@@ -1,0 +1,4304 @@
+{
+  "tool": "tools/world/w1-04-r5-live.mjs",
+  "when": "2026-08-08T06:34:02.987Z",
+  "commit": null,
+  "door_cap": null,
+  "chunk": 8,
+  "sections": {
+    "L1_live": {
+      "doors_tested": 115,
+      "skipped": 0,
+      "bodies_inside_a_building": 0,
+      "bodies_inside_the_building_just_left": 0,
+      "still_reporting_an_interior": 0,
+      "door_back_in_reach": 106,
+      "offenders": [],
+      "rows": [
+        {
+          "id": "archon-apothecary",
+          "building": "archon-apothecary",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3803.97,
+            3.42,
+            3851.34
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-apothecary",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-guild-office",
+          "building": "archon-guild-office",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3785,
+            3.42,
+            3798.8
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-guild-office",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-house-0",
+          "building": "archon-house-0",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3791.82,
+            3.42,
+            3857.11
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-house-0",
+          "door_dist_m": 1.499,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-house-1",
+          "building": "archon-house-1",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3789.01,
+            3.42,
+            3863.6
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-house-1",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-house-2",
+          "building": "archon-house-2",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3785,
+            3.42,
+            3864.2
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-house-2",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-inn",
+          "building": "archon-inn",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3812.26,
+            3.42,
+            3855.89
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-inn",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-kiln-house",
+          "building": "archon-kiln-house",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3795.25,
+            3.42,
+            3856.65
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-kiln-house",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-market",
+          "building": "archon-market",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3805.52,
+            3.42,
+            3845.62
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-market",
+          "door_dist_m": 2.25,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-rootpost",
+          "building": "archon-rootpost",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3802.78,
+            3.42,
+            3865.59
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-rootpost",
+          "door_dist_m": 1.499,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-shrine",
+          "building": "archon-shrine",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3806.41,
+            3.42,
+            3862.74
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-shrine",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-vat-house",
+          "building": "archon-vat-house",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3812.98,
+            3.42,
+            3847.1
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-vat-house",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-ward",
+          "building": "archon-ward",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3809.46,
+            3.42,
+            3859.27
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-ward",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "barge-hold",
+          "building": "barge-hold",
+          "settlement": "tidewrack",
+          "entered": true,
+          "pos": [
+            3800,
+            13.28,
+            909.4
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": null,
+          "door_dist_m": null,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-clerk",
+          "building": "blackrose-clerk",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1887.5,
+            2.59,
+            4459
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "blackrose-clerk",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-house-0",
+          "building": "blackrose-house-0",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1898.5,
+            2.59,
+            4449
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "blackrose-house-1",
+          "door_dist_m": 0.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-house-1",
+          "building": "blackrose-house-1",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1898.5,
+            2.59,
+            4450
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "blackrose-house-1",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-house-2",
+          "building": "blackrose-house-2",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1898.5,
+            2.58,
+            4471.7
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "blackrose-house-2",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-inn",
+          "building": "blackrose-inn",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1865.5,
+            2.59,
+            4458
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "blackrose-warders-hall",
+          "door_dist_m": 0.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-market",
+          "building": "blackrose-market",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1876.5,
+            2.59,
+            4449
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "blackrose-smithy",
+          "door_dist_m": 0.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-pawn",
+          "building": "blackrose-pawn",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1876.5,
+            2.57,
+            4471.7
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "blackrose-pawn",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-prison",
+          "building": "blackrose-prison",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1865.5,
+            2.59,
+            4446.3
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "blackrose-prison",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-rootpost",
+          "building": "blackrose-rootpost",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1887.5,
+            2.59,
+            4458
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "blackrose-clerk",
+          "door_dist_m": 0.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-shrine",
+          "building": "blackrose-shrine",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1887.5,
+            2.59,
+            4445.7
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "blackrose-shrine",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-smithy",
+          "building": "blackrose-smithy",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1876.5,
+            2.59,
+            4450
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "blackrose-smithy",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-warders-hall",
+          "building": "blackrose-warders-hall",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1865.5,
+            2.59,
+            4459
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "blackrose-warders-hall",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-apothecary",
+          "building": "gideon-apothecary",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            446,
+            2.71,
+            2945.2
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "gideon-apothecary",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-chapel",
+          "building": "gideon-chapel",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            434.82,
+            2.71,
+            2907.07
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": null,
+          "door_dist_m": null,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-court",
+          "building": "gideon-court",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            452.15,
+            2.71,
+            2929.26
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "gideon-court",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-grange",
+          "building": "gideon-grange",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            405,
+            2.7,
+            2914.2
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "gideon-grange",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-house-0",
+          "building": "gideon-house-0",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            427.89,
+            2.71,
+            2955.8
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": null,
+          "door_dist_m": null,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-house-1",
+          "building": "gideon-house-1",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            446,
+            2.71,
+            2887.2
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "gideon-house-1",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-inn",
+          "building": "gideon-inn",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            462,
+            2.71,
+            2929.8
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "gideon-inn",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-lowmarket",
+          "building": "gideon-lowmarket",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            427,
+            2.71,
+            2912.55
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "gideon-lowmarket",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-rootpost",
+          "building": "gideon-rootpost",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            473,
+            2.71,
+            2929.2
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "gideon-rootpost",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-shrine",
+          "building": "gideon-shrine",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            430.51,
+            2.71,
+            2896.83
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "gideon-shrine",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-smithy",
+          "building": "gideon-smithy",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            416,
+            2.7,
+            2914.2
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "gideon-smithy",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-tollhouse",
+          "building": "gideon-tollhouse",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            439.77,
+            2.71,
+            2933.84
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": null,
+          "door_dist_m": null,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-apothecary",
+          "building": "helstrom-apothecary",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2289.24,
+            27.2,
+            2841.96
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-apothecary",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-archive",
+          "building": "helstrom-archive",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2242.45,
+            27.2,
+            2809.84
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-archive",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-deep-market",
+          "building": "helstrom-deep-market",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2290.86,
+            27.2,
+            2803.8
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-deep-market",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-hist-shrine",
+          "building": "helstrom-hist-shrine",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2306.29,
+            27.2,
+            2798.64
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-hist-shrine",
+          "door_dist_m": 1.499,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-hollow-bole",
+          "building": "helstrom-hollow-bole",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2280.76,
+            27.2,
+            2780.58
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-hollow-bole",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-0",
+          "building": "helstrom-house-0",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2224.94,
+            27.2,
+            2818.61
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-house-0",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-1",
+          "building": "helstrom-house-1",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2216.34,
+            27.2,
+            2821.3
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-house-1",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-10",
+          "building": "helstrom-house-10",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2242.95,
+            27.2,
+            2767.28
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-house-10",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-11",
+          "building": "helstrom-house-11",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2244.39,
+            27.2,
+            2755.42
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-house-11",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-2",
+          "building": "helstrom-house-2",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2251.61,
+            27.2,
+            2790.6
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-house-2",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-3",
+          "building": "helstrom-house-3",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2234.98,
+            27.2,
+            2794.9
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-house-3",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-4",
+          "building": "helstrom-house-4",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2215.92,
+            27.2,
+            2793.26
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-house-4",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-5",
+          "building": "helstrom-house-5",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2197.05,
+            27.2,
+            2785.04
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-house-5",
+          "door_dist_m": 1.499,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-6",
+          "building": "helstrom-house-6",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2243.02,
+            27.2,
+            2779.96
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-house-6",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-7",
+          "building": "helstrom-house-7",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2227.65,
+            27.2,
+            2774.64
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-house-7",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-8",
+          "building": "helstrom-house-8",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2212.99,
+            27.2,
+            2762.66
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-house-8",
+          "door_dist_m": 1.499,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-9",
+          "building": "helstrom-house-9",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2202.77,
+            27.2,
+            2744.36
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-house-9",
+          "door_dist_m": 1.501,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-inn-egg",
+          "building": "helstrom-inn-egg",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2243.9,
+            27.2,
+            2844.61
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-inn-egg",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-inn-gate",
+          "building": "helstrom-inn-gate",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2258.71,
+            27.2,
+            2830.87
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-inn-gate",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-inn-tide",
+          "building": "helstrom-inn-tide",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2267.64,
+            27.2,
+            2814.68
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-inn-tide",
+          "door_dist_m": 1.499,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-legation",
+          "building": "helstrom-legation",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2314.23,
+            27.2,
+            2815.09
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-legation",
+          "door_dist_m": 1.501,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-rootpost",
+          "building": "helstrom-rootpost",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2273.24,
+            27.2,
+            2789.34
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-rootpost",
+          "door_dist_m": 1.501,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-scriptorium",
+          "building": "helstrom-scriptorium",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2270.38,
+            27.2,
+            2797.75
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-scriptorium",
+          "door_dist_m": 1.501,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-smithy",
+          "building": "helstrom-smithy",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2293.16,
+            27.2,
+            2822.15
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-smithy",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-undertemple",
+          "building": "helstrom-undertemple",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2294.55,
+            27.2,
+            2786.89
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-undertemple",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-warders",
+          "building": "helstrom-warders",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2254.62,
+            27.2,
+            2797.75
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "helstrom-warders",
+          "door_dist_m": 1.501,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-apothecary",
+          "building": "lilmoth-apothecary",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2786.8,
+            7.37,
+            5064.11
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-apothecary",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-customs",
+          "building": "lilmoth-customs",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2798.5,
+            2.68,
+            5038.2
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-yard",
+          "door_dist_m": 1.56,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-healer",
+          "building": "lilmoth-healer",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2747.5,
+            7.37,
+            5067.51
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-healer",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-house-0",
+          "building": "lilmoth-house-0",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2735.06,
+            7.37,
+            5059.14
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-house-0",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-house-1",
+          "building": "lilmoth-house-1",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2729.55,
+            2.68,
+            5053.1
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-house-1",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-house-2",
+          "building": "lilmoth-house-2",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2723.85,
+            7.37,
+            5046.39
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-house-2",
+          "door_dist_m": 2.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-house-3",
+          "building": "lilmoth-house-3",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2719.83,
+            2.68,
+            5039.66
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": null,
+          "door_dist_m": null,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-house-4",
+          "building": "lilmoth-house-4",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2752.56,
+            7.37,
+            5033.87
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-house-4",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-inn-drowned",
+          "building": "lilmoth-inn-drowned",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2768.4,
+            2.68,
+            5074.55
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-inn-drowned",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-inn-stilt",
+          "building": "lilmoth-inn-stilt",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2760.95,
+            7.37,
+            5074.2
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-inn-stilt",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-ledger-house",
+          "building": "lilmoth-ledger-house",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2797.17,
+            2.68,
+            5045.88
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": null,
+          "door_dist_m": null,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-market",
+          "building": "lilmoth-market",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2785.35,
+            7.37,
+            5048.79
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": null,
+          "door_dist_m": null,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-pawn",
+          "building": "lilmoth-pawn",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2775.03,
+            7.37,
+            5067.47
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-pawn",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-rootpost",
+          "building": "lilmoth-rootpost",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2740.83,
+            2.68,
+            5065.06
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-rootpost",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-scribe",
+          "building": "lilmoth-scribe",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2780.62,
+            2.68,
+            5065.53
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-scribe",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-shrine",
+          "building": "lilmoth-shrine",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2754.4,
+            2.68,
+            5070.57
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-shrine",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-smithy",
+          "building": "lilmoth-smithy",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2792.55,
+            2.68,
+            5059.11
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-smithy",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-yard",
+          "building": "lilmoth-yard",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2798.53,
+            7.37,
+            5038.91
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-yard",
+          "door_dist_m": 1.75,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-boneyard",
+          "building": "soulrest-boneyard",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            605.93,
+            8.13,
+            4900.21
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "soulrest-pawn",
+          "door_dist_m": 2.118,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-court-steps",
+          "building": "soulrest-court-steps",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            626.98,
+            8.13,
+            4894.08
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "soulrest-market",
+          "door_dist_m": 0.876,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-grey-hist",
+          "building": "soulrest-grey-hist",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            627.83,
+            8.13,
+            4893.09
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "soulrest-court-steps",
+          "door_dist_m": 0.451,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-market",
+          "building": "soulrest-market",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            627.16,
+            8.13,
+            4895.51
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "soulrest-market",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-pawn",
+          "building": "soulrest-pawn",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            607.89,
+            8.13,
+            4901.77
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "soulrest-pawn",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-quay",
+          "building": "soulrest-quay",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            594.55,
+            8.13,
+            4904.62
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "soulrest-quay",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-smithy",
+          "building": "soulrest-smithy",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            620.36,
+            8.13,
+            4907.34
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "soulrest-smithy",
+          "door_dist_m": 1.499,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-archive",
+          "building": "stormhold-archive",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2137.5,
+            141.05,
+            736.98
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-archive",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-chapel",
+          "building": "stormhold-chapel",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2197.5,
+            141.05,
+            739.1
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-chapel",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-customs",
+          "building": "stormhold-customs",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2151.54,
+            141.05,
+            739.35
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-customs",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-gaol",
+          "building": "stormhold-gaol",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2144.45,
+            141.05,
+            807.86
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-gaol",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-house-0",
+          "building": "stormhold-house-0",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2140.47,
+            141.05,
+            795.96
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-house-0",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-house-1",
+          "building": "stormhold-house-1",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2167.5,
+            141.05,
+            754.7
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-house-1",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-house-2",
+          "building": "stormhold-house-2",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2129.53,
+            141.05,
+            781.35
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-house-2",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-house-3",
+          "building": "stormhold-house-3",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2182.5,
+            141.05,
+            755.3
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-house-3",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-house-4",
+          "building": "stormhold-house-4",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2124.91,
+            141.05,
+            764.89
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-house-4",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-inn-lean",
+          "building": "stormhold-inn-lean",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2184.24,
+            141.05,
+            813.57
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-inn-lean",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-inn-pass",
+          "building": "stormhold-inn-pass",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2181.09,
+            141.05,
+            738.11
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-inn-pass",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-kiln",
+          "building": "stormhold-kiln",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2152.5,
+            141.05,
+            754.1
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-kiln",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-market",
+          "building": "stormhold-market",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2206.04,
+            141.05,
+            792.35
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-market",
+          "door_dist_m": 1.501,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-praetorium",
+          "building": "stormhold-praetorium",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2215.21,
+            141.05,
+            777.27
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-praetorium",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-rootpost",
+          "building": "stormhold-rootpost",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2137.5,
+            141.05,
+            754.1
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-rootpost",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-scribe",
+          "building": "stormhold-scribe",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2203.23,
+            141.05,
+            805.55
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-scribe",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-shrine",
+          "building": "stormhold-shrine",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2163.8,
+            141.05,
+            814.55
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-shrine",
+          "door_dist_m": 1.499,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-smithy",
+          "building": "stormhold-smithy",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2166.09,
+            141.05,
+            738.71
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "stormhold-smithy",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-apothecary",
+          "building": "thorn-apothecary",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3832.32,
+            13.28,
+            874.43
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "thorn-apothecary",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-gate",
+          "building": "thorn-gate",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3807.63,
+            13.28,
+            874.51
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "thorn-gate",
+          "door_dist_m": 1.501,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-hall",
+          "building": "thorn-hall",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3831.26,
+            13.28,
+            873.37
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "thorn-apothecary",
+          "door_dist_m": 0.16,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-house-0",
+          "building": "thorn-house-0",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3808.9,
+            13.28,
+            873.64
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "thorn-gate",
+          "door_dist_m": 0.455,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-inn",
+          "building": "thorn-inn",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3834.18,
+            13.28,
+            874.15
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": null,
+          "door_dist_m": null,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-rootpost",
+          "building": "thorn-rootpost",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3812.67,
+            13.28,
+            891.07
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "thorn-rootpost",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-sapwell",
+          "building": "thorn-sapwell",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3825.73,
+            13.28,
+            884.09
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "thorn-sapwell",
+          "door_dist_m": 1.5,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-trader",
+          "building": "thorn-trader",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3836.86,
+            13.28,
+            877
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": "thorn-trader",
+          "door_dist_m": 1.501,
+          "still_in_interior": null
+        },
+        {
+          "id": "writ-house",
+          "building": "writ-house",
+          "settlement": "tidewrack",
+          "entered": true,
+          "pos": [
+            3806,
+            13.28,
+            900.6
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": null,
+          "door_dist_m": null,
+          "still_in_interior": null
+        }
+      ]
+    },
+    "L2_control_setup": {
+      "spawns": 113,
+      "doors": 112
+    },
+    "L2_control": {
+      "doors_tested": 115,
+      "skipped": 0,
+      "bodies_inside_a_building": 113,
+      "bodies_inside_the_building_just_left": 103,
+      "still_reporting_an_interior": 0,
+      "door_back_in_reach": 113,
+      "offenders": [
+        {
+          "id": "archon-apothecary",
+          "building": "archon-apothecary",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3808.67,
+            3.42,
+            3848.3
+          ],
+          "inside_building": "archon-apothecary",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-apothecary",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-guild-office",
+          "building": "archon-guild-office",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3785,
+            3.42,
+            3791.3
+          ],
+          "inside_building": "archon-guild-office",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-guild-office",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-house-0",
+          "building": "archon-house-0",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3790.36,
+            3.42,
+            3851.76
+          ],
+          "inside_building": "archon-house-0",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-house-0",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-house-1",
+          "building": "archon-house-1",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3788.29,
+            3.42,
+            3858.14
+          ],
+          "inside_building": "archon-house-1",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-house-1",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-house-2",
+          "building": "archon-house-2",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3785,
+            3.42,
+            3857.3
+          ],
+          "inside_building": "archon-house-2",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-house-2",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-inn",
+          "building": "archon-inn",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3809.47,
+            3.42,
+            3854.37
+          ],
+          "inside_building": "archon-inn",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-inn",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-kiln-house",
+          "building": "archon-kiln-house",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3792.68,
+            3.42,
+            3850.14
+          ],
+          "inside_building": "archon-kiln-house",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-kiln-house",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-market",
+          "building": "archon-market",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3810.06,
+            3.42,
+            3845.2
+          ],
+          "inside_building": "archon-market",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-market",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-rootpost",
+          "building": "archon-rootpost",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3799.4,
+            3.42,
+            3859.38
+          ],
+          "inside_building": "archon-rootpost",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-rootpost",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-shrine",
+          "building": "archon-shrine",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3802.25,
+            3.42,
+            3856.9
+          ],
+          "inside_building": "archon-shrine",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-shrine",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-vat-house",
+          "building": "archon-vat-house",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3814.44,
+            3.42,
+            3844.22
+          ],
+          "inside_building": "archon-vat-house",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-vat-house",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-ward",
+          "building": "archon-ward",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3807.01,
+            3.42,
+            3857.49
+          ],
+          "inside_building": "archon-inn",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-ward",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-clerk",
+          "building": "blackrose-clerk",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1887.5,
+            2.59,
+            4456.8
+          ],
+          "inside_building": "blackrose-clerk",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-clerk",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-house-0",
+          "building": "blackrose-house-0",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1898.5,
+            2.59,
+            4446.8
+          ],
+          "inside_building": "blackrose-house-0",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-house-1",
+          "door_dist_m": 0.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-house-1",
+          "building": "blackrose-house-1",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1898.5,
+            2.59,
+            4447.8
+          ],
+          "inside_building": "blackrose-house-1",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-house-1",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-house-2",
+          "building": "blackrose-house-2",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1898.5,
+            2.59,
+            4464.8
+          ],
+          "inside_building": "blackrose-house-2",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-house-2",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-inn",
+          "building": "blackrose-inn",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1865.5,
+            2.59,
+            4455.8
+          ],
+          "inside_building": "blackrose-inn",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-warders-hall",
+          "door_dist_m": 0.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-market",
+          "building": "blackrose-market",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1876.5,
+            2.59,
+            4446.8
+          ],
+          "inside_building": "blackrose-market",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-smithy",
+          "door_dist_m": 0.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-pawn",
+          "building": "blackrose-pawn",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1876.5,
+            2.59,
+            4464.8
+          ],
+          "inside_building": "blackrose-pawn",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-pawn",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-prison",
+          "building": "blackrose-prison",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1865.5,
+            2.59,
+            4438.8
+          ],
+          "inside_building": "blackrose-prison",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-prison",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        }
+      ],
+      "rows": [
+        {
+          "id": "archon-apothecary",
+          "building": "archon-apothecary",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3808.67,
+            3.42,
+            3848.3
+          ],
+          "inside_building": "archon-apothecary",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-apothecary",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-guild-office",
+          "building": "archon-guild-office",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3785,
+            3.42,
+            3791.3
+          ],
+          "inside_building": "archon-guild-office",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-guild-office",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-house-0",
+          "building": "archon-house-0",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3790.36,
+            3.42,
+            3851.76
+          ],
+          "inside_building": "archon-house-0",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-house-0",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-house-1",
+          "building": "archon-house-1",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3788.29,
+            3.42,
+            3858.14
+          ],
+          "inside_building": "archon-house-1",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-house-1",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-house-2",
+          "building": "archon-house-2",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3785,
+            3.42,
+            3857.3
+          ],
+          "inside_building": "archon-house-2",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-house-2",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-inn",
+          "building": "archon-inn",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3809.47,
+            3.42,
+            3854.37
+          ],
+          "inside_building": "archon-inn",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-inn",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-kiln-house",
+          "building": "archon-kiln-house",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3792.68,
+            3.42,
+            3850.14
+          ],
+          "inside_building": "archon-kiln-house",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-kiln-house",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-market",
+          "building": "archon-market",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3810.06,
+            3.42,
+            3845.2
+          ],
+          "inside_building": "archon-market",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-market",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-rootpost",
+          "building": "archon-rootpost",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3799.4,
+            3.42,
+            3859.38
+          ],
+          "inside_building": "archon-rootpost",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-rootpost",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-shrine",
+          "building": "archon-shrine",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3802.25,
+            3.42,
+            3856.9
+          ],
+          "inside_building": "archon-shrine",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-shrine",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-vat-house",
+          "building": "archon-vat-house",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3814.44,
+            3.42,
+            3844.22
+          ],
+          "inside_building": "archon-vat-house",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "archon-vat-house",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "archon-ward",
+          "building": "archon-ward",
+          "settlement": "archon",
+          "entered": true,
+          "pos": [
+            3807.01,
+            3.42,
+            3857.49
+          ],
+          "inside_building": "archon-inn",
+          "inside_settlement": "archon",
+          "inside_the_one_just_left": false,
+          "door_in_reach": "archon-ward",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "barge-hold",
+          "building": "barge-hold",
+          "settlement": "tidewrack",
+          "entered": true,
+          "pos": [
+            3800,
+            13.28,
+            909.4
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": null,
+          "door_dist_m": null,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-clerk",
+          "building": "blackrose-clerk",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1887.5,
+            2.59,
+            4456.8
+          ],
+          "inside_building": "blackrose-clerk",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-clerk",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-house-0",
+          "building": "blackrose-house-0",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1898.5,
+            2.59,
+            4446.8
+          ],
+          "inside_building": "blackrose-house-0",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-house-1",
+          "door_dist_m": 0.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-house-1",
+          "building": "blackrose-house-1",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1898.5,
+            2.59,
+            4447.8
+          ],
+          "inside_building": "blackrose-house-1",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-house-1",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-house-2",
+          "building": "blackrose-house-2",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1898.5,
+            2.59,
+            4464.8
+          ],
+          "inside_building": "blackrose-house-2",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-house-2",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-inn",
+          "building": "blackrose-inn",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1865.5,
+            2.59,
+            4455.8
+          ],
+          "inside_building": "blackrose-inn",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-warders-hall",
+          "door_dist_m": 0.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-market",
+          "building": "blackrose-market",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1876.5,
+            2.59,
+            4446.8
+          ],
+          "inside_building": "blackrose-market",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-smithy",
+          "door_dist_m": 0.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-pawn",
+          "building": "blackrose-pawn",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1876.5,
+            2.59,
+            4464.8
+          ],
+          "inside_building": "blackrose-pawn",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-pawn",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-prison",
+          "building": "blackrose-prison",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1865.5,
+            2.59,
+            4438.8
+          ],
+          "inside_building": "blackrose-prison",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-prison",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-rootpost",
+          "building": "blackrose-rootpost",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1887.5,
+            2.59,
+            4455.8
+          ],
+          "inside_building": "blackrose-rootpost",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-clerk",
+          "door_dist_m": 0.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-shrine",
+          "building": "blackrose-shrine",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1887.5,
+            2.59,
+            4438.8
+          ],
+          "inside_building": "blackrose-shrine",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-shrine",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-smithy",
+          "building": "blackrose-smithy",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1876.5,
+            2.59,
+            4447.8
+          ],
+          "inside_building": "blackrose-smithy",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-smithy",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "blackrose-warders-hall",
+          "building": "blackrose-warders-hall",
+          "settlement": "blackrose",
+          "entered": true,
+          "pos": [
+            1865.5,
+            2.59,
+            4456.8
+          ],
+          "inside_building": "blackrose-warders-hall",
+          "inside_settlement": "blackrose",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "blackrose-warders-hall",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-apothecary",
+          "building": "gideon-apothecary",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            446,
+            2.71,
+            2938.3
+          ],
+          "inside_building": "gideon-apothecary",
+          "inside_settlement": "gideon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "gideon-apothecary",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-chapel",
+          "building": "gideon-chapel",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            432,
+            2.71,
+            2903.3
+          ],
+          "inside_building": "gideon-lowmarket",
+          "inside_settlement": "gideon",
+          "inside_the_one_just_left": false,
+          "door_in_reach": "gideon-chapel",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-court",
+          "building": "gideon-court",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            451,
+            2.71,
+            2922.3
+          ],
+          "inside_building": "gideon-court",
+          "inside_settlement": "gideon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "gideon-court",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-grange",
+          "building": "gideon-grange",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            405,
+            2.71,
+            2908.3
+          ],
+          "inside_building": "gideon-grange",
+          "inside_settlement": "gideon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "gideon-grange",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-house-0",
+          "building": "gideon-house-0",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            432,
+            2.71,
+            2949.3
+          ],
+          "inside_building": "gideon-house-0",
+          "inside_settlement": "gideon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "gideon-house-0",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-house-1",
+          "building": "gideon-house-1",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            446,
+            2.71,
+            2881.3
+          ],
+          "inside_building": "gideon-house-1",
+          "inside_settlement": "gideon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "gideon-house-1",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-inn",
+          "building": "gideon-inn",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            462,
+            2.71,
+            2922.3
+          ],
+          "inside_building": "gideon-inn",
+          "inside_settlement": "gideon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "gideon-inn",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-lowmarket",
+          "building": "gideon-lowmarket",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            427,
+            2.71,
+            2908.3
+          ],
+          "inside_building": "gideon-lowmarket",
+          "inside_settlement": "gideon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "gideon-lowmarket",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-rootpost",
+          "building": "gideon-rootpost",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            473,
+            2.71,
+            2922.3
+          ],
+          "inside_building": "gideon-rootpost",
+          "inside_settlement": "gideon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "gideon-rootpost",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-shrine",
+          "building": "gideon-shrine",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            432,
+            2.71,
+            2892.3
+          ],
+          "inside_building": "gideon-shrine",
+          "inside_settlement": "gideon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "gideon-shrine",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-smithy",
+          "building": "gideon-smithy",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            416,
+            2.71,
+            2908.3
+          ],
+          "inside_building": "gideon-smithy",
+          "inside_settlement": "gideon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "gideon-smithy",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "gideon-tollhouse",
+          "building": "gideon-tollhouse",
+          "settlement": "gideon",
+          "entered": true,
+          "pos": [
+            446,
+            2.71,
+            2927.3
+          ],
+          "inside_building": "gideon-tollhouse",
+          "inside_settlement": "gideon",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "gideon-tollhouse",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-apothecary",
+          "building": "helstrom-apothecary",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2286.52,
+            27.2,
+            2836.77
+          ],
+          "inside_building": "helstrom-apothecary",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-apothecary",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-archive",
+          "building": "helstrom-archive",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2246.08,
+            27.2,
+            2805.07
+          ],
+          "inside_building": "helstrom-archive",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-archive",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-deep-market",
+          "building": "helstrom-deep-market",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2285.74,
+            27.2,
+            2800.12
+          ],
+          "inside_building": "helstrom-deep-market",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-deep-market",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-hist-shrine",
+          "building": "helstrom-hist-shrine",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2308.93,
+            27.2,
+            2793.85
+          ],
+          "inside_building": "helstrom-hist-shrine",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-hist-shrine",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-hollow-bole",
+          "building": "helstrom-hollow-bole",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2280.5,
+            27.2,
+            2775.3
+          ],
+          "inside_building": "helstrom-hollow-bole",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-hollow-bole",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-0",
+          "building": "helstrom-house-0",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2230.51,
+            27.2,
+            2813.73
+          ],
+          "inside_building": "helstrom-house-0",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-house-0",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-1",
+          "building": "helstrom-house-1",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2211.46,
+            27.2,
+            2817.14
+          ],
+          "inside_building": "helstrom-house-1",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-house-1",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-10",
+          "building": "helstrom-house-10",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2247.94,
+            27.2,
+            2764.72
+          ],
+          "inside_building": "helstrom-house-10",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-house-10",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-11",
+          "building": "helstrom-house-11",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2239.26,
+            27.2,
+            2750.48
+          ],
+          "inside_building": "helstrom-house-11",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-house-11",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-2",
+          "building": "helstrom-house-2",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2247.94,
+            27.2,
+            2785.88
+          ],
+          "inside_building": "helstrom-house-2",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-house-2",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-3",
+          "building": "helstrom-house-3",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2231.71,
+            27.2,
+            2789.73
+          ],
+          "inside_building": "helstrom-house-3",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-house-3",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-4",
+          "building": "helstrom-house-4",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2214.03,
+            27.2,
+            2787.59
+          ],
+          "inside_building": "helstrom-house-4",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-house-4",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-5",
+          "building": "helstrom-house-5",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2196.61,
+            27.2,
+            2779.15
+          ],
+          "inside_building": "helstrom-house-5",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-house-5",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-6",
+          "building": "helstrom-house-6",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2244.5,
+            27.2,
+            2775.3
+          ],
+          "inside_building": "helstrom-house-6",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-house-6",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-7",
+          "building": "helstrom-house-7",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2229.11,
+            27.2,
+            2768.88
+          ],
+          "inside_building": "helstrom-house-7",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-house-7",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-8",
+          "building": "helstrom-house-8",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2216.07,
+            27.2,
+            2756.75
+          ],
+          "inside_building": "helstrom-house-8",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-house-8",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-house-9",
+          "building": "helstrom-house-9",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2206.93,
+            27.2,
+            2739.68
+          ],
+          "inside_building": "helstrom-house-9",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-house-9",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-inn-egg",
+          "building": "helstrom-inn-egg",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2245.8,
+            27.2,
+            2839.15
+          ],
+          "inside_building": "helstrom-inn-egg",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-inn-egg",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-inn-gate",
+          "building": "helstrom-inn-gate",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2259.21,
+            27.2,
+            2825.19
+          ],
+          "inside_building": "helstrom-inn-gate",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-inn-gate",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-inn-tide",
+          "building": "helstrom-inn-tide",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2266.71,
+            27.2,
+            2809.04
+          ],
+          "inside_building": "helstrom-inn-tide",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-inn-tide",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-legation",
+          "building": "helstrom-legation",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2318.07,
+            27.2,
+            2810.92
+          ],
+          "inside_building": "helstrom-legation",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-legation",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-rootpost",
+          "building": "helstrom-rootpost",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2277.06,
+            27.2,
+            2785.88
+          ],
+          "inside_building": "helstrom-rootpost",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-rootpost",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-scriptorium",
+          "building": "helstrom-scriptorium",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2268.06,
+            27.2,
+            2792.42
+          ],
+          "inside_building": "helstrom-scriptorium",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-scriptorium",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-smithy",
+          "building": "helstrom-smithy",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2289.16,
+            27.2,
+            2817.6
+          ],
+          "inside_building": "helstrom-smithy",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-smithy",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-undertemple",
+          "building": "helstrom-undertemple",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2295.89,
+            27.2,
+            2781.72
+          ],
+          "inside_building": "helstrom-undertemple",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-undertemple",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "helstrom-warders",
+          "building": "helstrom-warders",
+          "settlement": "helstrom",
+          "entered": true,
+          "pos": [
+            2256.94,
+            27.2,
+            2792.42
+          ],
+          "inside_building": "helstrom-warders",
+          "inside_settlement": "helstrom",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "helstrom-warders",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-apothecary",
+          "building": "lilmoth-apothecary",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2786.8,
+            7.37,
+            5057.81
+          ],
+          "inside_building": "lilmoth-apothecary",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "lilmoth-apothecary",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-customs",
+          "building": "lilmoth-customs",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2798.5,
+            2.68,
+            5029.3
+          ],
+          "inside_building": "lilmoth-customs",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "lilmoth-customs",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-healer",
+          "building": "lilmoth-healer",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2747.5,
+            7.37,
+            5062.21
+          ],
+          "inside_building": "lilmoth-healer",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "lilmoth-healer",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-house-0",
+          "building": "lilmoth-house-0",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2735.06,
+            7.37,
+            5054.03
+          ],
+          "inside_building": "lilmoth-house-0",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "lilmoth-house-0",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-house-1",
+          "building": "lilmoth-house-1",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2730.06,
+            2.68,
+            5048.09
+          ],
+          "inside_building": "lilmoth-house-0",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-house-1",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-house-2",
+          "building": "lilmoth-house-2",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2726.2,
+            7.37,
+            5041.13
+          ],
+          "inside_building": "lilmoth-house-1",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-house-2",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-house-3",
+          "building": "lilmoth-house-3",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2723.69,
+            2.68,
+            5033.39
+          ],
+          "inside_building": "lilmoth-house-2",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-house-3",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-house-4",
+          "building": "lilmoth-house-4",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2752.56,
+            7.37,
+            5027.97
+          ],
+          "inside_building": "lilmoth-house-4",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "lilmoth-house-4",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-inn-drowned",
+          "building": "lilmoth-inn-drowned",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2768.4,
+            2.68,
+            5069.25
+          ],
+          "inside_building": "lilmoth-inn-drowned",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "lilmoth-inn-drowned",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-inn-stilt",
+          "building": "lilmoth-inn-stilt",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2760.95,
+            7.37,
+            5067.9
+          ],
+          "inside_building": "lilmoth-inn-stilt",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "lilmoth-inn-stilt",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-ledger-house",
+          "building": "lilmoth-ledger-house",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2794.35,
+            2.68,
+            5040.45
+          ],
+          "inside_building": "lilmoth-ledger-house",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "lilmoth-ledger-house",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-market",
+          "building": "lilmoth-market",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2790.9,
+            7.37,
+            5044.98
+          ],
+          "inside_building": "lilmoth-market",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "lilmoth-market",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-pawn",
+          "building": "lilmoth-pawn",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2774.28,
+            7.37,
+            5061.37
+          ],
+          "inside_building": "lilmoth-scribe",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-pawn",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-rootpost",
+          "building": "lilmoth-rootpost",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2740.96,
+            2.68,
+            5058.77
+          ],
+          "inside_building": "lilmoth-healer",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": false,
+          "door_in_reach": "lilmoth-rootpost",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-scribe",
+          "building": "lilmoth-scribe",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2780.62,
+            2.68,
+            5060.23
+          ],
+          "inside_building": "lilmoth-scribe",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "lilmoth-scribe",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-shrine",
+          "building": "lilmoth-shrine",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2754.4,
+            2.68,
+            5064.27
+          ],
+          "inside_building": "lilmoth-shrine",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "lilmoth-shrine",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-smithy",
+          "building": "lilmoth-smithy",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2792.55,
+            2.68,
+            5054.14
+          ],
+          "inside_building": "lilmoth-smithy",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "lilmoth-smithy",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "lilmoth-yard",
+          "building": "lilmoth-yard",
+          "settlement": "lilmoth",
+          "entered": true,
+          "pos": [
+            2796.94,
+            7.37,
+            5035.17
+          ],
+          "inside_building": "lilmoth-yard",
+          "inside_settlement": "lilmoth",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "lilmoth-yard",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-boneyard",
+          "building": "soulrest-boneyard",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            598.36,
+            8.13,
+            4887.62
+          ],
+          "inside_building": "soulrest-quay",
+          "inside_settlement": "soulrest",
+          "inside_the_one_just_left": false,
+          "door_in_reach": "soulrest-boneyard",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-court-steps",
+          "building": "soulrest-court-steps",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            630.6,
+            8.13,
+            4887.75
+          ],
+          "inside_building": "soulrest-court-steps",
+          "inside_settlement": "soulrest",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "soulrest-court-steps",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-grey-hist",
+          "building": "soulrest-grey-hist",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            625.5,
+            8.13,
+            4878.8
+          ],
+          "inside_building": "soulrest-grey-hist",
+          "inside_settlement": "soulrest",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "soulrest-grey-hist",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-market",
+          "building": "soulrest-market",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            620.54,
+            8.13,
+            4889.95
+          ],
+          "inside_building": "soulrest-market",
+          "inside_settlement": "soulrest",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "soulrest-market",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-pawn",
+          "building": "soulrest-pawn",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            608.93,
+            8.13,
+            4893.72
+          ],
+          "inside_building": "soulrest-smithy",
+          "inside_settlement": "soulrest",
+          "inside_the_one_just_left": false,
+          "door_in_reach": "soulrest-pawn",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-quay",
+          "building": "soulrest-quay",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            599.5,
+            8.13,
+            4897.85
+          ],
+          "inside_building": "soulrest-quay",
+          "inside_settlement": "soulrest",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "soulrest-quay",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "soulrest-smithy",
+          "building": "soulrest-smithy",
+          "settlement": "soulrest",
+          "entered": true,
+          "pos": [
+            617.3,
+            8.13,
+            4899.72
+          ],
+          "inside_building": "soulrest-smithy",
+          "inside_settlement": "soulrest",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "soulrest-smithy",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-archive",
+          "building": "stormhold-archive",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2137.5,
+            141.05,
+            732.8
+          ],
+          "inside_building": "stormhold-archive",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-archive",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-chapel",
+          "building": "stormhold-chapel",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2197.5,
+            141.05,
+            732.8
+          ],
+          "inside_building": "stormhold-chapel",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-chapel",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-customs",
+          "building": "stormhold-customs",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2152.5,
+            141.05,
+            732.8
+          ],
+          "inside_building": "stormhold-customs",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-customs",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-gaol",
+          "building": "stormhold-gaol",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2148.5,
+            141.05,
+            802.64
+          ],
+          "inside_building": "stormhold-gaol",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-gaol",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-house-0",
+          "building": "stormhold-house-0",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2135.34,
+            141.05,
+            791.24
+          ],
+          "inside_building": "stormhold-house-0",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-house-0",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-house-1",
+          "building": "stormhold-house-1",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2167.5,
+            141.05,
+            747.8
+          ],
+          "inside_building": "stormhold-house-1",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-house-1",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-house-2",
+          "building": "stormhold-house-2",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2127.36,
+            141.05,
+            775.76
+          ],
+          "inside_building": "stormhold-house-2",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-house-2",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-house-3",
+          "building": "stormhold-house-3",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2182.5,
+            141.05,
+            747.8
+          ],
+          "inside_building": "stormhold-house-3",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-house-3",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-house-4",
+          "building": "stormhold-house-4",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2125.71,
+            141.05,
+            758.43
+          ],
+          "inside_building": "stormhold-house-4",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-house-4",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-inn-lean",
+          "building": "stormhold-inn-lean",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2182.34,
+            141.05,
+            807.5
+          ],
+          "inside_building": "stormhold-inn-lean",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-inn-lean",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-inn-pass",
+          "building": "stormhold-inn-pass",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2182.5,
+            141.05,
+            732.8
+          ],
+          "inside_building": "stormhold-inn-pass",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-inn-pass",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-kiln",
+          "building": "stormhold-kiln",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2152.5,
+            141.05,
+            747.8
+          ],
+          "inside_building": "stormhold-kiln",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-kiln",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-market",
+          "building": "stormhold-market",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2210.2,
+            141.05,
+            787.67
+          ],
+          "inside_building": "stormhold-market",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-market",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-praetorium",
+          "building": "stormhold-praetorium",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2216.67,
+            141.05,
+            771.51
+          ],
+          "inside_building": "stormhold-praetorium",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-praetorium",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-rootpost",
+          "building": "stormhold-rootpost",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2137.5,
+            141.05,
+            747.8
+          ],
+          "inside_building": "stormhold-rootpost",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-rootpost",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-scribe",
+          "building": "stormhold-scribe",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2198.18,
+            141.05,
+            800.27
+          ],
+          "inside_building": "stormhold-scribe",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-scribe",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-shrine",
+          "building": "stormhold-shrine",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2164.95,
+            141.05,
+            808.33
+          ],
+          "inside_building": "stormhold-shrine",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-shrine",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "stormhold-smithy",
+          "building": "stormhold-smithy",
+          "settlement": "stormhold",
+          "entered": true,
+          "pos": [
+            2167.5,
+            141.05,
+            732.8
+          ],
+          "inside_building": "stormhold-smithy",
+          "inside_settlement": "stormhold",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "stormhold-smithy",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-apothecary",
+          "building": "thorn-apothecary",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3826.86,
+            13.28,
+            869.4
+          ],
+          "inside_building": "thorn-apothecary",
+          "inside_settlement": "thorn",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "thorn-apothecary",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-gate",
+          "building": "thorn-gate",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3813.14,
+            13.28,
+            869.4
+          ],
+          "inside_building": "thorn-gate",
+          "inside_settlement": "thorn",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "thorn-gate",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-hall",
+          "building": "thorn-hall",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3820,
+            13.28,
+            860.8
+          ],
+          "inside_building": "thorn-hall",
+          "inside_settlement": "thorn",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "thorn-hall",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-house-0",
+          "building": "thorn-house-0",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3813.14,
+            13.28,
+            869.4
+          ],
+          "inside_building": "thorn-gate",
+          "inside_settlement": "thorn",
+          "inside_the_one_just_left": false,
+          "door_in_reach": "thorn-gate",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-inn",
+          "building": "thorn-inn",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3837,
+            13.28,
+            860.8
+          ],
+          "inside_building": "thorn-inn",
+          "inside_settlement": "thorn",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "thorn-inn",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-rootpost",
+          "building": "thorn-rootpost",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3814.88,
+            13.28,
+            883.22
+          ],
+          "inside_building": "thorn-rootpost",
+          "inside_settlement": "thorn",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "thorn-rootpost",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-sapwell",
+          "building": "thorn-sapwell",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3823.78,
+            13.28,
+            877.37
+          ],
+          "inside_building": "thorn-sapwell",
+          "inside_settlement": "thorn",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "thorn-sapwell",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "thorn-trader",
+          "building": "thorn-trader",
+          "settlement": "thorn",
+          "entered": true,
+          "pos": [
+            3840.72,
+            13.28,
+            870.78
+          ],
+          "inside_building": "thorn-trader",
+          "inside_settlement": "thorn",
+          "inside_the_one_just_left": true,
+          "door_in_reach": "thorn-trader",
+          "door_dist_m": 1.8,
+          "still_in_interior": null
+        },
+        {
+          "id": "writ-house",
+          "building": "writ-house",
+          "settlement": "tidewrack",
+          "entered": true,
+          "pos": [
+            3806,
+            13.28,
+            900.6
+          ],
+          "inside_building": null,
+          "inside_settlement": null,
+          "inside_the_one_just_left": false,
+          "door_in_reach": null,
+          "door_dist_m": null,
+          "still_in_interior": null
+        }
+      ]
+    },
+    "L2_world_restored": true,
+    "L3_reach": {
+      "what": "can you get back in from where the door left you — `whereAmI().door_in_reach`, the reach table sim/settlement.js itself fills",
+      "live_door_back_in_reach": 106,
+      "live_doors": 115,
+      "control_door_back_in_reach": 113
+    }
+  },
+  "failures": [],
+  "doors": 115,
+  "headline": {
+    "doors": 115,
+    "bodies_inside_a_building_SHIPPED": 0,
+    "bodies_inside_a_building_CONTROL": 113,
+    "inside_the_one_just_left_CONTROL": 103,
+    "door_back_in_reach_SHIPPED": 106,
+    "door_back_in_reach_CONTROL": 113
+  },
+  "page_errors": []
+}

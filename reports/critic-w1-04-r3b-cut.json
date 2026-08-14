@@ -1,0 +1,39 @@
+{
+  "tool": "tools/world/critic-w1-04-r3b.mjs",
+  "label": "cut",
+  "entry": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/criticr3-cut/game/index.html",
+  "door": {
+    "asked": 20,
+    "entered": 20,
+    "drew_the_right_cell": 0,
+    "misses": [
+      {
+        "id": "archon-apothecary",
+        "drawn": "province",
+        "want": "interior"
+      },
+      {
+        "id": "archon-guild-office",
+        "drawn": "province",
+        "want": "interior"
+      },
+      {
+        "id": "archon-house-0",
+        "drawn": "province",
+        "want": "interior"
+      },
+      {
+        "id": "archon-house-1",
+        "drawn": "province",
+        "want": "interior"
+      }
+    ]
+  },
+  "street": {
+    "settlement": "thorn",
+    "buildings_in_the_scene_graph": 0,
+    "collision_shapes": 67,
+    "collision_cell_id": "settlement:thorn"
+  },
+  "page_errors": []
+}

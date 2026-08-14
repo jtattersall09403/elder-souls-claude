@@ -1,0 +1,104 @@
+{
+  "schema": "elder-souls/marker-scan@1",
+  "item": "RI-UIX02",
+  "detector": "F1-F5 (data)",
+  "roots": [
+    "game/data"
+  ],
+  "files_scanned": 566,
+  "parse_errors": [],
+  "hits": [
+    {
+      "rule": "F6",
+      "file": "world/readables/site-marks.json",
+      "jsonpath": "marks.15",
+      "key": "pos beside quest",
+      "sample": "{\"pos\":[-4,0.9,-4.8],\"quest\":\"Q-XULA-10\"}"
+    },
+    {
+      "rule": "F6",
+      "file": "world/readables/site-marks.json",
+      "jsonpath": "marks.16",
+      "key": "pos beside quest",
+      "sample": "{\"pos\":[4,0.9,-4.8],\"quest\":\"Q-XULA-13\"}"
+    },
+    {
+      "rule": "F6",
+      "file": "world/readables/site-marks.json",
+      "jsonpath": "marks.17",
+      "key": "pos beside quest",
+      "sample": "{\"pos\":[0,0.9,-5.2],\"quest\":\"Q-XULA-08\"}"
+    },
+    {
+      "rule": "F6",
+      "file": "world/readables/site-marks.json",
+      "jsonpath": "marks.18",
+      "key": "pos beside quest",
+      "sample": "{\"pos\":[0,0.9,-0.6],\"quest\":\"Q-XULA-14\"}"
+    },
+    {
+      "rule": "F6",
+      "file": "world/readables/site-marks.json",
+      "jsonpath": "marks.19",
+      "key": "pos beside quest",
+      "sample": "{\"pos\":[-3.6,0.9,-4.6],\"quest\":\"Q-ASSZ-10\"}"
+    },
+    {
+      "rule": "F6",
+      "file": "world/readables/site-marks.json",
+      "jsonpath": "marks.20",
+      "key": "pos beside quest",
+      "sample": "{\"pos\":[3.6,0.9,-4.6],\"quest\":\"Q-ASSZ-13\"}"
+    },
+    {
+      "rule": "F6",
+      "file": "world/readables/site-marks.json",
+      "jsonpath": "marks.21",
+      "key": "pos beside quest",
+      "sample": "{\"pos\":[-3.6,0.9,-4.6],\"quest\":\"Q-ASSZ-12\"}"
+    },
+    {
+      "rule": "F6",
+      "file": "world/readables/site-marks.json",
+      "jsonpath": "marks.22",
+      "key": "pos beside quest",
+      "sample": "{\"pos\":[0,0.9,-3],\"quest\":\"Q-MAIN-01\"}"
+    },
+    {
+      "rule": "F6",
+      "file": "world/readables/site-marks.json",
+      "jsonpath": "marks.23",
+      "key": "pos beside quest",
+      "sample": "{\"pos\":[0,0.5,-4],\"quest\":\"Q-MAIN-08\"}"
+    },
+    {
+      "rule": "F6",
+      "file": "world/readables/site-marks.json",
+      "jsonpath": "marks.24",
+      "key": "pos beside quest",
+      "sample": "{\"pos\":[-3.2,0.6,-4.2],\"quest\":\"Q-SAP-01\"}"
+    }
+  ],
+  "hit_count": 10,
+  "excused": [
+    {
+      "rule": "F1",
+      "file": "stealth/detection.json",
+      "jsonpath": "no_meter.hud_elements",
+      "key": "hud_elements",
+      "sample": "0",
+      "reason": "The value is the integer 0 and the key is W1-15's DECLARATION that the stealth system draws no HUD elements — RI-STL01's 'no detection meter' compliance, asserted in data. It is a count of markers, not a coordinate a marker could be drawn from, and F1's `hud_.*` branch has caught the one field in the tree that exists to say there are none.",
+      "removed_by": "W1-15 renaming the key to `hud_element_count` or `meter_elements`, at which point this entry goes STALE and fails the run until it is deleted."
+    }
+  ],
+  "excused_count": 1,
+  "stale_exceptions": [],
+  "by_rule": {
+    "F1": 0,
+    "F2": 0,
+    "F3": 0,
+    "F4": 0,
+    "F5": 0
+  },
+  "K1": "FAIL"
+}

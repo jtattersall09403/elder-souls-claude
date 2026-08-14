@@ -1,0 +1,181 @@
+{
+  "schema": "elder-souls/critic-w1-16-live@1",
+  "unit": "f@60",
+  "generated": "2026-08-08T02:17:33.181Z",
+  "probes": {
+    "spell": {
+      "states_examined": 49,
+      "states_that_begin_with_nothing_equipped": [
+        "dungeon_primary",
+        "endgame-200q",
+        "interior_firelit",
+        "material_showcase",
+        "npc_showcase",
+        "rootlands-hollow",
+        "settlement_primary_street",
+        "stone-wastes-count",
+        "sv1-midquest",
+        "swamp_canopy",
+        "thorn-hall",
+        "town-archon",
+        "town-blackrose",
+        "town-gideon",
+        "town-helstrom",
+        "town-lilmoth",
+        "town-soulrest",
+        "town-stormhold",
+        "town-thorn",
+        "vista_primary",
+        "water_shallows"
+      ],
+      "demonstrations": [
+        {
+          "state": "dungeon_primary",
+          "source_at_start": "engine default — nothing is equipped yet",
+          "pct_at_start": 24,
+          "willpower": {
+            "focus_max": 117,
+            "slots": 6,
+            "focus": 94
+          },
+          "skills": {
+            "sorcery": 5,
+            "root_speech": 10,
+            "warding": 5,
+            "veiling": 5,
+            "alteration": 100,
+            "mysticism": 100,
+            "restoration": 100,
+            "destruction": 100,
+            "illusion": 100,
+            "conjuration": 100
+          },
+          "learn": [
+            "shock_damage",
+            "slowfall",
+            "burden"
+          ],
+          "attune": [],
+          "cast": {
+            "cast": false,
+            "refused": "not_attuned"
+          },
+          "pct_after_cast": 24,
+          "tier_after_cast": "LIGHT",
+          "equipped_weight": 9.1,
+          "equip_load_max": 73,
+          "pct_after_equip": 12.465753,
+          "pct_expected_after_equip": 52.465753,
+          "the_spell_survived_the_equip": false,
+          "pct_after_expiry": 12.465753,
+          "tier_after_expiry": "LIGHT",
+          "pct_expected_after_expiry": 12.465753,
+          "tier_expected_after_expiry": "LIGHT",
+          "load_correct_after_expiry": true
+        },
+        {
+          "state": "default",
+          "source_at_start": "derived from equipped items (W1-16 r2)",
+          "pct_at_start": 0,
+          "willpower": {
+            "focus_max": 117,
+            "slots": 6,
+            "focus": 94
+          },
+          "skills": {
+            "sorcery": 5,
+            "root_speech": 10,
+            "warding": 5,
+            "veiling": 5,
+            "alteration": 100,
+            "mysticism": 100,
+            "restoration": 100,
+            "destruction": 100,
+            "illusion": 100,
+            "conjuration": 100
+          },
+          "learn": [
+            "shock_damage",
+            "slowfall",
+            "burden"
+          ],
+          "attune": [],
+          "cast": {
+            "cast": false,
+            "refused": "not_attuned"
+          },
+          "pct_after_cast": 0,
+          "tier_after_cast": "LIGHT",
+          "equipped_weight": 9.1,
+          "equip_load_max": 73,
+          "pct_after_equip": 12.465753,
+          "pct_expected_after_equip": 52.465753,
+          "the_spell_survived_the_equip": false,
+          "pct_after_expiry": 12.465753,
+          "tier_after_expiry": "LIGHT",
+          "pct_expected_after_expiry": 12.465753,
+          "tier_expected_after_expiry": "LIGHT",
+          "load_correct_after_expiry": true
+        }
+      ],
+      "claim_in_the_source": "_recomputeEquipLoad(): \"applies its result as a DELTA ... so the feather effect's own additive offset survives untouched\"",
+      "coupled": false
+    },
+    "oversprint": {
+      "rows": [
+        {
+          "pct": 15,
+          "sprint_held": false,
+          "tier": "LIGHT",
+          "metres_over_120_f60": 6.4,
+          "stamina_spent": 0
+        },
+        {
+          "pct": 15,
+          "sprint_held": true,
+          "tier": "LIGHT",
+          "metres_over_120_f60": 10,
+          "stamina_spent": 18
+        },
+        {
+          "pct": 85,
+          "sprint_held": false,
+          "tier": "HEAVY",
+          "metres_over_120_f60": 6.4,
+          "stamina_spent": 0
+        },
+        {
+          "pct": 85,
+          "sprint_held": true,
+          "tier": "HEAVY",
+          "metres_over_120_f60": 10,
+          "stamina_spent": 18
+        },
+        {
+          "pct": 120,
+          "sprint_held": false,
+          "tier": "OVERLOADED",
+          "metres_over_120_f60": 6.4,
+          "stamina_spent": 0
+        },
+        {
+          "pct": 120,
+          "sprint_held": true,
+          "tier": "OVERLOADED",
+          "metres_over_120_f60": 10,
+          "stamina_spent": 18
+        }
+      ],
+      "ri_cmb01_b": "OVERLOADED additionally forbids sprinting and jump-attacks.",
+      "jump_attack_half_has_a_reader": "combat/moveset.js — ctx.roll_tier === \"OVERLOADED\" -> { slot: null, reason: \"overloaded\" }",
+      "the_sprint_button_does_something_at_LIGHT": true,
+      "an_OVERLOADED_player_still_sprints": true,
+      "every_tier_covers_the_same_ground_holding_sprint": true,
+      "coupled": false
+    }
+  },
+  "uncoupled_probes": [
+    "spell",
+    "oversprint"
+  ]
+}

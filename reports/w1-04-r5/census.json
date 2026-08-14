@@ -1,0 +1,261 @@
+{
+  "tool": "tools/world/w1-04-r5-census.mjs",
+  "when": "2026-08-08T07:08:49.623Z",
+  "commit": null,
+  "arms": {
+    "no_join": false,
+    "no_doorstep": false,
+    "no_lamp_clamp": false,
+    "self_break": false
+  },
+  "join_report": {
+    "rooms": 112,
+    "limited": 41,
+    "spawns_moved": 112,
+    "doorsteps_moved": 112,
+    "doorsteps_unresolved": 0,
+    "lamps_moved": 461
+  },
+  "D": {
+    "what": "is the declared exterior doorstep inside a drawn building footprint, and is the door still in reach from it",
+    "buildings": 113,
+    "doorsteps_inside_a_building": 0,
+    "doorsteps_inside_the_building_they_belong_to": 0,
+    "doors_at_the_building_centre": 0,
+    "doorsteps_with_the_door_out_of_reach": 11,
+    "orphan_interiors_no_plan_building": 3,
+    "door_reach_m": 2.6,
+    "offenders": [],
+    "out_of_reach": [
+      {
+        "building": "gideon-tollhouse",
+        "interior": "gideon-tollhouse",
+        "settlement": "gideon",
+        "drawn_footprint_m": [
+          9.09,
+          15.6
+        ],
+        "entry_side": "south",
+        "spawn": [
+          439.77,
+          2933.84
+        ],
+        "inside": null,
+        "inside_own": false,
+        "door_to_centre_m": 7.8,
+        "door_to_doorstep_m": 6.25
+      },
+      {
+        "building": "gideon-chapel",
+        "interior": "gideon-chapel",
+        "settlement": "gideon",
+        "drawn_footprint_m": [
+          9.09,
+          15.6
+        ],
+        "entry_side": "south",
+        "spawn": [
+          434.82,
+          2907.07
+        ],
+        "inside": null,
+        "inside_own": false,
+        "door_to_centre_m": 4.55,
+        "door_to_doorstep_m": 3
+      },
+      {
+        "building": "gideon-house-0",
+        "interior": "gideon-house-0",
+        "settlement": "gideon",
+        "drawn_footprint_m": [
+          12.4,
+          14.4
+        ],
+        "entry_side": "south",
+        "spawn": [
+          427.89,
+          2955.8
+        ],
+        "inside": null,
+        "inside_own": false,
+        "door_to_centre_m": 7.2,
+        "door_to_doorstep_m": 4.25
+      },
+      {
+        "building": "lilmoth-customs",
+        "interior": "lilmoth-customs",
+        "settlement": "lilmoth",
+        "drawn_footprint_m": [
+          12.4,
+          10.67
+        ],
+        "entry_side": "south",
+        "spawn": [
+          2798.5,
+          5038.2
+        ],
+        "inside": null,
+        "inside_own": false,
+        "door_to_centre_m": 6.2,
+        "door_to_doorstep_m": 4.5
+      },
+      {
+        "building": "lilmoth-ledger-house",
+        "interior": "lilmoth-ledger-house",
+        "settlement": "lilmoth",
+        "drawn_footprint_m": [
+          12.4,
+          8.24
+        ],
+        "entry_side": "south",
+        "spawn": [
+          2797.17,
+          5045.88
+        ],
+        "inside": null,
+        "inside_own": false,
+        "door_to_centre_m": 6.2,
+        "door_to_doorstep_m": 3
+      },
+      {
+        "building": "lilmoth-market",
+        "interior": "lilmoth-market",
+        "settlement": "lilmoth",
+        "drawn_footprint_m": [
+          12.4,
+          8.24
+        ],
+        "entry_side": "south",
+        "spawn": [
+          2785.35,
+          5048.79
+        ],
+        "inside": null,
+        "inside_own": false,
+        "door_to_centre_m": 4.12,
+        "door_to_doorstep_m": 5.75
+      },
+      {
+        "building": "lilmoth-house-3",
+        "interior": "lilmoth-house-3",
+        "settlement": "lilmoth",
+        "drawn_footprint_m": [
+          12.4,
+          14.07
+        ],
+        "entry_side": "south",
+        "spawn": [
+          2719.83,
+          5039.66
+        ],
+        "inside": null,
+        "inside_own": false,
+        "door_to_centre_m": 7.03,
+        "door_to_doorstep_m": 4
+      },
+      {
+        "building": "soulrest-grey-hist",
+        "interior": "soulrest-grey-hist",
+        "settlement": "soulrest",
+        "drawn_footprint_m": [
+          14.8,
+          11.85
+        ],
+        "entry_side": "south",
+        "spawn": [
+          627.83,
+          4893.09
+        ],
+        "inside": null,
+        "inside_own": false,
+        "door_to_centre_m": 7.4,
+        "door_to_doorstep_m": 9
+      },
+      {
+        "building": "soulrest-boneyard",
+        "interior": "soulrest-boneyard",
+        "settlement": "soulrest",
+        "drawn_footprint_m": [
+          14.8,
+          16.8
+        ],
+        "entry_side": "south",
+        "spawn": [
+          605.93,
+          4900.21
+        ],
+        "inside": null,
+        "inside_own": false,
+        "door_to_centre_m": 7.4,
+        "door_to_doorstep_m": 9
+      },
+      {
+        "building": "thorn-hall",
+        "interior": "thorn-hall",
+        "settlement": "thorn",
+        "drawn_footprint_m": [
+          16,
+          15.73
+        ],
+        "entry_side": "south",
+        "spawn": [
+          3831.26,
+          873.37
+        ],
+        "inside": null,
+        "inside_own": false,
+        "door_to_centre_m": 7.87,
+        "door_to_doorstep_m": 13
+      },
+      {
+        "building": "thorn-inn",
+        "interior": "thorn-inn",
+        "settlement": "thorn",
+        "drawn_footprint_m": [
+          14.8,
+          16.8
+        ],
+        "entry_side": "south",
+        "spawn": [
+          3834.18,
+          874.15
+        ],
+        "inside": null,
+        "inside_own": false,
+        "door_to_centre_m": 7.4,
+        "door_to_doorstep_m": 8.25
+      }
+    ]
+  },
+  "L": {
+    "what": "authored lights[].pos outside their own room bounds_m — the positions render/interior.js draws and sim/stealth/system.js#syncInteriorLights() feeds the detection model",
+    "lamps_outside": 0,
+    "rooms": 0,
+    "hearths_outside": 0,
+    "worst": null,
+    "offenders": []
+  },
+  "P": {
+    "what": "built meshes more than 0.6 m outside their own room",
+    "meshes_outside": 0,
+    "rooms": 0,
+    "by_class": {},
+    "offenders": []
+  },
+  "R": {
+    "unique_items_outside_their_room": 0,
+    "rooms_where_the_1_2m_npc_anchor_inset_collapses": 0,
+    "rooms_checked": 115
+  },
+  "probe": {
+    "rooms_with_meshes": 115,
+    "rooms_with_zero_meshes": 0,
+    "zero_mesh_rooms": [],
+    "meshes_traversed": 14878,
+    "assertion": "a room that traverses zero meshes is a PROBE FAILURE, not a clean result"
+  },
+  "findings": [],
+  "residuals": [
+    "D: 11 of 113 doorsteps are further than 2.6 m from their own door — the deep-overlap buildings, whose entry wall is inside a neighbour"
+  ]
+}

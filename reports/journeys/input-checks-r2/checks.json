@@ -1,0 +1,1838 @@
+{
+  "schema": "elder-souls/input-checks@1",
+  "tool": "tools/journey/input-checks.mjs",
+  "items": [
+    "RI-JRN03",
+    "RI-JRN04"
+  ],
+  "shim": null,
+  "entry": "game/index.html",
+  "ran_at": "2026-08-07T16:27:27.433Z",
+  "load_at_start": [
+    10.4,
+    9.65,
+    7.81
+  ],
+  "counts": {
+    "total": 60,
+    "pass": 47,
+    "fail": 0,
+    "unmeasurable": 13
+  },
+  "self_test": {
+    "legs": [],
+    "vacuous": [],
+    "error": "page.evaluate: Target page, context or browser has been closed"
+  },
+  "checks": [
+    {
+      "id": "M-K1",
+      "item": "RI-JRN03",
+      "what": "action coverage through the real DOM path",
+      "status": "pass",
+      "threshold": "14/14 primary, 0 misrouted",
+      "detail": {
+        "actions": 16,
+        "primary_correct": 16,
+        "misrouted": []
+      }
+    },
+    {
+      "id": "M-K2",
+      "item": "RI-JRN03",
+      "what": "bindings matched on KeyboardEvent.code, never .key/.keyCode",
+      "status": "pass",
+      "threshold": "identical action map on qwerty/azerty/qwertz (HF1)",
+      "detail": {
+        "heavy_from_code": true,
+        "azerty_w_dispatched": true,
+        "before": 470,
+        "compares_key": false,
+        "compares_keycode": false,
+        "compares_code": true
+      }
+    },
+    {
+      "id": "M-K5",
+      "item": "RI-JRN03",
+      "what": "auto-repeat produces exactly one action",
+      "status": "pass",
+      "threshold": "exactly 1 (HF7)",
+      "detail": {
+        "fires": 1
+      }
+    },
+    {
+      "id": "M-K6",
+      "item": "RI-JRN03",
+      "what": "held actions released within 1 frame of blur",
+      "status": "pass",
+      "threshold": "held empty in 1 frame; displacement after the committed state ends <= 0.05 m (HF2)",
+      "detail": {
+        "heldBefore": [
+          "roll",
+          "sprint"
+        ],
+        "heldAfter1": [],
+        "displacement_total_m": 4.6874,
+        "displacement_after_commitment_m": 0
+      }
+    },
+    {
+      "id": "M-K7",
+      "item": "RI-JRN03",
+      "what": "held actions released within 1 frame of visibilitychange",
+      "status": "pass",
+      "threshold": "held empty in 1 frame; displacement after the committed state ends <= 0.05 m (HF2)",
+      "detail": {
+        "heldBefore": [
+          "roll",
+          "sprint"
+        ],
+        "heldAfter1": [],
+        "displacement_total_m": 4.6874,
+        "displacement_after_commitment_m": 0
+      }
+    },
+    {
+      "id": "M-K10",
+      "item": "RI-JRN03",
+      "what": "pointer-lock loss releases every held action and enters the menu state",
+      "status": "pass",
+      "threshold": "held empty in 1 frame, menu entered — no reachable gameplay-with-no-lock-and-no-menu (HF4)",
+      "detail": {
+        "before": [
+          "sprint"
+        ],
+        "after": [],
+        "menuOpen": true,
+        "pointerLocked": false
+      }
+    },
+    {
+      "id": "M-K11",
+      "item": "RI-JRN03",
+      "what": "a permanently failing pointer lock leaves the game playable (click-drag look, 0 modals)",
+      "status": "pass",
+      "threshold": "fallback engaged and the camera turns (PL5)",
+      "detail": {
+        "dragLookFallback": true,
+        "lockErrors": 2,
+        "yaw_before": 0,
+        "yaw_after": 12,
+        "turned": true
+      }
+    },
+    {
+      "id": "M-K12",
+      "item": "RI-JRN03",
+      "what": "degrees turned per fixed step is identical at 60/30/15 Hz render",
+      "status": "pass",
+      "threshold": "identical to 6 dp AND non-zero (HF8 / RI-PLT01 HF3)",
+      "detail": {
+        "per_rate": {
+          "0": 9.6,
+          "15": 9.6,
+          "30": 9.6,
+          "60": 9.6
+        },
+        "rotation_is_real": true
+      }
+    },
+    {
+      "id": "M-K13",
+      "item": "RI-JRN03",
+      "what": "degrees turned is exactly linear in total mouse delta",
+      "status": "pass",
+      "threshold": "r2 >= 0.999 (PL8)",
+      "detail": {
+        "points": [
+          [
+            40,
+            4.8
+          ],
+          [
+            80,
+            9.600000000000001
+          ],
+          [
+            160,
+            19.200000000000003
+          ],
+          [
+            320,
+            38.4
+          ]
+        ],
+        "r2": 1.0000000000000002
+      }
+    },
+    {
+      "id": "M-K14",
+      "item": "RI-JRN03",
+      "what": "context menu / scroll / tab-focus / quick-find all suppressed on the canvas",
+      "status": "pass",
+      "threshold": "0 context menus, 0 scroll, 0 focus change (PL9, KB4-KB6)",
+      "detail": {
+        "contextmenu_default_prevented": true,
+        "space_default_prevented": true,
+        "tab_default_prevented": true,
+        "wheel_default_prevented": true,
+        "page_scrolled": false,
+        "body_overflow": "hidden",
+        "canvas_cursor": "none"
+      }
+    },
+    {
+      "id": "M-K15",
+      "item": "RI-JRN03",
+      "what": "the cursor is hidden during gameplay and no software cursor is drawn",
+      "status": "pass",
+      "threshold": "computed cursor 'none' (PL10)",
+      "detail": {
+        "cursor": "none"
+      }
+    },
+    {
+      "id": "M-K16",
+      "item": "RI-JRN03",
+      "what": "sprint-roll-attack completes on a 2-key-rollover keyboard",
+      "status": "pass",
+      "threshold": "sequence completes; no default action needs 3 simultaneous MATRIX keys (HF6)",
+      "detail": {
+        "ghosted": [],
+        "sprinting": true,
+        "rolled": true,
+        "swung": true,
+        "matrix_at_peak": 2
+      }
+    },
+    {
+      "id": "M-K23",
+      "item": "RI-JRN03",
+      "what": "frames from a real DOM event to the sim step that consumes it, over 200 inputs",
+      "status": "pass",
+      "threshold": "p100 <= 2 frames, p50 <= 1",
+      "detail": {
+        "n": 200,
+        "p50": 1,
+        "p100": 1,
+        "never_consumed": 0
+      }
+    },
+    {
+      "id": "M-K24",
+      "item": "RI-JRN03",
+      "what": "10 000 inputs through the real path: inputs the PIPELINE lost",
+      "status": "pass",
+      "threshold": "0 pipeline drops. The aggregate `droppedInputs` also counts presses the COMBAT model refused (RI-CMB09 §1) and cannot be 0 in any real fight — see pipeline.js",
+      "detail": {
+        "pipeline_drops": 0,
+        "aggregate_droppedInputs": 9487,
+        "buffer_misses": 0,
+        "inputs": 10000
+      }
+    },
+    {
+      "id": "M-K4",
+      "item": "RI-JRN03",
+      "what": "no default uses Ctrl/Alt; Ctrl+W and F5 are refused with an in-fiction line",
+      "status": "pass",
+      "threshold": "0 defaults use Ctrl/Alt; both refused in fiction (KB3/RB6)",
+      "detail": {
+        "usesModifier": [],
+        "ctrlW": {
+          "refused": "reserved",
+          "line": "The bindings hold. That hand belongs to the window, not to you."
+        },
+        "f5": {
+          "refused": "reserved",
+          "line": "The bindings hold. That hand belongs to the window, not to you."
+        },
+        "audit": []
+      }
+    },
+    {
+      "id": "M-K20",
+      "item": "RI-JRN03",
+      "what": "instruction tokens in the rendered-text stream outside the settings surface",
+      "status": "pass",
+      "threshold": "0 control-naming strings outside the settings surface (HF5 / RI-JRN01 HF3)",
+      "detail": {
+        "entries": 150,
+        "distinct": 87,
+        "surfaces": {
+          "menus": {
+            "entries": 150,
+            "drawn": 150,
+            "clipped": 0,
+            "distinct_drawn": 87
+          }
+        },
+        "states_driven": [
+          "arena_flat/world",
+          "settlement/world",
+          "helstrom-market/world",
+          "barge-hold/opening",
+          "menu/inventory",
+          "menu/journal",
+          "menu/sheet",
+          "menu/spells",
+          "menu/close",
+          "title",
+          "handheld/touch-overlay"
+        ],
+        "violations": [],
+        "in_world_prose_hits": [],
+        "note": "a hit is a string that carries an instruction token AND names a control, or any instruction token on an interface surface. A book that says \"Hold your breath\" is in-world prose and is reported separately rather than counted: DS1 forbids telling the player what a CONTROL does, not the use of an English verb."
+      }
+    },
+    {
+      "id": "M-P24",
+      "item": "RI-JRN04",
+      "what": "instruction tokens in the rendered-text stream outside the settings surface",
+      "status": "pass",
+      "threshold": "0 hits outside the settings surface and the G2 calibration sequence (HF7 / RI-JRN01 HF3)",
+      "detail": {
+        "entries": 150,
+        "distinct": 87,
+        "surfaces": {
+          "menus": {
+            "entries": 150,
+            "drawn": 150,
+            "clipped": 0,
+            "distinct_drawn": 87
+          }
+        },
+        "states_driven": [
+          "arena_flat/world",
+          "settlement/world",
+          "helstrom-market/world",
+          "barge-hold/opening",
+          "menu/inventory",
+          "menu/journal",
+          "menu/sheet",
+          "menu/spells",
+          "menu/close",
+          "title",
+          "handheld/touch-overlay"
+        ],
+        "violations": [],
+        "in_world_prose_hits": [],
+        "note": "a hit is a string that carries an instruction token AND names a control, or any instruction token on an interface surface. A book that says \"Hold your breath\" is in-world prose and is reported separately rather than counted: DS1 forbids telling the player what a CONTROL does, not the use of an English verb."
+      }
+    },
+    {
+      "id": "M-K8",
+      "item": "RI-JRN03",
+      "what": "pointer lock is acquired on the gesture that starts the game — no click-to-play surface",
+      "status": "pass",
+      "threshold": "1 gesture, 0 additional surfaces, 0 click-to-play strings (PL1 / HF3)",
+      "detail": {
+        "gestures_to_lock_request": 1,
+        "lock_requests_after_one_gesture": 1,
+        "lock_requests_before": 0,
+        "additional_surfaces": 0,
+        "full_screen_panels": 0,
+        "click_to_play_strings": [],
+        "cold_profile": "the page was reloaded immediately before this check. This is a fresh DOCUMENT, not a fresh BROWSER PROFILE: RI-JRN03 \"How we lose\" #12 is about the very first pointer-lock request an ORIGIN ever makes, and that needs a fresh user-data dir the launcher does not currently take. Recorded as a known limit rather than claimed.",
+        "pointer_locked_after_gesture": true,
+        "pointer_lock_granted_by_ua": "yes"
+      }
+    },
+    {
+      "id": "M-K9",
+      "item": "RI-JRN03",
+      "what": "Escape opens the menu and releases the lock; a second closes it; the next click re-requests",
+      "status": "pass",
+      "threshold": "0 frames of gameplay with no lock and no menu (PL2/PL3, HF4)",
+      "detail": {
+        "in_play": {
+          "locked": true,
+          "menuOpen": false
+        },
+        "trace": [
+          {
+            "f": 0,
+            "locked": false,
+            "menuOpen": true,
+            "mode": "world"
+          },
+          {
+            "f": 1,
+            "locked": false,
+            "menuOpen": true,
+            "mode": "world"
+          },
+          {
+            "f": 2,
+            "locked": false,
+            "menuOpen": true,
+            "mode": "world"
+          },
+          {
+            "f": 3,
+            "locked": false,
+            "menuOpen": true,
+            "mode": "world"
+          },
+          {
+            "f": 4,
+            "locked": false,
+            "menuOpen": true,
+            "mode": "world"
+          },
+          {
+            "f": 5,
+            "locked": false,
+            "menuOpen": true,
+            "mode": "world"
+          },
+          {
+            "f": 6,
+            "locked": false,
+            "menuOpen": true,
+            "mode": "world"
+          },
+          {
+            "f": 7,
+            "locked": false,
+            "menuOpen": true,
+            "mode": "world"
+          },
+          {
+            "f": 8,
+            "locked": false,
+            "menuOpen": true,
+            "mode": "world"
+          },
+          {
+            "f": 9,
+            "locked": false,
+            "menuOpen": true,
+            "mode": "world"
+          }
+        ],
+        "menu_opened_on_first_escape": true,
+        "lock_released_on_first_escape": true,
+        "menu_closed_on_second_escape": true,
+        "lock_rerequested_on_next_click": true,
+        "lock_requests": {
+          "before_click": 2,
+          "after_click": 3
+        },
+        "gameplay_no_lock_no_menu_frames": 0
+      }
+    },
+    {
+      "id": "M-K21",
+      "item": "RI-JRN03",
+      "what": "inscription census: how many, and how far from the situation that needs the verb",
+      "status": "pass",
+      "threshold": ">= 1 inscription per DS4 verb, <= 6 before the first choice, <= 14 total, 100% within 8 m (DS2/DS3/DS4)",
+      "detail": {
+        "inscriptions_found": 10,
+        "before_first_choice": 4,
+        "states_swept": 8,
+        "state_errors": [],
+        "verbs_taught": [
+          "sprint",
+          "interact",
+          "block",
+          "light",
+          "roll"
+        ],
+        "ds4_verbs_without_an_inscription": [],
+        "budget": {
+          "before_first_choice_max": 6,
+          "whole_game_max": 14,
+          "within_m": 8
+        },
+        "placement": [
+          {
+            "eid": "insc-hold-bilge",
+            "state": "barge-hold",
+            "teaches": "sprint",
+            "situation": "the flooding bilge run out of the hold",
+            "distance_m": 0.67
+          },
+          {
+            "eid": "insc-hold-hatch",
+            "state": "barge-hold",
+            "teaches": "interact",
+            "situation": "the hold's hatch, and the tithe-gourd and knife on the floor beside it — the first things in the game that answer to `interact`",
+            "distance_m": 1.08
+          },
+          {
+            "eid": "insc-market-gate",
+            "state": "helstrom-market",
+            "teaches": "block",
+            "situation": "the market gate the watch holds",
+            "distance_m": 0.57
+          },
+          {
+            "eid": "insc-market-post",
+            "state": "helstrom-market",
+            "teaches": "light",
+            "situation": "the market's butchering block, where a blade is first swung at something",
+            "distance_m": 0.57
+          },
+          {
+            "eid": "insc-thorn-beam",
+            "state": "thorn-hall",
+            "teaches": "roll",
+            "situation": "the drop-attack in Thorn Hall's rafters",
+            "distance_m": 0.78
+          },
+          {
+            "eid": "insc-thorn-hearth",
+            "state": "thorn-hall",
+            "teaches": "interact",
+            "situation": "Thorn Hall's door and its stores",
+            "distance_m": 0.57
+          },
+          {
+            "eid": "insc-street-kerb",
+            "state": "stormhold-street",
+            "teaches": "roll",
+            "situation": "the dray-run down the Stormhold street, the first thing in the game that has to be got out of the way of",
+            "distance_m": 2.06
+          },
+          {
+            "eid": "insc-street-run",
+            "state": "stormhold-street",
+            "teaches": "sprint",
+            "situation": "the tide-run to the Stormhold arch",
+            "distance_m": 1.26
+          },
+          {
+            "eid": "insc-dungeon-lintel",
+            "state": "dungeon_primary",
+            "teaches": "block",
+            "situation": "the first corridor of the primary dungeon, where something swings back",
+            "distance_m": 1.13
+          },
+          {
+            "eid": "insc-dungeon-swing",
+            "state": "dungeon_primary",
+            "teaches": "light",
+            "situation": "the seized door at the head of the dungeon",
+            "distance_m": 0.78
+          }
+        ],
+        "out_of_range": [],
+        "inscriptions": [
+          {
+            "state": "barge-hold",
+            "eid": "insc-hold-bilge",
+            "name": "Charcoal on the bilge boards",
+            "pos": [
+              1.9,
+              0.9,
+              -2.2
+            ],
+            "takeable": false,
+            "readable": {
+              "teaches": "sprint",
+              "text": "When the deck lists, the water comes the length of the hold before you have crossed half of it. Run it. Do not walk it.",
+              "before_first_choice": true,
+              "situation": {
+                "what": "the flooding bilge run out of the hold",
+                "pos": [
+                  1.6,
+                  0.82,
+                  -1.6
+                ]
+              }
+            },
+            "teaches": "sprint"
+          },
+          {
+            "state": "barge-hold",
+            "eid": "insc-hold-hatch",
+            "name": "Scratched into the hatch frame",
+            "pos": [
+              -2.6,
+              0.95,
+              1.1
+            ],
+            "takeable": false,
+            "readable": {
+              "teaches": "interact",
+              "text": "Sixty-one days. The hasp turns if you have the hands for it. I did not, at first.",
+              "before_first_choice": true,
+              "situation": {
+                "what": "the hold's hatch, and the tithe-gourd and knife on the floor beside it — the first things in the game that answer to `interact`",
+                "pos": [
+                  -2,
+                  0.82,
+                  0.2
+                ]
+              }
+            },
+            "teaches": "interact"
+          },
+          {
+            "state": "helstrom-market",
+            "eid": "insc-market-gate",
+            "name": "Painted on the gate-shield",
+            "pos": [
+              -2.8,
+              1.05,
+              0.6
+            ],
+            "takeable": false,
+            "readable": {
+              "teaches": "block",
+              "text": "Tesh's rule for the watch: the shield goes up before the shout, not after it. The ones who wait for the shout are the ones we carry.",
+              "before_first_choice": true,
+              "situation": {
+                "what": "the market gate the watch holds",
+                "pos": [
+                  -2.4,
+                  0.9,
+                  0.2
+                ]
+              }
+            },
+            "teaches": "block"
+          },
+          {
+            "state": "helstrom-market",
+            "eid": "insc-market-post",
+            "name": "Cut into the shambles post",
+            "pos": [
+              2.4,
+              1.1,
+              1.8
+            ],
+            "takeable": false,
+            "readable": {
+              "teaches": "light",
+              "text": "Sixteen swings to take the head off a marsh-boar and I counted every one. My grandmother did it in nine. She was not stronger. She was quicker.",
+              "before_first_choice": true,
+              "situation": {
+                "what": "the market's butchering block, where a blade is first swung at something",
+                "pos": [
+                  2,
+                  0.9,
+                  2.2
+                ]
+              }
+            },
+            "teaches": "light"
+          },
+          {
+            "state": "thorn-hall",
+            "eid": "insc-thorn-beam",
+            "name": "Knife-work on the roof beam",
+            "pos": [
+              -1.2,
+              1.6,
+              0.9
+            ],
+            "takeable": false,
+            "readable": {
+              "teaches": "roll",
+              "text": "The thing in the rafters drops where you were, never where you are going. Anseth worked that out on the third night. There was no fourth.",
+              "before_first_choice": false,
+              "situation": {
+                "what": "the drop-attack in Thorn Hall's rafters",
+                "pos": [
+                  -0.6,
+                  0.9,
+                  0.4
+                ]
+              }
+            },
+            "teaches": "roll"
+          },
+          {
+            "state": "thorn-hall",
+            "eid": "insc-thorn-hearth",
+            "name": "Tally burnt into the hearth-stone",
+            "pos": [
+              1.5,
+              0.7,
+              -0.8
+            ],
+            "takeable": false,
+            "readable": {
+              "teaches": "interact",
+              "text": "Every hand that has opened this door has added a mark. Add yours or do not; the door does not care and neither do we.",
+              "before_first_choice": false,
+              "situation": {
+                "what": "Thorn Hall's door and its stores",
+                "pos": [
+                  1.1,
+                  0.6,
+                  -1.2
+                ]
+              }
+            },
+            "teaches": "interact"
+          },
+          {
+            "state": "stormhold-street",
+            "eid": "insc-street-kerb",
+            "name": "Scored into the kerb-stone",
+            "pos": [
+              1.4,
+              0.55,
+              24
+            ],
+            "takeable": false,
+            "readable": {
+              "teaches": "roll",
+              "text": "The dray came down this street at a gallop and I went sideways into the gutter and lived. Halim stood still and reasoned about it. Halim is under the chapel.",
+              "before_first_choice": false,
+              "situation": {
+                "what": "the dray-run down the Stormhold street, the first thing in the game that has to be got out of the way of",
+                "pos": [
+                  0.9,
+                  0.4,
+                  26
+                ]
+              }
+            },
+            "teaches": "roll"
+          },
+          {
+            "state": "stormhold-street",
+            "eid": "insc-street-run",
+            "name": "Charcoal along the chapel wall",
+            "pos": [
+              -1.8,
+              1,
+              25.2
+            ],
+            "takeable": false,
+            "readable": {
+              "teaches": "sprint",
+              "text": "From the wall to the arch is a hundred and forty paces and the tide takes it in ninety. I have made it twice. Both times I was already moving.",
+              "before_first_choice": false,
+              "situation": {
+                "what": "the tide-run to the Stormhold arch",
+                "pos": [
+                  -1.4,
+                  0.6,
+                  26.4
+                ]
+              }
+            },
+            "teaches": "sprint"
+          },
+          {
+            "state": "dungeon_primary",
+            "eid": "insc-dungeon-lintel",
+            "name": "Chiselled under the lintel",
+            "pos": [
+              0.8,
+              1.3,
+              -1.2
+            ],
+            "takeable": false,
+            "readable": {
+              "teaches": "block",
+              "text": "Two of us came down with torches and one came up. He kept his guard closed the whole way and said afterwards that his arms hurt more than his pride.",
+              "before_first_choice": false,
+              "situation": {
+                "what": "the first corridor of the primary dungeon, where something swings back",
+                "pos": [
+                  0,
+                  0.9,
+                  -2
+                ]
+              }
+            },
+            "teaches": "block"
+          },
+          {
+            "state": "dungeon_primary",
+            "eid": "insc-dungeon-swing",
+            "name": "Hacked into the door-jamb",
+            "pos": [
+              -0.9,
+              1.15,
+              -1.6
+            ],
+            "takeable": false,
+            "readable": {
+              "teaches": "light",
+              "text": "Rust takes a hinge faster than a shoulder does. Two dozen strokes and the pin gave. My shoulder did not.",
+              "before_first_choice": false,
+              "situation": {
+                "what": "the seized door at the head of the dungeon",
+                "pos": [
+                  -0.4,
+                  0.9,
+                  -2.2
+                ]
+              }
+            },
+            "teaches": "light"
+          }
+        ],
+        "vacuous_pass_refused": null
+      }
+    },
+    {
+      "id": "M-K22",
+      "item": "RI-JRN03",
+      "what": "no interaction prompt names a key, a mouse button or a gamepad glyph as TEXT",
+      "status": "pass",
+      "threshold": "0 prompts contain a control name as text (DS5, HF5)",
+      "detail": {
+        "prompt_strings_enumerated": 95,
+        "prompts_captured_live": 30,
+        "matcher_control": {
+          "must_hit": [
+            "Press E to pull",
+            "Hold RT to charge",
+            "Left click to swing"
+          ],
+          "must_not_hit": [
+            "Waits-For-Salt the Shorter of rot quarter",
+            "Silent-Reed Bone-Setter of stilt town",
+            "A tithe-gourd, empty"
+          ],
+          "passed": true
+        },
+        "violations_in_names": [],
+        "violations_in_drawn_prompts": [],
+        "device_glyphs_seen": [
+          "keycap"
+        ],
+        "sample": [
+          {
+            "state": "barge-hold",
+            "eid": "clerk-avelia-doren",
+            "text": "A tithe-gourd, empty",
+            "meta": {
+              "range_m": 1.24,
+              "device": "mouse",
+              "glyph": "keycap"
+            }
+          },
+          {
+            "state": "barge-hold",
+            "eid": "jeeh-ei",
+            "text": "Jeeh-Ei",
+            "meta": {
+              "range_m": 0.85,
+              "device": "mouse",
+              "glyph": "keycap"
+            }
+          },
+          {
+            "state": "barge-hold",
+            "eid": "warden-scribe-tuleeh-ma",
+            "text": "A knife somebody did not find",
+            "meta": {
+              "range_m": 1.35,
+              "device": "mouse",
+              "glyph": "keycap"
+            }
+          },
+          {
+            "state": "barge-hold",
+            "eid": "hold-gourd",
+            "text": "A tithe-gourd, empty",
+            "meta": {
+              "range_m": 0.85,
+              "device": "mouse",
+              "glyph": "keycap"
+            }
+          },
+          {
+            "state": "barge-hold",
+            "eid": "hold-knife",
+            "text": "A knife somebody did not find",
+            "meta": {
+              "range_m": 0.85,
+              "device": "mouse",
+              "glyph": "keycap"
+            }
+          },
+          {
+            "state": "barge-hold",
+            "eid": "insc-hold-bilge",
+            "text": "A tithe-gourd, empty",
+            "meta": {
+              "range_m": 0.9,
+              "device": "mouse",
+              "glyph": "keycap"
+            }
+          },
+          {
+            "state": "default",
+            "eid": "blackwood-company-factor",
+            "text": "Corvus Aldeyn",
+            "meta": {
+              "range_m": 0.85,
+              "device": "mouse",
+              "glyph": "keycap"
+            }
+          },
+          {
+            "state": "default",
+            "eid": "dockmaster-weeja-sen",
+            "text": "Corvus Aldeyn",
+            "meta": {
+              "range_m": 2.18,
+              "device": "mouse",
+              "glyph": "keycap"
+            }
+          }
+        ],
+        "vacuous_pass_refused": null
+      }
+    },
+    {
+      "id": "M-P1/souls-default",
+      "item": "RI-JRN04",
+      "what": "map completeness for profile souls-default",
+      "status": "pass",
+      "threshold": "observed map == §C for all actions; 0 unbound (HF1)",
+      "detail": {
+        "observed": {
+          "0": {
+            "hold": "interact",
+            "tap": null
+          },
+          "1": {
+            "hold": "sprint",
+            "tap": "roll"
+          },
+          "2": {
+            "hold": "use_item",
+            "tap": null
+          },
+          "3": {
+            "hold": "two_hand",
+            "tap": "spell_cycle"
+          },
+          "4": {
+            "hold": "block",
+            "tap": null
+          },
+          "5": {
+            "hold": "light",
+            "tap": null
+          },
+          "6": {
+            "hold": "parry",
+            "tap": null
+          },
+          "7": {
+            "hold": "heavy",
+            "tap": null
+          },
+          "8": {
+            "hold": null,
+            "tap": null
+          },
+          "9": {
+            "hold": "menu",
+            "tap": null
+          },
+          "10": {
+            "hold": "crouch",
+            "tap": "jump"
+          },
+          "11": {
+            "hold": "lock_on",
+            "tap": null
+          },
+          "12": {
+            "hold": null,
+            "tap": null
+          },
+          "13": {
+            "hold": null,
+            "tap": null
+          },
+          "14": {
+            "hold": "swap_left",
+            "tap": null
+          },
+          "15": {
+            "hold": "swap_right",
+            "tap": null
+          },
+          "16": {
+            "hold": null,
+            "tap": null
+          }
+        },
+        "mismatches": [],
+        "unreachable": []
+      }
+    },
+    {
+      "id": "M-P1/souls-handheld",
+      "item": "RI-JRN04",
+      "what": "map completeness for profile souls-handheld",
+      "status": "pass",
+      "threshold": "observed map == §C for all actions; 0 unbound (HF1)",
+      "detail": {
+        "observed": {
+          "0": {
+            "hold": "jump",
+            "tap": null
+          },
+          "1": {
+            "hold": "sprint",
+            "tap": "roll"
+          },
+          "2": {
+            "hold": "use_item",
+            "tap": null
+          },
+          "3": {
+            "hold": "two_hand",
+            "tap": "interact"
+          },
+          "4": {
+            "hold": "block",
+            "tap": null
+          },
+          "5": {
+            "hold": "light",
+            "tap": null
+          },
+          "6": {
+            "hold": "parry",
+            "tap": null
+          },
+          "7": {
+            "hold": "heavy",
+            "tap": null
+          },
+          "8": {
+            "hold": "lock_on",
+            "tap": null
+          },
+          "9": {
+            "hold": "menu",
+            "tap": null
+          },
+          "10": {
+            "hold": "interact",
+            "tap": null
+          },
+          "11": {
+            "hold": "lock_on",
+            "tap": null
+          },
+          "12": {
+            "hold": "spell_cycle",
+            "tap": null
+          },
+          "13": {
+            "hold": "crouch",
+            "tap": null
+          },
+          "14": {
+            "hold": "swap_left",
+            "tap": null
+          },
+          "15": {
+            "hold": "swap_right",
+            "tap": null
+          },
+          "16": {
+            "hold": null,
+            "tap": null
+          }
+        },
+        "mismatches": [],
+        "unreachable": []
+      }
+    },
+    {
+      "id": "M-P2",
+      "item": "RI-JRN04",
+      "what": "index 16 fires nothing; a 16-button descriptor throws nothing",
+      "status": "pass",
+      "threshold": "no action, no exception, no undefined read",
+      "detail": {
+        "before": [],
+        "afterGuide": [],
+        "sixteen_button_descriptor_threw": null,
+        "held_after": []
+      }
+    },
+    {
+      "id": "M-P3",
+      "item": "RI-JRN04",
+      "what": "trigger fires at >= 0.35, releases at <= 0.20, exactly one of each, 0 dither fires",
+      "status": "pass",
+      "threshold": "one fire at 0.35, one release at 0.20, 0 extra during a 0.30<->0.40 dither (HF8)",
+      "detail": {
+        "fires": [
+          0.35
+        ],
+        "releases": [
+          0.2
+        ],
+        "dither_extra_fires": 0,
+        "value_path_fires": true
+      }
+    },
+    {
+      "id": "M-P4",
+      "item": "RI-JRN04",
+      "what": "charge state entered only above T_full = 0.85, stable across 5 runs",
+      "status": "pass",
+      "threshold": "never at 0.5, always at 0.9, same frame 5/5",
+      "detail": [
+        {
+          "half_intent": 0,
+          "full_intent": 1,
+          "entered_at_frame": 0
+        },
+        {
+          "half_intent": 0,
+          "full_intent": 1,
+          "entered_at_frame": 0
+        },
+        {
+          "half_intent": 0,
+          "full_intent": 1,
+          "entered_at_frame": 0
+        },
+        {
+          "half_intent": 0,
+          "full_intent": 1,
+          "entered_at_frame": 0
+        },
+        {
+          "half_intent": 0,
+          "full_intent": 1,
+          "entered_at_frame": 0
+        }
+      ]
+    },
+    {
+      "id": "M-P5",
+      "item": "RI-JRN04",
+      "what": "B tap => roll (<= 11 f), B hold => sprint (>= 12 f), never both, never neither",
+      "status": "pass",
+      "threshold": "roll for <= 11, sprint from 12; never both, never neither",
+      "detail": {
+        "4": {
+          "roll": true,
+          "sprint": false
+        },
+        "8": {
+          "roll": true,
+          "sprint": false
+        },
+        "11": {
+          "roll": true,
+          "sprint": false
+        },
+        "12": {
+          "roll": false,
+          "sprint": true
+        },
+        "13": {
+          "roll": false,
+          "sprint": true
+        },
+        "20": {
+          "roll": false,
+          "sprint": true
+        },
+        "60": {
+          "roll": false,
+          "sprint": true
+        }
+      }
+    },
+    {
+      "id": "M-P6",
+      "item": "RI-JRN04",
+      "what": "radial deadzone: 0 below 0.14 at every bearing, 1.0 at 0.92, isotropic at 0.60",
+      "status": "pass",
+      "threshold": "max/min ratio at 0.60 <= 1.02; > 1.10 means an axial deadzone",
+      "detail": {
+        "1": {
+          "min": 1,
+          "max": 1,
+          "ratio": 1
+        },
+        "0.1": {
+          "min": 0,
+          "max": 0,
+          "ratio": 1
+        },
+        "0.14": {
+          "min": 0,
+          "max": 0,
+          "ratio": 1
+        },
+        "0.2": {
+          "min": 0.06493506493506492,
+          "max": 0.06493506493506498,
+          "ratio": 1.000000000000001
+        },
+        "0.6": {
+          "min": 0.584415584415584,
+          "max": 0.5844155844155845,
+          "ratio": 1.0000000000000007
+        },
+        "0.92": {
+          "min": 0.9999999999999998,
+          "max": 1,
+          "ratio": 1.0000000000000002
+        }
+      }
+    },
+    {
+      "id": "M-P7",
+      "item": "RI-JRN04",
+      "what": "axes [0.707, -0.707] produce a 45 degree heading",
+      "status": "pass",
+      "threshold": "45 +/- 1.5 deg",
+      "detail": {
+        "move": [
+          0.7071067811865475,
+          0.7071067811865475
+        ],
+        "bearing_deg": 45
+      }
+    },
+    {
+      "id": "M-P8",
+      "item": "RI-JRN04",
+      "what": "camera degrees per FIXED STEP is monotonic in stick magnitude and identical at 3 render rates",
+      "status": "pass",
+      "threshold": "identical across render rates AND non-zero (HF6)",
+      "detail": {
+        "per_rate": {
+          "0": [
+            [
+              0.2,
+              0.011725
+            ],
+            [
+              0.5,
+              0.574212
+            ],
+            [
+              0.8,
+              1.980475
+            ],
+            [
+              1,
+              3
+            ]
+          ],
+          "15": [
+            [
+              0.2,
+              0.011712
+            ],
+            [
+              0.5,
+              0.574225
+            ],
+            [
+              0.8,
+              1.980462
+            ],
+            [
+              1,
+              3
+            ]
+          ],
+          "60": [
+            [
+              0.2,
+              0.011725
+            ],
+            [
+              0.5,
+              0.574213
+            ],
+            [
+              0.8,
+              1.980475
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "rotation_is_real": true,
+        "monotonic": true
+      }
+    },
+    {
+      "id": "M-P9",
+      "item": "RI-JRN04",
+      "what": "a press and release between two sim steps fires exactly once",
+      "status": "pass",
+      "threshold": "exactly 1 (HF6, edge latching)",
+      "detail": {
+        "fires": 1
+      }
+    },
+    {
+      "id": "M-P10",
+      "item": "RI-JRN04",
+      "what": "frames from the sampler observing a pad edge to the step that consumes it, over 200 presses",
+      "status": "pass",
+      "threshold": "p100 <= 2 frames",
+      "detail": {
+        "n": 200,
+        "p50": 1,
+        "p100": 1,
+        "never": 0
+      }
+    },
+    {
+      "id": "M-P11",
+      "item": "RI-JRN04",
+      "what": "a mid-play disconnect releases every held action on the disconnect frame",
+      "status": "pass",
+      "threshold": "held empty on the disconnect frame; displacement <= 0.05 m (HF3)",
+      "detail": {
+        "heldBefore": [
+          "sprint"
+        ],
+        "heldAfter1": [],
+        "move_after": [
+          0,
+          0
+        ],
+        "displacement_m": 0,
+        "frames_advanced": 301,
+        "ui": false
+      }
+    },
+    {
+      "id": "M-P12",
+      "item": "RI-JRN04",
+      "what": "the sim keeps advancing across a disconnect and no modal appears",
+      "status": "pass",
+      "threshold": "0 modal surfaces; sim advances (HF4 / seam S14)",
+      "detail": {
+        "frames_advanced": 301,
+        "ui": false
+      }
+    },
+    {
+      "id": "M-P13",
+      "item": "RI-JRN04",
+      "what": "device class is inferred from media queries before any pad exists",
+      "status": "pass",
+      "threshold": "deviceClass from the viewport, never from the gamepad list (L1)",
+      "detail": {
+        "deviceClass": "desktop",
+        "pad_connected": false,
+        "viewport_deviceClass": "desktop"
+      }
+    },
+    {
+      "id": "M-P15",
+      "item": "RI-JRN04",
+      "what": "a mapping-\"\" pad is de-permuted from pad-quirks.json; an unknown one calibrates on the pad alone",
+      "status": "pass",
+      "threshold": "known id -> correct map, no prompt; unknown id -> calibration in <= 8 inputs (HF2)",
+      "detail": {
+        "raw0": {
+          "hold": "use_item",
+          "tap": null
+        },
+        "raw1": {
+          "hold": "interact",
+          "tap": null
+        },
+        "raw2": {
+          "hold": "sprint",
+          "tap": "roll"
+        },
+        "raw5": {
+          "hold": "light",
+          "tap": null
+        },
+        "quirk_used": "3537:1004",
+        "prompted": false,
+        "calibration": {
+          "started": true,
+          "prompts": [
+            "Swing.",
+            "Get out of the way.",
+            "Take it on the shield.",
+            "Reach for it.",
+            "Stop and think.",
+            "Fix your eye on it."
+          ],
+          "inputs": 6,
+          "finished": true
+        },
+        "calibrated_action_for_raw0": "light"
+      }
+    },
+    {
+      "id": "L6",
+      "item": "RI-JRN04",
+      "what": "with two pads the most recently active drives the game, and switching drops nothing",
+      "status": "pass",
+      "threshold": "active index follows activity; 0 latched on removal",
+      "detail": {
+        "after_pad0": {
+          "active": 0,
+          "held": [
+            "light"
+          ]
+        },
+        "after_pad1": {
+          "active": 1,
+          "held": []
+        },
+        "after_both_gone": []
+      }
+    },
+    {
+      "id": "M-P21a",
+      "item": "RI-JRN04",
+      "what": "all sixteen actions of the closed set reachable on touch",
+      "status": "pass",
+      "threshold": "every action fires (HF5 / O17)",
+      "detail": {
+        "reach": {
+          "roll": "sprint",
+          "block": "block",
+          "light": "light",
+          "interact": "interact",
+          "jump": "jump",
+          "parry": "parry",
+          "heavy": "heavy",
+          "use_item": "use_item",
+          "crouch": "crouch",
+          "lock_on": "lock_on",
+          "two_hand": "two_hand",
+          "swap_left": "swap_left",
+          "swap_right": "swap_right",
+          "spell_cycle": "spell_cycle",
+          "menu": "menu"
+        },
+        "unreached": []
+      }
+    },
+    {
+      "id": "M-P21b",
+      "item": "RI-JRN04",
+      "what": "multi-touch: stick + camera + two buttons all register simultaneously",
+      "status": "pass",
+      "threshold": "4 pointers, camera still turns while a button is held (How we lose #12)",
+      "detail": {
+        "pointers": 4,
+        "roles": [
+          "stick",
+          "camera",
+          "button",
+          "button"
+        ],
+        "held": [
+          "light",
+          "block"
+        ],
+        "move": [
+          0.7071067811865475,
+          0.7071067811865475
+        ],
+        "camera_turned_deg": 16.8
+      }
+    },
+    {
+      "id": "T2",
+      "item": "RI-JRN04",
+      "what": "the virtual stick floats: the same drag from two origins gives the same vector",
+      "status": "pass",
+      "threshold": "identical move vector (T2)",
+      "detail": {
+        "origin_a": [
+          0.7071067811865475,
+          0.7071067811865475
+        ],
+        "origin_b": [
+          0.7071067811865475,
+          0.7071067811865475
+        ],
+        "same": true
+      }
+    },
+    {
+      "id": "M-P22",
+      "item": "RI-JRN04",
+      "what": "touch controls hide 2 s after the last touch while a pad is active and return on touch",
+      "status": "pass",
+      "threshold": "visible at 1 s, gone by 2.5 s, back on touch (T7)",
+      "detail": {
+        "visAt1s": true,
+        "visAt2_5s": false,
+        "visAfterTouch": true
+      }
+    },
+    {
+      "id": "M-P17",
+      "item": "RI-JRN04",
+      "what": "no touch control intersects a safe-area inset on a clamped landscape phone",
+      "status": "pass",
+      "threshold": "0 elements intersect an inset; every target >= 44 CSS px (H3/H11)",
+      "detail": {
+        "violations": 0,
+        "min_target_css_px": 44
+      }
+    },
+    {
+      "id": "M-P16",
+      "item": "RI-JRN04",
+      "what": "portrait shows an in-world rotate state and recovers on rotation with no reload",
+      "status": "pass",
+      "threshold": "a rotate state with 0 UI-kit chrome, recovered within 30 frames (H1)",
+      "detail": {
+        "rotateState": {
+          "kind": "rotate",
+          "line": "The map lies the long way.",
+          "illustration": "chart-on-a-table"
+        },
+        "recovered_after_frames": 0
+      }
+    },
+    {
+      "id": "M-P18",
+      "item": "RI-JRN04",
+      "what": "an 88 px chrome collapse costs 0 sim frames and 0 camera pose change",
+      "status": "pass",
+      "threshold": "0 frames lost, camera delta 0 (H4)",
+      "detail": {
+        "frames_advanced": 60,
+        "mode": "world",
+        "ui_pauses_now": false,
+        "camera_delta": {
+          "yaw": 0,
+          "pitch": 0
+        },
+        "resizes": 5
+      }
+    },
+    {
+      "id": "M-P19",
+      "item": "RI-JRN04",
+      "what": "pinch, double-tap zoom, pull-to-refresh, selection and the long-press callout are all suppressed",
+      "status": "pass",
+      "threshold": "0 zoom, 0 navigation, 0 selection, 0 callout; dvh not vh (H4/H5)",
+      "detail": {
+        "touch_action": "none",
+        "overscroll": "none",
+        "user_select": "none",
+        "gesturestart_prevented": true,
+        "contextmenu_prevented": true,
+        "selectstart_prevented": true,
+        "viewport_meta": "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover",
+        "canvas_height_css": "240px",
+        "uses_dvh": true
+      }
+    },
+    {
+      "id": "H12",
+      "item": "RI-JRN04",
+      "what": "the wake-lock and orientation-lock capabilities are probed, not assumed",
+      "status": "pass",
+      "threshold": "capability report present; absence is reported, never thrown",
+      "detail": {
+        "orientationLock": true,
+        "fullscreen": true,
+        "wakeLock": true,
+        "matchMedia": true
+      }
+    },
+    {
+      "id": "M-P14",
+      "item": "RI-JRN04",
+      "what": "the interaction prompt's affordance tracks the active device within 2 frames",
+      "status": "pass",
+      "threshold": "glyph matches the active device within 2 frames, 3/3, and the three drawn prompts differ (L7)",
+      "detail": {
+        "legs": [
+          {
+            "device_driven": "gamepad",
+            "active_device": "gamepad",
+            "prompt_text": "A tithe-gourd, empty",
+            "glyph": "face_button",
+            "device_in_meta": "gamepad"
+          },
+          {
+            "device_driven": "touch",
+            "active_device": "touch",
+            "prompt_text": "A tithe-gourd, empty",
+            "glyph": "fingertip",
+            "device_in_meta": "touch"
+          },
+          {
+            "device_driven": "keyboard",
+            "active_device": "keyboard",
+            "prompt_text": "A tithe-gourd, empty",
+            "glyph": "keycap",
+            "device_in_meta": "keyboard"
+          }
+        ],
+        "declared_matches": 3,
+        "distinct_glyphs": [
+          "face_button",
+          "fingertip",
+          "keycap"
+        ],
+        "drawn": [
+          {
+            "device": "gamepad",
+            "prompt_rect_hash": "7a44c138",
+            "canvas": [
+              1920,
+              1080
+            ],
+            "rect": [
+              860,
+              830,
+              200,
+              32
+            ]
+          },
+          {
+            "device": "touch",
+            "prompt_rect_hash": "f4f53a6e",
+            "canvas": [
+              1920,
+              1080
+            ],
+            "rect": [
+              860,
+              830,
+              200,
+              32
+            ]
+          },
+          {
+            "device": "keyboard",
+            "prompt_rect_hash": "3506406d",
+            "canvas": [
+              1920,
+              1080
+            ],
+            "rect": [
+              860,
+              830,
+              200,
+              32
+            ]
+          }
+        ],
+        "distinct_prompt_pixel_hashes": 3,
+        "note": "the glyph is a DRAWN MARK and never a string, which is what keeps L7 and DS5/M-K22 compatible: the affordance changes with the device and nothing about a control enters the rendered-text stream"
+      }
+    },
+    {
+      "id": "M-P20",
+      "item": "RI-JRN04",
+      "what": "the check threw before it could reach its threshold",
+      "status": "unmeasurable",
+      "threshold": "n/a — the instrument did not complete",
+      "detail": {
+        "reason": "exception",
+        "error": "page.evaluate: Target page, context or browser has been closed"
+      }
+    },
+    {
+      "id": "M-P25",
+      "item": "RI-JRN04",
+      "what": "the check threw before it could reach its threshold",
+      "status": "unmeasurable",
+      "threshold": "n/a — the instrument did not complete",
+      "detail": {
+        "reason": "exception",
+        "error": "page.evaluate: Target page, context or browser has been closed"
+      }
+    },
+    {
+      "id": "PAGE/after-viewport",
+      "item": "RI-JRN03|RI-JRN04",
+      "what": "the page could not be returned to a measurable state",
+      "status": "unmeasurable",
+      "threshold": "n/a — the page was still not measurable after the reattach, so later groups are running against a page that cannot answer",
+      "detail": {
+        "after_group": "viewport",
+        "observed": {
+          "real": false,
+          "attached": false,
+          "harness": false,
+          "helpers": false,
+          "err": "page.evaluate: Target page, context or browser has been closed"
+        },
+        "after_reattach": {
+          "real": false,
+          "attached": false,
+          "harness": false,
+          "helpers": false,
+          "err": "page.evaluate: Target page, context or browser has been closed"
+        },
+        "error": "page.waitForFunction: Target page, context or browser has been closed"
+      }
+    },
+    {
+      "id": "GROUP/rebind",
+      "item": "RI-JRN03|RI-JRN04",
+      "what": "the rebind group threw and could not complete",
+      "status": "unmeasurable",
+      "threshold": "n/a — the group did not run, which is not the same as the group finding nothing",
+      "detail": {
+        "reason": "exception",
+        "error": "page.evaluate: Target page, context or browser has been closed",
+        "stack": "page.evaluate: Target page, context or browser has been closed\n    at ev (/home/user/elder-souls-claude/tools/journey/input-checks.mjs:223:32)\n    at rebindChecks (/home/user/elder-souls-claude/tools/journey/input-checks.mjs:2210:19)\n    at /home/user/elder-souls-claude/tools/journey/input-checks.mjs:324:34\n    at runGroup (/home/user/elder-souls-claude/tools/journey/input-checks.mjs:282:13)\n    at main (/home/user/elder-souls-claude/tools/journey/input-checks.mjs:324:9)\n    at async file:///home/user/elder-souls-claude/tools/journey/input-checks.mjs:2997:1"
+      }
+    },
+    {
+      "id": "PAGE/after-rebind",
+      "item": "RI-JRN03|RI-JRN04",
+      "what": "the page could not be returned to a measurable state",
+      "status": "unmeasurable",
+      "threshold": "n/a — the page was still not measurable after the reattach, so later groups are running against a page that cannot answer",
+      "detail": {
+        "after_group": "rebind",
+        "observed": {
+          "real": false,
+          "attached": false,
+          "harness": false,
+          "helpers": false,
+          "err": "page.evaluate: Target page, context or browser has been closed"
+        },
+        "after_reattach": {
+          "real": false,
+          "attached": false,
+          "harness": false,
+          "helpers": false,
+          "err": "page.evaluate: Target page, context or browser has been closed"
+        },
+        "error": "page.waitForFunction: Target page, context or browser has been closed"
+      }
+    },
+    {
+      "id": "M-N1",
+      "item": "RI-JRN03",
+      "what": "pre-registration hit rate: a stranger guessed the binding",
+      "status": "unmeasurable",
+      "threshold": ">= 6 of 8 exact",
+      "detail": {
+        "reason": "the naive pass is a PROCEDURE run by a fresh agent under enforced isolation (JOURNEY-CRITIC-FLEET §4), not something this instrument can perform. No transcript was supplied.",
+        "how_to_supply": "node tools/journey/input-checks.mjs --naive reports/journeys/naive/<runId>.json",
+        "schema": "elder-souls/naive-pass@1 — see NAIVE_SCHEMA in this file",
+        "why_not_self_run": "RI-JRN03 'How we lose' #13: an agent that has read the item measures nothing at all with M-N1, and M-N1 is the only measurement in the corpus that can say whether the controls are conventional. A builder running its own naive pass is that failure with extra steps.",
+        "scores": 0
+      }
+    },
+    {
+      "id": "M-N2",
+      "item": "RI-JRN03",
+      "what": "actions found in fifteen minutes",
+      "status": "unmeasurable",
+      "threshold": ">= 11 of 14",
+      "detail": {
+        "reason": "the naive pass is a PROCEDURE run by a fresh agent under enforced isolation (JOURNEY-CRITIC-FLEET §4), not something this instrument can perform. No transcript was supplied.",
+        "how_to_supply": "node tools/journey/input-checks.mjs --naive reports/journeys/naive/<runId>.json",
+        "schema": "elder-souls/naive-pass@1 — see NAIVE_SCHEMA in this file",
+        "why_not_self_run": "RI-JRN03 'How we lose' #13: an agent that has read the item measures nothing at all with M-N1, and M-N1 is the only measurement in the corpus that can say whether the controls are conventional. A builder running its own naive pass is that failure with extra steps.",
+        "scores": 0
+      }
+    },
+    {
+      "id": "M-N3",
+      "item": "RI-JRN03",
+      "what": "how the stranger found out — \"the game told me\" must be 0",
+      "status": "unmeasurable",
+      "threshold": "0 told; >= 1 from writing in the world",
+      "detail": {
+        "reason": "the naive pass is a PROCEDURE run by a fresh agent under enforced isolation (JOURNEY-CRITIC-FLEET §4), not something this instrument can perform. No transcript was supplied.",
+        "how_to_supply": "node tools/journey/input-checks.mjs --naive reports/journeys/naive/<runId>.json",
+        "schema": "elder-souls/naive-pass@1 — see NAIVE_SCHEMA in this file",
+        "why_not_self_run": "RI-JRN03 'How we lose' #13: an agent that has read the item measures nothing at all with M-N1, and M-N1 is the only measurement in the corpus that can say whether the controls are conventional. A builder running its own naive pass is that failure with extra steps.",
+        "scores": 0
+      }
+    },
+    {
+      "id": "M-N5",
+      "item": "RI-JRN03",
+      "what": "unrecoverable losses of control",
+      "status": "unmeasurable",
+      "threshold": "0 episodes (HF10)",
+      "detail": {
+        "reason": "the naive pass is a PROCEDURE run by a fresh agent under enforced isolation (JOURNEY-CRITIC-FLEET §4), not something this instrument can perform. No transcript was supplied.",
+        "how_to_supply": "node tools/journey/input-checks.mjs --naive reports/journeys/naive/<runId>.json",
+        "schema": "elder-souls/naive-pass@1 — see NAIVE_SCHEMA in this file",
+        "why_not_self_run": "RI-JRN03 'How we lose' #13: an agent that has read the item measures nothing at all with M-N1, and M-N1 is the only measurement in the corpus that can say whether the controls are conventional. A builder running its own naive pass is that failure with extra steps.",
+        "scores": 0
+      }
+    },
+    {
+      "id": "M-N7",
+      "item": "RI-JRN03",
+      "what": "confusion census, triaged",
+      "status": "unmeasurable",
+      "threshold": "defects <= 1; hard fail >= 3",
+      "detail": {
+        "reason": "the naive pass is a PROCEDURE run by a fresh agent under enforced isolation (JOURNEY-CRITIC-FLEET §4), not something this instrument can perform. No transcript was supplied.",
+        "how_to_supply": "node tools/journey/input-checks.mjs --naive reports/journeys/naive/<runId>.json",
+        "schema": "elder-souls/naive-pass@1 — see NAIVE_SCHEMA in this file",
+        "why_not_self_run": "RI-JRN03 'How we lose' #13: an agent that has read the item measures nothing at all with M-N1, and M-N1 is the only measurement in the corpus that can say whether the controls are conventional. A builder running its own naive pass is that failure with extra steps.",
+        "scores": 0
+      }
+    },
+    {
+      "id": "M-P-N1",
+      "item": "RI-JRN04",
+      "what": "actions discovered on the pad in ten minutes, none from a text instruction",
+      "status": "unmeasurable",
+      "threshold": ">= 11 of 14",
+      "detail": {
+        "reason": "the naive pass is a PROCEDURE run by a fresh agent under enforced isolation (JOURNEY-CRITIC-FLEET §4), not something this instrument can perform. No transcript was supplied.",
+        "how_to_supply": "node tools/journey/input-checks.mjs --naive reports/journeys/naive/<runId>.json",
+        "schema": "elder-souls/naive-pass@1 — see NAIVE_SCHEMA in this file",
+        "why_not_self_run": "RI-JRN03 'How we lose' #13: an agent that has read the item measures nothing at all with M-N1, and M-N1 is the only measurement in the corpus that can say whether the controls are conventional. A builder running its own naive pass is that failure with extra steps.",
+        "scores": 0
+      }
+    },
+    {
+      "id": "M-P-N3",
+      "item": "RI-JRN04",
+      "what": "dead presses on the pad, triaged",
+      "status": "unmeasurable",
+      "threshold": "bound-but-silent defects 0; hard fail >= 2",
+      "detail": {
+        "reason": "the naive pass is a PROCEDURE run by a fresh agent under enforced isolation (JOURNEY-CRITIC-FLEET §4), not something this instrument can perform. No transcript was supplied.",
+        "how_to_supply": "node tools/journey/input-checks.mjs --naive reports/journeys/naive/<runId>.json",
+        "schema": "elder-souls/naive-pass@1 — see NAIVE_SCHEMA in this file",
+        "why_not_self_run": "RI-JRN03 'How we lose' #13: an agent that has read the item measures nothing at all with M-N1, and M-N1 is the only measurement in the corpus that can say whether the controls are conventional. A builder running its own naive pass is that failure with extra steps.",
+        "scores": 0
+      }
+    },
+    {
+      "id": "M-P-N5",
+      "item": "RI-JRN04",
+      "what": "hot-plug: the agent describes no walking, falling, death or reload",
+      "status": "unmeasurable",
+      "threshold": "0 of the four",
+      "detail": {
+        "reason": "the naive pass is a PROCEDURE run by a fresh agent under enforced isolation (JOURNEY-CRITIC-FLEET §4), not something this instrument can perform. No transcript was supplied.",
+        "how_to_supply": "node tools/journey/input-checks.mjs --naive reports/journeys/naive/<runId>.json",
+        "schema": "elder-souls/naive-pass@1 — see NAIVE_SCHEMA in this file",
+        "why_not_self_run": "RI-JRN03 'How we lose' #13: an agent that has read the item measures nothing at all with M-N1, and M-N1 is the only measurement in the corpus that can say whether the controls are conventional. A builder running its own naive pass is that failure with extra steps.",
+        "scores": 0
+      }
+    }
+  ]
+}

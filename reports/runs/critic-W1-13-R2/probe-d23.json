@@ -1,0 +1,101 @@
+{
+  "schema": "critic/w1-13-r2-d@1",
+  "taken_at": "2026-08-07T16:40:18.904Z",
+  "d2_respawn_drift": [
+    {
+      "well": "hearth-archon",
+      "mode": "released",
+      "at_respawn_m": 0,
+      "after_220f_m": 0,
+      "drift_m": 0
+    },
+    {
+      "well": "hearth-archon",
+      "mode": "held",
+      "at_respawn_m": 1.57,
+      "after_220f_m": 9.78,
+      "drift_m": 8.21
+    },
+    {
+      "well": "hearth-archon",
+      "mode": "released-no-traversal-reset",
+      "at_respawn_m": 0,
+      "after_220f_m": 0,
+      "drift_m": 0
+    },
+    {
+      "well": "hearth-stormhold",
+      "mode": "released",
+      "at_respawn_m": 0,
+      "after_220f_m": 0,
+      "drift_m": 0
+    },
+    {
+      "well": "hearth-stormhold",
+      "mode": "held",
+      "at_respawn_m": 2.24,
+      "after_220f_m": 13.97,
+      "drift_m": 11.73
+    },
+    {
+      "well": "hearth-stormhold",
+      "mode": "released-no-traversal-reset",
+      "at_respawn_m": 0,
+      "after_220f_m": 0,
+      "drift_m": 0
+    },
+    {
+      "well": "hearth-gideon",
+      "mode": "released",
+      "at_respawn_m": 0,
+      "after_220f_m": 0,
+      "drift_m": 0
+    },
+    {
+      "well": "hearth-gideon",
+      "mode": "held",
+      "at_respawn_m": 2.06,
+      "after_220f_m": 12.86,
+      "drift_m": 10.79
+    },
+    {
+      "well": "hearth-gideon",
+      "mode": "released-no-traversal-reset",
+      "at_respawn_m": 0,
+      "after_220f_m": 0,
+      "drift_m": 0
+    }
+  ],
+  "d3_consumption_2b": {
+    "shipped": {
+      "gate_boss_set_to": null,
+      "gates_repointed": 2,
+      "entity_flags_after_spawn": {
+        "named": false,
+        "boss": false,
+        "unique": false,
+        "bossOfGate": null,
+        "classifiedBy": null
+      },
+      "hp_after_kill": 0,
+      "hp_after_player_death": 412,
+      "stood_back_up": true
+    },
+    "perturbed": {
+      "gate_boss_set_to": "inf_trash",
+      "gates_repointed": 2,
+      "entity_flags_after_spawn": {
+        "named": false,
+        "boss": false,
+        "unique": false,
+        "bossOfGate": null,
+        "classifiedBy": null
+      },
+      "hp_after_kill": 0,
+      "hp_after_player_death": 0,
+      "stood_back_up": false
+    },
+    "coupled": true
+  },
+  "page_errors": []
+}

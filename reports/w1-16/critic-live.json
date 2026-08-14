@@ -1,0 +1,184 @@
+{
+  "schema": "elder-souls/critic-w1-16-live@1",
+  "unit": "f@60",
+  "generated": "2026-08-08T03:00:43.617Z",
+  "probes": {
+    "parallel": {
+      "before": {
+        "weapon": "ssw_garrison_sword",
+        "weapon_id": null,
+        "equip_load_pct": 13.013699,
+        "equipped_weight": 9.5
+      },
+      "after": {
+        "weapon": "ghm_bog_maul",
+        "weapon_id": null,
+        "inventory_right_slot": "bog-iron-maul",
+        "equip_load_pct": 29.452055,
+        "equipped_weight": 21.5
+      },
+      "swap": {
+        "setLoadout": {
+          "weapon": "ugs_golem_sword",
+          "weapon_class": "ultra_greatsword",
+          "shield": "marsh_oak_medium",
+          "stamina_max": 120,
+          "tier": "LIGHT"
+        },
+        "weapon_after": "ugs_golem_sword",
+        "equip_load_pct": 34.931507,
+        "equipped_weight": 25.5
+      },
+      "swap_err": null,
+      "inventory_equip_changed_the_ratio": true,
+      "inventory_equip_changed_the_weapon_the_fight_swings": true,
+      "swapping_the_fight_weapon_changed_the_ratio": true,
+      "coupled": true
+    },
+    "oversprint": {
+      "rows": [
+        {
+          "pct": 15,
+          "sprint_held": false,
+          "tier": "LIGHT",
+          "metres_over_120_f60": 6.4,
+          "stamina_spent": 0
+        },
+        {
+          "pct": 15,
+          "sprint_held": true,
+          "tier": "LIGHT",
+          "metres_over_120_f60": 10,
+          "stamina_spent": 18
+        },
+        {
+          "pct": 85,
+          "sprint_held": false,
+          "tier": "HEAVY",
+          "metres_over_120_f60": 6.4,
+          "stamina_spent": 0
+        },
+        {
+          "pct": 85,
+          "sprint_held": true,
+          "tier": "HEAVY",
+          "metres_over_120_f60": 10,
+          "stamina_spent": 18
+        },
+        {
+          "pct": 120,
+          "sprint_held": false,
+          "tier": "OVERLOADED",
+          "metres_over_120_f60": 6.4,
+          "stamina_spent": 0
+        },
+        {
+          "pct": 120,
+          "sprint_held": true,
+          "tier": "OVERLOADED",
+          "metres_over_120_f60": 6.4,
+          "stamina_spent": 0
+        }
+      ],
+      "ri_cmb01_b": "OVERLOADED additionally forbids sprinting and jump-attacks.",
+      "jump_attack_half_has_a_reader": "combat/moveset.js — ctx.roll_tier === \"OVERLOADED\" -> { slot: null, reason: \"overloaded\" }",
+      "the_sprint_button_does_something_at_LIGHT": true,
+      "an_OVERLOADED_player_still_sprints": false,
+      "every_tier_covers_the_same_ground_holding_sprint": false,
+      "coupled": true
+    },
+    "separation": {
+      "arms": [
+        {
+          "label": "A - empty pack, nothing worn",
+          "carried_weight_kg": 0,
+          "equipped_weight_kg": 9.5,
+          "burden_ratio": 0,
+          "burden_tier": "UNBURDENED",
+          "equip_load_pct": 13.013699,
+          "equip_load_source": "derived from equipped items and the hands (W1-16 r3)",
+          "equip_load_max_kg": 73,
+          "burden_divisor_kg": 182.5,
+          "iframes_f60": 26,
+          "window_f60": [
+            5,
+            30
+          ],
+          "recovery_f60": 22,
+          "total_f60": 52,
+          "contiguous_runs": 1,
+          "tier": "LIGHT"
+        },
+        {
+          "label": "B - 460 kg in the pack, worn by nothing",
+          "carried_weight_kg": 460,
+          "equipped_weight_kg": 9.5,
+          "burden_ratio": 2.520548,
+          "burden_tier": "IMMOBILE",
+          "equip_load_pct": 13.013699,
+          "equip_load_source": "derived from equipped items and the hands (W1-16 r3)",
+          "equip_load_max_kg": 73,
+          "burden_divisor_kg": 182.5,
+          "iframes_f60": 26,
+          "window_f60": [
+            5,
+            30
+          ],
+          "recovery_f60": 22,
+          "total_f60": 52,
+          "contiguous_runs": 1,
+          "tier": "LIGHT"
+        },
+        {
+          "label": "C - the same pack, five pieces now WORN",
+          "carried_weight_kg": 476.8,
+          "equipped_weight_kg": 26.3,
+          "burden_ratio": 2.612603,
+          "burden_tier": "IMMOBILE",
+          "equip_load_pct": 36.027397,
+          "equip_load_source": "derived from equipped items and the hands (W1-16 r3)",
+          "equip_load_max_kg": 73,
+          "burden_divisor_kg": 182.5,
+          "iframes_f60": 22,
+          "window_f60": [
+            5,
+            26
+          ],
+          "recovery_f60": 34,
+          "total_f60": 60,
+          "contiguous_runs": 1,
+          "tier": "MEDIUM"
+        }
+      ],
+      "worn": [
+        {
+          "item": "shell-scale-hauberk",
+          "slot": "chest"
+        },
+        {
+          "item": "legion-greaves",
+          "slot": "legs"
+        },
+        {
+          "item": "rootweave-cowl",
+          "slot": "head"
+        },
+        {
+          "item": "wet-season-boots",
+          "slot": "feet"
+        },
+        {
+          "item": "silt-strider-silk-sash",
+          "slot": "waist"
+        }
+      ],
+      "pack_moved_burden": true,
+      "pack_left_equip_load_alone": true,
+      "pack_left_the_roll_byte_identical": true,
+      "wearing_moved_equip_load": true,
+      "wearing_moved_the_roll": true,
+      "coupled": true
+    }
+  },
+  "uncoupled_probes": []
+}

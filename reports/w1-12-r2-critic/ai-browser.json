@@ -1,0 +1,344 @@
+{
+  "tool": "tools/harness/ai-browser.mjs",
+  "item": "RI-AI01",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 568
+  },
+  "console_errors": [],
+  "results": {
+    "b1": {
+      "frames": 1200,
+      "spacing_variance": 2.3201,
+      "mean_dist_m": 3.701,
+      "min_dist_dwell": 0.0115,
+      "state_entropy": 2.6123,
+      "state_histogram": {
+        "REPOSITION": 70,
+        "APPROACH": 216,
+        "CIRCLE": 310,
+        "FEINT_STEP": 190,
+        "ATK_WINDUP": 176,
+        "ATK_ACTIVE": 42,
+        "ATK_RECOVER": 196
+      },
+      "max_speed_mps": 18.211,
+      "nonzero_speed_frames": 1034,
+      "max_yaw_rate_dps": 300,
+      "worst_committed_yaw_rate_dps": 0,
+      "committed_frames": 222
+    },
+    "b2": {
+      "samples": [
+        {
+          "bearing": 0,
+          "mult": 0.5,
+          "r": 8,
+          "acquired_f": -1,
+          "suspicious_frames": 180
+        },
+        {
+          "bearing": 0,
+          "mult": 0.9,
+          "r": 14.4,
+          "acquired_f": -1,
+          "suspicious_frames": 180
+        },
+        {
+          "bearing": 0,
+          "mult": 1.1,
+          "r": 17.6,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 0,
+          "mult": 1.5,
+          "r": 24,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 30,
+          "mult": 0.5,
+          "r": 8,
+          "acquired_f": 165,
+          "suspicious_frames": 165
+        },
+        {
+          "bearing": 30,
+          "mult": 0.9,
+          "r": 14.4,
+          "acquired_f": -1,
+          "suspicious_frames": 180
+        },
+        {
+          "bearing": 30,
+          "mult": 1.1,
+          "r": 17.6,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 30,
+          "mult": 1.5,
+          "r": 24,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 60,
+          "mult": 0.5,
+          "r": 8,
+          "acquired_f": 165,
+          "suspicious_frames": 165
+        },
+        {
+          "bearing": 60,
+          "mult": 0.9,
+          "r": 14.4,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 60,
+          "mult": 1.1,
+          "r": 17.6,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 60,
+          "mult": 1.5,
+          "r": 24,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 90,
+          "mult": 0.5,
+          "r": 8,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 90,
+          "mult": 0.9,
+          "r": 14.4,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 90,
+          "mult": 1.1,
+          "r": 17.6,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 90,
+          "mult": 1.5,
+          "r": 24,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 120,
+          "mult": 0.5,
+          "r": 8,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 120,
+          "mult": 0.9,
+          "r": 14.4,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 120,
+          "mult": 1.1,
+          "r": 17.6,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 120,
+          "mult": 1.5,
+          "r": 24,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 150,
+          "mult": 0.5,
+          "r": 8,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 150,
+          "mult": 0.9,
+          "r": 14.4,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 150,
+          "mult": 1.1,
+          "r": 17.6,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 150,
+          "mult": 1.5,
+          "r": 24,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 180,
+          "mult": 0.5,
+          "r": 8,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 180,
+          "mult": 0.9,
+          "r": 14.4,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 180,
+          "mult": 1.1,
+          "r": 17.6,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        },
+        {
+          "bearing": 180,
+          "mult": 1.5,
+          "r": 24,
+          "acquired_f": -1,
+          "suspicious_frames": 0
+        }
+      ],
+      "acquisition_radius_by_bearing": {
+        "30": 8,
+        "60": 8
+      },
+      "spread_fraction_of_R": 0,
+      "is_a_circle": true,
+      "rear_180_never_acquires": true,
+      "front_0p9R_always_acquires": false,
+      "beyond_1p5R_never_acquires": true
+    },
+    "b3": {
+      "trials": [
+        {
+          "suspicious_frames": 330,
+          "idle_to_aggro_jump": false,
+          "acquired_f": 330
+        },
+        {
+          "suspicious_frames": 281,
+          "idle_to_aggro_jump": false,
+          "acquired_f": 281
+        },
+        {
+          "suspicious_frames": 244,
+          "idle_to_aggro_jump": false,
+          "acquired_f": 244
+        },
+        {
+          "suspicious_frames": 216,
+          "idle_to_aggro_jump": false,
+          "acquired_f": 216
+        },
+        {
+          "suspicious_frames": 194,
+          "idle_to_aggro_jump": false,
+          "acquired_f": 194
+        },
+        {
+          "suspicious_frames": 176,
+          "idle_to_aggro_jump": false,
+          "acquired_f": 176
+        }
+      ],
+      "median_suspicious_dwell_f": 244,
+      "jump_fraction": 0
+    },
+    "b4": {
+      "in_front": {
+        "bearing": 0,
+        "dist_m": 12,
+        "aggroed_f": 188
+      },
+      "behind": {
+        "bearing": 180,
+        "dist_m": 12,
+        "aggroed_f": -1
+      },
+      "flank": {
+        "bearing": 90,
+        "dist_m": 12,
+        "aggroed_f": -1
+      }
+    },
+    "b5": {
+      "before": {
+        "label": "shipped",
+        "mean_dist_m": 3.2409,
+        "sd": 2.1162,
+        "samples": 1800,
+        "min_dist_m": 0.136,
+        "max_dist_m": 10.307,
+        "nan_frames": 0,
+        "end_hp": 412,
+        "end_dead": false,
+        "player_hp": 330.68
+      },
+      "after": {
+        "label": "preferred_band_multiple x2",
+        "mean_dist_m": 4.4875,
+        "sd": 2.1157,
+        "samples": 1800,
+        "min_dist_m": 0.445,
+        "max_dist_m": 10.307,
+        "nan_frames": 0,
+        "end_hp": 412,
+        "end_dead": false,
+        "player_hp": 599.625
+      },
+      "restored": {
+        "label": "restored",
+        "mean_dist_m": 3.2409,
+        "sd": 2.1162,
+        "samples": 1800,
+        "min_dist_m": 0.136,
+        "max_dist_m": 10.307,
+        "nan_frames": 0,
+        "end_hp": 412,
+        "end_dead": false,
+        "player_hp": 330.68
+      },
+      "delta_mean_m": 1.2466,
+      "changed": true,
+      "restored_matches": true,
+      "isolation": "each arm despawns every entity INCLUDING encounter members and heals the player; see the comment above measure()"
+    }
+  }
+}

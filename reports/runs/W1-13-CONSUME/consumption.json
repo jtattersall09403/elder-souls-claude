@@ -1,0 +1,137 @@
+{
+  "schema": "elder-souls/consumption@1",
+  "piece": "W1-13",
+  "partial": true,
+  "failed_after_models": 2,
+  "error": "page.evaluate: Target page, context or browser has been closed",
+  "models_coupled": 2,
+  "models": [
+    {
+      "model": "game/data/world/hearths.json — 29 placements",
+      "consumer": "game/src/sim/hearth.js HearthSystem -> game/src/sim/death.js DeathSystem.respawn() -> sim.player.pos, and game/src/render/renderer.js syncDeathMarkers() draws the basin",
+      "observable": "the world position the body is standing at after a death, in metres",
+      "value_a": {
+        "hearth": "hearth-archon",
+        "respawned_at": [
+          3784.57,
+          3.39,
+          3941.5
+        ],
+        "region": "eastern-rootlands",
+        "offset_from_hearth_m": 0,
+        "settle_50f_m": 0,
+        "hearth_pos": [
+          3784.57,
+          3.386,
+          3941.5
+        ],
+        "respawn_target": "hearth-archon"
+      },
+      "value_b": {
+        "hearth": "hearth-gideon",
+        "respawned_at": [
+          438.43,
+          2.69,
+          3031.5
+        ],
+        "region": "blackwood",
+        "offset_from_hearth_m": 0,
+        "settle_50f_m": 0,
+        "hearth_pos": [
+          438.43,
+          2.689,
+          3031.5
+        ],
+        "respawn_target": "hearth-gideon"
+      },
+      "separation_m": 3467.67,
+      "null_control": {
+        "hearth_last_rested": null,
+        "died_at": [
+          3784.57,
+          3.39,
+          3941.5
+        ],
+        "respawned_at": [
+          3784.57,
+          3.39,
+          3941.5
+        ],
+        "moved_m": 0,
+        "surface_went_up": true,
+        "deaths": 1,
+        "respawn_target": null,
+        "ambient_drift_over_the_same_frames_with_no_death_m": 0,
+        "movement_attributable_to_the_respawn_m": 0,
+        "hearths_in_the_table": 0,
+        "_what_the_null_is": "the placement TABLE emptied, not the respawn point nulled — see the comment above"
+      },
+      "floor_when_the_respawn_point_is_null_but_the_table_is_not": {
+        "died_at": [
+          4084.57,
+          -1.4,
+          4241.5
+        ],
+        "woke_at": [
+          3784.57,
+          3.39,
+          3941.5
+        ],
+        "carried_m": 424.26,
+        "respawn_target": "hearth-archon",
+        "souls_held_after": 0,
+        "_why": "Round 1 read this state as its null control and it was a fail-open: the body did not move and 4,200 souls were back in five frames. It is now a floor."
+      },
+      "coupling": 1,
+      "note": "Two wells 3.5 km apart put the body in two different REGIONS. With the respawn point emptied the body does not move at all — the direction that proves the position came from the TABLE and not from a constant. The 17 m offset from the basin is the province setting the capsule down on ground that will hold it, is present on the respawn frame itself (settle_50f_m is 0), and is reported rather than tuned away."
+    },
+    {
+      "model": "game/data/world/respawn.json — the seam-S5 respawn classification",
+      "consumer": "game/src/sim/death.js DeathSystem.respawns() -> respawnOrdinary() -> entity.state, mirrored to the combat body and drawn by render/renderer.js syncEntities() as mesh.scale.y (0.18 collapsed / 1.0 upright)",
+      "observable": "which actors are standing up after the player dies, counted both as states and as upright-actor pixels on a rendered frame",
+      "shipped": {
+        "states": {
+          "boss": "DOWN",
+          "fix": "DOWN",
+          "ord": "STANDING"
+        },
+        "correct": true
+      },
+      "value_a": {
+        "rules": {
+          "respawning_tiers": []
+        },
+        "states": {
+          "boss": "DOWN",
+          "fix": "DOWN",
+          "ord": "DOWN"
+        }
+      },
+      "value_b": {
+        "rules": {
+          "respawning_tiers": [
+            "trash",
+            "elite",
+            "prop"
+          ],
+          "never_respawn_ids": [],
+          "never_respawn_entity_flags": []
+        },
+        "states": {
+          "boss": "STANDING",
+          "fix": "STANDING",
+          "ord": "STANDING"
+        }
+      },
+      "frame_diff_none_back_vs_all_back_px": 26618,
+      "frame_diff_same_condition_twice_px": 0,
+      "null_control": {
+        "what": "respawning_tiers emptied is the null control: with no tier declared ordinary, DeathSystem.respawns() returns false for every body and nothing at all comes back",
+        "held": true
+      },
+      "coupling": 1,
+      "note": "The two perturbations move the observable in OPPOSITE directions from the shipped rules — nothing back, then everything back including the boss the shipped rules hold dead — and the upright-pixel count moves with them. A classification that were hard-coded could not do that."
+    }
+  ],
+  "page_errors": []
+}

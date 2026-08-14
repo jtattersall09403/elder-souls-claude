@@ -1,0 +1,549 @@
+{
+ "tool": "critic-souls-r3",
+ "label": "DELETED-boundary",
+ "self_break": false,
+ "at": "2026-08-08T01:17:03.643Z",
+ "page_errors": [],
+ "arms": {
+  "D1_statblock_value": {
+   "shipped_value": 42,
+   "at_shipped": 252,
+   "at_999": 5994,
+   "restored": 252,
+   "bodies": 6,
+   "consumer": "game/src/sim/souls.js SoulsSystem.step() -> awardFor(stat, awardHour) -> sim.progression.soulsHeld",
+   "pass": true
+  },
+  "D2_night_multiplier": {
+   "day_1400": 252,
+   "night_2300": 342,
+   "night_0400": 342,
+   "base": 42,
+   "bodies": 6,
+   "want_day": 252,
+   "want_night": 342,
+   "ratio": 1.3571,
+   "consumer": "game/src/sim/souls.js isNight(env.awardTimeOfDay) -> awardFor()",
+   "pass": true
+  },
+  "D3_level_curve_changes_the_player": {
+   "cost_of_first_level": 418,
+   "declared_attributes": [
+    "strength",
+    "endurance",
+    "agility",
+    "speed",
+    "vigour",
+    "willpower",
+    "intellect",
+    "hist-bond",
+    "personality",
+    "luck"
+   ],
+   "souls_earned_by_killing": 504,
+   "funded_by_kills": true,
+   "level_before": 1,
+   "level_after": 11,
+   "refused_when_one_short": true,
+   "held_after_refusal": 417,
+   "refused_undeclared_attribute": true,
+   "per_attribute": [
+    {
+     "attribute": "strength",
+     "cost": 418,
+     "spent": true,
+     "attribute_value": 6,
+     "derived_moved": 2,
+     "moved": [
+      {
+       "stat": "derived.equip_load_max",
+       "before": 55.5,
+       "after": 57
+      },
+      {
+       "stat": "derived.from.strength",
+       "before": 5,
+       "after": 6
+      }
+     ]
+    },
+    {
+     "attribute": "endurance",
+     "cost": 483,
+     "spent": true,
+     "attribute_value": 7,
+     "derived_moved": 9,
+     "moved": [
+      {
+       "stat": "derived.stamina_max",
+       "before": 64,
+       "after": 68
+      },
+      {
+       "stat": "derived.stamina_regen_per_s",
+       "before": 40.8,
+       "after": 41.1
+      },
+      {
+       "stat": "derived.stamina_regen_per_frame",
+       "before": 0.68,
+       "after": 0.685
+      },
+      {
+       "stat": "derived.equip_load_max",
+       "before": 57,
+       "after": 57.5
+      },
+      {
+       "stat": "derived.from.endurance",
+       "before": 6,
+       "after": 7
+      },
+      {
+       "stat": "derived.live.stamina",
+       "before": 64,
+       "after": 68
+      }
+     ]
+    },
+    {
+     "attribute": "agility",
+     "cost": 553,
+     "spent": true,
+     "attribute_value": 11,
+     "derived_moved": 0,
+     "moved": []
+    },
+    {
+     "attribute": "speed",
+     "cost": 627,
+     "spent": true,
+     "attribute_value": 12,
+     "derived_moved": 0,
+     "moved": []
+    },
+    {
+     "attribute": "vigour",
+     "cost": 705,
+     "spent": true,
+     "attribute_value": 11,
+     "derived_moved": 6,
+     "moved": [
+      {
+       "stat": "derived.hp_max",
+       "before": 300,
+       "after": 326
+      },
+      {
+       "stat": "derived.from.vigour",
+       "before": 10,
+       "after": 11
+      },
+      {
+       "stat": "derived.live.hp",
+       "before": 300,
+       "after": 326
+      },
+      {
+       "stat": "derived.live.hp_max",
+       "before": 300,
+       "after": 326
+      },
+      {
+       "stat": "body.hp",
+       "before": 300,
+       "after": 326
+      },
+      {
+       "stat": "body.hpMax",
+       "before": 300,
+       "after": 326
+      }
+     ]
+    },
+    {
+     "attribute": "willpower",
+     "cost": 788,
+     "spent": true,
+     "attribute_value": 19,
+     "derived_moved": 4,
+     "moved": [
+      {
+       "stat": "derived.focus_max",
+       "before": 56,
+       "after": 59
+      },
+      {
+       "stat": "derived.from.willpower",
+       "before": 18,
+       "after": 19
+      },
+      {
+       "stat": "derived.focus_max_base",
+       "before": 56,
+       "after": 59
+      },
+      {
+       "stat": "derived.focus_live.focus_max",
+       "before": 56,
+       "after": 59
+      }
+     ]
+    },
+    {
+     "attribute": "intellect",
+     "cost": 876,
+     "spent": true,
+     "attribute_value": 19,
+     "derived_moved": 0,
+     "moved": []
+    },
+    {
+     "attribute": "hist-bond",
+     "cost": 968,
+     "spent": true,
+     "attribute_value": 12,
+     "derived_moved": 0,
+     "moved": []
+    },
+    {
+     "attribute": "personality",
+     "cost": 1065,
+     "spent": true,
+     "attribute_value": 13,
+     "derived_moved": 0,
+     "moved": []
+    },
+    {
+     "attribute": "luck",
+     "cost": 1167,
+     "spent": true,
+     "attribute_value": 12,
+     "derived_moved": 0,
+     "moved": []
+    }
+   ],
+   "attributes_that_buy_a_level_and_move_nothing": [
+    "agility",
+    "speed",
+    "intellect",
+    "hist-bond",
+    "personality",
+    "luck"
+   ],
+   "levels_bought": 10,
+   "levels_that_moved_a_derived_number": 4,
+   "consumer": "game/src/engine.js _spendSouls() -> prog.level/attributes -> sim._poolsDirty -> applyDerivedPools() -> the combat body",
+   "pass": true
+  },
+  "D3b_attribute_reach_at_plus_15": {
+   "rows": [
+    {
+     "attribute": "strength",
+     "from": 5,
+     "to": 20,
+     "derived_moved": 2,
+     "moved": [
+      "derived.equip_load_max",
+      "derived.from.strength"
+     ]
+    },
+    {
+     "attribute": "endurance",
+     "from": 6,
+     "to": 21,
+     "derived_moved": 9,
+     "moved": [
+      "derived.stamina_max",
+      "derived.stamina_regen_per_s",
+      "derived.stamina_regen_per_frame",
+      "derived.equip_load_max",
+      "derived.from.endurance",
+      "derived.live.stamina",
+      "derived.live.stamina_max",
+      "body.stamina"
+     ]
+    },
+    {
+     "attribute": "agility",
+     "from": 10,
+     "to": 25,
+     "derived_moved": 0,
+     "moved": []
+    },
+    {
+     "attribute": "speed",
+     "from": 11,
+     "to": 26,
+     "derived_moved": 0,
+     "moved": []
+    },
+    {
+     "attribute": "vigour",
+     "from": 10,
+     "to": 25,
+     "derived_moved": 6,
+     "moved": [
+      "derived.hp_max",
+      "derived.from.vigour",
+      "derived.live.hp",
+      "derived.live.hp_max",
+      "body.hp",
+      "body.hpMax"
+     ]
+    },
+    {
+     "attribute": "willpower",
+     "from": 18,
+     "to": 33,
+     "derived_moved": 5,
+     "moved": [
+      "derived.focus_max",
+      "derived.spell_slots",
+      "derived.from.willpower",
+      "derived.focus_max_base",
+      "derived.focus_live.focus_max"
+     ]
+    },
+    {
+     "attribute": "intellect",
+     "from": 18,
+     "to": 33,
+     "derived_moved": 0,
+     "moved": []
+    },
+    {
+     "attribute": "hist-bond",
+     "from": 11,
+     "to": 26,
+     "derived_moved": 0,
+     "moved": []
+    },
+    {
+     "attribute": "personality",
+     "from": 12,
+     "to": 27,
+     "derived_moved": 0,
+     "moved": []
+    },
+    {
+     "attribute": "luck",
+     "from": 11,
+     "to": 26,
+     "derived_moved": 0,
+     "moved": []
+    }
+   ],
+   "attributes_that_reach_nothing_even_at_plus_15": [
+    "agility",
+    "speed",
+    "intellect",
+    "hist-bond",
+    "personality",
+    "luck"
+   ],
+   "snapshot_keys": 113,
+   "derived_sheet_keys": 108,
+   "character_created": true,
+   "derived_sheet_why": null,
+   "sample_derived_keys": [
+    "derived.hp_max",
+    "derived.stamina_max",
+    "derived.stamina_regen_per_s",
+    "derived.stamina_regen_per_frame",
+    "derived.focus_max",
+    "derived.spell_slots",
+    "derived.equip_load_max",
+    "derived.from.vigour",
+    "derived.from.endurance",
+    "derived.from.willpower",
+    "derived.from.strength",
+    "derived.birthsign_terms.0.applied",
+    "derived.birthsign_terms.0.scale",
+    "derived.focus_max_base",
+    "derived.flask_charge_delta",
+    "derived.live.hp",
+    "derived.live.hp_max",
+    "derived.live.stamina",
+    "derived.live.stamina_max",
+    "derived.focus_live.focus",
+    "derived.focus_live.focus_max",
+    "derived.curves.hp_at.10",
+    "derived.curves.hp_at.20",
+    "derived.curves.hp_at.27",
+    "derived.curves.hp_at.40"
+   ],
+   "coverage_ok": true,
+   "reported_not_asserted": true,
+   "reach": "getDerivedStats() + the combat body. NOT movement, disposition, loot or skills.",
+   "pass": true
+  },
+  "D4_doctrine_souls_never_buy_gold_never_levels": {
+   "gold_before_kill": 0,
+   "gold_after_kill": 0,
+   "souls_from_kill": 252,
+   "gold_moved_by_a_kill": 0,
+   "gold_held": 100000,
+   "level_before": 1,
+   "level_after": 1,
+   "gold_bought_a_level": false,
+   "gold_after_attempt": 100000,
+   "refusal": {
+    "attribute": "strength",
+    "why": "not enough souls",
+    "cost": 418,
+    "held": 0
+   },
+   "pass": true
+  },
+  "D5_props_and_the_switch": {
+   "declared_souls": 0,
+   "eid": "e0",
+   "paid": 0,
+   "pass": true
+  },
+  "X_boundary_same_eids_twice": {
+   "pass1_paid": 252,
+   "pass2_paid": 252,
+   "same_eids": true,
+   "entities_after_boundary": 0,
+   "hearth_rests": 0,
+   "refused_rearms": 0,
+   "rebuilds": 54,
+   "observer_census": [
+    {
+     "id": "stealth",
+     "named": true,
+     "save": true,
+     "dirt": 0
+    },
+    {
+     "id": "discovery",
+     "named": true,
+     "save": false,
+     "dirt": 0
+    },
+    {
+     "id": "population",
+     "named": true,
+     "save": true,
+     "dirt": 0
+    },
+    {
+     "id": "souls",
+     "named": false,
+     "save": false,
+     "dirt": 13
+    },
+    {
+     "id": "greeting_count",
+     "named": true,
+     "save": true,
+     "dirt": 0
+    },
+    {
+     "id": "death",
+     "named": true,
+     "save": false,
+     "dirt": 0
+    }
+   ],
+   "pass": true
+  },
+  "X_save_load_same_eids": {
+   "pass1_paid": 252,
+   "pass2_paid": 252,
+   "same_eids": true,
+   "pass": true
+  },
+  "X_rest_epoch_still_gates_a_revived_body": {
+   "first_pay": 252,
+   "without_rest": 0,
+   "after_one_rest": 0,
+   "refused_rearms": 0,
+   "rested": {
+    "rested": true,
+    "focus_restored": true,
+    "focus": 56,
+    "focus_max": 56,
+    "why": null,
+    "rest_clamp_reset": true,
+    "sap_taint": {
+     "band": 0,
+     "rests": 1,
+     "immune": false,
+     "ward_uses_left": 3
+    },
+    "note": "RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here.",
+    "hearth": null,
+    "hearth_resolved_by": "none",
+    "respawn_point_set": null,
+    "hearths_discovered": [
+     "hearth-archon"
+    ],
+    "world_reset": null,
+    "clock": {
+     "before": null,
+     "after": null,
+     "hours": 0,
+     "day": 0
+    },
+    "diseases_advanced": [],
+    "hp": 300,
+    "flask_charges": 5,
+    "no_hearth_note": "No sapwell within reach, so this was the pools-and-clamp half only: no respawn point was set, nothing re-grew and the clock did not move. RI-PRG04 §1 needs a well.",
+    "menu": null
+   },
+   "pass": true
+  }
+ },
+ "rows": [
+  {
+   "arm": "D1_statblock_value",
+   "pass": true,
+   "error": null
+  },
+  {
+   "arm": "D2_night_multiplier",
+   "pass": true,
+   "error": null
+  },
+  {
+   "arm": "D3_level_curve_changes_the_player",
+   "pass": true,
+   "error": null
+  },
+  {
+   "arm": "D3b_attribute_reach_at_plus_15",
+   "pass": true,
+   "error": null
+  },
+  {
+   "arm": "D4_doctrine_souls_never_buy_gold_never_levels",
+   "pass": true,
+   "error": null
+  },
+  {
+   "arm": "D5_props_and_the_switch",
+   "pass": true,
+   "error": null
+  },
+  {
+   "arm": "X_boundary_same_eids_twice",
+   "pass": true,
+   "error": null
+  },
+  {
+   "arm": "X_save_load_same_eids",
+   "pass": true,
+   "error": null
+  },
+  {
+   "arm": "X_rest_epoch_still_gates_a_revived_body",
+   "pass": true,
+   "error": null
+  }
+ ],
+ "passed": 9,
+ "of": 9
+}

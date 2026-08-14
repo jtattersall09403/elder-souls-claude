@@ -1,0 +1,31 @@
+# CRITIC W1-02 — consumption census, re-runnable
+
+## every reference to env.weatherEffect in game/src (RI-WLD11 / ARBITRATION §3)
+game/src/sim/environment.js:241:      env.weatherEffect = cur.effect || {};
+game/src/sim/environment.js:303:      effect: env.weatherEffect || (cur ? cur.effect : {}),
+
+## stamina regen has no weather term (sim/player.js)
+212:    const rate = PLAYER_CONST.stamina_regen_per_frame * (guarding ? PLAYER_CONST.stamina_regen_guard_mult : 1);
+
+## the ONE hazard gate that reads a weather id
+55:  'ash-lung': (c) => c.region === 'thornmarsh' && (c.weather === 'ashfall' || c.weather === 'dust_devil'),
+154:    c.weather = sim.env.weather; c.hour = sim.env.timeOfDay; c.tide = tide;
+
+## souls night window reads the clock (RI-PRG04)
+120:/** RI-PRG04 §2's night window, in hours on `sim.env.timeOfDay`. */
+125:export function isNight(timeOfDay) {
+126:  const h = Number(timeOfDay);
+135: * @param {number} timeOfDay  `sim.env.timeOfDay`
+137:export function awardFor(stat, timeOfDay) {
+140:  const night = isNight(timeOfDay);
+211:      const a = awardFor(stat, sim.env && sim.env.timeOfDay);
+223:        ev.hour = Math.round((sim.env && sim.env.timeOfDay || 0) * 100) / 100;
+
+## RI-TRV01 day/night gate is prose, parsed by nothing
+36:    "night: the roots close 20:00–05:00",
+  travel modules reading a clock:
+  (none)
+
+## RI-WLD14: no instrument, no input data
+  tools referencing RI-WLD14/M78-M84: 0
+ls: cannot access 'game/data/world/architecture.json': No such file or directory

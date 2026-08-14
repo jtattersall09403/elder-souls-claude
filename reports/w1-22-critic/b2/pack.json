@@ -1,0 +1,18 @@
+{
+  "pack_id": "w1-22-b2-78aebc7",
+  "item": "RI-AUD03",
+  "check": "B2",
+  "kind": "audio-profile",
+  "question": "Are these two 20-second recordings from the same place in a game world, or different places?",
+  "trials": 32,
+  "seed": 22071,
+  "seconds": 20,
+  "sample_rate": 16000,
+  "git": {
+    "commit": "78aebc7",
+    "dirty": true
+  },
+  "trials_sha256": "3ab1e3b84faebdf821d62a1627d16e72a40644e99792922d981b11e343c7c768",
+  "contains_no_mapping": true,
+  "leak_audit": "RI-MTH03 M6 run by the pack author before any judge saw it. First build leaked the un-normalised clip loudness, which RI-AUD03 SectionC closes on purpose; every clip now reports -23.0 LUFS. No region name, synth id, layer id or filename appears anywhere in trials.json."
+}

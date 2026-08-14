@@ -1,0 +1,616 @@
+{
+  "checks": [
+    {
+      "id": "A1-cell-changes-with-the-clock",
+      "verdict": "CONSUMED",
+      "people": 24,
+      "changed_cell_noon_to_3am": 9,
+      "outdoors_noon": 4,
+      "outdoors_3am": 0
+    },
+    {
+      "id": "A2-does-anybody-WALK",
+      "verdict": "NOBODY-MOVES",
+      "people": 24,
+      "changed_position_noon_to_3am": 0,
+      "note": "stepSchedule docstring claims it changes pos (\"they walk to the slot's anchor\")"
+    },
+    {
+      "id": "A3-perturb-one-schedule",
+      "verdict": "CONSUMED",
+      "eid": "herbwife-ossa",
+      "before": {
+        "at": "thorn-hall",
+        "present": false,
+        "visible": false
+      },
+      "after": {
+        "at": "thorn-inn",
+        "present": false,
+        "visible": false
+      },
+      "restored": {
+        "at": "thorn-hall",
+        "present": false
+      }
+    },
+    {
+      "id": "A4-thorn-hall-occupancy",
+      "verdict": "POPULATED",
+      "interior": "thorn-hall",
+      "occupants": [
+        "king-hlaalu-teeth",
+        "thorn-keeper-hall",
+        "thorn-legionary-10",
+        "thorn-priest-1"
+      ],
+      "present_anywhere": 4,
+      "body": [
+        0,
+        0,
+        7.8
+      ]
+    },
+    {
+      "id": "B1-owner-perturbation",
+      "verdict": "CONSUMED",
+      "zone": "archon.priest0.r0",
+      "owned_item": "archon.priest0.r0.0",
+      "unowned_item": "archon.priest0.r0.1",
+      "owned": {
+        "r": {
+          "taken": true,
+          "theft": true,
+          "scope": "shared",
+          "why": "household or faction stock",
+          "stolen_from": "faction:drowned-court",
+          "crime": "theft_petty",
+          "challenge": false,
+          "disposition_delta": -5.5,
+          "put_back_window_s": 0,
+          "disposition_gmst": "fDispStealing",
+          "observed_by": [
+            {
+              "eid": "critic-witness",
+              "faction": null,
+              "civ_state": "CALM"
+            }
+          ],
+          "observed_by_source": "supplied_by_caller",
+          "crime_ref": 1,
+          "quote_g": 21,
+          "witnesses": []
+        },
+        "bounty_before": {
+          "imperial": 0,
+          "settlement": {},
+          "interior": 0
+        },
+        "bounty_after": {
+          "imperial": 0,
+          "settlement": {},
+          "interior": 0
+        }
+      },
+      "unowned": {
+        "r": {
+          "taken": true,
+          "theft": false,
+          "scope": null,
+          "why": "unowned",
+          "stolen_from": null,
+          "crime": null,
+          "challenge": false,
+          "disposition_delta": 0,
+          "put_back_window_s": 0,
+          "observed_by": [
+            {
+              "eid": "critic-witness",
+              "faction": null,
+              "civ_state": "CALM"
+            }
+          ],
+          "observed_by_source": "supplied_by_caller"
+        },
+        "bounty_before": {
+          "imperial": 0,
+          "settlement": {},
+          "interior": 0
+        },
+        "bounty_after": {
+          "imperial": 0,
+          "settlement": {},
+          "interior": 0
+        }
+      }
+    },
+    {
+      "id": "B2-lock-tier-perturbation",
+      "verdict": "CONSUMED",
+      "zone": "archon.priest0.r0",
+      "lock": "archon.priest0.r0.lock",
+      "tier_before": 3,
+      "tier_perturbed": 5,
+      "a": {
+        "ok": false,
+        "refusal": "LockAttempt: You do not know this kind of lock. (tier 3 needs Security 40 / Agility 26; you have 5/20)"
+      },
+      "b": {
+        "ok": false,
+        "refusal": "LockAttempt: You do not know this kind of lock. (tier 5 needs Security 80 / Agility 50; you have 5/20)"
+      },
+      "c": {
+        "ok": false,
+        "refusal": "LockAttempt: You do not know this kind of lock. (tier 3 needs Security 40 / Agility 26; you have 5/20)"
+      }
+    },
+    {
+      "id": "B3-shop-hours-change-trespass",
+      "verdict": "CONSUMED",
+      "rows": [
+        {
+          "zone": "archon.smith2.r0",
+          "cls": "shop_closed",
+          "noon": false,
+          "night": false
+        },
+        {
+          "zone": "archon.smith2.r1",
+          "cls": "shop_closed",
+          "noon": false,
+          "night": false
+        },
+        {
+          "zone": "archon.apothecary10.r0",
+          "cls": "shop_closed",
+          "noon": false,
+          "night": true
+        },
+        {
+          "zone": "archon.apothecary10.r1",
+          "cls": "shop_closed",
+          "noon": false,
+          "night": true
+        },
+        {
+          "zone": "archon.apothecary11.r0",
+          "cls": "shop_closed",
+          "noon": false,
+          "night": true
+        },
+        {
+          "zone": "archon.apothecary11.r1",
+          "cls": "shop_closed",
+          "noon": false,
+          "night": true
+        }
+      ],
+      "differ": 4
+    },
+    {
+      "id": "C1-named-interiors-with-own-geometry",
+      "verdict": "SHARED-HALL",
+      "interiors": 115,
+      "by_cell": {
+        "interior": 113,
+        "barge_hold": 1,
+        "writ_house": 1
+      },
+      "generic_hall_triangles": 249
+    },
+    {
+      "id": "C2-record-furnishing-instantiated",
+      "verdict": "INSPECT",
+      "record_props": 18,
+      "record_lights": 10,
+      "record_containers": 0,
+      "unique_item": "archon-apothecary-unique",
+      "lights_in_the_drawn_hall": 1
+    },
+    {
+      "id": "C3-do-different-interiors-use-different-cells",
+      "verdict": "ONE-CELL",
+      "visited": 4,
+      "distinct_cells": [
+        "interior",
+        null
+      ],
+      "rows": [
+        {
+          "id": "archon-apothecary",
+          "kind": "shop",
+          "cell": "interior",
+          "occupants": 0
+        },
+        {
+          "id": "helstrom-guild-mages",
+          "occupants": 0
+        },
+        {
+          "id": "thorn-house-0",
+          "kind": "dwelling",
+          "cell": "interior",
+          "occupants": 1
+        },
+        {
+          "id": "thorn-hall",
+          "kind": "hall",
+          "cell": "interior",
+          "occupants": 4
+        }
+      ]
+    },
+    {
+      "id": "D1-VP04-camera-stands-in-the-town",
+      "verdict": "IN-TOWN",
+      "settlement": "thorn",
+      "interior": null,
+      "npcs_in_world": 24,
+      "present": 4,
+      "present_ids": [
+        "herbwife-ossa",
+        "rootkeeper-sesh-anaat",
+        "warden-eshi",
+        "widow-ineel"
+      ],
+      "body": [
+        3825.5,
+        13.28,
+        879
+      ],
+      "anchor": null
+    }
+  ],
+  "notes": [],
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 555
+  },
+  "arrive": {
+    "settlement": "thorn",
+    "npcs": 24,
+    "pos": [
+      3824,
+      13.28,
+      863
+    ]
+  },
+  "perturb_schedule": {
+    "eid": "herbwife-ossa",
+    "before": {
+      "at": "thorn-hall",
+      "present": false,
+      "visible": false
+    },
+    "after": {
+      "at": "thorn-inn",
+      "present": false,
+      "visible": false
+    },
+    "restored": {
+      "at": "thorn-hall",
+      "present": false
+    }
+  },
+  "inside_thorn_hall": {
+    "inside": {
+      "entered": true,
+      "interior": "thorn-hall",
+      "pos": [
+        0,
+        0,
+        7.8
+      ]
+    },
+    "occupants": [
+      "king-hlaalu-teeth",
+      "thorn-keeper-hall",
+      "thorn-legionary-10",
+      "thorn-priest-1"
+    ],
+    "present_count": 4,
+    "present": [
+      {
+        "eid": "king-hlaalu-teeth",
+        "at": "thorn-hall",
+        "pos": [
+          0.5,
+          0,
+          -6.3
+        ]
+      },
+      {
+        "eid": "thorn-keeper-hall",
+        "at": "thorn-hall",
+        "pos": [
+          5.2,
+          0,
+          4.2
+        ]
+      },
+      {
+        "eid": "thorn-legionary-10",
+        "at": "thorn-hall",
+        "pos": [
+          5.6,
+          0,
+          -6.8
+        ]
+      },
+      {
+        "eid": "thorn-priest-1",
+        "at": "thorn-hall",
+        "pos": [
+          -0.5,
+          0,
+          -4.4
+        ]
+      }
+    ],
+    "env": {
+      "interior": "thorn-hall",
+      "settlement": "thorn"
+    },
+    "body": [
+      0,
+      0,
+      7.8
+    ]
+  },
+  "ownership": {
+    "zone": "archon.priest0.r0",
+    "owned_item": "archon.priest0.r0.0",
+    "unowned_item": "archon.priest0.r0.1",
+    "owned": {
+      "r": {
+        "taken": true,
+        "theft": true,
+        "scope": "shared",
+        "why": "household or faction stock",
+        "stolen_from": "faction:drowned-court",
+        "crime": "theft_petty",
+        "challenge": false,
+        "disposition_delta": -5.5,
+        "put_back_window_s": 0,
+        "disposition_gmst": "fDispStealing",
+        "observed_by": [
+          {
+            "eid": "critic-witness",
+            "faction": null,
+            "civ_state": "CALM"
+          }
+        ],
+        "observed_by_source": "supplied_by_caller",
+        "crime_ref": 1,
+        "quote_g": 21,
+        "witnesses": []
+      },
+      "bounty_before": {
+        "imperial": 0,
+        "settlement": {},
+        "interior": 0
+      },
+      "bounty_after": {
+        "imperial": 0,
+        "settlement": {},
+        "interior": 0
+      }
+    },
+    "unowned": {
+      "r": {
+        "taken": true,
+        "theft": false,
+        "scope": null,
+        "why": "unowned",
+        "stolen_from": null,
+        "crime": null,
+        "challenge": false,
+        "disposition_delta": 0,
+        "put_back_window_s": 0,
+        "observed_by": [
+          {
+            "eid": "critic-witness",
+            "faction": null,
+            "civ_state": "CALM"
+          }
+        ],
+        "observed_by_source": "supplied_by_caller"
+      },
+      "bounty_before": {
+        "imperial": 0,
+        "settlement": {},
+        "interior": 0
+      },
+      "bounty_after": {
+        "imperial": 0,
+        "settlement": {},
+        "interior": 0
+      }
+    }
+  },
+  "locks": {
+    "zone": "archon.priest0.r0",
+    "lock": "archon.priest0.r0.lock",
+    "tier_before": 3,
+    "tier_perturbed": 5,
+    "a": {
+      "ok": false,
+      "refusal": "LockAttempt: You do not know this kind of lock. (tier 3 needs Security 40 / Agility 26; you have 5/20)"
+    },
+    "b": {
+      "ok": false,
+      "refusal": "LockAttempt: You do not know this kind of lock. (tier 5 needs Security 80 / Agility 50; you have 5/20)"
+    },
+    "c": {
+      "ok": false,
+      "refusal": "LockAttempt: You do not know this kind of lock. (tier 3 needs Security 40 / Agility 26; you have 5/20)"
+    }
+  },
+  "hours": {
+    "rows": [
+      {
+        "zone": "archon.smith2.r0",
+        "cls": "shop_closed",
+        "noon": false,
+        "night": false
+      },
+      {
+        "zone": "archon.smith2.r1",
+        "cls": "shop_closed",
+        "noon": false,
+        "night": false
+      },
+      {
+        "zone": "archon.apothecary10.r0",
+        "cls": "shop_closed",
+        "noon": false,
+        "night": true
+      },
+      {
+        "zone": "archon.apothecary10.r1",
+        "cls": "shop_closed",
+        "noon": false,
+        "night": true
+      },
+      {
+        "zone": "archon.apothecary11.r0",
+        "cls": "shop_closed",
+        "noon": false,
+        "night": true
+      },
+      {
+        "zone": "archon.apothecary11.r1",
+        "cls": "shop_closed",
+        "noon": false,
+        "night": true
+      }
+    ],
+    "differ": 4
+  },
+  "cells": {
+    "interiors": 115,
+    "by_cell": {
+      "interior": 113,
+      "barge_hold": 1,
+      "writ_house": 1
+    },
+    "cell_triangles": {
+      "exterior": 14467,
+      "interior": 249,
+      "dungeon": 264,
+      "arena": 331,
+      "barge_hold": 272,
+      "writ_house": 1703,
+      "market": 622,
+      "street": 282,
+      "well": 6266,
+      "province": 46040
+    }
+  },
+  "furnishing": {
+    "record_props": 18,
+    "record_lights": 10,
+    "record_containers": 0,
+    "unique_item": "archon-apothecary-unique",
+    "lights_in_the_drawn_hall": 1
+  },
+  "interior_shots": [
+    {
+      "id": "archon-apothecary",
+      "r": {
+        "entered": false,
+        "reason": "closed",
+        "open_h": 8,
+        "close_h": 19
+      },
+      "cell": "interior",
+      "name": "The Crimson Apothecary",
+      "kind": "shop",
+      "occupants": [],
+      "body": [
+        0,
+        0,
+        7.8
+      ]
+    },
+    {
+      "id": "helstrom-guild-mages",
+      "__error": "page.evaluate: Error: useDoor: no interior \"helstrom-guild-mages\""
+    },
+    {
+      "id": "thorn-house-0",
+      "r": {
+        "entered": true,
+        "interior": "thorn-house-0",
+        "pos": [
+          0,
+          0,
+          6
+        ]
+      },
+      "cell": "interior",
+      "name": "Ocheeva of the Boards's house",
+      "kind": "dwelling",
+      "occupants": [
+        "thorn-factor-0"
+      ],
+      "body": [
+        0,
+        0,
+        6
+      ]
+    },
+    {
+      "id": "thorn-hall",
+      "r": {
+        "entered": true,
+        "interior": "thorn-hall",
+        "pos": [
+          0,
+          0,
+          7.8
+        ]
+      },
+      "cell": "interior",
+      "name": "The Rotted Hall",
+      "kind": "hall",
+      "occupants": [
+        "king-hlaalu-teeth",
+        "thorn-keeper-hall",
+        "thorn-legionary-10",
+        "thorn-priest-1"
+      ],
+      "body": [
+        0,
+        0,
+        7.8
+      ]
+    }
+  ],
+  "vp04": {
+    "settlement": "thorn",
+    "interior": null,
+    "npcs_in_world": 24,
+    "present": 4,
+    "present_ids": [
+      "herbwife-ossa",
+      "rootkeeper-sesh-anaat",
+      "warden-eshi",
+      "widow-ineel"
+    ],
+    "body": [
+      3825.5,
+      13.28,
+      879
+    ],
+    "anchor": null
+  }
+}

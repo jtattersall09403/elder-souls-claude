@@ -1,0 +1,327 @@
+{
+  "tool": "critic-w1-12-r2-consume",
+  "seed": 1337,
+  "baseline": {
+    "duel": "6585982f9dae4683",
+    "group5": "70622b16f82e579d",
+    "swarm5": "869d388299f596bd",
+    "group2": "50787a082917832c",
+    "group3": "7a83f00c24718512",
+    "group4": "7169d1590f000ab4",
+    "swarm6": "5c31ac86c38d8a13",
+    "leashheal": "d9cd340b50bd6c93",
+    "ladder": "4024bc82d6bceb65",
+    "duelT": "7b8237861bac536a",
+    "duelA": "26e3cf1ad22ca84e"
+  },
+  "results": [
+    {
+      "path": "circle.preferred_band_multiple",
+      "value": 1.6,
+      "control": "must_move",
+      "fixtures": [
+        "duel"
+      ],
+      "consumed": true,
+      "moved_in": [
+        "duel:=3.2",
+        "duel:=0.8"
+      ]
+    },
+    {
+      "path": "archetype.DUELIST.walk_mps",
+      "value": 2.5,
+      "control": "must_not_move",
+      "fixtures": [
+        "duel",
+        "group5",
+        "swarm5"
+      ],
+      "consumed": false,
+      "moved_in": []
+    },
+    {
+      "path": "commit.tokens_by_group[0].max_size",
+      "value": 2,
+      "control": null,
+      "fixtures": [
+        "group2",
+        "group3",
+        "group4",
+        "group5"
+      ],
+      "consumed": true,
+      "moved_in": [
+        "group2:=1",
+        "group3:=99",
+        "group4:=99",
+        "group5:=99"
+      ]
+    },
+    {
+      "path": "commit.tokens_by_group[0].tokens",
+      "value": 1,
+      "control": null,
+      "fixtures": [
+        "group2",
+        "group3",
+        "group4",
+        "group5"
+      ],
+      "consumed": true,
+      "moved_in": [
+        "group2:=0",
+        "group2:=3"
+      ]
+    },
+    {
+      "path": "commit.tokens_by_group[1].max_size",
+      "value": 4,
+      "control": null,
+      "fixtures": [
+        "group2",
+        "group3",
+        "group4",
+        "group5"
+      ],
+      "consumed": true,
+      "moved_in": [
+        "group3:=2",
+        "group4:=2",
+        "group5:=99"
+      ]
+    },
+    {
+      "path": "commit.tokens_by_group[1].tokens",
+      "value": 2,
+      "control": null,
+      "fixtures": [
+        "group3",
+        "group4",
+        "group5"
+      ],
+      "consumed": true,
+      "moved_in": [
+        "group3:=0",
+        "group4:=0",
+        "group3:=4",
+        "group4:=4"
+      ]
+    },
+    {
+      "path": "commit.tokens_by_group[2].max_size",
+      "value": 99,
+      "control": null,
+      "fixtures": [
+        "group4",
+        "group5",
+        "swarm5",
+        "swarm6"
+      ],
+      "consumed": true,
+      "moved_in": [
+        "group5:=4"
+      ]
+    },
+    {
+      "path": "commit.tokens_by_group[2].tokens",
+      "value": 3,
+      "control": null,
+      "fixtures": [
+        "group5",
+        "swarm5",
+        "swarm6"
+      ],
+      "consumed": true,
+      "moved_in": [
+        "group5:=0",
+        "group5:=6"
+      ]
+    },
+    {
+      "path": "leash.return_heal_seconds",
+      "value": 4,
+      "control": null,
+      "fixtures": [
+        "leashheal"
+      ],
+      "consumed": true,
+      "moved_in": [
+        "leashheal:=40",
+        "leashheal:=0.5"
+      ]
+    },
+    {
+      "path": "commit.swarm_max_omega_m",
+      "value": 2,
+      "control": null,
+      "fixtures": [
+        "swarm5",
+        "swarm6",
+        "group5"
+      ],
+      "consumed": false,
+      "moved_in": []
+    },
+    {
+      "path": "commit.swarm_tokens_at_5_plus",
+      "value": 3,
+      "control": null,
+      "fixtures": [
+        "swarm5",
+        "swarm6"
+      ],
+      "consumed": true,
+      "moved_in": [
+        "swarm5:=0",
+        "swarm6:=0",
+        "swarm5:=9",
+        "swarm6:=9"
+      ]
+    },
+    {
+      "path": "perception.suspicious_min_dwell_f",
+      "value": 90,
+      "control": null,
+      "fixtures": [
+        "ladder"
+      ],
+      "consumed": true,
+      "moved_in": [
+        "ladder:=1",
+        "ladder:=400"
+      ]
+    },
+    {
+      "path": "movement.max_yaw_rate_active_dps",
+      "value": 0,
+      "control": null,
+      "fixtures": [
+        "duel",
+        "duelT"
+      ],
+      "consumed": false,
+      "moved_in": []
+    },
+    {
+      "path": "leash.hard_m.elite",
+      "value": 45,
+      "control": null,
+      "fixtures": [
+        "duel",
+        "leashheal"
+      ],
+      "consumed": false,
+      "moved_in": []
+    },
+    {
+      "path": "commit.tokens_when_elite_present",
+      "value": 1,
+      "control": null,
+      "fixtures": [
+        "group4",
+        "group5"
+      ],
+      "consumed": false,
+      "moved_in": []
+    },
+    {
+      "path": "archetype.DUELIST.sprint_mps",
+      "value": 5.4,
+      "control": null,
+      "fixtures": [
+        "duel",
+        "group5"
+      ],
+      "consumed": false,
+      "moved_in": []
+    },
+    {
+      "path": "archetype.DUELIST.omega_m",
+      "value": 2,
+      "control": null,
+      "fixtures": [
+        "duel",
+        "group5"
+      ],
+      "consumed": false,
+      "moved_in": []
+    },
+    {
+      "path": "archetype.RANGED.walk_mps",
+      "value": 2.2,
+      "control": null,
+      "fixtures": [
+        "duel",
+        "group5"
+      ],
+      "consumed": false,
+      "moved_in": []
+    },
+    {
+      "path": "archetype.RANGED.prefers_band",
+      "value": "close",
+      "control": null,
+      "fixtures": [
+        "duel",
+        "group5"
+      ],
+      "consumed": false,
+      "moved_in": []
+    },
+    {
+      "path": "archetype.SWARM.walk_mps",
+      "value": 2.6,
+      "control": null,
+      "fixtures": [
+        "duel",
+        "swarm5"
+      ],
+      "consumed": false,
+      "moved_in": []
+    },
+    {
+      "path": "archetype.SWARM.omega_m",
+      "value": 1.6,
+      "control": null,
+      "fixtures": [
+        "duel",
+        "swarm5"
+      ],
+      "consumed": false,
+      "moved_in": []
+    },
+    {
+      "path": "archetype.INFANTRY.omega_m",
+      "value": 2.4,
+      "control": null,
+      "fixtures": [
+        "duel"
+      ],
+      "consumed": false,
+      "moved_in": []
+    },
+    {
+      "path": "archetype.INFANTRY.sight_r_m",
+      "value": 16,
+      "control": null,
+      "fixtures": [
+        "duel",
+        "leashheal"
+      ],
+      "consumed": false,
+      "moved_in": []
+    },
+    {
+      "path": "archetype.AMBUSHER.sight_r_m",
+      "value": 7,
+      "control": null,
+      "fixtures": [
+        "duelA",
+        "leashheal"
+      ],
+      "consumed": false,
+      "moved_in": []
+    }
+  ]
+}

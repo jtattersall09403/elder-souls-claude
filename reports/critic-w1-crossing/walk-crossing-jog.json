@@ -1,0 +1,469 @@
+{
+  "schema": "elder-souls/critic-crossing-walk@1",
+  "measured_at": "2026-08-08T06:13:49.306Z",
+  "git": {
+    "commit": "bf039f1b3ae6baee09fc6ae479764e089eb6e15d",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "label": "crossing",
+  "route": "crossing",
+  "leg": null,
+  "reverse": false,
+  "speed": "jog",
+  "hp_pinned": true,
+  "kill_at_m": null,
+  "steer": "new",
+  "clamp": "new",
+  "no_deck": false,
+  "time_of_day": null,
+  "weather": null,
+  "burden": null,
+  "state": "arrived",
+  "chunks": [
+    {
+      "t_s": 38.2,
+      "frames": 20001,
+      "path_m": 1065.8,
+      "minutes": 5.556,
+      "remaining_points": 459,
+      "worst_off_path_m": 1.22,
+      "off_path_frames": 0,
+      "regains": 0,
+      "teleports": 0,
+      "critic_walked_m": 1065.8,
+      "critic_naive_m": 1065.8,
+      "critic_teleports": 0
+    },
+    {
+      "t_s": 66.8,
+      "frames": 40001,
+      "path_m": 2132.7,
+      "minutes": 11.111,
+      "remaining_points": 362,
+      "worst_off_path_m": 1.22,
+      "off_path_frames": 0,
+      "regains": 0,
+      "teleports": 0,
+      "critic_walked_m": 2132.7,
+      "critic_naive_m": 2132.7,
+      "critic_teleports": 0
+    },
+    {
+      "t_s": 93.8,
+      "frames": 60001,
+      "path_m": 3199.3,
+      "minutes": 16.667,
+      "remaining_points": 289,
+      "worst_off_path_m": 1.22,
+      "off_path_frames": 0,
+      "regains": 0,
+      "teleports": 0,
+      "critic_walked_m": 3199.3,
+      "critic_naive_m": 3199.3,
+      "critic_teleports": 0
+    },
+    {
+      "t_s": 122.8,
+      "frames": 80001,
+      "path_m": 4266,
+      "minutes": 22.223,
+      "remaining_points": 199,
+      "worst_off_path_m": 1.38,
+      "off_path_frames": 0,
+      "regains": 0,
+      "teleports": 0,
+      "critic_walked_m": 4266,
+      "critic_naive_m": 4266,
+      "critic_teleports": 0
+    },
+    {
+      "t_s": 149.4,
+      "frames": 100001,
+      "path_m": 5331.9,
+      "minutes": 27.778,
+      "remaining_points": 107,
+      "worst_off_path_m": 1.38,
+      "off_path_frames": 0,
+      "regains": 0,
+      "teleports": 0,
+      "critic_walked_m": 5331.9,
+      "critic_naive_m": 5331.9,
+      "critic_teleports": 0
+    },
+    {
+      "t_s": 175.8,
+      "frames": 120001,
+      "path_m": 6398.5,
+      "minutes": 33.334,
+      "remaining_points": 15,
+      "worst_off_path_m": 1.38,
+      "off_path_frames": 0,
+      "regains": 0,
+      "teleports": 0,
+      "critic_walked_m": 6398.5,
+      "critic_naive_m": 6398.5,
+      "critic_teleports": 0
+    },
+    {
+      "t_s": 181.3,
+      "frames": 124639,
+      "path_m": 6645.9,
+      "minutes": 34.622,
+      "remaining_points": 1,
+      "worst_off_path_m": 1.38,
+      "off_path_frames": 0,
+      "regains": 0,
+      "teleports": 0,
+      "critic_walked_m": 6645.9,
+      "critic_naive_m": 6645.9,
+      "critic_teleports": 0
+    }
+  ],
+  "engine_result": {
+    "route": "crossing",
+    "speed": "jog",
+    "done": true,
+    "frames": 124639,
+    "seconds": 2077.32,
+    "minutes": 34.622,
+    "path_m": 6645.9,
+    "declared_route_m": 6903.6,
+    "mean_speed_mps": 3.2,
+    "min_speed_mps": 0,
+    "max_speed_mps": 9.9967,
+    "speed_samples": 20773,
+    "speed_histogram": {
+      "0-0.5": 4,
+      "0.5-1": 0,
+      "1-1.6": 0,
+      "1.6-1.9": 2,
+      "1.9-1.99": 0,
+      "1.99-2.01": 0,
+      "2.01-2.5": 2,
+      "2.5-3": 1,
+      "3-3.3": 20759,
+      "3.3-99": 5
+    },
+    "frac_samples_below_1_6": 0.00019,
+    "leg_minutes": {
+      "stormhold-helstrom": 14.724,
+      "helstrom-blackrose": 12.22,
+      "blackrose-lilmoth": 7.678
+    },
+    "region_sequence": [
+      {
+        "region": "salt-hills",
+        "frame": 1,
+        "m": 0
+      },
+      {
+        "region": "valus-ridge",
+        "frame": 8774,
+        "m": 467
+      },
+      {
+        "region": "stone-forest",
+        "frame": 13795,
+        "m": 734.8
+      },
+      {
+        "region": "blackwood",
+        "frame": 60960,
+        "m": 3250.4
+      },
+      {
+        "region": "deep-marshes",
+        "frame": 72826,
+        "m": 3883.3
+      },
+      {
+        "region": "blackwood",
+        "frame": 74461,
+        "m": 3970.5
+      },
+      {
+        "region": "western-rootlands",
+        "frame": 76101,
+        "m": 4058
+      },
+      {
+        "region": "hive",
+        "frame": 79038,
+        "m": 4214.6
+      },
+      {
+        "region": "western-rootlands",
+        "frame": 79237,
+        "m": 4225.2
+      },
+      {
+        "region": "eastern-rootlands",
+        "frame": 112863,
+        "m": 6017.8
+      },
+      {
+        "region": "western-rootlands",
+        "frame": 117688,
+        "m": 6275.2
+      }
+    ],
+    "remaining_points": 1,
+    "worst_off_path_m": 1.38,
+    "off_path_frames": 0,
+    "regains": 0,
+    "off_path_events": [],
+    "teleports": 0,
+    "teleported_m": 0,
+    "teleport_log": []
+  },
+  "critic_counter": {
+    "frames": 124638,
+    "naive_sum_m": 6645.9,
+    "walked_m": 6645.9,
+    "teleports": 0,
+    "teleported_m": 0,
+    "max_step_m": 0.167,
+    "jumps": [],
+    "hp_zero_frames": 0,
+    "hp_absorbed": 552,
+    "min_hp": 508.4,
+    "start": [
+      2171.5,
+      761
+    ],
+    "end": [
+      2765.7,
+      5028.8
+    ],
+    "net_m": 4308.9
+  },
+  "shot": null,
+  "env": {
+    "env": {
+      "time_of_day": 9,
+      "weather": "dawn_mist",
+      "tide": {
+        "phase": 0.75,
+        "state": "LOW",
+        "height_m": {
+          "topal": -0.33,
+          "padomaic": -0.6
+        },
+        "cycle_real_min": 12,
+        "mean_range_m": {
+          "topal": 0.66,
+          "padomaic": 1.2
+        }
+      }
+    },
+    "burden": {
+      "ratio": 0,
+      "tier": "UNBURDENED",
+      "move_mult_declared": 1,
+      "move_mult_applied": 1,
+      "sprint": true,
+      "fatigue_drain_mult": 1,
+      "sneak_detection_mult": 1,
+      "travel_time_mult": 1,
+      "jump": "normal",
+      "in_combat": false,
+      "suppressed_by_combat": false,
+      "tiers": [
+        {
+          "id": "UNBURDENED",
+          "ratio_max": 0.6,
+          "move": 1
+        },
+        {
+          "id": "LADEN",
+          "ratio_max": 0.85,
+          "move": 0.9
+        },
+        {
+          "id": "OVERLADEN",
+          "ratio_max": 1,
+          "move": 0.72
+        },
+        {
+          "id": "IMMOBILE",
+          "ratio_max": null,
+          "move": 0
+        }
+      ],
+      "equip_load": {
+        "pct": 24,
+        "tier": "LIGHT",
+        "equipped_weight": 0,
+        "hands": null,
+        "weapon_the_fight_swings": "ssw_garrison_sword",
+        "shield_the_fight_holds": "marsh_oak_medium",
+        "overloaded_denies_sprint": false,
+        "equip_load_max": 73,
+        "carried_weight": 0,
+        "burden_divisor": 182.5,
+        "burden_source": "derived from the pack",
+        "source": "engine default — nothing is equipped yet",
+        "equipment_base_pct": 24,
+        "pinned_base_pct": null,
+        "spell_offset_pct": 0,
+        "pinned": false,
+        "boundaries_pct": {
+          "LIGHT": 30,
+          "MEDIUM": 70,
+          "HEAVY": 100
+        },
+        "owner": "RI-CMB01 §B (seam S23: everything the tier does inside the fight)"
+      },
+      "equip_load_consumers": {
+        "roll_iframes": "combat/moves.js equipTier() -> roll.json row -> combat/player.js roll",
+        "roll_recovery": "combat/moves.js equipTier() -> roll.json row",
+        "roll_stamina_cost": "combat/moves.js equipTier() -> roll.json costs",
+        "stamina_regen_mult": "combat/rules.js regenStamina() ctx.tier",
+        "weapon_weight": "weapons/classes.json equip_weight -> combat/moveset.js weaponFor() -> moves._weapon -> engine._recomputeEquipLoad() -> the equip ratio (W1-16 r3)",
+        "shield_weight": "weapons/offhand.json + combat/stamina.json weight -> combat/system.js shieldFor() -> body.shield.weight -> engine._recomputeEquipLoad() -> the ratio (W1-16 r3)",
+        "talisman_weight": "magic/cast-classes.json catalysts[].equip_weight (RI-PRG07 §4 = 3 kg) -> engine._handWeights() -> BOTH _recomputeEquipLoad() (§2 term 4) and _recomputeBurden() (§3 \"equipped or not\") -> the roll row and the walk speed (W1-16 r4)",
+        "talisman_slot": "items/carried.json slot:\"talisman\" -> engine._slotForItem() -> _finishEquipCommit() -> MagicSystem.setCatalyst() -> focus cost and the castNow() no_catalyst refusal (W1-16 r4)",
+        "overloaded_denies_sprint": "combat/player.js locomotion gate — b.tier === \"OVERLOADED\" refuses SPRINT at the place locomotion is decided, not at the press gate (W1-16 r3)",
+        "overloaded_denies_jump_attack": "combat/moveset.js resolveSlot() — ctx.roll_tier === \"OVERLOADED\" -> {slot: null, reason: \"overloaded\"}",
+        "fall_damage_mult": null
+      },
+      "burden_consumers": {
+        "move": "engine._burdenMult() -> sim/traversal.js step() horizontal retraction",
+        "sprint": "engine -> sim.player.denySprint -> sim/player.js action gate (W1-16 r2)",
+        "travel_time": "engine.boardTravel() -> ride frames and world clock (W1-16 r2)",
+        "fatigue": null,
+        "sneak": null,
+        "jump": null
+      },
+      "reason": "You move freely.",
+      "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    }
+  },
+  "hp_max": 620,
+  "declared_route": {
+    "settlements": [
+      "Stormhold",
+      "Helstrom",
+      "Blackrose",
+      "Lilmoth"
+    ],
+    "legs": [
+      "stormhold-helstrom",
+      "helstrom-blackrose",
+      "blackrose-lilmoth"
+    ],
+    "metres": 6903.6,
+    "walk_min": 57.53,
+    "jog_min": 35.96,
+    "note": "RI-WLD01 §5 THE CROSSING — Stormhold south gate to Lilmoth harbour steps."
+  },
+  "player_end": {
+    "pos": [
+      2765.656544,
+      2.68,
+      5028.770106
+    ],
+    "yaw_deg": 146.412519,
+    "state": "RUN",
+    "anim": "run",
+    "anim_frame": 7,
+    "hp": 620,
+    "hp_max": 620,
+    "stamina": 120,
+    "stamina_max": 120,
+    "poise_cur": 48,
+    "poise_max": 48,
+    "estus": 5,
+    "locked_on": null,
+    "level": 1,
+    "souls": 0,
+    "souls_to_next": 418,
+    "souls_spent": 0,
+    "attributes": {
+      "strength": 12,
+      "endurance": 20,
+      "agility": 10,
+      "speed": 10,
+      "vigour": 10,
+      "willpower": 10,
+      "intellect": 10,
+      "hist-bond": 10,
+      "personality": 10,
+      "luck": 10
+    },
+    "equip_load_pct": 13.013698630136986,
+    "roll_class": "LIGHT",
+    "burden_ratio": 0.052055,
+    "burden_tier": "UNBURDENED",
+    "in_combat": false,
+    "water_band": "W0",
+    "breath_s": 60,
+    "breath_max_s": 60,
+    "submerged": false,
+    "airborne": false,
+    "mired": false,
+    "denied_by_water": {
+      "sprint": false,
+      "roll": false
+    },
+    "afflictions": [],
+    "stranded_by": null,
+    "equipped": {
+      "weapon_id": "ssw_garrison_sword",
+      "weapon_name": "Imperial garrison sword",
+      "weapon_class": "SSW",
+      "weight_tier": "light",
+      "reach_m": 1.95,
+      "attack_rating": 118,
+      "stance": "one_hand",
+      "offhand": "o1_sword_shield",
+      "offhand_kind": "shield",
+      "shield": "marsh_oak_medium",
+      "shield_class": "medium",
+      "guard_angle_deg": 75,
+      "slots_declared": 31,
+      "slots_reachable_in_this_configuration": [
+        "art.1",
+        "backstep.r1",
+        "guard.counter",
+        "guardbreak",
+        "jump.r1",
+        "plunge",
+        "r1.1",
+        "r1.2",
+        "r1.3",
+        "r2",
+        "r2.charged",
+        "roll.r1",
+        "run.r1",
+        "run.r2",
+        "shield.bash"
+      ],
+      "chain_root": "r1.1",
+      "distinct_clips": 31
+    },
+    "focus": 94,
+    "focus_max": 94,
+    "focus_locked": true,
+    "attuned": [
+      "spark_dart",
+      "slowfall"
+    ],
+    "effects_active": [],
+    "levitating": false,
+    "altitude_m": 0
+  },
+  "region_end": {
+    "settlement": "lilmoth",
+    "interior": null,
+    "hour": 20.54,
+    "pos": [
+      2765.656544,
+      2.68,
+      5028.770106
+    ],
+    "door_in_reach": null
+  },
+  "wall_clock_s": 181.3
+}

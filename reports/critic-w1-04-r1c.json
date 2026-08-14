@@ -1,0 +1,424 @@
+{
+  "ar2": {
+    "markers": {
+      "present": true,
+      "stain": null,
+      "wells": [
+        {
+          "id": "hearth-thorn",
+          "pos": [
+            3773.05,
+            13.22162258960174,
+            967.26
+          ],
+          "visible": true,
+          "in_scene": true,
+          "parts": [
+            {
+              "name": "Mesh",
+              "y": 0.31,
+              "visible": true
+            },
+            {
+              "name": "Mesh",
+              "y": 0.6,
+              "visible": true
+            },
+            {
+              "name": "Mesh",
+              "y": 0.95,
+              "visible": true
+            }
+          ],
+          "part_count": 3
+        }
+      ]
+    },
+    "marker_err": null,
+    "map_pin": {
+      "place": "[object Object]",
+      "attempts": [
+        {
+          "attempt": "discovery.discover('[object Object]')",
+          "threw": true,
+          "error": "TypeError: d.discover is not a function"
+        },
+        {
+          "attempt": "discovery.reveal('[object Object]')",
+          "threw": true,
+          "error": "TypeError: d.reveal is not a function"
+        },
+        {
+          "attempt": "discovery.mark('[object Object]')",
+          "threw": true,
+          "error": "TypeError: d.mark is not a function"
+        },
+        {
+          "attempt": "discovery.setPlace('[object Object]')",
+          "threw": true,
+          "error": "TypeError: d.setPlace is not a function"
+        },
+        {
+          "attempt": "discovery.places().push(id)",
+          "threw": true,
+          "error": "TypeError: Cannot add property 1, object is not extensible"
+        },
+        {
+          "attempt": "discovery.placeSet.add(id)",
+          "threw": true,
+          "error": "TypeError: Cannot read properties of undefined (reading 'add')"
+        },
+        {
+          "attempt": "discovery.reveal = fn",
+          "threw": true,
+          "error": "TypeError: Cannot add property reveal, object is not extensible"
+        },
+        {
+          "attempt": "Object.defineProperty(discovery, ...)",
+          "threw": true,
+          "error": "TypeError: Cannot define property reveal, object is not extensible"
+        },
+        {
+          "attempt": "openMenu('map', {place: '[object Object]'})",
+          "threw": true,
+          "error": "Error: openMenu('map', {\"place\":\"[object Object]\"}): the map takes no arguments. It is a record of where you have been, not a place to send you: ARBITRATION S35 forbids \"any icon a quest can place, request or highlight\" and any \"show on map\" affordance. There is no parameter here in which a place could be named, and adding one is a hard fail under RI-UIX04 Q13."
+        },
+        {
+          "attempt": "openMenu('map', {marker: {...}})",
+          "threw": true,
+          "error": "Error: openMenu('map', {\"marker\":{\"x\":0,\"z\":0}}): the map takes no arguments. It is a record of where you have been, not a place to send you: ARBITRATION S35 forbids \"any icon a quest can place, request or highlight\" and any \"show on map\" affordance. There is no parameter here in which a place could be named, and adding one is a hard fail under RI-UIX04 Q13."
+        },
+        {
+          "attempt": "openMenu('minimap')",
+          "threw": true,
+          "error": "Error: openMenu('minimap'): there is no minimap in this game and there will not be one. ARBITRATION S35 permits a map SCREEN — a thing you stop and open, that records where you have been — and RI-UIX01 §B still forbids `minimap` and `compass` as HUD elements. The screen is openMenu('map'); a live map in the corner of a fight is not the same object and is not what was permitted."
+        },
+        {
+          "attempt": "questEngine writes sim.discovery = forged",
+          "threw": false,
+          "result": "not defended — see map-probe.mjs D6 for what is and is not claimed"
+        },
+        {
+          "attempt": "discovery.observe(4600, 5200) — surplus arguments",
+          "threw": false,
+          "result": "accepted (JS ignores surplus arguments) — and had no effect",
+          "no_effect": true,
+          "detail": "seenAt(4600,5200) false -> false, revealed 7 -> 7"
+        }
+      ],
+      "discovered_after": false
+    },
+    "hearths_in_town": "ERR h.listHearths(...).filter is not a function",
+    "ui": {
+      "mode": "world",
+      "map_exists": true,
+      "map": {
+        "exists": true,
+        "reachable_from_journal": false,
+        "journal_reachable_from_map": false,
+        "markers": 0,
+        "routes_drawn": 0,
+        "quest_bearing_elements": [],
+        "travel_affordances": [],
+        "numeric_text": [],
+        "drawn_cells": 0,
+        "revealed_cells": 7,
+        "total_cells": 42846,
+        "places_drawn": 0,
+        "places_discovered": 1,
+        "view": "world",
+        "mutator_arities": {
+          "observe": 0,
+          "suspend": 0,
+          "resume": 0
+        }
+      },
+      "navigable": [
+        "inventory",
+        "journal",
+        "sheet",
+        "spells",
+        "map"
+      ],
+      "at_hearth": false,
+      "at_hearth_real": false,
+      "at_hearth_overridden": false,
+      "at_hearth_id": null,
+      "screen": {
+        "w": 1920,
+        "h": 1080,
+        "dpr": 1
+      },
+      "elements": [
+        {
+          "id": "hud.health",
+          "kind": "health_bar",
+          "rect": [
+            42,
+            40,
+            400,
+            16
+          ],
+          "visible": true,
+          "opacity": 1,
+          "text": null,
+          "fill": 1,
+          "worldAnchor": null,
+          "material": null,
+          "focused": false
+        },
+        {
+          "id": "hud.stamina",
+          "kind": "stamina_bar",
+          "rect": [
+            42,
+            64,
+            400,
+            10
+          ],
+          "visible": true,
+          "opacity": 1,
+          "text": null,
+          "fill": 1,
+          "worldAnchor": null,
+          "material": null,
+          "focused": false,
+          "meta": {
+            "regen_blocked": false,
+            "exhausted": false
+          }
+        },
+        {
+          "id": "hud.focus",
+          "kind": "focus_bar",
+          "rect": [
+            42,
+            82,
+            400,
+            10
+          ],
+          "visible": true,
+          "opacity": 1,
+          "text": null,
+          "fill": 1,
+          "worldAnchor": null,
+          "material": null,
+          "focused": false
+        },
+        {
+          "id": "hud.heal",
+          "kind": "heal_charges",
+          "rect": [
+            42,
+            118,
+            110,
+            24
+          ],
+          "visible": true,
+          "opacity": 1,
+          "text": "5",
+          "fill": 1,
+          "worldAnchor": null,
+          "material": null,
+          "focused": false,
+          "meta": {
+            "charges": 5,
+            "max": 5
+          }
+        },
+        {
+          "id": "hud.equipload",
+          "kind": "equip_load",
+          "rect": [
+            1758,
+            852,
+            120,
+            24
+          ],
+          "visible": true,
+          "opacity": 1,
+          "text": "LIGHT",
+          "fill": 0.24,
+          "worldAnchor": null,
+          "material": null,
+          "focused": false,
+          "meta": {
+            "roll_class": "LIGHT",
+            "pct": 24
+          }
+        },
+        {
+          "id": "hud.quickslots",
+          "kind": "quick_slots",
+          "rect": [
+            1728,
+            888,
+            150,
+            150
+          ],
+          "visible": true,
+          "opacity": 1,
+          "text": "Spark-Dart",
+          "fill": null,
+          "worldAnchor": null,
+          "material": null,
+          "focused": false,
+          "meta": {
+            "left": null,
+            "right": null,
+            "item": null,
+            "spell": "Spark-Dart",
+            "leftActive": false,
+            "rightActive": false
+          }
+        }
+      ],
+      "coveragePct": 2.0457,
+      "hud": {
+        "persistent_count": 6,
+        "total_count": 6,
+        "coverage_pct": 2.0457,
+        "coverage_with_conditional_pct": 2.0457,
+        "centre_coverage_pct": 0,
+        "world_anchored": [],
+        "numeric_text": [
+          "hud.heal"
+        ],
+        "bar_contrasts": {
+          "health": {
+            "fill_vs_trough": 6.351
+          },
+          "stamina": {
+            "fill_vs_trough": 7.966,
+            "spent_vs_trough": 10.923,
+            "exhausted_trough_vs_trough": 10.923
+          },
+          "focus": {
+            "fill_vs_trough": 5.659
+          },
+          "boss": {
+            "fill_vs_trough": 6.351
+          },
+          "buildup_poison": {
+            "fill_vs_trough": 7.827
+          },
+          "buildup_disease": {
+            "fill_vs_trough": 6.351
+          },
+          "buildup_curse": {
+            "fill_vs_trough": 5.659
+          },
+          "buildup_frost": {
+            "fill_vs_trough": 8.826
+          }
+        }
+      },
+      "menu": {
+        "area_frac": 0,
+        "opacity": 0,
+        "paused": false
+      },
+      "book": null,
+      "focus": null,
+      "journal": null,
+      "fonts": [
+        {
+          "family": "Argonian Reed (project)",
+          "size_px": 19,
+          "weight": 1.15,
+          "path": "game/src/ui/glyphs.js"
+        },
+        {
+          "family": "Argonian Bone-cut (project)",
+          "size_px": 15,
+          "weight": 1.5,
+          "path": "game/src/ui/glyphs.js"
+        }
+      ],
+      "textRenderPath": "canvas-vector",
+      "text_raster_scale": 1,
+      "text_glyph_source": "game/src/ui/glyphs.js",
+      "materials": [],
+      "overdraw": 0.02,
+      "touch": {
+        "controls_drawn": 0,
+        "rotate_drawn": false,
+        "area_frac": 0,
+        "rotate_area_frac": 0,
+        "labelled": []
+      },
+      "surfaces": 1,
+      "full_screen_panels": 0,
+      "hud_elements": 6,
+      "markers": 0,
+      "world_rendered_behind": true,
+      "dialogue_surface": {
+        "open": false
+      },
+      "non_world_area_frac": 0.0205,
+      "draw_calls": 100,
+      "frame": 6
+    }
+  },
+  "sweep": {
+    "start": [
+      "province"
+    ],
+    "total": 115,
+    "switched": 0,
+    "entered": 115,
+    "refused": 0,
+    "errors": 0,
+    "sample": [
+      {
+        "id": "archon-apothecary",
+        "entered": true,
+        "reason": null,
+        "before": [
+          "province"
+        ],
+        "after": [
+          "province"
+        ],
+        "switched": false
+      },
+      {
+        "id": "archon-guild-office",
+        "entered": true,
+        "reason": null,
+        "before": [
+          "province"
+        ],
+        "after": [
+          "province"
+        ],
+        "switched": false
+      },
+      {
+        "id": "archon-house-0",
+        "entered": true,
+        "reason": null,
+        "before": [
+          "province"
+        ],
+        "after": [
+          "province"
+        ],
+        "switched": false
+      },
+      {
+        "id": "archon-house-1",
+        "entered": true,
+        "reason": null,
+        "before": [
+          "province"
+        ],
+        "after": [
+          "province"
+        ],
+        "switched": false
+      }
+    ],
+    "any_switched": []
+  }
+}

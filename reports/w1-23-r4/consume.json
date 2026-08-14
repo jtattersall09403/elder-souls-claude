@@ -1,0 +1,189 @@
+{
+  "commit": "e00e6fe5f1cfa1891357999ee0ae23e704cbf85e",
+  "head_boots": false,
+  "neighbour_edits_carried": [
+    "game/data/books/interface-readables.json",
+    "game/data/books/the-drowned-ford.json",
+    "game/data/index.json",
+    "game/src/engine.js"
+  ],
+  "index_entries_dropped": [],
+  "legs": 2,
+  "arms": {
+    "A-shipped": [
+      {
+        "room": "lilmoth-customs",
+        "book": "the-blessings-of-the-coast",
+        "entered": true,
+        "prop": {
+          "eid": "interior-readable:the-blessings-of-the-coast",
+          "name": "The Blessings of the Coast: an address",
+          "reach_m": 2,
+          "pos": [
+            -5.65,
+            1.1,
+            3.575
+          ]
+        },
+        "stood_m": 1,
+        "opened": "the-blessings-of-the-coast",
+        "first_line": null,
+        "note": null,
+        "pages": 4,
+        "words_on_page_1": 83,
+        "drawn_chars": 0,
+        "perturbation_visible": false
+      },
+      {
+        "room": "lilmoth-ledger-house",
+        "book": "ledger-and-journal-of-andrel-vorin",
+        "entered": true,
+        "prop": {
+          "eid": "interior-readable:ledger-and-journal-of-andrel-vorin",
+          "name": "Ledger and journal of Andrel Vorin, salt-factor",
+          "reach_m": 2,
+          "pos": [
+            -4.77,
+            1.1,
+            6.65
+          ]
+        },
+        "stood_m": 1,
+        "opened": "ledger-and-journal-of-andrel-vorin",
+        "first_line": null,
+        "note": null,
+        "pages": 6,
+        "words_on_page_1": 137,
+        "drawn_chars": 0,
+        "perturbation_visible": false
+      }
+    ],
+    "B-perturbed": [
+      {
+        "room": "lilmoth-customs",
+        "book": "the-blessings-of-the-coast",
+        "entered": true,
+        "prop": {
+          "eid": "interior-readable:the-blessings-of-the-coast",
+          "name": "The Blessings of the Coast: an address",
+          "reach_m": 2,
+          "pos": [
+            -5.65,
+            1.1,
+            3.575
+          ]
+        },
+        "stood_m": 1,
+        "opened": "the-blessings-of-the-coast",
+        "first_line": null,
+        "note": null,
+        "pages": 4,
+        "words_on_page_1": 90,
+        "drawn_chars": 0,
+        "perturbation_visible": false
+      },
+      {
+        "room": "lilmoth-ledger-house",
+        "book": "ledger-and-journal-of-andrel-vorin",
+        "entered": true,
+        "prop": {
+          "eid": "interior-readable:ledger-and-journal-of-andrel-vorin",
+          "name": "Ledger and journal of Andrel Vorin, salt-factor",
+          "reach_m": 2,
+          "pos": [
+            -4.77,
+            1.1,
+            6.65
+          ]
+        },
+        "stood_m": 1,
+        "opened": "ledger-and-journal-of-andrel-vorin",
+        "first_line": null,
+        "note": null,
+        "pages": 6,
+        "words_on_page_1": 130,
+        "drawn_chars": 0,
+        "perturbation_visible": false
+      }
+    ],
+    "C-out-of-reach": [
+      {
+        "room": "lilmoth-customs",
+        "book": "the-blessings-of-the-coast",
+        "entered": true,
+        "prop": {
+          "eid": "interior-readable:the-blessings-of-the-coast",
+          "name": "The Blessings of the Coast: an address",
+          "reach_m": 2,
+          "pos": [
+            -5.65,
+            1.1,
+            3.575
+          ]
+        },
+        "stood_m": 5,
+        "opened": null,
+        "first_line": null,
+        "note": null,
+        "pages": null,
+        "words_on_page_1": null,
+        "drawn_chars": 0,
+        "perturbation_visible": false
+      },
+      {
+        "room": "lilmoth-ledger-house",
+        "book": "ledger-and-journal-of-andrel-vorin",
+        "entered": true,
+        "prop": {
+          "eid": "interior-readable:ledger-and-journal-of-andrel-vorin",
+          "name": "Ledger and journal of Andrel Vorin, salt-factor",
+          "reach_m": 2,
+          "pos": [
+            -4.77,
+            1.1,
+            6.65
+          ]
+        },
+        "stood_m": 5,
+        "opened": null,
+        "first_line": null,
+        "note": null,
+        "pages": null,
+        "words_on_page_1": null,
+        "drawn_chars": 0,
+        "perturbation_visible": false
+      }
+    ],
+    "D-placement-removed": [
+      {
+        "room": "lilmoth-customs",
+        "book": "the-blessings-of-the-coast",
+        "entered": true,
+        "prop": null,
+        "stood_m": null,
+        "opened": null,
+        "first_line": null,
+        "note": "no prop in this room offers that book"
+      },
+      {
+        "room": "lilmoth-ledger-house",
+        "book": "ledger-and-journal-of-andrel-vorin",
+        "entered": true,
+        "prop": null,
+        "stood_m": null,
+        "opened": null,
+        "first_line": null,
+        "note": "no prop in this room offers that book"
+      }
+    ]
+  },
+  "summary": {
+    "openedA": 2,
+    "changedB": 2,
+    "shutC": 2,
+    "redD": 2,
+    "propGoneD": 2,
+    "placements_removed": 99
+  },
+  "pass": true
+}

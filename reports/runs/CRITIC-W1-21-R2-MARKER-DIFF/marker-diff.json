@@ -1,0 +1,159 @@
+{
+  "schema": "elder-souls/marker-diff@1",
+  "item": "RI-UIX02",
+  "detector": "§E quest-state differential + camera-yaw sweep",
+  "at": "2026-08-08T00:53:38.938Z",
+  "screen": [
+    1280,
+    720
+  ],
+  "quests": [
+    "Q-MAIN-01",
+    "Q-MAIN-02",
+    "Q-LILM-01",
+    "Q-DOCK-01",
+    "Q-SOUL-02"
+  ],
+  "pinned": {
+    "seed": 1337,
+    "pos": [
+      0,
+      0
+    ],
+    "timeOfDay": 13,
+    "weather": "clear",
+    "camera": "fixed pose",
+    "settle_frames": 24
+  },
+  "differentials": [
+    {
+      "surface": "world",
+      "quest": "Q-MAIN-01",
+      "D_AB_px": 0,
+      "D_AB_bbox": null,
+      "D_AC_px": 0,
+      "D_AC_bbox": null,
+      "mode": "world",
+      "empty": true
+    },
+    {
+      "surface": "world",
+      "quest": "Q-MAIN-02",
+      "D_AB_px": 0,
+      "D_AB_bbox": null,
+      "D_AC_px": 0,
+      "D_AC_bbox": null,
+      "mode": "world",
+      "empty": true
+    },
+    {
+      "surface": "world",
+      "quest": "Q-LILM-01",
+      "D_AB_px": 0,
+      "D_AB_bbox": null,
+      "D_AC_px": 0,
+      "D_AC_bbox": null,
+      "mode": "world",
+      "empty": true
+    },
+    {
+      "surface": "world",
+      "quest": "Q-DOCK-01",
+      "D_AB_px": 0,
+      "D_AB_bbox": null,
+      "D_AC_px": 0,
+      "D_AC_bbox": null,
+      "mode": "world",
+      "empty": true
+    },
+    {
+      "surface": "world",
+      "quest": "Q-SOUL-02",
+      "D_AB_px": 0,
+      "D_AB_bbox": null,
+      "D_AC_px": 0,
+      "D_AC_bbox": null,
+      "mode": "world",
+      "empty": true
+    },
+    {
+      "surface": "map",
+      "quest": "Q-MAIN-01",
+      "D_AB_px": 0,
+      "D_AB_bbox": null,
+      "D_AC_px": 0,
+      "D_AC_bbox": null,
+      "mode": "map",
+      "empty": true
+    },
+    {
+      "surface": "map",
+      "quest": "Q-MAIN-02",
+      "D_AB_px": 0,
+      "D_AB_bbox": null,
+      "D_AC_px": 0,
+      "D_AC_bbox": null,
+      "mode": "map",
+      "empty": true
+    },
+    {
+      "surface": "map",
+      "quest": "Q-LILM-01",
+      "D_AB_px": 0,
+      "D_AB_bbox": null,
+      "D_AC_px": 0,
+      "D_AC_bbox": null,
+      "mode": "map",
+      "empty": true
+    },
+    {
+      "surface": "map",
+      "quest": "Q-DOCK-01",
+      "D_AB_px": 0,
+      "D_AB_bbox": null,
+      "D_AC_px": 0,
+      "D_AC_bbox": null,
+      "mode": "map",
+      "empty": true
+    },
+    {
+      "surface": "map",
+      "quest": "Q-SOUL-02",
+      "D_AB_px": 0,
+      "D_AB_bbox": null,
+      "D_AC_px": 0,
+      "D_AC_bbox": null,
+      "mode": "map",
+      "empty": true
+    }
+  ],
+  "yaw_sweep": [
+    {
+      "place": "street",
+      "state": "stormhold-street",
+      "steps": 24,
+      "world_tracked": []
+    },
+    {
+      "place": "vista",
+      "state": "vista_primary",
+      "steps": 24,
+      "world_tracked": []
+    },
+    {
+      "place": "dungeon",
+      "state": "dungeon_primary",
+      "steps": 24,
+      "world_tracked": []
+    }
+  ],
+  "self_test": null,
+  "ui_layer_px": 28310,
+  "K3": "PASS",
+  "K4": "PASS",
+  "K6_counts": {
+    "quests_differentialled": 10,
+    "yaw_positions": 3,
+    "yaw_steps_each": 24
+  }
+}

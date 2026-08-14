@@ -1,0 +1,465 @@
+{
+ "apertures": {
+  "declared": {
+   "max_ratio": 0.032258,
+   "room": "archon-house-0",
+   "k": 8.06,
+   "ties": 51
+  },
+  "joined": {
+   "max_ratio": 0.102565,
+   "room": "blackrose-house-1",
+   "room_m": [
+    12.94,
+    4.34
+   ],
+   "panes": 8,
+   "k": 2.535,
+   "ties": 5,
+   "min_ratio": 0.011593,
+   "min_room": "archon-shrine"
+  },
+  "shipped": {
+   "MAX_APERTURE_RATIO": 0.102565,
+   "DAYLIGHT_K": 2.535,
+   "data_k": 2.535
+  },
+  "bounds": {
+   "shrunk": 112,
+   "grew": 0,
+   "unchanged": 3,
+   "total": 115
+  },
+  "agrees_with_shipped": true,
+  "clamp_reachable_rooms": 0
+ },
+ "disagree": {
+  "hour": 12,
+  "sky": 1,
+  "interiors": 115,
+  "cells": 16996,
+  "disagree": 0,
+  "drawn_lit_sim_dark": 0,
+  "drawn_dark_sim_lit": 0,
+  "worst": []
+ },
+ "places": {
+  "hour": 12,
+  "sky": 1,
+  "cells": [
+   {
+    "floor_grid": {
+     "cells": 136,
+     "disagree": 13,
+     "drawn_lit_sim_dark": 7,
+     "drawn_dark_sim_lit": 6,
+     "brightest_drawn": [
+      0,
+      2.35,
+      1.2
+     ],
+     "brightest_simulated": [
+      0,
+      2.2,
+      5
+     ],
+     "brightest_apart_m": 3.8
+    },
+    "id": "barge-hold",
+    "in_interiors_corpus": true,
+    "drawn_by": "render/places.js",
+    "drawn_point_lights": 2,
+    "drawn_directional_or_hemi": 0,
+    "drawn": [
+     {
+      "pos": [
+       0,
+       2.35,
+       1.2
+      ],
+      "intensity": 30,
+      "distance": 22
+     },
+     {
+      "pos": [
+       0,
+       2.35,
+       -3.6
+      ],
+      "intensity": 16,
+      "distance": 14
+     }
+    ],
+    "sim_sources": 3,
+    "sim_synthesized": 0,
+    "sim_positions": [
+     [
+      0,
+      2.2,
+      5
+     ],
+     [
+      -1.8,
+      1.7,
+      -1.2
+     ],
+     [
+      1.9,
+      1.7,
+      -4.4
+     ]
+    ],
+    "sim_ambient_L": 0.04,
+    "sim_windows": 0,
+    "sim_windowless": true,
+    "calls_interior_lighting": false,
+    "room_m_drawn": null,
+    "room_m_record": [
+     7,
+     16
+    ]
+   },
+   {
+    "floor_grid": {
+     "cells": 154,
+     "disagree": 76,
+     "drawn_lit_sim_dark": 71,
+     "drawn_dark_sim_lit": 5,
+     "brightest_drawn": [
+      -0.2,
+      2.7,
+      1
+     ],
+     "brightest_simulated": [
+      0,
+      1.2,
+      -4
+     ],
+     "brightest_apart_m": 5.22
+    },
+    "id": "writ-house",
+    "in_interiors_corpus": true,
+    "drawn_by": "render/places.js",
+    "drawn_point_lights": 2,
+    "drawn_directional_or_hemi": 1,
+    "drawn": [
+     {
+      "pos": [
+       -0.2,
+       2.7,
+       1
+      ],
+      "intensity": 26,
+      "distance": 20
+     },
+     {
+      "pos": [
+       -3.6,
+       2.4,
+       2
+      ],
+      "intensity": 12,
+      "distance": 10
+     }
+    ],
+    "sim_sources": 1,
+    "sim_synthesized": 1,
+    "sim_positions": [
+     [
+      0,
+      1.2,
+      -4
+     ]
+    ],
+    "sim_ambient_L": 0.1102,
+    "sim_windows": 5,
+    "sim_windowless": false,
+    "calls_interior_lighting": false,
+    "room_m_drawn": null,
+    "room_m_record": [
+     10,
+     13
+    ]
+   },
+   {
+    "floor_grid": null,
+    "id": "helstrom-market",
+    "in_interiors_corpus": false,
+    "drawn_by": "render/places.js",
+    "drawn_point_lights": 0,
+    "drawn_directional_or_hemi": 2,
+    "drawn": [],
+    "sim_sources": 0,
+    "sim_synthesized": 0,
+    "sim_positions": [],
+    "sim_ambient_L": null,
+    "sim_windows": null,
+    "sim_windowless": null,
+    "calls_interior_lighting": false,
+    "room_m_drawn": null,
+    "room_m_record": null
+   },
+   {
+    "floor_grid": null,
+    "id": "stormhold-street",
+    "in_interiors_corpus": false,
+    "drawn_by": "render/places.js",
+    "drawn_point_lights": 1,
+    "drawn_directional_or_hemi": 2,
+    "drawn": [
+     {
+      "pos": [
+       -2.9,
+       1.5,
+       32.6
+      ],
+      "intensity": 22,
+      "distance": 24
+     }
+    ],
+    "sim_sources": 0,
+    "sim_synthesized": 0,
+    "sim_positions": [],
+    "sim_ambient_L": null,
+    "sim_windows": null,
+    "sim_windowless": null,
+    "calls_interior_lighting": false,
+    "room_m_drawn": null,
+    "room_m_record": null
+   },
+   {
+    "floor_grid": null,
+    "id": "rootlands-well",
+    "in_interiors_corpus": false,
+    "drawn_by": "render/places.js",
+    "drawn_point_lights": 3,
+    "drawn_directional_or_hemi": 2,
+    "drawn": [
+     {
+      "pos": [
+       0,
+       1.6,
+       0
+      ],
+      "intensity": 14,
+      "distance": 22
+     },
+     {
+      "pos": [
+       26,
+       1.6,
+       -14
+      ],
+      "intensity": 14,
+      "distance": 22
+     },
+     {
+      "pos": [
+       -22,
+       1.6,
+       20
+      ],
+      "intensity": 14,
+      "distance": 22
+     }
+    ],
+    "sim_sources": 0,
+    "sim_synthesized": 0,
+    "sim_positions": [],
+    "sim_ambient_L": null,
+    "sim_windows": null,
+    "sim_windowless": null,
+    "calls_interior_lighting": false,
+    "room_m_drawn": null,
+    "room_m_record": null
+   }
+  ]
+ },
+ "saturation": {
+  "hour": 12,
+  "sky": 1,
+  "rooms": 115,
+  "flat_rooms": 10,
+  "flat": [
+   {
+    "id": "archon-apothecary",
+    "L": 1,
+    "cells": 50
+   },
+   {
+    "id": "archon-house-0",
+    "L": 1,
+    "cells": 55
+   },
+   {
+    "id": "archon-house-1",
+    "L": 1,
+    "cells": 66
+   },
+   {
+    "id": "archon-inn",
+    "L": 1,
+    "cells": 72
+   },
+   {
+    "id": "archon-market",
+    "L": 1,
+    "cells": 40
+   },
+   {
+    "id": "archon-ward",
+    "L": 1,
+    "cells": 48
+   },
+   {
+    "id": "blackrose-inn",
+    "L": 1,
+    "cells": 65
+   },
+   {
+    "id": "blackrose-market",
+    "L": 1,
+    "cells": 65
+   },
+   {
+    "id": "blackrose-smithy",
+    "L": 1,
+    "cells": 65
+   },
+   {
+    "id": "blackrose-warders-hall",
+    "L": 1,
+    "cells": 65
+   }
+  ],
+  "all_saturated_rooms": 10,
+  "total_cells": 16996,
+  "saturated_cells": 12210,
+  "archon_apothecary": {
+   "id": "archon-apothecary",
+   "cells": 50,
+   "L_min": 1,
+   "L_max": 1,
+   "spread": 0,
+   "saturated_cells": 50,
+   "ambient": 0.2264,
+   "synthesized": false
+  },
+  "the_eleven": [
+   {
+    "id": "helstrom-apothecary",
+    "L_min": 0.2223,
+    "L_max": 1,
+    "spread": 0.7777,
+    "saturated": 29,
+    "cells": 120
+   },
+   {
+    "id": "helstrom-archive",
+    "L_min": 0.2223,
+    "L_max": 1,
+    "spread": 0.7777,
+    "saturated": 29,
+    "cells": 120
+   },
+   {
+    "id": "helstrom-deep-market",
+    "L_min": 0.2223,
+    "L_max": 1,
+    "spread": 0.7777,
+    "saturated": 29,
+    "cells": 120
+   },
+   {
+    "id": "helstrom-inn-egg",
+    "L_min": 0.2223,
+    "L_max": 1,
+    "spread": 0.7777,
+    "saturated": 29,
+    "cells": 120
+   },
+   {
+    "id": "helstrom-inn-gate",
+    "L_min": 0.2223,
+    "L_max": 1,
+    "spread": 0.7777,
+    "saturated": 29,
+    "cells": 120
+   },
+   {
+    "id": "helstrom-inn-tide",
+    "L_min": 0.2223,
+    "L_max": 1,
+    "spread": 0.7777,
+    "saturated": 29,
+    "cells": 120
+   },
+   {
+    "id": "helstrom-rootpost",
+    "L_min": 0.2223,
+    "L_max": 1,
+    "spread": 0.7777,
+    "saturated": 29,
+    "cells": 120
+   },
+   {
+    "id": "helstrom-scriptorium",
+    "L_min": 0.2223,
+    "L_max": 1,
+    "spread": 0.7777,
+    "saturated": 29,
+    "cells": 120
+   },
+   {
+    "id": "helstrom-smithy",
+    "L_min": 0.2223,
+    "L_max": 1,
+    "spread": 0.7777,
+    "saturated": 29,
+    "cells": 120
+   },
+   {
+    "id": "helstrom-warders",
+    "L_min": 0.2223,
+    "L_max": 1,
+    "spread": 0.7777,
+    "saturated": 29,
+    "cells": 120
+   },
+   {
+    "id": "writ-house",
+    "L_min": 0.1676,
+    "L_max": 1,
+    "spread": 0.8324,
+    "saturated": 28,
+    "cells": 154
+   }
+  ]
+ },
+ "frametime_LIT_CAP": {
+  "note": "Transcribed from tools/stealth/critic-w1-15-r4-live.mjs's own stdout: the run was cut at its timeout after two of four arms, before it could write its own JSON. thorn-hall drawn through the shipped path; only the length of the record's lights[] varies.",
+  "load_when_taken": "4-7 concurrent browser instances (ceiling 6); 5.0-7.5 load per core (ceiling 4.0)",
+  "rasteriser": "UNIDENTIFIED \u2014 E.renderer.renderer is not the WebGLRenderer on this build and the WEBGL_debug_renderer_info probe returned none. A 3.2 s frame at five point lights is not a GPU.",
+  "arms": [
+   {
+    "arm": "cap5_as_LIT_CAP_shipped",
+    "point_lights": 5,
+    "median_ms": 3240.9,
+    "mean_ms": 3460.0806,
+    "n": 40
+   },
+   {
+    "arm": "all14_as_this_round_ships",
+    "point_lights": 14,
+    "median_ms": 10813.83,
+    "mean_ms": 10534.2054,
+    "n": 40
+   }
+  ],
+  "ratio_14_over_5": 3.34,
+  "arms_not_completed": [
+   "cap5_repeat (the A-B-A drift check)",
+   "CONTROL_40_lamps (the can-this-instrument-see-lamp-cost check)"
+  ]
+ }
+}

@@ -1,0 +1,11 @@
+ok   B0  the real input path is attached and the touch fallback did not take over  — real.attached=true, mode=play-instrumented, touch_controls_drawn=0
+ok   B1  CONTROL: an UNBOUND key (KeyQ) changes nothing  — world -> world
+ok   B1b  CONTROL: the bound key Escape opens a screen from the world  — world -> inventory
+  key walk right: world -> inventory -> journal -> sheet -> spells -> map -> levelup -> world -> world -> world
+  key walk left : world -> inventory -> world -> world -> world -> world -> world -> world -> world -> world
+ok   B2  all six advertised screens are reachable from the world BY REAL KEY PRESSES ALONE  — routes {"inventory":"KeyM","journal":"KeyM, then Digit3 x1","sheet":"KeyM, then Digit3 x2","spells":"KeyM, then Digit3 x3","map":"KeyM, then Digit3 x4","levelup":"KeyM, then Digit3 x5"}; unreachable [-]
+ok   B3  every screen a real key opens, a real key closes  — {"inventory":{"after_escape":"world","after_space":null},"journal":{"after_escape":"world","after_space":null},"sheet":{"after_escape":"world","after_space":null},"spells":{"after_escape":"world","after_space":null},"map":{"after_escape":"world","after_space":null},"levelup":{"after_escape":"world","after_space":null}}; no way out of [-]
+ok   B4  the same six screens are reachable on a PAD (button 9 then button 15)  — pad walk world -> inventory -> journal -> sheet -> spells -> map -> levelup -> world -> inventory; missing [-]
+[harness] ERROR: aggro() threw: aggro('deadwater-koor-nakh'): no such entity
+[harness] {"stack":"Error: aggro('deadwater-koor-nakh'): no such entity\n    at Engine.aggro (http://127.0.0.1:46729/game/src/engine.js:6140:19)\n    at Object.aggro (http://127.0.0.1:46729/game/src/harness/api.js:143:32)\n    at eval (eval at evaluate (:290:30), <anonymous>:5:40)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)"}
+{"ok":false,"error":"aggro() threw: aggro('deadwater-koor-nakh'): no such entity","exit":12,"stack":"Error: aggro('deadwater-koor-nakh'): no such entity\n    at Engine.aggro (http://127.0.0.1:46729/game/src/engine.js:6140:19)\n    at Object.aggro (http://127.0.0.1:46729/game/src/harness/api.js:143:32)\n    at eval (eval at evaluate (:290:30), <anonymous>:5:40)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)"}

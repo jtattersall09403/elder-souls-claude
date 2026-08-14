@@ -1,0 +1,140 @@
+{
+ "schema": "w1-01/road-through-building@1",
+ "measured_at": "2026-08-08T03:42:55.732Z",
+ "git": {
+  "commit": "0dc070319adafd89aeef75e8e38fcc0cfb8897d9",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "dirty": true
+ },
+ "method": "every named route resampled at 1 m; insideBuilding() over all 8 settlement plans (render/exterior.js planSettlement), offline, no engine",
+ "settlements": [
+  {
+   "id": "stormhold",
+   "buildings": 33
+  },
+  {
+   "id": "thorn",
+   "buildings": 15
+  },
+  {
+   "id": "gideon",
+   "buildings": 22
+  },
+  {
+   "id": "helstrom",
+   "buildings": 40
+  },
+  {
+   "id": "archon",
+   "buildings": 22
+  },
+  {
+   "id": "blackrose",
+   "buildings": 22
+  },
+  {
+   "id": "soulrest",
+   "buildings": 15
+  },
+  {
+   "id": "lilmoth",
+   "buildings": 33
+  }
+ ],
+ "routes": [
+  {
+   "route": "crossing",
+   "route_m": 6911.4,
+   "sampled_m": 7160,
+   "blocked_blocks": [
+    {
+     "town": "blackrose",
+     "building": "blackrose-house-0",
+     "from_m": 5610,
+     "to_m": 5611,
+     "samples": 2,
+     "at": [
+      1902.6,
+      4442.8
+     ]
+    },
+    {
+     "town": "blackrose",
+     "building": "blackrose-condemned-row",
+     "from_m": 5621,
+     "to_m": 5623,
+     "samples": 3,
+     "at": [
+      1906,
+      4453
+     ]
+    },
+    {
+     "town": "blackrose",
+     "building": "blackrose-old-gallows",
+     "from_m": 5624,
+     "to_m": 5624,
+     "samples": 1,
+     "at": [
+      1906.5,
+      4455.9
+     ]
+    }
+   ],
+   "first_block_m": 5610
+  },
+  {
+   "route": "long_way",
+   "route_m": 9480.8,
+   "sampled_m": 9777,
+   "blocked_blocks": [
+    {
+     "town": "blackrose",
+     "building": "blackrose-house-0",
+     "from_m": 7859,
+     "to_m": 7860,
+     "samples": 2,
+     "at": [
+      1902.6,
+      4442.8
+     ]
+    },
+    {
+     "town": "blackrose",
+     "building": "blackrose-rootpost",
+     "from_m": 7890,
+     "to_m": 7890,
+     "samples": 1,
+     "at": [
+      1883.4,
+      4451.1
+     ]
+    }
+   ],
+   "first_block_m": 7859
+  }
+ ],
+ "legs": [
+  {
+   "leg": "helstrom-blackrose",
+   "buildings": [
+    "blackrose-house-0"
+   ]
+  },
+  {
+   "leg": "soulrest-blackrose",
+   "buildings": [
+    "blackrose-rootpost"
+   ]
+  },
+  {
+   "leg": "blackrose-lilmoth",
+   "buildings": [
+    "blackrose-condemned-row",
+    "blackrose-old-gallows"
+   ]
+  }
+ ],
+ "offences": 5,
+ "pass": false
+}

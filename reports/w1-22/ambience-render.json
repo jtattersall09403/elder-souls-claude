@@ -1,0 +1,753 @@
+{
+  "tool": "tools/analysis/ambience-render.mjs",
+  "taken_at": "2026-08-07T18:06:08.354Z",
+  "git": {
+    "commit": "733e74f",
+    "dirty": true
+  },
+  "seconds": 20,
+  "sample_rate": 16000,
+  "gates": {
+    "G1_driver_followed": {
+      "pass": true,
+      "value": "13/13",
+      "what": "Engine._afterStep() -> field.regionAt() -> AmbienceDriver picked up the region the player stands in"
+    },
+    "G2_audible": {
+      "pass": true,
+      "value": "13/13",
+      "what": "peak sample amplitude > 1e-4 in the rendered PCM. Not an event count: a waveform."
+    },
+    "G3_separation_proxy": {
+      "pass": true,
+      "value": 1,
+      "threshold": 0.8,
+      "what": "fraction of the 78 unordered region pairs whose LEVEL-NORMALISED 24-band spectra differ by cosine distance >= 0.15",
+      "caveat": "A MACHINE PROXY FOR RI-AUD03 B2, NOT B2. B2 is 78 fresh judges answering SAME/DIFFERENT and is a critic's to run. Never quote this number as B2."
+    },
+    "G4_level": {
+      "pass": true,
+      "value": "13/13",
+      "threshold": ">=11",
+      "what": "gated K-weighted LUFS-I within +/-4 LU of the bed's declared target",
+      "caveat": "The +/-4 LU tolerance is W1-22's, not RI-AUD03's. B5 asks for absolute -28..-24; that is a MIX calibration against a real output chain, and this build has no master bus, no combat audio to leave headroom for, and no monitoring. Reporting a calibrated absolute figure here would be inventing a mix. What is checked instead is that each bed lands where its own data says it should — which is the part that is knowable today."
+    },
+    "G5_control_collapses": {
+      "pass": true,
+      "value": 0.628,
+      "what": "with every L1 forced to one shared asset, separation must COLLAPSE. If it does not, G3 is not measuring region identity and its green means nothing.",
+      "live_value": 1
+    },
+    "G6_border": {
+      "pass": true,
+      "what": "RI-WLD12 M70: the bed changes at a border. Requires a DIFFERENT L1 on the far side and a crossfade in progress, not merely a different region name."
+    },
+    "G7_emitter": {
+      "pass": true,
+      "pan_strictly_monotonic": true,
+      "zero_crossings": 1,
+      "gain_peaks_at_closest_approach": true,
+      "pan_sweeps_when_the_player_turns": true,
+      "silent_beyond_audible_m": true,
+      "what": "RI-AUD03 B6 / R7. A landmark you can steer by must move across the stereo field as you pass it AND as you turn your head, must be loudest where it is nearest, and must stop at its stated range."
+    },
+    "G8_consumption": {
+      "pass": true,
+      "what": "RI-MTH07. Tripling one L1's partials must move the rendered spectrum, and restoring them must return it EXACTLY. The second half is what rules out a coincidence: a render that is not a function of the data cannot come back to the same place."
+    },
+    "G9_live_path": {
+      "pass": true,
+      "what": "AmbienceDriver.attach() → _swapLive() → buildBedContinuous, driven from the fixed step across a real border, into a context that renders. This is the code a player hears; nothing else in this tool touches it.",
+      "value": "peak 0.75517, layers 2→2"
+    }
+  },
+  "regions": {
+    "blackwood": {
+      "world_region_from_field": "blackwood",
+      "driver_followed": true,
+      "layers": {
+        "L1": "l1_canopy_pressure",
+        "L2": "l2_insect_wall",
+        "L3": "l3_drip_and_axe",
+        "L4": "l4_chitin_hound"
+      },
+      "voices_peak": 2,
+      "over_voice_cap": false,
+      "samples": 320000,
+      "peak": 0.36645,
+      "silent": false,
+      "lufs_i": -25,
+      "lufs_target": -25,
+      "bed_gain_db_before": -4.27,
+      "centroid_hz": 2841.8,
+      "events_fired": 1,
+      "key": {
+        "wet_dry": "wet",
+        "open_enclosed": "enclosed",
+        "living_dead": "living"
+      }
+    },
+    "clay-moor": {
+      "world_region_from_field": "clay-moor",
+      "driver_followed": true,
+      "layers": {
+        "L1": "l1_open_ground_wind_flat",
+        "L2": "l2_kiln_roar",
+        "L3": "l3_clay_and_tool",
+        "L4": "l4_naga_speech"
+      },
+      "voices_peak": 3,
+      "over_voice_cap": false,
+      "samples": 320000,
+      "peak": 0.3524,
+      "silent": false,
+      "lufs_i": -26,
+      "lufs_target": -26,
+      "bed_gain_db_before": -0.65,
+      "centroid_hz": 588.5,
+      "events_fired": 1,
+      "key": {
+        "wet_dry": "dry",
+        "open_enclosed": "open",
+        "living_dead": "living"
+      }
+    },
+    "crimson-coast": {
+      "world_region_from_field": "crimson-coast",
+      "driver_followed": true,
+      "layers": {
+        "L1": "l1_vat_bubble",
+        "L2": "l2_surf_damped",
+        "L3": "l3_lichen_scream",
+        "L4": "l4_dye_worm_cormorant"
+      },
+      "voices_peak": 3,
+      "over_voice_cap": false,
+      "samples": 320000,
+      "peak": 0.26504,
+      "silent": false,
+      "lufs_i": -24.92,
+      "lufs_target": -25,
+      "bed_gain_db_before": -6.05,
+      "centroid_hz": 349.5,
+      "events_fired": 1,
+      "key": {
+        "wet_dry": "wet",
+        "open_enclosed": "open",
+        "living_dead": "living"
+      }
+    },
+    "deep-marshes": {
+      "world_region_from_field": "deep-marshes",
+      "driver_followed": true,
+      "layers": {
+        "L1": "l1_intestinal_gurgle",
+        "L2": "l2_still_water",
+        "L3": "l3_near_empty",
+        "L4": "l4_breathing_not_yours"
+      },
+      "voices_peak": 3,
+      "over_voice_cap": false,
+      "samples": 320000,
+      "peak": 0.23992,
+      "silent": false,
+      "lufs_i": -27.96,
+      "lufs_target": -28,
+      "bed_gain_db_before": -4.46,
+      "centroid_hz": 130.9,
+      "events_fired": 0,
+      "key": {
+        "wet_dry": "wet",
+        "open_enclosed": "enclosed",
+        "living_dead": "dead"
+      }
+    },
+    "eastern-rootlands": {
+      "world_region_from_field": "eastern-rootlands",
+      "driver_followed": true,
+      "layers": {
+        "L1": "l1_jelly_hum",
+        "L2": "l2_water_slap_stilts",
+        "L3": "l3_oars_rope_stilt",
+        "L4": "l4_jelly_and_wamasu"
+      },
+      "voices_peak": 3,
+      "over_voice_cap": false,
+      "samples": 320000,
+      "peak": 0.19155,
+      "silent": false,
+      "lufs_i": -25,
+      "lufs_target": -25,
+      "bed_gain_db_before": -7.53,
+      "centroid_hz": 527.9,
+      "events_fired": 1,
+      "key": {
+        "wet_dry": "wet",
+        "open_enclosed": "open",
+        "living_dead": "living"
+      }
+    },
+    "hive": {
+      "world_region_from_field": "hive",
+      "driver_followed": true,
+      "layers": {
+        "L1": "l1_hive_chord_gradient",
+        "L2": "l2_wing_wash",
+        "L3": "l3_chitin_and_cell",
+        "L4": "l4_drone_passby"
+      },
+      "voices_peak": 3,
+      "over_voice_cap": false,
+      "samples": 320000,
+      "peak": 0.20972,
+      "silent": false,
+      "lufs_i": -25,
+      "lufs_target": -25,
+      "bed_gain_db_before": -5.39,
+      "centroid_hz": 1493.1,
+      "events_fired": 1,
+      "key": {
+        "wet_dry": "dry",
+        "open_enclosed": "enclosed",
+        "living_dead": "living"
+      }
+    },
+    "marauders-coast": {
+      "world_region_from_field": "marauders-coast",
+      "driver_followed": true,
+      "layers": {
+        "L1": "l1_open_sea_floor",
+        "L2": "l2_surf_tidal",
+        "L3": "l3_rope_creak",
+        "L4": "l4_gulls_or_drowned"
+      },
+      "voices_peak": 4,
+      "over_voice_cap": false,
+      "samples": 320000,
+      "peak": 0.34259,
+      "silent": false,
+      "lufs_i": -23.99,
+      "lufs_target": -24,
+      "bed_gain_db_before": -1.16,
+      "centroid_hz": 2177.7,
+      "events_fired": 1,
+      "key": {
+        "wet_dry": "wet",
+        "open_enclosed": "open",
+        "living_dead": "living"
+      }
+    },
+    "salt-hills": {
+      "world_region_from_field": "salt-hills",
+      "driver_followed": true,
+      "layers": {
+        "L1": "l1_dry_open_wind",
+        "L2": "l2_grass_hiss",
+        "L3": "l3_legion_horn",
+        "L4": "l4_guar_and_wamasu"
+      },
+      "voices_peak": 4,
+      "over_voice_cap": false,
+      "samples": 320000,
+      "peak": 0.19239,
+      "silent": false,
+      "lufs_i": -25.97,
+      "lufs_target": -26,
+      "bed_gain_db_before": -2.71,
+      "centroid_hz": 3468.5,
+      "events_fired": 0,
+      "key": {
+        "wet_dry": "dry",
+        "open_enclosed": "open",
+        "living_dead": "living"
+      }
+    },
+    "stone-forest": {
+      "world_region_from_field": "stone-forest",
+      "driver_followed": true,
+      "layers": {
+        "L1": "l1_hist_choral_hum",
+        "L2": "l2_wind_petrified_trunks",
+        "L3": "l3_stone_tick",
+        "L4": "l4_wamasu_herd"
+      },
+      "voices_peak": 4,
+      "over_voice_cap": false,
+      "samples": 320000,
+      "peak": 0.17627,
+      "silent": false,
+      "lufs_i": -25.98,
+      "lufs_target": -26,
+      "bed_gain_db_before": -11.24,
+      "centroid_hz": 327.1,
+      "events_fired": 1,
+      "key": {
+        "wet_dry": "dry",
+        "open_enclosed": "enclosed",
+        "living_dead": "living"
+      }
+    },
+    "stone-wastes": {
+      "world_region_from_field": "stone-wastes",
+      "driver_followed": true,
+      "layers": {
+        "L1": "l1_near_silence",
+        "L2": null,
+        "L3": "l3_cooling_stone_and_saltstorm",
+        "L4": "l4_dying_hist"
+      },
+      "voices_peak": 4,
+      "over_voice_cap": false,
+      "samples": 320000,
+      "peak": 0.16005,
+      "silent": false,
+      "lufs_i": -34,
+      "lufs_target": -34,
+      "bed_gain_db_before": 2.48,
+      "centroid_hz": 111.6,
+      "events_fired": 0,
+      "key": {
+        "wet_dry": "dry",
+        "open_enclosed": "open",
+        "living_dead": "dead"
+      }
+    },
+    "thornmarsh": {
+      "world_region_from_field": "thornmarsh",
+      "driver_followed": true,
+      "layers": {
+        "L1": "l1_dead_air_room_tone",
+        "L2": "l2_thorn_clatter_only",
+        "L3": "l3_thorn_clatter",
+        "L4": "l4_hackwing_above"
+      },
+      "voices_peak": 4,
+      "over_voice_cap": false,
+      "samples": 320000,
+      "peak": 0.23647,
+      "silent": false,
+      "lufs_i": -27.02,
+      "lufs_target": -27,
+      "bed_gain_db_before": 6.18,
+      "centroid_hz": 2343.7,
+      "events_fired": 1,
+      "key": {
+        "wet_dry": "dry",
+        "open_enclosed": "enclosed",
+        "living_dead": "dead"
+      }
+    },
+    "valus-ridge": {
+      "world_region_from_field": "valus-ridge",
+      "driver_followed": true,
+      "layers": {
+        "L1": "l1_rock_flute_chord",
+        "L2": "l2_altitude_wind",
+        "L3": "l3_rockfall",
+        "L4": "l4_hackwing_screams"
+      },
+      "voices_peak": 4,
+      "over_voice_cap": false,
+      "samples": 320000,
+      "peak": 0.24482,
+      "silent": false,
+      "lufs_i": -25.36,
+      "lufs_target": -26,
+      "bed_gain_db_before": -15.3,
+      "centroid_hz": 1925.1,
+      "events_fired": 0,
+      "key": {
+        "wet_dry": "dry",
+        "open_enclosed": "open",
+        "living_dead": "dead"
+      }
+    },
+    "western-rootlands": {
+      "world_region_from_field": "western-rootlands",
+      "driver_followed": true,
+      "layers": {
+        "L1": "l1_warm_reed_hum",
+        "L2": "l2_reeds_and_shallows",
+        "L3": "l3_reeds_and_shallows_oneshots",
+        "L4": "l4_frogs_hackwing_mudcrab"
+      },
+      "voices_peak": 5,
+      "over_voice_cap": false,
+      "samples": 320000,
+      "peak": 0.24606,
+      "silent": false,
+      "lufs_i": -24.97,
+      "lufs_target": -25,
+      "bed_gain_db_before": -7.12,
+      "centroid_hz": 1870.1,
+      "events_fired": 0,
+      "key": {
+        "wet_dry": "wet",
+        "open_enclosed": "open",
+        "living_dead": "living"
+      }
+    }
+  },
+  "notes": [],
+  "harness_surfaces": {
+    "getAmbienceState": "function",
+    "ambienceCapture": "function",
+    "ambienceLog": "function",
+    "ambienceEmitters": "function"
+  },
+  "pairs_total": 78,
+  "closest_pairs": [
+    {
+      "a": "deep-marshes",
+      "b": "stone-wastes",
+      "d": 0.1659
+    },
+    {
+      "a": "marauders-coast",
+      "b": "salt-hills",
+      "d": 0.1742
+    },
+    {
+      "a": "marauders-coast",
+      "b": "thornmarsh",
+      "d": 0.1898
+    },
+    {
+      "a": "crimson-coast",
+      "b": "stone-wastes",
+      "d": 0.2179
+    },
+    {
+      "a": "hive",
+      "b": "marauders-coast",
+      "d": 0.2294
+    }
+  ],
+  "control_one_swamp_loop": {
+    "separation_proxy": 0.628,
+    "pairs": 78
+  },
+  "border_crossing": {
+    "ok": true,
+    "cross": {
+      "p0": [
+        2125.3,
+        2222.2325
+      ],
+      "p1": [
+        2121.45,
+        2222.04875
+      ],
+      "from": "stone-forest",
+      "to": "valus-ridge"
+    },
+    "before": {
+      "region": "stone-forest",
+      "L1": "l1_hist_choral_hum",
+      "crossfade": 0.25
+    },
+    "after": {
+      "region": "valus-ridge",
+      "L1": "l1_rock_flute_chord",
+      "crossfade": 0.004
+    },
+    "region_change_events": 15,
+    "last_event": {
+      "frame": 1621,
+      "type": "region_change",
+      "bus": "ambience",
+      "region": "valus-ridge",
+      "from": "stone-forest",
+      "crossfade_s": 4
+    }
+  },
+  "emitter_transect": {
+    "rows": [
+      {
+        "x": 98,
+        "distance_m": 335.4,
+        "pan": 0.8944,
+        "gain": 0.1043,
+        "audible": true
+      },
+      {
+        "x": 118,
+        "distance_m": 317.6,
+        "pan": 0.8815,
+        "gain": 0.1102,
+        "audible": true
+      },
+      {
+        "x": 138,
+        "distance_m": 300.2,
+        "pan": 0.8662,
+        "gain": 0.1166,
+        "audible": true
+      },
+      {
+        "x": 158,
+        "distance_m": 283,
+        "pan": 0.848,
+        "gain": 0.1237,
+        "audible": true
+      },
+      {
+        "x": 178,
+        "distance_m": 266.3,
+        "pan": 0.8262,
+        "gain": 0.1314,
+        "audible": true
+      },
+      {
+        "x": 198,
+        "distance_m": 250,
+        "pan": 0.8,
+        "gain": 0.14,
+        "audible": true
+      },
+      {
+        "x": 218,
+        "distance_m": 234.3,
+        "pan": 0.7682,
+        "gain": 0.1494,
+        "audible": true
+      },
+      {
+        "x": 238,
+        "distance_m": 219.3,
+        "pan": 0.7295,
+        "gain": 0.1596,
+        "audible": true
+      },
+      {
+        "x": 258,
+        "distance_m": 205.2,
+        "pan": 0.6823,
+        "gain": 0.1706,
+        "audible": true
+      },
+      {
+        "x": 278,
+        "distance_m": 192.1,
+        "pan": 0.6247,
+        "gain": 0.1822,
+        "audible": true
+      },
+      {
+        "x": 298,
+        "distance_m": 180.3,
+        "pan": 0.5547,
+        "gain": 0.1941,
+        "audible": true
+      },
+      {
+        "x": 318,
+        "distance_m": 170,
+        "pan": 0.4706,
+        "gain": 0.2059,
+        "audible": true
+      },
+      {
+        "x": 338,
+        "distance_m": 161.6,
+        "pan": 0.3714,
+        "gain": 0.2166,
+        "audible": true
+      },
+      {
+        "x": 358,
+        "distance_m": 155.2,
+        "pan": 0.2577,
+        "gain": 0.2255,
+        "audible": true
+      },
+      {
+        "x": 378,
+        "distance_m": 151.3,
+        "pan": 0.1322,
+        "gain": 0.2313,
+        "audible": true
+      },
+      {
+        "x": 398,
+        "distance_m": 150,
+        "pan": 0,
+        "gain": 0.2333,
+        "audible": true
+      },
+      {
+        "x": 418,
+        "distance_m": 151.3,
+        "pan": -0.1322,
+        "gain": 0.2313,
+        "audible": true
+      },
+      {
+        "x": 438,
+        "distance_m": 155.2,
+        "pan": -0.2577,
+        "gain": 0.2255,
+        "audible": true
+      },
+      {
+        "x": 458,
+        "distance_m": 161.6,
+        "pan": -0.3714,
+        "gain": 0.2166,
+        "audible": true
+      },
+      {
+        "x": 478,
+        "distance_m": 170,
+        "pan": -0.4706,
+        "gain": 0.2059,
+        "audible": true
+      },
+      {
+        "x": 498,
+        "distance_m": 180.3,
+        "pan": -0.5547,
+        "gain": 0.1941,
+        "audible": true
+      },
+      {
+        "x": 518,
+        "distance_m": 192.1,
+        "pan": -0.6247,
+        "gain": 0.1822,
+        "audible": true
+      },
+      {
+        "x": 538,
+        "distance_m": 205.2,
+        "pan": -0.6823,
+        "gain": 0.1706,
+        "audible": true
+      },
+      {
+        "x": 558,
+        "distance_m": 219.3,
+        "pan": -0.7295,
+        "gain": 0.1596,
+        "audible": true
+      },
+      {
+        "x": 578,
+        "distance_m": 234.3,
+        "pan": -0.7682,
+        "gain": 0.1494,
+        "audible": true
+      },
+      {
+        "x": 598,
+        "distance_m": 250,
+        "pan": -0.8,
+        "gain": 0.14,
+        "audible": true
+      },
+      {
+        "x": 618,
+        "distance_m": 266.3,
+        "pan": -0.8262,
+        "gain": 0.1314,
+        "audible": true
+      },
+      {
+        "x": 638,
+        "distance_m": 283,
+        "pan": -0.848,
+        "gain": 0.1237,
+        "audible": true
+      },
+      {
+        "x": 658,
+        "distance_m": 300.2,
+        "pan": -0.8662,
+        "gain": 0.1166,
+        "audible": true
+      },
+      {
+        "x": 678,
+        "distance_m": 317.6,
+        "pan": -0.8815,
+        "gain": 0.1102,
+        "audible": true
+      },
+      {
+        "x": 698,
+        "distance_m": 335.4,
+        "pan": -0.8944,
+        "gain": 0.1043,
+        "audible": true
+      }
+    ],
+    "turn": [
+      {
+        "yaw": 0,
+        "pan": 1
+      },
+      {
+        "yaw": 45,
+        "pan": 0.707
+      },
+      {
+        "yaw": 90,
+        "pan": 0
+      },
+      {
+        "yaw": 135,
+        "pan": -0.707
+      },
+      {
+        "yaw": 180,
+        "pan": -1
+      },
+      {
+        "yaw": 225,
+        "pan": -0.707
+      },
+      {
+        "yaw": 270,
+        "pan": 0
+      },
+      {
+        "yaw": 315,
+        "pan": 0.707
+      }
+    ],
+    "far_audible": false
+  },
+  "perturbation": {
+    "region": "valus-ridge",
+    "layer": "L1",
+    "field": "synth.partials_hz",
+    "from_hz": [
+      146.83,
+      174.61,
+      220,
+      261.63
+    ],
+    "to_hz": [
+      440.49,
+      523.83,
+      660,
+      784.89
+    ],
+    "centroid_before_hz": 1925.1,
+    "centroid_after_hz": 2731.5,
+    "centroid_restored_hz": 1925.1,
+    "spectral_distance_before_after": 0.7297,
+    "spectral_distance_before_restored": 0
+  },
+  "live_path": {
+    "ok": true,
+    "layers_after_attach": 2,
+    "layers_after_crossing": 2,
+    "events": 11,
+    "live_peak": 0.7551650404930115,
+    "crossed": true
+  },
+  "page_errors": [],
+  "pass": true,
+  "failed_gates": []
+}

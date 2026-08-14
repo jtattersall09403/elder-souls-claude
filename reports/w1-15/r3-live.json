@@ -1,0 +1,960 @@
+{
+  "results": [
+    {
+      "id": "LAMP-CTL",
+      "name": "CONTROL: standing outside, the world has put nothing in the light field",
+      "got": "world_sources 0, interior_ambient_applied false, ambient 0.75",
+      "target": "0 world sources, the sky ambient — the control must be empty or the next row proves nothing",
+      "pass": true
+    },
+    {
+      "id": "LAMP-IN",
+      "name": "inside, the authored lamps are IN the light field the detection model samples",
+      "got": "8 world source(s) from 10 declared, 8 lit, 7 snuffable, ambient 0.04",
+      "target": "> 0 — this is the finding \"the lamps are drawn and nothing that decides whether you can be seen has ever been told about one\"",
+      "pass": true
+    },
+    {
+      "id": "LAMP-GRAD",
+      "name": "the room has a bright end and a dark end, from the lamps alone",
+      "got": "brightest L 1 at (-6.3, 3.2); darkest L 0.2988 at (-6.3, -7.3); dark coverage 0.4% of 224 samples",
+      "target": "a spread of more than 0.30 in L across one room — before this round every point in every interior read the SAME number, so the spread was exactly 0",
+      "pass": true
+    },
+    {
+      "id": "LAMP-CEN",
+      "name": "no interior in the census is a flat field any more",
+      "got": "0/30 rooms have zero L spread; mean spread 0.724",
+      "target": "0 flat rooms — every interior was a flat field in every build before this one, because L indoors was the sky",
+      "pass": true
+    },
+    {
+      "id": "LAMP-CLK",
+      "name": "indoor light no longer tracks the SKY",
+      "got": "bright spot 1 at noon / 1 at 03:00; dark corner 0.2988 / 0.2988",
+      "target": "identical at both hours and different at the two points — the pre-fix build read 1.0000 everywhere at noon and 0.2200 everywhere at 03:00",
+      "pass": true
+    },
+    {
+      "id": "LAMP-CON",
+      "name": "CONSUMPTION (RI-MTH07): put out ONE lamp and an ENTITY behaves differently",
+      "got": "snuffing world:archon.factor9.r0.lamp1 takes L 1 -> 0.536, V 1.3 -> 0.6023, and the watcher's time to alert 70 from 40 f to 80 f",
+      "target": "L falls, V falls, and the entity takes longer — a perturbation of the model observed on an entity, not on the model",
+      "pass": true
+    },
+    {
+      "id": "WIT-IN",
+      "name": "a person in the room, awake, with a clear cast, IS a witness — and it reaches a bounty",
+      "got": "observed_by [\"w_in\"], crime theft, routes [\"shout\",\"guard_witness\"], bounty 0 -> 294",
+      "target": "one observer, a crime, bounty 0 ON THE CRIME FRAME and > 0 after the report lands — RI-CRM01 §3a's gap is the point of the piece",
+      "pass": true
+    },
+    {
+      "id": "WIT-OUT",
+      "name": "a person OUTSIDE the room is not",
+      "got": "15.6 m away through the room wall, state CALM, LOS cast [{\"eid\":\"w_out\",\"clear\":false,\"walls\":1}]; observed_by [], bounty 0",
+      "target": "no observer and no bounty — read the LOS cast in `got`: if it says clear, the exclusion came from range and the suspicion machine, not from the wall, and that is what this arm measured",
+      "pass": true
+    },
+    {
+      "id": "WIT-SLP",
+      "name": "a person ASLEEP in the same room, at the same distance, is not",
+      "got": "asleep true, state CALM, observed_by [], bounty 0",
+      "target": "the sleeper is in the room and is not a sensor — same geometry as WIT-IN, opposite outcome",
+      "pass": true
+    },
+    {
+      "id": "WIT-DARK",
+      "name": "the same theft in the room's DARK corner is seen differently from under the lamp",
+      "got": "under the lamp: L 1 V 1.3 -> 1 observer(s), bounty 294  |  in the dark: L 0.2988 V 0.272 -> 1 observer(s), bounty 118",
+      "target": "V strictly lower in the dark corner — the lamps reach the justice system, not only the renderer",
+      "pass": true
+    },
+    {
+      "id": "THF-PTR",
+      "name": "the interior unique item points at a row in the ownership tree",
+      "got": "interior-unique:archon-apothecary-unique -> archon-apothecary-unique",
+      "target": "non-null — `unique_item.owner` was carried and unread for the whole of wave 1",
+      "pass": true
+    },
+    {
+      "id": "THF-RUN",
+      "name": "picking it up runs the theft chain",
+      "got": "theft true, scope personal, stolen_from npc:archon-priest-4, crime null",
+      "target": "theft true with an owner named — before this round takeProp() pushed it in clean",
+      "pass": true
+    },
+    {
+      "id": "THF-INV",
+      "name": "the inventory row carries the owner, and there is exactly one of it",
+      "got": "[{\"id\":\"archon-apothecary-unique\",\"stolen\":true,\"owner\":\"npc:archon-priest-4\"}]",
+      "target": "one row, stolen true, owner set — two rows would mean takeProp and takeObject both pushed",
+      "pass": true
+    },
+    {
+      "id": "THF-REG",
+      "name": "it is in the stolen registry, which is what the save writes and the fence reads",
+      "got": "0 -> 1; rows [{\"instance\":\"archon-apothecary-unique\",\"owner\":\"npc:archon-priest-4\",\"value_g\":122,\"unique\":true,\"settlement\":\"archon\"}]",
+      "target": "+1, and the row is marked unique so RI-STL02 §6 prices it at 0.20x with a delayed bounty",
+      "pass": true
+    },
+    {
+      "id": "THF-FNC",
+      "name": "the fence economy discriminates a stolen unique from a clean one",
+      "got": "0 refusal(s) ; 4 sale(s) fence.lilmoth.rot-hookline:25g unique=true fence.lilmoth.rot-veek:25g unique=true fence.gideon.docks:25g unique=true fence.archon.salvage:25g unique=true; CONTROL clean item -> {\"buys\":true,\"price_g\":25,\"multiplier\":0.20710000000000003,\"unique\":true,\"delayed_bounty\":{\"g\":61,\"in_days\":3,\"settlement\":null},\"clears_stolen_from\":true,\"laundered_from\":null}",
+      "target": "at least one fence quotes it AS A UNIQUE with a price and a delayed bounty, and the clean-item control is still bought — a quote identical in both arms would measure nothing",
+      "pass": true
+    }
+  ],
+  "detail": {
+    "interior": {
+      "id": "archon-apothecary",
+      "name": "The Crimson Apothecary",
+      "kind": "shop",
+      "lamps_declared": 10,
+      "bounds": {
+        "x": [
+          -6.8,
+          6.8
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -7.8,
+          7.8
+        ]
+      },
+      "unique": {
+        "id": "archon-apothecary-unique",
+        "name": "a purge for a poisoning nobody has named",
+        "unique": true,
+        "takeable": true,
+        "owner": "npc:archon-priest-4"
+      },
+      "zones": [
+        "archon.priest4.r1",
+        "archon.factor9.r0",
+        "archon.legionary13.r1"
+      ]
+    },
+    "outside_noon": {
+      "interior": null,
+      "interior_ambient_applied": false,
+      "ambient_L": 0.75,
+      "world_sources": 0,
+      "world_lit": 0,
+      "world_snuffable": 0,
+      "scenario_sources": 0,
+      "sources": []
+    },
+    "entered": {
+      "entered": true,
+      "interior": "archon-apothecary",
+      "pos": [
+        0,
+        0,
+        6.6
+      ]
+    },
+    "inside_noon": {
+      "interior": "archon-apothecary",
+      "interior_ambient_applied": true,
+      "ambient_L": 0.04,
+      "world_sources": 8,
+      "world_lit": 8,
+      "world_snuffable": 7,
+      "scenario_sources": 0,
+      "sources": [
+        {
+          "id": "world:archon.priest4.r1.hearth",
+          "kind": "hearth",
+          "pos": [
+            0,
+            0.7,
+            3.4
+          ],
+          "authored_intensity": 0.9,
+          "intensity_L": 8.3948,
+          "lit": true,
+          "snuffable": false
+        },
+        {
+          "id": "world:archon.priest4.r1.lamp0",
+          "kind": "oil-lamp",
+          "pos": [
+            1.2999999999999998,
+            1.6,
+            -3.3
+          ],
+          "authored_intensity": 0.55,
+          "intensity_L": 5.1301,
+          "lit": true,
+          "snuffable": true
+        },
+        {
+          "id": "world:archon.priest4.r1.lamp1",
+          "kind": "oil-lamp",
+          "pos": [
+            3.2,
+            1.6,
+            -3.4
+          ],
+          "authored_intensity": 0.55,
+          "intensity_L": 5.1301,
+          "lit": true,
+          "snuffable": true
+        },
+        {
+          "id": "world:archon.factor9.r0.lamp0",
+          "kind": "oil-lamp",
+          "pos": [
+            1.7000000000000002,
+            1.6,
+            -4.5
+          ],
+          "authored_intensity": 0.55,
+          "intensity_L": 5.1301,
+          "lit": true,
+          "snuffable": true
+        },
+        {
+          "id": "world:archon.factor9.r0.lamp1",
+          "kind": "oil-lamp",
+          "pos": [
+            -3.4,
+            1.6,
+            4.4
+          ],
+          "authored_intensity": 0.55,
+          "intensity_L": 5.1301,
+          "lit": true,
+          "snuffable": true
+        },
+        {
+          "id": "world:archon.legionary13.r1.lamp0",
+          "kind": "oil-lamp",
+          "pos": [
+            -2.2,
+            1.6,
+            0.5999999999999996
+          ],
+          "authored_intensity": 0.55,
+          "intensity_L": 5.1301,
+          "lit": true,
+          "snuffable": true
+        },
+        {
+          "id": "world:archon.legionary13.r1.lamp1",
+          "kind": "oil-lamp",
+          "pos": [
+            2.9000000000000004,
+            1.6,
+            0.7000000000000002
+          ],
+          "authored_intensity": 0.55,
+          "intensity_L": 5.1301,
+          "lit": true,
+          "snuffable": true
+        },
+        {
+          "id": "world:archon.legionary13.r1.lamp2",
+          "kind": "oil-lamp",
+          "pos": [
+            1.5999999999999996,
+            1.6,
+            0.7999999999999998
+          ],
+          "authored_intensity": 0.55,
+          "intensity_L": 5.1301,
+          "lit": true,
+          "snuffable": true
+        }
+      ]
+    },
+    "field": {
+      "samples": 780,
+      "brightest": {
+        "x": -6.3,
+        "z": 3.2,
+        "L": 1
+      },
+      "darkest": {
+        "x": -6.3,
+        "z": -7.3,
+        "L": 0.2988
+      },
+      "dark_coverage_noon": {
+        "dark": 1,
+        "total": 224,
+        "share": 0.004464285714285714,
+        "threshold": 0.1
+      }
+    },
+    "clock_independence": {
+      "bright_noon": 1,
+      "bright_0300": 1,
+      "dark_noon": 0.2988,
+      "dark_0300": 0.2988
+    },
+    "province_census": {
+      "rooms": 30,
+      "mean_sources": 6.97,
+      "mean_dark_share": 0.0034,
+      "rooms_with_no_dark_at_all": 23,
+      "mean_spread": 0.724,
+      "rooms_with_zero_spread": 0,
+      "rows": [
+        {
+          "id": "archon-apothecary",
+          "declared": 10,
+          "sources": 8,
+          "dark_share": 0.004,
+          "L_min": 0.299,
+          "L_max": 1
+        },
+        {
+          "id": "archon-guild-office",
+          "declared": 11,
+          "sources": 9,
+          "dark_share": 0,
+          "L_min": 0.293,
+          "L_max": 1
+        },
+        {
+          "id": "archon-house-0",
+          "declared": 7,
+          "sources": 6,
+          "dark_share": 0,
+          "L_min": 0.339,
+          "L_max": 1
+        },
+        {
+          "id": "archon-house-1",
+          "declared": 7,
+          "sources": 6,
+          "dark_share": 0,
+          "L_min": 0.339,
+          "L_max": 1
+        },
+        {
+          "id": "archon-house-2",
+          "declared": 7,
+          "sources": 6,
+          "dark_share": 0,
+          "L_min": 0.323,
+          "L_max": 1
+        },
+        {
+          "id": "archon-inn",
+          "declared": 8,
+          "sources": 7,
+          "dark_share": 0,
+          "L_min": 0.476,
+          "L_max": 1
+        },
+        {
+          "id": "archon-kiln-house",
+          "declared": 7,
+          "sources": 6,
+          "dark_share": 0.015,
+          "L_min": 0.102,
+          "L_max": 1
+        },
+        {
+          "id": "archon-market",
+          "declared": 11,
+          "sources": 9,
+          "dark_share": 0,
+          "L_min": 0.26,
+          "L_max": 1
+        },
+        {
+          "id": "archon-rootpost",
+          "declared": 7,
+          "sources": 6,
+          "dark_share": 0,
+          "L_min": 0.272,
+          "L_max": 1
+        },
+        {
+          "id": "archon-shrine",
+          "declared": 6,
+          "sources": 5,
+          "dark_share": 0,
+          "L_min": 0.297,
+          "L_max": 1
+        },
+        {
+          "id": "archon-vat-house",
+          "declared": 10,
+          "sources": 8,
+          "dark_share": 0.009,
+          "L_min": 0.161,
+          "L_max": 1
+        },
+        {
+          "id": "archon-ward",
+          "declared": 7,
+          "sources": 6,
+          "dark_share": 0,
+          "L_min": 0.374,
+          "L_max": 1
+        },
+        {
+          "id": "barge-hold",
+          "declared": 3,
+          "sources": 3,
+          "dark_share": 0,
+          "L_min": 0.264,
+          "L_max": 1
+        },
+        {
+          "id": "blackrose-clerk",
+          "declared": 7,
+          "sources": 6,
+          "dark_share": 0.01,
+          "L_min": 0.165,
+          "L_max": 1
+        },
+        {
+          "id": "blackrose-house-0",
+          "declared": 7,
+          "sources": 6,
+          "dark_share": 0,
+          "L_min": 0.181,
+          "L_max": 1
+        },
+        {
+          "id": "blackrose-house-1",
+          "declared": 10,
+          "sources": 8,
+          "dark_share": 0,
+          "L_min": 0.295,
+          "L_max": 1
+        },
+        {
+          "id": "blackrose-house-2",
+          "declared": 7,
+          "sources": 6,
+          "dark_share": 0,
+          "L_min": 0.331,
+          "L_max": 1
+        },
+        {
+          "id": "blackrose-inn",
+          "declared": 11,
+          "sources": 9,
+          "dark_share": 0,
+          "L_min": 0.358,
+          "L_max": 1
+        },
+        {
+          "id": "blackrose-market",
+          "declared": 10,
+          "sources": 8,
+          "dark_share": 0.04,
+          "L_min": 0.094,
+          "L_max": 1
+        },
+        {
+          "id": "blackrose-pawn",
+          "declared": 8,
+          "sources": 7,
+          "dark_share": 0.01,
+          "L_min": 0.104,
+          "L_max": 1
+        },
+        {
+          "id": "blackrose-prison",
+          "declared": 11,
+          "sources": 9,
+          "dark_share": 0,
+          "L_min": 0.419,
+          "L_max": 1
+        },
+        {
+          "id": "blackrose-rootpost",
+          "declared": 6,
+          "sources": 5,
+          "dark_share": 0,
+          "L_min": 0.265,
+          "L_max": 1
+        },
+        {
+          "id": "blackrose-shrine",
+          "declared": 8,
+          "sources": 7,
+          "dark_share": 0,
+          "L_min": 0.241,
+          "L_max": 1
+        },
+        {
+          "id": "blackrose-smithy",
+          "declared": 9,
+          "sources": 7,
+          "dark_share": 0,
+          "L_min": 0.23,
+          "L_max": 1
+        },
+        {
+          "id": "blackrose-warders-hall",
+          "declared": 11,
+          "sources": 9,
+          "dark_share": 0,
+          "L_min": 0.364,
+          "L_max": 1
+        },
+        {
+          "id": "gideon-apothecary",
+          "declared": 8,
+          "sources": 7,
+          "dark_share": 0,
+          "L_min": 0.348,
+          "L_max": 1
+        },
+        {
+          "id": "gideon-chapel",
+          "declared": 11,
+          "sources": 9,
+          "dark_share": 0,
+          "L_min": 0.393,
+          "L_max": 1
+        },
+        {
+          "id": "gideon-court",
+          "declared": 12,
+          "sources": 10,
+          "dark_share": 0,
+          "L_min": 0.336,
+          "L_max": 1
+        },
+        {
+          "id": "gideon-grange",
+          "declared": 6,
+          "sources": 5,
+          "dark_share": 0,
+          "L_min": 0.241,
+          "L_max": 1
+        },
+        {
+          "id": "gideon-house-0",
+          "declared": 7,
+          "sources": 6,
+          "dark_share": 0.015,
+          "L_min": 0.102,
+          "L_max": 1
+        }
+      ]
+    },
+    "snuff_target": {
+      "id": "world:archon.factor9.r0.lamp1",
+      "kind": "oil-lamp",
+      "dist_m": 3.14
+    },
+    "consumption_light": {
+      "lit": {
+        "arm": "lit",
+        "L": 1,
+        "V": 1.3,
+        "lamps_lit": 8,
+        "dist_m": 6,
+        "los": true,
+        "frames_to_70": 40,
+        "alert_after": 85.3125,
+        "state_after": "SUSPICIOUS",
+        "alert_at_start": 4.0625
+      },
+      "snuffed": {
+        "arm": "snuffed",
+        "L": 0.536,
+        "V": 0.6023,
+        "lamps_lit": 7,
+        "dist_m": 6,
+        "los": true,
+        "frames_to_70": 80,
+        "alert_after": 77.1639,
+        "state_after": "SUSPICIOUS",
+        "alert_at_start": 1.882
+      }
+    },
+    "witness_arms": [
+      {
+        "bounty_at_crime_frame": 0,
+        "pending_at_crime_frame": 2,
+        "arm": "in_the_room",
+        "hour": 12,
+        "standing": "under the lamp",
+        "L": 1,
+        "V": 1.3,
+        "people": [
+          {
+            "eid": "w_in",
+            "los": true,
+            "dist_m": 2,
+            "civ_state": "ALARM",
+            "asleep": false
+          }
+        ],
+        "observed_by": [
+          "w_in"
+        ],
+        "observed_by_source": "derived_from_the_world",
+        "theft": true,
+        "stolen_from": "npc:archon-priest-4",
+        "crime": "theft",
+        "witnesses": [
+          {
+            "eid": "w_in",
+            "identified": true
+          },
+          {
+            "eid": "the_watch",
+            "identified": true
+          }
+        ],
+        "bounty": 294,
+        "pending": 2,
+        "report_routes": [
+          "shout",
+          "guard_witness"
+        ],
+        "witness_checks": [
+          {
+            "eid": "w_in",
+            "crime": 1,
+            "witness": true,
+            "identified": true,
+            "kind": "sight",
+            "dist": 2,
+            "los": true,
+            "V": 1.3,
+            "civ_state": "ALARM"
+          },
+          {
+            "eid": "the_watch",
+            "crime": 1,
+            "witness": true,
+            "identified": true,
+            "kind": "sight",
+            "dist": 19.8,
+            "los": true,
+            "V": 1.3,
+            "civ_state": "CALM"
+          }
+        ],
+        "los_at_crime": [
+          {
+            "eid": "w_in",
+            "clear": true,
+            "walls": 0
+          }
+        ],
+        "occluders": []
+      },
+      {
+        "bounty_at_crime_frame": 0,
+        "pending_at_crime_frame": 0,
+        "arm": "outside_the_room",
+        "hour": 12,
+        "standing": "under the lamp",
+        "L": 1,
+        "V": 1.3,
+        "people": [
+          {
+            "eid": "w_out",
+            "los": true,
+            "dist_m": 15.6,
+            "civ_state": "CALM",
+            "asleep": false
+          }
+        ],
+        "observed_by": [],
+        "observed_by_source": "derived_from_the_world",
+        "theft": true,
+        "stolen_from": "npc:archon-priest-4",
+        "crime": null,
+        "witnesses": [],
+        "bounty": 0,
+        "pending": 0,
+        "report_routes": [],
+        "witness_checks": [],
+        "los_at_crime": [
+          {
+            "eid": "w_out",
+            "clear": false,
+            "walls": 1
+          }
+        ],
+        "occluders": [
+          {
+            "id": "the_wall",
+            "k": 0
+          }
+        ]
+      },
+      {
+        "bounty_at_crime_frame": 0,
+        "pending_at_crime_frame": 0,
+        "arm": "asleep_in_the_room",
+        "hour": 12,
+        "standing": "under the lamp",
+        "L": 1,
+        "V": 1.3,
+        "people": [
+          {
+            "eid": "w_sleep",
+            "los": false,
+            "dist_m": null,
+            "civ_state": "CALM",
+            "asleep": true
+          }
+        ],
+        "observed_by": [],
+        "observed_by_source": "derived_from_the_world",
+        "theft": true,
+        "stolen_from": "npc:archon-priest-4",
+        "crime": null,
+        "witnesses": [],
+        "bounty": 0,
+        "pending": 0,
+        "report_routes": [],
+        "witness_checks": [],
+        "los_at_crime": [
+          {
+            "eid": "w_sleep",
+            "clear": true,
+            "walls": 0
+          }
+        ],
+        "occluders": []
+      },
+      {
+        "bounty_at_crime_frame": 0,
+        "pending_at_crime_frame": 2,
+        "arm": "in_the_dark",
+        "hour": 12,
+        "standing": "the dark corner",
+        "L": 0.2988,
+        "V": 0.272,
+        "people": [
+          {
+            "eid": "w_dark",
+            "los": true,
+            "dist_m": 2,
+            "civ_state": "ALARM",
+            "asleep": false
+          }
+        ],
+        "observed_by": [
+          "w_dark"
+        ],
+        "observed_by_source": "derived_from_the_world",
+        "theft": true,
+        "stolen_from": "npc:archon-priest-4",
+        "crime": "theft",
+        "witnesses": [
+          {
+            "eid": "w_dark",
+            "identified": false
+          },
+          {
+            "eid": "the_watch",
+            "identified": false
+          }
+        ],
+        "bounty": 118,
+        "pending": 2,
+        "report_routes": [
+          "shout",
+          "guard_witness"
+        ],
+        "witness_checks": [
+          {
+            "eid": "w_dark",
+            "crime": 1,
+            "witness": true,
+            "identified": false,
+            "kind": "sight",
+            "dist": 2,
+            "los": true,
+            "V": 0.272014,
+            "civ_state": "ALARM"
+          },
+          {
+            "eid": "the_watch",
+            "crime": 1,
+            "witness": true,
+            "identified": false,
+            "kind": "sight",
+            "dist": 19.8,
+            "los": true,
+            "V": 0.272014,
+            "civ_state": "CALM"
+          }
+        ],
+        "los_at_crime": [
+          {
+            "eid": "w_dark",
+            "clear": true,
+            "walls": 0
+          }
+        ],
+        "occluders": []
+      }
+    ],
+    "los_check": {
+      "in_room": {
+        "clear": true,
+        "walls": 0
+      },
+      "outside": {
+        "clear": true,
+        "walls": 0
+      }
+    },
+    "property_reachable": {
+      "has_row": true,
+      "zone": "archon.priest4.r1",
+      "row": {
+        "zone": "archon.priest4.r1",
+        "owner": "npc:archon-priest-4",
+        "owner_scope": "personal",
+        "value_g": 122,
+        "unique": true,
+        "stolen_from": null
+      },
+      "interior_props_present": [
+        {
+          "eid": "interior-readable:archon-apothecary-readable",
+          "property_instance": null
+        },
+        {
+          "eid": "interior-unique:archon-apothecary-unique",
+          "property_instance": "archon-apothecary-unique"
+        }
+      ]
+    },
+    "theft_chain": {
+      "prop": {
+        "eid": "interior-unique:archon-apothecary-unique",
+        "item": "archon-apothecary-unique",
+        "property_instance": "archon-apothecary-unique",
+        "pos": [
+          1.4,
+          1.02,
+          -3.4
+        ]
+      },
+      "took": {
+        "eid": "interior-unique:archon-apothecary-unique",
+        "taken": true,
+        "item": "archon-apothecary-unique",
+        "name": "a purge for a poisoning nobody has named",
+        "theft": {
+          "taken": true,
+          "theft": true,
+          "scope": "personal",
+          "why": "one NPC's possession",
+          "stolen_from": "npc:archon-priest-4",
+          "crime": null,
+          "challenge": false,
+          "disposition_delta": 0,
+          "put_back_window_s": 0,
+          "owner_notices": true,
+          "topic_added": "Something of mine is gone.",
+          "observed_by": [],
+          "observed_by_source": "derived_from_the_world"
+        }
+      },
+      "inventory_added": [
+        {
+          "id": "archon-apothecary-unique",
+          "stolen": true,
+          "owner": "npc:archon-priest-4"
+        }
+      ],
+      "stolen_registry": {
+        "before": 0,
+        "after": 1
+      },
+      "registry_rows": [
+        {
+          "instance": "archon-apothecary-unique",
+          "owner": "npc:archon-priest-4",
+          "value_g": 122,
+          "unique": true,
+          "settlement": "archon"
+        }
+      ],
+      "fence_quotes": {
+        "fence.lilmoth.rot-hookline": {
+          "buys": true,
+          "price_g": 25,
+          "multiplier": 0.20710000000000003,
+          "unique": true,
+          "delayed_bounty": {
+            "g": 61,
+            "in_days": 3,
+            "settlement": "archon"
+          },
+          "clears_stolen_from": true,
+          "laundered_from": "npc:archon-priest-4"
+        },
+        "fence.lilmoth.rot-veek": {
+          "buys": true,
+          "price_g": 25,
+          "multiplier": 0.20710000000000003,
+          "unique": true,
+          "delayed_bounty": {
+            "g": 61,
+            "in_days": 3,
+            "settlement": "archon"
+          },
+          "clears_stolen_from": true,
+          "laundered_from": "npc:archon-priest-4"
+        },
+        "fence.gideon.docks": {
+          "buys": true,
+          "price_g": 25,
+          "multiplier": 0.20710000000000003,
+          "unique": true,
+          "delayed_bounty": {
+            "g": 61,
+            "in_days": 3,
+            "settlement": "archon"
+          },
+          "clears_stolen_from": true,
+          "laundered_from": "npc:archon-priest-4"
+        },
+        "fence.archon.salvage": {
+          "buys": true,
+          "price_g": 25,
+          "multiplier": 0.20710000000000003,
+          "unique": true,
+          "delayed_bounty": {
+            "g": 61,
+            "in_days": 3,
+            "settlement": "archon"
+          },
+          "clears_stolen_from": true,
+          "laundered_from": "npc:archon-priest-4"
+        },
+        "__control_clean_item": {
+          "buys": true,
+          "price_g": 25,
+          "multiplier": 0.20710000000000003,
+          "unique": true,
+          "delayed_bounty": {
+            "g": 61,
+            "in_days": 3,
+            "settlement": null
+          },
+          "clears_stolen_from": true,
+          "laundered_from": null
+        }
+      }
+    }
+  }
+}

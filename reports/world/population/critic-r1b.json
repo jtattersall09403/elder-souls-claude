@@ -1,0 +1,5667 @@
+{
+  "tool": "critic-population-r1",
+  "role": "critic",
+  "judges": "W1-POPULATION",
+  "at": "2026-08-07T21:06:22.666Z",
+  "commit": "aaa2f1f",
+  "contention_at_start": {
+    "headless_shell": 14,
+    "loadavg": "13.12 14.41 12.50 12/299 2735"
+  },
+  "note": "Counts, booleans and FRAME counts only. No wall-clock timing is claimed anywhere in this file; the box was shared.",
+  "arms": {
+    "C1": {
+      "name": "C1 crossing walked end to end, no top-ups",
+      "samples": [
+        {
+          "m": 29.4,
+          "live_posts": 0,
+          "live_bodies": 0,
+          "alive": 0,
+          "cleared": 0,
+          "dormant": 144,
+          "resident": 0,
+          "spawned": 0,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {},
+          "regions": {},
+          "mix": {},
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 59.4,
+          "live_posts": 0,
+          "live_bodies": 0,
+          "alive": 0,
+          "cleared": 0,
+          "dormant": 144,
+          "resident": 0,
+          "spawned": 0,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {},
+          "regions": {},
+          "mix": {},
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 89.4,
+          "live_posts": 0,
+          "live_bodies": 0,
+          "alive": 0,
+          "cleared": 0,
+          "dormant": 144,
+          "resident": 0,
+          "spawned": 0,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {},
+          "regions": {},
+          "mix": {},
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 119.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 1,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 1
+          },
+          "regions": {
+            "salt-hills": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1
+          },
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 149.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 1,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 1
+          },
+          "regions": {
+            "salt-hills": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1
+          },
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 179.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 1,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 1
+          },
+          "regions": {
+            "salt-hills": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1
+          },
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 209.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 1,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 1
+          },
+          "regions": {
+            "salt-hills": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1
+          },
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 239.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 1,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 1
+          },
+          "regions": {
+            "salt-hills": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1
+          },
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 269.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 2,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "salt-hills": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 1
+          },
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 299.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 2,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "salt-hills": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 1
+          },
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 329.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 2,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "salt-hills": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 1
+          },
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 359.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 2,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "salt-hills": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 1
+          },
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 389.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 2,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "salt-hills": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 1
+          },
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 419.4,
+          "live_posts": 4,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 4,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 2,
+            "valus-ridge": 1,
+            "stone-forest": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1
+          },
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 449.4,
+          "live_posts": 4,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 4,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 2,
+            "valus-ridge": 1,
+            "stone-forest": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1
+          },
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 479.4,
+          "live_posts": 4,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 4,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 2,
+            "valus-ridge": 1,
+            "stone-forest": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1
+          },
+          "hp": 620,
+          "hp_max": 620,
+          "mirror": 620,
+          "souls": 0
+        },
+        {
+          "m": 509.4,
+          "live_posts": 4,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 4,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 2,
+            "valus-ridge": 1,
+            "stone-forest": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1
+          },
+          "hp": 508.4,
+          "hp_max": 620,
+          "mirror": 508.4,
+          "souls": 0
+        },
+        {
+          "m": 539.4,
+          "live_posts": 4,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 4,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 2,
+            "valus-ridge": 1,
+            "stone-forest": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1
+          },
+          "hp": 396.8,
+          "hp_max": 620,
+          "mirror": 396.8,
+          "souls": 0
+        },
+        {
+          "m": 569.4,
+          "live_posts": 4,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 4,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 2,
+            "valus-ridge": 1,
+            "stone-forest": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1
+          },
+          "hp": 396.8,
+          "hp_max": 620,
+          "mirror": 396.8,
+          "souls": 0
+        },
+        {
+          "m": 599.4,
+          "live_posts": 5,
+          "live_bodies": 6,
+          "alive": 6,
+          "cleared": 0,
+          "dormant": 139,
+          "resident": 5,
+          "spawned": 5,
+          "released": 0,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 4,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 2,
+            "valus-ridge": 1,
+            "stone-forest": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "guard_legion": 2
+          },
+          "hp": 285.2,
+          "hp_max": 620,
+          "mirror": 285.2,
+          "souls": 0
+        },
+        {
+          "m": 629.4,
+          "live_posts": 4,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 5,
+          "released": 1,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 1,
+            "valus-ridge": 1,
+            "stone-forest": 2
+          },
+          "mix": {
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "guard_legion": 2
+          },
+          "hp": 285.2,
+          "hp_max": 620,
+          "mirror": 285.2,
+          "souls": 0
+        },
+        {
+          "m": 659.4,
+          "live_posts": 6,
+          "live_bodies": 12,
+          "alive": 12,
+          "cleared": 0,
+          "dormant": 138,
+          "resident": 6,
+          "spawned": 7,
+          "released": 1,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 1,
+            "valus-ridge": 1,
+            "stone-forest": 4
+          },
+          "mix": {
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 7,
+            "guard_legion": 2
+          },
+          "hp": 285.2,
+          "hp_max": 620,
+          "mirror": 285.2,
+          "souls": 0
+        },
+        {
+          "m": 689.4,
+          "live_posts": 6,
+          "live_bodies": 12,
+          "alive": 12,
+          "cleared": 0,
+          "dormant": 138,
+          "resident": 6,
+          "spawned": 7,
+          "released": 1,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 1,
+            "valus-ridge": 1,
+            "stone-forest": 4
+          },
+          "mix": {
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 7,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 719.4,
+          "live_posts": 6,
+          "live_bodies": 12,
+          "alive": 12,
+          "cleared": 0,
+          "dormant": 138,
+          "resident": 6,
+          "spawned": 7,
+          "released": 1,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 1,
+            "valus-ridge": 1,
+            "stone-forest": 4
+          },
+          "mix": {
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 7,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 749.4,
+          "live_posts": 6,
+          "live_bodies": 12,
+          "alive": 12,
+          "cleared": 0,
+          "dormant": 138,
+          "resident": 6,
+          "spawned": 7,
+          "released": 1,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 1,
+            "valus-ridge": 1,
+            "stone-forest": 4
+          },
+          "mix": {
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 7,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 779.4,
+          "live_posts": 6,
+          "live_bodies": 12,
+          "alive": 12,
+          "cleared": 0,
+          "dormant": 138,
+          "resident": 6,
+          "spawned": 7,
+          "released": 1,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 1,
+            "valus-ridge": 1,
+            "stone-forest": 4
+          },
+          "mix": {
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 7,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 809.4,
+          "live_posts": 6,
+          "live_bodies": 12,
+          "alive": 12,
+          "cleared": 0,
+          "dormant": 138,
+          "resident": 6,
+          "spawned": 7,
+          "released": 1,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 1,
+            "valus-ridge": 1,
+            "stone-forest": 4
+          },
+          "mix": {
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 7,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 839.4,
+          "live_posts": 6,
+          "live_bodies": 12,
+          "alive": 12,
+          "cleared": 0,
+          "dormant": 138,
+          "resident": 6,
+          "spawned": 7,
+          "released": 1,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 1,
+            "valus-ridge": 1,
+            "stone-forest": 4
+          },
+          "mix": {
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 7,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 869.4,
+          "live_posts": 6,
+          "live_bodies": 12,
+          "alive": 12,
+          "cleared": 0,
+          "dormant": 138,
+          "resident": 6,
+          "spawned": 7,
+          "released": 1,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5,
+            "4": 1
+          },
+          "regions": {
+            "salt-hills": 1,
+            "valus-ridge": 1,
+            "stone-forest": 4
+          },
+          "mix": {
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 7,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 899.4,
+          "live_posts": 6,
+          "live_bodies": 12,
+          "alive": 12,
+          "cleared": 0,
+          "dormant": 138,
+          "resident": 6,
+          "spawned": 8,
+          "released": 2,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 6
+          },
+          "regions": {
+            "salt-hills": 1,
+            "stone-forest": 5
+          },
+          "mix": {
+            "inf_trash": 2,
+            "beast_slitherfang": 8,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 929.4,
+          "live_posts": 5,
+          "live_bodies": 11,
+          "alive": 11,
+          "cleared": 0,
+          "dormant": 139,
+          "resident": 5,
+          "spawned": 8,
+          "released": 3,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5
+          },
+          "regions": {
+            "stone-forest": 5
+          },
+          "mix": {
+            "inf_trash": 1,
+            "beast_slitherfang": 8,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 959.4,
+          "live_posts": 5,
+          "live_bodies": 11,
+          "alive": 11,
+          "cleared": 0,
+          "dormant": 139,
+          "resident": 5,
+          "spawned": 8,
+          "released": 3,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5
+          },
+          "regions": {
+            "stone-forest": 5
+          },
+          "mix": {
+            "inf_trash": 1,
+            "beast_slitherfang": 8,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 989.4,
+          "live_posts": 5,
+          "live_bodies": 11,
+          "alive": 11,
+          "cleared": 0,
+          "dormant": 139,
+          "resident": 5,
+          "spawned": 8,
+          "released": 3,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5
+          },
+          "regions": {
+            "stone-forest": 5
+          },
+          "mix": {
+            "inf_trash": 1,
+            "beast_slitherfang": 8,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1019.4,
+          "live_posts": 5,
+          "live_bodies": 11,
+          "alive": 11,
+          "cleared": 0,
+          "dormant": 139,
+          "resident": 5,
+          "spawned": 8,
+          "released": 3,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5
+          },
+          "regions": {
+            "stone-forest": 5
+          },
+          "mix": {
+            "inf_trash": 1,
+            "beast_slitherfang": 8,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1049.4,
+          "live_posts": 4,
+          "live_bodies": 9,
+          "alive": 9,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 9,
+          "released": 5,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 4
+          },
+          "regions": {
+            "stone-forest": 4
+          },
+          "mix": {
+            "beast_slitherfang": 8,
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1079.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 9,
+          "released": 6,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "beast_slitherfang": 4,
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1109.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 9,
+          "released": 6,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "beast_slitherfang": 4,
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1139.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 9,
+          "released": 7,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1169.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 9,
+          "released": 7,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1199.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 10,
+          "released": 7,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 1,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1229.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 10,
+          "released": 7,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 1,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1259.4,
+          "live_posts": 4,
+          "live_bodies": 7,
+          "alive": 7,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 11,
+          "released": 7,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 4
+          },
+          "regions": {
+            "stone-forest": 4
+          },
+          "mix": {
+            "beast_slitherfang": 4,
+            "inf_trash": 1,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1289.4,
+          "live_posts": 4,
+          "live_bodies": 7,
+          "alive": 7,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 11,
+          "released": 7,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 4
+          },
+          "regions": {
+            "stone-forest": 4
+          },
+          "mix": {
+            "beast_slitherfang": 4,
+            "inf_trash": 1,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1319.4,
+          "live_posts": 6,
+          "live_bodies": 11,
+          "alive": 11,
+          "cleared": 0,
+          "dormant": 138,
+          "resident": 6,
+          "spawned": 13,
+          "released": 7,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 6
+          },
+          "regions": {
+            "stone-forest": 6
+          },
+          "mix": {
+            "beast_slitherfang": 4,
+            "inf_trash": 5,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1349.4,
+          "live_posts": 6,
+          "live_bodies": 11,
+          "alive": 11,
+          "cleared": 0,
+          "dormant": 138,
+          "resident": 6,
+          "spawned": 13,
+          "released": 7,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 6
+          },
+          "regions": {
+            "stone-forest": 6
+          },
+          "mix": {
+            "beast_slitherfang": 4,
+            "inf_trash": 5,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1379.4,
+          "live_posts": 7,
+          "live_bodies": 12,
+          "alive": 12,
+          "cleared": 0,
+          "dormant": 137,
+          "resident": 7,
+          "spawned": 14,
+          "released": 7,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 7
+          },
+          "regions": {
+            "stone-forest": 7
+          },
+          "mix": {
+            "beast_slitherfang": 4,
+            "inf_trash": 5,
+            "guard_legion": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1409.4,
+          "live_posts": 7,
+          "live_bodies": 12,
+          "alive": 12,
+          "cleared": 0,
+          "dormant": 137,
+          "resident": 7,
+          "spawned": 14,
+          "released": 7,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 7
+          },
+          "regions": {
+            "stone-forest": 7
+          },
+          "mix": {
+            "beast_slitherfang": 4,
+            "inf_trash": 5,
+            "guard_legion": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1439.4,
+          "live_posts": 6,
+          "live_bodies": 11,
+          "alive": 11,
+          "cleared": 0,
+          "dormant": 138,
+          "resident": 6,
+          "spawned": 14,
+          "released": 8,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 6
+          },
+          "regions": {
+            "stone-forest": 6
+          },
+          "mix": {
+            "inf_trash": 5,
+            "guard_legion": 3,
+            "beast_slitherfang": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1469.4,
+          "live_posts": 5,
+          "live_bodies": 8,
+          "alive": 8,
+          "cleared": 0,
+          "dormant": 139,
+          "resident": 5,
+          "spawned": 14,
+          "released": 9,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5
+          },
+          "regions": {
+            "stone-forest": 5
+          },
+          "mix": {
+            "inf_trash": 2,
+            "guard_legion": 3,
+            "beast_slitherfang": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1499.4,
+          "live_posts": 5,
+          "live_bodies": 8,
+          "alive": 8,
+          "cleared": 0,
+          "dormant": 139,
+          "resident": 5,
+          "spawned": 14,
+          "released": 9,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5
+          },
+          "regions": {
+            "stone-forest": 5
+          },
+          "mix": {
+            "inf_trash": 2,
+            "guard_legion": 3,
+            "beast_slitherfang": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1529.4,
+          "live_posts": 5,
+          "live_bodies": 8,
+          "alive": 8,
+          "cleared": 0,
+          "dormant": 139,
+          "resident": 5,
+          "spawned": 14,
+          "released": 9,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5
+          },
+          "regions": {
+            "stone-forest": 5
+          },
+          "mix": {
+            "inf_trash": 2,
+            "guard_legion": 3,
+            "beast_slitherfang": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1559.4,
+          "live_posts": 5,
+          "live_bodies": 8,
+          "alive": 8,
+          "cleared": 0,
+          "dormant": 139,
+          "resident": 5,
+          "spawned": 14,
+          "released": 9,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 5
+          },
+          "regions": {
+            "stone-forest": 5
+          },
+          "mix": {
+            "inf_trash": 2,
+            "guard_legion": 3,
+            "beast_slitherfang": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1589.4,
+          "live_posts": 4,
+          "live_bodies": 7,
+          "alive": 7,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 14,
+          "released": 10,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 4
+          },
+          "regions": {
+            "stone-forest": 4
+          },
+          "mix": {
+            "inf_trash": 1,
+            "guard_legion": 3,
+            "beast_slitherfang": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1619.4,
+          "live_posts": 4,
+          "live_bodies": 7,
+          "alive": 7,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 14,
+          "released": 10,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 4
+          },
+          "regions": {
+            "stone-forest": 4
+          },
+          "mix": {
+            "inf_trash": 1,
+            "guard_legion": 3,
+            "beast_slitherfang": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1649.4,
+          "live_posts": 4,
+          "live_bodies": 9,
+          "alive": 9,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 15,
+          "released": 11,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 4
+          },
+          "regions": {
+            "stone-forest": 4
+          },
+          "mix": {
+            "guard_legion": 3,
+            "beast_slitherfang": 6
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1679.4,
+          "live_posts": 4,
+          "live_bodies": 9,
+          "alive": 9,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 15,
+          "released": 11,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 4
+          },
+          "regions": {
+            "stone-forest": 4
+          },
+          "mix": {
+            "guard_legion": 3,
+            "beast_slitherfang": 6
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1709.4,
+          "live_posts": 4,
+          "live_bodies": 9,
+          "alive": 9,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 15,
+          "released": 11,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 4
+          },
+          "regions": {
+            "stone-forest": 4
+          },
+          "mix": {
+            "guard_legion": 3,
+            "beast_slitherfang": 6
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1739.4,
+          "live_posts": 4,
+          "live_bodies": 9,
+          "alive": 9,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 15,
+          "released": 11,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 4
+          },
+          "regions": {
+            "stone-forest": 4
+          },
+          "mix": {
+            "guard_legion": 3,
+            "beast_slitherfang": 6
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1769.4,
+          "live_posts": 3,
+          "live_bodies": 7,
+          "alive": 7,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 15,
+          "released": 12,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "beast_slitherfang": 6,
+            "guard_legion": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1799.4,
+          "live_posts": 3,
+          "live_bodies": 7,
+          "alive": 7,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 15,
+          "released": 12,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "beast_slitherfang": 6,
+            "guard_legion": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1829.4,
+          "live_posts": 2,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 15,
+          "released": 13,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "guard_legion": 1,
+            "beast_slitherfang": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1859.4,
+          "live_posts": 2,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 15,
+          "released": 13,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "guard_legion": 1,
+            "beast_slitherfang": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1889.4,
+          "live_posts": 2,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 15,
+          "released": 13,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "guard_legion": 1,
+            "beast_slitherfang": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1919.4,
+          "live_posts": 1,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 15,
+          "released": 14,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 1
+          },
+          "regions": {
+            "stone-forest": 1
+          },
+          "mix": {
+            "beast_slitherfang": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1949.4,
+          "live_posts": 1,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 15,
+          "released": 14,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 1
+          },
+          "regions": {
+            "stone-forest": 1
+          },
+          "mix": {
+            "beast_slitherfang": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 1979.4,
+          "live_posts": 1,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 15,
+          "released": 14,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 1
+          },
+          "regions": {
+            "stone-forest": 1
+          },
+          "mix": {
+            "beast_slitherfang": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2009.4,
+          "live_posts": 2,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 16,
+          "released": 14,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "beast_slitherfang": 3,
+            "guard_legion": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2039.4,
+          "live_posts": 2,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 16,
+          "released": 14,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "beast_slitherfang": 3,
+            "guard_legion": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2069.4,
+          "live_posts": 2,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 16,
+          "released": 14,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "beast_slitherfang": 3,
+            "guard_legion": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2099.4,
+          "live_posts": 2,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 16,
+          "released": 14,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "beast_slitherfang": 3,
+            "guard_legion": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2129.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 17,
+          "released": 14,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "beast_slitherfang": 3,
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2159.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 17,
+          "released": 15,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2189.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 17,
+          "released": 15,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2219.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 17,
+          "released": 15,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2249.4,
+          "live_posts": 3,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 18,
+          "released": 15,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "guard_legion": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2279.4,
+          "live_posts": 3,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 18,
+          "released": 15,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "guard_legion": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2309.4,
+          "live_posts": 3,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 18,
+          "released": 15,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "guard_legion": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2339.4,
+          "live_posts": 3,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 18,
+          "released": 15,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "guard_legion": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2369.4,
+          "live_posts": 4,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 19,
+          "released": 15,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 4
+          },
+          "regions": {
+            "stone-forest": 4
+          },
+          "mix": {
+            "guard_legion": 5
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2399.4,
+          "live_posts": 4,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 19,
+          "released": 15,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 4
+          },
+          "regions": {
+            "stone-forest": 4
+          },
+          "mix": {
+            "guard_legion": 5
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2429.4,
+          "live_posts": 4,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 19,
+          "released": 15,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 4
+          },
+          "regions": {
+            "stone-forest": 4
+          },
+          "mix": {
+            "guard_legion": 5
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2459.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 19,
+          "released": 16,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "guard_legion": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2489.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 19,
+          "released": 16,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "guard_legion": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2519.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 19,
+          "released": 16,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "guard_legion": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2549.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 19,
+          "released": 16,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "guard_legion": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2579.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 19,
+          "released": 16,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "guard_legion": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2609.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 19,
+          "released": 16,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "guard_legion": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2639.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 19,
+          "released": 16,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 3
+          },
+          "regions": {
+            "stone-forest": 3
+          },
+          "mix": {
+            "guard_legion": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2669.4,
+          "live_posts": 2,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 19,
+          "released": 17,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "guard_legion": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2699.4,
+          "live_posts": 2,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 19,
+          "released": 17,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "guard_legion": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2729.4,
+          "live_posts": 2,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 19,
+          "released": 17,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "guard_legion": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2759.4,
+          "live_posts": 1,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 19,
+          "released": 18,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 1
+          },
+          "regions": {
+            "stone-forest": 1
+          },
+          "mix": {
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2789.4,
+          "live_posts": 1,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 19,
+          "released": 18,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 1
+          },
+          "regions": {
+            "stone-forest": 1
+          },
+          "mix": {
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2819.4,
+          "live_posts": 1,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 19,
+          "released": 18,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 1
+          },
+          "regions": {
+            "stone-forest": 1
+          },
+          "mix": {
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2849.4,
+          "live_posts": 1,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 19,
+          "released": 18,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 1
+          },
+          "regions": {
+            "stone-forest": 1
+          },
+          "mix": {
+            "guard_legion": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2879.4,
+          "live_posts": 0,
+          "live_bodies": 0,
+          "alive": 0,
+          "cleared": 0,
+          "dormant": 144,
+          "resident": 0,
+          "spawned": 19,
+          "released": 19,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {},
+          "regions": {},
+          "mix": {},
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2909.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 20,
+          "released": 19,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 1
+          },
+          "regions": {
+            "stone-forest": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2939.4,
+          "live_posts": 2,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 21,
+          "released": 19,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2969.4,
+          "live_posts": 2,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 21,
+          "released": 19,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 2999.4,
+          "live_posts": 2,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 21,
+          "released": 19,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3029.4,
+          "live_posts": 2,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 21,
+          "released": 19,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2
+          },
+          "regions": {
+            "stone-forest": 2
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 3
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3059.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 22,
+          "released": 19,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2,
+            "5": 1
+          },
+          "regions": {
+            "stone-forest": 2,
+            "deep-marshes": 1
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 3,
+            "drowned_greater": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3089.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 22,
+          "released": 19,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2,
+            "5": 1
+          },
+          "regions": {
+            "stone-forest": 2,
+            "deep-marshes": 1
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 3,
+            "drowned_greater": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3119.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 22,
+          "released": 19,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "3": 2,
+            "5": 1
+          },
+          "regions": {
+            "stone-forest": 2,
+            "deep-marshes": 1
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 3,
+            "drowned_greater": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3149.4,
+          "live_posts": 4,
+          "live_bodies": 6,
+          "alive": 6,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 23,
+          "released": 19,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 1,
+            "3": 2,
+            "5": 1
+          },
+          "regions": {
+            "stone-forest": 2,
+            "deep-marshes": 1,
+            "blackwood": 1
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 3,
+            "drowned_greater": 1,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3179.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 23,
+          "released": 20,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 1,
+            "3": 1,
+            "5": 1
+          },
+          "regions": {
+            "stone-forest": 1,
+            "deep-marshes": 1,
+            "blackwood": 1
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3209.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 23,
+          "released": 20,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 1,
+            "3": 1,
+            "5": 1
+          },
+          "regions": {
+            "stone-forest": 1,
+            "deep-marshes": 1,
+            "blackwood": 1
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3239.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 23,
+          "released": 20,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 1,
+            "3": 1,
+            "5": 1
+          },
+          "regions": {
+            "stone-forest": 1,
+            "deep-marshes": 1,
+            "blackwood": 1
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3269.4,
+          "live_posts": 4,
+          "live_bodies": 6,
+          "alive": 6,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 24,
+          "released": 20,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 2,
+            "3": 1,
+            "5": 1
+          },
+          "regions": {
+            "stone-forest": 1,
+            "deep-marshes": 1,
+            "blackwood": 2
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3299.4,
+          "live_posts": 4,
+          "live_bodies": 6,
+          "alive": 6,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 24,
+          "released": 20,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 2,
+            "3": 1,
+            "5": 1
+          },
+          "regions": {
+            "stone-forest": 1,
+            "deep-marshes": 1,
+            "blackwood": 2
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3329.4,
+          "live_posts": 4,
+          "live_bodies": 6,
+          "alive": 6,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 24,
+          "released": 20,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 2,
+            "3": 1,
+            "5": 1
+          },
+          "regions": {
+            "stone-forest": 1,
+            "deep-marshes": 1,
+            "blackwood": 2
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3359.4,
+          "live_posts": 4,
+          "live_bodies": 6,
+          "alive": 6,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 24,
+          "released": 20,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 2,
+            "3": 1,
+            "5": 1
+          },
+          "regions": {
+            "stone-forest": 1,
+            "deep-marshes": 1,
+            "blackwood": 2
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3389.4,
+          "live_posts": 5,
+          "live_bodies": 8,
+          "alive": 8,
+          "cleared": 0,
+          "dormant": 139,
+          "resident": 5,
+          "spawned": 25,
+          "released": 20,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 3,
+            "3": 1,
+            "5": 1
+          },
+          "regions": {
+            "stone-forest": 1,
+            "deep-marshes": 1,
+            "blackwood": 3
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3419.4,
+          "live_posts": 5,
+          "live_bodies": 8,
+          "alive": 8,
+          "cleared": 0,
+          "dormant": 139,
+          "resident": 5,
+          "spawned": 25,
+          "released": 20,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 3,
+            "3": 1,
+            "5": 1
+          },
+          "regions": {
+            "stone-forest": 1,
+            "deep-marshes": 1,
+            "blackwood": 3
+          },
+          "mix": {
+            "guard_legion": 1,
+            "inf_trash": 2,
+            "drowned_greater": 1,
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3449.4,
+          "live_posts": 4,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 25,
+          "released": 21,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 3,
+            "5": 1
+          },
+          "regions": {
+            "deep-marshes": 1,
+            "blackwood": 3
+          },
+          "mix": {
+            "drowned_greater": 1,
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3479.4,
+          "live_posts": 4,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 25,
+          "released": 21,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 3,
+            "5": 1
+          },
+          "regions": {
+            "deep-marshes": 1,
+            "blackwood": 3
+          },
+          "mix": {
+            "drowned_greater": 1,
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3509.4,
+          "live_posts": 4,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 25,
+          "released": 21,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 3,
+            "5": 1
+          },
+          "regions": {
+            "deep-marshes": 1,
+            "blackwood": 3
+          },
+          "mix": {
+            "drowned_greater": 1,
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3539.4,
+          "live_posts": 4,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 25,
+          "released": 21,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 3,
+            "5": 1
+          },
+          "regions": {
+            "deep-marshes": 1,
+            "blackwood": 3
+          },
+          "mix": {
+            "drowned_greater": 1,
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3569.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 25,
+          "released": 22,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 3
+          },
+          "regions": {
+            "blackwood": 3
+          },
+          "mix": {
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3599.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 25,
+          "released": 22,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 3
+          },
+          "regions": {
+            "blackwood": 3
+          },
+          "mix": {
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3629.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 25,
+          "released": 22,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 3
+          },
+          "regions": {
+            "blackwood": 3
+          },
+          "mix": {
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3659.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 25,
+          "released": 22,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 3
+          },
+          "regions": {
+            "blackwood": 3
+          },
+          "mix": {
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3689.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 25,
+          "released": 22,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 3
+          },
+          "regions": {
+            "blackwood": 3
+          },
+          "mix": {
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3719.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 25,
+          "released": 22,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 3
+          },
+          "regions": {
+            "blackwood": 3
+          },
+          "mix": {
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3749.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 25,
+          "released": 22,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 3
+          },
+          "regions": {
+            "blackwood": 3
+          },
+          "mix": {
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3779.4,
+          "live_posts": 2,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 25,
+          "released": 23,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "2": 2
+          },
+          "regions": {
+            "blackwood": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3809.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 26,
+          "released": 23,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1,
+            "2": 2
+          },
+          "regions": {
+            "blackwood": 2,
+            "western-rootlands": 1
+          },
+          "mix": {
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3839.4,
+          "live_posts": 3,
+          "live_bodies": 4,
+          "alive": 4,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 26,
+          "released": 23,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1,
+            "2": 2
+          },
+          "regions": {
+            "blackwood": 2,
+            "western-rootlands": 1
+          },
+          "mix": {
+            "beast_slitherfang": 2,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3869.4,
+          "live_posts": 2,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 26,
+          "released": 24,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1,
+            "2": 1
+          },
+          "regions": {
+            "blackwood": 1,
+            "western-rootlands": 1
+          },
+          "mix": {
+            "drowned_lesser": 2,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3899.4,
+          "live_posts": 2,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 26,
+          "released": 24,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1,
+            "2": 1
+          },
+          "regions": {
+            "blackwood": 1,
+            "western-rootlands": 1
+          },
+          "mix": {
+            "drowned_lesser": 2,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3929.4,
+          "live_posts": 2,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 26,
+          "released": 24,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1,
+            "2": 1
+          },
+          "regions": {
+            "blackwood": 1,
+            "western-rootlands": 1
+          },
+          "mix": {
+            "drowned_lesser": 2,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3959.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 26,
+          "released": 25,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 3989.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 26,
+          "released": 25,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4019.4,
+          "live_posts": 2,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 27,
+          "released": 25,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4049.4,
+          "live_posts": 2,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 27,
+          "released": 25,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4079.4,
+          "live_posts": 2,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 27,
+          "released": 25,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4109.4,
+          "live_posts": 2,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 27,
+          "released": 25,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "drowned_lesser": 2
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4139.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 28,
+          "released": 25,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 3
+          },
+          "regions": {
+            "western-rootlands": 3
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "drowned_lesser": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4169.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 28,
+          "released": 25,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 3
+          },
+          "regions": {
+            "western-rootlands": 3
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "drowned_lesser": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4199.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 28,
+          "released": 25,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 3
+          },
+          "regions": {
+            "western-rootlands": 3
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "drowned_lesser": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4229.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 28,
+          "released": 25,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 3
+          },
+          "regions": {
+            "western-rootlands": 3
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "drowned_lesser": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4259.4,
+          "live_posts": 4,
+          "live_bodies": 6,
+          "alive": 6,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 29,
+          "released": 25,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 4
+          },
+          "regions": {
+            "western-rootlands": 4
+          },
+          "mix": {
+            "beast_slitherfang": 2,
+            "drowned_lesser": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4289.4,
+          "live_posts": 4,
+          "live_bodies": 6,
+          "alive": 6,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 29,
+          "released": 25,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 4
+          },
+          "regions": {
+            "western-rootlands": 4
+          },
+          "mix": {
+            "beast_slitherfang": 2,
+            "drowned_lesser": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4319.4,
+          "live_posts": 4,
+          "live_bodies": 6,
+          "alive": 6,
+          "cleared": 0,
+          "dormant": 140,
+          "resident": 4,
+          "spawned": 29,
+          "released": 25,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 4
+          },
+          "regions": {
+            "western-rootlands": 4
+          },
+          "mix": {
+            "beast_slitherfang": 2,
+            "drowned_lesser": 4
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4349.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 29,
+          "released": 26,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 3
+          },
+          "regions": {
+            "western-rootlands": 3
+          },
+          "mix": {
+            "drowned_lesser": 4,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4379.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 29,
+          "released": 26,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 3
+          },
+          "regions": {
+            "western-rootlands": 3
+          },
+          "mix": {
+            "drowned_lesser": 4,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4409.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 29,
+          "released": 26,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 3
+          },
+          "regions": {
+            "western-rootlands": 3
+          },
+          "mix": {
+            "drowned_lesser": 4,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4439.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 29,
+          "released": 26,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 3
+          },
+          "regions": {
+            "western-rootlands": 3
+          },
+          "mix": {
+            "drowned_lesser": 4,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4469.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 29,
+          "released": 26,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 3
+          },
+          "regions": {
+            "western-rootlands": 3
+          },
+          "mix": {
+            "drowned_lesser": 4,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4499.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 29,
+          "released": 26,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 3
+          },
+          "regions": {
+            "western-rootlands": 3
+          },
+          "mix": {
+            "drowned_lesser": 4,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4529.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 29,
+          "released": 26,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 3
+          },
+          "regions": {
+            "western-rootlands": 3
+          },
+          "mix": {
+            "drowned_lesser": 4,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4559.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 29,
+          "released": 26,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 3
+          },
+          "regions": {
+            "western-rootlands": 3
+          },
+          "mix": {
+            "drowned_lesser": 4,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4589.4,
+          "live_posts": 3,
+          "live_bodies": 5,
+          "alive": 5,
+          "cleared": 0,
+          "dormant": 141,
+          "resident": 3,
+          "spawned": 29,
+          "released": 26,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 3
+          },
+          "regions": {
+            "western-rootlands": 3
+          },
+          "mix": {
+            "drowned_lesser": 4,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4619.4,
+          "live_posts": 2,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 29,
+          "released": 27,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "drowned_lesser": 2,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4649.4,
+          "live_posts": 2,
+          "live_bodies": 3,
+          "alive": 3,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 29,
+          "released": 27,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "drowned_lesser": 2,
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4679.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 29,
+          "released": 28,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "beast_slitherfang": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4709.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 30,
+          "released": 28,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4739.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 30,
+          "released": 28,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4769.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 30,
+          "released": 28,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4799.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 30,
+          "released": 28,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "beast_slitherfang": 1,
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4829.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4859.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4889.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4919.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4949.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 4979.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5009.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5039.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5069.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5099.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5129.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5159.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5189.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5219.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5249.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 30,
+          "released": 29,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5279.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 31,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5309.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 31,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5339.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 31,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "inf_trash": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5369.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5399.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5429.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5459.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5489.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5519.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5549.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5579.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5609.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5639.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5669.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5699.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5729.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5759.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5789.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5819.4,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "alive": 2,
+          "cleared": 0,
+          "dormant": 142,
+          "resident": 2,
+          "spawned": 32,
+          "released": 30,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 2
+          },
+          "regions": {
+            "western-rootlands": 2
+          },
+          "mix": {
+            "inf_trash": 1,
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5849.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 32,
+          "released": 31,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5879.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 32,
+          "released": 31,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5909.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 32,
+          "released": 31,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5939.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 32,
+          "released": 31,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5969.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 32,
+          "released": 31,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        },
+        {
+          "m": 5999.4,
+          "live_posts": 1,
+          "live_bodies": 1,
+          "alive": 1,
+          "cleared": 0,
+          "dormant": 143,
+          "resident": 1,
+          "spawned": 32,
+          "released": 31,
+          "uncleared": 0,
+          "faults": 0,
+          "tiers": {
+            "1": 1
+          },
+          "regions": {
+            "western-rootlands": 1
+          },
+          "mix": {
+            "drowned_lesser": 1
+          },
+          "hp": 173.6,
+          "hp_max": 620,
+          "mirror": 173.6,
+          "souls": 0
+        }
+      ],
+      "enabled_at_start": true,
+      "start": {
+        "x": 2171.5,
+        "z": 761,
+        "hp": 620,
+        "hp_max": 620,
+        "mirror": 620
+      },
+      "walked_m": 5999.4,
+      "done": false,
+      "died": null,
+      "end": {
+        "x": 2369.45,
+        "z": 4749.79,
+        "hp": 173.6,
+        "hp_max": 620,
+        "mirror": 173.6,
+        "souls": 0
+      },
+      "total_spawned": 32
+    },
+    "C3": {
+      "name": "C3 re-pay without a rest: the save/load door",
+      "target": {
+        "id": "pop-0001",
+        "kind": "road",
+        "leg": "stormhold-helstrom",
+        "at_m": 275,
+        "x": 2255.24,
+        "z": 1008.28,
+        "region": "salt-hills",
+        "tier": 3,
+        "safety": 1,
+        "encounter": "wl-slitherfang-lone",
+        "d_safety": 155.5,
+        "bodies": 1,
+        "souls": 34
+      },
+      "L1": {
+        "what": "kill every population body standing here",
+        "killed": 2,
+        "souls_before": 0,
+        "souls_after": 98,
+        "delta": 98,
+        "epoch": 0,
+        "pass": true
+      },
+      "L2": {
+        "what": "CONTROL — leave past the release radius, return, kill again. No save, no rest.",
+        "bodies_present_on_return": 0,
+        "killed": 0,
+        "delta": 0,
+        "refused_before": 0,
+        "refused_after": 0,
+        "epoch_moved": false,
+        "pass_means_refused": true
+      },
+      "L3_save_ok": true,
+      "L3_load_ok": true,
+      "L3_load_error": null,
+      "L3_diag": {
+        "pos": {
+          "x": 2261.24,
+          "z": 1014.28
+        },
+        "cell": "province",
+        "env_region": "western-rootlands",
+        "report": {
+          "dormant": 142,
+          "resident": 2,
+          "cleared": 0,
+          "live_posts": 2,
+          "live_bodies": 2,
+          "candidates": 2,
+          "stats": {
+            "spawned": 2,
+            "released": 0,
+            "cleared": 0,
+            "uncleared": 0,
+            "refocuses": 1,
+            "steps": 900,
+            "skipped_cell": 0
+          }
+        }
+      },
+      "L3": {
+        "what": "save -> load -> the post re-materialises -> kill it again. NO hearth rest anywhere.",
+        "epoch_before": 0,
+        "epoch_after": 0,
+        "epoch_moved": false,
+        "bodies_present_after_load": 2,
+        "killed": 2,
+        "souls_before": 98,
+        "souls_after": 196,
+        "delta": 98,
+        "refused_before": 0,
+        "refused_after": 0,
+        "FARM": true
+      }
+    },
+    "C4": {
+      "name": "C4 a tier-5 crossing encounter, fought, at the level the crossing pays",
+      "target": {
+        "id": "pop-0042",
+        "kind": "road",
+        "leg": "helstrom-archon",
+        "at_m": 430,
+        "x": 2556.38,
+        "z": 2994.38,
+        "region": "deep-marshes",
+        "tier": 5,
+        "safety": 1,
+        "encounter": "wl-deep-drowned-and-pack",
+        "d_safety": 311.9,
+        "bodies": 4,
+        "souls": 259
+      },
+      "fighting": {
+        "fighting": true,
+        "swings": 424,
+        "hp_start": 620,
+        "hp_end": 620,
+        "hp_max": 620,
+        "player_died": false,
+        "frames": 14400,
+        "sim_seconds": 240,
+        "enemy_bodies_at_start": 8,
+        "enemy_bodies_alive_at_end": 8,
+        "souls": 0,
+        "level": 1
+      },
+      "passive_control": {
+        "fighting": false,
+        "swings": 0,
+        "hp_start": 620,
+        "hp_end": 620,
+        "hp_max": 620,
+        "player_died": false,
+        "frames": 14400,
+        "sim_seconds": 240,
+        "enemy_bodies_at_start": 8,
+        "enemy_bodies_alive_at_end": 8,
+        "souls": 0,
+        "level": 1
+      }
+    }
+  },
+  "contention_at_end": {
+    "headless_shell": 24,
+    "loadavg": "15.58 15.86 13.80 14/449 22665"
+  }
+}

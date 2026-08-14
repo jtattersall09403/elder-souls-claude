@@ -1,0 +1,235 @@
+{
+  "schema": "elder-souls/ui-layer@1",
+  "item": "RI-UIX02",
+  "detector": "§C pixel sweep",
+  "at": "2026-08-08T00:26:18.943Z",
+  "state": "ui-journal",
+  "screen": [
+    1280,
+    720
+  ],
+  "viewpoints": 9,
+  "viewpoints_declared": [
+    "ui_world_neutral",
+    "ui_combat_neutral",
+    "ui_menu_inventory",
+    "ui_menu_journal",
+    "ui_menu_book",
+    "ui_menu_levelup",
+    "ui_menu_sheet",
+    "ui_menu_spells",
+    "ui_menu_map",
+    "ui_menu_map_local"
+  ],
+  "viewpoints_run": [
+    "ui_world_neutral",
+    "ui_menu_inventory",
+    "ui_menu_journal",
+    "ui_menu_book",
+    "ui_menu_levelup",
+    "ui_menu_sheet",
+    "ui_menu_spells",
+    "ui_menu_map",
+    "ui_menu_map_local"
+  ],
+  "viewpoints_skipped": [
+    "ui_combat_neutral"
+  ],
+  "covered_all_viewpoints": false,
+  "results": [
+    {
+      "viewpoint": "ui_world_neutral",
+      "ui_layer_px": 12792,
+      "ui_layer_frac": 0.01388,
+      "declared_rects": 7,
+      "components": 14,
+      "undeclared": []
+    },
+    {
+      "viewpoint": "ui_menu_inventory",
+      "ui_layer_px": 530319,
+      "ui_layer_frac": 0.57543,
+      "declared_rects": 43,
+      "components": 1,
+      "undeclared": []
+    },
+    {
+      "viewpoint": "ui_menu_journal",
+      "ui_layer_px": 530302,
+      "ui_layer_frac": 0.57541,
+      "declared_rects": 27,
+      "components": 1,
+      "undeclared": []
+    },
+    {
+      "viewpoint": "ui_menu_book",
+      "ui_layer_px": 530312,
+      "ui_layer_frac": 0.57543,
+      "declared_rects": 14,
+      "components": 1,
+      "undeclared": []
+    },
+    {
+      "viewpoint": "ui_menu_levelup",
+      "ui_layer_px": 530284,
+      "ui_layer_frac": 0.57539,
+      "declared_rects": 26,
+      "components": 1,
+      "undeclared": []
+    },
+    {
+      "viewpoint": "ui_menu_sheet",
+      "ui_layer_px": 530283,
+      "ui_layer_frac": 0.57539,
+      "declared_rects": 49,
+      "components": 1,
+      "undeclared": []
+    },
+    {
+      "viewpoint": "ui_menu_spells",
+      "ui_layer_px": 530253,
+      "ui_layer_frac": 0.57536,
+      "declared_rects": 14,
+      "components": 1,
+      "undeclared": []
+    },
+    {
+      "viewpoint": "ui_menu_map",
+      "ui_layer_px": 530256,
+      "ui_layer_frac": 0.57536,
+      "declared_rects": 14,
+      "components": 1,
+      "undeclared": []
+    },
+    {
+      "viewpoint": "ui_menu_map_local",
+      "ui_layer_px": 530256,
+      "ui_layer_frac": 0.57536,
+      "declared_rects": 14,
+      "components": 1,
+      "undeclared": []
+    }
+  ],
+  "undeclared_components": 0,
+  "instrument_agreement": [
+    {
+      "viewpoint": "ui_world_neutral",
+      "harness": [
+        1280,
+        720
+      ],
+      "page": [
+        1280,
+        720
+      ],
+      "differing_pixels": 0,
+      "note": null
+    },
+    {
+      "viewpoint": "ui_menu_inventory",
+      "harness": [
+        1280,
+        720
+      ],
+      "page": [
+        1280,
+        720
+      ],
+      "differing_pixels": 0,
+      "note": null
+    },
+    {
+      "viewpoint": "ui_menu_journal",
+      "harness": [
+        1280,
+        720
+      ],
+      "page": [
+        1280,
+        720
+      ],
+      "differing_pixels": 0,
+      "note": null
+    },
+    {
+      "viewpoint": "ui_menu_book",
+      "harness": [
+        1280,
+        720
+      ],
+      "page": [
+        1280,
+        720
+      ],
+      "differing_pixels": 0,
+      "note": null
+    },
+    {
+      "viewpoint": "ui_menu_levelup",
+      "harness": [
+        1280,
+        720
+      ],
+      "page": [
+        1280,
+        720
+      ],
+      "differing_pixels": 0,
+      "note": null
+    },
+    {
+      "viewpoint": "ui_menu_sheet",
+      "harness": [
+        1280,
+        720
+      ],
+      "page": [
+        1280,
+        720
+      ],
+      "differing_pixels": 0,
+      "note": null
+    },
+    {
+      "viewpoint": "ui_menu_spells",
+      "harness": [
+        1280,
+        720
+      ],
+      "page": [
+        1280,
+        720
+      ],
+      "differing_pixels": 0,
+      "note": null
+    },
+    {
+      "viewpoint": "ui_menu_map",
+      "harness": [
+        1280,
+        720
+      ],
+      "page": [
+        1280,
+        720
+      ],
+      "differing_pixels": 0,
+      "note": null
+    },
+    {
+      "viewpoint": "ui_menu_map_local",
+      "harness": [
+        1280,
+        720
+      ],
+      "page": [
+        1280,
+        720
+      ],
+      "differing_pixels": 0,
+      "note": null
+    }
+  ],
+  "instruments_agree": true,
+  "K2": "PASS"
+}

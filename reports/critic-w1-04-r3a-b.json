@@ -1,0 +1,600 @@
+{
+  "tool": "tools/world/critic-w1-04-r3a.mjs",
+  "entry": "game/index.html",
+  "started_at": "2026-08-08T02:08:00.770Z",
+  "sections": {
+    "S2": {
+      "side": "HARNESS for everything except emptying sim.npcs, which the sweep also does through the engine (there is no verb)",
+      "room": "archon-apothecary",
+      "protocol": "the sweep's own: one fixed pose, clock pinned to 12, sim.npcs emptied, stepFrames(2)",
+      "n0_nothing_between": {
+        "shots": 8,
+        "distinct": 1,
+        "hashes": [
+          1720604056,
+          1720604056,
+          1720604056,
+          1720604056,
+          1720604056,
+          1720604056,
+          1720604056,
+          1720604056
+        ]
+      },
+      "n1_stepped_between": {
+        "shots": 8,
+        "distinct": 8,
+        "hashes": [
+          2895676749,
+          297963111,
+          2778502233,
+          3123213603,
+          1254720122,
+          1148523886,
+          440148503,
+          95544720
+        ]
+      },
+      "n2_reentered_same_room": {
+        "shots": 8,
+        "distinct": 8,
+        "hashes": [
+          3737454773,
+          3309719508,
+          1846783673,
+          4112467298,
+          68419936,
+          1142350156,
+          2582573620,
+          4272042843
+        ]
+      },
+      "pairs": {
+        "identical_records": [
+          {
+            "id": "helstrom-smithy",
+            "h": 3636011458,
+            "bytes": 368202,
+            "graph": {
+              "visible_cells": [
+                "interior"
+              ],
+              "cell": "interior",
+              "objects": 123,
+              "meshes": 100,
+              "triangles": 2192,
+              "lights": 1
+            },
+            "room": "helstrom-smithy"
+          },
+          {
+            "id": "helstrom-scriptorium",
+            "h": 230891533,
+            "bytes": 326022,
+            "graph": {
+              "visible_cells": [
+                "interior"
+              ],
+              "cell": "interior",
+              "objects": 123,
+              "meshes": 100,
+              "triangles": 2192,
+              "lights": 1
+            },
+            "room": "helstrom-scriptorium"
+          },
+          {
+            "id": "helstrom-apothecary",
+            "h": 4023424454,
+            "bytes": 337938,
+            "graph": {
+              "visible_cells": [
+                "interior"
+              ],
+              "cell": "interior",
+              "objects": 125,
+              "meshes": 101,
+              "triangles": 2204,
+              "lights": 1
+            },
+            "room": "helstrom-apothecary"
+          }
+        ],
+        "different_records": [
+          {
+            "id": "blackrose-prison",
+            "h": 3330958782,
+            "bytes": 815266,
+            "graph": {
+              "visible_cells": [
+                "interior"
+              ],
+              "cell": "interior",
+              "objects": 190,
+              "meshes": 146,
+              "triangles": 2776,
+              "lights": 5
+            },
+            "room": "blackrose-prison"
+          },
+          {
+            "id": "thorn-hall",
+            "h": 3219644007,
+            "bytes": 811394,
+            "graph": {
+              "visible_cells": [
+                "interior"
+              ],
+              "cell": "interior",
+              "objects": 221,
+              "meshes": 177,
+              "triangles": 3392,
+              "lights": 5
+            },
+            "room": "thorn-hall"
+          },
+          {
+            "id": "helstrom-undertemple",
+            "h": 1506002275,
+            "bytes": 872982,
+            "graph": {
+              "visible_cells": [
+                "interior"
+              ],
+              "cell": "interior",
+              "objects": 128,
+              "meshes": 96,
+              "triangles": 2332,
+              "lights": 3
+            },
+            "room": "helstrom-undertemple"
+          }
+        ]
+      },
+      "reading": {
+        "n0_all_distinct": false,
+        "n1_all_distinct": true,
+        "n2_all_distinct": true,
+        "identical_records_same_graph": false,
+        "identical_records_same_picture": false,
+        "different_records_differ_in_graph": true
+      }
+    },
+    "S3": {
+      "side": "HARNESS verbs for the arms; __ENGINE only to read _townCell identity",
+      "arms": {
+        "townSolids": {
+          "thorn": {
+            "on": 67,
+            "off": 0,
+            "off_after_4_steps": 0,
+            "restored": 67,
+            "cell_id_on": "settlement:thorn",
+            "cell_id_off": null,
+            "arms_differ": true,
+            "stayed_out_under_stepping": true
+          },
+          "helstrom": {
+            "on": 94,
+            "off": 0,
+            "off_after_4_steps": 0,
+            "restored": 94,
+            "cell_id_on": "settlement:helstrom",
+            "cell_id_off": null,
+            "arms_differ": true,
+            "stayed_out_under_stepping": true
+          }
+        },
+        "drawBuildings": {
+          "on": 15,
+          "off": 0,
+          "restored": 15,
+          "on_stats": true,
+          "off_stats": false,
+          "arms_differ": true,
+          "stayed_out_under_stepping": true
+        },
+        "interiorCell": {
+          "subset": 12,
+          "live": {
+            "entered": 12,
+            "drawn_agrees": 12,
+            "exterior_restored_on_exit": 12
+          },
+          "cut": {
+            "entered": 12,
+            "drawn_agrees": 0,
+            "exterior_restored_on_exit": 12
+          },
+          "arms_differ": true,
+          "exterior_restored_is_vacuous": true
+        },
+        "perturbSettlement": {
+          "shapes_before": 67,
+          "shapes_after_cut_to_5": 25,
+          "shapes_restored": 67,
+          "buildings_drawn_after": 5,
+          "collision_followed_the_model": true,
+          "restored_exactly": true
+        }
+      }
+    },
+    "S5": {
+      "side": "HARNESS",
+      "legs": {
+        "unique_item_owner": {
+          "sampled": 10,
+          "prop_exists": 10,
+          "taken": 10,
+          "theft_true": 0,
+          "carries_owner_field": 0,
+          "rows": [
+            {
+              "interior": "archon-apothecary",
+              "item": "archon-apothecary-unique",
+              "owner_declared": "npc:archon-priest-4",
+              "prop_exists": true,
+              "prop_owner_field": "<<ABSENT>>",
+              "prop_owner_scope": "<<ABSENT>>",
+              "taken": true,
+              "theft": {
+                "taken": true,
+                "theft": true,
+                "scope": "personal",
+                "why": "one NPC's possession",
+                "stolen_from": "npc:archon-priest-4",
+                "crime": null,
+                "challenge": false,
+                "disposition_delta": 0,
+                "put_back_window_s": 0,
+                "owner_notices": true,
+                "topic_added": "Something of mine is gone.",
+                "observed_by": [],
+                "observed_by_source": "derived_from_the_world"
+              },
+              "crime": null,
+              "stolen_from": null
+            },
+            {
+              "interior": "archon-guild-office",
+              "item": "archon-guild-office-unique",
+              "owner_declared": "npc:archon-priest-3",
+              "prop_exists": true,
+              "prop_owner_field": "<<ABSENT>>",
+              "prop_owner_scope": "<<ABSENT>>",
+              "taken": true,
+              "theft": {
+                "taken": true,
+                "theft": true,
+                "scope": "personal",
+                "why": "one NPC's possession",
+                "stolen_from": "npc:archon-priest-3",
+                "crime": null,
+                "challenge": false,
+                "disposition_delta": 0,
+                "put_back_window_s": 0,
+                "owner_notices": true,
+                "topic_added": "Something of mine is gone.",
+                "observed_by": [],
+                "observed_by_source": "derived_from_the_world"
+              },
+              "crime": null,
+              "stolen_from": null
+            },
+            {
+              "interior": "archon-inn",
+              "item": "archon-inn-unique",
+              "owner_declared": "npc:archon-cook-5",
+              "prop_exists": true,
+              "prop_owner_field": "<<ABSENT>>",
+              "prop_owner_scope": "<<ABSENT>>",
+              "taken": true,
+              "theft": {
+                "taken": true,
+                "theft": true,
+                "scope": "personal",
+                "why": "one NPC's possession",
+                "stolen_from": "npc:archon-cook-5",
+                "crime": null,
+                "challenge": false,
+                "disposition_delta": 0,
+                "put_back_window_s": 0,
+                "owner_notices": true,
+                "topic_added": "Something of mine is gone.",
+                "observed_by": [],
+                "observed_by_source": "derived_from_the_world"
+              },
+              "crime": null,
+              "stolen_from": null
+            },
+            {
+              "interior": "archon-kiln-house",
+              "item": "archon-kiln-house-unique",
+              "owner_declared": "npc:archon-factor-7",
+              "prop_exists": true,
+              "prop_owner_field": "<<ABSENT>>",
+              "prop_owner_scope": "<<ABSENT>>",
+              "taken": true,
+              "theft": {
+                "taken": true,
+                "theft": true,
+                "scope": "personal",
+                "why": "one NPC's possession",
+                "stolen_from": "npc:archon-factor-7",
+                "crime": null,
+                "challenge": false,
+                "disposition_delta": 0,
+                "put_back_window_s": 0,
+                "owner_notices": true,
+                "topic_added": "Something of mine is gone.",
+                "observed_by": [],
+                "observed_by_source": "derived_from_the_world"
+              },
+              "crime": null,
+              "stolen_from": null
+            },
+            {
+              "interior": "archon-market",
+              "item": "archon-market-unique",
+              "owner_declared": "npc:archon-priest-4",
+              "prop_exists": true,
+              "prop_owner_field": "<<ABSENT>>",
+              "prop_owner_scope": "<<ABSENT>>",
+              "taken": true,
+              "theft": {
+                "taken": true,
+                "theft": true,
+                "scope": "personal",
+                "why": "one NPC's possession",
+                "stolen_from": "npc:archon-priest-4",
+                "crime": null,
+                "challenge": false,
+                "disposition_delta": 0,
+                "put_back_window_s": 0,
+                "owner_notices": true,
+                "topic_added": "Something of mine is gone.",
+                "observed_by": [],
+                "observed_by_source": "derived_from_the_world"
+              },
+              "crime": null,
+              "stolen_from": null
+            },
+            {
+              "interior": "archon-rootpost",
+              "item": "archon-rootpost-unique",
+              "owner_declared": "npc:archon-scribe-6",
+              "prop_exists": true,
+              "prop_owner_field": "<<ABSENT>>",
+              "prop_owner_scope": "<<ABSENT>>",
+              "taken": true,
+              "theft": {
+                "taken": true,
+                "theft": true,
+                "scope": "personal",
+                "why": "one NPC's possession",
+                "stolen_from": "npc:archon-scribe-6",
+                "crime": null,
+                "challenge": false,
+                "disposition_delta": 0,
+                "put_back_window_s": 0,
+                "owner_notices": true,
+                "topic_added": "Something of mine is gone.",
+                "observed_by": [],
+                "observed_by_source": "derived_from_the_world"
+              },
+              "crime": null,
+              "stolen_from": null
+            },
+            {
+              "interior": "archon-shrine",
+              "item": "archon-shrine-unique",
+              "owner_declared": "npc:archon-scribe-6",
+              "prop_exists": true,
+              "prop_owner_field": "<<ABSENT>>",
+              "prop_owner_scope": "<<ABSENT>>",
+              "taken": true,
+              "theft": {
+                "taken": true,
+                "theft": true,
+                "scope": "personal",
+                "why": "one NPC's possession",
+                "stolen_from": "npc:archon-scribe-6",
+                "crime": null,
+                "challenge": false,
+                "disposition_delta": 0,
+                "put_back_window_s": 0,
+                "owner_notices": true,
+                "topic_added": "Something of mine is gone.",
+                "observed_by": [],
+                "observed_by_source": "derived_from_the_world"
+              },
+              "crime": null,
+              "stolen_from": null
+            },
+            {
+              "interior": "archon-vat-house",
+              "item": "archon-vat-house-unique",
+              "owner_declared": "npc:archon-priest-3",
+              "prop_exists": true,
+              "prop_owner_field": "<<ABSENT>>",
+              "prop_owner_scope": "<<ABSENT>>",
+              "taken": true,
+              "theft": {
+                "taken": true,
+                "theft": true,
+                "scope": "personal",
+                "why": "one NPC's possession",
+                "stolen_from": "npc:archon-priest-3",
+                "crime": null,
+                "challenge": false,
+                "disposition_delta": 0,
+                "put_back_window_s": 0,
+                "owner_notices": true,
+                "topic_added": "Something of mine is gone.",
+                "observed_by": [],
+                "observed_by_source": "derived_from_the_world"
+              },
+              "crime": null,
+              "stolen_from": null
+            },
+            {
+              "interior": "archon-ward",
+              "item": "archon-ward-unique",
+              "owner_declared": "npc:archon-cook-5",
+              "prop_exists": true,
+              "prop_owner_field": "<<ABSENT>>",
+              "prop_owner_scope": "<<ABSENT>>",
+              "taken": true,
+              "theft": {
+                "taken": true,
+                "theft": true,
+                "scope": "personal",
+                "why": "one NPC's possession",
+                "stolen_from": "npc:archon-cook-5",
+                "crime": null,
+                "challenge": false,
+                "disposition_delta": 0,
+                "put_back_window_s": 0,
+                "owner_notices": true,
+                "topic_added": "Something of mine is gone.",
+                "observed_by": [],
+                "observed_by_source": "derived_from_the_world"
+              },
+              "crime": null,
+              "stolen_from": null
+            },
+            {
+              "interior": "blackrose-clerk",
+              "item": "blackrose-clerk-unique",
+              "owner_declared": "npc:blackrose-publican-6",
+              "prop_exists": true,
+              "prop_owner_field": "<<ABSENT>>",
+              "prop_owner_scope": "<<ABSENT>>",
+              "taken": true,
+              "theft": {
+                "taken": true,
+                "theft": true,
+                "scope": "personal",
+                "why": "one NPC's possession",
+                "stolen_from": "npc:blackrose-publican-6",
+                "crime": null,
+                "challenge": false,
+                "disposition_delta": 0,
+                "put_back_window_s": 0,
+                "owner_notices": true,
+                "topic_added": "Something of mine is gone.",
+                "observed_by": [],
+                "observed_by_source": "derived_from_the_world"
+              },
+              "crime": null,
+              "stolen_from": null
+            }
+          ]
+        },
+        "building_list": {
+          "before": {
+            "solids": 67,
+            "drawn": 15
+          },
+          "after": {
+            "solids": 5,
+            "drawn": 1
+          },
+          "restored": {
+            "solids": 67,
+            "drawn": 15
+          },
+          "drawn_followed": true,
+          "solids_followed": true,
+          "restores": true
+        },
+        "wall_stops_a_body": {
+          "walks": [
+            {
+              "building": "thorn-hall",
+              "entry_side": "south",
+              "wall_z": 851.13,
+              "with_walls": {
+                "aborted": "stuck",
+                "frames": 463,
+                "end_z": 850.63,
+                "past_wall_m": -0.5,
+                "inside": null
+              },
+              "walls_cut": {
+                "aborted": null,
+                "frames": 271,
+                "end_z": 853.17,
+                "past_wall_m": 2.03,
+                "inside": {
+                  "settlement": "thorn",
+                  "building": "thorn-hall"
+                }
+              },
+              "stopped_outside": true,
+              "walked_through_when_cut": true,
+              "arms_differ": true
+            },
+            {
+              "building": "thorn-inn",
+              "entry_side": "south",
+              "wall_z": 850.6,
+              "with_walls": {
+                "aborted": "stuck",
+                "frames": 467,
+                "end_z": 851.1,
+                "past_wall_m": 0.5,
+                "inside": null
+              },
+              "walls_cut": {
+                "aborted": null,
+                "frames": 271,
+                "end_z": 852.63,
+                "past_wall_m": 2.03,
+                "inside": {
+                  "settlement": "thorn",
+                  "building": "thorn-inn"
+                }
+              },
+              "stopped_outside": false,
+              "walked_through_when_cut": true,
+              "arms_differ": true
+            },
+            {
+              "building": "thorn-trader",
+              "entry_side": "south",
+              "wall_z": 860.58,
+              "with_walls": {
+                "aborted": "stuck",
+                "frames": 506,
+                "end_z": 861.09,
+                "past_wall_m": 0.51,
+                "inside": {
+                  "settlement": "thorn",
+                  "building": "thorn-inn"
+                }
+              },
+              "walls_cut": {
+                "aborted": null,
+                "frames": 271,
+                "end_z": 862.61,
+                "past_wall_m": 2.03,
+                "inside": {
+                  "settlement": "thorn",
+                  "building": "thorn-inn"
+                }
+              },
+              "stopped_outside": false,
+              "walked_through_when_cut": true,
+              "arms_differ": true
+            }
+          ]
+        }
+      }
+    }
+  },
+  "page_errors": [],
+  "notes": [],
+  "fatal": "page.evaluate: Error: useDoor: no interior \"blackrose-gaol\"\n    at useDoor (http://127.0.0.1:39905/game/src/sim/settlement.js:266:17)\n    at Engine.enterInterior (http://127.0.0.1:39905/game/src/engine.js:8354:30)\n    at Object.enterInterior (http://127.0.0.1:39905/game/src/harness/api.js:2250:39)\n    at eval (eval at evaluate (:290:30), <anonymous>:4:11)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at /home/user/elder-souls-claude/tools/world/critic-w1-04-r3a.mjs:523:28",
+  "finished_at": "2026-08-08T02:35:42.019Z"
+}

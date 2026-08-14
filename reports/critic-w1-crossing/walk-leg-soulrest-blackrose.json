@@ -1,0 +1,289 @@
+{
+  "schema": "elder-souls/critic-crossing-walk@1",
+  "measured_at": "2026-08-08T05:59:10.191Z",
+  "git": {
+    "commit": "9736d26c60cf0c61c85ee3fd8984881e4360475f",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "label": "leg-soulrest-blackrose",
+  "route": "crossing",
+  "leg": "soulrest-blackrose",
+  "reverse": false,
+  "speed": "walk",
+  "hp_pinned": true,
+  "kill_at_m": null,
+  "time_of_day": null,
+  "weather": null,
+  "burden": null,
+  "state": "arrived",
+  "chunks": [],
+  "engine_result": {
+    "arrived": true,
+    "aborted": null,
+    "frames": 52976,
+    "minutes": 14.716,
+    "path_m": 1765.6,
+    "mean_speed_mps": 1.9997,
+    "end": [
+      1908.5,
+      4449.9
+    ],
+    "target": [
+      1905.5,
+      4450
+    ],
+    "offset_m": 3.03,
+    "longest_stuck_frames": 12,
+    "mired_frames": 0,
+    "regions_entered": [
+      "stone-wastes",
+      "western-rootlands"
+    ],
+    "deepest_water_on_the_walk": {
+      "depth_m": 0,
+      "at": null
+    },
+    "worst_off_path_m": 1.31,
+    "off_path_frames": 0,
+    "regains": 0
+  },
+  "critic_counter": {
+    "frames": 52975,
+    "naive_sum_m": 1765.6,
+    "walked_m": 1765.6,
+    "teleports": 0,
+    "teleported_m": 0,
+    "max_step_m": 0.173,
+    "jumps": [],
+    "hp_zero_frames": 0,
+    "hp_absorbed": 3522.9,
+    "min_hp": 514.4,
+    "start": [
+      610.5,
+      4877
+    ],
+    "end": [
+      1908.5,
+      4449.9
+    ],
+    "net_m": 1366.5
+  },
+  "shot": null,
+  "env": {
+    "env": {
+      "time_of_day": 9,
+      "weather": "dawn_mist",
+      "tide": {
+        "phase": 0.75,
+        "state": "LOW",
+        "height_m": {
+          "topal": -0.33,
+          "padomaic": -0.6
+        },
+        "cycle_real_min": 12,
+        "mean_range_m": {
+          "topal": 0.66,
+          "padomaic": 1.2
+        }
+      }
+    },
+    "burden": {
+      "ratio": 0,
+      "tier": "UNBURDENED",
+      "move_mult_declared": 1,
+      "move_mult_applied": 1,
+      "sprint": true,
+      "fatigue_drain_mult": 1,
+      "sneak_detection_mult": 1,
+      "travel_time_mult": 1,
+      "jump": "normal",
+      "in_combat": false,
+      "suppressed_by_combat": false,
+      "tiers": [
+        {
+          "id": "UNBURDENED",
+          "ratio_max": 0.6,
+          "move": 1
+        },
+        {
+          "id": "LADEN",
+          "ratio_max": 0.85,
+          "move": 0.9
+        },
+        {
+          "id": "OVERLADEN",
+          "ratio_max": 1,
+          "move": 0.72
+        },
+        {
+          "id": "IMMOBILE",
+          "ratio_max": null,
+          "move": 0
+        }
+      ],
+      "equip_load": {
+        "pct": 24,
+        "tier": "LIGHT",
+        "equipped_weight": 0,
+        "hands": null,
+        "weapon_the_fight_swings": "ssw_garrison_sword",
+        "shield_the_fight_holds": "marsh_oak_medium",
+        "overloaded_denies_sprint": false,
+        "equip_load_max": 73,
+        "carried_weight": 0,
+        "burden_divisor": 182.5,
+        "burden_source": "derived from the pack",
+        "source": "engine default — nothing is equipped yet",
+        "equipment_base_pct": 24,
+        "pinned_base_pct": null,
+        "spell_offset_pct": 0,
+        "pinned": false,
+        "boundaries_pct": {
+          "LIGHT": 30,
+          "MEDIUM": 70,
+          "HEAVY": 100
+        },
+        "owner": "RI-CMB01 §B (seam S23: everything the tier does inside the fight)"
+      },
+      "equip_load_consumers": {
+        "roll_iframes": "combat/moves.js equipTier() -> roll.json row -> combat/player.js roll",
+        "roll_recovery": "combat/moves.js equipTier() -> roll.json row",
+        "roll_stamina_cost": "combat/moves.js equipTier() -> roll.json costs",
+        "stamina_regen_mult": "combat/rules.js regenStamina() ctx.tier",
+        "weapon_weight": "weapons/classes.json equip_weight -> combat/moveset.js weaponFor() -> moves._weapon -> engine._recomputeEquipLoad() -> the equip ratio (W1-16 r3)",
+        "shield_weight": "weapons/offhand.json + combat/stamina.json weight -> combat/system.js shieldFor() -> body.shield.weight -> engine._recomputeEquipLoad() -> the ratio (W1-16 r3)",
+        "talisman_weight": "magic/cast-classes.json catalysts[].equip_weight (RI-PRG07 §4 = 3 kg) -> engine._handWeights() -> BOTH _recomputeEquipLoad() (§2 term 4) and _recomputeBurden() (§3 \"equipped or not\") -> the roll row and the walk speed (W1-16 r4)",
+        "talisman_slot": "items/carried.json slot:\"talisman\" -> engine._slotForItem() -> _finishEquipCommit() -> MagicSystem.setCatalyst() -> focus cost and the castNow() no_catalyst refusal (W1-16 r4)",
+        "overloaded_denies_sprint": "combat/player.js locomotion gate — b.tier === \"OVERLOADED\" refuses SPRINT at the place locomotion is decided, not at the press gate (W1-16 r3)",
+        "overloaded_denies_jump_attack": "combat/moveset.js resolveSlot() — ctx.roll_tier === \"OVERLOADED\" -> {slot: null, reason: \"overloaded\"}",
+        "fall_damage_mult": null
+      },
+      "burden_consumers": {
+        "move": "engine._burdenMult() -> sim/traversal.js step() horizontal retraction",
+        "sprint": "engine -> sim.player.denySprint -> sim/player.js action gate (W1-16 r2)",
+        "travel_time": "engine.boardTravel() -> ride frames and world clock (W1-16 r2)",
+        "fatigue": null,
+        "sneak": null,
+        "jump": null
+      },
+      "reason": "You move freely.",
+      "owner": "RI-PRG07 §3 (seam S23: equip load is RI-CMB01 and lives inside the fight)"
+    }
+  },
+  "hp_max": 620,
+  "declared_route": {
+    "id": "soulrest-blackrose",
+    "metres": 1841,
+    "from": "Soulrest",
+    "to": "Blackrose"
+  },
+  "player_end": {
+    "pos": [
+      1908.53105,
+      2.59,
+      4449.863093
+    ],
+    "yaw_deg": 272.586187,
+    "state": "WALK",
+    "anim": "walk",
+    "anim_frame": 32,
+    "hp": 620,
+    "hp_max": 620,
+    "stamina": 120,
+    "stamina_max": 120,
+    "poise_cur": 48,
+    "poise_max": 48,
+    "estus": 5,
+    "locked_on": null,
+    "level": 1,
+    "souls": 854,
+    "souls_to_next": 418,
+    "souls_spent": 0,
+    "attributes": {
+      "strength": 12,
+      "endurance": 20,
+      "agility": 10,
+      "speed": 10,
+      "vigour": 10,
+      "willpower": 10,
+      "intellect": 10,
+      "hist-bond": 10,
+      "personality": 10,
+      "luck": 10
+    },
+    "equip_load_pct": 13.013698630136986,
+    "roll_class": "LIGHT",
+    "burden_ratio": 0.052055,
+    "burden_tier": "UNBURDENED",
+    "in_combat": false,
+    "water_band": "W0",
+    "breath_s": 60,
+    "breath_max_s": 60,
+    "submerged": false,
+    "airborne": false,
+    "mired": false,
+    "denied_by_water": {
+      "sprint": false,
+      "roll": false
+    },
+    "afflictions": [],
+    "stranded_by": null,
+    "equipped": {
+      "weapon_id": "ssw_garrison_sword",
+      "weapon_name": "Imperial garrison sword",
+      "weapon_class": "SSW",
+      "weight_tier": "light",
+      "reach_m": 1.95,
+      "attack_rating": 118,
+      "stance": "one_hand",
+      "offhand": "o1_sword_shield",
+      "offhand_kind": "shield",
+      "shield": "marsh_oak_medium",
+      "shield_class": "medium",
+      "guard_angle_deg": 75,
+      "slots_declared": 31,
+      "slots_reachable_in_this_configuration": [
+        "art.1",
+        "backstep.r1",
+        "guard.counter",
+        "guardbreak",
+        "jump.r1",
+        "plunge",
+        "r1.1",
+        "r1.2",
+        "r1.3",
+        "r2",
+        "r2.charged",
+        "roll.r1",
+        "run.r1",
+        "run.r2",
+        "shield.bash"
+      ],
+      "chain_root": "r1.1",
+      "distinct_clips": 31
+    },
+    "focus": 94,
+    "focus_max": 94,
+    "focus_locked": true,
+    "attuned": [
+      "spark_dart",
+      "slowfall"
+    ],
+    "effects_active": [],
+    "levitating": false,
+    "altitude_m": 0
+  },
+  "region_end": {
+    "settlement": "blackrose",
+    "interior": null,
+    "hour": 13.91,
+    "pos": [
+      1908.53105,
+      2.59,
+      4449.863093
+    ],
+    "door_in_reach": null
+  },
+  "wall_clock_s": 95.2
+}

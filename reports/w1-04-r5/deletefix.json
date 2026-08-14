@@ -1,0 +1,68 @@
+{
+  "tool": "tools/world/w1-04-r5-deletefix.mjs",
+  "when": "2026-08-08T07:08:50.466Z",
+  "commit": null,
+  "rows": [
+    {
+      "cell": "A  shipped",
+      "flags": [],
+      "doorsteps_inside_a_building": 0,
+      "doorsteps_inside_their_own_building": 0,
+      "doors_at_the_building_centre": 0,
+      "lamps_outside_their_room": 0,
+      "hearths_outside": 0,
+      "meshes_more_than_0_6m_outside": 0
+    },
+    {
+      "cell": "B  doorstep cut",
+      "flags": [
+        "--no-doorstep"
+      ],
+      "doorsteps_inside_a_building": 113,
+      "doorsteps_inside_their_own_building": 103,
+      "doors_at_the_building_centre": 112,
+      "lamps_outside_their_room": 0,
+      "hearths_outside": 0,
+      "meshes_more_than_0_6m_outside": 0
+    },
+    {
+      "cell": "C  lamp clamp cut",
+      "flags": [
+        "--no-lamp-clamp"
+      ],
+      "doorsteps_inside_a_building": 0,
+      "doorsteps_inside_their_own_building": 0,
+      "doors_at_the_building_centre": 0,
+      "lamps_outside_their_room": 74,
+      "hearths_outside": 31,
+      "meshes_more_than_0_6m_outside": 153
+    },
+    {
+      "cell": "D  both cut",
+      "flags": [
+        "--no-doorstep",
+        "--no-lamp-clamp"
+      ],
+      "doorsteps_inside_a_building": 113,
+      "doorsteps_inside_their_own_building": 103,
+      "doors_at_the_building_centre": 112,
+      "lamps_outside_their_room": 74,
+      "hearths_outside": 31,
+      "meshes_more_than_0_6m_outside": 153
+    },
+    {
+      "cell": "E  the whole join cut (round 3)",
+      "flags": [
+        "--no-join"
+      ],
+      "doorsteps_inside_a_building": 113,
+      "doorsteps_inside_their_own_building": 103,
+      "doors_at_the_building_centre": 112,
+      "lamps_outside_their_room": 0,
+      "hearths_outside": 0,
+      "meshes_more_than_0_6m_outside": 0
+    }
+  ],
+  "shape": "TWO INDEPENDENT FIXES, NOT TWO GUARDS FOR ONE DEFECT. Each leg alone moves its own number and only its own number; cutting either one is enough to bring its defect back.",
+  "findings": []
+}

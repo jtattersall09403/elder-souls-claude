@@ -1,0 +1,91 @@
+{
+  "probe": "critic-w1-21-r2-consume",
+  "at": "2026-08-08T03:15:47.266Z",
+  "loadavg_start": "19.18 19.99 19.58 32/521 14229",
+  "checks": [
+    {
+      "id": "M1",
+      "what": "the PAINTER draws exactly the cells the MODEL reveals (drawn_cells == revealed_cells)",
+      "result": "pass",
+      "detail": "full 1096/1096, half 1078/1078, none 0/0"
+    },
+    {
+      "id": "M2",
+      "what": "CONSUMPTION: perturbing the model changes what reaches the FRAMEBUFFER, world and camera held still",
+      "result": "pass",
+      "detail": "lit pixels inside the map drawing box: full 10310, half 10204, none 13"
+    },
+    {
+      "id": "M3",
+      "what": "ABLATION: an empty model draws NOTHING — undiscovered is unrendered, not dimmed (S35)",
+      "result": "pass",
+      "detail": "empty footprint -> 0 cells drawn, 0 squares, 13 lit px in the box"
+    },
+    {
+      "id": "M4",
+      "what": "CONTROL: with the body and camera still, the ONLY thing that moved is the map",
+      "result": "pass",
+      "detail": "11544 pixels differ across the whole frame between the full and the empty model — compare the 1,586,540 my walking arm produced, of which almost all was the live world behind a 0.94-opaque panel."
+    }
+  ],
+  "data": {
+    "walk": {
+      "places": [
+        "lilmoth",
+        "stormhold",
+        "thorn",
+        "gideon"
+      ],
+      "revealed": 1096,
+      "footprint_cells": 4
+    },
+    "arms": {
+      "full": {
+        "kept": 4,
+        "model_revealed": 1096,
+        "model_places": 4,
+        "painter_drawn_cells": 1096,
+        "terrain_rect": [
+          683.91,
+          230,
+          552.18,
+          634
+        ],
+        "screen_places_drawn": 4,
+        "lit_px_in_terrain_rect": 10310
+      },
+      "half": {
+        "kept": 2,
+        "model_revealed": 1078,
+        "model_places": 2,
+        "painter_drawn_cells": 1078,
+        "terrain_rect": [
+          683.91,
+          230,
+          552.18,
+          634
+        ],
+        "screen_places_drawn": 2,
+        "lit_px_in_terrain_rect": 10204
+      },
+      "none": {
+        "kept": 0,
+        "model_revealed": 0,
+        "model_places": 0,
+        "painter_drawn_cells": 0,
+        "terrain_rect": [
+          683.91,
+          230,
+          552.18,
+          634
+        ],
+        "screen_places_drawn": 0,
+        "lit_px_in_terrain_rect": 13
+      }
+    },
+    "full_vs_none_whole_frame_px": 11544
+  },
+  "loadavg_end": "8.48 13.10 16.68 6/295 6438",
+  "pass": 4,
+  "fail": 0
+}

@@ -1,0 +1,32 @@
+{
+  "result": {
+    "outside": {
+      "visible_cells": [
+        "province"
+      ],
+      "cellFor": "province",
+      "env_interior": null
+    },
+    "afterDoor": {
+      "visible_cells": [
+        "province"
+      ],
+      "cellFor": "interior",
+      "env_interior": "thorn-hall"
+    },
+    "afterApplyCell": {
+      "visible_cells": [
+        "interior"
+      ],
+      "cellFor": "interior",
+      "env_interior": "thorn-hall"
+    },
+    "afterLeave": {
+      "visible_cells": [
+        "interior"
+      ],
+      "cellFor": "province",
+      "env_interior": null
+    }
+  }
+}

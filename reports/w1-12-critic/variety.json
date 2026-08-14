@@ -1,0 +1,248 @@
+{
+  "commit": "see status file",
+  "frames": 1800,
+  "seed": 1337,
+  "mode": "variety",
+  "roster_size": 8,
+  "distinct_shape_signatures": 8,
+  "shape_groups": [
+    [
+      "beast_slitherfang"
+    ],
+    [
+      "champion_hist_marked"
+    ],
+    [
+      "cst_sap_speaker"
+    ],
+    [
+      "drowned_greater"
+    ],
+    [
+      "drowned_lesser"
+    ],
+    [
+      "guard_legion"
+    ],
+    [
+      "inf_trash"
+    ],
+    [
+      "probe_pulse"
+    ]
+  ],
+  "distinct_scale_free_signatures": 8,
+  "signatures": {
+    "beast_slitherfang": {
+      "spacing_variance": 1.514,
+      "mean_dist_m": 2.8031,
+      "min_dist_dwell": 0.1317,
+      "state_entropy": 2.5407,
+      "commits": 7,
+      "inter_commit_cov": 0.1674,
+      "feint_release_ratio": 0.3,
+      "mean_speed_mps": 2.9665,
+      "state_fractions": {
+        "APPROACH": 0.082,
+        "CIRCLE": 0.296,
+        "COMMIT": 0.186,
+        "FEINT_STEP": 0.168,
+        "RECOVER": 0.177,
+        "REPOSITION": 0.031,
+        "RUSH": 0.061
+      },
+      "move_starts": {
+        "lunge": 4,
+        "whip": 3
+      },
+      "omega_m": 2,
+      "archetype": "BEAST",
+      "tier": "trash",
+      "hp": 286,
+      "trace_hash": "f738dddd0bf47f61"
+    },
+    "champion_hist_marked": {
+      "spacing_variance": 2.4703,
+      "mean_dist_m": 3.9446,
+      "min_dist_dwell": 0.2575,
+      "state_entropy": 2.6007,
+      "commits": 4,
+      "inter_commit_cov": 0.2631,
+      "feint_release_ratio": 0.6,
+      "mean_speed_mps": 2.7151,
+      "state_fractions": {
+        "APPROACH": 0.234,
+        "CIRCLE": 0.24,
+        "COMMIT": 0.116,
+        "FEINT_STEP": 0.173,
+        "RECOVER": 0.044,
+        "REPOSITION": 0.051,
+        "RUSH": 0.142
+      },
+      "move_starts": {
+        "combo_a": 4
+      },
+      "omega_m": 2.9,
+      "archetype": "INFANTRY",
+      "tier": "elite",
+      "hp": 2876,
+      "trace_hash": "c10e291f0aef43de"
+    },
+    "cst_sap_speaker": {
+      "spacing_variance": 1.3915,
+      "mean_dist_m": 3.421,
+      "min_dist_dwell": 0.015,
+      "state_entropy": 2.3433,
+      "commits": 0,
+      "inter_commit_cov": 0,
+      "feint_release_ratio": 1,
+      "mean_speed_mps": 2.9631,
+      "state_fractions": {
+        "APPROACH": 0.121,
+        "CIRCLE": 0.237,
+        "DISENGAGE": 0.14,
+        "FEINT_STEP": 0.234,
+        "REPOSITION": 0.016,
+        "RUSH": 0.252
+      },
+      "move_starts": {},
+      "omega_m": 2,
+      "archetype": "CASTER",
+      "tier": "elite",
+      "hp": 380,
+      "trace_hash": "0e08a18770ebed26"
+    },
+    "drowned_greater": {
+      "spacing_variance": 2.1223,
+      "mean_dist_m": 3.0061,
+      "min_dist_dwell": 0.5144,
+      "state_entropy": 1.9327,
+      "commits": 1,
+      "inter_commit_cov": 0,
+      "feint_release_ratio": 0,
+      "mean_speed_mps": 2.2412,
+      "state_fractions": {
+        "APPROACH": 0.388,
+        "CIRCLE": 0.121,
+        "COMMIT": 0.034,
+        "FEINT_STEP": 0.012,
+        "RECOVER": 0.033,
+        "REPOSITION": 0.016,
+        "RUSH": 0.394
+      },
+      "move_starts": {
+        "thrust": 1
+      },
+      "omega_m": 2.4,
+      "archetype": "INFANTRY",
+      "tier": "trash",
+      "hp": 640,
+      "trace_hash": "8548e9e8084f170b"
+    },
+    "drowned_lesser": {
+      "spacing_variance": 1.8856,
+      "mean_dist_m": 3.4114,
+      "min_dist_dwell": 0.1533,
+      "state_entropy": 2.6427,
+      "commits": 5,
+      "inter_commit_cov": 0.1302,
+      "feint_release_ratio": 0.4444,
+      "mean_speed_mps": 2.3566,
+      "state_fractions": {
+        "APPROACH": 0.152,
+        "CIRCLE": 0.234,
+        "COMMIT": 0.152,
+        "FEINT_STEP": 0.149,
+        "RECOVER": 0.174,
+        "REPOSITION": 0.02,
+        "RUSH": 0.118
+      },
+      "move_starts": {
+        "thrust": 3,
+        "combo_b": 2
+      },
+      "omega_m": 2.4,
+      "archetype": "INFANTRY",
+      "tier": "trash",
+      "hp": 260,
+      "trace_hash": "10fd2f8ea51ebf99"
+    },
+    "guard_legion": {
+      "spacing_variance": 1.9448,
+      "mean_dist_m": 3.3964,
+      "min_dist_dwell": 0.2018,
+      "state_entropy": 2.6223,
+      "commits": 4,
+      "inter_commit_cov": 0.0384,
+      "feint_release_ratio": 0.5556,
+      "mean_speed_mps": 2.2545,
+      "state_fractions": {
+        "APPROACH": 0.176,
+        "CIRCLE": 0.221,
+        "COMMIT": 0.141,
+        "FEINT_STEP": 0.146,
+        "RECOVER": 0.089,
+        "REPOSITION": 0.021,
+        "RUSH": 0.207
+      },
+      "move_starts": {
+        "thrust": 2,
+        "chop": 1,
+        "combo_a": 1
+      },
+      "omega_m": 2.4,
+      "archetype": "INFANTRY",
+      "tier": "trash",
+      "hp": 520,
+      "trace_hash": "057e8a69744fad4c"
+    },
+    "inf_trash": {
+      "spacing_variance": 1.9285,
+      "mean_dist_m": 3.2192,
+      "min_dist_dwell": 0.2581,
+      "state_entropy": 2.6394,
+      "commits": 4,
+      "inter_commit_cov": 0.1477,
+      "feint_release_ratio": 0.5,
+      "mean_speed_mps": 2.2934,
+      "state_fractions": {
+        "APPROACH": 0.201,
+        "CIRCLE": 0.213,
+        "COMMIT": 0.143,
+        "FEINT_STEP": 0.131,
+        "RECOVER": 0.129,
+        "REPOSITION": 0.018,
+        "RUSH": 0.164
+      },
+      "move_starts": {
+        "chop": 2,
+        "combo_b": 1,
+        "thrust": 1
+      },
+      "omega_m": 2.4,
+      "archetype": "INFANTRY",
+      "tier": "trash",
+      "hp": 412,
+      "trace_hash": "d85d33d4a3ae3167"
+    },
+    "probe_pulse": {
+      "spacing_variance": 2.477,
+      "mean_dist_m": 7.2842,
+      "min_dist_dwell": 0,
+      "state_entropy": 0,
+      "commits": 0,
+      "inter_commit_cov": 0,
+      "feint_release_ratio": -1,
+      "mean_speed_mps": 0,
+      "state_fractions": {
+        "REPOSITION": 1
+      },
+      "move_starts": {},
+      "omega_m": 1,
+      "archetype": "FIXTURE",
+      "tier": "prop",
+      "hp": 99999,
+      "trace_hash": "79d0a527a8bd019c"
+    }
+  }
+}

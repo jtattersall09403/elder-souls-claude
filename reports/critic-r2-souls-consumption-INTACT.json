@@ -1,0 +1,911 @@
+{
+  "tool": "souls-consumption",
+  "at": "2026-08-07T20:51:38.339Z",
+  "arms": {
+    "A": {
+      "archetype": "inf_trash",
+      "declared_souls": 64,
+      "entities": 6,
+      "level": 1,
+      "souls_to_next": 418,
+      "souls_at_start": 0,
+      "kills": [
+        {
+          "eid": "probe-fight-1-infantry-0",
+          "souls_before": 0,
+          "souls_after": 64,
+          "delta": 64,
+          "gold_before": 0,
+          "gold_after": 0,
+          "events": [
+            {
+              "f": 3,
+              "type": "souls_awarded",
+              "eid": "probe-fight-1-infantry-0",
+              "archetype": "inf_trash",
+              "tier": "trash",
+              "base": 64,
+              "night": false,
+              "multiplier": 1,
+              "souls": 64,
+              "held": 64,
+              "hour": 14,
+              "gold_awarded": 0,
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "eid": "probe-fight-1-infantry-1",
+          "souls_before": 64,
+          "souls_after": 128,
+          "delta": 64,
+          "gold_before": 0,
+          "gold_after": 0,
+          "events": [
+            {
+              "f": 7,
+              "type": "souls_awarded",
+              "eid": "probe-fight-1-infantry-1",
+              "archetype": "inf_trash",
+              "tier": "trash",
+              "base": 64,
+              "night": false,
+              "multiplier": 1,
+              "souls": 64,
+              "held": 128,
+              "hour": 14,
+              "gold_awarded": 0,
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "eid": "probe-fight-1-infantry-2",
+          "souls_before": 128,
+          "souls_after": 192,
+          "delta": 64,
+          "gold_before": 0,
+          "gold_after": 0,
+          "events": [
+            {
+              "f": 11,
+              "type": "souls_awarded",
+              "eid": "probe-fight-1-infantry-2",
+              "archetype": "inf_trash",
+              "tier": "trash",
+              "base": 64,
+              "night": false,
+              "multiplier": 1,
+              "souls": 64,
+              "held": 192,
+              "hour": 14,
+              "gold_awarded": 0,
+              "enabled": true
+            }
+          ]
+        },
+        {
+          "eid": "probe-fight-1-infantry-3",
+          "souls_before": 192,
+          "souls_after": 256,
+          "delta": 64,
+          "gold_before": 0,
+          "gold_after": 0,
+          "events": [
+            {
+              "f": 15,
+              "type": "souls_awarded",
+              "eid": "probe-fight-1-infantry-3",
+              "archetype": "inf_trash",
+              "tier": "trash",
+              "base": 64,
+              "night": false,
+              "multiplier": 1,
+              "souls": 64,
+              "held": 256,
+              "hour": 14,
+              "gold_awarded": 0,
+              "enabled": true
+            }
+          ]
+        }
+      ],
+      "souls_at_end": 256,
+      "level_at_end": 1
+    },
+    "B": {
+      "note": "sim.souls.enabled = false — the scan still runs and still settles bodies, it just banks nothing",
+      "kills": [
+        {
+          "eid": "probe-fight-2-infantry-0",
+          "souls_before": 256,
+          "souls_after": 256,
+          "delta": 0,
+          "gold_before": 0,
+          "gold_after": 0,
+          "events": [
+            {
+              "f": 20,
+              "type": "souls_awarded",
+              "eid": "probe-fight-2-infantry-0",
+              "archetype": "inf_trash",
+              "tier": "trash",
+              "base": 64,
+              "night": false,
+              "multiplier": 1,
+              "souls": 0,
+              "held": 256,
+              "hour": 14,
+              "gold_awarded": 0,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "eid": "probe-fight-2-infantry-1",
+          "souls_before": 256,
+          "souls_after": 256,
+          "delta": 0,
+          "gold_before": 0,
+          "gold_after": 0,
+          "events": [
+            {
+              "f": 24,
+              "type": "souls_awarded",
+              "eid": "probe-fight-2-infantry-1",
+              "archetype": "inf_trash",
+              "tier": "trash",
+              "base": 64,
+              "night": false,
+              "multiplier": 1,
+              "souls": 0,
+              "held": 256,
+              "hour": 14,
+              "gold_awarded": 0,
+              "enabled": false
+            }
+          ]
+        },
+        {
+          "eid": "probe-fight-2-infantry-2",
+          "souls_before": 256,
+          "souls_after": 256,
+          "delta": 0,
+          "gold_before": 0,
+          "gold_after": 0,
+          "events": [
+            {
+              "f": 28,
+              "type": "souls_awarded",
+              "eid": "probe-fight-2-infantry-2",
+              "archetype": "inf_trash",
+              "tier": "trash",
+              "base": 64,
+              "night": false,
+              "multiplier": 1,
+              "souls": 0,
+              "held": 256,
+              "hour": 14,
+              "gold_awarded": 0,
+              "enabled": false
+            }
+          ]
+        }
+      ]
+    },
+    "C": {
+      "shipped": 64,
+      "arms": [
+        {
+          "set_to": 0,
+          "kill": {
+            "eid": "probe-fight-3-infantry-0",
+            "souls_before": 256,
+            "souls_after": 256,
+            "delta": 0,
+            "gold_before": 0,
+            "gold_after": 0,
+            "events": [
+              {
+                "f": 33,
+                "type": "souls_awarded",
+                "eid": "probe-fight-3-infantry-0",
+                "archetype": "inf_trash",
+                "tier": "trash",
+                "base": 0,
+                "night": false,
+                "multiplier": 1,
+                "souls": 0,
+                "held": 256,
+                "hour": 14,
+                "gold_awarded": 0,
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "set_to": 999,
+          "kill": {
+            "eid": "probe-fight-4-infantry-0",
+            "souls_before": 256,
+            "souls_after": 1255,
+            "delta": 999,
+            "gold_before": 0,
+            "gold_after": 0,
+            "events": [
+              {
+                "f": 38,
+                "type": "souls_awarded",
+                "eid": "probe-fight-4-infantry-0",
+                "archetype": "inf_trash",
+                "tier": "trash",
+                "base": 999,
+                "night": false,
+                "multiplier": 1,
+                "souls": 999,
+                "held": 1255,
+                "hour": 14,
+                "gold_awarded": 0,
+                "enabled": true
+              }
+            ]
+          }
+        }
+      ],
+      "restored": {
+        "set_to": 64,
+        "kill": {
+          "eid": "probe-fight-5-infantry-0",
+          "souls_before": 1255,
+          "souls_after": 1319,
+          "delta": 64,
+          "gold_before": 0,
+          "gold_after": 0,
+          "events": [
+            {
+              "f": 43,
+              "type": "souls_awarded",
+              "eid": "probe-fight-5-infantry-0",
+              "archetype": "inf_trash",
+              "tier": "trash",
+              "base": 64,
+              "night": false,
+              "multiplier": 1,
+              "souls": 64,
+              "held": 1319,
+              "hour": 14,
+              "gold_awarded": 0,
+              "enabled": true
+            }
+          ]
+        }
+      }
+    },
+    "D": {
+      "declared_souls": 0,
+      "hp": 99999,
+      "kill": {
+        "eid": "e31",
+        "souls_before": 1319,
+        "souls_after": 1319,
+        "delta": 0,
+        "gold_before": 0,
+        "gold_after": 0,
+        "events": []
+      }
+    },
+    "E": {
+      "arms": [
+        {
+          "player_level": 1,
+          "kill": {
+            "eid": "probe-fight-6-infantry-0",
+            "souls_before": 1319,
+            "souls_after": 1383,
+            "delta": 64,
+            "gold_before": 0,
+            "gold_after": 0,
+            "events": [
+              {
+                "f": 52,
+                "type": "souls_awarded",
+                "eid": "probe-fight-6-infantry-0",
+                "archetype": "inf_trash",
+                "tier": "trash",
+                "base": 64,
+                "night": false,
+                "multiplier": 1,
+                "souls": 64,
+                "held": 1383,
+                "hour": 14,
+                "gold_awarded": 0,
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "player_level": 90,
+          "kill": {
+            "eid": "probe-fight-7-infantry-0",
+            "souls_before": 1383,
+            "souls_after": 1447,
+            "delta": 64,
+            "gold_before": 0,
+            "gold_after": 0,
+            "events": [
+              {
+                "f": 57,
+                "type": "souls_awarded",
+                "eid": "probe-fight-7-infantry-0",
+                "archetype": "inf_trash",
+                "tier": "trash",
+                "base": 64,
+                "night": false,
+                "multiplier": 1,
+                "souls": 64,
+                "held": 1447,
+                "hour": 14.01,
+                "gold_awarded": 0,
+                "enabled": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "F": {
+      "arms": [
+        {
+          "hour": 14,
+          "kill": {
+            "eid": "probe-fight-8-infantry-0",
+            "souls_before": 1447,
+            "souls_after": 1511,
+            "delta": 64,
+            "gold_before": 0,
+            "gold_after": 0,
+            "events": [
+              {
+                "f": 62,
+                "type": "souls_awarded",
+                "eid": "probe-fight-8-infantry-0",
+                "archetype": "inf_trash",
+                "tier": "trash",
+                "base": 64,
+                "night": false,
+                "multiplier": 1,
+                "souls": 64,
+                "held": 1511,
+                "hour": 14,
+                "gold_awarded": 0,
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "hour": 23,
+          "kill": {
+            "eid": "probe-fight-9-infantry-0",
+            "souls_before": 1511,
+            "souls_after": 1597,
+            "delta": 86,
+            "gold_before": 0,
+            "gold_after": 0,
+            "events": [
+              {
+                "f": 67,
+                "type": "souls_awarded",
+                "eid": "probe-fight-9-infantry-0",
+                "archetype": "inf_trash",
+                "tier": "trash",
+                "base": 64,
+                "night": true,
+                "multiplier": 1.35,
+                "souls": 86,
+                "held": 1597,
+                "hour": 23,
+                "gold_awarded": 0,
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "hour": 3,
+          "kill": {
+            "eid": "probe-fight-10-infantry-0",
+            "souls_before": 1597,
+            "souls_after": 1683,
+            "delta": 86,
+            "gold_before": 0,
+            "gold_after": 0,
+            "events": [
+              {
+                "f": 72,
+                "type": "souls_awarded",
+                "eid": "probe-fight-10-infantry-0",
+                "archetype": "inf_trash",
+                "tier": "trash",
+                "base": 64,
+                "night": true,
+                "multiplier": 1.35,
+                "souls": 86,
+                "held": 1683,
+                "hour": 3,
+                "gold_awarded": 0,
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "hour": 20.99,
+          "kill": {
+            "eid": "probe-fight-11-infantry-0",
+            "souls_before": 1683,
+            "souls_after": 1747,
+            "delta": 64,
+            "gold_before": 0,
+            "gold_after": 0,
+            "events": [
+              {
+                "f": 77,
+                "type": "souls_awarded",
+                "eid": "probe-fight-11-infantry-0",
+                "archetype": "inf_trash",
+                "tier": "trash",
+                "base": 64,
+                "night": false,
+                "multiplier": 1,
+                "souls": 64,
+                "held": 1747,
+                "hour": 20.99,
+                "gold_awarded": 0,
+                "enabled": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "G": {
+      "earned_souls": 448,
+      "kills_to_first_level": 2,
+      "price_of_level_2": 418,
+      "hearths": 29,
+      "well": "hearth-archon",
+      "rest": {
+        "rested": true,
+        "focus_restored": true,
+        "focus": 30,
+        "focus_max": 30,
+        "why": null,
+        "rest_clamp_reset": true,
+        "sap_taint": {
+          "band": 0,
+          "rests": 0,
+          "immune": true,
+          "ward_uses_left": 3
+        },
+        "note": "RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here.",
+        "hearth": "hearth-archon",
+        "hearth_resolved_by": "proximity",
+        "respawn_point_set": "hearth-archon",
+        "hearths_discovered": [
+          "hearth-archon",
+          "hearth-lilmoth"
+        ],
+        "world_reset": {
+          "respawned": [
+            "probe-fight-13-infantry-0"
+          ],
+          "held_dead": [],
+          "why": "hearth_rest",
+          "epoch": 1
+        },
+        "clock": {
+          "before": 14.002963,
+          "after": 20.002963,
+          "hours": 6,
+          "day": 0
+        },
+        "diseases_advanced": [],
+        "hp": 196,
+        "flask_charges": 5,
+        "no_hearth_note": null,
+        "menu": {
+          "hearth": "hearth-archon",
+          "name": "The Archon Well",
+          "actions": [
+            "rest",
+            "level_up",
+            "attune"
+          ],
+          "destinations": [],
+          "_s7": "RI-PRG04 §1 / seam S7: a sapwell is a wound, not a door (RI-LOR05 §4). There is no destination list here and there is no method on HearthSystem that takes a hearth id and moves the player to it. Travel is game/src/engine.js boardTravel(): NPC-brokered, gold-priced, fixed routes, real ride time."
+        }
+      },
+      "before": {
+        "level": 1,
+        "souls": 448,
+        "souls_spent": 0,
+        "gold": 0,
+        "attributes": {
+          "strength": 6,
+          "endurance": 12,
+          "agility": 13,
+          "speed": 11,
+          "vigour": 6,
+          "willpower": 10,
+          "intellect": 15,
+          "hist-bond": 14,
+          "personality": 14,
+          "luck": 11
+        },
+        "hp_max": 196,
+        "stamina_max": 88,
+        "body_hp_max": 196,
+        "body_stamina_max": 88
+      },
+      "ui_mode": "levelup",
+      "rows": 10,
+      "target_row": 4,
+      "the_screen_promised": [
+        {
+          "key": "hp_max",
+          "label": "hp max",
+          "from": 196,
+          "to": 222
+        }
+      ],
+      "after": {
+        "level": 2,
+        "souls": 30,
+        "souls_spent": 418,
+        "gold": 0,
+        "attributes": {
+          "strength": 6,
+          "endurance": 12,
+          "agility": 13,
+          "speed": 11,
+          "vigour": 7,
+          "willpower": 10,
+          "intellect": 15,
+          "hist-bond": 14,
+          "personality": 14,
+          "luck": 11
+        },
+        "hp_max": 222,
+        "stamina_max": 88,
+        "body_hp_max": 222,
+        "body_stamina_max": 88
+      },
+      "behaviour": {
+        "blow": 210,
+        "hp_max_before_spend": 196,
+        "hp_max_after_spend": 222,
+        "survived_with_the_level": true,
+        "hp_left": 12,
+        "would_have_died_without_it": true
+      }
+    },
+    "H": {
+      "before_save": {
+        "level": 2,
+        "souls": 30,
+        "souls_spent": 418,
+        "gold": 0,
+        "attributes": {
+          "strength": 6,
+          "endurance": 12,
+          "agility": 13,
+          "speed": 11,
+          "vigour": 7,
+          "willpower": 10,
+          "intellect": 15,
+          "hist-bond": 14,
+          "personality": 14,
+          "luck": 11
+        },
+        "hp_max": 222,
+        "stamina_max": 88,
+        "body_hp_max": 222,
+        "body_stamina_max": 88
+      },
+      "wrote": true,
+      "contaminated": {
+        "level": 1,
+        "souls": 7,
+        "souls_spent": 418,
+        "gold": 0,
+        "attributes": {
+          "strength": 6,
+          "endurance": 12,
+          "agility": 13,
+          "speed": 11,
+          "vigour": 3,
+          "willpower": 10,
+          "intellect": 15,
+          "hist-bond": 14,
+          "personality": 14,
+          "luck": 11
+        },
+        "hp_max": 222,
+        "stamina_max": 88,
+        "body_hp_max": 222,
+        "body_stamina_max": 88
+      },
+      "after_load_live": {
+        "level": 2,
+        "souls": 30,
+        "souls_spent": 418,
+        "gold": 0,
+        "attributes": {
+          "agility": 13,
+          "endurance": 12,
+          "hist-bond": 14,
+          "intellect": 15,
+          "luck": 11,
+          "personality": 14,
+          "speed": 11,
+          "strength": 6,
+          "vigour": 7,
+          "willpower": 10
+        },
+        "hp_max": 222,
+        "stamina_max": 88,
+        "body_hp_max": 222,
+        "body_stamina_max": 88
+      }
+    },
+    "I": {
+      "the_kill": {
+        "eid": "probe-fight-14-infantry-0",
+        "souls_before": 30,
+        "souls_after": 94,
+        "delta": 64,
+        "gold_before": 0,
+        "gold_after": 0,
+        "events": [
+          {
+            "f": 3,
+            "type": "souls_awarded",
+            "eid": "probe-fight-14-infantry-0",
+            "archetype": "inf_trash",
+            "tier": "trash",
+            "base": 64,
+            "night": false,
+            "multiplier": 1,
+            "souls": 64,
+            "held": 94,
+            "hour": 20.01,
+            "gold_awarded": 0,
+            "enabled": true
+          }
+        ]
+      },
+      "souls_at_save": 94,
+      "souls_after_load_and_10_frames": 94
+    },
+    "K": {
+      "declared_souls": 64,
+      "fight": {
+        "eid": "e0",
+        "frames_to_death": 1421,
+        "capped": false,
+        "swings": 42,
+        "souls_before": 0,
+        "souls_after": 64,
+        "delta": 64,
+        "events": [
+          {
+            "type": "souls_awarded",
+            "souls": 64,
+            "base": 64,
+            "night": false,
+            "gold_awarded": 0
+          }
+        ],
+        "seconds_at_60hz": 23.68
+      },
+      "control_no_input": {
+        "eid": "e0",
+        "frames_to_death": null,
+        "capped": true,
+        "swings": 0,
+        "souls_before": 0,
+        "souls_after": 0,
+        "delta": 0,
+        "events": [],
+        "seconds_at_60hz": null
+      }
+    },
+    "L": {
+      "fixed": {
+        "with_combat": true,
+        "hazard": "the-fall",
+        "step_error": null,
+        "region": "valus-ridge",
+        "hazards_visited": 1,
+        "armed": true,
+        "declared_damage": {
+          "kind": "pct_max_hp",
+          "value": 18
+        },
+        "hp_before_tick": 40,
+        "body_hp_right_after": 0,
+        "entity_hp_right_after": 0,
+        "body_hp_4_frames_later": 0,
+        "entity_hp_4_frames_later": 0,
+        "body_dead": true,
+        "souls_before": 0,
+        "souls_after": 64,
+        "delta": 64,
+        "events": [
+          {
+            "souls": 64,
+            "archetype": "inf_trash"
+          }
+        ]
+      },
+      "control_view_write": {
+        "with_combat": false,
+        "hazard": "the-fall",
+        "step_error": null,
+        "region": "valus-ridge",
+        "hazards_visited": 1,
+        "armed": true,
+        "declared_damage": {
+          "kind": "pct_max_hp",
+          "value": 18
+        },
+        "hp_before_tick": 40,
+        "body_hp_right_after": 40,
+        "entity_hp_right_after": 0,
+        "body_hp_4_frames_later": 40,
+        "entity_hp_4_frames_later": 40,
+        "body_dead": false,
+        "souls_before": 0,
+        "souls_after": 0,
+        "delta": 0,
+        "events": []
+      }
+    },
+    "M": {
+      "passes": [
+        {
+          "label": "first kill",
+          "eids": [
+            "deep-kin-war-brood-infantry-0",
+            "deep-kin-war-brood-infantry-1",
+            "deep-kin-war-brood-infantry-2"
+          ],
+          "bodies": 3,
+          "paid": 192,
+          "refused_rearms": 0
+        },
+        {
+          "label": "respawned with NO rest",
+          "eids": [
+            "deep-kin-war-brood-infantry-0",
+            "deep-kin-war-brood-infantry-1",
+            "deep-kin-war-brood-infantry-2"
+          ],
+          "bodies": 3,
+          "paid": 0,
+          "refused_rearms": 6
+        },
+        {
+          "label": "respawned with NO rest, again",
+          "eids": [
+            "deep-kin-war-brood-infantry-0",
+            "deep-kin-war-brood-infantry-1",
+            "deep-kin-war-brood-infantry-2"
+          ],
+          "bodies": 3,
+          "paid": 0,
+          "refused_rearms": 12
+        },
+        {
+          "label": "after ONE rest",
+          "eids": [
+            "deep-kin-war-brood-infantry-0",
+            "deep-kin-war-brood-infantry-1",
+            "deep-kin-war-brood-infantry-2"
+          ],
+          "bodies": 3,
+          "paid": 192,
+          "refused_rearms": 12
+        }
+      ],
+      "rests": 1,
+      "same_eids": true,
+      "epoch": {
+        "before": 0,
+        "after": 1
+      }
+    }
+  },
+  "verdicts": [
+    {
+      "name": "A  the source exists: every kill pays exactly the statblock value",
+      "pass": true,
+      "detail": "4/4 kills paid 64 (0 skipped, no body); souls 0 -> 256, next level costs 418"
+    },
+    {
+      "name": "B  ABLATION: with sim/souls.js switched off the counter is DEAD (if this passes while A passes, A is real)",
+      "pass": true,
+      "detail": "0/3 REAL kills moved souls with the module ablated (must be 0 of at least 1); 0 skipped and not counted"
+    },
+    {
+      "name": "C  DELETE-THE-FIX on the number: the shipped `souls` field IS what the world pays",
+      "pass": true,
+      "detail": "souls=0 -> +0; souls=999 -> +999; restored 64 -> +64"
+    },
+    {
+      "name": "D  a 99,999-hp training dummy is not an infinite soul farm",
+      "pass": true,
+      "detail": "dummy_passive declares 0 souls at 99999 hp; the kill paid 0"
+    },
+    {
+      "name": "E  S9: the same kill pays the same souls at level 1 and at level 90 — no scaling of any kind",
+      "pass": true,
+      "detail": "level 1 -> +64; level 90 -> +64"
+    },
+    {
+      "name": "F  RI-PRG06 §4 night multiplier: x1.35 inside 21:00-05:00 and x1.00 outside it",
+      "pass": true,
+      "detail": "14:00 -> 64; 23:00 -> 86; 03:00 -> 86; 20:59 -> 64 (expected 64/86/86/64)"
+    },
+    {
+      "name": "G1 the loop closes: souls earned by fighting buy a level at a sapwell, driven with real input",
+      "pass": true,
+      "detail": "level 1 -> 2, vigour +1, souls 448 -> 30 (price 418); earned in 2 encounter(s)"
+    },
+    {
+      "name": "G2 CONSUMPTION: the bought attribute reaches the BODY — the combat body's max HP moves",
+      "pass": true,
+      "detail": "combat body hp_max 196 -> 222 (delta 26); the screen promised [{\"key\":\"hp_max\",\"label\":\"hp max\",\"from\":196,\"to\":222}]"
+    },
+    {
+      "name": "G3 CONSUMPTION: the body BEHAVES differently — a blow that the pre-spend body could not survive is survived",
+      "pass": true,
+      "detail": "hp_max 196 -> 222; a 210-point blow leaves 12 hp (lethal at the old ceiling: true)"
+    },
+    {
+      "name": "H  the spend survives a save and a load, AUDITED ON THE LIVE WORLD (not the blob)",
+      "pass": true,
+      "detail": "saved L2/30 souls/vigour 7; contaminated to L1/7/vigour 3; live world after load L2/30/vigour 7"
+    },
+    {
+      "name": "I  a corpse restored by a load does not pay a second time",
+      "pass": true,
+      "detail": "the corpse cost 64 souls to make; souls at save 94 -> after load + 10 frames 94"
+    },
+    {
+      "name": "J  S15: no kill anywhere in this run moved gold, and every award declares gold_awarded 0",
+      "pass": true,
+      "detail": "0/10 kills moved gold; 10 souls_awarded events, all gold_awarded 0"
+    },
+    {
+      "name": "K  A FIGHT PAYS: latched `light` input kills a live inf_trash and souls move — no kill verb",
+      "pass": true,
+      "detail": "42 swings, the sentry dies on frame 1421 (23.68 s @60), souls 0 -> 64 (declared 64), 1 souls_awarded event. SELF-BREAK, same loop with the input removed: died never in 0 swings, paid 0"
+    },
+    {
+      "name": "L  THE HAZARD DEATH PATH PAYS, and the control shows why it did not: the write must reach the body",
+      "pass": true,
+      "detail": "hazard the-fall armed=true in region 'valus-ridge'. FIXED (HazardSystem.step with the CombatSystem): body hp 40 -> 0 right after the tick, dead true, souls +64, 1 event(s). CONTROL (the same step, same hazard, same body, without it — i.e. the pre-fix write to the mirror): entity hp 0 right after -> 40 four frames later (the corpse resurrects), souls +0"
+    },
+    {
+      "name": "M  the respawn re-arm is gated on a HEARTH REST: despawn/respawn without one pays nothing",
+      "pass": true,
+      "detail": "first kill +192; same eids reused true; two despawn/respawn cycles with NO rest paid +0, +0 (round 1 paid the full value on every one); after one rest (epoch 0 -> 1) +192; refused re-arms 12"
+    }
+  ],
+  "unfalsifiable": []
+}

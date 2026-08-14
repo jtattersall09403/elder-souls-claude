@@ -1,0 +1,146 @@
+{
+  "checks": [
+    {
+      "check": "M1 the border markers are installed in the running engine",
+      "pass": true,
+      "detail": {
+        "markers": 217,
+        "by_type": {
+          "corpse_in_a_cage": 67,
+          "barge": 3,
+          "imperial_border_cairn": 53,
+          "bone_line": 9,
+          "tesserae": 1,
+          "kiln_slag_heap": 11,
+          "knife_marked_stem": 22,
+          "root_gate": 22,
+          "wrappings": 1,
+          "tide_pole": 2,
+          "salt_glass_marker": 24,
+          "guar": 2
+        },
+        "types": 12,
+        "remains": 7,
+        "solid": 144,
+        "example": {
+          "type": "corpse_in_a_cage",
+          "x": 2225,
+          "z": 3112.5,
+          "h": 2.95,
+          "r": 2.21,
+          "solid_r": 0.53,
+          "glow": 0,
+          "border": "blackwood--deep-marshes",
+          "owner": "the Dres, and it is a warning",
+          "remains": false,
+          "ground_y": 10.4
+        }
+      }
+    },
+    {
+      "check": "M2 the marker meshes are in the scene at a border",
+      "pass": true,
+      "detail": {
+        "border": "deep-marshes--eastern-rootlands",
+        "threshold_type": "corpse_in_a_cage",
+        "owner": "the Dres, and it is a warning",
+        "objects_on_this_border": 48,
+        "neighbours_within_150m": 12,
+        "stood_at": [
+          2925,
+          3662.5
+        ],
+        "at": [
+          2925,
+          3662.5
+        ],
+        "meshes": 4,
+        "instances": 53,
+        "verts": 24297,
+        "found": {
+          "threshold:root_gate": 5,
+          "threshold:corpse_in_a_cage": 45,
+          "remains:barge": 2,
+          "threshold:imperial_border_cairn": 1
+        }
+      }
+    },
+    {
+      "check": "M3 control — fewer markers are drawn away from any frontier",
+      "pass": true,
+      "detail": {
+        "note": "a renderer that draws cairns everywhere is not drawing a border",
+        "caveat": "the resident tile ring is 5 x 5 x 300 m, so a camera 900 m from the nearest cluster still has some frontier inside it. This shows the count is a function of WHERE THE CAMERA IS, not that the interior is empty — read `nearest_declared_marker_m`",
+        "at_border": 53,
+        "in_the_interior": 28,
+        "nearest_declared_marker_m": 184.7,
+        "interior_detail": {
+          "at": [
+            2869.848112800331,
+            1162.2811136150087
+          ],
+          "meshes": 4,
+          "instances": 28,
+          "verts": 8888,
+          "found": {
+            "threshold:knife_marked_stem": 16,
+            "threshold:kiln_slag_heap": 4,
+            "threshold-glow:kiln_slag_heap": 4,
+            "threshold:imperial_border_cairn": 4
+          }
+        }
+      }
+    },
+    {
+      "check": "M4 the player is stopped by a solid marker",
+      "pass": true,
+      "detail": {
+        "note": "the capsule is 0.55 m; the body must stay outside solid_r + capsule, less slop",
+        "type": "corpse_in_a_cage",
+        "at": [
+          2225,
+          3112.5
+        ],
+        "solid_r": 0.53,
+        "closest_approach_m": 1.076,
+        "walk": {
+          "frames": 1311,
+          "aborted": "stuck"
+        },
+        "err": null
+      }
+    },
+    {
+      "check": "M5 control — a marker declaring solid_r 0 is walked straight through",
+      "pass": true,
+      "detail": {
+        "note": "a bone line is stepped over, not walked around",
+        "type": "bone_line",
+        "at": [
+          387.5,
+          3375
+        ],
+        "solid_r": 0,
+        "closest_approach_m": 0.046,
+        "walk": {
+          "frames": 1452,
+          "aborted": null
+        },
+        "err": null
+      }
+    },
+    {
+      "check": "M6 the marker geometry is shared, so a tile release does not free it",
+      "pass": true,
+      "detail": {
+        "note": "province.js _release() disposes any tile geometry without userData.shared",
+        "meshes_flagged_shared": 18,
+        "meshes_missing_the_flag": [],
+        "instances_before": 52,
+        "instances_after_round_trip": 52,
+        "verts_before": 23905,
+        "verts_after_round_trip": 23905
+      }
+    }
+  ]
+}

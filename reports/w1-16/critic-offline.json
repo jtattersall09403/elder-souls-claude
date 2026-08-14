@@ -1,0 +1,720 @@
+{
+  "schema": "elder-souls/critic-w1-16-offline@1",
+  "generated": "2026-08-08T03:48:48.183Z",
+  "selftest": false,
+  "checks": [
+    {
+      "id": "C1",
+      "title": "S22 holds in both directions on every roll.json row (f@60 = 2 x t@30, and ms is the 60 Hz reading)",
+      "ok": true,
+      "detail": {
+        "rows": [
+          {
+            "kind": "roll",
+            "tier": "LIGHT",
+            "total_f60": 52,
+            "total_was_t30": 26,
+            "total_is_2x_t30": true,
+            "iframe_count_declared": 26,
+            "iframe_count_from_window": 26,
+            "window_length_matches_count": true,
+            "iframes_was_t30": 13,
+            "iframes_is_2x_t30": true,
+            "ms_declared": 867,
+            "ms_at_60hz": 867,
+            "ms_at_30hz": 1733,
+            "ms_agrees_with_60hz": true,
+            "ms_would_agree_with_30hz": false
+          },
+          {
+            "kind": "roll",
+            "tier": "MEDIUM",
+            "total_f60": 60,
+            "total_was_t30": 30,
+            "total_is_2x_t30": true,
+            "iframe_count_declared": 22,
+            "iframe_count_from_window": 22,
+            "window_length_matches_count": true,
+            "iframes_was_t30": 11,
+            "iframes_is_2x_t30": true,
+            "ms_declared": 1000,
+            "ms_at_60hz": 1000,
+            "ms_at_30hz": 2000,
+            "ms_agrees_with_60hz": true,
+            "ms_would_agree_with_30hz": false
+          },
+          {
+            "kind": "roll",
+            "tier": "HEAVY",
+            "total_f60": 88,
+            "total_was_t30": 44,
+            "total_is_2x_t30": true,
+            "iframe_count_declared": 10,
+            "iframe_count_from_window": 10,
+            "window_length_matches_count": true,
+            "iframes_was_t30": 5,
+            "iframes_is_2x_t30": true,
+            "ms_declared": 1467,
+            "ms_at_60hz": 1467,
+            "ms_at_30hz": 2933,
+            "ms_agrees_with_60hz": true,
+            "ms_would_agree_with_30hz": false
+          },
+          {
+            "kind": "roll",
+            "tier": "OVERLOADED",
+            "total_f60": 120,
+            "total_was_t30": 60,
+            "total_is_2x_t30": true,
+            "iframe_count_declared": 0,
+            "iframe_count_from_window": 0,
+            "window_length_matches_count": true,
+            "iframes_was_t30": 0,
+            "iframes_is_2x_t30": true,
+            "ms_declared": 2000,
+            "ms_at_60hz": 2000,
+            "ms_at_30hz": 4000,
+            "ms_agrees_with_60hz": true,
+            "ms_would_agree_with_30hz": false
+          },
+          {
+            "kind": "backstep",
+            "tier": "LIGHT",
+            "total_f60": 42,
+            "total_was_t30": 21,
+            "total_is_2x_t30": true,
+            "iframe_count_declared": 8,
+            "iframe_count_from_window": 8,
+            "window_length_matches_count": true,
+            "iframes_was_t30": 4,
+            "iframes_is_2x_t30": true,
+            "ms_declared": 700,
+            "ms_at_60hz": 700,
+            "ms_at_30hz": 1400,
+            "ms_agrees_with_60hz": true,
+            "ms_would_agree_with_30hz": false
+          },
+          {
+            "kind": "backstep",
+            "tier": "MEDIUM",
+            "total_f60": 42,
+            "total_was_t30": 21,
+            "total_is_2x_t30": true,
+            "iframe_count_declared": 8,
+            "iframe_count_from_window": 8,
+            "window_length_matches_count": true,
+            "iframes_was_t30": 4,
+            "iframes_is_2x_t30": true,
+            "ms_declared": 700,
+            "ms_at_60hz": 700,
+            "ms_at_30hz": 1400,
+            "ms_agrees_with_60hz": true,
+            "ms_would_agree_with_30hz": false
+          },
+          {
+            "kind": "backstep",
+            "tier": "HEAVY",
+            "total_f60": 60,
+            "total_was_t30": 30,
+            "total_is_2x_t30": true,
+            "iframe_count_declared": 0,
+            "iframe_count_from_window": 0,
+            "window_length_matches_count": true,
+            "iframes_was_t30": 0,
+            "iframes_is_2x_t30": true,
+            "ms_declared": 1000,
+            "ms_at_60hz": 1000,
+            "ms_at_30hz": 2000,
+            "ms_agrees_with_60hz": true,
+            "ms_would_agree_with_30hz": false
+          },
+          {
+            "kind": "backstep",
+            "tier": "OVERLOADED",
+            "total_f60": 80,
+            "total_was_t30": 40,
+            "total_is_2x_t30": true,
+            "iframe_count_declared": 0,
+            "iframe_count_from_window": 0,
+            "window_length_matches_count": true,
+            "iframes_was_t30": 0,
+            "iframes_is_2x_t30": true,
+            "ms_declared": 1333,
+            "ms_at_60hz": 1333,
+            "ms_at_30hz": 2667,
+            "ms_agrees_with_60hz": true,
+            "ms_would_agree_with_30hz": false
+          }
+        ],
+        "unit_declared": "f@60"
+      }
+    },
+    {
+      "id": "C2",
+      "title": "exactly three cliffs, at 30.00->30.01 / 70.00->70.01 / 100.00->100.01, zero in-band variance",
+      "ok": true,
+      "detail": {
+        "transitions": [
+          {
+            "from_pct": 30,
+            "to_pct": 30.01,
+            "iframes": [
+              26,
+              22
+            ]
+          },
+          {
+            "from_pct": 70,
+            "to_pct": 70.01,
+            "iframes": [
+              22,
+              10
+            ]
+          },
+          {
+            "from_pct": 100,
+            "to_pct": 100.01,
+            "iframes": [
+              10,
+              0
+            ]
+          }
+        ],
+        "band_variance": [
+          {
+            "band": [
+              0,
+              30
+            ],
+            "distinct_iframe_counts": 1,
+            "values": [
+              26
+            ]
+          },
+          {
+            "band": [
+              30.01,
+              70
+            ],
+            "distinct_iframe_counts": 1,
+            "values": [
+              22
+            ]
+          },
+          {
+            "band": [
+              70.01,
+              100
+            ],
+            "distinct_iframe_counts": 1,
+            "values": [
+              10
+            ]
+          },
+          {
+            "band": [
+              100.01,
+              130
+            ],
+            "distinct_iframe_counts": 1,
+            "values": [
+              0
+            ]
+          }
+        ],
+        "iframes_f60": {
+          "LIGHT": 26,
+          "MEDIUM": 22,
+          "HEAVY": 10,
+          "OVERLOADED": 0
+        }
+      }
+    },
+    {
+      "id": "C3",
+      "title": "maxLoad reproduces all 48 published grid cells exactly and is uncapped in STRENGTH",
+      "ok": true,
+      "detail": {
+        "cells_off_by_more_than_0_pct": [],
+        "n_cells": 48,
+        "uncapped_delta": 58.5,
+        "uncapped_expected": 58.5
+      }
+    },
+    {
+      "id": "C4",
+      "title": "the pack moves burden and leaves equip load byte-identical; the two divisors differ by exactly 2.5x",
+      "ok": true,
+      "detail": {
+        "equip_capacity": 65,
+        "burden_divisor": 162.5,
+        "ratio": 2.5,
+        "equip_pct": [
+          22.92307692307692,
+          22.92307692307692
+        ],
+        "burden_ratio": [
+          2.922461538461538,
+          5.753230769230769
+        ],
+        "equipped_weight_kg": 14.899999999999999
+      }
+    },
+    {
+      "id": "C5",
+      "title": "a live feather offset survives the producer's first engagement, and the load is correct once the spell expires",
+      "ok": false,
+      "detail": {
+        "claim_in_the_source": "_recomputeEquipLoad(): \"applies its result as a DELTA ... so the feather effect's own additive offset survives untouched\"",
+        "baseline_pct_no_spell": 14,
+        "pct_before_cast": 24,
+        "pct_after_cast": 14,
+        "pct_after_first_equip": 14,
+        "pct_expected_after_first_equip": 4,
+        "pct_after_spell_expiry": 24,
+        "pct_expected_after_expiry": 14,
+        "offset_survived_equip": false,
+        "load_correct_after_expiry": false,
+        "tier_after_expiry": "LIGHT",
+        "tier_correct": "LIGHT"
+      }
+    },
+    {
+      "id": "C6",
+      "title": "the equipped WEAPON's shipped equip_weight reaches the equip-load ratio",
+      "ok": true,
+      "detail": {
+        "ri_prg07_s2": "equipRatio = (weight of equipped weapons, shields, armour, talismans) / maxLoad",
+        "producer_reads": "sim.inventory rows carrying a `slot`, weighed from game/data/items/carried.json",
+        "producer_mentions_weapon_weight": true,
+        "equip_weight_occurrences_in_game_src": [
+          {
+            "file": "game/src/combat/moveset.js",
+            "line": 159,
+            "text": "* four per-class numbers (`attack_rating`, `equip_weight`, `hitbox_span_m`, `parry_class`) that"
+          },
+          {
+            "file": "game/src/combat/moveset.js",
+            "line": 187,
+            "text": "equip_weight: cls.equip_weight,"
+          },
+          {
+            "file": "game/src/engine.js",
+            "line": 4044,
+            "text": "//   * `game/data/weapons/classes.json` ships `equip_weight` on all fifteen classes (Dagger 1"
+          },
+          {
+            "file": "game/src/engine.js",
+            "line": 4062,
+            "text": "weapon: !blind && wpn && typeof wpn.equip_weight === 'number' ? wpn.equip_weight : 0,"
+          },
+          {
+            "file": "game/src/engine.js",
+            "line": 6263,
+            "text": "weapon_weight: 'weapons/classes.json equip_weight -> combat/moveset.js weaponFor() -> '"
+          }
+        ],
+        "readers_that_use_the_value": [
+          {
+            "file": "game/src/engine.js",
+            "line": 4062,
+            "text": "weapon: !blind && wpn && typeof wpn.equip_weight === 'number' ? wpn.equip_weight : 0,"
+          },
+          {
+            "file": "game/src/engine.js",
+            "line": 6263,
+            "text": "weapon_weight: 'weapons/classes.json equip_weight -> combat/moveset.js weaponFor() -> '"
+          }
+        ],
+        "shipped_weapon_class_weights_kg": [
+          {
+            "id": "UGS",
+            "name": "Ultra greatsword",
+            "kg": 20
+          },
+          {
+            "id": "GHM",
+            "name": "Great hammer",
+            "kg": 16
+          },
+          {
+            "id": "CGS",
+            "name": "Curved greatsword",
+            "kg": 14
+          },
+          {
+            "id": "GSW",
+            "name": "Greatsword",
+            "kg": 12
+          },
+          {
+            "id": "HLB",
+            "name": "Halberd",
+            "kg": 9
+          },
+          {
+            "id": "AXE",
+            "name": "Axe",
+            "kg": 6
+          },
+          {
+            "id": "MCE",
+            "name": "Mace",
+            "kg": 6
+          },
+          {
+            "id": "SPR",
+            "name": "Spear",
+            "kg": 4.5
+          },
+          {
+            "id": "SSW",
+            "name": "Straight sword",
+            "kg": 4
+          },
+          {
+            "id": "TSW",
+            "name": "Thrusting sword",
+            "kg": 3.5
+          },
+          {
+            "id": "CSW",
+            "name": "Curved sword",
+            "kg": 3
+          },
+          {
+            "id": "WHP",
+            "name": "Whip",
+            "kg": 3
+          },
+          {
+            "id": "BOW",
+            "name": "Bow",
+            "kg": 3
+          },
+          {
+            "id": "DGR",
+            "name": "Dagger",
+            "kg": 1
+          },
+          {
+            "id": "FST",
+            "name": "Fist / claw",
+            "kg": 0.5
+          }
+        ],
+        "shields_have_no_weight_column_at_all": true
+      }
+    },
+    {
+      "id": "C7",
+      "title": "HEAVY / OVERLOADED are reachable by dressing from the shipped shelf",
+      "ok": false,
+      "detail": {
+        "slots_the_shelf_can_fill": [
+          "chest",
+          "legs",
+          "head",
+          "feet",
+          "waist"
+        ],
+        "heaviest_per_slot": [
+          "shell-scale-hauberk@chest:9.1",
+          "legion-greaves@legs:5.8",
+          "rootweave-cowl@head:0.6",
+          "wet-season-boots@feet:1.1",
+          "silt-strider-silk-sash@waist:0.2"
+        ],
+        "heaviest_carried_weapon": "bog-iron-maul:11.5",
+        "heaviest_declared_weapon_class": "Ultra greatsword:20",
+        "rows": [
+          {
+            "str": 10,
+            "end": 10,
+            "max_load_kg": 65,
+            "worn_only_kg": 28.3,
+            "worn_only_pct": 43.54,
+            "worn_only_tier": "MEDIUM",
+            "with_declared_weapon_class_kg": 36.8,
+            "with_declared_weapon_class_pct": 56.62,
+            "with_declared_weapon_class_tier": "MEDIUM",
+            "kg_needed_for_HEAVY": 45.51,
+            "kg_needed_for_OVERLOADED": 65.01
+          },
+          {
+            "str": 14,
+            "end": 14,
+            "max_load_kg": 73,
+            "worn_only_kg": 28.3,
+            "worn_only_pct": 38.77,
+            "worn_only_tier": "MEDIUM",
+            "with_declared_weapon_class_kg": 36.8,
+            "with_declared_weapon_class_pct": 50.41,
+            "with_declared_weapon_class_tier": "MEDIUM",
+            "kg_needed_for_HEAVY": 51.11,
+            "kg_needed_for_OVERLOADED": 73.01
+          },
+          {
+            "str": 55,
+            "end": 30,
+            "max_load_kg": 142.5,
+            "worn_only_kg": 28.3,
+            "worn_only_pct": 19.86,
+            "worn_only_tier": "LIGHT",
+            "with_declared_weapon_class_kg": 36.8,
+            "with_declared_weapon_class_pct": 25.82,
+            "with_declared_weapon_class_tier": "LIGHT",
+            "kg_needed_for_HEAVY": 99.76,
+            "kg_needed_for_OVERLOADED": 142.51
+          }
+        ],
+        "heavy_reachable_as_built": false,
+        "heavy_reachable_if_the_weapon_class_weight_were_counted": false,
+        "no_shield_rows": true,
+        "no_hand_or_arm_slot": true
+      }
+    },
+    {
+      "id": "C8",
+      "title": "the builder's 26-parameter census is complete",
+      "ok": false,
+      "detail": {
+        "note": "FAILS BY CONSTRUCTION — this check exists to name what the census left out, per ARBITRATION §3 (\"a sample is not an enumeration\").",
+        "parameters_the_census_did_not_enumerate": [
+          "weapons/classes.json equip_weight",
+          "OVERLOADED forbids sprinting"
+        ],
+        "rows": [
+          {
+            "model": "equip_load",
+            "param": "roll.iframes",
+            "needle": "m.iframes",
+            "files": [
+              "game/src/combat/actor.js",
+              "game/src/combat/player.js"
+            ],
+            "n_files": 2
+          },
+          {
+            "model": "equip_load",
+            "param": "roll.total",
+            "needle": "m.total",
+            "files": [
+              "game/src/combat/enemy.js",
+              "game/src/combat/moves.js",
+              "game/src/combat/player.js",
+              "game/src/combat/resolve.js",
+              "game/src/combat/trace.js",
+              "game/src/render/spell-vfx.js"
+            ],
+            "n_files": 7
+          },
+          {
+            "model": "equip_load",
+            "param": "roll.stamina",
+            "needle": "r.stamina",
+            "files": [
+              "game/src/combat/moves.js",
+              "game/src/combat/rules.js",
+              "game/src/engine.js",
+              "game/src/save/state.js",
+              "game/src/sim/death.js"
+            ],
+            "n_files": 5
+          },
+          {
+            "model": "equip_load",
+            "param": "roll.distance_m",
+            "needle": "distance_m",
+            "files": [
+              "game/src/audio/ambience.js",
+              "game/src/audio/impact-audio.js",
+              "game/src/combat/lockon.js",
+              "game/src/combat/moves.js",
+              "game/src/combat/resolve.js",
+              "game/src/engine.js"
+            ],
+            "n_files": 10
+          },
+          {
+            "model": "equip_load",
+            "param": "roll.anim_speed",
+            "needle": "anim_speed",
+            "files": [
+              "game/src/combat/moves.js"
+            ],
+            "n_files": 1
+          },
+          {
+            "model": "equip_load",
+            "param": "tier_boundaries_pct",
+            "needle": "tier_boundaries_pct",
+            "files": [
+              "game/src/combat/player.js",
+              "game/src/combat/system.js",
+              "game/src/engine.js"
+            ],
+            "n_files": 3
+          },
+          {
+            "model": "equip_load",
+            "param": "recovery_substructure.turn_rate_dps",
+            "needle": "turn_rate_dps",
+            "files": [
+              "game/src/combat/moves.js",
+              "game/src/combat/player.js",
+              "game/src/engine.js",
+              "game/src/sim/magic/moves.js",
+              "game/src/sim/magic/system.js",
+              "game/src/sim/player.js"
+            ],
+            "n_files": 8
+          },
+          {
+            "model": "equip_load",
+            "param": "recovery_substructure.buffer_frames",
+            "needle": "buffer_frames",
+            "files": [
+              "game/src/combat/moves.js",
+              "game/src/combat/player.js",
+              "game/src/combat/trace.js",
+              "game/src/engine.js",
+              "game/src/harness/api.js"
+            ],
+            "n_files": 5
+          },
+          {
+            "model": "equip_load",
+            "param": "OVERLOADED forbids sprinting",
+            "needle": "OVERLOADED",
+            "files": [
+              "game/src/combat/moves.js",
+              "game/src/combat/moveset.js",
+              "game/src/combat/player.js",
+              "game/src/combat/rules.js",
+              "game/src/engine.js"
+            ],
+            "n_files": 5
+          },
+          {
+            "model": "equip_load",
+            "param": "weapons/classes.json equip_weight",
+            "needle": "equip_weight",
+            "files": [
+              "game/src/combat/moveset.js",
+              "game/src/engine.js"
+            ],
+            "n_files": 2
+          },
+          {
+            "model": "equip_load",
+            "param": "fall_damage_mult",
+            "needle": "fall_damage",
+            "files": [
+              "game/src/engine.js",
+              "game/src/harness/api.js",
+              "game/src/sim/events.js",
+              "game/src/sim/magic/apply.js",
+              "game/src/sim/magic/system.js",
+              "game/src/sim/traversal.js"
+            ],
+            "n_files": 6
+          },
+          {
+            "model": "burden",
+            "param": "move",
+            "needle": "burdenTierOf",
+            "files": [
+              "game/src/engine.js"
+            ],
+            "n_files": 1
+          },
+          {
+            "model": "burden",
+            "param": "sprint",
+            "needle": "denySprint",
+            "files": [
+              "game/src/engine.js",
+              "game/src/sim/player.js",
+              "game/src/sim/state.js"
+            ],
+            "n_files": 3
+          },
+          {
+            "model": "burden",
+            "param": "travel_time",
+            "needle": "travel_time",
+            "files": [
+              "game/src/engine.js"
+            ],
+            "n_files": 1
+          },
+          {
+            "model": "burden",
+            "param": "fatigue",
+            "needle": ".fatigue",
+            "files": [
+              "game/src/engine.js",
+              "game/src/sim/dialogue/disposition.js"
+            ],
+            "n_files": 2
+          },
+          {
+            "model": "burden",
+            "param": "sneak",
+            "needle": "sneak_detection",
+            "files": [
+              "game/src/engine.js"
+            ],
+            "n_files": 1
+          },
+          {
+            "model": "burden",
+            "param": "jump",
+            "needle": "burden.*jump",
+            "files": [],
+            "n_files": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "C9",
+      "title": "every path that rebuilds the fight either sets the pin from a scenario or clears it for a load",
+      "ok": true,
+      "detail": {
+        "assignments_to__equipLoadPinned": [
+          {
+            "line": 1033,
+            "text": "this._equipLoadPinned = !!(loadout && loadout.equipLoadPct !== undefined);"
+          },
+          {
+            "line": 1225,
+            "text": "this._equipLoadPinned = true;"
+          },
+          {
+            "line": 5246,
+            "text": "this._equipLoadPinned = false;"
+          }
+        ],
+        "call_sites_of__buildCombat": [
+          {
+            "line": 943,
+            "text": "this._buildCombat(this._loadout);"
+          },
+          {
+            "line": 5237,
+            "text": "this._buildCombat(this._loadout);"
+          }
+        ],
+        "save_fight_js_always_writes_a_number": true,
+        "build_combat_found_at_char": true
+      }
+    }
+  ],
+  "failed": [
+    "C5",
+    "C7",
+    "C8"
+  ]
+}

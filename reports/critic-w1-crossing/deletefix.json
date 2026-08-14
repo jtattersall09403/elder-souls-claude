@@ -1,0 +1,115 @@
+{
+  "schema": "elder-souls/critic-crossing-deletefix@1",
+  "measured_at": "2026-08-08T06:05:35.109Z",
+  "git": {
+    "commit": "92b186086d06f652b18631833d5b6e6c7c29888d",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "mode": "deletefix",
+  "arms": [
+    {
+      "steering": "OLD",
+      "parapet": "OLD",
+      "install": {
+        "pursue_is": "OLD",
+        "clamp_is": "OLD"
+      },
+      "done": false,
+      "frames": 60000,
+      "path_m": 550.1,
+      "remaining_points": 502,
+      "worst_off_path_m": 6.69,
+      "off_path_frames": 45117,
+      "regains": 37,
+      "teleports": 0,
+      "end": [
+        2153.7,
+        1197.8
+      ]
+    },
+    {
+      "steering": "OLD",
+      "parapet": "NEW",
+      "install": {
+        "pursue_is": "OLD",
+        "clamp_is": "NEW"
+      },
+      "done": false,
+      "frames": 60000,
+      "path_m": 550.1,
+      "remaining_points": 502,
+      "worst_off_path_m": 6.69,
+      "off_path_frames": 45117,
+      "regains": 37,
+      "teleports": 0,
+      "end": [
+        2153.7,
+        1197.8
+      ]
+    },
+    {
+      "steering": "NEW",
+      "parapet": "OLD",
+      "install": {
+        "pursue_is": "NEW",
+        "clamp_is": "OLD"
+      },
+      "done": false,
+      "frames": 60000,
+      "path_m": 1779.2,
+      "remaining_points": 315,
+      "worst_off_path_m": 3391.93,
+      "off_path_frames": 21517,
+      "regains": 0,
+      "teleports": 1,
+      "end": [
+        2568.6,
+        4735
+      ]
+    },
+    {
+      "steering": "NEW",
+      "parapet": "NEW",
+      "install": {
+        "pursue_is": "NEW",
+        "clamp_is": "NEW"
+      },
+      "done": false,
+      "frames": 60000,
+      "path_m": 1779.2,
+      "remaining_points": 315,
+      "worst_off_path_m": 3391.93,
+      "off_path_frames": 21517,
+      "regains": 0,
+      "teleports": 1,
+      "end": [
+        2568.6,
+        4735
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "C1-REPRODUCES-PUBLISHED",
+      "pass": true,
+      "detail": "both-out arm ran FIRST from a re-seeded world: 550.1 m ending [2153.7,1197.8] against the published 550.1 m at (2153.7, 1197.8)"
+    },
+    {
+      "id": "C2-ORDER-INDEPENDENT",
+      "pass": false,
+      "detail": "NEW/NEW ran LAST here: 1779.2 m against the builder's 1327.3 m taken FIRST"
+    },
+    {
+      "id": "C3-ARMS-DIFFER",
+      "pass": true,
+      "detail": "2 distinct distances"
+    },
+    {
+      "id": "C4-WHICH-GUARD",
+      "pass": true,
+      "detail": "steering out alone 550.1 m; parapet out alone 1779.2 m; both in 1779.2 m"
+    }
+  ],
+  "ok": false
+}

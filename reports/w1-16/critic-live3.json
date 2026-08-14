@@ -1,0 +1,276 @@
+{
+  "schema": "elder-souls/critic-w1-16-live@1",
+  "unit": "f@60",
+  "generated": "2026-08-08T02:08:43.118Z",
+  "probes": {
+    "pin": {
+      "rows": [
+        {
+          "path": "loadState(<named state>)",
+          "err": null,
+          "load_returned": null,
+          "pct_before": 20.410958,
+          "pct_after": 20.410958,
+          "source_after": "derived from equipped items (W1-16 r2)",
+          "live": {
+            "pct_before_undress": 20.410958,
+            "pct_after_undress": 7.945205,
+            "producer_still_running": true,
+            "slot_after": null,
+            "had_row": true
+          }
+        },
+        {
+          "path": "saveRoundTrip()",
+          "err": "step-after-load: this.ai.step is not a function",
+          "load_returned": {
+            "hash_equal": false
+          },
+          "pct_before": 20.410958,
+          "pct_after": 20.410958,
+          "source_after": "engine default — nothing is equipped yet",
+          "live": null
+        },
+        {
+          "path": "writeSave() -> readSave()",
+          "err": null,
+          "load_returned": {},
+          "pct_before": 20.410958,
+          "pct_after": 20.410958,
+          "source_after": "derived from equipped items (W1-16 r2)",
+          "live": {
+            "pct_before_undress": 20.410958,
+            "pct_after_undress": 7.945205,
+            "producer_still_running": true,
+            "slot_after": null,
+            "had_row": true
+          }
+        },
+        {
+          "path": "exportSave() -> importSave()",
+          "err": "step-after-load: this.ai.step is not a function",
+          "load_returned": {
+            "ok": true,
+            "frame": 0,
+            "seed": 1337
+          },
+          "pct_before": 20.410958,
+          "pct_after": 20.410958,
+          "source_after": "engine default — nothing is equipped yet",
+          "live": null
+        },
+        {
+          "path": "snapshot() -> restoreState()",
+          "err": "load: loadState: expected a named state (string) or an elder-souls/save@1 blob",
+          "load_returned": null,
+          "pct_before": 20.410958,
+          "pct_after": 20.410958,
+          "source_after": "derived from equipped items (W1-16 r2)",
+          "live": {
+            "pct_before_undress": 20.410958,
+            "pct_after_undress": 7.945205,
+            "producer_still_running": true,
+            "slot_after": null,
+            "had_row": true
+          }
+        }
+      ],
+      "paths_tested": 5,
+      "paths_that_completed": 2,
+      "every_completed_path_left_the_producer_running": true,
+      "pinned_after_a_load": [],
+      "coupled": true
+    },
+    "deletefix": {
+      "order_cut_then_fix": {
+        "cut": {
+          "broken": "producer,slots",
+          "switch_reported": {
+            "broken": [
+              "producer",
+              "slots"
+            ]
+          },
+          "switch_cleared": {
+            "broken": []
+          },
+          "before": {
+            "equip_load_pct": 24,
+            "iframes_f60": 26,
+            "recovery_f60": 22,
+            "total_f60": 52,
+            "tier": "LIGHT"
+          },
+          "after": {
+            "equip_load_pct": 24,
+            "equipped_weight": 0,
+            "equipped_rows": [
+              "bog-iron-maul@right"
+            ],
+            "iframes_f60": 26,
+            "recovery_f60": 22,
+            "total_f60": 52,
+            "tier": "LIGHT"
+          },
+          "roll_moved": false
+        },
+        "fix": {
+          "broken": "none",
+          "switch_reported": {
+            "broken": []
+          },
+          "switch_cleared": {
+            "broken": []
+          },
+          "before": {
+            "equip_load_pct": 0,
+            "iframes_f60": 26,
+            "recovery_f60": 22,
+            "total_f60": 52,
+            "tier": "LIGHT"
+          },
+          "after": {
+            "equip_load_pct": 38.767123,
+            "equipped_weight": 28.3,
+            "equipped_rows": [
+              "bog-iron-maul@right",
+              "legion-greaves@legs",
+              "rootweave-cowl@head",
+              "shell-scale-hauberk@chest",
+              "silt-strider-silk-sash@waist",
+              "wet-season-boots@feet"
+            ],
+            "iframes_f60": 22,
+            "recovery_f60": 34,
+            "total_f60": 60,
+            "tier": "MEDIUM"
+          },
+          "roll_moved": true
+        }
+      },
+      "order_fix_then_cut": {
+        "fix": {
+          "broken": "none",
+          "switch_reported": {
+            "broken": []
+          },
+          "switch_cleared": {
+            "broken": []
+          },
+          "before": {
+            "equip_load_pct": 0,
+            "iframes_f60": 26,
+            "recovery_f60": 22,
+            "total_f60": 52,
+            "tier": "LIGHT"
+          },
+          "after": {
+            "equip_load_pct": 38.767123,
+            "equipped_weight": 28.3,
+            "equipped_rows": [
+              "bog-iron-maul@right",
+              "legion-greaves@legs",
+              "rootweave-cowl@head",
+              "shell-scale-hauberk@chest",
+              "silt-strider-silk-sash@waist",
+              "wet-season-boots@feet"
+            ],
+            "iframes_f60": 22,
+            "recovery_f60": 34,
+            "total_f60": 60,
+            "tier": "MEDIUM"
+          },
+          "roll_moved": true
+        },
+        "cut": {
+          "broken": "producer,slots",
+          "switch_reported": {
+            "broken": [
+              "producer",
+              "slots"
+            ]
+          },
+          "switch_cleared": {
+            "broken": []
+          },
+          "before": {
+            "equip_load_pct": 24,
+            "iframes_f60": 26,
+            "recovery_f60": 22,
+            "total_f60": 52,
+            "tier": "LIGHT"
+          },
+          "after": {
+            "equip_load_pct": 24,
+            "equipped_weight": 0,
+            "equipped_rows": [
+              "bog-iron-maul@right"
+            ],
+            "iframes_f60": 26,
+            "recovery_f60": 22,
+            "total_f60": 52,
+            "tier": "LIGHT"
+          },
+          "roll_moved": false
+        }
+      },
+      "arms_differ_in_both_orders": true,
+      "old_number_returns": true,
+      "switch_is_observable": true,
+      "cut_arm_slots": [
+        "bog-iron-maul@right"
+      ],
+      "fix_arm_slots": [
+        "bog-iron-maul@right",
+        "legion-greaves@legs",
+        "rootweave-cowl@head",
+        "shell-scale-hauberk@chest",
+        "silt-strider-silk-sash@waist",
+        "wet-season-boots@feet"
+      ],
+      "coupled": true
+    },
+    "burden": {
+      "pin": {
+        "set_to": 0.95,
+        "immediately": 0.95,
+        "after_180_f60": 0.95,
+        "source": "pinned by setBurden()",
+        "tier_after": "OVERLADEN",
+        "pin_survived_the_stepping_run": true
+      },
+      "sprint_denied_while_the_button_is_already_held": {
+        "unburdened_hold": {
+          "ratio": 0.1,
+          "hold_through": true,
+          "tier": "UNBURDENED",
+          "metres_after_the_transition": 11.667,
+          "metres_total": 13.5,
+          "burden_source": "pinned by setBurden()",
+          "burden_observed": 0.1
+        },
+        "overladen_hold": {
+          "ratio": 0.95,
+          "hold_through": true,
+          "tier": "OVERLADEN",
+          "metres_after_the_transition": 5.398,
+          "metres_total": 7.231,
+          "burden_source": "pinned by setBurden()",
+          "burden_observed": 0.95
+        },
+        "overladen_from_a_fresh_press": {
+          "ratio": 0.95,
+          "hold_through": false,
+          "tier": "OVERLADEN",
+          "metres_after_the_transition": 4.685,
+          "metres_total": 4.685,
+          "burden_source": "pinned by setBurden()",
+          "burden_observed": 0.95
+        },
+        "denial_outlives_the_press_frame": true
+      },
+      "coupled": true
+    }
+  },
+  "uncoupled_probes": []
+}

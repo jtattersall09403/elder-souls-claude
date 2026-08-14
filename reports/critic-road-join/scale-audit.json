@@ -1,0 +1,912 @@
+{
+ "schema": "elder-souls/scale-audit@1",
+ "method": "RI-WLD01 M1/M4/M5 + RI-WLD07 M36",
+ "measured_at": "2026-08-08T03:53:51.511Z",
+ "world_bounds_m": {
+  "x": [
+   0,
+   4825
+  ],
+  "z": [
+   0,
+   5540
+  ]
+ },
+ "land_km2": 14.309,
+ "land_above_sea_km2": 14.184,
+ "walkable_km2": 13.611,
+ "elevation_range_m": [
+  -42.3,
+  423.9
+ ],
+ "frac_land_below_5m": 0.3554,
+ "frac_land_above_100m": 0.1943,
+ "mean_slope_deg": 9.286,
+ "region_max_elevation_m": {
+  "salt-hills": 265.2,
+  "thornmarsh": 83.5,
+  "valus-ridge": 423.9,
+  "stone-forest": 220.8,
+  "clay-moor": 35.7,
+  "crimson-coast": 25.3,
+  "blackwood": 224.6,
+  "deep-marshes": 18,
+  "eastern-rootlands": 5.9,
+  "marauders-coast": 8.7,
+  "hive": 21.1,
+  "western-rootlands": 10.9,
+  "stone-wastes": 11.4
+ },
+ "settlements": [
+  {
+   "name": "Stormhold",
+   "tier": "city",
+   "declared": [
+    2171.5,
+    761
+   ],
+   "built": [
+    2171.5,
+    761
+   ],
+   "offset_m": 0,
+   "y": 141.05,
+   "depth_m": 0,
+   "slope_deg": 0,
+   "footprint_worst_slope_deg": 0.04,
+   "footprint_worst_depth_m": 0,
+   "region_built": "salt-hills",
+   "region_declared": "The Salt Hills"
+  },
+  {
+   "name": "Thorn",
+   "tier": "village",
+   "declared": [
+    3820,
+    859
+   ],
+   "built": [
+    3820,
+    859
+   ],
+   "offset_m": 0,
+   "y": 13.28,
+   "depth_m": 0,
+   "slope_deg": 0,
+   "footprint_worst_slope_deg": 4.07,
+   "footprint_worst_depth_m": 0,
+   "region_built": "thornmarsh",
+   "region_declared": "Thornmarsh"
+  },
+  {
+   "name": "Gideon",
+   "tier": "town",
+   "declared": [
+    439,
+    2913.5
+   ],
+   "built": [
+    439,
+    2913.5
+   ],
+   "offset_m": 0,
+   "y": 2.71,
+   "depth_m": 0,
+   "slope_deg": 0.01,
+   "footprint_worst_slope_deg": 0.08,
+   "footprint_worst_depth_m": 0,
+   "region_built": "blackwood",
+   "region_declared": "Blackwood"
+  },
+  {
+   "name": "Helstrom",
+   "tier": "capital",
+   "declared": [
+    2262.5,
+    2773.5
+   ],
+   "built": [
+    2262.5,
+    2773.5
+   ],
+   "offset_m": 0,
+   "y": 27.2,
+   "depth_m": 0,
+   "slope_deg": 0,
+   "footprint_worst_slope_deg": 0.01,
+   "footprint_worst_depth_m": 0,
+   "region_built": "stone-forest",
+   "region_declared": "The Stone Forest"
+  },
+  {
+   "name": "Archon",
+   "tier": "town",
+   "declared": [
+    3785,
+    3823.5
+   ],
+   "built": [
+    3785,
+    3823.5
+   ],
+   "offset_m": 0,
+   "y": 3.42,
+   "depth_m": 0,
+   "slope_deg": 4.86,
+   "footprint_worst_slope_deg": 6.76,
+   "footprint_worst_depth_m": 0,
+   "region_built": "crimson-coast",
+   "region_declared": "Crimson Coast"
+  },
+  {
+   "name": "Blackrose",
+   "tier": "town",
+   "declared": [
+    1905.5,
+    4450
+   ],
+   "built": [
+    1905.5,
+    4450
+   ],
+   "offset_m": 0,
+   "y": 2.59,
+   "depth_m": 0,
+   "slope_deg": 0.02,
+   "footprint_worst_slope_deg": 0.22,
+   "footprint_worst_depth_m": 0,
+   "region_built": "western-rootlands",
+   "region_declared": "Western Rootlands"
+  },
+  {
+   "name": "Soulrest",
+   "tier": "village",
+   "declared": [
+    610.5,
+    4877
+   ],
+   "built": [
+    610.5,
+    4877
+   ],
+   "offset_m": 0,
+   "y": 8.13,
+   "depth_m": 0,
+   "slope_deg": 0,
+   "footprint_worst_slope_deg": 0.63,
+   "footprint_worst_depth_m": 0,
+   "region_built": "stone-wastes",
+   "region_declared": "Stone Wastes"
+  },
+  {
+   "name": "Lilmoth",
+   "tier": "city",
+   "declared": [
+    2766.5,
+    5027.5
+   ],
+   "built": [
+    2766.5,
+    5027.5
+   ],
+   "offset_m": 0,
+   "y": 2.68,
+   "depth_m": 0,
+   "slope_deg": 6.56,
+   "footprint_worst_slope_deg": 5.74,
+   "footprint_worst_depth_m": 0,
+   "region_built": "western-rootlands",
+   "region_declared": "Western Rootlands"
+  }
+ ],
+ "legs": [
+  {
+   "id": "stormhold-thorn",
+   "declared_m": 2229,
+   "built_m": 2229,
+   "err_pct": 0,
+   "declared_walk_min": 18.6,
+   "built_walk_min": 18.58,
+   "max_grade": 0.4,
+   "sinuosity": 1.35
+  },
+  {
+   "id": "stormhold-helstrom",
+   "declared_m": 2921,
+   "built_m": 2921,
+   "err_pct": 0,
+   "declared_walk_min": 24.3,
+   "built_walk_min": 24.34,
+   "max_grade": 0.45,
+   "sinuosity": 1.45
+  },
+  {
+   "id": "helstrom-archon",
+   "declared_m": 2589,
+   "built_m": 2589.5,
+   "err_pct": 0.02,
+   "declared_walk_min": 21.6,
+   "built_walk_min": 21.58,
+   "max_grade": 0.107,
+   "sinuosity": 1.4
+  },
+  {
+   "id": "helstrom-blackrose",
+   "declared_m": 2485,
+   "built_m": 2489.8,
+   "err_pct": 0.19,
+   "declared_walk_min": 20.7,
+   "built_walk_min": 20.75,
+   "max_grade": 0.149,
+   "sinuosity": 1.453
+  },
+  {
+   "id": "helstrom-gideon",
+   "declared_m": 2378,
+   "built_m": 2431.7,
+   "err_pct": 2.26,
+   "declared_walk_min": 19.8,
+   "built_walk_min": 20.26,
+   "max_grade": 0.45,
+   "sinuosity": 1.33
+  },
+  {
+   "id": "gideon-soulrest",
+   "declared_m": 2562,
+   "built_m": 2568.5,
+   "err_pct": 0.25,
+   "declared_walk_min": 21.4,
+   "built_walk_min": 21.4,
+   "max_grade": 0.078,
+   "sinuosity": 1.303
+  },
+  {
+   "id": "soulrest-blackrose",
+   "declared_m": 1841,
+   "built_m": 1841,
+   "err_pct": 0,
+   "declared_walk_min": 15.3,
+   "built_walk_min": 15.34,
+   "max_grade": 0.12,
+   "sinuosity": 1.35
+  },
+  {
+   "id": "blackrose-lilmoth",
+   "declared_m": 1503,
+   "built_m": 1500.6,
+   "err_pct": 0.16,
+   "declared_walk_min": 12.5,
+   "built_walk_min": 12.5,
+   "max_grade": 0.033,
+   "sinuosity": 1.447
+  },
+  {
+   "id": "archon-thorn",
+   "declared_m": 4299,
+   "built_m": 4299,
+   "err_pct": 0,
+   "declared_walk_min": 35.8,
+   "built_walk_min": 35.82,
+   "max_grade": 0.45,
+   "sinuosity": 1.45
+  },
+  {
+   "id": "lilmoth-archon",
+   "declared_m": 2523,
+   "built_m": 2523,
+   "err_pct": 0,
+   "declared_walk_min": 21,
+   "built_walk_min": 21.02,
+   "max_grade": 0.064,
+   "sinuosity": 1.6
+  }
+ ],
+ "leg_gaps": [
+  {
+   "id": "stormhold-thorn",
+   "max_gap_m": 465,
+   "max_gap_walk_min": 3.88,
+   "habitation_marks_m": [
+    14,
+    35,
+    46,
+    478,
+    490,
+    502,
+    514,
+    526,
+    538,
+    550,
+    562,
+    574,
+    586,
+    598,
+    610,
+    1050,
+    1062,
+    1074,
+    1086,
+    1098,
+    1110,
+    1122,
+    1134,
+    1146,
+    1158,
+    1169,
+    1181,
+    1647,
+    1659,
+    1671,
+    1683,
+    1695,
+    1707,
+    1719,
+    1731,
+    1743,
+    1754,
+    1765,
+    1777,
+    1789,
+    2217,
+    2229
+   ]
+  },
+  {
+   "id": "stormhold-helstrom",
+   "max_gap_m": 881,
+   "max_gap_walk_min": 7.34,
+   "habitation_marks_m": [
+    61,
+    942,
+    955,
+    968,
+    982,
+    995,
+    1005,
+    1014,
+    1024,
+    1034,
+    1043,
+    1055,
+    1071,
+    1499,
+    1511,
+    1524,
+    1536,
+    1549,
+    1561,
+    1575,
+    1589,
+    1602,
+    1620,
+    1632,
+    1644,
+    1649,
+    1664,
+    1668,
+    1680,
+    1708,
+    2032,
+    2044,
+    2056,
+    2068,
+    2079,
+    2090,
+    2094,
+    2105,
+    2118,
+    2130,
+    2144,
+    2156,
+    2896,
+    2910,
+    2921
+   ]
+  },
+  {
+   "id": "helstrom-archon",
+   "max_gap_m": 652,
+   "max_gap_walk_min": 5.43,
+   "habitation_marks_m": [
+    22,
+    63,
+    80,
+    569,
+    581,
+    593,
+    605,
+    616,
+    626,
+    638,
+    650,
+    661,
+    673,
+    685,
+    696,
+    708,
+    1186,
+    1198,
+    1210,
+    1222,
+    1234,
+    1246,
+    1255,
+    1267,
+    1279,
+    1291,
+    1303,
+    1315,
+    1967,
+    1979,
+    1991,
+    2003,
+    2015,
+    2027,
+    2039,
+    2051,
+    2063,
+    2075,
+    2087,
+    2099,
+    2589
+   ]
+  },
+  {
+   "id": "helstrom-blackrose",
+   "max_gap_m": 771,
+   "max_gap_walk_min": 6.42,
+   "habitation_marks_m": [
+    24,
+    41,
+    52,
+    63,
+    473,
+    484,
+    495,
+    558,
+    570,
+    636,
+    668,
+    677,
+    688,
+    697,
+    706,
+    721,
+    730,
+    737,
+    1258,
+    2029,
+    2039,
+    2050,
+    2060,
+    2070,
+    2080,
+    2090,
+    2101,
+    2111,
+    2121,
+    2131,
+    2141,
+    2151,
+    2427,
+    2479,
+    2490
+   ]
+  },
+  {
+   "id": "helstrom-gideon",
+   "max_gap_m": 774,
+   "max_gap_walk_min": 6.45,
+   "habitation_marks_m": [
+    22,
+    52,
+    58,
+    832,
+    844,
+    856,
+    868,
+    880,
+    892,
+    903,
+    915,
+    927,
+    939,
+    951,
+    1670,
+    1682,
+    1694,
+    1706,
+    1718,
+    1730,
+    1740,
+    1752,
+    1764,
+    1776,
+    1788,
+    1800,
+    2432
+   ]
+  },
+  {
+   "id": "gideon-soulrest",
+   "max_gap_m": 895,
+   "max_gap_walk_min": 7.46,
+   "habitation_marks_m": [
+    895,
+    907,
+    919,
+    930,
+    941,
+    952,
+    964,
+    975,
+    988,
+    1000,
+    1013,
+    1026,
+    1862,
+    1874,
+    1886,
+    1898,
+    1910,
+    1924,
+    1935,
+    1948,
+    1960,
+    1972,
+    1984,
+    1996,
+    2538,
+    2551,
+    2569
+   ]
+  },
+  {
+   "id": "soulrest-blackrose",
+   "max_gap_m": 940,
+   "max_gap_walk_min": 7.83,
+   "habitation_marks_m": [
+    17,
+    56,
+    761,
+    773,
+    784,
+    795,
+    806,
+    818,
+    829,
+    841,
+    853,
+    865,
+    876,
+    1816,
+    1827,
+    1841
+   ]
+  },
+  {
+   "id": "blackrose-lilmoth",
+   "max_gap_m": 652,
+   "max_gap_walk_min": 5.44,
+   "habitation_marks_m": [
+    67,
+    673,
+    685,
+    696,
+    708,
+    720,
+    732,
+    737,
+    749,
+    761,
+    773,
+    785,
+    796,
+    1448,
+    1462,
+    1480,
+    1496,
+    1501
+   ]
+  },
+  {
+   "id": "archon-thorn",
+   "max_gap_m": 647,
+   "max_gap_walk_min": 5.39,
+   "habitation_marks_m": [
+    647,
+    659,
+    671,
+    683,
+    695,
+    707,
+    720,
+    732,
+    744,
+    756,
+    768,
+    780,
+    791,
+    1420,
+    1432,
+    1444,
+    1456,
+    1468,
+    1487,
+    1508,
+    1520,
+    1532,
+    1543,
+    1554,
+    1565,
+    2163,
+    2175,
+    2190,
+    2203,
+    2218,
+    2230,
+    2234,
+    2240,
+    2252,
+    2264,
+    2278,
+    2301,
+    2314,
+    2321,
+    2330,
+    2352,
+    2369,
+    2383,
+    2941,
+    2953,
+    2965,
+    2977,
+    2989,
+    3002,
+    3013,
+    3025,
+    3037,
+    3049,
+    3061,
+    3596,
+    3608,
+    3620,
+    3632,
+    3644,
+    3656,
+    3667,
+    3677,
+    3689,
+    3701,
+    3713,
+    3725,
+    3736,
+    4269,
+    4284,
+    4295,
+    4299
+   ]
+  },
+  {
+   "id": "lilmoth-archon",
+   "max_gap_m": 522,
+   "max_gap_walk_min": 4.35,
+   "habitation_marks_m": [
+    17,
+    36,
+    45,
+    556,
+    568,
+    580,
+    590,
+    602,
+    614,
+    626,
+    638,
+    650,
+    662,
+    673,
+    685,
+    697,
+    1209,
+    1221,
+    1233,
+    1245,
+    1257,
+    1268,
+    1279,
+    1291,
+    1303,
+    1314,
+    1326,
+    1338,
+    1861,
+    1872,
+    1884,
+    1896,
+    1908,
+    1920,
+    1926,
+    1938,
+    1950,
+    1956,
+    1968,
+    1980,
+    1992,
+    2000,
+    2012,
+    2021,
+    2032,
+    2513,
+    2523
+   ]
+  }
+ ],
+ "reachability": {
+  "regions_reached": [
+   "blackwood",
+   "clay-moor",
+   "crimson-coast",
+   "deep-marshes",
+   "eastern-rootlands",
+   "hive",
+   "marauders-coast",
+   "salt-hills",
+   "stone-forest",
+   "stone-wastes",
+   "thornmarsh",
+   "valus-ridge",
+   "western-rootlands"
+  ],
+  "unreachable_settlements": [],
+  "walkable_cells": 24444,
+  "reached_cells": 24282
+ },
+ "tideway": {
+  "leg": "lilmoth-archon",
+  "deepest_low_m": 0.85,
+  "deepest_high_m": 1.45
+ },
+ "trunk_network_m": 25393.1,
+ "named_routes": {
+  "crossing": {
+   "settlements": [
+    "Stormhold",
+    "Helstrom",
+    "Blackrose",
+    "Lilmoth"
+   ],
+   "legs": [
+    "stormhold-helstrom",
+    "helstrom-blackrose",
+    "blackrose-lilmoth"
+   ],
+   "metres": 6911.4,
+   "walk_min": 57.59,
+   "jog_min": 36,
+   "note": "RI-WLD01 §5 THE CROSSING — Stormhold south gate to Lilmoth harbour steps."
+  },
+  "long_way": {
+   "settlements": [
+    "Thorn",
+    "Stormhold",
+    "Helstrom",
+    "Blackrose",
+    "Soulrest"
+   ],
+   "legs": [
+    "stormhold-thorn",
+    "stormhold-helstrom",
+    "helstrom-blackrose",
+    "soulrest-blackrose"
+   ],
+   "metres": 9480.8,
+   "walk_min": 79.01,
+   "jog_min": 49.38,
+   "note": "RI-WLD01 §5 THE LONG WAY — Thorn to Soulrest."
+  }
+ },
+ "checks": [
+  {
+   "id": "M1-BOUNDS",
+   "pass": true,
+   "detail": "world box 4825 x 5540 m (RI-WLD01 §2: 4825 x 5540, tolerance +/-25)"
+  },
+  {
+   "id": "M1-SETTLEMENT-PLACEMENT",
+   "pass": true,
+   "detail": "worst settlement offset from the RI-WLD01 §3 table: 0.00 m (pass <= 60, fail > 150)"
+  },
+  {
+   "id": "M1-SETTLEMENT-DRY",
+   "pass": true,
+   "detail": "0 settlement centres under standing water"
+  },
+  {
+   "id": "M1-SETTLEMENT-FLAT",
+   "pass": true,
+   "detail": "worst slope inside a 75 m settlement footprint: 6.8 deg"
+  },
+  {
+   "id": "M1-SETTLEMENT-REGION",
+   "pass": true,
+   "detail": "every settlement is in the region settlements.json puts it in"
+  },
+  {
+   "id": "M1-LAND-AREA",
+   "pass": true,
+   "detail": "14.31 km2 of land (pass 13.0-16.0, RI-WLD01 derives 14.5)"
+  },
+  {
+   "id": "M36-ELEVATION-RANGE",
+   "pass": true,
+   "detail": "-42.3 .. 423.9 m = 466.2 m of range (RI-WLD07 §4 target -40..+420, fail < 150)"
+  },
+  {
+   "id": "M36-VALUS",
+   "pass": true,
+   "detail": "Valus Ridge max 423.9 m (pass >= 380, fail < 250)"
+  },
+  {
+   "id": "M36-SALT-HILLS",
+   "pass": true,
+   "detail": "Salt Hills max 265.2 m (pass >= 190, fail < 120)"
+  },
+  {
+   "id": "M36-BELOW-5M",
+   "pass": true,
+   "detail": "35.5% of land below +5 m (target 35-50, fail > 70)"
+  },
+  {
+   "id": "M36-ABOVE-100M",
+   "pass": true,
+   "detail": "19.4% of land above +100 m (target >= 12, fail < 5)"
+  },
+  {
+   "id": "M36-MEAN-SLOPE",
+   "pass": true,
+   "detail": "mean slope on land 9.29 deg (target 6-14, fail < 3)"
+  },
+  {
+   "id": "M4-LEG-TIMES",
+   "pass": true,
+   "detail": "worst leg deviation 2.26% (helstrom-gideon); pass <= 20%, fail > 40%"
+  },
+  {
+   "id": "M5-HABITATION-GAP",
+   "pass": true,
+   "detail": "largest walk-time gap between inhabited places: 7.83 min on soulrest-blackrose (pass <= 9.0, fail > 12)"
+  },
+  {
+   "id": "M36-ROAD-RELIEF",
+   "pass": true,
+   "detail": "31.8% of 500 m road windows change >= 15 m in elevation (target >= 30, fail < 12)"
+  },
+  {
+   "id": "S9-NO-FENCES",
+   "pass": true,
+   "detail": "on foot from the Lilmoth start, 13/13 regions and 8/8 settlements are reachable (99.3% of walkable land)"
+  },
+  {
+   "id": "M2-ROAD-ABOVE-WATER",
+   "pass": true,
+   "detail": "0 leg/phase offences over 4 tide phases x 10 legs; deepest non-tideway trunk point 0.000 m (stormhold-thorn at RISING); over-knee metreage on non-tideway legs RISING 0 m, HIGH 0 m, FALLING 0 m, LOW 0 m"
+  },
+  {
+   "id": "M2-ROAD-CUT-AND-FILL",
+   "pass": true,
+   "detail": "sub-sampled at 3 m along and across every non-tideway leg: deepest cutting 3.00 m (pass <= 3.5) at 2142.6,2169.8 on stormhold-helstrom; tallest EARTH embankment 7.61 m (pass <= 20) on stormhold-helstrom; tallest DECK SPAN 51.48 m over 2263 m of structure, which is a bridge and not a bank"
+  },
+  {
+   "id": "M2b-DECK-SPANS-ARE-STRUCTURES",
+   "pass": true,
+   "detail": "16/16 declared deck_spans are read by field.onDeckAt() in the running world (minimum clearance under a deck 3.63 m)"
+  },
+  {
+   "id": "TIDEWAY-INVERSION",
+   "pass": true,
+   "detail": "Lilmoth-Archon tideway: deepest point 0.85 m at LOW (walkable, <= W3) and 1.45 m at HIGH (>= W5, blocked)"
+  }
+ ],
+ "ok": true
+}

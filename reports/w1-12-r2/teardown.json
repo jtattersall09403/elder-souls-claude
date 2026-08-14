@@ -1,0 +1,503 @@
+{
+  "piece": "W1-12-r2",
+  "scratch": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/teardown",
+  "generated": "2026-08-08",
+  "problems": [],
+  "results": {
+    "base": {
+      "label": "AS SHIPPED",
+      "expect": null,
+      "flee_min_gap_m": {
+        "inf_trash": 1.612,
+        "guard_legion": 1.782,
+        "drowned_lesser": 1.469,
+        "drowned_greater": 1.859,
+        "beast_slitherfang": 3.235,
+        "champion_hist_marked": 1.977,
+        "cst_sap_speaker": 1.648
+      },
+      "flee_frames_inside_strike": {
+        "inf_trash": 294,
+        "guard_legion": 214,
+        "drowned_lesser": 320,
+        "drowned_greater": 107,
+        "beast_slitherfang": 0,
+        "champion_hist_marked": 752,
+        "cst_sap_speaker": 13
+      },
+      "flee_from_4m_frames_inside_strike": {
+        "inf_trash": 627,
+        "guard_legion": 573,
+        "drowned_lesser": 653,
+        "drowned_greater": 510,
+        "beast_slitherfang": 81,
+        "champion_hist_marked": 880,
+        "cst_sap_speaker": 16
+      },
+      "m3_dwell": {
+        "inf_trash": 0.2521,
+        "guard_legion": 0.256,
+        "drowned_lesser": 0.2688,
+        "drowned_greater": 0.2049,
+        "beast_slitherfang": 0.1887,
+        "champion_hist_marked": 0.2536,
+        "cst_sap_speaker": 0.0904
+      },
+      "strike_band_m": {
+        "inf_trash": 2.04,
+        "guard_legion": 2.04,
+        "drowned_lesser": 2.04,
+        "drowned_greater": 2.04,
+        "beast_slitherfang": 1.7,
+        "champion_hist_marked": 2.465,
+        "cst_sap_speaker": 1.7
+      },
+      "trace_hashes": {
+        "inf_trash": "6585982f9dae4683",
+        "guard_legion": "7b8237861bac536a",
+        "drowned_lesser": "26e3cf1ad22ca84e",
+        "drowned_greater": "3d4963500c7d5235",
+        "beast_slitherfang": "f3d946cd1bec9e5d",
+        "champion_hist_marked": "5c0807857319cbae",
+        "cst_sap_speaker": "de3eaa321e79ca6f"
+      },
+      "distinct_traces": 7,
+      "alive": {
+        "states": [
+          "APPROACH",
+          "CIRCLE",
+          "COMMIT",
+          "FEINT_STEP",
+          "RECOVER",
+          "REPOSITION",
+          "RUSH"
+        ],
+        "moving_frames": 1617,
+        "commits": 4
+      }
+    },
+    "A": {
+      "label": "A — delete the BEHAVIOUR (ai.json enabled:false)",
+      "expect": "every enemy collapses to a turning statue: no commits, no movement",
+      "flee_min_gap_m": {
+        "inf_trash": 13.033,
+        "guard_legion": 13.033,
+        "drowned_lesser": 13.033,
+        "drowned_greater": 13.033,
+        "beast_slitherfang": 13.033,
+        "champion_hist_marked": 13.033,
+        "cst_sap_speaker": 13.033
+      },
+      "flee_frames_inside_strike": {
+        "inf_trash": 0,
+        "guard_legion": 0,
+        "drowned_lesser": 0,
+        "drowned_greater": 0,
+        "beast_slitherfang": 0,
+        "champion_hist_marked": 0,
+        "cst_sap_speaker": 0
+      },
+      "flee_from_4m_frames_inside_strike": {
+        "inf_trash": 0,
+        "guard_legion": 0,
+        "drowned_lesser": 0,
+        "drowned_greater": 0,
+        "beast_slitherfang": 0,
+        "champion_hist_marked": 0,
+        "cst_sap_speaker": 0
+      },
+      "m3_dwell": {
+        "inf_trash": 0,
+        "guard_legion": 0,
+        "drowned_lesser": 0,
+        "drowned_greater": 0,
+        "beast_slitherfang": 0,
+        "champion_hist_marked": 0,
+        "cst_sap_speaker": 0
+      },
+      "strike_band_m": {
+        "inf_trash": 2.04,
+        "guard_legion": 2.04,
+        "drowned_lesser": 2.04,
+        "drowned_greater": 2.04,
+        "beast_slitherfang": 1.7,
+        "champion_hist_marked": 2.465,
+        "cst_sap_speaker": 1.7
+      },
+      "trace_hashes": {
+        "inf_trash": "678cdb62131efa2e",
+        "guard_legion": "678cdb62131efa2e",
+        "drowned_lesser": "ba907316e96d57ce",
+        "drowned_greater": "ba907316e96d57ce",
+        "beast_slitherfang": "fc8cde81fb42523f",
+        "champion_hist_marked": "ce0de5664525cab7",
+        "cst_sap_speaker": "fc8cde81fb42523f"
+      },
+      "distinct_traces": 4,
+      "alive": {
+        "states": [
+          "REPOSITION"
+        ],
+        "moving_frames": 0,
+        "commits": 0
+      }
+    },
+    "B": {
+      "label": "B — delete the CLOSURE RULE (walk_in_min_closure_mps -> -1000)",
+      "expect": "the enemy cannot catch a walking player again — flee min gap returns to round 1",
+      "flee_min_gap_m": {
+        "inf_trash": 9.108,
+        "guard_legion": 11.819,
+        "drowned_lesser": 6.797,
+        "drowned_greater": 11.735,
+        "beast_slitherfang": 3.235,
+        "champion_hist_marked": 9.158,
+        "cst_sap_speaker": 9.858
+      },
+      "flee_frames_inside_strike": {
+        "inf_trash": 0,
+        "guard_legion": 0,
+        "drowned_lesser": 0,
+        "drowned_greater": 0,
+        "beast_slitherfang": 0,
+        "champion_hist_marked": 0,
+        "cst_sap_speaker": 0
+      },
+      "flee_from_4m_frames_inside_strike": {
+        "inf_trash": 0,
+        "guard_legion": 0,
+        "drowned_lesser": 0,
+        "drowned_greater": 0,
+        "beast_slitherfang": 81,
+        "champion_hist_marked": 0,
+        "cst_sap_speaker": 0
+      },
+      "m3_dwell": {
+        "inf_trash": 0.2521,
+        "guard_legion": 0.2382,
+        "drowned_lesser": 0.2688,
+        "drowned_greater": 0.2005,
+        "beast_slitherfang": 0.1887,
+        "champion_hist_marked": 0.2536,
+        "cst_sap_speaker": 0.0904
+      },
+      "strike_band_m": {
+        "inf_trash": 2.04,
+        "guard_legion": 2.04,
+        "drowned_lesser": 2.04,
+        "drowned_greater": 2.04,
+        "beast_slitherfang": 1.7,
+        "champion_hist_marked": 2.465,
+        "cst_sap_speaker": 1.7
+      },
+      "trace_hashes": {
+        "inf_trash": "cffe51bcb2ac9271",
+        "guard_legion": "d6bab1507a8703ac",
+        "drowned_lesser": "92362ff2009adb20",
+        "drowned_greater": "3d5cd855adedfc76",
+        "beast_slitherfang": "1457d967caeda37e",
+        "champion_hist_marked": "a7739f76200315ea",
+        "cst_sap_speaker": "b688326523cbbc06"
+      },
+      "distinct_traces": 7,
+      "alive": {
+        "states": [
+          "APPROACH",
+          "CIRCLE",
+          "COMMIT",
+          "FEINT_STEP",
+          "RECOVER",
+          "REPOSITION"
+        ],
+        "moving_frames": 1665,
+        "commits": 4
+      }
+    },
+    "C": {
+      "label": "C — delete RECOVER (noteAttackPhase body)",
+      "expect": "M3 min_dist_dwell falls back to round 1s 0.04, because the recovery frames leave the denominator",
+      "flee_min_gap_m": {
+        "inf_trash": 1.612,
+        "guard_legion": 1.782,
+        "drowned_lesser": 1.469,
+        "drowned_greater": 1.859,
+        "beast_slitherfang": 3.235,
+        "champion_hist_marked": 1.977,
+        "cst_sap_speaker": 1.648
+      },
+      "flee_frames_inside_strike": {
+        "inf_trash": 294,
+        "guard_legion": 214,
+        "drowned_lesser": 320,
+        "drowned_greater": 107,
+        "beast_slitherfang": 0,
+        "champion_hist_marked": 752,
+        "cst_sap_speaker": 13
+      },
+      "flee_from_4m_frames_inside_strike": {
+        "inf_trash": 627,
+        "guard_legion": 573,
+        "drowned_lesser": 653,
+        "drowned_greater": 510,
+        "beast_slitherfang": 81,
+        "champion_hist_marked": 880,
+        "cst_sap_speaker": 16
+      },
+      "m3_dwell": {
+        "inf_trash": 0.0414,
+        "guard_legion": 0.0523,
+        "drowned_lesser": 0.0486,
+        "drowned_greater": 0.0513,
+        "beast_slitherfang": 0.0208,
+        "champion_hist_marked": 0.0539,
+        "cst_sap_speaker": 0.0125
+      },
+      "strike_band_m": {
+        "inf_trash": 2.04,
+        "guard_legion": 2.04,
+        "drowned_lesser": 2.04,
+        "drowned_greater": 2.04,
+        "beast_slitherfang": 1.7,
+        "champion_hist_marked": 2.465,
+        "cst_sap_speaker": 1.7
+      },
+      "trace_hashes": {
+        "inf_trash": "e933dc96266f84f3",
+        "guard_legion": "71b59cc0d31bfb38",
+        "drowned_lesser": "f85a15d66146c2c3",
+        "drowned_greater": "77acebd5b9a1bb29",
+        "beast_slitherfang": "28130a7bc9e8cdcc",
+        "champion_hist_marked": "cc25ab412bd76b44",
+        "cst_sap_speaker": "de3eaa321e79ca6f"
+      },
+      "distinct_traces": 7,
+      "alive": {
+        "states": [
+          "APPROACH",
+          "CIRCLE",
+          "COMMIT",
+          "FEINT_STEP",
+          "REPOSITION",
+          "RUSH"
+        ],
+        "moving_frames": 1617,
+        "commits": 4
+      }
+    },
+    "D": {
+      "label": "D — delete the BEHAVIOUR ARCHETYPE table",
+      "expect": "the four INFANTRY statblocks collapse back to one bit-identical trace",
+      "flee_min_gap_m": {
+        "inf_trash": 1.612,
+        "guard_legion": 1.612,
+        "drowned_lesser": 1.612,
+        "drowned_greater": 1.612,
+        "beast_slitherfang": 3.235,
+        "champion_hist_marked": 2.024,
+        "cst_sap_speaker": 1.648
+      },
+      "flee_frames_inside_strike": {
+        "inf_trash": 294,
+        "guard_legion": 294,
+        "drowned_lesser": 294,
+        "drowned_greater": 294,
+        "beast_slitherfang": 0,
+        "champion_hist_marked": 721,
+        "cst_sap_speaker": 13
+      },
+      "flee_from_4m_frames_inside_strike": {
+        "inf_trash": 627,
+        "guard_legion": 627,
+        "drowned_lesser": 627,
+        "drowned_greater": 627,
+        "beast_slitherfang": 81,
+        "champion_hist_marked": 864,
+        "cst_sap_speaker": 16
+      },
+      "m3_dwell": {
+        "inf_trash": 0.2521,
+        "guard_legion": 0.2521,
+        "drowned_lesser": 0.2529,
+        "drowned_greater": 0.2542,
+        "beast_slitherfang": 0.1887,
+        "champion_hist_marked": 0.2425,
+        "cst_sap_speaker": 0.0904
+      },
+      "strike_band_m": {
+        "inf_trash": 2.04,
+        "guard_legion": 2.04,
+        "drowned_lesser": 2.04,
+        "drowned_greater": 2.04,
+        "beast_slitherfang": 1.7,
+        "champion_hist_marked": 2.465,
+        "cst_sap_speaker": 1.7
+      },
+      "trace_hashes": {
+        "inf_trash": "6585982f9dae4683",
+        "guard_legion": "6585982f9dae4683",
+        "drowned_lesser": "6585982f9dae4683",
+        "drowned_greater": "6585982f9dae4683",
+        "beast_slitherfang": "f3d946cd1bec9e5d",
+        "champion_hist_marked": "ec5091e22ebbbf92",
+        "cst_sap_speaker": "de3eaa321e79ca6f"
+      },
+      "distinct_traces": 4,
+      "alive": {
+        "states": [
+          "APPROACH",
+          "CIRCLE",
+          "COMMIT",
+          "FEINT_STEP",
+          "RECOVER",
+          "REPOSITION",
+          "RUSH"
+        ],
+        "moving_frames": 1617,
+        "commits": 4
+      }
+    },
+    "E": {
+      "label": "E — delete only the CIRCLE half of the closure rule",
+      "expect": "the enemy rushes in and then dances a departing player back out — the 2.9 m stall",
+      "flee_min_gap_m": {
+        "inf_trash": 1.795,
+        "guard_legion": 1.886,
+        "drowned_lesser": 1.714,
+        "drowned_greater": 1.919,
+        "beast_slitherfang": 3.235,
+        "champion_hist_marked": 2.194,
+        "cst_sap_speaker": 1.648
+      },
+      "flee_frames_inside_strike": {
+        "inf_trash": 28,
+        "guard_legion": 20,
+        "drowned_lesser": 27,
+        "drowned_greater": 20,
+        "beast_slitherfang": 0,
+        "champion_hist_marked": 26,
+        "cst_sap_speaker": 13
+      },
+      "flee_from_4m_frames_inside_strike": {
+        "inf_trash": 0,
+        "guard_legion": 0,
+        "drowned_lesser": 0,
+        "drowned_greater": 18,
+        "beast_slitherfang": 81,
+        "champion_hist_marked": 0,
+        "cst_sap_speaker": 16
+      },
+      "m3_dwell": {
+        "inf_trash": 0.2521,
+        "guard_legion": 0.2382,
+        "drowned_lesser": 0.2688,
+        "drowned_greater": 0.2005,
+        "beast_slitherfang": 0.1887,
+        "champion_hist_marked": 0.2536,
+        "cst_sap_speaker": 0.0904
+      },
+      "strike_band_m": {
+        "inf_trash": 2.04,
+        "guard_legion": 2.04,
+        "drowned_lesser": 2.04,
+        "drowned_greater": 2.04,
+        "beast_slitherfang": 1.7,
+        "champion_hist_marked": 2.465,
+        "cst_sap_speaker": 1.7
+      },
+      "trace_hashes": {
+        "inf_trash": "6f1ea10d01bfa483",
+        "guard_legion": "4f71800c9186ee57",
+        "drowned_lesser": "954f0385af5c3a2d",
+        "drowned_greater": "af16a6d6870dcd28",
+        "beast_slitherfang": "0b95a6bb98b3db28",
+        "champion_hist_marked": "2a7a6bb22cee4ae5",
+        "cst_sap_speaker": "9de2a2fc1b94e609"
+      },
+      "distinct_traces": 7,
+      "alive": {
+        "states": [
+          "APPROACH",
+          "CIRCLE",
+          "COMMIT",
+          "FEINT_STEP",
+          "RECOVER",
+          "REPOSITION",
+          "RUSH"
+        ],
+        "moving_frames": 1626,
+        "commits": 4
+      }
+    },
+    "BE": {
+      "label": "B+E — delete BOTH halves (the 2x2 fourth cell)",
+      "expect": "the full round-1 behaviour",
+      "flee_min_gap_m": {
+        "inf_trash": 9.108,
+        "guard_legion": 11.819,
+        "drowned_lesser": 6.797,
+        "drowned_greater": 11.735,
+        "beast_slitherfang": 3.235,
+        "champion_hist_marked": 9.158,
+        "cst_sap_speaker": 9.858
+      },
+      "flee_frames_inside_strike": {
+        "inf_trash": 0,
+        "guard_legion": 0,
+        "drowned_lesser": 0,
+        "drowned_greater": 0,
+        "beast_slitherfang": 0,
+        "champion_hist_marked": 0,
+        "cst_sap_speaker": 0
+      },
+      "flee_from_4m_frames_inside_strike": {
+        "inf_trash": 0,
+        "guard_legion": 0,
+        "drowned_lesser": 0,
+        "drowned_greater": 0,
+        "beast_slitherfang": 81,
+        "champion_hist_marked": 0,
+        "cst_sap_speaker": 0
+      },
+      "m3_dwell": {
+        "inf_trash": 0.2521,
+        "guard_legion": 0.2382,
+        "drowned_lesser": 0.2688,
+        "drowned_greater": 0.2005,
+        "beast_slitherfang": 0.1887,
+        "champion_hist_marked": 0.2536,
+        "cst_sap_speaker": 0.0904
+      },
+      "strike_band_m": {
+        "inf_trash": 2.04,
+        "guard_legion": 2.04,
+        "drowned_lesser": 2.04,
+        "drowned_greater": 2.04,
+        "beast_slitherfang": 1.7,
+        "champion_hist_marked": 2.465,
+        "cst_sap_speaker": 1.7
+      },
+      "trace_hashes": {
+        "inf_trash": "cffe51bcb2ac9271",
+        "guard_legion": "d6bab1507a8703ac",
+        "drowned_lesser": "92362ff2009adb20",
+        "drowned_greater": "3d5cd855adedfc76",
+        "beast_slitherfang": "1457d967caeda37e",
+        "champion_hist_marked": "a7739f76200315ea",
+        "cst_sap_speaker": "b688326523cbbc06"
+      },
+      "distinct_traces": 7,
+      "alive": {
+        "states": [
+          "APPROACH",
+          "CIRCLE",
+          "COMMIT",
+          "FEINT_STEP",
+          "RECOVER",
+          "REPOSITION"
+        ],
+        "moving_frames": 1665,
+        "commits": 4
+      }
+    }
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "tool": "document-route-world --chain",
+  "taken_at": "2026-08-08T01:52:54.977Z",
+  "arms": {
+    "reading_and_looking": {
+      "completed": 28,
+      "of": 32,
+      "chain": [
+        "Q-MAIN-01/res_carry",
+        "Q-MAIN-02/res_count_plain",
+        "Q-MAIN-03/res_report_drain",
+        "Q-MAIN-04/res_ledger",
+        "Q-MAIN-05/res_accept_quietly",
+        "Q-MAIN-06/res_the_number",
+        "Q-MAIN-07/res_trade_the_number",
+        "Q-MAIN-08/res_ask_the_crane",
+        "Q-MAIN-09/res_hold_both",
+        "Q-MAIN-10/res_hear_it_out",
+        "Q-MAIN-11/res_walk_it",
+        "Q-MAIN-12/res_full_test",
+        "Q-MAIN-13/res_go_in",
+        "Q-MAIN-14/res_take_the_skei",
+        "Q-MAIN-15/res_heard_it",
+        "Q-MAIN-16/res_persuade_chapter",
+        "Q-MAIN-17/res_whole_arithmetic",
+        "Q-MAIN-18/res_walk_the_eleven",
+        "Q-MAIN-19/res_cutters_rank",
+        "Q-MAIN-20/res_the_paragraph",
+        "Q-MAIN-21/res_the_eleven",
+        "Q-MAIN-22/res_on_a_silence",
+        "Q-MAIN-23/res_sign_the_clause",
+        "Q-MAIN-24/res_shore_and_go",
+        "Q-MAIN-25/res_through_the_third_bay",
+        "Q-MAIN-26/res_hear_him_out",
+        "Q-MAIN-27/res_cross",
+        "Q-MAIN-28/res_open_the_count"
+      ],
+      "documents_read": [
+        {
+          "quest": "Q-MAIN-05",
+          "book": "the-chapter-room-recension"
+        },
+        {
+          "quest": "Q-MAIN-06",
+          "book": "the-drowned-tally-tenth-volume"
+        },
+        {
+          "quest": "Q-MAIN-06",
+          "book": "the-drowned-tally-fourth-volume"
+        },
+        {
+          "quest": "Q-MAIN-07",
+          "book": "the-grandmother-yard-book"
+        },
+        {
+          "quest": "Q-MAIN-08",
+          "book": "the-archon-true-manifest"
+        },
+        {
+          "quest": "Q-MAIN-10",
+          "book": "the-stewards-letter"
+        },
+        {
+          "quest": "Q-MAIN-12",
+          "book": "the-commonplace-book-of-ivo-sarn"
+        },
+        {
+          "quest": "Q-MAIN-13",
+          "book": "the-drowned-tally-appendix"
+        },
+        {
+          "quest": "Q-MAIN-16",
+          "book": "the-wet-ledger-private-book"
+        },
+        {
+          "quest": "Q-MAIN-17",
+          "book": "the-compact-share-book"
+        },
+        {
+          "quest": "Q-MAIN-22",
+          "book": "the-leave-book-of-thorn"
+        },
+        {
+          "quest": "Q-MAIN-22",
+          "book": "the-cutters-list"
+        }
+      ],
+      "marks_looked_at": [
+        {
+          "quest": "Q-MAIN-03",
+          "mark": "loc_shaft_under_the_rib",
+          "room": null
+        },
+        {
+          "quest": "Q-MAIN-08",
+          "mark": "item_lead_ring_seal",
+          "room": "archon-guild-office"
+        },
+        {
+          "quest": "Q-MAIN-11",
+          "mark": "loc_the_flooding_road",
+          "room": null
+        },
+        {
+          "quest": "Q-MAIN-12",
+          "mark": "loc_the_sixth_intake",
+          "room": null
+        },
+        {
+          "quest": "Q-MAIN-15",
+          "mark": "loc_the_tree_at_thorn",
+          "room": null
+        },
+        {
+          "quest": "Q-MAIN-21",
+          "mark": "loc_lilmoth_rotting_quarter",
+          "room": null
+        }
+      ],
+      "stopped_at": {
+        "quest": "Q-MAIN-29",
+        "phase": "offer",
+        "why": "closed by an earlier choice"
+      }
+    },
+    "reading_only": {
+      "completed": 10,
+      "of": 32,
+      "chain": [
+        "Q-MAIN-01/res_carry",
+        "Q-MAIN-02/res_count_plain",
+        "Q-MAIN-03/res_report_failure",
+        "Q-MAIN-04/res_ledger",
+        "Q-MAIN-05/res_accept_quietly",
+        "Q-MAIN-06/res_the_number",
+        "Q-MAIN-07/res_trade_the_number",
+        "Q-MAIN-08/res_ask_the_crane",
+        "Q-MAIN-09/res_hold_both",
+        "Q-MAIN-10/res_hear_it_out"
+      ],
+      "documents_read": [
+        {
+          "quest": "Q-MAIN-05",
+          "book": "the-chapter-room-recension"
+        },
+        {
+          "quest": "Q-MAIN-06",
+          "book": "the-drowned-tally-tenth-volume"
+        },
+        {
+          "quest": "Q-MAIN-06",
+          "book": "the-drowned-tally-fourth-volume"
+        },
+        {
+          "quest": "Q-MAIN-07",
+          "book": "the-grandmother-yard-book"
+        },
+        {
+          "quest": "Q-MAIN-08",
+          "book": "the-archon-true-manifest"
+        },
+        {
+          "quest": "Q-MAIN-10",
+          "book": "the-stewards-letter"
+        }
+      ],
+      "marks_looked_at": [],
+      "stopped_at": {
+        "quest": "Q-MAIN-11",
+        "phase": "resolution",
+        "why": "res_walk_it: you do not know rev_the_rhythm | res_bring_sarn_up: you do not know rev_the_rhythm; you do not know rev_sarns_book"
+      }
+    },
+    "neither": {
+      "completed": 5,
+      "of": 32,
+      "chain": [
+        "Q-MAIN-01/res_carry",
+        "Q-MAIN-02/res_count_plain",
+        "Q-MAIN-03/res_report_failure",
+        "Q-MAIN-04/res_ledger",
+        "Q-MAIN-05/res_accept_quietly"
+      ],
+      "documents_read": [],
+      "marks_looked_at": [],
+      "stopped_at": {
+        "quest": "Q-MAIN-06",
+        "phase": "resolution",
+        "why": "res_the_number: you do not know rev_the_curve_predates | res_the_fair_copy: you do not know rev_the_curve_predates; you do not know rev_the_steward_named"
+      }
+    }
+  }
+}

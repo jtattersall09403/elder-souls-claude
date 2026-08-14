@@ -1,0 +1,235 @@
+{
+  "tool": "tools/world/critic-w1-04-r3a.mjs",
+  "entry": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/criticr3-boot/game/index.html",
+  "started_at": "2026-08-08T02:45:24.465Z",
+  "sections": {
+    "S6": {
+      "files": {
+        "vp04": "docs/shots/2026-08-08-w1-04-r3-critic-vp04-inside-a-wall.png",
+        "roofs": "docs/shots/2026-08-08-w1-04-r3-critic-helstrom-open-topped-roofs.png",
+        "street": "docs/shots/2026-08-08-w1-04-r3-critic-helstrom-town-from-outside.png",
+        "shed": "docs/shots/2026-08-08-w1-04-r3-critic-blackrose-inn-a-shed-over-a-hall.png",
+        "interiors": [
+          "docs/shots/2026-08-08-w1-04-r3-critic-interior-blackrose-prison.png",
+          "docs/shots/2026-08-08-w1-04-r3-critic-interior-thorn-hall.png",
+          "docs/shots/2026-08-08-w1-04-r3-critic-interior-archon-apothecary.png"
+        ]
+      },
+      "shed": {
+        "drawn_footprint_m": [
+          3.4,
+          3.9
+        ],
+        "declared_footprint_m": [
+          13.6,
+          15.6
+        ],
+        "shrink": 0.25,
+        "interior": "blackrose-inn"
+      },
+      "vp04": {
+        "buildings_drawn": 15,
+        "camera_inside_building": {
+          "settlement": "thorn",
+          "building": "thorn-sapwell"
+        }
+      },
+      "roofs": {
+        "buildings_drawn": 15
+      },
+      "street": {
+        "buildings_drawn": 15
+      },
+      "interiors": [
+        {
+          "id": "blackrose-prison",
+          "meshes": 146,
+          "triangles": 2776,
+          "lights": 5
+        },
+        {
+          "id": "thorn-hall",
+          "meshes": 179,
+          "triangles": 3416,
+          "lights": 5
+        },
+        {
+          "id": "archon-apothecary",
+          "meshes": 127,
+          "triangles": 2460,
+          "lights": 5
+        }
+      ]
+    },
+    "S7": {
+      "side": "HARNESS",
+      "live": {
+        "distinct": 8,
+        "buildings": {
+          "archon": 22,
+          "blackrose": 22,
+          "gideon": 22,
+          "helstrom": 22,
+          "lilmoth": 40,
+          "soulrest": 33,
+          "stormhold": 15,
+          "thorn": 33
+        }
+      },
+      "repeat_of_live": {
+        "distinct": 8,
+        "towns_byte_identical_to_first_pass": 0
+      },
+      "control": {
+        "distinct": 8,
+        "buildings": {
+          "archon": 0,
+          "blackrose": 0,
+          "gideon": 0,
+          "helstrom": 0,
+          "lilmoth": 0,
+          "soulrest": 0,
+          "stormhold": 0,
+          "thorn": 0
+        }
+      },
+      "rows": {
+        "live": {
+          "archon": {
+            "h": 366526150,
+            "bytes": 1492058,
+            "buildings": 22
+          },
+          "blackrose": {
+            "h": 1163672706,
+            "bytes": 458366,
+            "buildings": 22
+          },
+          "gideon": {
+            "h": 117505099,
+            "bytes": 90754,
+            "buildings": 22
+          },
+          "helstrom": {
+            "h": 1266581146,
+            "bytes": 338742,
+            "buildings": 22
+          },
+          "lilmoth": {
+            "h": 128230917,
+            "bytes": 261942,
+            "buildings": 40
+          },
+          "soulrest": {
+            "h": 2409622136,
+            "bytes": 237766,
+            "buildings": 33
+          },
+          "stormhold": {
+            "h": 2589862534,
+            "bytes": 685546,
+            "buildings": 15
+          },
+          "thorn": {
+            "h": 2552272667,
+            "bytes": 186474,
+            "buildings": 33
+          }
+        },
+        "repeat": {
+          "archon": {
+            "h": 2470478063,
+            "bytes": 142130,
+            "buildings": 15
+          },
+          "blackrose": {
+            "h": 3716796195,
+            "bytes": 142306,
+            "buildings": 22
+          },
+          "gideon": {
+            "h": 4011948856,
+            "bytes": 89038,
+            "buildings": 22
+          },
+          "helstrom": {
+            "h": 2803637315,
+            "bytes": 338142,
+            "buildings": 22
+          },
+          "lilmoth": {
+            "h": 2218841516,
+            "bytes": 262270,
+            "buildings": 40
+          },
+          "soulrest": {
+            "h": 2071934618,
+            "bytes": 237574,
+            "buildings": 33
+          },
+          "stormhold": {
+            "h": 346702473,
+            "bytes": 684138,
+            "buildings": 15
+          },
+          "thorn": {
+            "h": 1903437018,
+            "bytes": 186582,
+            "buildings": 33
+          }
+        },
+        "control": {
+          "archon": {
+            "h": 3568655072,
+            "bytes": 141866,
+            "buildings": 0
+          },
+          "blackrose": {
+            "h": 1249475927,
+            "bytes": 142242,
+            "buildings": 0
+          },
+          "gideon": {
+            "h": 949920223,
+            "bytes": 89038,
+            "buildings": 0
+          },
+          "helstrom": {
+            "h": 2187272690,
+            "bytes": 338482,
+            "buildings": 0
+          },
+          "lilmoth": {
+            "h": 3065188511,
+            "bytes": 262202,
+            "buildings": 0
+          },
+          "soulrest": {
+            "h": 953959606,
+            "bytes": 237470,
+            "buildings": 0
+          },
+          "stormhold": {
+            "h": 834525503,
+            "bytes": 685094,
+            "buildings": 0
+          },
+          "thorn": {
+            "h": 1040635921,
+            "bytes": 186382,
+            "buildings": 0
+          }
+        }
+      },
+      "verdicts": {
+        "live_returns_8": true,
+        "control_returns_1": false,
+        "arms_differ": false,
+        "repeatable": false
+      }
+    }
+  },
+  "page_errors": [],
+  "notes": [],
+  "finished_at": "2026-08-08T02:59:20.184Z"
+}

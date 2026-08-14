@@ -1,0 +1,855 @@
+{
+  "schema": "elder-souls/beat-diff@1",
+  "tool": "tools/experience/beat-diff.mjs",
+  "item": "RI-EXP01 steps 3 + 5",
+  "sheet_from": "corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md",
+  "beats_in_sheet": 18,
+  "beats_in_log": 0,
+  "rows": [
+    {
+      "id": "B01",
+      "t_target_min": 0,
+      "window": [
+        0,
+        0
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "given",
+          "creation"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "given",
+            "count": 0
+          },
+          {
+            "beat_class": "creation",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          0,
+          0
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B02",
+      "t_target_min": 2,
+      "window": [
+        1,
+        3
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "given",
+          "creation",
+          "release"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "given",
+            "count": 0
+          },
+          {
+            "beat_class": "creation",
+            "count": 0
+          },
+          {
+            "beat_class": "release",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          1,
+          3
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B03",
+      "t_target_min": 4,
+      "window": [
+        2,
+        6
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "given",
+          "creation"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "given",
+            "count": 0
+          },
+          {
+            "beat_class": "creation",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          2,
+          6
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B04",
+      "t_target_min": 8,
+      "window": [
+        6,
+        10
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "found_not_given"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "found_not_given",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          6,
+          10
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B05",
+      "t_target_min": 11,
+      "window": [
+        9,
+        13
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "given",
+          "creation"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "given",
+            "count": 0
+          },
+          {
+            "beat_class": "creation",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          9,
+          13
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B06",
+      "t_target_min": 13,
+      "window": [
+        10,
+        16
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "given",
+          "creation",
+          "refusal"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "given",
+            "count": 0
+          },
+          {
+            "beat_class": "creation",
+            "count": 0
+          },
+          {
+            "beat_class": "refusal",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          10,
+          16
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B07",
+      "t_target_min": 16,
+      "window": [
+        12,
+        20
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "given",
+          "creation",
+          "refusal"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "given",
+            "count": 0
+          },
+          {
+            "beat_class": "creation",
+            "count": 0
+          },
+          {
+            "beat_class": "refusal",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          12,
+          20
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B08",
+      "t_target_min": 19,
+      "window": [
+        15,
+        23
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "found_not_given",
+          "combat"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "found_not_given",
+            "count": 0
+          },
+          {
+            "beat_class": "combat",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          15,
+          23
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B09",
+      "t_target_min": 22,
+      "window": [
+        17,
+        27
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "odd",
+          "found_not_given"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "odd",
+            "count": 0
+          },
+          {
+            "beat_class": "found_not_given",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          17,
+          27
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B10",
+      "t_target_min": 25,
+      "window": [
+        20,
+        30
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "found_not_given"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "found_not_given",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          20,
+          30
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B11",
+      "t_target_min": 28,
+      "window": [
+        22,
+        34
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "death",
+          "found_not_given"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "death",
+            "count": 0
+          },
+          {
+            "beat_class": "found_not_given",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          22,
+          34
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B12",
+      "t_target_min": 31,
+      "window": [
+        25,
+        37
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "given",
+          "creation",
+          "refusal"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "given",
+            "count": 0
+          },
+          {
+            "beat_class": "creation",
+            "count": 0
+          },
+          {
+            "beat_class": "refusal",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          25,
+          37
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B13",
+      "t_target_min": 34,
+      "window": [
+        28,
+        40
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "death",
+          "found_not_given",
+          "given",
+          "refusal"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "death",
+            "count": 0
+          },
+          {
+            "beat_class": "found_not_given",
+            "count": 0
+          },
+          {
+            "beat_class": "given",
+            "count": 0
+          },
+          {
+            "beat_class": "refusal",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          28,
+          40
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B14",
+      "t_target_min": 38,
+      "window": [
+        32,
+        44
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "given",
+          "creation"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "given",
+            "count": 0
+          },
+          {
+            "beat_class": "creation",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          32,
+          44
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B15",
+      "t_target_min": 42,
+      "window": [
+        34,
+        50
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "found_not_given"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "found_not_given",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          34,
+          50
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B16",
+      "t_target_min": 50,
+      "window": [
+        42,
+        58
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "found_not_given",
+          "combat"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "found_not_given",
+            "count": 0
+          },
+          {
+            "beat_class": "combat",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          42,
+          58
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B17",
+      "t_target_min": 55,
+      "window": [
+        50,
+        60
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "found_not_given"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "found_not_given",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          50,
+          60
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    },
+    {
+      "id": "B18",
+      "t_target_min": 58,
+      "window": [
+        53,
+        63
+      ],
+      "verdict": "missing",
+      "observed_t_min": null,
+      "delta_min": null,
+      "negative_artifact": {
+        "searched_beat_classes": [
+          "given",
+          "creation"
+        ],
+        "candidates_of_those_classes_in_log": [
+          {
+            "beat_class": "given",
+            "count": 0
+          },
+          {
+            "beat_class": "creation",
+            "count": 0
+          }
+        ],
+        "window_searched_min": [
+          53,
+          63
+        ],
+        "total_beats_in_log": 0,
+        "trace_records_scanned": 36000,
+        "empty_output": true,
+        "note": "RI-EXP01 step 5: a `missing` beat must carry the search that would have found it and its empty output. Without this a reader cannot tell a beat the build does not have from a beat the extractor cannot see."
+      }
+    }
+  ],
+  "summary": {
+    "hit": 0,
+    "early": 0,
+    "late": 0,
+    "missing": 18,
+    "required_hits": 15
+  },
+  "derived_targets": {
+    "T_choice": {
+      "value": null,
+      "target": {
+        "op": "<=",
+        "value": 14,
+        "raw": "<= 14"
+      },
+      "fail": {
+        "op": ">",
+        "value": 20,
+        "raw": "> 20"
+      },
+      "status": "unmeasurable",
+      "why": "needs a decision whose TWO consequences persist >= 30 min — a persistence check across the session, not a beat signature."
+    },
+    "T_found": {
+      "value": null,
+      "target": {
+        "op": "<=",
+        "value": 10,
+        "raw": "<= 10"
+      },
+      "fail": {
+        "op": ">",
+        "value": 15,
+        "raw": "> 15"
+      },
+      "status": "unmeasurable",
+      "why": "no observed beat class supplies this metric"
+    },
+    "T_death": {
+      "value": null,
+      "target": {
+        "op": "between",
+        "min": 18,
+        "max": 32,
+        "raw": "18-32"
+      },
+      "fail": {
+        "op": "prose",
+        "raw": "0 deaths, or > 40"
+      },
+      "status": "unmeasurable",
+      "why": "no observed beat class supplies this metric"
+    },
+    "T_odd": {
+      "value": null,
+      "target": {
+        "op": "<=",
+        "value": 25,
+        "raw": "<= 25"
+      },
+      "fail": {
+        "op": ">",
+        "value": 35,
+        "raw": "> 35"
+      },
+      "status": "unmeasurable",
+      "why": "no observed beat class supplies this metric"
+    },
+    "T_refusal": {
+      "value": null,
+      "target": {
+        "op": "<=",
+        "value": 20,
+        "raw": "<= 20"
+      },
+      "fail": {
+        "op": ">",
+        "value": 30,
+        "raw": "> 30"
+      },
+      "status": "unmeasurable",
+      "why": "no observed beat class supplies this metric"
+    },
+    "T_lie": {
+      "value": null,
+      "target": {
+        "op": "<=",
+        "value": 20,
+        "raw": "<= 20"
+      },
+      "fail": {
+        "op": "prose",
+        "raw": "none in the hour"
+      },
+      "status": "unmeasurable",
+      "why": "RI-EXP01 step 2 defers `lie` to a verification stage against game/data/**; it is not a trace signature and beat-extract does not emit it."
+    },
+    "V_taught": {
+      "value": null,
+      "target": {
+        "op": ">=",
+        "value": 7,
+        "raw": ">= 7"
+      },
+      "fail": {
+        "op": "<=",
+        "value": 4,
+        "raw": "<= 4"
+      },
+      "status": "unmeasurable",
+      "why": "needs the distinct-verb census from the session ops log; run it against session-run.mjs ops.json rather than the trace."
+    },
+    "N_odd": {
+      "value": 0,
+      "target": {
+        "op": ">=",
+        "value": 2,
+        "raw": ">= 2"
+      },
+      "fail": {
+        "op": "<=",
+        "value": 1,
+        "raw": "<= 1"
+      },
+      "status": "fail",
+      "why": null
+    },
+    "N_persons": {
+      "value": null,
+      "target": {
+        "op": ">=",
+        "value": 4,
+        "raw": ">= 4"
+      },
+      "fail": {
+        "op": "<=",
+        "value": 2,
+        "raw": "<= 2"
+      },
+      "status": "unmeasurable",
+      "why": "needs named NPCs with >= 3 topics AND a stated opinion about another named NPC, as PRESENTED in play. Reading npcs/*.json instead would measure the design document (RI-MTH07)."
+    },
+    "N_found": {
+      "value": 0,
+      "target": {
+        "op": ">=",
+        "value": 3,
+        "raw": ">= 3"
+      },
+      "fail": {
+        "op": "<=",
+        "value": 1,
+        "raw": "<= 1"
+      },
+      "status": "fail",
+      "why": null
+    },
+    "beats_hit": {
+      "value": 0,
+      "target": {
+        "op": ">=",
+        "value": 15,
+        "raw": ">= 15/18"
+      },
+      "fail": {
+        "op": "<=",
+        "value": 11,
+        "raw": "<= 11/18"
+      },
+      "status": "fail",
+      "why": null
+    },
+    "order_violations": {
+      "value": 0,
+      "target": {
+        "op": "==",
+        "value": 0,
+        "raw": "0"
+      },
+      "fail": {
+        "op": ">=",
+        "value": 2,
+        "raw": ">= 2"
+      },
+      "status": "pass",
+      "why": null
+    },
+    "tutorial_text_chars": {
+      "value": 0,
+      "target": {
+        "op": "<=",
+        "value": 400,
+        "raw": "<= 400"
+      },
+      "fail": {
+        "op": ">",
+        "value": 1500,
+        "raw": "> 1500"
+      },
+      "status": "pass",
+      "why": null
+    }
+  },
+  "jrn_agreement": null,
+  "ok": false
+}

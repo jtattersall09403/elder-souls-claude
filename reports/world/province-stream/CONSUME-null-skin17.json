@@ -1,0 +1,730 @@
+{
+  "tool": "tools/world/prov-stream.mjs",
+  "mode": "walk",
+  "state": "default",
+  "git": {
+    "commit": "13401fe409cc851de23bd5a2817901a7032bf24d",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "taken_at": "2026-08-07T12:47:47.449Z",
+  "loadavg": "12.24 8.84 7.54 13/253 6065",
+  "perturbation": {
+    "tile_radius": null,
+    "skin_radius": 17,
+    "applied": {
+      "before": {
+        "tile_radius": 2,
+        "skin_radius": 34
+      },
+      "after": {
+        "tile_radius": 2,
+        "skin_radius": 17
+      }
+    }
+  },
+  "samples": [
+    {
+      "province_loaded": true,
+      "frame": 1,
+      "cell": "province",
+      "at": [
+        2171.5,
+        761
+      ],
+      "player": [
+        2171.5,
+        761
+      ],
+      "region": "salt-hills",
+      "tile_radius": 2,
+      "tilesResident": 25,
+      "tilesQueued": 0,
+      "tilesBuiltTotal": 50,
+      "ring_want": 25,
+      "ring_built": 25,
+      "ring_unbuilt": 0,
+      "near_ring_want": 9,
+      "near_ring_built": 9,
+      "near_ring_unbuilt": 0,
+      "ground_underfoot_built": true,
+      "unbuilt_keys": [],
+      "stream_focus": [
+        2171.5,
+        761
+      ],
+      "stream_focus_lag_m": 0,
+      "skin_lag_m": 0,
+      "skin_vertices": 3969,
+      "near_lag_m": 0,
+      "near_instances": 99,
+      "cover_lag_m": 0,
+      "cover_instances": 2476,
+      "night_factor": 0,
+      "lamps_lit": 0,
+      "nearest_lamp_m": null
+    },
+    {
+      "province_loaded": true,
+      "frame": 6001,
+      "cell": "province",
+      "at": [
+        2265.6,
+        934
+      ],
+      "player": [
+        2265.6,
+        934
+      ],
+      "region": "salt-hills",
+      "tile_radius": 2,
+      "tilesResident": 30,
+      "tilesQueued": 0,
+      "tilesBuiltTotal": 55,
+      "ring_want": 25,
+      "ring_built": 25,
+      "ring_unbuilt": 0,
+      "near_ring_want": 9,
+      "near_ring_built": 9,
+      "near_ring_unbuilt": 0,
+      "ground_underfoot_built": true,
+      "unbuilt_keys": [],
+      "stream_focus": [
+        2265.4,
+        932.6
+      ],
+      "stream_focus_lag_m": 1.43,
+      "skin_lag_m": 5.43,
+      "skin_vertices": 3969,
+      "near_lag_m": 21.59,
+      "near_instances": 106,
+      "cover_lag_m": 5.43,
+      "cover_instances": 2549,
+      "night_factor": 0,
+      "lamps_lit": 0,
+      "nearest_lamp_m": null,
+      "walk_frames": 6001,
+      "walk_m": 199.4,
+      "chunk_wall_ms": 1362.9,
+      "chunk_frames": 6000,
+      "chunk_ms_per_frame": 0.2271
+    },
+    {
+      "province_loaded": true,
+      "frame": 12001,
+      "cell": "province",
+      "at": [
+        2228,
+        1128.3
+      ],
+      "player": [
+        2228,
+        1128.3
+      ],
+      "region": "salt-hills",
+      "tile_radius": 2,
+      "tilesResident": 30,
+      "tilesQueued": 0,
+      "tilesBuiltTotal": 55,
+      "ring_want": 25,
+      "ring_built": 25,
+      "ring_unbuilt": 0,
+      "near_ring_want": 9,
+      "near_ring_built": 9,
+      "near_ring_unbuilt": 0,
+      "ground_underfoot_built": true,
+      "unbuilt_keys": [],
+      "stream_focus": [
+        2228.5,
+        1127.2
+      ],
+      "stream_focus_lag_m": 1.2,
+      "skin_lag_m": 11.23,
+      "skin_vertices": 3969,
+      "near_lag_m": 21.3,
+      "near_instances": 98,
+      "cover_lag_m": 11.23,
+      "cover_instances": 2238,
+      "night_factor": 0,
+      "lamps_lit": 0,
+      "nearest_lamp_m": null,
+      "walk_frames": 12001,
+      "walk_m": 399.4,
+      "chunk_wall_ms": 1361.4,
+      "chunk_frames": 6000,
+      "chunk_ms_per_frame": 0.2269
+    },
+    {
+      "province_loaded": true,
+      "frame": 18001,
+      "cell": "province",
+      "at": [
+        2111,
+        1224.5
+      ],
+      "player": [
+        2111,
+        1224.5
+      ],
+      "region": "valus-ridge",
+      "tile_radius": 2,
+      "tilesResident": 30,
+      "tilesQueued": 0,
+      "tilesBuiltTotal": 60,
+      "ring_want": 25,
+      "ring_built": 25,
+      "ring_unbuilt": 0,
+      "near_ring_want": 9,
+      "near_ring_built": 9,
+      "near_ring_unbuilt": 0,
+      "ground_underfoot_built": true,
+      "unbuilt_keys": [],
+      "stream_focus": [
+        2112,
+        1222.8
+      ],
+      "stream_focus_lag_m": 2,
+      "skin_lag_m": 10.09,
+      "skin_vertices": 3969,
+      "near_lag_m": 23.56,
+      "near_instances": 181,
+      "cover_lag_m": 10.09,
+      "cover_instances": 2278,
+      "night_factor": 0,
+      "lamps_lit": 0,
+      "nearest_lamp_m": null,
+      "walk_frames": 18001,
+      "walk_m": 599.4,
+      "chunk_wall_ms": 1965.3,
+      "chunk_frames": 6000,
+      "chunk_ms_per_frame": 0.3276
+    },
+    {
+      "province_loaded": true,
+      "frame": 24001,
+      "cell": "province",
+      "at": [
+        2228,
+        1335.4
+      ],
+      "player": [
+        2228,
+        1335.4
+      ],
+      "region": "stone-forest",
+      "tile_radius": 2,
+      "tilesResident": 30,
+      "tilesQueued": 0,
+      "tilesBuiltTotal": 60,
+      "ring_want": 25,
+      "ring_built": 25,
+      "ring_unbuilt": 0,
+      "near_ring_want": 9,
+      "near_ring_built": 9,
+      "near_ring_unbuilt": 0,
+      "ground_underfoot_built": true,
+      "unbuilt_keys": [],
+      "stream_focus": [
+        2226.2,
+        1334.7
+      ],
+      "stream_focus_lag_m": 1.87,
+      "skin_lag_m": 3.9,
+      "skin_vertices": 3969,
+      "near_lag_m": 16.1,
+      "near_instances": 44,
+      "cover_lag_m": 3.9,
+      "cover_instances": 1034,
+      "night_factor": 0,
+      "lamps_lit": 0,
+      "nearest_lamp_m": null,
+      "walk_frames": 24001,
+      "walk_m": 799.4,
+      "chunk_wall_ms": 1341.3,
+      "chunk_frames": 6000,
+      "chunk_ms_per_frame": 0.2236
+    },
+    {
+      "province_loaded": true,
+      "frame": 30001,
+      "cell": "province",
+      "at": [
+        2299.1,
+        1495.1
+      ],
+      "player": [
+        2299.1,
+        1495.1
+      ],
+      "region": "stone-forest",
+      "tile_radius": 2,
+      "tilesResident": 30,
+      "tilesQueued": 0,
+      "tilesBuiltTotal": 60,
+      "ring_want": 25,
+      "ring_built": 25,
+      "ring_unbuilt": 0,
+      "near_ring_want": 9,
+      "near_ring_built": 9,
+      "near_ring_unbuilt": 0,
+      "ground_underfoot_built": true,
+      "unbuilt_keys": [],
+      "stream_focus": [
+        2299,
+        1495.1
+      ],
+      "stream_focus_lag_m": 0.03,
+      "skin_lag_m": 10.15,
+      "skin_vertices": 3969,
+      "near_lag_m": 12.17,
+      "near_instances": 17,
+      "cover_lag_m": 10.15,
+      "cover_instances": 792,
+      "night_factor": 0,
+      "lamps_lit": 0,
+      "nearest_lamp_m": null,
+      "walk_frames": 30001,
+      "walk_m": 999.4,
+      "chunk_wall_ms": 868.1,
+      "chunk_frames": 6000,
+      "chunk_ms_per_frame": 0.1447
+    },
+    {
+      "province_loaded": true,
+      "frame": 36000,
+      "cell": "province",
+      "at": [
+        2392.6,
+        1651.2
+      ],
+      "player": [
+        2392.6,
+        1651.2
+      ],
+      "region": "stone-forest",
+      "tile_radius": 2,
+      "tilesResident": 30,
+      "tilesQueued": 0,
+      "tilesBuiltTotal": 65,
+      "ring_want": 25,
+      "ring_built": 25,
+      "ring_unbuilt": 0,
+      "near_ring_want": 9,
+      "near_ring_built": 9,
+      "near_ring_unbuilt": 0,
+      "ground_underfoot_built": true,
+      "unbuilt_keys": [],
+      "stream_focus": [
+        2392.6,
+        1651.1
+      ],
+      "stream_focus_lag_m": 0.17,
+      "skin_lag_m": 4.23,
+      "skin_vertices": 3969,
+      "near_lag_m": 10.25,
+      "near_instances": 8,
+      "cover_lag_m": 4.23,
+      "cover_instances": 773,
+      "night_factor": 0,
+      "lamps_lit": 0,
+      "nearest_lamp_m": null,
+      "walk_frames": 36000,
+      "walk_m": 1199.4,
+      "chunk_wall_ms": 1490.2,
+      "chunk_frames": 5999,
+      "chunk_ms_per_frame": 0.2484
+    }
+  ],
+  "after_load": {
+    "province_loaded": true,
+    "frame": 0,
+    "cell": "province",
+    "at": [
+      2766.5,
+      5011
+    ],
+    "player": [
+      2766.5,
+      5011
+    ],
+    "region": "western-rootlands",
+    "tile_radius": 2,
+    "tilesResident": 0,
+    "tilesQueued": 0,
+    "tilesBuiltTotal": 25,
+    "ring_want": 25,
+    "ring_built": 0,
+    "ring_unbuilt": 25,
+    "near_ring_want": 9,
+    "near_ring_built": 0,
+    "near_ring_unbuilt": 9,
+    "ground_underfoot_built": false,
+    "unbuilt_keys": [
+      "7,14",
+      "8,14",
+      "9,14",
+      "10,14",
+      "11,14",
+      "7,15",
+      "8,15",
+      "9,15",
+      "10,15",
+      "11,15",
+      "7,16",
+      "8,16",
+      "9,16",
+      "10,16",
+      "11,16",
+      "7,17",
+      "8,17",
+      "9,17",
+      "10,17",
+      "11,17",
+      "7,18",
+      "8,18",
+      "9,18",
+      "10,18",
+      "11,18"
+    ],
+    "stream_focus": [
+      2766.5,
+      5011
+    ],
+    "stream_focus_lag_m": 0,
+    "skin_lag_m": null,
+    "skin_vertices": 15625,
+    "near_lag_m": null,
+    "near_instances": 478,
+    "cover_lag_m": null,
+    "cover_instances": 2601,
+    "night_factor": 0,
+    "lamps_lit": 0,
+    "nearest_lamp_m": null
+  },
+  "cost": {
+    "frames": 35999,
+    "total_ms": 8389.2,
+    "worst_step_ms": 0,
+    "worst_at_frame": -1,
+    "mean_ms": 0.233
+  },
+  "walk": {
+    "route": "crossing",
+    "speed": "walk",
+    "done": false,
+    "frames": 36000,
+    "seconds": 600,
+    "minutes": 10,
+    "path_m": 1199.4,
+    "declared_route_m": 6816,
+    "mean_speed_mps": 1.999,
+    "min_speed_mps": 0,
+    "max_speed_mps": 2,
+    "speed_samples": 6000,
+    "speed_histogram": {
+      "0-0.5": 3,
+      "0.5-1": 0,
+      "1-1.6": 0,
+      "1.6-1.9": 1,
+      "1.9-1.99": 0,
+      "1.99-2.01": 5996,
+      "2.01-2.5": 0,
+      "2.5-3": 0,
+      "3-3.3": 0,
+      "3.3-99": 0
+    },
+    "frac_samples_below_1_6": 0.0005,
+    "leg_minutes": {
+      "stormhold-helstrom": 10
+    },
+    "region_sequence": [
+      {
+        "region": "salt-hills",
+        "frame": 1,
+        "m": 0
+      },
+      {
+        "region": "valus-ridge",
+        "frame": 13859,
+        "m": 461.4
+      },
+      {
+        "region": "stone-forest",
+        "frame": 21551,
+        "m": 717.7
+      }
+    ],
+    "remaining_points": 476
+  },
+  "final": {
+    "province_loaded": true,
+    "frame": 36000,
+    "cell": "province",
+    "at": [
+      2392.6,
+      1651.2
+    ],
+    "player": [
+      2392.6,
+      1651.2
+    ],
+    "region": "stone-forest",
+    "tile_radius": 2,
+    "tilesResident": 30,
+    "tilesQueued": 0,
+    "tilesBuiltTotal": 65,
+    "ring_want": 25,
+    "ring_built": 25,
+    "ring_unbuilt": 0,
+    "near_ring_want": 9,
+    "near_ring_built": 9,
+    "near_ring_unbuilt": 0,
+    "ground_underfoot_built": true,
+    "unbuilt_keys": [],
+    "stream_focus": [
+      2392.6,
+      1651.1
+    ],
+    "stream_focus_lag_m": 0.17,
+    "skin_lag_m": 4.23,
+    "skin_vertices": 3969,
+    "near_lag_m": 10.25,
+    "near_instances": 8,
+    "cover_lag_m": 4.23,
+    "cover_instances": 773,
+    "night_factor": 0,
+    "lamps_lit": 0,
+    "nearest_lamp_m": null
+  },
+  "province_stats": {
+    "world_bounds_m": {
+      "x": [
+        0,
+        4825
+      ],
+      "z": [
+        0,
+        5540
+      ]
+    },
+    "cell_m": 25,
+    "cols": 193,
+    "rows": 222,
+    "elevation_range_m": [
+      -42.3,
+      423.9
+    ],
+    "land_km2": 14.309,
+    "land_above_sea_km2": 14.177,
+    "frac_land_below_5m": 0.356,
+    "frac_land_above_100m": 0.194,
+    "regions": [
+      {
+        "id": "blackwood",
+        "index": 0,
+        "built_area_km2": 2.052,
+        "declared_area_km2": 2.07,
+        "max_elevation_m": 224.6,
+        "mean_slope_deg": 10.58,
+        "frac_below_5m": 0.564,
+        "dry": false,
+        "water_offset_m": -0.1356,
+        "channel_wet": 1,
+        "wci_declared": 0.41,
+        "wci_built": 0.41
+      },
+      {
+        "id": "clay-moor",
+        "index": 1,
+        "built_area_km2": 0.797,
+        "declared_area_km2": 0.81,
+        "max_elevation_m": 35.3,
+        "mean_slope_deg": 5.32,
+        "frac_below_5m": 0,
+        "dry": true,
+        "water_offset_m": -12,
+        "channel_wet": 0,
+        "wci_declared": 0,
+        "wci_built": 0
+      },
+      {
+        "id": "crimson-coast",
+        "index": 2,
+        "built_area_km2": 0.614,
+        "declared_area_km2": 0.63,
+        "max_elevation_m": 25.4,
+        "mean_slope_deg": 5.15,
+        "frac_below_5m": 0.053,
+        "dry": false,
+        "water_offset_m": -0.5901,
+        "channel_wet": 1,
+        "wci_declared": 0.34,
+        "wci_built": 0.34
+      },
+      {
+        "id": "deep-marshes",
+        "index": 3,
+        "built_area_km2": 1.244,
+        "declared_area_km2": 1.26,
+        "max_elevation_m": 17.9,
+        "mean_slope_deg": 5.24,
+        "frac_below_5m": 0.769,
+        "dry": false,
+        "water_offset_m": 0.8769,
+        "channel_wet": 1,
+        "wci_declared": 0.86,
+        "wci_built": 0.86
+      },
+      {
+        "id": "eastern-rootlands",
+        "index": 4,
+        "built_area_km2": 1.42,
+        "declared_area_km2": 1.44,
+        "max_elevation_m": 5.6,
+        "mean_slope_deg": 3.61,
+        "frac_below_5m": 0.998,
+        "dry": false,
+        "water_offset_m": 0.3051,
+        "channel_wet": 1,
+        "wci_declared": 0.71,
+        "wci_built": 0.71
+      },
+      {
+        "id": "hive",
+        "index": 5,
+        "built_area_km2": 0.291,
+        "declared_area_km2": 0.31,
+        "max_elevation_m": 15.1,
+        "mean_slope_deg": 6.19,
+        "frac_below_5m": 0.011,
+        "dry": true,
+        "water_offset_m": -12,
+        "channel_wet": 0,
+        "wci_declared": 0,
+        "wci_built": 0
+      },
+      {
+        "id": "marauders-coast",
+        "index": 6,
+        "built_area_km2": 0.467,
+        "declared_area_km2": 0.49,
+        "max_elevation_m": 8.6,
+        "mean_slope_deg": 4.99,
+        "frac_below_5m": 0.896,
+        "dry": false,
+        "water_offset_m": 0.2573,
+        "channel_wet": 1,
+        "wci_declared": 0.58,
+        "wci_built": 0.5801
+      },
+      {
+        "id": "salt-hills",
+        "index": 7,
+        "built_area_km2": 0.933,
+        "declared_area_km2": 0.94,
+        "max_elevation_m": 265.2,
+        "mean_slope_deg": 16.62,
+        "frac_below_5m": 0,
+        "dry": false,
+        "water_offset_m": -12,
+        "channel_wet": 0.6227,
+        "wci_declared": 0.02,
+        "wci_built": 0.02
+      },
+      {
+        "id": "stone-forest",
+        "index": 8,
+        "built_area_km2": 1.787,
+        "declared_area_km2": 1.8,
+        "max_elevation_m": 213.6,
+        "mean_slope_deg": 9.93,
+        "frac_below_5m": 0,
+        "dry": false,
+        "water_offset_m": -2.4248,
+        "channel_wet": 1,
+        "wci_declared": 0.06,
+        "wci_built": 0.06
+      },
+      {
+        "id": "stone-wastes",
+        "index": 9,
+        "built_area_km2": 0.787,
+        "declared_area_km2": 0.81,
+        "max_elevation_m": 11.3,
+        "mean_slope_deg": 4.17,
+        "frac_below_5m": 0.133,
+        "dry": false,
+        "water_offset_m": -12,
+        "channel_wet": 0.4298,
+        "wci_declared": 0.03,
+        "wci_built": 0.0301
+      },
+      {
+        "id": "thornmarsh",
+        "index": 10,
+        "built_area_km2": 1.074,
+        "declared_area_km2": 1.08,
+        "max_elevation_m": 76.9,
+        "mean_slope_deg": 6.28,
+        "frac_below_5m": 0,
+        "dry": false,
+        "water_offset_m": -1.524,
+        "channel_wet": 1,
+        "wci_declared": 0.09,
+        "wci_built": 0.09
+      },
+      {
+        "id": "valus-ridge",
+        "index": 11,
+        "built_area_km2": 1.694,
+        "declared_area_km2": 1.71,
+        "max_elevation_m": 423.9,
+        "mean_slope_deg": 30.28,
+        "frac_below_5m": 0,
+        "dry": false,
+        "water_offset_m": -12,
+        "channel_wet": 0.3287,
+        "wci_declared": 0.01,
+        "wci_built": 0.01
+      },
+      {
+        "id": "western-rootlands",
+        "index": 12,
+        "built_area_km2": 1.149,
+        "declared_area_km2": 1.17,
+        "max_elevation_m": 11,
+        "mean_slope_deg": 4,
+        "frac_below_5m": 0.871,
+        "dry": false,
+        "water_offset_m": -0.1595,
+        "channel_wet": 1,
+        "wci_declared": 0.47,
+        "wci_built": 0.47
+      }
+    ],
+    "sites": 34,
+    "streaming": {
+      "tilesResident": 30,
+      "tilesQueued": 0,
+      "tilesBuiltTotal": 65,
+      "tileSizeM": 300,
+      "residentRadiusTiles": 2,
+      "meshes": 276,
+      "instances": 60903,
+      "groundCoverInstances": 773,
+      "groundCoverRadiusM": 70
+    }
+  },
+  "errors": [],
+  "summary": {
+    "samples": 6,
+    "worst_ring_unbuilt": 0,
+    "worst_near_ring_unbuilt": 0,
+    "samples_with_no_ground_underfoot": 0,
+    "worst_stream_focus_lag_m": 2,
+    "worst_skin_lag_m": 11.23,
+    "worst_near_lag_m": 23.56,
+    "worst_cover_lag_m": 11.23,
+    "streamed_from_the_simulation": true
+  }
+}

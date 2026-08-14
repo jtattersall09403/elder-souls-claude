@@ -1,0 +1,23 @@
+{
+ "pin_version": 1,
+ "path": "reports/sessions/exp-w1-opening/trace.jsonl",
+ "bytes": 82812608,
+ "sha256": "1ab8aa29b25b9e18d0ce4aa39e159a6460e8c17b9f97562a19371fb60d7b5f06",
+ "produced_by": "node tools/experience/session-run.mjs (another piece)",
+ "regeneration_verified": null,
+ "decisive": {
+  "lines": 36000,
+  "meta_lines": 0,
+  "frames": 36000,
+  "events": 0,
+  "event_kinds": 0,
+  "events_by_kind": {},
+  "unparseable_lines": 0
+ },
+ "cited_by": [
+  "corpus/90-verdicts/wave1/W1-25-r1.json"
+ ],
+ "pinned_at": "2026-08-14T08:50:00.103Z",
+ "pinned_by": "verdict-evidence-20260814",
+ "note": "Raw file exceeds the 1 MiB pin threshold and is not tracked. This pin is its citation: the decisive numbers, the SHA-256 of the bytes they were read from, and the command that regenerates it. `node tools/verdict-evidence.mjs --verify` re-checks the hash on any machine that still holds the raw file."
+}

@@ -1,0 +1,172 @@
+{
+ "schema": "critic-road-join/ridge@1",
+ "measured_at": "2026-08-08T03:55:20.462Z",
+ "git": "bda8677920d11dd667eaa74f271438ce2fba6062",
+ "max_walkable_deg": 40,
+ "stall": {
+  "x": 2153.7,
+  "z": 1197.8,
+  "leg": "stormhold-helstrom",
+  "reported_slope_deg": 61.09,
+  "off_deck_m": 4.98
+ },
+ "question": "did the join move stormhold-helstrom at the stall, and is the skirt the join's doing?",
+ "legs": {
+  "stormhold-helstrom": {
+   "displacement": {
+    "worst_m": 17.91,
+    "worst_at": {
+     "m": 1745,
+     "x": 2272.4,
+     "z": 1867.5
+    },
+    "metres_moved_over_1m": 1928,
+    "metres_total": 3029,
+    "pct_moved": 63.7
+   },
+   "centreline": {
+    "before_over_walkable": 149,
+    "after_over_walkable": 139,
+    "before_worst_deg": 57.79,
+    "after_worst_deg": 57.79
+   },
+   "skirt": {
+    "3.6m": {
+     "before_metres_over_walkable": 289,
+     "after_metres_over_walkable": 266,
+     "before_worst_deg": 59,
+     "after_worst_deg": 59
+    },
+    "5.6m": {
+     "before_metres_over_walkable": 254,
+     "after_metres_over_walkable": 279,
+     "before_worst_deg": 58.94,
+     "after_worst_deg": 58.94
+    },
+    "8.6m": {
+     "before_metres_over_walkable": 246,
+     "after_metres_over_walkable": 232,
+     "before_worst_deg": 57.72,
+     "after_worst_deg": 57.72
+    },
+    "11.6m": {
+     "before_metres_over_walkable": 247,
+     "after_metres_over_walkable": 277,
+     "before_worst_deg": 58.15,
+     "after_worst_deg": 58.62
+    }
+   },
+   "at_the_stall": {
+    "after_road_nearest_m": 4.99,
+    "after_at": {
+     "m": 586,
+     "x": 2149,
+     "z": 1199.6
+    },
+    "before_road_nearest_m": 4.88,
+    "before_at": {
+     "m": 584,
+     "x": 2149.1,
+     "z": 1199.3
+    },
+    "the_two_roads_apart_here_m": 0.21,
+    "ground_slope_at_stall_deg": 26.57,
+    "window": {
+     "from_m": 526,
+     "to_m": 646,
+     "worst_displacement_m": 2.03
+    }
+   }
+  },
+  "helstrom-blackrose": {
+   "displacement": {
+    "worst_m": 67.43,
+    "worst_at": {
+     "m": 95,
+     "x": 2203,
+     "z": 2725.5
+    },
+    "metres_moved_over_1m": 2460,
+    "metres_total": 2589,
+    "pct_moved": 95
+   },
+   "centreline": {
+    "before_over_walkable": 0,
+    "after_over_walkable": 0,
+    "before_worst_deg": 29.04,
+    "after_worst_deg": 37.22
+   },
+   "skirt": {
+    "3.6m": {
+     "before_metres_over_walkable": 0,
+     "after_metres_over_walkable": 0,
+     "before_worst_deg": 34.35,
+     "after_worst_deg": 38.22
+    },
+    "5.6m": {
+     "before_metres_over_walkable": 0,
+     "after_metres_over_walkable": 0,
+     "before_worst_deg": 30.27,
+     "after_worst_deg": 39.72
+    },
+    "8.6m": {
+     "before_metres_over_walkable": 0,
+     "after_metres_over_walkable": 0,
+     "before_worst_deg": 31.21,
+     "after_worst_deg": 38.34
+    },
+    "11.6m": {
+     "before_metres_over_walkable": 0,
+     "after_metres_over_walkable": 0,
+     "before_worst_deg": 30.42,
+     "after_worst_deg": 38.72
+    }
+   }
+  },
+  "blackrose-lilmoth": {
+   "displacement": {
+    "worst_m": 21.62,
+    "worst_at": {
+     "m": 1503,
+     "x": 2733.8,
+     "z": 5027.2
+    },
+    "metres_moved_over_1m": 313,
+    "metres_total": 1543,
+    "pct_moved": 20.3
+   },
+   "centreline": {
+    "before_over_walkable": 0,
+    "after_over_walkable": 1,
+    "before_worst_deg": 39.66,
+    "after_worst_deg": 40.41
+   },
+   "skirt": {
+    "3.6m": {
+     "before_metres_over_walkable": 10,
+     "after_metres_over_walkable": 11,
+     "before_worst_deg": 47.08,
+     "after_worst_deg": 47.76
+    },
+    "5.6m": {
+     "before_metres_over_walkable": 12,
+     "after_metres_over_walkable": 12,
+     "before_worst_deg": 49.03,
+     "after_worst_deg": 47.2
+    },
+    "8.6m": {
+     "before_metres_over_walkable": 3,
+     "after_metres_over_walkable": 2,
+     "before_worst_deg": 44.89,
+     "after_worst_deg": 41.74
+    },
+    "11.6m": {
+     "before_metres_over_walkable": 4,
+     "after_metres_over_walkable": 4,
+     "before_worst_deg": 44.51,
+     "after_worst_deg": 43.07
+    }
+   }
+  }
+ }
+}

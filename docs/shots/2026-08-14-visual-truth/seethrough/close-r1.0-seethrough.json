@@ -1,0 +1,62 @@
+{
+  "method": "B\\A over a full orbit; A = shipping materials, B = same meshes forced opaque DoubleSide",
+  "radius_m": 1,
+  "steps": 8,
+  "rows": [
+    {
+      "deg": 0,
+      "body_px": 270807,
+      "seethrough_px": 14,
+      "seethrough_frac": 0.0001
+    },
+    {
+      "deg": 45,
+      "body_px": 294519,
+      "seethrough_px": 151,
+      "seethrough_frac": 0.0005
+    },
+    {
+      "deg": 90,
+      "body_px": 255739,
+      "seethrough_px": 437,
+      "seethrough_frac": 0.0017
+    },
+    {
+      "deg": 135,
+      "body_px": 344695,
+      "seethrough_px": 0,
+      "seethrough_frac": 0
+    },
+    {
+      "deg": 180,
+      "body_px": 342474,
+      "seethrough_px": 10,
+      "seethrough_frac": 0
+    },
+    {
+      "deg": 225,
+      "body_px": 294875,
+      "seethrough_px": 433,
+      "seethrough_frac": 0.0015
+    },
+    {
+      "deg": 270,
+      "body_px": 276707,
+      "seethrough_px": 712,
+      "seethrough_frac": 0.0026
+    },
+    {
+      "deg": 315,
+      "body_px": 292392,
+      "seethrough_px": 191,
+      "seethrough_frac": 0.0007
+    }
+  ],
+  "worst": {
+    "deg": 270,
+    "body_px": 276707,
+    "seethrough_px": 712,
+    "seethrough_frac": 0.0026
+  },
+  "mean_frac": 0.0009
+}

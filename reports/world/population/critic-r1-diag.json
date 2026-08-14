@@ -1,0 +1,251 @@
+{
+  "tool": "critic-population-r1-diag",
+  "at": "2026-08-07T21:04:40.499Z",
+  "D": {
+    "D1_boot": {
+      "cell": "province",
+      "env_region": "western-rootlands",
+      "env_interior": null,
+      "pos": {
+        "x": 2766.5,
+        "z": 5011
+      },
+      "frame": 0,
+      "posts_total": 144,
+      "dormant": 144,
+      "resident": 0,
+      "cleared": 0,
+      "live_posts": 0,
+      "live_bodies": 0,
+      "candidates": 0,
+      "enabled": true,
+      "stats": {
+        "spawned": 0,
+        "released": 0,
+        "cleared": 0,
+        "uncleared": 0,
+        "refocuses": 0,
+        "steps": 0,
+        "skipped_cell": 0
+      },
+      "faults": 0,
+      "stream": {
+        "_model": "THE WORLD-SIDE CONSUMER. `game/src/world/population.js` holds every post in a coarse grid and is pumped from `Engine._streamPopulation()`, which runs from `Engine._afterStep()` beside `_streamProvince()` — the one slot every way the world advances passes through (stepFrames, the rAF accumulator, walkRoute, walkPath, travelRide). A post within `spawn_radius_m` of the player becomes bodies; beyond `release_radius_m` its living bodies are removed again. Nothing here slows the player down (S17) and nothing reads player level (S9).",
+        "spawn_radius_m": 170,
+        "release_radius_m": 260,
+        "_hysteresis_note": "90 m of hysteresis between the two, for the reason the province streamer needed one tile of it: a body standing on the boundary otherwise spawns and releases on alternate frames. 170 m also sits comfortably outside the widest aggro radius in the roster (20 m) and outside RI-AI07 §B SL2's 12 m sightline floor, so nothing is ever born inside its own aggro range.",
+        "max_resident_posts": 14,
+        "refocus_m": 8,
+        "_refocus_note": "The candidate set is only recomputed after the player has moved this far. At 2.0 m·s⁻¹ that is once per 4 s of walking.",
+        "spawn_per_step": 1,
+        "_budget_note": "One post materialises per fixed step at most. A four-body post costs four `engine.spawn()` calls, each of which builds a combat body and evaluates a rig, so they are spread exactly as the province streamer spreads tile builds."
+      },
+      "pop_bodies_in_entities": 0,
+      "entities_total": 0
+    },
+    "D2_after_default": {
+      "cell": "province",
+      "env_region": "western-rootlands",
+      "env_interior": null,
+      "pos": {
+        "x": 2766.5,
+        "z": 5011
+      },
+      "frame": 120,
+      "posts_total": 144,
+      "dormant": 143,
+      "resident": 1,
+      "cleared": 0,
+      "live_posts": 1,
+      "live_bodies": 1,
+      "candidates": 1,
+      "enabled": true,
+      "stats": {
+        "spawned": 1,
+        "released": 0,
+        "cleared": 0,
+        "uncleared": 0,
+        "refocuses": 1,
+        "steps": 120,
+        "skipped_cell": 0
+      },
+      "faults": 0,
+      "stream": {
+        "_model": "THE WORLD-SIDE CONSUMER. `game/src/world/population.js` holds every post in a coarse grid and is pumped from `Engine._streamPopulation()`, which runs from `Engine._afterStep()` beside `_streamProvince()` — the one slot every way the world advances passes through (stepFrames, the rAF accumulator, walkRoute, walkPath, travelRide). A post within `spawn_radius_m` of the player becomes bodies; beyond `release_radius_m` its living bodies are removed again. Nothing here slows the player down (S17) and nothing reads player level (S9).",
+        "spawn_radius_m": 170,
+        "release_radius_m": 260,
+        "_hysteresis_note": "90 m of hysteresis between the two, for the reason the province streamer needed one tile of it: a body standing on the boundary otherwise spawns and releases on alternate frames. 170 m also sits comfortably outside the widest aggro radius in the roster (20 m) and outside RI-AI07 §B SL2's 12 m sightline floor, so nothing is ever born inside its own aggro range.",
+        "max_resident_posts": 14,
+        "refocus_m": 8,
+        "_refocus_note": "The candidate set is only recomputed after the player has moved this far. At 2.0 m·s⁻¹ that is once per 4 s of walking.",
+        "spawn_per_step": 1,
+        "_budget_note": "One post materialises per fixed step at most. A four-body post costs four `engine.spawn()` calls, each of which builds a combat body and evaluates a rig, so they are spread exactly as the province streamer spreads tile builds."
+      },
+      "pop_bodies_in_entities": 1,
+      "entities_total": 1
+    },
+    "target": {
+      "id": "pop-0001",
+      "kind": "road",
+      "leg": "stormhold-helstrom",
+      "at_m": 275,
+      "x": 2255.24,
+      "z": 1008.28,
+      "region": "salt-hills",
+      "tier": 3,
+      "safety": 1,
+      "encounter": "wl-slitherfang-lone",
+      "d_safety": 155.5,
+      "bodies": 1,
+      "souls": 34
+    },
+    "D3_standing_on_post": {
+      "cell": "province",
+      "env_region": "western-rootlands",
+      "env_interior": null,
+      "pos": {
+        "x": 2260.2,
+        "z": 1013.3
+      },
+      "frame": 720,
+      "posts_total": 144,
+      "dormant": 142,
+      "resident": 2,
+      "cleared": 0,
+      "live_posts": 2,
+      "live_bodies": 2,
+      "candidates": 2,
+      "enabled": true,
+      "stats": {
+        "spawned": 3,
+        "released": 1,
+        "cleared": 0,
+        "uncleared": 0,
+        "refocuses": 2,
+        "steps": 720,
+        "skipped_cell": 0
+      },
+      "faults": 0,
+      "stream": {
+        "_model": "THE WORLD-SIDE CONSUMER. `game/src/world/population.js` holds every post in a coarse grid and is pumped from `Engine._streamPopulation()`, which runs from `Engine._afterStep()` beside `_streamProvince()` — the one slot every way the world advances passes through (stepFrames, the rAF accumulator, walkRoute, walkPath, travelRide). A post within `spawn_radius_m` of the player becomes bodies; beyond `release_radius_m` its living bodies are removed again. Nothing here slows the player down (S17) and nothing reads player level (S9).",
+        "spawn_radius_m": 170,
+        "release_radius_m": 260,
+        "_hysteresis_note": "90 m of hysteresis between the two, for the reason the province streamer needed one tile of it: a body standing on the boundary otherwise spawns and releases on alternate frames. 170 m also sits comfortably outside the widest aggro radius in the roster (20 m) and outside RI-AI07 §B SL2's 12 m sightline floor, so nothing is ever born inside its own aggro range.",
+        "max_resident_posts": 14,
+        "refocus_m": 8,
+        "_refocus_note": "The candidate set is only recomputed after the player has moved this far. At 2.0 m·s⁻¹ that is once per 4 s of walking.",
+        "spawn_per_step": 1,
+        "_budget_note": "One post materialises per fixed step at most. A four-body post costs four `engine.spawn()` calls, each of which builds a combat body and evaluates a rig, so they are spread exactly as the province streamer spreads tile builds."
+      },
+      "pop_bodies_in_entities": 2,
+      "entities_total": 2
+    },
+    "D4_pump_runs": {
+      "steps_d2": 120,
+      "steps_d3": 720,
+      "skipped_cell_d3": 0,
+      "pump_is_running": true,
+      "gated_out_by_cell": false
+    },
+    "D5_route_head": {
+      "cell": "province",
+      "env_region": "western-rootlands",
+      "env_interior": null,
+      "pos": {
+        "x": 2171.5,
+        "z": 761
+      },
+      "frame": 1320,
+      "posts_total": 144,
+      "dormant": 144,
+      "resident": 0,
+      "cleared": 0,
+      "live_posts": 0,
+      "live_bodies": 0,
+      "candidates": 0,
+      "enabled": true,
+      "stats": {
+        "spawned": 3,
+        "released": 3,
+        "cleared": 0,
+        "uncleared": 0,
+        "refocuses": 3,
+        "steps": 1320,
+        "skipped_cell": 0
+      },
+      "faults": 0,
+      "stream": {
+        "_model": "THE WORLD-SIDE CONSUMER. `game/src/world/population.js` holds every post in a coarse grid and is pumped from `Engine._streamPopulation()`, which runs from `Engine._afterStep()` beside `_streamProvince()` — the one slot every way the world advances passes through (stepFrames, the rAF accumulator, walkRoute, walkPath, travelRide). A post within `spawn_radius_m` of the player becomes bodies; beyond `release_radius_m` its living bodies are removed again. Nothing here slows the player down (S17) and nothing reads player level (S9).",
+        "spawn_radius_m": 170,
+        "release_radius_m": 260,
+        "_hysteresis_note": "90 m of hysteresis between the two, for the reason the province streamer needed one tile of it: a body standing on the boundary otherwise spawns and releases on alternate frames. 170 m also sits comfortably outside the widest aggro radius in the roster (20 m) and outside RI-AI07 §B SL2's 12 m sightline floor, so nothing is ever born inside its own aggro range.",
+        "max_resident_posts": 14,
+        "refocus_m": 8,
+        "_refocus_note": "The candidate set is only recomputed after the player has moved this far. At 2.0 m·s⁻¹ that is once per 4 s of walking.",
+        "spawn_per_step": 1,
+        "_budget_note": "One post materialises per fixed step at most. A four-body post costs four `engine.spawn()` calls, each of which builds a combat body and evaluates a rig, so they are spread exactly as the province streamer spreads tile builds."
+      },
+      "pop_bodies_in_entities": 0,
+      "entities_total": 0
+    },
+    "t5_target": {
+      "id": "pop-0042",
+      "kind": "road",
+      "leg": "helstrom-archon",
+      "at_m": 430,
+      "x": 2556.38,
+      "z": 2994.38,
+      "region": "deep-marshes",
+      "tier": 5,
+      "safety": 1,
+      "encounter": "wl-deep-drowned-and-pack",
+      "d_safety": 311.9,
+      "bodies": 4,
+      "souls": 259
+    },
+    "D6_t5_post": {
+      "cell": "province",
+      "env_region": "western-rootlands",
+      "env_interior": null,
+      "pos": {
+        "x": 2561.4,
+        "z": 2999.4
+      },
+      "frame": 1920,
+      "posts_total": 144,
+      "dormant": 141,
+      "resident": 3,
+      "cleared": 0,
+      "live_posts": 3,
+      "live_bodies": 8,
+      "candidates": 4,
+      "enabled": true,
+      "stats": {
+        "spawned": 6,
+        "released": 3,
+        "cleared": 0,
+        "uncleared": 0,
+        "refocuses": 4,
+        "steps": 1920,
+        "skipped_cell": 0
+      },
+      "faults": 0,
+      "stream": {
+        "_model": "THE WORLD-SIDE CONSUMER. `game/src/world/population.js` holds every post in a coarse grid and is pumped from `Engine._streamPopulation()`, which runs from `Engine._afterStep()` beside `_streamProvince()` — the one slot every way the world advances passes through (stepFrames, the rAF accumulator, walkRoute, walkPath, travelRide). A post within `spawn_radius_m` of the player becomes bodies; beyond `release_radius_m` its living bodies are removed again. Nothing here slows the player down (S17) and nothing reads player level (S9).",
+        "spawn_radius_m": 170,
+        "release_radius_m": 260,
+        "_hysteresis_note": "90 m of hysteresis between the two, for the reason the province streamer needed one tile of it: a body standing on the boundary otherwise spawns and releases on alternate frames. 170 m also sits comfortably outside the widest aggro radius in the roster (20 m) and outside RI-AI07 §B SL2's 12 m sightline floor, so nothing is ever born inside its own aggro range.",
+        "max_resident_posts": 14,
+        "refocus_m": 8,
+        "_refocus_note": "The candidate set is only recomputed after the player has moved this far. At 2.0 m·s⁻¹ that is once per 4 s of walking.",
+        "spawn_per_step": 1,
+        "_budget_note": "One post materialises per fixed step at most. A four-body post costs four `engine.spawn()` calls, each of which builds a combat body and evaluates a rig, so they are spread exactly as the province streamer spreads tile builds."
+      },
+      "pop_bodies_in_entities": 8,
+      "entities_total": 8
+    }
+  },
+  "commit": "aaa2f1f",
+  "loadavg": "9.75 14.54 12.31 10/290 19583",
+  "browsers": 12
+}

@@ -1,0 +1,104 @@
+{
+  "npc": "ixtu-meer",
+  "topics_total": 12,
+  "topics": [
+    "how the Count opens",
+    "the allowance",
+    "the chain on the wall",
+    "the count itself",
+    "the ninth clause of the Drowned Tally",
+    "the opening of the count",
+    "the sill",
+    "the steward of the count",
+    "the three things I checked myself",
+    "what does the marsh owe you",
+    "whose count are you",
+    "why it is filling now"
+  ],
+  "knowledge_gated": [
+    "the chain on the wall",
+    "the ninth clause of the Drowned Tally",
+    "the three things I checked myself",
+    "what does the marsh owe you"
+  ],
+  "per_signature": [
+    {
+      "signature": "interior-saxhleel",
+      "race": "saxhleel",
+      "upbringing": "interior",
+      "disposition": 74,
+      "band": "friendly",
+      "topics_cold": 8,
+      "topics_warm": 12,
+      "words_warm": 1624,
+      "distinct_from_top_signature": null
+    },
+    {
+      "signature": "lukiul-saxhleel",
+      "race": "saxhleel",
+      "upbringing": "lukiul",
+      "disposition": 48,
+      "band": "neutral",
+      "topics_cold": 8,
+      "topics_warm": 12,
+      "words_warm": 1539,
+      "distinct_from_top_signature": null
+    },
+    {
+      "signature": "interior-dunmer",
+      "race": "dunmer",
+      "upbringing": "interior",
+      "disposition": 20,
+      "band": "cold",
+      "topics_cold": 8,
+      "topics_warm": 12,
+      "words_warm": 1028,
+      "distinct_from_top_signature": null
+    },
+    {
+      "signature": "lukiul-dunmer",
+      "race": "dunmer",
+      "upbringing": "lukiul",
+      "disposition": 0,
+      "band": "hostile",
+      "topics_cold": 8,
+      "topics_warm": 12,
+      "words_warm": 943,
+      "distinct_from_top_signature": null
+    },
+    {
+      "signature": "foreign-imperial",
+      "race": "imperial",
+      "upbringing": "foreign-born",
+      "disposition": 24,
+      "band": "cold",
+      "topics_cold": 8,
+      "topics_warm": 12,
+      "words_warm": 1003,
+      "distinct_from_top_signature": null
+    },
+    {
+      "signature": "blackrose-khajiit",
+      "race": "khajiit",
+      "upbringing": "blackrose",
+      "disposition": 36,
+      "band": "neutral",
+      "topics_cold": 8,
+      "topics_warm": 12,
+      "words_warm": 1540,
+      "distinct_from_top_signature": null
+    }
+  ],
+  "ok": true,
+  "failures": [],
+  "standing_delta": {
+    "compared": 12,
+    "differing_answers": 12,
+    "top": "interior-saxhleel",
+    "low": "lukiul-dunmer",
+    "top_disposition": 74,
+    "low_disposition": 0,
+    "topics_top": 12,
+    "topics_low": 12
+  }
+}

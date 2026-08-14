@@ -1,0 +1,9 @@
+[harness] ERROR: harness ready() failed: page.evaluate: Error: canon register: 2 unresolved reference(s) in game/data/lore/canon.json.
+  A dispute whose sides are held by nobody in the build is not texture, it is paperwork (RI-LOR06 §2, `positions[].held_by`).
+  - CF-D015/A: topic `the-xanmeers` has no info written for actor `notary`
+  - CF-D018/A: topic `reading-the-count` has no info written for actor `notary`
+    at Engine._installCanon (http://127.0.0.1:46511/game/src/engine.js:2523:13)
+    at Engine._boot (http://127.0.0.1:46511/game/src/engine.js:580:10)
+    at async Object.ready (http://127.0.0.1:46511/game/src/harness/api.js:45:21)
+    at async <anonymous>:316:30
+{"ok":false,"error":"harness ready() failed: page.evaluate: Error: canon register: 2 unresolved reference(s) in game/data/lore/canon.json.\n  A dispute whose sides are held by nobody in the build is not texture, it is paperwork (RI-LOR06 §2, `positions[].held_by`).\n  - CF-D015/A: topic `the-xanmeers` has no info written for actor `notary`\n  - CF-D018/A: topic `reading-the-count` has no info written for actor `notary`\n    at Engine._installCanon (http://127.0.0.1:46511/game/src/engine.js:2523:13)\n    at Engine._boot (http://127.0.0.1:46511/game/src/engine.js:580:10)\n    at async Object.ready (http://127.0.0.1:46511/game/src/harness/api.js:45:21)\n    at async <anonymous>:316:30","exit":12}

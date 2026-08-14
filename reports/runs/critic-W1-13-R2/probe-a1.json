@@ -1,0 +1,299 @@
+{
+  "schema": "critic/w1-13-r2-a@1",
+  "taken_at": "2026-08-07T16:26:37.383Z",
+  "page_errors": [],
+  "a1_attribute_vocabulary": {
+    "spends": [
+      {
+        "attribute": "endurance",
+        "cursor_landed_on": "endurance",
+        "preview_the_screen_showed": {
+          "attribute": "endurance",
+          "from": 20,
+          "to": 21,
+          "derived": [
+            {
+              "key": "stamina_max",
+              "label": "stamina max",
+              "from": 120,
+              "to": 122.5
+            },
+            {
+              "key": "stamina_regen_per_s",
+              "label": "stamina regen per s",
+              "from": 45,
+              "to": 45.3
+            },
+            {
+              "key": "stamina_regen_per_frame",
+              "label": "stamina regen per frame",
+              "from": 0.75,
+              "to": 0.755
+            }
+          ]
+        },
+        "preview_text": "Max stamina; stamina regen rate; poise floor Max Fatigue (S4 second bar); recovery from Fatigue-0",
+        "level": [
+          1,
+          2
+        ],
+        "souls": [
+          400000,
+          399582
+        ],
+        "attributes_before": {
+          "vigour": 10,
+          "endurance": 20,
+          "strength": 12,
+          "dexterity": 12,
+          "intelligence": 10,
+          "faith": 10
+        },
+        "attributes_after": {
+          "vigour": 10,
+          "endurance": 21,
+          "strength": 12,
+          "dexterity": 12,
+          "intelligence": 10,
+          "faith": 10
+        },
+        "minted_a_new_key": [],
+        "pools_before": {
+          "hp_max": 620,
+          "stamina_max": 120,
+          "focus_max": 94
+        },
+        "pools_after": {
+          "hp_max": 620,
+          "stamina_max": 120,
+          "focus_max": 94
+        }
+      },
+      {
+        "attribute": "speed",
+        "cursor_landed_on": "speed",
+        "preview_the_screen_showed": {
+          "attribute": "speed",
+          "from": 10,
+          "to": 11,
+          "derived": []
+        },
+        "preview_text": "NOTHING, explicitly. AR-1 guard: while COMBAT is active, SPEED's contribution to locomotion is clamped to zero. Out-of-combat move and sprint speed; swim speed; sprint stamina drain; travel-time modifier on the world map",
+        "level": [
+          2,
+          3
+        ],
+        "souls": [
+          399582,
+          399099
+        ],
+        "attributes_before": {
+          "vigour": 10,
+          "endurance": 21,
+          "strength": 12,
+          "dexterity": 12,
+          "intelligence": 10,
+          "faith": 10
+        },
+        "attributes_after": {
+          "vigour": 10,
+          "endurance": 21,
+          "strength": 12,
+          "dexterity": 12,
+          "intelligence": 10,
+          "faith": 10,
+          "speed": 11
+        },
+        "minted_a_new_key": [
+          "speed"
+        ],
+        "pools_before": {
+          "hp_max": 620,
+          "stamina_max": 120,
+          "focus_max": 94
+        },
+        "pools_after": {
+          "hp_max": 620,
+          "stamina_max": 120,
+          "focus_max": 94
+        }
+      },
+      {
+        "attribute": "agility",
+        "cursor_landed_on": "agility",
+        "preview_the_screen_showed": {
+          "attribute": "agility",
+          "from": 10,
+          "to": 11,
+          "derived": []
+        },
+        "preview_text": "AGI-scaling damage; bow draw speed; roll distance Lockpick tier ceiling; pickpocket; trap disarm",
+        "level": [
+          3,
+          4
+        ],
+        "souls": [
+          399099,
+          398546
+        ],
+        "attributes_before": {
+          "vigour": 10,
+          "endurance": 21,
+          "strength": 12,
+          "dexterity": 12,
+          "intelligence": 10,
+          "faith": 10,
+          "speed": 11
+        },
+        "attributes_after": {
+          "vigour": 10,
+          "endurance": 21,
+          "strength": 12,
+          "dexterity": 12,
+          "intelligence": 10,
+          "faith": 10,
+          "speed": 11,
+          "agility": 11
+        },
+        "minted_a_new_key": [
+          "agility"
+        ],
+        "pools_before": {
+          "hp_max": 620,
+          "stamina_max": 120,
+          "focus_max": 94
+        },
+        "pools_after": {
+          "hp_max": 620,
+          "stamina_max": 120,
+          "focus_max": 94
+        }
+      }
+    ],
+    "well": "hearth-archon",
+    "open": {
+      "ok": true,
+      "mode": "levelup",
+      "threw": null
+    },
+    "rows_on_the_screen": [
+      {
+        "id": "strength",
+        "text": "STRENGTH 12",
+        "value": 12,
+        "focused": true
+      },
+      {
+        "id": "endurance",
+        "text": "ENDURANCE 20",
+        "value": 20,
+        "focused": false
+      },
+      {
+        "id": "agility",
+        "text": "AGILITY 10",
+        "value": 10,
+        "focused": false
+      },
+      {
+        "id": "speed",
+        "text": "SPEED 10",
+        "value": 10,
+        "focused": false
+      },
+      {
+        "id": "vigour",
+        "text": "VIGOUR 10",
+        "value": 10,
+        "focused": false
+      },
+      {
+        "id": "willpower",
+        "text": "WILLPOWER 10",
+        "value": 10,
+        "focused": false
+      },
+      {
+        "id": "intellect",
+        "text": "INTELLECT 10",
+        "value": 10,
+        "focused": false
+      },
+      {
+        "id": "hist-bond",
+        "text": "HIST-BOND 10",
+        "value": 10,
+        "focused": false
+      },
+      {
+        "id": "personality",
+        "text": "PERSONALITY 10",
+        "value": 10,
+        "focused": false
+      },
+      {
+        "id": "luck",
+        "text": "LUCK 10",
+        "value": 10,
+        "focused": false
+      }
+    ],
+    "preview_of_focused_row": {
+      "attribute": "strength",
+      "from": 12,
+      "to": 13,
+      "derived": [
+        {
+          "key": "equip_load_max",
+          "label": "equip load max",
+          "from": 66.4,
+          "to": 68.6
+        }
+      ]
+    },
+    "character_attributes": {
+      "vigour": 10,
+      "endurance": 20,
+      "strength": 12,
+      "dexterity": 12,
+      "intelligence": 10,
+      "faith": 10
+    },
+    "on_screen_but_not_on_the_character": [
+      "agility",
+      "speed",
+      "willpower",
+      "intellect",
+      "hist-bond",
+      "personality",
+      "luck"
+    ],
+    "on_the_character_but_not_on_screen": [
+      "dexterity",
+      "intelligence",
+      "faith"
+    ],
+    "pool_response_per_row": {
+      "strength": [
+        "equip load max"
+      ],
+      "endurance": [
+        "stamina max",
+        "stamina regen per s",
+        "stamina regen per frame"
+      ],
+      "agility": [],
+      "speed": [],
+      "vigour": [
+        "hp max"
+      ],
+      "willpower": [
+        "focus max"
+      ],
+      "intellect": [],
+      "hist-bond": [],
+      "personality": [],
+      "luck": []
+    }
+  }
+}

@@ -1,0 +1,2573 @@
+{
+  "tool": "tools/world/critic-w1-04-r4-offline.mjs",
+  "when": "2026-08-08T06:57:17.417Z",
+  "commit": null,
+  "sections": {
+    "C1": {
+      "enterable": 112,
+      "before_ratio_lt_1": 41,
+      "before_worst": {
+        "id": "archon-market",
+        "interior": "archon-market",
+        "drawn": [
+          7.96,
+          5.64
+        ],
+        "room": [
+          13.6,
+          15.6
+        ],
+        "ratio": 0.2116
+      },
+      "after_ratio_lt_1": 0,
+      "after_worst_ratio": 1.0887,
+      "after_not_fitting": 0,
+      "join_report": {
+        "rooms": 112,
+        "limited": 41,
+        "at_declared_less_walls": 71,
+        "spawns_moved": 112,
+        "worst": {
+          "id": "archon-market",
+          "building": "archon-market",
+          "declared_m": [
+            13.6,
+            15.6
+          ],
+          "room_m": [
+            7.3,
+            4.98
+          ],
+          "area_kept": 0.1714
+        }
+      },
+      "limited_ids": [
+        {
+          "id": "archon-market",
+          "area_kept": 0.1714,
+          "declared_m": [
+            13.6,
+            15.6
+          ],
+          "room_m": [
+            7.3,
+            4.98
+          ]
+        },
+        {
+          "id": "archon-ward",
+          "area_kept": 0.2242,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            7.99,
+            5.01
+          ]
+        },
+        {
+          "id": "archon-apothecary",
+          "area_kept": 0.2307,
+          "declared_m": [
+            13.6,
+            15.6
+          ],
+          "room_m": [
+            9.83,
+            4.98
+          ]
+        },
+        {
+          "id": "blackrose-inn",
+          "area_kept": 0.2647,
+          "declared_m": [
+            13.6,
+            15.6
+          ],
+          "room_m": [
+            12.94,
+            4.34
+          ]
+        },
+        {
+          "id": "blackrose-warders-hall",
+          "area_kept": 0.2647,
+          "declared_m": [
+            13.6,
+            15.6
+          ],
+          "room_m": [
+            12.94,
+            4.34
+          ]
+        },
+        {
+          "id": "blackrose-market",
+          "area_kept": 0.2647,
+          "declared_m": [
+            13.6,
+            15.6
+          ],
+          "room_m": [
+            12.94,
+            4.34
+          ]
+        },
+        {
+          "id": "blackrose-smithy",
+          "area_kept": 0.2647,
+          "declared_m": [
+            13.6,
+            15.6
+          ],
+          "room_m": [
+            12.94,
+            4.34
+          ]
+        },
+        {
+          "id": "blackrose-house-1",
+          "area_kept": 0.2647,
+          "declared_m": [
+            13.6,
+            15.6
+          ],
+          "room_m": [
+            12.94,
+            4.34
+          ]
+        },
+        {
+          "id": "archon-house-0",
+          "area_kept": 0.2659,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            4.34,
+            10.94
+          ]
+        },
+        {
+          "id": "blackrose-rootpost",
+          "area_kept": 0.2853,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            11.74,
+            4.34
+          ]
+        },
+        {
+          "id": "blackrose-clerk",
+          "area_kept": 0.2853,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            11.74,
+            4.34
+          ]
+        },
+        {
+          "id": "blackrose-house-0",
+          "area_kept": 0.2853,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            11.74,
+            4.34
+          ]
+        },
+        {
+          "id": "archon-house-1",
+          "area_kept": 0.3259,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            5.32,
+            10.94
+          ]
+        },
+        {
+          "id": "archon-inn",
+          "area_kept": 0.3294,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            11.74,
+            5.01
+          ]
+        },
+        {
+          "id": "archon-kiln-house",
+          "area_kept": 0.334,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            4.34,
+            13.74
+          ]
+        },
+        {
+          "id": "archon-shrine",
+          "area_kept": 0.3478,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            4.52,
+            13.74
+          ]
+        },
+        {
+          "id": "archon-rootpost",
+          "area_kept": 0.3478,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            4.52,
+            13.74
+          ]
+        },
+        {
+          "id": "archon-house-2",
+          "area_kept": 0.4094,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            5.32,
+            13.74
+          ]
+        },
+        {
+          "id": "lilmoth-ledger-house",
+          "area_kept": 0.4984,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            11.74,
+            7.58
+          ]
+        },
+        {
+          "id": "lilmoth-market",
+          "area_kept": 0.4984,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            11.74,
+            7.58
+          ]
+        },
+        {
+          "id": "archon-vat-house",
+          "area_kept": 0.5141,
+          "declared_m": [
+            13.6,
+            15.6
+          ],
+          "room_m": [
+            7.3,
+            14.94
+          ]
+        },
+        {
+          "id": "stormhold-archive",
+          "area_kept": 0.5457,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            11.74,
+            8.3
+          ]
+        },
+        {
+          "id": "lilmoth-house-0",
+          "area_kept": 0.577,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            10.16,
+            10.14
+          ]
+        },
+        {
+          "id": "lilmoth-yard",
+          "area_kept": 0.5878,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            11.74,
+            8.94
+          ]
+        },
+        {
+          "id": "gideon-court",
+          "area_kept": 0.5936,
+          "declared_m": [
+            13.6,
+            15.6
+          ],
+          "room_m": [
+            8.43,
+            14.94
+          ]
+        },
+        {
+          "id": "gideon-lowmarket",
+          "area_kept": 0.5936,
+          "declared_m": [
+            13.6,
+            15.6
+          ],
+          "room_m": [
+            8.43,
+            14.94
+          ]
+        },
+        {
+          "id": "gideon-tollhouse",
+          "area_kept": 0.5936,
+          "declared_m": [
+            13.6,
+            15.6
+          ],
+          "room_m": [
+            8.43,
+            14.94
+          ]
+        },
+        {
+          "id": "gideon-chapel",
+          "area_kept": 0.5936,
+          "declared_m": [
+            13.6,
+            15.6
+          ],
+          "room_m": [
+            8.43,
+            14.94
+          ]
+        },
+        {
+          "id": "soulrest-grey-hist",
+          "area_kept": 0.6364,
+          "declared_m": [
+            14.8,
+            16.8
+          ],
+          "room_m": [
+            14.14,
+            11.19
+          ]
+        },
+        {
+          "id": "lilmoth-customs",
+          "area_kept": 0.6581,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            11.74,
+            10.01
+          ]
+        },
+        {
+          "id": "lilmoth-house-1",
+          "area_kept": 0.6667,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            11.74,
+            10.14
+          ]
+        },
+        {
+          "id": "lilmoth-apothecary",
+          "area_kept": 0.7524,
+          "declared_m": [
+            11.2,
+            13.2
+          ],
+          "room_m": [
+            8.87,
+            12.54
+          ]
+        },
+        {
+          "id": "lilmoth-smithy",
+          "area_kept": 0.761,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            9.89,
+            13.74
+          ]
+        },
+        {
+          "id": "lilmoth-rootpost",
+          "area_kept": 0.7736,
+          "declared_m": [
+            11.2,
+            13.2
+          ],
+          "room_m": [
+            9.12,
+            12.54
+          ]
+        },
+        {
+          "id": "thorn-apothecary",
+          "area_kept": 0.7865,
+          "declared_m": [
+            14.8,
+            16.8
+          ],
+          "room_m": [
+            14.14,
+            13.83
+          ]
+        },
+        {
+          "id": "thorn-sapwell",
+          "area_kept": 0.7865,
+          "declared_m": [
+            14.8,
+            16.8
+          ],
+          "room_m": [
+            14.14,
+            13.83
+          ]
+        },
+        {
+          "id": "lilmoth-house-2",
+          "area_kept": 0.7883,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            11.74,
+            11.99
+          ]
+        },
+        {
+          "id": "thorn-gate",
+          "area_kept": 0.7973,
+          "declared_m": [
+            14.8,
+            16.8
+          ],
+          "room_m": [
+            14.14,
+            14.02
+          ]
+        },
+        {
+          "id": "thorn-hall",
+          "area_kept": 0.8027,
+          "declared_m": [
+            16,
+            18
+          ],
+          "room_m": [
+            15.34,
+            15.07
+          ]
+        },
+        {
+          "id": "lilmoth-house-3",
+          "area_kept": 0.8817,
+          "declared_m": [
+            12.4,
+            14.4
+          ],
+          "room_m": [
+            11.74,
+            13.41
+          ]
+        },
+        {
+          "id": "soulrest-court-steps",
+          "area_kept": 0.8877,
+          "declared_m": [
+            14.8,
+            16.8
+          ],
+          "room_m": [
+            14.14,
+            15.61
+          ]
+        }
+      ]
+    },
+    "C2_C3": {
+      "records": 115,
+      "build_errors": 0,
+      "limited_rooms": 41,
+      "lamps_outside_total": 0,
+      "lamps_outside_in_limited_rooms": 0,
+      "lamps_outside_in_unlimited_rooms": 0,
+      "rooms_with_a_lamp_outside": 0,
+      "limited_rooms_with_a_lamp_outside": 0,
+      "meshes_outside_total": 61,
+      "rooms_with_a_mesh_outside": 49,
+      "unique_item_outside_count": 0,
+      "worst_lamp_rooms": [],
+      "rows": [
+        {
+          "id": "archon-apothecary",
+          "limited": true,
+          "area_kept": 0.2307,
+          "room_m": [
+            9.83,
+            4.98
+          ],
+          "lamps_unique": 8,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 114,
+          "declared_meshes": 114,
+          "meshes_outside_by_gt_0_6m": 2,
+          "worst_overhang_m": 0.75,
+          "unique_item_outside": false
+        },
+        {
+          "id": "archon-guild-office",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            12.94,
+            14.94
+          ],
+          "lamps_unique": 9,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 141,
+          "declared_meshes": 141,
+          "meshes_outside_by_gt_0_6m": 2,
+          "worst_overhang_m": 0.75,
+          "unique_item_outside": false
+        },
+        {
+          "id": "archon-house-0",
+          "limited": true,
+          "area_kept": 0.2659,
+          "room_m": [
+            4.34,
+            10.94
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 99,
+          "declared_meshes": 99,
+          "meshes_outside_by_gt_0_6m": 2,
+          "worst_overhang_m": 0.75,
+          "unique_item_outside": false
+        },
+        {
+          "id": "archon-house-1",
+          "limited": true,
+          "area_kept": 0.3259,
+          "room_m": [
+            5.32,
+            10.94
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 104,
+          "declared_meshes": 104,
+          "meshes_outside_by_gt_0_6m": 2,
+          "worst_overhang_m": 0.75,
+          "unique_item_outside": false
+        },
+        {
+          "id": "archon-house-2",
+          "limited": true,
+          "area_kept": 0.4094,
+          "room_m": [
+            5.32,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 102,
+          "declared_meshes": 102,
+          "meshes_outside_by_gt_0_6m": 2,
+          "worst_overhang_m": 0.75,
+          "unique_item_outside": false
+        },
+        {
+          "id": "archon-inn",
+          "limited": true,
+          "area_kept": 0.3294,
+          "room_m": [
+            11.74,
+            5.01
+          ],
+          "lamps_unique": 7,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 146,
+          "declared_meshes": 146,
+          "meshes_outside_by_gt_0_6m": 2,
+          "worst_overhang_m": 0.75,
+          "unique_item_outside": false
+        },
+        {
+          "id": "archon-kiln-house",
+          "limited": true,
+          "area_kept": 0.334,
+          "room_m": [
+            4.34,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 107,
+          "declared_meshes": 107,
+          "meshes_outside_by_gt_0_6m": 2,
+          "worst_overhang_m": 0.75,
+          "unique_item_outside": false
+        },
+        {
+          "id": "archon-market",
+          "limited": true,
+          "area_kept": 0.1714,
+          "room_m": [
+            7.3,
+            4.98
+          ],
+          "lamps_unique": 9,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 124,
+          "declared_meshes": 124,
+          "meshes_outside_by_gt_0_6m": 2,
+          "worst_overhang_m": 0.75,
+          "unique_item_outside": false
+        },
+        {
+          "id": "archon-rootpost",
+          "limited": true,
+          "area_kept": 0.3478,
+          "room_m": [
+            4.52,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 107,
+          "declared_meshes": 107,
+          "meshes_outside_by_gt_0_6m": 2,
+          "worst_overhang_m": 0.75,
+          "unique_item_outside": false
+        },
+        {
+          "id": "archon-shrine",
+          "limited": true,
+          "area_kept": 0.3478,
+          "room_m": [
+            4.52,
+            13.74
+          ],
+          "lamps_unique": 5,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 91,
+          "declared_meshes": 91,
+          "meshes_outside_by_gt_0_6m": 2,
+          "worst_overhang_m": 0.75,
+          "unique_item_outside": false
+        },
+        {
+          "id": "archon-vat-house",
+          "limited": true,
+          "area_kept": 0.5141,
+          "room_m": [
+            7.3,
+            14.94
+          ],
+          "lamps_unique": 8,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 122,
+          "declared_meshes": 122,
+          "meshes_outside_by_gt_0_6m": 2,
+          "worst_overhang_m": 0.75,
+          "unique_item_outside": false
+        },
+        {
+          "id": "archon-ward",
+          "limited": true,
+          "area_kept": 0.2242,
+          "room_m": [
+            7.99,
+            5.01
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 98,
+          "declared_meshes": 98,
+          "meshes_outside_by_gt_0_6m": 2,
+          "worst_overhang_m": 0.75,
+          "unique_item_outside": false
+        },
+        {
+          "id": "barge-hold",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            7,
+            16
+          ],
+          "lamps_unique": 3,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 80,
+          "declared_meshes": 80,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "blackrose-clerk",
+          "limited": true,
+          "area_kept": 0.2853,
+          "room_m": [
+            11.74,
+            4.34
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 157,
+          "declared_meshes": 157,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "blackrose-house-0",
+          "limited": true,
+          "area_kept": 0.2853,
+          "room_m": [
+            11.74,
+            4.34
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 129,
+          "declared_meshes": 129,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "blackrose-house-1",
+          "limited": true,
+          "area_kept": 0.2647,
+          "room_m": [
+            12.94,
+            4.34
+          ],
+          "lamps_unique": 8,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 156,
+          "declared_meshes": 156,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "blackrose-house-2",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 129,
+          "declared_meshes": 129,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "blackrose-inn",
+          "limited": true,
+          "area_kept": 0.2647,
+          "room_m": [
+            12.94,
+            4.34
+          ],
+          "lamps_unique": 9,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 171,
+          "declared_meshes": 171,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "blackrose-market",
+          "limited": true,
+          "area_kept": 0.2647,
+          "room_m": [
+            12.94,
+            4.34
+          ],
+          "lamps_unique": 8,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 151,
+          "declared_meshes": 151,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "blackrose-pawn",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 7,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 151,
+          "declared_meshes": 151,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "blackrose-prison",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            12.94,
+            14.94
+          ],
+          "lamps_unique": 9,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 153,
+          "declared_meshes": 153,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "blackrose-rootpost",
+          "limited": true,
+          "area_kept": 0.2853,
+          "room_m": [
+            11.74,
+            4.34
+          ],
+          "lamps_unique": 5,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 132,
+          "declared_meshes": 132,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "blackrose-shrine",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 7,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 139,
+          "declared_meshes": 139,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "blackrose-smithy",
+          "limited": true,
+          "area_kept": 0.2647,
+          "room_m": [
+            12.94,
+            4.34
+          ],
+          "lamps_unique": 7,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 143,
+          "declared_meshes": 143,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "blackrose-warders-hall",
+          "limited": true,
+          "area_kept": 0.2647,
+          "room_m": [
+            12.94,
+            4.34
+          ],
+          "lamps_unique": 9,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 182,
+          "declared_meshes": 182,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "gideon-apothecary",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 7,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 150,
+          "declared_meshes": 150,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "gideon-chapel",
+          "limited": true,
+          "area_kept": 0.5936,
+          "room_m": [
+            8.43,
+            14.94
+          ],
+          "lamps_unique": 9,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 139,
+          "declared_meshes": 139,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "gideon-court",
+          "limited": true,
+          "area_kept": 0.5936,
+          "room_m": [
+            8.43,
+            14.94
+          ],
+          "lamps_unique": 10,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 167,
+          "declared_meshes": 167,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "gideon-grange",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 5,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 163,
+          "declared_meshes": 163,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "gideon-house-0",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 141,
+          "declared_meshes": 141,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "gideon-house-1",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 138,
+          "declared_meshes": 138,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "gideon-inn",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            12.94,
+            14.94
+          ],
+          "lamps_unique": 8,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 190,
+          "declared_meshes": 190,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.85,
+          "unique_item_outside": false
+        },
+        {
+          "id": "gideon-lowmarket",
+          "limited": true,
+          "area_kept": 0.5936,
+          "room_m": [
+            8.43,
+            14.94
+          ],
+          "lamps_unique": 7,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 144,
+          "declared_meshes": 144,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "gideon-rootpost",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 145,
+          "declared_meshes": 145,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "gideon-shrine",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 129,
+          "declared_meshes": 129,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.77,
+          "unique_item_outside": false
+        },
+        {
+          "id": "gideon-smithy",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 5,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 160,
+          "declared_meshes": 160,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "gideon-tollhouse",
+          "limited": true,
+          "area_kept": 0.5936,
+          "room_m": [
+            8.43,
+            14.94
+          ],
+          "lamps_unique": 10,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 183,
+          "declared_meshes": 183,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.81,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-apothecary",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            9.34,
+            11.34
+          ],
+          "lamps_unique": 0,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 101,
+          "declared_meshes": 101,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-archive",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            9.34,
+            11.34
+          ],
+          "lamps_unique": 0,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 109,
+          "declared_meshes": 109,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-deep-market",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            9.34,
+            11.34
+          ],
+          "lamps_unique": 0,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 101,
+          "declared_meshes": 101,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-hist-shrine",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 3,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 95,
+          "declared_meshes": 95,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-hollow-bole",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 4,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 129,
+          "declared_meshes": 129,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-house-0",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 109,
+          "declared_meshes": 109,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-house-1",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 109,
+          "declared_meshes": 109,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-house-10",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 103,
+          "declared_meshes": 103,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-house-11",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 103,
+          "declared_meshes": 103,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-house-2",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 103,
+          "declared_meshes": 103,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-house-3",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 115,
+          "declared_meshes": 115,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-house-4",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 106,
+          "declared_meshes": 106,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-house-5",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 103,
+          "declared_meshes": 103,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-house-6",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 103,
+          "declared_meshes": 103,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-house-7",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 103,
+          "declared_meshes": 103,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-house-8",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            12.94,
+            14.94
+          ],
+          "lamps_unique": 9,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 133,
+          "declared_meshes": 133,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-house-9",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 103,
+          "declared_meshes": 103,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-inn-egg",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            9.34,
+            11.34
+          ],
+          "lamps_unique": 0,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 123,
+          "declared_meshes": 123,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-inn-gate",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            9.34,
+            11.34
+          ],
+          "lamps_unique": 0,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 123,
+          "declared_meshes": 123,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-inn-tide",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            9.34,
+            11.34
+          ],
+          "lamps_unique": 0,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 125,
+          "declared_meshes": 125,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-legation",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 4,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 123,
+          "declared_meshes": 123,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-rootpost",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            9.34,
+            11.34
+          ],
+          "lamps_unique": 0,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 100,
+          "declared_meshes": 100,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-scriptorium",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            9.34,
+            11.34
+          ],
+          "lamps_unique": 0,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 103,
+          "declared_meshes": 103,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-smithy",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            9.34,
+            11.34
+          ],
+          "lamps_unique": 0,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 100,
+          "declared_meshes": 100,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-undertemple",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 3,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 96,
+          "declared_meshes": 96,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "helstrom-warders",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            9.34,
+            11.34
+          ],
+          "lamps_unique": 0,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 109,
+          "declared_meshes": 109,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.95,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-apothecary",
+          "limited": true,
+          "area_kept": 0.7524,
+          "room_m": [
+            8.87,
+            12.54
+          ],
+          "lamps_unique": 3,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 112,
+          "declared_meshes": 112,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-customs",
+          "limited": true,
+          "area_kept": 0.6581,
+          "room_m": [
+            11.74,
+            10.01
+          ],
+          "lamps_unique": 7,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 135,
+          "declared_meshes": 135,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-healer",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 3,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 105,
+          "declared_meshes": 105,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-house-0",
+          "limited": true,
+          "area_kept": 0.577,
+          "room_m": [
+            10.16,
+            10.14
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 116,
+          "declared_meshes": 116,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-house-1",
+          "limited": true,
+          "area_kept": 0.6667,
+          "room_m": [
+            11.74,
+            10.14
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 116,
+          "declared_meshes": 116,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-house-2",
+          "limited": true,
+          "area_kept": 0.7883,
+          "room_m": [
+            11.74,
+            11.99
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 120,
+          "declared_meshes": 120,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-house-3",
+          "limited": true,
+          "area_kept": 0.8817,
+          "room_m": [
+            11.74,
+            13.41
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 117,
+          "declared_meshes": 117,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-house-4",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 115,
+          "declared_meshes": 115,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-inn-drowned",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 3,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 140,
+          "declared_meshes": 140,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-inn-stilt",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 4,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 142,
+          "declared_meshes": 142,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-ledger-house",
+          "limited": true,
+          "area_kept": 0.4984,
+          "room_m": [
+            11.74,
+            7.58
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 130,
+          "declared_meshes": 130,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-market",
+          "limited": true,
+          "area_kept": 0.4984,
+          "room_m": [
+            11.74,
+            7.58
+          ],
+          "lamps_unique": 5,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 125,
+          "declared_meshes": 125,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-pawn",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 3,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 115,
+          "declared_meshes": 115,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-rootpost",
+          "limited": true,
+          "area_kept": 0.7736,
+          "room_m": [
+            9.12,
+            12.54
+          ],
+          "lamps_unique": 3,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 114,
+          "declared_meshes": 114,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-scribe",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 4,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 118,
+          "declared_meshes": 118,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-shrine",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 4,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 102,
+          "declared_meshes": 102,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-smithy",
+          "limited": true,
+          "area_kept": 0.761,
+          "room_m": [
+            9.89,
+            13.74
+          ],
+          "lamps_unique": 7,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 134,
+          "declared_meshes": 134,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "lilmoth-yard",
+          "limited": true,
+          "area_kept": 0.5878,
+          "room_m": [
+            11.74,
+            8.94
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 116,
+          "declared_meshes": 116,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "soulrest-boneyard",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            14.14,
+            16.14
+          ],
+          "lamps_unique": 11,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 165,
+          "declared_meshes": 165,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "soulrest-court-steps",
+          "limited": true,
+          "area_kept": 0.8877,
+          "room_m": [
+            14.14,
+            15.61
+          ],
+          "lamps_unique": 11,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 154,
+          "declared_meshes": 154,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "soulrest-grey-hist",
+          "limited": true,
+          "area_kept": 0.6364,
+          "room_m": [
+            14.14,
+            11.19
+          ],
+          "lamps_unique": 10,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 140,
+          "declared_meshes": 140,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "soulrest-market",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            14.14,
+            16.14
+          ],
+          "lamps_unique": 11,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 162,
+          "declared_meshes": 162,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "soulrest-pawn",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            14.14,
+            16.14
+          ],
+          "lamps_unique": 11,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 161,
+          "declared_meshes": 161,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "soulrest-quay",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            14.14,
+            16.14
+          ],
+          "lamps_unique": 12,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 169,
+          "declared_meshes": 169,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "soulrest-smithy",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            14.14,
+            16.14
+          ],
+          "lamps_unique": 11,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 157,
+          "declared_meshes": 157,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-archive",
+          "limited": true,
+          "area_kept": 0.5457,
+          "room_m": [
+            11.74,
+            8.3
+          ],
+          "lamps_unique": 5,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 138,
+          "declared_meshes": 138,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-chapel",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 3,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 107,
+          "declared_meshes": 107,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-customs",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 136,
+          "declared_meshes": 136,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-gaol",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 4,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 104,
+          "declared_meshes": 104,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-house-0",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            12.94,
+            14.94
+          ],
+          "lamps_unique": 9,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 153,
+          "declared_meshes": 153,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-house-1",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 114,
+          "declared_meshes": 114,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-house-2",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 114,
+          "declared_meshes": 114,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-house-3",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            12.94,
+            14.94
+          ],
+          "lamps_unique": 8,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 144,
+          "declared_meshes": 144,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-house-4",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            12.94,
+            14.94
+          ],
+          "lamps_unique": 9,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 153,
+          "declared_meshes": 153,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-inn-lean",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 4,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 146,
+          "declared_meshes": 146,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-inn-pass",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 4,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 150,
+          "declared_meshes": 150,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-kiln",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 3,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 117,
+          "declared_meshes": 117,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-market",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 5,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 127,
+          "declared_meshes": 127,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-praetorium",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 7,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 152,
+          "declared_meshes": 152,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-rootpost",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 3,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 120,
+          "declared_meshes": 120,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-scribe",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 133,
+          "declared_meshes": 133,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-shrine",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10.54,
+            12.54
+          ],
+          "lamps_unique": 4,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 107,
+          "declared_meshes": 107,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "stormhold-smithy",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            11.74,
+            13.74
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 133,
+          "declared_meshes": 133,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        },
+        {
+          "id": "thorn-apothecary",
+          "limited": true,
+          "area_kept": 0.7865,
+          "room_m": [
+            14.14,
+            13.83
+          ],
+          "lamps_unique": 12,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 162,
+          "declared_meshes": 162,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.67,
+          "unique_item_outside": false
+        },
+        {
+          "id": "thorn-gate",
+          "limited": true,
+          "area_kept": 0.7973,
+          "room_m": [
+            14.14,
+            14.02
+          ],
+          "lamps_unique": 12,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 165,
+          "declared_meshes": 165,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.67,
+          "unique_item_outside": false
+        },
+        {
+          "id": "thorn-hall",
+          "limited": true,
+          "area_kept": 0.8027,
+          "room_m": [
+            15.34,
+            15.07
+          ],
+          "lamps_unique": 14,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 178,
+          "declared_meshes": 178,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.67,
+          "unique_item_outside": false
+        },
+        {
+          "id": "thorn-house-0",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            12.4,
+            14.4
+          ],
+          "lamps_unique": 6,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 125,
+          "declared_meshes": 125,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.67,
+          "unique_item_outside": false
+        },
+        {
+          "id": "thorn-inn",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            14.14,
+            16.14
+          ],
+          "lamps_unique": 10,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 178,
+          "declared_meshes": 178,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.67,
+          "unique_item_outside": false
+        },
+        {
+          "id": "thorn-rootpost",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            14.14,
+            16.14
+          ],
+          "lamps_unique": 11,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 177,
+          "declared_meshes": 177,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.67,
+          "unique_item_outside": false
+        },
+        {
+          "id": "thorn-sapwell",
+          "limited": true,
+          "area_kept": 0.7865,
+          "room_m": [
+            14.14,
+            13.83
+          ],
+          "lamps_unique": 10,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 146,
+          "declared_meshes": 146,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.67,
+          "unique_item_outside": false
+        },
+        {
+          "id": "thorn-trader",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            14.14,
+            16.14
+          ],
+          "lamps_unique": 11,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 182,
+          "declared_meshes": 182,
+          "meshes_outside_by_gt_0_6m": 1,
+          "worst_overhang_m": 0.67,
+          "unique_item_outside": false
+        },
+        {
+          "id": "writ-house",
+          "limited": false,
+          "area_kept": 1,
+          "room_m": [
+            10,
+            13
+          ],
+          "lamps_unique": 0,
+          "lamps_outside_the_room": 0,
+          "lamps": [],
+          "meshes": 30,
+          "declared_meshes": 30,
+          "meshes_outside_by_gt_0_6m": 0,
+          "worst_overhang_m": 0,
+          "unique_item_outside": false
+        }
+      ]
+    },
+    "C4": {
+      "reads_bounds_m": true,
+      "inset_m": 1.2,
+      "smallest_room_after_join": {
+        "id": "archon-house-0",
+        "W": 4.34,
+        "D": 10.94,
+        "inset_collapses": false
+      },
+      "rooms_where_the_1_2m_inset_collapses": 0,
+      "examples": [],
+      "note": "anchorFor() derives interior anchors from d.bounds_m, and applyInteriorBounds() mutates the same record objects, so NPC posts inside a shrunk room follow the shrink. The failure mode to look for is not \"out of reach\" but an inset larger than the half-extent."
+    },
+    "C5_signature_algebra": {
+      "empty_group": {
+        "hash": "811c9dc5",
+        "meshes": 0
+      },
+      "same_content_twice": {
+        "a": "97ea374e",
+        "b": "97ea374e",
+        "equal": true
+      },
+      "root_moved": {
+        "equal": true
+      },
+      "children_reordered": {
+        "equal": true
+      },
+      "mesh_hidden": {
+        "equal": true,
+        "meshes": 2,
+        "note": "if equal, the signature counts meshes that are visible:false"
+      },
+      "mesh_removed": {
+        "equal": false,
+        "meshes": 1
+      },
+      "only_a_light_differs": {
+        "equal": true,
+        "note": "if equal, the signature is blind to lighting — conservative for a distinctness claim"
+      },
+      "only_non_colour_material_differs": {
+        "equal": true
+      },
+      "sub_mm_move": {
+        "equal": true
+      },
+      "one_cm_move": {
+        "equal": false
+      },
+      "instance_number_only": {
+        "equal": true,
+        "note": "names are stripped of trailing digits by design"
+      },
+      "name_changed": {
+        "equal": false
+      }
+    }
+  },
+  "findings": [
+    "C2: 61 meshes in 49 rooms stand more than 0.6 m outside their own room's bounds."
+  ]
+}

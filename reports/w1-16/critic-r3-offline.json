@@ -1,0 +1,758 @@
+{
+  "schema": "elder-souls/critic-w1-16-r3-offline@1",
+  "generated": "2026-08-08T04:19:44.670Z",
+  "selftest": false,
+  "checks": [
+    {
+      "id": "X1",
+      "title": "C5 is a STALE FIXTURE, not an unpassable check: seeded as the engine seeds it the arm passes, null-seeded the SAME arm still fails",
+      "ok": false,
+      "detail": {
+        "round_3_claim": "no change confined to the producer can [pass C5] ... only the construction site holds the missing information",
+        "adjudication": "UPHELD IN PART. `_buildCombat` assigns `_equipLoadBase` unconditionally one statement after `createPlayer`, so C5's `_equipLoadBase: null` at first engagement is UNREACHABLE in the shipped engine. C5's fixture is stale and the repair is to construct the field the engine constructs. It is NOT true that only the construction site can hold the information — see `alternative_the_round_did_not_consider`.",
+        "alternative_the_round_did_not_consider": "Store the spell offset in its OWN field and compute `pct = equipmentBase + offset` as an assignment. No delta-origin state is needed anywhere, the producer becomes idempotent, and the `Math.max(0, ...)` clamp asymmetry in BOTH sim/magic/apply.js and _recomputeEquipLoad() stops being able to lose points. The round's seeding repairs the symptom; the root cause is that one mutable scalar has two writers and no separation.",
+        "assignments_to__equipLoadBase": [
+          {
+            "line": 1046,
+            "text": "this._equipLoadBase = null;"
+          },
+          {
+            "line": 1130,
+            "text": "this._equipLoadBase = b.equipLoadPct;"
+          },
+          {
+            "line": 4167,
+            "text": "this._equipLoadBase = cap > 0 ? (w / cap) * 100 : 0;"
+          },
+          {
+            "line": 6462,
+            "text": "equipment_base_pct: this._equipLoadBase === null || this._equipLoadBase === undefined"
+          }
+        ],
+        "build_combat_seeds_unconditionally": true,
+        "seed_is_inside_an_if": false,
+        "arm_seeded_as_the_engine_seeds_it": {
+          "seed_base": 24,
+          "baseline_pct": 14,
+          "pct_after_cast": 14,
+          "pct_after_first_equip": 14,
+          "pct_expected_after_first_equip": 4,
+          "pct_after_expiry": 24,
+          "pct_expected_after_expiry": 14,
+          "offset_survived": false,
+          "correct_after_expiry": false
+        },
+        "arm_null_seeded_C5s_own_fixture": {
+          "seed_base": null,
+          "baseline_pct": 14,
+          "pct_after_cast": 14,
+          "pct_after_first_equip": 14,
+          "pct_expected_after_first_equip": 4,
+          "pct_after_expiry": 24,
+          "pct_expected_after_expiry": 14,
+          "offset_survived": false,
+          "correct_after_expiry": false
+        },
+        "the_repaired_check_can_still_go_red": true,
+        "what_the_seed_actually_is": "`b.equipLoadPct` at createPlayer — which for an UNPINNED state is the hardcoded 24.0, not the equipment base. The first engagement is therefore still an ASSIGNMENT (prev === pct, so pct + (base - prev) === base); it is a correct one because the two happen to be equal at that instant. The source comment calling it \"provably the bare equipment base\" is wrong about what the number is, and right that it is offset-free."
+      }
+    },
+    {
+      "id": "X2",
+      "title": "C7 measures a third of RI-PRG07 §2 and cannot pass; over the WHOLE §2 set three tiers are reachable and OVERLOADED is a content shortfall the item itself already prices",
+      "ok": true,
+      "detail": {
+        "round_3_claim": "C7 models \"dressing\" as carried.json rows only and the shelf ships no shield, so the 13 kg term that reaches HEAVY is invisible to it",
+        "adjudication": "UPHELD. `carried.json` declares five wearable slots and no shield, no talisman and no left-hand row; the weapon and shield weights live in weapons/classes.json, weapons/offhand.json and combat/stamina.json. C7 sums one of §2's four terms and is unpassable by construction. The repair is this arm, not a weight invented to clear a cliff.",
+        "but_the_round_still_owes_the_tier_a_number": "RI-PRG07 §4 declares weights for the same objects and every one of them is HEAVIER than the shipped row. Plate 78 + Greataxe 20 + Greatshield 18 + talisman 3 = 119 kg, which is OVERLOADED on all three sheets. The tier is not unreachable in the corpus — it is unreachable in this build's CONTENT, and the exact shortfall is the last column below.",
+        "slots_the_shelf_can_fill": [
+          "chest",
+          "legs",
+          "head",
+          "feet",
+          "waist",
+          "talisman"
+        ],
+        "shelf_total_kg": 19.8,
+        "heaviest_weapon_class": "Ultra greatsword:20",
+        "shield_registries": [
+          {
+            "registry": "weapons/offhand.json",
+            "id": "buckler_shell",
+            "cls": "buckler",
+            "kg": 1.5
+          },
+          {
+            "registry": "weapons/offhand.json",
+            "id": "small_reed",
+            "cls": "small",
+            "kg": 2.5
+          },
+          {
+            "registry": "weapons/offhand.json",
+            "id": "kite_garrison",
+            "cls": "medium",
+            "kg": 5
+          },
+          {
+            "registry": "weapons/offhand.json",
+            "id": "greatshield_xanmeer",
+            "cls": "greatshield",
+            "kg": 12
+          },
+          {
+            "registry": "weapons/offhand.json",
+            "id": "parry_dagger",
+            "cls": "parry_tool",
+            "kg": 1
+          },
+          {
+            "registry": "combat/stamina.json",
+            "id": "chitin_buckler",
+            "cls": "small",
+            "kg": 2
+          },
+          {
+            "registry": "combat/stamina.json",
+            "id": "marsh_oak_medium",
+            "cls": "medium",
+            "kg": 5.5
+          },
+          {
+            "registry": "combat/stamina.json",
+            "id": "naga_tower",
+            "cls": "great",
+            "kg": 13
+          }
+        ],
+        "heaviest_shield": {
+          "registry": "combat/stamina.json",
+          "id": "naga_tower",
+          "cls": "great",
+          "kg": 13
+        },
+        "shipped_vs_ri_prg07_s4": [
+          {
+            "item": "Straight sword",
+            "ri_prg07_s4_kg": 6,
+            "shipped_kg": 4,
+            "shipped_is_lighter_by": 2
+          },
+          {
+            "item": "Dagger",
+            "ri_prg07_s4_kg": 2,
+            "shipped_kg": 1,
+            "shipped_is_lighter_by": 1
+          },
+          {
+            "item": "Halberd",
+            "ri_prg07_s4_kg": 12,
+            "shipped_kg": 9,
+            "shipped_is_lighter_by": 3
+          },
+          {
+            "item": "Greatsword",
+            "ri_prg07_s4_kg": 14,
+            "shipped_kg": 12,
+            "shipped_is_lighter_by": 2
+          },
+          {
+            "item": "Buckler",
+            "ri_prg07_s4_kg": 4,
+            "shipped_kg": 1.5,
+            "shipped_is_lighter_by": 2.5
+          },
+          {
+            "item": "Kite shield",
+            "ri_prg07_s4_kg": 9,
+            "shipped_kg": 5,
+            "shipped_is_lighter_by": 4
+          },
+          {
+            "item": "Greatshield",
+            "ri_prg07_s4_kg": 18,
+            "shipped_kg": 12,
+            "shipped_is_lighter_by": 6
+          }
+        ],
+        "rows": [
+          {
+            "sheet": "base sheet",
+            "str": 10,
+            "end": 10,
+            "max_load_kg": 65,
+            "shelf_only_kg": 19.8,
+            "shelf_only_pct": 30.4615,
+            "shelf_only_tier": "MEDIUM",
+            "shipped_whole_s2_set_kg": 52.8,
+            "shipped_whole_s2_set_pct": 81.2308,
+            "shipped_whole_s2_set_tier": "HEAVY",
+            "ri_prg07_s4_heaviest_kg": 119,
+            "ri_prg07_s4_heaviest_pct": 183.0769,
+            "ri_prg07_s4_heaviest_tier": "OVERLOADED",
+            "kg_for_OVERLOADED": 65.01,
+            "shipped_shortfall_to_OVERLOADED_kg": 12.21
+          },
+          {
+            "sheet": "default sheet",
+            "str": 14,
+            "end": 14,
+            "max_load_kg": 73,
+            "shelf_only_kg": 19.8,
+            "shelf_only_pct": 27.1233,
+            "shelf_only_tier": "LIGHT",
+            "shipped_whole_s2_set_kg": 52.8,
+            "shipped_whole_s2_set_pct": 72.3288,
+            "shipped_whole_s2_set_tier": "HEAVY",
+            "ri_prg07_s4_heaviest_kg": 119,
+            "ri_prg07_s4_heaviest_pct": 163.0137,
+            "ri_prg07_s4_heaviest_tier": "OVERLOADED",
+            "kg_for_OVERLOADED": 73.01,
+            "shipped_shortfall_to_OVERLOADED_kg": 20.21
+          },
+          {
+            "sheet": "RI-PRG07 §5 Shell-Warden",
+            "str": 55,
+            "end": 30,
+            "max_load_kg": 142.5,
+            "shelf_only_kg": 19.8,
+            "shelf_only_pct": 13.8947,
+            "shelf_only_tier": "LIGHT",
+            "shipped_whole_s2_set_kg": 52.8,
+            "shipped_whole_s2_set_pct": 37.0526,
+            "shipped_whole_s2_set_tier": "MEDIUM",
+            "ri_prg07_s4_heaviest_kg": 119,
+            "ri_prg07_s4_heaviest_pct": 83.5088,
+            "ri_prg07_s4_heaviest_tier": "HEAVY",
+            "kg_for_OVERLOADED": 142.51,
+            "shipped_shortfall_to_OVERLOADED_kg": 89.71
+          }
+        ],
+        "tiers_reachable_by_shipped_dressing": [
+          "HEAVY",
+          "MEDIUM"
+        ],
+        "tiers_reachable_at_ri_prg07_s4_weights": [
+          "OVERLOADED",
+          "HEAVY"
+        ],
+        "OVERLOADED_by_shipped_dressing": false,
+        "OVERLOADED_at_the_items_own_weights": true
+      }
+    },
+    {
+      "id": "X3",
+      "title": "exactly one arm rides a rebuilt object, and it is re-published at every rebuild site",
+      "ok": false,
+      "detail": {
+        "arms": [
+          {
+            "arm": "producer",
+            "read_sites": [
+              "game/src/engine.js:4106"
+            ],
+            "carrier": "engine._w116Break (survives a scenario load)",
+            "at_risk_of_the_inert_trap": false,
+            "republished_at_every_rebuild_site": null
+          },
+          {
+            "arm": "slots",
+            "read_sites": [
+              "game/src/engine.js:4003"
+            ],
+            "carrier": "engine._w116Break (survives a scenario load)",
+            "at_risk_of_the_inert_trap": false,
+            "republished_at_every_rebuild_site": null
+          },
+          {
+            "arm": "travel",
+            "read_sites": [
+              "game/src/engine.js:6692"
+            ],
+            "carrier": "engine._w116Break (survives a scenario load)",
+            "at_risk_of_the_inert_trap": false,
+            "republished_at_every_rebuild_site": null
+          },
+          {
+            "arm": "sprint",
+            "read_sites": [
+              "game/src/engine.js:5536",
+              "game/src/engine.js:6273"
+            ],
+            "carrier": "engine._w116Break (survives a scenario load)",
+            "at_risk_of_the_inert_trap": false,
+            "republished_at_every_rebuild_site": null
+          },
+          {
+            "arm": "hands",
+            "read_sites": [
+              "game/src/engine.js:4033"
+            ],
+            "carrier": "engine._w116Break (survives a scenario load)",
+            "at_risk_of_the_inert_trap": false,
+            "republished_at_every_rebuild_site": null
+          },
+          {
+            "arm": "onehand",
+            "read_sites": [
+              "game/src/engine.js:4118",
+              "game/src/engine.js:4734",
+              "game/src/engine.js:4741"
+            ],
+            "carrier": "engine._w116Break (survives a scenario load)",
+            "at_risk_of_the_inert_trap": false,
+            "republished_at_every_rebuild_site": null
+          },
+          {
+            "arm": "oversprint",
+            "read_sites": [
+              "game/src/combat/player.js:990",
+              "game/src/engine.js:1057",
+              "game/src/engine.js:1057",
+              "game/src/harness/api.js:1637",
+              "game/src/harness/api.js:1663",
+              "game/src/harness/api.js:1663"
+            ],
+            "carrier": "combat.d (REBUILT by _combatData on every _buildCombat)",
+            "at_risk_of_the_inert_trap": true,
+            "republished_at_every_rebuild_site": true
+          },
+          {
+            "arm": "savepin",
+            "read_sites": [
+              "game/src/engine.js:4207"
+            ],
+            "carrier": "engine._w116Break (survives a scenario load)",
+            "at_risk_of_the_inert_trap": false,
+            "republished_at_every_rebuild_site": null
+          },
+          {
+            "arm": "burdenhands",
+            "read_sites": [
+              "game/src/engine.js:3972",
+              "game/src/engine.js:3978"
+            ],
+            "carrier": "engine._w116Break (survives a scenario load)",
+            "at_risk_of_the_inert_trap": false,
+            "republished_at_every_rebuild_site": null
+          },
+          {
+            "arm": "talisman",
+            "read_sites": [
+              "game/src/engine.js:4045"
+            ],
+            "carrier": "engine._w116Break (survives a scenario load)",
+            "at_risk_of_the_inert_trap": false,
+            "republished_at_every_rebuild_site": null
+          },
+          {
+            "arm": "feather",
+            "read_sites": [
+              "game/src/engine.js:4217"
+            ],
+            "carrier": "engine._w116Break (survives a scenario load)",
+            "at_risk_of_the_inert_trap": false,
+            "republished_at_every_rebuild_site": null
+          },
+          {
+            "arm": "toast",
+            "read_sites": [
+              "game/src/engine.js:4789"
+            ],
+            "carrier": "engine._w116Break (survives a scenario load)",
+            "at_risk_of_the_inert_trap": false,
+            "republished_at_every_rebuild_site": null
+          }
+        ],
+        "combat_system_rebuild_sites": [
+          {
+            "line": 1047,
+            "text": "this.combat = new CombatSystem(this._combatData());"
+          }
+        ],
+        "oversprint_republish_sites_in_engine": [
+          {
+            "line": 1057,
+            "text": "this.combat.d.__w116_oversprint = !!(this._w116Break && this._w116Break.oversprint);"
+          }
+        ],
+        "republished_in_harness_api_too": true,
+        "arms_riding_a_rebuilt_object_without_republication": [],
+        "note": "STATIC half only. The dynamic half — set each arm, cross a scenario boundary, confirm the arm is still in force — is `critic-w1-16-r3-live.mjs --probe controls`."
+      }
+    },
+    {
+      "id": "X4",
+      "title": "the round-3 census of unread parameters is INCOMPLETE — it names four and there are more",
+      "ok": false,
+      "detail": {
+        "note": "This check PASSES when it finds something the census missed. ARBITRATION §3: a sample is not an enumeration.",
+        "round_3_declared_unread": [
+          "burden.fatigue",
+          "burden.sneak",
+          "burden.jump",
+          "equip_load.fall_damage_mult"
+        ],
+        "measured_unread": [],
+        "missed_by_the_round_3_census": [],
+        "rows": [
+          {
+            "model": "burden",
+            "param": "move",
+            "readers": [
+              "game/src/combat/player.js:1185",
+              "game/src/engine.js:6261",
+              "game/src/engine.js:6384",
+              "game/src/engine.js:6422"
+            ],
+            "n_readers": 4,
+            "unread": false
+          },
+          {
+            "model": "burden",
+            "param": "sprint",
+            "readers": [
+              "game/src/engine.js:5530",
+              "game/src/engine.js:5536",
+              "game/src/engine.js:6267",
+              "game/src/engine.js:6273",
+              "game/src/engine.js:6303"
+            ],
+            "n_readers": 10,
+            "unread": false
+          },
+          {
+            "model": "burden",
+            "param": "fatigue",
+            "readers": [
+              "game/src/engine.js:6424"
+            ],
+            "n_readers": 1,
+            "unread": false
+          },
+          {
+            "model": "burden",
+            "param": "sneak",
+            "readers": [
+              "game/src/engine.js:6425"
+            ],
+            "n_readers": 1,
+            "unread": false
+          },
+          {
+            "model": "burden",
+            "param": "travel_time",
+            "readers": [
+              "game/src/engine.js:6426",
+              "game/src/engine.js:6692"
+            ],
+            "n_readers": 2,
+            "unread": false
+          },
+          {
+            "model": "burden",
+            "param": "jump",
+            "readers": [
+              "game/src/engine.js:6427"
+            ],
+            "n_readers": 1,
+            "unread": false
+          },
+          {
+            "model": "equip_load",
+            "param": "roll.iframes",
+            "readers": [
+              "game/src/combat/actor.js:201",
+              "game/src/combat/player.js:187",
+              "game/src/combat/player.js:374",
+              "game/src/combat/player.js:404"
+            ],
+            "n_readers": 4,
+            "unread": false
+          },
+          {
+            "model": "equip_load",
+            "param": "roll.total",
+            "readers": [
+              "game/src/combat/enemy.js:288",
+              "game/src/combat/moves.js:211",
+              "game/src/combat/moves.js:222",
+              "game/src/combat/player.js:239",
+              "game/src/combat/player.js:374"
+            ],
+            "n_readers": 19,
+            "unread": false
+          },
+          {
+            "model": "equip_load",
+            "param": "roll.stamina",
+            "readers": [
+              "game/src/combat/moves.js:273",
+              "game/src/combat/moves.js:382",
+              "game/src/combat/player.js:499",
+              "game/src/combat/resolve.js:266",
+              "game/src/combat/rules.js:20"
+            ],
+            "n_readers": 18,
+            "unread": false
+          },
+          {
+            "model": "equip_load",
+            "param": "roll.distance_m",
+            "readers": [
+              "game/src/combat/moves.js:261",
+              "game/src/combat/moves.js:274",
+              "game/src/engine.js:3044"
+            ],
+            "n_readers": 3,
+            "unread": false
+          },
+          {
+            "model": "equip_load",
+            "param": "roll.anim_speed",
+            "readers": [
+              "game/src/combat/moves.js:279"
+            ],
+            "n_readers": 1,
+            "unread": false
+          },
+          {
+            "model": "equip_load",
+            "param": "tier_boundaries_pct",
+            "readers": [
+              "game/src/combat/player.js:62",
+              "game/src/combat/system.js:642",
+              "game/src/engine.js:6468"
+            ],
+            "n_readers": 3,
+            "unread": false
+          },
+          {
+            "model": "equip_load",
+            "param": "fall_damage_mult (RI-PRG07 §2, the column the item says is ITS OWN)",
+            "readers": [
+              "game/src/engine.js:6496"
+            ],
+            "n_readers": 1,
+            "unread": false
+          },
+          {
+            "model": "equip_load",
+            "param": "stamina regen mult by tier (RI-PRG07 §2 column 5)",
+            "readers": [
+              "game/src/combat/actor.js:427",
+              "game/src/combat/rules.js:40",
+              "game/src/combat/rules.js:41"
+            ],
+            "n_readers": 3,
+            "unread": false
+          },
+          {
+            "model": "equip_load",
+            "param": "weapons/classes.json equip_weight",
+            "readers": [
+              "game/src/combat/moveset.js:187",
+              "game/src/engine.js:4037",
+              "game/src/engine.js:4049"
+            ],
+            "n_readers": 3,
+            "unread": false
+          },
+          {
+            "model": "equip_load",
+            "param": "shield weight",
+            "readers": [
+              "game/src/engine.js:4038"
+            ],
+            "n_readers": 1,
+            "unread": false
+          },
+          {
+            "model": "equip_load",
+            "param": "OVERLOADED denies sprint",
+            "readers": [
+              "game/src/combat/moves.js:257",
+              "game/src/combat/moves.js:260",
+              "game/src/combat/moveset.js:571",
+              "game/src/combat/moveset.js:630",
+              "game/src/combat/player.js:990"
+            ],
+            "n_readers": 7,
+            "unread": false
+          },
+          {
+            "model": "equip_load",
+            "param": "talisman weight (§2 term 4)",
+            "readers": [
+              "game/src/engine.js:3982",
+              "game/src/engine.js:4010",
+              "game/src/engine.js:4045",
+              "game/src/engine.js:4049",
+              "game/src/engine.js:4050"
+            ],
+            "n_readers": 10,
+            "unread": false
+          },
+          {
+            "model": "equip_load",
+            "param": "carried.json `moveset`",
+            "readers": [
+              "game/src/combat/moves.js:112",
+              "game/src/engine.js:4694"
+            ],
+            "n_readers": 2,
+            "unread": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "X5",
+      "title": "the equip refusal reaches a probe and NOT a player: nothing in ui/ or render/ reads `equip_end` or `refused`, and the shipped toast channel is not called",
+      "ok": true,
+      "detail": {
+        "round_3_position": "the equip is REFUSED with a reason on the equip_end event rather than silently weighed as though held",
+        "verdict": "The POLICY is right — guessing a bow would reproduce the round-2 defect. The DELIVERY is a silent no-op from the player's chair: press interact on the Sapwood bow and the row does not move, no slot changes, no HUD element changes and no message appears.",
+        "readers_of_equip_end_or_refused_outside_engine_js": [
+          {
+            "file": "game/src/character/skilluse.js",
+            "line": 89,
+            "text": "if (g && g.refused) {"
+          },
+          {
+            "file": "game/src/character/skilluse.js",
+            "line": 91,
+            "text": "ev.skill = g.skill; ev.event = kind; ev.points = 0; ev.refused = g.refused;"
+          },
+          {
+            "file": "game/src/character/skilluse.js",
+            "line": 120,
+            "text": "if (!g || !g.skill) return { refused: (g && g.refused) || `unknown use event '${kind}'` };"
+          },
+          {
+            "file": "game/src/character/skilluse.js",
+            "line": 121,
+            "text": "if (g.points <= 0) return { skill: g.skill, granted: 0, refused: g.refused || 'cost_gate' };"
+          },
+          {
+            "file": "game/src/sim/events.js",
+            "line": 157,
+            "text": "'equip_start', 'equip_end', 'item_used', 'item_moved',"
+          },
+          {
+            "file": "game/src/sim/magic/commission.js",
+            "line": 167,
+            "text": "return !!(q && !q.refused && this.gold() >= q.gold);"
+          },
+          {
+            "file": "game/src/sim/magic/commission.js",
+            "line": 192,
+            "text": "if (q.refused) return `${terms}. I cannot make that: ${q.reason}`;"
+          },
+          {
+            "file": "game/src/sim/magic/commission.js",
+            "line": 293,
+            "text": "if (q.refused) { this.lastRefusal = q.reason; return { taken: false, refused: q.gate }; }"
+          },
+          {
+            "file": "game/src/sim/magic/commission.js",
+            "line": 305,
+            "text": "if (made.refused) { this.lastRefusal = made.reason; return { taken: false, refused: made.gate }; }"
+          },
+          {
+            "file": "game/src/sim/magic/system.js",
+            "line": 1649,
+            "text": "if (q.refused) return q;"
+          },
+          {
+            "file": "game/src/sim/quest/machine.js",
+            "line": 873,
+            "text": "if (!this.isOpen(row.quest)) { out.refused.push({ ...pick(row), why: 'quest not open' }); continue; }"
+          },
+          {
+            "file": "game/src/sim/quest/machine.js",
+            "line": 874,
+            "text": "if (!row.before_point_of_no_return && !ponr) { out.refused.push({ ...pick(row), why: 'not until the point of no return is crossed' }); continue; }"
+          },
+          {
+            "file": "game/src/sim/quest/machine.js",
+            "line": 876,
+            "text": "if (!r.ok) { out.refused.push({ ...pick(row), why: r.reason }); continue; }"
+          },
+          {
+            "file": "game/src/sim/quest/machine.js",
+            "line": 880,
+            "text": "if (!e) { out.refused.push({ ...pick(row), why: `journal ${row.journal} does not exist` }); continue; }"
+          },
+          {
+            "file": "game/src/sim/quest/machine.js",
+            "line": 881,
+            "text": "if (e.state === 'success' || e.state === 'failure') { out.refused.push({ ...pick(row), why: `journal ${row.journal} is terminal` }); continue; }"
+          },
+          {
+            "file": "game/src/sim/quest/machine.js",
+            "line": 888,
+            "text": "if (row.journal <= lastWritten) { out.refused.push({ ...pick(row), why: `journal ${row.journal} is behind ${lastWritten}; the journal is append-only` }); continue; }"
+          },
+          {
+            "file": "game/src/sim/quest/machine.js",
+            "line": 891,
+            "text": "else out.refused.push({ ...pick(row), why: `journal ${row.journal}: ${w.reason}` });"
+          },
+          {
+            "file": "game/src/world/opacity.js",
+            "line": 69,
+            "text": "this.refused = new Map();"
+          },
+          {
+            "file": "game/src/world/opacity.js",
+            "line": 169,
+            "text": "this.refused.set(mid, (this.refused.get(mid) || 0) + 1);"
+          },
+          {
+            "file": "game/src/world/opacity.js",
+            "line": 234,
+            "text": "refusals_heard: this.refused.get(m.id) || 0,"
+          },
+          {
+            "file": "game/src/world/opacity.js",
+            "line": 238,
+            "text": "|| (this.refused.get(m.id) || 0) > 0).length,"
+          }
+        ],
+        "ui_or_render_readers": [],
+        "shipped_player_visible_channel_exists": true,
+        "refusal_uses_it": false,
+        "remedy": "one line at engine.js `_finishEquipCommit()`: `this.uiToast(...)` beside `ev.refused = why`."
+      }
+    },
+    {
+      "id": "X6",
+      "title": "the hands are in the equip ratio and in NEITHER burden term, against RI-PRG07 §3's \"equipped or not\"",
+      "ok": false,
+      "detail": {
+        "ri_prg07_s3": "burdenRatio = (weight of ALL carried items, equipped or not) / (maxLoad x 2.5)",
+        "hands_kg": 33,
+        "equip_load_equipped_weight_kg": 42.1,
+        "burden_carried_weight_kg": 42.1,
+        "equip_load_pct": 64.769231,
+        "burden_ratio": 0.259077,
+        "the_hands_reach_the_equip_ratio": true,
+        "the_hands_are_absent_from_burden": false,
+        "consequence": "33 kg of ultra greatsword and Naga tower move the roll from LIGHT to MEDIUM and move the burden ratio by zero. A character carrying nothing but the heaviest hands in the game reads UNBURDENED on the walk home, which is the §3 half of the same \"two right hands\" defect round 3 closed on the §2 side.",
+        "one_object_two_weights": {
+          "object": "bog-iron-maul / ghm_bog_maul",
+          "carried_json_kg": 11.5,
+          "weapon_class_kg": 16
+        },
+        "second_consequence": "Pick the maul up and it weighs 11.5 kg in your pack; put it in your hand and it weighs 16 kg to the roll and 11.5 kg to burden AT THE SAME TIME, because the pack row is skipped by §2 and counted by §3 while the class weight is counted by §2 only."
+      }
+    }
+  ],
+  "failed": [
+    "X1",
+    "X3",
+    "X4",
+    "X6"
+  ]
+}

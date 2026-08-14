@@ -1,0 +1,777 @@
+{
+  "probe": "critic-w1-21-r2-b",
+  "at": "2026-08-08T02:35:24.267Z",
+  "commit": "ref: refs/heads/claude/morrowind-souls-threejs-game-mou39v",
+  "viewport": [
+    1280,
+    720
+  ],
+  "loadavg_start": "22.00 23.29 23.22 25/501 10549",
+  "checks": [
+    {
+      "id": "C0",
+      "what": "GATE: the honest baseline is non-empty, so a refused forgery means something",
+      "result": "pass",
+      "detail": "stood in 6 places [lilmoth,stormhold,thorn,gideon,helstrom,archon], 2446 of 42846 cells revealed, interior=null, suspended=false"
+    },
+    {
+      "id": "C1",
+      "what": "a save forged in EVERY discovery field names no place the body did not stand in",
+      "result": "pass",
+      "detail": "forged 8 keys [\"stood\",\"cells\",\"places\",\"revealed\",\"derived_from\",\"discovered\",\"reveal\",\"stood_places\"]; places 6 -> 6; phantom [-]; dropped 36; audit {\"dropped\":[\"blackrose\",\"soulrest\",\"ixtaxh-tzil\",\"nine-mud\",\"the-weeping-ford\",\"xal-ithix\",\"kiln-camp\",\"sunken-barrow\",\"mudwater-landing\",\"rootway-post\",\"tenmarch-bridge\",\"hollow-reeds\",\"bone-ladder\",\"salt-egg-camp\",\"stilt-row\",\"clayfast\",\"the-red-wells\",\"tideway-shrine\",\"the-xanmeer-of-ix-thakla\",\"the-counting-obelisk\",\"wayshrine-of-the-ninth-root\",\"the-drowned-xanmeer\",\"xanmeer-of-sunken-teeth\",\"ceyatatar-zel-ayleid-vault\",\"the-leaning-stone\",\"the-border-falls\",\"the-glassed-crater\",\"bloodmarl-isle\",\"way-stormhold-thorn-0\",\"way-stormhold-thorn-1\",\"way-stormhold-helstrom-2\",\"way-helstrom-archon-3\",\"way-archon-thorn-4\",\"way-archon-thorn-5\",\"way-lilmoth-archon-6\",\"way-lilmoth-archon-7\"],\"phantom_cells\":40400,\"missing_cells\":0,\"claimed_places\":42,\"derived_places\":6,\"stood_cells\":6,\"legacy\":false}"
+    },
+    {
+      "id": "C2",
+      "what": "and the DRAWN screen draws no more squares than the body stood in",
+      "result": "pass",
+      "detail": "places_drawn=6 places_discovered=6 stood_in=6 drawn_cells=2446 (honest screen drew 6 squares over 2446 cells)"
+    },
+    {
+      "id": "C3",
+      "what": "no terrain is rendered where the player has not been (the raster did not grow)",
+      "result": "pass",
+      "detail": "revealed honest 2446 -> forged 2446 (delta 0)"
+    },
+    {
+      "id": "C3b",
+      "what": "the two map pictures are IDENTICAL — the forgery changed nothing a player can see",
+      "result": "fail",
+      "detail": "189514 differing pixels"
+    },
+    {
+      "id": "C4",
+      "what": "DECLARED LIMIT, MEASURED: forging the FOOTPRINT itself still reveals and still names",
+      "result": "fail",
+      "detail": "a synthetic 'stood' of 1,046 cells the body never occupied loads 14 places [the-border-falls,stormhold,thorn,the-weeping-ford,helstrom,gideon,the-drowned-xanmeer,tenmarch-bridge,archon,blackrose,the-leaning-stone,salt-egg-camp,stilt-row,lilmoth] and 39613 of 42846 revealed cells, against the honest 6/2446. S35 hard-fails \"terrain rendered where the player has not been\" and this renders it. Recorded as the limit the builder DECLARED (status note \"LIMIT, stated\"), not as a claim it concealed — but it is a hard-fail clause, not a footnote."
+    },
+    {
+      "id": "D1",
+      "what": "the build's own mutator enumeration matches an INDEPENDENT scan of every prototype member that writes state",
+      "result": "pass",
+      "detail": "25 prototype members (14 methods, 11 accessors); independent scan finds [observe/0,restore/1,resume/0,suspend/0]; the build reports [observe/0,restore/1,resume/0,suspend/0]"
+    },
+    {
+      "id": "D2",
+      "what": "no mutator has a parameter in which a place can be named",
+      "result": "pass",
+      "detail": "restore_reads=[\"stood\"], instance frozen=true"
+    },
+    {
+      "id": "D3",
+      "what": "RULES 4: the classifier goes RED when an undeclared METHOD is added to the prototype",
+      "result": "pass",
+      "detail": "caught=true"
+    },
+    {
+      "id": "D4",
+      "what": "RULES 4: the classifier goes RED when a state-writing ACCESSOR is added to the prototype",
+      "result": "fail",
+      "detail": "an accessor whose getter calls restore() wiped the map on a plain property READ (2446 -> 0 revealed cells, mutated=true) and mutatorReport() reported it as NOTHING AT ALL. The classifier's loop is `if (!d || typeof d.value !== 'function') continue`, and the file's own comment says \"getters are readers by construction\", which is not true of JavaScript."
+    },
+    {
+      "id": "E1",
+      "what": "no numeral on any element the MAP drew (S35: no distance or direction readouts)",
+      "result": "pass",
+      "detail": "14 map elements, 0 numerals []"
+    },
+    {
+      "id": "E2",
+      "what": "no quest / objective / giver / target / rumour / route / travel identity on any map element",
+      "result": "pass",
+      "detail": "0 of 14"
+    },
+    {
+      "id": "E1b",
+      "what": "and nothing ELSE on the screen while the map is open carries a numeral either",
+      "result": "fail",
+      "detail": "6 non-map elements visible over the map [hud.health,hud.stamina,hud.focus,hud.heal,hud.equipload,hud.quickslots]; numerals [[\"hud.heal\",\"5\"]]. These are HUD elements, not map readouts, so this is an RI-UIX01 numeric-budget question and NOT an S35 one — recorded on the right item."
+    },
+    {
+      "id": "E3",
+      "what": "RI-UIX04 Q7: map absent from the journal ring and journal absent from the map ring",
+      "result": "pass",
+      "detail": "{\"from_journal\":[\"world\",\"inventory\",\"sheet\",\"spells\"],\"from_map\":[\"world\",\"inventory\",\"sheet\",\"spells\"]}"
+    },
+    {
+      "id": "E4",
+      "what": "the screen's own AR-2 filters cover every element it drew (they key on the id prefix `map.`)",
+      "result": "fail",
+      "detail": "6 visible elements are NOT matched by `id.startsWith('map.')` and are therefore invisible to routes_drawn / quest_bearing_elements / travel_affordances / numeric_text: [hud.health,hud.stamina,hud.focus,hud.heal,hud.equipload,hud.quickslots]"
+    },
+    {
+      "id": "F1",
+      "what": "CONSUMPTION: perturbing the discovery model changes the DRAWN map, not only the register",
+      "result": "pass",
+      "detail": "places 6 -> 8, revealed 2446 -> 3524, 1586540 pixels changed on the screen a player looks at"
+    },
+    {
+      "id": "F1b",
+      "what": "ABLATION: with the model suspended the same walk moves NOTHING on the screen",
+      "result": "fail",
+      "detail": "suspended=true; revealed 3524 -> 3524; 1608316 pixels changed. Arm 1 moved 1586540 px, arm 2 moved 1608316 px — the two arms differ."
+    },
+    {
+      "id": "F2",
+      "what": "the discovery footprint has a consumer anywhere OUTSIDE the map screen",
+      "result": "fail",
+      "detail": "no. The S7 travel network — the one other system in the build whose rule is \"you must have walked there once\" — keeps its OWN record ({\"travel_keeps_its_own_visited\":true,\"travel_visited_legs\":8,\"travel_walked_legs\":8}), 25 m bins per leg, and never reads Discovery. Two parallel implementations of \"where the body has been\" (RULES 10)."
+    },
+    {
+      "id": "G1",
+      "what": "all six screens photographed, each showing the screen it claims to show and not a blank frame",
+      "result": "pass",
+      "detail": "[[\"inventory\",\"inventory\",1662783],[\"journal\",\"journal\",1662745],[\"sheet\",\"sheet\",1662708],[\"spells\",\"spells\",1174787],[\"map\",\"map\",1334482],[\"levelup\",\"levelup\",1662532]]"
+    }
+  ],
+  "data": {
+    "honest": {
+      "reached": [
+        "stormhold",
+        "thorn",
+        "gideon",
+        "helstrom",
+        "archon"
+      ],
+      "refused": [],
+      "neighbour_throws": [],
+      "interior": null,
+      "suspended": false,
+      "places": [
+        "lilmoth",
+        "stormhold",
+        "thorn",
+        "gideon",
+        "helstrom",
+        "archon"
+      ],
+      "revealed": 2446,
+      "total": 42846
+    },
+    "honest_screen": {
+      "exists": true,
+      "reachable_from_journal": false,
+      "journal_reachable_from_map": false,
+      "markers": 0,
+      "routes_drawn": 0,
+      "quest_bearing_elements": [],
+      "travel_affordances": [],
+      "numeric_text": [],
+      "drawn_cells": 2446,
+      "revealed_cells": 2446,
+      "total_cells": 42846,
+      "places_drawn": 6,
+      "places_discovered": 6,
+      "view": "world",
+      "mutator_arities": {
+        "observe": 0,
+        "restore": 1,
+        "resume": 0,
+        "suspend": 0
+      },
+      "mutators": [
+        {
+          "name": "observe",
+          "arity": 0
+        },
+        {
+          "name": "restore",
+          "arity": 1
+        },
+        {
+          "name": "resume",
+          "arity": 0
+        },
+        {
+          "name": "suspend",
+          "arity": 0
+        }
+      ],
+      "mutators_enumerated": true,
+      "zero_arity_mutators": [
+        "observe",
+        "resume",
+        "suspend"
+      ],
+      "restore_reads": [
+        "stood"
+      ],
+      "place_naming_parameters": []
+    },
+    "forged": {
+      "forged_keys": [
+        "stood",
+        "cells",
+        "places",
+        "revealed",
+        "derived_from",
+        "discovered",
+        "reveal",
+        "stood_places"
+      ],
+      "places": [
+        "lilmoth",
+        "stormhold",
+        "thorn",
+        "gideon",
+        "helstrom",
+        "archon"
+      ],
+      "place_count": 6,
+      "revealed": 2446,
+      "dropped_on_load": [
+        "blackrose",
+        "soulrest",
+        "ixtaxh-tzil",
+        "nine-mud",
+        "the-weeping-ford",
+        "xal-ithix",
+        "kiln-camp",
+        "sunken-barrow",
+        "mudwater-landing",
+        "rootway-post",
+        "tenmarch-bridge",
+        "hollow-reeds",
+        "bone-ladder",
+        "salt-egg-camp",
+        "stilt-row",
+        "clayfast",
+        "the-red-wells",
+        "tideway-shrine",
+        "the-xanmeer-of-ix-thakla",
+        "the-counting-obelisk",
+        "wayshrine-of-the-ninth-root",
+        "the-drowned-xanmeer",
+        "xanmeer-of-sunken-teeth",
+        "ceyatatar-zel-ayleid-vault",
+        "the-leaning-stone",
+        "the-border-falls",
+        "the-glassed-crater",
+        "bloodmarl-isle",
+        "way-stormhold-thorn-0",
+        "way-stormhold-thorn-1",
+        "way-stormhold-helstrom-2",
+        "way-helstrom-archon-3",
+        "way-archon-thorn-4",
+        "way-archon-thorn-5",
+        "way-lilmoth-archon-6",
+        "way-lilmoth-archon-7"
+      ],
+      "audit": {
+        "dropped": [
+          "blackrose",
+          "soulrest",
+          "ixtaxh-tzil",
+          "nine-mud",
+          "the-weeping-ford",
+          "xal-ithix",
+          "kiln-camp",
+          "sunken-barrow",
+          "mudwater-landing",
+          "rootway-post",
+          "tenmarch-bridge",
+          "hollow-reeds",
+          "bone-ladder",
+          "salt-egg-camp",
+          "stilt-row",
+          "clayfast",
+          "the-red-wells",
+          "tideway-shrine",
+          "the-xanmeer-of-ix-thakla",
+          "the-counting-obelisk",
+          "wayshrine-of-the-ninth-root",
+          "the-drowned-xanmeer",
+          "xanmeer-of-sunken-teeth",
+          "ceyatatar-zel-ayleid-vault",
+          "the-leaning-stone",
+          "the-border-falls",
+          "the-glassed-crater",
+          "bloodmarl-isle",
+          "way-stormhold-thorn-0",
+          "way-stormhold-thorn-1",
+          "way-stormhold-helstrom-2",
+          "way-helstrom-archon-3",
+          "way-archon-thorn-4",
+          "way-archon-thorn-5",
+          "way-lilmoth-archon-6",
+          "way-lilmoth-archon-7"
+        ],
+        "phantom_cells": 40400,
+        "missing_cells": 0,
+        "claimed_places": 42,
+        "derived_places": 6,
+        "stood_cells": 6,
+        "legacy": false
+      },
+      "screen": {
+        "exists": true,
+        "reachable_from_journal": false,
+        "journal_reachable_from_map": false,
+        "markers": 0,
+        "routes_drawn": 0,
+        "quest_bearing_elements": [],
+        "travel_affordances": [],
+        "numeric_text": [],
+        "drawn_cells": 2446,
+        "revealed_cells": 2446,
+        "total_cells": 42846,
+        "places_drawn": 6,
+        "places_discovered": 6,
+        "view": "world",
+        "mutator_arities": {
+          "observe": 0,
+          "restore": 1,
+          "resume": 0,
+          "suspend": 0
+        },
+        "mutators": [
+          {
+            "name": "observe",
+            "arity": 0
+          },
+          {
+            "name": "restore",
+            "arity": 1
+          },
+          {
+            "name": "resume",
+            "arity": 0
+          },
+          {
+            "name": "suspend",
+            "arity": 0
+          }
+        ],
+        "mutators_enumerated": true,
+        "zero_arity_mutators": [
+          "observe",
+          "resume",
+          "suspend"
+        ],
+        "restore_reads": [
+          "stood"
+        ],
+        "place_naming_parameters": []
+      }
+    },
+    "forged_footprint": {
+      "places": [
+        "the-border-falls",
+        "stormhold",
+        "thorn",
+        "the-weeping-ford",
+        "helstrom",
+        "gideon",
+        "the-drowned-xanmeer",
+        "tenmarch-bridge",
+        "archon",
+        "blackrose",
+        "the-leaning-stone",
+        "salt-egg-camp",
+        "stilt-row",
+        "lilmoth"
+      ],
+      "place_count": 14,
+      "revealed": 39613,
+      "total": 42846,
+      "synthetic_cells": 1046
+    },
+    "replay_for_D": {
+      "places": [
+        "lilmoth",
+        "stormhold",
+        "thorn",
+        "gideon",
+        "helstrom",
+        "archon"
+      ],
+      "place_count": 6,
+      "revealed": 2446
+    },
+    "mutator_census": {
+      "independent": [
+        {
+          "name": "observe",
+          "arity": 0
+        },
+        {
+          "name": "suspend",
+          "arity": 0
+        },
+        {
+          "name": "resume",
+          "arity": 0
+        },
+        {
+          "name": "restore",
+          "arity": 1
+        }
+      ],
+      "reported": [
+        {
+          "name": "observe",
+          "arity": 0
+        },
+        {
+          "name": "restore",
+          "arity": 1
+        },
+        {
+          "name": "resume",
+          "arity": 0
+        },
+        {
+          "name": "suspend",
+          "arity": 0
+        }
+      ],
+      "members": [
+        {
+          "name": "constructor",
+          "kind": "method",
+          "arity": 1
+        },
+        {
+          "name": "observe",
+          "kind": "method",
+          "arity": 0
+        },
+        {
+          "name": "suspend",
+          "kind": "method",
+          "arity": 0
+        },
+        {
+          "name": "resume",
+          "kind": "method",
+          "arity": 0
+        },
+        {
+          "name": "suspended",
+          "kind": "getter",
+          "arity": null
+        },
+        {
+          "name": "cols",
+          "kind": "getter",
+          "arity": null
+        },
+        {
+          "name": "rows",
+          "kind": "getter",
+          "arity": null
+        },
+        {
+          "name": "cell",
+          "kind": "getter",
+          "arity": null
+        },
+        {
+          "name": "revealedCells",
+          "kind": "getter",
+          "arity": null
+        },
+        {
+          "name": "revealedFrac",
+          "kind": "getter",
+          "arity": null
+        },
+        {
+          "name": "observations",
+          "kind": "getter",
+          "arity": null
+        },
+        {
+          "name": "seenCell",
+          "kind": "method",
+          "arity": 2
+        },
+        {
+          "name": "seenAt",
+          "kind": "method",
+          "arity": 2
+        },
+        {
+          "name": "places",
+          "kind": "method",
+          "arity": 0
+        },
+        {
+          "name": "hasPlace",
+          "kind": "method",
+          "arity": 1
+        },
+        {
+          "name": "placeCount",
+          "kind": "getter",
+          "arity": null
+        },
+        {
+          "name": "raster",
+          "kind": "method",
+          "arity": 0
+        },
+        {
+          "name": "footprint",
+          "kind": "method",
+          "arity": 0
+        },
+        {
+          "name": "stoodCells",
+          "kind": "getter",
+          "arity": null
+        },
+        {
+          "name": "placePos",
+          "kind": "method",
+          "arity": 1
+        },
+        {
+          "name": "serialise",
+          "kind": "method",
+          "arity": 0
+        },
+        {
+          "name": "restoreReads",
+          "kind": "getter",
+          "arity": null
+        },
+        {
+          "name": "mutatorReport",
+          "kind": "method",
+          "arity": 0
+        },
+        {
+          "name": "restore",
+          "kind": "method",
+          "arity": 1
+        },
+        {
+          "name": "lastRestore",
+          "kind": "getter",
+          "arity": null
+        }
+      ],
+      "methods": 14,
+      "getters": 11
+    },
+    "classifier_falsification": {
+      "revealed_before": 2446,
+      "method_caught": true,
+      "revealed_after": 0,
+      "getter_mutated": true,
+      "getter_caught": false
+    },
+    "replay_for_E": {
+      "places": [
+        "lilmoth",
+        "stormhold",
+        "thorn",
+        "gideon",
+        "helstrom",
+        "archon"
+      ],
+      "place_count": 6,
+      "revealed": 2446
+    },
+    "map_screen": {
+      "map_element_ids": [
+        "map.panel",
+        "map.header",
+        "map.terrain",
+        "map.place.lilmoth",
+        "map.place.stormhold",
+        "map.place.thorn",
+        "map.place.gideon",
+        "map.place.helstrom",
+        "map.place.archon",
+        "map.naming",
+        "map.player",
+        "map.rule",
+        "map.hint",
+        "map.found"
+      ],
+      "other_element_ids": [
+        "hud.health",
+        "hud.stamina",
+        "hud.focus",
+        "hud.heal",
+        "hud.equipload",
+        "hud.quickslots"
+      ],
+      "kinds": [
+        "divider",
+        "equip_load",
+        "focus_bar",
+        "heal_charges",
+        "health_bar",
+        "hint",
+        "map_place",
+        "map_player",
+        "map_terrain",
+        "panel",
+        "panel_header",
+        "quick_slots",
+        "stamina_bar"
+      ],
+      "self_report": {
+        "exists": true,
+        "reachable_from_journal": false,
+        "journal_reachable_from_map": false,
+        "markers": 0,
+        "routes_drawn": 0,
+        "quest_bearing_elements": [],
+        "travel_affordances": [],
+        "numeric_text": [],
+        "drawn_cells": 2446,
+        "revealed_cells": 2446,
+        "total_cells": 42846,
+        "places_drawn": 6,
+        "places_discovered": 6,
+        "view": "world",
+        "mutator_arities": {
+          "observe": 0,
+          "restore": 1,
+          "resume": 0,
+          "suspend": 0
+        },
+        "mutators": [
+          {
+            "name": "observe",
+            "arity": 0
+          },
+          {
+            "name": "restore",
+            "arity": 1
+          },
+          {
+            "name": "resume",
+            "arity": 0
+          },
+          {
+            "name": "suspend",
+            "arity": 0
+          }
+        ],
+        "mutators_enumerated": true,
+        "zero_arity_mutators": [
+          "observe",
+          "resume",
+          "suspend"
+        ],
+        "restore_reads": [
+          "stood"
+        ],
+        "place_naming_parameters": []
+      },
+      "map_numerals": [],
+      "other_numerals": [
+        [
+          "hud.heal",
+          "5"
+        ]
+      ]
+    },
+    "q7": {
+      "from_journal": [
+        "world",
+        "inventory",
+        "sheet",
+        "spells"
+      ],
+      "from_map": [
+        "world",
+        "inventory",
+        "sheet",
+        "spells"
+      ]
+    },
+    "consumption_map": {
+      "A": {
+        "places": 6,
+        "revealed": 2446
+      },
+      "B": {
+        "places": 8,
+        "revealed": 3524
+      },
+      "differing_px": 1586540
+    },
+    "consumption_ablation": {
+      "places": 8,
+      "revealed": 3524,
+      "suspended": true,
+      "differing_px_vs_B": 1608316
+    },
+    "consumers": {
+      "travel_keeps_its_own_visited": true,
+      "travel_visited_legs": 8,
+      "travel_walked_legs": 8
+    },
+    "shots": [
+      {
+        "screen": "inventory",
+        "mode_reached": "inventory",
+        "file": "docs/shots/2026-08-08-w1-21-r2-critic-inventory.png",
+        "lit_px": 1662783,
+        "size": [
+          1920,
+          1080
+        ]
+      },
+      {
+        "screen": "journal",
+        "mode_reached": "journal",
+        "file": "docs/shots/2026-08-08-w1-21-r2-critic-journal.png",
+        "lit_px": 1662745,
+        "size": [
+          1920,
+          1080
+        ]
+      },
+      {
+        "screen": "sheet",
+        "mode_reached": "sheet",
+        "file": "docs/shots/2026-08-08-w1-21-r2-critic-sheet.png",
+        "lit_px": 1662708,
+        "size": [
+          1920,
+          1080
+        ]
+      },
+      {
+        "screen": "spells",
+        "mode_reached": "spells",
+        "file": "docs/shots/2026-08-08-w1-21-r2-critic-spells.png",
+        "lit_px": 1174787,
+        "size": [
+          1920,
+          1080
+        ]
+      },
+      {
+        "screen": "map",
+        "mode_reached": "map",
+        "file": "docs/shots/2026-08-08-w1-21-r2-critic-map.png",
+        "lit_px": 1334482,
+        "size": [
+          1920,
+          1080
+        ]
+      },
+      {
+        "screen": "levelup",
+        "mode_reached": "levelup",
+        "file": "docs/shots/2026-08-08-w1-21-r2-critic-levelup.png",
+        "lit_px": 1662532,
+        "size": [
+          1920,
+          1080
+        ]
+      }
+    ]
+  },
+  "loadavg_end": "24.55 20.98 19.79 31/647 28148",
+  "console_errors": [],
+  "pass": 12,
+  "fail": 7
+}

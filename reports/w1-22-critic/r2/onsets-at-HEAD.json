@@ -1,0 +1,5945 @@
+{
+  "tool": "tools/analysis/ambience-onsets.mjs",
+  "taken_at": "2026-08-08T01:52:19.518Z",
+  "git": {
+    "commit": "5d88b7e",
+    "dirty": true
+  },
+  "seconds": 180,
+  "sample_rate": 16000,
+  "sabotage": null,
+  "bands_rel_bed_db": {
+    "L3": [
+      -6,
+      2
+    ],
+    "L4": [
+      -4,
+      4
+    ]
+  },
+  "tolerance_db": 2,
+  "gates": {
+    "O1_events_are_audible": {
+      "pass": false,
+      "scheduled": 453,
+      "detected": 297,
+      "detect_ratio": 0.656,
+      "silent_region_tod": [
+        "salt-hills/day",
+        "salt-hills/night",
+        "market/night"
+      ],
+      "what": "every bed produces a detectable event in both time-of-day bands, and the province detects at least half the events it scheduled"
+    },
+    "O2_events_change_the_dynamics": {
+      "pass": false,
+      "median_delta_db": 4.7,
+      "delta_bar_db": 3,
+      "below_bar": [
+        "blackwood/day 2.6",
+        "blackwood/night 2.8",
+        "deep-marshes/day 2.1",
+        "deep-marshes/night 2.1",
+        "dungeon/day 1.7",
+        "dungeon/night 1.5",
+        "interior/day 1.7",
+        "interior/night 1.7",
+        "market/night 1.9",
+        "writ_house/day 2.7",
+        "writ_house/night 1.7"
+      ],
+      "median_absolute_crest_db": 16.1,
+      "judge_reference_db": 20,
+      "note": "The absolute figure is REPORTED, not gated. The B2 judge's \">20 dB\" heuristic and RI-AUD03 §A's \"L3 at -6..+2 dB rel. bed\" cannot both be met — reaching 20 dB of crest on a ~12 dB noise bed needs the events roughly 8 dB outside §A's band. The gate is therefore the within-bed control: how much the events lift the crest of THEIR OWN bed, measured against the same render with the event layers muted.",
+      "what": "the event layers measurably change the dynamics of the bed they sit on"
+    },
+    "O3_level_in_band": {
+      "pass": true,
+      "per_bed": {
+        "blackwood": {
+          "L3": {
+            "n": 22,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": 0
+          }
+        },
+        "clay-moor": {
+          "L3": {
+            "n": 18,
+            "median_rel_db": -2.06
+          },
+          "L4": {
+            "n": 4,
+            "median_rel_db": -1.44
+          }
+        },
+        "crimson-coast": {
+          "L3": {
+            "n": 18,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": 0
+          }
+        },
+        "deep-marshes": {
+          "L3": {
+            "n": 10,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": 0
+          }
+        },
+        "eastern-rootlands": {
+          "L3": {
+            "n": 20,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": 0
+          }
+        },
+        "hive": {
+          "L3": {
+            "n": 24,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": 0
+          }
+        },
+        "marauders-coast": {
+          "L3": {
+            "n": 18,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": 0
+          }
+        },
+        "salt-hills": {
+          "L3": {
+            "n": 10,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": 0
+          }
+        },
+        "stone-forest": {
+          "L3": {
+            "n": 26,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": 0
+          }
+        },
+        "stone-wastes": {
+          "L3": {
+            "n": 12,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": 0
+          }
+        },
+        "thornmarsh": {
+          "L3": {
+            "n": 24,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": -1.41
+          }
+        },
+        "valus-ridge": {
+          "L3": {
+            "n": 16,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 4,
+            "median_rel_db": 0.05
+          }
+        },
+        "western-rootlands": {
+          "L3": {
+            "n": 20,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 4,
+            "median_rel_db": 0
+          }
+        },
+        "barge_hold": {
+          "L3": {
+            "n": 20,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": 0
+          }
+        },
+        "dungeon": {
+          "L3": {
+            "n": 16,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": -0.01
+          }
+        },
+        "interior": {
+          "L3": {
+            "n": 16,
+            "median_rel_db": -2
+          }
+        },
+        "market": {
+          "L3": {
+            "n": 28,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 3,
+            "median_rel_db": 0
+          }
+        },
+        "street": {
+          "L3": {
+            "n": 24,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": 0
+          }
+        },
+        "well": {
+          "L3": {
+            "n": 28,
+            "median_rel_db": -2
+          },
+          "L4": {
+            "n": 2,
+            "median_rel_db": 0
+          }
+        },
+        "writ_house": {
+          "L3": {
+            "n": 28,
+            "median_rel_db": -2
+          }
+        }
+      },
+      "province_median": {
+        "L3": {
+          "n": 398,
+          "median_rel_db": -2
+        },
+        "L4": {
+          "n": 43,
+          "median_rel_db": 0
+        },
+        "R7": {
+          "n": 12,
+          "median_rel_db": 9.45
+        }
+      },
+      "failures": [],
+      "what": "EVERY bed's measured event level, per layer, sits inside RI-AUD03 §A's own bands (L3 -6..+2, L4 -4..+4) within the declared +/-2 dB tolerance. Checked per bed rather than over a province median, because an average lets a loud bed and a quiet bed cancel into a green."
+    }
+  },
+  "regions": {
+    "blackwood": {
+      "tod": {
+        "day": {
+          "scheduled": 12,
+          "onsets_detected": 7,
+          "onsets_per_min": 2.33,
+          "crest_factor_db": 15.8,
+          "crest_factor_bed_only_db": 13.2,
+          "crest_delta_db": 2.6,
+          "event_peak_dbfs": -8.3,
+          "bed_rms_dbfs": -21.22,
+          "bed_lufs_i": -25.09,
+          "mix_lufs_i": -25.07,
+          "level_rel_bed": {
+            "L3": {
+              "n": 11,
+              "median_rel_db": -2.02,
+              "min_rel_db": -23.08,
+              "max_rel_db": 0.34
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0.07,
+              "min_rel_db": 0.07,
+              "max_rel_db": 0.07
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 19.15,
+              "duration_s": 0.03,
+              "over_floor_db": 9.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 37.47,
+              "duration_s": 0.03,
+              "over_floor_db": 15.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 50.45,
+              "duration_s": 0.03,
+              "over_floor_db": 15.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 63.32,
+              "duration_s": 0.03,
+              "over_floor_db": 15.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 75.5,
+              "duration_s": 0.03,
+              "over_floor_db": 15.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 98.6,
+              "duration_s": 0.02,
+              "over_floor_db": 16,
+              "scale": "fast"
+            },
+            {
+              "at_s": 138.48,
+              "duration_s": 0.03,
+              "over_floor_db": 11,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "canopy_drip",
+              "rel_db": 0.34,
+              "peak_dbfs": -11.32,
+              "at_s": 19.16
+            },
+            {
+              "layer": "L3",
+              "id": "canopy_drip",
+              "rel_db": -2.02,
+              "peak_dbfs": -11.73,
+              "at_s": 37.47
+            },
+            {
+              "layer": "L3",
+              "id": "canopy_drip",
+              "rel_db": -1.35,
+              "peak_dbfs": -10.52,
+              "at_s": 50.45
+            },
+            {
+              "layer": "L3",
+              "id": "canopy_drip",
+              "rel_db": -1.87,
+              "peak_dbfs": -11.47,
+              "at_s": 63.32
+            },
+            {
+              "layer": "L3",
+              "id": "canopy_drip",
+              "rel_db": -0.43,
+              "peak_dbfs": -11.53,
+              "at_s": 75.5
+            },
+            {
+              "layer": "L3",
+              "id": "distant_axe",
+              "rel_db": -15.98,
+              "peak_dbfs": -26.65,
+              "at_s": 89.87
+            },
+            {
+              "layer": "L3",
+              "id": "distant_axe",
+              "rel_db": -15.57,
+              "peak_dbfs": -27.78,
+              "at_s": 106.6
+            },
+            {
+              "layer": "L3",
+              "id": "distant_axe",
+              "rel_db": -19.37,
+              "peak_dbfs": -28.22,
+              "at_s": 129.4
+            },
+            {
+              "layer": "L3",
+              "id": "canopy_drip",
+              "rel_db": -1.31,
+              "peak_dbfs": -13.03,
+              "at_s": 138.49
+            },
+            {
+              "layer": "L3",
+              "id": "distant_axe",
+              "rel_db": -23.08,
+              "peak_dbfs": -29.71,
+              "at_s": 147.41
+            },
+            {
+              "layer": "L3",
+              "id": "distant_axe",
+              "rel_db": -18.73,
+              "peak_dbfs": -28.17,
+              "at_s": 165.21
+            },
+            {
+              "layer": "L4",
+              "id": "chitin_hound_sonar",
+              "rel_db": 0.07,
+              "peak_dbfs": -8.33,
+              "at_s": 98.47
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 12,
+          "onsets_detected": 7,
+          "onsets_per_min": 2.33,
+          "crest_factor_db": 15.6,
+          "crest_factor_bed_only_db": 12.8,
+          "crest_delta_db": 2.8,
+          "event_peak_dbfs": -8.3,
+          "bed_rms_dbfs": -21.22,
+          "bed_lufs_i": -25.19,
+          "mix_lufs_i": -25.18,
+          "level_rel_bed": {
+            "L3": {
+              "n": 11,
+              "median_rel_db": -1.98,
+              "min_rel_db": -23.1,
+              "max_rel_db": 0.31
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": -0.07,
+              "min_rel_db": -0.07,
+              "max_rel_db": -0.07
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 19.15,
+              "duration_s": 0.03,
+              "over_floor_db": 10,
+              "scale": "fast"
+            },
+            {
+              "at_s": 37.47,
+              "duration_s": 0.02,
+              "over_floor_db": 15.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 50.45,
+              "duration_s": 0.03,
+              "over_floor_db": 15.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 63.32,
+              "duration_s": 0.02,
+              "over_floor_db": 16,
+              "scale": "fast"
+            },
+            {
+              "at_s": 75.5,
+              "duration_s": 0.03,
+              "over_floor_db": 15.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 98.6,
+              "duration_s": 0.02,
+              "over_floor_db": 16.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 138.48,
+              "duration_s": 0.03,
+              "over_floor_db": 11.2,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "canopy_drip",
+              "rel_db": 0.31,
+              "peak_dbfs": -11.32,
+              "at_s": 19.16
+            },
+            {
+              "layer": "L3",
+              "id": "canopy_drip",
+              "rel_db": -1.98,
+              "peak_dbfs": -11.73,
+              "at_s": 37.47
+            },
+            {
+              "layer": "L3",
+              "id": "canopy_drip",
+              "rel_db": -1.23,
+              "peak_dbfs": -10.52,
+              "at_s": 50.45
+            },
+            {
+              "layer": "L3",
+              "id": "canopy_drip",
+              "rel_db": -1.75,
+              "peak_dbfs": -11.47,
+              "at_s": 63.32
+            },
+            {
+              "layer": "L3",
+              "id": "canopy_drip",
+              "rel_db": -0.22,
+              "peak_dbfs": -11.53,
+              "at_s": 75.5
+            },
+            {
+              "layer": "L3",
+              "id": "distant_axe",
+              "rel_db": -15.96,
+              "peak_dbfs": -26.65,
+              "at_s": 89.87
+            },
+            {
+              "layer": "L3",
+              "id": "distant_axe",
+              "rel_db": -15.55,
+              "peak_dbfs": -27.78,
+              "at_s": 106.6
+            },
+            {
+              "layer": "L3",
+              "id": "distant_axe",
+              "rel_db": -19.35,
+              "peak_dbfs": -28.22,
+              "at_s": 129.4
+            },
+            {
+              "layer": "L3",
+              "id": "canopy_drip",
+              "rel_db": -1.26,
+              "peak_dbfs": -13.03,
+              "at_s": 138.49
+            },
+            {
+              "layer": "L3",
+              "id": "distant_axe",
+              "rel_db": -23.1,
+              "peak_dbfs": -29.71,
+              "at_s": 147.41
+            },
+            {
+              "layer": "L3",
+              "id": "distant_axe",
+              "rel_db": -18.8,
+              "peak_dbfs": -28.17,
+              "at_s": 165.21
+            },
+            {
+              "layer": "L4",
+              "id": "chitin_hound_sonar",
+              "rel_db": -0.07,
+              "peak_dbfs": -8.34,
+              "at_s": 98.47
+            }
+          ]
+        }
+      },
+      "kind": "region"
+    },
+    "clay-moor": {
+      "tod": {
+        "day": {
+          "scheduled": 11,
+          "onsets_detected": 13,
+          "onsets_per_min": 4.33,
+          "crest_factor_db": 15.3,
+          "crest_factor_bed_only_db": 11.7,
+          "crest_delta_db": 3.6,
+          "event_peak_dbfs": 0.9,
+          "bed_rms_dbfs": -15.33,
+          "bed_lufs_i": -19.82,
+          "mix_lufs_i": -19.78,
+          "level_rel_bed": {
+            "L3": {
+              "n": 9,
+              "median_rel_db": -2.06,
+              "min_rel_db": -5.35,
+              "max_rel_db": 0.52
+            },
+            "L4": {
+              "n": 2,
+              "median_rel_db": -1.44,
+              "min_rel_db": -2.08,
+              "max_rel_db": -0.79
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 13.59,
+              "duration_s": 0.02,
+              "over_floor_db": 14.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 43.35,
+              "duration_s": 0.02,
+              "over_floor_db": 12.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 64.68,
+              "duration_s": 0.03,
+              "over_floor_db": 12.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 89.61,
+              "duration_s": 0.03,
+              "over_floor_db": 12.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 101.1,
+              "duration_s": 0.09,
+              "over_floor_db": 14.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 101.49,
+              "duration_s": 0.07,
+              "over_floor_db": 12.3,
+              "scale": "fast"
+            },
+            {
+              "at_s": 101.91,
+              "duration_s": 0.08,
+              "over_floor_db": 13.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 102.34,
+              "duration_s": 0.1,
+              "over_floor_db": 10.4,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": 0.52,
+              "peak_dbfs": -5.44,
+              "at_s": 13.6
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -4.85,
+              "peak_dbfs": -6.86,
+              "at_s": 43.35
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -2.06,
+              "peak_dbfs": -6.16,
+              "at_s": 64.68
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -3.71,
+              "peak_dbfs": -5.48,
+              "at_s": 89.61
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -1.85,
+              "peak_dbfs": -1.43,
+              "at_s": 109.21
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -5.35,
+              "peak_dbfs": -6.12,
+              "at_s": 120.39
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -3.1,
+              "peak_dbfs": -8.39,
+              "at_s": 130.74
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -1.52,
+              "peak_dbfs": -4.34,
+              "at_s": 149.75
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -1.39,
+              "peak_dbfs": -2.61,
+              "at_s": 177.45
+            },
+            {
+              "layer": "L4",
+              "id": "naga_speech",
+              "rel_db": -2.08,
+              "peak_dbfs": -0.39,
+              "at_s": 101.07
+            },
+            {
+              "layer": "L4",
+              "id": "naga_speech",
+              "rel_db": -0.79,
+              "peak_dbfs": 0.9,
+              "at_s": 179.83
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 11,
+          "onsets_detected": 13,
+          "onsets_per_min": 4.33,
+          "crest_factor_db": 15.3,
+          "crest_factor_bed_only_db": 11.7,
+          "crest_delta_db": 3.6,
+          "event_peak_dbfs": 0.9,
+          "bed_rms_dbfs": -15.33,
+          "bed_lufs_i": -19.82,
+          "mix_lufs_i": -19.78,
+          "level_rel_bed": {
+            "L3": {
+              "n": 9,
+              "median_rel_db": -2.06,
+              "min_rel_db": -5.35,
+              "max_rel_db": 0.52
+            },
+            "L4": {
+              "n": 2,
+              "median_rel_db": -1.44,
+              "min_rel_db": -2.08,
+              "max_rel_db": -0.79
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 13.59,
+              "duration_s": 0.02,
+              "over_floor_db": 14.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 43.35,
+              "duration_s": 0.02,
+              "over_floor_db": 12.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 64.68,
+              "duration_s": 0.03,
+              "over_floor_db": 12.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 89.61,
+              "duration_s": 0.03,
+              "over_floor_db": 12.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 101.1,
+              "duration_s": 0.09,
+              "over_floor_db": 14.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 101.49,
+              "duration_s": 0.07,
+              "over_floor_db": 12.3,
+              "scale": "fast"
+            },
+            {
+              "at_s": 101.91,
+              "duration_s": 0.08,
+              "over_floor_db": 13.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 102.34,
+              "duration_s": 0.1,
+              "over_floor_db": 10.4,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": 0.52,
+              "peak_dbfs": -5.44,
+              "at_s": 13.6
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -4.85,
+              "peak_dbfs": -6.86,
+              "at_s": 43.35
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -2.06,
+              "peak_dbfs": -6.16,
+              "at_s": 64.68
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -3.71,
+              "peak_dbfs": -5.48,
+              "at_s": 89.61
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -1.85,
+              "peak_dbfs": -1.43,
+              "at_s": 109.21
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -5.35,
+              "peak_dbfs": -6.12,
+              "at_s": 120.39
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -3.1,
+              "peak_dbfs": -8.39,
+              "at_s": 130.74
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -1.52,
+              "peak_dbfs": -4.34,
+              "at_s": 149.75
+            },
+            {
+              "layer": "L3",
+              "id": "clay_crack",
+              "rel_db": -1.39,
+              "peak_dbfs": -2.61,
+              "at_s": 177.45
+            },
+            {
+              "layer": "L4",
+              "id": "naga_speech",
+              "rel_db": -2.08,
+              "peak_dbfs": -0.39,
+              "at_s": 101.07
+            },
+            {
+              "layer": "L4",
+              "id": "naga_speech",
+              "rel_db": -0.79,
+              "peak_dbfs": 0.9,
+              "at_s": 179.83
+            }
+          ]
+        }
+      },
+      "kind": "region",
+      "listener": [
+        3788,
+        2010,
+        0
+      ],
+      "listener_note": "45 m from kiln"
+    },
+    "crimson-coast": {
+      "tod": {
+        "day": {
+          "scheduled": 10,
+          "onsets_detected": 10,
+          "onsets_per_min": 3.33,
+          "crest_factor_db": 13.3,
+          "crest_factor_bed_only_db": 8.7,
+          "crest_delta_db": 4.6,
+          "event_peak_dbfs": -14.16,
+          "bed_rms_dbfs": -21.93,
+          "bed_lufs_i": -25.26,
+          "mix_lufs_i": -25.2,
+          "level_rel_bed": {
+            "L3": {
+              "n": 9,
+              "median_rel_db": -2,
+              "min_rel_db": -3.1,
+              "max_rel_db": 2.75
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 18.7,
+              "duration_s": 0.2,
+              "over_floor_db": 16.8,
+              "scale": "slow"
+            },
+            {
+              "at_s": 30.3,
+              "duration_s": 0.14,
+              "over_floor_db": 21.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 46,
+              "duration_s": 0.2,
+              "over_floor_db": 14.7,
+              "scale": "slow"
+            },
+            {
+              "at_s": 61.2,
+              "duration_s": 0.2,
+              "over_floor_db": 17,
+              "scale": "slow"
+            },
+            {
+              "at_s": 83.33,
+              "duration_s": 0.14,
+              "over_floor_db": 19.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 110.34,
+              "duration_s": 0.14,
+              "over_floor_db": 22.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 130.59,
+              "duration_s": 0.09,
+              "over_floor_db": 14,
+              "scale": "fast"
+            },
+            {
+              "at_s": 131.78,
+              "duration_s": 0.14,
+              "over_floor_db": 22.3,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": 2.14,
+              "peak_dbfs": -14.54,
+              "at_s": 18.74
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": -2,
+              "peak_dbfs": -14.16,
+              "at_s": 30.29
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": 1.2,
+              "peak_dbfs": -14.24,
+              "at_s": 46.07
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": -2.25,
+              "peak_dbfs": -14.26,
+              "at_s": 61.23
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": -2.84,
+              "peak_dbfs": -14.48,
+              "at_s": 83.32
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": -3.1,
+              "peak_dbfs": -14.43,
+              "at_s": 110.33
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": -1.18,
+              "peak_dbfs": -14.41,
+              "at_s": 131.77
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": -2.61,
+              "peak_dbfs": -14.26,
+              "at_s": 153.98
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": 2.75,
+              "peak_dbfs": -14.21,
+              "at_s": 167.65
+            },
+            {
+              "layer": "L4",
+              "id": "dye_worm",
+              "rel_db": 0,
+              "peak_dbfs": -14.6,
+              "at_s": 130.54
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 10,
+          "onsets_detected": 10,
+          "onsets_per_min": 3.33,
+          "crest_factor_db": 13.3,
+          "crest_factor_bed_only_db": 8.7,
+          "crest_delta_db": 4.6,
+          "event_peak_dbfs": -14.16,
+          "bed_rms_dbfs": -21.93,
+          "bed_lufs_i": -25.26,
+          "mix_lufs_i": -25.2,
+          "level_rel_bed": {
+            "L3": {
+              "n": 9,
+              "median_rel_db": -2,
+              "min_rel_db": -3.1,
+              "max_rel_db": 2.75
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 18.7,
+              "duration_s": 0.2,
+              "over_floor_db": 16.8,
+              "scale": "slow"
+            },
+            {
+              "at_s": 30.3,
+              "duration_s": 0.14,
+              "over_floor_db": 21.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 46,
+              "duration_s": 0.2,
+              "over_floor_db": 14.7,
+              "scale": "slow"
+            },
+            {
+              "at_s": 61.2,
+              "duration_s": 0.2,
+              "over_floor_db": 17,
+              "scale": "slow"
+            },
+            {
+              "at_s": 83.33,
+              "duration_s": 0.14,
+              "over_floor_db": 19.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 110.34,
+              "duration_s": 0.14,
+              "over_floor_db": 22.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 130.59,
+              "duration_s": 0.09,
+              "over_floor_db": 14,
+              "scale": "fast"
+            },
+            {
+              "at_s": 131.78,
+              "duration_s": 0.14,
+              "over_floor_db": 22.3,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": 2.14,
+              "peak_dbfs": -14.54,
+              "at_s": 18.74
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": -2,
+              "peak_dbfs": -14.16,
+              "at_s": 30.29
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": 1.2,
+              "peak_dbfs": -14.24,
+              "at_s": 46.07
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": -2.25,
+              "peak_dbfs": -14.26,
+              "at_s": 61.23
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": -2.84,
+              "peak_dbfs": -14.48,
+              "at_s": 83.32
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": -3.1,
+              "peak_dbfs": -14.43,
+              "at_s": 110.33
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": -1.18,
+              "peak_dbfs": -14.41,
+              "at_s": 131.77
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": -2.61,
+              "peak_dbfs": -14.26,
+              "at_s": 153.98
+            },
+            {
+              "layer": "L3",
+              "id": "lichen_scream",
+              "rel_db": 2.75,
+              "peak_dbfs": -14.21,
+              "at_s": 167.65
+            },
+            {
+              "layer": "L4",
+              "id": "dye_worm",
+              "rel_db": 0,
+              "peak_dbfs": -14.6,
+              "at_s": 130.54
+            }
+          ]
+        }
+      },
+      "kind": "region"
+    },
+    "deep-marshes": {
+      "tod": {
+        "day": {
+          "scheduled": 6,
+          "onsets_detected": 6,
+          "onsets_per_min": 2,
+          "crest_factor_db": 12,
+          "crest_factor_bed_only_db": 9.9,
+          "crest_delta_db": 2.1,
+          "event_peak_dbfs": -12.9,
+          "bed_rms_dbfs": -22.05,
+          "bed_lufs_i": -27.59,
+          "mix_lufs_i": -27.57,
+          "level_rel_bed": {
+            "L3": {
+              "n": 5,
+              "median_rel_db": -2,
+              "min_rel_db": -30.37,
+              "max_rel_db": 2.07
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 30.8,
+              "duration_s": 0.2,
+              "over_floor_db": 12.6,
+              "scale": "slow"
+            },
+            {
+              "at_s": 69.71,
+              "duration_s": 0.14,
+              "over_floor_db": 14.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 106.98,
+              "duration_s": 0.19,
+              "over_floor_db": 15.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 112.19,
+              "duration_s": 0.37,
+              "over_floor_db": 16.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 114.1,
+              "duration_s": 0.5,
+              "over_floor_db": 15.9,
+              "scale": "slow"
+            },
+            {
+              "at_s": 142.5,
+              "duration_s": 0.2,
+              "over_floor_db": 12.5,
+              "scale": "slow"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "marsh_gas_release",
+              "rel_db": -0.21,
+              "peak_dbfs": -15.58,
+              "at_s": 30.74
+            },
+            {
+              "layer": "L3",
+              "id": "marsh_gas_release",
+              "rel_db": 2.07,
+              "peak_dbfs": -12.9,
+              "at_s": 69.63
+            },
+            {
+              "layer": "L3",
+              "id": "marsh_gas_release",
+              "rel_db": -2,
+              "peak_dbfs": -13.47,
+              "at_s": 106.89
+            },
+            {
+              "layer": "L3",
+              "id": "marsh_gas_release",
+              "rel_db": -3.55,
+              "peak_dbfs": -16.05,
+              "at_s": 142.46
+            },
+            {
+              "layer": "L3",
+              "id": "marsh_gas_release",
+              "rel_db": -30.37,
+              "peak_dbfs": -43.48,
+              "at_s": 179.93
+            },
+            {
+              "layer": "L4",
+              "id": "breathing_not_yours",
+              "rel_db": 0,
+              "peak_dbfs": -15.11,
+              "at_s": 111.67
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 6,
+          "onsets_detected": 6,
+          "onsets_per_min": 2,
+          "crest_factor_db": 12,
+          "crest_factor_bed_only_db": 9.9,
+          "crest_delta_db": 2.1,
+          "event_peak_dbfs": -12.9,
+          "bed_rms_dbfs": -22.05,
+          "bed_lufs_i": -27.59,
+          "mix_lufs_i": -27.57,
+          "level_rel_bed": {
+            "L3": {
+              "n": 5,
+              "median_rel_db": -2,
+              "min_rel_db": -30.37,
+              "max_rel_db": 2.07
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 30.8,
+              "duration_s": 0.2,
+              "over_floor_db": 12.6,
+              "scale": "slow"
+            },
+            {
+              "at_s": 69.71,
+              "duration_s": 0.14,
+              "over_floor_db": 14.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 106.98,
+              "duration_s": 0.19,
+              "over_floor_db": 15.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 112.19,
+              "duration_s": 0.37,
+              "over_floor_db": 16.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 114.1,
+              "duration_s": 0.5,
+              "over_floor_db": 15.9,
+              "scale": "slow"
+            },
+            {
+              "at_s": 142.5,
+              "duration_s": 0.2,
+              "over_floor_db": 12.5,
+              "scale": "slow"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "marsh_gas_release",
+              "rel_db": -0.21,
+              "peak_dbfs": -15.58,
+              "at_s": 30.74
+            },
+            {
+              "layer": "L3",
+              "id": "marsh_gas_release",
+              "rel_db": 2.07,
+              "peak_dbfs": -12.9,
+              "at_s": 69.63
+            },
+            {
+              "layer": "L3",
+              "id": "marsh_gas_release",
+              "rel_db": -2,
+              "peak_dbfs": -13.47,
+              "at_s": 106.89
+            },
+            {
+              "layer": "L3",
+              "id": "marsh_gas_release",
+              "rel_db": -3.55,
+              "peak_dbfs": -16.05,
+              "at_s": 142.46
+            },
+            {
+              "layer": "L3",
+              "id": "marsh_gas_release",
+              "rel_db": -30.37,
+              "peak_dbfs": -43.48,
+              "at_s": 179.93
+            },
+            {
+              "layer": "L4",
+              "id": "breathing_not_yours",
+              "rel_db": 0,
+              "peak_dbfs": -15.11,
+              "at_s": 111.67
+            }
+          ]
+        }
+      },
+      "kind": "region"
+    },
+    "eastern-rootlands": {
+      "tod": {
+        "day": {
+          "scheduled": 11,
+          "onsets_detected": 8,
+          "onsets_per_min": 2.67,
+          "crest_factor_db": 13.3,
+          "crest_factor_bed_only_db": 8.6,
+          "crest_delta_db": 4.7,
+          "event_peak_dbfs": -13.28,
+          "bed_rms_dbfs": -23.16,
+          "bed_lufs_i": -25.05,
+          "mix_lufs_i": -25.03,
+          "level_rel_bed": {
+            "L3": {
+              "n": 10,
+              "median_rel_db": -2,
+              "min_rel_db": -6.96,
+              "max_rel_db": 0.84
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 16.66,
+              "duration_s": 0.03,
+              "over_floor_db": 12,
+              "scale": "fast"
+            },
+            {
+              "at_s": 37.22,
+              "duration_s": 0.06,
+              "over_floor_db": 10.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 59.19,
+              "duration_s": 0.11,
+              "over_floor_db": 11.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 78.31,
+              "duration_s": 0.1,
+              "over_floor_db": 12.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 94.23,
+              "duration_s": 0.12,
+              "over_floor_db": 12.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 105.06,
+              "duration_s": 0.12,
+              "over_floor_db": 13.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 128.72,
+              "duration_s": 0.12,
+              "over_floor_db": 11.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 162.01,
+              "duration_s": 0.03,
+              "over_floor_db": 11.4,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "oar_stroke",
+              "rel_db": -4.02,
+              "peak_dbfs": -17.33,
+              "at_s": 16.64
+            },
+            {
+              "layer": "L3",
+              "id": "oar_stroke",
+              "rel_db": -5.05,
+              "peak_dbfs": -15.02,
+              "at_s": 37.2
+            },
+            {
+              "layer": "L3",
+              "id": "stilt_creak",
+              "rel_db": 0.84,
+              "peak_dbfs": -14.32,
+              "at_s": 59.1
+            },
+            {
+              "layer": "L3",
+              "id": "stilt_creak",
+              "rel_db": 0.55,
+              "peak_dbfs": -14.81,
+              "at_s": 78.22
+            },
+            {
+              "layer": "L3",
+              "id": "stilt_creak",
+              "rel_db": 0.02,
+              "peak_dbfs": -14.65,
+              "at_s": 94.14
+            },
+            {
+              "layer": "L3",
+              "id": "stilt_creak",
+              "rel_db": 0.07,
+              "peak_dbfs": -14.3,
+              "at_s": 104.97
+            },
+            {
+              "layer": "L3",
+              "id": "oar_stroke",
+              "rel_db": -6.5,
+              "peak_dbfs": -19.3,
+              "at_s": 119.87
+            },
+            {
+              "layer": "L3",
+              "id": "stilt_creak",
+              "rel_db": 0.78,
+              "peak_dbfs": -14.09,
+              "at_s": 128.63
+            },
+            {
+              "layer": "L3",
+              "id": "oar_stroke",
+              "rel_db": -6.96,
+              "peak_dbfs": -19.21,
+              "at_s": 140.91
+            },
+            {
+              "layer": "L3",
+              "id": "oar_stroke",
+              "rel_db": -5.27,
+              "peak_dbfs": -14.84,
+              "at_s": 161.99
+            },
+            {
+              "layer": "L4",
+              "id": "wamasu_low_call",
+              "rel_db": 0,
+              "peak_dbfs": -13.28,
+              "at_s": 102.57
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 11,
+          "onsets_detected": 8,
+          "onsets_per_min": 2.67,
+          "crest_factor_db": 13.3,
+          "crest_factor_bed_only_db": 8.6,
+          "crest_delta_db": 4.7,
+          "event_peak_dbfs": -13.28,
+          "bed_rms_dbfs": -23.16,
+          "bed_lufs_i": -25.05,
+          "mix_lufs_i": -25.03,
+          "level_rel_bed": {
+            "L3": {
+              "n": 10,
+              "median_rel_db": -2,
+              "min_rel_db": -6.96,
+              "max_rel_db": 0.84
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 16.66,
+              "duration_s": 0.03,
+              "over_floor_db": 12,
+              "scale": "fast"
+            },
+            {
+              "at_s": 37.22,
+              "duration_s": 0.06,
+              "over_floor_db": 10.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 59.19,
+              "duration_s": 0.11,
+              "over_floor_db": 11.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 78.31,
+              "duration_s": 0.1,
+              "over_floor_db": 12.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 94.23,
+              "duration_s": 0.12,
+              "over_floor_db": 12.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 105.06,
+              "duration_s": 0.12,
+              "over_floor_db": 13.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 128.72,
+              "duration_s": 0.12,
+              "over_floor_db": 11.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 162.01,
+              "duration_s": 0.03,
+              "over_floor_db": 11.4,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "oar_stroke",
+              "rel_db": -4.02,
+              "peak_dbfs": -17.33,
+              "at_s": 16.64
+            },
+            {
+              "layer": "L3",
+              "id": "oar_stroke",
+              "rel_db": -5.05,
+              "peak_dbfs": -15.02,
+              "at_s": 37.2
+            },
+            {
+              "layer": "L3",
+              "id": "stilt_creak",
+              "rel_db": 0.84,
+              "peak_dbfs": -14.32,
+              "at_s": 59.1
+            },
+            {
+              "layer": "L3",
+              "id": "stilt_creak",
+              "rel_db": 0.55,
+              "peak_dbfs": -14.81,
+              "at_s": 78.22
+            },
+            {
+              "layer": "L3",
+              "id": "stilt_creak",
+              "rel_db": 0.02,
+              "peak_dbfs": -14.65,
+              "at_s": 94.14
+            },
+            {
+              "layer": "L3",
+              "id": "stilt_creak",
+              "rel_db": 0.07,
+              "peak_dbfs": -14.3,
+              "at_s": 104.97
+            },
+            {
+              "layer": "L3",
+              "id": "oar_stroke",
+              "rel_db": -6.5,
+              "peak_dbfs": -19.3,
+              "at_s": 119.87
+            },
+            {
+              "layer": "L3",
+              "id": "stilt_creak",
+              "rel_db": 0.78,
+              "peak_dbfs": -14.09,
+              "at_s": 128.63
+            },
+            {
+              "layer": "L3",
+              "id": "oar_stroke",
+              "rel_db": -6.96,
+              "peak_dbfs": -19.21,
+              "at_s": 140.91
+            },
+            {
+              "layer": "L3",
+              "id": "oar_stroke",
+              "rel_db": -5.27,
+              "peak_dbfs": -14.84,
+              "at_s": 161.99
+            },
+            {
+              "layer": "L4",
+              "id": "wamasu_low_call",
+              "rel_db": 0,
+              "peak_dbfs": -13.28,
+              "at_s": 102.57
+            }
+          ]
+        }
+      },
+      "kind": "region"
+    },
+    "hive": {
+      "tod": {
+        "day": {
+          "scheduled": 13,
+          "onsets_detected": 2,
+          "onsets_per_min": 0.67,
+          "crest_factor_db": 23.3,
+          "crest_factor_bed_only_db": 11.1,
+          "crest_delta_db": 12.2,
+          "event_peak_dbfs": -1.04,
+          "bed_rms_dbfs": -24.68,
+          "bed_lufs_i": -24.91,
+          "mix_lufs_i": -24.8,
+          "level_rel_bed": {
+            "L3": {
+              "n": 12,
+              "median_rel_db": -2,
+              "min_rel_db": -4.17,
+              "max_rel_db": 10.61
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 46.1,
+              "duration_s": 0.1,
+              "over_floor_db": 10.4,
+              "scale": "slow"
+            },
+            {
+              "at_s": 156.74,
+              "duration_s": 0.07,
+              "over_floor_db": 16.3,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -1.97,
+              "peak_dbfs": -8.89,
+              "at_s": 19.59
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -2.04,
+              "peak_dbfs": -8.11,
+              "at_s": 31.65
+            },
+            {
+              "layer": "L3",
+              "id": "chitin_scrape",
+              "rel_db": 10.23,
+              "peak_dbfs": -1.04,
+              "at_s": 46.06
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -0.9,
+              "peak_dbfs": -8.24,
+              "at_s": 55.96
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -1.43,
+              "peak_dbfs": -7.26,
+              "at_s": 73.5
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -3.9,
+              "peak_dbfs": -5.56,
+              "at_s": 91.03
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -4.17,
+              "peak_dbfs": -7.91,
+              "at_s": 107.1
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -3.21,
+              "peak_dbfs": -10.64,
+              "at_s": 122.75
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -2.52,
+              "peak_dbfs": -9.79,
+              "at_s": 131.45
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -3.91,
+              "peak_dbfs": -11.43,
+              "at_s": 142.15
+            },
+            {
+              "layer": "L3",
+              "id": "chitin_scrape",
+              "rel_db": 10.61,
+              "peak_dbfs": -2.16,
+              "at_s": 156.7
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -1.03,
+              "peak_dbfs": -8.48,
+              "at_s": 166.5
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 13,
+          "onsets_detected": 2,
+          "onsets_per_min": 0.67,
+          "crest_factor_db": 23.3,
+          "crest_factor_bed_only_db": 11.1,
+          "crest_delta_db": 12.2,
+          "event_peak_dbfs": -1.04,
+          "bed_rms_dbfs": -24.68,
+          "bed_lufs_i": -24.91,
+          "mix_lufs_i": -24.8,
+          "level_rel_bed": {
+            "L3": {
+              "n": 12,
+              "median_rel_db": -2,
+              "min_rel_db": -4.17,
+              "max_rel_db": 10.61
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 46.1,
+              "duration_s": 0.1,
+              "over_floor_db": 10.4,
+              "scale": "slow"
+            },
+            {
+              "at_s": 156.74,
+              "duration_s": 0.07,
+              "over_floor_db": 16.3,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -1.97,
+              "peak_dbfs": -8.89,
+              "at_s": 19.59
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -2.04,
+              "peak_dbfs": -8.11,
+              "at_s": 31.65
+            },
+            {
+              "layer": "L3",
+              "id": "chitin_scrape",
+              "rel_db": 10.23,
+              "peak_dbfs": -1.04,
+              "at_s": 46.06
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -0.9,
+              "peak_dbfs": -8.24,
+              "at_s": 55.96
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -1.43,
+              "peak_dbfs": -7.26,
+              "at_s": 73.5
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -3.9,
+              "peak_dbfs": -5.56,
+              "at_s": 91.03
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -4.17,
+              "peak_dbfs": -7.91,
+              "at_s": 107.1
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -3.21,
+              "peak_dbfs": -10.64,
+              "at_s": 122.75
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -2.52,
+              "peak_dbfs": -9.79,
+              "at_s": 131.45
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -3.91,
+              "peak_dbfs": -11.43,
+              "at_s": 142.15
+            },
+            {
+              "layer": "L3",
+              "id": "chitin_scrape",
+              "rel_db": 10.61,
+              "peak_dbfs": -2.16,
+              "at_s": 156.7
+            },
+            {
+              "layer": "L3",
+              "id": "cell_tick",
+              "rel_db": -1.03,
+              "peak_dbfs": -8.48,
+              "at_s": 166.5
+            }
+          ]
+        }
+      },
+      "kind": "region"
+    },
+    "marauders-coast": {
+      "tod": {
+        "day": {
+          "scheduled": 13,
+          "onsets_detected": 3,
+          "onsets_per_min": 1,
+          "crest_factor_db": 16.8,
+          "crest_factor_bed_only_db": 13.8,
+          "crest_delta_db": 3,
+          "event_peak_dbfs": -9.15,
+          "bed_rms_dbfs": -23.36,
+          "bed_lufs_i": -25.35,
+          "mix_lufs_i": -25.14,
+          "level_rel_bed": {
+            "L3": {
+              "n": 9,
+              "median_rel_db": -2.43,
+              "min_rel_db": -3.59,
+              "max_rel_db": 0
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": -7.63,
+              "min_rel_db": -7.63,
+              "max_rel_db": -7.63
+            },
+            "R7": {
+              "n": 3,
+              "median_rel_db": 9.29,
+              "min_rel_db": 8.22,
+              "max_rel_db": 9.6
+            }
+          },
+          "onsets": [
+            {
+              "at_s": 7.2,
+              "duration_s": 0.52,
+              "over_floor_db": 12.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 67.2,
+              "duration_s": 0.55,
+              "over_floor_db": 13,
+              "scale": "fast"
+            },
+            {
+              "at_s": 127.2,
+              "duration_s": 0.6,
+              "over_floor_db": 13,
+              "scale": "slow"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -1.66,
+              "peak_dbfs": -17.97,
+              "at_s": 13.52
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -2.92,
+              "peak_dbfs": -17.73,
+              "at_s": 39.86
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -2.43,
+              "peak_dbfs": -18.75,
+              "at_s": 62.17
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -3.47,
+              "peak_dbfs": -18.42,
+              "at_s": 85.26
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -3.48,
+              "peak_dbfs": -18.02,
+              "at_s": 105.27
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -3.59,
+              "peak_dbfs": -17.77,
+              "at_s": 125.96
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": 0,
+              "peak_dbfs": -17.96,
+              "at_s": 141.74
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -1.09,
+              "peak_dbfs": -18.16,
+              "at_s": 157.81
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -0.24,
+              "peak_dbfs": -17.88,
+              "at_s": 168.17
+            },
+            {
+              "layer": "L4",
+              "id": "gull_cry",
+              "rel_db": -7.63,
+              "peak_dbfs": -19.69,
+              "at_s": 102.25
+            },
+            {
+              "layer": "R7",
+              "id": "bell_buoy",
+              "rel_db": 9.6,
+              "peak_dbfs": -9.15,
+              "at_s": 7.2
+            },
+            {
+              "layer": "R7",
+              "id": "bell_buoy",
+              "rel_db": 8.22,
+              "peak_dbfs": -9.15,
+              "at_s": 67.2
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 13,
+          "onsets_detected": 3,
+          "onsets_per_min": 1,
+          "crest_factor_db": 18.2,
+          "crest_factor_bed_only_db": 12.9,
+          "crest_delta_db": 5.3,
+          "event_peak_dbfs": -9.15,
+          "bed_rms_dbfs": -24.19,
+          "bed_lufs_i": -28.18,
+          "mix_lufs_i": -27.74,
+          "level_rel_bed": {
+            "L3": {
+              "n": 9,
+              "median_rel_db": -1.81,
+              "min_rel_db": -3.37,
+              "max_rel_db": 1.19
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 7.64,
+              "min_rel_db": 7.64,
+              "max_rel_db": 7.64
+            },
+            "R7": {
+              "n": 3,
+              "median_rel_db": 9.91,
+              "min_rel_db": 9.75,
+              "max_rel_db": 10.36
+            }
+          },
+          "onsets": [
+            {
+              "at_s": 7.2,
+              "duration_s": 0.62,
+              "over_floor_db": 15.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 67.2,
+              "duration_s": 0.62,
+              "over_floor_db": 15.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 127.2,
+              "duration_s": 0.6,
+              "over_floor_db": 15.6,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -0.74,
+              "peak_dbfs": -17.97,
+              "at_s": 13.52
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -1.81,
+              "peak_dbfs": -17.73,
+              "at_s": 39.86
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -2.18,
+              "peak_dbfs": -18.75,
+              "at_s": 62.17
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -2.33,
+              "peak_dbfs": -18.42,
+              "at_s": 85.26
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -3.14,
+              "peak_dbfs": -18.02,
+              "at_s": 105.27
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": -3.37,
+              "peak_dbfs": -17.77,
+              "at_s": 125.96
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": 0.67,
+              "peak_dbfs": -17.96,
+              "at_s": 141.74
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": 0.9,
+              "peak_dbfs": -18.16,
+              "at_s": 157.81
+            },
+            {
+              "layer": "L3",
+              "id": "rope_creak",
+              "rel_db": 1.19,
+              "peak_dbfs": -17.88,
+              "at_s": 168.17
+            },
+            {
+              "layer": "L4",
+              "id": "drowned_thing",
+              "rel_db": 7.64,
+              "peak_dbfs": -9.41,
+              "at_s": 102.25
+            },
+            {
+              "layer": "R7",
+              "id": "bell_buoy",
+              "rel_db": 9.75,
+              "peak_dbfs": -9.15,
+              "at_s": 7.2
+            },
+            {
+              "layer": "R7",
+              "id": "bell_buoy",
+              "rel_db": 9.91,
+              "peak_dbfs": -9.15,
+              "at_s": 67.2
+            }
+          ]
+        }
+      },
+      "kind": "region",
+      "listener": [
+        433,
+        4486,
+        0
+      ],
+      "listener_note": "35 m from bell_buoy"
+    },
+    "salt-hills": {
+      "tod": {
+        "day": {
+          "scheduled": 7,
+          "onsets_detected": 0,
+          "onsets_per_min": 0,
+          "crest_factor_db": 19.5,
+          "crest_factor_bed_only_db": 14.1,
+          "crest_delta_db": 5.4,
+          "event_peak_dbfs": -8.95,
+          "bed_rms_dbfs": -27.86,
+          "bed_lufs_i": -26.17,
+          "mix_lufs_i": -26.12,
+          "level_rel_bed": {
+            "L3": {
+              "n": 5,
+              "median_rel_db": -2,
+              "min_rel_db": -4.38,
+              "max_rel_db": 1.49
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": {
+              "n": 1,
+              "median_rel_db": 11.15,
+              "min_rel_db": 11.15,
+              "max_rel_db": 11.15
+            }
+          },
+          "onsets": [],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "dry_grass_gust",
+              "rel_db": -2,
+              "peak_dbfs": -20.42,
+              "at_s": 36.81
+            },
+            {
+              "layer": "L3",
+              "id": "dry_grass_gust",
+              "rel_db": -4.38,
+              "peak_dbfs": -22.7,
+              "at_s": 67.7
+            },
+            {
+              "layer": "L3",
+              "id": "dry_grass_gust",
+              "rel_db": 1.49,
+              "peak_dbfs": -18.5,
+              "at_s": 101
+            },
+            {
+              "layer": "L3",
+              "id": "dry_grass_gust",
+              "rel_db": -2.4,
+              "peak_dbfs": -20.93,
+              "at_s": 137.49
+            },
+            {
+              "layer": "L3",
+              "id": "dry_grass_gust",
+              "rel_db": -1.52,
+              "peak_dbfs": -19.73,
+              "at_s": 164.64
+            },
+            {
+              "layer": "L4",
+              "id": "guar_bells",
+              "rel_db": 0,
+              "peak_dbfs": -18.47,
+              "at_s": 101.83
+            },
+            {
+              "layer": "R7",
+              "id": "legion_horn",
+              "rel_db": 11.15,
+              "peak_dbfs": -8.95,
+              "at_s": 7.2
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 7,
+          "onsets_detected": 0,
+          "onsets_per_min": 0,
+          "crest_factor_db": 19.5,
+          "crest_factor_bed_only_db": 14.1,
+          "crest_delta_db": 5.4,
+          "event_peak_dbfs": -8.95,
+          "bed_rms_dbfs": -27.86,
+          "bed_lufs_i": -26.17,
+          "mix_lufs_i": -26.12,
+          "level_rel_bed": {
+            "L3": {
+              "n": 5,
+              "median_rel_db": -2,
+              "min_rel_db": -4.38,
+              "max_rel_db": 1.49
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": {
+              "n": 1,
+              "median_rel_db": 11.15,
+              "min_rel_db": 11.15,
+              "max_rel_db": 11.15
+            }
+          },
+          "onsets": [],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "dry_grass_gust",
+              "rel_db": -2,
+              "peak_dbfs": -20.42,
+              "at_s": 36.81
+            },
+            {
+              "layer": "L3",
+              "id": "dry_grass_gust",
+              "rel_db": -4.38,
+              "peak_dbfs": -22.7,
+              "at_s": 67.7
+            },
+            {
+              "layer": "L3",
+              "id": "dry_grass_gust",
+              "rel_db": 1.49,
+              "peak_dbfs": -18.5,
+              "at_s": 101
+            },
+            {
+              "layer": "L3",
+              "id": "dry_grass_gust",
+              "rel_db": -2.4,
+              "peak_dbfs": -20.93,
+              "at_s": 137.49
+            },
+            {
+              "layer": "L3",
+              "id": "dry_grass_gust",
+              "rel_db": -1.52,
+              "peak_dbfs": -19.73,
+              "at_s": 164.64
+            },
+            {
+              "layer": "L4",
+              "id": "guar_bells",
+              "rel_db": 0,
+              "peak_dbfs": -18.47,
+              "at_s": 101.83
+            },
+            {
+              "layer": "R7",
+              "id": "legion_horn",
+              "rel_db": 11.15,
+              "peak_dbfs": -8.95,
+              "at_s": 7.2
+            }
+          ]
+        }
+      },
+      "kind": "region",
+      "listener": [
+        2042,
+        706,
+        0
+      ],
+      "listener_note": "60 m from legion_horn"
+    },
+    "stone-forest": {
+      "tod": {
+        "day": {
+          "scheduled": 11,
+          "onsets_detected": 11,
+          "onsets_per_min": 3.67,
+          "crest_factor_db": 18.3,
+          "crest_factor_bed_only_db": 8.5,
+          "crest_delta_db": 9.8,
+          "event_peak_dbfs": -7.25,
+          "bed_rms_dbfs": -25.17,
+          "bed_lufs_i": -26.59,
+          "mix_lufs_i": -26.56,
+          "level_rel_bed": {
+            "L3": {
+              "n": 10,
+              "median_rel_db": -1.68,
+              "min_rel_db": -5.04,
+              "max_rel_db": 1.49
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": -0.39,
+              "min_rel_db": -0.39,
+              "max_rel_db": -0.39
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 9.87,
+              "duration_s": 0.02,
+              "over_floor_db": 17.2,
+              "scale": "fast"
+            },
+            {
+              "at_s": 22.37,
+              "duration_s": 0.02,
+              "over_floor_db": 13.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 32.11,
+              "duration_s": 0.01,
+              "over_floor_db": 14.2,
+              "scale": "fast"
+            },
+            {
+              "at_s": 52.96,
+              "duration_s": 0.02,
+              "over_floor_db": 17.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 79.71,
+              "duration_s": 0.01,
+              "over_floor_db": 16,
+              "scale": "fast"
+            },
+            {
+              "at_s": 97.03,
+              "duration_s": 0.06,
+              "over_floor_db": 12.3,
+              "scale": "fast"
+            },
+            {
+              "at_s": 102.68,
+              "duration_s": 0.01,
+              "over_floor_db": 18.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 122.42,
+              "duration_s": 0.02,
+              "over_floor_db": 12.3,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -0.36,
+              "peak_dbfs": -8.66,
+              "at_s": 9.87
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -4.39,
+              "peak_dbfs": -10.74,
+              "at_s": 22.37
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -2.02,
+              "peak_dbfs": -14.39,
+              "at_s": 32.11
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": 1.49,
+              "peak_dbfs": -12.2,
+              "at_s": 52.97
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -2.66,
+              "peak_dbfs": -11.62,
+              "at_s": 79.71
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": 1.31,
+              "peak_dbfs": -8.78,
+              "at_s": 102.68
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -5.04,
+              "peak_dbfs": -14.41,
+              "at_s": 122.42
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -1.34,
+              "peak_dbfs": -8.19,
+              "at_s": 143.68
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -0.53,
+              "peak_dbfs": -10.83,
+              "at_s": 158.55
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -3.38,
+              "peak_dbfs": -14.23,
+              "at_s": 172.38
+            },
+            {
+              "layer": "L4",
+              "id": "stone_beetle",
+              "rel_db": -0.39,
+              "peak_dbfs": -11.69,
+              "at_s": 97.02
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 17,
+          "onsets_detected": 16,
+          "onsets_per_min": 5.33,
+          "crest_factor_db": 18.3,
+          "crest_factor_bed_only_db": 8.5,
+          "crest_delta_db": 9.8,
+          "event_peak_dbfs": -7.19,
+          "bed_rms_dbfs": -25.17,
+          "bed_lufs_i": -26.59,
+          "mix_lufs_i": -26.55,
+          "level_rel_bed": {
+            "L3": {
+              "n": 16,
+              "median_rel_db": -2,
+              "min_rel_db": -6.36,
+              "max_rel_db": 2.16
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0.39,
+              "min_rel_db": 0.39,
+              "max_rel_db": 0.39
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 9.87,
+              "duration_s": 0.02,
+              "over_floor_db": 16.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 19.08,
+              "duration_s": 0.03,
+              "over_floor_db": 13.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 27.34,
+              "duration_s": 0.02,
+              "over_floor_db": 15,
+              "scale": "fast"
+            },
+            {
+              "at_s": 39.46,
+              "duration_s": 0.03,
+              "over_floor_db": 14.3,
+              "scale": "fast"
+            },
+            {
+              "at_s": 53.64,
+              "duration_s": 0.01,
+              "over_floor_db": 15.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 66.5,
+              "duration_s": 0.01,
+              "over_floor_db": 19.2,
+              "scale": "fast"
+            },
+            {
+              "at_s": 78.23,
+              "duration_s": 0.02,
+              "over_floor_db": 10.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 90.5,
+              "duration_s": 0.01,
+              "over_floor_db": 16,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -0.78,
+              "peak_dbfs": -7.84,
+              "at_s": 9.87
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -2,
+              "peak_dbfs": -13.61,
+              "at_s": 19.09
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -1.89,
+              "peak_dbfs": -13.45,
+              "at_s": 27.34
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -0.43,
+              "peak_dbfs": -10.14,
+              "at_s": 39.47
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -2.53,
+              "peak_dbfs": -11.75,
+              "at_s": 53.64
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": 2.16,
+              "peak_dbfs": -8.2,
+              "at_s": 66.5
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -5.85,
+              "peak_dbfs": -15.59,
+              "at_s": 78.23
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -2.16,
+              "peak_dbfs": -9.46,
+              "at_s": 90.5
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -0.61,
+              "peak_dbfs": -9.79,
+              "at_s": 100.54
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -2,
+              "peak_dbfs": -12.68,
+              "at_s": 110.22
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -2.6,
+              "peak_dbfs": -12.04,
+              "at_s": 120.21
+            },
+            {
+              "layer": "L3",
+              "id": "stone_tick",
+              "rel_db": -6.36,
+              "peak_dbfs": -15.08,
+              "at_s": 128.87
+            }
+          ]
+        }
+      },
+      "kind": "region"
+    },
+    "stone-wastes": {
+      "tod": {
+        "day": {
+          "scheduled": 7,
+          "onsets_detected": 10,
+          "onsets_per_min": 3.33,
+          "crest_factor_db": 18.6,
+          "crest_factor_bed_only_db": 12.2,
+          "crest_delta_db": 6.4,
+          "event_peak_dbfs": -9.21,
+          "bed_rms_dbfs": -27.81,
+          "bed_lufs_i": -34.51,
+          "mix_lufs_i": -34.45,
+          "level_rel_bed": {
+            "L3": {
+              "n": 6,
+              "median_rel_db": -2,
+              "min_rel_db": -4.63,
+              "max_rel_db": 7.12
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 19.71,
+              "duration_s": 0.01,
+              "over_floor_db": 10.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 31.28,
+              "duration_s": 0.03,
+              "over_floor_db": 27.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 55.49,
+              "duration_s": 0.02,
+              "over_floor_db": 32.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 73.72,
+              "duration_s": 0.03,
+              "over_floor_db": 35.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 96.56,
+              "duration_s": 0.04,
+              "over_floor_db": 10.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 102.65,
+              "duration_s": 0.03,
+              "over_floor_db": 37.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 141.41,
+              "duration_s": 0.03,
+              "over_floor_db": 31.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 149.52,
+              "duration_s": 0.06,
+              "over_floor_db": 13.2,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "cooling_stone_tick",
+              "rel_db": -4.63,
+              "peak_dbfs": -16.58,
+              "at_s": 31.29
+            },
+            {
+              "layer": "L3",
+              "id": "cooling_stone_tick",
+              "rel_db": -2.02,
+              "peak_dbfs": -15.16,
+              "at_s": 55.49
+            },
+            {
+              "layer": "L3",
+              "id": "cooling_stone_tick",
+              "rel_db": -2.19,
+              "peak_dbfs": -11.76,
+              "at_s": 73.72
+            },
+            {
+              "layer": "L3",
+              "id": "cooling_stone_tick",
+              "rel_db": 7.12,
+              "peak_dbfs": -9.21,
+              "at_s": 102.65
+            },
+            {
+              "layer": "L3",
+              "id": "cooling_stone_tick",
+              "rel_db": 4.54,
+              "peak_dbfs": -13.6,
+              "at_s": 141.42
+            },
+            {
+              "layer": "L3",
+              "id": "cooling_stone_tick",
+              "rel_db": -1.97,
+              "peak_dbfs": -10.1,
+              "at_s": 171.6
+            },
+            {
+              "layer": "L4",
+              "id": "dying_hist",
+              "rel_db": 0,
+              "peak_dbfs": -19.09,
+              "at_s": 149.52
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 7,
+          "onsets_detected": 10,
+          "onsets_per_min": 3.33,
+          "crest_factor_db": 18.6,
+          "crest_factor_bed_only_db": 12.2,
+          "crest_delta_db": 6.4,
+          "event_peak_dbfs": -9.21,
+          "bed_rms_dbfs": -27.81,
+          "bed_lufs_i": -34.51,
+          "mix_lufs_i": -34.45,
+          "level_rel_bed": {
+            "L3": {
+              "n": 6,
+              "median_rel_db": -2,
+              "min_rel_db": -4.63,
+              "max_rel_db": 7.12
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 19.71,
+              "duration_s": 0.01,
+              "over_floor_db": 10.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 31.28,
+              "duration_s": 0.03,
+              "over_floor_db": 27.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 55.49,
+              "duration_s": 0.02,
+              "over_floor_db": 32.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 73.72,
+              "duration_s": 0.03,
+              "over_floor_db": 35.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 96.56,
+              "duration_s": 0.04,
+              "over_floor_db": 10.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 102.65,
+              "duration_s": 0.03,
+              "over_floor_db": 37.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 141.41,
+              "duration_s": 0.03,
+              "over_floor_db": 31.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 149.52,
+              "duration_s": 0.06,
+              "over_floor_db": 13.2,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "cooling_stone_tick",
+              "rel_db": -4.63,
+              "peak_dbfs": -16.58,
+              "at_s": 31.29
+            },
+            {
+              "layer": "L3",
+              "id": "cooling_stone_tick",
+              "rel_db": -2.02,
+              "peak_dbfs": -15.16,
+              "at_s": 55.49
+            },
+            {
+              "layer": "L3",
+              "id": "cooling_stone_tick",
+              "rel_db": -2.19,
+              "peak_dbfs": -11.76,
+              "at_s": 73.72
+            },
+            {
+              "layer": "L3",
+              "id": "cooling_stone_tick",
+              "rel_db": 7.12,
+              "peak_dbfs": -9.21,
+              "at_s": 102.65
+            },
+            {
+              "layer": "L3",
+              "id": "cooling_stone_tick",
+              "rel_db": 4.54,
+              "peak_dbfs": -13.6,
+              "at_s": 141.42
+            },
+            {
+              "layer": "L3",
+              "id": "cooling_stone_tick",
+              "rel_db": -1.97,
+              "peak_dbfs": -10.1,
+              "at_s": 171.6
+            },
+            {
+              "layer": "L4",
+              "id": "dying_hist",
+              "rel_db": 0,
+              "peak_dbfs": -19.09,
+              "at_s": 149.52
+            }
+          ]
+        }
+      },
+      "kind": "region"
+    },
+    "thornmarsh": {
+      "tod": {
+        "day": {
+          "scheduled": 13,
+          "onsets_detected": 2,
+          "onsets_per_min": 0.67,
+          "crest_factor_db": 19.1,
+          "crest_factor_bed_only_db": 14.2,
+          "crest_delta_db": 4.9,
+          "event_peak_dbfs": -9.59,
+          "bed_rms_dbfs": -28.09,
+          "bed_lufs_i": -27.18,
+          "mix_lufs_i": -27.1,
+          "level_rel_bed": {
+            "L3": {
+              "n": 12,
+              "median_rel_db": -2,
+              "min_rel_db": -4.97,
+              "max_rel_db": 0.01
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": -1.41,
+              "min_rel_db": -1.41,
+              "max_rel_db": -1.41
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 119.67,
+              "duration_s": 0.01,
+              "over_floor_db": 9.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 153.06,
+              "duration_s": 0.02,
+              "over_floor_db": 10.2,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -2.69,
+              "peak_dbfs": -12.77,
+              "at_s": 17.97
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -3.4,
+              "peak_dbfs": -13.67,
+              "at_s": 30.96
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -4.97,
+              "peak_dbfs": -12.84,
+              "at_s": 39.66
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -0.63,
+              "peak_dbfs": -10.5,
+              "at_s": 52.31
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -2.59,
+              "peak_dbfs": -13.39,
+              "at_s": 66.83
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -0.24,
+              "peak_dbfs": -12.2,
+              "at_s": 77.36
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -4.93,
+              "peak_dbfs": -12.98,
+              "at_s": 95.71
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -3.1,
+              "peak_dbfs": -13.43,
+              "at_s": 106.87
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -1.41,
+              "peak_dbfs": -12.66,
+              "at_s": 119.67
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": 0.01,
+              "peak_dbfs": -9.59,
+              "at_s": 133.58
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -0.15,
+              "peak_dbfs": -12.87,
+              "at_s": 153.07
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -1.23,
+              "peak_dbfs": -13.68,
+              "at_s": 171.75
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 13,
+          "onsets_detected": 2,
+          "onsets_per_min": 0.67,
+          "crest_factor_db": 19.1,
+          "crest_factor_bed_only_db": 14.2,
+          "crest_delta_db": 4.9,
+          "event_peak_dbfs": -9.59,
+          "bed_rms_dbfs": -28.09,
+          "bed_lufs_i": -27.18,
+          "mix_lufs_i": -27.1,
+          "level_rel_bed": {
+            "L3": {
+              "n": 12,
+              "median_rel_db": -2,
+              "min_rel_db": -4.97,
+              "max_rel_db": 0.01
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": -1.41,
+              "min_rel_db": -1.41,
+              "max_rel_db": -1.41
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 119.67,
+              "duration_s": 0.01,
+              "over_floor_db": 9.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 153.06,
+              "duration_s": 0.02,
+              "over_floor_db": 10.2,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -2.69,
+              "peak_dbfs": -12.77,
+              "at_s": 17.97
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -3.4,
+              "peak_dbfs": -13.67,
+              "at_s": 30.96
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -4.97,
+              "peak_dbfs": -12.84,
+              "at_s": 39.66
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -0.63,
+              "peak_dbfs": -10.5,
+              "at_s": 52.31
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -2.59,
+              "peak_dbfs": -13.39,
+              "at_s": 66.83
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -0.24,
+              "peak_dbfs": -12.2,
+              "at_s": 77.36
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -4.93,
+              "peak_dbfs": -12.98,
+              "at_s": 95.71
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -3.1,
+              "peak_dbfs": -13.43,
+              "at_s": 106.87
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -1.41,
+              "peak_dbfs": -12.66,
+              "at_s": 119.67
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": 0.01,
+              "peak_dbfs": -9.59,
+              "at_s": 133.58
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -0.15,
+              "peak_dbfs": -12.87,
+              "at_s": 153.07
+            },
+            {
+              "layer": "L3",
+              "id": "thorn_clatter",
+              "rel_db": -1.23,
+              "peak_dbfs": -13.68,
+              "at_s": 171.75
+            }
+          ]
+        }
+      },
+      "kind": "region"
+    },
+    "valus-ridge": {
+      "tod": {
+        "day": {
+          "scheduled": 10,
+          "onsets_detected": 1,
+          "onsets_per_min": 0.33,
+          "crest_factor_db": 15.9,
+          "crest_factor_bed_only_db": 11.2,
+          "crest_delta_db": 4.7,
+          "event_peak_dbfs": -11.41,
+          "bed_rms_dbfs": -25.76,
+          "bed_lufs_i": -26.78,
+          "mix_lufs_i": -26.75,
+          "level_rel_bed": {
+            "L3": {
+              "n": 8,
+              "median_rel_db": -2,
+              "min_rel_db": -6.42,
+              "max_rel_db": 3.87
+            },
+            "L4": {
+              "n": 2,
+              "median_rel_db": 0.05,
+              "min_rel_db": -3.77,
+              "max_rel_db": 3.87
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 177.17,
+              "duration_s": 0.17,
+              "over_floor_db": 9.9,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": -2.3,
+              "peak_dbfs": -19.17,
+              "at_s": 33.14
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": -1.92,
+              "peak_dbfs": -18.26,
+              "at_s": 63.58
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": 2.01,
+              "peak_dbfs": -18.08,
+              "at_s": 79.13
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": 0.5,
+              "peak_dbfs": -17.8,
+              "at_s": 96.95
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": -6.42,
+              "peak_dbfs": -18.99,
+              "at_s": 110.79
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": -3.56,
+              "peak_dbfs": -16.84,
+              "at_s": 131.14
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": -2.09,
+              "peak_dbfs": -18.34,
+              "at_s": 149.33
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": 3.87,
+              "peak_dbfs": -11.41,
+              "at_s": 176.78
+            },
+            {
+              "layer": "L4",
+              "id": "hackwing_scream",
+              "rel_db": -3.77,
+              "peak_dbfs": -21.56,
+              "at_s": 91.67
+            },
+            {
+              "layer": "L4",
+              "id": "hackwing_scream",
+              "rel_db": 3.87,
+              "peak_dbfs": -11.41,
+              "at_s": 177.16
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 10,
+          "onsets_detected": 1,
+          "onsets_per_min": 0.33,
+          "crest_factor_db": 15.9,
+          "crest_factor_bed_only_db": 11.2,
+          "crest_delta_db": 4.7,
+          "event_peak_dbfs": -11.41,
+          "bed_rms_dbfs": -25.76,
+          "bed_lufs_i": -26.78,
+          "mix_lufs_i": -26.75,
+          "level_rel_bed": {
+            "L3": {
+              "n": 8,
+              "median_rel_db": -2,
+              "min_rel_db": -6.42,
+              "max_rel_db": 3.87
+            },
+            "L4": {
+              "n": 2,
+              "median_rel_db": 0.05,
+              "min_rel_db": -3.77,
+              "max_rel_db": 3.87
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 177.17,
+              "duration_s": 0.17,
+              "over_floor_db": 9.9,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": -2.3,
+              "peak_dbfs": -19.17,
+              "at_s": 33.14
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": -1.92,
+              "peak_dbfs": -18.26,
+              "at_s": 63.58
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": 2.01,
+              "peak_dbfs": -18.08,
+              "at_s": 79.13
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": 0.5,
+              "peak_dbfs": -17.8,
+              "at_s": 96.95
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": -6.42,
+              "peak_dbfs": -18.99,
+              "at_s": 110.79
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": -3.56,
+              "peak_dbfs": -16.84,
+              "at_s": 131.14
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": -2.09,
+              "peak_dbfs": -18.34,
+              "at_s": 149.33
+            },
+            {
+              "layer": "L3",
+              "id": "rockfall",
+              "rel_db": 3.87,
+              "peak_dbfs": -11.41,
+              "at_s": 176.78
+            },
+            {
+              "layer": "L4",
+              "id": "hackwing_scream",
+              "rel_db": -3.77,
+              "peak_dbfs": -21.56,
+              "at_s": 91.67
+            },
+            {
+              "layer": "L4",
+              "id": "hackwing_scream",
+              "rel_db": 3.87,
+              "peak_dbfs": -11.41,
+              "at_s": 177.16
+            }
+          ]
+        }
+      },
+      "kind": "region"
+    },
+    "western-rootlands": {
+      "tod": {
+        "day": {
+          "scheduled": 14,
+          "onsets_detected": 9,
+          "onsets_per_min": 3,
+          "crest_factor_db": 17.9,
+          "crest_factor_bed_only_db": 10.9,
+          "crest_delta_db": 7,
+          "event_peak_dbfs": -8.74,
+          "bed_rms_dbfs": -24.02,
+          "bed_lufs_i": -25.15,
+          "mix_lufs_i": -25.11,
+          "level_rel_bed": {
+            "L3": {
+              "n": 10,
+              "median_rel_db": -2.07,
+              "min_rel_db": -11.65,
+              "max_rel_db": 3.08
+            },
+            "L4": {
+              "n": 2,
+              "median_rel_db": -0.02,
+              "min_rel_db": -0.9,
+              "max_rel_db": 0.86
+            },
+            "R7": {
+              "n": 2,
+              "median_rel_db": -3.83,
+              "min_rel_db": -4.72,
+              "max_rel_db": -2.94
+            }
+          },
+          "onsets": [
+            {
+              "at_s": 30.76,
+              "duration_s": 0.04,
+              "over_floor_db": 12.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 51.82,
+              "duration_s": 0.09,
+              "over_floor_db": 11.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 52.19,
+              "duration_s": 0.11,
+              "over_floor_db": 9.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 52.64,
+              "duration_s": 0.1,
+              "over_floor_db": 9.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 72.06,
+              "duration_s": 0.04,
+              "over_floor_db": 13.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 136.66,
+              "duration_s": 0.04,
+              "over_floor_db": 9.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 139.72,
+              "duration_s": 0.08,
+              "over_floor_db": 10.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 140.09,
+              "duration_s": 0.07,
+              "over_floor_db": 11.5,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "reed_snap",
+              "rel_db": -10.28,
+              "peak_dbfs": -19.37,
+              "at_s": 21.09
+            },
+            {
+              "layer": "L3",
+              "id": "shallow_slap",
+              "rel_db": 3.08,
+              "peak_dbfs": -8.74,
+              "at_s": 30.76
+            },
+            {
+              "layer": "L3",
+              "id": "reed_snap",
+              "rel_db": -9.92,
+              "peak_dbfs": -19.69,
+              "at_s": 42.38
+            },
+            {
+              "layer": "L3",
+              "id": "shallow_slap",
+              "rel_db": 2.53,
+              "peak_dbfs": -11.81,
+              "at_s": 61.6
+            },
+            {
+              "layer": "L3",
+              "id": "shallow_slap",
+              "rel_db": 2.57,
+              "peak_dbfs": -8.78,
+              "at_s": 72.06
+            },
+            {
+              "layer": "L3",
+              "id": "reed_snap",
+              "rel_db": -11.65,
+              "peak_dbfs": -16.35,
+              "at_s": 94.17
+            },
+            {
+              "layer": "L3",
+              "id": "reed_snap",
+              "rel_db": -5.31,
+              "peak_dbfs": -15.14,
+              "at_s": 112.33
+            },
+            {
+              "layer": "L3",
+              "id": "shallow_slap",
+              "rel_db": 1.16,
+              "peak_dbfs": -10.24,
+              "at_s": 136.66
+            },
+            {
+              "layer": "L3",
+              "id": "reed_snap",
+              "rel_db": -8.26,
+              "peak_dbfs": -17.3,
+              "at_s": 149.08
+            },
+            {
+              "layer": "L3",
+              "id": "shallow_slap",
+              "rel_db": 1.35,
+              "peak_dbfs": -12.76,
+              "at_s": 161.36
+            },
+            {
+              "layer": "L4",
+              "id": "frog_chorus",
+              "rel_db": -0.9,
+              "peak_dbfs": -12.27,
+              "at_s": 51.64
+            },
+            {
+              "layer": "L4",
+              "id": "frog_chorus",
+              "rel_db": 0.86,
+              "peak_dbfs": -12.94,
+              "at_s": 139.46
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 14,
+          "onsets_detected": 12,
+          "onsets_per_min": 4,
+          "crest_factor_db": 17.9,
+          "crest_factor_bed_only_db": 10.1,
+          "crest_delta_db": 7.8,
+          "event_peak_dbfs": -8.74,
+          "bed_rms_dbfs": -24.17,
+          "bed_lufs_i": -25.51,
+          "mix_lufs_i": -25.46,
+          "level_rel_bed": {
+            "L3": {
+              "n": 10,
+              "median_rel_db": -1.93,
+              "min_rel_db": -11.58,
+              "max_rel_db": 3.25
+            },
+            "L4": {
+              "n": 2,
+              "median_rel_db": 0.14,
+              "min_rel_db": -0.86,
+              "max_rel_db": 1.14
+            },
+            "R7": {
+              "n": 2,
+              "median_rel_db": -3.74,
+              "min_rel_db": -4.6,
+              "max_rel_db": -2.88
+            }
+          },
+          "onsets": [
+            {
+              "at_s": 30.76,
+              "duration_s": 0.04,
+              "over_floor_db": 13.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 51.82,
+              "duration_s": 0.12,
+              "over_floor_db": 13.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 52.19,
+              "duration_s": 0.12,
+              "over_floor_db": 11,
+              "scale": "fast"
+            },
+            {
+              "at_s": 52.64,
+              "duration_s": 0.1,
+              "over_floor_db": 11.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 61.6,
+              "duration_s": 0.03,
+              "over_floor_db": 10,
+              "scale": "fast"
+            },
+            {
+              "at_s": 72.06,
+              "duration_s": 0.04,
+              "over_floor_db": 14.4,
+              "scale": "fast"
+            },
+            {
+              "at_s": 112.33,
+              "duration_s": 0.01,
+              "over_floor_db": 10.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 136.66,
+              "duration_s": 0.05,
+              "over_floor_db": 11,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "reed_snap",
+              "rel_db": -9.99,
+              "peak_dbfs": -19.37,
+              "at_s": 21.09
+            },
+            {
+              "layer": "L3",
+              "id": "shallow_slap",
+              "rel_db": 3.25,
+              "peak_dbfs": -8.74,
+              "at_s": 30.76
+            },
+            {
+              "layer": "L3",
+              "id": "reed_snap",
+              "rel_db": -9.71,
+              "peak_dbfs": -19.69,
+              "at_s": 42.38
+            },
+            {
+              "layer": "L3",
+              "id": "shallow_slap",
+              "rel_db": 2.63,
+              "peak_dbfs": -11.81,
+              "at_s": 61.6
+            },
+            {
+              "layer": "L3",
+              "id": "shallow_slap",
+              "rel_db": 2.72,
+              "peak_dbfs": -8.78,
+              "at_s": 72.06
+            },
+            {
+              "layer": "L3",
+              "id": "reed_snap",
+              "rel_db": -11.58,
+              "peak_dbfs": -16.35,
+              "at_s": 94.17
+            },
+            {
+              "layer": "L3",
+              "id": "reed_snap",
+              "rel_db": -5.16,
+              "peak_dbfs": -15.13,
+              "at_s": 112.33
+            },
+            {
+              "layer": "L3",
+              "id": "shallow_slap",
+              "rel_db": 1.3,
+              "peak_dbfs": -10.24,
+              "at_s": 136.66
+            },
+            {
+              "layer": "L3",
+              "id": "reed_snap",
+              "rel_db": -8.08,
+              "peak_dbfs": -17.3,
+              "at_s": 149.08
+            },
+            {
+              "layer": "L3",
+              "id": "shallow_slap",
+              "rel_db": 1.49,
+              "peak_dbfs": -12.76,
+              "at_s": 161.36
+            },
+            {
+              "layer": "L4",
+              "id": "frog_chorus",
+              "rel_db": -0.86,
+              "peak_dbfs": -12.27,
+              "at_s": 51.64
+            },
+            {
+              "layer": "L4",
+              "id": "frog_chorus",
+              "rel_db": 1.14,
+              "peak_dbfs": -12.94,
+              "at_s": 139.46
+            }
+          ]
+        }
+      },
+      "kind": "region",
+      "listener": [
+        1777,
+        4716,
+        0
+      ],
+      "listener_note": "50 m from hide_drum"
+    },
+    "barge_hold": {
+      "tod": {
+        "day": {
+          "scheduled": 11,
+          "onsets_detected": 8,
+          "onsets_per_min": 2.67,
+          "crest_factor_db": 18,
+          "crest_factor_bed_only_db": 12.5,
+          "crest_delta_db": 5.5,
+          "event_peak_dbfs": -5.13,
+          "bed_rms_dbfs": -21.18,
+          "bed_lufs_i": -26.31,
+          "mix_lufs_i": -26.22,
+          "level_rel_bed": {
+            "L3": {
+              "n": 10,
+              "median_rel_db": -1.81,
+              "min_rel_db": -7.73,
+              "max_rel_db": 7.66
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0.15,
+              "min_rel_db": 0.15,
+              "max_rel_db": 0.15
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 14.87,
+              "duration_s": 0.03,
+              "over_floor_db": 10.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 28.3,
+              "duration_s": 0.2,
+              "over_floor_db": 23,
+              "scale": "slow"
+            },
+            {
+              "at_s": 68.6,
+              "duration_s": 0.3,
+              "over_floor_db": 22.1,
+              "scale": "slow"
+            },
+            {
+              "at_s": 78.36,
+              "duration_s": 0.06,
+              "over_floor_db": 16.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 119.66,
+              "duration_s": 0.07,
+              "over_floor_db": 11,
+              "scale": "fast"
+            },
+            {
+              "at_s": 136.2,
+              "duration_s": 0.2,
+              "over_floor_db": 21.5,
+              "scale": "slow"
+            },
+            {
+              "at_s": 151.61,
+              "duration_s": 0.05,
+              "over_floor_db": 9.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 160.1,
+              "duration_s": 0.2,
+              "over_floor_db": 20.6,
+              "scale": "slow"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "plank_take",
+              "rel_db": -4.99,
+              "peak_dbfs": -15.93,
+              "at_s": 14.85
+            },
+            {
+              "layer": "L3",
+              "id": "cleat_creak",
+              "rel_db": 7.66,
+              "peak_dbfs": -5.16,
+              "at_s": 28.27
+            },
+            {
+              "layer": "L3",
+              "id": "plank_take",
+              "rel_db": -7.73,
+              "peak_dbfs": -21.48,
+              "at_s": 48.31
+            },
+            {
+              "layer": "L3",
+              "id": "cleat_creak",
+              "rel_db": 6.98,
+              "peak_dbfs": -5.13,
+              "at_s": 68.61
+            },
+            {
+              "layer": "L3",
+              "id": "plank_take",
+              "rel_db": -1.12,
+              "peak_dbfs": -12.36,
+              "at_s": 78.34
+            },
+            {
+              "layer": "L3",
+              "id": "plank_take",
+              "rel_db": -2.49,
+              "peak_dbfs": -16.65,
+              "at_s": 96.78
+            },
+            {
+              "layer": "L3",
+              "id": "plank_take",
+              "rel_db": -2.61,
+              "peak_dbfs": -14.63,
+              "at_s": 119.64
+            },
+            {
+              "layer": "L3",
+              "id": "cleat_creak",
+              "rel_db": 5.87,
+              "peak_dbfs": -5.92,
+              "at_s": 136.21
+            },
+            {
+              "layer": "L3",
+              "id": "cleat_creak",
+              "rel_db": 7.56,
+              "peak_dbfs": -5.92,
+              "at_s": 160.13
+            },
+            {
+              "layer": "L3",
+              "id": "plank_take",
+              "rel_db": -5.99,
+              "peak_dbfs": -19.38,
+              "at_s": 175.39
+            },
+            {
+              "layer": "L4",
+              "id": "bilge_shift",
+              "rel_db": 0.15,
+              "peak_dbfs": -10.88,
+              "at_s": 150.65
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 11,
+          "onsets_detected": 8,
+          "onsets_per_min": 2.67,
+          "crest_factor_db": 17.3,
+          "crest_factor_bed_only_db": 12.3,
+          "crest_delta_db": 5,
+          "event_peak_dbfs": -5.13,
+          "bed_rms_dbfs": -20.76,
+          "bed_lufs_i": -25.69,
+          "mix_lufs_i": -25.61,
+          "level_rel_bed": {
+            "L3": {
+              "n": 10,
+              "median_rel_db": -2.44,
+              "min_rel_db": -6.78,
+              "max_rel_db": 6.43
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": -0.15,
+              "min_rel_db": -0.15,
+              "max_rel_db": -0.15
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 14.87,
+              "duration_s": 0.03,
+              "over_floor_db": 10.3,
+              "scale": "fast"
+            },
+            {
+              "at_s": 28.3,
+              "duration_s": 0.2,
+              "over_floor_db": 22.9,
+              "scale": "slow"
+            },
+            {
+              "at_s": 68.6,
+              "duration_s": 0.3,
+              "over_floor_db": 22,
+              "scale": "slow"
+            },
+            {
+              "at_s": 78.36,
+              "duration_s": 0.06,
+              "over_floor_db": 16.4,
+              "scale": "fast"
+            },
+            {
+              "at_s": 119.66,
+              "duration_s": 0.07,
+              "over_floor_db": 10.8,
+              "scale": "fast"
+            },
+            {
+              "at_s": 136.2,
+              "duration_s": 0.2,
+              "over_floor_db": 21.3,
+              "scale": "slow"
+            },
+            {
+              "at_s": 151.61,
+              "duration_s": 0.05,
+              "over_floor_db": 9.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 160.1,
+              "duration_s": 0.2,
+              "over_floor_db": 20.5,
+              "scale": "slow"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "plank_take",
+              "rel_db": -5.04,
+              "peak_dbfs": -15.93,
+              "at_s": 14.85
+            },
+            {
+              "layer": "L3",
+              "id": "cleat_creak",
+              "rel_db": 5.92,
+              "peak_dbfs": -5.16,
+              "at_s": 28.27
+            },
+            {
+              "layer": "L3",
+              "id": "plank_take",
+              "rel_db": -6.78,
+              "peak_dbfs": -21.48,
+              "at_s": 48.31
+            },
+            {
+              "layer": "L3",
+              "id": "cleat_creak",
+              "rel_db": 6.43,
+              "peak_dbfs": -5.13,
+              "at_s": 68.61
+            },
+            {
+              "layer": "L3",
+              "id": "plank_take",
+              "rel_db": -1.51,
+              "peak_dbfs": -12.36,
+              "at_s": 78.34
+            },
+            {
+              "layer": "L3",
+              "id": "plank_take",
+              "rel_db": -3.44,
+              "peak_dbfs": -16.65,
+              "at_s": 96.78
+            },
+            {
+              "layer": "L3",
+              "id": "plank_take",
+              "rel_db": -3.36,
+              "peak_dbfs": -14.63,
+              "at_s": 119.64
+            },
+            {
+              "layer": "L3",
+              "id": "cleat_creak",
+              "rel_db": 5.9,
+              "peak_dbfs": -5.92,
+              "at_s": 136.21
+            },
+            {
+              "layer": "L3",
+              "id": "cleat_creak",
+              "rel_db": 6.38,
+              "peak_dbfs": -5.92,
+              "at_s": 160.13
+            },
+            {
+              "layer": "L3",
+              "id": "plank_take",
+              "rel_db": -5.87,
+              "peak_dbfs": -19.38,
+              "at_s": 175.39
+            },
+            {
+              "layer": "L4",
+              "id": "bilge_shift",
+              "rel_db": -0.15,
+              "peak_dbfs": -10.88,
+              "at_s": 150.65
+            }
+          ]
+        }
+      },
+      "kind": "interior"
+    },
+    "dungeon": {
+      "tod": {
+        "day": {
+          "scheduled": 9,
+          "onsets_detected": 6,
+          "onsets_per_min": 2,
+          "crest_factor_db": 14,
+          "crest_factor_bed_only_db": 12.3,
+          "crest_delta_db": 1.7,
+          "event_peak_dbfs": -9.01,
+          "bed_rms_dbfs": -21.89,
+          "bed_lufs_i": -27.52,
+          "mix_lufs_i": -27.47,
+          "level_rel_bed": {
+            "L3": {
+              "n": 8,
+              "median_rel_db": -2,
+              "min_rel_db": -13.52,
+              "max_rel_db": 1.35
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": -0.05,
+              "min_rel_db": -0.05,
+              "max_rel_db": -0.05
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 29.7,
+              "duration_s": 0.12,
+              "over_floor_db": 26.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 53.18,
+              "duration_s": 0.11,
+              "over_floor_db": 18.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 79.9,
+              "duration_s": 0.12,
+              "over_floor_db": 20.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 97.96,
+              "duration_s": 0.09,
+              "over_floor_db": 20.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 134.57,
+              "duration_s": 0.11,
+              "over_floor_db": 24.2,
+              "scale": "fast"
+            },
+            {
+              "at_s": 165.88,
+              "duration_s": 0.12,
+              "over_floor_db": 18.2,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "block_settle",
+              "rel_db": -8.72,
+              "peak_dbfs": -21.36,
+              "at_s": 10.37
+            },
+            {
+              "layer": "L3",
+              "id": "grit_fall",
+              "rel_db": 0.86,
+              "peak_dbfs": -9.01,
+              "at_s": 29.7
+            },
+            {
+              "layer": "L3",
+              "id": "grit_fall",
+              "rel_db": -4.11,
+              "peak_dbfs": -11.93,
+              "at_s": 53.19
+            },
+            {
+              "layer": "L3",
+              "id": "grit_fall",
+              "rel_db": -0.25,
+              "peak_dbfs": -11.52,
+              "at_s": 79.91
+            },
+            {
+              "layer": "L3",
+              "id": "grit_fall",
+              "rel_db": -3.71,
+              "peak_dbfs": -13.72,
+              "at_s": 97.96
+            },
+            {
+              "layer": "L3",
+              "id": "block_settle",
+              "rel_db": -13.52,
+              "peak_dbfs": -24.85,
+              "at_s": 118.02
+            },
+            {
+              "layer": "L3",
+              "id": "grit_fall",
+              "rel_db": 1.35,
+              "peak_dbfs": -12.49,
+              "at_s": 134.57
+            },
+            {
+              "layer": "L3",
+              "id": "grit_fall",
+              "rel_db": -0.3,
+              "peak_dbfs": -10.5,
+              "at_s": 165.89
+            },
+            {
+              "layer": "L4",
+              "id": "far_call",
+              "rel_db": -0.05,
+              "peak_dbfs": -17.43,
+              "at_s": 111.13
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 9,
+          "onsets_detected": 7,
+          "onsets_per_min": 2.33,
+          "crest_factor_db": 13.9,
+          "crest_factor_bed_only_db": 12.4,
+          "crest_delta_db": 1.5,
+          "event_peak_dbfs": -9.01,
+          "bed_rms_dbfs": -21.88,
+          "bed_lufs_i": -27.48,
+          "mix_lufs_i": -27.43,
+          "level_rel_bed": {
+            "L3": {
+              "n": 8,
+              "median_rel_db": -2,
+              "min_rel_db": -13.52,
+              "max_rel_db": 1.16
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0.04,
+              "min_rel_db": 0.04,
+              "max_rel_db": 0.04
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 29.7,
+              "duration_s": 0.11,
+              "over_floor_db": 26.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 53.18,
+              "duration_s": 0.11,
+              "over_floor_db": 18.2,
+              "scale": "fast"
+            },
+            {
+              "at_s": 79.9,
+              "duration_s": 0.12,
+              "over_floor_db": 20.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 97.96,
+              "duration_s": 0.09,
+              "over_floor_db": 20.3,
+              "scale": "fast"
+            },
+            {
+              "at_s": 120.55,
+              "duration_s": 0.01,
+              "over_floor_db": 9.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 134.57,
+              "duration_s": 0.09,
+              "over_floor_db": 23.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 165.88,
+              "duration_s": 0.12,
+              "over_floor_db": 17.8,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "block_settle",
+              "rel_db": -8.72,
+              "peak_dbfs": -21.36,
+              "at_s": 10.37
+            },
+            {
+              "layer": "L3",
+              "id": "grit_fall",
+              "rel_db": 0.79,
+              "peak_dbfs": -9.01,
+              "at_s": 29.7
+            },
+            {
+              "layer": "L3",
+              "id": "grit_fall",
+              "rel_db": -4.22,
+              "peak_dbfs": -11.93,
+              "at_s": 53.19
+            },
+            {
+              "layer": "L3",
+              "id": "grit_fall",
+              "rel_db": -0.31,
+              "peak_dbfs": -11.52,
+              "at_s": 79.91
+            },
+            {
+              "layer": "L3",
+              "id": "grit_fall",
+              "rel_db": -3.67,
+              "peak_dbfs": -13.73,
+              "at_s": 97.96
+            },
+            {
+              "layer": "L3",
+              "id": "block_settle",
+              "rel_db": -13.52,
+              "peak_dbfs": -24.85,
+              "at_s": 118.02
+            },
+            {
+              "layer": "L3",
+              "id": "grit_fall",
+              "rel_db": 1.16,
+              "peak_dbfs": -12.49,
+              "at_s": 134.57
+            },
+            {
+              "layer": "L3",
+              "id": "grit_fall",
+              "rel_db": -0.33,
+              "peak_dbfs": -10.5,
+              "at_s": 165.89
+            },
+            {
+              "layer": "L4",
+              "id": "far_call",
+              "rel_db": 0.04,
+              "peak_dbfs": -17.43,
+              "at_s": 111.13
+            }
+          ]
+        }
+      },
+      "kind": "interior"
+    },
+    "interior": {
+      "tod": {
+        "day": {
+          "scheduled": 8,
+          "onsets_detected": 5,
+          "onsets_per_min": 1.67,
+          "crest_factor_db": 14.3,
+          "crest_factor_bed_only_db": 12.6,
+          "crest_delta_db": 1.7,
+          "event_peak_dbfs": -9.84,
+          "bed_rms_dbfs": -22.65,
+          "bed_lufs_i": -27,
+          "mix_lufs_i": -26.98,
+          "level_rel_bed": {
+            "L3": {
+              "n": 8,
+              "median_rel_db": -2,
+              "min_rel_db": -4.85,
+              "max_rel_db": 2.72
+            },
+            "L4": null,
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 59.23,
+              "duration_s": 0.05,
+              "over_floor_db": 13.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 71.16,
+              "duration_s": 0.04,
+              "over_floor_db": 11.2,
+              "scale": "fast"
+            },
+            {
+              "at_s": 103.86,
+              "duration_s": 0.06,
+              "over_floor_db": 18.4,
+              "scale": "fast"
+            },
+            {
+              "at_s": 159.71,
+              "duration_s": 0.03,
+              "over_floor_db": 12.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 172.58,
+              "duration_s": 0.06,
+              "over_floor_db": 11.9,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": -3.59,
+              "peak_dbfs": -14.87,
+              "at_s": 32.45
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": -1.91,
+              "peak_dbfs": -11.22,
+              "at_s": 59.22
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": -1.93,
+              "peak_dbfs": -13.37,
+              "at_s": 71.15
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": 2.72,
+              "peak_dbfs": -9.84,
+              "at_s": 103.84
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": -2.18,
+              "peak_dbfs": -16.15,
+              "at_s": 126.58
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": -4.85,
+              "peak_dbfs": -16.08,
+              "at_s": 141.22
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": 0.03,
+              "peak_dbfs": -15.81,
+              "at_s": 159.7
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": -2.08,
+              "peak_dbfs": -13.95,
+              "at_s": 172.56
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 8,
+          "onsets_detected": 5,
+          "onsets_per_min": 1.67,
+          "crest_factor_db": 14.3,
+          "crest_factor_bed_only_db": 12.6,
+          "crest_delta_db": 1.7,
+          "event_peak_dbfs": -9.84,
+          "bed_rms_dbfs": -22.65,
+          "bed_lufs_i": -27,
+          "mix_lufs_i": -26.98,
+          "level_rel_bed": {
+            "L3": {
+              "n": 8,
+              "median_rel_db": -2,
+              "min_rel_db": -4.85,
+              "max_rel_db": 2.72
+            },
+            "L4": null,
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 59.23,
+              "duration_s": 0.05,
+              "over_floor_db": 13.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 71.16,
+              "duration_s": 0.04,
+              "over_floor_db": 11.2,
+              "scale": "fast"
+            },
+            {
+              "at_s": 103.86,
+              "duration_s": 0.06,
+              "over_floor_db": 18.4,
+              "scale": "fast"
+            },
+            {
+              "at_s": 159.71,
+              "duration_s": 0.03,
+              "over_floor_db": 12.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 172.58,
+              "duration_s": 0.06,
+              "over_floor_db": 11.9,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": -3.59,
+              "peak_dbfs": -14.87,
+              "at_s": 32.45
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": -1.91,
+              "peak_dbfs": -11.22,
+              "at_s": 59.22
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": -1.93,
+              "peak_dbfs": -13.37,
+              "at_s": 71.15
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": 2.72,
+              "peak_dbfs": -9.84,
+              "at_s": 103.84
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": -2.18,
+              "peak_dbfs": -16.15,
+              "at_s": 126.58
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": -4.85,
+              "peak_dbfs": -16.08,
+              "at_s": 141.22
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": 0.03,
+              "peak_dbfs": -15.81,
+              "at_s": 159.7
+            },
+            {
+              "layer": "L3",
+              "id": "joint_settle",
+              "rel_db": -2.08,
+              "peak_dbfs": -13.95,
+              "at_s": 172.56
+            }
+          ]
+        }
+      },
+      "kind": "interior"
+    },
+    "market": {
+      "tod": {
+        "day": {
+          "scheduled": 16,
+          "onsets_detected": 2,
+          "onsets_per_min": 0.67,
+          "crest_factor_db": 21.2,
+          "crest_factor_bed_only_db": 13.8,
+          "crest_delta_db": 7.4,
+          "event_peak_dbfs": -5.26,
+          "bed_rms_dbfs": -25.78,
+          "bed_lufs_i": -26.19,
+          "mix_lufs_i": -26.1,
+          "level_rel_bed": {
+            "L3": {
+              "n": 14,
+              "median_rel_db": 0.4,
+              "min_rel_db": -3.73,
+              "max_rel_db": 5.91
+            },
+            "L4": {
+              "n": 2,
+              "median_rel_db": 1.45,
+              "min_rel_db": 0,
+              "max_rel_db": 2.89
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 85.96,
+              "duration_s": 0.01,
+              "over_floor_db": 10.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 96.37,
+              "duration_s": 0.01,
+              "over_floor_db": 9.6,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "crate_down",
+              "rel_db": 4.9,
+              "peak_dbfs": -11.58,
+              "at_s": 14.68
+            },
+            {
+              "layer": "L3",
+              "id": "coin_count",
+              "rel_db": -2.83,
+              "peak_dbfs": -11.31,
+              "at_s": 27.58
+            },
+            {
+              "layer": "L3",
+              "id": "crate_down",
+              "rel_db": 3.2,
+              "peak_dbfs": -13.13,
+              "at_s": 41.72
+            },
+            {
+              "layer": "L3",
+              "id": "coin_count",
+              "rel_db": -1.59,
+              "peak_dbfs": -10.72,
+              "at_s": 51.25
+            },
+            {
+              "layer": "L3",
+              "id": "crate_down",
+              "rel_db": -0.34,
+              "peak_dbfs": -17.54,
+              "at_s": 63.81
+            },
+            {
+              "layer": "L3",
+              "id": "coin_count",
+              "rel_db": 2.89,
+              "peak_dbfs": -11.59,
+              "at_s": 74.82
+            },
+            {
+              "layer": "L3",
+              "id": "coin_count",
+              "rel_db": 2.54,
+              "peak_dbfs": -5.26,
+              "at_s": 85.45
+            },
+            {
+              "layer": "L3",
+              "id": "coin_count",
+              "rel_db": 1.14,
+              "peak_dbfs": -8.5,
+              "at_s": 96.2
+            },
+            {
+              "layer": "L3",
+              "id": "crate_down",
+              "rel_db": 3.08,
+              "peak_dbfs": -15.24,
+              "at_s": 104.53
+            },
+            {
+              "layer": "L3",
+              "id": "coin_count",
+              "rel_db": -3.73,
+              "peak_dbfs": -12.93,
+              "at_s": 118.1
+            },
+            {
+              "layer": "L3",
+              "id": "crate_down",
+              "rel_db": 5.91,
+              "peak_dbfs": -8.93,
+              "at_s": 134.89
+            },
+            {
+              "layer": "L3",
+              "id": "coin_count",
+              "rel_db": -0.45,
+              "peak_dbfs": -13.26,
+              "at_s": 151.9
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 15,
+          "onsets_detected": 0,
+          "onsets_per_min": 0,
+          "crest_factor_db": 14.5,
+          "crest_factor_bed_only_db": 12.6,
+          "crest_delta_db": 1.9,
+          "event_peak_dbfs": -9.81,
+          "bed_rms_dbfs": -22.04,
+          "bed_lufs_i": -23.81,
+          "mix_lufs_i": -23.77,
+          "level_rel_bed": {
+            "L3": {
+              "n": 14,
+              "median_rel_db": -3.79,
+              "min_rel_db": -7.9,
+              "max_rel_db": 1.98
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": -4.28,
+              "min_rel_db": -4.28,
+              "max_rel_db": -4.28
+            },
+            "R7": null
+          },
+          "onsets": [],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "coin_count",
+              "rel_db": -4.56,
+              "peak_dbfs": -10.61,
+              "at_s": 14.68
+            },
+            {
+              "layer": "L3",
+              "id": "shutter",
+              "rel_db": -2.36,
+              "peak_dbfs": -14.25,
+              "at_s": 27.58
+            },
+            {
+              "layer": "L3",
+              "id": "crate_down",
+              "rel_db": -3.56,
+              "peak_dbfs": -14.8,
+              "at_s": 41.72
+            },
+            {
+              "layer": "L3",
+              "id": "shutter",
+              "rel_db": -4.92,
+              "peak_dbfs": -16.37,
+              "at_s": 51.25
+            },
+            {
+              "layer": "L3",
+              "id": "crate_down",
+              "rel_db": 1.98,
+              "peak_dbfs": -10.82,
+              "at_s": 63.81
+            },
+            {
+              "layer": "L3",
+              "id": "coin_count",
+              "rel_db": -4.28,
+              "peak_dbfs": -9.81,
+              "at_s": 74.82
+            },
+            {
+              "layer": "L3",
+              "id": "shutter",
+              "rel_db": -1.23,
+              "peak_dbfs": -13.98,
+              "at_s": 85.45
+            },
+            {
+              "layer": "L3",
+              "id": "coin_count",
+              "rel_db": -6.6,
+              "peak_dbfs": -12.21,
+              "at_s": 96.2
+            },
+            {
+              "layer": "L3",
+              "id": "coin_count",
+              "rel_db": -2.82,
+              "peak_dbfs": -11.07,
+              "at_s": 104.53
+            },
+            {
+              "layer": "L3",
+              "id": "coin_count",
+              "rel_db": -6.89,
+              "peak_dbfs": -12.27,
+              "at_s": 118.1
+            },
+            {
+              "layer": "L3",
+              "id": "crate_down",
+              "rel_db": -7.9,
+              "peak_dbfs": -19.36,
+              "at_s": 134.89
+            },
+            {
+              "layer": "L3",
+              "id": "shutter",
+              "rel_db": -4.02,
+              "peak_dbfs": -14.81,
+              "at_s": 151.9
+            }
+          ]
+        }
+      },
+      "kind": "interior"
+    },
+    "street": {
+      "tod": {
+        "day": {
+          "scheduled": 13,
+          "onsets_detected": 19,
+          "onsets_per_min": 6.33,
+          "crest_factor_db": 17.3,
+          "crest_factor_bed_only_db": 13.4,
+          "crest_delta_db": 3.9,
+          "event_peak_dbfs": -8.54,
+          "bed_rms_dbfs": -23.96,
+          "bed_lufs_i": -25.44,
+          "mix_lufs_i": -25.39,
+          "level_rel_bed": {
+            "L3": {
+              "n": 12,
+              "median_rel_db": -2.04,
+              "min_rel_db": -6.37,
+              "max_rel_db": 7.13
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 2.11,
+              "min_rel_db": 2.11,
+              "max_rel_db": 2.11
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 48.61,
+              "duration_s": 0.06,
+              "over_floor_db": 10.5,
+              "scale": "fast"
+            },
+            {
+              "at_s": 88.54,
+              "duration_s": 0.02,
+              "over_floor_db": 9.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 88.93,
+              "duration_s": 0.01,
+              "over_floor_db": 12.2,
+              "scale": "fast"
+            },
+            {
+              "at_s": 107.56,
+              "duration_s": 0.02,
+              "over_floor_db": 10.4,
+              "scale": "fast"
+            },
+            {
+              "at_s": 107.89,
+              "duration_s": 0.02,
+              "over_floor_db": 9.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 108.56,
+              "duration_s": 0.02,
+              "over_floor_db": 9.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 118.73,
+              "duration_s": 0.09,
+              "over_floor_db": 12.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 122.55,
+              "duration_s": 0.02,
+              "over_floor_db": 10.7,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "door_close",
+              "rel_db": 0.37,
+              "peak_dbfs": -13.95,
+              "at_s": 18.73
+            },
+            {
+              "layer": "L3",
+              "id": "door_close",
+              "rel_db": 3.65,
+              "peak_dbfs": -11.31,
+              "at_s": 32.54
+            },
+            {
+              "layer": "L3",
+              "id": "gutter_release",
+              "rel_db": -3.97,
+              "peak_dbfs": -11.41,
+              "at_s": 48.6
+            },
+            {
+              "layer": "L3",
+              "id": "door_close",
+              "rel_db": 7.13,
+              "peak_dbfs": -8.54,
+              "at_s": 65.62
+            },
+            {
+              "layer": "L3",
+              "id": "door_close",
+              "rel_db": -6.37,
+              "peak_dbfs": -18.14,
+              "at_s": 75.62
+            },
+            {
+              "layer": "L3",
+              "id": "boots_stone",
+              "rel_db": -1.49,
+              "peak_dbfs": -10.5,
+              "at_s": 87.94
+            },
+            {
+              "layer": "L3",
+              "id": "boots_stone",
+              "rel_db": -2.33,
+              "peak_dbfs": -9.35,
+              "at_s": 107.26
+            },
+            {
+              "layer": "L3",
+              "id": "boots_stone",
+              "rel_db": -1.63,
+              "peak_dbfs": -9.18,
+              "at_s": 122.19
+            },
+            {
+              "layer": "L3",
+              "id": "boots_stone",
+              "rel_db": -1.88,
+              "peak_dbfs": -10.46,
+              "at_s": 131.19
+            },
+            {
+              "layer": "L3",
+              "id": "gutter_release",
+              "rel_db": -2.2,
+              "peak_dbfs": -14.23,
+              "at_s": 142.95
+            },
+            {
+              "layer": "L3",
+              "id": "boots_stone",
+              "rel_db": -2.44,
+              "peak_dbfs": -11.52,
+              "at_s": 161.13
+            },
+            {
+              "layer": "L3",
+              "id": "boots_stone",
+              "rel_db": -5.19,
+              "peak_dbfs": -10.02,
+              "at_s": 174.7
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 13,
+          "onsets_detected": 21,
+          "onsets_per_min": 7,
+          "crest_factor_db": 17.5,
+          "crest_factor_bed_only_db": 13.2,
+          "crest_delta_db": 4.3,
+          "event_peak_dbfs": -8.54,
+          "bed_rms_dbfs": -24.05,
+          "bed_lufs_i": -25.56,
+          "mix_lufs_i": -25.52,
+          "level_rel_bed": {
+            "L3": {
+              "n": 12,
+              "median_rel_db": -1.97,
+              "min_rel_db": -6.33,
+              "max_rel_db": 7.61
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": -2.11,
+              "min_rel_db": -2.11,
+              "max_rel_db": -2.11
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 48.61,
+              "duration_s": 0.07,
+              "over_floor_db": 10.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 87.94,
+              "duration_s": 0.02,
+              "over_floor_db": 9.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 88.54,
+              "duration_s": 0.02,
+              "over_floor_db": 10.2,
+              "scale": "fast"
+            },
+            {
+              "at_s": 88.93,
+              "duration_s": 0.01,
+              "over_floor_db": 12.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 107.56,
+              "duration_s": 0.02,
+              "over_floor_db": 11,
+              "scale": "fast"
+            },
+            {
+              "at_s": 107.89,
+              "duration_s": 0.02,
+              "over_floor_db": 10.3,
+              "scale": "fast"
+            },
+            {
+              "at_s": 108.56,
+              "duration_s": 0.02,
+              "over_floor_db": 10.4,
+              "scale": "fast"
+            },
+            {
+              "at_s": 122.19,
+              "duration_s": 0.02,
+              "over_floor_db": 9.6,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "door_close",
+              "rel_db": 0.5,
+              "peak_dbfs": -13.95,
+              "at_s": 18.73
+            },
+            {
+              "layer": "L3",
+              "id": "door_close",
+              "rel_db": 3.8,
+              "peak_dbfs": -11.31,
+              "at_s": 32.54
+            },
+            {
+              "layer": "L3",
+              "id": "gutter_release",
+              "rel_db": -3.87,
+              "peak_dbfs": -11.41,
+              "at_s": 48.6
+            },
+            {
+              "layer": "L3",
+              "id": "door_close",
+              "rel_db": 7.61,
+              "peak_dbfs": -8.54,
+              "at_s": 65.62
+            },
+            {
+              "layer": "L3",
+              "id": "door_close",
+              "rel_db": -6.33,
+              "peak_dbfs": -18.15,
+              "at_s": 75.62
+            },
+            {
+              "layer": "L3",
+              "id": "boots_stone",
+              "rel_db": -1.21,
+              "peak_dbfs": -10.5,
+              "at_s": 87.94
+            },
+            {
+              "layer": "L3",
+              "id": "boots_stone",
+              "rel_db": -2.13,
+              "peak_dbfs": -9.35,
+              "at_s": 107.26
+            },
+            {
+              "layer": "L3",
+              "id": "boots_stone",
+              "rel_db": -1.43,
+              "peak_dbfs": -9.18,
+              "at_s": 122.19
+            },
+            {
+              "layer": "L3",
+              "id": "boots_stone",
+              "rel_db": -1.82,
+              "peak_dbfs": -10.46,
+              "at_s": 131.19
+            },
+            {
+              "layer": "L3",
+              "id": "gutter_release",
+              "rel_db": -2.12,
+              "peak_dbfs": -14.23,
+              "at_s": 142.95
+            },
+            {
+              "layer": "L3",
+              "id": "boots_stone",
+              "rel_db": -2.27,
+              "peak_dbfs": -11.52,
+              "at_s": 161.13
+            },
+            {
+              "layer": "L3",
+              "id": "boots_stone",
+              "rel_db": -5.13,
+              "peak_dbfs": -10.02,
+              "at_s": 174.7
+            }
+          ]
+        }
+      },
+      "kind": "interior"
+    },
+    "well": {
+      "tod": {
+        "day": {
+          "scheduled": 15,
+          "onsets_detected": 10,
+          "onsets_per_min": 3.33,
+          "crest_factor_db": 12.9,
+          "crest_factor_bed_only_db": 8,
+          "crest_delta_db": 4.9,
+          "event_peak_dbfs": -12.72,
+          "bed_rms_dbfs": -21.98,
+          "bed_lufs_i": -26.5,
+          "mix_lufs_i": -26.47,
+          "level_rel_bed": {
+            "L3": {
+              "n": 14,
+              "median_rel_db": -2,
+              "min_rel_db": -21.36,
+              "max_rel_db": -0.67
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 42.4,
+              "duration_s": 0.06,
+              "over_floor_db": 26.3,
+              "scale": "fast"
+            },
+            {
+              "at_s": 53.46,
+              "duration_s": 0.06,
+              "over_floor_db": 26.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 71.37,
+              "duration_s": 0.06,
+              "over_floor_db": 25.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 90.11,
+              "duration_s": 0.06,
+              "over_floor_db": 19.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 108.7,
+              "duration_s": 0.06,
+              "over_floor_db": 21.4,
+              "scale": "fast"
+            },
+            {
+              "at_s": 109.21,
+              "duration_s": 0.04,
+              "over_floor_db": 9.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 120.4,
+              "duration_s": 0.1,
+              "over_floor_db": 18.5,
+              "scale": "slow"
+            },
+            {
+              "at_s": 138.68,
+              "duration_s": 0.06,
+              "over_floor_db": 22.3,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "stone_shift",
+              "rel_db": -15.9,
+              "peak_dbfs": -28.25,
+              "at_s": 18.25
+            },
+            {
+              "layer": "L3",
+              "id": "stone_shift",
+              "rel_db": -16.66,
+              "peak_dbfs": -30.62,
+              "at_s": 29.64
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -1.1,
+              "peak_dbfs": -12.94,
+              "at_s": 42.4
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -0.97,
+              "peak_dbfs": -12.72,
+              "at_s": 53.46
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -1.72,
+              "peak_dbfs": -12.74,
+              "at_s": 71.37
+            },
+            {
+              "layer": "L3",
+              "id": "stone_shift",
+              "rel_db": -14.41,
+              "peak_dbfs": -28.24,
+              "at_s": 80.77
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -2.81,
+              "peak_dbfs": -14.44,
+              "at_s": 90.12
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -0.7,
+              "peak_dbfs": -13.85,
+              "at_s": 108.71
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -1.97,
+              "peak_dbfs": -13.44,
+              "at_s": 120.43
+            },
+            {
+              "layer": "L3",
+              "id": "stone_shift",
+              "rel_db": -16.98,
+              "peak_dbfs": -30.32,
+              "at_s": 130.67
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -0.67,
+              "peak_dbfs": -13.93,
+              "at_s": 138.69
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -0.9,
+              "peak_dbfs": -13.49,
+              "at_s": 155.97
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 15,
+          "onsets_detected": 10,
+          "onsets_per_min": 3.33,
+          "crest_factor_db": 12.9,
+          "crest_factor_bed_only_db": 8,
+          "crest_delta_db": 4.9,
+          "event_peak_dbfs": -12.72,
+          "bed_rms_dbfs": -21.98,
+          "bed_lufs_i": -26.5,
+          "mix_lufs_i": -26.47,
+          "level_rel_bed": {
+            "L3": {
+              "n": 14,
+              "median_rel_db": -2,
+              "min_rel_db": -21.36,
+              "max_rel_db": -0.67
+            },
+            "L4": {
+              "n": 1,
+              "median_rel_db": 0,
+              "min_rel_db": 0,
+              "max_rel_db": 0
+            },
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 42.4,
+              "duration_s": 0.06,
+              "over_floor_db": 26.3,
+              "scale": "fast"
+            },
+            {
+              "at_s": 53.46,
+              "duration_s": 0.06,
+              "over_floor_db": 26.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 71.37,
+              "duration_s": 0.06,
+              "over_floor_db": 25.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 90.11,
+              "duration_s": 0.06,
+              "over_floor_db": 19.1,
+              "scale": "fast"
+            },
+            {
+              "at_s": 108.7,
+              "duration_s": 0.06,
+              "over_floor_db": 21.4,
+              "scale": "fast"
+            },
+            {
+              "at_s": 109.21,
+              "duration_s": 0.04,
+              "over_floor_db": 9.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 120.4,
+              "duration_s": 0.1,
+              "over_floor_db": 18.5,
+              "scale": "slow"
+            },
+            {
+              "at_s": 138.68,
+              "duration_s": 0.06,
+              "over_floor_db": 22.3,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "stone_shift",
+              "rel_db": -15.9,
+              "peak_dbfs": -28.25,
+              "at_s": 18.25
+            },
+            {
+              "layer": "L3",
+              "id": "stone_shift",
+              "rel_db": -16.66,
+              "peak_dbfs": -30.62,
+              "at_s": 29.64
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -1.1,
+              "peak_dbfs": -12.94,
+              "at_s": 42.4
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -0.97,
+              "peak_dbfs": -12.72,
+              "at_s": 53.46
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -1.72,
+              "peak_dbfs": -12.74,
+              "at_s": 71.37
+            },
+            {
+              "layer": "L3",
+              "id": "stone_shift",
+              "rel_db": -14.41,
+              "peak_dbfs": -28.24,
+              "at_s": 80.77
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -2.81,
+              "peak_dbfs": -14.44,
+              "at_s": 90.12
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -0.7,
+              "peak_dbfs": -13.85,
+              "at_s": 108.71
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -1.97,
+              "peak_dbfs": -13.44,
+              "at_s": 120.43
+            },
+            {
+              "layer": "L3",
+              "id": "stone_shift",
+              "rel_db": -16.98,
+              "peak_dbfs": -30.32,
+              "at_s": 130.67
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -0.67,
+              "peak_dbfs": -13.93,
+              "at_s": 138.69
+            },
+            {
+              "layer": "L3",
+              "id": "shaft_drip",
+              "rel_db": -0.9,
+              "peak_dbfs": -13.49,
+              "at_s": 155.97
+            }
+          ]
+        }
+      },
+      "kind": "interior"
+    },
+    "writ_house": {
+      "tod": {
+        "day": {
+          "scheduled": 14,
+          "onsets_detected": 13,
+          "onsets_per_min": 4.33,
+          "crest_factor_db": 16.2,
+          "crest_factor_bed_only_db": 13.5,
+          "crest_delta_db": 2.7,
+          "event_peak_dbfs": -7.72,
+          "bed_rms_dbfs": -22.94,
+          "bed_lufs_i": -27.4,
+          "mix_lufs_i": -27.28,
+          "level_rel_bed": {
+            "L3": {
+              "n": 14,
+              "median_rel_db": -1.83,
+              "min_rel_db": -4.41,
+              "max_rel_db": 0.81
+            },
+            "L4": null,
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 14.42,
+              "duration_s": 0.04,
+              "over_floor_db": 11.3,
+              "scale": "fast"
+            },
+            {
+              "at_s": 27.78,
+              "duration_s": 0.03,
+              "over_floor_db": 10.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 55.41,
+              "duration_s": 0.02,
+              "over_floor_db": 10.2,
+              "scale": "fast"
+            },
+            {
+              "at_s": 65.11,
+              "duration_s": 0.03,
+              "over_floor_db": 12,
+              "scale": "fast"
+            },
+            {
+              "at_s": 76.2,
+              "duration_s": 0.04,
+              "over_floor_db": 10.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 86.44,
+              "duration_s": 0.02,
+              "over_floor_db": 11.2,
+              "scale": "fast"
+            },
+            {
+              "at_s": 101.97,
+              "duration_s": 0.05,
+              "over_floor_db": 11.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 114.62,
+              "duration_s": 0.03,
+              "over_floor_db": 12.8,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -0.56,
+              "peak_dbfs": -9.97,
+              "at_s": 14.42
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -0.54,
+              "peak_dbfs": -12.24,
+              "at_s": 27.78
+            },
+            {
+              "layer": "L3",
+              "id": "stamp_down",
+              "rel_db": -3.05,
+              "peak_dbfs": -18.53,
+              "at_s": 36.67
+            },
+            {
+              "layer": "L3",
+              "id": "page_turn",
+              "rel_db": -1.8,
+              "peak_dbfs": -14.49,
+              "at_s": 46.58
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -4.41,
+              "peak_dbfs": -11.06,
+              "at_s": 55.4
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -1.04,
+              "peak_dbfs": -8.42,
+              "at_s": 64.9
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -0.84,
+              "peak_dbfs": -11.22,
+              "at_s": 75.73
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -3.05,
+              "peak_dbfs": -13.06,
+              "at_s": 86.43
+            },
+            {
+              "layer": "L3",
+              "id": "page_turn",
+              "rel_db": -3.95,
+              "peak_dbfs": -12.43,
+              "at_s": 101.95
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": 0.25,
+              "peak_dbfs": -10.69,
+              "at_s": 114.36
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -2.49,
+              "peak_dbfs": -8.68,
+              "at_s": 132.61
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": 0.81,
+              "peak_dbfs": -7.72,
+              "at_s": 143.11
+            }
+          ]
+        },
+        "night": {
+          "scheduled": 14,
+          "onsets_detected": 11,
+          "onsets_per_min": 3.67,
+          "crest_factor_db": 15.7,
+          "crest_factor_bed_only_db": 14,
+          "crest_delta_db": 1.7,
+          "event_peak_dbfs": -7.72,
+          "bed_rms_dbfs": -22.77,
+          "bed_lufs_i": -26.6,
+          "mix_lufs_i": -26.5,
+          "level_rel_bed": {
+            "L3": {
+              "n": 14,
+              "median_rel_db": -2.26,
+              "min_rel_db": -4.48,
+              "max_rel_db": 0.24
+            },
+            "L4": null,
+            "R7": null
+          },
+          "onsets": [
+            {
+              "at_s": 14.42,
+              "duration_s": 0.04,
+              "over_floor_db": 10,
+              "scale": "fast"
+            },
+            {
+              "at_s": 27.78,
+              "duration_s": 0.03,
+              "over_floor_db": 9.7,
+              "scale": "fast"
+            },
+            {
+              "at_s": 65.11,
+              "duration_s": 0.03,
+              "over_floor_db": 11,
+              "scale": "fast"
+            },
+            {
+              "at_s": 76.2,
+              "duration_s": 0.04,
+              "over_floor_db": 9.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 86.44,
+              "duration_s": 0.02,
+              "over_floor_db": 9.9,
+              "scale": "fast"
+            },
+            {
+              "at_s": 101.97,
+              "duration_s": 0.05,
+              "over_floor_db": 11.2,
+              "scale": "fast"
+            },
+            {
+              "at_s": 114.62,
+              "duration_s": 0.03,
+              "over_floor_db": 11.6,
+              "scale": "fast"
+            },
+            {
+              "at_s": 132.81,
+              "duration_s": 0.03,
+              "over_floor_db": 10.8,
+              "scale": "fast"
+            }
+          ],
+          "events": [
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -1.02,
+              "peak_dbfs": -9.97,
+              "at_s": 14.42
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -0.63,
+              "peak_dbfs": -12.24,
+              "at_s": 27.78
+            },
+            {
+              "layer": "L3",
+              "id": "stamp_down",
+              "rel_db": -3.48,
+              "peak_dbfs": -18.54,
+              "at_s": 36.67
+            },
+            {
+              "layer": "L3",
+              "id": "page_turn",
+              "rel_db": -2.23,
+              "peak_dbfs": -14.48,
+              "at_s": 46.58
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -4.48,
+              "peak_dbfs": -11.06,
+              "at_s": 55.4
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -1.22,
+              "peak_dbfs": -8.42,
+              "at_s": 64.9
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -1.04,
+              "peak_dbfs": -11.22,
+              "at_s": 75.73
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -3.27,
+              "peak_dbfs": -13.06,
+              "at_s": 86.43
+            },
+            {
+              "layer": "L3",
+              "id": "page_turn",
+              "rel_db": -4.1,
+              "peak_dbfs": -12.43,
+              "at_s": 101.95
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -0.15,
+              "peak_dbfs": -10.69,
+              "at_s": 114.36
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": -2.54,
+              "peak_dbfs": -8.68,
+              "at_s": 132.61
+            },
+            {
+              "layer": "L3",
+              "id": "nib_scratch",
+              "rel_db": 0.24,
+              "peak_dbfs": -7.72,
+              "at_s": 143.11
+            }
+          ]
+        }
+      },
+      "kind": "interior"
+    }
+  },
+  "notes": [],
+  "mute_supported": {
+    "full": 0,
+    "muted": 0,
+    "ok": true
+  }
+}

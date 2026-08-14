@@ -1,0 +1,44 @@
+file:///home/user/elder-souls-claude/tools/capture/client.mjs:90
+          else p.reject(new CaptureError(msg.error || 'capture failed', msg.code || 'ERROR', msg.detail));
+                        ^
+
+CaptureError: setTide() threw: setTide('0.75'): states are RISING, HIGH, FALLING, LOW
+    at Socket.<anonymous> (file:///home/user/elder-souls-claude/tools/capture/client.mjs:90:25)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23) {
+  code: 'CAPTURE_ERROR',
+  detail: {
+    spec: {
+      v: 1,
+      viewpoint: null,
+      viewpoints_file: null,
+      state: 'default',
+      seed: 1337,
+      place: { x: 2620, z: 4362, y: null },
+      pose: null,
+      camera: {
+        pos: [ 2617.4, 2.57, 4360.2 ],
+        look: [ 2620, 1.87, 4362 ],
+        fov: 50
+      },
+      time: 11,
+      weather: null,
+      tide: '0.75',
+      width: 900,
+      height: 900,
+      ui: false,
+      menu: null,
+      ops: [ [ 'stepFrames', 45 ] ],
+      settle_frames: 24,
+      settle_gap: 12,
+      settle_threshold: 0.005,
+      settle_always_c: false,
+      __no_camera_stream: false
+    }
+  }
+}
+
+Node.js v22.22.2

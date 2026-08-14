@@ -1,0 +1,113 @@
+{
+  "schema": "critic/w1-13-r2-d@1",
+  "taken_at": "2026-08-07T16:39:05.618Z",
+  "d1_purse_on_the_screen": {
+    "start": {
+      "drawn": {
+        "id": "inventory.gold",
+        "text": "0 gold"
+      },
+      "fields": {
+        "progression_gold": 0,
+        "stealth_p_gold": 400,
+        "magic_gold": 0,
+        "combat_world_gold": 0,
+        "sim_loadout_gold": "sim.loadout is undefined",
+        "sim_gold": "sim.gold is undefined"
+      }
+    },
+    "after_setGold_777": {
+      "drawn": {
+        "id": "inventory.gold",
+        "text": "0 gold"
+      },
+      "fields": {
+        "progression_gold": 777,
+        "stealth_p_gold": 400,
+        "magic_gold": 777,
+        "combat_world_gold": 0,
+        "sim_loadout_gold": "sim.loadout is undefined",
+        "sim_gold": "sim.gold is undefined"
+      }
+    },
+    "sales": [],
+    "after_fence": {
+      "drawn": {
+        "id": "inventory.gold",
+        "text": "0 gold"
+      },
+      "fields": {
+        "progression_gold": 777,
+        "stealth_p_gold": 400,
+        "magic_gold": 777,
+        "combat_world_gold": 0,
+        "sim_loadout_gold": "sim.loadout is undefined",
+        "sim_gold": "sim.gold is undefined"
+      }
+    },
+    "after_save_load": {
+      "drawn": {
+        "id": "inventory.gold",
+        "text": "0 gold"
+      },
+      "fields": {
+        "progression_gold": 777,
+        "stealth_p_gold": 400,
+        "magic_gold": 777,
+        "combat_world_gold": 777,
+        "sim_loadout_gold": "sim.loadout is undefined",
+        "sim_gold": "sim.gold is undefined"
+      }
+    },
+    "purses_that_exist": 4,
+    "_what_the_player_sees": "the `inventory.gold` element text"
+  },
+  "d2_respawn_drift": [
+    {
+      "well": "hearth-archon",
+      "mode": "released",
+      "threw": "event type 'weather_change' is not in the closed vocabulary (HARNESS.md §5, A-JRN7)"
+    },
+    {
+      "well": "hearth-archon",
+      "mode": "held",
+      "threw": "event type 'weather_change' is not in the closed vocabulary (HARNESS.md §5, A-JRN7)"
+    },
+    {
+      "well": "hearth-archon",
+      "mode": "released-no-traversal-reset",
+      "threw": "event type 'weather_change' is not in the closed vocabulary (HARNESS.md §5, A-JRN7)"
+    },
+    {
+      "well": "hearth-stormhold",
+      "mode": "released",
+      "threw": "event type 'weather_change' is not in the closed vocabulary (HARNESS.md §5, A-JRN7)"
+    },
+    {
+      "well": "hearth-stormhold",
+      "mode": "held",
+      "threw": "event type 'weather_change' is not in the closed vocabulary (HARNESS.md §5, A-JRN7)"
+    },
+    {
+      "well": "hearth-stormhold",
+      "mode": "released-no-traversal-reset",
+      "threw": "event type 'weather_change' is not in the closed vocabulary (HARNESS.md §5, A-JRN7)"
+    },
+    {
+      "well": "hearth-gideon",
+      "mode": "released",
+      "threw": "event type 'weather_change' is not in the closed vocabulary (HARNESS.md §5, A-JRN7)"
+    },
+    {
+      "well": "hearth-gideon",
+      "mode": "held",
+      "threw": "event type 'weather_change' is not in the closed vocabulary (HARNESS.md §5, A-JRN7)"
+    },
+    {
+      "well": "hearth-gideon",
+      "mode": "released-no-traversal-reset",
+      "threw": "event type 'weather_change' is not in the closed vocabulary (HARNESS.md §5, A-JRN7)"
+    }
+  ],
+  "fatal": "page.evaluate: Error: event type 'weather_change' is not in the closed vocabulary (HARNESS.md §5, A-JRN7)\n    at EventBus.emit (http://127.0.0.1:39367/game/src/sim/events.js:226:13)\n    at Environment.step (http://127.0.0.1:39367/game/src/sim/environment.js:197:26)\n    at stepOnce (http://127.0.0.1:39367/game/src/sim/step.js:105:42)\n    at Engine._step (http://127.0.0.1:39367/game/src/engine.js:3924:5)\n    at FixedLoop.step (http://127.0.0.1:39367/game/src/engine.js:216:42)\n    at FixedLoop.stepOnce (http://127.0.0.1:39367/game/src/core/loop.js:176:16)\n    at Engine.stepFrames (http://127.0.0.1:39367/game/src/engine.js:4531:45)\n    at Object.stepFrames (http://127.0.0.1:39367/game/src/harness/api.js:91:35)\n    at eval (eval at evaluate (:290:30), <anonymous>:13:50)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at run (/home/user/elder-souls-claude/tools/harness/critic-w1-13-r2-d.mjs:153:42)\n    at /home/user/elder-souls-claude/tools/harness/critic-w1-13-r2-d.mjs:176:27"
+}

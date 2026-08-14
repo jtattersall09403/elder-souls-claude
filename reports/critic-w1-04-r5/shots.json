@@ -1,0 +1,26 @@
+{
+  "tool": "tools/world/critic-w1-04-r5-shots.mjs",
+  "when": "2026-08-08T07:11:28.242Z",
+  "shots": [
+    {
+      "name": "2026-08-08-w1-04-r5-critic-archon-market-inside",
+      "ok": true,
+      "bytes": 185456,
+      "result": null,
+      "claim": "The inside of archon-market — the room the join left at 17.1% of its declared area, and the picture two consecutive critics and one builder have been refused by the settle gate."
+    },
+    {
+      "name": "2026-08-08-w1-04-r5-critic-on-the-doorstep-looking-back",
+      "ok": false,
+      "refused": "capture is NOT settled: G3b acceleration: the interval that starts at the DELIVERED frame moved MORE than the one before it — d2=0.11169 against d1=0.03125 (rise 0.08044 > 0.005, ratio 3.57 > 1.5). The world is still arriving, and it is arriving after the picture was taken. The old gate clamped this to zero with max(0, d1 - d2) and never looked at it.",
+      "claim": "A camera standing on the doorstep of archon-guild-office at eye height, looking back at the door it came out of. The round shipped this view from 6 m back and said so."
+    },
+    {
+      "name": "2026-08-08-w1-04-r5-critic-half-a-second-after-the-door",
+      "ok": true,
+      "bytes": 18586,
+      "result": null,
+      "claim": "Where the body from the thorn-inn door is standing 120 fixed steps after leaving it: inside thorn-trader, the building next door. One frame after the door it was clear of every footprint, which is the frame the round measures."
+    }
+  ]
+}

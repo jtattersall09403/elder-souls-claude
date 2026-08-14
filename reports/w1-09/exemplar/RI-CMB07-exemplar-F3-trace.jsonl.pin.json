@@ -1,0 +1,52 @@
+{
+ "pin_version": 1,
+ "path": "reports/w1-09/exemplar/RI-CMB07-exemplar-F3-trace.jsonl",
+ "bytes": 28072215,
+ "sha256": "09d6e3ce29b6232f7c58f18ff0bc33a3f83e7570d691bb502e0dd17074889972",
+ "produced_by": "the W1-09 builder",
+ "regeneration_verified": null,
+ "decisive": {
+  "lines": 8945,
+  "meta_lines": 0,
+  "frames": 8945,
+  "events": 530,
+  "event_kinds": 28,
+  "events_by_kind": {
+   "ACTION_START": 124,
+   "attack_start": 124,
+   "HIT": 54,
+   "hit": 54,
+   "INPUT_BUFFERED": 33,
+   "input_buffered": 33,
+   "IFRAME_NEGATE": 23,
+   "iframe_dodge": 23,
+   "WHIFF": 13,
+   "whiff": 13,
+   "STAGGER": 6,
+   "stagger": 6,
+   "detect": 2,
+   "INPUT_DROPPED": 2,
+   "input_dropped": 2,
+   "GUARD_UP": 2,
+   "guard_up": 2,
+   "ESTUS_START": 2,
+   "heal": 2,
+   "ESTUS_DONE": 2,
+   "BLOCK": 1,
+   "block": 1,
+   "BLOCK_SUCCESS": 1,
+   "block_success": 1,
+   "DEATH": 1,
+   "death": 1,
+   "LOCK_BREAK": 1,
+   "lock_break": 1
+  },
+  "unparseable_lines": 0
+ },
+ "cited_by": [
+  "corpus/90-verdicts/wave1/W1-25-r1.json"
+ ],
+ "pinned_at": "2026-08-14T08:50:02.535Z",
+ "pinned_by": "verdict-evidence-20260814",
+ "note": "Raw file exceeds the 1 MiB pin threshold and is not tracked. This pin is its citation: the decisive numbers, the SHA-256 of the bytes they were read from, and the command that regenerates it. `node tools/verdict-evidence.mjs --verify` re-checks the hash on any machine that still holds the raw file."
+}

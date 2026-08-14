@@ -1,0 +1,80 @@
+{
+  "tool": "tools/world/critic-w1-04-r3a.mjs",
+  "entry": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/criticr3-boot/game/index.html",
+  "started_at": "2026-08-08T03:00:23.090Z",
+  "sections": {
+    "S8": {
+      "side": "HARNESS",
+      "note": "teleport arrival, then step until the drawn count equals the town's own declared count",
+      "rows": {
+        "thorn": {
+          "declared_buildings": 15,
+          "drawn_at_end": 15,
+          "frames_to_reach_it": 6,
+          "reached": true,
+          "trace": [
+            {
+              "frames": 6,
+              "drawn": 15
+            }
+          ],
+          "people_present": null
+        },
+        "helstrom": {
+          "declared_buildings": 40,
+          "drawn_at_end": 40,
+          "frames_to_reach_it": 6,
+          "reached": true,
+          "trace": [
+            {
+              "frames": 6,
+              "drawn": 40
+            }
+          ],
+          "people_present": null
+        },
+        "archon": {
+          "declared_buildings": 22,
+          "drawn_at_end": 22,
+          "frames_to_reach_it": 6,
+          "reached": true,
+          "trace": [
+            {
+              "frames": 6,
+              "drawn": 22
+            }
+          ],
+          "people_present": null
+        },
+        "soulrest": {
+          "declared_buildings": 15,
+          "drawn_at_end": 15,
+          "frames_to_reach_it": 6,
+          "reached": true,
+          "trace": [
+            {
+              "frames": 6,
+              "drawn": 15
+            }
+          ],
+          "people_present": null
+        }
+      }
+    },
+    "S9": {
+      "roofs": {
+        "file": "docs/shots/2026-08-08-w1-04-r3-critic-helstrom-roofs-from-above.png",
+        "drawn": 40,
+        "verified": true
+      },
+      "town": {
+        "file": "docs/shots/2026-08-08-w1-04-r3-critic-helstrom-forty-buildings.png",
+        "drawn": 40,
+        "verified": true
+      }
+    }
+  },
+  "page_errors": [],
+  "notes": [],
+  "finished_at": "2026-08-08T03:03:35.892Z"
+}

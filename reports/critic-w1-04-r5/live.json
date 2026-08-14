@@ -1,0 +1,5864 @@
+{
+  "tool": "tools/world/critic-w1-04-r5-live.mjs",
+  "when": "2026-08-08T07:04:54.865Z",
+  "commit": "1fda355",
+  "sections": {
+    "L1_L2": {
+      "what": "where the body stands 1, 30, 120 and 600 fixed steps after the door",
+      "doors_tested": 115,
+      "skipped": 0,
+      "inside_a_building_at_1_frame": 0,
+      "inside_a_building_at_30_frames": 8,
+      "inside_a_building_at_120_frames": 10,
+      "inside_a_building_at_600_frames": 10,
+      "bodies_that_moved_more_than_0_25m_between_frame_1_and_600": 25,
+      "movers": [
+        {
+          "id": "archon-market",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3805.52,
+                3845.62
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3806.02,
+                3845.91
+              ],
+              "inside": "archon-apothecary"
+            },
+            {
+              "f": 120,
+              "pos": [
+                3806.02,
+                3845.91
+              ],
+              "inside": "archon-apothecary"
+            },
+            {
+              "f": 600,
+              "pos": [
+                3806.02,
+                3845.91
+              ],
+              "inside": "archon-apothecary"
+            }
+          ]
+        },
+        {
+          "id": "archon-vat-house",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3812.98,
+                3847.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3813.84,
+                3847.36
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3813.84,
+                3847.36
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3813.84,
+                3847.36
+              ],
+              "inside": null
+            }
+          ]
+        },
+        {
+          "id": "gideon-chapel",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                434.82,
+                2907.07
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                435.3,
+                2907.07
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                435.3,
+                2907.07
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                435.3,
+                2907.07
+              ],
+              "inside": null
+            }
+          ]
+        },
+        {
+          "id": "gideon-court",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                452.15,
+                2929.26
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                452.4,
+                2928.87
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                452.4,
+                2928.87
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                452.4,
+                2928.87
+              ],
+              "inside": null
+            }
+          ]
+        },
+        {
+          "id": "gideon-house-0",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                427.89,
+                2955.8
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                428.5,
+                2955.8
+              ],
+              "inside": "gideon-cellar"
+            },
+            {
+              "f": 120,
+              "pos": [
+                428.5,
+                2955.8
+              ],
+              "inside": "gideon-cellar"
+            },
+            {
+              "f": 600,
+              "pos": [
+                428.5,
+                2955.8
+              ],
+              "inside": "gideon-cellar"
+            }
+          ]
+        },
+        {
+          "id": "gideon-shrine",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                430.51,
+                2896.83
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                440.18,
+                2896.71
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                440.18,
+                2896.71
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                440.18,
+                2896.71
+              ],
+              "inside": null
+            }
+          ]
+        },
+        {
+          "id": "gideon-tollhouse",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                439.77,
+                2933.84
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                440.3,
+                2933.84
+              ],
+              "inside": "gideon-apothecary"
+            },
+            {
+              "f": 120,
+              "pos": [
+                440.3,
+                2933.84
+              ],
+              "inside": "gideon-apothecary"
+            },
+            {
+              "f": 600,
+              "pos": [
+                440.3,
+                2933.84
+              ],
+              "inside": "gideon-apothecary"
+            }
+          ]
+        },
+        {
+          "id": "helstrom-hollow-bole",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2280.76,
+                2780.58
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2281.26,
+                2780.33
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2281.26,
+                2780.33
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2281.26,
+                2780.33
+              ],
+              "inside": null
+            }
+          ]
+        },
+        {
+          "id": "helstrom-house-10",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2242.95,
+                2767.28
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2251.8,
+                2766.82
+              ],
+              "inside": "helstrom-house-10"
+            },
+            {
+              "f": 120,
+              "pos": [
+                2251.8,
+                2766.82
+              ],
+              "inside": "helstrom-house-10"
+            },
+            {
+              "f": 600,
+              "pos": [
+                2251.8,
+                2766.82
+              ],
+              "inside": "helstrom-house-10"
+            }
+          ]
+        },
+        {
+          "id": "helstrom-house-11",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2244.39,
+                2755.42
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2244.97,
+                2755.61
+              ],
+              "inside": "helstrom-house-10"
+            },
+            {
+              "f": 120,
+              "pos": [
+                2244.97,
+                2755.61
+              ],
+              "inside": "helstrom-house-10"
+            },
+            {
+              "f": 600,
+              "pos": [
+                2244.97,
+                2755.61
+              ],
+              "inside": "helstrom-house-10"
+            }
+          ]
+        },
+        {
+          "id": "helstrom-house-2",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2251.61,
+                2790.6
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2252.19,
+                2790.68
+              ],
+              "inside": "helstrom-warders"
+            },
+            {
+              "f": 120,
+              "pos": [
+                2252.19,
+                2790.68
+              ],
+              "inside": "helstrom-warders"
+            },
+            {
+              "f": 600,
+              "pos": [
+                2252.19,
+                2790.68
+              ],
+              "inside": "helstrom-warders"
+            }
+          ]
+        },
+        {
+          "id": "helstrom-house-6",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2243.02,
+                2779.96
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2243.39,
+                2780.34
+              ],
+              "inside": "helstrom-house-2"
+            },
+            {
+              "f": 120,
+              "pos": [
+                2243.39,
+                2780.34
+              ],
+              "inside": "helstrom-house-2"
+            },
+            {
+              "f": 600,
+              "pos": [
+                2243.39,
+                2780.34
+              ],
+              "inside": "helstrom-house-2"
+            }
+          ]
+        }
+      ],
+      "rows": [
+        {
+          "id": "archon-apothecary",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3803.97,
+                3851.34
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3803.97,
+                3851.34
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3803.97,
+                3851.34
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3803.97,
+                3851.34
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "archon-guild-office",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3785,
+                3798.8
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3785,
+                3798.8
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3785,
+                3798.8
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3785,
+                3798.8
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "archon-house-0",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3791.82,
+                3857.11
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3791.87,
+                3857.11
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3791.87,
+                3857.11
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3791.87,
+                3857.11
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "archon-house-1",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3789.01,
+                3863.6
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3789.01,
+                3863.6
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3789.01,
+                3863.6
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3789.01,
+                3863.6
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "archon-house-2",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3785,
+                3864.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3785,
+                3864.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3785,
+                3864.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3785,
+                3864.2
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "archon-inn",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3812.26,
+                3855.89
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3812.38,
+                3856.06
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3812.38,
+                3856.06
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3812.38,
+                3856.06
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "archon-kiln-house",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3795.25,
+                3856.65
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3795.25,
+                3856.65
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3795.25,
+                3856.65
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3795.25,
+                3856.65
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "archon-market",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3805.52,
+                3845.62
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3806.02,
+                3845.91
+              ],
+              "inside": "archon-apothecary"
+            },
+            {
+              "f": 120,
+              "pos": [
+                3806.02,
+                3845.91
+              ],
+              "inside": "archon-apothecary"
+            },
+            {
+              "f": 600,
+              "pos": [
+                3806.02,
+                3845.91
+              ],
+              "inside": "archon-apothecary"
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "archon-rootpost",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3802.78,
+                3865.59
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3802.78,
+                3865.59
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3802.78,
+                3865.59
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3802.78,
+                3865.59
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "archon-shrine",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3806.41,
+                3862.74
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3806.41,
+                3862.74
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3806.41,
+                3862.74
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3806.41,
+                3862.74
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "archon-vat-house",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3812.98,
+                3847.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3813.84,
+                3847.36
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3813.84,
+                3847.36
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3813.84,
+                3847.36
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "archon-ward",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3809.46,
+                3859.27
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3809.46,
+                3859.27
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3809.46,
+                3859.27
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3809.46,
+                3859.27
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "barge-hold",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3800,
+                909.4
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3800,
+                909.4
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3800,
+                909.4
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3800,
+                909.4
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "blackrose-clerk",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                1887.5,
+                4459
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                1887.5,
+                4459
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                1887.5,
+                4459
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                1887.5,
+                4459
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "blackrose-house-0",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                1898.5,
+                4449
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                1898.5,
+                4449
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                1898.5,
+                4449
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                1898.5,
+                4449
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "blackrose-house-1",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                1898.5,
+                4450
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                1898.5,
+                4450
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                1898.5,
+                4450
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                1898.5,
+                4450
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "blackrose-house-2",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                1898.5,
+                4471.7
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                1898.5,
+                4471.7
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                1898.5,
+                4471.7
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                1898.5,
+                4471.7
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "blackrose-inn",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                1865.5,
+                4458
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                1865.5,
+                4458
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                1865.5,
+                4458
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                1865.5,
+                4458
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "blackrose-market",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                1876.5,
+                4449
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                1876.5,
+                4449
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                1876.5,
+                4449
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                1876.5,
+                4449
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "blackrose-pawn",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                1876.5,
+                4471.7
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                1876.5,
+                4471.7
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                1876.5,
+                4471.7
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                1876.5,
+                4471.7
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "blackrose-prison",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                1865.5,
+                4446.3
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                1865.5,
+                4446.3
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                1865.5,
+                4446.3
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                1865.5,
+                4446.3
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "blackrose-rootpost",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                1887.5,
+                4458
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                1887.5,
+                4458
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                1887.5,
+                4458
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                1887.5,
+                4458
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "blackrose-shrine",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                1887.5,
+                4445.7
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                1887.5,
+                4445.7
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                1887.5,
+                4445.7
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                1887.5,
+                4445.7
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "blackrose-smithy",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                1876.5,
+                4450
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                1876.5,
+                4450
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                1876.5,
+                4450
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                1876.5,
+                4450
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "blackrose-warders-hall",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                1865.5,
+                4459
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                1865.5,
+                4459
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                1865.5,
+                4459
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                1865.5,
+                4459
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "gideon-apothecary",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                446,
+                2945.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                446,
+                2945.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                446,
+                2945.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                446,
+                2945.2
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "gideon-chapel",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                434.82,
+                2907.07
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                435.3,
+                2907.07
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                435.3,
+                2907.07
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                435.3,
+                2907.07
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "gideon-court",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                452.15,
+                2929.26
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                452.4,
+                2928.87
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                452.4,
+                2928.87
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                452.4,
+                2928.87
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "gideon-grange",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                405,
+                2914.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                405,
+                2914.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                405,
+                2914.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                405,
+                2914.2
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "gideon-house-0",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                427.89,
+                2955.8
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                428.5,
+                2955.8
+              ],
+              "inside": "gideon-cellar"
+            },
+            {
+              "f": 120,
+              "pos": [
+                428.5,
+                2955.8
+              ],
+              "inside": "gideon-cellar"
+            },
+            {
+              "f": 600,
+              "pos": [
+                428.5,
+                2955.8
+              ],
+              "inside": "gideon-cellar"
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "gideon-house-1",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                446,
+                2887.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                446,
+                2887.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                446,
+                2887.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                446,
+                2887.2
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "gideon-inn",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                462,
+                2929.8
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                462,
+                2929.8
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                462,
+                2929.8
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                462,
+                2929.8
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "gideon-lowmarket",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                427,
+                2912.55
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                427,
+                2912.55
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                427,
+                2912.55
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                427,
+                2912.55
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "gideon-rootpost",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                473,
+                2929.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                473,
+                2929.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                473,
+                2929.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                473,
+                2929.2
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "gideon-shrine",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                430.51,
+                2896.83
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                440.18,
+                2896.71
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                440.18,
+                2896.71
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                440.18,
+                2896.71
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "gideon-smithy",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                416,
+                2914.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                416,
+                2914.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                416,
+                2914.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                416,
+                2914.2
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "gideon-tollhouse",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                439.77,
+                2933.84
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                440.3,
+                2933.84
+              ],
+              "inside": "gideon-apothecary"
+            },
+            {
+              "f": 120,
+              "pos": [
+                440.3,
+                2933.84
+              ],
+              "inside": "gideon-apothecary"
+            },
+            {
+              "f": 600,
+              "pos": [
+                440.3,
+                2933.84
+              ],
+              "inside": "gideon-apothecary"
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-apothecary",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2289.24,
+                2841.96
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2289.24,
+                2841.96
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2289.24,
+                2841.96
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2289.24,
+                2841.96
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-archive",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2242.45,
+                2809.84
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2242.45,
+                2809.84
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2242.45,
+                2809.84
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2242.45,
+                2809.84
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-deep-market",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2290.86,
+                2803.8
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2290.86,
+                2803.8
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2290.86,
+                2803.8
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2290.86,
+                2803.8
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-hist-shrine",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2306.29,
+                2798.64
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2306.29,
+                2798.64
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2306.29,
+                2798.64
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2306.29,
+                2798.64
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-hollow-bole",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2280.76,
+                2780.58
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2281.26,
+                2780.33
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2281.26,
+                2780.33
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2281.26,
+                2780.33
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-house-0",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2224.94,
+                2818.61
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2224.94,
+                2818.61
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2224.94,
+                2818.61
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2224.94,
+                2818.61
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-house-1",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2216.34,
+                2821.3
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2216.34,
+                2821.3
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2216.34,
+                2821.3
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2216.34,
+                2821.3
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-house-10",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2242.95,
+                2767.28
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2251.8,
+                2766.82
+              ],
+              "inside": "helstrom-house-10"
+            },
+            {
+              "f": 120,
+              "pos": [
+                2251.8,
+                2766.82
+              ],
+              "inside": "helstrom-house-10"
+            },
+            {
+              "f": 600,
+              "pos": [
+                2251.8,
+                2766.82
+              ],
+              "inside": "helstrom-house-10"
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-house-11",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2244.39,
+                2755.42
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2244.97,
+                2755.61
+              ],
+              "inside": "helstrom-house-10"
+            },
+            {
+              "f": 120,
+              "pos": [
+                2244.97,
+                2755.61
+              ],
+              "inside": "helstrom-house-10"
+            },
+            {
+              "f": 600,
+              "pos": [
+                2244.97,
+                2755.61
+              ],
+              "inside": "helstrom-house-10"
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-house-2",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2251.61,
+                2790.6
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2252.19,
+                2790.68
+              ],
+              "inside": "helstrom-warders"
+            },
+            {
+              "f": 120,
+              "pos": [
+                2252.19,
+                2790.68
+              ],
+              "inside": "helstrom-warders"
+            },
+            {
+              "f": 600,
+              "pos": [
+                2252.19,
+                2790.68
+              ],
+              "inside": "helstrom-warders"
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-house-3",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2234.98,
+                2794.9
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2234.98,
+                2794.9
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2234.98,
+                2794.9
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2234.98,
+                2794.9
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-house-4",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2215.92,
+                2793.26
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2215.92,
+                2793.26
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2215.92,
+                2793.26
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2215.92,
+                2793.26
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-house-5",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2197.05,
+                2785.04
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2197.05,
+                2785.04
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2197.05,
+                2785.04
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2197.05,
+                2785.04
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-house-6",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2243.02,
+                2779.96
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2243.39,
+                2780.34
+              ],
+              "inside": "helstrom-house-2"
+            },
+            {
+              "f": 120,
+              "pos": [
+                2243.39,
+                2780.34
+              ],
+              "inside": "helstrom-house-2"
+            },
+            {
+              "f": 600,
+              "pos": [
+                2243.39,
+                2780.34
+              ],
+              "inside": "helstrom-house-2"
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-house-7",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2227.65,
+                2774.64
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2227.65,
+                2774.64
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2227.65,
+                2774.64
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2227.65,
+                2774.64
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-house-8",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2212.99,
+                2762.66
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2212.99,
+                2762.66
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2212.99,
+                2762.66
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2212.99,
+                2762.66
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-house-9",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2202.77,
+                2744.36
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2202.77,
+                2744.36
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2202.77,
+                2744.36
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2202.77,
+                2744.36
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-inn-egg",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2243.9,
+                2844.61
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2243.9,
+                2844.61
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2243.9,
+                2844.61
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2243.9,
+                2844.61
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-inn-gate",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2258.71,
+                2830.87
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2258.71,
+                2830.87
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2258.71,
+                2830.87
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2258.71,
+                2830.87
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-inn-tide",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2267.64,
+                2814.68
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2267.64,
+                2814.68
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2267.64,
+                2814.68
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2267.64,
+                2814.68
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-legation",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2314.23,
+                2815.09
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2314.23,
+                2815.09
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2314.23,
+                2815.09
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2314.23,
+                2815.09
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-rootpost",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2273.24,
+                2789.34
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2273.41,
+                2789.28
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2273.41,
+                2789.28
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2273.41,
+                2789.28
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-scriptorium",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2270.38,
+                2797.75
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2270.38,
+                2797.75
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2270.38,
+                2797.75
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2270.38,
+                2797.75
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-smithy",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2293.16,
+                2822.15
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2293.16,
+                2822.15
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2293.16,
+                2822.15
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2293.16,
+                2822.15
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-undertemple",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2294.55,
+                2786.89
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2294.55,
+                2786.89
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2294.55,
+                2786.89
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2294.55,
+                2786.89
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "helstrom-warders",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2254.62,
+                2797.75
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2254.62,
+                2797.75
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2254.62,
+                2797.75
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2254.62,
+                2797.75
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-apothecary",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2786.8,
+                5064.11
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2786.8,
+                5064.11
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2787.68,
+                5064.19
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2787.68,
+                5064.19
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-customs",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2798.5,
+                5038.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2798.97,
+                5038.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2798.97,
+                5038.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2798.97,
+                5038.2
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-healer",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2747.5,
+                5067.51
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2747.5,
+                5067.51
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2747.5,
+                5067.51
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2747.5,
+                5067.51
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-house-0",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2735.06,
+                5059.14
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2735.06,
+                5059.14
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2735.06,
+                5059.14
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2735.06,
+                5059.14
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-house-1",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2729.55,
+                5053.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2729.55,
+                5053.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2729.55,
+                5053.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2729.55,
+                5053.1
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-house-2",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2723.85,
+                5046.39
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2723.85,
+                5046.39
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2724.36,
+                5046.39
+              ],
+              "inside": "lilmoth-house-1"
+            },
+            {
+              "f": 600,
+              "pos": [
+                2724.36,
+                5046.39
+              ],
+              "inside": "lilmoth-house-1"
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-house-3",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2719.83,
+                5039.66
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2719.83,
+                5039.66
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2719.83,
+                5039.66
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2719.83,
+                5039.66
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-house-4",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2752.56,
+                5033.87
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2752.56,
+                5033.87
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2752.56,
+                5033.87
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2752.56,
+                5033.87
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-inn-drowned",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2768.4,
+                5074.55
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2768.4,
+                5074.55
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2768.4,
+                5074.55
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2768.4,
+                5074.55
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-inn-stilt",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2760.95,
+                5074.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2760.95,
+                5074.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2760.95,
+                5074.2
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2760.95,
+                5074.2
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-ledger-house",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2797.17,
+                5045.88
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2797.17,
+                5045.88
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2797.17,
+                5045.88
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2797.17,
+                5045.88
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-market",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2785.35,
+                5048.79
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2785.35,
+                5048.79
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2785.85,
+                5048.79
+              ],
+              "inside": "lilmoth-smithy"
+            },
+            {
+              "f": 600,
+              "pos": [
+                2785.85,
+                5048.79
+              ],
+              "inside": "lilmoth-smithy"
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-pawn",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2775.03,
+                5067.47
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2775.5,
+                5067.47
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2775.5,
+                5067.47
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2775.5,
+                5067.47
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-rootpost",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2740.83,
+                5065.06
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2740.83,
+                5065.06
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2740.83,
+                5065.06
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2740.83,
+                5065.06
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-scribe",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2780.62,
+                5065.53
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2780.62,
+                5065.53
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2780.62,
+                5065.53
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2780.62,
+                5065.53
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-shrine",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2754.4,
+                5070.57
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2754.4,
+                5070.57
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2754.4,
+                5070.57
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2754.4,
+                5070.57
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-smithy",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2792.55,
+                5059.11
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2792.55,
+                5059.11
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2792.55,
+                5059.11
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2792.55,
+                5059.11
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "lilmoth-yard",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2798.53,
+                5038.91
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2798.53,
+                5038.91
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2798.97,
+                5038.91
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2798.97,
+                5038.91
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "soulrest-boneyard",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                605.93,
+                4900.21
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                607.47,
+                4900.24
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                607.47,
+                4900.24
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                607.47,
+                4900.24
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "soulrest-court-steps",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                626.98,
+                4894.08
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                627.01,
+                4894.24
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                627.01,
+                4894.24
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                627.01,
+                4894.24
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "soulrest-grey-hist",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                627.83,
+                4893.09
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                628.04,
+                4893.37
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                628.04,
+                4893.37
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                628.04,
+                4893.37
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "soulrest-market",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                627.16,
+                4895.51
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                627.16,
+                4895.51
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                627.16,
+                4895.51
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                627.16,
+                4895.51
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "soulrest-pawn",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                607.89,
+                4901.77
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                607.89,
+                4901.77
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                607.89,
+                4901.77
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                607.89,
+                4901.77
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "soulrest-quay",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                594.55,
+                4904.62
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                594.55,
+                4904.62
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                594.55,
+                4904.62
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                594.55,
+                4904.62
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "soulrest-smithy",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                620.36,
+                4907.34
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                620.36,
+                4907.34
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                620.36,
+                4907.34
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                620.36,
+                4907.34
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-archive",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2137.5,
+                736.98
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2137.5,
+                736.98
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2137.5,
+                736.98
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2137.5,
+                736.98
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-chapel",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2197.5,
+                739.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2197.5,
+                739.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2197.5,
+                739.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2197.5,
+                739.1
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-customs",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2151.54,
+                739.35
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2158.26,
+                738.95
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2158.26,
+                738.95
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2158.26,
+                738.95
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-gaol",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2144.45,
+                807.86
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2144.45,
+                807.86
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2144.45,
+                807.86
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2144.45,
+                807.86
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-house-0",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2140.47,
+                795.96
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2140.47,
+                795.96
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2140.47,
+                795.96
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2140.47,
+                795.96
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-house-1",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2167.5,
+                754.7
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2167.5,
+                754.7
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2167.5,
+                754.7
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2167.5,
+                754.7
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-house-2",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2129.53,
+                781.35
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2129.53,
+                781.35
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2129.53,
+                781.35
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2129.53,
+                781.35
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-house-3",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2182.5,
+                755.3
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2182.5,
+                755.3
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2182.5,
+                755.3
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2182.5,
+                755.3
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-house-4",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2124.91,
+                764.89
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2124.91,
+                764.89
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2124.91,
+                764.89
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2124.91,
+                764.89
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-inn-lean",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2184.24,
+                813.57
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2184.24,
+                813.57
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2184.24,
+                813.57
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2184.24,
+                813.57
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-inn-pass",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2181.09,
+                738.11
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2189.74,
+                738.01
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2189.74,
+                738.01
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2189.74,
+                738.01
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-kiln",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2152.5,
+                754.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2152.5,
+                754.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2152.5,
+                754.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2152.5,
+                754.1
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-market",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2206.04,
+                792.35
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2206.04,
+                792.35
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2206.04,
+                792.35
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2206.04,
+                792.35
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-praetorium",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2215.21,
+                777.27
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2215.21,
+                777.27
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2215.21,
+                777.27
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2215.21,
+                777.27
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-rootpost",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2137.5,
+                754.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2137.5,
+                754.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2137.5,
+                754.1
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2137.5,
+                754.1
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-scribe",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2203.23,
+                805.55
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2203.23,
+                805.55
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2203.23,
+                805.55
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2203.23,
+                805.55
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-shrine",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2163.8,
+                814.55
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2163.8,
+                814.55
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2163.8,
+                814.55
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2163.8,
+                814.55
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "stormhold-smithy",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                2166.09,
+                738.71
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                2174,
+                738.5
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                2174,
+                738.5
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                2174,
+                738.5
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "thorn-apothecary",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3832.32,
+                874.43
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3832.32,
+                874.43
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3832.32,
+                874.43
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3832.32,
+                874.43
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "thorn-gate",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3807.63,
+                874.51
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3807.63,
+                874.51
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3807.63,
+                874.51
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3807.63,
+                874.51
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "thorn-hall",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3831.26,
+                873.37
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3831.37,
+                873.34
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3831.37,
+                873.34
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3831.37,
+                873.34
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "thorn-house-0",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3808.9,
+                873.64
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3808.56,
+                873.64
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3808.56,
+                873.64
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3808.56,
+                873.64
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "thorn-inn",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3834.18,
+                874.15
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3834.96,
+                873.86
+              ],
+              "inside": "thorn-trader"
+            },
+            {
+              "f": 120,
+              "pos": [
+                3834.96,
+                873.86
+              ],
+              "inside": "thorn-trader"
+            },
+            {
+              "f": 600,
+              "pos": [
+                3834.96,
+                873.86
+              ],
+              "inside": "thorn-trader"
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "thorn-rootpost",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3812.67,
+                891.07
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3812.67,
+                891.07
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3812.67,
+                891.07
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3812.67,
+                891.07
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "thorn-sapwell",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3825.73,
+                884.09
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3825.73,
+                884.09
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3825.73,
+                884.09
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3825.73,
+                884.09
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "thorn-trader",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3836.86,
+                877
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3836.86,
+                877
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3836.86,
+                877
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3836.86,
+                877
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        },
+        {
+          "id": "writ-house",
+          "at": [
+            {
+              "f": 1,
+              "pos": [
+                3806,
+                900.6
+              ],
+              "inside": null
+            },
+            {
+              "f": 30,
+              "pos": [
+                3806,
+                900.6
+              ],
+              "inside": null
+            },
+            {
+              "f": 120,
+              "pos": [
+                3806,
+                900.6
+              ],
+              "inside": null
+            },
+            {
+              "f": 600,
+              "pos": [
+                3806,
+                900.6
+              ],
+              "inside": null
+            }
+          ],
+          "entered": true
+        }
+      ]
+    },
+    "L3_reentry": {
+      "what": "press `interact` on the doorstep and read which room the body is standing in eight frames later",
+      "doors_tested": 115,
+      "back_in_the_room_you_left": 96,
+      "LANDED_IN_A_DIFFERENT_ROOM": 10,
+      "could_not_get_in_at_all": 9,
+      "wrong_room_rows": [
+        {
+          "id": "blackrose-house-0",
+          "door_in_reach": "blackrose-house-1",
+          "dist_m": 0.5,
+          "landed_in": "blackrose-house-1",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "blackrose-inn",
+          "door_in_reach": "blackrose-warders-hall",
+          "dist_m": 0.5,
+          "landed_in": "blackrose-warders-hall",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "blackrose-market",
+          "door_in_reach": "blackrose-smithy",
+          "dist_m": 0.5,
+          "landed_in": "blackrose-smithy",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "blackrose-rootpost",
+          "door_in_reach": "blackrose-clerk",
+          "dist_m": 0.5,
+          "landed_in": "blackrose-clerk",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "lilmoth-customs",
+          "door_in_reach": "lilmoth-yard",
+          "dist_m": 2.03,
+          "landed_in": "lilmoth-yard",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "soulrest-boneyard",
+          "door_in_reach": "soulrest-pawn",
+          "dist_m": 1.159,
+          "landed_in": "soulrest-pawn",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "soulrest-court-steps",
+          "door_in_reach": "soulrest-market",
+          "dist_m": 0.863,
+          "landed_in": "soulrest-market",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "soulrest-grey-hist",
+          "door_in_reach": "soulrest-court-steps",
+          "dist_m": 0.799,
+          "landed_in": "soulrest-court-steps",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "thorn-hall",
+          "door_in_reach": "thorn-apothecary",
+          "dist_m": 0.077,
+          "landed_in": "thorn-apothecary",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "thorn-house-0",
+          "door_in_reach": "thorn-gate",
+          "dist_m": 0.303,
+          "landed_in": "thorn-gate",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        }
+      ],
+      "stuck_rows": [
+        "barge-hold",
+        "gideon-chapel",
+        "gideon-house-0",
+        "gideon-tollhouse",
+        "lilmoth-house-3",
+        "lilmoth-ledger-house",
+        "lilmoth-market",
+        "thorn-inn",
+        "writ-house"
+      ],
+      "rows": [
+        {
+          "id": "archon-apothecary",
+          "door_in_reach": "archon-apothecary",
+          "dist_m": 1.5,
+          "landed_in": "archon-apothecary",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "archon-guild-office",
+          "door_in_reach": "archon-guild-office",
+          "dist_m": 1.5,
+          "landed_in": "archon-guild-office",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "archon-house-0",
+          "door_in_reach": "archon-house-0",
+          "dist_m": 1.504,
+          "landed_in": "archon-house-0",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "archon-house-1",
+          "door_in_reach": "archon-house-1",
+          "dist_m": 1.5,
+          "landed_in": "archon-house-1",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "archon-house-2",
+          "door_in_reach": "archon-house-2",
+          "dist_m": 1.5,
+          "landed_in": "archon-house-2",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "archon-inn",
+          "door_in_reach": "archon-inn",
+          "dist_m": 1.643,
+          "landed_in": "archon-inn",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "archon-kiln-house",
+          "door_in_reach": "archon-kiln-house",
+          "dist_m": 1.5,
+          "landed_in": "archon-kiln-house",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "archon-market",
+          "door_in_reach": "archon-market",
+          "dist_m": 1.68,
+          "landed_in": "archon-market",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "archon-rootpost",
+          "door_in_reach": "archon-rootpost",
+          "dist_m": 1.499,
+          "landed_in": "archon-rootpost",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "archon-shrine",
+          "door_in_reach": "archon-shrine",
+          "dist_m": 1.5,
+          "landed_in": "archon-shrine",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "archon-vat-house",
+          "door_in_reach": "archon-vat-house",
+          "dist_m": 1.761,
+          "landed_in": "archon-vat-house",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "archon-ward",
+          "door_in_reach": "archon-ward",
+          "dist_m": 1.5,
+          "landed_in": "archon-ward",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "barge-hold",
+          "door_in_reach": null,
+          "dist_m": null,
+          "landed_in": null,
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "blackrose-clerk",
+          "door_in_reach": "blackrose-clerk",
+          "dist_m": 1.5,
+          "landed_in": "blackrose-clerk",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "blackrose-house-0",
+          "door_in_reach": "blackrose-house-1",
+          "dist_m": 0.5,
+          "landed_in": "blackrose-house-1",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "blackrose-house-1",
+          "door_in_reach": "blackrose-house-1",
+          "dist_m": 1.5,
+          "landed_in": "blackrose-house-1",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "blackrose-house-2",
+          "door_in_reach": "blackrose-house-2",
+          "dist_m": 1.5,
+          "landed_in": "blackrose-house-2",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "blackrose-inn",
+          "door_in_reach": "blackrose-warders-hall",
+          "dist_m": 0.5,
+          "landed_in": "blackrose-warders-hall",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "blackrose-market",
+          "door_in_reach": "blackrose-smithy",
+          "dist_m": 0.5,
+          "landed_in": "blackrose-smithy",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "blackrose-pawn",
+          "door_in_reach": "blackrose-pawn",
+          "dist_m": 1.5,
+          "landed_in": "blackrose-pawn",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "blackrose-prison",
+          "door_in_reach": "blackrose-prison",
+          "dist_m": 1.5,
+          "landed_in": "blackrose-prison",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "blackrose-rootpost",
+          "door_in_reach": "blackrose-clerk",
+          "dist_m": 0.5,
+          "landed_in": "blackrose-clerk",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "blackrose-shrine",
+          "door_in_reach": "blackrose-shrine",
+          "dist_m": 1.5,
+          "landed_in": "blackrose-shrine",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "blackrose-smithy",
+          "door_in_reach": "blackrose-smithy",
+          "dist_m": 1.5,
+          "landed_in": "blackrose-smithy",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "blackrose-warders-hall",
+          "door_in_reach": "blackrose-warders-hall",
+          "dist_m": 1.5,
+          "landed_in": "blackrose-warders-hall",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "gideon-apothecary",
+          "door_in_reach": "gideon-apothecary",
+          "dist_m": 1.5,
+          "landed_in": "gideon-apothecary",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "gideon-chapel",
+          "door_in_reach": null,
+          "dist_m": null,
+          "landed_in": null,
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "gideon-court",
+          "door_in_reach": "gideon-court",
+          "dist_m": 1.501,
+          "landed_in": "gideon-court",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "gideon-grange",
+          "door_in_reach": "gideon-grange",
+          "dist_m": 1.5,
+          "landed_in": "gideon-grange",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "gideon-house-0",
+          "door_in_reach": null,
+          "dist_m": null,
+          "landed_in": null,
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "gideon-house-1",
+          "door_in_reach": "gideon-house-1",
+          "dist_m": 1.5,
+          "landed_in": "gideon-house-1",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "gideon-inn",
+          "door_in_reach": "gideon-inn",
+          "dist_m": 1.5,
+          "landed_in": "gideon-inn",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "gideon-lowmarket",
+          "door_in_reach": "gideon-lowmarket",
+          "dist_m": 1.5,
+          "landed_in": "gideon-lowmarket",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "gideon-rootpost",
+          "door_in_reach": "gideon-rootpost",
+          "dist_m": 1.5,
+          "landed_in": "gideon-rootpost",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "gideon-shrine",
+          "door_in_reach": "gideon-shrine",
+          "dist_m": 0.625,
+          "landed_in": "gideon-shrine",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "gideon-smithy",
+          "door_in_reach": "gideon-smithy",
+          "dist_m": 1.5,
+          "landed_in": "gideon-smithy",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "gideon-tollhouse",
+          "door_in_reach": null,
+          "dist_m": null,
+          "landed_in": null,
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-apothecary",
+          "door_in_reach": "helstrom-apothecary",
+          "dist_m": 1.5,
+          "landed_in": "helstrom-apothecary",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-archive",
+          "door_in_reach": "helstrom-archive",
+          "dist_m": 1.5,
+          "landed_in": "helstrom-archive",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-deep-market",
+          "door_in_reach": "helstrom-deep-market",
+          "dist_m": 1.5,
+          "landed_in": "helstrom-deep-market",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-hist-shrine",
+          "door_in_reach": "helstrom-hist-shrine",
+          "dist_m": 1.499,
+          "landed_in": "helstrom-hist-shrine",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-hollow-bole",
+          "door_in_reach": "helstrom-hollow-bole",
+          "dist_m": 1.446,
+          "landed_in": "helstrom-hollow-bole",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-house-0",
+          "door_in_reach": "helstrom-house-0",
+          "dist_m": 1.5,
+          "landed_in": "helstrom-house-0",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-house-1",
+          "door_in_reach": "helstrom-house-1",
+          "dist_m": 1.5,
+          "landed_in": "helstrom-house-1",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-house-10",
+          "door_in_reach": "helstrom-house-10",
+          "dist_m": 0.764,
+          "landed_in": "helstrom-house-10",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-house-11",
+          "door_in_reach": "helstrom-house-11",
+          "dist_m": 1.851,
+          "landed_in": "helstrom-house-11",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-house-2",
+          "door_in_reach": "helstrom-house-2",
+          "dist_m": 1.696,
+          "landed_in": "helstrom-house-2",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-house-3",
+          "door_in_reach": "helstrom-house-3",
+          "dist_m": 1.5,
+          "landed_in": "helstrom-house-3",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-house-4",
+          "door_in_reach": "helstrom-house-4",
+          "dist_m": 1.5,
+          "landed_in": "helstrom-house-4",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-house-5",
+          "door_in_reach": "helstrom-house-5",
+          "dist_m": 1.499,
+          "landed_in": "helstrom-house-5",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-house-6",
+          "door_in_reach": "helstrom-house-6",
+          "dist_m": 1.284,
+          "landed_in": "helstrom-house-6",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-house-7",
+          "door_in_reach": "helstrom-house-7",
+          "dist_m": 1.5,
+          "landed_in": "helstrom-house-7",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-house-8",
+          "door_in_reach": "helstrom-house-8",
+          "dist_m": 1.499,
+          "landed_in": "helstrom-house-8",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-house-9",
+          "door_in_reach": "helstrom-house-9",
+          "dist_m": 1.501,
+          "landed_in": "helstrom-house-9",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-inn-egg",
+          "door_in_reach": "helstrom-inn-egg",
+          "dist_m": 1.5,
+          "landed_in": "helstrom-inn-egg",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-inn-gate",
+          "door_in_reach": "helstrom-inn-gate",
+          "dist_m": 1.5,
+          "landed_in": "helstrom-inn-gate",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-inn-tide",
+          "door_in_reach": "helstrom-inn-tide",
+          "dist_m": 1.499,
+          "landed_in": "helstrom-inn-tide",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-legation",
+          "door_in_reach": "helstrom-legation",
+          "dist_m": 1.501,
+          "landed_in": "helstrom-legation",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-rootpost",
+          "door_in_reach": "helstrom-rootpost",
+          "dist_m": 1.36,
+          "landed_in": "helstrom-rootpost",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-scriptorium",
+          "door_in_reach": "helstrom-scriptorium",
+          "dist_m": 1.501,
+          "landed_in": "helstrom-scriptorium",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-smithy",
+          "door_in_reach": "helstrom-smithy",
+          "dist_m": 1.5,
+          "landed_in": "helstrom-smithy",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-undertemple",
+          "door_in_reach": "helstrom-undertemple",
+          "dist_m": 1.5,
+          "landed_in": "helstrom-undertemple",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "helstrom-warders",
+          "door_in_reach": "helstrom-warders",
+          "dist_m": 1.501,
+          "landed_in": "helstrom-warders",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-apothecary",
+          "door_in_reach": "lilmoth-apothecary",
+          "dist_m": 1.5,
+          "landed_in": "lilmoth-apothecary",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-customs",
+          "door_in_reach": "lilmoth-yard",
+          "dist_m": 2.03,
+          "landed_in": "lilmoth-yard",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "lilmoth-healer",
+          "door_in_reach": "lilmoth-healer",
+          "dist_m": 1.5,
+          "landed_in": "lilmoth-healer",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-house-0",
+          "door_in_reach": "lilmoth-house-0",
+          "dist_m": 1.5,
+          "landed_in": "lilmoth-house-0",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-house-1",
+          "door_in_reach": "lilmoth-house-1",
+          "dist_m": 1.5,
+          "landed_in": "lilmoth-house-1",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-house-2",
+          "door_in_reach": "lilmoth-house-2",
+          "dist_m": 2.5,
+          "landed_in": "lilmoth-house-2",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-house-3",
+          "door_in_reach": null,
+          "dist_m": null,
+          "landed_in": null,
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-house-4",
+          "door_in_reach": "lilmoth-house-4",
+          "dist_m": 1.5,
+          "landed_in": "lilmoth-house-4",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-inn-drowned",
+          "door_in_reach": "lilmoth-inn-drowned",
+          "dist_m": 1.5,
+          "landed_in": "lilmoth-inn-drowned",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-inn-stilt",
+          "door_in_reach": "lilmoth-inn-stilt",
+          "dist_m": 1.5,
+          "landed_in": "lilmoth-inn-stilt",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-ledger-house",
+          "door_in_reach": null,
+          "dist_m": null,
+          "landed_in": null,
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-market",
+          "door_in_reach": null,
+          "dist_m": null,
+          "landed_in": null,
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-pawn",
+          "door_in_reach": "lilmoth-pawn",
+          "dist_m": 1.782,
+          "landed_in": "lilmoth-pawn",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-rootpost",
+          "door_in_reach": "lilmoth-rootpost",
+          "dist_m": 1.5,
+          "landed_in": "lilmoth-rootpost",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-scribe",
+          "door_in_reach": "lilmoth-scribe",
+          "dist_m": 1.5,
+          "landed_in": "lilmoth-scribe",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-shrine",
+          "door_in_reach": "lilmoth-shrine",
+          "dist_m": 1.5,
+          "landed_in": "lilmoth-shrine",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-smithy",
+          "door_in_reach": "lilmoth-smithy",
+          "dist_m": 1.5,
+          "landed_in": "lilmoth-smithy",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "lilmoth-yard",
+          "door_in_reach": "lilmoth-yard",
+          "dist_m": 1.75,
+          "landed_in": "lilmoth-yard",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "soulrest-boneyard",
+          "door_in_reach": "soulrest-pawn",
+          "dist_m": 1.159,
+          "landed_in": "soulrest-pawn",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "soulrest-court-steps",
+          "door_in_reach": "soulrest-market",
+          "dist_m": 0.863,
+          "landed_in": "soulrest-market",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "soulrest-grey-hist",
+          "door_in_reach": "soulrest-court-steps",
+          "dist_m": 0.799,
+          "landed_in": "soulrest-court-steps",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "soulrest-market",
+          "door_in_reach": "soulrest-market",
+          "dist_m": 1.5,
+          "landed_in": "soulrest-market",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "soulrest-pawn",
+          "door_in_reach": "soulrest-pawn",
+          "dist_m": 1.5,
+          "landed_in": "soulrest-pawn",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "soulrest-quay",
+          "door_in_reach": "soulrest-quay",
+          "dist_m": 1.5,
+          "landed_in": "soulrest-quay",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "soulrest-smithy",
+          "door_in_reach": "soulrest-smithy",
+          "dist_m": 1.499,
+          "landed_in": "soulrest-smithy",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-archive",
+          "door_in_reach": "stormhold-archive",
+          "dist_m": 1.5,
+          "landed_in": "stormhold-archive",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-chapel",
+          "door_in_reach": "stormhold-chapel",
+          "dist_m": 1.5,
+          "landed_in": "stormhold-chapel",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-customs",
+          "door_in_reach": "stormhold-customs",
+          "dist_m": 1.152,
+          "landed_in": "stormhold-customs",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-gaol",
+          "door_in_reach": "stormhold-gaol",
+          "dist_m": 1.5,
+          "landed_in": "stormhold-gaol",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-house-0",
+          "door_in_reach": "stormhold-house-0",
+          "dist_m": 1.5,
+          "landed_in": "stormhold-house-0",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-house-1",
+          "door_in_reach": "stormhold-house-1",
+          "dist_m": 1.5,
+          "landed_in": "stormhold-house-1",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-house-2",
+          "door_in_reach": "stormhold-house-2",
+          "dist_m": 1.5,
+          "landed_in": "stormhold-house-2",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-house-3",
+          "door_in_reach": "stormhold-house-3",
+          "dist_m": 1.5,
+          "landed_in": "stormhold-house-3",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-house-4",
+          "door_in_reach": "stormhold-house-4",
+          "dist_m": 1.5,
+          "landed_in": "stormhold-house-4",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-inn-lean",
+          "door_in_reach": "stormhold-inn-lean",
+          "dist_m": 1.5,
+          "landed_in": "stormhold-inn-lean",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-inn-pass",
+          "door_in_reach": "stormhold-inn-pass",
+          "dist_m": 0.735,
+          "landed_in": "stormhold-inn-pass",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-kiln",
+          "door_in_reach": "stormhold-kiln",
+          "dist_m": 1.5,
+          "landed_in": "stormhold-kiln",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-market",
+          "door_in_reach": "stormhold-market",
+          "dist_m": 1.501,
+          "landed_in": "stormhold-market",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-praetorium",
+          "door_in_reach": "stormhold-praetorium",
+          "dist_m": 1.5,
+          "landed_in": "stormhold-praetorium",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-rootpost",
+          "door_in_reach": "stormhold-rootpost",
+          "dist_m": 1.5,
+          "landed_in": "stormhold-rootpost",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-scribe",
+          "door_in_reach": "stormhold-scribe",
+          "dist_m": 1.5,
+          "landed_in": "stormhold-scribe",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-shrine",
+          "door_in_reach": "stormhold-shrine",
+          "dist_m": 1.499,
+          "landed_in": "stormhold-shrine",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "stormhold-smithy",
+          "door_in_reach": "stormhold-smithy",
+          "dist_m": 0.735,
+          "landed_in": "stormhold-smithy",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "thorn-apothecary",
+          "door_in_reach": "thorn-apothecary",
+          "dist_m": 1.5,
+          "landed_in": "thorn-apothecary",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "thorn-gate",
+          "door_in_reach": "thorn-gate",
+          "dist_m": 1.501,
+          "landed_in": "thorn-gate",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "thorn-hall",
+          "door_in_reach": "thorn-apothecary",
+          "dist_m": 0.077,
+          "landed_in": "thorn-apothecary",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "thorn-house-0",
+          "door_in_reach": "thorn-gate",
+          "dist_m": 0.303,
+          "landed_in": "thorn-gate",
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": true
+        },
+        {
+          "id": "thorn-inn",
+          "door_in_reach": null,
+          "dist_m": null,
+          "landed_in": null,
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "thorn-rootpost",
+          "door_in_reach": "thorn-rootpost",
+          "dist_m": 1.5,
+          "landed_in": "thorn-rootpost",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "thorn-sapwell",
+          "door_in_reach": "thorn-sapwell",
+          "dist_m": 1.5,
+          "landed_in": "thorn-sapwell",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "thorn-trader",
+          "door_in_reach": "thorn-trader",
+          "dist_m": 1.501,
+          "landed_in": "thorn-trader",
+          "back_in_the_room_you_left": true,
+          "landed_somewhere_else": false
+        },
+        {
+          "id": "writ-house",
+          "door_in_reach": null,
+          "dist_m": null,
+          "landed_in": null,
+          "back_in_the_room_you_left": false,
+          "landed_somewhere_else": false
+        }
+      ]
+    }
+  },
+  "findings": [
+    "L2: 10 bodies inside a building after 600 frames, against 0 after one — the body settles somewhere worse than where it is put",
+    "L3: pressing interact on 10 of 115 doorsteps enters a DIFFERENT building from the one just left",
+    "L3: 9 of 115 doorsteps cannot re-enter any door at all"
+  ],
+  "doors": 115,
+  "page_errors": []
+}

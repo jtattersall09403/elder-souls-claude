@@ -1,0 +1,1180 @@
+{
+  "tool": "souls-ledger-oracle",
+  "at": "2026-08-08T01:21:21.475Z",
+  "self_break": true,
+  "alphabet": [
+    "kill_some",
+    "kill_all",
+    "release",
+    "materialise",
+    "named_load",
+    "save_load",
+    "rest"
+  ],
+  "exhaustive_length": 2,
+  "sampled_length": 5,
+  "sampled": 10,
+  "routes": 59,
+  "clean": 24,
+  "threw": 16,
+  "invariants": {
+    "I1": {
+      "statement": "a body-life is paid for at most once",
+      "owner": "game/src/sim/souls.js",
+      "violations": 0,
+      "examples": []
+    },
+    "I2": {
+      "statement": "a body-life that dies is paid exactly its statblock value x night",
+      "owner": "game/src/sim/souls.js",
+      "violations": 21,
+      "examples": [
+        {
+          "route": "kill_some > kill_some",
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        },
+        {
+          "route": "kill_some > kill_some",
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 42,
+          "eids": [
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        },
+        {
+          "route": "kill_some > kill_all",
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        },
+        {
+          "route": "kill_some > kill_all",
+          "inv": "I2",
+          "after": "kill_all",
+          "paid": 0,
+          "want": 42,
+          "eids": [
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        },
+        {
+          "route": "kill_some > release",
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        },
+        {
+          "route": "kill_some > materialise",
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        },
+        {
+          "route": "kill_some > named_load",
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        },
+        {
+          "route": "kill_some > rest",
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ]
+    },
+    "I3": {
+      "statement": "an eid last observed dead is never observed alive again without the rest epoch moving",
+      "owner": "game/src/world/population.js + engine.js loadState",
+      "violations": 0,
+      "examples": [],
+      "known_open": "Every route that still violates I3 contains `save_load`. applySave() calls population.reset(), which empties the post index AND the register of who was down, while applySave restores the bodies and death.ordinaryRespawnEpoch does not move. That is GAP-W1-population-save-reload-repays-every-corpse (W1-POPULATION-r1 §2), filed and open, and its remedy is to persist the cleared-post set into the save. A route violating I3 WITHOUT `save_load` in it would be new and is not expected."
+    }
+  },
+  "page_errors": [],
+  "results": [
+    {
+      "route": "kill_some > kill_some",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        },
+        {
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 42,
+          "eids": [
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "n": 5
+        },
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 42,
+          "n": 1
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_some > kill_all",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        },
+        {
+          "inv": "I2",
+          "after": "kill_all",
+          "paid": 0,
+          "want": 42,
+          "eids": [
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "n": 5
+        },
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 42,
+          "n": 1
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_some > release",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "n": 5
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_some > materialise",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "n": 5
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_some > named_load",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "n": 5
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_some > save_load",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "n": 5
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_some > rest",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "n": 5
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_all > kill_some",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0",
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "n": 6
+        },
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 0,
+          "n": 0
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_all > kill_all",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0",
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "n": 6
+        },
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 0,
+          "n": 0
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_all > release",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0",
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "n": 6
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_all > materialise",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0",
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "n": 6
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_all > named_load",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0",
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "n": 6
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_all > save_load",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0",
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "n": 6
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_all > rest",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0",
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "n": 6
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "release > kill_some",
+      "violations": [],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 0,
+          "n": 0
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "release > kill_all",
+      "violations": [],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 0,
+          "n": 0
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "release > release",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "release > materialise",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "release > named_load",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "release > save_load",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "release > rest",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "materialise > kill_some",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "n": 5
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "materialise > kill_all",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0",
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "n": 6
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "materialise > release",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "materialise > materialise",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "materialise > named_load",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "materialise > save_load",
+      "violations": [],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "materialise > rest",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "named_load > kill_some",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "n": 5
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "named_load > kill_all",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0",
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "n": 6
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "named_load > release",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "named_load > materialise",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "named_load > named_load",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "named_load > save_load",
+      "violations": [],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "named_load > rest",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "save_load > kill_some",
+      "violations": [],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "save_load > kill_all",
+      "violations": [],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "save_load > release",
+      "violations": [],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "save_load > materialise",
+      "violations": [],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "save_load > named_load",
+      "violations": [],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "save_load > save_load",
+      "violations": [],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "save_load > rest",
+      "violations": [],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "rest > kill_some",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "n": 5
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "rest > kill_all",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0",
+            "oracle-post-net-thrower-1"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 252,
+          "n": 6
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "rest > release",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "rest > materialise",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "rest > named_load",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "rest > save_load",
+      "violations": [],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "rest > rest",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "release > kill_all > save_load > kill_all > kill_all",
+      "violations": [],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 0,
+          "n": 0
+        },
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 0,
+          "n": 0
+        },
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 0,
+          "n": 0
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "materialise > materialise > named_load > named_load > rest",
+      "violations": [],
+      "broke": null,
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "kill_some > rest > save_load > kill_some > kill_some",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "n": 5
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "kill_some > save_load > kill_all > kill_all > named_load",
+      "violations": [
+        {
+          "inv": "I2",
+          "after": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "eids": [
+            "oracle-post-infantry-0",
+            "oracle-post-infantry-1",
+            "oracle-post-infantry-2",
+            "oracle-post-infantry-3",
+            "oracle-post-net-thrower-0"
+          ],
+          "note": "live bodies died for the wrong number of souls"
+        }
+      ],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 210,
+          "n": 5
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "save_load > kill_all > release > named_load > materialise",
+      "violations": [],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "release > save_load > kill_all > kill_some > named_load",
+      "violations": [],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 0,
+          "n": 0
+        },
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 0,
+          "n": 0
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "release > kill_some > kill_all > materialise > materialise",
+      "violations": [],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 0,
+          "n": 0
+        },
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 0,
+          "n": 0
+        }
+      ],
+      "bodies": 6
+    },
+    {
+      "route": "save_load > release > materialise > release > save_load",
+      "violations": [],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "save_load > named_load > kill_all > release > materialise",
+      "violations": [],
+      "broke": "save_load: this.ai.step is not a function",
+      "paid": [],
+      "bodies": 6
+    },
+    {
+      "route": "release > kill_some > save_load > save_load > kill_all",
+      "violations": [],
+      "broke": null,
+      "paid": [
+        {
+          "ev": "kill_some",
+          "paid": 0,
+          "want": 0,
+          "n": 0
+        },
+        {
+          "ev": "kill_all",
+          "paid": 0,
+          "want": 0,
+          "n": 0
+        }
+      ],
+      "bodies": 6
+    }
+  ]
+}

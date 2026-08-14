@@ -1,0 +1,325 @@
+{
+  "label": "B2-failopen",
+  "entry": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/wt-critic-w1-20/game/index.html",
+  "lines_checked": 7,
+  "lines_that_fit": 7,
+  "problems": [
+    "the_rootkeepers: FAIL-OPEN — meta.widest_px is absent, so `fits` was computed as 0 <= panel_w and is meaningless",
+    "the_rootkeepers: INDEPENDENT OVERFLOW — re-measured 756px across a 400px panel",
+    "the_drowned_court: FAIL-OPEN — meta.widest_px is absent, so `fits` was computed as 0 <= panel_w and is meaningless",
+    "the_drowned_court: INDEPENDENT OVERFLOW — re-measured 669px across a 400px panel",
+    "the_dockhands: FAIL-OPEN — meta.widest_px is absent, so `fits` was computed as 0 <= panel_w and is meaningless",
+    "the_dockhands: INDEPENDENT OVERFLOW — re-measured 498px across a 400px panel",
+    "the_ixtu_vakh: FAIL-OPEN — meta.widest_px is absent, so `fits` was computed as 0 <= panel_w and is meaningless",
+    "the_ixtu_vakh: INDEPENDENT OVERFLOW — re-measured 657px across a 400px panel",
+    "the_wet_ledger: FAIL-OPEN — meta.widest_px is absent, so `fits` was computed as 0 <= panel_w and is meaningless",
+    "the_wet_ledger: INDEPENDENT OVERFLOW — re-measured 823px across a 400px panel",
+    "the_imperial_assize: FAIL-OPEN — meta.widest_px is absent, so `fits` was computed as 0 <= panel_w and is meaningless",
+    "the_imperial_assize: INDEPENDENT OVERFLOW — re-measured 720px across a 400px panel",
+    "the_xul_aneekh: FAIL-OPEN — meta.widest_px is absent, so `fits` was computed as 0 <= panel_w and is meaningless",
+    "the_xul_aneekh: INDEPENDENT OVERFLOW — re-measured 603px across a 400px panel",
+    "long case: a 217-char string was NOT truncated — the 3-line ceiling did not engage"
+  ],
+  "verdict": "RED",
+  "detail": {
+    "lines": [
+      {
+        "faction": "the_rootkeepers",
+        "said": "The slate has 0 beside your name and a Leaf has 10. That is not a rule I made and I cannot rub it out. Go and do some counting.",
+        "said_len": 127,
+        "drawn_rows": [
+          "The slate has 0 beside your name and a Leaf has 10. That is not a rule I made and I cannot rub it out. Go and do some counting."
+        ],
+        "drawn_row_count": 1,
+        "joined_equals_said": true,
+        "shipped_fit": {
+          "text": "The slate has 0 beside your name and a Leaf has 10. That is not a rule I made and I cannot rub it out. Go and do some counting.",
+          "rows": [
+            "The slate has 0 beside your name and a Leaf has 10. That is not a rule I made and I cannot rub it out. Go and do some counting."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "register_rows": [
+          {
+            "text": "The slate has 0 beside your name and a Leaf has 10. That is not a rule I made and I cannot rub it out. Go and do some counting.",
+            "x": 582,
+            "w": 756,
+            "x0": 582,
+            "x1": 1338,
+            "px": 16,
+            "clipped": false,
+            "surface": "menus"
+          }
+        ],
+        "independent_widest_px": 756,
+        "painted_extent": [
+          582,
+          1338
+        ]
+      },
+      {
+        "faction": "the_drowned_court",
+        "said": "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them.",
+        "said_len": 114,
+        "drawn_rows": [
+          "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them."
+        ],
+        "drawn_row_count": 1,
+        "joined_equals_said": true,
+        "shipped_fit": {
+          "text": "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them.",
+          "rows": [
+            "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "register_rows": [
+          {
+            "text": "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them.",
+            "x": 626,
+            "w": 669,
+            "x0": 626,
+            "x1": 1295,
+            "px": 16,
+            "clipped": false,
+            "surface": "menus"
+          }
+        ],
+        "independent_widest_px": 669,
+        "painted_extent": [
+          626,
+          1295
+        ]
+      },
+      {
+        "faction": "the_dockhands",
+        "said": "The board doesn't know you. 0 against 10, and the hands put the names up, not me.",
+        "said_len": 81,
+        "drawn_rows": [
+          "The board doesn't know you. 0 against 10, and the hands put the names up, not me."
+        ],
+        "drawn_row_count": 1,
+        "joined_equals_said": true,
+        "shipped_fit": {
+          "text": "The board doesn't know you. 0 against 10, and the hands put the names up, not me.",
+          "rows": [
+            "The board doesn't know you. 0 against 10, and the hands put the names up, not me."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "register_rows": [
+          {
+            "text": "The board doesn't know you. 0 against 10, and the hands put the names up, not me.",
+            "x": 711,
+            "w": 498,
+            "x0": 711,
+            "x1": 1209,
+            "px": 16,
+            "clipped": false,
+            "surface": "menus"
+          }
+        ],
+        "independent_widest_px": 498,
+        "painted_extent": [
+          711,
+          1209
+        ]
+      },
+      {
+        "faction": "the_ixtu_vakh",
+        "said": "I've heard your name 0 times and I want 10. Nobody starts here. Go and be useful where somebody's watching.",
+        "said_len": 107,
+        "drawn_rows": [
+          "I've heard your name 0 times and I want 10. Nobody starts here. Go and be useful where somebody's watching."
+        ],
+        "drawn_row_count": 1,
+        "joined_equals_said": true,
+        "shipped_fit": {
+          "text": "I've heard your name 0 times and I want 10. Nobody starts here. Go and be useful where somebody's watching.",
+          "rows": [
+            "I've heard your name 0 times and I want 10. Nobody starts here. Go and be useful where somebody's watching."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "register_rows": [
+          {
+            "text": "I've heard your name 0 times and I want 10. Nobody starts here. Go and be useful where somebody's watching.",
+            "x": 632,
+            "w": 657,
+            "x0": 632,
+            "x1": 1289,
+            "px": 16,
+            "clipped": false,
+            "surface": "menus"
+          }
+        ],
+        "independent_widest_px": 657,
+        "painted_extent": [
+          632,
+          1289
+        ]
+      },
+      {
+        "faction": "the_wet_ledger",
+        "said": "The margin has your name in it 0 times and the next line wants 10. The Ledger remembers people by the margin. Give it more to remember.",
+        "said_len": 135,
+        "drawn_rows": [
+          "The margin has your name in it 0 times and the next line wants 10. The Ledger remembers people by the margin. Give it more to remember."
+        ],
+        "drawn_row_count": 1,
+        "joined_equals_said": true,
+        "shipped_fit": {
+          "text": "The margin has your name in it 0 times and the next line wants 10. The Ledger remembers people by the margin. Give it more to remember.",
+          "rows": [
+            "The margin has your name in it 0 times and the next line wants 10. The Ledger remembers people by the margin. Give it more to remember."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "register_rows": [
+          {
+            "text": "The margin has your name in it 0 times and the next line wants 10. The Ledger remembers people by the margin. Give it more to remember.",
+            "x": 548,
+            "w": 823,
+            "x0": 548,
+            "x1": 1371,
+            "px": 16,
+            "clipped": false,
+            "surface": "menus"
+          }
+        ],
+        "independent_widest_px": 823,
+        "painted_extent": [
+          548,
+          1371
+        ]
+      },
+      {
+        "faction": "the_imperial_assize",
+        "said": "The roll records 0 against your name and the grade requires 10. Applications are considered when the roll supports them.",
+        "said_len": 120,
+        "drawn_rows": [
+          "The roll records 0 against your name and the grade requires 10. Applications are considered when the roll supports them."
+        ],
+        "drawn_row_count": 1,
+        "joined_equals_said": true,
+        "shipped_fit": {
+          "text": "The roll records 0 against your name and the grade requires 10. Applications are considered when the roll supports them.",
+          "rows": [
+            "The roll records 0 against your name and the grade requires 10. Applications are considered when the roll supports them."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "register_rows": [
+          {
+            "text": "The roll records 0 against your name and the grade requires 10. Applications are considered when the roll supports them.",
+            "x": 600,
+            "w": 720,
+            "x0": 600,
+            "x1": 1320,
+            "px": 16,
+            "clipped": false,
+            "surface": "menus"
+          }
+        ],
+        "independent_widest_px": 720,
+        "painted_extent": [
+          600,
+          1320
+        ]
+      },
+      {
+        "faction": "the_xul_aneekh",
+        "said": "You are 0 to the hollow and the name you are asking for is 10. Names are not given. They are noticed.",
+        "said_len": 101,
+        "drawn_rows": [
+          "You are 0 to the hollow and the name you are asking for is 10. Names are not given. They are noticed."
+        ],
+        "drawn_row_count": 1,
+        "joined_equals_said": true,
+        "shipped_fit": {
+          "text": "You are 0 to the hollow and the name you are asking for is 10. Names are not given. They are noticed.",
+          "rows": [
+            "You are 0 to the hollow and the name you are asking for is 10. Names are not given. They are noticed."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "register_rows": [
+          {
+            "text": "You are 0 to the hollow and the name you are asking for is 10. Names are not given. They are noticed.",
+            "x": 659,
+            "w": 603,
+            "x0": 659,
+            "x1": 1262,
+            "px": 16,
+            "clipped": false,
+            "surface": "menus"
+          }
+        ],
+        "independent_widest_px": 603,
+        "painted_extent": [
+          659,
+          1262
+        ]
+      }
+    ],
+    "long_case": {
+      "text": "The tally has you at nought and the ledger wants ten and the bay keeps sending them in on the tide whether or not anybody has paid the fee for the burning of them, which is the same for all of you and always has been.",
+      "len": 217,
+      "toast": {
+        "text": "The tally has you at nought and the ledger wants ten and the bay keeps sending them in on the tide whether or not anybody has paid the fee for the burning of them, which is the same for all of you and always has been.",
+        "rows": [
+          "The tally has you at nought and the ledger wants ten and the bay keeps sending them in on the tide whether or not anybody has paid the fee for the burning of them, which is the same for all of you and always has been."
+        ],
+        "row_count": 1,
+        "wrap_budget": 99999,
+        "truncated": false,
+        "panel_w": 400,
+        "panel_h": 48,
+        "fits": true,
+        "overflow_px": 0
+      }
+    }
+  }
+}

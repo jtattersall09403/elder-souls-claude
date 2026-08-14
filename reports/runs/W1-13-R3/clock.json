@@ -1,0 +1,70 @@
+{
+  "schema": "w1-13/r3-clock@1",
+  "git": {
+    "commit": "0f6ff17e567f3c34f52ab16280cc9018e8f3de02",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "taken_at": "2026-08-07T23:01:49.109Z",
+  "rule": "RI-PRG04 §6 rule 4 — \"The clock does NOT advance on death. Only resting moves time. Dying repeatedly at a boss must not burn a quest deadline.\"",
+  "frames_per_day": 259200,
+  "arms": {
+    "shipped": {
+      "dead_frames": 150,
+      "clock_at_death": 20.967315,
+      "clock_at_respawn": 20.967315,
+      "across_dead_interval_h": 0,
+      "control_live_frames_h": 0.013889,
+      "env_frames_held_by_death": 6000,
+      "deaths_run": 40,
+      "total_dead_frames": 6040,
+      "hour_before_the_deaths": 20.967407,
+      "hour_after_the_deaths": 20.971111,
+      "phase_before": "night",
+      "phase_after": "night",
+      "hours_burned_by_the_deaths": 0.003704,
+      "souls_for_one_ordinary_kill": 57,
+      "award_hour_after": 21.526667,
+      "award_offset_h": 0.555556
+    },
+    "fix_deleted": {
+      "dead_frames": 150,
+      "clock_at_death": 20.967315,
+      "clock_at_respawn": 20.981204,
+      "across_dead_interval_h": 0.013889,
+      "control_live_frames_h": 0.013889,
+      "env_frames_held_by_death": 6000,
+      "deaths_run": 40,
+      "total_dead_frames": 6040,
+      "hour_before_the_deaths": 20.967407,
+      "hour_after_the_deaths": 21.526667,
+      "phase_before": "night",
+      "phase_after": "night",
+      "hours_burned_by_the_deaths": 0.55926,
+      "souls_for_one_ordinary_kill": 57,
+      "award_hour_after": 21.526667,
+      "award_offset_h": 0
+    }
+  },
+  "verdict": {
+    "T1_clock_frozen_across_the_death": true,
+    "T2_control_clock_runs_when_alive": true,
+    "T3_delete_the_fix_returns_the_old_number": true,
+    "T4_the_two_arms_differ": true,
+    "T5_death_burn_is_bounded_and_the_arms_differ": true,
+    "T5_consumer_moved_DEPRECATED_SEE_T6": null,
+    "T6_consumer_souls_paid": {
+      "shipped": 57,
+      "fix_deleted": 57
+    },
+    "T6_the_same_enemy_paid_differently": false,
+    "shipped_burn_is_one_live_frame_per_death": {
+      "hours": 0.003704,
+      "frames": 40,
+      "deaths": 40
+    },
+    "fix_is_inert": false,
+    "deaths_at_2058_kept_the_hour": true
+  },
+  "ok": true
+}

@@ -1,0 +1,324 @@
+{
+  "tool": "tools/world/critic-w1-04-r2a.mjs",
+  "entry": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/live/game/index.html",
+  "result": {
+    "interiors_listed": 115,
+    "sweep": {
+      "total": 115,
+      "entered": 115,
+      "refused": 0,
+      "errors": 0,
+      "agrees_verb": 115,
+      "agrees_graph": 115,
+      "exterior_restored_on_exit": 115,
+      "distinct_live_graph_signatures": 94,
+      "largest_identical_group": 7,
+      "misses": [],
+      "sample": [
+        {
+          "id": "archon-apothecary",
+          "entered": true,
+          "agrees_verb": true,
+          "agrees_graph": true,
+          "restored": true,
+          "drawn": "interior",
+          "want": "interior",
+          "room": "archon-apothecary",
+          "graph": {
+            "visible_cells": [
+              "interior"
+            ],
+            "cell": "interior",
+            "objects": 161,
+            "meshes": 127,
+            "triangles": 2460,
+            "lights": 5
+          }
+        },
+        {
+          "id": "archon-guild-office",
+          "entered": true,
+          "agrees_verb": true,
+          "agrees_graph": true,
+          "restored": true,
+          "drawn": "interior",
+          "want": "interior",
+          "room": "archon-guild-office",
+          "graph": {
+            "visible_cells": [
+              "interior"
+            ],
+            "cell": "interior",
+            "objects": 175,
+            "meshes": 137,
+            "triangles": 2484,
+            "lights": 5
+          }
+        },
+        {
+          "id": "archon-house-0",
+          "entered": true,
+          "agrees_verb": true,
+          "agrees_graph": true,
+          "restored": true,
+          "drawn": "interior",
+          "want": "interior",
+          "room": "archon-house-0",
+          "graph": {
+            "visible_cells": [
+              "interior"
+            ],
+            "cell": "interior",
+            "objects": 146,
+            "meshes": 114,
+            "triangles": 2328,
+            "lights": 5
+          }
+        }
+      ],
+      "triangle_range": [
+        388,
+        3444
+      ]
+    },
+    "renderer_perturbation": {
+      "room": "archon-apothecary",
+      "note": "The room builder builds the room from the record and the group is then emptied. The MODEL is untouched.",
+      "before": {
+        "verb_meshes": 127,
+        "verb_agrees": true,
+        "graph_meshes": 127,
+        "graph_objects": 161
+      },
+      "emptied": {
+        "verb_meshes": 127,
+        "verb_agrees": true,
+        "graph_meshes": 0,
+        "graph_objects": 1
+      },
+      "restored": {
+        "verb_meshes": 127,
+        "verb_agrees": true,
+        "graph_meshes": 127,
+        "graph_objects": 161
+      },
+      "verb_noticed_the_empty_room": false,
+      "graph_noticed_the_empty_room": true
+    },
+    "cache": {
+      "after_entry": {
+        "applyCalls": 1,
+        "setRecordCalls": 1,
+        "rebuilds": 0
+      },
+      "standing_still_600_frames": {
+        "applyCalls": 0,
+        "setRecordCalls": 0,
+        "rebuilds": 0
+      },
+      "reentry_same_record": {
+        "applyCalls": 2,
+        "setRecordCalls": 1,
+        "rebuilds": 0
+      },
+      "reentry_after_bounds_halved": {
+        "rebuilds": 1,
+        "graph": {
+          "visible_cells": [
+            "interior"
+          ],
+          "cell": "interior",
+          "objects": 147,
+          "meshes": 113,
+          "triangles": 2292,
+          "lights": 5
+        }
+      },
+      "graph_after_restore": {
+        "visible_cells": [
+          "interior"
+        ],
+        "cell": "interior",
+        "objects": 161,
+        "meshes": 127,
+        "triangles": 2460,
+        "lights": 5
+      },
+      "note": "rebuilds counts the times renderer.interiorKey actually changed, i.e. the times geometry was thrown away and rebuilt."
+    },
+    "schedules": {
+      "population": 329,
+      "changed_cell_09_to_03": 196,
+      "changed_position_09_to_03": 298,
+      "changed_both": 196,
+      "position_changed_without_cell_change": 102,
+      "walked_m_accumulated_09_to_03": 102,
+      "outdoors": [
+        {
+          "hour": 3,
+          "people": 329,
+          "at_null": 46,
+          "at_null_with_post": 23
+        },
+        {
+          "hour": 9,
+          "people": 329,
+          "at_null": 151,
+          "at_null_with_post": 128
+        },
+        {
+          "hour": 20,
+          "people": 329,
+          "at_null": 63,
+          "at_null_with_post": 40
+        }
+      ],
+      "note": "A cell change SNAPS the position (npc.js: \"a different cell is a different frame\"), so changed_position is mostly a consequence of changed_cell. walked_m counts only the walking branch."
+    },
+    "save_round_trip": {
+      "posted_people_before": 294,
+      "post_kept_after_load": 294,
+      "post_lost_after_load": 0,
+      "load_error": null,
+      "goal_null_after_load": 0,
+      "posted_people_present_inside_an_interior_after_load": 1,
+      "posted_present_inside_sample": [
+        "archon-keeper-apothecary"
+      ]
+    },
+    "unique_items": {
+      "interiors_declaring_one": 83,
+      "with_an_owner_declared": 72,
+      "sampled": 12,
+      "prop_exists": 11,
+      "taken": 11,
+      "theft_true": 0,
+      "crime_filed": 0,
+      "rows": [
+        {
+          "interior": "archon-apothecary",
+          "item": "archon-apothecary-unique",
+          "owner_declared": "npc:archon-priest-4",
+          "prop_exists": true,
+          "taken": true,
+          "theft": null,
+          "crime": null,
+          "inv_grew": true
+        },
+        {
+          "interior": "archon-guild-office",
+          "item": "archon-guild-office-unique",
+          "owner_declared": "npc:archon-priest-3",
+          "prop_exists": true,
+          "taken": true,
+          "theft": null,
+          "crime": null,
+          "inv_grew": true
+        },
+        {
+          "interior": "archon-inn",
+          "item": "archon-inn-unique",
+          "owner_declared": "npc:archon-cook-5",
+          "prop_exists": true,
+          "taken": true,
+          "theft": null,
+          "crime": null,
+          "inv_grew": true
+        },
+        {
+          "interior": "archon-kiln-house",
+          "item": "archon-kiln-house-unique",
+          "owner_declared": "npc:archon-factor-7",
+          "prop_exists": true,
+          "taken": true,
+          "theft": null,
+          "crime": null,
+          "inv_grew": true
+        },
+        {
+          "interior": "archon-market",
+          "item": "archon-market-unique",
+          "owner_declared": "npc:archon-priest-4",
+          "prop_exists": true,
+          "taken": true,
+          "theft": null,
+          "crime": null,
+          "inv_grew": true
+        },
+        {
+          "interior": "archon-rootpost",
+          "item": "archon-rootpost-unique",
+          "owner_declared": "npc:archon-scribe-6",
+          "prop_exists": true,
+          "taken": true,
+          "theft": null,
+          "crime": null,
+          "inv_grew": true
+        },
+        {
+          "interior": "archon-shrine",
+          "item": "archon-shrine-unique",
+          "owner_declared": "npc:archon-scribe-6",
+          "prop_exists": true,
+          "taken": true,
+          "theft": null,
+          "crime": null,
+          "inv_grew": true
+        },
+        {
+          "interior": "archon-vat-house",
+          "item": "archon-vat-house-unique",
+          "owner_declared": "npc:archon-priest-3",
+          "prop_exists": true,
+          "taken": true,
+          "theft": null,
+          "crime": null,
+          "inv_grew": true
+        },
+        {
+          "interior": "archon-ward",
+          "item": "archon-ward-unique",
+          "owner_declared": "npc:archon-cook-5",
+          "prop_exists": true,
+          "taken": true,
+          "theft": null,
+          "crime": null,
+          "inv_grew": true
+        },
+        {
+          "interior": "barge-hold",
+          "item": "barge-hold-unique",
+          "owner_declared": null,
+          "prop_exists": false,
+          "taken": false,
+          "theft": null,
+          "crime": null,
+          "inv_grew": false
+        },
+        {
+          "interior": "blackrose-clerk",
+          "item": "blackrose-clerk-unique",
+          "owner_declared": "npc:blackrose-publican-6",
+          "prop_exists": true,
+          "taken": true,
+          "theft": null,
+          "crime": null,
+          "inv_grew": true
+        },
+        {
+          "interior": "blackrose-inn",
+          "item": "blackrose-inn-unique",
+          "owner_declared": "npc:blackrose-legionary-3",
+          "prop_exists": true,
+          "taken": true,
+          "theft": null,
+          "crime": null,
+          "inv_grew": true
+        }
+      ]
+    }
+  },
+  "page_errors": [],
+  "failures": [],
+  "pass": true
+}

@@ -1,0 +1,223 @@
+{
+  "tool": "critic-w1-15-r3-live",
+  "at": "2026-08-08T02:26:30.192Z",
+  "assertions": [
+    {
+      "id": "L1-CHAIN",
+      "name": "the theft chain survives in the SHIPPED tree (three edits were lost mid-round once)",
+      "got": "_propertyHas true, props carrying property_instance 1",
+      "target": "_propertyHas present AND at least one furnished prop carries a property_instance",
+      "pass": true
+    },
+    {
+      "id": "L2-LAMPS",
+      "name": "the lamps reach the light field the detection model samples",
+      "got": "outside 0 sources -> inside 8 (archon-apothecary), ambient 0.04",
+      "target": "0 outside, >0 inside — the round's headline",
+      "pass": true
+    },
+    {
+      "id": "L2-FLAT",
+      "name": "the room is no longer FLAT: L varies across the floor, and does not track the sky",
+      "got": "noon max 1 min 0.2988 spread 0.7012; 03:00 spread 0.7012",
+      "target": "spread > 0.1 at noon AND the same spread at 03:00 (a lamp does not care what time it is)",
+      "pass": true
+    },
+    {
+      "id": "L2-SNUFF",
+      "name": "snuffing one lamp moves L where the player is standing",
+      "got": "world:archon.factor9.r0.lamp1: L 1 -> 0.536 (delta 0.464)",
+      "target": "a snuffable world lamp exists and snuffing it drops L by > 0.05",
+      "pass": true
+    },
+    {
+      "id": "L3-DARK",
+      "name": "THE UNDECLARED DIVERGENCE: a room that declares no lamp is DRAWN LIT and SIMULATED BLACK",
+      "got": "11 such interiors. helstrom-apothecary: sim sources 0, L 0.04..0.04; the renderer built 1 lamp(s) and lit 1",
+      "target": "the drawn lit set and the simulated lit set must agree — this is the same defect the round closed, inverted",
+      "pass": false
+    },
+    {
+      "id": "L4-COVER",
+      "name": "coverVolumes in the running world — the hand-feed this round did NOT close",
+      "got": "world 0, inside a furnished interior 0 (props in cell 2, occluders 0)",
+      "target": "> 0 — otherwise plausibleSet() returns [] and S-1's whole search plan is dead, exactly as LightField was",
+      "pass": false
+    },
+    {
+      "id": "L5-FENCE",
+      "name": "the owner's own local fence refuses stolen goods",
+      "got": "npc:archon-legionary-13 of archon: local fence.archon.salvage buys=true at 15 g; out-of-town fence.lilmoth.rot-hookline 16 g, fence.lilmoth.rot-veek 17 g, fence.gideon.docks 17 g; clean control 15 g",
+      "target": "buys=false, reason same_settlement — willBuy() authors that refusal and Engine.fenceQuote() stubs it out",
+      "pass": false
+    },
+    {
+      "id": "L6-ZONE",
+      "name": "p.zone inside an interior",
+      "got": "interior archon-apothecary, p.zone null",
+      "target": "non-null — the whole trespass ladder is behind it",
+      "pass": false
+    }
+  ],
+  "raw": {
+    "outside": {
+      "interior": null,
+      "interior_ambient_applied": false,
+      "ambient_L": 0.75,
+      "world_sources": 0,
+      "world_lit": 0,
+      "world_snuffable": 0,
+      "scenario_sources": 0,
+      "sources": []
+    },
+    "inside": {
+      "interior": "archon-apothecary",
+      "world_sources": 8,
+      "ambient_L": 0.04,
+      "snuffable": 7,
+      "ambient_applied": true
+    },
+    "pick": "archon-apothecary",
+    "noon": {
+      "n": 780,
+      "max": 1,
+      "min": 0.2988,
+      "spread": 0.7012,
+      "bright": [
+        -6.3,
+        3.2
+      ],
+      "dark": [
+        -6.3,
+        -7.3
+      ]
+    },
+    "night": {
+      "max": 1,
+      "min": 0.2988,
+      "spread": 0.7012
+    },
+    "snuff": {
+      "available": 7,
+      "id": "world:archon.factor9.r0.lamp1",
+      "L_before": 1,
+      "L_after": 0.536,
+      "delta": 0.464
+    },
+    "theft_chain": {
+      "spawnProp_carries_instance": true,
+      "propertyHas_exists": true,
+      "takeObject_exists": true,
+      "props_with_property_instance": 1,
+      "example": {
+        "name": "a purge for a poisoning nobody has named",
+        "instance": "archon-apothecary-unique"
+      }
+    },
+    "nolamp_ids": [
+      "helstrom-apothecary",
+      "helstrom-archive",
+      "helstrom-deep-market",
+      "helstrom-inn-egg",
+      "helstrom-inn-gate",
+      "helstrom-inn-tide",
+      "helstrom-rootpost",
+      "helstrom-scriptorium",
+      "helstrom-smithy",
+      "helstrom-warders",
+      "writ-house"
+    ],
+    "nolamp": {
+      "id": "helstrom-apothecary",
+      "world_sources": 0,
+      "ambient_L": 0.04,
+      "ambient_applied": true,
+      "L_max": 0.04,
+      "L_min": 0.04,
+      "drawn": {
+        "lights_declared": 0,
+        "lights_lit": 1,
+        "lamps_built": 1,
+        "id": "helstrom-apothecary"
+      },
+      "V_here": 0.05
+    },
+    "cover": {
+      "in_world": 0,
+      "in_a_furnished_interior": 0,
+      "props_in_cell": 2,
+      "occluders": 0
+    },
+    "fence": {
+      "owner": "npc:archon-legionary-13",
+      "owner_settlement": "archon",
+      "value_g": 47,
+      "local": {
+        "id": "fence.archon.salvage",
+        "q": {
+          "buys": true,
+          "price_g": 15,
+          "multiplier": 0.31893400000000005,
+          "unique": false,
+          "delayed_bounty": null,
+          "clears_stolen_from": true,
+          "laundered_from": "npc:archon-legionary-13"
+        }
+      },
+      "others": [
+        {
+          "id": "fence.lilmoth.rot-hookline",
+          "settlement": "lilmoth",
+          "q": {
+            "buys": true,
+            "price_g": 16,
+            "multiplier": 0.33343100000000003,
+            "unique": false,
+            "delayed_bounty": null,
+            "clears_stolen_from": true,
+            "laundered_from": "npc:archon-legionary-13"
+          }
+        },
+        {
+          "id": "fence.lilmoth.rot-veek",
+          "settlement": "lilmoth",
+          "q": {
+            "buys": true,
+            "price_g": 17,
+            "multiplier": 0.36967350000000004,
+            "unique": false,
+            "delayed_bounty": null,
+            "clears_stolen_from": true,
+            "laundered_from": "npc:archon-legionary-13"
+          }
+        },
+        {
+          "id": "fence.gideon.docks",
+          "settlement": "gideon",
+          "q": {
+            "buys": true,
+            "price_g": 17,
+            "multiplier": 0.3551765,
+            "unique": false,
+            "delayed_bounty": null,
+            "clears_stolen_from": true,
+            "laundered_from": "npc:archon-legionary-13"
+          }
+        }
+      ],
+      "clean_control": {
+        "buys": true,
+        "price_g": 15,
+        "multiplier": 0.31893400000000005,
+        "unique": false,
+        "delayed_bounty": null,
+        "clears_stolen_from": true,
+        "laundered_from": null
+      }
+    },
+    "zone": {
+      "inside": null,
+      "interior": "archon-apothecary"
+    }
+  }
+}

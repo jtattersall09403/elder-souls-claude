@@ -1,0 +1,98 @@
+{
+  "results": [
+    {
+      "id": "DTF-LAMP-OLD",
+      "name": "cutting syncInteriorLights() returns the OLD number",
+      "pass": true,
+      "detail": "without the fix: 0 world sources, L FLAT at 0.75 across all sampled points of the room at noon (spread 0) and 0.09 at 03:00 — indoor light tracking the sky, which is the pre-round build exactly"
+    },
+    {
+      "id": "DTF-LAMP-DIF",
+      "name": "the two arms genuinely differ",
+      "pass": true,
+      "detail": "with the fix: 8 world sources, L 0.2988..1 (spread 0.7012) and 1 at 03:00 — against 0 / flat 0.75 / 0.09"
+    },
+    {
+      "id": "DTF-THF-OLD",
+      "name": "cutting the takeProp routing returns the OLD number",
+      "pass": true,
+      "detail": "without the fix: theft null, registry 0 -> 0, inventory [{\"id\":\"archon-apothecary-unique\",\"stolen\":false,\"owner\":null}] — the item comes away clean, as it did all of wave 1"
+    },
+    {
+      "id": "DTF-THF-DIF",
+      "name": "the two arms genuinely differ",
+      "pass": true,
+      "detail": "with the fix: theft {\"theft\":true,\"stolen_from\":\"npc:archon-priest-4\"}, registry 0 -> 1, inventory [{\"id\":\"archon-apothecary-unique\",\"stolen\":true,\"owner\":\"npc:archon-priest-4\"}]"
+    },
+    {
+      "id": "DTF-CTL",
+      "name": "the CONTROL tree (a copy with NO cut) reproduces the working tree",
+      "pass": true,
+      "detail": "an uncut copy measures world_sources 8 and property_instance archon-apothecary-unique — if this failed, the staging itself would be the variable"
+    }
+  ],
+  "with_fix": {
+    "world_sources": 8,
+    "ambient_L": 0.04,
+    "interior_ambient_applied": true,
+    "L_noon_min": 0.2988,
+    "L_noon_max": 1,
+    "L_spread": 0.7012,
+    "L_0300_centre": 1,
+    "prop_property_instance": "archon-apothecary-unique",
+    "theft": {
+      "theft": true,
+      "stolen_from": "npc:archon-priest-4"
+    },
+    "registry": {
+      "before": 0,
+      "after": 1
+    },
+    "inventory_added": [
+      {
+        "id": "archon-apothecary-unique",
+        "stolen": true,
+        "owner": "npc:archon-priest-4"
+      }
+    ]
+  },
+  "without_fix": {
+    "world_sources": 0,
+    "ambient_L": 0.75,
+    "interior_ambient_applied": false,
+    "L_noon_min": 0.75,
+    "L_noon_max": 0.75,
+    "L_spread": 0,
+    "L_0300_centre": 0.09,
+    "prop_property_instance": "archon-apothecary-unique",
+    "theft": null,
+    "registry": {
+      "before": 0,
+      "after": 0
+    },
+    "inventory_added": [
+      {
+        "id": "archon-apothecary-unique",
+        "stolen": false,
+        "owner": null
+      }
+    ]
+  },
+  "cuts": [
+    {
+      "id": "lamps",
+      "file": "src/sim/stealth/system.js",
+      "occurrences": 1
+    },
+    {
+      "id": "lamps_ambient",
+      "file": "src/sim/stealth/system.js",
+      "occurrences": 1
+    },
+    {
+      "id": "theft",
+      "file": "src/engine.js",
+      "occurrences": 1
+    }
+  ]
+}

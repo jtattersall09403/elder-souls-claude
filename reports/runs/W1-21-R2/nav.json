@@ -1,0 +1,1112 @@
+{
+  "schema": "w1-21/r2-nav@1",
+  "git": {
+    "commit": "b90046016d8db1e5085d4d0ee04ec6f277d80d14",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "taken_at": "2026-08-08T00:14:40.557Z",
+  "load_declaration": {
+    "loadavg_at_start": "24.14 29.32 29.25",
+    "browsers": "one, kept for the whole run",
+    "loadavg_at_end": "26.61 28.02 28.74"
+  },
+  "checks": [
+    {
+      "id": "N0",
+      "what": "CONTROL: the presses this probe makes inside an open screen actually land",
+      "ok": true,
+      "detail": "menu opened 'inventory'; 8/8 right-steps and 8/8 left-steps moved getUIState()"
+    },
+    {
+      "id": "N1",
+      "what": "every destination navigable(ctx) advertises is reachable BY INPUT ALONE",
+      "ok": true,
+      "detail": "advertised [\"world\",\"journal\",\"sheet\",\"spells\",\"map\",\"levelup\"]; walkable [\"world\",\"inventory\",\"journal\",\"sheet\",\"spells\",\"map\",\"levelup\"]; input reached [inventory,journal,levelup,map,sheet,spells,world]; missing [-]. Walk actions {\"prev\":\"swap_left\",\"next\":\"swap_right\"}. Path right: inventory -> journal -> sheet -> spells -> map -> levelup -> world -> inventory -> journal -> sheet"
+    },
+    {
+      "id": "N1b",
+      "what": "W1-13 r4's own recipe (16 actions + 4 axes, one at a time) taken to a FIXED POINT",
+      "ok": true,
+      "detail": "16 actions and 4 axes from every screen discovered, 7 rounds: input reaches [inventory,journal,levelup,map,sheet,spells,world]; missing [-]. Route to levelup: menu -> swap_right -> swap_right -> swap_right -> swap_right -> swap_right. W1-13 r4's own probe still reports [\"inventory\",\"journal\",\"world\"] because its pass 2 visits only screens ONE press from the world and does not recurse — the ring is seven long."
+    },
+    {
+      "id": "N2",
+      "what": "RI-UIX04 Q7 survives the new door: journal and map are not adjacent in either direction",
+      "ok": true,
+      "detail": "from journal [{\"dir\":\"swap_right\",\"landed\":\"sheet\"},{\"dir\":\"swap_left\",\"landed\":\"inventory\"}]; from map [{\"dir\":\"swap_right\",\"landed\":\"levelup\"},{\"dir\":\"swap_left\",\"landed\":\"spells\"}]; journal ring [\"world\",\"inventory\",\"journal\",\"sheet\",\"spells\",\"levelup\"]; map ring [\"world\",\"inventory\",\"sheet\",\"spells\",\"map\",\"levelup\"]"
+    },
+    {
+      "id": "N4a",
+      "what": "CONTROL: a focus move on the paused screen moves pixels",
+      "ok": true,
+      "detail": "55627 pixels changed"
+    },
+    {
+      "id": "N4b",
+      "what": "a model change on a paused screen reaches the screen (verdict §4)",
+      "ok": true,
+      "detail": "black-water-draught 2 -> 1 in the simulation, and 164 pixels changed on screen (round 1 measured 0 px for exactly this). Menu paused=true, world advanced 0 frames across the press, actEpoch=8"
+    },
+    {
+      "id": "N5a",
+      "what": "getUIState().map.mutator_arities is ENUMERATED from the prototype, not a literal",
+      "ok": true,
+      "detail": "mutator_arities={\"observe\":0,\"restore\":1,\"resume\":0,\"suspend\":0} enumerated=true"
+    },
+    {
+      "id": "N5b",
+      "what": "and no mutator has a parameter in which a place can be named",
+      "ok": true,
+      "detail": "restore_reads=[\"stood\"] place_naming_parameters=[]"
+    },
+    {
+      "id": "N5c",
+      "what": "F1: a save forged in BOTH discovery fields is refused by the LIVE-WORLD load audit",
+      "ok": true,
+      "detail": "dropped=35 names; places 7 -> 7; revealed 3896 -> 3896; audit {\"dropped\":[\"lilmoth\",\"ixtaxh-tzil\",\"nine-mud\",\"the-weeping-ford\",\"xal-ithix\",\"kiln-camp\",\"sunken-barrow\",\"mudwater-landing\",\"rootway-post\",\"tenmarch-bridge\",\"hollow-reeds\",\"bone-ladder\",\"salt-egg-camp\",\"stilt-row\",\"clayfast\",\"the-red-wells\",\"tideway-shrine\",\"the-xanmeer-of-ix-thakla\",\"the-counting-obelisk\",\"wayshrine-of-the-ninth-root\",\"the-drowned-xanmeer\",\"xanmeer-of-sunken-teeth\",\"ceyatatar-zel-ayleid-vault\",\"the-leaning-stone\",\"the-border-falls\",\"the-glassed-crater\",\"bloodmarl-isle\",\"way-stormhold-thorn-0\",\"way-stormhold-thorn-1\",\"way-stormhold-helstrom-2\",\"way-helstrom-archon-3\",\"way-archon-thorn-4\",\"way-archon-thorn-5\",\"way-lilmoth-archon-6\",\"way-lilmoth-archon-7\"],\"phantom_cells\":38950,\"missing_cells\":0,\"claimed_places\":42,\"derived_places\":7,\"stood_cells\":8,\"legacy\":false}"
+    },
+    {
+      "id": "N5d",
+      "what": "F2: and no square for an unvisited place reaches the DRAWN map after that load",
+      "ok": true,
+      "detail": "7 squares drawn, 0 phantom []"
+    },
+    {
+      "id": "N5e",
+      "what": "F3: and the screen's own report says so, against a number the model did not supply",
+      "ok": true,
+      "detail": "places_drawn=7 places_discovered=7 stood_in=7"
+    },
+    {
+      "id": "N3",
+      "what": "RI-UIX03 P6: in a fight the two actions do NOT navigate — the offhand chord is intact",
+      "ok": true,
+      "detail": "in_combat=true mode inventory -> inventory, walk_live=false, menu paused=false"
+    }
+  ],
+  "setup": {
+    "hearth": "hearth-archon",
+    "at_hearth": true
+  },
+  "walk": {
+    "right": {
+      "path": [
+        "inventory",
+        "journal",
+        "sheet",
+        "spells",
+        "map",
+        "levelup",
+        "world",
+        "inventory",
+        "journal",
+        "sheet"
+      ],
+      "moved": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "advertised": [
+        "world",
+        "journal",
+        "sheet",
+        "spells",
+        "map",
+        "levelup"
+      ],
+      "walkable": [
+        "world",
+        "inventory",
+        "journal",
+        "sheet",
+        "spells",
+        "map",
+        "levelup"
+      ],
+      "actions": {
+        "prev": "swap_left",
+        "next": "swap_right"
+      },
+      "opened_by_menu": "inventory",
+      "walk_live": true,
+      "modes": [
+        "inventory",
+        "journal",
+        "levelup",
+        "map",
+        "sheet",
+        "spells",
+        "world"
+      ]
+    },
+    "left": {
+      "path": [
+        "inventory",
+        "world",
+        "inventory",
+        "world",
+        "inventory",
+        "world",
+        "inventory",
+        "world",
+        "inventory",
+        "world",
+        "inventory",
+        "world",
+        "inventory",
+        "world",
+        "inventory",
+        "world",
+        "inventory"
+      ],
+      "moved": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "advertised": [
+        "world",
+        "journal",
+        "sheet",
+        "spells",
+        "map",
+        "levelup"
+      ],
+      "walkable": [
+        "world",
+        "inventory",
+        "journal",
+        "sheet",
+        "spells",
+        "map",
+        "levelup"
+      ],
+      "actions": {
+        "prev": "swap_left",
+        "next": "swap_right"
+      },
+      "opened_by_menu": "inventory",
+      "walk_live": true,
+      "modes": [
+        "inventory",
+        "world"
+      ]
+    }
+  },
+  "closure": {
+    "actions_pressed": [
+      "light",
+      "heavy",
+      "roll",
+      "block",
+      "parry",
+      "sprint",
+      "jump",
+      "use_item",
+      "interact",
+      "lock_on",
+      "two_hand",
+      "swap_right",
+      "swap_left",
+      "menu",
+      "crouch",
+      "spell_cycle"
+    ],
+    "axes_pressed": [
+      "left",
+      "right",
+      "up",
+      "down"
+    ],
+    "rounds": 7,
+    "modes": [
+      "inventory",
+      "journal",
+      "levelup",
+      "map",
+      "sheet",
+      "spells",
+      "world"
+    ],
+    "routes": {
+      "world": "(the world)",
+      "inventory": "menu",
+      "journal": "menu -> swap_right",
+      "sheet": "menu -> swap_right -> swap_right",
+      "spells": "menu -> swap_right -> swap_right -> swap_right",
+      "map": "menu -> swap_right -> swap_right -> swap_right -> swap_right",
+      "levelup": "menu -> swap_right -> swap_right -> swap_right -> swap_right -> swap_right"
+    },
+    "edges": [
+      {
+        "from": "world",
+        "via": "menu",
+        "to": "inventory"
+      },
+      {
+        "from": "world",
+        "via": "menu",
+        "to": "inventory"
+      },
+      {
+        "from": "inventory",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "inventory",
+        "via": "swap_right",
+        "to": "journal"
+      },
+      {
+        "from": "inventory",
+        "via": "swap_left",
+        "to": "world"
+      },
+      {
+        "from": "inventory",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "world",
+        "via": "menu",
+        "to": "inventory"
+      },
+      {
+        "from": "inventory",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "inventory",
+        "via": "swap_right",
+        "to": "journal"
+      },
+      {
+        "from": "inventory",
+        "via": "swap_left",
+        "to": "world"
+      },
+      {
+        "from": "inventory",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "journal",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "journal",
+        "via": "swap_right",
+        "to": "sheet"
+      },
+      {
+        "from": "journal",
+        "via": "swap_left",
+        "to": "inventory"
+      },
+      {
+        "from": "journal",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "world",
+        "via": "menu",
+        "to": "inventory"
+      },
+      {
+        "from": "inventory",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "inventory",
+        "via": "swap_right",
+        "to": "journal"
+      },
+      {
+        "from": "inventory",
+        "via": "swap_left",
+        "to": "world"
+      },
+      {
+        "from": "inventory",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "journal",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "journal",
+        "via": "swap_right",
+        "to": "sheet"
+      },
+      {
+        "from": "journal",
+        "via": "swap_left",
+        "to": "inventory"
+      },
+      {
+        "from": "journal",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "sheet",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "sheet",
+        "via": "swap_right",
+        "to": "spells"
+      },
+      {
+        "from": "sheet",
+        "via": "swap_left",
+        "to": "journal"
+      },
+      {
+        "from": "sheet",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "world",
+        "via": "menu",
+        "to": "inventory"
+      },
+      {
+        "from": "inventory",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "inventory",
+        "via": "swap_right",
+        "to": "journal"
+      },
+      {
+        "from": "inventory",
+        "via": "swap_left",
+        "to": "world"
+      },
+      {
+        "from": "inventory",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "journal",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "journal",
+        "via": "swap_right",
+        "to": "sheet"
+      },
+      {
+        "from": "journal",
+        "via": "swap_left",
+        "to": "inventory"
+      },
+      {
+        "from": "journal",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "sheet",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "sheet",
+        "via": "swap_right",
+        "to": "spells"
+      },
+      {
+        "from": "sheet",
+        "via": "swap_left",
+        "to": "journal"
+      },
+      {
+        "from": "sheet",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "spells",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "spells",
+        "via": "swap_right",
+        "to": "map"
+      },
+      {
+        "from": "spells",
+        "via": "swap_left",
+        "to": "sheet"
+      },
+      {
+        "from": "spells",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "world",
+        "via": "menu",
+        "to": "inventory"
+      },
+      {
+        "from": "inventory",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "inventory",
+        "via": "swap_right",
+        "to": "journal"
+      },
+      {
+        "from": "inventory",
+        "via": "swap_left",
+        "to": "world"
+      },
+      {
+        "from": "inventory",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "journal",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "journal",
+        "via": "swap_right",
+        "to": "sheet"
+      },
+      {
+        "from": "journal",
+        "via": "swap_left",
+        "to": "inventory"
+      },
+      {
+        "from": "journal",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "sheet",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "sheet",
+        "via": "swap_right",
+        "to": "spells"
+      },
+      {
+        "from": "sheet",
+        "via": "swap_left",
+        "to": "journal"
+      },
+      {
+        "from": "sheet",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "spells",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "spells",
+        "via": "swap_right",
+        "to": "map"
+      },
+      {
+        "from": "spells",
+        "via": "swap_left",
+        "to": "sheet"
+      },
+      {
+        "from": "spells",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "map",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "map",
+        "via": "swap_right",
+        "to": "levelup"
+      },
+      {
+        "from": "map",
+        "via": "swap_left",
+        "to": "spells"
+      },
+      {
+        "from": "map",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "world",
+        "via": "menu",
+        "to": "inventory"
+      },
+      {
+        "from": "inventory",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "inventory",
+        "via": "swap_right",
+        "to": "journal"
+      },
+      {
+        "from": "inventory",
+        "via": "swap_left",
+        "to": "world"
+      },
+      {
+        "from": "inventory",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "journal",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "journal",
+        "via": "swap_right",
+        "to": "sheet"
+      },
+      {
+        "from": "journal",
+        "via": "swap_left",
+        "to": "inventory"
+      },
+      {
+        "from": "journal",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "sheet",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "sheet",
+        "via": "swap_right",
+        "to": "spells"
+      },
+      {
+        "from": "sheet",
+        "via": "swap_left",
+        "to": "journal"
+      },
+      {
+        "from": "sheet",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "spells",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "spells",
+        "via": "swap_right",
+        "to": "map"
+      },
+      {
+        "from": "spells",
+        "via": "swap_left",
+        "to": "sheet"
+      },
+      {
+        "from": "spells",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "map",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "map",
+        "via": "swap_right",
+        "to": "levelup"
+      },
+      {
+        "from": "map",
+        "via": "swap_left",
+        "to": "spells"
+      },
+      {
+        "from": "map",
+        "via": "menu",
+        "to": "world"
+      },
+      {
+        "from": "levelup",
+        "via": "roll",
+        "to": "world"
+      },
+      {
+        "from": "levelup",
+        "via": "swap_right",
+        "to": "world"
+      },
+      {
+        "from": "levelup",
+        "via": "swap_left",
+        "to": "map"
+      },
+      {
+        "from": "levelup",
+        "via": "menu",
+        "to": "world"
+      }
+    ]
+  },
+  "q7": {
+    "from_journal": [
+      {
+        "dir": "swap_right",
+        "landed": "sheet"
+      },
+      {
+        "dir": "swap_left",
+        "landed": "inventory"
+      }
+    ],
+    "from_map": [
+      {
+        "dir": "swap_right",
+        "landed": "levelup"
+      },
+      {
+        "dir": "swap_left",
+        "landed": "spells"
+      }
+    ],
+    "journal_ring": [
+      "world",
+      "inventory",
+      "journal",
+      "sheet",
+      "spells",
+      "levelup"
+    ],
+    "map_ring": [
+      "world",
+      "inventory",
+      "sheet",
+      "spells",
+      "map",
+      "levelup"
+    ]
+  },
+  "paused": {
+    "mode": "inventory",
+    "paused": true,
+    "potion": {
+      "id": "black-water-draught",
+      "count": 3,
+      "condition": 1
+    },
+    "inventory": [
+      "black-water-draughtx3",
+      "bog-iron-maulx1",
+      "boiled-hide-jackx1",
+      "bone-picksx5",
+      "carved-eggx1",
+      "chitin-cuirassx1",
+      "coil-of-twinex1",
+      "counted-crate-tallyx1",
+      "cracked-shell-cupx1",
+      "factors-coatx1",
+      "fever-cutx2",
+      "fire-drillx1",
+      "guar-jerkyx6",
+      "hackle-lo-leafx12",
+      "hist-bark-tokenx1",
+      "hist-sap-bowx1",
+      "hooked-gutting-knifex1",
+      "iron-gall-inkhornx1",
+      "kwama-cuttlex4",
+      "ledger-fragmentx1",
+      "legion-greavesx1",
+      "marsh-marrowx7",
+      "moth-silk-robex1",
+      "mud-slip-bowlx1",
+      "netting-needlex1",
+      "pilots-chart-bookx1",
+      "reed-cutterx1",
+      "reed-lanternx1",
+      "resin-lamp-oilx2",
+      "resin-of-the-combx2",
+      "rootweave-cowlx1",
+      "rotted-hall-keyx1",
+      "salt-brickx2",
+      "sealed-letter-stormholdx1",
+      "shell-scale-hauberkx1",
+      "shore-compassx1",
+      "silt-strider-silk-sashx1",
+      "sleeper-draughtx1",
+      "stamped-writx1",
+      "the-drowned-fordx1",
+      "warden-issue-sabrex1",
+      "warden-whistlex1",
+      "weighing-stonex1",
+      "wet-season-bootsx1"
+    ],
+    "rows": 15,
+    "row_kinds": [
+      "health_bar",
+      "stamina_bar",
+      "focus_bar",
+      "heal_charges",
+      "equip_load",
+      "quick_slots",
+      "interact_prompt",
+      "panel",
+      "panel_header",
+      "encumbrance",
+      "category",
+      "gold",
+      "divider",
+      "list_row",
+      "scroll_extent",
+      "detail_panel",
+      "hint"
+    ]
+  },
+  "phase_a": {
+    "id": "black-water-draught",
+    "start": 3,
+    "now": 2,
+    "presses": 1,
+    "focus": {
+      "col": 1,
+      "tagIdx": 0,
+      "rowIdx": 1,
+      "sortIdx": 0
+    }
+  },
+  "use": {
+    "id": "black-water-draught",
+    "before": 2,
+    "after": 1,
+    "mode": "inventory",
+    "paused": true,
+    "frames_advanced": 0,
+    "act_epoch": 8,
+    "pixels_changed": 164
+  },
+  "map_state": {
+    "map": {
+      "exists": true,
+      "reachable_from_journal": false,
+      "journal_reachable_from_map": false,
+      "markers": 0,
+      "routes_drawn": 0,
+      "quest_bearing_elements": [],
+      "travel_affordances": [],
+      "numeric_text": [],
+      "drawn_cells": 0,
+      "revealed_cells": 0,
+      "total_cells": 42846,
+      "places_drawn": 0,
+      "places_discovered": 0,
+      "view": "world",
+      "mutator_arities": {
+        "observe": 0,
+        "restore": 1,
+        "resume": 0,
+        "suspend": 0
+      },
+      "mutators": [
+        {
+          "name": "observe",
+          "arity": 0
+        },
+        {
+          "name": "restore",
+          "arity": 1
+        },
+        {
+          "name": "resume",
+          "arity": 0
+        },
+        {
+          "name": "suspend",
+          "arity": 0
+        }
+      ],
+      "mutators_enumerated": true,
+      "zero_arity_mutators": [
+        "observe",
+        "resume",
+        "suspend"
+      ],
+      "restore_reads": [
+        "stood"
+      ],
+      "place_naming_parameters": []
+    },
+    "mode": "map"
+  },
+  "honest_walk": {
+    "honest": {
+      "places": [
+        "stormhold",
+        "thorn",
+        "gideon",
+        "helstrom",
+        "archon",
+        "blackrose",
+        "soulrest"
+      ],
+      "revealed": 3896,
+      "interior": null,
+      "suspended": false
+    },
+    "reached": [
+      "stormhold",
+      "thorn",
+      "gideon",
+      "helstrom",
+      "archon",
+      "blackrose",
+      "soulrest"
+    ],
+    "refused": [],
+    "neighbour_throws": [],
+    "phase": "honest"
+  },
+  "forge": {
+    "honest": {
+      "places": [
+        "stormhold",
+        "thorn",
+        "gideon",
+        "helstrom",
+        "archon",
+        "blackrose",
+        "soulrest"
+      ],
+      "revealed": 3896,
+      "interior": null,
+      "suspended": false
+    },
+    "after": {
+      "places": [
+        "stormhold",
+        "thorn",
+        "gideon",
+        "helstrom",
+        "archon",
+        "blackrose",
+        "soulrest"
+      ],
+      "revealed": 3896
+    },
+    "audit": {
+      "dropped": [
+        "lilmoth",
+        "ixtaxh-tzil",
+        "nine-mud",
+        "the-weeping-ford",
+        "xal-ithix",
+        "kiln-camp",
+        "sunken-barrow",
+        "mudwater-landing",
+        "rootway-post",
+        "tenmarch-bridge",
+        "hollow-reeds",
+        "bone-ladder",
+        "salt-egg-camp",
+        "stilt-row",
+        "clayfast",
+        "the-red-wells",
+        "tideway-shrine",
+        "the-xanmeer-of-ix-thakla",
+        "the-counting-obelisk",
+        "wayshrine-of-the-ninth-root",
+        "the-drowned-xanmeer",
+        "xanmeer-of-sunken-teeth",
+        "ceyatatar-zel-ayleid-vault",
+        "the-leaning-stone",
+        "the-border-falls",
+        "the-glassed-crater",
+        "bloodmarl-isle",
+        "way-stormhold-thorn-0",
+        "way-stormhold-thorn-1",
+        "way-stormhold-helstrom-2",
+        "way-helstrom-archon-3",
+        "way-archon-thorn-4",
+        "way-archon-thorn-5",
+        "way-lilmoth-archon-6",
+        "way-lilmoth-archon-7"
+      ],
+      "phantom_cells": 38950,
+      "missing_cells": 0,
+      "claimed_places": 42,
+      "derived_places": 7,
+      "stood_cells": 8,
+      "legacy": false
+    },
+    "dropped_on_load": [
+      "lilmoth",
+      "ixtaxh-tzil",
+      "nine-mud",
+      "the-weeping-ford",
+      "xal-ithix",
+      "kiln-camp",
+      "sunken-barrow",
+      "mudwater-landing",
+      "rootway-post",
+      "tenmarch-bridge",
+      "hollow-reeds",
+      "bone-ladder",
+      "salt-egg-camp",
+      "stilt-row",
+      "clayfast",
+      "the-red-wells",
+      "tideway-shrine",
+      "the-xanmeer-of-ix-thakla",
+      "the-counting-obelisk",
+      "wayshrine-of-the-ninth-root",
+      "the-drowned-xanmeer",
+      "xanmeer-of-sunken-teeth",
+      "ceyatatar-zel-ayleid-vault",
+      "the-leaning-stone",
+      "the-border-falls",
+      "the-glassed-crater",
+      "bloodmarl-isle",
+      "way-stormhold-thorn-0",
+      "way-stormhold-thorn-1",
+      "way-stormhold-helstrom-2",
+      "way-helstrom-archon-3",
+      "way-archon-thorn-4",
+      "way-archon-thorn-5",
+      "way-lilmoth-archon-6",
+      "way-lilmoth-archon-7"
+    ],
+    "map": {
+      "exists": true,
+      "reachable_from_journal": false,
+      "journal_reachable_from_map": false,
+      "markers": 0,
+      "routes_drawn": 0,
+      "quest_bearing_elements": [],
+      "travel_affordances": [],
+      "numeric_text": [],
+      "drawn_cells": 3896,
+      "revealed_cells": 3896,
+      "total_cells": 42846,
+      "places_drawn": 7,
+      "places_discovered": 7,
+      "view": "world",
+      "mutator_arities": {
+        "observe": 0,
+        "restore": 1,
+        "resume": 0,
+        "suspend": 0
+      },
+      "mutators": [
+        {
+          "name": "observe",
+          "arity": 0
+        },
+        {
+          "name": "restore",
+          "arity": 1
+        },
+        {
+          "name": "resume",
+          "arity": 0
+        },
+        {
+          "name": "suspend",
+          "arity": 0
+        }
+      ],
+      "mutators_enumerated": true,
+      "zero_arity_mutators": [
+        "observe",
+        "resume",
+        "suspend"
+      ],
+      "restore_reads": [
+        "stood"
+      ],
+      "place_naming_parameters": []
+    }
+  },
+  "in_combat": {
+    "entities": [
+      "INFANTRY"
+    ],
+    "target": "E1",
+    "combat_keys": [
+      "schema",
+      "unit",
+      "frame",
+      "player",
+      "menu",
+      "lock",
+      "world_knowledge",
+      "enemies",
+      "state_enums"
+    ],
+    "in_combat_field": null,
+    "mode_before": "inventory",
+    "walk_live": false,
+    "mode_after": "inventory",
+    "navigated": false,
+    "menu_paused": false,
+    "in_combat": true
+  },
+  "ok": true,
+  "native": "12/12"
+}

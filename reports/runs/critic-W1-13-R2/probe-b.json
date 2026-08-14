@@ -1,0 +1,482 @@
+{
+  "schema": "critic/w1-13-r2-b@1",
+  "taken_at": "2026-08-07T16:33:16.108Z",
+  "arms": [
+    {
+      "at_start": {
+        "level": 1,
+        "souls": 400000,
+        "attributes": {
+          "vigour": 10,
+          "endurance": 20,
+          "strength": 12,
+          "dexterity": 12,
+          "intelligence": 10,
+          "faith": 10
+        },
+        "stats_hp_max": 620,
+        "stats_stamina_max": 120,
+        "stats_focus_max": 94,
+        "body_hp_max": 620,
+        "body_stamina_max": 120,
+        "magic_focus_max": 94,
+        "sim_pools": null,
+        "has_character": false,
+        "pools_dirty": false
+      },
+      "vigour": {
+        "attribute": "vigour",
+        "levels_bought": 8,
+        "the_screen_promised": [
+          {
+            "key": "hp_max",
+            "label": "hp max",
+            "from": 300,
+            "to": 326
+          }
+        ],
+        "before": {
+          "level": 1,
+          "souls": 400000,
+          "attributes": {
+            "vigour": 10,
+            "endurance": 20,
+            "strength": 12,
+            "dexterity": 12,
+            "intelligence": 10,
+            "faith": 10
+          },
+          "stats_hp_max": 620,
+          "stats_stamina_max": 120,
+          "stats_focus_max": 94,
+          "body_hp_max": 620,
+          "body_stamina_max": 120,
+          "magic_focus_max": 94,
+          "sim_pools": null,
+          "has_character": false,
+          "pools_dirty": false
+        },
+        "after": {
+          "level": 9,
+          "souls": 394582,
+          "attributes": {
+            "vigour": 18,
+            "endurance": 20,
+            "strength": 12,
+            "dexterity": 12,
+            "intelligence": 10,
+            "faith": 10
+          },
+          "stats_hp_max": 620,
+          "stats_stamina_max": 120,
+          "stats_focus_max": 94,
+          "body_hp_max": 620,
+          "body_stamina_max": 120,
+          "magic_focus_max": 94,
+          "sim_pools": null,
+          "has_character": false,
+          "pools_dirty": true
+        },
+        "souls_spent": 5418,
+        "attribute_moved": 8,
+        "hp_max_moved": 0,
+        "stamina_max_moved": 0,
+        "focus_max_moved": 0
+      },
+      "endurance": {
+        "attribute": "endurance",
+        "levels_bought": 8,
+        "the_screen_promised": [
+          {
+            "key": "stamina_max",
+            "label": "stamina max",
+            "from": 120,
+            "to": 122.5
+          },
+          {
+            "key": "stamina_regen_per_s",
+            "label": "stamina regen per s",
+            "from": 45,
+            "to": 45.3
+          },
+          {
+            "key": "stamina_regen_per_frame",
+            "label": "stamina regen per frame",
+            "from": 0.75,
+            "to": 0.755
+          }
+        ],
+        "before": {
+          "level": 9,
+          "souls": 394582,
+          "attributes": {
+            "vigour": 18,
+            "endurance": 20,
+            "strength": 12,
+            "dexterity": 12,
+            "intelligence": 10,
+            "faith": 10
+          },
+          "stats_hp_max": 620,
+          "stats_stamina_max": 120,
+          "stats_focus_max": 94,
+          "body_hp_max": 620,
+          "body_stamina_max": 120,
+          "magic_focus_max": 94,
+          "sim_pools": null,
+          "has_character": false,
+          "pools_dirty": true
+        },
+        "after": {
+          "level": 17,
+          "souls": 382921,
+          "attributes": {
+            "vigour": 18,
+            "endurance": 28,
+            "strength": 12,
+            "dexterity": 12,
+            "intelligence": 10,
+            "faith": 10
+          },
+          "stats_hp_max": 620,
+          "stats_stamina_max": 120,
+          "stats_focus_max": 94,
+          "body_hp_max": 620,
+          "body_stamina_max": 120,
+          "magic_focus_max": 94,
+          "sim_pools": null,
+          "has_character": false,
+          "pools_dirty": true
+        },
+        "souls_spent": 11661,
+        "attribute_moved": 8,
+        "hp_max_moved": 0,
+        "stamina_max_moved": 0,
+        "focus_max_moved": 0
+      },
+      "willpower": {
+        "attribute": "willpower",
+        "levels_bought": 8,
+        "the_screen_promised": [
+          {
+            "key": "focus_max",
+            "label": "focus max",
+            "from": 30,
+            "to": 33
+          }
+        ],
+        "before": {
+          "level": 17,
+          "souls": 382921,
+          "attributes": {
+            "vigour": 18,
+            "endurance": 28,
+            "strength": 12,
+            "dexterity": 12,
+            "intelligence": 10,
+            "faith": 10
+          },
+          "stats_hp_max": 620,
+          "stats_stamina_max": 120,
+          "stats_focus_max": 94,
+          "body_hp_max": 620,
+          "body_stamina_max": 120,
+          "magic_focus_max": 94,
+          "sim_pools": null,
+          "has_character": false,
+          "pools_dirty": true
+        },
+        "after": {
+          "level": 25,
+          "souls": 362348,
+          "attributes": {
+            "vigour": 18,
+            "endurance": 28,
+            "strength": 12,
+            "dexterity": 12,
+            "intelligence": 10,
+            "faith": 10,
+            "willpower": 18
+          },
+          "stats_hp_max": 620,
+          "stats_stamina_max": 120,
+          "stats_focus_max": 94,
+          "body_hp_max": 620,
+          "body_stamina_max": 120,
+          "magic_focus_max": 94,
+          "sim_pools": null,
+          "has_character": false,
+          "pools_dirty": true
+        },
+        "souls_spent": 20573,
+        "attribute_moved": 18,
+        "hp_max_moved": 0,
+        "stamina_max_moved": 0,
+        "focus_max_moved": 0
+      },
+      "arm": "no-character (the shipped default state)"
+    },
+    {
+      "at_start": {
+        "level": 1,
+        "souls": 400000,
+        "attributes": {
+          "strength": 14,
+          "endurance": 16,
+          "agility": 13,
+          "speed": 11,
+          "vigour": 10,
+          "willpower": 10,
+          "intellect": 7,
+          "hist-bond": 14,
+          "personality": 6,
+          "luck": 11
+        },
+        "stats_hp_max": 300,
+        "stats_stamina_max": 104,
+        "stats_focus_max": 30,
+        "body_hp_max": 300,
+        "body_stamina_max": 104,
+        "magic_focus_max": 30,
+        "sim_pools": {
+          "hp_max": 300,
+          "stamina_max": 104
+        },
+        "has_character": true,
+        "pools_dirty": false
+      },
+      "vigour": {
+        "attribute": "vigour",
+        "levels_bought": 8,
+        "the_screen_promised": [
+          {
+            "key": "hp_max",
+            "label": "hp max",
+            "from": 300,
+            "to": 326
+          }
+        ],
+        "before": {
+          "level": 1,
+          "souls": 400000,
+          "attributes": {
+            "strength": 14,
+            "endurance": 16,
+            "agility": 13,
+            "speed": 11,
+            "vigour": 10,
+            "willpower": 10,
+            "intellect": 7,
+            "hist-bond": 14,
+            "personality": 6,
+            "luck": 11
+          },
+          "stats_hp_max": 300,
+          "stats_stamina_max": 104,
+          "stats_focus_max": 30,
+          "body_hp_max": 300,
+          "body_stamina_max": 104,
+          "magic_focus_max": 30,
+          "sim_pools": {
+            "hp_max": 300,
+            "stamina_max": 104
+          },
+          "has_character": true,
+          "pools_dirty": false
+        },
+        "after": {
+          "level": 9,
+          "souls": 394582,
+          "attributes": {
+            "strength": 14,
+            "endurance": 16,
+            "agility": 13,
+            "speed": 11,
+            "vigour": 18,
+            "willpower": 10,
+            "intellect": 7,
+            "hist-bond": 14,
+            "personality": 6,
+            "luck": 11
+          },
+          "stats_hp_max": 508,
+          "stats_stamina_max": 104,
+          "stats_focus_max": 30,
+          "body_hp_max": 508,
+          "body_stamina_max": 104,
+          "magic_focus_max": 30,
+          "sim_pools": {
+            "hp_max": 508,
+            "stamina_max": 104
+          },
+          "has_character": true,
+          "pools_dirty": false
+        },
+        "souls_spent": 5418,
+        "attribute_moved": 8,
+        "hp_max_moved": 208,
+        "stamina_max_moved": 0,
+        "focus_max_moved": 0
+      },
+      "endurance": {
+        "attribute": "endurance",
+        "levels_bought": 8,
+        "the_screen_promised": [
+          {
+            "key": "stamina_max",
+            "label": "stamina max",
+            "from": 104,
+            "to": 108
+          },
+          {
+            "key": "stamina_regen_per_s",
+            "label": "stamina regen per s",
+            "from": 43.8,
+            "to": 44.1
+          },
+          {
+            "key": "stamina_regen_per_frame",
+            "label": "stamina regen per frame",
+            "from": 0.73,
+            "to": 0.735
+          }
+        ],
+        "before": {
+          "level": 9,
+          "souls": 394582,
+          "attributes": {
+            "strength": 14,
+            "endurance": 16,
+            "agility": 13,
+            "speed": 11,
+            "vigour": 18,
+            "willpower": 10,
+            "intellect": 7,
+            "hist-bond": 14,
+            "personality": 6,
+            "luck": 11
+          },
+          "stats_hp_max": 508,
+          "stats_stamina_max": 104,
+          "stats_focus_max": 30,
+          "body_hp_max": 508,
+          "body_stamina_max": 104,
+          "magic_focus_max": 30,
+          "sim_pools": {
+            "hp_max": 508,
+            "stamina_max": 104
+          },
+          "has_character": true,
+          "pools_dirty": false
+        },
+        "after": {
+          "level": 17,
+          "souls": 382921,
+          "attributes": {
+            "strength": 14,
+            "endurance": 24,
+            "agility": 13,
+            "speed": 11,
+            "vigour": 18,
+            "willpower": 10,
+            "intellect": 7,
+            "hist-bond": 14,
+            "personality": 6,
+            "luck": 11
+          },
+          "stats_hp_max": 508,
+          "stats_stamina_max": 130,
+          "stats_focus_max": 30,
+          "body_hp_max": 508,
+          "body_stamina_max": 130,
+          "magic_focus_max": 30,
+          "sim_pools": {
+            "hp_max": 508,
+            "stamina_max": 130
+          },
+          "has_character": true,
+          "pools_dirty": false
+        },
+        "souls_spent": 11661,
+        "attribute_moved": 8,
+        "hp_max_moved": 0,
+        "stamina_max_moved": 26,
+        "focus_max_moved": 0
+      },
+      "willpower": {
+        "attribute": "willpower",
+        "levels_bought": 8,
+        "the_screen_promised": [
+          {
+            "key": "focus_max",
+            "label": "focus max",
+            "from": 30,
+            "to": 33
+          }
+        ],
+        "before": {
+          "level": 17,
+          "souls": 382921,
+          "attributes": {
+            "strength": 14,
+            "endurance": 24,
+            "agility": 13,
+            "speed": 11,
+            "vigour": 18,
+            "willpower": 10,
+            "intellect": 7,
+            "hist-bond": 14,
+            "personality": 6,
+            "luck": 11
+          },
+          "stats_hp_max": 508,
+          "stats_stamina_max": 130,
+          "stats_focus_max": 30,
+          "body_hp_max": 508,
+          "body_stamina_max": 130,
+          "magic_focus_max": 30,
+          "sim_pools": {
+            "hp_max": 508,
+            "stamina_max": 130
+          },
+          "has_character": true,
+          "pools_dirty": false
+        },
+        "after": {
+          "level": 25,
+          "souls": 362348,
+          "attributes": {
+            "strength": 14,
+            "endurance": 24,
+            "agility": 13,
+            "speed": 11,
+            "vigour": 18,
+            "willpower": 18,
+            "intellect": 7,
+            "hist-bond": 14,
+            "personality": 6,
+            "luck": 11
+          },
+          "stats_hp_max": 508,
+          "stats_stamina_max": 130,
+          "stats_focus_max": 56,
+          "body_hp_max": 508,
+          "body_stamina_max": 130,
+          "magic_focus_max": 56,
+          "sim_pools": {
+            "hp_max": 508,
+            "stamina_max": 130
+          },
+          "has_character": true,
+          "pools_dirty": false
+        },
+        "souls_spent": 20573,
+        "attribute_moved": 8,
+        "hp_max_moved": 0,
+        "stamina_max_moved": 0,
+        "focus_max_moved": 26
+      },
+      "arm": "with-character (setCharacter first)"
+    }
+  ]
+}

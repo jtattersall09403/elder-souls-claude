@@ -1,0 +1,57 @@
+{
+  "schema": "elder-souls/critic-crossing-null@1",
+  "measured_at": "2026-08-08T06:31:34.698Z",
+  "git": {
+    "commit": "b81f834f7de20f235a900ecb65ac84660aa342ff",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "mode": "null",
+  "arms": [
+    {
+      "label": "REPEAT (nothing changed) — THE MEASURED NOISE FLOOR",
+      "frames_compared": 14000,
+      "worst_divergence_m": 0,
+      "worst_at_frame": 0,
+      "end_divergence_m": 0
+    },
+    {
+      "label": "NULL (move `lilmoth-archon`, a leg the crossing does not use)",
+      "frames_compared": 14000,
+      "worst_divergence_m": 0,
+      "worst_at_frame": 0,
+      "end_divergence_m": 0
+    },
+    {
+      "label": "P1 (move `stormhold-helstrom`, the leg it does use)",
+      "frames_compared": 14000,
+      "worst_divergence_m": 30.599,
+      "worst_at_frame": 12894,
+      "end_divergence_m": 15.202
+    }
+  ],
+  "checks": [
+    {
+      "id": "N0-FLOOR-IS-MEASURED",
+      "pass": true,
+      "detail": "re-running the identical walk diverges by 0 m — this is the floor, not an inherited number"
+    },
+    {
+      "id": "N1-NULL-IS-SILENT",
+      "pass": true,
+      "detail": "null 0 m against a measured floor of 0 m (the shipped check's bar was 6,193 m)"
+    },
+    {
+      "id": "N2-POSITIVE-BITES",
+      "pass": true,
+      "detail": "moving the leg the body walks moves the body 30.599 m"
+    },
+    {
+      "id": "N3-SEPARATION",
+      "pass": true,
+      "detail": "30.599 m against 0 m"
+    }
+  ],
+  "ok": true,
+  "walk_frames": 14000
+}

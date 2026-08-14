@@ -1,0 +1,493 @@
+{
+  "schema": "elder-souls/critic-crossing-grade@1",
+  "measured_at": "2026-08-08T05:53:05.328Z",
+  "commit": "c5ed8ac",
+  "self_test": null,
+  "shipped": {
+    "label": "SHIPPED",
+    "legs": [
+      {
+        "leg": "stormhold-thorn",
+        "metres": 2229,
+        "half_width_m": 3,
+        "worst_longitudinal_grade_deg": 21.82,
+        "at_m": 681.3,
+        "span_m": 154,
+        "tallest_span_m": 8.8,
+        "spans": 2
+      },
+      {
+        "leg": "stormhold-helstrom",
+        "metres": 2921,
+        "half_width_m": 3,
+        "worst_longitudinal_grade_deg": 24.27,
+        "at_m": 2265.3,
+        "span_m": 918,
+        "tallest_span_m": 50.6,
+        "spans": 8
+      },
+      {
+        "leg": "helstrom-archon",
+        "metres": 2589.5,
+        "half_width_m": 3.6,
+        "worst_longitudinal_grade_deg": 6.09,
+        "at_m": 366.9,
+        "span_m": 0,
+        "tallest_span_m": 0,
+        "spans": 0
+      },
+      {
+        "leg": "helstrom-blackrose",
+        "metres": 2479.5,
+        "half_width_m": 3,
+        "worst_longitudinal_grade_deg": 7.12,
+        "at_m": 441,
+        "span_m": 0,
+        "tallest_span_m": 0,
+        "spans": 0
+      },
+      {
+        "leg": "helstrom-gideon",
+        "metres": 2431.7,
+        "half_width_m": 3.6,
+        "worst_longitudinal_grade_deg": 24.24,
+        "at_m": 987.1,
+        "span_m": 84,
+        "tallest_span_m": 10.6,
+        "spans": 2
+      },
+      {
+        "leg": "gideon-soulrest",
+        "metres": 2568.5,
+        "half_width_m": 3,
+        "worst_longitudinal_grade_deg": 4.47,
+        "at_m": 2246.9,
+        "span_m": 0,
+        "tallest_span_m": 0,
+        "spans": 0
+      },
+      {
+        "leg": "soulrest-blackrose",
+        "metres": 1841,
+        "half_width_m": 3,
+        "worst_longitudinal_grade_deg": 6.85,
+        "at_m": 964.9,
+        "span_m": 36,
+        "tallest_span_m": 5.3,
+        "spans": 1
+      },
+      {
+        "leg": "blackrose-lilmoth",
+        "metres": 1503,
+        "half_width_m": 3,
+        "worst_longitudinal_grade_deg": 1.91,
+        "at_m": 1196.1,
+        "span_m": 456,
+        "tallest_span_m": 14.3,
+        "spans": 2
+      },
+      {
+        "leg": "archon-thorn",
+        "metres": 4299,
+        "half_width_m": 3,
+        "worst_longitudinal_grade_deg": 24.23,
+        "at_m": 3700.9,
+        "span_m": 84,
+        "tallest_span_m": 9.6,
+        "spans": 2
+      },
+      {
+        "leg": "lilmoth-archon",
+        "metres": 2523,
+        "half_width_m": 3,
+        "worst_longitudinal_grade_deg": 3.65,
+        "at_m": 2243,
+        "span_m": 0,
+        "tallest_span_m": 0,
+        "spans": 0
+      }
+    ],
+    "I2": {
+      "centreline_samples": 25390,
+      "centreline_exempt_from_the_slope_gate": 25390,
+      "centreline_exempt_pct": 100,
+      "verdict": "THE CENTRELINE COUNTER IS STRUCTURALLY ZERO: every centreline sample is exempt via onRoadAt(), so `climb_over_limit` on a centreline cannot be non-zero for any road, any terrain, any commit.",
+      "lateral_sweep": [
+        {
+          "offset_m": 0,
+          "samples": 25390,
+          "exempt": 25390,
+          "gated": 0,
+          "refused": 0,
+          "worst_deg": 0,
+          "worst_at": null
+        },
+        {
+          "offset_m": 1,
+          "samples": 50780,
+          "exempt": 50780,
+          "gated": 0,
+          "refused": 0,
+          "worst_deg": 0,
+          "worst_at": null
+        },
+        {
+          "offset_m": 2,
+          "samples": 50780,
+          "exempt": 50780,
+          "gated": 0,
+          "refused": 0,
+          "worst_deg": 0,
+          "worst_at": null
+        },
+        {
+          "offset_m": 3,
+          "samples": 50780,
+          "exempt": 50780,
+          "gated": 0,
+          "refused": 0,
+          "worst_deg": 0,
+          "worst_at": null
+        },
+        {
+          "offset_m": 3.45,
+          "samples": 50780,
+          "exempt": 33378,
+          "gated": 17402,
+          "refused": 9,
+          "worst_deg": 78.65,
+          "worst_at": {
+            "leg": "stormhold-helstrom",
+            "at_m": 1631,
+            "pos": [
+              2275.3,
+              1858.7
+            ]
+          }
+        },
+        {
+          "offset_m": 3.5,
+          "samples": 50780,
+          "exempt": 13515,
+          "gated": 37265,
+          "refused": 744,
+          "worst_deg": 88.31,
+          "worst_at": {
+            "leg": "stormhold-helstrom",
+            "at_m": 917,
+            "pos": [
+              2305.9,
+              1375.1
+            ]
+          }
+        },
+        {
+          "offset_m": 4,
+          "samples": 50780,
+          "exempt": 11552,
+          "gated": 39228,
+          "refused": 1125,
+          "worst_deg": 88.27,
+          "worst_at": {
+            "leg": "stormhold-helstrom",
+            "at_m": 899,
+            "pos": [
+              2289.3,
+              1367.3
+            ]
+          }
+        },
+        {
+          "offset_m": 5,
+          "samples": 50780,
+          "exempt": 1386,
+          "gated": 49394,
+          "refused": 1320,
+          "worst_deg": 88.22,
+          "worst_at": {
+            "leg": "stormhold-helstrom",
+            "at_m": 914,
+            "pos": [
+              2300.1,
+              1379.1
+            ]
+          }
+        },
+        {
+          "offset_m": 6,
+          "samples": 50780,
+          "exempt": 1248,
+          "gated": 49532,
+          "refused": 697,
+          "worst_deg": 88.21,
+          "worst_at": {
+            "leg": "stormhold-helstrom",
+            "at_m": 914,
+            "pos": [
+              2299.8,
+              1380
+            ]
+          }
+        },
+        {
+          "offset_m": 8,
+          "samples": 50780,
+          "exempt": 1150,
+          "gated": 49630,
+          "refused": 623,
+          "worst_deg": 85.85,
+          "worst_at": {
+            "leg": "stormhold-helstrom",
+            "at_m": 570,
+            "pos": [
+              2142.3,
+              1205.2
+            ]
+          }
+        }
+      ],
+      "lateral_sweep_structure_free_legs": [
+        {
+          "offset_m": 0,
+          "samples": 10162,
+          "exempt": 10162,
+          "gated": 0,
+          "refused": 0,
+          "worst_deg": 0,
+          "worst_at": null
+        },
+        {
+          "offset_m": 1,
+          "samples": 20324,
+          "exempt": 20324,
+          "gated": 0,
+          "refused": 0,
+          "worst_deg": 0,
+          "worst_at": null
+        },
+        {
+          "offset_m": 2,
+          "samples": 20324,
+          "exempt": 20324,
+          "gated": 0,
+          "refused": 0,
+          "worst_deg": 0,
+          "worst_at": null
+        },
+        {
+          "offset_m": 3,
+          "samples": 20324,
+          "exempt": 20324,
+          "gated": 0,
+          "refused": 0,
+          "worst_deg": 0,
+          "worst_at": null
+        },
+        {
+          "offset_m": 3.45,
+          "samples": 20324,
+          "exempt": 13521,
+          "gated": 6803,
+          "refused": 0,
+          "worst_deg": 29.21,
+          "worst_at": {
+            "leg": "lilmoth-archon",
+            "at_m": 2520,
+            "pos": [
+              3782.4,
+              3827.2
+            ]
+          }
+        },
+        {
+          "offset_m": 3.5,
+          "samples": 20324,
+          "exempt": 6071,
+          "gated": 14253,
+          "refused": 0,
+          "worst_deg": 32.76,
+          "worst_at": {
+            "leg": "lilmoth-archon",
+            "at_m": 439,
+            "pos": [
+              2929.6,
+              4859.5
+            ]
+          }
+        },
+        {
+          "offset_m": 4,
+          "samples": 20324,
+          "exempt": 5851,
+          "gated": 14473,
+          "refused": 4,
+          "worst_deg": 41.89,
+          "worst_at": {
+            "leg": "lilmoth-archon",
+            "at_m": 439,
+            "pos": [
+              2930,
+              4859.8
+            ]
+          }
+        },
+        {
+          "offset_m": 5,
+          "samples": 20324,
+          "exempt": 612,
+          "gated": 19712,
+          "refused": 41,
+          "worst_deg": 54.75,
+          "worst_at": {
+            "leg": "lilmoth-archon",
+            "at_m": 439,
+            "pos": [
+              2930.8,
+              4860.3
+            ]
+          }
+        },
+        {
+          "offset_m": 6,
+          "samples": 20324,
+          "exempt": 542,
+          "gated": 19782,
+          "refused": 45,
+          "worst_deg": 59.87,
+          "worst_at": {
+            "leg": "lilmoth-archon",
+            "at_m": 439,
+            "pos": [
+              2931.6,
+              4860.9
+            ]
+          }
+        },
+        {
+          "offset_m": 8,
+          "samples": 20324,
+          "exempt": 505,
+          "gated": 19819,
+          "refused": 38,
+          "worst_deg": 56.62,
+          "worst_at": {
+            "leg": "lilmoth-archon",
+            "at_m": 427,
+            "pos": [
+              2916.4,
+              4857.8
+            ]
+          }
+        }
+      ]
+    },
+    "I3": {
+      "stall_pos": [
+        2153.7,
+        1197.8
+      ],
+      "nearest_centreline_point": [
+        2148.9,
+        1199.1
+      ],
+      "lateral_m": 4.97,
+      "at_m_along_leg": 565.9,
+      "point_index": 39,
+      "inside_declared_span": {
+        "from_i": 38,
+        "to_i": 77,
+        "from_m": 553,
+        "to_m": 1024,
+        "length_m": 471,
+        "max_height_m": 50.6,
+        "kind": "viaduct"
+      },
+      "on_deck_at_centreline": {
+        "kind": "viaduct",
+        "deck_y": 215.81,
+        "clearance_m": 12.4
+      },
+      "on_deck_at_the_stall": false,
+      "on_road_at_the_stall": false,
+      "deck_y_at_centreline": 216.06,
+      "ground_y_at_the_stall": 200.45,
+      "bare_ground_y_at_the_stall": 200.45,
+      "below_the_deck_m": 15.61
+    },
+    "I4": {
+      "note": "field.slopeAt() default radius is 5 m — the +/-5 m central difference the survey blames.",
+      "rings": [
+        {
+          "radius_m": 1.5,
+          "at_the_stall": 30.07,
+          "at_the_centreline": 17.82
+        },
+        {
+          "radius_m": 2.5,
+          "at_the_stall": 73.55,
+          "at_the_centreline": 16.02
+        },
+        {
+          "radius_m": 5,
+          "at_the_stall": 61.1,
+          "at_the_centreline": 36.01
+        }
+      ],
+      "default_at_the_stall": 61.1,
+      "default_at_the_centreline": 36.01,
+      "control_flat_leg": {
+        "leg": "helstrom-archon",
+        "pos": [
+          2584.7,
+          2998
+        ],
+        "slopeAt": 1.09
+      },
+      "published_readings_the_round_disowns": [
+        57.5,
+        61.09,
+        64.6
+      ]
+    },
+    "totals": {
+      "worst_longitudinal_grade_deg": 24.27,
+      "worst_leg": "stormhold-helstrom",
+      "max_walkable_deg": 40
+    },
+    "I5": {
+      "earth_centreline_samples": 23640,
+      "G3_regain_over_limit": 63,
+      "worst_regain_deg": 80.8,
+      "regain_by_leg": {
+        "stormhold-thorn": 3,
+        "stormhold-helstrom": 59,
+        "helstrom-archon": 0,
+        "helstrom-blackrose": 0,
+        "helstrom-gideon": 0,
+        "gideon-soulrest": 0,
+        "soulrest-blackrose": 0,
+        "blackrose-lilmoth": 0,
+        "archon-thorn": 1,
+        "lilmoth-archon": 0
+      },
+      "G4_edge_drop_over_step": 488,
+      "worst_edge_drop_m": 9.27,
+      "drop_by_leg": {
+        "stormhold-thorn": 70,
+        "stormhold-helstrom": 274,
+        "helstrom-archon": 7,
+        "helstrom-blackrose": 3,
+        "helstrom-gideon": 16,
+        "gideon-soulrest": 0,
+        "soulrest-blackrose": 0,
+        "blackrose-lilmoth": 1,
+        "archon-thorn": 44,
+        "lilmoth-archon": 73
+      },
+      "published": {
+        "G3": 63,
+        "G4": 488
+      }
+    }
+  }
+}

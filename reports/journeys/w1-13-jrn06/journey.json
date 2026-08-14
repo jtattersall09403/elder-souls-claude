@@ -1,0 +1,1958 @@
+{
+  "schema": "elder-souls/journey-run@1",
+  "tool": "tools/journey/journey-run.mjs",
+  "amendment": "A-JRN1",
+  "run_id": "20260807T080945Z-jrn06-death-s4711-035f6b",
+  "journey": "jrn06-death",
+  "item": "RI-JRN06",
+  "title": "death and recovery",
+  "seed": 4711,
+  "profile": "headless-small",
+  "profile_realised": {
+    "width": 320,
+    "height": 240,
+    "dpr": 1,
+    "pointer": "fine",
+    "touch": false
+  },
+  "input_mode": "real",
+  "args": [
+    "--journey",
+    "jrn06-death",
+    "--seed",
+    "4711",
+    "--deaths",
+    "20",
+    "--input-mode",
+    "real",
+    "--out",
+    "reports/journeys/w1-13-jrn06"
+  ],
+  "url": "http://127.0.0.1:42597/game/index.html",
+  "harness_version": 2,
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 348
+  },
+  "capability_report": {
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "implemented": [
+      "fixed 60 Hz simulation decoupled from render (HARNESS.md R2/R3)",
+      "seeded PRNG with a runtime guard that throws on Math.random/Date.now/performance.now/new Date inside a step",
+      "the elder-souls/trace@1 record, including the camera channel RI-CAM02/RI-CAM06 need",
+      "the 15-button closed action set (14 from W1-00 + `crouch` from W1-15/AM-W1-15-01), the scripted path, the real desktop path, the 8 f@60 single-slot buffer",
+      "IndexedDB save with the RI-JRN05 §A write protocol, digest, A/B generations, export/import, hostility simulation",
+      "deterministic sky, sun and named weather; the nine viewpoint anchors",
+      "the game/data/** layout of HARNESS.md §5 with a generated index.json",
+      "W1-07: character creation as a scene — 10 attributes, 19 skills, 10 races, 9 birthsigns, 14 classes plus the custom route, the 12-question route, the 12x10 reaction matrix, the price surcharge, the guard law-factor table and the race-conditioned encounter opening",
+      "W1-09: swept-capsule hit resolution over bone-attached hurtboxes, 4 substeps, no distance check and no dice (RI-CMB04)",
+      "W1-09: the RI-CMB01 §B roll ladder at all four equip-load tiers, i-frames as a frame window",
+      "W1-09: RI-CMB02 §A/§B frame data for all 7 classes x R1/R2 with the §D commitment rule",
+      "W1-09: RI-CMB03 stamina, block, guard break and RI-CMB09 exhaustion, symmetric for enemies",
+      "W1-09: RI-CMB05 poise, stagger, hyperarmour, backstab, parry and riposte",
+      "W1-09: RI-CMB06 lock-on with target-relative directional roll and soft-lock steering",
+      "W1-09: RI-CMB08 healing with animation commitment and finite charges",
+      "W1-09: es-combat-trace/1 (RI-CMB07 §A) as a second stream, and the S13 parley"
+    ],
+    "not_implemented": [
+      {
+        "what": "enemy DECISION-MAKING (approach, circle, commit, attack token, punish reads, leash)",
+        "owner": "RI-AI01..07 / wave-1 piece W1-12",
+        "surfaced_as": "enemy statblocks declare ai='scripted'; actions come from the scenario file on declared frames, which is the RI-CMB07 M1 Mode-A instrument. spawn() throws for any archetype declaring behaviour this build cannot run. RI-CMB07 M2 (Mode-B free play against real AI) is therefore NOT measurable in this piece and scores 0, fail-closed."
+      },
+      {
+        "what": "mid-animation combat state across a save/load",
+        "owner": "W1-09, declared limitation",
+        "surfaced_as": "sim/combat-bridge.js header. The combat bodies are the authority and sim.player is a view; a save taken on frame 12 of a roll restores a standing character at the roll position. Correct under seam S6 (you save by resting) and true of both source games, but stated rather than discovered."
+      },
+      {
+        "what": "weapon movesets beyond the 7-class spine, and attack ratings",
+        "owner": "RI-WPN01..06 / wave-1 piece W1-10",
+        "surfaced_as": "movesets/*.json weapon.attack_rating_provenance marks all seven AR values PROVISIONAL; only the straight sword is pinned (to the RI-CMB07 exemplar HIT of 118 at motion value 1.00)."
+      },
+      {
+        "what": "hitstop, mass and impact feel",
+        "owner": "RI-WPN05 / RI-AUD01 / wave-1 piece W1-11",
+        "surfaced_as": "hitstop_frames is read from the moveset and applied, but the camera, audio and animation consequences are W1-11."
+      },
+      {
+        "what": "a quest runtime",
+        "owner": "wave-1 pieces W1-14..W1-16",
+        "surfaced_as": "getQuestState()._declared_incomplete; quest STATE is real and round-trips, quest PROGRESSION does not exist"
+      },
+      {
+        "what": "dialogue, topics, journal writing at runtime",
+        "owner": "wave-1 pieces W1-11..W1-13",
+        "surfaced_as": "data files exist and are analysable; getDialogueState() (A-JRN13) is absent"
+      },
+      {
+        "what": "the province: 13 regions, 8 settlements, 250 interiors, roads",
+        "owner": "wave-1 pieces W1-01..W1-05",
+        "surfaced_as": "getWorldStats()._declared_incomplete — counts come from game/data/**, which is the corpus transcription plus one worked settlement"
+      },
+      {
+        "what": "audio",
+        "owner": "RI-AUD01..03 / wave-1 piece W1-25",
+        "surfaced_as": "audioMB: 0. RI-AUD02 is unmeasurable in this piece and scores 0, fail-closed"
+      },
+      {
+        "what": "heap/GC access (A-JRN9), dialogue state (A-JRN13), resource registry (A-JRN14). A-JRN2 (gamepad) and A-JRN4 (viewport/orientation/safe-area) landed with W1-08/W1-29; A-JRN12 (keyboard layout) is driven runner-side through CDP by tools/journey/journey-run.mjs",
+        "owner": "runner-side or later pieces",
+        "surfaced_as": "the methods are absent rather than present-and-lying"
+      },
+      {
+        "what": "Tier-H performance numbers (fps, frame time, TTFP wall clock, hitch durations)",
+        "owner": "attested real hardware",
+        "surfaced_as": "getPerfStats()._unmeasurable / getLoadState()._unmeasurable. RI-PLT01 rule T1 forbids emitting these from a SwiftShader run at all"
+      }
+    ],
+    "harness_amendments_implemented": [
+      "A-JRN1 (partial: play-instrumented mode, no UI-text stream)",
+      "A-JRN3",
+      "A-JRN5 (partial: Tier-S fields only)",
+      "A-JRN6",
+      "A-JRN7",
+      "A-JRN8",
+      "A-JRN10",
+      "A-JRN11",
+      "A-JRN15 (partial)",
+      "A-JRN2 (gamepad, W1-29)",
+      "A-JRN4 (viewport/orientation/safe-area, W1-29)",
+      "A-JRN12 (runner-side via CDP Input.dispatchKeyEvent, W1-08)"
+    ],
+    "harness_amendments_absent": [
+      "A-JRN9",
+      "A-JRN13",
+      "A-JRN14"
+    ]
+  },
+  "git": {
+    "commit": "594b8efa6b8aec150a587cc64518055cee2f1b4c",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "data": {
+    "files": 350,
+    "sha256": "007281b2ec45379137499b14e4323d4e2c23006012f2af13550d583ce75c11b0"
+  },
+  "started_at": "2026-08-07T08:09:45.813Z",
+  "ended_at": "2026-08-07T08:33:26.220Z",
+  "wall_ms": 1420407,
+  "page_errors": [],
+  "beats": [
+    {
+      "kind": "journey_start",
+      "frame": 0,
+      "journey": "jrn06-death"
+    },
+    {
+      "kind": "first_input",
+      "frame": 60,
+      "device": "keyboard",
+      "via": "page.keyboard"
+    },
+    {
+      "kind": "first_control",
+      "frame": 120,
+      "moved": false,
+      "pos_before": [
+        2766.5,
+        2.68,
+        5011
+      ],
+      "pos_after": [
+        2766.5,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "kind": "surface_enter",
+      "frame": 120,
+      "surface": "census",
+      "speaker": "jeeh-ei",
+      "place": "barge-hold"
+    },
+    {
+      "kind": "surface_exit",
+      "frame": 180,
+      "surface": "census",
+      "still_open": false
+    },
+    {
+      "kind": "journey_end",
+      "frame": 3780,
+      "frames_stepped": 3600
+    }
+  ],
+  "trace_records": 3780,
+  "ui_text_frames": 5,
+  "surfaces": 1,
+  "driver_events": [],
+  "instruments": [
+    {
+      "id": "profile",
+      "what": "viewport/dpr/pointer realised",
+      "status": "measured",
+      "value": {
+        "profile": "headless-small",
+        "width": 320,
+        "height": 240,
+        "dpr": 1,
+        "pointer": "fine",
+        "touch": false,
+        "note": "dpr and pointer are set on the browser context at launch; viewport is set here. A-JRN4 is declared absent in the engine and is supplied runner-side."
+      }
+    },
+    {
+      "id": "input_mode",
+      "what": "real input path attached",
+      "status": "measured",
+      "value": {
+        "mode": "play-instrumented",
+        "result": "play-instrumented"
+      }
+    },
+    {
+      "id": "control_observed",
+      "what": "the player body responded to a movement input",
+      "status": "unmeasurable",
+      "why": "the player did not move between [2766.5,2.68,5011] and [2766.5,2.68,5011] after 60 frames of forward input in mode 'real'. This is an ENTITY-SIDE observation (RI-MTH07 §B2): first_control is not claimable when nothing in the world moved.",
+      "owner": "the build"
+    },
+    {
+      "id": "first_input",
+      "what": "first_input event",
+      "status": "measured",
+      "value": {
+        "source": "trace"
+      }
+    },
+    {
+      "id": "first_control",
+      "what": "first_control event",
+      "status": "measured",
+      "value": {
+        "source": "trace"
+      }
+    },
+    {
+      "id": "m4_clause1",
+      "what": "control precedes definition",
+      "status": "unmeasurable",
+      "why": "no character-field-writing event in the trace",
+      "owner": "A-JRN1/A-JRN7"
+    },
+    {
+      "id": "ui_text_accessor",
+      "what": "rendered-text accessor demonstrated live",
+      "status": "measured",
+      "value": {
+        "accessor": "__HARNESS.getRenderedText()",
+        "accessor_strength": "fillText-level, clip-aware",
+        "frames_sampled": 5,
+        "frames_with_text": 2,
+        "example": [
+          "JEEH-EI",
+          "THE HOLD, TWO DAYS OUT OF GIDEON   ·   1 of 13",
+          "They will take the other one off you at the writ house. Tell me the one they cannot."
+        ],
+        "dom_inner_text_len": 0,
+        "note": "document.body.innerText is EMPTY — the canvas accessor is the only enumerable rendered-text surface, which is why M9/M15 may not be greped from the DOM."
+      }
+    },
+    {
+      "id": "m9_instruction_budget",
+      "what": "instruction tokens outside dialogue/journal/book surfaces",
+      "status": "measured",
+      "value": {
+        "frames_outside_surface": 5,
+        "hits": 0,
+        "examples": [],
+        "threshold": 0,
+        "caveat": null
+      }
+    },
+    {
+      "id": "m15_chosen_one",
+      "what": "prophecy vocabulary in rendered text",
+      "status": "measured",
+      "value": {
+        "hits": 0,
+        "examples": [],
+        "threshold": 0
+      }
+    },
+    {
+      "id": "m2_unskippable",
+      "what": "frames from a real input to the surface being gone",
+      "status": "measured",
+      "value": {
+        "surfaces": 1,
+        "over_30_frames": 1,
+        "ignored_input_entirely": 0,
+        "detail": [
+          {
+            "id": "census",
+            "first_rendered_frame": 120,
+            "frames_to_dismiss": 60
+          }
+        ]
+      }
+    },
+    {
+      "id": "m1_surfaces_to_control",
+      "what": "distinct full-viewport surfaces before first_control",
+      "status": "measured",
+      "value": {
+        "count": 0,
+        "threshold": 2,
+        "hard_fail_at": 4
+      }
+    },
+    {
+      "id": "amendment_A-JRN13",
+      "what": "checks depending on A-JRN13",
+      "status": "unmeasurable",
+      "why": "the build declares A-JRN13 absent in getCapabilityReport().harness_amendments_absent",
+      "owner": "runner-side or later pieces"
+    },
+    {
+      "id": "amendment_A-JRN14",
+      "what": "checks depending on A-JRN14",
+      "status": "unmeasurable",
+      "why": "the build declares A-JRN14 absent in getCapabilityReport().harness_amendments_absent",
+      "owner": "runner-side or later pieces"
+    },
+    {
+      "id": "amendment_A-JRN9",
+      "what": "checks depending on A-JRN9",
+      "status": "unmeasurable",
+      "why": "the build declares A-JRN9 absent in getCapabilityReport().harness_amendments_absent",
+      "owner": "runner-side or later pieces"
+    },
+    {
+      "id": "m_d5_respawn_scope",
+      "what": "M-D5 world reset scope (D9, seam S5)",
+      "status": "measured",
+      "value": {
+        "classification": [
+          {
+            "eid": "boss-a",
+            "id": "champion_hist_marked",
+            "archetype": "INFANTRY",
+            "tier": "elite",
+            "flags": [],
+            "respawns": false,
+            "alive": true
+          },
+          {
+            "eid": "fix-a",
+            "id": "dummy_passive",
+            "archetype": "DUMMY",
+            "tier": "prop",
+            "flags": [],
+            "respawns": false,
+            "alive": true
+          },
+          {
+            "eid": "named-a",
+            "id": "inf_trash",
+            "archetype": "INFANTRY",
+            "tier": "trash",
+            "flags": [
+              "named"
+            ],
+            "respawns": false,
+            "alive": true
+          },
+          {
+            "eid": "ord-a",
+            "id": "inf_trash",
+            "archetype": "INFANTRY",
+            "tier": "trash",
+            "flags": [],
+            "respawns": true,
+            "alive": true
+          },
+          {
+            "eid": "ord-b",
+            "id": "inf_trash",
+            "archetype": "INFANTRY",
+            "tier": "trash",
+            "flags": [],
+            "respawns": true,
+            "alive": true
+          },
+          {
+            "eid": "ord-c",
+            "id": "drowned_lesser",
+            "archetype": "INFANTRY",
+            "tier": "trash",
+            "flags": [],
+            "respawns": true,
+            "alive": true
+          }
+        ],
+        "killed": [
+          "boss-a",
+          "fix-a",
+          "named-a",
+          "ord-a",
+          "ord-b",
+          "ord-c"
+        ],
+        "kill_register_after_kills": [
+          "ord-a",
+          "ord-b",
+          "ord-c"
+        ],
+        "respawned_after_player_death": [
+          "ord-a",
+          "ord-b",
+          "ord-c"
+        ],
+        "still_dead_after_player_death": [
+          "boss-a",
+          "fix-a",
+          "named-a"
+        ],
+        "named_or_boss_or_fixture_respawned": [],
+        "ordinary_failed_to_respawn": [],
+        "pass": true,
+        "hard_fail_HF3": false,
+        "note": "100% of ordinary enemies respawn; 0 named actors, bosses or fixtures do. A respawned named actor is HF3."
+      }
+    },
+    {
+      "id": "m_d6_named_stays_dead",
+      "what": "M-D6 dead named NPC stays dead, across rest and death",
+      "status": "measured",
+      "value": {
+        "after_rest_alive": [
+          "ord-a",
+          "ord-b",
+          "ord-c"
+        ],
+        "named_back_after_rest": [],
+        "rest_respawned_count": 3,
+        "rest_held_dead": [
+          {
+            "eid": "boss-a",
+            "id": "champion_hist_marked",
+            "reason": "S5: not in respawn scope"
+          },
+          {
+            "eid": "fix-a",
+            "id": "dummy_passive",
+            "reason": "S5: not in respawn scope"
+          },
+          {
+            "eid": "named-a",
+            "id": "inf_trash",
+            "reason": "S5: not in respawn scope"
+          }
+        ],
+        "npcs_dead_register": [],
+        "kill_register_cleared_by_rest": [],
+        "pass": true
+      }
+    },
+    {
+      "id": "m_prg04_rest",
+      "what": "RI-PRG04 §1/§2 what resting does",
+      "status": "measured",
+      "value": {
+        "respawn_point_set": "hearth-thorn",
+        "clock": {
+          "before": 12,
+          "after": 18,
+          "hours": 6,
+          "day": 0
+        },
+        "focus_restored": true,
+        "hp": 620,
+        "flask_charges": 5,
+        "rest_clamp_reset": true,
+        "sap_taint": {
+          "band": 0,
+          "rests": 1,
+          "immune": false,
+          "ward_uses_left": 3
+        },
+        "diseases_advanced": [],
+        "menu_destinations": [],
+        "s7_pass": true
+      }
+    },
+    {
+      "id": "m_d1_souls_conservation",
+      "what": "M-D1 souls held == souls stored == souls returned",
+      "status": "measured",
+      "value": {
+        "trials": 14,
+        "mismatches": 0,
+        "rows": [],
+        "sample": [
+          {
+            "banked": 500,
+            "held": 500,
+            "stain": 500,
+            "returned": 500
+          },
+          {
+            "banked": 697,
+            "held": 697,
+            "stain": 697,
+            "returned": 697
+          },
+          {
+            "banked": 1091,
+            "held": 1091,
+            "stain": 1091,
+            "returned": 1091
+          }
+        ],
+        "pass": true,
+        "hard_fail_HF1": false
+      }
+    },
+    {
+      "id": "m_d2_stain_placement",
+      "what": "M-D2 stain within 2.0 m of the death point, on standable ground",
+      "status": "measured",
+      "value": {
+        "n": 20,
+        "max_offset_m": 0,
+        "mean_offset_m": 0,
+        "over_2m": 0,
+        "placement_rules": {
+          "death_point": 20
+        },
+        "pass": true
+      }
+    },
+    {
+      "id": "m_d8_second_death",
+      "what": "M-D8 exactly one bloodstain, always; the first is destroyed",
+      "status": "measured",
+      "value": {
+        "trials": 6,
+        "any_two_stains": 0,
+        "first_souls_returned_anywhere": 0,
+        "sample": [
+          {
+            "stains_before": 1,
+            "stains_after": 1,
+            "first_stain_souls": 894,
+            "second_stain_souls": 0,
+            "on_surface_stain_count": 1
+          },
+          {
+            "stains_before": 1,
+            "stains_after": 1,
+            "first_stain_souls": 1485,
+            "second_stain_souls": 0,
+            "on_surface_stain_count": 1
+          },
+          {
+            "stains_before": 1,
+            "stains_after": 1,
+            "first_stain_souls": 2076,
+            "second_stain_souls": 0,
+            "on_surface_stain_count": 1
+          }
+        ],
+        "pass": true,
+        "hard_fail_HF4": false
+      }
+    },
+    {
+      "id": "m_d10_death_legibility",
+      "what": "M-D10 HP reaches 0 within 12 frames of the last hit",
+      "status": "measured",
+      "value": {
+        "n": 20,
+        "max_frames": 0,
+        "over_12": 0,
+        "pass": true
+      }
+    },
+    {
+      "id": "m_d12_time_dead",
+      "what": "M-D12 / R6 death frame -> controllable frame",
+      "status": "measured",
+      "value": {
+        "n": 20,
+        "median_frames": 150,
+        "median_s": 2.5,
+        "p95_frames": 150,
+        "p95_s": 2.5,
+        "target_median_s": 4,
+        "target_p95_s": 6,
+        "pass": true
+      }
+    },
+    {
+      "id": "m_d17_stain_loss_rate",
+      "what": "M-D17 / R5 fraction of stains lost to a second death",
+      "status": "measured",
+      "value": {
+        "deaths": 20,
+        "lost_to_second_death": 6,
+        "rate": 0.3,
+        "band": [
+          0.1,
+          0.35
+        ],
+        "pass": true,
+        "note": "This session is scripted, so the rate is a property of the script and is reported as such: what the check proves is that a second death DOES destroy the first stain (M-D8) and that the rate is neither 0 (nothing at stake) nor > 0.60 (a shredder). The human figure is RI-PRG04 §7 arithmetic and is unvalidated against play."
+      }
+    },
+    {
+      "id": "m_d4_across_death_diff",
+      "what": "M-D4 across-death state diff, death-volatile excluded by name",
+      "status": "measured",
+      "value": {
+        "hash_before": "d264e32aa2f1d66cd7603f3fac86892d8ffb23d2f14f28e69abe35d8b4602b86",
+        "hash_after": "5375f7d9187ad6381f17c53a9d18ffaf4439e9d37cdbf7bc2d463f9eddbbd8b0",
+        "volatile_group": [
+          "character.souls_held",
+          "character.hp",
+          "character.stamina",
+          "character.poise",
+          "character.estus",
+          "pose.",
+          "world.entities",
+          "world.enemies_dead_until_rest",
+          "death.bloodstain",
+          "volatile.",
+          "magic.focus",
+          "afflictions"
+        ],
+        "total_changed_paths": 15,
+        "non_volatile_changed": 0,
+        "offending": [],
+        "pass": true,
+        "hard_fail_HF2": false
+      }
+    },
+    {
+      "id": "m_d10_d11_preserved",
+      "what": "D10/D11 world mutation and progression preserved, field by field",
+      "status": "measured",
+      "value": {
+        "before": {
+          "containers_emptied": [
+            "chest:rotted-hall-1",
+            "chest:rotted-hall-2"
+          ],
+          "doors_unlocked": [
+            "door:rotted-hall-inner"
+          ],
+          "shortcuts_opened": [
+            "shortcut:rotted-hall-ladder"
+          ],
+          "items_taken": [
+            "item:eshis-knife"
+          ],
+          "npcs_dead": [
+            "warden-eshi"
+          ],
+          "fog_gates_passed": [
+            "gate-ceyatatar-vault"
+          ],
+          "quests": {},
+          "journal_len": 0,
+          "flags": {
+            "w1-13:probe": true
+          },
+          "factions": {
+            "legion": {
+              "rank": 3,
+              "expelled": false
+            }
+          },
+          "dispositions": {
+            "aftermath-province-npcs": 35,
+            "archon-bond-clerk": 30,
+            "archon-crane-crew": 35,
+            "blackrose-yard-hands": 30,
+            "blackwood-company-camp": 20,
+            "blackwood-company-factor": 25,
+            "bone-ladder-carter": 30,
+            "clerk-avelia-doren": 40,
+            "dockmaster-weeja-sen": 40,
+            "factor-ruvela-sath": 45,
+            "gallery-intake-keepers": 35,
+            "gideon-court-factor": 40,
+            "gideon-quay-porter": 35,
+            "harbourmaster-cuiro-vaneth": 40,
+            "helstrom-draught-seller": 50,
+            "helstrom-gallery-keepers": 30,
+            "helstrom-net-mender": 42,
+            "helstrom-reed-seller": 40,
+            "helstrom-salt-factor": 45,
+            "ixtu-meer": 50,
+            "jeeh-ei": 55,
+            "keeper-ei-vashan": 40,
+            "keeper-teeja-lun": 45,
+            "king-hlaalu-teeth": 40,
+            "ledgerer-hosk-vei": 45,
+            "lilmoth-rootkeepers": 20,
+            "lilmoth-wharf-cutters": 20,
+            "lilmoth-yard-brothers": 20,
+            "neeja-xul": 40,
+            "npc-sesh-weth": 35,
+            "npc-sexton-ivo-sarn": 0,
+            "npc-the-thing-in-the-third-bay": 0,
+            "ojal-weeth": 40,
+            "prefect-galvus-arn": 45,
+            "rootkeeper-ashul-tei": 45,
+            "rootkeeper-sesh-anaat": 45,
+            "rootlands-band-elder": 40,
+            "rootlands-drowned-speaker": 30,
+            "rootlands-keeper": 52,
+            "salt-factor-neloth-vaun": 45,
+            "sedd-ravano": 25,
+            "sexton-ivrenne-mour": 40,
+            "sexton-ravel-doun": 30,
+            "soulrest-customs-clerk": 35,
+            "soulrest-sexton-on-duty": 35,
+            "stormhold-gate-guard": 38,
+            "stormhold-second-guard": 36,
+            "stormhold-street-sweeper": 44,
+            "undersexton-aveline-rell": 45,
+            "undersexton-bel-mourne": 45,
+            "warden-eshi": 30,
+            "warden-scribe-tuleeh-ma": 45
+          },
+          "topics": [
+            "the-rootward-tide",
+            "the-tally-of-the-dead"
+          ],
+          "bounty": {
+            "imperial": 0
+          },
+          "witnesses": [],
+          "inventory": [
+            {
+              "id": "eshis-knife",
+              "count": 1,
+              "condition": 1,
+              "charge": 0,
+              "stolen": false,
+              "owner_of_record": null,
+              "equipped_slot": "right",
+              "quick_slot": null
+            }
+          ],
+          "hearths_discovered": [
+            "hearth-archon",
+            "hearth-lilmoth"
+          ],
+          "hearth_last_rested": "hearth-archon",
+          "travel_nodes": [],
+          "souls_spent": 11240,
+          "level": 1,
+          "afflictions": [
+            {
+              "id": "swamp-rot",
+              "kind": "disease",
+              "incubation_in_frames": 1200,
+              "duration_in_frames": 216000
+            }
+          ],
+          "clock": 15
+        },
+        "after": {
+          "containers_emptied": [
+            "chest:rotted-hall-1",
+            "chest:rotted-hall-2"
+          ],
+          "doors_unlocked": [
+            "door:rotted-hall-inner"
+          ],
+          "shortcuts_opened": [
+            "shortcut:rotted-hall-ladder"
+          ],
+          "items_taken": [
+            "item:eshis-knife"
+          ],
+          "npcs_dead": [
+            "warden-eshi"
+          ],
+          "fog_gates_passed": [
+            "gate-ceyatatar-vault"
+          ],
+          "quests": {},
+          "journal_len": 0,
+          "flags": {
+            "w1-13:probe": true
+          },
+          "factions": {
+            "legion": {
+              "rank": 3,
+              "expelled": false
+            }
+          },
+          "dispositions": {
+            "aftermath-province-npcs": 35,
+            "archon-bond-clerk": 30,
+            "archon-crane-crew": 35,
+            "blackrose-yard-hands": 30,
+            "blackwood-company-camp": 20,
+            "blackwood-company-factor": 25,
+            "bone-ladder-carter": 30,
+            "clerk-avelia-doren": 40,
+            "dockmaster-weeja-sen": 40,
+            "factor-ruvela-sath": 45,
+            "gallery-intake-keepers": 35,
+            "gideon-court-factor": 40,
+            "gideon-quay-porter": 35,
+            "harbourmaster-cuiro-vaneth": 40,
+            "helstrom-draught-seller": 50,
+            "helstrom-gallery-keepers": 30,
+            "helstrom-net-mender": 42,
+            "helstrom-reed-seller": 40,
+            "helstrom-salt-factor": 45,
+            "ixtu-meer": 50,
+            "jeeh-ei": 55,
+            "keeper-ei-vashan": 40,
+            "keeper-teeja-lun": 45,
+            "king-hlaalu-teeth": 40,
+            "ledgerer-hosk-vei": 45,
+            "lilmoth-rootkeepers": 20,
+            "lilmoth-wharf-cutters": 20,
+            "lilmoth-yard-brothers": 20,
+            "neeja-xul": 40,
+            "npc-sesh-weth": 35,
+            "npc-sexton-ivo-sarn": 0,
+            "npc-the-thing-in-the-third-bay": 0,
+            "ojal-weeth": 40,
+            "prefect-galvus-arn": 45,
+            "rootkeeper-ashul-tei": 45,
+            "rootkeeper-sesh-anaat": 45,
+            "rootlands-band-elder": 40,
+            "rootlands-drowned-speaker": 30,
+            "rootlands-keeper": 52,
+            "salt-factor-neloth-vaun": 45,
+            "sedd-ravano": 25,
+            "sexton-ivrenne-mour": 40,
+            "sexton-ravel-doun": 30,
+            "soulrest-customs-clerk": 35,
+            "soulrest-sexton-on-duty": 35,
+            "stormhold-gate-guard": 38,
+            "stormhold-second-guard": 36,
+            "stormhold-street-sweeper": 44,
+            "undersexton-aveline-rell": 45,
+            "undersexton-bel-mourne": 45,
+            "warden-eshi": 30,
+            "warden-scribe-tuleeh-ma": 45
+          },
+          "topics": [
+            "the-rootward-tide",
+            "the-tally-of-the-dead"
+          ],
+          "bounty": {
+            "imperial": 0
+          },
+          "witnesses": [],
+          "inventory": [
+            {
+              "id": "eshis-knife",
+              "count": 1,
+              "condition": 1,
+              "charge": 0,
+              "stolen": false,
+              "owner_of_record": null,
+              "equipped_slot": "right",
+              "quick_slot": null
+            }
+          ],
+          "hearths_discovered": [
+            "hearth-archon",
+            "hearth-lilmoth"
+          ],
+          "hearth_last_rested": "hearth-archon",
+          "travel_nodes": [],
+          "souls_spent": 11240,
+          "level": 1,
+          "afflictions": [
+            {
+              "id": "swamp-rot",
+              "kind": "disease",
+              "incubation_in_frames": 1200,
+              "duration_in_frames": 216000
+            }
+          ],
+          "clock": 15
+        },
+        "changed": [],
+        "clock_advanced_by_death": false,
+        "diseases_survived": true,
+        "pass": true,
+        "note": "The clock must NOT move on death (RI-PRG04 §6 rule 4) and a disease must NOT be cured by it (RI-JRN06 \"How we lose\" #11). Both are in this list."
+      }
+    },
+    {
+      "id": "m_d3_unreachable_relocation",
+      "what": "M-D3 / RN5 / D4 geometry never destroys souls",
+      "status": "measured",
+      "value": {
+        "found_unstandable_site": true,
+        "site": {
+          "x": 3811.882645082258,
+          "z": 4078.8099392564523,
+          "depth": 2.264
+        },
+        "placement_rule": "relocated_toward_hearth",
+        "relocated_m": 14.5,
+        "stain_pos": [
+          3809.053835,
+          0.79979,
+          4064.588552
+        ],
+        "stain_water_depth_m": 1.2,
+        "stain_exists": true,
+        "souls_recovered": 7777,
+        "recoverable": true,
+        "pass": true,
+        "hard_fail_HF7": false,
+        "note": null
+      }
+    },
+    {
+      "id": "m_d15_recovery_robustness",
+      "what": "M-D15 recovery under five conditions",
+      "status": "measured",
+      "value": {
+        "conditions": [
+          {
+            "id": "rolling",
+            "refused_at_2p6m": true,
+            "souls_after": 3333,
+            "stain_after": 0,
+            "ok": true
+          },
+          {
+            "id": "mid_attack",
+            "refused_at_2p6m": true,
+            "souls_after": 3333,
+            "stain_after": 0,
+            "ok": true
+          },
+          {
+            "id": "at_1_hp",
+            "refused_at_2p6m": true,
+            "souls_after": 3333,
+            "stain_after": 0,
+            "ok": true
+          },
+          {
+            "id": "hostile_aggroed",
+            "refused_at_2p6m": true,
+            "souls_after": 3333,
+            "stain_after": 0,
+            "ok": true
+          },
+          {
+            "id": "one_frame_press",
+            "refused_at_2p6m": true,
+            "souls_after": 3333,
+            "stain_after": 0,
+            "ok": true
+          }
+        ],
+        "credited": 5,
+        "of": 5,
+        "consumed_without_crediting": 0,
+        "pass": true,
+        "hard_fail_HF9": false,
+        "note": "RI-PRG04 §6: recovery is by touch, all-or-nothing, with no animation — so there is no window in which the stain is consumed and the souls are not credited. The refusal at 2.6 m is reported too: a check that only ever credits could not tell a working radius from an unconditional grant."
+      }
+    },
+    {
+      "id": "m_d16_persistence",
+      "what": "M-D16 / D17 the stain survives rest, region change, save and reload",
+      "status": "measured",
+      "value": {
+        "born": {
+          "pos": [
+            3839.57,
+            3.42,
+            3911.5
+          ],
+          "souls": 9100,
+          "death_index": 1
+        },
+        "after_rest": {
+          "pos": [
+            3839.57,
+            3.42,
+            3911.5
+          ],
+          "souls": 9100,
+          "death_index": 1
+        },
+        "after_region_change": {
+          "pos": [
+            3839.57,
+            3.42,
+            3911.5
+          ],
+          "souls": 9100,
+          "death_index": 1
+        },
+        "after_named_state_load": null,
+        "after_blob_restore": {
+          "pos": [
+            3839.57,
+            3.42,
+            3911.5
+          ],
+          "souls": 9100,
+          "death_index": 1
+        },
+        "after_storage_round_trip": {
+          "pos": [
+            3839.57,
+            3.42,
+            3911.5
+          ],
+          "souls": 9100,
+          "death_index": 1
+        },
+        "pass": true,
+        "storage_path_exercised": true
+      }
+    },
+    {
+      "id": "m_d9_no_compensation",
+      "what": "M-D9 / D18 no loss compensation of any kind",
+      "status": "measured",
+      "value": {
+        "ui_strings_seen": [
+          "5",
+          "LIGHT",
+          "Spark-Dart",
+          "YOU WENT DOWN"
+        ],
+        "forbidden_hits": [],
+        "strings_containing_a_numeral": [],
+        "system_enumeration": {
+          "loss_toast": false,
+          "retrieval_item": null,
+          "insurance": null,
+          "reduced_death_penalty_option": false,
+          "partial_recovery": false,
+          "grace_period_frames": 0,
+          "_note": "RI-JRN06 D18 is a hard fail if any of these exist. They do not, and this object is the enumeration M-D9 asks for rather than a promise."
+        },
+        "inventory_items_that_restore_a_lost_stain": [],
+        "pass": true,
+        "hard_fail_HF5": false,
+        "data_side_note": "The item also asks for an enumeration of every ITEM in the game data whose effect restores a lost bloodstain. That half is a data grep and is reported as such by tools/harness/w1-13-consume.mjs --items; the figure here is the RUNNING inventory."
+      }
+    },
+    {
+      "id": "m_d18_no_fast_travel_to_the_stain",
+      "what": "M-D18 / seam S7 no route that ends at the death point",
+      "status": "measured",
+      "value": {
+        "hearth_menu_destinations": [],
+        "travel_services": 68,
+        "stations": 26,
+        "stations_are_hearths": 0,
+        "travel_network_present": true,
+        "pass": true,
+        "note": "Two directions, per the RI-PRG04 S7 amendment: the transport network must EXIST (it does — RI-TRV01, 5 modes) and no route may end at or near the death point. A hearth exposes no destination list at all, and no station coincides with a hearth."
+      }
+    },
+    {
+      "id": "m_d19_marker_sweep",
+      "what": "M-D19 no marker, arrow, minimap or compass pointing at the stain",
+      "status": "measured",
+      "value": {
+        "markers_reported": 0,
+        "map_exists": false,
+        "marker_like_elements": [],
+        "world_anchored_elements": [],
+        "hud_element_ids": [
+          "hud.health",
+          "hud.stamina",
+          "hud.focus",
+          "hud.heal",
+          "hud.equipload",
+          "hud.quickslots"
+        ],
+        "pass": true
+      }
+    },
+    {
+      "id": "m_d11_death_surface",
+      "what": "M-D11 death surface: <= 3.0 s, skippable on its first frame",
+      "status": "measured",
+      "value": {
+        "samples": [
+          {
+            "frames_after_death": 0,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 6,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 12,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 18,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 24,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 30,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 36,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 42,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 48,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 54,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 60,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 66,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 72,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 78,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 84,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 90,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 96,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 102,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 108,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 114,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 120,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 126,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 132,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 138,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 144,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 150,
+            "surface_active": false,
+            "line": null
+          }
+        ],
+        "surface_up_for_frames": 150,
+        "surface_up_for_s": 2.5,
+        "ceiling_s": 3,
+        "line": "YOU WENT DOWN",
+        "skipped_on_first_rendered_frame": true,
+        "frames_from_input_to_gone": 2,
+        "pixels": {
+          "width": 1920,
+          "height": 1080,
+          "dark_px": 2000309,
+          "warm_ink_px": 19877,
+          "dark_frac": 0.9647
+        },
+        "surface_actually_drawn": true,
+        "statistics_or_tips_rendered": 0,
+        "pass": true,
+        "hard_fail_HF8": false
+      }
+    },
+    {
+      "id": "m_d14_stain_visibility",
+      "what": "M-D14 the bloom is visible at 12 m, and at 6 m in the dark",
+      "status": "measured",
+      "value": {
+        "stain": {
+          "pos": [
+            3834.57,
+            2.971782,
+            3959.5
+          ],
+          "souls": 4200,
+          "death_index": 2
+        },
+        "views": [
+          {
+            "condition": "daylight_12m",
+            "bearing_deg": 0,
+            "px": 1078,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "daylight_12m",
+            "bearing_deg": 45,
+            "px": 1047,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "daylight_12m",
+            "bearing_deg": 90,
+            "px": 1073,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "daylight_12m",
+            "bearing_deg": 135,
+            "px": 1072,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "daylight_12m",
+            "bearing_deg": 180,
+            "px": 295,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "daylight_12m",
+            "bearing_deg": 225,
+            "px": 1068,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "daylight_12m",
+            "bearing_deg": 270,
+            "px": 1073,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "daylight_12m",
+            "bearing_deg": 315,
+            "px": 438,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "dark_6m",
+            "bearing_deg": 0,
+            "px": 4127,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "dark_6m",
+            "bearing_deg": 45,
+            "px": 4104,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "dark_6m",
+            "bearing_deg": 90,
+            "px": 4132,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "dark_6m",
+            "bearing_deg": 135,
+            "px": 4107,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "dark_6m",
+            "bearing_deg": 180,
+            "px": 2671,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "dark_6m",
+            "bearing_deg": 225,
+            "px": 4104,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "dark_6m",
+            "bearing_deg": 270,
+            "px": 4132,
+            "control_px": 195,
+            "visible": true
+          },
+          {
+            "condition": "dark_6m",
+            "bearing_deg": 315,
+            "px": 4107,
+            "control_px": 195,
+            "visible": true
+          }
+        ],
+        "daylight_12m_visible": "8/8",
+        "dark_6m_visible": "8/8",
+        "pass": true,
+        "control_note": "Each viewpoint is shot twice — at the bloom and turned 180 deg away. A detector that fires on the marsh rather than on the bloom shows up as a non-zero control."
+      }
+    },
+    {
+      "id": "m_d13_run_back",
+      "what": "M-D13 / R1-R4 run-back timing, walked",
+      "status": "measured",
+      "value": {
+        "trials": [
+          {
+            "dist": 150,
+            "ok": false,
+            "why": "no walkable bearing at this radius",
+            "bearings_tried": [
+              {
+                "deg": 11,
+                "rejected_at": {
+                  "at_m": 150,
+                  "depth_m": 1.355,
+                  "slope": 3.24,
+                  "land": false
+                }
+              },
+              {
+                "deg": 26,
+                "walk_aborted": null
+              },
+              {
+                "deg": 41,
+                "rejected_at": {
+                  "at_m": 150,
+                  "depth_m": 0.998,
+                  "slope": 4.15,
+                  "land": true
+                }
+              },
+              {
+                "deg": 56,
+                "rejected_at": {
+                  "at_m": 138,
+                  "depth_m": 0.714,
+                  "slope": 2.38,
+                  "land": true
+                }
+              },
+              {
+                "deg": 71,
+                "rejected_at": {
+                  "at_m": 88,
+                  "depth_m": 0.816,
+                  "slope": 5.67,
+                  "land": true
+                }
+              },
+              {
+                "deg": 86,
+                "rejected_at": {
+                  "at_m": 113,
+                  "depth_m": 0.779,
+                  "slope": 3.42,
+                  "land": true
+                }
+              },
+              {
+                "deg": 101,
+                "rejected_at": {
+                  "at_m": 113,
+                  "depth_m": 0.826,
+                  "slope": 3.59,
+                  "land": true
+                }
+              },
+              {
+                "deg": 116,
+                "walk_aborted": null
+              },
+              {
+                "deg": 131,
+                "rejected_at": {
+                  "at_m": 150,
+                  "depth_m": 1.479,
+                  "slope": 3.79,
+                  "land": true
+                }
+              },
+              {
+                "deg": 146,
+                "rejected_at": {
+                  "at_m": 138,
+                  "depth_m": 0.897,
+                  "slope": 4.98,
+                  "land": true
+                }
+              },
+              {
+                "deg": 161,
+                "walk_aborted": null
+              },
+              {
+                "deg": 176,
+                "walk_aborted": null
+              },
+              {
+                "deg": 191,
+                "walk_aborted": null
+              },
+              {
+                "deg": 206,
+                "walk_aborted": null
+              },
+              {
+                "deg": 221,
+                "walk_aborted": null
+              },
+              {
+                "deg": 236,
+                "walk_aborted": null
+              },
+              {
+                "deg": 251,
+                "walk_aborted": null
+              },
+              {
+                "deg": 266,
+                "walk_aborted": null
+              },
+              {
+                "deg": 281,
+                "walk_aborted": null
+              },
+              {
+                "deg": 296,
+                "walk_aborted": null
+              },
+              {
+                "deg": 311,
+                "walk_aborted": null
+              },
+              {
+                "deg": 326,
+                "walk_aborted": null
+              },
+              {
+                "deg": 341,
+                "walk_aborted": null
+              },
+              {
+                "deg": 356,
+                "rejected_at": {
+                  "at_m": 100,
+                  "depth_m": 0,
+                  "slope": 2.38,
+                  "land": false
+                }
+              }
+            ]
+          },
+          {
+            "dist": 220,
+            "ok": false,
+            "why": "no walkable bearing at this radius",
+            "bearings_tried": [
+              {
+                "deg": 11,
+                "rejected_at": {
+                  "at_m": 147,
+                  "depth_m": 1.54,
+                  "slope": 2.69,
+                  "land": false
+                }
+              },
+              {
+                "deg": 26,
+                "rejected_at": {
+                  "at_m": 183,
+                  "depth_m": 1.714,
+                  "slope": 9.22,
+                  "land": true
+                }
+              },
+              {
+                "deg": 41,
+                "rejected_at": {
+                  "at_m": 147,
+                  "depth_m": 1.087,
+                  "slope": 2.98,
+                  "land": true
+                }
+              },
+              {
+                "deg": 56,
+                "rejected_at": {
+                  "at_m": 165,
+                  "depth_m": 0.933,
+                  "slope": 5.74,
+                  "land": false
+                }
+              },
+              {
+                "deg": 71,
+                "rejected_at": {
+                  "at_m": 92,
+                  "depth_m": 0.736,
+                  "slope": 6.45,
+                  "land": true
+                }
+              },
+              {
+                "deg": 86,
+                "rejected_at": {
+                  "at_m": 128,
+                  "depth_m": 1.022,
+                  "slope": 6.1,
+                  "land": true
+                }
+              },
+              {
+                "deg": 101,
+                "rejected_at": {
+                  "at_m": 110,
+                  "depth_m": 1.132,
+                  "slope": 3.42,
+                  "land": true
+                }
+              },
+              {
+                "deg": 116,
+                "rejected_at": {
+                  "at_m": 183,
+                  "depth_m": 1.135,
+                  "slope": 6.12,
+                  "land": false
+                }
+              },
+              {
+                "deg": 131,
+                "rejected_at": {
+                  "at_m": 128,
+                  "depth_m": 1.017,
+                  "slope": 4.32,
+                  "land": true
+                }
+              },
+              {
+                "deg": 146,
+                "rejected_at": {
+                  "at_m": 147,
+                  "depth_m": 0.725,
+                  "slope": 3.7,
+                  "land": true
+                }
+              },
+              {
+                "deg": 161,
+                "rejected_at": {
+                  "at_m": 183,
+                  "depth_m": 0.799,
+                  "slope": 7.13,
+                  "land": true
+                }
+              },
+              {
+                "deg": 176,
+                "walk_aborted": null
+              },
+              {
+                "deg": 191,
+                "walk_aborted": null
+              },
+              {
+                "deg": 206,
+                "walk_aborted": null
+              },
+              {
+                "deg": 221,
+                "walk_aborted": null
+              },
+              {
+                "deg": 236,
+                "walk_aborted": null
+              },
+              {
+                "deg": 251,
+                "walk_aborted": null
+              },
+              {
+                "deg": 266,
+                "walk_aborted": null
+              },
+              {
+                "deg": 281,
+                "walk_aborted": null
+              },
+              {
+                "deg": 296,
+                "walk_aborted": null
+              },
+              {
+                "deg": 311,
+                "walk_aborted": null
+              },
+              {
+                "deg": 326,
+                "rejected_at": {
+                  "at_m": 202,
+                  "depth_m": 0,
+                  "slope": 3.53,
+                  "land": false
+                }
+              },
+              {
+                "deg": 341,
+                "walk_aborted": null
+              },
+              {
+                "deg": 356,
+                "rejected_at": {
+                  "at_m": 92,
+                  "depth_m": 0,
+                  "slope": 1.42,
+                  "land": false
+                }
+              }
+            ]
+          },
+          {
+            "dist": 300,
+            "ok": false,
+            "why": "no walkable bearing at this radius",
+            "bearings_tried": [
+              {
+                "deg": 11,
+                "rejected_at": {
+                  "at_m": 150,
+                  "depth_m": 1.355,
+                  "slope": 3.24,
+                  "land": false
+                }
+              },
+              {
+                "deg": 26,
+                "rejected_at": {
+                  "at_m": 200,
+                  "depth_m": 2.514,
+                  "slope": 3.52,
+                  "land": false
+                }
+              },
+              {
+                "deg": 41,
+                "rejected_at": {
+                  "at_m": 150,
+                  "depth_m": 0.998,
+                  "slope": 4.15,
+                  "land": true
+                }
+              },
+              {
+                "deg": 56,
+                "rejected_at": {
+                  "at_m": 175,
+                  "depth_m": 2.762,
+                  "slope": 2.41,
+                  "land": false
+                }
+              },
+              {
+                "deg": 71,
+                "rejected_at": {
+                  "at_m": 100,
+                  "depth_m": 0.989,
+                  "slope": 1.12,
+                  "land": true
+                }
+              },
+              {
+                "deg": 86,
+                "rejected_at": {
+                  "at_m": 125,
+                  "depth_m": 0.704,
+                  "slope": 4.06,
+                  "land": true
+                }
+              },
+              {
+                "deg": 101,
+                "rejected_at": {
+                  "at_m": 125,
+                  "depth_m": 0.882,
+                  "slope": 2.31,
+                  "land": true
+                }
+              },
+              {
+                "deg": 116,
+                "rejected_at": {
+                  "at_m": 175,
+                  "depth_m": 1.697,
+                  "slope": 6.13,
+                  "land": true
+                }
+              },
+              {
+                "deg": 131,
+                "rejected_at": {
+                  "at_m": 150,
+                  "depth_m": 1.479,
+                  "slope": 3.79,
+                  "land": true
+                }
+              },
+              {
+                "deg": 146,
+                "rejected_at": {
+                  "at_m": 175,
+                  "depth_m": 0.864,
+                  "slope": 2.56,
+                  "land": true
+                }
+              },
+              {
+                "deg": 161,
+                "rejected_at": {
+                  "at_m": 175,
+                  "depth_m": 0.759,
+                  "slope": 7.99,
+                  "land": true
+                }
+              },
+              {
+                "deg": 176,
+                "rejected_at": {
+                  "at_m": 275,
+                  "depth_m": 1.004,
+                  "slope": 4.82,
+                  "land": true
+                }
+              },
+              {
+                "deg": 191,
+                "rejected_at": {
+                  "at_m": 175,
+                  "depth_m": 0.801,
+                  "slope": 3.64,
+                  "land": true
+                }
+              },
+              {
+                "deg": 206,
+                "walk_aborted": null
+              },
+              {
+                "deg": 221,
+                "walk_aborted": null
+              },
+              {
+                "deg": 236,
+                "walk_aborted": null
+              },
+              {
+                "deg": 251,
+                "walk_aborted": null
+              },
+              {
+                "deg": 266,
+                "walk_aborted": null
+              },
+              {
+                "deg": 281,
+                "walk_aborted": null
+              },
+              {
+                "deg": 296,
+                "rejected_at": {
+                  "at_m": 300,
+                  "depth_m": 1.123,
+                  "slope": 2.36,
+                  "land": true
+                }
+              },
+              {
+                "deg": 311,
+                "walk_aborted": null
+              },
+              {
+                "deg": 326,
+                "rejected_at": {
+                  "at_m": 200,
+                  "depth_m": 0,
+                  "slope": 1.76,
+                  "land": false
+                }
+              },
+              {
+                "deg": 341,
+                "rejected_at": {
+                  "at_m": 225,
+                  "depth_m": 0.822,
+                  "slope": 2.7,
+                  "land": true
+                }
+              },
+              {
+                "deg": 356,
+                "rejected_at": {
+                  "at_m": 100,
+                  "depth_m": 0,
+                  "slope": 2.38,
+                  "land": false
+                }
+              }
+            ]
+          }
+        ],
+        "run_back_median_min": null,
+        "run_back_p95_min": null,
+        "R1_band": [
+          1.5,
+          3
+        ],
+        "R2_ceiling": 4,
+        "R1_pass": false,
+        "R2_pass": false,
+        "recovered_on_arrival": "0/0",
+        "R3_note": "encounters_on_run_back needs a placed hostile roster in the province. game/data/world/encounters.json exists but no roster is placed on the ground between a well and an arbitrary death point, so R3 is UNMEASURED here rather than reported as 0 — a 0 would read as the failure R3 exists to catch and would be an artefact of the probe. Owner: W1-12 (combat.encounter.placement).",
+        "R4_note": "The shortcut ratio (RN2) needs an unlockable shortcut on the ground. sim.world.shortcutsOpened is a real, saved register and magic/apply.js writes it, but no shortcut GEOMETRY exists in the province, so R4 is UNMEASURED. Owner: W1-01/W1-02."
+      }
+    },
+    {
+      "id": "m_jrn06_summary",
+      "what": "RI-JRN06 M-D1..M-D19",
+      "status": "measured",
+      "value": {
+        "scenarios": [
+          "RN1",
+          "RN2",
+          "RN3",
+          "RN4",
+          "RN5"
+        ],
+        "deaths": 20,
+        "checks": {
+          "m_d5_respawn_scope": true,
+          "m_d6_named_stays_dead": true,
+          "m_d1_souls_conservation": true,
+          "m_d2_stain_placement": true,
+          "m_d8_second_death": true,
+          "m_d10_death_legibility": true,
+          "m_d12_time_dead": true,
+          "m_d17_stain_loss_rate": true,
+          "m_d4_across_death_diff": true,
+          "m_d10_d11_preserved": true,
+          "m_d3_unreachable_relocation": true,
+          "m_d15_recovery_robustness": true,
+          "m_d16_persistence": true,
+          "m_d9_no_compensation": true,
+          "m_d18_no_fast_travel_to_the_stain": true,
+          "m_d19_marker_sweep": true,
+          "m_d11_death_surface": true,
+          "m_d14_stain_visibility": true
+        }
+      }
+    }
+  ],
+  "ok": false,
+  "artifacts": {
+    "trace": "trace.jsonl",
+    "ui_text": "ui-text.jsonl",
+    "surfaces": "surfaces.json",
+    "shots": []
+  }
+}

@@ -1,0 +1,519 @@
+{
+  "tool": "tools/analysis/critic-w1-22-probe.mjs",
+  "author": "W1-22 round-1 critic",
+  "taken_at": "2026-08-07T18:25:49.566Z",
+  "git": {
+    "commit": "78aebc7",
+    "dirty": true
+  },
+  "seconds": 20,
+  "sample_rate": 16000,
+  "load_at_start": "17.85 17.74 12.54 16/325 1285",
+  "A_bed_gain_mechanism": {
+    "region": "valus-ridge",
+    "trims": [
+      -13.24,
+      -15.3
+    ],
+    "hypothesis": "synth.js attachMod() sets amt.gain.value (the LFO swing, an ADDITIVE AudioParam connection) from the pre-trim base; ambience.js buildBedContinuous() then multiplies only the STATIC gain by dbToGain(level_db)*trim. One term follows the trim, the other does not.",
+    "runs": {
+      "as_shipped@-13.24": {
+        "lufs_i": -23.943,
+        "peak": 0.272103,
+        "peak_dbfs": -11.305,
+        "band_centroid_hz": 2057.8,
+        "power_centroid_hz": 210.2
+      },
+      "as_shipped@-15.3": {
+        "lufs_i": -25.364,
+        "peak": 0.244819,
+        "peak_dbfs": -12.223,
+        "band_centroid_hz": 1925.1,
+        "power_centroid_hz": 205.1
+      },
+      "mod_off@-13.24": {
+        "lufs_i": -26.058,
+        "peak": 0.16509,
+        "peak_dbfs": -15.646,
+        "band_centroid_hz": 1917.6,
+        "power_centroid_hz": 213.9
+      },
+      "mod_off@-15.3": {
+        "lufs_i": -28.118,
+        "peak": 0.130222,
+        "peak_dbfs": -17.706,
+        "band_centroid_hz": 1917.6,
+        "power_centroid_hz": 213.9
+      }
+    },
+    "applied_trim_db": -2.06,
+    "delta_as_shipped": {
+      "d_lufs": -1.421,
+      "d_peak_db": -0.918,
+      "d_band_centroid_hz": -132.7,
+      "d_power_centroid_hz": -5.1
+    },
+    "delta_mod_off": {
+      "d_lufs": -2.06,
+      "d_peak_db": -2.06,
+      "d_band_centroid_hz": 0,
+      "d_power_centroid_hz": 0
+    },
+    "verdict": "mod_off deltas equal to (-2.06, -2.06, 0, 0) prove the gain LFO is the mechanism.",
+    "arithmetic": {
+      "l1_synth_gain_db": -2,
+      "l1_level_db": 0,
+      "bed_gain_db": -15.3,
+      "mod": {
+        "target": "gain",
+        "lfo_hz": 0.11,
+        "depth": 0.42
+      },
+      "static_term": 0.1078,
+      "lfo_swing_term": 0.16681,
+      "swing_over_static": 1.547,
+      "gain_goes_negative_at_trough": true
+    }
+  },
+  "B_emitter_consumption": {
+    "emitter_declared": {
+      "id": "bell_buoy",
+      "pos_m": [
+        398,
+        4486
+      ],
+      "period_s": 13,
+      "audible_m": 600,
+      "level_db": 2
+    },
+    "no_listener": {
+      "baseline": {
+        "peak": 0.342586,
+        "lufs": -23.991
+      },
+      "buoy_plus40": {
+        "peak": 0.342586,
+        "lufs": -23.991
+      },
+      "control_l1_plus40": {
+        "peak": 1.000031,
+        "lufs": -5.336
+      },
+      "fired_baseline": [
+        "L3:rope_creak"
+      ],
+      "fired_after": [
+        "L3:rope_creak"
+      ]
+    },
+    "with_listener": {
+      "baseline": {
+        "peak": 0.646428,
+        "lufs": -23.107
+      },
+      "buoy_plus40": {
+        "peak": 0.681234,
+        "lufs": -14.764
+      },
+      "fired_baseline": [
+        "L3:rope_creak",
+        "emitter:bell_buoy",
+        "emitter:bell_buoy"
+      ]
+    },
+    "live_path": {
+      "baseline": {
+        "live_peak": 0.4197283983230591,
+        "emitters_reported": [
+          {
+            "id": "bell_buoy",
+            "audible": true,
+            "gain": 0.9899,
+            "pan": 0.707
+          }
+        ],
+        "log_row_types": [
+          "region_change",
+          "ambience_event"
+        ],
+        "log_rows_naming_an_emitter": 0,
+        "voices_peak": 4
+      },
+      "buoy_plus40": {
+        "live_peak": 0.4197283983230591,
+        "emitters_reported": [
+          {
+            "id": "bell_buoy",
+            "audible": true,
+            "gain": 0.9899,
+            "pan": 0.707
+          }
+        ],
+        "log_row_types": [
+          "region_change",
+          "ambience_event"
+        ],
+        "log_rows_naming_an_emitter": 0,
+        "voices_peak": 4
+      }
+    }
+  },
+  "C_B5_strict": {
+    "spec": "RI-AUD03 B5 verbatim: integrated LUFS over each clip must be -28..-24, Stone Wastes exempt at -34 +-2. Pass = 13/13. Hard fail = any region > -18 LUFS-I.",
+    "in_band": "12/13",
+    "pass": false,
+    "hard_fail_any_above_minus18": false,
+    "out_of_band": [
+      {
+        "id": "marauders-coast",
+        "lufs_i": -23.991,
+        "own_target": -24
+      }
+    ],
+    "per_region": {
+      "blackwood": {
+        "lufs_i": -24.998,
+        "peak": 0.366451,
+        "peak_dbfs": -8.72,
+        "band_centroid_hz": 2841.8,
+        "power_centroid_hz": 341.3,
+        "target": -25,
+        "bed_gain_db": -4.27,
+        "events_fired": 1,
+        "fired": [
+          "L3:canopy_drip@19.16s"
+        ]
+      },
+      "clay-moor": {
+        "lufs_i": -25.996,
+        "peak": 0.352397,
+        "peak_dbfs": -9.059,
+        "band_centroid_hz": 588.5,
+        "power_centroid_hz": 163.1,
+        "target": -26,
+        "bed_gain_db": -0.65,
+        "events_fired": 1,
+        "fired": [
+          "L3:clay_crack@13.6s"
+        ]
+      },
+      "crimson-coast": {
+        "lufs_i": -24.924,
+        "peak": 0.265038,
+        "peak_dbfs": -11.534,
+        "band_centroid_hz": 349.5,
+        "power_centroid_hz": 76,
+        "target": -25,
+        "bed_gain_db": -6.05,
+        "events_fired": 1,
+        "fired": [
+          "L3:lichen_scream@18.74s"
+        ]
+      },
+      "deep-marshes": {
+        "lufs_i": -27.956,
+        "peak": 0.239921,
+        "peak_dbfs": -12.399,
+        "band_centroid_hz": 130.9,
+        "power_centroid_hz": 46,
+        "target": -28,
+        "bed_gain_db": -4.46,
+        "events_fired": 0,
+        "fired": []
+      },
+      "eastern-rootlands": {
+        "lufs_i": -24.996,
+        "peak": 0.191549,
+        "peak_dbfs": -14.354,
+        "band_centroid_hz": 527.9,
+        "power_centroid_hz": 119.8,
+        "target": -25,
+        "bed_gain_db": -7.53,
+        "events_fired": 1,
+        "fired": [
+          "L3:oar_stroke@16.64s"
+        ]
+      },
+      "hive": {
+        "lufs_i": -24.998,
+        "peak": 0.209723,
+        "peak_dbfs": -13.567,
+        "band_centroid_hz": 1493.1,
+        "power_centroid_hz": 648.8,
+        "target": -25,
+        "bed_gain_db": -5.39,
+        "events_fired": 1,
+        "fired": [
+          "L3:cell_tick@19.59s"
+        ]
+      },
+      "marauders-coast": {
+        "lufs_i": -23.991,
+        "peak": 0.342586,
+        "peak_dbfs": -9.305,
+        "band_centroid_hz": 2177.7,
+        "power_centroid_hz": 901.1,
+        "target": -24,
+        "bed_gain_db": -1.16,
+        "events_fired": 1,
+        "fired": [
+          "L3:rope_creak@13.52s"
+        ]
+      },
+      "salt-hills": {
+        "lufs_i": -25.969,
+        "peak": 0.192389,
+        "peak_dbfs": -14.316,
+        "band_centroid_hz": 3468.5,
+        "power_centroid_hz": 2997.8,
+        "target": -26,
+        "bed_gain_db": -2.71,
+        "events_fired": 0,
+        "fired": []
+      },
+      "stone-forest": {
+        "lufs_i": -25.981,
+        "peak": 0.176275,
+        "peak_dbfs": -15.076,
+        "band_centroid_hz": 327.1,
+        "power_centroid_hz": 144.3,
+        "target": -26,
+        "bed_gain_db": -11.24,
+        "events_fired": 1,
+        "fired": [
+          "L3:stone_tick@9.87s"
+        ]
+      },
+      "stone-wastes": {
+        "lufs_i": -33.997,
+        "peak": 0.160054,
+        "peak_dbfs": -15.915,
+        "band_centroid_hz": 111.6,
+        "power_centroid_hz": 45.1,
+        "target": -34,
+        "bed_gain_db": 2.48,
+        "events_fired": 0,
+        "fired": []
+      },
+      "thornmarsh": {
+        "lufs_i": -27.018,
+        "peak": 0.236473,
+        "peak_dbfs": -12.524,
+        "band_centroid_hz": 2343.7,
+        "power_centroid_hz": 1175.9,
+        "target": -27,
+        "bed_gain_db": 6.18,
+        "events_fired": 1,
+        "fired": [
+          "L3:thorn_clatter@17.97s"
+        ]
+      },
+      "valus-ridge": {
+        "lufs_i": -25.364,
+        "peak": 0.244819,
+        "peak_dbfs": -12.223,
+        "band_centroid_hz": 1925.1,
+        "power_centroid_hz": 205.1,
+        "target": -26,
+        "bed_gain_db": -15.3,
+        "events_fired": 0,
+        "fired": []
+      },
+      "western-rootlands": {
+        "lufs_i": -24.97,
+        "peak": 0.246055,
+        "peak_dbfs": -12.179,
+        "band_centroid_hz": 1870.1,
+        "power_centroid_hz": 294.3,
+        "target": -25,
+        "bed_gain_db": -7.12,
+        "events_fired": 0,
+        "fired": []
+      }
+    }
+  },
+  "D_pair_matrix": {
+    "pairs_total": 78,
+    "fraction_over_0_15": 1,
+    "closest_12": [
+      {
+        "a": "deep-marshes",
+        "b": "stone-wastes",
+        "d": 0.1659
+      },
+      {
+        "a": "marauders-coast",
+        "b": "salt-hills",
+        "d": 0.1742
+      },
+      {
+        "a": "marauders-coast",
+        "b": "thornmarsh",
+        "d": 0.1898
+      },
+      {
+        "a": "crimson-coast",
+        "b": "stone-wastes",
+        "d": 0.2179
+      },
+      {
+        "a": "hive",
+        "b": "marauders-coast",
+        "d": 0.2294
+      },
+      {
+        "a": "thornmarsh",
+        "b": "western-rootlands",
+        "d": 0.2427
+      },
+      {
+        "a": "marauders-coast",
+        "b": "western-rootlands",
+        "d": 0.2474
+      },
+      {
+        "a": "blackwood",
+        "b": "salt-hills",
+        "d": 0.2493
+      },
+      {
+        "a": "valus-ridge",
+        "b": "western-rootlands",
+        "d": 0.2763
+      },
+      {
+        "a": "salt-hills",
+        "b": "thornmarsh",
+        "d": 0.362
+      },
+      {
+        "a": "crimson-coast",
+        "b": "deep-marshes",
+        "d": 0.3833
+      },
+      {
+        "a": "clay-moor",
+        "b": "hive",
+        "d": 0.3896
+      }
+    ],
+    "furthest_3": [
+      {
+        "a": "hive",
+        "b": "stone-wastes",
+        "d": 0.952
+      },
+      {
+        "a": "deep-marshes",
+        "b": "salt-hills",
+        "d": 0.9556
+      },
+      {
+        "a": "salt-hills",
+        "b": "stone-wastes",
+        "d": 0.9668
+      }
+    ]
+  },
+  "E_suppression": {
+    "rows": [
+      {
+        "label": "exterior province",
+        "cell": "province",
+        "suppressed": null,
+        "region": "marauders-coast",
+        "layers": {
+          "L1": "l1_open_sea_floor",
+          "L2": "l2_surf_tidal",
+          "L3": "l3_rope_creak",
+          "L4": "l4_gulls_or_drowned"
+        },
+        "voices_active": 3
+      },
+      {
+        "label": "barge-hold",
+        "cell": "barge_hold",
+        "suppressed": "barge_hold",
+        "region": "marauders-coast",
+        "layers": {
+          "L1": "l1_open_sea_floor",
+          "L2": "l2_surf_tidal",
+          "L3": "l3_rope_creak",
+          "L4": "l4_gulls_or_drowned"
+        },
+        "voices_active": 3
+      },
+      {
+        "label": "writ-house",
+        "cell": "writ_house",
+        "suppressed": "writ_house",
+        "region": "marauders-coast",
+        "layers": {
+          "L1": "l1_open_sea_floor",
+          "L2": "l2_surf_tidal",
+          "L3": "l3_rope_creak",
+          "L4": "l4_gulls_or_drowned"
+        },
+        "voices_active": 3
+      },
+      {
+        "label": "helstrom-market",
+        "cell": "market",
+        "suppressed": "market",
+        "region": "marauders-coast",
+        "layers": {
+          "L1": "l1_open_sea_floor",
+          "L2": "l2_surf_tidal",
+          "L3": "l3_rope_creak",
+          "L4": "l4_gulls_or_drowned"
+        },
+        "voices_active": 3
+      },
+      {
+        "label": "stormhold-street",
+        "cell": "street",
+        "suppressed": "street",
+        "region": "marauders-coast",
+        "layers": {
+          "L1": "l1_open_sea_floor",
+          "L2": "l2_surf_tidal",
+          "L3": "l3_rope_creak",
+          "L4": "l4_gulls_or_drowned"
+        },
+        "voices_active": 3
+      },
+      {
+        "label": "rootlands-well",
+        "cell": "well",
+        "suppressed": "well",
+        "region": "marauders-coast",
+        "layers": {
+          "L1": "l1_open_sea_floor",
+          "L2": "l2_surf_tidal",
+          "L3": "l3_rope_creak",
+          "L4": "l4_gulls_or_drowned"
+        },
+        "voices_active": 3
+      },
+      {
+        "label": "dungeon-primary",
+        "cell": "dungeon",
+        "suppressed": "dungeon",
+        "region": "marauders-coast",
+        "layers": {
+          "L1": "l1_open_sea_floor",
+          "L2": "l2_surf_tidal",
+          "L3": "l3_rope_creak",
+          "L4": "l4_gulls_or_drowned"
+        },
+        "voices_active": 3
+      }
+    ],
+    "interiors_in_data": 115
+  },
+  "page_errors": [],
+  "git_at_end": {
+    "commit": "78aebc7",
+    "dirty": true
+  }
+}

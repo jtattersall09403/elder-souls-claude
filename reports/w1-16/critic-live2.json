@@ -1,0 +1,628 @@
+{
+  "schema": "elder-souls/critic-w1-16-live@1",
+  "unit": "f@60",
+  "generated": "2026-08-08T02:06:42.968Z",
+  "probes": {
+    "ladder": {
+      "unit": "f@60",
+      "conversion": "f@60 = 2 x t@30 (ARBITRATION S22)",
+      "rows": [
+        {
+          "pct": 15,
+          "tier": "LIGHT",
+          "startup_f60": 4,
+          "iframes_f60": 26,
+          "window_f60": [
+            5,
+            30
+          ],
+          "recovery_f60": 22,
+          "total_f60": 52,
+          "contiguous_runs": 1,
+          "stamina_spent": 22
+        },
+        {
+          "pct": 29.99,
+          "tier": "LIGHT",
+          "startup_f60": 4,
+          "iframes_f60": 26,
+          "window_f60": [
+            5,
+            30
+          ],
+          "recovery_f60": 22,
+          "total_f60": 52,
+          "contiguous_runs": 1,
+          "stamina_spent": 22
+        },
+        {
+          "pct": 30,
+          "tier": "LIGHT",
+          "startup_f60": 4,
+          "iframes_f60": 26,
+          "window_f60": [
+            5,
+            30
+          ],
+          "recovery_f60": 22,
+          "total_f60": 52,
+          "contiguous_runs": 1,
+          "stamina_spent": 22
+        },
+        {
+          "pct": 30.01,
+          "tier": "MEDIUM",
+          "startup_f60": 4,
+          "iframes_f60": 22,
+          "window_f60": [
+            5,
+            26
+          ],
+          "recovery_f60": 34,
+          "total_f60": 60,
+          "contiguous_runs": 1,
+          "stamina_spent": 26
+        },
+        {
+          "pct": 50,
+          "tier": "MEDIUM",
+          "startup_f60": 4,
+          "iframes_f60": 22,
+          "window_f60": [
+            5,
+            26
+          ],
+          "recovery_f60": 34,
+          "total_f60": 60,
+          "contiguous_runs": 1,
+          "stamina_spent": 26
+        },
+        {
+          "pct": 69.99,
+          "tier": "MEDIUM",
+          "startup_f60": 4,
+          "iframes_f60": 22,
+          "window_f60": [
+            5,
+            26
+          ],
+          "recovery_f60": 34,
+          "total_f60": 60,
+          "contiguous_runs": 1,
+          "stamina_spent": 26
+        },
+        {
+          "pct": 70,
+          "tier": "MEDIUM",
+          "startup_f60": 4,
+          "iframes_f60": 22,
+          "window_f60": [
+            5,
+            26
+          ],
+          "recovery_f60": 34,
+          "total_f60": 60,
+          "contiguous_runs": 1,
+          "stamina_spent": 26
+        },
+        {
+          "pct": 70.01,
+          "tier": "HEAVY",
+          "startup_f60": 6,
+          "iframes_f60": 10,
+          "window_f60": [
+            7,
+            16
+          ],
+          "recovery_f60": 72,
+          "total_f60": 88,
+          "contiguous_runs": 1,
+          "stamina_spent": 34
+        },
+        {
+          "pct": 85,
+          "tier": "HEAVY",
+          "startup_f60": 6,
+          "iframes_f60": 10,
+          "window_f60": [
+            7,
+            16
+          ],
+          "recovery_f60": 72,
+          "total_f60": 88,
+          "contiguous_runs": 1,
+          "stamina_spent": 34
+        },
+        {
+          "pct": 99.99,
+          "tier": "HEAVY",
+          "startup_f60": 6,
+          "iframes_f60": 10,
+          "window_f60": [
+            7,
+            16
+          ],
+          "recovery_f60": 72,
+          "total_f60": 88,
+          "contiguous_runs": 1,
+          "stamina_spent": 34
+        },
+        {
+          "pct": 100,
+          "tier": "HEAVY",
+          "startup_f60": 6,
+          "iframes_f60": 10,
+          "window_f60": [
+            7,
+            16
+          ],
+          "recovery_f60": 72,
+          "total_f60": 88,
+          "contiguous_runs": 1,
+          "stamina_spent": 34
+        },
+        {
+          "pct": 100.01,
+          "tier": "OVERLOADED",
+          "startup_f60": null,
+          "iframes_f60": 0,
+          "window_f60": null,
+          "recovery_f60": 120,
+          "total_f60": 120,
+          "contiguous_runs": 0,
+          "stamina_spent": 40
+        },
+        {
+          "pct": 120,
+          "tier": "OVERLOADED",
+          "startup_f60": null,
+          "iframes_f60": 0,
+          "window_f60": null,
+          "recovery_f60": 120,
+          "total_f60": 120,
+          "contiguous_runs": 0,
+          "stamina_spent": 40
+        }
+      ],
+      "diffs": [
+        {
+          "pct": 15,
+          "tier": "LIGHT",
+          "iframes_f60": [
+            26,
+            26
+          ],
+          "iframes_match": true,
+          "total_f60": [
+            52,
+            52
+          ],
+          "total_match": true,
+          "recovery_f60": [
+            22,
+            22
+          ],
+          "recovery_match": true,
+          "stamina": [
+            22,
+            22
+          ],
+          "stamina_match": true,
+          "contiguous": true,
+          "t30_reference": {
+            "iframes": 13,
+            "total": 26
+          },
+          "f60_is_2x_t30": true
+        },
+        {
+          "pct": 29.99,
+          "tier": "LIGHT",
+          "iframes_f60": [
+            26,
+            26
+          ],
+          "iframes_match": true,
+          "total_f60": [
+            52,
+            52
+          ],
+          "total_match": true,
+          "recovery_f60": [
+            22,
+            22
+          ],
+          "recovery_match": true,
+          "stamina": [
+            22,
+            22
+          ],
+          "stamina_match": true,
+          "contiguous": true,
+          "t30_reference": {
+            "iframes": 13,
+            "total": 26
+          },
+          "f60_is_2x_t30": true
+        },
+        {
+          "pct": 30,
+          "tier": "LIGHT",
+          "iframes_f60": [
+            26,
+            26
+          ],
+          "iframes_match": true,
+          "total_f60": [
+            52,
+            52
+          ],
+          "total_match": true,
+          "recovery_f60": [
+            22,
+            22
+          ],
+          "recovery_match": true,
+          "stamina": [
+            22,
+            22
+          ],
+          "stamina_match": true,
+          "contiguous": true,
+          "t30_reference": {
+            "iframes": 13,
+            "total": 26
+          },
+          "f60_is_2x_t30": true
+        },
+        {
+          "pct": 30.01,
+          "tier": "MEDIUM",
+          "iframes_f60": [
+            22,
+            22
+          ],
+          "iframes_match": true,
+          "total_f60": [
+            60,
+            60
+          ],
+          "total_match": true,
+          "recovery_f60": [
+            34,
+            34
+          ],
+          "recovery_match": true,
+          "stamina": [
+            26,
+            26
+          ],
+          "stamina_match": true,
+          "contiguous": true,
+          "t30_reference": {
+            "iframes": 11,
+            "total": 30
+          },
+          "f60_is_2x_t30": true
+        },
+        {
+          "pct": 50,
+          "tier": "MEDIUM",
+          "iframes_f60": [
+            22,
+            22
+          ],
+          "iframes_match": true,
+          "total_f60": [
+            60,
+            60
+          ],
+          "total_match": true,
+          "recovery_f60": [
+            34,
+            34
+          ],
+          "recovery_match": true,
+          "stamina": [
+            26,
+            26
+          ],
+          "stamina_match": true,
+          "contiguous": true,
+          "t30_reference": {
+            "iframes": 11,
+            "total": 30
+          },
+          "f60_is_2x_t30": true
+        },
+        {
+          "pct": 69.99,
+          "tier": "MEDIUM",
+          "iframes_f60": [
+            22,
+            22
+          ],
+          "iframes_match": true,
+          "total_f60": [
+            60,
+            60
+          ],
+          "total_match": true,
+          "recovery_f60": [
+            34,
+            34
+          ],
+          "recovery_match": true,
+          "stamina": [
+            26,
+            26
+          ],
+          "stamina_match": true,
+          "contiguous": true,
+          "t30_reference": {
+            "iframes": 11,
+            "total": 30
+          },
+          "f60_is_2x_t30": true
+        },
+        {
+          "pct": 70,
+          "tier": "MEDIUM",
+          "iframes_f60": [
+            22,
+            22
+          ],
+          "iframes_match": true,
+          "total_f60": [
+            60,
+            60
+          ],
+          "total_match": true,
+          "recovery_f60": [
+            34,
+            34
+          ],
+          "recovery_match": true,
+          "stamina": [
+            26,
+            26
+          ],
+          "stamina_match": true,
+          "contiguous": true,
+          "t30_reference": {
+            "iframes": 11,
+            "total": 30
+          },
+          "f60_is_2x_t30": true
+        },
+        {
+          "pct": 70.01,
+          "tier": "HEAVY",
+          "iframes_f60": [
+            10,
+            10
+          ],
+          "iframes_match": true,
+          "total_f60": [
+            88,
+            88
+          ],
+          "total_match": true,
+          "recovery_f60": [
+            72,
+            72
+          ],
+          "recovery_match": true,
+          "stamina": [
+            34,
+            34
+          ],
+          "stamina_match": true,
+          "contiguous": true,
+          "t30_reference": {
+            "iframes": 5,
+            "total": 44
+          },
+          "f60_is_2x_t30": true
+        },
+        {
+          "pct": 85,
+          "tier": "HEAVY",
+          "iframes_f60": [
+            10,
+            10
+          ],
+          "iframes_match": true,
+          "total_f60": [
+            88,
+            88
+          ],
+          "total_match": true,
+          "recovery_f60": [
+            72,
+            72
+          ],
+          "recovery_match": true,
+          "stamina": [
+            34,
+            34
+          ],
+          "stamina_match": true,
+          "contiguous": true,
+          "t30_reference": {
+            "iframes": 5,
+            "total": 44
+          },
+          "f60_is_2x_t30": true
+        },
+        {
+          "pct": 99.99,
+          "tier": "HEAVY",
+          "iframes_f60": [
+            10,
+            10
+          ],
+          "iframes_match": true,
+          "total_f60": [
+            88,
+            88
+          ],
+          "total_match": true,
+          "recovery_f60": [
+            72,
+            72
+          ],
+          "recovery_match": true,
+          "stamina": [
+            34,
+            34
+          ],
+          "stamina_match": true,
+          "contiguous": true,
+          "t30_reference": {
+            "iframes": 5,
+            "total": 44
+          },
+          "f60_is_2x_t30": true
+        },
+        {
+          "pct": 100,
+          "tier": "HEAVY",
+          "iframes_f60": [
+            10,
+            10
+          ],
+          "iframes_match": true,
+          "total_f60": [
+            88,
+            88
+          ],
+          "total_match": true,
+          "recovery_f60": [
+            72,
+            72
+          ],
+          "recovery_match": true,
+          "stamina": [
+            34,
+            34
+          ],
+          "stamina_match": true,
+          "contiguous": true,
+          "t30_reference": {
+            "iframes": 5,
+            "total": 44
+          },
+          "f60_is_2x_t30": true
+        },
+        {
+          "pct": 100.01,
+          "tier": "OVERLOADED",
+          "iframes_f60": [
+            0,
+            0
+          ],
+          "iframes_match": true,
+          "total_f60": [
+            120,
+            120
+          ],
+          "total_match": true,
+          "recovery_f60": [
+            120,
+            null
+          ],
+          "recovery_match": null,
+          "stamina": [
+            40,
+            40
+          ],
+          "stamina_match": true,
+          "contiguous": true,
+          "t30_reference": {
+            "iframes": 0,
+            "total": 60
+          },
+          "f60_is_2x_t30": true
+        },
+        {
+          "pct": 120,
+          "tier": "OVERLOADED",
+          "iframes_f60": [
+            0,
+            0
+          ],
+          "iframes_match": true,
+          "total_f60": [
+            120,
+            120
+          ],
+          "total_match": true,
+          "recovery_f60": [
+            120,
+            null
+          ],
+          "recovery_match": null,
+          "stamina": [
+            40,
+            40
+          ],
+          "stamina_match": true,
+          "contiguous": true,
+          "t30_reference": {
+            "iframes": 0,
+            "total": 60
+          },
+          "f60_is_2x_t30": true
+        }
+      ],
+      "cliffs": [
+        {
+          "from_pct": 30,
+          "to_pct": 30.01,
+          "iframes": [
+            26,
+            22
+          ],
+          "total": [
+            52,
+            60
+          ]
+        },
+        {
+          "from_pct": 70,
+          "to_pct": 70.01,
+          "iframes": [
+            22,
+            10
+          ],
+          "total": [
+            60,
+            88
+          ]
+        },
+        {
+          "from_pct": 100,
+          "to_pct": 100.01,
+          "iframes": [
+            10,
+            0
+          ],
+          "total": [
+            88,
+            120
+          ]
+        }
+      ],
+      "every_row_matches_RI_CMB01_B": true,
+      "every_row_is_2x_its_t30_reference": true,
+      "iframes_are_one_contiguous_run": true,
+      "cliffs_exactly_at_the_three_boundaries": true,
+      "coupled": true
+    },
+    "pin": {
+      "__err": "page.evaluate: TypeError: this.ai.step is not a function\n    at EnemyController._idleBehaviour (http://127.0.0.1:33953/game/src/combat/enemy.js:303:15)\n    at EnemyController.step (http://127.0.0.1:33953/game/src/combat/enemy.js:264:12)\n    at CombatSystem.step (http://127.0.0.1:33953/game/src/combat/system.js:447:18)\n    at stepCombat (http://127.0.0.1:33953/game/src/sim/combat-bridge.js:60:10)\n    at stepOnce (http://127.0.0.1:33953/game/src/sim/step.js:108:5)\n    at Engine._step (http://127.0.0.1:33953/game/src/engine.js:5023:5)\n    at FixedLoop.step (http://127.0.0.1:33953/game/src/engine.js:229:42)\n    at FixedLoop.stepOnce (http://127.0.0.1:33953/game/src/core/loop.js:176:16)\n    at Engine.stepFrames (http://127.0.0.1:33953/game/src/engine.js:6153:45)\n    at Object.stepFrames (http://127.0.0.1:33953/game/src/harness/api.js:91:35)"
+    }
+  },
+  "uncoupled_probes": []
+}

@@ -1,0 +1,213 @@
+{
+ "tool": "critic-w1-04-r2, offline census (no browser)",
+ "measured_against": {
+  "kind": "frozen working-tree snapshot",
+  "taken_at": "2026-08-07T23:49:11Z",
+  "digest_md5_of_sorted_md5s": "fd893c5524b35b2334baac19cff93b10"
+ },
+ "corrections": [
+  {
+   "claim": "RI-WLD13 N1: 0 of 115 interiors declare exterior_footprint_m",
+   "was": "WRONG — I grepped a top-level field that lives under `continuity`",
+   "is": "115 of 115 declare continuity.exterior_footprint_m and on 115 of 115 the bounds_m span equals it EXACTLY. N1 is vacuous by construction, exactly as round 1 said."
+  }
+ ],
+ "findings": {
+  "props_per_room": {
+   "18": 113,
+   "14": 1,
+   "0": 1
+  },
+  "distinct_floor_areas": 8,
+  "prop_instances": 2048,
+  "distinct_prop_ids": 148,
+  "kit_meshes_declared": 69,
+  "kit_meshes_built": 32,
+  "kit_built_per_town": 4,
+  "kit_declared_per_town": [
+   8,
+   8,
+   8,
+   10,
+   10,
+   8,
+   9,
+   8
+  ],
+  "records_distinct_build_content": 94,
+  "records_in_duplicate_groups": 21,
+  "duplicate_groups": 12,
+  "largest_duplicate_group": 7,
+  "unique_items_declared": 83,
+  "unique_items_with_owner": 72,
+  "unique_items_in_property_zone_contents": 0,
+  "property_zones": 233,
+  "property_zone_contents_entries": 1878,
+  "npcs_with_gold_pool": 0,
+  "npc_records": 347,
+  "shops": 30,
+  "shops_with_no_barter_npc": 11,
+  "interiors_with_exterior_footprint_m": 0,
+  "interiors_with_a_collision_cell": 0,
+  "camera_collision_cells": 8,
+  "lightfield_addSource_callers_in_game_src": 1,
+  "lightfield_only_caller": "game/src/harness/api.js addLightSource",
+  "interior_lights_declared": 827,
+  "interiors_reachable_through_a_door": 112,
+  "orphan_interiors": [
+   "barge-hold",
+   "thorn-house-0",
+   "writ-house"
+  ],
+  "m15_rooms_missing_two_or_more": 4,
+  "m15_fail_threshold": 4,
+  "settlement_buildings_read_sites": [
+   "game/src/sim/settlement.js:52 (door table)",
+   "game/src/engine.js:7749 (.length)"
+  ]
+ },
+ "extra": {
+  "interiors_declaring_a_footprint": 115,
+  "bounds_exactly_equal_the_footprint": 115,
+  "lights_per_room_distribution": {
+   "0": 11,
+   "3": 11,
+   "4": 9,
+   "6": 7,
+   "7": 37,
+   "8": 7,
+   "9": 2,
+   "10": 6,
+   "11": 9,
+   "12": 2,
+   "13": 3,
+   "14": 7,
+   "15": 3,
+   "18": 1
+  },
+  "rooms_declaring_zero_lights": 11,
+  "duplicate_groups": [
+   [
+    "helstrom-house-10",
+    "helstrom-house-11",
+    "helstrom-house-2",
+    "helstrom-house-5",
+    "helstrom-house-6",
+    "helstrom-house-7",
+    "helstrom-house-9"
+   ],
+   [
+    "helstrom-apothecary",
+    "helstrom-deep-market",
+    "helstrom-scriptorium",
+    "helstrom-smithy"
+   ],
+   [
+    "helstrom-inn-egg",
+    "helstrom-inn-gate",
+    "helstrom-inn-tide"
+   ],
+   [
+    "lilmoth-house-0",
+    "lilmoth-house-1",
+    "lilmoth-house-3"
+   ],
+   [
+    "archon-apothecary",
+    "archon-vat-house"
+   ],
+   [
+    "archon-house-0",
+    "archon-house-2"
+   ],
+   [
+    "helstrom-archive",
+    "helstrom-warders"
+   ],
+   [
+    "helstrom-house-0",
+    "helstrom-house-1"
+   ],
+   [
+    "soulrest-market",
+    "soulrest-pawn"
+   ],
+   [
+    "stormhold-house-0",
+    "stormhold-house-4"
+   ],
+   [
+    "stormhold-house-1",
+    "stormhold-house-2"
+   ],
+   [
+    "stormhold-scribe",
+    "stormhold-smithy"
+   ]
+  ],
+  "shops_with_no_barter_npc_named": [
+   "blackrose-smithy",
+   "gideon-apothecary",
+   "gideon-smithy",
+   "helstrom-apothecary",
+   "helstrom-scriptorium",
+   "helstrom-smithy",
+   "lilmoth-apothecary",
+   "lilmoth-scribe",
+   "soulrest-smithy",
+   "stormhold-smithy",
+   "thorn-apothecary"
+  ],
+  "m15_misses": [
+   "helstrom-house-11",
+   "helstrom-house-6",
+   "helstrom-inn-gate",
+   "helstrom-smithy"
+  ],
+  "kit_meshes_per_town_declared_vs_built": {
+   "archon": [
+    8,
+    4
+   ],
+   "blackrose": [
+    8,
+    4
+   ],
+   "gideon": [
+    8,
+    4
+   ],
+   "helstrom": [
+    10,
+    4
+   ],
+   "lilmoth": [
+    10,
+    4
+   ],
+   "soulrest": [
+    8,
+    4
+   ],
+   "stormhold": [
+    9,
+    4
+   ],
+   "thorn": [
+    8,
+    4
+   ]
+  },
+  "gates_at_the_snapshot": {
+   "check-data": 0,
+   "check-content": 0,
+   "check-quests": 0,
+   "check-prose": 0
+  }
+ },
+ "not_landed": [
+  "tools/world/critic-w1-04-r2a.mjs --expect-live (both arms)",
+  "tools/world/w1-04-interior-sweep.mjs --control",
+  "tools/world/critic-w1-04-r2b.mjs"
+ ]
+}

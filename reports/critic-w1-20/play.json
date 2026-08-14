@@ -1,0 +1,1099 @@
+{
+  "notes": [],
+  "ladders": [
+    "deep_kin",
+    "the_dockhands",
+    "the_drowned_court",
+    "the_imperial_assize",
+    "the_ixtu_vakh",
+    "the_rootkeepers",
+    "the_wet_ledger",
+    "the_xul_aneekh"
+  ],
+  "creation_keys": [
+    "attributes",
+    "skills",
+    "races",
+    "classes",
+    "birthsigns",
+    "reactions",
+    "creation",
+    "questions",
+    "encounters"
+  ],
+  "signature": {
+    "race": "saxhleel",
+    "upbringing": "lukiul",
+    "class": "ledger-hand",
+    "birthsign": "kaal-kaal"
+  },
+  "builders_signature": {
+    "race": "saxhleel",
+    "upbringing": "interior",
+    "class": "root-speaker",
+    "birthsign": "raj-xul"
+  },
+  "p1": [
+    {
+      "faction": "the_rootkeepers",
+      "quest": "Q-ROOT-00",
+      "resolutions": [
+        "res_count_what_you_reach",
+        "res_go_under",
+        "res_count_the_shadows"
+      ],
+      "doors": [
+        {
+          "resolution": "res_count_what_you_reach",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "root-speech": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "root-speech",
+              "to": 20,
+              "target": 20,
+              "uses": 25
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        },
+        {
+          "resolution": "res_go_under",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "survival": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "survival",
+              "to": 20,
+              "target": 20,
+              "uses": 0
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        },
+        {
+          "resolution": "res_count_the_shadows",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "alchemy": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "alchemy",
+              "to": 20,
+              "target": 20,
+              "uses": 5
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        }
+      ],
+      "doors_that_join": 3,
+      "doors_total": 3
+    },
+    {
+      "faction": "the_ixtu_vakh",
+      "quest": "Q-VAKH-00",
+      "resolutions": [
+        "res_coast_road",
+        "res_line_the_boots",
+        "res_tell_the_keeper"
+      ],
+      "doors": [
+        {
+          "resolution": "res_coast_road",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "survival": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "survival",
+              "to": 20,
+              "target": 20,
+              "uses": 0
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        },
+        {
+          "resolution": "res_line_the_boots",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "acrobatics": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "acrobatics",
+              "to": 20,
+              "target": 20,
+              "uses": 48
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        },
+        {
+          "resolution": "res_tell_the_keeper",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "athletics": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "athletics",
+              "to": 20,
+              "target": 20,
+              "uses": 56
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        }
+      ],
+      "doors_that_join": 3,
+      "doors_total": 3
+    },
+    {
+      "faction": "the_drowned_court",
+      "quest": "Q-CORT-00",
+      "resolutions": [
+        "res_over_the_pans",
+        "res_round_the_causeway",
+        "res_take_the_tag"
+      ],
+      "doors": [
+        {
+          "resolution": "res_over_the_pans",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "survival": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "survival",
+              "to": 20,
+              "target": 20,
+              "uses": 0
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        },
+        {
+          "resolution": "res_round_the_causeway",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "warding": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "warding",
+              "to": 20,
+              "target": 20,
+              "uses": 32
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        },
+        {
+          "resolution": "res_take_the_tag",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "root-speech": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "root-speech",
+              "to": 20,
+              "target": 20,
+              "uses": 25
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        }
+      ],
+      "doors_that_join": 3,
+      "doors_total": 3
+    },
+    {
+      "faction": "the_dockhands",
+      "quest": "Q-DOCK-00",
+      "resolutions": [
+        "res_work_it",
+        "res_get_the_block",
+        "res_hold_the_rate"
+      ],
+      "doors": [
+        {
+          "resolution": "res_work_it",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "athletics": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "athletics",
+              "to": 20,
+              "target": 20,
+              "uses": 56
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        },
+        {
+          "resolution": "res_get_the_block",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "mercantile": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "mercantile",
+              "to": 25,
+              "target": 20,
+              "uses": 0
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        },
+        {
+          "resolution": "res_hold_the_rate",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "shieldcraft": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "shieldcraft",
+              "to": 20,
+              "target": 20,
+              "uses": 126
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        }
+      ],
+      "doors_that_join": 3,
+      "doors_total": 3
+    },
+    {
+      "faction": "the_wet_ledger",
+      "quest": "Q-LEDG-00",
+      "resolutions": [
+        "res_lodge",
+        "res_read_then_lodge",
+        "res_sell"
+      ],
+      "doors": [
+        {
+          "resolution": "res_lodge",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {},
+          "payable_by_use": true,
+          "raised": [],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        },
+        {
+          "resolution": "res_read_then_lodge",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "security": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "security",
+              "to": 25,
+              "target": 20,
+              "uses": 0
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        },
+        {
+          "resolution": "res_sell",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "speechcraft": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "speechcraft",
+              "to": 25,
+              "target": 20,
+              "uses": 0
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 14,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        }
+      ],
+      "doors_that_join": 3,
+      "doors_total": 3
+    },
+    {
+      "faction": "the_imperial_assize",
+      "quest": "Q-ASSZ-00",
+      "resolutions": [
+        "res_carry_clean",
+        "res_copy_the_four"
+      ],
+      "doors": [
+        {
+          "resolution": "res_carry_clean",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {},
+          "payable_by_use": true,
+          "raised": [],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        },
+        {
+          "resolution": "res_copy_the_four",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {
+            "security": 20
+          },
+          "payable_by_use": true,
+          "raised": [
+            {
+              "skill": "security",
+              "to": 25,
+              "target": 20,
+              "uses": 0
+            }
+          ],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        }
+      ],
+      "doors_that_join": 2,
+      "doors_total": 2
+    },
+    {
+      "faction": "the_xul_aneekh",
+      "quest": "Q-XULA-00",
+      "resolutions": [
+        "res_carry_it",
+        "res_ask_first"
+      ],
+      "doors": [
+        {
+          "resolution": "res_carry_it",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {},
+          "payable_by_use": true,
+          "raised": [],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        },
+        {
+          "resolution": "res_ask_first",
+          "giver_present": true,
+          "open_ok": true,
+          "open_reason": null,
+          "requires": {},
+          "payable_by_use": true,
+          "raised": [],
+          "resolved": true,
+          "resolve_reason": null,
+          "reputation_after": 20,
+          "member_after": true,
+          "derived_rank_after": 1,
+          "joined": true
+        }
+      ],
+      "doors_that_join": 2,
+      "doors_total": 2
+    }
+  ],
+  "p2": {
+    "joined_via": null,
+    "refusal_sentence_for_deep_kin": {
+      "faction": "deep_kin",
+      "rank": 1,
+      "allowed": false,
+      "kind": "not_joinable",
+      "need": null,
+      "have": null,
+      "said": "That is the hollow's own name for itself. It is the same people and the same door.",
+      "toast": {
+        "text": "That is the hollow's own name for itself. It is the same people and the same door.",
+        "until": 240,
+        "frame": 0
+      }
+    },
+    "after_joining_the_xul_aneekh": {
+      "the_xul_aneekh": null,
+      "deep_kin": null,
+      "derived_rank_xul": 0,
+      "derived_rank_deep_kin": 0
+    },
+    "ladder_rank_names": {
+      "the_xul_aneekh": [
+        "Unnamed",
+        "Taken",
+        "Bound",
+        "Debtor",
+        "Keeper",
+        "Gem-Cutter",
+        "Sap-Drinker",
+        "Xul-Aneekh"
+      ],
+      "deep_kin": [
+        "Stranger",
+        "Guest",
+        "Known",
+        "Kin-Named",
+        "Deep Kin",
+        "Elder Kin",
+        "Root-Kin",
+        "The Deep"
+      ]
+    },
+    "deep_kin_ladder_climbs_on_reputation_alone": [
+      {
+        "reputation": 0,
+        "derived_rank": 0,
+        "rank_name": "Stranger"
+      },
+      {
+        "reputation": 10,
+        "derived_rank": 1,
+        "rank_name": "Guest"
+      },
+      {
+        "reputation": 22,
+        "derived_rank": 1,
+        "rank_name": "Guest"
+      },
+      {
+        "reputation": 52,
+        "derived_rank": 1,
+        "rank_name": "Guest"
+      },
+      {
+        "reputation": 112,
+        "derived_rank": 1,
+        "rank_name": "Guest"
+      }
+    ]
+  },
+  "p3": {
+    "engine_backdoor_used": true,
+    "why": "no harness verb writes a rank row; the tree is not edited",
+    "rows": [
+      {
+        "faction": "the_rootkeepers",
+        "rank1_before": {
+          "reputation": 10,
+          "attribute": 8,
+          "skill_1": 20
+        },
+        "said_at_default": "The slate has 0 beside your name and a Leaf has 10. That is not a rule I made and I cannot rub it out. Go and do some counting.",
+        "need_at_default": 10,
+        "said_with_rep_moved_to_37": "The slate has 0 beside your name and a Leaf has 37. That is not a rule I made and I cannot rub it out. Go and do some counting.",
+        "need_after": 37,
+        "sentence_moved": true,
+        "number_is_the_perturbed_one": true,
+        "said_when_reputation_is_met": "You're on the slate. That's the whole ceremony, and it's the only thing the Rootkeepers own.",
+        "kind_when_reputation_is_met": "welcome",
+        "kind_changed": true
+      },
+      {
+        "faction": "the_drowned_court",
+        "rank1_before": {
+          "reputation": 10,
+          "attribute": 9,
+          "skill_1": 20
+        },
+        "said_at_default": "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them.",
+        "need_at_default": 10,
+        "said_with_rep_moved_to_37": "The tally has you at 0. Knee-Deep is 37. You'll get there or you won't, and either way the bay keeps sending them.",
+        "need_after": 37,
+        "sentence_moved": true,
+        "number_is_the_perturbed_one": true,
+        "said_when_reputation_is_met": "You're in the tally. Everyone gets in it eventually. You've just done it standing up.",
+        "kind_when_reputation_is_met": "welcome",
+        "kind_changed": true
+      },
+      {
+        "faction": "the_dockhands",
+        "rank1_before": {
+          "reputation": 10,
+          "attribute": 8,
+          "skill_1": 20
+        },
+        "said_at_default": "The board doesn't know you. 0 against 10, and the hands put the names up, not me.",
+        "need_at_default": 10,
+        "said_with_rep_moved_to_37": "The board doesn't know you. 0 against 37, and the hands put the names up, not me.",
+        "need_after": 37,
+        "sentence_moved": true,
+        "number_is_the_perturbed_one": true,
+        "said_when_reputation_is_met": "Your name's on the board. It stays there until the rain gets in or the hands rub it off.",
+        "kind_when_reputation_is_met": "welcome",
+        "kind_changed": true
+      }
+    ]
+  },
+  "p4": {
+    "faction": "the_rootkeepers",
+    "npc": "rootkeeper-jeen",
+    "rows": [
+      {
+        "rank": 0,
+        "disposition_total": null,
+        "faction_term": null,
+        "explain": {
+          "npc": "rootkeeper-jeen",
+          "register": 45,
+          "value": 52,
+          "modelled": true,
+          "band": "neutral",
+          "group": "RG-ROOT",
+          "base": 45,
+          "race_term": 12,
+          "upbringing_term": -10,
+          "birthsign_term": 0,
+          "other_terms": 5,
+          "movable": [
+            [
+              "fDispRaceMod",
+              5
+            ],
+            [
+              "personality",
+              0
+            ],
+            [
+              "faction",
+              0
+            ]
+          ],
+          "player_race": "saxhleel",
+          "player_upbringing": "lukiul"
+        },
+        "gate_disposition": 52,
+        "price_quote": null,
+        "warbrood_shift": 0
+      },
+      {
+        "rank": 1,
+        "disposition_total": null,
+        "faction_term": null,
+        "explain": {
+          "npc": "rootkeeper-jeen",
+          "register": 45,
+          "value": 85,
+          "modelled": true,
+          "band": "devoted",
+          "group": "RG-ROOT",
+          "base": 45,
+          "race_term": 12,
+          "upbringing_term": -10,
+          "birthsign_term": 0,
+          "other_terms": 38,
+          "movable": [
+            [
+              "fDispRaceMod",
+              5
+            ],
+            [
+              "personality",
+              0
+            ],
+            [
+              "faction",
+              18
+            ],
+            [
+              "repute",
+              15
+            ]
+          ],
+          "player_race": "saxhleel",
+          "player_upbringing": "lukiul"
+        },
+        "gate_disposition": 85,
+        "price_quote": null,
+        "warbrood_shift": 22
+      },
+      {
+        "rank": 3,
+        "disposition_total": null,
+        "faction_term": null,
+        "explain": {
+          "npc": "rootkeeper-jeen",
+          "register": 45,
+          "value": 97,
+          "modelled": true,
+          "band": "devoted",
+          "group": "RG-ROOT",
+          "base": 45,
+          "race_term": 12,
+          "upbringing_term": -10,
+          "birthsign_term": 0,
+          "other_terms": 50,
+          "movable": [
+            [
+              "fDispRaceMod",
+              5
+            ],
+            [
+              "personality",
+              0
+            ],
+            [
+              "faction",
+              30
+            ],
+            [
+              "repute",
+              15
+            ]
+          ],
+          "player_race": "saxhleel",
+          "player_upbringing": "lukiul"
+        },
+        "gate_disposition": 97,
+        "price_quote": null,
+        "warbrood_shift": 22
+      },
+      {
+        "rank": 5,
+        "disposition_total": null,
+        "faction_term": null,
+        "explain": {
+          "npc": "rootkeeper-jeen",
+          "register": 45,
+          "value": 100,
+          "modelled": true,
+          "band": "devoted",
+          "group": "RG-ROOT",
+          "base": 45,
+          "race_term": 12,
+          "upbringing_term": -10,
+          "birthsign_term": 0,
+          "other_terms": 62,
+          "movable": [
+            [
+              "fDispRaceMod",
+              5
+            ],
+            [
+              "personality",
+              0
+            ],
+            [
+              "faction",
+              42
+            ],
+            [
+              "repute",
+              15
+            ]
+          ],
+          "player_race": "saxhleel",
+          "player_upbringing": "lukiul"
+        },
+        "gate_disposition": 100,
+        "price_quote": null,
+        "warbrood_shift": 34
+      },
+      {
+        "rank": 7,
+        "disposition_total": null,
+        "faction_term": null,
+        "explain": {
+          "npc": "rootkeeper-jeen",
+          "register": 45,
+          "value": 100,
+          "modelled": true,
+          "band": "devoted",
+          "group": "RG-ROOT",
+          "base": 45,
+          "race_term": 12,
+          "upbringing_term": -10,
+          "birthsign_term": 0,
+          "other_terms": 74,
+          "movable": [
+            [
+              "fDispRaceMod",
+              5
+            ],
+            [
+              "personality",
+              0
+            ],
+            [
+              "faction",
+              54
+            ],
+            [
+              "repute",
+              15
+            ]
+          ],
+          "player_race": "saxhleel",
+          "player_upbringing": "lukiul"
+        },
+        "gate_disposition": 100,
+        "price_quote": null,
+        "warbrood_shift": 34
+      }
+    ],
+    "disposition_moved": true,
+    "gate_disposition_moved": true
+  },
+  "p5": [
+    {
+      "quest": "Q-ROOT-00",
+      "who": "rootkeeper-jeen",
+      "state": "town-helstrom",
+      "npc_count_in_town": 66,
+      "found": true,
+      "name": "Jeen",
+      "pos": [
+        2297.75,
+        27.22,
+        2779.03
+      ],
+      "start": [
+        2293.83,
+        27.2,
+        2802.58
+      ],
+      "straight_line_m": 23.87,
+      "end": [
+        2296.437772,
+        27.2,
+        2786.23766
+      ],
+      "covered_m": 16.55,
+      "stopped_short_m": 7.33,
+      "arrived": false,
+      "aborted": "stuck",
+      "frames": 1397,
+      "walk_error": null,
+      "talk_opened": true,
+      "topics": []
+    },
+    {
+      "quest": "Q-VAKH-00",
+      "who": "cutter-neeth",
+      "state": "town-helstrom",
+      "npc_count_in_town": 66,
+      "found": true,
+      "name": "Neeth",
+      "pos": [
+        2287.05,
+        27.22,
+        2837.29
+      ],
+      "start": [
+        2293.83,
+        27.2,
+        2802.58
+      ],
+      "straight_line_m": 35.37,
+      "end": [
+        2294.095356,
+        27.2,
+        2813.315679
+      ],
+      "covered_m": 10.74,
+      "stopped_short_m": 24.99,
+      "arrived": false,
+      "aborted": "stuck",
+      "frames": 1296,
+      "walk_error": null,
+      "talk_opened": true,
+      "topics": []
+    },
+    {
+      "quest": "Q-CORT-00",
+      "who": "undertaker-vaskh",
+      "state": "town-soulrest",
+      "npc_count_in_town": 32,
+      "found": true,
+      "name": "Vaskh",
+      "pos": [
+        632.25,
+        7.91,
+        4887.26
+      ],
+      "start": [
+        632.2,
+        8.13,
+        4887.4
+      ],
+      "straight_line_m": 0.15,
+      "end": [
+        632.2,
+        8.13,
+        4887.4
+      ],
+      "covered_m": 0,
+      "stopped_short_m": 0.15,
+      "arrived": true,
+      "aborted": null,
+      "frames": 0,
+      "walk_error": null,
+      "talk_opened": true,
+      "topics": []
+    },
+    {
+      "quest": "Q-DOCK-00",
+      "who": "npc-porter-eeja",
+      "state": "town-gideon",
+      "npc_count_in_town": 48,
+      "found": true,
+      "name": "Eeja",
+      "pos": [
+        452.97,
+        2.72,
+        2920.83
+      ],
+      "start": [
+        428.56464,
+        2.71,
+        2980.92612
+      ],
+      "straight_line_m": 64.86,
+      "end": [
+        433.389153,
+        2.71,
+        2972.5001
+      ],
+      "covered_m": 9.71,
+      "stopped_short_m": 55.26,
+      "arrived": false,
+      "aborted": "stuck",
+      "frames": 1220,
+      "walk_error": null,
+      "talk_opened": true,
+      "topics": []
+    }
+  ],
+  "p0": {
+    "cases": [
+      {
+        "label": "short",
+        "chars": 8,
+        "text": "Not now.",
+        "fit": {
+          "text": "Not now.",
+          "rows": [
+            "Not now."
+          ],
+          "row_count": 1,
+          "widest_px": 53,
+          "wrap_budget": 376,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "words_in_text": 2,
+        "words_on_glass": 2,
+        "every_word_on_glass": true,
+        "fits_true_but_words_missing": false
+      },
+      {
+        "label": "refusal",
+        "chars": 114,
+        "text": "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them.",
+        "fit": {
+          "text": "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them.",
+          "rows": [
+            "The tally has you at 0. Knee-Deep is 10. You'll get there or you",
+            "won't, and either way the bay keeps sending them."
+          ],
+          "row_count": 2,
+          "widest_px": 364.5,
+          "wrap_budget": 376,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 60,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "words_in_text": 23,
+        "words_on_glass": 23,
+        "every_word_on_glass": true,
+        "fits_true_but_words_missing": false
+      },
+      {
+        "label": "long",
+        "chars": 253,
+        "text": "The tally has you at 0 and Knee-Deep is 10, and the bay keeps sending them in on the tide whether or not anybody has written your name down beside the fee, which is the same for all of you and always has been, and will be after you and I are both on it.",
+        "fit": {
+          "text": "The tally has you at 0 and Knee-Deep is 10, and the bay keeps sending them in on the tide whether or not anybody has written your name down beside the fee, which is the same for all of you and always has been, and will be after you and I are both on it.",
+          "rows": [
+            "The tally has you at 0 and Knee-Deep is 10, and the bay keeps",
+            "sending them in on the tide whether or not anybody has",
+            "written your name down beside the fee, which is the same for…"
+          ],
+          "row_count": 3,
+          "widest_px": 376.2,
+          "wrap_budget": 376,
+          "truncated": true,
+          "panel_w": 400,
+          "panel_h": 80,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "words_in_text": 55,
+        "words_on_glass": 37,
+        "every_word_on_glass": false,
+        "fits_true_but_words_missing": true
+      }
+    ]
+  },
+  "findings": [
+    "P2 deep_kin: the two ladders carry DIFFERENT rank names, so they are not one ladder under two ids",
+    "P2 deep_kin: its ladder climbs on reputation alone, and the shipped quest book pays it — so it is not a ladder with no door, it is a second ledger being filled",
+    "P5 rootkeeper-jeen: NOT REACHABLE ON FOOT — stopped 7.33 m short (stuck)",
+    "P5 cutter-neeth: NOT REACHABLE ON FOOT — stopped 24.99 m short (stuck)",
+    "P5 npc-porter-eeja: NOT REACHABLE ON FOOT — stopped 55.26 m short (stuck)",
+    "P0 toast \"long\": fits=true and 18 word(s) are not on the glass"
+  ]
+}

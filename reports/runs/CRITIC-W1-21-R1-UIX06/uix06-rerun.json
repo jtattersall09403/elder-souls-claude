@@ -1,0 +1,292 @@
+{
+  "probe": "critic-w1-21-r1-uix06",
+  "what": "RI-UIX06 \u00a7D/\u00a7E/\u00a7F re-run \u2014 the FIRST outstanding item in W1-21's hand-off. Run by the W1-21 round-1 critic with `node tools/run.mjs -- node tools/metrics/ui-metrics.mjs`.",
+  "commit": "07f8b75",
+  "load_note": "loadavg rose from 11 to 31 with 12-40 concurrent headless browsers on four cores during this run. Every value here is a pixel measurement or a count; no timing is reported.",
+  "completeness": "PARTIAL AND SAID SO: three of the four capture configurations (1280x720@1, 1280x720@2, 1920x1080@1) completed; 1920x1080@2 (a 3840x2160 buffer) had not returned when this artifact was written. The finding below does not depend on the fourth configuration - it reproduces identically in all three that did complete.",
+  "raw_log": "reports/runs/_raw/node-tools-metrics-ui-metrics.mjs-5507804996767.log",
+  "captures": [
+    {
+      "screen": "inventory",
+      "css": [
+        1280,
+        720
+      ],
+      "dpr": 1,
+      "buffer": "1280x720",
+      "image": "1280x720",
+      "stem_device_px": 0.811,
+      "samples": 1560
+    },
+    {
+      "screen": "journal",
+      "css": [
+        1280,
+        720
+      ],
+      "dpr": 1,
+      "buffer": "1280x720",
+      "image": "1280x720",
+      "stem_device_px": 0.8,
+      "samples": 2413
+    },
+    {
+      "screen": "book",
+      "css": [
+        1280,
+        720
+      ],
+      "dpr": 1,
+      "buffer": "1280x720",
+      "image": "1280x720",
+      "stem_device_px": 0.8,
+      "samples": 7990
+    },
+    {
+      "screen": "levelup",
+      "css": [
+        1280,
+        720
+      ],
+      "dpr": 1,
+      "buffer": "1280x720",
+      "image": "1280x720",
+      "stem_device_px": 0.8,
+      "samples": 1874
+    },
+    {
+      "screen": "sheet",
+      "css": [
+        1280,
+        720
+      ],
+      "dpr": 1,
+      "buffer": "1280x720",
+      "image": "1280x720",
+      "stem_device_px": null,
+      "samples": 0
+    },
+    {
+      "screen": "spells",
+      "css": [
+        1280,
+        720
+      ],
+      "dpr": 1,
+      "buffer": "1280x720",
+      "image": "1280x720",
+      "stem_device_px": null,
+      "samples": 0
+    },
+    {
+      "screen": "inventory",
+      "css": [
+        1280,
+        720
+      ],
+      "dpr": 2,
+      "buffer": "2560x1440",
+      "image": "2560x1440",
+      "stem_device_px": 0.876,
+      "samples": 5131
+    },
+    {
+      "screen": "journal",
+      "css": [
+        1280,
+        720
+      ],
+      "dpr": 2,
+      "buffer": "2560x1440",
+      "image": "2560x1440",
+      "stem_device_px": 0.814,
+      "samples": 7646
+    },
+    {
+      "screen": "book",
+      "css": [
+        1280,
+        720
+      ],
+      "dpr": 2,
+      "buffer": "2560x1440",
+      "image": "2560x1440",
+      "stem_device_px": 1.468,
+      "samples": 23123
+    },
+    {
+      "screen": "levelup",
+      "css": [
+        1280,
+        720
+      ],
+      "dpr": 2,
+      "buffer": "2560x1440",
+      "image": "2560x1440",
+      "stem_device_px": 0.8,
+      "samples": 5288
+    },
+    {
+      "screen": "sheet",
+      "css": [
+        1280,
+        720
+      ],
+      "dpr": 2,
+      "buffer": "2560x1440",
+      "image": "2560x1440",
+      "stem_device_px": null,
+      "samples": 0
+    },
+    {
+      "screen": "spells",
+      "css": [
+        1280,
+        720
+      ],
+      "dpr": 2,
+      "buffer": "2560x1440",
+      "image": "2560x1440",
+      "stem_device_px": null,
+      "samples": 0
+    },
+    {
+      "screen": "inventory",
+      "css": [
+        1920,
+        1080
+      ],
+      "dpr": 1,
+      "buffer": "1920x1080",
+      "image": "1920x1080",
+      "stem_device_px": 0.861,
+      "samples": 3176
+    },
+    {
+      "screen": "journal",
+      "css": [
+        1920,
+        1080
+      ],
+      "dpr": 1,
+      "buffer": "1920x1080",
+      "image": "1920x1080",
+      "stem_device_px": 0.809,
+      "samples": 4628
+    },
+    {
+      "screen": "book",
+      "css": [
+        1920,
+        1080
+      ],
+      "dpr": 1,
+      "buffer": "1920x1080",
+      "image": "1920x1080",
+      "stem_device_px": 0.808,
+      "samples": 15999
+    },
+    {
+      "screen": "levelup",
+      "css": [
+        1920,
+        1080
+      ],
+      "dpr": 1,
+      "buffer": "1920x1080",
+      "image": "1920x1080",
+      "stem_device_px": 0.8,
+      "samples": 3548
+    },
+    {
+      "screen": "sheet",
+      "css": [
+        1920,
+        1080
+      ],
+      "dpr": 1,
+      "buffer": "1920x1080",
+      "image": "1920x1080",
+      "stem_device_px": null,
+      "samples": 0
+    },
+    {
+      "screen": "spells",
+      "css": [
+        1920,
+        1080
+      ],
+      "dpr": 1,
+      "buffer": "1920x1080",
+      "image": "1920x1080",
+      "stem_device_px": null,
+      "samples": 0
+    }
+  ],
+  "finding": {
+    "id": "FD1-FD2-coverage",
+    "what": "the fidelity check silently drops the screens it cannot see",
+    "mechanism": "tools/metrics/ui-metrics.mjs picks its measurement region with `ui.elements.filter(e => e.visible && e.text && e.text.length > 40 && ['book_page','journal_entry','detail_panel','attribute_preview'].includes(e.kind))` - a hard-coded whitelist of four element kinds. game/src/ui/screens/progress.js draws the skills sheet as `sheet_row` and `attribute_row`, neither of which is on the list. The grader then computes `at(dpr) = out.captures.filter(c => c.stem_transition_device_px !== null)` and reports 'PASS ... over N screens', so a screen that returned nothing is removed from the median rather than reported as unmeasured.",
+    "screens_returning_zero_samples": [
+      "sheet",
+      "spells"
+    ],
+    "reproduced_in_every_completed_configuration": true,
+    "also": "the map screen is not in SCREENS at all, so three of the build's seven screens have never had their type fidelity measured."
+  },
+  "the_good_number": {
+    "id": "FD2",
+    "what": "M-F17.2 glyph stem transition at DPR 2 <= 1.5 device px - the signature an upscaled canvas cannot produce, and the check RI-UIX06 says the whole thing turns on",
+    "observed": [
+      {
+        "screen": "inventory",
+        "css": [
+          1280,
+          720
+        ],
+        "dpr": 2,
+        "buffer": "2560x1440",
+        "image": "2560x1440",
+        "stem_device_px": 0.876,
+        "samples": 5131
+      },
+      {
+        "screen": "journal",
+        "css": [
+          1280,
+          720
+        ],
+        "dpr": 2,
+        "buffer": "2560x1440",
+        "image": "2560x1440",
+        "stem_device_px": 0.814,
+        "samples": 7646
+      },
+      {
+        "screen": "book",
+        "css": [
+          1280,
+          720
+        ],
+        "dpr": 2,
+        "buffer": "2560x1440",
+        "image": "2560x1440",
+        "stem_device_px": 1.468,
+        "samples": 23123
+      },
+      {
+        "screen": "levelup",
+        "css": [
+          1280,
+          720
+        ],
+        "dpr": 2,
+        "buffer": "2560x1440",
+        "image": "2560x1440",
+        "stem_device_px": 0.8,
+        "samples": 5288
+      }
+    ],
+    "note": "book at 1280x720@2 measures 1.468 device px over 23,123 samples on a 2560x1440 buffer. This is real and it is good."
+  }
+}

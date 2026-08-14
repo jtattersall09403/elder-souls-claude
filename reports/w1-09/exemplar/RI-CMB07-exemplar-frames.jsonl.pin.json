@@ -1,0 +1,23 @@
+{
+ "pin_version": 1,
+ "path": "reports/w1-09/exemplar/RI-CMB07-exemplar-frames.jsonl",
+ "bytes": 3304035,
+ "sha256": "debb8872bff36133a6b8317e15ea8f036aed3eff2039b5632440a4079aabfc41",
+ "produced_by": "game/src/combat/trace.js from a live headless run",
+ "regeneration_verified": null,
+ "decisive": {
+  "lines": 9001,
+  "meta_lines": 1,
+  "frames": 9000,
+  "events": 0,
+  "event_kinds": 0,
+  "events_by_kind": {},
+  "unparseable_lines": 0
+ },
+ "cited_by": [
+  "corpus/90-verdicts/wave1/W1-09.json"
+ ],
+ "pinned_at": "2026-08-14T08:50:02.628Z",
+ "pinned_by": "verdict-evidence-20260814",
+ "note": "Raw file exceeds the 1 MiB pin threshold and is not tracked. This pin is its citation: the decisive numbers, the SHA-256 of the bytes they were read from, and the command that regenerates it. `node tools/verdict-evidence.mjs --verify` re-checks the hash on any machine that still holds the raw file."
+}

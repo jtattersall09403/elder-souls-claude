@@ -1,0 +1,221 @@
+{
+  "checks": [
+    {
+      "check": "L1 the clock advances from the fixed step, with no verb called",
+      "pass": true,
+      "detail": {
+        "frames": 12000,
+        "hours_before": 9,
+        "hours_after": 10.111111,
+        "hours_advanced": 1.111111,
+        "expected": 1.111111,
+        "timescale": 20,
+        "frames_per_day": 259200
+      }
+    },
+    {
+      "check": "L2 pauseClock() holds it (negative control)",
+      "pass": true,
+      "detail": {
+        "frames": 12000,
+        "hours_drift_while_paused": 0,
+        "hour": 10.111111
+      }
+    },
+    {
+      "check": "L3 a regional weather machine is installed",
+      "pass": true,
+      "detail": {
+        "region": "western-rootlands",
+        "weather": "heavy_rain",
+        "states_here": [
+          "clear",
+          "warm_rain",
+          "dawn_mist",
+          "heavy_rain"
+        ],
+        "worst_here": "heavy_rain",
+        "light": "dark",
+        "sightline_m": 190,
+        "state_is_declared_here": true,
+        "effect": {
+          "tracks_washed": true,
+          "stamina_regen_mult": 0.9,
+          "navigation_degraded": true
+        }
+      }
+    },
+    {
+      "check": "L4 stealth visibility V responds to the world clock",
+      "pass": true,
+      "detail": {
+        "consumer": "sim/stealth/system.js#skyAmbient -> light.defaultAmbient -> L -> V",
+        "V_noon": 0.2543,
+        "V_0100": 0.05
+      }
+    },
+    {
+      "check": "L5 inside a border band the nine axes disagree",
+      "pass": true,
+      "detail": {
+        "border": "blackwood--deep-marshes",
+        "at_m_through": -10,
+        "distinct_axis_regions": 2,
+        "axis_regions": {
+          "palette": "deep-marshes",
+          "flora": "deep-marshes",
+          "weather": "deep-marshes",
+          "fauna": "deep-marshes",
+          "audio": "blackwood",
+          "hazard": "blackwood",
+          "tier": "blackwood",
+          "architecture": "blackwood",
+          "only_here": "blackwood"
+        },
+        "raster_says": "deep-marshes"
+      }
+    },
+    {
+      "check": "L6 getBorderCrossover runs on the live field",
+      "pass": true,
+      "detail": {
+        "note": "stddev < 5 m is RI-WLD12 M65's automatic fail (the texture swap)",
+        "borders": 24,
+        "sampled": {
+          "blackwood--deep-marshes": {
+            "stddev_m": 22.82,
+            "span_m": 68,
+            "axes": 9,
+            "order": [
+              "palette",
+              "flora",
+              "weather",
+              "fauna",
+              "audio",
+              "hazard",
+              "tier",
+              "architecture",
+              "only_here"
+            ],
+            "kind": "HARD"
+          },
+          "blackwood--hive": {
+            "stddev_m": 43.24,
+            "span_m": 134,
+            "axes": 9,
+            "order": [
+              "palette",
+              "flora",
+              "weather",
+              "fauna",
+              "audio",
+              "tier",
+              "hazard",
+              "architecture",
+              "only_here"
+            ],
+            "kind": "MARKED"
+          },
+          "blackwood--marauders-coast": {
+            "stddev_m": 19.45,
+            "span_m": 62,
+            "axes": 9,
+            "order": [
+              "palette",
+              "flora",
+              "weather",
+              "fauna",
+              "audio",
+              "tier",
+              "hazard",
+              "architecture",
+              "only_here"
+            ],
+            "kind": "HARD"
+          },
+          "blackwood--stone-forest": {
+            "stddev_m": 20.28,
+            "span_m": 62,
+            "axes": 9,
+            "order": [
+              "palette",
+              "flora",
+              "weather",
+              "fauna",
+              "audio",
+              "hazard",
+              "tier",
+              "architecture",
+              "only_here"
+            ],
+            "kind": "HARD"
+          },
+          "blackwood--valus-ridge": {
+            "stddev_m": 21.5,
+            "span_m": 64,
+            "axes": 9,
+            "order": [
+              "palette",
+              "flora",
+              "weather",
+              "fauna",
+              "audio",
+              "tier",
+              "hazard",
+              "architecture",
+              "only_here"
+            ],
+            "kind": "HARD"
+          },
+          "clay-moor--crimson-coast": {
+            "stddev_m": 46.74,
+            "span_m": 148,
+            "axes": 9,
+            "order": [
+              "palette",
+              "flora",
+              "weather",
+              "fauna",
+              "audio",
+              "tier",
+              "hazard",
+              "architecture",
+              "only_here"
+            ],
+            "kind": "MARKED"
+          }
+        }
+      }
+    }
+  ],
+  "env_after": {
+    "time_of_day": 10.111111,
+    "day": 0,
+    "clock_frames": 109200,
+    "frames_per_day": 259200,
+    "timescale": 20,
+    "phase": "day",
+    "daylight": 1,
+    "paused": false,
+    "region": "western-rootlands",
+    "weather": "heavy_rain",
+    "weather_from": "dawn_mist",
+    "front_progress": 1,
+    "states_here": [
+      "clear",
+      "warm_rain",
+      "dawn_mist",
+      "heavy_rain"
+    ],
+    "worst_here": "heavy_rain",
+    "light": "dark",
+    "sightline_m": 190,
+    "effect": {
+      "tracks_washed": true,
+      "stamina_regen_mult": 0.9,
+      "navigation_degraded": true
+    },
+    "next_tick_frame": 72000
+  },
+  "borders": 24
+}

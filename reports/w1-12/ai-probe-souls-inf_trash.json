@@ -1,0 +1,115 @@
+{
+  "tool": "tools/harness/ai-probe.mjs",
+  "item": "RI-AI01",
+  "behaviour": "souls",
+  "stat": "inf_trash",
+  "archetype": "INFANTRY",
+  "omega_m": 2.4,
+  "frames": 3600,
+  "seed": 1337,
+  "still_fixture": false,
+  "arena": "bare Node (tools/lib/combat-node.mjs) — no stealth perception, no world, no renderer",
+  "checks": [
+    {
+      "id": "M1",
+      "score": 0,
+      "note": "browser_required: no stealth perception in the bare-Node arena, so acquisition radius per bearing cannot be measured here. Fail-closed 0 per RI-AI01 §A.",
+      "browser_required": true
+    },
+    {
+      "id": "M2",
+      "score": 0,
+      "note": "browser_required: the SUSPICIOUS dwell is a property of the meter, which this arena does not fill. Fail-closed 0 per RI-AI01 §A.",
+      "browser_required": true
+    },
+    {
+      "id": "M3",
+      "score": 1,
+      "note": "spacing_variance 1.746 m (>=0.8), min_dist_dwell 0.252 (<=0.10 pass, >0.35 hard fail), state_entropy 2.443 bits (>=1.5), median non-COMMIT speed 1.67 m/s",
+      "spacing_variance": 1.7461,
+      "min_dist_dwell": 0.2521,
+      "state_entropy": 2.4433,
+      "median_speed_mps": 1.668,
+      "state_histogram": {
+        "REPOSITION": 315,
+        "APPROACH": 221,
+        "CIRCLE": 916,
+        "FEINT_STEP": 624,
+        "COMMIT": 788,
+        "RECOVER": 736
+      }
+    },
+    {
+      "id": "M4",
+      "score": 2,
+      "note": "14 COMMITs, inter-COMMIT CoV 0.1724 (>=0.12 or hard fail), whiffs beyond 1.6*omega 0.00/min (<=2)",
+      "commits": 14,
+      "inter_commit_cov": 0.1724,
+      "intervals": [
+        275,
+        297,
+        185,
+        232,
+        254,
+        242,
+        235,
+        212,
+        194,
+        294,
+        159,
+        239,
+        202
+      ],
+      "far_commits_per_min": 0
+    },
+    {
+      "id": "M5",
+      "score": 2,
+      "note": "T13 14, T14 5, released-feint ratio 0.263 (pass 0.15-0.45)",
+      "t13": 14,
+      "t14": 5,
+      "feint_ratio": 0.263
+    },
+    {
+      "id": "M6",
+      "score": 2,
+      "note": "L_hard 32 m; max distance from anchor 6.9 m; LEASH_RETURN entered at frame 121; anchor reached at frame 265; healed en route false",
+      "l_hard_m": 32,
+      "max_track_m": 6.92,
+      "leash_entered_f": 121,
+      "anchor_reached_f": 265,
+      "healed_en_route": false
+    },
+    {
+      "id": "M7",
+      "score": 2,
+      "note": "worst yaw rate on an active/recovery frame 0.00 deg/s over 922 committed frames (must be 0, tolerance 2)",
+      "worst_committed_yaw_rate_dps": 0,
+      "committed_frames": 922
+    },
+    {
+      "id": "M8",
+      "score": 2,
+      "note": "4-enemy group: p99 concurrent COMMIT 2 (<=2), mean 0.66 (>=0.6), frozen fractions 0.24/0.22/0.24/0.24 (each <=0.5)",
+      "p99_concurrent_commit": 2,
+      "mean_concurrent": 0.661,
+      "frozen_fraction": [
+        0.237,
+        0.216,
+        0.244,
+        0.239
+      ]
+    },
+    {
+      "id": "M9",
+      "score": 2,
+      "note": "player began a real `heal` at 5.0*omega; PUNISH_READ entered 0 f after (<= 12 f@60); the drink occupied 130 f@60",
+      "punish_read_latency_f": 0,
+      "heal_frames": 130
+    }
+  ],
+  "hard_fails": [],
+  "total": 13,
+  "max": 18,
+  "verdict": "below bar"
+}

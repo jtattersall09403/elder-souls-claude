@@ -1,0 +1,221 @@
+{
+  "tool": "tools/world/tier-announcement.mjs",
+  "owner": "W1-02",
+  "item": "RI-WLD12 M66",
+  "at": "2026-08-07T18:44:42.291Z",
+  "passed": 2,
+  "of": 3,
+  "known_failing": [
+    "T3"
+  ],
+  "checks": [
+    {
+      "check": "T1 every tier jump of 2 or more is announced on at least two channels",
+      "pass": true,
+      "detail": {
+        "jumps": 7,
+        "bar": "RI-WLD12 M66: more than one channel",
+        "unannounced": [],
+        "rows": [
+          {
+            "border": "blackwood--deep-marshes",
+            "delta_tier": 3,
+            "higher": "deep-marshes",
+            "channels": [
+              "threshold_object",
+              "remains"
+            ],
+            "remains": true,
+            "threshold_type": "corpse_in_a_cage"
+          },
+          {
+            "border": "blackwood--valus-ridge",
+            "delta_tier": 2,
+            "higher": "valus-ridge",
+            "channels": [
+              "threshold_object",
+              "remains"
+            ],
+            "remains": true,
+            "threshold_type": "imperial_border_cairn"
+          },
+          {
+            "border": "crimson-coast--eastern-rootlands",
+            "delta_tier": -2,
+            "higher": "crimson-coast",
+            "channels": [
+              "threshold_object",
+              "remains"
+            ],
+            "remains": true,
+            "threshold_type": "root_gate"
+          },
+          {
+            "border": "deep-marshes--eastern-rootlands",
+            "delta_tier": -3,
+            "higher": "deep-marshes",
+            "channels": [
+              "threshold_object",
+              "remains"
+            ],
+            "remains": true,
+            "threshold_type": "corpse_in_a_cage"
+          },
+          {
+            "border": "deep-marshes--stone-forest",
+            "delta_tier": -2,
+            "higher": "deep-marshes",
+            "channels": [
+              "threshold_object",
+              "remains"
+            ],
+            "remains": true,
+            "threshold_type": "corpse_in_a_cage"
+          },
+          {
+            "border": "marauders-coast--stone-wastes",
+            "delta_tier": 3,
+            "higher": "stone-wastes",
+            "channels": [
+              "threshold_object",
+              "remains"
+            ],
+            "remains": true,
+            "threshold_type": "salt_glass_marker"
+          },
+          {
+            "border": "stone-wastes--western-rootlands",
+            "delta_tier": -4,
+            "higher": "stone-wastes",
+            "channels": [
+              "threshold_object",
+              "remains"
+            ],
+            "remains": true,
+            "threshold_type": "salt_glass_marker"
+          }
+        ]
+      }
+    },
+    {
+      "check": "T2 both declared channels have something standing on the ground",
+      "pass": true,
+      "detail": {
+        "note": "the meshes are measured by tools/world/threshold-consumption.mjs and threshold-live.mjs",
+        "borders_with_an_empty_channel": [],
+        "total_objects_on_jump_borders": 110
+      }
+    },
+    {
+      "check": "T3 the first hostile beyond a tier border stands at least first_hostile_min_m past it",
+      "pass": false,
+      "detail": {
+        "declared_by": "game/data/world/borders.json announcement.first_hostile_min_m",
+        "read_by_before_this_tool": "nothing — tools/world/build-borders.mjs writes it and no consumer reads it",
+        "jump_borders": 7,
+        "measurable": 5,
+        "no_hostile_in_band": 2,
+        "violations": 5,
+        "rows": [
+          {
+            "border": "blackwood--deep-marshes",
+            "delta_tier": 3,
+            "higher": "deep-marshes",
+            "declared_min_m": 40,
+            "nearest_hostile": {
+              "post": "pop-0016",
+              "encounter": "wl-deep-drowned-anchor",
+              "tier": 5,
+              "x": 2245.66,
+              "z": 3127.73,
+              "distance_m": 18.2,
+              "bodies": 1
+            },
+            "clears": false
+          },
+          {
+            "border": "blackwood--valus-ridge",
+            "delta_tier": 2,
+            "higher": "valus-ridge",
+            "declared_min_m": 40,
+            "nearest_hostile": null,
+            "clears": null
+          },
+          {
+            "border": "crimson-coast--eastern-rootlands",
+            "delta_tier": -2,
+            "higher": "crimson-coast",
+            "declared_min_m": 40,
+            "nearest_hostile": null,
+            "clears": null
+          },
+          {
+            "border": "deep-marshes--eastern-rootlands",
+            "delta_tier": -3,
+            "higher": "deep-marshes",
+            "declared_min_m": 40,
+            "nearest_hostile": {
+              "post": "pop-0087",
+              "encounter": "wl-drowned-host",
+              "tier": 5,
+              "x": 4068.15,
+              "z": 3361.56,
+              "distance_m": 5.99,
+              "bodies": 3
+            },
+            "clears": false
+          },
+          {
+            "border": "deep-marshes--stone-forest",
+            "delta_tier": -2,
+            "higher": "deep-marshes",
+            "declared_min_m": 40,
+            "nearest_hostile": {
+              "post": "pop-0042",
+              "encounter": "wl-deep-drowned-and-pack",
+              "tier": 5,
+              "x": 2556.38,
+              "z": 2994.38,
+              "distance_m": 18.74,
+              "bodies": 4
+            },
+            "clears": false
+          },
+          {
+            "border": "marauders-coast--stone-wastes",
+            "delta_tier": 3,
+            "higher": "stone-wastes",
+            "declared_min_m": 40,
+            "nearest_hostile": {
+              "post": "pop-0075",
+              "encounter": "wl-drowned-host",
+              "tier": 5,
+              "x": 487.46,
+              "z": 4650.84,
+              "distance_m": 25.84,
+              "bodies": 3
+            },
+            "clears": false
+          },
+          {
+            "border": "stone-wastes--western-rootlands",
+            "delta_tier": -4,
+            "higher": "stone-wastes",
+            "declared_min_m": 40,
+            "nearest_hostile": {
+              "post": "pop-0135",
+              "encounter": "wl-deep-drowned-and-pack",
+              "tier": 5,
+              "x": 1378.6,
+              "z": 4587.17,
+              "distance_m": 3.6,
+              "bodies": 4
+            },
+            "clears": false
+          }
+        ],
+        "what_this_means": "the announcement has no room to work: the player meets the higher tier at the same step they read the warning. The fix belongs to whoever owns population-posts.json — push these posts back along the border gradient until they clear the declared distance."
+      }
+    }
+  ]
+}

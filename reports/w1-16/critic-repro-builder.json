@@ -1,0 +1,249 @@
+{
+  "schema": "elder-souls/prg-encumbrance@1",
+  "unit": "f@60",
+  "generated": "2026-08-08T02:24:22.506Z",
+  "probes": {
+    "census": {
+      "rows": [
+        {
+          "model": "equip_load",
+          "param": "tier_boundaries_pct",
+          "reader": "combat/moves.js equipTier()",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "roll.iframes",
+          "reader": "combat/player.js roll -> the invulnerable frame window",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "roll.recovery",
+          "reader": "combat/player.js roll -> actionable frame",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "roll.total",
+          "reader": "combat/player.js roll",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "roll.stamina",
+          "reader": "combat/rules.js spendStamina()",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "roll.distance_m",
+          "reader": "combat root motion",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "roll.anim_speed",
+          "reader": "combat/moves.js move table",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "backstep.*",
+          "reader": "combat/player.js backstep",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "equipLoadPct (the INPUT)",
+          "reader": "engine._recomputeEquipLoad() <- inventory rows with a slot (W1-16 r2)",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "regen.multipliers.equip_load_over_70pct",
+          "reader": "combat/rules.js regenStamina()",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "regen.multipliers.overloaded",
+          "reader": "combat/rules.js regenStamina()",
+          "has_reader": true
+        },
+        {
+          "model": "burden",
+          "param": "burdenRatio (the INPUT)",
+          "reader": "engine._recomputeBurden() <- every inventory row",
+          "has_reader": true
+        },
+        {
+          "model": "burden",
+          "param": "move",
+          "reader": "engine._burdenMult() -> sim/traversal.js step()",
+          "has_reader": true
+        },
+        {
+          "model": "burden",
+          "param": "sprint",
+          "reader": "engine -> sim.player.denySprint -> sim/player.js gate (W1-16 r2)",
+          "has_reader": true
+        },
+        {
+          "model": "burden",
+          "param": "travel_time",
+          "reader": "engine.boardTravel() -> ride frames + world clock (W1-16 r2)",
+          "has_reader": true
+        },
+        {
+          "model": "burden",
+          "param": "fatigue",
+          "reader": null,
+          "has_reader": false
+        },
+        {
+          "model": "burden",
+          "param": "sneak",
+          "reader": null,
+          "has_reader": false
+        },
+        {
+          "model": "burden",
+          "param": "jump",
+          "reader": null,
+          "has_reader": false
+        },
+        {
+          "model": "equip_load",
+          "param": "fall_damage_mult (RI-PRG07 §2)",
+          "reader": null,
+          "has_reader": false
+        },
+        {
+          "model": "progression",
+          "param": "soulsHeld",
+          "reader": "engine._spendSouls() at the level-up screen",
+          "has_reader": true
+        },
+        {
+          "model": "progression",
+          "param": "soulsToNextLevel (the curve)",
+          "reader": "engine._spendSouls() cost gate + UI",
+          "has_reader": true
+        },
+        {
+          "model": "progression",
+          "param": "level",
+          "reader": "engine.soulsToNextLevel() (the curve reads it back)",
+          "has_reader": true
+        },
+        {
+          "model": "progression",
+          "param": "attributes.* -> derivePools",
+          "reader": "character/derive.js -> hp/stamina/focus/equip_load_max",
+          "has_reader": true
+        },
+        {
+          "model": "progression",
+          "param": "equip_load_max (STR curve)",
+          "reader": "engine._equipLoadMax() -> BOTH ratios (W1-16 r2 for equip load)",
+          "has_reader": true
+        },
+        {
+          "model": "progression",
+          "param": "gold",
+          "reader": "engine._setGold()/_gold() -> fares, bribes, fencing, the drawn purse",
+          "has_reader": true
+        },
+        {
+          "model": "progression",
+          "param": "skills.*",
+          "reader": "magic tier gate, merchant pricing, stealth gates",
+          "has_reader": true
+        }
+      ],
+      "unread": [
+        "burden.fatigue",
+        "burden.sneak",
+        "burden.jump",
+        "equip_load.fall_damage_mult (RI-PRG07 §2)"
+      ],
+      "unread_count": 4,
+      "total": 26,
+      "live": {
+        "burden": {
+          "ratio": 0,
+          "tier": "UNBURDENED",
+          "carried_weight": 0
+        },
+        "equip_load": {
+          "pct": 0,
+          "tier": "LIGHT",
+          "equipped_weight": 0,
+          "equip_load_max": 73,
+          "carried_weight": 0,
+          "burden_divisor": 182.5,
+          "burden_source": "derived from the pack",
+          "source": "derived from equipped items (W1-16 r2)",
+          "boundaries_pct": {
+            "LIGHT": 30,
+            "MEDIUM": 70,
+            "HEAVY": 100
+          },
+          "owner": "RI-CMB01 §B (seam S23: everything the tier does inside the fight)"
+        },
+        "burden_consumers": {
+          "move": "engine._burdenMult() -> sim/traversal.js step() horizontal retraction",
+          "sprint": "engine -> sim.player.denySprint -> sim/player.js action gate (W1-16 r2)",
+          "travel_time": "engine.boardTravel() -> ride frames and world clock (W1-16 r2)",
+          "fatigue": null,
+          "sneak": null,
+          "jump": null
+        },
+        "equip_load_consumers": {
+          "roll_iframes": "combat/moves.js equipTier() -> roll.json row -> combat/player.js roll",
+          "roll_recovery": "combat/moves.js equipTier() -> roll.json row",
+          "roll_stamina_cost": "combat/moves.js equipTier() -> roll.json costs",
+          "stamina_regen_mult": "combat/rules.js regenStamina() ctx.tier"
+        },
+        "level": null,
+        "souls_held": null,
+        "stamina_max": 120
+      },
+      "coupled": false
+    },
+    "separation": {
+      "arms": [
+        {
+          "label": "empty pack",
+          "carried_weight": 0,
+          "burden_ratio": 0,
+          "burden_tier": "UNBURDENED",
+          "equipped_weight": 0,
+          "equip_load_pct": 0,
+          "iframes_f60": 26,
+          "total_f60": 52,
+          "tier": "LIGHT"
+        },
+        {
+          "label": "460 kg of mauls in the pack, none of them worn",
+          "carried_weight": 460,
+          "burden_ratio": 2.520548,
+          "burden_tier": "IMMOBILE",
+          "equipped_weight": 0,
+          "equip_load_pct": 0,
+          "iframes_f60": 26,
+          "total_f60": 52,
+          "tier": "LIGHT"
+        }
+      ],
+      "burden_moved": true,
+      "equip_load_unchanged": true,
+      "roll_byte_identical": true,
+      "coupled": true
+    }
+  },
+  "uncoupled_probes": [
+    "census"
+  ]
+}

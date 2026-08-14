@@ -1,0 +1,95 @@
+{
+  "schema": "elder-souls/critic-w1-16-live@1",
+  "unit": "f@60",
+  "generated": "2026-08-08T02:11:18.882Z",
+  "probes": {
+    "pin": {
+      "rows": [
+        {
+          "path": "loadState(<named state>)",
+          "err": null,
+          "load_returned": null,
+          "pct_before": 20.410958,
+          "pct_after": 20.410958,
+          "source_after": "derived from equipped items (W1-16 r2)",
+          "live": {
+            "pct_before_undress": 20.410958,
+            "pct_after_undress": 7.945205,
+            "producer_still_running": true,
+            "slot_after": null,
+            "had_row": true
+          }
+        },
+        {
+          "path": "saveRoundTrip()",
+          "err": null,
+          "load_returned": {
+            "hash_equal": false
+          },
+          "pct_before": 20.410958,
+          "pct_after": 20.410959,
+          "source_after": "derived from equipped items (W1-16 r2)",
+          "live": {
+            "pct_before_undress": 20.410959,
+            "pct_after_undress": 7.945206,
+            "producer_still_running": true,
+            "slot_after": null,
+            "had_row": true
+          }
+        },
+        {
+          "path": "writeSave() -> readSave()",
+          "err": null,
+          "load_returned": {
+            "ok": true,
+            "gen": 1,
+            "degraded": false
+          },
+          "pct_before": 20.410958,
+          "pct_after": 20.410959,
+          "source_after": "derived from equipped items (W1-16 r2)",
+          "live": {
+            "pct_before_undress": 20.410959,
+            "pct_after_undress": 7.945206,
+            "producer_still_running": true,
+            "slot_after": null,
+            "had_row": true
+          }
+        },
+        {
+          "path": "exportSave() -> importSave()",
+          "err": null,
+          "load_returned": {
+            "ok": true,
+            "frame": 0,
+            "seed": 1337
+          },
+          "pct_before": 20.410958,
+          "pct_after": 20.410959,
+          "source_after": "derived from equipped items (W1-16 r2)",
+          "live": {
+            "pct_before_undress": 20.410959,
+            "pct_after_undress": 7.945206,
+            "producer_still_running": true,
+            "slot_after": null,
+            "had_row": true
+          }
+        }
+      ],
+      "ai_after_load": {
+        "state": "arena_duel",
+        "entities": [
+          "E1"
+        ],
+        "hash_equal": false,
+        "step_after_load_threw": "this.ai.step is not a function"
+      },
+      "paths_tested": 4,
+      "paths_that_completed": 4,
+      "every_completed_path_left_the_producer_running": true,
+      "pinned_after_a_load": [],
+      "coupled": true
+    }
+  },
+  "uncoupled_probes": []
+}

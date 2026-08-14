@@ -1,0 +1,722 @@
+{
+  "probe": "critic-w1-21-r1",
+  "at": "2026-08-07T21:52:54.938Z",
+  "viewport": [
+    1280,
+    720
+  ],
+  "loadavg": "11.73 11.06 10.60 12/387 32210",
+  "checks": [
+    {
+      "id": "A0",
+      "what": "the body walked and the SHIPPED model recorded it (not a probe-built one)",
+      "result": "pass",
+      "detail": "revealed_cells=4807 places=14"
+    },
+    {
+      "id": "A1",
+      "what": "JU8-amended: journal cannot reach map and map cannot reach journal",
+      "result": "pass",
+      "detail": "navigable(journal)=[world,inventory,sheet,spells] navigable(map)=[world,inventory,sheet,spells]"
+    },
+    {
+      "id": "A2",
+      "what": "map screen declares no forbidden kind",
+      "result": "pass",
+      "detail": "[]"
+    },
+    {
+      "id": "A3",
+      "what": "no element carries a quest/objective/giver/target/route/travel identity",
+      "result": "pass",
+      "detail": "[]"
+    },
+    {
+      "id": "A4",
+      "what": "no numeral is drawn on the map (S35: no distance or direction readout)",
+      "result": "pass",
+      "detail": "[]"
+    },
+    {
+      "id": "A5",
+      "what": "no square drawn for a place the body has not stood in",
+      "result": "pass",
+      "detail": "drawn=14 stood_in=14 phantom=[]"
+    },
+    {
+      "id": "B1",
+      "what": "AMENDMENT §3b: every MUTATING method on the discovery model has arity 0",
+      "result": "fail",
+      "detail": "mutators with parameters: [{\"name\":\"restore\",\"sort\":\"method\",\"length\":1}]; all mutators: [{\"name\":\"observe\",\"sort\":\"method\",\"length\":0},{\"name\":\"suspend\",\"sort\":\"method\",\"length\":0},{\"name\":\"resume\",\"sort\":\"method\",\"length\":0},{\"name\":\"restore\",\"sort\":\"method\",\"length\":1}]"
+    },
+    {
+      "id": "B2",
+      "what": "a forged discovery blob cannot name places the body never stood in",
+      "result": "fail",
+      "detail": "restore attempt: ACCEPTED {\"dropped\":0,\"places_now\":42,\"revealed_now\":42846}"
+    },
+    {
+      "id": "B3",
+      "what": "THE MARKER TEST: a forged blob puts no place-square on the drawn map",
+      "result": "fail",
+      "detail": "42 squares drawn, 28 of them for places never stood in: [\"mudwater-landing\",\"rootway-post\",\"tenmarch-bridge\",\"hollow-reeds\",\"bone-ladder\",\"salt-egg-camp\",\"stilt-row\",\"clayfast\"]"
+    },
+    {
+      "id": "E1",
+      "what": "the map picture is not blank — the frame contains its subject",
+      "result": "pass",
+      "detail": "painted_frac=1"
+    },
+    {
+      "id": "C1",
+      "what": "focus moved by a real button press on a paused screen redraws the layout",
+      "result": "pass",
+      "detail": "focus_moved=true layout_changed=true frame=4->4"
+    },
+    {
+      "id": "C2a",
+      "what": "using an item on a paused screen changes the simulation model",
+      "result": "pass",
+      "detail": "black-water-draught count 3 -> 2"
+    },
+    {
+      "id": "C2b",
+      "what": "and the DRAWN row changes with it (no stale screen)",
+      "result": "fail",
+      "detail": "drawn row before=\"Black-water draught  ×3  0.4  30  75.0\" after=\"Black-water draught  ×3  0.4  30  75.0\""
+    },
+    {
+      "id": "D1",
+      "what": "holding right cannot walk the book past its own last spread",
+      "result": "fail",
+      "detail": "page=3 pages=4 spreads=undefined last_spread=1"
+    }
+  ],
+  "map_ui": {
+    "mode": "map",
+    "navigable": [
+      "world",
+      "inventory",
+      "sheet",
+      "spells"
+    ],
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "text": null,
+        "meta": null
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "text": null,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "text": null,
+        "meta": null
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "text": "5",
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "text": "LIGHT",
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 24
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "text": "Spark-Dart",
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": null,
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "map.panel",
+        "kind": "panel",
+        "text": null,
+        "meta": {
+          "area_frac": 0.5718
+        }
+      },
+      {
+        "id": "map.header",
+        "kind": "panel_header",
+        "text": "Where I have been",
+        "meta": null
+      },
+      {
+        "id": "map.terrain",
+        "kind": "map_terrain",
+        "text": null,
+        "meta": {
+          "view": "world",
+          "revealed_cells": 4807,
+          "total_cells": 42846,
+          "revealed_frac": 0.11219,
+          "source": "game/data/world/terrain.json + regions.json",
+          "roads_drawn": 0,
+          "routes_drawn": 0,
+          "drawn_cells": 4807
+        }
+      },
+      {
+        "id": "map.place.lilmoth",
+        "kind": "map_place",
+        "text": "Lilmoth",
+        "meta": {
+          "place": "lilmoth",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.place.stormhold",
+        "kind": "map_place",
+        "text": "Stormhold",
+        "meta": {
+          "place": "stormhold",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.place.thorn",
+        "kind": "map_place",
+        "text": "Thorn",
+        "meta": {
+          "place": "thorn",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.place.gideon",
+        "kind": "map_place",
+        "text": "Gideon",
+        "meta": {
+          "place": "gideon",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.place.helstrom",
+        "kind": "map_place",
+        "text": "Helstrom",
+        "meta": {
+          "place": "helstrom",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.place.archon",
+        "kind": "map_place",
+        "text": "Archon",
+        "meta": {
+          "place": "archon",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.place.blackrose",
+        "kind": "map_place",
+        "text": "Blackrose",
+        "meta": {
+          "place": "blackrose",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.place.soulrest",
+        "kind": "map_place",
+        "text": "Soulrest",
+        "meta": {
+          "place": "soulrest",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.place.ixtaxh-tzil",
+        "kind": "map_place",
+        "text": "Ixtaxh-Tzil",
+        "meta": {
+          "place": "ixtaxh-tzil",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.place.nine-mud",
+        "kind": "map_place",
+        "text": "Nine-Mud",
+        "meta": {
+          "place": "nine-mud",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.place.the-weeping-ford",
+        "kind": "map_place",
+        "text": "The Weeping Ford",
+        "meta": {
+          "place": "the-weeping-ford",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.place.xal-ithix",
+        "kind": "map_place",
+        "text": "Xal-Ithix",
+        "meta": {
+          "place": "xal-ithix",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.place.kiln-camp",
+        "kind": "map_place",
+        "text": "Kiln Camp",
+        "meta": {
+          "place": "kiln-camp",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.place.sunken-barrow",
+        "kind": "map_place",
+        "text": "Sunken Barrow",
+        "meta": {
+          "place": "sunken-barrow",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.naming",
+        "kind": "map_place",
+        "text": "Lilmoth",
+        "meta": {
+          "place": "lilmoth",
+          "names": "lilmoth",
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.player",
+        "kind": "map_player",
+        "text": null,
+        "meta": {
+          "facing": true,
+          "position": true,
+          "destination": null,
+          "route": null
+        }
+      },
+      {
+        "id": "map.rule",
+        "kind": "divider",
+        "text": null,
+        "meta": null
+      },
+      {
+        "id": "map.hint",
+        "kind": "hint",
+        "text": "stick: the places you have found   ·   confirm: where I am   ·   back: close",
+        "meta": null
+      },
+      {
+        "id": "map.found",
+        "kind": "hint",
+        "text": "Places I have stood in.",
+        "meta": null
+      }
+    ]
+  },
+  "map_element_count": 22,
+  "attack": {
+    "arity": [
+      {
+        "name": "observe",
+        "sort": "method",
+        "length": 0
+      },
+      {
+        "name": "suspend",
+        "sort": "method",
+        "length": 0
+      },
+      {
+        "name": "resume",
+        "sort": "method",
+        "length": 0
+      },
+      {
+        "name": "suspended",
+        "sort": "getter",
+        "length": 0
+      },
+      {
+        "name": "cols",
+        "sort": "getter",
+        "length": 0
+      },
+      {
+        "name": "rows",
+        "sort": "getter",
+        "length": 0
+      },
+      {
+        "name": "cell",
+        "sort": "getter",
+        "length": 0
+      },
+      {
+        "name": "revealedCells",
+        "sort": "getter",
+        "length": 0
+      },
+      {
+        "name": "revealedFrac",
+        "sort": "getter",
+        "length": 0
+      },
+      {
+        "name": "observations",
+        "sort": "getter",
+        "length": 0
+      },
+      {
+        "name": "seenCell",
+        "sort": "method",
+        "length": 2
+      },
+      {
+        "name": "seenAt",
+        "sort": "method",
+        "length": 2
+      },
+      {
+        "name": "places",
+        "sort": "method",
+        "length": 0
+      },
+      {
+        "name": "hasPlace",
+        "sort": "method",
+        "length": 1
+      },
+      {
+        "name": "placeCount",
+        "sort": "getter",
+        "length": 0
+      },
+      {
+        "name": "raster",
+        "sort": "method",
+        "length": 0
+      },
+      {
+        "name": "placePos",
+        "sort": "method",
+        "length": 1
+      },
+      {
+        "name": "serialise",
+        "sort": "method",
+        "length": 0
+      },
+      {
+        "name": "restore",
+        "sort": "method",
+        "length": 1
+      }
+    ],
+    "attempts": [
+      {
+        "what": "discovery.observe.call({...forged sim})",
+        "threw": true,
+        "error": "TypeError: Cannot read private member #sim from an object whose class did not declare it"
+      },
+      {
+        "what": "Object.assign(discovery, {placeSet:new Set([...])})",
+        "threw": true,
+        "error": "TypeError: Cannot add property placeSet, object is not extensible"
+      },
+      {
+        "what": "Reflect.set(discovery, \"reveal\", fn)",
+        "threw": false,
+        "result": "false"
+      },
+      {
+        "what": "Object.setPrototypeOf(discovery, {...})",
+        "threw": true,
+        "error": "TypeError: #<Discovery> is not extensible"
+      },
+      {
+        "what": "discovery.restore(forged blob: raster all-ones + every place id)",
+        "threw": false,
+        "result": "{\"dropped\":0,\"places_now\":42,\"revealed_now\":42846}"
+      }
+    ],
+    "after_restore": {
+      "places": 42,
+      "revealed": 42846,
+      "frac": 1
+    }
+  },
+  "mutator_arity": [
+    {
+      "name": "observe",
+      "sort": "method",
+      "length": 0
+    },
+    {
+      "name": "suspend",
+      "sort": "method",
+      "length": 0
+    },
+    {
+      "name": "resume",
+      "sort": "method",
+      "length": 0
+    },
+    {
+      "name": "restore",
+      "sort": "method",
+      "length": 1
+    }
+  ],
+  "forged_on_screen": [
+    "mudwater-landing",
+    "rootway-post",
+    "tenmarch-bridge",
+    "hollow-reeds",
+    "bone-ladder",
+    "salt-egg-camp",
+    "stilt-row",
+    "clayfast",
+    "the-red-wells",
+    "tideway-shrine",
+    "the-xanmeer-of-ix-thakla",
+    "the-counting-obelisk",
+    "wayshrine-of-the-ninth-root",
+    "the-drowned-xanmeer",
+    "xanmeer-of-sunken-teeth",
+    "ceyatatar-zel-ayleid-vault",
+    "the-leaning-stone",
+    "the-border-falls",
+    "the-glassed-crater",
+    "bloodmarl-isle",
+    "way-stormhold-thorn-0",
+    "way-stormhold-thorn-1",
+    "way-stormhold-helstrom-2",
+    "way-helstrom-archon-3",
+    "way-archon-thorn-4",
+    "way-archon-thorn-5",
+    "way-lilmoth-archon-6",
+    "way-lilmoth-archon-7"
+  ],
+  "picture_after_forged": {
+    "total": 349968,
+    "undiscovered": 0,
+    "painted_frac": 1
+  },
+  "register_after_forged": {
+    "view": "world",
+    "revealed_cells": 42846,
+    "total_cells": 42846,
+    "revealed_frac": 1,
+    "source": "game/data/world/terrain.json + regions.json",
+    "roads_drawn": 0,
+    "routes_drawn": 0,
+    "drawn_cells": 42846
+  },
+  "paused_model": {
+    "item": "black-water-draught",
+    "model_count_before": 3,
+    "model_count_after": 2,
+    "placed": {
+      "i": 1,
+      "rows": 44
+    },
+    "drawn_row_after": "Black-water draught  ×3  0.4  30  75.0",
+    "ui_row_before": "Black-water draught  ×3  0.4  30  75.0",
+    "frame": 4
+  },
+  "book": {
+    "at_open": {
+      "id": "pilots-chart-book",
+      "page": 1,
+      "pages": 4,
+      "words_per_page": [
+        169,
+        160,
+        136,
+        118
+      ],
+      "metrics": [
+        {
+          "face": "ink",
+          "words": 169,
+          "lines": 15,
+          "chars_per_line": 62.62,
+          "font_px": 26,
+          "leading": 1.46,
+          "body_screen_frac": 0.02407,
+          "cap_em": 0.72
+        },
+        {
+          "face": "ink",
+          "words": 160,
+          "lines": 15,
+          "chars_per_line": 59.85,
+          "font_px": 26,
+          "leading": 1.46,
+          "body_screen_frac": 0.02407,
+          "cap_em": 0.72
+        },
+        {
+          "face": "ink",
+          "words": 136,
+          "lines": 15,
+          "chars_per_line": 56.91,
+          "font_px": 26,
+          "leading": 1.46,
+          "body_screen_frac": 0.02407,
+          "cap_em": 0.72
+        },
+        {
+          "face": "ink",
+          "words": 118,
+          "lines": 10,
+          "chars_per_line": 62,
+          "font_px": 26,
+          "leading": 1.46,
+          "body_screen_frac": 0.02407,
+          "cap_em": 0.72
+        }
+      ]
+    },
+    "after_40_rights": {
+      "id": "pilots-chart-book",
+      "page": 3,
+      "pages": 4,
+      "words_per_page": [
+        169,
+        160,
+        136,
+        118
+      ],
+      "metrics": [
+        {
+          "face": "ink",
+          "words": 169,
+          "lines": 15,
+          "chars_per_line": 62.62,
+          "font_px": 26,
+          "leading": 1.46,
+          "body_screen_frac": 0.02407,
+          "cap_em": 0.72
+        },
+        {
+          "face": "ink",
+          "words": 160,
+          "lines": 15,
+          "chars_per_line": 59.85,
+          "font_px": 26,
+          "leading": 1.46,
+          "body_screen_frac": 0.02407,
+          "cap_em": 0.72
+        },
+        {
+          "face": "ink",
+          "words": 136,
+          "lines": 15,
+          "chars_per_line": 56.91,
+          "font_px": 26,
+          "leading": 1.46,
+          "body_screen_frac": 0.02407,
+          "cap_em": 0.72
+        },
+        {
+          "face": "ink",
+          "words": 118,
+          "lines": 10,
+          "chars_per_line": 62,
+          "font_px": 26,
+          "leading": 1.46,
+          "body_screen_frac": 0.02407,
+          "cap_em": 0.72
+        }
+      ]
+    }
+  },
+  "failed": [
+    "B1",
+    "B2",
+    "B3",
+    "C2b",
+    "D1"
+  ]
+}

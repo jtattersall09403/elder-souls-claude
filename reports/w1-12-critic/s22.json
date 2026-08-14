@@ -1,0 +1,146 @@
+{
+  "ai_json_has_unit_field": false,
+  "leaves": [
+    {
+      "path": "perception.aggro_entry_frames",
+      "value": [
+        20,
+        30
+      ],
+      "unit_readable": false,
+      "seconds_at_60": "0.33–0.50",
+      "seconds_if_t30": "0.67–1.00",
+      "item_seconds_anchor": null,
+      "ambiguous": true
+    },
+    {
+      "path": "perception.search_to_leash_frames",
+      "value": 720,
+      "unit_readable": false,
+      "seconds_at_60": "12.00",
+      "seconds_if_t30": "24.00",
+      "item_seconds_anchor": [
+        "T06"
+      ],
+      "ambiguous": false
+    },
+    {
+      "path": "perception.suspicious_min_dwell_f",
+      "value": 90,
+      "unit_readable": false,
+      "seconds_at_60": "1.50",
+      "seconds_if_t30": "3.00",
+      "item_seconds_anchor": [
+        "T03",
+        "T04"
+      ],
+      "ambiguous": false
+    },
+    {
+      "path": "movement.accel_frames_to_walk",
+      "value": 8,
+      "unit_readable": false,
+      "seconds_at_60": "0.13",
+      "seconds_if_t30": "0.27",
+      "item_seconds_anchor": null,
+      "ambiguous": true
+    },
+    {
+      "path": "movement.accel_frames_to_sprint",
+      "value": 14,
+      "unit_readable": false,
+      "seconds_at_60": "0.23",
+      "seconds_if_t30": "0.47",
+      "item_seconds_anchor": null,
+      "ambiguous": true
+    },
+    {
+      "path": "movement.decel_frames_to_stop",
+      "value": 10,
+      "unit_readable": false,
+      "seconds_at_60": "0.17",
+      "seconds_if_t30": "0.33",
+      "item_seconds_anchor": [
+        "T18"
+      ],
+      "ambiguous": false
+    },
+    {
+      "path": "circle.reseed_frames",
+      "value": [
+        48,
+        96
+      ],
+      "unit_readable": false,
+      "seconds_at_60": "0.80–1.60",
+      "seconds_if_t30": "1.60–3.20",
+      "item_seconds_anchor": null,
+      "ambiguous": true
+    },
+    {
+      "path": "commit.feint_step_max_frames",
+      "value": 36,
+      "unit_readable": true,
+      "seconds_at_60": "0.60",
+      "seconds_if_t30": "1.20",
+      "item_seconds_anchor": [
+        "T14"
+      ],
+      "ambiguous": false
+    },
+    {
+      "path": "commit.feint_min_circle_dwell_f",
+      "value": 24,
+      "unit_readable": true,
+      "seconds_at_60": "0.40",
+      "seconds_if_t30": "0.80",
+      "item_seconds_anchor": null,
+      "ambiguous": false
+    },
+    {
+      "path": "commit.feint_release_cooldown_f",
+      "value": 36,
+      "unit_readable": true,
+      "seconds_at_60": "0.60",
+      "seconds_if_t30": "1.20",
+      "item_seconds_anchor": [
+        "T14"
+      ],
+      "ambiguous": false
+    },
+    {
+      "path": "commit.token_hold_cap_f",
+      "value": 180,
+      "unit_readable": true,
+      "seconds_at_60": "3.00",
+      "seconds_if_t30": "6.00",
+      "item_seconds_anchor": null,
+      "ambiguous": false
+    },
+    {
+      "path": "commit.token_cooldown_f",
+      "value": [
+        54,
+        90
+      ],
+      "unit_readable": true,
+      "seconds_at_60": "0.90–1.50",
+      "seconds_if_t30": "1.80–3.00",
+      "item_seconds_anchor": [
+        "T03",
+        "T04"
+      ],
+      "ambiguous": false
+    },
+    {
+      "path": "punish_read.react_within_f",
+      "value": 12,
+      "unit_readable": false,
+      "seconds_at_60": "0.20",
+      "seconds_if_t30": "0.40",
+      "item_seconds_anchor": null,
+      "ambiguous": true
+    }
+  ],
+  "unanchored": 5
+}

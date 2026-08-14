@@ -1,0 +1,158 @@
+{
+  "tool": "critic-souls-r1",
+  "at": "2026-08-07T20:52:33.326Z",
+  "arms": {
+    "K1": {
+      "eid": "e0",
+      "hp0": 412,
+      "frames_to_death": 1421,
+      "capped": false,
+      "swings": 42,
+      "souls_before": 0,
+      "souls_after": 64,
+      "delta": 64,
+      "events": [
+        {
+          "f": 1425,
+          "type": "souls_awarded",
+          "eid": "e0",
+          "archetype": "inf_trash",
+          "tier": "trash",
+          "base": 64,
+          "night": false,
+          "multiplier": 1,
+          "souls": 64,
+          "held": 64,
+          "hour": 14.13,
+          "gold_awarded": 0,
+          "enabled": true
+        }
+      ],
+      "player_died_at": null,
+      "seconds_at_60hz": 23.68,
+      "declared_souls": 64
+    },
+    "K8": {
+      "eid": "e0",
+      "hp0": 412,
+      "frames_to_death": null,
+      "capped": true,
+      "swings": 0,
+      "souls_before": 0,
+      "souls_after": 0,
+      "delta": 0,
+      "events": [],
+      "player_died_at": null,
+      "seconds_at_60hz": null
+    },
+    "K3": {
+      "entity_hp_before": 412,
+      "entity_hp_after_write": 0,
+      "souls_after_1_frame": 0,
+      "entity_hp_after_1_frame": 412,
+      "souls_after_31_frames": 0,
+      "entity_hp_after_31_frames": 412,
+      "body_hp": 412
+    },
+    "K4": {
+      "entity_ids": [
+        "e0"
+      ],
+      "player_in_entities": false
+    },
+    "K5": {
+      "pass1": {
+        "eids": [
+          "dres-raid-party-infantry-0",
+          "dres-raid-party-infantry-1",
+          "dres-raid-party-infantry-2",
+          "dres-raid-party-infantry-3",
+          "dres-raid-party-net-thrower-0",
+          "dres-raid-party-net-thrower-1"
+        ],
+        "paid": 384
+      },
+      "pass2": {
+        "eids": [
+          "dres-raid-party-infantry-0",
+          "dres-raid-party-infantry-1",
+          "dres-raid-party-infantry-2",
+          "dres-raid-party-infantry-3",
+          "dres-raid-party-net-thrower-0",
+          "dres-raid-party-net-thrower-1"
+        ],
+        "paid": 0
+      },
+      "pass3": {
+        "eids": [
+          "dres-raid-party-infantry-0",
+          "dres-raid-party-infantry-1",
+          "dres-raid-party-infantry-2",
+          "dres-raid-party-infantry-3",
+          "dres-raid-party-net-thrower-0",
+          "dres-raid-party-net-thrower-1"
+        ],
+        "paid": 0
+      },
+      "same_eids": true,
+      "hearth_rests": 0,
+      "total": 384
+    },
+    "K6": {
+      "arm_d_would_pass": true,
+      "D": {
+        "declared_souls": 0,
+        "hp": 99999,
+        "error": "spawn: eid 'critic-marker' is already in use"
+      }
+    },
+    "K7": {
+      "arm_i_would_pass": true,
+      "arm_i_kills_that_happened": 0,
+      "arm_b_would_pass": true,
+      "arm_b_real_kills": 0
+    }
+  },
+  "verdicts": [
+    {
+      "name": "K1 a REAL WEAPON KILL pays — no harness kill verb anywhere in this arm",
+      "pass": true,
+      "detail": "42 latched light swings; body died on frame 1421; souls 0 -> 64 (declared 64); 1 souls_awarded event(s)"
+    },
+    {
+      "name": "K2 MEASURED time-to-kill, in fixed frames",
+      "pass": true,
+      "detail": "1421 f@60 = 23.68 s of fighting for 64 souls; the player survived"
+    },
+    {
+      "name": "K8 SELF-BREAK: the same loop with the attack input removed must NOT report a kill",
+      "pass": true,
+      "detail": "no-attack control: frames_to_death=null, souls delta 0, swings 0"
+    },
+    {
+      "name": "K3 the HAZARD death path pays — `ent.hp = 0` on a sim.entities record, as sim/hazards.js does",
+      "pass": false,
+      "detail": "wrote hp 412 -> 0; after 1 frame hp=412 souls+0; after 31 frames hp=412 souls+0; combat body hp=412"
+    },
+    {
+      "name": "K5 S5: an ordinary enemy pays again only after a HEARTH rest",
+      "pass": true,
+      "detail": "despawn+respawn with no rest: pass1 +384, pass2 +0, pass3 +0; same eids reused: true; 0 rests; total 384"
+    },
+    {
+      "name": "K6 souls-consumption arm D can fail when the dummy cannot be spawned",
+      "pass": false,
+      "detail": "spawn threw (\"spawn: eid 'critic-marker' is already in use\") and arm D's predicate returns true"
+    },
+    {
+      "name": "K7 souls-consumption arms B and I can fail when no kill happened",
+      "pass": false,
+      "detail": "arm I with 0 kills -> true; arm B with 0 real kills -> true"
+    },
+    {
+      "name": "K4 the player is not swept into the kill scan",
+      "pass": true,
+      "detail": "sim.entities = [\"e0\"]; player present: false"
+    }
+  ]
+}

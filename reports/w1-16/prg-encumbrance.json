@@ -1,0 +1,866 @@
+{
+  "schema": "elder-souls/prg-encumbrance@1",
+  "unit": "f@60",
+  "generated": "2026-08-08T01:39:23.310Z",
+  "probes": {
+    "equipload": {
+      "arms": [
+        {
+          "label": "A — nothing worn but the starting knife",
+          "worn": [],
+          "equipped_rows": [
+            "eshis-knife@right"
+          ],
+          "equipped_weight": 0,
+          "equip_load_max": 73,
+          "equip_load_pct": 0,
+          "tier": "LIGHT",
+          "source": "derived from equipped items (W1-16 r2)",
+          "burden_ratio": 0,
+          "burden_tier": "UNBURDENED",
+          "carried_weight": 0,
+          "startup_f60": 4,
+          "iframes_f60": 26,
+          "iframe_window_f60": [
+            5,
+            30
+          ],
+          "recovery_f60": 22,
+          "total_f60": 52,
+          "contiguous_runs": 1,
+          "stamina_cost": 22
+        },
+        {
+          "label": "B — the heaviest set the shipped item shelf can wear",
+          "worn": [
+            {
+              "item": "shell-scale-hauberk",
+              "equipped": true
+            },
+            {
+              "item": "legion-greaves",
+              "equipped": true
+            },
+            {
+              "item": "rootweave-cowl",
+              "equipped": true
+            },
+            {
+              "item": "wet-season-boots",
+              "equipped": true
+            },
+            {
+              "item": "silt-strider-silk-sash",
+              "equipped": true
+            },
+            {
+              "item": "bog-iron-maul",
+              "equipped": true
+            }
+          ],
+          "equipped_rows": [
+            "bog-iron-maul@right",
+            "legion-greaves@legs",
+            "rootweave-cowl@head",
+            "shell-scale-hauberk@chest",
+            "silt-strider-silk-sash@waist",
+            "wet-season-boots@feet"
+          ],
+          "equipped_weight": 28.3,
+          "equip_load_max": 73,
+          "equip_load_pct": 38.767123,
+          "tier": "MEDIUM",
+          "source": "derived from equipped items (W1-16 r2)",
+          "burden_ratio": 0.155068,
+          "burden_tier": "UNBURDENED",
+          "carried_weight": 28.3,
+          "startup_f60": 4,
+          "iframes_f60": 22,
+          "iframe_window_f60": [
+            5,
+            26
+          ],
+          "recovery_f60": 34,
+          "total_f60": 60,
+          "contiguous_runs": 1,
+          "stamina_cost": 26
+        }
+      ],
+      "note": "i-frames and recovery are f@60. The RI-CMB01 §B reference beside them is the S22-rebased figure (Souls t@30 x 2).",
+      "menu_path": {
+        "equipped_through_the_real_cursor": true,
+        "slot": "chest",
+        "equip_load_pct": 10.273973,
+        "attempts": [
+          {
+            "row": 0,
+            "mode": "inventory",
+            "landed": true
+          }
+        ]
+      },
+      "perturbation": {
+        "model_moved": true,
+        "model_delta_pct": 38.767,
+        "tier_moved": true,
+        "entity_moved": true,
+        "iframes_f60": [
+          26,
+          22
+        ],
+        "recovery_f60": [
+          22,
+          34
+        ],
+        "reference_f60": {
+          "LIGHT": {
+            "iframes": 26,
+            "recovery": 22
+          },
+          "MEDIUM": {
+            "iframes": 22,
+            "recovery": 34
+          },
+          "HEAVY": {
+            "iframes": 10,
+            "recovery": 72
+          },
+          "OVERLOADED": {
+            "iframes": 0,
+            "recovery": null
+          }
+        },
+        "reference_t30": {
+          "LIGHT": {
+            "iframes": 13,
+            "recovery": 11
+          },
+          "MEDIUM": {
+            "iframes": 11,
+            "recovery": 17
+          },
+          "HEAVY": {
+            "iframes": 5,
+            "recovery": 36
+          },
+          "OVERLOADED": {
+            "iframes": 0,
+            "recovery": null
+          }
+        },
+        "conversion": "f@60 = 2 x t@30 (ARBITRATION S22: Souls community frame data is quoted in 1/30 s ticks; our step is 1/60 s)."
+      },
+      "coupled": true
+    },
+    "regen": {
+      "unit": "stamina per f@60",
+      "rows": [
+        {
+          "tier": "LIGHT",
+          "load_pct": 15,
+          "observed_tier": "LIGHT",
+          "stamina_before": 120,
+          "stamina_after_spend": 98,
+          "roll_cost": 22,
+          "first_regen_frame_after_spend_f60": 43,
+          "regen_per_frame_observed": 0.75
+        },
+        {
+          "tier": "MEDIUM",
+          "load_pct": 50,
+          "observed_tier": "MEDIUM",
+          "stamina_before": 120,
+          "stamina_after_spend": 94,
+          "roll_cost": 26,
+          "first_regen_frame_after_spend_f60": 43,
+          "regen_per_frame_observed": 0.75
+        },
+        {
+          "tier": "HEAVY",
+          "load_pct": 85,
+          "observed_tier": "HEAVY",
+          "stamina_before": 120,
+          "stamina_after_spend": 86,
+          "roll_cost": 34,
+          "first_regen_frame_after_spend_f60": 43,
+          "regen_per_frame_observed": 0.6
+        },
+        {
+          "tier": "OVERLOADED",
+          "load_pct": 120,
+          "observed_tier": "OVERLOADED",
+          "stamina_before": 120,
+          "stamina_after_spend": 80,
+          "roll_cost": 40,
+          "first_regen_frame_after_spend_f60": 43,
+          "regen_per_frame_observed": 0.45
+        }
+      ],
+      "multipliers_observed": [
+        {
+          "tier": "LIGHT",
+          "x": 1
+        },
+        {
+          "tier": "MEDIUM",
+          "x": 1
+        },
+        {
+          "tier": "HEAVY",
+          "x": 0.8
+        },
+        {
+          "tier": "OVERLOADED",
+          "x": 0.6
+        }
+      ],
+      "multipliers_declared": {
+        "LIGHT": 1,
+        "MEDIUM": 1,
+        "HEAVY": 0.8,
+        "OVERLOADED": 0.6
+      },
+      "delay_declared_f60": 42,
+      "delay_note": "RI-CMB03 is DELIBERATELY EXCLUDED from the S22 rebase: its 42 f@60 pause was derived from 0.70 s and was already right. Do not double it.",
+      "coupled": true
+    },
+    "travel": {
+      "rows": [
+        {
+          "label": "UNBURDENED",
+          "burden_ratio": 0.1,
+          "burden_tier": "UNBURDENED",
+          "travel_time_mult_declared": 1,
+          "service": "svc-005-rootway-the-weeping-ford-helstrom",
+          "route_m": 881.4,
+          "frames_f60": 7555,
+          "game_min": 40.2,
+          "game_min_scheduled": 40.2,
+          "gold_spent": 10,
+          "err": null
+        },
+        {
+          "label": "LADEN",
+          "burden_ratio": 0.75,
+          "burden_tier": "LADEN",
+          "travel_time_mult_declared": 1.12,
+          "service": "svc-005-rootway-the-weeping-ford-helstrom",
+          "route_m": 881.4,
+          "frames_f60": 8461,
+          "game_min": 45.024,
+          "game_min_scheduled": 40.2,
+          "gold_spent": 10,
+          "err": null
+        },
+        {
+          "label": "OVERLADEN",
+          "burden_ratio": 0.95,
+          "burden_tier": "OVERLADEN",
+          "travel_time_mult_declared": 1.35,
+          "service": "svc-005-rootway-the-weeping-ford-helstrom",
+          "route_m": 881.4,
+          "frames_f60": 10199,
+          "game_min": 54.27,
+          "game_min_scheduled": 40.2,
+          "gold_spent": 10,
+          "err": null
+        }
+      ],
+      "note": "Same service, same fare, three burdens. Frames are f@60; game_min is world minutes.",
+      "perturbation": {
+        "frames_f60": [
+          7555,
+          8461,
+          10199
+        ],
+        "game_min": [
+          40.2,
+          45.024,
+          54.27
+        ],
+        "fare_unchanged": true,
+        "entity_moved": true
+      },
+      "coupled": true
+    },
+    "road": {
+      "rows": [
+        {
+          "burden_ratio": 0.1,
+          "tier": "UNBURDENED",
+          "sprint_held": false,
+          "burden_source": "pinned by setBurden()",
+          "burden_ratio_observed": 0.1,
+          "deny_sprint": null,
+          "move_mult_declared": 1,
+          "move_mult_applied": 1,
+          "sprint_allowed_declared": true,
+          "metres": 4.752,
+          "in_combat": false
+        },
+        {
+          "burden_ratio": 0.1,
+          "tier": "UNBURDENED",
+          "sprint_held": true,
+          "burden_source": "pinned by setBurden()",
+          "burden_ratio_observed": 0.1,
+          "deny_sprint": null,
+          "move_mult_declared": 1,
+          "move_mult_applied": 1,
+          "sprint_allowed_declared": true,
+          "metres": 13.5,
+          "in_combat": false
+        },
+        {
+          "burden_ratio": 0.75,
+          "tier": "LADEN",
+          "sprint_held": false,
+          "burden_source": "pinned by setBurden()",
+          "burden_ratio_observed": 0.75,
+          "deny_sprint": null,
+          "move_mult_declared": 0.9,
+          "move_mult_applied": 0.9,
+          "sprint_allowed_declared": true,
+          "metres": 7.776,
+          "in_combat": false
+        },
+        {
+          "burden_ratio": 0.75,
+          "tier": "LADEN",
+          "sprint_held": true,
+          "burden_source": "pinned by setBurden()",
+          "burden_ratio_observed": 0.75,
+          "deny_sprint": null,
+          "move_mult_declared": 0.9,
+          "move_mult_applied": 0.9,
+          "sprint_allowed_declared": true,
+          "metres": 12.15,
+          "in_combat": false
+        },
+        {
+          "burden_ratio": 0.95,
+          "tier": "OVERLADEN",
+          "sprint_held": false,
+          "burden_source": "pinned by setBurden()",
+          "burden_ratio_observed": 0.95,
+          "deny_sprint": null,
+          "move_mult_declared": 0.72,
+          "move_mult_applied": 0.72,
+          "sprint_allowed_declared": false,
+          "metres": 6.221,
+          "in_combat": false
+        },
+        {
+          "burden_ratio": 0.95,
+          "tier": "OVERLADEN",
+          "sprint_held": true,
+          "burden_source": "pinned by setBurden()",
+          "burden_ratio_observed": 0.95,
+          "deny_sprint": null,
+          "move_mult_declared": 0.72,
+          "move_mult_applied": 0.72,
+          "sprint_allowed_declared": false,
+          "metres": 6.221,
+          "in_combat": false
+        }
+      ],
+      "unit": "metres over 180 f@60",
+      "warmup_discarded": {
+        "burden_ratio": 0.1,
+        "tier": "UNBURDENED",
+        "sprint_held": false,
+        "burden_source": "pinned by setBurden()",
+        "burden_ratio_observed": 0.1,
+        "deny_sprint": null,
+        "move_mult_declared": 1,
+        "move_mult_applied": 1,
+        "sprint_allowed_declared": true,
+        "metres": 6.386,
+        "in_combat": false
+      },
+      "perturbation": {
+        "walk_metres_by_tier": [
+          [
+            "UNBURDENED",
+            4.752
+          ],
+          [
+            "LADEN",
+            7.776
+          ],
+          [
+            "OVERLADEN",
+            6.221
+          ]
+        ],
+        "sprint_denied_when_overladen": true,
+        "overladen_walk_vs_sprint_m": [
+          6.221,
+          6.221
+        ],
+        "sprint_metres": [
+          13.5,
+          6.221
+        ]
+      },
+      "ar1_guard": {
+        "woke": "E1",
+        "in_combat": true,
+        "move_mult_applied": 1,
+        "sprint": true,
+        "fatigue_drain_mult": 1,
+        "sneak_detection_mult": 1,
+        "travel_time_mult": 1,
+        "tested": true,
+        "passes": true
+      },
+      "coupled": true
+    },
+    "separation": {
+      "arms": [
+        {
+          "label": "empty pack",
+          "carried_weight": 0,
+          "burden_ratio": 0,
+          "burden_tier": "UNBURDENED",
+          "equipped_weight": 0,
+          "equip_load_pct": 0,
+          "iframes_f60": 26,
+          "total_f60": 52,
+          "tier": "LIGHT"
+        },
+        {
+          "label": "460 kg of mauls in the pack, none of them worn",
+          "carried_weight": 460,
+          "burden_ratio": 2.520548,
+          "burden_tier": "IMMOBILE",
+          "equipped_weight": 0,
+          "equip_load_pct": 0,
+          "iframes_f60": 26,
+          "total_f60": 52,
+          "tier": "LIGHT"
+        }
+      ],
+      "burden_moved": true,
+      "equip_load_unchanged": true,
+      "roll_byte_identical": true,
+      "coupled": true
+    },
+    "deletefix": {
+      "claims": [
+        {
+          "claim": "A — putting armour on changes the i-frame window and the recovery of the roll",
+          "with_fix": {
+            "broken": "none",
+            "worn": [
+              {
+                "item": "shell-scale-hauberk",
+                "equipped": true
+              },
+              {
+                "item": "legion-greaves",
+                "equipped": true
+              },
+              {
+                "item": "rootweave-cowl",
+                "equipped": true
+              },
+              {
+                "item": "wet-season-boots",
+                "equipped": true
+              },
+              {
+                "item": "silt-strider-silk-sash",
+                "equipped": true
+              },
+              {
+                "item": "bog-iron-maul",
+                "equipped": true
+              }
+            ],
+            "before": {
+              "equip_load_pct": 0,
+              "iframes_f60": 26,
+              "recovery_f60": 22,
+              "total_f60": 52,
+              "tier": "LIGHT"
+            },
+            "after": {
+              "equip_load_pct": 38.767123,
+              "equipped_weight": 28.3,
+              "equipped_rows": [
+                "bog-iron-maul@right",
+                "legion-greaves@legs",
+                "rootweave-cowl@head",
+                "shell-scale-hauberk@chest",
+                "silt-strider-silk-sash@waist",
+                "wet-season-boots@feet"
+              ],
+              "iframes_f60": 22,
+              "recovery_f60": 34,
+              "total_f60": 60,
+              "tier": "MEDIUM"
+            },
+            "moved": true,
+            "roll_moved": true
+          },
+          "fix_deleted": {
+            "broken": "producer,slots",
+            "worn": [
+              {
+                "item": "shell-scale-hauberk",
+                "equipped": true
+              },
+              {
+                "item": "legion-greaves",
+                "equipped": true
+              },
+              {
+                "item": "rootweave-cowl",
+                "equipped": true
+              },
+              {
+                "item": "wet-season-boots",
+                "equipped": true
+              },
+              {
+                "item": "silt-strider-silk-sash",
+                "equipped": true
+              },
+              {
+                "item": "bog-iron-maul",
+                "equipped": true
+              }
+            ],
+            "before": {
+              "equip_load_pct": 24,
+              "iframes_f60": 26,
+              "recovery_f60": 22,
+              "total_f60": 52,
+              "tier": "LIGHT"
+            },
+            "after": {
+              "equip_load_pct": 24,
+              "equipped_weight": 0,
+              "equipped_rows": [
+                "bog-iron-maul@right"
+              ],
+              "iframes_f60": 26,
+              "recovery_f60": 22,
+              "total_f60": 52,
+              "tier": "LIGHT"
+            },
+            "moved": false,
+            "roll_moved": false
+          },
+          "old_number_returns": true,
+          "arms_differ": true,
+          "iframes_f60": {
+            "with_fix": [
+              26,
+              22
+            ],
+            "fix_deleted": [
+              26,
+              26
+            ]
+          },
+          "recovery_f60": {
+            "with_fix": [
+              22,
+              34
+            ],
+            "fix_deleted": [
+              22,
+              22
+            ]
+          },
+          "equip_load_pct": {
+            "with_fix": [
+              0,
+              38.767123
+            ],
+            "fix_deleted": [
+              24,
+              24
+            ]
+          }
+        },
+        {
+          "claim": "B — the same barge takes longer, in frames and in world minutes, when you are Overladen",
+          "with_fix": [
+            {
+              "broken": "none",
+              "burden": 0.1,
+              "tier": "UNBURDENED",
+              "frames_f60": 7555,
+              "game_min": 40.2,
+              "err": null
+            },
+            {
+              "broken": "none",
+              "burden": 0.95,
+              "tier": "OVERLADEN",
+              "frames_f60": 10199,
+              "game_min": 54.27,
+              "err": null
+            }
+          ],
+          "fix_deleted": [
+            {
+              "broken": "travel",
+              "burden": 0.1,
+              "tier": "UNBURDENED",
+              "frames_f60": 7555,
+              "game_min": 40.2,
+              "err": null
+            },
+            {
+              "broken": "travel",
+              "burden": 0.95,
+              "tier": "OVERLADEN",
+              "frames_f60": 7555,
+              "game_min": 40.2,
+              "err": null
+            }
+          ],
+          "old_number_returns": true,
+          "arms_differ": true,
+          "frames_f60": {
+            "with_fix": [
+              7555,
+              10199
+            ],
+            "fix_deleted": [
+              7555,
+              7555
+            ]
+          },
+          "game_min": {
+            "with_fix": [
+              40.2,
+              54.27
+            ],
+            "fix_deleted": [
+              40.2,
+              40.2
+            ]
+          }
+        }
+      ],
+      "coupled": true
+    },
+    "census": {
+      "rows": [
+        {
+          "model": "equip_load",
+          "param": "tier_boundaries_pct",
+          "reader": "combat/moves.js equipTier()",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "roll.iframes",
+          "reader": "combat/player.js roll -> the invulnerable frame window",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "roll.recovery",
+          "reader": "combat/player.js roll -> actionable frame",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "roll.total",
+          "reader": "combat/player.js roll",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "roll.stamina",
+          "reader": "combat/rules.js spendStamina()",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "roll.distance_m",
+          "reader": "combat root motion",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "roll.anim_speed",
+          "reader": "combat/moves.js move table",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "backstep.*",
+          "reader": "combat/player.js backstep",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "equipLoadPct (the INPUT)",
+          "reader": "engine._recomputeEquipLoad() <- inventory rows with a slot (W1-16 r2)",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "regen.multipliers.equip_load_over_70pct",
+          "reader": "combat/rules.js regenStamina()",
+          "has_reader": true
+        },
+        {
+          "model": "equip_load",
+          "param": "regen.multipliers.overloaded",
+          "reader": "combat/rules.js regenStamina()",
+          "has_reader": true
+        },
+        {
+          "model": "burden",
+          "param": "burdenRatio (the INPUT)",
+          "reader": "engine._recomputeBurden() <- every inventory row",
+          "has_reader": true
+        },
+        {
+          "model": "burden",
+          "param": "move",
+          "reader": "engine._burdenMult() -> sim/traversal.js step()",
+          "has_reader": true
+        },
+        {
+          "model": "burden",
+          "param": "sprint",
+          "reader": "engine -> sim.player.denySprint -> sim/player.js gate (W1-16 r2)",
+          "has_reader": true
+        },
+        {
+          "model": "burden",
+          "param": "travel_time",
+          "reader": "engine.boardTravel() -> ride frames + world clock (W1-16 r2)",
+          "has_reader": true
+        },
+        {
+          "model": "burden",
+          "param": "fatigue",
+          "reader": null,
+          "has_reader": false
+        },
+        {
+          "model": "burden",
+          "param": "sneak",
+          "reader": null,
+          "has_reader": false
+        },
+        {
+          "model": "burden",
+          "param": "jump",
+          "reader": null,
+          "has_reader": false
+        },
+        {
+          "model": "equip_load",
+          "param": "fall_damage_mult (RI-PRG07 §2)",
+          "reader": null,
+          "has_reader": false
+        },
+        {
+          "model": "progression",
+          "param": "soulsHeld",
+          "reader": "engine._spendSouls() at the level-up screen",
+          "has_reader": true
+        },
+        {
+          "model": "progression",
+          "param": "soulsToNextLevel (the curve)",
+          "reader": "engine._spendSouls() cost gate + UI",
+          "has_reader": true
+        },
+        {
+          "model": "progression",
+          "param": "level",
+          "reader": "engine.soulsToNextLevel() (the curve reads it back)",
+          "has_reader": true
+        },
+        {
+          "model": "progression",
+          "param": "attributes.* -> derivePools",
+          "reader": "character/derive.js -> hp/stamina/focus/equip_load_max",
+          "has_reader": true
+        },
+        {
+          "model": "progression",
+          "param": "equip_load_max (STR curve)",
+          "reader": "engine._equipLoadMax() -> BOTH ratios (W1-16 r2 for equip load)",
+          "has_reader": true
+        },
+        {
+          "model": "progression",
+          "param": "gold",
+          "reader": "engine._setGold()/_gold() -> fares, bribes, fencing, the drawn purse",
+          "has_reader": true
+        },
+        {
+          "model": "progression",
+          "param": "skills.*",
+          "reader": "magic tier gate, merchant pricing, stealth gates",
+          "has_reader": true
+        }
+      ],
+      "unread": [
+        "burden.fatigue",
+        "burden.sneak",
+        "burden.jump",
+        "equip_load.fall_damage_mult (RI-PRG07 §2)"
+      ],
+      "unread_count": 4,
+      "total": 26,
+      "live": {
+        "burden": {
+          "ratio": 0,
+          "tier": "UNBURDENED",
+          "carried_weight": 0
+        },
+        "equip_load": {
+          "pct": 0,
+          "tier": "LIGHT",
+          "equipped_weight": 0,
+          "equip_load_max": 73,
+          "carried_weight": 0,
+          "burden_divisor": 182.5,
+          "burden_source": "derived from the pack",
+          "source": "derived from equipped items (W1-16 r2)",
+          "boundaries_pct": {
+            "LIGHT": 30,
+            "MEDIUM": 70,
+            "HEAVY": 100
+          },
+          "owner": "RI-CMB01 §B (seam S23: everything the tier does inside the fight)"
+        },
+        "burden_consumers": {
+          "move": "engine._burdenMult() -> sim/traversal.js step() horizontal retraction",
+          "sprint": "engine -> sim.player.denySprint -> sim/player.js action gate (W1-16 r2)",
+          "travel_time": "engine.boardTravel() -> ride frames and world clock (W1-16 r2)",
+          "fatigue": null,
+          "sneak": null,
+          "jump": null
+        },
+        "equip_load_consumers": {
+          "roll_iframes": "combat/moves.js equipTier() -> roll.json row -> combat/player.js roll",
+          "roll_recovery": "combat/moves.js equipTier() -> roll.json row",
+          "roll_stamina_cost": "combat/moves.js equipTier() -> roll.json costs",
+          "stamina_regen_mult": "combat/rules.js regenStamina() ctx.tier"
+        },
+        "level": null,
+        "souls_held": null,
+        "stamina_max": 120
+      },
+      "coupled": false
+    }
+  },
+  "uncoupled_probes": [
+    "census"
+  ]
+}

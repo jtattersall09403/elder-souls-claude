@@ -1,0 +1,954 @@
+{
+  "tool": "critic-readable-slots-and-marks",
+  "commit": "4a17ec3",
+  "taken_at": "2026-08-08T02:39:33.298Z",
+  "load": "19.14 20.30 22.06 43/684 15794",
+  "min_separation_m": 2.6,
+  "f1_rooms": [
+    {
+      "interior": "soulrest-court-steps",
+      "declared": 15,
+      "spawned": 15,
+      "min_m": 2.6,
+      "pair": [
+        "interior-readable:the-blackrose-lease-stub-book",
+        "interior-readable:the-commonplace-book-of-ivo-sarn"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "gideon-grange",
+      "declared": 7,
+      "spawned": 7,
+      "min_m": 3.26,
+      "pair": [
+        "interior-readable:the-compact-share-book",
+        "interior-readable:the-unsealed-chits"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "helstrom-undertemple",
+      "declared": 6,
+      "spawned": 6,
+      "min_m": 4.16,
+      "pair": [
+        "interior-readable:helstrom-undertemple-readable",
+        "interior-readable:the-stewards-letter"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "lilmoth-customs",
+      "declared": 5,
+      "spawned": 5,
+      "min_m": 3.2,
+      "pair": [
+        "interior-readable:lilmoth-customs-readable",
+        "interior-readable:the-rootless-egg"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "archon-guild-office",
+      "declared": 4,
+      "spawned": 4,
+      "min_m": 4.26,
+      "pair": [
+        "interior-readable:the-harbour-minute-book",
+        "interior-readable:the-soulrest-daughter-letter"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "gideon-court",
+      "declared": 4,
+      "spawned": 4,
+      "min_m": 4.83,
+      "pair": [
+        "interior-readable:gideon-court-readable",
+        "interior-readable:the-blackrose-lease-roll"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "blackrose-prison",
+      "declared": 3,
+      "spawned": 3,
+      "min_m": 4.16,
+      "pair": [
+        "interior-readable:blackrose-prison-readable",
+        "interior-readable:the-lease-register-third-hand"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "lilmoth-ledger-house",
+      "declared": 3,
+      "spawned": 3,
+      "min_m": 4.43,
+      "pair": [
+        "interior-readable:lilmoth-ledger-house-readable",
+        "interior-readable:the-wet-ledger-private-book"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "thorn-sapwell",
+      "declared": 3,
+      "spawned": 3,
+      "min_m": 3.87,
+      "pair": [
+        "interior-readable:the-cutters-list",
+        "interior-readable:thorn-sapwell-readable"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "archon-vat-house",
+      "declared": 2,
+      "spawned": 2,
+      "min_m": 4.83,
+      "pair": [
+        "interior-readable:archon-vat-house-readable",
+        "interior-readable:the-guild-denial"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "blackrose-shrine",
+      "declared": 2,
+      "spawned": 2,
+      "min_m": 10.51,
+      "pair": [
+        "interior-readable:blackrose-shrine-readable",
+        "interior-readable:the-grandmother-yard-book"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "blackrose-warders-hall",
+      "declared": 2,
+      "spawned": 2,
+      "min_m": 3.63,
+      "pair": [
+        "interior-readable:blackrose-warders-hall-readable",
+        "interior-readable:the-prefect-commission"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "helstrom-apothecary",
+      "declared": 2,
+      "spawned": 2,
+      "min_m": 4.45,
+      "pair": [
+        "interior-readable:helstrom-apothecary-readable",
+        "interior-readable:the-coast-crew-list"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "stormhold-archive",
+      "declared": 2,
+      "spawned": 2,
+      "min_m": 3.83,
+      "pair": [
+        "interior-readable:stormhold-archive-readable",
+        "interior-readable:the-stormhold-transfer-file"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "stormhold-praetorium",
+      "declared": 2,
+      "spawned": 2,
+      "min_m": 3.83,
+      "pair": [
+        "interior-readable:stormhold-praetorium-readable",
+        "interior-readable:the-fourth-writ"
+      ],
+      "ok": true
+    },
+    {
+      "interior": "archon-apothecary",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "archon-inn",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "archon-kiln-house",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "archon-market",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "archon-rootpost",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "archon-shrine",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "archon-ward",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "barge-hold",
+      "declared": 1,
+      "spawned": 0,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "blackrose-clerk",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "blackrose-inn",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "blackrose-market",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "blackrose-pawn",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "blackrose-rootpost",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "blackrose-smithy",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "gideon-apothecary",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "gideon-chapel",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "gideon-inn",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "gideon-lowmarket",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "gideon-rootpost",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "gideon-shrine",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "gideon-smithy",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "gideon-tollhouse",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "helstrom-archive",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "helstrom-deep-market",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "helstrom-hist-shrine",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "helstrom-hollow-bole",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "helstrom-inn-egg",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "helstrom-inn-gate",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "helstrom-inn-tide",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "helstrom-legation",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "helstrom-rootpost",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "helstrom-scriptorium",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "helstrom-smithy",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "helstrom-warders",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "lilmoth-apothecary",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "lilmoth-healer",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "lilmoth-inn-drowned",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "lilmoth-inn-stilt",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "lilmoth-market",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "lilmoth-pawn",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "lilmoth-rootpost",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "lilmoth-scribe",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "lilmoth-shrine",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "lilmoth-smithy",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "lilmoth-yard",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "soulrest-boneyard",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "soulrest-grey-hist",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "soulrest-market",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "soulrest-pawn",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "soulrest-quay",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "soulrest-smithy",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "stormhold-chapel",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "stormhold-customs",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "stormhold-gaol",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "stormhold-inn-lean",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "stormhold-inn-pass",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "stormhold-kiln",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "stormhold-market",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "stormhold-rootpost",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "stormhold-scribe",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "stormhold-shrine",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "stormhold-smithy",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "thorn-apothecary",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "thorn-gate",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "thorn-hall",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "thorn-inn",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "thorn-rootpost",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    },
+    {
+      "interior": "thorn-trader",
+      "declared": 1,
+      "spawned": 1,
+      "min_m": null,
+      "pair": null,
+      "ok": true
+    }
+  ],
+  "f1_presses": [
+    {
+      "prop": "interior-readable:against-the-ninth-clause",
+      "stood": {
+        "x": 5.889809580787279,
+        "z": 1.7135106936845248,
+        "off_m": 1,
+        "door_m": 8.05
+      },
+      "mode": "book",
+      "opened": "against-the-ninth-clause",
+      "readable_id": "against-the-ninth-clause"
+    },
+    {
+      "prop": "interior-readable:for-the-ninth-clause",
+      "stood": {
+        "x": 5.910292428999937,
+        "z": -2.150877934843722,
+        "off_m": 1,
+        "door_m": 11.06
+      },
+      "mode": "book",
+      "opened": "for-the-ninth-clause",
+      "readable_id": "for-the-ninth-clause"
+    },
+    {
+      "prop": "interior-readable:soulrest-court-steps-readable",
+      "stood": {
+        "x": -5.353742982329523,
+        "z": 7.0534631769131995,
+        "off_m": 1,
+        "door_m": 5.36
+      },
+      "mode": "world",
+      "opened": null,
+      "readable_id": "soulrest-court-steps-readable"
+    },
+    {
+      "prop": "interior-readable:the-blackrose-lease-stub-book",
+      "stood": {
+        "x": -2.176519010886188,
+        "z": -1.213141743772629,
+        "off_m": 1,
+        "door_m": 8.69
+      },
+      "mode": "book",
+      "opened": "the-blackrose-lease-stub-book",
+      "readable_id": "the-blackrose-lease-stub-book"
+    },
+    {
+      "prop": "interior-readable:the-chapter-room-recension",
+      "stood": {
+        "x": -2.393021719032219,
+        "z": 2.746090497250088,
+        "off_m": 1,
+        "door_m": 5.06
+      },
+      "mode": "book",
+      "opened": "the-chapter-room-recension",
+      "readable_id": "the-chapter-room-recension"
+    },
+    {
+      "prop": "interior-readable:the-commonplace-book-of-ivo-sarn",
+      "stood": {
+        "x": -2.4714564819127514,
+        "z": -3.4843484826966664,
+        "off_m": 1,
+        "door_m": 10.97
+      },
+      "mode": "book",
+      "opened": "the-commonplace-book-of-ivo-sarn",
+      "readable_id": "the-commonplace-book-of-ivo-sarn"
+    },
+    {
+      "prop": "interior-readable:the-court-and-the-tide",
+      "stood": {
+        "x": 6.1234702316713525,
+        "z": 5.791436009090409,
+        "off_m": 1,
+        "door_m": 6.28
+      },
+      "mode": "book",
+      "opened": "the-court-and-the-tide",
+      "readable_id": "the-court-and-the-tide"
+    },
+    {
+      "prop": "interior-readable:the-court-shortfall-series",
+      "stood": {
+        "x": -2.090885245403581,
+        "z": 0.616982531430565,
+        "off_m": 1,
+        "door_m": 6.91
+      },
+      "mode": "book",
+      "opened": "the-court-shortfall-series",
+      "readable_id": "the-court-shortfall-series"
+    },
+    {
+      "prop": "interior-readable:the-drowned-tally-appendix",
+      "stood": {
+        "x": -5.999470331141106,
+        "z": -3.7097869305400026,
+        "off_m": 1,
+        "door_m": 12.45
+      },
+      "mode": "book",
+      "opened": "the-drowned-tally-appendix",
+      "readable_id": "the-drowned-tally-appendix"
+    },
+    {
+      "prop": "interior-readable:the-drowned-tally-eleventh-volume",
+      "stood": {
+        "x": 3.2510095561098944,
+        "z": -6.944333337540863,
+        "off_m": 1,
+        "door_m": 14.51
+      },
+      "mode": "book",
+      "opened": "the-drowned-tally-eleventh-volume",
+      "readable_id": "the-drowned-tally-eleventh-volume"
+    },
+    {
+      "prop": "interior-readable:the-drowned-tally-fourth-volume",
+      "stood": {
+        "x": -5.850665327215008,
+        "z": 0.2135279316501828,
+        "off_m": 1,
+        "door_m": 9.11
+      },
+      "mode": "book",
+      "opened": "the-drowned-tally-fourth-volume",
+      "readable_id": "the-drowned-tally-fourth-volume"
+    },
+    {
+      "prop": "interior-readable:the-drowned-tally-severances",
+      "stood": {
+        "x": -4.887447306269555,
+        "z": -7.028970448343113,
+        "off_m": 1,
+        "door_m": 15.04
+      },
+      "mode": "book",
+      "opened": "the-drowned-tally-severances",
+      "readable_id": "the-drowned-tally-severances"
+    },
+    {
+      "prop": "interior-readable:the-drowned-tally-sixth-volume",
+      "stood": {
+        "x": -0.7788046041244961,
+        "z": -6.856389372240191,
+        "off_m": 1,
+        "door_m": 14.08
+      },
+      "mode": "book",
+      "opened": "the-drowned-tally-sixth-volume",
+      "readable_id": "the-drowned-tally-sixth-volume"
+    },
+    {
+      "prop": "interior-readable:the-drowned-tally-tenth-volume",
+      "stood": {
+        "x": -6.027437427386063,
+        "z": 4.167039388174623,
+        "off_m": 1,
+        "door_m": 6.75
+      },
+      "mode": "book",
+      "opened": "the-drowned-tally-tenth-volume",
+      "readable_id": "the-drowned-tally-tenth-volume"
+    },
+    {
+      "prop": "interior-readable:the-seventh-recension",
+      "stood": {
+        "x": 6.149497813223356,
+        "z": -6.264920745098384,
+        "off_m": 1,
+        "door_m": 14.8
+      },
+      "mode": "book",
+      "opened": "the-seventh-recension",
+      "readable_id": "the-seventh-recension"
+    }
+  ],
+  "f2_resets": [
+    {
+      "pass": 1,
+      "phase": "after reset",
+      "marks": 36
+    },
+    {
+      "pass": 2,
+      "phase": "after reset",
+      "marks": 36
+    },
+    {
+      "pass": 3,
+      "phase": "after reset",
+      "marks": 36
+    },
+    {
+      "pass": 4,
+      "phase": "after reset",
+      "marks": 36
+    },
+    {
+      "pass": 5,
+      "phase": "after reset",
+      "marks": 36
+    },
+    {
+      "pass": 6,
+      "phase": "after reset",
+      "marks": 36
+    },
+    {
+      "pass": "inside helstrom-undertemple",
+      "marks": 7
+    },
+    {
+      "pass": "back outside",
+      "marks": 36
+    },
+    {
+      "pass": "reset after the round trip",
+      "marks": 36
+    }
+  ],
+  "f1_distinct_books_opened": 14,
+  "f1_presses_that_opened": 14,
+  "f1_collisions": 0,
+  "verdict": {
+    "f1_every_room_clear": true,
+    "f1_rooms_too_close": [],
+    "f1_no_two_presses_opened_the_same_book": true,
+    "f2_marks_survive_every_reset": true,
+    "f2_zero_at": []
+  }
+}

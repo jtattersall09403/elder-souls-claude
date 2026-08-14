@@ -1,0 +1,1312 @@
+{
+  "L1": {
+    "played": {
+      "quest": "Q-XULA-00",
+      "travelled": true,
+      "opened": true,
+      "resolved": "res_carry_it"
+    },
+    "the_xul_aneekh": {
+      "member": true,
+      "rank": 0,
+      "reputation": 20,
+      "expelled": false,
+      "rivalry_locked": []
+    },
+    "deep_kin": null,
+    "derived_the_xul_aneekh": 1,
+    "derived_deep_kin": 0,
+    "what_the_world_says_about_deep_kin": "That is the hollow's own name for itself. It is the same people and the same door.",
+    "after_a_second_xul_quest": {
+      "played": {
+        "quest": "Q-XULA-01",
+        "travelled": true,
+        "opened": true,
+        "resolved": "res_long_way"
+      },
+      "the_xul_aneekh": {
+        "member": true,
+        "rank": 0,
+        "reputation": 46,
+        "expelled": false,
+        "rivalry_locked": []
+      },
+      "deep_kin": null,
+      "derived_the_xul_aneekh": 1,
+      "derived_deep_kin": 0
+    }
+  },
+  "L2": {
+    "steps": [
+      {
+        "label": "cold",
+        "reputation": 0,
+        "member": false,
+        "stored_rank": null,
+        "derived_rank": 0,
+        "q_soul_02_open": false,
+        "q_soul_02_reason": "the_drowned_court rank 0/2; the_drowned_court reputation 0/22"
+      },
+      {
+        "label": "after Q-CORT-00",
+        "reputation": 20,
+        "member": true,
+        "stored_rank": 0,
+        "derived_rank": 1,
+        "q_soul_02_open": false,
+        "q_soul_02_reason": "the_drowned_court rank 1/2; the_drowned_court reputation 20/22",
+        "played": {
+          "quest": "Q-CORT-00",
+          "travelled": true,
+          "opened": true,
+          "resolved": "res_over_the_pans"
+        }
+      },
+      {
+        "label": "after Q-BLAK-01",
+        "reputation": 20,
+        "member": true,
+        "stored_rank": 0,
+        "derived_rank": 1,
+        "q_soul_02_open": false,
+        "q_soul_02_reason": "the_drowned_court rank 1/2; the_drowned_court reputation 20/22",
+        "played": {
+          "quest": "Q-BLAK-01",
+          "travelled": true,
+          "opened": false,
+          "reason": "requires Q-SOUL-02 first"
+        }
+      }
+    ],
+    "reputation_from_one_joining_quest": 20,
+    "reached_rank_2": false,
+    "q_soul_02_ever_opened": false
+  },
+  "L3": {
+    "census": [
+      {
+        "faction": "deep_kin",
+        "kinds_heard": [
+          "not_joinable"
+        ],
+        "rows": [
+          {
+            "rank": 1,
+            "reputation": 0,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          },
+          {
+            "rank": 1,
+            "reputation": 500,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          },
+          {
+            "rank": 2,
+            "reputation": 0,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          },
+          {
+            "rank": 2,
+            "reputation": 500,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          },
+          {
+            "rank": 3,
+            "reputation": 0,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          },
+          {
+            "rank": 3,
+            "reputation": 500,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          },
+          {
+            "rank": 4,
+            "reputation": 0,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          },
+          {
+            "rank": 4,
+            "reputation": 500,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          },
+          {
+            "rank": 5,
+            "reputation": 0,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          },
+          {
+            "rank": 5,
+            "reputation": 500,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          },
+          {
+            "rank": 6,
+            "reputation": 0,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          },
+          {
+            "rank": 6,
+            "reputation": 500,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          },
+          {
+            "rank": 7,
+            "reputation": 0,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          },
+          {
+            "rank": 7,
+            "reputation": 500,
+            "kind": "not_joinable",
+            "said": "That is the hollow's own name for itself. It is the same peo"
+          }
+        ]
+      },
+      {
+        "faction": "the_dockhands",
+        "kinds_heard": [
+          "reputation",
+          "skill_1",
+          "welcome"
+        ],
+        "rows": [
+          {
+            "rank": 1,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The board doesn't know you. 0 against 10, and the hands put "
+          },
+          {
+            "rank": 1,
+            "reputation": 500,
+            "kind": "welcome",
+            "said": "Your name's on the board. It stays there until the rain gets"
+          },
+          {
+            "rank": 2,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The board doesn't know you. 0 against 22, and the hands put "
+          },
+          {
+            "rank": 2,
+            "reputation": 500,
+            "kind": "welcome",
+            "said": "Your name's on the board. It stays there until the rain gets"
+          },
+          {
+            "rank": 3,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The board doesn't know you. 0 against 36, and the hands put "
+          },
+          {
+            "rank": 3,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Mercantile at 25. The board rate is for 32, and if I chalk y"
+          },
+          {
+            "rank": 4,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The board doesn't know you. 0 against 52, and the hands put "
+          },
+          {
+            "rank": 4,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Mercantile at 25. The board rate is for 40, and if I chalk y"
+          },
+          {
+            "rank": 5,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The board doesn't know you. 0 against 70, and the hands put "
+          },
+          {
+            "rank": 5,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Mercantile at 25. The board rate is for 50, and if I chalk y"
+          },
+          {
+            "rank": 6,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The board doesn't know you. 0 against 90, and the hands put "
+          },
+          {
+            "rank": 6,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Mercantile at 25. The board rate is for 60, and if I chalk y"
+          },
+          {
+            "rank": 7,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The board doesn't know you. 0 against 112, and the hands put"
+          },
+          {
+            "rank": 7,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Mercantile at 25. The board rate is for 70, and if I chalk y"
+          }
+        ]
+      },
+      {
+        "faction": "the_drowned_court",
+        "kinds_heard": [
+          "reputation",
+          "skill_1",
+          "welcome"
+        ],
+        "rows": [
+          {
+            "rank": 1,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The tally has you at 0. Knee-Deep is 10. You'll get there or"
+          },
+          {
+            "rank": 1,
+            "reputation": 500,
+            "kind": "welcome",
+            "said": "You're in the tally. Everyone gets in it eventually. You've "
+          },
+          {
+            "rank": 2,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The tally has you at 0. Knee-Deep is 22. You'll get there or"
+          },
+          {
+            "rank": 2,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20, and the Court asks 25. It isn't a test. It's"
+          },
+          {
+            "rank": 3,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The tally has you at 0. Knee-Deep is 36. You'll get there or"
+          },
+          {
+            "rank": 3,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20, and the Court asks 32. It isn't a test. It's"
+          },
+          {
+            "rank": 4,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The tally has you at 0. Knee-Deep is 52. You'll get there or"
+          },
+          {
+            "rank": 4,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20, and the Court asks 40. It isn't a test. It's"
+          },
+          {
+            "rank": 5,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The tally has you at 0. Knee-Deep is 70. You'll get there or"
+          },
+          {
+            "rank": 5,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20, and the Court asks 50. It isn't a test. It's"
+          },
+          {
+            "rank": 6,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The tally has you at 0. Knee-Deep is 90. You'll get there or"
+          },
+          {
+            "rank": 6,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20, and the Court asks 60. It isn't a test. It's"
+          },
+          {
+            "rank": 7,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The tally has you at 0. Knee-Deep is 112. You'll get there o"
+          },
+          {
+            "rank": 7,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20, and the Court asks 70. It isn't a test. It's"
+          }
+        ]
+      },
+      {
+        "faction": "the_imperial_assize",
+        "kinds_heard": [
+          "reputation",
+          "skill_1",
+          "welcome"
+        ],
+        "rows": [
+          {
+            "rank": 1,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The roll records 0 against your name and the grade requires "
+          },
+          {
+            "rank": 1,
+            "reputation": 500,
+            "kind": "welcome",
+            "said": "The roll is amended. You are an officer of this court, which"
+          },
+          {
+            "rank": 2,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The roll records 0 against your name and the grade requires "
+          },
+          {
+            "rank": 2,
+            "reputation": 500,
+            "kind": "welcome",
+            "said": "The roll is amended. You are an officer of this court, which"
+          },
+          {
+            "rank": 3,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The roll records 0 against your name and the grade requires "
+          },
+          {
+            "rank": 3,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Speechcraft stands at 25. The schedule for this grade is 32."
+          },
+          {
+            "rank": 4,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The roll records 0 against your name and the grade requires "
+          },
+          {
+            "rank": 4,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Speechcraft stands at 25. The schedule for this grade is 40."
+          },
+          {
+            "rank": 5,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The roll records 0 against your name and the grade requires "
+          },
+          {
+            "rank": 5,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Speechcraft stands at 25. The schedule for this grade is 50."
+          },
+          {
+            "rank": 6,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The roll records 0 against your name and the grade requires "
+          },
+          {
+            "rank": 6,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Speechcraft stands at 25. The schedule for this grade is 60."
+          },
+          {
+            "rank": 7,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The roll records 0 against your name and the grade requires "
+          },
+          {
+            "rank": 7,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Speechcraft stands at 25. The schedule for this grade is 70."
+          }
+        ]
+      },
+      {
+        "faction": "the_ixtu_vakh",
+        "kinds_heard": [
+          "reputation",
+          "skill_1",
+          "welcome"
+        ],
+        "rows": [
+          {
+            "rank": 1,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "I've heard your name 0 times and I want 10. Nobody starts he"
+          },
+          {
+            "rank": 1,
+            "reputation": 500,
+            "kind": "welcome",
+            "said": "You're written down. There's no oath and no drink. The list "
+          },
+          {
+            "rank": 2,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "I've heard your name 0 times and I want 22. Nobody starts he"
+          },
+          {
+            "rank": 2,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20. The road wants 25 and the road doesn't care "
+          },
+          {
+            "rank": 3,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "I've heard your name 0 times and I want 36. Nobody starts he"
+          },
+          {
+            "rank": 3,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20. The road wants 32 and the road doesn't care "
+          },
+          {
+            "rank": 4,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "I've heard your name 0 times and I want 52. Nobody starts he"
+          },
+          {
+            "rank": 4,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20. The road wants 40 and the road doesn't care "
+          },
+          {
+            "rank": 5,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "I've heard your name 0 times and I want 70. Nobody starts he"
+          },
+          {
+            "rank": 5,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20. The road wants 50 and the road doesn't care "
+          },
+          {
+            "rank": 6,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "I've heard your name 0 times and I want 90. Nobody starts he"
+          },
+          {
+            "rank": 6,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20. The road wants 60 and the road doesn't care "
+          },
+          {
+            "rank": 7,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "I've heard your name 0 times and I want 112. Nobody starts h"
+          },
+          {
+            "rank": 7,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20. The road wants 70 and the road doesn't care "
+          }
+        ]
+      },
+      {
+        "faction": "the_rootkeepers",
+        "kinds_heard": [
+          "reputation",
+          "skill_1",
+          "welcome"
+        ],
+        "rows": [
+          {
+            "rank": 1,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The slate has 0 beside your name and a Leaf has 10. That is "
+          },
+          {
+            "rank": 1,
+            "reputation": 500,
+            "kind": "welcome",
+            "said": "You're on the slate. That's the whole ceremony, and it's the"
+          },
+          {
+            "rank": 2,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The slate has 0 beside your name and a Leaf has 22. That is "
+          },
+          {
+            "rank": 2,
+            "reputation": 500,
+            "kind": "welcome",
+            "said": "You're on the slate. That's the whole ceremony, and it's the"
+          },
+          {
+            "rank": 3,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The slate has 0 beside your name and a Leaf has 36. That is "
+          },
+          {
+            "rank": 3,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "You have Speechcraft at 25 and the work wants 32. I'm not be"
+          },
+          {
+            "rank": 4,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The slate has 0 beside your name and a Leaf has 52. That is "
+          },
+          {
+            "rank": 4,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "You have Speechcraft at 25 and the work wants 40. I'm not be"
+          },
+          {
+            "rank": 5,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The slate has 0 beside your name and a Leaf has 70. That is "
+          },
+          {
+            "rank": 5,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "You have Speechcraft at 25 and the work wants 50. I'm not be"
+          },
+          {
+            "rank": 6,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The slate has 0 beside your name and a Leaf has 90. That is "
+          },
+          {
+            "rank": 6,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "You have Speechcraft at 25 and the work wants 60. I'm not be"
+          },
+          {
+            "rank": 7,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The slate has 0 beside your name and a Leaf has 112. That is"
+          },
+          {
+            "rank": 7,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "You have Speechcraft at 25 and the work wants 70. I'm not be"
+          }
+        ]
+      },
+      {
+        "faction": "the_wet_ledger",
+        "kinds_heard": [
+          "reputation",
+          "skill_1",
+          "welcome"
+        ],
+        "rows": [
+          {
+            "rank": 1,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The margin has your name in it 0 times and the next line wan"
+          },
+          {
+            "rank": 1,
+            "reputation": 500,
+            "kind": "welcome",
+            "said": "Your name's in the margin. That's how the Ledger remembers p"
+          },
+          {
+            "rank": 2,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The margin has your name in it 0 times and the next line wan"
+          },
+          {
+            "rank": 2,
+            "reputation": 500,
+            "kind": "welcome",
+            "said": "Your name's in the margin. That's how the Ledger remembers p"
+          },
+          {
+            "rank": 3,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The margin has your name in it 0 times and the next line wan"
+          },
+          {
+            "rank": 3,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Security at 25, and I need 32. I'm not asking you to be clev"
+          },
+          {
+            "rank": 4,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The margin has your name in it 0 times and the next line wan"
+          },
+          {
+            "rank": 4,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Security at 25, and I need 40. I'm not asking you to be clev"
+          },
+          {
+            "rank": 5,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The margin has your name in it 0 times and the next line wan"
+          },
+          {
+            "rank": 5,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Security at 25, and I need 50. I'm not asking you to be clev"
+          },
+          {
+            "rank": 6,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The margin has your name in it 0 times and the next line wan"
+          },
+          {
+            "rank": 6,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Security at 25, and I need 60. I'm not asking you to be clev"
+          },
+          {
+            "rank": 7,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "The margin has your name in it 0 times and the next line wan"
+          },
+          {
+            "rank": 7,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Security at 25, and I need 70. I'm not asking you to be clev"
+          }
+        ]
+      },
+      {
+        "faction": "the_xul_aneekh",
+        "kinds_heard": [
+          "reputation",
+          "skill_1",
+          "welcome"
+        ],
+        "rows": [
+          {
+            "rank": 1,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "You are 0 to the hollow and the name you are asking for is 1"
+          },
+          {
+            "rank": 1,
+            "reputation": 500,
+            "kind": "welcome",
+            "said": "The hollow has a name for you now. You will not like all of "
+          },
+          {
+            "rank": 2,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "You are 0 to the hollow and the name you are asking for is 2"
+          },
+          {
+            "rank": 2,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20. We ask 25 of anyone who walks where you are "
+          },
+          {
+            "rank": 3,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "You are 0 to the hollow and the name you are asking for is 3"
+          },
+          {
+            "rank": 3,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20. We ask 32 of anyone who walks where you are "
+          },
+          {
+            "rank": 4,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "You are 0 to the hollow and the name you are asking for is 5"
+          },
+          {
+            "rank": 4,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20. We ask 40 of anyone who walks where you are "
+          },
+          {
+            "rank": 5,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "You are 0 to the hollow and the name you are asking for is 7"
+          },
+          {
+            "rank": 5,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20. We ask 50 of anyone who walks where you are "
+          },
+          {
+            "rank": 6,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "You are 0 to the hollow and the name you are asking for is 9"
+          },
+          {
+            "rank": 6,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20. We ask 60 of anyone who walks where you are "
+          },
+          {
+            "rank": 7,
+            "reputation": 0,
+            "kind": "reputation",
+            "said": "You are 0 to the hollow and the name you are asking for is 1"
+          },
+          {
+            "rank": 7,
+            "reputation": 500,
+            "kind": "skill_1",
+            "said": "Survival at 20. We ask 70 of anyone who walks where you are "
+          }
+        ]
+      }
+    ],
+    "note": "kinds are the term the recruiter names; a template whose kind never appears is a sentence no player can hear"
+  },
+  "L4": {
+    "after_play": {
+      "standing": {
+        "member": true,
+        "rank": 0,
+        "reputation": 20,
+        "expelled": false,
+        "rivalry_locked": []
+      },
+      "derived": 1,
+      "explain": {
+        "npc": "rootkeeper-jeen",
+        "register": 53,
+        "value": 93,
+        "modelled": true,
+        "band": "devoted",
+        "group": "RG-ROOT",
+        "base": 53,
+        "race_term": 12,
+        "upbringing_term": -10,
+        "birthsign_term": 0,
+        "other_terms": 38,
+        "movable": [
+          [
+            "fDispRaceMod",
+            5
+          ],
+          [
+            "personality",
+            0
+          ],
+          [
+            "faction",
+            18
+          ],
+          [
+            "repute",
+            15
+          ]
+        ],
+        "player_race": "saxhleel",
+        "player_upbringing": "lukiul"
+      }
+    },
+    "after_poking_the_stored_rank": {
+      "standing": {
+        "member": true,
+        "rank": 1,
+        "reputation": 20,
+        "expelled": false,
+        "rivalry_locked": []
+      },
+      "derived": 1,
+      "explain": {
+        "npc": "rootkeeper-jeen",
+        "register": 53,
+        "value": 93,
+        "modelled": true,
+        "band": "devoted",
+        "group": "RG-ROOT",
+        "base": 53,
+        "race_term": 12,
+        "upbringing_term": -10,
+        "birthsign_term": 0,
+        "other_terms": 38,
+        "movable": [
+          [
+            "fDispRaceMod",
+            5
+          ],
+          [
+            "personality",
+            0
+          ],
+          [
+            "faction",
+            18
+          ],
+          [
+            "repute",
+            15
+          ]
+        ],
+        "player_race": "saxhleel",
+        "player_upbringing": "lukiul"
+      }
+    },
+    "faction_term_from_play": [
+      "faction",
+      18
+    ],
+    "faction_term_from_poke": [
+      "faction",
+      18
+    ],
+    "stored_rank_written_by_play": 0,
+    "disposition_from_play": 93,
+    "disposition_from_poke": 93
+  },
+  "L5": {
+    "joined_the_court": {
+      "quest": "Q-CORT-00",
+      "travelled": true,
+      "opened": true,
+      "resolved": "res_over_the_pans"
+    },
+    "court_closes": [
+      "the_imperial_assize"
+    ],
+    "rivalry_locked_after_joining_the_court": [
+      "the_imperial_assize"
+    ],
+    "then_joined_the_assize": {
+      "quest": "Q-ASSZ-00",
+      "travelled": true,
+      "opened": false,
+      "reason": "The Imperial Assize will not deal with you: you are The Drowned Court; assizer-corvo disposition 26.5/30"
+    },
+    "both_memberships_held": false,
+    "derived_court": 1,
+    "derived_assize": 0,
+    "rivalry_locked_at_the_end": [
+      "the_imperial_assize"
+    ],
+    "anything_said_at_join": {
+      "text": "The roll is amended. You are an officer of this court, which is a heavier thing than it sounds.",
+      "rows": [
+        "The roll is amended. You are an officer of this court, which is a",
+        "heavier thing than it sounds."
+      ],
+      "row_count": 2,
+      "widest_px": 372.1,
+      "wrap_budget": 376,
+      "truncated": false,
+      "panel_w": 400,
+      "panel_h": 60,
+      "fits": true,
+      "overflow_px": 0
+    }
+  },
+  "L6": [
+    {
+      "quest": "Q-ROOT-00",
+      "who": "rootkeeper-jeen",
+      "state": "town-helstrom",
+      "attempts": [
+        {
+          "approach": "from north",
+          "staging_reached": false,
+          "staging_abort": "stuck",
+          "arrived": true,
+          "abort": null,
+          "stopped_short_m": 1.58,
+          "total_frames": 1851
+        },
+        {
+          "approach": "from east",
+          "staging_reached": true,
+          "staging_abort": null,
+          "arrived": false,
+          "abort": "stuck",
+          "stopped_short_m": 5.44,
+          "total_frames": 1887
+        },
+        {
+          "approach": "from south",
+          "staging_reached": true,
+          "staging_abort": null,
+          "arrived": false,
+          "abort": "stuck",
+          "stopped_short_m": 7.34,
+          "total_frames": 1401
+        },
+        {
+          "approach": "from west",
+          "staging_reached": true,
+          "staging_abort": null,
+          "arrived": false,
+          "abort": "stuck",
+          "stopped_short_m": 8.97,
+          "total_frames": 1794
+        }
+      ],
+      "found": true,
+      "pos": [
+        2297.75,
+        27.22,
+        2779.03
+      ],
+      "interiors_in_this_state": [
+        "archon-apothecary",
+        "archon-guild-office",
+        "archon-house-0",
+        "archon-house-1",
+        "archon-house-2",
+        "archon-inn",
+        "archon-kiln-house",
+        "archon-market",
+        "archon-rootpost",
+        "archon-shrine",
+        "archon-vat-house",
+        "archon-ward",
+        "barge-hold",
+        "blackrose-clerk",
+        "blackrose-house-0",
+        "blackrose-house-1",
+        "blackrose-house-2",
+        "blackrose-inn",
+        "blackrose-market",
+        "blackrose-pawn"
+      ],
+      "best_stopped_short_m": 1.58,
+      "reachable_on_foot": true,
+      "solid_at_the_body": {
+        "solid": false,
+        "distance_m": 4.194339221739213
+      },
+      "building_at_the_body": {
+        "settlement": "helstrom",
+        "building": "helstrom-undertemple"
+      }
+    },
+    {
+      "quest": "Q-VAKH-00",
+      "who": "cutter-neeth",
+      "state": "town-helstrom",
+      "attempts": [
+        {
+          "approach": "from north",
+          "staging_reached": false,
+          "staging_abort": "stuck",
+          "arrived": false,
+          "abort": "stuck",
+          "stopped_short_m": 24.05,
+          "total_frames": 2277
+        },
+        {
+          "approach": "from east",
+          "staging_reached": true,
+          "staging_abort": null,
+          "arrived": false,
+          "abort": "stuck",
+          "stopped_short_m": 5.86,
+          "total_frames": 2106
+        },
+        {
+          "approach": "from south",
+          "staging_reached": false,
+          "staging_abort": "stuck",
+          "arrived": false,
+          "abort": "stuck",
+          "stopped_short_m": 22.76,
+          "total_frames": 2331
+        },
+        {
+          "approach": "from west",
+          "staging_reached": false,
+          "staging_abort": "stuck",
+          "arrived": false,
+          "abort": "stuck",
+          "stopped_short_m": 25.48,
+          "total_frames": 2219
+        }
+      ],
+      "found": true,
+      "pos": [
+        2287.05,
+        27.22,
+        2837.29
+      ],
+      "interiors_in_this_state": [
+        "archon-apothecary",
+        "archon-guild-office",
+        "archon-house-0",
+        "archon-house-1",
+        "archon-house-2",
+        "archon-inn",
+        "archon-kiln-house",
+        "archon-market",
+        "archon-rootpost",
+        "archon-shrine",
+        "archon-vat-house",
+        "archon-ward",
+        "barge-hold",
+        "blackrose-clerk",
+        "blackrose-house-0",
+        "blackrose-house-1",
+        "blackrose-house-2",
+        "blackrose-inn",
+        "blackrose-market",
+        "blackrose-pawn"
+      ],
+      "best_stopped_short_m": 5.86,
+      "reachable_on_foot": false,
+      "solid_at_the_body": {
+        "solid": false,
+        "distance_m": 3.5094859365614104
+      },
+      "building_at_the_body": {
+        "settlement": "helstrom",
+        "building": "helstrom-apothecary"
+      }
+    },
+    {
+      "quest": "Q-CORT-00",
+      "who": "undertaker-vaskh",
+      "state": "town-soulrest",
+      "attempts": [
+        {
+          "approach": "from north",
+          "staging_reached": false,
+          "staging_abort": "stuck",
+          "arrived": true,
+          "abort": null,
+          "stopped_short_m": 1.58,
+          "total_frames": 1377
+        },
+        {
+          "approach": "from east",
+          "staging_reached": false,
+          "staging_abort": "stuck",
+          "arrived": true,
+          "abort": null,
+          "stopped_short_m": 1.6,
+          "total_frames": 1307
+        },
+        {
+          "approach": "from south",
+          "staging_reached": false,
+          "staging_abort": "stuck",
+          "arrived": true,
+          "abort": null,
+          "stopped_short_m": 1.58,
+          "total_frames": 1352
+        },
+        {
+          "approach": "from west",
+          "staging_reached": false,
+          "staging_abort": "stuck",
+          "arrived": true,
+          "abort": null,
+          "stopped_short_m": 1.57,
+          "total_frames": 1153
+        }
+      ],
+      "found": true,
+      "pos": [
+        632.25,
+        7.91,
+        4887.26
+      ],
+      "interiors_in_this_state": [
+        "archon-apothecary",
+        "archon-guild-office",
+        "archon-house-0",
+        "archon-house-1",
+        "archon-house-2",
+        "archon-inn",
+        "archon-kiln-house",
+        "archon-market",
+        "archon-rootpost",
+        "archon-shrine",
+        "archon-vat-house",
+        "archon-ward",
+        "barge-hold",
+        "blackrose-clerk",
+        "blackrose-house-0",
+        "blackrose-house-1",
+        "blackrose-house-2",
+        "blackrose-inn",
+        "blackrose-market",
+        "blackrose-pawn"
+      ],
+      "best_stopped_short_m": 1.57,
+      "reachable_on_foot": true,
+      "solid_at_the_body": {
+        "solid": false,
+        "distance_m": 1.7317830219412933
+      },
+      "building_at_the_body": {
+        "settlement": "soulrest",
+        "building": "soulrest-court-steps"
+      }
+    },
+    {
+      "quest": "Q-DOCK-00",
+      "who": "npc-porter-eeja",
+      "state": "town-gideon",
+      "attempts": [
+        {
+          "approach": "from north",
+          "staging_reached": false,
+          "staging_abort": "stuck",
+          "arrived": false,
+          "abort": "stuck",
+          "stopped_short_m": 31.97,
+          "total_frames": 1862
+        },
+        {
+          "approach": "from east",
+          "staging_reached": false,
+          "staging_abort": "stuck",
+          "arrived": false,
+          "abort": "stuck",
+          "stopped_short_m": 31.97,
+          "total_frames": 1858
+        },
+        {
+          "approach": "from south",
+          "staging_reached": false,
+          "staging_abort": "stuck",
+          "arrived": false,
+          "abort": "stuck",
+          "stopped_short_m": 31.97,
+          "total_frames": 1870
+        },
+        {
+          "approach": "from west",
+          "staging_reached": false,
+          "staging_abort": "stuck",
+          "arrived": false,
+          "abort": "stuck",
+          "stopped_short_m": 31.97,
+          "total_frames": 1865
+        }
+      ],
+      "found": true,
+      "pos": [
+        452.97,
+        2.72,
+        2920.83
+      ],
+      "interiors_in_this_state": [
+        "archon-apothecary",
+        "archon-guild-office",
+        "archon-house-0",
+        "archon-house-1",
+        "archon-house-2",
+        "archon-inn",
+        "archon-kiln-house",
+        "archon-market",
+        "archon-rootpost",
+        "archon-shrine",
+        "archon-vat-house",
+        "archon-ward",
+        "barge-hold",
+        "blackrose-clerk",
+        "blackrose-house-0",
+        "blackrose-house-1",
+        "blackrose-house-2",
+        "blackrose-inn",
+        "blackrose-market",
+        "blackrose-pawn"
+      ],
+      "best_stopped_short_m": 31.97,
+      "reachable_on_foot": false,
+      "solid_at_the_body": {
+        "solid": false,
+        "distance_m": 2.049999999999961
+      },
+      "building_at_the_body": {
+        "settlement": "gideon",
+        "building": "gideon-court"
+      }
+    }
+  ],
+  "findings": [
+    "L1: joining the Xul-Aneekh produced two different standing rows for one body (deep_kin != the_xul_aneekh)",
+    "L2: one joining quest paid 20 reputation, not the 10 the report states (RI-QST03 §B caps a quest at +10)",
+    "L6 cutter-neeth: unreachable on foot from all four approaches — best 5.86 m short",
+    "L6 npc-porter-eeja: unreachable on foot from all four approaches — best 31.97 m short"
+  ]
+}

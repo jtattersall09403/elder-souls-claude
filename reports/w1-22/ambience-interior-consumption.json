@@ -1,0 +1,195 @@
+{
+  "tool": "tools/analysis/ambience-interior-consumption.mjs",
+  "taken_at": "2026-08-07T23:00:17.622Z",
+  "git": {
+    "commit": "0f6ff17",
+    "dirty": true
+  },
+  "seconds": 8,
+  "sample_rate": 16000,
+  "cells": {
+    "barge_hold": {
+      "engine_cell": "barge_hold",
+      "bed": "barge_hold",
+      "suppressed": null,
+      "layers": {
+        "L1": "l1_hull_below_waterline",
+        "L2": "l2_bilge_and_sway",
+        "L3": "l3_timber_and_rope",
+        "L4": "l4_something_in_the_bilge"
+      },
+      "voices_active": 2,
+      "perturbation": {
+        "field": "filter.hz",
+        "from": 120,
+        "spectral_distance": 0.0966,
+        "restored_identical": true
+      },
+      "distance_from_exterior": 0.2958
+    },
+    "writ_house": {
+      "engine_cell": "writ_house",
+      "bed": "writ_house",
+      "suppressed": null,
+      "layers": {
+        "L1": "l1_paper_deadness",
+        "L2": "l2_lamp_and_draught",
+        "L3": "l3_nib_and_ledger",
+        "L4": null
+      },
+      "voices_active": 2,
+      "perturbation": {
+        "field": "filter.hz",
+        "from": 420,
+        "spectral_distance": 0.2426,
+        "restored_identical": true
+      },
+      "distance_from_exterior": 0.2476
+    },
+    "market": {
+      "engine_cell": "market",
+      "bed": "market",
+      "suppressed": null,
+      "layers": {
+        "L1": "l1_crowd_body",
+        "L2": "l2_trade",
+        "L3": "l3_market_business",
+        "L4": "l4_market_animals"
+      },
+      "voices_active": 2,
+      "perturbation": {
+        "field": "filter.hz",
+        "from": 480,
+        "spectral_distance": 0.3444,
+        "restored_identical": true
+      },
+      "distance_from_exterior": 0.5413
+    },
+    "street": {
+      "engine_cell": "street",
+      "bed": "street",
+      "suppressed": null,
+      "layers": {
+        "L1": "l1_street_canyon",
+        "L2": "l2_gutters_and_town",
+        "L3": "l3_street_traffic",
+        "L4": "l4_street_life"
+      },
+      "voices_active": 3,
+      "perturbation": {
+        "field": "filter.hz",
+        "from": 175,
+        "spectral_distance": 0.6268,
+        "restored_identical": true
+      },
+      "distance_from_exterior": 0.2032
+    },
+    "well": {
+      "engine_cell": "well",
+      "bed": "well",
+      "suppressed": null,
+      "layers": {
+        "L1": "l1_shaft_resonance",
+        "L2": "l2_seep",
+        "L3": "l3_drip_arrival",
+        "L4": "l4_down_there"
+      },
+      "voices_active": 2,
+      "perturbation": {
+        "field": "partials_hz",
+        "from": [
+          43.65,
+          87.31,
+          131,
+          174.61
+        ],
+        "spectral_distance": 0.3258,
+        "restored_identical": true
+      },
+      "distance_from_exterior": 0.3261
+    },
+    "dungeon": {
+      "engine_cell": "dungeon",
+      "bed": "dungeon",
+      "suppressed": null,
+      "layers": {
+        "L1": "l1_earth_load",
+        "L2": "l2_far_water_and_air",
+        "L3": "l3_stone_and_grit",
+        "L4": "l4_further_in"
+      },
+      "voices_active": 2,
+      "perturbation": {
+        "field": "filter.hz",
+        "from": 95,
+        "spectral_distance": 0.1089,
+        "restored_identical": true
+      },
+      "distance_from_exterior": 0.3162
+    },
+    "interior": {
+      "engine_cell": "interior",
+      "bed": "interior",
+      "suppressed": null,
+      "layers": {
+        "L1": "l1_generic_room_tone",
+        "L2": "l2_structure",
+        "L3": "l3_settling",
+        "L4": null
+      },
+      "voices_active": 2,
+      "perturbation": {
+        "field": "filter.hz",
+        "from": 210,
+        "spectral_distance": 0.0706,
+        "restored_identical": true
+      },
+      "distance_from_exterior": 0.2864
+    },
+    "arena": {
+      "engine_cell": "arena",
+      "bed": "interior",
+      "suppressed": "arena",
+      "layers": {
+        "L1": "l1_generic_room_tone",
+        "L2": "l2_structure",
+        "L3": "l3_settling",
+        "L4": null
+      },
+      "voices_active": 2,
+      "expected": "suppressed by design — an arena's sound is the combat mix, not regional ambience"
+    }
+  },
+  "checks": {
+    "I1_interior_bed_selected": {
+      "pass": true,
+      "failures": [],
+      "what": "entering an interior cell selects that cell's own bed. Round 1 set `suppressed` here and the world went silent indoors, settlements included."
+    },
+    "I2_consumption": {
+      "pass": true,
+      "failures": [],
+      "what": "RI-MTH07. Perturbing an interior bed's L1 in the page moves the PCM the world renders for that cell, and restoring it returns the render EXACTLY."
+    },
+    "I3_not_the_exterior": {
+      "pass": true,
+      "failures": [],
+      "what": "R4. The interior bed is a different place from the exterior the player just left, not that exterior at a lower level."
+    }
+  },
+  "notes": [],
+  "beds_loaded": 20,
+  "interior_beds": [
+    "blackwood",
+    "hive",
+    "barge_hold",
+    "dungeon",
+    "interior",
+    "market",
+    "street",
+    "well",
+    "writ_house",
+    "thornmarsh"
+  ],
+  "exterior_region": "western-rootlands"
+}

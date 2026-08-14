@@ -1,0 +1,2103 @@
+{
+  "tool": "tools/world/w1-04-interior-sweep.mjs",
+  "bar": 100,
+  "pass": false,
+  "failures": [
+    "the control is not worse (115 vs 115): this sweep is not measuring the room"
+  ],
+  "live": {
+    "label": "live",
+    "total": 115,
+    "entered": 115,
+    "refused": 0,
+    "errors": 0,
+    "distinct_images": 115,
+    "largest_identical_group": 1,
+    "drawn_cell_agrees": 115,
+    "rows": [
+      {
+        "id": "archon-apothecary",
+        "entered": true,
+        "hash": 2140155485,
+        "bytes": 667626,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "archon-apothecary"
+      },
+      {
+        "id": "archon-guild-office",
+        "entered": true,
+        "hash": 239752370,
+        "bytes": 889150,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "archon-guild-office"
+      },
+      {
+        "id": "archon-house-0",
+        "entered": true,
+        "hash": 3958559451,
+        "bytes": 902714,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "archon-house-0"
+      },
+      {
+        "id": "archon-house-1",
+        "entered": true,
+        "hash": 1853443918,
+        "bytes": 871934,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "archon-house-1"
+      },
+      {
+        "id": "archon-house-2",
+        "entered": true,
+        "hash": 4281653100,
+        "bytes": 818930,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "archon-house-2"
+      },
+      {
+        "id": "archon-inn",
+        "entered": true,
+        "hash": 3614476229,
+        "bytes": 406642,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "archon-inn"
+      },
+      {
+        "id": "archon-kiln-house",
+        "entered": true,
+        "hash": 3709777406,
+        "bytes": 422094,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "archon-kiln-house"
+      },
+      {
+        "id": "archon-market",
+        "entered": true,
+        "hash": 3141368922,
+        "bytes": 460890,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "archon-market"
+      },
+      {
+        "id": "archon-rootpost",
+        "entered": true,
+        "hash": 1201638278,
+        "bytes": 434350,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "archon-rootpost"
+      },
+      {
+        "id": "archon-shrine",
+        "entered": true,
+        "hash": 1105328250,
+        "bytes": 854158,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "archon-shrine"
+      },
+      {
+        "id": "archon-vat-house",
+        "entered": true,
+        "hash": 2973038634,
+        "bytes": 472262,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "archon-vat-house"
+      },
+      {
+        "id": "archon-ward",
+        "entered": true,
+        "hash": 3162756078,
+        "bytes": 937758,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "archon-ward"
+      },
+      {
+        "id": "barge-hold",
+        "entered": true,
+        "hash": 2486699709,
+        "bytes": 931194,
+        "drawn_cell": "barge_hold",
+        "agrees": true,
+        "room": "archon-ward"
+      },
+      {
+        "id": "blackrose-clerk",
+        "entered": true,
+        "hash": 1499903868,
+        "bytes": 927094,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "blackrose-clerk"
+      },
+      {
+        "id": "blackrose-house-0",
+        "entered": true,
+        "hash": 1584653523,
+        "bytes": 850806,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "blackrose-house-0"
+      },
+      {
+        "id": "blackrose-house-1",
+        "entered": true,
+        "hash": 440713618,
+        "bytes": 769422,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "blackrose-house-1"
+      },
+      {
+        "id": "blackrose-house-2",
+        "entered": true,
+        "hash": 953022071,
+        "bytes": 943302,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "blackrose-house-2"
+      },
+      {
+        "id": "blackrose-inn",
+        "entered": true,
+        "hash": 4044495618,
+        "bytes": 1216234,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "blackrose-inn"
+      },
+      {
+        "id": "blackrose-market",
+        "entered": true,
+        "hash": 3432998568,
+        "bytes": 489642,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "blackrose-market"
+      },
+      {
+        "id": "blackrose-pawn",
+        "entered": true,
+        "hash": 1736584790,
+        "bytes": 439114,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "blackrose-pawn"
+      },
+      {
+        "id": "blackrose-prison",
+        "entered": true,
+        "hash": 818842615,
+        "bytes": 815534,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "blackrose-prison"
+      },
+      {
+        "id": "blackrose-rootpost",
+        "entered": true,
+        "hash": 284726473,
+        "bytes": 966354,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "blackrose-rootpost"
+      },
+      {
+        "id": "blackrose-shrine",
+        "entered": true,
+        "hash": 1778947689,
+        "bytes": 840954,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "blackrose-shrine"
+      },
+      {
+        "id": "blackrose-smithy",
+        "entered": true,
+        "hash": 1453720384,
+        "bytes": 1620202,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "blackrose-smithy"
+      },
+      {
+        "id": "blackrose-warders-hall",
+        "entered": true,
+        "hash": 2614611883,
+        "bytes": 760734,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "blackrose-warders-hall"
+      },
+      {
+        "id": "gideon-apothecary",
+        "entered": true,
+        "hash": 3776108744,
+        "bytes": 385246,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "gideon-apothecary"
+      },
+      {
+        "id": "gideon-chapel",
+        "entered": true,
+        "hash": 3704706832,
+        "bytes": 779174,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "gideon-chapel"
+      },
+      {
+        "id": "gideon-court",
+        "entered": true,
+        "hash": 459648681,
+        "bytes": 861218,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "gideon-court"
+      },
+      {
+        "id": "gideon-grange",
+        "entered": true,
+        "hash": 1477748906,
+        "bytes": 793582,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "gideon-grange"
+      },
+      {
+        "id": "gideon-house-0",
+        "entered": true,
+        "hash": 815020812,
+        "bytes": 954038,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "gideon-house-0"
+      },
+      {
+        "id": "gideon-house-1",
+        "entered": true,
+        "hash": 2483703407,
+        "bytes": 869622,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "gideon-house-1"
+      },
+      {
+        "id": "gideon-inn",
+        "entered": true,
+        "hash": 2348219057,
+        "bytes": 517618,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "gideon-inn"
+      },
+      {
+        "id": "gideon-lowmarket",
+        "entered": true,
+        "hash": 3719206453,
+        "bytes": 686638,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "gideon-lowmarket"
+      },
+      {
+        "id": "gideon-rootpost",
+        "entered": true,
+        "hash": 2224391330,
+        "bytes": 451078,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "gideon-rootpost"
+      },
+      {
+        "id": "gideon-shrine",
+        "entered": true,
+        "hash": 3570071016,
+        "bytes": 1059574,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "gideon-shrine"
+      },
+      {
+        "id": "gideon-smithy",
+        "entered": true,
+        "hash": 2602535007,
+        "bytes": 466166,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "gideon-smithy"
+      },
+      {
+        "id": "gideon-tollhouse",
+        "entered": true,
+        "hash": 1895191814,
+        "bytes": 884678,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "gideon-tollhouse"
+      },
+      {
+        "id": "helstrom-apothecary",
+        "entered": true,
+        "hash": 943155879,
+        "bytes": 337898,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-apothecary"
+      },
+      {
+        "id": "helstrom-archive",
+        "entered": true,
+        "hash": 409732806,
+        "bytes": 700498,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-archive"
+      },
+      {
+        "id": "helstrom-deep-market",
+        "entered": true,
+        "hash": 2791083276,
+        "bytes": 325274,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-deep-market"
+      },
+      {
+        "id": "helstrom-hist-shrine",
+        "entered": true,
+        "hash": 3839889143,
+        "bytes": 652742,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-hist-shrine"
+      },
+      {
+        "id": "helstrom-hollow-bole",
+        "entered": true,
+        "hash": 2540914677,
+        "bytes": 878802,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-hollow-bole"
+      },
+      {
+        "id": "helstrom-house-0",
+        "entered": true,
+        "hash": 768187812,
+        "bytes": 990186,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-house-0"
+      },
+      {
+        "id": "helstrom-house-1",
+        "entered": true,
+        "hash": 232492361,
+        "bytes": 942298,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-house-1"
+      },
+      {
+        "id": "helstrom-house-10",
+        "entered": true,
+        "hash": 2898954229,
+        "bytes": 940466,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-house-10"
+      },
+      {
+        "id": "helstrom-house-11",
+        "entered": true,
+        "hash": 469121201,
+        "bytes": 803978,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-house-11"
+      },
+      {
+        "id": "helstrom-house-2",
+        "entered": true,
+        "hash": 3773833868,
+        "bytes": 1006422,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-house-2"
+      },
+      {
+        "id": "helstrom-house-3",
+        "entered": true,
+        "hash": 104999471,
+        "bytes": 787598,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-house-3"
+      },
+      {
+        "id": "helstrom-house-4",
+        "entered": true,
+        "hash": 220813127,
+        "bytes": 1045386,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-house-4"
+      },
+      {
+        "id": "helstrom-house-5",
+        "entered": true,
+        "hash": 2503903406,
+        "bytes": 874022,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-house-5"
+      },
+      {
+        "id": "helstrom-house-6",
+        "entered": true,
+        "hash": 3779230236,
+        "bytes": 1099890,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-house-6"
+      },
+      {
+        "id": "helstrom-house-7",
+        "entered": true,
+        "hash": 3022153934,
+        "bytes": 1095970,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-house-7"
+      },
+      {
+        "id": "helstrom-house-8",
+        "entered": true,
+        "hash": 1090561285,
+        "bytes": 1063310,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-house-8"
+      },
+      {
+        "id": "helstrom-house-9",
+        "entered": true,
+        "hash": 2032136832,
+        "bytes": 937862,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-house-9"
+      },
+      {
+        "id": "helstrom-inn-egg",
+        "entered": true,
+        "hash": 1839876464,
+        "bytes": 328298,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-inn-egg"
+      },
+      {
+        "id": "helstrom-inn-gate",
+        "entered": true,
+        "hash": 931678463,
+        "bytes": 314866,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-inn-gate"
+      },
+      {
+        "id": "helstrom-inn-tide",
+        "entered": true,
+        "hash": 3082455317,
+        "bytes": 327682,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-inn-tide"
+      },
+      {
+        "id": "helstrom-legation",
+        "entered": true,
+        "hash": 3441333778,
+        "bytes": 861362,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-legation"
+      },
+      {
+        "id": "helstrom-rootpost",
+        "entered": true,
+        "hash": 1719735102,
+        "bytes": 342550,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-rootpost"
+      },
+      {
+        "id": "helstrom-scriptorium",
+        "entered": true,
+        "hash": 3734635157,
+        "bytes": 326550,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-scriptorium"
+      },
+      {
+        "id": "helstrom-smithy",
+        "entered": true,
+        "hash": 1642118969,
+        "bytes": 368578,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-smithy"
+      },
+      {
+        "id": "helstrom-undertemple",
+        "entered": true,
+        "hash": 1231890093,
+        "bytes": 838038,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-undertemple"
+      },
+      {
+        "id": "helstrom-warders",
+        "entered": true,
+        "hash": 1705189717,
+        "bytes": 676210,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "helstrom-warders"
+      },
+      {
+        "id": "lilmoth-apothecary",
+        "entered": true,
+        "hash": 2091914811,
+        "bytes": 322514,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-apothecary"
+      },
+      {
+        "id": "lilmoth-customs",
+        "entered": true,
+        "hash": 219923015,
+        "bytes": 845554,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-customs"
+      },
+      {
+        "id": "lilmoth-healer",
+        "entered": true,
+        "hash": 3950226677,
+        "bytes": 935650,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-healer"
+      },
+      {
+        "id": "lilmoth-house-0",
+        "entered": true,
+        "hash": 3148531033,
+        "bytes": 909162,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-house-0"
+      },
+      {
+        "id": "lilmoth-house-1",
+        "entered": true,
+        "hash": 3693011342,
+        "bytes": 1051462,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-house-1"
+      },
+      {
+        "id": "lilmoth-house-2",
+        "entered": true,
+        "hash": 3261954775,
+        "bytes": 927694,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-house-2"
+      },
+      {
+        "id": "lilmoth-house-3",
+        "entered": true,
+        "hash": 3500745013,
+        "bytes": 1012222,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-house-3"
+      },
+      {
+        "id": "lilmoth-house-4",
+        "entered": true,
+        "hash": 4177551833,
+        "bytes": 1009734,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-house-4"
+      },
+      {
+        "id": "lilmoth-inn-drowned",
+        "entered": true,
+        "hash": 689778351,
+        "bytes": 404014,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-inn-drowned"
+      },
+      {
+        "id": "lilmoth-inn-stilt",
+        "entered": true,
+        "hash": 2772276952,
+        "bytes": 399470,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-inn-stilt"
+      },
+      {
+        "id": "lilmoth-ledger-house",
+        "entered": true,
+        "hash": 2177837746,
+        "bytes": 859922,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-ledger-house"
+      },
+      {
+        "id": "lilmoth-market",
+        "entered": true,
+        "hash": 2735414620,
+        "bytes": 390130,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-market"
+      },
+      {
+        "id": "lilmoth-pawn",
+        "entered": true,
+        "hash": 2814633826,
+        "bytes": 382210,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-pawn"
+      },
+      {
+        "id": "lilmoth-rootpost",
+        "entered": true,
+        "hash": 2614395250,
+        "bytes": 422142,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-rootpost"
+      },
+      {
+        "id": "lilmoth-scribe",
+        "entered": true,
+        "hash": 2881110817,
+        "bytes": 403458,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-scribe"
+      },
+      {
+        "id": "lilmoth-shrine",
+        "entered": true,
+        "hash": 387471547,
+        "bytes": 819878,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-shrine"
+      },
+      {
+        "id": "lilmoth-smithy",
+        "entered": true,
+        "hash": 513343020,
+        "bytes": 1002902,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-smithy"
+      },
+      {
+        "id": "lilmoth-yard",
+        "entered": true,
+        "hash": 1541678963,
+        "bytes": 1405742,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "lilmoth-yard"
+      },
+      {
+        "id": "soulrest-boneyard",
+        "entered": true,
+        "hash": 3000764808,
+        "bytes": 633866,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "soulrest-boneyard"
+      },
+      {
+        "id": "soulrest-court-steps",
+        "entered": true,
+        "hash": 288554857,
+        "bytes": 1146890,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "soulrest-court-steps"
+      },
+      {
+        "id": "soulrest-grey-hist",
+        "entered": true,
+        "hash": 538383864,
+        "bytes": 1065058,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "soulrest-grey-hist"
+      },
+      {
+        "id": "soulrest-market",
+        "entered": true,
+        "hash": 1327141906,
+        "bytes": 581858,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "soulrest-market"
+      },
+      {
+        "id": "soulrest-pawn",
+        "entered": true,
+        "hash": 3762517305,
+        "bytes": 598334,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "soulrest-pawn"
+      },
+      {
+        "id": "soulrest-quay",
+        "entered": true,
+        "hash": 568542831,
+        "bytes": 617394,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "soulrest-quay"
+      },
+      {
+        "id": "soulrest-smithy",
+        "entered": true,
+        "hash": 2677548200,
+        "bytes": 1368790,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "soulrest-smithy"
+      },
+      {
+        "id": "stormhold-archive",
+        "entered": true,
+        "hash": 1029375030,
+        "bytes": 784946,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-archive"
+      },
+      {
+        "id": "stormhold-chapel",
+        "entered": true,
+        "hash": 1675252379,
+        "bytes": 757578,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-chapel"
+      },
+      {
+        "id": "stormhold-customs",
+        "entered": true,
+        "hash": 3748262127,
+        "bytes": 826398,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-customs"
+      },
+      {
+        "id": "stormhold-gaol",
+        "entered": true,
+        "hash": 181141494,
+        "bytes": 860078,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-gaol"
+      },
+      {
+        "id": "stormhold-house-0",
+        "entered": true,
+        "hash": 3396378051,
+        "bytes": 934130,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-house-0"
+      },
+      {
+        "id": "stormhold-house-1",
+        "entered": true,
+        "hash": 3572048104,
+        "bytes": 957178,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-house-1"
+      },
+      {
+        "id": "stormhold-house-2",
+        "entered": true,
+        "hash": 1339062422,
+        "bytes": 1042518,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-house-2"
+      },
+      {
+        "id": "stormhold-house-3",
+        "entered": true,
+        "hash": 647727472,
+        "bytes": 841238,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-house-3"
+      },
+      {
+        "id": "stormhold-house-4",
+        "entered": true,
+        "hash": 3099254128,
+        "bytes": 1050878,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-house-4"
+      },
+      {
+        "id": "stormhold-inn-lean",
+        "entered": true,
+        "hash": 267624712,
+        "bytes": 352370,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-inn-lean"
+      },
+      {
+        "id": "stormhold-inn-pass",
+        "entered": true,
+        "hash": 1409048041,
+        "bytes": 399934,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-inn-pass"
+      },
+      {
+        "id": "stormhold-kiln",
+        "entered": true,
+        "hash": 3594920181,
+        "bytes": 423994,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-kiln"
+      },
+      {
+        "id": "stormhold-market",
+        "entered": true,
+        "hash": 1889395549,
+        "bytes": 412650,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-market"
+      },
+      {
+        "id": "stormhold-praetorium",
+        "entered": true,
+        "hash": 3868339519,
+        "bytes": 929842,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-praetorium"
+      },
+      {
+        "id": "stormhold-rootpost",
+        "entered": true,
+        "hash": 2780286178,
+        "bytes": 371826,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-rootpost"
+      },
+      {
+        "id": "stormhold-scribe",
+        "entered": true,
+        "hash": 4128298159,
+        "bytes": 1083678,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-scribe"
+      },
+      {
+        "id": "stormhold-shrine",
+        "entered": true,
+        "hash": 3764360012,
+        "bytes": 928234,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-shrine"
+      },
+      {
+        "id": "stormhold-smithy",
+        "entered": true,
+        "hash": 662432416,
+        "bytes": 440370,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "stormhold-smithy"
+      },
+      {
+        "id": "thorn-apothecary",
+        "entered": true,
+        "hash": 1381822065,
+        "bytes": 449674,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-apothecary"
+      },
+      {
+        "id": "thorn-gate",
+        "entered": true,
+        "hash": 943619008,
+        "bytes": 883530,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-gate"
+      },
+      {
+        "id": "thorn-hall",
+        "entered": true,
+        "hash": 1728992879,
+        "bytes": 820794,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-hall"
+      },
+      {
+        "id": "thorn-house-0",
+        "entered": true,
+        "hash": 2833543016,
+        "bytes": 862186,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-house-0"
+      },
+      {
+        "id": "thorn-inn",
+        "entered": true,
+        "hash": 3849560695,
+        "bytes": 575286,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-inn"
+      },
+      {
+        "id": "thorn-rootpost",
+        "entered": true,
+        "hash": 2265700345,
+        "bytes": 491406,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-rootpost"
+      },
+      {
+        "id": "thorn-sapwell",
+        "entered": true,
+        "hash": 908674261,
+        "bytes": 811510,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-sapwell"
+      },
+      {
+        "id": "thorn-trader",
+        "entered": true,
+        "hash": 159170271,
+        "bytes": 521550,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "writ-house",
+        "entered": true,
+        "hash": 441649119,
+        "bytes": 1293722,
+        "drawn_cell": "writ_house",
+        "agrees": true,
+        "room": "thorn-trader"
+      }
+    ]
+  },
+  "control": {
+    "label": "room builder cut",
+    "total": 115,
+    "entered": 115,
+    "refused": 0,
+    "errors": 0,
+    "distinct_images": 115,
+    "largest_identical_group": 1,
+    "drawn_cell_agrees": 115,
+    "rows": [
+      {
+        "id": "archon-apothecary",
+        "entered": true,
+        "hash": 4188508108,
+        "bytes": 523726,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "archon-guild-office",
+        "entered": true,
+        "hash": 1559713016,
+        "bytes": 523982,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "archon-house-0",
+        "entered": true,
+        "hash": 372872834,
+        "bytes": 528182,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "archon-house-1",
+        "entered": true,
+        "hash": 1439604332,
+        "bytes": 528370,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "archon-house-2",
+        "entered": true,
+        "hash": 1019563087,
+        "bytes": 528014,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "archon-inn",
+        "entered": true,
+        "hash": 3442779095,
+        "bytes": 527814,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "archon-kiln-house",
+        "entered": true,
+        "hash": 2058974200,
+        "bytes": 528186,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "archon-market",
+        "entered": true,
+        "hash": 338693628,
+        "bytes": 524018,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "archon-rootpost",
+        "entered": true,
+        "hash": 845404708,
+        "bytes": 528402,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "archon-shrine",
+        "entered": true,
+        "hash": 3110018742,
+        "bytes": 528326,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "archon-vat-house",
+        "entered": true,
+        "hash": 1232927261,
+        "bytes": 524414,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "archon-ward",
+        "entered": true,
+        "hash": 1268642617,
+        "bytes": 528538,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "barge-hold",
+        "entered": true,
+        "hash": 4208398109,
+        "bytes": 936218,
+        "drawn_cell": "barge_hold",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "blackrose-clerk",
+        "entered": true,
+        "hash": 3632117418,
+        "bytes": 527806,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "blackrose-house-0",
+        "entered": true,
+        "hash": 2926047077,
+        "bytes": 528154,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "blackrose-house-1",
+        "entered": true,
+        "hash": 2293680983,
+        "bytes": 523926,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "blackrose-house-2",
+        "entered": true,
+        "hash": 22159575,
+        "bytes": 528286,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "blackrose-inn",
+        "entered": true,
+        "hash": 435228713,
+        "bytes": 524350,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "blackrose-market",
+        "entered": true,
+        "hash": 1693966239,
+        "bytes": 523974,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "blackrose-pawn",
+        "entered": true,
+        "hash": 3772929012,
+        "bytes": 528406,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "blackrose-prison",
+        "entered": true,
+        "hash": 695211925,
+        "bytes": 523842,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "blackrose-rootpost",
+        "entered": true,
+        "hash": 2492291276,
+        "bytes": 528282,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "blackrose-shrine",
+        "entered": true,
+        "hash": 2378903842,
+        "bytes": 528094,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "blackrose-smithy",
+        "entered": true,
+        "hash": 4180884227,
+        "bytes": 523770,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "blackrose-warders-hall",
+        "entered": true,
+        "hash": 2171773186,
+        "bytes": 523702,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "gideon-apothecary",
+        "entered": true,
+        "hash": 2700332373,
+        "bytes": 528086,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "gideon-chapel",
+        "entered": true,
+        "hash": 2630615760,
+        "bytes": 524026,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "gideon-court",
+        "entered": true,
+        "hash": 3264339562,
+        "bytes": 524222,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "gideon-grange",
+        "entered": true,
+        "hash": 2388214834,
+        "bytes": 528298,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "gideon-house-0",
+        "entered": true,
+        "hash": 2734495163,
+        "bytes": 528206,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "gideon-house-1",
+        "entered": true,
+        "hash": 1118603967,
+        "bytes": 527638,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "gideon-inn",
+        "entered": true,
+        "hash": 2249499642,
+        "bytes": 523658,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "gideon-lowmarket",
+        "entered": true,
+        "hash": 3648640997,
+        "bytes": 523818,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "gideon-rootpost",
+        "entered": true,
+        "hash": 1947094469,
+        "bytes": 527326,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "gideon-shrine",
+        "entered": true,
+        "hash": 431447686,
+        "bytes": 527566,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "gideon-smithy",
+        "entered": true,
+        "hash": 2179017703,
+        "bytes": 527222,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "gideon-tollhouse",
+        "entered": true,
+        "hash": 1418127056,
+        "bytes": 524038,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-apothecary",
+        "entered": true,
+        "hash": 430216741,
+        "bytes": 529206,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-archive",
+        "entered": true,
+        "hash": 2305367060,
+        "bytes": 529554,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-deep-market",
+        "entered": true,
+        "hash": 1727321474,
+        "bytes": 529402,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-hist-shrine",
+        "entered": true,
+        "hash": 411345940,
+        "bytes": 530474,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-hollow-bole",
+        "entered": true,
+        "hash": 162536470,
+        "bytes": 529938,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-house-0",
+        "entered": true,
+        "hash": 3153085202,
+        "bytes": 528014,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-house-1",
+        "entered": true,
+        "hash": 3461024172,
+        "bytes": 528210,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-house-10",
+        "entered": true,
+        "hash": 543879238,
+        "bytes": 528082,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-house-11",
+        "entered": true,
+        "hash": 889156661,
+        "bytes": 528426,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-house-2",
+        "entered": true,
+        "hash": 691247202,
+        "bytes": 527798,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-house-3",
+        "entered": true,
+        "hash": 1437999477,
+        "bytes": 527866,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-house-4",
+        "entered": true,
+        "hash": 3463329288,
+        "bytes": 528138,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-house-5",
+        "entered": true,
+        "hash": 3128344957,
+        "bytes": 527790,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-house-6",
+        "entered": true,
+        "hash": 214198879,
+        "bytes": 527974,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-house-7",
+        "entered": true,
+        "hash": 2397823818,
+        "bytes": 528150,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-house-8",
+        "entered": true,
+        "hash": 2894731105,
+        "bytes": 524302,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-house-9",
+        "entered": true,
+        "hash": 3276657522,
+        "bytes": 528046,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-inn-egg",
+        "entered": true,
+        "hash": 2059968959,
+        "bytes": 529898,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-inn-gate",
+        "entered": true,
+        "hash": 1659258118,
+        "bytes": 530286,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-inn-tide",
+        "entered": true,
+        "hash": 3423942541,
+        "bytes": 530582,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-legation",
+        "entered": true,
+        "hash": 147590554,
+        "bytes": 530178,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-rootpost",
+        "entered": true,
+        "hash": 3050889405,
+        "bytes": 530590,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-scriptorium",
+        "entered": true,
+        "hash": 1171215574,
+        "bytes": 530818,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-smithy",
+        "entered": true,
+        "hash": 2076826656,
+        "bytes": 530978,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-undertemple",
+        "entered": true,
+        "hash": 2318551506,
+        "bytes": 530394,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "helstrom-warders",
+        "entered": true,
+        "hash": 4268414462,
+        "bytes": 531062,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-apothecary",
+        "entered": true,
+        "hash": 1743720318,
+        "bytes": 529902,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-customs",
+        "entered": true,
+        "hash": 3938379286,
+        "bytes": 528326,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-healer",
+        "entered": true,
+        "hash": 1924465391,
+        "bytes": 530518,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-house-0",
+        "entered": true,
+        "hash": 3739444615,
+        "bytes": 528990,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-house-1",
+        "entered": true,
+        "hash": 4181880114,
+        "bytes": 528634,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-house-2",
+        "entered": true,
+        "hash": 1730756512,
+        "bytes": 529034,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-house-3",
+        "entered": true,
+        "hash": 3136547569,
+        "bytes": 528978,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-house-4",
+        "entered": true,
+        "hash": 1663565931,
+        "bytes": 528810,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-inn-drowned",
+        "entered": true,
+        "hash": 747358588,
+        "bytes": 530498,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-inn-stilt",
+        "entered": true,
+        "hash": 3202045476,
+        "bytes": 530550,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-ledger-house",
+        "entered": true,
+        "hash": 913115884,
+        "bytes": 528670,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-market",
+        "entered": true,
+        "hash": 1881594767,
+        "bytes": 529258,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-pawn",
+        "entered": true,
+        "hash": 1357314592,
+        "bytes": 530782,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-rootpost",
+        "entered": true,
+        "hash": 4277093166,
+        "bytes": 531342,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-scribe",
+        "entered": true,
+        "hash": 3137603661,
+        "bytes": 530910,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-shrine",
+        "entered": true,
+        "hash": 3582932514,
+        "bytes": 531166,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-smithy",
+        "entered": true,
+        "hash": 1249411070,
+        "bytes": 529610,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "lilmoth-yard",
+        "entered": true,
+        "hash": 4291841391,
+        "bytes": 529274,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "soulrest-boneyard",
+        "entered": true,
+        "hash": 2389008631,
+        "bytes": 522986,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "soulrest-court-steps",
+        "entered": true,
+        "hash": 221308664,
+        "bytes": 523214,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "soulrest-grey-hist",
+        "entered": true,
+        "hash": 4219985882,
+        "bytes": 523214,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "soulrest-market",
+        "entered": true,
+        "hash": 1310967548,
+        "bytes": 522338,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "soulrest-pawn",
+        "entered": true,
+        "hash": 3766323451,
+        "bytes": 522262,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "soulrest-quay",
+        "entered": true,
+        "hash": 1361646252,
+        "bytes": 522690,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "soulrest-smithy",
+        "entered": true,
+        "hash": 126975214,
+        "bytes": 522722,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-archive",
+        "entered": true,
+        "hash": 1970888039,
+        "bytes": 529054,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-chapel",
+        "entered": true,
+        "hash": 3258126617,
+        "bytes": 531526,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-customs",
+        "entered": true,
+        "hash": 3598116296,
+        "bytes": 529406,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-gaol",
+        "entered": true,
+        "hash": 210533956,
+        "bytes": 531342,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-house-0",
+        "entered": true,
+        "hash": 971436212,
+        "bytes": 526534,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-house-1",
+        "entered": true,
+        "hash": 405586913,
+        "bytes": 528746,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-house-2",
+        "entered": true,
+        "hash": 2934793343,
+        "bytes": 528910,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-house-3",
+        "entered": true,
+        "hash": 175127022,
+        "bytes": 527134,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-house-4",
+        "entered": true,
+        "hash": 2679485585,
+        "bytes": 526506,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-inn-lean",
+        "entered": true,
+        "hash": 2888580538,
+        "bytes": 530938,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-inn-pass",
+        "entered": true,
+        "hash": 1257194704,
+        "bytes": 531706,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-kiln",
+        "entered": true,
+        "hash": 3822591312,
+        "bytes": 531194,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-market",
+        "entered": true,
+        "hash": 675397921,
+        "bytes": 529274,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-praetorium",
+        "entered": true,
+        "hash": 752586960,
+        "bytes": 529042,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-rootpost",
+        "entered": true,
+        "hash": 186026335,
+        "bytes": 531470,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-scribe",
+        "entered": true,
+        "hash": 1265199916,
+        "bytes": 529014,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-shrine",
+        "entered": true,
+        "hash": 3460474087,
+        "bytes": 531634,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "stormhold-smithy",
+        "entered": true,
+        "hash": 3629080524,
+        "bytes": 529022,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "thorn-apothecary",
+        "entered": true,
+        "hash": 1920941108,
+        "bytes": 523566,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "thorn-gate",
+        "entered": true,
+        "hash": 2364974030,
+        "bytes": 524122,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "thorn-hall",
+        "entered": true,
+        "hash": 4172712343,
+        "bytes": 529226,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "thorn-house-0",
+        "entered": true,
+        "hash": 268865442,
+        "bytes": 529166,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "thorn-inn",
+        "entered": true,
+        "hash": 1514459726,
+        "bytes": 523942,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "thorn-rootpost",
+        "entered": true,
+        "hash": 2573373783,
+        "bytes": 523994,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "thorn-sapwell",
+        "entered": true,
+        "hash": 2741418279,
+        "bytes": 523566,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "thorn-trader",
+        "entered": true,
+        "hash": 3884310169,
+        "bytes": 523906,
+        "drawn_cell": "interior",
+        "agrees": true,
+        "room": "thorn-trader"
+      },
+      {
+        "id": "writ-house",
+        "entered": true,
+        "hash": 720585328,
+        "bytes": 1297214,
+        "drawn_cell": "writ_house",
+        "agrees": true,
+        "room": "thorn-trader"
+      }
+    ]
+  },
+  "page_errors": []
+}

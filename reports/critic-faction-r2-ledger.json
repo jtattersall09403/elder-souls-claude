@@ -1,0 +1,621 @@
+{
+  "tool": "critic-faction-r2",
+  "at": "2026-08-07T16:47:26.160Z",
+  "line": "the_wet_ledger",
+  "checks": [
+    {
+      "id": "C0_the_quest_givers_exist_in_the_world",
+      "ok": false,
+      "measured": "0/17 distinct faction quest givers are in the world; 53 of 53 quests are given by nobody. the_wet_ledger 0/6, the_imperial_assize 0/6, the_xul_aneekh 0/5"
+    },
+    {
+      "id": "C1a_career_walk_reached_rank_7",
+      "ok": false,
+      "measured": "derived rank 4 at reputation 192, 9/18 resolutions applied"
+    },
+    {
+      "id": "C1b_no_reputation_was_WRITTEN_by_any_route",
+      "ok": true,
+      "measured": "setFactionStanding x0, setFactionStandings x0 during the walk (counted at the harness boundary, not in the probe's own list)"
+    },
+    {
+      "id": "C1c_no_skill_register_was_written",
+      "ok": true,
+      "measured": "setSkills x0"
+    },
+    {
+      "id": "C1d_no_world_flag_was_poked",
+      "ok": true,
+      "measured": "0 questSetFlag calls"
+    },
+    {
+      "id": "C1e_reputation_reconciles_with_the_resolutions_own_deltas",
+      "ok": true,
+      "measured": "live standing 192 vs the sum of the taken resolutions' declared faction_reputation 192"
+    },
+    {
+      "id": "C2a_the_walk_actually_refused_at_rank_6",
+      "ok": true,
+      "measured": "Q-LEDG-07 via undefined"
+    },
+    {
+      "id": "C2b_the_world_seeded_the_second_route_topic",
+      "ok": false,
+      "measured": "topicsKnown contains []"
+    },
+    {
+      "id": "C2c_a_refuser_still_reaches_rank_7",
+      "ok": false,
+      "measured": "derived rank 4 at reputation 192 after refusing"
+    },
+    {
+      "id": "C2d_the_refusers_route_is_non_violent",
+      "ok": true,
+      "measured": "0 violent resolutions taken"
+    },
+    {
+      "id": "C2e_the_refusers_route_wrote_no_reputation",
+      "ok": true,
+      "measured": "setFactionStanding x0"
+    },
+    {
+      "id": "C3a_every_signature_reaches_rank_7",
+      "ok": false,
+      "measured": "0/8 signatures reached rank 7; worst = saxhleel/lukiul/ledger-hand at rank 4 (rep 192)"
+    },
+    {
+      "id": "C3b_no_signature_needed_a_written_reputation",
+      "ok": true,
+      "measured": "saxhleel/lukiul/ledger-hand:0 nord/foreign-born/salt-blade:0 khajiit/foreign-born/wet-foot:0 orsimer/blackrose/salt-blade:0 bosmer/interior/reed-walker:0 imperial/foreign-born/root-speaker:0 redguard/blackrose/sap-reader:0 naga/interior/salt-blade:0"
+    },
+    {
+      "id": "C4a_playing_the_line_wrote_a_standing_the_guard_reads",
+      "ok": true,
+      "measured": "sim.stealth.p.standings after the walk = {\"wet-ledger\":4} (0 harness pokes during the walk)"
+    },
+    {
+      "id": "C4b_the_reachable_spread_is_reported_honestly",
+      "ok": true,
+      "measured": "arrest_at by standing: none=709 wet-ledger:1-2=506 wet-ledger:3+=709 xul-aneekh:1-3=263 xul-aneekh:4+=182 ninth-cohort:1-3=648 ninth-cohort:4+=972 | spread over ROWS A PLAYER CAN REACH = 3.90x | spread over ALL rows incl. unjoinable = 5.34x"
+    },
+    {
+      "id": "C4c_page_errors_zero",
+      "ok": true,
+      "measured": "0"
+    }
+  ],
+  "failures": [
+    "C0_the_quest_givers_exist_in_the_world: 0/17 distinct faction quest givers are in the world; 53 of 53 quests are given by nobody. the_wet_ledger 0/6, the_imperial_assize 0/6, the_xul_aneekh 0/5",
+    "C1a_career_walk_reached_rank_7: derived rank 4 at reputation 192, 9/18 resolutions applied",
+    "C2b_the_world_seeded_the_second_route_topic: topicsKnown contains []",
+    "C2c_a_refuser_still_reaches_rank_7: derived rank 4 at reputation 192 after refusing",
+    "C3a_every_signature_reaches_rank_7: 0/8 signatures reached rank 7; worst = saxhleel/lukiul/ledger-hand at rank 4 (rep 192)"
+  ],
+  "sections": {
+    "c0_givers": {
+      "by_line": {
+        "the_wet_ledger": {
+          "quests": 18,
+          "givers": 6,
+          "givers_in_world": 0
+        },
+        "the_imperial_assize": {
+          "quests": 17,
+          "givers": 6,
+          "givers_in_world": 0
+        },
+        "the_xul_aneekh": {
+          "quests": 18,
+          "givers": 5,
+          "givers_in_world": 0
+        }
+      },
+      "present": [],
+      "absent": [
+        "Q-LEDG-00/factor-belliene",
+        "Q-LEDG-01/factor-belliene",
+        "Q-LEDG-02/sedd-ravano",
+        "Q-LEDG-03/factor-ruvela-sath",
+        "Q-LEDG-04/factor-belliene",
+        "Q-LEDG-05/harbourmaster-cuiro-vaneth",
+        "Q-LEDG-06/harbourmistress-tesh",
+        "Q-LEDG-07/factor-ruvela-sath",
+        "Q-LEDG-08/harbourmistress-tesh",
+        "Q-LEDG-09/factor-belliene",
+        "Q-LEDG-10/sedd-ravano",
+        "Q-LEDG-11/factor-belliene",
+        "Q-LEDG-12/factor-ruvela-sath",
+        "Q-LEDG-13/harbourmaster-cuiro-vaneth",
+        "Q-LEDG-14/harbourmistress-tesh",
+        "Q-LEDG-15/factor-ruvela-sath",
+        "Q-LEDG-16/harbourmistress-tesh",
+        "Q-LEDG-17/npc-wuleen-kus",
+        "Q-ASSZ-00/assizer-corvo",
+        "Q-ASSZ-01/clerk-avelia-doren",
+        "Q-ASSZ-02/assizer-corvo",
+        "Q-ASSZ-03/clerk-avelia-doren",
+        "Q-ASSZ-04/prefect-hallow",
+        "Q-ASSZ-05/prefect-galvus-arn",
+        "Q-ASSZ-06/assizer-corvo",
+        "Q-ASSZ-07/scribe-hulen",
+        "Q-ASSZ-08/assizer-corvo",
+        "Q-ASSZ-09/clerk-avelia-doren",
+        "Q-ASSZ-10/assizer-corvo",
+        "Q-ASSZ-11/notary-sedda-vell",
+        "Q-ASSZ-12/prefect-hallow",
+        "Q-ASSZ-13/assizer-corvo",
+        "Q-ASSZ-14/notary-sedda-vell",
+        "Q-ASSZ-15/prefect-galvus-arn",
+        "Q-ASSZ-16/scribe-hulen",
+        "Q-DEEP-01/speaker-teel-ashaan",
+        "Q-XULA-00/rootkeeper-ashul-tei",
+        "Q-XULA-01/speaker-teel-ashaan",
+        "Q-XULA-02/speaker-teel-ashaan",
+        "Q-XULA-03/speaker-teel-ashaan",
+        "Q-XULA-04/xul-aneekh-speaker",
+        "Q-XULA-05/rootkeeper-ashul-tei",
+        "Q-XULA-06/ee-vashum",
+        "Q-XULA-07/helstrom-gallery-keepers",
+        "Q-XULA-08/ee-vashum",
+        "Q-XULA-09/rootkeeper-ashul-tei",
+        "Q-XULA-10/speaker-teel-ashaan",
+        "Q-XULA-11/ee-vashum",
+        "Q-XULA-12/helstrom-gallery-keepers",
+        "Q-XULA-13/rootkeeper-ashul-tei",
+        "Q-XULA-14/ee-vashum",
+        "Q-XULA-15/xul-aneekh-speaker",
+        "Q-XULA-16/rootkeeper-ashul-tei"
+      ]
+    },
+    "presence_gate_suspended_for_the_rest": {
+      "mode": "report",
+      "misses": 0,
+      "missed": []
+    },
+    "c1_earned": {
+      "rank": 4,
+      "reputation": 192,
+      "direct_standing_writes": 0,
+      "direct_standings_writes": 0,
+      "setSkills_writes": 0,
+      "flag_pokes": [],
+      "declared_sum": 192,
+      "resolved": 9,
+      "attempted": 18,
+      "taken": [
+        {
+          "quest": "Q-LEDG-00",
+          "resolution": "res_lodge",
+          "ok": true,
+          "rep": {
+            "the_wet_ledger": 20
+          }
+        },
+        {
+          "quest": "Q-LEDG-09",
+          "resolution": "res_weigh_dry",
+          "ok": true,
+          "rep": {
+            "the_wet_ledger": 14,
+            "the_dockhands": -4
+          }
+        },
+        {
+          "quest": "Q-LEDG-01",
+          "resolution": "res_scapegoat",
+          "ok": true,
+          "rep": {
+            "the_wet_ledger": 8,
+            "the_dockhands": -12
+          }
+        },
+        {
+          "quest": "Q-LEDG-10",
+          "resolution": "res_all_six",
+          "ok": true,
+          "rep": {
+            "the_wet_ledger": 22,
+            "the_dockhands": -14
+          }
+        },
+        {
+          "quest": "Q-LEDG-02",
+          "resolution": "res_hand_over",
+          "ok": true,
+          "rep": {
+            "the_wet_ledger": 24,
+            "the_dockhands": 0
+          }
+        },
+        {
+          "quest": "Q-LEDG-11",
+          "resolution": "res_carry_both",
+          "ok": true,
+          "rep": {
+            "the_wet_ledger": 26,
+            "the_imperial_assize": -8
+          }
+        },
+        {
+          "quest": "Q-LEDG-16",
+          "resolution": "res_to_tesh",
+          "ok": true,
+          "rep": {
+            "the_wet_ledger": 16
+          }
+        },
+        {
+          "quest": "Q-LEDG-03",
+          "resolution": "res_take_box",
+          "ok": true,
+          "rep": {
+            "the_wet_ledger": 32,
+            "the_dockhands": -30,
+            "the_xul_aneekh": -18
+          }
+        },
+        {
+          "quest": "Q-LEDG-12",
+          "resolution": "res_clear_the_berth",
+          "ok": true,
+          "rep": {
+            "the_wet_ledger": 30,
+            "the_dockhands": -18,
+            "the_imperial_assize": -6
+          }
+        },
+        {
+          "quest": "Q-LEDG-04",
+          "open_refused": "the_wet_ledger rank 3/4"
+        },
+        {
+          "quest": "Q-LEDG-05",
+          "open_refused": "requires Q-LEDG-04 first"
+        },
+        {
+          "quest": "Q-LEDG-17",
+          "open_refused": "npc-wuleen-kus disposition 5/40"
+        },
+        {
+          "quest": "Q-LEDG-06",
+          "open_refused": "requires Q-LEDG-05 first; the_wet_ledger rank 4/5"
+        },
+        {
+          "quest": "Q-LEDG-13",
+          "open_refused": "requires Q-LEDG-06 first; the_wet_ledger rank 4/5"
+        },
+        {
+          "quest": "Q-LEDG-07",
+          "open_refused": "requires Q-LEDG-06 first; the_wet_ledger rank 4/6"
+        },
+        {
+          "quest": "Q-LEDG-14",
+          "open_refused": "the_wet_ledger rank 4/6"
+        },
+        {
+          "quest": "Q-LEDG-08",
+          "open_refused": "requires Q-LEDG-07 first; the_wet_ledger rank 4/7"
+        },
+        {
+          "quest": "Q-LEDG-15",
+          "open_refused": "requires Q-LEDG-08 first; the_wet_ledger rank 4/7"
+        }
+      ]
+    },
+    "c4": {
+      "standings_after_play": {
+        "wet-ledger": 4
+      },
+      "band_after_play": {
+        "race": "imperial",
+        "standing": "wet-ledger:3+",
+        "bounty": 500,
+        "thresholds": {
+          "base": 300,
+          "race_law": 1.35,
+          "faction_law": 1.75,
+          "arrest_at": 709,
+          "attack_at": 2835,
+          "suspicion": 0.5599999999999999
+        },
+        "band": 1,
+        "behaviour": "greeting_only",
+        "arrest": false,
+        "draws_weapon": false,
+        "parley": null
+      },
+      "sanction_state": {
+        "wet-ledger": 4
+      },
+      "writes_to_standings_during_walk": 0
+    },
+    "c2_refuser": {
+      "refused_at": "Q-LEDG-07",
+      "rank": 4,
+      "reputation": 192,
+      "direct_standing_writes": 0,
+      "flag_pokes": [],
+      "topics_known_has_second_route": [],
+      "taken": [
+        {
+          "quest": "Q-LEDG-00",
+          "open_refused": "quest is closed"
+        },
+        {
+          "quest": "Q-LEDG-09",
+          "open_refused": "quest is closed"
+        },
+        {
+          "quest": "Q-LEDG-01",
+          "open_refused": "quest is closed"
+        },
+        {
+          "quest": "Q-LEDG-10",
+          "open_refused": "quest is closed"
+        },
+        {
+          "quest": "Q-LEDG-02",
+          "open_refused": "quest is closed"
+        },
+        {
+          "quest": "Q-LEDG-11",
+          "open_refused": "quest is closed"
+        },
+        {
+          "quest": "Q-LEDG-16",
+          "open_refused": "quest is closed"
+        },
+        {
+          "quest": "Q-LEDG-03",
+          "open_refused": "quest is closed"
+        },
+        {
+          "quest": "Q-LEDG-12",
+          "open_refused": "quest is closed"
+        },
+        {
+          "quest": "Q-LEDG-04",
+          "open_refused": "the_wet_ledger rank 3/4"
+        },
+        {
+          "quest": "Q-LEDG-05",
+          "open_refused": "requires Q-LEDG-04 first"
+        },
+        {
+          "quest": "Q-LEDG-17",
+          "open_refused": "npc-wuleen-kus disposition 5/40"
+        },
+        {
+          "quest": "Q-LEDG-06",
+          "open_refused": "requires Q-LEDG-05 first; the_wet_ledger rank 4/5"
+        },
+        {
+          "quest": "Q-LEDG-13",
+          "open_refused": "requires Q-LEDG-06 first; the_wet_ledger rank 4/5"
+        },
+        {
+          "quest": "Q-LEDG-07",
+          "open_refused": "requires Q-LEDG-06 first; the_wet_ledger rank 4/6"
+        },
+        {
+          "quest": "Q-LEDG-14",
+          "open_refused": "the_wet_ledger rank 4/6"
+        },
+        {
+          "quest": "Q-LEDG-08",
+          "open_refused": "requires Q-LEDG-07 first; the_wet_ledger rank 4/7"
+        },
+        {
+          "quest": "Q-LEDG-15",
+          "open_refused": "requires Q-LEDG-08 first; the_wet_ledger rank 4/7"
+        }
+      ],
+      "violent": []
+    },
+    "c3_signatures": [
+      {
+        "sig": "saxhleel/lukiul/ledger-hand",
+        "rank": 4,
+        "reputation": 192,
+        "resolved": 0,
+        "attempted": 18,
+        "direct_standing_writes": 0,
+        "first_refusal": "quest is closed"
+      },
+      {
+        "sig": "nord/foreign-born/salt-blade",
+        "rank": 4,
+        "reputation": 192,
+        "resolved": 0,
+        "attempted": 18,
+        "direct_standing_writes": 0,
+        "first_refusal": "quest is closed"
+      },
+      {
+        "sig": "khajiit/foreign-born/wet-foot",
+        "rank": 4,
+        "reputation": 192,
+        "resolved": 0,
+        "attempted": 18,
+        "direct_standing_writes": 0,
+        "first_refusal": "quest is closed"
+      },
+      {
+        "sig": "orsimer/blackrose/salt-blade",
+        "rank": 4,
+        "reputation": 192,
+        "resolved": 0,
+        "attempted": 18,
+        "direct_standing_writes": 0,
+        "first_refusal": "quest is closed"
+      },
+      {
+        "sig": "bosmer/interior/reed-walker",
+        "rank": 4,
+        "reputation": 192,
+        "resolved": 0,
+        "attempted": 18,
+        "direct_standing_writes": 0,
+        "first_refusal": "quest is closed"
+      },
+      {
+        "sig": "imperial/foreign-born/root-speaker",
+        "rank": 4,
+        "reputation": 192,
+        "resolved": 0,
+        "attempted": 18,
+        "direct_standing_writes": 0,
+        "first_refusal": "quest is closed"
+      },
+      {
+        "sig": "redguard/blackrose/sap-reader",
+        "rank": 4,
+        "reputation": 192,
+        "resolved": 0,
+        "attempted": 18,
+        "direct_standing_writes": 0,
+        "first_refusal": "quest is closed"
+      },
+      {
+        "sig": "naga/interior/salt-blade",
+        "rank": 4,
+        "reputation": 192,
+        "resolved": 0,
+        "attempted": 18,
+        "direct_standing_writes": 0,
+        "first_refusal": "quest is closed"
+      }
+    ],
+    "c4b": {
+      "bands": {
+        "none": {
+          "race": "imperial",
+          "standing": "wet-ledger:3+",
+          "bounty": 500,
+          "thresholds": {
+            "base": 300,
+            "race_law": 1.35,
+            "faction_law": 1.75,
+            "arrest_at": 709,
+            "attack_at": 2835,
+            "suspicion": 0.5599999999999999
+          },
+          "band": 1,
+          "behaviour": "greeting_only",
+          "arrest": false,
+          "draws_weapon": false,
+          "parley": null
+        },
+        "wet-ledger:1-2": {
+          "race": "imperial",
+          "standing": "wet-ledger:1-2",
+          "bounty": 500,
+          "thresholds": {
+            "base": 300,
+            "race_law": 1.35,
+            "faction_law": 1.25,
+            "arrest_at": 506,
+            "attack_at": 2025,
+            "suspicion": 0.68
+          },
+          "band": 1,
+          "behaviour": "greeting_only",
+          "arrest": false,
+          "draws_weapon": false,
+          "parley": null
+        },
+        "wet-ledger:3+": {
+          "race": "imperial",
+          "standing": "wet-ledger:3+",
+          "bounty": 500,
+          "thresholds": {
+            "base": 300,
+            "race_law": 1.35,
+            "faction_law": 1.75,
+            "arrest_at": 709,
+            "attack_at": 2835,
+            "suspicion": 0.5599999999999999
+          },
+          "band": 1,
+          "behaviour": "greeting_only",
+          "arrest": false,
+          "draws_weapon": false,
+          "parley": null
+        },
+        "xul-aneekh:1-3": {
+          "race": "imperial",
+          "standing": "xul-aneekh:1-3",
+          "bounty": 500,
+          "thresholds": {
+            "base": 300,
+            "race_law": 1.35,
+            "faction_law": 0.65,
+            "arrest_at": 263,
+            "attack_at": 1053,
+            "suspicion": 1.16
+          },
+          "band": 2,
+          "behaviour": "arrest_dialogue",
+          "arrest": true,
+          "draws_weapon": false,
+          "parley": null
+        },
+        "xul-aneekh:4+": {
+          "race": "imperial",
+          "standing": "xul-aneekh:4+",
+          "bounty": 500,
+          "thresholds": {
+            "base": 300,
+            "race_law": 1.35,
+            "faction_law": 0.45,
+            "arrest_at": 182,
+            "attack_at": 729,
+            "suspicion": 1.4400000000000002
+          },
+          "band": 2,
+          "behaviour": "arrest_dialogue",
+          "arrest": true,
+          "draws_weapon": false,
+          "parley": null
+        },
+        "ninth-cohort:1-3": {
+          "race": "imperial",
+          "standing": "ninth-cohort:1-3",
+          "bounty": 500,
+          "thresholds": {
+            "base": 300,
+            "race_law": 1.35,
+            "faction_law": 1.6,
+            "arrest_at": 648,
+            "attack_at": 2592,
+            "suspicion": 0.5599999999999999
+          },
+          "band": 1,
+          "behaviour": "greeting_only",
+          "arrest": false,
+          "draws_weapon": false,
+          "parley": null
+        },
+        "ninth-cohort:4+": {
+          "race": "imperial",
+          "standing": "ninth-cohort:4+",
+          "bounty": 500,
+          "thresholds": {
+            "base": 300,
+            "race_law": 1.35,
+            "faction_law": 2.4,
+            "arrest_at": 972,
+            "attack_at": 3888,
+            "suspicion": 0.44000000000000006
+          },
+          "band": 1,
+          "behaviour": "greeting_only",
+          "arrest": false,
+          "draws_weapon": false,
+          "parley": null
+        }
+      }
+    }
+  },
+  "page_errors": []
+}

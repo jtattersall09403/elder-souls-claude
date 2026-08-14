@@ -1,0 +1,3604 @@
+{
+ "schema": "elder-souls/region-axes@2",
+ "method": "RI-WLD04 M18 — differentiation measured on the built world",
+ "note": "Replaces region-axes@1, in which 8 of 9 axes were string or hex comparisons against game/data/world/regions.json (verdict W1-01 §4d). Every axis here names its source; 13 are measured off built geometry or replicated renderer placement and 2 off rendered pixels, and 1 off RENDERED SOUND (W1-22: the audio axis was dropped as unmeasurable while audioMB was 0; it is now the spectrum of PCM the engine actually rendered). Unmeasurable axes are dropped, not scored.",
+ "measured_at": "2026-08-07T18:11:24.503Z",
+ "axes": [
+  {
+   "id": "slope_histogram",
+   "source": "built terrain (field.slopeAt over 900 in-region samples)",
+   "threshold": 0.15,
+   "measured": true
+  },
+  {
+   "id": "elevation_profile",
+   "source": "built terrain (heightAt mean and p10-p90 spread)",
+   "threshold": 8,
+   "measured": true
+  },
+  {
+   "id": "water_regime",
+   "source": "built water (depthAt at all four tide phases)",
+   "threshold": 0.25,
+   "measured": true
+  },
+  {
+   "id": "substrate_mix",
+   "source": "built substrate raster (substrateAt, wetness-modulated)",
+   "threshold": 0.2,
+   "measured": true
+  },
+  {
+   "id": "ground_material_lab",
+   "source": "renderer ground shader replicated over built ground and built depth (CIELAB dE)",
+   "threshold": 8,
+   "measured": true
+  },
+  {
+   "id": "flora_density_placed",
+   "source": "province.js prop lattice replicated: instances the renderer places",
+   "threshold": 0.3,
+   "measured": true
+  },
+  {
+   "id": "flora_silhouette_placed",
+   "source": "same lattice: placed crown height and radius, not the table row",
+   "threshold": 2,
+   "measured": true
+  },
+  {
+   "id": "ground_microrelief",
+   "source": "built terrain: the region’s own micro-relief field sampled on a 3 m lattice along four 240 m transects — the shape of the ORDINARY ground, not of its landmark",
+   "threshold": 1,
+   "measured": true
+  },
+  {
+   "id": "ground_skin",
+   "source": "built ground skin: the region’s own sub-metre surface sampled on the skin mesh’s own 0.55 m cell along four 110 m transects — the ordinary ground at the scale a standing player reads it, which is what the bottom half of every frame is made of",
+   "threshold": 1,
+   "measured": true
+  },
+  {
+   "id": "prop_arrangement",
+   "source": "the renderer’s own scatter lattice with the renderer’s own rolls: nearest-neighbour distance, its coefficient of variation and the Clark-Evans dispersion index",
+   "threshold": 1,
+   "measured": true
+  },
+  {
+   "id": "signature_silhouette",
+   "source": "built terrain: heightAt minus naturalHeightAt on a 12 m lattice — how much of the region’s ground IS its ONLY-HERE element, and which way it displaces",
+   "threshold": 1.2,
+   "measured": true
+  },
+  {
+   "id": "architecture_placed",
+   "source": "placed structures: solid signature instances and road deck spans standing in the region (RI-WLD04 M18 architecture, un-dropped)",
+   "threshold": 2,
+   "measured": true
+  },
+  {
+   "id": "hazard",
+   "source": "hazard volumes present in the region, by class multiset and signature (un-dropped: reports/hazard-fire.json shows 19/19 firing)",
+   "threshold": 0.6,
+   "measured": true
+  },
+  {
+   "id": "rendered_palette",
+   "source": "rendered pixels: mean CIELAB of the region’s M17 frames, top and upper-middle bands",
+   "threshold": 12,
+   "measured": false
+  },
+  {
+   "id": "rendered_vertical_structure",
+   "source": "rendered pixels: the sky/canopy/ground CIELAB profile down the frame",
+   "threshold": 10,
+   "measured": false
+  },
+  {
+   "id": "audio_spectrum",
+   "source": "rendered sound: level-normalised 24-band spectrum of the PCM Engine.ambienceCapture() rendered for this region",
+   "threshold": 0.15,
+   "measured": true
+  }
+ ],
+ "dropped_axes": [
+  {
+   "axis": "fauna",
+   "reason": "no enemy or creature is placed in any region in this build; a fauna axis scored off a table row would read 78/78 on an empty province"
+  },
+  {
+   "axis": "weather",
+   "reason": "weather is a per-frame capture parameter, not a property of the built world; it enters through rendered_palette when the M17 night and worst-weather passes are captured"
+  }
+ ],
+ "bar": {
+  "axes_available": 14,
+  "must_differ_on": 9
+ },
+ "per_region": {
+  "blackwood": {
+   "samples": 900,
+   "slope_histogram": [
+    0.8756,
+    0.1244,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mean_slope_deg": 3.221,
+   "elevation": {
+    "mean": 2.13,
+    "p10": 0.8,
+    "p90": 2.95
+   },
+   "water_regime": {
+    "frac_ever_wet": 0.3822,
+    "mean_depth_low_m": 0.2871,
+    "mean_tide_swing_m": 0,
+    "band_mix": {
+     "W0": 0.6211,
+     "W1": 0.0789,
+     "W2": 0.1011,
+     "W3": 0.0622,
+     "W4": 0.0644,
+     "W5": 0.0722
+    }
+   },
+   "substrate_mix": {
+    "SUCK": 0.6667,
+    "SILT": 0.32,
+    "FIRM": 0.0133
+   },
+   "ground_lab": [
+    10.08,
+    -7.23,
+    3.63
+   ],
+   "flora_placed": {
+    "canopy_per_100m2": 2.121,
+    "under_per_100m2": 1.965,
+    "rock_per_100m2": 0.114,
+    "mean_canopy_height_m": 19.96,
+    "mean_canopy_radius_m": 6.72,
+    "declared_canopy_per_100m2": 2.6,
+    "silhouette": "sphere:19x6.4"
+   },
+   "micro_relief": {
+    "sd_m": 0.347,
+    "mean_abs_grad": 0.1008,
+    "skew": 0.153,
+    "dominant": "rootmat",
+    "declared_amp_m": 0.5,
+    "declared_mix": {
+     "rootmat": 0.6,
+     "hummock": 0.4
+    }
+   },
+   "ground_skin": {
+    "kind": "rootnet",
+    "sd_m": 0.0895,
+    "mean_abs_grad": 0.0783,
+    "roughness_m": 0.096,
+    "skew": 0.294,
+    "declared_amp_m": 0.38,
+    "declared_len_m": 2.6
+   },
+   "arrangement": {
+    "mode": "high-ground",
+    "n": 11498,
+    "nn_mean_m": 6.37,
+    "nn_cv": 0.358,
+    "clark_evans_R": 1.115,
+    "cover_shape": "litter",
+    "cover_per100m2": 22,
+    "cover_patch_m": 7
+   },
+   "signature_relief": {
+    "samples": 7659,
+    "frac_ground_displaced": 0.00013,
+    "frac_up": 0.00013,
+    "frac_down": 0,
+    "mean_abs_displacement_m": 8.862,
+    "max_up_m": 8.86,
+    "max_down_m": 0,
+    "kind": "welkynd_pillar"
+   },
+   "architecture_placed": {
+    "structures": 34,
+    "deck_span_m": 0,
+    "per_km2": 16.43,
+    "tallest_m": 9.4,
+    "glowing": 34
+   },
+   "hazard_volumes": {
+    "ids": [
+     "spore-bloom",
+     "strangler-snare"
+    ],
+    "classes": {
+     "VECTOR": 1,
+     "TRAP": 1
+    },
+    "signature": "spore-bloom",
+    "anchored_on_signature": 2,
+    "worst_pct_per_s": 0
+   }
+  },
+  "clay-moor": {
+   "samples": 900,
+   "slope_histogram": [
+    0.7689,
+    0.1789,
+    0.0111,
+    0.0244,
+    0.0167,
+    0
+   ],
+   "mean_slope_deg": 5.122,
+   "elevation": {
+    "mean": 31.81,
+    "p10": 29.99,
+    "p90": 33.67
+   },
+   "water_regime": {
+    "frac_ever_wet": 0,
+    "mean_depth_low_m": 0,
+    "mean_tide_swing_m": 0,
+    "band_mix": {
+     "W0": 1,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   "substrate_mix": {
+    "FIRM": 1
+   },
+   "ground_lab": [
+    45.84,
+    23.74,
+    29.26
+   ],
+   "flora_placed": {
+    "canopy_per_100m2": 0.002,
+    "under_per_100m2": 0.456,
+    "rock_per_100m2": 0.044,
+    "mean_canopy_height_m": 4.58,
+    "mean_canopy_radius_m": 3.66,
+    "declared_canopy_per_100m2": 0.05,
+    "silhouette": "dome:4x3.2"
+   },
+   "micro_relief": {
+    "sd_m": 0.473,
+    "mean_abs_grad": 0.1174,
+    "skew": -0.59,
+    "dominant": "crack",
+    "declared_amp_m": 0.48,
+    "declared_mix": {
+     "crack": 1
+    }
+   },
+   "ground_skin": {
+    "kind": "polygon",
+    "sd_m": 0.0339,
+    "mean_abs_grad": 0.0321,
+    "roughness_m": 0.0532,
+    "skew": 0.42,
+    "declared_amp_m": 0.18,
+    "declared_len_m": 1.7
+   },
+   "arrangement": {
+    "mode": "isolated",
+    "n": 199,
+    "nn_mean_m": 23.86,
+    "nn_cv": 0.714,
+    "clark_evans_R": 0.963,
+    "cover_shape": "plate",
+    "cover_per100m2": 9,
+    "cover_patch_m": 12
+   },
+   "signature_relief": {
+    "samples": 3188,
+    "frac_ground_displaced": 0.01004,
+    "frac_up": 0.01004,
+    "frac_down": 0,
+    "mean_abs_displacement_m": 4.409,
+    "max_up_m": 7.04,
+    "max_down_m": 0,
+    "kind": "naga_kiln_dome"
+   },
+   "architecture_placed": {
+    "structures": 26,
+    "deck_span_m": 0,
+    "per_km2": 32.1,
+    "tallest_m": 7.9,
+    "glowing": 26
+   },
+   "hazard_volumes": {
+    "ids": [
+     "kiln-ground",
+     "thirst"
+    ],
+    "classes": {
+     "ATTRITION": 2
+    },
+    "signature": "kiln-ground",
+    "anchored_on_signature": 1,
+    "worst_pct_per_s": 1
+   }
+  },
+  "crimson-coast": {
+   "samples": 900,
+   "slope_histogram": [
+    0.89,
+    0.11,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mean_slope_deg": 3.825,
+   "elevation": {
+    "mean": 12.45,
+    "p10": 9.36,
+    "p90": 14.59
+   },
+   "water_regime": {
+    "frac_ever_wet": 0.2078,
+    "mean_depth_low_m": 0.0273,
+    "mean_tide_swing_m": 0.1073,
+    "band_mix": {
+     "W0": 0.9067,
+     "W1": 0.0311,
+     "W2": 0.0522,
+     "W3": 0.01,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   "substrate_mix": {
+    "SILT": 0.2044,
+    "FIRM": 0.7956
+   },
+   "ground_lab": [
+    31.61,
+    40.4,
+    18.02
+   ],
+   "flora_placed": {
+    "canopy_per_100m2": 0,
+    "under_per_100m2": 1.967,
+    "rock_per_100m2": 1.04,
+    "mean_canopy_height_m": 0,
+    "mean_canopy_radius_m": 0,
+    "declared_canopy_per_100m2": 0,
+    "silhouette": "none:0x0"
+   },
+   "micro_relief": {
+    "sd_m": 0.339,
+    "mean_abs_grad": 0.0776,
+    "skew": -0.072,
+    "dominant": "terracette",
+    "declared_amp_m": 0.45,
+    "declared_mix": {
+     "terracette": 0.5,
+     "rubble": 0.5
+    }
+   },
+   "ground_skin": {
+    "kind": "berm",
+    "sd_m": 0.0752,
+    "mean_abs_grad": 0.0548,
+    "roughness_m": 0.0446,
+    "skew": 0.173,
+    "declared_amp_m": 0.26,
+    "declared_len_m": 1.6
+   },
+   "arrangement": {
+    "mode": "fringe",
+    "n": 0,
+    "nn_mean_m": 0,
+    "nn_cv": 0,
+    "clark_evans_R": 1,
+    "cover_shape": "cobble",
+    "cover_per100m2": 16,
+    "cover_patch_m": 5
+   },
+   "signature_relief": {
+    "samples": 5539,
+    "frac_ground_displaced": 0,
+    "frac_up": 0,
+    "frac_down": 0,
+    "mean_abs_displacement_m": 0,
+    "max_up_m": 0,
+    "max_down_m": 0,
+    "kind": "open_dye_vat"
+   },
+   "architecture_placed": {
+    "structures": 18,
+    "deck_span_m": 0,
+    "per_km2": 28.57,
+    "tallest_m": 1.8,
+    "glowing": 18
+   },
+   "hazard_volumes": {
+    "ids": [
+     "dye-fume",
+     "high-tide-gate"
+    ],
+    "classes": {
+     "VECTOR": 1,
+     "GATE": 1
+    },
+    "signature": "dye-fume",
+    "anchored_on_signature": 1,
+    "worst_pct_per_s": 0
+   }
+  },
+  "deep-marshes": {
+   "samples": 900,
+   "slope_histogram": [
+    0.88,
+    0.12,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mean_slope_deg": 3.776,
+   "elevation": {
+    "mean": 1.44,
+    "p10": 0.41,
+    "p90": 2.28
+   },
+   "water_regime": {
+    "frac_ever_wet": 0.6367,
+    "mean_depth_low_m": 0.4419,
+    "mean_tide_swing_m": 0,
+    "band_mix": {
+     "W0": 0.3656,
+     "W1": 0.1189,
+     "W2": 0.2089,
+     "W3": 0.1567,
+     "W4": 0.0422,
+     "W5": 0.1078
+    }
+   },
+   "substrate_mix": {
+    "SILT": 0.8189,
+    "SUCK": 0.0967,
+    "FIRM": 0.0844
+   },
+   "ground_lab": [
+    5.72,
+    2.31,
+    -7.09
+   ],
+   "flora_placed": {
+    "canopy_per_100m2": 0.358,
+    "under_per_100m2": 0.874,
+    "rock_per_100m2": 0.014,
+    "mean_canopy_height_m": 13.59,
+    "mean_canopy_radius_m": 2.51,
+    "declared_canopy_per_100m2": 0.85,
+    "silhouette": "spire:13x2.4"
+   },
+   "micro_relief": {
+    "sd_m": 0.43,
+    "mean_abs_grad": 0.1309,
+    "skew": 1.091,
+    "dominant": "hummock",
+    "declared_amp_m": 0.56,
+    "declared_mix": {
+     "hummock": 0.75,
+     "rill": 0.25
+    }
+   },
+   "ground_skin": {
+    "kind": "tussock",
+    "sd_m": 0.1324,
+    "mean_abs_grad": 0.1428,
+    "roughness_m": 0.2388,
+    "skew": 0.468,
+    "declared_amp_m": 0.46,
+    "declared_len_m": 1.3
+   },
+   "arrangement": {
+    "mode": "high-ground",
+    "n": 2511,
+    "nn_mean_m": 7.59,
+    "nn_cv": 0.479,
+    "clark_evans_R": 1.072,
+    "cover_shape": "tussock",
+    "cover_per100m2": 14,
+    "cover_patch_m": 9
+   },
+   "signature_relief": {
+    "samples": 3367,
+    "frac_ground_displaced": 0,
+    "frac_up": 0,
+    "frac_down": 0,
+    "mean_abs_displacement_m": 0,
+    "max_up_m": 0,
+    "max_down_m": 0,
+    "kind": "voriplasm"
+   },
+   "architecture_placed": {
+    "structures": 40,
+    "deck_span_m": 0,
+    "per_km2": 31.75,
+    "tallest_m": 1.8,
+    "glowing": 40
+   },
+   "hazard_volumes": {
+    "ids": [
+     "strangler-snare",
+     "voriplasm"
+    ],
+    "classes": {
+     "KILL": 1,
+     "TRAP": 1
+    },
+    "signature": "voriplasm",
+    "anchored_on_signature": 2,
+    "worst_pct_per_s": 0
+   }
+  },
+  "eastern-rootlands": {
+   "samples": 900,
+   "slope_histogram": [
+    0.98,
+    0.02,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mean_slope_deg": 2.539,
+   "elevation": {
+    "mean": 1.24,
+    "p10": 0.53,
+    "p90": 1.89
+   },
+   "water_regime": {
+    "frac_ever_wet": 0.8422,
+    "mean_depth_low_m": 0.2841,
+    "mean_tide_swing_m": 0.364,
+    "band_mix": {
+     "W0": 0.5122,
+     "W1": 0.1133,
+     "W2": 0.1311,
+     "W3": 0.1533,
+     "W4": 0.0667,
+     "W5": 0.0233
+    }
+   },
+   "substrate_mix": {
+    "SUCK": 0.4411,
+    "SILT": 0.5589
+   },
+   "ground_lab": [
+    36.68,
+    -17.19,
+    8.56
+   ],
+   "flora_placed": {
+    "canopy_per_100m2": 0.113,
+    "under_per_100m2": 1.795,
+    "rock_per_100m2": 0.002,
+    "mean_canopy_height_m": 5.29,
+    "mean_canopy_radius_m": 2.75,
+    "declared_canopy_per_100m2": 0.36,
+    "silhouette": "sphere:5x2.6"
+   },
+   "micro_relief": {
+    "sd_m": 0.341,
+    "mean_abs_grad": 0.0919,
+    "skew": -0.895,
+    "dominant": "rill",
+    "declared_amp_m": 0.5,
+    "declared_mix": {
+     "rill": 0.6,
+     "ripple": 0.4
+    }
+   },
+   "ground_skin": {
+    "kind": "rillnet",
+    "sd_m": 0.035,
+    "mean_abs_grad": 0.026,
+    "roughness_m": 0.0303,
+    "skew": -0.862,
+    "declared_amp_m": 0.22,
+    "declared_len_m": 2.9
+   },
+   "arrangement": {
+    "mode": "drainage",
+    "n": 3241,
+    "nn_mean_m": 9.9,
+    "nn_cv": 0.474,
+    "clark_evans_R": 1.042,
+    "cover_shape": "reed",
+    "cover_per100m2": 20,
+    "cover_patch_m": 4
+   },
+   "signature_relief": {
+    "samples": 11252,
+    "frac_ground_displaced": 0.00036,
+    "frac_up": 0.00036,
+    "frac_down": 0,
+    "mean_abs_displacement_m": 3.508,
+    "max_up_m": 3.67,
+    "max_down_m": 0,
+    "kind": "swamp_jelly_canopy"
+   },
+   "architecture_placed": {
+    "structures": 48,
+    "deck_span_m": 0,
+    "per_km2": 33.33,
+    "tallest_m": 7,
+    "glowing": 48
+   },
+   "hazard_volumes": {
+    "ids": [
+     "cut-off-by-the-tide"
+    ],
+    "classes": {
+     "GATE": 1
+    },
+    "signature": "cut-off-by-the-tide",
+    "anchored_on_signature": 0,
+    "worst_pct_per_s": 0
+   }
+  },
+  "hive": {
+   "samples": 900,
+   "slope_histogram": [
+    0.5722,
+    0.37,
+    0.0567,
+    0.0011,
+    0,
+    0
+   ],
+   "mean_slope_deg": 5.878,
+   "elevation": {
+    "mean": 9.9,
+    "p10": 8.35,
+    "p90": 11.82
+   },
+   "water_regime": {
+    "frac_ever_wet": 0,
+    "mean_depth_low_m": 0,
+    "mean_tide_swing_m": 0,
+    "band_mix": {
+     "W0": 1,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   "substrate_mix": {
+    "FIRM": 1
+   },
+   "ground_lab": [
+    79.17,
+    -5.37,
+    41.88
+   ],
+   "flora_placed": {
+    "canopy_per_100m2": 0.305,
+    "under_per_100m2": 2.351,
+    "rock_per_100m2": 0.021,
+    "mean_canopy_height_m": 7.26,
+    "mean_canopy_radius_m": 3.73,
+    "declared_canopy_per_100m2": 0.55,
+    "silhouette": "dome:7x3.6"
+   },
+   "micro_relief": {
+    "sd_m": 0.452,
+    "mean_abs_grad": 0.1078,
+    "skew": 0.022,
+    "dominant": "terracette",
+    "declared_amp_m": 0.62,
+    "declared_mix": {
+     "terracette": 0.7,
+     "crack": 0.3
+    }
+   },
+   "ground_skin": {
+    "kind": "hexcell",
+    "sd_m": 0.0527,
+    "mean_abs_grad": 0.0473,
+    "roughness_m": 0.0917,
+    "skew": 1.269,
+    "declared_amp_m": 0.24,
+    "declared_len_m": 1.6
+   },
+   "arrangement": {
+    "mode": "clumped",
+    "n": 1346,
+    "nn_mean_m": 6.81,
+    "nn_cv": 0.553,
+    "clark_evans_R": 1.044,
+    "cover_shape": "wax",
+    "cover_per100m2": 13,
+    "cover_patch_m": 14
+   },
+   "signature_relief": {
+    "samples": 1155,
+    "frac_ground_displaced": 0.10909,
+    "frac_up": 0.10909,
+    "frac_down": 0,
+    "mean_abs_displacement_m": 3.676,
+    "max_up_m": 9.39,
+    "max_down_m": 0,
+    "kind": "comb_cliff"
+   },
+   "architecture_placed": {
+    "structures": 0,
+    "deck_span_m": 0,
+    "per_km2": 0,
+    "tallest_m": 12.8,
+    "glowing": 30
+   },
+   "hazard_volumes": {
+    "ids": [
+     "comb-collapse"
+    ],
+    "classes": {
+     "TRAP": 1
+    },
+    "signature": "comb-collapse",
+    "anchored_on_signature": 1,
+    "worst_pct_per_s": 0
+   }
+  },
+  "marauders-coast": {
+   "samples": 900,
+   "slope_histogram": [
+    0.5,
+    0.3478,
+    0.0211,
+    0.0578,
+    0.0733,
+    0
+   ],
+   "mean_slope_deg": 8.11,
+   "elevation": {
+    "mean": 0.38,
+    "p10": -0.98,
+    "p90": 1.44
+   },
+   "water_regime": {
+    "frac_ever_wet": 0.6789,
+    "mean_depth_low_m": 0.4541,
+    "mean_tide_swing_m": 0.2972,
+    "band_mix": {
+     "W0": 0.4556,
+     "W1": 0.0778,
+     "W2": 0.0822,
+     "W3": 0.18,
+     "W4": 0.1267,
+     "W5": 0.0778
+    }
+   },
+   "substrate_mix": {
+    "SILT": 0.9656,
+    "FIRM": 0.0344
+   },
+   "ground_lab": [
+    42.72,
+    -0.56,
+    5.33
+   ],
+   "flora_placed": {
+    "canopy_per_100m2": 1.021,
+    "under_per_100m2": 1.491,
+    "rock_per_100m2": 0.195,
+    "mean_canopy_height_m": 3.57,
+    "mean_canopy_radius_m": 2.31,
+    "declared_canopy_per_100m2": 1.3,
+    "silhouette": "arch:3.4x2.2"
+   },
+   "micro_relief": {
+    "sd_m": 0.319,
+    "mean_abs_grad": 0.112,
+    "skew": -0.294,
+    "dominant": "ripple",
+    "declared_amp_m": 0.44,
+    "declared_mix": {
+     "ripple": 0.7,
+     "rill": 0.3
+    }
+   },
+   "ground_skin": {
+    "kind": "sandripple",
+    "sd_m": 0.0297,
+    "mean_abs_grad": 0.0311,
+    "roughness_m": 0.0673,
+    "skew": -0.029,
+    "declared_amp_m": 0.1,
+    "declared_len_m": 1.4
+   },
+   "arrangement": {
+    "mode": "rows",
+    "n": 884,
+    "nn_mean_m": 6.89,
+    "nn_cv": 0.493,
+    "clark_evans_R": 0.935,
+    "cover_shape": "shell",
+    "cover_per100m2": 24,
+    "cover_patch_m": 6
+   },
+   "signature_relief": {
+    "samples": 1732,
+    "frac_ground_displaced": 0.00924,
+    "frac_up": 0.00924,
+    "frac_down": 0,
+    "mean_abs_displacement_m": 5.374,
+    "max_up_m": 7.79,
+    "max_down_m": 0,
+    "kind": "beached_hull_house"
+   },
+   "architecture_placed": {
+    "structures": 12,
+    "deck_span_m": 0,
+    "per_km2": 24.49,
+    "tallest_m": 8.3,
+    "glowing": 12
+   },
+   "hazard_volumes": {
+    "ids": [
+     "high-tide-gate",
+     "the-flats-flood"
+    ],
+    "classes": {
+     "STRANDING": 1,
+     "GATE": 1
+    },
+    "signature": "the-flats-flood",
+    "anchored_on_signature": 0,
+    "worst_pct_per_s": 0
+   }
+  },
+  "salt-hills": {
+   "samples": 900,
+   "slope_histogram": [
+    0.2256,
+    0.3489,
+    0.1167,
+    0.0589,
+    0.0322,
+    0.2178
+   ],
+   "mean_slope_deg": 17.539,
+   "elevation": {
+    "mean": 137.8,
+    "p10": 80.95,
+    "p90": 182.29
+   },
+   "water_regime": {
+    "frac_ever_wet": 0,
+    "mean_depth_low_m": 0,
+    "mean_tide_swing_m": 0,
+    "band_mix": {
+     "W0": 1,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   "substrate_mix": {
+    "FIRM": 0.7478,
+    "SILT": 0.2522
+   },
+   "ground_lab": [
+    55.33,
+    -13.26,
+    23.12
+   ],
+   "flora_placed": {
+    "canopy_per_100m2": 0.005,
+    "under_per_100m2": 2.255,
+    "rock_per_100m2": 0.089,
+    "mean_canopy_height_m": 5.7,
+    "mean_canopy_radius_m": 1.56,
+    "declared_canopy_per_100m2": 0.06,
+    "silhouette": "cone:5.5x1.5"
+   },
+   "micro_relief": {
+    "sd_m": 0.42,
+    "mean_abs_grad": 0.1226,
+    "skew": 0.066,
+    "dominant": "terracette",
+    "declared_amp_m": 0.55,
+    "declared_mix": {
+     "terracette": 0.75,
+     "rubble": 0.25
+    }
+   },
+   "ground_skin": {
+    "kind": "crustpuff",
+    "sd_m": 0.0307,
+    "mean_abs_grad": 0.0249,
+    "roughness_m": 0.0408,
+    "skew": 1.592,
+    "declared_amp_m": 0.2,
+    "declared_len_m": 1.4
+   },
+   "arrangement": {
+    "mode": "clumped",
+    "n": 497,
+    "nn_mean_m": 21.12,
+    "nn_cv": 0.594,
+    "clark_evans_R": 0.975,
+    "cover_shape": "tuft",
+    "cover_per100m2": 26,
+    "cover_patch_m": 3
+   },
+   "signature_relief": {
+    "samples": 7393,
+    "frac_ground_displaced": 0.00054,
+    "frac_up": 0.00054,
+    "frac_down": 0,
+    "mean_abs_displacement_m": 3.964,
+    "max_up_m": 5.31,
+    "max_down_m": 0,
+    "kind": "imperial_milestone"
+   },
+   "architecture_placed": {
+    "structures": 22,
+    "deck_span_m": 106,
+    "per_km2": 23.4,
+    "tallest_m": 1.6,
+    "glowing": 0
+   },
+   "hazard_volumes": {
+    "ids": [
+     "ridge-exposure",
+     "rockfall"
+    ],
+    "classes": {
+     "ATTRITION": 1,
+     "TRAP": 1
+    },
+    "signature": "ridge-exposure",
+    "anchored_on_signature": 0,
+    "worst_pct_per_s": 0.8
+   }
+  },
+  "stone-forest": {
+   "samples": 900,
+   "slope_histogram": [
+    0.4422,
+    0.2922,
+    0.0433,
+    0.0278,
+    0.0744,
+    0.12
+   ],
+   "mean_slope_deg": 11.282,
+   "elevation": {
+    "mean": 41.78,
+    "p10": 15.86,
+    "p90": 107.24
+   },
+   "water_regime": {
+    "frac_ever_wet": 0.14,
+    "mean_depth_low_m": 0.4623,
+    "mean_tide_swing_m": 0,
+    "band_mix": {
+     "W0": 0.86,
+     "W1": 0.0067,
+     "W2": 0.0022,
+     "W3": 0.0033,
+     "W4": 0.0089,
+     "W5": 0.1189
+    }
+   },
+   "substrate_mix": {
+    "SILT": 0.1389,
+    "FIRM": 0.8611
+   },
+   "ground_lab": [
+    52,
+    -1.09,
+    -7.77
+   ],
+   "flora_placed": {
+    "canopy_per_100m2": 0.262,
+    "under_per_100m2": 0.966,
+    "rock_per_100m2": 0.292,
+    "mean_canopy_height_m": 12.55,
+    "mean_canopy_radius_m": 2.3,
+    "declared_canopy_per_100m2": 0.55,
+    "silhouette": "column:12x2.2"
+   },
+   "micro_relief": {
+    "sd_m": 0.298,
+    "mean_abs_grad": 0.0858,
+    "skew": -0.17,
+    "dominant": "crack",
+    "declared_amp_m": 0.44,
+    "declared_mix": {
+     "crack": 0.55,
+     "rubble": 0.45
+    }
+   },
+   "ground_skin": {
+    "kind": "slab",
+    "sd_m": 0.0836,
+    "mean_abs_grad": 0.0682,
+    "roughness_m": 0.1124,
+    "skew": -0.444,
+    "declared_amp_m": 0.3,
+    "declared_len_m": 2.4
+   },
+   "arrangement": {
+    "mode": "scatter",
+    "n": 8116,
+    "nn_mean_m": 7.63,
+    "nn_cv": 0.384,
+    "clark_evans_R": 1.098,
+    "cover_shape": "flag",
+    "cover_per100m2": 8,
+    "cover_patch_m": 16
+   },
+   "signature_relief": {
+    "samples": 10253,
+    "frac_ground_displaced": 0.01161,
+    "frac_up": 0.01161,
+    "frac_down": 0,
+    "mean_abs_displacement_m": 6.444,
+    "max_up_m": 41.09,
+    "max_down_m": 0,
+    "kind": "petrified_bole"
+   },
+   "architecture_placed": {
+    "structures": 0,
+    "deck_span_m": 336,
+    "per_km2": 0,
+    "tallest_m": 9.5,
+    "glowing": 0
+   },
+   "hazard_volumes": {
+    "ids": [
+     "hist-sap-fume",
+     "pair-lightning"
+    ],
+    "classes": {
+     "TRAP": 1,
+     "VECTOR": 1
+    },
+    "signature": "pair-lightning",
+    "anchored_on_signature": 2,
+    "worst_pct_per_s": 0
+   }
+  },
+  "stone-wastes": {
+   "samples": 900,
+   "slope_histogram": [
+    0.9678,
+    0.0322,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mean_slope_deg": 2.931,
+   "elevation": {
+    "mean": 7.62,
+    "p10": 6.58,
+    "p90": 8.48
+   },
+   "water_regime": {
+    "frac_ever_wet": 0.0133,
+    "mean_depth_low_m": 0.0148,
+    "mean_tide_swing_m": 0,
+    "band_mix": {
+     "W0": 0.9867,
+     "W1": 0,
+     "W2": 0.0011,
+     "W3": 0.0033,
+     "W4": 0.0089,
+     "W5": 0
+    }
+   },
+   "substrate_mix": {
+    "FIRM": 0.6444,
+    "SILT": 0.3556
+   },
+   "ground_lab": [
+    83.26,
+    -0.8,
+    14.64
+   ],
+   "flora_placed": {
+    "canopy_per_100m2": 0.001,
+    "under_per_100m2": 0.89,
+    "rock_per_100m2": 0.738,
+    "mean_canopy_height_m": 2.95,
+    "mean_canopy_radius_m": 0.57,
+    "declared_canopy_per_100m2": 0.03,
+    "silhouette": "spire:2.6x0.5"
+   },
+   "micro_relief": {
+    "sd_m": 0.327,
+    "mean_abs_grad": 0.0746,
+    "skew": -0.257,
+    "dominant": "dune",
+    "declared_amp_m": 0.52,
+    "declared_mix": {
+     "dune": 0.55,
+     "crack": 0.45
+    }
+   },
+   "ground_skin": {
+    "kind": "crackfield",
+    "sd_m": 0.0274,
+    "mean_abs_grad": 0.0149,
+    "roughness_m": 0.0126,
+    "skew": -0.548,
+    "declared_amp_m": 0.14,
+    "declared_len_m": 3.2
+   },
+   "arrangement": {
+    "mode": "isolated",
+    "n": 253,
+    "nn_mean_m": 17.96,
+    "nn_cv": 1.005,
+    "clark_evans_R": 0.718,
+    "cover_shape": "flake",
+    "cover_per100m2": 6,
+    "cover_patch_m": 20
+   },
+   "signature_relief": {
+    "samples": 4729,
+    "frac_ground_displaced": 0.06259,
+    "frac_up": 0.02474,
+    "frac_down": 0.03785,
+    "mean_abs_displacement_m": 3.665,
+    "max_up_m": 4.47,
+    "max_down_m": -8.9,
+    "kind": "glassed_crater"
+   },
+   "architecture_placed": {
+    "structures": 0,
+    "deck_span_m": 36,
+    "per_km2": 0,
+    "tallest_m": 8.9,
+    "glowing": 0
+   },
+   "hazard_volumes": {
+    "ids": [
+     "salt-storm"
+    ],
+    "classes": {
+     "ATTRITION": 1
+    },
+    "signature": "salt-storm",
+    "anchored_on_signature": 0,
+    "worst_pct_per_s": 1.2
+   }
+  },
+  "thornmarsh": {
+   "samples": 900,
+   "slope_histogram": [
+    0.7733,
+    0.2089,
+    0.0178,
+    0,
+    0,
+    0
+   ],
+   "mean_slope_deg": 4.415,
+   "elevation": {
+    "mean": 13.91,
+    "p10": 10.79,
+    "p90": 21.58
+   },
+   "water_regime": {
+    "frac_ever_wet": 0.0056,
+    "mean_depth_low_m": 0.0004,
+    "mean_tide_swing_m": 0,
+    "band_mix": {
+     "W0": 0.9944,
+     "W1": 0.0056,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   "substrate_mix": {
+    "FIRM": 0.7189,
+    "SILT": 0.2811
+   },
+   "ground_lab": [
+    59.75,
+    7.11,
+    18.05
+   ],
+   "flora_placed": {
+    "canopy_per_100m2": 2.292,
+    "under_per_100m2": 1.495,
+    "rock_per_100m2": 0.061,
+    "mean_canopy_height_m": 4.42,
+    "mean_canopy_radius_m": 2.1,
+    "declared_canopy_per_100m2": 5.4,
+    "silhouette": "cone:4.2x2"
+   },
+   "micro_relief": {
+    "sd_m": 0.376,
+    "mean_abs_grad": 0.1126,
+    "skew": 0.285,
+    "dominant": "hummock",
+    "declared_amp_m": 0.52,
+    "declared_mix": {
+     "hummock": 0.5,
+     "rootmat": 0.5
+    }
+   },
+   "ground_skin": {
+    "kind": "hummock",
+    "sd_m": 0.1019,
+    "mean_abs_grad": 0.1055,
+    "roughness_m": 0.1277,
+    "skew": 0.305,
+    "declared_amp_m": 0.42,
+    "declared_len_m": 1.8
+   },
+   "arrangement": {
+    "mode": "maze",
+    "n": 7435,
+    "nn_mean_m": 6.54,
+    "nn_cv": 0.35,
+    "clark_evans_R": 1.144,
+    "cover_shape": "tussock",
+    "cover_per100m2": 17,
+    "cover_patch_m": 5
+   },
+   "signature_relief": {
+    "samples": 7230,
+    "frac_ground_displaced": 0,
+    "frac_up": 0,
+    "frac_down": 0,
+    "mean_abs_displacement_m": 0,
+    "max_up_m": 0,
+    "max_down_m": 0,
+    "kind": "knife_mark_stem"
+   },
+   "architecture_placed": {
+    "structures": 60,
+    "deck_span_m": 0,
+    "per_km2": 55.56,
+    "tallest_m": 4.6,
+    "glowing": 0
+   },
+   "hazard_volumes": {
+    "ids": [
+     "ash-lung",
+     "the-thicket"
+    ],
+    "classes": {
+     "ATTRITION": 1,
+     "VECTOR": 1
+    },
+    "signature": "the-thicket",
+    "anchored_on_signature": 0,
+    "worst_pct_per_s": 0.6
+   }
+  },
+  "valus-ridge": {
+   "samples": 900,
+   "slope_histogram": [
+    0.0267,
+    0.06,
+    0.1089,
+    0.2756,
+    0.18,
+    0.3489
+   ],
+   "mean_slope_deg": 26.189,
+   "elevation": {
+    "mean": 323.48,
+    "p10": 229.27,
+    "p90": 380.1
+   },
+   "water_regime": {
+    "frac_ever_wet": 0,
+    "mean_depth_low_m": 0,
+    "mean_tide_swing_m": 0,
+    "band_mix": {
+     "W0": 1,
+     "W1": 0,
+     "W2": 0,
+     "W3": 0,
+     "W4": 0,
+     "W5": 0
+    }
+   },
+   "substrate_mix": {
+    "FIRM": 1
+   },
+   "ground_lab": [
+    76.82,
+    -0.76,
+    14.19
+   ],
+   "flora_placed": {
+    "canopy_per_100m2": 0.361,
+    "under_per_100m2": 1.218,
+    "rock_per_100m2": 1.544,
+    "mean_canopy_height_m": 9.45,
+    "mean_canopy_radius_m": 1.36,
+    "declared_canopy_per_100m2": 0.62,
+    "silhouette": "spire:9x1.3"
+   },
+   "micro_relief": {
+    "sd_m": 0.411,
+    "mean_abs_grad": 0.1006,
+    "skew": 0.041,
+    "dominant": "rubble",
+    "declared_amp_m": 0.55,
+    "declared_mix": {
+     "rubble": 0.7,
+     "terracette": 0.3
+    }
+   },
+   "ground_skin": {
+    "kind": "blockstep",
+    "sd_m": 0.0949,
+    "mean_abs_grad": 0.0992,
+    "roughness_m": 0.1557,
+    "skew": 0.406,
+    "declared_amp_m": 0.32,
+    "declared_len_m": 1.2
+   },
+   "arrangement": {
+    "mode": "drainage",
+    "n": 7834,
+    "nn_mean_m": 7.07,
+    "nn_cv": 0.377,
+    "clark_evans_R": 1.134,
+    "cover_shape": "gravel",
+    "cover_per100m2": 30,
+    "cover_patch_m": 4
+   },
+   "signature_relief": {
+    "samples": 10984,
+    "frac_ground_displaced": 0.00109,
+    "frac_up": 0.00109,
+    "frac_down": 0,
+    "mean_abs_displacement_m": 2.718,
+    "max_up_m": 11.38,
+    "max_down_m": 0,
+    "kind": "rock_flute_spire"
+   },
+   "architecture_placed": {
+    "structures": 14,
+    "deck_span_m": 0,
+    "per_km2": 8.19,
+    "tallest_m": 25.2,
+    "glowing": 0
+   },
+   "hazard_volumes": {
+    "ids": [
+     "rockfall",
+     "the-fall"
+    ],
+    "classes": {
+     "TRAP": 2
+    },
+    "signature": "the-fall",
+    "anchored_on_signature": 0,
+    "worst_pct_per_s": 0
+   }
+  },
+  "western-rootlands": {
+   "samples": 900,
+   "slope_histogram": [
+    0.9444,
+    0.0556,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mean_slope_deg": 2.514,
+   "elevation": {
+    "mean": 2.77,
+    "p10": 1.51,
+    "p90": 4.25
+   },
+   "water_regime": {
+    "frac_ever_wet": 0.5067,
+    "mean_depth_low_m": 0.0867,
+    "mean_tide_swing_m": 0.1801,
+    "band_mix": {
+     "W0": 0.7522,
+     "W1": 0.1144,
+     "W2": 0.0789,
+     "W3": 0.03,
+     "W4": 0.0233,
+     "W5": 0.0011
+    }
+   },
+   "substrate_mix": {
+    "FIRM": 0.44,
+    "SILT": 0.56
+   },
+   "ground_lab": [
+    48.87,
+    -19.15,
+    26.45
+   ],
+   "flora_placed": {
+    "canopy_per_100m2": 0.164,
+    "under_per_100m2": 2.159,
+    "rock_per_100m2": 0.002,
+    "mean_canopy_height_m": 8.37,
+    "mean_canopy_radius_m": 4.71,
+    "declared_canopy_per_100m2": 0.42,
+    "silhouette": "arch:8x4.5"
+   },
+   "micro_relief": {
+    "sd_m": 0.468,
+    "mean_abs_grad": 0.1063,
+    "skew": 0.798,
+    "dominant": "bund",
+    "declared_amp_m": 0.58,
+    "declared_mix": {
+     "bund": 0.8,
+     "ripple": 0.2
+    }
+   },
+   "ground_skin": {
+    "kind": "furrow",
+    "sd_m": 0.0428,
+    "mean_abs_grad": 0.0442,
+    "roughness_m": 0.0738,
+    "skew": 0.373,
+    "declared_amp_m": 0.16,
+    "declared_len_m": 1.4
+   },
+   "arrangement": {
+    "mode": "rows",
+    "n": 3674,
+    "nn_mean_m": 7.43,
+    "nn_cv": 0.41,
+    "clark_evans_R": 1.041,
+    "cover_shape": "stubble",
+    "cover_per100m2": 21,
+    "cover_patch_m": 3
+   },
+   "signature_relief": {
+    "samples": 6735,
+    "frac_ground_displaced": 0.01485,
+    "frac_up": 0.01485,
+    "frac_down": 0,
+    "mean_abs_displacement_m": 1.48,
+    "max_up_m": 10.16,
+    "max_down_m": 0,
+    "kind": "root_arch"
+   },
+   "architecture_placed": {
+    "structures": 0,
+    "deck_span_m": 48,
+    "per_km2": 0,
+    "tallest_m": 2.6,
+    "glowing": 0
+   },
+   "hazard_volumes": {
+    "ids": [
+     "press-gang-water"
+    ],
+    "classes": {
+     "STRANDING": 1
+    },
+    "signature": "press-gang-water",
+    "anchored_on_signature": 1,
+    "worst_pct_per_s": 0
+   }
+  }
+ },
+ "rendered_present": false,
+ "rendered_capture_pass": null,
+ "axis_pair_counts": {
+  "slope_histogram": 54,
+  "elevation_profile": 57,
+  "water_regime": 63,
+  "substrate_mix": 62,
+  "ground_material_lab": 77,
+  "flora_density_placed": 66,
+  "flora_silhouette_placed": 76,
+  "ground_microrelief": 77,
+  "ground_skin": 78,
+  "prop_arrangement": 78,
+  "signature_silhouette": 72,
+  "architecture_placed": 78,
+  "hazard": 78,
+  "rendered_palette": 0,
+  "rendered_vertical_structure": 0,
+  "audio_spectrum": 78
+ },
+ "min_axes_differing": 10,
+ "min_pair": "crimson-coast / thornmarsh",
+ "pairs_below_bar": [],
+ "worst_pairs": [
+  {
+   "a": "crimson-coast",
+   "b": "thornmarsh",
+   "axes_differing": 10,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1167,
+    "elevation_profile": 4.24,
+    "water_regime": 0.3972,
+    "substrate_mix": 0.0767,
+    "ground_material_lab": 43.59,
+    "flora_density_placed": 2.4808,
+    "flora_silhouette_placed": 8.62,
+    "ground_microrelief": 2.9576,
+    "ground_skin": 3.4458,
+    "prop_arrangement": 4.0214,
+    "signature_silhouette": 0,
+    "architecture_placed": 112.08,
+    "hazard": 2.6,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.8326
+   }
+  },
+  {
+   "a": "crimson-coast",
+   "b": "stone-wastes",
+   "axes_differing": 11,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0778,
+    "elevation_profile": 6.495,
+    "water_regime": 0.3907,
+    "substrate_mix": 0.1512,
+    "ground_material_lab": 66.1558,
+    "flora_density_placed": 0.4318,
+    "flora_silhouette_placed": 4.09,
+    "ground_microrelief": 1.71,
+    "ground_skin": 2.8223,
+    "prop_arrangement": 9.7226,
+    "signature_silhouette": 9.5591,
+    "architecture_placed": 120.72,
+    "hazard": 3.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.2179
+   }
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "western-rootlands",
+   "axes_differing": 11,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0356,
+    "elevation_profile": 2.22,
+    "water_regime": 0.7605,
+    "substrate_mix": 0.4411,
+    "ground_material_lab": 21.7368,
+    "flora_density_placed": 0.1966,
+    "flora_silhouette_placed": 7,
+    "ground_microrelief": 3.9484,
+    "ground_skin": 2.8591,
+    "prop_arrangement": 2.5136,
+    "signature_silhouette": 3.4189,
+    "architecture_placed": 138.88,
+    "hazard": 2,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.793
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "deep-marshes",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0044,
+    "elevation_profile": 0.83,
+    "water_regime": 0.5323,
+    "substrate_mix": 0.57,
+    "ground_material_lab": 14.998,
+    "flora_density_placed": 2.1994,
+    "flora_silhouette_placed": 14.79,
+    "ground_microrelief": 3.5514,
+    "ground_skin": 4.8732,
+    "prop_arrangement": 2.2243,
+    "signature_silhouette": 7.5374,
+    "architecture_placed": 64.32,
+    "hazard": 1.6667,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6736
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "eastern-rootlands",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1044,
+    "elevation_profile": 1.285,
+    "water_regime": 0.9818,
+    "substrate_mix": 0.2389,
+    "ground_material_lab": 28.8282,
+    "flora_density_placed": 2.076,
+    "flora_silhouette_placed": 22.61,
+    "ground_microrelief": 2.5414,
+    "ground_skin": 3.8418,
+    "prop_arrangement": 3.2457,
+    "signature_silhouette": 4.5191,
+    "architecture_placed": 68.56,
+    "hazard": 2.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6966
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "stone-wastes",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0922,
+    "elevation_profile": 5.615,
+    "water_regime": 0.7345,
+    "substrate_mix": 0.6667,
+    "ground_material_lab": 74.2824,
+    "flora_density_placed": 2.55,
+    "flora_silhouette_placed": 29.31,
+    "ground_microrelief": 2.634,
+    "ground_skin": 4.1662,
+    "prop_arrangement": 8.461,
+    "signature_silhouette": 10.4531,
+    "architecture_placed": 69.52,
+    "hazard": 3.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6262
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "western-rootlands",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0688,
+    "elevation_profile": 0.935,
+    "water_regime": 0.4712,
+    "substrate_mix": 0.6667,
+    "ground_material_lab": 46.5564,
+    "flora_density_placed": 2.0346,
+    "flora_silhouette_placed": 15.61,
+    "ground_microrelief": 2.807,
+    "ground_skin": 2.2617,
+    "prop_arrangement": 2.7371,
+    "signature_silhouette": 5.343,
+    "architecture_placed": 72.24,
+    "hazard": 2.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.4237
+   }
+  },
+  {
+   "a": "clay-moor",
+   "b": "hive",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.2367,
+    "elevation_profile": 22.015,
+    "water_regime": 0,
+    "substrate_mix": 0,
+    "ground_material_lab": 46.0168,
+    "flora_density_placed": 1.061,
+    "flora_silhouette_placed": 2.82,
+    "ground_microrelief": 2.3036,
+    "ground_skin": 2.6361,
+    "prop_arrangement": 5.6519,
+    "signature_silhouette": 4.9893,
+    "architecture_placed": 130.36,
+    "hazard": 3.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.3896
+   }
+  }
+ ],
+ "pairs": [
+  {
+   "a": "crimson-coast",
+   "b": "thornmarsh",
+   "axes_differing": 10,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1167,
+    "elevation_profile": 4.24,
+    "water_regime": 0.3972,
+    "substrate_mix": 0.0767,
+    "ground_material_lab": 43.59,
+    "flora_density_placed": 2.4808,
+    "flora_silhouette_placed": 8.62,
+    "ground_microrelief": 2.9576,
+    "ground_skin": 3.4458,
+    "prop_arrangement": 4.0214,
+    "signature_silhouette": 0,
+    "architecture_placed": 112.08,
+    "hazard": 2.6,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.8326
+   }
+  },
+  {
+   "a": "crimson-coast",
+   "b": "stone-wastes",
+   "axes_differing": 11,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0778,
+    "elevation_profile": 6.495,
+    "water_regime": 0.3907,
+    "substrate_mix": 0.1512,
+    "ground_material_lab": 66.1558,
+    "flora_density_placed": 0.4318,
+    "flora_silhouette_placed": 4.09,
+    "ground_microrelief": 1.71,
+    "ground_skin": 2.8223,
+    "prop_arrangement": 9.7226,
+    "signature_silhouette": 9.5591,
+    "architecture_placed": 120.72,
+    "hazard": 3.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.2179
+   }
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "western-rootlands",
+   "axes_differing": 11,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0356,
+    "elevation_profile": 2.22,
+    "water_regime": 0.7605,
+    "substrate_mix": 0.4411,
+    "ground_material_lab": 21.7368,
+    "flora_density_placed": 0.1966,
+    "flora_silhouette_placed": 7,
+    "ground_microrelief": 3.9484,
+    "ground_skin": 2.8591,
+    "prop_arrangement": 2.5136,
+    "signature_silhouette": 3.4189,
+    "architecture_placed": 138.88,
+    "hazard": 2,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.793
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "deep-marshes",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0044,
+    "elevation_profile": 0.83,
+    "water_regime": 0.5323,
+    "substrate_mix": 0.57,
+    "ground_material_lab": 14.998,
+    "flora_density_placed": 2.1994,
+    "flora_silhouette_placed": 14.79,
+    "ground_microrelief": 3.5514,
+    "ground_skin": 4.8732,
+    "prop_arrangement": 2.2243,
+    "signature_silhouette": 7.5374,
+    "architecture_placed": 64.32,
+    "hazard": 1.6667,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6736
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "eastern-rootlands",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1044,
+    "elevation_profile": 1.285,
+    "water_regime": 0.9818,
+    "substrate_mix": 0.2389,
+    "ground_material_lab": 28.8282,
+    "flora_density_placed": 2.076,
+    "flora_silhouette_placed": 22.61,
+    "ground_microrelief": 2.5414,
+    "ground_skin": 3.8418,
+    "prop_arrangement": 3.2457,
+    "signature_silhouette": 4.5191,
+    "architecture_placed": 68.56,
+    "hazard": 2.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6966
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "stone-wastes",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0922,
+    "elevation_profile": 5.615,
+    "water_regime": 0.7345,
+    "substrate_mix": 0.6667,
+    "ground_material_lab": 74.2824,
+    "flora_density_placed": 2.55,
+    "flora_silhouette_placed": 29.31,
+    "ground_microrelief": 2.634,
+    "ground_skin": 4.1662,
+    "prop_arrangement": 8.461,
+    "signature_silhouette": 10.4531,
+    "architecture_placed": 69.52,
+    "hazard": 3.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6262
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "western-rootlands",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0688,
+    "elevation_profile": 0.935,
+    "water_regime": 0.4712,
+    "substrate_mix": 0.6667,
+    "ground_material_lab": 46.5564,
+    "flora_density_placed": 2.0346,
+    "flora_silhouette_placed": 15.61,
+    "ground_microrelief": 2.807,
+    "ground_skin": 2.2617,
+    "prop_arrangement": 2.7371,
+    "signature_silhouette": 5.343,
+    "architecture_placed": 72.24,
+    "hazard": 2.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.4237
+   }
+  },
+  {
+   "a": "clay-moor",
+   "b": "hive",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.2367,
+    "elevation_profile": 22.015,
+    "water_regime": 0,
+    "substrate_mix": 0,
+    "ground_material_lab": 46.0168,
+    "flora_density_placed": 1.061,
+    "flora_silhouette_placed": 2.82,
+    "ground_microrelief": 2.3036,
+    "ground_skin": 2.6361,
+    "prop_arrangement": 5.6519,
+    "signature_silhouette": 4.9893,
+    "architecture_placed": 130.36,
+    "hazard": 3.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.3896
+   }
+  },
+  {
+   "a": "clay-moor",
+   "b": "salt-hills",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.5433,
+    "elevation_profile": 154.82,
+    "water_regime": 0,
+    "substrate_mix": 0.2522,
+    "ground_material_lab": 38.688,
+    "flora_density_placed": 0.7226,
+    "flora_silhouette_placed": 5.32,
+    "ground_microrelief": 2.3988,
+    "ground_skin": 2.1028,
+    "prop_arrangement": 4.641,
+    "signature_silhouette": 1.0795,
+    "architecture_placed": 42.0867,
+    "hazard": 2.2,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6757
+   }
+  },
+  {
+   "a": "clay-moor",
+   "b": "stone-wastes",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1989,
+    "elevation_profile": 25.08,
+    "water_regime": 0.0266,
+    "substrate_mix": 0.3556,
+    "ground_material_lab": 47.0767,
+    "flora_density_placed": 0.1746,
+    "flora_silhouette_placed": 7.81,
+    "ground_microrelief": 3.8264,
+    "ground_skin": 2.6512,
+    "prop_arrangement": 4.0921,
+    "signature_silhouette": 6.9299,
+    "architecture_placed": 132.4,
+    "hazard": 1.95,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6114
+   }
+  },
+  {
+   "a": "clay-moor",
+   "b": "thornmarsh",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0411,
+    "elevation_profile": 21.455,
+    "water_regime": 0.0112,
+    "substrate_mix": 0.2811,
+    "ground_material_lab": 24.4072,
+    "flora_density_placed": 2.7056,
+    "flora_silhouette_placed": 3.28,
+    "ground_microrelief": 2.826,
+    "ground_skin": 3.7319,
+    "prop_arrangement": 7.1386,
+    "signature_silhouette": 4.807,
+    "architecture_placed": 98.16,
+    "hazard": 2.4,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6274
+   }
+  },
+  {
+   "a": "clay-moor",
+   "b": "valus-ridge",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.8611,
+    "elevation_profile": 365.245,
+    "water_regime": 0,
+    "substrate_mix": 0,
+    "ground_material_lab": 42.2743,
+    "flora_density_placed": 0.6638,
+    "flora_silhouette_placed": 9.47,
+    "ground_microrelief": 2.7808,
+    "ground_skin": 4.1476,
+    "prop_arrangement": 7.9998,
+    "signature_silhouette": 2.4576,
+    "architecture_placed": 105.56,
+    "hazard": 3.5,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.5678
+   }
+  },
+  {
+   "a": "crimson-coast",
+   "b": "deep-marshes",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.01,
+    "elevation_profile": 12.69,
+    "water_regime": 1.0774,
+    "substrate_mix": 0.7112,
+    "ground_material_lab": 52.4562,
+    "flora_density_placed": 0.7952,
+    "flora_silhouette_placed": 18.61,
+    "ground_microrelief": 4.4754,
+    "ground_skin": 6.2171,
+    "prop_arrangement": 4.7459,
+    "signature_silhouette": 0,
+    "architecture_placed": 12.72,
+    "hazard": 2.5,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.3833
+   }
+  },
+  {
+   "a": "crimson-coast",
+   "b": "eastern-rootlands",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.09,
+    "elevation_profile": 13.145,
+    "water_regime": 1.2855,
+    "substrate_mix": 0.7956,
+    "ground_material_lab": 58.5816,
+    "flora_density_placed": 0.1818,
+    "flora_silhouette_placed": 10.79,
+    "ground_microrelief": 2.4994,
+    "ground_skin": 2.4979,
+    "prop_arrangement": 4.8887,
+    "signature_silhouette": 3.0367,
+    "architecture_placed": 21.12,
+    "hazard": 1.75,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7343
+   }
+  },
+  {
+   "a": "crimson-coast",
+   "b": "salt-hills",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.6644,
+    "elevation_profile": 173.405,
+    "water_regime": 0.4084,
+    "substrate_mix": 0.0478,
+    "ground_material_lab": 58.8901,
+    "flora_density_placed": 0.1202,
+    "flora_silhouette_placed": 8.82,
+    "ground_microrelief": 1.9464,
+    "ground_skin": 2.5209,
+    "prop_arrangement": 7.4848,
+    "signature_silhouette": 3.7275,
+    "architecture_placed": 25.5267,
+    "hazard": 3.3,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.8589
+   }
+  },
+  {
+   "a": "crimson-coast",
+   "b": "western-rootlands",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0544,
+    "elevation_profile": 10.925,
+    "water_regime": 0.5262,
+    "substrate_mix": 0.3556,
+    "ground_material_lab": 62.5714,
+    "flora_density_placed": 0.2408,
+    "flora_silhouette_placed": 17.79,
+    "ground_microrelief": 3.731,
+    "ground_skin": 2.2068,
+    "prop_arrangement": 4.518,
+    "signature_silhouette": 4.022,
+    "architecture_placed": 118.4,
+    "hazard": 2.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7423
+   }
+  },
+  {
+   "a": "deep-marshes",
+   "b": "eastern-rootlands",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1,
+    "elevation_profile": 0.455,
+    "water_regime": 0.7407,
+    "substrate_mix": 0.3444,
+    "ground_material_lab": 39.7957,
+    "flora_density_placed": 0.6134,
+    "flora_silhouette_placed": 8.78,
+    "ground_microrelief": 4.6928,
+    "ground_skin": 7.515,
+    "prop_arrangement": 3.1986,
+    "signature_silhouette": 3.0367,
+    "architecture_placed": 8.4,
+    "hazard": 2.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6185
+   }
+  },
+  {
+   "a": "deep-marshes",
+   "b": "marauders-coast",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.38,
+    "elevation_profile": 1.335,
+    "water_regime": 0.5372,
+    "substrate_mix": 0.1467,
+    "ground_material_lab": 39.1343,
+    "flora_density_placed": 0.9098,
+    "flora_silhouette_placed": 10.42,
+    "ground_microrelief": 3.741,
+    "ground_skin": 6.3703,
+    "prop_arrangement": 3.3015,
+    "signature_silhouette": 5.5415,
+    "architecture_placed": 31.64,
+    "hazard": 2.5,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.8443
+   }
+  },
+  {
+   "a": "deep-marshes",
+   "b": "stone-forest",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.4378,
+    "elevation_profile": 85.095,
+    "water_regime": 1.0023,
+    "substrate_mix": 0.7767,
+    "ground_material_lab": 46.4097,
+    "flora_density_placed": 0.1328,
+    "flora_silhouette_placed": 1.46,
+    "ground_microrelief": 4.5538,
+    "ground_skin": 5.022,
+    "prop_arrangement": 3.1902,
+    "signature_silhouette": 14.6033,
+    "architecture_placed": 138.68,
+    "hazard": 2,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7407
+   }
+  },
+  {
+   "a": "deep-marshes",
+   "b": "stone-wastes",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0878,
+    "elevation_profile": 6.195,
+    "water_regime": 1.2446,
+    "substrate_mix": 0.56,
+    "ground_material_lab": 80.5873,
+    "flora_density_placed": 0.3634,
+    "flora_silhouette_placed": 14.52,
+    "ground_microrelief": 4.7854,
+    "ground_skin": 7.8394,
+    "prop_arrangement": 7.1368,
+    "signature_silhouette": 9.5591,
+    "architecture_placed": 133.44,
+    "hazard": 3.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.1659
+   }
+  },
+  {
+   "a": "deep-marshes",
+   "b": "thornmarsh",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1067,
+    "elevation_profile": 16.93,
+    "water_regime": 1.2599,
+    "substrate_mix": 0.6345,
+    "ground_material_lab": 59.7855,
+    "flora_density_placed": 2.1824,
+    "flora_silhouette_placed": 9.99,
+    "ground_microrelief": 1.5178,
+    "ground_skin": 3.9713,
+    "prop_arrangement": 2.1273,
+    "signature_silhouette": 0,
+    "architecture_placed": 99.36,
+    "hazard": 3.1,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.8705
+   }
+  },
+  {
+   "a": "deep-marshes",
+   "b": "western-rootlands",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0644,
+    "elevation_profile": 1.765,
+    "water_regime": 0.6968,
+    "substrate_mix": 0.3556,
+    "ground_material_lab": 58.7144,
+    "flora_density_placed": 0.708,
+    "flora_silhouette_placed": 9.62,
+    "ground_microrelief": 2.6004,
+    "ground_skin": 5.8559,
+    "prop_arrangement": 3.1422,
+    "signature_silhouette": 4.022,
+    "architecture_placed": 131.12,
+    "hazard": 2.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7341
+   }
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "salt-hills",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.7544,
+    "elevation_profile": 186.55,
+    "water_regime": 1.694,
+    "substrate_mix": 0.7478,
+    "ground_material_lab": 23.9846,
+    "flora_density_placed": 0.292,
+    "flora_silhouette_placed": 2.79,
+    "ground_microrelief": 3.5638,
+    "ground_skin": 2.678,
+    "prop_arrangement": 4.6061,
+    "signature_silhouette": 0.6908,
+    "architecture_placed": 46.6467,
+    "hazard": 3.05,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.8552
+   }
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "stone-wastes",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0122,
+    "elevation_profile": 6.65,
+    "water_regime": 1.6673,
+    "substrate_mix": 0.6444,
+    "ground_material_lab": 49.7523,
+    "flora_density_placed": 0.474,
+    "flora_silhouette_placed": 6.7,
+    "ground_microrelief": 2.5134,
+    "ground_skin": 1.8384,
+    "prop_arrangement": 7.6153,
+    "signature_silhouette": 6.5224,
+    "architecture_placed": 137.68,
+    "hazard": 3,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.4444
+   }
+  },
+  {
+   "a": "hive",
+   "b": "salt-hills",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.3678,
+    "elevation_profile": 176.835,
+    "water_regime": 0,
+    "substrate_mix": 0.2522,
+    "ground_material_lab": 31.3454,
+    "flora_density_placed": 0.3384,
+    "flora_silhouette_placed": 5.9,
+    "ground_microrelief": 0.6712,
+    "ground_skin": 2.6899,
+    "prop_arrangement": 5.5681,
+    "signature_silhouette": 5.5348,
+    "architecture_placed": 102.8467,
+    "hazard": 2.55,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.4857
+   }
+  },
+  {
+   "a": "hive",
+   "b": "stone-wastes",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.3956,
+    "elevation_profile": 3.065,
+    "water_regime": 0.0266,
+    "substrate_mix": 0.3556,
+    "ground_material_lab": 27.9219,
+    "flora_density_placed": 0.8884,
+    "flora_silhouette_placed": 10.63,
+    "ground_microrelief": 3.3692,
+    "ground_skin": 4.0873,
+    "prop_arrangement": 6.4773,
+    "signature_silhouette": 6.8356,
+    "architecture_placed": 5.16,
+    "hazard": 3,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.952
+   }
+  },
+  {
+   "a": "hive",
+   "b": "thornmarsh",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.2011,
+    "elevation_profile": 7.67,
+    "water_regime": 0.0112,
+    "substrate_mix": 0.2811,
+    "ground_material_lab": 33.1776,
+    "flora_density_placed": 2.3294,
+    "flora_silhouette_placed": 6.1,
+    "ground_microrelief": 2.2104,
+    "ground_skin": 3.1448,
+    "prop_arrangement": 3.6867,
+    "signature_silhouette": 8.9167,
+    "architecture_placed": 228.52,
+    "hazard": 2.85,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.4482
+   }
+  },
+  {
+   "a": "hive",
+   "b": "valus-ridge",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.8556,
+    "elevation_profile": 387.26,
+    "water_regime": 0,
+    "substrate_mix": 0,
+    "ground_material_lab": 28.1693,
+    "flora_density_placed": 0.5092,
+    "flora_silhouette_placed": 6.93,
+    "ground_microrelief": 1.8772,
+    "ground_skin": 3.5605,
+    "prop_arrangement": 4.6346,
+    "signature_silhouette": 5.3923,
+    "architecture_placed": 40.72,
+    "hazard": 1.75,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6441
+   }
+  },
+  {
+   "a": "hive",
+   "b": "western-rootlands",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.3722,
+    "elevation_profile": 7.495,
+    "water_regime": 0.9346,
+    "substrate_mix": 0.56,
+    "ground_material_lab": 36.6887,
+    "flora_density_placed": 0.2178,
+    "flora_silhouette_placed": 3.07,
+    "ground_microrelief": 2.1618,
+    "ground_skin": 2.1038,
+    "prop_arrangement": 3.8683,
+    "signature_silhouette": 5.2797,
+    "architecture_placed": 7.88,
+    "hazard": 2,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.3983
+   }
+  },
+  {
+   "a": "salt-hills",
+   "b": "stone-wastes",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.7422,
+    "elevation_profile": 179.9,
+    "water_regime": 0.0266,
+    "substrate_mix": 0.1034,
+    "ground_material_lab": 31.7372,
+    "flora_density_placed": 0.55,
+    "flora_silhouette_placed": 4.73,
+    "ground_microrelief": 3.6564,
+    "ground_skin": 2.9204,
+    "prop_arrangement": 6.9197,
+    "signature_silhouette": 6.6104,
+    "architecture_placed": 97.6867,
+    "hazard": 2.15,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.9668
+   }
+  },
+  {
+   "a": "salt-hills",
+   "b": "thornmarsh",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.5477,
+    "elevation_profile": 169.165,
+    "water_regime": 0.0112,
+    "substrate_mix": 0.0289,
+    "ground_material_lab": 21.4518,
+    "flora_density_placed": 2.591,
+    "flora_silhouette_placed": 2.36,
+    "ground_microrelief": 2.1392,
+    "ground_skin": 4.6347,
+    "prop_arrangement": 5.9834,
+    "signature_silhouette": 3.7275,
+    "architecture_placed": 131.6067,
+    "hazard": 2.2,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.362
+   }
+  },
+  {
+   "a": "stone-forest",
+   "b": "valus-ridge",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.6478,
+    "elevation_profile": 311.425,
+    "water_regime": 0.28,
+    "substrate_mix": 0.1389,
+    "ground_material_lab": 33.1419,
+    "flora_density_placed": 0.1998,
+    "flora_silhouette_placed": 4.98,
+    "ground_microrelief": 2.6908,
+    "ground_skin": 2.7674,
+    "prop_arrangement": 4.7688,
+    "signature_silhouette": 10.0839,
+    "architecture_placed": 44.64,
+    "hazard": 2,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.5416
+   }
+  },
+  {
+   "a": "stone-wastes",
+   "b": "thornmarsh",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1945,
+    "elevation_profile": 10.735,
+    "water_regime": 0.021,
+    "substrate_mix": 0.0745,
+    "ground_material_lab": 25.0383,
+    "flora_density_placed": 2.533,
+    "flora_silhouette_placed": 4.53,
+    "ground_microrelief": 3.2676,
+    "ground_skin": 5.0681,
+    "prop_arrangement": 8.364,
+    "signature_silhouette": 9.5591,
+    "architecture_placed": 224.56,
+    "hazard": 2.35,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.9057
+   }
+  },
+  {
+   "a": "stone-wastes",
+   "b": "valus-ridge",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.9412,
+    "elevation_profile": 390.325,
+    "water_regime": 0.0266,
+    "substrate_mix": 0.3556,
+    "ground_material_lab": 6.4558,
+    "flora_density_placed": 0.4912,
+    "flora_silhouette_placed": 8.08,
+    "ground_microrelief": 2.9224,
+    "ground_skin": 5.5848,
+    "prop_arrangement": 9.2253,
+    "signature_silhouette": 8.4947,
+    "architecture_placed": 39.88,
+    "hazard": 3.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.8041
+   }
+  },
+  {
+   "a": "stone-wastes",
+   "b": "western-rootlands",
+   "axes_differing": 12,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0234,
+    "elevation_profile": 5.27,
+    "water_regime": 0.908,
+    "substrate_mix": 0.2044,
+    "ground_material_lab": 40.7292,
+    "flora_density_placed": 0.6706,
+    "flora_silhouette_placed": 13.7,
+    "ground_microrelief": 4.041,
+    "ground_skin": 3.1835,
+    "prop_arrangement": 8.3239,
+    "signature_silhouette": 8.3821,
+    "architecture_placed": 2.72,
+    "hazard": 3,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7977
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "clay-moor",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1067,
+    "elevation_profile": 30.445,
+    "water_regime": 0.7611,
+    "substrate_mix": 0.9867,
+    "ground_material_lab": 53.8035,
+    "flora_density_placed": 2.7226,
+    "flora_silhouette_placed": 21.5,
+    "ground_microrelief": 3.2484,
+    "ground_skin": 2.841,
+    "prop_arrangement": 7.2356,
+    "signature_silhouette": 3.5232,
+    "architecture_placed": 63.28,
+    "hazard": 3.5,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7136
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "crimson-coast",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.0144,
+    "elevation_profile": 11.86,
+    "water_regime": 0.5673,
+    "substrate_mix": 0.7823,
+    "ground_material_lab": 54.2147,
+    "flora_density_placed": 2.1218,
+    "flora_silhouette_placed": 33.4,
+    "ground_microrelief": 2.324,
+    "ground_skin": 2.5439,
+    "prop_arrangement": 4.4937,
+    "signature_silhouette": 7.5374,
+    "architecture_placed": 51.6,
+    "hazard": 2,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6648
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "marauders-coast",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.3756,
+    "elevation_profile": 1.885,
+    "water_regime": 0.7795,
+    "substrate_mix": 0.6667,
+    "ground_material_lab": 33.3579,
+    "flora_density_placed": 1.2896,
+    "flora_silhouette_placed": 25.21,
+    "ground_microrelief": 2.2616,
+    "ground_skin": 2.6971,
+    "prop_arrangement": 2.8495,
+    "signature_silhouette": 2.7247,
+    "architecture_placed": 32.68,
+    "hazard": 2.5,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.3977
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "thornmarsh",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1023,
+    "elevation_profile": 16.1,
+    "water_regime": 0.7499,
+    "substrate_mix": 0.7056,
+    "ground_material_lab": 53.672,
+    "flora_density_placed": 0.359,
+    "flora_silhouette_placed": 24.78,
+    "ground_microrelief": 2.0336,
+    "ground_skin": 2.1019,
+    "prop_arrangement": 2.474,
+    "signature_silhouette": 7.5374,
+    "architecture_placed": 161.44,
+    "hazard": 2.6,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.494
+   }
+  },
+  {
+   "a": "clay-moor",
+   "b": "crimson-coast",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1211,
+    "elevation_profile": 20.135,
+    "water_regime": 0.4084,
+    "substrate_mix": 0.2044,
+    "ground_material_lab": 24.6249,
+    "flora_density_placed": 0.6064,
+    "flora_silhouette_placed": 11.9,
+    "ground_microrelief": 3.8124,
+    "ground_skin": 1.9621,
+    "prop_arrangement": 8.4972,
+    "signature_silhouette": 4.807,
+    "architecture_placed": 16.56,
+    "hazard": 3.5,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.4404
+   }
+  },
+  {
+   "a": "clay-moor",
+   "b": "deep-marshes",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1111,
+    "elevation_profile": 31.275,
+    "water_regime": 1.2712,
+    "substrate_mix": 0.9156,
+    "ground_material_lab": 58.2253,
+    "flora_density_placed": 0.5232,
+    "flora_silhouette_placed": 11.31,
+    "ground_microrelief": 3.4078,
+    "ground_skin": 6.3882,
+    "prop_arrangement": 5.9113,
+    "signature_silhouette": 4.807,
+    "architecture_placed": 3.84,
+    "hazard": 3.5,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.5786
+   }
+  },
+  {
+   "a": "clay-moor",
+   "b": "marauders-coast",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.2689,
+    "elevation_profile": 32.06,
+    "water_regime": 1.5206,
+    "substrate_mix": 0.9656,
+    "ground_material_lab": 34.2472,
+    "flora_density_placed": 1.433,
+    "flora_silhouette_placed": 3.71,
+    "ground_microrelief": 2.7228,
+    "ground_skin": 1.7461,
+    "prop_arrangement": 6.8118,
+    "signature_silhouette": 0.7985,
+    "architecture_placed": 30.6,
+    "hazard": 3.5,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.4421
+   }
+  },
+  {
+   "a": "clay-moor",
+   "b": "stone-forest",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.3267,
+    "elevation_profile": 53.82,
+    "water_regime": 0.28,
+    "substrate_mix": 0.1389,
+    "ground_material_lab": 45.0077,
+    "flora_density_placed": 0.464,
+    "flora_silhouette_placed": 10.69,
+    "ground_microrelief": 2.334,
+    "ground_skin": 3.4302,
+    "prop_arrangement": 5.9739,
+    "signature_silhouette": 9.7963,
+    "architecture_placed": 137.64,
+    "hazard": 3.5,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.5508
+   }
+  },
+  {
+   "a": "crimson-coast",
+   "b": "hive",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.3178,
+    "elevation_profile": 3.43,
+    "water_regime": 0.4084,
+    "substrate_mix": 0.2044,
+    "ground_material_lab": 70.1865,
+    "flora_density_placed": 0.4586,
+    "flora_silhouette_placed": 14.72,
+    "ground_microrelief": 1.6592,
+    "ground_skin": 2.915,
+    "prop_arrangement": 5.2653,
+    "signature_silhouette": 8.9167,
+    "architecture_placed": 118.68,
+    "hazard": 2.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7742
+   }
+  },
+  {
+   "a": "crimson-coast",
+   "b": "stone-forest",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.4478,
+    "elevation_profile": 72.405,
+    "water_regime": 0.3029,
+    "substrate_mix": 0.0655,
+    "ground_material_lab": 52.9367,
+    "flora_density_placed": 0.6624,
+    "flora_silhouette_placed": 17.15,
+    "ground_microrelief": 1.9704,
+    "ground_skin": 3.0121,
+    "prop_arrangement": 5.7561,
+    "signature_silhouette": 14.6033,
+    "architecture_placed": 125.96,
+    "hazard": 2,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.4837
+   }
+  },
+  {
+   "a": "deep-marshes",
+   "b": "valus-ridge",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.9133,
+    "elevation_profile": 396.52,
+    "water_regime": 1.2712,
+    "substrate_mix": 0.9156,
+    "ground_material_lab": 74.2797,
+    "flora_density_placed": 0.1406,
+    "flora_silhouette_placed": 6.44,
+    "ground_microrelief": 3.263,
+    "ground_skin": 3.4546,
+    "prop_arrangement": 3.8885,
+    "signature_silhouette": 4.5194,
+    "architecture_placed": 106.6,
+    "hazard": 2,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7108
+   }
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "marauders-coast",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.48,
+    "elevation_profile": 1.39,
+    "water_regime": 0.3712,
+    "substrate_mix": 0.4411,
+    "ground_material_lab": 17.9853,
+    "flora_density_placed": 1.0296,
+    "flora_silhouette_placed": 2.6,
+    "ground_microrelief": 2.6158,
+    "ground_skin": 2.4295,
+    "prop_arrangement": 3.0929,
+    "signature_silhouette": 2.5048,
+    "architecture_placed": 35.88,
+    "hazard": 1.75,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.722
+   }
+  },
+  {
+   "a": "hive",
+   "b": "marauders-coast",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.13,
+    "elevation_profile": 10.045,
+    "water_regime": 1.5206,
+    "substrate_mix": 0.9656,
+    "ground_material_lab": 51.8425,
+    "flora_density_placed": 1.06,
+    "flora_silhouette_placed": 6.53,
+    "ground_microrelief": 2.5768,
+    "ground_skin": 2.6182,
+    "prop_arrangement": 3.7915,
+    "signature_silhouette": 5.4128,
+    "architecture_placed": 99.76,
+    "hazard": 2.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.2294
+   }
+  },
+  {
+   "a": "hive",
+   "b": "stone-forest",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.2212,
+    "elevation_profile": 75.835,
+    "water_regime": 0.28,
+    "substrate_mix": 0.1389,
+    "ground_material_lab": 56.7596,
+    "flora_density_placed": 0.597,
+    "flora_silhouette_placed": 8.15,
+    "ground_microrelief": 3.1376,
+    "ground_skin": 2.8431,
+    "prop_arrangement": 2.9668,
+    "signature_silhouette": 13.485,
+    "architecture_placed": 9.92,
+    "hazard": 1.75,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7729
+   }
+  },
+  {
+   "a": "marauders-coast",
+   "b": "stone-forest",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1433,
+    "elevation_profile": 85.88,
+    "water_regime": 1.2816,
+    "substrate_mix": 0.8267,
+    "ground_material_lab": 16.0627,
+    "flora_density_placed": 0.969,
+    "flora_silhouette_placed": 9,
+    "ground_microrelief": 2.4112,
+    "ground_skin": 2.9633,
+    "prop_arrangement": 4.6917,
+    "signature_silhouette": 9.0618,
+    "architecture_placed": 107.04,
+    "hazard": 2.5,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.8057
+   }
+  },
+  {
+   "a": "marauders-coast",
+   "b": "stone-wastes",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.4678,
+    "elevation_profile": 7.5,
+    "water_regime": 1.4939,
+    "substrate_mix": 0.61,
+    "ground_material_lab": 41.596,
+    "flora_density_placed": 1.2604,
+    "flora_silhouette_placed": 4.1,
+    "ground_microrelief": 2.5996,
+    "ground_skin": 2.6691,
+    "prop_arrangement": 7.8972,
+    "signature_silhouette": 7.7284,
+    "architecture_placed": 101.8,
+    "hazard": 3.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.8523
+   }
+  },
+  {
+   "a": "marauders-coast",
+   "b": "thornmarsh",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.2733,
+    "elevation_profile": 17.715,
+    "water_regime": 1.5093,
+    "substrate_mix": 0.6845,
+    "ground_material_lab": 22.5975,
+    "flora_density_placed": 1.2726,
+    "flora_silhouette_placed": 1.27,
+    "ground_microrelief": 2.2232,
+    "ground_skin": 3.599,
+    "prop_arrangement": 3.2668,
+    "signature_silhouette": 5.5415,
+    "architecture_placed": 128.76,
+    "hazard": 3.1,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.1898
+   }
+  },
+  {
+   "a": "marauders-coast",
+   "b": "western-rootlands",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.4444,
+    "elevation_profile": 2.55,
+    "water_regime": 0.6226,
+    "substrate_mix": 0.4056,
+    "ground_material_lab": 28.8004,
+    "flora_density_placed": 1.1242,
+    "flora_silhouette_placed": 9.6,
+    "ground_microrelief": 3.3386,
+    "ground_skin": 1.7144,
+    "prop_arrangement": 1.9353,
+    "signature_silhouette": 3.1533,
+    "architecture_placed": 104.04,
+    "hazard": 1.75,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.2474
+   }
+  },
+  {
+   "a": "salt-hills",
+   "b": "stone-forest",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.2589,
+    "elevation_profile": 101,
+    "water_regime": 0.28,
+    "substrate_mix": 0.1133,
+    "ground_material_lab": 33.3675,
+    "flora_density_placed": 0.7726,
+    "flora_silhouette_placed": 8.33,
+    "ground_microrelief": 3.4248,
+    "ground_skin": 4.333,
+    "prop_arrangement": 7.3615,
+    "signature_silhouette": 10.8758,
+    "architecture_placed": 100.5933,
+    "hazard": 2.8,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.9128
+   }
+  },
+  {
+   "a": "salt-hills",
+   "b": "valus-ridge",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.4956,
+    "elevation_profile": 210.425,
+    "water_regime": 0,
+    "substrate_mix": 0.2522,
+    "ground_material_lab": 26.4162,
+    "flora_density_placed": 0.7708,
+    "flora_silhouette_placed": 4.15,
+    "ground_microrelief": 2.134,
+    "ground_skin": 5.0504,
+    "prop_arrangement": 5.3589,
+    "signature_silhouette": 2.2871,
+    "architecture_placed": 72.0467,
+    "hazard": 2.4667,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.5362
+   }
+  },
+  {
+   "a": "salt-hills",
+   "b": "western-rootlands",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.7188,
+    "elevation_profile": 184.33,
+    "water_regime": 0.9346,
+    "substrate_mix": 0.3078,
+    "ground_material_lab": 9.3548,
+    "flora_density_placed": 0.1974,
+    "flora_silhouette_placed": 8.97,
+    "ground_microrelief": 2.7626,
+    "ground_skin": 2.6821,
+    "prop_arrangement": 4.9718,
+    "signature_silhouette": 3.2753,
+    "architecture_placed": 94.9667,
+    "hazard": 3.05,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.4064
+   }
+  },
+  {
+   "a": "stone-forest",
+   "b": "stone-wastes",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.5256,
+    "elevation_profile": 78.9,
+    "water_regime": 0.2534,
+    "substrate_mix": 0.2167,
+    "ground_material_lab": 38.464,
+    "flora_density_placed": 0.2914,
+    "flora_silhouette_placed": 13.06,
+    "ground_microrelief": 1.9796,
+    "ground_skin": 4.0174,
+    "prop_arrangement": 6.2565,
+    "signature_silhouette": 16.6006,
+    "architecture_placed": 5.24,
+    "hazard": 3.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6612
+   }
+  },
+  {
+   "a": "stone-forest",
+   "b": "thornmarsh",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.3311,
+    "elevation_profile": 68.165,
+    "water_regime": 0.2688,
+    "substrate_mix": 0.1422,
+    "ground_material_lab": 28.1776,
+    "flora_density_placed": 2.2416,
+    "flora_silhouette_placed": 8.53,
+    "ground_microrelief": 3.036,
+    "ground_skin": 2.2507,
+    "prop_arrangement": 3.9075,
+    "signature_silhouette": 14.6033,
+    "architecture_placed": 229.8,
+    "hazard": 2.6,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.8122
+   }
+  },
+  {
+   "a": "thornmarsh",
+   "b": "valus-ridge",
+   "axes_differing": 13,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.8955,
+    "elevation_profile": 379.59,
+    "water_regime": 0.0112,
+    "substrate_mix": 0.2811,
+    "ground_material_lab": 19.1891,
+    "flora_density_placed": 2.0418,
+    "flora_silhouette_placed": 6.51,
+    "ground_microrelief": 2.1652,
+    "ground_skin": 1.9043,
+    "prop_arrangement": 2.9959,
+    "signature_silhouette": 4.5194,
+    "architecture_placed": 197.72,
+    "hazard": 3.1,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.51
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "hive",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.3034,
+    "elevation_profile": 8.43,
+    "water_regime": 0.7611,
+    "substrate_mix": 0.9867,
+    "ground_material_lab": 78.9934,
+    "flora_density_placed": 1.9704,
+    "flora_silhouette_placed": 18.68,
+    "ground_microrelief": 2.3448,
+    "ground_skin": 2.2539,
+    "prop_arrangement": 3.7837,
+    "signature_silhouette": 7.6025,
+    "architecture_placed": 67.08,
+    "hazard": 1.75,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7532
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "salt-hills",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.6501,
+    "elevation_profile": 185.265,
+    "water_regime": 0.7611,
+    "substrate_mix": 0.7345,
+    "ground_material_lab": 49.6365,
+    "flora_density_placed": 2.232,
+    "flora_silhouette_placed": 24.58,
+    "ground_microrelief": 2.5616,
+    "ground_skin": 3.7438,
+    "prop_arrangement": 5.766,
+    "signature_silhouette": 3.8427,
+    "architecture_placed": 35.7667,
+    "hazard": 2.8,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.2493
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "stone-forest",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.4334,
+    "elevation_profile": 84.265,
+    "water_regime": 0.5277,
+    "substrate_mix": 0.8478,
+    "ground_material_lab": 43.8742,
+    "flora_density_placed": 2.2586,
+    "flora_silhouette_placed": 16.25,
+    "ground_microrelief": 2.4024,
+    "ground_skin": 2.0048,
+    "prop_arrangement": 4.0045,
+    "signature_silhouette": 9.9675,
+    "architecture_placed": 74.36,
+    "hazard": 1.5,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7181
+   }
+  },
+  {
+   "a": "blackwood",
+   "b": "valus-ridge",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.9133,
+    "elevation_profile": 395.69,
+    "water_regime": 0.7611,
+    "substrate_mix": 0.9867,
+    "ground_material_lab": 67.8793,
+    "flora_density_placed": 2.0588,
+    "flora_silhouette_placed": 21.23,
+    "ground_microrelief": 1.8796,
+    "ground_skin": 2.6186,
+    "prop_arrangement": 2.8736,
+    "signature_silhouette": 4.3548,
+    "architecture_placed": 42.28,
+    "hazard": 2,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.4277
+   }
+  },
+  {
+   "a": "clay-moor",
+   "b": "eastern-rootlands",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.2111,
+    "elevation_profile": 31.73,
+    "water_regime": 1.694,
+    "substrate_mix": 1,
+    "ground_material_lab": 46.7724,
+    "flora_density_placed": 0.6466,
+    "flora_silhouette_placed": 2.53,
+    "ground_microrelief": 3.201,
+    "ground_skin": 2.3444,
+    "prop_arrangement": 6.3899,
+    "signature_silhouette": 1.7703,
+    "architecture_placed": 5.28,
+    "hazard": 3.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.5123
+   }
+  },
+  {
+   "a": "clay-moor",
+   "b": "western-rootlands",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1755,
+    "elevation_profile": 29.51,
+    "water_regime": 0.9346,
+    "substrate_mix": 0.56,
+    "ground_material_lab": 43.0886,
+    "flora_density_placed": 0.8432,
+    "flora_silhouette_placed": 5.89,
+    "ground_microrelief": 2.8734,
+    "ground_skin": 1.7793,
+    "prop_arrangement": 7.0985,
+    "signature_silhouette": 2.7298,
+    "architecture_placed": 134.32,
+    "hazard": 3.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.5089
+   }
+  },
+  {
+   "a": "crimson-coast",
+   "b": "marauders-coast",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.39,
+    "elevation_profile": 13.475,
+    "water_regime": 1.1121,
+    "substrate_mix": 0.7612,
+    "ground_material_lab": 44.2966,
+    "flora_density_placed": 1.2114,
+    "flora_silhouette_placed": 8.19,
+    "ground_microrelief": 2.7296,
+    "ground_skin": 2.2612,
+    "prop_arrangement": 4.7683,
+    "signature_silhouette": 5.5415,
+    "architecture_placed": 18.92,
+    "hazard": 1.6667,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7033
+   }
+  },
+  {
+   "a": "crimson-coast",
+   "b": "valus-ridge",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.9133,
+    "elevation_profile": 383.83,
+    "water_regime": 0.4084,
+    "substrate_mix": 0.2044,
+    "ground_material_lab": 61.2598,
+    "flora_density_placed": 0.6606,
+    "flora_silhouette_placed": 12.17,
+    "ground_microrelief": 2.6124,
+    "ground_skin": 3.9625,
+    "prop_arrangement": 5.1673,
+    "signature_silhouette": 4.5194,
+    "architecture_placed": 93.88,
+    "hazard": 2.5,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7343
+   }
+  },
+  {
+   "a": "deep-marshes",
+   "b": "hive",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.3078,
+    "elevation_profile": 9.26,
+    "water_regime": 1.2712,
+    "substrate_mix": 0.9156,
+    "ground_material_lab": 88.6112,
+    "flora_density_placed": 0.6438,
+    "flora_silhouette_placed": 8.77,
+    "ground_microrelief": 3.0802,
+    "ground_skin": 5.7531,
+    "prop_arrangement": 2.7194,
+    "signature_silhouette": 8.9167,
+    "architecture_placed": 131.4,
+    "hazard": 1.75,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.8938
+   }
+  },
+  {
+   "a": "deep-marshes",
+   "b": "salt-hills",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.6544,
+    "elevation_profile": 186.095,
+    "water_regime": 1.2712,
+    "substrate_mix": 0.6634,
+    "ground_material_lab": 60.135,
+    "flora_density_placed": 0.9054,
+    "flora_silhouette_placed": 9.79,
+    "ground_microrelief": 2.529,
+    "ground_skin": 7.243,
+    "prop_arrangement": 5.9846,
+    "signature_silhouette": 3.7275,
+    "architecture_placed": 38.2467,
+    "hazard": 2.8,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.9556
+   }
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "hive",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.4078,
+    "elevation_profile": 9.715,
+    "water_regime": 1.694,
+    "substrate_mix": 1,
+    "ground_material_lab": 55.2751,
+    "flora_density_placed": 0.4144,
+    "flora_silhouette_placed": 3.93,
+    "ground_microrelief": 3.2766,
+    "ground_skin": 3.7629,
+    "prop_arrangement": 3.978,
+    "signature_silhouette": 5.88,
+    "architecture_placed": 135.64,
+    "hazard": 2,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.8221
+   }
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "stone-forest",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.5378,
+    "elevation_profile": 85.55,
+    "water_regime": 1.5095,
+    "substrate_mix": 0.8611,
+    "ground_material_lab": 27.5786,
+    "flora_density_placed": 0.4806,
+    "flora_silhouette_placed": 8.16,
+    "ground_microrelief": 2.421,
+    "ground_skin": 3.693,
+    "prop_arrangement": 4.5555,
+    "signature_silhouette": 11.5666,
+    "architecture_placed": 142.92,
+    "hazard": 2.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7183
+   }
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "thornmarsh",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.2067,
+    "elevation_profile": 17.385,
+    "water_regime": 1.6827,
+    "substrate_mix": 0.7189,
+    "ground_material_lab": 34.8249,
+    "flora_density_placed": 2.299,
+    "flora_silhouette_placed": 2.17,
+    "ground_microrelief": 3.175,
+    "ground_skin": 4.7437,
+    "prop_arrangement": 3.1773,
+    "signature_silhouette": 3.0367,
+    "architecture_placed": 92.88,
+    "hazard": 2.85,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7827
+   }
+  },
+  {
+   "a": "eastern-rootlands",
+   "b": "valus-ridge",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.9534,
+    "elevation_profile": 396.975,
+    "water_regime": 1.694,
+    "substrate_mix": 1,
+    "ground_material_lab": 43.7363,
+    "flora_density_placed": 0.4788,
+    "flora_silhouette_placed": 6.94,
+    "ground_microrelief": 2.8298,
+    "ground_skin": 5.2604,
+    "prop_arrangement": 2.51,
+    "signature_silhouette": 2.4307,
+    "architecture_placed": 110.84,
+    "hazard": 2.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.6596
+   }
+  },
+  {
+   "a": "marauders-coast",
+   "b": "salt-hills",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.3155,
+    "elevation_profile": 186.88,
+    "water_regime": 1.5206,
+    "substrate_mix": 0.7134,
+    "ground_material_lab": 25.2346,
+    "flora_density_placed": 1.3216,
+    "flora_silhouette_placed": 3.63,
+    "ground_microrelief": 2.612,
+    "ground_skin": 2.5857,
+    "prop_arrangement": 4.9165,
+    "signature_silhouette": 1.814,
+    "architecture_placed": 11.8067,
+    "hazard": 3.3,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.1742
+   }
+  },
+  {
+   "a": "marauders-coast",
+   "b": "valus-ridge",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.7611,
+    "elevation_profile": 397.305,
+    "water_regime": 1.5206,
+    "substrate_mix": 0.9656,
+    "ground_material_lab": 35.2328,
+    "flora_density_placed": 0.7692,
+    "flora_silhouette_placed": 7.78,
+    "ground_microrelief": 2.562,
+    "ground_skin": 4.1157,
+    "prop_arrangement": 3.1881,
+    "signature_silhouette": 2.8171,
+    "architecture_placed": 74.96,
+    "hazard": 2.5,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.5726
+   }
+  },
+  {
+   "a": "stone-forest",
+   "b": "western-rootlands",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.5022,
+    "elevation_profile": 83.33,
+    "water_regime": 0.7724,
+    "substrate_mix": 0.4211,
+    "ground_material_lab": 38.8197,
+    "flora_density_placed": 0.5752,
+    "flora_silhouette_placed": 9,
+    "ground_microrelief": 3.8094,
+    "ground_skin": 2.8509,
+    "prop_arrangement": 4.2564,
+    "signature_silhouette": 10.8405,
+    "architecture_placed": 7.56,
+    "hazard": 2.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.7793
+   }
+  },
+  {
+   "a": "thornmarsh",
+   "b": "western-rootlands",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.1711,
+    "elevation_profile": 15.165,
+    "water_regime": 0.9234,
+    "substrate_mix": 0.2789,
+    "ground_material_lab": 29.6399,
+    "flora_density_placed": 2.3936,
+    "flora_silhouette_placed": 9.17,
+    "ground_microrelief": 2.5514,
+    "ground_skin": 3.1526,
+    "prop_arrangement": 2.8115,
+    "signature_silhouette": 4.022,
+    "architecture_placed": 223.84,
+    "hazard": 2.85,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.2427
+   }
+  },
+  {
+   "a": "valus-ridge",
+   "b": "western-rootlands",
+   "axes_differing": 14,
+   "axes_available": 14,
+   "per_axis": {
+    "slope_histogram": 0.9177,
+    "elevation_profile": 394.755,
+    "water_regime": 0.9346,
+    "substrate_mix": 0.56,
+    "ground_material_lab": 35.6329,
+    "flora_density_placed": 0.5734,
+    "flora_silhouette_placed": 7.78,
+    "ground_microrelief": 2.5186,
+    "ground_skin": 3.6013,
+    "prop_arrangement": 2.9014,
+    "signature_silhouette": 1.5982,
+    "architecture_placed": 42.6,
+    "hazard": 2.25,
+    "rendered_palette": null,
+    "rendered_vertical_structure": null,
+    "audio_spectrum": 0.2763
+   }
+  }
+ ],
+ "pass": true
+}

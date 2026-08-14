@@ -1,0 +1,330 @@
+{
+  "tool": "tools/audio/critic-w1-22-r2-bands.mjs",
+  "taken_at": "2026-08-08T01:59:45.189Z",
+  "reads_report": "reports/w1-22-critic/r2/onsets-at-HEAD.json",
+  "report_taken_at": "2026-08-08T01:52:19.518Z",
+  "report_commit": "5d88b7e",
+  "report_seconds": 180,
+  "git": {
+    "commit": "0f5f456",
+    "dirty": true
+  },
+  "sabotage": "centre",
+  "n_events": 413,
+  "n_bed_tod": 40,
+  "checks": {
+    "B1_every_event_in_band": {
+      "pass": true,
+      "n_out_of_band": 0,
+      "of_n_events": 413,
+      "buried": 0,
+      "shouting": 0,
+      "worst": [],
+      "o3_median_blind_pairs": 0,
+      "o3_median_blind": [],
+      "between_event_spread_db": {
+        "n_multi_event_layers": 11,
+        "median": 0,
+        "worst": [
+          {
+            "bed": "blackwood",
+            "layer": "L3",
+            "spread_db": 0,
+            "loudest": "canopy_drip@-2",
+            "quietest": "canopy_drip@-2"
+          },
+          {
+            "bed": "eastern-rootlands",
+            "layer": "L3",
+            "spread_db": 0,
+            "loudest": "oar_stroke@-2",
+            "quietest": "oar_stroke@-2"
+          },
+          {
+            "bed": "hive",
+            "layer": "L3",
+            "spread_db": 0,
+            "loudest": "cell_tick@-2",
+            "quietest": "cell_tick@-2"
+          },
+          {
+            "bed": "marauders-coast",
+            "layer": "L4",
+            "spread_db": 0,
+            "loudest": "gull_cry@0",
+            "quietest": "gull_cry@0"
+          },
+          {
+            "bed": "western-rootlands",
+            "layer": "L3",
+            "spread_db": 0,
+            "loudest": "reed_snap@-2",
+            "quietest": "reed_snap@-2"
+          },
+          {
+            "bed": "barge_hold",
+            "layer": "L3",
+            "spread_db": 0,
+            "loudest": "plank_take@-2",
+            "quietest": "plank_take@-2"
+          },
+          {
+            "bed": "dungeon",
+            "layer": "L3",
+            "spread_db": 0,
+            "loudest": "block_settle@-2",
+            "quietest": "block_settle@-2"
+          },
+          {
+            "bed": "market",
+            "layer": "L3",
+            "spread_db": 0,
+            "loudest": "crate_down@-1.97",
+            "quietest": "crate_down@-1.97"
+          }
+        ]
+      },
+      "what": "EVERY measured event sits inside RI-AUD03 §A's band (L3 -6,2, L4 -4,4) within the ±2 dB tolerance ambience-onsets.mjs declares — checked per EVENT, not over the layer median that gate O3 and the per-layer `event_gain_db` trim both use."
+    },
+    "B2_declared_chain_predicts_render": {
+      "pass": false,
+      "n_event_ids": 47,
+      "n_unmatched_in_data": 0,
+      "tolerance_db": 3,
+      "median_abs_error_db": 3.76,
+      "p90_abs_error_db": 14.82,
+      "max_abs_error_db": 20.78,
+      "n_outside_tolerance": 29,
+      "worst": [
+        {
+          "key": "stone-forest|L3|stone_tick",
+          "bed": "stone-forest",
+          "layer": "L3",
+          "id": "stone_tick",
+          "level_db": -3,
+          "gain_db": -9,
+          "event_gain_db": 30.78,
+          "predicted_rel_db": 18.78,
+          "measured_rel_db": -2,
+          "error_db": -20.78,
+          "n": 22
+        },
+        {
+          "key": "stone-wastes|L4|dying_hist",
+          "bed": "stone-wastes",
+          "layer": "L4",
+          "id": "dying_hist",
+          "level_db": -4,
+          "gain_db": -10,
+          "event_gain_db": -4.46,
+          "predicted_rel_db": -18.46,
+          "measured_rel_db": 0,
+          "error_db": 18.46,
+          "n": 2
+        },
+        {
+          "key": "stone-forest|L4|stone_beetle",
+          "bed": "stone-forest",
+          "layer": "L4",
+          "id": "stone_beetle",
+          "level_db": -2,
+          "gain_db": -11,
+          "event_gain_db": 29.03,
+          "predicted_rel_db": 16.03,
+          "measured_rel_db": -0.39,
+          "error_db": -16.42,
+          "n": 1
+        },
+        {
+          "key": "hive|L3|chitin_scrape",
+          "bed": "hive",
+          "layer": "L3",
+          "id": "chitin_scrape",
+          "level_db": -4,
+          "gain_db": -10,
+          "event_gain_db": 28.25,
+          "predicted_rel_db": 14.25,
+          "measured_rel_db": -2,
+          "error_db": -16.25,
+          "n": 4
+        },
+        {
+          "key": "hive|L3|cell_tick",
+          "bed": "hive",
+          "layer": "L3",
+          "id": "cell_tick",
+          "level_db": -4,
+          "gain_db": -11,
+          "event_gain_db": 28.25,
+          "predicted_rel_db": 13.25,
+          "measured_rel_db": -2,
+          "error_db": -15.25,
+          "n": 20
+        },
+        {
+          "key": "dungeon|L4|far_call",
+          "bed": "dungeon",
+          "layer": "L4",
+          "id": "far_call",
+          "level_db": 1,
+          "gain_db": -6,
+          "event_gain_db": -9.82,
+          "predicted_rel_db": -14.82,
+          "measured_rel_db": -0.01,
+          "error_db": 14.82,
+          "n": 2
+        },
+        {
+          "key": "clay-moor|L3|clay_crack",
+          "bed": "clay-moor",
+          "layer": "L3",
+          "id": "clay_crack",
+          "level_db": -3,
+          "gain_db": -9,
+          "event_gain_db": 23.17,
+          "predicted_rel_db": 11.17,
+          "measured_rel_db": -2.06,
+          "error_db": -13.23,
+          "n": 18
+        },
+        {
+          "key": "clay-moor|L4|naga_speech",
+          "bed": "clay-moor",
+          "layer": "L4",
+          "id": "naga_speech",
+          "level_db": -1,
+          "gain_db": -9,
+          "event_gain_db": 21.57,
+          "predicted_rel_db": 11.57,
+          "measured_rel_db": -1.43,
+          "error_db": -13,
+          "n": 4
+        },
+        {
+          "key": "salt-hills|L4|guar_bells",
+          "bed": "salt-hills",
+          "layer": "L4",
+          "id": "guar_bells",
+          "level_db": -3,
+          "gain_db": -11,
+          "event_gain_db": 1.35,
+          "predicted_rel_db": -12.65,
+          "measured_rel_db": 0,
+          "error_db": 12.65,
+          "n": 2
+        },
+        {
+          "key": "crimson-coast|L3|lichen_scream",
+          "bed": "crimson-coast",
+          "layer": "L3",
+          "id": "lichen_scream",
+          "level_db": 0,
+          "gain_db": -7,
+          "event_gain_db": 17.4,
+          "predicted_rel_db": 10.4,
+          "measured_rel_db": -2,
+          "error_db": -12.4,
+          "n": 18
+        }
+      ],
+      "what": "level_db + synth.gain_db + event_gain_db, read from game/data/audio/ambience/**, predicts the RENDERED level relative to the bed within ±3 dB. This is the gain staging measured end to end: what a designer types against what came out."
+    },
+    "B3_amendment_A_arithmetic": {
+      "gated": false,
+      "amendment_assumes_grain_par_db": [
+        6,
+        10
+      ],
+      "measured_grain_par_db": {
+        "n": 413,
+        "min": -19.43,
+        "p10": 6.33,
+        "median": 11.36,
+        "p90": 17.67,
+        "max": 25.65,
+        "frac_inside_6_10": 0.26,
+        "frac_above_10": 0.64
+      },
+      "required_event_level_to_reach_judge_bar_db": {
+        "amendment_says": 10,
+        "at_median_grain": 8.64,
+        "at_p90_grain": 2.34,
+        "note": "required rel_db = 20 dB - (the grain's own peak-to-window-RMS). The amendment fixes that second term at 6-10 dB by assumption; it is measurable from the same report and is measured here."
+      },
+      "band_ceiling_db": {
+        "L3": 4,
+        "L4": 6
+      },
+      "crest": {
+        "median_bed_alone_db": 12.25,
+        "median_full_mix_db": 16.05,
+        "n_reaching_judge_bar": 3,
+        "of_n": 40,
+        "max_db": 23.3,
+        "reaching": [
+          {
+            "bed": "hive",
+            "tod": "day",
+            "crest_db": 23.3
+          },
+          {
+            "bed": "hive",
+            "tod": "night",
+            "crest_db": 23.3
+          },
+          {
+            "bed": "market",
+            "tod": "day",
+            "crest_db": 21.2
+          }
+        ]
+      },
+      "near_miss_inside_the_band": [
+        {
+          "bed": "salt-hills",
+          "tod": "day",
+          "crest_db": 19.5,
+          "short_by_db": 0.5,
+          "loudest_event_rel_db": 0
+        },
+        {
+          "bed": "salt-hills",
+          "tod": "night",
+          "crest_db": 19.5,
+          "short_by_db": 0.5,
+          "loudest_event_rel_db": 0
+        },
+        {
+          "bed": "thornmarsh",
+          "tod": "day",
+          "crest_db": 19.1,
+          "short_by_db": 0.9,
+          "loudest_event_rel_db": -2
+        },
+        {
+          "bed": "thornmarsh",
+          "tod": "night",
+          "crest_db": 19.1,
+          "short_by_db": 0.9,
+          "loudest_event_rel_db": -2
+        },
+        {
+          "bed": "stone-wastes",
+          "tod": "day",
+          "crest_db": 18.6,
+          "short_by_db": 1.4,
+          "loudest_event_rel_db": 0
+        },
+        {
+          "bed": "stone-wastes",
+          "tod": "night",
+          "crest_db": 18.6,
+          "short_by_db": 1.4,
+          "loudest_event_rel_db": 0
+        }
+      ],
+      "what": "AMENDMENT-W1-22-01 §A argues the judge's 20 dB crest bar and §A's level band cannot both be satisfied. The argument turns on the grain's own peak-to-RMS, which §A assumes is 6-10 dB. Here it is measured. `near_miss_inside_the_band` lists beds that come within 1.5 dB of the bar with EVERY event inside §A's band — each one is a counterexample to \"cannot both be satisfied\"."
+    }
+  },
+  "pass": false
+}

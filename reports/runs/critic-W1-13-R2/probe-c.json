@@ -1,0 +1,131 @@
+{
+  "schema": "critic/w1-13-r2-c@1",
+  "taken_at": "2026-08-07T16:36:33.395Z",
+  "c1_gate_armed": {
+    "frozen": {
+      "advanced_with_the_screen_up": 0
+    },
+    "gate": {
+      "ui_mode_on_entry": "inventory",
+      "ui_mode_after_close": "world",
+      "frame_before": 2,
+      "frame_after": 7,
+      "advanced": 5,
+      "gate_would_refuse": false
+    },
+    "verdict": "gate recovered the world"
+  },
+  "c2_gate_disarmed": {
+    "gate": {
+      "ui_mode_on_entry": "inventory",
+      "ui_mode_after_close": "inventory",
+      "frame_before": 2,
+      "frame_after": 2,
+      "advanced": 0,
+      "gate_would_refuse": true
+    },
+    "instrument_went_red": true
+  },
+  "c3_in_combat": {
+    "in_combat": true,
+    "advanced_with_the_screen_up_in_combat": 10,
+    "gate": {
+      "ui_mode_on_entry": "inventory",
+      "ui_mode_after_close": "world",
+      "frame_before": 40,
+      "frame_after": 45,
+      "advanced": 5,
+      "gate_would_refuse": false
+    },
+    "ui_mode_after_gate": "world",
+    "note": "if the world runs while the screen is up, the gate PASSES with the screen still up"
+  },
+  "c4_sibling_exposure": [
+    {
+      "state": "arena_flat",
+      "screen": "inventory",
+      "advanced_with_screen_open": 0,
+      "mode_after_loadState": "inventory",
+      "advanced_after_loadState": 0
+    },
+    {
+      "state": "arena_flat",
+      "screen": "journal",
+      "advanced_with_screen_open": 0,
+      "mode_after_loadState": "journal",
+      "advanced_after_loadState": 0
+    },
+    {
+      "state": "arena_flat",
+      "screen": "sheet",
+      "advanced_with_screen_open": 0,
+      "mode_after_loadState": "sheet",
+      "advanced_after_loadState": 0
+    },
+    {
+      "state": "arena_flat",
+      "screen": "map",
+      "advanced_with_screen_open": 0,
+      "mode_after_loadState": "map",
+      "advanced_after_loadState": 0
+    },
+    {
+      "state": "settlement_primary_street",
+      "screen": "inventory",
+      "advanced_with_screen_open": 0,
+      "mode_after_loadState": "inventory",
+      "advanced_after_loadState": 0
+    },
+    {
+      "state": "settlement_primary_street",
+      "screen": "journal",
+      "advanced_with_screen_open": 0,
+      "mode_after_loadState": "journal",
+      "advanced_after_loadState": 0
+    },
+    {
+      "state": "settlement_primary_street",
+      "screen": "sheet",
+      "advanced_with_screen_open": 0,
+      "mode_after_loadState": "sheet",
+      "advanced_after_loadState": 0
+    },
+    {
+      "state": "settlement_primary_street",
+      "screen": "map",
+      "advanced_with_screen_open": 0,
+      "mode_after_loadState": "map",
+      "advanced_after_loadState": 0
+    },
+    {
+      "state": "barge-hold",
+      "screen": "inventory",
+      "advanced_with_screen_open": 0,
+      "mode_after_loadState": "inventory",
+      "advanced_after_loadState": 0
+    },
+    {
+      "state": "barge-hold",
+      "screen": "journal",
+      "advanced_with_screen_open": 0,
+      "mode_after_loadState": "journal",
+      "advanced_after_loadState": 0
+    },
+    {
+      "state": "barge-hold",
+      "screen": "sheet",
+      "advanced_with_screen_open": 0,
+      "mode_after_loadState": "sheet",
+      "advanced_after_loadState": 0
+    },
+    {
+      "state": "barge-hold",
+      "screen": "map",
+      "advanced_with_screen_open": 0,
+      "mode_after_loadState": "map",
+      "advanced_after_loadState": 0
+    }
+  ],
+  "c5_note": "see reports/journeys/*/journey.json instruments[].status for a check whose value.pass is false",
+  "page_errors": []
+}

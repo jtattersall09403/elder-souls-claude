@@ -1,0 +1,138 @@
+{
+  "tool": "tools/world/critic-w1-04-r3a.mjs",
+  "entry": "game/index.html",
+  "started_at": "2026-08-08T01:54:33.857Z",
+  "sections": {
+    "S1": {
+      "side": "window.__ENGINE used deliberately: only the renderer is perturbed, the model is not",
+      "room": "archon-apothecary",
+      "base": {
+        "verb": {
+          "drawn_cell": "interior",
+          "visible_cells": [
+            "interior"
+          ],
+          "env_cell": "interior",
+          "env_interior": "archon-apothecary",
+          "agrees": true,
+          "interior_id": "archon-apothecary",
+          "interior_meshes": 127
+        },
+        "graph": {
+          "visible_cells": [
+            "interior"
+          ],
+          "cell": "interior",
+          "objects": 161,
+          "meshes": 127,
+          "triangles": 2460,
+          "lights": 5
+        },
+        "model_env_interior": "archon-apothecary"
+      },
+      "a_setCell_province": {
+        "verb": {
+          "drawn_cell": "province",
+          "visible_cells": [
+            "province"
+          ],
+          "env_cell": "interior",
+          "env_interior": "archon-apothecary",
+          "agrees": false,
+          "interior_id": "archon-apothecary",
+          "interior_meshes": 127
+        },
+        "graph": {
+          "visible_cells": [
+            "province"
+          ],
+          "cell": "province",
+          "objects": 1876,
+          "meshes": 1651,
+          "triangles": 269024,
+          "lights": 0
+        },
+        "model_env_interior": "archon-apothecary"
+      },
+      "b_visible_false": {
+        "verb": {
+          "drawn_cell": "interior",
+          "visible_cells": [],
+          "env_cell": "interior",
+          "env_interior": "archon-apothecary",
+          "agrees": false,
+          "interior_id": "archon-apothecary",
+          "interior_meshes": 127
+        },
+        "graph": {
+          "visible_cells": [],
+          "cell": null,
+          "objects": 0,
+          "meshes": 0,
+          "triangles": 0,
+          "lights": 0
+        },
+        "model_env_interior": "archon-apothecary"
+      },
+      "c_group_emptied": {
+        "verb": {
+          "drawn_cell": "interior",
+          "visible_cells": [
+            "interior"
+          ],
+          "env_cell": "interior",
+          "env_interior": "archon-apothecary",
+          "agrees": true,
+          "interior_id": "archon-apothecary",
+          "interior_meshes": 127
+        },
+        "graph": {
+          "visible_cells": [
+            "interior"
+          ],
+          "cell": "interior",
+          "objects": 1,
+          "meshes": 0,
+          "triangles": 0,
+          "lights": 0
+        },
+        "model_env_interior": "archon-apothecary"
+      },
+      "restored": {
+        "verb": {
+          "drawn_cell": "interior",
+          "visible_cells": [
+            "interior"
+          ],
+          "env_cell": "interior",
+          "env_interior": "archon-apothecary",
+          "agrees": true,
+          "interior_id": "archon-apothecary",
+          "interior_meshes": 127
+        },
+        "graph": {
+          "visible_cells": [
+            "interior"
+          ],
+          "cell": "interior",
+          "objects": 161,
+          "meshes": 127,
+          "triangles": 2460,
+          "lights": 5
+        },
+        "model_env_interior": "archon-apothecary"
+      },
+      "verdicts": {
+        "a_verb_noticed": true,
+        "b_verb_noticed": true,
+        "c_verb_noticed_empty_room": false,
+        "c_graph_noticed_empty_room": true,
+        "model_never_moved": true
+      }
+    }
+  },
+  "page_errors": [],
+  "notes": [],
+  "fatal": "page.evaluate: Error: useDoor: no interior \"blackrose-gaol\"\n    at useDoor (http://127.0.0.1:34639/game/src/sim/settlement.js:266:17)\n    at Engine.enterInterior (http://127.0.0.1:34639/game/src/engine.js:8354:30)\n    at Object.enterInterior (http://127.0.0.1:34639/game/src/harness/api.js:2250:39)\n    at pairShot (eval at evaluate (:290:30), <anonymous>:30:11)\n    at eval (eval at evaluate (:290:30), <anonymous>:38:40)\n    at async <anonymous>:316:30\n    at /home/user/elder-souls-claude/tools/world/critic-w1-04-r3a.mjs:203:32",
+  "finished_at": "2026-08-08T02:06:18.735Z"
+}

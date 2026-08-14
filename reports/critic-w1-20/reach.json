@@ -1,0 +1,1103 @@
+{
+  "positive_control_c1_moved": true,
+  "summary": [
+    {
+      "faction": "the_wet_ledger",
+      "zone": "lilmoth.factor0.r0",
+      "rows_scored": 8,
+      "rows_total": 8,
+      "channels": {
+        "disposition": {
+          "channel": "A",
+          "distinct": 8,
+          "values": [
+            "44",
+            "47",
+            "50",
+            "53",
+            "56",
+            "59",
+            "62",
+            "65"
+          ]
+        },
+        "faction_term": {
+          "channel": "A",
+          "distinct": 8,
+          "values": [
+            "6",
+            "9",
+            "12",
+            "15",
+            "18",
+            "21",
+            "24",
+            "27"
+          ]
+        },
+        "theft": {
+          "channel": "B",
+          "distinct": 2,
+          "values": [
+            "true",
+            "false"
+          ]
+        },
+        "trespassing": {
+          "channel": "B",
+          "distinct": 2,
+          "values": [
+            "true",
+            "false"
+          ]
+        },
+        "arrest_topics": {
+          "channel": "arg",
+          "distinct": 2,
+          "values": [
+            "[\"pay\",\"resist\",\"serve\"]",
+            "[\"pay\",\"resist\",\"serve\",\"faction_invocation\"]"
+          ]
+        },
+        "price": {
+          "channel": "A",
+          "distinct": 8,
+          "values": [
+            "122",
+            "120",
+            "119",
+            "117",
+            "115",
+            "113",
+            "111",
+            "110"
+          ]
+        },
+        "warbrood_shift": {
+          "channel": "B",
+          "distinct": 3,
+          "values": [
+            "0",
+            "4",
+            "8"
+          ]
+        }
+      }
+    },
+    {
+      "faction": "the_drowned_court",
+      "zone": "lilmoth.priest6.r0",
+      "rows_scored": 8,
+      "rows_total": 8,
+      "channels": {
+        "disposition": {
+          "channel": "A",
+          "distinct": 8,
+          "values": [
+            "59",
+            "63.5",
+            "68",
+            "72.5",
+            "77",
+            "81.5",
+            "86",
+            "90.5"
+          ]
+        },
+        "faction_term": {
+          "channel": "A",
+          "distinct": 8,
+          "values": [
+            "9",
+            "13.5",
+            "18",
+            "22.5",
+            "27",
+            "31.5",
+            "36",
+            "40.5"
+          ]
+        },
+        "theft": {
+          "channel": "B",
+          "distinct": 2,
+          "values": [
+            "true",
+            "false"
+          ]
+        },
+        "trespassing": {
+          "channel": "B",
+          "distinct": 2,
+          "values": [
+            "true",
+            "false"
+          ]
+        },
+        "arrest_topics": {
+          "channel": "arg",
+          "distinct": 2,
+          "values": [
+            "[\"pay\",\"resist\",\"serve\"]",
+            "[\"pay\",\"resist\",\"serve\",\"faction_invocation\"]"
+          ]
+        },
+        "price": {
+          "channel": "A",
+          "distinct": 8,
+          "values": [
+            "113",
+            "110",
+            "108",
+            "105",
+            "102",
+            "100",
+            "97",
+            "94"
+          ]
+        },
+        "warbrood_shift": {
+          "channel": "B",
+          "distinct": 3,
+          "values": [
+            "8",
+            "10",
+            "16"
+          ]
+        }
+      }
+    },
+    {
+      "faction": "the_rootkeepers",
+      "zone": null,
+      "rows_scored": 8,
+      "rows_total": 8,
+      "channels": {
+        "disposition": {
+          "channel": "A",
+          "distinct": 4,
+          "values": [
+            "82",
+            "88",
+            "94",
+            "100"
+          ]
+        },
+        "faction_term": {
+          "channel": "A",
+          "distinct": 8,
+          "values": [
+            "12",
+            "18",
+            "24",
+            "30",
+            "36",
+            "42",
+            "48",
+            "54"
+          ]
+        },
+        "theft": {
+          "channel": "B",
+          "distinct": 1,
+          "values": [
+            null
+          ]
+        },
+        "trespassing": {
+          "channel": "B",
+          "distinct": 1,
+          "values": [
+            null
+          ],
+          "note": "no faction_interior exists for this faction anywhere in the world"
+        },
+        "arrest_topics": {
+          "channel": "arg",
+          "distinct": 2,
+          "values": [
+            "[\"pay\",\"resist\",\"serve\"]",
+            "[\"pay\",\"resist\",\"serve\",\"faction_invocation\"]"
+          ]
+        },
+        "price": {
+          "channel": "A",
+          "distinct": 4,
+          "values": [
+            "99",
+            "96",
+            "92",
+            "89"
+          ]
+        },
+        "warbrood_shift": {
+          "channel": "B",
+          "distinct": 3,
+          "values": [
+            "16",
+            "22",
+            "34"
+          ]
+        }
+      }
+    }
+  ],
+  "findings": [],
+  "detail": {
+    "lines": [
+      {
+        "faction": "the_wet_ledger",
+        "standing": "wet-ledger",
+        "npc": "harbourmaster-cuiro-vaneth",
+        "zone": "lilmoth.factor0.r0",
+        "rows": [
+          {
+            "rank": 0,
+            "standing_readback": 0,
+            "channel_b_took": true,
+            "disposition": 44,
+            "faction_term": 6,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.factor0.r0",
+            "trespassing": true,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": true,
+            "theft_scope": "shared",
+            "theft_why": "household or faction stock",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve"
+            ],
+            "price": 122,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 0
+          },
+          {
+            "rank": 1,
+            "standing_readback": 1,
+            "channel_b_took": true,
+            "disposition": 47,
+            "faction_term": 9,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.factor0.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": true,
+            "theft_scope": "shared",
+            "theft_why": "household or faction stock",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve"
+            ],
+            "price": 120,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 4
+          },
+          {
+            "rank": 2,
+            "standing_readback": 2,
+            "channel_b_took": true,
+            "disposition": 50,
+            "faction_term": 12,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.factor0.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": false,
+            "theft_scope": "shared",
+            "theft_why": "rank 2 in wet-ledger",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve"
+            ],
+            "price": 119,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 4
+          },
+          {
+            "rank": 3,
+            "standing_readback": 3,
+            "channel_b_took": true,
+            "disposition": 53,
+            "faction_term": 15,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.factor0.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": false,
+            "theft_scope": "shared",
+            "theft_why": "rank 3 in wet-ledger",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve"
+            ],
+            "price": 117,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 8
+          },
+          {
+            "rank": 4,
+            "standing_readback": 4,
+            "channel_b_took": true,
+            "disposition": 56,
+            "faction_term": 18,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.factor0.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": false,
+            "theft_scope": "shared",
+            "theft_why": "rank 4 in wet-ledger",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve",
+              "faction_invocation"
+            ],
+            "price": 115,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 8
+          },
+          {
+            "rank": 5,
+            "standing_readback": 5,
+            "channel_b_took": true,
+            "disposition": 59,
+            "faction_term": 21,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.factor0.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": false,
+            "theft_scope": "shared",
+            "theft_why": "rank 5 in wet-ledger",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve",
+              "faction_invocation"
+            ],
+            "price": 113,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 8
+          },
+          {
+            "rank": 6,
+            "standing_readback": 6,
+            "channel_b_took": true,
+            "disposition": 62,
+            "faction_term": 24,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.factor0.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": false,
+            "theft_scope": "shared",
+            "theft_why": "rank 6 in wet-ledger",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve",
+              "faction_invocation"
+            ],
+            "price": 111,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 8
+          },
+          {
+            "rank": 7,
+            "standing_readback": 7,
+            "channel_b_took": true,
+            "disposition": 65,
+            "faction_term": 27,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.factor0.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": false,
+            "theft_scope": "shared",
+            "theft_why": "rank 7 in wet-ledger",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve",
+              "faction_invocation"
+            ],
+            "price": 110,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 8
+          }
+        ]
+      },
+      {
+        "faction": "the_drowned_court",
+        "standing": "drowned-court",
+        "npc": "undertaker-vaskh",
+        "zone": "lilmoth.priest6.r0",
+        "rows": [
+          {
+            "rank": 0,
+            "standing_readback": 0,
+            "channel_b_took": true,
+            "disposition": 59,
+            "faction_term": 9,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.priest6.r0",
+            "trespassing": true,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": true,
+            "theft_scope": "shared",
+            "theft_why": "household or faction stock",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve"
+            ],
+            "price": 113,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 8
+          },
+          {
+            "rank": 1,
+            "standing_readback": 1,
+            "channel_b_took": true,
+            "disposition": 63.5,
+            "faction_term": 13.5,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.priest6.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": true,
+            "theft_scope": "shared",
+            "theft_why": "household or faction stock",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve"
+            ],
+            "price": 110,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 10
+          },
+          {
+            "rank": 2,
+            "standing_readback": 2,
+            "channel_b_took": true,
+            "disposition": 68,
+            "faction_term": 18,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.priest6.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": false,
+            "theft_scope": "shared",
+            "theft_why": "rank 2 in drowned-court",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve"
+            ],
+            "price": 108,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 10
+          },
+          {
+            "rank": 3,
+            "standing_readback": 3,
+            "channel_b_took": true,
+            "disposition": 72.5,
+            "faction_term": 22.5,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.priest6.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": false,
+            "theft_scope": "shared",
+            "theft_why": "rank 3 in drowned-court",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve"
+            ],
+            "price": 105,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 10
+          },
+          {
+            "rank": 4,
+            "standing_readback": 4,
+            "channel_b_took": true,
+            "disposition": 77,
+            "faction_term": 27,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.priest6.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": false,
+            "theft_scope": "shared",
+            "theft_why": "rank 4 in drowned-court",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve",
+              "faction_invocation"
+            ],
+            "price": 102,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 16
+          },
+          {
+            "rank": 5,
+            "standing_readback": 5,
+            "channel_b_took": true,
+            "disposition": 81.5,
+            "faction_term": 31.5,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.priest6.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": false,
+            "theft_scope": "shared",
+            "theft_why": "rank 5 in drowned-court",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve",
+              "faction_invocation"
+            ],
+            "price": 100,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 16
+          },
+          {
+            "rank": 6,
+            "standing_readback": 6,
+            "channel_b_took": true,
+            "disposition": 86,
+            "faction_term": 36,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.priest6.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": false,
+            "theft_scope": "shared",
+            "theft_why": "rank 6 in drowned-court",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve",
+              "faction_invocation"
+            ],
+            "price": 97,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 16
+          },
+          {
+            "rank": 7,
+            "standing_readback": 7,
+            "channel_b_took": true,
+            "disposition": 90.5,
+            "faction_term": 40.5,
+            "disposition_modelled": true,
+            "zone_tested": "lilmoth.priest6.r0",
+            "trespassing": false,
+            "trespass_why": null,
+            "owned_objects": 10,
+            "theft": false,
+            "theft_scope": "shared",
+            "theft_why": "rank 7 in drowned-court",
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve",
+              "faction_invocation"
+            ],
+            "price": 94,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 16
+          }
+        ]
+      },
+      {
+        "faction": "the_rootkeepers",
+        "standing": "rootkeepers",
+        "npc": "rootkeeper-jeen",
+        "zone": null,
+        "rows": [
+          {
+            "rank": 0,
+            "standing_readback": 0,
+            "channel_b_took": true,
+            "disposition": 82,
+            "faction_term": 12,
+            "disposition_modelled": true,
+            "zone_tested": null,
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve"
+            ],
+            "price": 99,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 16
+          },
+          {
+            "rank": 1,
+            "standing_readback": 1,
+            "channel_b_took": true,
+            "disposition": 88,
+            "faction_term": 18,
+            "disposition_modelled": true,
+            "zone_tested": null,
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve"
+            ],
+            "price": 96,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 22
+          },
+          {
+            "rank": 2,
+            "standing_readback": 2,
+            "channel_b_took": true,
+            "disposition": 94,
+            "faction_term": 24,
+            "disposition_modelled": true,
+            "zone_tested": null,
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve"
+            ],
+            "price": 92,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 22
+          },
+          {
+            "rank": 3,
+            "standing_readback": 3,
+            "channel_b_took": true,
+            "disposition": 100,
+            "faction_term": 30,
+            "disposition_modelled": true,
+            "zone_tested": null,
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve"
+            ],
+            "price": 89,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 22
+          },
+          {
+            "rank": 4,
+            "standing_readback": 4,
+            "channel_b_took": true,
+            "disposition": 100,
+            "faction_term": 36,
+            "disposition_modelled": true,
+            "zone_tested": null,
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve",
+              "faction_invocation"
+            ],
+            "price": 89,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 34
+          },
+          {
+            "rank": 5,
+            "standing_readback": 5,
+            "channel_b_took": true,
+            "disposition": 100,
+            "faction_term": 42,
+            "disposition_modelled": true,
+            "zone_tested": null,
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve",
+              "faction_invocation"
+            ],
+            "price": 89,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 34
+          },
+          {
+            "rank": 6,
+            "standing_readback": 6,
+            "channel_b_took": true,
+            "disposition": 100,
+            "faction_term": 48,
+            "disposition_modelled": true,
+            "zone_tested": null,
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve",
+              "faction_invocation"
+            ],
+            "price": 89,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 34
+          },
+          {
+            "rank": 7,
+            "standing_readback": 7,
+            "channel_b_took": true,
+            "disposition": 100,
+            "faction_term": 54,
+            "disposition_modelled": true,
+            "zone_tested": null,
+            "arrest_topics": [
+              "pay",
+              "resist",
+              "serve",
+              "faction_invocation"
+            ],
+            "price": 89,
+            "price_keys": [
+              "r",
+              "buyMult",
+              "sellMult",
+              "skill_terms",
+              "skill_buy_mult",
+              "skill_sell_mult",
+              "effective_buy_mult",
+              "effective_sell_mult",
+              "buy",
+              "sell",
+              "buy_surcharge_only",
+              "sell_surcharge_only"
+            ],
+            "warbrood_shift": 34
+          }
+        ]
+      }
+    ],
+    "notes": []
+  }
+}

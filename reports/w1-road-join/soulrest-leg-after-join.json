@@ -1,0 +1,140 @@
+{
+ "schema": "w1-01/soulrest-leg@1",
+ "measured_at": "2026-08-08T03:31:12.869Z",
+ "git": {
+  "commit": "322f708742044eb05e3a9fe11ef62a3284dbbd3e",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "dirty": true
+ },
+ "for": "orchestration/status/W1-05.json — the standing drowning defect near soulrest-blackrose",
+ "leg": "soulrest-blackrose",
+ "leg_m": 1841,
+ "frames_cap": 120000,
+ "buildings_on_this_leg": [
+  "soulrest-grey-hist",
+  "blackrose-pawn",
+  "blackrose-rootpost"
+ ],
+ "arms": [
+  {
+   "arm": "A soulrest->blackrose",
+   "walls": true,
+   "arrived": false,
+   "aborted": null,
+   "frames": 120000,
+   "minutes": 33.333,
+   "path_m": 6459.8,
+   "leg_m": 1841,
+   "longest_stuck_frames": 2,
+   "mired_frames": 0,
+   "deepest_water_m": null,
+   "stopped_at": [
+    1744.1,
+    4876
+   ],
+   "stopped_in_water_m": 0,
+   "stopped_water_band": "W1",
+   "breath_s": 60,
+   "breath_max_s": 60,
+   "submerged": false,
+   "hp": 7,
+   "state": "WALK",
+   "drowned": false,
+   "settlement_solids_at_stop": 0,
+   "inside_a_building": null,
+   "regions_visited": null
+  },
+  {
+   "arm": "B soulrest->blackrose",
+   "walls": false,
+   "arrived": false,
+   "aborted": null,
+   "frames": 120000,
+   "minutes": 33.333,
+   "path_m": 6459.8,
+   "leg_m": 1841,
+   "longest_stuck_frames": 2,
+   "mired_frames": 0,
+   "deepest_water_m": null,
+   "stopped_at": [
+    1744.1,
+    4876
+   ],
+   "stopped_in_water_m": 0,
+   "stopped_water_band": "W1",
+   "breath_s": 60,
+   "breath_max_s": 60,
+   "submerged": false,
+   "hp": 7,
+   "state": "WALK",
+   "drowned": false,
+   "settlement_solids_at_stop": 0,
+   "inside_a_building": null,
+   "regions_visited": null
+  },
+  {
+   "arm": "C blackrose->soulrest",
+   "walls": true,
+   "arrived": false,
+   "aborted": null,
+   "frames": 120000,
+   "minutes": 33.333,
+   "path_m": 6269,
+   "leg_m": 1841,
+   "longest_stuck_frames": 12,
+   "mired_frames": 0,
+   "deepest_water_m": null,
+   "stopped_at": [
+    2222,
+    4960.1
+   ],
+   "stopped_in_water_m": 15.962,
+   "stopped_water_band": "W5",
+   "breath_s": 60,
+   "breath_max_s": 60,
+   "submerged": false,
+   "hp": 379,
+   "state": "SWIM",
+   "drowned": false,
+   "settlement_solids_at_stop": 0,
+   "inside_a_building": null,
+   "regions_visited": null
+  },
+  {
+   "arm": "D blackrose->soulrest",
+   "walls": false,
+   "arrived": false,
+   "aborted": null,
+   "frames": 120000,
+   "minutes": 33.333,
+   "path_m": 6269,
+   "leg_m": 1841,
+   "longest_stuck_frames": 12,
+   "mired_frames": 0,
+   "deepest_water_m": null,
+   "stopped_at": [
+    2222,
+    4960.1
+   ],
+   "stopped_in_water_m": 15.962,
+   "stopped_water_band": "W5",
+   "breath_s": 60,
+   "breath_max_s": 60,
+   "submerged": false,
+   "hp": 379,
+   "state": "SWIM",
+   "drowned": false,
+   "settlement_solids_at_stop": 0,
+   "inside_a_building": null,
+   "regions_visited": null
+  }
+ ],
+ "findings": {
+  "any_arm_arrived": false,
+  "any_arm_drowned": false,
+  "any_arm_stopped_in_water": true,
+  "walls_change_the_answer": false,
+  "mean_path_walls_on": 6364.4,
+  "mean_path_walls_off": 6364.4
+ }
+}

@@ -1,0 +1,1418 @@
+{
+  "tool": "tools/world/critic-w1-04-r5-offline.mjs",
+  "when": "2026-08-08T06:59:53.029Z",
+  "commit": "1fda355",
+  "self_break": true,
+  "door_reach_m": 2.6,
+  "out_tol_m": 0.6,
+  "sections": {
+    "D_doorstep": {
+      "what": "is continuity.exterior_spawn inside a drawn building footprint — over ALL interior records, not only those whose building is in a plan",
+      "records_total": 115,
+      "records_with_a_settlement_plan": 113,
+      "records_with_NO_settlement_plan": 2,
+      "no_plan_ids": [
+        "barge-hold",
+        "writ-house"
+      ],
+      "doorsteps_inside_a_building": 0,
+      "doorsteps_inside_their_own_building": 0,
+      "offenders": []
+    },
+    "R_reentry": {
+      "what": "from the doorstep, which interior does sim/settlement.js#doorAt() hand to `interact`",
+      "records": 115,
+      "no_door_in_reach": 9,
+      "a_door_in_reach_ANY": 106,
+      "re_enters_the_room_you_left": 96,
+      "re_enters_A_DIFFERENT_ROOM": 10,
+      "wrong_door_rows": [
+        {
+          "id": "blackrose-house-0",
+          "settlement": "blackrose",
+          "town_has_a_door_table": true,
+          "door_in_reach": "blackrose-house-1",
+          "dist_m": 0.5,
+          "re_enters_the_room_you_left": false
+        },
+        {
+          "id": "blackrose-inn",
+          "settlement": "blackrose",
+          "town_has_a_door_table": true,
+          "door_in_reach": "blackrose-warders-hall",
+          "dist_m": 0.5,
+          "re_enters_the_room_you_left": false
+        },
+        {
+          "id": "blackrose-market",
+          "settlement": "blackrose",
+          "town_has_a_door_table": true,
+          "door_in_reach": "blackrose-smithy",
+          "dist_m": 0.5,
+          "re_enters_the_room_you_left": false
+        },
+        {
+          "id": "blackrose-rootpost",
+          "settlement": "blackrose",
+          "town_has_a_door_table": true,
+          "door_in_reach": "blackrose-clerk",
+          "dist_m": 0.5,
+          "re_enters_the_room_you_left": false
+        },
+        {
+          "id": "lilmoth-customs",
+          "settlement": "lilmoth",
+          "town_has_a_door_table": true,
+          "door_in_reach": "lilmoth-yard",
+          "dist_m": 1.56,
+          "re_enters_the_room_you_left": false
+        },
+        {
+          "id": "soulrest-boneyard",
+          "settlement": "soulrest",
+          "town_has_a_door_table": true,
+          "door_in_reach": "soulrest-pawn",
+          "dist_m": 2.118,
+          "re_enters_the_room_you_left": false
+        },
+        {
+          "id": "soulrest-court-steps",
+          "settlement": "soulrest",
+          "town_has_a_door_table": true,
+          "door_in_reach": "soulrest-market",
+          "dist_m": 0.876,
+          "re_enters_the_room_you_left": false
+        },
+        {
+          "id": "soulrest-grey-hist",
+          "settlement": "soulrest",
+          "town_has_a_door_table": true,
+          "door_in_reach": "soulrest-court-steps",
+          "dist_m": 0.451,
+          "re_enters_the_room_you_left": false
+        },
+        {
+          "id": "thorn-hall",
+          "settlement": "thorn",
+          "town_has_a_door_table": true,
+          "door_in_reach": "thorn-apothecary",
+          "dist_m": 0.16,
+          "re_enters_the_room_you_left": false
+        },
+        {
+          "id": "thorn-house-0",
+          "settlement": "thorn",
+          "town_has_a_door_table": true,
+          "door_in_reach": "thorn-gate",
+          "dist_m": 0.455,
+          "re_enters_the_room_you_left": false
+        }
+      ],
+      "no_reach_rows": [
+        {
+          "id": "barge-hold",
+          "settlement": "tidewrack",
+          "town_has_a_door_table": false
+        },
+        {
+          "id": "gideon-chapel",
+          "settlement": "gideon",
+          "town_has_a_door_table": true
+        },
+        {
+          "id": "gideon-house-0",
+          "settlement": "gideon",
+          "town_has_a_door_table": true
+        },
+        {
+          "id": "gideon-tollhouse",
+          "settlement": "gideon",
+          "town_has_a_door_table": true
+        },
+        {
+          "id": "lilmoth-house-3",
+          "settlement": "lilmoth",
+          "town_has_a_door_table": true
+        },
+        {
+          "id": "lilmoth-ledger-house",
+          "settlement": "lilmoth",
+          "town_has_a_door_table": true
+        },
+        {
+          "id": "lilmoth-market",
+          "settlement": "lilmoth",
+          "town_has_a_door_table": true
+        },
+        {
+          "id": "thorn-inn",
+          "settlement": "thorn",
+          "town_has_a_door_table": true
+        },
+        {
+          "id": "writ-house",
+          "settlement": "tidewrack",
+          "town_has_a_door_table": false
+        }
+      ],
+      "door_pairs_within_reach_of_each_other": 5,
+      "door_pairs": [
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-inn",
+          "b": "blackrose-warders-hall",
+          "apart_m": 1
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-market",
+          "b": "blackrose-smithy",
+          "apart_m": 1
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-rootpost",
+          "b": "blackrose-clerk",
+          "apart_m": 1
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-house-0",
+          "b": "blackrose-house-1",
+          "apart_m": 1
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-court-steps",
+          "b": "soulrest-market",
+          "apart_m": 2.21
+        }
+      ]
+    },
+    "P_props": {
+      "what": "meshes more than 0.6 m outside their room, under two predicates",
+      "meshes_traversed": 14878,
+      "rooms_that_traversed_nothing": 0,
+      "OVERHANG_reaches_past_the_wall": {
+        "meshes": 61,
+        "rooms": 49,
+        "by_class": {
+          "prop": 61
+        }
+      },
+      "CLEARANCE_sits_wholly_clear": {
+        "meshes": 0,
+        "rooms": 0,
+        "by_class": {}
+      },
+      "worst_overhang_rows": [
+        {
+          "room": "helstrom-apothecary",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-archive",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-deep-market",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-hist-shrine",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-hollow-bole",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-house-0",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-house-1",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-house-10",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-house-11",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-house-2",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-house-3",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-house-4",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-house-5",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-house-6",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-house-7",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-house-8",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-house-9",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-inn-egg",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-inn-gate",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-inn-tide",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-legation",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-rootpost",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-scriptorium",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-smithy",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        },
+        {
+          "room": "helstrom-undertemple",
+          "label": "prop:hel_shell_roof",
+          "cls": "prop",
+          "overhang_m": 0.95,
+          "clearance_m": 0
+        }
+      ]
+    },
+    "B_enumerators": {
+      "what": "which interior records each loop in this piece can reach at all (rule 11, general form)",
+      "interior_records": 115,
+      "reachable_by_a_loop_over_plan_buildings": 112,
+      "orphans_not_in_any_plan": 3,
+      "orphans_the_round5_orphan_pass_HANDLES": [
+        "thorn-house-0"
+      ],
+      "orphans_the_round5_orphan_pass_SKIPS_because_their_settlement_has_no_plan": [
+        "barge-hold",
+        "writ-house"
+      ],
+      "reachable_by_check_building_fits_room": 112,
+      "note": "applyInteriorBounds() orphan pass does `const plan = planFor.get(rec.settlement); if (!plan) continue;` BEFORE counting, so an orphan in a settlement with no document is invisible to it AND to its own count."
+    },
+    "ARM_doorstep_cut": {
+      "D": {
+        "what": "is continuity.exterior_spawn inside a drawn building footprint — over ALL interior records, not only those whose building is in a plan",
+        "records_total": 115,
+        "records_with_a_settlement_plan": 113,
+        "records_with_NO_settlement_plan": 2,
+        "no_plan_ids": [
+          "barge-hold",
+          "writ-house"
+        ],
+        "doorsteps_inside_a_building": 113,
+        "doorsteps_inside_their_own_building": 103,
+        "offenders": [
+          {
+            "id": "archon-apothecary",
+            "settlement": "archon",
+            "building": "archon-apothecary",
+            "has_plan": true,
+            "spawn": [
+              3808.67,
+              3848.3
+            ],
+            "inside_building": "archon-apothecary",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-guild-office",
+            "settlement": "archon",
+            "building": "archon-guild-office",
+            "has_plan": true,
+            "spawn": [
+              3785,
+              3791.3
+            ],
+            "inside_building": "archon-guild-office",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-house-0",
+            "settlement": "archon",
+            "building": "archon-house-0",
+            "has_plan": true,
+            "spawn": [
+              3790.36,
+              3851.76
+            ],
+            "inside_building": "archon-house-0",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-house-1",
+            "settlement": "archon",
+            "building": "archon-house-1",
+            "has_plan": true,
+            "spawn": [
+              3788.29,
+              3858.14
+            ],
+            "inside_building": "archon-house-1",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-house-2",
+            "settlement": "archon",
+            "building": "archon-house-2",
+            "has_plan": true,
+            "spawn": [
+              3785,
+              3857.3
+            ],
+            "inside_building": "archon-house-2",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-inn",
+            "settlement": "archon",
+            "building": "archon-inn",
+            "has_plan": true,
+            "spawn": [
+              3809.47,
+              3854.37
+            ],
+            "inside_building": "archon-inn",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-kiln-house",
+            "settlement": "archon",
+            "building": "archon-kiln-house",
+            "has_plan": true,
+            "spawn": [
+              3792.68,
+              3850.14
+            ],
+            "inside_building": "archon-kiln-house",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-market",
+            "settlement": "archon",
+            "building": "archon-market",
+            "has_plan": true,
+            "spawn": [
+              3810.06,
+              3845.2
+            ],
+            "inside_building": "archon-market",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-rootpost",
+            "settlement": "archon",
+            "building": "archon-rootpost",
+            "has_plan": true,
+            "spawn": [
+              3799.4,
+              3859.38
+            ],
+            "inside_building": "archon-rootpost",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-shrine",
+            "settlement": "archon",
+            "building": "archon-shrine",
+            "has_plan": true,
+            "spawn": [
+              3802.25,
+              3856.9
+            ],
+            "inside_building": "archon-shrine",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-vat-house",
+            "settlement": "archon",
+            "building": "archon-vat-house",
+            "has_plan": true,
+            "spawn": [
+              3814.44,
+              3844.22
+            ],
+            "inside_building": "archon-vat-house",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-ward",
+            "settlement": "archon",
+            "building": "archon-ward",
+            "has_plan": true,
+            "spawn": [
+              3807.01,
+              3857.49
+            ],
+            "inside_building": "archon-inn",
+            "inside_its_own": false
+          },
+          {
+            "id": "blackrose-clerk",
+            "settlement": "blackrose",
+            "building": "blackrose-clerk",
+            "has_plan": true,
+            "spawn": [
+              1887.5,
+              4456.8
+            ],
+            "inside_building": "blackrose-clerk",
+            "inside_its_own": true
+          },
+          {
+            "id": "blackrose-house-0",
+            "settlement": "blackrose",
+            "building": "blackrose-house-0",
+            "has_plan": true,
+            "spawn": [
+              1898.5,
+              4446.8
+            ],
+            "inside_building": "blackrose-house-0",
+            "inside_its_own": true
+          },
+          {
+            "id": "blackrose-house-1",
+            "settlement": "blackrose",
+            "building": "blackrose-house-1",
+            "has_plan": true,
+            "spawn": [
+              1898.5,
+              4447.8
+            ],
+            "inside_building": "blackrose-house-1",
+            "inside_its_own": true
+          },
+          {
+            "id": "blackrose-house-2",
+            "settlement": "blackrose",
+            "building": "blackrose-house-2",
+            "has_plan": true,
+            "spawn": [
+              1898.5,
+              4464.8
+            ],
+            "inside_building": "blackrose-house-2",
+            "inside_its_own": true
+          },
+          {
+            "id": "blackrose-inn",
+            "settlement": "blackrose",
+            "building": "blackrose-inn",
+            "has_plan": true,
+            "spawn": [
+              1865.5,
+              4455.8
+            ],
+            "inside_building": "blackrose-inn",
+            "inside_its_own": true
+          },
+          {
+            "id": "blackrose-market",
+            "settlement": "blackrose",
+            "building": "blackrose-market",
+            "has_plan": true,
+            "spawn": [
+              1876.5,
+              4446.8
+            ],
+            "inside_building": "blackrose-market",
+            "inside_its_own": true
+          },
+          {
+            "id": "blackrose-pawn",
+            "settlement": "blackrose",
+            "building": "blackrose-pawn",
+            "has_plan": true,
+            "spawn": [
+              1876.5,
+              4464.8
+            ],
+            "inside_building": "blackrose-pawn",
+            "inside_its_own": true
+          },
+          {
+            "id": "blackrose-prison",
+            "settlement": "blackrose",
+            "building": "blackrose-prison",
+            "has_plan": true,
+            "spawn": [
+              1865.5,
+              4438.8
+            ],
+            "inside_building": "blackrose-prison",
+            "inside_its_own": true
+          }
+        ]
+      },
+      "R": {
+        "what": "from the doorstep, which interior does sim/settlement.js#doorAt() hand to `interact`",
+        "records": 115,
+        "no_door_in_reach": 2,
+        "a_door_in_reach_ANY": 113,
+        "re_enters_the_room_you_left": 108,
+        "re_enters_A_DIFFERENT_ROOM": 5,
+        "wrong_door_rows": [
+          {
+            "id": "blackrose-house-0",
+            "settlement": "blackrose",
+            "town_has_a_door_table": true,
+            "door_in_reach": "blackrose-house-1",
+            "dist_m": 0.8,
+            "re_enters_the_room_you_left": false
+          },
+          {
+            "id": "blackrose-inn",
+            "settlement": "blackrose",
+            "town_has_a_door_table": true,
+            "door_in_reach": "blackrose-warders-hall",
+            "dist_m": 0.8,
+            "re_enters_the_room_you_left": false
+          },
+          {
+            "id": "blackrose-market",
+            "settlement": "blackrose",
+            "town_has_a_door_table": true,
+            "door_in_reach": "blackrose-smithy",
+            "dist_m": 0.8,
+            "re_enters_the_room_you_left": false
+          },
+          {
+            "id": "blackrose-rootpost",
+            "settlement": "blackrose",
+            "town_has_a_door_table": true,
+            "door_in_reach": "blackrose-clerk",
+            "dist_m": 0.8,
+            "re_enters_the_room_you_left": false
+          },
+          {
+            "id": "thorn-house-0",
+            "settlement": "thorn",
+            "town_has_a_door_table": true,
+            "door_in_reach": "thorn-gate",
+            "dist_m": 1.8,
+            "re_enters_the_room_you_left": false
+          }
+        ],
+        "no_reach_rows": [
+          {
+            "id": "barge-hold",
+            "settlement": "tidewrack",
+            "town_has_a_door_table": false
+          },
+          {
+            "id": "writ-house",
+            "settlement": "tidewrack",
+            "town_has_a_door_table": false
+          }
+        ],
+        "door_pairs_within_reach_of_each_other": 4,
+        "door_pairs": [
+          {
+            "settlement": "blackrose",
+            "a": "blackrose-inn",
+            "b": "blackrose-warders-hall",
+            "apart_m": 1
+          },
+          {
+            "settlement": "blackrose",
+            "a": "blackrose-market",
+            "b": "blackrose-smithy",
+            "apart_m": 1
+          },
+          {
+            "settlement": "blackrose",
+            "a": "blackrose-rootpost",
+            "b": "blackrose-clerk",
+            "apart_m": 1
+          },
+          {
+            "settlement": "blackrose",
+            "a": "blackrose-house-0",
+            "b": "blackrose-house-1",
+            "apart_m": 1
+          }
+        ]
+      },
+      "P": {
+        "meshes": 61,
+        "rooms": 49,
+        "by_class": {
+          "prop": 61
+        }
+      }
+    },
+    "ARM_lamps_cut": {
+      "P": {
+        "what": "meshes more than 0.6 m outside their room, under two predicates",
+        "meshes_traversed": 14878,
+        "rooms_that_traversed_nothing": 0,
+        "OVERHANG_reaches_past_the_wall": {
+          "meshes": 240,
+          "rooms": 59,
+          "by_class": {
+            "prop": 61,
+            "light": 179
+          }
+        },
+        "CLEARANCE_sits_wholly_clear": {
+          "meshes": 153,
+          "rooms": 17,
+          "by_class": {
+            "light": 153
+          }
+        },
+        "worst_overhang_rows": [
+          {
+            "room": "archon-apothecary",
+            "label": "light:archon.factor9.r0.lamp0",
+            "cls": "light",
+            "overhang_m": 2.14,
+            "clearance_m": 1.88
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "light:archon.factor9.r0.lamp0",
+            "cls": "light",
+            "overhang_m": 2.09,
+            "clearance_m": 1.93
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "light:archon.factor9.r0.lamp0",
+            "cls": "light",
+            "overhang_m": 2.04,
+            "clearance_m": 1.98
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "light:archon.factor9.r0.lamp1",
+            "cls": "light",
+            "overhang_m": 2.04,
+            "clearance_m": 1.78
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "light:archon.priest4.r1.hearth",
+            "cls": "light",
+            "overhang_m": 2.01,
+            "clearance_m": 0
+          },
+          {
+            "room": "archon-market",
+            "label": "light:archon.priest4.r0.hearth",
+            "cls": "light",
+            "overhang_m": 2.01,
+            "clearance_m": 0
+          },
+          {
+            "room": "archon-inn",
+            "label": "light:archon.cook5.r0.hearth",
+            "cls": "light",
+            "overhang_m": 2,
+            "clearance_m": 0
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "light:archon.factor9.r0.lamp1",
+            "cls": "light",
+            "overhang_m": 1.99,
+            "clearance_m": 1.83
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "light:archon.factor9.r0.lamp1",
+            "cls": "light",
+            "overhang_m": 1.94,
+            "clearance_m": 1.88
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "light:archon.priest4.r1.hearth",
+            "cls": "light",
+            "overhang_m": 1.27,
+            "clearance_m": 0.55
+          },
+          {
+            "room": "archon-market",
+            "label": "light:archon.priest4.r0.hearth",
+            "cls": "light",
+            "overhang_m": 1.27,
+            "clearance_m": 0.55
+          },
+          {
+            "room": "archon-inn",
+            "label": "light:archon.cook5.r0.hearth",
+            "cls": "light",
+            "overhang_m": 1.26,
+            "clearance_m": 0.53
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "light:archon.priest4.r1.hearth",
+            "cls": "light",
+            "overhang_m": 1.15,
+            "clearance_m": 1.06
+          },
+          {
+            "room": "archon-market",
+            "label": "light:archon.priest4.r0.hearth",
+            "cls": "light",
+            "overhang_m": 1.15,
+            "clearance_m": 1.06
+          },
+          {
+            "room": "archon-inn",
+            "label": "light:archon.cook5.r0.hearth",
+            "cls": "light",
+            "overhang_m": 1.14,
+            "clearance_m": 1.04
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "light:archon.priest4.r1.hearth",
+            "cls": "light",
+            "overhang_m": 1.08,
+            "clearance_m": 0.99
+          },
+          {
+            "room": "archon-market",
+            "label": "light:archon.priest4.r0.hearth",
+            "cls": "light",
+            "overhang_m": 1.08,
+            "clearance_m": 0.99
+          },
+          {
+            "room": "archon-house-0",
+            "label": "light:archon.priest0.r0.lamp1",
+            "cls": "light",
+            "overhang_m": 1.06,
+            "clearance_m": 0.8
+          },
+          {
+            "room": "archon-inn",
+            "label": "light:archon.cook5.r0.hearth",
+            "cls": "light",
+            "overhang_m": 1.06,
+            "clearance_m": 0.97
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "light:archon.priest4.r1.lamp1",
+            "cls": "light",
+            "overhang_m": 1.04,
+            "clearance_m": 0.78
+          },
+          {
+            "room": "archon-house-0",
+            "label": "light:archon.priest0.r0.lamp1",
+            "cls": "light",
+            "overhang_m": 1.01,
+            "clearance_m": 0.85
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "light:archon.priest4.r1.lamp1",
+            "cls": "light",
+            "overhang_m": 0.99,
+            "clearance_m": 0.83
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "light:archon.priest4.r1.hearth",
+            "cls": "light",
+            "overhang_m": 0.96,
+            "clearance_m": 0.87
+          },
+          {
+            "room": "archon-house-0",
+            "label": "light:archon.priest0.r0.lamp1",
+            "cls": "light",
+            "overhang_m": 0.96,
+            "clearance_m": 0.9
+          },
+          {
+            "room": "archon-market",
+            "label": "light:archon.priest4.r0.hearth",
+            "cls": "light",
+            "overhang_m": 0.96,
+            "clearance_m": 0.87
+          }
+        ]
+      }
+    },
+    "SELF_BREAK": {
+      "D": {
+        "what": "is continuity.exterior_spawn inside a drawn building footprint — over ALL interior records, not only those whose building is in a plan",
+        "records_total": 115,
+        "records_with_a_settlement_plan": 113,
+        "records_with_NO_settlement_plan": 2,
+        "no_plan_ids": [
+          "barge-hold",
+          "writ-house"
+        ],
+        "doorsteps_inside_a_building": 112,
+        "doorsteps_inside_their_own_building": 97,
+        "offenders": [
+          {
+            "id": "archon-apothecary",
+            "settlement": "archon",
+            "building": "archon-apothecary",
+            "has_plan": true,
+            "spawn": [
+              3808.67,
+              3846.5
+            ],
+            "inside_building": "archon-market",
+            "inside_its_own": false
+          },
+          {
+            "id": "archon-guild-office",
+            "settlement": "archon",
+            "building": "archon-guild-office",
+            "has_plan": true,
+            "spawn": [
+              3785,
+              3789.5
+            ],
+            "inside_building": "archon-guild-office",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-house-0",
+            "settlement": "archon",
+            "building": "archon-house-0",
+            "has_plan": true,
+            "spawn": [
+              3790.36,
+              3849.96
+            ],
+            "inside_building": "archon-house-0",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-house-1",
+            "settlement": "archon",
+            "building": "archon-house-1",
+            "has_plan": true,
+            "spawn": [
+              3788.29,
+              3856.34
+            ],
+            "inside_building": "archon-house-1",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-house-2",
+            "settlement": "archon",
+            "building": "archon-house-2",
+            "has_plan": true,
+            "spawn": [
+              3785,
+              3855.5
+            ],
+            "inside_building": "archon-house-2",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-inn",
+            "settlement": "archon",
+            "building": "archon-inn",
+            "has_plan": true,
+            "spawn": [
+              3809.47,
+              3852.57
+            ],
+            "inside_building": "archon-inn",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-kiln-house",
+            "settlement": "archon",
+            "building": "archon-kiln-house",
+            "has_plan": true,
+            "spawn": [
+              3792.68,
+              3848.34
+            ],
+            "inside_building": "archon-kiln-house",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-market",
+            "settlement": "archon",
+            "building": "archon-market",
+            "has_plan": true,
+            "spawn": [
+              3810.06,
+              3843.4
+            ],
+            "inside_building": "archon-vat-house",
+            "inside_its_own": false
+          },
+          {
+            "id": "archon-rootpost",
+            "settlement": "archon",
+            "building": "archon-rootpost",
+            "has_plan": true,
+            "spawn": [
+              3799.4,
+              3857.58
+            ],
+            "inside_building": "archon-rootpost",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-shrine",
+            "settlement": "archon",
+            "building": "archon-shrine",
+            "has_plan": true,
+            "spawn": [
+              3802.25,
+              3855.1
+            ],
+            "inside_building": "archon-shrine",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-vat-house",
+            "settlement": "archon",
+            "building": "archon-vat-house",
+            "has_plan": true,
+            "spawn": [
+              3814.44,
+              3842.42
+            ],
+            "inside_building": "archon-vat-house",
+            "inside_its_own": true
+          },
+          {
+            "id": "archon-ward",
+            "settlement": "archon",
+            "building": "archon-ward",
+            "has_plan": true,
+            "spawn": [
+              3807.01,
+              3855.69
+            ],
+            "inside_building": "archon-inn",
+            "inside_its_own": false
+          },
+          {
+            "id": "blackrose-clerk",
+            "settlement": "blackrose",
+            "building": "blackrose-clerk",
+            "has_plan": true,
+            "spawn": [
+              1887.5,
+              4455
+            ],
+            "inside_building": "blackrose-rootpost",
+            "inside_its_own": false
+          },
+          {
+            "id": "blackrose-house-0",
+            "settlement": "blackrose",
+            "building": "blackrose-house-0",
+            "has_plan": true,
+            "spawn": [
+              1898.5,
+              4445
+            ],
+            "inside_building": "blackrose-house-0",
+            "inside_its_own": true
+          },
+          {
+            "id": "blackrose-house-1",
+            "settlement": "blackrose",
+            "building": "blackrose-house-1",
+            "has_plan": true,
+            "spawn": [
+              1898.5,
+              4446
+            ],
+            "inside_building": "blackrose-house-0",
+            "inside_its_own": false
+          },
+          {
+            "id": "blackrose-house-2",
+            "settlement": "blackrose",
+            "building": "blackrose-house-2",
+            "has_plan": true,
+            "spawn": [
+              1898.5,
+              4463
+            ],
+            "inside_building": "blackrose-house-2",
+            "inside_its_own": true
+          },
+          {
+            "id": "blackrose-inn",
+            "settlement": "blackrose",
+            "building": "blackrose-inn",
+            "has_plan": true,
+            "spawn": [
+              1865.5,
+              4454
+            ],
+            "inside_building": "blackrose-inn",
+            "inside_its_own": true
+          },
+          {
+            "id": "blackrose-market",
+            "settlement": "blackrose",
+            "building": "blackrose-market",
+            "has_plan": true,
+            "spawn": [
+              1876.5,
+              4445
+            ],
+            "inside_building": "blackrose-market",
+            "inside_its_own": true
+          },
+          {
+            "id": "blackrose-pawn",
+            "settlement": "blackrose",
+            "building": "blackrose-pawn",
+            "has_plan": true,
+            "spawn": [
+              1876.5,
+              4463
+            ],
+            "inside_building": "blackrose-pawn",
+            "inside_its_own": true
+          },
+          {
+            "id": "blackrose-prison",
+            "settlement": "blackrose",
+            "building": "blackrose-prison",
+            "has_plan": true,
+            "spawn": [
+              1865.5,
+              4437
+            ],
+            "inside_building": "blackrose-prison",
+            "inside_its_own": true
+          }
+        ]
+      },
+      "P": {
+        "what": "meshes more than 0.6 m outside their room, under two predicates",
+        "meshes_traversed": 14878,
+        "rooms_that_traversed_nothing": 0,
+        "OVERHANG_reaches_past_the_wall": {
+          "meshes": 6652,
+          "rooms": 115,
+          "by_class": {
+            "roomshell": 618,
+            "unnamed": 1199,
+            "prop": 3636,
+            "light": 638,
+            "unique": 149,
+            "readable": 116,
+            "container": 296
+          }
+        },
+        "CLEARANCE_sits_wholly_clear": {
+          "meshes": 4581,
+          "rooms": 115,
+          "by_class": {
+            "roomshell": 162,
+            "unnamed": 548,
+            "prop": 2884,
+            "light": 560,
+            "unique": 116,
+            "readable": 109,
+            "container": 202
+          }
+        },
+        "worst_overhang_rows": [
+          {
+            "room": "archon-apothecary",
+            "label": "roomshell",
+            "cls": "roomshell",
+            "overhang_m": 5.15,
+            "clearance_m": 4.85
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "roomshell",
+            "cls": "roomshell",
+            "overhang_m": 5,
+            "clearance_m": 0
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "roomshell",
+            "cls": "roomshell",
+            "overhang_m": 5,
+            "clearance_m": 0
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "roomshell",
+            "cls": "roomshell",
+            "overhang_m": 5,
+            "clearance_m": 0
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "roomshell",
+            "cls": "roomshell",
+            "overhang_m": 5,
+            "clearance_m": 0.78
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "",
+            "cls": "unnamed",
+            "overhang_m": 5,
+            "clearance_m": 0
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "",
+            "cls": "unnamed",
+            "overhang_m": 5,
+            "clearance_m": 0
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:arc_dye_vat",
+            "cls": "prop",
+            "overhang_m": 4.26,
+            "clearance_m": 2.7
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:arc_clay_dome",
+            "cls": "prop",
+            "overhang_m": 4.23,
+            "clearance_m": 1.76
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:arc_clay_dome",
+            "cls": "prop",
+            "overhang_m": 4.2,
+            "clearance_m": 1.79
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:arc_dye_vat",
+            "cls": "prop",
+            "overhang_m": 4.14,
+            "clearance_m": 2.82
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:sack_row",
+            "cls": "prop",
+            "overhang_m": 4.12,
+            "clearance_m": 3.72
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "",
+            "cls": "unnamed",
+            "overhang_m": 3.89,
+            "clearance_m": 2.83
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "",
+            "cls": "unnamed",
+            "overhang_m": 3.89,
+            "clearance_m": 2.83
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "",
+            "cls": "unnamed",
+            "overhang_m": 3.81,
+            "clearance_m": 2.91
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "",
+            "cls": "unnamed",
+            "overhang_m": 3.81,
+            "clearance_m": 2.91
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:strongbox",
+            "cls": "prop",
+            "overhang_m": 3.8,
+            "clearance_m": 3.16
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:strongbox",
+            "cls": "prop",
+            "overhang_m": 3.79,
+            "clearance_m": 3.17
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:sack_row",
+            "cls": "prop",
+            "overhang_m": 3.75,
+            "clearance_m": 3.25
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:stool_high",
+            "cls": "prop",
+            "overhang_m": 3.69,
+            "clearance_m": 3.31
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:stool_high",
+            "cls": "prop",
+            "overhang_m": 3.65,
+            "clearance_m": 3.59
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:strongbox",
+            "cls": "prop",
+            "overhang_m": 3.53,
+            "clearance_m": 3.43
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:stool_high",
+            "cls": "prop",
+            "overhang_m": 3.47,
+            "clearance_m": 3.41
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:stool_high",
+            "cls": "prop",
+            "overhang_m": 3.47,
+            "clearance_m": 3.41
+          },
+          {
+            "room": "archon-apothecary",
+            "label": "prop:coin_tray",
+            "cls": "prop",
+            "overhang_m": 3.45,
+            "clearance_m": 3.14
+          }
+        ]
+      }
+    }
+  },
+  "findings": []
+}

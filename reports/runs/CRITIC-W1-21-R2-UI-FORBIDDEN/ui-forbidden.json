@@ -1,0 +1,283 @@
+{
+  "schema": "elder-souls/ui-forbidden@1",
+  "item": "RI-UIX01",
+  "at": "2026-08-08T00:53:50.713Z",
+  "state": "arena_champion",
+  "screen": [
+    1280,
+    720
+  ],
+  "declared": [],
+  "observed": [
+    {
+      "eid": "E1",
+      "screen": [
+        509,
+        366
+      ],
+      "candidates": 37,
+      "digit_glyphs": 10,
+      "nameplate_bars": 0,
+      "digit_bboxes": [
+        [
+          610,
+          476,
+          6,
+          16
+        ],
+        [
+          600,
+          478,
+          9,
+          14
+        ],
+        [
+          608,
+          478,
+          21,
+          23
+        ],
+        [
+          594,
+          482,
+          10,
+          19
+        ],
+        [
+          649,
+          503,
+          33,
+          30
+        ],
+        [
+          638,
+          515,
+          18,
+          17
+        ]
+      ]
+    },
+    {
+      "eid": "probe1",
+      "screen": [
+        797,
+        401
+      ],
+      "candidates": 158,
+      "digit_glyphs": 14,
+      "nameplate_bars": 0,
+      "digit_bboxes": [
+        [
+          900,
+          424,
+          14,
+          21
+        ],
+        [
+          919,
+          424,
+          12,
+          21
+        ],
+        [
+          610,
+          476,
+          6,
+          16
+        ],
+        [
+          921,
+          477,
+          9,
+          9
+        ],
+        [
+          600,
+          478,
+          9,
+          14
+        ],
+        [
+          608,
+          478,
+          21,
+          23
+        ]
+      ]
+    },
+    {
+      "eid": "probe2",
+      "screen": [
+        589,
+        372
+      ],
+      "candidates": 52,
+      "digit_glyphs": 10,
+      "nameplate_bars": 0,
+      "digit_bboxes": [
+        [
+          610,
+          476,
+          6,
+          16
+        ],
+        [
+          600,
+          478,
+          9,
+          14
+        ],
+        [
+          608,
+          478,
+          21,
+          23
+        ],
+        [
+          594,
+          482,
+          10,
+          19
+        ],
+        [
+          649,
+          503,
+          33,
+          30
+        ],
+        [
+          638,
+          515,
+          18,
+          17
+        ]
+      ]
+    },
+    {
+      "eid": "probe3",
+      "screen": [
+        338,
+        402
+      ],
+      "candidates": 5,
+      "digit_glyphs": 1,
+      "nameplate_bars": 0,
+      "digit_bboxes": [
+        [
+          525,
+          533,
+          13,
+          31
+        ]
+      ]
+    },
+    {
+      "eid": "probe4",
+      "screen": [
+        551,
+        518
+      ],
+      "candidates": 83,
+      "digit_glyphs": 16,
+      "nameplate_bars": 0,
+      "digit_bboxes": [
+        [
+          610,
+          476,
+          6,
+          16
+        ],
+        [
+          600,
+          478,
+          9,
+          14
+        ],
+        [
+          608,
+          478,
+          21,
+          23
+        ],
+        [
+          594,
+          482,
+          10,
+          19
+        ],
+        [
+          649,
+          503,
+          33,
+          30
+        ],
+        [
+          638,
+          515,
+          18,
+          17
+        ]
+      ]
+    },
+    {
+      "eid": "probe5",
+      "screen": [
+        860,
+        470
+      ],
+      "candidates": 222,
+      "digit_glyphs": 15,
+      "nameplate_bars": 0,
+      "digit_bboxes": [
+        [
+          1010,
+          421,
+          20,
+          18
+        ],
+        [
+          1034,
+          421,
+          12,
+          18
+        ],
+        [
+          900,
+          424,
+          14,
+          21
+        ],
+        [
+          919,
+          424,
+          12,
+          21
+        ],
+        [
+          1047,
+          435,
+          8,
+          11
+        ],
+        [
+          921,
+          477,
+          9,
+          9
+        ]
+      ]
+    }
+  ],
+  "self_test": {
+    "injected": "247 drawn over enemy E1 through the build's own glyph path",
+    "digit_glyphs_found": 10,
+    "pass": true,
+    "note": "three digits are drawn; >=2 found is a pass because two adjacent glyphs can merge at this size"
+  },
+  "hit_frame": null,
+  "declared_hits": 0,
+  "observed_digit_hits": 66,
+  "observed_bar_hits": 0,
+  "U4": "PASS",
+  "U5": "FAIL"
+}

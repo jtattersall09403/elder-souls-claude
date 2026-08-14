@@ -1,0 +1,2420 @@
+{
+  "schema": "critic-w1-25/1",
+  "at": "2026-08-08T04:36:34.992Z",
+  "subject": "W1-25",
+  "sections": {
+    "A": {
+      "A1": {
+        "id": "A1 support = effects examined (55 / 55)",
+        "what": "does the magnitude-dial census manufacture couplings out of arena noise? (W1-14-r3's own control question)",
+        "metric": "magnitude_coupled, of 55 effects",
+        "verdict": "OK",
+        "passed": true,
+        "why": "breaking nocast moved magnitude_coupled, of 55 effects from 33 to 0.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "nocast",
+            "what": "--break=nocast — the builder's declared teardown for the dials census"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 33,
+            "support": 55,
+            "canon": "33"
+          },
+          {
+            "arm": "nocast",
+            "broken": [
+              "nocast"
+            ],
+            "value": 0,
+            "support": 55,
+            "canon": "0"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 33,
+        "broken_value": 0,
+        "intact_support": 55,
+        "unsupported_arms": [],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "nocast",
+            "moved": true,
+            "value": 0,
+            "intact_value": 33
+          }
+        ],
+        "factors_that_move_it_alone": [
+          "nocast"
+        ],
+        "factors_inert_alone": [],
+        "minimal_breaking_set": [
+          "nocast"
+        ],
+        "redundant_guards": [],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": true,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 1
+      },
+      "A2": {
+        "id": "A2 support = effects delivered  (55 / 0)",
+        "what": "does the magnitude-dial census manufacture couplings out of arena noise? (W1-14-r3's own control question)",
+        "metric": "magnitude_coupled, of 55 effects",
+        "verdict": "VACUOUS",
+        "passed": false,
+        "why": "arm(s) nocast ranged over fewer than 1 unit(s) ((intact)=55, nocast=0). Whatever these arms did, they did it to an empty set — this is the W1-13 \"the control contained zero people\" shape, and no difference between an inhabited arm and an empty one is evidence about the mechanism.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "nocast",
+            "what": "--break=nocast — the builder's declared teardown for the dials census"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 33,
+            "support": 55,
+            "canon": "33"
+          },
+          {
+            "arm": "nocast",
+            "broken": [
+              "nocast"
+            ],
+            "value": 0,
+            "support": 0,
+            "canon": "0"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 33,
+        "broken_value": 0,
+        "intact_support": 55,
+        "unsupported_arms": [
+          "nocast"
+        ],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "nocast",
+            "moved": true,
+            "value": 0,
+            "intact_value": 33
+          }
+        ],
+        "factors_that_move_it_alone": [
+          "nocast"
+        ],
+        "factors_inert_alone": [],
+        "minimal_breaking_set": [
+          "nocast"
+        ],
+        "redundant_guards": [],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": true,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 0
+      },
+      "A3": {
+        "id": "A3 support not declared at all",
+        "what": "does the magnitude-dial census manufacture couplings out of arena noise? (W1-14-r3's own control question)",
+        "metric": "magnitude_coupled, of 55 effects",
+        "verdict": "OK",
+        "passed": true,
+        "why": "breaking nocast moved magnitude_coupled, of 55 effects from 33 to 0.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "nocast",
+            "what": "--break=nocast — the builder's declared teardown for the dials census"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 33,
+            "support": null,
+            "canon": "33"
+          },
+          {
+            "arm": "nocast",
+            "broken": [
+              "nocast"
+            ],
+            "value": 0,
+            "support": null,
+            "canon": "0"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 33,
+        "broken_value": 0,
+        "intact_support": null,
+        "unsupported_arms": [],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "nocast",
+            "moved": true,
+            "value": 0,
+            "intact_value": 33
+          }
+        ],
+        "factors_that_move_it_alone": [
+          "nocast"
+        ],
+        "factors_inert_alone": [],
+        "minimal_breaking_set": [
+          "nocast"
+        ],
+        "redundant_guards": [],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": true,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 0
+      },
+      "teardown": {
+        "id": "A2-teardown support forged to 55 in the control arm",
+        "what": "does the magnitude-dial census manufacture couplings out of arena noise? (W1-14-r3's own control question)",
+        "metric": "magnitude_coupled, of 55 effects",
+        "verdict": "OK",
+        "passed": true,
+        "why": "breaking nocast moved magnitude_coupled, of 55 effects from 33 to 0.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "nocast",
+            "what": "--break=nocast — the builder's declared teardown for the dials census"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 33,
+            "support": 55,
+            "canon": "33"
+          },
+          {
+            "arm": "nocast",
+            "broken": [
+              "nocast"
+            ],
+            "value": 0,
+            "support": 55,
+            "canon": "0"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 33,
+        "broken_value": 0,
+        "intact_support": 55,
+        "unsupported_arms": [],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "nocast",
+            "moved": true,
+            "value": 0,
+            "intact_value": 33
+          }
+        ],
+        "factors_that_move_it_alone": [
+          "nocast"
+        ],
+        "factors_inert_alone": [],
+        "minimal_breaking_set": [
+          "nocast"
+        ],
+        "redundant_guards": [],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": true,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 0
+      }
+    },
+    "B": {
+      "B-OK": {
+        "id": "B-OK",
+        "what": "canonical",
+        "metric": "n",
+        "verdict": "OK",
+        "passed": true,
+        "why": "breaking g moved n from 100 to 40 (0.6 vs required 0.5).",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "g",
+            "what": "the guard"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 100,
+            "support": 10,
+            "canon": "100"
+          },
+          {
+            "arm": "g",
+            "broken": [
+              "g"
+            ],
+            "value": 40,
+            "support": 10,
+            "canon": "40"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 100,
+        "broken_value": 40,
+        "intact_support": 10,
+        "unsupported_arms": [],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "g",
+            "moved": true,
+            "value": 40,
+            "intact_value": 100
+          }
+        ],
+        "factors_that_move_it_alone": [
+          "g"
+        ],
+        "factors_inert_alone": [],
+        "minimal_breaking_set": [
+          "g"
+        ],
+        "redundant_guards": [],
+        "margin": {
+          "kind": "relative",
+          "min": 0.5
+        },
+        "margin_observed": 0.6,
+        "margin_met": true,
+        "direction": "lower",
+        "direction_observed": "lower",
+        "facility_breaks": [],
+        "ms": 0
+      },
+      "B-INERT": {
+        "id": "B-INERT",
+        "what": "canonical",
+        "metric": "n",
+        "verdict": "INERT",
+        "passed": false,
+        "why": "the fully-broken arm produced the same n as the intact arm (100). Breaking g changed nothing, so this control never measured the thing it names — this is the W1-04 \"both arms were the walls-on arm\" shape.",
+        "arms_agree": true,
+        "factors": [
+          {
+            "id": "g",
+            "what": "the guard"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 100,
+            "support": 10,
+            "canon": "100"
+          },
+          {
+            "arm": "g",
+            "broken": [
+              "g"
+            ],
+            "value": 100,
+            "support": 10,
+            "canon": "100"
+          }
+        ],
+        "distinct_values": 1,
+        "intact_value": 100,
+        "broken_value": 100,
+        "intact_support": 10,
+        "unsupported_arms": [],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "g",
+            "moved": false,
+            "value": 100,
+            "intact_value": 100
+          }
+        ],
+        "factors_that_move_it_alone": [],
+        "factors_inert_alone": [
+          "g"
+        ],
+        "minimal_breaking_set": null,
+        "redundant_guards": [],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": false,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 1
+      },
+      "B-VACUOUS": {
+        "id": "B-VACUOUS",
+        "what": "canonical",
+        "metric": "n",
+        "verdict": "VACUOUS",
+        "passed": false,
+        "why": "arm(s) g ranged over fewer than 1 unit(s) ((intact)=52, g=0). Whatever these arms did, they did it to an empty set — this is the W1-13 \"the control contained zero people\" shape, and no difference between an inhabited arm and an empty one is evidence about the mechanism.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "g",
+            "what": "the guard"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 25,
+            "support": 52,
+            "canon": "25"
+          },
+          {
+            "arm": "g",
+            "broken": [
+              "g"
+            ],
+            "value": 0,
+            "support": 0,
+            "canon": "0"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 25,
+        "broken_value": 0,
+        "intact_support": 52,
+        "unsupported_arms": [
+          "g"
+        ],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "g",
+            "moved": true,
+            "value": 0,
+            "intact_value": 25
+          }
+        ],
+        "factors_that_move_it_alone": [
+          "g"
+        ],
+        "factors_inert_alone": [],
+        "minimal_breaking_set": [
+          "g"
+        ],
+        "redundant_guards": [],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": true,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 0
+      },
+      "B-MASKED": {
+        "id": "B-MASKED",
+        "what": "canonical",
+        "metric": "n",
+        "verdict": "MASKED",
+        "passed": false,
+        "why": "the number moves only when ALL of a + b are broken; every single-factor arm is byte-identical to intact. There are 2 guards here where the piece measured one, and each measures inert alone — this is the W1-SOULS \"delete either and the number stays green\" shape. The next agent deletes one in good faith.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "a",
+            "what": "guard A"
+          },
+          {
+            "id": "b",
+            "what": "guard B"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 252,
+            "support": 10,
+            "canon": "252"
+          },
+          {
+            "arm": "a",
+            "broken": [
+              "a"
+            ],
+            "value": 252,
+            "support": 10,
+            "canon": "252"
+          },
+          {
+            "arm": "b",
+            "broken": [
+              "b"
+            ],
+            "value": 252,
+            "support": 10,
+            "canon": "252"
+          },
+          {
+            "arm": "a+b",
+            "broken": [
+              "a",
+              "b"
+            ],
+            "value": 0,
+            "support": 10,
+            "canon": "0"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 252,
+        "broken_value": 0,
+        "intact_support": 10,
+        "unsupported_arms": [],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "a",
+            "moved": false,
+            "value": 252,
+            "intact_value": 252
+          },
+          {
+            "factor": "b",
+            "moved": false,
+            "value": 252,
+            "intact_value": 252
+          }
+        ],
+        "factors_that_move_it_alone": [],
+        "factors_inert_alone": [
+          "a",
+          "b"
+        ],
+        "minimal_breaking_set": [
+          "a",
+          "b"
+        ],
+        "redundant_guards": [
+          "a",
+          "b"
+        ],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": true,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 8
+      },
+      "B-UNDERPOWERED": {
+        "id": "B-UNDERPOWERED",
+        "what": "canonical",
+        "metric": "n",
+        "verdict": "UNDERPOWERED",
+        "passed": false,
+        "why": "the arms differ but by 0.04, under the declared margin of 0.5.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "g",
+            "what": "the guard"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 100,
+            "support": 10,
+            "canon": "100"
+          },
+          {
+            "arm": "g",
+            "broken": [
+              "g"
+            ],
+            "value": 96,
+            "support": 10,
+            "canon": "96"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 100,
+        "broken_value": 96,
+        "intact_support": 10,
+        "unsupported_arms": [],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "g",
+            "moved": true,
+            "value": 96,
+            "intact_value": 100
+          }
+        ],
+        "factors_that_move_it_alone": [
+          "g"
+        ],
+        "factors_inert_alone": [],
+        "minimal_breaking_set": [
+          "g"
+        ],
+        "redundant_guards": [],
+        "margin": {
+          "kind": "relative",
+          "min": 0.5
+        },
+        "margin_observed": 0.04,
+        "margin_met": false,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 0
+      },
+      "B-WRONG_DIRECTION": {
+        "id": "B-WRONG_DIRECTION",
+        "what": "canonical",
+        "metric": "n",
+        "verdict": "WRONG_DIRECTION",
+        "passed": false,
+        "why": "breaking it moved the number higher, and the control declared lower.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "g",
+            "what": "the guard"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 100,
+            "support": 10,
+            "canon": "100"
+          },
+          {
+            "arm": "g",
+            "broken": [
+              "g"
+            ],
+            "value": 180,
+            "support": 10,
+            "canon": "180"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 100,
+        "broken_value": 180,
+        "intact_support": 10,
+        "unsupported_arms": [],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "g",
+            "moved": true,
+            "value": 180,
+            "intact_value": 100
+          }
+        ],
+        "factors_that_move_it_alone": [
+          "g"
+        ],
+        "factors_inert_alone": [],
+        "minimal_breaking_set": [
+          "g"
+        ],
+        "redundant_guards": [],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": true,
+        "direction": "lower",
+        "direction_observed": "higher",
+        "facility_breaks": [],
+        "ms": 0
+      },
+      "B-COLLIDE-1": {
+        "id": "B-COLLIDE-1 masked defect, small joint effect, 50% margin declared",
+        "what": "two guards for one defect where breaking both moves the number 5%",
+        "metric": "n",
+        "verdict": "UNDERPOWERED",
+        "passed": false,
+        "why": "the arms differ but by 0.047619047619047616, under the declared margin of 0.5.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "a",
+            "what": "guard A"
+          },
+          {
+            "id": "b",
+            "what": "guard B"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 252,
+            "support": 10,
+            "canon": "252"
+          },
+          {
+            "arm": "a",
+            "broken": [
+              "a"
+            ],
+            "value": 252,
+            "support": 10,
+            "canon": "252"
+          },
+          {
+            "arm": "b",
+            "broken": [
+              "b"
+            ],
+            "value": 252,
+            "support": 10,
+            "canon": "252"
+          },
+          {
+            "arm": "a+b",
+            "broken": [
+              "a",
+              "b"
+            ],
+            "value": 240,
+            "support": 10,
+            "canon": "240"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 252,
+        "broken_value": 240,
+        "intact_support": 10,
+        "unsupported_arms": [],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "a",
+            "moved": false,
+            "value": 252,
+            "intact_value": 252
+          },
+          {
+            "factor": "b",
+            "moved": false,
+            "value": 252,
+            "intact_value": 252
+          }
+        ],
+        "factors_that_move_it_alone": [],
+        "factors_inert_alone": [
+          "a",
+          "b"
+        ],
+        "minimal_breaking_set": [
+          "a",
+          "b"
+        ],
+        "redundant_guards": [
+          "a",
+          "b"
+        ],
+        "margin": {
+          "kind": "relative",
+          "min": 0.5
+        },
+        "margin_observed": 0.047619047619047616,
+        "margin_met": false,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 0
+      },
+      "B-COLLIDE-2": {
+        "id": "B-COLLIDE-2 factor A moves it, A+B restores it",
+        "what": "a live guard whose partner cancels it",
+        "metric": "n",
+        "verdict": "INERT",
+        "passed": false,
+        "why": "the fully-broken arm produced the same n as the intact arm (100). Breaking a + b changed nothing, so this control never measured the thing it names — this is the W1-04 \"both arms were the walls-on arm\" shape.",
+        "arms_agree": true,
+        "factors": [
+          {
+            "id": "a",
+            "what": "guard A"
+          },
+          {
+            "id": "b",
+            "what": "guard B"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 100,
+            "support": 10,
+            "canon": "100"
+          },
+          {
+            "arm": "a",
+            "broken": [
+              "a"
+            ],
+            "value": 40,
+            "support": 10,
+            "canon": "40"
+          },
+          {
+            "arm": "b",
+            "broken": [
+              "b"
+            ],
+            "value": 100,
+            "support": 10,
+            "canon": "100"
+          },
+          {
+            "arm": "a+b",
+            "broken": [
+              "a",
+              "b"
+            ],
+            "value": 100,
+            "support": 10,
+            "canon": "100"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 100,
+        "broken_value": 100,
+        "intact_support": 10,
+        "unsupported_arms": [],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "a",
+            "moved": true,
+            "value": 40,
+            "intact_value": 100
+          },
+          {
+            "factor": "b",
+            "moved": false,
+            "value": 100,
+            "intact_value": 100
+          }
+        ],
+        "factors_that_move_it_alone": [
+          "a"
+        ],
+        "factors_inert_alone": [
+          "b"
+        ],
+        "minimal_breaking_set": [
+          "a"
+        ],
+        "redundant_guards": [],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": false,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 0
+      },
+      "B-COLLIDE-3": {
+        "id": "B-COLLIDE-3 empty population AND arms agree",
+        "what": "both defects at once",
+        "metric": "n",
+        "verdict": "VACUOUS",
+        "passed": false,
+        "why": "arm(s) (intact), g ranged over fewer than 1 unit(s) ((intact)=0, g=0). Whatever these arms did, they did it to an empty set — this is the W1-13 \"the control contained zero people\" shape, and no difference between an inhabited arm and an empty one is evidence about the mechanism.",
+        "arms_agree": true,
+        "factors": [
+          {
+            "id": "g",
+            "what": "the guard"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 0,
+            "support": 0,
+            "canon": "0"
+          },
+          {
+            "arm": "g",
+            "broken": [
+              "g"
+            ],
+            "value": 0,
+            "support": 0,
+            "canon": "0"
+          }
+        ],
+        "distinct_values": 1,
+        "intact_value": 0,
+        "broken_value": 0,
+        "intact_support": 0,
+        "unsupported_arms": [
+          "(intact)",
+          "g"
+        ],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "g",
+            "moved": false,
+            "value": 0,
+            "intact_value": 0
+          }
+        ],
+        "factors_that_move_it_alone": [],
+        "factors_inert_alone": [
+          "g"
+        ],
+        "minimal_breaking_set": null,
+        "redundant_guards": [],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": false,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 0
+      },
+      "B-COLLIDE-4": {
+        "id": "B-COLLIDE-4 the W1-13 case with supportArms:\"intact\" and no support_note",
+        "what": "the vacuity check opted out of, exactly as the docstring forbids",
+        "metric": "n",
+        "verdict": "OK",
+        "passed": true,
+        "why": "breaking g moved n from 25 to 0.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "g",
+            "what": "the guard"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 25,
+            "support": 52,
+            "canon": "25"
+          },
+          {
+            "arm": "g",
+            "broken": [
+              "g"
+            ],
+            "value": 0,
+            "support": 0,
+            "canon": "0"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 25,
+        "broken_value": 0,
+        "intact_support": 52,
+        "unsupported_arms": [],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "g",
+            "moved": true,
+            "value": 0,
+            "intact_value": 25
+          }
+        ],
+        "factors_that_move_it_alone": [
+          "g"
+        ],
+        "factors_inert_alone": [],
+        "minimal_breaking_set": [
+          "g"
+        ],
+        "redundant_guards": [],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": true,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 0
+      },
+      "B-COLLIDE-1-teardown": {
+        "id": "B-COLLIDE-1-teardown same case, margin dropped",
+        "what": "t",
+        "metric": "n",
+        "verdict": "MASKED",
+        "passed": false,
+        "why": "the number moves only when ALL of a + b are broken; every single-factor arm is byte-identical to intact. There are 2 guards here where the piece measured one, and each measures inert alone — this is the W1-SOULS \"delete either and the number stays green\" shape. The next agent deletes one in good faith.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "a",
+            "what": "guard A"
+          },
+          {
+            "id": "b",
+            "what": "guard B"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 252,
+            "support": 10,
+            "canon": "252"
+          },
+          {
+            "arm": "a",
+            "broken": [
+              "a"
+            ],
+            "value": 252,
+            "support": 10,
+            "canon": "252"
+          },
+          {
+            "arm": "b",
+            "broken": [
+              "b"
+            ],
+            "value": 252,
+            "support": 10,
+            "canon": "252"
+          },
+          {
+            "arm": "a+b",
+            "broken": [
+              "a",
+              "b"
+            ],
+            "value": 240,
+            "support": 10,
+            "canon": "240"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 252,
+        "broken_value": 240,
+        "intact_support": 10,
+        "unsupported_arms": [],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "a",
+            "moved": false,
+            "value": 252,
+            "intact_value": 252
+          },
+          {
+            "factor": "b",
+            "moved": false,
+            "value": 252,
+            "intact_value": 252
+          }
+        ],
+        "factors_that_move_it_alone": [],
+        "factors_inert_alone": [
+          "a",
+          "b"
+        ],
+        "minimal_breaking_set": [
+          "a",
+          "b"
+        ],
+        "redundant_guards": [
+          "a",
+          "b"
+        ],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": true,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 0
+      },
+      "B-COLLIDE-2-teardown": {
+        "id": "B-COLLIDE-2-teardown same case, B removed from the factor list",
+        "what": "t",
+        "metric": "n",
+        "verdict": "OK",
+        "passed": true,
+        "why": "breaking a moved n from 100 to 40.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "a",
+            "what": "guard A"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 100,
+            "support": 10,
+            "canon": "100"
+          },
+          {
+            "arm": "a",
+            "broken": [
+              "a"
+            ],
+            "value": 40,
+            "support": 10,
+            "canon": "40"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 100,
+        "broken_value": 40,
+        "intact_support": 10,
+        "unsupported_arms": [],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "a",
+            "moved": true,
+            "value": 40,
+            "intact_value": 100
+          }
+        ],
+        "factors_that_move_it_alone": [
+          "a"
+        ],
+        "factors_inert_alone": [],
+        "minimal_breaking_set": [
+          "a"
+        ],
+        "redundant_guards": [],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": true,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 0
+      },
+      "B-COLLIDE-4-teardown": {
+        "id": "B-COLLIDE-4-teardown same case, supportArms left at its default",
+        "what": "t",
+        "metric": "n",
+        "verdict": "VACUOUS",
+        "passed": false,
+        "why": "arm(s) g ranged over fewer than 1 unit(s) ((intact)=52, g=0). Whatever these arms did, they did it to an empty set — this is the W1-13 \"the control contained zero people\" shape, and no difference between an inhabited arm and an empty one is evidence about the mechanism.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "g",
+            "what": "the guard"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 25,
+            "support": 52,
+            "canon": "25"
+          },
+          {
+            "arm": "g",
+            "broken": [
+              "g"
+            ],
+            "value": 0,
+            "support": 0,
+            "canon": "0"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 25,
+        "broken_value": 0,
+        "intact_support": 52,
+        "unsupported_arms": [
+          "g"
+        ],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "g",
+            "moved": true,
+            "value": 0,
+            "intact_value": 25
+          }
+        ],
+        "factors_that_move_it_alone": [
+          "g"
+        ],
+        "factors_inert_alone": [],
+        "minimal_breaking_set": [
+          "g"
+        ],
+        "redundant_guards": [],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": true,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 0
+      }
+    },
+    "C": {
+      "case4": {
+        "id": "w1-14-r3.NOCAST — the teardown that exits before the comparator",
+        "what": "W1-14-r3's dials control: `--break=nocast` skips the cast, so all 55 rows exit at NOT_DELIVERED before readDial() runs",
+        "metric": "magnitude_coupled, of 55 effects",
+        "verdict": "VACUOUS",
+        "passed": false,
+        "why": "arm(s) nocast ranged over fewer than 1 unit(s) ((intact)=55, nocast=0). Whatever these arms did, they did it to an empty set — this is the W1-13 \"the control contained zero people\" shape, and no difference between an inhabited arm and an empty one is evidence about the mechanism.",
+        "arms_agree": false,
+        "factors": [
+          {
+            "id": "nocast",
+            "what": "tools/harness/w1-14-r3-dials.mjs --break=nocast"
+          }
+        ],
+        "arms": [
+          {
+            "arm": "(intact)",
+            "broken": [],
+            "value": 33,
+            "support": 55,
+            "detail": {
+              "active": 55,
+              "not_delivered": 0
+            },
+            "canon": "33"
+          },
+          {
+            "arm": "nocast",
+            "broken": [
+              "nocast"
+            ],
+            "value": 0,
+            "support": 0,
+            "detail": {
+              "active": 0,
+              "not_delivered": 55
+            },
+            "canon": "0"
+          }
+        ],
+        "distinct_values": 2,
+        "intact_value": 33,
+        "broken_value": 0,
+        "intact_support": 55,
+        "unsupported_arms": [
+          "nocast"
+        ],
+        "min_support": 1,
+        "factor_effects": [
+          {
+            "factor": "nocast",
+            "moved": true,
+            "value": 0,
+            "intact_value": 33
+          }
+        ],
+        "factors_that_move_it_alone": [
+          "nocast"
+        ],
+        "factors_inert_alone": [],
+        "minimal_breaking_set": [
+          "nocast"
+        ],
+        "redundant_guards": [],
+        "margin": {
+          "kind": "differs"
+        },
+        "margin_observed": null,
+        "margin_met": true,
+        "direction": "any",
+        "direction_observed": null,
+        "facility_breaks": [],
+        "ms": 1,
+        "expected_verdict": "VACUOUS",
+        "as_expected": true
+      },
+      "untracked": [
+        "reports/w1-04-r3-collision.json",
+        "reports/critic-souls-r3-INTACT.json",
+        "reports/critic-souls-r3-DELETED-identity.json",
+        "reports/critic-souls-r3-DELETED-boundary.json",
+        "reports/critic-souls-r3-DELETED-identity-boundary.json",
+        "reports/runs/W1-13-R4/clock-consequences.json",
+        "reports/journeys/w1-13-r4-jrn06/journey.json",
+        "reports/w1-14-r3/dials.json",
+        "reports/w1-14-r3/dials-break-nocast.json"
+      ]
+    },
+    "D": {
+      "rows": [
+        {
+          "cell": "QST->ROS",
+          "file": "game/data/world/encounters.json",
+          "key": "absent_when_flag",
+          "why": "Q-MAIN-23 res_sign_the_clause sets `the_sixty_are_protected`; the net-throwers of dres-raid-party carry `absent_when_flag` on it. ARBITRATION AR-3 names this crossing in as many words: \"a quest whose resolution changes an encounter's composition\".",
+          "occurrences": 1,
+          "sample": [
+            {
+              "pointer": "/encounters/0/members/1/absent_when_flag",
+              "value": "the_sixty_are_protected"
+            }
+          ],
+          "reported_as_no_data": true,
+          "missed_by_the_tool": true
+        },
+        {
+          "cell": "WLD->ROS",
+          "file": "game/data/world/encounters.json",
+          "key": "absent_when_flag",
+          "why": "the same field read as world-state -> roster: a world flag removes two bodies from a spawn.",
+          "occurrences": 1,
+          "sample": [
+            {
+              "pointer": "/encounters/0/members/1/absent_when_flag",
+              "value": "the_sixty_are_protected"
+            }
+          ],
+          "reported_as_no_data": true,
+          "missed_by_the_tool": true
+        },
+        {
+          "cell": "DIS->ROS",
+          "file": "game/data/world/encounters.json",
+          "key": "hostile_below_disposition",
+          "why": "an encounter that is hostile only below a disposition threshold.",
+          "occurrences": 1,
+          "sample": [
+            {
+              "pointer": "/encounters/1/hostile_below_disposition",
+              "value": 15
+            }
+          ],
+          "reported_as_no_data": true,
+          "missed_by_the_tool": true
+        },
+        {
+          "cell": "LOR->ROS",
+          "file": "game/data/world/encounters.json",
+          "key": "true_name_topic",
+          "why": "knowing a lore topic opens a parley on an encounter — ARBITRATION AR-3's \"a lore fact that is also a boss's weakness\", twice (the-sallow-wife, the-twin-lamps).",
+          "occurrences": 2,
+          "sample": [
+            {
+              "pointer": "/encounters/0/parley/true_name_topic",
+              "value": "the-sallow-wife"
+            },
+            {
+              "pointer": "/encounters/1/parley/true_name_topic",
+              "value": "the-twin-lamps"
+            }
+          ],
+          "reported_as_no_data": true,
+          "missed_by_the_tool": true
+        }
+      ],
+      "missed": 4,
+      "probes": [
+        "tools/quests/encounter-seam-probe.mjs",
+        "tools/quests/critic-ar3-endtoend.mjs",
+        "tools/quests/faction-seam-probe.mjs",
+        "tools/world/crossing-consumption.mjs",
+        "tools/world/crossing-deletefix.mjs"
+      ]
+    },
+    "E": {
+      "rows": [
+        {
+          "file": "reports/w1-09/exemplar/RI-CMB07-exemplar-F2-trace.jsonl",
+          "frames": 9000,
+          "events": 553,
+          "kinds": 24,
+          "top": [
+            [
+              "ACTION_START",
+              130
+            ],
+            [
+              "attack_start",
+              130
+            ],
+            [
+              "HIT",
+              53
+            ],
+            [
+              "hit",
+              53
+            ],
+            [
+              "INPUT_BUFFERED",
+              27
+            ],
+            [
+              "input_buffered",
+              27
+            ],
+            [
+              "WHIFF",
+              20
+            ],
+            [
+              "whiff",
+              20
+            ]
+          ]
+        },
+        {
+          "file": "reports/w1-09/exemplar/RI-CMB07-exemplar-F4-trace.jsonl",
+          "frames": 9000,
+          "events": 548,
+          "kinds": 24,
+          "top": [
+            [
+              "ACTION_START",
+              130
+            ],
+            [
+              "attack_start",
+              130
+            ],
+            [
+              "HIT",
+              51
+            ],
+            [
+              "hit",
+              51
+            ],
+            [
+              "INPUT_BUFFERED",
+              34
+            ],
+            [
+              "input_buffered",
+              34
+            ],
+            [
+              "IFRAME_NEGATE",
+              22
+            ],
+            [
+              "iframe_dodge",
+              22
+            ]
+          ]
+        },
+        {
+          "file": "reports/w1-09/exemplar/RI-CMB07-exemplar-F3-trace.jsonl",
+          "frames": 8945,
+          "events": 530,
+          "kinds": 28,
+          "top": [
+            [
+              "ACTION_START",
+              124
+            ],
+            [
+              "attack_start",
+              124
+            ],
+            [
+              "HIT",
+              54
+            ],
+            [
+              "hit",
+              54
+            ],
+            [
+              "INPUT_BUFFERED",
+              33
+            ],
+            [
+              "input_buffered",
+              33
+            ],
+            [
+              "IFRAME_NEGATE",
+              23
+            ],
+            [
+              "iframe_dodge",
+              23
+            ]
+          ]
+        },
+        {
+          "file": "reports/w1-09/exemplar/RI-CMB07-exemplar-F5-trace.jsonl",
+          "frames": 9000,
+          "events": 514,
+          "kinds": 24,
+          "top": [
+            [
+              "ACTION_START",
+              124
+            ],
+            [
+              "attack_start",
+              124
+            ],
+            [
+              "HIT",
+              50
+            ],
+            [
+              "hit",
+              50
+            ],
+            [
+              "IFRAME_NEGATE",
+              23
+            ],
+            [
+              "iframe_dodge",
+              23
+            ],
+            [
+              "INPUT_BUFFERED",
+              21
+            ],
+            [
+              "input_buffered",
+              21
+            ]
+          ]
+        },
+        {
+          "file": "reports/w1-09/exemplar/RI-CMB07-exemplar-F1-trace.jsonl",
+          "frames": 9000,
+          "events": 493,
+          "kinds": 24,
+          "top": [
+            [
+              "ACTION_START",
+              121
+            ],
+            [
+              "attack_start",
+              121
+            ],
+            [
+              "HIT",
+              48
+            ],
+            [
+              "hit",
+              48
+            ],
+            [
+              "IFRAME_NEGATE",
+              27
+            ],
+            [
+              "iframe_dodge",
+              27
+            ],
+            [
+              "INPUT_BUFFERED",
+              21
+            ],
+            [
+              "input_buffered",
+              21
+            ]
+          ]
+        },
+        {
+          "file": "reports/journeys/20260808T035412Z-jrn01-opening-s4711-991eea/trace.jsonl",
+          "frames": 245,
+          "events": 145,
+          "kinds": 15,
+          "top": [
+            [
+              "spawn",
+              57
+            ],
+            [
+              "npc_presence",
+              29
+            ],
+            [
+              "npc_schedule",
+              28
+            ],
+            [
+              "input_action",
+              10
+            ],
+            [
+              "creation_field",
+              7
+            ],
+            [
+              "weather_change",
+              2
+            ],
+            [
+              "settlement_enter",
+              2
+            ],
+            [
+              "first_input",
+              2
+            ]
+          ]
+        },
+        {
+          "file": "reports/journeys/20260808T035138Z-jrn01-opening-s4711-8ecb6a/trace.jsonl",
+          "frames": 225,
+          "events": 124,
+          "kinds": 9,
+          "top": [
+            [
+              "spawn",
+              57
+            ],
+            [
+              "npc_presence",
+              29
+            ],
+            [
+              "npc_schedule",
+              28
+            ],
+            [
+              "weather_change",
+              2
+            ],
+            [
+              "settlement_enter",
+              2
+            ],
+            [
+              "first_input",
+              2
+            ],
+            [
+              "first_control",
+              2
+            ],
+            [
+              "INPUT_DROPPED",
+              1
+            ]
+          ]
+        },
+        {
+          "file": "reports/journeys/w1-13-r3b-jrn06/trace.jsonl",
+          "frames": 201,
+          "events": 124,
+          "kinds": 9,
+          "top": [
+            [
+              "spawn",
+              54
+            ],
+            [
+              "npc_presence",
+              47
+            ],
+            [
+              "npc_schedule",
+              14
+            ],
+            [
+              "weather_change",
+              2
+            ],
+            [
+              "settlement_enter",
+              2
+            ],
+            [
+              "first_input",
+              2
+            ],
+            [
+              "INPUT_DROPPED",
+              1
+            ],
+            [
+              "input_dropped",
+              1
+            ]
+          ]
+        },
+        {
+          "file": "reports/journeys/w1-13-r3-jrn06/trace.jsonl",
+          "frames": 131,
+          "events": 123,
+          "kinds": 8,
+          "top": [
+            [
+              "spawn",
+              54
+            ],
+            [
+              "npc_presence",
+              47
+            ],
+            [
+              "npc_schedule",
+              14
+            ],
+            [
+              "weather_change",
+              2
+            ],
+            [
+              "settlement_enter",
+              2
+            ],
+            [
+              "first_input",
+              2
+            ],
+            [
+              "INPUT_DROPPED",
+              1
+            ],
+            [
+              "input_dropped",
+              1
+            ]
+          ]
+        },
+        {
+          "file": "reports/journeys/w1-26-r2-jrn01/trace.jsonl",
+          "frames": 201,
+          "events": 122,
+          "kinds": 9,
+          "top": [
+            [
+              "spawn",
+              56
+            ],
+            [
+              "npc_presence",
+              29
+            ],
+            [
+              "npc_schedule",
+              28
+            ],
+            [
+              "weather_change",
+              2
+            ],
+            [
+              "settlement_enter",
+              2
+            ],
+            [
+              "first_input",
+              2
+            ],
+            [
+              "INPUT_DROPPED",
+              1
+            ],
+            [
+              "input_dropped",
+              1
+            ]
+          ]
+        },
+        {
+          "file": "reports/journeys/20260808T035032Z-jrn01-opening-s4711-614a31/trace.jsonl",
+          "frames": 201,
+          "events": 121,
+          "kinds": 9,
+          "top": [
+            [
+              "spawn",
+              56
+            ],
+            [
+              "npc_schedule",
+              28
+            ],
+            [
+              "npc_presence",
+              28
+            ],
+            [
+              "weather_change",
+              2
+            ],
+            [
+              "settlement_enter",
+              2
+            ],
+            [
+              "first_input",
+              2
+            ],
+            [
+              "INPUT_DROPPED",
+              1
+            ],
+            [
+              "input_dropped",
+              1
+            ]
+          ]
+        },
+        {
+          "file": "reports/journeys/w1-13-r4-jrn06/trace.jsonl",
+          "frames": 201,
+          "events": 120,
+          "kinds": 9,
+          "top": [
+            [
+              "spawn",
+              54
+            ],
+            [
+              "npc_presence",
+              29
+            ],
+            [
+              "npc_schedule",
+              28
+            ],
+            [
+              "weather_change",
+              2
+            ],
+            [
+              "settlement_enter",
+              2
+            ],
+            [
+              "first_input",
+              2
+            ],
+            [
+              "INPUT_DROPPED",
+              1
+            ],
+            [
+              "input_dropped",
+              1
+            ]
+          ]
+        }
+      ],
+      "with_events": 34,
+      "vocabulary": 179,
+      "mirrors": 275
+    }
+  },
+  "checks": [
+    {
+      "id": "A1  support = \"effects examined\"",
+      "got": "OK",
+      "wanted": "OK",
+      "ok": true,
+      "note": "The facility passes the control the human critic ruled inert. 33 -> 0 is a real difference and the facility has no way to know it is a difference about the delivery gate."
+    },
+    {
+      "id": "A2  support = \"effects delivered\"",
+      "got": "VACUOUS",
+      "wanted": "VACUOUS",
+      "ok": true,
+      "note": "Same two artifacts, same control, opposite verdict — reached only because the caller chose the other number."
+    },
+    {
+      "id": "A3  support omitted",
+      "got": "OK",
+      "wanted": "OK",
+      "ok": true,
+      "note": "`support` is optional. Omit it and the entire W1-13 vacuity check is silently disabled for that control; nothing warns."
+    },
+    {
+      "id": "A2-teardown  forge the control arm's support to 55",
+      "got": "OK",
+      "wanted": "OK",
+      "ok": true,
+      "note": "MY control arm goes red exactly as declared: the VACUOUS in A2 is carried entirely by one caller-supplied integer, not by anything the facility observed."
+    },
+    {
+      "id": "A4  both arms undefined",
+      "got": "INERT",
+      "wanted": "INERT",
+      "ok": true,
+      "note": "The facility has no verdict for \"nothing was measured\". A typo in a field name produces INERT — which reads as a finding about the build, is indistinguishable in the report from a real W1-04, and is the exact class of error the piece exists to catch."
+    },
+    {
+      "id": "A4-teardown  give the intact arm a real value",
+      "got": "OK",
+      "wanted": "OK",
+      "ok": true,
+      "note": "red as declared: the INERT in A4 comes from both arms being unmeasured, not from anything structural."
+    },
+    {
+      "id": "B-OK",
+      "got": "OK",
+      "wanted": "OK",
+      "ok": true,
+      "note": null
+    },
+    {
+      "id": "B-INERT",
+      "got": "INERT",
+      "wanted": "INERT",
+      "ok": true,
+      "note": null
+    },
+    {
+      "id": "B-VACUOUS",
+      "got": "VACUOUS",
+      "wanted": "VACUOUS",
+      "ok": true,
+      "note": null
+    },
+    {
+      "id": "B-MASKED",
+      "got": "MASKED",
+      "wanted": "MASKED",
+      "ok": true,
+      "note": null
+    },
+    {
+      "id": "B-UNDERPOWERED",
+      "got": "UNDERPOWERED",
+      "wanted": "UNDERPOWERED",
+      "ok": true,
+      "note": null
+    },
+    {
+      "id": "B-WRONG_DIRECTION",
+      "got": "WRONG_DIRECTION",
+      "wanted": "WRONG_DIRECTION",
+      "ok": true,
+      "note": null
+    },
+    {
+      "id": "B-DISTINCT  six canonical cases produce six distinct verdicts",
+      "got": 6,
+      "wanted": 6,
+      "ok": true,
+      "note": "The categories are separable on the cases each was written for. That is the floor, not the test."
+    },
+    {
+      "id": "B-COLLIDE-1  masked + under margin",
+      "got": "UNDERPOWERED",
+      "wanted": "UNDERPOWERED",
+      "ok": true,
+      "note": "MASKED is unreachable behind an unmet margin. `redundant_guards` comes back [] and `factors_inert_alone` still lists both, but the VERDICT — the thing the exit code and the report headline carry — says the control is underpowered. The next agent deletes a guard in good faith, which is the exact harm the MASKED verdict exists to prevent."
+    },
+    {
+      "id": "B-COLLIDE-2  cancellation",
+      "got": "INERT",
+      "wanted": "INERT",
+      "ok": true,
+      "note": "INERT on a control with a live factor. The record self-contradicts: factors_that_move_it_alone=[\"a\"], minimal_breaking_set=[\"a\"], and the why-string says \"changed nothing\"."
+    },
+    {
+      "id": "B-COLLIDE-3  vacuous + inert",
+      "got": "VACUOUS",
+      "wanted": "VACUOUS",
+      "ok": true,
+      "note": "Only one of two independent defects is reported. Recoverable from `arms_agree: true` in the record, but not from the verdict."
+    },
+    {
+      "id": "B-COLLIDE-4  supportArms:\"intact\", support_note omitted",
+      "got": "OK",
+      "wanted": "OK",
+      "ok": true,
+      "note": "The canonical W1-13 failure passes. The docstring makes `support_note` mandatory and no code path reads it; `runControl` does not carry the field into its result, so a downstream report cannot even audit for it."
+    },
+    {
+      "id": "B-COLLIDE-1-teardown  drop the margin",
+      "got": "MASKED",
+      "wanted": "MASKED",
+      "ok": true,
+      "note": "red as declared: the masking was always visible, the margin check outranked it."
+    },
+    {
+      "id": "B-COLLIDE-2-teardown  drop the cancelling factor",
+      "got": "OK",
+      "wanted": "OK",
+      "ok": true,
+      "note": "red as declared: factor A is live, and the INERT in B-COLLIDE-2 is produced by comparing intact against all-broken alone."
+    },
+    {
+      "id": "B-COLLIDE-4-teardown  restore the default support scope",
+      "got": "VACUOUS",
+      "wanted": "VACUOUS",
+      "ok": true,
+      "note": "red as declared: the escape hatch, not the data, is what passed B-COLLIDE-4."
+    },
+    {
+      "id": "C  w1-14-r3 nocast, support = delivered rows",
+      "got": "VACUOUS",
+      "wanted": "VACUOUS",
+      "ok": true,
+      "note": "A fourth case the corpus can carry, and it is the only one of the four where the facility's verdict depends on a judgement the facility cannot make for itself."
+    },
+    {
+      "id": "C-PROVENANCE  replayed artifacts NOT under version control",
+      "got": 9,
+      "wanted": 9,
+      "ok": true,
+      "note": "9/9 are excluded by reports/.gitignore. A fresh clone has none of them and --cases exits 8."
+    },
+    {
+      "id": "C-AUTHENTIC  replayed numbers corroborated by tracked verdicts",
+      "got": 3,
+      "wanted": 3,
+      "ok": true,
+      "note": "The 8/8 is a real replay, not a transcription: 252/342, 67->0 and roster_n 0 each appear in a tracked verdict written by a different agent."
+    },
+    {
+      "id": "D  crossings with data that matrix-scan reported as having none",
+      "got": 4,
+      "wanted": 4,
+      "ok": true,
+      "note": "All four live in ONE file — game/data/world/encounters.json — and that file produces zero claims out of the 564 the tool read, because no pattern in the table globs it."
+    },
+    {
+      "id": "D-PROBES  purpose-built crossing probes already on the tree",
+      "got": true,
+      "wanted": true,
+      "ok": true,
+      "note": "QST->ROS is not only data-backed, it has a dedicated CONSUMPTION probe written for AR-3 that spawns the encounter with the flag clear and set and counts bodies."
+    },
+    {
+      "id": "D-teardown  the same search for a field that does not exist",
+      "got": 0,
+      "wanted": 0,
+      "ok": true,
+      "note": "red as declared: the search is not matching on substrings or on shape, so the four hits are four real fields."
+    },
+    {
+      "id": "E1  the 36,000-frame session carries zero events",
+      "got": 0,
+      "wanted": 0,
+      "ok": true,
+      "note": null
+    },
+    {
+      "id": "E2  traces carrying substantive events (>5)",
+      "got": true,
+      "wanted": true,
+      "ok": true,
+      "note": "34 traces, top five being W1-09's RI-CMB07 combat exemplars at 493-553 events over 24-28 kinds. 30 of them already existed when W1-25 wrote its own anecdote report, so the overstatement is not a timing artifact. The recorder works and the vocabulary is adequate; what has never been recorded is a SESSION that does anything."
+    },
+    {
+      "id": "E2b  event-bearing traces that predate the claim",
+      "got": true,
+      "wanted": true,
+      "ok": true,
+      "note": "30 predate reports/experience/w1/anecdote-and-shape.md."
+    },
+    {
+      "id": "E3  consequence names missing from the closed vocabulary",
+      "got": 0,
+      "wanted": 0,
+      "ok": true,
+      "note": "179 names in game/src/sim/events.js and every consequence name an anecdote needs is present. RULES #15 is NOT the fault here."
+    },
+    {
+      "id": "E4  mirror events carry no payload",
+      "got": true,
+      "wanted": true,
+      "ok": true,
+      "note": "in reports/w1-09/exemplar/RI-CMB07-exemplar-F2-trace.jsonl: 275 of 553 events are {type, f, mirrors:\"UPPERCASE\"} stubs. The closed §5 vocabulary is satisfied by empty shells over a parallel uppercase vocabulary that carries the data — RULES #10's two parallel implementations, in the trace format itself."
+    }
+  ],
+  "findings": [
+    {
+      "id": "A-NULL-IS-NOT-A-MEASUREMENT",
+      "severity": "major",
+      "claim": "A control whose measure() returns undefined or null in both arms is reported INERT — a positive claim that the break did nothing — rather than as a measurement that did not happen. `canon()` maps undefined, null and a missing field all to the string \"null\", so a misspelt field name produces the piece's flagship verdict. I hit this on my first run of section A against a real artifact.",
+      "evidence": {
+        "A4": "INERT",
+        "A4_teardown": "OK",
+        "canon_of_undefined": "null"
+      },
+      "remedy": "A NO_MEASUREMENT verdict (or reuse ERROR) when every arm's value canonicalises to \"null\". Three lines beside the existing support check, and it is the same argument the piece already makes for VACUOUS: a statement about an empty set is not a statement about the build."
+    },
+    {
+      "id": "A-VERDICT-IS-A-FUNCTION-OF-SUPPORT",
+      "severity": "major",
+      "claim": "The facility catches the strongest real inert control available (W1-14-r3 `--break=nocast`) ONLY IF the caller happens to declare `support` as delivered-rows rather than examined-rows, and not at all if the caller omits `support`. Two of the three honest readings pass it.",
+      "evidence": {
+        "intact": "reports/w1-14-r3/dials.json",
+        "broken": "reports/w1-14-r3/dials-break-nocast.json",
+        "A1": "OK",
+        "A2": "VACUOUS",
+        "A3": "OK",
+        "teardown": "OK"
+      },
+      "remedy": "`runControl` should REFUSE a spec whose measure() returns no `support` on any arm (throw, or force VERDICT.ERROR) exactly as it refuses a spec with no factors — `if (!factors.length) throw`. And the docstring's \"number of units the measurement ranged over\" needs the operative sentence: units that REACHED THE COMPARATOR, not units enumerated."
+    },
+    {
+      "id": "A-FOURTH-SHAPE-IS-NOT-IN-THE-TAXONOMY",
+      "severity": "major",
+      "claim": "W1-14-r3 is a FOURTH failure shape and the five verdicts have no name for it: the teardown short-circuits UPSTREAM of the mechanism under test, so the arms differ loudly and the difference is about the short-circuit. The facility's three documented shapes are arms-agree, no-single-factor-effect and empty-population; this one is none of them. It is caught, when it is caught, as a side effect of support accounting.",
+      "evidence": {
+        "verdict_source": "corpus/90-verdicts/wave1/W1-14-r3.json gap `inert_control:RI-MAG06`"
+      },
+      "remedy": "A sixth verdict — SHORT_CIRCUIT — triggered when the broken arm's support collapses relative to the intact arm (support_broken / support_intact below a declared floor, default 1.0 for a teardown that should not change the population). Cheap: the numbers are already on every arm record."
+    },
+    {
+      "id": "B-CASCADE-ORDER-HIDES-MASKED",
+      "severity": "major",
+      "claim": "MASKED is last in the verdict cascade and is therefore unreachable whenever the joint effect misses the declared margin or the direction. The one verdict in the taxonomy that exists to stop an agent deleting a guard in good faith is the one most easily shadowed.",
+      "evidence": {
+        "case": "B-COLLIDE-1",
+        "got": "UNDERPOWERED",
+        "with_margin_dropped": "MASKED"
+      },
+      "remedy": "Hoist the masking test above margin and direction — it is a statement about the structure of the effect, and margin/direction are statements about its size and sign. Or report a verdict LIST rather than a scalar, which the record already has all the fields for."
+    },
+    {
+      "id": "B-INERT-IS-DECIDED-ON-TWO-ARMS",
+      "severity": "moderate",
+      "claim": "`armsAgree` compares the intact arm against the all-broken arm and nothing else, so a control with a demonstrably live factor is reported INERT under cancellation, with a `why` string that asserts the opposite of the record's own `factor_effects`.",
+      "evidence": {
+        "case": "B-COLLIDE-2",
+        "verdict": "INERT",
+        "moves_alone": [
+          "a"
+        ]
+      },
+      "remedy": "armsAgree should be `distinct_values === 1` — no arm differs from any other — which is already computed one line above it and is the honest reading of \"the arms agree\"."
+    },
+    {
+      "id": "B-SUPPORT-NOTE-UNENFORCED",
+      "severity": "moderate",
+      "claim": "The documented obligation on `supportArms: \"intact\"` (\"a caller that narrows it must say why, in support_note\") is enforced nowhere and `support_note` is not even copied into the result, so the W1-13 failure the facility was built for is one spec key away from passing, unauditably.",
+      "evidence": {
+        "case": "B-COLLIDE-4",
+        "got": "OK",
+        "with_default_scope": "VACUOUS"
+      },
+      "remedy": "Three lines: throw when `supportArms === \"intact\"` and `support_note` is empty, and carry `support_note` and `support_scope` onto the result so a report can list every control that opted out."
+    },
+    {
+      "id": "C-REGRESSION-CORPUS-IS-UNTRACKED",
+      "severity": "major",
+      "claim": "--cases 8/8 is real — every number is corroborated by an independently tracked verdict (252/342 in W1-SOULS-r3.json, 67->0 in W1-04-r3.md, roster_n 0 in W1-13-r4.md) — but all 9 artifacts it replays are excluded by reports/.gitignore. On a fresh clone --cases reports ABSENT and exits 8. The regression corpus that makes this facility evidence rather than assertion survives only as long as this container does.",
+      "evidence": {
+        "untracked": [
+          "reports/w1-04-r3-collision.json",
+          "reports/critic-souls-r3-INTACT.json",
+          "reports/critic-souls-r3-DELETED-identity.json",
+          "reports/critic-souls-r3-DELETED-boundary.json",
+          "reports/critic-souls-r3-DELETED-identity-boundary.json",
+          "reports/runs/W1-13-R4/clock-consequences.json",
+          "reports/journeys/w1-13-r4-jrn06/journey.json",
+          "reports/w1-14-r3/dials.json",
+          "reports/w1-14-r3/dials-break-nocast.json"
+        ],
+        "gitignore": "reports/.gitignore"
+      },
+      "remedy": "reports/.gitignore already carries the exemption and the exact argument for it — `!**/*baseline*.json`, added because \"a baseline exists to be yesterday's, so regenerating it destroys the only thing it was for.\" These nine files are baselines by that definition and cannot be regenerated at all: the pre-fix `__w1_04_townSolids` and the two deleted souls guards do not exist at HEAD. Add `!**/sabotage-case-*.json`, copy the nine under that name, and point sabotage-cases.mjs at the copies. Under 100 KB."
+    },
+    {
+      "id": "D-THE-4-OF-41-IS-A-PROPERTY-OF-THE-SCANNER",
+      "severity": "critical",
+      "claim": "The piece's most consequential number is wrong and wrong in the direction that condemns other pieces. At least 8 of 41 crossings are data-backed, not 4. The four missed — QST->ROS, WLD->ROS, DIS->ROS, LOR->ROS — all sit in game/data/world/encounters.json, which contributed zero of the tool's 30 claims because every one of matrix-scan.mjs's 56 patterns is rooted in the SOURCE system's directory and these couplings are declared on the TARGET's. Two of them (absent_when_flag, true_name_topic) are the exact crossings ARBITRATION AR-3 names as its worked examples, and QST->ROS was built deliberately by W1-19 round 2 to answer a seam_sterile verdict, with a probe on the tree to demonstrate it.",
+      "evidence": {
+        "rows": [
+          {
+            "cell": "QST->ROS",
+            "file": "game/data/world/encounters.json",
+            "key": "absent_when_flag",
+            "why": "Q-MAIN-23 res_sign_the_clause sets `the_sixty_are_protected`; the net-throwers of dres-raid-party carry `absent_when_flag` on it. ARBITRATION AR-3 names this crossing in as many words: \"a quest whose resolution changes an encounter's composition\".",
+            "occurrences": 1,
+            "sample": [
+              {
+                "pointer": "/encounters/0/members/1/absent_when_flag",
+                "value": "the_sixty_are_protected"
+              }
+            ],
+            "reported_as_no_data": true,
+            "missed_by_the_tool": true
+          },
+          {
+            "cell": "WLD->ROS",
+            "file": "game/data/world/encounters.json",
+            "key": "absent_when_flag",
+            "why": "the same field read as world-state -> roster: a world flag removes two bodies from a spawn.",
+            "occurrences": 1,
+            "sample": [
+              {
+                "pointer": "/encounters/0/members/1/absent_when_flag",
+                "value": "the_sixty_are_protected"
+              }
+            ],
+            "reported_as_no_data": true,
+            "missed_by_the_tool": true
+          },
+          {
+            "cell": "DIS->ROS",
+            "file": "game/data/world/encounters.json",
+            "key": "hostile_below_disposition",
+            "why": "an encounter that is hostile only below a disposition threshold.",
+            "occurrences": 1,
+            "sample": [
+              {
+                "pointer": "/encounters/1/hostile_below_disposition",
+                "value": 15
+              }
+            ],
+            "reported_as_no_data": true,
+            "missed_by_the_tool": true
+          },
+          {
+            "cell": "LOR->ROS",
+            "file": "game/data/world/encounters.json",
+            "key": "true_name_topic",
+            "why": "knowing a lore topic opens a parley on an encounter — ARBITRATION AR-3's \"a lore fact that is also a boss's weakness\", twice (the-sallow-wife, the-twin-lamps).",
+            "occurrences": 2,
+            "sample": [
+              {
+                "pointer": "/encounters/0/parley/true_name_topic",
+                "value": "the-sallow-wife"
+              },
+              {
+                "pointer": "/encounters/1/parley/true_name_topic",
+                "value": "the-twin-lamps"
+              }
+            ],
+            "reported_as_no_data": true,
+            "missed_by_the_tool": true
+          }
+        ],
+        "existing_probes": [
+          "tools/quests/encounter-seam-probe.mjs",
+          "tools/quests/critic-ar3-endtoend.mjs",
+          "tools/quests/faction-seam-probe.mjs",
+          "tools/world/crossing-consumption.mjs",
+          "tools/world/crossing-deletefix.mjs"
+        ],
+        "encounters_claims_from_that_file": 0,
+        "files_read": 564
+      },
+      "remedy": "matrix-scan needs target-side patterns. Four lines against one file closes half the error: world/encounters.json at `members[].absent_when_flag` -> QST->ROS and WLD->ROS, at `hostile_below_disposition` -> DIS->ROS, at `parley.true_name_topic` -> LOR->ROS. Then the tool needs the check it does not have: an inventory of every existing tools/**/*seam*.mjs and crossing*.mjs, so a crossing another piece already DEMONSTRATED cannot be reported as having no data."
+    },
+    {
+      "id": "D-SHAPE-OF-THE-REAL-ABSENCE",
+      "severity": "note",
+      "claim": "The 37 no-data crossings are not scattered: every one has ROS (roster) or BOS (boss) as its source or its target, plus two DUN and two SCH. The finding worth publishing is not a count, it is that the enemy roster and the bosses are the seam-dead systems and everything else touches something. The piece reported the count.",
+      "evidence": {
+        "no_data_cells": [
+          "FAC->ROS",
+          "FAC->BOS",
+          "DIS->ROS",
+          "GLD->ROS",
+          "GLD->BOS",
+          "SKL->ROS",
+          "SKL->BOS",
+          "SPL->BOS",
+          "LOR->ROS",
+          "LOR->BOS",
+          "STL->ROS",
+          "STL->BOS",
+          "QST->ROS",
+          "QST->BOS",
+          "WLD->ROS",
+          "WLD->BOS",
+          "TOD->ROS",
+          "TOD->BOS",
+          "WEA->ROS",
+          "WEA->BOS",
+          "EQP->ROS",
+          "EQP->BOS",
+          "UPG->BOS",
+          "ROS->FAC",
+          "ROS->DIS",
+          "ROS->QST",
+          "ROS->SCH",
+          "BOS->FAC",
+          "BOS->DIS",
+          "BOS->LOR",
+          "BOS->QST",
+          "BOS->WLD",
+          "BOS->SCH",
+          "DUN->ROS",
+          "DUN->BOS",
+          "SCH->ROS",
+          "SCH->BOS"
+        ]
+      },
+      "remedy": "State it that way in reports/composition/w1/stage1.md; it survives the scanner being wrong about any individual cell, and it is directly actionable."
+    },
+    {
+      "id": "E-THE-CLAIM-OVERSTATES",
+      "severity": "moderate",
+      "claim": "The narrow claims are true and load-bearing: the one recorded session is 36,000 frames with zero events, and the journey traces carry five boot events each. The generalisation is not. Five traces on this tree carry 493-553 events across 24-28 kinds including hit, stagger, block_success, death and detect. \"verified_anecdotes_per_hour is 0 by construction on every trace this project has ever recorded\" is false as written, and it matters because it points the remedy at the recorder instead of at the fixture.",
+      "evidence": {
+        "traces": 77,
+        "with_events": 34,
+        "top": [
+          {
+            "file": "reports/w1-09/exemplar/RI-CMB07-exemplar-F2-trace.jsonl",
+            "events": 553,
+            "kinds": 24
+          },
+          {
+            "file": "reports/w1-09/exemplar/RI-CMB07-exemplar-F4-trace.jsonl",
+            "events": 548,
+            "kinds": 24
+          },
+          {
+            "file": "reports/w1-09/exemplar/RI-CMB07-exemplar-F3-trace.jsonl",
+            "events": 530,
+            "kinds": 28
+          },
+          {
+            "file": "reports/w1-09/exemplar/RI-CMB07-exemplar-F5-trace.jsonl",
+            "events": 514,
+            "kinds": 24
+          },
+          {
+            "file": "reports/w1-09/exemplar/RI-CMB07-exemplar-F1-trace.jsonl",
+            "events": 493,
+            "kinds": 24
+          },
+          {
+            "file": "reports/journeys/20260808T035412Z-jrn01-opening-s4711-991eea/trace.jsonl",
+            "events": 145,
+            "kinds": 15
+          }
+        ]
+      },
+      "remedy": "Restate as: no SESSION or JOURNEY run has ever produced a consequence event, while combat exemplars produce hundreds. Then the diagnosis follows — RULES #8, a still target. The session script walks and never fights, talks, takes or dies."
+    },
+    {
+      "id": "E-FAULT-IS-THE-FIXTURE-NOT-THE-RECORDER",
+      "severity": "major",
+      "claim": "Fault located, against the three candidates the brief names. NOT the recorder: the same trace writer emits 553 events in the combat exemplars. NOT the vocabulary: all 179 names are present and every consequence name an anecdote needs is in the list, so RULES #15 does not bite. It is the session fixture — a ten-minute run that never enters combat, opens dialogue, writes a journal entry or picks anything up, which is RULES #8 exactly.",
+      "evidence": {
+        "recorder_proof": [
+          "reports/w1-09/exemplar/RI-CMB07-exemplar-F2-trace.jsonl",
+          "reports/w1-09/exemplar/RI-CMB07-exemplar-F4-trace.jsonl",
+          "reports/w1-09/exemplar/RI-CMB07-exemplar-F3-trace.jsonl",
+          "reports/w1-09/exemplar/RI-CMB07-exemplar-F5-trace.jsonl",
+          "reports/w1-09/exemplar/RI-CMB07-exemplar-F1-trace.jsonl",
+          "reports/journeys/20260808T035412Z-jrn01-opening-s4711-991eea/trace.jsonl",
+          "reports/journeys/20260808T035138Z-jrn01-opening-s4711-8ecb6a/trace.jsonl",
+          "reports/journeys/w1-13-r3b-jrn06/trace.jsonl",
+          "reports/journeys/w1-13-r3-jrn06/trace.jsonl",
+          "reports/journeys/w1-26-r2-jrn01/trace.jsonl",
+          "reports/journeys/20260808T035032Z-jrn01-opening-s4711-614a31/trace.jsonl",
+          "reports/journeys/w1-13-r4-jrn06/trace.jsonl",
+          "reports/journeys/20260807T143230Z-jrn06-death-s4711-05c04d/trace.jsonl",
+          "reports/journeys/20260807T143410Z-jrn06-death-s4711-9f8ece/trace.jsonl",
+          "reports/journeys/critic-w1-13-r2-jrn06/trace.jsonl",
+          "reports/journeys/20260807T141242Z-jrn06-death-s4711-a0b76b/trace.jsonl",
+          "reports/journeys/20260807T141554Z-jrn06-death-s4711-104fdb/trace.jsonl",
+          "reports/runs/20260806T173713Z-cmb-duel-infantry-s1337-2fdbe4/trace.jsonl",
+          "reports/runs/20260806T185158Z-cmb-duel-infantry-s1337-641abf/trace.jsonl",
+          "reports/runs/20260806T185213Z-cmb-duel-infantry-s1337-3e9ae1/trace.jsonl",
+          "reports/runs/20260806T121249Z-cmb-duel-infantry-s1337-f0ddc1/trace.jsonl",
+          "reports/runs/20260806T140706Z-cmb-duel-infantry-s1337-9b3390/trace.jsonl",
+          "reports/runs/CRIT-DET-A/trace.jsonl",
+          "reports/runs/CRIT-DET-B/trace.jsonl",
+          "reports/runs/CRIT-DET-S4242/trace.jsonl",
+          "reports/runs/DET-A/trace.jsonl",
+          "reports/runs/DET-B/trace.jsonl",
+          "reports/runs/DET-C/trace.jsonl",
+          "reports/runs/DET-SEED/trace.jsonl",
+          "reports/runs/20260806T172919Z-cmb-duel-infantry-s1337-727f51/trace.jsonl",
+          "reports/runs/20260806T161403Z-cmb-duel-infantry-s1337-0c67a7/trace.jsonl",
+          "reports/runs/20260806T164412Z-cmb-duel-infantry-s1337-5b7475/trace.jsonl",
+          "reports/runs/ar3-khajiit/trace.jsonl",
+          "reports/runs/ar3-saxhleel/trace.jsonl"
+        ],
+        "vocabulary_size": 179,
+        "missing_consequence_names": []
+      },
+      "remedy": "The cheapest real number in this whole piece: point tools/experience/anecdote-trace.mjs at reports/w1-09/exemplar/RI-CMB07-exemplar-F3-trace.jsonl. It has a death, six staggers, a guard break and a block_success in 9,000 frames. It will score low on A2 (proper noun) and A4 (locatable) because it is an arena, and THAT is the finding RI-EXP02 wants — a build whose only recorded consequences happen in a room with no name."
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+ "schema": "critic-road-join/consume@1",
+ "measured_at": "2026-08-08T03:52:35.221Z",
+ "git": "37bbb6f61c5279d884bc49b3fc17caf06fdc1928",
+ "arms": [
+  {
+   "id": "SHIPPED",
+   "legs_blocked": 2,
+   "samples": 11,
+   "detail": [
+    {
+     "leg": "helstrom-blackrose",
+     "buildings": [
+      "blackrose/blackrose-house-0",
+      "blackrose/blackrose-house-1"
+     ]
+    },
+    {
+     "leg": "blackrose-lilmoth",
+     "buildings": [
+      "blackrose/blackrose-condemned-row",
+      "blackrose/blackrose-old-gallows"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "R-REMEDY",
+   "build_exit": 0,
+   "build_s": 0,
+   "legs_blocked": 0,
+   "samples": 0,
+   "detail": [],
+   "pass": true,
+   "note": "does re-running the joined generator on the CURRENT planSettlement close the staleness?"
+  },
+  {
+   "id": "R-DETERM",
+   "hash_a": "374c54154c5f6af5",
+   "hash_b": "374c54154c5f6af5",
+   "pass": true
+  },
+  {
+   "id": "TEARDOWN",
+   "build_exit": 0,
+   "legs_blocked": 10,
+   "samples": 267,
+   "hash": "3d7c87403d7c6df9",
+   "distinct_from_join": true,
+   "pass": true,
+   "note": "the control arm must go RED and must produce a DIFFERENT file, or both arms are the positive arm"
+  },
+  {
+   "id": "P-BLACKROSE",
+   "subject": "blackrose-east-block",
+   "moved_m": 13.6,
+   "leg": "blackrose-lilmoth",
+   "bites_legs": 3,
+   "bites_samples": 19,
+   "follows_legs": 0,
+   "follows_samples": 0,
+   "road_shift_m": 5.5,
+   "bites_pass": true,
+   "coupled_pass": true,
+   "follows_pass": true,
+   "note": "BITES compares SAMPLES not legs, because the shipped tree is already red in Blackrose and a leg count cannot see a worsening"
+  },
+  {
+   "id": "NULL-NOREAD",
+   "hash": "374c54154c5f6af5",
+   "unperturbed_hash": "374c54154c5f6af5",
+   "pass": true,
+   "note": "a byte-identical null is a stronger control than a \"moved less than 2 m\" one"
+  },
+  {
+   "id": "NULL-REVERSED",
+   "subject": "blackrose-prison",
+   "declared_from": [
+    13.6,
+    15.6
+   ],
+   "declared_to": [
+    81.6,
+    93.6
+   ],
+   "effective_before": [
+    13.6,
+    15.6
+   ],
+   "effective_after": [
+    21.5,
+    33.44
+   ],
+   "reversed_by_model": false,
+   "note": "the edit survived the shrink pass, so this arm is a real perturbation"
+  },
+  {
+   "id": "SUMMARY",
+   "shipped_is_red": true,
+   "rebuild_fixes_it": true,
+   "deterministic": true,
+   "teardown_goes_red": true,
+   "blackrose_coupled": true,
+   "null_byte_identical": true
+  }
+ ]
+}

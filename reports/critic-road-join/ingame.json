@@ -1,0 +1,2346 @@
+{
+ "schema": "critic-road-join/ingame@1",
+ "measured_at": "2026-08-08T03:42:06.440Z",
+ "git": {
+  "commit": "0dc070319adafd89aeef75e8e38fcc0cfb8897d9",
+  "dirty": true
+ },
+ "method": "plans read off the RUNNING engine (renderer.province.settlementPlans, built by _boot from data.interiors); roads read off engine.data.roads; every leg and named route sampled at 1 m; province.buildingAt() is the engine's own predicate; slab clearance is against the actual settlementSolids() wall boxes with PLAYER_RADIUS_M = 0.32 m.",
+ "settlements": 8,
+ "buildings": 202,
+ "slabs": 920,
+ "footprints": [
+  {
+   "town": "archon",
+   "id": "archon-guild-office",
+   "x": 3785,
+   "z": 3789.5,
+   "yaw": 0,
+   "w": 13.6,
+   "d": 15.6
+  },
+  {
+   "town": "archon",
+   "id": "archon-vat-house",
+   "x": 3814.44,
+   "z": 3842.42,
+   "yaw": 237.3,
+   "w": 7.96,
+   "d": 15.6
+  },
+  {
+   "town": "archon",
+   "id": "archon-market",
+   "x": 3810.06,
+   "z": 3843.4,
+   "yaw": 231.5,
+   "w": 7.96,
+   "d": 6
+  },
+  {
+   "town": "archon",
+   "id": "archon-apothecary",
+   "x": 3808.67,
+   "z": 3846.5,
+   "yaw": 225.8,
+   "w": 10.49,
+   "d": 6
+  },
+  {
+   "town": "archon",
+   "id": "archon-inn",
+   "x": 3809.47,
+   "z": 3852.57,
+   "yaw": 220.1,
+   "w": 12.4,
+   "d": 6
+  },
+  {
+   "town": "archon",
+   "id": "archon-ward",
+   "x": 3807.01,
+   "z": 3855.69,
+   "yaw": 214.4,
+   "w": 8.65,
+   "d": 6
+  },
+  {
+   "town": "archon",
+   "id": "archon-shrine",
+   "x": 3802.25,
+   "z": 3855.1,
+   "yaw": 208.6,
+   "w": 6,
+   "d": 14.4
+  },
+  {
+   "town": "archon",
+   "id": "archon-rootpost",
+   "x": 3799.4,
+   "z": 3857.58,
+   "yaw": 202.9,
+   "w": 6,
+   "d": 14.4
+  },
+  {
+   "town": "archon",
+   "id": "archon-kiln-house",
+   "x": 3792.68,
+   "z": 3848.34,
+   "yaw": 197.2,
+   "w": 6,
+   "d": 14.4
+  },
+  {
+   "town": "archon",
+   "id": "archon-house-0",
+   "x": 3790.36,
+   "z": 3849.96,
+   "yaw": 191.5,
+   "w": 6,
+   "d": 11.6
+  },
+  {
+   "town": "archon",
+   "id": "archon-house-1",
+   "x": 3788.29,
+   "z": 3856.34,
+   "yaw": 185.7,
+   "w": 6,
+   "d": 11.6
+  },
+  {
+   "town": "archon",
+   "id": "archon-house-2",
+   "x": 3785,
+   "z": 3855.5,
+   "yaw": 180,
+   "w": 6,
+   "d": 14.4
+  },
+  {
+   "town": "archon",
+   "id": "archon-first-vat",
+   "x": 3781.51,
+   "z": 3858.33,
+   "yaw": 174.3,
+   "w": 4.23,
+   "d": 9
+  },
+  {
+   "town": "archon",
+   "id": "archon-naga-row",
+   "x": 3778.25,
+   "z": 3856.82,
+   "yaw": 168.5,
+   "w": 5.93,
+   "d": 9
+  },
+  {
+   "town": "archon",
+   "id": "archon-old-kiln",
+   "x": 3774.07,
+   "z": 3858.85,
+   "yaw": 162.8,
+   "w": 5.6,
+   "d": 9
+  },
+  {
+   "town": "archon",
+   "id": "archon-quay-store",
+   "x": 3770.99,
+   "z": 3856.66,
+   "yaw": 157.1,
+   "w": 5.6,
+   "d": 9
+  },
+  {
+   "town": "archon",
+   "id": "archon-struct-the-dye-vats",
+   "x": 3766.31,
+   "z": 3857.73,
+   "yaw": 151.4,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "archon",
+   "id": "archon-struct-the-drying-racks",
+   "x": 3763.55,
+   "z": 3854.87,
+   "yaw": 145.6,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "archon",
+   "id": "archon-struct-the-kiln-stacks",
+   "x": 3758.6,
+   "z": 3854.87,
+   "yaw": 139.9,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "archon",
+   "id": "archon-struct-the-lichen-cribs",
+   "x": 3756.31,
+   "z": 3851.38,
+   "yaw": 134.2,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "archon",
+   "id": "archon-struct-the-old-quay",
+   "x": 3756.81,
+   "z": 3845.89,
+   "yaw": 128.5,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "archon",
+   "id": "archon-struct-the-wind-screen",
+   "x": 3753.87,
+   "z": 3843.5,
+   "yaw": 122.7,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-prison",
+   "x": 1865.5,
+   "z": 4437,
+   "yaw": 180,
+   "w": 13.6,
+   "d": 15.6
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-inn",
+   "x": 1865.5,
+   "z": 4454,
+   "yaw": 0,
+   "w": 13.6,
+   "d": 6
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-warders-hall",
+   "x": 1865.5,
+   "z": 4455,
+   "yaw": 180,
+   "w": 13.6,
+   "d": 6
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-market",
+   "x": 1876.5,
+   "z": 4445,
+   "yaw": 0,
+   "w": 13.6,
+   "d": 6
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-smithy",
+   "x": 1876.5,
+   "z": 4446,
+   "yaw": 180,
+   "w": 13.6,
+   "d": 6
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-pawn",
+   "x": 1876.5,
+   "z": 4463,
+   "yaw": 0,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-shrine",
+   "x": 1887.5,
+   "z": 4437,
+   "yaw": 180,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-rootpost",
+   "x": 1887.5,
+   "z": 4454,
+   "yaw": 0,
+   "w": 12.4,
+   "d": 6
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-clerk",
+   "x": 1887.5,
+   "z": 4455,
+   "yaw": 180,
+   "w": 12.4,
+   "d": 6
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-house-0",
+   "x": 1898.5,
+   "z": 4445,
+   "yaw": 0,
+   "w": 12.4,
+   "d": 6
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-house-1",
+   "x": 1898.5,
+   "z": 4446,
+   "yaw": 180,
+   "w": 13.6,
+   "d": 6
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-house-2",
+   "x": 1898.5,
+   "z": 4463,
+   "yaw": 0,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-east-block",
+   "x": 1909.5,
+   "z": 4437,
+   "yaw": 180,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-condemned-row",
+   "x": 1909.5,
+   "z": 4454,
+   "yaw": 0,
+   "w": 8,
+   "d": 3.4
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-old-gallows",
+   "x": 1909.5,
+   "z": 4455,
+   "yaw": 180,
+   "w": 8,
+   "d": 3.4
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-family-row",
+   "x": 1920.5,
+   "z": 4445,
+   "yaw": 0,
+   "w": 8,
+   "d": 3.4
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-struct-the-prison-wall",
+   "x": 1920.5,
+   "z": 4446,
+   "yaw": 180,
+   "w": 5,
+   "d": 3.4
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-struct-the-corridor-gates",
+   "x": 1920.5,
+   "z": 4463,
+   "yaw": 0,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-struct-the-lime-pit",
+   "x": 1931.5,
+   "z": 4437,
+   "yaw": 180,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-struct-the-gallows-frame",
+   "x": 1931.5,
+   "z": 4454,
+   "yaw": 0,
+   "w": 5,
+   "d": 3.4
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-struct-the-visitors-queue-rail",
+   "x": 1931.5,
+   "z": 4455,
+   "yaw": 180,
+   "w": 5,
+   "d": 3.4
+  },
+  {
+   "town": "blackrose",
+   "id": "blackrose-struct-the-water-butt-line",
+   "x": 1942.5,
+   "z": 4445,
+   "yaw": 0,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-court",
+   "x": 451,
+   "z": 2920.5,
+   "yaw": 0,
+   "w": 9.09,
+   "d": 15.6
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-lowmarket",
+   "x": 427,
+   "z": 2906.5,
+   "yaw": 90,
+   "w": 9.09,
+   "d": 15.6
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-tollhouse",
+   "x": 446,
+   "z": 2925.5,
+   "yaw": 180,
+   "w": 9.09,
+   "d": 15.6
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-chapel",
+   "x": 432,
+   "z": 2901.5,
+   "yaw": 270,
+   "w": 9.09,
+   "d": 15.6
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-inn",
+   "x": 462,
+   "z": 2920.5,
+   "yaw": 0,
+   "w": 13.6,
+   "d": 15.6
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-smithy",
+   "x": 416,
+   "z": 2906.5,
+   "yaw": 90,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-apothecary",
+   "x": 446,
+   "z": 2936.5,
+   "yaw": 180,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-shrine",
+   "x": 432,
+   "z": 2890.5,
+   "yaw": 270,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-rootpost",
+   "x": 473,
+   "z": 2920.5,
+   "yaw": 0,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-grange",
+   "x": 405,
+   "z": 2906.5,
+   "yaw": 90,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-house-0",
+   "x": 432,
+   "z": 2947.5,
+   "yaw": 180,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-house-1",
+   "x": 446,
+   "z": 2879.5,
+   "yaw": 270,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-old-barn",
+   "x": 484,
+   "z": 2906.5,
+   "yaw": 0,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-argonian-row",
+   "x": 394,
+   "z": 2920.5,
+   "yaw": 90,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-cellar",
+   "x": 432,
+   "z": 2958.5,
+   "yaw": 180,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-burnt-shop",
+   "x": 446,
+   "z": 2868.5,
+   "yaw": 270,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-struct-the-market-cross",
+   "x": 495,
+   "z": 2906.5,
+   "yaw": 0,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-struct-the-square-arcade",
+   "x": 383,
+   "z": 2920.5,
+   "yaw": 90,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-struct-the-toll-gate",
+   "x": 432,
+   "z": 2969.5,
+   "yaw": 180,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-struct-the-barge-dock",
+   "x": 446,
+   "z": 2857.5,
+   "yaw": 270,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-struct-the-grain-weighbridge",
+   "x": 506,
+   "z": 2920.5,
+   "yaw": 0,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "gideon",
+   "id": "gideon-struct-the-chapel-wall",
+   "x": 372,
+   "z": 2906.5,
+   "yaw": 90,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-hollow-bole",
+   "x": 2280.5,
+   "z": 2773.5,
+   "yaw": 270,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-undertemple",
+   "x": 2295.89,
+   "z": 2779.92,
+   "yaw": 259.1,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-hist-shrine",
+   "x": 2308.93,
+   "z": 2792.05,
+   "yaw": 248.2,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-legation",
+   "x": 2318.07,
+   "z": 2809.12,
+   "yaw": 237.3,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-rootpost",
+   "x": 2277.06,
+   "z": 2784.08,
+   "yaw": 234,
+   "w": 10,
+   "d": 12
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-deep-market",
+   "x": 2285.74,
+   "z": 2798.32,
+   "yaw": 223.1,
+   "w": 10,
+   "d": 12
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-smithy",
+   "x": 2289.16,
+   "z": 2815.8,
+   "yaw": 212.2,
+   "w": 10,
+   "d": 12
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-apothecary",
+   "x": 2286.52,
+   "z": 2834.97,
+   "yaw": 201.3,
+   "w": 10,
+   "d": 12
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-scriptorium",
+   "x": 2268.06,
+   "z": 2790.62,
+   "yaw": 198,
+   "w": 10,
+   "d": 12
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-inn-tide",
+   "x": 2266.71,
+   "z": 2807.24,
+   "yaw": 187.1,
+   "w": 10,
+   "d": 12
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-inn-gate",
+   "x": 2259.21,
+   "z": 2823.39,
+   "yaw": 176.2,
+   "w": 10,
+   "d": 12
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-inn-egg",
+   "x": 2245.8,
+   "z": 2837.35,
+   "yaw": 165.3,
+   "w": 10,
+   "d": 12
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-warders",
+   "x": 2256.94,
+   "z": 2790.62,
+   "yaw": 162,
+   "w": 10,
+   "d": 12
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-archive",
+   "x": 2246.08,
+   "z": 2803.27,
+   "yaw": 151.1,
+   "w": 10,
+   "d": 12
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-house-0",
+   "x": 2230.51,
+   "z": 2811.93,
+   "yaw": 140.2,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-house-1",
+   "x": 2211.46,
+   "z": 2815.34,
+   "yaw": 129.3,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-house-2",
+   "x": 2247.94,
+   "z": 2784.08,
+   "yaw": 126,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-house-3",
+   "x": 2231.71,
+   "z": 2787.93,
+   "yaw": 115.1,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-house-4",
+   "x": 2214.03,
+   "z": 2785.79,
+   "yaw": 104.2,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-house-5",
+   "x": 2196.61,
+   "z": 2777.35,
+   "yaw": 93.3,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-house-6",
+   "x": 2244.5,
+   "z": 2773.5,
+   "yaw": 90,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-house-7",
+   "x": 2229.11,
+   "z": 2767.08,
+   "yaw": 79.1,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-house-8",
+   "x": 2216.07,
+   "z": 2754.95,
+   "yaw": 68.2,
+   "w": 13.6,
+   "d": 15.6
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-house-9",
+   "x": 2206.93,
+   "z": 2737.88,
+   "yaw": 57.3,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-house-10",
+   "x": 2247.94,
+   "z": 2762.92,
+   "yaw": 54,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-house-11",
+   "x": 2239.26,
+   "z": 2748.68,
+   "yaw": 43.1,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-sunk-bole",
+   "x": 2235.84,
+   "z": 2731.2,
+   "yaw": 32.2,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-quarantine",
+   "x": 2238.48,
+   "z": 2712.03,
+   "yaw": 21.3,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-legate-annexe",
+   "x": 2256.94,
+   "z": 2756.38,
+   "yaw": 18,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-old-gate",
+   "x": 2258.29,
+   "z": 2739.76,
+   "yaw": 7.1,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-sap-cellar",
+   "x": 2265.79,
+   "z": 2723.61,
+   "yaw": 356.2,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-burnt-lodge",
+   "x": 2279.2,
+   "z": 2709.65,
+   "yaw": 345.3,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-struct-the-mound-itself",
+   "x": 2268.06,
+   "z": 2756.38,
+   "yaw": 342,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-struct-the-four-rootgates",
+   "x": 2278.92,
+   "z": 2743.73,
+   "yaw": 331.1,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-struct-the-egg-terraces",
+   "x": 2294.49,
+   "z": 2735.07,
+   "yaw": 320.2,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-struct-the-sap-gutters",
+   "x": 2313.54,
+   "z": 2731.66,
+   "yaw": 309.3,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-struct-the-kneeling-wall",
+   "x": 2277.06,
+   "z": 2762.92,
+   "yaw": 306,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-struct-the-deep-cistern",
+   "x": 2293.29,
+   "z": 2759.07,
+   "yaw": 295.1,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-struct-the-ring-causeway",
+   "x": 2310.97,
+   "z": 2761.21,
+   "yaw": 284.2,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "helstrom",
+   "id": "helstrom-struct-the-root-bridge",
+   "x": 2328.39,
+   "z": 2769.65,
+   "yaw": 273.3,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-customs",
+   "x": 2798.5,
+   "z": 5027.5,
+   "yaw": 90,
+   "w": 12.4,
+   "d": 10.67
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-yard",
+   "x": 2796.94,
+   "z": 5033.37,
+   "yaw": 180,
+   "w": 12.4,
+   "d": 9.6
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-ledger-house",
+   "x": 2794.35,
+   "z": 5038.65,
+   "yaw": 270,
+   "w": 12.4,
+   "d": 8.24
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-market",
+   "x": 2790.9,
+   "z": 5043.18,
+   "yaw": 0,
+   "w": 12.4,
+   "d": 8.24
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-smithy",
+   "x": 2792.55,
+   "z": 5052.34,
+   "yaw": 90,
+   "w": 10.55,
+   "d": 14.4
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-apothecary",
+   "x": 2786.8,
+   "z": 5056.01,
+   "yaw": 180,
+   "w": 9.53,
+   "d": 13.2
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-scribe",
+   "x": 2780.62,
+   "z": 5058.43,
+   "yaw": 270,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-pawn",
+   "x": 2774.28,
+   "z": 5059.57,
+   "yaw": 0,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-inn-drowned",
+   "x": 2768.4,
+   "z": 5067.45,
+   "yaw": 90,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-inn-stilt",
+   "x": 2760.95,
+   "z": 5066.1,
+   "yaw": 180,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-shrine",
+   "x": 2754.4,
+   "z": 5062.47,
+   "yaw": 0,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-healer",
+   "x": 2747.5,
+   "z": 5060.41,
+   "yaw": 270,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-rootpost",
+   "x": 2740.96,
+   "z": 5056.97,
+   "yaw": 180,
+   "w": 9.78,
+   "d": 13.2
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-house-0",
+   "x": 2735.06,
+   "z": 5052.23,
+   "yaw": 90,
+   "w": 10.82,
+   "d": 10.8
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-house-1",
+   "x": 2730.06,
+   "z": 5046.29,
+   "yaw": 0,
+   "w": 12.4,
+   "d": 10.8
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-house-2",
+   "x": 2726.2,
+   "z": 5039.33,
+   "yaw": 270,
+   "w": 12.4,
+   "d": 12.65
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-house-3",
+   "x": 2723.69,
+   "z": 5031.59,
+   "yaw": 180,
+   "w": 12.4,
+   "d": 14.07
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-house-4",
+   "x": 2752.56,
+   "z": 5026.17,
+   "yaw": 90,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-first-storey",
+   "x": 2738.67,
+   "z": 5019.33,
+   "yaw": 0,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-boom-house",
+   "x": 2739.83,
+   "z": 5013.75,
+   "yaw": 270,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-plague-stair",
+   "x": 2738.2,
+   "z": 5005.25,
+   "yaw": 270,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-sugar-cellar",
+   "x": 2743.58,
+   "z": 5001.05,
+   "yaw": 0,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-collapsed-arcade",
+   "x": 2747.5,
+   "z": 4994.59,
+   "yaw": 90,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-struct-the-boom-chain",
+   "x": 2754.4,
+   "z": 4992.53,
+   "yaw": 180,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-struct-the-landing-quay",
+   "x": 2761.95,
+   "z": 4995.83,
+   "yaw": 270,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-struct-the-tide-mark-wall",
+   "x": 2767.98,
+   "z": 4996.54,
+   "yaw": 0,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-struct-the-pile-field",
+   "x": 2774.52,
+   "z": 4994.46,
+   "yaw": 90,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-struct-the-sunk-arcade",
+   "x": 2780.21,
+   "z": 4997.48,
+   "yaw": 180,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-struct-the-sea-stair",
+   "x": 2774.62,
+   "z": 5016.1,
+   "yaw": 270,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-struct-the-cistern-cap",
+   "x": 2797.62,
+   "z": 4997.83,
+   "yaw": 0,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-struct-the-old-mole",
+   "x": 2795.94,
+   "z": 5008.58,
+   "yaw": 180,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-struct-the-fish-racks",
+   "x": 2799.92,
+   "z": 5014.12,
+   "yaw": 90,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "lilmoth",
+   "id": "lilmoth-struct-the-customs-bollards",
+   "x": 2798.9,
+   "z": 5021.25,
+   "yaw": 0,
+   "w": 5,
+   "d": 4.19
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-grey-hist",
+   "x": 625.5,
+   "z": 4877,
+   "yaw": 270,
+   "w": 14.8,
+   "d": 11.85
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-court-steps",
+   "x": 630.6,
+   "z": 4885.95,
+   "yaw": 246,
+   "w": 14.8,
+   "d": 16.27
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-market",
+   "x": 620.54,
+   "z": 4888.15,
+   "yaw": 222,
+   "w": 14.8,
+   "d": 16.8
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-smithy",
+   "x": 617.3,
+   "z": 4897.92,
+   "yaw": 198,
+   "w": 14.8,
+   "d": 16.8
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-pawn",
+   "x": 608.93,
+   "z": 4891.92,
+   "yaw": 174,
+   "w": 14.8,
+   "d": 16.8
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-quay",
+   "x": 599.5,
+   "z": 4896.05,
+   "yaw": 150,
+   "w": 14.8,
+   "d": 16.8
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-boneyard",
+   "x": 598.36,
+   "z": 4885.82,
+   "yaw": 126,
+   "w": 14.8,
+   "d": 16.8
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-old-harbourmaster",
+   "x": 588.98,
+   "z": 4881.57,
+   "yaw": 102,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-salt-house",
+   "x": 595.83,
+   "z": 4873.88,
+   "yaw": 78,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-burnt-shrine",
+   "x": 592.7,
+   "z": 4864.07,
+   "yaw": 54,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-struct-the-grey-hist",
+   "x": 603,
+   "z": 4864.01,
+   "yaw": 30,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-struct-the-silt-quay",
+   "x": 608.2,
+   "z": 4855.12,
+   "yaw": 6,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-struct-the-salt-pans",
+   "x": 615.14,
+   "z": 4862.73,
+   "yaw": 342,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-struct-the-bone-stacks",
+   "x": 625.22,
+   "z": 4860.65,
+   "yaw": 318,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "soulrest",
+   "id": "soulrest-struct-the-court-steps",
+   "x": 624.2,
+   "z": 4870.9,
+   "yaw": 294,
+   "w": 5,
+   "d": 3.53
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-archive",
+   "x": 2137.5,
+   "z": 731,
+   "yaw": 0,
+   "w": 12.4,
+   "d": 8.96
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-praetorium",
+   "x": 2216.67,
+   "z": 769.71,
+   "yaw": 79.1,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-customs",
+   "x": 2152.5,
+   "z": 731,
+   "yaw": 0,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-market",
+   "x": 2210.2,
+   "z": 785.87,
+   "yaw": 57.3,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-smithy",
+   "x": 2167.5,
+   "z": 731,
+   "yaw": 0,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-scribe",
+   "x": 2198.18,
+   "z": 798.47,
+   "yaw": 35.5,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-inn-pass",
+   "x": 2182.5,
+   "z": 731,
+   "yaw": 0,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-inn-lean",
+   "x": 2182.34,
+   "z": 805.7,
+   "yaw": 13.6,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-chapel",
+   "x": 2197.5,
+   "z": 731,
+   "yaw": 0,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-shrine",
+   "x": 2164.95,
+   "z": 806.53,
+   "yaw": 351.8,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-rootpost",
+   "x": 2137.5,
+   "z": 746,
+   "yaw": 0,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-gaol",
+   "x": 2148.5,
+   "z": 800.84,
+   "yaw": 330,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-kiln",
+   "x": 2152.5,
+   "z": 746,
+   "yaw": 0,
+   "w": 11.2,
+   "d": 13.2
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-house-0",
+   "x": 2135.34,
+   "z": 789.44,
+   "yaw": 308.2,
+   "w": 13.6,
+   "d": 15.6
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-house-1",
+   "x": 2167.5,
+   "z": 746,
+   "yaw": 0,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-house-2",
+   "x": 2127.36,
+   "z": 773.96,
+   "yaw": 286.4,
+   "w": 12.4,
+   "d": 14.4
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-house-3",
+   "x": 2182.5,
+   "z": 746,
+   "yaw": 0,
+   "w": 13.6,
+   "d": 15.6
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-house-4",
+   "x": 2125.71,
+   "z": 756.63,
+   "yaw": 264.5,
+   "w": 13.6,
+   "d": 15.6
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-north-barrack",
+   "x": 2197.5,
+   "z": 746,
+   "yaw": 0,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-raid-house",
+   "x": 2130.61,
+   "z": 739.92,
+   "yaw": 242.7,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-bloom-block",
+   "x": 2137.5,
+   "z": 761,
+   "yaw": 0,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-old-customs",
+   "x": 2141.38,
+   "z": 726.24,
+   "yaw": 220.9,
+   "w": 8,
+   "d": 5.6
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-outer-lean",
+   "x": 2152.5,
+   "z": 761,
+   "yaw": 0,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-struct-the-wall-itself",
+   "x": 2156.45,
+   "z": 717.53,
+   "yaw": 199.1,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-struct-the-pass-gate",
+   "x": 2167.5,
+   "z": 761,
+   "yaw": 0,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-struct-the-watch-towers",
+   "x": 2173.69,
+   "z": 715.05,
+   "yaw": 177.3,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-struct-the-muster-yard",
+   "x": 2182.5,
+   "z": 761,
+   "yaw": 0,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-struct-the-salt-kilns",
+   "x": 2190.61,
+   "z": 719.16,
+   "yaw": 155.5,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-struct-the-cistern",
+   "x": 2197.5,
+   "z": 761,
+   "yaw": 0,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-struct-the-outside-ditch",
+   "x": 2204.79,
+   "z": 729.26,
+   "yaw": 133.6,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-struct-the-bollard-line",
+   "x": 2137.5,
+   "z": 776,
+   "yaw": 0,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-struct-the-bloom-course",
+   "x": 2214.2,
+   "z": 743.9,
+   "yaw": 111.8,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "stormhold",
+   "id": "stormhold-struct-the-signal-post",
+   "x": 2152.5,
+   "z": 776,
+   "yaw": 0,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-hall",
+   "x": 3820,
+   "z": 859,
+   "yaw": 180,
+   "w": 16,
+   "d": 15.73
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-inn",
+   "x": 3837,
+   "z": 859,
+   "yaw": 270,
+   "w": 14.8,
+   "d": 16.8
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-trader",
+   "x": 3840.72,
+   "z": 868.98,
+   "yaw": 244.3,
+   "w": 14.8,
+   "d": 16.8
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-apothecary",
+   "x": 3826.86,
+   "z": 867.6,
+   "yaw": 218.6,
+   "w": 14.8,
+   "d": 14.49
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-sapwell",
+   "x": 3823.78,
+   "z": 875.57,
+   "yaw": 192.9,
+   "w": 14.8,
+   "d": 14.49
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-rootpost",
+   "x": 3814.88,
+   "z": 881.42,
+   "yaw": 167.1,
+   "w": 14.8,
+   "d": 16.8
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-gate",
+   "x": 3813.14,
+   "z": 867.6,
+   "yaw": 141.4,
+   "w": 14.8,
+   "d": 14.68
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-north-lean",
+   "x": 3804.68,
+   "z": 866.38,
+   "yaw": 115.7,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-court-store",
+   "x": 3797,
+   "z": 859,
+   "yaw": 90,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-burnt-stilt",
+   "x": 3810.09,
+   "z": 854.23,
+   "yaw": 64.3,
+   "w": 8,
+   "d": 9
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-struct-the-charter-post",
+   "x": 3809.4,
+   "z": 845.71,
+   "yaw": 38.6,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-struct-the-needle-stacks",
+   "x": 3814.88,
+   "z": 836.58,
+   "yaw": 12.9,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-struct-the-bow-racks",
+   "x": 3822.45,
+   "z": 848.28,
+   "yaw": 347.1,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-struct-the-sapwell-kerb",
+   "x": 3830.6,
+   "z": 845.71,
+   "yaw": 321.4,
+   "w": 5,
+   "d": 5
+  },
+  {
+   "town": "thorn",
+   "id": "thorn-struct-the-thicket-wall",
+   "x": 3840.72,
+   "z": 849.02,
+   "yaw": 295.7,
+   "w": 5,
+   "d": 5
+  }
+ ],
+ "legs": [
+  {
+   "leg": "stormhold-thorn",
+   "samples": 2249,
+   "inside_building": 0,
+   "inside_first": [],
+   "worst_slab_clearance_m": 1,
+   "worst_at": {
+    "m": 31,
+    "x": 2200.3,
+    "z": 764.6
+   },
+   "body_blocked_samples": 0,
+   "body_blocked_first": []
+  },
+  {
+   "leg": "stormhold-helstrom",
+   "samples": 3029,
+   "inside_building": 0,
+   "inside_first": [],
+   "worst_slab_clearance_m": 1.289,
+   "worst_at": {
+    "m": 2980,
+    "x": 2295.6,
+    "z": 2739.8
+   },
+   "body_blocked_samples": 0,
+   "body_blocked_first": []
+  },
+  {
+   "leg": "helstrom-archon",
+   "samples": 2668,
+   "inside_building": 0,
+   "inside_first": [],
+   "worst_slab_clearance_m": 1.042,
+   "worst_at": {
+    "m": 98,
+    "x": 2327.5,
+    "z": 2807.1
+   },
+   "body_blocked_samples": 0,
+   "body_blocked_first": []
+  },
+  {
+   "leg": "helstrom-blackrose",
+   "samples": 2589,
+   "inside_building": 7,
+   "inside_first": [
+    {
+     "m": 2581,
+     "x": 1902.6,
+     "z": 4442.8,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 2582,
+     "x": 1903,
+     "z": 4443.7,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 2583,
+     "x": 1903.4,
+     "z": 4444.7,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 2584,
+     "x": 1903.7,
+     "z": 4445.6,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 2585,
+     "x": 1904.1,
+     "z": 4446.5,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 2586,
+     "x": 1904.5,
+     "z": 4447.5,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    }
+   ],
+   "worst_slab_clearance_m": -0.066,
+   "worst_at": {
+    "m": 2580,
+    "x": 1902.2,
+    "z": 4441.9
+   },
+   "body_blocked_samples": 5,
+   "body_blocked_first": [
+    {
+     "m": 2580,
+     "x": 1902.2,
+     "z": 4441.9,
+     "clear_m": -0.066
+    },
+    {
+     "m": 2581,
+     "x": 1902.6,
+     "z": 4442.8,
+     "clear_m": 0.006
+    },
+    {
+     "m": 2586,
+     "x": 1904.5,
+     "z": 4447.5,
+     "clear_m": 0.041
+    },
+    {
+     "m": 2587,
+     "x": 1904.9,
+     "z": 4448.4,
+     "clear_m": 0.253
+    },
+    {
+     "m": 2588,
+     "x": 1905.2,
+     "z": 4449.3,
+     "clear_m": 0.131
+    }
+   ]
+  },
+  {
+   "leg": "helstrom-gideon",
+   "samples": 2495,
+   "inside_building": 0,
+   "inside_first": [],
+   "worst_slab_clearance_m": 0.971,
+   "worst_at": {
+    "m": 51,
+    "x": 2239.2,
+    "z": 2738.1
+   },
+   "body_blocked_samples": 0,
+   "body_blocked_first": []
+  },
+  {
+   "leg": "gideon-soulrest",
+   "samples": 2657,
+   "inside_building": 0,
+   "inside_first": [],
+   "worst_slab_clearance_m": 0.991,
+   "worst_at": {
+    "m": 2644,
+    "x": 607.6,
+    "z": 4864.9
+   },
+   "body_blocked_samples": 0,
+   "body_blocked_first": []
+  },
+  {
+   "leg": "soulrest-blackrose",
+   "samples": 1911,
+   "inside_building": 2,
+   "inside_first": [
+    {
+     "m": 1886,
+     "x": 1882.2,
+     "z": 4451.3,
+     "town": "blackrose",
+     "building": "blackrose-rootpost"
+    },
+    {
+     "m": 1887,
+     "x": 1883.2,
+     "z": 4451.1,
+     "town": "blackrose",
+     "building": "blackrose-rootpost"
+    }
+   ],
+   "worst_slab_clearance_m": -0.132,
+   "worst_at": {
+    "m": 1888,
+    "x": 1884.2,
+    "z": 4451
+   },
+   "body_blocked_samples": 7,
+   "body_blocked_first": [
+    {
+     "m": 1873,
+     "x": 1869.9,
+     "z": 4449.4,
+     "clear_m": 0.266
+    },
+    {
+     "m": 1885,
+     "x": 1881.2,
+     "z": 4451.5,
+     "clear_m": -0.09
+    },
+    {
+     "m": 1886,
+     "x": 1882.2,
+     "z": 4451.3,
+     "clear_m": 0.164
+    },
+    {
+     "m": 1887,
+     "x": 1883.2,
+     "z": 4451.1,
+     "clear_m": -0.032
+    },
+    {
+     "m": 1888,
+     "x": 1884.2,
+     "z": 4451,
+     "clear_m": -0.132
+    },
+    {
+     "m": 1889,
+     "x": 1885.1,
+     "z": 4450.8,
+     "clear_m": 0.064
+    }
+   ]
+  },
+  {
+   "leg": "blackrose-lilmoth",
+   "samples": 1543,
+   "inside_building": 4,
+   "inside_first": [
+    {
+     "m": 3,
+     "x": 1906,
+     "z": 4453,
+     "town": "blackrose",
+     "building": "blackrose-condemned-row"
+    },
+    {
+     "m": 4,
+     "x": 1906.2,
+     "z": 4453.9,
+     "town": "blackrose",
+     "building": "blackrose-condemned-row"
+    },
+    {
+     "m": 5,
+     "x": 1906.3,
+     "z": 4454.9,
+     "town": "blackrose",
+     "building": "blackrose-condemned-row"
+    },
+    {
+     "m": 6,
+     "x": 1906.5,
+     "z": 4455.9,
+     "town": "blackrose",
+     "building": "blackrose-old-gallows"
+    }
+   ],
+   "worst_slab_clearance_m": 0.025,
+   "worst_at": {
+    "m": 7,
+    "x": 1906.7,
+    "z": 4456.9
+   },
+   "body_blocked_samples": 4,
+   "body_blocked_first": [
+    {
+     "m": 2,
+     "x": 1905.8,
+     "z": 4452,
+     "clear_m": 0.147
+    },
+    {
+     "m": 3,
+     "x": 1906,
+     "z": 4453,
+     "clear_m": 0.161
+    },
+    {
+     "m": 6,
+     "x": 1906.5,
+     "z": 4455.9,
+     "clear_m": 0.038
+    },
+    {
+     "m": 7,
+     "x": 1906.7,
+     "z": 4456.9,
+     "clear_m": 0.025
+    }
+   ]
+  },
+  {
+   "leg": "archon-thorn",
+   "samples": 4473,
+   "inside_building": 0,
+   "inside_first": [],
+   "worst_slab_clearance_m": 1.209,
+   "worst_at": {
+    "m": 4453,
+    "x": 3830.2,
+    "z": 840.9
+   },
+   "body_blocked_samples": 0,
+   "body_blocked_first": []
+  },
+  {
+   "leg": "lilmoth-archon",
+   "samples": 2557,
+   "inside_building": 0,
+   "inside_first": [],
+   "worst_slab_clearance_m": 0.921,
+   "worst_at": {
+    "m": 2515,
+    "x": 3749.8,
+    "z": 3841.8
+   },
+   "body_blocked_samples": 0,
+   "body_blocked_first": []
+  }
+ ],
+ "routes": [
+  {
+   "route": "crossing",
+   "declared_m": 6911.4,
+   "samples": 7161,
+   "inside_building": 11,
+   "inside_first": [
+    {
+     "m": 5610,
+     "x": 1902.6,
+     "z": 4442.8,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 5611,
+     "x": 1903,
+     "z": 4443.7,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 5612,
+     "x": 1903.4,
+     "z": 4444.7,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 5613,
+     "x": 1903.7,
+     "z": 4445.6,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 5614,
+     "x": 1904.1,
+     "z": 4446.5,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 5615,
+     "x": 1904.5,
+     "z": 4447.5,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    }
+   ],
+   "worst_slab_clearance_m": -0.066,
+   "worst_at": {
+    "m": 5609,
+    "x": 1902.2,
+    "z": 4441.9
+   },
+   "body_blocked_samples": 9,
+   "body_blocked_first": [
+    {
+     "m": 5609,
+     "x": 1902.2,
+     "z": 4441.9,
+     "clear_m": -0.066
+    },
+    {
+     "m": 5610,
+     "x": 1902.6,
+     "z": 4442.8,
+     "clear_m": 0.006
+    },
+    {
+     "m": 5615,
+     "x": 1904.5,
+     "z": 4447.5,
+     "clear_m": 0.041
+    },
+    {
+     "m": 5616,
+     "x": 1904.9,
+     "z": 4448.4,
+     "clear_m": 0.253
+    },
+    {
+     "m": 5617,
+     "x": 1905.2,
+     "z": 4449.3,
+     "clear_m": 0.131
+    },
+    {
+     "m": 5620,
+     "x": 1905.8,
+     "z": 4452,
+     "clear_m": 0.147
+    }
+   ]
+  },
+  {
+   "route": "long_way",
+   "declared_m": 9480.8,
+   "samples": 9778,
+   "inside_building": 10,
+   "inside_first": [
+    {
+     "m": 7859,
+     "x": 1902.6,
+     "z": 4442.8,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 7860,
+     "x": 1903,
+     "z": 4443.7,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 7861,
+     "x": 1903.4,
+     "z": 4444.7,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 7862,
+     "x": 1903.7,
+     "z": 4445.6,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 7863,
+     "x": 1904.1,
+     "z": 4446.5,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    },
+    {
+     "m": 7864,
+     "x": 1904.5,
+     "z": 4447.5,
+     "town": "blackrose",
+     "building": "blackrose-house-0"
+    }
+   ],
+   "worst_slab_clearance_m": -0.093,
+   "worst_at": {
+    "m": 7889,
+    "x": 1884.3,
+    "z": 4450.9
+   },
+   "body_blocked_samples": 12,
+   "body_blocked_first": [
+    {
+     "m": 7858,
+     "x": 1902.2,
+     "z": 4441.9,
+     "clear_m": -0.066
+    },
+    {
+     "m": 7859,
+     "x": 1902.6,
+     "z": 4442.8,
+     "clear_m": 0.006
+    },
+    {
+     "m": 7864,
+     "x": 1904.5,
+     "z": 4447.5,
+     "clear_m": 0.041
+    },
+    {
+     "m": 7865,
+     "x": 1904.9,
+     "z": 4448.4,
+     "clear_m": 0.253
+    },
+    {
+     "m": 7866,
+     "x": 1905.2,
+     "z": 4449.3,
+     "clear_m": 0.131
+    },
+    {
+     "m": 7887,
+     "x": 1886.3,
+     "z": 4450.5,
+     "clear_m": 0.299
+    }
+   ]
+  }
+ ]
+}

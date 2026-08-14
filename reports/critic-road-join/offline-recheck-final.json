@@ -1,0 +1,63 @@
+{
+ "schema": "w1-01/road-through-building@1",
+ "measured_at": "2026-08-08T04:27:11.088Z",
+ "git": {
+  "commit": "a70a97f0184028403d6f87d822e38ccf67947119",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "dirty": true
+ },
+ "method": "every named route resampled at 1 m; insideBuilding() over all 8 settlement plans (render/exterior.js planSettlement), offline, no engine",
+ "settlements": [
+  {
+   "id": "stormhold",
+   "buildings": 33
+  },
+  {
+   "id": "thorn",
+   "buildings": 15
+  },
+  {
+   "id": "gideon",
+   "buildings": 22
+  },
+  {
+   "id": "helstrom",
+   "buildings": 40
+  },
+  {
+   "id": "archon",
+   "buildings": 22
+  },
+  {
+   "id": "blackrose",
+   "buildings": 22
+  },
+  {
+   "id": "soulrest",
+   "buildings": 15
+  },
+  {
+   "id": "lilmoth",
+   "buildings": 33
+  }
+ ],
+ "routes": [
+  {
+   "route": "crossing",
+   "route_m": 6903.6,
+   "sampled_m": 7143,
+   "blocked_blocks": [],
+   "first_block_m": null
+  },
+  {
+   "route": "long_way",
+   "route_m": 9470.6,
+   "sampled_m": 9720,
+   "blocked_blocks": [],
+   "first_block_m": null
+  }
+ ],
+ "legs": [],
+ "offences": 0,
+ "pass": true
+}

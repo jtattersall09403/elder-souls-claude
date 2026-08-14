@@ -1,0 +1,191 @@
+{
+  "commit_note": "run `git rev-parse --short HEAD` alongside this file; every number is a count over shipped data",
+  "total_quests_in_book": 124,
+  "lines": [
+    {
+      "faction": "deep_kin",
+      "ranks": 8,
+      "rank7_reputation": 112,
+      "faction_category_quests": 1,
+      "mean_quests_per_rank": 0.13,
+      "quests_with_deceit": 1,
+      "empty_rank_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "earnable_reputation_best_case": 159,
+      "earnable_over_rank7": 1.42,
+      "paying_quests": 10
+    },
+    {
+      "faction": "the_dockhands",
+      "ranks": 8,
+      "rank7_reputation": 112,
+      "faction_category_quests": 4,
+      "mean_quests_per_rank": 0.5,
+      "quests_with_deceit": 0,
+      "empty_rank_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "earnable_reputation_best_case": 541,
+      "earnable_over_rank7": 4.83,
+      "paying_quests": 35
+    },
+    {
+      "faction": "the_drowned_court",
+      "ranks": 8,
+      "rank7_reputation": 112,
+      "faction_category_quests": 2,
+      "mean_quests_per_rank": 0.25,
+      "quests_with_deceit": 1,
+      "empty_rank_bands": [
+        1,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "earnable_reputation_best_case": 280,
+      "earnable_over_rank7": 2.5,
+      "paying_quests": 20
+    },
+    {
+      "faction": "the_imperial_assize",
+      "ranks": 8,
+      "rank7_reputation": 112,
+      "faction_category_quests": 18,
+      "mean_quests_per_rank": 2.25,
+      "quests_with_deceit": 14,
+      "empty_rank_bands": [],
+      "earnable_reputation_best_case": 1009,
+      "earnable_over_rank7": 9.01,
+      "paying_quests": 46
+    },
+    {
+      "faction": "the_ixtu_vakh",
+      "ranks": 8,
+      "rank7_reputation": 112,
+      "faction_category_quests": 2,
+      "mean_quests_per_rank": 0.25,
+      "quests_with_deceit": 1,
+      "empty_rank_bands": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "earnable_reputation_best_case": 218,
+      "earnable_over_rank7": 1.95,
+      "paying_quests": 14
+    },
+    {
+      "faction": "the_rootkeepers",
+      "ranks": 8,
+      "rank7_reputation": 112,
+      "faction_category_quests": 3,
+      "mean_quests_per_rank": 0.38,
+      "quests_with_deceit": 1,
+      "empty_rank_bands": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "earnable_reputation_best_case": 208,
+      "earnable_over_rank7": 1.86,
+      "paying_quests": 18
+    },
+    {
+      "faction": "the_wet_ledger",
+      "ranks": 8,
+      "rank7_reputation": 112,
+      "faction_category_quests": 18,
+      "mean_quests_per_rank": 2.25,
+      "quests_with_deceit": 14,
+      "empty_rank_bands": [],
+      "earnable_reputation_best_case": 723,
+      "earnable_over_rank7": 6.46,
+      "paying_quests": 33
+    },
+    {
+      "faction": "the_xul_aneekh",
+      "ranks": 8,
+      "rank7_reputation": 112,
+      "faction_category_quests": 18,
+      "mean_quests_per_rank": 2.25,
+      "quests_with_deceit": 14,
+      "empty_rank_bands": [],
+      "earnable_reputation_best_case": 1034,
+      "earnable_over_rank7": 9.23,
+      "paying_quests": 45
+    }
+  ],
+  "consumers": {
+    "faction_interior_zones_by_faction": {
+      "drowned-court": 14,
+      "wet-ledger": 18
+    },
+    "ladders_with_no_hall_anywhere": [
+      "deep_kin",
+      "the_dockhands",
+      "the_imperial_assize",
+      "the_ixtu_vakh",
+      "the_rootkeepers",
+      "the_xul_aneekh"
+    ],
+    "lines_with_expulsion": [
+      "the_wet_ledger",
+      "the_imperial_assize",
+      "the_xul_aneekh"
+    ],
+    "lines_with_readmission": [
+      "the_wet_ledger",
+      "the_imperial_assize",
+      "the_xul_aneekh"
+    ]
+  },
+  "hard_fails": [
+    "RI-QST01 volume: deep_kin has 1 faction quests, below the floor of 18",
+    "RI-QST01 volume: deep_kin mean quests per rank 0.13, below the floor of 2.0",
+    "RI-QST01 volume: deep_kin has 7 EMPTY rank band(s): 1, 2, 3, 4, 5, 6, 7",
+    "RI-QST01 volume: the_dockhands has 4 faction quests, below the floor of 18",
+    "RI-QST01 volume: the_dockhands mean quests per rank 0.50, below the floor of 2.0",
+    "RI-QST01 volume: the_dockhands has 7 EMPTY rank band(s): 1, 2, 3, 4, 5, 6, 7",
+    "RI-QST01 honesty: the_dockhands has 4 faction quests and deceit == null on every one",
+    "RI-QST01 volume: the_drowned_court has 2 faction quests, below the floor of 18",
+    "RI-QST01 volume: the_drowned_court mean quests per rank 0.25, below the floor of 2.0",
+    "RI-QST01 volume: the_drowned_court has 6 EMPTY rank band(s): 1, 3, 4, 5, 6, 7",
+    "RI-QST01 volume: the_ixtu_vakh has 2 faction quests, below the floor of 18",
+    "RI-QST01 volume: the_ixtu_vakh mean quests per rank 0.25, below the floor of 2.0",
+    "RI-QST01 volume: the_ixtu_vakh has 6 EMPTY rank band(s): 2, 3, 4, 5, 6, 7",
+    "RI-QST01 volume: the_rootkeepers has 3 faction quests, below the floor of 18",
+    "RI-QST01 volume: the_rootkeepers mean quests per rank 0.38, below the floor of 2.0",
+    "RI-QST01 volume: the_rootkeepers has 7 EMPTY rank band(s): 1, 2, 3, 4, 5, 6, 7"
+  ],
+  "warnings": [
+    "RI-QST03 §4: the_dockhands earnable 541 is 4.83x its rank-7 requirement of 112 — above the 1.6x slack warning, gating is loose",
+    "RI-QST03 §4: the_drowned_court earnable 280 is 2.50x its rank-7 requirement of 112 — above the 1.6x slack warning, gating is loose",
+    "RI-QST03 §4: the_imperial_assize earnable 1009 is 9.01x its rank-7 requirement of 112 — above the 1.6x slack warning, gating is loose",
+    "RI-QST03 §4: the_ixtu_vakh earnable 218 is 1.95x its rank-7 requirement of 112 — above the 1.6x slack warning, gating is loose",
+    "RI-QST03 §4: the_rootkeepers earnable 208 is 1.86x its rank-7 requirement of 112 — above the 1.6x slack warning, gating is loose",
+    "RI-QST03 §4: the_wet_ledger earnable 723 is 6.46x its rank-7 requirement of 112 — above the 1.6x slack warning, gating is loose",
+    "RI-QST03 §4: the_xul_aneekh earnable 1034 is 9.23x its rank-7 requirement of 112 — above the 1.6x slack warning, gating is loose"
+  ]
+}

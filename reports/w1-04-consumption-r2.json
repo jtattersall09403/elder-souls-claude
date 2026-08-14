@@ -1,0 +1,511 @@
+{
+  "summary": {
+    "mode": "consumption",
+    "checks": 20,
+    "paths": 9,
+    "passed": 20,
+    "failed": 0,
+    "skipped": 0,
+    "page_errors": []
+  },
+  "results": [
+    {
+      "path": "world.settlement.anatomy",
+      "model": "game/data/world/settlements/*.json -> settlement.pos / radius_m",
+      "consumer": "sim/settlement.js stepSettlement() -> SettlementSystem.settlementAt(), on the fixed step via sim/step.js:128",
+      "perturbation": "move lilmoth 5 km away while the player stands still at its old centre",
+      "note": "The player does not move. Only the town does. If `env.settlement` does not follow, the anatomy is a census row. NB the town is MOVED rather than shrunk: the player stands at the exact centre, so d=0 and even a 1 mm radius still contains them — a perturbation that cannot change the answer is not a perturbation.",
+      "before": {
+        "settlement": "lilmoth"
+      },
+      "after": {
+        "settlement": null
+      },
+      "changed": true,
+      "restored_clean": true,
+      "verdict": "CONSUMED"
+    },
+    {
+      "path": "world.interior.named",
+      "model": "game/data/world/settlements/archon.json -> buildings[].door",
+      "consumer": "sim/settlement.js stepSettlement() -> SettlementSystem.doorAt(), writes sim.door every frame",
+      "perturbation": "move archon-guild-office's door 500 m away while the player stands on the doorstep",
+      "note": "sim.door is what a prompt renders off. A door that moves and leaves the prompt behind is a label, not a door.",
+      "before": {
+        "door": "archon-guild-office"
+      },
+      "after": {
+        "door": null
+      },
+      "changed": true,
+      "restored_clean": true,
+      "verdict": "CONSUMED"
+    },
+    {
+      "path": "world.interior.continuity",
+      "model": "game/data/world/interiors/archon-guild-office.json -> continuity.interior_spawn",
+      "consumer": "sim/settlement.js useDoor() — sets sim.env.interior and moves sim.player.pos to the declared spawn",
+      "perturbation": "move interior_spawn by +7 m in x, then walk through the door",
+      "note": "RI-WLD13. If the body lands in the same place either way, the continuity block is decoration. The read STEPS before measuring and asserts `entered`, because the first version of this check reported CONSUMED off a 0.01 m y-jitter while x never moved by the 7 m it was perturbed by — the interior transition was being undone by `combat-bridge.mirror()` on the very next frame and the probe could not see it.",
+      "before": {
+        "entered": true,
+        "landed_at": [
+          0,
+          0,
+          6.6
+        ],
+        "still_inside_after_2_steps": "archon-guild-office"
+      },
+      "after": {
+        "entered": true,
+        "landed_at": [
+          7,
+          0,
+          6.6
+        ],
+        "still_inside_after_2_steps": "archon-guild-office"
+      },
+      "changed": true,
+      "restored_clean": true,
+      "verdict": "CONSUMED"
+    },
+    {
+      "path": "world.interior.continuity",
+      "model": "archon-guild-office.continuity.{interior_spawn,exterior_spawn}",
+      "consumer": "useDoor() / leaveInterior() -> sim.placeBody -> Engine._placeBody (the BODY, not the mirror)",
+      "perturbation": "walk in, hold four frames, walk out, hold four frames",
+      "before": {
+        "outside": [
+          3785,
+          3.42,
+          3791.3
+        ]
+      },
+      "after": {
+        "inside": [
+          0,
+          0,
+          6.6
+        ],
+        "declared_interior_spawn": [
+          0,
+          0,
+          6.6
+        ],
+        "err_in_m": 0,
+        "back_outside": [
+          3785,
+          3.42,
+          3791.3
+        ],
+        "declared_doorstep": [
+          3785,
+          3.42,
+          3791.3
+        ],
+        "err_out_m": 0
+      },
+      "changed": true,
+      "verdict": "CONSUMED",
+      "note": "RI-WLD13, both ends of the one object. The body must still be at the declared spawn FOUR frames later — before the `_placeBody` fix it was back outside on frame N+1 while `env.interior` still said you were in."
+    },
+    {
+      "path": "world.npc.population",
+      "model": "game/data/npcs/pop-*.json -> rec.settlement",
+      "consumer": "engine.populateSettlement(), installed as sim.populate and called by stepSettlement() on the boundary crossing",
+      "perturbation": "walk out of the town and back in, having emptied the live npc list",
+      "note": "A population that only a probe can summon is not a population. Crossing the boundary is what summons it.",
+      "before": {
+        "people": true
+      },
+      "after": {
+        "people": false
+      },
+      "changed": true,
+      "restored_clean": true,
+      "verdict": "CONSUMED"
+    },
+    {
+      "path": "world.npc.population",
+      "model": "game/data/npcs/**",
+      "consumer": "engine.populateSettlement() / sim.npcs",
+      "perturbation": "(census)",
+      "before": null,
+      "after": {
+        "settlements": 8,
+        "interiors": 115,
+        "live_npcs_here": 86,
+        "with_schedule": 80
+      },
+      "changed": true,
+      "verdict": "CONSUMED",
+      "note": "Live count in the loaded town, not the record count on disk."
+    },
+    {
+      "path": "world.npc.schedule",
+      "model": "game/data/npcs/*.json -> schedule[{from,to,at}]",
+      "consumer": "sim/npc.js stepSchedule(), called from stepNPCs() on the fixed step via sim/step.js:131",
+      "perturbation": "advance the world clock from 12:00 to 03:00 and step; nobody is respawned",
+      "before": {
+        "hour": 12
+      },
+      "after": {
+        "sampled": 86,
+        "moved": 54,
+        "examples": [
+          {
+            "eid": "archon-apothecary-10",
+            "noon": null,
+            "at_0300": "archon-ward"
+          },
+          {
+            "eid": "archon-apothecary-11",
+            "noon": null,
+            "at_0300": "archon-rootpost"
+          },
+          {
+            "eid": "archon-factor-7",
+            "noon": "archon-guild-office",
+            "at_0300": "archon-kiln-house"
+          },
+          {
+            "eid": "archon-factor-9",
+            "noon": "archon-guild-office",
+            "at_0300": "archon-apothecary"
+          },
+          {
+            "eid": "archon-keeper-apothecary",
+            "noon": "archon-apothecary",
+            "at_0300": null
+          },
+          {
+            "eid": "archon-keeper-vat-house",
+            "noon": "archon-vat-house",
+            "at_0300": null
+          }
+        ]
+      },
+      "changed": true,
+      "verdict": "CONSUMED",
+      "note": "RI-WLD08. Before this piece, makeNPC() did not copy `schedule` onto the entity and nobody in this world had ever moved."
+    },
+    {
+      "path": "world.npc.schedule",
+      "model": "npc archon-apothecary-10 -> schedule[].at",
+      "consumer": "sim/npc.js stepSchedule() -> n.at / n.present / n.visible",
+      "perturbation": "rewrite every slot of archon-apothecary-10's day to point at a different cell",
+      "note": "One person, one field. If `at` does not follow the record, the schedule is decoration.",
+      "before": {
+        "at": "archon-ward"
+      },
+      "after": {
+        "at": "__perturbed__"
+      },
+      "changed": true,
+      "restored_clean": true,
+      "verdict": "CONSUMED"
+    },
+    {
+      "path": "world.property.ownership",
+      "model": "game/data/world/property/*.json -> zones[].contents[].owner / owner_scope",
+      "consumer": "engine.takeObject() -> STL_THF.take() -> sim.stealth.crime.commit(); built by W1-15",
+      "perturbation": "take archon.priest0.r0.0 as shipped, vs archon.priest0.r0.1 with its owner stripped",
+      "before": {
+        "object": "archon.priest0.r0.0",
+        "owner": "faction:drowned-court",
+        "crimes_delta": 1,
+        "stolen_from": "faction:drowned-court",
+        "error": null
+      },
+      "after": {
+        "object": "archon.priest0.r0.1",
+        "owner": null,
+        "crimes_delta": 0,
+        "stolen_from": null,
+        "error": null
+      },
+      "changed": true,
+      "verdict": "CONSUMED",
+      "note": "RI-STL02 §1. An unowned object is picked up; an owned one is a theft with a victim."
+    },
+    {
+      "path": "world.locks.security",
+      "model": "game/data/world/property/*.json -> zones[].locks[].tier",
+      "consumer": "engine.lockBegin() -> STL_LockAttempt; the ward-collar gate width and the skill refusal",
+      "perturbation": "raise archon.priest0.r0.lock's tier from 3 to 5",
+      "note": "RI-STL02 §3. A tier that does not change the gate — or the refusal that names it — is a number in a file.",
+      "before": {
+        "opened": false,
+        "refusal": "LockAttempt: You do not know this kind of lock. (tier 3 needs Security 40 / Agility 26; you have 5/20)"
+      },
+      "after": {
+        "opened": false,
+        "refusal": "LockAttempt: You do not know this kind of lock. (tier 5 needs Security 80 / Agility 50; you have 5/20)"
+      },
+      "changed": true,
+      "restored_clean": true,
+      "verdict": "CONSUMED"
+    },
+    {
+      "path": "world.faction.presence",
+      "model": "game/data/world/property/*.json -> zones[].schedule.{open_h,close_h} on archon.apothecary10.r0 (class=shop_closed)",
+      "consumer": "engine.trespassCheck() -> engine.isOpenNow() -> SettlementSystem.isOpen(), then sim/stealth/theft.js trespass()",
+      "perturbation": "ask the same zone the same question at 12:00 and at 03:00",
+      "before": {
+        "hour": 12,
+        "shop_open": true,
+        "trespassing": false
+      },
+      "after": {
+        "hour": 3,
+        "shop_open": false,
+        "trespassing": true
+      },
+      "changed": true,
+      "verdict": "CONSUMED",
+      "note": "The hours were on every zone in the build and read by nothing before this piece."
+    },
+    {
+      "path": "world.faction.presence",
+      "model": "zones[].faction on archon.priest0.r0 (class=faction_interior)",
+      "consumer": "engine.trespassCheck() -> sim/stealth/theft.js trespass(), which reads zone.faction against the player standings",
+      "perturbation": "point the zone at a faction the character is rank 5 in",
+      "note": "RI-CHR02. Whose door it is decides whether you are allowed through it.",
+      "before": {
+        "trespassing": true,
+        "zone_class": "faction_interior",
+        "escalation": "CHALLENGE -> ALARM -> guard"
+      },
+      "after": {
+        "trespassing": false,
+        "zone_class": "faction_interior",
+        "escalation": null
+      },
+      "changed": true,
+      "restored_clean": true,
+      "verdict": "CONSUMED"
+    },
+    {
+      "path": "world.persistence.state",
+      "model": "sim.env.interior / sim.env.settlement / npc.at, through save/state.js",
+      "consumer": "engine.loadState() — audited on the LIVE world after the load, not on the re-serialised blob",
+      "perturbation": "save inside a cell at 14:00, then leave the cell and set 06:00, then load",
+      "before": {
+        "live": {
+          "entered": true,
+          "interior": "archon-guild-office",
+          "settlement": "archon",
+          "hour": 14
+        },
+        "people": 86
+      },
+      "after": {
+        "disturbed": {
+          "interior": null,
+          "hour": 6
+        },
+        "live": {
+          "interior": "archon-guild-office",
+          "settlement": "archon",
+          "hour": 14
+        },
+        "people": 86,
+        "cell_restored": true,
+        "hour_restored": true,
+        "everyones_day_restored": true
+      },
+      "changed": true,
+      "verdict": "CONSUMED",
+      "note": "The control is real: the world was genuinely moved out of the saved state before the load."
+    },
+    {
+      "path": "world.interior.named",
+      "model": "game/data/world/interiors/**.json -> the 115 named cells, entered through the door",
+      "consumer": "sim/settlement.js useDoor()/leaveInterior() -> sim.applyCell -> Engine._syncCell() -> renderer.setCell(). READ OFF THE RENDERER, not off sim.env.",
+      "perturbation": "enter and leave all 115 through enterInterior()/exitInterior(); then repeat with the cell consumer cut",
+      "before": {
+        "label": "consumer cut",
+        "total": 115,
+        "entered": 115,
+        "refused": 0,
+        "errored": 0,
+        "drawn_agrees": 0,
+        "exterior_restored_on_exit": 115,
+        "misses": [
+          {
+            "id": "archon-apothecary",
+            "drawn": "province",
+            "want": "interior",
+            "room": "thorn-trader"
+          },
+          {
+            "id": "archon-guild-office",
+            "drawn": "province",
+            "want": "interior",
+            "room": "thorn-trader"
+          },
+          {
+            "id": "archon-house-0",
+            "drawn": "province",
+            "want": "interior",
+            "room": "thorn-trader"
+          },
+          {
+            "id": "archon-house-1",
+            "drawn": "province",
+            "want": "interior",
+            "room": "thorn-trader"
+          },
+          {
+            "id": "archon-house-2",
+            "drawn": "province",
+            "want": "interior",
+            "room": "thorn-trader"
+          }
+        ]
+      },
+      "after": {
+        "label": "consumer live",
+        "total": 115,
+        "entered": 115,
+        "refused": 0,
+        "errored": 0,
+        "drawn_agrees": 115,
+        "exterior_restored_on_exit": 115,
+        "misses": []
+      },
+      "changed": true,
+      "verdict": "CONSUMED",
+      "note": "Round 1: 115 of 115 entered, 0 of 115 switched the drawn cell. The cut arm is that build."
+    },
+    {
+      "path": "world.interior.named",
+      "model": "game/data/world/interiors/archon-apothecary.json -> bounds_m",
+      "consumer": "render/interior.js buildInterior() -> the floor, four walls, ceiling and beam count of the drawn cell",
+      "perturbation": "halve the room on x and z",
+      "note": "RI-WLD13 N1. Read off the renderer: the numbers below are the shell that got built.",
+      "before": {
+        "bounds": {
+          "w": 13.6,
+          "h": 3.2,
+          "d": 15.6
+        },
+        "meshes": 127
+      },
+      "after": {
+        "bounds": {
+          "w": 6.8,
+          "h": 3.2,
+          "d": 7.8
+        },
+        "meshes": 113
+      },
+      "changed": true,
+      "restored_clean": true,
+      "verdict": "CONSUMED"
+    },
+    {
+      "path": "world.interior.named",
+      "model": "game/data/world/interiors/archon-apothecary.json -> props[]",
+      "consumer": "render/interior.js PROPS table -> furniture meshes in the drawn cell",
+      "perturbation": "strip every prop off the record",
+      "note": "RI-QST07: the round-1 verdict called `settlement.content` \"a prop list nobody instantiates\". 18 props declared, none drawn.",
+      "before": {
+        "props_built": 18,
+        "kit_meshes": 4,
+        "meshes": 127
+      },
+      "after": {
+        "props_built": 0,
+        "kit_meshes": 0,
+        "meshes": 67
+      },
+      "changed": true,
+      "restored_clean": true,
+      "verdict": "CONSUMED"
+    },
+    {
+      "path": "world.interior.named",
+      "model": "game/data/world/interiors/archon-apothecary.json -> lights[]",
+      "consumer": "render/interior.js -> the point lights and lamp fittings of the drawn cell",
+      "perturbation": "strip every declared light off the record",
+      "note": "The record declares 10 lights; the hall it used to resolve to drew exactly one.",
+      "before": {
+        "lamps_built": 8,
+        "lights_lit": 5,
+        "lights_declared": 10
+      },
+      "after": {
+        "lamps_built": 1,
+        "lights_lit": 1,
+        "lights_declared": 0
+      },
+      "changed": true,
+      "restored_clean": true,
+      "verdict": "CONSUMED"
+    },
+    {
+      "path": "world.interior.named",
+      "model": "all 115 interior records",
+      "consumer": "render/interior.js — the geometry each record actually builds",
+      "perturbation": "walk into all 115 in turn and hash the drawn room",
+      "before": {
+        "round_1": {
+          "distinct_rooms": 2,
+          "largest_identical_group": 113,
+          "note": "113 of 115 resolved to one 249-triangle hall"
+        }
+      },
+      "after": {
+        "rooms_read": 115,
+        "distinct_rooms": 92,
+        "largest_identical_group": 7
+      },
+      "changed": true,
+      "verdict": "CONSUMED",
+      "note": "A scene-graph signature, not a pixel hash — the pixel sweep is tools/world/w1-04-interior-sweep.mjs."
+    },
+    {
+      "path": "world.npc.schedule",
+      "model": "game/data/npcs/pop-*.json -> schedule[].at + activity, as POSITION",
+      "consumer": "sim/npc.js stepSchedule() -> n.pos, walked over the fixed step at 1.35 m/s",
+      "perturbation": "run thorn's day from 02:00 to 20:00 and compare everybody's position",
+      "before": {
+        "hour": 2,
+        "people": 110,
+        "round_1": {
+          "changed_cell": 9,
+          "changed_position": 0
+        }
+      },
+      "after": {
+        "hour": 20,
+        "changed_cell": 75,
+        "changed_position": 93
+      },
+      "changed": true,
+      "verdict": "CONSUMED",
+      "note": "Round 1 scored 0 of 24 here with the docstring claiming otherwise."
+    },
+    {
+      "path": "world.npc.population",
+      "model": "game/data/npcs/pop-*.json -> post + the outdoor schedule rows (tools/world/build-street-life.mjs)",
+      "consumer": "sim/npc.js stepSchedule() presence rule: `at: null` + a post means OUTDOORS",
+      "perturbation": "stand in thorn and read the street at 03:00, 09:00 and 20:00",
+      "before": {
+        "round_1": {
+          "outdoors_at_03": 0,
+          "outdoors_at_12": "34, all of them another piece's quest-givers"
+        }
+      },
+      "after": {
+        "outdoors_at_03": 16,
+        "outdoors_at_09": 50,
+        "outdoors_at_20": 22
+      },
+      "changed": true,
+      "verdict": "CONSUMED",
+      "note": "The street of every town in Argonia was empty at every hour of W1-04's own population."
+    }
+  ]
+}

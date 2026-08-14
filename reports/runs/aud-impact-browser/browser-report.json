@@ -1,0 +1,902 @@
+{
+  "generated": "2026-08-07T18:26:44.266Z",
+  "commit": "78aebc7",
+  "dirty": true,
+  "phases": {
+    "P0_attach": {
+      "available": true,
+      "attached_to_fight": true,
+      "classes": 12,
+      "variants": 48,
+      "trigger_source": "resolution",
+      "panner_model": "equalpower",
+      "listener": "character"
+    },
+    "P1_calibrate": {
+      "rendered": 48,
+      "errors": 0,
+      "raw_peak_min": -12.91170393880529,
+      "raw_peak_max": 3.2843498867795007,
+      "rows": [
+        {
+          "cls": "hit_flesh_light",
+          "sid": "hit_flesh_light.v1",
+          "peak_dbfs": -2.1426886121548616,
+          "rms_dbfs": -28.63986152083491,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "hit_flesh_light",
+          "sid": "hit_flesh_light.v2",
+          "peak_dbfs": -2.1581441069721805,
+          "rms_dbfs": -29.02924423458245,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "hit_flesh_light",
+          "sid": "hit_flesh_light.v3",
+          "peak_dbfs": -2.1944164377187962,
+          "rms_dbfs": -29.440594169585697,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "hit_flesh_light",
+          "sid": "hit_flesh_light.v4",
+          "peak_dbfs": -2.1706527656117163,
+          "rms_dbfs": -29.904225056347983,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "hit_chitin_light",
+          "sid": "hit_chitin_light.v1",
+          "peak_dbfs": -2.725219079694577,
+          "rms_dbfs": -33.4408766058565,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "hit_chitin_light",
+          "sid": "hit_chitin_light.v2",
+          "peak_dbfs": -3.2446934102286824,
+          "rms_dbfs": -34.32010998974373,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "hit_chitin_light",
+          "sid": "hit_chitin_light.v3",
+          "peak_dbfs": -3.2087461448086927,
+          "rms_dbfs": -35.35267820395811,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "hit_chitin_light",
+          "sid": "hit_chitin_light.v4",
+          "peak_dbfs": -4.604561851266065,
+          "rms_dbfs": -36.212182152458475,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "hit_flesh_heavy",
+          "sid": "hit_flesh_heavy.v1",
+          "peak_dbfs": -1.6819395606335736,
+          "rms_dbfs": -24.257477316707245,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "hit_flesh_heavy",
+          "sid": "hit_flesh_heavy.v2",
+          "peak_dbfs": -1.7400857354856727,
+          "rms_dbfs": -24.82713975147435,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "hit_flesh_heavy",
+          "sid": "hit_flesh_heavy.v3",
+          "peak_dbfs": -1.6539584157777334,
+          "rms_dbfs": -25.355356789871834,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "hit_flesh_heavy",
+          "sid": "hit_flesh_heavy.v4",
+          "peak_dbfs": -1.5014036570758147,
+          "rms_dbfs": -25.905815144303496,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "blocked",
+          "sid": "blocked.v1",
+          "peak_dbfs": -1.7291462527894927,
+          "rms_dbfs": -25.975085883985845,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "blocked",
+          "sid": "blocked.v2",
+          "peak_dbfs": -2.1389452610634443,
+          "rms_dbfs": -26.917741953922686,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "blocked",
+          "sid": "blocked.v3",
+          "peak_dbfs": -3.2809328224394143,
+          "rms_dbfs": -28.088370105708304,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "blocked",
+          "sid": "blocked.v4",
+          "peak_dbfs": -3.4776962795066124,
+          "rms_dbfs": -29.19692489968942,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "guard_break",
+          "sid": "guard_break.v1",
+          "peak_dbfs": -5.0195470048189685,
+          "rms_dbfs": -28.92087079214867,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "guard_break",
+          "sid": "guard_break.v2",
+          "peak_dbfs": -4.89415404248372,
+          "rms_dbfs": -29.38161332586903,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "guard_break",
+          "sid": "guard_break.v3",
+          "peak_dbfs": -4.773653010815237,
+          "rms_dbfs": -29.816323955858195,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "guard_break",
+          "sid": "guard_break.v4",
+          "peak_dbfs": -4.646679742863478,
+          "rms_dbfs": -30.336663756071726,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "parried",
+          "sid": "parried.v1",
+          "peak_dbfs": 3.2843498867795007,
+          "rms_dbfs": -21.395364218775494,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "parried",
+          "sid": "parried.v2",
+          "peak_dbfs": 2.4756666801693576,
+          "rms_dbfs": -21.896021357255098,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "parried",
+          "sid": "parried.v3",
+          "peak_dbfs": 2.7024088274456792,
+          "rms_dbfs": -22.501551175217834,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "parried",
+          "sid": "parried.v4",
+          "peak_dbfs": 2.433117763155847,
+          "rms_dbfs": -23.047475541231268,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "riposte",
+          "sid": "riposte.v1",
+          "peak_dbfs": -0.1128477223181735,
+          "rms_dbfs": -20.086175569079792,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "riposte",
+          "sid": "riposte.v2",
+          "peak_dbfs": -0.03024131793144251,
+          "rms_dbfs": -20.55206753591628,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "riposte",
+          "sid": "riposte.v3",
+          "peak_dbfs": -0.35846253403580136,
+          "rms_dbfs": -20.99801369923213,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "riposte",
+          "sid": "riposte.v4",
+          "peak_dbfs": -0.2029274878447067,
+          "rms_dbfs": -21.37684317030109,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "backstab",
+          "sid": "backstab.v1",
+          "peak_dbfs": -1.0873380052014228,
+          "rms_dbfs": -24.099151800280175,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "backstab",
+          "sid": "backstab.v2",
+          "peak_dbfs": -0.9960284867402394,
+          "rms_dbfs": -24.511623076477363,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "backstab",
+          "sid": "backstab.v3",
+          "peak_dbfs": -0.8940257623419079,
+          "rms_dbfs": -24.98669057831817,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "backstab",
+          "sid": "backstab.v4",
+          "peak_dbfs": -0.7635702539341047,
+          "rms_dbfs": -25.530755431666083,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "whiff",
+          "sid": "whiff.v1",
+          "peak_dbfs": -12.91170393880529,
+          "rms_dbfs": -43.57604660719559,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "whiff",
+          "sid": "whiff.v2",
+          "peak_dbfs": -11.912113738600429,
+          "rms_dbfs": -43.237419759075415,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "whiff",
+          "sid": "whiff.v3",
+          "peak_dbfs": -11.243427570776571,
+          "rms_dbfs": -42.88764954005381,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "whiff",
+          "sid": "whiff.v4",
+          "peak_dbfs": -10.40890233113235,
+          "rms_dbfs": -42.52174654666813,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "player_hurt",
+          "sid": "player_hurt.v1",
+          "peak_dbfs": -4.422462161502871,
+          "rms_dbfs": -29.202087152135512,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "player_hurt",
+          "sid": "player_hurt.v2",
+          "peak_dbfs": -4.738251057997054,
+          "rms_dbfs": -29.88033892011181,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "player_hurt",
+          "sid": "player_hurt.v3",
+          "peak_dbfs": -5.525521418269347,
+          "rms_dbfs": -30.49766995135275,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "player_hurt",
+          "sid": "player_hurt.v4",
+          "peak_dbfs": -4.790003078072466,
+          "rms_dbfs": -31.149995273816376,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "stamina_break",
+          "sid": "stamina_break.v1",
+          "peak_dbfs": -0.6195073457055076,
+          "rms_dbfs": -23.14720296738288,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "stamina_break",
+          "sid": "stamina_break.v2",
+          "peak_dbfs": -1.5330477663861084,
+          "rms_dbfs": -23.589010781130526,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "stamina_break",
+          "sid": "stamina_break.v3",
+          "peak_dbfs": -2.0853951259635557,
+          "rms_dbfs": -23.979114703948774,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "stamina_break",
+          "sid": "stamina_break.v4",
+          "peak_dbfs": -2.069742534700398,
+          "rms_dbfs": -24.457998908580635,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "death",
+          "sid": "death.v1",
+          "peak_dbfs": -2.2486584752204153,
+          "rms_dbfs": -20.586496633208725,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "death",
+          "sid": "death.v2",
+          "peak_dbfs": -2.095130232760267,
+          "rms_dbfs": -20.91032388012717,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "death",
+          "sid": "death.v3",
+          "peak_dbfs": -2.0466460087779206,
+          "rms_dbfs": -21.500933715115433,
+          "samples": 67200,
+          "channels": 2
+        },
+        {
+          "cls": "death",
+          "sid": "death.v4",
+          "peak_dbfs": -2.2479797548573153,
+          "rms_dbfs": -22.035277951482392,
+          "samples": 67200,
+          "channels": 2
+        }
+      ],
+      "applied": false,
+      "raw_peak_spread_db": 16.196
+    },
+    "P2_ladder_M3": {
+      "reference_C01_dbfs": -8,
+      "rows": [
+        {
+          "cls": "parried",
+          "want": 5,
+          "measured_rel_db": 5,
+          "err_db": 0,
+          "abs_peak_dbfs": -3,
+          "declared_abs": -3,
+          "norm_db": -3.28,
+          "ok": true
+        },
+        {
+          "cls": "riposte",
+          "want": 3.5,
+          "measured_rel_db": 3.5,
+          "err_db": 0,
+          "abs_peak_dbfs": -4.5,
+          "declared_abs": -4.5,
+          "norm_db": 0.36,
+          "ok": true
+        },
+        {
+          "cls": "backstab",
+          "want": 3,
+          "measured_rel_db": 3,
+          "err_db": 0,
+          "abs_peak_dbfs": -5,
+          "declared_abs": -5,
+          "norm_db": 1,
+          "ok": true
+        },
+        {
+          "cls": "hit_flesh_heavy",
+          "want": 2,
+          "measured_rel_db": 2,
+          "err_db": 0,
+          "abs_peak_dbfs": -6,
+          "declared_abs": -6,
+          "norm_db": 1.74,
+          "ok": true
+        },
+        {
+          "cls": "hit_flesh_light",
+          "want": 0,
+          "measured_rel_db": 0,
+          "err_db": 0,
+          "abs_peak_dbfs": -8,
+          "declared_abs": -8,
+          "norm_db": 2.16,
+          "ok": true
+        },
+        {
+          "cls": "hit_chitin_light",
+          "want": 0,
+          "measured_rel_db": 0,
+          "err_db": 0,
+          "abs_peak_dbfs": -8,
+          "declared_abs": -8,
+          "norm_db": 2.73,
+          "ok": true
+        },
+        {
+          "cls": "player_hurt",
+          "want": -0.5,
+          "measured_rel_db": -0.5,
+          "err_db": 0,
+          "abs_peak_dbfs": -8.5,
+          "declared_abs": -8.5,
+          "norm_db": 5.53,
+          "ok": true
+        },
+        {
+          "cls": "guard_break",
+          "want": -1,
+          "measured_rel_db": -1,
+          "err_db": 0,
+          "abs_peak_dbfs": -9,
+          "declared_abs": -9,
+          "norm_db": 4.65,
+          "ok": true
+        },
+        {
+          "cls": "blocked",
+          "want": -4,
+          "measured_rel_db": -4,
+          "err_db": 0,
+          "abs_peak_dbfs": -12,
+          "declared_abs": -12,
+          "norm_db": 3.48,
+          "ok": true
+        },
+        {
+          "cls": "stamina_break",
+          "want": -8,
+          "measured_rel_db": -8,
+          "err_db": 0,
+          "abs_peak_dbfs": -16,
+          "declared_abs": -16,
+          "norm_db": 2.09,
+          "ok": true
+        },
+        {
+          "cls": "whiff",
+          "want": -12,
+          "measured_rel_db": -12,
+          "err_db": 0,
+          "abs_peak_dbfs": -20,
+          "declared_abs": -20,
+          "norm_db": 10.41,
+          "ok": true
+        }
+      ],
+      "rows_in_tolerance": 11,
+      "rows_total": 11,
+      "worst_err_db": 0,
+      "hard_fail_whiff_too_loud": false,
+      "M3": "PASS"
+    },
+    "P3_consume": {
+      "in_reach": [
+        {
+          "spawnId": "mat_flesh",
+          "z": 1.4,
+          "voices": 4,
+          "classes": {
+            "hit_flesh_light": 4
+          },
+          "materials": [
+            "flesh"
+          ]
+        },
+        {
+          "spawnId": "mat_chitin",
+          "z": 1.4,
+          "voices": 4,
+          "classes": {
+            "hit_chitin_light": 4
+          },
+          "materials": [
+            "chitin"
+          ]
+        },
+        {
+          "spawnId": "mat_stone",
+          "z": 1.4,
+          "voices": 3,
+          "classes": {
+            "hit_chitin_light": 3
+          },
+          "materials": [
+            "stone"
+          ]
+        },
+        {
+          "spawnId": "mat_metal",
+          "z": 1.4,
+          "voices": 4,
+          "classes": {
+            "hit_chitin_light": 4
+          },
+          "materials": [
+            "metal"
+          ]
+        }
+      ],
+      "out_of_reach": {
+        "spawnId": "mat_flesh",
+        "z": 6,
+        "voices": 4,
+        "classes": {
+          "whiff": 4
+        },
+        "materials": []
+      },
+      "distinct_hit_class_sets": [
+        "hit_flesh_light",
+        "hit_chitin_light"
+      ],
+      "material_changes_the_voice": true,
+      "reach_changes_the_voice": true
+    },
+    "P4_pan_M6": {
+      "moving_shipped": {
+        "impacts": 25,
+        "bearing_spread_deg": 75.6,
+        "pan_distinct": 25,
+        "pan_nonzero": 25,
+        "pan_min": -0.590328,
+        "pan_max": 0.635188,
+        "distance_m_max": 1.443,
+        "r_pan_vs_sin_bearing": 0.9999,
+        "sample": [
+          {
+            "frame": 35,
+            "cls": "hit_flesh_light",
+            "pan": -0.195464,
+            "dist": 1.4412,
+            "pan_src": "AUD",
+            "bearing_deg": -12.33,
+            "sinb": -0.21355829783545816
+          },
+          {
+            "frame": 122,
+            "cls": "hit_flesh_light",
+            "pan": -0.226151,
+            "dist": 1.4426,
+            "pan_src": "AUD",
+            "bearing_deg": -14.13,
+            "sinb": -0.24408212345639338
+          },
+          {
+            "frame": 211,
+            "cls": "hit_flesh_light",
+            "pan": -0.23202,
+            "dist": 1.4073,
+            "pan_src": "AUD",
+            "bearing_deg": -14.25,
+            "sinb": -0.24618942360156032
+          },
+          {
+            "frame": 354,
+            "cls": "hit_flesh_light",
+            "pan": 0.597415,
+            "dist": 1.4142,
+            "pan_src": "AUD",
+            "bearing_deg": 35.54,
+            "sinb": 0.581301832618583
+          },
+          {
+            "frame": 441,
+            "cls": "hit_flesh_light",
+            "pan": 0.569153,
+            "dist": 1.4184,
+            "pan_src": "AUD",
+            "bearing_deg": 33.59,
+            "sinb": 0.5532618656875525
+          },
+          {
+            "frame": 536,
+            "cls": "hit_flesh_light",
+            "pan": 0.635188,
+            "dist": 1.443,
+            "pan_src": "AUD",
+            "bearing_deg": 38.97,
+            "sinb": 0.6289346404360615
+          },
+          {
+            "frame": 678,
+            "cls": "hit_flesh_light",
+            "pan": 0.120665,
+            "dist": 1.4238,
+            "pan_src": "AUD",
+            "bearing_deg": 6.08,
+            "sinb": 0.10590591542567417
+          },
+          {
+            "frame": 765,
+            "cls": "hit_flesh_light",
+            "pan": 0.088592,
+            "dist": 1.4273,
+            "pan_src": "AUD",
+            "bearing_deg": 4.21,
+            "sinb": 0.07336190720492124
+          }
+        ]
+      },
+      "moving_legacy_attacker_position": {
+        "impacts": 25,
+        "bearing_spread_deg": 75.6,
+        "pan_distinct": 22,
+        "pan_nonzero": 25,
+        "pan_min": -0.999925,
+        "pan_max": 0.599722,
+        "distance_m_max": 0,
+        "r_pan_vs_sin_bearing": -0.5207,
+        "sample": [
+          {
+            "frame": 35,
+            "cls": "hit_flesh_light",
+            "pan": 0.078459,
+            "dist": 0,
+            "pan_src": "P",
+            "bearing_deg": -12.33,
+            "sinb": -0.21355829783545816
+          },
+          {
+            "frame": 122,
+            "cls": "hit_flesh_light",
+            "pan": 0.16935,
+            "dist": 0,
+            "pan_src": "P",
+            "bearing_deg": -14.13,
+            "sinb": -0.24408212345639338
+          },
+          {
+            "frame": 211,
+            "cls": "hit_flesh_light",
+            "pan": 0.406737,
+            "dist": 0,
+            "pan_src": "P",
+            "bearing_deg": -14.25,
+            "sinb": -0.24618942360156032
+          },
+          {
+            "frame": 354,
+            "cls": "hit_flesh_light",
+            "pan": -0.322266,
+            "dist": 0,
+            "pan_src": "P",
+            "bearing_deg": 35.54,
+            "sinb": 0.581301832618583
+          },
+          {
+            "frame": 441,
+            "cls": "hit_flesh_light",
+            "pan": -0.80953,
+            "dist": 0,
+            "pan_src": "P",
+            "bearing_deg": 33.59,
+            "sinb": 0.5532618656875525
+          },
+          {
+            "frame": 536,
+            "cls": "hit_flesh_light",
+            "pan": -0.999925,
+            "dist": 0,
+            "pan_src": "P",
+            "bearing_deg": 38.97,
+            "sinb": 0.6289346404360615
+          },
+          {
+            "frame": 678,
+            "cls": "hit_flesh_light",
+            "pan": -0.716911,
+            "dist": 0,
+            "pan_src": "P",
+            "bearing_deg": 6.08,
+            "sinb": 0.10590591542567417
+          },
+          {
+            "frame": 765,
+            "cls": "hit_flesh_light",
+            "pan": -0.183094,
+            "dist": 0,
+            "pan_src": "P",
+            "bearing_deg": 4.21,
+            "sinb": 0.07336190720492124
+          }
+        ]
+      },
+      "still_control": {
+        "impacts": 28,
+        "bearing_spread_deg": 0,
+        "pan_distinct": 1,
+        "pan_nonzero": 0,
+        "pan_min": 0,
+        "pan_max": 0,
+        "distance_m_max": 1.4272,
+        "r_pan_vs_sin_bearing": null,
+        "sample": [
+          {
+            "frame": 34,
+            "cls": "hit_flesh_light",
+            "pan": 0,
+            "dist": 1.4236,
+            "pan_src": "AUD",
+            "bearing_deg": 0,
+            "sinb": 0
+          },
+          {
+            "frame": 121,
+            "cls": "hit_flesh_light",
+            "pan": 0,
+            "dist": 1.4272,
+            "pan_src": "AUD",
+            "bearing_deg": 0,
+            "sinb": 0
+          },
+          {
+            "frame": 211,
+            "cls": "hit_flesh_light",
+            "pan": 0,
+            "dist": 1.4062,
+            "pan_src": "AUD",
+            "bearing_deg": 0,
+            "sinb": 0
+          },
+          {
+            "frame": 356,
+            "cls": "hit_flesh_light",
+            "pan": 0,
+            "dist": 1.4236,
+            "pan_src": "AUD",
+            "bearing_deg": 0,
+            "sinb": 0
+          },
+          {
+            "frame": 443,
+            "cls": "hit_flesh_light",
+            "pan": 0,
+            "dist": 1.4272,
+            "pan_src": "AUD",
+            "bearing_deg": 0,
+            "sinb": 0
+          },
+          {
+            "frame": 533,
+            "cls": "hit_flesh_light",
+            "pan": 0,
+            "dist": 1.4062,
+            "pan_src": "AUD",
+            "bearing_deg": 0,
+            "sinb": 0
+          },
+          {
+            "frame": 678,
+            "cls": "hit_flesh_light",
+            "pan": 0,
+            "dist": 1.4236,
+            "pan_src": "AUD",
+            "bearing_deg": 0,
+            "sinb": 0
+          },
+          {
+            "frame": 765,
+            "cls": "hit_flesh_light",
+            "pan": 0,
+            "dist": 1.4272,
+            "pan_src": "AUD",
+            "bearing_deg": 0,
+            "sinb": 0
+          }
+        ]
+      },
+      "M6": "PASS",
+      "events_ge_20": true,
+      "detector_goes_red": true,
+      "still_control_is_degenerate": true
+    },
+    "P5_sabotage": {
+      "shipped": {
+        "mode": "resolution",
+        "voices": 5,
+        "hit_events": 5,
+        "joined": 5,
+        "via": [
+          "weapon",
+          "body"
+        ],
+        "offset_p50": 0,
+        "offset_p99": 0,
+        "offset_max": 0,
+        "classes": {
+          "hit_flesh_light": 5
+        },
+        "trigger_source": "resolution"
+      },
+      "broken": {
+        "mode": "anim",
+        "voices": 5,
+        "hit_events": 5,
+        "joined": 5,
+        "via": [
+          "anim_track"
+        ],
+        "offset_p50": 24,
+        "offset_p99": 29,
+        "offset_max": 29,
+        "classes": {
+          "hit_flesh_light": 5
+        },
+        "trigger_source": "anim"
+      },
+      "detector_goes_red": true
+    },
+    "P6_shot": {
+      "hitFrame": 35,
+      "voices": [
+        {
+          "frame": 34,
+          "class": "hit_flesh_light",
+          "pan": -0.000001,
+          "distance_m": 1.1277,
+          "pan_src": "AUD",
+          "gain": 0.451668
+        }
+      ],
+      "path": "docs/shots/2026-08-07-W1-11-impact-audio-pan.png"
+    }
+  },
+  "page_errors": []
+}

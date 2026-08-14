@@ -1,0 +1,820 @@
+{
+  "lines": [
+    {
+      "faction": "deep_kin",
+      "joining_routes": 0,
+      "routes": [],
+      "joinable_end_to_end": false,
+      "why": "no resolution anywhere in the quest book joins this faction — an eight-rank ladder with no door",
+      "exempt": "declared not joinable in faction-refusals.json"
+    },
+    {
+      "faction": "the_dockhands",
+      "joining_routes": 4,
+      "routes": [
+        "Q-DOCK-00.res_work_it",
+        "Q-DOCK-00.res_get_the_block",
+        "Q-DOCK-00.res_hold_the_rate",
+        "Q-MAIN-21.res_dockhand_rank"
+      ],
+      "own_voice_routes": [
+        "Q-DOCK-00.res_work_it",
+        "Q-DOCK-00.res_get_the_block",
+        "Q-DOCK-00.res_hold_the_rate"
+      ],
+      "foreign_routes": [
+        "Q-MAIN-21.res_dockhand_rank (mainline-act4.json, category=main)"
+      ],
+      "walked": "Q-DOCK-00",
+      "presence_gate": {
+        "mode": "on",
+        "misses": 0,
+        "missed": []
+      },
+      "rank_before": 0,
+      "giver": {
+        "quest": "Q-DOCK-00",
+        "giver": "npc-porter-eeja",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "topics_learned": [
+        "the boards"
+      ],
+      "topic": "the boards",
+      "open": {
+        "ok": true,
+        "reason": null,
+        "stage": 12
+      },
+      "refusal_cold": {
+        "said": "The board doesn't know you. 0 against 10, and the hands put the names up, not me.",
+        "kind": "reputation",
+        "need": 10,
+        "have": 0,
+        "on_screen": true,
+        "drawn_on_glass": "The board doesn't know you. 0 against 10, and the hands put the names up, not me.",
+        "panel_fit": {
+          "text": "The board doesn't know you. 0 against 10, and the hands put the names up, not me.",
+          "rows": [
+            "The board doesn't know you. 0 against 10, and the hands put the names up, not me."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "is_a_sentence": true,
+        "names_a_number": true
+      },
+      "resolution_ids": [
+        "res_work_it",
+        "res_get_the_block",
+        "res_hold_the_rate"
+      ],
+      "resolution_chosen": {
+        "id": "res_work_it",
+        "skills": {
+          "athletics": 20
+        }
+      },
+      "raised": [
+        {
+          "skill": "athletics",
+          "to": 20,
+          "target": 20,
+          "uses": 56,
+          "rests": 1
+        }
+      ],
+      "resolve": {
+        "ok": true,
+        "reason": null
+      },
+      "refusal_warm": {
+        "said": "Your name's on the board. It stays there until the rain gets in or the hands rub it off.",
+        "kind": "welcome",
+        "need": null,
+        "have": null
+      },
+      "refusal_moved": true,
+      "rank_after": 0,
+      "reputation_after": 20,
+      "member_after": true,
+      "derived_rank_after": 1,
+      "joinable_end_to_end": true,
+      "why": null
+    },
+    {
+      "faction": "the_drowned_court",
+      "joining_routes": 3,
+      "routes": [
+        "Q-CORT-00.res_over_the_pans",
+        "Q-CORT-00.res_round_the_causeway",
+        "Q-CORT-00.res_take_the_tag"
+      ],
+      "own_voice_routes": [
+        "Q-CORT-00.res_over_the_pans",
+        "Q-CORT-00.res_round_the_causeway",
+        "Q-CORT-00.res_take_the_tag"
+      ],
+      "foreign_routes": [],
+      "walked": "Q-CORT-00",
+      "presence_gate": {
+        "mode": "on",
+        "misses": 0,
+        "missed": []
+      },
+      "rank_before": 0,
+      "giver": {
+        "quest": "Q-CORT-00",
+        "giver": "undertaker-vaskh",
+        "went_to": "soulrest",
+        "present": true,
+        "why": null
+      },
+      "topics_learned": [
+        "the drowned court"
+      ],
+      "topic": "the drowned court",
+      "open": {
+        "ok": true,
+        "reason": null,
+        "stage": 14
+      },
+      "refusal_cold": {
+        "said": "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them.",
+        "kind": "reputation",
+        "need": 10,
+        "have": 0,
+        "on_screen": true,
+        "drawn_on_glass": "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them.",
+        "panel_fit": {
+          "text": "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them.",
+          "rows": [
+            "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "is_a_sentence": true,
+        "names_a_number": true
+      },
+      "resolution_ids": [
+        "res_over_the_pans",
+        "res_round_the_causeway",
+        "res_take_the_tag"
+      ],
+      "resolution_chosen": {
+        "id": "res_over_the_pans",
+        "skills": {
+          "survival": 20
+        }
+      },
+      "raised": [
+        {
+          "skill": "survival",
+          "to": 20,
+          "target": 20,
+          "uses": 0,
+          "rests": 0
+        }
+      ],
+      "resolve": {
+        "ok": true,
+        "reason": null
+      },
+      "refusal_warm": {
+        "said": "You're in the tally. Everyone gets in it eventually. You've just done it standing up.",
+        "kind": "welcome",
+        "need": null,
+        "have": null
+      },
+      "refusal_moved": true,
+      "rank_after": 0,
+      "reputation_after": 20,
+      "member_after": true,
+      "derived_rank_after": 1,
+      "joinable_end_to_end": true,
+      "why": null
+    },
+    {
+      "faction": "the_imperial_assize",
+      "joining_routes": 3,
+      "routes": [
+        "Q-ASSZ-00.res_carry_clean",
+        "Q-ASSZ-00.res_copy_the_four",
+        "Q-MAIN-20.res_assize_rank"
+      ],
+      "own_voice_routes": [
+        "Q-ASSZ-00.res_carry_clean",
+        "Q-ASSZ-00.res_copy_the_four"
+      ],
+      "foreign_routes": [
+        "Q-MAIN-20.res_assize_rank (mainline-act4.json, category=main)"
+      ],
+      "walked": "Q-ASSZ-00",
+      "presence_gate": {
+        "mode": "on",
+        "misses": 0,
+        "missed": []
+      },
+      "rank_before": 0,
+      "giver": {
+        "quest": "Q-ASSZ-00",
+        "giver": "assizer-corvo",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "topics_learned": [
+        "the assize"
+      ],
+      "topic": "the assize",
+      "open": {
+        "ok": true,
+        "reason": null,
+        "stage": 10
+      },
+      "refusal_cold": {
+        "said": "The roll records 0 against your name and the grade requires 10. Applications are considered when the roll supports them.",
+        "kind": "reputation",
+        "need": 10,
+        "have": 0,
+        "on_screen": true,
+        "drawn_on_glass": "The roll records 0 against your name and the grade requires 10. Applications are considered when the roll supports them.",
+        "panel_fit": {
+          "text": "The roll records 0 against your name and the grade requires 10. Applications are considered when the roll supports them.",
+          "rows": [
+            "The roll records 0 against your name and the grade requires 10. Applications are considered when the roll supports them."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "is_a_sentence": true,
+        "names_a_number": true
+      },
+      "resolution_ids": [
+        "res_carry_clean",
+        "res_copy_the_four"
+      ],
+      "resolution_chosen": {
+        "id": "res_carry_clean",
+        "skills": {}
+      },
+      "raised": [],
+      "resolve": {
+        "ok": true,
+        "reason": null
+      },
+      "refusal_warm": {
+        "said": "The roll is amended. You are an officer of this court, which is a heavier thing than it sounds.",
+        "kind": "welcome",
+        "need": null,
+        "have": null
+      },
+      "refusal_moved": true,
+      "rank_after": 0,
+      "reputation_after": 20,
+      "member_after": true,
+      "derived_rank_after": 1,
+      "joinable_end_to_end": true,
+      "why": null
+    },
+    {
+      "faction": "the_ixtu_vakh",
+      "joining_routes": 4,
+      "routes": [
+        "Q-VAKH-00.res_coast_road",
+        "Q-VAKH-00.res_line_the_boots",
+        "Q-VAKH-00.res_tell_the_keeper",
+        "Q-MAIN-19.res_cutters_rank"
+      ],
+      "own_voice_routes": [
+        "Q-VAKH-00.res_coast_road",
+        "Q-VAKH-00.res_line_the_boots",
+        "Q-VAKH-00.res_tell_the_keeper"
+      ],
+      "foreign_routes": [
+        "Q-MAIN-19.res_cutters_rank (mainline-act4.json, category=main)"
+      ],
+      "walked": "Q-VAKH-00",
+      "presence_gate": {
+        "mode": "on",
+        "misses": 0,
+        "missed": []
+      },
+      "rank_before": 0,
+      "giver": {
+        "quest": "Q-VAKH-00",
+        "giver": "cutter-neeth",
+        "went_to": "helstrom",
+        "present": true,
+        "why": null
+      },
+      "topics_learned": [
+        "the sap-cutters"
+      ],
+      "topic": "the sap-cutters",
+      "open": {
+        "ok": true,
+        "reason": null,
+        "stage": 14
+      },
+      "refusal_cold": {
+        "said": "I've heard your name 0 times and I want 10. Nobody starts here. Go and be useful where somebody's watching.",
+        "kind": "reputation",
+        "need": 10,
+        "have": 0,
+        "on_screen": true,
+        "drawn_on_glass": "I've heard your name 0 times and I want 10. Nobody starts here. Go and be useful where somebody's watching.",
+        "panel_fit": {
+          "text": "I've heard your name 0 times and I want 10. Nobody starts here. Go and be useful where somebody's watching.",
+          "rows": [
+            "I've heard your name 0 times and I want 10. Nobody starts here. Go and be useful where somebody's watching."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "is_a_sentence": true,
+        "names_a_number": true
+      },
+      "resolution_ids": [
+        "res_coast_road",
+        "res_line_the_boots",
+        "res_tell_the_keeper"
+      ],
+      "resolution_chosen": {
+        "id": "res_coast_road",
+        "skills": {
+          "survival": 20
+        }
+      },
+      "raised": [
+        {
+          "skill": "survival",
+          "to": 20,
+          "target": 20,
+          "uses": 0,
+          "rests": 0
+        }
+      ],
+      "resolve": {
+        "ok": true,
+        "reason": null
+      },
+      "refusal_warm": {
+        "said": "You're written down. There's no oath and no drink. The list is the list.",
+        "kind": "welcome",
+        "need": null,
+        "have": null
+      },
+      "refusal_moved": true,
+      "rank_after": 0,
+      "reputation_after": 20,
+      "member_after": true,
+      "derived_rank_after": 1,
+      "joinable_end_to_end": true,
+      "why": null
+    },
+    {
+      "faction": "the_rootkeepers",
+      "joining_routes": 3,
+      "routes": [
+        "Q-ROOT-00.res_count_what_you_reach",
+        "Q-ROOT-00.res_go_under",
+        "Q-ROOT-00.res_count_the_shadows"
+      ],
+      "own_voice_routes": [
+        "Q-ROOT-00.res_count_what_you_reach",
+        "Q-ROOT-00.res_go_under",
+        "Q-ROOT-00.res_count_the_shadows"
+      ],
+      "foreign_routes": [],
+      "walked": "Q-ROOT-00",
+      "presence_gate": {
+        "mode": "on",
+        "misses": 0,
+        "missed": []
+      },
+      "rank_before": 0,
+      "giver": {
+        "quest": "Q-ROOT-00",
+        "giver": "rootkeeper-jeen",
+        "went_to": "helstrom",
+        "present": true,
+        "why": null
+      },
+      "topics_learned": [
+        "the quiet wells"
+      ],
+      "topic": "the quiet wells",
+      "open": {
+        "ok": true,
+        "reason": null,
+        "stage": 12
+      },
+      "refusal_cold": {
+        "said": "The slate has 0 beside your name and a Leaf has 10. That is not a rule I made and I cannot rub it out. Go and do some counting.",
+        "kind": "reputation",
+        "need": 10,
+        "have": 0,
+        "on_screen": true,
+        "drawn_on_glass": "The slate has 0 beside your name and a Leaf has 10. That is not a rule I made and I cannot rub it out. Go and do some counting.",
+        "panel_fit": {
+          "text": "The slate has 0 beside your name and a Leaf has 10. That is not a rule I made and I cannot rub it out. Go and do some counting.",
+          "rows": [
+            "The slate has 0 beside your name and a Leaf has 10. That is not a rule I made and I cannot rub it out. Go and do some counting."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "is_a_sentence": true,
+        "names_a_number": true
+      },
+      "resolution_ids": [
+        "res_count_what_you_reach",
+        "res_go_under",
+        "res_count_the_shadows"
+      ],
+      "resolution_chosen": {
+        "id": "res_count_what_you_reach",
+        "skills": {
+          "root-speech": 20
+        }
+      },
+      "raised": [
+        {
+          "skill": "root-speech",
+          "to": 25,
+          "target": 20,
+          "uses": 0,
+          "rests": 0
+        }
+      ],
+      "resolve": {
+        "ok": true,
+        "reason": null
+      },
+      "refusal_warm": {
+        "said": "You're on the slate. That's the whole ceremony, and it's the only thing the Rootkeepers own.",
+        "kind": "welcome",
+        "need": null,
+        "have": null
+      },
+      "refusal_moved": true,
+      "rank_after": 0,
+      "reputation_after": 20,
+      "member_after": true,
+      "derived_rank_after": 1,
+      "joinable_end_to_end": true,
+      "why": null
+    },
+    {
+      "faction": "the_wet_ledger",
+      "joining_routes": 4,
+      "routes": [
+        "Q-LEDG-00.res_lodge",
+        "Q-LEDG-00.res_read_then_lodge",
+        "Q-LEDG-00.res_sell",
+        "Q-MAIN-17.res_ledger_rank"
+      ],
+      "own_voice_routes": [
+        "Q-LEDG-00.res_lodge",
+        "Q-LEDG-00.res_read_then_lodge",
+        "Q-LEDG-00.res_sell"
+      ],
+      "foreign_routes": [
+        "Q-MAIN-17.res_ledger_rank (mainline-act4.json, category=main)"
+      ],
+      "walked": "Q-LEDG-00",
+      "presence_gate": {
+        "mode": "on",
+        "misses": 0,
+        "missed": []
+      },
+      "rank_before": 0,
+      "giver": {
+        "quest": "Q-LEDG-00",
+        "giver": "factor-belliene",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "topics_learned": [
+        "the wet ledger"
+      ],
+      "topic": "the wet ledger",
+      "open": {
+        "ok": true,
+        "reason": null,
+        "stage": 10
+      },
+      "refusal_cold": {
+        "said": "The margin has your name in it 0 times and the next line wants 10. The Ledger remembers people by the margin. Give it more to remember.",
+        "kind": "reputation",
+        "need": 10,
+        "have": 0,
+        "on_screen": true,
+        "drawn_on_glass": "The margin has your name in it 0 times and the next line wants 10. The Ledger remembers people by the margin. Give it more to remember.",
+        "panel_fit": {
+          "text": "The margin has your name in it 0 times and the next line wants 10. The Ledger remembers people by the margin. Give it more to remember.",
+          "rows": [
+            "The margin has your name in it 0 times and the next line wants 10. The Ledger remembers people by the margin. Give it more to remember."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "is_a_sentence": true,
+        "names_a_number": true
+      },
+      "resolution_ids": [
+        "res_lodge",
+        "res_read_then_lodge",
+        "res_sell"
+      ],
+      "resolution_chosen": {
+        "id": "res_lodge",
+        "skills": {}
+      },
+      "raised": [],
+      "resolve": {
+        "ok": true,
+        "reason": null
+      },
+      "refusal_warm": {
+        "said": "Your name's in the margin. That's how the Ledger remembers people.",
+        "kind": "welcome",
+        "need": null,
+        "have": null
+      },
+      "refusal_moved": true,
+      "rank_after": 0,
+      "reputation_after": 20,
+      "member_after": true,
+      "derived_rank_after": 1,
+      "joinable_end_to_end": true,
+      "why": null
+    },
+    {
+      "faction": "the_xul_aneekh",
+      "joining_routes": 3,
+      "routes": [
+        "Q-XULA-00.res_carry_it",
+        "Q-XULA-00.res_ask_first",
+        "Q-MAIN-18.res_deepkin_rank"
+      ],
+      "own_voice_routes": [
+        "Q-XULA-00.res_carry_it",
+        "Q-XULA-00.res_ask_first"
+      ],
+      "foreign_routes": [
+        "Q-MAIN-18.res_deepkin_rank (mainline-act4.json, category=main)"
+      ],
+      "walked": "Q-XULA-00",
+      "presence_gate": {
+        "mode": "on",
+        "misses": 0,
+        "missed": []
+      },
+      "rank_before": 0,
+      "giver": {
+        "quest": "Q-XULA-00",
+        "giver": "rootkeeper-ashul-tei",
+        "went_to": "helstrom",
+        "present": true,
+        "why": null
+      },
+      "topics_learned": [
+        "the hollow that eats"
+      ],
+      "topic": "the hollow that eats",
+      "open": {
+        "ok": true,
+        "reason": null,
+        "stage": 10
+      },
+      "refusal_cold": {
+        "said": "You are 0 to the hollow and the name you are asking for is 10. Names are not given. They are noticed.",
+        "kind": "reputation",
+        "need": 10,
+        "have": 0,
+        "on_screen": true,
+        "drawn_on_glass": "You are 0 to the hollow and the name you are asking for is 10. Names are not given. They are noticed.",
+        "panel_fit": {
+          "text": "You are 0 to the hollow and the name you are asking for is 10. Names are not given. They are noticed.",
+          "rows": [
+            "You are 0 to the hollow and the name you are asking for is 10. Names are not given. They are noticed."
+          ],
+          "row_count": 1,
+          "wrap_budget": 99999,
+          "truncated": false,
+          "panel_w": 400,
+          "panel_h": 48,
+          "fits": true,
+          "overflow_px": 0
+        },
+        "is_a_sentence": true,
+        "names_a_number": true
+      },
+      "resolution_ids": [
+        "res_carry_it",
+        "res_ask_first"
+      ],
+      "resolution_chosen": {
+        "id": "res_carry_it",
+        "skills": {}
+      },
+      "raised": [],
+      "resolve": {
+        "ok": true,
+        "reason": null
+      },
+      "refusal_warm": {
+        "said": "The hollow has a name for you now. You will not like all of what comes with it.",
+        "kind": "welcome",
+        "need": null,
+        "have": null
+      },
+      "refusal_moved": true,
+      "rank_after": 0,
+      "reputation_after": 20,
+      "member_after": true,
+      "derived_rank_after": 1,
+      "joinable_end_to_end": true,
+      "why": null
+    }
+  ],
+  "consumption": {
+    "faction": "the_rootkeepers",
+    "standing_key_id": "rootkeepers",
+    "at0": {
+      "rank": 0,
+      "standings": {},
+      "warbrood_shift": 0,
+      "guard_terms": {
+        "lawFactor": 0.7,
+        "arrest_at": 210,
+        "attack_at": 840,
+        "suspicion": 1.35,
+        "loiter_to_challenge_s": 6.7
+      },
+      "recruiter_says": "The slate has 0 beside your name and a Leaf has 10. That is not a rule I made and I cannot rub it out. Go and do some counting.",
+      "refusal_kind": "reputation",
+      "offers": 124
+    },
+    "at1": {
+      "rank": 1,
+      "standings": {
+        "rootkeepers": 1
+      },
+      "warbrood_shift": 22,
+      "guard_terms": {
+        "lawFactor": 0.7,
+        "arrest_at": 210,
+        "attack_at": 840,
+        "suspicion": 1.35,
+        "loiter_to_challenge_s": 6.7
+      },
+      "recruiter_says": "The slate has 12 beside your name and a Leaf has 22. That is not a rule I made and I cannot rub it out. Go and do some counting.",
+      "refusal_kind": "reputation",
+      "offers": 124
+    },
+    "at5": {
+      "rank": 5,
+      "standings": {
+        "rootkeepers": 5
+      },
+      "warbrood_shift": 34,
+      "guard_terms": {
+        "lawFactor": 0.7,
+        "arrest_at": 210,
+        "attack_at": 840,
+        "suspicion": 1.35,
+        "loiter_to_challenge_s": 6.7
+      },
+      "recruiter_says": "The slate has 60 beside your name and a Leaf has 90. That is not a rule I made and I cannot rub it out. Go and do some counting.",
+      "refusal_kind": "reputation",
+      "offers": 124
+    },
+    "C1_guard_moved": true,
+    "C1_guard_moved_again_at_5": true,
+    "C2_recruiter_changed": true,
+    "C3_offer_gate": {
+      "0": {
+        "ok": false,
+        "reason": "the_drowned_court rank 0/2; the_drowned_court reputation 0/22",
+        "said": "The tally has you at 0. Knee-Deep is 22. You'll get there or you won't, and either way the bay keeps sending them."
+      },
+      "1": {
+        "ok": false,
+        "reason": "the_drowned_court rank 1/2; the_drowned_court reputation 12/22",
+        "said": "The tally has you at 12. Knee-Deep is 22. You'll get there or you won't, and either way the bay keeps sending them."
+      },
+      "2": {
+        "ok": true,
+        "reason": null,
+        "said": null
+      },
+      "3": {
+        "ok": false,
+        "reason": "already opened",
+        "said": null
+      }
+    },
+    "C3_gate_moved": true,
+    "C3_rank_terms_cleared": true,
+    "C3_gate_spoke_before_it_opened": true
+  },
+  "deletefix": {
+    "quest": "Q-SOUL-02",
+    "armed": {
+      "said": "The tally has you at 0. Knee-Deep is 22. You'll get there or you won't, and either way the bay keeps sending them.",
+      "on_screen": true,
+      "open_ok": false,
+      "open_reason": "the_drowned_court rank 0/2; the_drowned_court reputation 0/22",
+      "open_said": "The tally has you at 0. Knee-Deep is 22. You'll get there or you won't, and either way the bay keeps sending them.",
+      "terms_still_computed": true
+    },
+    "control": {
+      "said": null,
+      "on_screen": false,
+      "open_ok": false,
+      "open_reason": "the_drowned_court rank 0/2; the_drowned_court reputation 0/22",
+      "open_said": null
+    },
+    "control_went_red": true,
+    "gate_unchanged_by_the_control": true,
+    "arms_genuinely_differ": true
+  },
+  "notes": [],
+  "ladders": [
+    "deep_kin",
+    "the_dockhands",
+    "the_drowned_court",
+    "the_imperial_assize",
+    "the_ixtu_vakh",
+    "the_rootkeepers",
+    "the_wet_ledger",
+    "the_xul_aneekh"
+  ],
+  "refusal_census": {
+    "speaks_for": [
+      "the_dockhands",
+      "the_drowned_court",
+      "the_imperial_assize",
+      "the_ixtu_vakh",
+      "the_rootkeepers",
+      "the_wet_ledger",
+      "the_xul_aneekh"
+    ],
+    "not_joinable": [
+      "house_dres",
+      "shadowscale_order",
+      "deep_kin"
+    ],
+    "spoken": 0
+  },
+  "summary": {
+    "laddered_factions": 8,
+    "with_any_joining_route": 7,
+    "with_a_route_in_the_factions_own_voice": 7,
+    "joinable_end_to_end_through_play": 7,
+    "refusals_spoken_and_drawn_on_screen": 7,
+    "declared_not_joinable": [
+      "house_dres",
+      "shadowscale_order",
+      "deep_kin"
+    ],
+    "problems": []
+  }
+}

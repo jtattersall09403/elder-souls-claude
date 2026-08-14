@@ -1,0 +1,28 @@
+RI-WLD10 M47 — the S24 regional water census  [game-data]
+source: /home/user/elder-souls-claude/game/data/world/water.json
+
+region              km²    WCI   class                tide  sea        k
+---------------------------------------------------------------------
+The Clay Moor      0.81  0.00   arid                  -   -         -
+The Hive           0.31  0.00   arid                  -   -         -
+Valus Ridge        1.71  0.01   dry-upland            -   -         0.9
+The Salt Hills     0.94  0.02   dry-upland            -   -         0.8
+Stone Wastes       0.81  0.03   arid-salt-fringe     yes  topal     1.4
+The Stone Forest    1.8  0.06   damp                  -   -         1.1
+Thornmarsh         1.08  0.09   seasonal              -   -         2
+Crimson Coast      0.63  0.34   tidal-littoral       yes  padomaic  0.35
+Blackwood          2.07  0.41   flooded-forest        -   -         2.6
+Western Rootlands  1.17  0.47   paddy-channel        yes  topal     1.9
+Marauder's Coast   0.49  0.58   tidal-flat           yes  topal     1.4
+Eastern Rootlands  1.44  0.71   tidal-delta          yes  padomaic  3.2
+The Deep Marshes   1.26  0.86   drowned               -   -         4.5
+---------------------------------------------------------------------
+area-weighted WCI  0.294   bar [0.22, 0.42]
+spread             0.86   bar ≥ 0.55
+dry (≤0.05)        5       bar ≥ 4   The Clay Moor, The Hive, Valus Ridge, The Salt Hills, Stone Wastes
+bone dry (=0.00)   2       bar ≥ 2   The Clay Moor, The Hive
+drowned (≥0.60)    2       bar ≤ 3   Eastern Rootlands, The Deep Marshes
+water classes      11       bar ≥ 6
+tidal regions      5       bar = 5 exactly
+
+S24 WATER CENSUS PASSED — the province has an arid half.

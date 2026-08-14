@@ -1,0 +1,64 @@
+{
+  "tool": "critic-w1-15-r3-dtf2x2",
+  "at": "2026-08-08T02:32:48.342Z",
+  "arms": {
+    "00 shipped (neither cut)": {
+      "world_sources": 8,
+      "ambient_L": 0.04,
+      "L_min": 0.2988,
+      "L_max": 1,
+      "L_spread": 0.7012,
+      "L_0300": 1
+    },
+    "10 call site cut only": {
+      "world_sources": 0,
+      "ambient_L": 0.75,
+      "L_min": 0.75,
+      "L_max": 0.75,
+      "L_spread": 0,
+      "L_0300": 0.09
+    },
+    "01 ambient guard cut only": {
+      "world_sources": 8,
+      "ambient_L": 0.75,
+      "L_min": 1,
+      "L_max": 1,
+      "L_spread": 0,
+      "L_0300": 1
+    },
+    "11 both cut (the round's arm)": {
+      "world_sources": 0,
+      "ambient_L": 0.75,
+      "L_min": 0.75,
+      "L_max": 0.75,
+      "L_spread": 0,
+      "L_0300": 0.09
+    }
+  },
+  "assertions": [
+    {
+      "id": "X-BITES",
+      "name": "the teardown bites — the both-cut arm is NOT the shipped arm",
+      "pass": true,
+      "detail": "shipped {\"world_sources\":8,\"ambient_L\":0.04,\"L_min\":0.2988,\"L_max\":1,\"L_spread\":0.7012,\"L_0300\":1}\n              both cut {\"world_sources\":0,\"ambient_L\":0.75,\"L_min\":0.75,\"L_max\":0.75,\"L_spread\":0,\"L_0300\":0.09}"
+    },
+    {
+      "id": "X-SINGLE",
+      "name": "cutting the CALL SITE alone already restores the old number",
+      "pass": true,
+      "detail": "call-site-only {\"world_sources\":0,\"ambient_L\":0.75,\"L_min\":0.75,\"L_max\":0.75,\"L_spread\":0,\"L_0300\":0.09}\n              both-cut       {\"world_sources\":0,\"ambient_L\":0.75,\"L_min\":0.75,\"L_max\":0.75,\"L_spread\":0,\"L_0300\":0.09}  -> identical: ONE cut is sufficient"
+    },
+    {
+      "id": "X-SHAPE",
+      "name": "which of rule 6's three shapes is this?",
+      "pass": true,
+      "detail": "NEITHER an inert fix NOR two-guards-for-one-defect. The call-site cut alone restores the\n              pre-round number; the ambient cut alone changes the answer too, differently. Two\n              INDEPENDENT edit sites, each individually sufficient to change the measurement — so\n              the round's 3-line single arm is sound but over-broad, and it could not have told\n              an inert second edit from a load-bearing one. It is told here."
+    },
+    {
+      "id": "X-AMBIENT",
+      "name": "the ambient guard is separately load-bearing (it is not decoration on the call site)",
+      "pass": true,
+      "detail": "ambient-only {\"world_sources\":8,\"ambient_L\":0.75,\"L_min\":1,\"L_max\":1,\"L_spread\":0,\"L_0300\":1} vs shipped {\"world_sources\":8,\"ambient_L\":0.04,\"L_min\":0.2988,\"L_max\":1,\"L_spread\":0.7012,\"L_0300\":1}"
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "probe": "critic-w1-21-r1b",
+  "at": "2026-08-07T21:56:03.656Z",
+  "viewport": [
+    1280,
+    720
+  ],
+  "loadavg": "11.99 11.91 11.05 13/467 10459",
+  "checks": [
+    {
+      "id": "F1",
+      "what": "a forged SAVE (raster + place list) is refused by the live-world load audit",
+      "result": "fail",
+      "detail": "dropped=[] places 7 -> 42, revealed 2527 -> 42846"
+    },
+    {
+      "id": "F2",
+      "what": "and no square for an unvisited place reaches the DRAWN map after that load",
+      "result": "fail",
+      "detail": "42 squares drawn, 35 of them phantom: [\"soulrest\",\"ixtaxh-tzil\",\"nine-mud\",\"the-weeping-ford\",\"xal-ithix\",\"kiln-camp\",\"sunken-barrow\",\"mudwater-landing\"]"
+    },
+    {
+      "id": "F3",
+      "what": "and the screen's own report says so: map.places_drawn == places_discovered by standing",
+      "result": "fail",
+      "detail": "places_drawn=42 places_discovered=42 stood_in=7"
+    },
+    {
+      "id": "G1",
+      "what": "the build's mutator_arities report enumerates every mutator the object has",
+      "result": "fail",
+      "detail": "reported=[observe,suspend,resume] actual mutators=[observe,suspend,resume,restore] missing from the report=[restore]"
+    },
+    {
+      "id": "G2",
+      "what": "and every mutator it omits also has arity 0",
+      "result": "fail",
+      "detail": "restore/1"
+    },
+    {
+      "id": "H0",
+      "what": "CONTROL: a focus move on the paused screen moves pixels (the probe can see a repaint)",
+      "result": "pass",
+      "detail": "55656 differing pixels"
+    },
+    {
+      "id": "H1",
+      "what": "using an item on the paused screen changes the model",
+      "result": "pass",
+      "detail": "black-water-draught 3 -> 2"
+    },
+    {
+      "id": "H2",
+      "what": "and the PLAYER SEES it: the frame changes when the model does",
+      "result": "fail",
+      "detail": "0 pixels differ between the frame before the use and the frame after it"
+    },
+    {
+      "id": "H3",
+      "what": "and closing and reopening the screen is not what repaints it",
+      "result": "fail",
+      "detail": "102 pixels differ between the still-open frame and the reopened one"
+    }
+  ],
+  "forge": {
+    "honest": {
+      "present": true,
+      "revealed_cells": 2527,
+      "total_cells": 42846,
+      "revealed_frac": 0.058979,
+      "observations": 7,
+      "places": [
+        "lilmoth",
+        "stormhold",
+        "thorn",
+        "gideon",
+        "helstrom",
+        "archon",
+        "blackrose"
+      ],
+      "place_count": 7,
+      "suspended": false,
+      "dropped_on_load": [],
+      "mutators": [
+        {
+          "name": "observe",
+          "arity": 0
+        },
+        {
+          "name": "suspend",
+          "arity": 0
+        },
+        {
+          "name": "resume",
+          "arity": 0
+        },
+        {
+          "name": "seenCell",
+          "arity": 2
+        },
+        {
+          "name": "seenAt",
+          "arity": 2
+        },
+        {
+          "name": "places",
+          "arity": 0
+        },
+        {
+          "name": "hasPlace",
+          "arity": 1
+        },
+        {
+          "name": "raster",
+          "arity": 0
+        },
+        {
+          "name": "placePos",
+          "arity": 1
+        },
+        {
+          "name": "serialise",
+          "arity": 0
+        },
+        {
+          "name": "restore",
+          "arity": 1
+        }
+      ],
+      "frozen": true
+    },
+    "before": {
+      "places": 7,
+      "revealed": 2527
+    },
+    "dropped": [],
+    "after": {
+      "places": 42,
+      "revealed": 42846,
+      "list": [
+        "stormhold",
+        "thorn",
+        "gideon",
+        "helstrom",
+        "archon",
+        "blackrose",
+        "soulrest",
+        "lilmoth",
+        "ixtaxh-tzil",
+        "nine-mud",
+        "the-weeping-ford",
+        "xal-ithix",
+        "kiln-camp",
+        "sunken-barrow",
+        "mudwater-landing",
+        "rootway-post",
+        "tenmarch-bridge",
+        "hollow-reeds",
+        "bone-ladder",
+        "salt-egg-camp",
+        "stilt-row",
+        "clayfast",
+        "the-red-wells",
+        "tideway-shrine",
+        "the-xanmeer-of-ix-thakla",
+        "the-counting-obelisk",
+        "wayshrine-of-the-ninth-root",
+        "the-drowned-xanmeer",
+        "xanmeer-of-sunken-teeth",
+        "ceyatatar-zel-ayleid-vault",
+        "the-leaning-stone",
+        "the-border-falls",
+        "the-glassed-crater",
+        "bloodmarl-isle",
+        "way-stormhold-thorn-0",
+        "way-stormhold-thorn-1",
+        "way-stormhold-helstrom-2",
+        "way-helstrom-archon-3",
+        "way-archon-thorn-4",
+        "way-archon-thorn-5",
+        "way-lilmoth-archon-6",
+        "way-lilmoth-archon-7"
+      ]
+    }
+  },
+  "forged_screen": {
+    "drawn": 42,
+    "phantom": 35,
+    "phantom_ids": [
+      "soulrest",
+      "ixtaxh-tzil",
+      "nine-mud",
+      "the-weeping-ford",
+      "xal-ithix",
+      "kiln-camp",
+      "sunken-barrow",
+      "mudwater-landing",
+      "rootway-post",
+      "tenmarch-bridge"
+    ],
+    "map_report": {
+      "exists": true,
+      "reachable_from_journal": false,
+      "journal_reachable_from_map": false,
+      "markers": 0,
+      "routes_drawn": 0,
+      "quest_bearing_elements": [],
+      "travel_affordances": [],
+      "numeric_text": [],
+      "drawn_cells": 42846,
+      "revealed_cells": 42846,
+      "total_cells": 42846,
+      "places_drawn": 42,
+      "places_discovered": 42,
+      "view": "world",
+      "mutator_arities": {
+        "observe": 0,
+        "suspend": 0,
+        "resume": 0
+      }
+    }
+  },
+  "arity": {
+    "methods": {
+      "observe": 0,
+      "suspend": 0,
+      "resume": 0,
+      "seenCell": 2,
+      "seenAt": 2,
+      "places": 0,
+      "hasPlace": 1,
+      "raster": 0,
+      "placePos": 1,
+      "serialise": 0,
+      "restore": 1
+    },
+    "reported": {
+      "observe": 0,
+      "suspend": 0,
+      "resume": 0
+    }
+  },
+  "paused_pixels": {
+    "item": "black-water-draught",
+    "count_before": 3,
+    "count_after": 2,
+    "diff_a_b": 0,
+    "diff_b_c": 102,
+    "control_diff": 55656
+  },
+  "error": "Error: page.evaluate: TypeError: window.__ENGINE.data.books.values is not a function or its return value is not iterable\n    at eval (eval at evaluate (:290:30), <anonymous>:2:47)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+  "failed": [
+    "F1",
+    "F2",
+    "F3",
+    "G1",
+    "G2",
+    "H2",
+    "H3"
+  ]
+}

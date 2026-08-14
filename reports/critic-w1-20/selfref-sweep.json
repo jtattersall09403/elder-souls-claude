@@ -1,0 +1,3819 @@
+{
+ "population": {
+  "files": 932,
+  "lines": 291481,
+  "roots": [
+   "game/src",
+   "tools"
+  ]
+ },
+ "form1_count": 385,
+ "form2_count": 42,
+ "hits": {
+  "form1": [
+   {
+    "file": "game/src/audio/ambience.js",
+    "line": 401,
+    "root": "this",
+    "left": "log.length",
+    "op": ">",
+    "right": "logCap",
+    "text": "if (this.log.length > this.logCap) this.log.splice(0, this.log.length - this.logCap);"
+   },
+   {
+    "file": "game/src/audio/impact-audio.js",
+    "line": 427,
+    "root": "this",
+    "left": "voices.length",
+    "op": ">",
+    "right": "voicesPeak",
+    "text": "if (this.voices.length > this.voicesPeak) this.voicesPeak = this.voices.length;"
+   },
+   {
+    "file": "game/src/character/census.js",
+    "line": 297,
+    "root": "this",
+    "left": "askedIndex",
+    "op": ">=",
+    "right": "asked.length",
+    "text": "if (this.askedIndex >= this.asked.length) {"
+   },
+   {
+    "file": "game/src/character/encounter.js",
+    "line": 126,
+    "root": "sim",
+    "left": "frame",
+    "op": ">=",
+    "right": "nettedUntil",
+    "text": "if (sim.nettedUntil && sim.frame >= sim.nettedUntil) {"
+   },
+   {
+    "file": "game/src/character/encounter.js",
+    "line": 313,
+    "root": "sim",
+    "left": "nettedUntil",
+    "op": ">",
+    "right": "frame",
+    "text": "if (sim.nettedUntil > sim.frame) return;"
+   },
+   {
+    "file": "game/src/character/scene.js",
+    "line": 140,
+    "root": "this",
+    "left": "sel",
+    "op": ">=",
+    "right": "options.length",
+    "text": "if (this.sel >= this.options.length) this.sel = Math.max(0, this.options.length - 1);"
+   },
+   {
+    "file": "game/src/combat/actor.js",
+    "line": 158,
+    "root": "this",
+    "left": "animFrame",
+    "op": ">=",
+    "right": "moveTotal",
+    "text": "return !this.dead && (this.move === null || this.animFrame >= this.moveTotal()) && frame >= this.staggerUntil"
+   },
+   {
+    "file": "game/src/combat/actor.js",
+    "line": 390,
+    "root": "this",
+    "left": "anim",
+    "op": "!==",
+    "right": "_blendAnim",
+    "text": "if (this.anim !== this._blendAnim) {"
+   },
+   {
+    "file": "game/src/combat/ai.js",
+    "line": 442,
+    "root": "this",
+    "left": "noLosSinceF",
+    "op": ">",
+    "right": "cfg.leash.no_los_seconds",
+    "text": "|| (this.noLosSinceF >= 0 && frame - this.noLosSinceF > this.cfg.leash.no_los_seconds * 60"
+   },
+   {
+    "file": "game/src/combat/ai.js",
+    "line": 473,
+    "root": "this",
+    "left": "stateF",
+    "op": "<",
+    "right": "cfg.perception.suspicious_min_dwell_f",
+    "text": "&& this.stateF < this.cfg.perception.suspicious_min_dwell_f) want = 'SUSPICIOUS';"
+   },
+   {
+    "file": "game/src/combat/ai.js",
+    "line": 477,
+    "root": "this",
+    "left": "stateF",
+    "op": ">=",
+    "right": "cfg.perception.search_to_leash_frames",
+    "text": "if (this.state === 'SEARCH' && this.stateF >= this.cfg.perception.search_to_leash_frames) {"
+   },
+   {
+    "file": "game/src/combat/ai.js",
+    "line": 546,
+    "root": "this",
+    "left": "stateF",
+    "op": ">=",
+    "right": "cfg.block.min_dwell_f",
+    "text": "|| (this.stateF >= this.cfg.block.min_dwell_f && !stillThreatened)) {"
+   },
+   {
+    "file": "game/src/combat/ai.js",
+    "line": 556,
+    "root": "this",
+    "left": "stateF",
+    "op": ">=",
+    "right": "cfg.disengage.min_dwell_f",
+    "text": "if (this.stateF >= this.cfg.disengage.min_dwell_f"
+   },
+   {
+    "file": "game/src/combat/ai.js",
+    "line": 557,
+    "root": "this",
+    "left": "stateF",
+    "op": ">=",
+    "right": "cfg.disengage.max_frames",
+    "text": "&& (dist >= floor || this.stateF >= this.cfg.disengage.max_frames)) {"
+   },
+   {
+    "file": "game/src/combat/ai.js",
+    "line": 626,
+    "root": "this",
+    "left": "stateF",
+    "op": ">=",
+    "right": "cfg.commit.feint_min_circle_dwell_f",
+    "text": "if (this.stateF >= this.cfg.commit.feint_min_circle_dwell_f"
+   },
+   {
+    "file": "game/src/combat/ai.js",
+    "line": 661,
+    "root": "this",
+    "left": "tokenSinceF",
+    "op": ">",
+    "right": "cfg.commit.token_hold_cap_f",
+    "text": "if (this.token && frame - this.tokenSinceF > this.cfg.commit.token_hold_cap_f) {"
+   },
+   {
+    "file": "game/src/combat/ai.js",
+    "line": 774,
+    "root": "b",
+    "left": "animFrame",
+    "op": ">",
+    "right": "move.startup",
+    "text": "if (b.animFrame > b.move.startup + b.move.active) this._enter('RECOVER', frame);"
+   },
+   {
+    "file": "game/src/combat/ai.js",
+    "line": 815,
+    "root": "b",
+    "left": "hp",
+    "op": "<",
+    "right": "hpMax",
+    "text": "if (b.hp < b.hpMax) b.hp = Math.min(b.hpMax, b.hp + b.hpMax / (this.cfg.leash.return_heal_seconds * 60));"
+   },
+   {
+    "file": "game/src/combat/ai.js",
+    "line": 816,
+    "root": "b",
+    "left": "hp",
+    "op": ">=",
+    "right": "hpMax",
+    "text": "if (frame >= this.healUntil && b.hp >= b.hpMax) this._enter('IDLE', frame);"
+   },
+   {
+    "file": "game/src/combat/enemy.js",
+    "line": 221,
+    "root": "b",
+    "left": "animFrame",
+    "op": ">=",
+    "right": "moveTotal",
+    "text": "if (b.move && b.animFrame >= b.moveTotal()) {"
+   },
+   {
+    "file": "game/src/combat/enemy.js",
+    "line": 241,
+    "root": "this",
+    "left": "scriptIdx",
+    "op": "<",
+    "right": "script.length",
+    "text": "while (this.scriptIdx < this.script.length && this.script[this.scriptIdx].f < frame) this.scriptIdx++;"
+   },
+   {
+    "file": "game/src/combat/enemy.js",
+    "line": 242,
+    "root": "this",
+    "left": "scriptIdx",
+    "op": "<",
+    "right": "script.length",
+    "text": "if (this.scriptIdx < this.script.length && this.script[this.scriptIdx].f === frame) {"
+   },
+   {
+    "file": "game/src/combat/enemy.js",
+    "line": 327,
+    "root": "this",
+    "left": "attacksInWindow.length",
+    "op": ">=",
+    "right": "stat.winded_after",
+    "text": "if (!this.winded && this.attacksInWindow.length >= this.stat.winded_after) {"
+   },
+   {
+    "file": "game/src/combat/lockon.js",
+    "line": 58,
+    "root": "this",
+    "left": "losLostAt",
+    "op": ">=",
+    "right": "C.acquisition.los_grace_frames",
+    "text": "if (frame - this.losLostAt >= this.C.acquisition.los_grace_frames) { this.release(); return 'los_lost'; }"
+   },
+   {
+    "file": "game/src/combat/player.js",
+    "line": 117,
+    "root": "b",
+    "left": "animFrame",
+    "op": ">=",
+    "right": "moveTotal",
+    "text": "if (b.move && b.animFrame >= b.moveTotal()) {"
+   },
+   {
+    "file": "game/src/combat/resolve.js",
+    "line": 353,
+    "root": "A",
+    "left": "animFrame",
+    "op": "!==",
+    "right": "move.startup",
+    "text": "if (A.animFrame !== A.move.startup + A.move.active) continue;"
+   },
+   {
+    "file": "game/src/combat/rules.js",
+    "line": 37,
+    "root": "actor",
+    "left": "stamina",
+    "op": ">=",
+    "right": "staminaMax",
+    "text": "if (actor.stamina >= actor.staminaMax) return 0;"
+   },
+   {
+    "file": "game/src/combat/rules.js",
+    "line": 134,
+    "root": "actor",
+    "left": "poiseHealth",
+    "op": ">=",
+    "right": "poiseHealthMax",
+    "text": "if (actor.poiseHealth >= actor.poiseHealthMax) return 0;"
+   },
+   {
+    "file": "game/src/combat/system.js",
+    "line": 422,
+    "root": "b",
+    "left": "animFrame",
+    "op": "<=",
+    "right": "move.startup",
+    "text": "if (b.move.kind === 'attack' && b.animFrame <= b.move.startup) return 'ATTACK_WINDUP';"
+   },
+   {
+    "file": "game/src/combat/system.js",
+    "line": 428,
+    "root": "b",
+    "left": "animFrame",
+    "op": ">",
+    "right": "move.startup",
+    "text": "&& b.animFrame > b.move.startup + b.move.active) return 'LONG_RECOVERY';"
+   },
+   {
+    "file": "game/src/engine.js",
+    "line": 1583,
+    "root": "this",
+    "left": "magic.focus",
+    "op": ">=",
+    "right": "magic.focusMax",
+    "text": "const wasFull = this.magic.focus >= this.magic.focusMax;"
+   },
+   {
+    "file": "game/src/engine.js",
+    "line": 3168,
+    "root": "w",
+    "left": "lines.length",
+    "op": ">",
+    "right": "top",
+    "text": "const more = w.lines.length > w.top + WRIT_WINDOW;"
+   },
+   {
+    "file": "game/src/engine.js",
+    "line": 6177,
+    "root": "this",
+    "left": "sim.cell",
+    "op": "===",
+    "right": "_townCell",
+    "text": "if (this._townCell && this.sim.cell === this._townCell) this.sim.cell = EMPTY_CELL;"
+   },
+   {
+    "file": "game/src/engine.js",
+    "line": 6187,
+    "root": "this",
+    "left": "sim.cell",
+    "op": "===",
+    "right": "_townCell",
+    "text": "if (this._townCell && this.sim.cell === this._townCell) { this.sim.cell = EMPTY_CELL; }"
+   },
+   {
+    "file": "game/src/engine.js",
+    "line": 6201,
+    "root": "this",
+    "left": "sim.cell",
+    "op": "!==",
+    "right": "_townCell",
+    "text": "if (this._townCell && this.sim.cell !== this._townCell) this.sim.cell = this._townCell;"
+   },
+   {
+    "file": "game/src/engine.js",
+    "line": 6206,
+    "root": "this",
+    "left": "sim.cell",
+    "op": "===",
+    "right": "_townCell",
+    "text": "if (this._townCell && this.sim.cell === this._townCell) this.sim.cell = EMPTY_CELL;"
+   },
+   {
+    "file": "game/src/engine.js",
+    "line": 6389,
+    "root": "this",
+    "left": "combat.audio",
+    "op": "===",
+    "right": "impactAudio",
+    "text": "s.attached_to_fight = !!(this.combat && this.combat.audio === this.impactAudio);"
+   },
+   {
+    "file": "game/src/engine.js",
+    "line": 7061,
+    "root": "r",
+    "left": "frame",
+    "op": ">=",
+    "right": "frames",
+    "text": "const done = r.frame >= r.frames;"
+   },
+   {
+    "file": "game/src/input/gamepad.js",
+    "line": 539,
+    "root": "c",
+    "left": "i",
+    "op": ">=",
+    "right": "prompts.length",
+    "text": "if (c.i >= c.prompts.length) {"
+   },
+   {
+    "file": "game/src/input/pipeline.js",
+    "line": 205,
+    "root": "this",
+    "left": "scriptIdx",
+    "op": "<",
+    "right": "script.length",
+    "text": "while (this.scriptIdx < this.script.length && this.script[this.scriptIdx].f + this.scriptBase === frame) {"
+   },
+   {
+    "file": "game/src/input/pipeline.js",
+    "line": 222,
+    "root": "this",
+    "left": "scriptIdx",
+    "op": "<",
+    "right": "script.length",
+    "text": "while (this.scriptIdx < this.script.length && this.script[this.scriptIdx].f + this.scriptBase < frame) {"
+   },
+   {
+    "file": "game/src/input/touch.js",
+    "line": 356,
+    "root": "this",
+    "left": "lastTouchMs",
+    "op": ">",
+    "right": "hideAfterMs",
+    "text": "if (this.padActive && nowMs - this.lastTouchMs > this.hideAfterMs && !this.pointers.size) this.visible = false;"
+   },
+   {
+    "file": "game/src/input/viewport.js",
+    "line": 110,
+    "root": "s",
+    "left": "h",
+    "op": ">",
+    "right": "w",
+    "text": "return s.h > s.w;"
+   },
+   {
+    "file": "game/src/sim/camera.js",
+    "line": 442,
+    "root": "sim",
+    "left": "hitstopUntil",
+    "op": ">",
+    "right": "frame",
+    "text": "if (sim.hitstopUntil > sim.frame) {"
+   },
+   {
+    "file": "game/src/sim/entities.js",
+    "line": 142,
+    "root": "sim",
+    "left": "hitstopUntil",
+    "op": ">",
+    "right": "frame",
+    "text": "if (sim.hitstopUntil > sim.frame) { e.phase = 'hitstun'; continue; }"
+   },
+   {
+    "file": "game/src/sim/environment.js",
+    "line": 240,
+    "root": "env",
+    "left": "weather",
+    "op": "!==",
+    "right": "_lastWeather",
+    "text": "if (env.weather !== env._lastWeather) {"
+   },
+   {
+    "file": "game/src/sim/hazards.js",
+    "line": 193,
+    "root": "an",
+    "left": "d",
+    "op": "<=",
+    "right": "r",
+    "text": "if (an) return an.d <= an.r;"
+   },
+   {
+    "file": "game/src/sim/magic/apply.js",
+    "line": 153,
+    "root": "b",
+    "left": "hp",
+    "op": ">",
+    "right": "hpMax",
+    "text": "if (b.hp > b.hpMax) b.hp = b.hpMax;"
+   },
+   {
+    "file": "game/src/sim/magic/system.js",
+    "line": 571,
+    "root": "this",
+    "left": "focus",
+    "op": "<",
+    "right": "costOf",
+    "text": "if (this.focus < this.costOf(s)) return 'no_focus';"
+   },
+   {
+    "file": "game/src/sim/magic/system.js",
+    "line": 1020,
+    "root": "p",
+    "left": "travelF",
+    "op": "<",
+    "right": "cutoffF",
+    "text": "if (p.turnRate > 0 && (this._cutoffDisabled || p.travelF < p.cutoffF) && p.target) {"
+   },
+   {
+    "file": "game/src/sim/magic/system.js",
+    "line": 1114,
+    "root": "p",
+    "left": "travelF",
+    "op": ">=",
+    "right": "lifeF",
+    "text": "if (this.projectiles[i] === p && p.travelF >= p.lifeF) {"
+   },
+   {
+    "file": "game/src/sim/magic/system.js",
+    "line": 1143,
+    "root": "v",
+    "left": "lastTickF",
+    "op": "<",
+    "right": "ticksEveryF",
+    "text": "if (v.lastTickF >= 0 && frame - v.lastTickF < v.ticksEveryF) continue;"
+   },
+   {
+    "file": "game/src/sim/magic/system.js",
+    "line": 1358,
+    "root": "b",
+    "left": "stamina",
+    "op": ">",
+    "right": "staminaMax",
+    "text": "if (b.stamina > b.staminaMax) b.stamina = b.staminaMax;"
+   },
+   {
+    "file": "game/src/sim/magic/system.js",
+    "line": 2177,
+    "root": "it",
+    "left": "charge",
+    "op": "<",
+    "right": "charge_per_use",
+    "text": "if (it.charge < it.charge_per_use) {"
+   },
+   {
+    "file": "game/src/sim/magic/system.js",
+    "line": 2358,
+    "root": "p",
+    "left": "travelF",
+    "op": "<",
+    "right": "cutoffF",
+    "text": "tracking_live: p.cutoffF === undefined ? null : (p.travelF < p.cutoffF),"
+   },
+   {
+    "file": "game/src/sim/npc.js",
+    "line": 135,
+    "root": "s",
+    "left": "from",
+    "op": "<=",
+    "right": "to",
+    "text": "if (s.from <= s.to ? (hour >= s.from && hour < s.to) : (hour >= s.from || hour < s.to)) return i;"
+   },
+   {
+    "file": "game/src/sim/player.js",
+    "line": 45,
+    "root": "p",
+    "left": "animFrame",
+    "op": ">=",
+    "right": "moveData.total",
+    "text": "if (p.moveData && p.animFrame >= p.moveData.total) {"
+   },
+   {
+    "file": "game/src/sim/player.js",
+    "line": 210,
+    "root": "p",
+    "left": "stamina",
+    "op": "<",
+    "right": "staminaMax",
+    "text": "if (f >= p.regenBlockUntil && p.stamina < p.staminaMax) {"
+   },
+   {
+    "file": "game/src/sim/route.js",
+    "line": 97,
+    "root": "r",
+    "left": "s",
+    "op": ">=",
+    "right": "total",
+    "text": "if (r.s >= r.total) {"
+   },
+   {
+    "file": "game/src/sim/route.js",
+    "line": 99,
+    "root": "r",
+    "left": "lap",
+    "op": ">=",
+    "right": "laps",
+    "text": "if (r.lap >= r.laps) { r.s = r.total; r.done = true; }"
+   },
+   {
+    "file": "game/src/sim/stealth/lock.js",
+    "line": 105,
+    "root": "this",
+    "left": "sweeps",
+    "op": ">=",
+    "right": "data.ward_collar.sweeps_per_ward",
+    "text": "if (this.sweeps >= this.data.ward_collar.sweeps_per_ward) {"
+   },
+   {
+    "file": "game/src/sim/stealth/lock.js",
+    "line": 122,
+    "root": "this",
+    "left": "set",
+    "op": ">=",
+    "right": "tierRow.wards",
+    "text": "if (this.set >= this.tierRow.wards) {"
+   },
+   {
+    "file": "game/src/sim/stealth/pickpocket.js",
+    "line": 131,
+    "root": "this",
+    "left": "heldFrames",
+    "op": ">=",
+    "right": "needFrames",
+    "text": "get complete() { return this.heldFrames >= this.needFrames; }"
+   },
+   {
+    "file": "game/src/sim/stealth/system.js",
+    "line": 640,
+    "root": "g",
+    "left": "dist",
+    "op": "<=",
+    "right": "R",
+    "text": "const engaged = g.los && g.dist !== undefined && g.dist <= g.R;"
+   },
+   {
+    "file": "game/src/sim/stealth/system.js",
+    "line": 1323,
+    "root": "this",
+    "left": "p.V",
+    "op": ">=",
+    "right": "d.justice.witness.identified_at_V",
+    "text": "const w = this.crime.witness(c.id, { eid: a.q.targetEid || 'target', frame, identified: this.p.V >= this.d.justice.witness.identified_at_V });"
+   },
+   {
+    "file": "game/src/sim/step.js",
+    "line": 90,
+    "root": "sim",
+    "left": "nettedUntil",
+    "op": ">",
+    "right": "frame",
+    "text": "if (sim.nettedUntil > sim.frame) input.consumeUI(NETTED_DENIED);"
+   },
+   {
+    "file": "game/src/ui/screens/progress.js",
+    "line": 49,
+    "root": "m",
+    "left": "souls",
+    "op": ">=",
+    "right": "soulsToNext",
+    "text": "meta: { souls_to_next: m.soulsToNext, level_after: m.level + 1, affordable: m.souls >= m.soulsToNext },"
+   },
+   {
+    "file": "game/src/ui/screens/progress.js",
+    "line": 53,
+    "root": "m",
+    "left": "souls",
+    "op": ">=",
+    "right": "soulsToNext",
+    "text": "m.souls >= m.soulsToNext ? C('ink') : inkDim());"
+   },
+   {
+    "file": "game/src/ui/screens/progress.js",
+    "line": 123,
+    "root": "m",
+    "left": "souls",
+    "op": ">=",
+    "right": "soulsToNext",
+    "text": "m.souls >= m.soulsToNext"
+   },
+   {
+    "file": "game/src/ui/system.js",
+    "line": 601,
+    "root": "this",
+    "left": "lastMode",
+    "op": "===",
+    "right": "mode",
+    "text": "if (!force && this.builtFrame === ctx.frame && this.lastMode === this.mode && this.lastTouchSig === sig) return;"
+   },
+   {
+    "file": "tools/analysis/ambience-onsets.mjs",
+    "line": 472,
+    "root": "muteWorks",
+    "left": "muted_noop",
+    "op": "!==",
+    "right": "full",
+    "text": "if (muteWorks.muted_noop !== muteWorks.full) {"
+   },
+   {
+    "file": "tools/analysis/ambience-render.mjs",
+    "line": 540,
+    "root": "border",
+    "left": "before.region",
+    "op": "!==",
+    "right": "after.region",
+    "text": "pass: !!(border.ok && border.before.region !== border.after.region && border.before.L1 !== border.after.L1"
+   },
+   {
+    "file": "tools/analysis/ambience-render.mjs",
+    "line": 540,
+    "root": "border",
+    "left": "before.L1",
+    "op": "!==",
+    "right": "after.L1",
+    "text": "pass: !!(border.ok && border.before.region !== border.after.region && border.before.L1 !== border.after.L1"
+   },
+   {
+    "file": "tools/analysis/audio-budget.mjs",
+    "line": 90,
+    "root": "r",
+    "left": "playAt",
+    "op": "===",
+    "right": "t",
+    "text": "const bare = log.filter((r) => r.playAt === r.t).length;"
+   },
+   {
+    "file": "tools/analysis/audio-sync.mjs",
+    "line": 254,
+    "root": "R",
+    "left": "summary.checks_passed",
+    "op": "<",
+    "right": "summary.checks_total",
+    "text": "if (GATE && (R.summary.hard_fails.length || R.summary.checks_passed < R.summary.checks_total)) process.exit(3);"
+   },
+   {
+    "file": "tools/analysis/crime-audit.mjs",
+    "line": 148,
+    "root": "theft",
+    "left": "fences.base_rate",
+    "op": "<",
+    "right": "fences.legit_sell_ceiling",
+    "text": "A('FNC-3', 'fence base rate vs the legitimate 0.60x ceiling', `${theft.fences.base_rate} vs ${theft.fences.legit_sell_ceiling}`, theft.fences.base_rate < theft.fences.legit_sell_ceiling, 'st"
+   },
+   {
+    "file": "tools/analysis/magic-audit.mjs",
+    "line": 358,
+    "root": "s2",
+    "left": "windup_f",
+    "op": ">=",
+    "right": "min_windup_required_f",
+    "text": "every_spell_meets_its_severity_floor: spells.every(([, s2]) => s2.windup_f >= s2.min_windup_required_f),"
+   },
+   {
+    "file": "tools/analysis/magic-audit.mjs",
+    "line": 373,
+    "root": "r",
+    "left": "min_windup_f",
+    "op": ">=",
+    "right": "windup_floor_f",
+    "text": "r.min_windup_f >= r.windup_floor_f && r.every_spell_meets_its_severity_floor"
+   },
+   {
+    "file": "tools/analysis/magic-audit.mjs",
+    "line": 374,
+    "root": "r",
+    "left": "min_dodge_window_f",
+    "op": ">=",
+    "right": "dodge_window_floor_f",
+    "text": "&& r.min_dodge_window_f >= r.dodge_window_floor_f"
+   },
+   {
+    "file": "tools/analysis/ui-census.mjs",
+    "line": 256,
+    "root": "curve",
+    "left": "shown",
+    "op": "===",
+    "right": "expected",
+    "text": "curve.match = curve.shown === curve.expected;"
+   },
+   {
+    "file": "tools/analysis/ui-census.mjs",
+    "line": 380,
+    "root": "o",
+    "left": "stamina.spends_visible_same_frame",
+    "op": "===",
+    "right": "stamina.spend_events",
+    "text": "pass: () => o.stamina.spend_events > 0 && o.stamina.spends_visible_same_frame === o.stamina.spend_events,"
+   },
+   {
+    "file": "tools/analysis/ui-forbidden.mjs",
+    "line": 316,
+    "root": "s",
+    "left": "mode",
+    "op": "!==",
+    "right": "where",
+    "text": "const wrongMode = out.scanned.filter((s) => s.where !== 'combat' && s.mode !== s.where).map((s) => `${s.where}->${s.mode}`);"
+   },
+   {
+    "file": "tools/analysis/w1-chartfont-deletefix.mjs",
+    "line": 117,
+    "root": "row",
+    "left": "broken_arm",
+    "op": "!==",
+    "right": "fixed_arm",
+    "text": "row.fix_moves_it = row.broken_arm !== row.fixed_arm;"
+   },
+   {
+    "file": "tools/analysis/w1-chartfont-deletefix.mjs",
+    "line": 119,
+    "root": "row",
+    "left": "broken_arm",
+    "op": "===",
+    "right": "archived_prefix",
+    "text": "row.teardown_lands = c.no_landing ? null : row.archived_prefix ? row.broken_arm === row.archived_prefix : null;"
+   },
+   {
+    "file": "tools/analysis/w1-chartfont-deletefix.mjs",
+    "line": 120,
+    "root": "row",
+    "left": "published_now",
+    "op": "===",
+    "right": "fixed_arm",
+    "text": "row.published_is_fixed_arm = row.published_now === row.fixed_arm;"
+   },
+   {
+    "file": "tools/camera/cam-probe.mjs",
+    "line": 286,
+    "root": "c",
+    "left": "arm_len_m",
+    "op": ">",
+    "right": "arm_desired_m",
+    "text": "const over = all.filter((c) => c.arm_len_m > c.arm_desired_m + 0.02).length;"
+   },
+   {
+    "file": "tools/camera/cam-probe.mjs",
+    "line": 1035,
+    "root": "s",
+    "left": "J_p95",
+    "op": "<=",
+    "right": "bar_J",
+    "text": "chk('jerk_within_pass_band', Object.entries(stats).every(([k, s]) => s.J_p95 <= s.bar_J && s.Jang_p95 <= s.bar_Jang),"
+   },
+   {
+    "file": "tools/camera/cam-probe.mjs",
+    "line": 1035,
+    "root": "s",
+    "left": "Jang_p95",
+    "op": "<=",
+    "right": "bar_Jang",
+    "text": "chk('jerk_within_pass_band', Object.entries(stats).every(([k, s]) => s.J_p95 <= s.bar_J && s.Jang_p95 <= s.bar_Jang),"
+   },
+   {
+    "file": "tools/check-souls-corpus.mjs",
+    "line": 152,
+    "root": "r",
+    "left": "souls_each",
+    "op": "!==",
+    "right": "total",
+    "text": "if (r.count * r.souls_each !== r.total) {"
+   },
+   {
+    "file": "tools/check-souls-world.mjs",
+    "line": 187,
+    "root": "r",
+    "left": "cached",
+    "op": "!==",
+    "right": "computed",
+    "text": "const drift = rows.filter((r) => r.cached !== r.computed);"
+   },
+   {
+    "file": "tools/check-souls-world.mjs",
+    "line": 229,
+    "root": "r",
+    "left": "cached",
+    "op": "===",
+    "right": "computed",
+    "text": "for (const r of rows) console.log(`  ${r.cached === r.computed ? 'ok  ' : 'DRIFT'} ${r.row}: cached ${r.cached}, statblocks ${r.computed}`);"
+   },
+   {
+    "file": "tools/combat/critic-w1-12-census.mjs",
+    "line": 385,
+    "root": "cur",
+    "left": "frames",
+    "op": ">=",
+    "right": "declared_total",
+    "text": "cur.completed = cur.frames >= cur.declared_total - 2;"
+   },
+   {
+    "file": "tools/combat/critic-w1-12-census.mjs",
+    "line": 575,
+    "root": "b",
+    "left": "animFrame",
+    "op": "<=",
+    "right": "move.startup",
+    "text": "const ph = !b.move ? 'none' : (b.animFrame <= b.move.startup ? 'windup' : (b.animFrame <= b.move.startup + b.move.active ? 'active' : 'recovery'));"
+   },
+   {
+    "file": "tools/combat/critic-w1-12-census.mjs",
+    "line": 575,
+    "root": "b",
+    "left": "animFrame",
+    "op": "<=",
+    "right": "move.startup",
+    "text": "const ph = !b.move ? 'none' : (b.animFrame <= b.move.startup ? 'windup' : (b.animFrame <= b.move.startup + b.move.active ? 'active' : 'recovery'));"
+   },
+   {
+    "file": "tools/combat/critic-w1-12-chart.mjs",
+    "line": 90,
+    "root": "b",
+    "left": "animFrame",
+    "op": "<=",
+    "right": "move.startup",
+    "text": ": (b.animFrame <= b.move.startup ? 'windup'"
+   },
+   {
+    "file": "tools/combat/critic-w1-12-chart.mjs",
+    "line": 91,
+    "root": "b",
+    "left": "animFrame",
+    "op": "<=",
+    "right": "move.startup",
+    "text": ": (b.animFrame <= b.move.startup + b.move.active ? 'active' : 'recovery'));"
+   },
+   {
+    "file": "tools/combat/critic-w1-12-r2-closure.mjs",
+    "line": 82,
+    "root": "this",
+    "left": "stateF",
+    "op": ">=",
+    "right": "cfg.movement.rush_closure_window_f",
+    "text": "s = s.replace(h, \"        if (this.stateF >= this.cfg.movement.rush_closure_window_f && !this._targetIsLeaving(dx, dz, dist)\");"
+   },
+   {
+    "file": "tools/combat/critic-w1-12-r2-consume.mjs",
+    "line": 90,
+    "root": "b",
+    "left": "hp",
+    "op": ">",
+    "right": "hpMax",
+    "text": "if (b.hp > b.hpMax * 0.4) { /* let it heal */ }"
+   },
+   {
+    "file": "tools/combat/w1-12-r2-teardown.mjs",
+    "line": 166,
+    "root": "b",
+    "left": "animFrame",
+    "op": ">",
+    "right": "move.startup",
+    "text": "const needle = \"    if (b.animFrame > b.move.startup + b.move.active) this._enter('RECOVER', frame);\";"
+   },
+   {
+    "file": "tools/cost-report.mjs",
+    "line": 230,
+    "root": "out",
+    "left": "ageMinutes",
+    "op": ">",
+    "right": "staleAfter",
+    "text": "const tooOld = out.ageMinutes === null || out.ageMinutes > out.staleAfter;"
+   },
+   {
+    "file": "tools/dialogue/rehome-actors.mjs",
+    "line": 208,
+    "root": "r",
+    "left": "from",
+    "op": "!==",
+    "right": "to",
+    "text": "const stale = TABLE.filter((r) => { const i = findInfo(load(r.file), r.topic, r.i); return i && i.a === r.from && r.from !== r.to; });"
+   },
+   {
+    "file": "tools/dialogue/voice-metrics.mjs",
+    "line": 244,
+    "root": "a",
+    "left": "id",
+    "op": "!==",
+    "right": "id",
+    "text": "const others = rows.filter((r) => r.a.id !== a.id).map((r) => per1k(r.texts, re));"
+   },
+   {
+    "file": "tools/experience/session-run.mjs",
+    "line": 668,
+    "root": "ghostBefore",
+    "left": "n1",
+    "op": ">",
+    "right": "n0",
+    "text": "ghostBefore.n1 > ghostBefore.n0,"
+   },
+   {
+    "file": "tools/experience/session-run.mjs",
+    "line": 689,
+    "root": "sideBefore",
+    "left": "n1",
+    "op": ">",
+    "right": "n0",
+    "text": "sideBefore.has_engine && sideBefore.n1 > sideBefore.n0,"
+   },
+   {
+    "file": "tools/experience/session-run.mjs",
+    "line": 715,
+    "root": "after",
+    "left": "violations",
+    "op": "===",
+    "right": "out.length",
+    "text": "ok('each attempt is recorded as a violation', after.violations === after.out.length,"
+   },
+   {
+    "file": "tools/experience/session-run.mjs",
+    "line": 726,
+    "root": "ghostAfter",
+    "left": "n1",
+    "op": "===",
+    "right": "n0",
+    "text": "ghostAfter.n1 === ghostAfter.n0,"
+   },
+   {
+    "file": "tools/experience/session-run.mjs",
+    "line": 774,
+    "root": "sideAfter",
+    "left": "n1",
+    "op": "===",
+    "right": "n0",
+    "text": "sideAfter.n1 === sideAfter.n0,"
+   },
+   {
+    "file": "tools/gamepad/deadzone-deletefix.mjs",
+    "line": 75,
+    "root": "window",
+    "left": "__ENGINE.combat.playerCtl.d",
+    "op": "===",
+    "right": "__ENGINE.combat.d",
+    "text": "ctl_reads_this_object: window.__ENGINE.combat.playerCtl.d === window.__ENGINE.combat.d,"
+   },
+   {
+    "file": "tools/gamepad/pad-run.mjs",
+    "line": 496,
+    "root": "r",
+    "left": "after_dwell",
+    "op": "===",
+    "right": "mode",
+    "text": "const heldOpen = dwelt.filter((r) => r.after_dwell === r.mode);"
+   },
+   {
+    "file": "tools/harness/ai-probe.mjs",
+    "line": 144,
+    "root": "b",
+    "left": "animFrame",
+    "op": "<=",
+    "right": "move.startup",
+    "text": "if (b.animFrame <= b.move.startup) return 'windup';"
+   },
+   {
+    "file": "tools/harness/ai-probe.mjs",
+    "line": 145,
+    "root": "b",
+    "left": "animFrame",
+    "op": "<=",
+    "right": "move.startup",
+    "text": "if (b.animFrame <= b.move.startup + b.move.active) return 'active';"
+   },
+   {
+    "file": "tools/harness/anim-tune.mjs",
+    "line": 48,
+    "root": "r",
+    "left": "angle_recovery",
+    "op": ">",
+    "right": "angle_active",
+    "text": "const rec = rows.filter((r) => r.angle_recovery > r.angle_active);"
+   },
+   {
+    "file": "tools/harness/cmb-exchange.mjs",
+    "line": 339,
+    "root": "r",
+    "left": "first",
+    "op": "!==",
+    "right": "again",
+    "text": "const nondet = recheck.filter((r) => r.first !== r.again);"
+   },
+   {
+    "file": "tools/harness/cmb-exemplar.mjs",
+    "line": 348,
+    "root": "p",
+    "left": "anim_frame",
+    "op": ">=",
+    "right": "move.total",
+    "text": "const buffering = !!(p.move && p.state === 'ATK_RECOVER' && p.anim_frame >= p.move.total - 8) && dist <= R1_REACH + 0.35;"
+   },
+   {
+    "file": "tools/harness/cmb-reach.mjs",
+    "line": 260,
+    "root": "e",
+    "left": "dmg",
+    "op": ">=",
+    "right": "dmg_if_weapon",
+    "text": "if (k === 'body' && e.dmg_if_weapon !== undefined && e.dmg >= e.dmg_if_weapon) {"
+   },
+   {
+    "file": "tools/harness/cmb-reach.mjs",
+    "line": 480,
+    "root": "e",
+    "left": "dmg",
+    "op": ">=",
+    "right": "dmg_if_weapon",
+    "text": "const violations = body.filter((e) => e.dmg_if_weapon !== undefined && e.dmg >= e.dmg_if_weapon);"
+   },
+   {
+    "file": "tools/harness/cmb-tipspeed.mjs",
+    "line": 105,
+    "root": "r",
+    "left": "local",
+    "op": ">",
+    "right": "declared",
+    "text": "const over = rows.filter((r) => r.declared && r.local > r.declared * TOL);"
+   },
+   {
+    "file": "tools/harness/critic-map-r2.mjs",
+    "line": 388,
+    "root": "mAll",
+    "left": "places_drawn",
+    "op": "===",
+    "right": "places_discovered",
+    "text": "!(mAll.places_drawn === mAll.places_discovered && squaresAll.length > honestLive.place_count),"
+   },
+   {
+    "file": "tools/harness/critic-map-r2.mjs",
+    "line": 447,
+    "root": "forgedReport",
+    "left": "places_drawn",
+    "op": "===",
+    "right": "places_discovered",
+    "text": "const allGreen = forgedReport.places_drawn === forgedReport.places_discovered"
+   },
+   {
+    "file": "tools/harness/critic-map-r2.mjs",
+    "line": 729,
+    "root": "rep",
+    "left": "passed",
+    "op": "!==",
+    "right": "total",
+    "text": "if (rep.passed !== rep.total) { log(`  FINDINGS (S35 assertions that failed): ${rep.red.join(', ')}`); bad++; }"
+   },
+   {
+    "file": "tools/harness/critic-w1-07-r2a.mjs",
+    "line": 202,
+    "root": "n",
+    "left": "speaker_entity",
+    "op": "===",
+    "right": "speaker",
+    "text": "speaker_resolves: rec.nodes.filter((n) => n.speaker && n.speaker_entity === n.speaker).length,"
+   },
+   {
+    "file": "tools/harness/critic-w1-07-r2i.mjs",
+    "line": 91,
+    "root": "e",
+    "left": "hp",
+    "op": "<",
+    "right": "hp_max",
+    "text": "hit: !!(e && e.hp < e.hp_max),"
+   },
+   {
+    "file": "tools/harness/critic-w1-08-29-r1-draw.mjs",
+    "line": 99,
+    "root": "d1",
+    "left": "sim_frame_before",
+    "op": "===",
+    "right": "sim_frame_after",
+    "text": "!d1.identical && d1.sim_frame_before === d1.sim_frame_after,"
+   },
+   {
+    "file": "tools/harness/critic-w1-09-r3.mjs",
+    "line": 52,
+    "root": "cfg",
+    "left": "step",
+    "op": "<=",
+    "right": "max",
+    "text": "for (let i = 0; i * cfg.step <= cfg.max + 1e-9; i++) {"
+   },
+   {
+    "file": "tools/harness/critic-w1-09-r3.mjs",
+    "line": 78,
+    "root": "cfg",
+    "left": "step",
+    "op": "<=",
+    "right": "max",
+    "text": "for (let i = 0; i * cfg.step <= cfg.max + 1e-9; i++) {"
+   },
+   {
+    "file": "tools/harness/critic-w1-10-static.mjs",
+    "line": 151,
+    "root": "B",
+    "left": "chains_to",
+    "op": "===",
+    "right": "chains_to",
+    "text": "|| A.shape !== B.shape || A.chains_to !== ('2h.' + B.chains_to === B.chains_to ? B.chains_to : String(B.chains_to).replace(/^2h\\./, ''))"
+   },
+   {
+    "file": "tools/harness/critic-w1-14-r4-commission.mjs",
+    "line": 355,
+    "root": "m",
+    "left": "gold_delta",
+    "op": "!==",
+    "right": "quote_gold",
+    "text": "if (m.gold_delta !== m.quote_gold) fails.push(`purse moved ${m.gold_delta} against a quote of ${m.quote_gold}`);"
+   },
+   {
+    "file": "tools/harness/critic-w1-14-r4-summon.mjs",
+    "line": 154,
+    "root": "f",
+    "left": "plain_after",
+    "op": "===",
+    "right": "baseline",
+    "text": "check(f.plain_after === f.baseline, `FIXED ${eff}: a plain ${f.archetype} reads ${f.plain_after} after ${CASTS} casts; before them it read ${f.baseline}`);"
+   },
+   {
+    "file": "tools/harness/critic-w1-14-r4-summon.mjs",
+    "line": 157,
+    "root": "b",
+    "left": "plain_after",
+    "op": "!==",
+    "right": "baseline",
+    "text": "check(b.plain_after !== b.baseline, `INERT CONTROL (${eff}): the BROKEN arm left the statblock at its declared ${b.baseline}`);"
+   },
+   {
+    "file": "tools/harness/critic-w1-16-live.mjs",
+    "line": 372,
+    "root": "cutFirst",
+    "left": "after.iframes_f60",
+    "op": "===",
+    "right": "before.iframes_f60",
+    "text": "old_number_returns: cutFirst.after.iframes_f60 === cutFirst.before.iframes_f60"
+   },
+   {
+    "file": "tools/harness/critic-w1-16-live.mjs",
+    "line": 373,
+    "root": "cutAfter",
+    "left": "after.iframes_f60",
+    "op": "===",
+    "right": "before.iframes_f60",
+    "text": "&& cutAfter.after.iframes_f60 === cutAfter.before.iframes_f60,"
+   },
+   {
+    "file": "tools/harness/critic-w1-16-r3-live.mjs",
+    "line": 533,
+    "root": "out",
+    "left": "before.pct",
+    "op": "!==",
+    "right": "after.pct",
+    "text": "out.before.pct !== out.after.pct || out.before.weapon !== out.after.weapon"
+   },
+   {
+    "file": "tools/harness/critic-w1-16-r3-live.mjs",
+    "line": 533,
+    "root": "out",
+    "left": "before.weapon",
+    "op": "!==",
+    "right": "after.weapon",
+    "text": "out.before.pct !== out.after.pct || out.before.weapon !== out.after.weapon"
+   },
+   {
+    "file": "tools/harness/critic-w1-16-r3-live.mjs",
+    "line": 537,
+    "root": "out",
+    "left": "before.equipped_kg",
+    "op": "===",
+    "right": "after.equipped_kg",
+    "text": "out.the_bow_is_not_weighed_as_though_held = out.before.equipped_kg === out.after.equipped_kg;"
+   },
+   {
+    "file": "tools/harness/critic-w1-16-r3-offline.mjs",
+    "line": 481,
+    "root": "twoWeights",
+    "left": "carried_json_kg",
+    "op": "!==",
+    "right": "weapon_class_kg",
+    "text": "const ok = handsInEquip && handsMissingFromBurden && twoWeights.carried_json_kg !== twoWeights.weapon_class_kg;"
+   },
+   {
+    "file": "tools/harness/critic-w1-21-r1-shots.mjs",
+    "line": 87,
+    "root": "report",
+    "left": "forged_places_drawn",
+    "op": "<=",
+    "right": "stood_in",
+    "text": "if (report.forged_places_drawn <= report.stood_in) fail.push(`forged frame draws ${report.forged_places_drawn} squares and the body stood in ${report.stood_in} — the finding is not in the pi"
+   },
+   {
+    "file": "tools/harness/critic-w1-21-r1-shots.mjs",
+    "line": 88,
+    "root": "report",
+    "left": "forged_drawn_cells",
+    "op": "<",
+    "right": "forged_total_cells",
+    "text": "if (report.forged_drawn_cells < report.forged_total_cells * 0.9) fail.push(`forged frame painted only ${report.forged_drawn_cells}/${report.forged_total_cells} cells — the province is not re"
+   },
+   {
+    "file": "tools/harness/critic-w1-map-r1.mjs",
+    "line": 190,
+    "root": "mAll",
+    "left": "places_drawn",
+    "op": "===",
+    "right": "places_discovered",
+    "text": "!(mAll.places_drawn === mAll.places_discovered && squaresAll.length > honestLive.place_count),"
+   },
+   {
+    "file": "tools/harness/critic-w1-map-r1.mjs",
+    "line": 455,
+    "root": "rep",
+    "left": "passed",
+    "op": "!==",
+    "right": "total",
+    "text": "if (rep.passed !== rep.total) { log(`  FINDINGS (S35 assertions that failed): ${rep.red.join(', ')}`); bad++; }"
+   },
+   {
+    "file": "tools/harness/critic-w1-map-shots.mjs",
+    "line": 113,
+    "root": "s",
+    "left": "drawn_cells",
+    "op": "<",
+    "right": "total_cells",
+    "text": "partial: (s) => s.drawn_cells > 0 && s.drawn_cells < s.total_cells * 0.25,"
+   },
+   {
+    "file": "tools/harness/critic-w1-map-shots.mjs",
+    "line": 114,
+    "root": "s",
+    "left": "drawn_cells",
+    "op": ">",
+    "right": "total_cells",
+    "text": "explored: (s) => s.drawn_cells > s.total_cells * 0.25 && s.places_drawn >= 3,"
+   },
+   {
+    "file": "tools/harness/critic-w1-map-shots.mjs",
+    "line": 115,
+    "root": "s",
+    "left": "drawn_cells",
+    "op": "===",
+    "right": "total_cells",
+    "text": "forged: (s) => s.drawn_cells === s.total_cells && s.places_drawn >= 40,"
+   },
+   {
+    "file": "tools/harness/determinism.mjs",
+    "line": 392,
+    "root": "rt",
+    "left": "hash0",
+    "op": "===",
+    "right": "hash1",
+    "text": "rt.hash0 === rt.hash1 && cd === ld && r9Differing.length === 0 && rt.roundTrip.diff.length === 0"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 217,
+    "root": "r",
+    "left": "mid.player.equip_load_pct",
+    "op": "<",
+    "right": "before.player.equip_load_pct",
+    "text": "feather: (r) => ({ consumer: 'equip_load_pct + roll_class (RI-CMB01 M5 cliff)', delta: { pct_before: r.before.player.equip_load_pct, pct_mid: r.mid ? r.mid.player.equip_load_pct : null, clas"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 217,
+    "root": "r",
+    "left": "mid.player.roll_class",
+    "op": "!==",
+    "right": "before.player.roll_class",
+    "text": "feather: (r) => ({ consumer: 'equip_load_pct + roll_class (RI-CMB01 M5 cliff)', delta: { pct_before: r.before.player.equip_load_pct, pct_mid: r.mid ? r.mid.player.equip_load_pct : null, clas"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 224,
+    "root": "r",
+    "left": "dark.after",
+    "op": ">",
+    "right": "dark.before",
+    "text": "night_eye: (r) => ({ consumer: 'stealth perceived light', delta: r.dark || null, functions: !!(r.dark && r.dark.after > r.dark.before) }),"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 225,
+    "root": "r",
+    "left": "mid.stealth.V_raw",
+    "op": "<",
+    "right": "before.stealth.V_raw",
+    "text": "chameleon: (r) => ({ consumer: 'stealth.V', delta: { V_before: r.before.stealth.V, V_mid: r.mid ? r.mid.stealth.V : null, raw_before: r.before.stealth.V_raw, raw_mid: r.mid ? r.mid.stealth.V"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 226,
+    "root": "r",
+    "left": "invis.v_during",
+    "op": "<",
+    "right": "invis.v_after",
+    "text": "invisibility: (r) => ({ consumer: 'stealth.V + break rules', delta: r.invis || null, functions: !!(r.invis && r.invis.v_during < r.invis.v_after && r.invis.broke === true) }),"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 227,
+    "root": "r",
+    "left": "sound.after",
+    "op": "<",
+    "right": "sound.before",
+    "text": "muffle: (r) => ({ consumer: 'stealth.sound_r_m', delta: r.sound || null, functions: !!(r.sound && r.sound.after < r.sound.before) }),"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 231,
+    "root": "r",
+    "left": "after.quest.journal",
+    "op": "===",
+    "right": "before.quest.journal",
+    "text": "hist_sight: (r) => ({ consumer: 'quest.journal', delta: { before: r.before.quest.journal, after: r.after.quest.journal }, functions: r.after.quest.journal === r.before.quest.journal + 1 }),"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 232,
+    "root": "r",
+    "left": "after.quest.topics.length",
+    "op": ">",
+    "right": "before.quest.topics.length",
+    "text": "speak_to_the_dead: (r) => ({ consumer: 'quest.topicsKnown', delta: { before: r.before.quest.topics, after: r.after.quest.topics }, functions: r.after.quest.topics.length > r.before.quest.top"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 233,
+    "root": "r",
+    "left": "after.world.locks.unlocked.length",
+    "op": ">",
+    "right": "before.world.locks.unlocked.length",
+    "text": "open_lock: (r) => ({ consumer: 'lock register + world.doors_unlocked', delta: { before: r.before.world.locks.unlocked, after: r.after.world.locks.unlocked, save: r.after.save_world.doors }, "
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 234,
+    "root": "r",
+    "left": "after.world.locks.locked.length",
+    "op": ">",
+    "right": "before.world.locks.locked.length",
+    "text": "lock_lock: (r) => ({ consumer: 'lock register', delta: { before: r.before.world.locks.locked, after: r.after.world.locks.locked }, functions: r.after.world.locks.locked.length > r.before.wor"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 235,
+    "root": "r",
+    "left": "after.world.traps.disarmed.length",
+    "op": ">",
+    "right": "before.world.traps.disarmed.length",
+    "text": "ward_trap: (r) => ({ consumer: 'trap register', delta: { before: r.before.world.traps.disarmed, after: r.after.world.traps.disarmed }, functions: r.after.world.traps.disarmed.length > r.befo"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 236,
+    "root": "r",
+    "left": "after.world.breakables.broken.length",
+    "op": ">",
+    "right": "before.world.breakables.broken.length",
+    "text": "shatter: (r) => ({ consumer: 'breakable register + shortcuts', delta: { before: r.before.world.breakables.broken, after: r.after.world.breakables.broken, save: r.after.save_world.shortcuts }"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 242,
+    "root": "r",
+    "left": "after.world.items.ruined_censer",
+    "op": "===",
+    "right": "before.world.items.ruined_censer",
+    "text": "mend_item: (r) => ({ consumer: 'item condition register', delta: { before: r.before.world.items, after: r.after.world.items }, functions: differs(r.before.world.items, r.after.world.items) &"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 243,
+    "root": "r",
+    "left": "mid.world.reach_m",
+    "op": ">",
+    "right": "before.world.reach_m",
+    "text": "telekinesis: (r) => ({ consumer: 'interaction reach', delta: { before: r.before.world.reach_m, mid: r.mid ? r.mid.world.reach_m : null }, functions: !!r.mid && r.mid.world.reach_m > r.before"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 244,
+    "root": "r",
+    "left": "mid.world.walls.walls",
+    "op": ">",
+    "right": "before.world.walls.walls",
+    "text": "wall: (r) => ({ consumer: 'collision field (solidAt)', delta: { before: r.before.world.walls.walls, mid: r.mid ? r.mid.world.walls.walls : null, solid_before: r.before.solid_ahead, solid_mid"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 245,
+    "root": "r",
+    "left": "mid.entities",
+    "op": ">",
+    "right": "before.entities",
+    "text": "bind_lesser: (r) => ({ consumer: 'listEntities()', delta: { before: r.before.entities, mid: r.mid ? r.mid.entities : null }, functions: !!r.mid && r.mid.entities > r.before.entities }),"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 246,
+    "root": "r",
+    "left": "mid.entities",
+    "op": ">",
+    "right": "before.entities",
+    "text": "bind_greater: (r) => ({ consumer: 'listEntities()', delta: { before: r.before.entities, mid: r.mid ? r.mid.entities : null }, functions: !!r.mid && r.mid.entities > r.before.entities }),"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 248,
+    "root": "r",
+    "left": "mitig.with",
+    "op": "<",
+    "right": "mitig.without",
+    "text": "resist_element: (r) => ({ consumer: 'damage taken from an identical hit', delta: r.mitig || null, functions: !!(r.mitig && r.mitig.with < r.mitig.without) }),"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 249,
+    "root": "r",
+    "left": "mitig.with",
+    "op": "<",
+    "right": "mitig.without",
+    "text": "resist_disease: (r) => ({ consumer: 'damage taken from an identical hit', delta: r.mitig || null, functions: !!(r.mitig && r.mitig.with < r.mitig.without) }),"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 250,
+    "root": "r",
+    "left": "mitig.with",
+    "op": "<",
+    "right": "mitig.without",
+    "text": "shield: (r) => ({ consumer: 'damage taken from an identical hit', delta: r.mitig || null, functions: !!(r.mitig && r.mitig.with < r.mitig.without) }),"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 251,
+    "root": "r",
+    "left": "mitig.with",
+    "op": "<",
+    "right": "mitig.without",
+    "text": "sap_ward: (r) => ({ consumer: 'damage taken from an identical hit', delta: r.mitig || null, functions: !!(r.mitig && r.mitig.with < r.mitig.without) }),"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 264,
+    "root": "r",
+    "left": "soul.gems_after",
+    "op": ">",
+    "right": "soul.gems_before",
+    "text": "soul_trap: (r) => ({ consumer: 'gem register + xul_hesh on death', delta: r.soul || null, functions: !!(r.soul && r.soul.gems_after > r.soul.gems_before && r.soul.xul_hesh_after > r.soul.xul"
+   },
+   {
+    "file": "tools/harness/mag-census.mjs",
+    "line": 264,
+    "root": "r",
+    "left": "soul.xul_hesh_after",
+    "op": ">",
+    "right": "soul.xul_hesh_before",
+    "text": "soul_trap: (r) => ({ consumer: 'gem register + xul_hesh on death', delta: r.soul || null, functions: !!(r.soul && r.soul.gems_after > r.soul.gems_before && r.soul.xul_hesh_after > r.soul.xul"
+   },
+   {
+    "file": "tools/harness/mag-probe.mjs",
+    "line": 597,
+    "root": "r",
+    "left": "points",
+    "op": "===",
+    "right": "expected_points",
+    "text": "rec('MAG03_M3_enchant_arithmetic', rows.every((r) => r.points === r.expected_points), {"
+   },
+   {
+    "file": "tools/harness/map-probe.mjs",
+    "line": 295,
+    "root": "m",
+    "left": "places_drawn",
+    "op": "<=",
+    "right": "places_discovered",
+    "text": "m.places_drawn <= m.places_discovered, 'drawn <= discovered');"
+   },
+   {
+    "file": "tools/harness/map-probe.mjs",
+    "line": 298,
+    "root": "m",
+    "left": "drawn_cells",
+    "op": "<",
+    "right": "total_cells",
+    "text": "m.total_cells > 0 && m.drawn_cells > 0 && m.drawn_cells < m.total_cells * 0.5,"
+   },
+   {
+    "file": "tools/harness/map-probe.mjs",
+    "line": 483,
+    "root": "rep",
+    "left": "passed",
+    "op": "!==",
+    "right": "total",
+    "text": "if (rep.passed !== rep.total) bad++;"
+   },
+   {
+    "file": "tools/harness/prg-encumbrance.mjs",
+    "line": 468,
+    "root": "aCut",
+    "left": "before.tier",
+    "op": "===",
+    "right": "after.tier",
+    "text": "old_number_returns: !aCut.roll_moved && aCut.before.tier === aCut.after.tier,"
+   },
+   {
+    "file": "tools/harness/seed-sweep.mjs",
+    "line": 100,
+    "root": "t",
+    "left": "h0",
+    "op": "===",
+    "right": "h1",
+    "text": "first_trip_equal: t.h0 === t.h1,"
+   },
+   {
+    "file": "tools/harness/seed-sweep.mjs",
+    "line": 101,
+    "root": "t",
+    "left": "h1",
+    "op": "===",
+    "right": "h2",
+    "text": "second_trip_equal: t.h1 === t.h2,"
+   },
+   {
+    "file": "tools/harness/stl-live.mjs",
+    "line": 139,
+    "root": "det",
+    "left": "d1",
+    "op": "===",
+    "right": "d0",
+    "text": "det.d1 === det.d0, '0 — the counter must not move at all (RI-STL02 method 3)');"
+   },
+   {
+    "file": "tools/harness/trace-stats.mjs",
+    "line": 77,
+    "root": "v",
+    "left": "present",
+    "op": "<",
+    "right": "total",
+    "text": "const missing = Object.entries(coverage).filter(([, v]) => v.present < v.total).map(([k, v]) => ({ field: k, present: v.present, total: v.total }));"
+   },
+   {
+    "file": "tools/harness/w1-07-scene.mjs",
+    "line": 79,
+    "root": "r",
+    "left": "speaker_entity",
+    "op": "===",
+    "right": "speaker",
+    "text": "assert('JRN01-M6-speaker-is-in-the-room', withSpeaker.every((r) => r.speaker_entity === r.speaker),"
+   },
+   {
+    "file": "tools/harness/w1-07-scene.mjs",
+    "line": 80,
+    "root": "r",
+    "left": "speaker_entity",
+    "op": "===",
+    "right": "speaker",
+    "text": "`${withSpeaker.filter((r) => r.speaker_entity === r.speaker).length}/${withSpeaker.length} nodes where the speaking NPC is a live entity standing in the interior`,"
+   },
+   {
+    "file": "tools/harness/w1-08-29-r2-coupling.mjs",
+    "line": 200,
+    "root": "by",
+    "left": "desktop.hash",
+    "op": "!==",
+    "right": "handheld.hash",
+    "text": "coupling: by.desktop.hash !== by.handheld.hash ? 1 : 0,"
+   },
+   {
+    "file": "tools/harness/w1-13-r2-levelling-loop.mjs",
+    "line": 271,
+    "root": "out",
+    "left": "summary.passing",
+    "op": "!==",
+    "right": "wells.length",
+    "text": "if (!deleteTheFix && out.summary.passing !== out.wells.length) process.exitCode = 1;"
+   },
+   {
+    "file": "tools/harness/w1-13-r2-placement.mjs",
+    "line": 300,
+    "root": "row",
+    "left": "offset_220f_later_m",
+    "op": "<=",
+    "right": "control_no_death_220f_m",
+    "text": "row.pass = row.offset_220f_later_m <= row.control_no_death_220f_m + 0.5;"
+   },
+   {
+    "file": "tools/harness/w1-13-r2-save-moments.mjs",
+    "line": 220,
+    "root": "out",
+    "left": "summary.passing",
+    "op": "!==",
+    "right": "rows.length",
+    "text": "if (!deleteTheFix && out.summary.passing !== out.rows.length) process.exitCode = 1;"
+   },
+   {
+    "file": "tools/harness/w1-13-r3-clock.mjs",
+    "line": 196,
+    "root": "S",
+    "left": "phase_after",
+    "op": "===",
+    "right": "phase_before",
+    "text": "deaths_at_2058_kept_the_hour: S.phase_after === S.phase_before && D.phase_after !== undefined,"
+   },
+   {
+    "file": "tools/harness/w1-13-r4-clock-consequences.mjs",
+    "line": 541,
+    "root": "exit",
+    "left": "shipped.dying_paid",
+    "op": "!==",
+    "right": "award_clock_deleted.dying_paid",
+    "text": "arms_differ: (exit.shipped.dying_paid !== exit.award_clock_deleted.dying_paid)"
+   },
+   {
+    "file": "tools/harness/w1-13-r4-clock-consequences.mjs",
+    "line": 542,
+    "root": "entry",
+    "left": "shipped.dying_paid",
+    "op": "!==",
+    "right": "award_clock_deleted.dying_paid",
+    "text": "|| (entry.shipped.dying_paid !== entry.award_clock_deleted.dying_paid),"
+   },
+   {
+    "file": "tools/harness/w1-14-r3-dials.mjs",
+    "line": 402,
+    "root": "e",
+    "left": "magnitude.max",
+    "op": ">",
+    "right": "magnitude.min",
+    "text": "declared_magnitude_dials: declared((e) => e.magnitude.max > e.magnitude.min).length,"
+   },
+   {
+    "file": "tools/harness/w1-14-r4-commission.mjs",
+    "line": 412,
+    "root": "r",
+    "left": "gold_delta",
+    "op": "===",
+    "right": "quote.gold",
+    "text": "push(r.gold_delta === r.quote.gold, `${r.commissioned}: the purse moved ${r.gold_delta} and the quote said ${r.quote.gold}`);"
+   },
+   {
+    "file": "tools/harness/w1-14-r4-summon.mjs",
+    "line": 188,
+    "root": "fixed",
+    "left": "plain_after.attack_rating",
+    "op": "===",
+    "right": "declared_statblock_attack_rating",
+    "text": "check(fixed.plain_after && fixed.plain_after.attack_rating === fixed.declared_statblock_attack_rating,"
+   },
+   {
+    "file": "tools/harness/w1-14-r4-summon.mjs",
+    "line": 193,
+    "root": "brokenArm",
+    "left": "plain_after.attack_rating",
+    "op": "!==",
+    "right": "declared_statblock_attack_rating",
+    "text": "check(brokenArm.plain_after && brokenArm.plain_after.attack_rating !== brokenArm.declared_statblock_attack_rating,"
+   },
+   {
+    "file": "tools/harness/w1-14-r5-enchant.mjs",
+    "line": 230,
+    "root": "d",
+    "left": "purchase.gems_after",
+    "op": "<",
+    "right": "purchase.gems_before",
+    "text": "const ok = d.counter.opened && d.purchase.gold_moved > 0 && d.purchase.gems_after < d.purchase.gems_before"
+   },
+   {
+    "file": "tools/harness/w1-14-r5-world.mjs",
+    "line": 262,
+    "root": "W",
+    "left": "fixed_casts_in_deep",
+    "op": "===",
+    "right": "deep_water_count",
+    "text": "const ok = W.deep_water_count > 0 && W.fixed_casts_in_deep === W.deep_water_count"
+   },
+   {
+    "file": "tools/harness/w1-14-r5-world.mjs",
+    "line": 263,
+    "root": "W",
+    "left": "no_floor_casts_in_deep",
+    "op": "<",
+    "right": "deep_water_count",
+    "text": "&& W.no_floor_casts_in_deep < W.deep_water_count && W.no_gate_casts_in_deep < W.deep_water_count"
+   },
+   {
+    "file": "tools/harness/w1-14-r5-world.mjs",
+    "line": 263,
+    "root": "W",
+    "left": "no_gate_casts_in_deep",
+    "op": "<",
+    "right": "deep_water_count",
+    "text": "&& W.no_floor_casts_in_deep < W.deep_water_count && W.no_gate_casts_in_deep < W.deep_water_count"
+   },
+   {
+    "file": "tools/harness/w1-15-r3-deletefix.mjs",
+    "line": 142,
+    "root": "A0",
+    "left": "L_noon_max",
+    "op": "!==",
+    "right": "L_0300_centre",
+    "text": "A0.world_sources === 0 && A0.interior_ambient_applied === false && Math.abs(A0.L_spread) < 1e-9 && A0.L_noon_max !== A0.L_0300_centre,"
+   },
+   {
+    "file": "tools/harness/w1-15-r3-deletefix.mjs",
+    "line": 148,
+    "root": "A0",
+    "left": "registry.after",
+    "op": "===",
+    "right": "registry.before",
+    "text": "A0.theft === null && A0.registry.after === A0.registry.before && A0.inventory_added.length === 1 && A0.inventory_added[0].stolen === false && A0.inventory_added[0].owner === null,"
+   },
+   {
+    "file": "tools/harness/w1-15-r3-deletefix.mjs",
+    "line": 151,
+    "root": "A1",
+    "left": "registry.after",
+    "op": "===",
+    "right": "registry.before",
+    "text": "!!(A1.theft && A1.theft.theft === true && A1.theft.stolen_from) && A1.registry.after === A1.registry.before + 1,"
+   },
+   {
+    "file": "tools/harness/w1-15-r3-live.mjs",
+    "line": 396,
+    "root": "ci",
+    "left": "bright_noon",
+    "op": "!==",
+    "right": "dark_noon",
+    "text": "Math.abs(ci.bright_noon - ci.bright_0300) < 1e-6 && Math.abs(ci.dark_noon - ci.dark_0300) < 1e-6 && ci.bright_noon !== ci.dark_noon,"
+   },
+   {
+    "file": "tools/harness/w1-15-r3-live.mjs",
+    "line": 402,
+    "root": "cl",
+    "left": "snuffed.L",
+    "op": "<",
+    "right": "lit.L",
+    "text": "cl.snuffed.L < cl.lit.L && cl.snuffed.V < cl.lit.V && (cl.snuffed.frames_to_70 === null || cl.lit.frames_to_70 === null ? true : cl.snuffed.frames_to_70 > cl.lit.frames_to_70),"
+   },
+   {
+    "file": "tools/harness/w1-15-r3-live.mjs",
+    "line": 402,
+    "root": "cl",
+    "left": "snuffed.V",
+    "op": "<",
+    "right": "lit.V",
+    "text": "cl.snuffed.L < cl.lit.L && cl.snuffed.V < cl.lit.V && (cl.snuffed.frames_to_70 === null || cl.lit.frames_to_70 === null ? true : cl.snuffed.frames_to_70 > cl.lit.frames_to_70),"
+   },
+   {
+    "file": "tools/harness/w1-15-r3-live.mjs",
+    "line": 402,
+    "root": "cl",
+    "left": "snuffed.frames_to_70",
+    "op": ">",
+    "right": "lit.frames_to_70",
+    "text": "cl.snuffed.L < cl.lit.L && cl.snuffed.V < cl.lit.V && (cl.snuffed.frames_to_70 === null || cl.lit.frames_to_70 === null ? true : cl.snuffed.frames_to_70 > cl.lit.frames_to_70),"
+   },
+   {
+    "file": "tools/harness/w1-15-r3-live.mjs",
+    "line": 460,
+    "root": "tc",
+    "left": "stolen_registry.after",
+    "op": "===",
+    "right": "stolen_registry.before",
+    "text": "tc.stolen_registry.after === tc.stolen_registry.before + 1 && tc.registry_rows.some((r) => r.unique),"
+   },
+   {
+    "file": "tools/harness/w1-15-r4-live.mjs",
+    "line": 342,
+    "root": "OUT",
+    "left": "lit_room.L_min_at_0300",
+    "op": "<",
+    "right": "lit_room.L_min",
+    "text": "OUT.lit_room.spread > 0.3 && OUT.lit_room.L_min_at_0300 < OUT.lit_room.L_min,"
+   },
+   {
+    "file": "tools/harness/w1-15-r4-live.mjs",
+    "line": 391,
+    "root": "u",
+    "left": "civilian_context_multiplier_after",
+    "op": ">",
+    "right": "civilian_context_multiplier_before",
+    "text": "lastU.settlement_alarm > 0 && u.civilian_context_multiplier_after > u.civilian_context_multiplier_before"
+   },
+   {
+    "file": "tools/harness/w1-16-r4-live.mjs",
+    "line": 110,
+    "root": "r",
+    "left": "tier_before",
+    "op": "!==",
+    "right": "tier_after",
+    "text": "r.tier_changed = r.tier_before !== r.tier_after;"
+   },
+   {
+    "file": "tools/harness/w1-16-r4-live.mjs",
+    "line": 270,
+    "root": "fix",
+    "left": "catalyst_before",
+    "op": "!==",
+    "right": "catalyst_after",
+    "text": "it_reaches_the_MagicSystem: fix.catalyst_before !== fix.catalyst_after && fix.catalyst_after === 'rod',"
+   },
+   {
+    "file": "tools/harness/w1-16-r4-live.mjs",
+    "line": 576,
+    "root": "m1",
+    "left": "with_the_rod.cast.focus_spent",
+    "op": "!==",
+    "right": "without_the_rod.cast.focus_spent",
+    "text": "&& m1.with_the_rod.cast.focus_spent !== m1.without_the_rod.cast.focus_spent;"
+   },
+   {
+    "file": "tools/harness/w1-21-r2-deletefix.mjs",
+    "line": 132,
+    "root": "B",
+    "left": "places_after_forged_load",
+    "op": ">",
+    "right": "stood_in",
+    "text": "const oldNumberReturns = B.phantom > 0 && B.places_after_forged_load > B.stood_in;"
+   },
+   {
+    "file": "tools/harness/w1-21-r2-deletefix.mjs",
+    "line": 134,
+    "root": "A",
+    "left": "places_after_forged_load",
+    "op": "===",
+    "right": "stood_in",
+    "text": "const fixHolds = A.phantom === 0 && A.places_after_forged_load === A.stood_in;"
+   },
+   {
+    "file": "tools/harness/w1-21-r2-nav.mjs",
+    "line": 257,
+    "root": "r",
+    "left": "mode_before",
+    "op": "!==",
+    "right": "mode_after",
+    "text": "r.navigated = r.mode_before !== r.mode_after;"
+   },
+   {
+    "file": "tools/harness/w1-21-r2-nav.mjs",
+    "line": 420,
+    "root": "used",
+    "left": "after",
+    "op": "<",
+    "right": "before",
+    "text": "used.before !== null && used.after !== null && used.after < used.before && usePx > 0,"
+   },
+   {
+    "file": "tools/harness/w1-21-r2-nav.mjs",
+    "line": 555,
+    "root": "forge",
+    "left": "after.places.length",
+    "op": "<=",
+    "right": "honest.places.length",
+    "text": "(forge.dropped_on_load || []).length > 0 && forge.after.places.length <= forge.honest.places.length,"
+   },
+   {
+    "file": "tools/harness/w1-26-opening.mjs",
+    "line": 505,
+    "root": "n",
+    "left": "drawn_layout",
+    "op": ">",
+    "right": "drawn_register",
+    "text": "const layoutOverclaim = dtr.filter((n) => n.drawn_layout > n.drawn_register);"
+   },
+   {
+    "file": "tools/harness/w1-26-opening.mjs",
+    "line": 707,
+    "root": "r",
+    "left": "after_selected",
+    "op": "!==",
+    "right": "before_selected",
+    "text": "const acted = r.shown_after === false || r.after_selected !== r.before_selected;"
+   },
+   {
+    "file": "tools/harness/w1-26-opening.mjs",
+    "line": 775,
+    "root": "k2",
+    "left": "restored",
+    "op": "===",
+    "right": "before",
+    "text": "if (k2.before > 0 && k2.after === 0 && k2.restored === k2.before) {"
+   },
+   {
+    "file": "tools/harness/w1-26-r2-asking.mjs",
+    "line": 278,
+    "root": "D",
+    "left": "without_grant.length",
+    "op": "<",
+    "right": "with_grant.length",
+    "text": "if (D.without_grant.length < D.with_grant.length) pass(`delete-the-fix reproduces: emptying topicsKnown drops the list ${D.with_grant.length} -> ${D.without_grant.length}, back to the subjec"
+   },
+   {
+    "file": "tools/harness/w1-library-r2-perturb.mjs",
+    "line": 145,
+    "root": "out",
+    "left": "pages_fixed.after_load",
+    "op": "===",
+    "right": "pages_fixed.reached",
+    "text": "out.pages_fixed.after_load === out.pages_fixed.reached && out.pages_fixed.after_reset !== out.pages_fixed.reached"
+   },
+   {
+    "file": "tools/harness/w1-library-r2-perturb.mjs",
+    "line": 145,
+    "root": "out",
+    "left": "pages_fixed.after_reset",
+    "op": "!==",
+    "right": "pages_fixed.reached",
+    "text": "out.pages_fixed.after_load === out.pages_fixed.reached && out.pages_fixed.after_reset !== out.pages_fixed.reached"
+   },
+   {
+    "file": "tools/harness/w1-library-r2-perturb.mjs",
+    "line": 146,
+    "root": "out",
+    "left": "pages_broken.after_load",
+    "op": "!==",
+    "right": "pages_broken.reached",
+    "text": "&& out.pages_broken.after_load !== out.pages_broken.reached,"
+   },
+   {
+    "file": "tools/harness/w1-library-r2-perturb.mjs",
+    "line": 150,
+    "root": "out",
+    "left": "index.books_read",
+    "op": "===",
+    "right": "index.books_read_still",
+    "text": "&& out.index.books_read === out.index.books_read_still && out.index.books_read > 0,"
+   },
+   {
+    "file": "tools/harness/w1-library-r2-reading.mjs",
+    "line": 236,
+    "root": "out",
+    "left": "T2_T3.turns_that_landed",
+    "op": "===",
+    "right": "T2_T3.turns",
+    "text": "out.T2_T3.every_turn_one_input && out.T2_T3.turns_that_landed === out.T2_T3.turns && out.T2_T3.turns > 0,"
+   },
+   {
+    "file": "tools/harness/w1-library-r2-reading.mjs",
+    "line": 250,
+    "root": "out",
+    "left": "T5.reopen_same_session",
+    "op": "===",
+    "right": "T5.page_reached",
+    "text": "&& out.T5.reopen_same_session === out.T5.page_reached"
+   },
+   {
+    "file": "tools/harness/w1-library-r2-reading.mjs",
+    "line": 254,
+    "root": "out",
+    "left": "T5.after_load",
+    "op": "===",
+    "right": "T5.page_reached",
+    "text": "&& out.T5.after_load === out.T5.page_reached,"
+   },
+   {
+    "file": "tools/harness/w1-library-skillbooks.mjs",
+    "line": 75,
+    "root": "row",
+    "left": "after_second_read",
+    "op": "===",
+    "right": "after_first_read",
+    "text": "row.idempotent = row.after_second_read === row.after_first_read;"
+   },
+   {
+    "file": "tools/harness/w1-library-skillbooks.mjs",
+    "line": 114,
+    "root": "r",
+    "left": "after_reread",
+    "op": "!==",
+    "right": "after_load",
+    "text": "r.farmable = r.after_reread !== r.after_load;"
+   },
+   {
+    "file": "tools/harness/w1-library-skillbooks.mjs",
+    "line": 115,
+    "root": "r",
+    "left": "after_load",
+    "op": "===",
+    "right": "before_load",
+    "text": "r.skill_survived_load = r.after_load === r.before_load;"
+   },
+   {
+    "file": "tools/harness/w1-library-turns.mjs",
+    "line": 331,
+    "root": "k6",
+    "left": "reopen_same_session",
+    "op": "===",
+    "right": "left_on_page",
+    "text": "k6.pass = k6.rewound_to === 1 && k6.reopen_same_session === k6.left_on_page"
+   },
+   {
+    "file": "tools/harness/w1-library-turns.mjs",
+    "line": 332,
+    "root": "k6",
+    "left": "after_save_load",
+    "op": "===",
+    "right": "left_on_page",
+    "text": "&& k6.after_save_load === k6.left_on_page"
+   },
+   {
+    "file": "tools/harness/w1-library-turns.mjs",
+    "line": 335,
+    "root": "k6",
+    "left": "disturbed_to_page",
+    "op": "!==",
+    "right": "left_on_page",
+    "text": "&& k6.disturbed_to_page !== k6.left_on_page;"
+   },
+   {
+    "file": "tools/harness/w1-speakers-ask.mjs",
+    "line": 376,
+    "root": "c",
+    "left": "town_pairs_perturbed",
+    "op": "<",
+    "right": "town_pairs_before",
+    "text": "if (c.town_pairs_perturbed < c.town_pairs_before) pass(`removing the generic floor from the LIVE index costs the room ${c.town_pairs_before - c.town_pairs_perturbed} answers — the file is re"
+   },
+   {
+    "file": "tools/harness/w1-speakers-ask.mjs",
+    "line": 378,
+    "root": "c",
+    "left": "town_pairs_restored",
+    "op": "===",
+    "right": "town_pairs_before",
+    "text": "if (c.town_pairs_restored === c.town_pairs_before) pass('and putting it back restores every one of them');"
+   },
+   {
+    "file": "tools/input/arbiter-clock-s39.mjs",
+    "line": 416,
+    "root": "A",
+    "left": "runs.hi_1.hash",
+    "op": "===",
+    "right": "runs.hi_2.hash",
+    "text": "A.runs.hi_1.hash === A.runs.hi_2.hash,"
+   },
+   {
+    "file": "tools/input/arbiter-clock-s39.mjs",
+    "line": 419,
+    "root": "A",
+    "left": "runs.lo_1.hash",
+    "op": "===",
+    "right": "runs.lo_2.hash",
+    "text": "A.runs.lo_1.hash === A.runs.lo_2.hash,"
+   },
+   {
+    "file": "tools/input/arbiter-clock-s39.mjs",
+    "line": 422,
+    "root": "A",
+    "left": "runs.hi_1.hash",
+    "op": "!==",
+    "right": "runs.hi_shift1.hash",
+    "text": "A.runs.hi_1.hash !== A.runs.hi_shift1.hash,"
+   },
+   {
+    "file": "tools/input/arbiter-clock-s39.mjs",
+    "line": 425,
+    "root": "A",
+    "left": "runs.hi_1.hash",
+    "op": "===",
+    "right": "runs.lo_1.hash",
+    "text": "A.runs.hi_1.hash === A.runs.lo_1.hash,"
+   },
+   {
+    "file": "tools/input/arbiter-clock-s39.mjs",
+    "line": 429,
+    "root": "A",
+    "left": "runs.hi_cap.hash",
+    "op": "===",
+    "right": "runs.lo_cap.hash",
+    "text": "A.runs.hi_cap.hash === A.runs.lo_cap.hash,"
+   },
+   {
+    "file": "tools/input/arbiter-clock-s39.mjs",
+    "line": 555,
+    "root": "r",
+    "left": "outcome",
+    "op": "===",
+    "right": "expected_outcome",
+    "text": "const rightMove = rows.filter((r) => r.outcome === r.expected_outcome).length;"
+   },
+   {
+    "file": "tools/input/arbiter-clock-s39.mjs",
+    "line": 854,
+    "root": "shipped",
+    "left": "sixteen_stamped",
+    "op": "===",
+    "right": "sixteen_total",
+    "text": "control('A4/sixteen-are-stamped', shipped.sixteen_stamped === shipped.sixteen_total,"
+   },
+   {
+    "file": "tools/input/arbiter-clock-s39.mjs",
+    "line": 899,
+    "root": "green",
+    "left": "sixteen_stamped",
+    "op": "===",
+    "right": "sixteen_total",
+    "text": "if (!control('A4/SELF-TEST-lint-moves', green.sixteen_stamped > before && green.sixteen_stamped === green.sixteen_total,"
+   },
+   {
+    "file": "tools/input/arbiter-clock-s39.mjs",
+    "line": 930,
+    "root": "ab",
+    "left": "right_move",
+    "op": "===",
+    "right": "rows",
+    "text": "promoted_above: control('A2/promoted-action-above-floor', ab.right_move === ab.rows,"
+   },
+   {
+    "file": "tools/input/arbiter-clock-s39.mjs",
+    "line": 932,
+    "root": "be",
+    "left": "right_move",
+    "op": "===",
+    "right": "rows",
+    "text": "promoted_below: control('A2/promoted-action-below-floor (S39 prediction a)', be.right_move === be.rows,"
+   },
+   {
+    "file": "tools/input/arbiter-clock-s39.mjs",
+    "line": 934,
+    "root": "ab",
+    "left": "frames_within_1",
+    "op": "===",
+    "right": "rows",
+    "text": "frames_above: control('A2/frames_held within +-1 above floor', ab.frames_within_1 === ab.rows,"
+   },
+   {
+    "file": "tools/input/arbiter-clock-s39.mjs",
+    "line": 936,
+    "root": "be",
+    "left": "frames_within_1",
+    "op": "===",
+    "right": "rows",
+    "text": "frames_below: control('A2/frames_held within +-1 below floor (S39 prediction b)', be.frames_within_1 === be.rows,"
+   },
+   {
+    "file": "tools/journey/cadence.mjs",
+    "line": 646,
+    "root": "walkR",
+    "left": "inputs_excluded_as_locomotion",
+    "op": "===",
+    "right": "inputs_total",
+    "text": "c1walk.status === 'fail' && walkR.inputs_excluded_as_locomotion === walkR.inputs_total,"
+   },
+   {
+    "file": "tools/journey/cadence.mjs",
+    "line": 667,
+    "root": "bogusR",
+    "left": "inputs_outside_the_closed_set",
+    "op": "===",
+    "right": "inputs_total",
+    "text": "&& bogusR.inputs_outside_the_closed_set === bogusR.inputs_total"
+   },
+   {
+    "file": "tools/journey/cadence.mjs",
+    "line": 746,
+    "root": "mashR",
+    "left": "inputs_uncorroborated",
+    "op": "===",
+    "right": "inputs_total",
+    "text": "c1mash.status === 'fail' && mashR.inputs_uncorroborated === mashR.inputs_total,"
+   },
+   {
+    "file": "tools/journey/cadence.mjs",
+    "line": 761,
+    "root": "realR",
+    "left": "inputs_uncorroborated",
+    "op": "<",
+    "right": "inputs_total",
+    "text": "c1real.status === 'pass' && realR.inputs_uncorroborated < realR.inputs_total,"
+   },
+   {
+    "file": "tools/journey/census-newgame.mjs",
+    "line": 227,
+    "root": "out",
+    "left": "player_path.ok",
+    "op": "!==",
+    "right": "harness_path.ok",
+    "text": "differ: out.player_path.ok !== out.harness_path.ok,"
+   },
+   {
+    "file": "tools/journey/competence.mjs",
+    "line": 294,
+    "root": "metrics",
+    "left": "E_late.K1",
+    "op": "<",
+    "right": "E_first.K1",
+    "text": "K1: metrics.E_late.K1 !== null && metrics.E_first.K1 !== null && metrics.E_late.K1 < metrics.E_first.K1,"
+   },
+   {
+    "file": "tools/journey/competence.mjs",
+    "line": 295,
+    "root": "metrics",
+    "left": "E_late.K2",
+    "op": ">",
+    "right": "E_first.K2",
+    "text": "K2: metrics.E_late.K2 !== null && metrics.E_first.K2 !== null && metrics.E_late.K2 > metrics.E_first.K2,"
+   },
+   {
+    "file": "tools/journey/competence.mjs",
+    "line": 296,
+    "root": "metrics",
+    "left": "E_late.K3",
+    "op": "<",
+    "right": "E_first.K3",
+    "text": "K3: metrics.E_late.K3 !== null && metrics.E_first.K3 !== null && metrics.E_late.K3 < metrics.E_first.K3,"
+   },
+   {
+    "file": "tools/journey/competence.mjs",
+    "line": 297,
+    "root": "metrics",
+    "left": "E_late.K4",
+    "op": "<",
+    "right": "E_first.K4",
+    "text": "K4: metrics.E_late.K4 !== null && metrics.E_first.K4 !== null && metrics.E_late.K4 < metrics.E_first.K4,"
+   },
+   {
+    "file": "tools/journey/competence.mjs",
+    "line": 298,
+    "root": "metrics",
+    "left": "E_late.K5",
+    "op": ">",
+    "right": "E_first.K5",
+    "text": "K5: metrics.E_late.K5 !== null && metrics.E_first.K5 !== null && metrics.E_late.K5 > metrics.E_first.K5,"
+   },
+   {
+    "file": "tools/journey/competence.mjs",
+    "line": 299,
+    "root": "metrics",
+    "left": "E_late.K6",
+    "op": "<",
+    "right": "E_first.K6",
+    "text": "K6: metrics.E_late.K6 !== null && metrics.E_first.K6 !== null && metrics.E_late.K6 < metrics.E_first.K6,"
+   },
+   {
+    "file": "tools/journey/competence.mjs",
+    "line": 676,
+    "root": "realGreenR",
+    "left": "E_late.from",
+    "op": ">",
+    "right": "E_first.from",
+    "text": "!!realGreenR.E_first && realGreenR.E_first.from > 0 && realGreenR.E_late.from > realGreenR.E_first.from,"
+   },
+   {
+    "file": "tools/journey/critic-w1-26-r3-asaperson.mjs",
+    "line": 334,
+    "root": "world",
+    "left": "sprint_per_frame",
+    "op": ">",
+    "right": "walk_per_frame",
+    "text": "const gaitsOk = world.walk.m > 0.5 && world.sprint_per_frame > world.walk_per_frame * 1.05;"
+   },
+   {
+    "file": "tools/journey/critic-w1-26-r3-input.mjs",
+    "line": 217,
+    "root": "r",
+    "left": "shipped",
+    "op": "!==",
+    "right": "without_branch",
+    "text": ".filter((r) => r.code && r.shipped !== r.without_branch);"
+   },
+   {
+    "file": "tools/journey/critic-w1-26-r3-input.mjs",
+    "line": 219,
+    "root": "m",
+    "left": "shipped",
+    "op": "!==",
+    "right": "without_branch",
+    "text": ".filter((m) => m.shipped !== m.without_branch);"
+   },
+   {
+    "file": "tools/journey/critic-w1-26-r3-input.mjs",
+    "line": 246,
+    "root": "gait",
+    "left": "sprint_m",
+    "op": ">",
+    "right": "walk_m",
+    "text": "if (gait.sprint_m > gait.walk_m * 1.05 && gait.roll_latched.includes('roll')) {"
+   },
+   {
+    "file": "tools/journey/input-checks.mjs",
+    "line": 1574,
+    "root": "cold",
+    "left": "deviceClass",
+    "op": "===",
+    "right": "viewport_deviceClass",
+    "text": "cold.deviceClass === cold.viewport_deviceClass && cold.pad_connected === false, cold, 'deviceClass from the viewport, never from the gamepad list (L1)');"
+   },
+   {
+    "file": "tools/journey/input-checks.mjs",
+    "line": 2184,
+    "root": "l",
+    "left": "value",
+    "op": ">",
+    "right": "max",
+    "text": "const over = measured.filter(([, l]) => l.value > l.max).map(([k]) => k);"
+   },
+   {
+    "file": "tools/journey/journey-run.mjs",
+    "line": 1637,
+    "root": "m",
+    "left": "value.seconds",
+    "op": ">=",
+    "right": "value.threshold_s",
+    "text": "m.value.seconds >= m.value.threshold_s, `${m.value.seconds}s >= ${m.value.threshold_s}s`);"
+   },
+   {
+    "file": "tools/journey/jrn06-death.mjs",
+    "line": 701,
+    "root": "r",
+    "left": "banked",
+    "op": "===",
+    "right": "held_at_death",
+    "text": "const bankedLeg = rows.filter((r) => !(r.banked === r.held_at_death));"
+   },
+   {
+    "file": "tools/journey/jrn06-death.mjs",
+    "line": 702,
+    "root": "r",
+    "left": "held_at_death",
+    "op": "===",
+    "right": "stain_souls",
+    "text": "const storedLeg = rows.filter((r) => !(r.held_at_death === r.stain_souls));"
+   },
+   {
+    "file": "tools/journey/jrn06-death.mjs",
+    "line": 704,
+    "root": "r",
+    "left": "stain_souls",
+    "op": "===",
+    "right": "returned",
+    "text": "const returnLeg = conserved.filter((r) => !(r.stain_souls === r.returned));"
+   },
+   {
+    "file": "tools/journey/jrn06-death.mjs",
+    "line": 748,
+    "root": "d",
+    "left": "second_stain_souls",
+    "op": "===",
+    "right": "first_stain_souls",
+    "text": "first_souls_returned_anywhere: dbl.filter((d) => d.second_stain_souls !== 0 && d.second_stain_souls === d.first_stain_souls).length,"
+   },
+   {
+    "file": "tools/journey/name-entry.mjs",
+    "line": 172,
+    "root": "b",
+    "left": "got",
+    "op": "===",
+    "right": "predicted",
+    "text": "fail('N2', `a name containing bound letters is recorded as ${JSON.stringify(b.got)} — ${b.committed_early ? 'and the scene committed it mid-word' : 'characters are silently dropped'}`, { arm"
+   },
+   {
+    "file": "tools/journey/name-entry.mjs",
+    "line": 181,
+    "root": "b",
+    "left": "got",
+    "op": "===",
+    "right": "predicted",
+    "text": "out.prediction_held = b.got === b.predicted;"
+   },
+   {
+    "file": "tools/journey/save-live-audit.mjs",
+    "line": 439,
+    "root": "t",
+    "left": "hashBefore",
+    "op": "===",
+    "right": "hashAfter",
+    "text": "engine_hash_equal: t.hashBefore === t.hashAfter,"
+   },
+   {
+    "file": "tools/journey/state-diff.mjs",
+    "line": 386,
+    "root": "t",
+    "left": "hashBefore",
+    "op": "===",
+    "right": "hashAfterLoad",
+    "text": "m1_pass: t.hashBefore === t.hashAfterLoad && t.roundTrip.equal,"
+   },
+   {
+    "file": "tools/lib/graded.mjs",
+    "line": 119,
+    "root": "c",
+    "left": "expected",
+    "op": "!==",
+    "right": "samples",
+    "text": "const n = `${c.samples}${typeof c.expected === 'number' && c.expected !== c.samples ? `/${c.expected}` : ''} ${c.sample_of}`;"
+   },
+   {
+    "file": "tools/lore/canon-in-page.mjs",
+    "line": 42,
+    "root": "st",
+    "left": "disputes.length",
+    "op": "!==",
+    "right": "disputed",
+    "text": "if (st.disputes.length !== st.disputed) bad('the state reports a different number of disputes than it lists');"
+   },
+   {
+    "file": "tools/lore/critic-martial-r4-consume.mjs",
+    "line": 225,
+    "root": "r",
+    "left": "opened",
+    "op": "===",
+    "right": "book",
+    "text": "const openedA = A.filter((r) => r.opened === r.book).length;"
+   },
+   {
+    "file": "tools/lore/critic-martial-r4-consume.mjs",
+    "line": 226,
+    "root": "r",
+    "left": "opened",
+    "op": "===",
+    "right": "book",
+    "text": "const drewA = A.filter((r) => r.opened === r.book && r.drawn_chars > 0).length;"
+   },
+   {
+    "file": "tools/lore/critic-martial-r4-consume.mjs",
+    "line": 231,
+    "root": "r",
+    "left": "opened",
+    "op": "!==",
+    "right": "book",
+    "text": "const dShut = D.filter((r, i) => A[i] && A[i].opened === A[i].book && r.opened !== r.book).length;"
+   },
+   {
+    "file": "tools/lore/critic-w1-23-r4-blocked.mjs",
+    "line": 150,
+    "root": "r",
+    "left": "opened",
+    "op": "!==",
+    "right": "book",
+    "text": "const failures = rows.filter((r) => r.opened !== r.book);"
+   },
+   {
+    "file": "tools/lore/critic-w1-23-r4-onscreen.mjs",
+    "line": 235,
+    "root": "r",
+    "left": "opened",
+    "op": "===",
+    "right": "book",
+    "text": "const openedRight = A.filter((r) => r.opened === r.book).length;"
+   },
+   {
+    "file": "tools/lore/critic-w1-23-r4-onscreen.mjs",
+    "line": 236,
+    "root": "r",
+    "left": "opened",
+    "op": "===",
+    "right": "book",
+    "text": "const drewOwn = A.filter((r) => r.opened === r.book && r.own_words_on_screen >= 2).length;"
+   },
+   {
+    "file": "tools/lore/critic-w1-23-r4-shelf.mjs",
+    "line": 139,
+    "root": "r",
+    "left": "openable",
+    "op": "!==",
+    "right": "spawned",
+    "text": "const bad = rooms.filter((r) => r.openable !== r.spawned || r.pairs_within_reach.length);"
+   },
+   {
+    "file": "tools/lore/w1-23-r4-consume.mjs",
+    "line": 299,
+    "root": "r",
+    "left": "opened",
+    "op": "===",
+    "right": "book",
+    "text": "const openedA = A.filter((r) => r.opened === r.book).length;"
+   },
+   {
+    "file": "tools/lore/w1-23-r4-consume.mjs",
+    "line": 300,
+    "root": "r",
+    "left": "opened",
+    "op": "===",
+    "right": "book",
+    "text": "const changedB = B.filter((r, i) => r.opened === r.book"
+   },
+   {
+    "file": "tools/platform/decoupling.mjs",
+    "line": 406,
+    "root": "r",
+    "left": "sim_steps_observed",
+    "op": "===",
+    "right": "sim_steps_requested",
+    "text": "const stepsOk = rows.every((r) => r.sim_steps_observed === r.sim_steps_requested);"
+   },
+   {
+    "file": "tools/playability/loader-retry.mjs",
+    "line": 530,
+    "root": "report",
+    "left": "passed",
+    "op": "===",
+    "right": "total",
+    "text": "process.exit(report.passed === report.total ? 0 : 1);"
+   },
+   {
+    "file": "tools/progression/critic-souls-r1.mjs",
+    "line": 200,
+    "root": "I",
+    "left": "souls_after_load_and_10_frames",
+    "op": "===",
+    "right": "souls_at_save",
+    "text": "Z.K7.arm_i_would_pass = I.souls_at_save !== undefined && I.souls_after_load_and_10_frames === I.souls_at_save;"
+   },
+   {
+    "file": "tools/progression/critic-souls-r1.mjs",
+    "line": 217,
+    "root": "K1",
+    "left": "delta",
+    "op": "===",
+    "right": "declared_souls",
+    "text": "K1.frames_to_death !== null && K1.delta === K1.declared_souls && K1.events.length === 1,"
+   },
+   {
+    "file": "tools/progression/critic-souls-r2.mjs",
+    "line": 390,
+    "root": "R",
+    "left": "C4.pass2.delta",
+    "op": "===",
+    "right": "C4.pass1.delta",
+    "text": "verdict('C4', R.C4.pass1.delta > 0 && R.C4.pass2.delta === R.C4.pass1.delta,"
+   },
+   {
+    "file": "tools/progression/derive-soul-values.mjs",
+    "line": 697,
+    "root": "r",
+    "left": "souls",
+    "op": ">=",
+    "right": "required.lo",
+    "text": "const inside = r.souls >= r.required.lo && r.souls <= r.required.hi;"
+   },
+   {
+    "file": "tools/progression/derive-soul-values.mjs",
+    "line": 697,
+    "root": "r",
+    "left": "souls",
+    "op": "<=",
+    "right": "required.hi",
+    "text": "const inside = r.souls >= r.required.lo && r.souls <= r.required.hi;"
+   },
+   {
+    "file": "tools/progression/souls-consumption.mjs",
+    "line": 655,
+    "root": "A",
+    "left": "souls_at_end",
+    "op": ">",
+    "right": "souls_at_start",
+    "text": "aReal.length > 0 && aPaid === aReal.length && A.souls_at_end > A.souls_at_start,"
+   },
+   {
+    "file": "tools/progression/souls-consumption.mjs",
+    "line": 671,
+    "root": "C",
+    "left": "restored.kill.delta",
+    "op": "===",
+    "right": "shipped",
+    "text": "c0 && c0.kill.delta === 0 && c9 && c9.kill.delta === 999 && C.restored.kill.delta === C.shipped,"
+   },
+   {
+    "file": "tools/progression/souls-consumption.mjs",
+    "line": 701,
+    "root": "G",
+    "left": "after.level",
+    "op": "===",
+    "right": "before.level",
+    "text": "G.after && G.before && G.after.level === G.before.level + 1 && gAttrMoved === 1"
+   },
+   {
+    "file": "tools/progression/souls-consumption.mjs",
+    "line": 702,
+    "root": "G",
+    "left": "after.souls",
+    "op": "===",
+    "right": "price_of_level_2",
+    "text": "&& G.before.souls - G.after.souls === G.price_of_level_2,"
+   },
+   {
+    "file": "tools/progression/souls-consumption.mjs",
+    "line": 711,
+    "root": "bh",
+    "left": "hp_max_after_spend",
+    "op": ">",
+    "right": "hp_max_before_spend",
+    "text": "bh.hp_max_after_spend > bh.hp_max_before_spend && bh.would_have_died_without_it === true && bh.survived_with_the_level === true,"
+   },
+   {
+    "file": "tools/progression/souls-consumption.mjs",
+    "line": 717,
+    "root": "H",
+    "left": "after_load_live.level",
+    "op": "===",
+    "right": "before_save.level",
+    "text": "hOk && H.after_load_live.level === H.before_save.level"
+   },
+   {
+    "file": "tools/progression/souls-consumption.mjs",
+    "line": 718,
+    "root": "H",
+    "left": "after_load_live.souls",
+    "op": "===",
+    "right": "before_save.souls",
+    "text": "&& H.after_load_live.souls === H.before_save.souls"
+   },
+   {
+    "file": "tools/progression/souls-consumption.mjs",
+    "line": 719,
+    "root": "H",
+    "left": "after_load_live.attributes.vigour",
+    "op": "===",
+    "right": "before_save.attributes.vigour",
+    "text": "&& H.after_load_live.attributes.vigour === H.before_save.attributes.vigour"
+   },
+   {
+    "file": "tools/progression/souls-consumption.mjs",
+    "line": 732,
+    "root": "I",
+    "left": "souls_after_load_and_10_frames",
+    "op": "===",
+    "right": "souls_at_save",
+    "text": "&& I.souls_at_save !== undefined && I.souls_after_load_and_10_frames === I.souls_at_save,"
+   },
+   {
+    "file": "tools/progression/souls-consumption.mjs",
+    "line": 737,
+    "root": "k",
+    "left": "gold_after",
+    "op": "!==",
+    "right": "gold_before",
+    "text": "const goldMoved = allKills.filter((k) => k && k.gold_after !== k.gold_before).length;"
+   },
+   {
+    "file": "tools/progression/souls-consumption.mjs",
+    "line": 779,
+    "root": "N",
+    "left": "pass2.paid",
+    "op": "===",
+    "right": "pass1.paid",
+    "text": "!N.error && N.pass1 && N.pass2 && N.pass1.paid > 0 && N.pass2.paid === N.pass1.paid && N.same_eids === true,"
+   },
+   {
+    "file": "tools/progression/souls-consumption.mjs",
+    "line": 789,
+    "root": "O",
+    "left": "bodies_second_visit",
+    "op": "===",
+    "right": "bodies_first_visit",
+    "text": "&& O.bodies_second_visit === O.bodies_first_visit - O.killed_first_visit"
+   },
+   {
+    "file": "tools/progression/souls-consumption.mjs",
+    "line": 791,
+    "root": "O",
+    "left": "bodies_after_rest",
+    "op": "===",
+    "right": "bodies_first_visit",
+    "text": "&& O.bodies_after_rest === O.bodies_first_visit && O.paid_after_rest > 0,"
+   },
+   {
+    "file": "tools/progression/souls-r3-shot.mjs",
+    "line": 81,
+    "root": "t",
+    "left": "pass2",
+    "op": "!==",
+    "right": "pass1",
+    "text": "if (t.pass2 !== t.pass1) { console.error('souls-r3-shot: the two passes disagree — the picture would be a lie.'); process.exit(1); }"
+   },
+   {
+    "file": "tools/prose/apply-info-rewrites.mjs",
+    "line": 154,
+    "root": "rewrites",
+    "left": "mjs",
+    "op": "<",
+    "right": "json",
+    "text": "if (!specPath) { console.error('usage: apply-info-rewrites.mjs <rewrites.json> [--dry-run]'); return 2; }"
+   },
+   {
+    "file": "tools/prose/apply-rewrites.mjs",
+    "line": 153,
+    "root": "rewrites",
+    "left": "mjs",
+    "op": "<",
+    "right": "jsonl",
+    "text": "console.error('usage: apply-rewrites.mjs <rewrites.jsonl…> [--check] | --self-test');"
+   },
+   {
+    "file": "tools/prose/apply-source-rewrites.mjs",
+    "line": 104,
+    "root": "rewrites",
+    "left": "mjs",
+    "op": "<",
+    "right": "jsonl",
+    "text": "if (!file) { console.error('usage: apply-source-rewrites.mjs <rewrites.jsonl> [--check]'); process.exit(2); }"
+   },
+   {
+    "file": "tools/quests/attr-scale-consumption.mjs",
+    "line": 181,
+    "root": "D",
+    "left": "after.souls",
+    "op": "===",
+    "right": "before.souls",
+    "text": "D.before && D.after && D.after.souls === D.before.souls && D.after.souls === 0 && (D.kills || []).length > 0"
+   },
+   {
+    "file": "tools/quests/attr-scale-consumption.mjs",
+    "line": 182,
+    "root": "k",
+    "left": "souls_after",
+    "op": "===",
+    "right": "souls_before",
+    "text": "&& D.kills.every((k) => k.error || k.souls_after === k.souls_before),"
+   },
+   {
+    "file": "tools/quests/critic-faction-r2.mjs",
+    "line": 334,
+    "root": "c1",
+    "left": "declared_sum",
+    "op": "===",
+    "right": "reputation",
+    "text": "check('C1e_reputation_reconciles_with_the_resolutions_own_deltas', c1.declared_sum === c1.reputation,"
+   },
+   {
+    "file": "tools/quests/critic-faction-r2.mjs",
+    "line": 335,
+    "root": "c1",
+    "left": "declared_sum",
+    "op": "===",
+    "right": "reputation",
+    "text": "`live standing ${c1.reputation} vs the sum of the taken resolutions' declared faction_reputation ${c1.declared_sum}${c1.declared_sum === c1.reputation ? '' : ' — DIFFERENCE ' + (c1.reputatio"
+   },
+   {
+    "file": "tools/quests/critic-w1-20-play.mjs",
+    "line": 393,
+    "root": "row",
+    "left": "doors_that_join",
+    "op": "<",
+    "right": "doors_total",
+    "text": "else if (row.doors_that_join < row.doors_total) {"
+   },
+   {
+    "file": "tools/quests/document-route-world.mjs",
+    "line": 566,
+    "root": "rec",
+    "left": "control_wrong_document.opened",
+    "op": "===",
+    "right": "control_wrong_document.book",
+    "text": "&& rec.control_wrong_document.opened === rec.control_wrong_document.book"
+   },
+   {
+    "file": "tools/quests/document-route-world.mjs",
+    "line": 567,
+    "root": "rec",
+    "left": "control_wrong_document.refusals_after.length",
+    "op": "===",
+    "right": "refusals_before.length",
+    "text": "&& rec.control_wrong_document.refusals_after.length === rec.refusals_before.length;"
+   },
+   {
+    "file": "tools/quests/encounter-seam-probe.mjs",
+    "line": 115,
+    "root": "out",
+    "left": "clear.bodies",
+    "op": "!==",
+    "right": "signed.bodies",
+    "text": "const changed = out.clear.bodies !== out.signed.bodies;"
+   },
+   {
+    "file": "tools/quests/faction-probe.mjs",
+    "line": 559,
+    "root": "r",
+    "left": "perturb_ladder.rank_after",
+    "op": "<",
+    "right": "perturb_ladder.rank_before",
+    "text": "check('P5_ladder_perturbation_bites', (r.perturb_ladder.closed || []).length > 0 && r.perturb_ladder.rank_after < r.perturb_ladder.rank_before,"
+   },
+   {
+    "file": "tools/quests/mainline-chain-floor.mjs",
+    "line": 372,
+    "root": "g",
+    "left": "chain_floor",
+    "op": "<",
+    "right": "min",
+    "text": "priced_gates: perGate.filter((g) => g.chain_floor < g.min).map((g) => `${g.quest} (${g.npc} floor ${g.chain_floor} vs min ${g.min}, worst ${g.floor_signature})`),"
+   },
+   {
+    "file": "tools/quests/mainline-chain-floor.mjs",
+    "line": 378,
+    "root": "g",
+    "left": "chain_floor",
+    "op": ">=",
+    "right": "min",
+    "text": "gates_never_short: perGate.filter((g) => g.chain_floor >= g.min).length,"
+   },
+   {
+    "file": "tools/quests/mark-route-world.mjs",
+    "line": 382,
+    "root": "rec",
+    "left": "control_wrong_mark.refusals_after.length",
+    "op": "!==",
+    "right": "refusals_before.length",
+    "text": "if (rec.control_wrong_mark.refusals_after.length !== rec.refusals_before.length) {"
+   },
+   {
+    "file": "tools/refs/merge-manifest.mjs",
+    "line": 304,
+    "root": "entry",
+    "left": "richness_theirs",
+    "op": ">",
+    "right": "richness_ours",
+    "text": "entry.keep = entry.richness_theirs > entry.richness_ours ? 'theirs' : 'ours';"
+   },
+   {
+    "file": "tools/stealth/critic-w1-15-r4-live.mjs",
+    "line": 165,
+    "root": "th",
+    "left": "drawn_point_lights",
+    "op": "===",
+    "right": "sim_world_sources",
+    "text": "th.cell_drawn === 'interior' && th.drawn_point_lights === th.sim_world_sources, 'drawn == simulated for a room on the shared path');"
+   },
+   {
+    "file": "tools/stealth/critic-w1-15-r4.mjs",
+    "line": 261,
+    "root": "r",
+    "left": "saturated_cells",
+    "op": "===",
+    "right": "cells",
+    "text": "all_saturated_rooms: rows.filter((r) => r.saturated_cells === r.cells && r.cells > 0).length,"
+   },
+   {
+    "file": "tools/touch/r2-framerate.mjs",
+    "line": 285,
+    "root": "rec",
+    "left": "control.drop_pct",
+    "op": ">",
+    "right": "baseline_drift.spread_pct",
+    "text": "&& (rec.baseline_drift.spread_pct === null || rec.control.drop_pct > rec.baseline_drift.spread_pct);"
+   },
+   {
+    "file": "tools/ui/critic-w1-21-r2-a.mjs",
+    "line": 476,
+    "root": "s",
+    "left": "mode_reached",
+    "op": "===",
+    "right": "screen",
+    "text": "shots.every((s) => s.mode_reached === s.screen && s.lit_px > 10000),"
+   },
+   {
+    "file": "tools/ui/critic-w1-21-r2-b.mjs",
+    "line": 283,
+    "root": "r",
+    "left": "revealed_before",
+    "op": "!==",
+    "right": "revealed_after",
+    "text": "r.getter_mutated = r.revealed_before !== r.revealed_after;"
+   },
+   {
+    "file": "tools/ui/critic-w1-21-r2-b.mjs",
+    "line": 443,
+    "root": "s",
+    "left": "mode_reached",
+    "op": "===",
+    "right": "screen",
+    "text": "shots.every((s) => s.mode_reached === s.screen && s.lit_px > 10000),"
+   },
+   {
+    "file": "tools/ui/critic-w1-21-r2-consume.mjs",
+    "line": 126,
+    "root": "full",
+    "left": "painter_drawn_cells",
+    "op": "===",
+    "right": "model_revealed",
+    "text": "full.painter_drawn_cells === full.model_revealed && half.painter_drawn_cells === half.model_revealed"
+   },
+   {
+    "file": "tools/ui/critic-w1-21-r2-consume.mjs",
+    "line": 126,
+    "root": "half",
+    "left": "painter_drawn_cells",
+    "op": "===",
+    "right": "model_revealed",
+    "text": "full.painter_drawn_cells === full.model_revealed && half.painter_drawn_cells === half.model_revealed"
+   },
+   {
+    "file": "tools/ui/critic-w1-21-r2-consume.mjs",
+    "line": 127,
+    "root": "none",
+    "left": "painter_drawn_cells",
+    "op": "===",
+    "right": "model_revealed",
+    "text": "&& none.painter_drawn_cells === none.model_revealed,"
+   },
+   {
+    "file": "tools/ui/w1-21-r3-browser.mjs",
+    "line": 226,
+    "root": "full",
+    "left": "painter_drawn_cells",
+    "op": "===",
+    "right": "model_revealed",
+    "text": "push('M1', full.painter_drawn_cells === full.model_revealed && half.painter_drawn_cells === half.model_revealed"
+   },
+   {
+    "file": "tools/ui/w1-21-r3-browser.mjs",
+    "line": 226,
+    "root": "half",
+    "left": "painter_drawn_cells",
+    "op": "===",
+    "right": "model_revealed",
+    "text": "push('M1', full.painter_drawn_cells === full.model_revealed && half.painter_drawn_cells === half.model_revealed"
+   },
+   {
+    "file": "tools/ui/w1-21-r3-browser.mjs",
+    "line": 227,
+    "root": "none",
+    "left": "painter_drawn_cells",
+    "op": "===",
+    "right": "model_revealed",
+    "text": "&& none.painter_drawn_cells === none.model_revealed,"
+   },
+   {
+    "file": "tools/ui/w1-21-r3-browser.mjs",
+    "line": 271,
+    "root": "s",
+    "left": "mode",
+    "op": "===",
+    "right": "screen",
+    "text": "push('C1', shots.length === 6 && shots.every((s) => s.mode === s.screen && s.elements > 0),"
+   },
+   {
+    "file": "tools/verdict-validate.mjs",
+    "line": 315,
+    "root": "v",
+    "left": "score.overall_0_10",
+    "op": "<",
+    "right": "score.pass_threshold",
+    "text": "if (v.score && v.score.overall_0_10 < v.score.pass_threshold) E('status PASS but overall score is below pass_threshold');"
+   },
+   {
+    "file": "tools/w1-26-r3/w1-26-r3-verify.mjs",
+    "line": 140,
+    "root": "atDesk",
+    "left": "race_observed",
+    "op": "===",
+    "right": "body_race",
+    "text": "if (atDesk.race_observed && atDesk.race_observed === atDesk.body_race) {"
+   },
+   {
+    "file": "tools/w1-26-r3/w1-26-r3-verify.mjs",
+    "line": 190,
+    "root": "a",
+    "left": "race_observed",
+    "op": "===",
+    "right": "body_race",
+    "text": "const tracks = arms.every((a) => a.race_observed === a.body_race && a.sheet_race === a.body_race);"
+   },
+   {
+    "file": "tools/w1-26-r3/w1-26-r3-verify.mjs",
+    "line": 190,
+    "root": "a",
+    "left": "sheet_race",
+    "op": "===",
+    "right": "body_race",
+    "text": "const tracks = arms.every((a) => a.race_observed === a.body_race && a.sheet_race === a.body_race);"
+   },
+   {
+    "file": "tools/w1-26-r3/w1-26-r3-verify.mjs",
+    "line": 265,
+    "root": "refusal",
+    "left": "refusal",
+    "op": "!==",
+    "right": "fault",
+    "text": "if (refusal.refusal && refusal.refusal !== refusal.fault) {"
+   },
+   {
+    "file": "tools/w1-26-r4/w1-26-r4-verify.mjs",
+    "line": 162,
+    "root": "a0",
+    "left": "observed",
+    "op": "===",
+    "right": "shipped",
+    "text": "if (!a0.threw && a0.observed === a0.shipped && a0.walk.done) {"
+   },
+   {
+    "file": "tools/weapons/impact-census.mjs",
+    "line": 200,
+    "root": "h",
+    "left": "attacker_hitstop_obs",
+    "op": "!==",
+    "right": "attacker_hitstop_evt",
+    "text": "if (h.hit && h.attacker_hitstop_obs !== h.attacker_hitstop_evt) m4Fail.push(`${c}: hold ${h.attacker_hitstop_obs} != declared ${h.attacker_hitstop_evt}`);"
+   },
+   {
+    "file": "tools/weapons/mass-browser.mjs",
+    "line": 271,
+    "root": "F",
+    "left": "af",
+    "op": ">",
+    "right": "startup",
+    "text": "if (F.af > F.startup && F.af <= F.startup + F.active) act.push(i);"
+   },
+   {
+    "file": "tools/weapons/mass-browser.mjs",
+    "line": 271,
+    "root": "F",
+    "left": "af",
+    "op": "<=",
+    "right": "startup",
+    "text": "if (F.af > F.startup && F.af <= F.startup + F.active) act.push(i);"
+   },
+   {
+    "file": "tools/weapons/mass-browser.mjs",
+    "line": 272,
+    "root": "F",
+    "left": "af",
+    "op": ">",
+    "right": "startup",
+    "text": "else if (F.af > F.startup + F.active) rec.push(i);"
+   },
+   {
+    "file": "tools/weapons/mass-browser.mjs",
+    "line": 357,
+    "root": "F",
+    "left": "af",
+    "op": "<=",
+    "right": "startup",
+    "text": ": F.af <= F.startup ? 'startup'"
+   },
+   {
+    "file": "tools/weapons/mass-browser.mjs",
+    "line": 358,
+    "root": "F",
+    "left": "af",
+    "op": "<=",
+    "right": "startup",
+    "text": ": F.af <= F.startup + F.active ? 'active' : 'recovery')),"
+   },
+   {
+    "file": "tools/weapons/motion-census.mjs",
+    "line": 232,
+    "root": "a",
+    "left": "arc_recovery",
+    "op": ">",
+    "right": "arc_active",
+    "text": "rec_gt_act_bearing: a.arc_recovery > a.arc_active,"
+   },
+   {
+    "file": "tools/weapons/motion-census.mjs",
+    "line": 233,
+    "root": "a",
+    "left": "path_recovery_m",
+    "op": ">",
+    "right": "path_active_m",
+    "text": "rec_gt_act_path: a.path_recovery_m > a.path_active_m,"
+   },
+   {
+    "file": "tools/world/build-signatures.mjs",
+    "line": 162,
+    "root": "rdist",
+    "left": "d",
+    "op": "<",
+    "right": "seg.hw",
+    "text": "if (rdist.d < rdist.seg.hw + 1.6 || rdist.d > rdist.seg.hw + 7.0) continue;"
+   },
+   {
+    "file": "tools/world/build-signatures.mjs",
+    "line": 162,
+    "root": "rdist",
+    "left": "d",
+    "op": ">",
+    "right": "seg.hw",
+    "text": "if (rdist.d < rdist.seg.hw + 1.6 || rdist.d > rdist.seg.hw + 7.0) continue;"
+   },
+   {
+    "file": "tools/world/build-signatures.mjs",
+    "line": 163,
+    "root": "rdist",
+    "left": "d",
+    "op": "<",
+    "right": "seg.hw",
+    "text": "} else if (rdist.d < rdist.seg.hw * 3.4 + reach + 4) continue;"
+   },
+   {
+    "file": "tools/world/critic-crossing-probe.mjs",
+    "line": 100,
+    "root": "p",
+    "left": "hp",
+    "op": "<",
+    "right": "hpMax",
+    "text": "E._afterStep = function () { orig(); const p = this.sim.player; if (p.hp < p.hpMax) p.hp = p.hpMax; };"
+   },
+   {
+    "file": "tools/world/critic-crossing-walk.mjs",
+    "line": 129,
+    "root": "p",
+    "left": "hp",
+    "op": "<",
+    "right": "hpMax",
+    "text": "if (pin && p.hp < p.hpMax) {"
+   },
+   {
+    "file": "tools/world/critic-population-r1-diag.mjs",
+    "line": 79,
+    "root": "out",
+    "left": "D.D3_standing_on_post.stats.steps",
+    "op": ">",
+    "right": "D.D2_after_default.stats.steps",
+    "text": "pump_is_running: out.D.D3_standing_on_post.stats.steps > out.D.D2_after_default.stats.steps,"
+   },
+   {
+    "file": "tools/world/critic-w1-04-r1.mjs",
+    "line": 92,
+    "root": "pert",
+    "left": "before.at",
+    "op": "!==",
+    "right": "after.at",
+    "text": "add('A3-perturb-one-schedule', pert.skipped ? 'SKIPPED' : (pert.before.at !== pert.after.at && pert.restored.at === pert.before.at ? 'CONSUMED' : 'DEAD'), pert);"
+   },
+   {
+    "file": "tools/world/critic-w1-04-r1.mjs",
+    "line": 92,
+    "root": "pert",
+    "left": "restored.at",
+    "op": "===",
+    "right": "before.at",
+    "text": "add('A3-perturb-one-schedule', pert.skipped ? 'SKIPPED' : (pert.before.at !== pert.after.at && pert.restored.at === pert.before.at ? 'CONSUMED' : 'DEAD'), pert);"
+   },
+   {
+    "file": "tools/world/critic-w1-04-r1.mjs",
+    "line": 176,
+    "root": "r",
+    "left": "noon",
+    "op": "!==",
+    "right": "night",
+    "text": "const differ = rows.filter((r) => r.noon !== r.night).length;"
+   },
+   {
+    "file": "tools/world/critic-w1-04-r2a.mjs",
+    "line": 395,
+    "root": "s",
+    "left": "entered",
+    "op": "!==",
+    "right": "total",
+    "text": "if (s.entered !== s.total) failures.push(`only ${s.entered} of ${s.total} interiors could be entered`);"
+   },
+   {
+    "file": "tools/world/critic-w1-04-r2a.mjs",
+    "line": 396,
+    "root": "s",
+    "left": "agrees_graph",
+    "op": "!==",
+    "right": "entered",
+    "text": "if (s.agrees_graph !== s.entered) failures.push(`${s.entered - s.agrees_graph} of ${s.entered} drew a cell the world had left (my own traversal)`);"
+   },
+   {
+    "file": "tools/world/critic-w1-04-r2a.mjs",
+    "line": 397,
+    "root": "s",
+    "left": "exterior_restored_on_exit",
+    "op": "!==",
+    "right": "entered",
+    "text": "if (s.exterior_restored_on_exit !== s.entered) failures.push(`${s.entered - s.exterior_restored_on_exit} of ${s.entered} left the room on screen after exitInterior()`);"
+   },
+   {
+    "file": "tools/world/critic-w1-04-r2b.mjs",
+    "line": 285,
+    "root": "out",
+    "left": "readable_after_load.readable_field_set_after",
+    "op": "===",
+    "right": "readable_after_load.readable_field_set_before",
+    "text": "if (out.readable_after_load.room && out.readable_after_load.readable_field_set_after === out.readable_after_load.readable_field_set_before) {"
+   },
+   {
+    "file": "tools/world/critic-w1-04-r2b.mjs",
+    "line": 291,
+    "root": "out",
+    "left": "unique_item_respawn.copies_after_leaving_and_returning",
+    "op": "===",
+    "right": "unique_item_respawn.copies_after_one_take",
+    "text": "if (out.unique_item_respawn.room && out.unique_item_respawn.copies_after_leaving_and_returning === out.unique_item_respawn.copies_after_one_take) {"
+   },
+   {
+    "file": "tools/world/critic-w1-04-r4-live.mjs",
+    "line": 136,
+    "root": "r",
+    "left": "settlement_before",
+    "op": "!==",
+    "right": "settlement_after",
+    "text": "failed_at_a_town_change: failed.filter((r) => r.settlement_before !== r.settlement_after).length,"
+   },
+   {
+    "file": "tools/world/critic-w1-04-r6-offline.mjs",
+    "line": 266,
+    "root": "t",
+    "left": "left_by",
+    "op": "!==",
+    "right": "nearest_face_was",
+    "text": "const wrongWay = trials.filter((t) => t.left_by !== t.nearest_face_was);"
+   },
+   {
+    "file": "tools/world/critic-w1-04-r6-offline.mjs",
+    "line": 628,
+    "root": "R",
+    "left": "failures.length",
+    "op": "===",
+    "right": "orphans.length",
+    "text": "R.the_three_are_the_orphans = R.failures.length === R.orphans.length && R.failures.every((f) => f.orphan);"
+   },
+   {
+    "file": "tools/world/crossing-body.mjs",
+    "line": 99,
+    "root": "p",
+    "left": "hp",
+    "op": "<",
+    "right": "hpMax",
+    "text": "if (p.hp < p.hpMax) { E.__hpAbsorbed += p.hpMax - p.hp; if (p.hp <= 0) E.__hpZeroFrames++; p.hp = p.hpMax; }"
+   },
+   {
+    "file": "tools/world/crossing-consumption.mjs",
+    "line": 134,
+    "root": "p",
+    "left": "hp",
+    "op": "<",
+    "right": "hpMax",
+    "text": "if (p.hp < p.hpMax) p.hp = p.hpMax;"
+   },
+   {
+    "file": "tools/world/crossing-consumption.mjs",
+    "line": 228,
+    "root": "p",
+    "left": "hp",
+    "op": "<",
+    "right": "hpMax",
+    "text": "E._afterStep = function () { orig(); const p = this.sim.player; if (p.hp < p.hpMax) p.hp = p.hpMax; const c = this.combat && this.combat.player; if (c && c.hp !== undefined) c.hp = p.hpMax; "
+   },
+   {
+    "file": "tools/world/crossing-deletefix.mjs",
+    "line": 87,
+    "root": "p",
+    "left": "hp",
+    "op": "<",
+    "right": "hpMax",
+    "text": "E._afterStep = function () { orig(); const p = this.sim.player; if (p.hp < p.hpMax) p.hp = p.hpMax; };"
+   },
+   {
+    "file": "tools/world/crossing-deletefix.mjs",
+    "line": 107,
+    "root": "E",
+    "left": "_pursue",
+    "op": "===",
+    "right": "__newPursue",
+    "text": "steering_is_new: E._pursue === E.__newPursue,"
+   },
+   {
+    "file": "tools/world/crossing-deletefix.mjs",
+    "line": 108,
+    "root": "E",
+    "left": "field.clampToDeck",
+    "op": "===",
+    "right": "field.__newClamp",
+    "text": "parapet_is_new: E.field.clampToDeck === E.field.__newClamp,"
+   },
+   {
+    "file": "tools/world/env-consumption.mjs",
+    "line": 231,
+    "root": "r",
+    "left": "distinct_realised_sightlines",
+    "op": "<",
+    "right": "states",
+    "text": "const flat = rows.filter((r) => r.distinct_realised_sightlines < r.states);"
+   },
+   {
+    "file": "tools/world/opacity-consumption.mjs",
+    "line": 235,
+    "root": "log",
+    "left": "value.after",
+    "op": ">",
+    "right": "value.before",
+    "text": "if (!(log.value.after > log.value.before)) fail(`reading ${bookId} did not move ${withBook.id}'s evidence_met (${log.value.before} -> ${log.value.after})`);"
+   },
+   {
+    "file": "tools/world/road-join-deletefix.mjs",
+    "line": 152,
+    "root": "o",
+    "left": "legs_blocked",
+    "op": "===",
+    "right": "legs_total",
+    "text": "check(`${o.arm.toUpperCase()}-RETURNS`, o.legs_blocked === o.legs_total && o.named_route_offences > 0,"
+   },
+   {
+    "file": "tools/world/threshold-live.mjs",
+    "line": 153,
+    "root": "blocked",
+    "left": "closest_approach_m",
+    "op": ">=",
+    "right": "solid_r",
+    "text": "!!blocked && blocked.closest_approach_m >= blocked.solid_r + 0.4, {"
+   },
+   {
+    "file": "tools/world/travel-audit.mjs",
+    "line": 97,
+    "root": "l",
+    "left": "line_ticket_gold",
+    "op": "!==",
+    "right": "sum_of_hop_fares",
+    "text": "const ticketMismatch = lines.filter((l) => l.line_ticket_gold !== l.sum_of_hop_fares).length;"
+   },
+   {
+    "file": "tools/world/travel-audit.mjs",
+    "line": 165,
+    "root": "live",
+    "left": "ride.gold_after",
+    "op": "<",
+    "right": "ride.gold_before",
+    "text": "check('M6-RIDE-IS-A-JOURNEY', live.ride.done && live.ride.gold_after < live.ride.gold_before && live.ride.max_frame_delta_m < 25 && live.ride.frames >= 480,"
+   },
+   {
+    "file": "tools/world/w1-04-consumption.mjs",
+    "line": 636,
+    "root": "live",
+    "left": "drawn_agrees",
+    "op": "===",
+    "right": "entered",
+    "text": "const passes = live.entered > 0 && live.drawn_agrees === live.entered"
+   },
+   {
+    "file": "tools/world/w1-04-consumption.mjs",
+    "line": 637,
+    "root": "live",
+    "left": "exterior_restored_on_exit",
+    "op": "===",
+    "right": "entered",
+    "text": "&& live.exterior_restored_on_exit === live.entered"
+   },
+   {
+    "file": "tools/world/w1-04-interior-sweep.mjs",
+    "line": 190,
+    "root": "live",
+    "left": "drawn_cell_agrees",
+    "op": "!==",
+    "right": "entered",
+    "text": "if (live.drawn_cell_agrees !== live.entered) failures.push(`${live.entered - live.drawn_cell_agrees} of ${live.entered} entered interiors drew a cell the world had left`);"
+   },
+   {
+    "file": "tools/world/w1-04-r3-collision.mjs",
+    "line": 197,
+    "root": "r",
+    "left": "shapes_restored",
+    "op": "===",
+    "right": "shapes_with_walls",
+    "text": "const inert = inst.filter((r) => !(r.shapes_with_walls > 0 && r.shapes_walls_cut === 0 && r.shapes_restored === r.shapes_with_walls));"
+   },
+   {
+    "file": "tools/world/w1-04-r3-consume.mjs",
+    "line": 103,
+    "root": "consume",
+    "left": "base.buildings_in_the_scene_graph",
+    "op": "!==",
+    "right": "a_fewer_buildings.buildings_in_the_scene_graph",
+    "text": "building_list_is_read: consume.base.buildings_in_the_scene_graph !== consume.a_fewer_buildings.buildings_in_the_scene_graph,"
+   },
+   {
+    "file": "tools/world/w1-04-r3-consume.mjs",
+    "line": 106,
+    "root": "consume",
+    "left": "base.collision_shapes_in_sim_cell",
+    "op": "!==",
+    "right": "a_fewer_buildings.collision_shapes_in_sim_cell",
+    "text": "collision_follows_the_model: consume.base.collision_shapes_in_sim_cell !== consume.a_fewer_buildings.collision_shapes_in_sim_cell,"
+   },
+   {
+    "file": "tools/world/w1-04-r3-exterior.mjs",
+    "line": 250,
+    "root": "report",
+    "left": "totals.building_groups_drawn",
+    "op": "===",
+    "right": "totals.buildings_declared",
+    "text": "ok.push(['buildings drawn == buildings declared', report.totals.building_groups_drawn === report.totals.buildings_declared]);"
+   },
+   {
+    "file": "tools/world/w1-04-r4-live.mjs",
+    "line": 240,
+    "root": "s4",
+    "left": "after.hash",
+    "op": "===",
+    "right": "before.hash",
+    "text": "if (s4.after.hash === s4.before.hash) out.failures.push('S4: the signature did not change when the room was emptied');"
+   },
+   {
+    "file": "tools/world/w1-04-r6-census.mjs",
+    "line": 119,
+    "root": "out",
+    "left": "E.reached_by_this_census",
+    "op": "!==",
+    "right": "E.interior_records",
+    "text": "if (out.E.reached_by_this_census !== out.E.interior_records) out.findings.push('this census cannot reach every interior record');"
+   },
+   {
+    "file": "tools/world/w1-04-unique-item-probe.mjs",
+    "line": 93,
+    "root": "R",
+    "left": "withItem",
+    "op": "!==",
+    "right": "checked",
+    "text": "if (R.withItem !== R.checked) failures.push(`${R.checked - R.withItem} of ${R.checked} rooms had no unique item in the world`);"
+   },
+   {
+    "file": "tools/world/w1-04-unique-item-probe.mjs",
+    "line": 94,
+    "root": "R",
+    "left": "taken",
+    "op": "!==",
+    "right": "checked",
+    "text": "if (R.taken !== R.checked) failures.push(`${R.checked - R.taken} of ${R.checked} unique items could not be picked up`);"
+   },
+   {
+    "file": "tools/world/w1-crossing-r2-legs.mjs",
+    "line": 133,
+    "root": "p",
+    "left": "hp",
+    "op": "<",
+    "right": "hpMax",
+    "text": "if (C.pin && p.hp < p.hpMax) {"
+   },
+   {
+    "file": "tools/wpn-tipspeed-s36.mjs",
+    "line": 180,
+    "root": "r",
+    "left": "active_f_needed",
+    "op": ">",
+    "right": "active_f",
+    "text": "const cost = fails.filter(r => r.active_f_needed > r.active_f).map(r => r.active_f_needed - r.active_f).sort((a, b) => a - b);"
+   }
+  ],
+  "form2": [
+   {
+    "file": "game/src/character/encounter.js",
+    "line": 142,
+    "measured": "sim.netsLanded",
+    "op": ">=",
+    "against": "3",
+    "text": "if (pb0 && !sim.encounterDefeatResolved && (sim.netsLanded || 0) >= 3) {"
+   },
+   {
+    "file": "game/src/combat/impact.js",
+    "line": 85,
+    "measured": "atk.poise_damage",
+    "op": "<",
+    "against": "d.poise_damage_below",
+    "text": "return (atk.poise_damage || 0) < d.poise_damage_below;"
+   },
+   {
+    "file": "game/src/combat/parley.js",
+    "line": 102,
+    "measured": "world.gold",
+    "op": ">=",
+    "against": "price",
+    "text": "const enough = (world.gold || 0) >= price;"
+   },
+   {
+    "file": "game/src/combat/system.js",
+    "line": 360,
+    "measured": "b.hitstopUntil",
+    "op": ">",
+    "against": "frame",
+    "text": "b.hitstop = (b.hitstopUntil || 0) > frame;"
+   },
+   {
+    "file": "game/src/engine.js",
+    "line": 4023,
+    "measured": "p.regenBlockUntil",
+    "op": "!==",
+    "against": "this._lastRegenBlock",
+    "text": "if ((p.regenBlockUntil || 0) !== this._lastRegenBlock) {"
+   },
+   {
+    "file": "game/src/engine.js",
+    "line": 4024,
+    "measured": "p.regenBlockUntil",
+    "op": ">",
+    "against": "this.sim.frame && (this._spentFrom === null || p.stamina > t",
+    "text": "if ((p.regenBlockUntil || 0) > this.sim.frame && (this._spentFrom === null || p.stamina > this._spentFrom)) {"
+   },
+   {
+    "file": "game/src/sim/crime/witness.js",
+    "line": 42,
+    "measured": "nearestGuardWallsBetween",
+    "op": "<=",
+    "against": "1",
+    "text": "if (nearestGuardDist !== null && nearestGuardDist <= shout.guard_range_m && (nearestGuardWallsBetween || 0) <= 1) {"
+   },
+   {
+    "file": "game/src/sim/dialogue/disposition.js",
+    "line": 154,
+    "measured": "m.rank",
+    "op": ">",
+    "against": "Number(prev.rank || 0",
+    "text": "if (!prev || Number(m.rank || 0) > Number(prev.rank || 0)) norm.set(key, m);"
+   },
+   {
+    "file": "game/src/ui/system.js",
+    "line": 1167,
+    "measured": "m.widest_px",
+    "op": "<=",
+    "against": "t.rect[2] + 0.5",
+    "text": "fits: (m.widest_px || 0) <= t.rect[2] + 0.5,"
+   },
+   {
+    "file": "tools/analysis/audio-budget.mjs",
+    "line": 96,
+    "measured": "S.scheduleMisses",
+    "op": "===",
+    "against": "0",
+    "text": "row('B6', 'scheduleMisses reported and zero in a clean run', S.scheduleMisses, (S.scheduleMisses || 0) === 0);"
+   },
+   {
+    "file": "tools/analysis/audio-budget.mjs",
+    "line": 136,
+    "measured": "S.htmlAudioElements",
+    "op": "===",
+    "against": "0",
+    "text": "row('C-D2', 'audioStats().htmlAudioElements === 0 after the run', S.htmlAudioElements, (S.htmlAudioElements || 0) === 0);"
+   },
+   {
+    "file": "tools/analysis/audio-budget.mjs",
+    "line": 137,
+    "measured": "S.decodesAfterReady",
+    "op": "===",
+    "against": "0",
+    "text": "row('C-D3', 'audioStats().decodesAfterReady === 0 in combat', S.decodesAfterReady, (S.decodesAfterReady || 0) === 0);"
+   },
+   {
+    "file": "tools/analysis/audio-budget.mjs",
+    "line": 143,
+    "measured": "S.voicesPeak",
+    "op": "<=",
+    "against": "CAPS.V1",
+    "text": "row('V1', 'total concurrent voices <= 32', S.voicesPeak, (S.voicesPeak || 0) <= CAPS.V1);"
+   },
+   {
+    "file": "tools/analysis/audio-budget.mjs",
+    "line": 144,
+    "measured": "byBus.sfx",
+    "op": "<=",
+    "against": "CAPS.V2",
+    "text": "row('V2', 'sfx bus voices <= 16', byBus.sfx, (byBus.sfx || 0) <= CAPS.V2);"
+   },
+   {
+    "file": "tools/analysis/audio-budget.mjs",
+    "line": 145,
+    "measured": "S.voicesPeak",
+    "op": "<=",
+    "against": "CAPS.V3",
+    "text": "row('V3', 'impact-class voices <= 8', S.voicesPeak, (S.voicesPeak || 0) <= CAPS.V3);"
+   },
+   {
+    "file": "tools/analysis/audio-budget.mjs",
+    "line": 146,
+    "measured": "byBus.voice",
+    "op": "<=",
+    "against": "CAPS.V4",
+    "text": "row('V4', 'voice bus <= 6', byBus.voice, (byBus.voice || 0) <= CAPS.V4);"
+   },
+   {
+    "file": "tools/analysis/audio-budget.mjs",
+    "line": 147,
+    "measured": "byBus.ambience",
+    "op": "<=",
+    "against": "CAPS.V5",
+    "text": "row('V5', 'ambience bus <= 8', byBus.ambience, (byBus.ambience || 0) <= CAPS.V5);"
+   },
+   {
+    "file": "tools/analysis/audio-budget.mjs",
+    "line": 148,
+    "measured": "byBus.music",
+    "op": "<=",
+    "against": "CAPS.V6",
+    "text": "row('V6', 'music bus <= 4', byBus.music, (byBus.music || 0) <= CAPS.V6);"
+   },
+   {
+    "file": "tools/analysis/audio-budget.mjs",
+    "line": 178,
+    "measured": "S.htmlAudioElements",
+    "op": ">",
+    "against": "0",
+    "text": "if ((S.htmlAudioElements || 0) > 0) HF.push('HF2 htmlAudioElements > 0');"
+   },
+   {
+    "file": "tools/analysis/magic-audit.mjs",
+    "line": 361,
+    "measured": "s2.geometry.speed_mps",
+    "op": ">",
+    "against": "30",
+    "text": "speeds_over_ceiling: spells.filter(([, s2]) => (s2.geometry.speed_mps || 0) > 30).map(([k]) => k),"
+   },
+   {
+    "file": "tools/analysis/marker-diff.mjs",
+    "line": 332,
+    "measured": "out.ui_layer_px",
+    "op": ">",
+    "against": "0 && out.differentials.every((d",
+    "text": "pass: () => (out.ui_layer_px || 0) > 0 && out.differentials.every((d) => d.empty),"
+   },
+   {
+    "file": "tools/harness/ai-browser.mjs",
+    "line": 102,
+    "measured": "r.sp",
+    "op": ">",
+    "against": "0.01",
+    "text": "nonzero_speed_frames: rows.filter((r) => (r.sp || 0) > 0.01).length,"
+   },
+   {
+    "file": "tools/harness/critic-w1-08-29-r1b.mjs",
+    "line": 161,
+    "measured": "x.entries",
+    "op": ">",
+    "against": "0",
+    "text": "const anyText = r.some((x) => (x.entries || 0) > 0);"
+   },
+   {
+    "file": "tools/harness/critic-w1-08-29-r1c.mjs",
+    "line": 157,
+    "measured": "x.entries",
+    "op": ">",
+    "against": "0",
+    "text": "const everSaw = k3.some((x) => (x.entries || 0) > 0);"
+   },
+   {
+    "file": "tools/harness/critic-w1-16-offline.mjs",
+    "line": 326,
+    "measured": "r.weight",
+    "op": ">",
+    "against": "(cur.weight || 0",
+    "text": "if (!cur || (r.weight || 0) > (cur.weight || 0)) bySlot.set(r.slot, r);"
+   },
+   {
+    "file": "tools/harness/critic-w1-16-r3-offline.mjs",
+    "line": 205,
+    "measured": "r.weight",
+    "op": ">",
+    "against": "(cur.weight || 0",
+    "text": "if (!cur || (r.weight || 0) > (cur.weight || 0)) bySlot.set(r.slot, r);"
+   },
+   {
+    "file": "tools/harness/w1-16-r3-reach.mjs",
+    "line": 176,
+    "measured": "r.weight",
+    "op": ">",
+    "against": "(cur.weight || 0",
+    "text": "if (!cur || (r.weight || 0) > (cur.weight || 0)) bySlot.set(r.slot, r);"
+   },
+   {
+    "file": "tools/harness/w1-21-r2-nav.mjs",
+    "line": 281,
+    "measured": "i.count",
+    "op": ">",
+    "against": "1",
+    "text": "const potion = inv.filter ? inv.filter((i) => (i.count || 0) > 1)[0] : null;"
+   },
+   {
+    "file": "tools/harness/w1-21-r2-nav.mjs",
+    "line": 367,
+    "measured": "i.count",
+    "op": ">",
+    "against": "1",
+    "text": "const p = inv.find((i) => (i.count || 0) > 1);"
+   },
+   {
+    "file": "tools/harness/wpn-impact-live.mjs",
+    "line": 126,
+    "measured": "r.dmg",
+    "op": ">",
+    "against": "0 }",
+    "text": "v.push({ d: +d.toFixed(2), hit: !!r.impact || (r.dmg || 0) > 0 });"
+   },
+   {
+    "file": "tools/journey/opening-play.mjs",
+    "line": 669,
+    "measured": "s.frames_advanced",
+    "op": ">",
+    "against": "0",
+    "text": "const stuckThatAdvanced = stuck.filter((s) => (s.frames_advanced || 0) > 0).length;"
+   },
+   {
+    "file": "tools/map/arbiter-map-s38.mjs",
+    "line": 298,
+    "measured": "got.audit.phantom_cells",
+    "op": ">",
+    "against": "0",
+    "text": "const itemised = (got.audit.dropped || []).length > 0 && (got.audit.phantom_cells || 0) > 0;"
+   },
+   {
+    "file": "tools/prose/judge-fragment-openers.mjs",
+    "line": 122,
+    "measured": "af.hits.Which",
+    "op": ">",
+    "against": "(b4.hits.Which || 0",
+    "text": "T('MUTATION: clause->fragment raises Which', (af.hits.Which || 0) > (b4.hits.Which || 0));"
+   },
+   {
+    "file": "tools/quests/critic-faction-r2.mjs",
+    "line": 352,
+    "measured": "s.direct_standing_writes",
+    "op": "===",
+    "against": "0",
+    "text": "check('C3b_no_signature_needed_a_written_reputation', sigs.every((s) => (s.direct_standing_writes || 0) === 0),"
+   },
+   {
+    "file": "tools/quests/critic-w1-20-ledgers.mjs",
+    "line": 156,
+    "measured": "s.derived_rank",
+    "op": ">=",
+    "against": "2",
+    "text": "reached_rank_2: steps.some((s) => (s.derived_rank || 0) >= 2),"
+   },
+   {
+    "file": "tools/quests/critic-w1-20-ledgers.mjs",
+    "line": 265,
+    "measured": "l1.derived_the_xul_aneekh",
+    "op": ">=",
+    "against": "1 && JSON.stringify(l1.the_xul_aneekh",
+    "text": "if ((l1.derived_the_xul_aneekh || 0) >= 1 && JSON.stringify(l1.the_xul_aneekh) !== JSON.stringify(l1.deep_kin)) {"
+   },
+   {
+    "file": "tools/quests/critic-w1-20-play.mjs",
+    "line": 400,
+    "measured": "dk.derived_rank_deep_kin",
+    "op": "<",
+    "against": "1",
+    "text": "if (dk.derived_rank_xul >= 1 && (dk.derived_rank_deep_kin || 0) < 1) {"
+   },
+   {
+    "file": "tools/quests/faction-joining-probe.mjs",
+    "line": 277,
+    "measured": "line.derived_rank_after",
+    "op": "<",
+    "against": "1 ? `derived rank stayed at ${line.derived_rank_after}` : nu",
+    "text": "(line.derived_rank_after || 0) < 1 ? `derived rank stayed at ${line.derived_rank_after}` : null].filter(Boolean).join('; ');"
+   },
+   {
+    "file": "tools/quests/faction-probe.mjs",
+    "line": 404,
+    "measured": "st.reputation",
+    "op": "<",
+    "against": "d.rank_gate.min_reputation",
+    "text": "if ((st.reputation || 0) < d.rank_gate.min_reputation) grantRep(LINE, d.rank_gate.min_reputation, `min_reputation on ${d.id}`);"
+   },
+   {
+    "file": "tools/w1-26-r3/hold-walkout.mjs",
+    "line": 141,
+    "measured": "s.during.moveY",
+    "op": ">",
+    "against": "0.01 || Math.abs(s.during.moveX || 0",
+    "text": "const anyLatched = out.samples.some((s) => Math.abs(s.during.moveY || 0) > 0.01 || Math.abs(s.during.moveX || 0) > 0.01);"
+   },
+   {
+    "file": "tools/world/critic-w1-04-r1.mjs",
+    "line": 199,
+    "measured": "cells.by_cell.interior",
+    "op": "===",
+    "against": "0 ? 'ALL-BESPOKE' : 'SHARED-HALL'",
+    "text": "(cells.by_cell.interior || 0) === 0 ? 'ALL-BESPOKE' : 'SHARED-HALL',"
+   },
+   {
+    "file": "tools/world/verify-playable.mjs",
+    "line": 402,
+    "measured": "last.clientW",
+    "op": ">=",
+    "against": "prof.w * 0.9 && (last.clientH || 0",
+    "text": "rec.fills = (last.clientW || 0) >= prof.w * 0.9 && (last.clientH || 0) >= prof.h * 0.5;"
+   }
+  ]
+ }
+}

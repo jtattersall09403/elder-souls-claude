@@ -1,0 +1,2094 @@
+{
+  "schema": "elder-souls/cmp01-claims@1",
+  "tool": "tools/composition/matrix-scan.mjs",
+  "stage": "RI-CMP01 Comparison method Stage 1 — STATIC CLAIMS ONLY",
+  "warning": "RI-CMP01 hard fail 6: a wave that reports coverage from this tool with no probe stage scores 0 for every cell. Nothing in this file is a demonstration.",
+  "at": "2026-08-08T05:26:18.712Z",
+  "data_dir": "game/data",
+  "files_read": 567,
+  "js_census": {
+    "js_files": 134,
+    "js_bytes": 3410833,
+    "rule": "HARNESS.md §7 — content that exists only as literals inside .js is unmeasurable and is treated as content that does not exist"
+  },
+  "declared_crossing_cells": 41,
+  "claimed_cells": 34,
+  "claimed_crossing_cells": 8,
+  "crossing_cells_with_no_data_claim": [
+    {
+      "cell": "FAC->ROS",
+      "direction": "W2F",
+      "mechanism": "Rank ≥ 3 in a faction makes its outposts non-hostile; rank ≥ 2 in its rival makes its patrols hostile on sight"
+    },
+    {
+      "cell": "FAC->BOS",
+      "direction": "W2F",
+      "mechanism": "A boss who is a faction officer accepts parley at rank; a rival faction's boss gains a two-NPC escort"
+    },
+    {
+      "cell": "GLD->ROS",
+      "direction": "W2F",
+      "mechanism": "A hired escort (paid in gold, S15) joins the encounter; a paid caravan route meets a different roster"
+    },
+    {
+      "cell": "GLD->BOS",
+      "direction": "W2F",
+      "mechanism": "A boss with a price ends the encounter for gold (RI-EXP06 B-10's third route)"
+    },
+    {
+      "cell": "SKL->ROS",
+      "direction": "W2F",
+      "mechanism": "Sneak decides whether the encounter starts at all — a stealth build's roster on the same route is materially smaller"
+    },
+    {
+      "cell": "SKL->BOS",
+      "direction": "W2F",
+      "mechanism": "Security opens a boss arena's back door (a different opening position); Alchemy's pre-fight potion changes the fight's phase timings"
+    },
+    {
+      "cell": "SPL->BOS",
+      "direction": "W2F",
+      "mechanism": "A utility effect solves a boss: a resist that nullifies its one damage type, a bind that costs it a phase"
+    },
+    {
+      "cell": "LOR->BOS",
+      "direction": "W2F",
+      "mechanism": "A book reveals a boss's weakness — BAR-CRITIQUE-01's own worked example. The weakness is inert until the book is read"
+    },
+    {
+      "cell": "STL->ROS",
+      "direction": "W2F",
+      "mechanism": "An undetected player faces no encounter; a witnessed crime spawns guards into the roster"
+    },
+    {
+      "cell": "STL->BOS",
+      "direction": "W2F",
+      "mechanism": "A backstab opener (Souls) and, via SCH, assassinating a boss during a scheduled sleep or rite"
+    },
+    {
+      "cell": "QST->BOS",
+      "direction": "W2F",
+      "mechanism": "A quest outcome adds or removes a boss, or changes its escort or phase set"
+    },
+    {
+      "cell": "WLD->BOS",
+      "direction": "W2F",
+      "mechanism": "A boss relocates, or gains/loses an escort, after a world change"
+    },
+    {
+      "cell": "TOD->ROS",
+      "direction": "W2F",
+      "mechanism": "A nocturnal roster: different creatures patrol the same ground at night"
+    },
+    {
+      "cell": "TOD->BOS",
+      "direction": "W2F",
+      "mechanism": "A boss present or awake only at a time — the window SCH→BOS opens"
+    },
+    {
+      "cell": "WEA->ROS",
+      "direction": "W2F",
+      "mechanism": "Salt-storms hide enemies (RI-WLD05 #28): visibility to 15 m, so the roster you can see changes"
+    },
+    {
+      "cell": "WEA->BOS",
+      "direction": "W2F",
+      "mechanism": "A boss fought in a storm: reduced player visibility, or a weather-gated ability"
+    },
+    {
+      "cell": "EQP->ROS",
+      "direction": "W2F",
+      "mechanism": "The disguise. Wearing a faction's armour changes patrol aggro — the most legible seam crossing in the game"
+    },
+    {
+      "cell": "EQP->BOS",
+      "direction": "W2F",
+      "mechanism": "A specific item is a boss's counter: a resist, a tool, a key that opens its arena from behind"
+    },
+    {
+      "cell": "UPG->BOS",
+      "direction": "W2F",
+      "mechanism": "An upgrade tier threshold is what makes a specific boss's poise breakable — the cleanest progression W→F cell"
+    },
+    {
+      "cell": "ROS->FAC",
+      "direction": "F2W",
+      "mechanism": "Clearing a roster from a region changes faction control of it"
+    },
+    {
+      "cell": "ROS->DIS",
+      "direction": "F2W",
+      "mechanism": "Killing the thing that was eating the village raises disposition across the settlement"
+    },
+    {
+      "cell": "ROS->QST",
+      "direction": "F2W",
+      "mechanism": "A roster state satisfies a quest without the quest being \"handed in\""
+    },
+    {
+      "cell": "ROS->SCH",
+      "direction": "F2W",
+      "mechanism": "A cleared route lets a caravan run again — NPC schedules change"
+    },
+    {
+      "cell": "BOS->FAC",
+      "direction": "F2W",
+      "mechanism": "structural. A boss killed or spared reshapes a faction's leadership and its remaining line"
+    },
+    {
+      "cell": "BOS->DIS",
+      "direction": "F2W",
+      "mechanism": "Province-wide reaction to the outcome"
+    },
+    {
+      "cell": "BOS->LOR",
+      "direction": "F2W",
+      "mechanism": "The boss's death or parley produces the truth about something — an RI-EXP04 N6 revision"
+    },
+    {
+      "cell": "BOS->QST",
+      "direction": "F2W",
+      "mechanism": "structural. The outcome branches the questline for hours"
+    },
+    {
+      "cell": "BOS->WLD",
+      "direction": "F2W",
+      "mechanism": "structural. A gate opens, a regional hazard ends, a district repopulates"
+    },
+    {
+      "cell": "BOS->SCH",
+      "direction": "F2W",
+      "mechanism": "NPCs move in, or flee"
+    },
+    {
+      "cell": "DUN->ROS",
+      "direction": "W2F",
+      "mechanism": "Layout decides encounter composition and whether the player can be flanked"
+    },
+    {
+      "cell": "DUN->BOS",
+      "direction": "W2F",
+      "mechanism": "The arena is a system: the ledge, the plunging attack, the pillar (RI-EXP06 B-15)"
+    },
+    {
+      "cell": "SCH->ROS",
+      "direction": "W2F",
+      "mechanism": "Patrol schedules are part of the roster: a road is safe at noon and not at midnight"
+    },
+    {
+      "cell": "SCH->BOS",
+      "direction": "W2F",
+      "mechanism": "A boss's schedule — asleep, at a rite — is an attack window"
+    }
+  ],
+  "sides_audit": [
+    {
+      "cell": "FAC->ROS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "FAC->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "DIS->ROS",
+      "rules": 1,
+      "source_side_rules": 0,
+      "target_side_rules": 1,
+      "looked_at_from": "the target only",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "DIS->BOS",
+      "rules": 1,
+      "source_side_rules": 0,
+      "target_side_rules": 1,
+      "looked_at_from": "the target only",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "GLD->ROS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "GLD->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "SKL->ROS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "SKL->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "SPL->ROS",
+      "rules": 1,
+      "source_side_rules": 1,
+      "target_side_rules": 0,
+      "looked_at_from": "the source only",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "SPL->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "SPL->DUN",
+      "rules": 1,
+      "source_side_rules": 1,
+      "target_side_rules": 0,
+      "looked_at_from": "the source only",
+      "source_dir_known": true,
+      "target_dir_known": false
+    },
+    {
+      "cell": "LOR->ROS",
+      "rules": 1,
+      "source_side_rules": 0,
+      "target_side_rules": 1,
+      "looked_at_from": "the target only",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "LOR->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "STL->ROS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "STL->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "QST->ROS",
+      "rules": 3,
+      "source_side_rules": 2,
+      "target_side_rules": 1,
+      "looked_at_from": "both ends",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "QST->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "WLD->ROS",
+      "rules": 1,
+      "source_side_rules": 1,
+      "target_side_rules": 1,
+      "looked_at_from": "both ends",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "WLD->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "TOD->ROS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": false,
+      "target_dir_known": true
+    },
+    {
+      "cell": "TOD->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": false,
+      "target_dir_known": true
+    },
+    {
+      "cell": "WEA->ROS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": false,
+      "target_dir_known": true
+    },
+    {
+      "cell": "WEA->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": false,
+      "target_dir_known": true
+    },
+    {
+      "cell": "EQP->ROS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "EQP->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "UPG->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": false,
+      "target_dir_known": true
+    },
+    {
+      "cell": "ROS->FAC",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "ROS->DIS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "ROS->QST",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "ROS->WLD",
+      "rules": 1,
+      "source_side_rules": 1,
+      "target_side_rules": 0,
+      "looked_at_from": "the source only",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "ROS->SCH",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "BOS->FAC",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "BOS->DIS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "BOS->LOR",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "BOS->QST",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "BOS->WLD",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "BOS->SCH",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "DUN->ROS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": false,
+      "target_dir_known": true
+    },
+    {
+      "cell": "DUN->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": false,
+      "target_dir_known": true
+    },
+    {
+      "cell": "SCH->ROS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    },
+    {
+      "cell": "SCH->BOS",
+      "rules": 0,
+      "source_side_rules": 0,
+      "target_side_rules": 0,
+      "looked_at_from": "neither end",
+      "source_dir_known": true,
+      "target_dir_known": true
+    }
+  ],
+  "seam_probes_on_the_tree": [
+    {
+      "tool": "tools/harness/critic-w1-14-r3-seam.mjs",
+      "data_files_named": [
+        "game/data/quests/hooks.json"
+      ],
+      "cells_those_files_claim": [
+        "QST->LOR",
+        "WLD->QST"
+      ]
+    },
+    {
+      "tool": "tools/harness/critic-w1-library-seam.mjs",
+      "data_files_named": [],
+      "cells_those_files_claim": []
+    },
+    {
+      "tool": "tools/quests/encounter-seam-probe.mjs",
+      "data_files_named": [
+        "game/data/quests/mainline-act4.json"
+      ],
+      "cells_those_files_claim": [
+        "QST->JRN",
+        "QST->WLD",
+        "DIS->QST",
+        "LOR->QST",
+        "QST->FAC",
+        "QST->DIS",
+        "SKL->QST",
+        "FAC->QST",
+        "GLD->QST"
+      ]
+    },
+    {
+      "tool": "tools/quests/faction-seam-probe.mjs",
+      "data_files_named": [],
+      "cells_those_files_claim": []
+    },
+    {
+      "tool": "tools/world/crossing-body.mjs",
+      "data_files_named": [],
+      "cells_those_files_claim": []
+    },
+    {
+      "tool": "tools/world/crossing-consumption.mjs",
+      "data_files_named": [
+        "game/data/world/roads.json"
+      ],
+      "cells_those_files_claim": []
+    },
+    {
+      "tool": "tools/world/crossing-deletefix.mjs",
+      "data_files_named": [],
+      "cells_those_files_claim": []
+    },
+    {
+      "tool": "tools/world/crossing-ridge-chart.mjs",
+      "data_files_named": [
+        "game/data/world/terrain.json",
+        "game/data/world/regions.json",
+        "game/data/world/water.json",
+        "game/data/world/signatures.json",
+        "game/data/world/roads.json"
+      ],
+      "cells_those_files_claim": [
+        "WEA->WLD"
+      ]
+    },
+    {
+      "tool": "tools/world/crossing.mjs",
+      "data_files_named": [],
+      "cells_those_files_claim": []
+    },
+    {
+      "tool": "tools/world/w1-01-r4-crossing-chart.mjs",
+      "data_files_named": [
+        "game/data/world/roads.json",
+        "game/data/world/pois.json"
+      ],
+      "cells_those_files_claim": []
+    }
+  ],
+  "claims": [
+    {
+      "cell": "QST->JRN",
+      "why": "§F: journal entries are quest state’s face (RI-DLG05)",
+      "n": 1005,
+      "files": [
+        "quests/blackmarsh-coast.json",
+        "quests/blackmarsh-core.json",
+        "quests/faction-imperial-assize.json",
+        "quests/faction-wet-ledger.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/magic-utility.json",
+        "quests/mainline-act1.json",
+        "quests/mainline-act2.json",
+        "quests/mainline-act3.json",
+        "quests/mainline-act4.json",
+        "quests/mainline-act5.json",
+        "quests/mainline-backpath.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/journal/0/index",
+          "value": 6
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/journal/1/index",
+          "value": 10
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/journal/2/index",
+          "value": 20
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/journal/3/index",
+          "value": 25
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/journal/4/index",
+          "value": 40
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/journal/5/index",
+          "value": 50
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "QST->WLD",
+      "why": "§E: quest outcomes change the world — a village saved or burned",
+      "n": 963,
+      "files": [
+        "quests/blackmarsh-coast.json",
+        "quests/blackmarsh-core.json",
+        "quests/faction-imperial-assize.json",
+        "quests/faction-wet-ledger.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/mainline-act1.json",
+        "quests/mainline-act2.json",
+        "quests/mainline-act3.json",
+        "quests/mainline-act4.json",
+        "quests/mainline-act5.json",
+        "quests/mainline-backpath.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/0/consequences/world_flags/0",
+          "value": "archon_guild_fined"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/0/consequences/world_flags/1",
+          "value": "archon_vats_open"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/0/consequences/world_flags/2",
+          "value": "archon_factor_teaches"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/0/consequences/world_flags/3",
+          "value": "archon_cough_continues"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/1/consequences/world_flags/0",
+          "value": "archon_vats_burned"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/1/consequences/world_flags/1",
+          "value": "archon_apothecary_closed"
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "DIS->QST",
+      "why": "§E: the disposition register the giver gate reads",
+      "n": 495,
+      "files": [
+        "npcs/faction-givers.json",
+        "npcs/mainline.json",
+        "npcs/named-states.json",
+        "npcs/pop-archon.json",
+        "npcs/pop-blackrose.json",
+        "npcs/pop-gideon.json",
+        "npcs/pop-helstrom.json",
+        "npcs/pop-lilmoth.json",
+        "npcs/pop-soulrest.json",
+        "npcs/pop-stormhold.json",
+        "npcs/pop-thorn.json",
+        "npcs/pop-trades.json",
+        "npcs/quest-givers.json",
+        "npcs/spellwrights.json",
+        "npcs/thorn.json",
+        "npcs/tribes.json",
+        "npcs/writ-house.json",
+        "quests/blackmarsh-coast.json",
+        "quests/blackmarsh-core.json",
+        "quests/faction-imperial-assize.json",
+        "quests/faction-wet-ledger.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/magic-utility.json",
+        "quests/mainline-act1.json",
+        "quests/mainline-act2.json",
+        "quests/mainline-act3.json",
+        "quests/mainline-act4.json",
+        "quests/mainline-act5.json",
+        "quests/mainline-backpath.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/npcs/faction-givers.json",
+          "json_pointer": "/npcs/0/disposition",
+          "value": 40
+        },
+        {
+          "data_path": "game/data/npcs/faction-givers.json",
+          "json_pointer": "/npcs/1/disposition",
+          "value": 35
+        },
+        {
+          "data_path": "game/data/npcs/faction-givers.json",
+          "json_pointer": "/npcs/2/disposition",
+          "value": 30
+        },
+        {
+          "data_path": "game/data/npcs/faction-givers.json",
+          "json_pointer": "/npcs/3/disposition",
+          "value": 35
+        },
+        {
+          "data_path": "game/data/npcs/faction-givers.json",
+          "json_pointer": "/npcs/4/disposition",
+          "value": 50
+        },
+        {
+          "data_path": "game/data/npcs/mainline.json",
+          "json_pointer": "/npcs/0/disposition",
+          "value": 45
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "LOR->QST",
+      "why": "§E: a quest resolvable by knowledge",
+      "n": 342,
+      "files": [
+        "quests/blackmarsh-coast.json",
+        "quests/blackmarsh-core.json",
+        "quests/faction-imperial-assize.json",
+        "quests/faction-wet-ledger.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/magic-utility.json",
+        "quests/mainline-act1.json",
+        "quests/mainline-act2.json",
+        "quests/mainline-act3.json",
+        "quests/mainline-act4.json",
+        "quests/mainline-act5.json",
+        "quests/mainline-backpath.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/opens_by/prerequisite_topics/0",
+          "value": "the drowned court"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/2/opens_by/prerequisite_topics/0",
+          "value": "the four hundred and eleven"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/4/opens_by/prerequisite_topics/0",
+          "value": "the rotting quarter"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/5/opens_by/prerequisite_topics/0",
+          "value": "the sap-house"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/opens_by/topic",
+          "value": "the vat cough"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/opens_by/topic",
+          "value": "the tally of the dead"
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "DIS->LOR",
+      "why": "§F: disposition-gated topics (RI-DLG01)",
+      "n": 325,
+      "files": [
+        "dialogue/topics/00-roots.json",
+        "dialogue/topics/05-asking-around.json",
+        "dialogue/topics/10-global.json",
+        "dialogue/topics/20-tier-a.json",
+        "dialogue/topics/21-tier-b.json",
+        "dialogue/topics/22-tier-c.json",
+        "dialogue/topics/30-texture.json",
+        "dialogue/topics/50-factions.json",
+        "dialogue/topics/50-mainline.json",
+        "dialogue/topics/55-utility.json",
+        "dialogue/topics/56-writ-house-open.json",
+        "dialogue/topics/70-disputes.json",
+        "dialogue/topics/main-quest-argument.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/0/infos/0/d",
+          "value": 30
+        },
+        {
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/0/infos/1/d",
+          "value": 20
+        },
+        {
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/0/infos/2/d",
+          "value": 15
+        },
+        {
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/1/infos/0/d",
+          "value": 30
+        },
+        {
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/1/infos/1/d",
+          "value": 20
+        },
+        {
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/2/infos/0/d",
+          "value": 25
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "TOD->SCH",
+      "why": "§E: schedules ARE time of day (RI-WLD08)",
+      "n": 315,
+      "files": [
+        "npcs/faction-givers.json",
+        "npcs/mainline.json",
+        "npcs/pop-archon.json",
+        "npcs/pop-blackrose.json",
+        "npcs/pop-gideon.json",
+        "npcs/pop-helstrom.json",
+        "npcs/pop-lilmoth.json",
+        "npcs/pop-soulrest.json",
+        "npcs/pop-stormhold.json",
+        "npcs/pop-thorn.json",
+        "npcs/quest-givers.json",
+        "npcs/spellwrights.json",
+        "npcs/thorn.json",
+        "npcs/tribes.json",
+        "npcs/writ-house.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/npcs/faction-givers.json",
+          "json_pointer": "/npcs/0/schedule",
+          "value": "[3]"
+        },
+        {
+          "data_path": "game/data/npcs/faction-givers.json",
+          "json_pointer": "/npcs/2/schedule",
+          "value": "[3]"
+        },
+        {
+          "data_path": "game/data/npcs/faction-givers.json",
+          "json_pointer": "/npcs/3/schedule",
+          "value": "[3]"
+        },
+        {
+          "data_path": "game/data/npcs/mainline.json",
+          "json_pointer": "/npcs/0/schedule",
+          "value": "[3]"
+        },
+        {
+          "data_path": "game/data/npcs/mainline.json",
+          "json_pointer": "/npcs/1/schedule",
+          "value": "[3]"
+        },
+        {
+          "data_path": "game/data/npcs/mainline.json",
+          "json_pointer": "/npcs/2/schedule",
+          "value": "[3]"
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "QST->FAC",
+      "why": "§E: quest outcomes advance, close and expel from factions",
+      "n": 285,
+      "files": [
+        "quests/blackmarsh-coast.json",
+        "quests/blackmarsh-core.json",
+        "quests/faction-imperial-assize.json",
+        "quests/faction-wet-ledger.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/mainline-act1.json",
+        "quests/mainline-act2.json",
+        "quests/mainline-act3.json",
+        "quests/mainline-act4.json",
+        "quests/mainline-act5.json",
+        "quests/mainline-backpath.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/0/consequences/faction_reputation",
+          "value": "{the_imperial_assize,the_wet_ledger}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/1/consequences/faction_reputation",
+          "value": "{the_imperial_assize,the_wet_ledger,the_xul_aneekh}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/2/consequences/faction_reputation",
+          "value": "{the_wet_ledger,the_xul_aneekh}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/0/consequences/faction_reputation",
+          "value": "{the_drowned_court,the_imperial_assize,the_wet_ledger}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/1/consequences/faction_reputation",
+          "value": "{the_drowned_court,the_imperial_assize}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/2/consequences/faction_reputation",
+          "value": "{the_drowned_court}"
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "QST->DIS",
+      "why": "§F: outcomes move disposition",
+      "n": 252,
+      "files": [
+        "quests/blackmarsh-coast.json",
+        "quests/blackmarsh-core.json",
+        "quests/faction-imperial-assize.json",
+        "quests/faction-wet-ledger.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/mainline-act1.json",
+        "quests/mainline-act2.json",
+        "quests/mainline-act3.json",
+        "quests/mainline-act4.json",
+        "quests/mainline-act5.json",
+        "quests/mainline-backpath.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/0/consequences/npc_disposition",
+          "value": "{dyer-sallis}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/1/consequences/npc_disposition",
+          "value": "{dyer-sallis,apothecary-neen}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/2/consequences/npc_disposition",
+          "value": "{dyer-sallis}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/0/consequences/npc_disposition",
+          "value": "{undertaker-vaskh}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/1/consequences/npc_disposition",
+          "value": "{undertaker-vaskh}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/2/consequences/npc_disposition",
+          "value": "{undertaker-vaskh}"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "SKL->QST",
+      "why": "§E: skill-gated resolutions — pick it, climb it, brew it, talk it",
+      "n": 212,
+      "files": [
+        "quests/blackmarsh-coast.json",
+        "quests/blackmarsh-core.json",
+        "quests/faction-imperial-assize.json",
+        "quests/faction-wet-ledger.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/magic-utility.json",
+        "quests/mainline-act1.json",
+        "quests/mainline-act2.json",
+        "quests/mainline-act3.json",
+        "quests/mainline-act4.json",
+        "quests/mainline-act5.json",
+        "quests/mainline-backpath.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/0/requires/skills",
+          "value": "{speechcraft}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/0/requires/skills",
+          "value": "{mercantile}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/3/requires/skills",
+          "value": "{security}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/2/resolutions/0/requires/skills",
+          "value": "{mercantile}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/2/resolutions/1/requires/skills",
+          "value": "{sneak}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/2/resolutions/3/requires/skills",
+          "value": "{sneak}"
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "DIS->GLD",
+      "why": "§E: disposition sets barter prices (RI-DLG04) — it reshapes the whole economy",
+      "n": 186,
+      "files": [
+        "npcs/faction-givers.json",
+        "npcs/mainline.json",
+        "npcs/named-states.json",
+        "npcs/pop-archon.json",
+        "npcs/pop-blackrose.json",
+        "npcs/pop-gideon.json",
+        "npcs/pop-helstrom.json",
+        "npcs/pop-lilmoth.json",
+        "npcs/pop-soulrest.json",
+        "npcs/pop-stormhold.json",
+        "npcs/pop-thorn.json",
+        "npcs/pop-trades.json",
+        "npcs/quest-givers.json",
+        "npcs/spellwrights.json",
+        "npcs/writ-house.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/npcs/faction-givers.json",
+          "json_pointer": "/npcs/1/services/0",
+          "value": "barter"
+        },
+        {
+          "data_path": "game/data/npcs/faction-givers.json",
+          "json_pointer": "/npcs/4/services/0",
+          "value": "ruling"
+        },
+        {
+          "data_path": "game/data/npcs/mainline.json",
+          "json_pointer": "/npcs/8/services/0",
+          "value": "barter"
+        },
+        {
+          "data_path": "game/data/npcs/mainline.json",
+          "json_pointer": "/npcs/15/services/0",
+          "value": "barter"
+        },
+        {
+          "data_path": "game/data/npcs/mainline.json",
+          "json_pointer": "/npcs/18/services/0",
+          "value": "barter"
+        },
+        {
+          "data_path": "game/data/npcs/mainline.json",
+          "json_pointer": "/npcs/22/services/0",
+          "value": "barter"
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "QST->LOR",
+      "why": "§F: granted topics",
+      "n": 156,
+      "files": [
+        "quests/hooks.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/entry_topics/0/adds_topics/0",
+          "value": "the-phial"
+        },
+        {
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/entry_topics/1/adds_topics/0",
+          "value": "the-toll-book"
+        },
+        {
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/entry_topics/2/adds_topics/0",
+          "value": "the-lease-roll"
+        },
+        {
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/entry_topics/3/adds_topics/0",
+          "value": "the-struck-off-notary"
+        },
+        {
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/entry_topics/4/adds_topics/0",
+          "value": "the-blackrose-day-book"
+        },
+        {
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/entry_topics/5/adds_topics/0",
+          "value": "the-warrant-of-attainder"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "SKL->SPL",
+      "why": "§F: which spells can be equipped at all (RI-PRG03)",
+      "n": 72,
+      "files": [
+        "magic/spells.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/0/skill_req",
+          "value": 0
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/1/skill_req",
+          "value": 0
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/2/skill_req",
+          "value": 0
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/3/skill_req",
+          "value": 25
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/4/skill_req",
+          "value": 25
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/5/skill_req",
+          "value": 25
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "GLD->SPL",
+      "why": "§F: bought spells",
+      "n": 72,
+      "files": [
+        "magic/spells.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/0/gold_price",
+          "value": 117
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/1/gold_price",
+          "value": 65
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/2/gold_price",
+          "value": 65
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/3/gold_price",
+          "value": 1090
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/4/gold_price",
+          "value": 613
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/5/gold_price",
+          "value": 674
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "FAC->QST",
+      "why": "§E: rank gates quest availability",
+      "n": 66,
+      "files": [
+        "quests/blackmarsh-coast.json",
+        "quests/blackmarsh-core.json",
+        "quests/faction-imperial-assize.json",
+        "quests/faction-wet-ledger.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/magic-utility.json",
+        "quests/mainline-act4.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/rank_gate",
+          "value": "{faction,min_rank,min_reputation}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/5/rank_gate",
+          "value": "{faction,min_rank,min_reputation}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/5/resolutions/2/requires/faction_rank",
+          "value": "{faction,min_rank}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-core.json",
+          "json_pointer": "/quests/0/rank_gate",
+          "value": "{faction,min_rank,min_reputation}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-core.json",
+          "json_pointer": "/quests/2/rank_gate",
+          "value": "{faction,min_rank,min_reputation}"
+        },
+        {
+          "data_path": "game/data/quests/faction-imperial-assize.json",
+          "json_pointer": "/quests/0/rank_gate",
+          "value": "{faction,min_rank,min_reputation}"
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "SPL->QST",
+      "why": "§E: spell-solvable quests (S19)",
+      "n": 31,
+      "files": [
+        "quests/magic-utility.json",
+        "quests/mainline-act1.json",
+        "quests/mainline-act3.json",
+        "quests/mainline-backpath.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/magic-utility.json",
+          "json_pointer": "/quests/0/resolutions/0/method",
+          "value": "magic_utility"
+        },
+        {
+          "data_path": "game/data/quests/magic-utility.json",
+          "json_pointer": "/quests/1/resolutions/0/method",
+          "value": "magic_utility"
+        },
+        {
+          "data_path": "game/data/quests/magic-utility.json",
+          "json_pointer": "/quests/2/resolutions/0/method",
+          "value": "magic_utility"
+        },
+        {
+          "data_path": "game/data/quests/magic-utility.json",
+          "json_pointer": "/quests/3/resolutions/0/method",
+          "value": "magic_utility"
+        },
+        {
+          "data_path": "game/data/quests/magic-utility.json",
+          "json_pointer": "/quests/4/resolutions/0/method",
+          "value": "magic_utility"
+        },
+        {
+          "data_path": "game/data/quests/magic-utility.json",
+          "json_pointer": "/quests/5/resolutions/0/method",
+          "value": "magic_utility"
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "WLD->QST",
+      "why": "§E: WLD→QST — the reciprocal that makes consequences persist",
+      "n": 23,
+      "files": [
+        "quests/hooks.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/hooks/0/flag",
+          "value": "lock:warded_ledger_door:open"
+        },
+        {
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/hooks/1/flag",
+          "value": "lock:ledger_strongbox:open"
+        },
+        {
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/hooks/2/flag",
+          "value": "shatter:cistern_wall_bricks"
+        },
+        {
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/hooks/3/flag",
+          "value": "lock:cistern_grate:open"
+        },
+        {
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/hooks/4/flag",
+          "value": "trap:ledger_threshold_ward:disarmed"
+        },
+        {
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/hooks/5/flag",
+          "value": "lock:hall_side_door:open"
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "ROS->LVL",
+      "why": "§F: souls (S2, S15)",
+      "n": 22,
+      "files": [
+        "combat/enemies/beast_slitherfang.json",
+        "combat/enemies/cam_boss_great.json",
+        "combat/enemies/cam_boss_mid.json",
+        "combat/enemies/cam_elite.json",
+        "combat/enemies/cam_levy.json",
+        "combat/enemies/cam_rat.json",
+        "combat/enemies/champion_hist_marked.json",
+        "combat/enemies/cst_sap_speaker.json",
+        "combat/enemies/drowned_greater.json",
+        "combat/enemies/drowned_lesser.json",
+        "combat/enemies/dummy_passive.json",
+        "combat/enemies/guard_legion.json",
+        "combat/enemies/inf_trash.json",
+        "combat/enemies/mat_chitin.json",
+        "combat/enemies/mat_flesh.json",
+        "combat/enemies/mat_metal.json",
+        "combat/enemies/mat_plant.json",
+        "combat/enemies/mat_shield.json",
+        "combat/enemies/mat_stone.json",
+        "combat/enemies/mat_water.json",
+        "combat/enemies/mat_wood.json",
+        "combat/enemies/probe_pulse.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/combat/enemies/beast_slitherfang.json",
+          "json_pointer": "/souls",
+          "value": 22
+        },
+        {
+          "data_path": "game/data/combat/enemies/cam_boss_great.json",
+          "json_pointer": "/souls",
+          "value": 0
+        },
+        {
+          "data_path": "game/data/combat/enemies/cam_boss_mid.json",
+          "json_pointer": "/souls",
+          "value": 0
+        },
+        {
+          "data_path": "game/data/combat/enemies/cam_elite.json",
+          "json_pointer": "/souls",
+          "value": 0
+        },
+        {
+          "data_path": "game/data/combat/enemies/cam_levy.json",
+          "json_pointer": "/souls",
+          "value": 0
+        },
+        {
+          "data_path": "game/data/combat/enemies/cam_rat.json",
+          "json_pointer": "/souls",
+          "value": 0
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "GLD->QST",
+      "why": "§F: a resolution bought",
+      "n": 22,
+      "files": [
+        "quests/faction-imperial-assize.json",
+        "quests/faction-wet-ledger.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/magic-utility.json",
+        "quests/mainline-act4.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/faction-imperial-assize.json",
+          "json_pointer": "/quests/3/resolutions/3/requires/gold",
+          "value": 1600
+        },
+        {
+          "data_path": "game/data/quests/faction-wet-ledger.json",
+          "json_pointer": "/quests/2/resolutions/3/requires/gold",
+          "value": 1100
+        },
+        {
+          "data_path": "game/data/quests/faction-wet-ledger.json",
+          "json_pointer": "/quests/4/resolutions/1/requires/gold",
+          "value": 2400
+        },
+        {
+          "data_path": "game/data/quests/faction-wet-ledger.json",
+          "json_pointer": "/quests/4/resolutions/3/requires/gold",
+          "value": 900
+        },
+        {
+          "data_path": "game/data/quests/faction-wet-ledger.json",
+          "json_pointer": "/quests/11/resolutions/1/requires/gold",
+          "value": 800
+        },
+        {
+          "data_path": "game/data/quests/faction-xul-aneekh.json",
+          "json_pointer": "/quests/1/resolutions/1/requires/gold",
+          "value": 400
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "STL->QST",
+      "why": "§E: stealth resolutions",
+      "n": 17,
+      "files": [
+        "quests/blackmarsh-coast.json",
+        "quests/blackmarsh-core.json",
+        "quests/faction-imperial-assize.json",
+        "quests/faction-wet-ledger.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/magic-utility.json",
+        "quests/mainline-act2.json",
+        "quests/mainline-act3.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/3/method",
+          "value": "steal"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/2/resolutions/1/method",
+          "value": "steal"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-core.json",
+          "json_pointer": "/quests/0/resolutions/4/method",
+          "value": "steal"
+        },
+        {
+          "data_path": "game/data/quests/faction-imperial-assize.json",
+          "json_pointer": "/quests/0/resolutions/1/method",
+          "value": "steal"
+        },
+        {
+          "data_path": "game/data/quests/faction-imperial-assize.json",
+          "json_pointer": "/quests/4/resolutions/0/method",
+          "value": "steal"
+        },
+        {
+          "data_path": "game/data/quests/faction-wet-ledger.json",
+          "json_pointer": "/quests/0/resolutions/1/method",
+          "value": "steal"
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "SPL->WLD",
+      "why": "§E: SPL→WLD — levitation and water-walk change which of the world is reachable",
+      "n": 13,
+      "files": [
+        "magic/spells.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/42/effects/0/effect",
+          "value": "buoyancy"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/43/effects/0/effect",
+          "value": "breathe_water"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/44/effects/0/effect",
+          "value": "feather"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/46/effects/0/effect",
+          "value": "slowfall"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/47/effects/0/effect",
+          "value": "slowfall"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/48/effects/0/effect",
+          "value": "levitate"
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "SPL->ROS",
+      "why": "§D: Calm / Paralyse / Command remove an enemy from an encounter without killing it; Invisibility prevents it",
+      "n": 13,
+      "files": [
+        "magic/spells.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/35/effects/0/effect",
+          "value": "calm_beast"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/36/effects/0/effect",
+          "value": "calm_beast"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/58/effects/0/effect",
+          "value": "invisibility"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/59/effects/0/effect",
+          "value": "chameleon"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/60/effects/0/effect",
+          "value": "chameleon"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/61/effects/0/effect",
+          "value": "muffle"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": true,
+      "declared_direction": "W2F"
+    },
+    {
+      "cell": "EQP->QST",
+      "why": "§F: a carried token opens a resolution",
+      "n": 9,
+      "files": [
+        "quests/blackmarsh-coast.json",
+        "quests/faction-imperial-assize.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/magic-utility.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/1/requires/items",
+          "value": "[1]"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/2/resolutions/1/requires/items",
+          "value": "[1]"
+        },
+        {
+          "data_path": "game/data/quests/faction-imperial-assize.json",
+          "json_pointer": "/quests/4/resolutions/1/requires/items",
+          "value": "[1]"
+        },
+        {
+          "data_path": "game/data/quests/faction-imperial-assize.json",
+          "json_pointer": "/quests/5/resolutions/2/requires/items",
+          "value": "[1]"
+        },
+        {
+          "data_path": "game/data/quests/faction-imperial-assize.json",
+          "json_pointer": "/quests/6/resolutions/1/requires/items",
+          "value": "[1]"
+        },
+        {
+          "data_path": "game/data/quests/faction-imperial-assize.json",
+          "json_pointer": "/quests/7/resolutions/0/requires/items",
+          "value": "[1]"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "SPL->STL",
+      "why": "§F: invisibility, chameleon, silence",
+      "n": 7,
+      "files": [
+        "magic/spells.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/58/effects/0/effect",
+          "value": "invisibility"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/59/effects/0/effect",
+          "value": "chameleon"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/60/effects/0/effect",
+          "value": "chameleon"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/61/effects/0/effect",
+          "value": "muffle"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/62/effects/0/effect",
+          "value": "silence"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/63/effects/0/effect",
+          "value": "night_eye"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "SPL->DUN",
+      "why": "§D: SPL→DUN, bounded by S19 — exterior only",
+      "n": 5,
+      "files": [
+        "magic/spells.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/38/effects/0/effect",
+          "value": "open_lock"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/39/effects/0/effect",
+          "value": "open_lock"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/48/effects/0/effect",
+          "value": "levitate"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/49/effects/0/effect",
+          "value": "levitate"
+        },
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/50/effects/0/effect",
+          "value": "levitate"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": true,
+      "declared_direction": "W2F"
+    },
+    {
+      "cell": "FAC->LOR",
+      "why": "§F: faction archive access grants topics",
+      "n": 4,
+      "files": [
+        "dialogue/topics/00-roots.json",
+        "dialogue/topics/10-global.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/0/infos/0/f",
+          "value": "rootkeepers"
+        },
+        {
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/0/infos/1/f",
+          "value": "house-dres"
+        },
+        {
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/0/infos/3/f",
+          "value": "ninth-cohort"
+        },
+        {
+          "data_path": "game/data/dialogue/topics/10-global.json",
+          "json_pointer": "/topics/0/infos/1/f",
+          "value": "ninth-cohort"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "DIS->BOS",
+      "why": "§D: the S13 parley threshold on a humanoid boss is a disposition gate",
+      "n": 3,
+      "files": [
+        "combat/enemies/champion_hist_marked.json",
+        "combat/enemies/guard_legion.json",
+        "combat/enemies/inf_trash.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/combat/enemies/champion_hist_marked.json",
+          "json_pointer": "/parley",
+          "value": "{npc_id,true_name_topic,faction,rank_required,rival_faction,gold_price,base_disposition,honour_bound,grounds,fiction}"
+        },
+        {
+          "data_path": "game/data/combat/enemies/guard_legion.json",
+          "json_pointer": "/parley",
+          "value": "{npc_id,faction,rank_required,rival_faction,gold_price,base_disposition,honour_bound,grounds,surrender,fiction,gold_price_note}"
+        },
+        {
+          "data_path": "game/data/combat/enemies/inf_trash.json",
+          "json_pointer": "/parley",
+          "value": "{npc_id,true_name_topic,faction,rank_required,rival_faction,gold_price,base_disposition,honour_bound,grounds,fiction}"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": true,
+      "declared_direction": "W2F"
+    },
+    {
+      "cell": "LOR->ROS",
+      "why": "§D: AR-3's \"a lore fact that is also a boss's weakness\". Knowing a true-name topic opens a parley on an encounter — the-sallow-wife and the-twin-lamps.",
+      "n": 2,
+      "files": [
+        "world/encounters.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/world/encounters.json",
+          "json_pointer": "/encounters/0/parley/true_name_topic",
+          "value": "the-sallow-wife"
+        },
+        {
+          "data_path": "game/data/world/encounters.json",
+          "json_pointer": "/encounters/1/parley/true_name_topic",
+          "value": "the-twin-lamps"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": true,
+      "declared_direction": "W2F"
+    },
+    {
+      "cell": "ROS->WLD",
+      "why": "§D: B-11’s leash is what lets a hostile be walked somewhere",
+      "n": 1,
+      "files": [
+        "combat/ai.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/combat/ai.json",
+          "json_pointer": "/leash",
+          "value": "{_source,hard_m,no_los_seconds,dist_multiple_of_sight,return_heal_seconds,_return_note}"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": true,
+      "declared_direction": "F2W"
+    },
+    {
+      "cell": "STL->DIS",
+      "why": "§F: being caught tanks it",
+      "n": 1,
+      "files": [
+        "crime/justice.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/crime/justice.json",
+          "json_pointer": "/witness",
+          "value": "{predicate,V_min,R_multiplier,identified_at_V,guard_V_min,guards_always_full_witnesses,hearing_only,never_witnesses,record_fields,unidentified_effect}"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "SPL->SKL",
+      "why": "§F: fortify-skill (and RI-EXP06 B-02)",
+      "n": 1,
+      "files": [
+        "magic/spells.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/magic/spells.json",
+          "json_pointer": "/spells/28/effects/0/effect",
+          "value": "fortify_skill"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "QST->ROS",
+      "why": "§D: AR-3's own worked example — \"a quest whose resolution changes an encounter's composition\". Q-MAIN-23 res_sign_the_clause sets `the_sixty_are_protected` and the net-throwers of dres-raid-party carry `absent_when_flag` on it. Declared on the ROSTER, not on the quest.",
+      "n": 1,
+      "files": [
+        "world/encounters.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/world/encounters.json",
+          "json_pointer": "/encounters/0/members/1/absent_when_flag",
+          "value": "the_sixty_are_protected"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": true,
+      "declared_direction": "W2F"
+    },
+    {
+      "cell": "WLD->ROS",
+      "why": "§D: the same field read as world-state -> roster. A world flag removes two bodies from a spawn, whoever set the flag.",
+      "n": 1,
+      "files": [
+        "world/encounters.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/world/encounters.json",
+          "json_pointer": "/encounters/0/members/1/absent_when_flag",
+          "value": "the_sixty_are_protected"
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": true,
+      "declared_direction": "W2F"
+    },
+    {
+      "cell": "DIS->ROS",
+      "why": "§D: an encounter hostile only below a disposition threshold — the gate lives on the encounter, not on the disposition register.",
+      "n": 1,
+      "files": [
+        "world/encounters.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/world/encounters.json",
+          "json_pointer": "/encounters/1/hostile_below_disposition",
+          "value": 15
+        }
+      ],
+      "declared_tier": "mechanical",
+      "declared_crossing": true,
+      "declared_direction": "W2F"
+    },
+    {
+      "cell": "WEA->WLD",
+      "why": "§E: tidewalking — roads and one whole route exist only at low tide (RI-WLD05 #21)",
+      "n": 1,
+      "files": [
+        "world/water.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/world/water.json",
+          "json_pointer": "/tide",
+          "value": "{cycle_real_min,states,mean_range_m,spring_mult,neap_mult,inland_damping_m,seas}"
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    }
+  ],
+  "cells_reachable_only_from_the_target": [
+    "DIS->ROS",
+    "DIS->BOS",
+    "LOR->ROS"
+  ],
+  "cells_no_rule_looks_at": [
+    "FAC->ROS",
+    "FAC->BOS",
+    "GLD->ROS",
+    "GLD->BOS",
+    "SKL->ROS",
+    "SKL->BOS",
+    "SPL->BOS",
+    "LOR->BOS",
+    "STL->ROS",
+    "STL->BOS",
+    "QST->BOS",
+    "WLD->BOS",
+    "TOD->ROS",
+    "TOD->BOS",
+    "WEA->ROS",
+    "WEA->BOS",
+    "EQP->ROS",
+    "EQP->BOS",
+    "UPG->BOS",
+    "ROS->FAC",
+    "ROS->DIS",
+    "ROS->QST",
+    "ROS->SCH",
+    "BOS->FAC",
+    "BOS->DIS",
+    "BOS->LOR",
+    "BOS->QST",
+    "BOS->WLD",
+    "BOS->SCH",
+    "DUN->ROS",
+    "DUN->BOS",
+    "SCH->ROS",
+    "SCH->BOS"
+  ]
+}

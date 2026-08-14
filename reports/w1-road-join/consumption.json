@@ -1,0 +1,240 @@
+{
+ "schema": "w1-road-join/consumption@1",
+ "method": "RI-MTH07 / ARBITRATION §3. Perturb the settlement model on a scratch tree; read the result off tools/world/road-through-building.mjs (an independent instrument, run as a subprocess) and off the geometry of the rebuilt roads.json, not off build-roads.mjs own summary.",
+ "measured_at": "2026-08-08T02:59:48.226Z",
+ "git": {
+  "head": "692b6aa0a071d25f3eeba043369ace6e301f0356"
+ },
+ "world_side_consumer": "game/src/world/field.js setRoads() blends the ground to the deck and game/src/engine.js walkRoute() steers a body down these points; game/src/world/province.js settlementSolidsNear() makes the walls the body hits. The join makes the first two agree with the third.",
+ "leg": "stormhold-helstrom",
+ "subjects": {
+  "move": "stormhold-struct-the-pass-gate",
+  "grow": "stormhold-house-1"
+ },
+ "perturbations": [
+  {
+   "id": "P1-MOVE",
+   "why": "a building that stands beside the road is moved on to it",
+   "at": [
+    2171.5,
+    761
+   ],
+   "expect_road_moves": true,
+   "what": "stormhold-struct-the-pass-gate.offset_m moved 4.0 m so its centre sits on the road",
+   "build_exit": 0,
+   "effective_footprint_after_shrink": {
+    "id": "stormhold-struct-the-pass-gate",
+    "footprint_m": [
+     5,
+     5
+    ],
+    "x": 2171.5,
+    "z": 761
+   },
+   "bites": {
+    "legs_blocked": 2,
+    "offences": 2,
+    "blocked": [
+     "stormhold-thorn: stormhold-struct-the-pass-gate",
+     "stormhold-helstrom: stormhold-struct-the-pass-gate"
+    ]
+   },
+   "bites_game_predicate": {
+    "legs_blocked": 2,
+    "blocked": [
+     "stormhold-thorn: stormhold-struct-the-pass-gate",
+     "stormhold-helstrom: stormhold-struct-the-pass-gate"
+    ]
+   },
+   "follows": {
+    "legs_blocked": 0,
+    "offences": 0,
+    "game_predicate_legs_blocked": 0
+   },
+   "road_shift_near_perturbation_m": 33.24,
+   "worst_shift_anywhere_m": 33.24,
+   "checks": [
+    {
+     "id": "BITES",
+     "pass": true,
+     "detail": "with the roads unrebuilt the world is RED — 2 leg(s) blocked, read by the offline instrument"
+    },
+    {
+     "id": "FOLLOWS",
+     "pass": true,
+     "detail": "after the rebuild the province is clear again — 0 of 10 by the instrument, 0 of 10 by the game's predicate"
+    },
+    {
+     "id": "COUPLED",
+     "pass": true,
+     "detail": "the road near the perturbation moved 33.24 m — the generator read the change"
+    }
+   ]
+  },
+  {
+   "id": "P2-ADD",
+   "why": "a building that did not exist is planted astride the road",
+   "at": [
+    2171.5,
+    761
+   ],
+   "expect_road_moves": true,
+   "what": "stormhold-consumption-blockhouse (hall, 15.0 x 17.0 m derived footprint) added on the road",
+   "build_exit": 0,
+   "effective_footprint_after_shrink": {
+    "id": "stormhold-struct-the-pass-gate",
+    "footprint_m": [
+     3.4,
+     3.4
+    ],
+    "x": 2167.5,
+    "z": 761
+   },
+   "bites": {
+    "legs_blocked": 2,
+    "offences": 2,
+    "blocked": [
+     "stormhold-thorn: stormhold-consumption-blockhouse",
+     "stormhold-helstrom: stormhold-consumption-blockhouse"
+    ]
+   },
+   "bites_game_predicate": {
+    "legs_blocked": 2,
+    "blocked": [
+     "stormhold-thorn: stormhold-consumption-blockhouse",
+     "stormhold-helstrom: stormhold-consumption-blockhouse"
+    ]
+   },
+   "follows": {
+    "legs_blocked": 0,
+    "offences": 0,
+    "game_predicate_legs_blocked": 0
+   },
+   "road_shift_near_perturbation_m": 32.75,
+   "worst_shift_anywhere_m": 32.75,
+   "checks": [
+    {
+     "id": "BITES",
+     "pass": true,
+     "detail": "with the roads unrebuilt the world is RED — 2 leg(s) blocked, read by the offline instrument"
+    },
+    {
+     "id": "FOLLOWS",
+     "pass": true,
+     "detail": "after the rebuild the province is clear again — 0 of 10 by the instrument, 0 of 10 by the game's predicate"
+    },
+    {
+     "id": "COUPLED",
+     "pass": true,
+     "detail": "the road near the perturbation moved 32.75 m — the generator read the change"
+    }
+   ]
+  },
+  {
+   "id": "P3-GROW",
+   "why": "an interior's declared exterior_footprint_m is enlarged until it swallows the road",
+   "at": [
+    2167.5,
+    746
+   ],
+   "expect_road_moves": true,
+   "bites_via": "game-predicate",
+   "what": "stormhold-house-1.continuity.exterior_footprint_m [12.4,14.4] -> [124,144] (x10); after planSettlement's shrink pass the EFFECTIVE footprint is [29.76,34.56], which does reach the road",
+   "build_exit": 0,
+   "effective_footprint_after_shrink": {
+    "id": "stormhold-house-1",
+    "footprint_m": [
+     29.76,
+     34.56
+    ],
+    "x": 2167.5,
+    "z": 746
+   },
+   "bites": {
+    "legs_blocked": 0,
+    "offences": 0,
+    "blocked": []
+   },
+   "bites_game_predicate": {
+    "legs_blocked": 2,
+    "blocked": [
+     "stormhold-thorn: stormhold-house-1",
+     "stormhold-helstrom: stormhold-house-1"
+    ]
+   },
+   "follows": {
+    "legs_blocked": 0,
+    "offences": 0,
+    "game_predicate_legs_blocked": 0
+   },
+   "road_shift_near_perturbation_m": 22.3,
+   "worst_shift_anywhere_m": 35.41,
+   "checks": [
+    {
+     "id": "BITES",
+     "pass": true,
+     "detail": "with the roads unrebuilt the world is RED — 2 leg(s) blocked, read by the GAME's predicate (planSettlement with interiors); the offline instrument sees 0 because it plans with none"
+    },
+    {
+     "id": "FOLLOWS",
+     "pass": true,
+     "detail": "after the rebuild the province is clear again — 0 of 10 by the instrument, 0 of 10 by the game's predicate"
+    },
+    {
+     "id": "COUPLED",
+     "pass": true,
+     "detail": "the road near the perturbation moved 22.3 m — the generator read the change"
+    }
+   ]
+  },
+  {
+   "id": "NULL",
+   "why": "a building is moved 250 m out into open country, 217 m from the nearest road point",
+   "at": [
+    2167.5,
+    761
+   ],
+   "expect_road_moves": false,
+   "what": "stormhold-struct-the-pass-gate moved to (2043, 978), 217 m from the nearest point of any leg",
+   "build_exit": 0,
+   "effective_footprint_after_shrink": {
+    "id": "stormhold-struct-the-pass-gate",
+    "footprint_m": [
+     5,
+     5
+    ],
+    "x": 2042.5,
+    "z": 977.5
+   },
+   "bites": {
+    "legs_blocked": 0,
+    "offences": 0,
+    "blocked": []
+   },
+   "bites_game_predicate": {
+    "legs_blocked": 0,
+    "blocked": []
+   },
+   "follows": {
+    "legs_blocked": 0,
+    "offences": 0,
+    "game_predicate_legs_blocked": 0
+   },
+   "road_shift_near_perturbation_m": 0,
+   "worst_shift_anywhere_m": 0,
+   "checks": [
+    {
+     "id": "NULL-QUIET",
+     "pass": true,
+     "detail": "the road did not move (0 m near the subject, 0.00 m worst anywhere) — the join is coupled to buildings ON the road, not to any edit anywhere"
+    },
+    {
+     "id": "NULL-STILL-CLEAR",
+     "pass": true,
+     "detail": "and the province is still clear (0 of 10 by the instrument, 0 by the game's predicate)"
+    }
+   ]
+  }
+ ],
+ "ok": true
+}

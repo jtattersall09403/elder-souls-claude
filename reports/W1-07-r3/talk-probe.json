@@ -1,0 +1,3431 @@
+{
+  "state": "barge-hold",
+  "races": [
+    "saxhleel",
+    "naga",
+    "dunmer",
+    "imperial",
+    "nord",
+    "breton",
+    "redguard",
+    "khajiit",
+    "orsimer",
+    "bosmer"
+  ],
+  "npcs": [
+    {
+      "eid": "jeeh-ei",
+      "name": "Jeeh-Ei",
+      "reaction_group": "RG-LUKIUL",
+      "topics": [
+        "the-hold",
+        "the-writ-house",
+        "your-hatch-name",
+        "what-they-take-off-you"
+      ]
+    },
+    {
+      "eid": "clerk-avelia-doren",
+      "name": "Avelia Doren",
+      "reaction_group": "RG-EMPIRE",
+      "topics": [
+        "the-provincial-office",
+        "writ-amendment",
+        "the-fee"
+      ]
+    },
+    {
+      "eid": "warden-scribe-tuleeh-ma",
+      "name": "Tuleeh-Ma",
+      "reaction_group": "RG-LEDGER",
+      "topics": [
+        "the-writ",
+        "the-writ-house",
+        "tidewrack",
+        "the-provincial-office",
+        "the-tides",
+        "my-work",
+        "the-list",
+        "lukiul"
+      ]
+    },
+    {
+      "eid": "helstrom-draught-seller",
+      "name": "Ashul-Reeh",
+      "reaction_group": "RG-DEEP",
+      "topics": [
+        "the-draught",
+        "the-market",
+        "the-tides",
+        "the-surcharge"
+      ]
+    },
+    {
+      "eid": "helstrom-net-mender",
+      "name": "Hul-Meesh",
+      "reaction_group": "RG-TOWN",
+      "topics": [
+        "the-market",
+        "the-old-cages",
+        "the-tides"
+      ]
+    },
+    {
+      "eid": "helstrom-reed-seller",
+      "name": "Perrine Bec",
+      "reaction_group": "RG-TOWN",
+      "topics": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ]
+    },
+    {
+      "eid": "helstrom-salt-factor",
+      "name": "Drovas Reln",
+      "reaction_group": "RG-DRES",
+      "topics": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ]
+    },
+    {
+      "eid": "stormhold-gate-guard",
+      "name": "Cassius Melo",
+      "reaction_group": "RG-EMPIRE",
+      "topics": [
+        "the-ninth-cohort",
+        "bridge-duty",
+        "the-muster-board",
+        "citizenship"
+      ]
+    },
+    {
+      "eid": "stormhold-second-guard",
+      "name": "Livia Sarran",
+      "reaction_group": "RG-EMPIRE",
+      "topics": [
+        "the-muster-board",
+        "home-leave",
+        "the-tribune"
+      ]
+    },
+    {
+      "eid": "stormhold-street-sweeper",
+      "name": "Okan-Zei",
+      "reaction_group": "RG-LUKIUL",
+      "topics": [
+        "the-boards",
+        "the-office",
+        "what-the-warmbloods-ask"
+      ]
+    },
+    {
+      "eid": "rootlands-band-elder",
+      "name": "Xhuth",
+      "reaction_group": "RG-NAGA",
+      "topics": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ]
+    },
+    {
+      "eid": "rootlands-drowned-speaker",
+      "name": "Nokh-Vashan",
+      "reaction_group": "RG-VAKH",
+      "topics": [
+        "the-drowned-kin",
+        "the-drowned-road",
+        "the-quiet-grave"
+      ]
+    },
+    {
+      "eid": "rootlands-keeper",
+      "name": "Teeba-Ei",
+      "reaction_group": "RG-ROOT",
+      "topics": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "state": "barge-hold",
+      "race": "saxhleel",
+      "npc": "jeeh-ei",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 56,
+      "greeting": "Sit on the boards; nobody minds. Cousin — you have the accent of somewhere.",
+      "cell": "65",
+      "key": [
+        "RG-LUKIUL",
+        "warm",
+        "saxhleel"
+      ],
+      "topics": [
+        "the-hold",
+        "the-writ-house",
+        "your-hatch-name",
+        "what-they-take-off-you"
+      ],
+      "gated": [
+        "the-writ-house",
+        "what-they-take-off-you"
+      ]
+    },
+    {
+      "state": "barge-hold",
+      "race": "naga",
+      "npc": "jeeh-ei",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 43,
+      "greeting": "Cousin, of a kind, and everybody here will say so slowly. Mind the boards; the third one from the end is rotten.",
+      "cell": "61",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "naga"
+      ],
+      "topics": [
+        "the-hold",
+        "the-writ-house",
+        "your-hatch-name",
+        "what-they-take-off-you"
+      ],
+      "gated": [
+        "the-writ-house",
+        "what-they-take-off-you"
+      ]
+    },
+    {
+      "state": "barge-hold",
+      "race": "dunmer",
+      "npc": "jeeh-ei",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 19,
+      "greeting": "We have had your people through here before. State your business at the boards, not at me.",
+      "cell": "57",
+      "key": [
+        "RG-LUKIUL",
+        "cold",
+        "dunmer"
+      ],
+      "topics": [
+        "the-hold",
+        "the-writ-house",
+        "your-hatch-name",
+        "what-they-take-off-you"
+      ],
+      "gated": [
+        "the-writ-house",
+        "what-they-take-off-you"
+      ]
+    },
+    {
+      "state": "barge-hold",
+      "race": "imperial",
+      "npc": "jeeh-ei",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 45,
+      "greeting": "Say it once and I will tell you who to ask. You will want the ledger side of town.",
+      "cell": "63",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "imperial"
+      ],
+      "topics": [
+        "the-hold",
+        "the-writ-house",
+        "your-hatch-name",
+        "what-they-take-off-you"
+      ],
+      "gated": [
+        "the-writ-house",
+        "what-they-take-off-you"
+      ]
+    },
+    {
+      "state": "barge-hold",
+      "race": "nord",
+      "npc": "jeeh-ei",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 41,
+      "greeting": "You are a long way from wherever that is. The road is that way and the water is the other.",
+      "cell": "64",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-hold",
+        "the-writ-house",
+        "your-hatch-name",
+        "what-they-take-off-you"
+      ],
+      "gated": [
+        "the-writ-house",
+        "what-they-take-off-you"
+      ]
+    },
+    {
+      "state": "barge-hold",
+      "race": "breton",
+      "npc": "jeeh-ei",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 43,
+      "greeting": "We trade. That is what this is. You are a long way from wherever that is.",
+      "cell": "64",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-hold",
+        "the-writ-house",
+        "your-hatch-name",
+        "what-they-take-off-you"
+      ],
+      "gated": [
+        "the-writ-house",
+        "what-they-take-off-you"
+      ]
+    },
+    {
+      "state": "barge-hold",
+      "race": "redguard",
+      "npc": "jeeh-ei",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 43,
+      "greeting": "You are a long way from wherever that is. Mind the boards; the third one from the end is rotten.",
+      "cell": "64",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-hold",
+        "the-writ-house",
+        "your-hatch-name",
+        "what-they-take-off-you"
+      ],
+      "gated": [
+        "the-writ-house",
+        "what-they-take-off-you"
+      ]
+    },
+    {
+      "state": "barge-hold",
+      "race": "khajiit",
+      "npc": "jeeh-ei",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 41,
+      "greeting": "You are a long way from wherever that is. You want something. Everybody does.",
+      "cell": "64",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-hold",
+        "the-writ-house",
+        "your-hatch-name",
+        "what-they-take-off-you"
+      ],
+      "gated": [
+        "the-writ-house",
+        "what-they-take-off-you"
+      ]
+    },
+    {
+      "state": "barge-hold",
+      "race": "orsimer",
+      "npc": "jeeh-ei",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 37,
+      "greeting": "Say it once and I will tell you who to ask. You are a long way from wherever that is.",
+      "cell": "64",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-hold",
+        "the-writ-house",
+        "your-hatch-name",
+        "what-they-take-off-you"
+      ],
+      "gated": [
+        "the-writ-house",
+        "what-they-take-off-you"
+      ]
+    },
+    {
+      "state": "barge-hold",
+      "race": "bosmer",
+      "npc": "jeeh-ei",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 42,
+      "greeting": "You are a long way from wherever that is. The road is that way and the water is the other.",
+      "cell": "64",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-hold",
+        "the-writ-house",
+        "your-hatch-name",
+        "what-they-take-off-you"
+      ],
+      "gated": [
+        "the-writ-house",
+        "what-they-take-off-you"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "saxhleel",
+      "npc": "clerk-avelia-doren",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 26,
+      "greeting": "That is provincial business. Take it to the provincial office. Provincial.",
+      "cell": "130",
+      "key": [
+        "RG-EMPIRE",
+        "cold",
+        "saxhleel"
+      ],
+      "topics": [
+        "the-provincial-office",
+        "writ-amendment",
+        "the-fee"
+      ],
+      "gated": [
+        "the-provincial-office",
+        "the-fee"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "saxhleel",
+      "npc": "warden-scribe-tuleeh-ma",
+      "reaction_group": "RG-LEDGER",
+      "disposition": 43,
+      "greeting": "Name and hatch-name, if you have both. Papers on the desk, please.",
+      "cell": "110",
+      "key": [
+        "RG-LEDGER",
+        "neutral",
+        "saxhleel"
+      ],
+      "topics": [
+        "the-writ",
+        "the-writ-house",
+        "tidewrack",
+        "the-provincial-office",
+        "the-tides",
+        "my-work",
+        "the-list",
+        "lukiul"
+      ],
+      "gated": [
+        "tidewrack",
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "naga",
+      "npc": "clerk-avelia-doren",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 12,
+      "greeting": "Provincial, and the kind we write twice. I am on duty and you are in the way.",
+      "cell": "131",
+      "key": [
+        "RG-EMPIRE",
+        "cold",
+        "naga"
+      ],
+      "topics": [
+        "the-provincial-office",
+        "writ-amendment",
+        "the-fee"
+      ],
+      "gated": [
+        "the-provincial-office",
+        "the-fee"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "naga",
+      "npc": "warden-scribe-tuleeh-ma",
+      "reaction_group": "RG-LEDGER",
+      "disposition": 31,
+      "greeting": "Name, and the river you came off. Yes. What.",
+      "cell": "111",
+      "key": [
+        "RG-LEDGER",
+        "neutral",
+        "naga"
+      ],
+      "topics": [
+        "the-writ",
+        "the-writ-house",
+        "tidewrack",
+        "the-provincial-office",
+        "the-tides",
+        "my-work",
+        "the-list",
+        "lukiul"
+      ],
+      "gated": [
+        "tidewrack",
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "dunmer",
+      "npc": "clerk-avelia-doren",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 34,
+      "greeting": "Citizen — of the useful sort. Citizen. Something you need?",
+      "cell": "137",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "dunmer"
+      ],
+      "topics": [
+        "the-provincial-office",
+        "writ-amendment",
+        "the-fee"
+      ],
+      "gated": [
+        "the-provincial-office",
+        "the-fee"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "dunmer",
+      "npc": "warden-scribe-tuleeh-ma",
+      "reaction_group": "RG-LEDGER",
+      "disposition": 33,
+      "greeting": "If it is an amendment it is a fee. If it is anything else it is a wait. Name and House, if you claim one.",
+      "cell": "112",
+      "key": [
+        "RG-LEDGER",
+        "neutral",
+        "dunmer"
+      ],
+      "topics": [
+        "the-writ",
+        "the-writ-house",
+        "tidewrack",
+        "the-provincial-office",
+        "the-tides",
+        "my-work",
+        "the-list",
+        "lukiul"
+      ],
+      "gated": [
+        "tidewrack",
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "imperial",
+      "npc": "clerk-avelia-doren",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 44,
+      "greeting": "Roads are clear as far as the bridge. After that, your problem. Citizen.",
+      "cell": "138",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "imperial"
+      ],
+      "topics": [
+        "the-provincial-office",
+        "writ-amendment",
+        "the-fee"
+      ],
+      "gated": [
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "imperial",
+      "npc": "warden-scribe-tuleeh-ma",
+      "reaction_group": "RG-LEDGER",
+      "disposition": 47,
+      "greeting": "Name and cohort or name and none. I can look it up. It will take as long as it takes.",
+      "cell": "113",
+      "key": [
+        "RG-LEDGER",
+        "neutral",
+        "imperial"
+      ],
+      "topics": [
+        "the-writ",
+        "the-writ-house",
+        "tidewrack",
+        "the-provincial-office",
+        "the-tides",
+        "my-work",
+        "the-list",
+        "lukiul"
+      ],
+      "gated": [
+        "tidewrack",
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "nord",
+      "npc": "clerk-avelia-doren",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 40,
+      "greeting": "Citizen, at a stretch. Ask, and if it is Legion business I will tell you it is Legion business.",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-provincial-office",
+        "writ-amendment",
+        "the-fee"
+      ],
+      "gated": [
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "nord",
+      "npc": "warden-scribe-tuleeh-ma",
+      "reaction_group": "RG-LEDGER",
+      "disposition": 41,
+      "greeting": "Say the whole thing once rather than half of it three times. Name, and what the writ says under it.",
+      "cell": "114",
+      "key": [
+        "RG-LEDGER",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-writ",
+        "the-writ-house",
+        "tidewrack",
+        "the-provincial-office",
+        "the-tides",
+        "my-work",
+        "the-list",
+        "lukiul"
+      ],
+      "gated": [
+        "tidewrack",
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "breton",
+      "npc": "clerk-avelia-doren",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 38,
+      "greeting": "Keep out of the marsh after dark and I will have less to write. Citizen, at a stretch.",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-provincial-office",
+        "writ-amendment",
+        "the-fee"
+      ],
+      "gated": [
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "breton",
+      "npc": "warden-scribe-tuleeh-ma",
+      "reaction_group": "RG-LEDGER",
+      "disposition": 43,
+      "greeting": "Name, and what the writ says under it. Papers on the desk, please.",
+      "cell": "114",
+      "key": [
+        "RG-LEDGER",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-writ",
+        "the-writ-house",
+        "tidewrack",
+        "the-provincial-office",
+        "the-tides",
+        "my-work",
+        "the-list",
+        "lukiul"
+      ],
+      "gated": [
+        "tidewrack",
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "redguard",
+      "npc": "clerk-avelia-doren",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 38,
+      "greeting": "Citizen, at a stretch. Something to report?",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-provincial-office",
+        "writ-amendment",
+        "the-fee"
+      ],
+      "gated": [
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "redguard",
+      "npc": "warden-scribe-tuleeh-ma",
+      "reaction_group": "RG-LEDGER",
+      "disposition": 41,
+      "greeting": "Name, and what the writ says under it. Yes. What.",
+      "cell": "114",
+      "key": [
+        "RG-LEDGER",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-writ",
+        "the-writ-house",
+        "tidewrack",
+        "the-provincial-office",
+        "the-tides",
+        "my-work",
+        "the-list",
+        "lukiul"
+      ],
+      "gated": [
+        "tidewrack",
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "khajiit",
+      "npc": "clerk-avelia-doren",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 22,
+      "greeting": "Citizen, at a stretch. State your business, briefly.",
+      "cell": "134",
+      "key": [
+        "RG-EMPIRE",
+        "cold",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-provincial-office",
+        "writ-amendment",
+        "the-fee"
+      ],
+      "gated": [
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "khajiit",
+      "npc": "warden-scribe-tuleeh-ma",
+      "reaction_group": "RG-LEDGER",
+      "disposition": 33,
+      "greeting": "If it is an amendment it is a fee. If it is anything else it is a wait. Name, and what the writ says under it.",
+      "cell": "114",
+      "key": [
+        "RG-LEDGER",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-writ",
+        "the-writ-house",
+        "tidewrack",
+        "the-provincial-office",
+        "the-tides",
+        "my-work",
+        "the-list",
+        "lukiul"
+      ],
+      "gated": [
+        "tidewrack",
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "orsimer",
+      "npc": "clerk-avelia-doren",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 36,
+      "greeting": "Roads are clear as far as the bridge. After that, your problem. Citizen, at a stretch.",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-provincial-office",
+        "writ-amendment",
+        "the-fee"
+      ],
+      "gated": [
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "orsimer",
+      "npc": "warden-scribe-tuleeh-ma",
+      "reaction_group": "RG-LEDGER",
+      "disposition": 35,
+      "greeting": "Name, and what the writ says under it. I can look it up. It will take as long as it takes.",
+      "cell": "114",
+      "key": [
+        "RG-LEDGER",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-writ",
+        "the-writ-house",
+        "tidewrack",
+        "the-provincial-office",
+        "the-tides",
+        "my-work",
+        "the-list",
+        "lukiul"
+      ],
+      "gated": [
+        "tidewrack",
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "bosmer",
+      "npc": "clerk-avelia-doren",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 32,
+      "greeting": "Citizen, at a stretch. Ask, and if it is Legion business I will tell you it is Legion business.",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-provincial-office",
+        "writ-amendment",
+        "the-fee"
+      ],
+      "gated": [
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "writ-house",
+      "race": "bosmer",
+      "npc": "warden-scribe-tuleeh-ma",
+      "reaction_group": "RG-LEDGER",
+      "disposition": 41,
+      "greeting": "Say the whole thing once rather than half of it three times. Name, and what the writ says under it.",
+      "cell": "114",
+      "key": [
+        "RG-LEDGER",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-writ",
+        "the-writ-house",
+        "tidewrack",
+        "the-provincial-office",
+        "the-tides",
+        "my-work",
+        "the-list",
+        "lukiul"
+      ],
+      "gated": [
+        "tidewrack",
+        "the-provincial-office"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "saxhleel",
+      "npc": "helstrom-draught-seller",
+      "reaction_group": "RG-DEEP",
+      "disposition": 74,
+      "greeting": "The Hist noticed you. Do not make anything of it. Sit. Root-kin.",
+      "cell": "20",
+      "key": [
+        "RG-DEEP",
+        "friendly",
+        "saxhleel"
+      ],
+      "topics": [
+        "the-draught",
+        "the-market",
+        "the-tides",
+        "the-surcharge"
+      ],
+      "gated": [
+        "the-draught",
+        "the-market",
+        "the-surcharge"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "saxhleel",
+      "npc": "helstrom-net-mender",
+      "reaction_group": "RG-TOWN",
+      "disposition": 44,
+      "greeting": "Prices are on the board. You are from here, or near enough.",
+      "cell": "260",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "saxhleel"
+      ],
+      "topics": [
+        "the-market",
+        "the-old-cages",
+        "the-tides"
+      ],
+      "gated": [
+        "the-old-cages",
+        "the-tides"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "saxhleel",
+      "npc": "helstrom-reed-seller",
+      "reaction_group": "RG-TOWN",
+      "disposition": 42,
+      "greeting": "You are from here, or near enough. Mind the wagons.",
+      "cell": "260",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "saxhleel"
+      ],
+      "topics": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ],
+      "gated": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "saxhleel",
+      "npc": "helstrom-salt-factor",
+      "reaction_group": "RG-DRES",
+      "disposition": 15,
+      "greeting": "We are trading. You are interrupting. Stock, unless the paper says otherwise.",
+      "cell": "155",
+      "key": [
+        "RG-DRES",
+        "cold",
+        "saxhleel"
+      ],
+      "topics": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ],
+      "gated": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "naga",
+      "npc": "helstrom-draught-seller",
+      "reaction_group": "RG-DEEP",
+      "disposition": 66,
+      "greeting": "It comes up out of the water and it wants talking to. The village knows you came in. That is not a bad thing.",
+      "cell": "16",
+      "key": [
+        "RG-DEEP",
+        "warm",
+        "naga"
+      ],
+      "topics": [
+        "the-draught",
+        "the-market",
+        "the-tides",
+        "the-surcharge"
+      ],
+      "gated": [
+        "the-draught",
+        "the-market",
+        "the-surcharge"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "naga",
+      "npc": "helstrom-net-mender",
+      "reaction_group": "RG-TOWN",
+      "disposition": 32,
+      "greeting": "The children have been told to stay in. Ask. If I know it, you can have it.",
+      "cell": "261",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "naga"
+      ],
+      "topics": [
+        "the-market",
+        "the-old-cages",
+        "the-tides"
+      ],
+      "gated": [
+        "the-old-cages",
+        "the-tides"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "naga",
+      "npc": "helstrom-reed-seller",
+      "reaction_group": "RG-TOWN",
+      "disposition": 30,
+      "greeting": "The children have been told to stay in. Something you need?",
+      "cell": "261",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "naga"
+      ],
+      "topics": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ],
+      "gated": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "naga",
+      "npc": "helstrom-salt-factor",
+      "reaction_group": "RG-DRES",
+      "disposition": 19,
+      "greeting": "That one is not stock. That one is a problem. The House does not treat with people on roads.",
+      "cell": "156",
+      "key": [
+        "RG-DRES",
+        "cold",
+        "naga"
+      ],
+      "topics": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ],
+      "gated": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "dunmer",
+      "npc": "helstrom-draught-seller",
+      "reaction_group": "RG-DEEP",
+      "disposition": 20,
+      "greeting": "Ash-man. Say what you came to say.",
+      "cell": "7",
+      "key": [
+        "RG-DEEP",
+        "cold",
+        "dunmer"
+      ],
+      "topics": [
+        "the-draught",
+        "the-market",
+        "the-tides",
+        "the-surcharge"
+      ],
+      "gated": [
+        "the-draught",
+        "the-market",
+        "the-surcharge"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "dunmer",
+      "npc": "helstrom-net-mender",
+      "reaction_group": "RG-TOWN",
+      "disposition": 20,
+      "greeting": "Say it and I will get back to the stall. We do not take that side and we do not take yours either.",
+      "cell": "257",
+      "key": [
+        "RG-TOWN",
+        "cold",
+        "dunmer"
+      ],
+      "topics": [
+        "the-market",
+        "the-tides"
+      ],
+      "gated": [
+        "the-tides"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "dunmer",
+      "npc": "helstrom-reed-seller",
+      "reaction_group": "RG-TOWN",
+      "disposition": 18,
+      "greeting": "We keep out of things. We do not take that side and we do not take yours either.",
+      "cell": "257",
+      "key": [
+        "RG-TOWN",
+        "cold",
+        "dunmer"
+      ],
+      "topics": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ],
+      "gated": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "dunmer",
+      "npc": "helstrom-salt-factor",
+      "reaction_group": "RG-DRES",
+      "disposition": 57,
+      "greeting": "Ask. Trade talk is the only talk out here. Serjo.",
+      "cell": "167",
+      "key": [
+        "RG-DRES",
+        "warm",
+        "dunmer"
+      ],
+      "topics": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ],
+      "gated": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "imperial",
+      "npc": "helstrom-draught-seller",
+      "reaction_group": "RG-DEEP",
+      "disposition": 38,
+      "greeting": "We are not unfriendly. We are busy. Warmblood, and the paper kind.",
+      "cell": "13",
+      "key": [
+        "RG-DEEP",
+        "neutral",
+        "imperial"
+      ],
+      "topics": [
+        "the-draught",
+        "the-market",
+        "the-tides",
+        "the-surcharge"
+      ],
+      "gated": [
+        "the-draught",
+        "the-market",
+        "the-surcharge"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "imperial",
+      "npc": "helstrom-net-mender",
+      "reaction_group": "RG-TOWN",
+      "disposition": 40,
+      "greeting": "Tax or trade? Mind the wagons.",
+      "cell": "263",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "imperial"
+      ],
+      "topics": [
+        "the-market",
+        "the-old-cages",
+        "the-tides"
+      ],
+      "gated": [
+        "the-old-cages",
+        "the-tides"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "imperial",
+      "npc": "helstrom-reed-seller",
+      "reaction_group": "RG-TOWN",
+      "disposition": 38,
+      "greeting": "Tax or trade? Ask. If I know it, you can have it.",
+      "cell": "263",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "imperial"
+      ],
+      "topics": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ],
+      "gated": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "imperial",
+      "npc": "helstrom-salt-factor",
+      "reaction_group": "RG-DRES",
+      "disposition": 49,
+      "greeting": "Factor. Or near enough for trade. Speak up.",
+      "cell": "163",
+      "key": [
+        "RG-DRES",
+        "neutral",
+        "imperial"
+      ],
+      "topics": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ],
+      "gated": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "nord",
+      "npc": "helstrom-draught-seller",
+      "reaction_group": "RG-DEEP",
+      "disposition": 44,
+      "greeting": "Warmblood. Ask, and if it is not root-business you may get an answer.",
+      "cell": "14",
+      "key": [
+        "RG-DEEP",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-draught",
+        "the-market",
+        "the-tides",
+        "the-surcharge"
+      ],
+      "gated": [
+        "the-draught",
+        "the-market",
+        "the-surcharge"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "nord",
+      "npc": "helstrom-net-mender",
+      "reaction_group": "RG-TOWN",
+      "disposition": 38,
+      "greeting": "Off a boat, then. Something you need?",
+      "cell": "264",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-market",
+        "the-old-cages",
+        "the-tides"
+      ],
+      "gated": [
+        "the-old-cages",
+        "the-tides"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "nord",
+      "npc": "helstrom-reed-seller",
+      "reaction_group": "RG-TOWN",
+      "disposition": 36,
+      "greeting": "It is a small place. There is not much to tell. Off a boat, then.",
+      "cell": "264",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ],
+      "gated": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "nord",
+      "npc": "helstrom-salt-factor",
+      "reaction_group": "RG-DRES",
+      "disposition": 45,
+      "greeting": "Free, I take it. For now. Are you buying? We have four and one of them can read.",
+      "cell": "164",
+      "key": [
+        "RG-DRES",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ],
+      "gated": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "breton",
+      "npc": "helstrom-draught-seller",
+      "reaction_group": "RG-DEEP",
+      "disposition": 46,
+      "greeting": "The water is high. Keep to the boards. Warmblood.",
+      "cell": "14",
+      "key": [
+        "RG-DEEP",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-draught",
+        "the-market",
+        "the-tides",
+        "the-surcharge"
+      ],
+      "gated": [
+        "the-draught",
+        "the-market",
+        "the-surcharge"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "breton",
+      "npc": "helstrom-net-mender",
+      "reaction_group": "RG-TOWN",
+      "disposition": 38,
+      "greeting": "Prices are on the board. Off a boat, then.",
+      "cell": "264",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-market",
+        "the-old-cages",
+        "the-tides"
+      ],
+      "gated": [
+        "the-old-cages",
+        "the-tides"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "breton",
+      "npc": "helstrom-reed-seller",
+      "reaction_group": "RG-TOWN",
+      "disposition": 36,
+      "greeting": "Off a boat, then. Mind the wagons.",
+      "cell": "264",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ],
+      "gated": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "breton",
+      "npc": "helstrom-salt-factor",
+      "reaction_group": "RG-DRES",
+      "disposition": 45,
+      "greeting": "Business, then. Quickly. Free, I take it. For now.",
+      "cell": "164",
+      "key": [
+        "RG-DRES",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ],
+      "gated": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "redguard",
+      "npc": "helstrom-draught-seller",
+      "reaction_group": "RG-DEEP",
+      "disposition": 48,
+      "greeting": "Warmblood. What.",
+      "cell": "14",
+      "key": [
+        "RG-DEEP",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-draught",
+        "the-market",
+        "the-tides",
+        "the-surcharge"
+      ],
+      "gated": [
+        "the-draught",
+        "the-market",
+        "the-surcharge"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "redguard",
+      "npc": "helstrom-net-mender",
+      "reaction_group": "RG-TOWN",
+      "disposition": 38,
+      "greeting": "Off a boat, then. Ask. If I know it, you can have it.",
+      "cell": "264",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-market",
+        "the-old-cages",
+        "the-tides"
+      ],
+      "gated": [
+        "the-old-cages",
+        "the-tides"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "redguard",
+      "npc": "helstrom-reed-seller",
+      "reaction_group": "RG-TOWN",
+      "disposition": 36,
+      "greeting": "Off a boat, then. Something you need?",
+      "cell": "264",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ],
+      "gated": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "redguard",
+      "npc": "helstrom-salt-factor",
+      "reaction_group": "RG-DRES",
+      "disposition": 43,
+      "greeting": "Free, I take it. For now. You want something or you want past. Both are arrangeable.",
+      "cell": "164",
+      "key": [
+        "RG-DRES",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ],
+      "gated": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "khajiit",
+      "npc": "helstrom-draught-seller",
+      "reaction_group": "RG-DEEP",
+      "disposition": 52,
+      "greeting": "Warmblood. There is dry floor by the fire.",
+      "cell": "19",
+      "key": [
+        "RG-DEEP",
+        "warm",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-draught",
+        "the-market",
+        "the-tides",
+        "the-surcharge"
+      ],
+      "gated": [
+        "the-draught",
+        "the-market",
+        "the-surcharge"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "khajiit",
+      "npc": "helstrom-net-mender",
+      "reaction_group": "RG-TOWN",
+      "disposition": 34,
+      "greeting": "It is a small place. There is not much to tell. Off a boat, then.",
+      "cell": "264",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-market",
+        "the-old-cages",
+        "the-tides"
+      ],
+      "gated": [
+        "the-old-cages",
+        "the-tides"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "khajiit",
+      "npc": "helstrom-reed-seller",
+      "reaction_group": "RG-TOWN",
+      "disposition": 32,
+      "greeting": "Prices are on the board. Off a boat, then.",
+      "cell": "264",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ],
+      "gated": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "khajiit",
+      "npc": "helstrom-salt-factor",
+      "reaction_group": "RG-DRES",
+      "disposition": 39,
+      "greeting": "The House is open to trade even out here. Free, I take it. For now.",
+      "cell": "164",
+      "key": [
+        "RG-DRES",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ],
+      "gated": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "orsimer",
+      "npc": "helstrom-draught-seller",
+      "reaction_group": "RG-DEEP",
+      "disposition": 42,
+      "greeting": "We are not unfriendly. We are busy. Warmblood.",
+      "cell": "14",
+      "key": [
+        "RG-DEEP",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-draught",
+        "the-market",
+        "the-tides",
+        "the-surcharge"
+      ],
+      "gated": [
+        "the-draught",
+        "the-market",
+        "the-surcharge"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "orsimer",
+      "npc": "helstrom-net-mender",
+      "reaction_group": "RG-TOWN",
+      "disposition": 32,
+      "greeting": "Off a boat, then. Mind the wagons.",
+      "cell": "264",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-market",
+        "the-old-cages",
+        "the-tides"
+      ],
+      "gated": [
+        "the-old-cages",
+        "the-tides"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "orsimer",
+      "npc": "helstrom-reed-seller",
+      "reaction_group": "RG-TOWN",
+      "disposition": 30,
+      "greeting": "Off a boat, then. Ask. If I know it, you can have it.",
+      "cell": "264",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ],
+      "gated": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "orsimer",
+      "npc": "helstrom-salt-factor",
+      "reaction_group": "RG-DRES",
+      "disposition": 41,
+      "greeting": "Free, I take it. For now. Speak up.",
+      "cell": "164",
+      "key": [
+        "RG-DRES",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ],
+      "gated": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "bosmer",
+      "npc": "helstrom-draught-seller",
+      "reaction_group": "RG-DEEP",
+      "disposition": 47,
+      "greeting": "Warmblood. Ask, and if it is not root-business you may get an answer.",
+      "cell": "14",
+      "key": [
+        "RG-DEEP",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-draught",
+        "the-market",
+        "the-tides",
+        "the-surcharge"
+      ],
+      "gated": [
+        "the-draught",
+        "the-market",
+        "the-surcharge"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "bosmer",
+      "npc": "helstrom-net-mender",
+      "reaction_group": "RG-TOWN",
+      "disposition": 38,
+      "greeting": "Off a boat, then. Something you need?",
+      "cell": "264",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-market",
+        "the-old-cages",
+        "the-tides"
+      ],
+      "gated": [
+        "the-old-cages",
+        "the-tides"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "bosmer",
+      "npc": "helstrom-reed-seller",
+      "reaction_group": "RG-TOWN",
+      "disposition": 36,
+      "greeting": "It is a small place. There is not much to tell. Off a boat, then.",
+      "cell": "264",
+      "key": [
+        "RG-TOWN",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ],
+      "gated": [
+        "the-market",
+        "boots",
+        "why-anyone-comes-here"
+      ]
+    },
+    {
+      "state": "helstrom-market",
+      "race": "bosmer",
+      "npc": "helstrom-salt-factor",
+      "reaction_group": "RG-DRES",
+      "disposition": 43,
+      "greeting": "Free, I take it. For now. Are you buying? We have four and one of them can read.",
+      "cell": "164",
+      "key": [
+        "RG-DRES",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ],
+      "gated": [
+        "house-business",
+        "the-factor-house",
+        "the-wine",
+        "the-net-price"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "saxhleel",
+      "npc": "stormhold-gate-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 24,
+      "greeting": "Provincial. State your business, briefly.",
+      "cell": "130",
+      "key": [
+        "RG-EMPIRE",
+        "cold",
+        "saxhleel"
+      ],
+      "topics": [
+        "the-ninth-cohort",
+        "bridge-duty",
+        "the-muster-board",
+        "citizenship"
+      ],
+      "gated": [
+        "citizenship"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "saxhleel",
+      "npc": "stormhold-second-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 22,
+      "greeting": "Provincial. Keep to the road and keep moving.",
+      "cell": "130",
+      "key": [
+        "RG-EMPIRE",
+        "cold",
+        "saxhleel"
+      ],
+      "topics": [
+        "the-muster-board",
+        "home-leave",
+        "the-tribune"
+      ],
+      "gated": []
+    },
+    {
+      "state": "stormhold-street",
+      "race": "saxhleel",
+      "npc": "stormhold-street-sweeper",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 45,
+      "greeting": "Cousin — you have the accent of somewhere. Mind the boards; the third one from the end is rotten.",
+      "cell": "60",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "saxhleel"
+      ],
+      "topics": [
+        "the-boards",
+        "the-office",
+        "what-the-warmbloods-ask"
+      ],
+      "gated": [
+        "what-the-warmbloods-ask"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "naga",
+      "npc": "stormhold-gate-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 10,
+      "greeting": "The Legion does not answer questions from the road. Provincial, and the kind we write twice.",
+      "cell": "131",
+      "key": [
+        "RG-EMPIRE",
+        "cold",
+        "naga"
+      ],
+      "topics": [
+        "the-ninth-cohort",
+        "bridge-duty",
+        "the-muster-board",
+        "citizenship"
+      ],
+      "gated": [
+        "citizenship"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "naga",
+      "npc": "stormhold-second-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 8,
+      "greeting": "This is Imperial ground. Behave as though it were. Provincial, and the kind we write twice.",
+      "cell": "126",
+      "key": [
+        "RG-EMPIRE",
+        "hostile",
+        "naga"
+      ],
+      "topics": [
+        "the-muster-board",
+        "home-leave",
+        "the-tribune"
+      ],
+      "gated": []
+    },
+    {
+      "state": "stormhold-street",
+      "race": "naga",
+      "npc": "stormhold-street-sweeper",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 32,
+      "greeting": "Cousin, of a kind, and everybody here will say so slowly. You want something. Everybody does.",
+      "cell": "61",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "naga"
+      ],
+      "topics": [
+        "the-boards",
+        "the-office",
+        "what-the-warmbloods-ask"
+      ],
+      "gated": [
+        "what-the-warmbloods-ask"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "dunmer",
+      "npc": "stormhold-gate-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 32,
+      "greeting": "Citizen — of the useful sort. Ask, and if it is Legion business I will tell you it is Legion business.",
+      "cell": "137",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "dunmer"
+      ],
+      "topics": [
+        "the-ninth-cohort",
+        "bridge-duty",
+        "the-muster-board",
+        "citizenship"
+      ],
+      "gated": [
+        "citizenship"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "dunmer",
+      "npc": "stormhold-second-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 30,
+      "greeting": "Citizen — of the useful sort. Something to report?",
+      "cell": "137",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "dunmer"
+      ],
+      "topics": [
+        "the-muster-board",
+        "home-leave",
+        "the-tribune"
+      ],
+      "gated": []
+    },
+    {
+      "state": "stormhold-street",
+      "race": "dunmer",
+      "npc": "stormhold-street-sweeper",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 8,
+      "greeting": "This is a working town and you are not working. We have had your people through here before.",
+      "cell": "52",
+      "key": [
+        "RG-LUKIUL",
+        "hostile",
+        "dunmer"
+      ],
+      "topics": [
+        "the-boards",
+        "the-office",
+        "what-the-warmbloods-ask"
+      ],
+      "gated": [
+        "what-the-warmbloods-ask"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "imperial",
+      "npc": "stormhold-gate-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 42,
+      "greeting": "Keep out of the marsh after dark and I will have less to write. Citizen.",
+      "cell": "138",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "imperial"
+      ],
+      "topics": [
+        "the-ninth-cohort",
+        "bridge-duty",
+        "the-muster-board",
+        "citizenship"
+      ],
+      "gated": [
+        "bridge-duty",
+        "the-muster-board",
+        "citizenship"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "imperial",
+      "npc": "stormhold-second-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 40,
+      "greeting": "Citizen. Citizen. Something you need?",
+      "cell": "138",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "imperial"
+      ],
+      "topics": [
+        "the-muster-board",
+        "home-leave",
+        "the-tribune"
+      ],
+      "gated": [
+        "the-muster-board",
+        "home-leave"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "imperial",
+      "npc": "stormhold-street-sweeper",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 34,
+      "greeting": "You will want the ledger side of town. The road is that way and the water is the other.",
+      "cell": "63",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "imperial"
+      ],
+      "topics": [
+        "the-boards",
+        "the-office",
+        "what-the-warmbloods-ask"
+      ],
+      "gated": [
+        "what-the-warmbloods-ask"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "nord",
+      "npc": "stormhold-gate-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 38,
+      "greeting": "Citizen, at a stretch. Something to report?",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-ninth-cohort",
+        "bridge-duty",
+        "the-muster-board",
+        "citizenship"
+      ],
+      "gated": [
+        "citizenship"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "nord",
+      "npc": "stormhold-second-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 36,
+      "greeting": "Roads are clear as far as the bridge. After that, your problem. Citizen, at a stretch.",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-muster-board",
+        "home-leave",
+        "the-tribune"
+      ],
+      "gated": []
+    },
+    {
+      "state": "stormhold-street",
+      "race": "nord",
+      "npc": "stormhold-street-sweeper",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 30,
+      "greeting": "We trade. That is what this is. You are a long way from wherever that is.",
+      "cell": "64",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-boards",
+        "the-office",
+        "what-the-warmbloods-ask"
+      ],
+      "gated": [
+        "what-the-warmbloods-ask"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "breton",
+      "npc": "stormhold-gate-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 36,
+      "greeting": "Citizen, at a stretch. Citizen. Something you need?",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-ninth-cohort",
+        "bridge-duty",
+        "the-muster-board",
+        "citizenship"
+      ],
+      "gated": [
+        "citizenship"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "breton",
+      "npc": "stormhold-second-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 34,
+      "greeting": "Citizen, at a stretch. Ask, and if it is Legion business I will tell you it is Legion business.",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-muster-board",
+        "home-leave",
+        "the-tribune"
+      ],
+      "gated": []
+    },
+    {
+      "state": "stormhold-street",
+      "race": "breton",
+      "npc": "stormhold-street-sweeper",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 32,
+      "greeting": "You are a long way from wherever that is. Mind the boards; the third one from the end is rotten.",
+      "cell": "64",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-boards",
+        "the-office",
+        "what-the-warmbloods-ask"
+      ],
+      "gated": [
+        "what-the-warmbloods-ask"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "redguard",
+      "npc": "stormhold-gate-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 36,
+      "greeting": "Roads are clear as far as the bridge. After that, your problem. Citizen, at a stretch.",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-ninth-cohort",
+        "bridge-duty",
+        "the-muster-board",
+        "citizenship"
+      ],
+      "gated": [
+        "citizenship"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "redguard",
+      "npc": "stormhold-second-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 34,
+      "greeting": "Keep out of the marsh after dark and I will have less to write. Citizen, at a stretch.",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-muster-board",
+        "home-leave",
+        "the-tribune"
+      ],
+      "gated": []
+    },
+    {
+      "state": "stormhold-street",
+      "race": "redguard",
+      "npc": "stormhold-street-sweeper",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 32,
+      "greeting": "You are a long way from wherever that is. You want something. Everybody does.",
+      "cell": "64",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-boards",
+        "the-office",
+        "what-the-warmbloods-ask"
+      ],
+      "gated": [
+        "what-the-warmbloods-ask"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "khajiit",
+      "npc": "stormhold-gate-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 20,
+      "greeting": "Citizen, at a stretch. Keep to the road and keep moving.",
+      "cell": "134",
+      "key": [
+        "RG-EMPIRE",
+        "cold",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-ninth-cohort",
+        "bridge-duty",
+        "the-muster-board",
+        "citizenship"
+      ],
+      "gated": [
+        "citizenship"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "khajiit",
+      "npc": "stormhold-second-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 18,
+      "greeting": "Citizen, at a stretch. I am on duty and you are in the way.",
+      "cell": "134",
+      "key": [
+        "RG-EMPIRE",
+        "cold",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-muster-board",
+        "home-leave",
+        "the-tribune"
+      ],
+      "gated": []
+    },
+    {
+      "state": "stormhold-street",
+      "race": "khajiit",
+      "npc": "stormhold-street-sweeper",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 30,
+      "greeting": "Say it once and I will tell you who to ask. You are a long way from wherever that is.",
+      "cell": "64",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-boards",
+        "the-office",
+        "what-the-warmbloods-ask"
+      ],
+      "gated": [
+        "what-the-warmbloods-ask"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "orsimer",
+      "npc": "stormhold-gate-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 34,
+      "greeting": "Keep out of the marsh after dark and I will have less to write. Citizen, at a stretch.",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-ninth-cohort",
+        "bridge-duty",
+        "the-muster-board",
+        "citizenship"
+      ],
+      "gated": [
+        "citizenship"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "orsimer",
+      "npc": "stormhold-second-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 32,
+      "greeting": "Citizen, at a stretch. Citizen. Something you need?",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-muster-board",
+        "home-leave",
+        "the-tribune"
+      ],
+      "gated": []
+    },
+    {
+      "state": "stormhold-street",
+      "race": "orsimer",
+      "npc": "stormhold-street-sweeper",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 26,
+      "greeting": "You are a long way from wherever that is. You want the ledger house.",
+      "cell": "59",
+      "key": [
+        "RG-LUKIUL",
+        "cold",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-boards",
+        "the-office",
+        "what-the-warmbloods-ask"
+      ],
+      "gated": [
+        "what-the-warmbloods-ask"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "bosmer",
+      "npc": "stormhold-gate-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 30,
+      "greeting": "Citizen, at a stretch. Something to report?",
+      "cell": "139",
+      "key": [
+        "RG-EMPIRE",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-ninth-cohort",
+        "bridge-duty",
+        "the-muster-board",
+        "citizenship"
+      ],
+      "gated": [
+        "citizenship"
+      ]
+    },
+    {
+      "state": "stormhold-street",
+      "race": "bosmer",
+      "npc": "stormhold-second-guard",
+      "reaction_group": "RG-EMPIRE",
+      "disposition": 28,
+      "greeting": "The Legion does not answer questions from the road. Citizen, at a stretch.",
+      "cell": "134",
+      "key": [
+        "RG-EMPIRE",
+        "cold",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-muster-board",
+        "home-leave",
+        "the-tribune"
+      ],
+      "gated": []
+    },
+    {
+      "state": "stormhold-street",
+      "race": "bosmer",
+      "npc": "stormhold-street-sweeper",
+      "reaction_group": "RG-LUKIUL",
+      "disposition": 31,
+      "greeting": "We trade. That is what this is. You are a long way from wherever that is.",
+      "cell": "64",
+      "key": [
+        "RG-LUKIUL",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-boards",
+        "the-office",
+        "what-the-warmbloods-ask"
+      ],
+      "gated": [
+        "what-the-warmbloods-ask"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "saxhleel",
+      "npc": "rootlands-band-elder",
+      "reaction_group": "RG-NAGA",
+      "disposition": 42,
+      "greeting": "What is it worth to you. Little cousin.",
+      "cell": "85",
+      "key": [
+        "RG-NAGA",
+        "neutral",
+        "saxhleel"
+      ],
+      "topics": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ],
+      "gated": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "saxhleel",
+      "npc": "rootlands-drowned-speaker",
+      "reaction_group": "RG-VAKH",
+      "disposition": 30,
+      "greeting": "One of the drowned ones, then. Ask. It may cost you a thing you did not offer.",
+      "cell": "210",
+      "key": [
+        "RG-VAKH",
+        "neutral",
+        "saxhleel"
+      ],
+      "topics": [
+        "the-drowned-kin",
+        "the-drowned-road",
+        "the-quiet-grave"
+      ],
+      "gated": [
+        "the-drowned-kin"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "saxhleel",
+      "npc": "rootlands-keeper",
+      "reaction_group": "RG-ROOT",
+      "disposition": 72,
+      "greeting": "Egg-brother. The tree knows your step now. So does this one.",
+      "cell": "45",
+      "key": [
+        "RG-ROOT",
+        "friendly",
+        "saxhleel"
+      ],
+      "topics": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ],
+      "gated": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "naga",
+      "npc": "rootlands-band-elder",
+      "reaction_group": "RG-NAGA",
+      "disposition": 54,
+      "greeting": "Kin. You have not lied to us yet. That is a start.",
+      "cell": "91",
+      "key": [
+        "RG-NAGA",
+        "warm",
+        "naga"
+      ],
+      "topics": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ],
+      "gated": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "naga",
+      "npc": "rootlands-drowned-speaker",
+      "reaction_group": "RG-VAKH",
+      "disposition": 34,
+      "greeting": "Keep your feet wet and your words short. The river brought it and the river will want it back.",
+      "cell": "211",
+      "key": [
+        "RG-VAKH",
+        "neutral",
+        "naga"
+      ],
+      "topics": [
+        "the-drowned-kin",
+        "the-drowned-road",
+        "the-quiet-grave"
+      ],
+      "gated": [
+        "the-drowned-kin"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "naga",
+      "npc": "rootlands-keeper",
+      "reaction_group": "RG-ROOT",
+      "disposition": 68,
+      "greeting": "This one will speak with you. The tree does not mind. The river sent one of its own up the bank.",
+      "cell": "41",
+      "key": [
+        "RG-ROOT",
+        "warm",
+        "naga"
+      ],
+      "topics": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ],
+      "gated": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "dunmer",
+      "npc": "rootlands-band-elder",
+      "reaction_group": "RG-NAGA",
+      "disposition": 10,
+      "greeting": "Salt-eater. State it from where you are.",
+      "cell": "82",
+      "key": [
+        "RG-NAGA",
+        "cold",
+        "dunmer"
+      ],
+      "topics": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ],
+      "gated": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "dunmer",
+      "npc": "rootlands-drowned-speaker",
+      "reaction_group": "RG-VAKH",
+      "disposition": 32,
+      "greeting": "Ash and salt. Nothing grows in either. What.",
+      "cell": "212",
+      "key": [
+        "RG-VAKH",
+        "neutral",
+        "dunmer"
+      ],
+      "topics": [
+        "the-drowned-kin",
+        "the-drowned-road",
+        "the-quiet-grave"
+      ],
+      "gated": [
+        "the-drowned-kin"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "dunmer",
+      "npc": "rootlands-keeper",
+      "reaction_group": "RG-ROOT",
+      "disposition": 26,
+      "greeting": "You. From the salt side. You may stand there. Not further.",
+      "cell": "32",
+      "key": [
+        "RG-ROOT",
+        "cold",
+        "dunmer"
+      ],
+      "topics": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ],
+      "gated": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "imperial",
+      "npc": "rootlands-band-elder",
+      "reaction_group": "RG-NAGA",
+      "disposition": 20,
+      "greeting": "We do not come up the bank for conversation. Ledger-hand.",
+      "cell": "83",
+      "key": [
+        "RG-NAGA",
+        "cold",
+        "imperial"
+      ],
+      "topics": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ],
+      "gated": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "imperial",
+      "npc": "rootlands-drowned-speaker",
+      "reaction_group": "RG-VAKH",
+      "disposition": 32,
+      "greeting": "Paper. It burns. The water is high. It is always high.",
+      "cell": "213",
+      "key": [
+        "RG-VAKH",
+        "neutral",
+        "imperial"
+      ],
+      "topics": [
+        "the-drowned-kin",
+        "the-drowned-road",
+        "the-quiet-grave"
+      ],
+      "gated": [
+        "the-drowned-kin"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "imperial",
+      "npc": "rootlands-keeper",
+      "reaction_group": "RG-ROOT",
+      "disposition": 44,
+      "greeting": "Keep your voice down. It carries into the wood. Officer of nothing, here.",
+      "cell": "38",
+      "key": [
+        "RG-ROOT",
+        "neutral",
+        "imperial"
+      ],
+      "topics": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ],
+      "gated": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "nord",
+      "npc": "rootlands-band-elder",
+      "reaction_group": "RG-NAGA",
+      "disposition": 28,
+      "greeting": "Land-walker. The crossing is not free and neither is the talk.",
+      "cell": "84",
+      "key": [
+        "RG-NAGA",
+        "cold",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ],
+      "gated": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "nord",
+      "npc": "rootlands-drowned-speaker",
+      "reaction_group": "RG-VAKH",
+      "disposition": 32,
+      "greeting": "You want something the drowned know. Something with dry feet.",
+      "cell": "214",
+      "key": [
+        "RG-VAKH",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-drowned-kin",
+        "the-drowned-road",
+        "the-quiet-grave"
+      ],
+      "gated": [
+        "the-drowned-kin"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "nord",
+      "npc": "rootlands-keeper",
+      "reaction_group": "RG-ROOT",
+      "disposition": 46,
+      "greeting": "Dry-skin. The grove is open. The heartwood is not.",
+      "cell": "39",
+      "key": [
+        "RG-ROOT",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ],
+      "gated": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "breton",
+      "npc": "rootlands-band-elder",
+      "reaction_group": "RG-NAGA",
+      "disposition": 28,
+      "greeting": "Say your piece to the water and we will hear it. Land-walker.",
+      "cell": "84",
+      "key": [
+        "RG-NAGA",
+        "cold",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ],
+      "gated": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "breton",
+      "npc": "rootlands-drowned-speaker",
+      "reaction_group": "RG-VAKH",
+      "disposition": 32,
+      "greeting": "Something with dry feet. Ask. It may cost you a thing you did not offer.",
+      "cell": "214",
+      "key": [
+        "RG-VAKH",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-drowned-kin",
+        "the-drowned-road",
+        "the-quiet-grave"
+      ],
+      "gated": [
+        "the-drowned-kin"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "breton",
+      "npc": "rootlands-keeper",
+      "reaction_group": "RG-ROOT",
+      "disposition": 48,
+      "greeting": "Dry-skin. The tree is well. That is usually the question.",
+      "cell": "39",
+      "key": [
+        "RG-ROOT",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ],
+      "gated": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "redguard",
+      "npc": "rootlands-band-elder",
+      "reaction_group": "RG-NAGA",
+      "disposition": 32,
+      "greeting": "Land-walker. Talk. It is a long river.",
+      "cell": "89",
+      "key": [
+        "RG-NAGA",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ],
+      "gated": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "redguard",
+      "npc": "rootlands-drowned-speaker",
+      "reaction_group": "RG-VAKH",
+      "disposition": 32,
+      "greeting": "Keep your feet wet and your words short. Something with dry feet.",
+      "cell": "214",
+      "key": [
+        "RG-VAKH",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-drowned-kin",
+        "the-drowned-road",
+        "the-quiet-grave"
+      ],
+      "gated": [
+        "the-drowned-kin"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "redguard",
+      "npc": "rootlands-keeper",
+      "reaction_group": "RG-ROOT",
+      "disposition": 48,
+      "greeting": "You may rest here. Rest is not the same as staying. Dry-skin.",
+      "cell": "39",
+      "key": [
+        "RG-ROOT",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ],
+      "gated": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "khajiit",
+      "npc": "rootlands-band-elder",
+      "reaction_group": "RG-NAGA",
+      "disposition": 42,
+      "greeting": "Land-walker. You want across. Everybody wants across.",
+      "cell": "89",
+      "key": [
+        "RG-NAGA",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ],
+      "gated": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "khajiit",
+      "npc": "rootlands-drowned-speaker",
+      "reaction_group": "RG-VAKH",
+      "disposition": 34,
+      "greeting": "Something with dry feet. What.",
+      "cell": "214",
+      "key": [
+        "RG-VAKH",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-drowned-kin",
+        "the-drowned-road",
+        "the-quiet-grave"
+      ],
+      "gated": [
+        "the-drowned-kin"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "khajiit",
+      "npc": "rootlands-keeper",
+      "reaction_group": "RG-ROOT",
+      "disposition": 50,
+      "greeting": "Dry-skin. You may drink. Once, and not deeply.",
+      "cell": "44",
+      "key": [
+        "RG-ROOT",
+        "warm",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ],
+      "gated": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "orsimer",
+      "npc": "rootlands-band-elder",
+      "reaction_group": "RG-NAGA",
+      "disposition": 34,
+      "greeting": "Speak. The river is patient and we are not. Land-walker.",
+      "cell": "89",
+      "key": [
+        "RG-NAGA",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ],
+      "gated": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "orsimer",
+      "npc": "rootlands-drowned-speaker",
+      "reaction_group": "RG-VAKH",
+      "disposition": 32,
+      "greeting": "Something with dry feet. The water is high. It is always high.",
+      "cell": "214",
+      "key": [
+        "RG-VAKH",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-drowned-kin",
+        "the-drowned-road",
+        "the-quiet-grave"
+      ],
+      "gated": [
+        "the-drowned-kin"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "orsimer",
+      "npc": "rootlands-keeper",
+      "reaction_group": "RG-ROOT",
+      "disposition": 46,
+      "greeting": "Keep your voice down. It carries into the wood. Dry-skin.",
+      "cell": "39",
+      "key": [
+        "RG-ROOT",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ],
+      "gated": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "bosmer",
+      "npc": "rootlands-band-elder",
+      "reaction_group": "RG-NAGA",
+      "disposition": 31,
+      "greeting": "Land-walker. We can take you. We can take your things separately.",
+      "cell": "89",
+      "key": [
+        "RG-NAGA",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ],
+      "gated": [
+        "the-river-bands",
+        "bank-law",
+        "the-boat-tax",
+        "the-crossing-fee"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "bosmer",
+      "npc": "rootlands-drowned-speaker",
+      "reaction_group": "RG-VAKH",
+      "disposition": 32,
+      "greeting": "You want something the drowned know. Something with dry feet.",
+      "cell": "214",
+      "key": [
+        "RG-VAKH",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-drowned-kin",
+        "the-drowned-road",
+        "the-quiet-grave"
+      ],
+      "gated": [
+        "the-drowned-kin"
+      ]
+    },
+    {
+      "state": "rootlands-well-graph",
+      "race": "bosmer",
+      "npc": "rootlands-keeper",
+      "reaction_group": "RG-ROOT",
+      "disposition": 49,
+      "greeting": "Dry-skin. The grove is open. The heartwood is not.",
+      "cell": "39",
+      "key": [
+        "RG-ROOT",
+        "neutral",
+        "other-foreign"
+      ],
+      "topics": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ],
+      "gated": [
+        "the-hist",
+        "root-water",
+        "what-the-sap-says",
+        "hist-debt",
+        "the-hatch-name-list"
+      ]
+    }
+  ],
+  "greeting_consumer": {
+    "conversations": 130,
+    "lines_drawn": 130,
+    "distinct_lines": 103,
+    "distinct_cells": 53,
+    "npcs_whose_greeting_race_moves": 13,
+    "npcs": 13
+  },
+  "topic_consumer": {
+    "npcs_whose_topics_race_moves": 1,
+    "npcs": 13,
+    "sax_vs_dun": [
+      {
+        "npc": "jeeh-ei",
+        "saxhleel_only": [],
+        "dunmer_only": [],
+        "identical": true
+      },
+      {
+        "npc": "clerk-avelia-doren",
+        "saxhleel_only": [],
+        "dunmer_only": [],
+        "identical": true
+      },
+      {
+        "npc": "warden-scribe-tuleeh-ma",
+        "saxhleel_only": [],
+        "dunmer_only": [],
+        "identical": true
+      },
+      {
+        "npc": "helstrom-draught-seller",
+        "saxhleel_only": [],
+        "dunmer_only": [],
+        "identical": true
+      },
+      {
+        "npc": "helstrom-net-mender",
+        "saxhleel_only": [
+          "the-old-cages"
+        ],
+        "dunmer_only": [],
+        "identical": false
+      },
+      {
+        "npc": "helstrom-reed-seller",
+        "saxhleel_only": [],
+        "dunmer_only": [],
+        "identical": true
+      },
+      {
+        "npc": "helstrom-salt-factor",
+        "saxhleel_only": [],
+        "dunmer_only": [],
+        "identical": true
+      },
+      {
+        "npc": "stormhold-gate-guard",
+        "saxhleel_only": [],
+        "dunmer_only": [],
+        "identical": true
+      },
+      {
+        "npc": "stormhold-second-guard",
+        "saxhleel_only": [],
+        "dunmer_only": [],
+        "identical": true
+      },
+      {
+        "npc": "stormhold-street-sweeper",
+        "saxhleel_only": [],
+        "dunmer_only": [],
+        "identical": true
+      },
+      {
+        "npc": "rootlands-band-elder",
+        "saxhleel_only": [],
+        "dunmer_only": [],
+        "identical": true
+      },
+      {
+        "npc": "rootlands-drowned-speaker",
+        "saxhleel_only": [],
+        "dunmer_only": [],
+        "identical": true
+      },
+      {
+        "npc": "rootlands-keeper",
+        "saxhleel_only": [],
+        "dunmer_only": [],
+        "identical": true
+      }
+    ],
+    "any_gated_info": true,
+    "mute_pairs": [],
+    "said_sample": {
+      "npc": "jeeh-ei",
+      "topic": "the-hold",
+      "text": "Two days from Gideon, one more to the mouth. You slept through the worst of it, which is the only good thing about the way you sleep."
+    }
+  },
+  "perturbations": [
+    {
+      "file": "dialogue/greetings.json",
+      "cell": "65",
+      "npc": "jeeh-ei",
+      "race": "saxhleel",
+      "before": "Sit on the boards; nobody minds. Cousin — you have the accent of somewhere.",
+      "after": "PERTURBED — this line exists only to prove the consumer reads the file.",
+      "moved": true,
+      "restored": true
+    },
+    {
+      "files": [
+        "dialogue/topics/40-race-gated.json",
+        "dialogue/topics/45-speaker-coverage.json"
+      ],
+      "gates_stripped": 153,
+      "npcs_moving_before": 1,
+      "npcs_moving_after": 0,
+      "answer_pairs_moving_before": 33,
+      "answer_pairs_moving_after": 0,
+      "collapsed": true,
+      "restored_to": 1,
+      "restored_answer_pairs": 33
+    }
+  ],
+  "failures": [],
+  "topic_consumer_answers": {
+    "utterances": 509,
+    "blank": 0,
+    "npc_topic_pairs": 51,
+    "pairs_whose_answer_race_moves": 33
+  }
+}

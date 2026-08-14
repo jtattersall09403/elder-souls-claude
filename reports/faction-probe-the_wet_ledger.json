@@ -1,0 +1,1209 @@
+{
+  "tool": "faction-probe",
+  "line": "the_wet_ledger",
+  "rival": "the_imperial_assize",
+  "checks": [
+    {
+      "id": "P1_line_is_a_line",
+      "ok": true,
+      "measured": "18 quests gated on the_wet_ledger, ranks 0/0/1/1/2/2/2/3/3/4/4/4/5/5/6/6/7/7"
+    },
+    {
+      "id": "P2_cold_start_closed",
+      "ok": true,
+      "measured": "cold start offers 0 of 18 the_wet_ledger quests — a line handed to you for free is not a ladder"
+    },
+    {
+      "id": "P3_every_rank_reachable",
+      "ok": true,
+      "measured": "18/18 quests in the line became offerable by playing"
+    },
+    {
+      "id": "P4_ladder_reaches_ceiling",
+      "ok": true,
+      "measured": "top derived rank 7 (The Ledger) at reputation 398; favoured attributes now agility 16, personality 16 against a rank-7 demand of 12"
+    },
+    {
+      "id": "P8_attributes_were_EARNED",
+      "ok": true,
+      "measured": "attribute points granted by skill use, never set: agility 13->14; agility 14->15; personality 14->16; agility 15->16"
+    },
+    {
+      "id": "P5_ladder_perturbation_bites",
+      "ok": true,
+      "measured": "zeroing reputation moved the DERIVED rank 7 -> 0 and closed 1 offers"
+    },
+    {
+      "id": "P6_exclusion_bites",
+      "ok": true,
+      "measured": "joining the_imperial_assize closed 1 the_wet_ledger offers; the_imperial_assize closes [\"the_drowned_court\",\"the_wet_ledger\"]"
+    },
+    {
+      "id": "P7_lockout_is_legible",
+      "ok": true,
+      "measured": "the refusal a giver would speak: [\"The Wet Ledger will not deal with you: you are The Imperial Assize\"]"
+    },
+    {
+      "id": "P9_the_line_can_be_walked_without_killing",
+      "ok": true,
+      "measured": "18/18 resolutions the walk actually took required no violence: Q-LEDG-00:res_lodge Q-LEDG-09:res_weigh_dry Q-LEDG-01:res_scapegoat Q-LEDG-10:res_all_six Q-LEDG-02:res_hand_over Q-LEDG-11:res_carry_both Q-LEDG-16:res_to_tesh Q-LEDG-03:res_pay_it Q-LEDG-12:res_clear_the_berth Q-LEDG-04:res_false_name Q-LEDG-05:res_give_vashum Q-LEDG-17:res_let_it_lie Q-LEDG-06:res_bring_the_wharf Q-LEDG-13:res_renew_it Q-LEDG-07:res_show_the_returns Q-LEDG-14:res_send_it_back Q-LEDG-08:res_keep_the_house Q-LEDG-15:res_vote_it_through"
+    },
+    {
+      "id": "P10_the_world_changed",
+      "ok": true,
+      "measured": "62 world flag(s) are set in sim.quest.flags that the probe never wrote — i.e. raised by the resolutions themselves: archon_water_call_open, archon_water_call_protected, archon_water_call_question_raised, archon_water_call_shut, corrano_took_it_to_the_assize, deepkin_have_the_archon_proof, gideon_berth_roll_clean, gideon_bond_berth_question_raised, gideon_float_question_settled, gideon_gate_weighs_dry, gideon_gate_weight_question_raised, gideon_gate_weights_traced, gideon_porter_dismissed, gideon_quay_hostile_to_outlanders, gideon_quay_story_examined, gideon_strike_fund_saved, gideon_toll_question_settled, gideon_wharf_float_named, gideon_wharf_float_question_raised, gideon_wharf_has_a_seat, ishi_vaal_on_the_packet, ledger_archon_decided, ledger_articles_motion_raised, ledger_caster_orders_held, ledger_continues_unchanged, ledger_eighth_chair_papered, ledger_eighth_chair_settled, ledger_exposed_from_inside, ledger_fear_is_a_rumour, ledger_first_chair_settled, ledger_first_chair_taken, ledger_first_chair_vacant, ledger_fourth_seat_proxy_renewed, ledger_fourth_seat_question_raised, ledger_gate_held, ledger_holds_the_float_list, ledger_ninth_column_question_raised, ledger_ninth_column_surfaced, ledger_owes_the_player_eleven_hundred, ledger_paired_letters_carried, ledger_runner_named, ledger_succession_settled, ledger_toll_theft_buried, ledger_two_house_article_found, ledger_two_house_article_struck, locked:Q-DOCK-01, player_knows_about_kaal, player_refused_the_chair_twice, ravano_owes_the_player, salt_wife_bond_lodged, soulrest_bond_refused_in_advance, tide_marks_went_inland, unlocked:Q-LEDG-01, unlocked:Q-LEDG-03, unlocked:Q-LEDG-04, unlocked:Q-LEDG-05, unlocked:Q-LEDG-06, unlocked:Q-LEDG-07, unlocked:Q-LEDG-08, unlocked:Q-LEDG-11, unlocked:Q-LEDG-12, vaneth_suspects_the_player (the probe poked in nothing to clear rank world_state terms)"
+    },
+    {
+      "id": "P11_every_quest_taken_could_be_finished",
+      "ok": true,
+      "measured": "all 18 quests opened on the walk reached a resolution"
+    },
+    {
+      "id": "P12_no_rank_flag_was_poked",
+      "ok": true,
+      "measured": "the probe wrote no world flag; every world_state term the ladder asked for was raised by a resolution or was not raised at all"
+    },
+    {
+      "id": "P13_the_seat_was_vacated_by_PLAY",
+      "ok": true,
+      "measured": "the rank-7 world_state term is \"ledger_first_chair_vacant\"; raised by a resolution the walk took: true. Endings that raised a ladder flag: Q-LEDG-04:res_false_name->ledger_gate_held Q-LEDG-06:res_bring_the_wharf->ledger_archon_decided+ledger_gate_held Q-LEDG-13:res_renew_it->ledger_archon_decided Q-LEDG-07:res_show_the_returns->ledger_first_chair_vacant"
+    },
+    {
+      "id": "P14_rank7_AND_nonviolent_together",
+      "ok": true,
+      "measured": "derived rank 7, 18/18 endings non-violent, 0 flags poked — the three claims held at the same time on the same character"
+    },
+    {
+      "id": "P15_every_open_went_through_the_offer_gate",
+      "ok": true,
+      "measured": "28 questOpen calls, 18 accepted and 10 idempotent re-opens; none refused by the gate"
+    },
+    {
+      "id": "P16_the_reputation_was_EARNED",
+      "ok": true,
+      "measured": "the walk wrote no reputation at all; 398 was paid entirely by the quests' own consequences"
+    }
+  ],
+  "failures": [],
+  "measured": {
+    "attrs": {
+      "strength": 6,
+      "endurance": 12,
+      "agility": 13,
+      "speed": 11,
+      "vigour": 6,
+      "willpower": 10,
+      "intellect": 15,
+      "hist-bond": 14,
+      "personality": 14,
+      "luck": 11
+    },
+    "expulsion_causes_avoided_by_the_walk": [
+      "assize_has_the_paired_letters",
+      "ledger_compassionate_rooms_public"
+    ],
+    "line_ids": [
+      "Q-LEDG-00@r0",
+      "Q-LEDG-09@r0",
+      "Q-LEDG-01@r1",
+      "Q-LEDG-10@r1",
+      "Q-LEDG-02@r2",
+      "Q-LEDG-11@r2",
+      "Q-LEDG-16@r2",
+      "Q-LEDG-03@r3",
+      "Q-LEDG-12@r3",
+      "Q-LEDG-04@r4",
+      "Q-LEDG-05@r4",
+      "Q-LEDG-17@r4",
+      "Q-LEDG-06@r5",
+      "Q-LEDG-13@r5",
+      "Q-LEDG-07@r6",
+      "Q-LEDG-14@r6",
+      "Q-LEDG-08@r7",
+      "Q-LEDG-15@r7"
+    ],
+    "cold": {
+      "offerable": [],
+      "n": 18,
+      "why_rank0": [
+        "the topic \"the wet ledger\" has not come up yet"
+      ]
+    },
+    "steps": [
+      {
+        "id": "Q-LEDG-00",
+        "min_rank": 0,
+        "giver": "factor-belliene",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 0,
+        "reputation": 0,
+        "opened": true,
+        "resolved": "res_lodge"
+      },
+      {
+        "id": "Q-LEDG-09",
+        "min_rank": 0,
+        "giver": "factor-belliene",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 1,
+        "reputation": 20,
+        "opened": true,
+        "resolved": "res_weigh_dry"
+      },
+      {
+        "id": "Q-LEDG-01",
+        "min_rank": 1,
+        "giver": "factor-belliene",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 2,
+        "reputation": 34,
+        "opened": true,
+        "resolved": "res_scapegoat"
+      },
+      {
+        "id": "Q-LEDG-10",
+        "min_rank": 1,
+        "giver": "sedd-ravano",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 2,
+        "reputation": 42,
+        "opened": true,
+        "resolved": "res_all_six"
+      },
+      {
+        "id": "Q-LEDG-02",
+        "min_rank": 2,
+        "giver": "sedd-ravano",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 2,
+        "reputation": 64,
+        "opened": true,
+        "resolved": "res_hand_over"
+      },
+      {
+        "id": "Q-LEDG-11",
+        "min_rank": 2,
+        "giver": "factor-belliene",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 2,
+        "reputation": 88,
+        "opened": true,
+        "resolved": "res_carry_both"
+      },
+      {
+        "id": "Q-LEDG-16",
+        "min_rank": 2,
+        "giver": "harbourmistress-tesh",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 2,
+        "reputation": 114,
+        "opened": true,
+        "resolved": "res_to_tesh"
+      },
+      {
+        "id": "Q-LEDG-03",
+        "min_rank": 3,
+        "giver": "factor-ruvela-sath",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 3,
+        "reputation": 130,
+        "opened": true,
+        "resolved": "res_pay_it"
+      },
+      {
+        "id": "Q-LEDG-12",
+        "min_rank": 3,
+        "giver": "factor-ruvela-sath",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 3,
+        "reputation": 158,
+        "opened": true,
+        "resolved": "res_clear_the_berth"
+      },
+      {
+        "id": "Q-LEDG-04",
+        "min_rank": 4,
+        "giver": "factor-belliene",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 4,
+        "reputation": 188,
+        "opened": true,
+        "resolved": "res_false_name"
+      },
+      {
+        "id": "Q-LEDG-05",
+        "min_rank": 4,
+        "giver": "harbourmaster-cuiro-vaneth",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 4,
+        "reputation": 224,
+        "opened": true,
+        "resolved": "res_give_vashum"
+      },
+      {
+        "id": "Q-LEDG-17",
+        "min_rank": 4,
+        "giver": "npc-wuleen-kus",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 4,
+        "reputation": 232,
+        "opened": true,
+        "resolved": "res_let_it_lie"
+      },
+      {
+        "id": "Q-LEDG-06",
+        "min_rank": 5,
+        "giver": "harbourmistress-tesh",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 5,
+        "reputation": 250,
+        "opened": true,
+        "resolved": "res_bring_the_wharf"
+      },
+      {
+        "id": "Q-LEDG-13",
+        "min_rank": 5,
+        "giver": "harbourmaster-cuiro-vaneth",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 5,
+        "reputation": 288,
+        "opened": true,
+        "resolved": "res_renew_it"
+      },
+      {
+        "id": "Q-LEDG-07",
+        "min_rank": 6,
+        "giver": "factor-ruvela-sath",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 6,
+        "reputation": 324,
+        "opened": true,
+        "resolved": "res_show_the_returns"
+      },
+      {
+        "id": "Q-LEDG-14",
+        "min_rank": 6,
+        "giver": "harbourmistress-tesh",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 6,
+        "reputation": 338,
+        "opened": true,
+        "resolved": "res_send_it_back"
+      },
+      {
+        "id": "Q-LEDG-08",
+        "min_rank": 7,
+        "giver": "harbourmistress-tesh",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 7,
+        "reputation": 358,
+        "opened": true,
+        "resolved": "res_keep_the_house"
+      },
+      {
+        "id": "Q-LEDG-15",
+        "min_rank": 7,
+        "giver": "factor-ruvela-sath",
+        "offerable": true,
+        "why": [],
+        "derived_rank": 7,
+        "reputation": 398,
+        "resolved": "res_vote_it_through"
+      }
+    ],
+    "resolutions": [
+      {
+        "quest": "Q-LEDG-00",
+        "resolution": "res_lodge",
+        "method": "trade",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-09",
+        "resolution": "res_weigh_dry",
+        "method": "comply",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-01",
+        "resolution": "res_scapegoat",
+        "method": "betray",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-10",
+        "resolution": "res_all_six",
+        "method": "comply",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-02",
+        "resolution": "res_hand_over",
+        "method": "trade",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-11",
+        "resolution": "res_carry_both",
+        "method": "comply",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-16",
+        "resolution": "res_to_tesh",
+        "method": "confess",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-03",
+        "resolution": "res_pay_it",
+        "method": "bribe",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "gold",
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-12",
+        "resolution": "res_clear_the_berth",
+        "method": "comply",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-04",
+        "resolution": "res_false_name",
+        "method": "betray",
+        "violence_required": false,
+        "ladder_flags_raised": [
+          "ledger_gate_held"
+        ],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-05",
+        "resolution": "res_give_vashum",
+        "method": "betray",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "disposition",
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-17",
+        "resolution": "res_let_it_lie",
+        "method": "refuse",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-06",
+        "resolution": "res_bring_the_wharf",
+        "method": "confess",
+        "violence_required": false,
+        "ladder_flags_raised": [
+          "ledger_archon_decided",
+          "ledger_gate_held"
+        ],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "disposition",
+          "skills",
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-13",
+        "resolution": "res_renew_it",
+        "method": "comply",
+        "violence_required": false,
+        "ladder_flags_raised": [
+          "ledger_archon_decided"
+        ],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-07",
+        "resolution": "res_show_the_returns",
+        "method": "confess",
+        "violence_required": false,
+        "ladder_flags_raised": [
+          "ledger_first_chair_vacant"
+        ],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "disposition",
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-14",
+        "resolution": "res_send_it_back",
+        "method": "refuse",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-08",
+        "resolution": "res_keep_the_house",
+        "method": "trade",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      },
+      {
+        "quest": "Q-LEDG-15",
+        "resolution": "res_vote_it_through",
+        "method": "comply",
+        "violence_required": false,
+        "ladder_flags_raised": [],
+        "would_have_been_expelled": false,
+        "paid_for": [
+          "requires_knowing"
+        ]
+      }
+    ],
+    "held_open_for_perturbation": "Q-LEDG-15",
+    "skill_raises": [
+      {
+        "skill": "security",
+        "to": 32,
+        "target": 32,
+        "uses": 15,
+        "rests": 2,
+        "attributes_earned": [
+          "agility 13->14"
+        ]
+      },
+      {
+        "skill": "security",
+        "to": 40,
+        "target": 40,
+        "uses": 20,
+        "rests": 3,
+        "attributes_earned": []
+      },
+      {
+        "skill": "security",
+        "to": 50,
+        "target": 50,
+        "uses": 31,
+        "rests": 3,
+        "attributes_earned": [
+          "agility 14->15"
+        ]
+      },
+      {
+        "skill": "speechcraft",
+        "to": 50,
+        "target": 50,
+        "uses": 30,
+        "rests": 8,
+        "attributes_earned": [
+          "personality 14->16"
+        ]
+      },
+      {
+        "skill": "security",
+        "to": 60,
+        "target": 60,
+        "uses": 37,
+        "rests": 3,
+        "attributes_earned": [
+          "agility 15->16"
+        ]
+      },
+      {
+        "skill": "security",
+        "to": 70,
+        "target": 70,
+        "uses": 44,
+        "rests": 3,
+        "attributes_earned": []
+      }
+    ],
+    "attrs_end": {
+      "strength": 6,
+      "endurance": 12,
+      "agility": 16,
+      "speed": 11,
+      "vigour": 6,
+      "willpower": 10,
+      "intellect": 15,
+      "hist-bond": 14,
+      "personality": 16,
+      "luck": 11
+    },
+    "skills_end": {
+      "acrobatics": 5,
+      "alchemy": 15,
+      "athletics": 15,
+      "axes-maces": 5,
+      "blades": 15,
+      "claw-fang": 5,
+      "greatweapons": 5,
+      "marksman": 5,
+      "mercantile": 25,
+      "polearms": 5,
+      "root-speech": 10,
+      "security": 70,
+      "shieldcraft": 5,
+      "sneak": 20,
+      "sorcery": 5,
+      "speechcraft": 50,
+      "survival": 20,
+      "veiling": 5,
+      "warding": 5
+    },
+    "final": {
+      "id": "the_wet_ledger",
+      "name": "The Wet Ledger",
+      "favoured_attributes": [
+        "agility",
+        "personality"
+      ],
+      "favoured_skills": [
+        "security",
+        "sneak",
+        "mercantile",
+        "speechcraft",
+        "veiling",
+        "acrobatics"
+      ],
+      "ranks": [
+        {
+          "rank": 0,
+          "name": "Runner",
+          "reputation": 0,
+          "attribute": null,
+          "skill_1": null,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 1,
+          "name": "Fence",
+          "reputation": 10,
+          "attribute": 8,
+          "skill_1": 20,
+          "skill_2": null,
+          "world_state": null
+        },
+        {
+          "rank": 2,
+          "name": "Ledger-Hand",
+          "reputation": 22,
+          "attribute": 8,
+          "skill_1": 25,
+          "skill_2": 10,
+          "world_state": null
+        },
+        {
+          "rank": 3,
+          "name": "Quiet Partner",
+          "reputation": 36,
+          "attribute": 9,
+          "skill_1": 32,
+          "skill_2": 15,
+          "world_state": null
+        },
+        {
+          "rank": 4,
+          "name": "Book-Keeper",
+          "reputation": 52,
+          "attribute": 9,
+          "skill_1": 40,
+          "skill_2": 20,
+          "world_state": null
+        },
+        {
+          "rank": 5,
+          "name": "Underwriter",
+          "reputation": 70,
+          "attribute": 10,
+          "skill_1": 50,
+          "skill_2": 25,
+          "world_state": {
+            "flag": "ledger_gate_held",
+            "text": "a toll gate that pays into your hand before it pays into theirs"
+          }
+        },
+        {
+          "rank": 6,
+          "name": "Silent Partner",
+          "reputation": 90,
+          "attribute": 12,
+          "skill_1": 60,
+          "skill_2": 30,
+          "world_state": {
+            "flag": "ledger_archon_decided",
+            "text": "the Archon water-call is open or shut, and it was settled in the room you were in"
+          }
+        },
+        {
+          "rank": 7,
+          "name": "The Ledger",
+          "reputation": 112,
+          "attribute": 12,
+          "skill_1": 70,
+          "skill_2": 35,
+          "world_state": {
+            "flag": "ledger_first_chair_vacant",
+            "text": "the first chair of the Ledger is empty and you emptied it"
+          }
+        }
+      ],
+      "closes": [
+        "the_imperial_assize"
+      ],
+      "derived_rank": 7,
+      "reputation": 398,
+      "next_rank_terms": {
+        "allowed": true,
+        "faction": "the_wet_ledger",
+        "rank": 7,
+        "rank_name": "The Ledger",
+        "terms": [
+          {
+            "kind": "reputation",
+            "what": "the_wet_ledger",
+            "need": 112,
+            "have": 398,
+            "met": true
+          },
+          {
+            "kind": "attribute",
+            "what": [
+              "agility",
+              "personality"
+            ],
+            "need": 12,
+            "have": 16,
+            "best": "agility",
+            "met": true
+          },
+          {
+            "kind": "skill_1",
+            "what": [
+              "security",
+              "sneak",
+              "mercantile",
+              "speechcraft",
+              "veiling",
+              "acrobatics"
+            ],
+            "need": 70,
+            "have": 70,
+            "best": "security",
+            "met": true
+          },
+          {
+            "kind": "skill_2",
+            "what": [
+              "security",
+              "sneak",
+              "mercantile",
+              "speechcraft",
+              "veiling",
+              "acrobatics"
+            ],
+            "need": 35,
+            "have": 50,
+            "best": "speechcraft",
+            "met": true
+          },
+          {
+            "kind": "world_state",
+            "what": "ledger_first_chair_vacant",
+            "need": "the first chair of the Ledger is empty and you emptied it",
+            "have": true,
+            "met": true
+          }
+        ],
+        "unmet": []
+      }
+    },
+    "perturb_ladder": {
+      "rank_before": 7,
+      "rank_after": 0,
+      "offerable_before": [
+        "Q-LEDG-15"
+      ],
+      "offerable_after": [],
+      "closed": [
+        "Q-LEDG-15"
+      ]
+    },
+    "perturb_exclusion": {
+      "declared": {
+        "hard_groups": [
+          {
+            "id": "the_two_courts",
+            "members": [
+              "the_drowned_court",
+              "the_imperial_assize"
+            ],
+            "why": "You cannot swear to a drowned crown and to the Assize that would hang it."
+          }
+        ],
+        "enemy_pairs": [
+          [
+            "the_wet_ledger",
+            "the_imperial_assize"
+          ]
+        ],
+        "earned": [
+          {
+            "a": "the_xul_aneekh",
+            "b": "the_wet_ledger",
+            "a_locks_b_at_rank": 2,
+            "b_locks_a_at_rank": 3,
+            "why": "The Deep-Kin position is that the coast is a wound. The Ledger IS the coast.",
+            "escape": "RI-QST03 §C X3: the rank-3 quest on each side has a resolution that does not lock."
+          },
+          {
+            "a": "the_xul_aneekh",
+            "b": "the_imperial_assize",
+            "a_locks_b_at_rank": 4,
+            "b_locks_a_at_rank": 4,
+            "why": "The Blackrose labour-lease and the Deep-Kin answer to it are the same event from two chairs.",
+            "escape": "RI-QST03 §C X3: the rank-4 quest on each side has a resolution that does not lock."
+          },
+          {
+            "a": "the_wet_ledger",
+            "b": "the_ixtu_vakh",
+            "a_locks_b_at_rank": 3,
+            "b_locks_a_at_rank": 3,
+            "why": "The Ledger’s business survives on not being the Sap-Cutters.",
+            "escape": null
+          }
+        ],
+        "rank_ceiling_with_a_second_membership": 5,
+        "soft": [
+          {
+            "a": "the_dockhands",
+            "b": "the_wet_ledger",
+            "penalty": -15,
+            "why": "The wharf knows who fences its cargo."
+          }
+        ]
+      },
+      "rival_closes": [
+        "the_drowned_court",
+        "the_wet_ledger"
+      ],
+      "rivalry_locked_now": [
+        "the_drowned_court",
+        "the_imperial_assize",
+        "the_ixtu_vakh",
+        "the_wet_ledger",
+        "the_xul_aneekh"
+      ],
+      "offerable_before": [
+        "Q-LEDG-15"
+      ],
+      "offerable_after": [],
+      "closed": [
+        "Q-LEDG-15"
+      ],
+      "example_refusal": [
+        "The Wet Ledger will not deal with you: you are The Imperial Assize"
+      ],
+      "quests_locked_by_rivalry": 39
+    },
+    "ceiling_resolved": "res_vote_it_through",
+    "opens": [
+      {
+        "quest": "Q-LEDG-00",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-09",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-01",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-10",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-01",
+        "as": "prerequisite",
+        "ok": false,
+        "reason": "quest is closed"
+      },
+      {
+        "quest": "Q-LEDG-02",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-10",
+        "as": "prerequisite",
+        "ok": false,
+        "reason": "quest is closed"
+      },
+      {
+        "quest": "Q-LEDG-11",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-16",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-02",
+        "as": "prerequisite",
+        "ok": false,
+        "reason": "quest is closed"
+      },
+      {
+        "quest": "Q-LEDG-03",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-12",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-03",
+        "as": "prerequisite",
+        "ok": false,
+        "reason": "quest is closed"
+      },
+      {
+        "quest": "Q-LEDG-04",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-04",
+        "as": "prerequisite",
+        "ok": false,
+        "reason": "quest is closed"
+      },
+      {
+        "quest": "Q-LEDG-05",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-17",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-05",
+        "as": "prerequisite",
+        "ok": false,
+        "reason": "quest is closed"
+      },
+      {
+        "quest": "Q-LEDG-06",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-06",
+        "as": "prerequisite",
+        "ok": false,
+        "reason": "quest is closed"
+      },
+      {
+        "quest": "Q-LEDG-13",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-06",
+        "as": "prerequisite",
+        "ok": false,
+        "reason": "quest is closed"
+      },
+      {
+        "quest": "Q-LEDG-07",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-14",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-07",
+        "as": "prerequisite",
+        "ok": false,
+        "reason": "quest is closed"
+      },
+      {
+        "quest": "Q-LEDG-08",
+        "as": "line",
+        "ok": true,
+        "stage": 10
+      },
+      {
+        "quest": "Q-LEDG-08",
+        "as": "prerequisite",
+        "ok": false,
+        "reason": "quest is closed"
+      },
+      {
+        "quest": "Q-LEDG-15",
+        "as": "ceiling",
+        "ok": true,
+        "stage": 10
+      }
+    ],
+    "unmet_world_state": [],
+    "reputation_writes": [],
+    "disposition_writes": [
+      {
+        "npc": "npc-wuleen-kus",
+        "to": 55,
+        "why": "giver.disposition_min on Q-LEDG-17"
+      },
+      {
+        "npc": "harbourmaster-cuiro-vaneth",
+        "to": 65,
+        "why": "giver.disposition_min on Q-LEDG-13"
+      }
+    ],
+    "world_flags_now": [
+      "archon_water_call_open",
+      "archon_water_call_protected",
+      "archon_water_call_question_raised",
+      "archon_water_call_shut",
+      "corrano_took_it_to_the_assize",
+      "deepkin_have_the_archon_proof",
+      "gideon_berth_roll_clean",
+      "gideon_bond_berth_question_raised",
+      "gideon_float_question_settled",
+      "gideon_gate_weighs_dry",
+      "gideon_gate_weight_question_raised",
+      "gideon_gate_weights_traced",
+      "gideon_porter_dismissed",
+      "gideon_quay_hostile_to_outlanders",
+      "gideon_quay_story_examined",
+      "gideon_strike_fund_saved",
+      "gideon_toll_question_settled",
+      "gideon_wharf_float_named",
+      "gideon_wharf_float_question_raised",
+      "gideon_wharf_has_a_seat",
+      "ishi_vaal_on_the_packet",
+      "ledger_archon_decided",
+      "ledger_articles_motion_raised",
+      "ledger_caster_orders_held",
+      "ledger_continues_unchanged",
+      "ledger_eighth_chair_papered",
+      "ledger_eighth_chair_settled",
+      "ledger_exposed_from_inside",
+      "ledger_fear_is_a_rumour",
+      "ledger_first_chair_settled",
+      "ledger_first_chair_taken",
+      "ledger_first_chair_vacant",
+      "ledger_fourth_seat_proxy_renewed",
+      "ledger_fourth_seat_question_raised",
+      "ledger_gate_held",
+      "ledger_holds_the_float_list",
+      "ledger_ninth_column_question_raised",
+      "ledger_ninth_column_surfaced",
+      "ledger_owes_the_player_eleven_hundred",
+      "ledger_paired_letters_carried",
+      "ledger_runner_named",
+      "ledger_succession_settled",
+      "ledger_toll_theft_buried",
+      "ledger_two_house_article_found",
+      "ledger_two_house_article_struck",
+      "locked:Q-DOCK-01",
+      "player_knows_about_kaal",
+      "player_refused_the_chair_twice",
+      "ravano_owes_the_player",
+      "salt_wife_bond_lodged",
+      "soulrest_bond_refused_in_advance",
+      "tide_marks_went_inland",
+      "unlocked:Q-LEDG-01",
+      "unlocked:Q-LEDG-03",
+      "unlocked:Q-LEDG-04",
+      "unlocked:Q-LEDG-05",
+      "unlocked:Q-LEDG-06",
+      "unlocked:Q-LEDG-07",
+      "unlocked:Q-LEDG-08",
+      "unlocked:Q-LEDG-11",
+      "unlocked:Q-LEDG-12",
+      "vaneth_suspects_the_player"
+    ],
+    "flags_the_probe_set_itself": [],
+    "flags_raised_by_the_quests": [
+      "archon_water_call_open",
+      "archon_water_call_protected",
+      "archon_water_call_question_raised",
+      "archon_water_call_shut",
+      "corrano_took_it_to_the_assize",
+      "deepkin_have_the_archon_proof",
+      "gideon_berth_roll_clean",
+      "gideon_bond_berth_question_raised",
+      "gideon_float_question_settled",
+      "gideon_gate_weighs_dry",
+      "gideon_gate_weight_question_raised",
+      "gideon_gate_weights_traced",
+      "gideon_porter_dismissed",
+      "gideon_quay_hostile_to_outlanders",
+      "gideon_quay_story_examined",
+      "gideon_strike_fund_saved",
+      "gideon_toll_question_settled",
+      "gideon_wharf_float_named",
+      "gideon_wharf_float_question_raised",
+      "gideon_wharf_has_a_seat",
+      "ishi_vaal_on_the_packet",
+      "ledger_archon_decided",
+      "ledger_articles_motion_raised",
+      "ledger_caster_orders_held",
+      "ledger_continues_unchanged",
+      "ledger_eighth_chair_papered",
+      "ledger_eighth_chair_settled",
+      "ledger_exposed_from_inside",
+      "ledger_fear_is_a_rumour",
+      "ledger_first_chair_settled",
+      "ledger_first_chair_taken",
+      "ledger_first_chair_vacant",
+      "ledger_fourth_seat_proxy_renewed",
+      "ledger_fourth_seat_question_raised",
+      "ledger_gate_held",
+      "ledger_holds_the_float_list",
+      "ledger_ninth_column_question_raised",
+      "ledger_ninth_column_surfaced",
+      "ledger_owes_the_player_eleven_hundred",
+      "ledger_paired_letters_carried",
+      "ledger_runner_named",
+      "ledger_succession_settled",
+      "ledger_toll_theft_buried",
+      "ledger_two_house_article_found",
+      "ledger_two_house_article_struck",
+      "locked:Q-DOCK-01",
+      "player_knows_about_kaal",
+      "player_refused_the_chair_twice",
+      "ravano_owes_the_player",
+      "salt_wife_bond_lodged",
+      "soulrest_bond_refused_in_advance",
+      "tide_marks_went_inland",
+      "unlocked:Q-LEDG-01",
+      "unlocked:Q-LEDG-03",
+      "unlocked:Q-LEDG-04",
+      "unlocked:Q-LEDG-05",
+      "unlocked:Q-LEDG-06",
+      "unlocked:Q-LEDG-07",
+      "unlocked:Q-LEDG-08",
+      "unlocked:Q-LEDG-11",
+      "unlocked:Q-LEDG-12",
+      "vaneth_suspects_the_player"
+    ]
+  },
+  "ok": true
+}

@@ -1,0 +1,353 @@
+{
+  "tool": "tools/world/threshold-consumption.mjs",
+  "owner": "W1-02",
+  "method": "RI-MTH07",
+  "item": "RI-WLD12 M64 / M66 / M68",
+  "at": "2026-08-07T18:44:26.697Z",
+  "passed": 8,
+  "of": 8,
+  "checks": [
+    {
+      "check": "T1 every declared threshold type and remains kind has real geometry",
+      "pass": true,
+      "detail": {
+        "declared_types": 8,
+        "declared_remains": 4,
+        "built": 12,
+        "missing": [],
+        "vertices": {
+          "imperial_border_cairn": 312,
+          "root_gate": 392,
+          "tide_pole": 164,
+          "knife_marked_stem": 395,
+          "kiln_slag_heap": 210,
+          "bone_line": 395,
+          "salt_glass_marker": 211,
+          "corpse_in_a_cage": 477,
+          "remains:barge": 280,
+          "remains:tesserae": 120,
+          "remains:wrappings": 226,
+          "remains:guar": 329
+        }
+      }
+    },
+    {
+      "check": "T2 no two markers share a silhouette",
+      "pass": true,
+      "detail": {
+        "kinds": 12,
+        "pairs": 66,
+        "bar": "shape-signature distance >= 0.12",
+        "closest_pair": {
+          "d": 0.201,
+          "a": "kiln_slag_heap",
+          "b": "remains:wrappings"
+        },
+        "collisions": [],
+        "signatures": {
+          "imperial_border_cairn": {
+            "aspect_wh": 1.125,
+            "aspect_dw": 0.704,
+            "com_frac": 0.569,
+            "spread_frac": 0.238,
+            "verts": 312
+          },
+          "root_gate": {
+            "aspect_wh": 1.063,
+            "aspect_dw": 0.314,
+            "com_frac": 0.512,
+            "spread_frac": 0.191,
+            "verts": 392
+          },
+          "tide_pole": {
+            "aspect_wh": 0.308,
+            "aspect_dw": 0.983,
+            "com_frac": 0.504,
+            "spread_frac": 0.342,
+            "verts": 164
+          },
+          "knife_marked_stem": {
+            "aspect_wh": 0.515,
+            "aspect_dw": 0.855,
+            "com_frac": 0.536,
+            "spread_frac": 0.287,
+            "verts": 395
+          },
+          "kiln_slag_heap": {
+            "aspect_wh": 2.591,
+            "aspect_dw": 0.742,
+            "com_frac": 0.441,
+            "spread_frac": 0.249,
+            "verts": 210
+          },
+          "bone_line": {
+            "aspect_wh": 4.402,
+            "aspect_dw": 0.177,
+            "com_frac": 0.433,
+            "spread_frac": 0.266,
+            "verts": 395
+          },
+          "salt_glass_marker": {
+            "aspect_wh": 0.733,
+            "aspect_dw": 1.057,
+            "com_frac": 0.489,
+            "spread_frac": 0.245,
+            "verts": 211
+          },
+          "corpse_in_a_cage": {
+            "aspect_wh": 0.66,
+            "aspect_dw": 0.504,
+            "com_frac": 0.658,
+            "spread_frac": 0.324,
+            "verts": 477
+          },
+          "remains:barge": {
+            "aspect_wh": 3.221,
+            "aspect_dw": 0.362,
+            "com_frac": 0.63,
+            "spread_frac": 0.252,
+            "verts": 280
+          },
+          "remains:tesserae": {
+            "aspect_wh": 1.653,
+            "aspect_dw": 0.837,
+            "com_frac": 0.5,
+            "spread_frac": 0.445,
+            "verts": 120
+          },
+          "remains:wrappings": {
+            "aspect_wh": 2.604,
+            "aspect_dw": 0.702,
+            "com_frac": 0.5,
+            "spread_frac": 0.279,
+            "verts": 226
+          },
+          "remains:guar": {
+            "aspect_wh": 2.028,
+            "aspect_dw": 0.585,
+            "com_frac": 0.461,
+            "spread_frac": 0.287,
+            "verts": 329
+          }
+        }
+      }
+    },
+    {
+      "check": "T3 no marker reuses an ONLY-HERE element silhouette",
+      "pass": true,
+      "detail": {
+        "markers": 12,
+        "only_here_kinds": 13,
+        "closest_pair": {
+          "d": 0.193,
+          "a": "remains:tesserae",
+          "b": "open_dye_vat"
+        },
+        "collisions": []
+      }
+    },
+    {
+      "check": "T4 every declared object and every tier-jump remains is flattened into an instance",
+      "pass": true,
+      "detail": {
+        "declared_objects": 210,
+        "declared_remains": 7,
+        "instances": 217,
+        "by_type": {
+          "corpse_in_a_cage": 67,
+          "barge": 3,
+          "imperial_border_cairn": 53,
+          "bone_line": 9,
+          "tesserae": 1,
+          "kiln_slag_heap": 11,
+          "knife_marked_stem": 22,
+          "root_gate": 22,
+          "wrappings": 1,
+          "tide_pole": 2,
+          "salt_glass_marker": 24,
+          "guar": 2
+        },
+        "types_in_use": 12,
+        "borders_carrying_objects": 24
+      }
+    },
+    {
+      "check": "T5 a body walked into a solid marker is pushed back out",
+      "pass": true,
+      "detail": {
+        "solid_types": [
+          "imperial_border_cairn",
+          "tide_pole",
+          "knife_marked_stem",
+          "corpse_in_a_cage"
+        ],
+        "solid_types_expected_at_least": 4,
+        "rows": [
+          {
+            "type": "imperial_border_cairn",
+            "found": true,
+            "x": 1912.5,
+            "z": 3450,
+            "entered_from_m": 0.05,
+            "solid_r": 0.773,
+            "distance_from_centre_after_m": 1.3233,
+            "expected_m": 1.3233
+          },
+          {
+            "type": "tide_pole",
+            "found": true,
+            "x": 3462.5,
+            "z": 2325,
+            "entered_from_m": 0.05,
+            "solid_r": 0.334,
+            "distance_from_centre_after_m": 0.8843,
+            "expected_m": 0.8843
+          },
+          {
+            "type": "knife_marked_stem",
+            "found": true,
+            "x": 3212.5,
+            "z": 950,
+            "entered_from_m": 0.05,
+            "solid_r": 0.407,
+            "distance_from_centre_after_m": 0.9571,
+            "expected_m": 0.9571
+          },
+          {
+            "type": "corpse_in_a_cage",
+            "found": true,
+            "x": 2225,
+            "z": 3112.5,
+            "entered_from_m": 0.05,
+            "solid_r": 0.526,
+            "distance_from_centre_after_m": 1.0761,
+            "expected_m": 1.0762
+          }
+        ],
+        "capsule_r": 0.55
+      }
+    },
+    {
+      "check": "T5c control — a marker declaring solid_r 0 does not push",
+      "pass": true,
+      "detail": {
+        "hollow_types": [
+          "root_gate",
+          "kiln_slag_heap",
+          "bone_line",
+          "salt_glass_marker"
+        ],
+        "rows": [
+          {
+            "type": "root_gate",
+            "found": true,
+            "x": 3787.5,
+            "z": 3625,
+            "entered_from_m": 0.05,
+            "solid_r": 0,
+            "distance_from_centre_after_m": 0,
+            "expected_m": 0.55
+          },
+          {
+            "type": "kiln_slag_heap",
+            "found": true,
+            "x": 3987.5,
+            "z": 1925,
+            "entered_from_m": 0.05,
+            "solid_r": 0,
+            "distance_from_centre_after_m": 0,
+            "expected_m": 0.55
+          },
+          {
+            "type": "bone_line",
+            "found": true,
+            "x": 387.5,
+            "z": 3375,
+            "entered_from_m": 0.05,
+            "solid_r": 0,
+            "distance_from_centre_after_m": 0,
+            "expected_m": 0.55
+          },
+          {
+            "type": "salt_glass_marker",
+            "found": true,
+            "x": 787.5,
+            "z": 4150,
+            "entered_from_m": 0.05,
+            "solid_r": 0,
+            "distance_from_centre_after_m": 0,
+            "expected_m": 0.55
+          }
+        ]
+      }
+    },
+    {
+      "check": "T6 SABOTAGE — deleting the objects from the data removes every push",
+      "pass": true,
+      "detail": {
+        "markers_before": 217,
+        "markers_after_deletion": 0,
+        "positions_that_still_push": [],
+        "note": "this is the pre-round-2 state of the build; the instrument reproduces the baseline"
+      }
+    },
+    {
+      "check": "T7 every marker stands in a border band, and the only ambiguous ones are triple points",
+      "pass": true,
+      "detail": {
+        "markers": 217,
+        "band_m": 260,
+        "misplaced": 0,
+        "examples": [],
+        "at_a_triple_point": 5,
+        "triple_points": [
+          {
+            "type": "corpse_in_a_cage",
+            "border": "deep-marshes--stone-forest",
+            "x": 3312.5,
+            "z": 2475,
+            "field_says": "crimson-coast--deep-marshes",
+            "shared_region": "deep-marshes"
+          },
+          {
+            "type": "corpse_in_a_cage",
+            "border": "deep-marshes--stone-forest",
+            "x": 2237.5,
+            "z": 3100,
+            "field_says": "blackwood--deep-marshes",
+            "shared_region": "deep-marshes"
+          },
+          {
+            "type": "root_gate",
+            "border": "eastern-rootlands--western-rootlands",
+            "x": 2225,
+            "z": 3612.5,
+            "field_says": "deep-marshes--eastern-rootlands",
+            "shared_region": "eastern-rootlands"
+          },
+          {
+            "type": "bone_line",
+            "border": "hive--marauders-coast",
+            "x": 975,
+            "z": 3812.5,
+            "field_says": "blackwood--hive",
+            "shared_region": "hive"
+          },
+          {
+            "type": "knife_marked_stem",
+            "border": "stone-forest--thornmarsh",
+            "x": 3100,
+            "z": 962.5,
+            "field_says": "clay-moor--thornmarsh",
+            "shared_region": "thornmarsh"
+          }
+        ],
+        "abs_distance_m": {
+          "min": 0,
+          "median": 0,
+          "max": 12.5
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "tool": "tools/audio/critic-w1-22-r2-probe.mjs",
+  "taken_at": "2026-08-08T02:14:12.463Z",
+  "git": {
+    "commit": "b7a41f1",
+    "dirty": true
+  },
+  "frames": 600,
+  "long_seconds": 60,
+  "load_at_start": "21.53 22.82 21.10 25/598 17733",
+  "probes": {
+    "P1_mute_guard": {
+      "raw": {
+        "short": {
+          "full": {
+            "ok": true,
+            "fired": 0,
+            "why": null
+          },
+          "muted_real": {
+            "ok": true,
+            "fired": 0,
+            "why": null
+          },
+          "muted_noop": {
+            "ok": true,
+            "fired": 0,
+            "why": null
+          }
+        },
+        "long": {
+          "full": {
+            "ok": true,
+            "fired": 3,
+            "why": null
+          },
+          "muted_real": {
+            "ok": true,
+            "fired": 0,
+            "why": null
+          },
+          "muted_noop": {
+            "ok": true,
+            "fired": 3,
+            "why": null
+          }
+        }
+      },
+      "guard_passes": {
+        "short_real_mute": true,
+        "short_noop_mute": true,
+        "long_real_mute": true,
+        "long_noop_mute": false
+      },
+      "short_arms_both_empty": true,
+      "guard_is_vacuous_at_shipped_fixture": true,
+      "guard_discriminates_when_given_events": true,
+      "unmuted_arm_is_never_checked": true,
+      "what": "ambience-onsets.mjs refuses to report when the MUTED arm still fires. It never checks that the UNMUTED arm fired anything, and at its 4 s fixture neither arm does — so the refusal is unreachable for the reason it exists. Remedy: assert full.fired > 0 as well, and size the fixture to the shortest interval band in the province."
+    },
+    "P2_consumption": {
+      "reproducible": true,
+      "ambience_perturbation_changes": 177,
+      "control_perturbation_changes": 21,
+      "ambience_changed_the_world": false,
+      "control_changed_the_world": true,
+      "hashes": {
+        "null": [
+          "64fb46e23bac1210b6eed06f11ef42d7e702a9af7ec53687412864d9105b1a49",
+          "adc2e15d91808e651dea5846f6ef3adc2f94f610fbbb72065c77eec4a2f7fdec",
+          "2121bbacae2c0ad5deb31f64078a3a7aae5bc32de2dce57fa645786ff91c151a",
+          "f6b7575856b6f2266deea220b4becca7f47e36e9f6e6eb501abdb31886fd90c3",
+          "a56d5a1d14e88148794d63281f6ab0bd4d6c144938f65bf4569128f130d92e60",
+          "d0f944e9a1e6059a7f097bb4c10d6aff76c04bf1633278aba14d9e9397bf2020"
+        ],
+        "ambience": [
+          "64fb46e23bac1210b6eed06f11ef42d7e702a9af7ec53687412864d9105b1a49",
+          "adc2e15d91808e651dea5846f6ef3adc2f94f610fbbb72065c77eec4a2f7fdec",
+          "2121bbacae2c0ad5deb31f64078a3a7aae5bc32de2dce57fa645786ff91c151a",
+          "f6b7575856b6f2266deea220b4becca7f47e36e9f6e6eb501abdb31886fd90c3",
+          "a56d5a1d14e88148794d63281f6ab0bd4d6c144938f65bf4569128f130d92e60",
+          "d0f944e9a1e6059a7f097bb4c10d6aff76c04bf1633278aba14d9e9397bf2020"
+        ],
+        "null_rerun": [
+          "64fb46e23bac1210b6eed06f11ef42d7e702a9af7ec53687412864d9105b1a49",
+          "adc2e15d91808e651dea5846f6ef3adc2f94f610fbbb72065c77eec4a2f7fdec",
+          "2121bbacae2c0ad5deb31f64078a3a7aae5bc32de2dce57fa645786ff91c151a",
+          "f6b7575856b6f2266deea220b4becca7f47e36e9f6e6eb501abdb31886fd90c3",
+          "a56d5a1d14e88148794d63281f6ab0bd4d6c144938f65bf4569128f130d92e60",
+          "d0f944e9a1e6059a7f097bb4c10d6aff76c04bf1633278aba14d9e9397bf2020"
+        ],
+        "control": [
+          "d6cd378a5a3f0e6b449ffe11fdaea7e9f1072ea2c0a4573938184f213ee1fd41",
+          "43fe8ee9bcbc91089ce2619673d66b0992d125ecfa165774d6551446c93d5193",
+          "8635f5a965ae312a4f0873d8333f164176b2bac2225e54c226d8234679fcac78",
+          "28e43515924d2b708a809f7ee1401ecee9af152c941df17149d513df29a22f6f",
+          "8ad60796d604341033d69ad80581a8c70a8497ce1048a1e8301145fc4ceda33e",
+          "1391cdf038b9568bd2e10cdb194c4c3be2ff63e7356b82e4e6935f3434955666"
+        ]
+      },
+      "entities_seen": 89,
+      "admissible": true,
+      "verdict": "NO WORLD-SIDE CONSUMER — the ambience model was perturbed to inaudibility (177 fields) and every state hash, entity position and alert value over the run was identical, while the control arm moved.",
+      "what": "ARBITRATION §3 CONSUMPTION. The ambience model is perturbed to inaudibility and the SIMULATION is read — state hash, entity positions, stealth alert — never the audio. The control arm perturbs the stealth detection table, a model the sim reads every step. A \"no consumer\" reading is only admissible if the control arm moved."
+    }
+  }
+}

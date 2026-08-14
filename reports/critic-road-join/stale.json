@@ -1,0 +1,6775 @@
+{
+ "schema": "critic-road-join/stale@1",
+ "measured_at": "2026-08-08T03:45:22.134Z",
+ "git_head": "a2031bbc1973f8f77d1a6665bd6d0ddf7b97d6d9",
+ "roads_json_from": "game/data/world/roads.json as it stands on disk (held FIXED across every impl)",
+ "impls": [
+  {
+   "label": "322f708 (join built here)",
+   "file": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/fake/src/render/exterior-322f708.js",
+   "check_no_interiors": {
+    "blocked_legs": 0,
+    "legs": [],
+    "total_footprint_area_m2": 14684.1,
+    "buildings": 202,
+    "footprints": {
+     "stormhold/stormhold-archive": [
+      7.81,
+      8.88
+     ],
+     "stormhold/stormhold-praetorium": [
+      11,
+      12.5
+     ],
+     "stormhold/stormhold-customs": [
+      11,
+      12.5
+     ],
+     "stormhold/stormhold-market": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-smithy": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-scribe": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-inn-pass": [
+      12,
+      14
+     ],
+     "stormhold/stormhold-inn-lean": [
+      12,
+      14
+     ],
+     "stormhold/stormhold-chapel": [
+      12,
+      14
+     ],
+     "stormhold/stormhold-shrine": [
+      9,
+      9
+     ],
+     "stormhold/stormhold-rootpost": [
+      10,
+      10
+     ],
+     "stormhold/stormhold-gaol": [
+      16,
+      18
+     ],
+     "stormhold/stormhold-kiln": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-house-0": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-1": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-2": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-3": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-4": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-north-barrack": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-raid-house": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-bloom-block": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-old-customs": [
+      5.68,
+      6.39
+     ],
+     "stormhold/stormhold-outer-lean": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-struct-the-wall-itself": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-pass-gate": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-watch-towers": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-muster-yard": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-salt-kilns": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-cistern": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-outside-ditch": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bollard-line": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bloom-course": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-signal-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-hall": [
+      14.22,
+      16.11
+     ],
+     "thorn/thorn-inn": [
+      12,
+      14
+     ],
+     "thorn/thorn-trader": [
+      10,
+      11.5
+     ],
+     "thorn/thorn-apothecary": [
+      9.48,
+      10.9
+     ],
+     "thorn/thorn-sapwell": [
+      9,
+      9
+     ],
+     "thorn/thorn-rootpost": [
+      10,
+      10
+     ],
+     "thorn/thorn-gate": [
+      7.82,
+      5.86
+     ],
+     "thorn/thorn-north-lean": [
+      8,
+      9
+     ],
+     "thorn/thorn-court-store": [
+      8,
+      9
+     ],
+     "thorn/thorn-burnt-stilt": [
+      8,
+      9
+     ],
+     "thorn/thorn-struct-the-charter-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-needle-stacks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-bow-racks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-sapwell-kerb": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-thicket-wall": [
+      5,
+      5
+     ],
+     "gideon/gideon-court": [
+      9.09,
+      10.33
+     ],
+     "gideon/gideon-lowmarket": [
+      7.69,
+      8.85
+     ],
+     "gideon/gideon-tollhouse": [
+      9.09,
+      10.33
+     ],
+     "gideon/gideon-chapel": [
+      9.23,
+      10.77
+     ],
+     "gideon/gideon-inn": [
+      12,
+      14
+     ],
+     "gideon/gideon-smithy": [
+      10,
+      11.5
+     ],
+     "gideon/gideon-apothecary": [
+      10,
+      11.5
+     ],
+     "gideon/gideon-shrine": [
+      9,
+      9
+     ],
+     "gideon/gideon-rootpost": [
+      10,
+      10
+     ],
+     "gideon/gideon-grange": [
+      11,
+      12.5
+     ],
+     "gideon/gideon-house-0": [
+      9,
+      10
+     ],
+     "gideon/gideon-house-1": [
+      9,
+      10
+     ],
+     "gideon/gideon-old-barn": [
+      8,
+      9
+     ],
+     "gideon/gideon-argonian-row": [
+      8,
+      9
+     ],
+     "gideon/gideon-cellar": [
+      8,
+      9
+     ],
+     "gideon/gideon-burnt-shop": [
+      8,
+      9
+     ],
+     "gideon/gideon-struct-the-market-cross": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-square-arcade": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-toll-gate": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-barge-dock": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-grain-weighbridge": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-chapel-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-hollow-bole": [
+      15,
+      17
+     ],
+     "helstrom/helstrom-undertemple": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-hist-shrine": [
+      9,
+      9
+     ],
+     "helstrom/helstrom-legation": [
+      11,
+      12.5
+     ],
+     "helstrom/helstrom-rootpost": [
+      10,
+      10
+     ],
+     "helstrom/helstrom-deep-market": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-smithy": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-apothecary": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-scriptorium": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-inn-tide": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-inn-gate": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-inn-egg": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-warders": [
+      11,
+      12.5
+     ],
+     "helstrom/helstrom-archive": [
+      11,
+      12.5
+     ],
+     "helstrom/helstrom-house-0": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-1": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-2": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-3": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-4": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-5": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-6": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-7": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-8": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-9": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-10": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-11": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-sunk-bole": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-quarantine": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-legate-annexe": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-old-gate": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-sap-cellar": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-burnt-lodge": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-struct-the-mound-itself": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-four-rootgates": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-egg-terraces": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-sap-gutters": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-kneeling-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-deep-cistern": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-ring-causeway": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-root-bridge": [
+      5,
+      5
+     ],
+     "archon/archon-guild-office": [
+      11,
+      12.5
+     ],
+     "archon/archon-vat-house": [
+      7.96,
+      9.16
+     ],
+     "archon/archon-market": [
+      4.9,
+      5.64
+     ],
+     "archon/archon-apothecary": [
+      4.9,
+      5.64
+     ],
+     "archon/archon-inn": [
+      4.86,
+      5.67
+     ],
+     "archon/archon-ward": [
+      4.86,
+      5.67
+     ],
+     "archon/archon-shrine": [
+      4.71,
+      4.71
+     ],
+     "archon/archon-rootpost": [
+      5.23,
+      5.23
+     ],
+     "archon/archon-kiln-house": [
+      4.26,
+      4.9
+     ],
+     "archon/archon-house-0": [
+      3.83,
+      4.26
+     ],
+     "archon/archon-house-1": [
+      5.98,
+      6.65
+     ],
+     "archon/archon-house-2": [
+      5.98,
+      6.65
+     ],
+     "archon/archon-first-vat": [
+      5.7,
+      6.41
+     ],
+     "archon/archon-naga-row": [
+      5.93,
+      6.67
+     ],
+     "archon/archon-old-kiln": [
+      5.6,
+      6.3
+     ],
+     "archon/archon-quay-store": [
+      5.6,
+      6.3
+     ],
+     "archon/archon-struct-the-dye-vats": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-drying-racks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-kiln-stacks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-lichen-cribs": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-old-quay": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-wind-screen": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-prison": [
+      16,
+      18
+     ],
+     "blackrose/blackrose-inn": [
+      3.4,
+      3.97
+     ],
+     "blackrose/blackrose-warders-hall": [
+      3.4,
+      3.86
+     ],
+     "blackrose/blackrose-market": [
+      3.4,
+      3.91
+     ],
+     "blackrose/blackrose-smithy": [
+      3.4,
+      3.91
+     ],
+     "blackrose/blackrose-pawn": [
+      10,
+      11.5
+     ],
+     "blackrose/blackrose-shrine": [
+      9,
+      9
+     ],
+     "blackrose/blackrose-rootpost": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-clerk": [
+      3.4,
+      3.86
+     ],
+     "blackrose/blackrose-house-0": [
+      3.4,
+      3.78
+     ],
+     "blackrose/blackrose-house-1": [
+      3.4,
+      3.78
+     ],
+     "blackrose/blackrose-house-2": [
+      9,
+      10
+     ],
+     "blackrose/blackrose-east-block": [
+      8,
+      9
+     ],
+     "blackrose/blackrose-condemned-row": [
+      3.4,
+      3.82
+     ],
+     "blackrose/blackrose-old-gallows": [
+      3.4,
+      3.82
+     ],
+     "blackrose/blackrose-family-row": [
+      3.4,
+      3.82
+     ],
+     "blackrose/blackrose-struct-the-prison-wall": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-corridor-gates": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-lime-pit": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-gallows-frame": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-visitors-queue-rail": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-water-butt-line": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-grey-hist": [
+      9,
+      9
+     ],
+     "soulrest/soulrest-court-steps": [
+      12,
+      14
+     ],
+     "soulrest/soulrest-market": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-smithy": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-pawn": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-quay": [
+      10,
+      10
+     ],
+     "soulrest/soulrest-boneyard": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-old-harbourmaster": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-salt-house": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-burnt-shrine": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-struct-the-grey-hist": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-silt-quay": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-salt-pans": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-bone-stacks": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-court-steps": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-customs": [
+      9.46,
+      10.75
+     ],
+     "lilmoth/lilmoth-yard": [
+      7.74,
+      8.9
+     ],
+     "lilmoth/lilmoth-ledger-house": [
+      7.3,
+      8.3
+     ],
+     "lilmoth/lilmoth-market": [
+      6.64,
+      7.63
+     ],
+     "lilmoth/lilmoth-smithy": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-apothecary": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-scribe": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-pawn": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-inn-drowned": [
+      12,
+      14
+     ],
+     "lilmoth/lilmoth-inn-stilt": [
+      12,
+      14
+     ],
+     "lilmoth/lilmoth-shrine": [
+      9,
+      9
+     ],
+     "lilmoth/lilmoth-healer": [
+      12,
+      14
+     ],
+     "lilmoth/lilmoth-rootpost": [
+      10,
+      10
+     ],
+     "lilmoth/lilmoth-house-0": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-1": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-2": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-3": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-4": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-first-storey": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-boom-house": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-plague-stair": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-sugar-cellar": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-collapsed-arcade": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-struct-the-boom-chain": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-landing-quay": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-tide-mark-wall": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-pile-field": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sunk-arcade": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sea-stair": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-cistern-cap": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-old-mole": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-fish-racks": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-customs-bollards": [
+      4.81,
+      4.81
+     ]
+    }
+   },
+   "game_with_interiors": {
+    "blocked_legs": 0,
+    "legs": [],
+    "total_footprint_area_m2": 18989.4,
+    "buildings": 202,
+    "footprints": {
+     "stormhold/stormhold-archive": [
+      7.72,
+      8.96
+     ],
+     "stormhold/stormhold-praetorium": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-customs": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-market": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-smithy": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-scribe": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-inn-pass": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-inn-lean": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-chapel": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-shrine": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-rootpost": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-gaol": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-kiln": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-house-0": [
+      13.6,
+      15.6
+     ],
+     "stormhold/stormhold-house-1": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-house-2": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-house-3": [
+      13.6,
+      15.6
+     ],
+     "stormhold/stormhold-house-4": [
+      13.6,
+      15.6
+     ],
+     "stormhold/stormhold-north-barrack": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-raid-house": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-bloom-block": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-old-customs": [
+      4.98,
+      5.6
+     ],
+     "stormhold/stormhold-outer-lean": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-struct-the-wall-itself": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-pass-gate": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-watch-towers": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-muster-yard": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-salt-kilns": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-cistern": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-outside-ditch": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bollard-line": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bloom-course": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-signal-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-hall": [
+      13.98,
+      15.73
+     ],
+     "thorn/thorn-inn": [
+      14.8,
+      16.8
+     ],
+     "thorn/thorn-trader": [
+      14.8,
+      16.8
+     ],
+     "thorn/thorn-apothecary": [
+      12.77,
+      14.49
+     ],
+     "thorn/thorn-sapwell": [
+      12.77,
+      14.49
+     ],
+     "thorn/thorn-rootpost": [
+      14.8,
+      16.8
+     ],
+     "thorn/thorn-gate": [
+      12.94,
+      14.68
+     ],
+     "thorn/thorn-north-lean": [
+      8,
+      9
+     ],
+     "thorn/thorn-court-store": [
+      8,
+      9
+     ],
+     "thorn/thorn-burnt-stilt": [
+      8,
+      9
+     ],
+     "thorn/thorn-struct-the-charter-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-needle-stacks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-bow-racks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-sapwell-kerb": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-thicket-wall": [
+      5,
+      5
+     ],
+     "gideon/gideon-court": [
+      9.09,
+      10.43
+     ],
+     "gideon/gideon-lowmarket": [
+      9.09,
+      10.43
+     ],
+     "gideon/gideon-tollhouse": [
+      9.09,
+      10.43
+     ],
+     "gideon/gideon-chapel": [
+      9.09,
+      10.43
+     ],
+     "gideon/gideon-inn": [
+      13.6,
+      15.6
+     ],
+     "gideon/gideon-smithy": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-apothecary": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-shrine": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-rootpost": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-grange": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-house-0": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-house-1": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-old-barn": [
+      8,
+      9
+     ],
+     "gideon/gideon-argonian-row": [
+      8,
+      9
+     ],
+     "gideon/gideon-cellar": [
+      8,
+      9
+     ],
+     "gideon/gideon-burnt-shop": [
+      8,
+      9
+     ],
+     "gideon/gideon-struct-the-market-cross": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-square-arcade": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-toll-gate": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-barge-dock": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-grain-weighbridge": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-chapel-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-hollow-bole": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-undertemple": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-hist-shrine": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-legation": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-rootpost": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-deep-market": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-smithy": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-apothecary": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-scriptorium": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-inn-tide": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-inn-gate": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-inn-egg": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-warders": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-archive": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-house-0": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-1": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-2": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-3": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-4": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-5": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-6": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-7": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-8": [
+      13.6,
+      15.6
+     ],
+     "helstrom/helstrom-house-9": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-10": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-11": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-sunk-bole": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-quarantine": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-legate-annexe": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-old-gate": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-sap-cellar": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-burnt-lodge": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-struct-the-mound-itself": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-four-rootgates": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-egg-terraces": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-sap-gutters": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-kneeling-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-deep-cistern": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-ring-causeway": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-root-bridge": [
+      5,
+      5
+     ],
+     "archon/archon-guild-office": [
+      13.6,
+      15.6
+     ],
+     "archon/archon-vat-house": [
+      7.96,
+      9.14
+     ],
+     "archon/archon-market": [
+      4.91,
+      5.64
+     ],
+     "archon/archon-apothecary": [
+      4.91,
+      5.64
+     ],
+     "archon/archon-inn": [
+      4.88,
+      5.67
+     ],
+     "archon/archon-ward": [
+      4.88,
+      5.67
+     ],
+     "archon/archon-shrine": [
+      5.18,
+      6.02
+     ],
+     "archon/archon-rootpost": [
+      5.18,
+      6.02
+     ],
+     "archon/archon-kiln-house": [
+      4.22,
+      4.9
+     ],
+     "archon/archon-house-0": [
+      4.22,
+      4.9
+     ],
+     "archon/archon-house-1": [
+      5.98,
+      6.95
+     ],
+     "archon/archon-house-2": [
+      5.98,
+      6.95
+     ],
+     "archon/archon-first-vat": [
+      4.23,
+      4.76
+     ],
+     "archon/archon-naga-row": [
+      5.93,
+      6.67
+     ],
+     "archon/archon-old-kiln": [
+      5.6,
+      6.3
+     ],
+     "archon/archon-quay-store": [
+      5.6,
+      6.3
+     ],
+     "archon/archon-struct-the-dye-vats": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-drying-racks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-kiln-stacks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-lichen-cribs": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-old-quay": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-wind-screen": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-prison": [
+      13.6,
+      15.6
+     ],
+     "blackrose/blackrose-inn": [
+      3.4,
+      3.9
+     ],
+     "blackrose/blackrose-warders-hall": [
+      3.4,
+      3.9
+     ],
+     "blackrose/blackrose-market": [
+      3.4,
+      3.9
+     ],
+     "blackrose/blackrose-smithy": [
+      3.4,
+      3.9
+     ],
+     "blackrose/blackrose-pawn": [
+      12.4,
+      14.4
+     ],
+     "blackrose/blackrose-shrine": [
+      12.4,
+      14.4
+     ],
+     "blackrose/blackrose-rootpost": [
+      3.4,
+      3.95
+     ],
+     "blackrose/blackrose-clerk": [
+      3.4,
+      3.95
+     ],
+     "blackrose/blackrose-house-0": [
+      3.4,
+      3.95
+     ],
+     "blackrose/blackrose-house-1": [
+      3.4,
+      3.9
+     ],
+     "blackrose/blackrose-house-2": [
+      12.4,
+      14.4
+     ],
+     "blackrose/blackrose-east-block": [
+      8,
+      9
+     ],
+     "blackrose/blackrose-condemned-row": [
+      3.4,
+      3.82
+     ],
+     "blackrose/blackrose-old-gallows": [
+      3.4,
+      3.82
+     ],
+     "blackrose/blackrose-family-row": [
+      3.4,
+      3.82
+     ],
+     "blackrose/blackrose-struct-the-prison-wall": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-corridor-gates": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-lime-pit": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-gallows-frame": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-visitors-queue-rail": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-water-butt-line": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-grey-hist": [
+      10.44,
+      11.85
+     ],
+     "soulrest/soulrest-court-steps": [
+      14.34,
+      16.27
+     ],
+     "soulrest/soulrest-market": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-smithy": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-pawn": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-quay": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-boneyard": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-old-harbourmaster": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-salt-house": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-burnt-shrine": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-struct-the-grey-hist": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-silt-quay": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-salt-pans": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-bone-stacks": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-court-steps": [
+      3.53,
+      3.53
+     ],
+     "lilmoth/lilmoth-customs": [
+      9.19,
+      10.67
+     ],
+     "lilmoth/lilmoth-yard": [
+      8.27,
+      9.6
+     ],
+     "lilmoth/lilmoth-ledger-house": [
+      7.09,
+      8.24
+     ],
+     "lilmoth/lilmoth-market": [
+      7.09,
+      8.24
+     ],
+     "lilmoth/lilmoth-smithy": [
+      10.55,
+      12.25
+     ],
+     "lilmoth/lilmoth-apothecary": [
+      9.53,
+      11.23
+     ],
+     "lilmoth/lilmoth-scribe": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-pawn": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-inn-drowned": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-inn-stilt": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-shrine": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-healer": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-rootpost": [
+      9.78,
+      11.52
+     ],
+     "lilmoth/lilmoth-house-0": [
+      9.3,
+      10.8
+     ],
+     "lilmoth/lilmoth-house-1": [
+      9.3,
+      10.8
+     ],
+     "lilmoth/lilmoth-house-2": [
+      10.9,
+      12.65
+     ],
+     "lilmoth/lilmoth-house-3": [
+      12.12,
+      14.07
+     ],
+     "lilmoth/lilmoth-house-4": [
+      12.4,
+      14.4
+     ],
+     "lilmoth/lilmoth-first-storey": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-boom-house": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-plague-stair": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-sugar-cellar": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-collapsed-arcade": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-struct-the-boom-chain": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-landing-quay": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-tide-mark-wall": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-pile-field": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sunk-arcade": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sea-stair": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-cistern-cap": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-old-mole": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-fish-racks": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-customs-bollards": [
+      4.19,
+      4.19
+     ]
+    }
+   }
+  },
+  {
+   "label": "345dcca (+3s after after.json)",
+   "file": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/fake/src/render/exterior-345dcca.js",
+   "check_no_interiors": {
+    "blocked_legs": 0,
+    "legs": [],
+    "total_footprint_area_m2": 14684.1,
+    "buildings": 202,
+    "footprints": {
+     "stormhold/stormhold-archive": [
+      7.81,
+      8.88
+     ],
+     "stormhold/stormhold-praetorium": [
+      11,
+      12.5
+     ],
+     "stormhold/stormhold-customs": [
+      11,
+      12.5
+     ],
+     "stormhold/stormhold-market": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-smithy": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-scribe": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-inn-pass": [
+      12,
+      14
+     ],
+     "stormhold/stormhold-inn-lean": [
+      12,
+      14
+     ],
+     "stormhold/stormhold-chapel": [
+      12,
+      14
+     ],
+     "stormhold/stormhold-shrine": [
+      9,
+      9
+     ],
+     "stormhold/stormhold-rootpost": [
+      10,
+      10
+     ],
+     "stormhold/stormhold-gaol": [
+      16,
+      18
+     ],
+     "stormhold/stormhold-kiln": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-house-0": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-1": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-2": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-3": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-4": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-north-barrack": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-raid-house": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-bloom-block": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-old-customs": [
+      5.68,
+      6.39
+     ],
+     "stormhold/stormhold-outer-lean": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-struct-the-wall-itself": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-pass-gate": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-watch-towers": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-muster-yard": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-salt-kilns": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-cistern": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-outside-ditch": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bollard-line": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bloom-course": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-signal-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-hall": [
+      14.22,
+      16.11
+     ],
+     "thorn/thorn-inn": [
+      12,
+      14
+     ],
+     "thorn/thorn-trader": [
+      10,
+      11.5
+     ],
+     "thorn/thorn-apothecary": [
+      9.48,
+      10.9
+     ],
+     "thorn/thorn-sapwell": [
+      9,
+      9
+     ],
+     "thorn/thorn-rootpost": [
+      10,
+      10
+     ],
+     "thorn/thorn-gate": [
+      7.82,
+      5.86
+     ],
+     "thorn/thorn-north-lean": [
+      8,
+      9
+     ],
+     "thorn/thorn-court-store": [
+      8,
+      9
+     ],
+     "thorn/thorn-burnt-stilt": [
+      8,
+      9
+     ],
+     "thorn/thorn-struct-the-charter-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-needle-stacks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-bow-racks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-sapwell-kerb": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-thicket-wall": [
+      5,
+      5
+     ],
+     "gideon/gideon-court": [
+      9.09,
+      10.33
+     ],
+     "gideon/gideon-lowmarket": [
+      7.69,
+      8.85
+     ],
+     "gideon/gideon-tollhouse": [
+      9.09,
+      10.33
+     ],
+     "gideon/gideon-chapel": [
+      9.23,
+      10.77
+     ],
+     "gideon/gideon-inn": [
+      12,
+      14
+     ],
+     "gideon/gideon-smithy": [
+      10,
+      11.5
+     ],
+     "gideon/gideon-apothecary": [
+      10,
+      11.5
+     ],
+     "gideon/gideon-shrine": [
+      9,
+      9
+     ],
+     "gideon/gideon-rootpost": [
+      10,
+      10
+     ],
+     "gideon/gideon-grange": [
+      11,
+      12.5
+     ],
+     "gideon/gideon-house-0": [
+      9,
+      10
+     ],
+     "gideon/gideon-house-1": [
+      9,
+      10
+     ],
+     "gideon/gideon-old-barn": [
+      8,
+      9
+     ],
+     "gideon/gideon-argonian-row": [
+      8,
+      9
+     ],
+     "gideon/gideon-cellar": [
+      8,
+      9
+     ],
+     "gideon/gideon-burnt-shop": [
+      8,
+      9
+     ],
+     "gideon/gideon-struct-the-market-cross": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-square-arcade": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-toll-gate": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-barge-dock": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-grain-weighbridge": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-chapel-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-hollow-bole": [
+      15,
+      17
+     ],
+     "helstrom/helstrom-undertemple": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-hist-shrine": [
+      9,
+      9
+     ],
+     "helstrom/helstrom-legation": [
+      11,
+      12.5
+     ],
+     "helstrom/helstrom-rootpost": [
+      10,
+      10
+     ],
+     "helstrom/helstrom-deep-market": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-smithy": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-apothecary": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-scriptorium": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-inn-tide": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-inn-gate": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-inn-egg": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-warders": [
+      11,
+      12.5
+     ],
+     "helstrom/helstrom-archive": [
+      11,
+      12.5
+     ],
+     "helstrom/helstrom-house-0": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-1": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-2": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-3": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-4": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-5": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-6": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-7": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-8": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-9": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-10": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-11": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-sunk-bole": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-quarantine": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-legate-annexe": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-old-gate": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-sap-cellar": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-burnt-lodge": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-struct-the-mound-itself": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-four-rootgates": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-egg-terraces": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-sap-gutters": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-kneeling-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-deep-cistern": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-ring-causeway": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-root-bridge": [
+      5,
+      5
+     ],
+     "archon/archon-guild-office": [
+      11,
+      12.5
+     ],
+     "archon/archon-vat-house": [
+      7.96,
+      9.16
+     ],
+     "archon/archon-market": [
+      4.9,
+      5.64
+     ],
+     "archon/archon-apothecary": [
+      4.9,
+      5.64
+     ],
+     "archon/archon-inn": [
+      4.86,
+      5.67
+     ],
+     "archon/archon-ward": [
+      4.86,
+      5.67
+     ],
+     "archon/archon-shrine": [
+      4.71,
+      4.71
+     ],
+     "archon/archon-rootpost": [
+      5.23,
+      5.23
+     ],
+     "archon/archon-kiln-house": [
+      4.26,
+      4.9
+     ],
+     "archon/archon-house-0": [
+      3.83,
+      4.26
+     ],
+     "archon/archon-house-1": [
+      5.98,
+      6.65
+     ],
+     "archon/archon-house-2": [
+      5.98,
+      6.65
+     ],
+     "archon/archon-first-vat": [
+      5.7,
+      6.41
+     ],
+     "archon/archon-naga-row": [
+      5.93,
+      6.67
+     ],
+     "archon/archon-old-kiln": [
+      5.6,
+      6.3
+     ],
+     "archon/archon-quay-store": [
+      5.6,
+      6.3
+     ],
+     "archon/archon-struct-the-dye-vats": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-drying-racks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-kiln-stacks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-lichen-cribs": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-old-quay": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-wind-screen": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-prison": [
+      16,
+      18
+     ],
+     "blackrose/blackrose-inn": [
+      3.4,
+      3.97
+     ],
+     "blackrose/blackrose-warders-hall": [
+      3.4,
+      3.86
+     ],
+     "blackrose/blackrose-market": [
+      3.4,
+      3.91
+     ],
+     "blackrose/blackrose-smithy": [
+      3.4,
+      3.91
+     ],
+     "blackrose/blackrose-pawn": [
+      10,
+      11.5
+     ],
+     "blackrose/blackrose-shrine": [
+      9,
+      9
+     ],
+     "blackrose/blackrose-rootpost": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-clerk": [
+      3.4,
+      3.86
+     ],
+     "blackrose/blackrose-house-0": [
+      3.4,
+      3.78
+     ],
+     "blackrose/blackrose-house-1": [
+      3.4,
+      3.78
+     ],
+     "blackrose/blackrose-house-2": [
+      9,
+      10
+     ],
+     "blackrose/blackrose-east-block": [
+      8,
+      9
+     ],
+     "blackrose/blackrose-condemned-row": [
+      3.4,
+      3.82
+     ],
+     "blackrose/blackrose-old-gallows": [
+      3.4,
+      3.82
+     ],
+     "blackrose/blackrose-family-row": [
+      3.4,
+      3.82
+     ],
+     "blackrose/blackrose-struct-the-prison-wall": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-corridor-gates": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-lime-pit": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-gallows-frame": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-visitors-queue-rail": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-water-butt-line": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-grey-hist": [
+      9,
+      9
+     ],
+     "soulrest/soulrest-court-steps": [
+      12,
+      14
+     ],
+     "soulrest/soulrest-market": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-smithy": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-pawn": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-quay": [
+      10,
+      10
+     ],
+     "soulrest/soulrest-boneyard": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-old-harbourmaster": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-salt-house": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-burnt-shrine": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-struct-the-grey-hist": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-silt-quay": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-salt-pans": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-bone-stacks": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-court-steps": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-customs": [
+      9.46,
+      10.75
+     ],
+     "lilmoth/lilmoth-yard": [
+      7.74,
+      8.9
+     ],
+     "lilmoth/lilmoth-ledger-house": [
+      7.3,
+      8.3
+     ],
+     "lilmoth/lilmoth-market": [
+      6.64,
+      7.63
+     ],
+     "lilmoth/lilmoth-smithy": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-apothecary": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-scribe": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-pawn": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-inn-drowned": [
+      12,
+      14
+     ],
+     "lilmoth/lilmoth-inn-stilt": [
+      12,
+      14
+     ],
+     "lilmoth/lilmoth-shrine": [
+      9,
+      9
+     ],
+     "lilmoth/lilmoth-healer": [
+      12,
+      14
+     ],
+     "lilmoth/lilmoth-rootpost": [
+      10,
+      10
+     ],
+     "lilmoth/lilmoth-house-0": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-1": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-2": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-3": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-4": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-first-storey": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-boom-house": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-plague-stair": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-sugar-cellar": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-collapsed-arcade": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-struct-the-boom-chain": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-landing-quay": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-tide-mark-wall": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-pile-field": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sunk-arcade": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sea-stair": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-cistern-cap": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-old-mole": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-fish-racks": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-customs-bollards": [
+      4.81,
+      4.81
+     ]
+    }
+   },
+   "game_with_interiors": {
+    "blocked_legs": 0,
+    "legs": [],
+    "total_footprint_area_m2": 18989.4,
+    "buildings": 202,
+    "footprints": {
+     "stormhold/stormhold-archive": [
+      7.72,
+      8.96
+     ],
+     "stormhold/stormhold-praetorium": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-customs": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-market": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-smithy": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-scribe": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-inn-pass": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-inn-lean": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-chapel": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-shrine": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-rootpost": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-gaol": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-kiln": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-house-0": [
+      13.6,
+      15.6
+     ],
+     "stormhold/stormhold-house-1": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-house-2": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-house-3": [
+      13.6,
+      15.6
+     ],
+     "stormhold/stormhold-house-4": [
+      13.6,
+      15.6
+     ],
+     "stormhold/stormhold-north-barrack": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-raid-house": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-bloom-block": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-old-customs": [
+      4.98,
+      5.6
+     ],
+     "stormhold/stormhold-outer-lean": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-struct-the-wall-itself": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-pass-gate": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-watch-towers": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-muster-yard": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-salt-kilns": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-cistern": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-outside-ditch": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bollard-line": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bloom-course": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-signal-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-hall": [
+      13.98,
+      15.73
+     ],
+     "thorn/thorn-inn": [
+      14.8,
+      16.8
+     ],
+     "thorn/thorn-trader": [
+      14.8,
+      16.8
+     ],
+     "thorn/thorn-apothecary": [
+      12.77,
+      14.49
+     ],
+     "thorn/thorn-sapwell": [
+      12.77,
+      14.49
+     ],
+     "thorn/thorn-rootpost": [
+      14.8,
+      16.8
+     ],
+     "thorn/thorn-gate": [
+      12.94,
+      14.68
+     ],
+     "thorn/thorn-north-lean": [
+      8,
+      9
+     ],
+     "thorn/thorn-court-store": [
+      8,
+      9
+     ],
+     "thorn/thorn-burnt-stilt": [
+      8,
+      9
+     ],
+     "thorn/thorn-struct-the-charter-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-needle-stacks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-bow-racks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-sapwell-kerb": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-thicket-wall": [
+      5,
+      5
+     ],
+     "gideon/gideon-court": [
+      9.09,
+      10.43
+     ],
+     "gideon/gideon-lowmarket": [
+      9.09,
+      10.43
+     ],
+     "gideon/gideon-tollhouse": [
+      9.09,
+      10.43
+     ],
+     "gideon/gideon-chapel": [
+      9.09,
+      10.43
+     ],
+     "gideon/gideon-inn": [
+      13.6,
+      15.6
+     ],
+     "gideon/gideon-smithy": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-apothecary": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-shrine": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-rootpost": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-grange": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-house-0": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-house-1": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-old-barn": [
+      8,
+      9
+     ],
+     "gideon/gideon-argonian-row": [
+      8,
+      9
+     ],
+     "gideon/gideon-cellar": [
+      8,
+      9
+     ],
+     "gideon/gideon-burnt-shop": [
+      8,
+      9
+     ],
+     "gideon/gideon-struct-the-market-cross": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-square-arcade": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-toll-gate": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-barge-dock": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-grain-weighbridge": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-chapel-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-hollow-bole": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-undertemple": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-hist-shrine": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-legation": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-rootpost": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-deep-market": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-smithy": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-apothecary": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-scriptorium": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-inn-tide": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-inn-gate": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-inn-egg": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-warders": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-archive": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-house-0": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-1": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-2": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-3": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-4": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-5": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-6": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-7": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-8": [
+      13.6,
+      15.6
+     ],
+     "helstrom/helstrom-house-9": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-10": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-11": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-sunk-bole": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-quarantine": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-legate-annexe": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-old-gate": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-sap-cellar": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-burnt-lodge": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-struct-the-mound-itself": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-four-rootgates": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-egg-terraces": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-sap-gutters": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-kneeling-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-deep-cistern": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-ring-causeway": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-root-bridge": [
+      5,
+      5
+     ],
+     "archon/archon-guild-office": [
+      13.6,
+      15.6
+     ],
+     "archon/archon-vat-house": [
+      7.96,
+      9.14
+     ],
+     "archon/archon-market": [
+      4.91,
+      5.64
+     ],
+     "archon/archon-apothecary": [
+      4.91,
+      5.64
+     ],
+     "archon/archon-inn": [
+      4.88,
+      5.67
+     ],
+     "archon/archon-ward": [
+      4.88,
+      5.67
+     ],
+     "archon/archon-shrine": [
+      5.18,
+      6.02
+     ],
+     "archon/archon-rootpost": [
+      5.18,
+      6.02
+     ],
+     "archon/archon-kiln-house": [
+      4.22,
+      4.9
+     ],
+     "archon/archon-house-0": [
+      4.22,
+      4.9
+     ],
+     "archon/archon-house-1": [
+      5.98,
+      6.95
+     ],
+     "archon/archon-house-2": [
+      5.98,
+      6.95
+     ],
+     "archon/archon-first-vat": [
+      4.23,
+      4.76
+     ],
+     "archon/archon-naga-row": [
+      5.93,
+      6.67
+     ],
+     "archon/archon-old-kiln": [
+      5.6,
+      6.3
+     ],
+     "archon/archon-quay-store": [
+      5.6,
+      6.3
+     ],
+     "archon/archon-struct-the-dye-vats": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-drying-racks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-kiln-stacks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-lichen-cribs": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-old-quay": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-wind-screen": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-prison": [
+      13.6,
+      15.6
+     ],
+     "blackrose/blackrose-inn": [
+      3.4,
+      3.9
+     ],
+     "blackrose/blackrose-warders-hall": [
+      3.4,
+      3.9
+     ],
+     "blackrose/blackrose-market": [
+      3.4,
+      3.9
+     ],
+     "blackrose/blackrose-smithy": [
+      3.4,
+      3.9
+     ],
+     "blackrose/blackrose-pawn": [
+      12.4,
+      14.4
+     ],
+     "blackrose/blackrose-shrine": [
+      12.4,
+      14.4
+     ],
+     "blackrose/blackrose-rootpost": [
+      3.4,
+      3.95
+     ],
+     "blackrose/blackrose-clerk": [
+      3.4,
+      3.95
+     ],
+     "blackrose/blackrose-house-0": [
+      3.4,
+      3.95
+     ],
+     "blackrose/blackrose-house-1": [
+      3.4,
+      3.9
+     ],
+     "blackrose/blackrose-house-2": [
+      12.4,
+      14.4
+     ],
+     "blackrose/blackrose-east-block": [
+      8,
+      9
+     ],
+     "blackrose/blackrose-condemned-row": [
+      3.4,
+      3.82
+     ],
+     "blackrose/blackrose-old-gallows": [
+      3.4,
+      3.82
+     ],
+     "blackrose/blackrose-family-row": [
+      3.4,
+      3.82
+     ],
+     "blackrose/blackrose-struct-the-prison-wall": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-corridor-gates": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-lime-pit": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-gallows-frame": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-visitors-queue-rail": [
+      3.4,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-water-butt-line": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-grey-hist": [
+      10.44,
+      11.85
+     ],
+     "soulrest/soulrest-court-steps": [
+      14.34,
+      16.27
+     ],
+     "soulrest/soulrest-market": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-smithy": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-pawn": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-quay": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-boneyard": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-old-harbourmaster": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-salt-house": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-burnt-shrine": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-struct-the-grey-hist": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-silt-quay": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-salt-pans": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-bone-stacks": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-court-steps": [
+      3.53,
+      3.53
+     ],
+     "lilmoth/lilmoth-customs": [
+      9.19,
+      10.67
+     ],
+     "lilmoth/lilmoth-yard": [
+      8.27,
+      9.6
+     ],
+     "lilmoth/lilmoth-ledger-house": [
+      7.09,
+      8.24
+     ],
+     "lilmoth/lilmoth-market": [
+      7.09,
+      8.24
+     ],
+     "lilmoth/lilmoth-smithy": [
+      10.55,
+      12.25
+     ],
+     "lilmoth/lilmoth-apothecary": [
+      9.53,
+      11.23
+     ],
+     "lilmoth/lilmoth-scribe": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-pawn": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-inn-drowned": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-inn-stilt": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-shrine": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-healer": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-rootpost": [
+      9.78,
+      11.52
+     ],
+     "lilmoth/lilmoth-house-0": [
+      9.3,
+      10.8
+     ],
+     "lilmoth/lilmoth-house-1": [
+      9.3,
+      10.8
+     ],
+     "lilmoth/lilmoth-house-2": [
+      10.9,
+      12.65
+     ],
+     "lilmoth/lilmoth-house-3": [
+      12.12,
+      14.07
+     ],
+     "lilmoth/lilmoth-house-4": [
+      12.4,
+      14.4
+     ],
+     "lilmoth/lilmoth-first-storey": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-boom-house": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-plague-stair": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-sugar-cellar": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-collapsed-arcade": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-struct-the-boom-chain": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-landing-quay": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-tide-mark-wall": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-pile-field": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sunk-arcade": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sea-stair": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-cistern-cap": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-old-mole": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-fish-racks": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-customs-bollards": [
+      4.19,
+      4.19
+     ]
+    }
+   }
+  },
+  {
+   "label": "0dc0703",
+   "file": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/fake/src/render/exterior-0dc0703.js",
+   "check_no_interiors": {
+    "blocked_legs": 3,
+    "legs": [
+     {
+      "leg": "helstrom-blackrose",
+      "buildings": [
+       "blackrose-house-0"
+      ],
+      "samples": 2
+     },
+     {
+      "leg": "soulrest-blackrose",
+      "buildings": [
+       "blackrose-rootpost"
+      ],
+      "samples": 1
+     },
+     {
+      "leg": "blackrose-lilmoth",
+      "buildings": [
+       "blackrose-condemned-row",
+       "blackrose-old-gallows"
+      ],
+      "samples": 4
+     }
+    ],
+    "total_footprint_area_m2": 15775.3,
+    "buildings": 202,
+    "footprints": {
+     "stormhold/stormhold-archive": [
+      11,
+      8.88
+     ],
+     "stormhold/stormhold-praetorium": [
+      11,
+      12.5
+     ],
+     "stormhold/stormhold-customs": [
+      11,
+      12.5
+     ],
+     "stormhold/stormhold-market": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-smithy": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-scribe": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-inn-pass": [
+      12,
+      14
+     ],
+     "stormhold/stormhold-inn-lean": [
+      12,
+      14
+     ],
+     "stormhold/stormhold-chapel": [
+      12,
+      14
+     ],
+     "stormhold/stormhold-shrine": [
+      9,
+      9
+     ],
+     "stormhold/stormhold-rootpost": [
+      10,
+      10
+     ],
+     "stormhold/stormhold-gaol": [
+      16,
+      18
+     ],
+     "stormhold/stormhold-kiln": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-house-0": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-1": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-2": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-3": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-4": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-north-barrack": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-raid-house": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-bloom-block": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-old-customs": [
+      8,
+      6.39
+     ],
+     "stormhold/stormhold-outer-lean": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-struct-the-wall-itself": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-pass-gate": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-watch-towers": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-muster-yard": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-salt-kilns": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-cistern": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-outside-ditch": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bollard-line": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bloom-course": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-signal-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-hall": [
+      15,
+      16.11
+     ],
+     "thorn/thorn-inn": [
+      12,
+      14
+     ],
+     "thorn/thorn-trader": [
+      10,
+      11.5
+     ],
+     "thorn/thorn-apothecary": [
+      10,
+      10.9
+     ],
+     "thorn/thorn-sapwell": [
+      9,
+      9
+     ],
+     "thorn/thorn-rootpost": [
+      10,
+      10
+     ],
+     "thorn/thorn-gate": [
+      8,
+      6
+     ],
+     "thorn/thorn-north-lean": [
+      8,
+      9
+     ],
+     "thorn/thorn-court-store": [
+      8,
+      9
+     ],
+     "thorn/thorn-burnt-stilt": [
+      8,
+      9
+     ],
+     "thorn/thorn-struct-the-charter-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-needle-stacks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-bow-racks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-sapwell-kerb": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-thicket-wall": [
+      5,
+      5
+     ],
+     "gideon/gideon-court": [
+      9.09,
+      12.5
+     ],
+     "gideon/gideon-lowmarket": [
+      7.69,
+      11.5
+     ],
+     "gideon/gideon-tollhouse": [
+      9.09,
+      12.5
+     ],
+     "gideon/gideon-chapel": [
+      9.23,
+      14
+     ],
+     "gideon/gideon-inn": [
+      12,
+      14
+     ],
+     "gideon/gideon-smithy": [
+      10,
+      11.5
+     ],
+     "gideon/gideon-apothecary": [
+      10,
+      11.5
+     ],
+     "gideon/gideon-shrine": [
+      9,
+      9
+     ],
+     "gideon/gideon-rootpost": [
+      10,
+      10
+     ],
+     "gideon/gideon-grange": [
+      11,
+      12.5
+     ],
+     "gideon/gideon-house-0": [
+      9,
+      10
+     ],
+     "gideon/gideon-house-1": [
+      9,
+      10
+     ],
+     "gideon/gideon-old-barn": [
+      8,
+      9
+     ],
+     "gideon/gideon-argonian-row": [
+      8,
+      9
+     ],
+     "gideon/gideon-cellar": [
+      8,
+      9
+     ],
+     "gideon/gideon-burnt-shop": [
+      8,
+      9
+     ],
+     "gideon/gideon-struct-the-market-cross": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-square-arcade": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-toll-gate": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-barge-dock": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-grain-weighbridge": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-chapel-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-hollow-bole": [
+      15,
+      17
+     ],
+     "helstrom/helstrom-undertemple": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-hist-shrine": [
+      9,
+      9
+     ],
+     "helstrom/helstrom-legation": [
+      11,
+      12.5
+     ],
+     "helstrom/helstrom-rootpost": [
+      10,
+      10
+     ],
+     "helstrom/helstrom-deep-market": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-smithy": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-apothecary": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-scriptorium": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-inn-tide": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-inn-gate": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-inn-egg": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-warders": [
+      11,
+      12.5
+     ],
+     "helstrom/helstrom-archive": [
+      11,
+      12.5
+     ],
+     "helstrom/helstrom-house-0": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-1": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-2": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-3": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-4": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-5": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-6": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-7": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-8": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-9": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-10": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-11": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-sunk-bole": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-quarantine": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-legate-annexe": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-old-gate": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-sap-cellar": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-burnt-lodge": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-struct-the-mound-itself": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-four-rootgates": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-egg-terraces": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-sap-gutters": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-kneeling-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-deep-cistern": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-ring-causeway": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-root-bridge": [
+      5,
+      5
+     ],
+     "archon/archon-guild-office": [
+      11,
+      12.5
+     ],
+     "archon/archon-vat-house": [
+      7.96,
+      11.5
+     ],
+     "archon/archon-market": [
+      7.96,
+      6
+     ],
+     "archon/archon-apothecary": [
+      10,
+      6
+     ],
+     "archon/archon-inn": [
+      12,
+      6
+     ],
+     "archon/archon-ward": [
+      8.86,
+      6
+     ],
+     "archon/archon-shrine": [
+      6,
+      9
+     ],
+     "archon/archon-rootpost": [
+      6,
+      10
+     ],
+     "archon/archon-kiln-house": [
+      6,
+      11.5
+     ],
+     "archon/archon-house-0": [
+      6,
+      10
+     ],
+     "archon/archon-house-1": [
+      6,
+      10
+     ],
+     "archon/archon-house-2": [
+      6,
+      10
+     ],
+     "archon/archon-first-vat": [
+      5.7,
+      9
+     ],
+     "archon/archon-naga-row": [
+      5.93,
+      9
+     ],
+     "archon/archon-old-kiln": [
+      5.6,
+      9
+     ],
+     "archon/archon-quay-store": [
+      5.6,
+      9
+     ],
+     "archon/archon-struct-the-dye-vats": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-drying-racks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-kiln-stacks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-lichen-cribs": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-old-quay": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-wind-screen": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-prison": [
+      16,
+      18
+     ],
+     "blackrose/blackrose-inn": [
+      12,
+      6
+     ],
+     "blackrose/blackrose-warders-hall": [
+      11,
+      6
+     ],
+     "blackrose/blackrose-market": [
+      10,
+      6
+     ],
+     "blackrose/blackrose-smithy": [
+      10,
+      6
+     ],
+     "blackrose/blackrose-pawn": [
+      10,
+      11.5
+     ],
+     "blackrose/blackrose-shrine": [
+      9,
+      9
+     ],
+     "blackrose/blackrose-rootpost": [
+      10,
+      6
+     ],
+     "blackrose/blackrose-clerk": [
+      11,
+      6
+     ],
+     "blackrose/blackrose-house-0": [
+      9,
+      6
+     ],
+     "blackrose/blackrose-house-1": [
+      9,
+      6
+     ],
+     "blackrose/blackrose-house-2": [
+      9,
+      10
+     ],
+     "blackrose/blackrose-east-block": [
+      8,
+      9
+     ],
+     "blackrose/blackrose-condemned-row": [
+      8,
+      3.4
+     ],
+     "blackrose/blackrose-old-gallows": [
+      8,
+      3.4
+     ],
+     "blackrose/blackrose-family-row": [
+      8,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-prison-wall": [
+      5,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-corridor-gates": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-lime-pit": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-gallows-frame": [
+      5,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-visitors-queue-rail": [
+      5,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-water-butt-line": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-grey-hist": [
+      9,
+      9
+     ],
+     "soulrest/soulrest-court-steps": [
+      12,
+      14
+     ],
+     "soulrest/soulrest-market": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-smithy": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-pawn": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-quay": [
+      10,
+      10
+     ],
+     "soulrest/soulrest-boneyard": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-old-harbourmaster": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-salt-house": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-burnt-shrine": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-struct-the-grey-hist": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-silt-quay": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-salt-pans": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-bone-stacks": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-court-steps": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-customs": [
+      11,
+      10.75
+     ],
+     "lilmoth/lilmoth-yard": [
+      10,
+      8.9
+     ],
+     "lilmoth/lilmoth-ledger-house": [
+      11,
+      8.3
+     ],
+     "lilmoth/lilmoth-market": [
+      10,
+      7.63
+     ],
+     "lilmoth/lilmoth-smithy": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-apothecary": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-scribe": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-pawn": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-inn-drowned": [
+      12,
+      14
+     ],
+     "lilmoth/lilmoth-inn-stilt": [
+      12,
+      14
+     ],
+     "lilmoth/lilmoth-shrine": [
+      9,
+      9
+     ],
+     "lilmoth/lilmoth-healer": [
+      12,
+      14
+     ],
+     "lilmoth/lilmoth-rootpost": [
+      10,
+      10
+     ],
+     "lilmoth/lilmoth-house-0": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-1": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-2": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-3": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-4": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-first-storey": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-boom-house": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-plague-stair": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-sugar-cellar": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-collapsed-arcade": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-struct-the-boom-chain": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-landing-quay": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-tide-mark-wall": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-pile-field": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sunk-arcade": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sea-stair": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-cistern-cap": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-old-mole": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-fish-racks": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-customs-bollards": [
+      5,
+      4.81
+     ]
+    }
+   },
+   "game_with_interiors": {
+    "blocked_legs": 3,
+    "legs": [
+     {
+      "leg": "helstrom-blackrose",
+      "buildings": [
+       "blackrose-house-0",
+       "blackrose-house-1"
+      ],
+      "samples": 7
+     },
+     {
+      "leg": "soulrest-blackrose",
+      "buildings": [
+       "blackrose-rootpost"
+      ],
+      "samples": 2
+     },
+     {
+      "leg": "blackrose-lilmoth",
+      "buildings": [
+       "blackrose-condemned-row",
+       "blackrose-old-gallows"
+      ],
+      "samples": 4
+     }
+    ],
+    "total_footprint_area_m2": 20835.1,
+    "buildings": 202,
+    "footprints": {
+     "stormhold/stormhold-archive": [
+      12.4,
+      8.96
+     ],
+     "stormhold/stormhold-praetorium": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-customs": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-market": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-smithy": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-scribe": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-inn-pass": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-inn-lean": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-chapel": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-shrine": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-rootpost": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-gaol": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-kiln": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-house-0": [
+      13.6,
+      15.6
+     ],
+     "stormhold/stormhold-house-1": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-house-2": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-house-3": [
+      13.6,
+      15.6
+     ],
+     "stormhold/stormhold-house-4": [
+      13.6,
+      15.6
+     ],
+     "stormhold/stormhold-north-barrack": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-raid-house": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-bloom-block": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-old-customs": [
+      8,
+      5.6
+     ],
+     "stormhold/stormhold-outer-lean": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-struct-the-wall-itself": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-pass-gate": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-watch-towers": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-muster-yard": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-salt-kilns": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-cistern": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-outside-ditch": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bollard-line": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bloom-course": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-signal-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-hall": [
+      16,
+      15.73
+     ],
+     "thorn/thorn-inn": [
+      14.8,
+      16.8
+     ],
+     "thorn/thorn-trader": [
+      14.8,
+      16.8
+     ],
+     "thorn/thorn-apothecary": [
+      14.8,
+      14.49
+     ],
+     "thorn/thorn-sapwell": [
+      14.8,
+      14.49
+     ],
+     "thorn/thorn-rootpost": [
+      14.8,
+      16.8
+     ],
+     "thorn/thorn-gate": [
+      14.8,
+      14.68
+     ],
+     "thorn/thorn-north-lean": [
+      8,
+      9
+     ],
+     "thorn/thorn-court-store": [
+      8,
+      9
+     ],
+     "thorn/thorn-burnt-stilt": [
+      8,
+      9
+     ],
+     "thorn/thorn-struct-the-charter-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-needle-stacks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-bow-racks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-sapwell-kerb": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-thicket-wall": [
+      5,
+      5
+     ],
+     "gideon/gideon-court": [
+      9.09,
+      15.6
+     ],
+     "gideon/gideon-lowmarket": [
+      9.09,
+      15.6
+     ],
+     "gideon/gideon-tollhouse": [
+      9.09,
+      15.6
+     ],
+     "gideon/gideon-chapel": [
+      9.09,
+      15.6
+     ],
+     "gideon/gideon-inn": [
+      13.6,
+      15.6
+     ],
+     "gideon/gideon-smithy": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-apothecary": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-shrine": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-rootpost": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-grange": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-house-0": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-house-1": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-old-barn": [
+      8,
+      9
+     ],
+     "gideon/gideon-argonian-row": [
+      8,
+      9
+     ],
+     "gideon/gideon-cellar": [
+      8,
+      9
+     ],
+     "gideon/gideon-burnt-shop": [
+      8,
+      9
+     ],
+     "gideon/gideon-struct-the-market-cross": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-square-arcade": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-toll-gate": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-barge-dock": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-grain-weighbridge": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-chapel-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-hollow-bole": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-undertemple": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-hist-shrine": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-legation": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-rootpost": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-deep-market": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-smithy": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-apothecary": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-scriptorium": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-inn-tide": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-inn-gate": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-inn-egg": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-warders": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-archive": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-house-0": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-1": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-2": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-3": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-4": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-5": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-6": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-7": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-8": [
+      13.6,
+      15.6
+     ],
+     "helstrom/helstrom-house-9": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-10": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-11": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-sunk-bole": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-quarantine": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-legate-annexe": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-old-gate": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-sap-cellar": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-burnt-lodge": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-struct-the-mound-itself": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-four-rootgates": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-egg-terraces": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-sap-gutters": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-kneeling-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-deep-cistern": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-ring-causeway": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-root-bridge": [
+      5,
+      5
+     ],
+     "archon/archon-guild-office": [
+      13.6,
+      15.6
+     ],
+     "archon/archon-vat-house": [
+      7.96,
+      15.6
+     ],
+     "archon/archon-market": [
+      7.96,
+      6
+     ],
+     "archon/archon-apothecary": [
+      10.49,
+      6
+     ],
+     "archon/archon-inn": [
+      12.4,
+      6
+     ],
+     "archon/archon-ward": [
+      8.65,
+      6
+     ],
+     "archon/archon-shrine": [
+      6,
+      14.4
+     ],
+     "archon/archon-rootpost": [
+      6,
+      14.4
+     ],
+     "archon/archon-kiln-house": [
+      6,
+      14.4
+     ],
+     "archon/archon-house-0": [
+      6,
+      11.6
+     ],
+     "archon/archon-house-1": [
+      6,
+      11.6
+     ],
+     "archon/archon-house-2": [
+      6,
+      14.4
+     ],
+     "archon/archon-first-vat": [
+      4.23,
+      9
+     ],
+     "archon/archon-naga-row": [
+      5.93,
+      9
+     ],
+     "archon/archon-old-kiln": [
+      5.6,
+      9
+     ],
+     "archon/archon-quay-store": [
+      5.6,
+      9
+     ],
+     "archon/archon-struct-the-dye-vats": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-drying-racks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-kiln-stacks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-lichen-cribs": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-old-quay": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-wind-screen": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-prison": [
+      13.6,
+      15.6
+     ],
+     "blackrose/blackrose-inn": [
+      13.6,
+      6
+     ],
+     "blackrose/blackrose-warders-hall": [
+      13.6,
+      6
+     ],
+     "blackrose/blackrose-market": [
+      13.6,
+      6
+     ],
+     "blackrose/blackrose-smithy": [
+      13.6,
+      6
+     ],
+     "blackrose/blackrose-pawn": [
+      12.4,
+      14.4
+     ],
+     "blackrose/blackrose-shrine": [
+      12.4,
+      14.4
+     ],
+     "blackrose/blackrose-rootpost": [
+      12.4,
+      6
+     ],
+     "blackrose/blackrose-clerk": [
+      12.4,
+      6
+     ],
+     "blackrose/blackrose-house-0": [
+      12.4,
+      6
+     ],
+     "blackrose/blackrose-house-1": [
+      13.6,
+      6
+     ],
+     "blackrose/blackrose-house-2": [
+      12.4,
+      14.4
+     ],
+     "blackrose/blackrose-east-block": [
+      8,
+      9
+     ],
+     "blackrose/blackrose-condemned-row": [
+      8,
+      3.4
+     ],
+     "blackrose/blackrose-old-gallows": [
+      8,
+      3.4
+     ],
+     "blackrose/blackrose-family-row": [
+      8,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-prison-wall": [
+      5,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-corridor-gates": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-lime-pit": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-gallows-frame": [
+      5,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-visitors-queue-rail": [
+      5,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-water-butt-line": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-grey-hist": [
+      14.8,
+      11.85
+     ],
+     "soulrest/soulrest-court-steps": [
+      14.8,
+      16.27
+     ],
+     "soulrest/soulrest-market": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-smithy": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-pawn": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-quay": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-boneyard": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-old-harbourmaster": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-salt-house": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-burnt-shrine": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-struct-the-grey-hist": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-silt-quay": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-salt-pans": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-bone-stacks": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-court-steps": [
+      5,
+      3.53
+     ],
+     "lilmoth/lilmoth-customs": [
+      12.4,
+      10.67
+     ],
+     "lilmoth/lilmoth-yard": [
+      12.4,
+      9.6
+     ],
+     "lilmoth/lilmoth-ledger-house": [
+      12.4,
+      8.24
+     ],
+     "lilmoth/lilmoth-market": [
+      12.4,
+      8.24
+     ],
+     "lilmoth/lilmoth-smithy": [
+      10.55,
+      14.4
+     ],
+     "lilmoth/lilmoth-apothecary": [
+      9.53,
+      13.2
+     ],
+     "lilmoth/lilmoth-scribe": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-pawn": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-inn-drowned": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-inn-stilt": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-shrine": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-healer": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-rootpost": [
+      9.78,
+      13.2
+     ],
+     "lilmoth/lilmoth-house-0": [
+      10.82,
+      10.8
+     ],
+     "lilmoth/lilmoth-house-1": [
+      12.4,
+      10.8
+     ],
+     "lilmoth/lilmoth-house-2": [
+      12.4,
+      12.65
+     ],
+     "lilmoth/lilmoth-house-3": [
+      12.4,
+      14.07
+     ],
+     "lilmoth/lilmoth-house-4": [
+      12.4,
+      14.4
+     ],
+     "lilmoth/lilmoth-first-storey": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-boom-house": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-plague-stair": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-sugar-cellar": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-collapsed-arcade": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-struct-the-boom-chain": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-landing-quay": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-tide-mark-wall": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-pile-field": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sunk-arcade": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sea-stair": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-cistern-cap": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-old-mole": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-fish-racks": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-customs-bollards": [
+      5,
+      4.19
+     ]
+    }
+   }
+  },
+  {
+   "label": "HEAD a2031bb",
+   "file": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/fake/src/render/exterior-HEAD.js",
+   "check_no_interiors": {
+    "blocked_legs": 3,
+    "legs": [
+     {
+      "leg": "helstrom-blackrose",
+      "buildings": [
+       "blackrose-house-0"
+      ],
+      "samples": 2
+     },
+     {
+      "leg": "soulrest-blackrose",
+      "buildings": [
+       "blackrose-rootpost"
+      ],
+      "samples": 1
+     },
+     {
+      "leg": "blackrose-lilmoth",
+      "buildings": [
+       "blackrose-condemned-row",
+       "blackrose-old-gallows"
+      ],
+      "samples": 4
+     }
+    ],
+    "total_footprint_area_m2": 15775.3,
+    "buildings": 202,
+    "footprints": {
+     "stormhold/stormhold-archive": [
+      11,
+      8.88
+     ],
+     "stormhold/stormhold-praetorium": [
+      11,
+      12.5
+     ],
+     "stormhold/stormhold-customs": [
+      11,
+      12.5
+     ],
+     "stormhold/stormhold-market": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-smithy": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-scribe": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-inn-pass": [
+      12,
+      14
+     ],
+     "stormhold/stormhold-inn-lean": [
+      12,
+      14
+     ],
+     "stormhold/stormhold-chapel": [
+      12,
+      14
+     ],
+     "stormhold/stormhold-shrine": [
+      9,
+      9
+     ],
+     "stormhold/stormhold-rootpost": [
+      10,
+      10
+     ],
+     "stormhold/stormhold-gaol": [
+      16,
+      18
+     ],
+     "stormhold/stormhold-kiln": [
+      10,
+      11.5
+     ],
+     "stormhold/stormhold-house-0": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-1": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-2": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-3": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-house-4": [
+      9,
+      10
+     ],
+     "stormhold/stormhold-north-barrack": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-raid-house": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-bloom-block": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-old-customs": [
+      8,
+      6.39
+     ],
+     "stormhold/stormhold-outer-lean": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-struct-the-wall-itself": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-pass-gate": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-watch-towers": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-muster-yard": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-salt-kilns": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-cistern": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-outside-ditch": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bollard-line": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bloom-course": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-signal-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-hall": [
+      15,
+      16.11
+     ],
+     "thorn/thorn-inn": [
+      12,
+      14
+     ],
+     "thorn/thorn-trader": [
+      10,
+      11.5
+     ],
+     "thorn/thorn-apothecary": [
+      10,
+      10.9
+     ],
+     "thorn/thorn-sapwell": [
+      9,
+      9
+     ],
+     "thorn/thorn-rootpost": [
+      10,
+      10
+     ],
+     "thorn/thorn-gate": [
+      8,
+      6
+     ],
+     "thorn/thorn-north-lean": [
+      8,
+      9
+     ],
+     "thorn/thorn-court-store": [
+      8,
+      9
+     ],
+     "thorn/thorn-burnt-stilt": [
+      8,
+      9
+     ],
+     "thorn/thorn-struct-the-charter-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-needle-stacks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-bow-racks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-sapwell-kerb": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-thicket-wall": [
+      5,
+      5
+     ],
+     "gideon/gideon-court": [
+      9.09,
+      12.5
+     ],
+     "gideon/gideon-lowmarket": [
+      7.69,
+      11.5
+     ],
+     "gideon/gideon-tollhouse": [
+      9.09,
+      12.5
+     ],
+     "gideon/gideon-chapel": [
+      9.23,
+      14
+     ],
+     "gideon/gideon-inn": [
+      12,
+      14
+     ],
+     "gideon/gideon-smithy": [
+      10,
+      11.5
+     ],
+     "gideon/gideon-apothecary": [
+      10,
+      11.5
+     ],
+     "gideon/gideon-shrine": [
+      9,
+      9
+     ],
+     "gideon/gideon-rootpost": [
+      10,
+      10
+     ],
+     "gideon/gideon-grange": [
+      11,
+      12.5
+     ],
+     "gideon/gideon-house-0": [
+      9,
+      10
+     ],
+     "gideon/gideon-house-1": [
+      9,
+      10
+     ],
+     "gideon/gideon-old-barn": [
+      8,
+      9
+     ],
+     "gideon/gideon-argonian-row": [
+      8,
+      9
+     ],
+     "gideon/gideon-cellar": [
+      8,
+      9
+     ],
+     "gideon/gideon-burnt-shop": [
+      8,
+      9
+     ],
+     "gideon/gideon-struct-the-market-cross": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-square-arcade": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-toll-gate": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-barge-dock": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-grain-weighbridge": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-chapel-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-hollow-bole": [
+      15,
+      17
+     ],
+     "helstrom/helstrom-undertemple": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-hist-shrine": [
+      9,
+      9
+     ],
+     "helstrom/helstrom-legation": [
+      11,
+      12.5
+     ],
+     "helstrom/helstrom-rootpost": [
+      10,
+      10
+     ],
+     "helstrom/helstrom-deep-market": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-smithy": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-apothecary": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-scriptorium": [
+      10,
+      11.5
+     ],
+     "helstrom/helstrom-inn-tide": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-inn-gate": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-inn-egg": [
+      12,
+      14
+     ],
+     "helstrom/helstrom-warders": [
+      11,
+      12.5
+     ],
+     "helstrom/helstrom-archive": [
+      11,
+      12.5
+     ],
+     "helstrom/helstrom-house-0": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-1": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-2": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-3": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-4": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-5": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-6": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-7": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-8": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-9": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-10": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-house-11": [
+      9,
+      10
+     ],
+     "helstrom/helstrom-sunk-bole": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-quarantine": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-legate-annexe": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-old-gate": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-sap-cellar": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-burnt-lodge": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-struct-the-mound-itself": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-four-rootgates": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-egg-terraces": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-sap-gutters": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-kneeling-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-deep-cistern": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-ring-causeway": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-root-bridge": [
+      5,
+      5
+     ],
+     "archon/archon-guild-office": [
+      11,
+      12.5
+     ],
+     "archon/archon-vat-house": [
+      7.96,
+      11.5
+     ],
+     "archon/archon-market": [
+      7.96,
+      6
+     ],
+     "archon/archon-apothecary": [
+      10,
+      6
+     ],
+     "archon/archon-inn": [
+      12,
+      6
+     ],
+     "archon/archon-ward": [
+      8.86,
+      6
+     ],
+     "archon/archon-shrine": [
+      6,
+      9
+     ],
+     "archon/archon-rootpost": [
+      6,
+      10
+     ],
+     "archon/archon-kiln-house": [
+      6,
+      11.5
+     ],
+     "archon/archon-house-0": [
+      6,
+      10
+     ],
+     "archon/archon-house-1": [
+      6,
+      10
+     ],
+     "archon/archon-house-2": [
+      6,
+      10
+     ],
+     "archon/archon-first-vat": [
+      5.7,
+      9
+     ],
+     "archon/archon-naga-row": [
+      5.93,
+      9
+     ],
+     "archon/archon-old-kiln": [
+      5.6,
+      9
+     ],
+     "archon/archon-quay-store": [
+      5.6,
+      9
+     ],
+     "archon/archon-struct-the-dye-vats": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-drying-racks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-kiln-stacks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-lichen-cribs": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-old-quay": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-wind-screen": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-prison": [
+      16,
+      18
+     ],
+     "blackrose/blackrose-inn": [
+      12,
+      6
+     ],
+     "blackrose/blackrose-warders-hall": [
+      11,
+      6
+     ],
+     "blackrose/blackrose-market": [
+      10,
+      6
+     ],
+     "blackrose/blackrose-smithy": [
+      10,
+      6
+     ],
+     "blackrose/blackrose-pawn": [
+      10,
+      11.5
+     ],
+     "blackrose/blackrose-shrine": [
+      9,
+      9
+     ],
+     "blackrose/blackrose-rootpost": [
+      10,
+      6
+     ],
+     "blackrose/blackrose-clerk": [
+      11,
+      6
+     ],
+     "blackrose/blackrose-house-0": [
+      9,
+      6
+     ],
+     "blackrose/blackrose-house-1": [
+      9,
+      6
+     ],
+     "blackrose/blackrose-house-2": [
+      9,
+      10
+     ],
+     "blackrose/blackrose-east-block": [
+      8,
+      9
+     ],
+     "blackrose/blackrose-condemned-row": [
+      8,
+      3.4
+     ],
+     "blackrose/blackrose-old-gallows": [
+      8,
+      3.4
+     ],
+     "blackrose/blackrose-family-row": [
+      8,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-prison-wall": [
+      5,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-corridor-gates": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-lime-pit": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-gallows-frame": [
+      5,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-visitors-queue-rail": [
+      5,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-water-butt-line": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-grey-hist": [
+      9,
+      9
+     ],
+     "soulrest/soulrest-court-steps": [
+      12,
+      14
+     ],
+     "soulrest/soulrest-market": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-smithy": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-pawn": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-quay": [
+      10,
+      10
+     ],
+     "soulrest/soulrest-boneyard": [
+      10,
+      11.5
+     ],
+     "soulrest/soulrest-old-harbourmaster": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-salt-house": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-burnt-shrine": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-struct-the-grey-hist": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-silt-quay": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-salt-pans": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-bone-stacks": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-court-steps": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-customs": [
+      11,
+      10.75
+     ],
+     "lilmoth/lilmoth-yard": [
+      10,
+      8.9
+     ],
+     "lilmoth/lilmoth-ledger-house": [
+      11,
+      8.3
+     ],
+     "lilmoth/lilmoth-market": [
+      10,
+      7.63
+     ],
+     "lilmoth/lilmoth-smithy": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-apothecary": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-scribe": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-pawn": [
+      10,
+      11.5
+     ],
+     "lilmoth/lilmoth-inn-drowned": [
+      12,
+      14
+     ],
+     "lilmoth/lilmoth-inn-stilt": [
+      12,
+      14
+     ],
+     "lilmoth/lilmoth-shrine": [
+      9,
+      9
+     ],
+     "lilmoth/lilmoth-healer": [
+      12,
+      14
+     ],
+     "lilmoth/lilmoth-rootpost": [
+      10,
+      10
+     ],
+     "lilmoth/lilmoth-house-0": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-1": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-2": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-3": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-house-4": [
+      9,
+      10
+     ],
+     "lilmoth/lilmoth-first-storey": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-boom-house": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-plague-stair": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-sugar-cellar": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-collapsed-arcade": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-struct-the-boom-chain": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-landing-quay": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-tide-mark-wall": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-pile-field": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sunk-arcade": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sea-stair": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-cistern-cap": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-old-mole": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-fish-racks": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-customs-bollards": [
+      5,
+      4.81
+     ]
+    }
+   },
+   "game_with_interiors": {
+    "blocked_legs": 3,
+    "legs": [
+     {
+      "leg": "helstrom-blackrose",
+      "buildings": [
+       "blackrose-house-0",
+       "blackrose-house-1"
+      ],
+      "samples": 7
+     },
+     {
+      "leg": "soulrest-blackrose",
+      "buildings": [
+       "blackrose-rootpost"
+      ],
+      "samples": 2
+     },
+     {
+      "leg": "blackrose-lilmoth",
+      "buildings": [
+       "blackrose-condemned-row",
+       "blackrose-old-gallows"
+      ],
+      "samples": 4
+     }
+    ],
+    "total_footprint_area_m2": 20835.1,
+    "buildings": 202,
+    "footprints": {
+     "stormhold/stormhold-archive": [
+      12.4,
+      8.96
+     ],
+     "stormhold/stormhold-praetorium": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-customs": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-market": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-smithy": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-scribe": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-inn-pass": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-inn-lean": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-chapel": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-shrine": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-rootpost": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-gaol": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-kiln": [
+      11.2,
+      13.2
+     ],
+     "stormhold/stormhold-house-0": [
+      13.6,
+      15.6
+     ],
+     "stormhold/stormhold-house-1": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-house-2": [
+      12.4,
+      14.4
+     ],
+     "stormhold/stormhold-house-3": [
+      13.6,
+      15.6
+     ],
+     "stormhold/stormhold-house-4": [
+      13.6,
+      15.6
+     ],
+     "stormhold/stormhold-north-barrack": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-raid-house": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-bloom-block": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-old-customs": [
+      8,
+      5.6
+     ],
+     "stormhold/stormhold-outer-lean": [
+      8,
+      9
+     ],
+     "stormhold/stormhold-struct-the-wall-itself": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-pass-gate": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-watch-towers": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-muster-yard": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-salt-kilns": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-cistern": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-outside-ditch": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bollard-line": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-bloom-course": [
+      5,
+      5
+     ],
+     "stormhold/stormhold-struct-the-signal-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-hall": [
+      16,
+      15.73
+     ],
+     "thorn/thorn-inn": [
+      14.8,
+      16.8
+     ],
+     "thorn/thorn-trader": [
+      14.8,
+      16.8
+     ],
+     "thorn/thorn-apothecary": [
+      14.8,
+      14.49
+     ],
+     "thorn/thorn-sapwell": [
+      14.8,
+      14.49
+     ],
+     "thorn/thorn-rootpost": [
+      14.8,
+      16.8
+     ],
+     "thorn/thorn-gate": [
+      14.8,
+      14.68
+     ],
+     "thorn/thorn-north-lean": [
+      8,
+      9
+     ],
+     "thorn/thorn-court-store": [
+      8,
+      9
+     ],
+     "thorn/thorn-burnt-stilt": [
+      8,
+      9
+     ],
+     "thorn/thorn-struct-the-charter-post": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-needle-stacks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-bow-racks": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-sapwell-kerb": [
+      5,
+      5
+     ],
+     "thorn/thorn-struct-the-thicket-wall": [
+      5,
+      5
+     ],
+     "gideon/gideon-court": [
+      9.09,
+      15.6
+     ],
+     "gideon/gideon-lowmarket": [
+      9.09,
+      15.6
+     ],
+     "gideon/gideon-tollhouse": [
+      9.09,
+      15.6
+     ],
+     "gideon/gideon-chapel": [
+      9.09,
+      15.6
+     ],
+     "gideon/gideon-inn": [
+      13.6,
+      15.6
+     ],
+     "gideon/gideon-smithy": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-apothecary": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-shrine": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-rootpost": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-grange": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-house-0": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-house-1": [
+      12.4,
+      14.4
+     ],
+     "gideon/gideon-old-barn": [
+      8,
+      9
+     ],
+     "gideon/gideon-argonian-row": [
+      8,
+      9
+     ],
+     "gideon/gideon-cellar": [
+      8,
+      9
+     ],
+     "gideon/gideon-burnt-shop": [
+      8,
+      9
+     ],
+     "gideon/gideon-struct-the-market-cross": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-square-arcade": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-toll-gate": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-barge-dock": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-grain-weighbridge": [
+      5,
+      5
+     ],
+     "gideon/gideon-struct-the-chapel-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-hollow-bole": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-undertemple": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-hist-shrine": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-legation": [
+      11.2,
+      13.2
+     ],
+     "helstrom/helstrom-rootpost": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-deep-market": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-smithy": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-apothecary": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-scriptorium": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-inn-tide": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-inn-gate": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-inn-egg": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-warders": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-archive": [
+      10,
+      12
+     ],
+     "helstrom/helstrom-house-0": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-1": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-2": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-3": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-4": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-5": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-6": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-7": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-8": [
+      13.6,
+      15.6
+     ],
+     "helstrom/helstrom-house-9": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-10": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-house-11": [
+      12.4,
+      14.4
+     ],
+     "helstrom/helstrom-sunk-bole": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-quarantine": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-legate-annexe": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-old-gate": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-sap-cellar": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-burnt-lodge": [
+      8,
+      9
+     ],
+     "helstrom/helstrom-struct-the-mound-itself": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-four-rootgates": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-egg-terraces": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-sap-gutters": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-kneeling-wall": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-deep-cistern": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-ring-causeway": [
+      5,
+      5
+     ],
+     "helstrom/helstrom-struct-the-root-bridge": [
+      5,
+      5
+     ],
+     "archon/archon-guild-office": [
+      13.6,
+      15.6
+     ],
+     "archon/archon-vat-house": [
+      7.96,
+      15.6
+     ],
+     "archon/archon-market": [
+      7.96,
+      6
+     ],
+     "archon/archon-apothecary": [
+      10.49,
+      6
+     ],
+     "archon/archon-inn": [
+      12.4,
+      6
+     ],
+     "archon/archon-ward": [
+      8.65,
+      6
+     ],
+     "archon/archon-shrine": [
+      6,
+      14.4
+     ],
+     "archon/archon-rootpost": [
+      6,
+      14.4
+     ],
+     "archon/archon-kiln-house": [
+      6,
+      14.4
+     ],
+     "archon/archon-house-0": [
+      6,
+      11.6
+     ],
+     "archon/archon-house-1": [
+      6,
+      11.6
+     ],
+     "archon/archon-house-2": [
+      6,
+      14.4
+     ],
+     "archon/archon-first-vat": [
+      4.23,
+      9
+     ],
+     "archon/archon-naga-row": [
+      5.93,
+      9
+     ],
+     "archon/archon-old-kiln": [
+      5.6,
+      9
+     ],
+     "archon/archon-quay-store": [
+      5.6,
+      9
+     ],
+     "archon/archon-struct-the-dye-vats": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-drying-racks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-kiln-stacks": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-lichen-cribs": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-old-quay": [
+      5,
+      5
+     ],
+     "archon/archon-struct-the-wind-screen": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-prison": [
+      13.6,
+      15.6
+     ],
+     "blackrose/blackrose-inn": [
+      13.6,
+      6
+     ],
+     "blackrose/blackrose-warders-hall": [
+      13.6,
+      6
+     ],
+     "blackrose/blackrose-market": [
+      13.6,
+      6
+     ],
+     "blackrose/blackrose-smithy": [
+      13.6,
+      6
+     ],
+     "blackrose/blackrose-pawn": [
+      12.4,
+      14.4
+     ],
+     "blackrose/blackrose-shrine": [
+      12.4,
+      14.4
+     ],
+     "blackrose/blackrose-rootpost": [
+      12.4,
+      6
+     ],
+     "blackrose/blackrose-clerk": [
+      12.4,
+      6
+     ],
+     "blackrose/blackrose-house-0": [
+      12.4,
+      6
+     ],
+     "blackrose/blackrose-house-1": [
+      13.6,
+      6
+     ],
+     "blackrose/blackrose-house-2": [
+      12.4,
+      14.4
+     ],
+     "blackrose/blackrose-east-block": [
+      8,
+      9
+     ],
+     "blackrose/blackrose-condemned-row": [
+      8,
+      3.4
+     ],
+     "blackrose/blackrose-old-gallows": [
+      8,
+      3.4
+     ],
+     "blackrose/blackrose-family-row": [
+      8,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-prison-wall": [
+      5,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-corridor-gates": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-lime-pit": [
+      5,
+      5
+     ],
+     "blackrose/blackrose-struct-the-gallows-frame": [
+      5,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-visitors-queue-rail": [
+      5,
+      3.4
+     ],
+     "blackrose/blackrose-struct-the-water-butt-line": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-grey-hist": [
+      14.8,
+      11.85
+     ],
+     "soulrest/soulrest-court-steps": [
+      14.8,
+      16.27
+     ],
+     "soulrest/soulrest-market": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-smithy": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-pawn": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-quay": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-boneyard": [
+      14.8,
+      16.8
+     ],
+     "soulrest/soulrest-old-harbourmaster": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-salt-house": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-burnt-shrine": [
+      8,
+      9
+     ],
+     "soulrest/soulrest-struct-the-grey-hist": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-silt-quay": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-salt-pans": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-bone-stacks": [
+      5,
+      5
+     ],
+     "soulrest/soulrest-struct-the-court-steps": [
+      5,
+      3.53
+     ],
+     "lilmoth/lilmoth-customs": [
+      12.4,
+      10.67
+     ],
+     "lilmoth/lilmoth-yard": [
+      12.4,
+      9.6
+     ],
+     "lilmoth/lilmoth-ledger-house": [
+      12.4,
+      8.24
+     ],
+     "lilmoth/lilmoth-market": [
+      12.4,
+      8.24
+     ],
+     "lilmoth/lilmoth-smithy": [
+      10.55,
+      14.4
+     ],
+     "lilmoth/lilmoth-apothecary": [
+      9.53,
+      13.2
+     ],
+     "lilmoth/lilmoth-scribe": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-pawn": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-inn-drowned": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-inn-stilt": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-shrine": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-healer": [
+      11.2,
+      13.2
+     ],
+     "lilmoth/lilmoth-rootpost": [
+      9.78,
+      13.2
+     ],
+     "lilmoth/lilmoth-house-0": [
+      10.82,
+      10.8
+     ],
+     "lilmoth/lilmoth-house-1": [
+      12.4,
+      10.8
+     ],
+     "lilmoth/lilmoth-house-2": [
+      12.4,
+      12.65
+     ],
+     "lilmoth/lilmoth-house-3": [
+      12.4,
+      14.07
+     ],
+     "lilmoth/lilmoth-house-4": [
+      12.4,
+      14.4
+     ],
+     "lilmoth/lilmoth-first-storey": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-boom-house": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-plague-stair": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-sugar-cellar": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-collapsed-arcade": [
+      8,
+      9
+     ],
+     "lilmoth/lilmoth-struct-the-boom-chain": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-landing-quay": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-tide-mark-wall": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-pile-field": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sunk-arcade": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-sea-stair": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-cistern-cap": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-old-mole": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-fish-racks": [
+      5,
+      5
+     ],
+     "lilmoth/lilmoth-struct-the-customs-bollards": [
+      5,
+      4.19
+     ]
+    }
+   }
+  }
+ ],
+ "footprint_delta": {
+  "first": "322f708 (join built here)",
+  "last": "HEAD a2031bb",
+  "grew": 54,
+  "shrank": 0,
+  "biggest_growth": [
+   {
+    "id": "blackrose/blackrose-inn",
+    "from": [
+     3.4,
+     3.9
+    ],
+    "to": [
+     13.6,
+     6
+    ],
+    "d_m2": 68.34
+   },
+   {
+    "id": "blackrose/blackrose-warders-hall",
+    "from": [
+     3.4,
+     3.9
+    ],
+    "to": [
+     13.6,
+     6
+    ],
+    "d_m2": 68.34
+   },
+   {
+    "id": "blackrose/blackrose-market",
+    "from": [
+     3.4,
+     3.9
+    ],
+    "to": [
+     13.6,
+     6
+    ],
+    "d_m2": 68.34
+   },
+   {
+    "id": "blackrose/blackrose-smithy",
+    "from": [
+     3.4,
+     3.9
+    ],
+    "to": [
+     13.6,
+     6
+    ],
+    "d_m2": 68.34
+   },
+   {
+    "id": "blackrose/blackrose-house-1",
+    "from": [
+     3.4,
+     3.9
+    ],
+    "to": [
+     13.6,
+     6
+    ],
+    "d_m2": 68.34
+   },
+   {
+    "id": "archon/archon-kiln-house",
+    "from": [
+     4.22,
+     4.9
+    ],
+    "to": [
+     6,
+     14.4
+    ],
+    "d_m2": 65.72
+   },
+   {
+    "id": "blackrose/blackrose-rootpost",
+    "from": [
+     3.4,
+     3.95
+    ],
+    "to": [
+     12.4,
+     6
+    ],
+    "d_m2": 60.97
+   },
+   {
+    "id": "blackrose/blackrose-clerk",
+    "from": [
+     3.4,
+     3.95
+    ],
+    "to": [
+     12.4,
+     6
+    ],
+    "d_m2": 60.97
+   },
+   {
+    "id": "blackrose/blackrose-house-0",
+    "from": [
+     3.4,
+     3.95
+    ],
+    "to": [
+     12.4,
+     6
+    ],
+    "d_m2": 60.97
+   },
+   {
+    "id": "archon/archon-shrine",
+    "from": [
+     5.18,
+     6.02
+    ],
+    "to": [
+     6,
+     14.4
+    ],
+    "d_m2": 55.22
+   }
+  ],
+  "biggest_shrink": []
+ }
+}
