@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-14T16:33:56Z",
+  "generated": "2026-08-14T19:02:04Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 85,
+  "verdicts_read": 86,
   "counts": {
-    "total": 80,
-    "open": 79,
+    "total": 81,
+    "open": 80,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -94,6 +94,9 @@
     "combat.hitbox.sweep": [
       "GAP-W1-enemy-attacks-cannot-reach-contact-range",
       "GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage"
+    ],
+    "render.fidelity.character": [
+      "GAP-W1-f1-actor-body-shader-does-not-link"
     ],
     "quests.faction.rankgating": [
       "GAP-W1-faction-ladders-are-bricked-up-at-rank-5"
@@ -372,13 +375,15 @@
     "STALE-RISK GAP-W1-two-placement-mechanisms-collide: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-23-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-rendered-text-accessor-blind-to-the-hud-surface: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-26-r2-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-26-creation-cannot-be-completed-from-the-title: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-26-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-30c-wetness-mask-blind-to-instancematrix: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-visual-blind-protocol-a-chunk2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-w1-30d-guard-misses-part-deletion: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-30c-wetness-mask-blind-to-instancematrix: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-visual-blind-protocol-a-chunk2, crit-w1-orphaned-surface-shaders-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-w1-30d-guard-misses-part-deletion: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-orphaned-surface-shaders-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-w1-30e-street-gate-never-ran: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-orphaned-surface-shaders-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-population-save-reload-repays-every-corpse: still open, and 2 later verdict(s) have been filed on the same piece or path since (critic-w1-souls-r2, critic-w1-souls). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-PACK-01: still open, and 2 later verdict(s) have been filed on the same piece or path since (judge-prose-packs-r1, crit-w1-30c-r1-2634eb0e). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-road-join-has-no-gate: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-crossing). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-souls-alive-keyed-on-eid: still open, and 2 later verdict(s) have been filed on the same piece or path since (critic-w1-souls, critic-w1-attr-scale). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-souls-world-copy-of-the-values-is-53pc-stale: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-attr-scale). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today."
+    "STALE-RISK GAP-W1-souls-world-copy-of-the-values-is-53pc-stale: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-attr-scale). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-pbr-material-set-unbound: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-orphaned-surface-shaders-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today."
   ],
   "load_errors": [],
   "gaps": [
@@ -1211,6 +1216,14 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-pbr-material-set-unbound"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.json",
+          "run_id": "crit-w1-orphaned-surface-shaders-r1-3c19",
+          "at": "2026-08-14T19:05:00Z",
+          "status": "PROVISIONAL",
+          "score": null,
+          "opened_gap": "GAP-W1-f1-actor-body-shader-does-not-link"
         }
       ]
     },
@@ -1725,6 +1738,50 @@
         "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json",
         "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-browser.json",
         "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-via-browser.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
+    },
+    {
+      "gap_id": "GAP-W1-f1-actor-body-shader-does-not-link",
+      "subsystem_path": "render.fidelity.character",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-orphaned-surface-shaders-r1-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.json",
+      "piece_id": "w1-orphaned-surface-shaders-r1",
+      "severity": "blocking",
+      "what": "Restoring the surface pass on cloned materials put two fragment-shader preambles into one program on actor body materials, and they collide on two identifiers. installSurfaceShader (visual-foundation.js:521, :574) and installWaterline (actor.js:302, :310) each declare `uniform float uWetness` and each declare a local `float esWet`. The program does not link. Measured at HEAD: 124 actor-body materials carry the duplicate declaration, 66 of 124 report program.diagnostics.runnable false with 'uWetness : redefinition' and 'esWet : redefinition', and 0 of 65 equipment/frill controls do either.",
+      "why_it_matters": "The player and every NPC in the game are drawn as a floating chest barrel, two detached boots, a pair of horns and their weapon — no head, no arms, no legs — which is the first thing the owner would see on opening the game right now.",
+      "remedy": {
+        "action": "PRESERVE the copy seam exactly as built — installCopySeam/adoptMaterialCopy, the JSON recipe in userData, the clone-not-copy choice and the chaining in installWaterline are all correct and are not what is broken. The delta is a rename, in one function. In game/src/render/actor.js#installWaterline (lines 287-327): rename the uniform `uWetness` to `uWaterlineWetness` at its declaration (:302), at the shader.uniforms assignment (:297) and at both uses (:310, :311); rename the local `float esWet` to `esWaterlineWet` at its declaration (:310) and both uses (:313, :319). Prefix `esBand` and `esMeniscus` in the same pass — they are unique today by luck rather than by design, and the next hook added to this chain will collide with them. Do NOT rename anything in installSurfaceShader: it is the shared library and its names are load-bearing for setWorldWetness(). Then add the missing tripwire, which is the durable half of this remedy: a check that no material in the live scene has program.diagnostics.runnable === false, wired into tools/visual/w1-30-surface-orphan-census.mjs so the standing census can see a link failure — its five existing checks structurally cannot, which is why all of them were green over a broken build.",
+        "targets": [
+          "game/src/render/actor.js",
+          "tools/visual/w1-30-surface-orphan-census.mjs",
+          "tools/visual/w1-f1-critic-shader-collision.mjs"
+        ],
+        "acceptance": "Cheapest gate first, and it already exists and is already red: `node tools/visual/w1-f1-critic-shader-collision.mjs` returns 0 for all four checks, with BODY-PROGRAM-IS-RUNNABLE reporting 0 of at least 100 actor-body programs failing to link and NO-DUPLICATE-UNIFORM-DECLARATION reporting 0 duplicates, while CONTROL-IS-CLEAN and CONTROL-PROGRAM-IS-RUNNABLE stay green. Then, and only then, re-take the frames: re-run `node corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.mjs` against a fresh two-arm capture and require the player's skin and cloth body surfaces to be PRESENT at all 8 orbit angles in BOTH arms, so the shipped-configuration player delta is attributable to shading rather than to geometry appearing. Hard fail: any actor-body material with runnable false. The gap closes when the census itself goes red on a deliberately re-introduced duplicate and green on the shipped tree.",
+        "ref_item": "RI-VIS08",
+        "estimated_size": "S"
+      },
+      "remedy_action": "PRESERVE the copy seam exactly as built — installCopySeam/adoptMaterialCopy, the JSON recipe in userData, the clone-not-copy choice and the chaining in installWaterline are all correct and are not what is broken. The delta is a rename, in one function. In game/src/render/actor.js#installWaterline (lines 287-327): rename the uniform `uWetness` to `uWaterlineWetness` at its declaration (:302), at the shader.uniforms assignment (:297) and at both uses (:310, :311); rename the local `float esWet` to `esWaterlineWet` at its declaration (:310) and both uses (:313, :319). Prefix `esBand` and `esMeniscus` in the same pass — they are unique today by luck rather than by design, and the next hook added to this chain will collide with them. Do NOT rename anything in installSurfaceShader: it is the shared library and its names are load-bearing for setWorldWetness(). Then add the missing tripwire, which is the durable half of this remedy: a check that no material in the live scene has program.diagnostics.runnable === false, wired into tools/visual/w1-30-surface-orphan-census.mjs so the standing census can see a link failure — its five existing checks structurally cannot, which is why all of them were green over a broken build.",
+      "remedy_acceptance": "Cheapest gate first, and it already exists and is already red: `node tools/visual/w1-f1-critic-shader-collision.mjs` returns 0 for all four checks, with BODY-PROGRAM-IS-RUNNABLE reporting 0 of at least 100 actor-body programs failing to link and NO-DUPLICATE-UNIFORM-DECLARATION reporting 0 duplicates, while CONTROL-IS-CLEAN and CONTROL-PROGRAM-IS-RUNNABLE stay green. Then, and only then, re-take the frames: re-run `node corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.mjs` against a fresh two-arm capture and require the player's skin and cloth body surfaces to be PRESENT at all 8 orbit angles in BOTH arms, so the shipped-configuration player delta is attributable to shading rather than to geometry appearing. Hard fail: any actor-body material with runnable false. The gap closes when the census itself goes red on a deliberately re-introduced duplicate and green on the shipped tree.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/shader-collision-HEAD.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/exhibit/player-yaw180-AFTER-fix-applied.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/exhibit/player-yaw000-AFTER-fix-applied.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/frames-head/head-player-yaw000.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/motion-after/contact/walk.png"
       ],
       "status": "open",
       "assigned_to_wave": 2,
@@ -2689,7 +2746,16 @@
       },
       "superseded_by": null,
       "age_waves": 0,
-      "filed_since": []
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.json",
+          "run_id": "crit-w1-orphaned-surface-shaders-r1-3c19",
+          "at": "2026-08-14T19:05:00Z",
+          "status": "PROVISIONAL",
+          "score": null,
+          "opened_gap": "GAP-W1-f1-actor-body-shader-does-not-link"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-platform-prng-never-drawn",
@@ -3936,6 +4002,14 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-w1-30e-street-gate-never-ran"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.json",
+          "run_id": "crit-w1-orphaned-surface-shaders-r1-3c19",
+          "at": "2026-08-14T19:05:00Z",
+          "status": "PROVISIONAL",
+          "score": null,
+          "opened_gap": "GAP-W1-f1-actor-body-shader-does-not-link"
         }
       ]
     },
@@ -3973,7 +4047,16 @@
       },
       "superseded_by": null,
       "age_waves": 0,
-      "filed_since": []
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.json",
+          "run_id": "crit-w1-orphaned-surface-shaders-r1-3c19",
+          "at": "2026-08-14T19:05:00Z",
+          "status": "PROVISIONAL",
+          "score": null,
+          "opened_gap": "GAP-W1-f1-actor-body-shader-does-not-link"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-w1-30s-seam-incomplete",

@@ -103,26 +103,72 @@ const report = await g.page.evaluate(() => {
     };
   };
 
-  if (!R.playerMesh) return { error: 'renderer.playerMesh missing' };
-  R.playerMesh.traverse((o) => {
-    if (!o.material) return;
-    out.meshes_found++;
-    for (const m of [].concat(o.material)) {
-      if (!m) continue;
-      // The body is the ONLY thing installWaterline touches (actor.js:607).
-      if (/^actor-body:/.test(o.name || '')) out.body.push(inspect(m, o));
-      else if (/^actor-(equipment|secondary-frill)/.test(o.name || '')) out.control.push(inspect(m, o));
+  // Scan the PLAYER and every NPC/enemy: they are all built by the same `actor.js` path, so if
+  // the seam is broken it is broken for every character in the world, not just the one on screen.
+  const roots = [];
+  if (R.playerMesh) roots.push(['player', R.playerMesh]);
+  for (const [label, coll] of [['npc', R.npcMeshes], ['enemy', R.enemyMeshes]]) {
+    if (!coll) continue;
+    for (const e of (coll.values ? [...coll.values()] : [].concat(coll))) {
+      const obj = e && (e.isObject3D ? e : (e.group || e.mesh || e.root));
+      if (obj && obj.traverse) roots.push([label, obj]);
     }
-  });
+  }
+  out.roots_scanned = roots.length;
+  if (!roots.length) return { error: 'no actor roots found (playerMesh/npcMeshes/enemyMeshes all empty)' };
+  const seen = new Set();
+  for (const [label, root] of roots) {
+    root.traverse((o) => {
+      if (!o.material) return;
+      out.meshes_found++;
+      for (const m of [].concat(o.material)) {
+        if (!m || seen.has(m)) continue; seen.add(m);
+        // The body is the ONLY thing installWaterline touches (actor.js:607).
+        if (/^actor-body:/.test(o.name || '')) out.body.push({ who: label, ...inspect(m, o) });
+        else if (/^actor-(equipment|secondary-frill)/.test(o.name || '')) out.control.push({ who: label, ...inspect(m, o) });
+      }
+    });
+  }
   return out;
 });
 
-await g.page.evaluate(async () => { await window.__HARNESS.stepFrames?.(4); });
+// ---- PICTURES, because a statistic can fail a build and can never pass one (Ruling W2) --------
+// The owner's standing directive is that a visual claim needs many angles and motion, and that a
+// still from one angle is how a defect got declared fixed while broken. So orbit the player.
+const FRAMES = path.join(OUT, 'frames');
+fs.mkdirSync(FRAMES, { recursive: true });
+const call = async (m, ...a) => g.page.evaluate(async ({ method, callArgs }) => {
+  const H = window.__HARNESS;
+  if (!H || typeof H[method] !== 'function') return { __err: `__HARNESS.${method} missing` };
+  try { return { __ok: await H[method](...callArgs) }; } catch (e) { return { __err: String(e && e.message || e) }; }
+}, { method: m, callArgs: a });
+await call('setTimeOfDay', 11);
+await call('setWeather', 'clear');
+await call('stepFrames', 16);
+const shot = async (name) => {
+  const s = await call('screenshot');
+  if (s && s.__ok) { fs.writeFileSync(path.join(FRAMES, name), Buffer.from(String(s.__ok).replace(/^data:image\/png;base64,/, ''), 'base64')); return true; }
+  return false;
+};
+let shots = 0;
+for (let i = 0; i < 8; i++) {
+  const yaw = Math.round(i * 45);
+  const snap = await call('snapshot');
+  if (!snap || !snap.__ok) break;
+  const [px, py, pz] = snap.__ok.player.pos;
+  const y = yaw * Math.PI / 180, pitch = -6 * Math.PI / 180, dist = 2.4;
+  await call('camera', { pos: [px + Math.sin(y) * Math.cos(pitch) * dist, py + 1.4 - Math.sin(pitch) * dist, pz + Math.cos(y) * Math.cos(pitch) * dist], look: [px, py + 1.05, pz] });
+  await call('stepFrames', 8);
+  if (await shot(`head-player-yaw${String(yaw).padStart(3, '0')}.png`)) shots++;
+}
+console.log(`captured ${shots} orbit frame(s) at HEAD into ${FRAMES}`);
 await g.close();
 
 const shaderErrors = consoleLines.filter((l) => /Shader Error|WebGLProgram|redefinition|ERROR:/i.test(l));
 const bodyDupes = (report.body || []).filter((r) => Object.keys(r.duplicate_declarations || {}).length > 0);
 const ctrlDupes = (report.control || []).filter((r) => Object.keys(r.duplicate_declarations || {}).length > 0);
+const notRunnable = (report.body || []).filter((r) => r.program_diagnostics && r.program_diagnostics.runnable === false);
+const ctrlNotRunnable = (report.control || []).filter((r) => r.program_diagnostics && r.program_diagnostics.runnable === false);
 
 const checks = [
   { id: 'INSTRUMENT-FOUND-THE-BODY', ok: (report.body || []).length > 0,
@@ -134,9 +180,22 @@ const checks = [
     detail: bodyDupes.length === 0 ? 'no uniform is declared twice in any composed body fragment shader'
       : `${bodyDupes.length} body material(s) compose a fragment shader declaring a uniform twice: `
         + bodyDupes.map((r) => `${r.mesh} -> ${JSON.stringify(r.duplicate_declarations)}`).join('; ') },
+  // THE AUTHORITATIVE CHECK. The console listener attaches after the page has already booted, so
+  // a compile error raised during boot is missed — `NO-SHADER-ERROR-ON-THE-CONSOLE` passing proves
+  // nothing on its own and is kept only as a second, weaker witness. The renderer's OWN
+  // `program.diagnostics.runnable` is the finding: false means the driver refused the program and
+  // the mesh draws nothing, whatever `mesh.visible` says.
+  { id: 'BODY-PROGRAM-IS-RUNNABLE', ok: notRunnable.length === 0,
+    detail: notRunnable.length === 0
+      ? `all ${(report.body || []).length} actor-body program(s) linked`
+      : `${notRunnable.length} of ${(report.body || []).length} actor-body program(s) FAILED TO LINK — `
+        + `the body is not drawn. First log: ${String(notRunnable[0].program_diagnostics.fragment_log).replace(/\u0000/g, '').trim()}` },
+  { id: 'CONTROL-PROGRAM-IS-RUNNABLE', ok: ctrlNotRunnable.length === 0,
+    detail: `${ctrlNotRunnable.length} of ${(report.control || []).length} equipment/frill program(s) failed to link `
+      + '— these must stay green, or the failure is not specific to the waterline seam' },
   { id: 'NO-SHADER-ERROR-ON-THE-CONSOLE', ok: shaderErrors.length === 0,
-    detail: shaderErrors.length === 0 ? 'the page reported no shader compile/link error'
-      : `${shaderErrors.length} shader error line(s): ${shaderErrors.slice(0, 3).join(' | ').slice(0, 600)}` },
+    detail: (shaderErrors.length === 0 ? 'no shader error seen AFTER the listener attached (weak: boot-time errors are missed)'
+      : `${shaderErrors.length} shader error line(s): ${shaderErrors.slice(0, 3).join(' | ').slice(0, 600)}`) },
 ];
 
 const manifest = { tool: 'w1-f1-critic-shader-collision', renderer: attestation, report, checks,

@@ -1,0 +1,591 @@
+{
+  "schema_version": 1,
+  "document_type": "critic-verdict",
+  "piece_id": "w1-orphaned-surface-shaders-r1",
+  "piece_title": "W1-ORPHANED-SURFACE-SHADERS (roadmap F1 — materials and surface response) — the Material.copy() seam, the four losses at it, and the shader-identifier collision the fix introduced (round 1)",
+  "subsystem_paths": [
+    "render.fidelity.materials",
+    "render.fidelity.character",
+    "render.process.measurement"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-orphaned-surface-shaders-r1-3c19",
+    "role": "critic.fidelity",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-14T18:30:00Z",
+    "finished_at": "2026-08-14T19:05:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "fb42ad10",
+    "branch": "codex/wave1-build-experiment",
+    "harness_commands": [
+      {
+        "command": "git show 03ba530d470a46e9784be71305005a598d223b9b:game/src/render/{visual-foundation,actor}.js | md5sum",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/visual/w1-30-copy-seam-patch.mjs --revert   (in an isolated copy of the pinned sha, not the repo)",
+        "exit_code": 0
+      },
+      {
+        "command": "git show 9ddeb512^:game/src/render/{visual-foundation,actor}.js | md5sum  +  diff against the reverted copy",
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/contention.mjs --gate",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/visual/w1-f1-critic-shader-collision.mjs",
+        "exit_code": 1
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "fidelity",
+    "declared_before_citation": true,
+    "fidelity_refs": [
+      "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+      "corpus/70-visual/RI-VIS08-character-animation-fidelity.md"
+    ],
+    "note": "Declared before any reference was opened. The piece is a material-library and shader-hook change: whether a surface responds to light, and whether a character's body is drawn at all, are RI-VIS01 section A FIDELITY properties. No Morrowind plate is cited and no art-direction judgement is made; the palettes and wear values the materials carry are the art layer's business, not this verdict's."
+  },
+  "reference_items": [
+    {
+      "id": "RI-VIS08",
+      "path": "corpus/70-visual/RI-VIS08-character-animation-fidelity.md",
+      "side": "modern-fidelity",
+      "kind": "number",
+      "native_scale": "min(STATIC, DYNAMIC); STATIC = 10 * (B-checks passed) / 8",
+      "native_score": 1,
+      "native_max": 10,
+      "native_verdict": "The player's body and every NPC's body are not drawn. The section B checks are not merely failed, they are unmeasurable: the surfaces they sample produce no fragment.",
+      "score_0_10": 1,
+      "justification": "Measured in the live page at HEAD with tools/visual/w1-f1-critic-shader-collision.mjs: 124 actor-body materials across the saxhleel and humanoid art families compose a fragment shader that declares `uniform float uWetness` twice and `float esWet` twice, and the renderer's own program diagnostics report `runnable: false` for 66 of them with `ERROR: 0:81: 'uWetness' : redefinition` / `ERROR: 0:1724: 'esWet' : redefinition`. The remaining 58 had not yet been compiled at the sampling instant and are `null`, not green. The 65 equipment/frill control materials — the ones that never pass through installWaterline — carry 0 duplicates and 0 link failures, so the failure is specific to the seam this piece changed. Confirmed visually at four independent cameras and in motion: corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/exhibit/*.png shows the complete figure in the before arm and a floating chest barrel, two detached boots, horns, frill and shield in the after arm, and hardware-ab/motion-after/contact/walk.png shows the same across 30 frames of a walk cycle. B8 (eyes are separate geometry with a specular) technically passes and does so conspicuously — the eyes float unattached where the head should be.",
+      "measured": "full",
+      "checks": [
+        {
+          "id": "B1-silhouette-faceting",
+          "result": "fail",
+          "value": "no silhouette to walk — the skin and cloth body surfaces are not rasterised",
+          "threshold": "Facets <= 1.5 per 1000 px on an extracted outline"
+        },
+        {
+          "id": "B3-material-separation",
+          "result": "fail",
+          "value": "the three materially distinct regions this piece exists to separate (skin, cloth, metal fitting) include two that draw nothing",
+          "threshold": "highest and lowest specular delta differ by >= 2x"
+        },
+        {
+          "id": "B7-weighting-artefacts",
+          "result": "not_run",
+          "not_run_reason": "the skinned body surfaces are not drawn, so no pose can show or exclude a weighting artefact"
+        },
+        {
+          "id": "B8-eyes",
+          "result": "pass",
+          "value": "separate geometry with specular — visible floating in mid-air where the head is not drawn",
+          "threshold": "separate geometry + specular rather than painted on"
+        },
+        {
+          "id": "body-program-links",
+          "result": "fail",
+          "value": "66 of 124 actor-body programs runnable:false; 0 of 65 equipment/frill controls fail",
+          "threshold": "every material in the live scene links"
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/shader-collision-HEAD.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/exhibit/player-yaw180-AFTER-fix-applied.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/frames-head/head-player-yaw000.png"
+      ]
+    },
+    {
+      "id": "RI-VIS04",
+      "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+      "side": "modern-fidelity",
+      "kind": "structure",
+      "native_scale": "min(raw, cap) over 13 features; judged here on section 1 (PBR materials), the only feature this piece moves",
+      "native_score": 4,
+      "native_max": 10,
+      "native_verdict": "Section 1 genuinely improves on world surfaces and is structurally absent on every character",
+      "score_0_10": 4,
+      "justification": "The gain on the world is real and the pack under-claimed it. Recomputed by this critic from the builder's own committed UNPERTURBED frames — same camera, same Pod, same GPU, arms differing only by the two reverted files — buildings move 11.78%, 23.15% and 23.82% of pixels between arms in SHIPPED configuration, with kit materials carrying real wear 0.2-0.9 and wearFrom 'geometry' where they previously carried none; the deck scene street-lilmoth moves 25.65%. Against that, section 1's MIN BAR is 'albedo + roughness on every material', and on 124 actor-body materials the fragment program does not link, so those surfaces have no albedo, no roughness and no output. The item's own band for a structurally absent section 1 is 3-4. Scored 4 rather than 3 because the absence is confined to actor bodies and the world half is verified present by DETECT-equivalent evidence. Artifact: artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.json.",
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "VIS04-1-world-surfaces-respond",
+          "result": "pass",
+          "value": "buildings 11.78-23.82% of pixels moved between arms in shipped configuration, restore floor 0.00%",
+          "threshold": "roughness varies across the surface rather than being a constant scalar"
+        },
+        {
+          "id": "VIS04-1-specificity",
+          "result": "pass",
+          "value": "vista-deep-marshes 0.007% and eye-deep-marshes 0.005% — the builder's own falsifiable prediction that terrain and canopy would not change is confirmed",
+          "threshold": "the change is concentrated where the census says the clones are"
+        },
+        {
+          "id": "VIS04-1-every-material",
+          "result": "fail",
+          "value": "124 actor-body materials produce no fragment at all",
+          "threshold": "albedo + roughness on EVERY material"
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.mjs"
+      ]
+    },
+    {
+      "id": "RI-MTH07",
+      "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "0-10 over five axes (Consumer named, Coupling measured, Hand-feed audit, Instrumentation honesty, Harness fidelity)",
+      "native_score": 6,
+      "native_max": 10,
+      "native_verdict": "A correctly built consumption arm with a live control, pointed away from the failure its own frames record",
+      "score_0_10": 6,
+      "justification": "Four of five axes are strong and I tried to break each. Consumer named and shipped: the probe loads game/index.html, reads window.__ENGINE.renderer, traverses R.scene and R.playerMesh, and writes into the materials the shipped world built — nothing is reimplemented, so the 'did the probe reimplement its subject' attack does not land. Hand-feed audit: the perturbation drives the material's OWN uniform objects and deliberately never sets needsUpdate, so no program recompiles and the only route to a pixel is the renderer already holding those objects. Coupling measured with a control that is live rather than trivial: the ground site moves 73.28% of pixels in the BEFORE arm against a 0.00% restore floor, with maxDelta identical to two decimals across arms, which is what proves the player's 0.33% is an absence and not a broken harness. Harness fidelity: one Pod, one GPU, identical renderer string 'ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA RTX A5000))', software_renderer false, both arms; I verified the arms independently (see RI-MTH04 below). Docked two points on instrumentation honesty alone: the perturbation drives uWear/uWetness/uWorldWetness/uDetailStrength to extremes the shipped build never produces — nothing in game/src calls setWorldWetness() at all — and the run captured, saved and shipped the unperturbed base frames that show the body missing, without ever comparing them. ON THE MIN-OVER-AXES WARNING, because the validator is right to raise it: RI-MTH07's five axes are Consumer named, Coupling measured, Hand-feed audit, Instrumentation honesty and Harness fidelity. The failing check `perturbation-is-a-configuration-the-game-produces` does NOT map 1:1 to any of them — it is a sub-observation under Instrumentation honesty, which is the axis actually scored, and which is scored `partial` rather than fail. No RI-MTH07 axis is unmeasurable here: all five were measured. So the min over the five axes is the Instrumentation-honesty partial, not 0. Recorded in prose as SCORING.md section 1.1 requires rather than left for the reader to reconcile.",
+      "measured": "full",
+      "checks": [
+        {
+          "id": "consumer-named-and-live",
+          "result": "pass",
+          "value": "userData.surfaceUniforms -> onBeforeCompile -> the fragment chunk at lights_physical_fragment in the shipped renderer",
+          "threshold": "a world-side consumer, not a trace field"
+        },
+        {
+          "id": "coupling-measured",
+          "result": "pass",
+          "value": "player 0.33% -> 5.36%, building 1.30% -> 32.84%, restore floor 0.00% both arms",
+          "threshold": "coupling > 0 with a clean control"
+        },
+        {
+          "id": "control-is-not-inert",
+          "result": "pass",
+          "value": "ground moves 73.28% in the BEFORE arm, 37 of 37 selected materials carry uniforms in both arms",
+          "threshold": "the control must be able to fail, and must respond in the arm where the defect is present"
+        },
+        {
+          "id": "perturbation-is-a-configuration-the-game-produces",
+          "result": "fail",
+          "value": "uWear=1, uWetness=1, uWorldWetness=1, uDetailStrength=2.5; the shipped build never sets uWorldWetness above 0 because setWorldWetness() has no caller in game/src",
+          "threshold": "the measured coupling corresponds to something a player can see"
+        },
+        {
+          "id": "instrumentation-honesty",
+          "result": "partial",
+          "value": "an eight-entry could_not_do list of unusual candour, and no check anywhere that the change did not break what it touched",
+          "threshold": "the instrument reports what it cannot see"
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/consumption-before/consumption.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/consumption-after/consumption.json"
+      ]
+    },
+    {
+      "id": "RI-MTH04",
+      "path": "corpus/80-methods/RI-MTH04-measurement-integrity.md",
+      "side": "neutral",
+      "kind": "trace",
+      "native_scale": "0-30 over M1-M8 plus an unmeasured list",
+      "native_score": 18,
+      "native_max": 30,
+      "native_verdict": "Every provenance claim I re-derived resolved exactly, including the two the brief expected to break; the delete-the-fix arm ran through the only instrument that could not see the defect",
+      "score_0_10": 6,
+      "justification": "I attacked the provenance directly rather than reading the log. The pinned sha 03ba530d47 exists, is dated 17:36:22Z, and its two files md5 to 5084d503... and a3a0a740... which are byte-identical to the pre-md5 in the Pod's own revert.log — so the Pod received the pinned sha, not the live working tree, and HAZARDS section 12 is genuinely handled. I then ran tools/visual/w1-30-copy-seam-patch.mjs --revert myself, in an isolated copy of the pinned sha outside the repo, and got post-md5 5ff49046... and 22989617..., matching the Pod exactly; and those bytes diff IDENTICAL against 9ddeb512^, the true parent of the commit that introduced the fix. Run 1's silently-inert revert did not recur. Docked because delete-the-fix was run through the census alone (README section 6) and never through a frame comparison — the census's five checks structurally cannot see a program that fails to link, and a frame comparison would have shown a body appearing in the reverted arm. Also docked one for a misleading log line: revert.log prints a correct revert as 'DRIFTED' because it compares the current md5 against the POST-revert expectation.",
+      "measured": "full",
+      "checks": [
+        {
+          "id": "M7-spot-check-recomputes",
+          "result": "pass",
+          "value": "the revert reproduces byte-for-byte and lands exactly on the pre-fix parent commit for both files",
+          "threshold": "an independent recomputation agrees"
+        },
+        {
+          "id": "arms-are-independent",
+          "result": "pass",
+          "value": "before arm == 9ddeb512^ byte-identical; after arm == 03ba530d47 == HEAD byte-identical; the arms differ by the fix and nothing else",
+          "threshold": "no two arms are the same configuration presented as different"
+        },
+        {
+          "id": "delete-the-fix-through-the-shipped-observable",
+          "result": "fail",
+          "value": "run through the census only; the census cannot see a link failure, so all six of its checks were green over a broken build",
+          "threshold": "the old number comes back through an instrument that can see the defect"
+        },
+        {
+          "id": "unmeasured-list-present",
+          "result": "pass",
+          "value": "eight entries, including a self-reported silently-inert revert and a self-reported SIGTERM that voided two of three Pod runs",
+          "threshold": "present and non-trivial"
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/revert.log",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/run.json"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md",
+      "kind": "report",
+      "produced_by": "this critic; the long-form verdict, citing every artefact below by section",
+      "note": "Section anchors cited from reference_items and biggest_gap resolve into this file."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/shader-collision-HEAD.json",
+      "kind": "trace",
+      "produced_by": "node tools/visual/w1-f1-critic-shader-collision.mjs (this critic's instrument, built for this verdict)",
+      "seed": null,
+      "resolution": "960x540",
+      "camera_pose": "spawn, 24 frames settled; a census of every actor-body and equipment material on the player and on every NPC/enemy",
+      "note": "The finding. 124 actor-body materials declare uWetness twice; 66 of 124 report program.diagnostics.runnable false with 'uWetness : redefinition' and 'esWet : redefinition'; 0 of 65 equipment/frill controls do either. Taken at HEAD fb42ad10, where both edited files are byte-identical to the pinned sha and the working tree is clean. Committed here rather than left under reports/, which is gitignored."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.mjs",
+      "kind": "report",
+      "produced_by": "this critic; recomputes the shipped-configuration before/after from the BUILDER's own committed unperturbed frames",
+      "note": "Run it to reproduce the player 6.42-21.84%, building 11.78-23.82%, street-lilmoth 25.65% and the two nature scenes at 0.005%/0.007% without trusting this verdict's prose. Reads only committed bytes: no browser, no Pod, no network."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.json",
+      "kind": "trace",
+      "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.mjs",
+      "note": "The shipped-configuration A/B the evidence pack captured and never computed, plus the check of the builder's own falsifiable prediction that terrain and canopy would not change. They did not: 0.005% and 0.007%."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/exhibit/player-yaw180-BEFORE-defect-present.png",
+      "kind": "screenshot",
+      "produced_by": "the BUILDER's own run 20260814-173808Z-27049, before arm, unperturbed base frame, RTX A5000",
+      "seed": null,
+      "resolution": "960x540",
+      "camera_pose": "street-lilmoth, player orbit yaw 180, 11:00, clear",
+      "note": "A complete armoured figure: face, shoulders, arms, gauntlets, shield, sword. This is the arm with the DEFECT the piece set out to fix."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/exhibit/player-yaw180-AFTER-fix-applied.png",
+      "kind": "screenshot",
+      "produced_by": "the same run, after arm, same camera, same instant, same GPU",
+      "seed": null,
+      "resolution": "960x540",
+      "camera_pose": "identical to the before frame",
+      "note": "Eyes and brow horns floating in mid-air where the head was. No head, no neck, no arms, no shoulders. This is the arm with the FIX applied, and it is byte-identical in source to HEAD."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/exhibit/player-yaw000-BEFORE-defect-present.png",
+      "kind": "screenshot",
+      "produced_by": "the BUILDER's run, before arm, unperturbed",
+      "resolution": "960x540",
+      "note": "The second independent camera. Complete figure with legs and sword blade.",
+      "camera_pose": "street-lilmoth, player orbit yaw 0, 11:00, clear"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/exhibit/player-yaw000-AFTER-fix-applied.png",
+      "kind": "screenshot",
+      "produced_by": "the BUILDER's run, after arm, unperturbed, identical camera",
+      "resolution": "960x540",
+      "note": "Floating chest barrel, two detached boots on the grass, horns and frill. The grass is visible through where the legs were, so this is absence rather than a colour coincidence.",
+      "camera_pose": "identical to the before frame: street-lilmoth, player orbit yaw 0, 11:00, clear"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/exhibit/deck-char-player-BEFORE.png",
+      "kind": "screenshot",
+      "produced_by": "the BUILDER's run, deck-before/char-player__t1300__clear.png",
+      "resolution": "960x540",
+      "note": "A third independent capture path (the Deck rather than the consumption orbit), before arm: full body.",
+      "camera_pose": "the Deck's char-player setup, 13:00, clear"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/exhibit/deck-char-player-AFTER.png",
+      "kind": "screenshot",
+      "produced_by": "the BUILDER's run, deck-after/char-player__t1300__clear.png",
+      "resolution": "960x540",
+      "note": "Same setup, after arm: the body is gone. Three independent capture paths agree.",
+      "camera_pose": "identical to the before frame: the Deck's char-player setup, 13:00, clear"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/frames-head/head-player-yaw000.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/w1-f1-critic-shader-collision.mjs, this critic, on this box at HEAD fb42ad10",
+      "resolution": "1920x1080",
+      "camera_pose": "player orbit yaw 0, 11:00, clear",
+      "note": "The defect at HEAD, after the V2 compositor and SSAO landed, not only at the pinned sha. Besides the headless player, a second floating head-and-horns is visible in the middle distance: an NPC with the same defect. Evidence class is software rendering, which is admissible here because a GLSL redefinition is a parse error and is renderer-independent; the hardware evidence for the same claim is the builder's own RTX A5000 frames above."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/motion-after/contact/walk.png",
+      "kind": "screenshot",
+      "produced_by": "the BUILDER: a 180-frame walk cycle thinned to every 6th frame, after arm, RTX A5000",
+      "note": "The defect in motion across 30 frames, which is the owner's standing requirement that a visual claim is not settled by a still. Cited from the builder's pack rather than duplicated.",
+      "camera_pose": "the Deck motion runner's walk sequence, a 180-frame walk cycle from a fixed following camera, thinned to every 6th frame",
+      "resolution": "960x540 per cell"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/revert.log",
+      "kind": "negative-evidence",
+      "produced_by": "the BUILDER's Pod run",
+      "note": "Re-derived here rather than trusted: I reran the same reversal on an isolated copy of the pinned sha and reproduced both post-md5 values exactly, then diffed them IDENTICAL against 9ddeb512^. Also the source of the misleading 'DRIFTED' line named in secondary_observations."
+    },
+    {
+      "path": "tools/visual/w1-f1-critic-shader-collision.mjs",
+      "kind": "report",
+      "produced_by": "this critic; the instrument, built under rule 24 because no tool in the tree asked whether a composed shader links",
+      "note": "Carries its own controls: it fails closed as INSTRUMENT-BLIND if it cannot find the body materials, and its equipment/frill control must come back clean or the probe declares itself to be measuring the wrong seam. Red at HEAD; the remedy's acceptance is that it goes green."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/consumption-before/consumption.json",
+      "kind": "trace",
+      "produced_by": "the BUILDER: node tools/visual/w1-30-surface-consumption.mjs --arm before, run 20260814-173808Z-27049 on an RTX A5000",
+      "seed": null,
+      "resolution": "960x540",
+      "camera_pose": "street-lilmoth; 8-angle player orbit, 3 building angles, 2 ground angles",
+      "note": "Re-read here, not re-run. The before arm: player 0.33%, building 1.30%, ground control 73.28%, restore floor 0.00% at every site. The arm this critic verified is byte-identical in source to 9ddeb512^, the true pre-fix parent."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/consumption-after/consumption.json",
+      "kind": "trace",
+      "produced_by": "the BUILDER: the same tool --arm after, same Pod, same GPU, same session",
+      "seed": null,
+      "resolution": "960x540",
+      "camera_pose": "identical to the before arm",
+      "note": "Re-read here, not re-run. The after arm: player 5.36%, building 32.84%, ground control 73.97%, restore floor 0.00%. Identical renderer_string and software_renderer false in both arms, which is what makes the pair admissible."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/run.json",
+      "kind": "trace",
+      "produced_by": "the BUILDER: tools/runpod/cli.mjs run --revision 03ba530d47…",
+      "note": "The provenance record this critic checked rather than trusted: source.revision 03ba530d47…, source.dirty false, commandExitCode 0, pod terminated and template deleted. The pinned sha's two files md5 to exactly the pre-md5 values in revert.log, so the Pod received the sha and not the working tree."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "not_applicable_reason": "AR-1's probes are Souls-combat contamination probes — to-hit rolls, stat-gated damage, hit resolution. This piece changes a material factory's copy seam and two shader hooks. No combat resolution path is reached and none of A1-A10 has an input here.",
+      "checks": [
+        {
+          "id": "A1-A10",
+          "result": "not_run",
+          "not_run_reason": "no combat resolution path is touched by a material clone hook or a fragment-shader preamble"
+        }
+      ]
+    },
+    "ar2": {
+      "status": "not_applicable",
+      "not_applicable_reason": "AR-2's probes are Morrowind-contamination probes — objective markers, quest compasses, fast travel, levelled loot. This piece touches the renderer only; no quest, journal, marker or travel surface is reached.",
+      "checks": [
+        {
+          "id": "B1-B11",
+          "result": "not_run",
+          "not_run_reason": "no quest, journal, marker or travel surface is touched"
+        }
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 1,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "The diagnosis, the seam choice and the arm discipline are first-rate, and the fix works on the world — buildings and settlements genuinely gained a surface response, verified independently. The piece nevertheless ships a change that stops the player's body and every NPC's body from being drawn, and that is live at HEAD. The score is a judgement of what is in the game, not of the quality of the work.",
+    "confidence": "high"
+  },
+  "status": "PROVISIONAL",
+  "status_reasons": [
+    "THE FINDING. Loss E in the builder's own table — installWaterline ASSIGNED onBeforeCompile rather than chaining, fixed by chaining — is what puts installSurfaceShader's fragment preamble and installWaterline's fragment preamble into one shader. Both declare `uniform float uWetness`, and both declare a local `float esWet`. The renderer's own diagnostics at HEAD: runnable false, 'ERROR: 0:81: uWetness : redefinition', 'ERROR: 0:1724: esWet : redefinition'. 124 actor-body materials across the player and every NPC carry the duplicate; 66 of 124 had been compiled at the sampling instant and every one of those 66 failed to link. installWaterline is called at exactly one site, actor.js:607, inside the ['cloth','skin'] body loop — which is why the blast radius is actor bodies only and why 65 of 65 equipment and frill controls are clean.",
+    "IT IS VISIBLE, AT FOUR CAMERAS AND IN MOTION, IN THE BUILDER'S OWN PACK. The unperturbed base frames were captured in both arms at identical cameras and never compared. Before: a complete armoured figure. After: eyes and brow horns floating where the head was, a chest barrel, two detached boots, the shield and the weapon haft. Three independent capture paths agree (the consumption orbit at yaw 0 and yaw 180, the Deck's char-player setup, and the 180-frame walk contact sheet). The parts that survive are exactly the ones that never pass through installWaterline: the shared mats.skin original on the horns, the eyes, frillMat, and the three equipment sets.",
+    "IT IS LIVE AT HEAD. Both edited files are byte-identical between the pinned sha 03ba530d47 and HEAD fb42ad10, and the working tree is clean for both. I captured it myself at HEAD, after the V2 compositor and SSAO landed, at 1920x1080.",
+    "THREE OF THE BRIEF'S FOUR ATTACKS FAILED, and the builder deserves that on the record. The pinned baseline is real and HAZARDS section 12 is genuinely handled — the pinned sha's md5s match the Pod's pre-md5 exactly, so the archive came from the sha and not from HEAD. The revert was not silently inert: I reran it on an isolated copy and reproduced both post-md5 values, and those bytes diff IDENTICAL against 9ddeb512^, the true pre-fix parent, so the two arms differ by the fix and by nothing else. The ground control is live rather than trivial: it moves 73.28% of pixels in the BEFORE arm against a 0.00% restore floor, which is precisely what makes the player's 0.33% an absence instead of a broken harness. And the CONSUMPTION probe consumes the shipped path — it reads window.__ENGINE.renderer and writes into the materials the shipped world built, reimplementing nothing.",
+    "THE WORLD HALF OF THE FIX IS REAL AND WAS UNDER-CLAIMED. Recomputed from the builder's own unperturbed frames: buildings move 11.78-23.82% of pixels between arms in shipped configuration, and street-lilmoth 25.65%. The builder's own falsifiable prediction — that terrain and canopy would not change at all — is confirmed at 0.005% and 0.007% on the two pure-nature Deck scenes. That is a genuine specificity result the pack was entitled to claim.",
+    "WHY EVERY CHECK STAYED GREEN, which is the part to carry forward. The census asks whether a hook installs uniforms, never whether the composed shader links; NO-HOOK-THREW is the near miss, because the hook does not throw, it emits illegal GLSL. The consumption probe measures a delta WITHIN an arm, and a material whose program does not link contributes zero to both the base and the perturbed frame. mesh.visible stays true, pageErrors stays empty, and a link failure arrives on console.error which nothing was listening to. And delete-the-fix was run through the census alone — a frame comparison would have shown a body appearing.",
+    "STATUS IS PROVISIONAL rather than FAIL for reasons about this critic, not about the piece, and the score of 1 stands on the evidence either way. (a) CRITIC-DOCTRINE section 8 asks a critic to record raw measurements before reading the builder's summary; my brief directed me to read the status file and README in full first, so saw_builder_notes_before_blind is true and cannot be undone. (b) ran_every_assigned_method is false — no blind human read, and my HEAD orbit capture completed 4 of 8 angles before I closed the verdict. Both are in method_deviations."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-f1-actor-body-shader-does-not-link",
+    "subsystem_path": "render.fidelity.character",
+    "what": "Restoring the surface pass on cloned materials put two fragment-shader preambles into one program on actor body materials, and they collide on two identifiers. installSurfaceShader (visual-foundation.js:521, :574) and installWaterline (actor.js:302, :310) each declare `uniform float uWetness` and each declare a local `float esWet`. The program does not link. Measured at HEAD: 124 actor-body materials carry the duplicate declaration, 66 of 124 report program.diagnostics.runnable false with 'uWetness : redefinition' and 'esWet : redefinition', and 0 of 65 equipment/frill controls do either.",
+    "why_it_matters": "The player and every NPC in the game are drawn as a floating chest barrel, two detached boots, a pair of horns and their weapon — no head, no arms, no legs — which is the first thing the owner would see on opening the game right now.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md",
+      "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/shader-collision-HEAD.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/exhibit/player-yaw180-AFTER-fix-applied.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/exhibit/player-yaw000-AFTER-fix-applied.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/frames-head/head-player-yaw000.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/motion-after/contact/walk.png"
+    ],
+    "severity": "blocking",
+    "remedy": {
+      "action": "PRESERVE the copy seam exactly as built — installCopySeam/adoptMaterialCopy, the JSON recipe in userData, the clone-not-copy choice and the chaining in installWaterline are all correct and are not what is broken. The delta is a rename, in one function. In game/src/render/actor.js#installWaterline (lines 287-327): rename the uniform `uWetness` to `uWaterlineWetness` at its declaration (:302), at the shader.uniforms assignment (:297) and at both uses (:310, :311); rename the local `float esWet` to `esWaterlineWet` at its declaration (:310) and both uses (:313, :319). Prefix `esBand` and `esMeniscus` in the same pass — they are unique today by luck rather than by design, and the next hook added to this chain will collide with them. Do NOT rename anything in installSurfaceShader: it is the shared library and its names are load-bearing for setWorldWetness(). Then add the missing tripwire, which is the durable half of this remedy: a check that no material in the live scene has program.diagnostics.runnable === false, wired into tools/visual/w1-30-surface-orphan-census.mjs so the standing census can see a link failure — its five existing checks structurally cannot, which is why all of them were green over a broken build.",
+      "targets": [
+        "game/src/render/actor.js",
+        "tools/visual/w1-30-surface-orphan-census.mjs",
+        "tools/visual/w1-f1-critic-shader-collision.mjs"
+      ],
+      "acceptance": "Cheapest gate first, and it already exists and is already red: `node tools/visual/w1-f1-critic-shader-collision.mjs` returns 0 for all four checks, with BODY-PROGRAM-IS-RUNNABLE reporting 0 of at least 100 actor-body programs failing to link and NO-DUPLICATE-UNIFORM-DECLARATION reporting 0 duplicates, while CONTROL-IS-CLEAN and CONTROL-PROGRAM-IS-RUNNABLE stay green. Then, and only then, re-take the frames: re-run `node corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.mjs` against a fresh two-arm capture and require the player's skin and cloth body surfaces to be PRESENT at all 8 orbit angles in BOTH arms, so the shipped-configuration player delta is attributable to shading rather than to geometry appearing. Hard fail: any actor-body material with runnable false. The gap closes when the census itself goes red on a deliberately re-introduced duplicate and green on the shipped tree.",
+      "ref_item": "RI-VIS08",
+      "estimated_size": "S"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "The evidence pack contains the disproof of its own headline and never computed it. Both arms saved the UNPERTURBED `*-base.png` at every camera — same camera, same Pod, same GPU, arms differing only by the two reverted files. That pair is the shipped-configuration before/after, and it is the only number in the run that describes what a player sees. Computing it takes no browser and no Pod: player 6.42-21.84% at every one of 8 angles, building 11.78-23.82%, street-lilmoth 25.65%, and the two pure-nature scenes 0.005% and 0.007%. The last two confirm the builder's own falsifiable prediction. The general lesson is cheap to state: when a run captures a base frame in both arms, diff the base frames — it costs nothing and it is the only arm that is not synthetic.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.mjs",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.json"
+      ],
+      "subsystem_path": "render.process.measurement"
+    },
+    {
+      "what": "revert.log announces a correct revert as DRIFTED, and it will cost a future critic an hour. tools/visual/w1-30-copy-seam-patch.mjs --revert prints `pre-md5=X (expected Y DRIFTED — anchors still unique, proceeding)` where Y is the POST-revert expectation, so the not-yet-reverted file is compared against what it should become. I reproduced the identical line locally on a clean isolated copy of the pinned sha, where nothing had drifted at all. One-line fix: compare pre-md5 against the expected PRE md5, or relabel the field.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/revert.log",
+        "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md"
+      ],
+      "subsystem_path": "render.process.measurement"
+    },
+    {
+      "what": "The two residual risks the builder named in README section 4 are both still unmeasured, and one of them is now easier to answer than it was. `customProgramCacheKey` is derived only from the recipe, so two copies of one material share a program — reasoned from the code, never measured; renderer.info.programs.length before and after is the arm, and the instrument built for this verdict already holds a live WebGLRenderer reference and could report it in three lines. The unbounded `shadedMaterials` Set now gains every copy; the census's with_surface_uniforms count is the declared tripwire and nothing samples it across a long session.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/README.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/shader-collision-HEAD.json"
+      ],
+      "subsystem_path": "render.fidelity.materials"
+    },
+    {
+      "what": "Not this piece's defect and it should not be imported into its score, but it is confirmed and it is what the next two pieces own: there is no ambient occlusion or contact darkening anywhere in the build. worldMaterial() sets `aoMap: authored ? null : ...` and every family has an authored set, and there is no screen-space AO pass in game/src/render at the pinned sha. Five of five blind judges named contact shadow as the biggest gap. W1-V2-CONTACT-SHADOWS-AO is live on it — a hemisphere SSAO compositor pass landed at 73c0da42, after the sha this piece was measured at.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/README.md",
+        "orchestration/status/W1-V2-CONTACT-SHADOWS-AO.json"
+      ],
+      "subsystem_path": "render.fidelity.materials"
+    },
+    {
+      "what": "The perturbation the CONSUMPTION arm measures is a configuration the shipped game cannot reach. It drives uWear=1, uWetness=1, uWorldWetness=1, uDetailStrength=2.5; the builder's own could_not_do records that nothing in game/src ever calls setWorldWetness(), so uWorldWetness has been 0 in every frame the game has ever drawn, and that CHARACTER_SPECS wear is not wired into the player body. So the 16x and 25x figures measure restored plumbing, and the plumbing carries no water yet. This is honestly declared by the builder in three separate places and is recorded here so nobody quotes 5.36% as an appearance result.",
+      "evidence": [
+        "orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/consumption-after/consumption.json"
+      ],
+      "subsystem_path": "render.fidelity.materials"
+    }
+  ],
+  "gap_closure": [],
+  "corpus_extended": [
+    {
+      "id": "GATE-composed-shader-must-link",
+      "path": "tools/visual/w1-f1-critic-shader-collision.mjs",
+      "area": "render.fidelity.materials",
+      "judges": [
+        "visual.renderer.materials",
+        "visual.character.materials"
+      ],
+      "reason": "harness_gap",
+      "note": "Nothing in the tree asked whether a material's composed shader is a LEGAL PROGRAM. Every existing instrument asks whether a hook installs uniforms — the census calls the hook against a stand-in and inspects the result, and NO-HOOK-THREW is as close as it gets, which is not close enough because a hook that emits illegal GLSL does not throw. That is how a change could take 124 actor-body programs from linking to not linking while six checks across two instruments stayed green and pageErrors stayed empty. This reads program.diagnostics.runnable back out of the running renderer and fails closed, and it composes the onBeforeCompile chain against a stand-in to name WHICH identifier collided. Its control (equipment and frill materials, which never pass through installWaterline) is required to come back clean or the probe declares itself blind. Offered as a standing gate for any piece that chains a shader hook; the durable home is inside w1-30-surface-orphan-census.mjs, and the remedy in biggest_gap asks for it to be moved there.",
+      "index_regenerated": false
+    },
+    {
+      "id": "METHOD-diff-the-base-frames-of-a-two-arm-capture",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.mjs",
+      "area": "render.process.measurement",
+      "judges": [
+        "process.critic.discipline",
+        "visual.renderer.materials"
+      ],
+      "reason": "sharper_discriminator",
+      "note": "A CONSUMPTION run measures a perturbed frame against a base frame WITHIN one arm, because that is what coupling means. When such a run is executed in two arms it necessarily captures a base frame in each, at the same camera, on the same hardware — and that pair is the shipped-configuration before/after, the only frame comparison in the whole run that describes what a player sees rather than what a synthetic uniform extreme does. It costs one PNG diff, no browser and no Pod, and here it is the difference between 'the player consumes, 0.33% to 5.36%' and 'the player has no body'. RI-MTH07 asks for the perturbation arm and does not ask for this one; it should.",
+      "index_regenerated": false
+    }
+  ],
+  "method_deviations": [
+    {
+      "ref_item": "CRITIC-DOCTRINE section 8 — record raw measurements before reading the builder's summary",
+      "deviation": "I read the builder's status file and the pack README in full before taking any measurement, so saw_builder_notes_before_blind is true.",
+      "why": "The dispatch instructed that reading order explicitly. Recorded rather than concealed. Mitigation: every provenance claim in this verdict was re-derived from git and from an isolated re-run rather than accepted from the log, and the finding itself came from opening the pictures, which the builder's notes did not mention.",
+      "affects_scores": false
+    },
+    {
+      "ref_item": "OWNER-DIRECTIVES 2026-08-14 section 2 — many screenshots and motion sequences from many angles",
+      "deviation": "My own HEAD orbit capture completed 4 of 8 angles (yaw 0, 45, 90, 135) before I closed the verdict; the run was still going.",
+      "why": "The builder's pack already supplies the full 8-angle orbit and a 30-frame motion sheet on HARDWARE at a source state byte-identical to HEAD for both edited files, and the defect is unambiguous at four independent cameras plus motion. My HEAD capture exists to show the defect survives the V2 compositor and SSAO that landed afterwards, and 4 angles settle that. Stated rather than quietly rounded up to 8.",
+      "affects_scores": false
+    },
+    {
+      "ref_item": "RI-VIS06 Protocol A — the blind human read",
+      "deviation": "No blind human read, and no Craft number, for this piece or for this verdict's captures.",
+      "why": "No naive judge is reachable from an agent and rule 0 forbids parking work on one. It is also moot for this round: the biggest gap is that a body is not drawn, which needs no judge. My explicit recommendation to the orchestrator is that Protocol A should NOT be paid for until this gap closes.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-VIS08 sections B2, B4, B5, B6 and all of section C",
+      "deviation": "Triangle budget, texel density, contact-shadow grounding, subsurface response and every animation measurable were not computed.",
+      "why": "They are measured on surfaces that are not rasterised. Computing a texel density for a mesh that produces no fragment would be a number about nothing. Recorded as not_run with the reason rather than scored as fail, except where the absence itself is the finding.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "This critic's own instrument",
+      "deviation": "NO-SHADER-ERROR-ON-THE-CONSOLE passed and proves nothing: the console listener attaches after launchForCapture has already booted the page, so boot-time compile errors are missed. The check is retained as a weak second witness and labelled as such in the tool.",
+      "why": "The authoritative reading is program.diagnostics.runnable, which is read out of the renderer itself and is not order-dependent. Named so nobody reads that PASS as evidence of anything.",
+      "affects_scores": false
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "game/src/render/visual-foundation.js",
+      "purpose": "quote-written-content",
+      "note": "installSurfaceShader (496-585): the uniform block, the JSON recipe at :508, the fragment preamble at :520-522 declaring uniform float uWetness, the local float esWet at :574, and the customProgramCacheKey chain at :581. THE COPY SEAM (588-644): adoptMaterialCopy and installCopySeam, and the clone-not-copy argument, which is correct."
+    },
+    {
+      "path": "game/src/render/actor.js",
+      "purpose": "quote-written-content",
+      "note": "installWaterline (287-327): the chain at :293-295 that this piece introduced, the fragment preamble at :302 declaring uniform float uWetness a second time, the local float esWet at :310, and the single call site at :607 inside the ['cloth','skin'] body loop — which is what confines the blast radius to actor bodies. Also the PLAN table at 339+ mapping body segments to the skin and cloth materials."
+    },
+    {
+      "path": "tools/visual/w1-30-surface-consumption.mjs",
+      "purpose": "quote-written-content",
+      "note": "Read in full to test the 'did the probe reimplement its subject' attack. It does not: it reads window.__ENGINE.renderer, traverses R.scene, selects from R.playerMesh and writes into the materials the shipped world built. The natural selector at :125-127 and the deliberate absence of needsUpdate at :163 are the two lines that make the control and the perturbation honest."
+    },
+    {
+      "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+      "purpose": "quote-written-content",
+      "note": "Section 1 PBR materials, its MIN BAR 'albedo + roughness on every material', and the scoring bands."
+    },
+    {
+      "path": "corpus/70-visual/RI-VIS08-character-animation-fidelity.md",
+      "purpose": "quote-written-content",
+      "note": "Section B static model quality B1-B8, the scoring bands, and the section E tell list — which has no entry for a body that is not drawn, because nobody imagined it."
+    },
+    {
+      "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+      "purpose": "quote-written-content",
+      "note": "The five axes: consumer named, coupling measured, hand-feed audit, instrumentation honesty, harness fidelity."
+    },
+    {
+      "path": "orchestration/HAZARDS.md",
+      "purpose": "quote-written-content",
+      "note": "Section 12 (HEAD is not your baseline) and section 0/0b (the self-test whose arms agree about a false premise, and the one-sided guard) — the two shapes I tested the pack against."
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is FALSE and blind_done_where_required is FALSE — no RI-VIS06 Protocol A read, and my own HEAD orbit reached 4 of 8 angles; both in method_deviations. On HAZARDS section 0's fifth failure shape applied to MYSELF: my instrument's arms are required to disagree, and they do — the 65 equipment/frill materials are the control and they come back clean on both the duplicate-declaration check and the link check while the 124 body materials fail both, so the probe is not measuring something global. It fails closed as INSTRUMENT-BLIND if it cannot find the body materials, rather than reporting a clean sheet. On section 0b's one-sided guard: I did not only look for evidence the pack was wrong. I attempted four falsifications of my own finding — that the pinned sha might not be what the Pod received (it is, md5-matched), that the revert might be inert as in run 1 (it is not, I reran it and it lands byte-identical on 9ddeb512^), that the ground control might be inert (it is not, it moves 73% in the before arm), and that the probe might have reimplemented its subject (it did not) — and all four failed to land, which is recorded in the verdict body as prominently as the finding. My own base-frame recomputation uses the BUILDER's movedFraction maths verbatim so the numbers are commensurable rather than a second opinion from a different ruler, and it reads only committed bytes so a later critic can rerun it from a fresh clone. I did not touch game/src: rule 23. tools/contention.mjs --gate returned GO (1 browser instance, room for 5 more) before any browser work."
+  },
+  "notes": "Measured at HEAD fb42ad10 on codex/wave1-build-experiment, where game/src/render/visual-foundation.js and game/src/render/actor.js are byte-identical to the pinned sha 03ba530d47 that the builder's closing Pod run was taken at, and the working tree is clean for both. The builder's hardware evidence is therefore a valid description of HEAD for the files in question, and I used it as such rather than re-renting a Pod. Where I needed HEAD specifically — to show the defect survives the V2 compositor and the SSAO pass that landed after the pin — I captured locally on a software backend and labelled it, which is admissible for this claim because a GLSL redefinition is a parse error and is renderer-independent. ORDERING, per CRITIC-DOCTRINE section 8: I read the builder's status file and README before measuring, because the dispatch instructed it; I read no prior verdict on this piece and no gap-ledger entry for these paths until after every measurement above was taken and written down."
+}
