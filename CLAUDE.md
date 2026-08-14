@@ -118,6 +118,42 @@ named one-step reversal that has actually been executed on a copy, an after, and
 largest known lever is that the fleet is essentially all Opus — 3,230 Opus requests against 29
 Sonnet — while the model-choice policy that would fix it has been written down and never applied.
 
+## The character directive — binding, and deliberately hard to lose
+
+**Owner, 2026-08-14, verbatim:** *"the player character and every NPC when I load the game look frankly
+ridiculous. Some serious work is needed on them, and I suspect some serious work is needed to build out
+the set of reference images/gifs for builders to use as their target and for critics to compare
+against. They could be compared against Skyrim and ESO images and gifs for example. We need our
+character design and overall quality to be at that level. Builders must look at the actual reference
+images/gifs to guide their work, and must look at actual screenshots and motion captures (e.g. rotating
+the camera around the player to view from multiple angles) — stills are not enough — from our actual
+game; critics must as well."*
+
+**Four requirements, all of them binding:**
+
+1. **A character reference set must exist before the character work is judged** — images **and motion**,
+   at the quality level of Skyrim and ESO. It does not exist today. Acquiring it is `I5` in ring 0, and
+   `F10` cannot be judged without it: `RI-VIS08`'s own comparison method runs its blind pass *"if and
+   only if a usable reference image exists"*, and it **refuses Morrowind references** for characters
+   (Morrowind characters are ~1,000 triangles).
+2. **Builders look at the references.** Not at a written description of them. A builder who has not
+   opened the plates is building from imagination.
+3. **Builders and critics both look at our actual game, in motion.** Orbit the camera around the
+   character, multiple angles, motion sequences. **Stills are not enough** — this is the same directive
+   that was bought when a transparency defect was declared fixed from one still and was still broken.
+4. **There is a hole in the bar and it must be filled, not worked around.** `RI-VIS08` §D is titled
+   *"the design/quality seam for creatures — where this item stops"*: the item covers **fidelity**
+   (model quality, silhouette readability) and stops short of holistic character and creature **design**.
+   Checked against all 149 reference items — `RI-CHR01/02/03` are creation, race and birthsigns and land
+   in `C1`, which is not design language. **Nothing covers the other side of that seam.** Until a
+   reference item does, `F10` is judged against an incomplete bar and any pass it earns is worth less
+   than it looks.
+
+**Why this is written here rather than only in the roadmap:** the owner asked for certainty it would
+survive compaction. `tools/readpath.mjs` carries named probes for this section, so if it is deleted or
+weakened, **a check goes red in `pre-commit`**. Do not remove the phrases those probes match without
+replacing the requirement.
+
 ## Before every dispatch, and before writing anything into a document — the four-line check
 
 **Owner, 2026-08-14, on going to bed: *"Keep checking the actual repo rather than relying on your

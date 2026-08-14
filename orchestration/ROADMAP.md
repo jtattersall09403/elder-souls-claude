@@ -39,6 +39,13 @@ alongside everything.
 `I1` harness and determinism · `I2` capture and the Deck · `I4` consumption as a gate ·
 `I5` **the corpus audited and extended** · `I3` **the blind protocols**
 
+**`I5`'s first job is the character reference set** — images **and motion**, at Skyrim/ESO quality, for
+builders to target and critics to compare against. It does not exist, `F10` cannot be judged without
+it, and `RI-VIS08` **refuses Morrowind references** for characters (Morrowind characters are ~1,000
+triangles). `I5` also owes the **design half** of the character bar: `RI-VIS08` §D stops at *fidelity*
+and nothing among the 149 items covers character or creature **design**. Both are binding — see the
+character directive in `CLAUDE.md`, which `tools/readpath.mjs` guards.
+
 **`I5` comes before `I3`**, and that ordering is the point: a pack built on reference plates that cannot
 satisfy their own rows is not a judgement. Protocol A has run **once** — we lost 5 of 5. Protocol B has
 **never run**.
@@ -59,7 +66,7 @@ Wave 1 by owner directive: *"it's not worth progressing to wave 2's depth unless
 | `F7` | The water surface | axis-aligned banding open |
 | `F8` | The building kit | 4 roof ids against a rule needing ≥5 |
 | `F9` | **Interiors and practical light** | **71.8% of the indoor floor reads fully lit** |
-| `F10` | Characters and creatures | holes fixed; never judged by eye |
+| `F10` | **Characters and creatures** — see the character directive in `CLAUDE.md` | `RI-VIS08` **3/10**, `RI-CAM07` 4/10. Owner, 14 Aug: the player and every NPC *"look frankly ridiculous"*. **Blocked on `I5`**: no character reference set exists, and `RI-VIS08` runs its blind pass only *"if and only if a usable reference image exists"* |
 | `F11` | Animation quality | **1,150 clips authored and undrawn** |
 | `F12` | VFX | |
 | `F13` | Art direction and region identity | the most under-served |

@@ -67,6 +67,12 @@ const FACTS = [
   ['arbitration-rule', /Inside the fight, Souls wins\. Everywhere else, Morrowind wins\./],
   ['S55-cap-is-2', /S55[\s\S]{0,600}?AMENDED TO 2|cap is amended to \*\*2\*\*|CAP IS AMENDED TO 2/],
   ['consumption-rimth07', /RI-MTH07/],
+  // ---- the character directive, 2026-08-14. The owner asked for certainty it survives compaction,
+  // ---- so forgetting it fails a check rather than merely being regrettable.
+  ['characters-look-ridiculous', /look frankly\s*\n?\s*ridiculous/i],
+  ['characters-need-reference-set', /reference (images\/gifs|set)[\s\S]{0,400}?(Skyrim|ESO)/i],
+  ['characters-motion-not-stills', /stills are not enough/i],
+  ['character-design-seam-hole', /design\/quality seam for creatures/i],
   ['events-vocabulary-closed', /events\.js`? is closed/i],
   ['commit-only', /git commit --only/],
   ['rule-0-never-wait', /AskUserQuestion/],
@@ -150,8 +156,17 @@ function measure() {
   return { rows, missing, bytes, tokens: Math.round(bytes / CHARS_PER_TOKEN) };
 }
 
+// A checker must never satisfy its own probes. `tools/readpath.mjs` contains every FACTS regex as a
+// literal, so if it is reachable in the hop map it will match almost any probe and the whole suite
+// silently proves itself. Found 2026-08-14 by breaking a fact in CLAUDE.md and watching the probe stay
+// green at `hop 1 tools/readpath.mjs` — the vacuous-control shape HAZARDS 0b is about, in the guard
+// that exists to prevent exactly that.
+const SELF_EXCLUDED = ['tools/readpath.mjs'];
+
 function checkFacts(hopMap, injectMiss = null) {
-  const files = [...hopMap.entries()].sort((a, b) => a[1] - b[1]);
+  const files = [...hopMap.entries()]
+    .filter(([f]) => !SELF_EXCLUDED.some(x => f === x || f.endsWith('/' + x)))
+    .sort((a, b) => a[1] - b[1]);
   const cache = new Map();
   const read = f => { if (!cache.has(f)) { try { cache.set(f, readFileSync(P(f), 'utf8')); } catch { cache.set(f, ''); } } return cache.get(f); };
   const results = [];
