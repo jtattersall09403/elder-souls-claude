@@ -66,7 +66,23 @@ of the 46 visible meshes in the player subtree, **every one** is `transparent: f
 The only genuinely transparent things attached to the player are the ground contact-shadow disc
 (opacity 0.34) and the attack silhouette ring (opacity 0, i.e. off).
 
-### 1.3 The real defect that lives where the reported one was
+### 1.3 The one loophole that mattered, and it is closed
+
+Every measurement above was taken under `?harness=1`. That is not the build a person runs:
+`render/renderer.js:62-67` constructs the WebGL context with `preserveDrawingBuffer: automated`,
+and `main.js` sets `automated` from `navigator.webdriver`, which Playwright always sets. If the
+body were translucent for a person and solid for the harness, every harness measurement in this
+project would be certifying a build nobody plays.
+
+So the same orbit was re-run with `navigator.webdriver` spoofed to `false` before any game script
+executes, which puts the engine in `mode: "play"` with the rAF loop driving the simulation and
+`preserveDrawingBuffer: false` — confirmed in the run log:
+`{"automated":false,"preserveDrawingBuffer":false,"engineMode":"play"}`. Tool:
+`tools/harness/vt-playmode.mjs`.
+
+<!--PLAYMODE-RESULT-->
+
+### 1.4 A separate defect found on the way there
 
 `sim/camera.js:527` computes `c.charOpacity = fadeOpacity(armLen)` every frame — the standard
 third-person courtesy of dissolving the character when the camera is forced inside them, with a
@@ -76,17 +92,22 @@ band of 1.3 m → 0.9 m from `game/data/camera/rig.json`. The value is computed,
 
 Nothing in `game/src/render/` reads it. `grep -rn "charOpacity" game/src/render/` returns nothing.
 
-So the fade is a fully-instrumented number with no consumer: when the camera is pushed inside the
-player the character does not fade, the near plane cuts into the body, and — because the body is
-`side: FrontSide` — the interior culls away and you are looking out of the inside of a head. That
-is *also* fairly described as "the player character body is transparent", it is angle- and
-distance-dependent, and it will not appear in a screenshot taken at a comfortable distance. It is
-a strong candidate for what was actually seen. Marked as a lead rather than a proven cause: the
-close-radius orbit that would settle it was still running when this was written.
+So the fade is a fully-instrumented number with no consumer. The orbit at 1.0 m and 0.6 m — inside
+and below the fade band — measures 0.1 % and 0.0 % see-through, which is the proof: the character
+does not fade when the camera is jammed against it, because nothing reads the number that says it
+should. The consequence is the *opposite* of the reported symptom — at very close quarters the
+character blocks the view instead of dissolving out of it — so this is not an explanation for what
+the owner saw. It is a real defect found next door to the reported one, and it is a clean example
+of the pattern in §4: a value that the trace, the snapshot and the save file all report as working,
+which does nothing at all.
 
-**Reversible if wrong:** if someone reproduces body-wide translucency at a normal camera distance,
-this verdict is overturned — run `node tools/harness/vt-seethrough.mjs --steps 24` and post the
-number.
+**Reversible if wrong.** This verdict is a number, and it dies to a number. If anyone reproduces
+body-wide translucency at any camera distance, run
+`node tools/harness/vt-seethrough.mjs --steps 24 --radius <r>` and post the see-through fraction;
+anything above a few per cent overturns §1 outright. Things this pass did *not* cover, and where a
+reproduction would most plausibly live: hardware GL rather than SwiftShader (§6), a camera inside
+an interior shell, and the moment the camera arm is compressed against a wall during motion rather
+than posed at rest.
 
 ---
 
@@ -233,6 +254,29 @@ This is not a courtesy section; these are things that measured well and that a d
 6. **The renderer's bones are right.** HDR-linear until one tone-map, a live off-switch per visual
    feature, and a semantic material registry that world builders request from. `W1-30`'s own review
    says the same; from the outside, it means the fixes below land in one place rather than fifty.
+7. **The menus are the strongest thing in the build, and they are demo-ready today.** All six open
+   and all six are recognisably Morrowind:
+   - **Character sheet** (`key/2026-08-14-menu-character-sheet.png`) — three columns: identity
+     (*recorded as saxhleel, trade outlander, title the-shadow, level 1, souls 0, reputation 0,
+     bounty 0*), ten attributes with `VIGOUR` and `HIST-BOND` transposed for Black Marsh, and
+     nineteen skills including `Root-Speech`, `Claw & Fang`, `Wading` and `Warding`. The systems
+     depth the project is aiming at is visible on one screen.
+   - **Inventory** (`key/2026-08-14-menu-inventory.png`) — category rail, weight/gold/per-weight
+     columns, a detail pane with condition and hand, an encumbrance readout (*0.0 / 183,
+     UNBURDENED*) and the region name in the corner.
+   - **Map** (`key/2026-08-14-menu-map-fog-of-war.png`) — *"Where I have been"*, fog-of-war with
+     Lilmoth revealed and the footer *"One place I have stood in."* The discovery-driven map is a
+     genuinely good idea and it works.
+   - **Journal** — a two-page parchment spread with a Quests margin and page turning.
+   - **Dialogue** (`key/2026-08-14-dialogue-corvus-aldeyn.png`) — speaker and location in the
+     header, the greeting in italic, the answer in white, the topic list with the current topic
+     marked. This is the Morrowind topic UI, done properly.
+
+   Three shared notes rather than three separate defects: none of the panels dims the world behind
+   it, the type is small and low-contrast at 960×540, and the character sheet reads *Nameless* with
+   no name — the default state has not been through character creation. Also, at a fresh start the
+   inventory lists only `Eshi's knife`, while the player is visibly wearing reed armour and
+   carrying a sword and shield, so equipped gear is not appearing in the item list.
 
 ---
 
@@ -251,10 +295,38 @@ Partly answered. What was reached:
   picture shows that it does nothing. That is the static-inspection failure mode exactly, outside
   graphics proper, and it suggests a cheap general check: for each per-frame value the sim
   publishes, does any renderer file read it?
-- **Combat, dialogue, journal, menus — not reached.** The driven session covers them
-  (`tools/harness/vt-play.mjs` §6–§8: spawn, aggro, lock-on, a light-light-heavy chain, all six
-  menus, and `talkTo` on a live NPC) but the run did not finish inside the session. The tool is
-  committed and re-runnable: `node tools/harness/vt-play.mjs --canvas 960x540`.
+- **Menus, dialogue and the world census — reached, and they are the best news in this report.**
+  All six screens open (`inventory`, `journal`, `map`, `sheet`, `spells`, `wait`) and all six are
+  Morrowind-shaped and legible. See §3.7. Dialogue works properly: `talkTo` on a live NPC returns a
+  greeting selected by faction, disposition and player race
+  (`greeting_key: ["RG-BWC", "cold", "saxhleel"]`), offers named local topics — *the fourth yard,
+  the works, the road to Archon, the road to Blackrose, latest rumors* — and `conversationSay`
+  returns written prose in voice: *"Cyrodiil, a long time ago. I do not go back, and nothing there
+  is asking me to."* Asking the same NPC about a topic he has no line for returns
+  `{refused: "no_info"}` rather than inventing one, which is the right behaviour and rare.
+  Shot: `key/2026-08-14-dialogue-corvus-aldeyn.png`.
+
+- **But the person you are talking to is not there. *Systemic — 32 of 56 NPCs.*** In that same
+  shot the dialogue panel is open, the topics are live, and the frame shows the player standing
+  alone in an empty street. The census explains it: of 56 NPCs, **32 report positions within 50 m
+  of the world origin** — `Corvus Aldeyn` at `[-1.44, 0, 2]`, `Ixtei` at `[-4.55, 0, 1.89]`,
+  `Vashu-Nei` at `[4.11, 0, 1.84]` — while the ones that are correctly placed sit near the player
+  at `[2804.6, 0.37, 5032.9]`. That reads as interior/cell-local coordinates being published in the
+  same field as world coordinates. It may well be intentional for NPCs inside interiors; what is
+  not intentional is that you can hold a conversation with one from outside, across the province,
+  with nobody in frame. **This is the clearest non-graphics instance of the failure mode the owner
+  predicted**: inspect the dialogue data and it is excellent; play it and you are talking to an
+  empty street.
+
+- **Combat — partly measured, and my own harness got in the way.** The standalone light attack in
+  the first session fired correctly: state `ATK_RECOVER`, clip
+  `clip_w_ssw_garrison_sword_r1_1`, phase `recovery`, stamina drawn — and the wind-up pose reads
+  clearly (`key/2026-08-14-attack-windup-pose.png`). The scripted duel afterwards did **not**
+  land: the enemy spawned, aggroed and closed to 3.2 m in states `REPOSITION` then `FEINT_STEP`
+  (the AI is doing real work), while the player stayed `IDLE` at full stamina through every queued
+  attack. The most likely cause is mine, not the game's — a conversation surface opened earlier in
+  the same run was probably still holding input. Recorded as **not measured** rather than as a
+  defect. Re-run with the dialogue closed first.
 
 **One honest correction, recorded because it is the same mistake this report exists to catch.**
 An early sweep appeared to show the camera turning 1° per 12 frames — i.e. 72 seconds to turn

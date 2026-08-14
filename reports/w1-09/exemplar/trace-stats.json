@@ -1,0 +1,208 @@
+{
+  "schema": "elder-souls/trace-stats@1",
+  "source": {
+    "path": "/home/user/elder-souls-claude/reports/w1-09/exemplar/RI-CMB07-exemplar-F1-trace.jsonl",
+    "records": 9000,
+    "seconds": 150,
+    "hz": 60
+  },
+  "run": null,
+  "trace_body_sha256": null,
+  "computed_at": "2026-08-06T21:59:43.536Z",
+  "attack_rate": {
+    "attacks": 121,
+    "attacks_per_min": 48.4,
+    "inter_attack_frames": {
+      "n": 120,
+      "min": 4,
+      "max": 225,
+      "mean": 72.8417,
+      "stdev": 39.0341,
+      "p05": 27.95,
+      "p50": 72,
+      "p95": 145.15
+    },
+    "inter_attack_cv": 0.5359,
+    "attack_lengths_frames": {
+      "n": 0
+    }
+  },
+  "stamina": {
+    "max": 120,
+    "floor": 64,
+    "ceiling": 120,
+    "distribution": {
+      "n": 9000,
+      "min": 64,
+      "max": 120,
+      "mean": 101.5375,
+      "stdev": 15.0164,
+      "p05": 79.25,
+      "p50": 99.25,
+      "p95": 120
+    },
+    "frac_at_zero": 0,
+    "frac_below_25pct": 0,
+    "spend_events": 0,
+    "spend_amounts": {
+      "n": 0
+    },
+    "regen_delay_frames": {
+      "n": 0
+    },
+    "regen_rate_per_sec": {
+      "n": 0
+    },
+    "regen_blocked_frac": 0.4463,
+    "denied_actions_low_stamina": 0
+  },
+  "commitment": {
+    "committed_frames": 5345,
+    "committed_ratio": 0.5939,
+    "commitment_lengths": {
+      "n": 64,
+      "min": 4,
+      "max": 244,
+      "mean": 83.5156,
+      "stdev": 51.9444,
+      "p05": 52,
+      "p50": 77,
+      "p95": 172.55
+    },
+    "free_ratio": 0.4061,
+    "suspected_cancels": 0
+  },
+  "rolls": {
+    "count": 0,
+    "roll_lengths": {
+      "n": 0
+    },
+    "iframe_windows": {
+      "n": 32,
+      "min": 26,
+      "max": 26,
+      "mean": 26,
+      "stdev": 0,
+      "p05": 26,
+      "p50": 26,
+      "p95": 26
+    },
+    "iframe_start_offsets": {
+      "n": 0
+    },
+    "rolls_overlapping_active": 0,
+    "dodge_events_logged": 27,
+    "roll_vs_active_delta_f": {
+      "n": 0
+    },
+    "samples": []
+  },
+  "punish": {
+    "windows_offered": 53,
+    "window_lengths": {
+      "n": 53,
+      "min": 1,
+      "max": 76,
+      "mean": 49.8868,
+      "stdev": 23.532,
+      "p05": 12.6,
+      "p50": 60,
+      "p95": 76
+    },
+    "windows_used": 0,
+    "usage_rate": 0,
+    "reaction_frames": {
+      "n": 28,
+      "min": 7,
+      "max": 64,
+      "mean": 39.5714,
+      "stdev": 18.2034,
+      "p05": 10.35,
+      "p50": 49,
+      "p95": 58
+    },
+    "player_hits": 0,
+    "player_hits_outside_windows": 0
+  },
+  "enemies": [
+    {
+      "eid": "E1",
+      "archetype": "INFANTRY",
+      "state_histogram": {
+        "IDLE": 77,
+        "REPOSITION": 3561,
+        "ATK_WINDUP": 2269,
+        "ATK_ACTIVE": 413,
+        "ATK_RECOVER": 2548,
+        "STAGGER": 132
+      },
+      "state_entropy_bits": 1.898,
+      "dist_m": {
+        "n": 9000,
+        "min": 0.0017,
+        "max": 7.3226,
+        "mean": 2.0902,
+        "stdev": 1.2512,
+        "p05": 0.6,
+        "p50": 1.6113,
+        "p95": 4.3802
+      },
+      "spacing_variance_m": 1.2512,
+      "min_dist_dwell": 0.5822,
+      "speed_mps": {
+        "n": 9000,
+        "min": 0,
+        "max": 0,
+        "mean": 0,
+        "stdev": 0,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0
+      },
+      "max_yaw_rate_during_active_recovery": 0,
+      "hp_start": 2876,
+      "hp_end": 289
+    }
+  ],
+  "concurrency": {
+    "concurrent_commit_p50": 0,
+    "concurrent_commit_p99": 0,
+    "concurrent_commit_max": 0,
+    "concurrent_commit_mean": 0
+  },
+  "events": {
+    "detect": 2,
+    "ACTION_START": 121,
+    "attack_start": 121,
+    "IFRAME_NEGATE": 27,
+    "iframe_dodge": 27,
+    "WHIFF": 13,
+    "whiff": 13,
+    "HIT": 48,
+    "hit": 48,
+    "GUARD_UP": 8,
+    "guard_up": 8,
+    "INPUT_BUFFERED": 21,
+    "input_buffered": 21,
+    "BLOCK": 1,
+    "block": 1,
+    "BLOCK_SUCCESS": 1,
+    "block_success": 1,
+    "INPUT_DROPPED": 1,
+    "input_dropped": 1,
+    "STAGGER": 3,
+    "stagger": 3,
+    "ESTUS_START": 1,
+    "heal": 1,
+    "ESTUS_DONE": 1
+  },
+  "integrity": {
+    "has_header": false,
+    "has_footer": false,
+    "schema": null,
+    "frame_discontinuities": 0,
+    "enemy_records": 9000,
+    "missing_fields": [],
+    "fail_closed": true
+  }
+}

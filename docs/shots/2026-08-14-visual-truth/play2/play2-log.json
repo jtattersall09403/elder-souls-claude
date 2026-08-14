@@ -1,0 +1,161 @@
+[
+  {
+    "step": "menu:inventory",
+    "ok": true
+  },
+  {
+    "step": "menu:journal",
+    "ok": true
+  },
+  {
+    "step": "menu:map",
+    "ok": true
+  },
+  {
+    "step": "menu:sheet",
+    "ok": true
+  },
+  {
+    "step": "menu:spells",
+    "ok": true
+  },
+  {
+    "step": "menu:wait",
+    "ok": true
+  },
+  {
+    "step": "npc-census",
+    "total": 93,
+    "npcs": 56,
+    "at_world_origin": 32
+  },
+  {
+    "step": "talkTo",
+    "eid": "blackwood-company-factor",
+    "name": "Corvus Aldeyn",
+    "race": "imperial",
+    "reply": "{\"open\":true,\"npc\":\"blackwood-company-factor\",\"name\":\"Corvus Aldeyn\",\"title\":null,\"greeting\":\"Say it in one line. Local. Useful.\",\"greeting_cell\":\"180\",\"greeting_key\":[\"RG-BWC\",\"cold\",\"saxhleel\"],\"said\":null,\"said_topic\":null,\"said_cell\":null,\"said_source\":null,\"said_route\":null,\"said_from\":null,\"topics\":[{\"id\":\"the fourth yard\",\"text\":\"the fourth yard\",\"gated\":false,\"root\":false},{\"id\":\"the works\",\"text\":\"the works\",\"gated\":false,\"root\":false},{\"id\":\"the road to Archon\",\"text\":\"the road to Archon\",\"gated\":false,\"root\":false},{\"id\":\"the road to Blackrose\",\"text\":\"the road to Blackrose\",\"gated\""
+  },
+  {
+    "step": "say",
+    "topic": "background",
+    "ok": true,
+    "reply": "{\"open\":true,\"npc\":\"blackwood-company-factor\",\"name\":\"Corvus Aldeyn\",\"title\":null,\"greeting\":\"Say it in one line. Local. Useful.\",\"greeting_cell\":\"180\",\"greeting_key\":[\"RG-BWC\",\"cold\",\"saxhleel\"],\"said\":\"Cyrodiil, a long time ago. I do not go back, and nothing there is asking me to.\",\"said_topic\":\"background\",\"said_cell\":null,\"said_source\":\"actor\",\"said_route\":null,\"said_from\":\"root-coverage\",\"top"
+  },
+  {
+    "step": "say",
+    "topic": "lilmoth",
+    "ok": true,
+    "reply": "{\"refused\":\"no_info\",\"topic\":\"lilmoth\",\"npc\":\"blackwood-company-factor\"}"
+  },
+  {
+    "step": "say",
+    "topic": "rumours",
+    "ok": true,
+    "reply": "{\"refused\":\"no_info\",\"topic\":\"rumours\",\"npc\":\"blackwood-company-factor\"}"
+  },
+  {
+    "step": "say",
+    "topic": "little advice",
+    "ok": true,
+    "reply": "{\"open\":true,\"npc\":\"blackwood-company-factor\",\"name\":\"Corvus Aldeyn\",\"title\":null,\"greeting\":\"Say it in one line. Local. Useful.\",\"greeting_cell\":\"180\",\"greeting_key\":[\"RG-BWC\",\"cold\",\"saxhleel\"],\"said\":\"Don't hire the cheapest one and don't pay all of it up front. Half now, half at the gate.\",\"said_topic\":\"little advice\",\"said_cell\":null,\"said_source\":\"actor\",\"said_route\":null,\"said_from\":\"root-c"
+  },
+  {
+    "step": "spawn",
+    "ok": true,
+    "v": "\"e1\""
+  },
+  {
+    "step": "enemy",
+    "eid": "e1",
+    "enemies": 2
+  },
+  {
+    "step": "fight",
+    "f": 15,
+    "p_state": "IDLE",
+    "p_anim": "idle",
+    "p_stam": 120,
+    "p_hp": 620,
+    "enemies": [
+      {
+        "hp": 412,
+        "state": "REPOSITION",
+        "anim": "e_idle",
+        "dist": 5
+      },
+      {
+        "hp": 412,
+        "state": "IDLE",
+        "anim": "e_idle",
+        "dist": 106.74
+      }
+    ]
+  },
+  {
+    "step": "fight",
+    "f": 75,
+    "p_state": "IDLE",
+    "p_anim": "idle",
+    "p_stam": 120,
+    "p_hp": 620,
+    "enemies": [
+      {
+        "hp": 412,
+        "state": "FEINT_STEP",
+        "anim": "e_walk",
+        "dist": 3.214
+      },
+      {
+        "hp": 412,
+        "state": "IDLE",
+        "anim": "e_idle",
+        "dist": 106.74
+      }
+    ]
+  },
+  {
+    "step": "fight",
+    "f": 135,
+    "p_state": "IDLE",
+    "p_anim": "idle",
+    "p_stam": 120,
+    "p_hp": 620,
+    "enemies": [
+      {
+        "hp": 412,
+        "state": "FEINT_STEP",
+        "anim": "e_walk",
+        "dist": 2.598
+      },
+      {
+        "hp": 412,
+        "state": "IDLE",
+        "anim": "e_idle",
+        "dist": 106.74
+      }
+    ]
+  },
+  {
+    "step": "fight",
+    "f": 195,
+    "p_state": "IDLE",
+    "p_anim": "idle",
+    "p_stam": 120,
+    "p_hp": 514.4,
+    "enemies": [
+      {
+        "hp": 412,
+        "state": "ATK_RECOVER",
+        "anim": "e_combo_b",
+        "dist": 2.16
+      },
+      {
+        "hp": 412,
+        "state": "IDLE",
+        "anim": "e_idle",
+        "dist": 106.678
+      }
+    ]
+  }
+]

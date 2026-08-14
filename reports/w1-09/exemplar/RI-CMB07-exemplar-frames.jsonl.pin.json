@@ -4,7 +4,13 @@
  "bytes": 3304035,
  "sha256": "debb8872bff36133a6b8317e15ea8f036aed3eff2039b5632440a4079aabfc41",
  "produced_by": "game/src/combat/trace.js from a live headless run",
- "regeneration_verified": null,
+ "regeneration_verified": {
+  "run": false,
+  "at": "2026-08-14T09:00:20.665Z",
+  "by": "verdict-evidence-20260814",
+  "why_not": "W1-09 records produced_by as \"game/src/combat/trace.js from a live headless run\" — a source file and a description, not a command. Same defect as the F3 trace above; same owner.",
+  "decisive_note": "The file's own META line declares scenario RI-CMB07-exemplar-F2, seed 0, 60 fps, generated_by game/src/combat/trace.js. That is the most specific provenance that exists for it and it is still not an invocation."
+ },
  "decisive": {
   "lines": 9001,
   "meta_lines": 1,

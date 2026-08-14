@@ -41,6 +41,18 @@
 #    SHA-256 manifest so a twin that drifts from an origin still on the container is caught.
 !**/sabotage-case-*.json
 
+# 5. PINS. `*` above is the right default and it had one consequence nobody reconciled: a verdict
+#    that cited `reports/**.json` was citing something a fresh clone did not have, so 56 of 76
+#    Wave-1 verdicts failed a real checkout while passing on the container that made their
+#    evidence. The fix is per-file, not a blanket exception — `node tools/verdict-evidence.mjs
+#    --recover` force-adds the small cited files by name, so scratch stays excluded and evidence
+#    does not. Above 1 MiB it writes a PIN instead: `<path>.pin.json`, the decisive numbers plus a
+#    SHA-256 of the raw bytes plus the command that regenerates them. 108.9 MiB of the 119.3 MiB
+#    of missing evidence was three raw frame traces; the pins are 3 KiB and carry more (a
+#    committed trace can be silently regenerated, a pinned one cannot — `--verify` goes red).
+#    Pins are tracked by rule, not by force-add, so a future one cannot be lost the same way.
+!**/*.pin.json
+
 # Still ignored, deliberately: reports/runs/ raw logs (tools/run.mjs writes there by design),
 # every .json artifact, and every capture. Those are reproducible by re-running the tool that
 # made them, which is the test for whether something belongs in history.

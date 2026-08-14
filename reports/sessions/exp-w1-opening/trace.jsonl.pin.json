@@ -3,8 +3,34 @@
  "path": "reports/sessions/exp-w1-opening/trace.jsonl",
  "bytes": 82812608,
  "sha256": "1ab8aa29b25b9e18d0ce4aa39e159a6460e8c17b9f97562a19371fb60d7b5f06",
- "produced_by": "node tools/experience/session-run.mjs (another piece)",
- "regeneration_verified": null,
+ "produced_by": "node tools/experience/session-run.mjs --session exp-w1-opening --brief corpus/95-experience/briefs/first-hour.md --seed 1337 --minutes 10 --render-policy on-demand --profile first-hour --drive none",
+ "regeneration_verified": {
+  "run": true,
+  "at": "2026-08-14T09:00:20.665Z",
+  "by": "verdict-evidence-20260814",
+  "command": "node tools/experience/session-run.mjs --session verdict-evidence-20260814-regen-sample --brief corpus/95-experience/briefs/first-hour.md --seed 1337 --minutes 1 --render-policy on-demand --profile first-hour --drive none",
+  "why_a_sample": "One simulated minute rather than ten. The question a sample answers is whether the command exists, runs, and emits the same record shape — not whether the byte-for-byte file returns, which no seeded ten-minute browser run reproduces across a changed HEAD anyway.",
+  "exit": 0,
+  "result": "RUNS, BUT DOES NOT REPRODUCE THE DECISIVE NUMBER.",
+  "observed": {
+   "frames": 3600,
+   "events": 113,
+   "event_kinds": 5,
+   "events_by_kind": {
+    "spawn": 56,
+    "npc_schedule": 28,
+    "npc_presence": 27,
+    "weather_change": 1,
+    "settlement_enter": 1
+   }
+  },
+  "divergence": [
+   "THE PINNED TRACE HAS ZERO EVENTS IN 36,000 FRAMES. The same driver, same seed (1337), same profile (first-hour), same brief and the same `--drive none` emits 113 events in 3,600 frames at HEAD. 0 vs 113 is not a sampling artifact of the shorter run.",
+   "W1-25-r1 cites this file for exactly that number — \"36,000 frames, 79 MB, zero events\" — as the counter-example to W1-09's event-bearing trace. That finding does not reproduce at HEAD.",
+   "The trace record has also grown 16 fields since the pinned file was written (cid, rig, clip, clip_t, clip_len_s, clip_sample_hz, blend, root, ctrl, bones, weapon, ground, ik, secondary, pose_hash, rest_hash — the animation channels). The pinned file predates them."
+  ],
+  "ruling": "The pin is NOT re-pinned to today's numbers. A pin records what the verdict actually read; overwriting it would erase the only evidence that the claim has moved. Whether W1-25-r1's gap has since been closed by other work, or the original run was taken under conditions the manifest does not capture, is a question for a fresh W1-25 round — named in orchestration/NEXT-DISPATCH.md. This divergence is the whole reason the ruling required a regeneration command to be RUN rather than written down."
+ },
  "decisive": {
   "lines": 36000,
   "meta_lines": 0,
@@ -19,5 +45,6 @@
  ],
  "pinned_at": "2026-08-14T08:50:00.103Z",
  "pinned_by": "verdict-evidence-20260814",
- "note": "Raw file exceeds the 1 MiB pin threshold and is not tracked. This pin is its citation: the decisive numbers, the SHA-256 of the bytes they were read from, and the command that regenerates it. `node tools/verdict-evidence.mjs --verify` re-checks the hash on any machine that still holds the raw file."
+ "note": "Raw file exceeds the 1 MiB pin threshold and is not tracked. This pin is its citation: the decisive numbers, the SHA-256 of the bytes they were read from, and the command that regenerates it. `node tools/verdict-evidence.mjs --verify` re-checks the hash on any machine that still holds the raw file.",
+ "produced_by_source": "Reconstructed from the artifact's own manifest, reports/sessions/exp-w1-opening/session.json, which records profile=first-hour, seed=1337, minutes_requested=10, render_policy=on-demand, drive=none, brief=corpus/95-experience/briefs/first-hour.md. The verdict itself recorded produced_by as the prose 'node tools/experience/session-run.mjs (another piece)', which is not a runnable command."
 }

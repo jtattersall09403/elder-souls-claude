@@ -72,7 +72,9 @@ async function setMode(m) {
   }, m);
   await g.page.waitForTimeout(180); // let rAF draw at least a few frames in the new state
 }
-const grab = async (f) => { const b = await g.page.screenshot({ path: path.join(OUT, f) }); return PNG.sync.read(b); };
+// In play mode the rAF loop runs the whole sim every frame under SwiftShader, so the
+// compositor is slow to produce a stable frame and the 30 s default is not enough.
+const grab = async (f) => { const b = await g.page.screenshot({ path: path.join(OUT, f), timeout: 150000, animations: 'allow', caret: 'initial' }); return PNG.sync.read(b); };
 function diffMask(png, ref, thr = 10) {
   const m = new Uint8Array(png.width * png.height); const d = png.data, r = ref.data;
   for (let i = 0, p = 0; i < d.length; i += 4, p++) m[p] = (Math.abs(d[i]-r[i]) + Math.abs(d[i+1]-r[i+1]) + Math.abs(d[i+2]-r[i+2])) > thr ? 1 : 0;

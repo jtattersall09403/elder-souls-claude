@@ -4,7 +4,14 @@
  "bytes": 28072215,
  "sha256": "09d6e3ce29b6232f7c58f18ff0bc33a3f83e7570d691bb502e0dd17074889972",
  "produced_by": "the W1-09 builder",
- "regeneration_verified": null,
+ "regeneration_verified": {
+  "run": false,
+  "at": "2026-08-14T09:00:20.665Z",
+  "by": "verdict-evidence-20260814",
+  "why_not": "W1-25-r1 records this artifact's produced_by as \"the W1-09 builder\" — an author, not a command. There is nothing here to run. The schema requires produced_by to be \"the exact command\"; this citation does not meet it and cannot be repaired by anyone but the W1-09 critic, who knows what was run. Recorded as a defect rather than papered over with a plausible-looking invocation.",
+  "decisive_numbers_independently_recomputed": true,
+  "decisive_note": "The counts in `decisive` were computed from the file by this tool, not copied from the verdict. They agree with W1-25-r1's claim of \"8,945 frames, 530 events, 28 kinds\" exactly, which corroborates the verdict's reading of the artifact even though the artifact's provenance command is missing."
+ },
  "decisive": {
   "lines": 8945,
   "meta_lines": 0,

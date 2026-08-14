@@ -273,9 +273,15 @@ function authoredMaps(family){
   const slug=AUTHORED_FAMILY[family], generated=GENERATED_FAMILY[family];if((!slug&&!generated)||typeof document==='undefined')return null;
   const key=slug?`cc0:${slug}`:`generated:${generated}`;if(authoredCache.has(key))return authoredCache.get(key);
   const loader=new THREE.TextureLoader(),setup=(t,role,repeat=2)=>{t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(repeat,repeat);t.anisotropy=4;t.name=`w1-30-authored:${key}:${role}`;return t;};
+  // Every family sharing this texture set goes to the visible fallback if any of its maps 404s.
+  // This is the mechanism behind the coverage gate's null control: delete a normal map on a copy
+  // and the frame turns magenta rather than quietly reverting to noise.
+  const onError=(role,url)=>()=>{
+    for(const f of MATERIAL_FAMILIES) if((AUTHORED_FAMILY[f]===slug&&slug)||(GENERATED_FAMILY[f]===generated&&!slug)) markFamilyAssetFailure(f,`(${role} @ ${url})`);
+  };
   let maps;
-  if(slug){const load=(role,colourSpace)=>{const t=setup(loader.load(new URL(`../../assets/w1-30/materials/${slug}/${slug}_${role}_1k.jpg`,import.meta.url).href),role);t.colorSpace=colourSpace;return t;};maps={albedo:load('detail',THREE.SRGBColorSpace),rough:load('rough',THREE.NoColorSpace),normal:load('nor_gl',THREE.NoColorSpace),source:key};}
-  else {const albedo=setup(loader.load(new URL(`../../assets/w1-30/materials/generated/${generated}_detail_256.jpg`,import.meta.url).href),'neutral-detail-256',1);albedo.colorSpace=THREE.SRGBColorSpace;maps={albedo,rough:null,normal:null,source:key};}
+  if(slug){const load=(role,colourSpace)=>{const url=new URL(`../../assets/w1-30/materials/${slug}/${slug}_${role}_1k.jpg`,import.meta.url).href;const t=setup(loader.load(url,undefined,undefined,onError(role,url)),role);t.colorSpace=colourSpace;return t;};maps={albedo:load('detail',THREE.SRGBColorSpace),rough:load('rough',THREE.NoColorSpace),normal:load('nor_gl',THREE.NoColorSpace),source:key};}
+  else {const url=new URL(`../../assets/w1-30/materials/generated/${generated}_detail_256.jpg`,import.meta.url).href;const albedo=setup(loader.load(url,undefined,undefined,onError('detail',url)),'neutral-detail-256',1);albedo.colorSpace=THREE.SRGBColorSpace;maps={albedo,rough:null,normal:null,source:key};}
   authoredCache.set(key,maps);return maps;
 }
 function hash(x, y, seed) {
@@ -311,28 +317,116 @@ function detailMaps(family) {
   mapCache.set(family,maps); return maps;
 }
 
+// A texture's `repeat` is per-texture state, so a variant that retiles cannot share the cached
+// instance.  Clone per quantised scale: `Texture.clone()` shares `source`, so the second instance
+// costs a sampler and its parameters, not a second image upload, and the cache is bounded by the
+// two decimal places rather than by the number of call sites.
+const tiledCache = new Map();
+function tiled(texture, scale) {
+  if (!texture || !(scale > 0) || Math.abs(scale - 1) < 1e-6) return texture;
+  const q = Math.round(scale * 100) / 100;
+  const key = `${texture.uuid}@${q}`;
+  let t = tiledCache.get(key);
+  if (!t) {
+    t = texture.clone();
+    t.repeat.set(texture.repeat.x / q, texture.repeat.y / q);
+    t.name = `${texture.name}:tile${q}`;
+    t.needsUpdate = true;
+    tiledCache.set(key, t);
+  }
+  return t;
+}
+
+/** Palette and wear act on base colour.  Palette pulls the family toward its region swatch and
+ * then re-grades saturation and value, so Blackwood stone and Salt Hills stone are the same texture
+ * set and different surfaces.  Wear is pigment loss toward the substrate: less saturated, slightly
+ * lighter, and (above, in `materialOptions`) rougher. */
+function applyVariantColour(mat, variant) {
+  if (!mat.color) return;
+  const hsl = { h: 0, s: 0, l: 0 };
+  if (variant.palette !== 'neutral') {
+    const sw = paletteSwatch(variant.palette);
+    mat.color.lerp(new THREE.Color(sw.tint), sw.strength);
+    mat.color.getHSL(hsl);
+    mat.color.setHSL(hsl.h, Math.min(1, hsl.s * sw.satMul), Math.max(0, Math.min(1, hsl.l * sw.valMul)));
+  }
+  if (variant.wear > 0) {
+    mat.color.getHSL(hsl);
+    mat.color.setHSL(hsl.h, hsl.s * (1 - .45 * variant.wear), Math.min(1, hsl.l + .10 * variant.wear));
+  }
+}
+
+// The declared fallback.  A family whose authored maps fail to load must be *obviously* wrong, not
+// plausibly wrong: a plausible fallback is how a 96px noise field textured a province for weeks
+// without anyone seeing it.  Materials are registered by family so that an asynchronous texture
+// load error can reach back and stain every material already built from that set.
+const liveFamilyMaterials = new Map();
+const failedFamilies = new Set();
+export const FALLBACK_COLOUR = 0xff00d4;
+function registerFamilyMaterial(family, mat) {
+  let set = liveFamilyMaterials.get(family);
+  if (!set) liveFamilyMaterials.set(family, set = new Set());
+  set.add(mat);
+  if (failedFamilies.has(family)) stainFallback(mat, family);
+}
+function stainFallback(mat, family) {
+  mat.color?.set(FALLBACK_COLOUR);
+  mat.emissive?.set(0x220018);
+  mat.name = `visual-family:${family}:ASSET-LOAD-FAILED`;
+  mat.userData.w1_30 = { ...(mat.userData.w1_30 || {}), fallback: 'authored-asset-load-failed' };
+  mat.needsUpdate = true;
+}
+/** Called by the texture loader's error path, and by the null control that deletes an asset. */
+export function markFamilyAssetFailure(family, detail = '') {
+  if (failedFamilies.has(family)) return;
+  failedFamilies.add(family);
+  console.error(`W1-30C authored asset failed for family '${family}' ${detail} — falling back to the visible magenta material`);
+  for (const mat of liveFamilyMaterials.get(family) || []) stainFallback(mat, family);
+}
+/** Which families are currently on the visible fallback.  The coverage gate reads this. */
+export function materialFallbackReport() {
+  return { fallbackColour: FALLBACK_COLOUR, families: [...failedFamilies].sort() };
+}
+
 export function worldMaterial(family, options={}) {
   const spec=FAMILY[family];
   if (!spec) throw new Error(`W1-30 unknown visual material family '${family}'`);
+  // Fail-closed on the variant spec before a single texture is touched.  An undeclared axis is a
+  // census `unknown` and must not reach a frame looking approximately right.
+  const variant=validateMaterialOptions(family, options);
+  const ts=variant.tilingScale;
   const procedural=detailMaps(family), authored=options.authored===false?null:authoredMaps(family);
   const Material=family==='water'||family==='wet_chitin'||family==='resin'?THREE.MeshPhysicalMaterial:THREE.MeshStandardMaterial;
   const foliage=/^(leaf|reed)$/.test(family), woody=/^(bark|root|thorn)$/.test(family),baseColour=options.color ?? 0xffffff;
+  // Wetness and wear are physical, not decorative.  A wet surface is smoother, darker in diffuse
+  // and brighter in specular; a worn surface is rougher and has lost pigment toward its substrate.
+  // Phase 1 applies them as whole-material scalars, phase 2 multiplies the same numbers by the
+  // shared curvature and world-height masks so edges wear and hollows wet.  A consumer that writes
+  // `{wear: .7}` today gets a visibly different material today and a better one when the masks land.
+  const wet=variant.wetness, wear=variant.wear;
   const materialOptions={
-    color: baseColour, roughness: options.roughness ?? spec.roughness,
+    color: baseColour,
+    roughness: Math.max(.04, Math.min(1, (options.roughness ?? spec.roughness)*(1-.55*wet)*(1+.22*wear))),
     // A governed consumer may supply an admitted authored map (the foliage atlas is the first).
     // Previously every truthy `options.map` was silently ignored and replaced by the family
     // detail map, making manifest-routed alpha cards impossible while appearing configured.
     metalness: options.metalness ?? spec.metalness,
-    map: options.map === false ? null : (options.map?.isTexture ? options.map : (authored?.albedo||procedural.albedo)),
-    normalMap:authored?.normal||null,normalScale:new THREE.Vector2(spec.bump*.72,spec.bump*.72),
-    bumpMap: authored?.normal?null:procedural.height, roughnessMap: authored?.rough||procedural.rough, aoMap: procedural.height,
+    map: options.map === false ? null : (options.map?.isTexture ? options.map : tiled(authored?.albedo||procedural.albedo, ts)),
+    // `options.normalMap` was declared by the API and silently ignored by the implementation: the
+    // family's own normal always won.  A consumer supplying an authored normal (D's character
+    // sheets, E's kit parts) now gets it, and only falls back to the family map when it does not.
+    normalMap: options.normalMap === false ? null : (options.normalMap?.isTexture ? options.normalMap : tiled(authored?.normal||null, ts)),
+    normalScale:new THREE.Vector2(spec.bump*.72,spec.bump*.72),
+    bumpMap: (options.normalMap?.isTexture||authored?.normal)?null:tiled(procedural.height, ts),
+    roughnessMap: tiled(authored?.rough||procedural.rough, ts), aoMap: tiled(procedural.height, ts),
     aoMapIntensity: options.aoMapIntensity ?? .42,
     bumpScale: options.bumpScale ?? spec.bump, vertexColors: !!options.vertexColors,
     transparent: !!options.transparent, opacity: options.opacity ?? 1,
     alphaTest: options.alphaTest ?? 0, side: options.side ?? THREE.FrontSide,
     emissive: options.emissive ?? (family==='water'?baseColour:(foliage||woody?baseColour:0x000000)),
     emissiveIntensity: options.emissiveIntensity ?? (family==='water'?.28:foliage?.24:woody?.035:1),
-    envMapIntensity: options.envMapIntensity ?? (family==='metal'||family==='water'||family==='wet_chitin'?1.25:.72),
+    // A wet surface returns more of the environment; this is the term B's rain has to land on.
+    envMapIntensity: (options.envMapIntensity ?? (family==='metal'||family==='water'||family==='wet_chitin'?1.25:.72))*(1+.62*wet),
     depthWrite: options.depthWrite ?? family!=='water',
   };
   // `clearcoat`, `clearcoatRoughness` and `ior` belong to MeshPhysicalMaterial. Passing them to
@@ -346,9 +440,16 @@ export function worldMaterial(family, options={}) {
   }
   const mat=new Material(materialOptions);
   mat.name=`visual-family:${family}`; mat.userData.visualFamily=family;
-  mat.userData.w1_30={ shadow:true, ao:'cavity-map', ibl:true, uvScale:authored?(authored.source.startsWith('cc0:')?[2,2]:[1,1]):[4,4], detail:authored?.source||'96px-albedo-height-roughness',
-    wetness:Number(options.wetness||0), boundedException:options.boundedException||null,
-    lod:options.lod ?? 'shared' };
+  applyVariantColour(mat, variant);
+  const baseRepeat=authored?(authored.source.startsWith('cc0:')?2:1):4;
+  mat.userData.w1_30={ shadow:true, ao:'cavity-map', ibl:true,
+    uvScale:[baseRepeat/ts, baseRepeat/ts], detail:authored?.source||'96px-albedo-height-roughness',
+    class:variant.class, wetness:variant.wetness, wear:variant.wear, palette:variant.palette,
+    tilingScale:variant.tilingScale, trim:variant.trim,
+    metresPerTile:TEXEL_METRES[family]*ts, detailNormalTile:CLASS_DETAIL_TILE[variant.class],
+    variantKey:materialVariantKey(family, options),
+    boundedException:options.boundedException||null, lod:variant.lod };
+  registerFamilyMaterial(family, mat);
   if(family==='water'){
     // A deterministic, presentation-only ripple field. Static texture maps made the surface
     // read as lacquer and made RI-VIS03 M12 TemporalVar correctly report static water. The
@@ -437,12 +538,30 @@ export function bindWaterReflection(texture,width=1,height=1,strength=1,matrix=n
 }
 
 export function visualFoundationCensus(root) {
-  const families=new Set(), bypass=[];
+  const families=new Set(), bypass=[], variants=new Set(), palettes=new Set(), noiseFallback=new Set();
+  const densities=new Map();
   root.traverse(o=>{ if (!(o.isMesh||o.isInstancedMesh) || !o.material) return;
     for (const m of (Array.isArray(o.material)?o.material:[o.material])) {
-      if (m.userData?.visualFamily) families.add(m.userData.visualFamily);
+      const f=m.userData?.visualFamily;
+      if (f) {
+        families.add(f);
+        const w=m.userData.w1_30;
+        if (w) {
+          if (w.variantKey) variants.add(w.variantKey);
+          if (w.palette) palettes.add(w.palette);
+          if (typeof w.detail==='string' && w.detail.startsWith('96px')) noiseFallback.add(f);
+          if (w.metresPerTile) densities.set(f, w.metresPerTile);
+        }
+      }
       else if (m.isMeshStandardMaterial || m.isMeshPhysicalMaterial) bypass.push(o.name||o.type);
     }
   });
-  return { features:{...VISUAL_FEATURES}, families:[...families].sort(), legacyStandardSurfaces:[...new Set(bypass)].sort() };
+  return { features:{...VISUAL_FEATURES}, families:[...families].sort(),
+    legacyStandardSurfaces:[...new Set(bypass)].sort(),
+    classes:Object.fromEntries(Object.keys(MATERIAL_CLASSES).map(c=>[c,[...families].filter(f=>FAMILY_CLASS[f]===c).sort()])),
+    variants:[...variants].sort(), palettes:[...palettes].sort(),
+    // A shipped frame using the noise fallback is a hard fail; this is the field that shows it.
+    noiseFallbackFamilies:[...noiseFallback].sort(),
+    assetFailureFamilies:materialFallbackReport().families,
+    metresPerTile:Object.fromEntries([...densities].sort()) };
 }

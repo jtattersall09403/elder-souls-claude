@@ -85,6 +85,21 @@ jobs:
       - name: image-metrics self-test (METRICS-IMPLEMENTATION-01)
         run: node tools/metrics/self-test.mjs
 
+      # The validator now carries two rules whose failure mode is SILENT, so they get their own
+      # step ahead of the sweep. (a) Only the latest round of a piece gates CI — a mis-parsed
+      # filename would un-gate a live verdict and nothing anywhere would go red;
+      # `W1-01-province-stream-r1` is a different sub-piece of W1-01, not a round of it. (b) An
+      # oversized artifact may be cited through a `<path>.pin.json` — a stub pin standing in for
+      # real evidence would be a hole with a comment over it. Both are tested by --self-test.
+      - name: verdict validator self-test (round identity + pin substitution)
+        run: node tools/verdict-validate.mjs --self-test
+
+      # And the pins themselves: shape, and drift against any raw file this runner happens to hold.
+      - name: verdict evidence pins
+        run: |
+          node tools/verdict-evidence.mjs --self-test
+          node tools/verdict-evidence.mjs --verify
+
       - name: verdict schema validation
         run: node tools/verdict-validate.mjs --all
 

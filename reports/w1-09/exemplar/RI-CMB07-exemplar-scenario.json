@@ -1,0 +1,1044 @@
+{
+  "schema": "es-combat-scenario/1",
+  "id": "RI-CMB07-exemplar-regenerated",
+  "regenerated": "2026-08-06T21:59:22.800Z",
+  "s22": "Authored against and re-run on the S22-REBASED constants. Not derived from the invalidated exemplar and not an f -> 2f dilation of it (RI-CMB07 §0 explains why that repair is wrong).",
+  "state": "arena_champion",
+  "seed": 0,
+  "mode": "B-prime",
+  "player": "a deterministic scripted BOT, not an input list: it reads distance, the enemy animation frame, its own stamina and its own HP every frame and decides. Reproduce with tools/harness/cmb-exemplar.mjs --fights 5.",
+  "enemy": "champion_hist_marked, ai=scripted. There is no enemy AI in this build (RI-AI01..07 / W1-12).",
+  "fights": [
+    {
+      "id": "F1",
+      "bot_profile": {
+        "id": "F1",
+        "seed": 1009,
+        "rollLead": 10,
+        "wobble": 3,
+        "blockRate": 0.2,
+        "greed": 0.4,
+        "staminaFloor": 24,
+        "panicHp": 0.55,
+        "gap": [
+          70,
+          110
+        ],
+        "hold": [
+          3.4,
+          3.9
+        ]
+      },
+      "frames": 9000,
+      "enemy_actions": [
+        {
+          "f": 80,
+          "move": "chop"
+        },
+        {
+          "f": 335,
+          "move": "thrust"
+        },
+        {
+          "f": 554,
+          "move": "chop"
+        },
+        {
+          "f": 778,
+          "move": "combo_a"
+        },
+        {
+          "f": 856,
+          "move": "combo_b"
+        },
+        {
+          "f": 1061,
+          "move": "chop"
+        },
+        {
+          "f": 1287,
+          "move": "thrust"
+        },
+        {
+          "f": 1489,
+          "move": "chop"
+        },
+        {
+          "f": 1714,
+          "move": "combo_a"
+        },
+        {
+          "f": 1792,
+          "move": "combo_b"
+        },
+        {
+          "f": 1996,
+          "move": "thrust"
+        },
+        {
+          "f": 2209,
+          "move": "chop"
+        },
+        {
+          "f": 2457,
+          "move": "thrust"
+        },
+        {
+          "f": 2677,
+          "move": "chop"
+        },
+        {
+          "f": 2911,
+          "move": "combo_a"
+        },
+        {
+          "f": 2989,
+          "move": "combo_b"
+        },
+        {
+          "f": 3171,
+          "move": "chop"
+        },
+        {
+          "f": 3410,
+          "move": "thrust"
+        },
+        {
+          "f": 3634,
+          "move": "chop"
+        },
+        {
+          "f": 3867,
+          "move": "combo_a"
+        },
+        {
+          "f": 3945,
+          "move": "combo_b"
+        },
+        {
+          "f": 4142,
+          "move": "thrust"
+        },
+        {
+          "f": 4360,
+          "move": "chop"
+        },
+        {
+          "f": 4600,
+          "move": "thrust"
+        },
+        {
+          "f": 4825,
+          "move": "chop"
+        },
+        {
+          "f": 5066,
+          "move": "combo_a"
+        },
+        {
+          "f": 5144,
+          "move": "combo_b"
+        },
+        {
+          "f": 5342,
+          "move": "chop"
+        },
+        {
+          "f": 5590,
+          "move": "thrust"
+        },
+        {
+          "f": 5800,
+          "move": "chop"
+        },
+        {
+          "f": 6026,
+          "move": "combo_a"
+        },
+        {
+          "f": 6104,
+          "move": "combo_b"
+        },
+        {
+          "f": 6304,
+          "move": "thrust"
+        },
+        {
+          "f": 6519,
+          "move": "chop"
+        },
+        {
+          "f": 6766,
+          "move": "thrust"
+        },
+        {
+          "f": 6958,
+          "move": "chop"
+        },
+        {
+          "f": 7191,
+          "move": "combo_a"
+        },
+        {
+          "f": 7269,
+          "move": "combo_b"
+        },
+        {
+          "f": 7462,
+          "move": "chop"
+        },
+        {
+          "f": 7700,
+          "move": "thrust"
+        },
+        {
+          "f": 7901,
+          "move": "chop"
+        },
+        {
+          "f": 8162,
+          "move": "combo_a"
+        },
+        {
+          "f": 8240,
+          "move": "combo_b"
+        },
+        {
+          "f": 8439,
+          "move": "thrust"
+        },
+        {
+          "f": 8666,
+          "move": "chop"
+        }
+      ],
+      "trace_hash": "2c900087",
+      "enemy_dead": false,
+      "player_hp_at_end": 408
+    },
+    {
+      "id": "F2",
+      "bot_profile": {
+        "id": "F2",
+        "seed": 2029,
+        "rollLead": 9,
+        "wobble": 4,
+        "blockRate": 0.26,
+        "greed": 0.5,
+        "staminaFloor": 21,
+        "panicHp": 0.5,
+        "gap": [
+          60,
+          100
+        ],
+        "hold": [
+          3.3,
+          3.8
+        ]
+      },
+      "frames": 9000,
+      "enemy_actions": [
+        {
+          "f": 80,
+          "move": "chop"
+        },
+        {
+          "f": 306,
+          "move": "thrust"
+        },
+        {
+          "f": 491,
+          "move": "chop"
+        },
+        {
+          "f": 735,
+          "move": "combo_a"
+        },
+        {
+          "f": 813,
+          "move": "combo_b"
+        },
+        {
+          "f": 1000,
+          "move": "thrust"
+        },
+        {
+          "f": 1211,
+          "move": "chop"
+        },
+        {
+          "f": 1461,
+          "move": "thrust"
+        },
+        {
+          "f": 1663,
+          "move": "chop"
+        },
+        {
+          "f": 1904,
+          "move": "combo_a"
+        },
+        {
+          "f": 1982,
+          "move": "combo_b"
+        },
+        {
+          "f": 2149,
+          "move": "chop"
+        },
+        {
+          "f": 2379,
+          "move": "thrust"
+        },
+        {
+          "f": 2569,
+          "move": "chop"
+        },
+        {
+          "f": 2809,
+          "move": "combo_a"
+        },
+        {
+          "f": 2887,
+          "move": "combo_b"
+        },
+        {
+          "f": 3053,
+          "move": "thrust"
+        },
+        {
+          "f": 3246,
+          "move": "chop"
+        },
+        {
+          "f": 3468,
+          "move": "thrust"
+        },
+        {
+          "f": 3668,
+          "move": "chop"
+        },
+        {
+          "f": 3888,
+          "move": "combo_a"
+        },
+        {
+          "f": 3966,
+          "move": "combo_b"
+        },
+        {
+          "f": 4136,
+          "move": "chop"
+        },
+        {
+          "f": 4386,
+          "move": "thrust"
+        },
+        {
+          "f": 4597,
+          "move": "chop"
+        },
+        {
+          "f": 4831,
+          "move": "combo_a"
+        },
+        {
+          "f": 4909,
+          "move": "combo_b"
+        },
+        {
+          "f": 5083,
+          "move": "thrust"
+        },
+        {
+          "f": 5294,
+          "move": "chop"
+        },
+        {
+          "f": 5516,
+          "move": "thrust"
+        },
+        {
+          "f": 5726,
+          "move": "chop"
+        },
+        {
+          "f": 5940,
+          "move": "combo_a"
+        },
+        {
+          "f": 6018,
+          "move": "combo_b"
+        },
+        {
+          "f": 6180,
+          "move": "chop"
+        },
+        {
+          "f": 6419,
+          "move": "thrust"
+        },
+        {
+          "f": 6627,
+          "move": "chop"
+        },
+        {
+          "f": 6864,
+          "move": "combo_a"
+        },
+        {
+          "f": 6942,
+          "move": "combo_b"
+        },
+        {
+          "f": 7134,
+          "move": "thrust"
+        },
+        {
+          "f": 7353,
+          "move": "chop"
+        },
+        {
+          "f": 7596,
+          "move": "thrust"
+        },
+        {
+          "f": 7788,
+          "move": "chop"
+        },
+        {
+          "f": 8037,
+          "move": "combo_a"
+        },
+        {
+          "f": 8115,
+          "move": "combo_b"
+        },
+        {
+          "f": 8300,
+          "move": "chop"
+        },
+        {
+          "f": 8514,
+          "move": "thrust"
+        },
+        {
+          "f": 8733,
+          "move": "chop"
+        }
+      ],
+      "trace_hash": "a78342",
+      "enemy_dead": false,
+      "player_hp_at_end": 251
+    },
+    {
+      "id": "F3",
+      "bot_profile": {
+        "id": "F3",
+        "seed": 3049,
+        "rollLead": 11,
+        "wobble": 3,
+        "blockRate": 0.16,
+        "greed": 0.35,
+        "staminaFloor": 28,
+        "panicHp": 0.58,
+        "gap": [
+          80,
+          120
+        ],
+        "hold": [
+          3.5,
+          4
+        ]
+      },
+      "frames": 8945,
+      "enemy_actions": [
+        {
+          "f": 80,
+          "move": "combo_a"
+        },
+        {
+          "f": 158,
+          "move": "combo_b"
+        },
+        {
+          "f": 373,
+          "move": "thrust"
+        },
+        {
+          "f": 594,
+          "move": "chop"
+        },
+        {
+          "f": 849,
+          "move": "thrust"
+        },
+        {
+          "f": 1068,
+          "move": "chop"
+        },
+        {
+          "f": 1317,
+          "move": "combo_a"
+        },
+        {
+          "f": 1395,
+          "move": "combo_b"
+        },
+        {
+          "f": 1600,
+          "move": "chop"
+        },
+        {
+          "f": 1873,
+          "move": "thrust"
+        },
+        {
+          "f": 2098,
+          "move": "chop"
+        },
+        {
+          "f": 2361,
+          "move": "combo_a"
+        },
+        {
+          "f": 2439,
+          "move": "combo_b"
+        },
+        {
+          "f": 2629,
+          "move": "thrust"
+        },
+        {
+          "f": 2860,
+          "move": "chop"
+        },
+        {
+          "f": 3096,
+          "move": "thrust"
+        },
+        {
+          "f": 3337,
+          "move": "chop"
+        },
+        {
+          "f": 3577,
+          "move": "combo_a"
+        },
+        {
+          "f": 3655,
+          "move": "combo_b"
+        },
+        {
+          "f": 3862,
+          "move": "chop"
+        },
+        {
+          "f": 4122,
+          "move": "thrust"
+        },
+        {
+          "f": 4350,
+          "move": "chop"
+        },
+        {
+          "f": 4614,
+          "move": "combo_a"
+        },
+        {
+          "f": 4692,
+          "move": "combo_b"
+        },
+        {
+          "f": 4891,
+          "move": "thrust"
+        },
+        {
+          "f": 5118,
+          "move": "chop"
+        },
+        {
+          "f": 5376,
+          "move": "thrust"
+        },
+        {
+          "f": 5615,
+          "move": "chop"
+        },
+        {
+          "f": 5884,
+          "move": "combo_a"
+        },
+        {
+          "f": 5962,
+          "move": "combo_b"
+        },
+        {
+          "f": 6182,
+          "move": "chop"
+        },
+        {
+          "f": 6429,
+          "move": "thrust"
+        },
+        {
+          "f": 6644,
+          "move": "chop"
+        },
+        {
+          "f": 6894,
+          "move": "combo_a"
+        },
+        {
+          "f": 6972,
+          "move": "combo_b"
+        },
+        {
+          "f": 7181,
+          "move": "thrust"
+        },
+        {
+          "f": 7395,
+          "move": "chop"
+        },
+        {
+          "f": 7666,
+          "move": "thrust"
+        },
+        {
+          "f": 7907,
+          "move": "chop"
+        },
+        {
+          "f": 8161,
+          "move": "combo_a"
+        },
+        {
+          "f": 8239,
+          "move": "combo_b"
+        },
+        {
+          "f": 8431,
+          "move": "chop"
+        },
+        {
+          "f": 8688,
+          "move": "thrust"
+        }
+      ],
+      "trace_hash": "3efc6903",
+      "enemy_dead": true,
+      "player_hp_at_end": 603
+    },
+    {
+      "id": "F4",
+      "bot_profile": {
+        "id": "F4",
+        "seed": 4079,
+        "rollLead": 10,
+        "wobble": 4,
+        "blockRate": 0.24,
+        "greed": 0.55,
+        "staminaFloor": 20,
+        "panicHp": 0.52,
+        "gap": [
+          65,
+          105
+        ],
+        "hold": [
+          3.3,
+          3.7
+        ]
+      },
+      "frames": 9000,
+      "enemy_actions": [
+        {
+          "f": 80,
+          "move": "chop"
+        },
+        {
+          "f": 309,
+          "move": "combo_a"
+        },
+        {
+          "f": 387,
+          "move": "combo_b"
+        },
+        {
+          "f": 583,
+          "move": "chop"
+        },
+        {
+          "f": 828,
+          "move": "thrust"
+        },
+        {
+          "f": 1050,
+          "move": "chop"
+        },
+        {
+          "f": 1290,
+          "move": "combo_a"
+        },
+        {
+          "f": 1368,
+          "move": "combo_b"
+        },
+        {
+          "f": 1556,
+          "move": "thrust"
+        },
+        {
+          "f": 1768,
+          "move": "chop"
+        },
+        {
+          "f": 2009,
+          "move": "thrust"
+        },
+        {
+          "f": 2232,
+          "move": "chop"
+        },
+        {
+          "f": 2472,
+          "move": "combo_a"
+        },
+        {
+          "f": 2550,
+          "move": "combo_b"
+        },
+        {
+          "f": 2720,
+          "move": "chop"
+        },
+        {
+          "f": 2948,
+          "move": "thrust"
+        },
+        {
+          "f": 3148,
+          "move": "chop"
+        },
+        {
+          "f": 3381,
+          "move": "combo_a"
+        },
+        {
+          "f": 3459,
+          "move": "combo_b"
+        },
+        {
+          "f": 3654,
+          "move": "thrust"
+        },
+        {
+          "f": 3857,
+          "move": "chop"
+        },
+        {
+          "f": 4088,
+          "move": "thrust"
+        },
+        {
+          "f": 4287,
+          "move": "chop"
+        },
+        {
+          "f": 4538,
+          "move": "combo_a"
+        },
+        {
+          "f": 4616,
+          "move": "combo_b"
+        },
+        {
+          "f": 4801,
+          "move": "chop"
+        },
+        {
+          "f": 5032,
+          "move": "thrust"
+        },
+        {
+          "f": 5230,
+          "move": "chop"
+        },
+        {
+          "f": 5478,
+          "move": "combo_a"
+        },
+        {
+          "f": 5556,
+          "move": "combo_b"
+        },
+        {
+          "f": 5758,
+          "move": "thrust"
+        },
+        {
+          "f": 5961,
+          "move": "chop"
+        },
+        {
+          "f": 6205,
+          "move": "thrust"
+        },
+        {
+          "f": 6412,
+          "move": "chop"
+        },
+        {
+          "f": 6664,
+          "move": "combo_a"
+        },
+        {
+          "f": 6742,
+          "move": "combo_b"
+        },
+        {
+          "f": 6915,
+          "move": "chop"
+        },
+        {
+          "f": 7141,
+          "move": "thrust"
+        },
+        {
+          "f": 7358,
+          "move": "chop"
+        },
+        {
+          "f": 7605,
+          "move": "combo_a"
+        },
+        {
+          "f": 7683,
+          "move": "combo_b"
+        },
+        {
+          "f": 7884,
+          "move": "thrust"
+        },
+        {
+          "f": 8106,
+          "move": "chop"
+        },
+        {
+          "f": 8345,
+          "move": "thrust"
+        },
+        {
+          "f": 8554,
+          "move": "chop"
+        }
+      ],
+      "trace_hash": "951390c6",
+      "enemy_dead": false,
+      "player_hp_at_end": 443
+    },
+    {
+      "id": "F5",
+      "bot_profile": {
+        "id": "F5",
+        "seed": 5099,
+        "rollLead": 9,
+        "wobble": 3,
+        "blockRate": 0.18,
+        "greed": 0.45,
+        "staminaFloor": 25,
+        "panicHp": 0.56,
+        "gap": [
+          75,
+          115
+        ],
+        "hold": [
+          3.4,
+          3.9
+        ]
+      },
+      "frames": 9000,
+      "enemy_actions": [
+        {
+          "f": 80,
+          "move": "thrust"
+        },
+        {
+          "f": 308,
+          "move": "chop"
+        },
+        {
+          "f": 542,
+          "move": "combo_a"
+        },
+        {
+          "f": 620,
+          "move": "combo_b"
+        },
+        {
+          "f": 813,
+          "move": "thrust"
+        },
+        {
+          "f": 1037,
+          "move": "chop"
+        },
+        {
+          "f": 1273,
+          "move": "thrust"
+        },
+        {
+          "f": 1478,
+          "move": "chop"
+        },
+        {
+          "f": 1711,
+          "move": "combo_a"
+        },
+        {
+          "f": 1789,
+          "move": "combo_b"
+        },
+        {
+          "f": 1983,
+          "move": "chop"
+        },
+        {
+          "f": 2232,
+          "move": "thrust"
+        },
+        {
+          "f": 2442,
+          "move": "chop"
+        },
+        {
+          "f": 2694,
+          "move": "combo_a"
+        },
+        {
+          "f": 2772,
+          "move": "combo_b"
+        },
+        {
+          "f": 2974,
+          "move": "thrust"
+        },
+        {
+          "f": 3179,
+          "move": "chop"
+        },
+        {
+          "f": 3417,
+          "move": "thrust"
+        },
+        {
+          "f": 3619,
+          "move": "chop"
+        },
+        {
+          "f": 3873,
+          "move": "combo_a"
+        },
+        {
+          "f": 3951,
+          "move": "combo_b"
+        },
+        {
+          "f": 4160,
+          "move": "chop"
+        },
+        {
+          "f": 4423,
+          "move": "thrust"
+        },
+        {
+          "f": 4633,
+          "move": "chop"
+        },
+        {
+          "f": 4877,
+          "move": "combo_a"
+        },
+        {
+          "f": 4955,
+          "move": "combo_b"
+        },
+        {
+          "f": 5148,
+          "move": "thrust"
+        },
+        {
+          "f": 5381,
+          "move": "chop"
+        },
+        {
+          "f": 5645,
+          "move": "thrust"
+        },
+        {
+          "f": 5866,
+          "move": "chop"
+        },
+        {
+          "f": 6097,
+          "move": "combo_a"
+        },
+        {
+          "f": 6175,
+          "move": "combo_b"
+        },
+        {
+          "f": 6390,
+          "move": "chop"
+        },
+        {
+          "f": 6656,
+          "move": "thrust"
+        },
+        {
+          "f": 6888,
+          "move": "chop"
+        },
+        {
+          "f": 7149,
+          "move": "combo_a"
+        },
+        {
+          "f": 7227,
+          "move": "combo_b"
+        },
+        {
+          "f": 7425,
+          "move": "thrust"
+        },
+        {
+          "f": 7661,
+          "move": "chop"
+        },
+        {
+          "f": 7902,
+          "move": "thrust"
+        },
+        {
+          "f": 8113,
+          "move": "chop"
+        },
+        {
+          "f": 8350,
+          "move": "combo_a"
+        },
+        {
+          "f": 8428,
+          "move": "combo_b"
+        },
+        {
+          "f": 8633,
+          "move": "chop"
+        }
+      ],
+      "trace_hash": "ae9be5f4",
+      "enemy_dead": false,
+      "player_hp_at_end": 579
+    }
+  ]
+}
