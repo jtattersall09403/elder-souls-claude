@@ -56,7 +56,7 @@ Wave 1 by owner directive: *"it's not worth progressing to wave 2's depth unless
 
 | | | state |
 |---|---|---|
-| `G1` | **The camera** — the instrument the body is judged through | `RI-CAM01` 2/10; `RI-CAM03`/`04` never judged |
+| `G1` | **The camera** — the instrument the body is judged through | `RI-CAM01` 2/10; `RI-CAM03`/`04` never judged. **Diagnosed 14 Aug:** trees are `InstancedMesh` in `province.js` and were never wired into any `CollisionCell`, so the spring arm was working exactly as designed against a set a tree could never be in. **A fix of the correct category already landed** (`b476b55d`, camera-to-actor segment test) and **nobody has re-measured §C.1 against it.** Measurement instrument built; blocked only on the shader regression |
 | `F1` | **Materials and surface response** | **delivered 2026-08-14**, hardware-evidenced, **not yet judged** |
 | `F2` | **Shadow, contact and ambient occlusion** | **in flight.** Named by 5 of 5 blind judges |
 | `T4` | **The Morrowind screens** — inventory, map, character sheet, level-up, journal, out-of-combat HUD, the dialogue window's look, UI diegesis | **Moved from ring 6.** On screen in the first few minutes; we hold Morrowind interface references (`REF-A12b`, 33 plates, plus OpenMW layouts with exact widget rects); journal **7/10**, books **8/10**, inventory 6/10 — several are near the bar already. Combat HUD (`RI-UIX01`) and out-of-combat HUD (`RI-UIX07`) **never judged** |
