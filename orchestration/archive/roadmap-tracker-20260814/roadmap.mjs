@@ -313,6 +313,17 @@ export function driftGate(roadmap, opts = {}) {
 }
 
 // ---------------------------------------------------------------- printing
+function wrap(text, width) {
+  const words = String(text).split(/\s+/);
+  const lines = []; let line = '';
+  for (const w of words) {
+    if ((line + ' ' + w).trim().length > width) { lines.push(line.trim()); line = w; }
+    else line = (line + ' ' + w).trim();
+  }
+  if (line) lines.push(line.trim());
+  return lines.join('\n');
+}
+
 function badge(state) {
   if (state === 'done') return '[DONE]      ';
   if (state === 'in_progress') return '[in progress]';
@@ -323,8 +334,16 @@ function badge(state) {
   return `[${state}]`;
 }
 
-export function printReport(report) {
+export function printReport(report, roadmap) {
   const lines = [];
+  if (roadmap && roadmap.provisional === true) {
+    lines.push('*'.repeat(78));
+    lines.push('PROVISIONAL DATA — orchestration/ROADMAP.md is CONDEMNED and being rewritten from scratch.');
+    lines.push('The percentages below are a fixture over the OLD file, not a real completion estimate.');
+    if (roadmap.provisional_reason) lines.push(wrap(roadmap.provisional_reason, 78));
+    lines.push('*'.repeat(78));
+    lines.push('');
+  }
   lines.push(`ROADMAP (full list, all phases): ${report.done_items}/${report.total_items} verified DONE (${report.pct_done}%) as of ${report.generated_commit || 'unknown commit'}` +
     `${report.current_item ? ` — currently on ${report.current_item.id} [phase ${report.current_item.phase}] (${report.current_item.title})` : ''}.` +
     `${report.unverified_items ? ` ${report.unverified_items} UNVERIFIED claim(s).` : ''}` +
@@ -356,11 +375,13 @@ export function printReport(report) {
 }
 
 // ---------------------------------------------------------------- docs/data/roadmap.json
-export function writeSummary(report, { root = ROOT, outPath = SUMMARY_OUT_PATH } = {}) {
+export function writeSummary(report, roadmap, { root = ROOT, outPath = SUMMARY_OUT_PATH } = {}) {
   const summary = {
     schema: 'elder-souls/roadmap-summary@2',
     generated_at: new Date().toISOString(),
     commit: report.generated_commit,
+    provisional: roadmap && roadmap.provisional === true,
+    provisional_reason: roadmap && roadmap.provisional === true ? (roadmap.provisional_reason || null) : null,
     total_items: report.total_items, done_items: report.done_items,
     in_progress_items: report.in_progress_items, not_started_items: report.not_started_items,
     blocked_items: report.blocked_items, unverified_items: report.unverified_items,
@@ -480,6 +501,15 @@ export function selfTest() {
     rec('I:drift-detected-phase-item-missing-from-json', i1.ok === false && i1.problems.some(p => /B1/.test(p)), `ok=${i1.ok} problems=${JSON.stringify(i1.problems)}`);
     rec('I/H2 genuinely disagree', i1.ok !== h2.ok, `I=${i1.ok} H2=${h2.ok}`);
 
+    // Arm J — driftGate: the SAME real drift must be fatal for an ordinary roadmap.json and
+    // non-fatal for one marked `provisional` (mid wholesale-rewrite). Still reported either way —
+    // only the fatality differs, never the visibility.
+    const j1 = driftGate({ ...driftBadStep }, { root: tmp, mdPath: 'ROADMAP.md' });
+    const j2 = driftGate({ ...driftBadStep, provisional: true }, { root: tmp, mdPath: 'ROADMAP.md' });
+    rec('J:drift-fatal-when-not-provisional', j1.fatal === true && j1.problems.length > 0, `fatal=${j1.fatal} problems=${j1.problems.length}`);
+    rec('J:drift-not-fatal-when-provisional', j2.fatal === false && j2.problems.length > 0, `fatal=${j2.fatal} problems=${j2.problems.length} (still reported, just not fatal)`);
+    rec('J1/J2 genuinely disagree on fatal, agree on problems', j1.fatal !== j2.fatal && j1.problems.length === j2.problems.length, `J1.fatal=${j1.fatal} J2.fatal=${j2.fatal} J1.problems=${j1.problems.length} J2.problems=${j2.problems.length}`);
+
   } finally {
     rmSync(tmp, { recursive: true, force: true });
   }
@@ -505,11 +535,12 @@ async function main() {
   const roadmap = loadRoadmap(ROOT);
 
   if (args.includes('--check-drift')) {
-    const d = checkDrift(roadmap, { root: ROOT });
+    const d = driftGate(roadmap, { root: ROOT });
     if (d.ok) { console.log('roadmap.mjs --check-drift: ROADMAP.md and roadmap.json agree on every step id and phase-item token.'); process.exit(0); }
     console.error(`roadmap.mjs --check-drift: ${d.problems.length} disagreement(s) between ROADMAP.md and roadmap.json:`);
     for (const p of d.problems) console.error(`  - ${p}`);
-    process.exit(1);
+    if (d.provisional) console.error('roadmap.json is marked provisional (source ROADMAP.md is being rewritten wholesale) — NOT failing on drift while that flag is set.');
+    process.exit(d.fatal ? 1 : 0);
   }
 
   const report = computeReport(roadmap, { root: ROOT });
@@ -519,23 +550,24 @@ async function main() {
     process.exit(0);
   }
 
-  console.log(printReport(report));
+  console.log(printReport(report, roadmap));
 
-  const drift = checkDrift(roadmap, { root: ROOT });
+  const drift = driftGate(roadmap, { root: ROOT });
   if (!drift.ok) {
     console.error('');
     console.error(`DRIFT: ROADMAP.md and orchestration/roadmap.json disagree (${drift.problems.length}):`);
     for (const p of drift.problems) console.error(`  - ${p}`);
+    if (drift.provisional) console.error('roadmap.json is marked provisional — this is EXPECTED during a wholesale rewrite and does NOT fail the build. Clear `provisional` once the two are back in sync.');
   } else {
     console.log('');
     console.log('drift check: ROADMAP.md and roadmap.json agree.');
   }
 
-  const summary = writeSummary(report, { root: ROOT });
+  const summary = writeSummary(report, roadmap, { root: ROOT });
   console.log('');
-  console.log(`wrote ${SUMMARY_OUT_PATH} (${summary.done_items}/${summary.total_items} done, ${summary.pct_done}% of the FULL roadmap)`);
+  console.log(`wrote ${SUMMARY_OUT_PATH} (${summary.done_items}/${summary.total_items} done, ${summary.pct_done}% of the FULL roadmap${summary.provisional ? ' — PROVISIONAL, source document is being rewritten' : ''})`);
 
-  process.exitCode = drift.ok ? 0 : 1;
+  process.exitCode = drift.fatal ? 1 : 0;
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
