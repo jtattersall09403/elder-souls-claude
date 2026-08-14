@@ -95,6 +95,36 @@ do not need it. The worktree is removed automatically if unchanged, so the cost 
 This does not replace Ruling O1's ownership check; it removes the *class* of damage that check can
 only warn about.
 
+### 2d. Banking from the shared tree reverts other agents' pushed work — and worktrees do not stop it
+
+**The orchestrator did this and it is the largest single source of lost work found so far.** Commit
+`06dafd04` — an orchestrator bank — **reverted all twenty files an agent had already pushed**, taking
+a canonical artifact back to a three-day-old refusal record and deleting two tools outright. The
+agent only noticed because it re-read the remote blob after a second fetch.
+
+**The mechanism, and it is not the one I assumed.** Banking does `git read-tree` from origin (correct),
+then **`git add -A`** — which stages the *working tree*. The shared working tree is stale for every
+file another agent has pushed from its own worktree, because nothing updates it. So `add -A`
+faithfully stages an old copy over the new one, and the merge "keeps the pre-push side".
+
+> **Worktree isolation does not prevent this.** It stops two agents writing one file. It does not
+> stop a bank staging a stale index over a branch that has moved. Those are different failures and
+> the second is the orchestrator's alone.
+
+**The guard: stage a path only when the working-tree file is newer than origin's tip commit.**
+
+```sh
+P=$(git rev-parse origin/<branch>); PT=$(git log -1 --format=%ct "$P")
+export GIT_INDEX_FILE=/tmp/idx-$$; git read-tree "$P"
+while IFS= read -r f; do
+  [ -f "$f" ] || continue
+  [ "$(stat -c %Y "$f")" -gt "$PT" ] && git add -- "$f"     # else it is stale: skip
+done < <(git diff --name-only "$P"; git ls-files --others --exclude-standard)
+```
+
+First run of the guard: **0 files genuinely newer, 4 stale** — i.e. the unguarded routine would have
+reverted four files that instant. Assume it has been doing so all along.
+
 ### 2b. Never `git reset --hard` a shared working tree
 
 A dozen agents hold uncommitted edits in it. `--hard` discards every one of them with no warning and
