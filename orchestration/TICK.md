@@ -129,6 +129,37 @@ null control that must come out worse**, and **which existing instrument it reus
 Dispatch order for a new round is therefore: plan → plan critic → build → build critic. The first
 two are cheap and need no browser, so **the whole wave can plan in parallel while builds queue.**
 
+## 2e. A cost agent is always running — the same standing-role rule as playability
+
+> Owner, 2026-08-14: *"do whatever needs to be done to keep the whole cost control system we
+> discussed keep going alongside other work, make this stick."*
+
+**The efficiency programme's failure mode is not bad measurement — it is going quiet.** It produced
+five recorded changes (`docs/data/cost-ledger.json` → `changes`), two of them kept or reversed on
+real evidence and two of them **trials sized and waiting on a dispatch that never came**. Cost per
+agent-hour then tripled while nobody was watching. The measurement was excellent and the loop
+stalled at exactly the point where the orchestrator had to act.
+
+So cost gets the **same treatment as playability (§2c): one agent is always live on it, it is never
+a piece that finishes, and when one reports the next is dispatched.** It costs nothing scarce — the
+work is transcript analysis, needs no browser and no GPU, and can run at full contention while every
+browser on the box is busy. There is never a reason not to have one running.
+
+**Three standing duties for whoever holds the role:**
+
+1. **Read the ledger's `changes` array before doing anything.** Three separate agents have now
+   re-derived a mechanism a predecessor had already settled, twice because the orchestrator briefed
+   them from stale doctrine. `COST.md` is a summary and the ledger is the record; where they
+   disagree, the ledger wins.
+2. **Trials become dispatches or they become nothing.** A trial with a measured ceiling, a killed
+   confound and three tripwires is not a result — it is a proposal, and the orchestrator owes it a
+   real piece. Name the owed dispatch explicitly in your status file's `next_step` so it cannot be
+   lost between agents.
+3. **Never report a saving without its four guards** (`COST.md` §1). And never let a saving come from
+   doing less verification — §5 is absolute, and CH-05's second tripwire is the shape to copy:
+   *total requests across a split piece must not fall below the pre-split median. Splitting must
+   shorten an agent's waste, never its work.*
+
 ## 3. Top up, in this order of preference
 
 1. **A critic owed a piece that has reported.** A finished builder with no critic dispatched is the
