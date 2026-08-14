@@ -71,7 +71,9 @@ const FACTS = [
   ['commit-only', /git commit --only/],
   ['rule-0-never-wait', /AskUserQuestion/],
   ['gold-is-the-currency', /Gold is the only currency|gold is the currency/i],
-  ['rulings-append-only', /append-only/i],
+  // Deliberately NOT just /append-only/i — that matched the filename `check-append-only.mjs` in
+  // the tool listing, so the probe passed while saying nothing about the doctrine it is for.
+  ['rulings-append-only', /Amendments are append-only[\s\S]{0,200}?(struck|superseded)/i],
   ['model-routing-sonnet-default', /C6[\s\S]{0,400}?Sonnet|Sonnet[\s\S]{0,200}?default/],
   ['G1-inverted-not-a-floor', /roadmap steps? delivered/i],
   ['land-self-test', /land\.mjs --self-test/],
