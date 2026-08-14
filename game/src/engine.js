@@ -621,6 +621,12 @@ export class Engine {
     // remains derived by FactionGates; this registry describes what that rank unlocks in-world.
     this.factionRegistry = this.data.factionRegistry || { factions: [] };
     this.questEngine = new QuestEngine(this.questBook, this.factionGates, this.data.quests['quest-hooks'], this.sim);
+
+    // W1-18. Quest gold rewards go through the canonical purse writer so combat, magic,
+    // stealth and the UI all agree about what the player has. `sim/quest/quest machine`
+    // calls `this.awardGold(...)`; without this line it falls back to writing
+    // `sim.progression.gold` directly and bypasses `_setGold()`.
+    this.questEngine.awardGold = (amount) => this._setGold(this._gold() + Number(amount || 0));
     // W1-20. The recruiters' words. `FactionGates.evaluate()` has always computed the whole
     // four-part statement with the player's own numbers in it and `QuestEngine.open()` has always
     // refused on it — and what came back was `the_drowned_court rank 0/2`, a debug string with
@@ -3804,7 +3810,12 @@ export class Engine {
           const d = Math.hypot(n.pos[0] - p.pos[0], n.pos[2] - p.pos[2]);
           if (d <= Math.min(n.notice_radius_m, 3.0) && d < whoD) { who = n; whoD = d; }
         }
-        if (who) this._talkPending = who.eid;
+        if (who) {
+          // W1-18. Crouched, you are listening rather than introducing yourself — which is
+          // the whole distinction the `eavesdrop` reveal channel rests on.
+          if (this.sim.stealth && this.sim.stealth.p.crouched) this._eavesdropPending = who.eid;
+          else this._talkPending = who.eid;
+        }
       }
       return;
     }
@@ -6821,6 +6832,7 @@ export class Engine {
       return;
     }
     if (this._propPending) this._takePropPending();
+    if (this._eavesdropPending) { const w = this._eavesdropPending; this._eavesdropPending = null; try { this.eavesdrop(w); } catch { /* they walked off */ } }
     if (this._talkPending) { const w = this._talkPending; this._talkPending = null; try { this.talkTo(w); } catch { /* they walked off */ } }
     if (this._convPending) {
       const t = this._convPending; this._convPending = null;
