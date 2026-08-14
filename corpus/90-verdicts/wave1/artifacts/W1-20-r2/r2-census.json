@@ -1,7 +1,7 @@
 {
   "schema": "elder-souls/critic-w1-20-r2-census@1",
   "commit": null,
-  "generated_at": "2026-08-14T15:28:12.978Z",
+  "generated_at": "2026-08-14T15:38:27.955Z",
   "lines": [
     "deep_kin",
     "the_dockhands",
@@ -27,7 +27,6 @@
   ],
   "fails": [
     "QST03.skill_overlap",
-    "QST03.reachability",
     "QST03.escape_hatches",
     "QST03.on_permanent",
     "QST03.offences_tolerated",
@@ -49,7 +48,8 @@
     "QST03.earnable.the_ixtu_vakh",
     "QST03.earnable.the_rootkeepers",
     "QST03.earnable.the_wet_ledger",
-    "QST03.earnable.the_xul_aneekh"
+    "QST03.earnable.the_xul_aneekh",
+    "QST03.reachability"
   ],
   "rows": [
     {
@@ -1572,16 +1572,22 @@
     {
       "id": "QST03.reachability",
       "item": "RI-QST03",
-      "status": "FAIL",
+      "status": "AT_THE_LINE",
       "detail": {
         "total_faction_quests": 144,
-        "greedy_reachable": 126,
-        "fraction": 0.875,
+        "max_single_save_reachable": 108,
+        "fraction": 0.75,
+        "lines_in_the_maximal_save": [
+          "deep_kin",
+          "the_dockhands",
+          "the_drowned_court",
+          "the_ixtu_vakh",
+          "the_rootkeepers",
+          "the_xul_aneekh"
+        ],
         "target": "<=0.60",
         "fail_above": 0.75,
-        "closed_by_exclusivity": [
-          "the_imperial_assize"
-        ]
+        "note": "Solved exactly over every membership set, using hard_groups + enemy_pairs + earned. The live engine agrees: reports r2-live-shipping.json B1 shows joining the Wet Ledger locking three factions and 54 quests."
       }
     },
     {

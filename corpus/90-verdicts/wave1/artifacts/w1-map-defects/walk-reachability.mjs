@@ -84,18 +84,48 @@ function fewest(order, opt) {
 // phone pays two taps per page-turn, plus two to open the inventory in the first place.
 const taps = (presses) => 2 + presses * 2;
 
+/** Are any two NEVER_ADJACENT partners actually NEIGHBOURS in this order? That is the mechanism. */
+function adjacentPairs(order) {
+  const bad = [];
+  for (const pair of NEVER_ADJACENT) {
+    const i = order.indexOf(pair[0]), j = order.indexOf(pair[1]);
+    if (i >= 0 && j >= 0 && Math.abs(i - j) === 1) bad.push(pair.join(' next to '));
+  }
+  return bad;
+}
+
+// ---- THE TWO CONTROLS, AND WHY THERE ARE TWO --------------------------------------------------
+//
+// HAZARDS §0b: "a guard that only sees deviation in the direction you expected is the same failure
+// as a control that cannot fail". The r1 version of this file had one eye. It asked only "is any
+// screen missing from the forward walk?", so it would have printed `ok` for the order the fix
+// REPLACED — the one where every screen is reachable and the map is four presses away, which is
+// the owner's original defect and the whole reason anything was edited. Both directions are now
+// checked and each has its own control, and each control must go red for its OWN reason:
+//
+//   NULL CONTROL (the plausible wrong answer)  the pre-fix order. Reaches EVERY screen, and puts
+//                                              the map back out of reach. Completeness green,
+//                                              map-at-one-press RED.
+//   THE BROKEN FIX (what r1 shipped)           map second and immediately before the journal.
+//                                              Map-at-one-press green, completeness RED.
+//
+// The trivial control — "no walk at all" — is not run: it fails everything and would pass a guard
+// that only knows how to notice zero. If EITHER control comes back green on both halves this tool
+// exits 2 rather than 1, because a control that cannot exhibit the failure is not a control.
 const ORDERS = {
-  'BEFORE the fix (map sixth)': ['world', 'inventory', 'journal', 'sheet', 'spells', 'map', 'wait', 'levelup'],
-  'SHIPPED at HEAD':            UISystem.WALK_ORDER,
-  'PROPOSED remediation':       ['world', 'inventory', 'map', 'sheet', 'journal', 'spells', 'wait', 'levelup'],
+  'NULL CONTROL — BEFORE the fix (map sixth)': ['world', 'inventory', 'journal', 'sheet', 'spells', 'map', 'wait', 'levelup'],
+  'CONTROL — THE BROKEN FIX (r1: map next to journal)': ['world', 'inventory', 'map', 'journal', 'sheet', 'spells', 'wait', 'levelup'],
+  'SHIPPED at HEAD': UISystem.WALK_ORDER,
 };
 
-let shippedComplete = true;
+const results = {};
 for (const [label, order] of Object.entries(ORDERS)) {
   const fwd = walk(order, 1);
   const back = walk(order, -1);
   const d = fewest(order);
   const missing = PEERS.filter((m) => m !== 'inventory' && !fwd.includes(m));
+  const bad = adjacentPairs(order);
+  results[label] = { complete: missing.length === 0, mapAtOne: d.map === 1, neighbours: bad.length === 0 };
   console.log(`\n== ${label}`);
   console.log(`   WALK_ORDER      ${order.join(', ')}`);
   console.log(`   forward walk    inventory -> ${fwd.join(' -> ')}`);
@@ -103,16 +133,41 @@ for (const [label, order] of Object.entries(ORDERS)) {
   console.log(`   fewest turns    ${PEERS.map((m) => `${m}=${d[m] === undefined ? 'UNREACHABLE' : d[m]}`).join('  ')}`);
   console.log(`   phone taps      ${PEERS.filter((m) => m !== 'inventory').map((m) => `${m}=${d[m] === undefined ? 'n/a' : taps(d[m])}`).join('  ')}`);
   console.log(`   SKIPPED by the forward walk: ${missing.length ? missing.join(', ') : 'nothing'}`);
-  if (label === 'SHIPPED at HEAD' && missing.length) shippedComplete = false;
+  console.log(`   NEVER_ADJACENT pair sitting side by side: ${bad.length ? bad.join('; ') : 'none'}`);
 }
 
+const HEAD = results['SHIPPED at HEAD'];
+const NULLC = results['NULL CONTROL — BEFORE the fix (map sixth)'];
+const BROKEN = results['CONTROL — THE BROKEN FIX (r1: map next to journal)'];
+
 console.log('');
-if (shippedComplete) {
-  console.log('ok   every menu screen is on the forward page-walk');
+// Vacuity first. A guard is worth nothing until both of its eyes have been watched blinking.
+const vacuous = [];
+if (NULLC.complete !== true) vacuous.push('the null control was supposed to reach every screen and does not');
+if (NULLC.mapAtOne !== false) vacuous.push('the null control was supposed to put the map out of reach and does not');
+if (BROKEN.mapAtOne !== true) vacuous.push('the broken-fix control was supposed to keep the map at one press and does not');
+if (BROKEN.complete !== false) vacuous.push('the broken-fix control was supposed to drop a screen and does not');
+if (vacuous.length) {
+  console.log('VACUOUS  this tool cannot show the failure it claims to guard against:');
+  for (const v of vacuous) console.log(`         - ${v}`);
+  process.exit(2);
+}
+console.log('ok   both controls go red, and for DIFFERENT reasons:');
+console.log('     null control  complete=yes  map-at-one-press=NO   <- the owner\'s original defect');
+console.log('     broken fix    complete=NO   map-at-one-press=yes  <- what r1 shipped');
+
+const fails = [];
+if (!HEAD.complete) fails.push('the shipped WALK_ORDER drops a screen from the forward page-walk entirely');
+if (!HEAD.mapAtOne) fails.push('the shipped WALK_ORDER does not keep the map one page-turn from the inventory');
+if (!HEAD.neighbours) fails.push('the shipped WALK_ORDER puts a NEVER_ADJACENT pair side by side — the second is stepped over');
+
+if (!fails.length) {
+  console.log('ok   SHIPPED: every menu screen is on the forward page-walk, the map is one turn away,');
+  console.log('     and no NEVER_ADJACENT pair are neighbours.');
   process.exit(0);
 }
-console.log('FAIL the shipped WALK_ORDER drops a screen from the forward page-walk entirely.');
-console.log('     `map` sits immediately before `journal`, and `map`\'s own ring excludes');
-console.log('     `journal` (NEVER_ADJACENT / RI-UIX04 Q7), so the forward walk steps over it.');
-console.log('     Separating the pair by one screen restores it and keeps the map one turn away.');
+for (const f of fails) console.log(`FAIL ${f}`);
+console.log('     `navigable()` drops the NEVER_ADJACENT partner OF THE MODE YOU STAND ON, so an');
+console.log('     excluded neighbour is STEPPED OVER rather than stopped at. Separate the pair by');
+console.log('     one screen: it restores the walk and keeps the map one turn away.');
 process.exit(1);

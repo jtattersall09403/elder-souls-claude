@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a1d527be`: 969 tools, 157 reference
+so it cannot drift. Generated at `7c9488d5`: 967 tools, 157 reference
 items, 189 pieces in flight.
 
 Its purpose is to stop 189+ concurrent agents each paying separately to discover the
@@ -105,7 +105,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 44
+### `tools/` — 42
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -125,10 +125,8 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/contention.mjs` — how loaded is this box, really, and may I launch a browser?
 - `tools/control-clone.mjs` — build, clean up, and prove the cheap null-control clone.
 - `tools/corpus-index.mjs` — **no header comment**
-- `tools/cost-deletefix-dev.mjs` — tools/cost.mjs — THE COST INSTRUMENT (piece `COST-INSTRUMENT`; contract: orchestration/COST.md §6.1; corrected specification: orchestration/plans/COST-INSTRUMEN
 - `tools/cost-refresh.mjs` — Runs the cost instrument on the commit path, and never, ever blocks it.
 - `tools/cost-report.mjs` — The cost programme, drawn on the page the owner actually opens (COST.md §6).
-- `tools/cost-split-trial-dev.mjs` — tools/cost.mjs — THE COST INSTRUMENT (piece `COST-INSTRUMENT`; contract: orchestration/COST.md §6.1; corrected specification: orchestration/plans/COST-INSTRUMEN
 - `tools/cost.mjs` — tools/cost.mjs — THE COST INSTRUMENT (piece `COST-INSTRUMENT`; contract: orchestration/COST.md §6.1; corrected specification: orchestration/plans/COST-INSTRUMEN
 - `tools/dispatch-staleness.mjs` — re-run the MECHANICALLY CHECKABLE claims in a dispatch file and report which ones no longer hold.
 - `tools/dispatchable.mjs` — answer, before an agent is spawned, whether this piece needs one.

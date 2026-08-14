@@ -424,7 +424,44 @@ export class UISystem {
   // The other half of "a person cannot find it" is the foot hint on the inventory, which now
   // names the page turn. That is `RI-JRN03` DS5's shape — it names the ACTION, never the key —
   // and it is the same device-neutral vocabulary every other hint in this interface uses.
-  static WALK_ORDER = ['world', 'inventory', 'map', 'journal', 'sheet', 'spells', 'wait', 'levelup'];
+  //
+  // ---------------------------------------------------------------------------------------
+  // W1-MAP-DEFECTS r1 REMEDIATION — `map` STAYS SECOND, `journal` MOVES OFF ITS SHOULDER.
+  //
+  // The paragraph above is true and the edit it describes had a cost nobody measured, because
+  // REORDERING A WALK IS ZERO-SUM: every screen the map passed, it pushed back. What it pushed
+  // out was the journal, and not by one press — off the forward walk ENTIRELY.
+  //
+  // THE STRUCTURAL RULE, which is the thing to remember rather than this particular array:
+  //
+  //   **No two screens named in `NEVER_ADJACENT` may be NEIGHBOURS in `WALK_ORDER`.**
+  //
+  // `_walkRing()` filters `WALK_ORDER` through `navigable()`, and `navigable()` drops the
+  // NEVER_ADJACENT partner OF THE MODE YOU ARE STANDING ON. So an excluded neighbour is not
+  // stopped at, it is STEPPED OVER: standing on `map`, `journal` is not in the ring at all, and
+  // the next screen forward is whatever follows the journal. Put the pair side by side and the
+  // second of them becomes unreachable in that direction at any number of presses. That is
+  // exactly what shipped — `['…, inventory, map, journal, sheet, …]` walked
+  // inventory -> map -> sheet -> spells -> wait -> (closes), five screens down to four, and
+  // the journal (press 1 of 5 before the fix) fell out of the walk.
+  //
+  // It is not recoverable by walking back, either: `world` sits at ring index 0 and `_walkPeer`
+  // CLOSES the UI on it, so the ring is a line with a trapdoor at the left end and `swap_left`
+  // from the inventory quits the menu. Forward is the only direction a player finds by accident.
+  //
+  // One screen of separation fixes it and costs the map nothing:
+  //   inventory -> map -> sheet -> journal -> spells -> wait -> (closes), nothing skipped,
+  //   fewest turns map=1 (the owner's defect stays fixed), journal=3.
+  // The journal is dearer than the 1 it was, and that is the zero-sum being paid honestly rather
+  // than hidden: the map cannot be first without something moving back. What is NOT acceptable,
+  // and what the r1 critic failed the build on, is a screen leaving the walk altogether.
+  //
+  // Enforced, not just written down: `tools/harness/map-probe.mjs` S13 asserts the neighbour rule
+  // and the completeness of the forward walk, and
+  // `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs` enumerates it in
+  // bare Node with a null control — the pre-fix order, which reaches every screen and puts the
+  // map back four presses away — so the guard fails in BOTH directions (HAZARDS §0b).
+  static WALK_ORDER = ['world', 'inventory', 'map', 'sheet', 'journal', 'spells', 'wait', 'levelup'];
 
   /** The ring this mode sits in: WALK_ORDER filtered to here plus everywhere advertised. */
   _walkRing(ctx) {
