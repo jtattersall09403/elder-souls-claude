@@ -187,7 +187,11 @@ async function parseFile(path, onRecord) {
 // failing. Caught by comparing the live page to the local one, not by any test in this file.
 class NoSourceError extends Error { }
 
-async function buildLedger() {
+// ONE parser, one dedup, one price table, for the ledger AND for every experiment flag below.
+// Extracted from buildLedger() unchanged on 2026-08-14 by COST-EXPERIMENTS-BUILD so the retrospective
+// experiments (--experiments) consume the instrument rather than re-implementing it (rule 10). If you
+// are tempted to write a second parser for an analysis, add a flag here instead.
+async function collectPricedRequests() {
   const projectDir = findClaudeProjectDir();
   if (!projectDir) {
     throw new NoSourceError(
@@ -241,6 +245,13 @@ async function buildLedger() {
     if (usd == null) { unpriced.count++; unpriced.byModel[r.model] = (unpriced.byModel[r.model] || 0) + 1; continue; }
     priced.push({ ...r, usd });
   }
+
+  return { projectDir, files, fileStats, groups, requests, priced, unpriced, filesRead, bytesRead, parseErrors };
+}
+
+async function buildLedger() {
+  const collected = await collectPricedRequests();
+  const { projectDir, files, fileStats, groups, requests, priced, unpriced, filesRead, bytesRead, parseErrors } = collected;
 
   const withTs = priced.filter((r) => Number.isFinite(r.ts));
   const droppedNoTs = priced.length - withTs.length;
@@ -475,7 +486,10 @@ async function buildLedger() {
       g2_quality: g2,
       g3_rigour: g3,
     },
-    changes: [],
+    // The programme's ledger of changes. The instrument is still the only writer of the ledger
+    // (COST.md §6.1) — it reads the experiment findings it itself computed and cached under
+    // reports/cost/experiments.json via `--experiments`, rather than a second tool writing here.
+    changes: readExperimentChanges(),
     notes: [
       'First run of a newly-built instrument (2026-08-14). Not yet through a fresh build critic; '
         + 'treat as a first working measurement, not a finished COST-INSTRUMENT verdict.',

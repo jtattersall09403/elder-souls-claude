@@ -248,7 +248,13 @@ function selfcheck() {
 }
 
 // ---------------------------------------------------------------- main
-if (process.argv[2] === '--selfcheck') selfcheck();
+// Entry-point guard. Without it, `import` of this module runs the CLI and exits the importer —
+// which is exactly what happened the first time m-instance-bars.mjs reused signatureAt().
+// A method file must be safe to import; the CLI is a use of it, not the whole of it.
+const IS_MAIN = process.argv[1] && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname);
+
+if (!IS_MAIN) { /* imported as a library — export only, run nothing */ }
+else if (process.argv[2] === '--selfcheck') selfcheck();
 else {
   if (!fs.existsSync(TERRAIN)) { console.error(`FAIL: ${TERRAIN} not found — cannot measure. This is a missing-world result, not a pass.`); process.exit(2); }
   const T = JSON.parse(fs.readFileSync(TERRAIN, 'utf8'));
