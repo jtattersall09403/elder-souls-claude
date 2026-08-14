@@ -147,6 +147,30 @@ payoff and emergence · `E5` build identity · `E6` session shape and pacing ·
 
 ## Honest position
 
-**Zero of 79 open gaps are closed. 38 reference items have never been named by any verdict.** One item
-(`F1`) was delivered today and is not yet judged. A completion percentage quoted against anything
-narrower than this list means nothing.
+**38 reference items have never been named by any verdict.** One item (`F1`) was delivered today and is
+not yet judged. A completion percentage quoted against anything narrower than this list means nothing.
+
+**The "79 open gaps" figure is inflated and the ledger cannot currently tell you by how much.**
+`tools/gap-ledger.mjs` only accepts a closure from a **later wave**, so a gap remediated and
+independently re-verified *within* wave 1 can never show as closed — `W1-00-r2` says so in its own
+`gap_closure` note. Audited against the tree, at least three of the five headline
+"built-but-connected-to-nothing" gaps are substantially fixed already:
+
+- **PRNG never drawn** — fixed in `sim/entities.js` **and** independently judged closed in `W1-00-r2`.
+  Blocked from showing closed purely by the wave-numbering rule. **Fix the tool, not the game.**
+- **Creation renders nothing** — the symptom is gone; `W1-26-r3` played the whole scene end to end,
+  P1–P10 PASS over two runs. A small guard and 11 untested journey nodes remain.
+- **The library has no reader** (the ledger's only `critical`) — mechanically wired in `engine.js` and
+  `machine.js`, self-verified by its builder against the gap's own acceptance string, **never
+  independently judged.**
+- **Weapon animation has no rendered consumer** — a 1,506-line `SkinnedMesh` rig exists with
+  consumption and delete-the-fix evidence, **unjudged**. It also surfaced a new defect: a greatsword
+  blade drawn underground.
+
+**So the cheapest visible progress available is not building — it is judging what is already built.**
+Four critics, no builders.
+
+**The one that must not be sold as cheap:** `G3` weapons. The named symptom (`setLoadout()` rejecting
+all 87 movesets) is fixed and reconfirmed in `W1-10-r3`, but the item still scores **3/10** because
+weapon-class *distinctiveness* fails. That is design and tuning work, not wiring, and it stays in ring 2
+behind `F11`.
