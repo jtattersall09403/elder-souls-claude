@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a92bdeb7`: 919 tools, 155 reference
-items, 167 pieces in flight.
+so it cannot drift. Generated at `d7702f04`: 919 tools, 155 reference
+items, 168 pieces in flight.
 
-Its purpose is to stop 167+ concurrent agents each paying separately to discover the
+Its purpose is to stop 168+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1307,11 +1307,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-30K` | plan-awaiting-criticism | A first fresh reviewer-editor criticises orchestration/plans/W1-30K.md under PLAN-LOOP.md  | — |
+| `W1-30A` | ? | FRESH CRITIC. The three attacks most worth making, in order. (1) Look at the contact sheet | `game/src/render/renderer.js` `game/src/render/post/composite.js` `game/src/render/post/grade.js` `game/src/render/post/baseline-composite.js` `tools/render/w1-30a-frame-probe.mjs` `tools/render/w1-30a-verdict.mjs` |
+| `FIRST-TEN-MINUTES-critic` | measuring | GPU run 3 (walk-only to settle C4, overlay proof to settle C5, builder tool at HEAD to sup | `orchestration/status/FIRST-TEN-MINUTES-critic.json` `tools/harness/critic-first-ten-play.mjs` `reports/first-ten-minutes-critic/` |
+| `W1-30V` | ? | Capture the 12 declared motion sequences (the largest gap - no gate in this tree is motion | `tools/visual/build-deck.mjs` `tools/visual/deck.json` `tools/visual/deck.mjs` `tools/visual/frame-stats.mjs` `tools/visual/contact-sheet.mjs` `tools/visual/deck-compare.mjs` |
 | `W1-30C-builder` | ? | Dispatch the fresh W1-30C critic, and tell W1-30E and W1-30D that MATERIAL_API.md section  | `game/src/render/MATERIAL_API.md` `game/src/render/visual-foundation.js` `game/assets/w1-30/materials/` `tools/assets/` `tools/render/w1-30-assets.mjs` `reports/w1-30/C-DELIVERY.md` |
 | `W1-30-VIS-RECRITICISM` | material_edit_awaiting_recriticism | A THIRD fresh reviewer-editor judges this version of W1-30.md; this round materially edite | `orchestration/plans/W1-30.md` `orchestration/plans/W1-30-EVIDENCE.md` `orchestration/plans/W1-30K.md` `orchestration/status/W1-30-VIS-RECRITICISM.json` `orchestration/status/W1-30.json` `orchestration/INDEX.md` |
-| `W1-30A` | ? | FRESH CRITIC. The three attacks most worth making, in order. (1) Look at the contact sheet | `game/src/render/renderer.js` `game/src/render/post/composite.js` `game/src/render/post/grade.js` `game/src/render/post/baseline-composite.js` `tools/render/w1-30a-frame-probe.mjs` `tools/render/w1-30a-verdict.mjs` |
-| `FIRST-TEN-MINUTES-critic` | starting | read audit + directives + schema | `orchestration/status/FIRST-TEN-MINUTES-critic.json` |
-| `W1-30V` | ? | Capture the 12 declared motion sequences (the largest gap - no gate in this tree is motion | `tools/visual/build-deck.mjs` `tools/visual/deck.json` `tools/visual/deck.mjs` `tools/visual/frame-stats.mjs` `tools/visual/contact-sheet.mjs` `tools/visual/deck-compare.mjs` |
 | `FIRST-TEN-MINUTES` | built-and-banked-d3-and-charopacity-only-d1-and-d2-diagnosed-not-fixed | A fresh-context critic. The four things most worth attacking: (1) re-run tools/harness/fir | — |
 | `W1-25-divergence-20260814` | done | Re-run tools/composition/matrix-probe.mjs to its DOCUMENTED DEFAULT path reports/compositi | `orchestration/status/W1-25-DIVERGENCE-20260814.json` `reports/experience/w1-25-r2-divergence/DIVERGENCE-20260814.md` `reports/experience/w1-25-r2-divergence/npc-presence-consumption.json` `reports/experience/w1-25-r2-divergence/session-2x2.json` `tools/experience/npc-presence-consumption.mjs` `orchestration/INDEX.md` |
 | `W1-30` | builder-native-gpu-remediation-in-progress |  | `corpus/70-visual/RI-VIS09-reference-image-set.md` `orchestration/plans/W1-30.md` `orchestration/status/W1-30-animation-amendment-codex-20260811.json` `orchestration/status/W1-30-reviewer-editor-20260812.json` `orchestration/status/W1-30.json` |

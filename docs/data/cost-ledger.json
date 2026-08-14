@@ -1,14 +1,14 @@
 {
   "schema": "elder-souls/cost-ledger@1",
-  "generated_at": "2026-08-14T10:28:21.936Z",
+  "generated_at": "2026-08-14T10:41:24.078Z",
   "generator": "tools/cost.mjs",
-  "commit": "a92bdeb",
+  "commit": "d7702f0",
   "source": "~/.claude/projects/-home-user-elder-souls-claude",
   "stale_after_minutes": 45,
   "window": {
     "from": "2026-08-05T22:16:46.017Z",
-    "to": "2026-08-14T10:28:15.499Z",
-    "hours": 204.19,
+    "to": "2026-08-14T10:41:15.402Z",
+    "hours": 204.41,
     "complete": true
   },
   "comparable_key": "sha1:2e492d83b9953130",
@@ -39,31 +39,31 @@
     }
   },
   "coverage": {
-    "files_total": 434,
-    "files_read": 434,
-    "bytes_read": 629566350,
+    "files_total": 436,
+    "files_read": 436,
+    "bytes_read": 634895850,
     "complete": true
   },
   "drivers": {
-    "requests": 52337,
-    "mean_context_tokens": 210288,
-    "pie_tokens": 1357177689,
-    "requests_per_agent_hour": 70.63
+    "requests": 52612,
+    "mean_context_tokens": 210546,
+    "pie_tokens": 1366855903,
+    "requests_per_agent_hour": 70.81
   },
   "denominator": {
     "definition": "active_clock_hours",
     "active_hours": 55,
-    "agent_hours": 741,
-    "span_hours": 204.19
+    "agent_hours": 743,
+    "span_hours": 204.41
   },
   "headline": {
-    "spend_to_date_usd": 6517.32,
-    "burn_usd_per_hour": 123.98,
+    "spend_to_date_usd": 6564.86,
+    "burn_usd_per_hour": 171.52,
     "burn_window_hours": 1,
-    "ch_usd_per_hour": 118.5,
-    "ch_pct_of_baseline": 102.3,
-    "usd_per_agent_hour": 8.8,
-    "usd_per_agent_hour_pct_of_baseline": 101
+    "ch_usd_per_hour": 119.36,
+    "ch_pct_of_baseline": 103,
+    "usd_per_agent_hour": 8.84,
+    "usd_per_agent_hour_pct_of_baseline": 101.4
   },
   "baseline": {
     "usd_per_hour": 115.88,
@@ -305,70 +305,70 @@
     },
     {
       "t": "2026-08-14T10:00:00.000Z",
-      "usd_per_hour": 61.99,
-      "usd_per_agent_hour": 4.13,
-      "mean_agents": 15,
-      "commit": "a92bdeb",
+      "usd_per_hour": 85.76,
+      "usd_per_agent_hour": 5.04,
+      "mean_agents": 17,
+      "commit": "d7702f0",
       "window_hours": 2
     }
   ],
   "by_model": [
     {
       "model": "claude-opus-5",
-      "usd": 6338.27,
-      "requests": 48484,
+      "usd": 6385.24,
+      "requests": 48739,
       "tokens": {
-        "input": 1041572,
-        "cache_write_5m": 157594869,
-        "cache_write_1h": 7967748,
-        "cache_read": 10076135292,
-        "output": 9213986
+        "input": 1042134,
+        "cache_write_5m": 158920558,
+        "cache_write_1h": 7990807,
+        "cache_read": 10145092921,
+        "output": 9372983
       }
     },
     {
       "model": "claude-sonnet-5",
-      "usd": 179.05,
-      "requests": 3853,
+      "usd": 179.61,
+      "requests": 3873,
       "tokens": {
-        "input": 288065,
-        "cache_write_5m": 8497276,
+        "input": 299251,
+        "cache_write_5m": 8609870,
         "cache_write_1h": 0,
-        "cache_read": 754298406,
-        "output": 636815
+        "cache_read": 755308873,
+        "output": 642955
       }
     }
   ],
   "by_token_class": [
     {
       "class": "input",
-      "usd": 5.78,
-      "tokens": 1329637
+      "usd": 5.81,
+      "tokens": 1341385
     },
     {
       "class": "cache_write_5m",
-      "usd": 1006.21,
-      "tokens": 166092145
+      "usd": 1014.78,
+      "tokens": 167530428
     },
     {
       "class": "cache_write_1h",
-      "usd": 79.68,
-      "tokens": 7967748
+      "usd": 79.91,
+      "tokens": 7990807
     },
     {
       "class": "cache_read",
-      "usd": 5188.93,
-      "tokens": 10830433698
+      "usd": 5223.61,
+      "tokens": 10900401794
     },
     {
       "class": "output",
-      "usd": 236.72,
-      "tokens": 9850801
+      "usd": 240.75,
+      "tokens": 10015938
     }
   ],
   "guards": {
     "g1_parallelism": {
-      "mean_agents": 13.47,
-      "mean_agents_present": 13.58,
+      "mean_agents": 13.51,
+      "mean_agents_present": 13.62,
       "floor": 12,
       "divergence_flag": false,
       "status": "ok",
