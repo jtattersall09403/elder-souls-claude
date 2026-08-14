@@ -1,10 +1,58 @@
 {
   "task_id": "ROADMAP-COVERAGE-AUDIT",
-  "state": "starting",
+  "state": "complete",
   "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
-  "could_not_do": ["nothing recorded yet - just started"],
-  "next_step": "enumerate W1 plans, corpus reference items, open gaps",
-  "files_claimed": ["orchestration/status/ROADMAP-COVERAGE-AUDIT.json", "reports/roadmap-audit/"],
-  "files_touched": ["orchestration/status/ROADMAP-COVERAGE-AUDIT.json"],
-  "must_not_touch": ["orchestration/ROADMAP.md", "orchestration/roadmap.json"]
+  "branch": "codex/wave1-build-experiment",
+  "could_not_do": [
+    "The dispatch brief's counts do not reproduce and I did not use them. Brief said 211 reference items across 20 areas and 78 open gaps. On disk at baseline: 149 reference items across 18 areas (tools/corpus-index.mjs prints 'reference items : 149') and 79 open gaps (GAP-LEDGER.json counts.open = 79, total 80). I could not reproduce 211 from any count attempted: RI-*.md=149, RI-* any ext=159, all corpus/**/*.md=336, excl 90-verdicts=223, excl doctrine too=193. Treat 211 and 78 as memory numbers.",
+    "No running game. Offline, no browser, no GPU. Every delivery/judgement claim is derived from the 85 verdict JSONs and the generated gap ledger, i.e. from what critics measured, not from what I measured.",
+    "I could not classify any reference item as 'delivered and judged, therefore needing no future step'. 52 of 149 have scored >= 6 at least once, but a best-ever score is not a current state, several carry open blocking gaps, and 0 of 80 gaps in the ledger are closed. So there is no item I am willing to call finished, and the 'delivered' bucket the brief asked for is empty by evidence rather than by omission.",
+    "coverage.json 'derived_state' is a mechanical rollup (max score_0_10 over the item's reference items) and is unreliable for items with few or no reference items. F1 (materials) reads planned_unjudged despite being done and evidenced on hardware, because no reference item maps to it primarily. That is the finding of AUDIT.md section 4, not a bug to paper over. Do not read derived_state as a verdict.",
+    "The inventory is derived (fs walk + generated ledgers, reproducible). The MAPPING of each item to a proposed roadmap item is authored judgement after reading every RI front-matter and title, every plan heading, and every open gap record. A second reader would place a handful differently.",
+    "I did not answer the second half of the owner's corpus-sufficiency question - whether we hold Morrowind region/topological maps and their Black Marsh equivalents. That needs an inventory of the 298 corpus/**/REF-* files against the world data; out of budget. It is named as the first job of proposed item I5.",
+    "One claim in my first draft was too strong and I corrected it rather than shipping it: I wrote that shadow/AO/ambient fill have 'no reference item of their own at all'. RI-VIS04 mentions ambient occlusion or contact shadows 8 times. The corrected and checked claim is that no reference item anywhere has shadow, occlusion, lighting or ambient in its title - they are judged only as rows inside RI-VIS04 and RI-VIS03."
+  ],
+  "did_not_touch": ["orchestration/ROADMAP.md", "orchestration/roadmap.json"],
+  "deliverables": {
+    "coverage_matrix_json": "reports/roadmap-audit/coverage.json",
+    "coverage_matrix_md": "reports/roadmap-audit/coverage.md",
+    "narrative_report": "reports/roadmap-audit/AUDIT.md",
+    "generator": "reports/roadmap-audit/build-coverage.mjs"
+  },
+  "headline_numbers": {
+    "reference_items": 149,
+    "plans": 49,
+    "open_gaps": 79,
+    "gap_severities": {"critical": 1, "blocking": 53, "major": 23, "high": 2},
+    "closed_gaps": 0,
+    "verdicts_parsed": 85,
+    "ref_items_never_judged": 38,
+    "ref_items_judged_below_bar": 59,
+    "ref_items_judged_at_or_above_bar_at_least_once": 52,
+    "proposed_roadmap_items": 69,
+    "uncovered_against_proposed_structure": {"reference_items": 0, "plans": 0, "open_gaps": 0},
+    "old_roadmap_items_with_no_home": 14,
+    "old_roadmap_ref_items_homeless": 35,
+    "old_roadmap_open_gaps_homeless": 20,
+    "dependency_edges_recorded": 21,
+    "dependency_order_violations_in_proposed_order": 0,
+    "dependency_order_violations_in_my_first_draft": 7
+  },
+  "top_findings": [
+    "The Morrowind-half / Souls-half split is not a work breakdown. 41 of 149 reference items (27.5%) are side neutral, split or modern-fidelity and belong to neither half; the 4 explicitly split items are each one piece of work the split cuts in two.",
+    "14 of 69 proposed items had NO home in the condemned roadmap, carrying 35 reference items and 20 open gaps. Biggest: the camera (7 RI items, plan W1-06, grep 'camera' = 1 hit and it is inside a quote about evidence method), character creation as a scene, the main quest (grep 'main quest' = 0), travel and transport (0), inventory and equip load (0), endings (0 as a game ending), pacing (0).",
+    "At least 13 of 79 open gaps by mechanical regex - closer to 25 by hand - are 'built, correct, connected to nothing', not 'unbuilt'. 87 movesets unreachable, 1150 animation clips undrawn, 37819 words of readable text with no reader (the only critical gap), the Writ House rendering nothing, four audio emitters producing no sound. Wiring what exists is the cheapest visible progress available and deserves to be a first-class kind of increment.",
+    "The bar is measurably insufficient for graphics: 11 reference items judge 25 render.* subsystem paths (0.44 per path, against combat 0.94 and world 1.22); 3 of those 11 have never been judged and RI-VIS02 scored 0/10; and no reference item anywhere has shadow, occlusion, lighting or ambient in its title, though 5 of 5 blind judges named contact shadow and AO.",
+    "Phase V's real defect was not lateness - the directive was honoured in the live queue - but that it was written as a status table rather than ordered increments, so no reader could say which step delivers V8 or V13.",
+    "Save/load and controls are not late-phase platform chores: three blocking gaps make them preconditions of every progression and economy verdict. Stealth depends on interior lighting (71.8% of interior cells read L = 1.0000), which is the strongest gameplay-grounds argument in the repo for the graphics-first directive."
+  ],
+  "files_touched": [
+    "orchestration/status/ROADMAP-COVERAGE-AUDIT.json",
+    "reports/roadmap-audit/build-coverage.mjs",
+    "reports/roadmap-audit/coverage.json",
+    "reports/roadmap-audit/coverage.md",
+    "reports/roadmap-audit/AUDIT.md"
+  ],
+  "files_claimed": ["reports/roadmap-audit/"],
+  "next_step": "Orchestrator writes the replacement orchestration/ROADMAP.md from reports/roadmap-audit/AUDIT.md section 5 and 7. If any proposed item is renamed, merged or split, re-run node reports/roadmap-audit/build-coverage.mjs after editing its ITEMS table so coverage stays proven rather than asserted."
 }

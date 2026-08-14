@@ -1,8 +1,8 @@
 # Coverage matrix — inventory on disk → proposed roadmap items
 
-> **GENERATED.** Regenerate with `node reports/roadmap-audit/build-coverage.mjs`.
-> Canonical data: `reports/roadmap-audit/coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-14T18:09:10.581Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
+> Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
+> Generated 2026-08-14T18:14:43.519Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
@@ -29,9 +29,9 @@
 |---|---|---|---|---|---|---|---|
 | `G1` | The camera | RI-CMB06 RI-CAM01 RI-CAM02 RI-CAM03 RI-CAM04 RI-CAM05 RI-CAM06 RI-CAM07 | RI-CAM03 RI-CAM04 | 0 (0) | W1-06 | built_below_bar | **none** |
 | `F1` | Materials and surface response | — | — | 2 (1) | W1-30 W1-30C W1-30S | planned_unjudged | V1 |
-| `F2` | Shadow, contact and ambient occlusion | — | — | 0 (0) | W1-30 W1-30A W1-30B W1-30S | planned_unjudged | V2 |
-| `F3` | Ambient and bounce fill | — | — | 0 (0) | W1-30 W1-30B W1-30S | planned_unjudged | V3 |
-| `F4` | Light, sky and atmosphere | — | — | 1 (0) | W1-30 W1-30B W1-30S | planned_unjudged | V4/V12 |
+| `F2` | Shadow, contact and ambient occlusion | RI-VIS03 RI-VIS04 | — | 0 (0) | W1-30 W1-30A W1-30B W1-30S | at_bar | V2 |
+| `F3` | Ambient and bounce fill | RI-VIS03 RI-VIS04 | — | 0 (0) | W1-30 W1-30B W1-30S | at_bar | V3 |
+| `F4` | Light, sky and atmosphere | RI-VIS04 | — | 1 (0) | W1-30 W1-30B W1-30S | built_below_bar | V4/V12 |
 | `F5` | The frame pipeline | RI-VIS04 | — | 0 (0) | W1-30 W1-30A W1-30S | at_bar | V5 |
 | `F6` | Terrain and vegetation surfaces | RI-WLD15 RI-WLD16 | RI-WLD15 RI-WLD16 | 0 (0) | W1-30 W1-30F | planned_unjudged | V9/V10 |
 | `F7` | The water surface | RI-WLD10 | — | 1 (1) | W1-03 W1-30 W1-30H | built_below_bar | V11 |
@@ -227,8 +227,8 @@
 | `RI-LOR08` | 60-lore | morrowind | P5 | 0 | — | never_judged |
 | `RI-VIS01` | 70-visual | neutral | I3 | 0 | — | never_judged |
 | `RI-VIS02` | 70-visual | modern-fidelity | I5 | 1 | 0 | judged_below_bar |
-| `RI-VIS03` | 70-visual | modern-fidelity | I3 | 2 | 6 | judged_at_or_above_bar |
-| `RI-VIS04` | 70-visual | modern-fidelity | F5 | 3 | 8 | judged_at_or_above_bar |
+| `RI-VIS03` | 70-visual | modern-fidelity | I3 F2 F3 | 2 | 6 | judged_at_or_above_bar |
+| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 3 | 8 | judged_at_or_above_bar |
 | `RI-VIS05` | 70-visual | morrowind | F13 | 0 | — | never_judged |
 | `RI-VIS06` | 70-visual | neutral | I3 | 4 | 5 | judged_below_bar |
 | `RI-VIS07` | 70-visual | morrowind | F13 | 1 | 4 | judged_below_bar |
