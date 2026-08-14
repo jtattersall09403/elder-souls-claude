@@ -72,7 +72,9 @@ const step = (n) => g.h('stepFrames', n);
 
 /** Read the disputed input out of the page instead of asserting it. */
 const chunkOwner = await g.page.evaluate(async () => {
-  const THREE = await import('/game/vendor/three/three.module.js');
+  // Page-relative on purpose: this tool is run against a control clone too, where the served
+  // root is <clone>/game and an absolute `/game/...` specifier would 404.
+  const THREE = await import('./vendor/three/three.module.js');
   const f = String(THREE.ShaderChunk.fog_fragment || '');
   const v = String(THREE.ShaderChunk.fog_vertex || '');
   return {

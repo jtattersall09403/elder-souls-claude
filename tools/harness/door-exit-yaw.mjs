@@ -234,7 +234,13 @@ const main = async () => {
       row.ms = Date.now() - t0;
       out.rows.push(row);
       n++;
-      if (n % 10 === 0 || list.length <= 8) say(`  ${n}/${list.length} ${id} (${row.ms} ms)`);
+      // WRITTEN AFTER EVERY ROW, not at the end. RULES.md rule 2: a partial file is a good
+      // outcome and a perfect one that was never saved is nothing. The first full-tree attempt
+      // at this sweep was killed at 35 minutes on a contended box and produced ZERO bytes,
+      // because the only write was after the loop — 35 minutes of real measurement thrown away
+      // by a line of I/O placement.
+      writeJson(jsonPath, out);
+      say(`  ${n}/${list.length} ${id} (${(row.ms / 1000).toFixed(1)} s)`);
     }
   } finally { await g.close(); }
 
