@@ -374,7 +374,9 @@ and because it shows the corrected instrument still separates the eras:
   RI-VIS03 names.
 - **The anti-reference is never regenerated.** Without `--anti`, `AT DEFAULT` cannot be computed,
   M8's floor anchor is missing, and RI-VIS03 caps the verdict at 6/10 — which the tool now
-  enforces and states in `verdict.caps`. `corpus/80-methods/make-anti-ref.mjs` does not exist yet.
+  enforces and states in `verdict.caps`. ~~`corpus/80-methods/make-anti-ref.mjs` does not exist yet.~~ **CORRECTED 2026-08-14
+(AUDIT-CITATION-STALENESS): it exists, 1 182 bytes.** Anyone reading this sentence would have
+built a second one — `COST.md` W3, duplicated build, one whole agent.
   **Until it does, no shot can score above 6.**
 - **M11 and M12 stay permanently unmeasurable** because no dolly capture and no water mask is ever
   produced, and two of twelve metrics quietly drop out of every verdict. The tool lists them in

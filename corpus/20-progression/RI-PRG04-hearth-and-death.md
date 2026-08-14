@@ -112,6 +112,24 @@ control survivability must be gated by *going places*, not by *accumulating*.
 
 ### 5. How many HEARTHs, and where
 
+> **THE COUNTS BELOW ARE SUPERSEDED BY THE BUILT PROVINCE. READ
+> `orchestration/amendments/AM-W1-13-01-prg04-spacing-table-superseded.md` BEFORE USING ANY
+> NUMBER IN THIS SECTION.** *(Pointer added 2026-08-14 by AUDIT-CITATION-STALENESS. The
+> amendment was filed by the `W1-13` round-1 critic and this item never named it, so a builder
+> who opened `RI-PRG04` — the correct thing to do, since `RI-JRN06` declares this item
+> authoritative — read the superseded table with nothing to warn them. Nothing below is deleted:
+> the original numbers are the record of what was designed before the world was built.)*
+>
+> | Quantity | This section declares | The built province measures |
+> |---|---:|---:|
+> | Critical path, unopposed | 95 min | **56.91 min** |
+> | Regions | 6 | **13** |
+> | HEARTHs | 28 | **29** |
+>
+> **No spacing RULE changes** — the amendment amends the counts, not the doctrine, and the mean
+> spacing bar below still governs. Numbers stamped at the amendment's own commit; re-derive with
+> the instrument the amendment names rather than trusting either table.
+
 The world's long axis is **≈55 minutes** of unmodified walking; the critical path traversed
 once, unopposed, is **≈95 minutes** across all six regions.
 

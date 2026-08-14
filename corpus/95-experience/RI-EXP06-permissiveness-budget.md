@@ -560,8 +560,14 @@ are close transpositions of documented Morrowind behaviour and are the strongest
 are constructed from existing corpus rules (`S9`, `RI-LOR03`, `RI-EXP01` hard fail 5) and are safe.
 B-03, B-10 and B-11 depend on rulings that exist (`S19`, `S13` as amended, `RI-AI01`) but on
 implementations that do not, and their probes may need rewriting once those systems are real.
-**B-08 is conditional and may not exist**: `corpus/25-magic/` is empty, soul gems have no ruling, and
-`S15` is close enough to the question that a reasonable magic item could rule enchanting-by-soul-trap
+~~**B-08 is conditional and may not exist**: `corpus/25-magic/` is empty, soul gems have no ruling,~~
+**CORRECTED 2026-08-14 (AUDIT-CITATION-STALENESS): both halves of that condition are false and have
+been for some time.** `corpus/25-magic/` holds **six reference items** — `RI-MAG01`–`RI-MAG06` —
+plus a `data/` directory; and magic *does* have a ruling: **`S19`**, which this same paragraph cites
+two lines above as an existing ruling that B-03/B-10/B-11 depend on. The paragraph contradicted
+itself within four lines. **B-08 is therefore not conditional on the existence of a magic corpus.**
+What survives, and is the only live part of the condition: `S15`
+is close enough to the question that a reasonable magic item could rule enchanting-by-soul-trap
 out entirely. It is included with its condition stated rather than quietly assumed, and the register
 carries three entries of margin above the floor for exactly this reason.
 
