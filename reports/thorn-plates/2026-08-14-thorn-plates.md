@@ -239,3 +239,35 @@ bollards and a moored hull). **Thorn's Tidewrack quay — the first exterior in 
 has none of them**, and every one is a tweak-and-place rather than a rebuild.
 
 ---
+
+## 4. The gap, on axes that can be built against
+
+Ruling W2 binds: *a chart is not the thing; telling apart is not liking.* Every row below is a
+buildable difference, not a score. **A statistic may fail this town and can never pass it.**
+
+| axis | target, and where it comes from | Thorn today | the gap, stated as work |
+|---|---|---|---|
+| **roof profiles** (Ruling E1 — silhouettes, not parts) | ≥ 5 | **2** (`roof.reed` ×13, `roof.hip` ×5) | The whole renderer defines **three** roof ids (`roof.reed`, `roof.hip`, `roof.shell`), so ≥5 is **unreachable by construction** for every town. Thorn's own document names the profile that is missing and that nothing else would share: **black needle-wood thatch laid in courses.** |
+| **tideline treatment** | REF-A19: stilted shacks standing in water, piles, a moored hull, a wet line on everything | **none.** `tideline` is a real grammar property in `lib/kits.js` and **only `lilmoth` sets it** (`tideline: 1.45`, `drownedRole: 'stone'`) | The first exterior in the game is a **quay**, and it has no tideline. The code path exists, is proven on Lilmoth, and is a two-field grammar change plus materials. `exterior.js:1608`'s comment — *"it is deliberately the starting town's"* — was written when Lilmoth was believed to be the starting town. |
+| **quay vocabulary** | REF-A19 (moored longboat, stilts), REF-A11 (boardwalks, standing water) | `tidewrack-quay` holds **2 buildings and no props at all**; both buildings reuse other meshes (`tavern-1-barge-hold`, `shop-2-writ-house`) | Six ready parts exist next door: `lil_pile_cluster`, `lil_stilt_platform`, `lil_tide_mark`, `lil_boom_chain`, `lil_customs_hall`, `sou_silt_quay`. Directive §3 reuse, not a rebuild. |
+| **silhouette variety** | REF-A19's built form: shacks of visibly different heights and lean | 17 distinct silhouettes over 18 buildings, but from 2 roofs and 2 storey counts | The variety is in footprint and height, not in **profile**. From a distance the skyline is one shape repeated. |
+| **verticality** | REF-A19 plates run sky fraction 0.32–0.80 with relief σ 0.23–0.33 | the quay sits at **y ≈ 0** and the town at **y = 13.31 m**, about 50 m apart — a ~15% grade the player climbs on their first walk; roofline heights span **3.4 – 9.0 m** | The verticality is **already in the data and nothing makes it read**. Free win: frame the approach so the town stands above the quay. |
+| **the thicket** | the town's own document: *"a thicket you walk into and cannot see out of"* | `thornmarsh` terrain is `thorn-islands` with `depth: 'hook-arch-thickets'` (`world-art.js:17`); no settlement-scale enclosure | Nothing currently closes the sky over the streets. This is the town's single strongest identity line and it is unbuilt. |
+| **material response** | **n = 0, and honestly so** | not measurable here | `pixel_metrics_valid: false` on all 89 Morrowind plates (RI-VIS09 §3.3), so **no plate may ever be a material-response target**, and my frames are software-rendered. This axis has **no reference and no measurement** and is recorded unset rather than guessed. |
+| **the read from eye height** | REF-A19 is eye-height waterside framing | frames captured, §3a/§5 | Ruling W2: this is the row a person answers, and chunk 2 owes it. |
+
+---
+
+## 5. Evidence index
+
+| what | where |
+|---|---|
+| The plates that are the target | `corpus/70-visual/refs/morrowind/REF-A19/REF-A19__mw-fullframe-*.jpg` (6), `REF-A11/REF-A11__mw-fullframe-*.jpg` (3) |
+| Supporting landscape plates | `corpus/70-visual/refs/morrowind/REF-A21-regions/bitter_coast__*.jpg` (3), `REF-A23-ground/bitter_coast__mw-56965694.jpg` |
+| The composition-valid rule | `docs/art-direction/ART.md` §5; RI-VIS09 §3.3 |
+| Silhouette / roof-profile census, all eight towns | `reports/thorn-plates/thorn-baseline.json` |
+| Our Thorn frames, statistics | `reports/thorn-plates/thorn-frames-baseline.json` |
+| Our Thorn frames, PNGs | `reports/thorn-plates/frames/` (untracked by `reports/.gitignore`), selection copied to `docs/shots/2026-08-14-thorn-plates/` |
+| The played opening | `reports/thorn-plates/frames/opening/` and `reports/thorn-plates/capture.log` |
+
+---
