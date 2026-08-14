@@ -341,6 +341,13 @@ function validateCriticVerdict(v, E, W) {
     for (const r of v.reference_items) {
       const tag = r.id || '(no id)';
       if (!/^RI-[A-Z]+\d+$/.test(r.id || '')) E(`reference_items ${tag}: id must look like RI-CMB03`);
+      // `not_read` belongs to a blind judgement, which is DEFINED by not having read the item.
+      // A build critic that did not measure an item already has a way to say so, and it is
+      // fail-closed: `measured: "unmeasurable"` with `score_0_10: 0`. Letting a critic declare an
+      // item unread would be a route around scoring it.
+      if (r.not_read || (typeof r.path === 'string' && LEGACY_NOT_READ.test(r.path))) {
+        E(`reference_items ${tag}: a critic verdict may not declare an item unread. \`not_read\` is a blind judgement's field — a judge is quarantined from the item its pack serves. A critic that could not measure this item records \`measured: "unmeasurable"\` with \`score_0_10: 0\` (fail-closed), not a non-reading.`);
+      }
       if (!r.path || !resolveCitedPath(ROOT, r.path).ok) E(`reference_items ${tag}: path "${r.path}" does not exist`);
       if (!ENUM.side.includes(r.side)) E(`reference_items ${tag}: side "${r.side}" invalid`);
       if (!ENUM.kind.includes(r.kind)) E(`reference_items ${tag}: kind "${r.kind}" invalid`);
@@ -544,7 +551,11 @@ function validateCriticVerdict(v, E, W) {
   if (!g) {
   } else {
     if (!/^GAP-W\d+-[a-z0-9-]+$/.test(g.gap_id || '')) E(`biggest_gap.gap_id "${g.gap_id}" must match GAP-W<wave>-<slug>`);
-    if (g.subsystem_path && !canonical.has(g.subsystem_path) && !aliases[g.subsystem_path]) E(`biggest_gap.subsystem_path "${g.subsystem_path}" is not canonical`);
+    if (g.subsystem_path) {
+      const issue = subsystemPathIssue(g.subsystem_path);
+      if (issue && issue.level === 'error') E(`biggest_gap.subsystem_path ${issue.m}`);
+      else if (issue) W(`biggest_gap.subsystem_path ${issue.m}`);
+    }
     for (const k of ['what', 'why_it_matters']) if (!g[k]) E(`biggest_gap.${k} required`);
     if (!Array.isArray(g.evidence) || g.evidence.length === 0) E('biggest_gap.evidence[] required');
     checkEvidence(g.evidence, 'biggest_gap');
