@@ -1,91 +1,631 @@
 {
-  "schema": "elder-souls/production-asset-manifest@1",
+  "schema": "elder-souls/production-asset-manifest@2",
+  "generated_by": "node tools/assets/check-material-coverage.mjs --write",
+  "build_spec": "tools/assets/material-library.json",
   "licence": {
-    "id": "CC0-1.0",
+    "licence": "CC0-1.0",
     "source": "https://polyhaven.com/license",
-    "note": "Poly Haven states that all library assets are released under CC0 and may be used and redistributed commercially."
+    "note": "Poly Haven releases all library assets under CC0 and permits commercial use and redistribution.",
+    "api": "https://api.polyhaven.com/files/<slug>",
+    "maps": [
+      "Diffuse",
+      "nor_gl",
+      "Rough"
+    ],
+    "resolution": "1k",
+    "format": "jpg"
   },
-  "transformation": "Official 1K JPEG diffuse, roughness and OpenGL-normal derivatives downloaded unchanged from the Poly Haven public asset API. Each runtime detail map is derived from diffuse with ffmpeg `format=gray,lut=y='clip(238+(val-128)*0.10,226,252)'`, retaining scanned frequency while neutralising colour so Elder Souls regional tint remains authoritative.",
+  "conversion": {
+    "albedo": "ffmpeg -i <diffuse> -vf scale=1024:1024,eq=saturation=0.55 -q:v 4 <slug>_albedo_1k.jpg",
+    "normal": "ffmpeg -i <nor_gl> -vf scale=1024:1024 -q:v 3 <slug>_normal_1k.jpg",
+    "rough": "ffmpeg -i <rough> -vf format=gray,scale=512:512 -q:v 5 <slug>_rough_512.jpg",
+    "why_desaturated": "The source sets carry their own strong colour identity (rusty orange, red leather). Black Marsh's regional palette must lead, so albedo is desaturated to 0.55 at conversion: pigment variation survives, the source's colour opinion does not. The former pipeline went further and neutralised colour entirely, which is one reason the province reads as grey.",
+    "why_rough_at_512": "Roughness is a low-frequency signal; halving it costs nothing visible and takes the whole library under the 320 MB high-tier texture budget without a KTX2 toolchain."
+  },
+  "ktx2": {
+    "state": "deferred",
+    "reason": "Neither basisu nor toktx is installed on this host and neither is vendorable as a build dependency here. The budget is met without them by keeping roughness at 512 (see conversion.why_rough_at_512); the measured high-tier figure is recorded below. Reversal is one command per file once a KTX2 encoder exists.",
+    "measured_high_mb": 281.3,
+    "measured_medium_mb": 70.3,
+    "budget_high_mb": 320,
+    "budget_medium_mb": 120
+  },
+  "families": {
+    "mud": "brown_mud",
+    "wet_mud": "mud_forest",
+    "bark": "bark_brown_01",
+    "leaf": "forest_leaves_02",
+    "reed": "reed_roof_04",
+    "root": "roots",
+    "timber": "dark_wooden_planks",
+    "clay": "clay_plaster",
+    "stone": "plastered_stone_wall",
+    "salt": "white_plaster_rough_01",
+    "bone": "marble_01",
+    "chitin": "chitin_plates",
+    "resin": "resin_flow",
+    "cloth": "rough_linen",
+    "skin": "brown_leather",
+    "metal": "rusty_metal_04",
+    "water": "water_ripple",
+    "shell": "shell_floor_01",
+    "thorn": "bark_willow",
+    "wet_chitin": "chitin_plates"
+  },
   "assets": [
     {
-      "id": "brown_mud",
-      "source": "https://polyhaven.com/a/brown_mud",
-      "author": "Rob Tuytel",
-      "format": "JPEG",
-      "dimensions": [1024, 1024],
-      "maps": {
-        "diff": {"sha256": "df3f135c899f10a3b018738343b222cbc67d13e7c76c5d8da834a3d34c984417"},
-        "detail": {"sha256": "9588d28c77349f2c4caa22b503da68da879cdbe1c3774686d37db267e1e7399d"},
-        "rough": {"sha256": "ae9fb57c1173ccb4579f40edf8321a30bdca815042ffd72015a2a707c7e2e7ba"},
-        "nor_gl": {"sha256": "ac517ca39eb507ae0f27e2b3db431c60888f9b5c3c52bec49d2c0775da0920cb"}
-      },
-      "consumers": ["mud", "wet_mud", "province terrain", "arena ground", "interior floors"]
-    },
-    {
       "id": "bark_brown_01",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
       "source": "https://polyhaven.com/a/bark_brown_01",
       "author": "Rob Tuytel",
-      "format": "JPEG",
-      "dimensions": [1024, 1024],
+      "why": null,
+      "consumers": [
+        "bark"
+      ],
       "maps": {
-        "diff": {"sha256": "4213441aebcb72b9911f5a860e9ce74a61a8f6ce3b9c23d1f204173e7e7f6066"},
-        "detail": {"sha256": "a13ac234c57bcb44559bb277ebfec14529e7383ce068ad5530b77c4e1b1098d0"},
-        "rough": {"sha256": "4e7f62508cf77faebfeee15ffb571ff02c45c18d5174aa19fcb8b98506359c5c"},
-        "nor_gl": {"sha256": "9d1537b3429579436a62890bb7c5050a0172a15ce768787eacde81c5ccefc9cc"}
-      },
-      "consumers": ["bark", "root", "timber", "thorn", "flora trunks", "architecture", "props", "weapon hafts"]
+        "albedo": {
+          "file": "bark_brown_01_albedo_1k.jpg",
+          "sha256": "8df9e85ee29620d325d69710f6c815f790c7871b9ea08909a28e4c5229616547",
+          "bytes": 286017
+        },
+        "normal": {
+          "file": "bark_brown_01_normal_1k.jpg",
+          "sha256": "551de51ab7fd2d02d1bf1c9fc5c2654b0cc5fd273ef0c3160b8ab0e94623c207",
+          "bytes": 873762
+        },
+        "rough": {
+          "file": "bark_brown_01_rough_512.jpg",
+          "sha256": "e39a7f7e59a96d61bb1c376e89ef08f2e4bfe2f6fee13c1b975125e2213242ea",
+          "bytes": 11864
+        }
+      }
+    },
+    {
+      "id": "bark_willow",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/bark_willow",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "thorn"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "bark_willow_albedo_1k.jpg",
+          "sha256": "e99e4b4778c16b34fb16f6f1d9c3772ca6bdb58e2b38d8a44e0cd48569d6f4c1",
+          "bytes": 137726
+        },
+        "normal": {
+          "file": "bark_willow_normal_1k.jpg",
+          "sha256": "fba2ad32ff4b9187e8a21647eacb9a0939d7e673c238eef48bff2f86e5a6fe0e",
+          "bytes": 580033
+        },
+        "rough": {
+          "file": "bark_willow_rough_512.jpg",
+          "sha256": "652b149908e63162a7ea3f3058cc9693eacb1650277c4a43bc64fa40d39c6dbc",
+          "bytes": 5246
+        }
+      }
+    },
+    {
+      "id": "brown_leather",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/brown_leather",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "skin"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "brown_leather_albedo_1k.jpg",
+          "sha256": "5adf45c3200064f0be010bb0c22d0161714b15eb526d4d5e6f73544fb33e9e74",
+          "bytes": 140837
+        },
+        "normal": {
+          "file": "brown_leather_normal_1k.jpg",
+          "sha256": "c8487ac854c3e249623f0f9b84a16c80d3d7262c516fdf6e5f4744e4e5ac4801",
+          "bytes": 553360
+        },
+        "rough": {
+          "file": "brown_leather_rough_512.jpg",
+          "sha256": "272776f4cbec5c70c11ed94d616708690286a857ff874128ab132a5b3a215d06",
+          "bytes": 88942
+        }
+      }
+    },
+    {
+      "id": "brown_mud",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/brown_mud",
+      "author": "Rob Tuytel",
+      "why": null,
+      "consumers": [
+        "mud"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "brown_mud_albedo_1k.jpg",
+          "sha256": "018a96ce4d9912e301e75a579ac86b4039c4f430d88d4b8b6934d7e14d8c0a55",
+          "bytes": 177679
+        },
+        "normal": {
+          "file": "brown_mud_normal_1k.jpg",
+          "sha256": "6fe795ab60eb264c069c5c257f064f214c1ed943585e55fe37c88ef1397e63b4",
+          "bytes": 719053
+        },
+        "rough": {
+          "file": "brown_mud_rough_512.jpg",
+          "sha256": "559b1844c59709c40a45521ce39b4b09b1d37666c16224d651acfa4a334a60ad",
+          "bytes": 24297
+        }
+      }
+    },
+    {
+      "id": "chitin_plates",
+      "kind": "synth",
+      "licence": "project-generated (tools/assets/synth-materials.mjs)",
+      "source": "tools/assets/synth-materials.mjs",
+      "author": "Elder Souls W1-30C",
+      "why": "No CC0 set in the corpus reads as insect carapace. Voronoi plate cells with a bevelled rim and per-cell gloss, synthesised by tools/assets/synth-materials.mjs. Recorded as a substitution under W1-30C's stop condition.",
+      "consumers": [
+        "chitin",
+        "wet_chitin"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "chitin_plates_albedo_1k.jpg",
+          "sha256": "5107e6557034c980cb46b39d8d07d42358ce72729d82e2a9aa367143b331e060",
+          "bytes": 38064
+        },
+        "normal": {
+          "file": "chitin_plates_normal_1k.jpg",
+          "sha256": "a377f7a2dd2924e69a482c119bc9cd7ac11e74826b74d4e9562f1e2a34a77207",
+          "bytes": 123371
+        },
+        "rough": {
+          "file": "chitin_plates_rough_512.jpg",
+          "sha256": "57f05619482f465a26c23cfd881526e131e8414ac263214a7926783f41b7c005",
+          "bytes": 11583
+        }
+      }
+    },
+    {
+      "id": "clay_plaster",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/clay_plaster",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "clay"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "clay_plaster_albedo_1k.jpg",
+          "sha256": "a2c10de7597e3faac954fa32b216034e860292be1b145de7dd506a0737e5bc9e",
+          "bytes": 11707
+        },
+        "normal": {
+          "file": "clay_plaster_normal_1k.jpg",
+          "sha256": "db080cb625d7c942b19a5e6bc61217103ff8c4bf42178d279e7f096c780ffcf7",
+          "bytes": 137277
+        },
+        "rough": {
+          "file": "clay_plaster_rough_512.jpg",
+          "sha256": "db4920047bd2da64e847f445a41326f18d3fb07e55956709479f477710b77cc0",
+          "bytes": 6741
+        }
+      }
+    },
+    {
+      "id": "dark_wooden_planks",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/dark_wooden_planks",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "timber"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "dark_wooden_planks_albedo_1k.jpg",
+          "sha256": "cb25bded986e9bce0ed8019ba0a05770917e808ac051e5f37437641f1af95bef",
+          "bytes": 104101
+        },
+        "normal": {
+          "file": "dark_wooden_planks_normal_1k.jpg",
+          "sha256": "8c8830df83ce6cca4ce97d8b2d831e6fad6d1fa6579415a88de635c1ee004fee",
+          "bytes": 98746
+        },
+        "rough": {
+          "file": "dark_wooden_planks_rough_512.jpg",
+          "sha256": "ee3f6a2688c124037710d8b6feb7a908c8fc6ec8526b64ed0900517966c73d5b",
+          "bytes": 27868
+        }
+      }
+    },
+    {
+      "id": "forest_leaves_02",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/forest_leaves_02",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "leaf"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "forest_leaves_02_albedo_1k.jpg",
+          "sha256": "1306af3ff809dd444a5b7f9c4ed736b6793abefbb34b23a759dcd1ae81e11e1e",
+          "bytes": 352118
+        },
+        "normal": {
+          "file": "forest_leaves_02_normal_1k.jpg",
+          "sha256": "d4505d6d89a41b9bba647ed4af439dfecc0e6a9726e1e91fb2c8683b3a127bf9",
+          "bytes": 561545
+        },
+        "rough": {
+          "file": "forest_leaves_02_rough_512.jpg",
+          "sha256": "7551e0d87c63340751167aadea90b9aa3cd3e74ce92635d7d7ec62abcd6d70dd",
+          "bytes": 26397
+        }
+      }
+    },
+    {
+      "id": "marble_01",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/marble_01",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "bone"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "marble_01_albedo_1k.jpg",
+          "sha256": "e0f36083d2b6865564ae01c80e78c52d2749076581d981a8a320949c4d804253",
+          "bytes": 66828
+        },
+        "normal": {
+          "file": "marble_01_normal_1k.jpg",
+          "sha256": "6c9bbf113f8c4c63b115aa698a6c73219eba9d43538e1156aef6b03462aacfea",
+          "bytes": 25021
+        },
+        "rough": {
+          "file": "marble_01_rough_512.jpg",
+          "sha256": "ceab6f97095a3fd84ca0ede2e8d35efafbcdd8054d707bd484eca4d3fc84d3c5",
+          "bytes": 8902
+        }
+      }
+    },
+    {
+      "id": "mud_forest",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/mud_forest",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "wet_mud"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "mud_forest_albedo_1k.jpg",
+          "sha256": "73e6fac1ebf683715359b2b329f1732c58790e9af92e7ef4f0bd3ca122ec7539",
+          "bytes": 197621
+        },
+        "normal": {
+          "file": "mud_forest_normal_1k.jpg",
+          "sha256": "a31d23b01cda4b5f77091260f38df092ad708e0fb5ef793f5ba3ed37bb92f9dc",
+          "bytes": 599987
+        },
+        "rough": {
+          "file": "mud_forest_rough_512.jpg",
+          "sha256": "88fdb189eeef46756753c8528e0dd4eebbb66ccdd1be96acc0498113bd6ee9de",
+          "bytes": 3925
+        }
+      }
     },
     {
       "id": "plastered_stone_wall",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
       "source": "https://polyhaven.com/a/plastered_stone_wall",
       "author": "Rob Tuytel",
-      "format": "JPEG",
-      "dimensions": [1024, 1024],
+      "why": null,
+      "consumers": [
+        "stone"
+      ],
       "maps": {
-        "diff": {"sha256": "b86e9a408aac5b493c31a4ec221e5022b0b704d2f51596006f7d6840a6a3300a"},
-        "detail": {"sha256": "6caabe7b6090b79c0eb045081112b837443b195f75cd0a56342d8e2cddba9cfd"},
-        "rough": {"sha256": "978bd1d9f8d4132564d40375f705975e897ca588c2d756e6257f68946651bab0"},
-        "nor_gl": {"sha256": "c64dc8d1ad382b8832e430e738f099343ed959b7ae7d9390919a497536d1191e"}
-      },
-      "consumers": ["stone", "clay", "salt", "settlement shells", "interior shells", "rocks", "bridges"]
+        "albedo": {
+          "file": "plastered_stone_wall_albedo_1k.jpg",
+          "sha256": "d436d581a4683ec00b5b5f75f40d83dc7d337db48c23c7b37e32d8a4f361c2b2",
+          "bytes": 103483
+        },
+        "normal": {
+          "file": "plastered_stone_wall_normal_1k.jpg",
+          "sha256": "cc37c77f8487636a646710861641b95aa8ea381f7603632d4af373bdceec2a4b",
+          "bytes": 309367
+        },
+        "rough": {
+          "file": "plastered_stone_wall_rough_512.jpg",
+          "sha256": "bf6fd181e4637700b4af656f8c5530ba2da8d90269949b229479d215b7b24fe3",
+          "bytes": 8860
+        }
+      }
+    },
+    {
+      "id": "reed_roof_04",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/reed_roof_04",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "reed"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "reed_roof_04_albedo_1k.jpg",
+          "sha256": "19c45957d81268323b8b27ebfc9e365b0c359ccece2102f2f0c76d4613ae534f",
+          "bytes": 316095
+        },
+        "normal": {
+          "file": "reed_roof_04_normal_1k.jpg",
+          "sha256": "1e38c2ae1fff41884dcfc8f8392d8884b04ef6c92d772275908ff908bbbbb0f4",
+          "bytes": 908179
+        },
+        "rough": {
+          "file": "reed_roof_04_rough_512.jpg",
+          "sha256": "b7138164e6bb09a2fff2e01557ab299a49023df5e6ad41e7f735d08c3b8847b4",
+          "bytes": 25827
+        }
+      }
+    },
+    {
+      "id": "resin_flow",
+      "kind": "synth",
+      "licence": "project-generated (tools/assets/synth-materials.mjs)",
+      "source": "tools/assets/synth-materials.mjs",
+      "author": "Elder Souls W1-30C",
+      "why": "No CC0 set reads as sap resin. Flow-banded surface with bubble cavities, same script, same reason.",
+      "consumers": [
+        "resin"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "resin_flow_albedo_1k.jpg",
+          "sha256": "51e26c0373249862bcd7541ed708e03239f5c455236a938c0e6671900a14fa32",
+          "bytes": 56243
+        },
+        "normal": {
+          "file": "resin_flow_normal_1k.jpg",
+          "sha256": "5c0ba0b5bac86b66ea9e11e4e7dde3d32ed120f7b0cf4dbf3432cb69e9a86fd0",
+          "bytes": 98119
+        },
+        "rough": {
+          "file": "resin_flow_rough_512.jpg",
+          "sha256": "7f4d9989e825a14cf0aebc081eb8f865cdd37f42d14d18fc3d7be3ede0e008ff",
+          "bytes": 11663
+        }
+      }
+    },
+    {
+      "id": "roots",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/roots",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "root"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "roots_albedo_1k.jpg",
+          "sha256": "f2d8864372d612cfceb0cbcdd5661b9481761112f115de47742df6b5ae54379a",
+          "bytes": 187218
+        },
+        "normal": {
+          "file": "roots_normal_1k.jpg",
+          "sha256": "ea06110745afdc7c5e794312a6f6aba23b2cea7e9bbc9fc5308c8205204e76a3",
+          "bytes": 515639
+        },
+        "rough": {
+          "file": "roots_rough_512.jpg",
+          "sha256": "93941019399dbffc03c122f10e1d3bb104cd3554199ad6ca61a9a4441ad01081",
+          "bytes": 3850
+        }
+      }
+    },
+    {
+      "id": "rough_linen",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/rough_linen",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "cloth"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "rough_linen_albedo_1k.jpg",
+          "sha256": "4c1ddaf1e098ad9e77259c1abe0cb314e028f984727f90cdf1e50b5c4c86c45b",
+          "bytes": 156115
+        },
+        "normal": {
+          "file": "rough_linen_normal_1k.jpg",
+          "sha256": "34f3c619222421f980f61fd12e112918a5233c5cdbba0d53394c8ad32a635671",
+          "bytes": 211230
+        },
+        "rough": {
+          "file": "rough_linen_rough_512.jpg",
+          "sha256": "acc73e5b21ee68c1cb5fe55a49959e95769b74ef18dd040aab9729eedfe6dd98",
+          "bytes": 50659
+        }
+      }
+    },
+    {
+      "id": "rusty_metal_04",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/rusty_metal_04",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "metal"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "rusty_metal_04_albedo_1k.jpg",
+          "sha256": "3d9a57ed45a640a2ee8d706313ad2d1442f463b0c2f813c145bb89b03550cf8a",
+          "bytes": 194516
+        },
+        "normal": {
+          "file": "rusty_metal_04_normal_1k.jpg",
+          "sha256": "2013720f751b26ed84561d55d540b38d9cd9d4834fe827260825a5bbf8317f1d",
+          "bytes": 210343
+        },
+        "rough": {
+          "file": "rusty_metal_04_rough_512.jpg",
+          "sha256": "bee2ef0041df0c7d2038ec22b2d0355db0b4935b25830a0eba78c671e94689eb",
+          "bytes": 39306
+        }
+      }
+    },
+    {
+      "id": "shell_floor_01",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/shell_floor_01",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "shell"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "shell_floor_01_albedo_1k.jpg",
+          "sha256": "6ba1e42c18a9c1f34eba3ef97baafc84728b6fd38c107bccbcb3c57010760158",
+          "bytes": 299396
+        },
+        "normal": {
+          "file": "shell_floor_01_normal_1k.jpg",
+          "sha256": "a95973bf3a75b5edcef43f4617e8f49a2ee89a692ae330735c740f717b5c74b6",
+          "bytes": 989526
+        },
+        "rough": {
+          "file": "shell_floor_01_rough_512.jpg",
+          "sha256": "e1fc83bbf0e53d6760412ac951c6c795e67e210ecbf4f52ced22178e423466c6",
+          "bytes": 27392
+        }
+      }
+    },
+    {
+      "id": "water_ripple",
+      "kind": "synth",
+      "licence": "project-generated (tools/assets/synth-materials.mjs)",
+      "source": "tools/assets/synth-materials.mjs",
+      "author": "Elder Souls W1-30C",
+      "why": "Water's appearance is owned by the surface shader (W1-30H after the W1-30S seam). C supplies only a ripple normal so the shader has a high-frequency term to break its specular lobe.",
+      "consumers": [
+        "water"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "water_ripple_albedo_1k.jpg",
+          "sha256": "7ac0317ea92542526dd62dc4d0c7b24a1d34167fed12d6010a8e9b64998f147d",
+          "bytes": 3277
+        },
+        "normal": {
+          "file": "water_ripple_normal_1k.jpg",
+          "sha256": "e8e7eeffb6f76f9f64d3ef606282c6444b5b6cecd7df39c864d7a7403bd36b16",
+          "bytes": 57942
+        },
+        "rough": {
+          "file": "water_ripple_rough_512.jpg",
+          "sha256": "fd99aea3e3a60f222234ab479ccce99de87a631e2d2cf583a43de06fc97a146a",
+          "bytes": 1938
+        }
+      }
+    },
+    {
+      "id": "white_plaster_rough_01",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/white_plaster_rough_01",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "salt"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "white_plaster_rough_01_albedo_1k.jpg",
+          "sha256": "c8dfb48f8b456ddea285a721317beaa9fd305b7131cfa4d4dde9f2c6859ef4a9",
+          "bytes": 250535
+        },
+        "normal": {
+          "file": "white_plaster_rough_01_normal_1k.jpg",
+          "sha256": "86d29ed17566c5cd46f0d87aaa0c233ba78da1ee5a62f777a92400cc1ece0129",
+          "bytes": 154993
+        },
+        "rough": {
+          "file": "white_plaster_rough_01_rough_512.jpg",
+          "sha256": "adb612ffeaf3e1a576bdc2445d88299a4789587ad623553eb8ede39dfe4d3bfd",
+          "bytes": 58102
+        }
+      }
     }
   ],
-  "generated_asset": {
-    "id": "black_marsh_surface_atlas_01",
-    "source": "OpenAI built-in image generation, generated for this repository on 2026-08-12",
-    "source_sha256": "8a5ff48b67b1b47b708078fdcf8982b5ba656c5802e940733b6616d1bd5feb3b",
-    "licence": "project-owned generated production asset; no third-party input image",
-    "prompt": "Square 4-by-4 orthographic, neutral-lit Black Marsh material atlas: leaf, reed, woven reed cloth, leather, reptile skin, chitin, resin, bone, iron, weapon grip, bronze, volcanic stone, roots, clay, salt limestone and muddy cobbles; no labels, objects, perspective, baked shadows or watermark.",
-    "transformation": "Generated 1254x1254 PNG resized to 1024x1024 with ffmpeg, split on the exact 4x4 grid into 16 256x256 JPEG source tiles (`scale=1024:1024,crop=256:256:x:y`, q:v 3). Seven admitted consumers receive a neutral detail derivative (`format=gray,lut=y='clip(232+(val-128)*0.16,218,252)'`) so regional colour remains authoritative. Runtime height, roughness and AO remain independent.",
-    "production_consumer": "semantic material registry; generated albedo is admitted only for leaf, reed, cloth, chitin/wet_chitin, resin, bone/shell and metal",
-    "format": "JPEG",
-    "dimensions": [256, 256],
-    "maps": {
-      "bone": "def781cd32c6be94451493607add5ac01dabbd704506cc9bf56ec871875c1198",
-      "bronze": "5a81c7357969839368deffebf1b8c053007fd416e90e85b8e1257807319a07be",
-      "chitin": "684c56fa345f5a7b01ca7056d6af3c536daca79436d1a6906315663cc57e9be8",
-      "clay": "e7216e16817b4ecee056446bbfa8d6c860173290e8986f0a36c4d32a10bfbe78",
-      "cloth": "24098d4d7a27d61cb49005ce6a3298953977698cf6081187fce06a50e5f75e24",
-      "cobble": "987228a28cec135375c66080be10a6509537c41a464d2142e9335be31df586a7",
-      "grip": "53b29d045b91ccc5eb654c4b4e12d6f741c02130a1ff6a60f268d731e8fb84e7",
-      "leaf": "340768f1632c280266a5a72fa956d16d6e9df2903fa7a958bb4663ccc2494b4d",
-      "leather": "dcca06d8c382c7458dc1e18d4a9e17cdd95e7ae179eadacbde0def7a8773830d",
-      "metal": "0e61a90da6fe4dc9a4106cb42a069571115396e36c847a9c30d2ebfdc9acc787",
-      "reed": "90dd13b5808e358840d64b57b09e3131f6e90a250b151ff02d030fa8c155c40c",
-      "resin": "bbb2b33d568babad810666631739cd9766eb62f7c0dd68d62604e2b48f5a527b",
-      "root": "22f632f5d1051edd467fc20be2e608703a1c2cb707277fe4363109e32b15848a",
-      "salt": "f531aa81cc31cff1bc269bdf80fd113f950545c2bbad506876e1c4fe04e19868",
-      "skin": "9bcc0120298010893046acab5457ac121da5e65c3bfc03f242fb3806207d683b",
-      "volcanic_stone": "773ba98cd76f036a8e483b009ee153f49bc05d700d07357c493a16d2e1c879b9"
+  "shared": {
+    "detail_normal_organic": {
+      "file": "detail/detail_normal_organic_512.jpg",
+      "sha256": "7ccd089045e7b941d5212b5e1950c6fe997be09a20b06edf5f3f024296845dee",
+      "bytes": 208216,
+      "note": "fibrous directional grain with pores - wood, foliage"
     },
-    "runtime_detail_maps": {
-      "bone": "4a78f4ccf64f4c288782103600833a727f33a8817ff55ba9e342262b59971148",
-      "chitin": "0297a0430e17c1f28929f7839148dd94be0f89f31d70c9d5fb8047609a34386a",
-      "cloth": "3b8610554b015251422cdb710cb61a5134631c45397d1af97422b581d5c0b67a",
-      "leaf": "05cc7ab4975a2f49eb1c19f409971d990171ce29ff7ef120c82373c50187abc7",
-      "metal": "1151d1bc19d5e4704b9702a1bd84ae9de0ba734407d610b4ca1f75ee2e2c9add",
-      "reed": "46b32f81d47335b449f95e497f3d46230858cd392c618fb92654661a043dd420",
-      "resin": "16857bf3e5caec72129eff60e755901a8479f7b4fee9f30087036fa8b9b45af1"
+    "detail_normal_mineral": {
+      "file": "detail/detail_normal_mineral_512.jpg",
+      "sha256": "d597246416fd0ff29a4dd0d74e8d25adab057021b75f95ef568d18d8df8c7a05",
+      "bytes": 163688,
+      "note": "cellular pitting with sub-grain - soil, stone, salt, metal"
+    },
+    "detail_normal_fabric": {
+      "file": "detail/detail_normal_fabric_512.jpg",
+      "sha256": "514bc0915a7b6cbb71167b74a166fd0cf66915491e43ed18f9edf092adcddfa3",
+      "bytes": 271075,
+      "note": "woven warp/weft crossing - cloth, skin, water"
+    },
+    "detail_normal_hard": {
+      "file": "detail/detail_normal_hard_512.jpg",
+      "sha256": "df9e35d9c6c8d5338d8cc95720f80c9b79bdfe144f22029bfbb5517b617f199a",
+      "bytes": 199221,
+      "note": "fine cracked plating - carapace, shell, bone, resin"
+    },
+    "trim_atlas_albedo_2k": {
+      "file": "trim/trim_atlas_albedo_2k.jpg",
+      "sha256": "6cca1091617f851eeee798cb8e00ef4db47f9b447de0be1cf1448262a79619bd",
+      "bytes": 163728
+    },
+    "trim_atlas_normal_2k": {
+      "file": "trim/trim_atlas_normal_2k.jpg",
+      "sha256": "0fafef2ea5e27772cc6b711a52de46a1e5bc5b108ebf96e13e049701f4bea52d",
+      "bytes": 774427
+    },
+    "trim_atlas_rough_2k": {
+      "file": "trim/trim_atlas_rough_2k.jpg",
+      "sha256": "7355e30c82a8660bad99589c2b0c84a2e15429c89947ea7e4b910634b682224d",
+      "bytes": 113276
     }
   }
 }
