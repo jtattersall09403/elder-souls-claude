@@ -8,7 +8,7 @@
 
 **Making the game look like a game.** Specifically: surfaces responding to light, and things sitting *on* the ground instead of floating above it.
 
-Alongside that: shrinking the documentation every agent has to read before it can work, and rebuilding the roadmap from the actual repo.
+Alongside that: shrinking the documentation every agent reads before it can start (done today — 145k tokens down to 69k).
 
 ## If you play right now, expect this
 
@@ -51,4 +51,4 @@ Roughly **37% of the weekly budget** spent, in about nine hours. The approach ch
 
 ---
 
-*Kept short on purpose. Detail lives in `orchestration/ROADMAP.md` (when rebuilt), and the honest failure record in `orchestration/HAZARDS.md`.*
+*Kept short on purpose. Detail lives in `orchestration/ROADMAP.md`; the honest failure record in `orchestration/HAZARDS.md`.*
