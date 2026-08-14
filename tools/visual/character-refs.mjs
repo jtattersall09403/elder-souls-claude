@@ -141,10 +141,16 @@ const SLOTS = [
     targets: ['RI-VIS08 C2', 'RI-VIS08 C9 secondary motion', 'RI-VIS05 §D4 "moves wrongly"'],
     our_counterpart: 'each shipped creature, in motion, orbited',
     floor: 40,
-    select: (r) => r.animated === true && dirIs(r, 'souls-behaviour/anim/')
-      && !DS1_HUMANOID.some((n) => r.path.includes(`/${n}`))
-      && !dirIs(r, 'souls-behaviour/anim/stance/')
-      && !dirIs(r, 'souls-behaviour/anim/impact/'),
+    // Only rows whose SUBJECT is not a person. `anim/attacks/`, `anim/stance/` and `anim/impact/`
+    // are the player character swinging, stepping and parrying — those are humanoid and belong to
+    // M2/M3, not here. `anim/telegraph/` is mixed: the Leyndell knights and Lansseax are in M4, and
+    // the two unnamed GIF_2024… files are a Fingercreeper and an Astel, which are not.
+    select: (r) => r.animated === true
+      && ((dirIs(r, 'souls-behaviour/anim/ds1-boss-moves/')
+            && !DS1_HUMANOID.some((n) => r.path.includes(`/${n}`)))
+        || dirIs(r, 'souls-behaviour/anim/death/')
+        || dirIs(r, 'souls-behaviour/anim/arena/')
+        || (dirIs(r, 'souls-behaviour/anim/telegraph/') && /GIF_2024/.test(r.path))),
   },
   {
     id: 'D1', title: 'Scaled / reptilian humanoid — the race we actually ship',
