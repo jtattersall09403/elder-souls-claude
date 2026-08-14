@@ -2,19 +2,49 @@
   "task_id": "W1-DOOR-YAW-SWEEP",
   "status": "in_progress",
   "started": "2026-08-14",
-  "headline": "Door-yaw sweep across all 115 interiors, both directions, with before/after and delete-the-fix",
-  "could_not_do": [
-    "nothing yet - just started"
+  "headline": "All 115 interiors, both directions: a two-number definition of 'correct', the population baseline, a geometry-refined fix for 10 of 12 failures, and the delete-the-fix arms.",
+  "could_not_do_so_far": [
+    "The in-browser 115-row sweep is NOT finished. A row costs ~25 s in a town you are standing in but writ-house alone cost 496 s, and the contention gate has read WAIT for most of this pass. The population number therefore comes from an OFFLINE instrument (tools/world/door-yaw-offline.mjs) that runs the game's OWN modules (planSettlement/settlementSolids/interiorCollisionShapes/CollisionCell/exitFacing/entryFacing) in Node, cross-validated against the running game. Said plainly rather than dressed up as a browser sweep.",
+    "Screenshots / motion sequences not yet taken.",
+    "CONSUMPTION perturbation not yet run in the browser.",
+    "No hardware (GPU) capture yet."
   ],
-  "next_step": "read HAZARDS.md, OWNER-DIRECTIVES, prior agent status file, settlement.js current state",
-  "findings": [],
+  "next_step": "in-game validation run on the 12 failing exits + a stratified spread; then delete-the-fix arms; then screenshots.",
+  "findings": [
+    "DEFINITION, stated before measuring: clearance_m = distance to first solid at eye height (pos.y+1.6), 0.25 m march, 12 m cap, via Engine.solidAt() = sim.cell.contains(); occluded_frac = share of 21 rays across the forward 60 deg (+/-30 deg, 3 deg apart) whose first solid is nearer than 3 m. PASS = clearance >= 3 m AND occluded_frac <= 0.34. Judged on sim.camera.yaw, because that is what the player looks through.",
+    "WHY TWO NUMBERS: archon-vat-house has TWELVE METRES of sightline dead ahead and fails, because 47.6% of the forward view is a wall at arm's length. Distance alone passes it.",
+    "BASELINE (fix removed), all 115, EXIT: with the prior yaw surviving the placement, 1768 of 4140 (interior x prior-yaw) pairs fail = 42.7%; 114 of 115 interiors fail for at least one prior. At the single seeded prior of 200 deg used by the in-game run, 43 of 115 fail. ENTER: 2043/4140 = 49.4% of pairs, 115/115 interiors.",
+    "AFTER the predecessor's shipped fix, EXIT fails 12/115 and ENTER fails 0/115.",
+    "NEW FIX: 10 of the 12 exit failures have a passing bearing available from the same standing point; the other 2 (archon-vat-house, thorn-hall) have none — those are defects in WHERE the doorstep is, not in which way it faces. Added Engine._refineFacing() + sim.faceRefine hook: the door record proposes, the collision set disposes. Keeps the proposal when it clears (103 of 115 doors unchanged), otherwise takes the NEAREST passing of 36 bearings, otherwise keeps the proposal. Predicted 12 -> 2 failing.",
+    "DELIBERATELY NOT DONE IN DATA: authoring a continuity.exit_facing_deg for the twelve would be the third repeat of the frozen-derived-number shape that door_world_bearing_deg already convicted.",
+    "lilmoth-house-4's exterior spawn sees NO geometry within 12 m in any of 36 bearings — a doorstep detached from its own building. Flagged by the instrument's own can-it-fail column, not by a passing measurement."
+  ],
+  "instruments": [
+    "tools/world/door-yaw-offline.mjs — 115x2 in ~15 s, no browser, game's own modules.",
+    "tools/harness/door-yaw-sweep.mjs — the authority: real useDoor()/leaveInterior() in the running engine, three yaw fields, frames 1/30/120, --entry for an arm on a clone.",
+    "tools/harness/door-yaw-teardown.mjs — four teardown arms (before, mirror-only, no-camera, no-combat) that refuse to apply against a tree lacking the text, so an inert control is impossible. --self-test green."
+  ],
   "files_touched": [
-    "orchestration/status/W1-DOOR-YAW-SWEEP.json"
+    "orchestration/status/W1-DOOR-YAW-SWEEP.json",
+    "tools/harness/door-yaw-sweep.mjs",
+    "tools/harness/door-yaw-teardown.mjs",
+    "tools/world/door-yaw-offline.mjs",
+    "game/src/sim/settlement.js",
+    "game/src/engine.js"
   ],
   "files_claimed": [
     "orchestration/status/W1-DOOR-YAW-SWEEP.json",
+    "tools/harness/door-yaw-sweep.mjs",
+    "tools/harness/door-yaw-teardown.mjs",
+    "tools/world/door-yaw-offline.mjs",
     "game/src/sim/settlement.js",
-    "tools/harness/w1-door-yaw-sweep.mjs",
-    "reports/door-yaw/"
+    "game/src/engine.js",
+    "reports/door-yaw/",
+    "docs/shots/2026-08-14-door-yaw/"
+  ],
+  "redundant_with": ["SPAWN-YAW"],
+  "notes": [
+    "game/src/engine.js edit is narrow and additive: 8 lines of constants, one hook install line, two new methods (_refineFacing, _facingCell) placed immediately before _placeBody. Nothing existing was changed.",
+    "Contention read WAIT (6 instances, 6.5/core) for much of this pass. Browser work was deferred and offline work done instead, exactly as rule 21 asks."
   ]
 }
