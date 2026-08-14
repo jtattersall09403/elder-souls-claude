@@ -29,6 +29,38 @@ The one thing that does travel upward: **say what you decided, in the reply, pla
 overrules by reading, not by being asked — that is exactly how S30 became S35 and how the map exists
 at all.
 
+## 0b. Never write from memory about the repo. Read the repo, and say what you read.
+
+**This rule exists because the orchestrator broke it on 2026-08-14 and the owner had to catch it three
+times in one hour.** The roadmap — the document that decides what the whole project builds and in what
+order — was written from an orchestrator's working memory. It never opened a W1 plan or a reference
+item. It stopped at "combat feel", named none of Morrowind's systems, and compressed the entire visual
+programme into one step, against a body of work that measures **49 plans, 211 reference items and 78
+open gaps**. It was deleted and rewritten from the repo.
+
+**The rule.** If a document asserts anything about what this repo *contains, plans, covers, has
+delivered, or lacks* — that assertion must be derived by **reading the repo at the moment of writing**,
+and the document must name what was read or which command enumerated it.
+
+**The tell, and it is reliable: if you could have written it without opening a file, you did.** A
+document that would read the same whether or not the repo existed is a memory dump wearing a
+document's clothes.
+
+**Context memory is not a source.** It is lossy, it is stale the moment anything lands, and it does not
+survive compaction — this session compacted twice on the day this rule was written, and everything held
+only in context was silently replaced by a summary of itself. **A summary of the repo is not the repo.**
+
+**This is the same defect as every other one found on 2026-08-14**, arriving from the inside instead of
+from history: a reference item that told builders for eight days that no images were vendored when 131
+were; 33 interface screenshots on disk while the corpus asserted they were not there; a plate count
+that was arithmetically correct over a wrongly-chosen anchor; a fix dispatched under the headline "72
+of 83" where the 72 came from a sibling's summary and the true number was 6. **An agent inheriting a
+figure from another agent's summary is the same failure as a document asserting something it never
+checked — it just travels faster.**
+
+**What it costs to comply: one command.** `ls`, `grep -c`, `find | wc -l`. Then put the number and the
+command in the document. That is the whole obligation, and it is cheaper than any of the above.
+
 ## The project
 
 A browser game in Three.js: **Morrowind in almost every system** — quests, factions, dialogue,
