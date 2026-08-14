@@ -76,14 +76,27 @@ const APPROACH_STANDOFF_M = 38;
  *                         (`sim/camera.js` rest_arm_m). That point must be clear too, or the
  *                         spring arm collapses into the building behind and we are back where we
  *                         started with the failure moved one wall over.
- *   FACE_BAND_M   4..8    the nearest facade the camera is pointed at must land in the band the
- *                         plan's row is written about. Outside it, the shot is not the shot.
+ *   FOCUS_MIN_M     9.0   stand OUT of the civic court. The public realm builds a court, covered
+ *                         work bays and market canopies on the focus, and those meshes are not in
+ *                         `plan.buildings`, so no footprint test can see them. The first hardware
+ *                         run of this rule put Soulrest's camera under the court's own stone
+ *                         canopy: clear of every footprint and still a roof filling the frame.
+ *   FACE_BAND_M   4..9    the facade the camera is AIMED AT — a ray cast along forward, not the
+ *                         nearest thing anywhere in a cone — must land in the band the plan's row
+ *                         is written about.
  *
- * Candidates are the civic focus and 24 bearings on rings out to 30 m, crossed with 24 yaws; the
- * score prefers more building in a +/-30 degree cone within 12 m, then a nearest facade closest to
- * 6 m, and ties break on (radius, bearing, yaw) so the manifest is reproducible. All eight
- * settlements resolve; a settlement that did not would ship as a RED row rather than an omission,
- * the same way an unresolved interior does.
+ * THE RAY IS THE POINT, and the first version of this got it wrong in a way only a frame showed.
+ * Scoring "how much building is within 30 degrees" put Lilmoth's and Blackrose's facades at the
+ * edge of frame with open marsh in the middle, because a thing 30 degrees off-axis at 6 m satisfies
+ * a cone and does not fill a shot. Casting the ray and requiring it to ENTER a footprint is the
+ * same idea done properly. Structures are excluded as ray targets for the same reason: Blackrose's
+ * nearest "building" at 6.11 m was `bla_gallows_frame`, an open timber frame with nothing to read
+ * at 4-8 m. The row is about BUILDING quality, so the target must be a building.
+ *
+ * Candidates are 24 bearings on rings from 9 to 33 m off the civic focus, crossed with 24 yaws;
+ * ties break on (radius, bearing, yaw) so the manifest is reproducible. All eight settlements
+ * resolve; a settlement that did not would ship as a RED row rather than an omission, the same way
+ * an unresolved interior does.
  *
  * The camera's forward is +(sin yaw, cos yaw) — `sim/camera.js:basisAt` — and the eye is
  * `pivot - forward * arm`, which is the sign that decides whether the push-out is behind the
@@ -93,7 +106,23 @@ const APPROACH_STANDOFF_M = 38;
 const STAND_CLEAR_M = 3.0;
 const CAM_ARM_M = 4.9;
 const CAM_CLEAR_M = 1.5;
-const FACE_MIN_M = 4.0, FACE_MAX_M = 8.0, FACE_WANT_M = 6.0;
+const FOCUS_MIN_M = 9.0;
+const FACE_MIN_M = 4.0, FACE_MAX_M = 9.0, FACE_WANT_M = 6.0;
+
+/** Distance along +dir from (x,z) at which the ray enters b's oriented footprint, or null. */
+function rayHit(b, x, z, dir) {
+  const yaw = (b.yaw_deg || 0) * Math.PI / 180, c = Math.cos(yaw), s = Math.sin(yaw);
+  const ox = (x - b.x) * c - (z - b.z) * s, oz = (x - b.x) * s + (z - b.z) * c;
+  const dx = dir[0] * c - dir[1] * s, dz = dir[0] * s + dir[1] * c;
+  const fp = b.drawn_footprint_m || b.footprint_m || [5, 5];
+  let t0 = -Infinity, t1 = Infinity;
+  for (const [o, d, h] of [[ox, dx, fp[0] * 0.5], [oz, dz, fp[1] * 0.5]]) {
+    if (Math.abs(d) < 1e-9) { if (Math.abs(o) > h) return null; continue; }
+    const a = (-h - o) / d, bb = (h - o) / d;
+    t0 = Math.max(t0, Math.min(a, bb)); t1 = Math.min(t1, Math.max(a, bb));
+  }
+  return (t1 >= Math.max(t0, 0)) ? Math.max(t0, 0) : null;
+}
 
 /** Signed distance from (x,z) to ONE building's oriented shrunk footprint. Mirrors
  *  `settlementFootprintClearance`, which minimises this over the whole plan. */
@@ -122,12 +151,15 @@ function streetStand(rec) {
   const [fx, fz] = app.focus;
   const R = plan.radius_m || 60;
   let best = null;
-  for (const r of [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30]) {
-    const bearings = r === 0 ? 1 : 24;
-    for (let i = 0; i < bearings; i++) {
-      const a = (i / bearings) * Math.PI * 2;
+  // A facade is a BUILDING, not a gallows frame or a salt pan. `structure` entries are named
+  // features with no readable wall at 4-8 m, so they block the stand but never earn the shot.
+  const facades = plan.buildings.filter((b) => b.kind !== 'structure');
+  for (const r of [9, 12, 15, 18, 21, 24, 27, 30, 33]) {
+    for (let i = 0; i < 24; i++) {
+      const a = (i / 24) * Math.PI * 2;
       const x = fx + Math.sin(a) * r, z = fz + Math.cos(a) * r;
       if (Math.hypot(x - plan.pos[0], z - plan.pos[2]) > R) continue;
+      if (Math.hypot(x - fx, z - fz) < FOCUS_MIN_M) continue;
       const stand = settlementFootprintClearance(plan, x, z);
       if (stand < STAND_CLEAR_M) continue;
       for (let k = 0; k < 24; k++) {
@@ -135,20 +167,24 @@ function streetStand(rec) {
         const fwd = [Math.sin(yaw), Math.cos(yaw)];
         const camClear = settlementFootprintClearance(plan, x - fwd[0] * CAM_ARM_M, z - fwd[1] * CAM_ARM_M);
         if (camClear < CAM_CLEAR_M) continue;
-        let inView = 0, nearFace = Infinity;
-        for (const b of plan.buildings) {
-          const dx = b.x - x, dz = b.z - z, d = Math.hypot(dx, dz);
-          if (d < 1e-6 || d > 20) continue;
-          if ((dx * fwd[0] + dz * fwd[1]) / d < Math.cos(30 * Math.PI / 180)) continue;
-          const fd = footprintDistance(b, x, z);
-          if (fd <= 12) inView++;
-          if (fd < nearFace) nearFace = fd;
+        // The facade the camera is AIMED AT — the first footprint the forward ray enters.
+        let aimed = Infinity;
+        for (const b of facades) {
+          const t = rayHit(b, x, z, fwd);
+          if (t !== null && t > 0 && t < aimed) aimed = t;
         }
-        if (!(nearFace >= FACE_MIN_M && nearFace <= FACE_MAX_M)) continue;
-        const score = inView * 100 - Math.abs(nearFace - FACE_WANT_M) * 10;
+        if (!(aimed >= FACE_MIN_M && aimed <= FACE_MAX_M)) continue;
+        // ...and how much else is around, so a street beats a lone shed. +/-45 degrees, 18 m.
+        let inView = 0;
+        for (const b of facades) {
+          const dx = b.x - x, dz = b.z - z, d = Math.hypot(dx, dz);
+          if (d < 1e-6 || d > 18) continue;
+          if ((dx * fwd[0] + dz * fwd[1]) / d >= Math.cos(45 * Math.PI / 180)) inView++;
+        }
+        const score = inView * 100 - Math.abs(aimed - FACE_WANT_M) * 10;
         if (!best || score > best.score) {
           best = { score, r, i, k, x, z, yaw_deg: k * 15, stand_clear_m: +stand.toFixed(2),
-            camera_clear_m: +camClear.toFixed(2), nearest_facade_m: +nearFace.toFixed(2), buildings_in_view: inView };
+            camera_clear_m: +camClear.toFixed(2), nearest_facade_m: +aimed.toFixed(2), buildings_in_view: inView };
         }
       }
     }
