@@ -326,6 +326,21 @@ function nonEmptyDir(root, rel) {
   } catch { return false; }
 }
 
+// The claim and the thing must be in the SAME clause, or the check is noise.
+//
+// The first version of this check tested the whole line and produced 51 findings of which nearly
+// all were false: `INDEX.md` rows read "`RI-CMB01.md` names phantom tool `m-cmb01.mjs` — the
+// command does not exist on disk", where the absent thing is the tool and the present thing is
+// the item, in one line. Two assertions sharing a line are not one assertion. So: segment on the
+// boundaries prose actually uses — table cells, sentence ends, semicolons, em dashes — and require
+// the resolvable name to sit inside the same segment as the words of absence.
+function segments(line) {
+  return line
+    .split('|')                                              // a markdown table cell is its own claim
+    .flatMap((s) => s.split(/(?<=[.;])\s+|\s+—\s+|\s+--\s+/)) // sentence / clause boundaries
+    .filter((s) => s.trim().length);
+}
+
 function checkC(root, files) {
   const findings = [];
   const refs = refIndex(root);
@@ -341,22 +356,27 @@ function checkC(root, files) {
       if (!ABSENCE.test(l)) continue;
       absenceLines++;
       if (SUPPRESS.test(l)) continue;
-      if (PAST.test(l)) continue;
       if (/^\s*>/.test(l)) continue;                          // a quotation of somebody else
 
       const hits = [];
-      for (const m of l.matchAll(PATHISH)) {
-        const r = resolvePath(root, m[1]);
-        if (r && nonEmptyDir(root, r)) hits.push({ kind: 'path', named: m[1], onDisk: r });
-      }
-      for (const m of l.matchAll(REFID)) {
-        const id = m[0];
-        if (refs.has(id)) hits.push({ kind: 'ref', named: id, onDisk: refs.get(id) });
+      let claim = null;
+      for (const seg of segments(l)) {
+        if (!ABSENCE.test(seg)) continue;
+        if (PAST.test(seg)) continue;                         // "was empty", "at authoring time"
+        for (const m of seg.matchAll(PATHISH)) {
+          const r = resolvePath(root, m[1]);
+          if (r && nonEmptyDir(root, r)) { hits.push({ kind: 'path', named: m[1], onDisk: r }); claim ??= seg.trim(); }
+        }
+        for (const m of seg.matchAll(REFID)) {
+          const id = m[0];
+          if (refs.has(id)) { hits.push({ kind: 'ref', named: id, onDisk: refs.get(id) }); claim ??= seg.trim(); }
+        }
       }
       if (!hits.length) continue;
-      findings.push({ check: 'C1', severity: 'error', file: p, line: i + 1, hits,
-        message: `asserts absence, but ${hits.map((h) => h.named).join(', ')} is on disk at ${hits.map((h) => h.onDisk).join(', ')}`,
-        excerpt: l.trim().slice(0, 200) });
+      const uniq = [...new Map(hits.map((h) => [h.named, h])).values()];
+      findings.push({ check: 'C1', severity: 'error', file: p, line: i + 1, hits: uniq, claim,
+        message: `asserts absence, but ${uniq.map((h) => h.named).join(', ')} is on disk at ${uniq.map((h) => h.onDisk).join(', ')}`,
+        excerpt: (claim || l.trim()).slice(0, 220) });
     }
   }
   return { findings, scanned, absenceLines };
