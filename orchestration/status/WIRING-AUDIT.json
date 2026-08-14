@@ -1,0 +1,117 @@
+{
+  "task": "wiring-audit-2026-08-14",
+  "generated": "2026-08-14",
+  "method": "offline read-and-report; no browser, no GPU; no game code changed",
+  "report_md": "reports/wiring-audit/2026-08-14-wiring.md",
+  "what_could_not_be_done": [
+    "No browser/launchGame() run this session; runtime claims are read from code + existing dated artifacts + verdict JSON, not fresh captures.",
+    "648 consumption-census orphan-candidates not traced beyond one cross-check (combat/movesets *.trigger, confirmed still orphaned and distinct from the 5 named gaps).",
+    "AUDIT.md section 4's second, unchecked half (Morrowind region/topological maps vs Black Marsh equivalent) not investigated — out of this dispatch's scope.",
+    "Underground-blade finding in W1-RENDER.json (F11) reported as the builder's own claim, not independently re-measured (would need a browser)."
+  ],
+  "headline_finding": "3 of 5 candidate gaps (I1 PRNG, C1 creation, F11 weapon-animation-render) are already substantially built and in one case (I1) already independently critic-judged closed; the roadmap's ring-table state text and the gap ledger's `what` field describe round-1 states superseded by later wave-1 rounds. Mechanism: tools/gap-ledger.mjs only accepts closure from a LATER wave, so a same-wave remediation-and-reverify cycle can never show as closed even when it demonstrably is (see W1-00-r2's own gap_closure note). P4 (library) is built and self-verified by the builder but has no independent critic verdict. Only G3 (weapon movesets) still needs real, non-cheap work (weapon-class distinctiveness), and it needs it in the 'design decision inside the wiring' category, not the wiring itself (setLoadout 87/87 already holds per an independent critic, W1-10-r3).",
+  "gaps": [
+    {
+      "gap_id": "GAP-W1-platform-prng-never-drawn",
+      "roadmap_item": "I1",
+      "current_ring": 0,
+      "recommended_ring": 0,
+      "move_recommended": false,
+      "build_status": "done",
+      "judged_status": "independently_judged_closed_but_ledger_rejects_cross_wave_closure",
+      "evidence": [
+        "game/src/sim/entities.js:20-31 (seeded idle phase, names the gap id)",
+        "tools/harness/determinism.mjs:201-239 (R4 drops rng.seed, fails with prng_never_drawn if undrawn)",
+        "corpus/90-verdicts/wave1/W1-00-r2.json gap_closure array: status closed, ledger tool ignores it because closure is same-wave as the opening"
+      ],
+      "recommendation": "No roadmap move. Fix the ledger-tool's cross-wave-only closure rule (reversible: revert the tool change; tripwire: a gap the tool marks closed that a later critic reopens)."
+    },
+    {
+      "gap_id": "GAP-W1-creation-is-an-api-not-a-scene",
+      "roadmap_item": "C1",
+      "current_ring": 4,
+      "recommended_ring": "1-2 (pull forward)",
+      "move_recommended": true,
+      "build_status": "substantially_done_superseded_by_narrower_open_gap",
+      "judged_status": "independently_judged_w1_26_r3_min_over_axes_2_of_10_for_unrelated_reasons",
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-26-r3.md: opening-play.mjs P1-P10 all PASS, two full runs, 0 page errors, whole 11-node census completed by key",
+        "current open gap on this piece is GAP-W1-26-r3-body-race-fails-silently-and-is-refused-eleven-nodes-later, severity major (not blocking), small well-specified remedy",
+        "11 of 22 authored journey nodes (custom-class pick branches, birthsign-second) never entered by any critic's evidence"
+      ],
+      "dependencies_satisfied_by_move": ["C2 needs C1", "E1 needs C1"],
+      "recommendation": "Pull forward: close small body-race guard, test the 11 untested nodes, run RI-EXP01 extraction, then re-judge. Reversible: if the untested pick-nodes still crash, revert to ring 4."
+    },
+    {
+      "gap_id": "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side",
+      "roadmap_item": "P4",
+      "current_ring": 5,
+      "recommended_ring": "0-1 (judge now)",
+      "move_recommended": true,
+      "build_status": "done",
+      "judged_status": "self_verified_by_builder_only_no_independent_critic",
+      "evidence": [
+        "game/src/engine.js:5166-5250 (_bookKnowledgeIndex, _readBook, named after this gap id in comments)",
+        "game/src/sim/quest/machine.js:110-124,216-222 (ctx.knowledge union)",
+        "reports/critic-w1-library-consume.json (mtime 2026-08-07 15:39, builder artifact): all 3 named cases satisfy the gap's own OR-clause acceptance",
+        "reports/critic-w1-library-seam.json (mtime 2026-08-07 15:39, builder artifact): 122 distinct topics gained, non-empty"
+      ],
+      "recommendation": "No build indicated. Dispatch an independent critic to rerun the two existing named scripts and judge against RI-UIX05's fuller bar. Reversible: if independent perturbation fails to reproduce the builder's numbers, revert to ring 5."
+    },
+    {
+      "gap_id": "GAP-W1-weapon-animation-model-has-no-rendered-consumer",
+      "roadmap_item": "F11",
+      "current_ring": 1,
+      "recommended_ring": 1,
+      "move_recommended": false,
+      "build_status": "done_larger_than_the_remedy_asked",
+      "judged_status": "unjudged_orchestrator_already_flags_as_dispatch_priority_2",
+      "evidence": [
+        "game/src/render/actor.js (new, 1506 lines): SkinnedMesh driven by Rig.world[], weapon meshes per class from socket_a/socket_b/capsule_length_m",
+        "game/src/render/renderer.js:1133 poseFromRig() consumer",
+        "orchestration/status/W1-RENDER.json state:complete, records tip==socketB to 0.0000mm, consumption perturbation and delete-the-fix control both passing",
+        "orchestration/NEXT-DISPATCH.md:139 already lists this as dispatch priority #2, 'marked DONE... and never judged'",
+        "new unrecorded defect found by the builder itself: cgs_drowned_reaper blade tip below ground plane for the whole sampled swing (data/solver defect in MovesetLibrary._bladeLength, not a render defect)"
+      ],
+      "dependents": ["G3 needs F11"],
+      "recommendation": "Judge immediately (agrees with orchestrator's existing #2 priority). File the underground-blade finding as its own gap. Reversible: if judging can't reproduce the tip/socket and pixel-delta numbers, revert to build."
+    },
+    {
+      "gap_id": "GAP-W1-weapon-movesets-not-wired-to-the-runtime",
+      "roadmap_item": "G3",
+      "current_ring": 2,
+      "recommended_ring": 2,
+      "move_recommended": false,
+      "build_status": "partially_done_wiring_fixed_design_bar_not_met",
+      "judged_status": "independently_judged_w1_10_r3_score_3_of_10_fail",
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-10-r3.md line 373: equipped_ok 87/87 holds (the gap's own named symptom is fixed)",
+        "same verdict: RI-WPN03 within-class SEP 1.3988 and W_min 0.1476 both fail; chain_arc_range >=20deg only 7 of 14 classes against a bar of >=10; blind M6 within-group clause fails",
+        "critic's own words: 'Is a passing score here the thing the user asked for? No'"
+      ],
+      "dependency_check": "G3 needs F11 (only recorded edge touching G3; no recorded G3-needs-G4 edge despite ring-2 list ordering)",
+      "recommendation": "Leave in ring 2, behind F11. Remaining work is genuine weapon-class-distinctiveness design/tuning, not wiring — do not sell as cheap."
+    }
+  ],
+  "sweep_cross_check": {
+    "method": "traced consumption-census 2026-08-14 finding #1 (combat/movesets/*.json slots[].trigger)",
+    "result": "grep -c trigger game/src/combat/moveset.js == 0; field still unread, and is a DIFFERENT field from the now-fixed 'moveset file unreachable' gap, so the true built-correct-unconsumed count exceeds the ledger's hand-read ~25 even on this single sample",
+    "not_done": "full reconciliation of the 648 census orphans against the gap ledger's ~25 was out of budget this pass"
+  },
+  "question_2_creature_character_design_seam": {
+    "answer": "coverage_hole_confirmed",
+    "where_ri_vis08_section_d_stops": "readability (§D1, fidelity) and technical execution (§C); design (shape, alienness) handed to RI-VIS05 §D4",
+    "what_ri_vis05_section_d4_actually_covers": "fauna/creature design only (no horses/wolves/bears; arthropod/reptile/amphibian; the naga as the one humanoid example, explicitly a creature not a playable race)",
+    "items_checked_for_a_home_on_the_other_side": [
+      "corpus/22-character/RI-CHR01-character-creation.md (creation flow mechanics, not appearance)",
+      "corpus/22-character/RI-CHR02-race-and-standing.md (race's social/mechanical effect, not appearance)",
+      "corpus/22-character/RI-CHR03-birthsigns.md (birthsign mechanics)",
+      "corpus/70-visual/RI-VIS01-bifurcation-protocol.md lines 44-73 (28-row property table, self-declared exhaustive and closed; P04 creature-only, F14 fidelity-only, no character/race design row)",
+      "corpus/00-doctrine/subsystems.json character.* namespace (creation/class/race/birthsign only) and render.art.* namespace (render.art.creature exists, no render.art.character or render.art.race)",
+      "corpus/70-visual/refs/ACQUISITION-CRITIQUE-R2.md line 635: 'naga and Argonian character design' reference-plate category rated 4 Argonian / 0 naga / PARTIAL — even the source images were never fully acquired"
+    ],
+    "did_not_invent_a_reference_item": true
+  },
+  "verify_against": "remote blob (checked via git log / git show HEAD:<path>, not git status alone)",
+  "game_code_changed": false
+}
