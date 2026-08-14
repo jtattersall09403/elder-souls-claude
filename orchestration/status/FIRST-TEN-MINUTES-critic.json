@@ -1,89 +1,123 @@
 {
   "task_id": "FIRST-TEN-MINUTES-critic",
-  "title": "Fresh critic for FIRST-TEN-MINUTES: D3 placement/presence, charOpacity consumption repair, and the honesty of the open D1/D2 diagnoses",
+  "title": "Fresh critic for FIRST-TEN-MINUTES: D3 placement/presence, the charOpacity consumption repair, and the honesty of the open D1/D2 diagnoses",
   "started": "2026-08-14T10:05:00Z",
-  "state": "measuring",
+  "finished": "2026-08-14T11:05:00Z",
+  "state": "verdict-filed-FAIL-4.0-against-gate-7.0",
   "branch": "codex/wave1-build-experiment",
+  "commit_measured": "a8e4c938da682688f472b8d6b6822e8acb913820",
   "role": "critic",
   "grades": "FIRST-TEN-MINUTES",
   "redundant_with": ["FIRST-TEN-MINUTES"],
-  "files_claimed": [
-    "orchestration/status/FIRST-TEN-MINUTES-critic.json",
-    "corpus/90-verdicts/wave1/",
-    "reports/first-ten-minutes-critic/",
-    "tools/harness/critic-first-ten-play.mjs",
-    "docs/shots/2026-08-14-first-ten-minutes-critic/"
+  "verdict": [
+    "corpus/90-verdicts/wave1/W1-FIRST-TEN-MINUTES-r1.md",
+    "corpus/90-verdicts/wave1/W1-FIRST-TEN-MINUTES-r1.json"
   ],
   "files_touched": [
     "orchestration/status/FIRST-TEN-MINUTES-critic.json",
     "tools/harness/critic-first-ten-play.mjs",
+    "corpus/90-verdicts/wave1/W1-FIRST-TEN-MINUTES-r1.md",
+    "corpus/90-verdicts/wave1/W1-FIRST-TEN-MINUTES-r1.json",
+    "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/",
+    "corpus/80-methods/RI-MTH04-measurement-integrity.md",
+    "tools/scores.mjs",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-14-first-ten-minutes-critic/",
     "reports/first-ten-minutes-critic/"
   ],
-  "overlap_declared": "I read game/src/{engine.js,sim/npc.js,sim/camera.js,render/renderer.js,render/exterior.js,world/province.js} but as a critic I write none of them (rule 23). Delete-the-fix arms run on a 76 MB sparse copy (game/ + tools/) outside the repo, per HAZARDS §5.",
-  "hazards_hit": [
-    "tools/contention.mjs went from GO to WAIT (5 instances, load 5.49/core against a 4.0 ceiling) after my browser was already up. I PROCEEDED — one browser, kept for the whole local run, never a second — because the alternative was leaving the piece unmeasured, and I moved the expensive arms to the GPU instead of opening more local browsers. Stated here because the tool asks anyone who proceeds to say so.",
-    "GPU run 2 died at `PodAgentError: GET /job... failed with HTTP 404` after ~90 s, before any command output. Retried without `set -x` in the command string and it is running. Cost: one pod-minute, no evidence lost."
-  ],
-  "gpu": {
-    "used": true,
-    "hardware": "NVIDIA RTX A5000, ANGLE (NVIDIA, Vulkan 1.4.312), swiftshader:false",
-    "runs": ["reports/runpod-gpu/runs/20260814-102342Z-10274 (spawn,walk,talk,fade — 36 artifacts, full run 2m44s)"],
-    "cleanup": "each run terminated its own Pod in the mandatory cleanup path; deletion confirmed by API lookup. No bare `cleanup` was run, so no other agent's Pod was touched."
+  "files_claimed": [],
+  "overlap_declared": "I read game/src/{engine.js,sim/npc.js,sim/camera.js,sim/record.js,render/renderer.js,render/sky.js,render/exterior.js,world/province.js,sim/settlement.js} and wrote NONE of them (rule 23). Two shared files were edited and both were checked first with `node tools/ownership.mjs --for`: corpus/80-methods/RI-MTH04-measurement-integrity.md (nobody live had declared it) gained a purely additive Appendix A, and tools/scores.mjs (touched by critic-w1-deploy-r2, marked done) gained one DOMAIN key because tools/publish.mjs asked for it by name. Delete-the-fix arms ran on a 76 MB sparse copy of game/ + tools/ outside the repository, per HAZARDS.md section 5.",
+  "verdict_summary": {
+    "status": "FAIL",
+    "overall": 4.0,
+    "gate": 7.0,
+    "aggregation": "min over six named piece axes",
+    "axes": {
+      "d3_placement_and_presence": 7.5,
+      "charopacity_consumption_repair": 8.0,
+      "d2_diagnosis_and_disabled_state": 8.0,
+      "d1_diagnosis": 5.0,
+      "reporting_honesty": 9.0,
+      "instrument_integrity": 4.0
+    },
+    "biggest_gap": "GAP-W1-consumption-sweep-tripwire-is-a-name-grep",
+    "note": "The minimum over reference_items is 2, because RI-CAM01 carries a triggered automatic fail (the buried camera) that the piece explicitly did not claim to close and that I agree is open. Both numbers are on the page; the headline is the piece-axis min, because scoring a piece at 2 for a defect it honestly filed as unfixed would punish the behaviour this project is trying to buy."
   },
-  "findings_so_far": [
+  "confirmed_the_builder_was_right_about": [
+    "D3 recount: 56 NPCs, 32 within 50 m of the origin before, of which exactly 5 had a drawn body. The audit's headline and the builder's refinement of it are both correct. The remaining 29 all carry a non-null `at` and room-scale coordinates, and interiors really are a local frame centred on zero (game/data/world/interiors/lilmoth-ledger-house.json continuity.interior_spawn is [0,0,...] and useDoor() places the body at it), so 'interior-local' is a fact about the data.",
+    "The headline claim that matters, measured for the first time by anybody: during his own conversation Corvus Aldeyn is drawn at 1016 px, bbox 92x122, centroid (469,245) of a 960x540 frame at 3.5 m, and at 262 px, bbox 27x32, at 30 m. The engine's own projectPoint agrees with both. On an RTX A5000. The audit's 'dialogue panel over an empty street' is answered.",
+    "Interior residents are drawn in the room. Inside lilmoth-ledger-house: 3 visible bodies, lilmoth-archivist-ledger present 4 m away. This was the builder's own open question 2 and the answer is yes.",
+    "The null-presence-only control is a genuine plausible-wrong-answer control and I verified it from the artifact: visible bodies at origin 5 -> 3 (the headline improves) while residents_in_town stays 24 and Corvus stays 5.7 km away.",
+    "charOpacity CONSUMPTION, demonstrated by perturbation on hardware: 0.5 and 0.25 install a ':camera-fade' clone on all 75 player meshes at the perturbed opacity; 0.0 hides the subtree and player pixels go 16910 -> 0.",
+    "The D2 attribution. I ran the builder's own tool at HEAD, where the roof field is passed null: surviving streaks stay at 192 at every stop, so the collapse to 1/0/2 with the field enabled really was the roof cull and not a weather ramp. Disabling it rather than shipping it was the right call, and the disabled path is structurally inert (sky.js:233 skips the branch on null).",
+    "D2 is live and gets worse as you walk in: streaks under a roof run 15, 20, 26, 28, 36, 32, 27, 36, 32, 23, 32 across the 600-frame walk.",
+    "The D1 conclusion that this is genuine occlusion rather than bad framing. On hardware the player is 0 px, not 1 px."
+  ],
+  "found_against": [
     {
       "id": "C1",
-      "severity": "material",
-      "headline": "The consumption-sweep tripwire is satisfied by a COMMENT. It goes red only for the trivial deletion.",
-      "method": "Three-arm delete-the-fix on a sparse copy. ARM A (trivial): rename every `charOpacity` mention in render/ -> sweep exits 1, so the tool CAN fail. ARM B (plausible): delete only the call site `this._applyCharacterFade(c);`, leaving the method and its comment -> sweep exits 0. ARM C (plausible): gut the method to `return;`, keep the doc comment -> sweep exits 0, with 2 surviving `charOpacity` mentions, both prose.",
-      "why_it_matters": "The test is `does any file under game/src/render/ MENTION this name`. RI-MTH07 is about consumption, not mention. The builder's own null control for the sweep (exit 1 before, exit 0 after) is the trivial control RULES rule 6 names: it has only ever been seen to fail in the one arm that cannot happen by accident."
+      "headline": "The consumption sweep's tripwire is satisfied by a comment. THIS IS THE BIGGEST GAP.",
+      "evidence": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/consumption-sweep-delete-the-fix.log. ARM A (trivial, every mention renamed) exit 1. ARM B (call site deleted, method and comment intact) exit 0, 3 mentions left. ARM C (method body gutted to `return;`) exit 0, 2 mentions left, both prose in its own doc comment. The builder's control for the tool is arm A alone — the one deletion nobody performs by accident."
     },
     {
       "id": "C2",
-      "severity": "material",
-      "headline": "The builder's D1 table has two dead columns and did not say so.",
-      "method": "`tools/harness/first-ten.mjs` reads `cam.armLen` and `cam.clipThrough` off `snapshot()`. `snapshot()` returns `makeRecord()`, whose camera block names them `arm_len_m` and `clip_through` (game/src/sim/record.js:239,252). Both read undefined and were published as null at all 11 stops of after-d1d2/manifest.json without a warning.",
-      "why_it_matters": "The arm length is the quantity that decides between D1's two candidate causes and is the sole input to charOpacity. The instrument that was supposed to settle it recorded nothing."
+      "headline": "Two dead columns in the D1 table, published as null without a warning.",
+      "evidence": "tools/harness/first-ten.mjs reads cam.armLen and cam.clipThrough off snapshot(); makeRecord() names them arm_len_m and clip_through (game/src/sim/record.js:239,252). Both undefined at 11/11 stops. The arm length is the only input to charOpacity and the quantity that decides between D1's two candidate causes."
     },
     {
       "id": "C3",
-      "severity": "material",
-      "headline": "The decisive D1 frame is a TREE, not a raised deck — and the prescribed fix is about decks.",
-      "evidence": "reports/first-ten-minutes/after-d1d2/frames/after-d1d2-006-walk-f0360.png is the camera inside a tree trunk with a green frond across it. The status file prescribes 'settlementSolids() gaining the underside of raised decks'. Trees are not in settlementSolids() at all, so that fix would not change this frame.",
-      "status": "diagnosis of OCCLUSION (candidate a) stands; the attribution of the occluder does not."
+      "headline": "The D1 occluder is a TREE and the prescribed remedy is about decks.",
+      "evidence": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/d1-f360-camera-inside-a-tree-rtx-a5000.png, and the builder's own after-d1d2-006-walk-f0360.png is the same trunk. The status file prescribes 'settlementSolids() gaining the underside of raised decks'; trees are not in settlementSolids() at all."
     },
     {
       "id": "C4",
-      "severity": "open-question",
-      "headline": "On real GPU hardware the D1 burial did not reproduce.",
-      "evidence": "Same walk, same tool family. Builder (SwiftShader 640x360) player-visible %: 4.2 3.4 4.0 3.1 2.2 0.5 0.0 3.2 3.2 3.2 3.2. Mine (RTX A5000, 960x540): 4.1 3.4 4.0 3.2 3.2 3.3 3.1 3.3 3.3 3.3 3.3. The first four stops agree to a tenth, so it is the same walk; the divergence is entirely f240-f360.",
-      "confound_being_tested": "my run played a spawn look-around phase (net 360 deg) before the walk. A GPU walk-only arm is running to separate 'the renderer' from 'the extra 150 frames'."
+      "headline": "The camera arm never fires during the burial, which contradicts 'collision is not the defect'.",
+      "evidence": "arm_len 3.993 m (full extension), arm_hit false, clip_through false at all 11 stops including the zero-pixel one. Read off the live sim, not the trace record. The arm's sphere-cast does not detect this occluder because it is not in the collision set."
     },
     {
       "id": "C5",
-      "severity": "material",
-      "headline": "The talk-to-Corvus frame still looks like the audit's D3 screenshot: dialogue panel, empty street.",
-      "evidence": "reports/runpod-gpu/runs/20260814-102342Z-10274/artifacts/first-ten-critic-gpu/frames/gpu-020-talk-far-corvus.png. My instrument reports npc_visible_px 6485 at 29.9 m, which is far too many pixels for a body at that range in that haze, so the COUNT is under suspicion, not the fix.",
-      "next": "an overlay arm paints the differing pixels red and projects the NPC's own world point to screen, so the number becomes a picture."
+      "headline": "The stated reason for wiring charOpacity as a D1 remedy is measurably false.",
+      "evidence": "charOpacity is 1.000 at all 11 walk stops. The fade is a pure function of armLen (sim/camera.js:527) and the arm never compresses during the burial. The fade DOES have a real use case — at the lilmoth-rootkeepers standoff the arm compressed to about 0.95 m, inside the 1.3->0.9 m band — but it is not a D1 remedy."
     },
     {
       "id": "C6",
-      "severity": "minor",
-      "headline": "The cited D2 null control has no manifest.",
-      "evidence": "reports/first-ten-minutes/null-d2-unwired/ contains one frame and no manifest.json. The status file quotes its numbers (192 live, 15 under cover at f0) as if from it. Re-measuring at HEAD on the GPU."
+      "headline": "The cited D2 null control has one frame and no manifest.",
+      "evidence": "reports/first-ten-minutes/null-d2-unwired/ — its quoted numbers (192 live, 15 under cover) are true, because I reproduced them independently, but they were not evidenced by the artifact cited for them."
     },
     {
       "id": "C7",
-      "severity": "confirmed-good",
-      "headline": "The D3 recount and the presence null control both check out.",
-      "evidence": "before/census-rows.json: 56 rows, 32 within 50 m of the origin, 5 with drawn bodies — the audit's 32/56 is right and the builder's refinement to 5 is right. All 29 that remain have a non-null `at` and room-scale coordinates, so 'interior-local' is a fact about the data, not a rationalisation. null-presence-only is a genuine plausible-wrong-answer control: visible_bodies_at_origin 5->3 (the headline improves) while residents_in_town stays at 24."
-    },
-    {
-      "id": "C8",
-      "severity": "confirmed-good",
-      "headline": "charOpacity CONSUMPTION demonstrated by perturbation on real hardware.",
-      "evidence": "gpu manifest phases.fade: at charOpacity 0.5/0.25 all 75 player meshes carry a `:camera-fade` clone with the perturbed opacity; at 0.0 the player subtree is hidden and player_visible_px goes 16910 -> 0. Perturb the value, the entity changes on screen. Caveat: my material readback lags one arm (read before the render), which I will state rather than hide."
+      "headline": "Conversational range is uncomfortable, though partly my method.",
+      "evidence": "Standing 3.5 m from lilmoth-yard-brothers and dockmaster-weeja-sen gave 0 px each — the body is behind the wall the doorstep placement stands them against — and at lilmoth-rootkeepers the camera ended entirely inside geometry. My standoff is a fixed +3.5 m in x and can land the player inside a building, so this is reported as marginal, not as a fail. Three of four attempts, though."
     }
   ],
-  "next_step": "GPU run 3 (walk-only to settle C4, overlay proof to settle C5, builder tool at HEAD to supply C6). Then local play1 walk for the SwiftShader arm of C4. Then score and write the verdict."
+  "my_own_errors_found_and_corrected": [
+    "I first reported that D1 did not reproduce on GPU. It does. My harness's look-around phase left about 24 degrees of residual yaw and the player walked PAST the tree instead of into it; the isolated walk-only arm reproduces the burial exactly. Retracted in verdict section 6d.",
+    "My first actor-pixel probe copied vt-seethrough.mjs section 1.1 and hid actors by setting material colorWrite:false. render/actor.js:473 shares armour material instances between actors, so it also blanked the player: Corvus at 30 m came back as 6485 px where the clean method gives 262. Caught by painting the mask red and looking at it. The failed version is filed as negative evidence (method-contaminated-overlay-shared-materials.png) rather than deleted, and RI-MTH04 gained Appendix A so nobody repeats it. tools/harness/first-ten.mjs inherits the same defect.",
+    "The corrected method toggles root.visible, which also removes the cast shadow — so my percentages are body-plus-shadow where the builder's are body only. They differ by about a factor of two and agree exactly at zero. Stated rather than hidden.",
+    "My first GPU talk and interior arms ran with no warm-up, so sim.npcs was empty and every answer was 'not in world' / 'visible_bodies: 0'. That reads like a damning result and was a missing stepFrames. warmUp() now runs first and records npcs_in_world in the manifest.",
+    "My single-facing interior pixel count read 0 because the player happened to be facing away — rule 8's trap, one instant as a still target. The picture (d3-ledger-house-interior-bodies.png) and the census settle it; the count does not."
+  ],
+  "gpu": {
+    "used": true,
+    "hardware": "NVIDIA RTX A5000 and L4, ANGLE (NVIDIA, Vulkan 1.4.312), swiftshader:false — as against every number the builder published, which is SwiftShader",
+    "runs": 6,
+    "flakes": "2 of 6 died at `PodAgentError: GET /job ... failed with HTTP 404` before producing output; retrying worked both times. Cost about two pod-minutes. Worth knowing, not yet worth a HAZARDS entry.",
+    "cleanup": "every run terminated its own Pod in the mandatory cleanup path with deletion confirmed by API lookup. No bare `cleanup` was ever run, so no other agent's Pod was touched."
+  },
+  "hazards_hit": [
+    "tools/contention.mjs went GO -> WAIT (5 instances, load 5.49 per core against a 4.0 ceiling) after my first local browser was already up. I PROCEEDED, kept that one browser and never opened a second, and moved everything expensive to the GPU instead. Stated because the tool asks anyone who proceeds to say so. That local run was later killed by a tool timeout at 9 of 19 frames; nothing in the verdict rests on it.",
+    "The orchestrator's bank committed my verdict, its 11 artifacts and the RI-MTH04 appendix under 'In-flight agent work' while I was still writing. Expected behaviour per RULES rule 17; the content landed and I did not unpick it."
+  ],
+  "handoff": {
+    "to_the_builder_or_its_successor": "One buildable gap: make tools/render/consumption-sweep.mjs a consumption test rather than a mention test, and require ALL THREE delete-the-fix arms to exit 1 while the shipped tree exits 0. Full spec in the verdict JSON biggest_gap.remedy. Everything else is a correction handed over with its numbers, not a build request.",
+    "for_whoever_takes_D1": "Skip the deck. The occluder is vegetation, the arm is at full extension and arm_hit is false, so the object is absent from the camera collision set. The fix is vegetation collision or a near-field occluder fade. RI-CAM01 section C.1's automatic fail is live: an occluded run of between 60 and 120 frames against a ceiling of 6.",
+    "for_whoever_takes_D2": "The defect is confirmed live at HEAD and worsens as you walk in (15 -> 36 streaks under a roof). The builder's own note on the cause — the 120 m footprint ceiling is too generous and the z arm of the proximity filter reads `> BOX + 60` where x reads `> BOX` — is worth trusting; I verified the surrounding numbers, not that specific cause.",
+    "for_everyone_measuring_actors": "corpus/80-methods/RI-MTH04-measurement-integrity.md Appendix A. Hide the root, never the materials."
+  },
+  "not_done": [
+    "No settlement other than Lilmoth was entered, by the builder or by me. The builder's open question 1 — does the door derivation behave in a town whose buildings ring the centre — is still open.",
+    "The character fade was demonstrated by perturbation but never photographed in motion against a wall. The picture the builder said it owed is still owed.",
+    "The fight arm was captured but not judged; it is outside this piece's claims."
+  ],
+  "next_step": "None from me. The verdict is filed, schema-valid, the ledger is regenerated and publish has run."
 }

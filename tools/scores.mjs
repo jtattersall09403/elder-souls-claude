@@ -32,6 +32,12 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '
 // page whose newest verdict was five hours old while seven newer ones sat on disk. Unmapped is
 // now a hard failure in `publish.mjs`; a chart that quietly omits data is worse than no chart.
 const DOMAIN = {
+  // Not every piece is named `w1-NN`. `first-ten-minutes` is the defect round taken straight from
+  // the 2026-08-14 visual-truth audit — people at the world origin, the buried camera, rain through
+  // roofs — and it belongs with 'The first hour' rather than under any one system, because what it
+  // fixes is what a player meets before they have met a system. Added by its critic when
+  // `tools/publish.mjs` said the verdict plotted on no chart.
+  'first-ten-minutes': 'The first hour',
   'w1-00': 'Engine & harness',
   'w1-01': 'The world',
   'w1-02': 'The world',
