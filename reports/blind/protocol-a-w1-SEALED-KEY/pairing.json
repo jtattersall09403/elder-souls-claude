@@ -1,0 +1,68 @@
+{
+  "schema": "elder-souls/protocol-a-pairing@1",
+  "item": "RI-VIS06",
+  "protocol": "A",
+  "wave": "w1",
+  "built_by": "RI-VIS06-PROTOCOL-A chunk 1",
+  "SEALED": "This table names which arm is ours. Ruling S51: it must never travel with the pack. It is written to the reveal side only.",
+
+  "ours_capture": {
+    "run": "reports/runpod-gpu/runs/protocol-a-chars-r3",
+    "deck": "tools/blind/deck-protocol-a.json",
+    "deck_manifest_hash": "4746eafe87af6559",
+    "canvas": [1920, 1080],
+    "seed": 20260814,
+    "gpu": "NVIDIA RTX A4500 (SECURE, $0.25/hr)",
+    "renderer_string": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A4500 (0x00002232)), NVIDIA)",
+    "software_renderer": false,
+    "evidence_class": "HARDWARE — valid for appearance claims.",
+    "counts": { "planned": 6, "ok": 6, "red": 0 }
+  },
+
+  "jpeg_q": 95,
+  "crop_size": 512,
+
+  "why_only_1920x1080_plates": "A 512x512 NATIVE crop out of a 3840x2160 plate covers a quarter of the frame area a 512x512 crop out of a 1920x1080 frame covers, so surfaces arrive magnified on one arm. That is an appearance change landing on exactly one side — the leak RI-VIS06 'how we lose' names as the one that teaches you nothing about fidelity. Restricting the reference side to the 1920x1080 plates gives exact pixel-density parity with our 1920x1080 capture and makes the crop boxes directly comparable. COST OF THE RULE, recorded rather than hidden: it excludes REF-M6 (RDR2 1921x1081 — one pixel off in both axes), REF-RD (2560x1440), REF-ER neulyiaa (3840x2160) and REF-W3 1399085215 (3840x2160), which is the whole of the Red Dead Redemption 2 holding and the daylight-overcast lighting profile with it.",
+
+  "why_three_plates_are_excluded_outright": "REF-ER 2764130788, 2764143936 and 2764143953 carry burnt-in dialogue subtitles across the lower-centre of the frame. RI-VIS06 §D lists 'HUD, watermark, subtitle' as a leak vector and says reference shots with an overlay are unusable. Verified by eye on the contact sheet, not from metadata.",
+
+  "hud_constraint_on_our_side": "Our frames carry a shipped HUD drawn into the WebGL canvas: status bars top-left (to about y=115), compass top-right (about x>1680, y<140), hotbar bottom-right (about x>1680, y>820). There is no HUD-off mode. Every window below is chosen to clear all three, and every crop was inspected at native resolution before sealing rather than trusted to arithmetic.",
+
+  "pairs": [
+    {
+      "id": "pair01",
+      "ours": { "file": "reports/runpod-gpu/runs/protocol-a-chars-r3/artifacts/deck/frames/char-player__t0800__clear.png", "crop": "300,150,512,512" },
+      "ref": { "file": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764143924.jpg", "crop": "100,100,512,512" },
+      "match": "low-angle warm sun on built stone/timber against open sky; both mid-distance exterior architecture, no character in either window",
+      "mismatch": null
+    },
+    {
+      "id": "pair02",
+      "ours": { "file": "reports/runpod-gpu/runs/protocol-a-chars-r3/artifacts/deck/frames/char-player__t1300__clear.png", "crop": "150,480,512,512" },
+      "ref": { "file": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764130815.jpg", "crop": "1408,300,512,512" },
+      "match": "flat daylight on a plain built masonry surface; both windows are a large, largely unbroken surface under diffuse light, which is the condition that exposes flat shading",
+      "mismatch": "the first window chosen here (100,100) caught a creature limb at the frame edge. RI-VIS06 §A asks for a patch of ground, foliage, water or a material close-up, so the window was moved to plain masonry. Recorded because the move was made after looking, not before."
+    },
+    {
+      "id": "pair03",
+      "ours": { "file": "reports/runpod-gpu/runs/protocol-a-chars-r3/artifacts/deck/frames/char-npc__t1300__clear.png", "crop": "1100,150,512,512" },
+      "ref": { "file": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764130857.jpg", "crop": "1408,0,512,512" },
+      "match": "daylight on carved built stonework at mid distance; both windows are architecture with ornament and a receding plane, no character in either",
+      "mismatch": "same correction as pair02 — the first window (100,100) caught a creature limb and was moved to clean carved masonry after inspection."
+    },
+    {
+      "id": "pair04",
+      "ours": { "file": "reports/runpod-gpu/runs/protocol-a-chars-r3/artifacts/deck/frames/char-npc__t0800__clear.png", "crop": "150,480,512,512" },
+      "ref": { "file": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764067220.jpg", "crop": "1350,540,512,512" },
+      "match": "low-angle light raking across ground vegetation; both are near-field ground cover with no built form and no character",
+      "mismatch": "ours is 08:00 morning sun, the plate is dusk. Both are low-angle, but the colour temperature and the direction of the key differ, and the plate is the darker of the two."
+    },
+    {
+      "id": "pair05",
+      "ours": { "file": "reports/runpod-gpu/runs/protocol-a-chars-r3/artifacts/deck/frames/char-player__t1930__clear.png", "crop": "1100,150,512,512" },
+      "ref": { "file": "corpus/70-visual/refs/modern/character_closeup/REF-W3__steam-1902321246.jpg", "crop": "1350,540,512,512" },
+      "match": "low ambient light with a warm local source; the question both windows put is whether shadowed regions still hold readable detail",
+      "mismatch": "SUBJECT SCALE DIFFERS AND IT IS THE WEAKEST PAIR IN THE SET. Ours is a mid-distance exterior walkway at dusk; the plate is a near-field material close-up (studded leather) under lamplight. The corpus holds no 1920x1080 low-light plate at mid-distance exterior scale — the nearest, REF-ER 2764067220, is spent on pair04 and its remaining windows are darker still. Recorded rather than substituted: a judge reading this pair is comparing surfaces at different distances."
+    }
+  ]
+}

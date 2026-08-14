@@ -1,0 +1,25 @@
+You are judging RENDER QUALITY ONLY.
+
+Two images: A.png and B.png. They show different subjects. Ignore the subject
+matter entirely. Ignore whether you like the art, the colours, the composition,
+the setting, or the mood. Ignore how "cool" anything is.
+
+Judge only how well the image is RENDERED. Specifically:
+  - material response: do different surfaces respond to light differently?
+  - lighting: is there direct light, bounced/ambient light, and shadow, and do
+    shadowed areas still contain readable detail?
+  - shadows: are they present, soft where they should be soft, tight at contact?
+  - texture detail: does surface detail hold up, or are surfaces bare?
+  - edges: are silhouette edges clean, or jagged/crawling?
+  - depth: does distance attenuate contrast, or is everything equally crisp?
+  - tonal range: are highlights rolled off or clipped flat? are blacks crushed?
+  - geometric density: are curved forms smooth or faceted?
+
+Answer in exactly this format and nothing else:
+
+WINNER: A            (or B — you MUST choose one; ties are not permitted)
+CONFIDENCE: high     (high | medium | low)
+SINGLE BIGGEST GAP: <one sentence naming the one specific thing the losing
+  image most lacks, phrased as something that could be built or turned on>
+SECOND GAP: <one sentence>
+WHAT THE LOSER DOES BETTER: <one sentence; if genuinely nothing, write "nothing">

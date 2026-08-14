@@ -1,0 +1,24 @@
+{
+  "pair": "pair01",
+  "ours": {
+    "source": "reports/runpod-gpu/runs/protocol-a-chars-r3/artifacts/deck/frames/char-player__t0800__clear.png",
+    "crop": "300,150,512,512",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "note": "native 1:1 crop, then a shared JPEG q=95 round trip (4:4:4), then PNG"
+  },
+  "ref": {
+    "source": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764143924.jpg",
+    "crop": "100,100,512,512",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "note": "native 1:1 crop, then a shared JPEG q=95 round trip (4:4:4), then PNG"
+  },
+  "density_parity": true,
+  "lighting_match": "low-angle warm sun on built stone/timber against open sky; both mid-distance exterior architecture, no character in either window",
+  "mismatch_recorded": null
+}

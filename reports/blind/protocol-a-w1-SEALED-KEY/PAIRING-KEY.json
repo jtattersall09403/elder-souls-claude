@@ -1,0 +1,70 @@
+{
+  "schema": "elder-souls/protocol-a-pairing-key@1",
+  "warning": "SEALED. This file names which frame is on which arm. Ruling S51: it must not travel with the pack.",
+  "seed_base": 20260814,
+  "jpeg_q": 95,
+  "built": [
+    {
+      "name": "pair01",
+      "ours": {
+        "file": "reports/runpod-gpu/runs/protocol-a-chars-r3/artifacts/deck/frames/char-player__t0800__clear.png",
+        "crop": "300,150,512,512"
+      },
+      "ref": {
+        "file": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764143924.jpg",
+        "crop": "100,100,512,512"
+      },
+      "density_parity": true
+    },
+    {
+      "name": "pair02",
+      "ours": {
+        "file": "reports/runpod-gpu/runs/protocol-a-chars-r3/artifacts/deck/frames/char-player__t1300__clear.png",
+        "crop": "150,480,512,512"
+      },
+      "ref": {
+        "file": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764130815.jpg",
+        "crop": "1408,300,512,512"
+      },
+      "density_parity": true
+    },
+    {
+      "name": "pair03",
+      "ours": {
+        "file": "reports/runpod-gpu/runs/protocol-a-chars-r3/artifacts/deck/frames/char-npc__t1300__clear.png",
+        "crop": "1100,150,512,512"
+      },
+      "ref": {
+        "file": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764130857.jpg",
+        "crop": "1408,0,512,512"
+      },
+      "density_parity": true
+    },
+    {
+      "name": "pair04",
+      "ours": {
+        "file": "reports/runpod-gpu/runs/protocol-a-chars-r3/artifacts/deck/frames/char-npc__t0800__clear.png",
+        "crop": "150,480,512,512"
+      },
+      "ref": {
+        "file": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764067220.jpg",
+        "crop": "1350,540,512,512"
+      },
+      "density_parity": true
+    },
+    {
+      "name": "pair05",
+      "ours": {
+        "file": "reports/runpod-gpu/runs/protocol-a-chars-r3/artifacts/deck/frames/char-player__t1930__clear.png",
+        "crop": "1100,150,512,512"
+      },
+      "ref": {
+        "file": "corpus/70-visual/refs/modern/character_closeup/REF-W3__steam-1902321246.jpg",
+        "crop": "1350,540,512,512"
+      },
+      "density_parity": true
+    }
+  ],
+  "refused": 0,
+  "table_source": "reports/blind/protocol-a-w1/pairing.json"
+}

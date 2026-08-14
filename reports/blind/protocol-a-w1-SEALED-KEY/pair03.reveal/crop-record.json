@@ -1,0 +1,24 @@
+{
+  "pair": "pair03",
+  "ours": {
+    "source": "reports/runpod-gpu/runs/protocol-a-chars-r3/artifacts/deck/frames/char-npc__t1300__clear.png",
+    "crop": "1100,150,512,512",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "note": "native 1:1 crop, then a shared JPEG q=95 round trip (4:4:4), then PNG"
+  },
+  "ref": {
+    "source": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764130857.jpg",
+    "crop": "1408,0,512,512",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "note": "native 1:1 crop, then a shared JPEG q=95 round trip (4:4:4), then PNG"
+  },
+  "density_parity": true,
+  "lighting_match": "daylight on carved built stonework at mid distance; both windows are architecture with ornament and a receding plane, no character in either",
+  "mismatch_recorded": "same correction as pair02 — the first window (100,100) caught a creature limb and was moved to clean carved masonry after inspection."
+}
