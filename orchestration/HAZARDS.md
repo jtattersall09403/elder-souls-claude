@@ -66,6 +66,33 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 13. Agents stall waiting on their own monitors — take the measurement or declare it unmeasured
+
+**Measured on the evening of 2026-08-14: four separate agents stalled waiting on background tasks, and
+one of them stalled twice.** Each ended its turn with some variant of *"I'll wait for the monitor to
+report before deciding how to proceed."* The monitors were watching runs that had, in several cases,
+already finished — the notifications were stale — so the agent was waiting on something that would
+never arrive.
+
+**A blocked agent produces nothing. An approximate answer produces something.**
+
+Three rules:
+
+1. **Never end a turn waiting.** If a background task has not reported, take the measurement inline,
+   take a cheaper proxy, or write *"unmeasured, because X"* and carry on with the parts that do not
+   depend on it. Ending a turn to wait converts a slow measurement into an indefinite one.
+2. **Suspect the monitor before suspecting the run.** Several of tonight's stalls were on runs that had
+   already completed successfully. One agent's own `pgrep` loop was matching *its own waiter shells*,
+   so the condition could never clear — a check contaminated by the thing doing the checking, which is
+   the same shape as §0's failure family.
+3. **Know what is actually slow here.** `gl.readPixels` was measured at **10–20 seconds per call** on
+   this box at load ~3–3.4 per core. A frame-by-frame pixel walk is not slow because something is
+   broken; it is slow because that is what it costs. Budget for it or choose another instrument.
+
+**And the deliverable is usually the fix, not the evidence.** A regression fix held back behind a
+perfect capture is worse than an honestly-labelled unverified fix, because the tree stays broken while
+the pack is assembled. Land the fix, label what is unverified, and let the evidence follow.
+
 ## 12. `HEAD` is not your baseline — a sibling's bank can turn your delete-the-fix green
 
 **Reported by the agent it happened to, and caused by the orchestrator:** *"my first delete-the-fix came
