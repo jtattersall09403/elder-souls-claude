@@ -7,7 +7,7 @@
     "quests.faction.joining",
     "quests.faction.rankgating",
     "quests.faction.escalation",
-    "quests.faction.exclusivity"
+    "quests.faction.rivalry"
   ],
   "wave": 1,
   "critic": {
@@ -56,7 +56,7 @@
       ],
       "why_not_ten": "Volume is exactly 18 per line against a 24-28 target — the item's own 5/10 band. 70 of 144 faction quests have stakes == rank + 2, which is the 'spreadsheet rather than a story' signature the item's own How-we-lose section names, though real variance does exist (rank 2 carries stakes 4, 5, 6 and 8). Two lines place a politics quest at rank 0 (Q-DOCK-01, Q-MAG-07) against a 5-6 target. And the corruption reveal, which the item wants to be a PERSON, points at people whose authored voice is in a file the engine does not load.",
       "path_to_ten": "Six more quests per line to reach the 24-28 band; stakes chosen per quest rather than derived from rank; move the two rank-0 politics quests to rank 5-6 or re-tag them; and load the authored dissenter records so the reveal has a voice.",
-      "justification_for_7_plus": "RI-QST01 scores 7.5 on the strength of corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-census.json, which counts every metric the item's own comparison method specifies over game/data/quests/**: 18 quests on each of the eight lines across all eight rank bands (mean 2.25/rank against a 2.0 hard-fail floor), deceit present on every line and first at rank <= 3 on all eight, dirty_work first at rank 4 on all eight, succession at rank 7 on all eight, no stakes band dropping >= 2.0 against the band below, and 12-18 rival-touching quests per line against a target of >= 6. Zero of the item's four hard-fail clauses fire. Round 1 measured five volume hard fails and one honesty hard fail on the same instrument class; all six are gone."
+      "justification": "RI-QST01 scores 7.5 on the strength of corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-census.json, which counts every metric the item's own comparison method specifies over game/data/quests/**: 18 quests on each of the eight lines across all eight rank bands (mean 2.25/rank against a 2.0 hard-fail floor), deceit present on every line and first at rank <= 3 on all eight, dirty_work first at rank 4 on all eight, succession at rank 7 on all eight, no stakes band dropping >= 2.0 against the band below, and 12-18 rival-touching quests per line against a target of >= 6. Zero of the item's four hard-fail clauses fire. Round 1 measured five volume hard fails and one honesty hard fail on the same instrument class; all six are gone."
     },
     {
       "id": "RI-QST03",
@@ -217,16 +217,25 @@
     "what": "RI-QST03 §B puts a world-state requirement on ranks 5, 6 and 7 of every ladder. On four of the eight lines the world states named are raised by nothing: the_dockhands (dockhands_gang_held, dockhands_wharf_decided, dockhands_harbourmaster_vacant), the_drowned_court (court_yard_held, court_tally_decided, court_crown_vacant), the_ixtu_vakh (sapcutters_well_cut, sapcutters_buyer_decided, sapcutters_cutter_vacant) and the_rootkeepers (rootkeepers_sapwell_kept, rootkeepers_chapter_decided, rootkeepers_voice_vacant). `grep -rl dockhands_gang_held game/data/` returns exactly one file, faction-gates.json. The other four lines are clean — ledger_gate_held, assize_seal_held and the Deep-Kin/Xul-Aneekh states are each raised by a real quest resolution. Measured live: a character given every favoured skill at 100, every favoured attribute at 100 and 400 reputation reaches rank 4 on all eight lines and stops, held by the world state; in the null control, with that column flattened, the same character reaches rank 7 on all eight. So the live arm establishes what holds everyone at 4 and the static grep establishes that on four lines nothing can ever move it. 21 authored quests are stranded above the ceiling — 4 on the Dockhands, 6 on the Drowned Court, 6 on the Ixtu-Vakh, 5 on the Rootkeepers — including every succession quest on those lines.",
     "why_it_matters": "Round 1's failure was visible: a line with one quest on it. This one is invisible. Every static check passes, every quest exists, the census is green, and the player simply finds that the Rootkeepers stop promoting them and nobody says why. It is Ruling W1's shape exactly — an aggregate (RI-QST03 §4's 'earnable reputation >= the rank-7 requirement', which passes on all eight lines) standing in for something a player meets one rung at a time. And it deletes the beat RI-QST01 says the whole ladder exists to arrive at: the player taking the seat.",
     "evidence": [
-      "reports/w1-20/r2-census.json — QST03.ceiling.the_dockhands / .the_drowned_court / .the_ixtu_vakh / .the_rootkeepers, each HARD_FAIL with unreachable_ranks [5,6,7]",
-      "reports/w1-20/r2-live.json — A4.lines_reaching_rank_ge_5 = 0 of 8 on the shipping tree",
-      "reports/w1-20/r2-live-null-control.json — A4.lines_reaching_rank_ge_5 = 8 of 8 with the world_state column flattened",
-      "grep -rl dockhands_gang_held game/data/ -> game/data/quests/faction-gates.json"
+      "corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-census.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-live-shipping.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-live-null-control.json"
     ],
     "remedy": {
       "owner": "W1-20 or its wave-2 successor",
       "acceptance": "node tools/quests/critic-w1-20-r2-census.mjs returns zero QST03.ceiling.* hard fails, AND node tools/quests/critic-w1-20-r2-live.mjs reports A4.lines_reaching_rank_ge_5 = 8 of 8 on the shipping tree (it is 0 of 8 today).",
-      "action": "Twelve world_flags entries on quests that already exist at the right ranks. For each of the four lines: give its rank-4 or rank-5 quest a resolution that raises the line's *_held flag, its rank-6 quest one that raises *_decided, and its rank-7 quest one that raises *_vacant. The four carried lines already show the pattern — copy game/data/quests/faction-wet-ledger.json's ledger_gate_held."
-    }
+      "action": "Twelve world_flags entries on quests that already exist at the right ranks. For each of the four lines: give its rank-4 or rank-5 quest a resolution that raises the line's *_held flag, its rank-6 quest one that raises *_decided, and its rank-7 quest one that raises *_vacant. The four carried lines already show the pattern — copy game/data/quests/faction-wet-ledger.json's ledger_gate_held.",
+      "targets": [
+        "game/data/quests/faction-continuation-wave1.json",
+        "game/data/quests/faction-gates.json"
+      ]
+    },
+    "evidence_notes": [
+      "corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-census.json — QST03.ceiling.the_dockhands / .the_drowned_court / .the_ixtu_vakh / .the_rootkeepers, each HARD_FAIL with unreachable_ranks [5,6,7]",
+      "corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-live-shipping.json — A4.lines_reaching_rank_ge_5 = 0 of 8",
+      "corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-live-null-control.json — A4.lines_reaching_rank_ge_5 = 8 of 8 with the world_state column flattened",
+      "grep -rl dockhands_gang_held game/data/ -> game/data/quests/faction-gates.json (one file, and it is the gate itself)"
+    ]
   },
   "secondary_observations": [
     "the_dockhands is absent from game/data/dialogue/faction-reactions.json altogether — no alias, no matrix row — so rank in the Dockhands reaches no person in the world. npc-porter-eeja sits at disposition 47 at ranks 0, 2, 4 and 7 while the other seven representatives move 21-24 points across the same span. Fix: two lines of JSON.",
@@ -308,6 +317,7 @@
     "PART 1 RULING, reversible: W1-20-r1 STANDS as written and is not superseded on its own commit; W1-20-r2 is the current verdict of W1-20. The dispatch's premise that the round-1 critic judged against a hole is not what the dates say — r1 ran on 2026-08-08 and the recovered material was authored on 2026-08-10 by 9ed28905, then partly deleted sixteen minutes later by 091a6cec. What the deletion cost was round two, not round one. WHAT WOULD OVERTURN IT: a copy of 9ed28905's material on the branch before 2026-08-08. The object database has one authoring commit per path and it is dated 08-10.",
     "THE RECOVERY IS TWO FILES SHORT, and no file-level sweep could have known. 091a6cec also reverted 18 lines of game/src/engine.js (the factions/registry.json loader branch, the this.factionRegistry install, and the 19-line Engine.factionAccess) and the whole of orchestration/status/W1-20.json (from builder-delivery-complete with ten added files_touched entries, back to the pre-continuation record). Both files still exist, so RECOVERY-20260814's per-path method is blind to them. Worth adding to HAZARDS: the cheapest detector for an in-file revert is not git, it is booting the game and watching a harness verb throw.",
     "THE DOWNSTREAM DOCUMENTS ARE STALE, and this is the cheap fix nobody has made: node tools/dispatchable.mjs W1-20 still advises a critic to push on 'RI-QST01 volume over the four new lines', against a build where every line has carried 18 quests since 2026-08-10; and GAP-W1-faction-ladders-are-doors-onto-empty-corridors is still carried open against a tree where its five hard fails are zero.",
-    "reports/w1-20/builder-continuation.json is on disk and deliberately not landed — reports/.gitignore excludes *.json under reports/ and the original was force-added past that rule. RECOVERY-20260814 left the decision to W1-20's owner and this verdict does the same; the blob is permanent at 9ed28905:reports/w1-20/builder-continuation.json."
+    "reports/w1-20/builder-continuation.json is on disk and deliberately not landed — reports/.gitignore excludes *.json under reports/ and the original was force-added past that rule. RECOVERY-20260814 left the decision to W1-20's owner and this verdict does the same; the blob is permanent at 9ed28905:reports/w1-20/builder-continuation.json.",
+    "I did NOT file a gap_closure for GAP-W1-faction-ladders-are-doors-onto-empty-corridors, and the reason is a rule rather than a doubt: the ledger ignores a closure filed in the same wave that opened the gap ('Closure must come from a later wave's critic'). Its five volume hard fails and its honesty hard fail all measure ZERO at HEAD — 18 quests across 8 full rank bands on every one of the eight lines, deceit on every line — and that is recorded here so a wave-2 critic can close it in one re-measurement: node tools/quests/critic-w1-20-r2-census.mjs, rows QST01.volume.*, QST01.bands.*, QST01.meanPerRank.* and QST01.deceit.*."
   ]
 }

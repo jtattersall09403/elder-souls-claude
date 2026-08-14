@@ -106,17 +106,16 @@ computes, read off the wrong end — a player turned to face the wall they came 
 from the same standing point on the same frame, so two arms that came back equal would convict the
 instrument rather than the fix.
 
-**Seven interiors across three towns**, 12 m cap (`reports/door-yaw/smoke-after.json` and
+**Nine interiors across four towns**, 12 m cap (`reports/door-yaw/smoke-after.json` and
 `sample-17-after.json`): `writ-house`, `barge-hold`, `archon-inn`, `archon-apothecary`,
-`archon-kiln-house`, `blackrose-clerk`, `blackrose-pawn`.
+`archon-kiln-house`, `blackrose-clerk`, `blackrose-pawn`, `gideon-apothecary`, `gideon-inn`.
 
 | arm | median | mean | under 2 m | at the 12 m cap |
 |---|---|---|---|---|
-| **as shipped** (no yaw written; adversarial prior survives) | 4.5 m | 5.11 | **3/7** | 2/7 |
-| **fixed** (`door_to_doorstep`) | **12 m** | **10.50** | **1/7** | **6/7** |
-| **null control** (the same yaw, inward) | 6.75 m | 5.68 | 2/7 | 1/7 |
-| the declared `door_world_bearing_deg` | 12 m | 7.25 | 3/7 | 4/7 |
-| the best of 36 bearings from that point (the ceiling) | 12 m | 12.00 | 0/7 | 7/7 |
+| **as shipped** (no yaw written; adversarial prior survives) | 5.5 m | 6.56 | **3/9** | 3/9 |
+| **fixed** (`door_to_doorstep`) | **12 m** | **10.83** | **1/9** | **8/9** |
+| **null control** (the same yaw, inward) | 7.25 m | 6.92 | 2/9 | 2/9 |
+| the best of 36 bearings from that point (the ceiling) | 12 m | 12.00 | 0/9 | 9/9 |
 
 Per interior, and the last column is the honest one:
 
@@ -126,8 +125,10 @@ Per interior, and the last column is the honest one:
 | `archon-inn` | 0.25 | **12** | 0.25 | 12 |
 | `archon-kiln-house` | 4.50 | **12** | 6.75 | 12 |
 | `blackrose-clerk` | 5.50 | **12** | 5.25 | 12 |
+| `gideon-apothecary` | 11.25 | **12** | 10.50 | 12 |
 | `barge-hold` | 12 | 12 | 7.25 | 12 |
 | `blackrose-pawn` | 12 | 12 | 12 | 12 |
+| `gideon-inn` | 12 | 12 | 12 | 12 |
 | **`archon-apothecary`** | 1.00 | **1.50** | **8.00** | 12 |
 
 **The control goes red where it matters.** On the writ house — the door every player opens first —
@@ -137,7 +138,7 @@ Per interior, and the last column is the honest one:
 gives 1.50 m, its own reverse gives 8 m, and the best available facing from that standing point is
 12 m at 220° — which is neither. So the doorstep has a good facing and *no rule derived from the
 door geometry alone finds it*: `exterior_spawn` sits at bearing 315.9° from `door_world_pos`,
-pointing at something 1.5 m away. That is one of seven, it is a smaller failure than the one being
+pointing at something 1.5 m away. That is one of nine, it is a smaller failure than the one being
 fixed (1.50 m is not 0.25 m), and it is a named open gap with a number rather than a rounding of
 the result. The instrument's `best` column exists precisely so a bad *rule* can be told apart from
 a bad *point*, and here it says: bad rule, good point.
@@ -265,7 +266,7 @@ a probe measuring terrain, weather or any town that is not Thorn. It is now loud
   --no-enter` on an idle box is the whole job.
 * **Renderer.** Every number in §4 is SwiftShader. §4a is hardware and says so, with the renderer
   string in the manifest and `software_renderer` failing closed on an unknown string.
-* **`archon-apothecary`'s facing is not fixed** (§4). One of seven measured, improved from 1.00 m to
+* **`archon-apothecary`'s facing is not fixed** (§4). One of nine measured, improved from 1.00 m to
   1.50 m where 12 m was available.
 * **The camera arm at the writ house doorstep is collapsed** (§4a) and the player is not in the
   first controlled frame. Not touched.

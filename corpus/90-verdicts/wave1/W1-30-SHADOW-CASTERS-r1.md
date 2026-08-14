@@ -262,8 +262,41 @@ The arms are not additive-only: `setCasters()` writes the value it wants and rep
 meshes it changed, so a duplicate arm is visible instead of passing as a second copy of its
 neighbour — which is the defect §2 found in the builder's own harness.
 
-Results, and the honest limits on them, are in the run report and the artifact manifest. Where the
-hardware sequence completed it is the first motion evidence of the canopy casting that exists.
+**Taken on hardware** — RTX A5000, `ANGLE (NVIDIA, Vulkan 1.4.312)`, `software: false`, 90 frames
+per arm at 960×540, eye-blackwood, 13:00 clear, zero page errors:
+
+| arm | caster meshes | caster triangles | flags changed | **flicker / px / 10 frames** | pixels that moved |
+|---|---:|---:|---|---:|---:|
+| A `canopy-off` | 1,285 | 492,330 | 246 canopy → false | **1.848** | 96.4% |
+| B `canopy-on` (HEAD) | 1,531 | 1,345,138 | 246 canopy → true | **1.888** | 96.0% |
+| C `canopy+under+rock` | 1,617 | 1,732,544 | 86 under/rock → true | **2.017** | 98.6% |
+
+- `ARMS-ARE-DISTINCT` **PASS** — 492,330 < 1,345,138 < 1,732,544, and every arm reports the
+  meshes it actually changed, so none is a silent duplicate.
+- `INSTRUMENT-CAN-SEE-SHIMMER` **PASS** — the set R5 declined reads **6.8% higher** than the
+  shipped set on the identical walk. The instrument is not blind, which is what makes B's number
+  mean anything.
+- `CANOPY-DOES-NOT-SHIMMER` **PASS** — B is **2.2%** above A, well inside the 25% allowance.
+
+**So the canopy's shadow does not shimmer in motion, on real hardware, and R5's caution about the
+sub-texel buckets is corroborated rather than merely asserted.** The builder's largest declared
+gap is closed, and the answer is the one it hoped for.
+
+**The honest limit on that, stated rather than left to be found:** each arm was walked once, so I
+have no repeatability estimate for the flicker statistic itself — exactly the criticism §2 makes of
+the builder's budget, and I am not exempt from it. The 2.2% and 6.8% gaps are single observations.
+What is robust is the *ordering* (A < B < C, monotone in sub-texel content) and the absence of any
+step change at B; a claim that 6.8% is significant would need the walk repeated.
+
+Alongside it, a 180-frame `boundary-walk` through the flooded forest on the same Pod
+(`reports/runpod-gpu/runs/critic-canopy-motion/artifacts/motion/contact/boundary-walk.png`,
+180 frames, 180 distinct, hardware-attested). Set beside the builder's pre-canopy sheet, the
+difference is easy to see and is a plain improvement: the forest floor was a bright plane crossed
+by thin lanes and is now dappled with broad, soft-edged canopy shade that tracks the camera
+smoothly. That is the first forest walk with the canopy casting that exists.
+
+Cost of both: one RTX A5000 at $0.27/hr for 4.3 minutes. Pod deleted and deletion confirmed by API
+lookup; `cleanup --dry-run` afterwards shows nothing of mine outstanding.
 
 ---
 
