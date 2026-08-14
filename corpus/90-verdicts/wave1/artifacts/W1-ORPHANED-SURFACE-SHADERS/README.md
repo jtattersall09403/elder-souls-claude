@@ -100,7 +100,57 @@ consulted. **A copy hook would have been inert and would have looked exactly lik
 `MATERIAL_API.md` is frozen and was not edited. Two exports were **added** (§9 permits additions);
 the documentation of them is owed: `installCopySeam(mat)` and `adoptMaterialCopy(copy, source)`.
 
-## 5. The instrument had to be rebuilt mid-run, and that is worth recording
+## 5. CONSUMPTION (`RI-MTH07`) — on hardware, and the control is the point
+
+**NVIDIA L4, `ANGLE (NVIDIA, Vulkan 1.4.303)`, `software: false`** — a hardware attestation, so
+these are admissible as appearance evidence.
+
+The perturbation drives a material's **own uniform objects** to an extreme and **never sets
+`needsUpdate`**, so no program is recompiled and no `onBeforeCompile` re-runs. The only route from
+the call to a pixel is the renderer already holding those exact objects. The three captures at each
+site are taken with **no simulated frames between them** — `__HARNESS.screenshot()` re-renders by
+itself — so the frames are identical but for the uniform value.
+
+| target | affected by the defect? | pixels moved (best angle) | restore floor |
+|---|---|---:|---:|
+| **player**, 8-angle orbit | yes | 3.23 – **5.36%** at every one of 8 angles | **0.00%** |
+| **building**, 3 angles | yes | 24.25 / **32.84** / 25.12% | **0.00%** |
+| **ground**, 2 angles *(control)* | **no** | 73.97 / 52.68% | **0.00%** |
+
+The restore floor is **0.00% at all thirteen sites** — the site is perfectly deterministic, so any
+movement at all is signal rather than noise.
+
+**Why `ground` is in the table.** It is the plausible-wrong-answer control. Terrain kept its shader
+in both arms, so it must respond in *both*. If every target had come back zero in the before-arm,
+the honest reading would have been "the harness cannot perturb anything" and the whole result would
+be worthless. `ground` responding is what makes a player/building zero mean an *absence*.
+
+**An accidental repeatability estimate, and it is worth more than it cost.** The first hardware run
+tried to delete the fix with a script that resolved the repo from a hard-coded
+`/home/user/elder-souls-claude`, which does not exist on a Pod. The revert silently did nothing —
+and the run's own guard printed *"REVERT DID NOT APPLY — the BEFORE arm below is NOT a control"*,
+which is the only reason it was not read as a result. That arm is therefore a **same-configuration
+repeat** of the positive arm, and it returned **byte-identical** numbers: 73.97 / 5.36 / 32.84 and a
+0.00% floor. Repeatability spread on this instrument is **zero**. (The script now resolves the repo
+from its own location, and the runner additionally greps both source files for the marker rather
+than trusting the revert's own log.)
+
+## 6. Delete-the-fix, on a copy
+
+`node tools/control-clone.mjs make` (hard-linked, `game/` and `tools/`, the two edited files
+declared writable), then `--revert` inside the clone:
+
+```
+REVERT game/src/render/visual-foundation.js  pre=5084d503… post=5ff49046…
+REVERT game/src/render/actor.js              pre=a3a0a740… post=22989617…
+```
+
+`5ff49046…` and `22989617…` are **the exact md5s of the two files before the change was applied** —
+the reversal is byte-for-byte, not approximate. The marker count goes 3 → 0 and 2 → 0 in the clone
+while the live tree still reads 3 and 2 and its md5s are unchanged, so the clone was written and the
+repository was not.
+
+## 7. The instrument had to be rebuilt mid-run, and that is worth recording
 
 The original gate and the first version of this census both asked
 `/uDetailNormal/.test(String(mat.onBeforeCompile))`. That reads the **source text of the outer
@@ -116,7 +166,7 @@ would look installed, and would never respond to the world.
 `tools/visual/w1-30-shader-hook-collision.mjs` still uses the text test and will report those 116
 false orphans against the fixed tree. It is another piece's instrument; flagged, not edited.
 
-## 6. What this fix does **not** do
+## 8. What this fix does **not** do
 
 - **No ambient occlusion, no contact darkening.** `worldMaterial()` sets `aoMap: authored ? null : …`
   and all twenty families have authored sets, so **`aoMap` is null on every material in the game**;

@@ -95,6 +95,61 @@ function corr(a, b) {
   return +(sab / Math.sqrt(sa * sb)).toFixed(3);
 }
 function energy(h) { let s = 0; for (const v of h) s += Math.abs(v); return +(s / h.length).toFixed(3); }
+
+/* --- the lane metric, and why `energy` above is not enough ------------------------------------
+ * `energy` is the r1 critic's statistic and is kept so the numbers stay comparable. It is a mean
+ * absolute vertical high-pass over a crop, and at `vista-deep-marshes` that crop is full of tree
+ * trunks and roots: measured, it RISES 19% when the whole water surface is replaced by one flat
+ * colour, because the crop's high-frequency content is mostly trees and flattening the water only
+ * changes their contrast against it. A statistic that goes up when the thing under test is deleted
+ * is not measuring the thing under test.
+ *
+ * `lanes()` measures banding directly and directionally. The crop is high-passed, then projected
+ * onto an axis at each angle; a set of parallel lanes concentrates all its variance at ONE angle
+ * (the one perpendicular to the lanes) and almost none at the angle along them. So:
+ *   lane_power  variance of the projection profile at the best angle — how strong the banding is
+ *   lane_angle  the angle it sits at, in screen degrees; lanes that move are lanes that changed
+ *   lane_aniso  best angle's variance / the median angle's — how BANDED rather than merely noisy
+ *               the crop is. Isotropic noise gives ~1. This is the number an arm has to move.
+ * `lane_aniso` is a ratio, so it is immune to the confound that killed `energy` here: an arm that
+ * makes the whole crop brighter or flatter scales numerator and denominator together. */
+function lanes(h, w, hh) {
+  const at = (x, y) => h[y * w + x];
+  const stats = [];
+  for (let deg = -90; deg < 90; deg += 2) {
+    const th = deg * Math.PI / 180, ux = Math.cos(th), uy = Math.sin(th);
+    const off = Math.min(0, ux * (w - 1)) + Math.min(0, uy * (hh - 1));
+    const nb = Math.ceil(Math.abs(ux) * w + Math.abs(uy) * hh) + 2;
+    const acc = new Float64Array(nb), cnt = new Float64Array(nb);
+    for (let y = 0; y < hh; y++) for (let x = 0; x < w; x++) { const t = Math.round(ux * x + uy * y - off); if (t < 0 || t >= nb) continue; acc[t] += at(x, y); cnt[t]++; }
+    // Only bins with enough support, so the thin corners of a rotated projection cannot dominate.
+    const need = Math.max(8, 0.25 * Math.min(w, hh));
+    const prof = []; for (let i = 0; i < nb; i++) if (cnt[i] >= need) prof.push(acc[i] / cnt[i]);
+    if (prof.length < 8) continue;
+    let m = 0; for (const v of prof) m += v; m /= prof.length;
+    let va = 0; for (const v of prof) va += (v - m) * (v - m); va /= prof.length;
+    stats.push({ deg, va });
+  }
+  if (!stats.length) return { lane_power: 0, lane_angle: null, lane_aniso: 1 };
+  const sorted = stats.slice().sort((a, b) => b.va - a.va);
+  const med = stats.slice().sort((a, b) => a.va - b.va)[Math.floor(stats.length / 2)].va;
+  return {
+    lane_power: +sorted[0].va.toFixed(3),
+    lane_angle: sorted[0].deg,
+    lane_aniso: +(sorted[0].va / Math.max(1e-6, med)).toFixed(2),
+  };
+}
+/** High-pass returned as a rectangle, for `lanes()`. */
+function hpRect(o, [x0, x1, y0, y1]) {
+  const X1 = Math.min(x1, o.w), Y1 = Math.min(y1, o.h);
+  const w = X1 - x0, hh = Y1 - y0, out = new Float32Array(w * hh);
+  for (let y = y0; y < Y1; y++) for (let x = x0; x < X1; x++) {
+    let s = 0, c = 0;
+    for (let k = -4; k <= 4; k++) { const yy = y + k; if (yy < 0 || yy >= o.h) continue; s += o.y[yy * o.w + x]; c++; }
+    out[(y - y0) * w + (x - x0)] = o.y[y * o.w + x] - s / c;
+  }
+  return { h: out, w, hh };
+}
 /** Whole-frame change fraction — so an arm that turned nothing off is distinguishable from an
  *  arm that changed nothing inside the crop but plenty outside it. */
 function changed(a, b) {
@@ -300,11 +355,15 @@ const ONLY = args.only ? String(args.only).split(',') : null;
 const ARMS = ONLY ? ALL_ARMS.filter((a) => ONLY.includes(a.id) || a.kind === 'floor' || a.kind === 'positive-control') : ALL_ARMS;
 
 const base = await shot('00-baseline');
-const baseH = hp(lum(base), CROP);
+const baseL = lum(base);
+const baseH = hp(baseL, CROP);
+const baseR = hpRect(baseL, CROP);
 const out = {
   tool: 'w1-water-lane-terms', site: SITE, time: TIME, crop: CROP, canvas: [CW, CH], seed: SEED,
-  commit: null, baseline_band_energy: energy(baseH), arms: [], pageErrors: [],
+  commit: null, baseline_band_energy: energy(baseH), baseline_lane: lanes(baseR.h, baseR.w, baseR.hh),
+  arms: [], pageErrors: [],
 };
+console.log(`baseline lanes: ${JSON.stringify(out.baseline_lane)}`);
 try { out.commit = (await import('node:child_process')).execSync('git rev-parse --short HEAD', { cwd: REPO }).toString().trim(); } catch {}
 out.water_state = await waterState();
 console.log(`water state: ${JSON.stringify(out.water_state, null, 1)}`);
@@ -317,16 +376,21 @@ for (const arm of ARMS) {
   await step(4);
   const buf = await shot(arm.id);
   if (arm.edits) applied.edits_applied = await editCount();
-  const h = hp(lum(buf), CROP);
+  const L = lum(buf);
+  const h = hp(L, CROP);
+  const r = hpRect(L, CROP);
+  const ln = lanes(r.h, r.w, r.hh);
   const row = {
     arm: arm.id, kind: arm.kind, what: arm.what, applied,
     rho_vs_baseline: corr(baseH, h), band_energy: energy(h),
     band_energy_pct_of_baseline: +(100 * energy(h) / out.baseline_band_energy).toFixed(1),
+    ...ln,
+    lane_power_pct_of_baseline: +(100 * ln.lane_power / Math.max(1e-6, out.baseline_lane.lane_power)).toFixed(1),
     whole_frame_changed_pct: changed(base, buf),
     vacuous: !!(arm.edits && !applied.edits_applied),
   };
   out.arms.push(row);
-  console.log(`  ${arm.id.padEnd(28)} rho ${String(row.rho_vs_baseline).padStart(6)}  energy ${String(row.band_energy).padStart(7)} (${String(row.band_energy_pct_of_baseline).padStart(5)}% of base)  frame moved ${String(row.whole_frame_changed_pct).padStart(6)}%  ${row.vacuous ? 'VACUOUS — substitution matched nothing' : JSON.stringify(applied)}`);
+  console.log(`  ${arm.id.padEnd(28)} lane_power ${String(row.lane_power).padStart(8)} (${String(row.lane_power_pct_of_baseline).padStart(5)}%)  aniso ${String(row.lane_aniso).padStart(6)} @${String(row.lane_angle).padStart(4)}deg   energy ${String(row.band_energy).padStart(7)}  rho ${String(row.rho_vs_baseline).padStart(6)}  ${row.vacuous ? 'VACUOUS — substitution matched nothing' : JSON.stringify(applied)}`);
   if (arm.edits) await restoreEdits(); else if (arm.undo) await arm.undo();
   await step(4);
 }
