@@ -1,0 +1,42 @@
+{
+  "task_id": "verdict-evidence-20260814",
+  "task": "Make every Wave-1 verdict citation resolve in a fresh clone: recover the evidence, pin what is too large, rule on what is gone, stop gating on superseded rounds, and put the rule where a builder meets it",
+  "started_at": "2026-08-14T08:30:00Z",
+  "state": "complete",
+  "status": "complete",
+  "headline": "Fresh-checkout verdict FAIL 54 -> 9. 203 cited evidence files committed (10.4 MiB), 3 pinned (108.9 MiB), 21 rotted paths corrected, 35 superseded rounds no longer gate. The 9 that remain are content defects with named owners.",
+  "measurement_method": "git archive <tree> | tar -x into an empty directory, then node tools/verdict-validate.mjs --all inside it. Never measured against the populated working tree.",
+  "fresh_checkout_fail_before": 54,
+  "fresh_checkout_fail_after": 9,
+  "next_step": "Nothing for this task. Three follow-ons named in reports/ci-triage/EVIDENCE-RECOVERY-20260814.md §8 and orchestration/NEXT-DISPATCH.md: repair the 9 owned verdicts, split verdict/judgement document types in the schema, and re-run W1-25 whose zero-event trace does not reproduce at HEAD.",
+  "report": "reports/ci-triage/EVIDENCE-RECOVERY-20260814.md",
+  "files_touched": [
+    "tools/verdict-evidence.mjs",
+    "tools/verdict-validate.mjs",
+    "tools/gen-index.mjs",
+    "corpus/00-doctrine/verdict.schema.json",
+    "corpus/00-doctrine/CRITIC-PROMPT-TEMPLATE.md",
+    "orchestration/plans/BUILDER-EXECUTION-CONTRACT.md",
+    "reports/.gitignore",
+    ".github/workflows/corpus-gate.yml",
+    "reports/ci-triage/EVIDENCE-RECOVERY-20260814.md",
+    "orchestration/status/VERDICT-EVIDENCE-20260814.md",
+    "orchestration/NEXT-DISPATCH.md",
+    "corpus/90-verdicts/wave1/W1-04-r4.json",
+    "corpus/90-verdicts/wave1/W1-09-r3.json",
+    "corpus/90-verdicts/wave1/W1-13-r2.json",
+    "corpus/90-verdicts/wave1/W1-19-r2.json",
+    "corpus/90-verdicts/wave1/W1-FACTIONS-r2.json",
+    "reports/sessions/exp-w1-opening/trace.jsonl.pin.json",
+    "reports/w1-09/exemplar/RI-CMB07-exemplar-F3-trace.jsonl.pin.json",
+    "reports/w1-09/exemplar/RI-CMB07-exemplar-frames.jsonl.pin.json",
+    "203 cited evidence files under reports/, force-added by name"
+  ],
+  "not_done": [
+    "The 9 remaining verdicts are not repaired: every remaining error is a field whose value is a measurement this task did not take. Owners named in the report section 4.",
+    "The verdict/judgement document-type split that four of those nine need is designed, not built.",
+    "W1-25-r1's zero-event trace does not reproduce at HEAD (0 events in 36,000 frames pinned; 113 in 3,600 regenerated at the same seed and profile). Found, not resolved.",
+    "The two W1-09 exemplar traces record no runnable regeneration command; recorded as run:false rather than filled with a guess.",
+    "W1-01.json's four dead citations are ruled un-repairable and un-worth-re-taking, not fixed."
+  ]
+}

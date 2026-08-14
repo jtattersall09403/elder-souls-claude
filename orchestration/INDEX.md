@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `319bc15`: 896 tools, 155 reference
+so it cannot drift. Generated at `ae17b24`: 897 tools, 155 reference
 items, 160 pieces in flight.
 
 Its purpose is to stop 160+ concurrent agents each paying separately to discover the
@@ -146,6 +146,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/w1-chartfont-deletefix.mjs` — RULE 6 for the shared chart font, both halves of it.
 - `tools/analysis/w1-chartfont-shot-sweep.mjs` — SWEEP docs/shots/ FOR FIGURES DRAWN WITH THE SHEARED CHART FONT — by reading the PIXELS.
 - `tools/analysis/w1-chartfont-shot.mjs` — the rule-27 picture for W1-CHARTFONT: the same strings drawn with the pre-fix table and with the fixed one, side by side, at the size a chart actually uses them
+
+### `tools/assets/` — 1
+
+- `tools/assets/fetch-cc0-materials.mjs` — W1-30C — fetch and convert the CC0 texture sets named in tools/assets/material-library.json.
 
 ### `tools/audio/` — 13
 
