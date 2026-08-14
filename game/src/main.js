@@ -22,6 +22,30 @@ const mode = params.get('mode') || (automated ? 'harness' : 'play');
 globalThis.__ES_AUTOMATED = automated;
 const stateName = params.get('state') || 'default';
 
+// ---- THE LOUD BIT --------------------------------------------------------------------------
+//
+// This one line is why every "first ten minutes" measurement this project ever took was taken in
+// the wrong town. `default.json` is the harness/debug boot — the harbour steps at LILMOTH — and a
+// player who clicks `New` at the title screen never reaches it: `Engine._titleApply('new')` goes
+// to `censusBegin({})`, which stages `barge-hold` and then `writ-house`, both of which are in
+// THORN. Settled by playing it: `reports/spawn-truth/2026-08-14-spawn-truth.md`.
+//
+// The default is not being changed — booting straight to a known world coordinate is exactly
+// right for a probe measuring terrain, weather or any town that is not Thorn, and moving where
+// the game starts is a design decision with a blast radius, not a patch. What it must not do any
+// more is happen SILENTLY under automation. `launchGame()` collects the page console, so this
+// lands in the log of every tool that boots without a `?state=`, and `tools/lib/opening.mjs`
+// names the shipping path for anything that means to measure the opening.
+if (automated && !params.get('state')) {
+  console.warn(
+    '[spawn] booting the HARNESS DEFAULT state (game/data/states/default.json — the harbour steps '
+    + 'at Lilmoth). This is NOT where the game starts: title -> New goes to barge-hold and then '
+    + 'writ-house, both in Thorn. Nothing measured from here is evidence about what a new player '
+    + 'sees. See reports/spawn-truth/2026-08-14-spawn-truth.md, and tools/lib/opening.mjs '
+    + 'startOpening() for the shipping path.',
+  );
+}
+
 window.__ES_THREE = REVISION;
 
 const canvas = document.getElementById('view');

@@ -134,19 +134,35 @@ function footprintDistance(b, x, z) {
   return (qx <= 0 && qz <= 0) ? Math.max(qx, qz) : Math.hypot(Math.max(qx, 0), Math.max(qz, 0));
 }
 
-function loadPlan(rec) {
+/**
+ * THE PLANS AS THE GAME ACTUALLY HAS THEM, and this cost a Pod and a wrong frame to learn.
+ *
+ * `planSettlement()` alone is NOT what the world stands on. `world/province.js setSettlements()`
+ * calls it and then calls `applyInteriorBounds(plans, interiors, docs)`, which GROWS exteriors that
+ * had been shrunk below their own interior — round 3 left *"41 of 112 enterable buildings drawing
+ * an exterior smaller than their own interior"* and this is the line that puts it right. A tool
+ * that plans without joining is measuring footprints nobody ships.
+ *
+ * The first hardware run of the picker put Soulrest's camera inside a room while the unjoined plan
+ * said 3.77 m of clearance, because three `sealed-with-reason` 8x9 sheds around that point are
+ * bigger in the world than in the plan. So the join runs here, once, across every settlement, with
+ * the same arguments the province passes.
+ */
+const PLANS = (() => {
   const interiors = {};
-  for (const b of rec.buildings || []) if (b.interior) {
+  for (const rec of settlements) for (const b of rec.buildings || []) if (b.interior) {
     const p = path.join(REPO, `game/data/world/interiors/${b.interior}.json`);
-    if (fs.existsSync(p)) interiors[b.interior] = JSON.parse(fs.readFileSync(p, 'utf8'));
+    if (!interiors[b.interior] && fs.existsSync(p)) interiors[b.interior] = JSON.parse(fs.readFileSync(p, 'utf8'));
   }
-  return planSettlement(rec, interiors, {});
-}
+  const plans = settlements.map((d) => planSettlement(d, interiors));
+  applyInteriorBounds(plans, interiors, settlements);
+  return new Map(plans.map((p) => [p.id, p]));
+})();
 
 /** @returns {{x:number,z:number,yaw_deg:number,stand_clear_m:number,camera_clear_m:number,nearest_facade_m:number,buildings_in_view:number}|null} */
 function streetStand(rec) {
-  let plan;
-  try { plan = loadPlan(rec); } catch { return null; }
+  const plan = PLANS.get(rec.id);
+  if (!plan) return null;
   const app = settlementApproach(plan, true);
   const [fx, fz] = app.focus;
   const R = plan.radius_m || 60;
