@@ -1,5 +1,127 @@
 # Next dispatches, in priority order
 
+## UNJUDGED-Q. Triage ruling: the 96-piece unjudged backlog is 16 pieces. The other 80 are cleared, and here is the queue.
+
+**Reversible.** Full working, the per-piece verdict for all 96, and what I could not do:
+`orchestration/audits/UNJUDGED-TRIAGE-2026-08-14.md`. **Falsifier for the whole ruling:** open any row I
+cleared and find a piece whose output the game consumes and whose bar nobody has ever measured it against
+— that is a clearance I got wrong and the queue should grow by one.
+
+**The finding.** `node tools/dispatchable.mjs` reports 96 pieces *finished but unjudged*. Read one at a
+time, **80 of them are already answered, answered by a different loop, or need something that is not a
+critic**:
+
+| what it actually is | count | who judged it |
+|---|---|---|
+| plans, plan critiques, arbitrations, audits, blog posts | 44 | the plan loop, or nobody because a blog post has no bar. **Nineteen of these are critics themselves** — `dispatchable`'s exclusion regex catches `critic` and `judge` but not `critique`, `audit`, `arbiter`, `reviewer-editor` or `plancritic` |
+| corpus/bar authoring, the 2026-08-06 wave | 18 | `BAR-CRITIQUE-01/02`, `BAR-CRITIQUE-IMAGES-01..04`, `ACQUISITION-CRITIQUE-R1/R2`, `INTENT-AUDIT-01/02` |
+| tool-loop pieces | 6 | `corpus/80-methods/TOOL-COVERAGE-R1..R4`, `CAPTURE-SERVICE-R1` |
+| judged under a longer verdict name | 8 | see the regex defect below |
+| needs a builder, a plan round, an arbiter or a one-line fix | 4 | §UNJUDGED-Q(b) |
+| **genuinely unjudged, a critic is right** | **16** | **the queue** |
+
+**The one-line tool defect that manufactured eight false rows.** `tools/dispatchable.mjs` looks a verdict
+up under `/^(w\d+-[a-z0-9]+)/`, and `[a-z0-9]+` stops at the first hyphen. So `W1-LIBRARY-MARTIAL` is
+looked up as `w1-library`, `W1-ATTR-SCALE` as `w1-attr`, `W1-PROSE-TICS` as `w1-prose` — and all three
+report unjudged **while their verdicts sit on disk** (5.4, 0 and 4 respectively). Same for `W1-23` (three
+verdicts, behind `w1-23-lore-registry-and-the-provinces-canon`) and `province-stream-pump` (behind
+`w1-01-province-stream-pump`). **Not fixed here:** Ruling O1 binds an ownership check before writing into
+a file every dispatch decision reads. The edit is one character class — match the verdict's own `piece_id`
+prefix, not the first segment. *Overturned by:* a widened key that starts matching two different pieces to
+one verdict, which would be worse than the current miss.
+
+**Symmetry worth noticing.** `PLAN-AUDIT-2026-08-14.md` found one unpropagated directive wearing thirty
+plan defects. This finds one truncated regex and one loop-boundary assumption wearing eighty ungraded
+builds. **Neither list was ever as long as it read.**
+
+**And one thing that came back better than expected.** I grepped the shipped tree for every one of the
+sixteen: `opacity` is in `engine.js` 30 times, `render/actor.js` is imported by `scene.js` and
+`renderer.js`, `07-root-coverage.json` is in `game/data/index.json`, `_streamProvince` is called from
+`_afterStep`, `save/fight.js` is imported by `combat/ai.js`, `quest-givers` and 26 `books/` paths are
+indexed. **Not one of the sixteen is an orphan.** `RI-MTH07` orphaning is not what is behind Directive §9
+here — the gap between the green dashboards and the played game is *quality*, which is what a critic
+measures and a census cannot.
+
+### (a) The queue — dispatch in this order
+
+Ranked by **likelihood of changing a decision**, not by suspected badness: what the owner sees when they
+play (§9), what other live work is standing on, and where a green status file and a plausible defect
+coexist.
+
+1. **`W1-30-GPU-CAPTURE` — the highest-leverage critic in the backlog.** Finished today; it is the
+   evidence transport under the whole visual programme. `W1-30A`, `W1-30B`, `W1-30F`, `W1-30S`, `W1-30V`
+   and `W1-30-P2` are all queued for critics whose hardware evidence returns through `gpu-deck.mjs`. **If
+   this harness is wrong, six verdicts are wrong before they are written.** Entry: the builder's own four
+   attacks in its `next_step`, plus `HAZARDS` §0's fifth failure shape against a self-test that reads its
+   evidence class from a renderer string. Nobody has looked at 287 of the 288 hardware stills.
+2. **`W1-RENDER` — marked DONE in §1old of this file and never judged.** §1old's own words: it *"blocks
+   the whole visual half of the corpus."* Acceptance is already written and falsifiable in one sitting —
+   three weapon classes at the same frame not byte-identical, a 60-frame attack moving more than 0.2% of
+   the character box, the rendered tip tracking the socket hit resolution uses. **Take the frames through
+   the ordinary follow camera**, per §1a: a posed camera used to hide the player entirely.
+3. **`W1-GIVER-PRESENCE`** — closes `W1-19-r2`'s top defect, every gate green, and its own `next_step`
+   hands on *"W1-23's canon register throws at boot on the shipped canon.json"* and 14 quests reachable
+   only through two site states. A green status file beside a boot-time throw is the §9 shape exactly.
+4. **`W1-24` — through the live builder, not the 08-10 delivery.** W1-24 owns the player's body, which is
+   what §2 is literally about, and **no `W1-24` verdict exists anywhere in `corpus/90-verdicts/`.** But
+   `W1-24` is `building` now, so the dispatch is the independent handoff `reports/w1-24/BUILDER-DELIVERY.md`
+   specifies — RI-VIS08, the disjoint S47 calibration, then VIS06 A/B, CAM07 art and UI ART/FIDELITY —
+   **issued when that builder reports.** Land `PLAN-AUDIT` §8's one-sentence fix to `W1-24.md:124` first
+   (131 files exist in `refs/modern/`; *"zero runnable pairs caps fidelity at 7"* has been false for eight
+   days), or the judges are commissioned against a capped ladder.
+5. **`W1-LIBRARY-r2`** — answers a 3/10 FAIL with the `readBook()` consumer r1 asked for. Read together
+   with 3, and after it: both touch `canon.json`.
+6. **`save-load-repair`** — `RI-JRN05`. Belongs to no single piece, which is how it went unjudged. A save
+   that drops your fight is felt in one session.
+7. **`W1-OPACITY`** — `opacity@1`, 24 mysteries, wired and throwing on a dangle. Judge it early for an
+   unusual reason: it wrote **24 sealed answers**, and a sealed record judged late is judged by somebody
+   who has read it.
+8. **`W1-SPEAKERS`, `W1-TRIBES`, `W1-DLG-SHADOWS`** — one cheap offline critic each, in the dialogue/lore
+   lane §4 names as safe beside the visual work. `W1-TRIBES` carries the sharpest self-declared hazard in
+   the population: *"the axis table in tribe-census.mjs is TRANSCRIBED from RI-LOR08 §2, not derived — a
+   builder who changed §2 and not the table would pass."* That is a coupled yardstick; **S51's
+   disconnected-script test is the instrument for it.**
+9. Then `COST-EXPERIMENTS-BUILD` and `COST-DASHBOARD` (`COST.md` requires a build critic that did not do
+   the saving; the builder already names *"no quality arm anywhere"*), and `capture-service-r2` (seven
+   rebuilds unverified under the daemon every capture uses).
+
+**Two in the sixteen are deliberately NOT queued**, because a critic today would judge them against a bar
+that moved this morning: `W1-08-builder-20260811` (S53 supersedes `W1-08`'s closure clause — this file's
+own table says so) and `codex-w1-09-builder-20260810` (`PLAN-AUDIT` rank 3; and the `W1-09-r4` lineage is
+live and would collide). **Plan round, then critic.**
+
+### (b) Five pieces that need something other than a critic
+
+- **`W1-05` — a builder round on a quiet box.** Its state is `partial-complete`: three Phase-B body-walk
+  attempts all fail on the same water defect and the clean-route positive control is **prepared and
+  unrun** because of the contention cap. A critic would report what the builder already reported. Start at
+  `tools/world/rawleg-check.mjs` and `deepest_water_on_the_walk`, not a fresh 111-minute walk. The plan is
+  `CLEAR` in `PLAN-AUDIT` with the best human gate in the project — only the measurement is owed.
+- **`W1-27` — a builder round, then a plan round.** Its own status records the hard fail: *42 eligible
+  exterior POIs, A+B=157 against a 276 floor, and the M7 sample of 60 void because the denominator is 42.*
+  A critic confirms a self-declared fail and changes nothing. And `PLAN-AUDIT` rank 5 says the predicate is
+  wrong under Ruling W1 anyway — a province-wide count where a player walks one route.
+- **`W1-29` — a one-line bookkeeping fix.** `orchestration/status/W1-29.json` still reads
+  `"plan_state": "satisfied"`. S53 moved it and the table at the top of this file says so in bold. The
+  status file and the ruling disagree, and `dispatchable.mjs --wave1-plans` reads the status file. This is
+  `PLAN-AUDIT`'s propagation failure reappearing one document later.
+- **`W1-MASS` — an arbiter, and §S1 above is already the referral.** Its own `next_step`: *"Open and
+  deliberately NOT landed, for an arbiter rather than a builder: the RI-WPN02 §B / RI-WPN05 §E.2
+  contradiction. 645 of 2,689 slots imply a peak tip speed over §E.2's ceiling."* A critic sent now scores
+  a piece against two items that contradict each other. **Arbitrate, then judge.**
+- **The `blind_pair: yes` census — a research dispatch.** S51 says it plainly: *"A full census across all
+  109 `blind_pair: yes` items is owed and was NOT performed here."* One cheap agent, not a critic.
+
+### (c) The successor this piece owes
+
+**Nobody has checked the inverse error.** The same truncated key that produces false *unjudged* rows can
+produce false *judged* ones — `w1-08` matching `w1-08-w1-29` is the shape. The 134-row *done and judged*
+bucket has not been swept for a piece reported as graded whose verdict actually belongs to a neighbour.
+Cheap, and it is the one way this triage could be wrong in the dangerous direction.
+
+---
+
+
 ## ~~BLIND-COUNTERPART. Referred: `RI-AI01`/`RI-AI05` build blind counterparts from their own design tables, which `RI-CMB07`'s wave-1 amendment rules `VOID`~~ — RULED. **ARBITRATION S51, S52, S53.**
 
 Referred by the `W1-12` Ruling-W2 reviewer-editor, which found the incoherence, refused to patch
