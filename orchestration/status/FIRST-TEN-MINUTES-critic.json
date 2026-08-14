@@ -1,0 +1,28 @@
+{
+  "task_id": "FIRST-TEN-MINUTES-critic",
+  "title": "Fresh critic for FIRST-TEN-MINUTES: D3 placement/presence, charOpacity consumption repair, and the honesty of the open D1/D2 diagnoses",
+  "started": "2026-08-14T00:00:00Z",
+  "state": "starting",
+  "branch": "codex/wave1-build-experiment",
+  "role": "critic",
+  "grades": "FIRST-TEN-MINUTES",
+  "redundant_with": ["FIRST-TEN-MINUTES"],
+  "files_claimed": [
+    "orchestration/status/FIRST-TEN-MINUTES-critic.json",
+    "corpus/90-verdicts/",
+    "reports/first-ten-minutes-critic/",
+    "docs/shots/2026-08-14-first-ten-minutes-critic/"
+  ],
+  "files_touched": ["orchestration/status/FIRST-TEN-MINUTES-critic.json"],
+  "overlap_declared": "I read game/src/{engine.js,sim/npc.js,render/renderer.js,render/sky.js} but as a critic I do not write them (rule 23). Null controls are taken on a copy outside the repo.",
+  "plan": [
+    "Read audit, directives, verdict schema at HEAD",
+    "PLAY IT: spawn, walk 10s, turn, enter building, talk to somebody",
+    "Verify D3 by conversation-with-a-visible-body, not coordinates; recount 32/56; check placements are sensible",
+    "charOpacity: perturb the value and watch an entity change on screen; audit the sweep's CLEARED set not just its found set",
+    "Delete-the-fix on each claimed fix, with plausible-wrong-answer null controls",
+    "Judge D1/D2 diagnoses and cost the fixes",
+    "Score min-over-axes vs 7.0, write verdict md+json, regenerate ledger, publish"
+  ],
+  "next_step": "read audit + directives + schema"
+}

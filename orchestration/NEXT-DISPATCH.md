@@ -1393,10 +1393,33 @@ differing pixels (the method from `vt-seethrough.mjs` §1.1):
 
 **It is (a).** At f360 the character is one pixel — it is genuinely *occluded*, not merely badly
 framed, and the burial is transient (it recovers by f420). So the fix belongs in the
-collision/occlusion path — `settlementSolids()` gaining the underside of raised decks so the arm
-can collide with them, or a near-field occluder fade — and **not** in frame composition. Whoever
-takes this can skip that fork entirely. Frames `after-d1d2-005-walk-f0300.png` and
-`-006-walk-f0360.png` are the burial.
+collision/occlusion path and **not** in frame composition. Whoever takes this can skip that fork.
+
+**And then the picture said something the number could not, which is the whole point of this
+exercise.** The two burial frames have *different occluders*:
+
+- `after-d1d2-005-walk-f0300.png` (1189 px) — a wooden deck, the audit's own D1.
+- `after-d1d2-006-walk-f0360.png` (**1 px**) — a **tree trunk**, filling the frame edge to edge.
+
+The trunk one has a named, specific cause. `world/province.js:1230 updateOcclusion()` already
+exists to stop exactly this: it collapses instanced stems and crowns to `scale(0.001)` when they
+foul the camera. But its test is a **proximity bubble**, not a sightline —
+
+```js
+const cm2 = 5.6*5.6, pm2 = 2.7*2.7;
+const hide = (ix-cameraX)**2 + (iz-cameraZ)**2 < cm2      // within 5.6 m of the CAMERA
+          || (ix-playerX)**2 + (iz-playerZ)**2 < pm2;     // or 2.7 m of the PLAYER
+```
+
+— so a trunk sitting **between** the camera and the player, six metres from the camera, is outside
+both bubbles, is never collapsed, and owns the entire frame. The fix is small and stays inside the
+same loop: test the instance's distance to the **segment** from the camera to the pivot, not to the
+two endpoints. That is a point-to-segment distance and a radius, and it subsumes both existing
+bubbles rather than replacing them.
+
+The deck at f300 is the separate half, and that one probably is `settlementSolids()` lacking the
+underside of raised decking so the arm has nothing to collide with. **Two occluders, two fixes;
+the vegetation one is the cheaper and it is the one that scored a single pixel.**
 
 ### R4 — **D2 (rain through roofs): I built a fix, measured it failing, and switched it off.**
 

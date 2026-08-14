@@ -53,6 +53,22 @@ that had never contained the file — staged its **deletion**, and the file vani
 one commit later. If you use the plumbing route for a *new* file, write it to disk as well, or the
 next bulk stage will delete it for you.
 
+### 2c. The actual fix: dispatch file-writing agents into their own worktree
+
+Seven agents have now lost an hour or more to this, and several independently arrived at the same
+workaround — *"the final push needed an isolated worktree, because `git merge` in the shared copy
+dies with `fatal: stash failed` against five other agents' uncommitted files."* One had a rebase
+destroy its report, status file, tool and blog line an hour into the work.
+
+**The orchestrator has a built-in answer it was not using: the Agent tool's `isolation: "worktree"`
+option**, which gives the agent its own git worktree. From now on, any agent that will write files
+gets it, unless it genuinely needs to see another agent's uncommitted work — which is rare, and is
+usually the thing that goes wrong anyway. Read-only agents (critics reading a diff, judges, research)
+do not need it. The worktree is removed automatically if unchanged, so the cost is near zero.
+
+This does not replace Ruling O1's ownership check; it removes the *class* of damage that check can
+only warn about.
+
 ### 2b. Never `git reset --hard` a shared working tree
 
 A dozen agents hold uncommitted edits in it. `--hard` discards every one of them with no warning and
