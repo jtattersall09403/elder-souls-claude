@@ -102,7 +102,33 @@ const report = await g.page.evaluate(async () => {
   const rows = [...mats.values()];
   // The defect: bookkeeping says the surface pass was installed, the hook says it is gone.
   const orphaned = rows.filter((r) => r.has_surface_uniforms && !r.hook_mentions_surface);
+
+  // ---- the MECHANISM arm, so the count above is a diagnosis and not a correlation -----------
+  // Take a material whose hook IS intact, clone it the way the actor and equipment builders do,
+  // and ask the clone the same two questions. `Material.copy()` in three r180 copies `userData`
+  // through `JSON.parse(JSON.stringify(...))` and does NOT copy `onBeforeCompile` — so if this
+  // is the mechanism, the clone keeps the bookkeeping and loses the shader. If the clone comes
+  // back intact, this arm falsifies the diagnosis and the count above needs another explanation.
+  let mechanism = null;
+  let intact = null;
+  R.scene.traverse((o) => {
+    if (intact || !o.material) return;
+    for (const m of [].concat(o.material)) {
+      if (m && m.userData && m.userData.surfaceUniforms
+        && /uDetailNormal|vEsSurfaceWorldY/.test(String(m.onBeforeCompile || ''))) { intact = m; return; }
+    }
+  });
+  if (intact) {
+    const c = intact.clone();
+    mechanism = {
+      source_hook_installs_surface: /uDetailNormal|vEsSurfaceWorldY/.test(String(intact.onBeforeCompile || '')),
+      clone_hook_installs_surface: /uDetailNormal|vEsSurfaceWorldY/.test(String(c.onBeforeCompile || '')),
+      clone_keeps_surface_uniforms: !!(c.userData && c.userData.surfaceUniforms),
+    };
+  }
+
   return {
+    mechanism,
     chunk_owners: owners,
     materials_seen: rows.length,
     with_surface_uniforms: rows.filter((r) => r.has_surface_uniforms).length,
@@ -126,6 +152,11 @@ checks.push({
   ok: report.orphaned_surface_pass === 0,
   detail: `${report.orphaned_surface_pass} of ${report.with_surface_uniforms} materials carry surfaceUniforms whose onBeforeCompile no longer installs them`,
 });
+if (report.mechanism) {
+  console.log(`mechanism arm: source hook installs surface = ${report.mechanism.source_hook_installs_surface}; `
+    + `after .clone() hook installs surface = ${report.mechanism.clone_hook_installs_surface}; `
+    + `clone still carries userData.surfaceUniforms = ${report.mechanism.clone_keeps_surface_uniforms}`);
+}
 
 const out = { sabotage: SABOTAGE, ...report, checks, pageErrors: g.errors.slice(0, 10) };
 fs.writeFileSync(path.join(OUT, SABOTAGE ? 'hooks-sabotage.json' : 'hooks.json'), JSON.stringify(out, null, 2));

@@ -125,7 +125,13 @@ function measure(opts = {}) {
       rows.push({
         town, id: b.id, kit: kitId, w: r3(w), d: r3(d),
         span_x: span ? r3(span.x) : null, span_z: span ? r3(span.z) : null,
-        span_ratio: span ? r3(Math.max(span.x / w, span.z / d)) : null,
+        // Orientation-agnostic: `buildBuilding()` turns a building to face its entry side, so a
+        // world-axis span must be matched to the footprint's own axes by size, not by name. Taking
+        // it by name reported a correctly-sized roof on a turned building as 2.8x its footprint.
+        span_ratio: span ? r3(Math.max(
+          Math.max(span.x, span.z) / Math.max(w, d),
+          Math.min(span.x, span.z) / Math.min(w, d),
+        )) : null,
         coverage: coverage(roof, w, d, h),
       });
     }

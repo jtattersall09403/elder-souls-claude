@@ -431,6 +431,47 @@ export function kit(id, spec = {}) {
 
 export function knownKits() { return [...REGISTRY.keys()].sort(); }
 
+/**
+ * HOW BIG IS THE ROOF? — the question nothing outside this file could ask, and the reason a
+ * roof twice its building's size lived in four settlements until somebody rendered a frame.
+ *
+ * Every clearance test in the tree — `settlementFootprintClearance()`, `build-deck.mjs`'s street
+ * stand, the camera's spring arm — reasons about `drawn_footprint_m`. A roof is not a footprint,
+ * so all of them were structurally blind to `roof.shell` drawing 1.97x its building's plan and
+ * standing a player under a roof out in the open (`reports/w1-30de-remediation/README.md` §4).
+ * Fixing the eave closes that instance; publishing the extent closes the CLASS, which is the half
+ * that survives the fix.
+ *
+ * Returns the union roof plan under `node`, in the node's own local frame, in metres, or `null`
+ * if there is no roof under it. `over` is the largest authored eave found. Offline: no renderer,
+ * no raycast, no world — a caller can build one building in Node and ask.
+ *
+ * The intended consumers are named rather than assumed, because a published number nobody reads
+ * is the failure this project has a rule about: `tools/visual/build-deck.mjs` should gate its
+ * street stand on `footprintClearance - roofOverhang` instead of on the footprint alone, and
+ * `tools/render/w1-30e-roof-extent.mjs` is the regression gate. Neither wiring is in this change —
+ * `build-deck.mjs` belongs to W1-30V and W1-30DE-REMEDIATION — and saying so is more use than
+ * pretending the join exists.
+ */
+export function roofPlanExtent(node) {
+  let w = 0, d = 0, over = 0, found = false;
+  node.traverse((o) => {
+    const rp = o.userData && o.userData.roofPlan;
+    if (!rp) return;
+    found = true;
+    // The roof group may be scaled or rotated by its placer; take the placer's scale into account
+    // and swap the axes on a quarter turn, which is the only rotation `buildKitRoof()` applies.
+    const sx = o.scale ? Math.abs(o.scale.x) : 1, sz = o.scale ? Math.abs(o.scale.z) : 1;
+    const quarter = o.rotation ? Math.abs(Math.round(o.rotation.y / (Math.PI / 2))) % 2 === 1 : false;
+    const pw = (quarter ? rp.d : rp.w) * (quarter ? sz : sx);
+    const pd = (quarter ? rp.w : rp.d) * (quarter ? sx : sz);
+    if (pw > w) w = pw;
+    if (pd > d) d = pd;
+    if (rp.over > over) over = rp.over;
+  });
+  return found ? { w, d, over } : null;
+}
+
 /* --- small helpers the factories share -------------------------------------------------------- */
 
 const cache = new Map();
@@ -567,6 +608,7 @@ registerKit('roof.hip', (s) => {
     g.add(panel);
   }
   at(g, slab(Math.min(w, d) * 0.22, 0.16, Math.min(w, d) * 0.22, mat, s, 'ridgecap'), 0, rise + 0.02, 0);
+  g.userData.roofPlan = { w: W, d: D, over, footprint: [w, d] };
   return g;
 });
 
@@ -589,35 +631,120 @@ registerKit('roof.reed', (s) => {
   // The ridge bundle, lashed. This is the settlement's trim band, on the one line of the roof a
   // player sees from every approach.
   at(g, drum(0.16, 0.16, w + over, s.lod === 'near' ? 7 : 5, M(s, { role: s.trimRole || 'reed', trim: s.trim, wear: (s.mat?.wear ?? 0.3) + TRIM_WEAR }), s, 'ridgebundle'), 0, rise + 0.10, 0, 0, Math.PI / 2);
+  g.userData.roofPlan = { w: w + over * 2, d: d + over * 2, over, footprint: [w, d] };
   return g;
 });
 
+/**
+ * THE SHELL'S EAVE — the null-control lever, and it is not a debug flag.
+ *
+ * `null` means "use the eave the caller passed", which is the shipped behaviour. A number
+ * overrides it, and `0` is the arm `tools/render/w1-30e-roof-extent.mjs` runs as `null:no-eave`:
+ * the shell shrunk to exactly its building's footprint. That is the PLAUSIBLE wrong answer to the
+ * defect below rather than the trivial one — it clears the street stand, it makes the approach
+ * shot resolve, and it costs the overhang that is the only thing separating a grown shell from a
+ * box with a lid. "No roof at all" would fail everything by accident and is not an arm.
+ *
+ * Public and settable from outside for the reason `world/province.js` gives about `drawBuildings`:
+ * a claim that the eave is what moved a number is only a claim until the eave can be perturbed
+ * from outside and the number watched to move.
+ */
+let SHELL_EAVE_OVERRIDE_M = null;
+export function setShellEave(metres) {
+  SHELL_EAVE_OVERRIDE_M = (metres === null || metres === undefined) ? null : Number(metres);
+}
+export function shellEaveOverride() { return SHELL_EAVE_OVERRIDE_M; }
+
 registerKit('roof.shell', (s) => {
-  // A grown shell: radial facets over an elliptical plan, flatter at the crown. Faceted on
-  // purpose — a smooth dome is a primitive, a facetted one is a made thing with arrises the wear
-  // mask can find.
+  /* THE ROOF THAT SWALLOWED THE TOWN — what was wrong, and why a footprint proxy could never see it.
+   *
+   * This part used to draw a roof **1.97x its building's own footprint** — an ~8 m overhang on
+   * every side of a 16 m building — in archon, helstrom, lilmoth and soulrest, against 1.17x for
+   * `roof.hip` and `roof.reed`. `reports/w1-30de-remediation/README.md` §4 found it by RENDERING A
+   * FRAME: a player standing 3.79 m clear of every footprint in Soulrest was still under a roof,
+   * and Soulrest's street shot failed at every light in both hardware runs because of it. No
+   * geometric gate in this tree could have found it, because every one of them measures building
+   * FOOTPRINTS and a roof is not a footprint.
+   *
+   * THE RULING (reversible): the eave was wrong, not the footprint. Three pieces of evidence, in
+   * increasing order of how hard they are to argue with.
+   *
+   *  1. `exterior.js buildKitRoof()` passes `over: 0.45 + jitter * 0.35` to ALL THREE roof kits.
+   *     `roof.hip` reads it, `roof.reed` reads it, and this part never did. The authored eave for
+   *     this roof exists, is 0.45-0.80 m, and had no consumer — so an 8 m overhang cannot be
+   *     authored intent, because the author wrote 0.6 m one call up and it was thrown away.
+   *  2. `drum()`'s parameters are RADII — `prismGeometry` uses them as `Math.cos(a) * r`. Fifteen
+   *     of its sixteen call sites in this file pass a radius. This one passed `r0 * 2`, where
+   *     `r0 = 0.5 * cos(0) = 0.5` is the half-extent of a unit plan meant to be scaled by (w, d)
+   *     into exactly w x d. Doubling it made the plan 2w x 2d. It is a units slip, in one place.
+   *  3. The measured ratio was 1.97, not "about two" — which is what a 9-sided prism's bounding
+   *     box does to a diameter of exactly 2. The arithmetic predicts the observed number.
+   *
+   * WHAT WOULD OVERTURN IT: a settlement document, art-direction plate or region record asking for
+   * a deep sheltering canopy over the street in the shell towns. Nothing in `docs/art-direction/`
+   * or the four settlements' records says any such thing; if one turns up, the right answer is not
+   * to re-widen this part but to build the canopy as public realm, where the street can be planned
+   * around it and collision can know about it.
+   *
+   * AND THE PART THAT IS NOT A UNITS SLIP, because deleting the `* 2` alone would have been wrong.
+   * An ellipse with the same span as a rectangle does not cover the rectangle: `w1-04-r4-join.mjs`
+   * §4 says so in its own header — "an ellipsoid dome scaled to w x d has a bounding box exactly
+   * w x d and leaves all four corners open to the sky" — and that hole was photographed once
+   * already. A circumscribing ellipse needs 1.41x span before the eave, which still stands a
+   * player under a roof outdoors. So the dome does not carry the corners at all: it sits on a
+   * SQUARED EAVES PLATE, which is how a round roof meets a rectangular building everywhere it is
+   * built that way, covers the plan exactly, spans footprint + the authored eave, and gives this
+   * roof the one thing it never had — the eave shadow line that `roof.hip`'s own comment calls
+   * "the single line that says 'roof' at 60 m".
+   */
   const g = new THREE.Group();
   const w = s.w ?? 5, d = s.d ?? 5, rise = s.rise ?? Math.min(w, d) * 0.42;
+  const over = SHELL_EAVE_OVERRIDE_M === null ? (s.over ?? 0.5) : SHELL_EAVE_OVERRIDE_M;
+  // Same idiom, same line, as `roof.hip` twenty lines up. The plan of this roof is its building
+  // plus its eave, and nothing else.
+  const W = w + over * 2, D = d + over * 2;
   const rings = s.lod === 'near' ? 3 : s.lod === 'far' ? 2 : 1;
   const sides = s.lod === 'near' ? 9 : s.lod === 'far' ? 7 : 5;
   const mat = M(s);
+  // The eaves plate. Thin, chamfered, and the full plan — it is what keeps the rain out of the
+  // four corners the dome above it cannot reach, and what casts the eave line.
+  at(g, slab(W, 0.18, D, mat, s, 'shelleaves'), 0, 0.09, 0);
   for (let r = 0; r < rings; r++) {
     const t0 = r / rings, t1 = (r + 1) / rings;
     const r0 = 0.5 * Math.cos(t0 * Math.PI / 2), r1 = 0.5 * Math.cos(t1 * Math.PI / 2);
     const y0 = rise * Math.sin(t0 * Math.PI / 2), y1 = rise * Math.sin(t1 * Math.PI / 2);
-    const band = drum(r1 * 2, r0 * 2, Math.max(0.12, y1 - y0), sides, mat, s, 'shellband');
-    band.scale.set(w, 1, d);
-    at(g, band, 0, (y0 + y1) / 2, 0);
+    const band = drum(r1, r0, Math.max(0.12, y1 - y0), sides, mat, s, 'shellband');
+    band.scale.set(W, 1, D);
+    at(g, band, 0, 0.14 + (y0 + y1) / 2, 0);
   }
   // Ribs, on the shell's arrises, in the settlement trim.
+  //
+  // Each rib's length is the shell's OWN chord at that bearing, not `max(W, D)`. The same probe
+  // that caught the eave caught this: on `archon-shrine`, a 5.18 x 14.41 m building, the ribs were
+  // cut to the long axis and swung across the short one, so a rib at 72 degrees projected 4.5 m
+  // past a wall 2.6 m from the centre and the roof measured **2.77x** its own building on that
+  // axis — a bigger ratio than the eave defect itself, in a part nobody was looking at. A member
+  // sized from `max()` of a plan it is placed radially in will always overhang the narrow axis of
+  // an elongated plan; the chord is the only length that stays on the shell it is supposed to
+  // trace.
   const ribMat = M(s, { role: s.trimRole || 'bone', trim: s.trim, wear: (s.mat?.wear ?? 0.3) + TRIM_WEAR });
   const ribN = s.lod === 'near' ? 5 : 3;
   for (let i = 0; i < ribN; i++) {
     const a = (i / ribN) * Math.PI;
-    const rib = slab(0.13, 0.11, Math.max(w, d) * 0.96, ribMat, s, 'shellrib', s.trim);
+    // Half-chord of the ellipse (W/2, D/2) along the rib's own bearing. The rib is placed with a
+    // Y rotation of `a` and runs along its local +z, so its world direction is (sin a, cos a).
+    const half = 1 / Math.hypot(Math.sin(a) / (W / 2), Math.cos(a) / (D / 2));
+    const rib = slab(0.13, 0.11, half * 2 * 0.96, ribMat, s, 'shellrib', s.trim);
     rib.rotation.x = -0.20;
     at(g, rib, 0, rise * 0.52, 0, a);
   }
+  // PUBLISH THE EXTENT. This is the half of the defect that survives the fix: nothing outside this
+  // file could ask how big a roof was, so `build-deck.mjs`'s street stand, the camera's spring arm
+  // and every clearance test reasoned about footprints and were structurally blind to a roof of
+  // any size. `roofPlanExtent()` below reads this off a built node with no renderer, so the next
+  // roof that overhangs by eight metres is a number somebody can gate on instead of a frame
+  // somebody has to notice.
+  g.userData.roofPlan = { w: W, d: D, over, footprint: [w, d] };
   return g;
 });
 
