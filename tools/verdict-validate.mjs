@@ -9,13 +9,16 @@
  *
  * Usage
  *   node tools/verdict-validate.mjs corpus/90-verdicts/w2/combat-dodge-core.json
- *   node tools/verdict-validate.mjs --all        validate every verdict in the corpus
+ *   node tools/verdict-validate.mjs --all        validate every round-current verdict in the corpus
+ *   node tools/verdict-validate.mjs --all --all-rounds     …including superseded draft rounds
+ *   node tools/verdict-validate.mjs --all --verbose        …print the errors of skipped rounds too
+ *   node tools/verdict-validate.mjs --self-test  the gap rule and the round-identity edge cases
  *
  * Exit 0 = valid. Exit 1 = errors. Warnings never fail the run but are printed.
  */
 
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
-import { join, dirname, relative, sep } from 'node:path';
+import { join, dirname, relative, sep, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
