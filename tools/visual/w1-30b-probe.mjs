@@ -151,6 +151,11 @@ for (const site of SITES) {
           env: sky.environmentReport(),
           fog: { sigma0: +sc.fog.sigma0.toFixed(6), heightFalloff: +sc.fog.heightFalloff.toFixed(1), colour: sc.fog.color.getHexString() },
           recipe: R.lightingFrame ? R.lightingFrame.recipeId : null,
+          // What is actually lighting the frame, in the renderer's own units. The plan's note
+          // that "ambient is doing IBL's job" is only checkable against these four numbers.
+          lights: { sun: +sky.sun.intensity.toFixed(3), moon: +sky.moon.intensity.toFixed(3),
+            hemi: +sky.hemi.intensity.toFixed(3), fill: +sky.fill.intensity.toFixed(3),
+            envIntensity: sc.environmentIntensity },
           rain: (() => {
             const r = sky.rain; if (!r.visible) return null;
             const pos = r.geometry.attributes.position.array, col = r.geometry.attributes.color.array;
@@ -177,14 +182,126 @@ for (const site of SITES) {
       }
       // The shadow control that is the plausible wrong answer rather than the trivial one: the
       // pre-W1-30B player-centred 120 m box, a shadow system that draws and does not reach.
+      const keepArms = weather === WEATHERS[0] && t === TIMES[Math.min(1, TIMES.length - 1)];
+
+      // ---- the atmosphere null control, executed exactly rather than approximated -----------
+      // Not "fog off" — that is the trivial control. This puts three's stock `FogExp2` chunks
+      // back, forces every material to recompile against them, and installs a real `FogExp2`
+      // carrying the density the shipped build computed: `extinction * (1 + fogDensity/0.0026 *
+      // 0.22) + 1.978 / sightline_m`. Same hardware, same camera, same frame, the model somebody
+      // actually shipped. It is restored immediately afterwards.
+      if (args.stockArm) {
+        await g.page.evaluate(async () => {
+          const THREE = await import('/game/vendor/three/three.module.js');
+          const sky = await import('/game/src/render/sky.js');
+          const R = window.__ENGINE.renderer, sc = R.scene;
+          window.__W1B_FOG = sc.fog;
+          const w = sky.WEATHER[window.__ENGINE.sim.env.weather];
+          const ext = R.sky._lastRegionExtinction || 0.0058;
+          const sight = window.__ENGINE.sim.env.sightlineM || 0;
+          const base = ext * (1 + w.fogDensity / 0.0026 * 0.22);
+          const density = sight > 0 ? base + 1.978 / sight : base;
+          sky.restoreStockAtmosphere();
+          const f = new THREE.FogExp2(sc.fog.color.getHex(), density);
+          sc.fog = f;
+          sc.traverse((o) => { if (o.material) for (const m of [].concat(o.material)) m.needsUpdate = true; });
+        });
+        await step(4);
+        const stockFrame = await shot(`${stem}-stockfog.png`);
+        arms.stockAtmosphere = diff(base, stockFrame);
+        await g.page.evaluate(async () => {
+          const sky = await import('/game/src/render/sky.js');
+          const R = window.__ENGINE.renderer, sc = R.scene;
+          sky.installAtmosphereModel();
+          sc.fog = window.__W1B_FOG;
+          sc.traverse((o) => { if (o.material) for (const m of [].concat(o.material)) m.needsUpdate = true; });
+        });
+        await step(4);
+      }
       await setFeature('shadowFit', false); await step(3);
-      const oldBox = await shot(`${stem}-oldbox.png`);
+      const oldBox = await shot(keepArms ? `${stem}-oldbox.png` : null);
       arms.shadowReach = diff(base, oldBox);
       await setFeature('shadowFit', true); await step(3);
+
+      // ---- THE DIAGNOSTIC ARM, and it is the one that matters on a vista -------------------
+      // A shadow volume that reaches 150 m still draws nothing if the geometry inside it is
+      // flagged not to cast. `game/src/world/province.js` sets `castShadow = false` on the
+      // streamed vegetation instances (lines 766, 857, 1204, 2249) and never sets it at all on
+      // the terrain tiles (`ground` at 1333, `ground-skin` at 995, `province-far` at 564, which
+      // additionally has `receiveShadow = false`). So a region vista contains no shadow caster
+      // and no far-terrain receiver, whatever the light does.
+      //
+      // This arm turns those flags on IN THE PAGE, for one frame, purely to measure the size of
+      // the effect. Nothing is shipped by it: `province.js` is not W1-30B's file and the flags are
+      // restored immediately. It exists so the report can say how much of the vista defect is
+      // W1-30B's (the volume) and how much belongs to whoever owns the world meshes, with a
+      // number rather than an assertion.
+      await g.page.evaluate(() => {
+        const R = window.__ENGINE.renderer;
+        window.__W1B_FLAGS = [];
+        R.scene.traverse((o) => {
+          if (!(o.isMesh || o.isInstancedMesh)) return;
+          if (o.castShadow && o.receiveShadow) return;
+          window.__W1B_FLAGS.push([o, o.castShadow, o.receiveShadow]);
+          o.castShadow = true; o.receiveShadow = true;
+        });
+      });
+      await step(3);
+      const allCast = await shot(keepArms ? `${stem}-allcast.png` : null);
+      arms.worldCastersOn = diff(base, allCast);
+      await g.page.evaluate(() => {
+        for (const [o, c, r] of (window.__W1B_FLAGS || [])) { o.castShadow = c; o.receiveShadow = r; }
+        window.__W1B_FLAGS = [];
+      });
+      await step(3);
       row.arms = arms;
       out.rows.push(row);
-      console.log(`  ${stem}  shadow ${arms.shadow.pct}%  fog ${arms.atmosphere.pct}%  height ${arms.height.pct}%  probe ${arms.probe.pct}%  reach ${arms.shadowReach.pct}%  σ=${row.state.fog.sigma0} H=${row.state.fog.heightFalloff} ${row.state.recipe}`);
+      console.log(`  ${stem}  shadow ${arms.shadow.pct}%  fog ${arms.atmosphere.pct}%  height ${arms.height.pct}%  probe ${arms.probe.pct}%  reach ${arms.shadowReach.pct}%  worldCasters ${arms.worldCastersOn.pct}%  σ=${row.state.fog.sigma0} H=${row.state.fog.heightFalloff} ${row.state.recipe} L=${row.thirds.lower}/${row.thirds.middle}/${row.thirds.upper}`);
     }
+  }
+}
+
+// ---- motion ---------------------------------------------------------------------------------
+// `orchestration/OWNER-DIRECTIVES-2026-08-14.md` §2: many stills AND motion sequences. A still
+// cannot show whether the shadow volume crawls as the camera moves, whether the cascade-free fit
+// has a seam a walk passes through, or whether the day-night probe transitions or steps. Two
+// sequences, both deterministic, both reviewed as contact sheets (`tools/visual/contact-sheet.mjs`,
+// W1-30V's tool — consumed, not reimplemented).
+if (args.motion) {
+  const site = String(args.motion === true ? 'street-lilmoth' : args.motion);
+  const err = await goTo(site);
+  if (err) console.log(`  motion RED — ${err}`);
+  else {
+    const seqDir = path.join(OUT, 'motion');
+    fs.mkdirSync(seqDir, { recursive: true });
+    await g.h('setWeather', 'clear');
+    // day -> night, 48 frames over 24 h. The probe rebuilds on a bucket change, so this is also
+    // the sequence that shows whether an IBL rebake is a visible step.
+    const lapse = [];
+    for (let i = 0; i < 48; i++) {
+      const hour = i / 48 * 24;
+      await g.h('setTimeOfDay', hour);
+      await step(2);
+      const d = await g.h('screenshot');
+      const buf = Buffer.from(String(d).replace(/^data:image\/png;base64,/, ''), 'base64');
+      fs.writeFileSync(path.join(seqDir, `daynight-${String(i).padStart(3, '0')}.png`), buf);
+      lapse.push({ i, hour: +hour.toFixed(2), bytes: buf.length, hash: crypto.createHash('sha256').update(buf).digest('hex').slice(0, 16) });
+    }
+    // walk forward 180 frames at noon, capturing every third: the sequence a shadow-volume seam
+    // or a swimming shadow edge would show up in and a still never could.
+    await g.h('setTimeOfDay', 13); await step(4);
+    await g.h('camera', { mode: 'gameplay' }).catch(() => {});
+    const walk = [];
+    for (let i = 0; i < 60; i++) {
+      await g.h('queueInputs', Array.from({ length: 3 }, (_, f) => ({ f, move: [0, 1] })));
+      await step(3);
+      const d = await g.h('screenshot');
+      const buf = Buffer.from(String(d).replace(/^data:image\/png;base64,/, ''), 'base64');
+      fs.writeFileSync(path.join(seqDir, `walk-${String(i).padStart(3, '0')}.png`), buf);
+      walk.push({ i, frame: i * 3, hash: crypto.createHash('sha256').update(buf).digest('hex').slice(0, 16) });
+    }
+    out.motion = { site, daynight: lapse, walk };
+    console.log(`  motion: ${lapse.length} day-night frames + ${walk.length} walk frames at ${site}`);
   }
 }
 

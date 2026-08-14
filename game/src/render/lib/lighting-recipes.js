@@ -158,7 +158,13 @@ registerLightingRecipe('storm', variantOf('exterior', {
 // fall the way a body expects. Cold, low, and readable — a night frame a judge cannot classify is
 // a missing frame, not a dark one (RI-WLD04 M17 step 6).
 registerLightingRecipe('night-moon', variantOf('exterior', {
-  key: 0.30, keyWarmth: -0.80, sky: 0.60, fill: 0.55, env: 0.55, envGroundBounce: 0.18,
+  // These are the highest ambient multipliers in the file and they are deliberate. The probe at
+  // night is genuinely almost black — the sky's own zenith and horizon fall to 0.02-0.09 — so
+  // unlike every daylight recipe there is no image-based irradiance for the hemisphere and fill to
+  // hand their job to. Measured on an RTX A5000 with these at 0.60/0.55, a 19:30 street frame came
+  // back at a mean luminance of 3.8/255, which is `RI-WLD04` M17 step 6's failure exactly: a frame
+  // a judge cannot classify is not a dark frame, it is a missing frame.
+  key: 0.30, keyWarmth: -0.80, sky: 1.05, fill: 1.00, env: 0.75, envGroundBounce: 0.18,
   shadow: 0.85, fog: { extinction: 1.10, height: 1.15, inscatter: 0.0 }, exposure: 1.22,
 }));
 

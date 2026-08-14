@@ -306,8 +306,19 @@ const WEATHER_CEILING_K = 2.2;
  * Blackwood's declared 0.018/m fed to a Gaussian, plus `1.978 / sightline_m` on top, put the
  * transmittance at 150 m at about 3e-9.
  */
-export function airExtinction(regionExtinction, weather) {
-  const sw = WEATHER_SIGMA(weather);
+export function airExtinction(regionExtinction, weather, sightlineM = 0) {
+  // `RI-WLD08` §5 requires the declared sightline to be the distance the frame really stops at,
+  // and W1-02's consumption probe (`tools/world/env-consumption.mjs` C4) requires every state to
+  // change the fog in every region. So the state's thickness is the THICKER of its two
+  // declarations — its `fogDensity` and its `sightline_m` — rather than the sum of them. Summing
+  // them is what the shipped build did (`extinction + 1.978 / sightline_m`) and it double-counted
+  // the same fact into a Gaussian, which is most of why the world stopped at 40 m.
+  //
+  // `sightline_m` is read as the HALF-contrast distance, `sigma = ln2 / S`, not the 2% distance.
+  // "You can see 260 m" is a statement about where a silhouette stops being easy to read, not
+  // about where 98% of it has gone; reading it the other way makes a 260 m clear day thicker than
+  // the ceiling every region has to pass.
+  const sw = Math.max(WEATHER_SIGMA(weather), sightlineM > 0 ? Math.LN2 / sightlineM : 0);
   const raw = Math.max(0, regionExtinction || 0) + sw;
   const ceiling = Math.max(CLEAR_AIR_CEILING, sw * WEATHER_CEILING_K);
   return ceiling * (1 - Math.exp(-raw / ceiling));
@@ -441,30 +452,45 @@ const PROBE_W = 128, PROBE_H = 64;
 export function bakeEnvironmentProbe({ zenith, horizon, ground, sunColour, sunDir, overcast, sunGain = 1, groundBounce = 0.35 }) {
   const data = new Uint16Array(PROBE_W * PROBE_H * 4);
   const half = THREE.DataUtils.toHalfFloat;
-  const dir = new THREE.Vector3();
-  const c = new THREE.Color();
+  const one = half(1);
+  // Hoisted scalars, and no allocation anywhere in the loop: this runs on the main thread on a
+  // bucket change and the plan's budget for it is 2 ms.
+  const hr = horizon.r, hg = horizon.g, hb = horizon.b;
+  const zr = zenith.r, zg = zenith.g, zb = zenith.b;
+  const gr = ground.r, gg = ground.g, gb = ground.b;
+  const sr = sunColour.r, sg = sunColour.g, sb = sunColour.b;
+  const dx = sunDir.x, dy = sunDir.y, dz = sunDir.z;
+  const sunScale = (1 - overcast) * sunGain;
   for (let y = 0; y < PROBE_H; y++) {
     // equirect: row 0 is +Y (zenith), row H-1 is -Y (nadir)
     const theta = (y + 0.5) / PROBE_H * Math.PI;      // 0 at zenith
     const sy = Math.cos(theta);
     const st = Math.sin(theta);
-    const up = Math.max(0, sy);
-    const down = Math.max(0, -sy);
+    const up = sy > 0 ? Math.pow(sy, 0.62) : 0;
+    const down = sy < 0 ? -sy : 0;
+    const gmix = down > 0 ? down * groundBounce + (1 - groundBounce) * down * 0.25 : 0;
+    // sky above the horizon, ground bounce below it — the row's colour, before the sun
+    const br = (hr + (zr - hr) * up) * (1 - gmix) + gr * gmix;
+    const bg = (hg + (zg - hg) * up) * (1 - gmix) + gg * gmix;
+    const bb = (hb + (zb - hb) * up) * (1 - gmix) + gb * gmix;
     for (let x = 0; x < PROBE_W; x++) {
       const phi = (x + 0.5) / PROBE_W * Math.PI * 2;
-      dir.set(Math.cos(phi) * st, sy, Math.sin(phi) * st);
-      // sky above the horizon, ground bounce below it
-      c.copy(horizon).lerp(zenith, Math.pow(up, 0.62));
-      if (down > 0) c.lerp(ground, down * groundBounce + (1 - groundBounce) * down * 0.25);
-      // the sun's disc and its glow, unclipped because this is a half-float target
-      const sd = Math.max(0, dir.dot(sunDir));
-      const disc = sd > 0.9995 ? 60 : 0;
-      const hot = (Math.pow(sd, 64) * 6.0 + Math.pow(sd, 8) * 0.45 + disc) * (1 - overcast) * sunGain;
+      const vx = Math.cos(phi) * st, vz = Math.sin(phi) * st;
+      let sd = vx * dx + sy * dy + vz * dz;
+      if (sd < 0) sd = 0;
+      // The sun's disc and its glow, unclipped because this is a half-float target. `pow` by
+      // repeated squaring: sd^8 and sd^64 with five multiplies rather than two Math.pow calls.
+      const s2 = sd * sd, s4 = s2 * s2, s8 = s4 * s4, s64 = s8 * s8 * s8;
+      // Deliberately NOT a hard disc. The directional `sun` light already delivers the sun's
+      // irradiance; a 60x disc in the probe as well double-counts it into the diffuse mip and
+      // washes the shadows out. What the probe owes is a bright, small SPECULAR source, which is
+      // what separates roughness 0.05 from roughness 0.9.
+      const hot = (s64 * 9.0 + s8 * 0.40) * sunScale;
       const i = (y * PROBE_W + x) * 4;
-      data[i] = half(c.r + sunColour.r * hot);
-      data[i + 1] = half(c.g + sunColour.g * hot);
-      data[i + 2] = half(c.b + sunColour.b * hot);
-      data[i + 3] = half(1);
+      data[i] = half(br + sr * hot);
+      data[i + 1] = half(bg + sg * hot);
+      data[i + 2] = half(bb + sb * hot);
+      data[i + 3] = one;
     }
   }
   const tex = new THREE.DataTexture(data, PROBE_W, PROBE_H, THREE.RGBAFormat, THREE.HalfFloatType);
@@ -823,27 +849,26 @@ export class Sky {
 
     // ---- the air -------------------------------------------------------------------------------
     const heightFalloff = regionHeightFalloff(regionFog) * (R.fog.height || 1);
+    // WHAT HAPPENED TO `sightline_m`. It used to be ADDED as `1.978 / sightline_m` — a FogExp2
+    // density laid on top of a region extinction that was already being read as one — and the two
+    // together are what erased the world: at Lilmoth in clear weather they put the transmittance at
+    // 150 m at about 3e-9. It is now one of the two declarations the WEATHER's own thickness is
+    // taken from, inside `airExtinction()`, rather than a second fog added to the first.
+    const sightline = env && Number.isFinite(env.sightlineM) ? env.sightlineM : 0;
     let sigma0;
     if (regionFog) {
       // The region owns the hue and the floor; the weather can only ever make the air thicker,
       // never clearer than the region's own.
       const rc = new THREE.Color(regionFog.colour);
       this.scene.fog.color.copy(rc).lerp(hor, 0.34 * (1 - night * 0.7)).multiplyScalar(lerp(0.62, 1.0, day));
-      sigma0 = airExtinction(regionFog.extinction, w) * (R.fog.extinction || 1);
+      sigma0 = airExtinction(regionFog.extinction, w, sightline) * (R.fog.extinction || 1);
+      // Kept only so the atmosphere null control can rebuild the shipped model's density from the
+      // same inputs on the same frame, without re-deriving which region the camera is in.
+      this._lastRegionExtinction = regionFog.extinction;
     } else {
-      sigma0 = airExtinction(0, w) * (R.fog.extinction || 1);
+      sigma0 = airExtinction(0, w, sightline) * (R.fog.extinction || 1);
       this.scene.fog.color.copy(hor).multiplyScalar(0.92);
     }
-    // WHAT HAPPENED TO `sightline_m`. It used to be added as `1.978 / sightline_m` — a FogExp2
-    // density that, on top of a region extinction already being read as one, is what actually
-    // erased the world: at Lilmoth in clear weather the two together put 150 m at a transmittance
-    // of about 3e-9. `RI-WLD08` §5's requirement is that the declared sightline be the distance the
-    // frame really stops at, and Beer-Lambert says 2% of a silhouette survives at `3.912 / sigma`.
-    // So the sightline is now honoured as a CEILING on visibility rather than a second fog: the air
-    // is never thinner than the weather front says it is, and never thicker than the region and the
-    // state between them earn.
-    const sightline = env && Number.isFinite(env.sightlineM) ? env.sightlineM : 0;
-    if (sightline > 0) sigma0 = Math.max(sigma0, 3.912 / Math.max(40, sightline * 6));
     this.scene.fog.sigma0 = this.features.atmosphere ? sigma0 : 0;
     this.scene.fog.heightFalloff = this.features.heightFog ? heightFalloff : 0;
 

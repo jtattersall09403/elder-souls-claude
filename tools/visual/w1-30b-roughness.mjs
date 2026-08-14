@@ -86,23 +86,33 @@ await g.page.evaluate(async ({ rough }) => {
     rig.add(s); window.__W1B.spheres.push(s);
   }
   R.scene.add(rig);
-  // Park the rig in front of a camera we then hold still, and zero every analytic light so the
-  // only thing illuminating the spheres is `scene.environment`.
-  window.__W1B.place = () => {
+  // WHY THIS DRAWS THE FRAME ITSELF RATHER THAN CALLING renderer.render(sim).
+  //
+  // The first version of this rig zeroed the analytic lights, then called `renderer.render(sim)` —
+  // which begins by calling `sky.apply()`, which writes every light intensity and `scene.environment`
+  // back from the weather table. So nothing was zeroed at draw time, the spheres were lit by the sun
+  // and the hemisphere, and the null arm's substituted environment had already been overwritten. The
+  // measured result was the real probe and the shipped 16x8 one agreeing to within 1% — a rig
+  // reporting that its own subject makes no difference, which is exactly the shape of instrument
+  // this project keeps having to throw away. Everything below runs AFTER apply(), in the same tick
+  // as the draw, and issues the draw itself.
+  window.__W1B.shoot = (envOverride) => {
     const cam = R.camera;
     const f = new THREE.Vector3(); cam.getWorldDirection(f);
     rig.position.copy(cam.position).add(f.multiplyScalar(9));
     rig.quaternion.copy(cam.quaternion);
+    // Only the environment lights the spheres. Anything else and the number is about the sun.
     R.sky.sun.intensity = 0; R.sky.moon.intensity = 0;
     R.sky.hemi.intensity = 0; R.sky.fill.intensity = 0;
+    if (envOverride !== undefined) R.scene.environment = envOverride;
+    R.three.setRenderTarget(null);
+    R.three.render(R.scene, cam);
   };
 }, { rough: ROUGH });
 
-async function shootAndMeasure(file) {
-  // `place()` after the sim step, so the sky's own per-frame writes to the lights are overwritten
-  // rather than overwriting us.
+async function shootAndMeasure(file, useNull = false) {
   await g.h('stepFrames', 2);
-  await g.page.evaluate(() => { window.__W1B.place(); window.__ENGINE.renderer.render(window.__ENGINE.sim); });
+  await g.page.evaluate((n) => window.__W1B.shoot(n ? window.__W1B.nullTex : undefined), useNull);
   const d = await g.h('screenshot');
   const buf = Buffer.from(String(d).replace(/^data:image\/png;base64,/, ''), 'base64');
   fs.writeFileSync(path.join(OUT, file), buf);
@@ -168,12 +178,11 @@ await g.page.evaluate(async () => {
   tex.colorSpace = THREE.SRGBColorSpace;
   tex.name = 'w1-30-dynamic-environment-ibl';
   tex.needsUpdate = true;
-  // Stop `apply()` replacing it: pin the probe key so no bucket change re-bakes.
-  sky.setFeature('probe', false);
-  sc.environment = tex;
   window.__W1B.nullTex = tex;
 });
-result.null_control = await shootAndMeasure('roughness-null.png');
+// `shoot(nullTex)` substitutes it AFTER apply() has written scene.environment, in the same tick as
+// the draw — the only point at which a substitution survives to the frame.
+result.null_control = await shootAndMeasure('roughness-null.png', true);
 console.log('\nnull control (the shipped 16x8 byte environment):');
 for (const r of result.null_control) console.log(`  roughness ${String(r.roughness).padEnd(5)} mean ${String(r.mean).padEnd(8)} spread ${String(r.spread).padEnd(7)} bands ${r.vertical_bands}`);
 
