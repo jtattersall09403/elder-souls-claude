@@ -153,6 +153,23 @@ async function census() {
 
 const step = (n) => g.h('stepFrames', n);
 
+/**
+ * WARM-UP, and it is not optional. `Engine.populateSettlement()` runs from the fixed step, so at
+ * frame 0 `sim.npcs` is EMPTY and every question about where somebody is standing answers "not in
+ * world". My first GPU run lost its talk and interior arms to exactly this: three `not in world`
+ * errors and an interior with `visible_bodies: 0`, which reads like a damning result and is only a
+ * missing `stepFrames`. `tools/harness/first-ten.mjs` steps 30 before its census for the same
+ * reason. Recorded in the manifest so no reader has to trust that it happened.
+ */
+async function warmUp(frames = 30) {
+  await step(frames);
+  const n = await g.page.evaluate(() => window.__ENGINE.sim.npcs.length);
+  M.warm_up = { frames, npcs_in_world: n };
+  if (!n) console.error('critic-first-ten-play: WARNING — the town is still empty after warm-up; every population number below is vacuous');
+  save();
+  return n;
+}
+
 // ---------------------------------------------------------------- spawn + look around
 if (want('spawn')) {
   const p = { shots: [], look: [] };
@@ -181,13 +198,22 @@ if (want('walk')) {
   for (let f = 0; f <= 600; f += 60) {
     if (f > 0) await step(60);
     const v = await visiblePx('player');
-    const snap = await g.h('snapshot');
-    const cam = (snap && snap.camera) || {};
+    // Read the LIVE sim camera, not the trace record. `snapshot()` returns `makeRecord()`, whose
+    // camera block is named `arm_len_m` / `char_opacity` / `clip_through` — so a reader asking for
+    // `cam.armLen` or `cam.clipThrough` gets `undefined` and publishes it as null without
+    // complaint. `tools/harness/first-ten.mjs` does exactly that, which is why its D1 table has an
+    // empty arm column at every one of its eleven stops.
+    const cam = await g.page.evaluate(() => {
+      const c = window.__ENGINE.sim.camera; const P = window.__ENGINE.sim.player;
+      const r = (x) => (typeof x === 'number' ? Math.round(x * 1000) / 1000 : x);
+      return { armLen: r(c.armLen), armDesired: r(c.armDesired), armHit: c.armHit, charOpacity: r(c.charOpacity), clipThrough: c.clipThrough, mode: c.mode, pos: P.pos.map((x) => Math.round(x * 10) / 10) };
+    });
     p.steps.push({
       frame: f, file: await shot(`walk-f${String(f).padStart(4, '0')}`),
       player_visible_px: v.visible_px, player_visible_pct: Math.round((v.visible_px / v.total_px) * 1000) / 10,
-      arm_len: cam.armLen, char_opacity: cam.charOpacity, clip_through: cam.clipThrough,
-      player_pos: (snap && snap.player && snap.player.pos) ? snap.player.pos.map((x) => Math.round(x * 10) / 10) : null,
+      arm_len: cam.armLen, arm_desired: cam.armDesired, arm_hit: cam.armHit,
+      char_opacity: cam.charOpacity, clip_through: cam.clipThrough,
+      player_pos: cam.pos,
     });
     console.log(JSON.stringify(p.steps[p.steps.length - 1]));
   }
@@ -203,7 +229,7 @@ if (want('walk')) {
 //   talk-far  — talk to the audit's own subject from where we happen to be standing
 //   talk-near — walk up to the nearest drawn NPC and talk, which is what a player would do
 if (want('talk')) {
-  const p = { arms: [] };
+  const p = { arms: [], npcs_in_world: await warmUp() };
   const c = await census();
   p.drawn_within_60m = c.drawn_within_60m;
   p.player_pos = c.player_pos;
@@ -272,9 +298,106 @@ if (want('talk')) {
   M.phases.talk = p; save();
 }
 
+// ---------------------------------------------------------------- WHERE is the body?
+// `npc_visible_px` is a count, and a count cannot tell you whether the pixels are a person
+// standing in front of you or a sliver at the edge of the frame. This phase turns the number
+// into a picture: the same two renders, differenced, with the differing pixels painted red and
+// their bounding box reported, plus the NPC's own world point projected to screen coordinates
+// through the engine's `projectPoint`. If the red is a human silhouette in the middle of the
+// frame, D3 is fixed. If it is a smear at the horizon, the count was flattering.
+if (want('talkproof')) {
+  const p = { arms: [], npcs_in_world: await warmUp() };
+  const targets = String(args.targets || 'blackwood-company-factor').split(',');
+  for (const eid of targets) {
+    const a = { eid };
+    try {
+      const t = await g.page.evaluate((id) => {
+        const n = window.__ENGINE.sim.npcs.find((x) => x.eid === id);
+        return n ? n.pos.map(Number) : null;
+      }, eid);
+      if (!t) { a.error = 'not in world'; p.arms.push(a); continue; }
+      await g.h('teleport', t[0] + Number(args.standoff || 3.5), t[2] + 0.5);
+      await step(10);
+      for (let k = 0; k < 40; k++) {
+        const d = await g.page.evaluate((id) => {
+          const E = window.__ENGINE; const n = E.sim.npcs.find((x) => x.eid === id);
+          const P = E.sim.player.pos; const c = E.sim.camera;
+          const wnt = Math.atan2(n.pos[0] - P[0], n.pos[2] - P[2]) * 180 / Math.PI;
+          const have = (c.yaw === undefined ? 0 : c.yaw);
+          return ((wnt - have + 540) % 360) - 180;
+        }, eid);
+        if (Math.abs(d) < 3) break;
+        await g.h('queueInputs', [{ f: 0, look: [Math.max(-3, Math.min(3, d)), 0] }]);
+        await step(1);
+      }
+      await g.h('queueInputs', [{ f: 0, look: [0, 0] }]);
+      await step(6);
+      const conv = await g.h('talkTo', eid);
+      a.greeting = conv && conv.greeting ? String(conv.greeting).slice(0, 120) : null;
+      await step(4);
+      a.file_plain = await shot(`proof-${eid}`);
+      const r = await g.page.evaluate((id) => {
+        const E = window.__ENGINE; const R = E.renderer;
+        const root = R.npcMeshes.get(id);
+        const n = E.sim.npcs.find((x) => x.eid === id);
+        const P = E.sim.player.pos;
+        const grab = () => {
+          R.three.render(R.scene, R.camera);
+          const c = R.three.domElement;
+          const cv = document.createElement('canvas'); cv.width = c.width; cv.height = c.height;
+          cv.getContext('2d').drawImage(c, 0, 0);
+          return cv.getContext('2d').getImageData(0, 0, c.width, c.height);
+        };
+        const touched = [];
+        if (root) root.traverse((o) => { if (o.isMesh && o.material && !Array.isArray(o.material)) touched.push([o, o.material.colorWrite, o.material.depthWrite, o.material.depthTest]); });
+        const ship = grab();
+        for (const [o] of touched) { o.material.colorWrite = false; o.material.depthWrite = false; o.material.depthTest = false; }
+        const gone = grab();
+        for (const [o, cw, dw, dt] of touched) { o.material.colorWrite = cw; o.material.depthWrite = dw; o.material.depthTest = dt; }
+        const W = ship.width, H = ship.height;
+        const out = new ImageData(new Uint8ClampedArray(ship.data), W, H);
+        let n0 = 0, x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1, sx = 0, sy = 0;
+        for (let i = 0, px = 0; i < ship.data.length; i += 4, px++) {
+          const diff = ship.data[i] !== gone.data[i] || ship.data[i + 1] !== gone.data[i + 1] || ship.data[i + 2] !== gone.data[i + 2];
+          if (!diff) continue;
+          n0++;
+          const x = px % W, y = (px / W) | 0;
+          if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+          sx += x; sy += y;
+          out.data[i] = 255; out.data[i + 1] = 0; out.data[i + 2] = 0; out.data[i + 3] = 255;
+        }
+        const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+        cv.getContext('2d').putImageData(out, 0, 0);
+        // Where the engine itself says the person is, in screen coordinates.
+        let proj = null;
+        try { proj = E.projectPoint(n.pos[0], n.pos[1] + 1.0, n.pos[2]); } catch (e) { proj = { error: String(e.message) }; }
+        return {
+          overlay: cv.toDataURL('image/png'),
+          canvas: [W, H], diff_px: n0,
+          bbox: n0 ? [x0, y0, x1, y1] : null,
+          centroid: n0 ? [Math.round(sx / n0), Math.round(sy / n0)] : null,
+          projected: proj,
+          distance_m: Math.round(Math.hypot(n.pos[0] - P[0], n.pos[2] - P[2]) * 10) / 10,
+          mesh_present: !!root, mesh_visible: root ? !!root.visible : null, meshes: touched.length,
+          npc_pos: n.pos.map((v) => Math.round(v * 100) / 100), player_pos: P.map((v) => Math.round(v * 100) / 100),
+        };
+      }, eid);
+      const f = `${TAG}-${String(shotN++).padStart(3, '0')}-proof-overlay-${eid}.png`;
+      fs.writeFileSync(path.join(FRAMES, f), Buffer.from(String(r.overlay).replace(/^data:image\/png;base64,/, ''), 'base64'));
+      delete r.overlay;
+      Object.assign(a, r, { file_overlay: f });
+      await g.h('closeMenu').catch(() => {});
+      await step(2);
+    } catch (e) { a.error = String(e.message || e).slice(0, 240); }
+    p.arms.push(a);
+    console.log(JSON.stringify(a));
+  }
+  M.phases.talkproof = p; save();
+}
+
 // ---------------------------------------------------------------- go inside
 if (want('interior')) {
-  const p = {};
+  const p = { npcs_in_world: await warmUp() };
   try {
     const doors = await g.page.evaluate(() => {
       const E = window.__ENGINE;

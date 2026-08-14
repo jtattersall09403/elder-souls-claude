@@ -128,8 +128,22 @@ const TIME = {
 // `overcast` is the single scalar `lighting.js` publishes for "how much cloud is between the sun
 // and the ground". Rain and fog both raise it, so one axis covers both and there is no second,
 // separately-tunable knob to fall out of sync with the sky.
+//
+// THESE NUMBERS WERE HALVED BY A MEASUREMENT, and the measurement is worth recording because it is
+// what the null control was for. The first version used `sat: -0.14, warmth: -0.10, contrast:
+// -0.10`. On the GPU sweep (RTX A5000, 4 regions x 4 hours x 2 weathers), the grade INCREASED the
+// colour separation between regions in 33 of 48 pairs — and DECREASED it in the other 15, every
+// one of which was a rain cell. A desaturation that large, applied identically everywhere, pulls
+// every region toward the same grey and undoes the region variant it is sitting on top of. That is
+// precisely backwards: Morrowind's weather makes a place more itself, not less. Rain should dim
+// Blackwood without turning it into the Salt Hills.
+//
+// Reversal, should this prove wrong: restore -0.14 / -0.10 / -0.10 above. Falsifier: if rain now
+// reads as insufficiently miserable — if a downpour in the Stone Wastes still looks like a bright
+// day — the fix is a bigger `lift` and `vignette` here, which dim without flattening chroma, and
+// NOT a return of the saturation cut.
 const WEATHER = {
-  overcast: { warmth: -0.10, sat: -0.14, contrast: -0.10, vignette: +0.04, lift: +0.008 },
+  overcast: { warmth: -0.05, sat: -0.06, contrast: -0.06, vignette: +0.07, lift: +0.014 },
 };
 
 // ---- registry ---------------------------------------------------------------------------------
