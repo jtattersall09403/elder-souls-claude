@@ -27,7 +27,17 @@ node tools/visual/deck-motion.mjs --profile smoke --tag after --gpu hardware --r
 
 echo "=== DELETE THE FIX =================================================================="
 node tools/visual/w1-30-copy-seam-patch.mjs --revert                                  2>&1 | tee "$ART/revert.log"
-if grep -q "REVERT" "$ART/revert.log"; then echo "revert applied"; else echo "REVERT DID NOT APPLY — the BEFORE arm below is NOT a control"; fi
+if grep -q "^REVERT " "$ART/revert.log"; then
+  echo "revert applied"
+else
+  echo "REVERT DID NOT APPLY — the BEFORE arm below is NOT a control"
+fi
+# Prove the revert reached the FILES, not just the log. Two independent reads: the marker must be
+# gone from both sources, and the census below must go red. If the marker is still present the
+# arm is a second copy of the positive arm and must not be reported as a control.
+for f in game/src/render/visual-foundation.js game/src/render/actor.js; do
+  if grep -q "W1-ORPHANED-SURFACE-SHADERS" "$f"; then echo "MARKER STILL PRESENT in $f — NOT A CONTROL"; else echo "marker gone from $f"; fi
+done
 
 echo "=== ARM: BEFORE (fix deleted, same GPU) ============================================="
 node tools/visual/w1-30-surface-orphan-census.mjs --out "$ART/census-before"          2>&1 | tee "$ART/census-before.log"
