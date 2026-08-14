@@ -1,0 +1,22 @@
+{
+  "task_id": "BAR-AUDIT-WORLD-20260814",
+  "role": "auditor",
+  "title": "Audit the bar: does the corpus cover world design, region differentiation, topology/geology, road networks, and Black Marsh canon?",
+  "state": "running",
+  "started": "2026-08-14",
+  "branch": "codex/wave1-build-experiment",
+  "charge": "Owner: 'our bar and reference materials might be sufficient and they might not be.' Specifically world design / region character / canonical Argonia.",
+  "next_step": "Read OWNER-DIRECTIVES-2026-08-14.md S6, then inventory corpus/50-world and corpus/60-lore.",
+  "files_touched": [
+    "orchestration/status/BAR-AUDIT-WORLD-20260814.json"
+  ],
+  "files_claimed": [
+    "corpus/50-world/",
+    "corpus/60-lore/",
+    "reports/",
+    "orchestration/INDEX.md"
+  ],
+  "notes": [
+    "Not touching game/src/ or orchestration/plans/ per dispatch."
+  ]
+}

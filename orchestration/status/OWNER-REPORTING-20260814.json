@@ -1,0 +1,34 @@
+{
+  "task_id": "OWNER-REPORTING-20260814",
+  "role": "builder",
+  "state": "in_progress",
+  "started": "2026-08-14T00:00:00Z",
+  "reads": [
+    "CLAUDE.md",
+    "orchestration/OWNER-DIRECTIVES-2026-08-14.md #5 #7",
+    "orchestration/2026-08-14 09:00 Codex to claude handover notes.md",
+    "orchestration/RULES.md rule 27",
+    "orchestration/briefs/blog.md",
+    "orchestration/plans/BUILDER-EXECUTION-CONTRACT.md",
+    "orchestration/COST.md",
+    "orchestration/plans/COST-INSTRUMENT.md (BLOCKING 1-6, fully specified remedies)",
+    "tools/cost-report.mjs",
+    "tools/cost-refresh.mjs",
+    "tools/cost-fixture.json"
+  ],
+  "goal": "Job1: rewrite blog cadence/tone (twice-daily roundup, positive register, from merged PR descriptions). Job2: find why docs/index.html, docs/progress.html, docs/status.json, orchestration/INDEX.md, reports/blog-feed.jsonl stopped updating, fix mechanism (builder contract), regenerate. Job3: cost line chart - tools/cost.mjs was never built; COST-INSTRUMENT plan already fully specifies the fix for BLOCKING 1-6 (dedup by element-wise max on message.id, 5 token classes, coverage/drivers/denominator, G1 median over active hours). Build it, produce a real time series from the actual transcript, self-test with a deliberate break.",
+  "next_step": "read recent merged PR descriptions via github MCP tools, then rewrite blog brief + RULES.md rule 27",
+  "files_claimed": [
+    "orchestration/RULES.md",
+    "orchestration/briefs/blog.md",
+    "orchestration/plans/BUILDER-EXECUTION-CONTRACT.md",
+    "tools/cost.mjs",
+    "docs/data/cost-ledger.json",
+    "docs/index.html",
+    "docs/progress.html",
+    "docs/status.json",
+    "orchestration/INDEX.md",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_touched": []
+}

@@ -1,0 +1,17 @@
+{
+  "task_id": "ci-triage-20260814",
+  "task": "Triage failing CI gate actions on GitHub; decide and record what should happen to them",
+  "started_at": "2026-08-14T00:00:00Z",
+  "status": "in_progress",
+  "next_step": "list workflows via mcp__github__actions_list, then per-workflow runs via actions_get, sample failing job logs",
+  "files_touched": [
+    "orchestration/status/ci-triage-20260814.json"
+  ],
+  "files_claimed": [
+    "reports/ci-triage/",
+    "orchestration/NEXT-DISPATCH.md",
+    "orchestration/INDEX.md"
+  ],
+  "redundant_with": [],
+  "notes": "Reads CLAUDE.md + orchestration/OWNER-DIRECTIVES-2026-08-14.md §7 done. Branch confirmed codex/wave1-build-experiment. Proceeding to GitHub Actions inspection."
+}

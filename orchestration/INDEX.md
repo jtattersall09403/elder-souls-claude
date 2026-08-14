@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `ebc8745`: 881 tools, 153 reference
-items, 158 pieces in flight.
+so it cannot drift. Generated at `a38e8d6`: 882 tools, 153 reference
+items, 159 pieces in flight.
 
-Its purpose is to stop 158+ concurrent agents each paying separately to discover the
+Its purpose is to stop 159+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -313,7 +313,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
-### `tools/harness/` — 240
+### `tools/harness/` — 241
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -478,6 +478,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/trace-stats.mjs` — turn a per-frame JSONL trace into the combat statistics the combat reference items score against.
 - `tools/harness/trace.mjs` — drive scripted inputs and dump a JSONL per-frame trace.
 - `tools/harness/ui-pause.mjs` — RI-UIX03 §A, measured as frame arithmetic, plus the gamepad-only reachability walk this piece is required to survive.
+- `tools/harness/visual-truth.mjs` — **no header comment**
 - `tools/harness/w1-00-mth07-live.mjs` — Native RI-MTH07 treatment/null producer for the models owned by W1-00.
 - `tools/harness/w1-00-mth07.mjs` — Fail-closed aggregate for W1-00's RI-MTH07 census.
 - `tools/harness/w1-07-birthsign-consume.mjs` — **no header comment**
@@ -1055,7 +1056,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **222 tools have no header comment**, so nobody can tell what they do without
+> **223 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1229,6 +1230,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `OWNER-REPORTING-20260814` | in_progress | read recent merged PR descriptions via github MCP tools, then rewrite blog brief + RULES.m | — |
 | `ci-triage-20260814` | ? | list workflows via mcp__github__actions_list, then per-workflow runs via actions_get, samp | `orchestration/status/ci-triage-20260814.json` |
 | `HUD-MORROWIND` | reading | Read CLAUDE.md, owner directives, handover, game/src/ui/*, W1-21 plan, corpus HUD items | — |
 | `BAR-AUDIT-WORLD-20260814` | running | Read OWNER-DIRECTIVES-2026-08-14.md S6, then inventory corpus/50-world and corpus/60-lore. | `orchestration/status/BAR-AUDIT-WORLD-20260814.json` |
