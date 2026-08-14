@@ -1,0 +1,27 @@
+{
+  "task_id": "W1-F3-AMBIENT-FILL",
+  "role": "builder",
+  "state": "in_progress",
+  "branch": "codex/wave1-build-experiment",
+  "baseline_pinned_at": "eafd13168e1fed354be0afb2709051d473f09f4a",
+  "baseline_pinned_reason": "HAZARDS.md #12 — HEAD is not the baseline. Pinned before any edit this piece made. `git show eafd1316:game/src/render/post/composite.js` is the true before-arm for delete-the-fix.",
+
+  "could_not_do": [
+    "placeholder — will be filled in as the piece proceeds; see next_step"
+  ],
+
+  "next_step": "Read F2's status file and R3 remedy text (done). Ownership clean (nobody live on composite.js/renderer.js). Plan: add a screen-space local-bounce ambient/GI fill term to game/src/render/post/composite.js (new uGI/uGIStrength/uGIRadius/uGIMaxDist uniforms, computeGI() reusing aoKernel() hemisphere directions at a larger radius than AO's contact radius), wired through a new renderer.js quality.giFill flag, additive to the HDR colour BEFORE the AO multiply and BEFORE tonemap (so it inherits ACES's own tonemapped compression -- the 'tone-mapped shadow lift' the judge asked for) rather than as a post-tonemap grade lift. Build an evidence instrument (tools/visual/w1-f3-ambient-fill.mjs) measuring shadow-region vs lit-region luma/detail on the material_showcase fixture at a time-of-day that casts a real shadow, with a null control that is a flat global lift/gamma tuned to the same overall darkening -- the plausible wrong answer named in the dispatch -- and show it collapses the lit/shadow luma ratio (directional falloff) while the real fix does not.",
+
+  "files_touched": [
+    "orchestration/status/W1-F3-AMBIENT-FILL.json"
+  ],
+  "files_claimed": [
+    "orchestration/status/W1-F3-AMBIENT-FILL.json",
+    "game/src/render/post/composite.js",
+    "game/src/render/renderer.js",
+    "tools/visual/w1-f3-ambient-fill.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F3-AMBIENT-FILL/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": []
+}

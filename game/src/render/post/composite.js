@@ -108,6 +108,18 @@ export function buildCompositor(w, h, opts = {}) {
       // >=25% darker than open ground) rather than this comment.
       uAORadius: { value: 0.42 }, uAOStrength: { value: 3.1 }, uAOBias: { value: 0.03 },
       uAOMaxOcclusion: { value: 0.6 },
+      // W1-F3 — ambient/GI fill with a tone-mapped shadow lift (remedy R3, 3/5 blind judges:
+      // "shadowed regions crushed to near-uniform black with no bounced or ambient fill"). A
+      // SEPARATE on/off switch from `uAO` on purpose: R2 (contact AO, F2) and R3 (shadow fill,
+      // this piece) are different axes — F2's own status file measured them additive, not
+      // overlapping — and every existing tool that flips `uAO` must keep meaning exactly what it
+      // already means. `uGIRadius` is metres and deliberately larger than `uAORadius`: AO asks
+      // "what occludes me at boot-sole distance", GI asks "what nearby LIT surface can bounce
+      // light onto me", and those are different scales. `uGIMaxDist` gates which reprojected
+      // kernel samples are trusted (see `computeGI` below). `uGIStrength` is a fraction of the
+      // local deficit, not a flat additive constant — see the null control this piece's own
+      // instrument runs (`tools/visual/w1-f3-ambient-fill.mjs --null-control`).
+      uGI: { value: 1 }, uGIStrength: { value: 0.55 }, uGIRadius: { value: 1.6 }, uGIMaxDist: { value: 0.6 },
       uBloom: { value: 0.16 }, uBloomThreshold: { value: 0.9 }, uBloomKnee: { value: 0.45 },
       // The grade block. Pushed every frame by `renderer.js` from `post/grade.js`; the identity
       // values here mean a compositor built and never fed is a no-op rather than a colour cast.
@@ -133,6 +145,7 @@ export function buildCompositor(w, h, opts = {}) {
     uniform float uBalance, uContrast, uPivot, uSat, uVignette, uVignInner, uVignOuter;
     uniform mat4 uProjMat, uInvProjMat;
     uniform float uAORadius, uAOStrength, uAOBias, uAOMaxOcclusion;
+    uniform float uGI, uGIStrength, uGIRadius, uGIMaxDist;
 
     const vec3 LUMA = vec3(.2126, .7152, .0722);
 
@@ -272,10 +285,78 @@ export function buildCompositor(w, h, opts = {}) {
       return clamp(occlusion / 10.0 * uAOStrength, 0.0, uAOMaxOcclusion);
     }
 
+    // ---- W1-F3: ambient/GI fill with a tone-mapped shadow lift ------------------------------
+    // R3 (3/5 blind judges): "an ambient/GI term with tone-mapped shadow lift is needed to keep
+    // detail readable in shade." This is deliberately NOT a global exposure/gamma lift — the
+    // plausible wrong answer named in the dispatch, and the one this piece's own null control
+    // (tools/visual/w1-f3-ambient-fill.mjs --null-control) is built to fail. A flat lift adds
+    // the same constant to every pixel regardless of what is nearby, which is exactly what
+    // destroys the directional falloff three of the five judges separately praised in the
+    // reference. This term instead samples the ALREADY-LIT colour of nearby real geometry (a
+    // cheap screen-space bounce estimate) and lifts a pixel only TOWARD its own neighbourhood's
+    // brightness, only when it sits below it, and only by a bounded fraction — a pixel in full
+    // sun with no darker neighbours receives nothing at all, and a pixel deep in a cast shadow
+    // next to sunlit ground picks up a fraction of that ground's own colour and brightness, the
+    // way a real diffuse bounce would. It also inherits the neighbour's HUE rather than a
+    // neutral grey, which is what RI-VIS03 M6's hue_offset check is asking a real renderer to
+    // show (a single white key plus a flat white lift produces hue_offset ~= 0 and fails it).
+    //
+    // Reuses aoKernel()'s hemisphere directions — a hemisphere is the right shape to sample
+    // INCOMING light from a surface, exactly as it is the right shape to sample OCCLUDERS for
+    // AO — at a larger radius, because "what nearby surface can bounce light onto me" and "what
+    // occludes me at boot-sole distance" are different questions at different scales. A separate
+    // rotation seed (+ 71.0) keeps the two kernels from producing correlated dither on the same
+    // pixel. Because it runs before c *= occ below, bounce light reaching a crease is also
+    // occluded there, which is the physically correct order (ambient light is occluded by AO;
+    // AO is not a property of only the direct key).
+    vec3 computeGI(vec2 uv, float depth){
+      vec3 P = viewPosFromDepth(uv, depth);
+      vec3 dx = dFdx(P), dy = dFdy(P);
+      vec3 N = normalize(cross(dx, dy));
+      if (N.z < 0.0) N = -N;
+      vec3 up = (abs(N.z) < 0.98) ? vec3(0., 0., 1.) : vec3(1., 0., 0.);
+      vec3 T = normalize(cross(up, N));
+      vec3 B = cross(N, T);
+      float ang = ign(uv * uResolution + 71.0) * 6.2831853;
+      float ca = cos(ang), sa = sin(ang);
+      vec3 bounce = vec3(0.0);
+      float wsum = 0.0;
+      for (int i = 0; i < 10; i++) {
+        vec3 k = aoKernel(i);
+        vec2 kr = vec2(k.x * ca - k.y * sa, k.x * sa + k.y * ca);
+        vec3 samplePos = P + (T * kr.x + B * kr.y + N * k.z) * uGIRadius;
+        vec4 clip = uProjMat * vec4(samplePos, 1.0);
+        if (clip.w <= 0.0) continue;
+        vec2 sUV = (clip.xy / clip.w) * 0.5 + 0.5;
+        if (sUV.x < 0.0 || sUV.x > 1.0 || sUV.y < 0.0 || sUV.y > 1.0) continue;
+        float sd = texture2D(tDepth, sUV).r;
+        if (sd > 0.99999) continue;                 // sky carries no bounce light
+        vec3 SP = viewPosFromDepth(sUV, sd);
+        // Trust this tap only if REAL geometry sits close to where the kernel sample landed —
+        // otherwise the ray passed over open space or behind a silhouette, and the colour
+        // sitting under it on screen belongs to an unrelated, possibly distant surface that has
+        // nothing to do with this point.
+        float posErr = length(SP - samplePos);
+        if (posErr > uGIMaxDist) continue;
+        float w = 1.0 - clamp(posErr / uGIMaxDist, 0.0, 1.0);
+        bounce += texture2D(tWorld, sUV).rgb * w;
+        wsum += w;
+      }
+      return wsum > 1e-4 ? bounce / wsum : vec3(0.0);
+    }
+
     void main(){
       vec2 p = 1. / uResolution;
       vec3 c = (uAA > .5) ? fxaa(vUv, p) : texture2D(tWorld, vUv).rgb;
       float d = texture2D(tDepth, vUv).r;
+
+      if (uGI > .5 && d < .9999) {
+        vec3 nb = computeGI(vUv, d);
+        float nbL = dot(max(nb, 0.0), LUMA);
+        float cL  = dot(max(c,  0.0), LUMA);
+        float deficit = max(0.0, nbL - cL);
+        c += nb * (deficit / max(nbL, 1e-4)) * uGIStrength;
+      }
 
       float occ = 1.;
       if (uAO > .5 && d < .9999) {
