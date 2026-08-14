@@ -1,0 +1,20 @@
+{
+  "task_id": "W1-30-SHADOW-CASTERS",
+  "role": "builder",
+  "piece": "W1-30-SHADOW-CASTERS",
+  "status": "running",
+  "state": "measuring",
+  "branch": "codex/wave1-build-experiment",
+  "summary": "Two measured one-line fixes handed over by W1-30B and W1-30F, each falling in the other's file. (1) province.js cast/receive flags so the region vistas can contain a shadow at all. (2) renderer.js regionFog carries fog.height_falloff_m so sky.js's colour-keyed fallback table can be retired.",
+  "files_claimed": [
+    "game/src/world/province.js",
+    "game/src/render/renderer.js",
+    "game/src/render/sky.js",
+    "tools/visual/w1-30-shadow-casters.mjs",
+    "orchestration/status/W1-30-SHADOW-CASTERS.json",
+    "reports/visual-truth/shadow-casters/"
+  ],
+  "files_touched": [],
+  "redundant_with": [],
+  "notes": "province.js flag edits are narrow (castShadow/receiveShadow only). renderer.js edit is one added property on the regionFog literal. sky.js edit is the deletion the file's own comment asks for once that property exists."
+}
