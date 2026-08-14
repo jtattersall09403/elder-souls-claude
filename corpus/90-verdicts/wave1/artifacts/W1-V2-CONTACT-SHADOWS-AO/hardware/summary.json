@@ -1,0 +1,80 @@
+{
+  "renderer": "ANGLE (NVIDIA, Vulkan 1.4.303 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)",
+  "software_renderer": false,
+  "after_ao_off": {
+    "contact_luma": 46.079,
+    "far_luma": 40.382,
+    "ratio": 1.1411,
+    "pass": false
+  },
+  "after_ao_on": {
+    "contact_luma": 29.155,
+    "far_luma": 40.382,
+    "ratio": 0.722,
+    "pass": true
+  },
+  "after_checks": [
+    {
+      "id": "AO-OFF-DOES-NOT-PASS",
+      "ok": true,
+      "detail": "ratio 1.1411 (must NOT already be <= 0.75 — else the fixture itself has a contact-dark bias and the arm proves nothing)"
+    },
+    {
+      "id": "AO-ON-PASSES-RI-VIS04-4",
+      "ok": true,
+      "detail": "ratio 0.722 <= 0.75 required"
+    },
+    {
+      "id": "FAR-BAND-UNCHANGED",
+      "ok": true,
+      "detail": "far_luma off=40.382 on=40.382 — open ground away from any junction must not move; a change here would mean this is a global darken, not contact AO"
+    }
+  ],
+  "null_control": {
+    "scale_k": 0.9835,
+    "note": "ao-off frame uniformly multiplied by k, k chosen to match ao-on's overall mean luma",
+    "measured": {
+      "contact_luma": 44.992,
+      "far_luma": 39.376,
+      "ratio": 1.1426,
+      "pass": false
+    },
+    "algebraic_prediction": 1.1411,
+    "checks": [
+      {
+        "id": "GLOBAL-DARKEN-DOES-NOT-REPRODUCE-CONTACT-AO",
+        "ok": true,
+        "detail": "scaled ratio 1.1426 (predicted 1.1411 by k*a/k*b=a/b) vs real AO ratio 0.722 — a global darken this dark overall still does NOT pass 0.75, because it cannot change a ratio"
+      }
+    ]
+  },
+  "before_ao_off": {
+    "contact_luma": 46.079,
+    "far_luma": 40.382,
+    "ratio": 1.1411,
+    "pass": false
+  },
+  "before_ao_on": {
+    "contact_luma": 45.823,
+    "far_luma": 40.382,
+    "ratio": 1.1347,
+    "pass": false
+  },
+  "before_checks": [
+    {
+      "id": "AO-OFF-DOES-NOT-PASS",
+      "ok": true,
+      "detail": "ratio 1.1411 (must NOT already be <= 0.75 — else the fixture itself has a contact-dark bias and the arm proves nothing)"
+    },
+    {
+      "id": "AO-ON-PASSES-RI-VIS04-4",
+      "ok": false,
+      "detail": "ratio 1.1347 <= 0.75 required"
+    },
+    {
+      "id": "FAR-BAND-UNCHANGED",
+      "ok": true,
+      "detail": "far_luma off=40.382 on=40.382 — open ground away from any junction must not move; a change here would mean this is a global darken, not contact AO"
+    }
+  ]
+}

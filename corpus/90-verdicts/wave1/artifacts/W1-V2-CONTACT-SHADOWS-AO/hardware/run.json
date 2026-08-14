@@ -1,0 +1,87 @@
+{
+  "schema": "elder-souls/runpod-run@2",
+  "runId": "20260814-191218Z-26271",
+  "transport": "https-podproxy",
+  "owner": {
+    "slug": "e9b0d69d",
+    "source": "CLAUDE_CODE_SESSION_ID (container-scoped: sibling agents share it)"
+  },
+  "status": "passed",
+  "startedAt": "2026-08-14T19:12:18.436Z",
+  "finishedAt": "2026-08-14T19:15:08.793Z",
+  "diskCheck": {
+    "checked": true,
+    "availableBytes": 11923296256,
+    "requiredBytes": 268435456
+  },
+  "limits": {
+    "maxPricePerHourUsd": 1,
+    "maxRuntimeMinutes": 15,
+    "allowedGpuTypes": [
+      "NVIDIA RTX A2000",
+      "NVIDIA GeForce RTX 3070",
+      "NVIDIA RTX A4000",
+      "NVIDIA GeForce RTX 3080",
+      "NVIDIA RTX A4500",
+      "NVIDIA RTX A5000",
+      "NVIDIA GeForce RTX 3090",
+      "NVIDIA L4"
+    ],
+    "cloudTypes": [
+      "SECURE",
+      "COMMUNITY"
+    ]
+  },
+  "sourceTemplateId": "q3vvfpdtgf",
+  "runtimeTemplate": {
+    "id": "a42jke8ize",
+    "name": "elder-souls-ephemeral-oe9b0d69d-20260814-191218Z-26271"
+  },
+  "source": {
+    "revision": "276ada01bf5cd94461b62681198bf740ed3645cc",
+    "dirty": true,
+    "fileCount": 1891,
+    "bytes": 22073763,
+    "sha256": "286535329449b4e52c579aff5f96ced35fcbf2ddf4db22b0bb86cd211909a7a1",
+    "paths": [
+      "game",
+      "tools",
+      "package.json",
+      "play.sh"
+    ]
+  },
+  "selectedOffer": {
+    "gpuTypeId": "NVIDIA L4",
+    "displayName": "L4",
+    "cloudType": "SECURE",
+    "memoryInGb": 24,
+    "stockStatus": "Low",
+    "pricePerHourUsd": 0.49
+  },
+  "pod": {
+    "id": "ef6l5a3o33phxe",
+    "name": "elder-souls-gpu-oe9b0d69d-20260814-191218Z-26271",
+    "gpuTypeId": "NVIDIA L4",
+    "cloudType": "SECURE",
+    "pricePerHourUsd": 0.49
+  },
+  "agentUrl": "https://ef6l5a3o33phxe-8888.proxy.runpod.net",
+  "command": "bash tools/visual/w1-v2-contact-ao-hw.sh",
+  "commandExitCode": 0,
+  "artifactDir": "/home/user/elder-souls-claude/reports/runpod-gpu/runs/w1-v2-contact-ao-retry3-20260814T191218Z",
+  "artifactFiles": 19,
+  "gpu": "NVIDIA L4, 570.195.03, 23034 MiB",
+  "cleanup": {
+    "attempted": true,
+    "terminated": true,
+    "at": "2026-08-14T19:15:05.399Z",
+    "error": null
+  },
+  "templateCleanup": {
+    "attempted": true,
+    "deleted": true,
+    "at": "2026-08-14T19:15:07.954Z",
+    "error": null
+  },
+  "error": null
+}
