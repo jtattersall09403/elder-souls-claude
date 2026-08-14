@@ -100,6 +100,19 @@ consulted. **A copy hook would have been inert and would have looked exactly lik
 `MATERIAL_API.md` is frozen and was not edited. Two exports were **added** (§9 permits additions);
 the documentation of them is owed: `installCopySeam(mat)` and `adoptMaterialCopy(copy, source)`.
 
+### Two residual risks, named rather than discovered later
+
+- **Shader program count.** Every copy now compiles the surface pass. `installSurfaceShader` sets
+  `customProgramCacheKey` to a string derived only from the recipe, so two copies of one material
+  produce the *same* key and three.js shares one program between them — that is why this should not
+  multiply programs. **Reasoned from the code, not measured.** If a future frame-time regression is
+  traced to program count, `renderer.info.programs.length` before and after is the arm to run.
+- **`shadedMaterials` is an unbounded `Set`** and copies now join it. It was already unbounded for
+  originals; this raises the rate. Nothing iterates it at frame rate today (`setWorldWetness()` is
+  never called from `game/src` at all), so the cost today is memory, not time. The census's
+  `with_surface_uniforms` count is the tripwire: if it climbs across a long session while the scene
+  does not, materials are being retained after their meshes are gone.
+
 ## 5. CONSUMPTION (`RI-MTH07`) — on hardware, and the control is the point
 
 **NVIDIA L4, `ANGLE (NVIDIA, Vulkan 1.4.303)`, `software: false`** — a hardware attestation, so
@@ -149,6 +162,23 @@ REVERT game/src/render/actor.js              pre=a3a0a740… post=22989617…
 the reversal is byte-for-byte, not approximate. The marker count goes 3 → 0 and 2 → 0 in the clone
 while the live tree still reads 3 and 2 and its md5s are unchanged, so the clone was written and the
 repository was not.
+
+**The census run inside that reverted clone** (`census/deletefix-clone-summary.json`):
+
+| check | fixed tree | reverted clone |
+|---|---|---|
+| `NO-ORPHANED-SURFACE-PASS` | PASS, 0 of 406 | **FAIL, 321 of 422** |
+| `NO-DEAD-GHOST-UNIFORMS` | PASS, 0 | **FAIL, 321** |
+| `WETNESS-REACHES-EVERY-SHADED-MATERIAL` | PASS, 0 | **FAIL, 321** |
+| `SHADER-UNIFORM-IS-THE-LIVE-ONE` | PASS, 0 | **FAIL, 321** |
+| `INSTRUMENT-SEES-A-DEFECT-IT-CREATED` | PASS | PASS |
+| `NO-HOOK-THREW` | PASS | PASS |
+
+The four substantive checks come back red and the two **instrument** controls stay green, which is
+the distinction that matters: the arms disagree about the build and agree about the instrument. The
+denominator moves (422 rather than 406) because more NPCs had spawned in that session; the *ratio* —
+76% of materials carrying surface uniforms that nothing installs — is unchanged, and the per-route
+attribution is identical apart from the extra bodies.
 
 ## 7. The instrument had to be rebuilt mid-run, and that is worth recording
 

@@ -413,20 +413,31 @@ out.checks['NULL-CONTROL-MUST-NOT-FIX'] = (() => {
     ? `PASS — the null control visibly changed the water (${n.whole_frame_changed_pct}% of the frame) and left the lanes standing (rho ${n.rho_vs_baseline} against floor ${floor.rho_vs_baseline})`
     : `FAIL — the null control ALSO removed the lanes (rho ${n.rho_vs_baseline}); it is not a wrong answer and cannot discriminate`;
 })();
-// Two-sided classification of every arm against the floor.
-const F = floor ? floor.band_energy : out.baseline_band_energy;
+// Two-sided classification of every arm against the floor, on the DIRECTIONAL metric. Two-sided
+// because HAZARDS.md 0b: a guard that can only see the direction its author expected fails on half
+// the number line, and an arm that makes the banding WORSE is as much a finding as one that fixes it.
+const F = floor ? floor.lane_power : out.baseline_lane.lane_power;
+const FA = floor ? floor.lane_aniso : out.baseline_lane.lane_aniso;
 out.arms.forEach((a) => {
   if (a.vacuous) { a.verdict = 'VACUOUS'; return; }
-  const d = 100 * (a.band_energy - F) / F;
-  a.energy_vs_floor_pct = +d.toFixed(1);
-  a.verdict = d < -12 ? 'REMOVES LANES' : (d > 12 ? 'ADDS BAND ENERGY' : 'no effect on the lanes');
+  const d = 100 * (a.lane_power - F) / Math.max(1e-6, F);
+  const da = 100 * (a.lane_aniso - FA) / Math.max(1e-6, FA);
+  a.lane_power_vs_floor_pct = +d.toFixed(1);
+  a.lane_aniso_vs_floor_pct = +da.toFixed(1);
+  a.energy_vs_floor_pct = floor ? +(100 * (a.band_energy - floor.band_energy) / floor.band_energy).toFixed(1) : null;
+  a.verdict = (d < -35 && da < -20) ? 'REMOVES THE LANES'
+    : (d < -35 ? 'weaker banding, same anisotropy — dimmed the crop rather than unbanding it'
+      : (d > 35 ? 'MAKES THE BANDING WORSE' : 'no effect on the lanes'));
 });
+out.checks['LANE-METRIC-CAN-FAIL'] = (pos && floor && pos.lane_power < floor.lane_power * 0.65)
+  ? `PASS — the lane metric drops ${Math.round(100 - 100 * pos.lane_power / floor.lane_power)}% when the water is hidden, so it can go red`
+  : `FAIL — hiding the water did not drop lane_power (${pos && pos.lane_power} against floor ${floor && floor.lane_power}); this metric cannot see the lanes and no row below is readable`;
 out.pageErrors = g.errors.slice(0, 20);
 fs.writeFileSync(path.join(OUT, 'lane-terms.json'), JSON.stringify(out, null, 2));
 console.log('');
 for (const [k, v] of Object.entries(out.checks)) console.log(`${k}: ${v}`);
 console.log('');
-for (const a of out.arms) console.log(`  ${a.arm.padEnd(28)} ${a.verdict}${a.energy_vs_floor_pct !== undefined ? `  (${a.energy_vs_floor_pct > 0 ? '+' : ''}${a.energy_vs_floor_pct}% band energy vs floor)` : ''}`);
+for (const a of out.arms) console.log(`  ${a.arm.padEnd(28)} ${String(a.verdict).padEnd(58)} lane_power ${a.lane_power_vs_floor_pct > 0 ? '+' : ''}${a.lane_power_vs_floor_pct}%, aniso ${a.lane_aniso_vs_floor_pct > 0 ? '+' : ''}${a.lane_aniso_vs_floor_pct}% vs floor`);
 console.log(`\nwrote ${path.join(OUT, 'lane-terms.json')}`);
 await g.close();
 process.exit(String(out.checks['INSTRUMENT-CAN-SEE-LANES']).startsWith('PASS') ? 0 : 3);
