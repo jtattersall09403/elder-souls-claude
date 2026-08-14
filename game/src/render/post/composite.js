@@ -198,8 +198,9 @@ export function buildCompositor(w, h, opts = {}) {
     // Replaces the old depth-DISCONTINUITY detector, which only darkened a hard silhouette edge
     // (an object against distant background) and could not see a CONTINUOUS-depth contact — the
     // exact case the blind judges named 5/5: a step meeting a path, a wall meeting the ground,
-    // an eave. Both are the same surface locally (no depth cliff), so the old `(d*4-ring)*22`
-    // edge test reads them as flat and fires nothing. A hemisphere kernel around the true
+    // an eave. Both are the same surface locally (no depth cliff), so the old edge test
+    // (d*4-ring)*22, clamped to a 12% cap, reads them as flat and fires nothing. A hemisphere
+    // kernel around the true
     // view-space position, tested against nearby occluder depth, darkens exactly a concave
     // JUNCTION rather than a silhouette — which is what "contact shadow" means.
     //
