@@ -1,14 +1,14 @@
 {
   "schema": "elder-souls/cost-ledger@1",
-  "generated_at": "2026-08-14T14:20:50.955Z",
+  "generated_at": "2026-08-14T14:25:56.867Z",
   "generator": "tools/cost.mjs",
-  "commit": "7e119c7",
+  "commit": "95d7ced",
   "source": "~/.claude/projects/-home-user-elder-souls-claude",
   "stale_after_minutes": 45,
   "window": {
     "from": "2026-08-05T22:16:46.017Z",
-    "to": "2026-08-14T14:20:46.117Z",
-    "hours": 208.07,
+    "to": "2026-08-14T14:25:49.623Z",
+    "hours": 208.15,
     "complete": true
   },
   "comparable_key": "sha1:2e492d83b9953130",
@@ -39,31 +39,31 @@
     }
   },
   "coverage": {
-    "files_total": 474,
-    "files_read": 474,
-    "bytes_read": 714391764,
+    "files_total": 475,
+    "files_read": 475,
+    "bytes_read": 715458149,
     "complete": true
   },
   "drivers": {
-    "requests": 57761,
-    "mean_context_tokens": 210241,
-    "pie_tokens": 1495886167,
-    "requests_per_agent_hour": 70.87
+    "requests": 57909,
+    "mean_context_tokens": 210277,
+    "pie_tokens": 1499646282,
+    "requests_per_agent_hour": 70.97
   },
   "denominator": {
     "definition": "active_clock_hours",
     "active_hours": 59,
-    "agent_hours": 815,
-    "span_hours": 208.07
+    "agent_hours": 816,
+    "span_hours": 208.15
   },
   "headline": {
-    "spend_to_date_usd": 7170.34,
-    "burn_usd_per_hour": 55.85,
+    "spend_to_date_usd": 7186.38,
+    "burn_usd_per_hour": 71.89,
     "burn_window_hours": 1,
-    "ch_usd_per_hour": 121.53,
-    "ch_pct_of_baseline": 104.9,
-    "usd_per_agent_hour": 8.8,
-    "usd_per_agent_hour_pct_of_baseline": 101
+    "ch_usd_per_hour": 121.8,
+    "ch_pct_of_baseline": 105.1,
+    "usd_per_agent_hour": 8.81,
+    "usd_per_agent_hour_pct_of_baseline": 101.1
   },
   "baseline": {
     "usd_per_hour": 115.88,
@@ -321,36 +321,36 @@
     },
     {
       "t": "2026-08-14T14:00:00.000Z",
-      "usd_per_hour": 27.93,
-      "usd_per_agent_hour": 2.79,
-      "mean_agents": 10,
-      "commit": "7e119c7",
+      "usd_per_hour": 35.95,
+      "usd_per_agent_hour": 3.27,
+      "mean_agents": 11,
+      "commit": "95d7ced",
       "window_hours": 2
     }
   ],
   "by_model": [
     {
       "model": "claude-opus-5",
-      "usd": 6964.29,
-      "requests": 53272,
+      "usd": 6978.49,
+      "requests": 53393,
       "tokens": {
-        "input": 1200435,
-        "cache_write_5m": 173568059,
-        "cache_write_1h": 9357579,
-        "cache_read": 11077675336,
-        "output": 9642865
+        "input": 1200677,
+        "cache_write_5m": 173757904,
+        "cache_write_1h": 9368232,
+        "cache_read": 11101903151,
+        "output": 9674453
       }
     },
     {
       "model": "claude-sonnet-5",
-      "usd": 206.06,
-      "requests": 4489,
+      "usd": 207.9,
+      "requests": 4516,
       "tokens": {
-        "input": 303939,
-        "cache_write_5m": 9742016,
+        "input": 303993,
+        "cache_write_5m": 9761397,
         "cache_write_1h": 0,
-        "cache_read": 871902077,
-        "output": 671395
+        "cache_read": 880631366,
+        "output": 676061
       }
     }
   ],
@@ -358,33 +358,33 @@
     {
       "class": "input",
       "usd": 6.61,
-      "tokens": 1504374
+      "tokens": 1504670
     },
     {
       "class": "cache_write_5m",
-      "usd": 1109.16,
-      "tokens": 183310075
+      "usd": 1110.39,
+      "tokens": 183519301
     },
     {
       "class": "cache_write_1h",
-      "usd": 93.58,
-      "tokens": 9357579
+      "usd": 93.68,
+      "tokens": 9368232
     },
     {
       "class": "cache_read",
-      "usd": 5713.22,
-      "tokens": 11949577413
+      "usd": 5727.08,
+      "tokens": 11982534517
     },
     {
       "class": "output",
-      "usd": 247.79,
-      "tokens": 10314260
+      "usd": 248.62,
+      "tokens": 10350514
     }
   ],
   "guards": {
     "g1_parallelism": {
-      "mean_agents": 13.81,
-      "mean_agents_present": 13.92,
+      "mean_agents": 13.83,
+      "mean_agents_present": 13.93,
       "floor": 12,
       "divergence_flag": false,
       "status": "ok",

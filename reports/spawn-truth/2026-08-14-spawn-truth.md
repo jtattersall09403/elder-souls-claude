@@ -10,7 +10,9 @@ scene — starts and ends in Thorn, not Lilmoth. Lilmoth is a harness/debug defa
 clicks "New" never passes through.** This is settled by direct citation of the game's own data and
 code, not by inference, and corroborated by playing it.
 
-Screenshots: `reports/spawn-truth/shots/`. Tool (committed, re-runnable):
+Screenshots: `docs/shots/2026-08-14-spawn-truth/` (tracked; `reports/spawn-truth/shots/` is where the
+tool writes them and is gitignored by `reports/.gitignore`'s blanket rule, same as every other run
+artifact in this repo — the tracked copies are the ones this report cites). Tool (committed, re-runnable):
 `tools/harness/spawn-truth-thorn.mjs`.
 
 ---
@@ -82,10 +84,10 @@ creation happens in two interiors, `barge-hold` and `writ-house`."* Both are Tho
 
 | stage | shot |
 |---|---|
-| Title screen | `shots/desktop-00-title.png` |
-| Barge hold (creation begins) | `shots/desktop-01-barge-hold.png` |
-| Writ House, writ stamped (creation ends) | `shots/desktop-02-writ-house-done.png` |
-| Thorn's Tidewrack Quay, at the writ house's own `exterior_spawn` coordinate | `shots/desktop-03-thorn-tidewrack-quay-establishing.png` |
+| Title screen | `docs/shots/2026-08-14-spawn-truth/desktop-00-title.png` |
+| Barge hold (creation begins) | `docs/shots/2026-08-14-spawn-truth/desktop-01-barge-hold.png` |
+| Writ House, writ stamped (creation ends) | `docs/shots/2026-08-14-spawn-truth/desktop-02-writ-house-done.png` |
+| Thorn's Tidewrack Quay, at the writ house's own `exterior_spawn` coordinate | `docs/shots/2026-08-14-spawn-truth/desktop-03-thorn-tidewrack-quay-establishing.png` |
 
 The fourth shot is a placed establishing shot (`tools/harness/shot.mjs`, S34(a) "appearance"
 evidence — it teleports and poses the camera, not a claim about the walk itself) at the literal
