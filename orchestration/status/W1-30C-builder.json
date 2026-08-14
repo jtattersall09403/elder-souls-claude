@@ -2,21 +2,63 @@
   "task_id": "W1-30C-builder",
   "role": "builder",
   "piece": "W1-30C",
-  "status": "running",
-  "plan_state": "building",
-  "summary": "Material and texture library. Phase 1 (frozen API contract, unblocks D/E/F/G) first, then phase 2 content: real PBR per family, detail normals, trim sheet, wear/wetness masks, palette variants, alpha foliage, magenta fallback.",
-  "files_touched": [
-    "orchestration/status/W1-30C-builder.json"
+  "status": "builder-owned work complete",
+  "plan_state": "awaiting-fresh-critic",
+  "summary": "The material and texture library. Phase 1 (the frozen API contract) published first and pushed, unblocking D, E, F and G. Phase 2 landed all 20 families on real albedo+normal+roughness, four shared detail-normal tiles, a twelve-band trim atlas, wear and wetness as masks rather than scalars, thirteen region palettes over one texture set, and a magenta-on-purpose fallback. The 96px hash-noise field is retired from every family. Every capture is SwiftShader and is therefore a builder diagnostic, not an appearance claim: the hardware Deck run is the critic's.",
+  "api_contract": {
+    "published": "game/src/render/MATERIAL_API.md",
+    "frozen": "2026-08-14",
+    "unblocks": ["W1-30D", "W1-30E", "W1-30F", "W1-30G", "W1-30H"],
+    "note": "Options may be added and never removed or repurposed. Four of the seven declared variant axes were live in the first commit; all seven are live now."
+  },
+  "gates": {
+    "coverage": "20/20 families authored, 19 texture sets, 281 MB high / 70 MB medium — PASS",
+    "close_up": "15/20 families resolve structure at 0.5 m — GREEN (bar >= 15)",
+    "close_up_null_control": "mean shading 0.0798 authored vs 0.0061 on the noise fallback; 0/20 would pass on noise",
+    "coverage_null_control": "delete a normal map on a copy: gate FAILs and the family renders magenta as visual-family:<f>:ASSET-LOAD-FAILED while its neighbour is untouched",
+    "wear": "4/5 subjects selective; chitin inverts and is named, not tuned away",
+    "wetness": "reads on 5/5, delta -10.3% to -22.1% between the wet and dry arms",
+    "palette": "78 region pairs over one stone set, closest 0.013 hue / 0.011 value; control (same swatch twice) exactly 0.0000",
+    "boot": "PASS",
+    "shipping_gates": "w1-30-assets GREEN, w1-30-package2 [], w1-30-gate []"
+  },
+  "not_done": [
+    "KTX2/Basis compression — no basisu or toktx on this host; budget met without it, deferral and one-command reversal recorded in manifest.json",
+    "library census — W1-30V owns tools/visual/library-census.mjs and it does not exist yet; visualFoundationCensus() now reports the fields it will need",
+    "bounded live proof on the pod (3 streets, 2 vistas, 1 rain transition) — NOT RUN. All builder captures are SwiftShader, which W1-30-EVIDENCE.md forbids for appearance claims",
+    "diffuse-floor removal test, naive grouping test, M1-M12 tripwire, full Deck, texture memory on hardware — critic-owned per the plan's allocation",
+    "trim atlas has zero realised consumers today (E has no kit, D has no equipment); published and frozen so they need not wait, but one consumer short of W1-30-LIBRARY.md section 3"
   ],
-  "files_claimed": [
+  "known_weaknesses": [
+    "reed still reads washed-out in the close-up sheet and I would not defend it to a judge",
+    "leaf, reed, root and cloth clear the shading threshold but miss albedo contrast; water is a declared exemption",
+    "the chitin wear mask is pointed at the grooves rather than the plate rims; the fix belongs in the synth script's height field"
+  ],
+  "files_touched": [
     "game/src/render/MATERIAL_API.md",
     "game/src/render/visual-foundation.js",
     "game/assets/w1-30/materials/",
     "tools/assets/",
-    "reports/w1-30/C-",
+    "tools/render/w1-30-assets.mjs",
+    "reports/w1-30/C-DELIVERY.md",
+    "reports/w1-30/C-closeup/",
+    "reports/blog-feed.jsonl",
+    "orchestration/status/W1-30C-builder.json",
     "orchestration/INDEX.md",
-    "docs/progress.html",
-    "reports/blog-feed.jsonl"
+    "docs/progress.html"
   ],
-  "next_step": "Write and freeze game/src/render/MATERIAL_API.md, land the option surface in visual-foundation.js as accepted-and-recorded (no-op where content is absent), commit and push so D/E/F/G unblock, then begin phase 2 content."
+  "files_claimed": [],
+  "outside_declared_paths": {
+    "tools/render/w1-30-assets.mjs": "It validated the old three-set manifest and the 256px generated atlas, both of which this piece removes, so it would have gone permanently red for everyone. Rewritten for manifest@2 rather than left broken. No other live piece declares it."
+  },
+  "reproduce": [
+    "NODE_USE_ENV_PROXY=1 node tools/assets/fetch-cc0-materials.mjs --force",
+    "node tools/assets/synth-materials.mjs",
+    "node tools/assets/check-material-coverage.mjs --write",
+    "node tools/assets/family-closeup.mjs --null-control",
+    "node tools/assets/variant-proof.mjs",
+    "node tools/render/w1-30-assets.mjs",
+    "node tools/boot-check.mjs"
+  ],
+  "next_step": "Dispatch the fresh W1-30C critic. The single test I most want run is the diffuse-floor removal on the eight settlement street shots on hardware: the floor at consumeStyleboard was compensating for missing texture detail and should now be removable. Second is the naive grouping test with reports/w1-30/C-closeup/family-closeup-full.jpg as the pack."
 }

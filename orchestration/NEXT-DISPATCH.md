@@ -1,5 +1,74 @@
 # Next dispatches, in priority order
 
+## CI-DOCTYPE. Ruling: `corpus/90-verdicts/` holds TWO document types, and it now says so.
+## Fresh-checkout verdict FAIL 9 → 8. The remaining 8 are named and owned; three are one line each.
+
+Full write-up, delete-the-fix arms and reversal table: `reports/ci-triage/DOCTYPE-20260814.md`.
+Third in the sequence after `TRIAGE-20260814.md` (54 → 9 by committing evidence) and
+`EVIDENCE-RECOVERY-20260814.md`.
+
+**The finding.** Four of the nine remaining failures were not critic verdicts.
+`W1-PROSE-BLIND-r1`, `W1-PROSE-TICS-r4` and `W1-22-B2-blind` are **blind-pack judgements** — a
+judge answers a masked pack's question and has no build, so it structurally cannot carry
+`artifacts[]`, `arbitration.ar1/ar2` or scored `reference_items[]`. `W1-TOUCH-r1` declared
+`"schema": "elder-souls/verdict@1"` while implementing a third layout again. Two incompatible
+contracts were answering to one name.
+
+**Ruled and shipped, reversible:**
+
+- **Two types, additive.** `elder-souls/critic-verdict@1` (unchanged) and
+  `elder-souls/blind-judgement@1` (`corpus/00-doctrine/blind-judgement.schema.json`, new). Dispatch
+  is `document_type` → registered `schema` → a `critic.role` beginning `judge.` → **critic
+  verdict**. The default is the *stricter* type, so forgetting the field can never buy leniency,
+  and the 32 already-conformant verdicts took the identical code path — diffed, not counted: the
+  same 32, plus `W1-PROSE-BLIND-r1`. `tools/scores.mjs` is untouched and the score series is
+  byte-identical, 69 rows before and after. *Overturned by:* a critic verdict slipping through as
+  a judgement, which would mean the `judge.` role prefix is being used loosely.
+- **`elder-souls/verdict@1` is RETIRED, not renamed.** Four documents claim or imply it
+  (`W1-TOUCH-r1`, `W1-MAP-r1`, `W1-DEPLOY-r1`, `W1-FACTIONS-r1`) and no two share a field layout.
+  One name per instance is the absence of a type. The validator refuses it by name.
+- **`W1-TOUCH-r1` is a malformed critic verdict, not a third type**, and the file was not edited —
+  the validator now names the false declaration instead of emitting eight anonymous
+  missing-field lines (21 → 22 errors, the right direction). The triage's guess that it is an
+  unfinished draft is **wrong**: it is one of the stronger critic documents in the corpus in a
+  bespoke serialisation. Report §3 lists which of its missing fields are clerical and which are
+  measurements nobody can now supply. *Overturned by:* a second document ever appearing in that
+  layout, which would make it a type after all.
+- **An honest non-reading is now expressible.** `reference_items[].not_read: { reason, why }`, on
+  a blind judgement only, carrying no score. A critic that could not measure an item still says
+  `measured: "unmeasurable"` with `score_0_10: 0`, fail-closed. The legacy
+  `"NOT READ - quarantined"` string is grandfathered with a warning; a path that merely fails to
+  resolve is still an error, so the clause cannot launder a missing file.
+- **A judge may decline to score the piece** — `score.overall_0_10: null` with a written note —
+  because `W1-22-B2-blind` deliberately read no `RI-AUD` item and had no bar to score against.
+- **A strict refinement of a canonical subsystem path warns instead of erroring**
+  (`audio.ambience.region.separation` rolls up to `audio.ambience.region`). A path with **no**
+  canonical ancestor still errors: registering a subsystem is a taxonomy decision, not a
+  validator's (RI-MTH05 §C).
+
+**Named, not built — three small, owned pieces, in ascending cost:**
+
+- **`W1-PROSE-TICS-r4`: one error, one field.** The document carries **no timestamp anywhere** —
+  no `critic.finished_at`, no `started_at`, no ISO string in the file. It is plotted at x = 0 on
+  the trajectory chart. Owner: the prose r4 judge (`judge-prose-r4`). Cost: one line, by whoever
+  knows when it finished.
+- **`W1-22-B2-blind`: four errors, one question.** `audio.ambience.events`,
+  `audio.ambience.stereo` and `process.blind.protocol` are unregistered in
+  `corpus/00-doctrine/subsystems.json`. Either register the three leaves (with `arb`/`area`/
+  `critic`/`wave`) or roll them into `audio.ambience.region`. **Not taken here on purpose:**
+  registering a subsystem tells `INDEX.md` it is a judged path, on the strength of a document
+  that explicitly declines to score the piece. Owner: the W1-22 audio critic / whoever owns the
+  taxonomy.
+- **`W1-TOUCH` round 2.** Cheaper than backfilling r1: r1 already carries a five-item round-2
+  brief (the roll asymmetry under a second live pointer, an S-ruling on frames-versus-milliseconds
+  for the tap/hold gate, the stale `ui/system.js:647` comment, T3/T7 coverage, and the
+  `preserveDrawingBuffer` experiment for the phone black screen). A conformant r2 retires r1 to
+  history under the round rule. Owner: a fresh W1-TOUCH critic.
+
+The other five (`W1-14-r4`, `W1-19-r2`, `W1-FACTIONS-r2`, `W1-LIBRARY-r1`,
+`W1-LIBRARY-MARTIAL-r4`) are unchanged from the previous ruling and stay red with their owners.
+
+
 ## CI-TRIAGE. Owner ruling: the corpus-gate red is real (74% of Wave-1 verdicts VOID for uncommitted
 ## evidence), not a broken gate — two cheap fixes shipped, two bounded follow-ons named, nothing new blocks the commit path
 
@@ -1249,3 +1318,73 @@ backing, aspect 1.779 — just under the threshold — so the physical text floo
 **every authored small label in the game**, not only the compass, is drawn below 18 CSS px on that
 device. Recorded in `reports/hud-morrowind/compass-math.json` under `findings`. Fixing it moves text
 size across the whole interface, so it belongs to that item rather than to this piece.
+
+---
+
+## FIRST-TEN-MINUTES — three referrals, filed 2026-08-14
+
+From the pass on `reports/visual-truth/2026-08-14-visual-truth.md` §2. What I fixed is in
+`orchestration/status/FIRST-TEN-MINUTES.json`; these three are the parts that belong to somebody else.
+
+### R1 — **For `HUD-MORROWIND`: the intermittent boot crash (audit D11) is still live.**
+
+I re-read the code rather than trusting the audit, and neither mitigation has landed on
+`codex/wave1-build-experiment`:
+
+- `game/src/ui/compass.js:109` still reads `return POINTS[i].label;` after `const i = Math.round(b / 45) % 8;`
+- `game/src/ui/system.js:799` still reads `bearing_deg: bearingFromYaw(ctx.cameraYaw || 0),`
+
+**The mechanism, confirmed.** `bearingFromYaw` does `norm360(180 - Number(yawDeg || 0))`. The `|| 0`
+catches `NaN` (falsy) but **not** `±Infinity` (truthy). `180 - Infinity = -Infinity`;
+`norm360(-Infinity)` is `NaN`; `Math.round(NaN / 45) % 8` is `NaN`; `POINTS[NaN]` is `undefined`;
+`.label` throws and takes the whole boot to the BOOT FAILED screen. Seen once in ~20 boots by the
+audit, and a ten-viewport sweep did not reproduce it, so it is timing-related, not size-related.
+
+**I did not edit it.** `node tools/ownership.mjs --for game/src/ui/compass.js` says `HUD-MORROWIND`,
+which is live. Three independent one-liners, any of which alone stops the crash — all three are
+worth having, because they fail independently:
+
+1. `cardinalOf`: `const p = POINTS[i]; return p ? p.label : POINTS[0].label;`
+2. `system.js:799`: `bearingFromYaw(Number.isFinite(ctx.cameraYaw) ? ctx.cameraYaw : 0)`
+3. a `Number.isFinite` guard inside `bearingFromYaw` itself, so a future caller is covered too
+
+**A null control that is the plausible wrong answer rather than the trivial one:** keep (1), revert
+only (2), then drive `cameraYaw = Infinity`. The compass will not crash — it will silently draw
+**NORTH on every frame** whatever the camera is doing, which is a worse defect than the crash
+because nothing goes red. A fix for this must be checked against the *bearing*, not against the
+absence of an exception.
+
+### R2 — **For whoever owns the camera and the renderer (`W1-06` / `W1-03` / `W1-30`): the shake is half-consumed.**
+
+`tools/render/consumption-sweep.mjs` (new, this pass) sweeps all 98 per-frame fields declared on
+the four `sim/state.js` factories against all 21 files in `game/src/render/`. Exactly one field was
+a genuine consumption failure — `charOpacity`, now wired — but the sweep also turned up an amber
+row worth someone's attention:
+
+`camera.shakeYaw` / `camera.shakePitch` **do** reach the frame, but only as a small *positional*
+wobble, via `sim/camera.js:1039 viewBasis()` → `writePose()` → `c.pos`. The **rotation** — which
+`RI-CAM06 §G` says is the entire intent, *"rotational only"* — never arrives, because
+`render/renderer.js` builds the view with `camera.lookAt(pivot)` and `camera.up.set(0, 1, 0)`,
+which discards it. So a hit that is supposed to kick the view kicks the camera's *position* by a
+few centimetres instead. Not mine to fix; the file belongs to pieces that are mid-flight.
+
+### R3 — **D1 (the buried camera) is measured and NOT fixed. It needs an owner.**
+
+The cheap explanation is wrong and I want to save the next person the hour: the arm's collision
+**already** runs against settlement buildings. `engine.js _settleSettlementSolids()` builds a
+`CollisionCell` from `settlementSolidsNear(p, 45)` and assigns it to `sim.cell`, and
+`sim/camera.js solveArm()` sphere-casts against exactly that. So "the camera does not collide with
+the town" is not the defect.
+
+The two live candidates are (a) `settlementSolids()` emits wall slabs and not the *underside of a
+raised deck*, so the one surface that buries the camera is the one surface not in the collision
+set; and (b) the frame is composed badly rather than occluded — a near-field object owning 55% of
+the frame while the character is still technically visible behind it, which no arm change fixes and
+which wants a near-field occluder fade instead.
+
+**These are distinguishable by a number that now exists.** `reports/first-ten-minutes/*/manifest.json`
+carries `d1.steps[].player_visible_px` at eleven stops along the walk, measured by rendering each
+stop twice from one pose with the player's materials set to `colorWrite:false` and counting the
+differing pixels (the method from `vt-seethrough.mjs` §1.1). **If it collapses under the deck it is
+(a); if it does not, it is (b) and an arm fix would be wasted work.** Read the number before
+choosing the fix.

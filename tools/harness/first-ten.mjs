@@ -193,13 +193,13 @@ async function census() {
   });
 }
 
-const walk = async (frames) => {
-  // The real input pipeline: the same closed ACTIONS set a keyboard drives.
-  for (let i = 0; i < frames; i += 10) {
-    await g.h('queueInputs', [{ move: [0, 1] }]);
-    await g.h('stepFrames', 10);
-  }
-};
+// The real input pipeline: the same closed ACTIONS set a keyboard drives. The event shape is
+// `{ f, move }` — `f` is the frame the event lands on, and it is REQUIRED (a missing one throws
+// "event frame must be a non-negative integer", which cost one run). A queued `move` persists
+// until it is changed, which is why `tools/harness/vt-play.mjs` queues once and then steps; this
+// does the same so the two tools drive the character identically.
+const holdForward = async () => g.h('queueInputs', [{ f: 0, move: [0, 1] }]);
+const walk = async (frames) => g.h('stepFrames', frames);
 
 // ---------------------------------------------------------------------------------------
 // D3 first, because it needs nothing but a boot and a settlement crossing.
@@ -237,6 +237,7 @@ if (want('d1') || want('d2')) {
   await g.h('restoreState');                 // back to the spawn point, whatever D3 did
   await g.h('setWeather', 'rain');           // D2 needs precipitation to exist to be wrong
   await g.h('stepFrames', 12);
+  await holdForward();                       // and hold it, the way a player's thumb does
   const steps = [];
   for (let f = 0; f <= 600; f += 60) {
     if (f > 0) await walk(60);

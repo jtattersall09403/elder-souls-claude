@@ -154,8 +154,21 @@ when it is. Two write-ups own it; **read them rather than re-running the whole t
 |---|---|
 | why the gate was red for eight days across 1222 runs, and the rulings | \`reports/ci-triage/TRIAGE-20260814.md\` |
 | the evidence recovery that took fresh-checkout verdict FAIL from **54 to 9** | \`reports/ci-triage/EVIDENCE-RECOVERY-20260814.md\` |
+| the document-type split, **9 to 8**, and what the last 8 are owed | \`reports/ci-triage/DOCTYPE-20260814.md\` |
 
-The remaining 9 are named, owned content defects, not plumbing — see the second report §4 and
+**\`corpus/90-verdicts/\` holds two document types and they are not interchangeable.** A build
+critic files a \`critic-verdict\` (\`corpus/00-doctrine/verdict.schema.json\`); a blind judge files a
+\`blind-judgement\` (\`corpus/00-doctrine/blind-judgement.schema.json\`) — no \`artifacts[]\`, no
+\`arbitration\`, no scored \`reference_items[]\`, because it answers a masked pack's question and has
+no build in front of it. **Write \`"document_type"\` in your file.** Omit it and the validator falls
+back to the stricter critic-verdict contract, which is deliberate: forgetting the field can never
+buy leniency. \`"schema": "elder-souls/verdict@1"\` is RETIRED and is refused — four documents
+claimed it and no two share a layout. A judge that deliberately did **not** read the item its pack
+serves says so with \`reference_items[].not_read: { reason, why }\` and carries no score for it; a
+critic that could not measure an item says \`measured: "unmeasurable"\` with \`score_0_10: 0\`
+instead, and may not use \`not_read\` at all.
+
+The remaining 8 are named, owned content defects, not plumbing — see the third report §5 and
 \`orchestration/NEXT-DISPATCH.md\`. **A verdict citation must resolve in a fresh clone**: anything
 you write under \`reports/\` is gitignored, so run \`node tools/verdict-evidence.mjs --recover\`
 before you file a verdict that cites it. Evidence over 1 MiB is pinned, not committed.

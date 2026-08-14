@@ -9931,8 +9931,72 @@ export class Engine {
           // of every town in a heap around the world origin, kilometres from the town they
           // belong to. Someone standing outdoors goes at their authored post.
           pos = [rec.post.pos[0], rec.post.pos[1], rec.post.pos[2]];
+        } else if (cell === null) {
+          // D3, 2026-08-14 — the SECOND mouth of the same defect W1-GIVER-PRESENCE closed above.
+          //
+          // The `else` arm derives a position from an INTERIOR's bounds. When `cell` is null it
+          // has no interior to derive from, so `d` is null, `bx`/`bz` fall back to the literals
+          // 3 and 4, and the person is placed in a 6 m × 8 m box centred on the WORLD ORIGIN —
+          // which for a resident of Lilmoth is 5.8 km from their own town. Nothing then moved
+          // them: `anchorFor()` returns null for `at: null` with no post, so `stepSchedule` never
+          // gives them a goal, and if they have no schedule at all it returns on its first line.
+          // Measured in the shipping build before this change: `blackwood-company-factor` (Corvus
+          // Aldeyn, the Blackwood Company's factor in Lilmoth) standing at [-1.44, 0, 2] with a
+          // drawn body, plus `lilmoth-rootkeepers` and `lilmoth-yard-brothers` beside him. That is
+          // the frame behind the dialogue panel in the 2026-08-14 visual-truth audit: an empty
+          // street, because the person is not in it.
+          //
+          // A person with no cell belongs OUTDOORS in their own town. The place to stand is a
+          // door of a real building in it — which is exactly the derivation
+          // `tools/world/build-giver-posts.mjs` already uses to author the 39 quest-giver posts,
+          // reused here rather than re-invented (owner directive §3). The door list is shipped
+          // data (`settlements.doors`), the choice among doors is a hash of the person's own id,
+          // and the 1.6 m step out from the doorway is so nobody stands in their own doorframe.
+          // No RNG, no clock, deterministic and idempotent — the same person lands on the same
+          // doorstep every run.
+          const doors = (this.settlements.doors && this.settlements.doors.get(sid)) || [];
+          const town = this.settlements.get(sid);
+          if (doors.length && town && Array.isArray(town.pos)) {
+            // THE SAME ARITHMETIC AS `build-giver-posts.mjs` lines 167-184, deliberately: the
+            // vector from the town centre out through the door, a short pace along it, and a
+            // lateral offset off the person's own id. Two derivations of "where somebody stands
+            // outside a building" that disagree is the two-parallel-implementations failure
+            // AGENT-PROTOCOL names, and it would show up as posted and unposted townsfolk
+            // standing in visibly different relationships to the same doorway.
+            const dr = doors[h % doors.length];
+            const c = town.pos;
+            const d0 = dr.door;
+            let vx = d0[0] - c[0], vz = d0[2] - c[2];
+            const len = Math.hypot(vx, vz) || 1;
+            vx /= len; vz /= len;
+            const outStep = 1.6 + ((h % 90) / 100);           // 1.60 .. 2.49 m clear of the doorway
+            const lateral = (((h >>> 9) % 300) / 100) - 1.5;  // -1.50 .. +1.49 m along the frontage
+            pos = [
+              Math.round((d0[0] + vx * outStep - vz * lateral) * 100) / 100,
+              0,
+              Math.round((d0[2] + vz * outStep + vx * lateral) * 100) / 100,
+            ];
+          }
+          if (!pos && town && Array.isArray(town.pos)) {
+            // A town with no door list still has a centre and a radius. Better a person in the
+            // right town than a person at the origin, and this arm says so out loud rather than
+            // falling through to the interior maths that caused the defect.
+            const r = Math.max(4, (town.radius_m || 30) * 0.55);
+            const x = town.pos[0] + ((((h % 200) / 100) - 1) * r);
+            const z = town.pos[2] + (((((h >>> 8) % 200) / 100) - 1) * r);
+            pos = [Math.round(x * 100) / 100, 0, Math.round(z * 100) / 100];
+          }
+          if (!pos) {
+            // Neither doors nor a town record. Refuse rather than place them at the origin: an
+            // unplaced person is a data fault somebody can find, and a person standing in an
+            // empty marsh pretending to be in a town is a defect nobody can see.
+            (this._populationFaults ||= []).push({ npc: rec.id, settlement: sid, why: 'no doors and no settlement record to stand in' });
+            continue;
+          }
+          // The town stands ON the province heightfield, so Y comes from the ground, not from 0.
+          pos[1] = Number(this.groundAt(pos[0], pos[2])) || 0;
         } else {
-          const d = cell ? this.settlements.interior(cell) : null;
+          const d = this.settlements.interior(cell);
           const bx = d ? d.bounds_m.x[1] - 1.2 : 3;
           const bz = d ? d.bounds_m.z[1] - 1.2 : 4;
           let px=(((h % 200) / 100) - 1) * bx;

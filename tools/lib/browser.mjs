@@ -87,7 +87,49 @@ export function resolveEntry(args) {
  * Launch the game.
  * @returns {Promise<{page, browser, server, origin, url, console:Array, errors:Array, close:Function, h:Function}>}
  */
+/**
+ * Free bytes on the filesystem holding `directory`, or null when it cannot be measured.
+ * Not being able to measure is reported as null rather than guessed at.
+ */
+export function freeBytesFor(directory = REPO_ROOT) {
+  try {
+    if (typeof fs.statfsSync !== 'function') return null;
+    const stats = fs.statfsSync(directory);
+    return Number(stats.bavail) * Number(stats.bsize);
+  } catch { return null; }
+}
+
+/**
+ * Refuse to start a capture run on a full disk.
+ *
+ * On 2026-08-14 the box hit 100% and harness runs kept completing while writing nothing: an
+ * ENOSPC inside a capture is easy to swallow, and a run that produced no frames looks exactly
+ * like a clean one. A run that cannot store its evidence is not evidence, so this stops before
+ * the browser starts rather than after the frames are lost.
+ *
+ * Override for a deliberately tiny run with ELDER_SOULS_MIN_FREE_MB.
+ */
+export function assertCaptureDiskSpace(directory = REPO_ROOT, { minFreeBytes = null, label = 'capture' } = {}) {
+  const required = Number.isFinite(minFreeBytes) && minFreeBytes !== null
+    ? minFreeBytes
+    : Number(process.env.ELDER_SOULS_MIN_FREE_MB || 256) * 1024 * 1024;
+  const available = freeBytesFor(directory);
+  if (available === null) return { checked: false, availableBytes: null, requiredBytes: required };
+  if (available < required) {
+    die(EXIT.INTERNAL,
+      `disk is full: ${(available / 1048576).toFixed(1)} MiB free on the filesystem holding ${directory}, ` +
+      `${(required / 1048576).toFixed(0)} MiB required for a ${label} run. Screenshots would fail with ENOSPC ` +
+      'and this run would look clean while producing nothing. Free space and re-run ' +
+      '(set ELDER_SOULS_MIN_FREE_MB to lower the floor deliberately).',
+      { availableBytes: available, requiredBytes: required, directory });
+  }
+  return { checked: true, availableBytes: available, requiredBytes: required };
+}
+
 export async function launchGame(args = {}) {
+  // Every harness tool in the fleet reaches the browser through here, so this one check covers
+  // all of them without 247 edits.
+  assertCaptureDiskSpace(REPO_ROOT, { label: 'harness' });
   const { chromium } = await loadPlaywright();
   const width = Number(args.width || 1920);
   const height = Number(args.height || 1080);

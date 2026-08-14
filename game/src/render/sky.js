@@ -202,12 +202,51 @@ export class Sky {
    * @param {number} hours 0..24
    * @param {string} weatherId a key of WEATHER
    * @param {THREE.Vector3} focus where the shadow frustum should sit
+   * @param {object|null} overhead the roof field from `Renderer._updateOverheadField()`, or null
+   *        for "open sky everywhere". See the D2 note below.
    */
-  apply(hours, weatherId, focus, regionFog, env, frame=0) {
+  apply(hours, weatherId, focus, regionFog, env, frame=0, overhead=null) {
     const w = WEATHER[weatherId];
     if (!w) throw new Error(`unknown weather '${weatherId}'. Named states: ${Object.keys(WEATHER).join(', ')}`);
     this.rain.visible=this.features.atmosphere&&w.rain>0.02;
-    if(this.rain.visible&&focus){const fall=(frame*.31)%22,n=Math.max(1,Math.round(320*w.rain));for(let i=0;i<n;i++){const x=(this.rainSeed[i*3]-.5)*28,z=(this.rainSeed[i*3+1]-.5)*28,y=((this.rainSeed[i*3+2]*22-fall+22)%22)-5,k=i*6;this.rainPos[k]=x;this.rainPos[k+1]=y;this.rainPos[k+2]=z;this.rainPos[k+3]=x+.12;this.rainPos[k+4]=y-(.9+w.rain*.8);this.rainPos[k+5]=z+.05;}this.rain.geometry.setDrawRange(0,n*2);this.rain.geometry.attributes.position.needsUpdate=true;this.rain.position.copy(focus);this.rain.material.opacity=.18+w.rain*.28;}
+    // ---- D2: RAIN DOES NOT FALL THROUGH ROOFS ------------------------------------------------
+    // The streak field is generated in a 28 m x 28 m column around `focus`, from 5 m below it to
+    // 17 m above. Nothing ever asked whether a given streak was under a roof, so walking under
+    // the raised decks at Lilmoth put streaks INSIDE the covered volume, in front of the ceiling
+    // — the audit's D2, visible in every frame of play/016..032.
+    //
+    // Note what the defect is NOT: the material is depth-TESTED (only `depthWrite` is off), so
+    // this was never a sorting bug. The drops are genuinely spawned in the air beneath the deck,
+    // between the player and the underside, and no amount of depth state can help with that. The
+    // emitter has to know about the ceiling, which is what `overhead` is.
+    //
+    // `overhead` is a coarse height field the renderer refreshes a few times a second: for each
+    // sample point, the underside of the lowest solid thing above it, or +Infinity for open sky.
+    // A streak below the roof over its own column is not drawn. Streaks are COMPACTED to the
+    // front of the buffer and `drawRange` shortened, so a covered player also pays less overdraw
+    // rather than more — the cull is not a per-vertex branch in a shader.
+    if(this.rain.visible&&focus){
+      const fall=(frame*.31)%22,n=Math.max(1,Math.round(320*w.rain));
+      let out=0;
+      for(let i=0;i<n;i++){
+        const x=(this.rainSeed[i*3]-.5)*28,z=(this.rainSeed[i*3+1]-.5)*28,y=((this.rainSeed[i*3+2]*22-fall+22)%22)-5;
+        if(overhead){
+          // World coordinates: the streak field is a child transform on `focus`.
+          const wy=focus.y+y;
+          if(wy<ceilingAt(overhead,focus.x+x,focus.z+z))continue;
+        }
+        const k=out*6;out++;
+        this.rainPos[k]=x;this.rainPos[k+1]=y;this.rainPos[k+2]=z;
+        this.rainPos[k+3]=x+.12;this.rainPos[k+4]=y-(.9+w.rain*.8);this.rainPos[k+5]=z+.05;
+      }
+      this.rain.geometry.setDrawRange(0,out*2);
+      this.rain.geometry.attributes.position.needsUpdate=true;
+      this.rain.position.copy(focus);
+      this.rain.material.opacity=.18+w.rain*.28;
+      // A fully covered player gets no streaks at all, and drawing an empty LineSegments is a
+      // draw call for nothing.
+      if(out===0)this.rain.visible=false;
+    }
 
     // Sun elevation: noon is up, midnight is down. Pure arithmetic, deterministic.
     const ang = ((hours - 6) / 24) * Math.PI * 2;
@@ -354,3 +393,23 @@ export class Sky {
 }
 
 function lerp(a, b, t) { return a + (b - a) * t; }
+
+/**
+ * THE ROOF OVER A POINT. `overhead` is the coarse field `Renderer._updateOverheadField()` builds:
+ * a square grid of `n x n` samples spanning the precipitation column, each holding the WORLD Y of
+ * the underside of the lowest solid thing above that sample, or `Infinity` where the sky is open.
+ *
+ * Nearest-sample lookup, deliberately — no interpolation. Interpolating between "roof at 4 m" and
+ * "open sky" would invent a sloping ceiling along every eave and let a band of rain through just
+ * inside the edge of every deck, which is the defect in miniature. A hard edge one sample wide is
+ * the honest artefact of a coarse field, and the field is sized so that sample is a few metres.
+ *
+ * @returns {number} world Y of the ceiling above (wx, wz), or Infinity for open sky.
+ */
+export function ceilingAt(overhead, wx, wz) {
+  if (!overhead) return Infinity;
+  const i = Math.round((wx - overhead.x0) / overhead.step);
+  const j = Math.round((wz - overhead.z0) / overhead.step);
+  if (i < 0 || j < 0 || i >= overhead.n || j >= overhead.n) return Infinity;
+  return overhead.y[j * overhead.n + i];
+}

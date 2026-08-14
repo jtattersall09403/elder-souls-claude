@@ -267,18 +267,41 @@ export function stepSchedule(sim, n, bus) {
       n.hasGoal = false;
     }
   }
-  // Presence. `sim.env.interior` is the cell the player is standing in; a person whose day has
-  // them somewhere else is not in the room with you, and `visible` is what the renderer and
-  // every perception cast read.
-  // W1-GIVER-PRESENCE. Three cases, not two. `at` names a cell -> you are in that cell. `at` is
-  // null and the person has a POST -> they are outdoors, so they are in the world when the player
-  // is too and not otherwise. `at` is null and they have no post -> the old meaning, kept
-  // verbatim: a scenario NPC a state file placed by hand is wherever the scene is.
-  // A post with a `settlement` is a spot on that town's street; a post with a `site` is a named
-  // place that is not a town at all (the hollow above the sap-line), and the only thing that ever
-  // spawns one of those is the state file that names the site — so it keeps the old meaning.
-  const here = n.at !== null ? n.at === sim.env.interior
-    : (n.post && n.post.settlement ? sim.env.interior === null : true);
+  applyPresence(sim, n, bus);
+}
+
+/**
+ * IS THIS PERSON IN THE ROOM WITH YOU. `sim.env.interior` is the cell the player is standing in;
+ * a person whose day has them somewhere else is not in it, and `visible` is what the renderer and
+ * every perception cast read.
+ *
+ * W1-GIVER-PRESENCE. Three cases, not two. `at` names a cell -> you are in that cell. `at` is
+ * null and the person has a POST -> they are outdoors, so they are in the world when the player
+ * is too and not otherwise. `at` is null and they have no post -> the old meaning, kept
+ * verbatim: a scenario NPC a state file placed by hand is wherever the scene is.
+ * A post with a `settlement` is a spot on that town's street; a post with a `site` is a named
+ * place that is not a town at all (the hollow above the sap-line), and the only thing that ever
+ * spawns one of those is the state file that names the site — so it keeps the old meaning.
+ *
+ * WHY THIS IS ITS OWN FUNCTION NOW (D3, 2026-08-14). It used to be the last paragraph of
+ * `stepSchedule()`, which opens `if (!n.schedule.length) return;`. So a person with NO schedule
+ * never had their presence computed at all — they kept `makeNPC`'s optimistic `present: true`
+ * for the whole run, and the renderer drew their body wherever `populateSettlement()` had put
+ * it. For somebody whose record names an interior that place is an INTERIOR-LOCAL coordinate,
+ * which as a world coordinate is a few metres from the world origin. Measured in the shipping
+ * build at Lilmoth: 5 bodies standing in an empty marsh 5.8 km from the town they belong to,
+ * two of them (`lilmoth-archivist-ledger`, `lilmoth-mudborn-shrine`) people whose record says
+ * they are indoors. Presence is not a property of having a diary, so it is asked of everybody.
+ *
+ * The `settlement` arm is the other half. A person whose record names a town and whose `at` is
+ * null belongs on that town's STREET — `populateSettlement()` now gives them a real world
+ * position there — so like a posted person they are present outdoors and absent indoors. Only a
+ * record with no cell, no post and no town keeps the old "wherever the scene is" meaning, which
+ * is exactly the scenario NPC a state file placed by hand.
+ */
+export function applyPresence(sim, n, bus) {
+  const here = n.at != null ? n.at === sim.env.interior
+    : ((n.post && n.post.settlement) || n.settlement ? sim.env.interior === null : true);
   if (here !== n.present) {
     n.present = here;
     n.visible = here;
@@ -296,6 +319,10 @@ export function stepNPCs(sim, bus) {
     // which way they are looking, or a person who has just gone home turns to face you through
     // a wall for one frame and the trace records it.
     stepSchedule(sim, n, bus);
+    // ...and presence for the people `stepSchedule` returns early on. It is idempotent — it
+    // writes only on a change and emits only on a write — so the diarised majority pay one
+    // comparison for it and nothing else.
+    if (!n.schedule.length) applyPresence(sim, n, bus);
     // Somebody who is not in this cell does not turn, does not notice and does not loiter.
     if (!n.present) { n.noticing = false; n.loiter_frames = 0; continue; }
     const dx = p.pos[0] - n.pos[0], dz = p.pos[2] - n.pos[2];

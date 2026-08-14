@@ -18,6 +18,10 @@ import { makeRiggedActor, poseFromRig, poseStatic } from './actor.js';
 import { Sky, WEATHER } from './sky.js';
 import { Province } from '../world/province.js';
 import { SIGNATURE_KINDS } from '../world/signature.js';
+
+// Scratch for `_updateOverheadField()`'s AABB corner transform. Module-scope so the roof field
+// allocates nothing on the frame path (the renderer is inside the no-allocation budget).
+const _bbV = new THREE.Vector3();
 import { SpellVFX } from './spell-vfx.js';
 import { UILayer } from './ui.js';
 import { UISurface } from '../ui/surface.js';
@@ -552,6 +556,164 @@ export class Renderer {
     }
   }
 
+  /**
+   * THE CAMERA FADE, WIRED. `sim/camera.js:527` computes `c.charOpacity = fadeOpacity(armLen)`
+   * every frame — 1.0 above 1.3 m of arm, ramping to 0.0 at 0.9 m, from `game/data/camera/rig.json`.
+   * It is quantised in `sim/state.js`, written to the trace in `sim/record.js`, and saved and
+   * restored in `save/state.js`. Until this method existed, `grep -rn charOpacity game/src/render/`
+   * returned nothing: the trace, the snapshot and the save file all reported a working camera fade
+   * that did not exist. The 2026-08-14 visual-truth audit measured the consequence directly —
+   * 0.1% and 0.0% see-through at 1.0 m and 0.6 m, i.e. INSIDE and BELOW the fade band, the
+   * character stayed completely solid and blocked the view instead of dissolving out of it.
+   *
+   * WIRED RATHER THAN DELETED, and the reason is not sentiment about the code. Three things:
+   * the behaviour is one a third-person Souls camera actually needs, so deleting it would just
+   * move the same work to a later piece; the field is load-bearing in four other files
+   * (`sim/state.js` quantisation, `sim/record.js` trace, `save/state.js` both directions) and
+   * removing it touches the save shape, which is a far wider blast radius than adding a reader;
+   * and it is the closest thing this build has to a remedy for D1, where the arm is compressed
+   * and the player's own body is one of the things filling the frame. What would change my mind:
+   * if the fade turns out to read badly in motion — a character strobing in and out on every
+   * brush against a wall — the honest answer is a longer band or a hysteresis in `rig.json`,
+   * not a value nothing reads.
+   *
+   * MATERIALS ARE NOT ALL THE PLAYER'S OWN, which is why this clones. `makeRiggedActor()` clones
+   * skin and cloth per actor, but `_equipmentMaterialCache` (render/actor.js:473) caches the reed,
+   * chitin and xanmeer armour materials against the shared `mats` object and hands the SAME
+   * instances to every actor built from it. Setting `.opacity` on the player's meshes in place
+   * would therefore have faded every NPC in the scene along with them. So each mesh keeps two
+   * materials — the shared solid one it was built with, and a private translucent clone — and
+   * this swaps between them. The clone is made once, on the first frame the fade is actually
+   * needed, so a player who never jams the camera into a wall pays nothing at all.
+   */
+  _applyCharacterFade(c) {
+    const v = c && Number.isFinite(c.charOpacity) ? Math.max(0, Math.min(1, c.charOpacity)) : 1;
+    // Fully faded: stop drawing them. Cheaper than a zero-alpha pass, and it removes the
+    // depth/sorting question entirely at the one opacity where the answer does not matter.
+    if (v <= 0.02) { this.playerMesh.visible = false; return; }
+    const solid = v >= 0.999;
+    // Nothing to do, and nothing has ever been cloned: the common case, and it costs one
+    // boolean per frame rather than a traverse.
+    if (solid && !this._charFaded) return;
+    this.playerMesh.traverse((o) => {
+      if (!o.isMesh || !o.material || Array.isArray(o.material)) return;
+      const u = o.userData;
+      // Re-clone if the mesh's solid material has been swapped out from under us — equipment
+      // gating and the weapon build both reassign materials, and a stale clone would silently
+      // draw last week's armour whenever the camera came close. Only checked while the solid
+      // material is the one actually mounted, because while the clone is mounted `o.material`
+      // is deliberately not `__solidMat` and the comparison would re-clone every frame.
+      if (!u.__fadeMat || (!u.__fadeInUse && u.__solidMat !== o.material)) {
+        u.__solidMat = o.material;
+        u.__fadeMat = o.material.clone();
+        u.__fadeMat.transparent = true;
+        u.__fadeMat.depthWrite = false;   // a translucent body must not occlude itself
+        u.__fadeMat.name = `${o.material.name || 'player'}:camera-fade`;
+      }
+      if (solid) {
+        if (u.__fadeInUse) { o.material = u.__solidMat; u.__fadeInUse = false; }
+      } else {
+        u.__fadeMat.opacity = v;
+        if (!u.__fadeInUse) { o.material = u.__fadeMat; u.__fadeInUse = true; }
+      }
+    });
+    this._charFaded = !solid;
+  }
+
+  /**
+   * THE ROOF FIELD — D2's other half. Rain fell through the raised decks at Lilmoth because the
+   * emitter in `sky.js` spawns streaks in a 28 m column around the player and never asked what
+   * was above any of them. This answers that question cheaply enough to ask every frame.
+   *
+   * WHAT IT IS: an `n × n` grid over the precipitation column. Each cell holds the world Y of the
+   * underside of the lowest solid thing above that cell, or `Infinity` where the sky is open.
+   *
+   * WHY BOUNDING BOXES AND NOT RAYCASTS. A `THREE.Raycaster` walks triangles, and the terrain mesh
+   * alone is tens of thousands of them; 81 upward rays a frame against it is not affordable and
+   * caching it per frame would make the rain lag the player. Structures, though, are boxy — decks,
+   * shells, roofs — so an axis-aligned box test over their cached world bounds is both fast and,
+   * for the question "is this point under a roof", almost exactly right.
+   *
+   * IT ERRS TOWARD DRYNESS, ON PURPOSE. A building's AABB covers its whole footprint including any
+   * gap under an arch, so this can stop rain a little outside a wall or beneath an opening. That
+   * is the cheaper error: a metre of missing rain by a doorway is nearly invisible, and a streak
+   * falling through a solid roof is the thing a player noticed in the first ten minutes. If the
+   * dry apron ever becomes visible the fix is a tighter candidate set, not a coarser grid.
+   *
+   * @returns {object|null} the field, or null when there is nothing overhead worth testing.
+   */
+  _updateOverheadField(sim) {
+    const BOX = 28, N = 9;                      // 9 × 9 over 28 m — a 3.1 m cell
+    const f = this._focus;
+    const st = this._overhead || (this._overhead = { x0: 0, z0: 0, step: BOX / (N - 1), n: N, y: new Float32Array(N * N), frame: -1, boxes: null, boxFrame: -1 });
+    // The candidate set changes only when the world streams, so it is rebuilt on a slow cadence
+    // and the field itself on a fast one. Both are frame-counted rather than timed, because a
+    // renderer that behaves differently at a different frame rate is not reproducible.
+    if (st.boxFrame < 0 || sim.frame - st.boxFrame > 90) {
+      st.boxFrame = sim.frame;
+      const boxes = [];
+      const skip = (o) => {
+        if (o === this.playerMesh || o === this.terrain) return true;
+        const n = String(o.name || '');
+        return n.startsWith('npc:') || n.startsWith('prop:') || n.includes('precipitation')
+          || n.includes('sky') || n.includes('dome') || n.includes('reflect') || n.includes('water');
+      };
+      this.scene.traverse((o) => {
+        if (!o.isMesh || !o.visible || o.isInstancedMesh || skip(o)) return;
+        let p = o.parent, bad = false;
+        while (p) { if (p === this.playerMesh || String(p.name || '').startsWith('npc:')) { bad = true; break; } p = p.parent; }
+        if (bad || !o.geometry) return;
+        if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
+        const bb = o.geometry.boundingBox;
+        if (!bb) return;
+        o.updateWorldMatrix(true, false);
+        // World AABB of the local AABB: the eight corners, transformed.
+        let minX = Infinity, minY = Infinity, minZ = Infinity, maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
+        for (let c = 0; c < 8; c++) {
+          _bbV.set(c & 1 ? bb.max.x : bb.min.x, c & 2 ? bb.max.y : bb.min.y, c & 4 ? bb.max.z : bb.min.z)
+            .applyMatrix4(o.matrixWorld);
+          if (_bbV.x < minX) minX = _bbV.x; if (_bbV.x > maxX) maxX = _bbV.x;
+          if (_bbV.y < minY) minY = _bbV.y; if (_bbV.y > maxY) maxY = _bbV.y;
+          if (_bbV.z < minZ) minZ = _bbV.z; if (_bbV.z > maxZ) maxZ = _bbV.z;
+        }
+        // Only things near the player, and only things that are plausibly a structure. The
+        // footprint ceiling is what keeps a ground plane or a whole-town shell out of the set —
+        // one of those covers every sample and would stop the rain across the entire province.
+        if (maxX - minX > 120 || maxZ - minZ > 120) return;
+        if (Math.abs((minX + maxX) / 2 - f.x) > BOX || Math.abs((minZ + maxZ) / 2 - f.z) > BOX + 60) return;
+        boxes.push([minX, minZ, maxX, maxZ, minY, maxY]);
+      });
+      st.boxes = boxes;
+    }
+    if (!st.boxes || !st.boxes.length) return null;
+    // The field follows the player, resampled a few times a second. 81 cells × the candidate
+    // count, and the candidate count is the buildings within one town block.
+    if (st.frame < 0 || sim.frame - st.frame > 5) {
+      st.frame = sim.frame;
+      st.x0 = f.x - BOX / 2; st.z0 = f.z - BOX / 2;
+      let anyRoof = false;
+      for (let j = 0; j < N; j++) {
+        const z = st.z0 + j * st.step;
+        for (let i = 0; i < N; i++) {
+          const x = st.x0 + i * st.step;
+          let lowest = Infinity;
+          for (let b = 0; b < st.boxes.length; b++) {
+            const B = st.boxes[b];
+            if (x < B[0] || x > B[2] || z < B[1] || z > B[3]) continue;
+            // Only geometry that is genuinely ABOVE head height counts as a roof; a doorstep or a
+            // kerb whose box happens to contain the sample point is not shelter.
+            if (B[5] < f.y + 1.2) continue;
+            if (B[5] < lowest) lowest = B[5];
+          }
+          st.y[j * N + i] = lowest;
+          if (lowest !== Infinity) anyRoof = true;
+        }
+      }
+      st.anyRoof = anyRoof;
+    }
+    return st.anyRoof ? st : null;
+  }
+
   /** World objects: a thing on a crate that you can pick up (RI-JRN01 O6, M10). */
   syncProps(sim) {
     const props = sim.props || [];
@@ -824,6 +986,7 @@ export class Renderer {
     // which contained no character at all. A camera placed inside the head is a camera problem
     // and is solved by near-plane clipping, not by deleting the subject of the photograph.
     this.playerMesh.visible = true;
+    this._applyCharacterFade(c);
     this.syncEntities(sim);
     this.syncNPCs(sim);
     this.syncProps(sim);
@@ -859,7 +1022,8 @@ export class Renderer {
     // W1-02: `sim.env` carries the environment's own derived terms - the blended sightline the
     // front is currently at, and the weather's light class. The sky reads them off the LIVE
     // env rather than off weather.json, so what is drawn is what the fixed step computed.
-    this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus, regionFog, sim.env, sim.frame);
+    this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus, regionFog, sim.env, sim.frame,
+      this._updateOverheadField(sim));
     // W1-30S seam: publish the frame's lighting summary sky.js just computed.
     this.setLightingFrame(this.sky.lastFrame);
       // The province's own night lamps, driven off the same sun elevation the sky is: at 01:00 the

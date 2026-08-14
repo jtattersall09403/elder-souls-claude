@@ -91,7 +91,7 @@ jobs:
       # `W1-01-province-stream-r1` is a different sub-piece of W1-01, not a round of it. (b) An
       # oversized artifact may be cited through a `<path>.pin.json` — a stub pin standing in for
       # real evidence would be a hole with a comment over it. Both are tested by --self-test.
-      - name: verdict validator self-test (round identity + pin substitution)
+      - name: verdict validator self-test (document types + round identity + pin substitution)
         run: node tools/verdict-validate.mjs --self-test
 
       # And the pins themselves: shape, and drift against any raw file this runner happens to hold.
