@@ -3,17 +3,72 @@
   "role": "plan-reviewer-editor",
   "piece": "W1-DLG-TOPIC-WEB",
   "plan": "orchestration/plans/W1-DLG-TOPIC-WEB.md",
-  "state": "in-progress",
+  "state": "complete",
   "started": "2026-08-14",
-  "round": "2 (fresh reviewer-editor judging the version materially edited by round 1)",
+  "round": "2 (fresh reviewer-editor judging the version round 1 materially edited)",
   "branch": "codex/wave1-build-experiment",
+  "commit_at_reading": "7b05e65e",
   "plan_state": "awaiting-recriticism",
+  "outcome": "MATERIALLY EDITED. Under PLAN-LOOP.md rule 1 an agent may approve the version it received OR materially edit it, never both. Seven material defects were found and repaired in place, so this task does not approve; a THIRD fresh reviewer-editor must judge this version.",
   "no_browser_launched": true,
-  "next_step": "read the bar, re-measure round 1's figures at HEAD, attack the null control / S51 / the seam / the aggregation clause",
-  "files_touched": [
-    "orchestration/status/plan-review2-w1-dlg-topic-web.json"
+  "no_game_edits": true,
+  "what_i_could_not_do": [
+    "Could not close the seam with the live W1-UIX08 builder any more firmly than round 1 did. It is still ruled, not agreed. What I could do was remove the dependency on it being agreed: round 1 blocked step C on an acknowledgement, which violates rule 0, and that is now three one-sided checks that need nobody to answer.",
+    "Did not re-derive A1's 90% floor or A7's 85% floor. Both remain chosen rather than measured. I attacked A1's and have no offline measurement that beats it, so I left it exactly as round 1 set it rather than invent a number.",
+    "Did not find a stated mechanism in SCORING.md making a subsystem score the minimum over its judging items. Section 5a therefore writes the cap as a verdict instruction rather than citing one, and section 10.6 names that as its own weak joint for the next reviewer.",
+    "Did not perform any of the three owed corpus edits (RI-UIX08's `via` claim, RI-DLG01 SD's ungated median-depth and absent reachability rows, thorn.json's second schema). I judged the question the brief put and wrote the answer into section 9: leaving them owed is right and the plan is buildable without them.",
+    "A5c's baseline of 10 unreachable topics is gated at no-regression, not at zero. That is an honest statement of what this plan pays for and also an admission that the province ships ten topics nobody can reach. Section 10.7 says so."
   ],
-  "files_claimed": [
-    "orchestration/plans/W1-DLG-TOPIC-WEB.md"
-  ]
+  "round1_claims_i_reproduced": {
+    "note": "game/data/dialogue/ is byte-identical between e2a7a1a8 and 7b05e65e, so any difference is instrument, not tree.",
+    "build_graph": "IDENTICAL — nodes 470, edges 1630, out-degree 3.9836, leaf 0.2234, reachable_only 0.9809, max_depth 7, median_depth 2, convergence 0.6191, orphans 0, unreachable_infos 0, menu_quest_fraction 0.20",
+    "median_depth_2": "CONFIRMED, and round 1's reading of SD is right: target >= 3, hard floor 2, so SD scores 12/13 and RI-DLG01's '12/13 or better' still reads PASS",
+    "topic_to_topic_out_degree": "CONFIRMED — 3.488 against round 1's 3.50",
+    "names": "CONFIRMED — 23 authored, 21 restate the de-slugged id",
+    "topicLabel": "CONFIRMED — String(id).split('-').join(' '); `name` has no reader in game/src",
+    "ri_uix08_aggregation_clause": "CONFIRMED VERBATIM — 'SG is a gate, not an axis ... once a build exists that can be played, an unrun SG caps this item at 2.'",
+    "s51_class_d": "CONFIRMED — S51 names '(D) A within-build ablation contrast' and says 'this ruling does not touch it'. The two conditions round 1 added are S51's own two binding conditions, quoted correctly.",
+    "null_control_repairs": "BOTH HOLD AND BOTH ARE SOUND. Unlock keys on the answer being displayed (buildable, shared by both arms). Self-check reads recall (precision is 0/0 with zero marked spans). Against HAZARDS S0b the gate is genuinely two-sided: worse = pass, same = inert and cannot pass, better = overturns 2b with the reason recorded. The availability asymmetry is FORCED by construction, not asserted: shipped grants on click plus `implied: true`, ablated grants every `to` on display, so shipped is a subset of ablated for every player and route. NO EDIT WAS NEEDED IN SECTION 6.",
+    "figures_that_moved": "1,605 -> 1,601 addTopic occurrences, 1,277 -> 1,273 distinct pairs, 168 -> 167 strict, 255 -> 254 loose. Cause found: four records in thorn.json use a second undeclared schema (topic/text/links instead of id/infos/to)."
+  },
+  "defects_found": [
+    "P1 SECTION 2a's ownership table forbids the edit section 4A commissions. Table: 'Never edits — anything under game/src/'. Section 4A: 'This is the one edit this piece makes under game/src/'. A2's hard fail (topicLabel reads `name`) depends on it, so a builder obeying the table cannot pass A2.",
+    "P2 SECTION 2a blocked step C on another agent acknowledging. CLAUDE.md rule 0 and RULES.md rule 0 forbid parking work pending an answer. Ruling O1 requires the message, not an acknowledgement.",
+    "P3 The concession to the sibling was written in section 10 (a self-doubt section), where a builder takes no orders from it.",
+    "P4 TEN TOPICS ARE REACHABLE FROM NO GREETING and nothing gates it. build-graph.mjs reports unreachable_from_greeting = warden-eshi, the-one-path, the-blight-storms, the-ash-cough, the-xul-teekh, the-soul-trade, the-tolls, the-ninth-column, the-bond-berth, the-man-off-the-quay. Every one has in-degree >= 1 so SD's orphan row passes them; none is advertised by any npc.topics so the documented 'fourth door' does not save them. Worse, section 4C's deletion budget is guarded by the ORPHAN test, which by construction cannot see this class — a 200-edge pass can multiply it with all 13 SD rows green.",
+    "P5 A7's baseline is the most flattering corner of an unstated player space, and its prose gloss names the wrong defect. All 408 records carry a `topics` array and only one is empty, so 'the median person advertises zero subjects' is false. Over the corpus's own player space (10 races x 4 upbringings x disposition {0,40,100} = 120 shapes) the figure runs 215-250 of 408 (52.7%-61.3%); round 1's 217 is one record off the best corner. Round 1's '3 offer nothing at all' reproduces at no shape (0 with roots known, 27 without). Ruling W1 makes the player the constituent.",
+    "P6 Step D commissions the wrong repair. Of the 225 records offering nothing at argonian/0/d40, 208 DO advertise a non-root topic. The 221 dead advertisements are 17 strings that name no topic at all and 204 that name a real topic id — concentrated in just 23 distinct topics — whose filter stack admits no INFO for that player. And measured globally the reference defect is far larger than A7 can see: 100 of 865 npc.topics entries (11.6%), 66 distinct strings, 52 records, name no topic that exists.",
+    "P7 The SG cap is quoted but never bound to this piece's verdict, and section 2a is what unbinds it. RI-UIX08's clause caps RI-UIX08 — and 2a hands every RI-UIX08 row to the sibling, leaving this piece anchored on RI-DLG01, whose published aggregation is 'count of passing SD rows, gated' with no human read anywhere in it. A critic could score A1-A7 green with SG unrun and break no written rule."
+  ],
+  "repairs_made": [
+    "New section 0b: round 2's change log, and an explicit record of everything attacked that survived, so a third reviewer does not re-pay for it.",
+    "Section 1 re-measured and re-stamped at 7b05e65e; the ten unreachable topics named; a warning that reachable_only_via_another_topic is a shape statistic deletion cannot move and must not be read as a reachability guard.",
+    "Section 2's authority table gains Ruling W1, with the argument for why A1 already complies (A1b is its worst-constituent clause, and per_settlement.answerable runs 395-411 of 470 so the settlement is not a meaningful constituent) and why A7 did not.",
+    "Section 2a: ownership table paths made precise with the one declared converse.js exception (ownership.mjs shows one done piece, no live claimant; the sibling claims engine.js/ui/**, not converse.js). Handoff rewritten as three one-sided checks under rule 0. The concession promoted from section 10 into 2a as numbered rule 3 with the exact check.",
+    "Section 2c: the defect re-described from measurement, with the 17/204/23 decomposition and a reversible sub-ruling that this is a filter-stack and reference repair rather than a rehoming job, with a stop-after-five falsifier.",
+    "Section 4B gains two lints the tree does not have: dangling npc.topics references and unreachable_from_greeting. Section 4C's deletion safety test changed from 'does not orphan' to 'destination still reachable from some greeting'. Section 4D reordered cheapest-first.",
+    "Acceptance: A1's denominator defined against the definition (1,601 `to` entries; the four links-schema records excluded and named as an owed edit); new row A5c (unreachable-from-greeting, hard fail above 10); new row A7b (dangling npc.topics, hard fail above 0); A7 restated to bind on the worst player in a named space with the spread published.",
+    "New section 5a: what actually stops a green number passing, as four binding verdict requirements — file against both items, quote SG or record RI-UIX08 at 2, report green-with-SG-unrun as not_yet_judged, and never substitute a statistic for a schedule fact.",
+    "Section 8: A7's full 120-shape sweep moved to the critic per PLAN-LOOP rule 3a, with the builder keeping worst and best.",
+    "Section 9: the owed corpus edits raised to three, with the judgement the brief asked for — leaving them owed is right and neither blocks the build. Section 10 rewritten with two new weak joints (5a's cap is an instruction not a cited clause; A5c gates without repairing)."
+  ],
+  "measurements_taken": {
+    "at_commit": "7b05e65e",
+    "instrument": "independently written census, not round 1's; scripts in the session scratchpad, all reproducible from the commands quoted in the plan",
+    "visibility": "1,601 addTopic occurrences over 1,273 distinct pairs; 167 strict (10.4%), 161 distinct pairs strict (12.6%), 254 loose (15.9%)",
+    "topics": "584 topic records collapsing to 470 distinct ids (92 ids appear in more than one file); 4 further records in thorn.json carry no id at all",
+    "unreachable_from_greeting": "10, all with in-degree >= 1, none advertised by any npc.topics",
+    "npc_reach": "408 records; offering no topic of their own runs 215-250 of 408 (52.7%-61.3%) across 120 player shapes; worst orc/3/d0, best dunmer/0/d40; median own-topics 0 at every shape; 0 offering nothing at all with roots known, 27 without",
+    "npc_reach_causes_at_argonian_0_d40": "225 offer nothing; 208 of them do advertise a non-root topic; 17 advertised strings name no topic (1 fixable by slugifying), 204 name a real id across only 23 distinct topics whose filters admit no INFO",
+    "dangling_npc_topics_global": "100 of 865 entries (11.6%), 66 distinct strings, 52 records",
+    "topic_to_topic": "1,273 distinct edges, mean non-leaf out-degree 3.488"
+  },
+  "instrument_trap_found": "converse.js:214 calls knows.has(k); player.knows must be a Set. An array throws TypeError from inside infoFor, and a census that swallows the exception silently drops the record rather than counting it. My own first A7 run was contaminated by exactly this and is why the plan now requires a zero-throw assertion over the population.",
+  "files_touched": [
+    "orchestration/plans/W1-DLG-TOPIC-WEB.md",
+    "orchestration/status/plan-review2-w1-dlg-topic-web.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [],
+  "next_step": "A THIRD fresh reviewer-editor judges this version. Start at section 0b (what survived attack, so it is not re-paid for) and section 10's seven weak joints — particularly 10.6, whether section 5a's cap can be replaced by a cited scoring mechanism rather than a plan-local instruction, and 10.7, whether A5c should gate at 0 rather than at no-regression."
 }
