@@ -1,0 +1,583 @@
+{
+  "tag": "arms-after",
+  "renderer_string": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "software": true,
+  "seed": 20260814,
+  "canvas": [
+    640,
+    360
+  ],
+  "time": 13,
+  "perf_frames": 0,
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 586
+  },
+  "rows": [
+    {
+      "site": "vista-blackwood",
+      "arm": "base",
+      "flagged": {
+        "cast": 0,
+        "receive": 0,
+        "names": {}
+      },
+      "shadow_load": {
+        "casterMeshes": 1284,
+        "casterInstances": 2628,
+        "casterTriangles": 489390,
+        "topByTriangles": [
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40562
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "signature",
+            30188
+          ],
+          [
+            "world-art-place",
+            13624
+          ],
+          [
+            "actor-body",
+            13088
+          ]
+        ]
+      },
+      "frame_ms": null,
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            1258.323876354199,
+            4.012159241065547,
+            3487.484020129389
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0,
+      "stripe_pct": 22.612,
+      "drawCalls": 277,
+      "triangles": 991446
+    },
+    {
+      "site": "vista-blackwood",
+      "arm": "terrain",
+      "flagged": {
+        "cast": 0,
+        "receive": 1,
+        "names": {}
+      },
+      "shadow_load": {
+        "casterMeshes": 1284,
+        "casterInstances": 2628,
+        "casterTriangles": 489390,
+        "topByTriangles": [
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40562
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "signature",
+            30188
+          ],
+          [
+            "world-art-place",
+            13624
+          ],
+          [
+            "actor-body",
+            13088
+          ]
+        ]
+      },
+      "frame_ms": null,
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            1258.3451584054706,
+            4.01239204351009,
+            3487.4894280877525
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0,
+      "stripe_pct": 23.411,
+      "drawCalls": 277,
+      "triangles": 991446
+    },
+    {
+      "site": "vista-blackwood",
+      "arm": "terrain+canopy",
+      "flagged": {
+        "cast": 246,
+        "receive": 1,
+        "names": {
+          "near-canopy:blackwood": 6,
+          "canopy:blackwood": 108,
+          "canopy:hive": 46,
+          "canopy:marauders-coast": 54,
+          "canopy:western-rootlands": 24,
+          "canopy:stone-wastes": 8
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1530,
+        "casterInstances": 15102,
+        "casterTriangles": 1352566,
+        "topByTriangles": [
+          [
+            "canopy",
+            605072
+          ],
+          [
+            "near-canopy",
+            258104
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40562
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "signature",
+            30188
+          ]
+        ]
+      },
+      "frame_ms": null,
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            1258.2983295369677,
+            4.012156380101942,
+            3487.477156418885
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 17.28,
+      "stripe_pct": 22.325,
+      "drawCalls": 277,
+      "triangles": 991446
+    },
+    {
+      "site": "vista-blackwood",
+      "arm": "terrain+canopy+geology",
+      "flagged": {
+        "cast": 247,
+        "receive": 1,
+        "names": {
+          "geology:blackwood:root-hummocks": 1,
+          "near-canopy:blackwood": 6,
+          "canopy:blackwood": 108,
+          "canopy:hive": 46,
+          "canopy:marauders-coast": 54,
+          "canopy:western-rootlands": 24,
+          "canopy:stone-wastes": 8
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1531,
+        "casterInstances": 15162,
+        "casterTriangles": 1356166,
+        "topByTriangles": [
+          [
+            "canopy",
+            605072
+          ],
+          [
+            "near-canopy",
+            258104
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40562
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "signature",
+            30188
+          ]
+        ]
+      },
+      "frame_ms": null,
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            1258.319849593735,
+            4.012068267564928,
+            3487.4830616600148
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 17.609,
+      "stripe_pct": 22.556,
+      "drawCalls": 277,
+      "triangles": 991446
+    },
+    {
+      "site": "vista-blackwood",
+      "arm": "terrain+near+scatter",
+      "flagged": {
+        "cast": 332,
+        "receive": 1,
+        "names": {
+          "near-canopy:blackwood": 6,
+          "near-under:blackwood": 1,
+          "near-rock:blackwood": 1,
+          "under:blackwood": 19,
+          "rock:blackwood": 18,
+          "canopy:blackwood": 108,
+          "under:hive": 8,
+          "canopy:hive": 46,
+          "rock:hive": 8,
+          "under:marauders-coast": 9,
+          "canopy:marauders-coast": 54,
+          "rock:marauders-coast": 9,
+          "under:western-rootlands": 4,
+          "canopy:western-rootlands": 24,
+          "rock:western-rootlands": 4,
+          "under:stone-wastes": 3,
+          "canopy:stone-wastes": 8,
+          "rock:stone-wastes": 2
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1616,
+        "casterInstances": 35729,
+        "casterTriangles": 1745268,
+        "topByTriangles": [
+          [
+            "canopy",
+            605072
+          ],
+          [
+            "near-canopy",
+            258104
+          ],
+          [
+            "rock",
+            198780
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "under",
+            97542
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "near-under",
+            94760
+          ]
+        ]
+      },
+      "frame_ms": null,
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            1258.3414858049628,
+            4.011819818062122,
+            3487.489225420629
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 17.775,
+      "stripe_pct": 22.689,
+      "drawCalls": 277,
+      "triangles": 991446
+    },
+    {
+      "site": "vista-blackwood",
+      "arm": "everything",
+      "flagged": {
+        "cast": 334,
+        "receive": 1,
+        "names": {
+          "geology:blackwood:root-hummocks": 1,
+          "near-canopy:blackwood": 6,
+          "near-under:blackwood": 1,
+          "near-rock:blackwood": 1,
+          "cover:blackwood": 1,
+          "under:blackwood": 19,
+          "rock:blackwood": 18,
+          "canopy:blackwood": 108,
+          "under:hive": 8,
+          "canopy:hive": 46,
+          "rock:hive": 8,
+          "under:marauders-coast": 9,
+          "canopy:marauders-coast": 54,
+          "rock:marauders-coast": 9,
+          "under:western-rootlands": 4,
+          "canopy:western-rootlands": 24,
+          "rock:western-rootlands": 4,
+          "under:stone-wastes": 3,
+          "canopy:stone-wastes": 8,
+          "rock:stone-wastes": 2
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1618,
+        "casterInstances": 37811,
+        "casterTriangles": 1829748,
+        "topByTriangles": [
+          [
+            "canopy",
+            605072
+          ],
+          [
+            "near-canopy",
+            258104
+          ],
+          [
+            "rock",
+            198780
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "under",
+            97542
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "near-under",
+            94760
+          ]
+        ]
+      },
+      "frame_ms": null,
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            1258.2958983971575,
+            4.011411058786962,
+            3487.47747460575
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 17.872,
+      "stripe_pct": 22.807,
+      "drawCalls": 277,
+      "triangles": 991446
+    },
+    {
+      "site": "vista-blackwood",
+      "arm": "wrongset-null-control",
+      "flagged": {
+        "cast": 332,
+        "receive": 0,
+        "names": {
+          "near-canopy:blackwood": 6,
+          "near-under:blackwood": 1,
+          "near-rock:blackwood": 1,
+          "under:blackwood": 19,
+          "rock:blackwood": 18,
+          "canopy:blackwood": 108,
+          "under:hive": 8,
+          "canopy:hive": 46,
+          "rock:hive": 8,
+          "under:marauders-coast": 9,
+          "canopy:marauders-coast": 54,
+          "rock:marauders-coast": 9,
+          "under:western-rootlands": 4,
+          "canopy:western-rootlands": 24,
+          "rock:western-rootlands": 4,
+          "under:stone-wastes": 3,
+          "canopy:stone-wastes": 8,
+          "rock:stone-wastes": 2
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1616,
+        "casterInstances": 35729,
+        "casterTriangles": 1745268,
+        "topByTriangles": [
+          [
+            "canopy",
+            605072
+          ],
+          [
+            "near-canopy",
+            258104
+          ],
+          [
+            "rock",
+            198780
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "under",
+            97542
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "near-under",
+            94760
+          ]
+        ]
+      },
+      "shadow_pct": 17.952,
+      "stripe_pct": 22.79
+    }
+  ],
+  "pageErrors": []
+}
