@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `4815a2cc`: 958 tools, 157 reference
+so it cannot drift. Generated at `dd5ec5d4`: 959 tools, 157 reference
 items, 187 pieces in flight.
 
 Its purpose is to stop 187+ concurrent agents each paying separately to discover the
@@ -787,7 +787,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 62
+### `tools/quests/` — 63
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -808,6 +808,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/critic-w1-20-census.mjs` — the W1-20 critic's static census.
 - `tools/quests/critic-w1-20-ledgers.mjs` — the W1-20 round-1 critic's SECOND instrument.
 - `tools/quests/critic-w1-20-play.mjs` — THE W1-20 ROUND-1 CRITIC'S OWN INSTRUMENT.
+- `tools/quests/critic-w1-20-r2-census.mjs` — the round-2 critic's STATIC arm.
 - `tools/quests/critic-w1-20-reach.mjs` — the W1-20 critic's THIRD instrument.
 - `tools/quests/critic-w1-20-wraptest.mjs` — the W1-20 critic's FOURTH instrument: is the toast wrap repair real?
 - `tools/quests/critic-w1-readables-chart.mjs` — the picture for the W1-READABLES round-2 verdict (rule 27).
