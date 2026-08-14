@@ -134,6 +134,17 @@ const main = async () => {
     // harness re-renders through on `screenshot`; a Three camera moved behind the engine's back
     // is overwritten before the pixels are read (first-ten.mjs learned this the expensive way).
     const p0 = await g.page.evaluate(() => window.__ENGINE.sim.player.pos.slice());
+    // The pose the door left us in, stashed BEFORE the orbit moves the camera. Restored after.
+    // MEASURED on the first hardware run and it silently spoiled the walk: `camera({mode:
+    // 'gameplay'})` releases the position override but leaves `sim.camera.yaw` wherever the last
+    // orbit put it, and `move: [0, 1]` is forward RELATIVE TO THE CAMERA — so thirty seconds of
+    // "walking out of the door" set off at 315°, the last orbit angle, instead of the door's 70°.
+    // The manifest recorded it (`facing_yaw_deg` went 70 -> 315 between the orbit and t01s) which
+    // is the only reason it was caught, and is why that field is in the manifest at all.
+    const exitPose = await g.page.evaluate(() => ({
+      yaw: window.__ENGINE.sim.player.yaw,
+      cam_yaw: window.__ENGINE.sim.camera ? window.__ENGINE.sim.camera.yaw : null,
+    }));
     for (const yaw of ORBIT_YAWS) {
       const r = yaw * Math.PI / 180;
       const dist = 5.5, height = 2.4;
@@ -145,7 +156,15 @@ const main = async () => {
       await shot(`exit-orbit-${String(yaw).padStart(3, '0')}`, { orbit_yaw_deg: yaw });
     }
     await g.h('camera', { mode: 'gameplay' });
-    await g.h('stepFrames', 4);
+    // Put the pose back the way the DOOR left it, not the way the last orbit left it.
+    await g.page.evaluate((pose) => {
+      const s = window.__ENGINE.sim;
+      s.player.yaw = pose.yaw;
+      if (s.camera && pose.cam_yaw !== null) s.camera.yaw = pose.cam_yaw;
+      const b = window.__ENGINE.combat && window.__ENGINE.combat.player;
+      if (b) b.yaw = pose.yaw;
+    }, exitPose);
+    await g.h('stepFrames', 8);
     await shot('exit-gameplay-camera');
 
     // ---- 5. thirty seconds of walking -------------------------------------------------------
