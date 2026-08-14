@@ -2,7 +2,7 @@
 
 > **GENERATED.** Regenerate with `node reports/roadmap-audit/build-coverage.mjs`.
 > Canonical data: `reports/roadmap-audit/coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-14T18:08:27.763Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-14T18:09:10.581Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
@@ -19,14 +19,15 @@
 |---|---|---|---|---|---|---|---|
 | `I1` | The harness and determinism | RI-CMB07 RI-MTH01 RI-MTH02 | — | 5 (4) | W1-00 | built_below_bar | **none** |
 | `I2` | Capture and the Deck | RI-MTH04 RI-MTH06 | RI-MTH06 | 2 (1) | W1-30-EVIDENCE W1-30V | built_below_bar | V17 |
-| `I3` | The blind protocols | RI-DLG07 RI-VIS01 RI-VIS03 RI-VIS06 RI-MTH03 | RI-DLG07 RI-VIS01 | 2 (1) | W1-24 | built_below_bar | V17/F2 |
 | `I4` | Consumption as a gate | RI-MTH07 | — | 5 (3) | BUILDER-EXECUTION-CONTRACT | built_below_bar | **none** |
 | `I5` | The corpus audited and extended | RI-VIS02 RI-VIS09 RI-MTH05 RI-MTH06 | RI-VIS09 RI-MTH05 RI-MTH06 | 0 (0) | — | built_below_bar | F3 |
+| `I3` | The blind protocols | RI-DLG07 RI-VIS01 RI-VIS03 RI-VIS06 RI-MTH03 | RI-DLG07 RI-VIS01 | 2 (1) | W1-24 | built_below_bar | V17/F2 |
 
 ### Ring 1 — The frame — what a rendered pixel looks like. Wave 1 by owner directive.
 
 | id | item | ref items | never judged | open gaps (blocking) | plans | state | old roadmap |
 |---|---|---|---|---|---|---|---|
+| `G1` | The camera | RI-CMB06 RI-CAM01 RI-CAM02 RI-CAM03 RI-CAM04 RI-CAM05 RI-CAM06 RI-CAM07 | RI-CAM03 RI-CAM04 | 0 (0) | W1-06 | built_below_bar | **none** |
 | `F1` | Materials and surface response | — | — | 2 (1) | W1-30 W1-30C W1-30S | planned_unjudged | V1 |
 | `F2` | Shadow, contact and ambient occlusion | — | — | 0 (0) | W1-30 W1-30A W1-30B W1-30S | planned_unjudged | V2 |
 | `F3` | Ambient and bounce fill | — | — | 0 (0) | W1-30 W1-30B W1-30S | planned_unjudged | V3 |
@@ -46,10 +47,11 @@
 
 | id | item | ref items | never judged | open gaps (blocking) | plans | state | old roadmap |
 |---|---|---|---|---|---|---|---|
-| `G1` | The camera | RI-CMB06 RI-CAM01 RI-CAM02 RI-CAM03 RI-CAM04 RI-CAM05 RI-CAM06 RI-CAM07 | RI-CAM03 RI-CAM04 | 0 (0) | W1-06 | built_below_bar | **none** |
+| `T1` | Save and load | RI-JRN05 | — | 5 (4) | W1-00 | built_below_bar | E2 |
+| `T2` | Controls and discoverability | RI-CMB11 RI-JRN03 RI-JRN04 | — | 2 (0) | W1-08 W1-29 | built_below_bar | E3 |
+| `G4` | Enemies that can fight you | RI-AI01 RI-AI02 RI-AI03 RI-AI04 RI-AI05 | RI-AI04 | 2 (2) | W1-09 W1-12 | built_below_bar | partial:Step5 |
 | `G2` | The exchange | RI-CMB01 RI-CMB02 RI-CMB03 RI-CMB04 RI-CMB05 RI-CMB06 RI-CMB11 RI-PRG07 RI-MAG01 | — | 2 (1) | W1-09 | built_below_bar | partial:C3 |
 | `G3` | Weapons and movesets, wired | RI-CMB02 RI-WPN01 RI-WPN02 RI-WPN03 RI-WPN04 RI-WPN05 RI-WPN06 RI-WPN07 | — | 3 (3) | W1-10 W1-11 | built_below_bar | C2 |
-| `G4` | Enemies that can fight you | RI-AI01 RI-AI02 RI-AI03 RI-AI04 RI-AI05 | RI-AI04 | 2 (2) | W1-09 W1-12 | built_below_bar | partial:Step5 |
 | `G5` | Bosses and encounter authorship | RI-AI06 RI-AI07 | RI-AI06 | 1 (0) | W1-12 | built_below_bar | C4/C7 |
 | `G6` | Combat HUD and impact feedback | RI-UIX01 RI-AUD01 | RI-UIX01 | 1 (0) | W1-11 W1-21 W1-HUD-TOAST | built_below_bar | **none** |
 | `G7` | How the fight feels | RI-CMB07 RI-CMB12 RI-DLG09 | RI-CMB12 | 1 (1) | W1-08 | built_below_bar | Step5/C6 |
@@ -103,8 +105,6 @@
 
 | id | item | ref items | never judged | open gaps (blocking) | plans | state | old roadmap |
 |---|---|---|---|---|---|---|---|
-| `T1` | Save and load | RI-JRN05 | — | 5 (4) | W1-00 | built_below_bar | E2 |
-| `T2` | Controls and discoverability | RI-CMB11 RI-JRN03 RI-JRN04 | — | 2 (0) | W1-08 W1-29 | built_below_bar | E3 |
 | `T3` | Load, streaming and budgets | RI-PLT01 RI-PLT02 RI-PLT03 RI-AUD02 | RI-PLT02 | 2 (1) | W1-00 | built_below_bar | E4 |
 | `T4` | The screens | RI-UIX03 RI-UIX04 RI-UIX06 RI-UIX07 | RI-UIX07 | 4 (3) | W1-21 W1-HUD-TOAST | built_below_bar | partial:V14 |
 
