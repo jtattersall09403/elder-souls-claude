@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `35643d53`: 998 tools, 157 reference
+so it cannot drift. Generated at `039344a9`: 998 tools, 157 reference
 items, 205 pieces in flight.
 
 Its purpose is to stop 205+ concurrent agents each paying separately to discover the
@@ -1417,13 +1417,13 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-BUILDING-OVERLAP-CENSUS` | done-except-hardware-frames |  | `orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json` `tools/world/building-overlap-census.mjs` `tools/world/thorn-quay-deletefix.mjs` `tools/check-building-overlap.mjs` `corpus/50-world/data/building-overlap-baseline.json` `.githooks/pre-commit` |
 | `W1-ORPHANED-SURFACE-SHADERS` | in_progress | CONSUMPTION arms (before/after) and the hardware before/after sweep on one Pod, both arms  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` `game/src/render/visual-foundation.js` `game/src/render/actor.js` `tools/visual/w1-30-surface-orphan-census.mjs` `tools/visual/w1-30-copy-seam-patch.mjs` `tools/visual/w1-30-surface-consumption.mjs` |
 | `RECONCILE-MAP-PROBE-S13` | reconciled |  | `orchestration/status/RECONCILE-MAP-PROBE-S13.json` |
 | `W1-MAP-DEFECTS-r1-remediation` | landed; four of five defects closed with evidence, one measurement still owed |  | `game/src/ui/system.js` `game/src/input/touch.js` `game/src/engine.js` `tools/harness/map-probe.mjs` `tools/map/fog-control.mjs` `tools/map/player-route.mjs` |
 | `W1-THORN-PLATES-C2` | built-awaiting-fresh-critic | IN ORDER. (1) MOVE THE WATERLINE TO THE QUAY — terrain.json/water.json, about 25 m of shor | `orchestration/status/W1-THORN-PLATES-C2.json` `reports/thorn-plates/2026-08-14-thorn-plates-chunk2.md` `game/src/render/lib/kits.js` `game/src/render/exterior.js` `game/data/world/settlements/thorn.json` `docs/art-direction/build-board.mjs` |
 | `W1-DOOR-YAW-SWEEP` | ? | collect the three in-game sweep arms; run door-yaw-consume for CONSUMPTION + screenshots;  | `orchestration/status/W1-DOOR-YAW-SWEEP.json` `tools/harness/door-yaw-sweep.mjs` `tools/harness/door-yaw-teardown.mjs` `tools/harness/door-yaw-consume.mjs` `tools/world/door-yaw-offline.mjs` `game/src/sim/settlement.js` |
 | `W1-MAP-DEFECTS-r2` | in_progress | CHUNK 2 PICKS UP EXACTLY HERE. (1) THE PHONE LEG IS DONE — 3 taps, map reached, whole prov | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/blog-feed.jsonl` `reports/w1-map-defects-r2/` |
-| `W1-BUILDING-OVERLAP-CENSUS` | census-done-falsifier-answered-fix-in-progress | Apply the 7-value translation, re-measure, run delete-the-fix on a copy, build tools/check | `orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json` `tools/world/building-overlap-census.mjs` |
 | `AUDIT-CITATION-STALENESS` | ? |  | `tools/check-citations.mjs` `.githooks/pre-commit` `reports/staleness-audit/2026-08-14-citation-audit.md` `reports/staleness-audit/2026-08-14-citation-audit.json` `reports/staleness-audit/reverse-index.md` `reports/staleness-audit/reverse-index.json` |
 | `W1-DLG-TOPIC-WEB` | building | Read REF-A12c reading note requirement; run baseline censuses; demonstrate consume.mjs RED | `orchestration/status/W1-DLG-TOPIC-WEB.json` |
 | `W1-18-REINTEGRATION` | in_progress | Restore group A, verify JSON parses + quest-audit moves, land. | `orchestration/status/W1-18-REINTEGRATION.json` |
