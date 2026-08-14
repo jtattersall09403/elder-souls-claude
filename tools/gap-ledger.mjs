@@ -136,6 +136,40 @@ for (const v of verdicts) {
   }
 }
 
+// ------------------------------------- what has happened SINCE a gap was opened
+//
+// W1-20 round 3. `GAP-W1-faction-ladders-are-doors-onto-empty-corridors` was opened by a verdict
+// dated 2026-08-08 and its `what` — "three lines carry 18 quests each; the other five carry 1, 2,
+// 2, 3 and 4" — was remediated on 08-10 and re-measured at zero on 08-14. Nothing on the row said
+// so, because the closure rule (rightly) requires a LATER WAVE's critic and both verdicts are
+// wave 1, so the row read to every passing agent as the current state of the subsystem. It is not.
+//
+// This does NOT close anything and it must not: a builder relaxing the closure rule is exactly
+// what SCORING.md §5 exists to prevent, and it governs every gap in the project rather than this
+// one. It only makes the row say what else has been filed on the same piece or the same subsystem
+// path since — which is derived entirely from verdicts already read, invents no new data file, and
+// cannot be gamed by anyone who could not already file a verdict.
+const verdictTime = (v) => String((v.critic && (v.critic.finished_at || v.critic.started_at)) || '');
+for (const e of ledger.values()) {
+  const openedAt = verdictTime(verdicts.find((v) => v._file === e.opened_in) || {});
+  e.filed_since = verdicts
+    .filter((v) => v._file !== e.opened_in)
+    .filter((v) => v.piece_id === e.piece_id || (v.subsystem_paths || []).includes(e.subsystem_path))
+    .filter((v) => verdictTime(v) > openedAt)
+    .sort((a, b) => verdictTime(a).localeCompare(verdictTime(b)))
+    .map((v) => ({
+      verdict: v._file,
+      run_id: (v.critic && v.critic.run_id) || null,
+      at: verdictTime(v) || null,
+      status: v.status || null,
+      score: v.score && v.score.overall !== undefined ? v.score.overall : (typeof v.score === 'number' ? v.score : null),
+      opened_gap: (v.biggest_gap && v.biggest_gap.gap_id) || null,
+    }));
+  if (e.status === 'open' && e.filed_since.length) {
+    warnings.push(`STALE-RISK ${e.gap_id}: still open, and ${e.filed_since.length} later verdict(s) have been filed on the same piece or path since (${e.filed_since.map((f) => f.run_id || f.verdict).join(', ')}). Read those before acting on this row's \`what\` — it is a snapshot of the tree on the day it was written, not of the tree today.`);
+  }
+}
+
 for (const e of ledger.values()) {
   const until = e.closure.closed_wave ?? maxWave;
   e.age_waves = Math.max(0, (Number(until) || 0) - (Number(e.opened_wave) || 0));
@@ -203,11 +237,16 @@ if (open.length === 0) {
     ? '_No verdicts have been filed yet. This ledger fills itself as critics emit verdicts into `corpus/90-verdicts/<wave>/<piece_id>.json`._'
     : '_No open gaps. Verify this against SCORING.md §4 before believing it — a ledger that empties faster than it fills usually means soft critics, not a finished game._');
 } else {
-  M.push('| Gap | Subsystem path | Sev | Age (waves) | Opened | What | Remedy → acceptance |');
-  M.push('|---|---|---|---:|---|---|---|');
+  M.push('| Gap | Subsystem path | Sev | Age (waves) | Opened | Filed since | What | Remedy → acceptance |');
+  M.push('|---|---|---|---:|---|---|---|---|');
   for (const e of open) {
     const r = e.remedy || {};
-    M.push(`| \`${e.gap_id}\` | \`${e.subsystem_path}\` | ${e.severity} | ${e.age_waves} | w${e.opened_wave} / ${e.piece_id} | ${oneLine(e.what)} | ${oneLine(r.action)} → **${oneLine(r.acceptance)}** |`);
+    // `Filed since` is the anti-staleness column. A `what` is a measurement of the tree on the day
+    // it was written; if a later verdict on the same piece exists, read it before believing this row.
+    const since = (e.filed_since || []).length
+      ? (e.filed_since || []).map((f) => `\`${f.run_id || f.verdict}\`${f.status ? ` (${f.status})` : ''}`).join(', ')
+      : '—';
+    M.push(`| \`${e.gap_id}\` | \`${e.subsystem_path}\` | ${e.severity} | ${e.age_waves} | w${e.opened_wave} / ${e.piece_id} | ${since} | ${oneLine(e.what)} | ${oneLine(r.action)} → **${oneLine(r.acceptance)}** |`);
   }
 }
 M.push('');

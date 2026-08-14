@@ -1,10 +1,10 @@
 {
  "task_id": "W1-MAP-DEFECTS-r1-remediation",
- "state": "landed_with_two_measurements_outstanding",
+ "state": "landed; four of five defects closed with evidence, one measurement still owed",
  "started": "2026-08-14",
  "branch": "codex/wave1-build-experiment",
  "remediates": "corpus/90-verdicts/wave1/W1-MAP-DEFECTS-r1.json — FAIL, 4/10",
- "summary": "The five defects the r1 critic named, taken in order. Three are closed with evidence in the tree; one is closed by construction and its proof arm is queued behind box contention; one (map-probe end to end) is still owed and is queued behind the same gate.",
+ "summary": "The five defects the r1 critic named, taken in order. FOUR are closed with evidence in the tree, each with a null control that is the plausible wrong answer and a guard that fails in both directions. The fifth item outstanding is not a defect but a measurement: map-probe has still never run end to end, and the reason is recorded rather than worked around.",
  "COLLISION_NOTICE": {
   "sibling": "orchestration/status/W1-MAP-DEFECTS-r2.json",
   "what": "A sibling task claims the SAME four unowned findings and claims `tools/harness/map-probe.mjs` and `ARBITRATION.md`. Its own status reads 'WIP - nothing measured yet'. This task has already edited and LANDED both of those files (commit ed57feb6 / the sibling bank that carried the tree). Its status also correctly records `game/src/ui/system.js` and `game/src/input/touch.js` as NOT theirs — those are this task's and are landed.",
@@ -36,7 +36,7 @@
    "state": "REPLACED, and the replacement is PROVEN ABLE TO FAIL",
    "change": "tools/harness/map-probe.mjs S8 and S12 now assert `drawn_cells === total_cells` (42,846) instead of `drawn_cells === cells_in_view`. `cells_in_view` is kept in the detail line as an honest description; the pass no longer rests on it.",
    "why": "the two counters are incremented on ADJACENT LINES in game/src/ui/screens/map.js with the comment 'equal by construction' between them. Only a gate spliced BETWEEN them could break it — which is exactly and only the shape the deletefix arm uses. A gate one line earlier, above `inView++`, hides any fraction of the province and both counters fall together.",
-   "proof_arm": "tools/map/fog-control.mjs --arms head,hiddenhalf — splices `if (rz % 2 === 0) continue;` ABOVE `inView++` on a control clone (every even row hidden) and requires the OLD form to stay GREEN while the NEW one goes RED. Written, landed, NOT YET RUN (browser contention).",
+   "proof_arm": "tools/map/fog-control.mjs --arms head,hiddenhalf — splices `if (rz % 2 === 0) continue;` ABOVE `inView++` on a control clone (every even row hidden) and requires the OLD form to stay GREEN while the NEW one goes RED. RUN, and it passed — see proof_arm_result.",
    "also_added": "S13, the forward page-walk WALKED live with real queued `swap_right` edges, so D1 fails a check instead of a player.",
    "proof_arm_result": {
     "command": "node tools/map/fog-control.mjs --arms head,hiddenhalf --out reports/w1-map-defects/probe-teeth",
@@ -77,7 +77,7 @@
    "honest_number_reported_against_the_argument": "the obvious cost would be arc controls whose hit centres a petal steals, and measured on the shipped geometry that number is ZERO (petals at radius 92, arc rings at 132/196/260). Reported as 0 rather than dropped."
   },
   "fog": "unchanged from r1 and re-run: deletefix (the old number comes back, 0/42846) and markers (whole province + 34 unearned squares, which looks like a good map in a screenshot and has deleted discovery).",
-  "probe_assertion": "hiddenhalf — a gate ABOVE inView++, which is the exact shape the old assertion could not see. Queued."
+  "probe_assertion": "hiddenhalf — a gate ABOVE inView++, the exact shape the old assertion could not see. RUN: 21,423 of 42,846 cells drawn, old check green, new check red."
  },
  "not_done": [
   "map-probe.mjs HAS STILL NOT RUN END TO END. This is r1's named gap and it is now mine too. Five attempts died on `Target page, context or browser has been closed` with the box between 4.25 and 6.64 per core and four to five other agents' browsers resident. A contention-gated retry chain is left running. Recorded as not-run, not worked around.",

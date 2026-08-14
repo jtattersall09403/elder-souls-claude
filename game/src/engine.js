@@ -3943,6 +3943,10 @@ export class Engine {
       c.containArm = 0; c.containPitch = 0; c.armHit = false; c.armGuard = false;
     }
     if (this.combat) mirror(this.sim, this.combat);
+    // `_censusFinish()` quantises and then this runs and writes camera and yaw fields, which are
+    // cold state. Re-quantise, or a save taken on the first controlled frame carries a pose the
+    // grid never saw and the durable-field census reports a field that does not survive.
+    quantiseColdState(this.sim);
     return this.censusHandBack;
   }
 
@@ -5549,7 +5553,21 @@ export class Engine {
     let ev = null;
     try { ev = this.factionGates.evaluate(factionId, Math.max(0, Math.min(7, Number(want) || 0)), ctx); }
     catch { ev = null; }   // a faction with no ladder — refusal.js answers that in words too
-    return this._speakFactionRefusal(factionId, ev);
+    // W1-20 round 3. The same correction as `QuestEngine.open()`'s, on the other path into this
+    // mouth: a rank gate can be satisfied by somebody this house has permanently closed to, and
+    // the rank gate is the only thing `evaluate()` knows about. Asking a recruiter for a rank in
+    // a faction you have locked yourself out of used to get you the WELCOME line.
+    let lockedBy = null;
+    if (ctx.rivalry_locked && ctx.rivalry_locked.has && ctx.rivalry_locked.has(factionId)) {
+      const nm = (id) => { try { return this.factionGates.get(id).name; } catch { return id; } };
+      const held = (f) => { const r = (this.sim.quest.factions || {})[f]; return !!(r && r.member); };
+      lockedBy = this.factionGates.ids()
+        .filter((x) => held(x) && (this.factionGates.closedBy(x).includes(factionId)
+          || ((this.factionGates.exclusivity.earned || []).some((r) => (r.a === x && r.b === factionId) || (r.b === x && r.a === factionId)))))
+        .map(nm);
+      if (!lockedBy.length) lockedBy = null;
+    }
+    return this._speakFactionRefusal(factionId, ev, lockedBy ? { locked_by: lockedBy } : null);
   }
 
   /**

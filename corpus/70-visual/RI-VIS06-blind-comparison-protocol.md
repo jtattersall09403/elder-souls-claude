@@ -244,8 +244,40 @@ most of them — see its provenance note), Protocol A **cannot be run for that p
 be recorded as skipped, not faked from a verbal spec. A blind test needs two images. Until
 `refs/modern/` is populated, Protocol A runs only on the pairs for which we hold a legally
 usable reference image, and the wave verdict must state how many of the 5 pairs actually ran.
-**A wave in which zero Protocol A pairs ran caps the FIDELITY score at 7** — we cannot claim
-the top band without the backstop.
+**A wave in which zero Protocol A pairs ran caps the FIDELITY score at 2, and sets
+`status: FAIL` for the item** — a triggered hard fail, scored exactly as every other hard fail
+in this corpus.
+
+> **AMENDED 2026-08-14 by Ruling S55 (`corpus/00-doctrine/ARBITRATION.md`). This clause
+> previously read `caps the FIDELITY score at 7`, and that number was the defect.**
+>
+> The failure-mode list below states this guard's own purpose: *"the explicit cap for zero runs,
+> which makes the absence cost something."* Against a wave-1 gate of **≥ 7.0**, a cap of **7**
+> makes the absence cost **exactly nothing** — it lands precisely on the pass line, so a wave
+> could decline to run the backstop and still pass at the bar. The guard was written with teeth
+> and shipped with none, and Protocol A has never run once in this project's history.
+>
+> The original wording — *"we cannot claim the top band without the backstop"* — reveals the
+> slip: it was reasoning about **8/9/10**, and set the cap one point below the top band instead
+> of at the failure level. Every other hard fail in this corpus caps at **2** (`RI-JRN01`–`09`,
+> `SCORING` §1.1, the GAP-LEDGER). 2 is therefore not a new number invented for this item; it is
+> the number this corpus already uses, and consistency with it is worth more than a bespoke 3.
+>
+> **The cap is unconditional and does not care why the protocol did not run.** Splitting it by
+> cause — "the references were unobtainable, so it isn't the build's fault" — rebuilds a
+> toothless guard by another route, and that specific excuse is already void: modern reference
+> plates are on disk at `corpus/70-visual/refs/modern/`, and a run reached real hardware against
+> them on 2026-08-14 before dying on a transport timeout. Attribution of blame belongs in the
+> gap ledger, not in the score. A wave that cannot demonstrate fidelity has not demonstrated
+> fidelity, whoever owes the missing piece.
+>
+> **Reversible.** What would overturn it: evidence that a cap of 2 fails waves whose fidelity is
+> genuinely good and merely unmeasured — i.e. Protocol A runs, passes comfortably, and shows the
+> statistics-only score was right all along. That would mean the backstop is redundant rather
+> than load-bearing, and the cap should soften. Nothing so far suggests it; the visual audit
+> found the fidelity area rests almost entirely on checks that the *instruments* are valid, with
+> one place where a human looks at a picture, and its main statistic is one that random noise
+> **raises**.
 
 ## Comparison method
 

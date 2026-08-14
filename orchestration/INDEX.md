@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `2df1dceb`: 973 tools, 157 reference
-items, 197 pieces in flight.
+so it cannot drift. Generated at `1be74605`: 975 tools, 157 reference
+items, 198 pieces in flight.
 
-Its purpose is to stop 197+ concurrent agents each paying separately to discover the
+Its purpose is to stop 198+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -226,7 +226,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/audio/w1-22-r3-pack.mjs` — THE BLIND QUALITY PACK, WITH THE RECORDINGS IN IT.
 - `tools/audio/w1-22-r4-s41.mjs` — W1-22 completion-builder capture preparation.
 
-### `tools/blind/` — 9
+### `tools/blind/` — 10
 
 - `tools/blind/audio-pack-b2.mjs` — RI-AUD03 B2 PACK BUILDER.
 - `tools/blind/audio-pack-w1-22-r2.mjs` — W1-22 ROUND-2 CRITIC'S BLIND PACK BUILDER — THE HARDER PACK THE B2 JUDGE ASKED FOR.
@@ -236,6 +236,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/blind/make-image-pair.mjs` — **no header comment**
 - `tools/blind/make-pair.mjs` — assemble a blind comparison pack (CORPUS-CONTRACT §6).
 - `tools/blind/mask-text.mjs` — tools/blind/mask-text.mjs — hide provenance in a text artifact WITHOUT leaving a countable scar.
+- `tools/blind/protocol-a-pack.mjs` — **no header comment**
 - `tools/blind/protocol-a-transport-proof.mjs` — **no header comment**
 
 ### `tools/camera/` — 10
@@ -392,7 +393,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
-### `tools/harness/` — 253
+### `tools/harness/` — 254
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -533,6 +534,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/determinism.mjs` — run the RI-MTH02 reproducibility ladder against the game and report every rung with the evidence that decided it.
 - `tools/harness/door-exit-yaw.mjs` — WHICH WAY ARE YOU FACING WHEN A DOOR PUTS YOU DOWN?
 - `tools/harness/door-yaw-sweep.mjs` — ALL 115 INTERIORS, BOTH DIRECTIONS, AND A DEFINITION OF "CORRECT".
+- `tools/harness/door-yaw-teardown.mjs` — remove the door-yaw fix, or part of it, from a CLONE of the tree.
 - `tools/harness/first-ten.mjs` — **no header comment**
 - `tools/harness/input-probe.mjs` — the RI-JRN03 checks that can be taken without the journey fleet.
 - `tools/harness/jrn01-m8-writ.mjs` — RI-JRN01 M8 (amended wave 1): is the writ an OBJECT or a return value?
@@ -1208,7 +1210,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **268 tools have no header comment**, so nobody can tell what they do without
+> **269 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1386,13 +1388,14 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-MAP-DEFECTS-r2` | in_progress | CHUNK 2 PICKS UP EXACTLY HERE. (1) FIRST AND MOST IMPORTANT — demonstrate CONSUMPTION of t | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/w1-map-defects-r2/` |
+| `W1-MAP-DEFECTS-r1-remediation` | landed_with_two_measurements_outstanding |  | `game/src/ui/system.js` `game/src/input/touch.js` `game/src/engine.js` `tools/harness/map-probe.mjs` `tools/map/fog-control.mjs` `tools/map/player-route.mjs` |
+| `W1-ORPHANED-SURFACE-SHADERS` | in_progress | Write the census tool (population + grouping by route), then develop the fix on a control  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` |
 | `W1-WATER-LANES` | starting | Read game/src/render/water.js, W1-30S status, ownership; re-derive band diagnosis. | `orchestration/status/W1-WATER-LANES.json` |
-| `W1-ORPHANED-SURFACE-SHADERS` | in_progress | Read CLAUDE.md, OWNER-DIRECTIVES, MATERIAL_API.md, W1-30 verdict; then reproduce the censu | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` |
 | `W1-30E-KIT-DEFECTS` | built-awaiting-fresh-critic |  | `game/src/render/lib/kits.js` `tools/render/w1-30e-roof-extent.mjs` `tools/render/w1-30e-ground-albedo.mjs` `tools/visual/deck.mjs` `reports/w1-30e-kit-defects/README.md` `reports/blog-feed.jsonl` |
 | `plan-review2-w1-dlg-topic-web` | in-progress | read the bar, re-measure round 1's figures at HEAD, attack the null control / S51 / the se | `orchestration/status/plan-review2-w1-dlg-topic-web.json` |
 | `SPLIT-TRIAL-DISPATCH` | dispatched | On each chunk 1's completion: read its orchestration/status/<PIECE>.json, and dispatch chu | `orchestration/status/SPLIT-TRIAL-DISPATCH.json` |
 | `W1-DOOR-YAW-SWEEP` | ? | read HAZARDS.md, OWNER-DIRECTIVES, prior agent status file, settlement.js current state | `orchestration/status/W1-DOOR-YAW-SWEEP.json` |
-| `W1-MAP-DEFECTS-r2` | in_progress | Read verdict r1, HAZARDS, OWNER-DIRECTIVES; then re-run fog control with both arms. | `orchestration/status/W1-MAP-DEFECTS-r2.json` |
 | `W1-THORN-PLATES` | in_progress | WIP - reading orientation files. | `orchestration/status/W1-THORN-PLATES.json` |
 | `RI-VIS06-PROTOCOL-A` | running | in progress | `orchestration/status/RI-VIS06-PROTOCOL-A.json` |
 | `W1-UIX08-dialogue-window` | building | write game/src/ui/screens/dialogue.js (window + inline-link matcher + history), add 2 kind | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` |

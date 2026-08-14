@@ -2,8 +2,8 @@
   "task_id": "W1-20",
   "title": "Faction skeleton - every line present, one quest deep",
   "role": "builder",
-  "state": "complete",
-  "commit_at_start": "3b0cc43",
+  "state": "builder-delivery-complete",
+  "commit_at_start": "07e75bd",
   "box_at_start": "contention.mjs --gate exit 3 (4 browser instances, load 19.71 over 4 cores). All data/code/prose work first; browser phase last, via tools/capture/ if still over.",
   "judged_by": [
     "RI-CRM02",
@@ -44,8 +44,8 @@
     },
     "note_on_the_two_ones": "the_dockhands and the_ixtu_vakh are joinable ONLY as a side effect of mainline Act IV (Q-MAIN-21 res_dockhand_rank, Q-MAIN-19 res_cutters_rank). That is the main quest's voice, not the faction's, and it is unreachable to a player who has not reached Act IV.",
     "two_dead_rank_gates_found": [
-      "blackmarsh-coast.json Q-SOUL-02 is rank_gate the_drowned_court min_rank 2 \u2014 and NOTHING in the build joins the_drowned_court, so that gate can never open.",
-      "blackmarsh-coast.json Q-SAP-01 is rank_gate the_ixtu_vakh min_rank 1 \u2014 reachable only via Act IV."
+      "blackmarsh-coast.json Q-SOUL-02 is rank_gate the_drowned_court min_rank 2 — and NOTHING in the build joins the_drowned_court, so that gate can never open.",
+      "blackmarsh-coast.json Q-SAP-01 is rank_gate the_ixtu_vakh min_rank 1 — reachable only via Act IV."
     ]
   },
   "rulings_rule_0_decide_and_record": [
@@ -69,12 +69,12 @@
     }
   ],
   "plan": [
-    "1. game/data/quests/faction-joining-wave1.json \u2014 4 joining quests, one per missing line, each with a discoverable opens_by topic that already exists in the shipped topic set, >=2 resolutions, joins_faction, reputation >= the rank-1 demand of 10.",
-    "2. game/data/npcs/faction-recruiters.json \u2014 the four recruiters, with reaction_group (Engine._assertGiversAreVisibleToRace throws otherwise) and a real place.",
+    "1. game/data/quests/faction-joining-wave1.json — 4 joining quests, one per missing line, each with a discoverable opens_by topic that already exists in the shipped topic set, >=2 resolutions, joins_faction, reputation >= the rank-1 demand of 10.",
+    "2. game/data/npcs/faction-recruiters.json — the four recruiters, with reaction_group (Engine._assertGiversAreVisibleToRace throws otherwise) and a real place.",
     "3. Refusals IN VOICE: game/data/dialogue/faction-refusals.json + an engine reader that turns gate.evaluate()'s unmet terms into the recruiter's own words, exposed on the harness and rendered where a player sees it.",
     "4. The crime seam for the two NEW joinables: sanction.json standing_ids + rows, standingKey() branches. check-data.mjs asserts both directions and will fail the commit if I skip it.",
-    "5. game/data/progression/factions.json \u2014 promote the wave-0 two-faction skeleton to the roster of record, with a world-side consumer.",
-    "6. tools/quests/faction-joining-probe.mjs \u2014 joinability measured THROUGH PLAY; CONSUMPTION by rank perturbation; delete-the-fix with a control that is checked for inertness.",
+    "5. game/data/progression/factions.json — promote the wave-0 two-faction skeleton to the roster of record, with a world-side consumer.",
+    "6. tools/quests/faction-joining-probe.mjs — joinability measured THROUGH PLAY; CONSUMPTION by rank perturbation; delete-the-fix with a control that is checked for inertness.",
     "7. index.json regen, gates, blog line, shot, commit."
   ],
   "files_claimed": [],
@@ -100,17 +100,26 @@
     "reports/w1-20/deletefix.json",
     "reports/w1-20/instrument-test.json",
     "docs/shots/2026-08-08-w1-20-the-drowned-court-says-no-in-its-own-words.png",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "game/data/factions/registry.json",
+    "game/data/quests/faction-continuation-wave1.json",
+    "game/data/progression/faction-discipline.json",
+    "game/data/world/property/gideon.json",
+    "game/data/world/property/helstrom.json",
+    "game/data/world/property/stormhold.json",
+    "tools/quests/w1-20-builder.mjs",
+    "reports/w1-20/builder-continuation.json",
+    "reports/w1-20/builder-delivery.md"
   ],
-  "next_step": "a critic with fresh context. The obvious places to push: RI-QST01 volume over the four new lines; whether the four recruiters are reachable ON FOOT; whether the refusal reads as voice or as a form.",
+  "next_step": "JUDGED. corpus/90-verdicts/wave1/W1-20-r2.md is the current verdict (FAIL, 0 min-over-items forced by RI-MTH07; 5.0 with that axis struck). Its biggest gap GAP-W1-faction-ladders-are-bricked-up-at-rank-5 and its secondary findings 1 and 2 have been remediated by W1-20-r3-remediation: twelve ladder world_flags, the registry loader and a world-side consumer restored, the rivalry lock now reaches the mouth, and the_dockhands added to faction-reactions.json. THE NEXT DISPATCH IS A FRESH CRITIC OF THAT REMEDIATION — not a builder, and NOT on quest volume: every line has carried 18 quests across all eight rank bands since 2026-08-10 and W1-20-r2 scored RI-QST01 at 7.5. What is still open and unmeasured: whether the recruiters are reachable ON FOOT (r1 measured 2 of 4 unreachable; still NOT_RUN), the blind prose comparison (delivery rows 2, 12, 13 NOT_RUN), deep_kin sharing a byte-identical favoured-skill set with the_xul_aneekh, offences_tolerated and on_permanent absent from all eight discipline rows, and the registry SERVICES list still having no world-side consumer.",
   "done": [
     "WIDTH. Four joining quests, one per missing line: Q-ROOT-00 (Rootkeepers), Q-VAKH-00 (Ixtu-Vakh), Q-CORT-00 (Drowned Court), Q-DOCK-00 (Dockhands). 120 -> 124 quests. Every resolution grants exactly the rank-1 reputation demand of 10 and no more, so finishing the quest IS joining and rank 2 still costs a second quest. One quest per line and no more, per the brief.",
-    "NO NEW NPCs. All four recruiters already existed in game/data/npcs/quest-givers.json with a reaction_group and a post with coordinates \u2014 each already gave a rank-gated quest for the faction nobody could enter. travelToGiver() confirms all four stand in the world; the presence gate was never suspended.",
+    "NO NEW NPCs. All four recruiters already existed in game/data/npcs/quest-givers.json with a reaction_group and a post with coordinates — each already gave a rank-gated quest for the faction nobody could enter. travelToGiver() confirms all four stand in the world; the presence gate was never suspended.",
     "TWO DEAD GATES BROUGHT TO LIFE. blackmarsh-coast.json Q-SOUL-02 has carried `rank_gate: the_drowned_court >= 2` since it was written with no path to rank 1 anywhere in the build; Q-SAP-01 carried `the_ixtu_vakh >= 1`, reachable only through Act IV. Both now have a door.",
-    "THE REFUSAL IS SPOKEN. game/data/dialogue/faction-refusals.json + game/src/sim/quest/refusal.js + Engine.factionRefusal(). It states NO threshold: every number is filled from FactionGates.evaluate(), so the ladder stays the only source of them. QuestEngine.open() calls it on the rank-gate refusal path, so the line is reached from play and not only by a probe. 7/7 factions refuse in their own voice with the player\u2019s own numbers in the sentence.",
+    "THE REFUSAL IS SPOKEN. game/data/dialogue/faction-refusals.json + game/src/sim/quest/refusal.js + Engine.factionRefusal(). It states NO threshold: every number is filled from FactionGates.evaluate(), so the ladder stays the only source of them. QuestEngine.open() calls it on the rank-gate refusal path, so the line is reached from play and not only by a probe. 7/7 factions refuse in their own voice with the player’s own numbers in the sentence.",
     "THE CRIME SEAM. Adding joins_faction made check-data.mjs assertion A go RED on the same commit for the_rootkeepers and the_drowned_court. Four new rows in sanction.json faction_law_factor and four standingKey() branches. check-data now reports 7 joinable factions mapped, 19/19 rows selectable.",
     "THE TOAST WRAPS NOW. Found by photographing the refusal: ui/hud.js drew one unwrapped centred run on a 400-unit panel, so a 676 px sentence ran off both ends of the paper. It affects every toast in the build (equip refusals, cast refusals), not just mine. Wrapped to 3 lines with an ellipsis on overflow; a short toast keeps the same rect.",
-    "game/data/progression/factions.json no longer claims to be the roster. It shipped as a wave-0 skeleton of two bodies with three ranks each while the game ran on eight eight-rank ladders, and the only record of that was a comment in tools/lib/gamedata.mjs. DECLARED rather than rewritten \u2014 see the ruling below."
+    "game/data/progression/factions.json no longer claims to be the roster. It shipped as a wave-0 skeleton of two bodies with three ranks each while the game ran on eight eight-rank ladders, and the only record of that was a comment in tools/lib/gamedata.mjs. DECLARED rather than rewritten — see the ruling below."
   ],
   "commit_at_measurement": "f71088d (tree dirty with this piece)",
   "browser_note": "contention.mjs --gate returned exit 3 at start and again before the screenshot; I proceeded past it for the screenshot only, and say so here per rule 21. One browser at a time, launched by tools/lib/browser.mjs and closed by the probe. A private browser rather than tools/capture/ because the shot is of a HUD state that has to be DRIVEN (a rank set, factionRefusal() called) and the capture daemon places a camera, it cannot put a rank on a player.",
@@ -120,7 +129,7 @@
     "with_a_route_in_the_factions_own_voice": 7,
     "refusals_spoken_and_whole_on_the_glass": 7,
     "before_this_piece": "3 lines had a joining quest in their own voice; 2 more could be joined only as a side effect of a main-quest Act IV resolution; 2 had an eight-rank ladder and no door at all.",
-    "measured_by": "tools/quests/faction-joining-probe.mjs \u2014 cold start, presence gate armed, no rank poked, skills raised by grantSkillUse and a hearth rest, rank read back off the DERIVED ladder."
+    "measured_by": "tools/quests/faction-joining-probe.mjs — cold start, presence gate armed, no rank poked, skills raised by grantSkillUse and a hearth rest, rank read back off the DERIVED ladder."
   },
   "consumption_RI_MTH07": {
     "faction_perturbed": "the_rootkeepers",
@@ -136,33 +145,51 @@
     "second_control": "The refusal VOICE has its own teardown, __breakFactionRefusalVoice(), inside the probe. It mutes the speech and nothing else: both arms still refuse with identical reasons (gate_unchanged_by_the_control true) and differ only in whether a person hears anything."
   },
   "instrument_falsification_rule_4": [
-    "The probe\u2019s on-screen check was WRONG twice and both are recorded in reports/w1-20/instrument-test.json.",
+    "The probe’s on-screen check was WRONG twice and both are recorded in reports/w1-20/instrument-test.json.",
     "1. It first asked whether SOME drawn run was a substring of the refusal. It returned true for a sentence with its first four words and its last five off the paper. The photograph caught what the probe did not.",
-    "2. Rewritten to compare the joined rows against the whole line AND the element\u2019s fit report \u2014 and the fit was computed in hud.js against the same maxW the wrapper uses, so setting maxW to 99999 moved the yardstick with it and the test came back GREEN on a line measuring 823 px across a 400 px panel. That is an inert control, and it looked exactly like a pass.",
+    "2. Rewritten to compare the joined rows against the whole line AND the element’s fit report — and the fit was computed in hud.js against the same maxW the wrapper uses, so setting maxW to 99999 moved the yardstick with it and the test came back GREEN on a line measuring 823 px across a 400 px panel. That is an inert control, and it looked exactly like a pass.",
     "3. The fit is now derived in ui/system.js from the element RECT, which the drawing code does not set. Same break: overflow_px 423.4, fits false, 7 of 7 lines red, probe exit 1. The instrument can fail."
   ],
   "what_i_did_not_do": [
     "ESCALATION, EXPULSION AND RIVALRY inside the four new lines. Wave 2, and the plan says so.",
-    "DEPTH. Each new line is exactly one quest. RI-QST01 scores quest volume per line and these four score 1, against the carried lines\u2019 18. That is the brief (width beats depth in wave 1) and not an oversight, but a critic scoring RI-QST01 over ALL seven lines will find a mean far below its 2.0-per-rank hard fail. Ruling S-W1-20-C.",
-    "THE DROWNED COURT STILL CANNOT REACH Q-SOUL-02 BY PLAY. That quest wants rank 2 = 22 reputation and one quest may grant at most 10 (RI-QST03 \u00a7B caps the per-quest delta at +4..+10). The gate now moves with the rank \u2014 demonstrated by perturbation \u2014 but the second quest that would carry a player over it is wave 2.",
-    "deep_kin still has an eight-rank ladder and no door. Ruled a duplicate id for the Xul-Aneekh (S-W1-20-B) and NOT deleted, because deleting it orphans another piece\u2019s Q-MAG-07. The probe reports it every run and exempts it only because faction-refusals.json declares it not joinable IN WORDS a player can hear.",
-    "I did not rewrite game/data/progression/factions.json into a real roster. Its only reader is tools/lib/gamedata.mjs \u2014 a TOOLS-side reader, not a world-side one \u2014 so promoting it would have shipped a bigger model that nothing in the running world reads, which is the failure this project keeps finding. It now declares what it is and points at the ladder of record. Reversible: if a world-side consumer for a roster appears, build the roster then.",
+    "DEPTH. Each new line is exactly one quest. RI-QST01 scores quest volume per line and these four score 1, against the carried lines’ 18. That is the brief (width beats depth in wave 1) and not an oversight, but a critic scoring RI-QST01 over ALL seven lines will find a mean far below its 2.0-per-rank hard fail. Ruling S-W1-20-C.",
+    "THE DROWNED COURT STILL CANNOT REACH Q-SOUL-02 BY PLAY. That quest wants rank 2 = 22 reputation and one quest may grant at most 10 (RI-QST03 §B caps the per-quest delta at +4..+10). The gate now moves with the rank — demonstrated by perturbation — but the second quest that would carry a player over it is wave 2.",
+    "deep_kin still has an eight-rank ladder and no door. Ruled a duplicate id for the Xul-Aneekh (S-W1-20-B) and NOT deleted, because deleting it orphans another piece’s Q-MAG-07. The probe reports it every run and exempts it only because faction-refusals.json declares it not joinable IN WORDS a player can hear.",
+    "I did not rewrite game/data/progression/factions.json into a real roster. Its only reader is tools/lib/gamedata.mjs — a TOOLS-side reader, not a world-side one — so promoting it would have shipped a bigger model that nothing in the running world reads, which is the failure this project keeps finding. It now declares what it is and points at the ladder of record. Reversible: if a world-side consumer for a roster appears, build the roster then.",
     "The four new lines have no expulsion triggers of their own; game/data/progression/faction-discipline.json still covers the three carried lines only.",
     "I did not verify the four recruiters are reachable ON FOOT. travelToGiver() proves they are in the populated world at a post with coordinates; it does not walk to them. Five of six enchanter posts in this game were unreachable on foot and only a walk found it."
   ],
   "undeclared_overlap_note": "game/src/ui/hud.js and game/src/ui/system.js belong to W1-21, whose r3 is DONE and which declares neither hud.js nor (for r3) system.js live. The toast wrap is additive and a short toast keeps its rect. Declared here so W1-21 r4 sees it.",
   "gates_at_finish": {
     "boot-check": "PASS",
-    "check-data": "PASS \u2014 7 joinable factions mapped, 19/19 rows selectable",
-    "check-quests": "PASS \u2014 124 quests",
+    "check-data": "PASS — 7 joinable factions mapped, 19/19 rows selectable",
+    "check-quests": "PASS — 124 quests",
     "check-content": "PASS",
     "check-prose": "67 regressions, the same count as before this piece. faction-joining-wave1.json is NOT in the list: 0 stings, 0 tics, contractions in band. It is the only faction quest file in the tree that is clean.",
-    "check-shipped-files": "reports game/src/__ghost.js missing, imported by game/src/__gatecheck.js \u2014 ANOTHER AGENT\u2019S staged gate-falsification fixture, not mine and not touched."
+    "check-shipped-files": "reports game/src/__ghost.js missing, imported by game/src/__gatecheck.js — ANOTHER AGENT’S staged gate-falsification fixture, not mine and not touched."
   },
-  "commit_attribution": "MY COMMIT NEVER RAN AND THE WORK IS ALL AT HEAD ANYWAY. `git commit --only <19 declared paths>` lost twenty-five races for `.git/index.lock` over about two minutes, and by the time it got in, every one of my paths had already been carried by somebody else: `a52113c` (\"preserveDrawingBuffer was a test requirement shipping to every player\") took eighteen of them and the orchestrator bank `8ab4bb9` took `reports/w1-20-faction-joining.md`. RULES rule 17 covers exactly this \u2014 \"if your work is banked while you wait, verify the content landed and move on; do not unpick it\" \u2014 so I verified rather than reverting. At HEAD: the four quests are present, ui/hud.js carries the wrap, the report is 202 lines, the blog line is in blog-feed.jsonl, and boot-check / check-data / check-quests / check-append-only all pass. Nothing of mine is dirty in the working tree. The consequence is attribution only: this piece has no commit under its own message. The message I would have used is at reports/w1-20-faction-joining.md, which carries the same numbers.",
+  "commit_attribution": "MY COMMIT NEVER RAN AND THE WORK IS ALL AT HEAD ANYWAY. `git commit --only <19 declared paths>` lost twenty-five races for `.git/index.lock` over about two minutes, and by the time it got in, every one of my paths had already been carried by somebody else: `a52113c` (\"preserveDrawingBuffer was a test requirement shipping to every player\") took eighteen of them and the orchestrator bank `8ab4bb9` took `reports/w1-20-faction-joining.md`. RULES rule 17 covers exactly this — \"if your work is banked while you wait, verify the content landed and move on; do not unpick it\" — so I verified rather than reverting. At HEAD: the four quests are present, ui/hud.js carries the wrap, the report is 202 lines, the blog line is in blog-feed.jsonl, and boot-check / check-data / check-quests / check-append-only all pass. Nothing of mine is dirty in the working tree. The consequence is attribution only: this piece has no commit under its own message. The message I would have used is at reports/w1-20-faction-joining.md, which carries the same numbers.",
   "pushed": "Not pushed by me. One unpushed commit at the time I finished (9c08032, PLAYABILITY) and it is not mine to push under my name; the orchestrator pushes after the bank.",
   "plan_state": "satisfied",
   "canonical_plan": "orchestration/plans/W1-20.md",
   "planning_head": "1c4c487d",
-  "planning_note": "Independent current-state plan critique on 2026-08-09 found no blocking pre-build gap; continuation plan is satisfied and ready for builder dispatch."
+  "planning_note": "Independent current-state plan critique on 2026-08-09 found no blocking pre-build gap; continuation plan is satisfied and ready for builder dispatch.",
+  "continuation": {
+    "headline": "Eight distinct live faction ladders; 18 quests and zero empty bands each; all have discipline, readmission, physical seats, canonical registry records and live rank-gated services.",
+    "builder_rows": {
+      "pass": 10,
+      "preserved": 3,
+      "built_not_run": 2,
+      "independent_rows_not_run": [
+        "RI-QST01/RI-LOR01/RI-LOR02 blind prose comparison",
+        "four-bearing reachability and full live discipline/property matrix"
+      ]
+    },
+    "evidence": [
+      "reports/w1-20/builder-delivery.md",
+      "reports/w1-20/builder-continuation.json",
+      "reports/critic-w1-20/census.json"
+    ]
+  },
+  "superseded_next_step_note": "THE OLD next_step SAID: \"a critic with fresh context. The obvious places to push: RI-QST01 volume over the four new lines\". It was written on 2026-08-08 and was correct then. The continuation of 2026-08-10 (9ed28905) answered it — 18 quests on every line — and a merge sixteen minutes later (091a6cec) reverted THIS FILE along with part of game/src/engine.js, so node tools/dispatchable.mjs W1-20 went on printing the 08-08 sentence for six days and would have spent a whole critic budget on a question already answered. W1-20-r2 Part 1 found it; this file is the fix. The file-level recovery sweep of 08-14 could not see either revert, because both are inside files that still exist — which is the general lesson and belongs in HAZARDS."
 }
