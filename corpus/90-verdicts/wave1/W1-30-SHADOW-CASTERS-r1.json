@@ -108,8 +108,8 @@
       ],
       "evidence": [
         "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md",
-        "reports/runpod-gpu/runs/critic-canopy-motion/artifacts/shimmer/canopy-shimmer.json",
-        "reports/visual-truth/deep-marshes-bands/bands.json"
+        "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/canopy-shimmer-hw.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/deep-marshes-bands.json"
       ]
     },
     {
@@ -145,9 +145,9 @@
       ],
       "evidence": [
         "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md",
-        "reports/visual-truth/fog-owner/head-probe/fog-owner.json",
-        "reports/visual-truth/fog-owner/aerial-arm/fog-owner.json",
-        "reports/runpod-gpu/runs/critic-canopy-motion/artifacts/shimmer/frames/B-canopy-on-f0048.png"
+        "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/fog-owner-head.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/fog-owner-aerial-arm.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/water-lanes-eye-blackwood-hw.png"
       ]
     },
     {
@@ -240,58 +240,58 @@
   ],
   "artifacts": [
     {
-      "path": "reports/visual-truth/fog-owner/head-probe/fog-owner.json",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/fog-owner-head.json",
       "kind": "trace",
       "produced_by": "node tools/visual/w1-30-fog-owner-ab.mjs --tag head --sites vista-blackwood,vista-deep-marshes,vista-salt-hills",
       "seed": 20260814,
       "resolution": "960x540",
       "camera_pose": "three Deck region-vista setups, 13:00, clear",
-      "note": "chunk_owner read out of THREE.ShaderChunk in the live page: fog_fragment render/sky.js, uAerial_declared false. 95% fog at 912/1414/1726 m."
+      "note": "chunk_owner read out of THREE.ShaderChunk in the live page: fog_fragment render/sky.js, uAerial_declared false. 95% fog at 912/1414/1726 m. Committed under corpus/90-verdicts/wave1/artifacts/ rather than left at the tool's own output path: reports/.gitignore excludes `*` and `git add -f` does not survive land.mjs's temporary index, so a verdict citing reports/**.json cites something a fresh clone does not have — the exact failure reports/.gitignore §5 describes."
     },
     {
-      "path": "reports/visual-truth/fog-owner/aerial-arm/fog-owner.json",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/fog-owner-aerial-arm.json",
       "kind": "trace",
       "produced_by": "node tools/visual/w1-30-fog-owner-ab.mjs --tag aerial --entry <control-clone>/game/index.html, same three setups",
       "seed": 20260814,
       "resolution": "960x540",
       "camera_pose": "identical to the head arm",
-      "note": "The clone (tools/control-clone.mjs, paths=game, writable=province.js) has installAerialPerspective() uncommented and nothing else. chunk_owner reads world/aerial.js and uAerial_declared true, so the control applied. sigma0, H and camera Y are byte-identical to the head arm; 95% fog at 48/23/294 m."
+      "note": "The clone (tools/control-clone.mjs, paths=game, writable=province.js) has installAerialPerspective() uncommented and nothing else. chunk_owner reads world/aerial.js and uAerial_declared true, so the control applied. sigma0, H and camera Y are byte-identical to the head arm; 95% fog at 48/23/294 m. Committed under corpus/90-verdicts/wave1/artifacts/ rather than left at the tool's own output path: reports/.gitignore excludes `*` and `git add -f` does not survive land.mjs's temporary index, so a verdict citing reports/**.json cites something a fresh clone does not have — the exact failure reports/.gitignore §5 describes."
     },
     {
-      "path": "reports/runpod-gpu/runs/critic-canopy-motion/artifacts/shimmer/canopy-shimmer.json",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/canopy-shimmer-hw.json",
       "kind": "trace",
       "produced_by": "node tools/visual/w1-30-canopy-shimmer.mjs --hardware --site eye-blackwood --frames 90 --canvas 960x540, on a RunPod RTX A5000 via tools/runpod/cli.mjs",
       "seed": 20260814,
       "resolution": "960x540",
       "camera_pose": "eye-blackwood, gameplay camera, walking forward with a 0.8 deg/frame yaw for 90 frames, three arms on the identical scripted path",
-      "note": "renderer_string 'ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)', software false. Zero page errors. Pod deleted and deletion confirmed."
+      "note": "renderer_string 'ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)', software false. Zero page errors. Pod deleted and deletion confirmed. Committed under corpus/90-verdicts/wave1/artifacts/ rather than left at the tool's own output path: reports/.gitignore excludes `*` and `git add -f` does not survive land.mjs's temporary index, so a verdict citing reports/**.json cites something a fresh clone does not have — the exact failure reports/.gitignore §5 describes."
     },
     {
-      "path": "reports/runpod-gpu/runs/critic-canopy-motion/artifacts/motion/contact/boundary-walk.png",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/boundary-walk-canopy-casting-hw.png",
       "kind": "screenshot",
       "produced_by": "node tools/visual/deck-motion.mjs --profile full --only boundary-walk --gpu hardware --require-hardware --frames 180, same Pod",
       "seed": 20260814,
       "resolution": "960x540",
       "camera_pose": "the Deck's boundary-walk sequence, a walk across a streamed boundary through flooded forest",
-      "note": "180 frames, 180 distinct, hardware-attested. The first forest walk captured with the canopy casting; set beside the builder's pre-canopy sheet the forest floor gains broad soft-edged shade."
+      "note": "180 frames, 180 distinct, hardware-attested. The first forest walk captured with the canopy casting; set beside the builder's pre-canopy sheet the forest floor gains broad soft-edged shade. Committed under corpus/90-verdicts/wave1/artifacts/ rather than left at the tool's own output path: reports/.gitignore excludes `*` and `git add -f` does not survive land.mjs's temporary index, so a verdict citing reports/**.json cites something a fresh clone does not have — the exact failure reports/.gitignore §5 describes."
     },
     {
-      "path": "reports/visual-truth/deep-marshes-bands/bands.json",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/deep-marshes-bands.json",
       "kind": "trace",
       "produced_by": "node tools/visual/w1-30-deep-marshes-bands.mjs",
       "seed": 20260814,
       "resolution": "960x540",
       "camera_pose": "vista-deep-marshes, 13:00, clear; six arms against one baseline over a fixed crop chosen before any arm ran",
-      "note": "shadows-off rho 0.990, water-hidden rho 0.335, restore control rho 0.957. The bands are the water surface."
+      "note": "shadows-off rho 0.990, water-hidden rho 0.335, restore control rho 0.957. The bands are the water surface. Committed under corpus/90-verdicts/wave1/artifacts/ rather than left at the tool's own output path: reports/.gitignore excludes `*` and `git add -f` does not survive land.mjs's temporary index, so a verdict citing reports/**.json cites something a fresh clone does not have — the exact failure reports/.gitignore §5 describes."
     },
     {
-      "path": "reports/visual-truth/shader-hooks/hooks.json",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/shader-hooks.json",
       "kind": "trace",
       "produced_by": "node tools/visual/w1-30-shader-hook-collision.mjs (and --sabotage)",
       "seed": null,
       "resolution": "480x270",
       "camera_pose": "spawn, 20 frames settled; a census of the chunk registry and of every material's onBeforeCompile",
-      "note": "FOG-CHUNKS-SINGLE-OWNER passes at HEAD and goes red under --sabotage and against the control clone. NO-ORPHANED-SURFACE-PASS fails: 305 of 406. Mechanism arm: Material.clone() drops onBeforeCompile and keeps userData."
+      "note": "FOG-CHUNKS-SINGLE-OWNER passes at HEAD and goes red under --sabotage and against the control clone. NO-ORPHANED-SURFACE-PASS fails: 305 of 406. Mechanism arm: Material.clone() drops onBeforeCompile and keeps userData. Committed under corpus/90-verdicts/wave1/artifacts/ rather than left at the tool's own output path: reports/.gitignore excludes `*` and `git add -f` does not survive land.mjs's temporary index, so a verdict citing reports/**.json cites something a fresh clone does not have — the exact failure reports/.gitignore §5 describes."
     },
     {
       "path": "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md",
@@ -300,13 +300,13 @@
       "note": "Section anchors cited from reference_items and biggest_gap resolve into this file."
     },
     {
-      "path": "reports/runpod-gpu/runs/critic-canopy-motion/artifacts/shimmer/frames/B-canopy-on-f0048.png",
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/water-lanes-eye-blackwood-hw.png",
       "kind": "screenshot",
       "produced_by": "node tools/visual/w1-30-canopy-shimmer.mjs --hardware, arm B, frame 48, RunPod RTX A5000",
       "seed": 20260814,
       "resolution": "960x540",
       "camera_pose": "eye-blackwood, gameplay camera, 48 frames into the scripted walk",
-      "note": "The water-lane bands at eye-blackwood, on hardware, present identically in the canopy-off arm at the same frame. The single clearest picture of the band defect."
+      "note": "The water-lane bands at eye-blackwood, on hardware, present identically in the canopy-off arm at the same frame. The single clearest picture of the band defect. Committed under corpus/90-verdicts/wave1/artifacts/ rather than left at the tool's own output path: reports/.gitignore excludes `*` and `git add -f` does not survive land.mjs's temporary index, so a verdict citing reports/**.json cites something a fresh clone does not have — the exact failure reports/.gitignore §5 describes."
     },
     {
       "path": "reports/runpod-gpu/runs/shadow-budget/artifacts/shadow-casters/hw-budget/shadow-casters.json",
@@ -336,6 +336,36 @@
       "kind": "text-excerpt",
       "produced_by": "the W1-30F builder",
       "note": "Cited for F7, the 13-of-13 / 9->5 claim whose provenance this verdict's gap is about, and for that piece's own tripwire_audit admission that its offline arm is a model of the fix rather than an observation of it."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/band-time-of-day-correlation.mjs",
+      "kind": "report",
+      "produced_by": "this critic; recomputes the time-of-day cross-correlation of the band pattern from the committed hardware stills, including the negative control",
+      "note": "Run it to reproduce rho(t0800,t1300)=0.844, rho(t0800,t1930)=0.666 and the 0.046 negative control without trusting this verdict's prose."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/duplicate-arm-noise-floor.mjs",
+      "kind": "report",
+      "produced_by": "this critic; recomputes the same-configuration repeats and the corrected canopy deltas from the builder's own committed shadow-casters.json",
+      "note": "Run it to reproduce the six duplicate arms, the 0.55 ms median / 1.59 ms maximum spread, and the pair-mean canopy deltas."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/vista-deep-marshes-skyjs.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/w1-30-fog-owner-ab.mjs --tag head",
+      "seed": 20260814,
+      "resolution": "960x540",
+      "camera_pose": "Deck setup vista-deep-marshes, 13:00, clear",
+      "note": "The shipped atmosphere: a legible flooded forest reaching a treeline at the horizon."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/vista-deep-marshes-aerialjs.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/w1-30-fog-owner-ab.mjs --tag aerial --entry <control-clone>/game/index.html",
+      "seed": 20260814,
+      "resolution": "960x540",
+      "camera_pose": "identical camera, identical instant, identical sigma0/H/camera Y",
+      "note": "The model that was winning: a flat grey wash with a hard horizon line and a handful of near trunks fading out at about twenty metres."
     }
   ],
   "arbitration": {
@@ -386,8 +416,8 @@
     "why_it_matters": "It is a claim about a build that no longer exists, and the screen that produced it has now been shown to rank the two atmosphere models the wrong way round at one of three sites tested: at vista-salt-hills frame-stats.mjs gives the broken model higher edge density and a wider tonal span than the shipped one, because that camera sits 168 m up in a 340 m haze layer where a smoothstep wall lands at 294 m and reads as crisper than a Beer-Lambert ramp. The project's own rule is that a measurement is a claim about a commit rather than about the project, and this number has quietly changed commits.",
     "evidence": [
       "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md",
-      "reports/visual-truth/fog-owner/head-probe/fog-owner.json",
-      "reports/visual-truth/fog-owner/aerial-arm/fog-owner.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/fog-owner-head.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/fog-owner-aerial-arm.json",
       "orchestration/status/W1-30F.json"
     ],
     "severity": "major",
@@ -408,7 +438,7 @@
     {
       "what": "The shader-hook collision is a class, not an incident, and its largest instance is older and bigger than this round's. Material.copy() in the vendored three r180 (game/vendor/three/three.core.js:17236) does not copy onBeforeCompile and does deep-copy userData through JSON, so every .clone() of a worldMaterial silently drops installSurfaceShader's detail-normal/wear/wetness pass while keeping userData.surfaceUniforms. Measured in the page: 305 of 406 materials carrying surfaceUniforms have a hook that no longer installs them, including actor-body:saxhleel:skin and :cloth. The mechanism arm is explicit: source hook installs surface = true, clone hook installs surface = false, clone keeps surfaceUniforms = true. Not this round's file (render/visual-foundation.js, render/actor.js).",
       "evidence": [
-        "reports/visual-truth/shader-hooks/hooks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/shader-hooks.json",
         "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md"
       ],
       "subsystem_path": "render.fidelity.materials"

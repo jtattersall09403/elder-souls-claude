@@ -4,7 +4,7 @@
 > Canonical data: `corpus/90-verdicts/GAP-LEDGER.json`. Source: every verdict's
 > `biggest_gap` (opens) and `gap_closure[]` (closes). Rules: `SCORING.md` §5.
 
-Generated: 2026-08-14T15:40:08Z · verdicts read: 84 · waves: 1
+Generated: 2026-08-14T15:48:38Z · verdicts read: 84 · waves: 1
 
 **The three rules that matter**
 1. Every unsatisfied verdict opens exactly one gap. An evidence-earned PASS may open none.
