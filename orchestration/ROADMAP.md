@@ -1,3 +1,15 @@
+> # ⚠ THIS FILE IS CONDEMNED AND IS BEING REWRITTEN FROM SCRATCH
+>
+> **Do not plan from it, do not derive from it, do not quote it.** Written 2026-08-14 evening by the
+> orchestrator **from working memory rather than from the repo**, in breach of `CLAUDE.md` rule 0b.
+> The owner caught three separate coverage failures in it within an hour: it stopped at "combat feel",
+> it named none of Morrowind's systems, and it compressed the whole visual programme into one step —
+> against a body of work measuring **49 plans, 211 reference items and 78 open gaps**.
+>
+> `ROADMAP-COVERAGE-AUDIT` is enumerating what actually exists. When it reports, **this file is
+> deleted and rewritten from that enumeration**, not patched. Anything below is retained only so the
+> rewrite can be diffed against it.
+
 # The roadmap — ordered, one step at a time, each ending in something visible
 
 **This file is the source of truth for what we are doing and in what order.** Started 2026-08-14
