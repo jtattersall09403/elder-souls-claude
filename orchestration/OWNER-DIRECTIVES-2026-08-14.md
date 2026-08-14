@@ -43,11 +43,54 @@ not a measurement; it is the shape of evidence that has already certified a brok
 Assume this failure mode is **not confined to graphics.** Any piece whose verdict rests on a static,
 isolated check is suspect until someone has played through the thing it claims.
 
-**GPU is available.** RunPod tooling is in the repo (`tools/runpod/`) with `RUNPOD_API_KEY` and
-`RUNPOD_GPU_TEMPLATE_ID` in the environment. Subagents that need real rendering should use it rather
-than reasoning about what SwiftShader showed them. **It needs `openssh-client` installed and
-`NODE_USE_ENV_PROXY=1`** — Node's global `fetch` ignores `HTTPS_PROXY` in this container. One agent
-lost an hour to that; nobody else should.
+**GPU is available, and as of 2026-08-14 it actually works.** RunPod tooling is in `tools/runpod/`
+with `RUNPOD_API_KEY` and `RUNPOD_GPU_TEMPLATE_ID` in the environment. Use it rather than reasoning
+about what SwiftShader showed you. Verified end to end: **NVIDIA RTX A4500, 20 GiB, $0.25/hr**, with
+artefacts back in this repo 57 seconds after start including provisioning and teardown.
+
+```
+node tools/runpod/cli.mjs run --max-runtime 35        # Node + Playwright + the game
+node tools/runpod/cli.mjs cleanup                     # safe: only your own Pods
+node tools/runpod/cli.mjs selftest                    # 15 arms, no network, no spend
+```
+
+**Three things that used to cost an hour each — do not re-derive them.**
+
+- **SSH cannot reach a Pod from here and never will.** Raw outbound TCP is blocked and the agent
+  proxy's `CONNECT` re-terminates TLS, while SSH is not TLS, so every session dies at
+  `kex_exchange_identification`. The transport that works is ordinary **HTTPS on 443** —
+  `https://<podId>-<port>.proxy.runpod.net` — which the egress policy allows. **Never add a wildcard
+  SSH config** (it changes behaviour for every agent on the box) and never disable TLS verification
+  or unset `HTTPS_PROXY`.
+- **Node's global `fetch` ignores `HTTPS_PROXY`**, turning every RunPod API call into `403 Host not
+  in allowlist`. The CLI now re-executes itself with `NODE_USE_ENV_PROXY=1`.
+- **`cleanup` is owner-scoped now.** A bare `cleanup` used to terminate *every* managed Pod on the
+  account and on 2026-08-14 it killed another agent's live Pod mid-capture. `--all` refuses without
+  `--yes`; `--older-than <min>` is the safe sweep for orphans.
+
+### The disk: `git gc` is the lever, not deleting agents' work
+
+The box reached **96% with 1.5 GB free**, and the obvious culprits were seven full-tree null-control
+copies at ~1.2 GB each — modified two to twenty-seven minutes earlier, i.e. **live delete-the-fix
+work in progress**. Deleting those to buy space is never the trade.
+
+**The space was in `.git`, which had grown to 9.3 GB.** `git gc --prune=now` took it to 1.2 GB and
+returned **8.3 GB** in one command with nothing lost. Try it first, waiting for a quiet index
+(`pgrep git`). Two follow-ons: null-control copies clone the whole tree when a control needs only
+`game/` and `tools/` — **76 MB against 12 GB** — and `tools/lib/browser.mjs` now refuses to launch on
+low free space, closing the silent-`ENOSPC` class where a run that wrote nothing looked clean.
+
+### `git status` clean is not evidence your work is in the tree
+
+Four agents have now had finished work silently reverted, including this file twice. Ruling O1 blames
+two agents holding one file, and that is part of it — but the rest is **`index.lock` contention**:
+`bank.mjs` times out, `git commit --only` loses the race, and the tree looks clean afterwards because
+the edit is simply gone.
+
+**The technique that works, found by the `RI-WLD` agent: git plumbing, which never takes
+`index.lock`** — `git commit-tree` plus a compare-and-swap `update-ref`. Use it when the box is busy.
+And whichever route you take, **verify by grepping the committed blob for a string you know you
+wrote**, not by looking at `git status`.
 
 ### The generalised rule, and it is not only about graphics
 
