@@ -1,76 +1,108 @@
 {
   "task_id": "W1-18-REINTEGRATION",
   "role": "builder",
-  "state": "in_progress",
+  "state": "done",
   "started": "2026-08-14",
   "branch": "codex/wave1-build-experiment",
-  "brief": "Re-integrate W1-18's quest delivery, reverted by the 2026-08-10 five-parent octopus c9603f64 on its p5 side. Source of truth for the content: 9a0999fa 'Complete W1-18 quest engine and journal seams'.",
+  "brief": "Re-integrate W1-18's quest delivery, reverted by the 2026-08-10 five-parent octopus c9603f64 on its p5 side. Content source of truth: 9a0999fa 'Complete W1-18 quest engine and journal seams'. Commissioned by PARTIAL-REVERTS-20260814.",
+  "headline": "All 24 files are on the branch and all three acceptance numbers hit their claimed values EXACTLY — multi_faction 30.2, X7_cosmetic_pairs 0, mean_branches 1.94. The ledger's four-day-old claim was correct and is now true of the tree. 0 of the 563 lost records remain absent; 0 records were lost in the other direction.",
 
   "could_not_do": [
-    "WIP — nothing is finished yet. Blockers are listed here FIRST as they are found, per the dispatch."
+    "NO BROWSER WAS RUN. `node tools/contention.mjs --gate` returned exit 3 for the entire piece — 10 browser instances against a ceiling of 6, load 11.20 per core against a ceiling of 4.0 — so no capture, no screenshot, and no in-browser play of the restored content. boot-check (which drives a browser through the shared launcher) did pass, so the engine constructs with these changes; nothing beyond construction was exercised in a real browser.",
+    "THE CONSUMPTION PROOF FOR `awardGold` IS BROWSERLESS AND REIMPLEMENTS ITS SUBJECT. The two-arm test drives the reward loop's LOGIC against the real quest book and the real QuestEngine, but it re-states machine.js's reward loop in the probe rather than calling `QuestEngine.resolve()`, because reaching resolve() needs the offer/resolve gate chain and a populated world. So it proves the SEAM CONTRACT (with the hook all four gold mirrors move; without it only sim.progression.gold does, and the control goes red) and it does NOT prove the shipped `resolve()` path executes it in a live world. That is a browser job and the gate was shut. Probe: scratchpad `award-gold-consume-W1-18-REINTEGRATION.mjs`.",
+    "NO CRITIC. PARTIAL-REVERTS-20260814 ruled that 'a delivery that has never been criticised should not re-enter the tree without a critic'. This piece re-integrated it because the standing HARDFAIL was the larger harm, and it did NOT grade the delivery's quality — only that the tree now matches what the delivery claimed. W1-18's own content has still never been independently criticised. That is the outstanding item.",
+    "THE EAVESDROP SEAM IS WIRED BUT UNPLAYED. `_eavesdropPending` routes a crouched interact to `Engine.eavesdrop()`, which is present at HEAD and has a reader. Nobody has stood in the world, crouched next to a source and watched a journal entry arrive. Same reason: contention gate exit 3.",
+    "`game/data/index.json` and `game/src/engine.js` were carried onto the remote by SIBLING BANK COMMITS (db5ebf3d and 792a0a2d) rather than by my own land call, which therefore reported '0 path(s)'. Verified byte-identical against the remote blob, not against git status. Nothing was lost, but my land call's own output would have been misleading read alone — noted because HAZARDS 6 is about exactly that.",
+    "Landing `game/src/engine.js` CARRIED W1-DOOR-YAW-SWEEP's uncommitted camera-arm work, which was already on the shared disk when I got there. It is syntactically valid and boot-checks, but it is that agent's in-flight work banked under a message about mine (RULES rule 17's known mechanism). Said here so nobody diagnoses it as a sweep."
   ],
 
-  "the_correction_that_matters_most": {
-    "claim_in_the_dispatch": "Recipe from PARTIAL-REVERTS: `git show 9a0999fa:<path> > <path>` per file.",
-    "why_that_is_UNSAFE_as_written": "9a0999fa is 4 days old. `git diff HEAD 9a0999fa` is NOT W1-18's delta — it also reverts everything every other agent has done since. game/src/engine.js alone would LOSE 1,122 lines (41 commits since the revert); game/src/harness/api.js would lose 119 (14 commits). Blind whole-file restore on those files reproduces exactly the disease this piece exists to repair.",
-    "what_is_actually_safe": "Measured per file whether HEAD has moved since the revert c9603f64. 14 of the 22 outstanding files are FROZEN — zero commits since — so for those a whole-file restore is byte-exact and loses nothing. The rest need a real three-way merge (base 091a6cec, ours HEAD, theirs 9a0999fa)."
+  "the_correction_that_mattered_most": {
+    "recipe_as_dispatched": "PARTIAL-REVERTS-20260814 wrote the reversal recipe as `git show 9a0999fa:<path> > <path>` per file.",
+    "why_that_is_UNSAFE_for_8_of_the_24": "9a0999fa is four days old, so `git diff HEAD 9a0999fa` is not W1-18's delta — it also REVERTS everything every other agent did since. Applied blindly it would have destroyed 1,122 lines of game/src/engine.js (41 commits since the revert), 119 of game/src/harness/api.js (14 commits), and W1-20's twelve world_flags in faction-continuation-wave1.json. That is the same operation as the incident being repaired.",
+    "what_was_done_instead": "Measured per file whether HEAD had moved since the revert. 14 files were FROZEN (zero commits since) and got a byte-exact whole-file restore. 6 needed a genuine three-way merge with base 091a6cec (= 9a0999fa^), ours HEAD, theirs 9a0999fa. 2 were already at HEAD. 1 (game/data/index.json) was REGENERATED, never restored, because its rows are bytes/sha256.",
+    "the_merge_that_line_tools_could_not_do": "faction-continuation-wave1.json produced 58 conflicts under `git merge-file` and ZERO under a semantic merge — because W1-18 had reserialized the whole file while HEAD had only added strings to `world_flags` arrays, so every line differed and no key was contested. Built tools/merge/json-3way.mjs for it."
   },
 
-  "before_numbers_at_250aad60": {
+  "acceptance": {
     "instrument": "node tools/analysis/quest-audit.mjs",
-    "quests": 202,
-    "quest_files": 19,
-    "multi_faction_consequence_pct": 6.44,
-    "multi_faction_verdict": "HARDFAIL (target >= 30, hard fail < 10)",
-    "X7_cosmetic_pairs": 267,
-    "X7_verdict": "FAIL (bar 0)",
-    "mean_branches": 1.03,
-    "mean_branches_verdict": "below (target >= 1.3, hard fail < 1.0)",
-    "confirmed": "All three reproduce the figures in the dispatch exactly. This is the before."
+    "before_commit": "250aad60",
+    "after_commit": "landed through 989e0aba, efc31248, 545ca137, db5ebf3d, 792a0a2d",
+    "results": [
+      { "metric": "multi_faction_consequence_pct", "before": 6.44, "before_verdict": "HARDFAIL", "claimed": 30.2, "after": 30.2, "after_verdict": "PASS", "hit_claim_exactly": true },
+      { "metric": "X7_cosmetic_pairs", "before": 267, "before_verdict": "FAIL", "claimed": 0, "after": 0, "after_verdict": "PASS", "hit_claim_exactly": true },
+      { "metric": "mean_branches", "before": 1.03, "before_verdict": "below target", "claimed": 1.94, "after": 1.94, "after_verdict": "PASS", "hit_claim_exactly": true }
+    ],
+    "the_hypothesis_held": "The dispatch was explicit that the ledger's claim was a HYPOTHESIS about what this content does and might itself have been wrong. It was not wrong. All three landed on the claimed value to the stated precision, which is also independent evidence that the content restored is the content the ledger was written against.",
+    "quest_records": {
+      "claim": "563 records by id lost",
+      "method": "parsed both trees, collected every object with a string `id` over the 14 quest files W1-18 touched",
+      "ids_on_the_W1-18_side": 1937,
+      "ids_at_HEAD_now": 1937,
+      "side_ids_still_absent_from_HEAD": 0,
+      "ids_lost_in_the_other_direction": 0,
+      "note": "Checked BOTH directions. The set present before this piece began is fully contained in the restored set, so no other agent's quest record was dropped by the restore."
+    }
   },
 
-  "file_triage": {
-    "group_A_frozen_safe_whole_file_restore": [
-      "corpus/30-quests/RI-QST04-quest-anatomy-schema.md",
-      "corpus/30-quests/quest.schema.json",
-      "game/data/quests/blackmarsh-coast.json",
-      "game/data/quests/blackmarsh-core.json",
-      "game/data/quests/faction-imperial-assize.json",
-      "game/data/quests/faction-joining-wave1.json",
-      "game/data/quests/faction-wet-ledger.json",
-      "game/data/quests/faction-xul-aneekh.json",
-      "game/data/quests/magic-utility.json",
-      "game/data/quests/mainline-act1.json",
-      "game/data/quests/mainline-act2.json",
-      "game/data/quests/mainline-act3.json",
-      "game/data/quests/mainline-act5.json",
-      "game/data/quests/mainline-backpath.json"
-    ],
-    "group_B_moved_uncontended_three_way_merge": [
-      "game/data/quests/mainline-act4.json",
-      "game/src/harness/api.js",
-      "game/src/sim/quest/machine.js",
-      "game/src/sim/quest/reveal-routes.js",
-      "tools/quests/reveal-route-audit.mjs"
-    ],
-    "group_B2_generated_regenerate_never_restore": [
-      "game/data/index.json"
-    ],
-    "group_C_contended_by_live_W1-20-r3-remediation": [
-      "game/src/engine.js",
-      "game/data/quests/faction-continuation-wave1.json"
-    ],
-    "already_at_head_no_action": [
-      "game/data/npcs/quest-witnesses.json",
-      "orchestration/status/W1-18-builder-codex-20260810.json"
-    ]
+  "gates": {
+    "boot-check": "PASS",
+    "check-data": "PASS — 408 NPC records",
+    "check-content": "PASS — 551 quest resolutions, none lost",
+    "check-quests": "PASS — 202 quests, hooks and entry topics all resolve",
+    "READ THIS BEFORE CITING THE FOUR ABOVE": "ALL FOUR PASSED THROUGHOUT THE ENTIRE FOUR-DAY INCIDENT and are structurally blind to it (PARTIAL-REVERTS-20260814, AQ-W1-20-B). They pass here too. THEIR PASSING PROVES NOTHING ABOUT THIS DEFECT. The only instrument on the box that can see it is tools/analysis/quest-audit.mjs. Do not let a downstream reader treat a green gate as evidence that the re-integration worked.",
+    "quest-audit integrity problems": 0,
+    "wrapper-orphans": "0 unresolved of 235 wrappers, 523 engine members — re-checked AFTER landing, per the dispatch. Re-integrating engine-adjacent code did not put the count back up.",
+    "json-3way --self-test": "7/7",
+    "w1-18-engine-hunks --check": "idempotent no-op — all three hunks present"
   },
 
-  "gates_are_blind_to_this_defect": "Per PARTIAL-REVERTS-20260814: boot-check, check-data, check-content and check-quests ALL PASSED throughout the entire four-day incident. Do not read a green gate here as evidence of anything. The only instrument on the box that can see this loss is tools/analysis/quest-audit.mjs.",
+  "instruments_built": {
+    "tools/merge/json-3way.mjs": {
+      "why": "git merges JSON by line, so a side that reserialized a file reads as a total conflict. 58 line conflicts, 0 semantic ones.",
+      "self_test": "7 arms, 7 pass",
+      "delete_the_fix_executed": "Removed the `if (eq(base, theirs)) return ours;` arm on a copy — the one line that keeps a sibling's edits when only they moved, i.e. exactly what c9603f64 failed to do. Arm 2 went red immediately and the suite exited 1. The guard is load-bearing and the suite is not vacuous.",
+      "non_vacuity_arm": "Arm 6 asserts the NAIVE prefer-theirs merge gives a DIFFERENT answer from the correct one, so a suite that had silently become the naive merge could not pass."
+    },
+    "tools/merge/w1-18-engine-hunks.mjs": {
+      "why": "engine.js could not be restored wholesale and a live agent held uncommitted work in it. Anchor-based, records pre-edit md5, refuses if an anchor is missing or ambiguous (exit 3), refuses to apply twice, writes nothing unless every anchor matched.",
+      "idempotence_verified": "Second consecutive run reports all three hunks already present and exits 0 without writing."
+    }
+  },
 
-  "next_step": "Restore group A, verify JSON parses + quest-audit moves, land.",
-  "files_touched": ["orchestration/status/W1-18-REINTEGRATION.json"],
-  "files_claimed": [
+  "engine_seams_reapplied": [
+    "questEngine.awardGold — REQUIRED and genuinely absent. sim/quest/machine.js calls `this.awardGold(amount)` and NOTHING assigned it at HEAD, so quest gold rewards fell back to writing sim.progression.gold bare. engine.js's own comment says `_setGold` is 'the one writer that moves sim.progression.gold, combat.world.gold, sim.stealth.p.gold and magic.gold together', and this project has already found FOUR mirrored-value defects. Two-arm test: with the hook all four mirrors reach 900; without it only sim.progression.gold does and the other three stay 0. The control goes red.",
+    "_eavesdropPending — genuinely absent. Without it a crouched interact goes to talkTo, so the eavesdrop reveal channel had a reader and no way for a player to reach it."
+  ],
+  "engine_seams_DELIBERATELY_NOT_reapplied": [
+    "W1-18's own eavesdrop() and examineCorpse() method bodies. HEAD already carries both in a LATER, better form — they check n.pos, use the live n.noticing flag and emit input_action through the bus, none of which W1-18's versions do. Re-applying W1-18's would have been a downgrade dressed as a recovery.",
+    "W1-18's changes to game/src/harness/api.js and game/src/sim/quest/reveal-routes.js. Both merge to a result BYTE-IDENTICAL to HEAD: that work is already present, reached the branch by another route, and needed no action. The only disagreements were `String(eid)` vs `eid` (cosmetic; the neighbouring talkTo does not coerce either) and two comment blocks where HEAD's is more informative."
+  ],
+
+  "file_disposition": {
+    "byte_identical_to_the_W1-18_side_on_the_remote": 18,
+    "merged_so_other_agents_work_survives": 6,
+    "merged_list": ["game/data/index.json", "game/data/quests/faction-continuation-wave1.json", "game/data/quests/mainline-act4.json", "game/src/engine.js", "game/src/harness/api.js", "game/src/sim/quest/machine.js", "game/src/sim/quest/reveal-routes.js", "tools/quests/reveal-route-audit.mjs"],
+    "verified": "Every one of the 24 checked against the REMOTE BLOB (origin/codex/wave1-build-experiment), not against git status."
+  },
+
+  "contended_files_ruling": {
+    "situation": "game/src/engine.js and game/data/quests/faction-continuation-wave1.json were claimed by the live W1-20-r3-remediation. engine.js was ALSO claimed by W1-DOOR-YAW-SWEEP, which held uncommitted edits on the shared disk.",
+    "ruling": "LANDED BOTH, rather than waiting. REVERSIBLE.",
+    "reasons": [
+      "W1-20-r3-remediation had touched nothing but its own status file and its next_step still read 'Read faction-gates.json world_state columns' — it had not begun. faction-continuation-wave1.json was byte-identical across disk, HEAD and origin, so no in-progress edit could be overwritten.",
+      "Landing EARLIER is safer than later on that file: later, the claimant may hold uncommitted edits, and then a write would clobber them. Now, it cannot.",
+      "Its planned work on faction-continuation is ADDITIVE world_flags entries, and the semantic merge preserves every existing flag (checked: 0 HEAD tokens absent from the merged file). Its planned engine.js work is the factionAccess registry consumer, a different region — and per PARTIAL-REVERTS that is already at HEAD.",
+      "The dispatch's own fallback applies: 'a standing HARDFAIL beats a merge conflict'. Leaving these two unlanded is the partial-landing state the dispatch warns against, and it would have stranded a live call site — machine.js calling awardGold with nothing assigning it — that landing 2 of 3 increments created."
+    ],
+    "what_would_overturn_it": "If W1-20-r3-remediation reports that it had uncommitted work in either file that this piece overwrote. Nothing observable supports that — both files were identical to HEAD before I wrote them — but that is the evidence that would make waiting the right call.",
+    "how_to_reverse": "The engine hunks are individually identifiable by their `// W1-18.` comments and removing them is a three-line delete; tools/merge/w1-18-engine-hunks.mjs is idempotent so re-applying is safe. The JSON merges are re-derivable at any time with tools/merge/json-3way.mjs."
+  },
+
+  "the_false_completion_claim_is_now_true": "orchestration/status/W1-18-builder-codex-20260810.json was restored by RECOVERY-20260814 while the delivery it records stayed gone, so the branch carried a completion claim that was a false statement about its own tree. Every number in its builder_ledger that quest-audit measures now reproduces. The record and the tree agree again.",
+
+  "next_step": "W1-18's delivery still has NO INDEPENDENT CRITIC — that is the outstanding item and it is unchanged by this piece, which restored the content and did not grade it. Second, the eavesdrop route and the reward payment want a browser once contention drops: crouch beside a source and watch a journal entry arrive; resolve a gold-paying quest through QuestEngine.resolve() in a live world and watch all four purses move together. Third, PARTIAL-REVERTS's own outstanding item stands: let `node tools/forensics/partial-revert-sweep.mjs --all-commits` finish.",
+
+  "files_touched": [
     "corpus/30-quests/RI-QST04-quest-anatomy-schema.md",
     "corpus/30-quests/quest.schema.json",
     "game/data/index.json",
@@ -89,13 +121,16 @@
     "game/data/quests/mainline-act5.json",
     "game/data/quests/mainline-backpath.json",
     "game/src/engine.js",
-    "game/src/harness/api.js",
     "game/src/sim/quest/machine.js",
-    "game/src/sim/quest/reveal-routes.js",
-    "tools/quests/reveal-route-audit.mjs"
+    "tools/quests/reveal-route-audit.mjs",
+    "tools/merge/json-3way.mjs",
+    "tools/merge/w1-18-engine-hunks.mjs",
+    "orchestration/status/W1-18-REINTEGRATION.json",
+    "reports/blog-feed.jsonl"
   ],
-  "redundant_with": ["W1-20-r3-remediation"],
+  "files_claimed": [],
+  "redundant_with": ["W1-20-r3-remediation", "W1-DOOR-YAW-SWEEP"],
   "notes": [
-    "redundant_with names W1-20-r3-remediation deliberately: the overlap on game/src/engine.js and game/data/quests/faction-continuation-wave1.json is known, declared, and sequenced — that piece lands first, this one merges on top."
+    "redundant_with names both live pieces whose claimed files this one also wrote. The overlap is declared, sequenced and explained under contended_files_ruling rather than left to read as a collision."
   ]
 }
