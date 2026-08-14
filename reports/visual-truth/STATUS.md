@@ -33,3 +33,12 @@ Started 2026-08-14. This file is updated as work proceeds so a restart can resum
 - 08:58 Self-inflicted: `pkill -f vt-seethrough` also matched the RunPod CLI (the tool name was
   inside its --command string) and killed the GPU job. Pod terminated cleanly via
   `node tools/runpod/cli.mjs cleanup`; ~2 minutes at $0.27/hr. Relaunched detached.
+- 09:05 GPU: RunPod provisioning gets as far as a live Pod (RTX A5000, SECURE, $0.27/hr,
+  API-confirmed RUNNING with a public SSH port) and then cannot connect. Two layers:
+    * raw outbound TCP is blocked entirely (`/dev/tcp/69.30.85.220/22060` times out);
+    * the agent HTTP proxy does accept CONNECT to that host:port, but /root/.ccr/README.md
+      says "TLS is re-terminated there", and SSH is not TLS, so the tunnelled session dies at
+      `kex_exchange_identification: Connection closed by remote host`.
+  So the GPU is reachable for API calls and not reachable for work. Both pods created were
+  terminated via `node tools/runpod/cli.mjs cleanup` (deletion API-confirmed); total spend is a
+  few minutes at $0.27/hr. All rendering below is SwiftShader and is labelled as such.
