@@ -81,10 +81,19 @@ function spansFor(text, cands) {
     return String(text).split(/\s+/).filter(Boolean).map((w) => ({ text: w, topic: `word:${w.toLowerCase()}` }));
   }
   if (ARM === 'propernoun') {
+    // The plausible wrong build, and it has to be genuinely plausible or it is not a control:
+    // it lights every capitalised phrase AND resolves the phrase to a topic when one happens to
+    // share its name. So it gets credit on recall for the topics it does light — which is the
+    // whole seduction of the approach — and pays for it on precision, because most of what it
+    // lights promises nothing. An arm that could not score on recall at all would be a broken
+    // null, not a control.
     const out = [];
     let m;
     PROPER.lastIndex = 0;
-    while ((m = PROPER.exec(String(text)))) out.push({ text: m[1], topic: `proper:${m[1].toLowerCase()}` });
+    while ((m = PROPER.exec(String(text)))) {
+      const hit = topicsPresent(m[1], cands, { stem: true });
+      out.push({ text: m[1], topic: hit.length ? hit[0] : `proper:${m[1].toLowerCase()}` });
+    }
     return out;
   }
   return markLinks(text, cands).filter((s) => s.topic);
@@ -95,7 +104,7 @@ function spansFor(text, cands) {
 // "a link that is not a promise is worse than no link."
 const answerable = new Set([...topics.values()].filter((t) => t.infos.length).map((t) => t.id));
 
-let lit = 0, truthful = 0, present = 0, marked = 0, texts = 0, chars = 0;
+let lit = 0, truthful = 0, present = 0, marked = 0, texts = 0, chars = 0, subsumed = 0;
 const missedBy = new Map();
 const worst = [];
 
@@ -114,7 +123,23 @@ for (const t of topics.values()) {
     present += inText.length;
     const got = inText.filter((id) => litIds.has(id));
     marked += got.length;
-    for (const id of inText) if (!litIds.has(id)) missedBy.set(id, (missedBy.get(id) || 0) + 1);
+    // SUBSUMPTION IS NOT A MISS, AND SAYING SO IS NOT MOVING THE BAR.
+    //
+    // `the-salt-factor` and `the-factor` are both topics; so are `the-office-annexe` and
+    // `the-office`. The matcher resolves overlaps longest-first, so "a salt factor" lights
+    // `the-salt-factor` — the MORE SPECIFIC promise, and the right one — while the independent
+    // denominator counts `the-factor` as present and therefore as missed. That is the single
+    // largest component of our recall gap and it is correct behaviour being penalised.
+    //
+    // It is reported SEPARATELY and the GRADED number stays the strict one, because rounding in
+    // our own favour on the metric the item scores is exactly how a bar gets quietly lowered.
+    for (const id of inText) {
+      if (litIds.has(id)) continue;
+      const cand = [{ id, label: labelOf(id) }];
+      const inside = spans.some((s) => answerable.has(s.topic) && topicsPresent(s.text, cand, { stem: true }).length);
+      if (inside) subsumed++;
+      missedBy.set(id, (missedBy.get(id) || 0) + 1);
+    }
     if (inText.length && got.length < inText.length && worst.length < 12) {
       worst.push({ topic: t.id, file: info.file, missed: inText.filter((id) => !litIds.has(id)), text: info.x.slice(0, 180) });
     }
@@ -147,6 +172,9 @@ const report = {
   topics_present: present,
   topics_marked: marked,
   recall: present ? +(marked / present).toFixed(4) : null,
+  // Diagnostic, never graded: see the note beside `subsumed` above.
+  topics_subsumed_by_a_longer_link: subsumed,
+  recall_excluding_subsumed: present - subsumed > 0 ? +(marked / (present - subsumed)).toFixed(4) : null,
   bar: { precision: 0.98, recall: 0.95 },
   worst_misses: worst,
   most_missed: [...missedBy.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10).map(([id, n]) => ({ id, n })),
@@ -165,7 +193,8 @@ console.log(`link-census [arm=${ARM}] over ${texts} authored answers in ${topics
 console.log(`  spans lit          ${lit}`);
 console.log(`  precision          ${pct(report.precision)}  (bar 98.00%)`);
 console.log(`  topics in text     ${present}`);
-console.log(`  recall             ${pct(report.recall)}  (bar 95.00%)`);
+console.log(`  recall             ${pct(report.recall)}  (bar 95.00%)  [graded]`);
+console.log(`  of the misses, ${subsumed} were subsumed by a longer, more specific link; recall excluding those ${pct(report.recall_excluding_subsumed)} (diagnostic, not graded)`);
 console.log(`  AddTopic edges     ${edges}, named in the text that unlocks them ${edgesNamed} (${pct(report.addtopic_named_frac)})`);
 console.log(`  -> ${OUT}`);
 

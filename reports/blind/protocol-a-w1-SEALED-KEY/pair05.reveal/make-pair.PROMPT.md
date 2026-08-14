@@ -1,4 +1,4 @@
-# Blind comparison — pack 20260814T160050Z-image
+# Blind comparison — pack 20260814T160245Z-image
 
 You are judging two artifacts. You do **not** know which is which, and you must not try to
 find out. One of them was produced by the project under review; the other is a reference.

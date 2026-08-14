@@ -81,11 +81,28 @@ function populate(srcRoot, destRoot, rel, writable, stats) {
     }
     return;
   }
+  if (st.isSymbolicLink()) {
+    // W1-20 round 3, reported by `critic-w1-20-r2` as "a real gap in a tool HAZARDS §5a
+    // recommends": the comment below used to say no symlinks exist under game/ or tools/. They do
+    // — `tools/node_modules/.bin/` is entirely symlinks — so the round-2 critic could not build
+    // its null control with this tool at all and made the clone by hand with `cp -al`.
+    //
+    // A symlink is REPRODUCED, not followed and not linked. Reproducing it keeps the clone's
+    // `node_modules/.bin` working (the targets are relative and resolve inside the clone), and it
+    // is the only placement that cannot silently change what the control executes: hard-linking
+    // the *target* would make a writable path's edit visible through the link, and copying the
+    // target would fork a binary the arms are supposed to share.
+    const to = fs.readlinkSync(src);
+    const dest = path.join(destRoot, rel);
+    ensureDir(path.dirname(dest));
+    fs.symlinkSync(to, dest);
+    stats.symlinked = (stats.symlinked || 0) + 1;
+    return;
+  }
   if (!st.isFile()) {
-    // No symlinks or special files exist under game/ or tools/ today (checked: `find game tools
-    // -type l` is empty). If that ever changes, fail loudly rather than silently drop a file a
-    // control might need.
-    throw new Error(`control-clone: ${rel} is neither a regular file nor a directory (mode ${st.mode.toString(8)}); refusing to guess how to place it`);
+    // Sockets, fifos, devices. Still loud: silently dropping a file a control might need is how a
+    // control arm comes to differ from the shipping arm in a way nobody wrote down.
+    throw new Error(`control-clone: ${rel} is neither a regular file, a directory nor a symlink (mode ${st.mode.toString(8)}); refusing to guess how to place it`);
   }
   const dest = path.join(destRoot, rel);
   ensureDir(path.dirname(dest));
@@ -145,7 +162,7 @@ export function makeControlClone(opts = {}) {
   ensureDir(dir);
 
   const stats = {
-    linked: 0, copiedWritable: 0, copiedFallback: 0,
+    linked: 0, copiedWritable: 0, copiedFallback: 0, symlinked: 0,
     apparentBytes: 0, newBytes: 0, linkFallbacks: [],
   };
   for (const rel of [...paths, ...extra]) populate(root, dir, rel, writable, stats);
@@ -169,6 +186,7 @@ export function makeControlClone(opts = {}) {
     headSha,
     stats: {
       linked: stats.linked,
+      symlinked: stats.symlinked,
       copiedWritable: stats.copiedWritable,
       copiedFallback: stats.copiedFallback,
       apparentBytes: stats.apparentBytes,

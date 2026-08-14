@@ -157,6 +157,68 @@ const RULES = [
   { id: 'local_contrast_med', class: 'quality',    matched: false, why: 'local micro-contrast — the finding' },
 ];
 
+/**
+ * PNG-level facts, read out of the container rather than out of the decoded pixels.
+ *
+ * WHY THIS IS SEPARATE FROM THE STATISTICAL BATTERY BELOW, AND WHY IT GATES HARDER
+ * -------------------------------------------------------------------------------
+ * The statistical rules ask "does this channel DECIDE the pack" and need five pairs to say so —
+ * weak power, honestly declared. These do not need power at all: a single pair whose two arms are
+ * different file formats, different bit depths, or where one arm carries an EXIF block naming a
+ * camera or an editor, is decidable on its own, by one look, with no statistics. HAZARDS.md §0b
+ * is the reason this is checked in BOTH directions rather than "is ours the odd one out": a guard
+ * that only fires when the leak lands on the arm its author expected is a guard with one eye.
+ */
+function pngFacts(file) {
+  const buf = fs.readFileSync(file);
+  const sig = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+  const isPng = buf.length > 8 && buf.subarray(0, 8).equals(sig);
+  const facts = { file, format: isPng ? 'PNG' : `NOT-PNG(${buf.subarray(0, 4).toString('hex')})`, bytes: buf.length, chunks: [], metadata_chunks: [], bit_depth: null, colour_type: null, interlace: null, width: null, height: null };
+  if (!isPng) return facts;
+  let off = 8;
+  while (off + 8 <= buf.length) {
+    const len = buf.readUInt32BE(off);
+    const type = buf.subarray(off + 4, off + 8).toString('latin1');
+    facts.chunks.push(type);
+    if (type === 'IHDR') {
+      facts.width = buf.readUInt32BE(off + 8);
+      facts.height = buf.readUInt32BE(off + 12);
+      facts.bit_depth = buf[off + 16];
+      facts.colour_type = buf[off + 17];
+      facts.interlace = buf[off + 20];
+    }
+    // Every chunk that can carry a human-readable or provenance-bearing payload.
+    if (['tEXt', 'iTXt', 'zTXt', 'eXIf', 'tIME', 'pHYs', 'iCCP', 'sRGB', 'gAMA'].includes(type)) facts.metadata_chunks.push(type);
+    if (type === 'IEND') break;
+    off += 12 + len;
+  }
+  return facts;
+}
+
+/** Returns a list of structural leak descriptions for one pair; empty means clean. */
+function structuralLeaks(name, aFile, bFile) {
+  const A = pngFacts(aFile); const B = pngFacts(bFile);
+  const out = [];
+  const cmp = (field, label) => {
+    if (JSON.stringify(A[field]) !== JSON.stringify(B[field])) {
+      out.push(`${name}: ${label} differs between the arms — A=${JSON.stringify(A[field])} B=${JSON.stringify(B[field])}`);
+    }
+  };
+  if (A.format !== 'PNG' || B.format !== 'PNG') out.push(`${name}: both arms must be PNG — A=${A.format} B=${B.format}`);
+  cmp('format', 'file format');
+  cmp('bit_depth', 'PNG bit depth');
+  cmp('colour_type', 'PNG colour type');
+  cmp('interlace', 'PNG interlace method');
+  cmp('width', 'pixel width');
+  cmp('height', 'pixel height');
+  // Metadata is a leak whichever arm carries it, and it is a leak even when BOTH carry it if the
+  // sets differ. Identical, empty is the only clean state.
+  if (A.metadata_chunks.length || B.metadata_chunks.length) {
+    out.push(`${name}: metadata chunks present — A=[${A.metadata_chunks}] B=[${B.metadata_chunks}]. A judge can read these without decoding a pixel.`);
+  }
+  return out;
+}
+
 function loadPairs(packsDir, revealsDir) {
   const pairs = [];
   for (const name of fs.readdirSync(packsDir).sort()) {
@@ -170,6 +232,15 @@ function loadPairs(packsDir, revealsDir) {
         process.exit(4);
       }
     }
+    // FILENAME LEAKAGE, and "nothing else" (RI-VIS06 §A). The two names must be exactly A.png and
+    // B.png, and there must be no third file — a stray manifest, prompt or contact sheet in the
+    // pack directory is a label whatever it is called, and Ruling S51 voids a pack whose
+    // counterpart arm is derivable from anything shipped alongside the images.
+    const listing = fs.readdirSync(dir).sort();
+    if (listing.length !== 2 || listing[0] !== 'A.png' || listing[1] !== 'B.png') {
+      console.error(`STRUCTURAL: pack ${name} holds ${JSON.stringify(listing)}; a Protocol A pack is exactly ["A.png","B.png"] and nothing else`);
+      process.exit(4);
+    }
     const keyFile = path.join(revealsDir, `${name}.reveal`, 'mapping.json');
     if (!fs.existsSync(keyFile)) { console.error(`STRUCTURAL: no reveal key for pair ${name} at ${keyFile}`); process.exit(4); }
     const key = JSON.parse(fs.readFileSync(keyFile, 'utf8'));
@@ -179,35 +250,85 @@ function loadPairs(packsDir, revealsDir) {
 }
 
 if (args['self-test']) {
-  // The gate must go RED on a pack that is decidable, or it is an inert probe (RULES.md 4).
-  const tmp = fs.mkdtempSync('/tmp/imgleak-');
-  const packs = path.join(tmp, 'packs'); const reveals = path.join(tmp, 'reveals');
+  /**
+   * THE BATTERY. RULES.md rule 4: break the thing you measure on purpose and confirm the
+   * instrument goes red. One deliberately-leaky pack is not enough to establish that, for the
+   * reason HAZARDS.md §0 gives — a suite whose arms all fabricate the disputed input identically
+   * cannot falsify its own premise. So there are SEVEN arms, they are required to DISAGREE, and
+   * one of them is CLEAN and must come back GREEN. A gate that reds on everything is exactly as
+   * useless as a gate that reds on nothing, and only the clean arm can tell those two apart.
+   *
+   * Each leaky arm injects ONE channel and names the exit code it must produce:
+   *   exit 4 = structural (decidable from the container, no statistics needed)
+   *   exit 3 = a held-out provenance statistic swept the pack
+   */
+  const scenarios = [
+    { id: 'clean', want: 0, why: 'both arms identical in container and comparable in statistics — MUST pass, or the gate is a rubber stamp' },
+    { id: 'dimensions', want: 4, why: 'one arm 64x64, the other 48x48 — a resolution mismatch is RI-VIS06 §D row 2' },
+    { id: 'format', want: 4, why: 'one arm is a JPEG wearing a .png name — §D row 3, "never mix a JPEG reference with a PNG capture"' },
+    { id: 'bitdepth', want: 4, why: 'one arm written at PNG bit depth 16, the other 8' },
+    { id: 'metadata', want: 4, why: 'one arm carries a tEXt chunk — §D row 1, EXIF/metadata' },
+    { id: 'extrafile', want: 4, why: 'a third file in the pack directory — §A "nothing else", Ruling S51' },
+    { id: 'quantised', want: 3, why: 'the reference arm quantised to 8 luma levels on every pair — a swept held-out provenance statistic' },
+  ];
+
   const mk = `
-import sys, os
+import sys, os, random
 from PIL import Image
-import random
-root, rev = sys.argv[1], sys.argv[2]
+from PIL.PngImagePlugin import PngInfo
+mode, root, rev = sys.argv[1], sys.argv[2], sys.argv[3]
 random.seed(7)
 for i in range(5):
     d = os.path.join(root, 'p%d' % i); os.makedirs(d, exist_ok=True)
     os.makedirs(os.path.join(rev, 'p%d.reveal' % i), exist_ok=True)
-    clean = Image.new('RGB', (64, 64))
-    clean.putdata([(random.randrange(256),)*3 for _ in range(64*64)])
-    # the "reference" arm is deliberately quantised to 8 luma levels: a blatant provenance channel
-    leaky = clean.point(lambda v: (v // 32) * 32)
-    clean.save(os.path.join(d, 'A.png')); leaky.save(os.path.join(d, 'B.png'))
+    def noise(w, h, seedoff):
+        im = Image.new('RGB', (w, h))
+        im.putdata([(random.randrange(256),)*3 for _ in range(w*h)])
+        return im
+    a = noise(64, 64, 0); b = noise(64, 64, 1)
+    pa, pb = os.path.join(d, 'A.png'), os.path.join(d, 'B.png')
+    if mode == 'clean':
+        a.save(pa); b.save(pb)
+    elif mode == 'dimensions':
+        a.save(pa); b.resize((48, 48)).save(pb)
+    elif mode == 'format':
+        a.save(pa); b.save(pb, format='JPEG', quality=90)      # .png name, JPEG bytes
+    elif mode == 'bitdepth':
+        a.save(pa); b.convert('I;16').save(pb)                  # 16-bit greyscale PNG
+    elif mode == 'metadata':
+        a.save(pa)
+        info = PngInfo(); info.add_text('Software', 'Adobe Photoshop 2026')
+        b.save(pb, pnginfo=info)
+    elif mode == 'extrafile':
+        a.save(pa); b.save(pb)
+        open(os.path.join(d, 'contact-sheet.txt'), 'w').write('ours is B')
+    elif mode == 'quantised':
+        a.save(pa); b.point(lambda v: (v // 32) * 32).save(pb)
     open(os.path.join(rev, 'p%d.reveal' % i, 'mapping.json'), 'w').write('{"A":"ours","B":"reference"}')
 `;
-  execFileSync('python3', ['-c', mk, packs, reveals]);
-  let r = '';
-  try {
-    r = execFileSync(process.execPath, [process.argv[1], '--packs', packs, '--reveals', reveals], { encoding: 'utf8' }).toString();
-  } catch (e) { r = String(e.stdout || ''); }   // exit 3 IS the expected outcome here
-  console.log('--- self-test ran the gate on a deliberately decidable pack ---');
-  const red = /LEAK/.test(r);
-  fs.rmSync(tmp, { recursive: true, force: true });
-  console.log(red ? 'SELF-TEST PASS: the gate flagged a pack it should flag' : 'SELF-TEST FAIL: the gate passed a decidable pack — it is inert');
-  process.exit(red ? 0 : 5);
+
+  let allOk = true;
+  console.log('image-leakcheck self-test — 7 arms, required to disagree. The CLEAN arm is the one\nthat proves the gate is not simply always red.\n');
+  for (const s of scenarios) {
+    const tmp = fs.mkdtempSync('/tmp/imgleak-');
+    const packs = path.join(tmp, 'packs'); const reveals = path.join(tmp, 'reveals');
+    execFileSync('python3', ['-c', mk, s.id, packs, reveals]);
+    let code = 0; let out = '';
+    try {
+      out = execFileSync(process.execPath, [process.argv[1], '--packs', packs, '--reveals', reveals], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).toString();
+    } catch (e) { code = e.status ?? -1; out = String(e.stdout || '') + String(e.stderr || ''); }
+    fs.rmSync(tmp, { recursive: true, force: true });
+    const ok = code === s.want;
+    if (!ok) allOk = false;
+    const first = (out.split('\n').find((l) => /STRUCTURAL|LEAK|GATE:/.test(l)) || '').trim().slice(0, 130);
+    console.log(`${ok ? 'PASS' : 'FAIL'}  ${String(s.id).padEnd(11)} exit ${code} (wanted ${s.want})  ${s.why}`);
+    if (first) console.log(`        ${first}`);
+  }
+  console.log('');
+  console.log(allOk
+    ? 'SELF-TEST PASS: every injected channel was caught, each with the right severity, and the clean\npack still passed — so the gate discriminates rather than refusing everything.'
+    : 'SELF-TEST FAIL: at least one arm did not behave as required. Do not trust this gate.');
+  process.exit(allOk ? 0 : 5);
 }
 
 if (!args.packs || !args.reveals) {
@@ -216,6 +337,17 @@ if (!args.packs || !args.reveals) {
 }
 const pairs = loadPairs(path.resolve(String(args.packs)), path.resolve(String(args.reveals)));
 if (!pairs.length) { console.error('no pairs found'); process.exit(1); }
+
+// STRUCTURAL GATE, before a single statistic is computed. These leaks need no power: one pair is
+// enough, because a judge can read them off the container without decoding a pixel.
+const structural = pairs.flatMap((p) => structuralLeaks(p.name, p.a, p.b));
+if (structural.length) {
+  console.error('STRUCTURAL LEAKS — the pack is decidable from the files themselves:');
+  for (const s of structural) console.error(`  ${s}`);
+  console.error('\nDo not dispatch a judge.');
+  process.exit(4);
+}
+console.log(`structural gate: ${pairs.length} pair(s) — both arms PNG, identical dimensions, bit depth, colour type and interlace, no text/EXIF/timestamp chunks on either side, and each pack directory holds exactly A.png and B.png.\n`);
 const files = pairs.flatMap((p) => [p.a, p.b]);
 const stats = JSON.parse(execFileSync('python3', ['-c', MEASURE, ...files], { encoding: 'utf8', maxBuffer: 1 << 28 }));
 

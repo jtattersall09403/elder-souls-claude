@@ -1,0 +1,327 @@
+#!/usr/bin/env node
+// door-yaw-offline.mjs — the whole 115-interior population, both directions, without a browser.
+//
+// WHY AN OFFLINE ARM EXISTS AT ALL. The in-game sweep (`tools/harness/door-yaw-sweep.mjs`) is the
+// authority — it drives the real `useDoor()`/`leaveInterior()` verbs in the running engine and it
+// is what any claim about the shipped game must rest on. It also costs a browser and ~20-30 s per
+// interior on a box whose contention gate reads WAIT for hours at a time, which is exactly why the
+// previous attempt at this sweep reached 8 of 115 rows and the one before it reached 0.
+//
+// So this tool measures the SAME GEOMETRY through the SAME MODULES, in Node, in seconds:
+//
+//   game/src/render/exterior.js  planSettlement() / settlementSolids()   the town's wall slabs
+//   game/src/render/interior.js  interiorCollisionShapes()               the room's shell
+//   game/src/sim/collision.js    CollisionCell.contains()                the containment test
+//   game/src/sim/settlement.js   exitFacing() / entryFacing()            THE SHIPPED RULE ITSELF
+//
+// Nothing here re-implements a facing rule or a containment test. The one thing it does restate is
+// `Province._meshY()` (province.js:768) — twelve lines of bilinear sampling of `WorldField` — and
+// it is restated rather than imported because `world/province.js` pulls in THREE, the renderer's
+// visual foundation and a live GPU context. That restatement is the tool's one soft joint, so it
+// is NOT taken on trust: `--validate <in-game sweep json>` compares this tool's clearance against
+// the browser's, row by row, on every interior both have measured, and prints the disagreement.
+// An offline number that has not been validated against the running game is a hypothesis.
+//
+// THE BEFORE ARM IS A DISTRIBUTION, NOT A DRAW. Before the fix, a door wrote position and never
+// orientation, so what you faced afterwards was whatever you faced before — and that is not one
+// number. Worse, it is not even a number correlated with the world: inside a room the yaw is a
+// LOCAL yaw in the room's own frame, and carrying it through the door reinterprets it as a WORLD
+// yaw, so the prior facing arrives at the doorstep effectively arbitrary. A single seeded prior
+// (the in-game sweep uses 200 deg, for comparability) measures one draw from that. Offline the
+// whole distribution is free, so the baseline is reported as: over all 36 ten-degree prior yaws,
+// what fraction of (interior x prior yaw) pairs fail, and how many interiors fail for at least
+// one prior. That is the honest shape of "the old behaviour".
+//
+// THE DEFINITION is `tools/harness/door-yaw-sweep.mjs`'s, unchanged and deliberately duplicated
+// nowhere: clearance_m to the first solid at eye height, 0.25 m march, 12 m cap; occluded_frac =
+// the share of 21 rays across the forward 60 deg blocked closer than 3 m; PASS = clearance >= 3 m
+// AND occluded <= 0.34.
+//
+// USAGE
+//   node tools/world/door-yaw-offline.mjs [--json <path>] [--validate <sweep json>] [--only a,b]
+//        [--reach 12] [--near 3] [--min-clear 3] [--max-occl 0.34] [--seed-yaw 200]
+'use strict';
+
+import path from 'node:path';
+import fs from 'node:fs';
+import { execSync } from 'node:child_process';
+import { parseArgs, wantsHelp, usage, writeJson, REPO_ROOT, REPORTS_DIR, ensureDir } from '../lib/cli.mjs';
+import { planSettlement, settlementSolids, insideBuilding, applyInteriorBounds } from '../../game/src/render/exterior.js';
+import { interiorCollisionShapes } from '../../game/src/render/interior.js';
+import { CollisionCell } from '../../game/src/sim/collision.js';
+import { exitFacing, entryFacing } from '../../game/src/sim/settlement.js';
+import { WorldField } from '../../game/src/world/field.js';
+
+const USAGE = `
+door-yaw-offline.mjs — all 115 interiors, both directions, offline, through the game's own modules.
+
+USAGE
+  node tools/world/door-yaw-offline.mjs [--json <path>] [--validate <in-game sweep json>]
+       [--only a,b] [--reach 12] [--near 3] [--min-clear 3] [--max-occl 0.34] [--seed-yaw 200]
+`;
+
+const args = parseArgs();
+if (wantsHelp(args)) usage(USAGE);
+const REACH = Number(args.reach || 12);
+const NEAR = Number(args.near || 3);
+const MIN_CLEAR = Number(args['min-clear'] || 3);
+const MAX_OCCL = Number(args['max-occl'] || 0.34);
+const SEED_YAW = args['seed-yaw'] === undefined ? 200 : Number(args['seed-yaw']);
+const say = (s) => process.stdout.write(s + '\n');
+
+const DATA = path.join(REPO_ROOT, 'game/data');
+const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
+const readDir = (rel) => {
+  const dir = path.join(DATA, rel);
+  const out = {};
+  for (const f of fs.readdirSync(dir)) if (f.endsWith('.json')) out[f.replace(/\.json$/, '')] = readJson(path.join(dir, f));
+  return out;
+};
+
+// ---- the ground, restated from Province._meshY (province.js:768) -------------------------------
+// TILE_M / TILE_SEG are province.js:22 and :29. `onDeckAt` chooses the bare height on a built deck,
+// exactly as the drawn mesh does; the building slabs are based on this, so getting it wrong lifts
+// or sinks a wall relative to the eye. See the module header on why it is restated.
+const TILE_M = 300, TILE_SEG = 44;
+function makeMeshY(field) {
+  const G = TILE_M / TILE_SEG;
+  const cache = new Map();
+  const at = (i, j) => {
+    const k = i * 1000003 + j;
+    let v = cache.get(k);
+    if (v === undefined) {
+      const px = i * G, pz = j * G;
+      v = field.onDeckAt(px, pz) ? field.bareHeightAt(px, pz) : field.heightAt(px, pz);
+      cache.set(k, v);
+    }
+    return v;
+  };
+  return (x, z) => {
+    const i = Math.floor(x / G), j = Math.floor(z / G);
+    const tx = x / G - i, tz = z / G - j;
+    const a = at(i, j) + (at(i + 1, j) - at(i, j)) * tx;
+    const b = at(i, j + 1) + (at(i + 1, j + 1) - at(i, j + 1)) * tx;
+    return a + (b - a) * tz;
+  };
+}
+
+// ---- the definition ---------------------------------------------------------------------------
+const d2r = Math.PI / 180;
+const norm = (a) => ((a % 360) + 360) % 360;
+const fwd = (yaw) => [Math.sin(yaw * d2r), Math.cos(yaw * d2r)];
+
+function clearance(cell, x, z, yaw, eye) {
+  const f = fwd(yaw);
+  for (let d = 0.25; d <= REACH + 1e-9; d += 0.25) {
+    if (cell.contains(x + f[0] * d, eye, z + f[1] * d)) return +(d - 0.25).toFixed(2);
+  }
+  return REACH;
+}
+function occluded(cell, x, z, yaw, eye) {
+  let blocked = 0, n = 0;
+  for (let a = -30; a <= 30 + 1e-9; a += 3) { n++; if (clearance(cell, x, z, yaw + a, eye) < NEAR) blocked++; }
+  return +(blocked / n).toFixed(4);
+}
+const passes = (c, o) => c >= MIN_CLEAR && o <= MAX_OCCL;
+
+/** Every ten-degree bearing scored once — the ceiling, the floor, and the whole prior-yaw sweep. */
+function scan(cell, x, z, eye) {
+  const rows = [];
+  for (let a = 0; a < 360; a += 10) {
+    const c = clearance(cell, x, z, a, eye);
+    const o = occluded(cell, x, z, a, eye);
+    rows.push({ yaw_deg: a, clearance_m: c, occluded_frac: o, pass: passes(c, o) });
+  }
+  const cs = rows.map((r) => r.clearance_m);
+  return {
+    rows,
+    best_clearance_m: Math.max(...cs),
+    worst_clearance_m: Math.min(...cs),
+    best_yaw_deg: rows[cs.indexOf(Math.max(...cs))].yaw_deg,
+    passing_bearings: rows.filter((r) => r.pass).length,
+    point_can_pass: rows.some((r) => r.pass),
+    // RULES.md rule 4: a probe that cannot fail is worse than no probe. If even the WORST of 36
+    // bearings runs to the cap, this point saw no geometry and its PASS is not a measurement.
+    no_geometry_visible: Math.min(...cs) >= REACH,
+  };
+}
+
+const main = () => {
+  const settlements = readDir('world/settlements');
+  const interiors = readDir('world/interiors');
+  const field = new WorldField(readJson(path.join(DATA, 'world/terrain.json')),
+    readJson(path.join(DATA, 'world/regions.json')), readJson(path.join(DATA, 'world/water.json')));
+  const meshY = makeMeshY(field);
+
+  const docs = Object.values(settlements);
+  const plans = docs.map((d) => planSettlement(d, interiors));
+  applyInteriorBounds(plans, interiors, docs);
+  const planFor = new Map(plans.map((p) => [p.id, p]));
+
+  const only = args.only ? String(args.only).split(',').map((s) => s.trim()) : null;
+  const ids = Object.keys(interiors).filter((i) => !only || only.includes(i)).sort();
+
+  const out = {
+    schema: 'elder-souls/door-yaw-offline@1',
+    generated_at: new Date().toISOString(),
+    commit: (() => { try { return execSync('git rev-parse --short HEAD', { cwd: REPO_ROOT }).toString().trim(); } catch { return null; } })(),
+    population: Object.keys(interiors).length,
+    definition: {
+      clearance_m: `first solid at eye height (ground + 1.6), 0.25 m march, ${REACH} m cap, CollisionCell.contains()`,
+      occluded_frac: `share of 21 rays across the forward 60 deg blocked closer than ${NEAR} m`,
+      pass: `clearance_m >= ${MIN_CLEAR} AND occluded_frac <= ${MAX_OCCL}`,
+      before_arm: 'the prior yaw survives the placement — swept over all 36 ten-degree priors, and separately at the seeded prior for comparability with the in-game run',
+      seed_yaw_deg: SEED_YAW,
+    },
+    rows: [],
+  };
+
+  for (const id of ids) {
+    const rec = interiors[id];
+    const cont = rec.continuity || {};
+    const plan = planFor.get(rec.settlement);
+    const row = { id, settlement: rec.settlement, entry_side: cont.entry_side,
+      declared_bearing_deg: Number(rec.door_world_bearing_deg) };
+
+    // ---- OUT: the doorstep, in world coordinates, against the town's own wall slabs -----------
+    const out3 = cont.exterior_spawn || rec.exterior_door;
+    if (!plan) row.exit = { skipped: `no settlement plan for ${rec.settlement}` };
+    else if (!Array.isArray(out3)) row.exit = { skipped: 'no exterior spawn' };
+    else {
+      const gy = meshY(out3[0], out3[2]);
+      const eye = gy + 1.6;
+      const solids = settlementSolids(plan, out3[0], out3[2], 45, (bx, bz) => meshY(bx, bz));
+      const cell = new CollisionCell(`settlement:${plan.id}`, solids, { class: 'exterior' });
+      const face = exitFacing(rec);
+      const sc = scan(cell, out3[0], out3[2], eye);
+      const fixC = face ? clearance(cell, out3[0], out3[2], face.yaw_deg, eye) : null;
+      const fixO = face ? occluded(cell, out3[0], out3[2], face.yaw_deg, eye) : null;
+      const seedC = clearance(cell, out3[0], out3[2], SEED_YAW, eye);
+      const seedO = occluded(cell, out3[0], out3[2], SEED_YAW, eye);
+      row.exit = {
+        pos: [out3[0], +gy.toFixed(2), out3[2]], shapes: solids.length,
+        fixed: face ? { yaw_deg: +face.yaw_deg.toFixed(1), source: face.source, clearance_m: fixC, occluded_frac: fixO, pass: passes(fixC, fixO) } : null,
+        seeded_prior: { yaw_deg: SEED_YAW, clearance_m: seedC, occluded_frac: seedO, pass: passes(seedC, seedO) },
+        any_prior: { passing_of_36: sc.passing_bearings, failing_of_36: 36 - sc.passing_bearings },
+        best_clearance_m: sc.best_clearance_m, best_yaw_deg: sc.best_yaw_deg,
+        worst_clearance_m: sc.worst_clearance_m,
+        point_can_pass: sc.point_can_pass, no_geometry_visible: sc.no_geometry_visible,
+        inside_a_building: !!insideBuilding(plan, out3[0], out3[2]),
+        bearings: sc.rows,
+      };
+    }
+
+    // ---- IN: the room, in its own local frame, against its own shell --------------------------
+    const isp = cont.interior_spawn;
+    if (!Array.isArray(isp)) row.enter = { skipped: 'no interior spawn' };
+    else {
+      const shapes = interiorCollisionShapes(rec);
+      const cell = new CollisionCell(`interior:${id}`, shapes, { class: 'interior' });
+      const eye = isp[1] + 1.6;
+      const face = entryFacing(rec);
+      const sc = scan(cell, isp[0], isp[2], eye);
+      const fixC = face ? clearance(cell, isp[0], isp[2], face.yaw_deg, eye) : null;
+      const fixO = face ? occluded(cell, isp[0], isp[2], face.yaw_deg, eye) : null;
+      const seedC = clearance(cell, isp[0], isp[2], SEED_YAW, eye);
+      const seedO = occluded(cell, isp[0], isp[2], SEED_YAW, eye);
+      row.enter = {
+        pos: isp.slice(), shapes: shapes.length,
+        fixed: face ? { yaw_deg: +face.yaw_deg.toFixed(1), source: face.source, clearance_m: fixC, occluded_frac: fixO, pass: passes(fixC, fixO) } : null,
+        seeded_prior: { yaw_deg: SEED_YAW, clearance_m: seedC, occluded_frac: seedO, pass: passes(seedC, seedO) },
+        any_prior: { passing_of_36: sc.passing_bearings, failing_of_36: 36 - sc.passing_bearings },
+        best_clearance_m: sc.best_clearance_m, best_yaw_deg: sc.best_yaw_deg,
+        worst_clearance_m: sc.worst_clearance_m,
+        point_can_pass: sc.point_can_pass, no_geometry_visible: sc.no_geometry_visible,
+        bearings: sc.rows,
+      };
+    }
+    out.rows.push(row);
+  }
+
+  // ---- roll-up ---------------------------------------------------------------------------------
+  const med = (a) => { const s = a.slice().sort((x, y) => x - y); return s.length ? s[Math.floor(s.length / 2)] : null; };
+  const side = (key) => {
+    const rs = out.rows.filter((r) => r[key] && !r[key].skipped);
+    const fixed = rs.filter((r) => r[key].fixed);
+    const priorPairs = rs.reduce((a, r) => a + r[key].any_prior.failing_of_36, 0);
+    return {
+      n: rs.length,
+      fixed_failing: fixed.filter((r) => !r[key].fixed.pass).length,
+      fixed_failing_ids: fixed.filter((r) => !r[key].fixed.pass).map((r) => r.id),
+      fixed_median_clearance_m: med(fixed.map((r) => r[key].fixed.clearance_m)),
+      fixed_median_occluded: med(fixed.map((r) => r[key].fixed.occluded_frac)),
+      seeded_prior_failing: rs.filter((r) => !r[key].seeded_prior.pass).length,
+      seeded_prior_median_clearance_m: med(rs.map((r) => r[key].seeded_prior.clearance_m)),
+      any_prior_failing_pairs: priorPairs,
+      any_prior_total_pairs: rs.length * 36,
+      any_prior_failing_share: +(priorPairs / (rs.length * 36)).toFixed(4),
+      interiors_failing_for_some_prior: rs.filter((r) => r[key].any_prior.failing_of_36 > 0).length,
+      point_cannot_pass: rs.filter((r) => !r[key].point_can_pass).map((r) => r.id),
+      no_geometry_visible: rs.filter((r) => r[key].no_geometry_visible).map((r) => r.id),
+      no_rule: rs.filter((r) => !r[key].fixed).map((r) => r.id),
+      sources: rs.reduce((a, r) => { const k = r[key].fixed ? r[key].fixed.source : '(none)'; a[k] = (a[k] || 0) + 1; return a; }, {}),
+    };
+  };
+  out.summary = { exit: side('exit'), enter: side('enter') };
+
+  // ---- validation against the running game -----------------------------------------------------
+  if (args.validate) {
+    const v = JSON.parse(fs.readFileSync(path.resolve(String(args.validate)), 'utf8'));
+    const byId = new Map(out.rows.map((r) => [r.id, r]));
+    const pairs = [];
+    for (const r of v.rows || []) {
+      const mine = byId.get(r.id);
+      if (!mine) continue;
+      const ex = r.exit && r.exit.marks && r.exit.marks.f1;
+      if (ex && mine.exit && mine.exit.fixed) {
+        pairs.push({ id: r.id, side: 'exit', in_game_m: ex.clearance_m, offline_m: mine.exit.fixed.clearance_m,
+          in_game_yaw: ex.cam_yaw_deg, offline_yaw: mine.exit.fixed.yaw_deg,
+          in_game_occl: ex.occluded_frac, offline_occl: mine.exit.fixed.occluded_frac });
+      }
+      const en = r.enter && r.enter.marks && r.enter.marks.f1;
+      if (en && mine.enter && mine.enter.fixed) {
+        pairs.push({ id: r.id, side: 'enter', in_game_m: en.clearance_m, offline_m: mine.enter.fixed.clearance_m,
+          in_game_yaw: en.cam_yaw_deg, offline_yaw: mine.enter.fixed.yaw_deg,
+          in_game_occl: en.occluded_frac, offline_occl: mine.enter.fixed.occluded_frac });
+      }
+    }
+    const yawAgree = pairs.filter((p) => Math.abs(((p.in_game_yaw - p.offline_yaw + 540) % 360) - 180) < 1).length;
+    const clearAgree = pairs.filter((p) => Math.abs(p.in_game_m - p.offline_m) <= 0.5).length;
+    const verdictAgree = pairs.filter((p) => passes(p.in_game_m, p.in_game_occl) === passes(p.offline_m, p.offline_occl)).length;
+    out.validation = {
+      against: String(args.validate), pairs: pairs.length,
+      yaw_agrees_within_1deg: yawAgree, clearance_agrees_within_0p5m: clearAgree, verdict_agrees: verdictAgree,
+      disagreements: pairs.filter((p) => passes(p.in_game_m, p.in_game_occl) !== passes(p.offline_m, p.offline_occl)),
+      worst_clearance_gap_m: pairs.length ? +Math.max(...pairs.map((p) => Math.abs(p.in_game_m - p.offline_m))).toFixed(2) : null,
+      detail: pairs,
+    };
+  }
+
+  const outDir = path.join(REPORTS_DIR, 'door-yaw');
+  ensureDir(outDir);
+  const jsonPath = args.json ? path.resolve(String(args.json)) : path.join(outDir, 'offline-115.json');
+  writeJson(jsonPath, out);
+
+  say(`door-yaw-offline — ${out.rows.length} of ${out.population} interiors, commit ${out.commit}`);
+  say(`  PASS = clearance >= ${MIN_CLEAR} m AND occluded_frac <= ${MAX_OCCL} (near ${NEAR} m, cap ${REACH} m)`);
+  for (const k of ['exit', 'enter']) {
+    const s = out.summary[k];
+    say(`  ${k.toUpperCase()}  n=${s.n}`);
+    say(`    SHIPPED RULE   failing ${s.fixed_failing}/${s.n}   median clear ${s.fixed_median_clearance_m} m   median occl ${s.fixed_median_occluded}`);
+    say(`    BEFORE, seeded prior ${SEED_YAW} deg   failing ${s.seeded_prior_failing}/${s.n}   median clear ${s.seeded_prior_median_clearance_m} m`);
+    say(`    BEFORE, ANY prior (36 per interior)   failing pairs ${s.any_prior_failing_pairs}/${s.any_prior_total_pairs} = ${(s.any_prior_failing_share * 100).toFixed(1)}%   interiors failing for at least one prior: ${s.interiors_failing_for_some_prior}/${s.n}`);
+    say(`    points where NO bearing passes: ${s.point_cannot_pass.length}${s.point_cannot_pass.length ? ' — ' + s.point_cannot_pass.join(', ') : ''}`);
+    say(`    instrument saw no geometry: ${s.no_geometry_visible.length}${s.no_geometry_visible.length ? ' — ' + s.no_geometry_visible.slice(0, 10).join(', ') : ''}`);
+    say(`    rule sources: ${JSON.stringify(s.sources)}`);
+    if (s.fixed_failing) say(`    FAILING: ${s.fixed_failing_ids.join(', ')}`);
+  }
+  if (out.validation) {
+    const V = out.validation;
+    say(`  VALIDATION against the running game (${path.basename(V.against)}): ${V.pairs} paired measurement(s)`);
+    say(`    yaw agrees within 1 deg: ${V.yaw_agrees_within_1deg}/${V.pairs}   clearance within 0.5 m: ${V.clearance_agrees_within_0p5m}/${V.pairs}   PASS/FAIL verdict agrees: ${V.verdict_agrees}/${V.pairs}   worst gap ${V.worst_clearance_gap_m} m`);
+    for (const d of V.disagreements.slice(0, 8)) say(`    DISAGREES  ${d.id} ${d.side}: in-game ${d.in_game_m} m / ${d.in_game_occl}, offline ${d.offline_m} m / ${d.offline_occl}`);
+  }
+  say(`  json: ${path.relative(REPO_ROOT, jsonPath)}`);
+};
+
+main();

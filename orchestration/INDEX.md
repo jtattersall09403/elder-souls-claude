@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `1be74605`: 975 tools, 157 reference
-items, 198 pieces in flight.
+so it cannot drift. Generated at `b7a75d51`: 979 tools, 157 reference
+items, 200 pieces in flight.
 
-Its purpose is to stop 198+ concurrent agents each paying separately to discover the
+Its purpose is to stop 200+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -965,13 +965,14 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/uesp/uesp-query.mjs` — **no header comment**
 - `tools/uesp/uesp-stats.mjs` — **no header comment**
 
-### `tools/ui/` — 11
+### `tools/ui/` — 12
 
 - `tools/ui/compass-math.mjs` — the compass's arithmetic, checked against an INDEPENDENT derivation, plus the responsive dial geometry at every viewport the game is meant to be played at.
 - `tools/ui/critic-w1-21-r2-a.mjs` — the W1-21 ROUND-2 CRITIC's own instrument.
 - `tools/ui/critic-w1-21-r2-b.mjs` — the W1-21 ROUND-2 CRITIC's own instrument, passes C..G.
 - `tools/ui/critic-w1-21-r2-consume.mjs` — the W1-21 round-2 CRITIC's CONSUMPTION instrument (RI-MTH07).
 - `tools/ui/critic-w1-21-r2-doors-at-head.mjs` — RULES 12, applied to the round's headline result.
+- `tools/ui/dialogue-link-census.mjs` — The inline-link census — RI-UIX08 comparison method §2, headless, no browser.
 - `tools/ui/hud-compass-probe.mjs` — the compass and minimal mode, in the running game.
 - `tools/ui/w1-21-model-consumption.mjs` — Exhaustive RI-MTH07 coupling gate for every player-facing UISystem model/drawer in W1-21.
 - `tools/ui/w1-21-r3-browser.mjs` — W1-21 round 3's ONE browser: the derived `markers` field, CONSUMPTION, and the six screens.
@@ -979,7 +980,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 - `tools/ui/w1-21-r3-sample-table.mjs` — PUBLISH THE PER-SCREEN, PER-CHECK SAMPLE TABLE.
 
-### `tools/visual/` — 27
+### `tools/visual/` — 29
 
 - `tools/visual/actor-hole-control.mjs` — W1-30D — the null controls for `actor-orbit-holes.mjs`, run against patched SOURCE TREES.
 - `tools/visual/actor-orbit-holes.mjs` — W1-30D — the offline orbit hole detector.
@@ -1004,10 +1005,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/visual/w1-30-heightfalloff-arm.mjs` — **no header comment**
 - `tools/visual/w1-30-shader-hook-collision.mjs` — **no header comment**
 - `tools/visual/w1-30-shadow-casters.mjs` — **no header comment**
+- `tools/visual/w1-30-surface-orphan-census.mjs` — **no header comment**
 - `tools/visual/w1-30-terrain-acne-ab.mjs` — **no header comment**
 - `tools/visual/w1-30b-air.mjs` — **no header comment**
 - `tools/visual/w1-30b-probe.mjs` — **no header comment**
 - `tools/visual/w1-30b-roughness.mjs` — **no header comment**
+- `tools/visual/w1-water-lane-terms.mjs` — **no header comment**
 
 ### `tools/w1-26-continuation/` — 1
 
@@ -1046,7 +1049,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 160
+### `tools/world/` — 161
 
 - `tools/world/architecture.mjs` — RI-WLD14 M78-M84 builder instrument.
 - `tools/world/arrangement-audit.mjs` — **no header comment**
@@ -1135,6 +1138,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/crossing-deletefix.mjs` — **no header comment**
 - `tools/world/crossing-ridge-chart.mjs` — **no header comment**
 - `tools/world/crossing.mjs` — **no header comment**
+- `tools/world/door-yaw-offline.mjs` — the whole 115-interior population, both directions, without a browser.
 - `tools/world/env-consumption.mjs` — RI-MTH07 / ARBITRATION §3 — the CONSUMPTION probe for W1-02's clock and weather machine.
 - `tools/world/hazard-fire.mjs` — **no header comment**
 - `tools/world/locomotion-audit.mjs` — **no header comment**
@@ -1210,7 +1214,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **269 tools have no header comment**, so nobody can tell what they do without
+> **271 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1388,15 +1392,17 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `AUDIT-CONSUMPTION-CENSUS` | ? | enumerate game/data field families, grep game/src for readers, classify | — |
+| `W1-MAP-DEFECTS-r1-remediation` | landed; four of five defects closed with evidence, one measurement still owed |  | `game/src/ui/system.js` `game/src/input/touch.js` `game/src/engine.js` `tools/harness/map-probe.mjs` `tools/map/fog-control.mjs` `tools/map/player-route.mjs` |
+| `AUDIT-CITATION-STALENESS` | ? | Read ARBITRATION.md S-rulings, HAZARDS.md, OWNER-DIRECTIVES; build ruling->document revers | `orchestration/status/AUDIT-CITATION-STALENESS.json` |
+| `W1-THORN-PLATES` | in_progress | WIP — capture of the real opening path is running; report being written. | `orchestration/status/W1-THORN-PLATES.json` `reports/thorn-plates/silhouette-census.json` |
 | `W1-MAP-DEFECTS-r2` | in_progress | CHUNK 2 PICKS UP EXACTLY HERE. (1) FIRST AND MOST IMPORTANT — demonstrate CONSUMPTION of t | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/w1-map-defects-r2/` |
-| `W1-MAP-DEFECTS-r1-remediation` | landed_with_two_measurements_outstanding |  | `game/src/ui/system.js` `game/src/input/touch.js` `game/src/engine.js` `tools/harness/map-probe.mjs` `tools/map/fog-control.mjs` `tools/map/player-route.mjs` |
 | `W1-ORPHANED-SURFACE-SHADERS` | in_progress | Write the census tool (population + grouping by route), then develop the fix on a control  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` |
 | `W1-WATER-LANES` | starting | Read game/src/render/water.js, W1-30S status, ownership; re-derive band diagnosis. | `orchestration/status/W1-WATER-LANES.json` |
 | `W1-30E-KIT-DEFECTS` | built-awaiting-fresh-critic |  | `game/src/render/lib/kits.js` `tools/render/w1-30e-roof-extent.mjs` `tools/render/w1-30e-ground-albedo.mjs` `tools/visual/deck.mjs` `reports/w1-30e-kit-defects/README.md` `reports/blog-feed.jsonl` |
 | `plan-review2-w1-dlg-topic-web` | in-progress | read the bar, re-measure round 1's figures at HEAD, attack the null control / S51 / the se | `orchestration/status/plan-review2-w1-dlg-topic-web.json` |
 | `SPLIT-TRIAL-DISPATCH` | dispatched | On each chunk 1's completion: read its orchestration/status/<PIECE>.json, and dispatch chu | `orchestration/status/SPLIT-TRIAL-DISPATCH.json` |
 | `W1-DOOR-YAW-SWEEP` | ? | read HAZARDS.md, OWNER-DIRECTIVES, prior agent status file, settlement.js current state | `orchestration/status/W1-DOOR-YAW-SWEEP.json` |
-| `W1-THORN-PLATES` | in_progress | WIP - reading orientation files. | `orchestration/status/W1-THORN-PLATES.json` |
 | `RI-VIS06-PROTOCOL-A` | running | in progress | `orchestration/status/RI-VIS06-PROTOCOL-A.json` |
 | `W1-UIX08-dialogue-window` | building | write game/src/ui/screens/dialogue.js (window + inline-link matcher + history), add 2 kind | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` |
 | `W1-20-r3-remediation` | in_progress | Read faction-gates.json world_state columns and the four faction quest books; identify the | `orchestration/status/W1-20-r3-remediation.json` |

@@ -300,10 +300,26 @@ async function buildRoom(ref) {
  *
  * The aperture is the SAME rectangle in both arms — `INTERIOR_DOOR_W` x `INTERIOR_DOOR_H` at the
  * centre of the wall `continuity.entry_side` names, which is what `interiorShellPlan()` cuts and
- * what the collision shell already had. The sample plane sits at z = 6.30, in front of both the
- * old solid wall's face (6.325) and the new leaf's face (6.37), so neither arm is measured
- * through its own door.
+ * what the collision shell already had.
+ *
+ * IT ASKS WHAT THE RAY HITS FIRST, not whether it reaches a plane, and that took two wrong
+ * drafts to get to. Draft one stopped each ray just short of a sample plane at z = 6.30 and
+ * scored the FIXED room at 0% — the rays were terminating inside the door the fix had just added.
+ * Draft two moved the plane to 6.15 and the numbers moved by 43 points on an arm that had not
+ * changed at all, because 6.15 is 0.03 m behind the shelf boards' rear face and the raycaster's
+ * `far` epsilon was eating the shelf hits. Both drafts were measuring their own plane placement.
+ *
+ * So: the ray runs PAST the wall, and the sample is scored by what stopped it.
+ *
+ *   first hit is a mesh named `writ-house-door`  -> the way out is visible from here
+ *   first hit is anything else                   -> named, and counted as a blocker
+ *
+ * In the BEFORE arm nothing is named `writ-house-door` because nothing was drawn, so that arm
+ * scores zero by construction — which is the finding, not an artefact: the room had no door in
+ * it. The blocker names are what say whether the wall or the shelving got there first.
  */
+const DOOR_SAMPLE_Z = 6.50;      // the wall plane; rays are allowed 0.6 m past it
+const DOOR_MESH_NAME = 'writ-house-door';
 function apertureVisibility({ THREE, root }, camPos, cols = 5, rows = 7) {
   const rc = new THREE.Raycaster();
   const meshes = [];
@@ -315,21 +331,21 @@ function apertureVisibility({ THREE, root }, camPos, cols = 5, rows = 7) {
     for (let j = 0; j < rows; j++) {
       const x = -0.63 + (1.26 * i) / (cols - 1);
       const y = 0.15 + (1.80 * j) / (rows - 1);
-      const target = new THREE.Vector3(x, y, 6.30);
+      const target = new THREE.Vector3(x, y, DOOR_SAMPLE_Z);
       const dir = target.clone().sub(origin);
       const dist = dir.length();
       rc.set(origin, dir.normalize());
-      rc.far = dist - 0.02;
+      rc.far = dist + 0.6;
       const hits = rc.intersectObjects(meshes, false);
       n++;
-      if (!hits.length) seen++;
-      else {
-        const g = hits[0].object.geometry;
-        const key = g && g.parameters
-          ? `${g.type}(${[g.parameters.width, g.parameters.height, g.parameters.depth].map((v) => (v === undefined ? '' : (+v).toFixed(2))).join('x')}) @ z=${hits[0].object.position.z.toFixed(2)}`
-          : (g ? g.type : 'unknown');
-        blockers.set(key, (blockers.get(key) || 0) + 1);
-      }
+      if (hits.length && hits[0].object.name === DOOR_MESH_NAME) { seen++; continue; }
+      const hit = hits[0];
+      const g = hit && hit.object.geometry;
+      const key = !hit ? 'nothing — the ray left the room'
+        : (g && g.parameters
+          ? `${g.type}(${[g.parameters.width, g.parameters.height, g.parameters.depth].map((v) => (v === undefined ? '' : (+v).toFixed(2))).join('x')}) @ z=${hit.object.position.z.toFixed(2)}`
+          : (g ? g.type : 'unknown'));
+      blockers.set(key, (blockers.get(key) || 0) + 1);
     }
   }
   return {
