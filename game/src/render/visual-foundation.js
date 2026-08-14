@@ -502,6 +502,10 @@ function installSurfaceShader(mat, { tile, tiling, wear, wetness, detailStrength
     uWetTop:{value:worldWetness.topY}, uWetBottom:{value:worldWetness.bottomY},
   };
   mat.userData.surfaceUniforms=u;
+  // THE RECIPE, not just the uniforms.  Every value here is a JSON primitive, so it survives
+  // `Material.copy()`'s deep copy of `userData` intact — which is exactly what lets a COPY rebuild
+  // the shader a copy cannot inherit.  See THE COPY SEAM below for why that matters. (W1-ORPHANED-SURFACE-SHADERS)
+  mat.userData.w1_30surface={tile,tiling,wear,wetness,detailStrength,wearFrom};
   const prior=mat.onBeforeCompile;
   mat.onBeforeCompile=(shader,renderer)=>{
     if(prior) prior(shader,renderer);
@@ -578,6 +582,65 @@ function installSurfaceShader(mat, { tile, tiling, wear, wetness, detailStrength
   mat.customProgramCacheKey=()=>`w1-30c-surface-v6:${wearFrom}:${tile}:${detailStrength.toFixed(2)}:${detail?1:0}:${priorKey?priorKey():''}`;
   shadedMaterials.add(mat);
   mat.needsUpdate=true;
+}
+
+// ---------------------------------------------------------------------------
+// THE COPY SEAM — where three quarters of this library was being thrown away. (W1-ORPHANED-SURFACE-SHADERS)
+//
+// `Material.copy()` in the vendored three r180 does NOT copy `onBeforeCompile`, and it deep-copies
+// `userData` through `JSON.parse(JSON.stringify(...))`.  A `.clone()` of a `worldMaterial()`
+// therefore keeps the BOOKKEEPING and loses the SHADER — and loses two registrations that no
+// census could ever see, because they live in this module rather than on the material:
+//
+//   A. `userData.surfaceUniforms`  SURVIVES, as a dead JSON ghost whose textures are gone. This is
+//                                  why every static inspection of the material tables said the
+//                                  world was fine: the tables ARE fine. Nothing installed them.
+//   B. `onBeforeCompile`           LOST — no detail normal, no wear mask, no wetness mask.
+//   C. `shadedMaterials`           does not contain the copy, so `setWorldWetness()` cannot reach
+//                                  it: B's rain would have nothing to land on.
+//   D. `liveFamilyMaterials`       does not contain the copy, so a texture 404 cannot stain it
+//                                  magenta and §7's deliberately loud fallback goes quiet on it.
+//
+// WHY THE FIX IS HERE AND NOT AT THE CALL SITES.  There are a dozen `.clone()` sites today, across
+// `world/province.js` (settlement styleboards — every building in the province),
+// `render/actor.js` (bodies, frills, eyes, weapons, shields), `render/renderer.js` (the player's
+// camera-fade material) and `render/scene.js` (fixtures).  Re-installing at each of them is a
+// dozen chances to miss one, and it rots the first time somebody adds the thirteenth.  Instead
+// every material this factory builds carries its own recipe and knows how to rebuild itself when
+// it is copied.  That is what OWNER-DIRECTIVES §3 means by reuse being structural, not a hope.
+//
+// WHY `clone` AND NOT `copy`.  `Material.prototype.clone()` is `new this.constructor().copy(this)`:
+// the `copy` that actually runs belongs to the NEW object, which is a stock material, so an
+// instance-level `copy` override on the SOURCE would never be consulted — a `copy` hook here would
+// be inert and would look exactly like a fix.  `clone` is the method invoked on the source, so
+// that is the seam that works.  The override is re-installed on the copy, so a clone of a clone is
+// covered too, and `installCopySeam` is idempotent by construction.
+//
+// NOT COVERED, and said plainly rather than left to be found: a caller that writes
+// `new THREE.MeshStandardMaterial().copy(worldMat)` by hand bypasses this seam. There is no such
+// call site in `game/src` today; `tools/visual/w1-30-surface-orphan-census.mjs` is the standing
+// tripwire that would catch one being added.
+// ---------------------------------------------------------------------------
+
+/** Rebuild everything a copy could not inherit.  Idempotent: `installSurfaceShader` rewrites
+ * rather than appends, and both registries are Sets. Exported so a census or a repair pass can
+ * call it on a material it finds hollow. */
+export function adoptMaterialCopy(copy, source) {
+  const family=source?.userData?.visualFamily;
+  if(family) registerFamilyMaterial(family, copy);                  // D
+  if(source?.userData?.waterUniforms) installWaterShader(copy);     // water first, as worldMaterial() does
+  const recipe=source?.userData?.w1_30surface;
+  if(recipe) installSurfaceShader(copy, recipe);                    // A, B and C in one call
+  installCopySeam(copy);
+  return copy;
+}
+
+/** Make `mat.clone()` return a whole material instead of a hollow one. */
+export function installCopySeam(mat) {
+  if(!mat || Object.hasOwn(mat,'clone')) return mat;
+  Object.defineProperty(mat,'clone',{ configurable:true, writable:true, enumerable:false,
+    value: function(){ return adoptMaterialCopy(Object.getPrototypeOf(this).clone.call(this), this); } });
+  return mat;
 }
 
 export function worldMaterial(family, options={}) {
@@ -657,6 +720,8 @@ export function worldMaterial(family, options={}) {
       detailStrength:FAMILY_DETAIL_STRENGTH[family] ?? CLASS_DETAIL_STRENGTH[variant.class],
       wearFrom:variant.wearFrom });
   }
+  // Every material this factory hands out knows how to rebuild itself when copied. (W1-ORPHANED-SURFACE-SHADERS)
+  installCopySeam(mat);
   return mat;
 }
 

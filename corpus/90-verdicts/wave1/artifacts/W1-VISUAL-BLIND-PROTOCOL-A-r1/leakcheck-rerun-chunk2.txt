@@ -1,0 +1,23 @@
+structural gate: 5 pair(s) — both arms PNG, identical dimensions, bit depth, colour type and interlace, no text/EXIF/timestamp chunks on either side, and each pack directory holds exactly A.png and B.png.
+
+image-leakcheck — 5 pairs, 12 rules. Five trials is weak power: a clean sweep by chance is p=0.0313 per rule, one-sided.
+
+PROVENANCE CHANNELS — these GATE. A sweep here means the pack is sortable without judging the render.
+  rule                matched  names ref       p        why
+  bytes               held-out 1/5             0.1875   file length; a PNG of a JPEG-sourced crop compresses differently from a PNG of a render
+  w                   yes      0/0 (5 tied)    1        width — equalised by the crop box
+  h                   yes      0/0 (5 tied)    1        height — equalised by the crop box
+  blockiness_8px      yes      1/5             0.1875   the 8x8 DCT signature; equalised by the shared JPEG round trip, and this row is the check that it worked
+  distinct_levels     held-out 2/5             0.5      a quantised or palette-reduced arm has fewer luma levels
+  flat_border_edges   held-out 0/0 (5 tied)    1        letterbox or matte edges; one arm bordered and the other not is a label
+  duplicate_rows      held-out 0/0 (5 tied)    1        a resampled or upscaled arm repeats scanlines; a native crop does not
+
+QUALITY STATISTICS — reported, never gating. A sweep here is the FINDING Protocol A exists to produce.
+  rule                matched  names ref       p        why
+  edge_energy         held-out 1/5             0.1875   sharpness / detail — this is the finding, not a leak
+  sd_luma             held-out 3/5             0.5      tonal spread — the finding
+  mean_luma           held-out 4/5             0.1875   exposure — the finding
+  shadow_levels       held-out 5/5             0.0313   readable detail in shadow — the finding
+  local_contrast_med  held-out 5/5             0.0313   local micro-contrast — the finding
+
+GATE: GREEN — no held-out provenance channel decides the pack. Power is weak (see the header); this is a floor, not a proof.

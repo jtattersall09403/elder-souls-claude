@@ -512,7 +512,18 @@ prevention rules alone should stand without the accounting.
   is cheaper and worthless.
 - **Never cut the controls.** Delete-the-fix, the null control and the self-test that goes red are
   the only reason any number here means anything.
-- **Never trade speed for cost.** The parallelism floor of 12 is a floor during this programme too.
+- **Never trade speed for cost.** ~~The parallelism floor of 12 is a floor during this programme
+  too.~~ **SUPERSEDED 2026-08-14 by the owner, via `CLAUDE.md` — struck here rather than deleted so
+  the change of mind is legible.** The owner's words: *"Instead continuously qualitatively review
+  and use your judgment as the implementation lead to set as much working in parallel as is
+  sensible in a dependency safe and performance aware way."* **There is no number to hit and no
+  excuse to idle.** So the guard this line was protecting still stands, restated in the terms that
+  replaced it: this programme may never buy a cost saving by running fewer agents than the
+  dependency graph safely allows. `COST.md` §4's guard **G2 (parallelism)** must be re-read the
+  same way — as "no reduction in safe concurrency", not as "≥ 12".
+  *(Found by AUDIT-CITATION-STALENESS: `CLAUDE.md` has said "The hard floor of 12 is removed" since
+  the 2026-08-14 directives landed, and this document went on asserting the floor — a binding
+  document contradicting the binding document that overrides it.)*
 - **Never report a saving without its guards.** A cost number published without G1–G3 beside it is
   not a result, and the orchestrator should reject it and say so.
 

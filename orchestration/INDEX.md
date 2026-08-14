@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a2b017cc`: 985 tools, 157 reference
-items, 199 pieces in flight.
+so it cannot drift. Generated at `250aad60`: 987 tools, 157 reference
+items, 201 pieces in flight.
 
-Its purpose is to stop 199+ concurrent agents each paying separately to discover the
+Its purpose is to stop 201+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -399,7 +399,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
-### `tools/harness/` — 254
+### `tools/harness/` — 255
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -539,6 +539,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-map-stepcheck.mjs` — is the long-step crash the map's, or the tree's?
 - `tools/harness/determinism.mjs` — run the RI-MTH02 reproducibility ladder against the game and report every rung with the evidence that decided it.
 - `tools/harness/door-exit-yaw.mjs` — WHICH WAY ARE YOU FACING WHEN A DOOR PUTS YOU DOWN?
+- `tools/harness/door-yaw-consume.mjs` — RI-MTH07 CONSUMPTION for the door-facing fix, and the pictures with it.
 - `tools/harness/door-yaw-sweep.mjs` — ALL 115 INTERIORS, BOTH DIRECTIONS, AND A DEFINITION OF "CORRECT".
 - `tools/harness/door-yaw-teardown.mjs` — remove the door-yaw fix, or part of it, from a CLONE of the tree.
 - `tools/harness/first-ten.mjs` — **no header comment**
@@ -743,8 +744,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/map/player-route.mjs` — CAN A PERSON OPEN THE MAP?
 - `tools/map/touch-route.mjs` — HOW MANY TAPS DOES A PHONE PAY FOR A PAGE TURN, AND CAN IT FIND THE MAP?
 
-### `tools/metrics/` — 6
+### `tools/metrics/` — 7
 
+- `tools/metrics/consumption-census.mjs` — RI-MTH07 CONSUMPTION census — re-runnable standing check.
 - `tools/metrics/image-metrics.mjs` — the RI-VIS03 fidelity battery, M1..M12.
 - `tools/metrics/lib/battery.mjs` — assembles RI-VIS03's twelve metrics into the normative verdict object: bands, pass/fail, named hard-fail diagnoses, AT DEFAULT comparison, and the §Scoring rule
 - `tools/metrics/lib/decode.mjs` — one image decoder for the whole fidelity harness.
@@ -1401,17 +1403,19 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-WATER-LANES` | measuring | Run tools/visual/w1-water-lane-terms.mjs at vista-deep-marshes to name the owning shader t | `orchestration/status/W1-WATER-LANES.json` `tools/visual/w1-water-lane-terms.mjs` |
-| `W1-THORN-PLATES` | in_progress | CHUNK 2 BUILDS. Full brief: reports/thorn-plates/2026-08-14-thorn-plates.md §6. In short — | `orchestration/status/W1-THORN-PLATES.json` `reports/thorn-plates/2026-08-14-thorn-plates.md` |
+| `W1-BUILDING-OVERLAP-CENSUS` | starting | Read HAZARDS.md, RULING-D1-BUILDING-OVERLAP.json, reports/opening-frame/2026-08-14-opening | `orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json` |
+| `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched |  | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
+| `W1-THORN-PLATES-C2` | in-progress | WIP | `orchestration/status/W1-THORN-PLATES-C2.json` |
 | `OPENING-FRAME` | done-and-banked |  | `orchestration/status/OPENING-FRAME.json` `game/src/character/scene.js` `game/src/engine.js` `game/src/render/places.js` `tools/harness/opening-frame.mjs` `tools/harness/opening-capture.mjs` |
+| `W1-MAP-DEFECTS-r2` | in_progress | CHUNK 2 PICKS UP EXACTLY HERE. (1) READ `reports/w1-map-defects-r2/phone-leg.log.txt` AND  | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/blog-feed.jsonl` `reports/w1-map-defects-r2/` |
+| `W1-DOOR-YAW-SWEEP` | ? | in-game validation run on the 12 failing exits + a stratified spread; then delete-the-fix  | `orchestration/status/W1-DOOR-YAW-SWEEP.json` `tools/harness/door-yaw-sweep.mjs` `tools/harness/door-yaw-teardown.mjs` `tools/world/door-yaw-offline.mjs` `game/src/sim/settlement.js` `game/src/engine.js` |
+| `W1-WATER-LANES` | measuring | Run tools/visual/w1-water-lane-terms.mjs at vista-deep-marshes to name the owning shader t | `orchestration/status/W1-WATER-LANES.json` `tools/visual/w1-water-lane-terms.mjs` |
 | `AUDIT-CONSUMPTION-CENSUS` | ? | enumerate game/data field families, grep game/src for readers, classify | — |
 | `W1-MAP-DEFECTS-r1-remediation` | landed; four of five defects closed with evidence, one measurement still owed |  | `game/src/ui/system.js` `game/src/input/touch.js` `game/src/engine.js` `tools/harness/map-probe.mjs` `tools/map/fog-control.mjs` `tools/map/player-route.mjs` |
 | `AUDIT-CITATION-STALENESS` | ? | Read ARBITRATION.md S-rulings, HAZARDS.md, OWNER-DIRECTIVES; build ruling->document revers | `orchestration/status/AUDIT-CITATION-STALENESS.json` |
-| `W1-MAP-DEFECTS-r2` | in_progress | CHUNK 2 PICKS UP EXACTLY HERE. (1) FIRST AND MOST IMPORTANT — demonstrate CONSUMPTION of t | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/w1-map-defects-r2/` |
 | `W1-ORPHANED-SURFACE-SHADERS` | in_progress | Write the census tool (population + grouping by route), then develop the fix on a control  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` |
 | `W1-30E-KIT-DEFECTS` | built-awaiting-fresh-critic |  | `game/src/render/lib/kits.js` `tools/render/w1-30e-roof-extent.mjs` `tools/render/w1-30e-ground-albedo.mjs` `tools/visual/deck.mjs` `reports/w1-30e-kit-defects/README.md` `reports/blog-feed.jsonl` |
 | `SPLIT-TRIAL-DISPATCH` | dispatched | On each chunk 1's completion: read its orchestration/status/<PIECE>.json, and dispatch chu | `orchestration/status/SPLIT-TRIAL-DISPATCH.json` |
-| `W1-DOOR-YAW-SWEEP` | ? | read HAZARDS.md, OWNER-DIRECTIVES, prior agent status file, settlement.js current state | `orchestration/status/W1-DOOR-YAW-SWEEP.json` |
 | `W1-UIX08-dialogue-window` | building | write game/src/ui/screens/dialogue.js (window + inline-link matcher + history), add 2 kind | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` |
 | `W1-20-r3-remediation` | in_progress | Read faction-gates.json world_state columns and the four faction quest books; identify the | `orchestration/status/W1-20-r3-remediation.json` |
 | `critic-w1-map-defects-r1` | done |  | `corpus/90-verdicts/wave1/W1-MAP-DEFECTS-r1.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/fog-three-arms.png` |

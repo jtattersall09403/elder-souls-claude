@@ -285,7 +285,14 @@ class MeshBuilder {
 // So `boneMatrix * bindMatrix`, i.e. the position after `#include <skinning_vertex>`, already
 // IS the world-space vertex position — there is no separate model matrix to fold in.
 function installWaterline(mat, sharedUniforms) {
-  mat.onBeforeCompile = (shader) => {
+  // CHAIN, DO NOT ASSIGN. (W1-ORPHANED-SURFACE-SHADERS)  `mat` is a `.clone()` of a `worldMaterial()`, and since the
+  // copy seam in `visual-foundation.js` that clone now arrives with its detail-normal / wear /
+  // wetness pass rebuilt. Assigning over the top would delete it again — and the player's own body
+  // is the most visible thing this file builds, so the fix would have been inert exactly where it
+  // matters most. This is the same chain `installSurfaceShader` already does, for the same reason.
+  const prior = mat.onBeforeCompile;
+  mat.onBeforeCompile = (shader, renderer) => {
+    if (prior) prior(shader, renderer);
     shader.uniforms.uWaterY = sharedUniforms.uWaterY;
     shader.uniforms.uWetness = sharedUniforms.uWetness;
     shader.vertexShader = 'varying float vEsWaterY;\n' + shader.vertexShader.replace(
@@ -311,6 +318,11 @@ function installWaterline(mat, sharedUniforms) {
           // the band the fragment is actually inside.
           + '\troughnessFactor = mix(roughnessFactor, roughnessFactor * 0.30, esWet);\n');
   };
+  // three.js's DEFAULT `customProgramCacheKey` reads `this.onBeforeCompile.toString()`, so calling
+  // a prior key detached throws inside the renderer's program lookup — a boot failure, not a
+  // visual one. Only chain a key the material actually OWNS. (W1-ORPHANED-SURFACE-SHADERS)
+  const priorKey = Object.hasOwn(mat, 'customProgramCacheKey') ? mat.customProgramCacheKey.bind(mat) : null;
+  mat.customProgramCacheKey = () => `es-waterline-v1:${priorKey ? priorKey() : ''}`;
   mat.needsUpdate = true;
 }
 

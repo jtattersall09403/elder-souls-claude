@@ -84,6 +84,16 @@ const report = await g.page.evaluate(async ({ selfcheck, fallback }) => {
   // `renderer.js#setCharacterFade` keeps a cloned `__fadeMat` on the MESH's userData and only
   // mounts it when the camera closes on the player. A scene walk taken at arm's length would
   // miss the single material the owner is most likely to be looking at, so walk both.
+  // The owner looks at the player first, and `actor-body:saxhleel:skin` is not distinguishable
+  // from any other saxhleel by name. Ask the renderer which subtree is actually the player rather
+  // than pattern-matching a name and hoping.
+  const playerMaterials = new Set();
+  if (R.playerMesh) R.playerMesh.traverse((o) => {
+    if (o.material) for (const m of [].concat(o.material)) playerMaterials.add(m);
+    if (o.userData && o.userData.__fadeMat) playerMaterials.add(o.userData.__fadeMat);
+    if (o.userData && o.userData.__solidMat) playerMaterials.add(o.userData.__solidMat);
+  });
+
   const seen = new Map();   // material -> row
   const record = (m, meshName, mounted) => {
     if (!m) return;
@@ -94,6 +104,7 @@ const report = await g.page.evaluate(async ({ selfcheck, fallback }) => {
       row = {
         material_name: m.name || m.type,
         family: (m.userData && m.userData.visualFamily) || null,
+        is_player: playerMaterials.has(m),
         meshes: [],
         mounted,
         has_surface_uniforms: !!u,
@@ -215,22 +226,27 @@ const report = await g.page.evaluate(async ({ selfcheck, fallback }) => {
 // Classification happens HERE, not in the page, so the categories can be re-cut against a saved
 // row dump without paying for another browser.
 // ---------------------------------------------------------------------------------------------
+// Categories are ordered most-specific-first on purpose. The first cut of this function put the
+// `xanmeer` equipment set in `building` and two equipment sets in `ui`, because it tested the
+// architecture words before the actor ones. A misfiled row is a wrong answer to "which visible
+// things are affected", which is the only question here that matters.
 function category(row) {
   const s = `${row.material_name || ''} ${row.meshes.join(' ')}`.toLowerCase();
-  if (/player|__fademat|__solidmat/.test(s)) return 'player';
-  if (/actor-body|actor-family-form|actor-secondary|actor-eye|held-weapon|held-grip|shield-/.test(s)) return 'actor';
-  if (/water|river|pool|flood/.test(s)) return 'water';
-  if (/canopy|foliage|leaf|frond|cover:|understor/.test(s)) return 'canopy/foliage';
-  if (/ground|terrain|geology|rock|skin:|bed/.test(s)) return 'terrain';
-  if (/wall|roof|post|plank|building|kit|settlement|door|xanmeer|hut|shrine|tower|bridge|pier/.test(s)) return 'building';
-  if (/hud|ui|panel|icon|text|compass|journal/.test(s)) return 'ui';
+  if (row.is_player) return 'player';
+  if (/actor-|held-weapon|held-grip|shield-/.test(s)) return 'actor (npc)';
+  if (/water|river|pool|flood|waterfall/.test(s)) return 'water';
+  if (/canopy|foliage|leaf|frond|cover:|understor|crown|trunk/.test(s)) return 'canopy/foliage';
+  if (/ground|terrain|geology|rock|ground-skin|bed/.test(s)) return 'terrain';
+  if (/style-|wall|roof|post|plank|building|kit|settlement|door|xanmeer|hut|shrine|tower|bridge|pier/.test(s)) return 'building';
+  if (/hud|compass|journal|menu|reticle/.test(s)) return 'ui';
   return 'other';
 }
 function route(row) {
   const s = `${row.material_name || ''} ${row.meshes.join(' ')}`.toLowerCase();
-  if (row.styleboard) return 'province.js:552 styleboard .clone() (STYLE_MATERIAL_CACHE)';
-  if (/camera-fade/.test(s) || /__fademat/.test(s)) return 'renderer.js:761 __fadeMat .clone()';
+  if (row.styleboard) return 'province.js:552 settlement styleboard .clone()';
+  if (/camera-fade|__fademat/.test(s)) return 'renderer.js:761 player camera-fade .clone()';
   if (/actor-body|actor-secondary-frill/.test(s)) return 'actor.js:592/619 body+frill mats.<family>.clone()';
+  if (/actor-equipment/.test(s)) return 'actor.js:635 equipment set .clone() (cached per mats)';
   if (/actor-family-form|actor-beast/.test(s)) return 'actor.js:674 familyMat.clone()';
   if (/held-weapon|held-grip|shield-/.test(s)) return 'actor.js:1070-1099 weapon/shield .clone()';
   if (/actor-eye|pupil/.test(s)) return 'actor.js:703/734 eye mats.<family>.clone()';
@@ -266,9 +282,11 @@ const summary = {
   orphans_by_family: tally(orphans, 'family'),
   orphans_by_route: tally(orphans, 'route'),
   intact_by_category: tally(withUniforms.filter((r) => r.hook_installs_surface), 'category'),
-  player_rows: rows.filter((r) => r.category === 'player' || /actor-body/.test(r.material_name || ''))
-    .map((r) => ({ name: r.material_name, meshes: r.meshes, orphaned: r.has_surface_uniforms && !r.hook_installs_surface,
-      hook_installs_waterline: r.hook_installs_waterline, wetness_followed: r.wetness_followed })),
+  player_rows: rows.filter((r) => r.is_player)
+    .map((r) => ({ name: r.material_name, meshes: r.meshes, family: r.family,
+      orphaned: r.has_surface_uniforms && !r.hook_installs_surface,
+      hook_installs_waterline: r.hook_installs_waterline, uniforms_are_live: r.uniforms_are_live,
+      wetness_followed: r.wetness_followed })),
   mechanism: report.mechanism,
   loud_fallback_probe: report.fallbackProbe,
   selfcheck: report.selfcheckResult,

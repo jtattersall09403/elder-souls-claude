@@ -1,0 +1,31 @@
+{
+  "task_id": "RULING-D1-BUILDING-OVERLAP",
+  "title": "Ruling D1 — the writ house's door opens inside the barge hold: separate the buildings, do not move the player",
+  "state": "ruled-and-dispatched",
+  "owner": "orchestrator",
+  "ruled_at": "2026-08-14T16:30:00Z",
+  "reversible": true,
+
+  "the_finding": "reports/opening-frame/2026-08-14-opening-frame.md §1. The Writ House and the barge hold — the first two structures a player meets, in the town the player actually starts in — overlap by 7.02 x 4.00 m. The writ house's front door opens INSIDE the barge hold, and the doorstep the player is handed back onto is the 0.6 m corner pocket left over. All 72 bearings were scored and the result is perfectly bimodal with no middle: 25 of 72 keep the player drawn, the best of those sees 0.75 m, and the best-SEEING bearing draws no player at all. No facing rule can fix that standing point, which is why the agent that found it correctly refused to patch it.",
+
+  "the_ruling": "SEPARATE THE BUILDINGS. Do not move `exterior_spawn`.",
+
+  "reasoning": [
+    "Moving the spawn ~3.5 m out is the cheaper change and it is the wrong one, because it fixes the camera and leaves the defect. The writ house's door would still open into another building for any player who walks back to it, and the overlap would still be there for every screenshot, every capture sweep and every future piece that stands anywhere near it. It converts a visible geometric fault into an invisible one, which is precisely the trade this project keeps regretting.",
+    "The player's standing point is downstream evidence, not the cause. Ruling: fix causes where the cause is in reach, and this one is two numbers in settlement data.",
+    "THE BIGGER HALF OF THIS RULING IS THAT THE CLASS IS UNMEASURED. `planSettlement()` reports no overlap field at all, so 'how many buildings in this world are inside each other' has never been asked. One overlap found by accident, in the first two buildings anybody looked at closely, in a world of eight settlements, is not evidence of one overlap — it is evidence that nobody has counted. The census is worth more than the fix.",
+    "This is the same shape as the orphaned-consumption and citation-staleness audits running today: a defect that every existing check passes over because no check was ever pointed at it."
+  ],
+
+  "what_would_overturn_it": "If the census finds that overlaps are pervasive and load-bearing — i.e. settlements have been authored ON TOP of overlapping footprints and separating them breaks street layouts, quest coordinates or door registrations across many towns — then separation stops being a two-number fix and becomes a layout migration. In that case the correct ruling flips to: add the overlap gate, freeze the count, move THIS spawn as a stated local exception, and schedule the migration as its own piece. The census settles which world we are in, and it must run before the fix is called done.",
+
+  "also_settled_by_the_same_report": [
+    "The census hand-back was NOT primarily a yaw defect and the original diagnosis was half wrong in the half that mattered. The camera was 6.6 degrees off the doorway in a 79.3 degree field of view — the way out was already on screen. What was wrong was drawn geometry: `render/places.js#buildWritHouse()` drew the +z wall as one unbroken 11 m slab, so THE WRIT HOUSE HAD NO DOOR IN IT AT ALL, while `interiorShellPlan()` cut a 1.40 x 2.10 m doorway on that face and the world's door stands there. An 8.2 m wall of reed-cases stood 0.6 m in front of it. A yaw-only fix would have moved a number and changed nothing — this is the CONSUMPTION lesson (RI-MTH07) arriving from the geometry side.",
+    "Fixed and landed by that agent: the doorway is cut with a frame and named leaf, the reed-cases part around it, the window narrows to fit, and `_censusHandBack()` writes body, combat mirror AND `sim.camera.yaw` (all three, or it is inert). Rays at the doorway 0% -> 69% visible. Walking straight forward went from missing the door by 2.64 m to reaching it.",
+    "The doorstep defect is bounded to about two seconds (t01s opacity 0, t03s back to 1) — established by motion capture, and by nothing else available. A still frame could not have bounded it. This is the owner's directive about motion evidence paying for itself."
+  ],
+
+  "dispatched": "W1-BUILDING-OVERLAP-CENSUS — census first, then the Thorn separation, then the standing gate.",
+  "files_claimed": ["orchestration/status/RULING-D1-BUILDING-OVERLAP.json"],
+  "files_touched": ["orchestration/status/RULING-D1-BUILDING-OVERLAP.json"]
+}
