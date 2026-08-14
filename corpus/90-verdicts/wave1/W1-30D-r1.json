@@ -167,10 +167,10 @@
    "note": "The guard attack. Patches a COPY of game/src, game/data/combat and game/vendor and runs the unmodified instrument against the copy; never a flag inside the instrument. Copies are removed on exit including on failure."
   },
   {
-   "path": "reports/runpod-gpu/runs/w1-30de-critic/run.json",
+   "path": "corpus/90-verdicts/wave1/artifacts/w1-30de/gpu-run-record.json",
    "kind": "trace",
    "produced_by": "tools/visual/gpu-deck.mjs",
-   "note": "Run record: status passed, 288 stills + 400 motion frames, 12 sequences ok / 0 red, cost $0.054."
+   "note": "Run record copied into the verdict's own artifact directory because reports/ is gitignored and a citation that does not resolve in a fresh clone is not a citation. Status passed, 288 stills + 400 motion frames, 12 sequences ok / 0 red, NVIDIA L4, cost $0.054."
   }
  ],
  "arbitration": {
