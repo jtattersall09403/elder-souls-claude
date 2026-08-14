@@ -49,6 +49,7 @@
   "notes_for_others": [
     "GPU tooling: the CLI subcommand is 'run', not 'test' (npm run gpu:test maps to cli.mjs run); needs apt-get install openssh-client and NODE_USE_ENV_PROXY=1 because Node's global fetch ignores HTTPS_PROXY here.",
     "Git contention deleted three uncommitted files of this child's mid-session. Mirror artefacts outside the repo before any long-running step.",
-    "enterInterior(null) throws page-side and the harness treats that as fatal - use exitInterior()."
+    "enterInterior(null) throws page-side and the harness treats that as fatal - use exitInterior().",
+    "SELF-INFLICTED RISK, recorded rather than hidden: `node tools/runpod/cli.mjs cleanup` with no --pod terminated a Pod created at 10:11 that this child did not create (its runs were at 08:55 and 09:01). The tool scopes ownership to the CONTAINER, not the agent, so a blanket cleanup in a shared container can kill a sibling's live GPU job — the predecessor hit the same class of problem with pkill. Anyone reclaiming GPU spend should pass --pod <id> or --dry-run first."
   ]
 }
