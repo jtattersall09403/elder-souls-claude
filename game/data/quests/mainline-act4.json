@@ -98,6 +98,18 @@
             "res_serve_chapter"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 44,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_persuade_chapter",
+            "res_expose_debt",
+            "res_serve_chapter",
+            "res_buy_debt"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -127,12 +139,16 @@
               "voice_court_won",
               "voice_court_by_argument",
               "crypt_road_open_to_the_gallery",
-              "the_chapter_is_whole"
+              "the_chapter_is_whole",
+              "quest_q_main_16_res_persuade_chapter_choice_recorded",
+              "quest_q_main_16_res_persuade_chapter_world_answered",
+              "quest_q_main_16_res_persuade_chapter_route_closed"
             ],
             "npc_disposition": {
               "sexton-ravel-doun": 10,
               "undersexton-aveline-rell": 10,
-              "sexton-ivrenne-mour": 25
+              "sexton-ivrenne-mour": 25,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -162,12 +178,16 @@
               "voice_court_by_exposure",
               "crypt_road_open_to_the_gallery",
               "sexton_ravel_resigned",
-              "the_chapter_will_argue_about_it_for_ten_years"
+              "the_chapter_will_argue_about_it_for_ten_years",
+              "quest_q_main_16_res_expose_debt_choice_recorded",
+              "quest_q_main_16_res_expose_debt_world_answered",
+              "quest_q_main_16_res_expose_debt_route_closed"
             ],
             "npc_disposition": {
               "sexton-ravel-doun": -70,
               "undersexton-aveline-rell": 4,
-              "factor-ruvela-sath": -20
+              "factor-ruvela-sath": -20,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -198,11 +218,16 @@
               "voice_court_by_rank",
               "crypt_road_open_to_the_gallery",
               "player_holds_the_ninth_chair",
-              "an_outlander_sits_in_the_chapter"
+              "an_outlander_sits_in_the_chapter",
+              "quest_q_main_16_res_serve_chapter_choice_recorded",
+              "quest_q_main_16_res_serve_chapter_world_answered",
+              "quest_q_main_16_res_serve_chapter_route_closed"
             ],
             "npc_disposition": {
               "undersexton-bel-mourne": -10,
-              "sexton-ravel-doun": 4
+              "sexton-ravel-doun": 4,
+              "undersexton-aveline-rell": 3,
+              "ee-vashum": 2
             }
           }
         },
@@ -234,11 +259,16 @@
               "voice_court_by_gold",
               "crypt_road_open_to_the_gallery",
               "a_sextons_debt_is_settled",
-              "nobody_was_ruined"
+              "nobody_was_ruined",
+              "quest_q_main_16_res_buy_debt_choice_recorded",
+              "quest_q_main_16_res_buy_debt_world_answered",
+              "quest_q_main_16_res_buy_debt_route_closed"
             ],
             "npc_disposition": {
               "sexton-ravel-doun": 30,
-              "factor-ruvela-sath": 10
+              "factor-ruvela-sath": 10,
+              "undersexton-aveline-rell": -3,
+              "rootkeeper-ashul-tei": -2
             }
           }
         }
@@ -335,6 +365,42 @@
           "unique_named": true,
           "id": "topic_what_eleven_hundred_buys",
           "name": "what eleven hundred buys in the Court",
+          "on_resolution": [
+            "res_buy_debt"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_16_res_persuade_chapter",
+          "name": "Consequence of persuade chapter",
+          "on_resolution": [
+            "res_persuade_chapter"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_16_res_expose_debt",
+          "name": "Consequence of expose debt",
+          "on_resolution": [
+            "res_expose_debt"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_16_res_serve_chapter",
+          "name": "Consequence of serve chapter",
+          "on_resolution": [
+            "res_serve_chapter"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_16_res_buy_debt",
+          "name": "Consequence of buy debt",
           "on_resolution": [
             "res_buy_debt"
           ]
@@ -437,6 +503,18 @@
             "res_ledger_surety"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 46,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_whole_arithmetic",
+            "res_half_arithmetic",
+            "res_ledger_rank",
+            "res_ledger_surety"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -466,11 +544,15 @@
               "voice_ledger_by_whole_arithmetic",
               "gem_trade_on_the_record",
               "river_freight_secured",
-              "eleven_factors_are_exposed_to_the_assize"
+              "eleven_factors_are_exposed_to_the_assize",
+              "quest_q_main_17_res_whole_arithmetic_choice_recorded",
+              "quest_q_main_17_res_whole_arithmetic_world_answered",
+              "quest_q_main_17_res_whole_arithmetic_route_closed"
             ],
             "npc_disposition": {
               "factor-ruvela-sath": -10,
-              "prefect-galvus-arn": 15
+              "prefect-galvus-arn": 15,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -500,12 +582,16 @@
               "voice_ledger_by_half_truth",
               "gem_trade_buried",
               "river_freight_secured",
-              "the_dockhands_lost_their_only_chance"
+              "the_dockhands_lost_their_only_chance",
+              "quest_q_main_17_res_half_arithmetic_choice_recorded",
+              "quest_q_main_17_res_half_arithmetic_world_answered",
+              "quest_q_main_17_res_half_arithmetic_route_closed"
             ],
             "npc_disposition": {
               "factor-ruvela-sath": 30,
               "dockmaster-weeja-sen": -25,
-              "archon-crane-crew": -15
+              "archon-crane-crew": -15,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -536,10 +622,14 @@
               "voice_ledger_by_rank",
               "river_freight_secured",
               "sath_is_owed_a_favour",
-              "sath_will_ask_the_favour_back_in_act_five"
+              "sath_will_ask_the_favour_back_in_act_five",
+              "quest_q_main_17_res_ledger_rank_choice_recorded",
+              "quest_q_main_17_res_ledger_rank_world_answered",
+              "quest_q_main_17_res_ledger_rank_route_closed"
             ],
             "npc_disposition": {
-              "factor-ruvela-sath": 10
+              "factor-ruvela-sath": 10,
+              "ee-vashum": 2
             },
             "joins_faction": [
               "the_wet_ledger"
@@ -571,12 +661,16 @@
               "voice_ledger_by_gold",
               "river_freight_secured",
               "two_thousand_is_lodged_against_the_freight",
-              "the_compact_owes_nothing"
+              "the_compact_owes_nothing",
+              "quest_q_main_17_res_ledger_surety_choice_recorded",
+              "quest_q_main_17_res_ledger_surety_world_answered",
+              "quest_q_main_17_res_ledger_surety_route_closed"
             ],
             "npc_disposition": {
               "factor-ruvela-sath": 4,
               "dockmaster-weeja-sen": -4,
-              "gideon-court-factor": 6
+              "gideon-court-factor": 6,
+              "rootkeeper-ashul-tei": -2
             }
           }
         }
@@ -617,7 +711,10 @@
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "voice_ledger_settled"
         ]
@@ -671,6 +768,42 @@
           "unique_named": true,
           "id": "prop_the_freight_surety",
           "name": "a surety lodged against the freight",
+          "on_resolution": [
+            "res_ledger_surety"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_17_res_whole_arithmetic",
+          "name": "Consequence of whole arithmetic",
+          "on_resolution": [
+            "res_whole_arithmetic"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_17_res_half_arithmetic",
+          "name": "Consequence of half arithmetic",
+          "on_resolution": [
+            "res_half_arithmetic"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_17_res_ledger_rank",
+          "name": "Consequence of ledger rank",
+          "on_resolution": [
+            "res_ledger_rank"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_17_res_ledger_surety",
+          "name": "Consequence of ledger surety",
           "on_resolution": [
             "res_ledger_surety"
           ]
@@ -772,6 +905,18 @@
             "res_keepers_name"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 42,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_walk_the_eleven",
+            "res_speak_the_fourth",
+            "res_keepers_name",
+            "res_deepkin_rank"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -799,11 +944,15 @@
               "voice_deepkin_won",
               "voice_deepkin_by_walking",
               "player_promised_to_seal_the_road",
-              "nineteen_days_of_walking"
+              "nineteen_days_of_walking",
+              "quest_q_main_18_res_walk_the_eleven_choice_recorded",
+              "quest_q_main_18_res_walk_the_eleven_world_answered",
+              "quest_q_main_18_res_walk_the_eleven_route_closed"
             ],
             "npc_disposition": {
               "rootkeeper-ashul-tei": 20,
-              "helstrom-gallery-keepers": 20
+              "helstrom-gallery-keepers": 20,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -834,12 +983,16 @@
               "voice_deepkin_by_the_fourth_sentence",
               "the_interior_is_mobilising",
               "fourth_sentence_spoken",
-              "the_interior_did_not_deliberate"
+              "the_interior_did_not_deliberate",
+              "quest_q_main_18_res_speak_the_fourth_choice_recorded",
+              "quest_q_main_18_res_speak_the_fourth_world_answered",
+              "quest_q_main_18_res_speak_the_fourth_route_closed"
             ],
             "npc_disposition": {
               "rootkeeper-sesh-anaat": -80,
               "rootkeeper-ashul-tei": 10,
-              "lilmoth-rootkeepers": -25
+              "lilmoth-rootkeepers": -25,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -868,12 +1021,16 @@
               "voice_deepkin_won",
               "voice_deepkin_by_keepers_name",
               "the_consensus_cost_nothing",
-              "nobody_asked_who_the_player_was"
+              "nobody_asked_who_the_player_was",
+              "quest_q_main_18_res_keepers_name_choice_recorded",
+              "quest_q_main_18_res_keepers_name_world_answered",
+              "quest_q_main_18_res_keepers_name_route_closed"
             ],
             "npc_disposition": {
               "rootkeeper-sesh-anaat": 15,
               "rootkeeper-ashul-tei": 12,
-              "keeper-teeja-lun": 10
+              "keeper-teeja-lun": 10,
+              "ee-vashum": 2
             }
           }
         },
@@ -903,10 +1060,13 @@
               "voice_deepkin_won",
               "voice_deepkin_by_rank",
               "the_question_was_internal",
-              "four_days_instead_of_nineteen"
+              "four_days_instead_of_nineteen",
+              "quest_q_main_18_res_deepkin_rank_choice_recorded",
+              "quest_q_main_18_res_deepkin_rank_world_answered",
+              "quest_q_main_18_res_deepkin_rank_route_closed"
             ],
             "npc_disposition": {
-              "rootkeeper-ashul-tei": 18,
+              "rootkeeper-ashul-tei": -2,
               "rootkeeper-sesh-anaat": 6
             },
             "joins_faction": [
@@ -953,7 +1113,10 @@
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "voice_deepkin_settled"
         ]
@@ -1008,6 +1171,42 @@
           "unique_named": true,
           "id": "rank_counted_among_the_deep_kin",
           "name": "counted among the Deep-Kin",
+          "on_resolution": [
+            "res_deepkin_rank"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_18_res_walk_the_eleven",
+          "name": "Consequence of walk the eleven",
+          "on_resolution": [
+            "res_walk_the_eleven"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_18_res_speak_the_fourth",
+          "name": "Consequence of speak the fourth",
+          "on_resolution": [
+            "res_speak_the_fourth"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_18_res_keepers_name",
+          "name": "Consequence of keepers name",
+          "on_resolution": [
+            "res_keepers_name"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_18_res_deepkin_rank",
+          "name": "Consequence of deepkin rank",
           "on_resolution": [
             "res_deepkin_rank"
           ]
@@ -1096,6 +1295,17 @@
             "res_cutters_rank"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 34,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_expose_the_yard",
+            "res_outbid_the_company",
+            "res_cutters_rank"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -1123,11 +1333,15 @@
               "voice_cutters_by_exposure",
               "blackwood_company_lost_its_cutters",
               "the_company_knows_the_players_name",
-              "the_yards_saw_one_of_their_own_bought"
+              "the_yards_saw_one_of_their_own_bought",
+              "quest_q_main_19_res_expose_the_yard_choice_recorded",
+              "quest_q_main_19_res_expose_the_yard_world_answered",
+              "quest_q_main_19_res_expose_the_yard_route_closed"
             ],
             "npc_disposition": {
               "neeja-xul": 20,
-              "lilmoth-yard-brothers": -40
+              "lilmoth-yard-brothers": -40,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -1156,10 +1370,15 @@
               "voice_cutters_won",
               "voice_cutters_by_gold",
               "lilmoth_yard_bought_back",
-              "the_company_does_not_know_why_yet"
+              "the_company_does_not_know_why_yet",
+              "quest_q_main_19_res_outbid_the_company_choice_recorded",
+              "quest_q_main_19_res_outbid_the_company_world_answered",
+              "quest_q_main_19_res_outbid_the_company_route_closed"
             ],
             "npc_disposition": {
-              "lilmoth-yard-brothers": 25
+              "lilmoth-yard-brothers": 25,
+              "neeja-xul": -3,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -1189,11 +1408,15 @@
               "voice_cutters_won",
               "voice_cutters_by_rank",
               "the_player_is_on_the_cutters_list",
-              "nobody_at_the_yard_looked_at_the_player"
+              "nobody_at_the_yard_looked_at_the_player",
+              "quest_q_main_19_res_cutters_rank_choice_recorded",
+              "quest_q_main_19_res_cutters_rank_world_answered",
+              "quest_q_main_19_res_cutters_rank_route_closed"
             ],
             "npc_disposition": {
               "neeja-xul": 10,
-              "rootkeeper-sesh-anaat": -10
+              "rootkeeper-sesh-anaat": -10,
+              "ee-vashum": 2
             },
             "joins_faction": [
               "the_ixtu_vakh"
@@ -1284,6 +1507,33 @@
           "on_resolution": [
             "res_cutters_rank"
           ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_19_res_expose_the_yard",
+          "name": "Consequence of expose the yard",
+          "on_resolution": [
+            "res_expose_the_yard"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_19_res_outbid_the_company",
+          "name": "Consequence of outbid the company",
+          "on_resolution": [
+            "res_outbid_the_company"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_19_res_cutters_rank",
+          "name": "Consequence of cutters rank",
+          "on_resolution": [
+            "res_cutters_rank"
+          ]
         }
       ],
       "notes": "Act IV voice 4 of 8. Who told the Blackwood Company is one of the five declared unanswered questions; the Act V conversation raises it and does not close it."
@@ -1370,6 +1620,17 @@
             "res_assize_rank"
           ],
           "irreversible": false
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 36,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_the_paragraph",
+            "res_finding_of_fact",
+            "res_assize_rank"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -1398,11 +1659,15 @@
               "voice_assize_by_the_paragraph",
               "writ_of_works_issued",
               "player_named_in_an_imperial_dispatch",
-              "a_dispatch_leaves_for_gideon_by_the_fast_boat"
+              "a_dispatch_leaves_for_gideon_by_the_fast_boat",
+              "quest_q_main_20_res_the_paragraph_choice_recorded",
+              "quest_q_main_20_res_the_paragraph_world_answered",
+              "quest_q_main_20_res_the_paragraph_route_closed"
             ],
             "npc_disposition": {
               "prefect-galvus-arn": 25,
-              "rootkeeper-ashul-tei": -10
+              "rootkeeper-ashul-tei": -10,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -1432,11 +1697,15 @@
               "voice_assize_by_finding",
               "writ_of_works_issued",
               "the_writ_is_defensible",
-              "eleven_days_and_three_clerks"
+              "eleven_days_and_three_clerks",
+              "quest_q_main_20_res_finding_of_fact_choice_recorded",
+              "quest_q_main_20_res_finding_of_fact_world_answered",
+              "quest_q_main_20_res_finding_of_fact_route_closed"
             ],
             "npc_disposition": {
               "prefect-galvus-arn": 10,
-              "ledgerer-hosk-vei": 10
+              "ledgerer-hosk-vei": 10,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -1466,10 +1735,14 @@
               "voice_assize_by_rank",
               "writ_of_works_issued",
               "the_writ_took_a_morning",
-              "the_paragraph_was_given_anyway"
+              "the_paragraph_was_given_anyway",
+              "quest_q_main_20_res_assize_rank_choice_recorded",
+              "quest_q_main_20_res_assize_rank_world_answered",
+              "quest_q_main_20_res_assize_rank_route_closed"
             ],
             "npc_disposition": {
-              "prefect-galvus-arn": 15
+              "prefect-galvus-arn": 15,
+              "ee-vashum": 2
             },
             "joins_faction": [
               "the_imperial_assize"
@@ -1558,6 +1831,33 @@
           "unique_named": true,
           "id": "rank_sworn_to_the_assize",
           "name": "sworn to the Assize, and it shows",
+          "on_resolution": [
+            "res_assize_rank"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_20_res_the_paragraph",
+          "name": "Consequence of the paragraph",
+          "on_resolution": [
+            "res_the_paragraph"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_20_res_finding_of_fact",
+          "name": "Consequence of finding of fact",
+          "on_resolution": [
+            "res_finding_of_fact"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_20_res_assize_rank",
+          "name": "Consequence of assize rank",
           "on_resolution": [
             "res_assize_rank"
           ]
@@ -1653,6 +1953,17 @@
             "res_dockhand_rank"
           ],
           "irreversible": false
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 44,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_the_eleven",
+            "res_outbid_company",
+            "res_dockhand_rank"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -1681,12 +1992,16 @@
               "voice_wharf_by_the_eleven",
               "company_shut_out_of_lilmoth",
               "rotting_quarter_entered",
-              "nine_of_the_eleven_are_accounted_for"
+              "nine_of_the_eleven_are_accounted_for",
+              "quest_q_main_21_res_the_eleven_choice_recorded",
+              "quest_q_main_21_res_the_eleven_world_answered",
+              "quest_q_main_21_res_the_eleven_route_closed"
             ],
             "npc_disposition": {
               "dockmaster-weeja-sen": 30,
               "lilmoth-rootkeepers": 20,
-              "blackwood-company-factor": -30
+              "blackwood-company-factor": -30,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -1712,12 +2027,16 @@
               "voice_wharf_won",
               "voice_wharf_by_gold",
               "the_eleven_unaccounted",
-              "the_wharf_was_bought"
+              "the_wharf_was_bought",
+              "quest_q_main_21_res_outbid_company_choice_recorded",
+              "quest_q_main_21_res_outbid_company_world_answered",
+              "quest_q_main_21_res_outbid_company_route_closed"
             ],
             "npc_disposition": {
               "dockmaster-weeja-sen": -15,
               "lilmoth-rootkeepers": -6,
-              "factor-ruvela-sath": -6
+              "factor-ruvela-sath": -6,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -1747,10 +2066,14 @@
               "voice_wharf_by_the_list",
               "the_eleven_unaccounted",
               "the_list_hired_the_list",
-              "it_cost_nothing"
+              "it_cost_nothing",
+              "quest_q_main_21_res_dockhand_rank_choice_recorded",
+              "quest_q_main_21_res_dockhand_rank_world_answered",
+              "quest_q_main_21_res_dockhand_rank_route_closed"
             ],
             "npc_disposition": {
-              "dockmaster-weeja-sen": 10
+              "dockmaster-weeja-sen": 10,
+              "ee-vashum": 2
             },
             "joins_faction": [
               "the_dockhands"
@@ -1795,7 +2118,10 @@
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "voice_wharf_settled"
         ]
@@ -1841,6 +2167,33 @@
           "unique_named": true,
           "id": "rank_on_the_hiring_list",
           "name": "a place on the hiring list",
+          "on_resolution": [
+            "res_dockhand_rank"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_21_res_the_eleven",
+          "name": "Consequence of the eleven",
+          "on_resolution": [
+            "res_the_eleven"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_21_res_outbid_company",
+          "name": "Consequence of outbid company",
+          "on_resolution": [
+            "res_outbid_company"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_21_res_dockhand_rank",
+          "name": "Consequence of dockhand rank",
           "on_resolution": [
             "res_dockhand_rank"
           ]
@@ -1936,6 +2289,17 @@
             "res_as_a_cutter"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 46,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_true_reason",
+            "res_on_a_silence",
+            "res_as_a_cutter"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -1965,11 +2329,15 @@
               "voice_keepers_won",
               "voice_keepers_by_true_reason",
               "leave_for_eleven_roots",
-              "the_true_reason_is_in_the_leave_book"
+              "the_true_reason_is_in_the_leave_book",
+              "quest_q_main_22_res_true_reason_choice_recorded",
+              "quest_q_main_22_res_true_reason_world_answered",
+              "quest_q_main_22_res_true_reason_route_closed"
             ],
             "npc_disposition": {
               "rootkeeper-sesh-anaat": 25,
-              "rootkeeper-ashul-tei": 10
+              "rootkeeper-ashul-tei": 10,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -1994,10 +2362,14 @@
               "voice_keepers_on_a_silence",
               "leave_for_eleven_roots",
               "the_silence_is_in_the_book",
-              "a_silence_is_in_the_book_next_to_the_players_name"
+              "a_silence_is_in_the_book_next_to_the_players_name",
+              "quest_q_main_22_res_on_a_silence_choice_recorded",
+              "quest_q_main_22_res_on_a_silence_world_answered",
+              "quest_q_main_22_res_on_a_silence_route_closed"
             ],
             "npc_disposition": {
-              "rootkeeper-sesh-anaat": 6
+              "rootkeeper-sesh-anaat": 6,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -2031,11 +2403,15 @@
               "voice_keepers_as_a_cutter",
               "leave_for_eleven_roots",
               "player_on_the_cutters_list",
-              "the_order_had_to_read_its_own_book_back"
+              "the_order_had_to_read_its_own_book_back",
+              "quest_q_main_22_res_as_a_cutter_choice_recorded",
+              "quest_q_main_22_res_as_a_cutter_world_answered",
+              "quest_q_main_22_res_as_a_cutter_route_closed"
             ],
             "npc_disposition": {
               "neeja-xul": 20,
-              "rootkeeper-sesh-anaat": -10
+              "rootkeeper-sesh-anaat": -10,
+              "ee-vashum": 2
             }
           }
         }
@@ -2119,6 +2495,33 @@
           "unique_named": true,
           "id": "topic_how_the_other_names_died",
           "name": "how the other names on that list died",
+          "on_resolution": [
+            "res_as_a_cutter"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_22_res_true_reason",
+          "name": "Consequence of true reason",
+          "on_resolution": [
+            "res_true_reason"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_22_res_on_a_silence",
+          "name": "Consequence of on a silence",
+          "on_resolution": [
+            "res_on_a_silence"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_22_res_as_a_cutter",
+          "name": "Consequence of as a cutter",
           "on_resolution": [
             "res_as_a_cutter"
           ]
@@ -2219,6 +2622,17 @@
             "res_turn_the_writ"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 38,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_sign_the_clause",
+            "res_buy_the_water",
+            "res_turn_the_writ"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -2249,11 +2663,15 @@
               "deep_water_berth_open",
               "the_sixty_are_protected",
               "dres_bought_another_year",
-              "a_clause_protects_sixty_for_a_season"
+              "a_clause_protects_sixty_for_a_season",
+              "quest_q_main_23_res_sign_the_clause_choice_recorded",
+              "quest_q_main_23_res_sign_the_clause_world_answered",
+              "quest_q_main_23_res_sign_the_clause_route_closed"
             ],
             "npc_disposition": {
               "salt-factor-neloth-vaun": 25,
-              "rootkeeper-ashul-tei": -15
+              "rootkeeper-ashul-tei": -15,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -2282,11 +2700,15 @@
               "voice_salt_by_gold",
               "deep_water_berth_open",
               "vaun_will_remember_it",
-              "three_thousand_went_to_the_ledgers_barges"
+              "three_thousand_went_to_the_ledgers_barges",
+              "quest_q_main_23_res_buy_the_water_choice_recorded",
+              "quest_q_main_23_res_buy_the_water_world_answered",
+              "quest_q_main_23_res_buy_the_water_route_closed"
             ],
             "npc_disposition": {
               "salt-factor-neloth-vaun": -30,
-              "factor-ruvela-sath": 15
+              "factor-ruvela-sath": 15,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -2319,11 +2741,15 @@
               "voice_salt_won",
               "voice_salt_by_the_writ",
               "deep_water_berth_open",
-              "a_dres_factor_did_the_arithmetic_in_front_of_the_player"
+              "a_dres_factor_did_the_arithmetic_in_front_of_the_player",
+              "quest_q_main_23_res_turn_the_writ_choice_recorded",
+              "quest_q_main_23_res_turn_the_writ_world_answered",
+              "quest_q_main_23_res_turn_the_writ_route_closed"
             ],
             "npc_disposition": {
               "salt-factor-neloth-vaun": -10,
-              "harbourmaster-cuiro-vaneth": -20
+              "harbourmaster-cuiro-vaneth": -20,
+              "ee-vashum": 2
             }
           }
         }
@@ -2366,7 +2792,10 @@
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "voice_salt_settled"
         ]
@@ -2409,6 +2838,33 @@
           "unique_named": true,
           "id": "topic_what_a_raid_would_cost_dres",
           "name": "what a raid on a lawful works would cost House Dres",
+          "on_resolution": [
+            "res_turn_the_writ"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_23_res_sign_the_clause",
+          "name": "Consequence of sign the clause",
+          "on_resolution": [
+            "res_sign_the_clause"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_23_res_buy_the_water",
+          "name": "Consequence of buy the water",
+          "on_resolution": [
+            "res_buy_the_water"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_23_res_turn_the_writ",
+          "name": "Consequence of turn the writ",
           "on_resolution": [
             "res_turn_the_writ"
           ]
