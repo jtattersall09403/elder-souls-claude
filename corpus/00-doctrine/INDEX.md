@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-14T18:05:56Z
+Generated: 2026-08-14T19:13:19Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -25,9 +25,9 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 
 ## 1. Coverage at a glance
 
-- Canonical subsystem paths: **331**
-- Reference items found: **149** across 18 area(s)
-- Subsystems with at least one judging reference item: **325**
+- Canonical subsystem paths: **332**
+- Reference items found: **150** across 18 area(s)
+- Subsystems with at least one judging reference item: **326**
 - Subsystems judged by a doctrine document instead: **6** (see §3b)
 - **Corpus holes (no judging item): 0** (0%)
 - Front-matter problems: 0 error(s), 30 warning(s)
@@ -41,7 +41,7 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 | `journal.*` | 4 | 4 | 0 | 0 |
 | `world.*` | 36 | 36 | 0 | 0 |
 | `lore.*` | 11 | 11 | 0 | 0 |
-| `render.*` | 25 | 25 | 0 | 0 |
+| `render.*` | 26 | 26 | 0 | 0 |
 | `audio.*` | 4 | 4 | 0 | 0 |
 | `ui.*` | 9 | 9 | 0 | 0 |
 | `platform.*` | 13 | 13 | 0 | 0 |
@@ -279,9 +279,10 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `render.process.bifurcation` | The judging process itself: axis declared, references not crossed (ARBITRATION §4) | neutral | [RI-CAM07](../../corpus/15-camera/RI-CAM07-third-person-character-presentation.md)<br>[RI-VIS01](../../corpus/70-visual/RI-VIS01-bifurcation-protocol.md)<br>[RI-VIS06](../../corpus/70-visual/RI-VIS06-blind-comparison-protocol.md)<br>[RI-VIS09](../../corpus/70-visual/RI-VIS09-reference-image-set.md)<br>[RI-UIX06](../../corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md) | `critic.fidelity` | in-item M1–M6 (6 checks); corpus/80-methods/m-cam07-presentation.mjs<br>in-item procedure (kind: structure); corpus/80-methods/capture-shots.md, corpus/80-methods/cc-scan.mjs, cc-scan.mjs<br>in-item procedure (kind: structure)<br>in-item procedure (kind: structure); tools/metrics/image-metrics.mjs, tools/blind/make-pair.mjs, image-metrics.mjs<br>in-item procedure (kind: structure); corpus/80-methods/palette-conformance.mjs, corpus/80-methods/cc-scan.mjs, tools/harness/shoot.mjs, tools/metrics/ui-metrics.mjs, ui-metrics.mjs, cc-scan.mjs |
 | `render.process.measurement` | How a visual number is taken: capture protocol, poses, repeatability | neutral | [RI-VIS03](../../corpus/70-visual/RI-VIS03-fidelity-image-metrics.md) | `critic.fidelity` | in-item procedure (kind: number); corpus/80-methods/make-anti-ref.mjs, corpus/80-methods/vis-metrics.mjs |
 | `render.art.palette` | Colour identity per region against Morrowind's palette discipline | art-direction | [RI-WLD05](../../corpus/50-world/RI-WLD05-strangeness-bar.md)<br>[RI-VIS01](../../corpus/70-visual/RI-VIS01-bifurcation-protocol.md)<br>[RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-VIS06](../../corpus/70-visual/RI-VIS06-blind-comparison-protocol.md)<br>[RI-VIS07](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md)<br>[RI-VIS09](../../corpus/70-visual/RI-VIS09-reference-image-set.md) | `critic.artdirection` | in-item M22–M26 (5 checks)<br>in-item procedure (kind: structure); corpus/80-methods/capture-shots.md, corpus/80-methods/cc-scan.mjs, cc-scan.mjs<br>in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: structure)<br>in-item procedure (kind: text)<br>in-item procedure (kind: structure); tools/metrics/image-metrics.mjs, tools/blind/make-pair.mjs, image-metrics.mjs |
-| `render.art.silhouette` | Readable, strange silhouettes for creatures and buildings | art-direction | [RI-CAM07](../../corpus/15-camera/RI-CAM07-third-person-character-presentation.md)<br>[RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-VIS07](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md)<br>[RI-VIS08](../../corpus/70-visual/RI-VIS08-character-animation-fidelity.md) | `critic.artdirection` | in-item M1–M6 (6 checks); corpus/80-methods/m-cam07-presentation.mjs<br>in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: text)<br>in-item procedure (kind: number); corpus/80-methods/capture-trace.mjs, corpus/80-methods/anim-metrics.mjs |
+| `render.art.silhouette` | Readable, strange silhouettes for creatures and buildings | art-direction | [RI-CAM07](../../corpus/15-camera/RI-CAM07-third-person-character-presentation.md)<br>[RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-VIS07](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md)<br>[RI-VIS08](../../corpus/70-visual/RI-VIS08-character-animation-fidelity.md)<br>[RI-VIS10](../../corpus/70-visual/RI-VIS10-character-design.md) | `critic.artdirection` | in-item M1–M6 (6 checks); corpus/80-methods/m-cam07-presentation.mjs<br>in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: text)<br>in-item procedure (kind: number); corpus/80-methods/capture-trace.mjs, corpus/80-methods/anim-metrics.mjs<br>in-item procedure (kind: number) |
 | `render.art.architecture` | A coherent invented architectural language | art-direction | [RI-WLD03](../../corpus/50-world/RI-WLD03-settlement-anatomy.md)<br>[RI-WLD05](../../corpus/50-world/RI-WLD05-strangeness-bar.md)<br>[RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-VIS07](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md) | `critic.artdirection` | in-item M12–M16 (5 checks)<br>in-item M22–M26 (5 checks)<br>in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: text) |
 | `render.art.creature` | Creature design that is not a generic bestiary | art-direction | [RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-VIS07](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md)<br>[RI-VIS08](../../corpus/70-visual/RI-VIS08-character-animation-fidelity.md) | `critic.artdirection` | in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: text)<br>in-item procedure (kind: number); corpus/80-methods/capture-trace.mjs, corpus/80-methods/anim-metrics.mjs |
+| `render.art.character` | Playable-race and NPC humanoid design: race identity, proportion, dress, rank and population variety | art-direction | [RI-VIS10](../../corpus/70-visual/RI-VIS10-character-design.md) | `critic.artdirection` | in-item procedure (kind: number) |
 | `render.art.composition` | Vista framing and landmark placement in the frame | art-direction | [RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md) | `critic.artdirection` | in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs |
 | `render.art.weirdness` | The dream-logic strangeness budget per screen | art-direction | [RI-MAG05](../../corpus/25-magic/RI-MAG05-magic-vfx.md) | `critic.artdirection` | in-item procedure (kind: image); corpus/80-methods/palette-selfcheck.mjs, cc-scan.mjs |
 | `render.art.mood` | Mood and atmosphere as an art choice: oppression, damp, quiet menace | art-direction | [RI-VIS07](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md) | `critic.artdirection` | in-item procedure (kind: text) |
@@ -873,6 +874,7 @@ _None._
 | RI-VIS07 | The "could this be Skyrim?" test — the art-direction failure detector | 70-visual | text | morrowind | constructed | high | yes | `render.art.mood` `render.art.silhouette` `render.art.palette` `render.art.architecture` `render.art.flora` `render.art.creature` | [corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md](../../corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md) |
 | RI-VIS08 | Character, creature and animation fidelity — model quality, silhouette readability, and the tells of bad Three.js character work | 70-visual | number | modern-fidelity | constructed | high | yes | `render.fidelity.character` `render.art.silhouette` `render.fidelity.animation` `combat.attack.commitment` `render.art.creature` | [corpus/70-visual/RI-VIS08-character-animation-fidelity.md](../../corpus/70-visual/RI-VIS08-character-animation-fidelity.md) |
 | RI-VIS09 | The reference image set — what pixels we actually hold, and what each side may do with them | 70-visual | structure | neutral | measured | medium | yes | `render.process.bifurcation` `render.art.palette` `render.fidelity.materials` | [corpus/70-visual/RI-VIS09-reference-image-set.md](../../corpus/70-visual/RI-VIS09-reference-image-set.md) |
+| RI-VIS10 | Playable-race and NPC humanoid character design — is this a person from Black Marsh, or a human in a costume | 70-visual | number | morrowind | constructed | medium | no | `render.art.character` `render.art.silhouette` | [corpus/70-visual/RI-VIS10-character-design.md](../../corpus/70-visual/RI-VIS10-character-design.md) |
 | RI-MTH01 | The harness API surface — what a critic can and cannot measure | 80-methods | structure | neutral | constructed | high | no | `platform.determinism.harness` `platform.input.pipeline` `platform.save.persistence` `combat.camera.behaviour` `platform.load.streaming` | [corpus/80-methods/RI-MTH01-harness-api-surface.md](../../corpus/80-methods/RI-MTH01-harness-api-surface.md) |
 | RI-MTH02 | Determinism and reproducibility as a judged property | 80-methods | trace | neutral | constructed | high | no | `platform.determinism.harness` `platform.save.persistence` | [corpus/80-methods/RI-MTH02-determinism-reproducibility.md](../../corpus/80-methods/RI-MTH02-determinism-reproducibility.md) |
 | RI-MTH03 | The blind-comparison protocol | 80-methods | structure | neutral | constructed | high | no | `process.critic.discipline` `process.verdict.format` | [corpus/80-methods/RI-MTH03-blind-comparison-protocol.md](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md) |
