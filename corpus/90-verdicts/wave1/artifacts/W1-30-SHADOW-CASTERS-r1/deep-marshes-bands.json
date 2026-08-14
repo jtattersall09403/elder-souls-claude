@@ -1,0 +1,167 @@
+{
+  "site": "vista-deep-marshes",
+  "time": 13,
+  "crop": [
+    560,
+    900,
+    300,
+    470
+  ],
+  "canvas": [
+    960,
+    540
+  ],
+  "seed": 20260814,
+  "baseline_band_energy": 5.372,
+  "arms": [
+    {
+      "arm": "shadows-off",
+      "applied": {
+        "feature": "shadows=false"
+      },
+      "rho_vs_baseline": 0.99,
+      "band_energy": 5.301
+    },
+    {
+      "arm": "water-hidden",
+      "applied": {
+        "hidden": 94
+      },
+      "rho_vs_baseline": 0.335,
+      "band_energy": 3.111
+    },
+    {
+      "arm": "skin-hidden",
+      "applied": {
+        "hidden": 1
+      },
+      "rho_vs_baseline": 0.978,
+      "band_energy": 5.402
+    },
+    {
+      "arm": "cover-hidden",
+      "applied": {
+        "hidden": 1
+      },
+      "rho_vs_baseline": 0.969,
+      "band_energy": 5.425
+    },
+    {
+      "arm": "ground-hidden",
+      "applied": {
+        "hidden": 32
+      },
+      "rho_vs_baseline": 0.686,
+      "band_energy": 4.913
+    },
+    {
+      "arm": "nothing-restore-control",
+      "applied": {},
+      "rho_vs_baseline": 0.957,
+      "band_energy": 5.418
+    }
+  ],
+  "pageErrors": [],
+  "mesh_names": [
+    [
+      "Mesh",
+      871
+    ],
+    [
+      "world-art-place",
+      440
+    ],
+    [
+      "canopy",
+      254
+    ],
+    [
+      "water",
+      94
+    ],
+    [
+      "settlement-batch",
+      89
+    ],
+    [
+      "arena-radial-weathered-course",
+      58
+    ],
+    [
+      "under",
+      44
+    ],
+    [
+      "rock",
+      43
+    ],
+    [
+      "actor-equipment",
+      42
+    ],
+    [
+      "prop",
+      36
+    ],
+    [
+      "ground",
+      31
+    ],
+    [
+      "signature",
+      23
+    ],
+    [
+      "signature-glow",
+      21
+    ],
+    [
+      "threshold",
+      14
+    ],
+    [
+      "actor-family-form",
+      8
+    ],
+    [
+      "near-canopy",
+      6
+    ],
+    [
+      "waylamp",
+      4
+    ],
+    [
+      "canopy-lobe",
+      3
+    ],
+    [
+      "arena-weathered-inlay",
+      3
+    ],
+    [
+      "arena-depth-integrated-puddle",
+      3
+    ],
+    [
+      "actor-secondary-frill",
+      3
+    ],
+    [
+      "actor-contact-shadow",
+      2
+    ],
+    [
+      "actor-action-silhouette",
+      2
+    ],
+    [
+      "actor-body",
+      2
+    ],
+    [
+      "actor-held",
+      2
+    ]
+  ]
+}

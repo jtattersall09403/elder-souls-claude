@@ -1,0 +1,92 @@
+{
+  "tag": "hw",
+  "site": "eye-blackwood",
+  "frames": 90,
+  "canvas": [
+    960,
+    540
+  ],
+  "seed": 20260814,
+  "time": 13,
+  "renderer_string": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+  "software": false,
+  "arms": [
+    {
+      "arm": "A-canopy-off",
+      "flagged": [
+        {
+          "matched": 246,
+          "changed": 246
+        },
+        {
+          "matched": 86,
+          "changed": 0
+        }
+      ],
+      "casterMeshes": 1285,
+      "casterTriangles": 492330,
+      "flicker_per_px_per_10f": 1.8481,
+      "moved_px_frac": 0.9639,
+      "total_crossings": 8526795
+    },
+    {
+      "arm": "B-canopy-on",
+      "flagged": [
+        {
+          "matched": 246,
+          "changed": 246
+        },
+        {
+          "matched": 86,
+          "changed": 0
+        }
+      ],
+      "casterMeshes": 1531,
+      "casterTriangles": 1345138,
+      "flicker_per_px_per_10f": 1.888,
+      "moved_px_frac": 0.9602,
+      "total_crossings": 8710804
+    },
+    {
+      "arm": "C-canopy+under",
+      "flagged": [
+        {
+          "matched": 246,
+          "changed": 0
+        },
+        {
+          "matched": 86,
+          "changed": 86
+        }
+      ],
+      "casterMeshes": 1617,
+      "casterTriangles": 1732544,
+      "flicker_per_px_per_10f": 2.017,
+      "moved_px_frac": 0.9859,
+      "total_crossings": 9305863
+    }
+  ],
+  "pageErrors": [],
+  "place": {
+    "kind": "teleport",
+    "x": 1178,
+    "z": 3427.5
+  },
+  "checks": [
+    {
+      "id": "ARMS-ARE-DISTINCT",
+      "ok": true,
+      "detail": "492330 < 1345138 < 1732544 shadow-pass triangles"
+    },
+    {
+      "id": "INSTRUMENT-CAN-SEE-SHIMMER",
+      "ok": true,
+      "detail": "the declined sub-texel set reads 2.017 against the shipped 1.888; if this is not higher the instrument is blind and B's result means nothing"
+    },
+    {
+      "id": "CANOPY-DOES-NOT-SHIMMER",
+      "ok": true,
+      "detail": "canopy-on 1.888 against canopy-off 1.8481 (allowance 25%)"
+    }
+  ]
+}

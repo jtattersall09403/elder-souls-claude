@@ -1,0 +1,87 @@
+{
+  "sabotage": false,
+  "chunk_owners": {
+    "fog_fragment": "render/sky.js",
+    "fog_pars_fragment": "render/sky.js",
+    "fog_vertex": "render/sky.js",
+    "fog_pars_vertex": "patched (either)"
+  },
+  "materials_seen": 584,
+  "with_surface_uniforms": 406,
+  "orphaned_surface_pass": 305,
+  "orphaned_examples": [
+    {
+      "mesh": "Mesh",
+      "family": null,
+      "hook_is": "unknown"
+    },
+    {
+      "mesh": "actor-body:saxhleel:cloth",
+      "family": null,
+      "hook_is": "installWaterline"
+    },
+    {
+      "mesh": "actor-body:saxhleel:skin",
+      "family": null,
+      "hook_is": "installWaterline"
+    },
+    {
+      "mesh": "actor-secondary-frill:0@spine_02",
+      "family": null,
+      "hook_is": "unknown"
+    },
+    {
+      "mesh": "actor-equipment:reed:head@head",
+      "family": null,
+      "hook_is": "unknown"
+    },
+    {
+      "mesh": "actor-equipment:chitin:head@head",
+      "family": null,
+      "hook_is": "unknown"
+    },
+    {
+      "mesh": "actor-equipment:xanmeer:head@head",
+      "family": null,
+      "hook_is": "unknown"
+    },
+    {
+      "mesh": "actor-family-form:saxhleel:eye-l@head",
+      "family": null,
+      "hook_is": "unknown"
+    },
+    {
+      "mesh": "actor-family-form:saxhleel:pupil-l@head",
+      "family": null,
+      "hook_is": "unknown"
+    },
+    {
+      "mesh": "Mesh",
+      "family": null,
+      "hook_is": "unknown"
+    },
+    {
+      "mesh": "Mesh",
+      "family": null,
+      "hook_is": "unknown"
+    },
+    {
+      "mesh": "Mesh",
+      "family": null,
+      "hook_is": "unknown"
+    }
+  ],
+  "checks": [
+    {
+      "id": "FOG-CHUNKS-SINGLE-OWNER",
+      "ok": true,
+      "detail": "fog_fragment=render/sky.js fog_pars_fragment=render/sky.js fog_vertex=render/sky.js"
+    },
+    {
+      "id": "NO-ORPHANED-SURFACE-PASS",
+      "ok": false,
+      "detail": "305 of 406 materials carry surfaceUniforms whose onBeforeCompile no longer installs them"
+    }
+  ],
+  "pageErrors": []
+}
