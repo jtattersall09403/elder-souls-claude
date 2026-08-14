@@ -26,9 +26,11 @@
 //      pass — but it does refuse a patch that DELETES more than it adds, which is the mechanical
 //      half: a "rewrite" that throws the answer away and writes a keyword list is caught here.
 //
-// SAFE ON DISK. Every topic file in `game/data/dialogue/topics/` round-trips exactly through
-// `JSON.stringify(doc, null, 2) + "\n"` — verified byte for byte before writing — so a patch
-// changes the one string it names and nothing else in the file.
+// SAFE ON DISK. Eleven of the twenty-two topic files do NOT round-trip through
+// `JSON.stringify(doc, null, 2)` — some escape non-ASCII as `\u00a7`, one writes its `to` arrays on
+// a single line — so nothing here re-serialises a document. Each edit swaps the exact bytes of the
+// one value it names, in that file's own encoding, and every touched file is re-parsed and
+// re-checked afterwards. A patch changes the string it names and nothing else in the file.
 'use strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -60,7 +62,7 @@ const APPLY = !!arg('apply', false);
 const filePath = (f) => path.join(DIR, f);
 const readRaw = (f) => fs.readFileSync(filePath(f), 'utf8');
 const encPlain = (s) => JSON.stringify(s);
-const encAscii = (s) => JSON.stringify(s).replace(/[-￿]/g, (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
+const encAscii = (s) => JSON.stringify(s).replace(/[\u007f-\uffff]/g, (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
 
 /** Replace `oldVal`'s encoded form with `newVal`'s, in whichever encoding the file uses. */
 function swapValue(raw, oldVal, newVal, what) {
