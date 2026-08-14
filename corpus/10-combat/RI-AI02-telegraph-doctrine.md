@@ -24,6 +24,29 @@ This item is the hardest gate in the AI area. It is largely binary, and it is th
 site of AR-1 (Souls leakage) enforcement: an untelegraphed instant attack is an automatic
 fail of the piece regardless of any other score.
 
+> **REFERENCE MATERIAL FOR THIS ITEM IS ON DISK, added 2026-08-14 by AUDIT-CITATION-STALENESS.**
+> This item is about what a windup *looks like*, and it had no route to a single picture of one
+> while **282 animated behaviour references** sat vendored in the repo. Not one of `RI-AI01`–
+> `RI-AI07` cited them; they were reachable only through `RI-VIS09` §2's routing table, which
+> routes them to `RI-VIS08` (character animation) and to nothing in `10-combat/`. That is how the
+> MyGUI layouts were lost for a week — described in an inventory, cited by no item.
+>
+> | Path | Files | What it is for here |
+> |---|---|---|
+> | `corpus/70-visual/refs/souls-behaviour/telegraph/` | 10 | windup poses — §A's silhouette clause |
+> | `corpus/70-visual/refs/souls-behaviour/anim/ds1-boss-moves/` | 177 | named DS1 boss moves as animated GIFs, one per move; the closest thing the project owns to a per-attack anatomy reference |
+> | `corpus/70-visual/refs/souls-behaviour/anim/telegraph/`, `.../attacks/`, `.../stance/`, `.../impact/` | see `refs/MANIFEST.json` | windup, swing, guard and hit motion |
+>
+> **What they may and may not be used for, and this is not negotiable.** These are
+> **behaviour-valid, not pixel-valid**. `RI-VIS09` §2 forbids using them for any fidelity or
+> art-direction metric, and forbids deriving a frame count from a GIF whose capture rate is
+> unknown — a GIF's frame timing is not the game's frame timing, and §A's numbers are `f@60`
+> under **S22**. Use them for **silhouette, pose ordering, tracking-cutoff visibility and
+> qualitative windup legibility**; preregister the action and disclose the rate under
+> `RI-VIS09` §5a. A number taken off a GIF is a defect.
+>
+> *(Counts stamped at commit `5597b4c4`; re-derive with `find corpus/70-visual/refs/souls-behaviour -type f | wc -l`.)*
+
 ## The reference artifact
 
 ### A. Attack anatomy (60 fps, frames — all counts `f@60`)

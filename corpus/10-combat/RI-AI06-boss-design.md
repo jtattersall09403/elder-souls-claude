@@ -23,6 +23,23 @@ Phases exist so the song changes key exactly when the player has got comfortable
 transition is not "more damage"; it is a **new set of questions layered onto the old ones**,
 announced by an unmissable event, at a threshold the player can feel coming.
 
+> **REFERENCE MATERIAL FOR THIS ITEM IS ON DISK, added 2026-08-14 by AUDIT-CITATION-STALENESS.**
+> `corpus/70-visual/refs/souls-behaviour/anim/ds1-boss-moves/` holds **177 named DS1 boss moves**
+> as animated GIFs — one file per move, named `<Boss>_-_<Move>.gif` — and
+> `corpus/70-visual/refs/souls-behaviour/arena/` holds **14** arena references. This item is
+> called "boss design" and cited neither, for eight days, because they were reachable only from
+> `RI-VIS09` §2's routing table, which routes them to `RI-VIS08` and to nothing in `10-combat/`.
+>
+> They are the direct evidence for **"a finite, enumerable moveset"**: the per-boss file count is
+> the enumeration, and the names are the move list. Artorias alone has 8.
+>
+> **Behaviour-valid, not pixel-valid.** `RI-VIS09` §2 forbids fidelity or art-direction metrics
+> on these, and forbids deriving any frame count from them — GIF frame timing is not game frame
+> timing and every number in this area is `f@60` under **S22**. Use them for moveset enumeration,
+> silhouette distinctness and phase-rhythm reading; preregister the action under `RI-VIS09` §5a.
+>
+> *(Counts stamped at commit `5597b4c4`; re-derive with `ls corpus/70-visual/refs/souls-behaviour/anim/ds1-boss-moves | wc -l`.)*
+
 The arena is part of the moveset. A boss's spacing behaviour is only meaningful in a space
 that has a size, a shape, and a small number of legible features. And the loop around the
 fight — fog gate in, die, run back, fog gate in — is a designed object with its own budget:
