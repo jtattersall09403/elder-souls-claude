@@ -160,6 +160,24 @@ browser on the box is busy. There is never a reason not to have one running.
    *total requests across a split piece must not fall below the pre-split median. Splitting must
    shorten an agent's waste, never its work.*
 
+### 2e-i. Adoption is the orchestrator's job, and the evidence says exhortation fails
+
+CH-06 measured a **13–19% saving with no handoff risk and nothing split**: 91.29% of all requests
+carry exactly one tool call, 46% of those are a small read-only probe, and 14,851 of them sit
+immediately behind another one just like it. 1,500 requests are **pure waiting** — the same command
+re-run to see whether a job had finished.
+
+**The agent that wrote the rule then failed to follow it**, and said so: it finished at 1.0792
+blocks per request, 8 of 101 requests batched, barely above the fleet baseline. In its words, this
+*"ships as a tool with a meter rather than an exhortation"* — because intending to batch is not
+enough.
+
+**So every dispatch brief carries the batching line, and the orchestrator batches its own calls.**
+Use `tools/probe.mjs` for N read-only commands in one call and `--until` to wait inside a single
+call instead of polling. The meter is `node tools/cost.mjs --batching`; the tripwire is that
+`blocks_per_request` must **rise** above 1.0925 or the change is inert and comes out. Scope guard:
+total tool *calls* per piece must not fall — **batching removes requests, never observations.**
+
 ## 3. Top up, in this order of preference
 
 1. **A critic owed a piece that has reported.** A finished builder with no critic dispatched is the
