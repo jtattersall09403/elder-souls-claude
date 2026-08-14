@@ -1303,8 +1303,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `FIRST-TEN-MINUTES` | built-and-banked-d3-and-charopacity-only-d1-and-d2-diagnosed-not-fixed | A fresh-context critic. The four things most worth attacking: (1) re-run tools/harness/fir | — |
 | `W1-25-divergence-20260814` | done | Re-run tools/composition/matrix-probe.mjs to its DOCUMENTED DEFAULT path reports/compositi | `orchestration/status/W1-25-DIVERGENCE-20260814.json` `reports/experience/w1-25-r2-divergence/DIVERGENCE-20260814.md` `reports/experience/w1-25-r2-divergence/npc-presence-consumption.json` `reports/experience/w1-25-r2-divergence/session-2x2.json` `tools/experience/npc-presence-consumption.mjs` `orchestration/INDEX.md` |
-| `FIRST-TEN-MINUTES` | built-and-banked-d1-diagnosed-not-fixed | A fresh-context critic. The four things most worth attacking: (1) re-run tools/harness/fir | — |
 | `W1-30-VIS-RECRITICISM` | material_edit_awaiting_recriticism | A THIRD fresh reviewer-editor judges this version of W1-30.md; this round materially edite | `orchestration/plans/W1-30.md` `orchestration/plans/W1-30-EVIDENCE.md` `orchestration/plans/W1-30K.md` `orchestration/status/W1-30-VIS-RECRITICISM.json` `orchestration/status/W1-30.json` `orchestration/INDEX.md` |
 | `W1-30` | builder-native-gpu-remediation-in-progress |  | `corpus/70-visual/RI-VIS09-reference-image-set.md` `orchestration/plans/W1-30.md` `orchestration/status/W1-30-animation-amendment-codex-20260811.json` `orchestration/status/W1-30-reviewer-editor-20260812.json` `orchestration/status/W1-30.json` |
 | `W1-30V` | ? | Capture the 12 declared motion sequences (the largest gap - no gate in this tree is motion | `tools/visual/build-deck.mjs` `tools/visual/deck.json` `tools/visual/deck.mjs` `tools/visual/frame-stats.mjs` `tools/visual/contact-sheet.mjs` `tools/visual/deck-compare.mjs` |

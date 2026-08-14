@@ -311,15 +311,23 @@ export class Renderer {
     const w = (this.worldTarget && this.worldTarget.width) || this.canvas.width;
     const h = (this.worldTarget && this.worldTarget.height) || this.canvas.height;
     this.registerComposite(buildCompositor(w, h, { samples: want, maxSamples }));
-    if (old) {
-      old.worldTarget.dispose();
-      if (old.worldTarget.depthTexture) old.worldTarget.depthTexture.dispose();
-      old.compositeMaterial.dispose();
-      for (const c of old.compositeScene.children) if (c.geometry) c.geometry.dispose();
-    }
+    this.disposeComposite(old);
     this._msaaProbed = false;
     this._grade = null;
     return this.compositeSamples;
+  }
+
+  /** Release a compositor module's GPU memory. Public because the measurement harness swaps the
+   * pre-A compositor in and out to get before/after on the same frames, and a 1920x1080 HalfFloat
+   * multisample target plus its depth is ~90 MB — leaking one per swap turns a seven-variant
+   * sweep into an out-of-memory crash rather than a result. */
+  disposeComposite(mod) {
+    if (!mod || mod === this._composite) return false;
+    mod.worldTarget.dispose();
+    if (mod.worldTarget.depthTexture) mod.worldTarget.depthTexture.dispose();
+    mod.compositeMaterial.dispose();
+    for (const c of mod.compositeScene.children) if (c.geometry) c.geometry.dispose();
+    return true;
   }
 
   /**
@@ -1171,8 +1179,30 @@ export class Renderer {
     // W1-02: `sim.env` carries the environment's own derived terms - the blended sightline the
     // front is currently at, and the weather's light class. The sky reads them off the LIVE
     // env rather than off weather.json, so what is drawn is what the fixed step computed.
-    this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus, regionFog, sim.env, sim.frame,
-      this._updateOverheadField(sim));
+    // D2 — THE ROOF CULL IS DISABLED, AND IT IS DISABLED BECAUSE IT DID NOT WORK.
+    //
+    // `_updateOverheadField()` below builds the field and is left in place, because the diagnosis
+    // it encodes is right and the next person should not have to redo it. What is NOT right is the
+    // result, and my own instrument caught it. Measured over an 11-stop walk from the spawn point
+    // in rain (`reports/first-ten-minutes/after-d1d2/manifest.json`, `d2.steps`), surviving
+    // streaks went:
+    //
+    //     f0 192   f60 1   f120 0   f180 2   f240 0   f300 1   f360 0   f420 1   f480 0 ...
+    //
+    // That is wrong in BOTH directions at once. At f0 it culls nothing while 15 streaks are
+    // genuinely under a roof; from f60 on it culls essentially everything, including under open
+    // sky. Rain vanishing from the whole world is a worse defect than rain falling through a deck,
+    // so shipping it would have traded a visible bug for a more visible one.
+    //
+    // The likely cause, for whoever picks this up: the candidate set is too generous. The 120 m
+    // footprint ceiling in `_updateOverheadField()` lets a town-sized platform or shell mesh into
+    // the box list, and one of those covers all 81 samples at once. There is also a plain typo —
+    // the z arm of the proximity filter reads `> BOX + 60` where the x arm reads `> BOX`. Tighten
+    // the footprint cap to something roof-sized, fix the asymmetry, and re-run
+    // `node tools/harness/first-ten.mjs --tag <tag> --only d1,d2`: the target is `live` staying
+    // near 192 in the open and `under_cover` reaching 0 under the decks, and BOTH halves have to
+    // hold at once. Passing the field instead of `null` is the whole re-enable.
+    this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus, regionFog, sim.env, sim.frame, null);
     // W1-30S seam: publish the frame's lighting summary sky.js just computed.
     this.setLightingFrame(this.sky.lastFrame);
       // The province's own night lamps, driven off the same sun elevation the sky is: at 01:00 the

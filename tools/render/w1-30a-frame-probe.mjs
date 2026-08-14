@@ -242,8 +242,12 @@ async function applyVariant(id) {
     for (const f of ['msaa', 'antialias', 'grade', 'dither', 'postprocess', 'ao']) r.setVisualFeature(f, true);
     r._buildCompositorForTier();
     if (v === 'baseline') {
+      // Dispose the shipping compositor `_buildCompositorForTier` just made, or a seven-variant
+      // sweep leaks one ~90 MB multisample target per stop and dies of it half way through.
+      const orphan = r._composite;
       const mod = window.__W130A_BASELINE(r.worldTarget.width, r.worldTarget.height);
       r.registerComposite(mod);
+      r.disposeComposite(orphan);
     }
     if (v === 'after-nomsaa') r.setVisualFeature('msaa', false);
     if (v === 'after-nofxaa') r.setVisualFeature('antialias', false);
@@ -275,12 +279,15 @@ async function goTo(setup) {
 }
 
 /** The eye and the look-at for a setup, plus a yaw offset. Same arithmetic as deck.mjs's
- * `poseCamera`, restated here because deck.mjs is a script and exports nothing. */
-async function pose(setup, yawOffsetDeg) {
+ * `poseCamera`, restated here because deck.mjs is a script and exports nothing.
+ *
+ * `anchor` is the player position, read ONCE per stop and passed in. The first version asked the
+ * harness for a snapshot on every frame of the pan, which is 48 extra round-trips per variant per
+ * stop and — worse — makes the camera path depend on anything that nudges the player, so two
+ * variants would not have been panning over the same ground. */
+async function pose(setup, yawOffsetDeg, anchor) {
   const cam = setup.camera;
-  const s = await call('snapshot');
-  if (!s.ok) return `snapshot failed: ${s.e}`;
-  const [px, py, pz] = s.v.player.pos;
+  const [px, py, pz] = anchor;
   const yaw = ((Number(cam.yaw_deg || 0)) + yawOffsetDeg) * Math.PI / 180;
   const pitch = (Number(cam.pitch_deg || 0)) * Math.PI / 180;
   const dist = Number(cam.distance_m || 0), height = Number(cam.height_m || 0);
@@ -311,9 +318,12 @@ for (const setup of stops) {
   if (err) { console.log(`  RED  ${setup.id} — ${err}`); rows.push({ stop: setup.id, status: 'red', reason: err }); continue; }
   await call('setWeather', 'clear');
   await call('setTimeOfDay', 13);
+  const snap = await call('snapshot');
+  if (!snap.ok) { console.log(`  RED  ${setup.id} — snapshot failed`); rows.push({ stop: setup.id, status: 'red', reason: 'snapshot failed' }); continue; }
+  const anchor = snap.v.player.pos;
   for (const variant of VARIANTS) {
     reports[variant.id] = await applyVariant(variant.id);
-    const perr = await pose(setup, 0);
+    const perr = await pose(setup, 0, anchor);
     if (perr) { rows.push({ stop: setup.id, variant: variant.id, status: 'red', reason: perr }); continue; }
     await g.h('stepFrames', 10);
 
@@ -338,7 +348,7 @@ for (const setup of stops) {
     await g.page.evaluate(() => window.__W130A.resetSeq());
     let panCrawl = 0, panN = 0;
     for (let f = 0; f < PAN; f++) {
-      await pose(setup, f * PAN_STEP);
+      await pose(setup, f * PAN_STEP, anchor);
       await g.h('renderFrame');
       const s = await g.page.evaluate(() => window.__W130A.sample(false));
       if (s.crawl !== null) { panCrawl += s.crawl; panN++; }
@@ -369,13 +379,16 @@ const gradeRows = [];
 for (const setup of stops.filter((s) => s.region)) {
   const err = await goTo(setup);
   if (err) continue;
+  const gsnap = await call('snapshot');
+  if (!gsnap.ok) continue;
+  const ganchor = gsnap.v.player.pos;
   for (const variant of ['after', 'after-flatgrade']) {
     await applyVariant(variant);
     for (const [tid, hour] of [['t0800', 8], ['t1300', 13], ['t1930', 19.5], ['t0100', 1]]) {
       for (const wid of ['clear', 'rain']) {
         await call('setWeather', wid);
         await call('setTimeOfDay', hour);
-        await pose(setup, 0);
+        await pose(setup, 0, ganchor);
         await g.h('stepFrames', 12);
         await g.h('renderFrame');
         await g.page.evaluate(() => window.__W130A.resetSeq());
