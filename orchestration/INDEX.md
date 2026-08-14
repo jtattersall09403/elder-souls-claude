@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `ef2554f1`: 953 tools, 156 reference
+so it cannot drift. Generated at `bc35919d`: 953 tools, 156 reference
 items, 183 pieces in flight.
 
 Its purpose is to stop 183+ concurrent agents each paying separately to discover the
@@ -1345,12 +1345,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-30-SHADOW-CASTERS` | three-changes-landed-evidence-in-flight | pixel arms at vista-blackwood, then the flag set for the canopy | `game/src/world/province.js` `game/src/render/renderer.js` `tools/visual/w1-30-shadow-casters.mjs` `tools/visual/w1-30-heightfalloff-arm.mjs` |
 | `HUD-OUT-OF-COMBAT` | corpus-landed-verified-on-remote | Nothing blocking. The remediations R1-R5 in RI-UIX07 are owed by HUD-MORROWIND (R1, R3), b | `corpus/86-ui/RI-UIX07-out-of-combat-hud.md (new)` `corpus/00-doctrine/ARBITRATION.md (S54 appended)` `corpus/00-doctrine/subsystems.json (ui.hud.world registered)` `corpus/86-ui/RI-UIX01-combat-hud.md (header pointer to RI-UIX07; no threshold changed)` `corpus/86-ui/RI-UIX02-no-marker-enforcement.md (§F narrowed by one paragraph; no threshold changed)` `orchestration/INDEX.md (regenerated)` |
 | `spawn-truth-thorn-lilmoth` | ? | none -- ruling filed. See orchestration/NEXT-DISPATCH.md #SPAWN-TRUTH for what should chan | `tools/harness/spawn-truth-thorn.mjs` `reports/spawn-truth/2026-08-14-spawn-truth.md` `reports/spawn-truth/shots/desktop-00-title.png` `reports/spawn-truth/shots/desktop-01-barge-hold.png` `reports/spawn-truth/shots/desktop-02-writ-house-done.png` `reports/spawn-truth/shots/desktop-03-thorn-tidewrack-quay-establishing.png` |
 | `W1-30DE-critic` | verdicts-filed-BOTH-FAIL-D-3.0-E-4.0-against-gate-7.0 | Done. Two rounds are owed to the builders (the per-part census for D, the roof gable flag  | `corpus/90-verdicts/wave1/W1-30D-r1.json` `corpus/90-verdicts/wave1/W1-30D-r1.md` `corpus/90-verdicts/wave1/W1-30E-r1.json` `corpus/90-verdicts/wave1/W1-30E-r1.md` `corpus/90-verdicts/wave1/artifacts/w1-30de/` `docs/shots/2026-08-14-w1-30de-critic/` |
 | `W1-MAP-DEFECTS` | ? |  | `orchestration/status/W1-MAP-DEFECTS.json` `tools/map/player-route.mjs` `tools/map/fog-control.mjs` `tools/map/explore-W1-MAP-DEFECTS.mjs` `corpus/00-doctrine/AMENDMENT-W1-MAP-02.md` `game/src/ui/screens/map.js` |
 | `W1-MW-UI-REFS` | running | eye-verify REF-A12b contact sheets; vendor the owner's screenshot as REF-A12c; write RI-UI | `orchestration/status/W1-MW-UI-REFS.json` |
-| `W1-30-SHADOW-CASTERS` | measuring |  | — |
 | `RI-VIS06-PROTOCOL-A` | running |  | — |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |
 | `W1-30C-critic` | ? | orchestrator: dispatch a fresh judge for the naive grouping pack at corpus/90-verdicts/wav | `orchestration/status/W1-30C-critic.json` `corpus/90-verdicts/wave1/W1-30C-r1.md` `corpus/90-verdicts/wave1/W1-30C-r1.json` `corpus/90-verdicts/wave1/artifacts/w1-30c/` `corpus/90-verdicts/GAP-LEDGER.md` `corpus/90-verdicts/GAP-LEDGER.json` |
