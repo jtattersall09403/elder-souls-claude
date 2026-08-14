@@ -121,6 +121,30 @@ per-process claim in `/tmp` separates **sibling agents inside one container** bu
 container. Neither is sufficient; together they cover it. Verified against the real collision — a
 sibling's Pod carrying the author's own slug, zero minutes old, came back `PROTECTED`.
 
+## 0b. A sixth failure shape: the one-sided guard
+
+Rule 6 lists four ways a control fails; §0 above adds a fifth. Here is a sixth, found 2026-08-14 by
+the canopy-shimmer measurement — **a guard that can only see deviation in the direction its author
+expected.**
+
+The rule asked `(A / C) > 1.02` — *is this arm noisier than the floor?* The arm came back at **0.82**,
+an 18% departure in the **quieter** direction, and the tool printed **"NO POWER"** over a real and
+important result. In the author's own words:
+
+> *"It wasn't blind; I'd given it one eye."*
+
+**A guard that only sees deviation in the direction you expected is the same failure as a control
+that cannot fail** — it simply fails on half the number line instead of all of it. Ask of any
+threshold: *what would this print if the effect went the other way, and is that outcome
+distinguishable from no effect at all?*
+
+Two things the same round did right and worth copying. It **wrote the confound into the finding
+rather than banking a win**: the metric is mean *absolute* luminance change, shadowing darkens the
+ground, and darker images have smaller absolute deltas — so the magnitude is confounded and must not
+be read as "18% calmer". The *direction* is what supports the negative claim, and the negative claim
+was what was owed. And when it found two published manifests carried the wrong verdict string, it
+**superseded them in a named file** rather than quietly rewriting them.
+
 ## 1. `git gc --prune=now` destroys other agents' staged work — use plain `git gc`
 
 On 2026-08-14 the disk hit 96%. The space was in `.git`, which had grown to **9.3 GB**;
