@@ -1,0 +1,89 @@
+CONSUMPTION — game/data/dialogue/topics/** against its shipped readers
+roster: 408 people from game/data/npcs/**
+
+PASS  the text a person speaks
+      field   `x` on topics/05-asking-around.json#lilmoth
+      reader  infoFor() -> Conversation.say() -> Engine.conversationSay() (engine.js:2486)
+      Deelith-Muul (lilmoth-factor-0-child0) asked about "lilmoth":
+          "You pay for the lamps whether your street has any. Wide-Eye Teel keeps the list of who's paid and sh…"
+      after rewriting that one string:
+          "PERTURBED: the lamps were sold last winter.…"
+
+PASS  the actor gate
+      field   `a` (Morrowind filter field 3, Class)
+      reader  infoFor() `matchesActor` — an info written for another actor is skipped outright
+      Deelith-Muul is a villager and the info says villager:
+          "You pay for the lamps whether your street has any. Wide-Eye Teel keeps the list of who's paid and sh…"
+      after retagging that info to `innkeeper`, the same villager says:
+          (nothing — this person has no answer)
+
+PASS  the place gate — one actor, one word, two towns
+      field   `cell` (Morrowind filter field 6, the SPEAKER's place)
+      reader  infoFor() `inCell(npc, info.cell)` plus 2 points of specificity score
+      Fals Uveran, a merchant standing in Stormhold, asked about "stormhold":
+          "Salt market's the whole reason there's a town on this rock. Okan-Shei has held the west end for thir…"
+      Anse, a merchant standing in Gideon, asked the same word:
+          (nothing — this person has no answer)
+
+PASS  the disposition bar
+      field   `d` on topics/05-asking-around.json#the-covenant (d:30)
+      reader  infoAllowed() `Number(disposition) < Number(info.d)` -> false (converse.js:139)
+      Sesh-Anaat to a Saxhleel they think well of (disposition 60):
+          "What is owed is learned in the shallows before it is learned in words. It is learned again at the fi…"
+      the same word put by the same person at disposition 10:
+          "What is taken is returned, what is named is kept, and what is owed is carried. It is three sentences…"
+
+PASS  the race gate — two players, one speaker, one word
+      field   `requires.race` on topics/05-asking-around.json#the-lukiul
+      reader  infoAllowed() race whitelist (converse.js:127)
+      Eeja-Sul answering a Saxhleel:
+          "You talk like the towns. That's not an accusation, it's just the first thing this street noticed abo…"
+      the same person answering a Dunmer:
+          (nothing — this person has no answer)
+
+PASS  AddTopic — the words the player leaves the conversation holding
+      field   `to` on topics/05-asking-around.json#the-cart-roads
+      reader  Engine.conversationSay() -> learnTopics(sim.quest.topicsKnown, [topic, ...info.to]) (engine.js:2504, topic-supply.js:200)
+      after asking Galvus Arn about the cart roads, topicsKnown gains:
+          the-road-to-gideon, the-road-to-helstrom, the-road-to-lilmoth
+      with that one `to` list emptied, the same question yields:
+          (no topics)
+
+FAIL  `name` — the words in the topic column, as against the slug
+      field   `name` on the topic record #the-second-set-of-weights
+      reader  topicLabel(record, index) <- topicsFor() (converse.js) -> engine.js:3573 topic column
+      Wuleen-Kus (npc-wuleen-kus) sees the subject listed as:
+          "the second set of weights…"
+      after authoring a different `name` on that topic record:
+          "the second set of weights…"
+      ^ expected the answer to CHANGE and it did not.
+
+FAIL  `implied` — the unlock a writer declared invisible on purpose (A1b)
+      field   `implied` on an INFO of #the-second-set-of-weights, naming its `to` destination #the-wharf-debt
+      reader  infoFor() -> `implied`, alongside `to`, for Engine.conversationSay() (converse.js)
+      asking Wuleen-Kus about "the-second-set-of-weights" with nothing flagged:
+          "(the reader does not carry `implied` at all)…"
+      with that one unlock flagged `implied: ["the-wharf-debt"]`:
+          "(the reader does not carry `implied` at all)…"
+      ^ expected the answer to CHANGE and it did not.
+
+PASS  delete-the-fix: remove 05-asking-around.json entirely
+      field   the whole file this round authored
+      reader  buildTopicIndex() over game/data/dialogue/topics/**
+      Galvus Arn asked about "the-north-wall" with the file present:
+          "Six feet of salt block and a gate no man of mine has opened. Stores, per the roll. Show me the requi…"
+      with the file removed:
+          (nothing — this person has no answer)
+
+PASS  the cell ladder — 63 authored (actor, town) infos, each reachable by
+      some player from that actor in that town, and by no speaker of that actor elsewhere.
+      0 exception(s).
+
+---- field-coverage census: is every authored field accounted for? ----
+      authored field names: a, cell, cf, d, f, forbids, pos, requires, res, to, x
+PASS  field-coverage census — 11 authored field name(s), 0 unaccounted for.
+PASS  f consumer — faction-qualified duties changes with the speaker faction.
+PASS  res reader — RESULT journal, flag and AddTopic leave infoFor() for Engine.conversationSay().
+
+2 ARM(S) FAILED — every authored field is accounted for by a reader/consumer arm.
+EXIT=1

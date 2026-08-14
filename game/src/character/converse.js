@@ -173,6 +173,15 @@ export function buildTopicIndex(topicDocs) {
       // has one source, and a file that adds an actor's half of a root (`06-opening-roots.json`)
       // does not have to re-declare the flag to stay in it.
       if (t.root) cur.root = true;
+      // W1-DLG-TOPIC-WEB. `name` is the topic's player-visible wording where the de-slugged id is
+      // wrong — a proper noun that needs its capital, or an id whose slug is not what a person
+      // would actually say. It was authored on 23 records and READ BY NOTHING; `topicLabel()` took
+      // an id and de-slugged it, so the label a player saw could not be corrected by any authoring
+      // act. It is carried onto the merged record here for the same reason `root` is: an id
+      // declared in more than one file (92 of the 470 are) must resolve to one label, and the
+      // first file to name it wins, which is the same precedence `orderTopicDocs()` already gives
+      // everything else on this record.
+      if (typeof t.name === 'string' && t.name && cur.name === undefined) cur.name = t.name;
       idx.set(key, cur);
     }
   }
@@ -398,6 +407,20 @@ export function infoFor(topicIndex, topicId, npc, player, canon = null) {
     // `game/src/sim/quest/topic-supply.js` for why that is the whole of the main quest's
     // bootstrap.
     to: Array.isArray(best.to) ? best.to.slice() : [],
+    // W1-DLG-TOPIC-WEB, plan §2b/§4C. Which of this answer's `to` destinations the writer declared
+    // an unlock BY IMPLICATION — a subject the player is meant to leave holding although the words
+    // for it were deliberately not put in their mouth. A1b's whole point is that such an unlock is
+    // a choice somebody made and a number a census can count, rather than today's silent default,
+    // and that is only true if the flag survives into what the shipped reader returns. Carried out
+    // here beside `to` for exactly the reason `res`, `cf`, `pos` and `cell` are.
+    //
+    // WHAT THIS IS NOT, said plainly rather than glossed: the behavioural half of §2b — grant a
+    // visible unlock on the player's CLICK and an implied one on read — lives in
+    // `Engine.conversationSay()`, which is `W1-UIX08`'s file under the §2a seam and is not touched
+    // by this piece. Today every `to` still grants on read. This field is the data contract that
+    // makes that change a one-line switch when the window lands, and the census that says whether
+    // the exception budget was spent honestly in the meantime.
+    implied: Array.isArray(best.implied) ? best.implied.filter((d) => (best.to || []).includes(d)) : [],
     // Morrowind RESULT script, kept declarative in JSON. Engine.conversationSay() is the
     // world-side consumer: it writes the journal/flag and learns addTopic entries.
     res: best.res && typeof best.res === 'object' ? structuredClone(best.res) : null,
@@ -438,7 +461,7 @@ export function topicsFor(topicIndex, npc, player, canon = null) {
   const seen = new Set();
   for (const id of (npc.topics || [])) {
     const info = infoFor(topicIndex, id, npc, player, canon);
-    if (info) { out.push({ id, text: topicLabel(id), gated: info.gated }); seen.add(topicKey(id)); }
+    if (info) { out.push({ id, text: topicLabel(id, topicIndex), gated: info.gated }); seen.add(topicKey(id)); }
   }
   const known = player && player.topics_known;
   if (known && known.length && Array.isArray(topicIndex.roots)) {
@@ -447,7 +470,7 @@ export function topicsFor(topicIndex, npc, player, canon = null) {
       if (seen.has(r.key) || !heldKeys.has(r.key)) continue;
       const info = infoFor(topicIndex, r.id, npc, player, canon);
       if (!info) continue;
-      out.push({ id: r.id, text: topicLabel(r.id), gated: info.gated, root: true });
+      out.push({ id: r.id, text: topicLabel(r.id, topicIndex), gated: info.gated, root: true });
       seen.add(r.key);
     }
   }
@@ -463,9 +486,34 @@ export function rootTopicIds(topicIndex) {
   return Array.isArray(topicIndex && topicIndex.roots) ? topicIndex.roots.map((r) => r.id) : [];
 }
 
-/** A topic id is a slug; the player sees it as the words they would say. */
-export function topicLabel(id) {
-  return String(id).split('-').join(' ');
+/**
+ * A topic id is a slug; the player sees it as the words they would say.
+ *
+ * W1-DLG-TOPIC-WEB. This used to be `String(id).split('-').join(' ')` and nothing else, which made
+ * the authored `name` field decoration: 23 topic records carried one, no code path read any of
+ * them, and a proper noun could not keep its capital however carefully it was authored
+ * (`RI-UIX08` §A4 requires *"lower-case as authored except where the topic is a proper noun"*).
+ *
+ * **The signature is additive on purpose.** Every existing call site passes a bare id string and
+ * gets exactly what it got before — `topicLabel('the-tally-of-the-dead')` is still
+ * `the tally of the dead`. `game/src/engine.js`'s four call sites are `W1-UIX08`'s file under the
+ * §2a seam and are deliberately not edited by this piece; they keep compiling and keep their old
+ * answer. A caller that HAS the index (this file's `topicsFor()`, which is what fills the topic
+ * column a player reads) passes it and gets the authored wording.
+ *
+ * @param {string|{id: string, name?: string}} idOrRecord  a topic id, or a topic record.
+ * @param {Map} [topicIndex]  a `buildTopicIndex()` result; when given, an id is resolved through it.
+ */
+export function topicLabel(idOrRecord, topicIndex = null) {
+  const deslug = (s) => String(s).split('-').join(' ');
+  if (idOrRecord && typeof idOrRecord === 'object') {
+    return typeof idOrRecord.name === 'string' && idOrRecord.name ? idOrRecord.name : deslug(idOrRecord.id);
+  }
+  if (topicIndex && typeof topicIndex.get === 'function') {
+    const rec = topicIndex.get(topicKey(idOrRecord));
+    if (rec && typeof rec.name === 'string' && rec.name) return rec.name;
+  }
+  return deslug(idOrRecord);
 }
 
 /**
