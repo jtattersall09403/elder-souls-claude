@@ -375,7 +375,7 @@
     "artifacts": {
       "type": "array",
       "minItems": 1,
-      "description": "Every file this verdict cites. An empty array makes the verdict VOID.",
+      "description": "Every file this verdict cites. An empty array makes the verdict VOID. EVERY PATH MUST RESOLVE IN A FRESH CLONE, not merely on the machine that produced it: `git ls-files` must list it, or `git add -f` it before the verdict is filed. For eight days 56 of 76 Wave-1 verdicts cited evidence that `reports/.gitignore` excluded, so their scores could not be checked by anybody else — the exact failure `nothing counts because someone says so` forbids. Evidence larger than 1 MiB is cited through a PIN instead: commit `<path>.pin.json` (see tools/verdict-evidence.mjs) carrying the decisive numbers, a SHA-256 of the raw bytes and the command that regenerates them, and keep citing the raw path here. `node tools/verdict-evidence.mjs --recover` does both. `node tools/verdict-validate.mjs` fails the verdict otherwise.",
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -387,7 +387,7 @@
         "properties": {
           "path": {
             "type": "string",
-            "description": "Repo-relative, normally corpus/90-verdicts/<wave>/artifacts/<piece_id>/..."
+            "description": "Repo-relative, normally corpus/90-verdicts/<wave>/artifacts/<piece_id>/... — and TRACKED. A citation that only resolves on the machine that produced it is not a citation. Anything under reports/ is gitignored by default and must be force-added (`node tools/verdict-evidence.mjs --recover`) or pinned if it is over 1 MiB. A `#section` anchor on a tracked document is allowed and resolves against the base path."
           },
           "kind": {
             "enum": [
