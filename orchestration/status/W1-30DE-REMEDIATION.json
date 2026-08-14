@@ -2,16 +2,22 @@
   "task_id": "W1-30DE-REMEDIATION",
   "role": "builder",
   "piece": "W1-30D + W1-30E remediation",
-  "status": "running",
-  "plan_state": "building",
+  "status": "landed",
+  "plan_state": "done",
   "summary": "Applying the four remediations named by the W1-30D-r1 and W1-30E-r1 critic. (1) unblock E's street gate by moving the eight street camera setups off the blind 0.35r offset onto a clearance-checked point, then re-render on hardware. (2) add a per-part presence census beside the 3% silhouette area guard and prove it with a hide-both-hands control. (3) fix the held-object stray-pixel bug at actor-orbit-holes.mjs:350. (4) fix D's reproduction command, whose --baseline-ref=HEAD patches nothing.",
-  "next_step": "hardware render of profile=street on a RunPod pod, then report",
-  "reversible_rulings": [],
+  "next_step": "none — report filed at reports/w1-30de-remediation/README.md. Soulrest street row stays blocked on roof.shell (W1-30E).",
+  "reversible_rulings": [
+    "The 3% silhouette area guard is KEPT rather than retuned, and supplemented by the census. Reasoning: the area guard is the only arm that catches an ADDITION (weld-arm-to-rib, +9.0%), which a presence census structurally cannot see. Overturned by an addition cheat that the census catches and the area guard does not, or by a deletion cheat that escapes both.",
+    "The census compares FULL PART LABELS, not bones, and treats an empty-intersection delta as a relabelling rather than a mutilation. Overturned by a cheat that escapes by renaming meshes while also moving the crack count.",
+    "The street stand is chosen against BUILDING FOOTPRINTS, not drawn mesh bounds. Soulrest shows footprints are insufficient. Not changed here because bounds-based selection is a larger instrument change and the defect it exposes (roof.shell at 1.97x) should be fixed in the kit rather than dodged by the camera. Overturned if roof.shell is ruled correct as drawn."
+  ],
   "headline_findings": [
     "D-2 fixed: held computed on the filtered ring. Full 5,760-frame profile 2,204 -> 2,207 crack px, 978 -> 981 frames. The held-object stray-pixel veto was hiding 3 px in 3 frames; at the 640-frame profile it hides nothing (178 both ways).",
     "D-1 fixed: per-part presence census beside the 3% area guard. hide-both-hands reproduces the critic exactly (123 crack px, -31%, silhouette -0.3%) and is now CAUGHT by the census (actor-body:saxhleel:skin/hand_l, hand_r). Delete-the-fix on a copy with the census branch removed: NOT CAUGHT.",
     "D-3 fixed: --baseline-ref now defaults to a1d24f58 and refuses a ref whose actor.js equals the working tree by name.",
-    "E street gate: the old blind stand (centre + 0.35r, yaw 270) put FOUR of eight teleports INSIDE a building footprint (gideon -0.80 m, lilmoth -0.34 m, stormhold -1.50 m, thorn -7.40 m) and two more within 0.25 m of a wall. All eight now stand 3.5-6.0 m clear with the nearest facade 5.2-6.1 m."
+    "E street gate: the old blind stand (centre + 0.35r, yaw 270) put FOUR of eight teleports INSIDE a building footprint (gideon -0.80 m, lilmoth -0.34 m, stormhold -1.50 m, thorn -7.40 m) and two more within 0.25 m of a wall. All eight now stand 3.5-6.0 m clear with the nearest facade 5.2-6.1 m.",
+    "E street gate now executes in 7 of 8 towns on hardware (0 of 3 usable before). Soulrest still fails: roof.shell draws a roof 1.97x the building footprint (~8 m eave every side) on archon/helstrom/lilmoth/soulrest, against 1.17x for roof.hip and roof.reed. That is a W1-30E kit defect a footprint proxy cannot see.",
+    "Also visible in the new frames and not this piece to fix: Gideon renders a black ground at all six lights, and the deck manifest reports region_reported=western-rootlands for a blackwood setup."
   ],
   "files_claimed": [
     "orchestration/status/W1-30DE-REMEDIATION.json",
@@ -29,11 +35,24 @@
     "tools/visual/actor-orbit-holes.mjs",
     "tools/visual/actor-hole-control.mjs",
     "tools/visual/build-deck.mjs",
-    "tools/visual/deck.json"
+    "tools/visual/deck.json",
+    "orchestration/status/W1-30D.md",
+    "reports/w1-30de-remediation/README.md",
+    "docs/shots/2026-08-14-w1-30de-remediation/",
+    "reports/blog-feed.jsonl"
   ],
   "redundant_with": [
     "W1-30V",
     "W1-30DE-critic"
   ],
-  "redundancy_note": "tools/visual/ and deck.json are W1-30V's. The deck edit is the critic's named remedy for GAP-W1-w1-30e-street-gate-never-ran and is deliberately in W1-30V's territory; it is a generated file so the edit is to build-deck.mjs and deck.json is regenerated."
+  "redundancy_note": "tools/visual/ and deck.json are W1-30V's. The deck edit is the critic's named remedy for GAP-W1-w1-30e-street-gate-never-ran and is deliberately in W1-30V's territory; it is a generated file so the edit is to build-deck.mjs and deck.json is regenerated.",
+  "cost_usd_hardware": 0.045,
+  "evidence": {
+    "hardware_runs": [
+      "reports/runpod-gpu/runs/deck-w1-30de-rem-street/",
+      "reports/runpod-gpu/runs/deck-w1-30de-rem-street2/"
+    ],
+    "renderer": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA L4)) — HARDWARE, valid for appearance claims",
+    "frames": "docs/shots/2026-08-14-w1-30de-remediation/ (25 jpg, 8 towns x 3 times, clear)"
+  }
 }
