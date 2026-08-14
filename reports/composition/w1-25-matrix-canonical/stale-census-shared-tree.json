@@ -1,0 +1,250 @@
+{
+  "schema": "elder-souls/stale-canonical-census@1",
+  "at": "2026-08-14T10:44:23.471Z",
+  "tree": "/home/user/elder-souls-claude",
+  "population": 16,
+  "no_default_path": [
+    "tools/composition/cells-from-md.mjs",
+    "tools/dialogue/answer-census.mjs",
+    "tools/experience/sabotage.mjs",
+    "tools/harness/critic-w1-09-r3n.mjs",
+    "tools/quests/attr-scale-consumption.mjs",
+    "tools/quests/critic-attr-scale-souls.mjs"
+  ],
+  "counts": {
+    "REFUSAL": 1,
+    "BEHIND_SIDE": 1,
+    "STALE_VS_TOOL": 9,
+    "ABSENT": 2,
+    "FRESH": 3
+  },
+  "rows": [
+    {
+      "tool": "tools/composition/matrix-probe.mjs",
+      "out": "reports/composition/w1/matrix.json",
+      "exists": true,
+      "tracked": true,
+      "ran": false,
+      "schema": "elder-souls/cmp01-matrix@1",
+      "artifact_at": "2026-08-08T02:42:41.794Z",
+      "tool_last_commit": "2026-08-11T12:25:46.000Z",
+      "inputs_referenced": [],
+      "verdict": "REFUSAL",
+      "why": "the artifact records ran:false — the instrument refused and this is not a measurement of the world"
+    },
+    {
+      "tool": "tools/experience/pbrule-audit.mjs",
+      "out": "reports/experience/w1/pbrule-audit.json",
+      "exists": true,
+      "tracked": false,
+      "ran": null,
+      "schema": "elder-souls/exp06-pbrule@1",
+      "artifact_at": "2026-08-08T02:26:53.004Z",
+      "tool_last_commit": "2026-08-08T02:26:35.000Z",
+      "inputs_referenced": [],
+      "verdict": "BEHIND_SIDE",
+      "why": "a newer artifact of schema elder-souls/exp06-pbrule@1 is at reports/experience/w1-25-persistent-builder/pbrule-current-wave.json",
+      "side": "reports/experience/w1-25-persistent-builder/pbrule-current-wave.json"
+    },
+    {
+      "tool": "tools/progression/critic-souls-r1.mjs",
+      "out": "reports/critic-souls-r1.json",
+      "exists": true,
+      "tracked": false,
+      "ran": null,
+      "schema": null,
+      "artifact_at": "2026-08-07T17:01:15.230Z",
+      "tool_last_commit": "2026-08-07T21:44:37.000Z",
+      "inputs_referenced": [],
+      "verdict": "STALE_VS_TOOL",
+      "why": "tools/progression/critic-souls-r1.mjs was committed after this artifact was written"
+    },
+    {
+      "tool": "tools/progression/critic-souls-r2.mjs",
+      "out": "reports/critic-souls-r2.json",
+      "exists": true,
+      "tracked": true,
+      "ran": null,
+      "schema": null,
+      "artifact_at": "2026-08-07T20:54:53.397Z",
+      "tool_last_commit": "2026-08-07T20:56:01.000Z",
+      "inputs_referenced": [],
+      "verdict": "STALE_VS_TOOL",
+      "why": "tools/progression/critic-souls-r2.mjs was committed after this artifact was written"
+    },
+    {
+      "tool": "tools/experience/anecdote-verify.mjs",
+      "out": "reports/experience/w1/anecdote-verify.json",
+      "exists": true,
+      "tracked": false,
+      "ran": null,
+      "schema": "elder-souls/exp02-verify@1",
+      "artifact_at": "2026-08-08T05:24:12.736Z",
+      "tool_last_commit": "2026-08-08T05:42:03.000Z",
+      "inputs_referenced": [],
+      "verdict": "STALE_VS_TOOL",
+      "why": "tools/experience/anecdote-verify.mjs was committed after this artifact was written"
+    },
+    {
+      "tool": "tools/experience/breakage-probe.mjs",
+      "out": "reports/experience/w1/breakage-register.json",
+      "exists": true,
+      "tracked": false,
+      "ran": null,
+      "schema": "elder-souls/exp06-register@1",
+      "artifact_at": "2026-08-08T02:26:56.933Z",
+      "tool_last_commit": "2026-08-08T05:42:03.000Z",
+      "inputs_referenced": [
+        {
+          "path": "reports/experience/breakage-register-baseline.json",
+          "mtime": "2026-08-08T02:26:56.930Z",
+          "mib": 0
+        }
+      ],
+      "verdict": "STALE_VS_TOOL",
+      "why": "tools/experience/breakage-probe.mjs was committed after this artifact was written"
+    },
+    {
+      "tool": "tools/experience/event-histogram.mjs",
+      "out": "reports/experience/w1/event-histogram.json",
+      "exists": true,
+      "tracked": false,
+      "ran": null,
+      "schema": "elder-souls/exp03-histogram@1",
+      "artifact_at": "2026-08-08T02:37:08.373Z",
+      "tool_last_commit": "2026-08-08T02:38:15.000Z",
+      "inputs_referenced": [
+        {
+          "path": "reports/sessions/exp-w1-opening/trace.jsonl",
+          "mtime": "2026-08-07T08:15:12.072Z",
+          "mib": 79
+        }
+      ],
+      "verdict": "STALE_VS_TOOL",
+      "why": "tools/experience/event-histogram.mjs was committed after this artifact was written"
+    },
+    {
+      "tool": "tools/progression/souls-consumption.mjs",
+      "out": "reports/souls-consumption.json",
+      "exists": true,
+      "tracked": false,
+      "ran": null,
+      "schema": null,
+      "artifact_at": "2026-08-07T22:02:47.037Z",
+      "tool_last_commit": "2026-08-07T22:23:36.000Z",
+      "inputs_referenced": [],
+      "verdict": "STALE_VS_TOOL",
+      "why": "tools/progression/souls-consumption.mjs was committed after this artifact was written"
+    },
+    {
+      "tool": "tools/progression/souls-ledger-oracle.mjs",
+      "out": "reports/souls-ledger-oracle.json",
+      "exists": true,
+      "tracked": false,
+      "ran": null,
+      "schema": null,
+      "artifact_at": "2026-08-07T22:00:36.847Z",
+      "tool_last_commit": "2026-08-07T22:24:28.000Z",
+      "inputs_referenced": [],
+      "verdict": "STALE_VS_TOOL",
+      "why": "tools/progression/souls-ledger-oracle.mjs was committed after this artifact was written"
+    },
+    {
+      "tool": "tools/souls-consumption-ledger.mjs",
+      "out": "reports/w1-souls-ledger/consumption.json",
+      "exists": true,
+      "tracked": false,
+      "ran": null,
+      "schema": null,
+      "artifact_at": "2026-08-08T01:54:01.581Z",
+      "tool_last_commit": "2026-08-08T01:54:38.000Z",
+      "inputs_referenced": [],
+      "verdict": "STALE_VS_TOOL",
+      "why": "tools/souls-consumption-ledger.mjs was committed after this artifact was written"
+    },
+    {
+      "tool": "tools/world/critic-population-r1.mjs",
+      "out": "reports/world/population/critic-r1.json",
+      "exists": true,
+      "tracked": true,
+      "ran": null,
+      "schema": null,
+      "artifact_at": "2026-08-07T20:55:00.260Z",
+      "tool_last_commit": "2026-08-07T21:11:04.000Z",
+      "inputs_referenced": [],
+      "verdict": "STALE_VS_TOOL",
+      "why": "tools/world/critic-population-r1.mjs was committed after this artifact was written"
+    },
+    {
+      "tool": "tools/progression/souls-r3-shot.mjs",
+      "out": "docs/shots/2026-08-07-w1-souls-r3-the-same-fight-pays-twice.png",
+      "exists": false,
+      "tracked": false,
+      "ran": null,
+      "schema": null,
+      "artifact_at": null,
+      "tool_last_commit": "2026-08-07T22:07:55.000Z",
+      "inputs_referenced": [],
+      "verdict": "ABSENT",
+      "why": "no file at the tool’s documented default path"
+    },
+    {
+      "tool": "tools/world/wld12-blind-pack.mjs",
+      "out": "reports/wld12-blind",
+      "exists": false,
+      "tracked": false,
+      "ran": null,
+      "schema": null,
+      "artifact_at": null,
+      "tool_last_commit": "2026-08-10T16:51:59.000Z",
+      "inputs_referenced": [],
+      "verdict": "ABSENT",
+      "why": "no file at the tool’s documented default path"
+    },
+    {
+      "tool": "tools/quests/viability-split-shot.mjs",
+      "out": "docs/shots/2026-08-07-viability-split-screen-vs-walk.png",
+      "exists": true,
+      "tracked": false,
+      "ran": null,
+      "schema": null,
+      "artifact_at": "2026-08-07T21:39:17.988Z",
+      "tool_last_commit": "2026-08-07T21:38:30.000Z",
+      "inputs_referenced": [],
+      "verdict": "FRESH",
+      "why": "postdates the last authored change to its producing tool"
+    },
+    {
+      "tool": "tools/composition/matrix-scan.mjs",
+      "out": "reports/composition/w1/claims.json",
+      "exists": true,
+      "tracked": true,
+      "ran": null,
+      "schema": "elder-souls/cmp01-claims@1",
+      "artifact_at": "2026-08-14T09:34:48.882Z",
+      "tool_last_commit": "2026-08-08T05:42:03.000Z",
+      "inputs_referenced": [],
+      "verdict": "FRESH",
+      "why": "postdates the last authored change to its producing tool"
+    },
+    {
+      "tool": "tools/experience/anecdote-trace.mjs",
+      "out": "reports/experience/w1/anecdote-trace.json",
+      "exists": true,
+      "tracked": false,
+      "ran": null,
+      "schema": null,
+      "artifact_at": "2026-08-08T02:37:05.638Z",
+      "tool_last_commit": "2026-08-08T02:31:47.000Z",
+      "inputs_referenced": [
+        {
+          "path": "reports/sessions/exp-w1-opening/trace.jsonl",
+          "mtime": "2026-08-07T08:15:12.072Z",
+          "mib": 79
+        }
+      ],
+      "verdict": "FRESH",
+      "why": "postdates the last authored change to its producing tool"
+    }
+  ]
+}

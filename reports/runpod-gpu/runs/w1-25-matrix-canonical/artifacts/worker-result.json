@@ -1,0 +1,25 @@
+{
+  "schema": "elder-souls/runpod-worker-result@1",
+  "runId": "20260814-102825Z-14955",
+  "finishedAt": "2026-08-14T10:34:00.327Z",
+  "hostname": "6f6c9d3c8b3c",
+  "platform": "linux 6.8.0-117-generic x64",
+  "node": "v22.23.2",
+  "display": ":99",
+  "source": {
+    "revision": "f680d6623164b718a6da86fd61735abcd7a66c65",
+    "dirty": true,
+    "fileCount": 1793,
+    "bytes": 21339294,
+    "sha256": "2a9d96678ee8f9dd852ee14436e0e157604dd31c663c80e7bf06fe09d76384da",
+    "paths": [
+      "game",
+      "tools",
+      "package.json",
+      "corpus/95-experience"
+    ]
+  },
+  "command": "bash tools/composition/w1-25-matrix-canonical-run.sh",
+  "exitCode": 0,
+  "passed": true
+}
