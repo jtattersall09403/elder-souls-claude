@@ -1,19 +1,87 @@
 {
   "task_id": "W1-ORPHANED-SURFACE-SHADERS-CRITIC",
   "role": "critic",
-  "state": "in_progress",
+  "state": "done",
   "started": "2026-08-14",
+  "branch": "codex/wave1-build-experiment",
+  "commit_at_start": "fb42ad10",
+
   "could_not_do": [
-    "Nothing yet - just started. This field is written first per rule 26."
+    "NO BLIND HUMAN READ (RI-VIS06 Protocol A). None is reachable from an agent and rule 0 forbids parking work on one. It is also moot this round — see `answer_to_the_orchestrator` below, which says plainly that Protocol A should NOT be paid for until the gap closes.",
+    "MY OWN HEAD ORBIT CAPTURE REACHED 4 OF 8 ANGLES (yaw 0, 45, 90, 135) before I closed the verdict; it ran at roughly 45 s per frame on a software backend. The builder's pack already supplies the full 8-angle orbit and a 30-frame motion sheet on HARDWARE at a source state byte-identical to HEAD for both edited files, so the finding does not rest on my capture — mine exists only to show the defect survives the V2 compositor and SSAO that landed after the pinned sha. Stated rather than rounded up to 8.",
+    "I DID NOT RE-RENT A POD. Every hardware frame I reason from is the builder's, re-read rather than re-run. Justified because both edited files are byte-identical between the pinned sha 03ba530d47 and HEAD and the working tree is clean for both — but it is a reuse of someone else's arms, not an independent hardware replication, and a later critic should know that.",
+    "RI-VIS08 sections B2 (triangle budget), B4 (texel density), B5 (contact-shadow grounding), B6 (subsurface response) and ALL of section C (the animation measurables) were not computed. They are measured on surfaces that are not rasterised; a texel density for a mesh that produces no fragment is a number about nothing. Recorded as `not_run` with the reason rather than scored as fail.",
+    "I DID NOT MEASURE THE TWO RESIDUAL RISKS the builder named and left unmeasured — shader program count after the copy seam multiplies compiles, and the unbounded `shadedMaterials` Set. Both are in `secondary_observations`; neither is the biggest gap and neither is closed.",
+    "MY OWN `NO-SHADER-ERROR-ON-THE-CONSOLE` CHECK PASSES AND PROVES NOTHING. The console listener attaches after `launchForCapture` has already booted the page, so a boot-time compile error is missed. It is retained as a weak second witness and labelled as such inside the tool. The authoritative reading is `program.diagnostics.runnable`, read out of the renderer itself.",
+    "I DID NOT VERIFY WHETHER ANY OTHER PIECE'S CHANGE ALSO FAILS TO LINK. My probe scans actor bodies and actor equipment only. A whole-scene sweep for `runnable === false` is the durable tripwire I am asking for in the remedy, and I did not build it into the standing census myself — rule 23, that is the next builder's edit and I am not grading my own repair."
   ],
-  "summary": "Independent critic for F1 / W1-ORPHANED-SURFACE-SHADERS. Fresh context, did not build any of this.",
-  "next_step": "Read doctrine, HAZARDS, status file, evidence pack.",
+
+  "headline": "FAIL, 1/10. The F1 fix stops the player's body and every NPC's body from being drawn, and it is live at HEAD. Two shader identifiers collide — `uniform float uWetness` and `float esWet` are each declared by both installSurfaceShader and installWaterline once the fix makes them chain — and 66 of 124 actor-body programs report runnable:false with 'redefinition'. Three of the brief's four attacks failed: the pinned baseline, the revert and the ground control are all sound.",
+
+  "verdict": {
+    "path": "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.json",
+    "long_form": "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md",
+    "status": "PROVISIONAL",
+    "overall_0_10": 1,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "axes": { "RI-VIS08": 1, "RI-VIS04": 4, "RI-MTH07": 6, "RI-MTH04": 6 },
+    "validator": "node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.json -> OK (1 warning, answered in prose in the RI-MTH07 justification)",
+    "gap_ledger": "regenerated; GAP-W1-f1-actor-body-shader-does-not-link is row 53 of corpus/90-verdicts/GAP-LEDGER.md, severity blocking, path render.fidelity.character"
+  },
+
+  "the_finding": {
+    "what": "installWaterline used to ASSIGN onBeforeCompile, which deleted installSurfaceShader's hook. This piece made it CHAIN (loss E in the builder's own table). Chaining puts both fragment preambles into one program, and they collide on two identifiers.",
+    "collisions": [
+      "uniform float uWetness — visual-foundation.js:521 and actor.js:302",
+      "float esWet — visual-foundation.js:574 and actor.js:310"
+    ],
+    "driver_says": "runnable:false, 'ERROR: 0:81: uWetness : redefinition', 'ERROR: 0:1724: esWet : redefinition' — read from the live renderer's program.diagnostics at HEAD, not inferred from source",
+    "population": "124 actor-body materials across the player and every NPC/enemy, saxhleel and humanoid families. 66 of 124 had been compiled at the sampling instant; every one of those 66 failed to link. The other 58 are null, not green.",
+    "blast_radius_is_bounded_and_that_is_the_proof": "installWaterline is called at exactly one site, actor.js:607, inside the ['cloth','skin'] body loop. So only actor BODIES break. 65 of 65 equipment and frill control materials carry 0 duplicates and 0 link failures — and that is exactly what the frames show: the horns, eyes, frills, equipment, shield and weapon still draw while the head, arms, legs and torso do not.",
+    "live_at_head": "game/src/render/visual-foundation.js and game/src/render/actor.js are byte-identical between 03ba530d47 and HEAD fb42ad10, working tree clean for both."
+  },
+
+  "what_i_tried_to_break_and_could_not": [
+    "THE PINNED BASELINE IS REAL. 03ba530d47's two files md5 to 5084d503… and a3a0a740…, byte-identical to the pre-md5 in the Pod's own revert.log, and run.json records source.dirty false. The archive came from the sha, not from HEAD. HAZARDS §12 is genuinely handled.",
+    "THE REVERT WAS NOT SILENTLY INERT (run 1's failure mode). I reran `w1-30-copy-seam-patch.mjs --revert` myself on an isolated copy of the pinned sha and reproduced both post-md5 values exactly — then diffed those bytes IDENTICAL against 9ddeb512^, the true parent of the commit that introduced the fix. The two arms differ by the fix and by nothing else. This is a cleaner arm-freeze than anything else I have seen in this corpus.",
+    "THE GROUND CONTROL IS LIVE, NOT INERT. It moves 73.28% of pixels in the BEFORE arm against a 0.00% restore floor, with maxDelta identical to two decimals across arms and 37 of 37 selected materials carrying uniforms in both. An inert control is one that cannot move; this one moves in the arm where the defect is present, which is precisely what makes the player's 0.33% an absence rather than a broken harness.",
+    "THE CONSUMPTION PROBE CONSUMES THE SHIPPED PATH. It reads window.__ENGINE.renderer, traverses R.scene, selects from R.playerMesh and writes into the materials the shipped world built, never setting needsUpdate. Nothing is reimplemented. The RI-MTH07 shape is correct."
+  ],
+
+  "what_i_added_that_the_pack_had_and_never_computed": {
+    "what": "Both arms saved the UNPERTURBED `*-base.png` at every camera — same camera, same Pod, same GPU, arms differing only by the fix. That pair is the shipped-configuration before/after, the only frame comparison in the run that describes what a player sees. It costs one PNG diff and no hardware.",
+    "numbers": "player 6.42–21.84% at every one of 8 angles; building 11.78–23.82%; deck street-lilmoth 25.65%; deck vista-deep-marshes 0.007%; deck eye-deep-marshes 0.005%",
+    "cuts_both_ways": "The two nature scenes at ~0% CONFIRM the builder's own falsifiable prediction that terrain and canopy would not change — a real specificity result the pack was entitled to claim and did not. And the player's 6–22% is mostly geometry disappearing, not a surface starting to respond to light.",
+    "reproducible_from_a_fresh_clone": "node corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/base-frame-ab.mjs — reads only committed bytes, no browser, no Pod, no network"
+  },
+
+  "why_every_check_stayed_green": "The census asks whether a hook installs uniforms, never whether the composed shader LINKS. `NO-HOOK-THREW` is the near miss: the hook does not throw, it emits illegal GLSL. The consumption probe measures a delta WITHIN an arm, and a material whose program does not link contributes zero to both the base and the perturbed frame, so it is invisible to a within-arm difference. mesh.visible stays true, pageErrors stays empty, and a link failure arrives on console.error which nothing was listening to. And delete-the-fix ran through the census alone — a frame comparison would have shown a body appearing.",
+
+  "answer_to_the_orchestrator": {
+    "question": "Is F1 good enough that re-running the blind Protocol A comparison is worth paying for now, or should F2 and F3 land first?",
+    "answer": "NEITHER. Do not pay for Protocol A, and do not wait for F2/F3 either. Close this gap first — it is a rename in one function and the gate for it already exists and is already red.",
+    "why_not_protocol_a_now": "Five blind judges would be shown a game whose characters are floating equipment with no bodies. They would not report on materials at all; they would report that. The comparison would burn its budget measuring a defect a two-line probe already names precisely, and the result would be uninterpretable as a materials verdict.",
+    "why_not_f2_f3_first": "F2 and F3 are contact shadows, AO and ambient fill — all of which land ON characters. Grounding and contact darkening judged against a character with no body is not a measurement. Landing them first means re-taking their evidence afterwards.",
+    "the_order_i_recommend": "1) The rename in actor.js#installWaterline, gated on `node tools/visual/w1-f1-critic-shader-collision.mjs` going green — S, and the tool exists. 2) Move the runnable:false check into tools/visual/w1-30-surface-orphan-census.mjs so the standing census can see this class at all. 3) Re-take the two-arm frame evidence and re-run base-frame-ab.mjs, requiring the body PRESENT in both arms. 4) THEN F2/F3. 5) THEN Protocol A, once there is a body for the contact shadow to land on and a surface for the judges to judge.",
+    "what_would_change_my_mind": "If a hardware capture at HEAD showed the bodies present — i.e. if the software backend I captured on were somehow the cause. It is not: the builder's own RTX A5000 after-arm frames show the same absence at the same source state, and a GLSL redefinition is a parse error, not a driver behaviour. That is why I did not spend a Pod re-proving it."
+  },
+
+  "i_did_not_repair_anything": "Rule 23. I did not touch game/src. The remedy is a minimal executable specification in biggest_gap.remedy: preserve the copy seam (it is correct), rename two identifiers in one function, and add the missing tripwire. Named targets, named lines, named acceptance, named hard fail.",
+
   "files_touched": [
-    "orchestration/status/W1-ORPHANED-SURFACE-SHADERS-CRITIC.json"
+    "orchestration/status/W1-ORPHANED-SURFACE-SHADERS-CRITIC.json",
+    "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.json",
+    "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/",
+    "tools/visual/w1-f1-critic-shader-collision.mjs",
+    "corpus/90-verdicts/GAP-LEDGER.json",
+    "corpus/90-verdicts/GAP-LEDGER.md",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
   ],
-  "files_claimed": [
-    "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-critic.md",
-    "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/"
-  ],
-  "redundant_with": []
+  "files_claimed": [],
+  "redundant_with": [],
+
+  "next_step": "CLOSED. The verdict is filed, schema-valid and in the gap ledger. What remains is not mine: the remedy belongs to a fresh builder (rule 23), and gap closure belongs to a later critic on render.fidelity.character (CRITIC-DOCTRINE §3 — a gap may not be closed by the agent that built the fix)."
 }
