@@ -29,6 +29,27 @@ The one thing that does travel upward: **say what you decided, in the reply, pla
 overrules by reading, not by being asked — that is exactly how S30 became S35 and how the map exists
 at all.
 
+## 0a. `STATUS.md` is the owner's window. Keeping it true is a standing duty, not a chore.
+
+**One file, repo root, one screen, readable on a phone.** The owner's words: *"I just want to be able
+to easily open up a file on my phone, look at something and see, 'oh cool our agents are currently
+working on [bit x] of the roadmap; I should expect that everything before that bit is delivered to the
+7/10 standard; if I play the game right now I know what to expect'."*
+
+**The orchestrator updates it whenever any of these change — same turn, not later:**
+what the fleet is working on · anything that closes to the bar · anything the owner would *see*
+differently if they played right now · the cost position.
+
+**It answers exactly one question: what will I find if I open the game now.** Not what we intend, not
+what has landed in a branch, not what a number says. If something is fixed but unjudged, it says so.
+**A status file that flatters is worse than none**, because the owner then plays the game and finds out
+the file lies — and every other document loses its credit at the same moment.
+
+**Resist making this a system.** It was briefly a tracker with schemas, evidence verification and a
+publish pipeline; the owner called that over-engineered and was right. The only mechanism is a
+**staleness warning** — the file itself is written by hand, and it is short so that writing it is
+cheap. Rule 0b still binds it: what it claims must come from the repo, not from memory.
+
 ## 0b. Never write from memory about the repo. Read the repo, and say what you read.
 
 **This rule exists because the orchestrator broke it on 2026-08-14 and the owner had to catch it three
