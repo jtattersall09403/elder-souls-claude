@@ -13,7 +13,7 @@
 // surface, and who currently owns which files.
 //
 // Run: node tools/gen-index.mjs   (wired into .githooks/pre-commit)
-import { readFileSync, writeFileSync, readdirSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync, statSync, mkdirSync } from 'node:fs';
 import { join, relative, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -86,25 +86,60 @@ const gates = [
 ].filter(([cmd]) => existsSync(P(cmd.split(' ')[1])));
 
 // ---- who owns what, right now --------------------------------------------------------------
+// THE LIVENESS TEST IS OWNED BY `tools/ownership.mjs` AND MIRRORED HERE. It is mirrored rather
+// than imported because ownership.mjs runs its CLI at import time and pays one `git log`
+// subprocess per live piece, which this generator runs inside the pre-commit hook and must not.
+// The two must agree: `node tools/gen-index.mjs --check-ownership` shells out to ownership.mjs
+// and fails if the counts diverge. Run it if you change either.
+//
+// What this replaces, and why it mattered: the old test was `!/complete|blocked/i.test(j.state)`
+// against the raw `state` string only. It reported **208 pieces in flight** on 2026-08-14 when a
+// sweep established 56 and ownership.mjs reported 54. Two independent bugs, both found by the
+// ownership fix: 78 of 452 status files record their endpoint in `status`, not `state`, so they
+// counted live no matter what they said; and `builder_delivery_complete` never matched
+// `/complete/` at a word boundary, so compound machine-generated states counted live too. A
+// number an index states about the tree is a claim, and this one was wrong by ~4x (DOC-POLICY 4).
+const TERMINAL_WORD_RE =
+  /\b(complete|completed|done|closed|landed|committed|published|banked|fixed|satisfied|delivered|filed|blocked)\b/i;
+// A builder handed to a critic has stopped editing its own claimed files.
+const AWAITING_CRITIC_RE = /\bawaiting\b[\s\S]{0,20}\bcritic(?!al)/i;
+const normaliseForMatch = s => String(s || '').replace(/[_-]+/g, ' ');
+function isTerminal(j) {
+  if (j && j.ownership_claim_released) return true;   // a fact about the claim, not a guess from state text
+  const c = normaliseForMatch(`${(j && j.state) || ''} ${(j && j.status) || ''}`);
+  return TERMINAL_WORD_RE.test(c) || AWAITING_CRITIC_RE.test(c);
+}
+
 const statusDir = P('orchestration', 'status');
 const live = [];
 if (existsSync(statusDir)) {
   for (const f of readdirSync(statusDir).filter(f => f.endsWith('.json'))) {
     try {
       const j = JSON.parse(readFileSync(join(statusDir, f), 'utf8'));
-      const mtime = statSync(join(statusDir, f)).mtime;
+      const claimed = [...new Set([...(j.files_touched || j.files || []), ...(j.files_claimed || [])])];
       live.push({
         task: j.task_id || f.replace(/\.json$/, ''),
-        state: j.state || '?',
-        files: (j.files_touched || j.files || []).slice(0, 6),
-        next: String(j.next_step || '').slice(0, 90),
-        at: mtime,
+        state: String(j.state || j.status || '?').replace(/[|\n]/g, ' ').slice(0, 44),
+        files: claimed.slice(0, 4),
+        more: Math.max(0, claimed.length - 4),
+        terminal: isTerminal(j),
+        at: statSync(join(statusDir, f)).mtime,
       });
     } catch { }
   }
 }
 live.sort((a, b) => b.at - a.at);
-const active = live.filter(l => !/complete|blocked/i.test(l.state));
+const active = live.filter(l => !l.terminal);
+
+// `--check-ownership`: the tripwire for the mirrored logic above. Not run in the hook.
+if (process.argv.includes('--check-ownership')) {
+  const { execSync } = await import('node:child_process');
+  const out = execSync('node tools/ownership.mjs', { cwd: ROOT, encoding: 'utf8' });
+  const n = Number((out.match(/ownership:\s+(\d+)\s+live/) || [])[1]);
+  const ok = n === active.length;
+  console.log(`gen-index --check-ownership: gen-index says ${active.length}, ownership.mjs says ${n} — ${ok ? 'agree' : 'DIVERGED'}`);
+  process.exit(ok ? 0 : 1);
+}
 
 // ---- harness surface -----------------------------------------------------------------------
 let verbs = [];
@@ -122,16 +157,86 @@ async function execish(cmd) {
   return execSync(cmd, { cwd: ROOT, encoding: 'utf8' }).trim();
 }
 
+// ---- satellites: the full listings, generated OFF the read path -----------------------------
+// DOC-POLICY rule 6: "An index points; it does not contain." Everything below used to be inline
+// in INDEX.md, which every agent reads before doing anything — 24k tokens of tool listing, 7k of
+// item table, 2k of harness verbs, 16k of in-flight rows, paid by every agent on every cold start
+// whether or not it needed any of it. The listings are still generated in full, byte for byte, and
+// nothing has been dropped; they now live beside the index and are opened only when needed. Grep
+// is the interface, and the index says so.
+const IDX = P('orchestration', 'index');
+if (!existsSync(IDX)) mkdirSync(IDX, { recursive: true });
+
+const banner = n => `<!-- GENERATED by tools/gen-index.mjs. Do not edit; your changes will be overwritten. -->
+<!-- Full listing, deliberately OFF the cold-start read path. Pointed at by orchestration/INDEX.md. -->
+# ${n}
+
+`;
+
+writeFileSync(join(IDX, 'TOOLS.md'), banner(`Every tool — ${toolFiles.length}, one line each`) +
+  `Grep this; do not read it. \`grep -i <word> orchestration/index/TOOLS.md\`. A tool that does what
+you need already exists more often than not — this project already has duplicate instruments that
+were each written by someone who could not find the other.
+
+${[...byArea.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([area, list]) => `
+## \`tools/${area === '(top level)' ? '' : area + '/'}\` — ${list.length}
+
+${list.map(t => `- \`${t.path}\`${t.purpose ? ` — ${t.purpose}` : ' — **no header comment**'}`).join('\n')}`).join('\n')}
+
+${undocumented.length ? `\n> **${undocumented.length} of ${toolFiles.length} tools have no header comment**, so nobody can tell what\n> they do without reading them. That is a rediscovery tax paid by every agent that meets one.\n` : ''}`);
+
+writeFileSync(join(IDX, 'ITEMS.md'), banner(`Every reference item — ${items.length}`) +
+  `Grep this; do not read it. \`grep -i <word> orchestration/index/ITEMS.md\`.
+
+The \`judges:\` front-matter is authoritative for which paths an item scores. **Never assemble an
+item set by listing a directory** — a piece was once scored against a set built that way and seven
+of its twelve items judged none of its declared paths.
+
+| item | judges | file |
+|---|---|---|
+${items.map(i => `| **${i.id}** ${i.title} | ${i.judges || '—'} | \`${i.path}\` |`).join('\n')}`);
+
+writeFileSync(join(IDX, 'HARNESS.md'), banner(`\`window.__HARNESS\` — ${verbs.length} verbs`) +
+  `Grep this; do not read it. \`grep -i <word> orchestration/index/HARNESS.md\`.
+
+\`window.__ENGINE\` is also published by \`main.js\`, which is a **back door**: capability
+prohibitions installed on the harness do not cover it.
+
+${verbs.length ? '`' + verbs.join('`, `') + '`' : '_(api.js not found)_'}`);
+
+// Item families, so the index can say what exists without listing 157 rows.
+const families = new Map();
+for (const i of items) {
+  const fam = (i.id.match(/^RI-([A-Z]+)/) || [, '?'])[1];
+  families.set(fam, (families.get(fam) || 0) + 1);
+}
+
+// ---- render the index itself ----------------------------------------------------------------
+const topLevel = (byArea.get('(top level)') || []);
+
 let out = `<!-- GENERATED by tools/gen-index.mjs. Do not edit; your changes will be overwritten. -->
 # The index
 
-**Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at \`${stamp}\`: ${toolFiles.length} tools, ${items.length} reference
-items, ${active.length} pieces in flight.
+**An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
+drift. At \`${stamp}\`: **${toolFiles.length} tools**, **${items.length} reference items**,
+**${active.length} pieces in flight**.
 
-Its purpose is to stop ${active.length}+ concurrent agents each paying separately to discover the
-same things — and to stop a second copy of a tool being written by someone who could not find the
-first. **If what you need is not here, that is a finding: say so in your report.**
+Its purpose is to stop every concurrent agent paying separately to discover the same things — which
+only works if it is cheap to read. **The full listings are generated beside this file and are
+deliberately off the read path. Grep them; do not read them.**
+
+| what you want to know | the one line that answers it |
+|---|---|
+| does a tool for this already exist? | \`grep -i <word> orchestration/index/TOOLS.md\` — all ${toolFiles.length}, one line each |
+| which reference item governs this? | \`grep -i <word> orchestration/index/ITEMS.md\` — all ${items.length}, with their \`judges:\` paths |
+| is there a harness verb for it? | \`grep -i <word> orchestration/index/HARNESS.md\` — ${verbs.length} verbs |
+| who is in this file right now? | \`node tools/ownership.mjs --for <path>\` |
+| am I about to collide with someone? | \`node tools/ownership.mjs --conflicts\` |
+| what can I safely start? | \`node tools/dispatchable.mjs\` |
+| may I open a browser? | \`node tools/contention.mjs --gate\` (exit 3 = do something else first) |
+| how do I put work on the branch? | \`node tools/land.mjs "<headline>" --paths <yours>\` |
+
+**If what you need is not here, that is a finding: say so in your report.**
 
 ## The gates, and what each one actually asserts
 
@@ -145,57 +250,55 @@ ${gates.map(([c, w]) => `| \`${c}\` | ${w} |`).join('\n')}
 Both work. Note that \`node … 2>&1 | tail -1 ; echo exit=$?\` reports the **pipe's** exit code, so
 a check that never ran can read as one that passed.
 
-## Work the banks deleted — recovered, and do not re-derive this
+## The ${topLevel.length} tools you will actually reach for
 
-**\`reports/RECOVERY-20260814.md\`** is the forensic and the recovery. Read it before you conclude a
-file of yours is missing, and before you re-run a sweep somebody has already run.
+Everything else is by area below, and in full in \`orchestration/index/TOOLS.md\`.
 
-- **All 1,401 commits on the branch were swept** for the \`HAZARDS\` §2f signature — a commit whose tree
-  lacks paths its own parents contain. 64 candidate (commit, parent) pairs, **8 commits guilty**,
-  **74 files still missing at the tip. All 74 are back**, byte-identical to their last good blob.
-- **\`06dafd04\` — the famous one — needed no recovery.** Its victim repaired it three minutes later in
-  \`5f1e03b8\`; 17 of its 18 paths are already correct at \`HEAD\` and the 18th
-  (\`docs/data/cost-ledger.error.json\`) is a failure marker whose *absence* is the success signal.
-- **The signature is not only in merges.** The largest outstanding loss, \`eed8e7fe\`, is an ordinary
-  one-parent bank that deleted 39 visual-truth frames.
-- **The disease is eight days old, not one.** The 08-06/08-10/08-11 restore commits were believed to be
-  index churn. They are not: three round-2 verdicts, a dialogue topic, two composition matrices, and
-  \`game/src/engine.js\` restored twice at +11,573 and +11,583 lines.
-- **Two recovered files are flagged, not vouched for**: \`game/src/ui/screens/bindings.js\` (imported by
-  nothing) and \`game/data/npcs/quest-witnesses.json\` (absent from \`game/data/index.json\`, so the
-  engine never loads it). Their authors own the call; deleting either again costs one line.
+${topLevel.map(t => `- \`${t.path}\`${t.purpose ? ` — ${t.purpose}` : ' — **no header comment**'}`).join('\n')}
 
-## CI health — read this before re-deriving it
+## Tools by area — counts only
 
-The \`corpus gate\` workflow has one step that is allowed to be red, and it is telling the truth
-when it is. Two write-ups own it; **read them rather than re-running the whole triage:**
+\`grep -i <word> orchestration/index/TOOLS.md\` for the one you want.
 
-| what | where |
+${(() => {
+    const areas = [...byArea.entries()].filter(([a]) => a !== '(top level)').sort((a, b) => b[1].length - a[1].length);
+    const cells = areas.map(([a, l]) => `\`${a}\` ${l.length}`);
+    return cells.join(' · ');
+  })()}
+
+${undocumented.length ? `> **${undocumented.length} of ${toolFiles.length} tools have no header comment**, so nobody can tell what they\n> do without reading them. That is a rediscovery tax paid by every agent that meets one.\n` : ''}
+## Reference items — ${items.length}, by family
+
+\`grep -i <word> orchestration/index/ITEMS.md\` for the item, its \`judges:\` paths and its file.
+**Never assemble an item set by listing a directory** — a piece was once scored against a set built
+that way and seven of its twelve items judged none of its declared paths.
+
+${[...families.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([f, n]) => `\`RI-${f}\` ${n}`).join(' · ')}
+
+## Read these before you re-derive them
+
+Each one is a sweep somebody has already run. Re-running it is the single most common way an hour
+disappears here.
+
+| if you are about to… | read instead |
 |---|---|
-| why the gate was red for eight days across 1222 runs, and the rulings | \`reports/ci-triage/TRIAGE-20260814.md\` |
-| the evidence recovery that took fresh-checkout verdict FAIL from **54 to 9** | \`reports/ci-triage/EVIDENCE-RECOVERY-20260814.md\` |
-| the document-type split, **9 to 8**, and what the last 8 are owed | \`reports/ci-triage/DOCTYPE-20260814.md\` |
+| conclude a file of yours is missing, or re-sweep the branch for lost work | \`reports/RECOVERY-20260814.md\` — all 1,401 commits swept, 8 commits guilty, **all 74 missing files are back** |
+| re-triage why the \`corpus gate\` workflow is red | \`reports/ci-triage/TRIAGE-20260814.md\` — 1222 runs, and the rulings |
+| re-derive the fresh-checkout verdict failures | \`reports/ci-triage/EVIDENCE-RECOVERY-20260814.md\` — took FAIL from **54 to 9** |
+| argue about which verdict schema applies | \`reports/ci-triage/DOCTYPE-20260814.md\` — the **9 to 8** split |
 
-**\`corpus/90-verdicts/\` holds two document types and they are not interchangeable.** A build
-critic files a \`critic-verdict\` (\`corpus/00-doctrine/verdict.schema.json\`); a blind judge files a
-\`blind-judgement\` (\`corpus/00-doctrine/blind-judgement.schema.json\`) — no \`artifacts[]\`, no
-\`arbitration\`, no scored \`reference_items[]\`, because it answers a masked pack's question and has
-no build in front of it. **Write \`"document_type"\` in your file.** Omit it and the validator falls
-back to the stricter critic-verdict contract, which is deliberate: forgetting the field can never
-buy leniency. \`"schema": "elder-souls/verdict@1"\` is RETIRED and is refused — four documents
-claimed it and no two share a layout. A judge that deliberately did **not** read the item its pack
-serves says so with \`reference_items[].not_read: { reason, why }\` and carries no score for it; a
-critic that could not measure an item says \`measured: "unmeasurable"\` with \`score_0_10: 0\`
-instead, and may not use \`not_read\` at all.
+**\`corpus/90-verdicts/\` holds two document types and they are not interchangeable.** A build critic
+files a \`critic-verdict\` (\`corpus/00-doctrine/verdict.schema.json\`); a blind judge files a
+\`blind-judgement\` (\`corpus/00-doctrine/blind-judgement.schema.json\`). **Write \`"document_type"\`
+in your file** — omit it and the validator falls back to the stricter critic-verdict contract, which
+is deliberate: forgetting the field can never buy leniency. \`"schema": "elder-souls/verdict@1"\` is
+RETIRED and refused. A judge that deliberately did **not** read an item says so with
+\`reference_items[].not_read: { reason, why }\`; a critic that could not measure one says
+\`measured: "unmeasurable"\` with \`score_0_10: 0\`, and may never use \`not_read\`.
 
-The remaining 8 are named, owned content defects, not plumbing — see the third report §5 and
-\`orchestration/NEXT-DISPATCH.md\`. **A verdict citation must resolve in a fresh clone**: anything
-you write under \`reports/\` is gitignored, so run \`node tools/verdict-evidence.mjs --recover\`
-before you file a verdict that cites it. Evidence over 1 MiB is pinned, not committed.
-
-This block lives in \`tools/gen-index.mjs\`, not in \`INDEX.md\`. The triage put its pointer straight
-into \`INDEX.md\` and the next \`gen-index\` run erased it — which is the same staleness Owner
-Directive #7 is about. Anything that must survive regeneration belongs in the generator.
+**A verdict citation must resolve in a fresh clone.** Run \`node tools/verdict-evidence.mjs
+--recover\` before you file a verdict citing anything under \`reports/\`. Evidence over 1 MiB is
+pinned, not committed.
 
 ## Numbers you must not read off a status file
 
@@ -212,42 +315,22 @@ were stale — the second by a third. **Ask the tree, it costs one command:**
 \`game/data/world/population-posts.json\` is a **generated cache**, not a source. Never hand-edit it;
 re-run \`node tools/world/build-population.mjs --write\`.
 
-## The harness
+## In flight right now — ${active.length} live pieces
 
-\`window.__HARNESS\` — ${verbs.length} verbs. \`window.__ENGINE\` is also published by \`main.js\`,
-which is a **back door**: capability prohibitions installed on the harness do not cover it.
+**Read the status file of anything near your files before you write**, and record your own as you
+go (\`files_touched\`, \`files_claimed\`). Three container restarts in one day killed every agent
+each time; a status file written as you work is the difference between resuming and starting over.
 
-${verbs.length ? '`' + verbs.join('`, `') + '`' : '_(api.js not found)_'}
+\`node tools/ownership.mjs --for <path>\` answers "who is in this file" precisely, with each
+claimant's age and a stale hint past two days. This table is the overview, not the instrument.
 
-## Tools, by area
-
-${[...byArea.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([area, list]) => `
-### \`tools/${area === '(top level)' ? '' : area + '/'}\` — ${list.length}
-
-${list.map(t => `- \`${t.path}\`${t.purpose ? ` — ${t.purpose}` : ' — **no header comment**'}`).join('\n')}`).join('\n')}
-
-${undocumented.length ? `\n> **${undocumented.length} tools have no header comment**, so nobody can tell what they do without\n> reading them. That is a rediscovery tax paid by every agent that meets one.\n` : ''}
-
-## Reference items
-
-The \`judges:\` front-matter is authoritative for which paths an item scores. **Never assemble an
-item set by listing a directory** — a piece was once scored against a set built that way and seven
-of its twelve items judged none of its declared paths.
-
-| item | judges | file |
+${active.length ? `| piece | state | files claimed |
 |---|---|---|
-${items.map(i => `| **${i.id}** ${i.title} | ${i.judges || '—'} | \`${i.path}\` |`).join('\n')}
-
-## In flight right now
-
-Read the status file of anything near your files **before you write**, and record your own as you
-go. Three container restarts in one day killed every agent each time; a status file written as you
-work is the difference between resuming and starting over.
-
-${active.length ? `| piece | state | next step | files |
-|---|---|---|---|
-${active.map(l => `| \`${l.task}\` | ${l.state} | ${l.next} | ${l.files.map(f => `\`${f}\``).join(' ') || '—'} |`).join('\n')}` : '_nothing in flight_'}
+${active.map(l => `| \`${l.task}\` | ${l.state} | ${l.files.map(f => `\`${f}\``).join(' ') || '— **declares nothing**'}${l.more ? ` +${l.more}` : ''} |`).join('\n')}` : '_nothing in flight_'}
 `;
 
 writeFileSync(P('orchestration', 'INDEX.md'), out);
-console.log(`gen-index: ${toolFiles.length} tools (${undocumented.length} undocumented), ${items.length} items, ${active.length} in flight -> orchestration/INDEX.md`);
+const kb = n => `${(n / 1024).toFixed(0)}k`;
+console.log(`gen-index: ${toolFiles.length} tools (${undocumented.length} undocumented), ${items.length} items, ${active.length} in flight`);
+console.log(`gen-index: orchestration/INDEX.md ${kb(out.length)}  (~${Math.round(out.length / 4 / 100) / 10}k tokens, on the read path)`);
+console.log(`gen-index: orchestration/index/{TOOLS,ITEMS,HARNESS}.md written  (full listings, off the read path)`);
