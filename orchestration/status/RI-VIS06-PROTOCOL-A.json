@@ -1,15 +1,81 @@
 {
   "task_id": "RI-VIS06-PROTOCOL-A",
-  "chunk": "1 of 2",
-  "state": "running",
-  "started": "2026-08-14",
-  "note": "PREVIOUS RUN'S state:running WAS STALE (it died on an HTTPS job-poll timeout). This entry supersedes it. Chunk 1 builds sealed, leak-checked image pairs ONLY. It does not judge and does not write a verdict.",
-  "findings": [],
-  "files_touched": ["orchestration/status/RI-VIS06-PROTOCOL-A.json"],
-  "files_claimed": [
-    "tools/blind/image-leakcheck.mjs",
-    "tools/blind/deck-protocol-a.json",
-    "reports/blind/protocol-a-w1/"
+  "chunk": "1 of 2 — PAIR CONSTRUCTION ONLY. Chunk 1 did not judge anything and wrote no verdict.",
+  "state": "chunk_1_complete",
+  "date": "2026-08-14",
+  "commit_of_record": "21795f5f27",
+  "supersedes": "The previous entry said state:running. That was stale — it belonged to a run that died on an HTTPS job-poll timeout at 2026-08-14T13:35:48Z with zero frames retrieved. Corrected here.",
+
+  "headline": "RI-VIS06 Protocol A now has a pack. Five sealed, leak-checked, subject-neutral 512x512 native pairs, our side captured on a real GPU (RTX A4500, HARDWARE-attested), reference side drawn from refs/modern/character_closeup/ at exact pixel-density parity. This has never existed in this project before. NOTHING HAS BEEN JUDGED. The FIDELITY cap of 7 does not lift until chunk 2 runs the judges.",
+
+  "findings": [
+    "WHAT KILLED THE PREVIOUS ATTEMPT WAS THE TRANSPORT, NOT THE RENDER. capture-r2.log reached a real RTX 3090, logged 'HARDWARE — valid for appearance claims', planned 6 frames, and then died 66 seconds later on a single `GET /job?id=... timed out` inside PodAgentClient.exec. One HTTPS poll of the job-status endpoint stalled; exec threw on it; mandatory Pod cleanup took the live render with it. Fixed in tools/runpod/lib/http-transport.mjs: a failed poll is now retried (5 consecutive failures still fail, any success resets the counter) because polling is idempotent — outOffset/errOffset advance only after a poll succeeds, so a repeat asks for the same byte range and can neither lose nor duplicate a log line, and the job keeps running on the Pod regardless. 401/404 are still thrown immediately, because those are real answers rather than transport noise.",
+
+    "THE RETRY DID NOT FIRE ON THE SUCCESSFUL RUN, AND I AM NOT CLAIMING IT AS THE CAUSE OF SUCCESS. grep of capture-r3.log finds zero retry lines. The r3 run was simply clean. The fix is evidenced by tools/blind/protocol-a-transport-proof.mjs, not by r3: four arms, and the CONTROL arm re-implements the old single-poll behaviour and is REQUIRED to lose the same job — it does, with the identical error string seen on the RTX 3090. A fourth arm checks the idempotence claim rather than asserting it (reconstructed stdout is byte-identical to a clean run), and a third proves the retry loop terminates instead of hanging forever, which would have been a worse bug than the one it fixed.",
+
+    "I ORPHANED A POD AND CAUGHT IT. `node tools/visual/gpu-deck.mjs --help` does not print help — it PROVISIONS. Run in the foreground it outlived the 2-minute shell timeout, and pod zb757cdsmtzl3m (NVIDIA L4, $0.49/hr) was left running with its owning pid gone. Found by `cleanup --dry-run`, terminated by id with `cleanup --pod`, deletion confirmed by API lookup. Cost roughly $0.02. Never ran a bare `runpod cleanup`. Every later GPU call was backgrounded with output to a log file, and RUNPOD_OWNER was set so ownership is per-agent rather than per-container.",
+
+    "OUR SIDE IS HARDWARE AND THE ATTESTATION IS ON THE RECORD. renderer_string = 'ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A4500 (0x00002232)), NVIDIA)', software_renderer = false, evidence_class = 'HARDWARE — valid for appearance claims.', 6 planned / 6 ok / 0 red, canvas 1920x1080, seed 20260814, deck_manifest_hash 4746eafe87af6559. No software frame was substituted at any point. The deck manifest is committed at reports/blind/protocol-a-w1-SEALED-KEY/frames/deck-manifest.json.",
+
+    "PIXEL-DENSITY PARITY COST US A GAME AND A LIGHTING PROFILE, AND THAT IS THE RIGHT TRADE. A 512x512 NATIVE crop out of a 3840x2160 plate covers a quarter of the frame area the same crop covers in a 1920x1080 frame, so surfaces arrive magnified on exactly one arm — an appearance change landing on one side, which is the leak RI-VIS06 'how we lose' says teaches you nothing about fidelity. So the reference side was restricted to the 1920x1080 plates. The cost, stated rather than hidden: that excludes REF-M6 (RDR2, 1921x1081 — one pixel off in each axis), REF-RD (2560x1440) and both 4K plates, i.e. the entire Red Dead Redemption 2 holding and the daylight-overcast lighting profile with it. All five reference plates therefore come from two games, four of five from Elden Ring, three of those from one session. protocol-a-pack.mjs REFUSES a dimension mismatch unless --allow-density-mismatch is passed; it was not passed.",
+
+    "THREE PLATES WERE EXCLUDED FOR BURNT-IN SUBTITLES — REF-ER 2764130788, 2764143936, 2764143953. Verified by eye on a contact sheet, not from metadata. RI-VIS06 §D calls a subtitle a leak vector and reference shots carrying an overlay unusable.",
+
+    "OUR HUD IS DRAWN INTO THE CANVAS AND THERE IS NO HUD-OFF MODE, so every window on our side was placed to clear the status bars (top-left, to about y=115), the compass (top-right, x>1680 y<140) and the hotbar (bottom-right, x>1680 y>820). An early candidate window at (1250,470) was discarded because the hotbar intruded into its bottom-right corner — caught by looking at the rendered crop, not by the arithmetic that said it should have been fine.",
+
+    "TWO REFERENCE WINDOWS WERE MOVED AFTER LOOKING, AND THE MOVE IS RECORDED RATHER THAN QUIETLY APPLIED. pair02 and pair03 originally took their reference window at (100,100), which caught a creature limb at the frame edge; RI-VIS06 §A asks for a patch of ground, foliage, water or a material close-up, so both were moved to clean masonry. Recorded in pairing.json per pair.",
+
+    "THE ONE CONFOUND I COULD NOT REMOVE, AND IT RUNS IN OUR FAVOUR. pair02 and pair03's reference windows are out-of-focus background — the Godrick plates put their depth of field on the creature, and every subject-neutral region of those frames is behind the focal plane. Ours has no depth of field, so on 'texture detail' and 'edges' those two pairs are biased AGAINST the reference. I chose to keep them rather than swap to sharp windows, because the sharp alternatives are all warm-storm-lit and would have introduced a LIGHTING mismatch biasing in an unknown direction; a known-direction confound that can only flatter us is the safer of the two, and RI-VIS06 §C already treats a win by us as implausible until proven. REVERSIBLE: acquiring one 1920x1080 in-focus daylight exterior plate lets pair02/pair03 be rebuilt without the confound, and the pairing table is a one-line edit away from doing it.",
+
+    "pair05 IS THE WEAKEST PAIR AND IS LABELLED AS SUCH IN THE TABLE. Ours is a mid-distance dusk walkway; the plate is a near-field material close-up under lamplight. The corpus holds no 1920x1080 low-light plate at mid-distance exterior scale. Recorded as a subject-scale mismatch rather than substituted.",
+
+    "THE LEAK-CHECK WAS EXTENDED AND THEN BROKEN ON PURPOSE, SEVEN WAYS. tools/blind/image-leakcheck.mjs previously covered only statistical channels and had a single self-test arm. It now also reads the PNG container directly — format magic bytes, IHDR bit depth, colour type, interlace and dimensions, and every metadata-bearing chunk (tEXt/iTXt/zTXt/eXIf/tIME/pHYs/iCCP/sRGB/gAMA) — and asserts each pack directory holds exactly ['A.png','B.png'] and nothing else. `--self-test` now runs SEVEN arms that are required to disagree: dimensions, format (a JPEG wearing a .png name), bit depth, metadata chunk, a stray third file, and a quantised arm all go red with the right severity (exit 4 structural, exit 3 statistical), AND A CLEAN ARM MUST COME BACK GREEN. That clean arm is the point: HAZARDS.md §0's fifth shape is a suite whose arms agree about a false premise, and a gate that reds on everything is exactly as useless as one that reds on nothing. All seven pass.",
+
+    "THE REAL PACK PASSES THE GATE: GREEN, exit 0. Structural gate clean on all five pairs — both arms PNG, identical bit depth, colour type, interlace and dimensions, zero metadata chunks on either side. No held-out provenance channel sweeps: bytes 1/5, distinct_levels 2/5, flat_border_edges and duplicate_rows tied on all five. blockiness_8px came back 1/5, which is the check that the shared JPEG q=95 4:4:4 round trip actually equalised the DCT signature — both arms go through the identical quantiser, so a JPEG-sourced plate and a PNG render carry the same compression artefacts instead of one of them being marked.",
+
+    "TWO QUALITY STATISTICS ALREADY SWEEP, AND THEY ARE THE FINDING RATHER THAN A LEAK — the leak-check reports them and deliberately does not gate on them. shadow_levels 5/5 and local_contrast_med 5/5 name the reference on every pair: our crops carry fewer distinct luma levels below the 25th percentile and less local micro-contrast than the reference on all five. This is a hint about what the judges will say, NOT a verdict, and it must not be reported as one. mean_luma 4/5 and edge_energy 1/5.",
+
+    "THE COIN FLIPS CAME OUT 4:1 (ours is B on pair01, 02, 04, 05; ours is A on pair03). Unremarkable for five fair flips and not derivable by a judge, who has no prior. I deliberately did NOT reseed to get a prettier split — fiddling with the instrument after looking at it is how the one unbiased instrument in the corpus dies. It does mean chunk 2 must watch for positional bias: a judge that answers the same letter on all five pairs has told you about itself, not about the renders.",
+
+    "WHAT I COULD NOT DO: I did not run the judges, by design — RULES.md rule 25 forbids judging a pack you built, and this chunk's brief scopes me to construction. I did not extend Protocol A beyond the character_closeup profile, because RI-VIS09 §2 routes Protocol A to that folder and no other, and it is the only modern profile with any pixels in it. I did not amend RI-VIS06's prompt text; the two prompt files are the previous attempt's and are reused byte-for-byte, because a changed prompt is a changed instrument. I did not touch tools/visual/deck.json."
   ],
-  "next_step": "in progress"
+
+  "s51_audit": {
+    "ruling": "S51 — a blind pack whose counterpart arm is derivable from the item's own tables is void.",
+    "result": "PASS, by construction and then by assertion.",
+    "how": [
+      "Each pack directory holds exactly A.png and B.png. image-leakcheck.mjs exits 4 if a third file of any name appears, and that arm of its self-test is proven to fire.",
+      "make-pair.mjs writes PROMPT.md and pack.json INTO the pack directory by default; protocol-a-pack.mjs relocates both into the reveal directory (it does not delete them — they are the audit trail) and then asserts the pack listing is exactly the two images.",
+      "The sealed key is a SIBLING of the pack tree, not a child: reports/blind/protocol-a-w1-SEALED-KEY/ against reports/blind/protocol-a-w1/PACK/. A judge handed the pack directory cannot reach the key by opening its parent.",
+      "pairing.json and leakcheck.json were MOVED out of the judge-facing directory after the build, because both name which arm is the reference. leakcheck.json's per-rule rows carry a `ref` field on every pair; it is a key, not a report.",
+      "Nothing travelling with the images states what either arm depicts, the time of day, the lighting profile, which plate was used, or how many pairs share a source."
+    ]
+  },
+
+  "next_step": "CHUNK 2 RUNS THE JUDGES AND WRITES THE VERDICT. Everything it needs is below; nothing else in this file is required reading for it.\n\n1. WHERE THE PAIRS ARE — reports/blind/protocol-a-w1/PACK/packs/pair01 .. pair05, each holding exactly A.png and B.png, 512x512 PNG, 8-bit, no metadata. FIVE pairs, which is exactly the number RI-VIS06 §A demands per wave ('Runs: 5 pairs per wave'), so no pair may be skipped without recording the skip and its reason.\n\n2. WHERE THE SEALED KEY IS — reports/blind/protocol-a-w1-SEALED-KEY/. Per-pair reveal at <pair>.reveal/mapping.json (field A is 'ours' or 'reference'); the whole resolved table at pairing.json and PAIRING-KEY.json; the labelled crops at crops/; our raw 1920x1080 frames at frames/. DO NOT OPEN ANY OF IT — not one file — until every judgement is captured to disk. RI-VIS06 §D's 'key read before judging' row and §'Failure threshold' both say the protocol's results are VOID if the key was readable before judging. Capture the answers first, then reveal, then record. The read-after-write ordering is yours to assert in the verdict.\n\n3. THE JUDGE PROMPT — reports/blind/protocol-a-w1/PROMPT-A-verbatim.txt, quoted BYTE-FOR-BYTE. Do not paraphrase it, do not add to it, do not 'tidy' it. RI-VIS06 §D's last row makes verbatim quotation a requirement and §'Failure threshold' voids the protocol if the prompt was paraphrased. The judge is given the two images, that prompt, and NOTHING ELSE — not this file, not the project name, not the words 'Morrowind' or 'Black Marsh', not RI-VIS05, and no indication that either image is from an in-development game. If a judge's answer mentions the setting, the prompt leaked: discard that run, record the discard AND its reason, and re-run with a fresh agent.\n\n4. HOW MANY JUDGES — RI-VIS06 §A requires a FRESH AGENT CONTEXT PER RUN with no prior turn from this project, and §D forbids one agent answering both Protocol A and Protocol B. So: one fresh judge per pair, five judges. Note that create_session is approval-gated here and returns MCP error -32003 (RULES.md rule 0) — dispatch judge AGENTS, which need no approval. You may not judge these yourself: rule 25, and I built the pack, so I am disqualified too.\n\n5. WHAT THE ESCALATION PROMPT IS FOR — reports/blind/protocol-a-w1/PROMPT-A-escalation.txt is NOT a second opinion and NOT to be used because you dislike an answer. It is RI-VIS06 §C, and it fires ONLY IF OURS WINS A PAIR. A win by us is treated as implausible until proven and triggers all three escalations: a fresh judge, the identical prompt with that paragraph appended, and three 512x512 crops at 1:1. Note §C's own warning: if ours wins in wave 1, the most likely explanation is that the pair construction is broken, not that we beat a shipped AAA frame. If ours LOSES, no escalation is applied — that is the expected outcome and it needs no re-run. Re-running a loss 'to check' is judge-shopping, which RI-VIS06 says destroys the only unbiased instrument in the corpus.\n\n6. THE DISCIPLINE THAT KEEPS IT BLIND — (a) hand each judge the two image FILES and the prompt TEXT, never a directory path they could walk out of, and never this status file; (b) no best-of-N, no re-asking because you dislike an answer, every discard recorded with its reason; (c) forced choice, ties not permitted, exactly one named biggest gap phrased as something buildable — a gap that is a mood ('it lacks atmosphere') is a malformed run, re-asked once with the format reminder only; (d) watch for positional bias, since ours sits on B in four of five pairs — a judge answering the same letter five times has told you about itself; (e) re-run `node tools/blind/image-leakcheck.mjs --packs reports/blind/protocol-a-w1/PACK/packs --reveals reports/blind/protocol-a-w1-SEALED-KEY` before dispatching, and expect GATE: GREEN with the structural line above it. Its power is weak by construction (five trials, p=0.0313 for a clean sweep) and it says so in its own output — quote that caveat rather than presenting GREEN as proof of blindness.\n\n7. WHAT TO WRITE — the §E record block per pair, all five appended to corpus/90-verdicts/w01-visual-blind.md, then the §Scoring table applied. On the evidence in hand the likely landing is 'ours loses all five' → FIDELITY cap 5 or 7 depending on the confidence spread; the cap for zero pairs having run (7) no longer applies once these five are judged, which is the entire point of this exercise. Carry forward two caveats into the verdict, in the verdict's own words: the depth-of-field confound on pair02/pair03 runs in OUR favour, and pair05's subject-scale mismatch is recorded in pairing.json.",
+
+  "files_touched": [
+    "orchestration/status/RI-VIS06-PROTOCOL-A.json",
+    "tools/runpod/lib/http-transport.mjs",
+    "tools/blind/protocol-a-transport-proof.mjs",
+    "tools/blind/protocol-a-pack.mjs",
+    "tools/blind/image-leakcheck.mjs",
+    "reports/blind/.gitignore",
+    "reports/blind/protocol-a-w1/",
+    "reports/blind/protocol-a-w1-SEALED-KEY/",
+    "docs/shots/2026-08-14-protocol-a-dusk-npc-hardware.png",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [],
+  "redundant_with": [],
+  "declared_overlap": {
+    "path": "tools/runpod/lib/http-transport.mjs",
+    "with": ["W1-19-builder-production-continuation-20260813", "runpod-gpu-test-infra"],
+    "why": "Both already claim this file and the overlap between them was undeclared before I arrived. My change is a surgical ~20-line retry inside PodAgentClient.exec's poll loop, made with Edit rather than a whole-file write, and it is the specific defect that has cost Protocol A its only live-hardware capture. It is covered by its own four-arm proof (tools/blind/protocol-a-transport-proof.mjs) whose control arm re-implements and is required to lose to the old behaviour."
+  },
+
+  "cost": {
+    "gpu": "two Pods: one orphaned L4 terminated within minutes (~$0.02), one RTX A4500 that did the work (4.3 min wall, $0.25/hr, ~$0.02). Both confirmed terminated by API lookup; no Pod belonging to any other agent was touched.",
+    "note": "Protocol A's capture is 6 frames and 19.8 seconds of rendering. The whole cost of this item is Pod overhead, not rendering."
+  }
 }
