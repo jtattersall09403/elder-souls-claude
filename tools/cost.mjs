@@ -503,6 +503,727 @@ async function buildLedger() {
   return { ledger, fileStats, groupsCount: groups.size, requestsCount: requests.length, pricedCount: priced.length };
 }
 
+// ==================================================================================================
+// RETROSPECTIVE EXPERIMENTS — piece `COST-EXPERIMENTS-BUILD`, 2026-08-14.
+//
+// Four questions, all answerable from banked history, none of which changes any orchestration
+// behaviour or any game code. They consume the parser, dedup and price table above rather than
+// re-deriving them (rule 10; COST.md §6.1 "the instrument is the only thing that computes cost").
+//
+//   Q1 --routing      Did routing mechanical builds to Sonnet save anything?
+//   Q2 --growth       Is cost really superlinear in tool calls, and is it accumulation or workload?
+//   Q3 --bursts       Confirm or overturn the C1 revert (staggered burst dispatch).
+//   Q4 --attribution  Where the money actually goes, by role and by model.
+//   --experiments     all four, writing reports/cost/experiments.json which the ledger's `changes`
+//                     array is then built from.
+//   --experiments-self-test   synthetic arms with known answers that must genuinely disagree.
+//
+// THE ATTRIBUTION RULE (COST.md §2) BINDS EVERY ONE OF THEM. Cost per run has CV ~0.97, so no
+// conclusion here may rest on comparing dollar totals between two windows. Every number below is
+// either (a) a share/proportion, (b) a counterfactual repricing of the SAME recorded token flow, or
+// (c) a recomputation over a recorded per-request context curve. Where a dollar figure appears it is
+// arithmetic on a fixed flow, never a between-window difference.
+// ==================================================================================================
+
+const EXPERIMENTS_DIR = join(ROOT, 'reports', 'cost');
+const EXPERIMENTS_PATH = join(EXPERIMENTS_DIR, 'experiments.json');
+
+function readExperimentChanges() {
+  try {
+    const j = JSON.parse(readFileSync(EXPERIMENTS_PATH, 'utf8'));
+    return Array.isArray(j.changes) ? j.changes : [];
+  } catch { return []; }
+}
+
+// ---- small deterministic statistics helpers (no dependency, seeded RNG so runs reproduce) --------
+const sum = (a) => a.reduce((x, y) => x + y, 0);
+const mean = (a) => (a.length ? sum(a) / a.length : null);
+function quantile(arr, q) {
+  if (!arr.length) return null;
+  const s = [...arr].sort((x, y) => x - y);
+  const pos = (s.length - 1) * q, lo = Math.floor(pos), hi = Math.ceil(pos);
+  return lo === hi ? s[lo] : s[lo] + (s[hi] - s[lo]) * (pos - lo);
+}
+const median = (a) => quantile(a, 0.5);
+function mulberry32(seed) { // deterministic RNG: the same permutation null every run
+  return function () {
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+// least-squares slope/intercept/R^2 of y on x
+function regress(xs, ys) {
+  const n = xs.length;
+  if (n < 3) return { slope: null, intercept: null, r2: null, n };
+  const mx = mean(xs), my = mean(ys);
+  let sxx = 0, sxy = 0, syy = 0;
+  for (let i = 0; i < n; i++) { const dx = xs[i] - mx, dy = ys[i] - my; sxx += dx * dx; sxy += dx * dy; syy += dy * dy; }
+  const slope = sxy / sxx, intercept = my - slope * mx;
+  const r2 = syy === 0 ? null : (sxy * sxy) / (sxx * syy);
+  return { slope, intercept, r2, n };
+}
+
+// ---- agents: the unit every experiment is expressed over ----------------------------------------
+// An "agent" is one dispatched subagent (its own transcript file), or the orchestrator's own thread.
+// Requests are ordered by timestamp; `ctx` is the CONTEXT RE-READ on each request — input + both
+// cache-write classes + cache_read. That is the quantity cost is proportional to, and it is the
+// quantity Q2 is about.
+function buildAgents(priced, projectDir) {
+  const byAgent = new Map();
+  for (const r of priced) {
+    if (!Number.isFinite(r.ts)) continue;
+    const key = r.agentId ? `${r.sessionId}:${r.agentId}` : `${r.sessionId}:orchestrator`;
+    let a = byAgent.get(key);
+    if (!a) {
+      a = { key, agentId: r.agentId, sessionId: r.sessionId, isOrchestrator: !r.agentId, reqs: [] };
+      byAgent.set(key, a);
+    }
+    a.reqs.push(r);
+  }
+  for (const a of byAgent.values()) {
+    a.reqs.sort((x, y) => x.ts - y.ts);
+    a.n = a.reqs.length;
+    a.usd = sum(a.reqs.map((r) => r.usd));
+    a.first = a.reqs[0].ts;
+    a.last = a.reqs[a.n - 1].ts;
+    a.ctx = a.reqs.map((r) => r.usage.input + r.usage.cache_read + r.usage.cache_write_5m + r.usage.cache_write_1h);
+    a.pie = a.reqs.map((r) => CLASSES.reduce((s, c) => s + r.usage[c] * PIE_WEIGHTS[c], 0));
+    a.out = a.reqs.map((r) => r.usage.output);
+    // majority model over priced requests, plus the purity of that majority (routing assertion)
+    const tally = {};
+    for (const r of a.reqs) tally[r.model] = (tally[r.model] || 0) + 1;
+    a.model = Object.keys(tally).sort((x, y) => tally[y] - tally[x])[0];
+    a.model_purity = tally[a.model] / a.n;
+    // dispatch attribution, from the harness's own sidecar file
+    a.description = null; a.agentType = null;
+    if (a.agentId && projectDir) {
+      const metaPath = join(projectDir, a.sessionId, 'subagents', `agent-${a.agentId}.meta.json`);
+      try {
+        const m = JSON.parse(readFileSync(metaPath, 'utf8'));
+        a.description = m.description || null;
+        a.agentType = m.agentType || null;
+      } catch { /* no sidecar — stays null, and is reported as unattributed, never guessed */ }
+    }
+    a.role = classifyRole(a);
+  }
+  return [...byAgent.values()].sort((x, y) => x.first - y.first);
+}
+
+// ---- role classification (Q4) --------------------------------------------------------------------
+// EXPLICIT MARKERS ONLY. Anything that does not match a marker is `unclassified` and is reported as
+// such — it is NEVER folded into `builder`. That default is the whole trap: a catch-all bucket makes
+// a classifier look like it covers 100% of the money while distinguishing nothing, which is exactly
+// the failure mode of an instrument that reported 71% coverage of a world containing none of the
+// thing it measured. The generic-classifier null control in --experiments-self-test demonstrates it.
+const ROLE_RULES = [
+  ['orchestrator', (d, a) => a.isOrchestrator],
+  ['judge',        (d) => /^(blind judge|arbiter|intent audit)/i.test(d)],
+  ['plan',         (d) => /^(plan:|plan critic|cost plan)/i.test(d) || /\bplan critic\b/i.test(d)],
+  ['critic',       (d) => /^(critic\b|.*\bcritic:)/i.test(d) || /\bcritic\b/i.test(d)],
+  ['blog',         (d) => /^blog/i.test(d)],
+  ['research',     (d) => /^(cost research|research\b)/i.test(d)],
+  ['corpus',       (d) => /^corpus/i.test(d)],
+  ['builder',      (d) => /^(w1-|ri-|s\d|cost dashboard|make |fix|build|implement|wire |repair|resume|write |populate|put |join |give |apply |close |mine |acquire|tighten|reconcile|own |finish|triage|do tools)/i.test(d)
+                          || /\b(remediation|round \d|successor|rebuild|builder)\b/i.test(d)],
+];
+function classifyRole(a) {
+  const d = a.description || '';
+  if (a.isOrchestrator) return 'orchestrator';
+  if (!d) return 'unattributed';
+  for (const [role, test] of ROLE_RULES) { try { if (test(d, a)) return role; } catch { } }
+  return 'unclassified';
+}
+
+// ==================================================================== Q1 — did Sonnet routing save?
+// THE CONFOUND, stated first because it is fatal if ignored: Sonnet was given the EASIER tasks by
+// design (COST.md §4.1 routes on decidability). A raw per-agent dollar comparison therefore measures
+// task difficulty, not model efficiency, and it will flatter the routing enormously. So the headline
+// here is NOT a comparison between agents. It is a COUNTERFACTUAL REPRICING of the exact token flow
+// that was actually recorded on Sonnet: hold the work fixed, change only the price vector. That is
+// arithmetic on a fixed flow (COST-INSTRUMENT §5.3: "a mix change's effect is arithmetic, not
+// empirical") and it is immune to the difficulty confound by construction, because no Opus agent
+// enters the sum at all.
+//
+// What the counterfactual CANNOT tell us is whether routing changed the amount of work done. That is
+// the second half, and it is measured model-independently in PIE tokens at matched request index.
+function experimentRouting(agents, priced) {
+  const bySonnet = agents.filter((a) => a.model === 'claude-sonnet-5');
+  const byOpus = agents.filter((a) => a.model === 'claude-opus-5' && !a.isOrchestrator);
+
+  // ---- (1) counterfactual repricing of the recorded Sonnet flow at Opus prices
+  let actual = 0, counterfactual = 0, sonnetReqs = 0;
+  const sonnetTokens = zeroUsage();
+  for (const r of priced) {
+    if (r.model !== 'claude-sonnet-5') continue;
+    sonnetReqs++;
+    for (const c of CLASSES) sonnetTokens[c] += r.usage[c];
+    actual += r.usd;
+    counterfactual += priceRequest('claude-opus-5', r.usage);
+  }
+  const totalSpend = sum(priced.map((r) => r.usd));
+  const saving = counterfactual - actual;
+
+  // ---- (2) the naive (confounded) comparison, computed so the report can show what it looks like
+  const naive = {
+    sonnet_mean_usd_per_agent: mean(bySonnet.map((a) => a.usd)),
+    opus_mean_usd_per_agent: mean(byOpus.map((a) => a.usd)),
+    sonnet_median_requests: median(bySonnet.map((a) => a.n)),
+    opus_median_requests: median(byOpus.map((a) => a.n)),
+  };
+  naive.apparent_ratio = naive.opus_mean_usd_per_agent ? naive.sonnet_mean_usd_per_agent / naive.opus_mean_usd_per_agent : null;
+
+  // ---- (3) request-count-matched comparison. Matching on REALISED request count collapses the
+  // between-task spread (the plan critic measured median cost ratio 2.39 unmatched -> 1.25 matched).
+  // The statistic is the PIE-token ratio, which is model-INDEPENDENT: every model's price vector is
+  // base_input x [1,1.25,2,0.1,5], so PIE is the same units on both arms. If routing changed only the
+  // price, matched PIE per request is ~1.0 and the whole saving is the price ratio. If matched PIE
+  // rises on Sonnet, the cheaper model bought MORE volume and ate part of its own saving.
+  const matched = [];
+  const opusPool = [...byOpus].sort((x, y) => x.n - y.n);
+  for (const s of bySonnet) {
+    const cands = opusPool.filter((o) => Math.abs(o.n - s.n) <= 0.25 * s.n);
+    if (!cands.length) continue;
+    // nearest by request count; ties broken deterministically by first timestamp
+    cands.sort((x, y) => (Math.abs(x.n - s.n) - Math.abs(y.n - s.n)) || (x.first - y.first));
+    const o = cands[0];
+    matched.push({
+      sonnet: s.description, opus: o.description, n_sonnet: s.n, n_opus: o.n,
+      pie_per_req_sonnet: mean(s.pie), pie_per_req_opus: mean(o.pie),
+      ctx_per_req_sonnet: mean(s.ctx), ctx_per_req_opus: mean(o.ctx),
+      usd_ratio: o.usd ? s.usd / o.usd : null,
+    });
+  }
+  const pieRatios = matched.map((m) => m.pie_per_req_sonnet / m.pie_per_req_opus).filter(Number.isFinite);
+  const usdRatios = matched.map((m) => m.usd_ratio).filter(Number.isFinite);
+
+  // ---- (4) matched-index context, the same test Q2 uses: do Sonnet agents carry a different context
+  // at the same point in their life? (The plan critic found Sonnet agents carried LARGER early
+  // contexts, 29,794 vs 25,365 at k=0, which is why usd_per_request is a broken diagnostic.)
+  const idxTable = [];
+  for (const k of [0, 5, 10, 20, 40, 80]) {
+    const s = bySonnet.filter((a) => a.n > k).map((a) => a.ctx[k]);
+    const o = byOpus.filter((a) => a.n > k).map((a) => a.ctx[k]);
+    idxTable.push({ k, sonnet_mean_ctx: s.length ? Math.round(mean(s)) : null, sonnet_n: s.length,
+                    opus_mean_ctx: o.length ? Math.round(mean(o)) : null, opus_n: o.length });
+  }
+
+  // ---- (5) when did routing actually happen? A mix share per day is a proportion, not a dollar
+  // comparison between windows, so it is admissible under COST.md §2.
+  const byDay = new Map();
+  for (const r of priced) {
+    if (!Number.isFinite(r.ts)) continue;
+    const day = new Date(r.ts).toISOString().slice(0, 10);
+    let d = byDay.get(day);
+    if (!d) { d = { day, sonnet_pie: 0, total_pie: 0, sonnet_requests: 0, total_requests: 0 }; byDay.set(day, d); }
+    const pie = CLASSES.reduce((s, c) => s + r.usage[c] * PIE_WEIGHTS[c], 0);
+    d.total_pie += pie; d.total_requests++;
+    if (r.model === 'claude-sonnet-5') { d.sonnet_pie += pie; d.sonnet_requests++; }
+  }
+  const timeline = [...byDay.values()].sort((a, b) => a.day.localeCompare(b.day))
+    .map((d) => ({ day: d.day, sonnet_share_of_pie: +(d.sonnet_pie / d.total_pie).toFixed(4),
+                   sonnet_share_of_requests: +(d.sonnet_requests / d.total_requests).toFixed(4),
+                   requests: d.total_requests }));
+
+  // ---- NULL CONTROL, and it is deliberately the PLAUSIBLE wrong answer rather than the trivial one.
+  // The trivial control ("reprice zero tokens, get zero saving") proves nothing. The plausible wrong
+  // answer is that the counterfactual-repricing number is evidence the FLEET got more efficient. It
+  // is not: it measures only how much volume was routed. Demonstrate that by repricing an equal-sized,
+  // request-count-matched set of OPUS agents as if they had been Sonnet. If that placebo produces a
+  // "saving" of the same order, then the headline number is a statement about volume, not efficiency,
+  // and nobody may read it as programme progress.
+  let placeboActual = 0, placeboCounterfactual = 0;
+  const placeboSet = new Set(matched.map((m) => m.opus));
+  for (const a of byOpus) {
+    if (!placeboSet.has(a.description)) continue;
+    for (const r of a.reqs) {
+      placeboActual += r.usd;
+      placeboCounterfactual += priceRequest('claude-sonnet-5', r.usage);
+    }
+  }
+
+  return {
+    question: 'Q1 — did routing mechanical builds to Sonnet save anything?',
+    method: 'counterfactual repricing of the recorded Sonnet token flow at Opus prices (holds work fixed; immune to the difficulty confound), plus a request-count-matched model-independent PIE comparison to test whether routing changed the volume of work.',
+    sonnet: { agents: bySonnet.length, requests: sonnetReqs, tokens: sonnetTokens,
+              actual_usd: +actual.toFixed(2), at_opus_prices_usd: +counterfactual.toFixed(2) },
+    saving_usd: +saving.toFixed(2),
+    saving_pct_of_counterfactual_bill: +((saving / (totalSpend + saving)) * 100).toFixed(2),
+    total_spend_usd: +totalSpend.toFixed(2),
+    sonnet_share_of_spend_pct: +((actual / totalSpend) * 100).toFixed(2),
+    naive_confounded_comparison: naive,
+    matched_pairs: { n: matched.length,
+                     median_pie_per_request_ratio: pieRatios.length ? +median(pieRatios).toFixed(3) : null,
+                     median_usd_ratio: usdRatios.length ? +median(usdRatios).toFixed(3) : null,
+                     pairs: matched.map((m) => ({ ...m, pie_per_req_sonnet: Math.round(m.pie_per_req_sonnet), pie_per_req_opus: Math.round(m.pie_per_req_opus), ctx_per_req_sonnet: Math.round(m.ctx_per_req_sonnet), ctx_per_req_opus: Math.round(m.ctx_per_req_opus), usd_ratio: m.usd_ratio != null ? +m.usd_ratio.toFixed(3) : null })) },
+    matched_index_context: idxTable,
+    timeline,
+    null_control_placebo: {
+      description: 'request-count-matched OPUS agents repriced as if they had been Sonnet. If this "saving" is the same order as the real one, the headline measures VOLUME ROUTED, not efficiency.',
+      agents: placeboSet.size,
+      actual_usd: +placeboActual.toFixed(2),
+      at_sonnet_prices_usd: +placeboCounterfactual.toFixed(2),
+      would_be_saving_usd: +(placeboActual - placeboCounterfactual).toFixed(2),
+    },
+  };
+}
+
+// ================================================== Q2 — superlinear in tool calls: which mechanism?
+// The confound the brief names: are long agents expensive because each call re-sends a grown context,
+// or simply because they did more work? The two imply completely different remedies, so the analysis
+// must separate them rather than confirm superlinearity (which both stories predict).
+//
+// The discriminating test is MATCHED REQUEST INDEX. If long agents are doing heavier work, their
+// EARLY requests are already heavier than a short agent's early requests. If the mechanism is
+// accumulation, then at the same index k every bin looks the same and the only difference is how far
+// up the curve each bin travels. Test B adds the work proxy: per-request context GROWTH and OUTPUT
+// tokens, which are the "new content" an agent generates, again at matched index.
+function experimentGrowth(agents) {
+  const subs = agents.filter((a) => !a.isOrchestrator && a.n >= 2);
+  const BINS = [[0, 99], [100, 199], [200, 299], [300, Infinity]];
+  const binOf = (n) => BINS.findIndex(([lo, hi]) => n >= lo && n <= hi);
+  const binLabel = (i) => (BINS[i][1] === Infinity ? `${BINS[i][0]}+` : `${BINS[i][0]}-${BINS[i][1]}`);
+
+  // ---- (1) the exponent. Is it 2 (quadratic) or something smaller?
+  const withCost = subs.filter((a) => a.usd > 0 && a.n > 0);
+  const reg = regress(withCost.map((a) => Math.log(a.n)), withCost.map((a) => Math.log(a.usd)));
+
+  // ---- (2) the bins, as COST.md §4.0 states them
+  const bins = BINS.map((_, i) => {
+    const g = subs.filter((a) => binOf(a.n) === i);
+    return {
+      bin: binLabel(i), agents: g.length,
+      mean_requests: g.length ? +mean(g.map((a) => a.n)).toFixed(1) : null,
+      mean_usd_per_agent: g.length ? +mean(g.map((a) => a.usd)).toFixed(2) : null,
+      usd_per_request: g.length ? +(sum(g.map((a) => a.usd)) / sum(g.map((a) => a.n))).toFixed(4) : null,
+      mean_ctx_per_request: g.length ? Math.round(mean(g.flatMap((a) => a.ctx))) : null,
+    };
+  });
+
+  // ---- (3) THE CONFOUND TEST. mean context at index k, split by the agent's EVENTUAL bin.
+  const idxs = [0, 10, 20, 40, 80, 150, 250];
+  const matchedIndex = idxs.map((k) => {
+    const row = { k };
+    BINS.forEach((_, i) => {
+      const vals = subs.filter((a) => binOf(a.n) === i && a.n > k).map((a) => a.ctx[k]);
+      row[binLabel(i)] = vals.length ? Math.round(mean(vals)) : null;
+      row[`${binLabel(i)}_n`] = vals.length;
+    });
+    return row;
+  });
+
+  // ---- (4) THE WORK PROXY, i.e. the plausible-wrong-answer's own prediction, measured.
+  // "They did more work" predicts long agents produce MORE NEW CONTENT per request. Context growth
+  // per request (delta) and output tokens per request are that new content, and both are measured at
+  // matched index so position in the turn is held constant.
+  const workProxy = [10, 40, 80].map((k) => {
+    const row = { k };
+    BINS.forEach((_, i) => {
+      const g = subs.filter((a) => binOf(a.n) === i && a.n > k + 1);
+      row[`${binLabel(i)}_ctx_growth`] = g.length ? Math.round(mean(g.map((a) => a.ctx[k + 1] - a.ctx[k]))) : null;
+      row[`${binLabel(i)}_output`] = g.length ? Math.round(mean(g.map((a) => a.out[k]))) : null;
+    });
+    return row;
+  });
+
+  // ---- (5) DOES ACCUMULATION FULLY EXPLAIN THE PER-REQUEST COST RISE? Predict each bin's mean
+  // context per request using the POOLED context-vs-index curve and that bin's own index distribution.
+  // If predicted ~= actual, the rise across bins is entirely "long agents spend more of their life at
+  // high k" — accumulation — and nothing is left for a workload explanation.
+  const pooledByIdx = new Map();
+  for (const a of subs) for (let k = 0; k < a.n; k++) {
+    let p = pooledByIdx.get(k); if (!p) { p = { s: 0, n: 0 }; pooledByIdx.set(k, p); }
+    p.s += a.ctx[k]; p.n++;
+  }
+  const pooledMean = (k) => { const p = pooledByIdx.get(k); return p ? p.s / p.n : null; };
+  const explained = BINS.map((_, i) => {
+    const g = subs.filter((a) => binOf(a.n) === i);
+    const actualVals = g.flatMap((a) => a.ctx);
+    const predVals = g.flatMap((a) => a.ctx.map((_, k) => pooledMean(k)).filter((v) => v != null));
+    const act = mean(actualVals), pred = mean(predVals);
+    return { bin: binLabel(i), actual_mean_ctx: act != null ? Math.round(act) : null,
+             predicted_from_pooled_curve: pred != null ? Math.round(pred) : null,
+             ratio: (act && pred) ? +(act / pred).toFixed(3) : null };
+  });
+
+  // ---- (6) HOW BIG IS THE LEVER? Decompose every agent's re-read context into the unavoidable floor
+  // (its own first-request context, re-read n times) and the accumulation on top of it. The
+  // accumulation share is the ceiling of everything "shorter agents" could ever recover.
+  let floorTok = 0, accumTok = 0, totalTok = 0, floorUsd = 0, accumUsd = 0;
+  for (const a of subs) {
+    const c0 = a.ctx[0];
+    for (let k = 0; k < a.n; k++) {
+      const p = PRICES[a.reqs[k].model];
+      // the marginal price of carrying one more token of context on one more request is the
+      // cache_read rate — cache_read is ~80% of spend and is what a re-sent context is billed at.
+      const marginal = p ? p.cache_read / 1e6 : 0;
+      totalTok += a.ctx[k];
+      floorTok += Math.min(c0, a.ctx[k]);
+      accumTok += Math.max(0, a.ctx[k] - c0);
+      floorUsd += Math.min(c0, a.ctx[k]) * marginal;
+      accumUsd += Math.max(0, a.ctx[k] - c0) * marginal;
+    }
+  }
+
+  // ---- (7) THE SPLIT COUNTERFACTUAL — a recomputation over the recorded curve, not a guess.
+  // If an agent of n requests had instead been s-request agents, chunk j would restart at its own
+  // first-request context c0 and follow the SAME recorded deltas: c'[js+i] = c0 + (c[js+i] - c[js]).
+  // The saved context per request is therefore exactly (c[js] - c0). This is an UPPER BOUND: it
+  // models no re-orientation, no re-reading, and no handoff cost, all of which are real and
+  // unmeasured here. Reported as a ceiling and labelled as one.
+  function splitSaving(chunk) {
+    let saved = 0;
+    for (const a of subs) {
+      const c0 = a.ctx[0];
+      for (let k = 0; k < a.n; k++) {
+        const boundary = Math.floor(k / chunk) * chunk;
+        if (boundary === 0) continue;
+        const p = PRICES[a.reqs[k].model];
+        saved += Math.max(0, a.ctx[boundary] - c0) * (p ? p.cache_read / 1e6 : 0);
+      }
+    }
+    return +saved.toFixed(2);
+  }
+
+  // ---- (8) DOES THE HARNESS ALREADY RESET THE CONTEXT? If compaction were already recovering the
+  // accumulation, the split ceiling in (7) would be overstated — it would be proposing to recover
+  // money the harness has already recovered. A reset is a request whose context falls below 60% of
+  // the previous request's, from a base above 50k tokens. The count of agents whose context ever
+  // falls AT ALL is published beside it, so an unfired diagnostic can be told from a blind one.
+  let resetEvents = 0, agentsWithReset = 0, agentsWithAnyDecline = 0;
+  for (const a of subs) {
+    let hadReset = false, hadDecline = false;
+    for (let k = 1; k < a.n; k++) {
+      if (a.ctx[k] < a.ctx[k - 1]) hadDecline = true;
+      if (a.ctx[k - 1] > 50_000 && a.ctx[k] < 0.6 * a.ctx[k - 1]) { resetEvents++; hadReset = true; }
+    }
+    if (hadReset) agentsWithReset++;
+    if (hadDecline) agentsWithAnyDecline++;
+  }
+
+  const totalUsd = sum(subs.map((a) => a.usd));
+  return {
+    question: 'Q2 — is cost quadratic in tool calls, and is the driver accumulation or workload?',
+    method: 'log-log regression of agent cost on request count; matched-request-index context and work-proxy tables to separate accumulation from workload; pooled-curve prediction; split counterfactual recomputed over the recorded context curve.',
+    population: { agents: subs.length, requests: sum(subs.map((a) => a.n)), usd: +totalUsd.toFixed(2) },
+    exponent: { value: reg.slope != null ? +reg.slope.toFixed(3) : null, r2: reg.r2 != null ? +reg.r2.toFixed(3) : null, n: reg.n,
+                quadratic_would_be: 2.0, linear_would_be: 1.0 },
+    bins,
+    matched_index_context: matchedIndex,
+    work_proxy_at_matched_index: workProxy,
+    accumulation_explains: explained,
+    decomposition: {
+      total_context_tokens_reread: totalTok,
+      floor_tokens_first_request_context_x_n: floorTok,
+      accumulation_tokens: accumTok,
+      accumulation_share_of_context: +(accumTok / totalTok).toFixed(4),
+      floor_usd: +floorUsd.toFixed(2),
+      accumulation_usd: +accumUsd.toFixed(2),
+      accumulation_usd_share_of_subagent_spend: +(accumUsd / totalUsd).toFixed(4),
+    },
+    split_counterfactual_ceiling_usd: { chunk_50: splitSaving(50), chunk_100: splitSaving(100), chunk_150: splitSaving(150) },
+    split_counterfactual_caveat: 'UPPER BOUND. Models no re-orientation, no re-reading and no handoff between the split agents, all of which are real. The measured re-read cost is the missing term and this piece did not measure it.',
+    context_resets: { reset_events: resetEvents, agents_with_reset: agentsWithReset,
+                      agents_with_any_context_decline: agentsWithAnyDecline, agents: subs.length,
+                      note: 'a reset is ctx dropping below 60% of the previous request from a base > 50k. If this is ~0 the harness is not compacting, and the accumulation above has never been recovered by anything.' },
+  };
+}
+
+// ================================================ Q3 — confirm or overturn the C1 revert (E1)
+// Ruling C1 staggered burst dispatch on the argument that concurrent requests cannot hit each other's
+// cache until the first has begun streaming. It was then reverted as inert on a PROTOTYPE's figures.
+// E1 requires reproduction, not confirmation, with a cold-start control that fails loudly if the
+// prototype's bug is reproduced instead of its finding.
+//
+// NOTE ON THE PREDICATE. C1's own acceptance ("staggered exceeds tight by >= 10 percentage points")
+// is arithmetically unsatisfiable when the tight arm already sits at ~0.96 — no data can reach 1.06.
+// The plan critic caught this (BLOCKING 3). The satisfiable restatement, used here, is the fraction of
+// AVAILABLE HEADROOM closed: (warm_stag - warm_tight) / (1 - warm_tight). The primary acceptance is
+// the ceiling: what share of total spend could first-request cache writes possibly represent?
+function experimentBursts(agents, priced) {
+  const subs = agents.filter((a) => !a.isOrchestrator).sort((x, y) => x.first - y.first);
+  const GAP_MS = 120_000, STAGGER_MS = 20_000;
+
+  // burst = maximal run of agents each starting within 120s of the previous one
+  const bursts = [];
+  let cur = [];
+  for (const a of subs) {
+    if (!cur.length || a.first - cur[cur.length - 1].first <= GAP_MS) cur.push(a);
+    else { bursts.push(cur); cur = [a]; }
+  }
+  if (cur.length) bursts.push(cur);
+  const multi = bursts.filter((b) => b.length >= 2);
+
+  const warmOfBurst = (b) => {
+    const followers = b.slice(1);
+    return followers.filter((a) => a.reqs[0].usage.cache_read > 0).length / followers.length;
+  };
+  const isStaggered = (b) => (b[1].first - b[0].first) >= STAGGER_MS;
+
+  const tight = multi.filter((b) => !isStaggered(b));
+  const stag = multi.filter((b) => isStaggered(b));
+  const wTight = mean(tight.map(warmOfBurst));
+  const wStag = mean(stag.map(warmOfBurst));
+  const diffPp = (wStag - wTight) * 100;
+  const headroomClosed = (1 - wTight) > 0 ? (wStag - wTight) / (1 - wTight) : null;
+
+  // ---- THE CEILING, which is the primary acceptance. First-request cache_write is the ENTIRE pool
+  // of money any dispatch-timing change can address: it is what a cold first request pays that a warm
+  // one does not. Priced at each agent's own model.
+  let firstReqWriteUsd = 0, firstReqWriteTok = 0;
+  for (const a of subs) {
+    const u = a.reqs[0].usage, p = PRICES[a.reqs[0].model];
+    if (!p) continue;
+    firstReqWriteTok += u.cache_write_5m + u.cache_write_1h;
+    firstReqWriteUsd += (u.cache_write_5m * p.cache_write_5m + u.cache_write_1h * p.cache_write_1h) / 1e6;
+  }
+  const totalSpend = sum(priced.map((r) => r.usd));
+  const warmOnFirst = subs.filter((a) => a.reqs[0].usage.cache_read > 0).length;
+
+  // ---- COLD-START NULL CONTROL. The session's first-ever agent had nothing before it to warm the
+  // prefix, so its first request MUST show cache_read == 0 and a non-zero cache_write. If it reads as
+  // warm, the parser is reading the wrong field and every number above is void — that is the "fails
+  // loudly if you reproduce the prototype's bug instead of its finding" requirement, made operative.
+  const firstAgent = subs[0];
+  const coldControl = firstAgent ? {
+    agent: firstAgent.agentId, description: firstAgent.description,
+    first_request_cache_read: firstAgent.reqs[0].usage.cache_read,
+    first_request_cache_write: firstAgent.reqs[0].usage.cache_write_5m + firstAgent.reqs[0].usage.cache_write_1h,
+    fires_correctly: firstAgent.reqs[0].usage.cache_read === 0
+      && (firstAgent.reqs[0].usage.cache_write_5m + firstAgent.reqs[0].usage.cache_write_1h) > 0,
+  } : null;
+
+  // ---- LABEL-SHUFFLE PERMUTATION NULL. This is the plausible wrong answer, not the trivial one: the
+  // trivial control is "compare a burst with itself". The plausible wrong answer is that warm_fraction
+  // is really tracking BURST SIZE (bigger bursts are more likely staggered AND more likely to have a
+  // warm follower), in which case a random relabelling that preserves the burst-size distribution
+  // would reproduce the effect. Shuffling the tight/staggered labels across the same bursts tests
+  // exactly that, and its spread is the noise band the observed difference must clear.
+  const rnd = mulberry32(20260814);
+  const warms = multi.map(warmOfBurst);
+  const nStag = stag.length;
+  const perm = [];
+  for (let it = 0; it < 4000; it++) {
+    const idx = warms.map((_, i) => i);
+    for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+    const sArm = idx.slice(0, nStag).map((i) => warms[i]);
+    const tArm = idx.slice(nStag).map((i) => warms[i]);
+    perm.push((mean(sArm) - mean(tArm)) * 100);
+  }
+  perm.sort((a, b) => a - b);
+  const pTwoSided = perm.filter((v) => Math.abs(v) >= Math.abs(diffPp)).length / perm.length;
+
+  // ---- burst-size cross-check: is stagger just a proxy for size?
+  const sizeCheck = {
+    mean_burst_size_tight: tight.length ? +mean(tight.map((b) => b.length)).toFixed(2) : null,
+    mean_burst_size_staggered: stag.length ? +mean(stag.map((b) => b.length)).toFixed(2) : null,
+  };
+
+  return {
+    question: 'Q3 — confirm or overturn the C1 revert (staggered burst dispatch).',
+    method: 'independent reproduction from the instrument parser: burst segmentation at 120s, stagger at 20s, warm_fraction over followers, ceiling on first-request cache_write share of spend, cold-start control and a 4,000-draw label-shuffle permutation null.',
+    bursts: { total: bursts.length, multi_agent: multi.length, largest: Math.max(...bursts.map((b) => b.length)),
+              tight: tight.length, staggered: stag.length, ...sizeCheck },
+    warm_fraction: { tight: wTight != null ? +wTight.toFixed(4) : null, staggered: wStag != null ? +wStag.toFixed(4) : null,
+                     difference_pp: +diffPp.toFixed(2),
+                     headroom_closed_pct: headroomClosed != null ? +(headroomClosed * 100).toFixed(1) : null,
+                     c1_original_bar_pp: 10, c1_bar_is_satisfiable: (wTight != null && wTight + 0.10 <= 1) },
+    permutation_null: { draws: perm.length, p_two_sided: +pTwoSided.toFixed(3),
+                        band_95_pp: [ +quantile(perm, 0.025).toFixed(2), +quantile(perm, 0.975).toFixed(2) ] },
+    ceiling: { agents: subs.length, agents_warm_on_first_request: warmOnFirst,
+               warm_on_first_pct: +((warmOnFirst / subs.length) * 100).toFixed(1),
+               first_request_cache_write_tokens: firstReqWriteTok,
+               first_request_cache_write_usd: +firstReqWriteUsd.toFixed(2),
+               pct_of_total_spend: +((firstReqWriteUsd / totalSpend) * 100).toFixed(3),
+               c1_ceiling_bar_pct: 2 },
+    cold_start_control: coldControl,
+  };
+}
+
+// =============================================== Q4 — where the money actually goes, by role & model
+function experimentAttribution(agents, priced, byTokenClass) {
+  const total = sum(priced.map((r) => r.usd));
+  const roles = new Map();
+  for (const a of agents) {
+    let r = roles.get(a.role);
+    if (!r) { r = { role: a.role, agents: 0, requests: 0, usd: 0, pie: 0 }; roles.set(a.role, r); }
+    r.agents++; r.requests += a.n; r.usd += a.usd; r.pie += sum(a.pie);
+  }
+  const byRole = [...roles.values()].sort((x, y) => y.usd - x.usd).map((r) => ({
+    ...r, usd: +r.usd.toFixed(2), pie: Math.round(r.pie),
+    pct_of_spend: +((r.usd / total) * 100).toFixed(2),
+    mean_usd_per_agent: +(r.usd / r.agents).toFixed(2),
+    mean_requests_per_agent: +(r.requests / r.agents).toFixed(1),
+  }));
+
+  // ---- NULL CONTROL, the plausible wrong answer rather than the trivial one. The trivial control is
+  // an empty input. The plausible wrong answer is a classifier with a CATCH-ALL: label every
+  // subagent "builder" and it reports 100% coverage while distinguishing nothing — which is exactly
+  // how an instrument came to report 71% coverage of a world containing none of the thing it measured.
+  // Reported here beside the real classifier so the two can be compared, and the real classifier's
+  // unmatched residual is published rather than absorbed.
+  const genericUsd = sum(agents.filter((a) => !a.isOrchestrator).map((a) => a.usd));
+  const unmatched = byRole.filter((r) => r.role === 'unclassified' || r.role === 'unattributed');
+  const nullControl = {
+    generic_catch_all_classifier: { role: 'builder (everything)', agents: agents.filter((a) => !a.isOrchestrator).length,
+                                    usd: +genericUsd.toFixed(2), pct_of_spend: +((genericUsd / total) * 100).toFixed(2),
+                                    distinguishes: 0 },
+    explicit_classifier_residual: { roles: unmatched.map((r) => r.role), usd: +sum(unmatched.map((r) => r.usd)).toFixed(2),
+                                    pct_of_spend: +(sum(unmatched.map((r) => r.pct_of_spend))).toFixed(2) },
+    interpretation: 'The catch-all reports 100% coverage and separates nothing. The explicit classifier leaves a residual it publishes rather than absorbing. A coverage figure is only meaningful beside the residual it refuses to claim.',
+  };
+
+  // ---- VALIDITY CHECK on the labels, independent of the words they were derived from. If the
+  // critic label means anything, a critic for item X must START AFTER a builder for item X: that is
+  // the project's own gauntlet order, and it is nowhere in the description text the label came from.
+  // A classifier labelling noise would come out near 50%.
+  const itemRe = /\b(W1-\d+|RI-[A-Z0-9]+|W1-[A-Z-]+)\b/i;
+  const buildersByItem = new Map();
+  for (const a of agents) {
+    if (a.role !== 'builder' || !a.description) continue;
+    const m = a.description.match(itemRe); if (!m) continue;
+    const item = m[1].toUpperCase();
+    const prev = buildersByItem.get(item);
+    if (prev == null || a.first < prev) buildersByItem.set(item, a.first);
+  }
+  let ordered = 0, testable = 0;
+  for (const a of agents) {
+    if (a.role !== 'critic' || !a.description) continue;
+    const m = a.description.match(itemRe); if (!m) continue;
+    const b = buildersByItem.get(m[1].toUpperCase()); if (b == null) continue;
+    testable++; if (a.first > b) ordered++;
+  }
+
+  return {
+    question: 'Q4 — where is the money actually going?',
+    method: 'per-agent spend attributed via the harness\'s own subagents/*.meta.json dispatch description, classified by explicit markers only; the unmatched residual is published, never folded into a catch-all.',
+    total_spend_usd: +total.toFixed(2),
+    by_role: byRole,
+    by_token_class: byTokenClass,
+    null_control: nullControl,
+    label_validity_check: {
+      description: 'critics for an item must start after that item\'s first builder — an ordering the label was NOT derived from. Noise labels would land near 50%.',
+      testable_pairs: testable, correctly_ordered: ordered,
+      pct: testable ? +((ordered / testable) * 100).toFixed(1) : null,
+    },
+  };
+}
+
+// ---- the experiments driver -----------------------------------------------------------------------
+async function runExperiments(which) {
+  const collected = await collectPricedRequests();
+  const { priced, projectDir } = collected;
+  const agents = buildAgents(priced, projectDir);
+  log(`cost: ${agents.length} agents (${agents.filter((a) => !a.isOrchestrator).length} subagents + orchestrator), ${priced.length} priced requests.`);
+
+  // by_token_class, reused from the ledger's own definition rather than recomputed differently
+  const byClassAgg = {};
+  for (const c of CLASSES) byClassAgg[c] = { class: c, usd: 0, tokens: 0 };
+  for (const r of priced) {
+    const p = PRICES[r.model];
+    for (const c of CLASSES) { byClassAgg[c].tokens += r.usage[c]; byClassAgg[c].usd += (r.usage[c] || 0) * (p[c] || 0) / 1e6; }
+  }
+  const totalSpend = sum(priced.map((r) => r.usd));
+  const byTokenClass = CLASSES.map((c) => ({ class: c, usd: +byClassAgg[c].usd.toFixed(2), tokens: byClassAgg[c].tokens,
+                                             pct_of_spend: +((byClassAgg[c].usd / totalSpend) * 100).toFixed(2) }));
+
+  const out = {};
+  if (which.has('routing')) out.q1_routing = experimentRouting(agents, priced);
+  if (which.has('growth')) out.q2_growth = experimentGrowth(agents);
+  if (which.has('bursts')) out.q3_bursts = experimentBursts(agents, priced);
+  if (which.has('attribution')) out.q4_attribution = experimentAttribution(agents, priced, byTokenClass);
+  return { results: out, agents, priced, totalSpend, collected };
+}
+
+// ---- experiment self-test: synthetic arms with known answers that must genuinely disagree ---------
+// Rule 4/6. Each analysis is fed a synthetic fleet where the RIGHT answer is known in advance, and a
+// second fleet where the OPPOSITE is true. An analysis that reports the same thing on both is inert
+// and its live number means nothing.
+function synthAgent(id, n, ctx0, growth, model = 'claude-opus-5', t0 = 0) {
+  const reqs = [];
+  for (let k = 0; k < n; k++) {
+    const ctx = ctx0 + growth * k;
+    const usage = { input: 0, cache_write_5m: 0, cache_write_1h: 0, cache_read: ctx, output: 10 };
+    reqs.push({ id: `${id}-${k}`, model, ts: t0 + k * 1000, sessionId: 's', agentId: id, usage, usd: priceRequest(model, usage) });
+  }
+  return reqs;
+}
+function runExperimentsSelfTest() {
+  let pass = true;
+  const say = (ok, msg) => { console.log(`  ${ok ? 'OK  ' : 'FAIL'} ${msg}`); if (!ok) pass = false; };
+
+  console.log('cost --experiments-self-test\n');
+
+  // ---- Q2 arms. Arm A: pure accumulation (identical ctx0 and growth; only n differs).
+  //               Arm W: pure workload (flat context within an agent, but bigger for bigger agents).
+  //               Arm L: flat and identical (the linear control).
+  console.log('Q2 growth — three synthetic fleets whose right answers differ:');
+  const armA = [];
+  [40, 40, 150, 150, 250, 250, 330, 330].forEach((n, i) => armA.push(...synthAgent(`a${i}`, n, 25000, 2000, 'claude-opus-5', i * 1e7)));
+  const armW = [];
+  [40, 40, 150, 150, 250, 250, 330, 330].forEach((n, i) => armW.push(...synthAgent(`w${i}`, n, 25000 + n * 2000 / 2, 0, 'claude-opus-5', i * 1e7)));
+  const armL = [];
+  [40, 40, 150, 150, 250, 250, 330, 330].forEach((n, i) => armL.push(...synthAgent(`l${i}`, n, 25000, 0, 'claude-opus-5', i * 1e7)));
+  const gA = experimentGrowth(buildAgents(armA, null));
+  const gW = experimentGrowth(buildAgents(armW, null));
+  const gL = experimentGrowth(buildAgents(armL, null));
+  say(Math.abs(gL.exponent.value - 1.0) < 0.05, `flat arm exponent ${gL.exponent.value} ~ 1.0 — the regression can report "linear"`);
+  say(gA.exponent.value > 1.3, `accumulation arm exponent ${gA.exponent.value} > 1.3 (superlinear)`);
+  // THE POINT OF THIS ARM: the workload story ALSO produces a superlinear exponent. So the exponent
+  // on its own cannot answer the brief's question, and anyone who reports it as if it could is
+  // reporting a statistic that both hypotheses predict. The two arms must be separated by the
+  // matched-index and accumulation-share tests below, and they are.
+  say(gW.exponent.value > 1.3, `workload arm exponent ${gW.exponent.value} > 1.3 TOO — the exponent alone does NOT discriminate; it is not the answer to the confound`);
+  say(gA.decomposition.accumulation_share_of_context > 0.5,
+      `accumulation arm: accumulation share ${(gA.decomposition.accumulation_share_of_context * 100).toFixed(1)}% > 50%`);
+  say(gW.decomposition.accumulation_share_of_context < 0.02,
+      `workload arm: accumulation share ${(gW.decomposition.accumulation_share_of_context * 100).toFixed(1)}% < 2% — the analysis CAN report "it is workload"`);
+  const wRow = gW.matched_index_context.find((r) => r.k === 10);
+  const aRow = gA.matched_index_context.find((r) => r.k === 10);
+  say(aRow['0-99'] != null && aRow['300+'] != null && Math.abs(aRow['0-99'] - aRow['300+']) / aRow['0-99'] < 0.05,
+      `accumulation arm: matched-index k=10 context agrees across bins (${aRow['0-99']} vs ${aRow['300+']})`);
+  say(wRow['0-99'] != null && wRow['300+'] != null && wRow['300+'] / wRow['0-99'] > 1.5,
+      `workload arm: matched-index k=10 context DIVERGES across bins (${wRow['0-99']} vs ${wRow['300+']}) — the confound test goes red when it should`);
+  say(gA.split_counterfactual_ceiling_usd.chunk_100 > 0 && gW.split_counterfactual_ceiling_usd.chunk_100 === 0,
+      `split ceiling: accumulation arm ${gA.split_counterfactual_ceiling_usd.chunk_100} vs workload arm ${gW.split_counterfactual_ceiling_usd.chunk_100} (splitting cannot help a flat context)`);
+
+  // ---- Q3 arms. Cold fleet: every first request is a miss. Warm fleet: every first request hits.
+  console.log('\nQ3 bursts — cold vs warm synthetic fleets:');
+  const mkBurst = (warm, stagger) => {
+    const reqs = [];
+    for (let i = 0; i < 6; i++) {
+      const t0 = i === 0 ? 0 : (stagger ? 30_000 + i * 1000 : i * 1000);
+      const a = synthAgent(`b${warm ? 'w' : 'c'}${stagger ? 's' : 't'}${i}`, 5, 50000, 1000, 'claude-opus-5', t0);
+      if (!warm) { a[0].usage.cache_read = 0; a[0].usage.cache_write_5m = 50000; a[0].usd = priceRequest('claude-opus-5', a[0].usage); }
+      reqs.push(...a);
+    }
+    return reqs;
+  };
+  const cold = experimentBursts(buildAgents(mkBurst(false, false), null), mkBurst(false, false));
+  const warm = experimentBursts(buildAgents(mkBurst(true, false), null), mkBurst(true, false));
+  say(cold.warm_fraction.tight === 0, `cold fleet warm_fraction ${cold.warm_fraction.tight} == 0`);
+  say(warm.warm_fraction.tight === 1, `warm fleet warm_fraction ${warm.warm_fraction.tight} == 1`);
+  say(cold.cold_start_control.fires_correctly === true, 'cold fleet: cold-start control fires (cache_read 0, cache_write > 0)');
+  say(warm.cold_start_control.fires_correctly === false, 'warm fleet: cold-start control correctly REFUSES to fire — it is not a rubber stamp');
+  say(cold.ceiling.pct_of_total_spend > warm.ceiling.pct_of_total_spend,
+      `ceiling separates the arms: cold ${cold.ceiling.pct_of_total_spend}% vs warm ${warm.ceiling.pct_of_total_spend}%`);
+
+  // ---- Q1 arm. A known repricing: 1M Opus cache_read tokens cost $0.50; the same flow on Sonnet is
+  // $0.20, so routing it saves $0.30. The analysis must recover exactly that.
+  console.log('\nQ1 routing — a repricing with a hand-computable answer:');
+  const sonnetFlow = synthAgent('s0', 10, 100_000, 0, 'claude-sonnet-5', 0);       // 1.0 Mtok cache_read
+  const opusFlow = synthAgent('o0', 10, 100_000, 0, 'claude-opus-5', 1e7);
+  const rt = experimentRouting(buildAgents([...sonnetFlow, ...opusFlow], null), [...sonnetFlow, ...opusFlow]);
+  say(Math.abs(rt.sonnet.actual_usd - 0.2010) < 0.002, `sonnet flow actual ${rt.sonnet.actual_usd} ~ $0.201 (1 Mtok cache_read @ $0.20 + 100 output tokens)`);
+  say(Math.abs(rt.saving_usd - 0.3015) < 0.002, `counterfactual saving ${rt.saving_usd} ~ $0.3015 — the exact price delta on the SAME flow`);
+  say(rt.null_control_placebo.would_be_saving_usd > 0.29,
+      `placebo control also "saves" ${rt.null_control_placebo.would_be_saving_usd} on identical Opus work — proving the headline measures VOLUME ROUTED, not efficiency`);
+
+  console.log(`\ncost --experiments-self-test: ${pass ? 'all arms pass and the arms genuinely disagree.' : 'FAILED — see FAIL lines.'}`);
+  process.exit(pass ? 0 : 1);
+}
+
 // ------------------------------------------------------------------ self-test (rule 4 / rule 6)
 // The N7 fixture from COST-INSTRUMENT §11.1 BLOCKING 2, reproduced exactly, with its three known
 // answers. This is the deliberate-break control: 'max' must be the ONLY mode that gives the right
@@ -564,8 +1285,39 @@ function runSelfTest() {
 }
 
 // ------------------------------------------------------------------ main
+const EXP_FLAGS = { '--routing': 'routing', '--growth': 'growth', '--bursts': 'bursts', '--attribution': 'attribution' };
+const wantedExperiments = new Set(process.argv.filter((a) => EXP_FLAGS[a]).map((a) => EXP_FLAGS[a]));
+if (process.argv.includes('--experiments')) for (const k of Object.values(EXP_FLAGS)) wantedExperiments.add(k);
+
 if (process.argv.includes('--self-test')) {
   runSelfTest();
+} else if (process.argv.includes('--experiments-self-test')) {
+  runExperimentsSelfTest();
+} else if (wantedExperiments.size) {
+  try {
+    const { results, collected } = await runExperiments(wantedExperiments);
+    mkdirSync(EXPERIMENTS_DIR, { recursive: true });
+    let commit = null;
+    try { commit = execFileSync('git', ['rev-parse', '--short', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim(); } catch { }
+    // Preserve any `changes` already written; only the results this run owns are replaced.
+    let prior = {};
+    try { prior = JSON.parse(readFileSync(EXPERIMENTS_PATH, 'utf8')); } catch { }
+    const doc = {
+      schema: 'elder-souls/cost-experiments@1',
+      generated_at: new Date().toISOString(),
+      generator: 'tools/cost.mjs --experiments',
+      commit,                                   // rule 12: every number is a claim about a commit
+      piece: 'COST-EXPERIMENTS-BUILD',
+      requests_parsed: collected.priced.length,
+      results: { ...(prior.results || {}), ...results },
+      changes: Array.isArray(prior.changes) ? prior.changes : [],
+    };
+    writeFileSync(EXPERIMENTS_PATH, JSON.stringify(doc, null, 2) + String.fromCharCode(10));
+    console.error(`cost: wrote ${EXPERIMENTS_PATH.replace(ROOT, '.')} at commit ${commit}`);
+  } catch (e) {
+    console.error(`cost: FAILED — ${e.message}`);
+    process.exitCode = 1;
+  }
 } else {
   try {
     const { ledger, groupsCount, requestsCount, pricedCount } = await buildLedger();
