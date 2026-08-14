@@ -34,6 +34,26 @@
 // `unmeasurable ⇒ 0`, fail-closed, and hard fail 6 says static analysis alone scores zero for
 // every cell, so a run of this tool that probes nothing must report exactly that.
 //
+// THE WHOLE-RUN NULL CONTROL (RULES #4, #6), added 2026-08-14.
+//   node tools/composition/matrix-probe.mjs --null-control on  --out <somewhere-else>.json
+//   node tools/composition/matrix-probe.mjs --null-control off --out <somewhere-else>.json
+// The self-test proves each probe can distinguish three FAKE worlds. It says nothing about whether
+// a LIVE run's demonstrated cells are the fork's doing or the browser's. So: run the identical
+// live sweep — same browser, same seed, same scenario reload, same encounters, same observables —
+// with the source-state fork removed, by handing BOTH arms the same `set`. Every cell must then
+// come back INERT. A demonstrated cell under `--null-control` is a difference the instrument
+// manufactured, and it would void the same cell in the real run.
+//
+// WHY BOTH `on` AND `off`, and why neither is the trivial control. An EMPTY world would fail
+// everything by accident — the mistake that let a landform instrument report 71% coverage of a
+// world containing none of the thing it measured. These two are the *plausible* wrong answers
+// instead: a world where the source state is always set (`on`), and one where it is never set
+// (`off`). Both keep the population, the spawns and the support intact, so a cell that goes INERT
+// here goes INERT because the fork is gone and for no other reason.
+//
+// The flag NEVER writes the canonical path by default — pass --out. `null_control` is recorded in
+// the artifact so a control run can never be mistaken for a measurement.
+//
 // SELF-TEST (RULES #4)
 //   node tools/composition/matrix-probe.mjs --self-test        (no browser)
 // Every probe in the table is run against a FAKE harness in three configurations: one where the
@@ -316,7 +336,14 @@ function fakeWorld(mode) {
     setTimeOfDay(h) { hour = h; },
     setWeather(w) { weather = w; },
     setRenderRate() {}, stepFrames() {}, loadState() {}, setSeed() {},
-    listEntities: () => ents(),
+    // FAITHFUL TO THE REAL ACCESSOR, deliberately (fixed 2026-08-14). `Engine.listEntities()` at
+    // game/src/engine.js:10612 returns `{eid, kind, archetype, pos, hp}` and carries NO
+    // `alert_state` and NO `side`. The fake used to hand back the whole entity, alert_state and
+    // all — so it was MORE permissive than the world it stands in for, and a probe reading the
+    // alert observable off the wrong accessor passed the self-test and then reported 9 paper cells
+    // out of 10 against the live build on 2026-08-10. Checked by sabotage: pointing alertArena
+    // back at listEntities() left the old self-test at PASS 15/15 and now turns it red.
+    listEntities: () => ents().map((e) => ({ eid: e.eid, kind: e.kind, archetype: e.type, pos: [0, 0, 0], hp: 10 })),
     spawnEncounter: () => ({ eids: ents().map((e) => e.eid) }),
     getEncounterState: () => ({ members: ents().concat(live && hour < 6 ? [{ eid: 'night', role: 'night_watch', alert_state: 'IDLE', dist_m: 5 }] : [])
       .map((e) => ({ ...e, role: e.role || 'infantry', dist_m: e.dist_m || 18 })) }),
@@ -348,10 +375,18 @@ async function selfTest() {
   let ok = true;
   for (const p of PROBES) {
     const row = [];
-    // The fake world has to expose the same two page-side helpers the live path injects, or the
-    // self-test would be exercising a different probe body than the browser runs.
-    globalThis.alertArena = (H, id) => { const e = H.listEntities().filter((x) => x.kind === 'enemy'); return { members: e.map((x) => ({ eid: x.eid, alert_state: x.alert_state, aggroed: false, dist_m: 5 })), spawned: e.length }; };
-    globalThis.alertValue = (m) => m.map((x) => x.eid + ':' + x.alert_state + ':-').sort();
+    // THE HELPERS ARE EVALUATED FROM `ALERT_HELPER` ITSELF, not reimplemented (fixed 2026-08-14).
+    // This comment used to say the self-test exposed "the same two page-side helpers the live path
+    // injects" while the code hand-wrote two lookalikes beside it — so ALERT_HELPER, the file's
+    // most defect-prone code, was the one part of the probe body no self-test ever ran. Checked by
+    // sabotage: reintroducing the exact historical defect (reading `x.alert`, which
+    // getEncounterState().members[] does not carry, instead of `x.alert_state` — the bug that made
+    // the 2026-08-10 run report 9 paper cells out of 10) left the old self-test at PASS 15/15. It
+    // now goes red. `new Function` here is the same construction the live path uses at the
+    // page.evaluate call below, so both run one copy of the source.
+    const helpers = new Function(ALERT_HELPER + '; return { alertArena: alertArena, alertValue: alertValue };')();
+    globalThis.alertArena = helpers.alertArena;
+    globalThis.alertValue = helpers.alertValue;
     for (const mode of ['live', 'paper', 'empty']) {
       const r = await runControl({
         id: `${p.cell}/${mode}`, what: p.mechanism, metric: p.observable,
@@ -392,7 +427,7 @@ function contentionGate() {
   }
 }
 
-async function live({ cellsPath, outPath, seed }) {
+async function live({ cellsPath, outPath, seed, nullControl }) {
   const cells = JSON.parse(fs.readFileSync(cellsPath, 'utf8'));
   const byId = new Map(cells.cells.map((c) => [c.id, c]));
   const { launchGame } = await import('../lib/browser.mjs');
@@ -413,7 +448,9 @@ async function live({ cellsPath, outPath, seed }) {
         unit: 'entities in the live world the observable was read from at the fork',
         factors: [{ id: 'source_state', what: `${p.cell.split('->')[0]} state set at the fork` }],
         measure: async (broken) => {
-          const set = broken.length === 0;
+          // THE ONE LINE THE NULL CONTROL CHANGES. Everything downstream — browser, seed,
+          // scenario reload, spawns, observable, roll-up — is byte-identical to the real run.
+          const set = nullControl ? nullControl === 'on' : broken.length === 0;
           return page.evaluate(async ({ src, helper, scenario, seed, set, cell }) => {
             const H = window.__HARNESS;
             H.setSeed(seed); H.loadState(scenario); H.setRenderRate(0);
@@ -493,6 +530,13 @@ async function main() {
   const cells = JSON.parse(fs.readFileSync(cellsPath, 'utf8'));
   const outPath = path.resolve(REPO, arg('out', 'reports/composition/w1/matrix.json'));
   const seed = Number(arg('seed', 1234));
+  const nullControl = arg('null-control', null);
+  if (nullControl && nullControl !== 'on' && nullControl !== 'off') {
+    say(`--null-control takes 'on' or 'off', not ${JSON.stringify(nullControl)}.`); process.exit(5);
+  }
+  if (nullControl && !has('out')) {
+    say('--null-control refuses to write the canonical default path. Pass --out.'); process.exit(5);
+  }
 
   const gate = contentionGate();
   if (!gate.ok && !has('force')) {
@@ -508,9 +552,10 @@ async function main() {
     process.exit(4);
   }
 
-  say(`matrix-probe — ${PROBES.length} cells, one browser, seed ${seed}.`);
+  say(`matrix-probe — ${PROBES.length} cells, one browser, seed ${seed}.`
+    + (nullControl ? `  NULL CONTROL '${nullControl}': the source-state fork is removed and every cell must come back INERT.` : ''));
   let out;
-  try { out = await live({ cellsPath, outPath, seed }); }
+  try { out = await live({ cellsPath, outPath, seed, nullControl }); }
   catch (e) {
     // A run that could not happen must leave a record saying so, or the next reader finds a
     // stale matrix.json from an earlier run and reads it as this commit's answer (RULES #12).
@@ -531,6 +576,15 @@ async function main() {
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, JSON.stringify({
     schema: 'elder-souls/cmp01-matrix@1', at: new Date().toISOString(), seed, ran: true,
+    null_control: nullControl || null,
+    null_control_note: nullControl
+      ? `NOT A MEASUREMENT. Both arms were given set=${nullControl === 'on'}, so the source-state fork is absent. Every cell must be INERT; any demonstrated cell here is manufactured by the instrument.`
+      : null,
+    // RULES #12 — a measurement is a claim about a commit. On a RunPod worker the snapshot is a
+    // tar with no .git, so the bootstrap's RUNPOD_SOURCE_REVISION is the only place the revision
+    // survives; fall back to it before giving up and writing null.
+    commit: (() => { try { return execFileSync('git', ['rev-parse', 'HEAD'], { cwd: REPO }).toString().trim(); } catch { return process.env.RUNPOD_SOURCE_REVISION || null; } })(),
+    host: process.env.RUNPOD_GPU_RUN_ID ? `runpod:${process.env.RUNPOD_GPU_RUN_ID}` : 'local',
     page_errors: out.pageErrors, results: out.results, roll_up: roll,
   }, null, 2) + '\n');
 
@@ -543,6 +597,14 @@ async function main() {
   say(`  vacuous cells                ${roll.vacuous_cells.length}: ${roll.vacuous_cells.join(', ')}`);
   say(`  crossings never probed       ${roll.unprobed_crossings.length}: ${roll.unprobed_crossings.join(', ')}`);
   say(`wrote ${path.relative(REPO, outPath)}`);
+  if (nullControl) {
+    // A control's pass condition is the OPPOSITE of a measurement's: nothing may be demonstrated.
+    const leaked = roll.demonstrated_live_cells;
+    say(leaked === 0
+      ? `NULL CONTROL '${nullControl}' HELD: 0 of ${out.results.length} cells demonstrated with the fork removed.`
+      : `NULL CONTROL '${nullControl}' LEAKED: ${leaked} cell(s) demonstrated with NO source-state fork. Those cells are not evidence in the real run either.`);
+    process.exit(leaked === 0 ? 0 : 2);
+  }
   const met = Object.values(roll.floor_met).every(Boolean);
   process.exit(met ? 0 : 2);
 }

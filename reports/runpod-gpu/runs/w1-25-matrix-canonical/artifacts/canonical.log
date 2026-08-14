@@ -1,0 +1,26 @@
+matrix-probe — 15 cells, one browser, seed 1234.
+  OK              TOD->ROS    support 4/4,2
+  OK              SCH->ROS    support 56/56,56
+  INERT           SPL->ROS    support 1/1,1
+  OK              STL->ROS    support 2/2,1
+  INERT           EQP->ROS    support 1/1,1
+  INERT           DIS->BOS    support 1/1,1
+  OK              ROS->WLD    support 1/1,1
+  OK              ROS->DIS    support 392/392,392
+  OK              WEA->ROS    support 1/1,1
+  OK              FAC->ROS    support 1/1,1
+  OK              BOS->WLD    support 1/1,1
+  OK              BOS->QST    support 1/1,1
+  OK              BOS->FAC    support 1/1,1
+  OK              BOS->DIS    support 1/1,1
+  OK              BOS->LOR    support 1/1,1
+fatal: not a git repository (or any of the parent directories): .git
+
+  demonstrated live cells      12  (W1 floor 10)
+  demonstrated seam crossings  12  (W1 floor 4)  5 W->F / 7 F->W
+  demonstrated structural      3  (W1 floor 1)
+  matrix score                 36  (W1 floor 20)
+  paper cells                  3: SPL->ROS, EQP->ROS, DIS->BOS
+  vacuous cells                0: 
+  crossings never probed       26: FAC->BOS, DIS->ROS, GLD->ROS, GLD->BOS, SKL->ROS, SKL->BOS, SPL->BOS, SPL->DUN, LOR->ROS, LOR->BOS, STL->BOS, QST->ROS, QST->BOS, WLD->ROS, WLD->BOS, TOD->BOS, WEA->BOS, EQP->BOS, UPG->BOS, ROS->FAC, ROS->QST, ROS->SCH, BOS->SCH, DUN->ROS, DUN->BOS, SCH->BOS
+wrote reports/composition/w1/matrix.json
