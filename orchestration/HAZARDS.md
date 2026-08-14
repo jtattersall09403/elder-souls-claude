@@ -37,6 +37,23 @@ Any new worktree needs the same link before it can capture anything.
 a **second capture daemon rooted at its own worktree**, which cannot work and competes for the
 browser ceiling with the real one. Use the shared daemon.
 
+## 7. A git worktree cannot render the game — and it fails as `GAME_BROKEN`
+
+**The orchestrator moved most agents into isolated worktrees to stop the clobbering, and thereby
+broke rendering for nine of eleven of them without noticing.**
+
+`tools/node_modules` **is gitignored**, so a `git worktree` never receives it. `launchGame()` then
+exits 70 and the shared capture daemon returns **`GAME_BROKEN`** — which reads as *the game is
+broken*, not *your environment is missing a directory*. Two agents hit it, one correctly diagnosed it
+as a worktree artefact and said so; anything concluded from it before 2026-08-14 should be re-run.
+
+**Fixed by symlinking `tools/node_modules` (and the root `node_modules`) into every agent worktree.**
+Any new worktree needs the same link before it can capture anything.
+
+**Second trap in the same place:** an agent in a worktree that calls `tools/harness/shot.mjs` starts
+a **second capture daemon rooted at its own worktree**, which cannot work and competes for the
+browser ceiling with the real one. Use the shared daemon.
+
 ## 0. A fifth failure shape: a self-test whose arms agree about a false premise
 
 Rule 6 lists four ways a control fails. Here is a fifth, found on 2026-08-14 when the fix for the
