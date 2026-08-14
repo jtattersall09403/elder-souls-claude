@@ -6,7 +6,9 @@
   "commit_at_start": "3675320",
   "question": "Does the round's central claim -- that S39's 'fair AND readable' is half wrong because images_per_sim_frame is a simulated quantity over a RENDERED one and falls to 0.2 -- hold from the instrument, not the prose? Plus: null controls re-run, a fourth checker artefact, the two floors, the tier-warning sweep, thresholds-before-measurement against git log.",
   "next_step": "Read RI-PLT01 C.5, timefidelity.mjs, S39, loop.js. Then re-run the four null controls myself.",
-  "redundant_with": ["PLT01-STEPRATE"],
+  "redundant_with": [
+    "PLT01-STEPRATE"
+  ],
   "files_claimed": [
     "orchestration/status/PLT01-STEPRATE-critic.json",
     "corpus/90-verdicts/",
@@ -19,5 +21,10 @@
     "tools/platform/timefidelity.mjs (builder's; I re-run it, I do not edit it)",
     "game/src/core/loop.js",
     "game/src/engine.js"
-  ]
+  ],
+  "ownership_claim_released": {
+    "date": "2026-08-14",
+    "reason": "Stuck at state=\"reading\" since 2026-08-08 (6.2 days), zero files_touched beyond its own status file, no verdict ever filed under PLT01-STEPRATE anywhere in corpus/90-verdicts/, and its builder counterpart (PLT01-STEPRATE.json) is already state=done with predecessor_note describing an earlier instance killed by a usage limit -- the same fleet-wide kill event this piece shows every sign of. Its directory claim on corpus/90-verdicts/ (rather than a specific PLT01-STEPRATE-r*.{md,json} path) was the single largest source of undeclared-overlap noise in the sweep: 13 CONFLICT lines against unrelated critics about to write their own, differently-named verdicts. Releasing on strong but not certain evidence -- if this critic is in fact still alive, re-claim with a narrower path.",
+    "by": "OWNERSHIP-SWEEP-20260814"
+  }
 }

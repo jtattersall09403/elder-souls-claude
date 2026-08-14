@@ -3,7 +3,12 @@
   "brief": "Fresh blind judge on reports/packs/prose-tics-r4/ (15 trials). Dispatched as a fresh judge; on arrival I found the pack has ALREADY been judged twice (status judge-prose-r4.json, state=done) and that the mandatory RI-MTH03 M5 second pass is recorded as OWED AND NOT RUN. I run M5.",
   "state": "researching",
   "role": "blind judge, third pass, M5 harsher-lens",
-  "redundant_with": ["judge-prose-r4", "judge-prose-packs", "W1-PROSE-R2", "W1-PROSE-TICS"],
+  "redundant_with": [
+    "judge-prose-r4",
+    "judge-prose-packs",
+    "W1-PROSE-R2",
+    "W1-PROSE-TICS"
+  ],
   "contamination_control_declared_before_reading_any_trial": [
     "HARD BAN: I will not open any t*/answer.md. The predecessor status file's summary block (read while orienting) states the FIRST judge picked reference on 15/15. Therefore every existing answer.md PICK line is a direct answer key. Reading one would void this pass.",
     "HARD BAN: I will not open reports/packs/prose-tics-r4.reveal/ until all 15 of my rows are on disk.",
@@ -20,8 +25,13 @@
     "tree_commit": "cca44e0980acbde39e395e8e654a62e8934c6cfa",
     "note": "All 15 PROV/QUAL rows, the M5 pass and the WEAKEST POINT existed on disk at this hash BEFORE prose-tics-r4.reveal/ was opened. Sections after this point are appended post-reveal, so the file's later hash will differ by design; this hash is the auditable pre-reveal one."
   },
-  "outputs_written": ["reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md"],
-  "files_touched": ["orchestration/status/judge-prose-r4-m5.json", "reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md"],
+  "outputs_written": [
+    "reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md"
+  ],
+  "files_touched": [
+    "orchestration/status/judge-prose-r4-m5.json",
+    "reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md"
+  ],
   "files_claimed": [
     "reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md",
     "reports/blog-feed.jsonl"
@@ -57,5 +67,10 @@
     "fleet_hazard_worth_recording": "Rule 17 names two things that put other agents' work into your commit (tools/bank.mjs, and the pre-commit hook's five generated files). This is a THIRD route and it runs the other way - it put another agent's WORDS on my commit. The scratchpad directory is not private between concurrently running agents here. Anything written to a fixed, guessable filename in it (msg.txt, out.txt, tmp.json) is a collision waiting to happen. Use a task-id-suffixed filename, always.",
     "my_intended_message": "judge-prose-r4-m5: prose-tics-r4 blind judgement - 15/15 provenance, ours preferred 15/15, and the pack is decidable by counting [NAME-n] tokens"
   },
-  "next_step": "None. Judgement written, revealed, scored, banked. Builder action: equalise [NAME-n] token counts across arms (or re-name rather than redact) and assert it fail-closed in the pack builder; move answers to a sibling <pack>.answers/<judge-id>/; fix the stale reveal path in PROMPT.md."
+  "next_step": "None. Judgement written, revealed, scored, banked. Builder action: equalise [NAME-n] token counts across arms (or re-name rather than redact) and assert it fail-closed in the pack builder; move answers to a sibling <pack>.answers/<judge-id>/; fix the stale reveal path in PROMPT.md.",
+  "ownership_claim_released": {
+    "date": "2026-08-14",
+    "reason": "Own next_step is literally \"None. Judgement written, revealed, scored, banked.\" and state_final is already \"done\". No further edits expected under this claim.",
+    "by": "OWNERSHIP-SWEEP-20260814"
+  }
 }
