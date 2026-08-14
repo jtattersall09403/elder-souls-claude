@@ -1,0 +1,1093 @@
+{
+ "label": "null-no-orientation",
+ "tree": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/W1-OVERLAP-RESOLVER/NULL",
+ "plan_ms": 31,
+ "counts": {
+  "overlap": 77,
+  "borderline": 27,
+  "shared_wall": 8,
+  "door_inside_other": 24,
+  "centre_inside_other": 23,
+  "structure_pairs_overlap": 5,
+  "yaw_blind_deep_overlaps": 24,
+  "settlements_with_overlap": 8
+ },
+ "per_settlement": {
+  "archon": 12,
+  "blackrose": 8,
+  "gideon": 6,
+  "helstrom": 7,
+  "lilmoth": 17,
+  "soulrest": 12,
+  "stormhold": 3,
+  "thorn": 12
+ },
+ "size": {
+  "buildings": 149,
+  "shrunk": 12,
+  "on_floor": 12,
+  "area_frac_mean": 0.9677,
+  "area_frac_min": 0.2234,
+  "area_frac_p05": 0.7735,
+  "area_frac_p25": 1,
+  "below_50pct_of_declared": 4,
+  "below_25pct_of_declared": 2,
+  "worst": [
+   "archon:archon-old-kiln 8x9 -> 4.48x3.59 (22%)",
+   "archon:archon-quay-store 8x9 -> 4.48x3.59 (22%)",
+   "lilmoth:lilmoth-sugar-cellar 8x9 -> 4.88x5.22 (35%)",
+   "archon:archon-first-vat 8x9 -> 3.6x9 (45%)",
+   "lilmoth:lilmoth-plague-stair 8x9 -> 6.78x5.98 (56%)",
+   "archon:archon-naga-row 8x9 -> 4.66x9 (58%)",
+   "lilmoth:lilmoth-collapsed-arcade 8x9 -> 5.76x7.86 (63%)",
+   "archon:archon-house-2 7.99x14.41 -> 6.18x14.41 (77%)"
+  ]
+ },
+ "pairs_remaining": [
+  {
+   "s": "thorn",
+   "a": "thorn-apothecary",
+   "b": "thorn-sapwell",
+   "depth_m": 9.842,
+   "yaw": [
+    218.6,
+    192.9
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 8.54
+  },
+  {
+   "s": "soulrest",
+   "a": "soulrest-market",
+   "b": "soulrest-smithy",
+   "depth_m": 8.643,
+   "yaw": [
+    222,
+    198
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 10.29
+  },
+  {
+   "s": "soulrest",
+   "a": "soulrest-pawn",
+   "b": "soulrest-quay",
+   "depth_m": 8.642,
+   "yaw": [
+    174,
+    150
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 10.29
+  },
+  {
+   "s": "soulrest",
+   "a": "soulrest-quay",
+   "b": "soulrest-boneyard",
+   "depth_m": 8.642,
+   "yaw": [
+    150,
+    126
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 10.29
+  },
+  {
+   "s": "soulrest",
+   "a": "soulrest-smithy",
+   "b": "soulrest-pawn",
+   "depth_m": 8.637,
+   "yaw": [
+    198,
+    174
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 10.3
+  },
+  {
+   "s": "soulrest",
+   "a": "soulrest-court-steps",
+   "b": "soulrest-market",
+   "depth_m": 8.533,
+   "yaw": [
+    246,
+    222
+   ],
+   "door": [
+    "soulrest-court-steps"
+   ],
+   "feasible": true,
+   "centre_gap_m": 10.3
+  },
+  {
+   "s": "blackrose",
+   "a": "blackrose-condemned-row",
+   "b": "blackrose-old-gallows",
+   "depth_m": 8,
+   "yaw": [
+    0,
+    180
+   ],
+   "door": [],
+   "feasible": false,
+   "centre_gap_m": 1
+  },
+  {
+   "s": "thorn",
+   "a": "thorn-sapwell",
+   "b": "thorn-rootpost",
+   "depth_m": 7.749,
+   "yaw": [
+    192.9,
+    167.1
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 10.65
+  },
+  {
+   "s": "thorn",
+   "a": "thorn-inn",
+   "b": "thorn-trader",
+   "depth_m": 7.742,
+   "yaw": [
+    270,
+    244.3
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 10.65
+  },
+  {
+   "s": "soulrest",
+   "a": "soulrest-pawn",
+   "b": "soulrest-boneyard",
+   "depth_m": 7.456,
+   "yaw": [
+    174,
+    126
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 12.2
+  },
+  {
+   "s": "soulrest",
+   "a": "soulrest-market",
+   "b": "soulrest-pawn",
+   "depth_m": 7.454,
+   "yaw": [
+    222,
+    174
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 12.21
+  },
+  {
+   "s": "thorn",
+   "a": "thorn-hall",
+   "b": "thorn-apothecary",
+   "depth_m": 7.394,
+   "yaw": [
+    180,
+    218.6
+   ],
+   "door": [
+    "thorn-hall"
+   ],
+   "feasible": true,
+   "centre_gap_m": 11
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-smithy",
+   "b": "lilmoth-apothecary",
+   "depth_m": 6.225,
+   "yaw": [
+    90,
+    180
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 6.82
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-scribe",
+   "b": "lilmoth-pawn",
+   "depth_m": 5.87,
+   "yaw": [
+    270,
+    0
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 6.44
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-ledger-house",
+   "b": "lilmoth-market",
+   "depth_m": 5.8,
+   "yaw": [
+    270,
+    0
+   ],
+   "door": [
+    "lilmoth-ledger-house"
+   ],
+   "feasible": true,
+   "centre_gap_m": 5.69
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-yard",
+   "b": "lilmoth-ledger-house",
+   "depth_m": 5.73,
+   "yaw": [
+    180,
+    270
+   ],
+   "door": [
+    "lilmoth-yard"
+   ],
+   "feasible": true,
+   "centre_gap_m": 5.88
+  },
+  {
+   "s": "stormhold",
+   "a": "stormhold-archive",
+   "b": "stormhold-old-customs",
+   "depth_m": 5.522,
+   "yaw": [
+    0,
+    220.9
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 6.14
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-house-2",
+   "b": "lilmoth-house-3",
+   "depth_m": 5.505,
+   "yaw": [
+    270,
+    180
+   ],
+   "door": [
+    "lilmoth-house-3"
+   ],
+   "feasible": true,
+   "centre_gap_m": 8.14
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-shrine",
+   "b": "lilmoth-healer",
+   "depth_m": 5.31,
+   "yaw": [
+    0,
+    270
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 7.2
+  },
+  {
+   "s": "thorn",
+   "a": "thorn-inn",
+   "b": "thorn-apothecary",
+   "depth_m": 5.304,
+   "yaw": [
+    270,
+    218.6
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 13.3
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-apothecary",
+   "b": "lilmoth-scribe",
+   "depth_m": 5.195,
+   "yaw": [
+    180,
+    270
+   ],
+   "door": [
+    "lilmoth-apothecary"
+   ],
+   "feasible": true,
+   "centre_gap_m": 6.64
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-customs",
+   "b": "lilmoth-yard",
+   "depth_m": 5.14,
+   "yaw": [
+    90,
+    180
+   ],
+   "door": [
+    "lilmoth-customs"
+   ],
+   "feasible": true,
+   "centre_gap_m": 6.07
+  },
+  {
+   "s": "archon",
+   "a": "archon-inn",
+   "b": "archon-ward",
+   "depth_m": 5.098,
+   "yaw": [
+    220.1,
+    214.4
+   ],
+   "door": [
+    "archon-inn"
+   ],
+   "feasible": true,
+   "centre_gap_m": 3.97
+  },
+  {
+   "s": "thorn",
+   "a": "thorn-trader",
+   "b": "thorn-apothecary",
+   "depth_m": 5.062,
+   "yaw": [
+    244.3,
+    218.6
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 13.93
+  },
+  {
+   "s": "archon",
+   "a": "archon-vat-house",
+   "b": "archon-market",
+   "depth_m": 5.044,
+   "yaw": [
+    237.3,
+    231.5
+   ],
+   "door": [],
+   "feasible": false,
+   "centre_gap_m": 4.49
+  },
+  {
+   "s": "thorn",
+   "a": "thorn-hall",
+   "b": "thorn-gate",
+   "depth_m": 5.01,
+   "yaw": [
+    180,
+    141.4
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 11
+  },
+  {
+   "s": "thorn",
+   "a": "thorn-hall",
+   "b": "thorn-house-0",
+   "depth_m": 5.01,
+   "yaw": [
+    180,
+    141.4
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 11
+  },
+  {
+   "s": "thorn",
+   "a": "thorn-gate",
+   "b": "thorn-house-0",
+   "depth_m": 5.01,
+   "yaw": [
+    141.4,
+    141.4
+   ],
+   "door": [
+    "thorn-house-0"
+   ],
+   "feasible": false,
+   "centre_gap_m": 0
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-healer",
+   "b": "lilmoth-rootpost",
+   "depth_m": 4.96,
+   "yaw": [
+    270,
+    180
+   ],
+   "door": [
+    "lilmoth-rootpost"
+   ],
+   "feasible": true,
+   "centre_gap_m": 7.39
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-house-0",
+   "b": "lilmoth-house-1",
+   "depth_m": 4.88,
+   "yaw": [
+    90,
+    0
+   ],
+   "door": [
+    "lilmoth-house-1"
+   ],
+   "feasible": true,
+   "centre_gap_m": 7.76
+  },
+  {
+   "s": "helstrom",
+   "a": "helstrom-house-2",
+   "b": "helstrom-house-6",
+   "depth_m": 4.879,
+   "yaw": [
+    126,
+    90
+   ],
+   "door": [
+    "helstrom-house-6"
+   ],
+   "feasible": true,
+   "centre_gap_m": 11.13
+  },
+  {
+   "s": "helstrom",
+   "a": "helstrom-house-6",
+   "b": "helstrom-house-10",
+   "depth_m": 4.879,
+   "yaw": [
+    90,
+    54
+   ],
+   "door": [
+    "helstrom-house-10"
+   ],
+   "feasible": true,
+   "centre_gap_m": 11.13
+  },
+  {
+   "s": "archon",
+   "a": "archon-market",
+   "b": "archon-apothecary",
+   "depth_m": 4.867,
+   "yaw": [
+    231.5,
+    225.8
+   ],
+   "door": [
+    "archon-market"
+   ],
+   "feasible": false,
+   "centre_gap_m": 3.4
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-inn-drowned",
+   "b": "lilmoth-inn-stilt",
+   "depth_m": 4.76,
+   "yaw": [
+    90,
+    180
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 7.57
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-inn-stilt",
+   "b": "lilmoth-shrine",
+   "depth_m": 4.66,
+   "yaw": [
+    180,
+    0
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 7.49
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-house-1",
+   "b": "lilmoth-house-2",
+   "depth_m": 4.65,
+   "yaw": [
+    0,
+    270
+   ],
+   "door": [
+    "lilmoth-house-2"
+   ],
+   "feasible": true,
+   "centre_gap_m": 7.96
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-rootpost",
+   "b": "lilmoth-house-0",
+   "depth_m": 4.4,
+   "yaw": [
+    180,
+    90
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 7.57
+  },
+  {
+   "s": "soulrest",
+   "a": "soulrest-grey-hist",
+   "b": "soulrest-court-steps",
+   "depth_m": 4.379,
+   "yaw": [
+    270,
+    246
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 13.35
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-pawn",
+   "b": "lilmoth-inn-drowned",
+   "depth_m": 4.33,
+   "yaw": [
+    0,
+    90
+   ],
+   "door": [
+    "lilmoth-pawn"
+   ],
+   "feasible": true,
+   "centre_gap_m": 9.83
+  },
+  {
+   "s": "gideon",
+   "a": "gideon-court",
+   "b": "gideon-tollhouse",
+   "depth_m": 4.1,
+   "yaw": [
+    0,
+    180
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 7.07
+  },
+  {
+   "s": "gideon",
+   "a": "gideon-lowmarket",
+   "b": "gideon-chapel",
+   "depth_m": 4.1,
+   "yaw": [
+    90,
+    270
+   ],
+   "door": [
+    "gideon-chapel"
+   ],
+   "feasible": true,
+   "centre_gap_m": 7.07
+  },
+  {
+   "s": "blackrose",
+   "a": "blackrose-inn",
+   "b": "blackrose-warders-hall",
+   "depth_m": 4.01,
+   "yaw": [
+    0,
+    180
+   ],
+   "door": [
+    "blackrose-inn"
+   ],
+   "feasible": false,
+   "centre_gap_m": 1
+  },
+  {
+   "s": "blackrose",
+   "a": "blackrose-market",
+   "b": "blackrose-smithy",
+   "depth_m": 4.01,
+   "yaw": [
+    0,
+    180
+   ],
+   "door": [
+    "blackrose-market"
+   ],
+   "feasible": false,
+   "centre_gap_m": 1
+  },
+  {
+   "s": "blackrose",
+   "a": "blackrose-rootpost",
+   "b": "blackrose-clerk",
+   "depth_m": 4.01,
+   "yaw": [
+    0,
+    180
+   ],
+   "door": [
+    "blackrose-rootpost"
+   ],
+   "feasible": false,
+   "centre_gap_m": 1
+  },
+  {
+   "s": "blackrose",
+   "a": "blackrose-house-0",
+   "b": "blackrose-house-1",
+   "depth_m": 4.01,
+   "yaw": [
+    0,
+    180
+   ],
+   "door": [
+    "blackrose-house-0"
+   ],
+   "feasible": false,
+   "centre_gap_m": 1
+  },
+  {
+   "s": "gideon",
+   "a": "gideon-lowmarket",
+   "b": "gideon-smithy",
+   "depth_m": 4.01,
+   "yaw": [
+    90,
+    90
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 11
+  },
+  {
+   "s": "gideon",
+   "a": "gideon-tollhouse",
+   "b": "gideon-apothecary",
+   "depth_m": 4.01,
+   "yaw": [
+    180,
+    180
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 11
+  },
+  {
+   "s": "soulrest",
+   "a": "soulrest-boneyard",
+   "b": "soulrest-old-harbourmaster",
+   "depth_m": 3.938,
+   "yaw": [
+    126,
+    102
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 10.3
+  },
+  {
+   "s": "thorn",
+   "a": "thorn-hall",
+   "b": "thorn-burnt-stilt",
+   "depth_m": 3.884,
+   "yaw": [
+    180,
+    64.3
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 11
+  },
+  {
+   "s": "stormhold",
+   "a": "stormhold-rootpost",
+   "b": "stormhold-raid-house",
+   "depth_m": 3.599,
+   "yaw": [
+    0,
+    242.7
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 9.19
+  },
+  {
+   "s": "gideon",
+   "a": "gideon-smithy",
+   "b": "gideon-grange",
+   "depth_m": 3.41,
+   "yaw": [
+    90,
+    90
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 11
+  },
+  {
+   "s": "archon",
+   "a": "archon-house-1",
+   "b": "archon-house-2",
+   "depth_m": 3.342,
+   "yaw": [
+    185.7,
+    180
+   ],
+   "door": [],
+   "feasible": false,
+   "centre_gap_m": 3.4
+  },
+  {
+   "s": "archon",
+   "a": "archon-ward",
+   "b": "archon-shrine",
+   "depth_m": 3.293,
+   "yaw": [
+    214.4,
+    208.6
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 4.8
+  },
+  {
+   "s": "helstrom",
+   "a": "helstrom-warders",
+   "b": "helstrom-house-2",
+   "depth_m": 3.203,
+   "yaw": [
+    162,
+    126
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 11.13
+  },
+  {
+   "s": "archon",
+   "a": "archon-vat-house",
+   "b": "archon-apothecary",
+   "depth_m": 3.142,
+   "yaw": [
+    237.3,
+    225.8
+   ],
+   "door": [
+    "archon-vat-house"
+   ],
+   "feasible": true,
+   "centre_gap_m": 7.07
+  },
+  {
+   "s": "archon",
+   "a": "archon-kiln-house",
+   "b": "archon-house-0",
+   "depth_m": 2.879,
+   "yaw": [
+    197.2,
+    191.5
+   ],
+   "door": [],
+   "feasible": false,
+   "centre_gap_m": 2.83
+  },
+  {
+   "s": "thorn",
+   "a": "thorn-rootpost",
+   "b": "thorn-gate",
+   "depth_m": 2.841,
+   "yaw": [
+    167.1,
+    141.4
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 13.93
+  },
+  {
+   "s": "archon",
+   "a": "archon-house-0",
+   "b": "archon-house-1",
+   "depth_m": 2.756,
+   "yaw": [
+    191.5,
+    185.7
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 6.71
+  },
+  {
+   "s": "helstrom",
+   "a": "helstrom-hollow-bole",
+   "b": "helstrom-rootpost",
+   "depth_m": 2.604,
+   "yaw": [
+    270,
+    234
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 11.13
+  },
+  {
+   "s": "blackrose",
+   "a": "blackrose-prison",
+   "b": "blackrose-market",
+   "depth_m": 2.31,
+   "yaw": [
+    180,
+    0
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 13.6
+  },
+  {
+   "s": "soulrest",
+   "a": "soulrest-boneyard",
+   "b": "soulrest-salt-house",
+   "depth_m": 2.279,
+   "yaw": [
+    126,
+    78
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 12.21
+  },
+  {
+   "s": "soulrest",
+   "a": "soulrest-smithy",
+   "b": "soulrest-quay",
+   "depth_m": 2.255,
+   "yaw": [
+    198,
+    150
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 17.9
+  },
+  {
+   "s": "stormhold",
+   "a": "stormhold-rootpost",
+   "b": "stormhold-house-4",
+   "depth_m": 2.206,
+   "yaw": [
+    0,
+    264.5
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 15.87
+  },
+  {
+   "s": "archon",
+   "a": "archon-shrine",
+   "b": "archon-rootpost",
+   "depth_m": 2.203,
+   "yaw": [
+    208.6,
+    202.9
+   ],
+   "door": [],
+   "feasible": false,
+   "centre_gap_m": 3.78
+  },
+  {
+   "s": "thorn",
+   "a": "thorn-rootpost",
+   "b": "thorn-house-0",
+   "depth_m": 2.153,
+   "yaw": [
+    167.1,
+    141.4
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 13.93
+  },
+  {
+   "s": "archon",
+   "a": "archon-rootpost",
+   "b": "archon-kiln-house",
+   "depth_m": 2.116,
+   "yaw": [
+    202.9,
+    197.2
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 11.43
+  },
+  {
+   "s": "soulrest",
+   "a": "soulrest-court-steps",
+   "b": "soulrest-smithy",
+   "depth_m": 2.061,
+   "yaw": [
+    246,
+    198
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 17.89
+  },
+  {
+   "s": "gideon",
+   "a": "gideon-inn",
+   "b": "gideon-rootpost",
+   "depth_m": 2.01,
+   "yaw": [
+    0,
+    0
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 11
+  },
+  {
+   "s": "helstrom",
+   "a": "helstrom-scriptorium",
+   "b": "helstrom-warders",
+   "depth_m": 2.008,
+   "yaw": [
+    198,
+    162
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 11.12
+  },
+  {
+   "s": "helstrom",
+   "a": "helstrom-rootpost",
+   "b": "helstrom-scriptorium",
+   "depth_m": 2.003,
+   "yaw": [
+    234,
+    198
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 11.13
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-first-storey",
+   "b": "lilmoth-boom-house",
+   "depth_m": 1.91,
+   "yaw": [
+    0,
+    270
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 5.7
+  },
+  {
+   "s": "lilmoth",
+   "a": "lilmoth-smithy",
+   "b": "lilmoth-scribe",
+   "depth_m": 1.88,
+   "yaw": [
+    90,
+    270
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 13.39
+  },
+  {
+   "s": "archon",
+   "a": "archon-house-2",
+   "b": "archon-first-vat",
+   "depth_m": 1.838,
+   "yaw": [
+    180,
+    174.3
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 4.49
+  },
+  {
+   "s": "blackrose",
+   "a": "blackrose-warders-hall",
+   "b": "blackrose-pawn",
+   "depth_m": 1.71,
+   "yaw": [
+    180,
+    0
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 13.6
+  },
+  {
+   "s": "blackrose",
+   "a": "blackrose-market",
+   "b": "blackrose-shrine",
+   "depth_m": 1.71,
+   "yaw": [
+    0,
+    180
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 13.6
+  },
+  {
+   "s": "archon",
+   "a": "archon-inn",
+   "b": "archon-shrine",
+   "depth_m": 1.692,
+   "yaw": [
+    220.1,
+    208.6
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 7.65
+  },
+  {
+   "s": "helstrom",
+   "a": "helstrom-house-10",
+   "b": "helstrom-legate-annexe",
+   "depth_m": 1.505,
+   "yaw": [
+    54,
+    18
+   ],
+   "door": [],
+   "feasible": true,
+   "centre_gap_m": 11.13
+  }
+ ]
+}

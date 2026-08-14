@@ -1,19 +1,132 @@
 {
   "task_id": "W1-OVERLAP-RESOLVER",
-  "status": "in_progress",
-  "started_utc": "2026-08-14T00:00:00Z",
+  "state": "built-awaiting-fresh-critic",
+  "date": "2026-08-14",
   "base_commit_pinned": "551c972291cfe4f4e7474c66c7ffc98af9747182",
-  "base_commit_note": "HAZARDS §12: HEAD is NOT the baseline. All control clones are made from this sha, not from HEAD.",
-  "could_not_do": [
-    "PENDING - nothing yet; this list is written first and updated as blockers appear.",
-    "Offline by dispatch: no browser, no GPU pod. Any claim requiring a rendered frame is recorded as unmeasured."
+  "base_commit_note": "HAZARDS §12. HEAD moved from 551c9722 to ac726703 while this ran. Every arm was cut from the PINNED sha by `git archive`, never from HEAD, and the delete-the-fix arms from control clones.",
+  "commissioned_by": "orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json next_piece[1], under RULING-D1-BUILDING-OVERLAP",
+
+  "could_not_do_FIRST": [
+    "THE PRIZE THE CENSUS PROMISED IS NOT THERE, AND I COULD NOT DELIVER IT. The dispatch's headline was 'one fix, 72 pairs, across every settlement'. The real number is 6. The census's feasibility bound took every building to MIN_ENTERABLE_SPAN_M = 5.0 m, and NO NATIVE BUILDING CAN GO THERE: all 115 shipped interiors are native RI-WLD13 records, so `applyInteriorBounds()` returns early and NOTHING APPLIES `interior_bounds_m` — the room behind the door cannot be shrunk to follow its building. The true floor is `room + ROOM_WALL_T + SHELL_WALL_T`, and 227 of the 230 axes of those 115 buildings have ONE CENTIMETRE of slack above it. The shipped resolver was already spending that centimetre. The size-only lever is not miscalibrated; it is exhausted. Detail and the falsifier's answer below.",
+    "NO BROWSER, NO GPU POD, NO FRAMES, AND NONE ARE CLAIMED. Offline by dispatch. Every number here is bare-Node geometry over the shipped `planSettlement()` / `settlementSolids()` orientation convention. No visual claim is made about how the towns now look; a successor with a browser owes screenshots of Archon and Lilmoth, the two settlements that changed.",
+    "THE 11 THAT NEED A MOVE ARE NOT DONE, AS DISPATCHED — AND NEITHER ARE THE OTHER 65. Listed under `the_76_that_remain`. The dispatch scoped me out of building moves; that scoping was right, but it now covers 76 pairs rather than 11.",
+    "I CONTAMINATED MY OWN BASELINE TREE MID-RUN AND CAUGHT IT ONLY AT APPLY TIME. My arm trees were `cp -al` hard-link clones, and two later edits made with a plain file write went THROUGH the link into the pinned BASE tree (`tools/check-building-overlap.mjs`, the baseline JSON). The live repo was never touched and `git status` was clean throughout. The two files that decide every measurement — `game/src/render/exterior.js`, `game/src/world/province.js` — were verified PRISTINE against the sha, the two contaminated files were restored from the sha, and the baseline was RE-MEASURED afterwards: still exactly 82, byte-identical counts. It is also independently confirmed by the delete-the-fix arm `THE-WHOLE-FIX-DELETED`, which restores the pre-fix shrink pass in a fresh control clone and returns 82. Reported because it is the same family as HAZARDS §5's warning about `--writable`, arriving from the other side: a hard-link clone protects the SOURCE only for paths you declared, and I declared none because I did not expect to edit tool files later.",
+    "`check-building-fits-room.mjs --self-break` EXITS 1, AND IT DID SO BEFORE I TOUCHED ANYTHING. Verified identical on the pinned base and after the fix (both exit 1; the live gate exits 0 on both). Its room-fitting leg cannot be broken by removing the join, because on a world of 115 native records the join genuinely does not resize any room. That is the vacuity W1-BUILDING-OVERLAP-CENSUS already reported from the other side. Not mine to repair — it belongs with the native-branch finding — but it is now a second independent sighting of it and should be scheduled.",
+    "THE COUNT IMPROVEMENT IS MOSTLY NOT THE ORIENTATION. Measured, not assumed: yaw-blind + the new tolerance and floor clears 5; yaw-aware clears 6. Orientation's unique contribution to the COUNT is one pair. Its contribution to correctness is not a count — see `what_this_is_actually_worth`."
   ],
-  "next_step": "Read HAZARDS §11/§12, census JSON, reports/building-overlap/, ruling D1.",
-  "files_touched": ["orchestration/status/W1-OVERLAP-RESOLVER.json"],
-  "files_claimed": [
+
+  "the_falsifier_the_census_named_answered": {
+    "the_question": "'If a yaw-aware shrink at the shipped MAX_OVERLAP_FRAC = 0.45 still leaves most pairs over the 1.50 m bar, then the TOLERANCE is the defect rather than the orientation.'",
+    "the_answer": "NEITHER. The falsifier's premise — that one of the two is the defect — is false, and I am reporting that rather than picking the nearer of two wrong answers.",
+    "the_numbers_baseline_82": {
+      "yaw_aware__tolerance_left_at_MAX_OVERLAP_FRAC_0.45": 82,
+      "yaw_BLIND__tolerance_in_metres__the_matched_null_control": 77,
+      "yaw_aware__tolerance_in_metres__SHIPPED": 76,
+      "and_the_count_is_76_for_every_tolerance_between": "0.50 m and 1.50 m — flat. A knob whose whole range moves nothing is not the constraint."
+    },
+    "so_the_tolerance_at_0.45_is_genuinely_wrong": "Yes — it permits 4.5 m of interpenetration for a pair of 10 m buildings against a bar of 1.50 m, and made yaw-aware at 0.45 the resolver clears NOTHING. It is fixed here. But fixing it buys 5, not 72.",
+    "and_the_orientation_is_genuinely_wrong": "Yes, and it is not in doubt: the resolver and its counter measured a rectangle the world does not have, `_deepOverlaps()` reported 22 of 82, and the oriented path draws 21 buildings at different sizes from the yaw-blind one. But that buys 1 more pair.",
+    "what_is_actually_the_constraint": "THE LEVER. `planSettlement()` may only change SIZES, never positions, and it may not draw a building smaller than the room behind its own door. 227 of 230 axes have 0.01 m of headroom. Take the room floor away on a copy and the SAME resolver clears 68 of 82 — and draws 66 buildings smaller than their own rooms, which `check-building-fits-room.mjs` fails closed on. That arm is the size of the prize, and it is not collectable by a resolver."
+  },
+
+  "what_shipped": {
+    "game/src/world/footprint.js": "NEW. The one implementation of 'what rectangle does this building occupy, and how deeply do two interpenetrate' — `orientedAxes`, `footprintCorners`, `penetrationDepth`, `pairDepth`, `pairAxes`. Imported by the resolver, by the counter and by the census, which had a private copy. Rotation convention copied from `settlementSolids()`'s `push()`, not re-derived.",
+    "planSettlement() shrink pass": "Oriented SAT over both buildings' edge normals; resolves on the axis that costs the pair least, pulling on each building's own local axis most aligned with that separating direction — which at yaw 0 on the world-x axis is exactly what the old code did, so this generalises the shipped rule rather than replacing it. Tolerance `SEPARATION_TOL_M = 1.45` in METRES, the census's 1.50 m bar with margin, so resolver and check are in one currency. `MAX_OVERLAP_FRAC` is retained but read by nothing.",
+    "spanFloor(b, k)": "Per-axis, and floored at the room behind the door for native records. This is the change that makes the resolver honest about what it may spend, and it is why the count is 76 and not 13.",
+    "the doorstep pass": "No drawn footprint may come within `DOORSTEP_CLEAR_M` (SHELL_WALL_T/2 + BODY_RADIUS_M + 0.05) of ANY doorstep in its settlement. Named on the plan as `doorstep_limited`, never silent. Eight buildings: archon-vat-house, archon-market, archon-house-1, archon-house-2, gideon-court, lilmoth-ledger-house, soulrest-old-harbourmaster, stormhold-archive.",
+    "province.js#_deepOverlaps()": "Second private copy of the axis-aligned arithmetic DELETED; now `pairDepth()` against the census's own 1.50 m bar, structures excluded as the census excludes them. It reported 22 when the truth was 82.",
+    "isNativeInterior()": "The six-clause native-record predicate lifted out of `applyInteriorBounds()` and exported, because it is now read in two places and a second copy of a predicate is the same defect as a second copy of the geometry.",
+    "tools/world/overlap-resolver-deletefix.mjs": "NEW. Six arms, every one from its own control clone including the head arm (HAZARDS §11).",
+    "tools/check-building-overlap.mjs": "Gains SIZE assertions and `--self-break-size`. See `the_statistic_that_can_fail`.",
+    "tools/world/building-overlap-census.mjs": "Geometry now imported from the shipped module instead of privately copied, so its 10-arm self-test proves the SHIPPED functions. Gains a per-settlement `sizes` block. Thresholds untouched."
+  },
+
+  "the_result": {
+    "counted_overlaps": "82 -> 76",
+    "per_settlement": { "archon": "15 -> 12", "blackrose": "8 -> 8", "gideon": "6 -> 6", "helstrom": "7 -> 7", "lilmoth": "19 -> 16", "soulrest": "12 -> 12", "stormhold": "3 -> 3", "thorn": "12 -> 12" },
+    "the_counter_stops_lying": "_deepOverlaps() 22 -> the true 76",
+    "new_overlapping_pairs_created": "0, in every arm. Shrinking cannot create an overlap and it was checked rather than assumed.",
+    "cost_in_building": "149 mass buildings average 97.42% of their declared footprint (was 97.48%); worst 36% (was 38%). The fix is very nearly free in floor area, which is the same fact as the lever being exhausted.",
+    "plan_ms": "16 ms -> 32 ms for all eight settlements, once, at load. planSettlement() is cached per settlement."
+  },
+
+  "the_statistic_that_can_fail": {
+    "why": "The dispatch is right that a count going down is necessary and not sufficient — the only lever is shrinking, so the ratchet can always be satisfied by ruining the towns.",
+    "what_I_asserted": "`SIZE_FLOOR_FRAC = 0.25` (no mass building below a quarter of its declared footprint area) and `TOWN_MEAN_FLOOR = 0.90` (the world's 149 mass buildings average at least that), both in `tools/check-building-overlap.mjs`, checked on every run alongside the ratchet.",
+    "why_those_fractions": "Tripwires, not targets, and RULES rule 13 — silent on the shipped tree AND on the tree before it. The pre-fix worst is 37.8% and the post-fix worst 35.96%, so 25% leaves ~10 points of headroom; the pre- and post-fix means are 97.5% and 97.4%, so 90% leaves 7. The arm that removes the room floor comes in at 22% / 80.9% and fires BOTH.",
+    "proven_to_fire": "`node tools/check-building-overlap.mjs --self-break-size` — removes the room floor on a control clone, which clears 63 MORE overlaps, and REQUIRES both assertions red there and silent on the shipped tree. It is the exact shape the dispatch warned about: a better count bought by crushing the towns, rejected."
+  },
+
+  "delete_the_fix": {
+    "tool": "node tools/world/overlap-resolver-deletefix.mjs",
+    "result": "9 of 9 arms as required. Every arm served from its own control clone, head arm included.",
+    "arms": {
+      "head": 76, "orientation-off": 77, "tolerance-off": 81,
+      "orientation-and-tolerance-off": 79, "THE-WHOLE-FIX-DELETED": 82, "room-floor-off": "13, and 66 buildings then draw smaller than their own room"
+    },
+    "not_an_inert_fix": "Every arm asserts the anchors it is about to remove are present first; the tool exits 2 on a tree that never carried the change rather than reporting a clean negative.",
+    "not_an_inert_control": "Every teardown asserts the bytes it wrote differ from the bytes it read.",
+    "the_fix_actually_RAN": "Not inferred from the number moving. 9 yawed buildings are shrunk by the oriented path, the doorstep pass names 8 buildings, and the oriented path draws 21 buildings at a DIFFERENT SIZE from the yaw-blind arm — a leg that changed the count but no rectangle would be arithmetic.",
+    "the_honest_shape": "This is RULES rule 6's fourth shape — coupled legs, not one fix. Removing either the orientation or the tolerance alone leaves the other standing, so no single-leg arm returns 82; only the full teardown does. Said here rather than left to look like an inert fix. Note also that the legs are NOT additive: tolerance-off is 81 and orientation-and-tolerance-off is 79, so removing orientation from an already-broken tolerance IMPROVES the count. That interaction is real and is why the full-teardown arm exists."
+  },
+
+  "the_76_that_remain": {
+    "shape": "11 cannot be separated by any size change at all (the census's own figure, unchanged by this work). The other 65 could be, but only by drawing buildings smaller than the rooms behind their doors. All 76 need POSITIONS moved.",
+    "cost_per_building_moved": "NINE VALUES, unchanged from the census's finding and confirmed here: `offset_m`, `door` and `door_declared` in the settlement document, and `door_world_pos`, `apertures[].world_pos`, `exterior_door`, `continuity.exterior_spawn` and `exterior_spawn_declared` in the interior record, which are WORLD coordinates that do not follow `offset_m`.",
+    "the_11_that_need_a_move_named": [
+      "blackrose:blackrose-condemned-row <-> blackrose-old-gallows  depth 8.00 m, centres 1.0 m apart",
+      "thorn:thorn-gate <-> thorn-house-0  depth 5.01 m, IDENTICAL offset_m [-6.86,0,8.6] and identical yaw — two buildings at one spot, 100% of the smaller inside the larger",
+      "archon:archon-market <-> archon-apothecary  depth 4.85 m, door of archon-market inside",
+      "archon:archon-vat-house <-> archon-market  depth 4.01 m",
+      "blackrose:blackrose-inn <-> blackrose-warders-hall  depth 4.01 m, door inside, centres 1.0 m",
+      "blackrose:blackrose-market <-> blackrose-smithy  depth 4.01 m, door inside, centres 1.0 m",
+      "blackrose:blackrose-rootpost <-> blackrose-clerk  depth 4.01 m, door inside, centres 1.0 m",
+      "blackrose:blackrose-house-0 <-> blackrose-house-1  depth 4.01 m, door inside, centres 1.0 m",
+      "archon:archon-house-1 <-> archon-house-2  depth 3.71 m",
+      "archon:archon-kiln-house <-> archon-house-0  depth 2.59 m",
+      "archon:archon-shrine <-> archon-rootpost  depth 2.00 m"
+    ],
+    "thorn_note": "Thorn's barge-hold/writ-house pair was separated by W1-BUILDING-OVERLAP-CENSUS and is not in this list. thorn-gate/thorn-house-0 is a different and worse pair, and is the cheapest single fix in the world: two buildings authored at the identical offset.",
+    "the_five_blackrose_pairs_at_1.0_m_centres": "blackrose-inn/warders-hall, market/smithy, rootpost/clerk, house-0/house-1 and condemned-row/old-gallows are all authored one metre apart. That is a generator artefact, not five independent authoring mistakes, and whoever takes the layout piece should look for the generator before hand-placing ten buildings."
+  },
+
+  "the_ratchet": {
+    "re_frozen_at": 76,
+    "should_it_become_blocking": "NO, NOT YET, and I am calling it as dispatched. 76 overlaps remain and 24 pairs still have a door inside another building; a fail-closed zero gate would throw for every agent on the box, which is RULES rule 13 exactly. It should become blocking when the LAYOUT piece lands and the count reaches zero or near it — not on the resolver's account, because the resolver cannot get there.",
+    "what_DID_get_tighter": "The frozen number drops 82 -> 76, and the ratchet now also refuses a lower count that was bought by shrinking (`sizeFaults`), which it could not do before. That second half is the part that matters, because the layout piece will be moving buildings and a ratchet that can be gamed by the other lever is not a ratchet.",
+    "reversible": "Re-freeze with `--freeze` and say why."
+  },
+
+  "two_latent_defects_this_exposed": [
+    "stormhold-archive's authored `continuity.exterior_spawn` lies 0.25 m INSIDE its own DECLARED footprint. `check-building-fits-room` is green today only because the yaw-blind resolver happened to cut that building's depth from 10.47 m to 8.77 m for an unrelated pair. It is the only such building in the world — counted, every building's own doorstep against its own declared footprint, not assumed.",
+    "archon-house-1 sits 0.08 m from a doorstep once its neighbours stop being shrunk on the axis the axis-aligned resolver happened to pick.",
+    "Both are now held by the doorstep pass, which gives the BUILDING the span rather than moving the doorstep — Ruling D1 is explicit that moving a spawn 'converts a visible geometric fault into an invisible one'. The data defect is reported here, not repaired, and the compensation is named on the plan."
+  ],
+
+  "how_it_was_applied": {
+    "why_a_scripted_patch": "`ownership.mjs --for game/src/render/exterior.js` reported 5 live pieces and `--for game/src/world/province.js` reported 6. Verified each against its status file: W1-06-build, W1-30-P2, W1-THORN-PLATES-C2, W1-30E-builder (no status file at all), W1-03-builder, W1-30-SHADOW-CASTERS and W1-ROAD-JOIN are all finished or awaiting a critic — STALE CLAIMS, stated here rather than quietly ignored. Two are genuinely live: W1-19-builder-production-continuation-20260813 (IN_PROGRESS, exterior.js) and W1-30-builder-20260812 (in progress, province.js).",
+    "the_method": "Developed entirely in a scratchpad clone of the pinned sha. Applied by `patch.mjs` + `apply-tools.mjs`: anchored replacement, pre-edit md5 recorded for every file, refusing on a moved anchor and refusing to apply twice. Idempotence was BROKEN on the first version — the guard derived its sentinel from the replacement's first line, which several edits leave unchanged — and was found by running the script a second time on a scratch tree. Fixed with explicit per-edit sentinels and re-proved. The live md5s were re-verified against the pinned sha immediately before applying, and the result was diffed byte-for-byte against the independently verified tree.",
+    "no_dev_copy_left_in_the_tree": "Everything lives under the session scratchpad. Nothing the bank could stage."
+  },
+
+  "aggregation_run_together": "node tools/probe.mjs -- check-building-overlap --verbose | --self-break | --self-break-size | census --self-test | check-data | check-building-fits-room  ->  6 commands, 0 failed. Plus overlap-resolver-deletefix 9/9.",
+
+  "next_step": "A fresh independent critic. Then THE LAYOUT PIECE, which is now the whole of the remaining class and not 11 pairs of it: start with thorn-gate/thorn-house-0 (identical offset_m) and the five Blackrose pairs at 1.0 m centres, and look for the generator that authored them rather than hand-placing.",
+
+  "files_touched": [
+    "game/src/world/footprint.js",
+    "game/src/render/exterior.js",
     "game/src/world/province.js",
-    "game/src/world/exterior.js",
+    "tools/world/overlap-resolver-deletefix.mjs",
+    "tools/world/building-overlap-census.mjs",
     "tools/check-building-overlap.mjs",
+    "corpus/50-world/data/building-overlap-baseline.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-OVERLAP-RESOLVER/",
+    "reports/building-overlap/2026-08-14-overlap-resolver.md",
+    "reports/blog-feed.jsonl",
     "orchestration/status/W1-OVERLAP-RESOLVER.json"
-  ]
+  ],
+  "files_claimed": [],
+  "redundant_with": ["W1-19-builder-production-continuation-20260813", "W1-30-builder-20260812", "W1-BUILDING-OVERLAP-CENSUS"],
+  "overlap_note": "exterior.js is also being edited by W1-19-builder-production-continuation-20260813 and province.js by W1-30-builder-20260812; both are genuinely live. My edits are confined to `planSettlement()`'s shrink pass, one lifted predicate, two new constants and `_deepOverlaps()` — no mesh, material, light, kit, grammar or GPU code, which is what both of those pieces are working on. Declared here rather than left to read as a collision. Five further claims on exterior.js and province.js were checked and found stale; named above. `tools/check-building-overlap.mjs` and `tools/world/building-overlap-census.mjs` belong to W1-BUILDING-OVERLAP-CENSUS, which is `done-except-hardware-frames`; its 10-arm self-test and its `--self-break` both still pass unchanged, and its thresholds were not touched."
 }

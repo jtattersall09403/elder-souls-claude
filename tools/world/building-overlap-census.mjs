@@ -87,6 +87,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { footprintCorners, penetrationDepth } from '../../game/src/world/footprint.js';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname, '..');
 const J = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
@@ -122,37 +123,12 @@ export const BORDERLINE_M = 1.50;    // above the 1.10 m of roof overhang settle
  *     wz = b.z - cx * sin(yaw) + cz * cos(yaw)
  * so a change to that convention shows up here as a disagreement, not as a silent drift.
  */
-export function footprintCorners(b) {
-  const w = (b.drawn_footprint_m ? b.drawn_footprint_m[0] : b.footprint_m[0]);
-  const d = (b.drawn_footprint_m ? b.drawn_footprint_m[1] : b.footprint_m[1]);
-  const yaw = (b.yaw_deg || 0) * Math.PI / 180;
-  const c = Math.cos(yaw), s = Math.sin(yaw);
-  const hw = w / 2, hd = d / 2;
-  return [[-hw, -hd], [hw, -hd], [hw, hd], [-hw, hd]]
-    .map(([cx, cz]) => [b.x + cx * c + cz * s, b.z - cx * s + cz * c]);
-}
-
-/** Separating-axis test on two convex quads. Returns the minimum translation distance, or 0. */
-export function penetrationDepth(A, B) {
-  let best = Infinity;
-  for (const P of [A, B]) {
-    for (let i = 0; i < P.length; i++) {
-      const p = P[i], q = P[(i + 1) % P.length];
-      // outward normal of this edge
-      let nx = -(q[1] - p[1]), nz = q[0] - p[0];
-      const L = Math.hypot(nx, nz);
-      if (L < 1e-9) continue;
-      nx /= L; nz /= L;
-      let aMin = Infinity, aMax = -Infinity, bMin = Infinity, bMax = -Infinity;
-      for (const v of A) { const t = v[0] * nx + v[1] * nz; if (t < aMin) aMin = t; if (t > aMax) aMax = t; }
-      for (const v of B) { const t = v[0] * nx + v[1] * nz; if (t < bMin) bMin = t; if (t > bMax) bMax = t; }
-      const ov = Math.min(aMax, bMax) - Math.max(aMin, bMin);
-      if (ov <= 0) return 0;               // a separating axis exists: they do not overlap
-      if (ov < best) best = ov;
-    }
-  }
-  return best === Infinity ? 0 : best;
-}
+// THE GEOMETRY IS NOT DEFINED HERE ANY MORE — it is imported from the shipped module the
+// resolver and the counter use, `game/src/world/footprint.js`. It used to be a private copy,
+// and a private copy of the geometry is exactly the defect this census found: three
+// implementations, two of which measured a rectangle the world does not have. The self-test
+// below now proves the SHIPPED functions, not a duplicate of them.
+export { footprintCorners, penetrationDepth };
 
 /** Sutherland-Hodgman clip of convex `subject` by convex `clip`. Both CCW or both CW is fine. */
 export function intersectionArea(subject, clip) {
@@ -290,6 +266,20 @@ export function censusPlan(plan) {
   }
   pairs.sort((p, q) => q.depth_m - p.depth_m);
   const mass = pairs.filter((p) => !p.structural);
+  // ---- HOW MUCH BUILDING THE RESOLVER SPENT GETTING THERE ----------------------------------------
+  // A count on its own can always be moved the right way by a resolver that separates the town by
+  // making every hall a shed. `tools/check-building-overlap.mjs` asserts against these, so the
+  // ratchet cannot be satisfied by shrinking. Structures are excluded, as everywhere else here.
+  const massB = plan.buildings.filter((b) => b.kind !== 'structure');
+  const fracs = massB.map((b) => (b.drawn_footprint_m[0] * b.drawn_footprint_m[1]) / (b.footprint_m[0] * b.footprint_m[1]));
+  const sizes = {
+    mass_buildings: massB.length,
+    area_frac_sum: +fracs.reduce((a, b) => a + b, 0).toFixed(6),
+    area_frac_min: fracs.length ? +Math.min(...fracs).toFixed(4) : 1,
+    smallest: massB
+      .map((b, i) => ({ id: b.id, frac: +fracs[i].toFixed(4), declared: b.footprint_m.map((v) => +v.toFixed(2)), drawn: b.drawn_footprint_m.slice() }))
+      .sort((a, b) => a.frac - b.frac).slice(0, 5),
+  };
   const counts = {
     buildings: plan.buildings.length,
     mass_buildings: plan.buildings.filter((b) => b.kind !== 'structure').length,
@@ -303,7 +293,7 @@ export function censusPlan(plan) {
     overlap_shrink_feasible: mass.filter((p) => p.class === 'overlap' && p.shrink_feasible).length,
     overlap_needs_move: mass.filter((p) => p.class === 'overlap' && !p.shrink_feasible).length,
   };
-  return { id: plan.id, name: plan.name, counts, pairs };
+  return { id: plan.id, name: plan.name, counts, sizes, pairs };
 }
 
 // ---------------------------------------------------------------------------------------------

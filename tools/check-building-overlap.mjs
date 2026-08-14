@@ -67,7 +67,49 @@ async function measure(root) {
       for (const d of p.door_inside_other) doors.push(`${s.id}:${d}`);
     }
   }
-  return { per_settlement: per, pairs: pairs.sort(), doors_inside_another_building: [...new Set(doors)].sort(), total: j.total.overlap };
+  let sum = 0, n = 0, min = 1, worst = null;
+  for (const st of j.settlements) {
+    sum += st.sizes.area_frac_sum; n += st.sizes.mass_buildings;
+    if (st.sizes.area_frac_min < min) { min = st.sizes.area_frac_min; worst = `${st.id}:${st.sizes.smallest[0].id} ${st.sizes.smallest[0].declared.join('x')} -> ${st.sizes.smallest[0].drawn.join('x')}`; }
+  }
+  return {
+    per_settlement: per, pairs: pairs.sort(), doors_inside_another_building: [...new Set(doors)].sort(), total: j.total.overlap,
+    size: { mass_buildings: n, area_frac_mean: +(sum / n).toFixed(4), area_frac_min: min, worst },
+  };
+}
+
+/* -------------------------------------------------------------------------------------------------
+ * THE SIZE FLOOR — because a falling count is necessary and is NOT sufficient.
+ * -------------------------------------------------------------------------------------------------
+ *
+ * The only lever `planSettlement()` has for pulling buildings apart is making them smaller, so the
+ * number this file ratchets can always be driven down by a resolver that separates the town by
+ * turning every hall into a shed. That would move a number and break the towns, and the ratchet
+ * above would report it as an improvement. So the count is asserted TOGETHER WITH what it cost.
+ *
+ * These are tripwires, not targets, and RULES.md rule 13 applies: both are silent on the tree they
+ * were written against and on the tree before it. Measured at 551c9722 — shipped resolver: mean
+ * 0.9748, worst 0.3778. Yaw-aware resolver: mean 0.9742, worst 0.3596. The arm that removes the
+ * room floor — which draws 66 buildings smaller than the rooms behind their own doors — comes in at
+ * mean 0.8086, worst 0.2229, and fires BOTH of these. That arm is what `--self-break-size` runs.
+ *
+ * `check-building-fits-room.mjs` already asserts the harder, per-building version of this (a
+ * building may not be smaller than its own room) and is not duplicated here. This is the town-wide
+ * one it cannot see: a settlement of legal-but-miserable buildings.
+ * ---------------------------------------------------------------------------------------------- */
+const SIZE_FLOOR_FRAC = 0.25;    // no single mass building below a quarter of its declared footprint
+const TOWN_MEAN_FLOOR = 0.90;    // and the world's mass buildings average at least this
+
+/** The size assertions, separated so `--self-break-size` can run them against a sabotaged tree. */
+export function sizeFaults(size) {
+  const bad = [];
+  if (size.area_frac_min < SIZE_FLOOR_FRAC) {
+    bad.push(`a building is drawn at ${(size.area_frac_min * 100).toFixed(0)}% of its declared footprint, below the ${(SIZE_FLOOR_FRAC * 100).toFixed(0)}% floor — ${size.worst}`);
+  }
+  if (size.area_frac_mean < TOWN_MEAN_FLOOR) {
+    bad.push(`the world's ${size.mass_buildings} mass buildings average ${(size.area_frac_mean * 100).toFixed(1)}% of their declared footprints, below the ${(TOWN_MEAN_FLOOR * 100).toFixed(0)}% floor — the resolver is buying separation by shrinking the towns`);
+  }
+  return bad;
 }
 
 /** Compare a measurement against a frozen baseline. Returns the list of regressions. */
@@ -126,6 +168,43 @@ if (has('--self-break')) {
   process.exit(0);
 }
 
+// ---- --self-break-size: prove the SIZE assertions fire -------------------------------------------
+// The ratchet's own `--self-break` proves the COUNT half goes red. This proves the half that stops
+// the count being satisfied by shrinking: it removes the room floor from `planSettlement()`'s
+// `spanFloor()` on a copy — the one change that lets the resolver crush buildings — and REQUIRES
+// both size assertions to fire there and neither to fire on the shipped tree.
+if (has('--self-break-size')) {
+  const FLOOR_FROM = '    return room ? Math.max(base, room[k] + ROOM_WALL_T + SHELL_WALL_T) : base;';
+  const FLOOR_TO = '    void room; return base;   // SABOTAGE: the room stops being the floor.';
+  const EXTREL = 'game/src/render/exterior.js';
+  const src0 = fs.readFileSync(path.join(ROOT, EXTREL), 'utf8');
+  if (!src0.includes(FLOOR_FROM)) {
+    say('self-break-size: the room floor is not on this tree — there is nothing to sabotage.');
+    say('self-break-size: refusing to report a green check against a tree it failed to sabotage.');
+    process.exit(2);
+  }
+  const clone = execFileSync('node', [path.join(ROOT, 'tools/control-clone.mjs'), 'make',
+    '--label', 'check-building-overlap-selfbreak-size', '--paths', 'game,tools', '--writable', EXTREL],
+    { encoding: 'utf8' }).trim().split('\n').pop().trim();
+  const p = path.join(clone, EXTREL);
+  const before = fs.readFileSync(p, 'utf8');
+  const after = before.replace(FLOOR_FROM, FLOOR_TO);
+  if (after === before) { say('self-break-size: the sabotage changed nothing. Refusing.'); process.exit(2); }
+  fs.writeFileSync(p, after);
+  const sabotaged = await measure(clone);
+  const clean = await measure(ROOT);
+  try { execFileSync('node', [path.join(ROOT, 'tools/control-clone.mjs'), 'cleanup', '--dir', clone], { stdio: 'pipe' }); } catch { /* sweep will get it */ }
+  const badS = sizeFaults(sabotaged.size), badC = sizeFaults(clean.size);
+  say('self-break-size — the room floor removed from the shrink, on a copy:');
+  say(`  sabotaged tree: mean ${(sabotaged.size.area_frac_mean * 100).toFixed(1)}%, worst ${(sabotaged.size.area_frac_min * 100).toFixed(0)}%, ${badS.length} size fault(s), and it clears ${clean.total - sabotaged.total} more overlap(s)`);
+  for (const b of badS) say(`      ${b}`);
+  say(`  shipped tree:   mean ${(clean.size.area_frac_mean * 100).toFixed(1)}%, worst ${(clean.size.area_frac_min * 100).toFixed(0)}%, ${badC.length} size fault(s)`);
+  if (badS.length < 2) { say('\nself-break-size FAILED: the size assertions do not both fire on a tree that crushes the towns.'); process.exit(2); }
+  if (badC.length !== 0) { say('\nself-break-size FAILED: a size assertion fires on the SHIPPED tree, so it is a blocker, not a tripwire.'); process.exit(2); }
+  say('\nself-break-size: the arms disagree — a lower overlap count bought by shrinking is REJECTED, and the shipped tree is silent.');
+  process.exit(0);
+}
+
 // ---- the ordinary run --------------------------------------------------------------------------
 const now = await measure(ROOT);
 
@@ -152,7 +231,7 @@ if (!fs.existsSync(path.join(ROOT, BASELINE))) {
   process.exit(2);
 }
 const base = JSON.parse(fs.readFileSync(path.join(ROOT, BASELINE), 'utf8'));
-const bad = ratchet(base, now);
+const bad = ratchet(base, now).concat(sizeFaults(now.size));
 
 const improved = [];
 for (const [id, n] of Object.entries(now.per_settlement)) {
@@ -173,3 +252,4 @@ if (bad.length) {
   process.exit(1);
 }
 say(`check-building-overlap: held — ${now.total} counted overlap(s) against a frozen ${base.total}, no settlement worse, no new door inside another building.`);
+say(`check-building-overlap: and it was not bought by shrinking — ${now.size.mass_buildings} mass buildings average ${(now.size.area_frac_mean * 100).toFixed(1)}% of their declared footprint, worst ${(now.size.area_frac_min * 100).toFixed(0)}% (floors ${(TOWN_MEAN_FLOOR * 100).toFixed(0)}% / ${(SIZE_FLOOR_FRAC * 100).toFixed(0)}%).`);
