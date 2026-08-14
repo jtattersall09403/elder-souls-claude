@@ -1,0 +1,239 @@
+{
+ "iouSameThreshold": 0.95,
+ "res": 128,
+ "worst": 3,
+ "report": {
+  "archon": {
+   "buildings": 16,
+   "kitRoofParts": 2,
+   "e1Classes": 9,
+   "classesAfterMergingJitter": 9,
+   "medianPairIoU": 0.6811,
+   "maxPairIoU": 0.9384,
+   "minPairIoU": 0.4484,
+   "pairsAboveSameThreshold": 0,
+   "totalPairs": 36,
+   "e1SurvivesHere": true,
+   "topPairs": [
+    {
+     "a": "roof.hip|1|0.25",
+     "b": "roof.hip|1|0.5",
+     "iou": 0.9384
+    },
+    {
+     "a": "roof.hip|2|0.75",
+     "b": "roof.hip|1|0.75",
+     "iou": 0.921
+    },
+    {
+     "a": "roof.hip|2|0.75",
+     "b": "roof.shell|1|0.5",
+     "iou": 0.8762
+    }
+   ]
+  },
+  "blackrose": {
+   "buildings": 16,
+   "kitRoofParts": 1,
+   "e1Classes": 9,
+   "classesAfterMergingJitter": 6,
+   "medianPairIoU": 0.5437,
+   "maxPairIoU": 1,
+   "minPairIoU": 0.3466,
+   "pairsAboveSameThreshold": 4,
+   "totalPairs": 36,
+   "e1SurvivesHere": true,
+   "topPairs": [
+    {
+     "a": "roof.hip|1|2.75",
+     "b": "roof.hip|2|2.5",
+     "iou": 1
+    },
+    {
+     "a": "roof.hip|2|2.75",
+     "b": "roof.hip|1|2.75",
+     "iou": 0.9988
+    },
+    {
+     "a": "roof.hip|2|2.75",
+     "b": "roof.hip|2|2.5",
+     "iou": 0.9988
+    }
+   ]
+  },
+  "gideon": {
+   "buildings": 16,
+   "kitRoofParts": 1,
+   "e1Classes": 6,
+   "classesAfterMergingJitter": 4,
+   "medianPairIoU": 0.8938,
+   "maxPairIoU": 0.9995,
+   "minPairIoU": 0.732,
+   "pairsAboveSameThreshold": 3,
+   "totalPairs": 15,
+   "e1SurvivesHere": false,
+   "topPairs": [
+    {
+     "a": "roof.hip|3|0.75",
+     "b": "roof.hip|2|0.75",
+     "iou": 0.9995
+    },
+    {
+     "a": "roof.hip|2|0.75",
+     "b": "roof.hip|1|1",
+     "iou": 0.985
+    },
+    {
+     "a": "roof.hip|3|0.75",
+     "b": "roof.hip|1|1",
+     "iou": 0.9845
+    }
+   ]
+  },
+  "helstrom": {
+   "buildings": 32,
+   "kitRoofParts": 2,
+   "e1Classes": 5,
+   "classesAfterMergingJitter": 5,
+   "medianPairIoU": 0.4964,
+   "maxPairIoU": 0.9016,
+   "minPairIoU": 0.3809,
+   "pairsAboveSameThreshold": 0,
+   "totalPairs": 10,
+   "e1SurvivesHere": true,
+   "topPairs": [
+    {
+     "a": "roof.shell|2|0.75",
+     "b": "roof.shell|1|0.75",
+     "iou": 0.9016
+    },
+    {
+     "a": "roof.shell|2|0.75",
+     "b": "roof.shell|1|1",
+     "iou": 0.8329
+    },
+    {
+     "a": "roof.reed|1|0.75",
+     "b": "roof.reed|1|1",
+     "iou": 0.8148
+    }
+   ]
+  },
+  "lilmoth": {
+   "buildings": 23,
+   "kitRoofParts": 3,
+   "e1Classes": 13,
+   "classesAfterMergingJitter": 11,
+   "medianPairIoU": 0.6513,
+   "maxPairIoU": 0.9718,
+   "minPairIoU": 0.3296,
+   "pairsAboveSameThreshold": 2,
+   "totalPairs": 78,
+   "e1SurvivesHere": true,
+   "topPairs": [
+    {
+     "a": "roof.hip|2|1.25",
+     "b": "roof.hip|1|1",
+     "iou": 0.9718
+    },
+    {
+     "a": "roof.hip|3|0.75",
+     "b": "roof.hip|1|0.75",
+     "iou": 0.9609
+    },
+    {
+     "a": "roof.hip|2|1.5",
+     "b": "roof.hip|1|1",
+     "iou": 0.9472
+    }
+   ]
+  },
+  "soulrest": {
+   "buildings": 10,
+   "kitRoofParts": 2,
+   "e1Classes": 3,
+   "classesAfterMergingJitter": 3,
+   "medianPairIoU": 0.6785,
+   "maxPairIoU": 0.7602,
+   "minPairIoU": 0.5359,
+   "pairsAboveSameThreshold": 0,
+   "totalPairs": 3,
+   "e1SurvivesHere": false,
+   "topPairs": [
+    {
+     "a": "roof.shell|1|1",
+     "b": "roof.hip|1|1",
+     "iou": 0.7602
+    },
+    {
+     "a": "roof.shell|1|1.25",
+     "b": "roof.shell|1|1",
+     "iou": 0.6785
+    },
+    {
+     "a": "roof.shell|1|1.25",
+     "b": "roof.hip|1|1",
+     "iou": 0.5359
+    }
+   ]
+  },
+  "stormhold": {
+   "buildings": 23,
+   "kitRoofParts": 1,
+   "e1Classes": 5,
+   "classesAfterMergingJitter": 3,
+   "medianPairIoU": 0.8752,
+   "maxPairIoU": 1,
+   "minPairIoU": 0.8194,
+   "pairsAboveSameThreshold": 2,
+   "totalPairs": 10,
+   "e1SurvivesHere": false,
+   "topPairs": [
+    {
+     "a": "roof.hip|2|1.5",
+     "b": "roof.hip|2|0.75",
+     "iou": 1
+    },
+    {
+     "a": "roof.hip|3|0.75",
+     "b": "roof.hip|1|1",
+     "iou": 0.9912
+    },
+    {
+     "a": "roof.hip|1|0.75",
+     "b": "roof.hip|3|0.75",
+     "iou": 0.9441
+    }
+   ]
+  },
+  "thorn": {
+   "buildings": 13,
+   "kitRoofParts": 2,
+   "e1Classes": 6,
+   "classesAfterMergingJitter": 6,
+   "medianPairIoU": 0.7393,
+   "maxPairIoU": 0.8795,
+   "minPairIoU": 0.4426,
+   "pairsAboveSameThreshold": 0,
+   "totalPairs": 15,
+   "e1SurvivesHere": true,
+   "topPairs": [
+    {
+     "a": "roof.reed|1|1",
+     "b": "roof.reed|1|0.5",
+     "iou": 0.8795
+    },
+    {
+     "a": "roof.reed|2|1",
+     "b": "roof.reed|1|0.25",
+     "iou": 0.8647
+    },
+    {
+     "a": "roof.reed|1|1",
+     "b": "roof.reed|1|0.25",
+     "iou": 0.8555
+    }
+   ]
+  }
+ }
+}

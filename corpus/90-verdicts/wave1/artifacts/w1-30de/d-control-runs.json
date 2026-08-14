@@ -1,0 +1,33 @@
+{
+ "what_this_is": "Every null-control and baseline run this critic executed against W1-30D, re-run from the shipping tree. Profile: res 384, family saxhleel, poses default, angles 8, distances [1.5] = 640 frames per arm. Each arm patches a COPY of game/src, game/data/combat and game/vendor and runs the unmodified instrument against the copy; no flag inside the instrument was used.",
+ "commands": [
+  "node tools/visual/actor-hole-control.mjs --poses=default --angles=8 --distances=1.5",
+  "node tools/visual/actor-hole-control.mjs --poses=default --angles=8 --distances=1.5 --baseline-ref=a1d24f58 --only=hide-arm",
+  "node corpus/90-verdicts/wave1/artifacts/w1-30de/critic-guard-probe.mjs"
+ ],
+ "area_guard_pct": 3,
+ "shipped": { "crackPx": 178, "framesWithCracks": 86, "frames": 640, "meanBodyPx": 53075 },
+ "baseline": {
+  "ref": "a1d24f58",
+  "note": "The commit before 4607cabe. The builder's own documented reproduction uses --baseline-ref=HEAD, which now CRASHES with 'control baseline patched nothing' because the work is committed and the blob equals the working tree.",
+  "crackPx": 1858, "framesWithCracks": 151, "meanBodyPx": 54685,
+  "silhouette_drift_pct": -2.9
+ },
+ "builder_controls_reproduced": [
+  { "control": "break-joints", "crackPx": 391, "meanBodyPx": 52893, "driftPct": -0.3, "required": "go red", "result": "RED as required" },
+  { "control": "unbed-belt", "crackPx": 139, "meanBodyPx": 53084, "driftPct": 0.0, "required": "go red", "result": "DID NOT GO RED — reproduced as the builder declared, and left failing by the builder on purpose" },
+  { "control": "refloat-crest", "crackPx": 251, "meanBodyPx": 53192, "driftPct": 0.2, "required": "go red", "result": "RED as required" },
+  { "control": "unweld-tail", "crackPx": 179, "meanBodyPx": 53046, "driftPct": -0.1, "required": "go red", "result": "RED, marginal" },
+  { "control": "hide-arm", "crackPx": 136, "meanBodyPx": 51310, "driftPct": -3.3, "required": "caught by the silhouette guard while cracks improve", "result": "CAUGHT — by 0.3 percentage points" },
+  { "control": "weld-arm-to-rib", "crackPx": 108, "meanBodyPx": 57838, "driftPct": 9.0, "required": "caught by the silhouette guard while cracks improve", "result": "CAUGHT" }
+ ],
+ "critic_controls_new": [
+  { "control": "hide-hand", "what": "the left palm, three fingers and opposed thumb deleted", "crackPx": 137, "meanBodyPx": 53002, "driftPct": -0.14, "improves_metric": true, "caught": false },
+  { "control": "hide-both-hands", "what": "both hands deleted entirely", "crackPx": 123, "meanBodyPx": 52913, "driftPct": -0.31, "improves_metric": true, "caught": false },
+  { "control": "debeak-head", "what": "head crest plates", "crackPx": 178, "meanBodyPx": 53075, "driftPct": 0.0, "improves_metric": true, "caught": false, "verdict": "INERT — the patched branch does not execute for this family, so this arm proves nothing and is NOT counted as an escape" },
+  { "control": "sink-crest", "what": "dorsal crest buried further inside the body and shrunk 65%", "crackPx": 178, "meanBodyPx": 53075, "driftPct": 0.0, "verdict": "INERT, and the reason corroborates the build: the crest is already fully interior, so moving it further in changes no exterior pixel" },
+  { "control": "shrink-arm", "what": "left arm thinned 30% rather than deleted", "crackPx": 294, "meanBodyPx": 52523, "driftPct": -1.04, "improves_metric": false, "caught": false, "verdict": "worsens the metric — the metric is not trivially gameable by thinning" }
+ ],
+ "finding": "The 3% silhouette guard is a scalar and cannot see a named part disappear. Deleting BOTH hands improves the headline metric 31% at -0.31% drift and is not caught. The guard's docstring justifies 3% by citing -1.0% for the whole of this build's change; the measured figure is -2.9%.",
+ "self_note": "This critic's FIRST hide-hand removed only the palm entry in the segment table and left the fingers, which are built in a separate loop at actor.js:505. It moved the silhouette 0.00% and proved nothing. It was strengthened before being reported, and the weak version is recorded here rather than deleted."
+}

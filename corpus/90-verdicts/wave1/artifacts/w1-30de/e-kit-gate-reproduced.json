@@ -1,0 +1,28 @@
+{
+ "what_this_is": "node tools/render/w1-30e-kit-gate.mjs, re-run from the shipping tree by the fresh critic at HEAD 318ecdf2. Every gate value and every control value reproduces the builder's report to the last digit.",
+ "arms": {
+  "shipped":            { "parts": 25, "bypass": 13229, "kitMeshes": 45106, "adjacentSilhouette": "0/205",  "separability": 0.6443, "brokenEdges": 0.971,  "reliefLilmoth": 0.1835 },
+  "null:kit-false":     { "parts": 0,  "bypass": 40939, "kitMeshes": 0,     "adjacentSilhouette": "56/205", "separability": 0.1745, "brokenEdges": 0.4816, "reliefLilmoth": 0.1862 },
+  "null:no-chamfer":    { "parts": 25, "bypass": 16472, "kitMeshes": 41863, "adjacentSilhouette": "0/205",  "separability": 0.6443, "brokenEdges": 0.9637, "reliefLilmoth": 0.1835 },
+  "null:one-grammar":   { "parts": 17, "bypass": 13229, "kitMeshes": 42688, "adjacentSilhouette": "0/205",  "separability": 0.2081, "brokenEdges": 0.9708, "reliefLilmoth": 0.1862 },
+  "null:one-variant":   { "parts": 24, "bypass": 13229, "kitMeshes": 44557, "adjacentSilhouette": "56/205", "separability": 0.5436, "brokenEdges": 0.9703, "reliefLilmoth": 0.1862 },
+  "null:flat-roof":     { "parts": 24, "bypass": 13229, "kitMeshes": 43992, "adjacentSilhouette": "53/205", "separability": 0.5772, "brokenEdges": 0.9705, "reliefLilmoth": 0.1862 },
+  "null:all-imperial":  { "parts": 25, "bypass": 13229, "kitMeshes": 45106, "adjacentSilhouette": "0/205",  "separability": 0.6443, "brokenEdges": 0.971,  "reliefLilmoth": 0.1835 }
+ },
+ "gate_rows": [
+  { "row": "kit economy: parts", "value": 25, "bar": "<= 25", "result": "PASS" },
+  { "row": "kit economy: distinct buildings from the kit", "value": 179, "bar": ">= 40", "result": "PASS" },
+  { "row": "kit economy: BUILDING meshes without a kitId", "value": 3284, "bar": "zero", "result": "FAIL", "control": 29584 },
+  { "row": "variation within a street: adjacent silhouette collisions", "value": "0/205", "bar": "zero", "result": "PASS", "control": "53/205" },
+  { "row": "variation within a street: roof profiles per settlement", "value": 1, "bar": ">= 5", "result": "FAIL", "note": "1 under the PARTS reading; 3 under Ruling E1's SILHOUETTE reading — see e1-roof-falsifier.json. Red under both." },
+  { "row": "settlements separable (geometry proxy, NOT the plan gate)", "value": 0.6443, "bar": "beat chance 0.125 decisively", "result": "PASS", "control": 0.2081 },
+  { "row": "edges are broken (geometric reading)", "value": 0.971, "bar": ">= 0.95", "result": "PASS", "control": 0.9637, "critic_note": "The single-variable control moves the metric only 0.971 -> 0.9637 and leaves the row passing comfortably; the arm that collapses it (0.4816) replaces the entire kit and confounds the chamfer with everything else. The row currently has no isolating null control." },
+  { "row": "skyline relief, Lilmoth (builder indicator, NOT ART-X5)", "value": 0.1835, "control": 0.1862, "result": "no signal", "critic_note": "Resolved by photography, not by statistics: the skyline HAS relief in geometry and the fog at the approach camera removes the contrast it needs to read. See docs/shots/2026-08-14-w1-30de-critic/approach-lilmoth__t1300__clear.jpg." },
+  { "row": "Gideon is the exception (grammar ordering)", "value": 0.14, "control": -0.115, "result": "PASS" }
+ ],
+ "board_rows_unset": {
+  "note": "docs/art-direction/measure-plates.mjs re-run as the board's own instrument. Four settlement roofline-relief rows are UNSET for want of plates. That is a corpus shortage, not a failure of this piece, and no target was invented for them.",
+  "unset": { "helstrom": "n=2", "archon": "n=1", "thorn": "n=0", "stormhold": "n=0" },
+  "set": ["lilmoth", "soulrest", "blackrose", "gideon"]
+ }
+}
