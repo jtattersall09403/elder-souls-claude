@@ -116,7 +116,11 @@ try {
     let entry = null, patched = null;
     if (arm !== 'head') {
       const { dir, manifest } = makeControlClone({
-        root: REPO_ROOT, paths: ['game', 'tools'], label: `w1-map-defects-${arm}`,
+        // `game` ONLY. The measurement runs from the real repo with `--entry <clone>/game/index.html`,
+        // so the clone needs the served tree and nothing else — and cloning `tools` trips over the
+        // symlinks npm leaves in `tools/node_modules/.bin`, which the clone tool correctly refuses
+        // to guess at rather than silently copying a link target.
+        root: REPO_ROOT, paths: ['game'], label: `w1-map-defects-${arm}`,
         writable: [MAP_SCREEN, UI_SYSTEM],
       });
       clones.push(dir);
