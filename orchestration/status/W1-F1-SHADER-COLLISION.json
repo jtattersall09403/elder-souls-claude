@@ -1,0 +1,16 @@
+{
+  "task_id": "W1-F1-SHADER-COLLISION",
+  "role": "builder",
+  "item": "F1",
+  "state": "in-progress",
+  "base_commit": "1393d1b8ff1344a6f3ffe88680ac20dccaec602c",
+  "spec": "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md",
+  "files_claimed": [
+    "game/src/render/actor.js",
+    "tools/visual/w1-f1-critic-shader-collision.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F1-SHADER-COLLISION/"
+  ],
+  "files_touched": [],
+  "next_step": "run gate red, apply rename, run gate green, land, then census follow-up and frame re-take",
+  "could_not_do": []
+}
