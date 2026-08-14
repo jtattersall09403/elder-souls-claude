@@ -40,11 +40,23 @@
     "kit_gate_moved": { "skyline_relief_lilmoth": { "before": 0.1835, "after": 0.1862, "note": "moved onto its own controls' value; reported as a change, not explained away — a fresh critic should attack this first" } },
     "gideon_ground_luminance_srgb255": { "value": 2.1, "peers_min": 25.5, "acceptance_for_whoever_owns_the_fix": ">= 20 at the Gideon street stand with the other seven towns unmoved" }
   },
+  "hardware_evidence": {
+    "run": "reports/runpod-gpu/runs/deck-w1-30e-roof-fix/",
+    "gpu": "RTX A5000, ANGLE (NVIDIA, Vulkan 1.4.312), HARDWARE — valid for appearance claims",
+    "captured": "288 stills 0 red + 12 motion sequences / 2400 frames 0 red, 960x540, seed 20260814, full profile",
+    "cost_usd": 0.063,
+    "pod": "ts1hfns8azkjc2 terminated, deletion confirmed by subsequent API lookup; ephemeral template deleted; nothing of this piece is billing",
+    "shots": "docs/shots/2026-08-14-w1-30e-kit-defects/",
+    "what_the_frames_show": "The approach shots carry the roof fix plainly: before, every Helstrom building is a wide pale cap with a sliver of wall under it (the critic's 'the same wide hipped roof repeated across the whole town'); after, the walls are the building, with windows, timber framing and the shell sitting on them at a size that reads as a roof. Held across t0800/t1300/t1930 and clear/rain. street-helstrom and street-lilmoth are proper 4-8 m street reads.",
+    "what_the_frames_falsified": "Soulrest's street shot is STILL enclosed and roof.shell was not the cause. A 16-ray enclosure probe (tools/render/w1-30e-street-enclosure.mjs) run on the shipped tree AND the delete-the-fix clone gives identical answers for all eight settlements: open sky over the player and over the camera at every one, nearest wall to the Soulrest camera 6.98 m. The remediation report's §4 attributed it using an axis-aligned bounding box on a rotated building — a 17 m plan turned 45 degrees has a 24 m AABB — so the roof defect it found is real and its Soulrest attribution is not. The enclosing thing is not in buildSettlementExterior's output and is UNIDENTIFIED."
+  },
   "not_done": [
     "Gideon's ground is diagnosed and NOT fixed — the fix is game/data/world/regions.json (W1-25-persistent-builder) or game/src/world/province.js (five live claimants); editing either from here is the Ruling O1 failure.",
     "build-deck.mjs does not yet read roofPlanExtent() — the publication exists, the join does not; that file belongs to W1-30V and W1-30DE-REMEDIATION.",
     "No naive-judge read of whether a shell town now reads as architecture or as a row of boxes. Geometry cannot answer it and the pack must be built by an agent that is not the judge.",
     "w1-04-r4-join.mjs still reports 56 roofs that do not cover their building — the roofless archon-struct-* civic class, pre-existing, identical in all three arms including the legacy one, untouched.",
+    "Soulrest's street shot is NOT fixed and its cause is NOT identified — it was handed over as a roof.shell consequence and the ray probe falsifies that in both arms. Open, not closed.",
+    "Gideon's ground is still black in the new hardware frames, exactly as expected — nothing here changed it.",
     "Ruling E1 and Lilmoth's approach row left alone, as instructed."
   ],
   "reproduce": [
@@ -52,6 +64,7 @@
     "node tools/render/w1-30e-roof-extent.mjs --self-test",
     "node tools/render/w1-30e-ground-albedo.mjs",
     "node tools/render/w1-30e-ground-albedo.mjs --self-test",
+    "node tools/render/w1-30e-street-enclosure.mjs",
     "node tools/render/w1-30e-kit-gate.mjs",
     "node tools/render/w1-30-settlement-batching.mjs"
   ]
