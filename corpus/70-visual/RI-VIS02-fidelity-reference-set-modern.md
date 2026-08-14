@@ -39,11 +39,36 @@ Eight reference shots. For each: **where to find it**, **what to look at**, **th
 specification** (so the shot is judgeable even when the image cannot be fetched), and the
 **measurable signature** it contributes to RI-VIS03's target bands.
 
-Provenance discipline: image files are not vendored into this repo (copyright). Each entry
-carries a `FETCH:` line stating honestly whether the authoring agent retrieved the image,
-retrieved only a text page, or is working from a verbal specification. Where `FETCH: spec
-only`, the verbal specification **is** the reference and is binding — a critic judges
-against the described properties, not against a remembered picture.
+> **CORRECTION, 2026-08-14 (AUDIT-CITATION-STALENESS). The sentence below is struck because it
+> is false, and it was false for eight days while builders read it.** The strike is append-only:
+> the original wording is kept struck rather than deleted, because what was believed and why it
+> changed is the part worth keeping.
+>
+> ~~Provenance discipline: image files are not vendored into this repo (copyright).~~
+>
+> **Image files ARE vendored.** `corpus/70-visual/refs/modern/` holds **131 files** across
+> `character_closeup/`, `combat/`, `exterior_daylight/`, `exterior_lowlight/`,
+> `interior_darkemissive/`, `material_closeup/` and `ui/`, acquired 2026-08-06 with licences
+> recorded in `corpus/70-visual/refs/LICENCE-NOTE.md` and per-file provenance in
+> `corpus/70-visual/refs/MANIFEST.json`. `ARBITRATION.md` **S55** already relies on this and says
+> so in its own words — *"modern plates are on disk at `corpus/70-visual/refs/modern/`"* — so the
+> corpus's supreme law and this item have disagreed since S55 was ruled.
+> `corpus/00-doctrine/BAR-CRITIQUE-IMAGES-02.md` item 17 flagged this exact sentence as
+> outstanding and it was never applied. **`RI-VIS09` is the register of what is actually on disk
+> and its §2 routing table, not this paragraph, decides which folder a given item may cite.**
+> *(Counts stamped at commit `5597b4c4`; re-derive with
+> `find corpus/70-visual/refs/modern -type f | wc -l`.)*
+>
+> What survives from the struck sentence, and is still binding: **some** REF-M slots below are
+> still spec-only, so each entry keeps its `FETCH:` line and the rule beneath it.
+
+Provenance discipline: each entry carries a `FETCH:` line stating honestly whether the
+authoring agent retrieved the image, retrieved only a text page, or is working from a verbal
+specification. Where `FETCH: spec only`, the verbal specification **is** the reference and is
+binding — a critic judges against the described properties, not against a remembered picture.
+Where pixels exist under `refs/modern/`, **the pixels win over the spec** and a fidelity claim
+must cite the file (`RI-VIS09`: "a visual claim that cites a reference must cite a file that
+exists").
 
 ---
 
