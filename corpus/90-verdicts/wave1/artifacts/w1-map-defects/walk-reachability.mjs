@@ -79,10 +79,16 @@ function fewest(order, opt) {
 }
 
 // The touch route multiplies every page-turn. `game/data/input/profiles.json` puts `menu`,
-// `swap_left` and `swap_right` behind ONE drawer control, and `game/src/input/touch.js:255`
-// (`if (hit.fromDrawer) this.drawerOpen = false;`) shuts the drawer after EVERY petal tap. So a
-// phone pays two taps per page-turn, plus two to open the inventory in the first place.
-const taps = (presses) => 2 + presses * 2;
+// `swap_left` and `swap_right` behind ONE drawer control, so a phone pays for the drawer as well
+// as for the turn. r1 shut the drawer after EVERY petal tap — two taps per page-turn, plus two to
+// open the inventory. `TouchInput._keepDrawerOpenAfter()` now leaves it standing while a menu is
+// up, so the drawer is bought ONCE: two taps to the inventory, one per turn after that.
+//
+// THIS COLUMN IS A CONVENIENCE AND NOT THE MEASUREMENT. It is arithmetic on the press count and
+// it assumes the drawer behaviour rather than executing it. `node tools/map/touch-route.mjs`
+// drives real `down()`/`up()` pairs through the shipped `TouchInput` on a real phone viewport and
+// is the authority; this line exists so the desktop and phone costs can be read side by side.
+const taps = (presses) => 2 + presses;
 
 /** Are any two NEVER_ADJACENT partners actually NEIGHBOURS in this order? That is the mechanism. */
 function adjacentPairs(order) {

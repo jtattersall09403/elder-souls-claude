@@ -1,0 +1,22 @@
+{
+  "task_id": "W1-20-r3-remediation",
+  "role": "builder",
+  "state": "in_progress",
+  "started": "2026-08-14",
+  "branch": "codex/wave1-build-experiment",
+  "brief": "Remediate W1-20-r2's biggest gap and three secondary findings: (1) twelve world_flags entries unlocking ranks 5-7 on four faction ladders (21 stranded quests), (2) locked player hears a 'welcome' voice, (3) restore the registry consumer (Engine.factionAccess + loader branch) removed by 091a6cec, (4) the_dockhands missing from faction-reactions.json. Plus: close the stale round-1 gap in the ledger and fix dispatchable.mjs's stale quest-volume advice.",
+  "next_step": "Read faction-gates.json world_state columns and the four faction quest books; identify the exact twelve quests.",
+  "files_claimed": [
+    "game/data/quests/faction-continuation-wave1.json",
+    "game/data/dialogue/faction-reactions.json",
+    "game/src/engine.js",
+    "game/src/sim/quest/refusal.js",
+    "tools/dispatchable.mjs",
+    "orchestration/status/W1-20-r3-remediation.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_touched": [
+    "orchestration/status/W1-20-r3-remediation.json"
+  ],
+  "notes": []
+}

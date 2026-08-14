@@ -1,0 +1,28 @@
+{
+  "task_id": "W1-UIX08-dialogue-window",
+  "role": "builder",
+  "item": "corpus/86-ui/RI-UIX08-dialogue-window.md",
+  "branch": "codex/wave1-build-experiment",
+  "state": "building",
+  "started_at": "2026-08-14",
+  "next_step": "write game/src/ui/screens/dialogue.js (window + inline-link matcher + history), add 2 kinds to surface.js, wire ctx.dialogue in system.js/engine.js, then checks + capture",
+  "files_touched": [
+    "orchestration/status/W1-UIX08-dialogue-window.json",
+    "reports/uix08/READING-NOTE.md"
+  ],
+  "files_claimed": [
+    "game/src/ui/screens/dialogue.js",
+    "game/src/ui/screens/dialogue-links.js",
+    "game/src/ui/surface.js",
+    "game/src/ui/system.js",
+    "game/src/engine.js",
+    "tools/ui/dialogue-window-probe.mjs",
+    "tools/ui/dialogue-link-census.mjs",
+    "tools/analysis/ui-census.mjs",
+    "reports/uix08/",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "notes": "Owns the dialogue WINDOW. surface.js/system.js/engine.js edits are ADDITIVE ONLY (2 new element kinds; one draw branch; one ctx field; one pending action). HUD-MORROWIND has touched surface.js/system.js/hud.js — no overlap with the HUD code paths.",
+  "redundant_with": []
+}

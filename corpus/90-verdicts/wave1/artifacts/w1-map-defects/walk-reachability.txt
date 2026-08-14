@@ -1,29 +1,33 @@
 
-== BEFORE the fix (map sixth)
+== NULL CONTROL — BEFORE the fix (map sixth)
    WALK_ORDER      world, inventory, journal, sheet, spells, map, wait, levelup
    forward walk    inventory -> journal -> sheet -> spells -> map -> wait -> (closes)
    backward walk   inventory -> (closes)
    fewest turns    inventory=0  journal=1  sheet=2  spells=3  map=4  wait=5
-   phone taps      journal=4  sheet=6  spells=8  map=10  wait=12
+   phone taps      journal=3  sheet=4  spells=5  map=6  wait=7
    SKIPPED by the forward walk: nothing
+   NEVER_ADJACENT pair sitting side by side: none
 
-== SHIPPED at HEAD
+== CONTROL — THE BROKEN FIX (r1: map next to journal)
    WALK_ORDER      world, inventory, map, journal, sheet, spells, wait, levelup
    forward walk    inventory -> map -> sheet -> spells -> wait -> (closes)
    backward walk   inventory -> (closes)
    fewest turns    inventory=0  journal=3  sheet=2  spells=3  map=1  wait=4
-   phone taps      journal=8  sheet=6  spells=8  map=4  wait=10
+   phone taps      journal=5  sheet=4  spells=5  map=3  wait=6
    SKIPPED by the forward walk: journal
+   NEVER_ADJACENT pair sitting side by side: journal next to map
 
-== PROPOSED remediation
+== SHIPPED at HEAD
    WALK_ORDER      world, inventory, map, sheet, journal, spells, wait, levelup
    forward walk    inventory -> map -> sheet -> journal -> spells -> wait -> (closes)
    backward walk   inventory -> (closes)
    fewest turns    inventory=0  journal=3  sheet=2  spells=4  map=1  wait=5
-   phone taps      journal=8  sheet=6  spells=10  map=4  wait=12
+   phone taps      journal=5  sheet=4  spells=6  map=3  wait=7
    SKIPPED by the forward walk: nothing
+   NEVER_ADJACENT pair sitting side by side: none
 
-FAIL the shipped WALK_ORDER drops a screen from the forward page-walk entirely.
-     `map` sits immediately before `journal`, and `map`'s own ring excludes
-     `journal` (NEVER_ADJACENT / RI-UIX04 Q7), so the forward walk steps over it.
-     Separating the pair by one screen restores it and keeps the map one turn away.
+ok   both controls go red, and for DIFFERENT reasons:
+     null control  complete=yes  map-at-one-press=NO   <- the owner's original defect
+     broken fix    complete=NO   map-at-one-press=yes  <- what r1 shipped
+ok   SHIPPED: every menu screen is on the forward page-walk, the map is one turn away,
+     and no NEVER_ADJACENT pair are neighbours.

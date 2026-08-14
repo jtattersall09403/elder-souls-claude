@@ -305,10 +305,32 @@ async function run(h, brk) {
     // reveal-on-approach" all along, so the assertion is now the opposite one — and it is still
     // an assertion with teeth, because it is paired with S7 above: the geography is whole AND
     // every square is earned. Either half alone passes a broken map.
-    A('S8', 'the GEOGRAPHY is drawn whole — every cell in view is painted (W1-MAP-02)',
-      `${m.drawn_cells} of ${m.cells_in_view} cells in view (province total ${m.total_cells}); geography_always_drawn=${m.geography_always_drawn}`,
-      m.cells_in_view > 0 && m.drawn_cells === m.cells_in_view && m.geography_always_drawn === true,
-      'drawn === in view, and > 0');
+    //
+    // W1-MAP-DEFECTS r1 — THE ASSERTION WAS A TAUTOLOGY AND THIS IS THE REPAIR.
+    //
+    // It read `drawn_cells === cells_in_view`. In `game/src/ui/screens/map.js` those two counters
+    // are incremented on ADJACENT LINES with nothing between them, and the comment beside them
+    // says so outright — "equal by construction now". The equality could therefore be broken by
+    // exactly one edit in the world: a gate spliced BETWEEN the two increments, which is the
+    // shape `tools/map/fog-control.mjs --arms deletefix` uses and nothing else. A gate one line
+    // EARLIER, above `inView++`, hides any fraction of the province you like and both counters
+    // fall together — the check stays green while the map goes black. The critic found it; the
+    // check did not.
+    //
+    // THE ASSERTION WITH TEETH IS AGAINST THE PROVINCE TOTAL. In the province view the drawing
+    // box spans the whole raster (`c0..c1` = `0..cols-1`, `r0..r1` = `0..rows-1`), so a map that
+    // draws everything draws all 42,846 cells and `total_cells` is a number the draw loop cannot
+    // move. `cells_in_view` is kept in the detail line because it is still the honest description
+    // of what the layout could have painted; it is no longer what the pass rests on.
+    //
+    // PROVEN ABLE TO FAIL, not asserted able to fail: `tools/map/fog-control.mjs --arms
+    // head,hiddenhalf` splices a gate ABOVE `inView++` on a control clone and requires the OLD
+    // form to stay green on it while this one goes red. A check nobody has watched fail is a
+    // check nobody knows works.
+    A('S8', 'the GEOGRAPHY is drawn whole — the WHOLE PROVINCE is painted (W1-MAP-02)',
+      `${m.drawn_cells} of ${m.total_cells} province cells (${m.cells_in_view} in view); geography_always_drawn=${m.geography_always_drawn}`,
+      m.total_cells > 0 && m.drawn_cells === m.total_cells && m.geography_always_drawn === true,
+      'drawn === total_cells (42,846), not merely === cells_in_view');
     const navFromMap = ui.navigable;
     H.closeMenu();
     H.openMenu('journal', {});
@@ -318,6 +340,41 @@ async function run(h, brk) {
       navFromJournal.join(','), !navFromJournal.includes('map'), 'no `map`');
     A('S10', 'and the map cannot reach the journal either',
       navFromMap.join(','), !navFromMap.includes('journal'), 'no `journal`');
+
+    // ---- S13. THE FORWARD PAGE-WALK, WALKED. W1-MAP-DEFECTS r1's biggest gap ----------------
+    //
+    // S9/S10 above are the mechanism that broke this, and they were both GREEN while it was
+    // broken. `navigable()` drops the NEVER_ADJACENT partner OF THE MODE YOU STAND ON, so an
+    // excluded neighbour in `WALK_ORDER` is not stopped at — it is STEPPED OVER. r1 moved `map`
+    // to second, which put it immediately before `journal`, and the forward walk went
+    // inventory -> map -> sheet -> spells -> wait -> (closes): five peer screens down to four,
+    // with the journal — the screen a Morrowind player opens most — off the walk at any number
+    // of presses, in that direction, forever. Q7 held perfectly the whole time. THE RULE:
+    //
+    //     no two screens named in NEVER_ADJACENT may be NEIGHBOURS in WALK_ORDER.
+    //
+    // WALKED, NOT READ. Every step below is a real `swap_right` edge queued into the fixed step
+    // and latched exactly as a swing is, so this fails if the binding is lost, if `_walkPeer`
+    // stops being called, or if the order is edited — not merely if a constant changes shape.
+    // `f: 0` for S11's reason: the menu pauses the world, `sim.frame` is frozen while it is up,
+    // and a scripted event at `f >= 1` can never fire and is never counted as dropped either.
+    H.closeMenu();
+    H.openMenu('inventory', {});
+    const walked = [];
+    for (let i = 0; i < 10; i++) {
+      H.queueInputs([{ f: 0, press: ['swap_right'] }, { f: 0, release: ['swap_right'] }]);
+      H.stepFrames(2);
+      const md = H.getUIState().mode;
+      if (md === 'world' || md === 'inventory' || walked.includes(md)) break;
+      walked.push(md);
+    }
+    H.closeMenu();
+    const OWED = ['map', 'sheet', 'journal', 'spells', 'wait'];
+    const skipped = OWED.filter((m) => !walked.includes(m));
+    A('S13', 'the forward page-walk reaches EVERY screen, and reaches the map first',
+      `inventory -> ${walked.join(' -> ')} -> (closes); skipped: ${skipped.join(',') || 'nothing'}`,
+      skipped.length === 0 && walked[0] === 'map',
+      'nothing skipped, and `map` one page-turn from the inventory');
 
     // ---- S11. The local view exists and is a DIFFERENT view, not a relabelled one ----------
     //
@@ -398,10 +455,11 @@ async function run(h, brk) {
     const blank = H.getUIState().map;
     H.closeMenu();
     sim.discovery = keep;
+    // The same tautology repair as S8 above, for the same reason and against the same number.
     A('S12', 'APPENDIX: a character who has been nowhere sees the WHOLE province and NOT ONE square',
-      `drawn ${blank.drawn_cells} of ${blank.cells_in_view} cells in view, ${blank.places_drawn} squares, ${blank.revealed_cells} cells in the footprint`,
-      blank.cells_in_view > 0 && blank.drawn_cells === blank.cells_in_view && blank.places_drawn === 0,
-      'the geography whole, zero squares');
+      `drawn ${blank.drawn_cells} of ${blank.total_cells} province cells (${blank.cells_in_view} in view), ${blank.places_drawn} squares, ${blank.revealed_cells} cells in the footprint`,
+      blank.total_cells > 0 && blank.drawn_cells === blank.total_cells && blank.places_drawn === 0,
+      'the whole province (42,846), zero squares');
 
     // =========================================================================================
     // D — THE HOSTILE ATTEMPT. Every one of these must fail, structurally.

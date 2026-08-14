@@ -69,6 +69,28 @@ const SABOTAGE = {
       '      seen: d ? (cx, rz) => d.seenCell(cx, rz) : () => false,\n      cellHex: f ? (cx, rz) => {');
     return ['the fog gate restored in screens/map.js', 'the `seen` closure restored in ui/system.js'];
   },
+  // W1-MAP-DEFECTS r1 — THE ARM THAT PROVES `map-probe` S8/S12 CAN FAIL AT ALL.
+  //
+  // Not part of the fog experiment and deliberately not in the default `--arms` list: the fog
+  // record is three arms and stays three arms. This one exists to falsify an ASSERTION rather
+  // than a fix. S8 and S12 used to read `drawn_cells === cells_in_view`, and in
+  // `screens/map.js` those counters are incremented on ADJACENT LINES — "equal by construction",
+  // says the comment between them. The `deletefix` arm above is the only edit in the world that
+  // breaks that equality, because it splices its gate BETWEEN the two increments. Put the same
+  // gate ONE LINE EARLIER, above `inView++`, and both counters skip together: half the province
+  // vanishes and the old assertion stays green the whole way down.
+  //
+  // So this arm hides every even row — 21,321 of 42,846 cells, a map with the province in
+  // horizontal stripes — and the checks below require the OLD form to stay GREEN on it and the
+  // NEW form (`drawn_cells === total_cells`) to go RED. That is the one-sided-guard test of
+  // `HAZARDS` §0b applied to a probe assertion: it is not enough that the check passes at HEAD,
+  // it has to be shown failing somewhere, and shown failing where the old one could not.
+  hiddenhalf(dir) {
+    patch(dir, MAP_SCREEN,
+      '        inView++;\n        drawn++;\n',
+      '        if (rz % 2 === 0) continue;\n        inView++;\n        drawn++;\n');
+    return ['a draw gate spliced ABOVE inView++ in screens/map.js — every even row hidden'];
+  },
   // Reveal every place with the geography — the plausible wrong answer.
   markers(dir) {
     patch(dir, UI_SYSTEM,
@@ -139,6 +161,18 @@ try {
 const A = report.arms;
 const checks = [];
 if (A.head) checks.push(['head draws the whole geography', A.head.geography_whole], ['head draws no unearned square', A.head.no_marker_unearned]);
+// W1-MAP-DEFECTS r1 — the assertion the probe now makes, asserted here too, so the experiment and
+// `map-probe` S8/S12 rest on the same number rather than on two descriptions of it.
+if (A.head) checks.push([`head draws the WHOLE PROVINCE — drawn === total_cells (${A.head.total_cells})`,
+  A.head.total_cells > 0 && A.head.drawn_cells === A.head.total_cells]);
+if (A.hiddenhalf) checks.push(
+  ['PROBE TEETH: a gate ABOVE inView++ hides half the province', A.hiddenhalf.drawn_cells < A.hiddenhalf.total_cells],
+  ['…and the OLD assertion (drawn === cells_in_view) stays GREEN on it — which is why it was replaced',
+    A.hiddenhalf.cells_in_view > 0 && A.hiddenhalf.drawn_cells === A.hiddenhalf.cells_in_view],
+  ['…and the NEW assertion (drawn === total_cells) goes RED on it',
+    A.hiddenhalf.drawn_cells !== A.hiddenhalf.total_cells]);
+if (A.hiddenhalf && A.head) checks.push(['…and the arm is not inert: it differs from head',
+  A.hiddenhalf.drawn_cells < A.head.drawn_cells]);
 if (A.deletefix) checks.push(['DELETE-THE-FIX goes red: the fog gate hides the province again', A.deletefix.geography_whole === false]);
 if (A.markers) checks.push(['NULL CONTROL goes red: revealing every marker is caught', A.markers.no_marker_unearned === false]);
 if (A.markers && A.head) checks.push(['…and the control is not inert: it differs from head', A.markers.places_drawn > A.head.places_drawn]);

@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `7c9488d5`: 967 tools, 157 reference
-items, 189 pieces in flight.
+so it cannot drift. Generated at `6881b6a4`: 969 tools, 157 reference
+items, 190 pieces in flight.
 
-Its purpose is to stop 189+ concurrent agents each paying separately to discover the
+Its purpose is to stop 190+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -391,7 +391,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
-### `tools/harness/` — 251
+### `tools/harness/` — 252
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -543,6 +543,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/map-probe.mjs` — the evidence for W1-MAP: the discovery map (ARBITRATION seam S35).
 - `tools/harness/map-shots.mjs` — photograph the discovery map, early and well-travelled.
 - `tools/harness/opening-capture.mjs` — **no header comment**
+- `tools/harness/opening-frame.mjs` — IS THE PLAYER IN THE FIRST FRAME THEY CONTROL, AND WHAT ARE THEY LOOKING AT?
 - `tools/harness/prg-encumbrance.mjs` — W1-16 round 2.
 - `tools/harness/run-headless.mjs` — boot the game in headless Chromium, run a named scenario, write artifacts to a run directory.
 - `tools/harness/save-ai-consumption.mjs` — RI-MTH07 for the restored enemy AI, plus RULES 6 in full.
@@ -723,12 +724,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lore/w1-23-r4-chart.mjs` — THE PICTURE FOR W1-23 ROUND 4.
 - `tools/lore/w1-23-r4-consume.mjs` — CONSUMPTION for the library half (RI-MTH07 §B, mandatory under `corpus/00-doctrine/ARBITRATION.md` §3).
 
-### `tools/map/` — 4
+### `tools/map/` — 5
 
 - `tools/map/arbiter-map-s38.mjs` — THE S38 GATE — does the map comply with S35's "no square for a place the player has not stood in"?
 - `tools/map/explore-W1-MAP-DEFECTS.mjs` — Throwaway diagnosis #3 for W1-MAP-DEFECTS.
 - `tools/map/fog-control.mjs` — the fog-of-war removal, with a delete-the-fix arm and a NULL CONTROL that is the plausible wrong answer rather than the trivial one.
 - `tools/map/player-route.mjs` — CAN A PERSON OPEN THE MAP?
+- `tools/map/touch-route.mjs` — HOW MANY TAPS DOES A PHONE PAY FOR A PAGE TURN, AND CAN IT FIND THE MAP?
 
 ### `tools/metrics/` — 6
 
@@ -1380,10 +1382,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-20-r3-remediation` | in_progress | Read faction-gates.json world_state columns and the four faction quest books; identify the | `orchestration/status/W1-20-r3-remediation.json` |
+| `W1-UIX08-dialogue-window` | starting | read RI-UIX08 in full, REF-A12c/A12b, mygui layout, RI-UIX06, game/src/ui | — |
 | `W1-30E-KIT-DEFECTS` | built-awaiting-fresh-critic |  | `game/src/render/lib/kits.js` `tools/render/w1-30e-roof-extent.mjs` `tools/render/w1-30e-ground-albedo.mjs` `tools/visual/deck.mjs` `reports/w1-30e-kit-defects/README.md` `reports/blog-feed.jsonl` |
 | `critic-w1-map-defects-r1` | done |  | `corpus/90-verdicts/wave1/W1-MAP-DEFECTS-r1.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/fog-three-arms.png` |
 | `SPAWN-YAW` | done-and-banked |  | `orchestration/status/SPAWN-YAW.json` `game/src/sim/settlement.js` `game/src/engine.js` `game/src/main.js` `game/data/states/default.json` `tools/lib/opening.mjs` |
-| `W1-30-SHADOW-CASTERS-critic` | measuring | Finish the aerial arm capture; run the bands ownership probe; take the canopy motion seque | `orchestration/status/W1-30-SHADOW-CASTERS-critic.json` `tools/visual/w1-30-fog-owner-ab.mjs` `tools/visual/w1-30-shader-hook-collision.mjs` `tools/visual/w1-30-canopy-shimmer.mjs` `tools/visual/w1-30-deep-marshes-bands.mjs` |
 | `W1-MW-UI-REFS` | delivered | Nothing blocking. W1-DLG-TOPIC-WEB is a draft awaiting its first fresh reviewer-editor rou | `orchestration/status/W1-MW-UI-REFS.json` `corpus/70-visual/refs/morrowind/REF-A12c/REF-A12c-dialogue__mw-owner-20260814.png` `corpus/70-visual/refs/_provenance.json` `corpus/70-visual/refs/_computed.json` `corpus/70-visual/refs/MANIFEST.json` `corpus/70-visual/refs/make-manifest.py` |
 | `W1-30-SHADOW-CASTERS` | landed-motion-evidence-taken-pending-fresh-critic | A fresh critic on R1 first — largest blast radius, not in the brief, changes the atmospher | `game/src/world/province.js` `game/src/render/renderer.js` `tools/visual/w1-30-shadow-casters.mjs` `tools/visual/w1-30-heightfalloff-arm.mjs` `tools/visual/w1-30-terrain-acne-ab.mjs` `orchestration/status/W1-30-SHADOW-CASTERS.json` |
 | `W1-MAP-DEFECTS` | ? |  | `orchestration/status/W1-MAP-DEFECTS.json` `corpus/00-doctrine/AMENDMENT-W1-MAP-02.md` `game/src/ui/screens/map.js` `game/src/ui/screens/inventory.js` `game/src/ui/system.js` `tools/harness/map-probe.mjs` |
