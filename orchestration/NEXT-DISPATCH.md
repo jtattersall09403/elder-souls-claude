@@ -1382,9 +1382,63 @@ set; and (b) the frame is composed badly rather than occluded — a near-field o
 the frame while the character is still technically visible behind it, which no arm change fixes and
 which wants a near-field occluder fade instead.
 
-**These are distinguishable by a number that now exists.** `reports/first-ten-minutes/*/manifest.json`
+**The number now exists and it has settled the question.** `reports/first-ten-minutes/after-d1d2/manifest.json`
 carries `d1.steps[].player_visible_px` at eleven stops along the walk, measured by rendering each
 stop twice from one pose with the player's materials set to `colorWrite:false` and counting the
-differing pixels (the method from `vt-seethrough.mjs` §1.1). **If it collapses under the deck it is
-(a); if it does not, it is (b) and an arm fix would be wasted work.** Read the number before
-choosing the fix.
+differing pixels (the method from `vt-seethrough.mjs` §1.1):
+
+| frame | 0 | 60 | 120 | 180 | 240 | 300 | 360 | 420 | 480 | 540 | 600 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| player pixels | 9766 | 7744 | 9132 | 7243 | 4975 | **1189** | **1** | 7385 | 7385 | 7364 | 7388 |
+
+**It is (a).** At f360 the character is one pixel — it is genuinely *occluded*, not merely badly
+framed, and the burial is transient (it recovers by f420). So the fix belongs in the
+collision/occlusion path and **not** in frame composition. Whoever takes this can skip that fork.
+
+**And then the picture said something the number could not, which is the whole point of this
+exercise.** The two burial frames have *different occluders*:
+
+- `after-d1d2-005-walk-f0300.png` (1189 px) — a wooden deck, the audit's own D1.
+- `after-d1d2-006-walk-f0360.png` (**1 px**) — a **tree trunk**, filling the frame edge to edge.
+
+The trunk one has a named, specific cause. `world/province.js:1230 updateOcclusion()` already
+exists to stop exactly this: it collapses instanced stems and crowns to `scale(0.001)` when they
+foul the camera. But its test is a **proximity bubble**, not a sightline —
+
+```js
+const cm2 = 5.6*5.6, pm2 = 2.7*2.7;
+const hide = (ix-cameraX)**2 + (iz-cameraZ)**2 < cm2      // within 5.6 m of the CAMERA
+          || (ix-playerX)**2 + (iz-playerZ)**2 < pm2;     // or 2.7 m of the PLAYER
+```
+
+— so a trunk sitting **between** the camera and the player, six metres from the camera, is outside
+both bubbles, is never collapsed, and owns the entire frame. The fix is small and stays inside the
+same loop: test the instance's distance to the **segment** from the camera to the pivot, not to the
+two endpoints. That is a point-to-segment distance and a radius, and it subsumes both existing
+bubbles rather than replacing them.
+
+The deck at f300 is the separate half, and that one probably is `settlementSolids()` lacking the
+underside of raised decking so the arm has nothing to collide with. **Two occluders, two fixes;
+the vegetation one is the cheaper and it is the one that scored a single pixel.**
+
+### R4 — **D2 (rain through roofs): I built a fix, measured it failing, and switched it off.**
+
+The defect is real and now has a number: **15 of 192 live streaks are under a roof at the spawn
+point**. It was never a depth-sorting bug — the material is depth-tested, only `depthWrite` is off
+— the drops are genuinely spawned in the air beneath the deck.
+
+`Renderer._updateOverheadField()` and `Sky.apply()`'s `overhead` parameter are both in the tree and
+both work as written; `render()` passes `null`, so the cull is inert and behaviour is exactly what
+it was before. **Why:** over the same 11-stop walk, surviving streaks went
+`192, 1, 0, 2, 0, 1, 0, 1, 0, 2, 1` — wrong in *both* directions at once. At f0 it culled nothing
+while 15 streaks were genuinely covered; from f60 on it culled essentially everything, including
+under open sky. Rain vanishing from the whole world is worse than rain falling through a deck.
+
+**The likely cause, so nobody redoes the diagnosis:** the candidate set is too generous. The 120 m
+footprint ceiling lets a town-sized platform or shell mesh into the box list, and one of those
+covers all 81 samples at once. There is also a plain typo — the z arm of the proximity filter reads
+`> BOX + 60` where the x arm reads `> BOX`. Tighten the footprint cap to something roof-sized, fix
+the asymmetry, and re-run `node tools/harness/first-ten.mjs --tag <tag> --only d1,d2`. **The target
+is `live` staying near 192 in the open AND `under_cover` reaching 0 under the decks — both at once**,
+which is precisely the pair my version satisfied one at a time. Re-enabling is one line: pass
+`this._updateOverheadField(sim)` instead of `null`.
