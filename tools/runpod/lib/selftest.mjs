@@ -262,7 +262,7 @@ const arms = [
 ];
 
 async function withLocalAgent(body) {
-  const token = 'self-test-token-0123456789';
+  const token = 'self-test-token-0123456789abcdef0123456789';
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'runpod-agent-'));
   const scriptPath = path.join(dir, 'agent.py');
   fs.writeFileSync(scriptPath, podAgentScript());
