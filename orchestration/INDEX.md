@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `674d492a`: 967 tools, 157 reference
-items, 188 pieces in flight.
+so it cannot drift. Generated at `e75caee1`: 968 tools, 157 reference
+items, 189 pieces in flight.
 
-Its purpose is to stop 188+ concurrent agents each paying separately to discover the
+Its purpose is to stop 189+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -105,7 +105,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 42
+### `tools/` — 43
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -127,6 +127,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/corpus-index.mjs` — **no header comment**
 - `tools/cost-refresh.mjs` — Runs the cost instrument on the commit path, and never, ever blocks it.
 - `tools/cost-report.mjs` — The cost programme, drawn on the page the owner actually opens (COST.md §6).
+- `tools/cost-split-trial-dev.mjs` — tools/cost.mjs — THE COST INSTRUMENT (piece `COST-INSTRUMENT`; contract: orchestration/COST.md §6.1; corrected specification: orchestration/plans/COST-INSTRUMEN
 - `tools/cost.mjs` — tools/cost.mjs — THE COST INSTRUMENT (piece `COST-INSTRUMENT`; contract: orchestration/COST.md §6.1; corrected specification: orchestration/plans/COST-INSTRUMEN
 - `tools/dispatch-staleness.mjs` — re-run the MECHANICALLY CHECKABLE claims in a dispatch file and report which ones no longer hold.
 - `tools/dispatchable.mjs` — answer, before an agent is spawned, whether this piece needs one.
@@ -1380,11 +1381,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-map-defects-r1` | done |  | `corpus/90-verdicts/wave1/W1-MAP-DEFECTS-r1.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/fog-three-arms.png` |
+| `SPAWN-YAW` | done-and-banked |  | `orchestration/status/SPAWN-YAW.json` `game/src/sim/settlement.js` `game/src/engine.js` `game/src/main.js` `game/data/states/default.json` `tools/lib/opening.mjs` |
 | `W1-30-SHADOW-CASTERS-critic` | measuring | Finish the aerial arm capture; run the bands ownership probe; take the canopy motion seque | `orchestration/status/W1-30-SHADOW-CASTERS-critic.json` `tools/visual/w1-30-fog-owner-ab.mjs` `tools/visual/w1-30-shader-hook-collision.mjs` `tools/visual/w1-30-canopy-shimmer.mjs` `tools/visual/w1-30-deep-marshes-bands.mjs` |
 | `W1-MW-UI-REFS` | delivered | Nothing blocking. W1-DLG-TOPIC-WEB is a draft awaiting its first fresh reviewer-editor rou | `orchestration/status/W1-MW-UI-REFS.json` `corpus/70-visual/refs/morrowind/REF-A12c/REF-A12c-dialogue__mw-owner-20260814.png` `corpus/70-visual/refs/_provenance.json` `corpus/70-visual/refs/_computed.json` `corpus/70-visual/refs/MANIFEST.json` `corpus/70-visual/refs/make-manifest.py` |
 | `W1-30-SHADOW-CASTERS` | landed-motion-evidence-taken-pending-fresh-critic | A fresh critic on R1 first — largest blast radius, not in the brief, changes the atmospher | `game/src/world/province.js` `game/src/render/renderer.js` `tools/visual/w1-30-shadow-casters.mjs` `tools/visual/w1-30-heightfalloff-arm.mjs` `tools/visual/w1-30-terrain-acne-ab.mjs` `orchestration/status/W1-30-SHADOW-CASTERS.json` |
 | `W1-MAP-DEFECTS` | ? |  | `orchestration/status/W1-MAP-DEFECTS.json` `corpus/00-doctrine/AMENDMENT-W1-MAP-02.md` `game/src/ui/screens/map.js` `game/src/ui/screens/inventory.js` `game/src/ui/system.js` `tools/harness/map-probe.mjs` |
-| `SPAWN-YAW` | fix-landed-evidence-in-flight | collect the two runs, copy the frames to docs/shots/2026-08-14-spawn-yaw/, fold the 115 nu | `orchestration/status/SPAWN-YAW.json` `game/src/sim/settlement.js` `game/src/engine.js` `game/src/main.js` `game/data/states/default.json` `tools/lib/opening.mjs` |
 | `W1-30E-KIT-DEFECTS` | running |  | — |
 | `W1-30DE-REMEDIATION` | ? | none — report filed at reports/w1-30de-remediation/README.md. Soulrest street row stays bl | `orchestration/status/W1-30DE-REMEDIATION.json` `tools/visual/actor-orbit-holes.mjs` `tools/visual/actor-hole-control.mjs` `tools/visual/build-deck.mjs` `tools/visual/deck.json` `orchestration/status/W1-30D.md` |
 | `W1-14-r6` | ? | Fresh critic reruns the satisfied W1-14 seven-item native decision manifest and independen | `game/data/npcs/spellwrights.json` `game/src/engine.js` `game/src/save/state.js` `game/src/sim/magic/enchant-counter.js` `game/src/sim/magic/system.js` `orchestration/status/W1-14-r6.json` |
