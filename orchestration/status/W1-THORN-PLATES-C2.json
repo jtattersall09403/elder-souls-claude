@@ -1,0 +1,28 @@
+{
+  "task_id": "W1-THORN-PLATES-C2",
+  "chunk": "2 of 2 — builds what chunk 1's next_step names.",
+  "state": "in-progress",
+  "date": "2026-08-14",
+  "parent": "W1-THORN-PLATES",
+  "spec": "orchestration/status/W1-THORN-PLATES.json next_step + reports/thorn-plates/2026-08-14-thorn-plates.md §6",
+  "findings_could_not_do_first": [
+    "WIP — nothing concluded yet."
+  ],
+  "findings": [],
+  "files_touched": [
+    "orchestration/status/W1-THORN-PLATES-C2.json"
+  ],
+  "files_claimed": [
+    "orchestration/status/W1-THORN-PLATES-C2.json",
+    "reports/thorn-plates/",
+    "docs/shots/2026-08-14-thorn-plates/",
+    "corpus/90-verdicts/wave1/artifacts/W1-THORN-PLATES/",
+    "game/src/render/lib/kits.js",
+    "game/src/render/exterior.js",
+    "game/data/world/settlements/thorn.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["W1-30E-KIT-DEFECTS", "W1-30S", "W1-30E-builder", "W1-06-build", "W1-19-builder-production-continuation-20260813", "W1-30-P2"],
+  "overlap_note": "kits.js and exterior.js are shared with the pieces above (ownership.mjs reports 3 and 4 live pieces). Declared deliberately rather than left to read as a collision. My edits are additive and narrowly scoped: a new roof id in the roof table, GRAMMARS.thorn fields, and a thorn quay dressing block. Committing with --only.",
+  "next_step": "WIP"
+}

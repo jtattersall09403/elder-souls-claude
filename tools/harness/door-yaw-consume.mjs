@@ -106,11 +106,20 @@ window.__DYC = {
     if (E.combat && E.combat.player) E.combat.player.yaw = seed;
     if (E.sim.camera) { E.sim.camera.yaw = seed; E.sim.camera.yawRate = 0; }
     H.stepFrames(1);
+    // TIMED. The refinement scans up to 36 bearings x 21 rays x 12 steps against a cell of up to
+    // ~130 slabs when the proposal fails, and that runs inside the fixed step. A fix that turns a
+    // door into a visible hitch is not a fix, so the cost is measured rather than asserted to be
+    // small — and it is measured around the WHOLE door verb, which is the number a player feels.
+    const t0 = performance.now();
     const inRes = H.enterInterior(id);
+    const tEnter = performance.now() - t0;
     H.stepFrames(4);
+    const t1 = performance.now();
     const outRes = H.exitInterior();
+    const tExit = performance.now() - t1;
     H.stepFrames(4);
-    return { enter: inRes, exit: outRes, after: this.read() };
+    return { enter: inRes, exit: outRes, after: this.read(),
+      enter_ms: +tEnter.toFixed(2), exit_ms: +tExit.toFixed(2) };
   },
 };
 `;
@@ -215,6 +224,7 @@ const main = async () => {
     // And the PICTURE changed. Byte-identical PNGs from the same standing point would mean the
     // camera basis does not read sim.camera.yaw, which is the whole load-bearing half.
     picture_changed_when_perturbed: s.shot.bytes !== pt.shot.bytes,
+    door_cost_ms: { shipped_exit: s.exit_ms, removed_exit: rm.exit_ms, shipped_enter: s.enter_ms, removed_enter: rm.enter_ms },
     clearance_shipped_m: s.after.clearance_m, clearance_removed_m: rm.after.clearance_m,
     occluded_shipped: s.after.occluded_frac, occluded_removed: rm.after.occluded_frac,
   };
@@ -222,7 +232,7 @@ const main = async () => {
 
   say(`door-yaw-consume [${INTERIOR}] — ${out.arms.length} arms, ${out.orbit.length} orbit frames`);
   for (const a of out.arms) {
-    say(`  ${String(a.arm).padEnd(20)} cam ${String(a.after.sim_camera_yaw).padStart(6)}  body ${String(a.after.sim_player_yaw).padStart(6)}  combat ${String(a.after.combat_player_yaw).padStart(6)}  clear ${String(a.after.clearance_m).padStart(5)} m  occl ${a.after.occluded_frac}  source ${a.exit && a.exit.yaw_source}`);
+    say(`  ${String(a.arm).padEnd(20)} cam ${String(a.after.sim_camera_yaw).padStart(6)}  body ${String(a.after.sim_player_yaw).padStart(6)}  combat ${String(a.after.combat_player_yaw).padStart(6)}  clear ${String(a.after.clearance_m).padStart(5)} m  occl ${a.after.occluded_frac}  door ${String(a.exit_ms).padStart(6)} ms  source ${a.exit && a.exit.yaw_source}`);
   }
   const V = out.verdict;
   say('  CONSUMPTION:');

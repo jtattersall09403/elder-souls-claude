@@ -194,6 +194,44 @@ for (const f of questFiles) {
   });
 }
 
+/**
+ * S6 — CAN A PLAYER CHOOSE THEIR WAY INTO A DEAD END? Reported, deliberately NOT remedied.
+ *
+ * Found by driving the ladder rather than by reading it: on `the_imperial_assize` and
+ * `the_xul_aneekh` the driver completed every quest on the line and stopped at rank 6, because the
+ * rank-6 quests each carry a resolution that does not empty the chair. That is AUTHORED — the Wet
+ * Ledger says it in a journal entry (*"I am still at rank six with nowhere above me, and Tesh says
+ * that is not a wall, it is a fee"*) and then gives a second route in `Q-LEDG-14`. The question
+ * this check asks is whether the second route always exists, or whether a line can be closed by
+ * two ordinary choices.
+ *
+ * It is a WARN and not a fail because remedying it by putting the flag on the refusal would delete
+ * the design: a refusal that costs nothing is not a refusal. What a builder needs is another quest,
+ * which is authoring and not a data entry.
+ */
+{
+  const rows = [];
+  for (const f of gates.factions || []) {
+    const mine = allQuests.filter((q) => (q.faction || (q.rank_gate && q.rank_gate.faction)) === f.id);
+    for (const row of f.ranks || []) {
+      const ws = row.world_state && row.world_state.flag;
+      if (!ws) continue;
+      const carriers = mine.filter((q) => ((q.rank_gate && q.rank_gate.min_rank) ?? 99) < row.rank
+        && (q.resolutions || []).some((r) => ((((r.consequences || {}).world_flags) || []).includes(ws))));
+      // A carrier is ESCAPABLE if it has a resolution that finishes the quest without raising the flag.
+      const escapable = carriers.filter((q) => (q.resolutions || []).some((r) => !((((r.consequences || {}).world_flags) || []).includes(ws))));
+      if (carriers.length && carriers.length === escapable.length) {
+        rows.push({ faction: f.id, rank: row.rank, flag: ws, carriers: carriers.map((q) => q.id),
+          note: 'every quest that can raise this flag also has a resolution that finishes without raising it, and no other quest raises it — a player who takes that resolution on all of them is capped below this rank for the rest of the save' });
+      }
+    }
+  }
+  say('S6.a_wrong_choice_can_cap_the_ladder', rows.length ? 'WARN' : 'PASS', {
+    discriminating: false, ranks_at_risk: rows.length, rows,
+    not_remedied_here: 'Putting the flag on the refusal resolution would delete the authored cost of refusing. The remedy is another quest at that rank, which is authoring.',
+  });
+}
+
 // =============================================================== LIVE =======================
 const LINES = (gates.factions || []).map((f) => f.id);
 const REPS = Object.fromEntries((readJSON('game/data/factions/registry.json').factions || []).map((r) => [r.id, r.representative]));
@@ -214,12 +252,20 @@ if (!args['static-only'] && !args.staticOnly) {
   // `faction` field, so the mapping is done node-side off the book itself — which also keeps the
   // plan honest: it is every faction quest in `game/data/quests/**`, in rank order, not whatever
   // a harness census happened to return.
+  const LADDER_FLAGS = new Set();
+  for (const f of gates.factions || []) for (const r of f.ranks || []) if (r.world_state) LADDER_FLAGS.add(r.world_state.flag);
   const PLAN = {};
   for (const fid of LINES) {
     PLAN[fid] = allQuests
       .filter((q) => (q.faction || (q.rank_gate && q.rank_gate.faction)) === fid)
       .map((q) => ({ id: q.id, min_rank: (q.rank_gate && q.rank_gate.min_rank) || 0, giver: (q.giver && q.giver.npc_id) || null,
-        home: (q.giver && where.get(q.giver.npc_id)) || null }))
+        home: (q.giver && where.get(q.giver.npc_id)) || null,
+        // Which resolutions RAISE a ladder flag. The driver prefers one, and the reason is a
+        // finding rather than a convenience: on the Assize and the Xul-Aneekh the rank-6 quests
+        // each carry a REFUSAL resolution that deliberately does not empty the chair —
+        // `Q-LEDG-14`'s journal says so out loud, *"that is not a wall, it is a fee"* — so a
+        // driver that takes the first available resolution measures the refusal, not the ladder.
+        raises: (q.resolutions || []).map((r) => ({ id: r.id, flags: (((r.consequences || {}).world_flags) || []).filter((w) => LADDER_FLAGS.has(w)) })) }))
       .sort((a, b) => a.min_rank - b.min_rank);
   }
 
@@ -269,17 +315,17 @@ if (!args['static-only'] && !args.staticOnly) {
       maxOut(fid);
       const start = derived(fid).rank;
       const played = [];
-      const done = new Set();
+      const taken = new Set();
       for (let round = 0; round < 10; round++) {
         const before = derived(fid).rank;
         // Everything this rank is allowed to take. `open()` still applies every other term —
         // the rank gate, the reputation gate, the topic, the giver's disposition — and refuses
         // in its own words if one is unmet; nothing here bypasses a gate.
-        const candidates = (PLAN[fid] || []).filter((q) => !done.has(q.id) && q.min_rank <= before);
+        const candidates = (PLAN[fid] || []).filter((q) => !taken.has(q.id) && q.min_rank <= before);
         let acted = 0;
         for (const o of candidates) {
           const qid = o.id;
-          done.add(qid);
+          taken.add(qid);
           if (o.home) { try { H.populateSettlement(o.home); } catch { /* */ } }
           try { H.questPrepareOffer(qid); } catch { /* */ }
           try { if (o.giver) H.setDisposition(o.giver, 100); } catch { /* */ }
@@ -287,12 +333,13 @@ if (!args['static-only'] && !args.staticOnly) {
           try { opened = H.questOpen(qid); } catch (e) { played.push({ quest: qid, open_error: String(e).slice(0, 120) }); continue; }
           if (!opened || opened.ok !== true) { played.push({ quest: qid, refused: opened && opened.reason }); continue; }
           const res = H.questResolutions(qid) || [];
-          const pick = res.find((r) => r.available) || res[0];
+          const raisers = new Set((o.raises || []).filter((r) => r.flags.length).map((r) => r.id));
+          const pick = res.find((r) => r.available && raisers.has(r.id)) || res.find((r) => r.available) || res[0];
           if (!pick) { played.push({ quest: qid, no_resolution: true }); continue; }
-          let done = null;
-          try { done = H.questResolve(qid, pick.id); } catch (e) { played.push({ quest: qid, resolve_error: String(e).slice(0, 120) }); continue; }
-          played.push({ quest: qid, resolution: pick.id, ok: !!(done && done.ok) });
-          if (done && done.ok) acted++;
+          let closed = null;
+          try { closed = H.questResolve(qid, pick.id); } catch (e) { played.push({ quest: qid, resolve_error: String(e).slice(0, 120) }); continue; }
+          played.push({ quest: qid, resolution: pick.id, ok: !!(closed && closed.ok), why: closed && closed.reason });
+          if (closed && closed.ok) acted++;
         }
         const after = derived(fid).rank;
         if (after >= 7) break;

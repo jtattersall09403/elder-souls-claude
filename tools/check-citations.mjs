@@ -412,7 +412,10 @@ function nonEmptyDir(root, rel) {
 // boundaries prose actually uses — table cells, sentence ends, semicolons, em dashes — and require
 // the resolvable name to sit inside the same segment as the words of absence.
 function segments(line) {
-  return line
+  // `~~struck~~` is this project's own append-only marker for "this was believed and no longer is".
+  // A struck claim is the record, not a live assertion, so it is removed before segmenting — that
+  // is exactly what a correct fix looks like here, and re-firing on it would punish the repair.
+  return line.replace(/~~[^~]*~~/g, ' ')
     .split('|')                                              // a markdown table cell is its own claim
     .flatMap((s) => s.split(/(?<=[.;])\s+|\s+—\s+|\s+--\s+/)) // sentence / clause boundaries
     .filter((s) => s.trim().length);
@@ -802,7 +805,7 @@ function main() {
   const argv = process.argv.slice(2);
   if (argv.includes('--self-test')) process.exit(selfTest());
   const only = (argv.find((a) => a.startsWith('--only='))?.slice(7)
-    || (argv.includes('--only') ? argv[argv.indexOf('--only') + 1] : '') || 'A,B,C')
+    || (argv.includes('--only') ? argv[argv.indexOf('--only') + 1] : '') || 'A,B,C,D,E')
     .toUpperCase().split(',').map((s) => s.trim()).filter(Boolean);
   const asJson = argv.includes('--json');
 
