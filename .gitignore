@@ -21,3 +21,16 @@ corpus/70-visual/refs/video/*.webm
 # committed artefacts and are deliberately NOT ignored.
 reports/visual-truth/deck/*/frames/
 reports/visual-truth/deck-motion/*/frames/
+
+# land.mjs conflict rescues. When land.mjs resolves a conflict it preserves the losing side here,
+# which is a genuine safety net and has already been checked once (2026-08-14) and found to hold
+# only a correctly-superseded older file — nothing was lost.
+#
+# But 194 of its first 198 files were rescue copies of GENERATED files (docs/index.html,
+# docs/progress.html, docs/status.json, orchestration/INDEX.md), 48 MB of churn that regenerates on
+# the next publish. Those are ignored; rescues of real SOURCE files are deliberately NOT ignored, so
+# that if the net ever catches something that matters, it shows up in `git status` and someone looks.
+reports/land-rescue/**/docs/
+reports/land-rescue/**/orchestration/INDEX.md
+reports/land-rescue/**/*.error.json
+docs/data/cost-ledger.error.json

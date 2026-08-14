@@ -13,6 +13,11 @@ import { computeReport, discoverVerdicts } from './verdict-staleness.mjs';
 // its own — the instrument is the only thing that prices tokens (rule 10). costHtml() never
 // throws: this page is regenerated inside the pre-commit hook.
 import { costHtml, COST_CSS } from './cost-report.mjs';
+// The roadmap tracker (owner: "I MUST always always have a way to instantly check how far
+// through the roadmap we are ... it must always be correct"). Same rule as the cost programme:
+// this file computes no progress of its own — tools/roadmap.mjs verifies every claim against its
+// evidence and writes docs/data/roadmap.json; roadmapHtml() only draws that file.
+import { roadmapHtml, ROADMAP_CSS } from './roadmap-report.mjs';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const P = (...a) => join(ROOT, ...a);
@@ -247,12 +252,15 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 .shots img{width:100%;display:block}
 .shots figcaption{font-size:10px;color:var(--dim);padding:6px 8px;word-break:break-all}
 ${COST_CSS}
+${ROADMAP_CSS}
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
   <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated ${esc(now)} &middot; auto-refresh 20s</div>
 </header>
 <div class="wrap">
+
+${roadmapHtml()}
 
 ${costHtml()}
 

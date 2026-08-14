@@ -1,0 +1,125 @@
+{
+  "schema": "elder-souls/roadmap-summary@1",
+  "generated_at": "2026-08-14T17:54:50.041Z",
+  "commit": "f9b9305b",
+  "total_units": 8,
+  "done_units": 0,
+  "in_progress_units": 5,
+  "not_started_units": 2,
+  "blocked_units": 0,
+  "unverified_units": 1,
+  "unevidenced_units": 0,
+  "pct_done": 0,
+  "current_step": {
+    "id": "step-1",
+    "title": "Surfaces respond to light"
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Surfaces respond to light",
+      "visible_outcome": "Stone reads as stone, wood as wood, leather as leather. Objects sit on the ground instead of floating on it. Shadowed areas have detail in them instead of being black.",
+      "claimed_state": "in_progress",
+      "effective_state": "in_progress",
+      "closes_when": "Protocol A is re-run blind against the same plates and we stop losing 5 of 5. Not when the orphan count reaches zero — statistics can fail a build and can never pass one.",
+      "failing_evidence": [],
+      "substeps": [
+        {
+          "id": "step-1a",
+          "title": "Bind the material set — the orphan fix",
+          "visible_outcome": "The player's body and every affected surface (305 of 406 materials) actually run the surface shader whose uniforms they already carry, instead of the uniforms sitting unread in userData.",
+          "claimed_state": "in_progress",
+          "effective_state": "UNVERIFIED",
+          "closes_when": "The CONSUMPTION arms (before/after) are filed and a hardware before/after sweep, both arms on the same Pod and the same GPU, confirms the orphan count went 305 to 0 and the rendered pixels differ.",
+          "failing_evidence": [
+            "orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json#state = \"done\", expected one of [\"in_progress\"]"
+          ]
+        },
+        {
+          "id": "step-1b",
+          "title": "Contact shadows and ambient occlusion",
+          "visible_outcome": "Objects sit on the ground instead of floating on it — the defect judges named 5 of 5, the most universal finding in the blind round.",
+          "claimed_state": "not_started",
+          "effective_state": "not_started",
+          "closes_when": "A contact-shadow or AO term is present in the render path (not just declared in FEATURE_CONSUMERS) and a before/after capture shows darkening at contact points that was not there before.",
+          "failing_evidence": []
+        },
+        {
+          "id": "step-1c",
+          "title": "Ambient/GI fill with tone-mapped shadow lift",
+          "visible_outcome": "Shadowed areas have detail in them instead of being crushed to black.",
+          "claimed_state": "not_started",
+          "effective_state": "not_started",
+          "closes_when": "An ambient/GI fill term is present in the render path and a before/after capture shows detail recoverable in a previously-black shadow region.",
+          "failing_evidence": []
+        }
+      ]
+    },
+    {
+      "id": "step-2",
+      "title": "The first five minutes look and behave right",
+      "visible_outcome": "You come out of character creation in Thorn, facing somewhere sensible, in a town that looks like a Black Marsh tidewater settlement, and you can walk out of the door without being inside another building.",
+      "claimed_state": "in_progress",
+      "effective_state": "in_progress",
+      "closes_when": "A hardware capture of the real opening path, many angles plus motion, looks right to a person.",
+      "failing_evidence": [],
+      "substeps": null
+    },
+    {
+      "id": "step-2b",
+      "title": "Buildings are not inside each other",
+      "visible_outcome": "Doors open into streets rather than into other buildings.",
+      "claimed_state": "in_progress",
+      "effective_state": "in_progress",
+      "closes_when": "The 83 interpenetrating pairs across 8 of 8 settlements are resolved by fixing the axis-aligned-vs-rotated comparison defect in the shrink pass and _deepOverlaps(), with 72 of 83 separating without moving a building.",
+      "failing_evidence": [],
+      "substeps": null
+    },
+    {
+      "id": "step-3",
+      "title": "Conversation has depth, and looks like Morrowind",
+      "visible_outcome": "Asking about one topic opens others, so a conversation branches outward instead of being a flat list; speakers disagree with each other; and the window looks like Morrowind's.",
+      "claimed_state": "in_progress",
+      "effective_state": "in_progress",
+      "closes_when": "Topic visibility and reachability rise substantially past their current measured floors (22% -> 50% and climbing across landed batches; ten topics reachable from no greeting; 100 of 865 npc.topics entries name nothing; 52-61% of NPCs advertise no subject of their own) and the dialogue window matches the vendored Morrowind screenshot REF-A12c.",
+      "failing_evidence": [],
+      "substeps": null
+    },
+    {
+      "id": "step-4",
+      "title": "The quests that exist are reachable",
+      "visible_outcome": "The faction ladders go past rank 5, opening 21 already-authored quests that no player can currently reach.",
+      "claimed_state": "in_progress",
+      "effective_state": "in_progress",
+      "closes_when": "Twelve world_flags entries open the ladders past rank 5, and W1-18's quest delivery (563 records, all three audit numbers hitting their claimed values) stands independently critiqued as both restored and good.",
+      "failing_evidence": [],
+      "substeps": null
+    },
+    {
+      "id": "step-5",
+      "title": "Combat feel",
+      "visible_outcome": "Fights that feel like Souls — readable animation, weight, a difficulty curve worth climbing, and a moment-to-moment feel worth repeating.",
+      "claimed_state": "in_progress",
+      "effective_state": "in_progress",
+      "closes_when": "Human judges actually fight the game (not view charts of enemy behaviour) and rate the animation, difficulty and feel — named explicitly by the owner as its own step, not a background property.",
+      "failing_evidence": [],
+      "substeps": null
+    }
+  ],
+  "standing_work": [
+    {
+      "id": "standing-repo-integrity",
+      "title": "Repo integrity — the documents that direct work must not hold false beliefs about what the repo contains",
+      "claimed_state": "in_progress",
+      "effective_state": "in_progress",
+      "failing_evidence": []
+    },
+    {
+      "id": "standing-unjudged-backlog",
+      "title": "The unjudged backlog — 126 pieces built and never independently checked",
+      "claimed_state": "in_progress",
+      "effective_state": "in_progress",
+      "failing_evidence": []
+    }
+  ]
+}

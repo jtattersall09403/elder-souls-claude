@@ -94,31 +94,134 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 .cost-foot{font-size:11px;color:var(--dim);line-height:1.6;margin-top:4px}
 @media(max-width:700px){.cost-hero{grid-template-columns:1fr}.cost-hero-n{font-size:34px}}
 
+
+.rm-strip{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.6}
+.rm-strip a{color:var(--gold);text-decoration:none;border-bottom:1px dotted var(--gold)}
+.rm-strip b{color:var(--ink)}
+.rm-strip-dim{color:var(--dim)}
+.rm-banner{border:1px solid var(--line);border-radius:6px;padding:12px 15px;font-size:12px;line-height:1.7;margin-bottom:14px}
+.rm-wait{background:var(--panel);color:var(--dim)}
+.rm-bad{border-color:#6b2f22;background:linear-gradient(180deg,#241512,#1b1813);color:#e8b6a6}
+.rm-hero{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;background:linear-gradient(180deg,#221d15,#1b1813);border:1px solid var(--gold);border-radius:6px;padding:16px 20px;margin-bottom:10px}
+.rm-hero-n{font-size:46px;font-weight:700;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums}
+.rm-hero-s{font-size:12px;color:var(--dim);line-height:1.7}
+.rm-flags{margin-top:8px;font-size:11px;line-height:1.7}
+.rm-note{font-size:11px;color:var(--dim);margin:0 0 12px;line-height:1.6}
+.rm-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:18px}
+.rm-scroll table{min-width:640px;width:100%}
+.rm-outcome{font-size:11px;color:var(--dim);margin-top:3px}
+.rm-closes{font-size:11px;color:var(--dim);max-width:280px}
+.rm-claim{font-size:10px;color:var(--dim)}
+.rm-fail{font-size:11px;color:#e08a76;margin-top:4px}
+.rm-standing-h{margin-top:0}
+.gold{color:var(--gold)}
+
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-14 17:41:36Z &middot; auto-refresh 20s</div>
+  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-14 17:55:23Z &middot; auto-refresh 20s</div>
 </header>
 <div class="wrap">
 
+<h2 id="roadmap">Roadmap progress <span class="dimtext">at any arbitrary point in time, and it must always be correct</span></h2>
+<div class="rm-hero">
+  <div class="rm-hero-n">0%</div>
+  <div class="rm-hero-s">
+    <b>0/8</b> steps verified done, at commit <code>f9b9305</code>, read 2026-08-14T17:54:50.041Z.<br>
+    Currently on <b>Surfaces respond to light</b> (<code>step-1</code>).<br>
+    5 in progress &middot; 2 not started.
+    <div class="rm-flags"><b class="bad">1 UNVERIFIED</b> claim(s) &mdash; a step said done or in-progress whose named evidence did not check out. Not counted toward the percentage.</div>
+  </div>
+</div>
+<div class="rm-note">Every "done" or "in progress" claim below is verified against named evidence &mdash; a status file, a gate, an instrument &mdash; every time this page regenerates. A step whose evidence is missing reads <b class="bad">UNVERIFIED</b>, not done. Source: <code>orchestration/roadmap.json</code> &middot; instrument: <code>tools/roadmap.mjs</code>.</div>
+<div class="rm-scroll"><table><tr><th>id</th><th>state</th><th>step</th><th>closes when</th></tr>
+<tr>
+    <td ><code>step-1</code></td>
+    <td class="gold">in_progress</td>
+    <td>Surfaces respond to light<div class="rm-outcome">Stone reads as stone, wood as wood, leather as leather. Objects sit on the ground instead of floating on it. Shadowed areas have detail in them instead of being black.</div></td>
+    <td class="rm-closes">Protocol A is re-run blind against the same plates and we stop losing 5 of 5. Not when the orphan count reaches zero — statistics can fail a build and can never pass one.</td>
+  </tr><tr>
+    <td style="padding-left:26px"><code>step-1a</code></td>
+    <td class="bad">UNVERIFIED<div class="rm-claim">claimed: in_progress</div></td>
+    <td>Bind the material set — the orphan fix<div class="rm-outcome">The player's body and every affected surface (305 of 406 materials) actually run the surface shader whose uniforms they already carry, instead of the uniforms sitting unread in userData.</div><div class="rm-fail">&#10007; orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json#state = &quot;done&quot;, expected one of [&quot;in_progress&quot;]</div></td>
+    <td class="rm-closes">The CONSUMPTION arms (before/after) are filed and a hardware before/after sweep, both arms on the same Pod and the same GPU, confirms the orphan count went 305 to 0 and the rendered pixels differ.</td>
+  </tr>
+<tr>
+    <td style="padding-left:26px"><code>step-1b</code></td>
+    <td class="dimtext">not started</td>
+    <td>Contact shadows and ambient occlusion<div class="rm-outcome">Objects sit on the ground instead of floating on it — the defect judges named 5 of 5, the most universal finding in the blind round.</div></td>
+    <td class="rm-closes">A contact-shadow or AO term is present in the render path (not just declared in FEATURE_CONSUMERS) and a before/after capture shows darkening at contact points that was not there before.</td>
+  </tr>
+<tr>
+    <td style="padding-left:26px"><code>step-1c</code></td>
+    <td class="dimtext">not started</td>
+    <td>Ambient/GI fill with tone-mapped shadow lift<div class="rm-outcome">Shadowed areas have detail in them instead of being crushed to black.</div></td>
+    <td class="rm-closes">An ambient/GI fill term is present in the render path and a before/after capture shows detail recoverable in a previously-black shadow region.</td>
+  </tr>
+<tr>
+    <td ><code>step-2</code></td>
+    <td class="gold">in_progress</td>
+    <td>The first five minutes look and behave right<div class="rm-outcome">You come out of character creation in Thorn, facing somewhere sensible, in a town that looks like a Black Marsh tidewater settlement, and you can walk out of the door without being inside another building.</div></td>
+    <td class="rm-closes">A hardware capture of the real opening path, many angles plus motion, looks right to a person.</td>
+  </tr>
+<tr>
+    <td ><code>step-2b</code></td>
+    <td class="gold">in_progress</td>
+    <td>Buildings are not inside each other<div class="rm-outcome">Doors open into streets rather than into other buildings.</div></td>
+    <td class="rm-closes">The 83 interpenetrating pairs across 8 of 8 settlements are resolved by fixing the axis-aligned-vs-rotated comparison defect in the shrink pass and _deepOverlaps(), with 72 of 83 separating without moving a building.</td>
+  </tr>
+<tr>
+    <td ><code>step-3</code></td>
+    <td class="gold">in_progress</td>
+    <td>Conversation has depth, and looks like Morrowind<div class="rm-outcome">Asking about one topic opens others, so a conversation branches outward instead of being a flat list; speakers disagree with each other; and the window looks like Morrowind's.</div></td>
+    <td class="rm-closes">Topic visibility and reachability rise substantially past their current measured floors (22% -&gt; 50% and climbing across landed batches; ten topics reachable from no greeting; 100 of 865 npc.topics entries name nothing; 52-61% of NPCs advertise no subject of their own) and the dialogue window matches the vendored Morrowind screenshot REF-A12c.</td>
+  </tr>
+<tr>
+    <td ><code>step-4</code></td>
+    <td class="gold">in_progress</td>
+    <td>The quests that exist are reachable<div class="rm-outcome">The faction ladders go past rank 5, opening 21 already-authored quests that no player can currently reach.</div></td>
+    <td class="rm-closes">Twelve world_flags entries open the ladders past rank 5, and W1-18's quest delivery (563 records, all three audit numbers hitting their claimed values) stands independently critiqued as both restored and good.</td>
+  </tr>
+<tr>
+    <td ><code>step-5</code></td>
+    <td class="gold">in_progress</td>
+    <td>Combat feel<div class="rm-outcome">Fights that feel like Souls — readable animation, weight, a difficulty curve worth climbing, and a moment-to-moment feel worth repeating.</div></td>
+    <td class="rm-closes">Human judges actually fight the game (not view charts of enemy behaviour) and rate the animation, difficulty and feel — named explicitly by the owner as its own step, not a background property.</td>
+  </tr>
+</table></div>
+<h3 class="rm-standing-h">Standing work <span class="dimtext">(no closing condition by design &mdash; not counted above)</span></h3>
+<div class="rm-scroll"><table><tr><th>id</th><th>state</th><th>work</th><th></th></tr>
+<tr>
+      <td><code>standing-repo-integrity</code></td>
+      <td class="gold">in_progress</td>
+      <td>Repo integrity — the documents that direct work must not hold false beliefs about what the repo contains</td>
+      <td></td>
+    </tr>
+<tr>
+      <td><code>standing-unjudged-backlog</code></td>
+      <td class="gold">in_progress</td>
+      <td>The unjudged backlog — 126 pieces built and never independently checked</td>
+      <td></td>
+    </tr>
+</table></div>
+
 <section class="cost"><h2 id="cost">What this is costing <span class="dimtext">(the efficiency programme &mdash; <code>orchestration/COST.md</code>)</span></h2>
-<div class="cost-banner cost-banner-bad"><b>Cost regeneration FAILED at 2026-08-14 17:41Z.</b> tools/cost.mjs exited 1: cost: FAILED — no Claude Code project transcripts found under /home/runner/.claude/projects — this is expected on a CI runner or any machine that never ran the agent fleet itself, and NOT a reason to publish an empty ledger over a real one.<br>
-      The figures below are the <b>last good reading, taken 2026-08-14 17:15Z &mdash; 26 min ago</b>. They are not current. Fix the instrument before quoting them.</div><div class="cost-hero">
+<div class="cost-banner cost-banner-ok">Reading taken <b>2026-08-14 17:54Z</b> (seconds ago) at commit <code>f9b9305</code>, and it refreshes on every bank.</div><div class="cost-hero">
   <div class="cost-hero-main">
     <div class="cost-hero-l">Spend to date</div>
-    <div class="cost-hero-n">$7,794.54</div>
-    <div class="cost-hero-s">2026-08-05 22:16Z &rarr; 2026-08-14 17:15Z &middot; 211 h of fleet runtime</div>
-    <div class="cost-hero-s" style="margin-top:8px">Per hour of <b>active_clock_hours</b>: 62 active h of 211 elapsed &middot; 887 agent-hours. Idle hours are excluded, or switching the fleet off would improve the metric.</div>
+    <div class="cost-hero-n">$7,828.32</div>
+    <div class="cost-hero-s">2026-08-05 22:16Z &rarr; 2026-08-14 17:54Z &middot; 211.6 h of fleet runtime</div>
+    <div class="cost-hero-s" style="margin-top:8px">Per hour of <b>active_clock_hours</b>: 62 active h of 211.6 elapsed &middot; 891 agent-hours. Idle hours are excluded, or switching the fleet off would improve the metric.</div>
     
-    <div class="cost-caveat cost-caveat-ok">Read <b>512</b> of 512 transcript files (0.78 GB) &mdash; complete.</div>
+    <div class="cost-caveat cost-caveat-ok">Read <b>516</b> of 516 transcript files (0.78 GB) &mdash; complete.</div>
   </div>
   <div class="cost-hero-side">
-    <div class="cost-tile"><div class="cost-tile-v">$19.62<span class="cost-per">/h</span></div>
+    <div class="cost-tile"><div class="cost-tile-v">$53.40<span class="cost-per">/h</span></div>
       <div class="cost-tile-l">Burn rate now</div>
       <div class="cost-tile-s">over the last 1 h</div></div>
-    <div class="cost-tile"><div class="cost-tile-v">$125.72<span class="cost-per">/h</span></div>
+    <div class="cost-tile"><div class="cost-tile-v">$126.26<span class="cost-per">/h</span></div>
       <div class="cost-tile-l">C/H &mdash; the headline metric</div>
-      <div class="cost-tile-s">108.5% of baseline &middot; bar is 25%</div></div>
+      <div class="cost-tile-s">109% of baseline &middot; bar is 25%</div></div>
     <div class="cost-tile"><div class="cost-tile-v">$8.79<span class="cost-per">/agent-h</span></div>
       <div class="cost-tile-l">Cost per agent-hour</div>
       <div class="cost-tile-s">100.9% of baseline &mdash; if this did not fall, the fleet just got smaller</div></div>
@@ -126,8 +229,8 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </div><div class="cost-guards">
   <div class="cost-guards-h">The guards. <span class="dimtext">A cost figure published without these is not a result &mdash; C/H alone is gamed by running fewer agents.</span></div>
   <div class="cost-tiles">
-    <div class="cost-tile cost-guard"><div class="cost-tile-v ok">14.3</div>
-    <div class="cost-tile-l">G1 &mdash; mean concurrent agents</div><div class="cost-tile-s"><span class="ok">&#10003;</span> floor 12 &middot; over 1 h<br>14.4 alive on the second reading</div></div>
+    <div class="cost-tile cost-guard"><div class="cost-tile-v ok">14.4</div>
+    <div class="cost-tile-l">G1 &mdash; mean concurrent agents</div><div class="cost-tile-s"><span class="ok">&#10003;</span> floor 12 &middot; over 1 h<br>14.5 alive on the second reading</div></div>
     <div class="cost-tile cost-guard"><div class="cost-tile-v ok">3.7</div>
     <div class="cost-tile-l">G2a &mdash; verdict score <span class="cost-weak">tripwire, low power</span></div><div class="cost-tile-s"><span class="ok">&#10003;</span> baseline &mdash; / 10 &middot; n=78 &middot; power low<br>One-sided and under-powered: it cannot prove quality held, only shout if it falls.</div></div>
     <div class="cost-tile cost-guard"><div class="cost-tile-v ok">&mdash;</div>
@@ -137,7 +240,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
   </div>
 </div>
 <div class="cost-panel"><h3>C/H — model spend per hour of fleet runtime <span class="cost-unit">$/h</span> <span class="cost-n">32 measurements</span></h3>
-<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="C/H — model spend per hour of fleet runtime"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$80.34</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$160.68</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$241.02</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$321.36</text><line x1="62" x2="792" y1="114.23848524528134" y2="114.23848524528134" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="118.23848524528134" fill="#9a8f79" font-size="11">baseline $115.88</text><line x1="62" x2="792" y1="151.5596213113203" y2="151.5596213113203" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="155.5596213113203" fill="#7d9a5a" font-size="11">target $28.97 · 25% bar</text><polyline points="62.0,148.3 89.8,160.3 96.8,125.6 103.7,144.2 110.7,125.5 117.6,153.8 124.6,129.6 131.5,122.6 138.5,100.3 145.4,88.5 152.4,163.2 173.2,86.6 180.2,99.3 187.1,119.1 194.1,90.6 201.0,110.0 208.0,96.6 215.0,111.3 221.9,109.6 228.9,77.6 235.8,99.8 242.8,70.9 249.7,106.3 256.7,121.7 263.6,132.0 270.6,107.7 277.5,117.0 764.2,104.3 771.1,40.8 778.1,129.4 785.0,67.1 792.0,114.9" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
+<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="C/H — model spend per hour of fleet runtime"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$80.34</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$160.68</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$241.02</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$321.36</text><line x1="62" x2="792" y1="114.23848524528134" y2="114.23848524528134" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="118.23848524528134" fill="#9a8f79" font-size="11">baseline $115.88</text><line x1="62" x2="792" y1="151.5596213113203" y2="151.5596213113203" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="155.5596213113203" fill="#7d9a5a" font-size="11">target $28.97 · 25% bar</text><polyline points="62.0,148.3 89.8,160.3 96.8,125.6 103.7,144.2 110.7,125.5 117.6,153.8 124.6,129.6 131.5,122.6 138.5,100.3 145.4,88.5 152.4,163.2 173.2,86.6 180.2,99.3 187.1,119.1 194.1,90.6 201.0,110.0 208.0,96.6 215.0,111.3 221.9,109.6 228.9,77.6 235.8,99.8 242.8,70.9 249.7,106.3 256.7,121.7 263.6,132.0 270.6,107.7 277.5,117.0 764.2,104.3 771.1,40.8 778.1,129.4 785.0,67.1 792.0,107.6" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
 $36.56 per hour
 commit 70498c0
 measured over 2 h</title><circle cx="62.0" cy="148.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 06:00Z
@@ -226,16 +329,16 @@ $286.93 per hour
 commit a148758
 measured over 2 h</title><circle cx="771.1" cy="40.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 12:00Z
 $80.60 per hour
-commit 390c795
+commit 448b76a
 measured over 2 h</title><circle cx="778.1" cy="129.4" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 14:00Z
 $225.63 per hour
-commit cbb77ce
+commit 9fd8d3f
 measured over 2 h</title><circle cx="785.0" cy="67.1" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 16:00Z
-$114.40 per hour
-commit c6d6d20
-measured over 2 h</title><circle cx="792.0" cy="114.9" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="104.87403099810308" fill="#3987e5" font-size="12" font-weight="600">$114.40/h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 16:00Z</text></svg></div></div>
+$131.28 per hour
+commit f9b9305
+measured over 2 h</title><circle cx="792.0" cy="107.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="97.62537403348752" fill="#3987e5" font-size="12" font-weight="600">$131.28/h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 16:00Z</text></svg></div></div>
 <div class="cost-panel"><h3>Cost per agent-hour — the diagnostic that proves efficiency, not idling <span class="cost-unit">$/agent-h</span> <span class="cost-n">32 measurements</span></h3>
-<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="Cost per agent-hour — the diagnostic that proves efficiency, not idling"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$3.14</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$6.28</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$9.42</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$12.57</text><line x1="62" x2="792" y1="68.34969442322384" y2="68.34969442322384" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="72.34969442322384" fill="#9a8f79" font-size="11">baseline $8.71</text><line x1="62" x2="792" y1="140.05996944232237" y2="140.05996944232237" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="144.05996944232237" fill="#7d9a5a" font-size="11">target $2.18</text><polyline points="62.0,143.9 89.8,152.0 96.8,127.7 103.7,118.0 110.7,40.8 117.6,111.6 124.6,84.1 131.5,67.8 138.5,82.6 145.4,67.5 152.4,160.7 173.2,59.8 180.2,72.1 187.1,103.6 194.1,97.0 201.0,111.0 208.0,111.7 215.0,107.8 221.9,114.4 228.9,100.9 235.8,105.4 242.8,99.6 249.7,93.7 256.7,80.8 263.6,109.4 270.6,114.4 277.5,119.4 764.2,91.3 771.1,76.5 778.1,133.5 785.0,84.1 792.0,128.1" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
+<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="Cost per agent-hour — the diagnostic that proves efficiency, not idling"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$3.14</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$6.28</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$9.42</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$12.57</text><line x1="62" x2="792" y1="68.34969442322384" y2="68.34969442322384" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="72.34969442322384" fill="#9a8f79" font-size="11">baseline $8.71</text><line x1="62" x2="792" y1="140.05996944232237" y2="140.05996944232237" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="144.05996944232237" fill="#7d9a5a" font-size="11">target $2.18</text><polyline points="62.0,143.9 89.8,152.0 96.8,127.7 103.7,118.0 110.7,40.8 117.6,111.6 124.6,84.1 131.5,67.8 138.5,82.6 145.4,67.5 152.4,160.7 173.2,59.8 180.2,72.1 187.1,103.6 194.1,97.0 201.0,111.0 208.0,111.7 215.0,107.8 221.9,114.4 228.9,100.9 235.8,105.4 242.8,99.6 249.7,93.7 256.7,80.8 263.6,109.4 270.6,114.4 277.5,119.4 764.2,91.3 771.1,76.5 778.1,133.5 785.0,84.1 792.0,127.0" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
 $1.83 per agent-hour
 commit 70498c0
 measured over 2 h</title><circle cx="62.0" cy="143.9" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 06:00Z
@@ -324,117 +427,117 @@ $7.97 per agent-hour
 commit a148758
 measured over 2 h</title><circle cx="771.1" cy="76.5" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 12:00Z
 $2.78 per agent-hour
-commit 390c795
+commit 448b76a
 measured over 2 h</title><circle cx="778.1" cy="133.5" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 14:00Z
 $7.28 per agent-hour
-commit cbb77ce
+commit 9fd8d3f
 measured over 2 h</title><circle cx="785.0" cy="84.1" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 16:00Z
-$3.27 per agent-hour
-commit c6d6d20
-measured over 2 h</title><circle cx="792.0" cy="128.1" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="118.08995416348358" fill="#d95926" font-size="12" font-weight="600">$3.27/agent-h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 16:00Z</text></svg></div></div>
+$3.37 per agent-hour
+commit f9b9305
+measured over 2 h</title><circle cx="792.0" cy="127.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="116.99178762414057" fill="#d95926" font-size="12" font-weight="600">$3.37/agent-h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 16:00Z</text></svg></div></div>
 <div class="cost-panel"><h3>G1 — mean concurrent agents, on the same clock as the cost <span class="cost-unit">agents</span> <span class="cost-n">32 measurements</span></h3>
-<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="G1 — mean concurrent agents, on the same clock as the cost"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">0</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">10.4</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">20.7</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">31.1</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">41.4</text><line x1="62" x2="792" y1="124.03861003861005" y2="124.03861003861005" stroke="#c8a253" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="128.03861003861005" fill="#c8a253" font-size="11">floor 12</text><polyline points="62.0,97.4 89.8,137.4 96.8,74.1 103.7,127.4 110.7,137.4 117.6,147.3 124.6,127.4 131.5,127.4 138.5,97.4 145.4,97.4 152.4,144.0 173.2,100.7 180.2,104.1 187.1,100.7 194.1,70.8 201.0,77.4 208.0,54.1 215.0,84.1 221.9,70.8 228.9,47.4 235.8,70.8 242.8,40.8 249.7,94.1 256.7,120.7 263.6,114.0 270.6,67.4 277.5,74.1 764.2,94.1 771.1,44.1 778.1,67.4 785.0,60.8 792.0,47.4" fill="none" stroke="#199e70" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
+<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="G1 — mean concurrent agents, on the same clock as the cost"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">0</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">10.9</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">21.8</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">32.8</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">43.7</text><line x1="62" x2="792" y1="126.0879120879121" y2="126.0879120879121" stroke="#c8a253" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="130.08791208791212" fill="#c8a253" font-size="11">floor 12</text><polyline points="62.0,100.8 89.8,138.7 96.8,78.7 103.7,129.2 110.7,138.7 117.6,148.2 124.6,129.2 131.5,129.2 138.5,100.8 145.4,100.8 152.4,145.0 173.2,104.0 180.2,107.1 187.1,104.0 194.1,75.5 201.0,81.9 208.0,59.7 215.0,88.2 221.9,75.5 228.9,53.4 235.8,75.5 242.8,47.1 249.7,97.7 256.7,122.9 263.6,116.6 270.6,72.4 277.5,78.7 764.2,97.7 771.1,50.3 778.1,72.4 785.0,66.1 792.0,40.8" fill="none" stroke="#199e70" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
 20 agents
 commit 70498c0
-measured over 2 h</title><circle cx="62.0" cy="97.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 06:00Z
+measured over 2 h</title><circle cx="62.0" cy="100.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 06:00Z
 8 agents
 commit 43ad5db
-measured over 2 h</title><circle cx="89.8" cy="137.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 08:00Z
+measured over 2 h</title><circle cx="89.8" cy="138.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 08:00Z
 27 agents
 commit a75ba7e
-measured over 2 h</title><circle cx="96.8" cy="74.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 10:00Z
+measured over 2 h</title><circle cx="96.8" cy="78.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 10:00Z
 11 agents
 commit 76e88d5
-measured over 2 h</title><circle cx="103.7" cy="127.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 12:00Z
+measured over 2 h</title><circle cx="103.7" cy="129.2" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 12:00Z
 8 agents
 commit eeeaad2
-measured over 2 h</title><circle cx="110.7" cy="137.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 14:00Z
+measured over 2 h</title><circle cx="110.7" cy="138.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 14:00Z
 5 agents
 commit f298f82
-measured over 2 h</title><circle cx="117.6" cy="147.3" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 16:00Z
+measured over 2 h</title><circle cx="117.6" cy="148.2" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 16:00Z
 11 agents
 commit f57c302
-measured over 2 h</title><circle cx="124.6" cy="127.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 18:00Z
+measured over 2 h</title><circle cx="124.6" cy="129.2" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 18:00Z
 11 agents
 commit 65275dc
-measured over 2 h</title><circle cx="131.5" cy="127.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 20:00Z
+measured over 2 h</title><circle cx="131.5" cy="129.2" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 20:00Z
 20 agents
 commit 87a5b0e
-measured over 2 h</title><circle cx="138.5" cy="97.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 22:00Z
+measured over 2 h</title><circle cx="138.5" cy="100.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 22:00Z
 20 agents
 commit 3c38f18
-measured over 2 h</title><circle cx="145.4" cy="97.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 00:00Z
+measured over 2 h</title><circle cx="145.4" cy="100.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 00:00Z
 6 agents
 commit 3c38f18
-measured over 2 h</title><circle cx="152.4" cy="144.0" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 06:00Z
+measured over 2 h</title><circle cx="152.4" cy="145.0" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 06:00Z
 19 agents
 commit 4009815
-measured over 2 h</title><circle cx="173.2" cy="100.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 08:00Z
+measured over 2 h</title><circle cx="173.2" cy="104.0" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 08:00Z
 18 agents
 commit cd5ae7e
-measured over 2 h</title><circle cx="180.2" cy="104.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 10:00Z
+measured over 2 h</title><circle cx="180.2" cy="107.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 10:00Z
 19 agents
 commit be17753
-measured over 2 h</title><circle cx="187.1" cy="100.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 12:00Z
+measured over 2 h</title><circle cx="187.1" cy="104.0" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 12:00Z
 28 agents
 commit b7d249a
-measured over 2 h</title><circle cx="194.1" cy="70.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 14:00Z
+measured over 2 h</title><circle cx="194.1" cy="75.5" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 14:00Z
 26 agents
 commit aa68530
-measured over 2 h</title><circle cx="201.0" cy="77.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 16:00Z
+measured over 2 h</title><circle cx="201.0" cy="81.9" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 16:00Z
 33 agents
 commit 0b2d6ef
-measured over 2 h</title><circle cx="208.0" cy="54.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 18:00Z
+measured over 2 h</title><circle cx="208.0" cy="59.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 18:00Z
 24 agents
 commit de4756c
-measured over 2 h</title><circle cx="215.0" cy="84.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 20:00Z
+measured over 2 h</title><circle cx="215.0" cy="88.2" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 20:00Z
 28 agents
 commit 3ba93e0
-measured over 2 h</title><circle cx="221.9" cy="70.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 22:00Z
+measured over 2 h</title><circle cx="221.9" cy="75.5" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 22:00Z
 35 agents
 commit b900460
-measured over 2 h</title><circle cx="228.9" cy="47.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 00:00Z
+measured over 2 h</title><circle cx="228.9" cy="53.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 00:00Z
 28 agents
 commit 0f5f456
-measured over 2 h</title><circle cx="235.8" cy="70.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 02:00Z
+measured over 2 h</title><circle cx="235.8" cy="75.5" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 02:00Z
 37 agents
 commit 8b1295b
-measured over 2 h</title><circle cx="242.8" cy="40.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 04:00Z
+measured over 2 h</title><circle cx="242.8" cy="47.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 04:00Z
 21 agents
 commit 7bdc979
-measured over 2 h</title><circle cx="249.7" cy="94.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 06:00Z
+measured over 2 h</title><circle cx="249.7" cy="97.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 06:00Z
 13 agents
 commit b4fbd5b
-measured over 2 h</title><circle cx="256.7" cy="120.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 08:00Z
+measured over 2 h</title><circle cx="256.7" cy="122.9" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 08:00Z
 15 agents
 commit fa96455
-measured over 2 h</title><circle cx="263.6" cy="114.0" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 10:00Z
+measured over 2 h</title><circle cx="263.6" cy="116.6" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 10:00Z
 29 agents
 commit 7db8368
-measured over 2 h</title><circle cx="270.6" cy="67.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 12:00Z
+measured over 2 h</title><circle cx="270.6" cy="72.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 12:00Z
 27 agents
 commit d2dbae7
-measured over 2 h</title><circle cx="277.5" cy="74.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
+measured over 2 h</title><circle cx="277.5" cy="78.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
 21 agents
 commit 9903ea7
-measured over 2 h</title><circle cx="764.2" cy="94.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 10:00Z
+measured over 2 h</title><circle cx="764.2" cy="97.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 10:00Z
 36 agents
 commit a148758
-measured over 2 h</title><circle cx="771.1" cy="44.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 12:00Z
+measured over 2 h</title><circle cx="771.1" cy="50.3" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 12:00Z
 29 agents
-commit 390c795
-measured over 2 h</title><circle cx="778.1" cy="67.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 14:00Z
+commit 448b76a
+measured over 2 h</title><circle cx="778.1" cy="72.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 14:00Z
 31 agents
-commit cbb77ce
-measured over 2 h</title><circle cx="785.0" cy="60.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 16:00Z
-35 agents
-commit c6d6d20
-measured over 2 h</title><circle cx="792.0" cy="47.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="37.44594594594596" fill="#199e70" font-size="12" font-weight="600">35 agents</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 16:00Z</text></svg></div></div>
+commit 9fd8d3f
+measured over 2 h</title><circle cx="785.0" cy="66.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 16:00Z
+39 agents
+commit f9b9305
+measured over 2 h</title><circle cx="792.0" cy="40.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="30.785714285714306" fill="#199e70" font-size="12" font-weight="600">39 agents</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 16:00Z</text></svg></div></div>
 <details class="cost-details"><summary>Every measurement, as a table</summary>
 <div class="cost-scroll"><table><tr><th>Taken</th><th>C/H</th><th>$/agent-h</th><th>Agents</th><th>Commit</th><th>Note</th></tr>
-<tr><td>2026-08-14 16:00Z</td><td>$114.40</td><td>$3.27</td><td>35</td><td><code>c6d6d20</code></td><td class="rem"></td></tr>
-<tr><td>2026-08-14 14:00Z</td><td>$225.63</td><td>$7.28</td><td>31</td><td><code>cbb77ce</code></td><td class="rem"></td></tr>
-<tr><td>2026-08-14 12:00Z</td><td>$80.60</td><td>$2.78</td><td>29</td><td><code>390c795</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-14 16:00Z</td><td>$131.28</td><td>$3.37</td><td>39</td><td><code>f9b9305</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-14 14:00Z</td><td>$225.63</td><td>$7.28</td><td>31</td><td><code>9fd8d3f</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-14 12:00Z</td><td>$80.60</td><td>$2.78</td><td>29</td><td><code>448b76a</code></td><td class="rem"></td></tr>
 <tr><td>2026-08-14 10:00Z</td><td>$286.93</td><td>$7.97</td><td>36</td><td><code>a148758</code></td><td class="rem"></td></tr>
 <tr><td>2026-08-14 08:00Z</td><td>$139.02</td><td>$6.62</td><td>21</td><td><code>9903ea7</code></td><td class="rem"></td></tr>
 <tr><td>2026-08-08 12:00Z</td><td>$109.49</td><td>$4.06</td><td>27</td><td><code>d2dbae7</code></td><td class="rem"></td></tr>
@@ -467,50 +570,50 @@ measured over 2 h</title><circle cx="792.0" cy="47.4" r="4.5" fill="#199e70" str
 </table></div></details><div class="cost-two"><div class="cost-panel"><h3>Cost by model</h3><div class="cost-note">Routing is the largest single lever: 3,230 Opus requests against 29 Sonnet when the programme opened.</div><div class="cost-bars"><div class="cost-bar-row">
       <div class="cost-bar-label">claude-opus-5</div>
       <div class="cost-bar-track"><i style="width:100.0%;background:#3987e5"></i></div>
-      <div class="cost-bar-val">$7,579.94</div>
-      <div class="cost-bar-sub">57,510 distinct requests · input 1.3M / cache write 5m 192.6M / cache write 1h 10.0M / cache read 11.95B / output 11.8M</div>
+      <div class="cost-bar-val">$7,604.64</div>
+      <div class="cost-bar-sub">57,684 distinct requests · input 1.3M / cache write 5m 192.9M / cache write 1h 10.1M / cache read 11.99B / output 11.9M</div>
     </div>
 <div class="cost-bar-row">
       <div class="cost-bar-label">claude-sonnet-5</div>
-      <div class="cost-bar-track"><i style="width:2.8%;background:#d95926"></i></div>
-      <div class="cost-bar-val">$214.60</div>
-      <div class="cost-bar-sub">4,669 distinct requests · input 316k / cache write 5m 10.3M / cache write 1h 0 / cache read 901.0M / output 802k</div>
+      <div class="cost-bar-track"><i style="width:2.9%;background:#d95926"></i></div>
+      <div class="cost-bar-val">$223.68</div>
+      <div class="cost-bar-sub">4,858 distinct requests · input 349k / cache write 5m 11.1M / cache write 1h 0 / cache read 932.7M / output 879k</div>
     </div></div></div><div class="cost-panel"><h3>Cost by token class</h3><div class="cost-note">Input, two kinds of cache write (5-minute and 1-hour, billed differently), cache read and output are five different prices. A single total hides cache economics entirely.</div><div class="cost-bars"><div class="cost-bar-row">
       <div class="cost-bar-label">input</div>
       <div class="cost-bar-track"><i style="width:1.5%;background:#3987e5"></i></div>
-      <div class="cost-bar-val">$7.12</div>
-      <div class="cost-bar-sub">1.6M tokens</div>
+      <div class="cost-bar-val">$7.28</div>
+      <div class="cost-bar-sub">1.7M tokens</div>
     </div>
 <div class="cost-bar-row">
       <div class="cost-bar-label">cache write 5m</div>
       <div class="cost-bar-track"><i style="width:20.0%;background:#d95926"></i></div>
-      <div class="cost-bar-val">$1,229.70</div>
-      <div class="cost-bar-sub">202.9M tokens</div>
+      <div class="cost-bar-val">$1,233.46</div>
+      <div class="cost-bar-sub">204.0M tokens</div>
     </div>
 <div class="cost-bar-row">
       <div class="cost-bar-label">cache write 1h</div>
       <div class="cost-bar-track"><i style="width:1.6%;background:#199e70"></i></div>
-      <div class="cost-bar-val">$99.86</div>
-      <div class="cost-bar-sub">10.0M tokens</div>
+      <div class="cost-bar-val">$100.63</div>
+      <div class="cost-bar-sub">10.1M tokens</div>
     </div>
 <div class="cost-bar-row">
       <div class="cost-bar-label">cache read</div>
       <div class="cost-bar-track"><i style="width:100.0%;background:#c98500"></i></div>
-      <div class="cost-bar-val">$6,155.33</div>
-      <div class="cost-bar-sub">12.85B tokens</div>
+      <div class="cost-bar-val">$6,180.11</div>
+      <div class="cost-bar-sub">12.92B tokens</div>
     </div>
 <div class="cost-bar-row">
       <div class="cost-bar-label">output</div>
-      <div class="cost-bar-track"><i style="width:4.9%;background:#d55181"></i></div>
-      <div class="cost-bar-val">$302.52</div>
-      <div class="cost-bar-sub">12.6M tokens</div>
+      <div class="cost-bar-track"><i style="width:5.0%;background:#d55181"></i></div>
+      <div class="cost-bar-val">$306.84</div>
+      <div class="cost-bar-sub">12.8M tokens</div>
     </div></div></div></div><div class="cost-panel"><h3>What drives it</h3>
 <div class="cost-note">Cost is context volume multiplied by request count, not how much anything writes. These four numbers are where the levers act.</div>
 <div class="cost-tiles">
-  <div class="cost-tile"><div class="cost-tile-v">62,179</div><div class="cost-tile-l">Requests</div><div class="cost-tile-s">distinct API responses, not transcript records</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">62,542</div><div class="cost-tile-l">Requests</div><div class="cost-tile-s">distinct API responses, not transcript records</div></div>
   <div class="cost-tile"><div class="cost-tile-v">210k</div><div class="cost-tile-l">Mean context per request</div><div class="cost-tile-s">what every request pays to re-read</div></div>
-  <div class="cost-tile"><div class="cost-tile-v">1.62B</div><div class="cost-tile-l">Price-indexed token volume</div><div class="cost-tile-s">model-independent volume, so mix and volume never confound</div></div>
-  <div class="cost-tile"><div class="cost-tile-v">70.1</div><div class="cost-tile-l">Requests per agent-hour</div><div class="cost-tile-s">how hard each agent-hour leans on the API</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">1.63B</div><div class="cost-tile-l">Price-indexed token volume</div><div class="cost-tile-s">model-independent volume, so mix and volume never confound</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">70.2</div><div class="cost-tile-l">Requests per agent-hour</div><div class="cost-tile-s">how hard each agent-hour leans on the API</div></div>
 </div></div><div class="cost-panel"><h3>Every change, kept or reversed <span class="cost-n">7</span></h3>
 <div class="cost-note">A ledger showing only what worked hides negative evidence and cannot support a causal cost claim. Reversibility is a hard requirement: a change whose reversal has never been executed on a copy is only believed to be reversible.</div>
 <div class="cost-scroll cost-wide"><table><tr><th>Change</th><th>State</th><th>C/H before</th><th>C/H after</th><th>Delta</th><th>Reversal</th><th>Tripwire &amp; outcome</th></tr>
@@ -1128,7 +1231,7 @@ table.sc-tbl td.d{color:var(--ink)}
 
 <h2>Verdict staleness <span class="dimtext">(reported, not a gate &mdash; a stale verdict is a fact for the next dispatch, not a downgrade)</span></h2>
 <div class="sub" style="margin-bottom:10px">
-  85 verdict(s) at HEAD 91b42a6 &mdash;
+  85 verdict(s) at HEAD f9b9305 &mdash;
   <span class="ok">3 fresh</span>,
   <span class="bad">41 stale</span>,
   <span class="dimtext">41 unknown</span>
@@ -1136,89 +1239,89 @@ table.sc-tbl td.d{color:var(--ink)}
   Detail: <code>node tools/verdict-staleness.mjs</code>.
 </div>
 <table><tr><th>Piece</th><th>Status</th><th>Since</th><th>Why</th></tr>
-<tr><td><code>w1-00-r2</code></td><td class="bad">stale</td><td class="rem">445bfa6</td><td class="rem">760 of 5471 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md</code></td></tr>
-<tr><td><code>w1-00</code></td><td class="bad">stale</td><td class="rem">8714e38</td><td class="rem">750 of 5993 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md</code></td></tr>
-<tr><td><code>w1-01-province-stream-pump</code></td><td class="bad">stale</td><td class="rem">8734986</td><td class="rem">551 of 4239 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/85-platform/RI-PLT03-load-streaming-and-hitches.md</code></td></tr>
+<tr><td><code>w1-00-r2</code></td><td class="bad">stale</td><td class="rem">445bfa6</td><td class="rem">760 of 5574 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md</code></td></tr>
+<tr><td><code>w1-00</code></td><td class="bad">stale</td><td class="rem">8714e38</td><td class="rem">750 of 6096 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md</code></td></tr>
+<tr><td><code>w1-01-province-stream-pump</code></td><td class="bad">stale</td><td class="rem">8734986</td><td class="rem">551 of 4342 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/85-platform/RI-PLT03-load-streaming-and-hitches.md</code></td></tr>
 <tr><td><code>w1-01-r2</code></td><td class="dimtext">unknown</td><td class="rem">b17121c</td><td class="rem">commit b17121cb1e9a0d8f4e8bb0a3b7c0e6a0e3a3f0aa is not resolvable in this repository's history</td></tr>
-<tr><td><code>W1-01</code></td><td class="bad">stale</td><td class="rem">341cd48</td><td class="rem">727 of 5400 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG06-souls-yield-and-pace.md</code></td></tr>
-<tr><td><code>W1-02-r1</code></td><td class="ok">fresh</td><td class="rem">6b1a142</td><td class="rem">3853 file(s) changed since 6b1a142, none inside the declared depends_on</td></tr>
-<tr><td><code>W1-03-r1</code></td><td class="ok">fresh</td><td class="rem">652b1d7</td><td class="rem">3547 file(s) changed since 652b1d7, none inside the declared depends_on</td></tr>
-<tr><td><code>W1-04-r1</code></td><td class="ok">fresh</td><td class="rem">3ba93e0</td><td class="rem">3695 file(s) changed since 3ba93e04f53e8827153134ebe255085b84682acf, none inside the declared depends_on</td></tr>
+<tr><td><code>W1-01</code></td><td class="bad">stale</td><td class="rem">341cd48</td><td class="rem">727 of 5503 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG06-souls-yield-and-pace.md</code></td></tr>
+<tr><td><code>W1-02-r1</code></td><td class="ok">fresh</td><td class="rem">6b1a142</td><td class="rem">3956 file(s) changed since 6b1a142, none inside the declared depends_on</td></tr>
+<tr><td><code>W1-03-r1</code></td><td class="ok">fresh</td><td class="rem">652b1d7</td><td class="rem">3650 file(s) changed since 652b1d7, none inside the declared depends_on</td></tr>
+<tr><td><code>W1-04-r1</code></td><td class="ok">fresh</td><td class="rem">3ba93e0</td><td class="rem">3798 file(s) changed since 3ba93e04f53e8827153134ebe255085b84682acf, none inside the declared depends_on</td></tr>
 <tr><td><code>W1-04-r2</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
 <tr><td><code>W1-04</code></td><td class="dimtext">unknown</td><td class="rem">c36653e</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-04</code></td><td class="dimtext">unknown</td><td class="rem">3ee6ada</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-04</code></td><td class="dimtext">unknown</td><td class="rem">1fda355</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-07-r2</code></td><td class="bad">stale</td><td class="rem">4a5f13f</td><td class="rem">592 of 4872 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG02-stat-sheet.md</code></td></tr>
-<tr><td><code>w1-07-r3</code></td><td class="bad">stale</td><td class="rem">b48859f</td><td class="rem">564 of 4433 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/22-character/RI-CHR01-character-creation.md</code></td></tr>
-<tr><td><code>w1-07</code></td><td class="bad">stale</td><td class="rem">65275dc</td><td class="rem">612 of 5199 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG02-stat-sheet.md</code></td></tr>
-<tr><td><code>w1-08-w1-29-r1</code></td><td class="bad">stale</td><td class="rem">be17753</td><td class="rem">556 of 4320 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md</code></td></tr>
-<tr><td><code>w1-08-w1-29-r2</code></td><td class="bad">stale</td><td class="rem">dcf1d36</td><td class="rem">526 of 4027 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md</code></td></tr>
-<tr><td><code>w1-09-combat-core-r2</code></td><td class="bad">stale</td><td class="rem">04d8208</td><td class="rem">617 of 5147 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-AI02-telegraph-doctrine.md</code></td></tr>
-<tr><td><code>w1-09-r3</code></td><td class="bad">stale</td><td class="rem">93f3d2d</td><td class="rem">597 of 4768 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-AI02-telegraph-doctrine.md</code></td></tr>
-<tr><td><code>W1-09</code></td><td class="bad">stale</td><td class="rem">f7b5468</td><td class="rem">731 of 5405 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md</code></td></tr>
-<tr><td><code>W1-10-r2</code></td><td class="bad">stale</td><td class="rem">5e1a861</td><td class="rem">22 of 4885 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/12-weapons/RI-WPN01-moveset-slot-contract.md</code></td></tr>
-<tr><td><code>W1-10</code></td><td class="bad">stale</td><td class="rem">6eb8f04</td><td class="rem">568 of 4579 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md</code></td></tr>
-<tr><td><code>W1-10</code></td><td class="bad">stale</td><td class="rem">65275dc</td><td class="rem">614 of 5199 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/12-weapons/RI-WPN01-moveset-slot-contract.md</code></td></tr>
+<tr><td><code>w1-07-r2</code></td><td class="bad">stale</td><td class="rem">4a5f13f</td><td class="rem">592 of 4975 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG02-stat-sheet.md</code></td></tr>
+<tr><td><code>w1-07-r3</code></td><td class="bad">stale</td><td class="rem">b48859f</td><td class="rem">564 of 4536 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/22-character/RI-CHR01-character-creation.md</code></td></tr>
+<tr><td><code>w1-07</code></td><td class="bad">stale</td><td class="rem">65275dc</td><td class="rem">612 of 5302 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG02-stat-sheet.md</code></td></tr>
+<tr><td><code>w1-08-w1-29-r1</code></td><td class="bad">stale</td><td class="rem">be17753</td><td class="rem">556 of 4423 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md</code></td></tr>
+<tr><td><code>w1-08-w1-29-r2</code></td><td class="bad">stale</td><td class="rem">dcf1d36</td><td class="rem">526 of 4130 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md</code></td></tr>
+<tr><td><code>w1-09-combat-core-r2</code></td><td class="bad">stale</td><td class="rem">04d8208</td><td class="rem">617 of 5250 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-AI02-telegraph-doctrine.md</code></td></tr>
+<tr><td><code>w1-09-r3</code></td><td class="bad">stale</td><td class="rem">93f3d2d</td><td class="rem">597 of 4871 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-AI02-telegraph-doctrine.md</code></td></tr>
+<tr><td><code>W1-09</code></td><td class="bad">stale</td><td class="rem">f7b5468</td><td class="rem">731 of 5508 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md</code></td></tr>
+<tr><td><code>W1-10-r2</code></td><td class="bad">stale</td><td class="rem">5e1a861</td><td class="rem">22 of 4988 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/12-weapons/RI-WPN01-moveset-slot-contract.md</code></td></tr>
+<tr><td><code>W1-10</code></td><td class="bad">stale</td><td class="rem">6eb8f04</td><td class="rem">568 of 4682 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md</code></td></tr>
+<tr><td><code>W1-10</code></td><td class="bad">stale</td><td class="rem">65275dc</td><td class="rem">614 of 5302 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/12-weapons/RI-WPN01-moveset-slot-contract.md</code></td></tr>
 <tr><td><code>W1-11</code></td><td class="dimtext">unknown</td><td class="rem">5c4c5b0</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-12-r1</code></td><td class="dimtext">unknown</td><td class="rem">e97347f</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-12-r2</code></td><td class="dimtext">unknown</td><td class="rem">9063779</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-13-death-and-the-hearth-loop</code></td><td class="bad">stale</td><td class="rem">0a8a4d0</td><td class="rem">556 of 4252 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG04-hearth-and-death.md</code></td></tr>
+<tr><td><code>w1-13-death-and-the-hearth-loop</code></td><td class="bad">stale</td><td class="rem">0a8a4d0</td><td class="rem">556 of 4355 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG04-hearth-and-death.md</code></td></tr>
 <tr><td><code>w1-13-death-and-the-hearth-loop</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
-<tr><td><code>w1-13-r3</code></td><td class="bad">stale</td><td class="rem">37d64e3</td><td class="rem">18 of 3717 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
-<tr><td><code>w1-13-r4</code></td><td class="bad">stale</td><td class="rem">e74df06</td><td class="rem">18 of 3548 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
-<tr><td><code>W1-14-r2</code></td><td class="bad">stale</td><td class="rem">7e7993d</td><td class="rem">577 of 4677 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG03-skills-by-use.md</code></td></tr>
-<tr><td><code>W1-14-r3</code></td><td class="bad">stale</td><td class="rem">34d1387</td><td class="rem">11 of 3314 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/magic/cast-classes.json</code></td></tr>
-<tr><td><code>W1-14-r4</code></td><td class="bad">stale</td><td class="rem">9fadada</td><td class="rem">17 of 3027 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/magic/cast-classes.json</code></td></tr>
-<tr><td><code>W1-14</code></td><td class="bad">stale</td><td class="rem">75c8e3a</td><td class="rem">607 of 5213 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG03-skills-by-use.md</code></td></tr>
-<tr><td><code>w1-15</code></td><td class="bad">stale</td><td class="rem">7e7993d</td><td class="rem">576 of 4677 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/80-methods/RI-MTH07-world-coupling.md</code></td></tr>
+<tr><td><code>w1-13-r3</code></td><td class="bad">stale</td><td class="rem">37d64e3</td><td class="rem">18 of 3820 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
+<tr><td><code>w1-13-r4</code></td><td class="bad">stale</td><td class="rem">e74df06</td><td class="rem">18 of 3651 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
+<tr><td><code>W1-14-r2</code></td><td class="bad">stale</td><td class="rem">7e7993d</td><td class="rem">577 of 4780 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG03-skills-by-use.md</code></td></tr>
+<tr><td><code>W1-14-r3</code></td><td class="bad">stale</td><td class="rem">34d1387</td><td class="rem">11 of 3417 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/magic/cast-classes.json</code></td></tr>
+<tr><td><code>W1-14-r4</code></td><td class="bad">stale</td><td class="rem">9fadada</td><td class="rem">17 of 3130 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/magic/cast-classes.json</code></td></tr>
+<tr><td><code>W1-14</code></td><td class="bad">stale</td><td class="rem">75c8e3a</td><td class="rem">607 of 5316 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG03-skills-by-use.md</code></td></tr>
+<tr><td><code>w1-15</code></td><td class="bad">stale</td><td class="rem">7e7993d</td><td class="rem">576 of 4780 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/80-methods/RI-MTH07-world-coupling.md</code></td></tr>
 <tr><td><code>w1-15</code></td><td class="dimtext">unknown</td><td class="rem">9126e02</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-15</code></td><td class="dimtext">unknown</td><td class="rem">9063779</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-15</code></td><td class="bad">stale</td><td class="rem">21c9566</td><td class="rem">598 of 4970 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/README.md</code></td></tr>
+<tr><td><code>w1-15</code></td><td class="bad">stale</td><td class="rem">21c9566</td><td class="rem">598 of 5073 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/README.md</code></td></tr>
 <tr><td><code>W1-16-r2</code></td><td class="dimtext">unknown</td><td class="rem">5d88b7e</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-16-r3</code></td><td class="dimtext">unknown</td><td class="rem">2032744</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-17-act5-argument</code></td><td class="bad">stale</td><td class="rem">3ba93e0</td><td class="rem">14 of 3695 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/40-dialogue/RI-DLG01-topic-graph.md</code></td></tr>
+<tr><td><code>w1-17-act5-argument</code></td><td class="bad">stale</td><td class="rem">3ba93e0</td><td class="rem">14 of 3798 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/40-dialogue/RI-DLG01-topic-graph.md</code></td></tr>
 <tr><td><code>w1-17</code></td><td class="dimtext">unknown</td><td class="rem">6c979e3</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-19</code></td><td class="bad">stale</td><td class="rem">be17753</td><td class="rem">554 of 4320 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/50-world/RI-WLD09-the-opacity-budget.md</code></td></tr>
-<tr><td><code>w1-19</code></td><td class="bad">stale</td><td class="rem">86c0ff7</td><td class="rem">542 of 4092 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/40-dialogue/RI-DLG01-topic-graph.md</code></td></tr>
-<tr><td><code>W1-20</code></td><td class="bad">stale</td><td class="rem">d98ca28</td><td class="rem">410 of 2625 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/blackwood.json</code></td></tr>
+<tr><td><code>w1-19</code></td><td class="bad">stale</td><td class="rem">be17753</td><td class="rem">554 of 4423 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/50-world/RI-WLD09-the-opacity-budget.md</code></td></tr>
+<tr><td><code>w1-19</code></td><td class="bad">stale</td><td class="rem">86c0ff7</td><td class="rem">542 of 4195 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/40-dialogue/RI-DLG01-topic-graph.md</code></td></tr>
+<tr><td><code>W1-20</code></td><td class="bad">stale</td><td class="rem">d98ca28</td><td class="rem">410 of 2728 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/blackwood.json</code></td></tr>
 <tr><td><code>W1-20</code></td><td class="dimtext">unknown</td><td class="rem">6220e0f</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-21</code></td><td class="dimtext">unknown</td><td class="rem">07f8b75</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-21</code></td><td class="dimtext">unknown</td><td class="rem">e97347f</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>W1-22-B2-blind</code></td><td class="bad">stale</td><td class="rem">72baa12</td><td class="rem">1 of 3906 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/80-methods/RI-MTH03-blind-comparison-protocol.md</code></td></tr>
-<tr><td><code>w1-22-r1</code></td><td class="bad">stale</td><td class="rem">78aebc7</td><td class="rem">501 of 3935 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/80-methods/RI-MTH03-blind-comparison-protocol.md</code></td></tr>
-<tr><td><code>w1-22-r2</code></td><td class="bad">stale</td><td class="rem">5d88b7e</td><td class="rem">37 of 3419 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
-<tr><td><code>w1-23-lore-registry-and-the-provinces-canon</code></td><td class="bad">stale</td><td class="rem">5c4c5b0</td><td class="rem">58 of 3703 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/SCORING.md</code></td></tr>
+<tr><td><code>W1-22-B2-blind</code></td><td class="bad">stale</td><td class="rem">72baa12</td><td class="rem">1 of 4009 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/80-methods/RI-MTH03-blind-comparison-protocol.md</code></td></tr>
+<tr><td><code>w1-22-r1</code></td><td class="bad">stale</td><td class="rem">78aebc7</td><td class="rem">501 of 4038 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/80-methods/RI-MTH03-blind-comparison-protocol.md</code></td></tr>
+<tr><td><code>w1-22-r2</code></td><td class="bad">stale</td><td class="rem">5d88b7e</td><td class="rem">37 of 3522 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
+<tr><td><code>w1-23-lore-registry-and-the-provinces-canon</code></td><td class="bad">stale</td><td class="rem">5c4c5b0</td><td class="rem">58 of 3806 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/SCORING.md</code></td></tr>
 <tr><td><code>w1-23-lore-registry-and-the-provinces-canon</code></td><td class="dimtext">unknown</td><td class="rem">0f5f456</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-23-lore-registry-and-the-provinces-canon</code></td><td class="dimtext">unknown</td><td class="rem">37bbb6f</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-25</code></td><td class="dimtext">unknown</td><td class="rem">fdef3d6</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-26-r1</code></td><td class="bad">stale</td><td class="rem">8744ead</td><td class="rem">560 of 4330 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md</code></td></tr>
-<tr><td><code>w1-26-r2</code></td><td class="bad">stale</td><td class="rem">402d01a</td><td class="rem">1 of 3291 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md</code></td></tr>
+<tr><td><code>w1-26-r1</code></td><td class="bad">stale</td><td class="rem">8744ead</td><td class="rem">560 of 4433 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md</code></td></tr>
+<tr><td><code>w1-26-r2</code></td><td class="bad">stale</td><td class="rem">402d01a</td><td class="rem">1 of 3394 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md</code></td></tr>
 <tr><td><code>w1-26-r3</code></td><td class="dimtext">unknown</td><td class="rem">ec0b767</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-30-shadow-casters-r1</code></td><td class="dimtext">unknown</td><td class="rem">97845f0</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-30c</code></td><td class="dimtext">unknown</td><td class="rem">2634eb0</td><td class="rem">commit 2634eb0e1a26568d91f8bd68d0280d5532d79b9f is not resolvable in this repository's history</td></tr>
+<tr><td><code>w1-30c</code></td><td class="dimtext">unknown</td><td class="rem">2634eb0</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-30D-r1</code></td><td class="dimtext">unknown</td><td class="rem">318ecdf</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-30E-r1</code></td><td class="dimtext">unknown</td><td class="rem">318ecdf</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-30S-r1</code></td><td class="dimtext">unknown</td><td class="rem">91fbb20</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-attr-scale-r1</code></td><td class="dimtext">unknown</td><td class="rem">692bcc8</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>W1-CROSSING</code></td><td class="bad">stale</td><td class="rem">2fe47f5</td><td class="rem">6 of 3004 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/world/roads.json</code></td></tr>
+<tr><td><code>W1-CROSSING</code></td><td class="bad">stale</td><td class="rem">2fe47f5</td><td class="rem">6 of 3107 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/world/roads.json</code></td></tr>
 <tr><td><code>corpus/90-verdicts/wave1/W1-DEPLOY-r1.json</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
 <tr><td><code>w1-deploy-r2</code></td><td class="dimtext">unknown</td><td class="rem">db449a5</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>W1-FACTIONS-r1</code></td><td class="bad">stale</td><td class="rem">44f8432</td><td class="rem">540 of 4105 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/README.md</code></td></tr>
+<tr><td><code>W1-FACTIONS-r1</code></td><td class="bad">stale</td><td class="rem">44f8432</td><td class="rem">540 of 4208 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/README.md</code></td></tr>
 <tr><td><code>W1-FACTIONS</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
 <tr><td><code>first-ten-minutes</code></td><td class="dimtext">unknown</td><td class="rem">a8e4c93</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-library-martial-r4</code></td><td class="dimtext">unknown</td><td class="rem">3d4c88d</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-library-books-and-the-reading-surface</code></td><td class="dimtext">unknown</td><td class="rem">4c90402</td><td class="rem">commit 4c904020 is not resolvable in this repository's history</td></tr>
 <tr><td><code>w1-map-defects-r1</code></td><td class="dimtext">unknown</td><td class="rem">bfae92e</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>corpus/90-verdicts/wave1/W1-MAP-r1.json</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
-<tr><td><code>w1-map-r2</code></td><td class="bad">stale</td><td class="rem">f291b01</td><td class="rem">9 of 3198 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
+<tr><td><code>w1-map-r2</code></td><td class="bad">stale</td><td class="rem">f291b01</td><td class="rem">9 of 3301 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
 <tr><td><code>w1-population</code></td><td class="dimtext">unknown</td><td class="rem">28909e1</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-prose-blind-in-world-prose-and-npc-voice</code></td><td class="bad">stale</td><td class="rem">d750b6c</td><td class="rem">1 of 4065 changed file(s) fall inside depends_on &mdash; e.g. <code>tools/prose/judge-fragment-openers.mjs</code></td></tr>
+<tr><td><code>w1-prose-blind-in-world-prose-and-npc-voice</code></td><td class="bad">stale</td><td class="rem">d750b6c</td><td class="rem">1 of 4168 changed file(s) fall inside depends_on &mdash; e.g. <code>tools/prose/judge-fragment-openers.mjs</code></td></tr>
 <tr><td><code>w1-prose-tics-r4-blind-pack-judged-and-voided</code></td><td class="dimtext">unknown</td><td class="rem">652b1d7</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-READABLES-r2</code></td><td class="dimtext">unknown</td><td class="rem">64dd5f9</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-ROAD-JOIN</code></td><td class="dimtext">unknown</td><td class="rem">a2031bb</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>W1-SAVE-r1</code></td><td class="bad">stale</td><td class="rem">b27373f</td><td class="rem">555 of 4387 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-break-critic.mjs</code></td></tr>
-<tr><td><code>w1-souls-r2</code></td><td class="bad">stale</td><td class="rem">a5a637d</td><td class="rem">30 of 3843 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG06-souls-yield-and-pace.md</code></td></tr>
-<tr><td><code>w1-souls-r3</code></td><td class="bad">stale</td><td class="rem">e97347f</td><td class="rem">8 of 3468 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
+<tr><td><code>W1-SAVE-r1</code></td><td class="bad">stale</td><td class="rem">b27373f</td><td class="rem">555 of 4490 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-break-critic.mjs</code></td></tr>
+<tr><td><code>w1-souls-r2</code></td><td class="bad">stale</td><td class="rem">a5a637d</td><td class="rem">30 of 3946 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG06-souls-yield-and-pace.md</code></td></tr>
+<tr><td><code>w1-souls-r3</code></td><td class="bad">stale</td><td class="rem">e97347f</td><td class="rem">8 of 3571 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
 <tr><td><code>corpus/90-verdicts/wave1/W1-TOUCH-r1.json</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
 <tr><td><code>w1-visual-blind-protocol-a-r1</code></td><td class="dimtext">unknown</td><td class="rem">21795f5</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 </table>
@@ -1319,7 +1422,7 @@ table.sc-tbl td.d{color:var(--ink)}
 </table>
 
 <h2>Latest captures</h2>
-<div class="shots"><figure><img src="shots/SB-TEL__ds3-3625638110.jpg"><figcaption>SB-TEL__ds3-3625638110.jpg</figcaption></figure><figure><img src="shots/shot-drowned-road-stormhold-helstrom.png"><figcaption>shot-drowned-road-stormhold-helstrom.png</figcaption></figure><figure><img src="shots/shot-tideway-lilmoth-archon-LOW.png"><figcaption>shot-tideway-lilmoth-archon-LOW.png</figcaption></figure><figure><img src="shots/2026-08-14-w1-map-defects/2026-08-14-what-the-fog-of-war-actually-showed-you.png"><figcaption>2026-08-14-what-the-fog-of-war-actually-showed-you.png</figcaption></figure><figure><img src="shots/2026-08-14-w1-map-defects/2026-08-14-the-whole-province-and-not-one-place-you-have-not-found.png"><figcaption>2026-08-14-the-whole-province-and-not-one-place-you-have-not-found.png</figcaption></figure><figure><img src="shots/2026-08-14-w1-map-defects/2026-08-14-the-null-control-a-map-that-looks-right-and-has-deleted-discovery.png"><figcaption>2026-08-14-the-null-control-a-map-that-looks-right-and-has-deleted-discovery.png</figcaption></figure><figure><img src="shots/2026-08-14-w1-30f/valus-ridge-1-before.png"><figcaption>valus-ridge-1-before.png</figcaption></figure><figure><img src="shots/2026-08-14-w1-30f/valus-ridge-2-after.png"><figcaption>valus-ridge-2-after.png</figcaption></figure><figure><img src="shots/2026-08-14-w1-30f/deep-marshes-2-after.png"><figcaption>deep-marshes-2-after.png</figcaption></figure><figure><img src="shots/2026-08-14-w1-30f/deep-marshes-1-before.png"><figcaption>deep-marshes-1-before.png</figcaption></figure><figure><img src="shots/2026-08-14-w1-30f/2026-08-14-w1-30f-fog-before-after.png"><figcaption>2026-08-14-w1-30f-fog-before-after.png</figcaption></figure><figure><img src="shots/2026-08-14-w1-30e-kit-defects/street-soulrest__t1300__clear.jpg"><figcaption>street-soulrest__t1300__clear.jpg</figcaption></figure></div>
+<div class="shots"><figure><img src="shots/2026-08-14-door-yaw/archon-apothecary-orbit-315.png"><figcaption>archon-apothecary-orbit-315.png</figcaption></figure><figure><img src="shots/2026-08-14-door-yaw/archon-apothecary-orbit-270.png"><figcaption>archon-apothecary-orbit-270.png</figcaption></figure><figure><img src="shots/2026-08-14-door-yaw/archon-apothecary-orbit-225.png"><figcaption>archon-apothecary-orbit-225.png</figcaption></figure><figure><img src="shots/2026-08-14-door-yaw/archon-apothecary-orbit-180.png"><figcaption>archon-apothecary-orbit-180.png</figcaption></figure><figure><img src="shots/2026-08-14-door-yaw/archon-apothecary-orbit-135.png"><figcaption>archon-apothecary-orbit-135.png</figcaption></figure><figure><img src="shots/2026-08-14-door-yaw/archon-apothecary-orbit-090.png"><figcaption>archon-apothecary-orbit-090.png</figcaption></figure><figure><img src="shots/2026-08-14-door-yaw/archon-apothecary-orbit-045.png"><figcaption>archon-apothecary-orbit-045.png</figcaption></figure><figure><img src="shots/2026-08-14-door-yaw/archon-apothecary-orbit-000.png"><figcaption>archon-apothecary-orbit-000.png</figcaption></figure><figure><img src="shots/2026-08-14-door-yaw/archon-apothecary-4-restored.png"><figcaption>archon-apothecary-4-restored.png</figcaption></figure><figure><img src="shots/2026-08-14-door-yaw/archon-apothecary-3-perturbed.png"><figcaption>archon-apothecary-3-perturbed.png</figcaption></figure><figure><img src="shots/2026-08-14-door-yaw/archon-apothecary-2-removed.png"><figcaption>archon-apothecary-2-removed.png</figcaption></figure><figure><img src="shots/2026-08-14-door-yaw/archon-apothecary-1-shipped.png"><figcaption>archon-apothecary-1-shipped.png</figcaption></figure></div>
 
 </div>
 <footer>

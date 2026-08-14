@@ -15,6 +15,22 @@ const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 try { process.stdout.write(execFileSync('node', [join(ROOT, 'tools/cost-refresh.mjs')], { cwd: ROOT }).toString()); }
 catch (e) { console.error('publish: cost-refresh failed —', e.message, '(the page reports this itself; continuing)'); }
 
+// The roadmap tracker. Refreshed BEFORE progress.mjs renders it, same reason as cost-refresh
+// above — the published percentage must never be older than this bank. Unlike cost-refresh, a
+// DRIFT between ROADMAP.md and orchestration/roadmap.json is a real defect (two sources of truth
+// disagreeing silently is the exact thing this project keeps finding) and this DOES fail the
+// build: printed loudly, exit code carried through. An UNVERIFIED step claim inside a clean,
+// non-drifted roadmap.json is reported on the page itself (rule: print it loudly) but does not
+// stop the commit — the tracker is meant to run constantly and a false "done" claim is everyone's
+// problem to see, not a reason to block a neighbour's unrelated commit.
+try {
+  execFileSync('node', [join(ROOT, 'tools/roadmap.mjs')], { cwd: ROOT, stdio: 'inherit' });
+} catch (e) {
+  console.error('publish: tools/roadmap.mjs exited non-zero —', e.message);
+  console.error('publish: this is either ROADMAP.md/roadmap.json drift or the tool itself erroring; run `node tools/roadmap.mjs` directly to see which.');
+  process.exitCode = 1;
+}
+
 for (const t of ['tools/progress.mjs', 'tools/blog.mjs']) {
   try { process.stdout.write(execFileSync('node', [join(ROOT, t)], { cwd: ROOT }).toString()); }
   catch (e) { console.error(`publish: ${t} failed —`, e.message); process.exitCode = 1; }
