@@ -4,26 +4,24 @@
   "date": "2026-08-14",
   "commit_stamp": "9ddeb512",
   "headline": "The rulings propagate; the amendments, the assets and the anchors do not. Five mechanical checks built, wired into the pre-commit gate, and proven red on reintroduced real instances.",
-
   "could_not_do": [
     "THIS IS A SAMPLE, NOT A SWEEP. 267 governing documents were scanned for five mechanical shapes. Everything asserted in ordinary English is invisible to that and always will be.",
-    "The single highest-blast-radius finding — RI-VIS02's false 'image files are not vendored into this repo', which had been false for eight days — WAS NOT FOUND BY ANY CHECK. It has no path in the sentence, so check C could not resolve it. I found it by hand. A green run means 'the five shapes I can decide are clean', never 'the documents are current'.",
-    "Five findings are handed over rather than fixed, because the files have live owners (Ruling O1). Each carries an acceptance criterion in report §6.",
+    "The single highest-blast-radius finding \u2014 RI-VIS02's false 'image files are not vendored into this repo', which had been false for eight days \u2014 WAS NOT FOUND BY ANY CHECK. It has no path in the sentence, so check C could not resolve it. I found it by hand. A green run means 'the five shapes I can decide are clean', never 'the documents are current'.",
+    "Five findings are handed over rather than fixed, because the files have live owners (Ruling O1). Each carries an acceptance criterion in report \u00a76.",
     "Question 4 (stale counts) is answered structurally, not exhaustively. I did not re-derive every figure in the corpus. I established that unstamped numbers are the general condition and built the check for the one sub-shape recomputation can never catch (D).",
-    "The commit-stamp check that §5 argues for is NOT BUILT. Its false-positive rate needs work I did not have budget for. It is rank 3 in the queue.",
+    "The commit-stamp check that \u00a75 argues for is NOT BUILT. Its false-positive rate needs work I did not have budget for. It is rank 3 in the queue.",
     "Check B's warning tier is not triaged: 18 asset directories named only by inventory. I confirmed the two that matter and left 16 ranked.",
     "Check C has a known false-positive class I deliberately did not suppress: a claim about command output ('`git diff ...` is empty') reads as a claim about the path in the command. One live instance (W1-DLG-TOPIC-WEB.md:144). Suppressing it would also have suppressed INTENT-AUDIT-02's genuinely stale grep.",
-    "No browser work and no game runtime — text and tooling only, as briefed. No claim here rests on anything rendered."
+    "No browser work and no game runtime \u2014 text and tooling only, as briefed. No claim here rests on anything rendered.",
+    "The two .json companions under reports/staleness-audit/ are NOT on the remote. reports/.gitignore excludes reproducible JSON and both are reproducible from one command each, so this is the correct outcome rather than a loss (HAZARDS \u00a79) \u2014 but it means nothing in this audit may be cited as JSON evidence from a fresh clone."
   ],
-
   "deliverables": {
     "tool": "tools/check-citations.mjs",
     "report": "reports/staleness-audit/2026-08-14-citation-audit.md",
-    "findings_json": "reports/staleness-audit/2026-08-14-citation-audit.json",
-    "reverse_index": "reports/staleness-audit/reverse-index.md and .json — REGENERATE with `node tools/check-citations.mjs --index`, do not trust the copy",
-    "gate": ".githooks/pre-commit — warning, not blocking, on the same reasoning as the prose and ownership gates"
+    "findings_json": "regenerate with `node tools/check-citations.mjs --json` \u2014 deliberately untracked; reports/.gitignore excludes reproducible JSON and this is reproducible",
+    "reverse_index": "reports/staleness-audit/reverse-index.md (tracked). Regenerate with `node tools/check-citations.mjs --index`; the --json form is deliberately untracked for the same reason.",
+    "gate": ".githooks/pre-commit \u2014 warning, not blocking, on the same reasoning as the prose and ownership gates"
   },
-
   "tripwire_proof": {
     "command": "node tools/check-citations.mjs --self-test",
     "arms": 10,
@@ -31,57 +29,76 @@
     "required_green": 4,
     "vacuity_guard": "the suite declares itself vacuous and fails if either side is empty",
     "red_arms_are_real_instances": [
-      "C reintroduces instance 3 verbatim — a document asserting the REF-A12b screenshots are absent while 33 are on disk",
+      "C reintroduces instance 3 verbatim \u2014 a document asserting the REF-A12b screenshots are absent while 33 are on disk",
       "A1 cites S30 alone; its control names S35 and must stay green, so A1 tests the successor pointer and not the string",
       "A2 removes S30's strikethrough from a copy of ARBITRATION.md",
       "D runs the live Thorn row; its control repoints it at REF-A19 and must go green, so D tests the anchor and not the zero",
       "E runs the live --shots flag; its control passes --out, which the script does read"
     ]
   },
-
   "key_findings": {
-    "arbitration_md_is_clean": "§2's append-only rule is honoured. Zero governing documents cite an overruled S-ruling (check A1). The rot is one level down.",
+    "arbitration_md_is_clean": "\u00a72's append-only rule is honoured. Zero governing documents cite an overruled S-ruling (check A1). The rot is one level down.",
     "highest_blast_radius": "RI-VIS02 asserted image files are not vendored; 131 files are, and ARBITRATION S55 already contradicted it in its own words. BAR-CRITIQUE-IMAGES-02 item 17 flagged this exact sentence and it was never applied.",
     "mygui_shape_at_scale": "corpus/70-visual/refs/souls-behaviour/ holds 282 behaviour references including 177 named DS1 boss-move GIFs, cited by no item in 10-combat/. RI-AI06 is called 'boss design'.",
-    "fourth_instance_confirmed": "thorn n=0 is a property of anchor REF-A3 (0 of 5 composition-valid, all square crops). stormhold is WORSE and not the same defect: anchor REF-A17 is in board.json's own slot_routing.interior while the zeroed rows are ROOFLINE-RELIEF and SKY-FRACTION — skyline statistics. 0 of 6 sky-visible. A category error, unmovable by acquisition.",
+    "fourth_instance_confirmed": "thorn n=0 is a property of anchor REF-A3 (0 of 5 composition-valid, all square crops). stormhold is WORSE and not the same defect: anchor REF-A17 is in board.json's own slot_routing.interior while the zeroed rows are ROOFLINE-RELIEF and SKY-FRACTION \u2014 skyline statistics. 0 of 6 sky-visible. A category error, unmovable by acquisition.",
     "remediation_that_cannot_run": "board.json's fill_command passes --shots to docs/art-direction/measure-plates.mjs, which parses only --out. The documented fix runs, exits 0, recomputes the same population and reproduces n=0 exactly.",
     "convention_not_edits": "Every stale figure fixed here was unstamped. RULES.md rule 12 and COST.md prevention rule 1 already say to stamp; neither is enforced anywhere. The remedy is a convention change, said so rather than starting a hundred edits.",
-    "cost_md_contradicted_claude_md": "COST.md §5 asserted the parallelism floor of 12 while CLAUDE.md has said it is removed since the 2026-08-14 directives."
+    "cost_md_contradicted_claude_md": "COST.md \u00a75 asserted the parallelism floor of 12 while CLAUDE.md has said it is removed since the 2026-08-14 directives."
   },
-
   "fixed": [
-    "corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md — false 'not vendored' claim struck, counts and licence trail added",
-    "corpus/10-combat/RI-AI02-telegraph-doctrine.md — 282 behaviour references routed, with the behaviour-valid/not-pixel-valid prohibition stated",
-    "corpus/10-combat/RI-AI06-boss-design.md — 177 boss moves and 14 arena references routed",
-    "corpus/20-progression/RI-PRG04-hearth-and-death.md — §5 points at AM-W1-13-01 with the delta table",
-    "corpus/80-methods/RI-MTH02-determinism-reproducibility.md — R4 points at the APPLIED AM-W1-00-C1",
-    "corpus/85-platform/RI-PLT03-load-streaming-and-hitches.md — §C points at the filed motion-axis hole",
-    "corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md — session-run.mjs exists; the blocked_on excuse withdrawn, the unmeasured claim left standing",
-    "corpus/95-experience/RI-EXP06-permissiveness-budget.md — corpus/25-magic is not empty and S19 exists",
-    "corpus/00-doctrine/METRICS-IMPLEMENTATION-01.md, corpus/00-doctrine/INTENT-AUDIT-02.md — stale absence claims struck",
-    "orchestration/COST.md §5 — superseded parallelism floor struck, guard restated as 'no reduction in safe concurrency'"
+    "corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md \u2014 false 'not vendored' claim struck, counts and licence trail added",
+    "corpus/10-combat/RI-AI02-telegraph-doctrine.md \u2014 282 behaviour references routed, with the behaviour-valid/not-pixel-valid prohibition stated",
+    "corpus/10-combat/RI-AI06-boss-design.md \u2014 177 boss moves and 14 arena references routed",
+    "corpus/20-progression/RI-PRG04-hearth-and-death.md \u2014 \u00a75 points at AM-W1-13-01 with the delta table",
+    "corpus/80-methods/RI-MTH02-determinism-reproducibility.md \u2014 R4 points at the APPLIED AM-W1-00-C1",
+    "corpus/85-platform/RI-PLT03-load-streaming-and-hitches.md \u2014 \u00a7C points at the filed motion-axis hole",
+    "corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md \u2014 session-run.mjs exists; the blocked_on excuse withdrawn, the unmeasured claim left standing",
+    "corpus/95-experience/RI-EXP06-permissiveness-budget.md \u2014 corpus/25-magic is not empty and S19 exists",
+    "corpus/00-doctrine/METRICS-IMPLEMENTATION-01.md, corpus/00-doctrine/INTENT-AUDIT-02.md \u2014 stale absence claims struck",
+    "orchestration/COST.md \u00a75 \u2014 superseded parallelism floor struck, guard restated as 'no reduction in safe concurrency'"
   ],
-
   "handed_over": [
-    { "to": "W1-17 via AUDIT-R1-LIST", "what": "NEXT-DISPATCH §2b says main-quest-argument.json does not exist; it is on disk at 41419 bytes and NEXT-DISPATCH's own §1444 already says so", "accept": "check-citations --only C no longer names line 1500" },
-    { "to": "AUDIT-R1-LIST", "what": "NEXT-DISPATCH L1299 is deliberate struck history", "accept": "append <!--citation-ok: struck section, kept as the record-->" },
-    { "to": "W1-30K", "what": "thorn/stormhold anchors in board.json and ART.md §3 — a slot-routing change, NOT an acquisition", "accept": "check-citations --only D returns no D1 findings" },
-    { "to": "live owner of COST-EXPERIMENTS.md", "what": "'docs/data/ does not exist yet' — it holds cost-ledger.json and rigour.json", "accept": "struck with current contents named" },
-    { "to": "W1-06-s49-authority-resolution-20260811, codex-w1-06-fresh-review-20260811", "what": "W1-06:294 'the newest visual seam is S47' — S48-S55 now exist, and S50 was ruled from this plan's own AMENDMENT-W1-06-03. The conclusion may survive; the figure is stale.", "accept": "paragraph re-tested against current §2 and struck or confirmed" },
-    { "to": "owners of RI-AUD03 and RI-WLD04", "what": "amended by AMENDMENT-W1-22-01 and AM-W1-01-01 respectively; neither item names its amendment", "accept": "--only A returns no A4 findings for them" }
+    {
+      "to": "W1-17 via AUDIT-R1-LIST",
+      "what": "NEXT-DISPATCH \u00a72b says main-quest-argument.json does not exist; it is on disk at 41419 bytes and NEXT-DISPATCH's own \u00a71444 already says so",
+      "accept": "check-citations --only C no longer names line 1500"
+    },
+    {
+      "to": "AUDIT-R1-LIST",
+      "what": "NEXT-DISPATCH L1299 is deliberate struck history",
+      "accept": "append <!--citation-ok: struck section, kept as the record-->"
+    },
+    {
+      "to": "W1-30K",
+      "what": "thorn/stormhold anchors in board.json and ART.md \u00a73 \u2014 a slot-routing change, NOT an acquisition",
+      "accept": "check-citations --only D returns no D1 findings"
+    },
+    {
+      "to": "live owner of COST-EXPERIMENTS.md",
+      "what": "'docs/data/ does not exist yet' \u2014 it holds cost-ledger.json and rigour.json",
+      "accept": "struck with current contents named"
+    },
+    {
+      "to": "W1-06-s49-authority-resolution-20260811, codex-w1-06-fresh-review-20260811",
+      "what": "W1-06:294 'the newest visual seam is S47' \u2014 S48-S55 now exist, and S50 was ruled from this plan's own AMENDMENT-W1-06-03. The conclusion may survive; the figure is stale.",
+      "accept": "paragraph re-tested against current \u00a72 and struck or confirmed"
+    },
+    {
+      "to": "owners of RI-AUD03 and RI-WLD04",
+      "what": "amended by AMENDMENT-W1-22-01 and AM-W1-01-01 respectively; neither item names its amendment",
+      "accept": "--only A returns no A4 findings for them"
+    }
   ],
-
   "ranked_queue": [
-    "1. refs/morrowind/REF-A21-regions (39 files) + REF-A23-ground (11) — cited by no corpus item. Region/topological material the owner's directive 5 asks about by name. We have it; no item says so.",
-    "2. refs/modern/ui/ — 8 plates no document anywhere names. Cheapest fix on the list.",
+    "1. refs/morrowind/REF-A21-regions (39 files) + REF-A23-ground (11) \u2014 cited by no corpus item. Region/topological material the owner's directive 5 asks about by name. We have it; no item says so.",
+    "2. refs/modern/ui/ \u2014 8 plates no document anywhere names. Cheapest fix on the list.",
     "3. The commit-stamp check: a numeric claim in a governing document with no commit stamp and no re-derivation command.",
-    "4. 12 amendments that cannot be routed to an item (A5) — name the primary target in each title line, then A4 starts demanding the back-pointers.",
-    "5. refs/temporal-substitutes/burst-* (46 files, 4 dirs) — verify legitimately inventory-only before spending.",
-    "6. 12 further inventory-only REF-A* directories, 1-6 files each — one pass to route or explicitly de-scope.",
-    "7. ARBITRATION S32, S31, S29, S28 cited by no governing document at all — rulings nobody can find by reading.",
-    "8. Extend check C past resolvable paths — the RI-VIS02 miss proves the best findings have no path in the sentence."
+    "4. 12 amendments that cannot be routed to an item (A5) \u2014 name the primary target in each title line, then A4 starts demanding the back-pointers.",
+    "5. refs/temporal-substitutes/burst-* (46 files, 4 dirs) \u2014 verify legitimately inventory-only before spending.",
+    "6. 12 further inventory-only REF-A* directories, 1-6 files each \u2014 one pass to route or explicitly de-scope.",
+    "7. ARBITRATION S32, S31, S29, S28 cited by no governing document at all \u2014 rulings nobody can find by reading.",
+    "8. Extend check C past resolvable paths \u2014 the RI-VIS02 miss proves the best findings have no path in the sentence."
   ],
-
   "files_touched": [
     "tools/check-citations.mjs",
     ".githooks/pre-commit",

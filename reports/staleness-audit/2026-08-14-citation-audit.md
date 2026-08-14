@@ -1,9 +1,16 @@
 # Citation-staleness audit — documents that hold false beliefs about this repo
 
 **Task:** `AUDIT-CITATION-STALENESS` · **Date:** 2026-08-14 · **Branch:** `codex/wave1-build-experiment`
-**Machine-readable findings:** `reports/staleness-audit/2026-08-14-citation-audit.json` (stamped `9ddeb512`)
-**Reverse index:** `reports/staleness-audit/reverse-index.md` / `.json` — **regenerate, never trust the copy**:
+**Reverse index:** `reports/staleness-audit/reverse-index.md` — **regenerate, never trust the copy**:
 `node tools/check-citations.mjs --index`
+
+> **On the two `.json` companions.** `reports/.gitignore` excludes `*.json` and its stated test is
+> *"is this reproducible by re-running the tool that made it"*. Both are: the findings are
+> `node tools/check-citations.mjs --json`, the index is `node tools/check-citations.mjs --index --json`.
+> So they are deliberately **not** tracked, they exist on the container only, and nothing here cites
+> them as evidence — every number in this report is reproducible from the two commands above.
+> (`HAZARDS.md` §9: evidence under `reports/` can silently never reach the remote. It did not, and
+> that is the correct outcome for these two rather than a loss.)
 
 ---
 
