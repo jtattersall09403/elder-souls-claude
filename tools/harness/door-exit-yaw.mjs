@@ -96,7 +96,17 @@ const main = async () => {
   const { page } = g;
   await g.h('ready');
   await page.evaluate(IN_PAGE);
-  const ids = await page.evaluate(() => Object.keys(window.__ENGINE.data.interiors).sort());
+  // Sorted BY TOWN, not by id. Each row teleports to its own doorstep, and a teleport that
+  // crosses the province opens a streaming boundary: measured on this box, an interior in the
+  // town you are already standing in costs ~17 s and the first interior of a new town costs
+  // ~150 s. Sorting by settlement turns 115 town changes into 8.
+  const ids = await page.evaluate(() => {
+    const I = window.__ENGINE.data.interiors;
+    return Object.keys(I).sort((a, b) => {
+      const sa = String(I[a].settlement || ''), sb = String(I[b].settlement || '');
+      return sa === sb ? (a < b ? -1 : 1) : (sa < sb ? -1 : 1);
+    });
+  });
   const only = args.only ? String(args.only).split(',').map((s) => s.trim()) : null;
   const list = (only ? ids.filter((i) => only.includes(i)) : ids).slice(0, args.limit ? Number(args.limit) : 1e9);
 
@@ -161,6 +171,13 @@ const main = async () => {
         const real = {};
         try {
           const inRes = H.enterInterior(o.id);
+          // A shut shop is a locked door, not a measurement. `useDoor()` refuses it and
+          // `sim.env.interior` stays null — so an unguarded `exitInterior()` below would measure
+          // the OUTDOOR standing point with the adversarial seed yaw and file it as "the fix".
+          // That is a vacuous positive arm, and it would have been invisible in the roll-up.
+          if (inRes && inRes.entered === false) {
+            real.refused = inRes.reason || 'refused';
+          } else {
           H.stepFrames(6);
           const ip = E.sim.player.pos;
           real.enter = {
@@ -182,6 +199,7 @@ const main = async () => {
             clearance_m: X.clearance(op[0], op[2], oy, op[1] + 1.6, o.reach),
             null_inward_clearance_m: X.clearance(op[0], op[2], oy + 180, op[1] + 1.6, o.reach),
           };
+          }
         } catch (e) { real.error = String((e && e.message) || e); }
 
         // ---- the way IN, in the room's own local frame ------------------------------------------
