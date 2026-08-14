@@ -76,6 +76,11 @@ right now). Between these two you should not need to go looking for anything.
    either alone changes nothing and only deleting both moves the number. Honest reporting of it
    looks exactly like an inert fix, so say which you have when you report it (see
    `corpus/90-verdicts/wave1/W1-SOULS-r3.md`, run as a 2×2).
+
+   **Before you `fs.cpSync` a copy of the tree for this: it does not need to be a deep copy.**
+   `node tools/control-clone.mjs make --label <name>` hard-links `game/`/`tools/` instead of copying
+   them — same tree, ~150× less disk, safe by construction as long as you pass `--writable` for
+   every path you will actually write into. See `HAZARDS.md` §5.
 7. **Audit the running world after a load, not the bytes.** A field written and never read back
    re-serialises to exactly what was saved and passes forever.
 8. **A still target hides every steering defect — and one instant is a still target in time.** If
