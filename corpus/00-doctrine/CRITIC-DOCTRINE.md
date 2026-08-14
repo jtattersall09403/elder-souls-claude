@@ -14,8 +14,10 @@ score and, when unsatisfied, one named gap.** If you cannot produce artifacts, y
 For one **piece** (one subsystem path, one wave), you must:
 
 1. Read `ARBITRATION.md` in full, then this file, then `SCORING.md`.
-2. Read every reference item you were handed. These, and **only** these, are your bar.
-   You may not invent a standard. If the items don't cover it, extend the corpus (§7).
+2. Read every reference item you were handed. These are your bar — **and §1.3 requires you to
+   judge whether they are a sufficient bar.** You may not invent a standard, and you may not
+   *lower* one; but where the items cannot express what the piece must be good at, closing that
+   hole is part of your job, not somebody else's (§1.3, §7).
 3. **Declare your bifurcation** (§6) before you cite any visual reference.
 4. Run the harness commands you were given. Produce real output: screenshots, JSONL
    traces, harness report JSON, quoted in-game text with file and line.
@@ -69,6 +71,61 @@ do not count as a judging pass; the orchestrator re-runs the critic.
 
 Artifacts must be reproducible: record the exact command, the seed, the commit SHA, and
 the resolution/duration. A screenshot with no camera pose is an anecdote.
+
+### 1.3 Judge the bar, not only the build — and close the hole yourself
+
+**Mandatory. A critic that scores a piece against an insufficient bar has produced a number, not a
+judgement.**
+
+This exists because of a real miss. `RI-VIS08` covers character **fidelity** — model quality,
+silhouette readability — and its §D hands creature *design* to `RI-VIS05` §D4, which on inspection is
+**fauna-only**. Nothing in the corpus covered playable-race or NPC humanoid character **design**.
+Every critic that judged characters scored them against a bar with that hole in it and passed the
+hole downstream in silence. It was eventually caught by the owner, playing the game, saying the
+characters *"look frankly ridiculous"* — which is the most expensive possible detector and the one
+this project exists to replace.
+
+**So, before you score, ask the question the items cannot ask themselves:**
+
+> *If this piece scored full marks on every item I was handed, would it actually be good?*
+
+If the answer is no, **say what is missing and fix it in the same pass**:
+
+1. **Render the thing and look at it first.** You cannot tell whether a bar is sufficient from the
+   bar. Play it, orbit it, take motion — the hole shows up as *"I can see this is bad and no row I
+   have will fail it."* That sentence, written in a verdict, is a finding in its own right.
+2. **Check the whole corpus before declaring a hole**, not just your handed items. This repo has three
+   separate incidents of something being declared absent while it sat on disk — 131 vendored images, 33
+   interface screenshots, and a plate count computed correctly over a wrongly-chosen anchor. Name the
+   ids you checked. A false "nothing covers this" is worse than the hole.
+3. **Acquire the reference material the missing comparison needs** — plates, and **motion where the
+   property lives in motion**. Obey `RI-VIS09` on what counts as valid and the corpus's provenance
+   rules on what may be fetched. Record `n=0` honestly rather than admitting something that does not
+   qualify.
+4. **Write the reference item**, following corpus conventions — front-matter, `judges:`, hard fails,
+   scoring, `provenance: constructed` naming you as its author. It must be judgeable: another critic
+   scoring the same build against it should land near your number.
+5. **Update the records** so it is not orphaned: the area index, `subsystems.json` if it needs a path,
+   and the roadmap coverage (`node tools/roadmap-coverage.mjs` exits non-zero if a reference item has
+   no home).
+6. **Then run your critique**, including the new item, and say plainly in the verdict that you extended
+   the bar mid-pass and why.
+
+**Three guards, because this is a power that could be abused and one of them is the whole safety of it:**
+
+- **You may only ADD. Never weaken, delete, or relax an existing row** to make a piece pass. An
+  extension that lowers the bar is a corpus edit no critic may make — take it to arbitration.
+- **A bar you extended may not be the reason you PASS.** If your new item is the only thing standing
+  between the piece and a fail, you have graded your own work. Score the piece against the bar as it
+  stood, record the new item as **owed for the next round**, and say so.
+- **Bound it.** If closing the hole properly is a piece of work rather than a pass — a whole reference
+  set, a protocol, a new area — **do not build it inside a critique.** Write the finding, name what is
+  needed, file it, and score against what exists while stating the cap that ignorance puts on your own
+  verdict. A critique that turns into a three-hour acquisition has stopped being a critique.
+
+**And record the near-miss even when you conclude the bar is fine.** *"I checked whether these items
+could express what this piece needs to be good at, and they can"* is a sentence worth writing, because
+its absence is indistinguishable from never having asked.
 
 ---
 
