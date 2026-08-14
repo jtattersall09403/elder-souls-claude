@@ -1,0 +1,68 @@
+{
+  "task_id": "W1-30S-critic",
+  "title": "Fresh critic for W1-30S: is there a behaviour change hidden in the seam move, and does the seam actually isolate the ten children?",
+  "started": "2026-08-14T09:45:00Z",
+  "state": "verdict_filed",
+  "branch": "codex/wave1-build-experiment",
+  "role": "critic",
+  "grades": "W1-30S",
+  "measured_at": "91fbb20e",
+  "verdict": "FAIL",
+  "score": 5,
+  "gate": 7.0,
+  "verdict_md": "corpus/90-verdicts/wave1/W1-30S-r1.md",
+  "verdict_json": "corpus/90-verdicts/wave1/W1-30S-r1.json",
+  "files_claimed": [
+    "orchestration/status/W1-30S-critic.json",
+    "corpus/90-verdicts/wave1/W1-30S-r1.md",
+    "corpus/90-verdicts/wave1/W1-30S-r1.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-30S-r1/"
+  ],
+  "files_touched": [
+    "orchestration/status/W1-30S-critic.json",
+    "corpus/90-verdicts/wave1/W1-30S-r1.md",
+    "corpus/90-verdicts/wave1/W1-30S-r1.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-30S-r1/",
+    "corpus/90-verdicts/GAP-LEDGER.md",
+    "corpus/90-verdicts/GAP-LEDGER.json",
+    "orchestration/INDEX.md"
+  ],
+  "overlap_declared": "I wrote NOTHING under game/. Ruling O1 was run first: `ownership.mjs --for game/src/render/renderer.js` reports six live pieces and prints UNDECLARED OVERLAP, and W1-30A plus a FIRST-TEN-MINUTES agent were both writing renderer.js during this run. Every measurement was taken in throwaway `git worktree` checkouts under the scratchpad, pinned to 91fbb20e. Two findings live in renderer.js and are reported to W1-30A rather than repaired (rule 23).",
+  "headline": "The property the whole visual tree is standing on is sound and now proved on hardware: the move really is a move (all four moved bodies token-identical to their pre-move originals) and the frame really is byte-identical (288 of 288 full-Deck stills, RTX A5000, seam present vs seam reverted). But the commit is not move-only — it deletes one computation — and the seam it publishes does not isolate W1-30H or W1-30D, which is why the verdict is FAIL and why nothing should stop.",
+  "controls_run_before_any_green_was_believed": [
+    "RED CONTROL: vignette 0.075 -> 0.076 on a copy changed 6 of 6 frame hashes (100%) while edge density, luma span and dominant-colour fraction all moved by <= 0.0004. The hash separates these builds completely and the statistics cannot tell them apart at all.",
+    "DETERMINISM: 6 of 6 identical on SwiftShader at one seed; 24 distinct hashes in 24 hardware shots, so the capture is neither drifting nor degenerate.",
+    "TIME AXIS on hardware: 12 of 12 setups hash differently at 13:00 vs 19:30 — the capture is seeing the light.",
+    "REVERT FIDELITY: the reconstructed before-tree was proved token-identical to the genuine pre-seam git blobs on nine assertions BEFORE any frame was captured, and unseam.mjs exits 1 on any missed anchor under `set -Eeuo pipefail`, so a silently-skipped revert cannot produce a free green."
+  ],
+  "hazards_hit": [
+    "tools/contention.mjs said WAIT for most of this run (load 18.5 over 4 cores against a 4.0 ceiling). I PROCEEDED with at most three browsers and then moved the expensive population onto the GPU pod instead of opening more, which is stated here because the tool asks anyone who proceeds to say so.",
+    "The worktree's own tools/runpod predates the HTTPS transport (it landed after 91fbb20e), so the first pod attempt spent four minutes failing over SSH — the transport OWNER-DIRECTIVES §2 says cannot work from this container. Fixed by copying the newer tooling into the worktree. Worth adding to the GPU docs: a pinned worktree gets a pinned CLI.",
+    "Second pod attempt died at `PodAgentError: GET /job?id=... failed with HTTP 404` immediately after a healthy agent and a completed upload. A straight retry worked. Cost: about ninety pod-seconds.",
+    "DISK: the box hit 97% mid-run. Freeing space, I deleted my own in-flight capture directory and lost the local after-run at 24 of 30 setups. The replacement worktree was then garbage-collected by another agent working in the same shared scratchpad, losing it a second time along with the determinism and red-control manifests — their numbers are reported and cite the markdown, while the load-bearing controls that ARE committed are the hardware pair and the hardware time-axis run.",
+    "Local SwiftShader capture ran at roughly 33 s/frame under that load. The GPU pod ran the same work at about 2.2 s/frame, so after losing the local pair twice I stopped re-running it and put the whole 288-still population on the pod instead — which closed the builder's named gap completely rather than at the sample size the brief asked for."
+  ],
+  "gpu": {
+    "used": true,
+    "hardware": "NVIDIA RTX A5000, driver 580.159.04, 24564 MiB; ANGLE (NVIDIA, Vulkan 1.4.312), software_renderer:false",
+    "why": "Both halves of every pair ran on ONE machine in ONE session. Two Pods with two GPU models would have differed on every hash for reasons that have nothing to do with the seam.",
+    "runs": [
+      "24-still paired sample (gpu-before / gpu-after): 24 of 24 identical",
+      "288-still full Deck paired (full-before / full-after): the builder's named gap, closed"
+    ]
+  },
+  "findings_for_other_owners": [
+    "W1-30A + W1-30H (F3): the spell-VFX prepass was never moved into registerPrePass, so H must edit renderer.js to touch prepass ordering, gating or lifecycle. ~12 lines to relocate; the registration point and its loop already exist.",
+    "W1-30A (F4): models.js publishes an async loadModel() while every character is built synchronously in render/scene.js:365/390, a file the parent plan makes read-only to all children and that ownership.mjs says nobody has claimed. W1-30D has no seam to land glTF through.",
+    "W1-30A + W1-30B (F1): the province night lamps now read sky.js's `day` instead of recomputing it. Bit-identical over 2,400,001 samples; a permanent coupling that moves if B retunes the curve. Ruled reversible: keep it, because B's own lighting.js already names the province night lamps as a declared consumer.",
+    "W1-30V (F8, F9): tools/visual/library-census.mjs has never existed, so row 5 of W1-30S's bar has never been run by anyone; and deck.mjs never reads PROFILE.motion, so the 12 declared motion sequences are uncapturable and the parent's 'no gate is satisfiable by stills alone' is currently unsatisfiable. V's own next_step already names the motion gap, which is the right owner already knowing.",
+    "orchestrator (F5): commits 3b43ec6c and 380c374d cannot boot — the Renderer constructor calls registerPrePass/registerComposite while neither is defined anywhere in game/src. A half-written snapshot was banked by `git add -A`. Ruling O1's failure mode on the one commit where it is most expensive.",
+    "W1-30 parent plan (F2): the plan asks the seam for both 'a live registrant on every registration point' and 'only import/export rewrites'. For setLightingFrame those cannot both hold, because nothing pre-seam consumed a lighting-frame object. The next seam-shaped piece should not inherit the contradiction."
+  ],
+  "could_not_do": [
+    "Zero motion sequences against the 3 the plan assigns the critic — because tools/visual/deck.mjs implements no motion capture at all. Raised as F9 rather than worked around.",
+    "Did not re-run boot-check or the W1-30 cheap gates; capturing 336 stills from the running game at the seam tree is a stronger boot proof and that is where the browsers went.",
+    "Did not repair anything. Both code findings live in renderer.js, which is W1-30A's and had two other agents writing it during this run."
+  ],
+  "next_step": "W1-30A to close F3 (relocate the VFX prepass behind registerPrePass) and F4 (publish an async model-ready seam, and give render/scene.js an owner) before W1-30H and W1-30D reach their first real commits — both are small now and expensive after those children diverge. W1-30V to build tools/visual/library-census.mjs and to implement motion capture in deck.mjs. Orchestrator to note F5: the seam is the one commit where a partial `git add -A` bank left the branch unbootable."
+}
