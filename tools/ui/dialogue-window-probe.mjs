@@ -564,9 +564,18 @@ try {
       `${seen.size} distinct images over ${shots.length} captures`);
     // F2 in the item is reversible on exactly this evidence: does the fixed column starve the
     // prose on the narrowest supported viewport? Reported as a number rather than an opinion.
-    const worstMeasure = Math.min(...geo.map((g) => g.chars_per_line));
-    push('H3 the prose measure holds on every viewport', worstMeasure >= 45,
-      `narrowest measure ${worstMeasure} chars/line (RI-UIX05 band 45–75)`);
+    // §F2 IS REVERSIBLE ON EXACTLY THIS EVIDENCE, so the number is published for every viewport
+    // and graded on the ones the game is played in. PORTRAIT IS NOT ONE: `input/viewport.js`
+    // raises the rotate state in portrait and `ui/touch-overlay.js` draws the illustration asking
+    // the player to turn the device, so a portrait dialogue window is a frame nobody plays. It is
+    // still captured and still reported — grading it would be measuring an unsupported viewport,
+    // hiding it would be choosing the population to suit the answer.
+    const landscape = geo.filter((g) => g.canvas[0] >= g.canvas[1]);
+    const portrait = geo.filter((g) => g.canvas[0] < g.canvas[1]);
+    const worstMeasure = Math.min(...landscape.map((g) => g.chars_per_line));
+    push('H3 the prose measure holds on every viewport the game is played in', worstMeasure >= 45,
+      `narrowest landscape measure ${worstMeasure} chars/line (RI-UIX05 band 45–75)` +
+      (portrait.length ? `; portrait, which raises the rotate prompt, reads ${portrait.map((g) => g.chars_per_line).join('/')} and is reported not graded` : ''));
   }
 
   report.checks = checks;

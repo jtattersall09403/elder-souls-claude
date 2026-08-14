@@ -470,6 +470,34 @@ if (!args['static-only'] && !args.staticOnly) {
       of: LINES.length, rows: seatRows,
     });
 
+    // ---- L6. THE SAME QUESTION WITH THE REGISTRY TAKEN OUT OF THE PROBE'S HANDS.
+    // L5 asks the registry which room is a faction's seat and then asks the world about that room,
+    // so a perturbation moves BOTH halves and the discrimination is partly the probe following its
+    // own input. This asks about ONE HARD-NAMED ROOM instead — `stormhold.faction-deep-kin.r0`,
+    // the Deep Kin hollow, whose zone declares `faction: "deep-kin"` and for which NOTHING ELSE IN
+    // THE BUILD writes a standing: `crime/sanction.json` lists `deep_kin` under
+    // `standing_ids_unreachable` and says so in its own note. So the only thing that can make a
+    // Deep Kin member at home in the Deep Kin hollow is the registry, and the zone id in this
+    // check is a constant that no arm can move.
+    const HOLLOW = 'stormhold.faction-deep-kin.r0';
+    const hollow = {};
+    fresh();
+    try { hollow.as_stranger = H.trespassCheck(HOLLOW, {}).trespassing; } catch (e) { hollow.stranger_error = String(e).slice(0, 120); }
+    H.setFactionStanding('deep_kin', { member: true, reputation: 120, rank: 3 });
+    try { const t = H.trespassCheck(HOLLOW, {}); hollow.as_deep_kin_member = t.trespassing; hollow.seat_row = t.faction_seat; } catch (e) { hollow.member_error = String(e).slice(0, 120); }
+    fresh();
+    H.setFactionStanding('the_wet_ledger', { member: true, reputation: 120, rank: 3 });
+    try { hollow.as_a_ledger_member = H.trespassCheck(HOLLOW, {}).trespassing; } catch (e) { hollow.other_error = String(e).slice(0, 120); }
+    push('L6.the_deep_kin_hollow_is_the_deep_kin_hollow', {
+      discriminating: true,
+      zone: HOLLOW,
+      a_stranger_trespasses: hollow.as_stranger,
+      a_member_trespasses: hollow.as_deep_kin_member,
+      a_rival_member_trespasses: hollow.as_a_ledger_member,
+      detail: hollow,
+      note: 'The zone id is a constant. Only game/data/factions/registry.json can make the middle row false.',
+    });
+
     return out;
   }, { LINES, REPS, REP_HOME, PLAN, ALL_SKILLS, ALL_ATTRS });
   await game.close();

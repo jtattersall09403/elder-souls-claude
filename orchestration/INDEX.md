@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `039344a9`: 998 tools, 157 reference
-items, 205 pieces in flight.
+so it cannot drift. Generated at `807cfd9f`: 998 tools, 157 reference
+items, 206 pieces in flight.
 
-Its purpose is to stop 205+ concurrent agents each paying separately to discover the
+Its purpose is to stop 206+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1417,6 +1417,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-18-CRITIC-r1` | in_progress | Read RI-QST04 + RI-QST09, then attack mean_branches / X7 / multi_faction with break-the-de | `orchestration/status/W1-18-CRITIC-r1.json` |
+| `W1-18-REINTEGRATION` | done | W1-18's delivery still has NO INDEPENDENT CRITIC — that is the outstanding item and it is  | `corpus/30-quests/RI-QST04-quest-anatomy-schema.md` `corpus/30-quests/quest.schema.json` `game/data/index.json` `game/data/quests/blackmarsh-coast.json` `game/data/quests/blackmarsh-core.json` `game/data/quests/faction-continuation-wave1.json` |
 | `W1-BUILDING-OVERLAP-CENSUS` | done-except-hardware-frames |  | `orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json` `tools/world/building-overlap-census.mjs` `tools/world/thorn-quay-deletefix.mjs` `tools/check-building-overlap.mjs` `corpus/50-world/data/building-overlap-baseline.json` `.githooks/pre-commit` |
 | `W1-ORPHANED-SURFACE-SHADERS` | in_progress | CONSUMPTION arms (before/after) and the hardware before/after sweep on one Pod, both arms  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` `game/src/render/visual-foundation.js` `game/src/render/actor.js` `tools/visual/w1-30-surface-orphan-census.mjs` `tools/visual/w1-30-copy-seam-patch.mjs` `tools/visual/w1-30-surface-consumption.mjs` |
 | `RECONCILE-MAP-PROBE-S13` | reconciled |  | `orchestration/status/RECONCILE-MAP-PROBE-S13.json` |
@@ -1426,7 +1428,6 @@ work is the difference between resuming and starting over.
 | `W1-MAP-DEFECTS-r2` | in_progress | CHUNK 2 PICKS UP EXACTLY HERE. (1) THE PHONE LEG IS DONE — 3 taps, map reached, whole prov | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/blog-feed.jsonl` `reports/w1-map-defects-r2/` |
 | `AUDIT-CITATION-STALENESS` | ? |  | `tools/check-citations.mjs` `.githooks/pre-commit` `reports/staleness-audit/2026-08-14-citation-audit.md` `reports/staleness-audit/2026-08-14-citation-audit.json` `reports/staleness-audit/reverse-index.md` `reports/staleness-audit/reverse-index.json` |
 | `W1-DLG-TOPIC-WEB` | building | Read REF-A12c reading note requirement; run baseline censuses; demonstrate consume.mjs RED | `orchestration/status/W1-DLG-TOPIC-WEB.json` |
-| `W1-18-REINTEGRATION` | in_progress | Restore group A, verify JSON parses + quest-audit moves, land. | `orchestration/status/W1-18-REINTEGRATION.json` |
 | `W1-UIX08-dialogue-window` | built-probe-running | finish tools/ui/dialogue-window-probe.mjs run; delete-the-fix arm on a control clone; blog | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` `game/src/ui/screens/dialogue.js` `game/src/ui/screens/dialogue-links.js` `game/src/ui/surface.js` `game/src/ui/system.js` |
 | `plan-review3-w1-dlg-topic-web` | done | none — the plan is build-ready. Dispatch the builder per §8; steps A-E, rows A1/A1b/A2/A5/ | `orchestration/plans/W1-DLG-TOPIC-WEB.md` `orchestration/status/plan-review3-w1-dlg-topic-web.json` |
 | `AUDIT-CONSUMPTION-CENSUS` | ? | none for this task — census complete. Follow-up work (not done here, per 'do not fix the o | `reports/consumption-census/2026-08-14-census.md` `tools/metrics/consumption-census.mjs` `orchestration/status/AUDIT-CONSUMPTION-CENSUS.json` |

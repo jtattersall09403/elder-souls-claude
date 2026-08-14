@@ -1,0 +1,24 @@
+{
+  "task_id": "W1-18-CRITIC-r1",
+  "role": "critic",
+  "state": "in_progress",
+  "started": "2026-08-14",
+  "branch": "codex/wave1-build-experiment",
+  "baseline_commit": "f614c869ea0747f635e372f93345a8d0980fb90e",
+  "brief": "Independent critic for W1-18's quest delivery, re-integrated 2026-08-14 after a four-day silent revert. The content has never been criticised. Offline: browser ceiling exceeded.",
+
+  "could_not_do": [
+    "NO BROWSER. Contention gate is shut for this piece by dispatch instruction; every live-play claim is recorded as UNMEASURED, not as absent and not as present.",
+    "PENDING — filled in as the run proceeds."
+  ],
+
+  "next_step": "Read RI-QST04 + RI-QST09, then attack mean_branches / X7 / multi_faction with break-the-detector controls.",
+  "files_touched": ["orchestration/status/W1-18-CRITIC-r1.json"],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-18-r3.json",
+    "corpus/90-verdicts/wave1/W1-18-r3.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-18-r3/",
+    "reports/blog-feed.jsonl"
+  ],
+  "notes": []
+}

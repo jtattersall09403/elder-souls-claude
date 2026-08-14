@@ -152,10 +152,20 @@ export function layoutDialogue(S, m) {
   const s = S.s, W = S.W, H = S.H;
   const minPx = Number(S.ctx && S.ctx.__esMinTextPx) || 0;
 
-  // One scale factor, layout units → pixels. Tied to frame HEIGHT so the type is the same
-  // physical size on a 16:9 and a 21:9 screen of the same height — which is exactly what makes
-  // the anchor rule visible: widen the frame and the column does not move, the prose grows.
-  const u = s * 1.9;
+  // One scale factor, layout units → pixels. Tied to the frame's SHORTER AXIS.
+  //
+  // It was `s * 1.9` — the surface's own height scale — and on a portrait phone canvas
+  // (780 × 1688) that made one layout unit 2.97 px, so the fixed 166-unit column came out
+  // **493 px wide inside a 445 px panel**. The column is not the problem and must not become a
+  // percentage (B1); the SCALE was, because on a tall narrow frame "height" is the axis that has
+  // room to spare and "width" is the one under pressure.
+  //
+  // Using the shorter axis is identical on every landscape viewport this build supports — at
+  // 1920×1080 and 2560×1080 it is the height, unchanged — and degrades portrait gracefully
+  // instead of absurdly. Portrait is not a play orientation here in any case: `input/viewport.js`
+  // raises the rotate state and `ui/touch-overlay.js` draws the chart-on-a-table illustration
+  // asking the player to turn the device.
+  const u = 1.9 * Math.min(H, W) / 1080;
 
   const face = faceOf('ink'), boneFace = faceOf('bone');
   // Mean advance per character at size 1, measured from the shipped outlines rather than assumed,

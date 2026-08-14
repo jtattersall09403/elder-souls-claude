@@ -1,0 +1,254 @@
+{
+  "arm": "after",
+  "canvas": [
+    960,
+    540
+  ],
+  "renderer_string": "ANGLE (NVIDIA, Vulkan 1.4.303 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)",
+  "software_renderer": false,
+  "evidence_class": "HARDWARE — valid for appearance claims.",
+  "renderer_attestation": {
+    "class": "HARDWARE",
+    "decided_from": "renderer-string",
+    "reason": "the reported renderer names a GPU vendor and no software rasteriser: ANGLE (NVIDIA, Vulkan 1.4.303 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)",
+    "unknown": false,
+    "hardware_requested": true,
+    "fell_back": false,
+    "source": "live page WEBGL_debug_renderer_info"
+  },
+  "results": [
+    {
+      "target": "player",
+      "angles": [
+        {
+          "yaw": 0,
+          "materials_selected": 17,
+          "with_uniforms": 15,
+          "perturbed": {
+            "frac": 0.05043402777777778,
+            "maxDelta": 192.24,
+            "meanDelta": 1.1342
+          },
+          "restored_floor": {
+            "frac": 0,
+            "maxDelta": 2,
+            "meanDelta": 0.7578
+          }
+        },
+        {
+          "yaw": 45,
+          "materials_selected": 17,
+          "with_uniforms": 15,
+          "perturbed": {
+            "frac": 0.04375578703703704,
+            "maxDelta": 215.89,
+            "meanDelta": 0.9334
+          },
+          "restored_floor": {
+            "frac": 0,
+            "maxDelta": 1,
+            "meanDelta": 0.5124
+          }
+        },
+        {
+          "yaw": 90,
+          "materials_selected": 17,
+          "with_uniforms": 15,
+          "perturbed": {
+            "frac": 0.04619984567901234,
+            "maxDelta": 114.03,
+            "meanDelta": 0.8346
+          },
+          "restored_floor": {
+            "frac": 0,
+            "maxDelta": 1,
+            "meanDelta": 0.3616
+          }
+        },
+        {
+          "yaw": 135,
+          "materials_selected": 17,
+          "with_uniforms": 15,
+          "perturbed": {
+            "frac": 0.0511207561728395,
+            "maxDelta": 137.17,
+            "meanDelta": 0.7785
+          },
+          "restored_floor": {
+            "frac": 0,
+            "maxDelta": 1,
+            "meanDelta": 0.2482
+          }
+        },
+        {
+          "yaw": 180,
+          "materials_selected": 17,
+          "with_uniforms": 15,
+          "perturbed": {
+            "frac": 0.05157407407407407,
+            "maxDelta": 162.98,
+            "meanDelta": 0.7694
+          },
+          "restored_floor": {
+            "frac": 0,
+            "maxDelta": 1,
+            "meanDelta": 0.1638
+          }
+        },
+        {
+          "yaw": 225,
+          "materials_selected": 17,
+          "with_uniforms": 15,
+          "perturbed": {
+            "frac": 0.053634259259259257,
+            "maxDelta": 116.68,
+            "meanDelta": 0.7186
+          },
+          "restored_floor": {
+            "frac": 0,
+            "maxDelta": 1,
+            "meanDelta": 0.1083
+          }
+        },
+        {
+          "yaw": 270,
+          "materials_selected": 17,
+          "with_uniforms": 15,
+          "perturbed": {
+            "frac": 0.03232060185185185,
+            "maxDelta": 119.27,
+            "meanDelta": 0.544
+          },
+          "restored_floor": {
+            "frac": 0,
+            "maxDelta": 1,
+            "meanDelta": 0.0708
+          }
+        },
+        {
+          "yaw": 315,
+          "materials_selected": 17,
+          "with_uniforms": 15,
+          "perturbed": {
+            "frac": 0.044675925925925924,
+            "maxDelta": 143.62,
+            "meanDelta": 0.638
+          },
+          "restored_floor": {
+            "frac": 0,
+            "maxDelta": 1,
+            "meanDelta": 0.0443
+          }
+        }
+      ]
+    },
+    {
+      "target": "building",
+      "angles": [
+        {
+          "yaw": 20,
+          "materials_selected": 145,
+          "with_uniforms": 134,
+          "perturbed": {
+            "frac": 0.24247492283950617,
+            "maxDelta": 97.98,
+            "meanDelta": 4.7058
+          },
+          "restored_floor": {
+            "frac": 0,
+            "maxDelta": 1,
+            "meanDelta": 0.0167
+          }
+        },
+        {
+          "yaw": 140,
+          "materials_selected": 145,
+          "with_uniforms": 134,
+          "perturbed": {
+            "frac": 0.3284182098765432,
+            "maxDelta": 94.08,
+            "meanDelta": 4.1398
+          },
+          "restored_floor": {
+            "frac": 0,
+            "maxDelta": 1,
+            "meanDelta": 0.0142
+          }
+        },
+        {
+          "yaw": 260,
+          "materials_selected": 145,
+          "with_uniforms": 134,
+          "perturbed": {
+            "frac": 0.25116319444444446,
+            "maxDelta": 109.97,
+            "meanDelta": 3.1948
+          },
+          "restored_floor": {
+            "frac": 0,
+            "maxDelta": 1,
+            "meanDelta": 0.0111
+          }
+        }
+      ]
+    },
+    {
+      "target": "natural",
+      "angles": [
+        {
+          "yaw": 0,
+          "materials_selected": 37,
+          "with_uniforms": 37,
+          "perturbed": {
+            "frac": 0.7397164351851852,
+            "maxDelta": 181.71,
+            "meanDelta": 32.5471
+          },
+          "restored_floor": {
+            "frac": 0,
+            "maxDelta": 1,
+            "meanDelta": 0.0083
+          }
+        },
+        {
+          "yaw": 180,
+          "materials_selected": 37,
+          "with_uniforms": 37,
+          "perturbed": {
+            "frac": 0.526820987654321,
+            "maxDelta": 164.84,
+            "meanDelta": 29.1735
+          },
+          "restored_floor": {
+            "frac": 0,
+            "maxDelta": 0.93,
+            "meanDelta": 0.0052
+          }
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "CONTROL-NATURAL-RESPONDS",
+      "ok": true,
+      "detail": "unaffected ground surfaces moved 73.97% of pixels against a restore floor of 0.00% — if this fails, nothing else in this run means anything"
+    },
+    {
+      "id": "RESTORE-IS-CLEAN",
+      "ok": true,
+      "detail": "worst restore-to-baseline drift 0.00%"
+    },
+    {
+      "id": "PLAYER-CONSUMES",
+      "ok": true,
+      "detail": "player moved 5.36% at its best angle (floor 0.00%)"
+    },
+    {
+      "id": "BUILDING-CONSUMES",
+      "ok": true,
+      "detail": "buildings moved 32.84% at their best angle (floor 0.00%)"
+    }
+  ],
+  "pageErrors": []
+}
