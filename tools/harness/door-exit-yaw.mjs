@@ -146,6 +146,44 @@ const main = async () => {
           exit.inside_a_building = !!(E.renderer && E.renderer.province && E.renderer.province.buildingAt(p[0], p[2]));
         } catch (e) { exit.inside_a_building = null; }
 
+        // ---- THE REAL DOOR, driven ----------------------------------------------------------
+        // Everything above scores a candidate rule from a standing point. This scores what the
+        // SHIPPED CODE actually does, through `useDoor()`/`leaveInterior()` — the same two
+        // functions `stepSettlement()` calls off the `interact` latch — with the adversarial
+        // prior yaw still in place. `H.teleport()` is not a substitute: it takes `opts.yaw` and a
+        // door does not, so measuring the door defect through a teleport measures the instrument.
+        //
+        // `null_inward` is the null control and it is the PLAUSIBLE wrong answer, not the trivial
+        // one: the same yaw the fix computes, read off the wrong end — a player turned to face the
+        // wall they just came through. It is measured from the same standing point on the same
+        // frame, so if the two arms come back equal the instrument is blind and nothing here is
+        // evidence.
+        const real = {};
+        try {
+          const inRes = H.enterInterior(o.id);
+          H.stepFrames(6);
+          const ip = E.sim.player.pos;
+          real.enter = {
+            yaw_deg: +E.sim.player.yaw.toFixed(1),
+            cam_yaw_deg: E.sim.camera ? +E.sim.camera.yaw.toFixed(1) : null,
+            body_yaw_deg: E.combat && E.combat.player ? +E.combat.player.yaw.toFixed(1) : null,
+            yaw_source: (inRes && inRes.yaw_source) || null,
+            clearance_m: X.clearance(ip[0], ip[2], E.sim.player.yaw, ip[1] + 1.6, o.reach),
+          };
+          const outRes = H.exitInterior();
+          H.stepFrames(6);
+          const op = E.sim.player.pos;
+          const oy = E.sim.player.yaw;
+          real.exit = {
+            yaw_deg: +oy.toFixed(1),
+            cam_yaw_deg: E.sim.camera ? +E.sim.camera.yaw.toFixed(1) : null,
+            body_yaw_deg: E.combat && E.combat.player ? +E.combat.player.yaw.toFixed(1) : null,
+            yaw_source: (outRes && outRes.yaw_source) || null,
+            clearance_m: X.clearance(op[0], op[2], oy, op[1] + 1.6, o.reach),
+            null_inward_clearance_m: X.clearance(op[0], op[2], oy + 180, op[1] + 1.6, o.reach),
+          };
+        } catch (e) { real.error = String((e && e.message) || e); }
+
         // ---- the way IN, in the room's own local frame ------------------------------------------
         let enter = null;
         if (o.doEnter) {
@@ -173,7 +211,7 @@ const main = async () => {
             H.stepFrames(2);
           } catch (e) { enter.error = String((e && e.message) || e); }
         }
-        return { id: o.id, settlement: rec.settlement, entry_side: cont.entry_side, bearing_deg: bearing, exit, enter };
+        return { id: o.id, settlement: rec.settlement, entry_side: cont.entry_side, bearing_deg: bearing, exit, enter, real };
       }, { id, seed: SEED_YAW, reach: REACH, doEnter: DO_ENTER });
       row.ms = Date.now() - t0;
       out.rows.push(row);
@@ -197,6 +235,25 @@ const main = async () => {
     if (v.length) out.summary.exit.best = { n: v.length, median_m: med(v), under_2m: v.filter((x) => x < 2).length };
     out.summary.exit.inside_a_building = out.rows.filter((r) => r.exit && r.exit.inside_a_building).length;
   }
+  // The two arms of the real, driven door: what the shipped code does, and the null control.
+  {
+    const ex = out.rows.map((r) => r.real && r.real.exit).filter(Boolean);
+    const en = out.rows.map((r) => r.real && r.real.enter).filter(Boolean);
+    const col = (a, k) => a.map((x) => x[k]).filter((v) => v !== null && v !== undefined);
+    const sum = (a, k) => { const v = col(a, k); return v.length ? { n: v.length, median_m: med(v), under_2m: v.filter((x) => x < 2).length, at_cap: v.filter((x) => x >= REACH).length } : null; };
+    out.summary.real = {
+      exit_fixed: sum(ex, 'clearance_m'),
+      exit_null_inward: sum(ex, 'null_inward_clearance_m'),
+      enter_fixed: sum(en, 'clearance_m'),
+      exit_yaw_written: ex.filter((x) => x.yaw_source).length,
+      enter_yaw_written: en.filter((x) => x.yaw_source).length,
+      // If the body's yaw and the mirror's yaw ever disagree the fix is the inert kind.
+      exit_body_matches_mirror: ex.filter((x) => x.body_yaw_deg === null || Math.abs(x.body_yaw_deg - x.yaw_deg) < 0.05).length,
+      exit_camera_matches: ex.filter((x) => x.cam_yaw_deg === null || Math.abs(((x.cam_yaw_deg - x.yaw_deg + 540) % 360) - 180) < 0.05).length,
+      exit_yaw_sources: ex.reduce((a, x) => { const k = x.yaw_source || '(none)'; a[k] = (a[k] || 0) + 1; return a; }, {}),
+      errors: out.rows.filter((r) => r.real && r.real.error).map((r) => ({ id: r.id, error: r.real.error })),
+    };
+  }
   for (const rule of ['as_shipped', 'to_centre', 'entry_side_in', 'entry_side_out']) {
     const v = gather('enter', rule);
     if (!v.length) continue;
@@ -208,6 +265,18 @@ const main = async () => {
   for (const [k, v] of Object.entries(out.summary.exit)) {
     if (k === 'inside_a_building') { say(`    ${String(k).padEnd(14)} ${v} of ${out.rows.length} exit points are inside a building footprint`); continue; }
     say(`    ${String(k).padEnd(14)} median ${String(v.median_m).padStart(6)}  under 2 m: ${String(v.under_2m).padStart(3)}/${v.n}${v.at_cap !== undefined ? `  at cap: ${v.at_cap}` : ''}`);
+  }
+  if (out.summary.real) {
+    const R = out.summary.real;
+    say('  THE REAL DOOR, driven through useDoor()/leaveInterior():');
+    const line = (k, v) => v && say(`    ${String(k).padEnd(18)} median ${String(v.median_m).padStart(6)}  under 2 m: ${String(v.under_2m).padStart(3)}/${v.n}  at cap: ${v.at_cap}`);
+    line('exit (fixed)', R.exit_fixed);
+    line('exit NULL inward', R.exit_null_inward);
+    line('enter (fixed)', R.enter_fixed);
+    say(`    yaw written on exit: ${R.exit_yaw_written}/${out.rows.length}   on enter: ${R.enter_yaw_written}/${out.rows.length}`);
+    say(`    body yaw == mirror yaw: ${R.exit_body_matches_mirror}/${out.rows.length}   camera == body: ${R.exit_camera_matches}/${out.rows.length}`);
+    say(`    yaw sources: ${JSON.stringify(R.exit_yaw_sources)}`);
+    if (R.errors.length) say(`    errors: ${R.errors.length} — ${R.errors.slice(0, 3).map((e) => e.id + ': ' + e.error).join('; ')}`);
   }
   say('  ENTER — clearance (m), interior local frame:');
   for (const [k, v] of Object.entries(out.summary.enter)) {

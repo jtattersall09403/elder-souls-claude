@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `faa44d58`: 956 tools, 157 reference
+so it cannot drift. Generated at `8d64667e`: 957 tools, 157 reference
 items, 186 pieces in flight.
 
 Its purpose is to stop 186+ concurrent agents each paying separately to discover the
@@ -674,7 +674,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/journey/state-diff.mjs` — RI-JRN05's round-trip instrument, named by the item (§ "Instruments", line 213) and absent until now: the W1-00 round-2 critic verified its absence.
 - `tools/journey/world-runs-gate.mjs` — one implementation of "is the simulation actually advancing?", used by every journey rather than by one.
 
-### `tools/lib/` — 13
+### `tools/lib/` — 14
 
 - `tools/lib/absence.mjs` — the third thing TOOL-LOOP rule 1 names, and the one this project keeps skipping.
 - `tools/lib/browser.mjs` — Boots the game in headless Chromium and hands back a live handle to window.__HARNESS.
@@ -685,6 +685,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/control-clone.mjs` — the cheap way to build a null-control tree.
 - `tools/lib/gamedata.mjs` — load the shipped game/data/** trees the way game/src/engine.js assembles them, so a static tool and the running game cannot drift.
 - `tools/lib/graded.mjs` — A CHECK WITH AN EMPTY SAMPLE SET MUST REPORT `EMPTY`, NEVER `PASS`.
+- `tools/lib/opening.mjs` — THE OPENING A PLAYER ACTUALLY GETS, as one shared function.
 - `tools/lib/run.mjs` — Scenario execution + artifact writing.
 - `tools/lib/scenario.mjs` — Scenario loading + input-script normalisation.
 - `tools/lib/serve.mjs` — Minimal static file server.

@@ -76,25 +76,44 @@ const DEG = 180 / Math.PI;
 export function exitFacing(rec) {
   if (!rec) return null;
   const cont = rec.continuity || {};
-  // 1. The declared outward normal. Two independently authored copies exist (this one and the
-  //    settlement building row's); RI-WLD13 N2 is the check that they agree.
-  const b = Number(rec.door_world_bearing_deg);
-  if (Number.isFinite(b)) return { yaw_deg: norm360(b), source: 'door_world_bearing_deg' };
-  // 2. The way you walked: from the door to the doorstep the derivation put you on. Only when the
-  //    two are far enough apart for the direction to mean anything.
+  // 1. THE WAY YOU JUST WALKED: from the door to the doorstep the body is being put on. Two
+  //    numbers the placement itself uses, so this answer cannot disagree with where you are
+  //    standing, and it needs nothing to be true about a compass word.
+  //
+  //    WHY THIS IS FIRST AND `door_world_bearing_deg` IS NOT, which was a surprise. The declared
+  //    bearing is RI-WLD13 §4's field and it is present on all 115 records and on all 115
+  //    settlement rows, so it looked like the obvious primary. Measured against the DRAWN world
+  //    (`tools/harness/door-exit-yaw.mjs`, which marches the town collision set at eye height and
+  //    reports how far you can see along a facing), it disagrees with the geometry on a large
+  //    fraction of the tree and does so in both directions:
+  //
+  //      writ-house  bearing 180 -> 0.50 m of clearance (a wall in your face); 0 -> 12 m
+  //      barge-hold  bearing  90 -> 0.75 m;                                  270 -> 12 m
+  //      archon-inn  bearing  40 -> 12 m;                                    220 ->  3.75 m
+  //
+  //    It is a FROZEN DERIVED value — `tools/world/w1-04-r7-freeze.mjs` wrote it as
+  //    `entry_side + continuity.building_yaw_deg`, exactly, on all 115 — and the `entry_side`
+  //    half is itself contradicted by the records: 109 of the 115 declare `"south"` and then put
+  //    `interior_spawn` against the +z wall. So the field is a second, disagreeing copy of a
+  //    number the geometry already carries, and this is the third time that shape has cost this
+  //    project a wrong answer. It is kept as a LAST resort, not a first one.
   const door = rec.door_world_pos || rec.exterior_door;
   const out = cont.exterior_spawn;
   if (Array.isArray(door) && Array.isArray(out)) {
     const dx = out[0] - door[0], dz = out[2] - door[2];
     if (Math.hypot(dx, dz) >= 0.25) return { yaw_deg: norm360(Math.atan2(dx, dz) * DEG), source: 'door_to_doorstep' };
   }
-  // 3. The compass word, rotated by the building's own yaw — the arithmetic
-  //    `render/exterior.js#entryOutwardWorld()` uses, restated because `sim/` must not import
-  //    `render/`. `south` is +z in this build (`entrySideLocal()`: `entry_side === 'south'` sets
-  //    `wz = 1`), which is the opposite of the intuition and is why it is written down here.
+  // 2. A doorstep that sits ON its own door has no "the way you walked". Fall back to the compass
+  //    word rotated by the building's own yaw — the arithmetic `render/exterior.js`'s
+  //    `entryOutwardWorld()` uses, restated rather than imported because `sim/` must not depend on
+  //    `render/`. `south` is +z in this build (`entrySideLocal()` sets `wz = 1` for it), which is
+  //    the opposite of the intuition and is why it is written down here.
   const side = cont.entry_side;
   const base = side === 'north' ? 180 : side === 'south' ? 0 : side === 'east' ? 90 : side === 'west' ? 270 : null;
   if (base !== null) return { yaw_deg: norm360(base + (Number(cont.building_yaw_deg) || 0)), source: 'entry_side' };
+  // 3. The declared bearing, last, for a record that carries nothing else.
+  const b = Number(rec.door_world_bearing_deg);
+  if (Number.isFinite(b)) return { yaw_deg: norm360(b), source: 'door_world_bearing_deg' };
   return null;
 }
 
