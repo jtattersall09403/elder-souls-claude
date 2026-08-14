@@ -1,0 +1,67 @@
+{
+  "task_id": "critic-w1-20-r2",
+  "role": "critic",
+  "piece": "W1-20",
+  "round": 2,
+  "state": "complete",
+  "started_at": "2026-08-14T18:00:00Z",
+  "commit_at_start": "6220e0ff",
+  "box_at_start": "node tools/contention.mjs returned GO (1 browser, load 1.97/core). It returned WAIT twice mid-run (load 4.53-4.86/core, 3-4 instances) and I did the static census and the data work until it cleared. NO TIMING FIGURE IS PUBLISHED ANYWHERE in this verdict.",
+  "judged_by": ["RI-QST01", "RI-QST03", "RI-MTH07"],
+  "subsystem_paths": [
+    "quests.faction.joining",
+    "quests.faction.rankgating",
+    "quests.faction.escalation",
+    "quests.faction.exclusivity"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-20-r2.md",
+    "corpus/90-verdicts/wave1/W1-20-r2.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-20-r2/",
+    "tools/quests/critic-w1-20-r2-census.mjs",
+    "tools/quests/critic-w1-20-r2-live.mjs",
+    "orchestration/status/critic-w1-20-r2.json"
+  ],
+  "files_touched": [
+    "corpus/90-verdicts/wave1/W1-20-r2.md",
+    "corpus/90-verdicts/wave1/W1-20-r2.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-census.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-live-shipping.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-live-null-control.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-20-r2/reach-head.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-20-r2/w1-20-builder-at-head.log",
+    "tools/quests/critic-w1-20-r2-census.mjs",
+    "tools/quests/critic-w1-20-r2-live.mjs",
+    "orchestration/status/critic-w1-20-r2.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "verdict": "FAIL — 0, min-over-items, forced by RI-MTH07's binary coupling clause. Strike RI-MTH07 out entirely and it is still FAIL at 5.0, set by RI-QST03's rank ceiling. Both numbers are published.",
+  "part_1_ruling": {
+    "id": "S-W1-20-r2-A",
+    "question": "The dispatch asks whether W1-20-r1 stands, needs amending, or is void, given that material recovered on 08-14 had been deleted before the critic read it.",
+    "ruling": "IT STANDS, unamended. The dispatch's premise is not what the dates say. W1-20-r1 ran on 2026-08-08 at d98ca28/fb2cb09. The recovered material was AUTHORED on 2026-08-10 by 9ed28905 ('Build complete W1-20 faction system') and partly deleted sixteen minutes later by 091a6cec. The round-1 critic could not have read it because it did not exist for another two days, and nothing in it contradicts a number in the verdict. What the deletion cost was ROUND TWO, not round one: the continuation is a point-by-point answer to r1 and no critic ever learned it had happened.",
+    "reversible": true,
+    "what_would_overturn_it": "A copy of 9ed28905's material on the branch before 2026-08-08. The object database has one authoring commit per path and it is dated 08-10."
+  },
+  "findings": [
+    "THE RECOVERY IS TWO FILES SHORT, and no file-level sweep could have found them. 091a6cec also reverted 18 lines of game/src/engine.js — the factions/registry.json loader branch, the this.factionRegistry install, and the 19-line Engine.factionAccess() — and the whole of orchestration/status/W1-20.json, from the continuation's builder-delivery-complete record back to the pre-continuation one. Both files still exist, so RECOVERY-20260814's per-path method is blind to them. The cheapest detector is not git: `node tools/quests/w1-20-builder.mjs` gives 'TypeError: engine.factionAccess is not a function', because the one-line harness wrapper survived and the engine method under it did not. Worth an entry in HAZARDS.",
+    "RI-MTH07 = 0. game/data/factions/registry.json (8 records, 5,984 bytes) is fetched at boot by game/data/index.json and read by NOTHING in game/src. grep -r factionRegistry game/src -> 0 hits; grep -r factionAccess game/src -> 1 hit, harness/api.js. It falls off the end of loadData's else-if chain in exactly the way that function's own W1-07 comment warns about. Remedy: three lines restored from 9ed28905 makes it readable; a fourth (a world-side caller) makes it consumed.",
+    "BIGGEST GAP — GAP-W1-faction-ladders-are-bricked-up-at-rank-5. Ranks 5, 6 and 7 are unreachable in any save on the_dockhands, the_drowned_court, the_ixtu_vakh and the_rootkeepers: the world_state each of those rank rows names is raised by no quest resolution anywhere in game/data. `grep -rl dockhands_gang_held game/data/` returns only faction-gates.json. 21 authored quests, including every succession quest on those four lines, cannot be opened. Measured LIVE (a character with every favoured skill at 100 and 400 reputation stops at rank 4 on all eight lines) and confirmed by the NULL CONTROL (the same character reaches rank 7 on all eight when the world_state column is flattened). Remedy: twelve world_flags entries on quests that already exist at the right ranks.",
+    "RI-QST01 has ZERO hard fails where round 1 had two. Every one of the eight lines now carries 18 quests across all eight rank bands, with deceit at rank <= 3, dirty_work at 4, succession at 7, monotonic stakes and 12-18 rival-touching quests. That work landed on 08-10 and nobody had said so.",
+    "Round 1's error of fact #1 is FIXED: the four joining quests no longer double their reputation award. Q-ROOT-00, Q-VAKH-00, Q-CORT-00 and Q-DOCK-00 declare {} at quest level and 10 on each resolution. It pays 10, not 20.",
+    "the_dockhands is absent from game/data/dialogue/faction-reactions.json altogether — no alias, no matrix row — so rank in the Dockhands reaches no person in the world. npc-porter-eeja sits at disposition 47 at ranks 0, 2, 4 and 7 while the other seven representatives move 21-24 points. Fix: two lines of JSON.",
+    "A locked player is told they have been ADMITTED. QuestEngine.open() refuses correctly and records 'The Imperial Assize will not deal with you: you are The Wet Ledger', but the sentence the player hears is voice.kind 'welcome' — 'The roll is amended. You are an officer of this court.' Measured on all five locked lines. The voice is chosen from gate.allowed, which is the RANK gate; the exclusivity lock never reaches the mouth. Fix: refusal.js must consult rivalry_locked before gate.allowed.",
+    "THE NULL CONTROL FALSIFIED MY OWN CHECKS, which is the instrument finding. Under 'every faction accepts everyone and refuses nobody, ladders and prose intact', only 2 of the 5 checks I had marked discriminating flipped: A2 (7 refusals carrying a number -> 0) and A4 (rank 4 -> rank 7 on all eight). A1 and A3 were inert because I read r.ok, a field factionRefusal does not return; B1/B2/B3/C1/D1 test models the control deliberately leaves alone. All three failures are in the verdict and fixed in the tool, which now reads r.kind.",
+    "The dialogue-words finding ('257 of 336 NPC records carry actor names no starting topic is written for') does NOT bite W1-20 as I can measure it: 7 of 408 records carry an uncovered actor, and all eight faction representatives answer 9 of the 9 starting topics.",
+    "quest-witnesses.json's absence from index.json orphans no faction consequence — all 16 ids are also in the loaded mainline.json — but the loaded record is a generated shell whose topics are the quest title as a free string (not a topic id in any of the 21 topic files) and whose greeting is generic town filler; two of the four I walked up to say the identical sentence. The AUTHORED reveal voice is in the unloaded file. RI-QST01's 'No dissenter' loss mode in disguise, touching 13 faction quests. Fix is one index line PLUS removing 16 colliding shells — W1-18's call.",
+    "CORPUS GAP filed: RI-QST03 §4 checks ladder completability entirely on the reputation column and has no check at all on the world_state column, so the item's own 'Unreachable ranks' loss mode is reachable with every stated check green. Proposed fifth clause: every world_state named by a rank row must be raised by at least one quest resolution.",
+    "tools/control-clone.mjs cannot build a clone of this tree — it refuses tools/node_modules/.bin's symlinks (mode 120777). The null control was built by hand with cp -al; the repository's faction-gates.json was md5'd before and after and is byte-identical."
+  ],
+  "downstream_actions_owed_by_someone_else": [
+    "orchestration/status/W1-20.json should be restored to 9ed28905's builder-delivery-complete record, or superseded deliberately. It is not mine to rewrite.",
+    "node tools/dispatchable.mjs W1-20 still advises a critic to push on 'RI-QST01 volume over the four new lines'. That advice has been wrong since 2026-08-10.",
+    "GAP-W1-faction-ladders-are-doors-onto-empty-corridors is carried open against a tree where its five hard fails are zero. W1-20-r2 opens GAP-W1-faction-ladders-are-bricked-up-at-rank-5 in its place.",
+    "reports/w1-20/builder-continuation.json is on disk and unlanded (reports/.gitignore excludes *.json). The blob is permanent at 9ed28905:reports/w1-20/builder-continuation.json; landing it is W1-20's owner's call."
+  ],
+  "next_step": "none for this critic — the verdict is written, schema-valid, in the ledger and published. For a builder: the path_to_ten in W1-20-r2.json is six named edits in order, and the first three are twelve JSON entries, three lines of engine.js and two lines of faction-reactions.json."
+}

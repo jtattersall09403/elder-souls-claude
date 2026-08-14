@@ -1,0 +1,1804 @@
+{
+  "schema": "elder-souls/critic-w1-20-r2-census@1",
+  "commit": null,
+  "generated_at": "2026-08-14T15:28:12.978Z",
+  "lines": [
+    "deep_kin",
+    "the_dockhands",
+    "the_drowned_court",
+    "the_imperial_assize",
+    "the_ixtu_vakh",
+    "the_rootkeepers",
+    "the_wet_ledger",
+    "the_xul_aneekh"
+  ],
+  "totals": {
+    "faction_quests": 144,
+    "lines": 8,
+    "ladders": 8
+  },
+  "hard_fails": [
+    "QST03.ceiling.the_dockhands",
+    "QST03.ceiling.the_drowned_court",
+    "QST03.ceiling.the_ixtu_vakh",
+    "QST03.ceiling.the_rootkeepers",
+    "MTH07.factionAccess",
+    "MTH07.registry"
+  ],
+  "fails": [
+    "QST03.skill_overlap",
+    "QST03.reachability",
+    "QST03.escape_hatches",
+    "QST03.on_permanent",
+    "QST03.offences_tolerated",
+    "MTH07.quest_witnesses"
+  ],
+  "warnings": [
+    "QST01.volume.deep_kin",
+    "QST01.volume.the_dockhands",
+    "QST01.volume.the_drowned_court",
+    "QST01.volume.the_imperial_assize",
+    "QST01.volume.the_ixtu_vakh",
+    "QST01.volume.the_rootkeepers",
+    "QST01.volume.the_wet_ledger",
+    "QST01.volume.the_xul_aneekh",
+    "QST03.earnable.deep_kin",
+    "QST03.earnable.the_dockhands",
+    "QST03.earnable.the_drowned_court",
+    "QST03.earnable.the_imperial_assize",
+    "QST03.earnable.the_ixtu_vakh",
+    "QST03.earnable.the_rootkeepers",
+    "QST03.earnable.the_wet_ledger",
+    "QST03.earnable.the_xul_aneekh"
+  ],
+  "rows": [
+    {
+      "id": "QST01.volume.deep_kin",
+      "item": "RI-QST01",
+      "status": "PASS_AT_FLOOR",
+      "detail": {
+        "total": 18,
+        "target": "24-28",
+        "hard_fail_below": 18,
+        "sub_score_band": 5
+      }
+    },
+    {
+      "id": "QST01.bands.deep_kin",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "empty_rank_bands": []
+      }
+    },
+    {
+      "id": "QST01.meanPerRank.deep_kin",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean": 2.25,
+        "target": 3,
+        "hard_fail_below": 2
+      }
+    },
+    {
+      "id": "QST01.lumpiness.deep_kin",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "per_rank_counts": [
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "QST01.deceit.deep_kin",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "deceitful_quests": 3,
+        "first_deceit_rank": 0,
+        "target": "<=3",
+        "hard_fail_above": 4
+      }
+    },
+    {
+      "id": "QST01.taskkind.deep_kin",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "first_dirty_work": 4,
+        "first_politics": 0,
+        "first_succession": 7,
+        "targets": {
+          "dirty_work": "4+-1",
+          "politics": "5-6",
+          "succession": 7
+        },
+        "kinds_present": [
+          "dirty_work",
+          "errand",
+          "investigation",
+          "moral_dilemma",
+          "politics",
+          "retrieval",
+          "rival_conflict",
+          "succession"
+        ]
+      }
+    },
+    {
+      "id": "QST01.stakes.deep_kin",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean_stakes_by_rank": [
+          3.25,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "drops": [],
+        "span": [
+          3,
+          9
+        ],
+        "first_rank_stakes_ge_5": 3,
+        "target_first_rank_stakes_ge_5": 4,
+        "hard_fail_if": ">5 or <2"
+      }
+    },
+    {
+      "id": "QST01.rival.deep_kin",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "rival_touching": 18,
+        "target": ">=6",
+        "hard_fail_below": 3
+      }
+    },
+    {
+      "id": "QST01.volume.the_dockhands",
+      "item": "RI-QST01",
+      "status": "PASS_AT_FLOOR",
+      "detail": {
+        "total": 18,
+        "target": "24-28",
+        "hard_fail_below": 18,
+        "sub_score_band": 5
+      }
+    },
+    {
+      "id": "QST01.bands.the_dockhands",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "empty_rank_bands": []
+      }
+    },
+    {
+      "id": "QST01.meanPerRank.the_dockhands",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean": 2.25,
+        "target": 3,
+        "hard_fail_below": 2
+      }
+    },
+    {
+      "id": "QST01.lumpiness.the_dockhands",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "per_rank_counts": [
+          6,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "QST01.deceit.the_dockhands",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "deceitful_quests": 2,
+        "first_deceit_rank": 3,
+        "target": "<=3",
+        "hard_fail_above": 4
+      }
+    },
+    {
+      "id": "QST01.taskkind.the_dockhands",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "first_dirty_work": 4,
+        "first_politics": 0,
+        "first_succession": 7,
+        "targets": {
+          "dirty_work": "4+-1",
+          "politics": "5-6",
+          "succession": 7
+        },
+        "kinds_present": [
+          "dirty_work",
+          "errand",
+          "investigation",
+          "moral_dilemma",
+          "politics",
+          "retrieval",
+          "rival_conflict",
+          "succession",
+          "theft"
+        ]
+      }
+    },
+    {
+      "id": "QST01.stakes.the_dockhands",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean_stakes_by_rank": [
+          3.17,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "drops": [],
+        "span": [
+          3,
+          9
+        ],
+        "first_rank_stakes_ge_5": 3,
+        "target_first_rank_stakes_ge_5": 4,
+        "hard_fail_if": ">5 or <2"
+      }
+    },
+    {
+      "id": "QST01.rival.the_dockhands",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "rival_touching": 16,
+        "target": ">=6",
+        "hard_fail_below": 3
+      }
+    },
+    {
+      "id": "QST01.volume.the_drowned_court",
+      "item": "RI-QST01",
+      "status": "PASS_AT_FLOOR",
+      "detail": {
+        "total": 18,
+        "target": "24-28",
+        "hard_fail_below": 18,
+        "sub_score_band": 5
+      }
+    },
+    {
+      "id": "QST01.bands.the_drowned_court",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "empty_rank_bands": []
+      }
+    },
+    {
+      "id": "QST01.meanPerRank.the_drowned_court",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean": 2.25,
+        "target": 3,
+        "hard_fail_below": 2
+      }
+    },
+    {
+      "id": "QST01.lumpiness.the_drowned_court",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "per_rank_counts": [
+          3,
+          2,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "QST01.deceit.the_drowned_court",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "deceitful_quests": 3,
+        "first_deceit_rank": 2,
+        "target": "<=3",
+        "hard_fail_above": 4
+      }
+    },
+    {
+      "id": "QST01.taskkind.the_drowned_court",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "first_dirty_work": 4,
+        "first_politics": 5,
+        "first_succession": 7,
+        "targets": {
+          "dirty_work": "4+-1",
+          "politics": "5-6",
+          "succession": 7
+        },
+        "kinds_present": [
+          "dirty_work",
+          "errand",
+          "investigation",
+          "moral_dilemma",
+          "politics",
+          "retrieval",
+          "rival_conflict",
+          "succession"
+        ]
+      }
+    },
+    {
+      "id": "QST01.stakes.the_drowned_court",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean_stakes_by_rank": [
+          2.33,
+          3,
+          5.33,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "drops": [],
+        "span": [
+          2.3333333333333335,
+          9
+        ],
+        "first_rank_stakes_ge_5": 2,
+        "target_first_rank_stakes_ge_5": 4,
+        "hard_fail_if": ">5 or <2"
+      }
+    },
+    {
+      "id": "QST01.rival.the_drowned_court",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "rival_touching": 17,
+        "target": ">=6",
+        "hard_fail_below": 3
+      }
+    },
+    {
+      "id": "QST01.volume.the_imperial_assize",
+      "item": "RI-QST01",
+      "status": "PASS_AT_FLOOR",
+      "detail": {
+        "total": 18,
+        "target": "24-28",
+        "hard_fail_below": 18,
+        "sub_score_band": 5
+      }
+    },
+    {
+      "id": "QST01.bands.the_imperial_assize",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "empty_rank_bands": []
+      }
+    },
+    {
+      "id": "QST01.meanPerRank.the_imperial_assize",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean": 2.25,
+        "target": 3,
+        "hard_fail_below": 2
+      }
+    },
+    {
+      "id": "QST01.lumpiness.the_imperial_assize",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "per_rank_counts": [
+          3,
+          2,
+          2,
+          3,
+          2,
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "QST01.deceit.the_imperial_assize",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "deceitful_quests": 14,
+        "first_deceit_rank": 0,
+        "target": "<=3",
+        "hard_fail_above": 4
+      }
+    },
+    {
+      "id": "QST01.taskkind.the_imperial_assize",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "first_dirty_work": 4,
+        "first_politics": 5,
+        "first_succession": 7,
+        "targets": {
+          "dirty_work": "4+-1",
+          "politics": "5-6",
+          "succession": 7
+        },
+        "kinds_present": [
+          "dirty_work",
+          "errand",
+          "investigation",
+          "moral_dilemma",
+          "politics",
+          "retrieval",
+          "succession",
+          "weird"
+        ]
+      }
+    },
+    {
+      "id": "QST01.stakes.the_imperial_assize",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean_stakes_by_rank": [
+          3.33,
+          3.5,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "drops": [],
+        "span": [
+          3.3333333333333335,
+          10
+        ],
+        "first_rank_stakes_ge_5": 2,
+        "target_first_rank_stakes_ge_5": 4,
+        "hard_fail_if": ">5 or <2"
+      }
+    },
+    {
+      "id": "QST01.rival.the_imperial_assize",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "rival_touching": 12,
+        "target": ">=6",
+        "hard_fail_below": 3
+      }
+    },
+    {
+      "id": "QST01.volume.the_ixtu_vakh",
+      "item": "RI-QST01",
+      "status": "PASS_AT_FLOOR",
+      "detail": {
+        "total": 18,
+        "target": "24-28",
+        "hard_fail_below": 18,
+        "sub_score_band": 5
+      }
+    },
+    {
+      "id": "QST01.bands.the_ixtu_vakh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "empty_rank_bands": []
+      }
+    },
+    {
+      "id": "QST01.meanPerRank.the_ixtu_vakh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean": 2.25,
+        "target": 3,
+        "hard_fail_below": 2
+      }
+    },
+    {
+      "id": "QST01.lumpiness.the_ixtu_vakh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "per_rank_counts": [
+          3,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "QST01.deceit.the_ixtu_vakh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "deceitful_quests": 3,
+        "first_deceit_rank": 1,
+        "target": "<=3",
+        "hard_fail_above": 4
+      }
+    },
+    {
+      "id": "QST01.taskkind.the_ixtu_vakh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "first_dirty_work": 4,
+        "first_politics": 5,
+        "first_succession": 7,
+        "targets": {
+          "dirty_work": "4+-1",
+          "politics": "5-6",
+          "succession": 7
+        },
+        "kinds_present": [
+          "delivery",
+          "dirty_work",
+          "errand",
+          "investigation",
+          "moral_dilemma",
+          "politics",
+          "retrieval",
+          "rival_conflict",
+          "succession"
+        ]
+      }
+    },
+    {
+      "id": "QST01.stakes.the_ixtu_vakh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean_stakes_by_rank": [
+          2.33,
+          3.33,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "drops": [],
+        "span": [
+          2.3333333333333335,
+          9
+        ],
+        "first_rank_stakes_ge_5": 3,
+        "target_first_rank_stakes_ge_5": 4,
+        "hard_fail_if": ">5 or <2"
+      }
+    },
+    {
+      "id": "QST01.rival.the_ixtu_vakh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "rival_touching": 17,
+        "target": ">=6",
+        "hard_fail_below": 3
+      }
+    },
+    {
+      "id": "QST01.volume.the_rootkeepers",
+      "item": "RI-QST01",
+      "status": "PASS_AT_FLOOR",
+      "detail": {
+        "total": 18,
+        "target": "24-28",
+        "hard_fail_below": 18,
+        "sub_score_band": 5
+      }
+    },
+    {
+      "id": "QST01.bands.the_rootkeepers",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "empty_rank_bands": []
+      }
+    },
+    {
+      "id": "QST01.meanPerRank.the_rootkeepers",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean": 2.25,
+        "target": 3,
+        "hard_fail_below": 2
+      }
+    },
+    {
+      "id": "QST01.lumpiness.the_rootkeepers",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "per_rank_counts": [
+          5,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "QST01.deceit.the_rootkeepers",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "deceitful_quests": 3,
+        "first_deceit_rank": 0,
+        "target": "<=3",
+        "hard_fail_above": 4
+      }
+    },
+    {
+      "id": "QST01.taskkind.the_rootkeepers",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "first_dirty_work": 4,
+        "first_politics": 5,
+        "first_succession": 7,
+        "targets": {
+          "dirty_work": "4+-1",
+          "politics": "5-6",
+          "succession": 7
+        },
+        "kinds_present": [
+          "dirty_work",
+          "errand",
+          "investigation",
+          "moral_dilemma",
+          "politics",
+          "retrieval",
+          "rival_conflict",
+          "succession"
+        ]
+      }
+    },
+    {
+      "id": "QST01.stakes.the_rootkeepers",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean_stakes_by_rank": [
+          3.8,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "drops": [],
+        "span": [
+          3,
+          9
+        ],
+        "first_rank_stakes_ge_5": 3,
+        "target_first_rank_stakes_ge_5": 4,
+        "hard_fail_if": ">5 or <2"
+      }
+    },
+    {
+      "id": "QST01.rival.the_rootkeepers",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "rival_touching": 16,
+        "target": ">=6",
+        "hard_fail_below": 3
+      }
+    },
+    {
+      "id": "QST01.volume.the_wet_ledger",
+      "item": "RI-QST01",
+      "status": "PASS_AT_FLOOR",
+      "detail": {
+        "total": 18,
+        "target": "24-28",
+        "hard_fail_below": 18,
+        "sub_score_band": 5
+      }
+    },
+    {
+      "id": "QST01.bands.the_wet_ledger",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "empty_rank_bands": []
+      }
+    },
+    {
+      "id": "QST01.meanPerRank.the_wet_ledger",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean": 2.25,
+        "target": 3,
+        "hard_fail_below": 2
+      }
+    },
+    {
+      "id": "QST01.lumpiness.the_wet_ledger",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "per_rank_counts": [
+          2,
+          2,
+          3,
+          2,
+          3,
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "QST01.deceit.the_wet_ledger",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "deceitful_quests": 14,
+        "first_deceit_rank": 1,
+        "target": "<=3",
+        "hard_fail_above": 4
+      }
+    },
+    {
+      "id": "QST01.taskkind.the_wet_ledger",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "first_dirty_work": 4,
+        "first_politics": 5,
+        "first_succession": 7,
+        "targets": {
+          "dirty_work": "4+-1",
+          "politics": "5-6",
+          "succession": 7
+        },
+        "kinds_present": [
+          "delivery",
+          "dirty_work",
+          "errand",
+          "investigation",
+          "moral_dilemma",
+          "politics",
+          "succession",
+          "theft",
+          "weird"
+        ]
+      }
+    },
+    {
+      "id": "QST01.stakes.the_wet_ledger",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean_stakes_by_rank": [
+          2,
+          4,
+          4.67,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "drops": [],
+        "span": [
+          2,
+          10
+        ],
+        "first_rank_stakes_ge_5": 3,
+        "target_first_rank_stakes_ge_5": 4,
+        "hard_fail_if": ">5 or <2"
+      }
+    },
+    {
+      "id": "QST01.rival.the_wet_ledger",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "rival_touching": 14,
+        "target": ">=6",
+        "hard_fail_below": 3
+      }
+    },
+    {
+      "id": "QST01.volume.the_xul_aneekh",
+      "item": "RI-QST01",
+      "status": "PASS_AT_FLOOR",
+      "detail": {
+        "total": 18,
+        "target": "24-28",
+        "hard_fail_below": 18,
+        "sub_score_band": 5
+      }
+    },
+    {
+      "id": "QST01.bands.the_xul_aneekh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "empty_rank_bands": []
+      }
+    },
+    {
+      "id": "QST01.meanPerRank.the_xul_aneekh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean": 2.25,
+        "target": 3,
+        "hard_fail_below": 2
+      }
+    },
+    {
+      "id": "QST01.lumpiness.the_xul_aneekh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "per_rank_counts": [
+          2,
+          3,
+          2,
+          2,
+          3,
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "QST01.deceit.the_xul_aneekh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "deceitful_quests": 14,
+        "first_deceit_rank": 1,
+        "target": "<=3",
+        "hard_fail_above": 4
+      }
+    },
+    {
+      "id": "QST01.taskkind.the_xul_aneekh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "first_dirty_work": 4,
+        "first_politics": 5,
+        "first_succession": 7,
+        "targets": {
+          "dirty_work": "4+-1",
+          "politics": "5-6",
+          "succession": 7
+        },
+        "kinds_present": [
+          "delivery",
+          "dirty_work",
+          "errand",
+          "escort",
+          "investigation",
+          "moral_dilemma",
+          "politics",
+          "succession",
+          "theft",
+          "weird"
+        ]
+      }
+    },
+    {
+      "id": "QST01.stakes.the_xul_aneekh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "mean_stakes_by_rank": [
+          2,
+          3.67,
+          5.5,
+          6,
+          7.33,
+          8.5,
+          9,
+          10
+        ],
+        "drops": [],
+        "span": [
+          2,
+          10
+        ],
+        "first_rank_stakes_ge_5": 2,
+        "target_first_rank_stakes_ge_5": 4,
+        "hard_fail_if": ">5 or <2"
+      }
+    },
+    {
+      "id": "QST01.rival.the_xul_aneekh",
+      "item": "RI-QST01",
+      "status": "PASS",
+      "detail": {
+        "rival_touching": 13,
+        "target": ">=6",
+        "hard_fail_below": 3
+      }
+    },
+    {
+      "id": "QST03.ladders",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "factions": 8,
+        "ranks": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ]
+      }
+    },
+    {
+      "id": "QST03.rows.deep_kin",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "bad_rows": [],
+        "forbidden_keys": 0
+      }
+    },
+    {
+      "id": "QST03.monotonic.deep_kin",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "violations": []
+      }
+    },
+    {
+      "id": "QST03.favoured.deep_kin",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "favoured_skills": 6,
+        "favoured_attributes": 2,
+        "skills_named_in_rows": []
+      }
+    },
+    {
+      "id": "QST03.worldstate.deep_kin",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "ranks_5_plus_with_world_state": 3
+      }
+    },
+    {
+      "id": "QST03.rows.the_dockhands",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "bad_rows": [],
+        "forbidden_keys": 0
+      }
+    },
+    {
+      "id": "QST03.monotonic.the_dockhands",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "violations": []
+      }
+    },
+    {
+      "id": "QST03.favoured.the_dockhands",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "favoured_skills": 6,
+        "favoured_attributes": 2,
+        "skills_named_in_rows": []
+      }
+    },
+    {
+      "id": "QST03.worldstate.the_dockhands",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "ranks_5_plus_with_world_state": 3
+      }
+    },
+    {
+      "id": "QST03.rows.the_drowned_court",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "bad_rows": [],
+        "forbidden_keys": 0
+      }
+    },
+    {
+      "id": "QST03.monotonic.the_drowned_court",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "violations": []
+      }
+    },
+    {
+      "id": "QST03.favoured.the_drowned_court",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "favoured_skills": 6,
+        "favoured_attributes": 2,
+        "skills_named_in_rows": []
+      }
+    },
+    {
+      "id": "QST03.worldstate.the_drowned_court",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "ranks_5_plus_with_world_state": 3
+      }
+    },
+    {
+      "id": "QST03.rows.the_imperial_assize",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "bad_rows": [],
+        "forbidden_keys": 0
+      }
+    },
+    {
+      "id": "QST03.monotonic.the_imperial_assize",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "violations": []
+      }
+    },
+    {
+      "id": "QST03.favoured.the_imperial_assize",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "favoured_skills": 6,
+        "favoured_attributes": 2,
+        "skills_named_in_rows": []
+      }
+    },
+    {
+      "id": "QST03.worldstate.the_imperial_assize",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "ranks_5_plus_with_world_state": 3
+      }
+    },
+    {
+      "id": "QST03.rows.the_ixtu_vakh",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "bad_rows": [],
+        "forbidden_keys": 0
+      }
+    },
+    {
+      "id": "QST03.monotonic.the_ixtu_vakh",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "violations": []
+      }
+    },
+    {
+      "id": "QST03.favoured.the_ixtu_vakh",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "favoured_skills": 6,
+        "favoured_attributes": 2,
+        "skills_named_in_rows": []
+      }
+    },
+    {
+      "id": "QST03.worldstate.the_ixtu_vakh",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "ranks_5_plus_with_world_state": 3
+      }
+    },
+    {
+      "id": "QST03.rows.the_rootkeepers",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "bad_rows": [],
+        "forbidden_keys": 0
+      }
+    },
+    {
+      "id": "QST03.monotonic.the_rootkeepers",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "violations": []
+      }
+    },
+    {
+      "id": "QST03.favoured.the_rootkeepers",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "favoured_skills": 6,
+        "favoured_attributes": 2,
+        "skills_named_in_rows": []
+      }
+    },
+    {
+      "id": "QST03.worldstate.the_rootkeepers",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "ranks_5_plus_with_world_state": 3
+      }
+    },
+    {
+      "id": "QST03.rows.the_wet_ledger",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "bad_rows": [],
+        "forbidden_keys": 0
+      }
+    },
+    {
+      "id": "QST03.monotonic.the_wet_ledger",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "violations": []
+      }
+    },
+    {
+      "id": "QST03.favoured.the_wet_ledger",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "favoured_skills": 6,
+        "favoured_attributes": 2,
+        "skills_named_in_rows": []
+      }
+    },
+    {
+      "id": "QST03.worldstate.the_wet_ledger",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "ranks_5_plus_with_world_state": 3
+      }
+    },
+    {
+      "id": "QST03.rows.the_xul_aneekh",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "bad_rows": [],
+        "forbidden_keys": 0
+      }
+    },
+    {
+      "id": "QST03.monotonic.the_xul_aneekh",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "violations": []
+      }
+    },
+    {
+      "id": "QST03.favoured.the_xul_aneekh",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "favoured_skills": 6,
+        "favoured_attributes": 2,
+        "skills_named_in_rows": []
+      }
+    },
+    {
+      "id": "QST03.worldstate.the_xul_aneekh",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "ranks_5_plus_with_world_state": 3
+      }
+    },
+    {
+      "id": "QST03.ceiling.deep_kin",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "unreachable_ranks": [],
+        "world_states_no_quest_raises": [],
+        "highest_reachable_rank": 7,
+        "quests_stranded_above_the_ceiling": 0
+      }
+    },
+    {
+      "id": "QST03.ceiling.the_dockhands",
+      "item": "RI-QST03",
+      "status": "HARD_FAIL",
+      "detail": {
+        "unreachable_ranks": [
+          5,
+          6,
+          7
+        ],
+        "world_states_no_quest_raises": [
+          "dockhands_gang_held",
+          "dockhands_wharf_decided",
+          "dockhands_harbourmaster_vacant"
+        ],
+        "highest_reachable_rank": 4,
+        "quests_stranded_above_the_ceiling": 4
+      }
+    },
+    {
+      "id": "QST03.ceiling.the_drowned_court",
+      "item": "RI-QST03",
+      "status": "HARD_FAIL",
+      "detail": {
+        "unreachable_ranks": [
+          5,
+          6,
+          7
+        ],
+        "world_states_no_quest_raises": [
+          "court_yard_held",
+          "court_tally_decided",
+          "court_crown_vacant"
+        ],
+        "highest_reachable_rank": 4,
+        "quests_stranded_above_the_ceiling": 6
+      }
+    },
+    {
+      "id": "QST03.ceiling.the_imperial_assize",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "unreachable_ranks": [],
+        "world_states_no_quest_raises": [],
+        "highest_reachable_rank": 7,
+        "quests_stranded_above_the_ceiling": 0
+      }
+    },
+    {
+      "id": "QST03.ceiling.the_ixtu_vakh",
+      "item": "RI-QST03",
+      "status": "HARD_FAIL",
+      "detail": {
+        "unreachable_ranks": [
+          5,
+          6,
+          7
+        ],
+        "world_states_no_quest_raises": [
+          "sapcutters_well_cut",
+          "sapcutters_buyer_decided",
+          "sapcutters_cutter_vacant"
+        ],
+        "highest_reachable_rank": 4,
+        "quests_stranded_above_the_ceiling": 6
+      }
+    },
+    {
+      "id": "QST03.ceiling.the_rootkeepers",
+      "item": "RI-QST03",
+      "status": "HARD_FAIL",
+      "detail": {
+        "unreachable_ranks": [
+          5,
+          6,
+          7
+        ],
+        "world_states_no_quest_raises": [
+          "rootkeepers_sapwell_kept",
+          "rootkeepers_chapter_decided",
+          "rootkeepers_voice_vacant"
+        ],
+        "highest_reachable_rank": 4,
+        "quests_stranded_above_the_ceiling": 5
+      }
+    },
+    {
+      "id": "QST03.ceiling.the_wet_ledger",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "unreachable_ranks": [],
+        "world_states_no_quest_raises": [],
+        "highest_reachable_rank": 7,
+        "quests_stranded_above_the_ceiling": 0
+      }
+    },
+    {
+      "id": "QST03.ceiling.the_xul_aneekh",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "unreachable_ranks": [],
+        "world_states_no_quest_raises": [],
+        "highest_reachable_rank": 7,
+        "quests_stranded_above_the_ceiling": 0
+      }
+    },
+    {
+      "id": "QST03.skill_overlap",
+      "item": "RI-QST03",
+      "status": "FAIL",
+      "detail": {
+        "pairs_over_3": [
+          {
+            "a": "deep_kin",
+            "b": "the_xul_aneekh",
+            "shared": [
+              "root-speech",
+              "veiling",
+              "survival",
+              "claw-fang",
+              "alchemy",
+              "sneak"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "QST03.earnable.deep_kin",
+      "item": "RI-QST03",
+      "status": "WARN_SLACK",
+      "detail": {
+        "earnable": 245,
+        "rank7_requirement": 112,
+        "slack": 2.19,
+        "warn_above": 1.6
+      }
+    },
+    {
+      "id": "QST03.earnable.the_dockhands",
+      "item": "RI-QST03",
+      "status": "WARN_SLACK",
+      "detail": {
+        "earnable": 254,
+        "rank7_requirement": 112,
+        "slack": 2.27,
+        "warn_above": 1.6
+      }
+    },
+    {
+      "id": "QST03.earnable.the_drowned_court",
+      "item": "RI-QST03",
+      "status": "WARN_SLACK",
+      "detail": {
+        "earnable": 336,
+        "rank7_requirement": 112,
+        "slack": 3,
+        "warn_above": 1.6
+      }
+    },
+    {
+      "id": "QST03.earnable.the_imperial_assize",
+      "item": "RI-QST03",
+      "status": "WARN_SLACK",
+      "detail": {
+        "earnable": 358,
+        "rank7_requirement": 112,
+        "slack": 3.2,
+        "warn_above": 1.6
+      }
+    },
+    {
+      "id": "QST03.earnable.the_ixtu_vakh",
+      "item": "RI-QST03",
+      "status": "WARN_SLACK",
+      "detail": {
+        "earnable": 276,
+        "rank7_requirement": 112,
+        "slack": 2.46,
+        "warn_above": 1.6
+      }
+    },
+    {
+      "id": "QST03.earnable.the_rootkeepers",
+      "item": "RI-QST03",
+      "status": "WARN_SLACK",
+      "detail": {
+        "earnable": 282,
+        "rank7_requirement": 112,
+        "slack": 2.52,
+        "warn_above": 1.6
+      }
+    },
+    {
+      "id": "QST03.earnable.the_wet_ledger",
+      "item": "RI-QST03",
+      "status": "WARN_SLACK",
+      "detail": {
+        "earnable": 338,
+        "rank7_requirement": 112,
+        "slack": 3.02,
+        "warn_above": 1.6
+      }
+    },
+    {
+      "id": "QST03.earnable.the_xul_aneekh",
+      "item": "RI-QST03",
+      "status": "WARN_SLACK",
+      "detail": {
+        "earnable": 416,
+        "rank7_requirement": 112,
+        "slack": 3.71,
+        "warn_above": 1.6
+      }
+    },
+    {
+      "id": "QST03.exclusivity.declared",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "hard_groups": [
+          {
+            "id": "the_two_courts",
+            "members": [
+              "the_drowned_court",
+              "the_imperial_assize"
+            ],
+            "why": "You cannot swear to a drowned crown and to the Assize that would hang it."
+          }
+        ],
+        "enemy_pairs": [
+          [
+            "the_wet_ledger",
+            "the_imperial_assize"
+          ]
+        ],
+        "earned": [
+          {
+            "a": "the_xul_aneekh",
+            "b": "the_wet_ledger",
+            "a_locks_b_at_rank": 2,
+            "b_locks_a_at_rank": 3,
+            "why": "The Deep-Kin position is that the coast is a wound. The Ledger IS the coast.",
+            "escape": "RI-QST03 §C X3: the rank-3 quest on each side has a resolution that does not lock."
+          },
+          {
+            "a": "the_xul_aneekh",
+            "b": "the_imperial_assize",
+            "a_locks_b_at_rank": 4,
+            "b_locks_a_at_rank": 4,
+            "why": "The Blackrose labour-lease and the Deep-Kin answer to it are the same event from two chairs.",
+            "escape": "RI-QST03 §C X3: the rank-4 quest on each side has a resolution that does not lock."
+          },
+          {
+            "a": "the_wet_ledger",
+            "b": "the_ixtu_vakh",
+            "a_locks_b_at_rank": 3,
+            "b_locks_a_at_rank": 3,
+            "why": "The Ledger’s business survives on not being the Sap-Cutters.",
+            "escape": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "QST03.reachability",
+      "item": "RI-QST03",
+      "status": "FAIL",
+      "detail": {
+        "total_faction_quests": 144,
+        "greedy_reachable": 126,
+        "fraction": 0.875,
+        "target": "<=0.60",
+        "fail_above": 0.75,
+        "closed_by_exclusivity": [
+          "the_imperial_assize"
+        ]
+      }
+    },
+    {
+      "id": "QST03.escape_hatches",
+      "item": "RI-QST03",
+      "status": "FAIL",
+      "detail": {
+        "quests_that_lock": 20,
+        "without_two_resolutions": [
+          "Q-MAIN-27"
+        ]
+      }
+    },
+    {
+      "id": "QST03.expulsion.coverage",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "lines_without_a_discipline_row": [],
+        "rows": 8
+      }
+    },
+    {
+      "id": "QST03.readmission.variety",
+      "item": "RI-QST03",
+      "status": "PASS",
+      "detail": {
+        "distinct_prices": 8,
+        "shapes": [
+          {
+            "faction": "the_wet_ledger",
+            "triggers": 2,
+            "price": 1200,
+            "rep_floor": 52,
+            "rep_cost": 20,
+            "offered_by": "harbourmistress-tesh",
+            "has_shortfall_line": true,
+            "on_permanent": null
+          },
+          {
+            "faction": "the_imperial_assize",
+            "triggers": 2,
+            "price": 400,
+            "rep_floor": 52,
+            "rep_cost": 34,
+            "offered_by": "assizer-corvo",
+            "has_shortfall_line": true,
+            "on_permanent": null
+          },
+          {
+            "faction": "the_xul_aneekh",
+            "triggers": 2,
+            "price": 900,
+            "rep_floor": 52,
+            "rep_cost": 12,
+            "offered_by": "ee-vashum",
+            "has_shortfall_line": true,
+            "on_permanent": null
+          },
+          {
+            "faction": "deep_kin",
+            "triggers": 1,
+            "price": 800,
+            "rep_floor": 36,
+            "rep_cost": 10,
+            "offered_by": "ee-vashum",
+            "has_shortfall_line": true,
+            "on_permanent": null
+          },
+          {
+            "faction": "the_dockhands",
+            "triggers": 1,
+            "price": 300,
+            "rep_floor": 36,
+            "rep_cost": 10,
+            "offered_by": "npc-porter-eeja",
+            "has_shortfall_line": true,
+            "on_permanent": null
+          },
+          {
+            "faction": "the_drowned_court",
+            "triggers": 1,
+            "price": 600,
+            "rep_floor": 36,
+            "rep_cost": 10,
+            "offered_by": "undertaker-vaskh",
+            "has_shortfall_line": true,
+            "on_permanent": null
+          },
+          {
+            "faction": "the_ixtu_vakh",
+            "triggers": 1,
+            "price": 500,
+            "rep_floor": 36,
+            "rep_cost": 10,
+            "offered_by": "cutter-neeth",
+            "has_shortfall_line": true,
+            "on_permanent": null
+          },
+          {
+            "faction": "the_rootkeepers",
+            "triggers": 1,
+            "price": 450,
+            "rep_floor": 36,
+            "rep_cost": 10,
+            "offered_by": "rootkeeper-jeen",
+            "has_shortfall_line": true,
+            "on_permanent": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "QST03.on_permanent",
+      "item": "RI-QST03",
+      "status": "FAIL",
+      "detail": {
+        "lines_with_no_permanent_expulsion_consequence": [
+          "the_wet_ledger",
+          "the_imperial_assize",
+          "the_xul_aneekh",
+          "deep_kin",
+          "the_dockhands",
+          "the_drowned_court",
+          "the_ixtu_vakh",
+          "the_rootkeepers"
+        ],
+        "note": "RI-QST03 §7 asks for offences_tolerated + readmission + on_permanent per faction"
+      }
+    },
+    {
+      "id": "QST03.offences_tolerated",
+      "item": "RI-QST03",
+      "status": "FAIL",
+      "detail": {
+        "missing": [
+          "the_wet_ledger",
+          "the_imperial_assize",
+          "the_xul_aneekh",
+          "deep_kin",
+          "the_dockhands",
+          "the_drowned_court",
+          "the_ixtu_vakh",
+          "the_rootkeepers"
+        ]
+      }
+    },
+    {
+      "id": "MTH07.factionAccess",
+      "item": "RI-MTH07",
+      "status": "HARD_FAIL",
+      "detail": {
+        "all_readers": [
+          "game/src/harness/api.js"
+        ],
+        "world_side_readers": [],
+        "note": "Engine.factionAccess() is the consumer the W1-20 delivery report names for its RI-MTH07 row."
+      }
+    },
+    {
+      "id": "MTH07.registry",
+      "item": "RI-MTH07",
+      "status": "HARD_FAIL",
+      "detail": {
+        "in_data_index": true,
+        "all_readers": [],
+        "world_side_readers": [],
+        "registry_factions": 8,
+        "note": "game/data/factions/registry.json is fetched at boot; does anything install or read it?"
+      }
+    },
+    {
+      "id": "MTH07.refusals",
+      "item": "RI-MTH07",
+      "status": "PASS",
+      "detail": {
+        "world_side_readers": [
+          "game/src/engine.js"
+        ]
+      }
+    },
+    {
+      "id": "MTH07.discipline",
+      "item": "RI-MTH07",
+      "status": "PASS",
+      "detail": {
+        "world_side_readers": [
+          "game/src/audio/impact-audio.js",
+          "game/src/character/encounter.js",
+          "game/src/combat/ai.js",
+          "game/src/combat/moveset.js",
+          "game/src/combat/parley.js",
+          "game/src/combat/skeleton.js",
+          "game/src/combat/swing.js",
+          "game/src/engine.js",
+          "game/src/input/pipeline.js",
+          "game/src/render/lib/kits.js",
+          "game/src/save/fight.js",
+          "game/src/sim/hazards.js",
+          "game/src/sim/quest/machine.js",
+          "game/src/sim/state.js",
+          "game/src/sim/stealth/detection.js",
+          "game/src/ui/screens/map.js",
+          "game/src/world/canon.js"
+        ]
+      }
+    },
+    {
+      "id": "MTH07.quest_witnesses",
+      "item": "RI-MTH07",
+      "status": "FAIL",
+      "detail": {
+        "on_disk": true,
+        "in_data_index": false,
+        "faction_quests_naming_a_revealer": 129,
+        "note": "RI-QST01 requires an in-faction dissenter who NAMES the rot. If the revealer records are not loaded, the dissenter is not in the world."
+      }
+    }
+  ]
+}
