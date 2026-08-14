@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `6881b6a4`: 969 tools, 157 reference
+so it cannot drift. Generated at `8b1c9952`: 969 tools, 157 reference
 items, 190 pieces in flight.
 
 Its purpose is to stop 190+ concurrent agents each paying separately to discover the
@@ -1382,8 +1382,8 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-UIX08-dialogue-window` | building | write game/src/ui/screens/dialogue.js (window + inline-link matcher + history), add 2 kind | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` |
 | `W1-20-r3-remediation` | in_progress | Read faction-gates.json world_state columns and the four faction quest books; identify the | `orchestration/status/W1-20-r3-remediation.json` |
-| `W1-UIX08-dialogue-window` | starting | read RI-UIX08 in full, REF-A12c/A12b, mygui layout, RI-UIX06, game/src/ui | — |
 | `W1-30E-KIT-DEFECTS` | built-awaiting-fresh-critic |  | `game/src/render/lib/kits.js` `tools/render/w1-30e-roof-extent.mjs` `tools/render/w1-30e-ground-albedo.mjs` `tools/visual/deck.mjs` `reports/w1-30e-kit-defects/README.md` `reports/blog-feed.jsonl` |
 | `critic-w1-map-defects-r1` | done |  | `corpus/90-verdicts/wave1/W1-MAP-DEFECTS-r1.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/fog-three-arms.png` |
 | `SPAWN-YAW` | done-and-banked |  | `orchestration/status/SPAWN-YAW.json` `game/src/sim/settlement.js` `game/src/engine.js` `game/src/main.js` `game/data/states/default.json` `tools/lib/opening.mjs` |
