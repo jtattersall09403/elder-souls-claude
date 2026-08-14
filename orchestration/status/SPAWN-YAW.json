@@ -1,25 +1,44 @@
 {
   "task": "SPAWN-YAW",
-  "state": "measuring",
+  "state": "fix-landed-evidence-in-flight",
   "started": "2026-08-14",
   "goal": "Fix the door-exit yaw defect (all 115 interiors), retarget the first-ten-minutes tooling at the real Thorn title-screen path, re-take the opening's evidence at Thorn.",
-  "next_step": "run tools/harness/door-exit-yaw.mjs over all 115 interiors, pick the rule, implement, delete-the-fix + inward-normal null control",
+  "done": [
+    "sim/settlement.js: exitFacing()/entryFacing(); placeBody(sim, at, yaw). 115/115 resolve on the geometric primary rule in both directions, 0 fall through.",
+    "engine.js: _placeBody(x,y,z,yaw) writes sim.player.yaw AND combat.player.yaw (the mirror would otherwise undo it on the next step) AND sim.camera.yaw (auto-recentre is 1.5 deg/frame).",
+    "MEASURED through the real door verbs (reports/door-yaw/smoke-after.json): as-shipped median 0.50 m clearance, fixed 12 m (cap) on 3/3, inward NULL CONTROL 0.25 m. Control goes red. yaw written 3/3, body==mirror 3/3, camera==body 3/3.",
+    "FINDING: door_world_bearing_deg is a frozen derived value (entry_side + building_yaw_deg, residual 0 on all 115) and disagrees with the drawn geometry in BOTH directions. It is now the LAST fallback, not the first.",
+    "tools/lib/opening.mjs: startOpening/playToWritHouse/leaveWritHouse/debugSpawnBanner.",
+    "tools/harness/first-ten.mjs defaults to --start shipping (Thorn); --start debug prints a banner; manifest records start + measures; D3 street shot named from the census's own settlement.",
+    "default.json marked harness_default + not_the_player_start; main.js console.warn on any automated boot with no ?state=; launchGame/resolveEntry now accepts --state.",
+    "reports/spawn-yaw/2026-08-14-door-exit-yaw.md; blog line appended."
+  ],
+  "in_flight": [
+    "tools/harness/door-exit-yaw.mjs full 115 sweep -> reports/door-yaw/all-115-after.json",
+    "tools/harness/opening-capture.mjs --tag thorn-sw (desktop + phone, 8 orbit angles, 30 s walk) -> reports/spawn-yaw/capture/thorn-sw/"
+  ],
+  "next_step": "collect the two runs, copy the frames to docs/shots/2026-08-14-spawn-yaw/, fold the 115 numbers into the report, then consider a hardware pod run",
   "files_touched": [
     "orchestration/status/SPAWN-YAW.json",
-    "tools/harness/door-exit-yaw.mjs"
-  ],
-  "files_claimed": [
     "game/src/sim/settlement.js",
     "game/src/engine.js",
+    "game/src/main.js",
+    "game/data/states/default.json",
+    "tools/lib/opening.mjs",
+    "tools/lib/browser.mjs",
+    "tools/harness/door-exit-yaw.mjs",
+    "tools/harness/opening-capture.mjs",
     "tools/harness/first-ten.mjs",
-    "tools/harness/spawn-truth-thorn.mjs",
-    "reports/blog-feed.jsonl",
-    "reports/spawn-yaw/",
+    "reports/spawn-yaw/2026-08-14-door-exit-yaw.md",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [
     "docs/shots/2026-08-14-spawn-yaw/"
   ],
   "redundant_with": ["FIRST-TEN-MINUTES", "FIRST-TEN-MINUTES-critic"],
   "notes": [
-    "engine.js claim is narrow: _placeBody() and the sim.placeBody hook only. FIRST-TEN-MINUTES claims engine.js populateSettlement() only, so we do not overlap.",
-    "contention was WAIT (5 browsers) at the start of this pass and GO (3 browsers) when the probe launched."
+    "engine.js touch is narrow: _placeBody() and the sim.placeBody hook. FIRST-TEN-MINUTES claims engine.js populateSettlement() only.",
+    "contention: started at WAIT (5 browsers), ran at GO (3). Two browsers of my own are in flight and that is recorded here per the contention tool's instruction.",
+    "NOT done and NOT claimed: the census hand-back camera framing (character/scene.js), the stuck walk from the census end-position to the writ house door, and moving where the game starts."
   ]
 }

@@ -209,7 +209,33 @@ const report = await page.evaluate(async ({ LINES, DISSENTERS }) => {
         names_the_rival: !!(sp && sp.said && String(sp.said).toLowerCase().includes(String(r.joined).replace(/^the_/, '').replace(/_/g, ' ').split(' ')[0])) });
     }
   }
-  say('B2.the_rival_refuses_in_its_own_voice', { discriminating: true, rows: rivalVoice });
+  say('B2.the_rival_refuses_in_its_own_voice', { discriminating: true, rows: rivalVoice,
+    note: 'This is the RANK-GATE voice (Engine.factionRefusal). The exclusivity voice is on the quest-open path and is measured by B3.' });
+
+  // B3. The other half, and the one a player actually meets: open a quest the rivalry has locked
+  // and see whether the world explains the lock. `QuestEngine.open()` is the shipping path.
+  const locked = [];
+  for (const r of rivalry) {
+    if (!r.quests_locked) continue;
+    fresh();
+    H.setFactionStanding(r.joined, { member: true, reputation: 60, rank: 3 });
+    const g = H.factionGates();
+    const first = (g.quests_locked_by_rivalry || [])[0];
+    if (!first) continue;
+    const row = { joined: r.joined, quest: first.quest, declared_why: first.why };
+    try { H.questPrepareOffer(first.quest); } catch (e) { row.prepare_error = String(e).slice(0, 120); }
+    try { row.open_result = H.questOpen(first.quest); } catch (e) { row.open_error = String(e).slice(0, 200); }
+    const said = row.open_result && (row.open_result.said || row.open_result.refusal || row.open_result.why || null);
+    row.said = typeof said === 'string' ? said : (said ? JSON.stringify(said).slice(0, 240) : null);
+    row.names_the_lock = !!(row.said && /lock|rival|already|ledger|assize|court|hollow|kin|dock|root|cutter/i.test(row.said));
+    locked.push(row);
+  }
+  say('B3.the_world_explains_the_lock_when_you_try_the_door', {
+    discriminating: true,
+    lines_tested: locked.length,
+    lines_where_the_refusal_names_the_lock: locked.filter((l) => l.names_the_lock).length,
+    rows: locked,
+  });
 
   // ---------------------------------------------------------------- C. RANK OUTSIDE QUEST GATING
   // The entity-side observable: what the representative SAYS when you walk up to them.
