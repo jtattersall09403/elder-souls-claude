@@ -77,6 +77,31 @@ const report = await g.page.evaluate(async ({ selfcheck, fallback }) => {
   const VF = await import('./src/render/visual-foundation.js');
   const R = window.__ENGINE.renderer;
 
+  // ---- W1-F1-SHADER-COLLISION: does the composed program actually LINK? ---------------------
+  // Every check above asks whether a hook INSTALLS uniforms into a stand-in shader. None of them
+  // ask whether the shader those hooks compose is a legal GLSL program — so two hooks that each
+  // install cleanly can still declare the same identifier twice, the renderer's driver refuses to
+  // link, and the mesh draws nothing while every count above reads clean. That is exactly what
+  // shipped: `installWaterline` (actor.js) started chaining onto `installSurfaceShader`
+  // (visual-foundation.js) and both declared `uniform float uWetness`; 124 actor-body materials
+  // failed to link and every existing check here stayed green throughout
+  // (`corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md` §3, the `NO-HOOK-THREW` near
+  // miss — the hook does not throw, it emits illegal GLSL). This is the missing tripwire named
+  // there: no material actually mounted in the live scene may hold a program the driver marked
+  // `runnable === false`. It reads the renderer's OWN program diagnostics, not a re-derivation.
+  const GL = [R.gl, R.webgl, R.three, R.renderer, R.threeRenderer, window.__ENGINE.gl]
+    .find((c) => c && c.properties && typeof c.properties.get === 'function') || null;
+  const programRunnable = (m) => {
+    if (!GL) return null;
+    const props = GL.properties.get(m) || {};
+    const prog = props.currentProgram;
+    if (!prog || !prog.diagnostics) return null;   // not compiled at the instant we sampled
+    return {
+      runnable: prog.diagnostics.runnable,
+      fragment_log: String(prog.diagnostics.fragmentShader?.log || '').slice(0, 400),
+    };
+  };
+
   // ---- HOW WE ASK WHETHER A HOOK INSTALLS THE SURFACE PASS ----------------------------------
   // The first version of this census — and the gate that found the defect — tested
   // `/uDetailNormal/.test(String(mat.onBeforeCompile))`. That reads the SOURCE TEXT of the outer
@@ -160,6 +185,10 @@ const report = await g.page.evaluate(async ({ selfcheck, fallback }) => {
         source_family: (m.userData && m.userData.sourceFamily) || null,
         wetness_followed: null,
         family_registered: null,
+        // The tripwire (W1-F1-SHADER-COLLISION): null means "not compiled at sampling time", not
+        // green — only `runnable === false` is a finding, and `runnable === true` is the only
+        // passing answer this field can give.
+        program_runnable: programRunnable(m),
       };
       seen.set(m, row);
     }
@@ -300,6 +329,10 @@ const orphans = withUniforms.filter((r) => !r.hook_installs_surface);
 const ghosts = withUniforms.filter((r) => !r.uniforms_are_live);
 const unreachableWet = withUniforms.filter((r) => !r.wetness_followed);
 const clobbered = orphans.filter((r) => r.hook_installs_waterline || r.hook_installs_water);
+// W1-F1-SHADER-COLLISION tripwire: only a POSITIVE `runnable === false` counts against a
+// material. `program_runnable === null` means the driver never compiled a program for it at the
+// instant we sampled (never mounted/never drawn) and is silent on the question, not a pass.
+const notRunnable = rows.filter((r) => r.program_runnable && r.program_runnable.runnable === false);
 
 const tally = (list, key) => {
   const m = new Map();
@@ -316,6 +349,8 @@ const summary = {
   dead_json_ghost_uniforms: ghosts.length,
   wetness_unreachable: unreachableWet.length,
   orphans_whose_hook_was_reassigned: clobbered.length,
+  program_not_runnable: notRunnable.length,
+  program_runnable_sampled: rows.filter((r) => r.program_runnable !== null).length,
   orphans_by_category: tally(orphans, 'category'),
   orphans_by_family: tally(orphans, 'family'),
   orphans_by_route: tally(orphans, 'route'),
@@ -344,6 +379,20 @@ const checks = [
     detail: `${withUniforms.filter((r) => !r.shader_uniform_is_the_live_one).length} of ${withUniforms.length} bind a uWorldWetness that is NOT the object setWorldWetness() writes into` },
   { id: 'NO-HOOK-THREW', ok: rows.filter((r) => r.hook_threw).length === 0,
     detail: `${rows.filter((r) => r.hook_threw).length} onBeforeCompile hooks threw when invoked against a stand-in shader` },
+  // THE MISSING TRIPWIRE (W1-ORPHANED-SURFACE-SHADERS-r1.md §3/§6). Every check above asks
+  // whether a hook INSTALLS something into a stand-in shader; none of them ask whether the real,
+  // composed program the renderer builds from the LIVE scene actually LINKS. `NO-HOOK-THREW` is
+  // the near miss it names: `installWaterline` never threw, it emitted a fragment shader that
+  // declared `uniform float uWetness` twice, and every check above this line passed at 0-of-422
+  // while 124 actor-body materials failed to link and neither the player nor any NPC had a body.
+  // This reads `program.diagnostics.runnable` straight off the renderer's own WebGLProperties for
+  // every material actually mounted and compiled in the scene — the same fact a driver-level GLSL
+  // link failure leaves behind, independent of what any hook claims about itself.
+  { id: 'NO-UNRUNNABLE-PROGRAM-IN-SCENE', ok: notRunnable.length === 0,
+    detail: notRunnable.length === 0
+      ? `0 of ${rows.filter((r) => r.program_runnable !== null).length} sampled program(s) failed to link (${rows.length - rows.filter((r) => r.program_runnable !== null).length} not yet compiled at sampling time)`
+      : `${notRunnable.length} material(s) hold a program the driver marked runnable:false — the mesh is not drawn. `
+        + notRunnable.slice(0, 3).map((r) => `${r.material_name}: ${r.program_runnable.fragment_log.replace(/ /g, '').trim().slice(0, 200)}`).join(' | ') },
 ];
 if (report.fallbackProbe) {
   checks.push({ id: 'LOUD-FALLBACK-REACHES-EVERY-MATERIAL',
