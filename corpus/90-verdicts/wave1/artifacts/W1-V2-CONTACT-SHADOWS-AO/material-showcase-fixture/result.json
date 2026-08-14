@@ -1,0 +1,79 @@
+{
+  "entry": "game/index.html",
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "software_renderer": true,
+  "camera": {
+    "pos": [
+      0,
+      1.7,
+      2.6
+    ],
+    "look": [
+      0,
+      0.15,
+      -0.4
+    ],
+    "fov": 50
+  },
+  "contact_band": {
+    "y0": 552,
+    "y1": 568,
+    "x0": 400,
+    "x1": 1200
+  },
+  "far_band": {
+    "y0": 660,
+    "y1": 676,
+    "x0": 400,
+    "x1": 1200
+  },
+  "pass_ratio": 0.75,
+  "ao_off": {
+    "contact_luma": 46.282,
+    "far_luma": 40.544,
+    "ratio": 1.1415,
+    "pass": false
+  },
+  "ao_on": {
+    "contact_luma": 29.332,
+    "far_luma": 40.544,
+    "ratio": 0.7235,
+    "pass": true
+  },
+  "darkening_is_localized": true,
+  "checks": [
+    {
+      "id": "AO-OFF-DOES-NOT-PASS",
+      "ok": true,
+      "detail": "ratio 1.1415 (must NOT already be <= 0.75 — else the fixture itself has a contact-dark bias and the arm proves nothing)"
+    },
+    {
+      "id": "AO-ON-PASSES-RI-VIS04-4",
+      "ok": true,
+      "detail": "ratio 0.7235 <= 0.75 required"
+    },
+    {
+      "id": "FAR-BAND-UNCHANGED",
+      "ok": true,
+      "detail": "far_luma off=40.544 on=40.544 — open ground away from any junction must not move; a change here would mean this is a global darken, not contact AO"
+    }
+  ],
+  "null_control_global_darken": {
+    "scale_k": 0.9834,
+    "note": "ao-off frame uniformly multiplied by k, k chosen to match ao-on's overall mean luma",
+    "measured": {
+      "contact_luma": 45.191,
+      "far_luma": 39.538,
+      "ratio": 1.143,
+      "pass": false
+    },
+    "algebraic_prediction": 1.1415,
+    "checks": [
+      {
+        "id": "GLOBAL-DARKEN-DOES-NOT-REPRODUCE-CONTACT-AO",
+        "ok": true,
+        "detail": "scaled ratio 1.143 (predicted 1.1415 by k*a/k*b=a/b) vs real AO ratio 0.7235 — a global darken this dark overall still does NOT pass 0.75, because it cannot change a ratio"
+      }
+    ]
+  }
+}
