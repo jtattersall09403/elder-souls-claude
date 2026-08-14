@@ -181,6 +181,22 @@ carried compass *item* readable in the inventory screen (RI-UIX03) rather than o
 last one is the honest compromise and it is allowed: an item you must stop and look at is not a
 HUD element.
 
+> **NARROWED by ARBITRATION S54 (2026-08-14) — one sentence, and nothing else in this item moves.**
+> **A bearing dial carrying no ticks and no place list is permitted *out of combat only*. A compass
+> strip, and any dial that acquires a `ticks` or `places` field, remains banned in both phases.**
+> This paragraph's argument is the reason the narrowing is safe rather than a reason against it: the
+> ban rested on the strip being *the mount point*, and the mount point is removed structurally, not
+> promised away — the shipped model is `{bearing_deg}` and holds no array a tick could hang on,
+> `compass` stays in `surface.js` `FORBIDDEN_KINDS` untouched, and **§E's detector 3 is run on the
+> dial**. **S8 is not touched and is not weakened**: S8 bans markers, and a dial with no quest field
+> is not one. RI-UIX01 **X6** likewise stands exactly as written, because X6 governs the *combat*
+> HUD and the dial declares nothing there — asserted by RI-UIX07 V7's census-identity test. The
+> permitted substitute above survives unchanged. **Factual correction, because it is the sentence a
+> future edit would cite: Morrowind's compass carries no quest marker.** Morrowind has no quest
+> markers at all — that is S8's own premise — and the red-arrow compass is Oblivion and Skyrim.
+> The out-of-combat element set, its budget and its transition are **RI-UIX07**; this item's
+> detectors are extended to the world phase there (RI-UIX07 R5) and no new detector is commissioned.
+
 ## Comparison method
 
 1. **Data scan first** — it is free and it fails fastest.
