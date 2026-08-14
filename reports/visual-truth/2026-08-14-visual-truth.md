@@ -50,6 +50,11 @@ writes a red overlay per angle so the number can be looked at rather than believ
 |---|---|---|---|
 | 2.6 m | 12 (full orbit) | **1.4 %** | 2.3 % at 210° |
 | 1.6 m | 8 (full orbit) | **0.2 %** | 0.3 % at 225° |
+| 1.0 m | 8 (full orbit) | **0.1 %** | 0.3 % at 270° |
+| 0.6 m | 8 (full orbit) | **0.0 %** | 0.1 % at 270° |
+
+1.3 m → 0.9 m is the camera's own character-fade band, so the last two rows sit inside and below
+it. The body does not become see-through there either.
 
 `key/2026-08-14-player-seethrough-overlay-210deg.png` is the worst angle with the see-through
 pixels painted red. The red is confined to the tops of the feet, the shoulder seams, a hip edge

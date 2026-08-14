@@ -65,6 +65,24 @@ instrument needed to make that critic work executable.
    outcomes, targeted red/delete results, known dependency blocks and exact reproduction commands
    for the critic-owned suite. Builders may create screenshots, video, audio and other binaries for
    their own inspection, but do not commit those binaries.
+8b. **Commit the evidence you cite, or you did not cite it.** Anything written under `reports/` is
+   excluded by `reports/.gitignore` and will not be in a clone. That is fine for scratch and fatal
+   for anything a verdict or a handover note points at: for eight days 56 of 76 Wave-1 verdicts
+   cited evidence no reviewer could open, so 74% of the wave's scores were unauditable by anyone
+   but the container that produced them, and the corpus gate was correctly red about it the whole
+   time (`reports/ci-triage/EVIDENCE-RECOVERY-20260814.md`). Before handoff:
+
+   ```
+   node tools/verdict-evidence.mjs            # audit: what you cite that a fresh clone would not have
+   node tools/verdict-evidence.mjs --recover   # git add -f the small ones; pin anything over 1 MiB
+   ```
+
+   Evidence over **1 MiB** is not committed raw — `--recover` writes `<path>.pin.json` beside it
+   carrying the decisive numbers, a SHA-256 of the raw bytes and the regeneration command, and the
+   verdict keeps citing the raw path. This does **not** change #8: builders still do not commit
+   screenshots and video they made only for their own inspection. It applies to the files something
+   else *cites*.
+
 9. **Publish before handoff.** Owner-ratified 2026-08-14 (`orchestration/OWNER-DIRECTIVES-2026-08-14.md`
    #7), after `orchestration/INDEX.md`, `docs/index.html`, `docs/progress.html` and
    `docs/status.json` went stale for days because regeneration lived only in a local git hook,

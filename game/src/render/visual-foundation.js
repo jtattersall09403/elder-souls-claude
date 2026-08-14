@@ -57,6 +57,178 @@ const FAMILY_COLOUR = Object.freeze({
   metal:0x75828b, water:0x244e58, shell:0xa39172, thorn:0x50372e, wet_chitin:0x3e4d4d,
 });
 
+// ---------------------------------------------------------------------------
+// THE PUBLISHED REGISTRY SURFACE — frozen contract, see render/MATERIAL_API.md.
+//
+// W1-30D (characters), W1-30E (architecture), W1-30F (terrain/vegetation) and
+// W1-30G (interiors) code against this and nothing else.  Options may be ADDED
+// here; an option may never be removed or repurposed.  Every identifier below
+// is fail-closed: an unknown family, palette, trim slot or option key throws at
+// construction rather than silently producing a plausible-looking wrong result,
+// because a silently-wrong material is exactly the defect this piece exists to
+// remove (a 96px hash-noise field wearing twenty hats for a year).
+// ---------------------------------------------------------------------------
+
+/** The twenty semantic families.  Frozen: adding one is a plan edit, not a builder's call. */
+export const MATERIAL_FAMILIES = Object.freeze(Object.keys(FAMILY));
+
+/** The six declared material classes.  A naive judge shown unlabelled close-ups must be able to
+ * group the twenty families into these six; that is W1-30C's `families are distinguishable` gate.
+ * The cuts are by how a surface responds to light, not by what it is made of in fiction: `metal`
+ * sits with the minerals because it is hard, non-translucent and roughness-driven; `water` sits
+ * with the pliant surfaces because it is the third family whose surface deforms continuously. */
+export const MATERIAL_CLASSES = Object.freeze({
+  soil: Object.freeze(['mud', 'wet_mud', 'clay']),
+  wood: Object.freeze(['bark', 'root', 'timber', 'thorn']),
+  foliage: Object.freeze(['leaf', 'reed']),
+  mineral: Object.freeze(['stone', 'salt', 'metal']),
+  carapace: Object.freeze(['chitin', 'wet_chitin', 'shell', 'bone', 'resin']),
+  pliant: Object.freeze(['cloth', 'skin', 'water']),
+});
+const FAMILY_CLASS = Object.freeze(Object.fromEntries(
+  Object.entries(MATERIAL_CLASSES).flatMap(([cls, fams]) => fams.map(f => [f, cls]))));
+export function materialClass(family) {
+  const c = FAMILY_CLASS[family];
+  if (!c) throw new Error(`W1-30C unknown visual material family '${family}'`);
+  return c;
+}
+
+/** One shared detail-normal tile per class of surface, blended at DETAIL_NORMAL_TILING x the base
+ * rate.  Four tiles carry all six classes and all twenty families: this is how a 1k base texture
+ * survives a 0.5 m close-up without a 4k base texture per family. */
+const CLASS_DETAIL_TILE = Object.freeze({
+  soil: 'mineral', mineral: 'mineral', wood: 'organic',
+  foliage: 'organic', carapace: 'hard', pliant: 'fabric',
+});
+export const DETAIL_NORMAL_TILES = Object.freeze(['organic', 'mineral', 'fabric', 'hard']);
+export const DETAIL_NORMAL_TILING = 8;
+
+/** Metres of world surface covered by one tile of a family's base texture.
+ *
+ * This is the seam that keeps texel density stable across the game.  C publishes the target here;
+ * D, E and F lay out their UVs so that one UV unit equals this many metres, and then every surface
+ * in a frame resolves at a comparable number of texels per metre.  The plan's hard fail is a >4x
+ * density change between adjacent surfaces in one shot, and the widest adjacency this table
+ * permits (leaf 0.6 m against timber 2.2 m) is 3.7x.  Read it with `materialTiling(family, opts)`
+ * rather than inlining the numbers. */
+export const TEXEL_METRES = Object.freeze({
+  mud: 4.0, wet_mud: 4.0, clay: 2.5, bark: 1.6, root: 1.8, timber: 2.2, thorn: 1.2,
+  leaf: 0.6, reed: 0.8, stone: 2.4, salt: 3.0, metal: 0.9, chitin: 0.7, wet_chitin: 0.7,
+  shell: 0.9, bone: 0.8, resin: 0.7, cloth: 1.1, skin: 1.4, water: 8.0,
+});
+
+/** Region palette swatches — the `palette` variant axis.
+ *
+ * `world-art.js` is read-only to every W1-30 child and carries no colour, so the swatches live
+ * here, keyed by the same thirteen region ids so the two files cannot drift apart without the
+ * assertion below firing at import time.  A palette is a tint plus a strength, applied to base
+ * colour and to the trim tint, so one stone texture set reads as Blackwood stone or Salt Hills
+ * stone without a second texture set on disk.  `neutral` is the identity. */
+export const PALETTES = Object.freeze({
+  neutral: Object.freeze({ tint: 0x808080, strength: 0, satMul: 1.0, valMul: 1.0 }),
+  blackwood: Object.freeze({ tint: 0x2f3a2c, strength: .34, satMul: 1.08, valMul: .90 }),
+  'clay-moor': Object.freeze({ tint: 0x8a6a3f, strength: .32, satMul: 1.14, valMul: 1.08 }),
+  'crimson-coast': Object.freeze({ tint: 0x7a3730, strength: .36, satMul: 1.22, valMul: .98 }),
+  'deep-marshes': Object.freeze({ tint: 0x2b3d35, strength: .38, satMul: 1.04, valMul: .86 }),
+  'eastern-rootlands': Object.freeze({ tint: 0x5d6b3a, strength: .30, satMul: 1.12, valMul: 1.04 }),
+  hive: Object.freeze({ tint: 0x8a7239, strength: .35, satMul: 1.18, valMul: 1.06 }),
+  'marauders-coast': Object.freeze({ tint: 0x5a6470, strength: .33, satMul: .88, valMul: 1.02 }),
+  'salt-hills': Object.freeze({ tint: 0xb7b49a, strength: .37, satMul: .72, valMul: 1.18 }),
+  'stone-forest': Object.freeze({ tint: 0x3f4247, strength: .34, satMul: .78, valMul: .92 }),
+  'stone-wastes': Object.freeze({ tint: 0x7d7c72, strength: .32, satMul: .74, valMul: 1.10 }),
+  thornmarsh: Object.freeze({ tint: 0x3d2f33, strength: .36, satMul: 1.06, valMul: .88 }),
+  'valus-ridge': Object.freeze({ tint: 0x4e5a52, strength: .31, satMul: .92, valMul: 1.00 }),
+  'western-rootlands': Object.freeze({ tint: 0x4a5738, strength: .30, satMul: 1.10, valMul: .98 }),
+});
+for (const id of Object.keys(REGION_ART)) {
+  // Fail at import, not at the one frame where a region without a swatch is on screen.
+  if (!PALETTES[id]) throw new Error(`W1-30C region '${id}' has no palette swatch in visual-foundation.js`);
+}
+export function paletteSwatch(id) {
+  const p = PALETTES[id];
+  if (!p) throw new Error(`W1-30C unknown palette swatch '${id}' (known: ${Object.keys(PALETTES).join(', ')})`);
+  return p;
+}
+
+/** Trim atlas slots — the `trim` variant axis, consumed by W1-30E's kit parts and W1-30D's
+ * equipment.  A trim sheet is why authored architecture reads as *made* rather than extruded.
+ * Each slot is one horizontal band of the shared 2048x1536 atlas, twelve bands of 128 px. */
+export const TRIM_SLOTS = Object.freeze({
+  edge: 0, moulding: 1, plank: 2, lashing: 3, bolt: 4, 'shell-ring': 5,
+  'bone-binding': 6, 'resin-seam': 7, 'dye-band': 8, 'metal-course': 9,
+  'chitin-bar': 10, 'bleached-timber': 11,
+});
+export const TRIM_ATLAS = Object.freeze({ width: 2048, height: 1536, bands: 12, bandHeight: 128 });
+export function trimSlot(id) {
+  const band = TRIM_SLOTS[id];
+  if (band === undefined) throw new Error(`W1-30C unknown trim slot '${id}' (known: ${Object.keys(TRIM_SLOTS).join(', ')})`);
+  // v runs bottom-up in three.js UV space; return the band's [v0, v1] and its pixel row.
+  const v0 = 1 - (band + 1) / TRIM_ATLAS.bands, v1 = 1 - band / TRIM_ATLAS.bands;
+  return { id, band, v0, v1, row: band * TRIM_ATLAS.bandHeight };
+}
+
+/** Every option key `worldMaterial` accepts.  Frozen in the sense that entries may be added and
+ * never removed; the census reads this array to detect a variant spec using an undeclared axis. */
+export const MATERIAL_OPTION_KEYS = Object.freeze([
+  // three.js pass-through, unchanged semantics
+  'color', 'roughness', 'metalness', 'map', 'normalMap', 'alphaTest', 'transparent', 'opacity',
+  'side', 'emissive', 'emissiveIntensity', 'envMapIntensity', 'vertexColors', 'depthWrite',
+  // declared variant axes
+  'lod', 'wetness', 'wear', 'tilingScale', 'trim', 'palette', 'boundedException',
+  // retained from the pre-freeze surface; live call sites depend on these
+  'aoMapIntensity', 'bumpScale', 'authored',
+]);
+const OPTION_KEY_SET = new Set(MATERIAL_OPTION_KEYS);
+export const LOD_LEVELS = Object.freeze(['shared', 'near', 'far', 'impostor']);
+
+const unit = (name, v) => {
+  const n = Number(v);
+  if (!Number.isFinite(n) || n < 0 || n > 1) throw new Error(`W1-30C option '${name}' must be 0..1, got ${JSON.stringify(v)}`);
+  return n;
+};
+
+/** Validate a variant spec against the declared axes and return it normalised.  Exported so that
+ * W1-30V's census and any consumer can check a spec without constructing a material. */
+export function validateMaterialOptions(family, options = {}) {
+  if (!FAMILY[family]) throw new Error(`W1-30 unknown visual material family '${family}'`);
+  if (options === null || typeof options !== 'object') throw new Error('W1-30C material options must be an object');
+  for (const k of Object.keys(options)) {
+    if (!OPTION_KEY_SET.has(k)) {
+      throw new Error(`W1-30C unknown material option '${k}' for family '${family}'. `
+        + `Declared axes: ${MATERIAL_OPTION_KEYS.join(', ')}. Adding one is a plan edit (see render/MATERIAL_API.md).`);
+    }
+  }
+  const wear = options.wear === undefined ? 0 : unit('wear', options.wear);
+  const wetness = options.wetness === undefined ? 0 : unit('wetness', options.wetness);
+  let tilingScale = options.tilingScale === undefined ? 1 : Number(options.tilingScale);
+  if (!Number.isFinite(tilingScale) || tilingScale <= 0 || tilingScale > 64) {
+    throw new Error(`W1-30C option 'tilingScale' must be a positive number <= 64, got ${JSON.stringify(options.tilingScale)}`);
+  }
+  const palette = options.palette === undefined || options.palette === null ? 'neutral' : String(options.palette);
+  paletteSwatch(palette);
+  const trim = options.trim === undefined || options.trim === null ? null : String(options.trim);
+  if (trim !== null) trimSlot(trim);
+  const lod = options.lod === undefined ? 'shared' : String(options.lod);
+  if (!LOD_LEVELS.includes(lod)) throw new Error(`W1-30C unknown lod '${lod}' (known: ${LOD_LEVELS.join(', ')})`);
+  return { family, wear, wetness, tilingScale, palette, trim, lod, class: materialClass(family) };
+}
+
+/** The tiling a consumer should lay its UVs out for: metres of world surface per UV unit, and the
+ * texture repeat that follows from it.  D/E/F call this rather than guessing a repeat. */
+export function materialTiling(family, options = {}) {
+  const v = validateMaterialOptions(family, options);
+  const metres = TEXEL_METRES[family] * v.tilingScale;
+  return { metresPerTile: metres, texelsPerMetre: 1024 / metres, repeat: 1 / metres, detailRepeat: DETAIL_NORMAL_TILING / metres };
+}
+
+/** A stable string identity for a (family, variant) pair.  W1-30V's `duplicate` check hashes this
+ * so that a second definition of an existing material is visible as a copy rather than a variant. */
+export function materialVariantKey(family, options = {}) {
+  const v = validateMaterialOptions(family, options);
+  return `${family}|p=${v.palette}|w=${v.wear.toFixed(2)}|wet=${v.wetness.toFixed(2)}`
+    + `|t=${v.tilingScale.toFixed(2)}|trim=${v.trim ?? '-'}|lod=${v.lod}`;
+}
+
 /** Apply a styleboard to pixels, not metadata. The semantic board controls the material's
  * dominant/contrast colour, wet/cavity response and shader identity. `amount=0` is the live
  * sabotage arm used by the W1-30 visual-consumption check. */

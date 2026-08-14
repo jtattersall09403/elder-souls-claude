@@ -63,6 +63,23 @@ screenshots), duration (for traces). A screenshot with no camera pose is an anec
 will be rejected. If something cannot be measured at all, score it 0 (fail-closed) and
 file the missing harness as a method item under corpus/80-methods/. Never write "unknown".
 
+**A CITATION THAT DOES NOT RESOLVE IN A FRESH CLONE IS NOT A CITATION — commit the evidence
+before you file the verdict.** This is not paperwork. For eight days 56 of 76 Wave-1 verdicts
+cited files that `reports/.gitignore` excluded, so every one of those scores could be checked
+only on the container that produced it; that is exactly the thing `nothing counts because
+someone says so` exists to stop, and it went unnoticed because the gate that catches it was
+red for something else. Before you write the verdict:
+
+    node tools/verdict-evidence.mjs            # what you cite that a clone would not have
+    node tools/verdict-evidence.mjs --recover   # git add -f the small ones, pin the large ones
+    node tools/verdict-validate.mjs <your verdict>.json
+
+Anything you write under `reports/` is gitignored by default and needs `git add -f`. Evidence
+over **1 MiB** is not committed raw: `--recover` writes `<path>.pin.json` beside it — the
+decisive numbers, a SHA-256 of the bytes you read them from, and the command that regenerates
+it — and you keep citing the raw path. Cite a `#section` anchor on a tracked document freely;
+it resolves against the base path.
+
 You MAY open source files for exactly three purposes, and you must list every one you open
 in `source_reads` with its purpose: (a) locating a harness/seed/debug hook, (b) quoting
 written content that IS the artifact — dialogue, journal, book and item text, cited as
