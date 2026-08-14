@@ -1,0 +1,44 @@
+{
+  "task_id": "COST-REORIENTATION",
+  "role": "builder",
+  "started": "2026-08-14",
+  "state": "complete",
+  "summary": "Measure the term COST.md §4.0 left out — what a successor pays to pick up where a predecessor stopped — and decide whether the $1,728 split ceiling is real or a mirage. Plus the urgent disk reclamation and a loud-ENOSPC guard on the capture path.",
+  "next_step": "None from this piece. The trial itself is the orchestrator's to dispatch: split long pieces at ~100 requests under the three tripwires in COST.md Ruling C3.",
+  "files_touched": [
+    "tools/cost.mjs",
+    "tools/capture/server.mjs",
+    "orchestration/COST.md",
+    "orchestration/cost-changes.json",
+    "docs/data/cost-ledger.json",
+    "reports/cost/experiments.json",
+    "reports/blog-feed.jsonl",
+    "orchestration/status/COST-REORIENTATION.json"
+  ],
+  "files_claimed": [
+    "tools/cost.mjs",
+    "tools/capture/server.mjs",
+    "orchestration/COST.md",
+    "orchestration/cost-changes.json",
+    "orchestration/status/COST-REORIENTATION.json"
+  ],
+  "notes": [
+    "Ruling O1 followed on tools/cost.mjs: ownership --for returned 'nobody live has declared this file', --conflicts showed no cost.mjs overlap, the whole change was developed on a scratchpad copy and applied to the live file in ONE scripted patch with a pre-edit md5 recorded (16bf2e5... -> 7b6af9f...).",
+    "Extended by flag (--reorientation), not restructured. One shared-path change and it is additive: parseFile now carries tool_use names on each record, which the primary statistic needs and nothing else reads.",
+    "No browser needed. No agent's live working directory was touched.",
+    "Scratchpad copies kept at scratchpad/reorient/ — baseline, working copy, the delete-the-fix copy, and the patch script that can replay the whole edit."
+  ],
+  "findings": [
+    "DISK: 15.8 GB reclaimed; 3.1 GB free -> 12 GB at the time of the sweep (other agents have since taken the headroom back, which is precisely why the ENOSPC guard below matters). 8.1 GB of it was three abandoned tmp_pack_* files in .git/objects/pack/ dated 6 August — leftovers of an interrupted repack, open by no process, which a plain 'git gc' prunes after a day. .git went 9.3 GB -> 1.2 GB and 'git fsck --connectivity-only' stayed clean afterwards. The other 7.7 GB was /workspace/kezyma/morrowind-voices, a clone of a public repo untouched since 5 August and referenced nowhere in this tree; it is recoverable with a single clone of github.com/kezyma/morrowind-voices. NO live scratch was touched: the seven full-tree copies under the shared scratchpad had all been written within the hour.",
+    "ENOSPC IS NOW LOUD. tools/capture/server.mjs had exactly the described shape. There was a bare 'catch {}' around the cache-manifest rewrite, and — the one that actually produced clean-looking failures — renameSync(tmp, finalPng) followed immediately by 'bytes = statSync().size' with nothing checking the bytes were non-zero or that the file was a PNG. A truncated capture was banked with bytes:0 and a sha256 of nothing, and every later run read it as a cache hit. Four additive guards: a preflight free-space floor that returns DISK_FULL before nine seconds of rendering are spent; a PNG magic + length assertion applied to the tmp file BEFORE it is given the banked name; ENOSPC classified apart from CAPTURE_ERROR so callers do not retry a full disk in a loop; and a half-entry (PNG banked with no manifest beside it) removed rather than left for a later hit to trust.",
+    "The ENOSPC guard has a null control that is the plausible wrong answer, not the trivial one: a VALID 79-byte PNG must be ACCEPTED (a size-only guard fails that arm), a 200-byte JPEG must be REJECTED, a zero-byte file and a 40-byte truncation must be REJECTED. 7 of 7 arms pass. Its limit is stated rather than glossed: a truncation that keeps the header and at least 64 bytes is NOT caught by the magic check — it is caught one level up by the ENOSPC classification and the preflight floor.",
+    "THE HEADLINE: re-orientation costs $0.4302 per handoff against a break-even of $6.264. The split lever SURVIVES — $1,872.81 ceiling less $128.63 across 299 handoffs leaves $1,744.18 net at chunk 100, a 14.6x margin.",
+    "MECHANISM: it is paid in extra REQUESTS, not heavier ones. A successor takes 20 requests to reach its first Write or Edit against 11 for a fresh agent dispatched in the same six-hour window, carrying 860,320 extra context tokens. n = 50 matched successors, stratified-shuffle p = 0.002, null band [-0.116, +0.276].",
+    "A STATISTIC WAS DISQUALIFIED ON THE WAY AND IS PUBLISHED WITH THE CONTROL THAT CAUGHT IT. The obvious measure — the resumed-versus-fresh context premium integrated over the first 60 requests — returns MINUS $0.40, successors apparently re-reading three-quarters of a million tokens FEWER than fresh agents. Its late-index placebo shows the gap still widening at k=200, where orientation is long over. The curve is flat for five requests then diverges linearly: a slope difference, not an intercept difference. It measures SCOPE (resumed agents were given narrower jobs — 3,367 tokens of context growth per request against 3,974) and would have been reported as a free handoff. Reporting it would have been this project's own favourite failure.",
+    "CONTROLS. N2, the generic second-generation arm — 91 round-2+ agents that were NOT resumed — shows -$0.01, so the effect is handoff-specific and not 'later agents carry fuller briefs'. Fresh-against-fresh self-control -$0.001, so the matching is not biased by construction. The time confound is real and measured: fresh agents' first-request context rises 26 tokens per hour over 205 hours (R2 0.407), which is why every figure is time-matched.",
+    "DELETE-THE-FIX EXECUTED, on a copy: removing the time-matching control (one constant, REORIENT_WINDOW_H) moves the handoff figure $0.4302 -> $0.3031 and degrades the shuffle p-value 0.003 -> 0.027, i.e. the old number comes back and the control is load-bearing rather than believed to be. The documentation reversal was also executed on a copy — 66-line diff, arms genuinely differ.",
+    "SELF-TEST: four synthetic fleets whose right answers differ, and two of them are traps. An extra-requests handoff arm is detected at the hand-computable $0.42 (expected $0.405) AND is MISSED entirely by the 60-index integral, which proves the two statistics are not redundant. A time-confound arm with no handoff at all produces a spurious $0.11 raw and $0.00 matched. A scope-contamination arm reproduces the live failure in miniature: the integral reports -$2.21, its placebo FIRES, and the primary statistic stays at -$0.019. And the placebo is not a rubber stamp — on the clean handoff arm it correctly does not fire.",
+    "QUALITY ARM DESIGNED BEFORE THE SAVING, AND IT CANNOT LICENCE THE CHANGE. Resumed rounds score 3.88 against 3.56 across 70 verdicts — no alarm — but the power is low and the selection confound is fatal, because a piece is resumed BECAUSE it was long or hard. It is therefore wired to REFUSE only, and 'resumed pieces needed 2.38 rounds against 1.61' is NOT evidence against splitting for the same reason. This is why C3 lands as a TRIAL with three tripwires and not as doctrine.",
+    "WHAT I COULD NOT DO. Every handoff measured was ACCIDENTAL — a usage-limit kill or a container restart — so no predecessor wrote a note by design. Nothing here says whether a PLANNED split decomposes work sensibly, and a deliberate status file could well be larger than what a killed agent left behind; the trial's own re-measurement is the only thing that would show it. I also cannot separate re-reading from work REDONE inside the successor's extra nine requests, and if some of it is redone then both the cost and the quality risk are larger than stated. The orchestrator is excluded from every arm and is itself one of the most expensive agents in the fleet."
+  ]
+}

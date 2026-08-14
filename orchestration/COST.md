@@ -210,6 +210,71 @@ hypothesis to be measured; none is a decision.**
 > accumulation is already being recovered and the split ceiling is overstated.
 > Full output: `reports/cost/experiments.json`, `reports/cost/EXPERIMENTS-20260814.md`.
 
+### Ruling C3 — the missing term is measured, and the split lever survives it *(reversible, trial)*
+
+> **Measured 2026-08-14 by `COST-REORIENTATION` with `tools/cost.mjs --reorientation` at commit
+> `defc376b`, over 53,748 deduplicated requests and 440 subagents.** §4.0's ceiling assumed a split
+> was free. It is not, and the term it left out is now sized.
+
+**A handoff costs $0.43. Break-even is $6.26. The lever is real.**
+
+The measurement uses the natural experiments this project already ran without meaning to: **52 agents
+killed by usage limits or container restarts and dispatched again as explicitly-marked successors**
+("Resume W1-14 r3 magic", "W1-05 wayfinding (successor)"). A successor is a split's second half with
+the split already performed, so nothing had to be constructed.
+
+**Re-orientation is paid in extra requests, not heavier ones.** A successor takes **20 requests** to
+reach its first `Write`/`Edit` against **11** for a fresh agent dispatched in the same six-hour
+window — **860,320 extra context tokens, $0.4302** at the marginal cache-read rate (n = 50,
+stratified-shuffle p = 0.002, null band [−0.116, +0.276]). Against break-even of **$6.264** per
+handoff at chunk 100 that is a **14.6× margin**, and the ceiling survives it nearly intact:
+**$1,872.81 − $128.63 across 299 handoffs = $1,744.18.**
+
+**The controls are what make that number worth anything.**
+
+| control | result | what it rules out |
+|---|---|---|
+| N2 — 91 round-2+ agents that were *not* resumed | **−$0.01** | "later agents just carry fuller briefs". The effect is handoff-specific. |
+| S — fresh against fresh | **−$0.001** | a matching procedure biased by construction |
+| time-matching, **deleted on a copy** | $0.4302 → **$0.3031**, p 0.003 → 0.027 | the control is load-bearing, not decorative (rule 6) |
+| N1 — 1,000 stratified label shuffles | p = 0.002 | arm composition reproducing the effect by itself |
+
+**A statistic was disqualified on the way, and it is published with the control that caught it.**
+The obvious measure — integrate the resumed-versus-fresh context premium over the first 60 requests —
+returns **minus $0.40**, successors apparently re-reading three-quarters of a million tokens *fewer*.
+Its late-index placebo shows the gap **still widening at k = 200**, where orientation is long over.
+The curve is flat for five requests and then diverges linearly: a *slope* difference, not an
+*intercept* difference. Resumed agents were given **narrower jobs** (3,367 tokens of context growth
+per request against 3,974), and integrating over 60 indices measures the narrower job and calls it a
+free handoff. Reporting it would have been this project's own favourite failure — a green number from
+an instrument measuring the wrong thing.
+
+**What this does not measure, stated because the margin is large enough that it can be.** Every
+handoff here was **accidental**: no predecessor wrote a note by design, so this bounds the *unplanned*
+case and says nothing about whether a *planned* split decomposes work sensibly. And some of the
+successor's extra requests may be work **redone** rather than merely re-read; the transcript cannot
+tell those apart, which would make both the cost and the quality risk larger than stated.
+
+**The quality arm can refuse this and can never licence it**, and it is used in that direction only.
+Resumed rounds score **3.88** against 3.56 on 70 verdicts — no alarm, but the power is low and the
+selection confound is fatal: a piece is resumed *because* it was long or hard. So resumed pieces
+needing 2.38 rounds against 1.61 is **not** evidence against splitting either.
+
+**The ruling, therefore: split long pieces at ~100 requests, as a trial, with three tripwires.** §5
+binds hardest here — this shortens an agent's *waste*, never its *work*, and the second tripwire is
+what enforces that.
+
+1. **Cost** — the handoff figure re-measured on deliberately split agents rises above **$2.00** (still
+   under a third of break-even, so it fires long before the lever stops paying).
+2. **Scope** — total requests summed across a split piece's agents falls below the pre-split median
+   for comparable pieces. A split that shortens the work is not a saving.
+3. **Quality** — critic find-rate or the G3 separate-critic count falls on the split arm.
+
+**Reversal**: one line in the dispatch brief returns long pieces to a single marathon agent;
+`git revert` restores this section. **Falsifier**: a planned handoff that costs more than an
+accidental one — plausible if a deliberate status file is larger than what a killed agent left behind
+— would move the $0.43 upward, and the trial's own re-measurement is what would show it.
+
 Found by the `COST-EXPERIMENTS` plan, absent from this document's original ranking **and** from the
 external research: **$4.55 → $51.83 per agent across request-count bins**, because every tool call
 re-sends a context that the previous calls grew. One agent's context went **23,757 → 578,648 tokens
