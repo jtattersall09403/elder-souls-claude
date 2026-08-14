@@ -1,5 +1,6 @@
 {
   "schema": "elder-souls/cost-ledger@1",
+<<<<<<< HEAD
   "generated_at": "2026-08-14T08:52:54.036Z",
   "generator": "tools/cost.mjs",
   "commit": "72c3dea",
@@ -9,6 +10,17 @@
     "from": "2026-08-05T22:16:46.017Z",
     "to": "2026-08-14T08:52:51.238Z",
     "hours": 202.6,
+=======
+  "generated_at": "2026-08-14T08:51:36.065Z",
+  "generator": "tools/cost.mjs",
+  "commit": "215b75c",
+  "source": "not found",
+  "stale_after_minutes": 45,
+  "window": {
+    "from": null,
+    "to": null,
+    "hours": 0,
+>>>>>>> origin/codex/wave1-build-experiment
     "complete": true
   },
   "comparable_key": "sha1:2e492d83b9953130",
@@ -39,6 +51,7 @@
     }
   },
   "coverage": {
+<<<<<<< HEAD
     "files_total": 420,
     "files_read": 420,
     "bytes_read": 604710622,
@@ -64,7 +77,26 @@
     "ch_pct_of_baseline": 100.4,
     "usd_per_agent_hour": 8.72,
     "usd_per_agent_hour_pct_of_baseline": 100.1
+=======
+    "files_total": 0,
+    "files_read": 0,
+    "bytes_read": 0,
+    "complete": true
   },
+  "drivers": {
+    "requests": 0,
+    "mean_context_tokens": null,
+    "pie_tokens": 0,
+    "requests_per_agent_hour": null
+  },
+  "denominator": {
+    "definition": "active_clock_hours",
+    "active_hours": 0,
+    "agent_hours": 0,
+    "span_hours": 0
+>>>>>>> origin/codex/wave1-build-experiment
+  },
+  "headline": null,
   "baseline": {
     "usd_per_hour": 115.88,
     "usd_per_agent_hour": 8.71,
@@ -78,6 +110,7 @@
     "usd_per_hour": 28.97,
     "usd_per_agent_hour": 2.18
   },
+<<<<<<< HEAD
   "series": [
     {
       "t": "2026-08-05T22:00:00.000Z",
@@ -355,15 +388,49 @@
       "class": "output",
       "usd": 208.71,
       "tokens": 8679184
+=======
+  "series": [],
+  "by_model": [],
+  "by_token_class": [
+    {
+      "class": "input",
+      "usd": 0,
+      "tokens": 0
+    },
+    {
+      "class": "cache_write_5m",
+      "usd": 0,
+      "tokens": 0
+    },
+    {
+      "class": "cache_write_1h",
+      "usd": 0,
+      "tokens": 0
+    },
+    {
+      "class": "cache_read",
+      "usd": 0,
+      "tokens": 0
+    },
+    {
+      "class": "output",
+      "usd": 0,
+      "tokens": 0
+>>>>>>> origin/codex/wave1-build-experiment
     }
   ],
   "guards": {
     "g1_parallelism": {
+<<<<<<< HEAD
       "mean_agents": 13.34,
       "mean_agents_present": 13.45,
+=======
+      "mean_agents": null,
+      "mean_agents_present": null,
+>>>>>>> origin/codex/wave1-build-experiment
       "floor": 12,
       "divergence_flag": false,
-      "status": "ok",
+      "status": "unmeasured",
       "window_hours": 1
     },
     "g2_quality": {
@@ -399,7 +466,6 @@
   "changes": [],
   "notes": [
     "First run of a newly-built instrument (2026-08-14). Not yet through a fresh build critic; treat as a first working measurement, not a finished COST-INSTRUMENT verdict.",
-    "57 deduplicated request(s) used an unpriced/unrecognised model and were excluded from cost: {\"<synthetic>\":57}.",
     "baseline/target are the frozen figures already published in orchestration/COST.md §2 (BLOCKING 3), not re-derived here — see baseline.source.",
     "g2_quality.baseline_mean_verdict_score and critic_find_rate, and all of g3_rigour, are not computed by this instrument yet; they ship null/unmeasured rather than a confident wrong number."
   ]
