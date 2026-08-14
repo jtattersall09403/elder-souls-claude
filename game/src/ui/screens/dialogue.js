@@ -236,7 +236,11 @@ export function layoutDialogue(S, m) {
           if (!cur.frags.length) continue;                       // no leading space on a line
           const ww = measure(' ', face, bodyPx);
           if (curW + ww > proseW) { flush(); continue; }
-          pushFrag(cur, ' ', null, ww); curW += ww;
+          // THE SPACE INSIDE A LINK BELONGS TO THE LINK. It used to be pushed with `topic: null`,
+          // which broke the adjacency merge below and turned `netch leather` into TWO link
+          // entries with a dead gap between them — two carets to walk, two underlines, and a
+          // count that overstated how many subjects were on the page.
+          pushFrag(cur, ' ', sp.topic || null, ww); curW += ww;
           continue;
         }
         const ww = measure(w, face, bodyPx);
@@ -594,6 +598,12 @@ export function drawDialogue(S, m) {
     links_total: L.links.length,
     links_drawn: linkEls,
     link_topics: L.links.map((l) => l.topic),
+    // Published so a probe that finds no links can tell WHICH of the two reasons it is —
+    // "nothing was offered to light" or "the prose does not name what was offered" — instead of
+    // reporting a zero that could mean either. The first run of the browser probe reported
+    // exactly that zero and cost a round to diagnose offline.
+    linkable: (m.linkable || []).map((t) => t.id),
+    blocks: (m.blocks || []).map((b) => ({ topic: b.topic, heading: b.heading, chars: b.text.length })),
     actions: actions.map((a) => a.id),
     topics: topics.map((t) => t.id),
     topics_shown: shown.length,

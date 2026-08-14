@@ -129,9 +129,14 @@ const main = async () => {
   const { page } = g;
   await g.h('ready');
   await page.evaluate(IN_PAGE);
+  // The default 30 s screenshot timeout is not survivable on this box: contention has run at 10-11
+  // browser instances and load 45 over 4 cores for hours, and the first attempt at this run died on
+  // it after completing all four arms' MEASUREMENTS. Two minutes, and one retry, so a slow box
+  // costs time rather than the evidence.
   const shot = async (name) => {
     const p = path.join(shotsDir, name);
-    await page.screenshot({ path: p });
+    try { await page.screenshot({ path: p, timeout: 120000 }); }
+    catch (e) { await page.screenshot({ path: p, timeout: 120000 }); }
     return { file: path.relative(REPO_ROOT, p), bytes: fs.statSync(p).size };
   };
 

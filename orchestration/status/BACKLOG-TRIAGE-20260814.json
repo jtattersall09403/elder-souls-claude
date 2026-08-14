@@ -1,0 +1,46 @@
+{
+  "task_id": "BACKLOG-TRIAGE-20260814",
+  "role": "triage",
+  "state": "complete",
+  "started_at": "2026-08-14",
+  "branch": "codex/wave1-build-experiment",
+  "brief": "Make the next twenty critics the twenty that matter. Verify the dispatchable.mjs unjudged count (given as 121), run the cheap-detector sweep against tools already in the repo, and produce a ranked queue with reasoning.",
+
+  "could_not_do": [
+    "Ran no browser and no GPU pod (out of scope for this dispatch). Every visual/motion/audio/boot claim among the 33 uncategorised rows is UNVERIFIED here -- in particular W1-GIVER-PRESENCE's handed-on claim that canon.json throws at boot, and every W1-30/W1-RENDER/W1-THORN-PLATES rendering claim. tools/harness/boot-check.mjs was started and killed at a 90s timeout for the same reason (it launches a browser).",
+    "Did not open all 126 unjudged status files in full. Read all 126 through task_id/state/next_step/files_touched/outputs, opened roughly 45 in full (the 33 uncategorised, the 8 verdict-name-collision rows, the needs-something-else 4, plus the two forensic reports that produced the free findings). The 56-row meta-work bucket and 18-row corpus-bar bucket were classified by regex plus reuse of UNJUDGED-TRIAGE-2026-08-14.md's own hand-verification of the equivalent 2026-08-14 12:16 population, not independently re-opened row by row -- if one of those rows shipped a new game-content deliverable after being classified plan/blog/audit work, it would be genuinely unjudged and mis-cleared here. Named, not assumed away.",
+    "Did not verify BLIND-PACK-GATE Ruling 4 (which closes W1-PROSE-R2 and W1-PROSE-TICS as superseded) still stands -- reused UNJUDGED-TRIAGE-2026-08-14.md's citation of it rather than re-reading NEXT-DISPATCH.md's ruling table myself.",
+    "Did not resolve GIT-INTEGRATION-SCHEME -- its status file has state:complete and no other field (no next_step, no files_touched, no brief). Could not characterise it as game-content, process-tooling, or stale/orphaned from the file alone.",
+    "Did not fix tools/dispatchable.mjs. It does not need fixing: the regex defect the brief describes (the one that inflated the count and falsely reassured on rows) was already found and fixed at commit f0946995 (2026-08-14 12:16:02Z), by an unrelated prior agent, hours before this dispatch. --self-test passes 6/6 (2 pre-existing arms + 4 new verdictLookupKey arms) when re-run here. What IS still open, and is not a bug, is documented in the tool's own function-level comment: exact-match-only by design leaves a handful of pieces (W1-23, W1-LIBRARY, province-stream-pump, W1-PROSE-R2, W1-PROSE-TICS, RI-VIS06-PROTOCOL-A) reading unjudged even though a verdict for them exists under an unrelated-looking name, because the safe alternative (prefix matching) would silently credit standalone W1-08 with the JOINT W1-08-W1-29 verdict. tools/ownership.mjs --for tools/dispatchable.mjs shows no live claimant on the file itself, but W1-20-r3-remediation (live, in_progress) has it in files_claimed for an unrelated reason (a faction-gates fix); left it alone rather than write into a file a live sibling is about to touch.",
+    "Did not critique any of the 20 queued pieces. That is a deliberate boundary of this task, not an omission."
+  ],
+
+  "population_verified": {
+    "instrument": "node tools/dispatchable.mjs (post-fix, commit f0946995)",
+    "reported_finished_but_unjudged": 126,
+    "the_brief_said": 121,
+    "why_the_numbers_differ": "Not a new defect. UNJUDGED-TRIAGE-2026-08-14.md (12:16Z) audited a 96-row population under the OLD truncating regex; f0946995 fixed the regex, swept the done-and-judged bucket for the inverse error (22 rows corrected), and landed a few hours before this dispatch. Between 12:16Z and now, at least 11 more pieces crossed into complete-with-no-verdict (confirmed via git log f0946995..HEAD -- orchestration/status/, cross-referenced against the current 126): W1-11-builder, W1-18-builder-codex-20260810, W1-DLG-WORDS, W1-THORN-PLATES, GIT-INTEGRATION-SCHEME, PARTIAL-REVERTS-20260814, RECOVERY-20260814, RI-VIS06-PROTOCOL-A, SPLIT-TRIAL, plan-review-w1-dlg-topic-web, plan-review2-w1-dlg-topic-web. 121 vs 126 is population growth over a live afternoon, not a miscount -- neither figure should be treated as fixed; re-run the instrument before acting on any number here.",
+    "self_test": "node tools/dispatchable.mjs --self-test: PASS, 6/6 arms (2 canonical-plan-unit arms + 4 verdictLookupKey arms), re-run directly by this task."
+  },
+
+  "free_findings_no_critic_needed": [
+    "RI-VIS06-PROTOCOL-A already carries a real, filed, schema-valid verdict -- corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.json, piece_id w1-visual-blind-protocol-a-r1, score 5/10, BELOW BAR. dispatchable.mjs cannot see it because the task id starts with RI- rather than w<N>-, so verdictLookupKey() never enters its w<N> branch and the two strings can never match -- same shape as the W1-23/W1-LIBRARY/province-stream-pump rows the tool's own comment already names, just not enumerated there. Action: hand the existing FAIL verdict to a remediation builder; do not spend a fresh critic re-judging it.",
+    "The 'W1-18 quest delivery reverted, quest-audit HARDFAIL' incident (RECOVERY-20260814, PARTIAL-REVERTS-20260814.md, W1-18-REINTEGRATION.json) is CURRENTLY RESOLVED on the checked-out tree. W1-18-REINTEGRATION.json's own before_numbers_at_250aad60 records multi_faction_consequence_pct 6.44 (HARDFAIL), X7_cosmetic_pairs 267 (FAIL), mean_branches 1.03 (below target). Re-running node tools/analysis/quest-audit.mjs live, right now, returns multi_faction_consequence_pct 30.2 PASS, X7_cosmetic_pairs 0 PASS, mean_branches 1.94 PASS -- exactly W1-18-builder-codex-20260810's own claimed ledger, not the HARDFAIL numbers. Group A's restore appears to have already landed (most likely folded into a sibling's bank), but W1-18-REINTEGRATION.json's own state is still in_progress with next_step 'Restore group A ... land'. Its owner should re-run the audit and update the status file rather than re-do a restore that already happened -- flagged, not fixed, since the file is not mine to close.",
+    "W1-SOULS-LEDGER's headline decision figure reproduces. Its status file reports 'crossing.level_if_fully_cleared was 5, now 3, REPORTED NOT DECIDED'. node tools/check-souls-world.mjs, run live, prints '...the crossing pays 1404 -> level 3' -- the corrected figure, not the stale cache. The arithmetic is not in question; what remains is a design ruling (does the crossing SHIP paying level 3 or should the economy be re-tuned to pay 5), which is arguably an immediate S-ruling rather than a build-critic dispatch -- flagged for the orchestrator.",
+    "W1-DLG-WORDS's self-declared gap reproduces exactly. Its could_not_do says 'the corpus still fails 6 of 9 axes'. node tools/dialogue/words-check.mjs, run live, prints exactly 6 required-axis FAILs (A2, A3, A4, A7, A8, A9) and 1 advisory. This is not a red flag -- it is the practice working as intended (rule 26) -- but it directly confirms the open ledger gap GAP-PROSE-01 (dialogue.voice, high severity) is still live, and the piece edited the shared measurement tool itself (tone-metrics.py, words-check.mjs), which is exactly the kind of self-graded-instrument change this project's rules ask a critic to scrutinise even when the headline claim checks out.",
+    "Standing blind-spot, restated because it is about to matter again: quest-audit.mjs is the only instrument on this tree that can see a same-path/reduced-content quest regression (a merge that reverts JSON content while the file path survives). boot-check.mjs, check-data.mjs, check-content.mjs and check-quests.mjs are all blind to it by the shipped incident's own account (W1-18-REINTEGRATION.json: 'gates_are_blind_to_this_defect ... ALL PASSED throughout the entire four-day incident'). Anyone judging quest content should re-run quest-audit.mjs at HEAD themselves rather than trust a status file's snapshot number."
+  ],
+
+  "ranked_queue_summary": "Full ranked queue of 20 (plus 1 gated, plus exclusions with reasons) is in reports/backlog-triage/2026-08-14-triage.md section 3. Top 5, in order: W1-30-GPU-CAPTURE (transport under 6+ other queued visual critics), W1-RENDER (blocks the owner's own 'rotate the camera around the player' directive, never judged), W1-GIVER-PRESENCE (closes W1-19-r2's top defect, first thing a player looks for), W1-11-builder (combat: player-damage camera coupling, motion hard-fail census), W1-00-codex-builder-sweep (touches canonical save/state/engine/combat -- wrong here is wrong everywhere downstream).",
+
+  "outputs_written": [
+    "reports/backlog-triage/2026-08-14-triage.md",
+    "orchestration/status/BACKLOG-TRIAGE-20260814.json"
+  ],
+  "files_touched": [
+    "orchestration/status/BACKLOG-TRIAGE-20260814.json",
+    "reports/backlog-triage/2026-08-14-triage.md"
+  ],
+  "files_claimed": [],
+  "next_step": "Orchestrator dispatches critics off the ranked queue in reports/backlog-triage/2026-08-14-triage.md section 3, starting at rank 1 (W1-30-GPU-CAPTURE), skipping rank 5-gated W1-24-builder-codex-20260810 until the live W1-24 builder reports. Someone should also re-point W1-18-REINTEGRATION.json at the now-passing quest-audit numbers rather than re-run its restore."
+}
