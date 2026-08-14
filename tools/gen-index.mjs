@@ -145,6 +145,25 @@ ${gates.map(([c, w]) => `| \`${c}\` | ${w} |`).join('\n')}
 Both work. Note that \`node … 2>&1 | tail -1 ; echo exit=$?\` reports the **pipe's** exit code, so
 a check that never ran can read as one that passed.
 
+## CI health — read this before re-deriving it
+
+The \`corpus gate\` workflow has one step that is allowed to be red, and it is telling the truth
+when it is. Two write-ups own it; **read them rather than re-running the whole triage:**
+
+| what | where |
+|---|---|
+| why the gate was red for eight days across 1222 runs, and the rulings | \`reports/ci-triage/TRIAGE-20260814.md\` |
+| the evidence recovery that took fresh-checkout verdict FAIL from **54 to 9** | \`reports/ci-triage/EVIDENCE-RECOVERY-20260814.md\` |
+
+The remaining 9 are named, owned content defects, not plumbing — see the second report §4 and
+\`orchestration/NEXT-DISPATCH.md\`. **A verdict citation must resolve in a fresh clone**: anything
+you write under \`reports/\` is gitignored, so run \`node tools/verdict-evidence.mjs --recover\`
+before you file a verdict that cites it. Evidence over 1 MiB is pinned, not committed.
+
+This block lives in \`tools/gen-index.mjs\`, not in \`INDEX.md\`. The triage put its pointer straight
+into \`INDEX.md\` and the next \`gen-index\` run erased it — which is the same staleness Owner
+Directive #7 is about. Anything that must survive regeneration belongs in the generator.
+
 ## Numbers you must not read off a status file
 
 A status file records what was true at the commit it was written at. Twice in one day an
