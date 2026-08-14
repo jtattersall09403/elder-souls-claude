@@ -620,8 +620,29 @@ export class QuestEngine {
     if (!this.sim.quest.completed.includes(id)) this.sim.quest.completed.push(id);
     r.stage = res.journal_index;
     const applied = this._applyConsequences(def, res);
-    this._emit('quest_resolve', { quest: id, resolution: resolutionId, method: res.method, violence_required: !!res.violence_required, ...applied });
-    return { ok: true, quest: id, resolution: resolutionId, journal_index: res.journal_index, ...applied };
+    // Rewards are resolution-scoped world state, not audit-only declarations. The durable quest
+    // record is the idempotence register; it already round-trips through the save. Information,
+    // access and standing are consumed as flags, while tangible items enter the real inventory.
+    const awarded = [];
+    for (const reward of def.rewards || []) {
+      if (reward.on_resolution && !reward.on_resolution.includes(resolutionId)) continue;
+      const key = `reward:${reward.id || reward.name || reward.type}`;
+      if (r.flags[key]) continue;
+      r.flags[key] = 1;
+      if (reward.type === 'gold' && reward.amount) {
+        if (this.awardGold) this.awardGold(reward.amount);
+        else this.sim.progression.gold = (this.sim.progression.gold || 0) + reward.amount;
+      }
+      if (reward.type === 'item' && reward.id && this.sim.inventory) {
+        const held = this.sim.inventory.find((x) => x.id === reward.id && !x.stolen);
+        if (held) held.count = (held.count || 1) + (reward.amount || 1);
+        else this.sim.inventory.push({ id: reward.id, count: reward.amount || 1, condition: 1, charge: 0, stolen: false, owner: null, slot: null, quickSlot: null });
+      }
+      if (['access', 'information', 'property', 'service', 'ally', 'training', 'faction_rank'].includes(reward.type)) q.flags[`reward:${reward.id || reward.name}`] = 1;
+      awarded.push({ type: reward.type, id: reward.id || null, name: reward.name || null, amount: reward.amount || null });
+    }
+    this._emit('quest_resolve', { quest: id, resolution: resolutionId, method: res.method, violence_required: !!res.violence_required, awarded, ...applied });
+    return { ok: true, quest: id, resolution: resolutionId, journal_index: res.journal_index, awarded, ...applied };
   }
 
   /** Close the quest without resolution. `silent` failures write the entry and say nothing. */
