@@ -49,8 +49,15 @@ const EXTERIOR_RIG = Object.freeze({
   base: 'exterior',
   key: 1.0,            // directional sun/moon multiplier
   keyWarmth: 0.0,      // -1 cools the key toward the sky, +1 warms it toward the horizon
-  sky: 1.0,            // hemisphere multiplier
-  fill: 1.0,           // ambient fill multiplier
+  // WHY THE HEMISPHERE AND FILL ARE BELOW 1.0 AND THE SUN IS NOT. Before W1-30B the environment
+  // probe was 128 clamped texels, baked once at boot and never rebuilt, and tagged sRGB while
+  // holding linear values — so it delivered almost no irradiance, and the HemisphereLight plus the
+  // AmbientLight fill were doing image-based lighting's job. With a live half-float probe they are
+  // support again, and leaving them where they were measured +70% mean frame luminance at the
+  // spawn with the shadow contrast washed out of it. These two numbers are that correction, and
+  // they are the first thing to move if the world reads flat.
+  sky: 0.55,           // hemisphere multiplier
+  fill: 0.40,          // ambient fill multiplier
   env: 1.0,            // scene.environmentIntensity
   envGroundBounce: 0.35, // how much of the probe's lower hemisphere is ground rather than sky
   shadow: 1.0,         // shadow-distance multiplier; 0 disables the directional shadow
@@ -121,21 +128,21 @@ export function knownLightingRecipes() { return [...REGISTRY.keys()].sort(); }
 // the air is thin so the far bank is readable. Reference condition: everything else is read as a
 // departure from this.
 registerLightingRecipe('noon-marsh', variantOf('exterior', {
-  key: 1.00, sky: 0.92, fill: 0.80, env: 1.00, envGroundBounce: 0.38,
+  key: 1.00, sky: 0.42, fill: 0.30, env: 1.00, envGroundBounce: 0.38,
   fog: { extinction: 0.90, height: 1.0, inscatter: 0.10 }, exposure: 1.0,
 }));
 
 // Low sun under canopy. The key is warm and weak because the leaves have it; the bounce is doing
 // most of the work and it is green. Long shadows want the far cascade, so shadow distance rises.
 registerLightingRecipe('dusk-canopy', variantOf('exterior', {
-  key: 0.78, keyWarmth: 0.85, sky: 1.05, fill: 1.10, env: 0.95, envGroundBounce: 0.55,
+  key: 0.78, keyWarmth: 0.85, sky: 0.62, fill: 0.55, env: 0.95, envGroundBounce: 0.55,
   shadow: 1.25, fog: { extinction: 1.15, height: 1.25, inscatter: 0.55 }, exposure: 1.06,
 }));
 
 // Overcast. There is no key worth the name; the sky IS the light. Shadows still exist but they are
 // broad and shallow, which is what stops an overcast frame reading as unlit rather than diffuse.
 registerLightingRecipe('overcast-flat', variantOf('exterior', {
-  key: 0.34, keyWarmth: -0.30, sky: 1.22, fill: 1.15, env: 1.10, envGroundBounce: 0.30,
+  key: 0.34, keyWarmth: -0.30, sky: 0.95, fill: 0.70, env: 1.10, envGroundBounce: 0.30,
   shadow: 0.85, fog: { extinction: 1.30, height: 0.85, inscatter: 0.0 }, exposure: 1.04,
 }));
 
@@ -143,7 +150,7 @@ registerLightingRecipe('overcast-flat', variantOf('exterior', {
 // the clear-air extinction ceiling, because a storm that does not close the world in is not a
 // storm. Wet surfaces get their specular from the probe, so `env` stays up.
 registerLightingRecipe('storm', variantOf('exterior', {
-  key: 0.22, keyWarmth: -0.55, sky: 0.92, fill: 0.86, env: 1.15, envGroundBounce: 0.22,
+  key: 0.22, keyWarmth: -0.55, sky: 0.70, fill: 0.55, env: 1.15, envGroundBounce: 0.22,
   shadow: 0.70, fog: { extinction: 2.10, height: 0.70, inscatter: 0.0 }, exposure: 1.10,
 }));
 
@@ -151,7 +158,7 @@ registerLightingRecipe('storm', variantOf('exterior', {
 // fall the way a body expects. Cold, low, and readable — a night frame a judge cannot classify is
 // a missing frame, not a dark one (RI-WLD04 M17 step 6).
 registerLightingRecipe('night-moon', variantOf('exterior', {
-  key: 0.30, keyWarmth: -0.80, sky: 0.72, fill: 0.70, env: 0.55, envGroundBounce: 0.18,
+  key: 0.30, keyWarmth: -0.80, sky: 0.60, fill: 0.55, env: 0.55, envGroundBounce: 0.18,
   shadow: 0.85, fog: { extinction: 1.10, height: 1.15, inscatter: 0.0 }, exposure: 1.22,
 }));
 
