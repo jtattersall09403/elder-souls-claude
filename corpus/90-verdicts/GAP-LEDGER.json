@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-14T11:47:45Z",
+  "generated": "2026-08-14T11:51:33Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 78,
+  "verdicts_read": 79,
   "counts": {
-    "total": 73,
-    "open": 72,
+    "total": 74,
+    "open": 73,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -188,6 +188,9 @@
       "GAP-W1-ui-detectors-that-cannot-see",
       "GAP-W1-ui-map-outside-the-ar2-detectors"
     ],
+    "render.fidelity.vfx": [
+      "GAP-W1-w1-30s-seam-incomplete"
+    ],
     "world.traversal.locomotion": [
       "GAP-W1-walkpath-absorbs-teleports"
     ],
@@ -216,6 +219,7 @@
     "corpus/90-verdicts/wave1/W1-14-r4.json: unsatisfied verdict has no biggest_gap; validator should reject it.",
     "GAP-W1-quest-givers-not-in-the-world: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "AUDB2-F1: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
+    "GAP-W1-w1-30s-seam-incomplete: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-FCT-03: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "corpus/90-verdicts/wave1/W1-FACTIONS-r1.json: unsatisfied verdict has no biggest_gap; validator should reject it.",
     "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
@@ -2965,6 +2969,35 @@
         "reports/runs/CRITIC-W1-21-R1B/critic-w1-21-r1b.json",
         "reports/runs/CRITIC-W1-21-R1B/map-forged-save.png",
         "reports/runs/CRITIC-W1-21-R1/critic-w1-21-r1.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-w1-30s-seam-incomplete",
+      "subsystem_path": "render.fidelity.vfx",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-30s-r1-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-30S-r1.json",
+      "piece_id": "W1-30S-r1",
+      "severity": "major",
+      "what": "The seam publishes the boundary for 8 of 10 children and leaves 2 stranded. registerPrePass exists and has one registrant (water reflection), but the spell-VFX prepass named in the plan as its other registrant is still inline in renderer.js — construction, setSize, update and the gated this.vfx.prepass(this.camera) — so W1-30H cannot change prepass ordering, gating or lifecycle without writing into W1-30A's exclusive file. And models.js publishes an async loadModel() while every character mesh is built synchronously in render/scene.js:365/390 via makeRiggedActor, a file the parent plan declares read-only to all children and the ownership registry says nobody has declared at all — so W1-30D has no seam through which an awaited glTF mesh can reach the scene.",
+      "why_it_matters": "The seam's whole purpose is that ten children build in parallel without colliding; two of them will collide on their first real commit, in the one file the seam was created to give a single owner.",
+      "remedy": "Two small forward edits, both cheap now and expensive after three children have diverged. (1) Move the spell-VFX block out of renderer.js's render() into a registered prepass, exactly as the water reflection already is — the registration point and its loop already exist, so this is a relocation of ~12 lines plus one registerPrePass call, and its own null control is the one already written into the registerPrePass docstring. (2) Publish an async model-ready seam: either a renderer.registerActorSource(fn) that buildScene consults, or an awaited prewarm that resolves loadModel() promises before the first Renderer construction, so W1-30D can land glTF without touching scene.js or renderer.js. Owner of (1) is W1-30A by file, in coordination with W1-30H; owner of (2) is W1-30A, since renderer.js is A's and scene.js has no owner and must be given one.",
+      "remedy_action": null,
+      "remedy_acceptance": null,
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-30S-r1.md#5-would-another-child-have-to-edit-a-file-it-does-not-own",
+        "corpus/90-verdicts/wave1/W1-30S-r1.md#42-the-registrant-that-was-named-in-the-plan-and-is-not-there"
       ],
       "status": "open",
       "assigned_to_wave": 2,
