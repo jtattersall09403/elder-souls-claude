@@ -45,7 +45,30 @@ isolated check is suspect until someone has played through the thing it claims.
 
 **GPU is available.** RunPod tooling is in the repo (`tools/runpod/`) with `RUNPOD_API_KEY` and
 `RUNPOD_GPU_TEMPLATE_ID` in the environment. Subagents that need real rendering should use it rather
-than reasoning about what SwiftShader showed them.
+than reasoning about what SwiftShader showed them. **It needs `openssh-client` installed and
+`NODE_USE_ENV_PROXY=1`** — Node's global `fetch` ignores `HTTPS_PROXY` in this container. One agent
+lost an hour to that; nobody else should.
+
+### The generalised rule, and it is not only about graphics
+
+> **Statistics can fail a build and can never pass one.**
+
+From the W1-30 review, and it is the most transferable thing found this week. That plan's acceptance
+contract had dozens of rows checking *instrument validity* — does the metric implement the equation,
+does the sabotage go red, is the population complete — and **effectively one** row where a human
+being looks at a picture and says whether it is good. A build could pass every gate and still look
+like a prototype, and the current build is the proof: it is an honest attempt at that plan.
+
+Worse, the load-bearing signal was a family of image statistics **that procedural noise raises**, and
+`render/visual-foundation.js:112` binds a 96×96 hash-noise field as albedo, height, AO *and*
+roughness for the whole world. The metric was not lying; it was measuring the wrong thing, and noise
+is the cheapest way to satisfy it.
+
+**So, for every piece, not just visual ones:** a green metric is necessary and never sufficient. Ask
+what a person would experience, and make *that* the gate — then use the statistics to catch
+regressions underneath it. Any acceptance a single still from a single angle can satisfy is broken.
+Directive §9 says the owner plays this game and finds it far below the bar across the board while the
+dashboards read green; that gap is this rule, unapplied.
 
 ## 3. Reuse is structural, not aspirational
 

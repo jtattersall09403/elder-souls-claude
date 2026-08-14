@@ -598,7 +598,14 @@ if (targets.length === 0 && !process.argv.includes('--all')) {
   process.exit(2);
 }
 
-let failed = 0;
+// Only the latest round of a piece gates. `--all-rounds` restores the old behaviour, and skipped
+// rounds are still validated and still counted out loud — the point is that a superseded draft
+// stops holding CI red, not that it stops being visible. `--verbose` prints their errors too.
+const allRounds = process.argv.includes('--all-rounds');
+const verbose = process.argv.includes('--verbose');
+const relevance = roundRelevance(targets.map((t) => rel(t.startsWith('/') ? t : join(ROOT, t))));
+
+let failed = 0, skipped = 0, skippedWithErrors = 0;
 for (const t of targets) {
   const p = t.startsWith('/') ? t : join(ROOT, t);
   const name = rel(p);
@@ -608,9 +615,22 @@ for (const t of targets) {
   let errors, warns;
   try { ({ errors, warns } = validate(p)); }
   catch (e) { errors = [`validator threw on this file — ${e.message}`]; warns = []; }
+
+  const r = relevance.get(name) || { gates: true, supersededBy: null };
+  if (!allRounds && !r.gates) {
+    skipped++;
+    if (errors.length) skippedWithErrors++;
+    console.log(`SKIP  ${name}  — superseded by ${r.supersededBy}${errors.length ? `; ${errors.length} error(s), not gating` : '; clean'}`);
+    if (verbose) for (const e of errors) console.log(`   (skipped) ERROR  ${e}`);
+    continue;
+  }
+
   if (errors.length === 0) console.log(`OK    ${name}${warns.length ? `  (${warns.length} warning(s))` : ''}`);
   else { failed++; console.log(`FAIL  ${name}  — ${errors.length} error(s)`); }
   for (const e of errors) console.log(`   ERROR  ${e}`);
   for (const w of warns) console.log(`   warn   ${w}`);
+}
+if (skipped) {
+  console.log(`\n${skipped} superseded draft round(s) skipped (${skippedWithErrors} of them non-conformant). They are history: a later round of the same piece exists. Re-run with --all-rounds to validate them, --verbose to see their errors.`);
 }
 process.exit(failed ? 1 : 0);

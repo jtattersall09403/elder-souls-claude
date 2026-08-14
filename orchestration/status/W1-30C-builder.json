@@ -1,0 +1,22 @@
+{
+  "task_id": "W1-30C-builder",
+  "role": "builder",
+  "piece": "W1-30C",
+  "status": "running",
+  "plan_state": "building",
+  "summary": "Material and texture library. Phase 1 (frozen API contract, unblocks D/E/F/G) first, then phase 2 content: real PBR per family, detail normals, trim sheet, wear/wetness masks, palette variants, alpha foliage, magenta fallback.",
+  "files_touched": [
+    "orchestration/status/W1-30C-builder.json"
+  ],
+  "files_claimed": [
+    "game/src/render/MATERIAL_API.md",
+    "game/src/render/visual-foundation.js",
+    "game/assets/w1-30/materials/",
+    "tools/assets/",
+    "reports/w1-30/C-",
+    "orchestration/INDEX.md",
+    "docs/progress.html",
+    "reports/blog-feed.jsonl"
+  ],
+  "next_step": "Write and freeze game/src/render/MATERIAL_API.md, land the option surface in visual-foundation.js as accepted-and-recorded (no-op where content is absent), commit and push so D/E/F/G unblock, then begin phase 2 content."
+}
