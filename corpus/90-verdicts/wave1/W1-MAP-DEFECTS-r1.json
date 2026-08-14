@@ -1,0 +1,385 @@
+{
+ "schema_version": 1,
+ "document_type": "critic-verdict",
+ "piece_id": "w1-map-defects-r1",
+ "piece_title": "W1-MAP-DEFECTS — the map's reachability fix and the removal of its fog of war (round 1 critique)",
+ "subsystem_paths": [
+  "input.modality.parity",
+  "input.discoverability",
+  "input.touch.fallback",
+  "ui.hud.minimalism",
+  "ui.menu.journal"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-map-defects-r1-3c19",
+  "role": "critic.ui",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-14T14:52:00Z",
+  "finished_at": "2026-08-14T15:35:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true
+ },
+ "build": {
+  "commit_sha": "bfae92ea",
+  "branch": "codex/wave1-build-experiment",
+  "harness_commands": [
+   {
+    "command": "node corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs",
+    "exit_code": 1,
+    "duration_s": 0.2,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt"
+   },
+   {
+    "command": "node corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.mjs",
+    "exit_code": 0,
+    "duration_s": 0.2,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.json"
+   },
+   {
+    "command": "node tools/map/player-route.mjs --legs phone --out reports/w1-map-defects/critic-phone",
+    "duration_s": 3000,
+    "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/w1-map-defects/phone-leg-partial.txt"
+   },
+   {
+    "command": "node tools/contention.mjs",
+    "exit_code": 0,
+    "duration_s": 1
+   }
+  ]
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "Declared before any frame was opened. The two fixes under judgement are a navigation-order change and the removal of a draw gate; both are judged on reachability and on rule-compliance, not on how the map looks. The five Morrowind map plates in REF-A12b were opened only to test the amendment's own claim about what they show, which is a provenance question rather than a fidelity comparison. The art-direction question these plates DO raise — the province reads as flat blocks of saturated region colour where Morrowind's reads as continuous shaded relief — is real, is named in `open_questions`, and is deliberately NOT scored here: it is the region palette, which predates both fixes and which the builder correctly scoped out. Scoring it on this piece and then naming a different biggest gap would be incoherent."
+ },
+ "reference_items": [
+  {
+   "id": "RI-UIX04",
+   "path": "corpus/86-ui/RI-UIX04-journal-ui.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "native_scale": "JU1-JU8 pass/hard-fail rows plus the §B prohibition table (Q1-Q7); any hard fail caps at 2",
+   "native_score": 4,
+   "native_max": 10,
+   "native_verdict": "Q7 holds in both directions and is now verified by enumerating the shipped ring rather than by reading the source. But the mechanism that enforces Q7 and the new page order interact: `map` was placed immediately before `journal` in `WALK_ORDER`, and `map`'s own ring excludes `journal`, so the forward page-walk steps straight over the journal and never returns to it. The journal is now unreachable by pressing the page-turn control in one direction, at any number of presses.",
+   "score_0_10": 4,
+   "measured": "full",
+   "checks": [
+    {
+     "id": "Q7-journal-cannot-reach-map",
+     "result": "pass",
+     "value": "ring(journal) = [world, inventory, journal, sheet, spells, wait] — no `map`",
+     "threshold": "`map` absent from the journal's navigable list"
+    },
+    {
+     "id": "Q7-map-cannot-reach-journal",
+     "result": "pass",
+     "value": "ring(map) = [world, inventory, map, sheet, spells, wait] — no `journal`",
+     "threshold": "`journal` absent from the map's navigable list"
+    },
+    {
+     "id": "map-reachable-in-one-page-turn",
+     "result": "pass",
+     "value": "fewest turns from `inventory`: map=1 (was 4). Forward walk: inventory -> map -> sheet -> spells -> wait -> (closes)",
+     "threshold": "the map is reachable, and the builder's claim was one press"
+    },
+    {
+     "id": "zero-sum-nothing-else-pushed-out-of-reach",
+     "result": "fail",
+     "value": "journal is SKIPPED by the forward walk entirely (was press 1 of 5 before the fix). Fewest turns with a direction reversal: journal=3. Before the fix the forward walk visited all five peer screens; it now visits four.",
+     "threshold": "every menu screen still on the forward page-walk"
+    },
+    {
+     "id": "backward-walk-is-not-an-escape-hatch",
+     "result": "fail",
+     "value": "`world` sits at ring index 0 and `_walkPeer` CLOSES the UI on it, so swap_left from `inventory` closes the menu. The ring is a line with a trapdoor at the left end; forward is the only direction that pages.",
+     "threshold": "a reversal is discoverable without being told"
+    },
+    {
+     "id": "page-turn-is-signposted",
+     "result": "fail",
+     "value": "the builder added a foot hint on the inventory naming the page turn; nothing anywhere names which pages exist or that one of them can only be reached by turning back",
+     "threshold": "a player who was told nothing can find each screen (input.discoverability)"
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs",
+    "corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt"
+   ]
+  },
+  {
+   "id": "RI-WLD06",
+   "path": "corpus/50-world/RI-WLD06-navigation-without-markers.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "native_scale": "§5 ban list (AR-2 Morrowind-leakage, fails the piece outright) plus M27-M29",
+   "native_score": 6,
+   "native_max": 10,
+   "native_verdict": "The builder's reading of §5 is correct and I verified it verbatim: 'no fog-of-war reveal-on-approach' is in the ban list and 'paper, static, hand-drawn' is the permitted surface, so removing the fog is a correction and not a preference. The boundary is where the corpus puts it: `roads.json` is not imported by the map screen and `routes_drawn` is asserted 0, so markerless navigation survives. What is missing is the record, not the reasoning — `ARBITRATION.md` S35 still reads 'Undiscovered is not merely unlabelled, it is unrendered' as live binding text with no pointer to the amendment that struck it, and S38(b) ('no square and no revealed cell may exist that the asserted footprint does not imply') is now literally false of the drawn map. And M29, the measurement the amendment itself names as the thing that would overturn it, was not run.",
+   "score_0_10": 6,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "fog-of-war-already-banned-by-RI-WLD06-5",
+     "result": "pass",
+     "value": "verified verbatim at corpus/50-world/RI-WLD06-navigation-without-markers.md:88-93 — 'no minimap, no auto-path, no fog-of-war reveal-on-approach' and 'A world map item may exist (paper, static, hand-drawn, no player dot ...)'",
+     "threshold": "the amendment is a correction of a silent disagreement, not a new preference"
+    },
+    {
+     "id": "roads-stay-off-the-map",
+     "result": "pass",
+     "value": "`roads.json` is not imported by game/src/ui/screens/map.js; the terrain element declares roads_drawn: 0 and routes_drawn: 0",
+     "threshold": "S35's 'no route, path, trail or line of any kind' untouched"
+    },
+    {
+     "id": "delete-the-fix-reproduces-the-owner-s-defect",
+     "result": "pass",
+     "value": "0 of 42,846 cells drawn — a black rectangle under the heading 'Where I have been', which is the screen the owner reported",
+     "threshold": "the old number comes back when the fix is deleted"
+    },
+    {
+     "id": "null-control-is-the-plausible-wrong-answer",
+     "result": "pass",
+     "value": "whole province drawn AND 34 place squares AND the foot line 'Places I have stood in.' on a character who has stood nowhere — caught by the marker half",
+     "threshold": "not the trivial 'no map at all'"
+    },
+    {
+     "id": "sabotage-hit-counts-are-real",
+     "result": "pass",
+     "value": "3 of 3 anchors occur exactly once at HEAD, and each guard was watched throwing on a perturbed copy",
+     "threshold": "an unapplied patch fails loudly rather than passing as a control"
+    },
+    {
+     "id": "ARBITRATION-record-updated-for-the-clause-struck",
+     "result": "fail",
+     "value": "S35's 'Undiscovered is not merely unlabelled, it is unrendered' is unamended and carries no pointer to AMENDMENT-W1-MAP-02; ARBITRATION.md was not edited. S35's own row models the missing signpost ('AMENDED wave 1 by S38 — READ THAT ROW BEFORE ENFORCING THIS ONE') for the same clause.",
+     "threshold": "the top-of-hierarchy document does not contradict the shipped build without saying so"
+    },
+    {
+     "id": "M29-navigation-measurement-with-and-without-the-map",
+     "result": "not_run",
+     "not_run_reason": "the amendment's §6 names M29 as the evidence that would overturn it; it needs a fresh-agent navigation run and was outside what this critic could schedule on a box at load 26 over 4 cores"
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-map-defects/fog-three-arms.png",
+    "corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.mjs",
+    "corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.json",
+    "corpus/00-doctrine/AMENDMENT-W1-MAP-02.md"
+   ]
+  },
+  {
+   "id": "RI-JRN04",
+   "path": "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md",
+   "side": "modern-fidelity",
+   "kind": "structure",
+   "native_scale": "T1-T9 touch fallback (BINDING, §G) plus M-P21 touch parity",
+   "native_score": 4,
+   "native_max": 10,
+   "native_verdict": "T1 is satisfied — the four page/hand verbs sit behind one drawer and the other ten are direct. The route to the map is four taps on unlabelled pictograms and every link in it is now evidenced, which closes the gap the builder could not close. The journal costs eight taps on a phone and is not on the forward tap-walk at all. The live touch run did not complete on this box, so the taps are evidenced by composition of the shipped input data, the shipped drawer behaviour and the shipped ring — not by a photograph of a map on a phone screen.",
+   "score_0_10": 4,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "T1-page-verbs-behind-one-drawer",
+     "result": "pass",
+     "value": "game/data/input/profiles.json touch.drawer.actions = [two_hand, swap_left, swap_right, spell_cycle, menu]; ten direct buttons; boot glass measured live as 11 controls with no `menu` among them",
+     "threshold": "swap_left/swap_right/two_hand/menu may live behind ONE control; the other ten direct"
+    },
+    {
+     "id": "phone-route-to-the-map-is-closed",
+     "result": "pass",
+     "value": "drawer -> menu -> drawer -> swap_right = 4 taps. Link 3 is game/src/input/touch.js:255 (`if (hit.fromDrawer) this.drawerOpen = false;`) which shuts the drawer after EVERY petal tap; link 4 is the shipped ring, where swap_right from `inventory` lands on `map`.",
+     "threshold": "a player can reach the map on a phone"
+    },
+    {
+     "id": "final-tap-photographed-on-a-phone",
+     "result": "not_run",
+     "not_run_reason": "the live touch leg reached boot after ~40 minutes on a box at load 24-26 over 4 cores with 4-6 other agents' browsers resident, and had not completed when this verdict was filed. This is the builder's failure repeated, from the same cause, and it is recorded rather than worked around."
+    },
+    {
+     "id": "phone-route-to-the-journal",
+     "result": "fail",
+     "value": "8 taps (drawer, menu, drawer, swap_right, drawer, swap_right, drawer, swap_left) and it requires a direction reversal on an unlabelled pictogram; forward-only tapping never reaches it",
+     "threshold": "every UI surface reachable on touch (input.modality.parity)"
+    },
+    {
+     "id": "four-unlabelled-taps-is-acceptable",
+     "result": "fail",
+     "value": "RULED, and the ruling is: not as the only route. The desktop fix was justified because the map was four presses away with nothing announcing that the pages turn; on a phone the map is four TAPS away on pictograms with no text at all, which is the same argument with more force. It is not the blocker — the map is at least on the forward tap-walk — but the journal at eight taps off the forward walk is the same defect made worse by the same edit.",
+     "threshold": "a player who was told nothing can find the screen"
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-map-defects/phone-leg-partial.txt",
+    "corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt",
+    "game/data/input/profiles.json",
+    "game/src/input/touch.js"
+   ]
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic",
+   "note": "Imports UISystem.WALK_ORDER and NEVER_ADJACENT from the SHIPPED module and re-executes navigable() and _walkPeer() over them, so the output changes when the shipped constant changes. Enumerates the forward walk, the backward walk, the fewest page-turns to every screen and the phone tap cost, for the order before the fix, the order at HEAD and a proposed remediation. Exits 1 while any screen is off the forward walk. No browser — which is why it produced a result on a box at load 26 where the live probe could not."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt",
+   "kind": "trace",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs",
+   "note": "Exit 1. The decisive line: `SKIPPED by the forward walk: journal` at HEAD, against `nothing` both before the fix and under the proposed remediation."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic",
+   "note": "Checks the fog controls' asserted text-replacement hit counts, and then perturbs each anchor on an in-memory copy and requires fog-control.mjs's own guard to throw. A guard nobody has watched throw is a guard nobody knows works."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.json",
+   "kind": "trace",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.mjs",
+   "note": "3 of 3 anchors exactly-once; 3 of 3 guards watched throwing; exit 0. Also records the failure mode the builder's status file overstates: patch() throws out of the arm loop and kills the process before writeJson(), so an unapplied sabotage produces NO report rather than a report naming a broken arm. Loud, but not 'reported'."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/w1-map-defects/fog-three-arms.png",
+   "kind": "screenshot",
+   "produced_by": "ffmpeg crop+vstack of reports/w1-map-defects/fog-{head,deletefix,markers}.png, which were produced by node tools/map/fog-control.mjs",
+   "resolution": "500 px wide per panel, cropped from 1920x1080",
+   "camera_pose": "the map screen, province view, opened on a character who has walked nowhere; three arms stacked top to bottom: HEAD, DELETE-THE-FIX, NULL CONTROL",
+   "note": "Both control arms are convincing at a glance: the middle panel is the black rectangle the owner reported, the bottom panel is a whole province carrying 34 unearned squares under the foot line 'Places I have stood in.'. It also carries this critic's evidence defect: panels 1 and 2 are headed 'Where I have been' and panel 3 is headed 'The Province', because game/src/ui/screens/map.js was edited between the second and third arms of the same run."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/w1-map-defects/phone-leg-partial.txt",
+   "kind": "trace",
+   "produced_by": "node tools/map/player-route.mjs --legs phone --out reports/w1-map-defects/critic-phone",
+   "note": "The live touch leg as far as it got in ~45 minutes on a saturated box: a real phone context (844x390, hasTouch, isMobile), booted at ?mode=play, reporting eleven controls on the glass with no `menu` among them. This independently reproduces the builder's first observation and gets no further. Recorded as an incomplete run, not as a result."
+  },
+  {
+   "path": "corpus/00-doctrine/AMENDMENT-W1-MAP-02.md",
+   "kind": "report",
+   "produced_by": "the builder; cited here as the document under judgement"
+  },
+  {
+   "path": "corpus/50-world/RI-WLD06-navigation-without-markers.md#5-what-is-banned-s8-enforcement",
+   "kind": "text-excerpt",
+   "produced_by": "corpus; the clause whose reading the whole fog change rests on"
+  },
+  {
+   "path": "corpus/00-doctrine/ARBITRATION.md",
+   "kind": "text-excerpt",
+   "produced_by": "corpus; cited for S35's unamended 'Undiscovered is not merely unlabelled, it is unrendered' and for S38(b)"
+  },
+  {
+   "path": "game/data/input/profiles.json",
+   "kind": "text-excerpt",
+   "produced_by": "the build; cited for touch.drawer.actions, the five petals behind the one drawer control"
+  },
+  {
+   "path": "game/src/input/touch.js",
+   "kind": "text-excerpt",
+   "produced_by": "the build; cited for line 255, `if (hit.fromDrawer) this.drawerOpen = false;` — the drawer shuts after every petal tap, which is what makes each phone page-turn cost two taps"
+  },
+  {
+   "path": "game/src/ui/screens/map.js",
+   "kind": "text-excerpt",
+   "produced_by": "the build; cited for the terrain loop (roads.json absent, roads_drawn/routes_drawn 0) and for the adjacent inView++/drawn++ increments that make map-probe S8 a tautology"
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "not_applicable",
+   "not_applicable_reason": "AR-1 is the Souls-side arbitration and applies inside the fight. Neither fix touches frames, stamina, hitboxes or enemy behaviour; both are menu navigation and a draw gate on a paused screen.",
+   "checks": []
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B-no-fog-of-war-reveal-on-approach",
+     "result": "pass",
+     "observed": "the terrain loop no longer consults m.seen(cx, rz); the whole raster inside the drawing box is painted in both views. This is the removal of an AR-2 Morrowind-leakage violation, not the introduction of one.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/w1-map-defects/fog-three-arms.png"
+     ]
+    },
+    {
+     "id": "B-no-route-path-trail-or-line",
+     "result": "pass",
+     "observed": "roads.json not imported by the map screen; roads_drawn: 0 and routes_drawn: 0 declared on the terrain element",
+     "evidence": [
+      "game/src/ui/screens/map.js"
+     ]
+    },
+    {
+     "id": "B-no-marker-for-a-place-not-stood-in",
+     "result": "pass",
+     "observed": "0 place squares on a fresh character at HEAD; the place loop is untouched by the amendment and reads only the discovery model's own list",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/w1-map-defects/fog-three-arms.png"
+     ]
+    },
+    {
+     "id": "B-map-not-reachable-from-the-journal",
+     "result": "pass",
+     "observed": "NEVER_ADJACENT untouched; verified by enumerating both rings from the shipped module",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt"
+     ]
+    }
+   ]
+  }
+ },
+ "score": {
+  "overall_0_10": 4,
+  "pass_threshold": 7,
+  "aggregation": "min",
+  "band_label": "Below the wave-1 gate — named remedy required",
+  "confidence": "high"
+ },
+ "status": "FAIL",
+ "biggest_gap": {
+  "gap_id": "GAP-W1-map-fix-drops-the-journal-from-the-page-walk",
+  "subsystem_path": "input.modality.parity",
+  "what": "Moving `map` to second in `UISystem.WALK_ORDER` put it immediately before `journal`, and `map`'s own navigable ring excludes `journal` (NEVER_ADJACENT, enforcing RI-UIX04 Q7). The forward page-walk from the inventory therefore steps over the journal and never returns: inventory -> map -> sheet -> spells -> wait -> (closes). Before the fix the same walk visited all five peer screens and reached the journal on the first press. The journal now costs three page-turns WITH a direction reversal on desktop and eight taps with a reversal on a phone, and swap_left from the inventory closes the menu rather than paging backwards, so the reversal is not something a player discovers by accident. The map went from four presses to one; the journal went from one press to off the forward walk entirely.",
+  "why_it_matters": "The quest log is the screen a Morrowind player opens most, and a player who has found the page-turn control can now press it forever without ever seeing their journal.",
+  "evidence": [
+   "corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt",
+   "corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs"
+  ],
+  "severity": "major",
+  "remedy": {
+   "action": "Separate `map` and `journal` by at least one screen in `UISystem.WALK_ORDER`, keeping `map` second. `['world', 'inventory', 'map', 'sheet', 'journal', 'spells', 'wait', 'levelup']` is measured and works: the forward walk becomes inventory -> map -> sheet -> journal -> spells -> wait, the map stays one page-turn from the screen `menu` opens, and nothing is skipped. The constraint is structural rather than cosmetic and belongs in a comment beside the constant: any two screens in NEVER_ADJACENT must not be neighbours in WALK_ORDER, because the ring is filtered per-mode and an excluded neighbour is stepped over rather than stopped at. Add the assertion to tools/harness/map-probe.mjs so a future reorder fails a check instead of a player.",
+   "targets": [
+    "game/src/ui/system.js",
+    "tools/harness/map-probe.mjs",
+    "corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs"
+   ],
+   "acceptance": "`node corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs` exits 0 with `SKIPPED by the forward walk: nothing` for the shipped WALK_ORDER, and the fewest-turns line still reads map=1.",
+   "ref_item": "RI-UIX04",
+   "estimated_size": "S"
+  }
+ },
+ "open_questions": [
+  "THE HEAD ARM OF THE FOG EXPERIMENT IS NOT IN THE LANDED RECORD. reports/w1-map-defects/fog-control.json contains only `deletefix` and `markers`, and its `checks` array holds only the two control assertions — the two that measure HEAD ('head draws the whole geography', 'head draws no unearned square') are absent, so its `pass: true` was computed without the experiment's own positive arm. The run's `at` is 14:34:40 and fog-head.png was written at 14:34:19, twenty-one seconds EARLIER, so the head screenshot is from a previous run. Worse, fog-deletefix.png (14:37:32) is headed 'Where I have been' and fog-markers.png (14:41:21) is headed 'The Province', so game/src/ui/screens/map.js was edited BETWEEN two arms of the same experiment. The cell counts are unaffected (the heading is a string literal outside the draw loop) and the conclusion is not in doubt, but the arms were not run against one source and the status file's 'three arms, commit 34b9a10fcc' is not true of any of them. Remediation is one command on a quiet box: `node tools/map/fog-control.mjs`.",
+  "S8 AND S12 IN map-probe.mjs ARE WEAKER THAN THEY LOOK. Both assert `drawn_cells === cells_in_view`, and in game/src/ui/screens/map.js:136-137 the two counters are incremented on ADJACENT LINES with nothing between them — the comment says so outright ('They are equal by construction now'). The equality is therefore a tautology at HEAD and can only be broken by a gate spliced between the two increments, which is exactly and only the shape the deletefix arm uses. A gate placed one line EARLIER, above `inView++`, would hide any fraction of the province and both assertions would stay green as long as one cell survived. The assertion with teeth is against the province total: in the province view the drawing box spans the whole raster, so `drawn_cells === total_cells` (42,846) is the check, and it is a one-line change to S8 and S12.",
+  "map-probe.mjs HAS STILL NOT RUN END TO END since S8, S12 and C1b were inverted. This critic could not run it either: the box held 4-6 other agents' browsers at load 24-26 over 4 cores for the whole session, and adding a second browser to the one already stalled would have made both worse. It remains the builder's named gap and it is now also mine.",
+  "THE AMENDMENT UNDERSTATES ITS OWN REFERENCES, AND ONE OF THEM IS NOT MORROWIND. §6 clause 3 says all five REF-A12b map plates 'are late saves with the province explored' and therefore cannot settle what a fresh character sees. REF-A12b-map__mw-219518267.jpg shows a whole drawn landmass carrying exactly ONE place square, which is much closer to a fresh character than a late save and supports clause 1 more strongly than the amendment claims. But its header reads 'Forsaken Land', which is not a Vvardenfell, Solstheim or Mournhold region — that plate is from a mod or total conversion, not vanilla Morrowind, and the corpus does not say so. REF-A12b's provenance needs a pass by whoever owns the interface references.",
+  "THE PROVINCE READS AS A CHOROPLETH, NOT AS LAND. Removing the fog made the whole raster visible for the first time, and what it shows is thirteen flat blocks of saturated region colour — one pure black, one bright red, one orange — where all five Morrowind plates show continuous muted shaded relief in browns and greys with the sea a flat field behind it. The height shading is applied and the region palette drowns it. This predates both fixes and the builder correctly scoped it out, so it is not scored here, but it is now the thing the owner sees when they open the map, and under Ruling W1 that makes it wave-1 work rather than wave-4 work. It wants its own piece against the five plates.",
+  "THE PLAYER CHEVRON. game/src/ui/screens/map.js draws position AND facing on both views, on the comment 'explicitly permitted by S35'. RI-WLD06 §5 says 'no player dot — or a player dot only while standing still and only at settlements, if a later item rules that way'. S35 is the later owner ruling and outranks the item under ARBITRATION §5, so this is settled and I am not reopening it — recorded only because the two documents read differently and the next critic will notice."
+ ],
+ "corpus_extended": [],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": true,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "ran_every_assigned_method is FALSE and this is the honest part of the report. Three things were assigned and not done. (1) The live phone leg did not complete: it reached boot after ~40 minutes and was still running when this was filed, on a box that held 4-6 other agents' browsers at load 24-26 over 4 cores for the entire session. The phone question is answered by composition of three shipped facts — the drawer's petal list in game/data/input/profiles.json, the drawer's auto-close at game/src/input/touch.js:255, and the ring enumerated from the shipped module — which is a stronger form of evidence for the ROUTE than a starved browser would have given, and no evidence at all for 'the taps land'. I did not photograph a map on a phone screen and I do not claim to have. (2) map-probe.mjs was not run end to end, for the same reason. (3) RI-WLD06 M29 was not run. Against the measurement trap I was warned about: I did NOT report any defect from a starved run. Every failing check in this verdict comes from enumerating the shipped module in bare Node, where frame starvation cannot reach, and the one live thing I did observe (eleven touch controls with no `menu`) is reported as a reproduction of the builder's observation rather than as a result. On the ring: I verified it from the shipped constants rather than from a live read, which is the opposite of what the dispatch asked for ('live, not from source'). I judged that an enumeration that IMPORTS the shipped module and re-executes the shipped functions is not a source read — it fails when the source changes — and that it was the only instrument that would produce an answer on this box. A live confirmation is still owed and is the first thing the remediation's critic should take."
+ }
+}
