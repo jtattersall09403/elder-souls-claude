@@ -35,6 +35,9 @@ const ARM = String(args.arm || 'shipping');
 const OUT = args.out ? String(args.out) : path.join(ROOT, 'reports/w1-20/r2-live.json');
 
 // The eight ladders, their representative (registry.json), the seat zone, and a rival.
+// `settlement` is read off the NPC records node-side and handed in, because a person only enters
+// `sim.npcs` when `populateSettlement()` has run for the town they live in — a probe that calls
+// `talkTo()` without doing that measures its own starting position, not the build.
 const LINES = [
   { id: 'the_wet_ledger', rep: 'harbourmistress-tesh', zone: 'lilmoth.factor0.r0' },
   { id: 'the_imperial_assize', rep: 'assizer-corvo', zone: null },
@@ -45,19 +48,45 @@ const LINES = [
   { id: 'the_ixtu_vakh', rep: 'cutter-neeth', zone: null },
   { id: 'the_rootkeepers', rep: 'rootkeeper-jeen', zone: null },
 ];
+{
+  const nDir = path.join(ROOT, 'game/data/npcs');
+  const where = new Map();
+  for (const f of fs.readdirSync(nDir).filter((x) => x.endsWith('.json'))) {
+    try {
+      const d = JSON.parse(fs.readFileSync(path.join(nDir, f), 'utf8'));
+      for (const n of d.npcs || []) if (!where.has(n.eid || n.id)) where.set(n.eid || n.id, n.settlement || null);
+    } catch { /* */ }
+  }
+  for (const L of LINES) L.settlement = where.get(L.rep) || null;
+  LINES.dissenterSettlements = where;
+}
 
 const game = await launchGame(args, { usage: USAGE });
 const { page } = game;
 
-const report = await page.evaluate(async ({ LINES }) => {
+// The four people a faction quest's `deceit.revealed_by` points at whose AUTHORED record lives in
+// `game/data/npcs/quest-witnesses.json` — the file that is on disk and absent from
+// `game/data/index.json`. The engine therefore serves the duplicate record of the same id from
+// `mainline.json` instead. This asks what the player actually hears.
+const DISSENTERS = [
+  ['npc-ineve-corrano', LINES.dissenterSettlements.get('npc-ineve-corrano')],
+  ['npc-sorel-ithan', LINES.dissenterSettlements.get('npc-sorel-ithan')],
+  ['npc-eleen', LINES.dissenterSettlements.get('npc-eleen')],
+  ['npc-skara-hull-chalk', LINES.dissenterSettlements.get('npc-skara-hull-chalk')],
+];
+
+const report = await page.evaluate(async ({ LINES, DISSENTERS }) => {
   const H = window.__HARNESS;
   const out = { checks: [], lines: [], notes: [] };
   const say = (id, detail) => out.checks.push({ id, ...detail });
 
-  const fresh = () => {
+  const fresh = (settlement) => {
     H.reset({ state: 'default' });
     H.setRenderRate(0);
     H.setCharacter({ race: 'saxhleel', upbringing: 'interior', class: 'root-speaker', birthsign: 'raj-xul' });
+    // Put the people in the world. Without this `sim.npcs` is empty and every `talkTo` throws
+    // "nobody by that name is in the world" — which is the probe's location, not a defect.
+    if (settlement) { try { H.populateSettlement(settlement); } catch (e) { out.notes.push(`populateSettlement(${settlement}): ${String(e).slice(0, 120)}`); } }
   };
 
   // ---------------------------------------------------------------- A. THE REFUSAL
@@ -186,7 +215,7 @@ const report = await page.evaluate(async ({ LINES }) => {
   // The entity-side observable: what the representative SAYS when you walk up to them.
   // `Engine.talkTo()` is the shipping path — it calls `npcDisposition()` and `topicsFor()`.
   for (const L of LINES) {
-    fresh();
+    fresh(L.settlement);
     H.setFactionStanding(L.id, { member: true, reputation: 0, rank: 0 });
     const rows = [];
     for (const rank of [0, 2, 4, 7]) {
@@ -264,17 +293,16 @@ const report = await page.evaluate(async ({ LINES }) => {
   // E2. The dissenter. RI-QST01 requires the corruption reveal to be a PERSON who names the rot.
   // Walk up to four of the people the faction quests' `deceit.revealed_by` points at and record
   // what they actually say in the shipping build.
-  const dissenters = ['npc-ineve-corrano', 'npc-sorel-ithan', 'npc-eleen', 'npc-skara-hull-chalk'];
   const heard = [];
-  for (const eid of dissenters) {
-    fresh();
-    try { const t = H.talkTo(eid); heard.push({ eid, greeting: t && (t.greeting || t.line || null), topics_offered: t && t.topics_offered }); }
-    catch (e) { heard.push({ eid, error: String(e).slice(0, 160) }); }
+  for (const [eid, settlement] of DISSENTERS) {
+    fresh(settlement);
+    try { const t = H.talkTo(eid); heard.push({ eid, settlement, greeting: t && (t.greeting || t.line || null), topics_offered: t && t.topics_offered, band: t && t.band }); }
+    catch (e) { heard.push({ eid, settlement, error: String(e).slice(0, 160) }); }
   }
   say('E2.the_dissenter_says_something_specific', { discriminating: false, rows: heard });
 
   return out;
-}, { LINES });
+}, { LINES: LINES.map((L) => ({ ...L })), DISSENTERS });
 
 await game.close();
 

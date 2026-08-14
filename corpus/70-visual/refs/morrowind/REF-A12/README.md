@@ -229,3 +229,46 @@ map — four files — would close gaps 1 and 3 entirely and is the only thing t
 small, well-specified ask for any future pass with access to a screenshot host; it is *not* a
 reason to hold RI-VIS05 or the UI transposition work, because the layout half, which is the half a
 builder actually consumes, is now complete and exact.
+
+---
+
+## Correction, 2026-08-14 — the slot this README calls unfillable was filled, one folder over
+
+**Everything above is accurate about REF-A12 and out of date about the corpus.** The closing
+section — *"One 1024×768 vanilla screenshot each of the inventory, the dialogue window, the journal
+and the map — four files — would close gaps 1 and 3 entirely and is the only thing that would"* —
+was written before `REF-A12b/` landed on **2026-08-06** with **33 native-engine Morrowind UI
+captures**: dialogue ×5, journal ×3, inventory ×4, map ×5, character sheet ×4, barter ×3, book
+reader ×4, tooltip ×2, level-up ×2, char creation ×1. They are manifested, eye-verified,
+`vanilla_confidence: high`, and routed to `ui-fidelity`. On **2026-08-14** `REF-A12c/` added the
+project owner's own 2376×1069 dialogue capture.
+
+**Gaps 1 and 3 in "What this does not let you judge" are therefore closed** — appearance, and
+populated state. Gap 2 (type) is partly closed: the captures show rendered letterforms and line
+density, though no font file. Gaps 4 and 5 stand unchanged.
+
+**Why this correction is worth writing down rather than quietly deleting the paragraph.** The
+pictures existed for eight days and the dialogue window was built in that window with nothing to
+compare against, because the two documents a builder actually reads before citing REF-A12 — this
+file, and `RI-VIS09` §2 and §3.5 — both still said the appearance reference did not exist. One plan
+(`orchestration/plans/W1-21.md`) did cite REF-A12b by path; nothing else did. **The failure was not
+acquisition, it was propagation**, and the fix is that a folder landing is not finished until the
+register and the READMEs that route consumers to it have been edited.
+
+**What to cite for what, now:**
+
+| You want | Cite |
+|---|---|
+| exact rects, anchors, border weights, spacing, the `[FontColor]` table | **this folder** — still the only exact source, and still the only one for anchors |
+| bevel, sheen, wear, type, iconography, how dense a real list is | **`../REF-A12b/`** |
+| the dialogue window at the highest resolution we hold | **`../REF-A12c/`**, with `RI-UIX08` §E's two named traps: its green topic list and its Android corner chrome are **not** Morrowind |
+| the dialogue window's *specification*, already written from all three | `corpus/86-ui/RI-UIX08-dialogue-window.md` |
+
+**And one factual correction to the section above, found by measuring the owner's capture against
+this folder's own XML.** The line *"Both columns `align` to stretch, so the ratio holds as the
+window is resized"* is **wrong**. In `openmw_dialogue_window.layout` the history box is `Stretch`,
+but the disposition bar, the topic list and the Goodbye button are all `Right Top` / `Right VStretch`
+/ `Right Bottom` at a **fixed 166 px**. The topic column does not hold its ratio: it is
+right-anchored at a fixed width and the prose pane absorbs every extra pixel. REF-A12c is the proof
+in pixels — a widened window puts the column at **23.9%** of the panel, not the nominal 28.2%. The
+"166 px of a 588 px window — 28%" figure elsewhere in this README is correct *at nominal size only*.
