@@ -11,6 +11,12 @@
  *
  * ROOT is resolved from THIS FILE's own location, never hard-coded — the exact bug that made an
  * earlier revert silently a no-op on a RunPod worker whose checkout path differs from this box's.
+ *
+ * Both text blocks below are LITERAL, hardcoded strings, not extracted from the live file at run
+ * time — the first version of this tool extracted the "fixed" block from the live file, which
+ * only works when the file is ALREADY fixed; running --revert then --apply back to back produced
+ * a file with the literal text "null" spliced in. Caught by this file's own round-trip self-test
+ * (node tools/visual/w1-v2-ao-patch.mjs --self-test), not shipped broken.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -20,11 +26,12 @@ const TARGET = path.join(ROOT, 'game/src/render/post/composite.js');
 const CHECK = process.argv.includes('--check');
 const REVERT = process.argv.includes('--revert');
 const APPLY = process.argv.includes('--apply');
-if (!CHECK && !REVERT && !APPLY) { console.error('usage: w1-v2-ao-patch.mjs --check|--revert|--apply'); process.exit(2); }
+const SELFTEST = process.argv.includes('--self-test');
+if (!CHECK && !REVERT && !APPLY && !SELFTEST) { console.error('usage: w1-v2-ao-patch.mjs --check|--revert|--apply|--self-test'); process.exit(2); }
 
 const MARKER = 'W1-V2';
 
-// ---- the four edits, as (baseline -> fixed) pairs ----------------------------------------------
+// ---- the four edits, as (baseline -> fixed) pairs, both sides literal -------------------------
 const EDITS = [
   {
     id: 'uniforms-js',
@@ -45,7 +52,8 @@ const EDITS = [
       // human-scale contact gap (a boot sole, a step riser); \`w1-v2-contact-ao.mjs\` is the
       // instrument that proves the acceptance bar (RI-VIS04 §4 / RI-VIS03 M6b: contact junction
       // >=25% darker than open ground) rather than this comment.
-      uAORadius: { value: 0.42 }, uAOStrength: { value: 1.9 }, uAOBias: { value: 0.018 },
+      uAORadius: { value: 0.42 }, uAOStrength: { value: 3.1 }, uAOBias: { value: 0.03 },
+      uAOMaxOcclusion: { value: 0.6 },
       uBloom: { value: 0.16 }, uBloomThreshold: { value: 0.9 }, uBloomKnee: { value: 0.45 },`,
   },
   {
@@ -53,18 +61,13 @@ const EDITS = [
     baseline: `    uniform float uBalance, uContrast, uPivot, uSat, uVignette, uVignInner, uVignOuter;`,
     fixed: `    uniform float uBalance, uContrast, uPivot, uSat, uVignette, uVignInner, uVignOuter;
     uniform mat4 uProjMat, uInvProjMat;
-    uniform float uAORadius, uAOStrength, uAOBias;`,
+    uniform float uAORadius, uAOStrength, uAOBias, uAOMaxOcclusion;`,
   },
   {
     id: 'ao-functions-block',
     baseline: `    float ign(vec2 p){ return fract(52.9829189 * fract(dot(p, vec2(0.06711056, 0.00583715)))); }
 
     void main(){`,
-    // Hardcoded rather than extracted from the live file: extraction only works when the file is
-    // already in the FIXED state, which made --apply a no-op-that-writes-"null" the first time
-    // this tool ran --revert then --apply back to back (caught by the round-trip self-test below,
-    // not shipped broken). A literal string cannot drift silently, and the self-test compares it
-    // byte-for-byte against the real shipped file on every run.
     fixed: `    float ign(vec2 p){ return fract(52.9829189 * fract(dot(p, vec2(0.06711056, 0.00583715)))); }
 
     // ---- W1-V2: real screen-space ambient occlusion / contact shadow ------------------------
@@ -135,7 +138,13 @@ const EDITS = [
         float rangeCheck = smoothstep(0.0, 1.0, uAORadius / max(abs(P.z - SP.z), 1e-4));
         occlusion += (SP.z >= samplePos.z + uAOBias) ? rangeCheck : 0.0;
       }
-      return clamp(occlusion / 10.0 * uAOStrength, 0.0, 1.0);
+      // Capped below 1.0 (see uAOMaxOcclusion): on real low-poly ground the per-pixel normal is
+      // reconstructed from a ONE-PIXEL depth derivative, so it faithfully reads every terrain
+      // triangle's own flat facet rather than a smoothed vertex normal — measured on a real
+      // settlement ground plane, this reads as a hard black-diamond checker at full strength.
+      // The cap keeps a genuine object/ground contact reading clearly darker without letting
+      // ordinary bumpy terrain crush to solid black. See the instrument's production-scene note.
+      return clamp(occlusion / 10.0 * uAOStrength, 0.0, uAOMaxOcclusion);
     }
 
     void main(){`,
@@ -157,44 +166,70 @@ const EDITS = [
   },
 ];
 
-const live = fs.readFileSync(TARGET, 'utf8');
-
-function report() {
+function report(live) {
   const hasMarker = live.includes(MARKER);
   const rows = EDITS.map((e) => {
-    const wantFixed = e.fixed && live.includes(e.fixed);
+    const wantFixed = live.includes(e.fixed);
     const wantBaseline = live.includes(e.baseline) && !wantFixed;
     return { id: e.id, state: wantFixed ? 'fixed' : (wantBaseline ? 'baseline' : 'UNRECOGNISED — anchor moved') };
   });
   return { hasMarker, rows, allFixed: rows.every((r) => r.state === 'fixed'), allBaseline: rows.every((r) => r.state === 'baseline') };
 }
 
-const status = report();
+function doRevert(file) {
+  const live = fs.readFileSync(file, 'utf8');
+  const status = report(live);
+  if (status.allBaseline) return { ok: true, note: 'already at baseline — nothing to do' };
+  if (!status.allFixed) return { ok: false, error: 'one or more anchors did not match the known fixed text', status };
+  let out = live;
+  for (const e of EDITS) {
+    if (!out.includes(e.fixed)) return { ok: false, error: `mid-way: ${e.id} anchor not found during rewrite` };
+    out = out.replace(e.fixed, e.baseline);
+  }
+  if (out.includes(MARKER)) return { ok: false, error: `REVERT DID NOT FULLY APPLY — marker ${MARKER} still present. NOT A CONTROL.` };
+  fs.writeFileSync(file, out);
+  return { ok: true, note: `REVERT applied to ${file}` };
+}
+
+function doApply(file) {
+  const live = fs.readFileSync(file, 'utf8');
+  const status = report(live);
+  if (status.allFixed) return { ok: true, note: 'already fixed — nothing to do' };
+  if (!status.allBaseline) return { ok: false, error: 'one or more anchors did not match the known baseline text', status };
+  let out = live;
+  for (const e of EDITS) out = out.replace(e.baseline, e.fixed);
+  if (!out.includes(MARKER)) return { ok: false, error: 'APPLY DID NOT WORK — marker missing after rewrite' };
+  fs.writeFileSync(file, out);
+  return { ok: true, note: `APPLY (re-fix) written to ${file}` };
+}
+
+if (SELFTEST) {
+  // Proves the round trip on a SCRATCH copy, never on the real repo file, and proves double-apply
+  // and double-revert are both no-ops rather than corrupting anchors.
+  const os = await import('node:os');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'w1-v2-ao-patch-selftest-'));
+  const scratch = path.join(tmp, 'composite.js');
+  fs.mkdirSync(path.dirname(scratch), { recursive: true });
+  fs.copyFileSync(TARGET, scratch);
+  const originalFixed = fs.readFileSync(scratch, 'utf8');
+  const arms = [];
+  let r = doRevert(scratch); arms.push(['revert-1', r]);
+  const afterRevert = fs.readFileSync(scratch, 'utf8');
+  arms.push(['revert-has-no-marker', { ok: !afterRevert.includes(MARKER) }]);
+  r = doRevert(scratch); arms.push(['revert-2-is-noop', { ok: r.ok && /already at baseline/.test(r.note || '') }]);
+  r = doApply(scratch); arms.push(['apply-1', r]);
+  const afterApply = fs.readFileSync(scratch, 'utf8');
+  arms.push(['apply-roundtrips-byte-identical', { ok: afterApply === originalFixed }]);
+  r = doApply(scratch); arms.push(['apply-2-is-noop', { ok: r.ok && /already fixed/.test(r.note || '') }]);
+  fs.rmSync(tmp, { recursive: true, force: true });
+  let allOk = true;
+  for (const [id, res] of arms) { console.log(`${res.ok ? 'PASS' : 'FAIL'}  ${id}${res.error ? '  — ' + res.error : ''}`); if (!res.ok) allOk = false; }
+  process.exit(allOk ? 0 : 1);
+}
+
+const status = report(fs.readFileSync(TARGET, 'utf8'));
 console.log(JSON.stringify(status, null, 2));
 
 if (CHECK) process.exit(status.allFixed || status.allBaseline ? 0 : 1);
-
-if (REVERT) {
-  if (status.allBaseline) { console.log('already at baseline — nothing to do (not an error, not a second revert)'); process.exit(0); }
-  if (!status.allFixed) { console.error('REFUSED: one or more anchors did not match the known fixed text — will not partially revert'); process.exit(1); }
-  let out = live;
-  for (const e of EDITS) {
-    if (!out.includes(e.fixed)) { console.error(`REFUSED mid-way: ${e.id} anchor not found during rewrite`); process.exit(1); }
-    out = out.replace(e.fixed, e.baseline);
-  }
-  if (out.includes(MARKER)) { console.error(`REVERT DID NOT FULLY APPLY — marker ${MARKER} still present. NOT A CONTROL.`); process.exit(1); }
-  fs.writeFileSync(TARGET, out);
-  console.log(`REVERT applied to ${TARGET}`);
-  process.exit(0);
-}
-
-if (APPLY) {
-  if (status.allFixed) { console.log('already fixed — nothing to do'); process.exit(0); }
-  if (!status.allBaseline) { console.error('REFUSED: one or more anchors did not match the known baseline text'); process.exit(1); }
-  let out = live;
-  for (const e of EDITS) out = out.replace(e.baseline, e.fixed);
-  if (!out.includes(MARKER)) { console.error('APPLY DID NOT WORK — marker missing after rewrite'); process.exit(1); }
-  fs.writeFileSync(TARGET, out);
-  console.log(`APPLY (re-fix) written to ${TARGET}`);
-  process.exit(0);
-}
+if (REVERT) { const r = doRevert(TARGET); console.log(r.note || r.error); process.exit(r.ok ? 0 : 1); }
+if (APPLY) { const r = doApply(TARGET); console.log(r.note || r.error); process.exit(r.ok ? 0 : 1); }
