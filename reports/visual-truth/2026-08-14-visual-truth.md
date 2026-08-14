@@ -432,6 +432,15 @@ and taking stills instead of sequences is the habit this report was commissioned
   620 to 514 HP. The player's own attacks did not fire in that run, almost certainly because a
   conversation surface was still open and holding input. Not a game defect until re-run cleanly.
 
+- **One thing I broke, reported because the next person needs to know.** `node tools/runpod/cli.mjs
+  cleanup` with no arguments terminates **every** managed Pod on the account, not just your own.
+  Run at the end of this session to make sure my two Pods were gone, it also deleted
+  `srd13nazorl0uc` — a Pod belonging to another agent's run (pid 17046, `--max-runtime 14
+  --max-price 0.60`) which was still live at the time. That run will have failed and will need
+  repeating; I am sorry for the interruption. The tool has `--pod <id>` and `--dry-run`, and
+  **`--pod <id>` is what anyone sharing this box should use.** Worth a guard in the tool itself:
+  a bare `cleanup` on a multi-agent box is a fleet-wide kill switch that reads like tidying up.
+
 - **Disk.** The box was at 100 % (31 MB free) when this started and captures were failing silently
   with `ENOSPC`. About 9 GB of six-day-stale scratch clones were cleared to proceed. Worth knowing
   that any capture-producing agent that ran before that point may have written nothing.

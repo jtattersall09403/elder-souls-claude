@@ -70,3 +70,6 @@ Started 2026-08-14. This file is updated as work proceeds so a restart can resum
   105 damage. The player's own attacks did not fire in the duel — very likely an open conversation
   surface holding input, i.e. my error; recorded as not-measured.
 - 10:30 Shots downscaled and thinned: 232 MB -> 34 MB. Report written. Banking.
+- 10:40 Side effect to flag: `node tools/runpod/cli.mjs cleanup` with no args terminates ALL
+  managed pods on the account. Running it to confirm my own pods were gone also killed pod
+  srd13nazorl0uc belonging to another agent's still-running job (pid 17046). Use `--pod <id>`.
