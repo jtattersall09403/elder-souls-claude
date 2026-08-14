@@ -45,7 +45,7 @@
           "a": "magister",
           "f": "house-dres",
           "d": 20,
-          "x": "If you are asking what I do here, provincial, the answer is that I hold an estate that the Empire says is not an estate. The duty is largely correspondence. Presumably you have better things to ask about.",
+          "x": "If you are asking what I do here, provincial, the answer is that I hold an estate that the Empire says is not an estate. The duty is largely correspondence: House Dres on one side, and on the other whichever clerk has most recently discovered the Blackwater Treaty. Presumably you have better things to ask about.",
           "to": [
             "house-dres",
             "the-blackwater-treaty"
@@ -54,7 +54,7 @@
         {
           "a": "mudborn",
           "d": 15,
-          "x": "I've no duties, dry-one. That's rather the difficulty with me. If I had one I'd keep it very carefully and I wouldn't let on that I had it. They'd take it back off me for a younger man.",
+          "x": "I've no duties, dry-one. That's rather the difficulty with me. If I had one I'd keep it very carefully and I wouldn't let on that I had it. They'd take it back off me for a younger man. So I walk the boards instead, and the boards ask nothing of anybody.",
           "to": [
             "the-boards"
           ]
@@ -62,7 +62,7 @@
         {
           "a": "legionary",
           "f": "ninth-cohort",
-          "x": "Mine? Watch the wall. Count the boats. Write down what came off them. Half of it is lies. All of it goes in the manifest. Yours, citizen, I could not say.",
+          "x": "Mine? Watch the wall. Count the boats. Write down what came off them. Half of it is lies. All of it goes in the manifest. That is what the Ninth Cohort is for, whatever the recruiter told you. Yours, citizen, I could not say.",
           "to": [
             "the-ninth-cohort",
             "the-manifest"
@@ -70,7 +70,7 @@
         },
         {
           "a": "sapcutter",
-          "x": "This one buys. This one sells. Cart in the morning, cart at night. And it has been the same cart for nine years, friend.",
+          "x": "This one buys. This one sells. Cart in the morning on the cart roads, cart at night on the same. The sap cutters load it and this one carries it, and it has been the same cart for nine years, friend.",
           "to": [
             "the-sap-cutters",
             "the-cart-roads"
@@ -78,7 +78,7 @@
         },
         {
           "a": "archivist",
-          "x": "In the strict sense my duty is the sequence: what arrived, in what order, and from whom. It is a smaller question than it sounds and a much larger one than the Office believes it is paying for. The catalogue runs three years behind, and the years it is behind are never the years anybody wants.",
+          "x": "In the strict sense my duty is the sequence: what arrived, in what order, and from whom. It is a smaller question than it sounds and a much larger one than the Provincial Office believes it is paying for. The catalogue runs three years behind, and the years it is behind are never the years anybody wants.",
           "to": [
             "the-provincial-office",
             "the-catalogue"
@@ -94,7 +94,7 @@
         {
           "a": "rootkeeper",
           "d": 30,
-          "x": "I was hatched at the third well and I was given to it before I was named. It is done less now than it was done then. The not-doing of it is one of the reasons the sap runs thin.",
+          "x": "I was hatched at the third of the sapwells and I was given to it before the naming. It is done less now than it was done then. The not-doing of it is one of the reasons the sap runs thin.",
           "to": [
             "the-sapwells",
             "the-naming"
@@ -103,14 +103,14 @@
         {
           "a": "magister",
           "d": 20,
-          "x": "If you mean where I am from, provincial, the answer is a place that no longer sends me anything. If you mean what I am, that is a longer conversation and you have not earned it.",
+          "x": "If you mean where I am from, provincial, the answer is a place that no longer sends me anything. If you mean what I am, House Dres has a word for it, and that is a longer conversation and you have not earned it.",
           "to": [
             "house-dres"
           ]
         },
         {
           "a": "archivist",
-          "x": "Yours or mine? Mine is a chapel school in Cyrodiil and twenty-one years of other people's paperwork, which is a background in the sense that a wall is a view. Yours the Office will have written down somewhere, and it will be wrong in one particular that you will never find out.",
+          "x": "Yours or mine? Mine is a chapel school in Cyrodiil and twenty-one years of other people's paperwork, which is a background in the sense that a wall is a view. Yours the Provincial Office will have written down somewhere, filed against the charter, and it will be wrong in one particular that you will never find out.",
           "to": [
             "the-provincial-office",
             "the-charter"
@@ -118,14 +118,14 @@
         },
         {
           "a": "legionary",
-          "x": "Chorrol. Second son. No land. So: the Cohort. Wet boots for twenty years, citizen, and I'm still here.",
+          "x": "Chorrol. Second son. No land. So: the Ninth Cohort. Wet boots for twenty years, citizen, and I'm still here.",
           "to": [
             "the-ninth-cohort"
           ]
         },
         {
           "a": "sapcutter",
-          "x": "This one's mother pushed a cart. Her mother pushed a cart. Friend, you see the shape of it. Do you want the cart or the story?",
+          "x": "This one's mother pushed a cart. Her mother pushed a cart. The cart roads were here before either of them, friend, and you see the shape of it. Do you want the cart or the story?",
           "to": [
             "the-cart-roads"
           ]
@@ -141,7 +141,7 @@
           "a": "rootkeeper",
           "cell": "helstrom",
           "d": 25,
-          "x": "Helstrom is not laid out, supplicant. It is grown. A place in it is described by which root you are standing under, not by which street you are on. Tell me what you are looking for and I will tell you the root.",
+          "x": "Helstrom is not laid out, supplicant. It is grown, and it is grown from the Great Hist outward. A place in it is described by which root you are standing under, not by which street you are on. Tell me what you are looking for and I will tell you the root.",
           "to": [
             "helstrom",
             "the-great-hist"
@@ -168,7 +168,7 @@
         {
           "a": "sapcutter",
           "cell": "lilmoth",
-          "x": "In Lilmoth? Ask which floor, friend. Half the doors are underwater. This one knows the dry ones.",
+          "x": "In Lilmoth? Ask which floor, friend. Half the doors are underwater, and the half that is worth asking about is the drowned quarter. This one knows the dry ones.",
           "to": [
             "lilmoth",
             "the-drowned-quarter"
@@ -177,7 +177,7 @@
         {
           "a": "archivist",
           "cell": "gideon",
-          "x": "Gideon is surveyed, which makes it the only settlement in the province I can describe without apologising. Fields to the west in a grid, timber yards on the river, the chapel on the only rise, and the inn where the survey pegs used to be. Ask for any of them by name.",
+          "x": "Gideon is surveyed, which makes it the only settlement in the province I can describe without apologising. Fields to the west in a grid, timber yards on the river, the Chapel of Akatosh on the only rise, and the inn where the survey pegs used to be. Ask for any of them by name.",
           "to": [
             "gideon",
             "the-chapel-of-akatosh"
@@ -186,7 +186,7 @@
         {
           "a": "legionary",
           "cell": "blackrose",
-          "x": "There is the prison. There is the town that feeds it. That's Blackrose, citizen. Pick one!",
+          "x": "There is Blackrose prison. There is the town that feeds it, and nothing else worth the walk. That's Blackrose, citizen. Pick one!",
           "to": [
             "blackrose",
             "blackrose-prison"
@@ -204,7 +204,7 @@
         {
           "a": "legionary",
           "cell": "thorn",
-          "x": "The hall. The gate. The needle-forest. Walk the boards, citizen. Not the ground.",
+          "x": "The hall. The gate. The needle-forest. That is the whole of Thorn, citizen. Walk the boards. Not the ground.",
           "to": [
             "thorn",
             "the-needle-forest"
@@ -212,7 +212,7 @@
         },
         {
           "a": "archivist",
-          "x": "Somewhere in the province, then. I can generally place a settlement to within a day's walk and a river to within the wrong bank. Name it and we will see which of us is more embarrassed.",
+          "x": "Somewhere in the province, then. I can generally place a settlement to within a day's walk and a river to within the wrong bank, which is what the thirteen regions do to a man. Name it and we will see which of us is more embarrassed.",
           "to": [
             "the-thirteen-regions"
           ]
@@ -228,7 +228,7 @@
           "a": "rootkeeper",
           "cell": "helstrom",
           "d": 25,
-          "x": "Every person in Helstrom is written on the root they were given to. A name is not enough here, supplicant, and it never has been. Bring me the name and the well. I will bring you the person.",
+          "x": "Every person in Helstrom is written on the root they were given to at the naming, and every root runs back to the Great Hist. A name is not enough here, supplicant, and it never has been. Bring me the name and the well. I will bring you the person.",
           "to": [
             "the-naming",
             "the-great-hist"
@@ -237,7 +237,7 @@
         {
           "a": "magister",
           "d": 20,
-          "x": "If the person is worth knowing, provincial, I already correspond with them. If they are not, I would not waste your time or, more to the point, mine.",
+          "x": "If the person is worth knowing, provincial, House Dres already corresponds with them and so, therefore, do I. If they are not, I would not waste your time or, more to the point, mine.",
           "to": [
             "house-dres"
           ]
@@ -245,7 +245,7 @@
         {
           "a": "mudborn",
           "d": 15,
-          "x": "I know most people by their boots, dry-one. It isn't as useless as you think. A man who's had the same boots resoled four times is staying. A man in new ones has just been paid for something. Yours are wrong for the water here, and I'd not say so to everyone.",
+          "x": "I know most people by their boots, dry-one. It isn't as useless as you think. A man who's had the same boots resoled four times is staying. A man in new ones has just been paid for something. Yours are wrong for the boards and wrong for the water here, and I'd not say so to everyone.",
           "to": [
             "the-boards"
           ]
@@ -253,7 +253,7 @@
         {
           "a": "sapcutter",
           "cell": "lilmoth",
-          "x": "This one knows every buyer. Friend, say a name. If they sell, this one knows them twice.",
+          "x": "This one knows every buyer in Lilmoth. Friend, say a name. Say Hard Bargain Jeel and this one knows them twice.",
           "to": [
             "lilmoth",
             "hard-bargain-jeel"
@@ -262,7 +262,7 @@
         {
           "a": "legionary",
           "cell": "stormhold",
-          "x": "Ask at the muster board. Names, ranks, watches. If they are not on it, they are not ours. Then ask the Ledger.",
+          "x": "Ask at the muster board. Names, ranks, watches. If they are not on it, they are not ours. Then ask the Wet Ledger, who keep the list the Cohort is not permitted to keep.",
           "to": [
             "the-muster-board",
             "the-wet-ledger"
@@ -271,7 +271,7 @@
         {
           "a": "archivist",
           "cell": "gideon",
-          "x": "The chapel keeps a roll of the tithed and the Office keeps a roll of the taxed, and the interesting people in Gideon are on precisely one of the two. Give me a name and I will tell you which roll it sits on. That will tell you rather more than the name did.",
+          "x": "The chapel keeps the tithe roll and the Office keeps a roll of the taxed, and the interesting people in Gideon are on precisely one of the two and never on both. Give me a name and I will tell you which of the two rolls it sits on, and that will tell you rather more than the name itself ever did.",
           "to": [
             "gideon",
             "the-tithe-roll"
@@ -288,7 +288,7 @@
           "a": "rootkeeper",
           "cell": "helstrom",
           "d": 30,
-          "x": "What is given at the well is not a service and it is not paid for. If you have come to buy healing you have come to the wrong root, supplicant. I would rather tell you now than let you be embarrassed in front of people. Ask me again when you have understood the difference.",
+          "x": "What is given at the sapwells is not a service and it is not paid for. That is the covenant. If you have come to buy healing you have come to the wrong root, supplicant. I would rather tell you now than let you be embarrassed in front of people. Ask me again when you have understood the difference.",
           "to": [
             "the-sapwells",
             "the-covenant"
@@ -298,7 +298,7 @@
           "a": "sapcutter",
           "cell": "lilmoth",
           "d": 20,
-          "x": "Lilmoth sells everything twice. Once legally. Friend, this one can point at both counters.",
+          "x": "Lilmoth sells everything twice. Once legally, and once at the organ market. Friend, this one can point at both counters.",
           "to": [
             "lilmoth",
             "the-organ-market"
@@ -316,7 +316,7 @@
         {
           "a": "legionary",
           "cell": "stormhold",
-          "x": "Cohort quartermaster for arms. Ledger house for coin. Physician on the wall street. Nothing here is cheap, citizen.",
+          "x": "The quartermaster for arms. The Wet Ledger for coin. Physician on the wall street. Nothing in Stormhold is cheap, citizen.",
           "to": [
             "stormhold",
             "the-wet-ledger",
@@ -326,7 +326,7 @@
         {
           "a": "archivist",
           "cell": "gideon",
-          "x": "Gideon has an inn, a chapel, a timber factor and a smith who is better than the town deserves. It also has an Office annexe that will sell you a copy of any document you can name, and several you cannot. That is more service than anywhere else in the province, and Gideon is quietly insufferable about it. I have lived here nine years and caught it myself.",
+          "x": "Gideon has an inn, a chapel, a timber factor and a smith who is better than the town deserves. It also has an annexe of the Provincial Office that will sell you a copy of any document you can name, and several you cannot. That is more service than anywhere else in the province, and Gideon is quietly insufferable about it. I have lived here nine years and caught it myself.",
           "to": [
             "gideon",
             "the-provincial-office"
@@ -334,7 +334,7 @@
         },
         {
           "a": "sapcutter",
-          "x": "This one has a cart. That is a service. Friend, what do you need moved?",
+          "x": "This one has a cart, and the cart roads to run it on. That is a service. Friend, what do you need moved?",
           "to": [
             "the-cart-roads"
           ]
@@ -349,7 +349,7 @@
         {
           "a": "rootkeeper",
           "d": 25,
-          "x": "It is not a trade, supplicant. It is an obligation that is inherited, and the difference is that a trade may be put down.",
+          "x": "It is not a trade, supplicant. It is the covenant, an obligation that is inherited, and the difference is that a trade may be put down.",
           "to": [
             "the-covenant"
           ]
@@ -357,7 +357,7 @@
         {
           "a": "magister",
           "d": 20,
-          "x": "Administration, of an estate whose legality is a matter of opinion. If you want the opinion, provincial, read the treaty. If you want the estate, take it up with the Empire.",
+          "x": "Administration, of an estate whose legality is a matter of opinion. If you want the opinion, provincial, read the Blackwater Treaty. If you want the estate, take it up with the Empire.",
           "to": [
             "the-blackwater-treaty"
           ]
@@ -365,14 +365,14 @@
         {
           "a": "mudborn",
           "d": 10,
-          "x": "I ask, dry-one. It's a trade like any other, in that most of the day goes on walking to where the customers are. It's unlike any other in one particular. The customers would rather I wasn't there when I arrive.",
+          "x": "I ask, dry-one. It's a trade like any other, in that most of the day goes on walking the boards to where the customers are. It's unlike any other in one particular. The customers would rather I wasn't there when I arrive.",
           "to": [
             "the-boards"
           ]
         },
         {
           "a": "sapcutter",
-          "x": "Sap. Salt. Dye. Whatever weighs less than it sells for. This one does not ask where a bundle slept.",
+          "x": "Hist sap. Salt. Dye. Whatever weighs less than it sells for. This one buys from the sap cutters and does not ask where a bundle slept.",
           "to": [
             "the-sap-cutters",
             "hist-sap"
@@ -380,7 +380,7 @@
         },
         {
           "a": "archivist",
-          "x": "Records, which is not a trade so much as an accusation people make about me. In practice it is reconciliation: two documents about the same barge, disagreeing, and then a decision about which one the Empire will believe for the next thirty years. I make that decision, and nobody has ever asked me how.",
+          "x": "Records, which is not a trade so much as an accusation people make about me. In practice it is reconciliation: the manifest and the catalogue disagreeing about the same barge, and then a decision about which one the Empire will believe for the next thirty years. I make that decision, and nobody has ever asked me how.",
           "to": [
             "the-catalogue",
             "the-manifest"
@@ -388,7 +388,7 @@
         },
         {
           "a": "legionary",
-          "x": "Soldiering. Nine years of it here. The trade is standing still. Everything else is training.",
+          "x": "Soldiering, in the Ninth Cohort. Nine years of it here. The trade is standing still. Everything else is training.",
           "to": [
             "the-ninth-cohort"
           ]
@@ -440,7 +440,7 @@
         {
           "a": "rootkeeper",
           "d": 25,
-          "x": "Advice is given to those who intend to take it. So I will give you the one thing that is not advice but law. What is drawn from a well is returned to a well. The province is not interested in whether you knew, supplicant, and neither am I.",
+          "x": "Advice is given to those who intend to take it. So I will give you the one thing that is not advice but law. What is drawn from the sapwells is returned to the sapwells. That is the covenant. The province is not interested in whether you knew, supplicant, and neither am I.",
           "to": [
             "the-sapwells",
             "the-covenant"
@@ -449,7 +449,7 @@
         {
           "a": "magister",
           "d": 20,
-          "x": "Should you wish to survive the interior, provincial, do not accept water. Everything else you will work out or you will not.",
+          "x": "Should you wish to survive the deep marshes, provincial, do not accept water. Everything else you will work out or you will not.",
           "to": [
             "the-deep-marshes"
           ]
@@ -457,7 +457,7 @@
         {
           "a": "legionary",
           "cell": "stormhold",
-          "x": "Do not draw in the street. Do not argue with a writ. Pay the gate fee. It is smaller than the fine.",
+          "x": "Do not draw in the street. Do not argue with a writ. Pay the gate fee. In Stormhold it is smaller than the fine, and the fine is not the worst of it.",
           "to": [
             "stormhold",
             "the-gate-fee"
@@ -466,7 +466,7 @@
         {
           "a": "sapcutter",
           "cell": "lilmoth",
-          "x": "Lilmoth advice? Never take the low stair at high water. Friend, this one has seen it close.",
+          "x": "Lilmoth advice? Never take the low stair at high water. Tide law says the water owns what it reaches, and it is not arguing. Friend, this one has seen it close.",
           "to": [
             "lilmoth",
             "tide-law"
@@ -474,7 +474,7 @@
         },
         {
           "a": "archivist",
-          "x": "Carry a written thing with a seal on it. It need not be relevant. The Cohort cannot read the interior dialect of Imperial legal hand, and the assumption that a sealed document must be important survives contact with the evidence remarkably well. I keep three such things about me and none of them are mine.",
+          "x": "Carry a written thing with a seal on it. It need not be relevant; a page of the charter will do. The Ninth Cohort cannot read the interior dialect of Imperial legal hand, and the assumption that a sealed document must be important survives contact with the evidence remarkably well. I keep three such things about me and none of them are mine.",
           "to": [
             "the-charter",
             "the-ninth-cohort"
@@ -512,7 +512,7 @@
         {
           "a": "sapcutter",
           "d": 80,
-          "x": "For you? This one will say it once. The Ledger weighs sap wet. Friend, that is a whole cart in ten.",
+          "x": "For you? This one will say it once. The Wet Ledger weighs sap wet. They call it the short weight, when they think no one is listening. Friend, that is a whole cart in ten.",
           "to": [
             "the-wet-ledger",
             "the-short-weight"
