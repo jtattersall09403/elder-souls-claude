@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-14T18:42:38.005Z",
+ "generated": "2026-08-14T19:01:30.954Z",
  "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
  "method": "Inventory derived by fs walk + generated ledgers. Mapping authored by the audit agent after reading every RI title/front-matter, every plan heading, and every open gap record.",
  "inventory_counts": {
@@ -1468,18 +1468,20 @@
   },
   {
    "id": "T4",
-   "ring": 6,
-   "title": "The screens",
-   "blurb": "Inventory, map, level-up, journal screen, out-of-combat HUD, UI diegesis — style judged as art direction, rendering judged as fidelity.",
+   "ring": 1,
+   "title": "The Morrowind screens",
+   "blurb": "Inventory, map, character sheet, level-up, journal screen, out-of-combat HUD, the dialogue window's look, UI diegesis. Ring 1, not ring 6: these are on screen in the first few minutes, we hold Morrowind interface references for them, and several already score at or near the bar.",
    "ref_items": [
     "RI-UIX03",
     "RI-UIX04",
     "RI-UIX06",
-    "RI-UIX07"
+    "RI-UIX07",
+    "RI-UIX08"
    ],
-   "n_ref_items": 4,
+   "n_ref_items": 5,
    "never_judged": [
-    "RI-UIX07"
+    "RI-UIX07",
+    "RI-UIX08"
    ],
    "open_gaps": [
     "GAP-W1-map-fix-drops-the-journal-from-the-page-walk",
@@ -3467,7 +3469,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 3,
+   "verdicts": 4,
    "best_score_0_10": 8,
    "state": "judged_at_or_above_bar"
   },
@@ -3536,7 +3538,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 1,
+   "verdicts": 2,
    "best_score_0_10": 3,
    "state": "judged_below_bar"
   },
@@ -3621,7 +3623,7 @@
    ],
    "bucket": "method_doctrine",
    "judged": true,
-   "verdicts": 6,
+   "verdicts": 7,
    "best_score_0_10": 8,
    "state": "judged_at_or_above_bar"
   },
@@ -3673,7 +3675,7 @@
    ],
    "bucket": "method_doctrine",
    "judged": true,
-   "verdicts": 24,
+   "verdicts": 25,
    "best_score_0_10": 8,
    "state": "judged_at_or_above_bar"
   },
@@ -3860,7 +3862,8 @@
    "side": "morrowind",
    "judges": [],
    "covered_by": [
-    "P1"
+    "P1",
+    "T4"
    ],
    "bucket": "build",
    "judged": false,
@@ -6217,7 +6220,7 @@
    },
    {
     "id": "T4",
-    "title": "The screens",
+    "title": "The Morrowind screens",
     "old": "partial:V14"
    },
    {

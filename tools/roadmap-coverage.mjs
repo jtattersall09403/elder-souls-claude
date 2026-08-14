@@ -165,7 +165,7 @@ const ITEMS = [
 
   // ---- ring 6
   ['T3', 6, 'Load, streaming and budgets', 'Time to first playable, silent region borders, hitch census, memory and the ten-minute traversal leak test, the frame budget.'],
-  ['T4', 6, 'The screens', 'Inventory, map, level-up, journal screen, out-of-combat HUD, UI diegesis — style judged as art direction, rendering judged as fidelity.'],
+  ['T4', 1, 'The Morrowind screens', 'Inventory, map, character sheet, level-up, journal screen, out-of-combat HUD, the dialogue window\'s look, UI diegesis. Ring 1, not ring 6: these are on screen in the first few minutes, we hold Morrowind interface references for them, and several already score at or near the bar.'],
 
   // ---- ring 7
   ['E1', 7, 'The opening', 'First launch to first meaningful choice as an unbroken act; the opening as an exchange; the first-hour beat sheet.'],
@@ -231,7 +231,7 @@ const RI_MAP = {
   'RI-PLT01': ['T3', 'F14'], 'RI-PLT02': ['T3'], 'RI-PLT03': ['T3'],
   // 86-ui
   'RI-UIX01': ['G6'], 'RI-UIX02': ['P3'], 'RI-UIX03': ['C3', 'T4'], 'RI-UIX04': ['P3', 'T4'],
-  'RI-UIX05': ['P4'], 'RI-UIX06': ['T4', 'F13'], 'RI-UIX07': ['T4'], 'RI-UIX08': ['P1'],
+  'RI-UIX05': ['P4'], 'RI-UIX06': ['T4', 'F13'], 'RI-UIX07': ['T4'], 'RI-UIX08': ['P1', 'T4'],
   // 87-audio
   'RI-AUD01': ['G6'], 'RI-AUD02': ['E9', 'T3'], 'RI-AUD03': ['E9'], 'RI-AUD04': ['E9'], 'RI-AUD05': ['E9'],
   // 88-journeys
