@@ -134,10 +134,14 @@
             "world_flags": [
               "player_knows_the_curve_is_older",
               "steward_of_the_count_named",
-              "the_sum_exists_only_in_the_players_head"
+              "the_sum_exists_only_in_the_players_head",
+              "quest_q_main_06_res_the_number_choice_recorded",
+              "quest_q_main_06_res_the_number_world_answered",
+              "quest_q_main_06_res_the_number_route_closed"
             ],
             "npc_disposition": {
-              "ledgerer-hosk-vei": 10
+              "ledgerer-hosk-vei": 10,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -166,11 +170,15 @@
               "player_knows_the_curve_is_older",
               "steward_of_the_count_named",
               "the_sum_exists_as_a_document",
-              "the_archive_has_cited_an_outlander"
+              "the_archive_has_cited_an_outlander",
+              "quest_q_main_06_res_the_fair_copy_choice_recorded",
+              "quest_q_main_06_res_the_fair_copy_world_answered",
+              "quest_q_main_06_res_the_fair_copy_route_closed"
             ],
             "npc_disposition": {
               "ledgerer-hosk-vei": 25,
-              "undersexton-bel-mourne": 10
+              "undersexton-bel-mourne": 10,
+              "notary-sedda-vell": -2
             }
           }
         }
@@ -249,6 +257,24 @@
           "unique_named": true,
           "id": "item_the_fair_copy_of_the_sum",
           "name": "the fair copy of the sum",
+          "on_resolution": [
+            "res_the_fair_copy"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_06_res_the_number",
+          "name": "Consequence of the number",
+          "on_resolution": [
+            "res_the_number"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_06_res_the_fair_copy",
+          "name": "Consequence of the fair copy",
           "on_resolution": [
             "res_the_fair_copy"
           ]
@@ -342,6 +368,16 @@
             "res_take_the_book"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 44,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_trade_the_number",
+            "res_take_the_book"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -367,12 +403,16 @@
             "world_flags": [
               "player_knows_the_cutting_predates_its_licence",
               "cutters_will_hear_the_player",
-              "the_cutters_know_what_they_are_accused_of"
+              "the_cutters_know_what_they_are_accused_of",
+              "quest_q_main_07_res_trade_the_number_choice_recorded",
+              "quest_q_main_07_res_trade_the_number_world_answered",
+              "quest_q_main_07_res_trade_the_number_route_closed"
             ],
             "npc_disposition": {
               "neeja-xul": 30,
               "ledgerer-hosk-vei": -6,
-              "blackrose-yard-hands": 20
+              "blackrose-yard-hands": 20,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -403,12 +443,16 @@
               "player_knows_the_cutting_predates_its_licence",
               "cutters_closed_their_books",
               "blackrose_yard_hostile_to_player",
-              "the_yard_will_not_answer_the_court"
+              "the_yard_will_not_answer_the_court",
+              "quest_q_main_07_res_take_the_book_choice_recorded",
+              "quest_q_main_07_res_take_the_book_world_answered",
+              "quest_q_main_07_res_take_the_book_route_closed"
             ],
             "npc_disposition": {
               "neeja-xul": -50,
               "ledgerer-hosk-vei": 10,
-              "undersexton-aveline-rell": 8
+              "undersexton-aveline-rell": 8,
+              "notary-sedda-vell": -2
             }
           }
         }
@@ -483,6 +527,24 @@
           "unique_named": true,
           "id": "topic_the_forties_entries",
           "name": "the entries from the forties",
+          "on_resolution": [
+            "res_take_the_book"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_07_res_trade_the_number",
+          "name": "Consequence of trade the number",
+          "on_resolution": [
+            "res_trade_the_number"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_07_res_take_the_book",
+          "name": "Consequence of take the book",
           "on_resolution": [
             "res_take_the_book"
           ]
@@ -626,12 +688,16 @@
             "world_flags": [
               "player_knows_the_gem_trade_cannot_account_for_the_curve",
               "archon_quay_friendly",
-              "nobody_at_archon_was_exposed"
+              "nobody_at_archon_was_exposed",
+              "quest_q_main_08_res_ask_the_crane_choice_recorded",
+              "quest_q_main_08_res_ask_the_crane_world_answered",
+              "quest_q_main_08_res_ask_the_crane_route_closed"
             ],
             "npc_disposition": {
               "archon-crane-crew": 25,
               "harbourmaster-cuiro-vaneth": 4,
-              "archon-bond-clerk": 6
+              "archon-bond-clerk": 6,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -663,10 +729,15 @@
               "player_knows_the_gem_trade_cannot_account_for_the_curve",
               "player_knows_the_blackwood_ring",
               "archon_store_entered_unseen",
-              "the_tide_house_does_not_know"
+              "the_tide_house_does_not_know",
+              "quest_q_main_08_res_enter_the_store_choice_recorded",
+              "quest_q_main_08_res_enter_the_store_world_answered",
+              "quest_q_main_08_res_enter_the_store_route_closed"
             ],
             "npc_disposition": {
-              "archon-crane-crew": -6
+              "archon-crane-crew": -6,
+              "harbourmaster-cuiro-vaneth": -3,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -702,12 +773,16 @@
               "player_knows_the_gem_trade_cannot_account_for_the_curve",
               "player_knows_the_blackwood_ring",
               "cuiro_is_the_players_asset",
-              "the_lead_seal_people_will_ask_cuiro_what_he_told"
+              "the_lead_seal_people_will_ask_cuiro_what_he_told",
+              "quest_q_main_08_res_lean_on_cuiro_choice_recorded",
+              "quest_q_main_08_res_lean_on_cuiro_world_answered",
+              "quest_q_main_08_res_lean_on_cuiro_route_closed"
             ],
             "npc_disposition": {
               "harbourmaster-cuiro-vaneth": -30,
               "archon-crane-crew": -10,
-              "prefect-galvus-arn": 6
+              "prefect-galvus-arn": 6,
+              "ee-vashum": 2
             }
           }
         }
@@ -798,6 +873,33 @@
           "unique_named": true,
           "id": "harbourmaster-cuiro-vaneth",
           "name": "a harbourmaster who is afraid of somebody else",
+          "on_resolution": [
+            "res_lean_on_cuiro"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_08_res_ask_the_crane",
+          "name": "Consequence of ask the crane",
+          "on_resolution": [
+            "res_ask_the_crane"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_08_res_enter_the_store",
+          "name": "Consequence of enter the store",
+          "on_resolution": [
+            "res_enter_the_store"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_08_res_lean_on_cuiro",
+          "name": "Consequence of lean on cuiro",
           "on_resolution": [
             "res_lean_on_cuiro"
           ]
@@ -893,6 +995,16 @@
             "fail_told_rell"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 40,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_hold_both",
+            "res_carry_the_copies"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -912,11 +1024,15 @@
             "world_flags": [
               "player_holds_both_arguments",
               "mandate_doubted_by_an_ally",
-              "the_argument_lives_only_where_it_was_made"
+              "the_argument_lives_only_where_it_was_made",
+              "quest_q_main_09_res_hold_both_choice_recorded",
+              "quest_q_main_09_res_hold_both_world_answered",
+              "quest_q_main_09_res_hold_both_route_closed"
             ],
             "npc_disposition": {
               "undersexton-bel-mourne": 8,
-              "ledgerer-hosk-vei": 6
+              "ledgerer-hosk-vei": 6,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -939,11 +1055,15 @@
               "player_holds_both_arguments",
               "mandate_doubted_by_an_ally",
               "player_carries_the_gapped_copies",
-              "the_gapped_copies_left_the_chapel"
+              "the_gapped_copies_left_the_chapel",
+              "quest_q_main_09_res_carry_the_copies_choice_recorded",
+              "quest_q_main_09_res_carry_the_copies_world_answered",
+              "quest_q_main_09_res_carry_the_copies_route_closed"
             ],
             "npc_disposition": {
               "undersexton-bel-mourne": 30,
-              "undersexton-aveline-rell": -12
+              "undersexton-aveline-rell": -12,
+              "notary-sedda-vell": -2
             }
           }
         }
@@ -1030,6 +1150,24 @@
           "unique_named": true,
           "id": "item_three_gapped_copies",
           "name": "three copies with the gap in them",
+          "on_resolution": [
+            "res_carry_the_copies"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_09_res_hold_both",
+          "name": "Consequence of hold both",
+          "on_resolution": [
+            "res_hold_both"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_09_res_carry_the_copies",
+          "name": "Consequence of carry the copies",
           "on_resolution": [
             "res_carry_the_copies"
           ]
@@ -1125,6 +1263,16 @@
             "fail_copied_it"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 50,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_hear_it_out",
+            "res_carry_the_letter"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -1149,10 +1297,14 @@
             "world_flags": [
               "player_has_read_the_stewards_letter",
               "the_letter_stayed_in_the_gallery",
-              "the_players_account_of_it_is_the_only_one"
+              "the_players_account_of_it_is_the_only_one",
+              "quest_q_main_10_res_hear_it_out_choice_recorded",
+              "quest_q_main_10_res_hear_it_out_world_answered",
+              "quest_q_main_10_res_hear_it_out_route_closed"
             ],
             "npc_disposition": {
-              "rootkeeper-ashul-tei": 8
+              "rootkeeper-ashul-tei": 8,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -1180,11 +1332,15 @@
               "player_has_read_the_stewards_letter",
               "player_carries_the_stewards_letter",
               "player_carries_ashul_teis_question",
-              "the_letter_can_be_shown_to_the_coast"
+              "the_letter_can_be_shown_to_the_coast",
+              "quest_q_main_10_res_carry_the_letter_choice_recorded",
+              "quest_q_main_10_res_carry_the_letter_world_answered",
+              "quest_q_main_10_res_carry_the_letter_route_closed"
             ],
             "npc_disposition": {
               "rootkeeper-ashul-tei": 25,
-              "rootkeeper-sesh-anaat": 8
+              "rootkeeper-sesh-anaat": 8,
+              "notary-sedda-vell": -2
             }
           }
         }
@@ -1266,6 +1422,24 @@
           "unique_named": true,
           "id": "item_the_stewards_letter",
           "name": "the Steward’s letter",
+          "on_resolution": [
+            "res_carry_the_letter"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_10_res_hear_it_out",
+          "name": "Consequence of hear it out",
+          "on_resolution": [
+            "res_hear_it_out"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_10_res_carry_the_letter",
+          "name": "Consequence of carry the letter",
           "on_resolution": [
             "res_carry_the_letter"
           ]

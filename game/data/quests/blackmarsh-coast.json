@@ -145,13 +145,17 @@
               "archon_guild_fined",
               "archon_vats_open",
               "archon_factor_teaches",
-              "archon_cough_continues"
+              "archon_cough_continues",
+              "quest_q_arch_01_res_report_choice_recorded",
+              "quest_q_arch_01_res_report_world_answered",
+              "quest_q_arch_01_res_report_route_closed"
             ],
             "locks": [
               "Q-ARCH-03"
             ],
             "npc_disposition": {
-              "dyer-sallis": -40
+              "dyer-sallis": -40,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -189,7 +193,10 @@
               "archon_apothecary_closed",
               "archon_dye_trade_ended",
               "archon_lichen_recovering",
-              "archon_three_households_left"
+              "archon_three_households_left",
+              "quest_q_arch_01_res_burn_choice_recorded",
+              "quest_q_arch_01_res_burn_world_answered",
+              "quest_q_arch_01_res_burn_route_closed"
             ],
             "locks": [
               "Q-ARCH-02",
@@ -197,7 +204,8 @@
             ],
             "npc_disposition": {
               "dyer-sallis": -100,
-              "apothecary-neen": -60
+              "apothecary-neen": -60,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -222,13 +230,17 @@
               "archon_silence_bought",
               "archon_beds_cleared",
               "archon_beggars_silent",
-              "archon_vats_open"
+              "archon_vats_open",
+              "quest_q_arch_01_res_bribe_choice_recorded",
+              "quest_q_arch_01_res_bribe_world_answered",
+              "quest_q_arch_01_res_bribe_route_closed"
             ],
             "locks": [
               "Q-ARCH-02"
             ],
             "npc_disposition": {
-              "dyer-sallis": 30
+              "dyer-sallis": 30,
+              "ee-vashum": 2
             }
           }
         }
@@ -321,6 +333,33 @@
           "on_resolution": [
             "res_report",
             "res_burn"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_arch_01_res_report",
+          "name": "Consequence of report",
+          "on_resolution": [
+            "res_report"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_arch_01_res_burn",
+          "name": "Consequence of burn",
+          "on_resolution": [
+            "res_burn"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_arch_01_res_bribe",
+          "name": "Consequence of bribe",
+          "on_resolution": [
+            "res_bribe"
           ]
         }
       ],
@@ -469,13 +508,17 @@
             "world_flags": [
               "soulrest_count_sealed",
               "assize_lease_file_opened",
-              "blackrose_lease_under_review"
+              "blackrose_lease_under_review",
+              "quest_q_soul_02_res_seal_choice_recorded",
+              "quest_q_soul_02_res_seal_world_answered",
+              "quest_q_soul_02_res_seal_route_closed"
             ],
             "unlocks": [
               "Q-BLAK-01"
             ],
             "npc_disposition": {
-              "undertaker-vaskh": 30
+              "undertaker-vaskh": 30,
+              "gideon-court-factor": 2
             }
           },
           "skill_id_note": "W1-ATTR-SCALE. Was `scribing: 40`, and there is no such skill — the register has nineteen and none of them is scribing. The gate looked the key up verbatim, found nothing, and reported `scribing 0/40` for as long as the game ran, so this non-violent exit was shut by a typo rather than by a difficulty. Re-pointed at `mercantile`, the register's ledger skill, which keeps this a clerk's route rather than converting it into a thief's."
@@ -504,14 +547,18 @@
             "world_flags": [
               "blackrose_register_corrected",
               "blackrose_lease_continues",
-              "player_known_to_the_garrison"
+              "player_known_to_the_garrison",
+              "quest_q_soul_02_res_prefect_choice_recorded",
+              "quest_q_soul_02_res_prefect_world_answered",
+              "quest_q_soul_02_res_prefect_route_closed"
             ],
             "locks": [
               "Q-BLAK-01",
               "Q-SOUL-04"
             ],
             "npc_disposition": {
-              "undertaker-vaskh": -70
+              "undertaker-vaskh": -70,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -534,13 +581,17 @@
             "world_flags": [
               "soulrest_count_destroyed",
               "blackrose_lease_continues",
-              "soulrest_court_ranks_closed"
+              "soulrest_court_ranks_closed",
+              "quest_q_soul_02_res_burn_count_choice_recorded",
+              "quest_q_soul_02_res_burn_count_world_answered",
+              "quest_q_soul_02_res_burn_count_route_closed"
             ],
             "locks": [
               "Q-SOUL-04"
             ],
             "npc_disposition": {
-              "undertaker-vaskh": -20
+              "undertaker-vaskh": -20,
+              "ee-vashum": 2
             }
           }
         },
@@ -556,7 +607,18 @@
           "journal_index": 97,
           "outcome": "The Drowned Court keeps its count in a ledger that is not supposed to leave the room. You hold it for as long as it takes to read a column, and then it is back on its hook.",
           "morally_better": null,
-          "added_by": "W1-15-r2"
+          "added_by": "W1-15-r2",
+          "consequences": {
+            "world_flags": [
+              "quest_q_soul_02_q_soul_02_steal_choice_recorded",
+              "quest_q_soul_02_q_soul_02_steal_world_answered",
+              "quest_q_soul_02_q_soul_02_steal_route_closed"
+            ],
+            "npc_disposition": {
+              "undertaker-vaskh": -3,
+              "rootkeeper-ashul-tei": -2
+            }
+          }
         }
       ],
       "failure_states": [
@@ -630,6 +692,42 @@
           "amount": 500,
           "on_resolution": [
             "res_prefect"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_soul_02_res_seal",
+          "name": "Consequence of seal",
+          "on_resolution": [
+            "res_seal"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_soul_02_res_prefect",
+          "name": "Consequence of prefect",
+          "on_resolution": [
+            "res_prefect"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_soul_02_res_burn_count",
+          "name": "Consequence of burn count",
+          "on_resolution": [
+            "res_burn_count"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_soul_02_q_soul_02_steal",
+          "name": "Consequence of q soul 02  steal",
+          "on_resolution": [
+            "q_soul_02__steal"
           ]
         }
       ],
@@ -770,14 +868,18 @@
             "world_flags": [
               "blackrose_lease_laundered",
               "blackrose_inspection_passed",
-              "archon_dres_supply_continues"
+              "archon_dres_supply_continues",
+              "quest_q_blak_01_res_fair_copy_choice_recorded",
+              "quest_q_blak_01_res_fair_copy_world_answered",
+              "quest_q_blak_01_res_fair_copy_route_closed"
             ],
             "locks": [
               "Q-BLAK-03"
             ],
             "npc_disposition": {
               "prefect-hallow": 35,
-              "clerk-meno": -30
+              "clerk-meno": -30,
+              "gideon-court-factor": 2
             }
           },
           "skill_id_note": "W1-ATTR-SCALE. Was `scribing: 35`, and there is no such skill — the register has nineteen and none of them is scribing. The gate looked the key up verbatim, found nothing, and reported `scribing 0/35` for as long as the game ran, so this non-violent exit was shut by a typo rather than by a difficulty. Re-pointed at `mercantile`, the register's ledger skill, which keeps this a clerk's route rather than converting it into a thief's."
@@ -815,7 +917,10 @@
               "blackrose_lease_suspended",
               "blackrose_prefect_recalled",
               "blackrose_four_hundred_held",
-              "archon_dres_supply_cut"
+              "archon_dres_supply_cut",
+              "quest_q_blak_01_res_smuggle_choice_recorded",
+              "quest_q_blak_01_res_smuggle_world_answered",
+              "quest_q_blak_01_res_smuggle_route_closed"
             ],
             "unlocks": [
               "Q-BLAK-03"
@@ -824,7 +929,8 @@
               "Q-BLAK-02"
             ],
             "npc_disposition": {
-              "prefect-hallow": -100
+              "prefect-hallow": -100,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -856,14 +962,18 @@
             "world_flags": [
               "blackrose_lease_laundered",
               "player_holds_the_sheets",
-              "blackrose_keep_open_to_player"
+              "blackrose_keep_open_to_player",
+              "quest_q_blak_01_res_hold_choice_recorded",
+              "quest_q_blak_01_res_hold_world_answered",
+              "quest_q_blak_01_res_hold_route_closed"
             ],
             "unlocks": [
               "Q-BLAK-02"
             ],
             "npc_disposition": {
               "prefect-hallow": -20,
-              "clerk-meno": 20
+              "clerk-meno": 20,
+              "ee-vashum": 2
             }
           },
           "attribute_scale_note": "W1-ATTR-SCALE. Was `personality: 45`. W1-ATTR-SCALE. Re-set from the MEASURED ceiling with reserve, not clamped to it. Attributes are earned only at +1 per multiple of 15 crossed in a governing skill (character/derive.js:359); the bought stream exists in engine.js _spendSouls() and is unfundable, because nothing in the build awards souls. So an attribute is worth `creation + 6 per governing skill` and no more, measured over 240 signatures in reports/faction-signature-sweep.json. The new value sits at or under `median ceiling - 2`; clamping to the ceiling itself is the zero-margin defect that shut Act IV for 11 of 40 signatures one point lower. Checked by tools/quests/attr-scale-audit.mjs."
@@ -880,7 +990,18 @@
           "journal_index": 95,
           "outcome": "The lease is in the strongroom and the strongroom is behind the counting floor, and the counting floor empties at the eleventh bell. You read it, you put it back, and you know what you know.",
           "morally_better": null,
-          "added_by": "W1-15-r2"
+          "added_by": "W1-15-r2",
+          "consequences": {
+            "world_flags": [
+              "quest_q_blak_01_q_blak_01_sneak_choice_recorded",
+              "quest_q_blak_01_q_blak_01_sneak_world_answered",
+              "quest_q_blak_01_q_blak_01_sneak_route_closed"
+            ],
+            "npc_disposition": {
+              "prefect-hallow": -3,
+              "rootkeeper-ashul-tei": -2
+            }
+          }
         }
       ],
       "failure_states": [
@@ -966,6 +1087,42 @@
           "on_resolution": [
             "res_smuggle",
             "res_hold"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_blak_01_res_fair_copy",
+          "name": "Consequence of fair copy",
+          "on_resolution": [
+            "res_fair_copy"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_blak_01_res_smuggle",
+          "name": "Consequence of smuggle",
+          "on_resolution": [
+            "res_smuggle"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_blak_01_res_hold",
+          "name": "Consequence of hold",
+          "on_resolution": [
+            "res_hold"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_blak_01_q_blak_01_sneak",
+          "name": "Consequence of q blak 01  sneak",
+          "on_resolution": [
+            "q_blak_01__sneak"
           ]
         }
       ],
@@ -1086,10 +1243,14 @@
             "world_flags": [
               "stormhold_quarter_still_shut",
               "stormhold_oil_delivered",
-              "ossei_unfound"
+              "ossei_unfound",
+              "quest_q_strm_01_res_crates_only_choice_recorded",
+              "quest_q_strm_01_res_crates_only_world_answered",
+              "quest_q_strm_01_res_crates_only_route_closed"
             ],
             "npc_disposition": {
-              "quartermaster-sedd": 20
+              "quartermaster-sedd": 20,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -1120,13 +1281,18 @@
             "world_flags": [
               "ossei_in_the_sprawl",
               "stormhold_quarter_still_shut",
-              "stormhold_flu_testimony_available"
+              "stormhold_flu_testimony_available",
+              "quest_q_strm_01_res_smuggle_out_choice_recorded",
+              "quest_q_strm_01_res_smuggle_out_world_answered",
+              "quest_q_strm_01_res_smuggle_out_route_closed"
             ],
             "unlocks": [
               "Q-STRM-03"
             ],
             "npc_disposition": {
-              "npc-ossei": 60
+              "npc-ossei": 60,
+              "quartermaster-sedd": -3,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -1154,14 +1320,18 @@
               "stormhold_quarter_reopened",
               "stormhold_hearing_called",
               "stormhold_sedd_reassigned",
-              "ossei_in_legion_custody"
+              "ossei_in_legion_custody",
+              "quest_q_strm_01_res_tell_sedd_choice_recorded",
+              "quest_q_strm_01_res_tell_sedd_world_answered",
+              "quest_q_strm_01_res_tell_sedd_route_closed"
             ],
             "locks": [
               "Q-STRM-03"
             ],
             "npc_disposition": {
               "quartermaster-sedd": -50,
-              "npc-ossei": -40
+              "npc-ossei": -40,
+              "ee-vashum": 2
             }
           }
         }
@@ -1237,6 +1407,33 @@
           "name": "the chalk hand",
           "on_resolution": [
             "res_smuggle_out",
+            "res_tell_sedd"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_strm_01_res_crates_only",
+          "name": "Consequence of crates only",
+          "on_resolution": [
+            "res_crates_only"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_strm_01_res_smuggle_out",
+          "name": "Consequence of smuggle out",
+          "on_resolution": [
+            "res_smuggle_out"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_strm_01_res_tell_sedd",
+          "name": "Consequence of tell sedd",
+          "on_resolution": [
             "res_tell_sedd"
           ]
         }
@@ -1370,13 +1567,17 @@
             "world_flags": [
               "lilmoth_charters_filed",
               "company_still_measuring",
-              "assize_company_file_opened"
+              "assize_company_file_opened",
+              "quest_q_lilm_01_res_assize_choice_recorded",
+              "quest_q_lilm_01_res_assize_world_answered",
+              "quest_q_lilm_01_res_assize_route_closed"
             ],
             "unlocks": [
               "Q-LILM-03"
             ],
             "npc_disposition": {
-              "harbourmistress-tesh": 25
+              "harbourmistress-tesh": 25,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -1412,14 +1613,21 @@
               "lilmoth_charters_taken_inside",
               "company_fifth_man_missing",
               "lilmoth_sapwell_open",
-              "assize_lilmoth_blind"
+              "assize_lilmoth_blind",
+              "quest_q_lilm_01_res_rootkeepers_choice_recorded",
+              "quest_q_lilm_01_res_rootkeepers_world_answered",
+              "quest_q_lilm_01_res_rootkeepers_route_closed"
             ],
             "locks": [
               "Q-LILM-03"
             ],
             "kills_npc": [
               "company-agent-fifth"
-            ]
+            ],
+            "npc_disposition": {
+              "harbourmistress-tesh": -3,
+              "notary-sedda-vell": -2
+            }
           }
         },
         {
@@ -1444,13 +1652,17 @@
               "lilmoth_charter_returned",
               "company_still_measuring",
               "company_knows_the_player",
-              "lilmoth_rootkeepers_closed"
+              "lilmoth_rootkeepers_closed",
+              "quest_q_lilm_01_res_sell_choice_recorded",
+              "quest_q_lilm_01_res_sell_world_answered",
+              "quest_q_lilm_01_res_sell_route_closed"
             ],
             "locks": [
               "Q-LILM-03"
             ],
             "npc_disposition": {
-              "harbourmistress-tesh": -50
+              "harbourmistress-tesh": -50,
+              "ee-vashum": 2
             }
           }
         }
@@ -1527,6 +1739,33 @@
           "on_resolution": [
             "res_assize",
             "res_rootkeepers"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_lilm_01_res_assize",
+          "name": "Consequence of assize",
+          "on_resolution": [
+            "res_assize"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_lilm_01_res_rootkeepers",
+          "name": "Consequence of rootkeepers",
+          "on_resolution": [
+            "res_rootkeepers"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_lilm_01_res_sell",
+          "name": "Consequence of sell",
+          "on_resolution": [
+            "res_sell"
           ]
         }
       ],
@@ -1654,13 +1893,17 @@
             "world_flags": [
               "sap_route_to_archon_open",
               "eleen_supplied",
-              "ixtu_vakh_trusts_player"
+              "ixtu_vakh_trusts_player",
+              "quest_q_sap_01_res_deliver_choice_recorded",
+              "quest_q_sap_01_res_deliver_world_answered",
+              "quest_q_sap_01_res_deliver_route_closed"
             ],
             "unlocks": [
               "Q-SAP-02"
             ],
             "npc_disposition": {
-              "cutter-neeth": 30
+              "cutter-neeth": 30,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -1687,14 +1930,18 @@
             "world_flags": [
               "eleen_told",
               "sap_route_to_archon_open",
-              "ixtu_vakh_closed_to_player"
+              "ixtu_vakh_closed_to_player",
+              "quest_q_sap_01_res_empty_choice_recorded",
+              "quest_q_sap_01_res_empty_world_answered",
+              "quest_q_sap_01_res_empty_route_closed"
             ],
             "locks": [
               "Q-SAP-02"
             ],
             "npc_disposition": {
               "npc-eleen": 20,
-              "cutter-neeth": -60
+              "cutter-neeth": -60,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -1726,14 +1973,18 @@
               "helstrom_sap_house_shut",
               "sap_route_to_archon_closed",
               "ixtu_vakh_closed_to_player",
-              "eleen_unsupplied"
+              "eleen_unsupplied",
+              "quest_q_sap_01_res_deep_kin_choice_recorded",
+              "quest_q_sap_01_res_deep_kin_world_answered",
+              "quest_q_sap_01_res_deep_kin_route_closed"
             ],
             "locks": [
               "Q-SAP-02",
               "Q-SAP-04"
             ],
             "npc_disposition": {
-              "cutter-neeth": -100
+              "cutter-neeth": -100,
+              "ee-vashum": 2
             }
           }
         }
@@ -1816,6 +2067,33 @@
           "name": "the wax mark",
           "on_resolution": [
             "res_empty",
+            "res_deep_kin"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_sap_01_res_deliver",
+          "name": "Consequence of deliver",
+          "on_resolution": [
+            "res_deliver"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_sap_01_res_empty",
+          "name": "Consequence of empty",
+          "on_resolution": [
+            "res_empty"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_sap_01_res_deep_kin",
+          "name": "Consequence of deep kin",
+          "on_resolution": [
             "res_deep_kin"
           ]
         }

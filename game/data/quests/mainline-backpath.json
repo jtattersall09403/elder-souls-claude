@@ -87,6 +87,16 @@
             "fail_stopped_at_seven"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 44,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_through_the_seventh",
+            "res_round_the_barrow"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -117,14 +127,18 @@
               "nine_wells_cold",
               "the_interior_will_not_have_the_player",
               "neeja_xul_will_not_speak_to_the_player",
-              "the_keepers_at_the_seventh_were_moved"
+              "the_keepers_at_the_seventh_were_moved",
+              "quest_q_main_29_res_through_the_seventh_choice_recorded",
+              "quest_q_main_29_res_through_the_seventh_world_answered",
+              "quest_q_main_29_res_through_the_seventh_route_closed"
             ],
             "unlocks": [
               "Q-MAIN-31"
             ],
             "npc_disposition": {
               "neeja-xul": -60,
-              "rootkeeper-sesh-anaat": -60
+              "rootkeeper-sesh-anaat": -60,
+              "gideon-court-factor": 2
             },
             "locks": [
               "Q-MAIN-18",
@@ -163,13 +177,18 @@
               "nine_wells_cold",
               "the_interior_will_not_have_the_player",
               "nobody_was_moved_at_the_seventh",
-              "six_more_days_under_the_barrow"
+              "six_more_days_under_the_barrow",
+              "quest_q_main_29_res_round_the_barrow_choice_recorded",
+              "quest_q_main_29_res_round_the_barrow_world_answered",
+              "quest_q_main_29_res_round_the_barrow_route_closed"
             ],
             "unlocks": [
               "Q-MAIN-31"
             ],
             "npc_disposition": {
-              "rootkeeper-sesh-anaat": -30
+              "rootkeeper-sesh-anaat": -30,
+              "neeja-xul": -3,
+              "notary-sedda-vell": -2
             },
             "locks": [
               "Q-MAIN-22"
@@ -213,7 +232,10 @@
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "the_backpath_was_taken"
         ]
@@ -247,6 +269,24 @@
           "unique_named": true,
           "id": "acc_the_route_under_the_barrow",
           "name": "the route under the barrow that is not a route",
+          "on_resolution": [
+            "res_round_the_barrow"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_29_res_through_the_seventh",
+          "name": "Consequence of through the seventh",
+          "on_resolution": [
+            "res_through_the_seventh"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_29_res_round_the_barrow",
+          "name": "Consequence of round the barrow",
           "on_resolution": [
             "res_round_the_barrow"
           ]
@@ -332,6 +372,16 @@
             "res_the_fourth_entry"
           ],
           "irreversible": false
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 50,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_carry_on",
+            "res_the_fourth_entry"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -357,13 +407,18 @@
               "the_mandate_is_void",
               "the_thread_is_severed",
               "the_player_carries_on_without_a_mandate",
-              "the_severance_is_written_after"
+              "the_severance_is_written_after",
+              "quest_q_main_30_res_carry_on_choice_recorded",
+              "quest_q_main_30_res_carry_on_world_answered",
+              "quest_q_main_30_res_carry_on_route_closed"
             ],
             "unlocks": [
               "Q-MAIN-31"
             ],
             "npc_disposition": {
-              "undersexton-bel-mourne": 15
+              "undersexton-bel-mourne": 15,
+              "ledgerer-hosk-vei": 3,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -392,11 +447,15 @@
               "the_thread_is_severed",
               "the_player_carries_on_without_a_mandate",
               "the_fourth_entry_is_written",
-              "the_severance_is_written_before"
+              "the_severance_is_written_before",
+              "quest_q_main_30_res_the_fourth_entry_choice_recorded",
+              "quest_q_main_30_res_the_fourth_entry_world_answered",
+              "quest_q_main_30_res_the_fourth_entry_route_closed"
             ],
             "npc_disposition": {
               "ledgerer-hosk-vei": 20,
-              "undersexton-aveline-rell": -10
+              "undersexton-aveline-rell": -10,
+              "notary-sedda-vell": -2
             }
           }
         }
@@ -431,7 +490,10 @@
         "never_revealed": true
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "severance_acknowledged"
         ]
@@ -459,6 +521,24 @@
           "unique_named": true,
           "id": "item_the_fourth_entry",
           "name": "the fourth entry, written before the descent",
+          "on_resolution": [
+            "res_the_fourth_entry"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_30_res_carry_on",
+          "name": "Consequence of carry on",
+          "on_resolution": [
+            "res_carry_on"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_30_res_the_fourth_entry",
+          "name": "Consequence of the fourth entry",
           "on_resolution": [
             "res_the_fourth_entry"
           ]
@@ -549,6 +629,17 @@
             "res_kill_him_below"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 40,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_drain_past_the_roots",
+            "res_shut_the_channels",
+            "res_kill_him_below"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -588,11 +679,16 @@
               "the_recension_is_still_unsettled",
               "the_doomed_world_persists",
               "gem_trade_collapsed",
-              "blackwood_company_left_the_province"
+              "blackwood_company_left_the_province",
+              "quest_q_main_31_res_drain_past_the_roots_choice_recorded",
+              "quest_q_main_31_res_drain_past_the_roots_world_answered",
+              "quest_q_main_31_res_drain_past_the_roots_route_closed"
             ],
             "npc_disposition": {
               "ixtu-meer": 10,
-              "rootkeeper-sesh-anaat": -60
+              "rootkeeper-sesh-anaat": -60,
+              "neeja-xul": 3,
+              "gideon-court-factor": 2
             },
             "locks": [
               "Q-MAIN-28"
@@ -634,11 +730,15 @@
               "bone_ladder_well_is_dead",
               "province_hatchings_recover_slowly",
               "the_court_is_discredited",
-              "the_recension_is_still_unsettled"
+              "the_recension_is_still_unsettled",
+              "quest_q_main_31_res_shut_the_channels_choice_recorded",
+              "quest_q_main_31_res_shut_the_channels_world_answered",
+              "quest_q_main_31_res_shut_the_channels_route_closed"
             ],
             "npc_disposition": {
               "neeja-xul": -20,
-              "keeper-teeja-lun": -30
+              "keeper-teeja-lun": -30,
+              "notary-sedda-vell": -2
             },
             "locks": [
               "Q-MAIN-28"
@@ -672,13 +772,18 @@
               "nobody_keeps_the_count",
               "the_court_is_destroyed",
               "the_doomed_world_persists",
-              "the_recension_is_still_unsettled"
+              "the_recension_is_still_unsettled",
+              "quest_q_main_31_res_kill_him_below_choice_recorded",
+              "quest_q_main_31_res_kill_him_below_world_answered",
+              "quest_q_main_31_res_kill_him_below_route_closed"
             ],
             "kills_npc": [
               "ixtu-meer"
             ],
             "npc_disposition": {
-              "gallery-intake-keepers": -40
+              "gallery-intake-keepers": -40,
+              "neeja-xul": 3,
+              "ee-vashum": 2
             },
             "locks": [
               "Q-MAIN-28",
@@ -717,7 +822,10 @@
         "never_revealed": true
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "the_main_quest_is_finished",
           "finished_on_the_backpath"
@@ -761,6 +869,33 @@
           "unique_named": true,
           "id": "topic_it_made_no_difference",
           "name": "it made no difference to anything at all",
+          "on_resolution": [
+            "res_kill_him_below"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_31_res_drain_past_the_roots",
+          "name": "Consequence of drain past the roots",
+          "on_resolution": [
+            "res_drain_past_the_roots"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_31_res_shut_the_channels",
+          "name": "Consequence of shut the channels",
+          "on_resolution": [
+            "res_shut_the_channels"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_31_res_kill_him_below",
+          "name": "Consequence of kill him below",
           "on_resolution": [
             "res_kill_him_below"
           ]
@@ -846,6 +981,16 @@
             "res_sit_at_the_well"
           ],
           "irreversible": false
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 40,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_walk_it",
+            "res_sit_at_the_well"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -868,11 +1013,16 @@
             "world_flags": [
               "aftermath_walked",
               "the_province_disagrees_about_what_happened",
-              "eighteen_days_of_walking_afterwards"
+              "eighteen_days_of_walking_afterwards",
+              "quest_q_main_32_res_walk_it_choice_recorded",
+              "quest_q_main_32_res_walk_it_world_answered",
+              "quest_q_main_32_res_walk_it_route_closed"
             ],
             "npc_disposition": {
               "ojal-weeth": 10,
-              "soulrest-sexton-on-duty": 6
+              "soulrest-sexton-on-duty": 6,
+              "keeper-teeja-lun": 3,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -894,11 +1044,15 @@
             "world_flags": [
               "aftermath_tasted",
               "the_player_knows_what_the_wells_do_now",
-              "the_player_knelt_at_the_ladder_afterwards"
+              "the_player_knelt_at_the_ladder_afterwards",
+              "quest_q_main_32_res_sit_at_the_well_choice_recorded",
+              "quest_q_main_32_res_sit_at_the_well_world_answered",
+              "quest_q_main_32_res_sit_at_the_well_route_closed"
             ],
             "npc_disposition": {
               "keeper-teeja-lun": 20,
-              "keeper-ei-vashan": 10
+              "keeper-ei-vashan": 10,
+              "notary-sedda-vell": -2
             }
           }
         }
@@ -961,6 +1115,24 @@
           "unique_named": true,
           "id": "topic_whether_i_would_do_it_again",
           "name": "whether I would do it again",
+          "on_resolution": [
+            "res_sit_at_the_well"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_32_res_walk_it",
+          "name": "Consequence of walk it",
+          "on_resolution": [
+            "res_walk_it"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_32_res_sit_at_the_well",
+          "name": "Consequence of sit at the well",
           "on_resolution": [
             "res_sit_at_the_well"
           ]

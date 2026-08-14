@@ -151,11 +151,14 @@
             "world_flags": [
               "rell_kept_the_player_on",
               "ravano_still_unnamed",
-              "the_road_was_reported_quiet"
+              "the_road_was_reported_quiet",
+              "quest_q_main_01_res_carry_choice_recorded",
+              "quest_q_main_01_res_carry_world_answered",
+              "quest_q_main_01_res_carry_route_closed"
             ],
             "npc_disposition": {
               "undersexton-aveline-rell": 8,
-              "gideon-court-factor": 10
+              "gideon-court-factor": 2
             }
           }
         },
@@ -184,13 +187,17 @@
               "ravano_named_to_the_court",
               "rell_kept_the_player_on",
               "ledger_window_into_the_court_closed",
-              "the_court_knows_who_reads_its_books"
+              "the_court_knows_who_reads_its_books",
+              "quest_q_main_01_res_name_him_choice_recorded",
+              "quest_q_main_01_res_name_him_world_answered",
+              "quest_q_main_01_res_name_him_route_closed"
             ],
             "npc_disposition": {
               "undersexton-aveline-rell": 15,
               "sedd-ravano": -40,
               "gideon-court-factor": 6,
-              "soulrest-customs-clerk": 6
+              "soulrest-customs-clerk": 6,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -223,13 +230,17 @@
               "player_on_ravano_payroll",
               "rell_suspects_the_player",
               "rell_kept_the_player_on",
-              "the_ledger_keeps_its_window"
+              "the_ledger_keeps_its_window",
+              "quest_q_main_01_res_double_choice_recorded",
+              "quest_q_main_01_res_double_world_answered",
+              "quest_q_main_01_res_double_route_closed"
             ],
             "npc_disposition": {
               "sedd-ravano": 30,
               "undersexton-aveline-rell": -10,
               "gideon-court-factor": -20,
-              "bone-ladder-carter": -8
+              "bone-ladder-carter": -8,
+              "ee-vashum": 2
             }
           }
         },
@@ -254,13 +265,17 @@
               "player_refused_the_bait",
               "rell_kept_the_player_on",
               "rell_gives_worse_errands_and_better_information",
-              "ravano_still_unnamed"
+              "ravano_still_unnamed",
+              "quest_q_main_01_res_refuse_bait_choice_recorded",
+              "quest_q_main_01_res_refuse_bait_world_answered",
+              "quest_q_main_01_res_refuse_bait_route_closed"
             ],
             "npc_disposition": {
               "undersexton-aveline-rell": 12,
               "sedd-ravano": 10,
               "gideon-court-factor": 4,
-              "gideon-quay-porter": 8
+              "gideon-quay-porter": 8,
+              "rootkeeper-ashul-tei": -2
             }
           }
         }
@@ -393,6 +408,42 @@
           "on_resolution": [
             "res_refuse_bait"
           ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_01_res_carry",
+          "name": "Consequence of carry",
+          "on_resolution": [
+            "res_carry"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_01_res_name_him",
+          "name": "Consequence of name him",
+          "on_resolution": [
+            "res_name_him"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_01_res_double",
+          "name": "Consequence of double",
+          "on_resolution": [
+            "res_double"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_01_res_refuse_bait",
+          "name": "Consequence of refuse bait",
+          "on_resolution": [
+            "res_refuse_bait"
+          ]
         }
       ],
       "notes": "Act I quest 1. The geography quest RI-QST06 §B requires: its real purpose is four days of road between two settlements with prose wayfinding and no destination that is not a place. Stakes 2. The antagonist is not present in any form yet."
@@ -481,6 +532,17 @@
             "res_count_and_tell"
           ],
           "irreversible": false
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 45,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_count_plain",
+            "res_count_and_tell",
+            "res_count_to_sexton"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -503,11 +565,15 @@
             "world_flags": [
               "boxes_counted_plain",
               "the_mortuary_count_stayed_in_the_mortuary",
-              "soulrest_court_book_unchanged"
+              "soulrest_court_book_unchanged",
+              "quest_q_main_02_res_count_plain_choice_recorded",
+              "quest_q_main_02_res_count_plain_world_answered",
+              "quest_q_main_02_res_count_plain_route_closed"
             ],
             "npc_disposition": {
               "ojal-weeth": -10,
-              "undersexton-aveline-rell": 4
+              "undersexton-aveline-rell": 4,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -535,13 +601,17 @@
             "world_flags": [
               "boxes_counted_true",
               "court_archive_open_to_player",
-              "rell_knows_the_book_is_four_years_wrong"
+              "rell_knows_the_book_is_four_years_wrong",
+              "quest_q_main_02_res_count_and_tell_choice_recorded",
+              "quest_q_main_02_res_count_and_tell_world_answered",
+              "quest_q_main_02_res_count_and_tell_route_closed"
             ],
             "npc_disposition": {
               "undersexton-aveline-rell": 15,
               "ojal-weeth": 10,
               "soulrest-sexton-on-duty": -6,
-              "ledgerer-hosk-vei": 10
+              "ledgerer-hosk-vei": 10,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -565,13 +635,17 @@
               "boxes_counted_to_the_mortuary",
               "soulrest_mortuary_favours_player",
               "court_archive_open_to_player",
-              "the_counting_house_must_ask_the_mortuary"
+              "the_counting_house_must_ask_the_mortuary",
+              "quest_q_main_02_res_count_to_sexton_choice_recorded",
+              "quest_q_main_02_res_count_to_sexton_world_answered",
+              "quest_q_main_02_res_count_to_sexton_route_closed"
             ],
             "npc_disposition": {
               "undersexton-aveline-rell": -12,
               "ojal-weeth": 25,
               "soulrest-sexton-on-duty": 25,
-              "undersexton-bel-mourne": 12
+              "undersexton-bel-mourne": 12,
+              "ee-vashum": 2
             }
           }
         }
@@ -676,6 +750,33 @@
           "amount": 40,
           "id": "gold_sexton_trouble",
           "name": "forty for the trouble",
+          "on_resolution": [
+            "res_count_to_sexton"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_02_res_count_plain",
+          "name": "Consequence of count plain",
+          "on_resolution": [
+            "res_count_plain"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_02_res_count_and_tell",
+          "name": "Consequence of count and tell",
+          "on_resolution": [
+            "res_count_and_tell"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_02_res_count_to_sexton",
+          "name": "Consequence of count to sexton",
           "on_resolution": [
             "res_count_to_sexton"
           ]
@@ -816,12 +917,16 @@
             "world_flags": [
               "court_knows_the_wells_drain",
               "shaft_under_the_bone_ladder_known",
-              "the_court_will_send_a_rootkeeper"
+              "the_court_will_send_a_rootkeeper",
+              "quest_q_main_03_res_report_drain_choice_recorded",
+              "quest_q_main_03_res_report_drain_world_answered",
+              "quest_q_main_03_res_report_drain_route_closed"
             ],
             "npc_disposition": {
               "undersexton-aveline-rell": 10,
               "keeper-teeja-lun": -6,
-              "ledgerer-hosk-vei": 10
+              "ledgerer-hosk-vei": 10,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -845,11 +950,15 @@
             "world_flags": [
               "bone_ladder_keeper_protected",
               "court_told_the_well_simply_failed",
-              "the_coast_keepers_trust_the_player"
+              "the_coast_keepers_trust_the_player",
+              "quest_q_main_03_res_report_failure_choice_recorded",
+              "quest_q_main_03_res_report_failure_world_answered",
+              "quest_q_main_03_res_report_failure_route_closed"
             ],
             "npc_disposition": {
               "keeper-teeja-lun": 30,
-              "undersexton-aveline-rell": -6
+              "undersexton-aveline-rell": -6,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -881,12 +990,16 @@
               "player_cut_a_well_without_leave",
               "bone_ladder_well_gave_once",
               "shaft_under_the_bone_ladder_known",
-              "the_cutters_have_heard_of_the_player"
+              "the_cutters_have_heard_of_the_player",
+              "quest_q_main_03_res_widen_choice_recorded",
+              "quest_q_main_03_res_widen_world_answered",
+              "quest_q_main_03_res_widen_route_closed"
             ],
             "npc_disposition": {
               "keeper-teeja-lun": -20,
               "neeja-xul": 20,
-              "undersexton-aveline-rell": -4
+              "undersexton-aveline-rell": -4,
+              "ee-vashum": 2
             }
           }
         }
@@ -989,6 +1102,33 @@
           "on_resolution": [
             "res_widen"
           ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_03_res_report_drain",
+          "name": "Consequence of report drain",
+          "on_resolution": [
+            "res_report_drain"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_03_res_report_failure",
+          "name": "Consequence of report failure",
+          "on_resolution": [
+            "res_report_failure"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_03_res_widen",
+          "name": "Consequence of widen",
+          "on_resolution": [
+            "res_widen"
+          ]
         }
       ],
       "notes": "Act I quest 3. Stakes 3. First contact with the engine, still nameless: worked stone under the road that the keepers have decided not to look at. The shaft found here is the road the player walks down in Act III."
@@ -1073,6 +1213,19 @@
             "res_no_name"
           ],
           "irreversible": false
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 20,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_ledger",
+            "res_deepkin",
+            "res_assize",
+            "res_dockhands",
+            "res_no_name"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -1089,8 +1242,15 @@
               "the_wet_ledger": 4
             },
             "world_flags": [
-              "player_took_a_ledger_name"
-            ]
+              "player_took_a_ledger_name",
+              "quest_q_main_04_res_ledger_choice_recorded",
+              "quest_q_main_04_res_ledger_world_answered",
+              "quest_q_main_04_res_ledger_route_closed"
+            ],
+            "npc_disposition": {
+              "undersexton-aveline-rell": 3,
+              "gideon-court-factor": 2
+            }
           }
         },
         {
@@ -1106,8 +1266,15 @@
               "the_xul_aneekh": 4
             },
             "world_flags": [
-              "player_took_a_deepkin_name"
-            ]
+              "player_took_a_deepkin_name",
+              "quest_q_main_04_res_deepkin_choice_recorded",
+              "quest_q_main_04_res_deepkin_world_answered",
+              "quest_q_main_04_res_deepkin_route_closed"
+            ],
+            "npc_disposition": {
+              "undersexton-aveline-rell": -3,
+              "notary-sedda-vell": -2
+            }
           }
         },
         {
@@ -1124,8 +1291,15 @@
               "the_drowned_court": -4
             },
             "world_flags": [
-              "player_took_an_assize_name"
-            ]
+              "player_took_an_assize_name",
+              "quest_q_main_04_res_assize_choice_recorded",
+              "quest_q_main_04_res_assize_world_answered",
+              "quest_q_main_04_res_assize_route_closed"
+            ],
+            "npc_disposition": {
+              "undersexton-aveline-rell": 3,
+              "ee-vashum": 2
+            }
           }
         },
         {
@@ -1142,8 +1316,15 @@
               "the_wet_ledger": -4
             },
             "world_flags": [
-              "player_took_a_dockhand_name"
-            ]
+              "player_took_a_dockhand_name",
+              "quest_q_main_04_res_dockhands_choice_recorded",
+              "quest_q_main_04_res_dockhands_world_answered",
+              "quest_q_main_04_res_dockhands_route_closed"
+            ],
+            "npc_disposition": {
+              "undersexton-aveline-rell": -3,
+              "rootkeeper-ashul-tei": -2
+            }
           }
         },
         {
@@ -1160,8 +1341,15 @@
             },
             "world_flags": [
               "player_took_no_name",
-              "act_iv_leverage_must_be_bought"
-            ]
+              "act_iv_leverage_must_be_bought",
+              "quest_q_main_04_res_no_name_choice_recorded",
+              "quest_q_main_04_res_no_name_world_answered",
+              "quest_q_main_04_res_no_name_route_closed"
+            ],
+            "npc_disposition": {
+              "undersexton-aveline-rell": 3,
+              "prefect-hallow": 2
+            }
           }
         }
       ],
@@ -1191,6 +1379,51 @@
           "unique_named": true,
           "id": "topic_what_a_name_costs_later",
           "name": "what a name costs later"
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_04_res_ledger",
+          "name": "Consequence of ledger",
+          "on_resolution": [
+            "res_ledger"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_04_res_deepkin",
+          "name": "Consequence of deepkin",
+          "on_resolution": [
+            "res_deepkin"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_04_res_assize",
+          "name": "Consequence of assize",
+          "on_resolution": [
+            "res_assize"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_04_res_dockhands",
+          "name": "Consequence of dockhands",
+          "on_resolution": [
+            "res_dockhands"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_04_res_no_name",
+          "name": "Consequence of no name",
+          "on_resolution": [
+            "res_no_name"
+          ]
         }
       ],
       "notes": "Act I quest 4. RI-QST06 §B: 'the player is told to join a faction for cover'. Every resolution including refusal is a win with its own cost; nothing in this quest or anywhere in the mainline sets rank_gate, because faction membership is leverage in Act IV and never a wall. can_fail is false, which the census permits at this rate."
@@ -1312,11 +1545,15 @@
               "player_is_the_tally_reader",
               "recension_unquestioned_in_chapter",
               "court_backs_the_mandate_whole",
-              "the_sextons_use_the_word_without_qualifying_it"
+              "the_sextons_use_the_word_without_qualifying_it",
+              "quest_q_main_05_res_accept_quietly_choice_recorded",
+              "quest_q_main_05_res_accept_quietly_world_answered",
+              "quest_q_main_05_res_accept_quietly_route_closed"
             ],
             "npc_disposition": {
               "undersexton-aveline-rell": 20,
-              "undersexton-bel-mourne": -20
+              "undersexton-bel-mourne": -20,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -1344,11 +1581,16 @@
               "player_is_the_tally_reader",
               "recension_doubted_in_chapter",
               "court_split_on_the_mandate",
-              "two_sextons_who_never_liked_the_recension_are_allies"
+              "two_sextons_who_never_liked_the_recension_are_allies",
+              "quest_q_main_05_res_say_the_ink_choice_recorded",
+              "quest_q_main_05_res_say_the_ink_world_answered",
+              "quest_q_main_05_res_say_the_ink_route_closed"
             ],
             "npc_disposition": {
               "ledgerer-hosk-vei": -25,
-              "undersexton-bel-mourne": 25
+              "undersexton-bel-mourne": 25,
+              "undersexton-aveline-rell": -3,
+              "notary-sedda-vell": -2
             }
           }
         }
@@ -1432,6 +1674,24 @@
           "unique_named": true,
           "id": "undersexton-bel-mourne",
           "name": "the sextons who never liked the Recension",
+          "on_resolution": [
+            "res_say_the_ink"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_05_res_accept_quietly",
+          "name": "Consequence of accept quietly",
+          "on_resolution": [
+            "res_accept_quietly"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_05_res_say_the_ink",
+          "name": "Consequence of say the ink",
           "on_resolution": [
             "res_say_the_ink"
           ]

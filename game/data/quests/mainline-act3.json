@@ -125,10 +125,14 @@
             "world_flags": [
               "player_has_stood_on_the_gallery",
               "the_machine_is_known_to_be_running",
-              "the_gallery_is_on_a_strangers_word"
+              "the_gallery_is_on_a_strangers_word",
+              "quest_q_main_11_res_walk_it_choice_recorded",
+              "quest_q_main_11_res_walk_it_world_answered",
+              "quest_q_main_11_res_walk_it_route_closed"
             ],
             "npc_disposition": {
-              "undersexton-aveline-rell": 6
+              "undersexton-aveline-rell": 6,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -156,12 +160,16 @@
               "the_machine_is_known_to_be_running",
               "sarns_book_recovered",
               "soulrest_mortuary_owes_the_player",
-              "ivo_sarn_is_buried"
+              "ivo_sarn_is_buried",
+              "quest_q_main_11_res_bring_sarn_up_choice_recorded",
+              "quest_q_main_11_res_bring_sarn_up_world_answered",
+              "quest_q_main_11_res_bring_sarn_up_route_closed"
             ],
             "npc_disposition": {
               "ojal-weeth": 30,
               "undersexton-aveline-rell": 10,
-              "soulrest-sexton-on-duty": 15
+              "soulrest-sexton-on-duty": 15,
+              "notary-sedda-vell": -2
             }
           }
         }
@@ -248,6 +256,24 @@
           "unique_named": true,
           "id": "ojal-weeth",
           "name": "the Soulrest mortuary",
+          "on_resolution": [
+            "res_bring_sarn_up"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_11_res_walk_it",
+          "name": "Consequence of walk it",
+          "on_resolution": [
+            "res_walk_it"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_11_res_bring_sarn_up",
+          "name": "Consequence of bring sarn up",
           "on_resolution": [
             "res_bring_sarn_up"
           ]
@@ -346,6 +372,17 @@
             "res_arithmetic"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 50,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_full_test",
+            "res_short_test",
+            "res_arithmetic"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -374,14 +411,19 @@
               "sesh_weth_died_untaken",
               "player_proved_the_wells_drink_the_overflow",
               "player_named_in_the_mortuary_book",
-              "the_proof_is_unarguable"
+              "the_proof_is_unarguable",
+              "quest_q_main_12_res_full_test_choice_recorded",
+              "quest_q_main_12_res_full_test_world_answered",
+              "quest_q_main_12_res_full_test_route_closed"
             ],
             "kills_npc": [
               "npc-sesh-weth"
             ],
             "npc_disposition": {
               "ojal-weeth": -25,
-              "keeper-teeja-lun": -15
+              "keeper-teeja-lun": -15,
+              "undersexton-aveline-rell": 3,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -413,11 +455,16 @@
               "throttle_test_partial",
               "player_proved_the_wells_drink_the_overflow",
               "nobody_died_in_the_throttle_test",
-              "the_proof_is_partial"
+              "the_proof_is_partial",
+              "quest_q_main_12_res_short_test_choice_recorded",
+              "quest_q_main_12_res_short_test_world_answered",
+              "quest_q_main_12_res_short_test_route_closed"
             ],
             "npc_disposition": {
               "undersexton-bel-mourne": 20,
-              "keeper-teeja-lun": 6
+              "keeper-teeja-lun": 6,
+              "undersexton-aveline-rell": -3,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -450,11 +497,16 @@
               "player_proved_the_wells_drink_the_overflow",
               "nobody_died_in_the_throttle_test",
               "proof_is_arithmetic_only",
-              "the_proof_persuades_only_readers"
+              "the_proof_persuades_only_readers",
+              "quest_q_main_12_res_arithmetic_choice_recorded",
+              "quest_q_main_12_res_arithmetic_world_answered",
+              "quest_q_main_12_res_arithmetic_route_closed"
             ],
             "npc_disposition": {
               "ledgerer-hosk-vei": 25,
-              "keeper-teeja-lun": 10
+              "keeper-teeja-lun": 10,
+              "undersexton-aveline-rell": 3,
+              "ee-vashum": 2
             }
           }
         }
@@ -495,7 +547,10 @@
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "the_wells_and_the_machine_are_one_system"
         ],
@@ -535,6 +590,33 @@
           "unique_named": true,
           "id": "item_sarns_flow_tables",
           "name": "Sarn’s flow tables, worked through",
+          "on_resolution": [
+            "res_arithmetic"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_12_res_full_test",
+          "name": "Consequence of full test",
+          "on_resolution": [
+            "res_full_test"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_12_res_short_test",
+          "name": "Consequence of short test",
+          "on_resolution": [
+            "res_short_test"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_12_res_arithmetic",
+          "name": "Consequence of arithmetic",
           "on_resolution": [
             "res_arithmetic"
           ]
@@ -633,6 +715,16 @@
             "fail_refused_the_basin"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 60,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_go_in",
+            "res_make_him_say_it"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -656,10 +748,14 @@
               "player_reissue_is_degraded",
               "the_count_answers_the_players_hand",
               "irreversible_mark_taken",
-              "the_cost_was_stated_and_one_term_left_out"
+              "the_cost_was_stated_and_one_term_left_out",
+              "quest_q_main_13_res_go_in_choice_recorded",
+              "quest_q_main_13_res_go_in_world_answered",
+              "quest_q_main_13_res_go_in_route_closed"
             ],
             "npc_disposition": {
-              "ledgerer-hosk-vei": 10
+              "ledgerer-hosk-vei": 10,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -692,12 +788,16 @@
               "the_count_answers_the_players_hand",
               "irreversible_mark_taken",
               "hosk_vei_said_the_whole_cost",
-              "the_court_cannot_claim_the_player_was_not_told"
+              "the_court_cannot_claim_the_player_was_not_told",
+              "quest_q_main_13_res_make_him_say_it_choice_recorded",
+              "quest_q_main_13_res_make_him_say_it_world_answered",
+              "quest_q_main_13_res_make_him_say_it_route_closed"
             ],
             "npc_disposition": {
               "ledgerer-hosk-vei": -20,
               "undersexton-bel-mourne": 20,
-              "undersexton-aveline-rell": -8
+              "undersexton-aveline-rell": -8,
+              "notary-sedda-vell": -2
             }
           }
         }
@@ -738,7 +838,10 @@
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "act_three_pivot_passed"
         ],
@@ -775,6 +878,24 @@
           "unique_named": true,
           "id": "undersexton-bel-mourne-witness",
           "name": "a witness who heard the whole cost said",
+          "on_resolution": [
+            "res_make_him_say_it"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_13_res_go_in",
+          "name": "Consequence of go in",
+          "on_resolution": [
+            "res_go_in"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_13_res_make_him_say_it",
+          "name": "Consequence of make him say it",
           "on_resolution": [
             "res_make_him_say_it"
           ]
@@ -863,6 +984,16 @@
             "fail_drowned_for_it"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 48,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_take_the_skei",
+            "res_give_it_back"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -886,7 +1017,10 @@
               "player_holds_the_skei",
               "backpath_open",
               "the_knife_is_out_of_the_yard",
-              "the_decision_is_the_players"
+              "the_decision_is_the_players",
+              "quest_q_main_14_res_take_the_skei_choice_recorded",
+              "quest_q_main_14_res_take_the_skei_world_answered",
+              "quest_q_main_14_res_take_the_skei_route_closed"
             ],
             "unlocks": [
               "Q-MAIN-29"
@@ -894,7 +1028,8 @@
             "npc_disposition": {
               "neeja-xul": -10,
               "rootkeeper-sesh-anaat": -12,
-              "keeper-teeja-lun": -10
+              "keeper-teeja-lun": -10,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -918,12 +1053,16 @@
               "skei_returned_to_neeja_xul",
               "backpath_available_on_request",
               "the_knife_is_in_her_hand",
-              "the_yard_owes_the_player"
+              "the_yard_owes_the_player",
+              "quest_q_main_14_res_give_it_back_choice_recorded",
+              "quest_q_main_14_res_give_it_back_world_answered",
+              "quest_q_main_14_res_give_it_back_route_closed"
             ],
             "npc_disposition": {
               "neeja-xul": 30,
               "rootkeeper-sesh-anaat": 10,
-              "blackrose-yard-hands": 15
+              "blackrose-yard-hands": 15,
+              "notary-sedda-vell": -2
             }
           }
         }
@@ -1004,6 +1143,24 @@
           "unique_named": true,
           "id": "topic_where_the_route_starts",
           "name": "where the route under the Court starts",
+          "on_resolution": [
+            "res_give_it_back"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_14_res_take_the_skei",
+          "name": "Consequence of take the skei",
+          "on_resolution": [
+            "res_take_the_skei"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_14_res_give_it_back",
+          "name": "Consequence of give it back",
           "on_resolution": [
             "res_give_it_back"
           ]
@@ -1098,6 +1255,16 @@
             "res_keep_the_fourth"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 60,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_heard_it",
+            "res_keep_the_fourth"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -1122,10 +1289,14 @@
             "world_flags": [
               "the_hist_has_spoken_plainly",
               "no_authority_will_adjudicate",
-              "the_fourth_sentence_is_only_in_the_players_head"
+              "the_fourth_sentence_is_only_in_the_players_head",
+              "quest_q_main_15_res_heard_it_choice_recorded",
+              "quest_q_main_15_res_heard_it_world_answered",
+              "quest_q_main_15_res_heard_it_route_closed"
             ],
             "npc_disposition": {
-              "rootkeeper-sesh-anaat": 8
+              "rootkeeper-sesh-anaat": 8,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -1155,11 +1326,15 @@
               "no_authority_will_adjudicate",
               "player_holds_a_keepers_name",
               "fourth_sentence_kept",
-              "the_interior_will_open_to_a_keepers_name"
+              "the_interior_will_open_to_a_keepers_name",
+              "quest_q_main_15_res_keep_the_fourth_choice_recorded",
+              "quest_q_main_15_res_keep_the_fourth_world_answered",
+              "quest_q_main_15_res_keep_the_fourth_route_closed"
             ],
             "npc_disposition": {
               "rootkeeper-sesh-anaat": 35,
-              "rootkeeper-ashul-tei": 12
+              "rootkeeper-ashul-tei": 12,
+              "notary-sedda-vell": -2
             }
           }
         }
@@ -1200,7 +1375,10 @@
         "never_revealed": true
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "act_three_closed"
         ],
@@ -1247,6 +1425,24 @@
           "unique_named": true,
           "id": "svc_thorn_answers_for_you",
           "name": "the keeper of Thorn answers for you",
+          "on_resolution": [
+            "res_keep_the_fourth"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_15_res_heard_it",
+          "name": "Consequence of heard it",
+          "on_resolution": [
+            "res_heard_it"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_15_res_keep_the_fourth",
+          "name": "Consequence of keep the fourth",
           "on_resolution": [
             "res_keep_the_fourth"
           ]
