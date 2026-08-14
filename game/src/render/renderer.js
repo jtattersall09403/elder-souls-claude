@@ -119,7 +119,13 @@ export class Renderer {
     this.waterReflectionCamera=new THREE.PerspectiveCamera(60,canvas.width/canvas.height,.1,6400);
     this.waterReflectionFrame=-99;
     this.waterReflectionFocus=new THREE.Vector3(Infinity,Infinity,Infinity);
-    this.quality = { postprocess:true, ao:true, antialias:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true, waterReflection:true, interiorDressing:true };
+    // W1-30A. `msaa`, `grade` and `dither` join the sabotage surface: each is one of this piece's
+    // changes and each must be provably switchable, because "a pass whose off-switch does not
+    // change pixels" is a hard fail in the plan. `antialias` keeps its old name and now means the
+    // POST edge pass (FXAA); `msaa` is the multisampled world target, which is a different thing
+    // and has to be togglable separately or neither can be measured.
+    this.quality = { postprocess:true, ao:true, antialias:true, msaa:true, grade:true, dither:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true, waterReflection:true, interiorDressing:true };
+    this.qualityTier = 'high';
     // W1-30S seam: renderer.registerPrePass(fn) — H's vfx prepass and water reflection register
     // here (future owner: W1-30H). This commit's own water-reflection pass is the first live
     // registrant; A owns the call order in render(), H owns the pass body.

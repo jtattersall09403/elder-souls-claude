@@ -25,6 +25,6 @@
     "gpu:doctor": "node tools/runpod/cli.mjs doctor",
     "gpu:test": "node tools/runpod/cli.mjs run",
     "gpu:cleanup": "node tools/runpod/cli.mjs cleanup",
-    "gpu:selftest": "node --test tools/runpod/test/*.test.mjs"
+    "gpu:selftest": "node --test tools/runpod/test/*.test.mjs && node tools/runpod/cli.mjs selftest"
   }
 }

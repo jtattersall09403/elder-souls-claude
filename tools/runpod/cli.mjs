@@ -1,4 +1,37 @@
 #!/usr/bin/env node
+// Elder Souls GPU runner — real hardware rendering, on a rented Pod, from this container.
+//
+// THE WORKING PATH, so nobody loses an hour rediscovering it:
+//
+//   node tools/runpod/cli.mjs run --max-runtime 35
+//   node tools/runpod/cli.mjs run --no-bootstrap --max-runtime 12 --command 'nvidia-smi'
+//   node tools/runpod/cli.mjs cleanup        # safe: only this agent's Pods
+//   node tools/runpod/cli.mjs selftest       # 15 arms, no network, no spend
+//
+// Verified 2026-08-14: NVIDIA RTX A4500, driver 570.195.03, $0.25/hr, evidence back in 57 seconds
+// including provisioning and teardown; and the game itself rendering on an RTX A5000 under
+// ANGLE/Vulkan, not SwiftShader.
+//
+// TRANSPORT. SSH does not work from this container and cannot be made to: raw outbound TCP is
+// blocked, and the agent proxy's CONNECT re-terminates TLS while SSH is not TLS, so the handshake
+// dies at kex_exchange_identification. Do not add a wildcard SSH config (it would affect every
+// other agent on the box) and never disable TLS verification or unset HTTPS_PROXY.
+// What works is ordinary HTTPS: RunPod publishes each Pod's HTTP ports at
+// https://<podId>-<port>.proxy.runpod.net, which is plain TLS on 443 and passes the egress policy.
+// The Pod therefore runs worker/agent.py — a stdlib control agent behind a per-run bearer token —
+// and the whole run (upload snapshot, execute, retrieve frames as one tar) happens over HTTPS.
+// --transport ssh keeps the old path for any environment where raw TCP works.
+//
+// TWO PREREQUISITES, both handled here rather than documented as traps. Node's global fetch
+// ignores HTTPS_PROXY, which makes every RunPod API call fail with "403 Host not in allowlist";
+// this CLI re-executes itself with NODE_USE_ENV_PROXY=1. And openssh-client is only needed for
+// --transport ssh, which this container cannot use anyway.
+//
+// CLEANUP IS OWNER-SCOPED. Several agents share this account. A bare cleanup used to terminate
+// every managed Pod and on 2026-08-14 it killed another agent's live Pod mid-capture. Ownership
+// now travels in the RunPod resource name (RUNPOD_OWNER, else CLAUDE_CODE_SESSION_ID), so it
+// survives a container restart: bare cleanup touches only your own Pods, --all refuses unless
+// --yes, and --older-than <min> is the safe way to sweep orphans of a dead agent.
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -69,11 +102,22 @@ RUN OPTIONS
   --include <path>       Add a repo-relative path to the default snapshot; repeatable
   --only-path <path>     Replace default snapshot paths; repeatable
   --artifact-dir <path>  Local run directory (default: reports/runpod-gpu/runs/<run-id>)
-  --ssh-key <path>       Private key (default: inject a per-run ephemeral key)
+  --ssh-key <path>       Private key, --transport ssh only
+  --transport <kind>     http (default; HTTPS via <podId>-<port>.proxy.runpod.net) or ssh
+  --agent-port <port>    Pod-side agent port for the http transport (default 8888)
+  --no-bootstrap         Run the command directly instead of installing Node/Playwright first
 
 The run command requires RUNPOD_API_KEY and RUNPOD_GPU_TEMPLATE_ID. It always requests
-one on-demand GPU, no persistent volume, a public SSH port, and deletes the Pod in a
-finally path. SIGINT/SIGTERM and the runtime watchdog also enter that cleanup path.
+one on-demand GPU and no persistent volume, and deletes the Pod in a finally path.
+SIGINT/SIGTERM and the runtime watchdog also enter that cleanup path.
+
+TRANSPORT — read this before debugging a connection
+  In this container SSH cannot reach a Pod at all: raw outbound TCP is blocked, and the agent
+  proxy's CONNECT re-terminates TLS while SSH is not TLS, so the handshake dies at
+  kex_exchange_identification. The default transport is therefore HTTPS: the Pod runs
+  worker/agent.py behind a bearer token and RunPod publishes it at
+  https://<podId>-<port>.proxy.runpod.net, which is ordinary TLS on 443 and passes the proxy.
+  Do not add a wildcard SSH config or disable TLS verification to work around this.
 `;
 
 function parseArgs(argv) {
@@ -85,7 +129,7 @@ function parseArgs(argv) {
     const equal = token.indexOf('=');
     const key = token.slice(2, equal < 0 ? undefined : equal);
     const normalized = key.replace(/-([a-z])/g, (_, char) => char.toUpperCase());
-    if (['help', 'dry-run', 'all', 'yes', 'force', 'json'].includes(key)) { parsed[normalized] = true; continue; }
+    if (['help', 'dry-run', 'all', 'yes', 'force', 'json', 'no-bootstrap'].includes(key)) { parsed[normalized] = true; continue; }
     const value = equal >= 0 ? token.slice(equal + 1) : argv[++index];
     if (value === undefined || value.startsWith('--')) throw new Error(`--${key} requires a value`);
     if (multi.has(key)) parsed[normalized].push(value);
@@ -843,7 +887,16 @@ async function main() {
     if (result.refusals.length) process.exitCode = 3;
     return result;
   }
-  if (command === 'run') return runCommand(args, config);
+  if (command === 'run') {
+    // SSH cannot reach a Pod from this container (raw TCP blocked; the egress proxy's CONNECT
+    // re-terminates TLS and SSH is not TLS), so the HTTPS Pod-proxy transport is the default here.
+    // `--transport ssh` keeps the original path for any environment where raw TCP works.
+    const transport = args.transport || 'http';
+    if (transport === 'ssh') return runCommand(args, config);
+    if (transport !== 'http') throw new Error(`--transport must be http or ssh, got ${transport}`);
+    const { runHttpCommand } = await import('./lib/run-http.mjs');
+    return runHttpCommand(args, config);
+  }
   if (command === 'selftest' || command === 'self-test') {
     const { selfTest } = await import('./lib/selftest.mjs');
     const ok = await selfTest({ json: Boolean(args.json) });

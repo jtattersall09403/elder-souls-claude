@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `6be11dce`: 911 tools, 155 reference
+so it cannot drift. Generated at `9903ea79`: 912 tools, 155 reference
 items, 162 pieces in flight.
 
 Its purpose is to stop 162+ concurrent agents each paying separately to discover the
@@ -848,9 +848,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/render/w1-30-visual-smoke.mjs` — One low-cost settled frame for the builder repair loop.
 - `tools/render/w1-30-water-proof.mjs` — Hardware, frame-exact water/shore review.
 
-### `tools/runpod/` — 14
+### `tools/runpod/` — 15
 
-- `tools/runpod/cli.mjs` — **no header comment**
+- `tools/runpod/cli.mjs` — Elder Souls GPU runner — real hardware rendering, on a rented Pod, from this container.
 - `tools/runpod/lib/api.mjs` — **no header comment**
 - `tools/runpod/lib/cleanup-plan.mjs` — Pure planning for `cli.mjs cleanup`.
 - `tools/runpod/lib/disk.mjs` — Loud disk failures.
@@ -859,6 +859,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/runpod/lib/local.mjs` — **no header comment**
 - `tools/runpod/lib/owner.mjs` — Ownership identity for RunPod resources.
 - `tools/runpod/lib/provision.mjs` — **no header comment**
+- `tools/runpod/lib/run-http.mjs` — A GPU run driven entirely over HTTPS.
 - `tools/runpod/lib/selftest.mjs` — `node tools/runpod/cli.mjs selftest` Every arm here is paired with an arm that must come out differently.
 - `tools/runpod/test/runpod.test.mjs` — **no header comment**
 - `tools/runpod/worker/agent.py` — **no header comment**
@@ -1123,7 +1124,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **236 tools have no header comment**, so nobody can tell what they do without
+> **235 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 

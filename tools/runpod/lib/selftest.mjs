@@ -210,6 +210,32 @@ const arms = [
     },
   },
 
+  {
+    name: 'disk/harness-refuses-to-launch-a-browser-on-a-full-disk',
+    why: 'the 247 harness tools all reach the browser through launchGame, so the check belongs there',
+    async run() {
+      const script = "import('./tools/lib/browser.mjs').then(m => { m.assertCaptureDiskSpace(); console.log('ALLOWED'); })";
+      const repoRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../..');
+      const run = (minFreeMb) => new Promise((resolve) => {
+        const child = spawn(process.execPath, ['--input-type=module', '-e', script], {
+          cwd: repoRoot,
+          env: { ...process.env, ELDER_SOULS_MIN_FREE_MB: String(minFreeMb) },
+          stdio: ['ignore', 'pipe', 'pipe'],
+        });
+        let out = '';
+        child.stdout.on('data', (chunk) => { out += chunk; });
+        child.stderr.on('data', (chunk) => { out += chunk; });
+        child.on('close', (code) => resolve({ code, out }));
+      });
+      const full = await run(100_000_000); // ~95 TiB required: nothing has this
+      const fine = await run(1);
+      if (full.code === 0) return { pass: false, detail: 'launch was allowed with an impossible free-space floor' };
+      if (!/disk is full/i.test(full.out)) return { pass: false, detail: `refusal did not name the disk: ${full.out.slice(0, 200)}` };
+      if (fine.code !== 0 || !/ALLOWED/.test(fine.out)) return { pass: false, detail: `a 1 MiB floor also refused, so the guard is always-fail: ${fine.out.slice(0, 200)}` };
+      return { pass: true, detail: 'refuses loudly when the disk is short, allows when it is not' };
+    },
+  },
+
   // --- Job 2: the HTTP transport, exercised against a real local instance of the pod agent. ---
   {
     name: 'transport/agent-executes-and-reports-both-outcomes',

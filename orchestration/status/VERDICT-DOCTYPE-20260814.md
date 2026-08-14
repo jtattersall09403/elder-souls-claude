@@ -59,8 +59,10 @@ its step name changed.
 - Did not edit any of the four documents, nor `W1-LIBRARY-MARTIAL-r4`.
 - Did not migrate the three judgements to canonical spellings; they validate as written.
 - No browser, no timing figure.
-- `node tools/corpus-index.mjs --strict` exits 1 in this working tree and 0 in both extracted
-  trees, before and after — another agent's in-flight corpus edit, not this work.
+- Found a **second** red CI step that was not mine: `node tools/corpus-index.mjs --strict` failed
+  with `INDEX.md is STALE`, 0 errors and 0 holes. The whole delta is four rows gaining
+  `m-instance-bars.mjs` from the concurrent "Ruling W1: five bars bind on instances" edit to
+  `RI-WLD04`. Regenerated (`node tools/corpus-index.mjs`); the step now exits 0.
 
 ## Hazards hit — concurrent writes, three times
 
