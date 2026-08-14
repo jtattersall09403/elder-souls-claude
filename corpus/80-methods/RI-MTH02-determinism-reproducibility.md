@@ -26,6 +26,17 @@ corpus, and that is why this item can void a wave on its own.
 
 ### A. The reproducibility ladder — each rung is separately scored
 
+> **R4's discriminator was sharpened by an APPLIED amendment: `AM-W1-00-C1`.** See
+> `orchestration/amendments/AM-W1-00-C1-mth02-r4-discriminator.md`. It was adopted by the W1-00
+> remediation builder into §A rung R4, `## Comparison method` M3 and `## Scoring`, and implemented
+> in `tools/harness/determinism.mjs` and `tools/harness/seed-sweep.mjs` — the "≥ 5% of frames
+> still differ after dropping `rng.seed`" and "`max(rng.draws) > 0`" clauses in the R4 row below
+> **are** that amendment. It moves no threshold. *(Pointer added 2026-08-14 by
+> AUDIT-CITATION-STALENESS: the amendment was applied to this item's text and this item never
+> named it, so nobody reading R4 could tell which clauses were original and which were the
+> repair — and `AM-W1-00-01`, listed one directory away and **WITHDRAWN**, was the only amendment
+> this item pointed at.)*
+
 | Rung | Property | Test | Tolerance |
 |---|---|---|---|
 | R1 | **Run-to-run** identical | same scenario, same seed, two runs, same process | `body_sha256` equal — zero tolerance |

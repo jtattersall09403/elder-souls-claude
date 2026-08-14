@@ -188,9 +188,16 @@ A verdict scoring this item must additionally record, or state why it cannot:
 
 1. `RI-PLT03` P1's measured `T_control` for the same build.
 2. `RI-EXP01`'s `N_found`, `T_lie`, `T_refusal` and `N_odd`. That item is the corpus's only
-   quality instrument for the opening, its paths are declared by no wave-1 piece, its tool
-   (`tools/experience/session-run.mjs`) does not exist, and **it has never been run on any build.**
-   Recording `blocked_on: RI-MTH06` is an acceptable answer; silence is not.
+   quality instrument for the opening, its paths are declared by no wave-1 piece, ~~its tool
+   (`tools/experience/session-run.mjs`) does not exist~~ — **CORRECTED 2026-08-14
+   (AUDIT-CITATION-STALENESS): `tools/experience/session-run.mjs` IS on disk, 47 182 bytes.**
+   The clause is struck rather than deleted because it is the reason a verdict was allowed to
+   answer `blocked_on`, and that excuse is now gone: **the tool exists, so a verdict that wants
+   to record `blocked_on: RI-MTH06` must first say what happened when it ran the tool.** Whether
+   it has ever been run on a build is a separate question this correction does not answer, and
+   the sentence below still stands until somebody measures it.
+   Recording `blocked_on: RI-MTH06` is an acceptable answer only with that run attached; silence
+   is not. *(Stamped at commit `5bbde201`; re-derive with `ls -l tools/experience/session-run.mjs`.)*
 
 ## Scoring
 

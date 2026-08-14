@@ -220,6 +220,10 @@ export function amendmentTargets(root = ROOT, files = null) {
   const out = [];
   for (const f of amendments) {
     const text = readFileSync(join(ROOT === root ? ROOT : root, f), 'utf8');
+    // A WITHDRAWN amendment must NOT be pointed at — `AM-W1-00-01` says so in its own words,
+    // "Never applied. Do not cite it." Demanding a back-pointer to it would be demanding the
+    // exact error this tool exists to prevent, in the other direction.
+    if (/\bWITHDRAWN\b/.test(text.slice(0, 1200))) { out.push({ amendment: f, primary: [], alsoMentions: [], withdrawn: true, items }); continue; }
     const title = text.split('\n').find((l) => l.startsWith('#')) || '';
     const mentioned = [...new Set([...text.slice(0, 4000).matchAll(/\bRI-[A-Z]+\d+\b/g)].map((m) => m[0]))]
       .filter((id) => items.has(id));
@@ -247,7 +251,7 @@ function checkA4(root, files) {
         message: `${id} is amended by \`${key}\` and never names it — a builder who opens the item ` +
                  'reads the superseded text with nothing to warn them' });
     }
-    if (!a.primary.length) {
+    if (!a.primary.length && !a.withdrawn) {
       findings.push({ check: 'A5', severity: 'warn', file: a.amendment,
         message: 'no primary target could be determined from the filename or title line; ' +
                  'the amendment cannot be routed back to the item it amends',

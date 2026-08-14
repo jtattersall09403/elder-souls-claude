@@ -100,6 +100,18 @@ kind a maximum, and exceeding it is a failure of *this* item rather than an esca
 
 ### C. `ES/LOAD` — the budget (BINDING)
 
+> **A FILED HOLE IN THIS SECTION: every streaming budget here is defined at a walk.** See
+> `orchestration/amendments/AM-W1-01-PS-01-plt03-needs-a-motion-axis.md`, filed by
+> `crit-w1-01-provstream-r1-3c19` on 2026-08-07. C.3's **S4** (hitches per traversal *minute of
+> continuous walking*) and **S7** (prefetch lead ≥ 20 s *of walking*) are both anchored to 2.0 m/s,
+> and this build's `RI-TRV01` transport ships a `rootspeak` mode at **40 m/s** — twenty times the
+> speed the budgets assume. **Status: filed, not applied. This item is unchanged and still
+> governs**; the amendment records the hole rather than working around it, and a piece measuring
+> S4/S7 must say which speed it measured at. *(Pointer added 2026-08-14 by
+> AUDIT-CITATION-STALENESS — the amendment has been on disk since 7 August and this item never
+> named it, so the hole was invisible to anyone who read the item rather than the amendments
+> directory.)*
+
 **C.1 — Initial load (`phone-mid`, cold cache, emulated "Fast 3G"-class link unless stated)**
 
 | # | Quantity | Tier | Budget | Fail |

@@ -343,7 +343,9 @@ The corpus now contains both readings:
 Meanwhile **no reference item gives parley frame data**. `grep -rn parley corpus/10-combat/
 corpus/12-weapons/` returns nothing. It has no startup, no recovery, no punish window, no
 interrupt rule, no input binding in `RI-JRN03`/`RI-JRN04`'s 14-action set, and **no subsystem
-path** — `grep parley corpus/00-doctrine/subsystems.json` is empty, so nothing in `INDEX.md`
+path** — ~~`grep parley corpus/00-doctrine/subsystems.json` is empty~~ — **CORRECTED 2026-08-14
+(AUDIT-CITATION-STALENESS): that grep now returns 5 matches; the hole was filled and this line
+was not updated.** So nothing in `INDEX.md`
 routes it to a critic. It is judged only obliquely, as a crossing cell in `RI-CMP01` and a
 scored assertion in `RI-CRM01`.
 
