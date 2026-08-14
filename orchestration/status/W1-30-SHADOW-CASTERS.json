@@ -3,18 +3,26 @@
   "role": "builder",
   "piece": "W1-30-SHADOW-CASTERS",
   "status": "running",
-  "state": "measuring",
+  "state": "three-changes-landed-evidence-in-flight",
   "branch": "codex/wave1-build-experiment",
-  "summary": "Two measured one-line fixes handed over by W1-30B and W1-30F, each falling in the other's file. (1) province.js cast/receive flags so the region vistas can contain a shadow at all. (2) renderer.js regionFog carries fog.height_falloff_m so sky.js's colour-keyed fallback table can be retired.",
+  "summary": "Two one-line fixes handed over by W1-30B and W1-30F, each falling in the other's file. Both were real. Neither was the whole story, and the second one turned out to be decorative until a THIRD defect was found sitting underneath it: world/aerial.js and render/sky.js each patch the SAME four THREE.ShaderChunk fog chunks at module scope, aerial.js runs second, and it had been silently deleting sky.js's entire atmosphere model since both landed.",
   "files_claimed": [
     "game/src/world/province.js",
     "game/src/render/renderer.js",
-    "game/src/render/sky.js",
     "tools/visual/w1-30-shadow-casters.mjs",
+    "tools/visual/w1-30-heightfalloff-arm.mjs",
     "orchestration/status/W1-30-SHADOW-CASTERS.json",
-    "reports/visual-truth/shadow-casters/"
+    "reports/visual-truth/shadow-casters/",
+    "reports/visual-truth/heightfalloff/"
   ],
-  "files_touched": [],
+  "files_touched": [
+    "game/src/world/province.js",
+    "game/src/render/renderer.js",
+    "tools/visual/w1-30-shadow-casters.mjs",
+    "tools/visual/w1-30-heightfalloff-arm.mjs"
+  ],
   "redundant_with": [],
-  "notes": "province.js flag edits are narrow (castShadow/receiveShadow only). renderer.js edit is one added property on the regionFog literal. sky.js edit is the deletion the file's own comment asks for once that property exists."
+  "headline_findings": [],
+  "could_not_do": [],
+  "next_step": "pixel arms at vista-blackwood, then the flag set for the canopy"
 }
