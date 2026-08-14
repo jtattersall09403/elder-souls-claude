@@ -51,3 +51,10 @@ Started 2026-08-14. This file is updated as work proceeds so a restart can resum
 - 09:22 First see-through measurement was also void: it used a player-hidden reference frame,
   and `actor.js:988` reasserts `mesh.visible` on the body every frame, so the "player absent"
   reference still contained the player. Rebuilt on material swaps, which do survive.
+- 09:45 See-through complete at four radii: 2.6 m 1.4%, 1.6 m 0.2%, 1.0 m 0.1%, 0.6 m 0.0%.
+  The body is solid at every distance and every angle tested. Transparency claim not reproduced.
+  Remaining gap: everything so far is HARNESS mode; renderer.js:62-67 builds the GL context
+  differently for a person. Written tools/harness/vt-playmode.mjs to close that.
+- 09:50 vt-play.mjs run 1 aborted at the fight step: I passed archetype 'pop-0027-infantry'
+  (that is an eid, not an archetype) and the harness correctly refused. Menus and dialogue were
+  behind it and did not run. Split into tools/harness/vt-play2.mjs with a real archetype.

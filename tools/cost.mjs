@@ -176,9 +176,29 @@ async function parseFile(path, onRecord) {
 }
 
 // ------------------------------------------------------------------ core aggregation
+// Thrown when the source transcripts are not reachable at all in this environment (a GitHub
+// Actions runner, for instance, which has no `~/.claude/projects/` — that directory lives only on
+// the machine actually running Claude Code). Caught in main() and turned into a non-zero exit
+// rather than a written ledger, so `cost-refresh.mjs` treats it as a FAILURE and leaves the last
+// good ledger in place with a failure banner (COST.md §6.1) instead of overwriting real spend data
+// with an honest-but-empty one. This is not hypothetical: the first two CI runs of this workflow
+// did exactly that — silently replaced a real $6,000+/202-hour reading with headline:null and a
+// zero-point series, because the naive version of this file wrote a valid empty ledger instead of
+// failing. Caught by comparing the live page to the local one, not by any test in this file.
+class NoSourceError extends Error { }
+
 async function buildLedger() {
   const projectDir = findClaudeProjectDir();
+  if (!projectDir) {
+    throw new NoSourceError(
+      `no Claude Code project transcripts found under ${process.env.COST_CLAUDE_PROJECTS_DIR || join(process.env.HOME || '/root', '.claude', 'projects')} — `
+      + `this is expected on a CI runner or any machine that never ran the agent fleet itself, and NOT a reason to publish an empty ledger over a real one.`
+    );
+  }
   const files = enumerateCanonicalFiles(projectDir);
+  if (files.length === 0) {
+    throw new NoSourceError(`project directory ${projectDir} exists but contains no canonical *.jsonl files.`);
+  }
   const groups = new Map(); // message.id -> { model, tsMin, sessionId, agentId, records: [] }
   let filesRead = 0, bytesRead = 0, parseErrors = 0;
   const fileStats = [];
@@ -533,17 +553,26 @@ function runSelfTest() {
 if (process.argv.includes('--self-test')) {
   runSelfTest();
 } else {
-  const { ledger, groupsCount, requestsCount, pricedCount } = await buildLedger();
-  mkdirSync(dirname(LEDGER_PATH), { recursive: true });
-  writeFileSync(LEDGER_PATH, JSON.stringify(ledger, null, 2) + '\n');
-  const h = ledger.headline;
-  console.log(`cost: ${groupsCount} distinct requests (deduped from more raw records), ${pricedCount}/${requestsCount} priced.`);
-  if (h) {
-    console.log(`cost: spend to date $${h.spend_to_date_usd} · C/H $${h.ch_usd_per_hour}/h (${h.ch_pct_of_baseline}% of baseline) · $/agent-hour ${h.usd_per_agent_hour} (${h.usd_per_agent_hour_pct_of_baseline}% of baseline)`);
-    console.log(`cost: G1 mean agents (requesting) ${ledger.guards.g1_parallelism.mean_agents}, (present) ${ledger.guards.g1_parallelism.mean_agents_present}, floor 12 -> ${ledger.guards.g1_parallelism.status}`);
-  } else {
-    console.log('cost: no timestamped priced requests found — ledger written with headline: null.');
+  try {
+    const { ledger, groupsCount, requestsCount, pricedCount } = await buildLedger();
+    mkdirSync(dirname(LEDGER_PATH), { recursive: true });
+    writeFileSync(LEDGER_PATH, JSON.stringify(ledger, null, 2) + '\n');
+    const h = ledger.headline;
+    console.log(`cost: ${groupsCount} distinct requests (deduped from more raw records), ${pricedCount}/${requestsCount} priced.`);
+    if (h) {
+      console.log(`cost: spend to date $${h.spend_to_date_usd} · C/H $${h.ch_usd_per_hour}/h (${h.ch_pct_of_baseline}% of baseline) · $/agent-hour ${h.usd_per_agent_hour} (${h.usd_per_agent_hour_pct_of_baseline}% of baseline)`);
+      console.log(`cost: G1 mean agents (requesting) ${ledger.guards.g1_parallelism.mean_agents}, (present) ${ledger.guards.g1_parallelism.mean_agents_present}, floor 12 -> ${ledger.guards.g1_parallelism.status}`);
+    } else {
+      console.log('cost: no timestamped priced requests found — ledger written with headline: null.');
+    }
+    console.log(`cost: coverage ${ledger.coverage.files_read}/${ledger.coverage.files_total} files, complete=${ledger.coverage.complete}`);
+    console.log(`cost: wrote ${LEDGER_PATH.replace(ROOT, '.')}`);
+  } catch (e) {
+    // NoSourceError (this environment has no ~/.claude/projects — a CI runner, most likely) and
+    // any other unexpected failure both take this path: exit non-zero, WRITE NOTHING. cost-refresh.mjs
+    // is the thing that interprets a non-zero exit; it leaves docs/data/cost-ledger.json exactly as
+    // it was and publishes a failure banner instead — never a fresh empty reading over real spend.
+    console.error(`cost: FAILED — ${e.message}`);
+    process.exitCode = 1;
   }
-  console.log(`cost: coverage ${ledger.coverage.files_read}/${ledger.coverage.files_total} files, complete=${ledger.coverage.complete}`);
-  console.log(`cost: wrote ${LEDGER_PATH.replace(ROOT, '.')}`);
 }
