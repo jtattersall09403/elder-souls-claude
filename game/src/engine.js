@@ -4129,6 +4129,11 @@ export class Engine {
     t.suppressToDrawer = reading;
     const talking = reading ? null : this._touchTalkSuppression();
     t.keepOnly = talking;
+    // W1-MAP-DEFECTS r1 — told to the input model for the same reason the two above are, and set
+    // from the same field. `TouchInput._keepDrawerOpenAfter()` leaves the drawer standing while a
+    // menu is up so a page turn costs ONE tap instead of two; it must not import the UI to find
+    // out, and `suppressToDrawer` cannot answer it because `inventory` is not a READING screen.
+    t.menuOpen = !!(this.ui && this.ui.mode && this.ui.mode !== 'world');
     const controls = t.layout();
     const shown = !!(t.enabled && t.visible) && controls.length > 0;
     // The dialogue panel is told where the arc begins so it can stop short of it. Null whenever

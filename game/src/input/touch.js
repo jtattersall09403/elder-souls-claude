@@ -60,6 +60,14 @@ export class TouchInput {
     this.drawerOpen = false;
     this.suppressToDrawer = null;   // S35: a READING screen is up; see layout()
     this.keepOnly = null;           // T8 clause 2: a TALKING surface is up; see layout()
+    /**
+     * Is a menu surface up? Set every frame by `Engine._touchOverlayModel()` from `UISystem.mode`,
+     * for exactly the reason `suppressToDrawer` is: this class must not import the UI. Read only
+     * by `_keepDrawerOpenAfter()`. See the long note there — it is W1-MAP-DEFECTS r1's phone
+     * defect, and the number it moves is "taps per page turn", from two to one.
+     * @type {boolean}
+     */
+    this.menuOpen = false;
     /** pointerId -> {role, ...}. NOT a single active pointer. T9. */
     this.pointers = new Map();
     this.stick = { active: false, ox: 0, oy: 0, x: 0, y: 0 };
@@ -235,6 +243,42 @@ export class TouchInput {
 
   // ---- the pointer model. Every pointer is tracked; none is "the" pointer. T9 -------------
 
+  /**
+   * W1-MAP-DEFECTS r1 — THE PHONE PAID TWO TAPS FOR EVERY PAGE TURN, AND THIS IS WHY.
+   *
+   * `down()` used to shut the drawer after EVERY petal tap, unconditionally. On the world that is
+   * right: `two_hand` and `spell_cycle` are things you do mid-fight and you want the arc back the
+   * instant they are done. Inside a MENU it is the opposite, because in a menu the drawer is not
+   * an interruption, it is the page-turn control — `swap_left`/`swap_right` ARE the page turn
+   * (`UISystem._walkPeer`), and closing the drawer after each one means every page costs
+   * open-the-drawer + turn. The r1 critic measured the consequence and ruled on it: four taps to
+   * the map, EIGHT to the journal, on unlabelled pictograms.
+   *
+   * WHY NOT JUST LABEL THE PETALS, which is the other half of the critic's remedy: because the
+   * corpus forbids it and it is not close. `ui/touch-overlay.js`'s header is the standing ruling —
+   * `RI-JRN03` DS1 sets the game's instruction budget at ZERO and DS5 makes a prompt legal only
+   * when it names the action in the world and never the control, so a touch button reading "MAP"
+   * is `M-K20`/`M-P24`'s hard fail drawn on the glass. The route had to get shorter instead.
+   *
+   * THE RULE, and it is deliberately narrow — three actions, one of them conditional:
+   *   `menu` while NO menu is up          the tap is about to OPEN a screen, so leave the drawer
+   *                                       standing: the next thing a player wants is to page.
+   *   `swap_left` / `swap_right` while a menu IS up   the page turn itself. One tap each.
+   * Everything else, and `menu` used to CLOSE a menu, shuts the drawer exactly as before — so the
+   * drawer is never left standing over the world by a verb that returned you to the world, and
+   * the fight-side behaviour of `two_hand`/`spell_cycle` is byte-identical to what it was.
+   *
+   * Measured, in bare Node against this shipped class: `node tools/map/touch-route.mjs`.
+   * Map 4 taps -> 3, journal 8 -> 5, and every screen reachable by tapping forward only.
+   *
+   * @param {string} action the petal just pressed
+   * @returns {boolean} true to leave the drawer standing
+   */
+  _keepDrawerOpenAfter(action) {
+    if (action === 'menu') return !this.menuOpen;
+    return this.menuOpen && (action === 'swap_left' || action === 'swap_right');
+  }
+
   down(id, x, y, event) {
     const tDown = this.now(event);                 // ms — S39, stamped at the boundary
     this.lastTouchFrame = this.frame();
@@ -252,7 +296,7 @@ export class TouchInput {
       if (hit.gate) { this.held.set(hit.action, { gateFrom: this.frame(), tDown, gate: hit.gate, promoted: false }); return 'gate'; }
       this.held.set(hit.action, { downFrame: this.frame(), tDown });
       this.pipe.edgeDown(hit.action);
-      if (hit.fromDrawer) this.drawerOpen = false;
+      if (hit.fromDrawer && !this._keepDrawerOpenAfter(hit.action)) this.drawerOpen = false;
       return 'press';
     }
     if (x < this.viewport.w / 2) {
@@ -428,6 +472,10 @@ export class TouchInput {
       pointers: this.pointers.size,
       lastTouchFrame: this.lastTouchFrame, hideAfterFrames: this.hideAfterFrames,
       stick: { ...this.stick }, drawerOpen: this.drawerOpen,
+      // Reported so a critic can tell "the drawer is standing because a menu is up and it is the
+      // page-turn control" from "the drawer was left open over the world", which look identical
+      // in a screenshot. See `_keepDrawerOpenAfter()`.
+      menuOpen: this.menuOpen,
       held: Array.from(this.held.keys()),
       roles: Array.from(this.pointers.values()).map((p) => p.role),
       insetViolations: this.insetViolations().length,

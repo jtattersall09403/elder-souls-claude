@@ -275,6 +275,70 @@ what enforces that.
 accidental one — plausible if a deliberate status file is larger than what a killed agent left behind
 — would move the $0.43 upward, and the trial's own re-measurement is what would show it.
 
+### Ruling C3a — C3's falsifier is run and does not fire, and the trial now has an instrument *(reversible, trial)*
+
+> **Measured 2026-08-14 by `SPLIT-TRIAL` with `tools/cost.mjs --split-trial`.** C3 named one
+> falsifier and left two of its three tripwires with nothing to compute them. Both are now fixed.
+> **The planned arm is still empty and this ruling says so in its first line rather than its last.**
+
+**Nothing has been split on purpose yet — `planned_split: 0` across 478 subagents — so every "after"
+column in `--split-trial` is empty by construction, not by measurement.** The instrument refuses a
+verdict rather than returning a green light from an empty arm, and `--experiments-self-test` proves
+the refusal: fed the same $2.64 handoff on two agents it returns `UNDERPOWERED`, and fed ten it
+returns `REVERT`.
+
+**The falsifier does not fire, and the confound pushes the other way.** C3 worried that a *deliberate*
+note is bigger than what a killed agent leaves behind and might therefore cost more to absorb. That
+has a gradient inside the accidental population already: successors differ enormously in how much
+their predecessor had written down. Measured from **git, as of the successor's first request** — not
+as of today, because those files have been rewritten many times since:
+
+| arm | richer written record vs poorer | shuffle p |
+|---|---|---|
+| **accidental handoffs** (n = 11 vs 10) | **−$0.486** — a richer record orients *cheaper* | 0.072 |
+| **fresh agents, same measurement** (n = 26 vs 23) | **+$0.358** — on the identical contrast, *dearer* | 0.207 |
+
+The maturity control is the plausible wrong answer made concrete: a big written record belongs to a
+*mature piece*, and an agent on a mature piece may orient differently for reasons that have nothing
+to do with a handoff. It moves the **opposite** way. So the confound cannot be manufacturing the
+handoff arm's gradient — it is working against it. A planned split always writes the richest note
+there is, so **the planned handoff is predicted at or below the accidental $0.4302**, and C3's
+$6.264 break-even is not threatened from this direction.
+
+**Two things that number is not.** p = 0.072 is not significance, and it is reported as a *direction*
+that survives its control, never as a size. And it measures the **size** of a note, not its quality —
+a long useless note scores the same as a short excellent one, which biases towards "notes do not
+help", i.e. against the reading that makes the trial safe.
+
+**Delete-the-fix, executed on a copy, and it flips the sign.** Remove the git time-travel — read each
+piece's status files as they are *today* instead of as the successor found them — and the same
+analysis returns **+$0.2767 (p = 0.370)** and prints **"FALSIFIER FIRES"**. The wrong implementation
+reaches the opposite conclusion, so the time-travel is load-bearing rather than believed to be. The
+mechanism is visible in the strata: today's files are 35 KB / 102 KB where the successors actually
+inherited 15 KB / 43 KB.
+
+**The frozen BEFORE, so a later run has something to compare against.** Tripwire 1: **$0.4302**
+(n = 50). Tripwire 2: **265** requests per unsplit piece (28 pieces), against 1,197.5 for the 14
+accidentally-split ones. Tripwire 3: find-rate **1.30** gaps per verdict on unsplit pieces and
+**1.47** separate critics per piece, against 1.52 and 3.00 on the accidental-split arm.
+
+**Tripwire 2 is biased against firing and that is the right direction** — a piece is split *because*
+it is long, so its total starts above the median for reasons unrelated to the change. Read a quiet
+tripwire 2 as "no alarm", never as "scope preserved".
+
+**How to dispatch a split so the instrument can see it.** The planned marker is explicit, exactly as
+`RESUMED_RE` is: the dispatch description must contain **`chunk N`**, **`part N of M`** or
+**`split N/M`** (e.g. `"W1-33 canopy — chunk 2 of 3"`). A split that does not say so is invisible to
+every tripwire, and a regex that guessed would fold ordinary round-2 dispatches into the planned arm
+and manufacture the population this ruling reports as absent. **The predecessor's last act is its
+status file**: findings, `files_touched`, and a `next_step` naming what the successor picks up.
+
+**Reversal**: `git checkout <this commit>~1 -- tools/cost.mjs` removes `--split-trial` and the hoist
+in one step, and one line of the dispatch brief stops marking chunks. **Executed on a copy**, and the
+arms genuinely differ: the reverted copy has no `--split-trial` flag at all and `--experiments`
+writes no `q7_split_trial`. **Regression guard on the hoist**: `--reorientation` is unchanged to the
+last decimal ($0.4302 / −$0.0113 / −$0.0011) and its `null_controls` block is byte-identical.
+
 Found by the `COST-EXPERIMENTS` plan, absent from this document's original ranking **and** from the
 external research: **$4.55 → $51.83 per agent across request-count bins**, because every tool call
 re-sends a context that the previous calls grew. One agent's context went **23,757 → 578,648 tokens

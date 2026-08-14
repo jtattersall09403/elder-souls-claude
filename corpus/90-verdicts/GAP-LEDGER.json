@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-14T15:32:13Z",
+  "generated": "2026-08-14T15:38:15Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 83,
+  "verdicts_read": 84,
   "counts": {
-    "total": 78,
-    "open": 77,
+    "total": 79,
+    "open": 78,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -102,6 +102,9 @@
     ],
     "progression.bonfire.function": [
       "GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist"
+    ],
+    "render.fidelity.atmosphere": [
+      "GAP-W1-height-fog-credit-unanchored"
     ],
     "input.gamepad.lifecycle": [
       "GAP-W1-input-calibration-outlives-its-pad-on-disconnect"
@@ -1578,6 +1581,48 @@
       "evidence": [
         "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json",
         "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-height-fog-credit-unanchored",
+      "subsystem_path": "render.fidelity.atmosphere",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-30-shadow-casters-r1-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.json",
+      "piece_id": "w1-30-shadow-casters-r1",
+      "severity": "major",
+      "what": "The thirteen-region height-fog result in circulation — 13 of 13 regions improved, unusable frames 9 of 13 down to 5 — was rendered through world/aerial.js's shader chunks while they were clobbering render/sky.js, and has never been re-taken under the model that ships. It is currently the headline evidence for the atmosphere and for region identity.",
+      "why_it_matters": "It is a claim about a build that no longer exists, and the screen that produced it has now been shown to rank the two atmosphere models the wrong way round at one of three sites tested: at vista-salt-hills frame-stats.mjs gives the broken model higher edge density and a wider tonal span than the shipped one, because that camera sits 168 m up in a 340 m haze layer where a smoothstep wall lands at 294 m and reads as crisper than a Beer-Lambert ramp. The project's own rule is that a measurement is a claim about a commit rather than about the project, and this number has quietly changed commits.",
+      "remedy": {
+        "action": "One capture run, no source edit. Re-render the thirteen Deck region vistas at HEAD twice with tools/visual/deck.mjs at one stamped commit: once as shipped, once with sky.js's heightFog feature off (setFeature('heightFog', false) sets scene.fog.heightFalloff = 0, which degenerates the Beer-Lambert integral to the height-independent case and is the honest before-arm). Run frame-stats.mjs over both. Retire reports/w1-30f/deck/F-before and F-after and mark the 9->5 figure superseded wherever it is quoted. Separately, add a subtractive mode to tools/visual/w1-30-shadow-casters.mjs#applyArm() so an arm can write false as well as true.",
+        "targets": [
+          "tools/visual/deck.mjs",
+          "tools/visual/frame-stats.mjs",
+          "tools/visual/w1-30-shadow-casters.mjs",
+          "orchestration/status/W1-30F.json"
+        ],
+        "acceptance": "A committed pair of thirteen-vista captures at one commit sha, both rendered with render/sky.js owning THREE.ShaderChunk.fog_fragment (assert it, as tools/visual/w1-30-fog-owner-ab.mjs does), with the per-region edge_density, dominant_frac and luma span of each arm published; and a restated count of vistas flagged unusable by frame-stats.mjs in each arm. A later critic can re-measure by re-running the same two commands. The gap closes when no document in the tree quotes 9->5 without naming the commit it was taken at.",
+        "ref_item": "RI-VIS03",
+        "estimated_size": "S"
+      },
+      "remedy_action": "One capture run, no source edit. Re-render the thirteen Deck region vistas at HEAD twice with tools/visual/deck.mjs at one stamped commit: once as shipped, once with sky.js's heightFog feature off (setFeature('heightFog', false) sets scene.fog.heightFalloff = 0, which degenerates the Beer-Lambert integral to the height-independent case and is the honest before-arm). Run frame-stats.mjs over both. Retire reports/w1-30f/deck/F-before and F-after and mark the 9->5 figure superseded wherever it is quoted. Separately, add a subtractive mode to tools/visual/w1-30-shadow-casters.mjs#applyArm() so an arm can write false as well as true.",
+      "remedy_acceptance": "A committed pair of thirteen-vista captures at one commit sha, both rendered with render/sky.js owning THREE.ShaderChunk.fog_fragment (assert it, as tools/visual/w1-30-fog-owner-ab.mjs does), with the per-region edge_density, dominant_frac and luma span of each arm published; and a restated count of vistas flagged unusable by frame-stats.mjs in each arm. A later critic can re-measure by re-running the same two commands. The gap closes when no document in the tree quotes 9->5 without naming the commit it was taken at.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md",
+        "reports/visual-truth/fog-owner/head-probe/fog-owner.json",
+        "reports/visual-truth/fog-owner/aerial-arm/fog-owner.json",
+        "orchestration/status/W1-30F.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,

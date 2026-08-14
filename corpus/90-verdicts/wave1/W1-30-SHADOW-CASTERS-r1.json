@@ -23,13 +23,34 @@
     "commit_sha": "97845f02",
     "branch": "codex/wave1-build-experiment",
     "harness_commands": [
-      { "command": "node tools/visual/w1-30-fog-owner-ab.mjs --tag head --sites vista-blackwood,vista-deep-marshes,vista-salt-hills", "exit_code": 0 },
-      { "command": "node tools/visual/w1-30-fog-owner-ab.mjs --tag aerial --entry <control-clone>/game/index.html --sites vista-blackwood,vista-deep-marshes,vista-salt-hills", "exit_code": 0 },
-      { "command": "node tools/visual/frame-stats.mjs --in reports/visual-truth/fog-owner/head-probe/frames", "exit_code": 0 },
-      { "command": "node tools/visual/w1-30-shader-hook-collision.mjs", "exit_code": 1 },
-      { "command": "node tools/visual/w1-30-shader-hook-collision.mjs --sabotage", "exit_code": 1 },
-      { "command": "node tools/visual/w1-30-deep-marshes-bands.mjs", "exit_code": 0 },
-      { "command": "node tools/runpod/cli.mjs run --max-runtime 22 --command '<canopy-shimmer + boundary-walk>' (RTX A5000)", "exit_code": 0 }
+      {
+        "command": "node tools/visual/w1-30-fog-owner-ab.mjs --tag head --sites vista-blackwood,vista-deep-marshes,vista-salt-hills",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/visual/w1-30-fog-owner-ab.mjs --tag aerial --entry <control-clone>/game/index.html --sites vista-blackwood,vista-deep-marshes,vista-salt-hills",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/visual/frame-stats.mjs --in reports/visual-truth/fog-owner/head-probe/frames",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/visual/w1-30-shader-hook-collision.mjs",
+        "exit_code": 1
+      },
+      {
+        "command": "node tools/visual/w1-30-shader-hook-collision.mjs --sabotage",
+        "exit_code": 1
+      },
+      {
+        "command": "node tools/visual/w1-30-deep-marshes-bands.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/runpod/cli.mjs run --max-runtime 22 --command '<canopy-shimmer + boundary-walk>' (RTX A5000)",
+        "exit_code": 0
+      }
     ]
   },
   "bifurcation": {
@@ -55,14 +76,38 @@
       "justification": "§3's 'shadows shimmer and crawl as the camera moves' is the named TELL for a bad shadow map, and it is the exact risk this round's canopy change carries. Measured on an RTX A5000 over 90-frame walks: canopy-on reads 1.888 oscillations per pixel per 10 frames against canopy-off 1.848 (+2.2%), while the sub-texel bucket set the builder declined reads 2.017 (+6.8%) — so the instrument is demonstrably not blind and the shipped set is stable. §3's other TELL, 'dark diagonal stripe acne on lit surfaces', was suspected by the builder and is falsified twice over here: with every shadow in the game off the band pattern is unchanged at rho 0.990 against a 0.957 nondeterminism floor. Artifact: reports/runpod-gpu/runs/critic-canopy-motion/artifacts/shimmer/canopy-shimmer.json and reports/visual-truth/deep-marshes-bands/bands.json.",
       "measured": "partial",
       "checks": [
-        { "id": "VIS04-3-shimmer-in-motion", "result": "pass", "value": "canopy-on 1.888 vs canopy-off 1.848 flicker/px/10f", "threshold": "no step change against the canopy-off arm; positive control C must read higher" },
-        { "id": "VIS04-3-positive-control", "result": "pass", "value": "canopy+under+rock 2.017", "threshold": "> canopy-on, else the instrument is blind" },
-        { "id": "VIS04-3-stripe-acne", "result": "pass", "value": "shadows-off rho 0.990 vs restore-control floor 0.957", "threshold": "if the bands were acne, shadows-off would collapse them" },
-        { "id": "VIS04-6-atmospherics-present", "result": "pass", "value": "fog_fragment owned by render/sky.js, 95% opacity at 912/1414/1726 m", "threshold": "an atmosphere that reaches past one terrain tile" },
-        { "id": "VIS04-3-cascades", "result": "not_run", "not_run_reason": "cascades were explicitly not built by W1-30B and are that piece's open substitution, not this one's" }
+        {
+          "id": "VIS04-3-shimmer-in-motion",
+          "result": "pass",
+          "value": "canopy-on 1.888 vs canopy-off 1.848 flicker/px/10f",
+          "threshold": "no step change against the canopy-off arm; positive control C must read higher"
+        },
+        {
+          "id": "VIS04-3-positive-control",
+          "result": "pass",
+          "value": "canopy+under+rock 2.017",
+          "threshold": "> canopy-on, else the instrument is blind"
+        },
+        {
+          "id": "VIS04-3-stripe-acne",
+          "result": "pass",
+          "value": "shadows-off rho 0.990 vs restore-control floor 0.957",
+          "threshold": "if the bands were acne, shadows-off would collapse them"
+        },
+        {
+          "id": "VIS04-6-atmospherics-present",
+          "result": "pass",
+          "value": "fog_fragment owned by render/sky.js, 95% opacity at 912/1414/1726 m",
+          "threshold": "an atmosphere that reaches past one terrain tile"
+        },
+        {
+          "id": "VIS04-3-cascades",
+          "result": "not_run",
+          "not_run_reason": "cascades were explicitly not built by W1-30B and are that piece's open substitution, not this one's"
+        }
       ],
       "evidence": [
-        "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md#4-motion-evidence-for-the-canopy--the-gap-the-builder-named-first",
+        "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md",
         "reports/runpod-gpu/runs/critic-canopy-motion/artifacts/shimmer/canopy-shimmer.json",
         "reports/visual-truth/deep-marshes-bands/bands.json"
       ]
@@ -79,12 +124,27 @@
       "score_0_10": 6,
       "measured": "partial",
       "checks": [
-        { "id": "M12-water-plausibility", "result": "fail", "value": "the water surface carries evenly spaced parallel light/dark lanes across the frame at vista-deep-marshes AND at eye-blackwood; hiding the water takes the pattern from rho 1.000 to 0.335 and 42% of its energy", "threshold": "a water surface whose structure is not a visible periodic lattice" },
-        { "id": "aerial-perspective-reach", "result": "pass", "value": "95% opacity at 912 m / 1414 m / 1726 m under render/sky.js against 48 m / 23 m / 294 m under world/aerial.js, same sigma0, same H, same camera Y", "threshold": "a frame that is a picture of something rather than a wash of fog colour" },
-        { "id": "frame-stats-as-arbiter", "result": "fail", "value": "at vista-salt-hills frame-stats prefers the model that paints the Deep Marshes opaque at 23 m (edge 3.05 vs 2.79, span 160 vs 128)", "threshold": "the plan's own rule: statistics are a regression tripwire and can never pass a build" }
+        {
+          "id": "M12-water-plausibility",
+          "result": "fail",
+          "value": "the water surface carries evenly spaced parallel light/dark lanes across the frame at vista-deep-marshes AND at eye-blackwood; hiding the water takes the pattern from rho 1.000 to 0.335 and 42% of its energy",
+          "threshold": "a water surface whose structure is not a visible periodic lattice"
+        },
+        {
+          "id": "aerial-perspective-reach",
+          "result": "pass",
+          "value": "95% opacity at 912 m / 1414 m / 1726 m under render/sky.js against 48 m / 23 m / 294 m under world/aerial.js, same sigma0, same H, same camera Y",
+          "threshold": "a frame that is a picture of something rather than a wash of fog colour"
+        },
+        {
+          "id": "frame-stats-as-arbiter",
+          "result": "fail",
+          "value": "at vista-salt-hills frame-stats prefers the model that paints the Deep Marshes opaque at 23 m (edge 3.05 vs 2.79, span 160 vs 128)",
+          "threshold": "the plan's own rule: statistics are a regression tripwire and can never pass a build"
+        }
       ],
       "evidence": [
-        "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md#3-the-deep-marshes-bands--the-accusation-was-correctly-falsified-and-the-attribution-is-wrong",
+        "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md",
         "reports/visual-truth/fog-owner/head-probe/fog-owner.json",
         "reports/visual-truth/fog-owner/aerial-arm/fog-owner.json",
         "reports/runpod-gpu/runs/critic-canopy-motion/artifacts/shimmer/frames/B-canopy-on-f0048.png"
@@ -103,13 +163,33 @@
       "justification": "M4 was spot-recomputed against the run JSONs rather than read: 20 of 22 numeric claims in the builder's status file resolve exactly. Two do not. F2's headline row ('base 13.73 ms at 485,458 triangles, everything-on 13.98 ms at 1,829,748') crosses two sites — Salt Hills' everything arm is 1,097,770 triangles and 1,829,748 is Blackwood's, whose medians are 6.09 -> 6.01. F3's 'terrain alone 0.009%' is an arm with flagged.cast = 0, i.e. an arm that turned on nothing. Both are recomputed from reports/runpod-gpu/runs/shadow-budget/artifacts/shadow-casters/hw-budget/shadow-casters.json, which is committed and hashable. Neither error changes a landed decision.",
       "measured": "full",
       "checks": [
-        { "id": "M4-numeric-claims-resolve", "result": "partial", "value": "20 of 22 resolve; F2 crosses two sites, F3's first entry is an empty arm", "threshold": "every numeric claim resolves to a committed artefact" },
-        { "id": "M7-spot-check-recomputes", "result": "pass", "value": "the caster census, the arm deltas and the noise floor all recompute from the committed run JSON", "threshold": "an independent recomputation agrees" },
-        { "id": "arms-are-independent", "result": "fail", "value": "six of the budget's arms are four: base == terrain and terrain+canopy == terrain+canopy+geology, byte-identical caster triangles and identical flagged.cast at all three sites", "threshold": "no two arms are the same configuration presented as different" },
-        { "id": "unmeasured-list-present", "result": "pass", "value": "nine entries including the motion gap, the local frame-time refusal, the settling artefact and the arm that could not be built", "threshold": "present and non-trivial" }
+        {
+          "id": "M4-numeric-claims-resolve",
+          "result": "partial",
+          "value": "20 of 22 resolve; F2 crosses two sites, F3's first entry is an empty arm",
+          "threshold": "every numeric claim resolves to a committed artefact"
+        },
+        {
+          "id": "M7-spot-check-recomputes",
+          "result": "pass",
+          "value": "the caster census, the arm deltas and the noise floor all recompute from the committed run JSON",
+          "threshold": "an independent recomputation agrees"
+        },
+        {
+          "id": "arms-are-independent",
+          "result": "fail",
+          "value": "six of the budget's arms are four: base == terrain and terrain+canopy == terrain+canopy+geology, byte-identical caster triangles and identical flagged.cast at all three sites",
+          "threshold": "no two arms are the same configuration presented as different"
+        },
+        {
+          "id": "unmeasured-list-present",
+          "result": "pass",
+          "value": "nine entries including the motion gap, the local frame-time refusal, the settling artefact and the arm that could not be built",
+          "threshold": "present and non-trivial"
+        }
       ],
       "evidence": [
-        "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md#2-the-1080p-budget-re-taken-independently--the-ruling-holds-and-the-strange-result-is-the-instrument",
+        "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md",
         "reports/runpod-gpu/runs/shadow-budget/artifacts/shadow-casters/hw-budget/shadow-casters.json"
       ]
     },
@@ -126,13 +206,33 @@
       "justification": "fog.height_falloff_m had no reader in game/src for the whole of the project's history. The round's consumption proof is the plausible-wrong-answer control rather than the trivial one: perturb western-rootlands' H from 70 to 280 in the live region record and scene.fog.heightFalloff follows, moving 6.471% of the frame, against 2.552% at that site's nondeterminism floor with the fix deleted. I confirmed independently that sky.js's regionHeightFalloff() prefers regionFog.heightFalloffM and that renderer.js:1189 supplies it, and that the shipped chunk which consumes it is render/sky.js's — read out of the live page, not from source. Artifact: reports/visual-truth/heightfalloff/after/heightfalloff.json and reports/visual-truth/fog-owner/head-probe/fog-owner.json.",
       "measured": "full",
       "checks": [
-        { "id": "consumer-named-and-live", "result": "pass", "value": "regions.json -> renderer.js:1189 -> sky.js regionHeightFalloff() -> scene.fog.heightFalloff -> ES_FOG_FRAGMENT", "threshold": "a world-side consumer, not a trace field" },
-        { "id": "coupling-measured", "result": "pass", "value": "6.471% of the frame moves for a 70->280 perturbation; 2.552% with the fix deleted", "threshold": "coupling > 0 with a clean control" },
-        { "id": "instrumentation-honesty", "result": "pass", "value": "_updateAerial() is left running and declared as writing to a uniform no chunk now reads, rather than quietly deleted", "threshold": "trace fields with no consumer are declared" },
-        { "id": "stale-consumer-left-in-place", "result": "partial", "value": "sky.js's REGION_HEIGHT_FALLOFF_M table is now unreachable for all thirteen regions and was not deleted; the builder says so and names the reason (another live piece owns the file)", "threshold": "a superseded stand-in is removed or its retention is justified" }
+        {
+          "id": "consumer-named-and-live",
+          "result": "pass",
+          "value": "regions.json -> renderer.js:1189 -> sky.js regionHeightFalloff() -> scene.fog.heightFalloff -> ES_FOG_FRAGMENT",
+          "threshold": "a world-side consumer, not a trace field"
+        },
+        {
+          "id": "coupling-measured",
+          "result": "pass",
+          "value": "6.471% of the frame moves for a 70->280 perturbation; 2.552% with the fix deleted",
+          "threshold": "coupling > 0 with a clean control"
+        },
+        {
+          "id": "instrumentation-honesty",
+          "result": "pass",
+          "value": "_updateAerial() is left running and declared as writing to a uniform no chunk now reads, rather than quietly deleted",
+          "threshold": "trace fields with no consumer are declared"
+        },
+        {
+          "id": "stale-consumer-left-in-place",
+          "result": "partial",
+          "value": "sky.js's REGION_HEIGHT_FALLOFF_M table is now unreachable for all thirteen regions and was not deleted; the builder says so and names the reason (another live piece owns the file)",
+          "threshold": "a superseded stand-in is removed or its retention is justified"
+        }
       ],
       "evidence": [
-        "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md#1-r1--is-the-surviving-atmosphere-actually-better-or-only-different",
+        "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md",
         "reports/visual-truth/heightfalloff/after/heightfalloff.json",
         "reports/visual-truth/heightfalloff/delete-the-fix/heightfalloff.json"
       ]
@@ -168,7 +268,7 @@
     },
     {
       "path": "reports/runpod-gpu/runs/critic-canopy-motion/artifacts/motion/contact/boundary-walk.png",
-      "kind": "image",
+      "kind": "screenshot",
       "produced_by": "node tools/visual/deck-motion.mjs --profile full --only boundary-walk --gpu hardware --require-hardware --frames 180, same Pod",
       "seed": 20260814,
       "resolution": "960x540",
@@ -192,6 +292,50 @@
       "resolution": "480x270",
       "camera_pose": "spawn, 20 frames settled; a census of the chunk registry and of every material's onBeforeCompile",
       "note": "FOG-CHUNKS-SINGLE-OWNER passes at HEAD and goes red under --sabotage and against the control clone. NO-ORPHANED-SURFACE-PASS fails: 305 of 406. Mechanism arm: Material.clone() drops onBeforeCompile and keeps userData."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md",
+      "kind": "report",
+      "produced_by": "this critic; the long-form verdict, written from the run JSONs listed here and citing them by section",
+      "note": "Section anchors cited from reference_items and biggest_gap resolve into this file."
+    },
+    {
+      "path": "reports/runpod-gpu/runs/critic-canopy-motion/artifacts/shimmer/frames/B-canopy-on-f0048.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/w1-30-canopy-shimmer.mjs --hardware, arm B, frame 48, RunPod RTX A5000",
+      "seed": 20260814,
+      "resolution": "960x540",
+      "camera_pose": "eye-blackwood, gameplay camera, 48 frames into the scripted walk",
+      "note": "The water-lane bands at eye-blackwood, on hardware, present identically in the canopy-off arm at the same frame. The single clearest picture of the band defect."
+    },
+    {
+      "path": "reports/runpod-gpu/runs/shadow-budget/artifacts/shadow-casters/hw-budget/shadow-casters.json",
+      "kind": "perf",
+      "produced_by": "the BUILDER, not this critic: node tools/visual/w1-30-shadow-casters.mjs --hardware --perfFrames 60 on an NVIDIA L4 at 1920x1080",
+      "seed": 20260814,
+      "resolution": "1920x1080",
+      "camera_pose": "vista-blackwood, vista-salt-hills, spawn; seven arms per site",
+      "note": "Re-analysed here rather than re-run. The duplicate-arm noise floor and the corrected canopy deltas are recomputed from this file; it is the builder's artefact and is cited as such."
+    },
+    {
+      "path": "reports/visual-truth/heightfalloff/after/heightfalloff.json",
+      "kind": "trace",
+      "produced_by": "the BUILDER: node tools/visual/w1-30-heightfalloff-arm.mjs",
+      "seed": 20260814,
+      "note": "The consumption arm for fog.height_falloff_m. Re-read here to confirm the perturbation reaches scene.fog.heightFalloff; not re-run."
+    },
+    {
+      "path": "reports/visual-truth/heightfalloff/delete-the-fix/heightfalloff.json",
+      "kind": "negative-evidence",
+      "produced_by": "the BUILDER: node tools/visual/w1-30-heightfalloff-arm.mjs --deleteFix",
+      "seed": 20260814,
+      "note": "The delete-the-fix arm: with heightFalloffM stripped off the object sky.apply() receives, the declared 70->280 does not reach the shader and the frame moves only at the site's nondeterminism floor."
+    },
+    {
+      "path": "orchestration/status/W1-30F.json",
+      "kind": "text-excerpt",
+      "produced_by": "the W1-30F builder",
+      "note": "Cited for F7, the 13-of-13 / 9->5 claim whose provenance this verdict's gap is about, and for that piece's own tripwire_audit admission that its offline arm is a model of the fix rather than an observation of it."
     }
   ],
   "arbitration": {
@@ -199,14 +343,22 @@
       "status": "not_applicable",
       "not_applicable_reason": "AR-1's probes are Souls-combat contamination probes — to-hit rolls, stat-gated damage, hit resolution. This piece changes shadow-caster flags, one fog uniform's source and which module owns four shader chunks. No combat resolution path is reached and none of A1-A10 has an input here.",
       "checks": [
-        { "id": "A1-A10", "result": "not_run", "not_run_reason": "no combat resolution path is touched by a caster flag, a fog parameter or a shader chunk" }
+        {
+          "id": "A1-A10",
+          "result": "not_run",
+          "not_run_reason": "no combat resolution path is touched by a caster flag, a fog parameter or a shader chunk"
+        }
       ]
     },
     "ar2": {
       "status": "not_applicable",
       "not_applicable_reason": "AR-2's probes are Morrowind-contamination probes — objective markers, quest compasses, fast travel, levelled loot. This piece touches the renderer only. The one adjacent question, whether the region records remain authoritative for the air, is answered on the RI-MTH07 row above rather than here.",
       "checks": [
-        { "id": "B1-B11", "result": "not_run", "not_run_reason": "no quest, journal, marker or travel surface is touched" }
+        {
+          "id": "B1-B11",
+          "result": "not_run",
+          "not_run_reason": "no quest, journal, marker or travel surface is touched"
+        }
       ]
     }
   },
@@ -217,14 +369,15 @@
     "band_label": "Clears the wave-1 gate on its worst axis. The largest defect in the round was found by the builder, outside its own brief, diagnosed from the running page and fixed with a one-line reversal; the axis that binds is that a caster change whose named risk is temporal shipped with zero motion frames of it.",
     "confidence": "high"
   },
-  "status": "PASS",
+  "status": "PROVISIONAL",
   "status_reasons": [
     "R1, the change with the largest blast radius, is confirmed by an arm built to overturn it. The same three Deck vistas render with byte-identical sigma0, H and camera Y in both arms and differ only in which module owns the four fog chunks: 95% opacity at 912/1414/1726 m under render/sky.js against 48/23/294 m under world/aerial.js. The Deep Marshes vista is a legible flooded forest at HEAD and a flat grey wash with a hard horizon under the model that was winning. Only one of the two draws a world.",
     "The canopy ruling holds under an independent re-take, and the strange result the brief flagged is the instrument rather than the GPU. The hardware budget contains six SAME-CONFIGURATION repeats nobody noticed — applyArm() only ever turns flags on, so base == terrain and terrain+canopy == terrain+canopy+geology once the flags had landed in source. Those repeats measure the run's own spread at up to 1.59 ms, median 0.55 ms; the canopy delta against the pair means is -0.37 / +0.41 / +0.60 ms, and every-caster-on is -0.10 / +0.32 / +0.21 ms. R4's self-withdrawal stands and is better evidenced than the builder knew.",
     "The gap the builder named first is now closed and the answer is favourable. On an RTX A5000 over three 90-frame walks on one scripted path, canopy-on reads 1.888 luminance oscillations per pixel per 10 frames against canopy-off 1.848, while the sub-texel set R5 declined reads 2.017 — so the instrument can see shimmer and the shipped set does not shimmer. R5 is corroborated rather than merely asserted.",
     "The Deep Marshes bands are not shadows, and the builder's A/B could never have found their owner. With every shadow in the game off the pattern is unchanged (rho 0.990 against a 0.957 restore-control floor); hiding the water collapses it to 0.335 and removes 42% of its energy. They belong to game/src/render/water.js, whose own header records the axis-aligned lane defect its crossed-wave field was meant to remove, and they are present at eye-blackwood as well as in the Deep Marshes.",
     "Two claims in the report do not survive recomputation and neither changes a decision: F2's headline row crosses two sites (Salt Hills' everything arm is 1,097,770 triangles, not 1,829,748), and F3's 'terrain alone 0.009%' is an arm with flagged.cast = 0.",
-    "PASS at 7 rather than higher because the round landed a change whose named risk is temporal with no motion evidence at all, and because every appearance number in it is a statistic — no human read, no Craft number, so the plan's Craft >= 7.0 row and Ruling W2's 'show the artefact as a player meets it' are unmet for this piece. The builder says both plainly."
+    "PASS at 7 rather than higher because the round landed a change whose named risk is temporal with no motion evidence at all, and because every appearance number in it is a statistic — no human read, no Craft number, so the plan's Craft >= 7.0 row and Ruling W2's 'show the artefact as a player meets it' are unmet for this piece. The builder says both plainly.",
+    "Status is PROVISIONAL rather than PASS for two reasons that are about this critic and not about the piece, and the validator flags both. (a) CRITIC-DOCTRINE section 8 requires a critic to record its raw measurements before reading the builder's summary; my brief directed me to read the builder's status file in full first, so saw_builder_notes_before_blind is true and cannot be undone. (b) ran_every_assigned_method is false — no orbit population and no human read. The score is 7 and clears the wave-1 gate on the evidence; the provisional flag is about the order I read things in and the methods I could not run, and an orchestrator should read it that way."
   ],
   "biggest_gap": {
     "gap_id": "GAP-W1-height-fog-credit-unanchored",
@@ -232,20 +385,31 @@
     "what": "The thirteen-region height-fog result in circulation — 13 of 13 regions improved, unusable frames 9 of 13 down to 5 — was rendered through world/aerial.js's shader chunks while they were clobbering render/sky.js, and has never been re-taken under the model that ships. It is currently the headline evidence for the atmosphere and for region identity.",
     "why_it_matters": "It is a claim about a build that no longer exists, and the screen that produced it has now been shown to rank the two atmosphere models the wrong way round at one of three sites tested: at vista-salt-hills frame-stats.mjs gives the broken model higher edge density and a wider tonal span than the shipped one, because that camera sits 168 m up in a 340 m haze layer where a smoothstep wall lands at 294 m and reads as crisper than a Beer-Lambert ramp. The project's own rule is that a measurement is a claim about a commit rather than about the project, and this number has quietly changed commits.",
     "evidence": [
-      "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md#1a-some-of-the-credit-did-belong-to-the-wrong-implementation-and-the-instrument-cannot-tell",
+      "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md",
       "reports/visual-truth/fog-owner/head-probe/fog-owner.json",
       "reports/visual-truth/fog-owner/aerial-arm/fog-owner.json",
       "orchestration/status/W1-30F.json"
     ],
     "severity": "major",
-    "remedy": "One capture run. Re-render the thirteen region vistas at HEAD with sky.js's heightFog feature on and off — setting heightFalloff = 0 degenerates its integral to plain Beer-Lambert, which is the honest before-arm and needs no source edit. Publish both, retire the old F-before/F-after pair, and stop quoting 9 -> 5 against the current tree. Separately and even cheaper: give w1-30-shadow-casters.mjs's applyArm() a subtractive mode so `base` can mean shipped-minus-the-change, without which R2's terrain flags have a triangle census and no hardware arm at all."
+    "remedy": {
+      "action": "One capture run, no source edit. Re-render the thirteen Deck region vistas at HEAD twice with tools/visual/deck.mjs at one stamped commit: once as shipped, once with sky.js's heightFog feature off (setFeature('heightFog', false) sets scene.fog.heightFalloff = 0, which degenerates the Beer-Lambert integral to the height-independent case and is the honest before-arm). Run frame-stats.mjs over both. Retire reports/w1-30f/deck/F-before and F-after and mark the 9->5 figure superseded wherever it is quoted. Separately, add a subtractive mode to tools/visual/w1-30-shadow-casters.mjs#applyArm() so an arm can write false as well as true.",
+      "targets": [
+        "tools/visual/deck.mjs",
+        "tools/visual/frame-stats.mjs",
+        "tools/visual/w1-30-shadow-casters.mjs",
+        "orchestration/status/W1-30F.json"
+      ],
+      "acceptance": "A committed pair of thirteen-vista captures at one commit sha, both rendered with render/sky.js owning THREE.ShaderChunk.fog_fragment (assert it, as tools/visual/w1-30-fog-owner-ab.mjs does), with the per-region edge_density, dominant_frac and luma span of each arm published; and a restated count of vistas flagged unusable by frame-stats.mjs in each arm. A later critic can re-measure by re-running the same two commands. The gap closes when no document in the tree quotes 9->5 without naming the commit it was taken at.",
+      "ref_item": "RI-VIS03",
+      "estimated_size": "S"
+    }
   },
   "secondary_observations": [
     {
       "what": "The shader-hook collision is a class, not an incident, and its largest instance is older and bigger than this round's. Material.copy() in the vendored three r180 (game/vendor/three/three.core.js:17236) does not copy onBeforeCompile and does deep-copy userData through JSON, so every .clone() of a worldMaterial silently drops installSurfaceShader's detail-normal/wear/wetness pass while keeping userData.surfaceUniforms. Measured in the page: 305 of 406 materials carrying surfaceUniforms have a hook that no longer installs them, including actor-body:saxhleel:skin and :cloth. The mechanism arm is explicit: source hook installs surface = true, clone hook installs surface = false, clone keeps surfaceUniforms = true. Not this round's file (render/visual-foundation.js, render/actor.js).",
       "evidence": [
         "reports/visual-truth/shader-hooks/hooks.json",
-        "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md#1b-the-sweep-and-the-commented-path"
+        "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md"
       ],
       "subsystem_path": "render.fidelity.materials"
     },
@@ -283,7 +447,44 @@
     }
   ],
   "gap_closure": [],
-  "corpus_extended": [],
+  "corpus_extended": [
+    {
+      "id": "METHOD-shadow-shimmer-zero-crossing",
+      "path": "tools/visual/w1-30-canopy-shimmer.mjs",
+      "area": "render.fidelity.shadows",
+      "judges": [
+        "visual.renderer.shadows",
+        "visual.renderer.foliage"
+      ],
+      "reason": "method_gap",
+      "note": "RI-VIS04 §3 names 'shadows shimmer and crawl as the camera moves' as a TELL and gives it no DETECT. Every image metric in RI-VIS03 is per-frame, and the two temporal ones (M11 LOD pop, M12 TemporalVar) measure a stationary camera or an animated-region mask — neither can separate a shadow sweeping smoothly across a pixel from a shadow texel flipping, and in a forest frame a plain frame-to-frame diff scores the foliage, the camera and the defect the same. The statistic added here is the zero-crossing rate of each pixel's luminance time series over a scripted walk, counted only on swings above a threshold: a smooth ramp contributes zero reversals. It ships with a positive control (the sub-texel bucket set) so a blind instrument reddens instead of passing. Offered as a candidate DETECT for RI-VIS04 §3's third TELL.",
+      "index_regenerated": false
+    },
+    {
+      "id": "METHOD-surface-artefact-ownership-by-hiding",
+      "path": "tools/visual/w1-30-deep-marshes-bands.mjs",
+      "area": "render.fidelity.water",
+      "judges": [
+        "visual.renderer.water",
+        "visual.renderer.shadows"
+      ],
+      "reason": "sharper_discriminator",
+      "note": "A visible artefact on a large surface has no method in the corpus for saying WHICH mesh owns it, and 'not mine' is where three separate rounds have stopped. The pattern here: high-pass a fixed crop chosen before any arm runs, correlate each arm against an untouched baseline, and include a restore control that sets the site's own nondeterminism floor so an arm reading above it is known to have changed nothing. Two things it made possible that a caster A/B could not: proving an artefact is not a shadow at all (shadows-off rho 0.990 against a 0.957 floor) and naming its owner (water-hidden rho 0.335). Generalises to any 'is this acne / z-fighting / tiling / a shadow' question.",
+      "index_regenerated": false
+    },
+    {
+      "id": "GATE-global-shader-hook-ownership",
+      "path": "tools/visual/w1-30-shader-hook-collision.mjs",
+      "area": "render.fidelity.materials",
+      "judges": [
+        "visual.renderer.materials",
+        "visual.renderer.atmosphere"
+      ],
+      "reason": "harness_gap",
+      "note": "Nothing in the tree asserted who owns THREE.ShaderChunk or a material's onBeforeCompile, which is how two modules patched the same four chunks for four hours with both agents' controls passing. This reads both back out of the running page and fails closed, and it carries its own mechanism arm for the second shape (Material.clone() drops onBeforeCompile and keeps userData). The builder asked for exactly this and said it did not have the budget; it is 130 lines.",
+      "index_regenerated": false
+    }
+  ],
   "method_deviations": [
     {
       "ref_item": "W1-30 plan, Part 3 — 'no gate is satisfiable by stills alone; every child has at least one motion gate and at least one orbit gate'",
@@ -311,13 +512,41 @@
     }
   ],
   "source_reads": [
-    { "path": "game/src/world/aerial.js", "purpose": "quote-written-content", "note": "read in full to compare the two fog integrals; both compute the same height factor (e^-a - e^-b)/(b-a), and the difference is Gaussian-FogExp2-with-a-scale against Beer-Lambert, plus aerial's [0.08, 1] clamp" },
-    { "path": "game/src/render/sky.js", "purpose": "quote-written-content", "note": "the atmosphere model, HeightFog's repurposing of fogNear/fogFar, airExtinction() and REGION_HEIGHT_FALLOFF_M" },
-    { "path": "game/src/world/province.js", "purpose": "quote-written-content", "note": "the commented installAerialPerspective() call, its comment block, and the five castShadow sites this round changed" },
-    { "path": "game/src/render/renderer.js", "purpose": "quote-written-content", "note": "line 1189, the heightFalloffM property, and the import order that decided the collision" },
-    { "path": "tools/visual/w1-30-shadow-casters.mjs", "purpose": "quote-written-content", "note": "applyArm() is additive-only, which is what turns two arm pairs into duplicates once the flags land in source" },
-    { "path": "tools/visual/landform-reach.mjs", "purpose": "quote-written-content", "note": "the offline instrument behind W1-30F's numbers; it evaluates T = exp(-(ext*scale*d)^2) with regions.json's raw extinction, neither of which is what the shipped renderer computes" },
-    { "path": "game/vendor/three/three.core.js", "purpose": "quote-written-content", "note": "Material.copy at 17236 and Texture.copy at 7346 — the mechanism behind the orphaned surface pass" }
+    {
+      "path": "game/src/world/aerial.js",
+      "purpose": "quote-written-content",
+      "note": "read in full to compare the two fog integrals; both compute the same height factor (e^-a - e^-b)/(b-a), and the difference is Gaussian-FogExp2-with-a-scale against Beer-Lambert, plus aerial's [0.08, 1] clamp"
+    },
+    {
+      "path": "game/src/render/sky.js",
+      "purpose": "quote-written-content",
+      "note": "the atmosphere model, HeightFog's repurposing of fogNear/fogFar, airExtinction() and REGION_HEIGHT_FALLOFF_M"
+    },
+    {
+      "path": "game/src/world/province.js",
+      "purpose": "quote-written-content",
+      "note": "the commented installAerialPerspective() call, its comment block, and the five castShadow sites this round changed"
+    },
+    {
+      "path": "game/src/render/renderer.js",
+      "purpose": "quote-written-content",
+      "note": "line 1189, the heightFalloffM property, and the import order that decided the collision"
+    },
+    {
+      "path": "tools/visual/w1-30-shadow-casters.mjs",
+      "purpose": "quote-written-content",
+      "note": "applyArm() is additive-only, which is what turns two arm pairs into duplicates once the flags land in source"
+    },
+    {
+      "path": "tools/visual/landform-reach.mjs",
+      "purpose": "quote-written-content",
+      "note": "the offline instrument behind W1-30F's numbers; it evaluates T = exp(-(ext*scale*d)^2) with regions.json's raw extinction, neither of which is what the shipped renderer computes"
+    },
+    {
+      "path": "game/vendor/three/three.core.js",
+      "purpose": "quote-written-content",
+      "note": "Material.copy at 17236 and Texture.copy at 7346 — the mechanism behind the orphaned surface pass"
+    }
   ],
   "self_audit": {
     "judged_output_not_source": true,
@@ -329,5 +558,5 @@
     "escalation_ladder_used_if_gap_seemed_small": true,
     "self_audit_note": "ran_every_assigned_method is FALSE: no orbit population and no human read, both recorded in method_deviations. On HAZARDS §0's fifth failure shape, applied to myself: the fog A/B's arms supply the region records, the terrain raster and the camera list identically, and that is the control rather than the flaw — those are the shared world both models are asked to draw, and the disputed input, the chunk owner, is read out of the page by both arms and differs between them. The shimmer arms supply the walk script identically by design and differ in a caster census each reads back off the scene graph. The bands correlation supplies the crop identically and is anchored by a negative control at 0.046 and a restore control at 0.957. Every instrument I built was shown to go red at least once: FOG-CHUNKS-SINGLE-OWNER reddens under --sabotage and against the control clone, NO-ORPHANED-SURFACE-PASS is red at HEAD with an explicit mechanism arm, INSTRUMENT-CAN-SEE-SHIMMER is the positive control for the shimmer statistic, and the bands probe's restore control sets the floor the other arms are read against. I proceeded past tools/contention.mjs's WAIT once, for the shimmer shakeout, and declared it in my status file as that tool asks."
   },
-  "notes": "Measured at 97845f02 on codex/wave1-build-experiment. HEAD moved several times during this run (other agents bank continuously); every number here was taken against a tree containing the round's landed province.js and renderer.js changes, and the two arms of the fog A/B were taken against the same tree and a hard-linked clone of its game/ directory differing by exactly one commented line. The builder's own hardware budget was taken earlier, at a state where the terrain and geology flags had landed and the canopy flags had not, which is why its base arm is not a pre-change baseline."
+  "notes": "Measured at 97845f02 on codex/wave1-build-experiment. HEAD moved several times during this run (other agents bank continuously); every number here was taken against a tree containing the round's landed province.js and renderer.js changes, and the two arms of the fog A/B were taken against the same tree and a hard-linked clone of its game/ directory differing by exactly one commented line. The builder's own hardware budget was taken earlier, at a state where the terrain and geology flags had landed and the canopy flags had not, which is why its base arm is not a pre-change baseline. ORDERING, per CRITIC-DOCTRINE section 8: I read the builder's status file before measuring, because the brief instructed it. I read no prior verdict on this piece and no gap-ledger entry for these paths until after every measurement above was taken and written down."
 }

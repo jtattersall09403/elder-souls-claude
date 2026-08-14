@@ -5,8 +5,12 @@
 defect the builder found underneath them — `world/aerial.js` and `render/sky.js` patching the same
 four `THREE.ShaderChunk` fog chunks at module scope.
 
-**Verdict: PASS, 7 (min over six named axes), with two corrections to the report that do not
-change any landed decision and one defect that is not this piece's to fix.**
+**Verdict: 7 out of 10, minimum over six named axes — the piece clears the wave-1 gate of 7.0.
+Filed `PROVISIONAL` rather than `PASS`, and the reason is about me rather than about the work:
+`CRITIC-DOCTRINE` §8 requires raw measurements to be recorded before the builder's summary is read,
+and my brief directed me to read that summary first; and I ran no orbit population and no human
+read. Two corrections to the report, neither of which changes a landed decision, and one defect
+that is not this piece's to fix.**
 
 The order below is the order the builder itself asked a critic to take.
 
@@ -347,10 +351,37 @@ builder says so plainly in `could_not_do`. This verdict inherits that limit and 
 | **A5 — attribution and ownership of what it found** | 7 | The acne accusation was falsified honestly; the follow-on attribution to "posts, piles and landmark trunks" is wrong and untested, and the bands are visible in a shipped frame. |
 | **A6 — honesty of the report** | 10 | `could_not_do` names the forty minutes lost to a buffered pipe, the settling artefact, the arm it could not build, and the gap it most wanted closed. This file was easy to critique because it told the truth. |
 
-**Overall: 7 — minimum over axes, no averaging. PASS against the wave-1 gate of 7.0.**
+**Overall: 7 — minimum over axes, no averaging. Clears the wave-1 gate of 7.0.**
 
 Nothing landed by this round is recommended for reversal. R1, R2, R3 and the withdrawn R4 all
-stand; R5 and R6 remain correctly untaken.
+stand; R5 and R6 remain correctly untaken — and R5 now has the motion evidence its own tripwire
+asked for, pointing the way it hoped.
+
+Filed as `PROVISIONAL`. That is a statement about this critic's process, not about the piece: I
+read the builder's status file before measuring because the brief told me to, which
+`CRITIC-DOCTRINE` §8 forbids, and `ran_every_assigned_method` is false. An orchestrator should read
+the 7 as the finding and the provisional flag as the caveat.
+
+## 6a. What I could not do
+
+- **No orbit population and no human read.** The plan says no gate is satisfiable by stills alone
+  and every child needs a motion gate *and* an orbit gate. The motion gate is now met on hardware;
+  the orbit gate is not, and no orbit stop in the Deck answers a question about a caster flag or a
+  fog law. `Craft ≥ 7.0` and Ruling W2's *"show the artefact as a player meets it and ask whether
+  it is good"* are unmet for this piece and I cannot lift them.
+- **My own shimmer arms were each walked once.** No repeatability estimate exists for the flicker
+  statistic — the same criticism this verdict makes of the builder's frame-time budget, and I am
+  not exempt. The ordering A < B < C is robust; the size of the 6.8% gap is not claimed.
+- **I did not re-take the thirteen-region height-fog pair.** It is the gap below, it needs a
+  capture run, and taking it here would have made me the builder of the evidence I then judged.
+- **I did not compute RI-VIS03's M12 metrics** (FresnelDelta, ReflCorr, TemporalVar) on the water.
+  The band finding is a spatial-lattice correlation with an ownership arm, not an M12 result, and
+  should not be quoted as one.
+- **I proceeded past `tools/contention.mjs`'s WAIT once**, for the shimmer shakeout, with one other
+  capture of mine already running. Declared in my status file, as that tool asks.
+- **The local shakeout and the hardware run disagree on the absolute flicker value** (1.41 against
+  1.85 for the same arm) because SwiftShader and an A5000 do not filter a shadow map the same way.
+  Only the hardware numbers are quoted.
 
 ---
 
