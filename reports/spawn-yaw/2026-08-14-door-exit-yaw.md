@@ -152,7 +152,7 @@ not contain the opening at all, because until yesterday nobody knew where the op
 | yaw before the door | **320°** (the census framing, facing the Warden-Scribe's shelves) |
 | yaw after the door | **70°**, `yaw_source: door_to_doorstep` |
 | worst clearance over all 40 outdoor frames per viewport | **12 m — the cap. Nothing under it.** |
-| cost | two pods, RTX A5000 and L4, 4.33 min and ~4 min, **$0.019 + ~$0.02**; both terminated, deletion confirmed by API lookup |
+| cost | **three pods, $0.066 in total** — RTX A5000 4.33 min $0.019, an L4 cancelled 40 s in when the phone-viewport defect was spotted (~$0.00), and an L4 5.74 min $0.047. **All three terminated, and in every case the tool re-queried the API and got "not found" back.** No pod is left billing. |
 
 Frames: `docs/shots/2026-08-14-spawn-yaw/` (tracked); full runs in
 `reports/runpod-gpu/runs/opening-thorn/` and `opening-thorn3/` (gitignored, reproducible).
