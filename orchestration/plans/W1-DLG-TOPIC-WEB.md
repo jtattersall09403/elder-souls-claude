@@ -1,16 +1,106 @@
 # W1-DLG-TOPIC-WEB — topics unlocking topics, as something a player can see happen
 
-Plan-State: awaiting-recriticism — materially edited 2026-08-14 by reviewer-editor **round 2**
-(`plan-review2-w1-dlg-topic-web`) at `7b05e65e`, on top of round 1's edit at `e2a7a1a8`. Under
-`PLAN-LOOP.md` rule 1 the editing task may not also approve; a **third** fresh reviewer-editor
-judges this version.
+Plan-State: **satisfied** — approved 2026-08-14 at `f434730c` by reviewer-editor **round 3**
+(`plan-review3-w1-dlg-topic-web`), judging round 2's version (edited at `7b05e65e`, landed
+`d041b584`, on top of round 1's edit at `e2a7a1a8`). Round 3 made **no material edit**: it approved
+the version it received, as `PLAN-LOOP.md` rule 1 requires of an approving reviewer. **Build-ready.**
 
 **Owner's ask, which is what this plan exists to serve:** *in Morrowind, asking about one subject
 adds new subjects to your list — the conversation branches outward as you pull threads, and that is
 a large part of why it feels like investigating a place rather than reading a FAQ.*
 
-**Do not build from this plan yet.** It commissions no work until a fresh reviewer-editor marks it
-satisfied.
+**This plan is cleared to build.** Round 3's approval record — what it attacked, what reproduced, and
+the one question it answered that round 2 left open — is §0c. **No requirement below was changed by
+round 3**; §0c adds no row, moves no threshold and commissions no work.
+
+---
+
+## 0c. Reviewer-editor round 3 — approved, and what was attacked to earn it
+
+Round 3 read the plan against `RI-DLG01`, `RI-UIX08`, `SCORING.md`, `ARBITRATION.md` (S51, S52),
+`OWNER-DIRECTIVES-2026-08-14` (O1, W1, W2) and `PLAN-LOOP.md`, re-measured HEAD with its own census,
+and **found no material defect**. It did not edit, because `PLAN-LOOP.md` rule 1 forbids approving an
+edit of one's own and a fourth round costs the thing the owner actually asked for: dialogue depth
+that is not being built while this document is revised.
+
+**The load-bearing question round 2 left open — §10.6 — is answered, and it resolves in the plan's
+favour, more strongly than round 2 knew.** Round 2 wrote §5a as a verdict instruction because it
+found no mechanism making a subsystem score the minimum over its judging items, and asked the next
+reviewer to cite one if it existed. There is a chain, and every link is a corpus fact rather than a
+plan-local assertion:
+
+1. **`judges:` compels the item list.** `RI-DLG01`'s front matter is
+   `judges: [dialogue.topics.graph, dialogue.topics.discovery, …]` and `RI-UIX08`'s is
+   `judges: [ui.dialogue.presentation, dialogue.topics.discovery, dialogue.disposition]`. Both carry
+   `dialogue.topics.discovery`, which `subsystems.json` registers as *"Keyword discovery: topics
+   unlock by being told about them"* — this piece's subject exactly. `PLAN-LOOP.md` states that the
+   governing bar is derived from *"the piece's canonical owned paths/decomposition and authoritative
+   `judges:` metadata"*, not from what a plan quotes. **So §5a rule 1 is compelled by the corpus, not
+   chosen by this plan.** That was the one contestable step.
+2. **`RI-UIX08` caps itself, twice and independently.** Its `## Scoring` aggregation line:
+   *"`min-over-axes`, then gated by §G … once one does, an unrun §G caps this item at 2."* Its
+   mandated ladder-anchor row says the same thing from the other side — Ladder **2** = *"native ≤ 16,
+   **or §G not run and the mechanical rows below 24**"*.
+3. **`SCORING.md` does the arithmetic.** §3 combines per-item scores into `score.overall_0_10` —
+   `mean` by default, **`min` when the items are gates rather than dimensions** — and §1.2 step 1
+   makes the item's own band a **ceiling** the ladder may never exceed.
+
+**The result, in numbers:** a build with A1–A7 green and §G unrun scores `RI-UIX08` at 2, so the
+piece lands at **4.5** under §3's default and **2** under `min`, against `SCORING.md` §0's wave-1
+gate of **≥ 7.0**. **A green statistic cannot pass this build.** §5a is therefore a correct
+restatement of a mechanism that already binds, and a builder or critic executing §5a as written
+already does the right thing — which is why round 3 recorded the citation here rather than editing
+§5a to carry it.
+
+**What round 3 re-measured independently at HEAD (`f434730c`), with its own census rather than round
+2's, so round 2's new figures are no longer unchecked.** Every one reproduces exactly:
+
+| figure | round 2 | round 3 |
+|---|---|---|
+| `build-graph.mjs` topology | 470 / 1,630 / 3.9836 / 0.2234 / 0.9809 / depth 7 / median 2 / conv 0.6191 / orphans 0 / unreachable INFOs 0 / menu 0.20 | identical, all of it |
+| `unreachable_from_greeting` | the 10 named in §1 | the same 10, **in-degrees 1–2** (so §D's orphan row does pass them), and **none advertised by any `npc.topics`** — P4 confirmed on both halves |
+| topic census | 470 ids, 1,601 `to` occurrences, 1,273 distinct pairs | identical |
+| `npc.topics` | 408 records, 865 entries, **100 dangling**, 66 distinct, 52 records | identical, and **exactly one empty `topics` array** — P5's correction of round 1 confirmed |
+| `thorn.json` second schema | 4 records, `topic`/`text`/`links` | 4 records with no `id`, keys `topic/settlement/text/links`, **4 link entries** — exactly the 1,605 vs 1,601 gap |
+
+**The five joints round 2 named, judged rather than re-litigated:**
+
+- **A1's 90% and A7's 85% are chosen, and that is acceptable here.** Neither is unfailable or
+  unpassable. A7's has measured headroom: §2c's own decomposition puts 204 of 221 dead
+  advertisements inside 23 topics, so repairing those plus the 100 dangling entries takes the
+  reachable ceiling to roughly 95% and 85% is a floor with room — and §4D step 2's *"re-measure after
+  the first five, stop and report"* is a real stop condition, not a hope. A1's is the harder number
+  and the plan says so in §10.1, gives §6's text pack as the cheap red arm, and names the honest
+  repair if it fires (a lower floor with a **higher** `implied` bar, never worse prose). A threshold
+  that is declared, bounded, and carries a written stop condition is what `PLAN-LOOP.md` rule 2 asks
+  for; deriving either further needs a measurement no offline round can take.
+- **The three owed corpus edits stay owed, and nothing in §4 becomes unexecutable.** `thorn.json` is
+  verified above and A1's denominator excludes it **by name**, so no two honest censuses can drift.
+  The `via` error is a defect in the *sibling's* governing item and §7 contradicts it in terms for
+  this builder. §D's ungated median-depth row is guarded locally by A5 at ≥ 2 and no step here can
+  move it.
+- **The seam's three checks are genuinely one-sided.** Rule 1 is send-and-continue, rule 2 is two
+  file reads, rule 3 is a read of `files_touched`. None needs anyone to answer, so Rule 0 is
+  satisfied. Confirmed at HEAD: the sibling is still `state: building`, `files_touched` is its status
+  file and `reports/uix08/READING-NOTE.md` only, and its `files_claimed` names `game/src/engine.js`,
+  `game/src/ui/**` and `tools/ui/**` — **not** `converse.js`, **not** `game/data/dialogue/**`, **not**
+  `tools/dialogue/**`. `node tools/ownership.mjs --for game/src/character/converse.js` returns one
+  piece, `W1-DLG-S37`, **done**. §2a's declared exception is safe and Ruling O1 is satisfied — O1
+  requires *"goes to that agent via `SendMessage`"* and nowhere requires a reply.
+- **A5c at no-regression is the right call.** The ten are 2.1% of 470 topics, and repairing them
+  means authoring an inbound edge from a reachable topic whose prose must *also* carry the label
+  under A1 — content work step C has not budgeted, in a plan whose expensive rows are already ~1,434
+  invisible unlocks and ~250 of 408 people who offer nothing. §9 names the repair and its owner
+  rather than letting it drift. **And the important half of P4 is not the gate level:** it is that
+  §4C's deletion test was changed from *"does not orphan"* to *"still reachable from some greeting"*.
+  That is what stops a 200-edge pass from multiplying the pocket, and it is in the plan.
+
+**One thing round 3 checked that nobody had:** `node tools/ownership.mjs --for
+game/data/dialogue/topics/` reports `UNDECLARED OVERLAP` over ten pieces. All ten are stale — every
+one is `done`, `partial`, or a status file dated 08-10 to 08-13 whose `next_step` reads *"round
+complete"* or *"work is complete"*. No live builder holds this piece's content directory. §2a rule 2
+already makes the builder run that command before writing, and `RULES.md` rule 16 governs the general
+case, so nothing needed adding.
 
 ---
 
