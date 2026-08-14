@@ -291,6 +291,33 @@ Before and after, from the first post:
 General shape of it: "This turned out to be wrong" beats "This was a catastrophic failure".
 "Which is not ideal" is a perfectly good way to say something is bad.
 
+### The banned pattern — "nobody had wired it in", and why it was wrong
+
+**Tone is a hard requirement, not a preference, and this exact pattern is banned.** The owner named
+it directly, quoting a real published line: *"'\[x\] NPCs had been written, \[x\] lines of dialogue,
+over \[x\] regions. Nothing in the actual game touched any of it.'"* And explained why it is wrong,
+not just unpleasant: *"several times they've said things like 'nobody had ever wired \[x\] into the
+actual game' but actually I don't think that was unexpected, we just hadn't gotten to that bit of the
+build yet."*
+
+The defect in that sentence is not the fact — the content not being wired in yet may be completely
+true — it is the framing. It is written as a discovery of fault ("Nothing... touched any of it",
+delivered as a gotcha) about something that was never claimed finished and was never supposed to be
+finished yet. **A thing that has not been built is "not yet built", which is the ordinary state of a
+project mid-wave, exactly as normal as a half-built house having no roof yet.** Write it as a status,
+not as an accusation:
+
+| Don't | Do |
+| --- | --- |
+| "40 NPCs had been written, 3,000 lines of dialogue, over 12 regions. Nothing in the actual game touched any of it." | "The 40 NPCs and their dialogue are written; the next step is wiring them into the world so the player can actually meet them." |
+| "Nobody had ever wired the ambience system into the actual game." | "The ambience system exists and hasn't reached the game yet — that's the next piece of work." |
+
+Owner's summary of what to aim for instead: *"more positive and kind and progress-oriented. But not
+hype-y or cheesy or over the top."* That middle path is the whole difficulty of this brief: honest
+about gaps, warm about the people doing the work, without tipping into either sarcasm or sales copy.
+Say the gap plainly, as a fact about where things are, and move on to what's being done about it —
+don't dwell on it as a failure and don't dress it up as a triumph either.
+
 ### The worked example — read this one properly
 
 This paragraph was published and flagged by the project's owner as **totally wrong in tone**. It is
@@ -339,16 +366,20 @@ it probably is not.
 
 ## Structure that works
 
-**Dispatch (the default).** A title naming the specific thing. Open on the fact itself, in the
-first sentence — no scene-setting paragraph. The substance, with an image or a comparison. One line
-on what happens next. That is the whole shape; there is usually no need for a heading at all.
+**Roundup (the default, twice a day).** A title naming the period or the headline thing in it
+(`Tuesday afternoon: settlement streets and a wait menu`, or similar — specific, not
+"progress update"). Open with a short line on the shape of the window — what kind of work it was,
+in one sentence — then one short section per topic covered, each following the merged-PR shape:
+what changed, what to expect in the game, how far along it is. Close with a line or two on what's
+next. Two or three images across the whole post, placed near the topic they illustrate.
 
-**Feature (occasional).** A title that says what happened. One paragraph on why it matters. The
-substance under two or three headings, with pictures. An honest "where things actually stand" near
-the end. What's next, in one line.
+**Feature (rare).** A title that says what happened. One paragraph on why it matters. The substance
+under two or three headings, with pictures. An honest "where things actually stand" near the end.
+What's next, in one line.
 
-Length: **300–600 words for a dispatch, 900–1,400 for a feature.** A dispatch that is running long
-is usually two dispatches.
+Length: **500–900 words for a roundup, 900–1,400 for a feature.** A roundup that is running past
+about 900 words is usually trying to cover too much detail per topic — trim each section rather than
+dropping a topic, since dropping one is how a reader stops trusting the roundup to be complete.
 
 ## The test
 

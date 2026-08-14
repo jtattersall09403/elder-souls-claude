@@ -239,7 +239,19 @@ right now). Between these two you should not need to go looking for anything.
 
 27. **One line in `reports/blog-feed.jsonl`**, in plain words a non-developer would understand, and
     one illustrative image in `docs/shots/` with a dated descriptive name. This is how the owner
-    sees progress, and it costs you a minute.
+    sees progress, and it costs you a minute. **This line is raw material, not a blog post itself.**
+    Owner, twice: *"Reduce blogs frequency. More like a twice daily roundup of key things
+    done/achieved/improved that day with a selection of visuals and images to showcase. And they
+    should be less harsh."* The blog is now **two roundups a day**, each drawing on the feed lines
+    filed since the last one — not a post per line, and not a post per verdict.
+
+    **Tone is a hard requirement, not a preference**, and one exact pattern is banned: *"[x] NPCs had
+    been written, [x] lines of dialogue, over [x] regions. Nothing in the actual game touched any of
+    it."* The owner's own diagnosis: *"I don't think that was unexpected, we just hadn't gotten to
+    that bit of the build yet."* **An unbuilt thing is "not yet built" — the ordinary state of a
+    project mid-wave, not a scandal — and every status line you write, here and in your own status
+    file, should read that way: a fact about where things are, not a gotcha.** Full brief and worked
+    examples: `orchestration/briefs/blog.md`.
 28. **Commit your own declared files, by explicit path. The orchestrator banks everything else.**
 
     This rule used to read "do not commit — the orchestrator banks the tree", and dispatch briefs
