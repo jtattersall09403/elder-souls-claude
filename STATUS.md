@@ -22,16 +22,15 @@ Alongside that: shrinking the documentation every agent reads before it can star
 - The map opens, shows the whole province, and hides only the markers you haven't found.
 
 **Still wrong, and you will see it:**
-- **Nothing casts a contact shadow.** Buildings, trees and steps look like they are hovering. Being fixed right now — it is the single thing five blind judges all named.
 - Shadowed areas crush to black with no detail.
-- **The player and every NPC have no body.** Not a design problem — a bug, found by a critic this
-  evening. A shader fails to link, so **head, arms, legs and torso do not draw at all**, while horns,
-  eyes, frills, equipment and weapons do. This is almost certainly what you were looking at when you
-  said they look *"frankly ridiculous"*. A fix is in flight and it is small. Once it lands, the real
-  question — whether they look *good* — is still open and still needs the reference set below. The earlier work fixed *holes in the models*; it never
-  touched design or quality. Fixing it properly is blocked on one thing that does not exist yet: a
-  character reference set (images **and motion**, at Skyrim/ESO quality) for builders to aim at and
-  critics to compare against. Building that set is the next thing dispatched.
+- **Characters had no bodies for part of today — fixed a few minutes ago.** A shader failed to link, so
+  head, arms, legs and torso did not draw at all while horns, eyes, frills and equipment did. If you
+  looked at the game this evening, that is what you saw. **124 of 124 programs now link** and the full
+  figure renders, confirmed at eight orbit angles. Whether the characters look *good* is a separate,
+  still-open question — that needs the reference set, which is now on disk.
+- **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
+  out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
+  it. Shadows still crush to black; that fix is being built now.
 - Dialogue is shallow — asking about one topic mostly does not open others. Being fixed.
 - Some buildings still overlap each other; 24 doors still open into another building.
 
