@@ -1,34 +1,108 @@
 {
   "task_id": "W1-30K",
-  "role": "plan",
-  "piece": "W1-30K — the look target: art direction written as numbers",
-  "parent": "W1-30",
-  "status": "not-started",
-  "state": "plan-awaiting-criticism",
-  "plan_state": "awaiting-criticism",
-  "plan_path": "orchestration/plans/W1-30K.md",
+  "role": "builder",
+  "piece": "W1-30K",
+  "plan": "orchestration/plans/W1-30K.md",
   "branch": "codex/wave1-build-experiment",
-  "created_by": "W1-30-VIS-RECRITICISM, amendment R2",
-  "why": "The W1-30 parent's previous reviewer flagged that W1-30E (architecture) and W1-30F (terrain) may not cohere without a concept pass, declined to add one because it could not establish we can draw or license key art, and wrote that a reviewer adding it would be right. This child resolves that by drawing nothing and licensing nothing: it derives a NUMERIC look target from reference plates the corpus already holds and is already permitted to cite. Art direction nobody has written down becomes whatever each builder individually imagined, and eleven parallel children is exactly the population that turns that into eleven different games.",
-  "paths": [
-    "docs/art-direction/**"
+  "status": "board-landed-92-rows-set-12-unset-validator-and-four-null-controls-green",
+  "plan_state": "partially-satisfied",
+  "summary": "The look target now exists as numbers. 313 reference plates measured by a committed, re-runnable script; 104 board rows emitted, 92 set and 12 unset; every set row names the plate paths it was read from and the statistic used; the two halves ship disjoint with RI-VIS01 declarations and a cross-citation scan that goes red on an injected cross-cite. Nothing was drawn and nothing was licensed. The headline row for the tree in flight is ART-X5-SKYLINE-RELIEF: the reference set's skyline standard deviation is 0.085-0.274 of frame height (median 0.175) and a dead-flat horizon measures 0.000 — which is the number W1-30V-REGIONS's 'every region horizon is dead flat' finding did not have. Per-region skyline bands are ordered by landforms.json's own measured_relief_range_m, so Valus Ridge (418 m) is asked for 0.226-0.300 and the Hive (8.1 m) for 0.052-0.127.",
+  "what_it_publishes": {
+    "board.json": "104 rows. The machine-readable target: {id, side, scope, subject, axis, statistic, unit, target{lo,hi,anchor_p50}, source{plates[],statistic_n}, current_build, consumers[], judgement, note}. A critic checks a frame against a range in this file instead of against a paragraph.",
+    "ART.md": "the art-direction half. Cites refs/morrowind/ and refs/anti-generic/ only.",
+    "FIDELITY.md": "the fidelity half. Cites refs/modern/ only, HUD-free plates only.",
+    "README.md": "neutral. Consumer map and gaps register. Names row IDs, never plate paths, so it cannot cross-cite.",
+    "plate-metrics.json": "one row of raw statistics per measured plate.",
+    "measure-plates.mjs / build-board.mjs / emit-docs.mjs / validate-board.mjs": "the whole pipeline, re-runnable end to end in about two and a half minutes."
+  },
+  "headline_numbers": {
+    "ART-X5-SKYLINE-RELIEF": "0.085 - 0.274 of frame height, median 0.175, n=90. A dead-flat horizon is 0.000.",
+    "ART-X1-VALUE-SPLIT": "the top third of frame is -2.81 to +44.14 L* brighter than the bottom third, median +15.85, n=90.",
+    "ART-X2-CHROMA-P95": "7.11 - 34.64 C*, median 18.32, n=165. The saturation ceiling, measured.",
+    "ART-X2-CHROMA-FRAC": "0.0% - 11.5% of frame pixels above C*=30, median 0.0%. High chroma is a light source, not a surface.",
+    "ART-X6-STRANGENESS": "distance from the anti-generic centroid, floor 59.75 (mean-CIELAB) and 116.70 (colour-stripped layout). A floor, never a ceiling: RI-VIS07 permits anti-generic only as the thing to measure distance FROM.",
+    "FID-AERIAL-exterior_daylight": "foreground local contrast over near-horizon local contrast, 0.80 - 2.40, median 1.27. A renderer with no aerial perspective returns 1.0."
+  },
+  "the_finding_worth_reading": "ART-X7-SEPARATION-RAW ships UNSET, and the reason is a measurement rather than a shortage of plates. Morrowind's own nine regions cannot be identified from colour alone on this corpus: leave-one-out region identification 9.1% against 11.1% chance, Fisher 0.964 (inter-centroid p50 68.04 against intra p50 70.57), n=66 frames over 9 regions. A separation floor read off a population that fails its own test is noise wearing a number, so no floor was published. The colour-stripped layout descriptor does better — LOO 27.3% against the same 11.1% chance — and that row ships set. This is the same finding AM-W1-01-01 filed against RI-WLD04's A7 instrument, reached independently on a different population and a different descriptor, and it is the reason every per-region colour row in the board carries the words NECESSARY, NOT SUFFICIENT. A region that meets its colour band and misses its skyline band has been graded, not built.",
+  "bifurcation": {
+    "how_it_is_held": "The two halves are generated from rows of exactly one side. board.json carries an RI-VIS01 declaration block per side. validate-board.mjs C2 scans every plate path on every row against the side's forbidden prefixes; C3 scans the prose for forbidden paths, forbidden per-side vocabulary, the six CC-3 cardinal-sin phrases and CC-5 score fusion. The declaration block itself is fenced with <!-- cc-scan:ignore --> because RI-VIS01 B requires it to NAME the forbidden set.",
+    "one_place_the_plan_was_wrong_and_the_rule_won": "W1-30K.md asked for key-to-fill ratio and fog density on the ART half. RI-VIS01 A routes lighting model to F03 and atmospheric scattering to F06, both FIDELITY. They are therefore computed from refs/modern/ and nowhere else, and the ART half keeps only the part that is genuinely P08 — the tint direction of the far field. A 2002 screenshot may not set a lighting rig or a scattering model, whatever a look board would like."
+  },
+  "null_controls_run": [
+    "--inject-unsourced: a row with no plate behind it -> C1 fires RED. Verified.",
+    "--inject-crosscite: a modern plate added to an ART row's source list -> C2 fires RED. Verified.",
+    "--inject-cardinal: a CC-3 cardinal-sin phrase appended to ART.md in memory -> C3 fires RED. Verified.",
+    "--collapse-regions: Valus Ridge given Blackwood's board verbatim -> C4 fires RED. Verified.",
+    "node docs/art-direction/validate-board.mjs --self-test runs all four and the clean pass in one command and exits non-zero if any control fails to fire."
   ],
-  "owns_exclusive_write": [
-    "docs/art-direction/**"
+  "what_i_could_not_do": [
+    "THE CURRENT-BUILD COLUMN IS MOSTLY EMPTY. The plan's bar asks for the current build's measured value beside every target. Every composition and palette row's own statistic needs a rendered frame, and no frame was captured: tools/contention.mjs reported the box at or over its browser ceiling (4 browser instances, 24 processes, load 5.69 per core against a 4.0 ceiling), and the shared capture daemon could not render from this worktree at all - tools/node_modules is absent in a worktree, so launchGame() exits 70 and the daemon returns GAME_BROKEN. That is a worktree artefact, not a broken game. I did not npm install into the worktree and did not start a second browser on an over-ceiling box; W1-30K blocks nothing and was not worth a browser. Every affected row carries the reason and the exact two-command fill in current_build.fill_command. What IS recorded offline: the authored per-region chroma from regions.json palette_hex, and the declared FogExp2 densities from sky.js, both labelled as inputs rather than measured consequences.",
+    "SILHOUETTE RHYTHM IS UNSET. The plan asked for 'silhouette rhythm at 200 m'. Two separate reasons, both measured rather than asserted: the autocorrelation instrument finds a repeat period in only 51% of the reference frames it is run on, and a screenshot has no depth channel so nothing here can be stated at 200 m at all. The found-rate is on the row as evidence.",
+    "FOUR SETTLEMENT ROWS ARE UNSET for want of composition-valid plates: thorn (REF-A3, n=0) and stormhold (REF-A17, n=0) have no plate in the set with both native framing and an asserted sky; helstrom (n=2) and archon (n=1) are below the three-plate floor. Their palette rows are set from the square-crop previews, which RI-VIS09 3.3 permits for palette and forbids for framing.",
+    "I DID NOT RUN THE HUMAN HALF OF ANYTHING. No blind pair, no Protocol B, no judgement of any kind - that is W1-30V's and it must not score against a target its subject authored. validate-board.mjs C6 scans the pack directories for board artefacts and is currently green over 1 pack directory.",
+    "THE CONSUMPTION GATE IS NOT MINE TO PASS. The plan requires >= 5 of the 9 game-code children to cite a board row in their builder report. I have published and notified; whether it is consumed is measured on them, and if it is not, the boards were not useful and saying so is the finding."
   ],
-  "read_only": [
-    "corpus/70-visual/refs/**",
-    "corpus/70-visual/RI-VIS01-bifurcation-protocol.md",
-    "corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md",
-    "corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md",
-    "corpus/70-visual/RI-VIS09-reference-image-set.md",
-    "corpus/50-world/landforms.json",
-    "game/src/render/world-art.js"
+  "honest_caveats_that_travel_with_every_number": [
+    "vanilla_confidence is 'medium' at best on the preview set and 'pixel_metrics_valid' is false on all of it.",
+    "The manifest's own sampling_bias_note: the screenshot population is skewed toward the picturesque, which biases dispersion UPWARD, so any floor derived from it is harder rather than easier. That runs in our favour and is stated anyway.",
+    "No image in the reference set is two-host corroborated.",
+    "The FIDELITY bands are p10-p90 of populations of 5 to 16 frames. They are indicative envelopes, not authorities. Nothing here amends RI-VIS03 and the RI-VIS09 4a prohibition on publishing a band as measured on the strength of a nearest-equivalent statistic is untouched.",
+    "REF-A20 (main-menu and title art) was excluded from the saturation ceiling as a painted 2D asset rather than a rendered world frame. It measures C* 29.9-45.8 against 2.3-29.1 for every rendered exterior slot; including it would have roughly doubled the ceiling off four non-world plates. The full exclusion list with per-slot reasons is slot_routing.excluded in board.json."
   ],
-  "game_code_touched": [],
-  "blocks": [],
-  "blocked_by": [],
-  "dispatch": "now — touches no game code, blocks nothing, is blocked by nothing",
-  "next_step": "A first fresh reviewer-editor criticises orchestration/plans/W1-30K.md under PLAN-LOOP.md rule 1. Only after the plan is satisfied does a builder run. The plan's own stop condition is the thing to test hardest: if the plates cannot honestly ground the numbers, the correct output is a short document saying so plus what acquisition would fix it, and the parent's R2 ruling is overturned by its own falsifier. Do not let this child fill a board by inventing plausible numbers - a target every other child is then measured against is the most expensive possible place to guess.",
-  "consumers": ["W1-30A", "W1-30B", "W1-30C", "W1-30E", "W1-30F", "W1-30G"]
+  "judgements_made_in_the_open_and_all_reversible": [
+    "SLOT ROUTING - which of the 23 Morrowind slots are frames of the world. Declared from each slot's own depicts field; five slots excluded with a reason each.",
+    "PER-REGION ORDERING - the VALUES are quantiles of the measured reference distribution; the ORDER is read from corpus-owned data and not from taste. Lightness and chroma follow the mean CIELAB of the three palette_hex swatches regions.json already declares; skyline relief follows landforms.json's measured_relief_range_m. Every row carries judgement.ordering_source, judgement.ordering_value and judgement.would_overturn.",
+    "SETTLEMENT ANCHORS - each of the eight settlements is anchored on one reference slot chosen for BUILT FORM, which is the use RI-VIS09 3.3 grants by name, matched against the grammar world-art.js already declares. The anchor is the judgement; the numbers are that slot's measured band. Every anchor row records the basis and is marked reversible.",
+    "TWO CLAMPS - L* floored at 0 (physical) and per-region chroma bands clamped into the province envelope (consistency, so the board cannot contradict itself). Region centres span the province row's own p10..p90 rather than the full distribution, because spanning the full distribution collapsed the extreme regions' bands to zero width under the clamp. Rows record clamped: 'physical' or 'province envelope' when it bites."
+  ],
+  "files_touched": [
+    "docs/art-direction/measure-plates.mjs",
+    "docs/art-direction/build-board.mjs",
+    "docs/art-direction/emit-docs.mjs",
+    "docs/art-direction/validate-board.mjs",
+    "docs/art-direction/board.json",
+    "docs/art-direction/plate-metrics.json",
+    "docs/art-direction/ART.md",
+    "docs/art-direction/FIDELITY.md",
+    "docs/art-direction/README.md",
+    "orchestration/status/W1-30K.json",
+    "orchestration/INDEX.md",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": ["docs/art-direction/**"],
+  "zero_writes_to": ["game/src/**", "corpus/**"],
+  "reuse": {
+    "consumed": [
+      "corpus/70-visual/refs/MANIFEST.json - the plate register drives every routing decision. sky_visible, framing, has_hud, promotional, profile and region are all read from it rather than typed. A plate the manifest does not describe is not measured.",
+      "corpus/70-visual/refs/morrowind/REF-A21-regions, REF-A22-intraregion, REF-A23-ground - the newest acquisition, full-frame native-aspect and region-tagged, and the only population that can carry a composition statistic. The manifest's own pixel_metrics_note says A7's measurements are DISPERSION statistics over palette, luminance, edge density, colour entropy, sky fraction and silhouette; that is exactly what this piece computes and it is the population those files were acquired for.",
+      "tools/world/region-dispersion.mjs - its ffmpeg-to-rawvideo decode route (one decoder for AVIF and JPEG, so the numbers are comparable across both) and its two descriptors, the 4x4 mean-CIELAB 'raw' and the per-image z-scored 6x4 edge+lightness 'structure'. Re-implemented in-file rather than imported because that tool is owned by W1-01 and this piece has zero write access outside docs/art-direction/, but the descriptor shape is the amendment's, not mine.",
+      "orchestration/amendments/AM-W1-01-01 - its finding (colour carries two-thirds of measured region separability, and the pass condition belongs on the colour-stripped control) is what made ART-X7-SEPARATION-RAW's unset status an expected result rather than a surprise.",
+      "corpus/50-world/regions.json palette_hex and corpus/50-world/landforms.json measured_relief_range_m - the corpus owns regional identity; this piece publishes the measured envelope those declarations have to live inside and takes its orderings from them rather than inventing a second opinion.",
+      "game/src/render/world-art.js REGION_ART and SETTLEMENT_ART - the vocabulary this piece gives numbers to. Read-only, as the plan requires.",
+      "game/src/render/visual-foundation.js PALETTES and game/src/render/sky.js WEATHER - read statically for the two current-build columns that do not need a browser."
+    ],
+    "published": [
+      "docs/art-direction/board.json - the look target. Consumed by A, B, C, D, E, F and G, and by every Wave-2 visual piece thereafter. Row counts per child: E 53, C 49, A 44, F 38, G 23, B 20, D 8.",
+      "docs/art-direction/measure-plates.mjs - a general per-frame statistics instrument. It takes any image ffmpeg can decode and emits palette, value-structure, skyline, layout-descriptor and atmospheric statistics. Any child that wants to check its OWN frame against the board runs this over its shots; that is the same instrument the target was set with, which is the only way a comparison means anything.",
+      "docs/art-direction/validate-board.mjs - the gate and its four null controls. A child editing the board runs --self-test."
+    ]
+  },
+  "for_the_fresh_critic": {
+    "the_three_attacks_most_worth_making": [
+      "1. THE THREE CROSS-CUTTING DECISIONS ARE JUDGEMENTS AND THE BOARD SAYS SO. A board can be correct and wrong: 'the mean of the reference population' is arithmetic, not art direction. That risk is not fully guarded. Attack ART-X1, ART-X2 and ART-X6 on whether the statistic chosen is the one that carries the look, not on whether the arithmetic is right.",
+      "2. RE-DERIVE 20 NUMBERS. Every row names its plate paths and its statistic. node docs/art-direction/measure-plates.mjs regenerates plate-metrics.json in about 2m15s over 313 plates; the board is quantiles of it. If a number does not reproduce, that is the finding.",
+      "3. AUDIT THE GAPS FOR CONVENIENCE. 12 unset rows out of 104 from a set whose Morrowind half is 320x320 previews with pixel_metrics_valid false. A board with NO gaps would be the finding; whether 12 is honest or comfortable is the question. In particular: is ART-X7-SEPARATION-RAW unset because the measurement says so, or because an unset row was easier than a hard one? The measurement is on the row - check it."
+    ],
+    "the_thing_i_am_least_sure_of": "Whether the per-region quantile mapping is a target or a decoration. The endpoints are measured and the ordering is corpus-owned, but the assumption underneath - that the measured Morrowind distribution of a statistic is monotone in our corpus's ordering of our regions - is not itself tested, and could not be with the plates held. If it is wrong the bands are still inside the province envelope and still ordered, so nothing dangerous follows, but a critic would be right to say they are then thirteen labels on one distribution rather than thirteen targets. The honest fallback if that attack lands is fewer, wider, more confident statements: the province rows and the skyline ordering survive it; the per-region colour rows may not."
+  },
+  "verification": {
+    "commands": [
+      "node docs/art-direction/measure-plates.mjs  -> measured 313 plates, skipped 62, errors 0",
+      "node docs/art-direction/build-board.mjs     -> 104 rows (92 set, 12 unset), 82 ART / 22 FIDELITY",
+      "node docs/art-direction/emit-docs.mjs       -> ART.md, FIDELITY.md, README.md",
+      "node docs/art-direction/validate-board.mjs --self-test -> clean GREEN; all four null controls RED as required"
+    ],
+    "text_only_evidence": true,
+    "new_binaries": 0
+  }
 }
