@@ -223,7 +223,7 @@ const RI_MAP = {
   'RI-LOR05': ['P5'], 'RI-LOR06': ['P5'], 'RI-LOR07': ['P5'], 'RI-LOR08': ['P5'],
   // 70-visual
   'RI-VIS01': ['I3'], 'RI-VIS02': ['I5'], 'RI-VIS03': ['I3', 'F2', 'F3'], 'RI-VIS04': ['F5', 'F2', 'F3', 'F4'],
-  'RI-VIS05': ['F13'], 'RI-VIS06': ['I3'], 'RI-VIS07': ['F13'], 'RI-VIS08': ['F10', 'F11'], 'RI-VIS09': ['I5'],
+  'RI-VIS05': ['F13'], 'RI-VIS06': ['I3'], 'RI-VIS07': ['F13'], 'RI-VIS08': ['F10', 'F11'], 'RI-VIS10': ['F10', 'I5'], 'RI-VIS09': ['I5'],
   // 80-methods  (METHOD bucket — but each has a build-side owner too)
   'RI-MTH01': ['I1'], 'RI-MTH02': ['I1'], 'RI-MTH03': ['I3'], 'RI-MTH04': ['I2'],
   'RI-MTH05': ['I5'], 'RI-MTH06': ['I2', 'I5'], 'RI-MTH07': ['I4'],
@@ -346,6 +346,9 @@ const GAP_MAP = {
   'GAP-W1-map-the-audit-is-computed-and-never-published': ['T1'],
   'GAP-W1-mark-teaches-nothing-to-the-journal': ['P3'],
   'GAP-W1-pbr-material-set-unbound': ['F1'],
+  // The F1 critic's finding: two onBeforeCompile hooks declare uWetness/esWet twice, the actor
+  // program fails to link, and no character has a body. F1 owns it; F10 carries the consequence.
+  'GAP-W1-f1-actor-body-shader-does-not-link': ['F1', 'F10'],
   'GAP-W1-platform-prng-never-drawn': ['I1'],
   'GAP-W1-platform-save-drops-entity-prev-state': ['T1'],
   'GAP-W1-population-save-reload-repays-every-corpse': ['T1', 'G5'],

@@ -37,15 +37,16 @@ wrong. Anyone with Souls hours will recognise the shape: a fight with no pressur
 fight whatever the frame data says, and every individual number in it can be correct while the
 whole thing is wrong.
 
-:::compare Left, the third-person camera the fight is judged through: placeholder capsules on
-untextured ground, which is the expected state, and nothing in the frame to fight. Right,
-`SB-TEL__ds3-3625638110`, a behavioural reference held for `RI-AI02` — an enemy at committed range,
-weapon lit and in hand. That one is cited for telegraph and spacing only, never for how anything
-should look; our art direction descends from Morrowind and may not borrow a Souls silhouette. The
-distance that matters is not the rendering. It is that one of these frames has a threat in it.
+The third-person camera the fight is judged through: placeholder capsules on untextured ground,
+which is the expected state, and **nothing in the frame to fight**. The behavioural reference we hold
+alongside it — an enemy at committed range, weapon lit and in hand — is not reproduced here, and the
+reason is worth stating: it is licensed to us for *internal comparison and critique only, never
+redistributed*, and publishing it to this site would be redistribution. It is cited for telegraph and
+spacing only, never for how anything should look; our art direction descends from Morrowind and may
+not borrow a Souls silhouette. The distance that matters is not the rendering. It is that one of these
+frames has a threat in it and ours does not.
+
 ![Ours — the over-the-shoulder combat camera, VP12](../shots/2026-08-06-combat-framing.png)
-![Reference — SB-TEL__ds3-3625638110, an enemy at combat distance mid-commitment](../shots/SB-TEL__ds3-3625638110.jpg)
-:::
 
 The frame layer underneath is the best work this project has produced: fourteen of fourteen attack
 rows exact to the frame, i-frame windows landing on `f5–f30` / `f5–f26` / `f7–f16` with zero holes
