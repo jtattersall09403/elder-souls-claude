@@ -2,7 +2,7 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-14T18:42:38.005Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-14T19:01:30.954Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
@@ -42,6 +42,7 @@
 | `F12` | VFX and particles | RI-MAG05 | — | 1 (0) | W1-30 W1-30H | built_below_bar | V13 |
 | `F13` | Art direction and region identity | RI-WLD04 RI-VIS05 RI-VIS07 RI-UIX06 | RI-VIS05 | 1 (1) | W1-30 W1-30K | built_below_bar | V15 |
 | `F14` | Performance, LOD and budgets | RI-PLT01 | — | 0 (0) | W1-30 | built_below_bar | V16 |
+| `T4` | The Morrowind screens | RI-UIX03 RI-UIX04 RI-UIX06 RI-UIX07 RI-UIX08 | RI-UIX07 RI-UIX08 | 4 (3) | W1-21 W1-HUD-TOAST | built_below_bar | partial:V14 |
 
 ### Ring 2 — The body, the camera and the fight — Souls owns everything in here.
 
@@ -106,7 +107,6 @@
 | id | item | ref items | never judged | open gaps (blocking) | plans | state | old roadmap |
 |---|---|---|---|---|---|---|---|
 | `T3` | Load, streaming and budgets | RI-PLT01 RI-PLT02 RI-PLT03 RI-AUD02 | RI-PLT02 | 2 (1) | W1-00 | built_below_bar | E4 |
-| `T4` | The screens | RI-UIX03 RI-UIX04 RI-UIX06 RI-UIX07 | RI-UIX07 | 4 (3) | W1-21 W1-HUD-TOAST | built_below_bar | partial:V14 |
 
 ### Ring 7 — The whole thing — judged as an experience, end to end.
 
@@ -228,19 +228,19 @@
 | `RI-VIS01` | 70-visual | neutral | I3 | 0 | — | never_judged |
 | `RI-VIS02` | 70-visual | modern-fidelity | I5 | 1 | 0 | judged_below_bar |
 | `RI-VIS03` | 70-visual | modern-fidelity | I3 F2 F3 | 2 | 6 | judged_at_or_above_bar |
-| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 3 | 8 | judged_at_or_above_bar |
+| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 4 | 8 | judged_at_or_above_bar |
 | `RI-VIS05` | 70-visual | morrowind | F13 | 0 | — | never_judged |
 | `RI-VIS06` | 70-visual | neutral | I3 | 4 | 5 | judged_below_bar |
 | `RI-VIS07` | 70-visual | morrowind | F13 | 1 | 4 | judged_below_bar |
-| `RI-VIS08` | 70-visual | modern-fidelity | F10 F11 | 1 | 3 | judged_below_bar |
+| `RI-VIS08` | 70-visual | modern-fidelity | F10 F11 | 2 | 3 | judged_below_bar |
 | `RI-VIS09` | 70-visual | neutral | I5 | 0 | — | never_judged |
 | `RI-MTH01` | 80-methods | neutral | I1 | 2 | 6 | judged_at_or_above_bar |
 | `RI-MTH02` | 80-methods | neutral | I1 | 3 | 7 | judged_at_or_above_bar |
 | `RI-MTH03` | 80-methods | neutral | I3 | 2 | 5 | judged_below_bar |
-| `RI-MTH04` | 80-methods | neutral | I2 | 6 | 8 | judged_at_or_above_bar |
+| `RI-MTH04` | 80-methods | neutral | I2 | 7 | 8 | judged_at_or_above_bar |
 | `RI-MTH05` | 80-methods | neutral | I5 | 0 | — | never_judged |
 | `RI-MTH06` | 80-methods | neutral | I2 I5 | 0 | — | never_judged |
-| `RI-MTH07` | 80-methods | neutral | I4 | 24 | 8 | judged_at_or_above_bar |
+| `RI-MTH07` | 80-methods | neutral | I4 | 25 | 8 | judged_at_or_above_bar |
 | `RI-PLT01` | 85-platform | neutral | T3 F14 | 2 | 5 | judged_below_bar |
 | `RI-PLT02` | 85-platform | neutral | T3 | 0 | — | never_judged |
 | `RI-PLT03` | 85-platform | neutral | T3 | 3 | 2 | judged_below_bar |
@@ -251,7 +251,7 @@
 | `RI-UIX05` | 86-ui | morrowind | P4 | 4 | 8 | judged_at_or_above_bar |
 | `RI-UIX06` | 86-ui | neutral | T4 F13 | 2 | 5 | judged_below_bar |
 | `RI-UIX07` | 86-ui | morrowind | T4 | 0 | — | never_judged |
-| `RI-UIX08` | 86-ui | morrowind | P1 | 0 | — | never_judged |
+| `RI-UIX08` | 86-ui | morrowind | P1 T4 | 0 | — | never_judged |
 | `RI-AUD01` | 87-audio | souls | G6 | 1 | 6 | judged_at_or_above_bar |
 | `RI-AUD02` | 87-audio | modern-fidelity | E9 T3 | 1 | 6 | judged_at_or_above_bar |
 | `RI-AUD03` | 87-audio | morrowind | E9 | 4 | 5 | judged_below_bar |
