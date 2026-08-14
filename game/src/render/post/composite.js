@@ -106,7 +106,7 @@ export function buildCompositor(w, h, opts = {}) {
       // human-scale contact gap (a boot sole, a step riser); `w1-v2-contact-ao.mjs` is the
       // instrument that proves the acceptance bar (RI-VIS04 §4 / RI-VIS03 M6b: contact junction
       // >=25% darker than open ground) rather than this comment.
-      uAORadius: { value: 0.42 }, uAOStrength: { value: 1.9 }, uAOBias: { value: 0.018 },
+      uAORadius: { value: 0.42 }, uAOStrength: { value: 1.9 }, uAOBias: { value: 0.08 },
       uBloom: { value: 0.16 }, uBloomThreshold: { value: 0.9 }, uBloomKnee: { value: 0.45 },
       // The grade block. Pushed every frame by `renderer.js` from `post/grade.js`; the identity
       // values here mean a compositor built and never fed is a no-op rather than a colour cast.
