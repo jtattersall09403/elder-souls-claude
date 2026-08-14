@@ -107,6 +107,7 @@ export function buildCompositor(w, h, opts = {}) {
       // instrument that proves the acceptance bar (RI-VIS04 §4 / RI-VIS03 M6b: contact junction
       // >=25% darker than open ground) rather than this comment.
       uAORadius: { value: 0.16 }, uAOStrength: { value: 2.6 }, uAOBias: { value: 0.02 },
+      uAOMaxOcclusion: { value: 0.32 },
       uBloom: { value: 0.16 }, uBloomThreshold: { value: 0.9 }, uBloomKnee: { value: 0.45 },
       // The grade block. Pushed every frame by `renderer.js` from `post/grade.js`; the identity
       // values here mean a compositor built and never fed is a no-op rather than a colour cast.
@@ -131,7 +132,7 @@ export function buildCompositor(w, h, opts = {}) {
     uniform mat3 uMix;
     uniform float uBalance, uContrast, uPivot, uSat, uVignette, uVignInner, uVignOuter;
     uniform mat4 uProjMat, uInvProjMat;
-    uniform float uAORadius, uAOStrength, uAOBias;
+    uniform float uAORadius, uAOStrength, uAOBias, uAOMaxOcclusion;
 
     const vec3 LUMA = vec3(.2126, .7152, .0722);
 
@@ -262,7 +263,13 @@ export function buildCompositor(w, h, opts = {}) {
         float rangeCheck = smoothstep(0.0, 1.0, uAORadius / max(abs(P.z - SP.z), 1e-4));
         occlusion += (SP.z >= samplePos.z + uAOBias) ? rangeCheck : 0.0;
       }
-      return clamp(occlusion / 10.0 * uAOStrength, 0.0, 1.0);
+      // Capped below 1.0 (see uAOMaxOcclusion): on real low-poly ground the per-pixel normal is
+      // reconstructed from a ONE-PIXEL depth derivative, so it faithfully reads every terrain
+      // triangle's own flat facet rather than a smoothed vertex normal — measured on a real
+      // settlement ground plane, this reads as a hard black-diamond checker at full strength.
+      // The cap keeps a genuine object/ground contact reading clearly darker without letting
+      // ordinary bumpy terrain crush to solid black. See the instrument's production-scene note.
+      return clamp(occlusion / 10.0 * uAOStrength, 0.0, uAOMaxOcclusion);
     }
 
     void main(){
