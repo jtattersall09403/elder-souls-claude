@@ -58,7 +58,10 @@ const TIME = Number(args.time || 13);
 const SITES = args.sites ? String(args.sites).split(',')
   : DECK.setups.filter((s) => s.block === 'region-vista').map((s) => s.id);
 
-const g = await launchGame({ entry: 'game/index.html', width: CW, height: CH });
+// `--entry <control-clone>/game/index.html` is how the aerial arm is taken: the ONE source line
+// that differs lives in the clone, so this file is identical in both arms.
+const ENTRY = String(args.entry || path.join(REPO, 'game/index.html'));
+const g = await launchGame({ entry: ENTRY, width: CW, height: CH });
 await g.h('ready');
 await g.page.evaluate(({ w, h }) => {
   const c = document.getElementById('view'); c.width = w; c.height = h;
