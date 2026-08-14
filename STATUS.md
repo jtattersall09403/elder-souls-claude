@@ -24,8 +24,11 @@ Alongside that: shrinking the documentation every agent reads before it can star
 **Still wrong, and you will see it:**
 - **Nothing casts a contact shadow.** Buildings, trees and steps look like they are hovering. Being fixed right now — it is the single thing five blind judges all named.
 - Shadowed areas crush to black with no detail.
-- **The player and every NPC look wrong.** You said so on 14 Aug — *"frankly ridiculous"* — and that is
-  now the standing verdict, not an open question. The earlier work fixed *holes in the models*; it never
+- **The player and every NPC have no body.** Not a design problem — a bug, found by a critic this
+  evening. A shader fails to link, so **head, arms, legs and torso do not draw at all**, while horns,
+  eyes, frills, equipment and weapons do. This is almost certainly what you were looking at when you
+  said they look *"frankly ridiculous"*. A fix is in flight and it is small. Once it lands, the real
+  question — whether they look *good* — is still open and still needs the reference set below. The earlier work fixed *holes in the models*; it never
   touched design or quality. Fixing it properly is blocked on one thing that does not exist yet: a
   character reference set (images **and motion**, at Skyrim/ESO quality) for builders to aim at and
   critics to compare against. Building that set is the next thing dispatched.
