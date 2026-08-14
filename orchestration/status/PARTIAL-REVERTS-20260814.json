@@ -1,0 +1,142 @@
+{
+  "task_id": "PARTIAL-REVERTS-20260814",
+  "title": "Sweep for the reverts a per-path sweep cannot see, and settle AQ-W1-20-B",
+  "role": "forensic",
+  "state": "complete",
+  "started_at": "2026-08-14T15:45:00Z",
+  "completed_at": "2026-08-14T17:40:00Z",
+  "branch": "codex/wave1-build-experiment",
+  "report": "reports/PARTIAL-REVERTS-20260814.md",
+  "extends": "RECOVERY-20260814",
+  "files_claimed": [
+    "reports/PARTIAL-REVERTS-20260814.md",
+    "orchestration/status/PARTIAL-REVERTS-20260814.json",
+    "tools/forensics/partial-revert-sweep.mjs",
+    "tools/forensics/wrapper-orphans.mjs"
+  ],
+  "files_touched": [
+    "reports/PARTIAL-REVERTS-20260814.md",
+    "orchestration/status/PARTIAL-REVERTS-20260814.json",
+    "tools/forensics/partial-revert-sweep.mjs",
+    "tools/forensics/wrapper-orphans.mjs",
+    "orchestration/HAZARDS.md",
+    "reports/blog-feed.jsonl"
+  ],
+  "headline": "The per-path sweep's blind spot hid a bigger loss than the one it was opened for: the 08-10 octopus reverted W1-18's whole quest delivery — 3,798 lines over 26 surviving files, 563 quest ids — and the branch has been printing it as a HARDFAIL for four days. AQ-W1-20-B is yes and worse: 150 harness wrappers were orphaned at once on 08-11.",
+
+  "population_searched": {
+    "merge_tier": {
+      "merges_reachable_from_head": 194,
+      "sides_examined": "every parent-side of every merge, against merge-base(p1, pN)",
+      "flagged_commit_sides": 60,
+      "file_rows": 280,
+      "rows_with_lines_still_absent_from_the_whole_head_tree": 237,
+      "of_those_on_non_generated_paths": 75,
+      "outstanding_incidents_after_reading": 3
+    },
+    "single_parent_tier": {
+      "population": "the whole-file-signature banks (eed8e7fe, 314e9f3f) plus the six 08-07/08-08 collateral banks, plus all 21 restore/revert-titled commits of 08-06, 08-08, 08-10, 08-11 and 08-14",
+      "commits": 29,
+      "flagged": 15,
+      "outstanding": 0,
+      "cleared_how": "12 of 15 are regenerated dashboards. The four substantive-looking ones each resolve to supersession, checked at HEAD by name: effects.json's cross term was REVISED (0.75*M^0.85*D^0.55 -> 0.55*M^0.80*D^0.45, rationale present with the new coefficients); signpost-audit.mjs's four normalisations were refactored into addName() at HEAD 316-330; cam-death-in-lock.mjs's control assertion was rewritten and recentre_window_swing_deg is live; game/data/index.json's rows are bytes/sha256, regenerated."
+    },
+    "note": "The damage is concentrated in MERGES, which is the opposite of the file-level finding where the largest single loss was a one-parent bank. A one-parent `add -A` loses whole files readily and whole hunks almost never, because it has no second tree to prefer."
+  },
+
+  "incidents": [
+    {
+      "commit": "c9603f64",
+      "date": "2026-08-10",
+      "shape": "5-parent octopus, p5 side",
+      "what": "W1-18's entire quest delivery, reverted by a merge whose title claims to integrate it",
+      "measured_three_ways": {
+        "detector": "3,798 lines the W1-18 side added and the merge lacks, across 26 surviving files",
+        "semantic_json": "563 records with an id present on the side and absent at HEAD, over 14 files; only 3 ids at HEAD are not on the side, so the loss is one-directional",
+        "live_gate": "node tools/analysis/quest-audit.mjs at HEAD: multi_faction_consequence_pct 6.44 HARDFAIL (W1-18's ledger claims 30.2), X7_cosmetic_pairs 267 FAIL (claims 0), mean_branches 1.03 below target (claims 1.94)"
+      },
+      "intent": "ACCIDENT. The merge title claims to integrate W1-18; git log -S finds exactly one authoring commit for every lost id and it is 9a0999fa; no commit anywhere states a removal; no verdict on W1-18 exists to have rejected it; game/data/quests/magic-utility.json has had no commit touch it at all since 2026-08-10.",
+      "recovered": false,
+      "ruling": "RE-INTEGRATION, NOT RECOVERY — dispatched rather than done. ~29,000 lines across the 24 files W1-18's own record names must land together (schema + data + engine.js + machine.js + reveal-routes.js + api.js + index.json) or any subset is dead data or a check-quests failure; two of those files are claimed RIGHT NOW by the in-flight W1-20-r3-remediation; and a delivery that has never been criticised should not re-enter the tree without a critic.",
+      "reversible_by": "If nobody picks it up within a day the balance flips — a standing HARDFAIL is worse than a merge conflict. Recipe: `git show 9a0999fa:<path> > <path>` per file; acceptance is quest-audit multi_faction >= 30, X7 == 0, mean_branches >= 1.3 with check-quests still at 202."
+    },
+    {
+      "commit": "556c08e2",
+      "date": "2026-08-14",
+      "shape": "merge-side drop, inside a bank titled 'In-flight agent work: visual children, plan audit, look target, HUD'",
+      "what": "HAZARDS section 6 (50 lines) and the tools/bank.mjs hardening (161 lines), both written hours earlier by fd5d7a24 'bank.mjs stops lying about its own success'",
+      "visible_the_whole_time": "HAZARDS ran 5, 7, 8, 9 with no 6.",
+      "recovered": "HAZARDS section 6 RESTORED byte-identical, with a dated note recording that the specific code paths are superseded while the doctrine is not.",
+      "ruled_deliberate": "tools/bank.mjs's 150 lines are SUPERSEDED and deliberately not restored. Written evidence from the file itself at HEAD lines 121-123: land.mjs takes offenders as --exclude, 'the same behaviour the old git restore --staged had, without needing an index to restore them out of'. The bug those lines fixed cannot occur in code that no longer exists; restoring them would reintroduce the code path."
+    },
+    {
+      "commit": "091a6cec",
+      "date": "2026-08-10",
+      "shape": "merge-side drop",
+      "what": "18 lines of game/src/engine.js (registry loader, install, Engine.factionAccess) and the whole body of orchestration/status/W1-20.json",
+      "recovered": "BY ITS OWNERS, WHILE THIS PASS RAN. Both were absent at HEAD when this pass opened and present before it closed, put back by W1-20-r3-remediation and the W1-20-r2 critic. W1-20.json at HEAD now carries a superseded_next_step_note naming 091a6cec. Nothing was restored here that its owner was already restoring; the incident is pinned as the detector's positive control so the regression stays testable."
+    }
+  ],
+
+  "AQ-W1-20-B": {
+    "question": "Has a wrapper surviving while the function under it is reverted happened elsewhere?",
+    "answer": "YES, repeatedly, and once catastrophically.",
+    "instrument": "node tools/forensics/wrapper-orphans.mjs --history",
+    "commits_swept": 199,
+    "commits_with_an_orphaned_wrapper": 46,
+    "distinct_symbols_ever_orphaned": 150,
+    "factionAccess_window": "43 consecutive commits, 2026-08-10 (091a6cec) to 2026-08-14 — four days",
+    "worst": "e0b03132 (2026-08-11, 'Merge current Wave-1 builder flight') orphaned 150 wrappers AT ONCE — the entire harness surface pointing at an engine cut to a stub. That is the damage 669ae9b7 'Restore executable engine after Wave 1 merge' (+11,583/-1,825) was undoing.",
+    "others": "setLoadout x3 commits, consumeBossOutcome x2, equipItem x2",
+    "at_head_today": "0 of 235 wrappers unresolved",
+    "the_sting": "The recovery pass itself ran inside the factionAccess window. 1db3f66c — 'Orchestrator tick: 74 files recovered, the disease is eight days old' — is one of the 43. Nothing it could have run would have gone red.",
+    "gates_that_are_blind_to_this": "boot-check PASS, check-data PASS (408 NPCs), check-content PASS (551 resolutions), check-quests PASS (202 quests) — all four pass at HEAD today and passed throughout, because a one-line forwarder is syntactically fine whether or not anything is under it. The two detectors that DID fire call the verb (tools/quests/w1-20-builder.mjs threw TypeError) or count the data (tools/analysis/quest-audit.mjs)."
+  },
+
+  "instrument": {
+    "landed": ["tools/forensics/partial-revert-sweep.mjs", "tools/forensics/wrapper-orphans.mjs"],
+    "self_tests": "partial-revert-sweep --self-test 7/7 arms pass; wrapper-orphans --self-test 2/2 arms pass. Both refuse to report a sweep unless their controls behave.",
+    "null_control_is_the_plausible_wrong_answer": "b823e03d (PR #168), whose merged side carries 78838f1f 'remove idle VFX and vegetation shadow waste' and ff42b238 'remove marsh water lattice banding' — deliberate refactor deletions that leave byte-for-byte the same evidence a partial revert leaves. A self-test arm REQUIRES the naive detector to fire there; if it does not, the control is not plausible and the suite declares itself vacuous rather than reporting a clean sweep.",
+    "discrimination": {
+      "null_control_b823e03d": { "naive_detector": 274, "naive_files": 30, "this_detector_DROP": 0, "this_detector_RESURRECT": 0 },
+      "positive_091a6cec": { "naive_detector": 661, "this_detector_DROP": 83, "drop_files": 6, "RESURRECT": 30 },
+      "positive_c9603f64_p5": { "naive_detector": 50, "this_detector_DROP": 3798, "drop_files": 26, "RESURRECT": 809 },
+      "reading": "On the largest real partial revert the naive answer sees 50 lines and this one sees 3,798, while on the refactor the naive answer invents 274 findings and this one is silent. The naive detector is not merely noisier, it is pointed the wrong way — a refactor's removals are in the base and a revert's losses are not."
+    },
+    "both_directions_HAZARDS_0b": "A second RESURRECT arm catches the mirror defect — lines the side deleted that the child has back, i.e. a deletion silently undone by a stale snapshot. It returns 30 on 091a6cec and 809 on c9603f64 p5 and 0 on the null control, and a self-test arm asserts it fires somewhere, because an arm that has never fired is an arm nobody has tested.",
+    "delete_the_fix_executed": "On a copy, the base-relative filter — the one line separating 'the side added this' from 'this is merely absent' — was removed. The null control's DROP arm immediately fired (0 -> 8 false hits on the refactor) and the suite went red, exit 1. The guard is load-bearing."
+  },
+
+  "is_the_disease_worse_than_recorded": {
+    "verdict": "YES — the eight-day figure understates it in KIND rather than in span.",
+    "dates_hold": "The oldest content-level hit is 2026-08-06, the same day the file-level sweep reaches.",
+    "what_changes": [
+      "The file-level count says 74 FILES. It cannot count A DELIVERY. c9603f64 cost one file the recovery could see and 26 files' worth of contents it could not — and it restored the delivery RECORD while the delivery stayed gone, so the tree now carries a status file that is a false statement about the tree.",
+      "The 11,500-line engine restores of 08-10 and 08-11 are the same disease at a scale nobody costed. e0b03132 orphaning 150 wrappers at once is what an engine reduced to a stub looks like from the harness side, and 669ae9b7 is the repair. Two of those in two days.",
+      "Two of the three incidents are inside commits whose titles are about something else entirely — a bank about 'visual children, plan audit, look target, HUD', a merge 'pending semantic seam reconciliation'. `git log --grep` will never find these. The signature is in the trees."
+    ]
+  },
+
+  "gates_run": {
+    "boot-check": "PASS — the engine constructed and the harness answers",
+    "check-data": "PASS — 408 NPC records, 310 soul rows agree",
+    "check-content": "PASS — 551 quest resolutions, none lost",
+    "check-quests": "PASS — 202 quests, hooks and entry topics all resolve",
+    "quest-audit": "HARDFAIL multi_faction_consequence_pct 6.44; FAIL X7_cosmetic_pairs 267 — this is the W1-18 loss, and it is the only gate on the box that can see it",
+    "partial-revert-sweep --self-test": "7/7",
+    "wrapper-orphans --self-test": "2/2"
+  },
+
+  "could_not_do": [
+    "The full single-parent sweep over all 1,401 commits DID NOT FINISH — killed after ~50 minutes without producing output. The targeted 29-commit population ran in its place, so 'the single-parent tier is clean' is measured over the commits the task named and NOT over the whole branch. `node tools/forensics/partial-revert-sweep.mjs --all-commits` is the run somebody should let finish.",
+    "W1-18's delivery is NOT restored — ruled a dispatch with reasons and with the one thing that would overturn the ruling. It is the largest outstanding item on this branch and it is written down rather than done.",
+    "Line matching cannot distinguish a reformat from a revert in general. For JSON this pass parses both sides and compares ids and leaf keys, which settles it; for Markdown and JavaScript it does not, so a wholesale re-indentation of a .js file would read as a total revert. None of the three incidents rests on that.",
+    "The detector matches trimmed line content, so a line that MOVED to a different file counts as present. Deliberate — it under-reports rather than manufacturing findings — but the true count is a floor, not a total.",
+    "orchestration/status/W1-20.json and game/src/engine.js moved under this pass while it ran. Both were absent at the start and repaired by their owners before the end; the numbers are re-verified at the current HEAD and the earlier ones are stated as history, not as findings.",
+    "NO BROWSER WAS RUN. contention.mjs reported 5 instances and load 22.95 over 4 cores — at or over the ceiling — so the LIVE arm of the wrapper audit (calling each verb on a constructed engine) was not run. The static arm returns zero candidates at HEAD, which is why there was nothing to take to a browser. boot-check was run once, before the ceiling was checked.",
+    "Only HEAD's ancestry is swept, and only harness/api.js -> engine.js for the wrapper question. Wrappers over other modules, and the ~20 local worktree-agent-* branches, are unswept.",
+    "RI-VIS09's 30-line 'moving-reference correction' was ruled SUPERSEDED rather than restored, on the evidence that its substance — 207 animated sequences, 304 behaviour-valid, and the section 5a preregistration requirement — is all present at HEAD in integrated form. If that reading is wrong the block is one `git show e74f6582^1:` away."
+  ],
+
+  "next_step": "Someone owns W1-18's re-integration: 24 files from 9a0999fa, landing together, with a critic. Until it happens `node tools/analysis/quest-audit.mjs` prints a HARDFAIL and W1-18-builder-codex-20260810.json claims numbers the tree does not have. Second, let `node tools/forensics/partial-revert-sweep.mjs --all-commits` finish — the single-parent tier is only measured over 29 commits here. Third, both forensic self-tests belong in whatever runs the gates, because the shape recurs."
+}
