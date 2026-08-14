@@ -1,56 +1,71 @@
 {
   "task_id": "I5-CHARACTER-REFERENCE-SET",
-  "state": "in_progress",
+  "state": "done",
   "started": "2026-08-14",
+  "finished": "2026-08-14",
   "baseline_commit": "b87bb10e",
 
   "what_i_could_not_do": [
-    "SLOT C5 IS n=0 AND STAYS n=0. There is no full-body TURNAROUND or camera-orbit of a modern humanoid anywhere in the set, and I did not acquire one. That is the exact artefact the owner named ('motion captures (e.g. rotating the camera around the player to view from multiple angles)') on the REFERENCE side. What I searched, this turn: elderscrolls.fandom.com and eldenring.fandom.com MediaWiki APIs (list=search ns=6, list=allimages with aimime=image/gif and aiprefix over Roll/Sprint/Running/Walk/Backstep/Dodge/Turn/Jump/Idle/Locomotion) — no humanoid turnaround GIF surfaced on either. The two ESO character-creation entries that would have been perfect ('File:Elder Scrolls Online -- Argonian Male / Female - Character Creation') are mime video/youtube, i.e. embeds, not files, so there is nothing to fetch. web.archive.org returns 000 from this container, so the archive route is shut. What would fill it: any hash-pinnable clip of one character rotating on the spot; the nearest legal substitute already on disk is the 25 full-body plates in slot C4 read as a multi-subject stand-in, which is NOT the same thing and the index says so.",
-    "I did NOT complete a full `make-manifest.py --check` re-walk before writing this. The pure-Python walk over 834 files takes >20 minutes and was killed once mid-run. What I did instead: computed the 25 new records with the script's OWN `analyse()` function (imported, not reimplemented), merged them into `_computed.json`, and ran the script's `--join-only` path, which reported `834 on disk`. A full `--check` is running in the background; if it reports drift, that is a real failure and this line is where to start.",
-    "The 25 new full-body plates are NOT composition-valid in the RI-VIS09 §3.3 sense and I did not pretend otherwise. They are subject crops on a plain backdrop, not full native-aspect frames. Worse, `docs/art-direction/measure-plates.mjs` line 318 would compute `composition_valid: true` for them anyway, because for a non-ART record it defaults to true unless `framing` is the exact literal 'square crop, not the native aspect'. I recorded `framing: 'cropped to subject, not the native aspect'` plus a `framing_note` on every one of the 25, and every composition/framing/sky statistic over `modern/character_fullbody/` is n=0. I did not edit `measure-plates.mjs` — it belongs to the art-direction board and a one-line predicate change there is somebody else's delete-the-fix.",
-    "No Skyrim or ESO MOTION exists in the set, before or after this piece. Every motion row is Dark Souls / Elden Ring / Ghost of Tsushima / RDR2 / Morrowind. The owner named Skyrim and ESO; on stills that is now satisfied, on motion it is not.",
-    "I have not run the game or captured anything from it. This piece builds the target side only. The pairing table names our counterpart capture per slot; nobody has produced those captures yet, so no pairing has actually been exercised.",
-    "`RI-VIS10` is `provenance: constructed`. Every threshold in it is mine. It has never been run by a critic and its inter-rater agreement is asserted by construction (countable checks over enumerated populations), not demonstrated."
+    "SLOT C5 IS n=0 AND STAYS n=0. There is no full-body TURNAROUND or camera-orbit of a modern humanoid anywhere in the set, and I did not acquire one. That is precisely the artefact the owner named ('motion captures (e.g. rotating the camera around the player to view from multiple angles)') on the REFERENCE side. The search I ran this turn, so nobody repeats it: the MediaWiki APIs of elderscrolls.fandom.com and eldenring.fandom.com — list=search in namespace 6, list=allimages with aimime=image/gif, aiprefix over Roll/Sprint/Running/Walk/Backstep/Dodge/Turn/Jump/Idle/Locomotion. No humanoid turnaround surfaced on either. The two entries that would have been exactly right, 'File:Elder Scrolls Online -- Argonian Male / Female - Character Creation', are mime video/youtube — embeds with no file behind them. web.archive.org returns 000 from this container. WHAT WOULD FILL IT: any hash-pinnable clip of one character rotating on the spot. WHAT MUST NOT: the 25 C4 plates read as if they were one figure from many angles — they are 13 different figures from one angle, and that substitution is the same move that let the transparency defect be declared fixed from a single still.",
+    "NO SKYRIM OR ESO MOTION EXISTS IN THE SET, before or after this piece. Every motion row is Dark Souls, Elden Ring, Ghost of Tsushima, RDR2 or Morrowind. On stills the owner's named standard is now met; on motion it is not.",
+    "NOTHING HAS BEEN PAIRED YET. I did not run the game and captured nothing from it. The pairing table names our counterpart capture for all 13 slots; none has been taken, so no pairing has been exercised and this set is a target with nothing beside it. That is the next piece, not this one.",
+    "RI-VIS10 HAS NEVER BEEN RUN. provenance: constructed, every threshold mine. Its inter-rater agreement is asserted by construction — counts over enumerated populations plus published answer sheets — and has never been demonstrated by two critics scoring one build. Its own provenance note says where to look first if they diverge (§D's D4 and D5).",
+    "THE 25 NEW PLATES ARE NOT COMPOSITION-VALID and I did not pretend otherwise. They are subject crops on a plain backdrop, not full native-aspect frames. Worse, docs/art-direction/measure-plates.mjs line 318 would compute composition_valid:true for them anyway, because for a non-ART record it defaults to true unless `framing` is the exact literal 'square crop, not the native aspect'. Every one of the 25 carries framing:'cropped to subject, not the native aspect' plus a framing_note, and every composition/framing/sky statistic over modern/character_fullbody/ is n=0 by construction. I did NOT edit measure-plates.mjs — a predicate change on the art-direction board belongs to whoever owns it and needs its own delete-the-fix.",
+    "I DID NOT FIX TWO THINGS I FOUND. (a) game/data/npcs/*.json uses race:'argonian' 181 times and race:'saxhleel' 77 times plus one 'none' and one 'mixed', while game/data/progression/races.json knows 'saxhleel' and not 'argonian'. (b) docs/shots/SB-TEL__ds3-3625638110.jpg is a Dark Souls 3 reference plate sitting in the published site directory, which refs/LICENCE-NOTE.md's 'not redistributed' position does not permit. Both flagged, neither touched, and I deliberately published an SVG rather than a plate for my own blog image for exactly that reason."
   ],
 
   "what_was_already_on_disk_and_nobody_was_using": [
-    "modern/character_closeup/ holds 13 images, not 1. RI-VIS09 §1's table and §3.1 both still say one. Verified: `ls corpus/70-visual/refs/modern/character_closeup/ | wc -l` -> 13, and MANIFEST.json -> 13 records. Nine are Elden Ring (Melina at 1920x1080, Malenia at 3840x2160, six Godrick), two Witcher 3 (one 3840x2160), two RDR2.",
-    "RI-VIS09 §3.1 says 'Five of six modern/ profile folders are empty and the sixth holds one image.' Measured this turn from MANIFEST.json: character_closeup 13, combat 12, exterior_daylight 43, exterior_lowlight 24, interior_darkemissive 22, material_closeup 9, ui 8. NONE of them is empty. The sentence has been wrong for some time and it is the same eight-day defect as REF-A12b.",
-    "modern/hud/ DOES NOT EXIST on disk. `ls corpus/70-visual/refs/modern/` returns seven directories and hud is not one of them. RI-VIS09 §1 tables it at 24 files, §2 carries a standing prohibition against citing it, and `anti-generic/` is described as 'copies of modern/hud/'. A prohibition on a folder that is not there is harmless; a 24-file inventory row for it is not.",
-    "context/ESO-argonian_character__*.jpg — FOUR 1600x900-to-1920x1080 close-range Argonian character plates, on disk since 2026-08-06 (`ls -la`), routed `side: subject-reference` and therefore citable by nobody under RI-VIS09 §2. These are the single closest reference the project holds to the race it actually ships, and the owner named ESO by name. This is the anchor-routing defect again: the plates were never missing, the route was.",
-    "207 animated sequences and 10 videos were already registered. Humanoid motion specifically: 12 Elden Ring attack-chain GIFs at up to 700x395, 3 quickstep GIFs at 720x405, 4 parry GIFs at 600x338, 6 Leyndell knight/Lansseax telegraph GIFs, 46 DS1 humanoid-boss move GIFs, and video/V3-locomotion__dsr-longplay-t11990.mp4 (30 s of continuous third-person run/stop/turn, no cuts). The motion half of this piece was 90% already paid for.",
-    "3 Skyrim SE plates with characters in them were already in modern/combat/ (spriggan mid-attack, three armoured figures in melee, a large creature at combat range)."
+    "227 OF THE 252 ROUTED FILES WERE ALREADY VENDORED. Only 25 are new. Read that before anyone proposes another acquisition run.",
+    "modern/character_closeup/ holds 13 images, not 1. `ls corpus/70-visual/refs/modern/character_closeup/ | wc -l` -> 13; MANIFEST.json -> 13 records. Nine Elden Ring (Melina 1920x1080, Malenia 3840x2160, six Godrick), two Witcher 3 (one 3840x2160), two RDR2. RI-VIS09 §1's table and §3.1 both still said one until this piece corrected them.",
+    "RI-VIS09 §3.1 said 'Five of six modern/ profile folders are empty and the sixth holds one image.' Measured from MANIFEST.json this turn: character_closeup 13, combat 12, exterior_daylight 43, exterior_lowlight 24, interior_darkemissive 22, material_closeup 9, ui 8. NONE is empty. Corrected in place, with the false sentence struck rather than deleted.",
+    "modern/hud/ DOES NOT EXIST on disk. `ls corpus/70-visual/refs/modern/` returns seven directories and hud is not one of them, while RI-VIS09 §1 tabled it at 24 files and §2 carried a standing prohibition against citing it. Prohibition kept, inventory row corrected.",
+    "context/ESO-argonian_character__*.jpg — FOUR close-range Argonian plates (three at 1920x1080, one at 1600x900), on disk since 2026-08-06 per `ls -la`, routed side:subject-reference and therefore citable by NOBODY under RI-VIS09 §2's 'refs/context/ may be cited by neither as a target'. The closest reference this project holds to the race it actually ships, and the owner named ESO by name. FOURTH INSTANCE of the anchor-routing defect: the plates were never missing, the route was.",
+    "207 animated sequences and 10 videos were already registered. Humanoid motion specifically: 12 Elden Ring attack-chain GIFs up to 700x395, 3 quickstep GIFs at 720x405, 4 parry GIFs at 600x338, 6 Leyndell knight / Lansseax telegraphs, 46 DS1 humanoid-boss moves, and video/V3-locomotion__dsr-longplay-t11990.mp4 — 30 s of continuous third-person run/stop/turn with no cuts. The motion half of this piece was very largely already paid for; what it lacked was a table saying which of them is a person.",
+    "3 Skyrim SE plates with characters already sat in modern/combat/."
   ],
 
   "what_i_added": {
-    "plates": "25 Skyrim full-body humanoid renders in corpus/70-visual/refs/modern/character_fullbody/ (male+female across leather, blades, stormcloak-officer, wolf, orcish, ebony, dwarven, glass, dragonscale, steel-plate, elven, steel, iron), 900x1844 to 2470x3568, from The Elder Scrolls Wiki (Fandom). 8 MB total. Whole figure head-to-foot on a plain backdrop: proportion, silhouette, armour construction, and metal/leather/cloth/fur/scale separation on one body.",
-    "routing": "corpus/70-visual/refs/characters/character-reference-set.json + INDEX.md — 13 slots, 252 distinct files, 210 of them motion, each slot naming the RI-VIS08/RI-VIS10 property it targets and the counterpart capture on our side.",
-    "tool": "tools/visual/character-refs.mjs — derives the routing from MANIFEST.json at run time and exits non-zero on a missing file, an underrun floor, or an n=0 slot with no stated reason. Watched to fail: it exited 1 with 'C4: floor 12, got 0' before the manifest was rebuilt, and 0 after.",
-    "item": "corpus/70-visual/RI-VIS10-character-design.md — the humanoid character design bar, provenance constructed.",
-    "wiring": "RI-VIS01 §A gains property P10; corpus/00-doctrine/subsystems.json gains render.art.character; RI-VIS09 §1/§2/§3 corrected and amended."
+    "plates": "25 Skyrim full-body humanoid renders in corpus/70-visual/refs/modern/character_fullbody/ — male and female across leather, blades, stormcloak-officer, wolf, orcish, ebony, dwarven, glass, dragonscale, steel-plate, elven, steel and iron. 900x1844 to 2470x3568, 8 MB. Whole figure head to foot on a plain backdrop: proportion, silhouette, armour construction and metal/leather/cloth/fur/scale separation on one body. Source elderscrolls.fandom.com; each record carries its own licence and licence_position because refs/LICENCE-NOTE.md's blanket statement names only Bethesda-Morrowind, CD PROJEKT RED and Rockstar, and that note's own rule is that a differing provenance must not silently inherit it.",
+    "routing": "corpus/70-visual/refs/characters/INDEX.md and character-reference-set.json — 13 slots, 252 distinct files, 210 of them motion, 1 slot at n=0. §3 is the pairing table: every slot names the capture WE must take opposite it. §4 is the routing. §5 is what is missing, up front.",
+    "tool": "tools/visual/character-refs.mjs — derives the whole routing from MANIFEST.json at run time, verifies every routed path exists, exits non-zero on a missing file, an underrun floor, or an n=0 slot with no stated reason. --check fails if the committed JSON has drifted.",
+    "item": "corpus/70-visual/RI-VIS10-character-design.md — 18 checks in four groups (race identity, proportion/silhouette, dress, population variety), each a count over a stated denominator or a published forced-choice answer sheet, plus an inter-rater clause that resolves a disagreement by recomputing from the censuses rather than re-judging.",
+    "wiring": "RI-VIS01 §A gains P10 with the note explaining why a table calling itself exhaustive was not; corpus/00-doctrine/subsystems.json gains render.art.character; RI-VIS09 §1/§2/§3.1 corrected and amended; corpus/00-doctrine/INDEX.md regenerated and RI-VIS10 resolves cleanly.",
+    "blog": "one line in reports/blog-feed.jsonl with docs/shots/2026-08-14-i5-character-reference-set-coverage.svg — an SVG chart, deliberately NOT a reference plate, because docs/ is published and the plates are not ours to redistribute."
   },
 
-  "verified_holes_i_am_filling": {
-    "RI-VIS01 §A": "28 property rows, exhaustive and closed by its own words. P04 is 'Creature design'; P02 is 'Silhouette language (buildings, props, creatures)'. No row covers a PERSON's design. Read this turn.",
-    "RI-VIS05 §D4": "titled 'Fauna silhouette rules'; its one humanoid sentence is the naga, and it routes them to VIS08 §D's readability bar. Fauna-only, as the audit said. Read this turn.",
-    "subsystems.json": "9 render.art.* subsystems (palette, silhouette, architecture, creature, composition, weirdness, mood, flora, materials). No character/person subsystem. Derived this turn by walking the file.",
-    "RI-CHR01/02/03": "corpus/22-character/ holds exactly three RI items — creation, race-and-standing, birthsigns. Mechanics and social standing, not design language. `ls corpus/22-character/`."
+  "evidence": {
+    "manifest_integrity": "`python3 corpus/70-visual/refs/make-manifest.py --check` -> `ok: 834 files, no drift`, exit 0. Ran to completion in the background (two earlier attempts were killed mid-walk; the pure-Python FFT walk takes ~20 min). Independently: all 25 new records' sha256 and byte length recomputed and matched, 834 records with 0 having no file on disk, 834 media files on disk with 0 unregistered.",
+    "tool_watched_to_fail": "tools/visual/character-refs.mjs exited 1 with `C4: floor 12, got 0` while the manifest had not yet been rebuilt, and 0 after. A floor that has never been seen to fail is not a floor.",
+    "hole_verified_not_remembered": {
+      "RI-VIS01 §A": "28 property rows, self-described exhaustive and closed. P04 is 'Creature design'; P02 is 'Silhouette language (buildings, props, creatures)'. No row for a person. Read this turn.",
+      "RI-VIS05 §D4": "titled 'Fauna silhouette rules'; its one humanoid sentence is the naga and it routes them to VIS08 §D as a creature readability bar. Fauna-only, exactly as the audit reported. Read this turn.",
+      "subsystems.json": "nine render.art.* subsystems — palette, silhouette, architecture, creature, composition, weirdness, mood, flora, materials. None for a person. Derived by walking the file.",
+      "corpus/22-character/": "three RI items: RI-CHR01 creation, RI-CHR02 race-and-standing, RI-CHR03 birthsigns. `ls`."
+    },
+    "populations_measured_this_turn": {
+      "npc_records": 408,
+      "npc_files": 18,
+      "distinct_actor_values": 32,
+      "largest_actor_bucket": "townsman = 97 (23.8%)",
+      "distinct_race_actor_pairs": 88,
+      "races_declared": 10,
+      "how": "walked game/data/npcs/*.json and game/data/progression/races.json with python3"
+    },
+    "network_hosts_reachable_from_this_container": "static.wikia.nocookie.net 200, elderscrolls.fandom.com api 200, images.steamusercontent.com reachable, raw.githubusercontent.com 301, web.archive.org 000 (dead)."
   },
 
-  "populations_the_new_item_scores_over": {
-    "npcs": "408 NPC records across 18 files in game/data/npcs/, every one carrying race, class, actor, faction, settlement.",
-    "distinct_actor_values": 32,
-    "note": "32 visual actors serve 408 NPCs; the top one, 'townsman', serves 97. That is the measured baseline for RI-VIS10's population-variety checks, derived this turn.",
-    "races": "10 in game/data/progression/races.json: saxhleel, naga, dunmer, imperial, nord, breton, redguard, khajiit, orsimer, bosmer.",
-    "incidental_finding_not_mine_to_fix": "the NPC files use race:'argonian' 181 times and race:'saxhleel' 77 times, plus one 'none' and one 'mixed'; races.json knows 'saxhleel' and not 'argonian'. Flagged, not touched."
-  },
+  "rulings_i_made": [
+    "ESO ADMITTED, BOUNDED. context/ESO-argonian_character__* is admitted as construction-quality reference on the FIDELITY side only (RI-VIS08 §B), and stays barred as an ART_DIRECTION target. On the design side it is a divergence anchor. WHY: the owner named ESO as the quality standard, and RI-VIS05 forbids the world converging on ESO's Murkmire — both hold at once if quality and design are separated, which is exactly what the RI-VIS08/RI-VIS10 seam already does. REVERSIBLE: if a critic shows our Saxhleel failing RI-VIS10 B1 race legibility AND that ESO's plates solve the same problem in a way our lore permits, promote it to a design reference and record the verdict that bought it. This amends RI-VIS09 §2, which says routing rules are rules and do not change when files land — so it is a deliberate rule change, marked as one in the table.",
+    "RI-VIS10 IS ART SIDE, NOT FIDELITY, AND CITES NO MODERN GAME AS A DESIGN TARGET. WHY: RI-VIS01 CC-2 voids any verdict citing a modern AAA reference under an ART_DIRECTION declaration, and every character plate we hold except the Morrowind material is modern. Making the design item fidelity-side would have collapsed it into RI-VIS08, which is the hole this piece exists to fill. REVERSIBLE: if an art-direction-side character reference at comparable fidelity ever exists, RI-VIS10's Comparison method §7 is the line to revisit and blind_pair could become yes.",
+    "SLOT C5 LEFT AT ZERO RATHER THAN FILLED. WHY: RI-VIS09 §3's own discipline, and the brief's instruction to record n=0 honestly rather than admit a plate that does not qualify. REVERSIBLE the moment a hash-pinnable orbit clip is found."
+  ],
 
   "what_would_make_this_piece_wrong": [
-    "The set is technically valid and useless in practice because nothing in it matches what our harness can capture. Guard: every slot carries an `our_counterpart` naming a capture we can actually take, and slot C5 is left at n=0 rather than filled with something that only looks like a turnaround.",
-    "RI-VIS10 is so subjective that two critics land five points apart. Guard: every check is a count over an enumerated population (408 NPCs, 32 actors, 10 races) with the census table published so a second critic recomputes rather than re-feels. If a critic cannot produce the census, the check scores 0, not 'unknown'.",
-    "The new plates are used for something they cannot support. Guard: pixel_metrics_valid:false on all 25, and the standing prohibitions block at the top of character-reference-set.json.",
-    "Admitting ESO as a design target quietly turns our world into Murkmire — the exact thing RI-VIS05 warns against. Guard: RI-VIS10 §A2 admits ESO for CONSTRUCTION QUALITY on the FIDELITY side only and keeps it a divergence anchor on the design side, with the reversal condition written down.",
-    "Licence. Every new plate is a Bethesda asset under Bethesda's copyright; the blanket note in refs/LICENCE-NOTE.md names only Bethesda-Morrowind, CD PROJEKT RED and Rockstar, so each of the 25 records carries its own explicit `licence` and `licence_position`, per that note's own rule that a differing provenance must not silently inherit the blanket."
+    "The set is technically valid and useless because nothing in it matches what our harness can capture. Guard: every slot carries an our_counterpart naming a capture we can actually take, and C5 is left empty rather than filled with a near-miss. UNTESTED — no counterpart capture has been taken yet, so this guard is designed, not demonstrated.",
+    "RI-VIS10 is so subjective that two critics land five points apart. Guard: 18 checks, each a count over an enumerated population (408 NPCs, 32 actors, 10 races, 32-row garment table) or a published forced-choice answer sheet; a check whose census is not published scores 0; twelve unpublished censuses score the item 0. UNTESTED — no two critics have run it.",
+    "The new plates get used for something they cannot support. Guard: pixel_metrics_valid:false on all 25, the standing_prohibitions block in character-reference-set.json, and §5.3 of the index naming the measure-plates.mjs trap explicitly.",
+    "Admitting ESO quietly turns our people into ESO's Argonians. Guard: RI-VIS10 §A2, fidelity-side-only, divergence anchor on the design side, reversal condition written down.",
+    "Licence. Every plate is a publisher's copyright. Guard: explicit per-record licence fields on all 25, and an SVG rather than a plate for the blog image."
   ],
 
   "files_touched": [
@@ -59,18 +74,19 @@
     "corpus/70-visual/refs/_provenance.json",
     "corpus/70-visual/refs/_computed.json",
     "corpus/70-visual/refs/MANIFEST.json",
+    "corpus/70-visual/refs/characters/INDEX.md",
     "corpus/70-visual/refs/characters/character-reference-set.json",
-    "tools/visual/character-refs.mjs"
-  ],
-  "files_claimed": [
-    "corpus/70-visual/refs/characters/",
+    "tools/visual/character-refs.mjs",
     "corpus/70-visual/RI-VIS10-character-design.md",
     "corpus/70-visual/RI-VIS01-bifurcation-protocol.md",
     "corpus/70-visual/RI-VIS09-reference-image-set.md",
     "corpus/00-doctrine/subsystems.json",
-    "corpus/70-visual/refs/LICENCE-NOTE.md",
-    "reports/blog-feed.jsonl"
+    "corpus/00-doctrine/INDEX.md",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-14-i5-character-reference-set-coverage.svg"
   ],
+  "files_claimed": [],
   "redundant_with": [],
-  "next_step": "Write corpus/70-visual/refs/characters/INDEX.md, then RI-VIS10, then the RI-VIS01 P10 row, the subsystems.json row, and the RI-VIS09 corrections. Land incrementally."
+
+  "next_step": "TWO PIECES, IN THIS ORDER. (1) CAPTURE OUR SIDE. corpus/70-visual/refs/characters/INDEX.md §3 names the counterpart for all 13 slots; none has been taken. The two that unblock the most are C4's eight-angle orbit of the player with the whole figure in frame, and M1's capture-trace locomotion set plus a moving derivative — between them they answer RI-VIS10 B3/C1/C3 and RI-VIS08 C1/C3/C4, and they are the literal artefacts the owner asked for. (2) JUDGE F10 AGAINST BOTH ITEMS, as an ordered pair (ART x/10 from RI-VIS10, FIDELITY y/10 from RI-VIS08), never averaged (CC-5). A separate critic, fresh context, who has opened the plates. STILL OPEN AND CHEAP: the garment vocabulary table RI-VIS10 §D requires (faction x rank x region -> silhouette/material/colour/fitting) — until it exists D1 scores 0 fail-closed, and it is one table that makes D2/D3/D4 answerable rather than arguable."
 }
