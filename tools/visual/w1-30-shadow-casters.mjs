@@ -85,12 +85,17 @@ const SUBSETS = {
   scatter: { cast: ['canopy:', 'under:', 'rock:'], receive: [] },
   cover: { cast: ['cover:'], receive: [] },
   geology: { cast: ['geology:'], receive: [] },
+  // The canopy buckets alone. `under` is the grass/fern layer — the largest instance population in
+  // the province and the one whose blades resolve to nothing in a 4096 atlas fitted to 150 m; the
+  // canopy is the layer whose shadow a player can name.
+  'canopy-only': { cast: ['canopy:', 'near-canopy:'], receive: [] },
 };
 
 const ARM_SETS = {
   base: [],
   terrain: ['terrain'],
-  'terrain+near': ['terrain', 'near'],
+  'terrain+canopy': ['terrain', 'canopy-only'],
+  'terrain+canopy+geology': ['terrain', 'canopy-only', 'geology'],
   'terrain+near+scatter': ['terrain', 'near', 'scatter'],
   everything: ['terrain', 'near', 'scatter', 'cover', 'geology'],
 };
@@ -298,16 +303,22 @@ for (const site of SITES) {
   // self-shadowing at all. The arm a hurried fix ships.
   if (ARMS.length > 1) {
     const hit = await applyArm(['near', 'scatter'], true);
-    await step(4);
-    const lit = await shot(`${site}-wrongset.png`);
-    const load = await shadowLoad();
-    await setFeature('shadows', false); await step(3);
-    const dark = await shot(null);
-    await setFeature('shadows', true); await step(3);
-    const pct = diff(lit, dark).pct;
-    out.rows.push({ site, arm: 'wrongset-null-control', flagged: hit, shadow_pct: pct,
-      stripe_pct: stripeEnergy(lit), shadow_load: load });
-    console.log(`  ${site.padEnd(22)} ${'wrongset (null ctrl)'.padEnd(22)} shadow ${String(pct).padStart(6)}%  casters ${String(load.casterMeshes).padStart(4)} / ${String(load.casterTriangles).padStart(9)} tris`);
+    const row = { site, arm: 'wrongset-null-control', flagged: hit };
+    if (!COST_ONLY) {
+      await step(4);
+      const lit = await shot(`${site}-wrongset.png`);
+      row.shadow_load = await shadowLoad();
+      await setFeature('shadows', false); await step(3);
+      const dark = await shot(null);
+      await setFeature('shadows', true); await step(3);
+      row.shadow_pct = diff(lit, dark).pct;
+      row.stripe_pct = stripeEnergy(lit);
+    } else {
+      row.shadow_load = await shadowLoad();
+    }
+    const load = row.shadow_load;
+    out.rows.push(row);
+    console.log(`  ${site.padEnd(22)} ${'wrongset (null ctrl)'.padEnd(22)} shadow ${String(row.shadow_pct ?? '-').padStart(6)}%  casters ${String(load.casterMeshes).padStart(4)} / ${String(load.casterTriangles).padStart(9)} tris`);
     await restoreArm();
     await step(2);
   }

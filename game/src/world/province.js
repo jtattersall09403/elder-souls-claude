@@ -100,7 +100,48 @@ const c3 = (hex) => new THREE.Color(hex);
 // restores stock fog exactly. Read the header of `aerial.js` for the measurement that motivated it:
 // nine of thirteen eye-level shots currently lose over 90% of the landform inside their own frustum
 // to uniform-height fog, while every region declares a `fog.height_falloff_m` that nothing reads.
-installAerialPerspective();
+//
+// ============================================================================================
+// THIS CALL IS OFF, AND IT IS OFF BECAUSE IT WAS SILENTLY DELETING `render/sky.js`'s ATMOSPHERE.
+// ============================================================================================
+//
+// NOT AN OPINION — READ OUT OF THE LIVE PAGE. `THREE.ShaderChunk.fog_fragment` was carrying
+// `esAerialScale`, i.e. THIS file's four chunk strings, not `sky.js`'s. Two pieces landed on the
+// same day each patched the SAME four `THREE.ShaderChunk` fog chunks at module scope, and
+// `renderer.js` imports `./sky.js` (line 18) before `../world/province.js` (line 19), so
+// `installAtmosphereModel()` ran first and `installAerialPerspective()` overwrote all four of its
+// strings. Neither piece could see it: each one's own arms flip its own switch and both switches
+// still appear to work.
+//
+// WHAT THE OVERWRITE COST, in the shipped frame. `sky.js` sets `scene.fog` to a `HeightFog extends
+// THREE.Fog`, which deliberately REPURPOSES `fogNear` as sigma0 (per metre, ~0.0068) and `fogFar`
+// as H (the scale height, 26-340 m) — that repurposing is only meaningful to `sky.js`'s own
+// chunks. This file's chunk reads the stock meaning off the same two floats:
+//
+//     fogFactor = smoothstep( fogNear, fogFar, depth * esAerial )
+//                 smoothstep( 0.0068,  55.0,   depth * 0.76 )      // Blackwood, vista camera
+//
+// which is total fog at about 72 m. The whole province beyond roughly one tile was a flat wash of
+// fog colour, and `sky.js`'s measured "35% of contrast survives at 150 m" was not running at all.
+//
+// THE RESOLUTION IS THE ONE W1-30F WROTE DOWN ITSELF: "if you take ownership of aerial perspective,
+// world/aerial.js is written to be lifted into sky.js whole. Deleting installAerialPerspective()
+// and _updateAerial() from province.js is the exact reversal." Nothing is lost by doing so, because
+// `sky.js`'s `ES_FOG_FRAGMENT` is the SAME physics done better: it integrates Beer-Lambert through
+// an exponential haze layer of scale height H between the camera's world Y and the fragment's,
+// where this file multiplies a scale onto a smoothstep. And the region-by-region DATA this file
+// went and found — `fog.height_falloff_m`, which nothing read until W1-30F — is not lost either:
+// `renderer.js` now puts it on `regionFog.heightFalloffM` and `sky.js`'s `regionHeightFalloff()`
+// feeds it to that integral every frame, which is the same thirteen numbers reaching the same
+// physical parameter by the path that does not clobber anything.
+//
+// REVERSAL, ONE LINE: uncomment the call below. What would overturn this ruling: a capture showing
+// `sky.js`'s model is the WORSE picture, or a consumer that needs `uAerial` bound. `_updateAerial`
+// is deliberately left in place and still runs — `province.stats().aerial` keeps reporting the
+// region's falloff, so an instrument that reads it keeps working; it simply writes to a uniform no
+// chunk now declares, which three leaves unbound and which costs one Float32Array write per region
+// crossing.
+// installAerialPerspective();
 
 const COVER_CARD = Object.freeze({ litter:12, tussock:14, reed:3, tuft:8, stubble:8 });
 
