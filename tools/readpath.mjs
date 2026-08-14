@@ -75,7 +75,9 @@ const FACTS = [
   // the tool listing, so the probe passed while saying nothing about the doctrine it is for.
   ['rulings-append-only', /Amendments are append-only[\s\S]{0,200}?(struck|superseded)/i],
   ['model-routing-sonnet-default', /C6[\s\S]{0,400}?Sonnet|Sonnet[\s\S]{0,200}?default/],
-  ['G1-inverted-not-a-floor', /roadmap steps? delivered/i],
+  // G1 was INVERTED on 2026-08-14 evening — from a floor of 12 concurrent agents to roadmap steps
+  // delivered. The fact that must stay reachable is the negative one: there is no parallelism floor.
+  ['G1-inverted-not-a-floor', /no parallelism floor/i],
   ['land-self-test', /land\.mjs --self-test/],
   ['control-clone-writable', /--writable/],
   ['contention-gate', /contention\.mjs --gate/],
