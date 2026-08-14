@@ -171,14 +171,27 @@ const AREA_GUARD_PCT = 3;
  * WHAT IT CANNOT DO, stated because a guard nobody knows the edge of is a guard nobody can trust:
  *   - it cannot see a part SHRUNK to one pixel, only a part gone from every frame;
  *   - it cannot see a part ADDED (that is the area guard's job, and `weld-arm-to-rib`'s arm);
- *   - a part legitimately RENAMED reads as a deletion plus an addition, so the reporter prints
- *     both sides and a human decides. It is deliberately noisy in that one direction.
+ *   - IT CANNOT COMPARE ACROSS A RENAME, and that is not hypothetical. The `a1d24f58` baseline
+ *     predates the labelling scheme entirely: its meshes are anonymous (`SkinnedMesh/hand_l`)
+ *     where the shipping tree's are named (`actor-body:saxhleel:skin/hand_l`). Every one of its 37
+ *     parts therefore reads as deleted, which is a false alarm and would have been an actively
+ *     harmful one — a guard that cries wolf on the one arm everybody runs is a guard people learn
+ *     to skip. So a delta with an EMPTY INTERSECTION is a relabelling, not a mutilation: it is
+ *     reported and not counted. A partial loss, which is what every deletion cheat produces, still
+ *     fails. The escape this leaves open is "rename every mesh in the character", which does
+ *     nothing to the crack count it would be trying to game and is loud in the output.
+ *
+ * Bones alone would survive the rename and were tried first: they do not work. Deleting both hands
+ * leaves the gauntlet equipment attached to `hand_l`, so the BONE is still on screen and only the
+ * mesh-plus-bone label disappears. A bone-level census would have missed the exact cheat this was
+ * built for.
  */
 function censusDelta(baseline, arm) {
   const a = new Set(Object.keys(baseline || {})), b = new Set(Object.keys(arm || {}));
   const missing = [...a].filter((k) => !b.has(k)).sort();
   const added = [...b].filter((k) => !a.has(k)).sort();
-  return { missing, added, baselineParts: a.size, armParts: b.size };
+  const common = [...a].filter((k) => b.has(k)).length;
+  return { missing, added, common, comparable: common > 0, baselineParts: a.size, armParts: b.size };
 }
 
 // D-3: `--baseline-ref=HEAD` crashes with *"control 'baseline' patched nothing"*, because once the
@@ -233,7 +246,11 @@ try {
       failed++;
     }
     const d = censusDelta(b.partCensus, now.partCensus);
-    if (d.missing.length) {
+    if (!d.comparable) {
+      console.log(`  -> part census: NOT COMPARABLE across ${opts.baselineRef} — ${d.baselineParts} baseline part labels and `
+        + `${d.armParts} current ones share none, i.e. the labelling scheme changed rather than a part being deleted. `
+        + 'Reported, not counted. The control arms below are where the census does its work.');
+    } else if (d.missing.length) {
       console.log(`  !! PART CENSUS: ${d.missing.length} part(s) present in the baseline reach zero pixels now: ${d.missing.join(', ')}`);
       failed++;
     } else {
@@ -256,7 +273,7 @@ try {
     let verdict;
     if (shouldGoRed) verdict = s.crackPx > now.crackPx ? 'RED as required' : 'CONTROL DID NOT GO RED — the check is not measuring what it claims';
     else if (Math.abs(areaDrift) > AREA_GUARD_PCT) verdict = 'CAUGHT by silhouette guard';
-    else if (d.missing.length) verdict = `CAUGHT by part census (${d.missing.length} part(s) gone: ${d.missing.join(', ')})`;
+    else if (d.comparable && d.missing.length) verdict = `CAUGHT by part census (${d.missing.length} part(s) gone: ${d.missing.join(', ')})`;
     else verdict = 'NOT CAUGHT — the guard is too loose';
     if (/DID NOT|NOT CAUGHT/.test(verdict)) failed++;
     console.log(`${label.padEnd(20)}: ${String(s.crackPx).padStart(6)} crack px, `

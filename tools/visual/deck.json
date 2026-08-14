@@ -529,13 +529,20 @@
       "mandatory": true,
       "place": {
         "kind": "teleport",
-        "x": 3807,
-        "z": 3823.5
+        "x": 3778.8,
+        "z": 3846.7
       },
       "camera": {
         "kind": "gameplay",
-        "yaw_deg": 270
+        "yaw_deg": 345
       },
+      "stand": {
+        "stand_clear_m": 3.56,
+        "camera_clear_m": 6.63,
+        "nearest_facade_m": 5.54,
+        "buildings_in_view": 4
+      },
+      "unresolved": false,
       "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
     },
     {
@@ -567,13 +574,20 @@
       "mandatory": true,
       "place": {
         "kind": "teleport",
-        "x": 1927.5,
-        "z": 4450
+        "x": 1929.7,
+        "z": 4446.2
       },
       "camera": {
         "kind": "gameplay",
-        "yaw_deg": 270
+        "yaw_deg": 0
       },
+      "stand": {
+        "stand_clear_m": 5.18,
+        "camera_clear_m": 1.79,
+        "nearest_facade_m": 6.11,
+        "buildings_in_view": 2
+      },
+      "unresolved": false,
       "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
     },
     {
@@ -605,13 +619,20 @@
       "mandatory": true,
       "place": {
         "kind": "teleport",
-        "x": 461,
-        "z": 2913.5
+        "x": 436.2,
+        "z": 2919.9
       },
       "camera": {
         "kind": "gameplay",
-        "yaw_deg": 270
+        "yaw_deg": 60
       },
+      "stand": {
+        "stand_clear_m": 5.21,
+        "camera_clear_m": 6.43,
+        "nearest_facade_m": 5.21,
+        "buildings_in_view": 3
+      },
+      "unresolved": false,
       "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
     },
     {
@@ -643,13 +664,20 @@
       "mandatory": true,
       "place": {
         "kind": "teleport",
-        "x": 2293.5,
-        "z": 2773.5
+        "x": 2264.1,
+        "z": 2779.3
       },
       "camera": {
         "kind": "gameplay",
-        "yaw_deg": 270
+        "yaw_deg": 45
       },
+      "stand": {
+        "stand_clear_m": 6,
+        "camera_clear_m": 7.88,
+        "nearest_facade_m": 6,
+        "buildings_in_view": 2
+      },
+      "unresolved": false,
       "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
     },
     {
@@ -681,13 +709,20 @@
       "mandatory": true,
       "place": {
         "kind": "teleport",
-        "x": 2793.5,
-        "z": 5027.5
+        "x": 2762.3,
+        "z": 5004.2
       },
       "camera": {
         "kind": "gameplay",
-        "yaw_deg": 270
+        "yaw_deg": 210
       },
+      "stand": {
+        "stand_clear_m": 5.92,
+        "camera_clear_m": 8.93,
+        "nearest_facade_m": 5.92,
+        "buildings_in_view": 3
+      },
+      "unresolved": false,
       "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
     },
     {
@@ -719,13 +754,20 @@
       "mandatory": true,
       "place": {
         "kind": "teleport",
-        "x": 625.5,
-        "z": 4877
+        "x": 611.8,
+        "z": 4876.8
       },
       "camera": {
         "kind": "gameplay",
-        "yaw_deg": 270
+        "yaw_deg": 15
       },
+      "stand": {
+        "stand_clear_m": 5.88,
+        "camera_clear_m": 7.77,
+        "nearest_facade_m": 5.88,
+        "buildings_in_view": 2
+      },
+      "unresolved": false,
       "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
     },
     {
@@ -757,13 +799,20 @@
       "mandatory": true,
       "place": {
         "kind": "teleport",
-        "x": 2198.5,
-        "z": 761
+        "x": 2145.4,
+        "z": 780
       },
       "camera": {
         "kind": "gameplay",
-        "yaw_deg": 270
+        "yaw_deg": 225
       },
+      "stand": {
+        "stand_clear_m": 4.82,
+        "camera_clear_m": 5.08,
+        "nearest_facade_m": 5.62,
+        "buildings_in_view": 2
+      },
+      "unresolved": false,
       "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
     },
     {
@@ -795,13 +844,20 @@
       "mandatory": true,
       "place": {
         "kind": "teleport",
-        "x": 3838,
-        "z": 859
+        "x": 3843.7,
+        "z": 840.6
       },
       "camera": {
         "kind": "gameplay",
-        "yaw_deg": 270
+        "yaw_deg": 315
       },
+      "stand": {
+        "stand_clear_m": 5.37,
+        "camera_clear_m": 10.02,
+        "nearest_facade_m": 5.37,
+        "buildings_in_view": 3
+      },
+      "unresolved": false,
       "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
     },
     {
@@ -1140,6 +1196,28 @@
         "walk"
       ]
     },
+    "street": {
+      "stills": [
+        "street-archon",
+        "street-blackrose",
+        "street-gideon",
+        "street-helstrom",
+        "street-lilmoth",
+        "street-soulrest",
+        "street-stormhold",
+        "street-thorn"
+      ],
+      "times": [
+        "t0800",
+        "t1300",
+        "t1930"
+      ],
+      "weathers": [
+        "clear",
+        "rain"
+      ],
+      "motion": []
+    },
     "weather": {
       "stills": [
         "vista-blackwood",
@@ -1262,5 +1340,5 @@
     "motion_sequences": 12,
     "motion_frames": 2400
   },
-  "manifest_hash": "4746eafe87af6559"
+  "manifest_hash": "8c3bf744889e4a94"
 }
