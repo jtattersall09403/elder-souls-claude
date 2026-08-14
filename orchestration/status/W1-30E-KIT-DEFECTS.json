@@ -4,17 +4,55 @@
   "parent": "orchestration/plans/W1-30.md",
   "branch": "codex/wave1-build-experiment",
   "started": "2026-08-14",
-  "state": "running",
+  "state": "built-awaiting-fresh-critic",
   "role": "builder",
-  "summary": "Three defects the working street gate found by rendering frames rather than by geometry: roof.shell drawing 1.97x the building's footprint, Gideon's ground rendering black at all six lights, and the deck manifest reporting the wrong region for a blackwood setup.",
-  "redundant_with": ["W1-30E-builder", "W1-30S"],
+  "report": "reports/w1-30e-kit-defects/README.md",
+  "summary": "Three defects the working street gate found by rendering frames rather than by geometry. (1) roof.shell drew 1.97x its building's plan — an ~8 m eave — in four settlements; RULED as a units slip rather than authored intent (the caller passes over: 0.45-0.80 m to all three roof kits and this one never read it; drum() takes radii and 15 of its 16 call sites pass one), fixed to footprint + the authored eave on a squared eaves plate so the dome's four corners stay covered, and the roof's real extent is now PUBLISHED via kits.js roofPlanExtent(). A second overhang in the same part — ribs cut to max(w,d) and swung radially, 2.77x on archon-shrine — fixed with the shell's own chord. (2) Gideon's black ground DIAGNOSED, not fixed: it is the authored region palette, blackwood ground #14231A at luminance 3.6/255 rendering to #020202 at 2.1 against 25.5-107 for the other seven towns; null control that swaps only that one authored value moves Gideon 2.1 -> 44.9 and leaves all seven others identical. The fix is one value in regions.json or a floor in province.js, both of which have other live claimants, so it is handed over with a stated acceptance. (3) region_reported was not one bad row but ALL 48 rows in all eight towns — it read sim.env.region, which no engine code updates from position (INVENTORY V15, open, W1-02/W1-30F); deck.mjs now records region_at_player from getTerrainAt() and renames the cached field so V15 stays visible.",
+  "rulings": [
+    {
+      "id": "the eave was wrong, not the footprint",
+      "reversible": true,
+      "reversal": "three edits inside registerKit('roof.shell') in game/src/render/lib/kits.js — restore drum(r1*2, r0*2) with band.scale.set(w,1,d), delete the shelleaves slab, restore Math.max(w,d)*0.96 as the rib length. EXECUTED on a hard-linked control clone; 1.97 came back to the digit on the same buildings.",
+      "falsifier": "a settlement document, art-direction plate or region record asking for a deep sheltering canopy over the street in the shell towns. If one exists the answer is still not to re-widen this part — build the canopy as public realm, where the street can be planned around it and collision can know about it."
+    }
+  ],
+  "redundant_with": ["W1-30E-builder", "W1-30S", "W1-30V", "W1-30DE-REMEDIATION"],
   "files_claimed": [
     "game/src/render/lib/kits.js",
     "tools/render/w1-30e-roof-extent.mjs",
+    "tools/render/w1-30e-ground-albedo.mjs",
     "reports/w1-30e-kit-defects/"
   ],
-  "files_touched": [],
+  "files_touched": [
+    "game/src/render/lib/kits.js",
+    "tools/render/w1-30e-roof-extent.mjs",
+    "tools/render/w1-30e-ground-albedo.mjs",
+    "tools/visual/deck.mjs",
+    "reports/w1-30e-kit-defects/README.md",
+    "reports/blog-feed.jsonl"
+  ],
+  "gates": {
+    "roof_shell_span_ratio_median": { "before": 1.97, "after": 1.116, "peers": "roof.hip 1.146, roof.reed 1.114" },
+    "roof_shell_span_ratio_worst": { "before": 2.547, "after": 1.238 },
+    "roof_shell_coverage_min": { "before": 1.0, "after": 1.0, "note": "the eaves plate keeps it at 1.0 at ANY eave including zero, so coverage cannot discriminate the fix from its null control — stated, not assumed" },
+    "worst_settlement_render_meshes": { "before": 106, "after": 106, "note": "the +45 eaves plates batch away; w1-30-settlement-batching failures []" },
+    "kit_gate_unchanged": "parts 25, buildings 179, bypass 3284, adjSil 0/205, sep 0.6443, brokenEdges 0.971, Gideon +0.14",
+    "kit_gate_moved": { "skyline_relief_lilmoth": { "before": 0.1835, "after": 0.1862, "note": "moved onto its own controls' value; reported as a change, not explained away — a fresh critic should attack this first" } },
+    "gideon_ground_luminance_srgb255": { "value": 2.1, "peers_min": 25.5, "acceptance_for_whoever_owns_the_fix": ">= 20 at the Gideon street stand with the other seven towns unmoved" }
+  },
+  "not_done": [
+    "Gideon's ground is diagnosed and NOT fixed — the fix is game/data/world/regions.json (W1-25-persistent-builder) or game/src/world/province.js (five live claimants); editing either from here is the Ruling O1 failure.",
+    "build-deck.mjs does not yet read roofPlanExtent() — the publication exists, the join does not; that file belongs to W1-30V and W1-30DE-REMEDIATION.",
+    "No naive-judge read of whether a shell town now reads as architecture or as a row of boxes. Geometry cannot answer it and the pack must be built by an agent that is not the judge.",
+    "w1-04-r4-join.mjs still reports 56 roofs that do not cover their building — the roofless archon-struct-* civic class, pre-existing, identical in all three arms including the legacy one, untouched.",
+    "Ruling E1 and Lilmoth's approach row left alone, as instructed."
+  ],
   "reproduce": [
-    "node tools/render/w1-30e-roof-extent.mjs"
+    "node tools/render/w1-30e-roof-extent.mjs",
+    "node tools/render/w1-30e-roof-extent.mjs --self-test",
+    "node tools/render/w1-30e-ground-albedo.mjs",
+    "node tools/render/w1-30e-ground-albedo.mjs --self-test",
+    "node tools/render/w1-30e-kit-gate.mjs",
+    "node tools/render/w1-30-settlement-batching.mjs"
   ]
 }
