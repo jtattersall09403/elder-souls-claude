@@ -1,0 +1,1707 @@
+{
+  "tag": "hw-budget",
+  "renderer_string": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)",
+  "software": false,
+  "seed": 20260814,
+  "canvas": [
+    1920,
+    1080
+  ],
+  "time": 13,
+  "perf_frames": 60,
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 586
+  },
+  "rows": [
+    {
+      "site": "vista-blackwood",
+      "arm": "base",
+      "flagged": {
+        "cast": 0,
+        "receive": 0,
+        "names": {}
+      },
+      "shadow_load": {
+        "casterMeshes": 1285,
+        "casterInstances": 2688,
+        "casterTriangles": 492990,
+        "topByTriangles": [
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40562
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "signature",
+            30188
+          ],
+          [
+            "world-art-place",
+            13624
+          ],
+          [
+            "actor-body",
+            13088
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 6.09,
+        "p10": 5.69,
+        "p90": 11.35
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            1258.3387880774305,
+            3.982815503565007,
+            3487.5271788110645
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 98.114,
+      "stripe_pct": 22.495,
+      "drawCalls": 277,
+      "triangles": 991446
+    },
+    {
+      "site": "vista-blackwood",
+      "arm": "terrain",
+      "flagged": {
+        "cast": 0,
+        "receive": 1,
+        "names": {}
+      },
+      "shadow_load": {
+        "casterMeshes": 1285,
+        "casterInstances": 2688,
+        "casterTriangles": 492990,
+        "topByTriangles": [
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40562
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "signature",
+            30188
+          ],
+          [
+            "world-art-place",
+            13624
+          ],
+          [
+            "actor-body",
+            13088
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 6.12,
+        "p10": 5.36,
+        "p90": 11.03
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            1258.326623054682,
+            3.9902202756513816,
+            3487.514036307639
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0.009,
+      "stripe_pct": 23.876,
+      "drawCalls": 277,
+      "triangles": 991446
+    },
+    {
+      "site": "vista-blackwood",
+      "arm": "terrain+canopy",
+      "flagged": {
+        "cast": 246,
+        "receive": 1,
+        "names": {
+          "near-canopy:blackwood": 6,
+          "canopy:blackwood": 108,
+          "canopy:hive": 46,
+          "canopy:marauders-coast": 54,
+          "canopy:western-rootlands": 24,
+          "canopy:stone-wastes": 8
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1531,
+        "casterInstances": 15162,
+        "casterTriangles": 1356166,
+        "topByTriangles": [
+          [
+            "canopy",
+            605072
+          ],
+          [
+            "near-canopy",
+            258104
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40562
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "signature",
+            30188
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 5.56,
+        "p10": 5.2,
+        "p90": 10.16
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            1258.3192952367338,
+            3.991210717199465,
+            3487.51072319554
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 17.719,
+      "stripe_pct": 22.756,
+      "drawCalls": 277,
+      "triangles": 991446
+    },
+    {
+      "site": "vista-blackwood",
+      "arm": "terrain+canopy+geology",
+      "flagged": {
+        "cast": 246,
+        "receive": 1,
+        "names": {
+          "near-canopy:blackwood": 6,
+          "canopy:blackwood": 108,
+          "canopy:hive": 46,
+          "canopy:marauders-coast": 54,
+          "canopy:western-rootlands": 24,
+          "canopy:stone-wastes": 8
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1531,
+        "casterInstances": 15162,
+        "casterTriangles": 1356166,
+        "topByTriangles": [
+          [
+            "canopy",
+            605072
+          ],
+          [
+            "near-canopy",
+            258104
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40562
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "signature",
+            30188
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 5.92,
+        "p10": 5.21,
+        "p90": 11.21
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            1258.316774116458,
+            3.9857937829347065,
+            3487.517250466967
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 17.683,
+      "stripe_pct": 22.757,
+      "drawCalls": 277,
+      "triangles": 991446
+    },
+    {
+      "site": "vista-blackwood",
+      "arm": "terrain+near+scatter",
+      "flagged": {
+        "cast": 332,
+        "receive": 1,
+        "names": {
+          "near-canopy:blackwood": 6,
+          "near-under:blackwood": 1,
+          "near-rock:blackwood": 1,
+          "under:blackwood": 19,
+          "rock:blackwood": 18,
+          "canopy:blackwood": 108,
+          "under:hive": 8,
+          "canopy:hive": 46,
+          "rock:hive": 8,
+          "under:marauders-coast": 9,
+          "canopy:marauders-coast": 54,
+          "rock:marauders-coast": 9,
+          "under:western-rootlands": 4,
+          "canopy:western-rootlands": 24,
+          "rock:western-rootlands": 4,
+          "under:stone-wastes": 3,
+          "canopy:stone-wastes": 8,
+          "rock:stone-wastes": 2
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1617,
+        "casterInstances": 35789,
+        "casterTriangles": 1748868,
+        "topByTriangles": [
+          [
+            "canopy",
+            605072
+          ],
+          [
+            "near-canopy",
+            258104
+          ],
+          [
+            "rock",
+            198780
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "under",
+            97542
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "near-under",
+            94760
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 5.93,
+        "p10": 5.27,
+        "p90": 10.94
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            1258.333766064245,
+            4.016820087644874,
+            3487.480599410781
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 17.606,
+      "stripe_pct": 22.759,
+      "drawCalls": 277,
+      "triangles": 991446
+    },
+    {
+      "site": "vista-blackwood",
+      "arm": "everything",
+      "flagged": {
+        "cast": 333,
+        "receive": 1,
+        "names": {
+          "near-canopy:blackwood": 6,
+          "near-under:blackwood": 1,
+          "near-rock:blackwood": 1,
+          "cover:blackwood": 1,
+          "under:blackwood": 19,
+          "rock:blackwood": 18,
+          "canopy:blackwood": 108,
+          "under:hive": 8,
+          "canopy:hive": 46,
+          "rock:hive": 8,
+          "under:marauders-coast": 9,
+          "canopy:marauders-coast": 54,
+          "rock:marauders-coast": 9,
+          "under:western-rootlands": 4,
+          "canopy:western-rootlands": 24,
+          "rock:western-rootlands": 4,
+          "under:stone-wastes": 3,
+          "canopy:stone-wastes": 8,
+          "rock:stone-wastes": 2
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1618,
+        "casterInstances": 37811,
+        "casterTriangles": 1829748,
+        "topByTriangles": [
+          [
+            "canopy",
+            605072
+          ],
+          [
+            "near-canopy",
+            258104
+          ],
+          [
+            "rock",
+            198780
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "under",
+            97542
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "near-under",
+            94760
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 6.01,
+        "p10": 5.23,
+        "p90": 10.38
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            1258.3408617078032,
+            3.9986228612401646,
+            3487.5068773809458
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 17.939,
+      "stripe_pct": 22.762,
+      "drawCalls": 277,
+      "triangles": 991446
+    },
+    {
+      "site": "vista-blackwood",
+      "arm": "wrongset-null-control",
+      "flagged": {
+        "cast": 332,
+        "receive": 0,
+        "names": {
+          "near-canopy:blackwood": 6,
+          "near-under:blackwood": 1,
+          "near-rock:blackwood": 1,
+          "under:blackwood": 19,
+          "rock:blackwood": 18,
+          "canopy:blackwood": 108,
+          "under:hive": 8,
+          "canopy:hive": 46,
+          "rock:hive": 8,
+          "under:marauders-coast": 9,
+          "canopy:marauders-coast": 54,
+          "rock:marauders-coast": 9,
+          "under:western-rootlands": 4,
+          "canopy:western-rootlands": 24,
+          "rock:western-rootlands": 4,
+          "under:stone-wastes": 3,
+          "canopy:stone-wastes": 8,
+          "rock:stone-wastes": 2
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1617,
+        "casterInstances": 35789,
+        "casterTriangles": 1748868,
+        "topByTriangles": [
+          [
+            "canopy",
+            605072
+          ],
+          [
+            "near-canopy",
+            258104
+          ],
+          [
+            "rock",
+            198780
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            107210
+          ],
+          [
+            "under",
+            97542
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "near-under",
+            94760
+          ]
+        ]
+      },
+      "shadow_pct": 17.587,
+      "stripe_pct": 22.877
+    },
+    {
+      "site": "vista-salt-hills",
+      "arm": "base",
+      "flagged": {
+        "cast": 0,
+        "receive": 0,
+        "names": {}
+      },
+      "shadow_load": {
+        "casterMeshes": 1284,
+        "casterInstances": 2672,
+        "casterTriangles": 485458,
+        "topByTriangles": [
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40970
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "world-art-place",
+            13624
+          ],
+          [
+            "actor-body",
+            13088
+          ],
+          [
+            "trunks",
+            7680
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 13.73,
+        "p10": 13.41,
+        "p90": 14.58
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            2122.831081621588,
+            141.30720747109493,
+            705.0253756242946
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0.727,
+      "stripe_pct": 0.543,
+      "drawCalls": 269,
+      "triangles": 1328494
+    },
+    {
+      "site": "vista-salt-hills",
+      "arm": "terrain",
+      "flagged": {
+        "cast": 0,
+        "receive": 1,
+        "names": {}
+      },
+      "shadow_load": {
+        "casterMeshes": 1284,
+        "casterInstances": 2672,
+        "casterTriangles": 485458,
+        "topByTriangles": [
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40970
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "world-art-place",
+            13624
+          ],
+          [
+            "actor-body",
+            13088
+          ],
+          [
+            "trunks",
+            7680
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 13.6,
+        "p10": 13.16,
+        "p90": 15.24
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            2122.8213354747268,
+            141.34003501770658,
+            704.9789786718208
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0.771,
+      "stripe_pct": 0.544,
+      "drawCalls": 269,
+      "triangles": 1328494
+    },
+    {
+      "site": "vista-salt-hills",
+      "arm": "terrain+canopy",
+      "flagged": {
+        "cast": 162,
+        "receive": 1,
+        "names": {
+          "canopy:salt-hills": 84,
+          "canopy:valus-ridge": 60,
+          "canopy:stone-forest": 18
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1446,
+        "casterInstances": 6896,
+        "casterTriangles": 705106,
+        "topByTriangles": [
+          [
+            "canopy",
+            219648
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40970
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "world-art-place",
+            13624
+          ],
+          [
+            "actor-body",
+            13088
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 14.87,
+        "p10": 13.18,
+        "p90": 17.35
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            2122.8046366832996,
+            141.33040964185335,
+            704.9872424899856
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0.842,
+      "stripe_pct": 0.547,
+      "drawCalls": 269,
+      "triangles": 1328494
+    },
+    {
+      "site": "vista-salt-hills",
+      "arm": "terrain+canopy+geology",
+      "flagged": {
+        "cast": 162,
+        "receive": 1,
+        "names": {
+          "canopy:salt-hills": 84,
+          "canopy:valus-ridge": 60,
+          "canopy:stone-forest": 18
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1446,
+        "casterInstances": 6896,
+        "casterTriangles": 705106,
+        "topByTriangles": [
+          [
+            "canopy",
+            219648
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40970
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "world-art-place",
+            13624
+          ],
+          [
+            "actor-body",
+            13088
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 13.28,
+        "p10": 12.85,
+        "p90": 13.86
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            2122.795339273291,
+            141.32113675145973,
+            704.9970123079567
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0.841,
+      "stripe_pct": 0.547,
+      "drawCalls": 269,
+      "triangles": 1328494
+    },
+    {
+      "site": "vista-salt-hills",
+      "arm": "terrain+near+scatter",
+      "flagged": {
+        "cast": 224,
+        "receive": 1,
+        "names": {
+          "near-under:salt-hills": 1,
+          "near-rock:salt-hills": 1,
+          "under:salt-hills": 17,
+          "rock:salt-hills": 17,
+          "canopy:salt-hills": 84,
+          "under:valus-ridge": 10,
+          "rock:valus-ridge": 10,
+          "canopy:valus-ridge": 60,
+          "under:stone-forest": 3,
+          "rock:stone-forest": 3,
+          "canopy:stone-forest": 18
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1508,
+        "casterInstances": 21065,
+        "casterTriangles": 941026,
+        "topByTriangles": [
+          [
+            "canopy",
+            219648
+          ],
+          [
+            "rock",
+            148440
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "under",
+            67728
+          ],
+          [
+            "Mesh",
+            40970
+          ],
+          [
+            "ground-skin",
+            30752
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 14.64,
+        "p10": 13.91,
+        "p90": 15.92
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            2122.7934406413633,
+            141.31223197248738,
+            705.0083105096253
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0.914,
+      "stripe_pct": 0.542,
+      "drawCalls": 269,
+      "triangles": 1328494
+    },
+    {
+      "site": "vista-salt-hills",
+      "arm": "everything",
+      "flagged": {
+        "cast": 225,
+        "receive": 1,
+        "names": {
+          "near-under:salt-hills": 1,
+          "near-rock:salt-hills": 1,
+          "cover:salt-hills": 1,
+          "under:salt-hills": 17,
+          "rock:salt-hills": 17,
+          "canopy:salt-hills": 84,
+          "under:valus-ridge": 10,
+          "rock:valus-ridge": 10,
+          "canopy:valus-ridge": 60,
+          "under:stone-forest": 3,
+          "rock:stone-forest": 3,
+          "canopy:stone-forest": 18
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1509,
+        "casterInstances": 23864,
+        "casterTriangles": 1097770,
+        "topByTriangles": [
+          [
+            "canopy",
+            219648
+          ],
+          [
+            "cover",
+            156744
+          ],
+          [
+            "rock",
+            148440
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "under",
+            67728
+          ],
+          [
+            "Mesh",
+            40970
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 13.98,
+        "p10": 13.26,
+        "p90": 15.15
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            2122.798938147301,
+            141.3037109759527,
+            705.0211594769472
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0.913,
+      "stripe_pct": 0.545,
+      "drawCalls": 269,
+      "triangles": 1328494
+    },
+    {
+      "site": "vista-salt-hills",
+      "arm": "wrongset-null-control",
+      "flagged": {
+        "cast": 224,
+        "receive": 0,
+        "names": {
+          "near-under:salt-hills": 1,
+          "near-rock:salt-hills": 1,
+          "under:salt-hills": 17,
+          "rock:salt-hills": 17,
+          "canopy:salt-hills": 84,
+          "under:valus-ridge": 10,
+          "rock:valus-ridge": 10,
+          "canopy:valus-ridge": 60,
+          "under:stone-forest": 3,
+          "rock:stone-forest": 3,
+          "canopy:stone-forest": 18
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1508,
+        "casterInstances": 21065,
+        "casterTriangles": 941026,
+        "topByTriangles": [
+          [
+            "canopy",
+            219648
+          ],
+          [
+            "rock",
+            148440
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "under",
+            67728
+          ],
+          [
+            "Mesh",
+            40970
+          ],
+          [
+            "ground-skin",
+            30752
+          ]
+        ]
+      },
+      "shadow_pct": 0.854,
+      "stripe_pct": 0.543
+    },
+    {
+      "site": "spawn",
+      "arm": "base",
+      "flagged": {
+        "cast": 0,
+        "receive": 0,
+        "names": {}
+      },
+      "shadow_load": {
+        "casterMeshes": 1284,
+        "casterInstances": 2672,
+        "casterTriangles": 485458,
+        "topByTriangles": [
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40970
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "world-art-place",
+            13624
+          ],
+          [
+            "actor-body",
+            13088
+          ],
+          [
+            "trunks",
+            7680
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 14.37,
+        "p10": 13.26,
+        "p90": 15.51
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            2122.831081621588,
+            141.30720747109493,
+            705.0253756242946
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0.727,
+      "stripe_pct": 0.543,
+      "drawCalls": 269,
+      "triangles": 1328494
+    },
+    {
+      "site": "spawn",
+      "arm": "terrain",
+      "flagged": {
+        "cast": 0,
+        "receive": 1,
+        "names": {}
+      },
+      "shadow_load": {
+        "casterMeshes": 1284,
+        "casterInstances": 2672,
+        "casterTriangles": 485458,
+        "topByTriangles": [
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40970
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "world-art-place",
+            13624
+          ],
+          [
+            "actor-body",
+            13088
+          ],
+          [
+            "trunks",
+            7680
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 13.82,
+        "p10": 13.2,
+        "p90": 15.75
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            2122.8213354747268,
+            141.34003501770658,
+            704.9789786718208
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0.771,
+      "stripe_pct": 0.544,
+      "drawCalls": 269,
+      "triangles": 1328494
+    },
+    {
+      "site": "spawn",
+      "arm": "terrain+canopy",
+      "flagged": {
+        "cast": 162,
+        "receive": 1,
+        "names": {
+          "canopy:salt-hills": 84,
+          "canopy:valus-ridge": 60,
+          "canopy:stone-forest": 18
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1446,
+        "casterInstances": 6896,
+        "casterTriangles": 705106,
+        "topByTriangles": [
+          [
+            "canopy",
+            219648
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40970
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "world-art-place",
+            13624
+          ],
+          [
+            "actor-body",
+            13088
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 14.08,
+        "p10": 13.29,
+        "p90": 20.27
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            2122.8046366832996,
+            141.33040964185335,
+            704.9872424899856
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0.842,
+      "stripe_pct": 0.547,
+      "drawCalls": 269,
+      "triangles": 1328494
+    },
+    {
+      "site": "spawn",
+      "arm": "terrain+canopy+geology",
+      "flagged": {
+        "cast": 162,
+        "receive": 1,
+        "names": {
+          "canopy:salt-hills": 84,
+          "canopy:valus-ridge": 60,
+          "canopy:stone-forest": 18
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1446,
+        "casterInstances": 6896,
+        "casterTriangles": 705106,
+        "topByTriangles": [
+          [
+            "canopy",
+            219648
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "Mesh",
+            40970
+          ],
+          [
+            "ground-skin",
+            30752
+          ],
+          [
+            "world-art-place",
+            13624
+          ],
+          [
+            "actor-body",
+            13088
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 15.31,
+        "p10": 14.41,
+        "p90": 16.84
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            2122.795339273291,
+            141.32113675145973,
+            704.9970123079567
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0.841,
+      "stripe_pct": 0.547,
+      "drawCalls": 269,
+      "triangles": 1328494
+    },
+    {
+      "site": "spawn",
+      "arm": "terrain+near+scatter",
+      "flagged": {
+        "cast": 224,
+        "receive": 1,
+        "names": {
+          "near-under:salt-hills": 1,
+          "near-rock:salt-hills": 1,
+          "under:salt-hills": 17,
+          "rock:salt-hills": 17,
+          "canopy:salt-hills": 84,
+          "under:valus-ridge": 10,
+          "rock:valus-ridge": 10,
+          "canopy:valus-ridge": 60,
+          "under:stone-forest": 3,
+          "rock:stone-forest": 3,
+          "canopy:stone-forest": 18
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1508,
+        "casterInstances": 21065,
+        "casterTriangles": 941026,
+        "topByTriangles": [
+          [
+            "canopy",
+            219648
+          ],
+          [
+            "rock",
+            148440
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "under",
+            67728
+          ],
+          [
+            "Mesh",
+            40970
+          ],
+          [
+            "ground-skin",
+            30752
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 15.53,
+        "p10": 14.58,
+        "p90": 17.82
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            2122.7934406413633,
+            141.31223197248738,
+            705.0083105096253
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0.914,
+      "stripe_pct": 0.542,
+      "drawCalls": 269,
+      "triangles": 1328494
+    },
+    {
+      "site": "spawn",
+      "arm": "everything",
+      "flagged": {
+        "cast": 225,
+        "receive": 1,
+        "names": {
+          "near-under:salt-hills": 1,
+          "near-rock:salt-hills": 1,
+          "cover:salt-hills": 1,
+          "under:salt-hills": 17,
+          "rock:salt-hills": 17,
+          "canopy:salt-hills": 84,
+          "under:valus-ridge": 10,
+          "rock:valus-ridge": 10,
+          "canopy:valus-ridge": 60,
+          "under:stone-forest": 3,
+          "rock:stone-forest": 3,
+          "canopy:stone-forest": 18
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1509,
+        "casterInstances": 23864,
+        "casterTriangles": 1097770,
+        "topByTriangles": [
+          [
+            "canopy",
+            219648
+          ],
+          [
+            "cover",
+            156744
+          ],
+          [
+            "rock",
+            148440
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "under",
+            67728
+          ],
+          [
+            "Mesh",
+            40970
+          ]
+        ]
+      },
+      "frame_ms": {
+        "median": 14.3,
+        "p10": 13.82,
+        "p90": 17.86
+      },
+      "fit": {
+        "tier": "high",
+        "mapSize": 4096,
+        "distance": 150,
+        "castShadow": true,
+        "fit": {
+          "radius": 142.84548218312085,
+          "texel": 0.06974877059722698,
+          "centre": [
+            2122.798938147301,
+            141.3037109759527,
+            705.0211594769472
+          ],
+          "backoff": 562.8454821831208,
+          "mapSize": 4096
+        },
+        "bias": -0.00008656188041775121,
+        "normalBias": 0.09764827883611776
+      },
+      "shadow_pct": 0.912,
+      "stripe_pct": 0.545,
+      "drawCalls": 269,
+      "triangles": 1328494
+    },
+    {
+      "site": "spawn",
+      "arm": "wrongset-null-control",
+      "flagged": {
+        "cast": 224,
+        "receive": 0,
+        "names": {
+          "near-under:salt-hills": 1,
+          "near-rock:salt-hills": 1,
+          "under:salt-hills": 17,
+          "rock:salt-hills": 17,
+          "canopy:salt-hills": 84,
+          "under:valus-ridge": 10,
+          "rock:valus-ridge": 10,
+          "canopy:valus-ridge": 60,
+          "under:stone-forest": 3,
+          "rock:stone-forest": 3,
+          "canopy:stone-forest": 18
+        }
+      },
+      "shadow_load": {
+        "casterMeshes": 1508,
+        "casterInstances": 21065,
+        "casterTriangles": 941026,
+        "topByTriangles": [
+          [
+            "canopy",
+            219648
+          ],
+          [
+            "rock",
+            148440
+          ],
+          [
+            "canopy-lobe",
+            138240
+          ],
+          [
+            "settlement-batch",
+            126218
+          ],
+          [
+            "ground",
+            96800
+          ],
+          [
+            "under",
+            67728
+          ],
+          [
+            "Mesh",
+            40970
+          ],
+          [
+            "ground-skin",
+            30752
+          ]
+        ]
+      },
+      "shadow_pct": 0.855,
+      "stripe_pct": 0.543
+    }
+  ],
+  "pageErrors": []
+}
