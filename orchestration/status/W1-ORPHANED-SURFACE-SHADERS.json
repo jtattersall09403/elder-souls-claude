@@ -86,5 +86,16 @@
     "docs/shots/"
   ],
 
-  "next_step": "CONSUMPTION arms (before/after) and the hardware before/after sweep on one Pod, both arms on the same GPU."
+  "next_step": "CONSUMPTION arms (before/after) and the hardware before/after sweep on one Pod, both arms on the same GPU.",
+
+  "resumption_20260814b": {
+    "baseline_pinned_at": "03ba530d470a46e9784be71305005a598d223b9b",
+    "baseline_pinned_reason": "HAZARDS.md #12 — HEAD is not the baseline, a sibling bank can carry an uncommitted edit into it. Verified the fix markers (W1-ORPHANED-SURFACE-SHADERS) are present in both files at this exact sha and match the working tree before renting anything.",
+    "prior_pod_runs_found_and_why_neither_closes_this": [
+      "reports/runpod-gpu/runs/w1-orphaned-surface-shaders (NVIDIA L4, status passed): the AFTER arm is real. The BEFORE arm is NOT a control — revert.log shows ENOENT resolving the repo from a hard-coded /home/user/elder-souls-claude path that does not exist on the Pod, so the revert silently did nothing (this is the exact incident the README's section 5 'accidental repeatability estimate' describes). census-before on this run reports 'orphans by category: {}' — zero orphans — proving the revert never applied. Its consumption-before numbers (5.36% / 32.84% / 73.97%) are therefore a same-configuration REPEAT of the after arm, not a before arm.",
+      "reports/runpod-gpu/runs/w1-orphaned-surface-shaders-ab (NVIDIA RTX A5000, status failed/SIGTERM): the revert script bug was already fixed here (it now resolves the repo from its own location) and census-before is a REAL before arm — 321 of 422 orphaned, matching the diagnosis. But the run was SIGTERM'd by the CALLING SHELL immediately after census-before finished and before w1-30-surface-consumption.mjs could capture a single frame (consumption-before.log has only the renderer banner, consumption-before/consumption.json does not exist). This is exactly the hazard the brief names: 'background every GPU command so a shell timeout cannot orphan a rented Pod' — the prior agent ran it in the foreground.",
+      "Neither run gives a valid CONSUMPTION before-arm on hardware, and the two runs are on different GPUs from each other besides. tools/visual/w1-30-copy-seam-hw.sh itself is correct (it is what produced the real before-arm census on the -ab run) — the fix needed is operational: run it backgrounded with enough runtime headroom, not a code fix."
+    ],
+    "plan": "Re-run tools/visual/w1-30-copy-seam-hw.sh via node tools/runpod/cli.mjs run, backgrounded in this shell (run_in_background), pinned to --revision 03ba530d470a46e9784be71305005a598d223b9b so the Pod snapshot is a clean git archive of the pinned commit and cannot pick up a sibling's concurrent edit under game/ or tools/ (HAZARDS #11). --max-runtime raised well above the ~6.5 minutes the prior two runs took, so a slow offer/queue does not repeat the SIGTERM."
+  }
 }

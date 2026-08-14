@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `c6d6d200`: 998 tools, 157 reference
+so it cannot drift. Generated at `900a84e9`: 999 tools, 157 reference
 items, 208 pieces in flight.
 
 Its purpose is to stop 208+ concurrent agents each paying separately to discover the
@@ -1072,7 +1072,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 163
+### `tools/world/` — 164
 
 - `tools/world/architecture.mjs` — RI-WLD14 M78-M84 builder instrument.
 - `tools/world/arrangement-audit.mjs` — **no header comment**
@@ -1170,6 +1170,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/opacity-consumption.mjs` — is `game/data/world/opacity.json` READ by the running world?
 - `tools/world/opacity-reseal.py` — **no header comment**
 - `tools/world/opacity-resolve.mjs` — does the opacity register point at anything?
+- `tools/world/overlap-resolver-deletefix.mjs` — TEAR THE YAW-AWARE RESOLVER DOWN, ONE LEG AT A TIME.
 - `tools/world/parapet-probe.mjs` — **no header comment**
 - `tools/world/partial-dispersion.mjs` — **no header comment**
 - `tools/world/population-consumption.mjs` — **no header comment**
@@ -1417,12 +1418,16 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `OWNERSHIP-SWEEP-20260814` | researching | Build classifier script over all orchestration/status/*.json, cross-check against corpus/9 | — |
-| `W1-OVERLAP-RESOLVER` | ? | Read HAZARDS §11/§12, census JSON, reports/building-overlap/, ruling D1. | `orchestration/status/W1-OVERLAP-RESOLVER.json` |
+| `W1-OVERLAP-RESOLVER` | built-awaiting-fresh-critic | A fresh independent critic. Then THE LAYOUT PIECE, which is now the whole of the remaining | `game/src/world/footprint.js` `game/src/render/exterior.js` `game/src/world/province.js` `tools/world/overlap-resolver-deletefix.mjs` `tools/world/building-overlap-census.mjs` `tools/check-building-overlap.mjs` |
+| `W1-ORPHANED-SURFACE-SHADERS` | in_progress | CONSUMPTION arms (before/after) and the hardware before/after sweep on one Pod, both arms  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` `game/src/render/visual-foundation.js` `game/src/render/actor.js` `tools/visual/w1-30-surface-orphan-census.mjs` `tools/visual/w1-30-copy-seam-patch.mjs` `tools/visual/w1-30-surface-consumption.mjs` |
+| `OWNERSHIP-SWEEP-20260814` | done | none -- swept, tool patched and self-tested, 4 claims cleared with verified evidence, rema | `tools/ownership.mjs` `orchestration/status/judge-prose-r4-m5.json` `orchestration/status/PLT01-STEPRATE-critic.json` `orchestration/status/critic-w1-20.json` `orchestration/status/critic-w1-attr-scale.json` `orchestration/status/OWNERSHIP-SWEEP-20260814.json` |
+| `critic-w1-attr-scale` | running | SUCCESSOR (round 2 of this critic run, resuming after the predecessor was killed by a usag | `orchestration/status/critic-w1-attr-scale.json` |
+| `critic-w1-20` | running | write corpus/90-verdicts/wave1/W1-20-r1.{md,json}; verdict-validate; ledger; publish; bank | `orchestration/status/critic-w1-20.json` `tools/quests/critic-w1-20-reach.mjs` |
+| `PLT01-STEPRATE-critic` | reading | Read RI-PLT01 C.5, timefidelity.mjs, S39, loop.js. Then re-run the four null controls myse | `orchestration/status/PLT01-STEPRATE-critic.json` |
+| `judge-prose-r4-m5` | researching | None. Judgement written, revealed, scored, banked. Builder action: equalise [NAME-n] token | `orchestration/status/judge-prose-r4-m5.json` `reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md` |
 | `W1-18-CRITIC-r1` | in_progress | Read RI-QST04 + RI-QST09, then attack mean_branches / X7 / multi_faction with break-the-de | `orchestration/status/W1-18-CRITIC-r1.json` |
 | `W1-18-REINTEGRATION` | done | W1-18's delivery still has NO INDEPENDENT CRITIC — that is the outstanding item and it is  | `corpus/30-quests/RI-QST04-quest-anatomy-schema.md` `corpus/30-quests/quest.schema.json` `game/data/index.json` `game/data/quests/blackmarsh-coast.json` `game/data/quests/blackmarsh-core.json` `game/data/quests/faction-continuation-wave1.json` |
 | `W1-BUILDING-OVERLAP-CENSUS` | done-except-hardware-frames |  | `orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json` `tools/world/building-overlap-census.mjs` `tools/world/thorn-quay-deletefix.mjs` `tools/check-building-overlap.mjs` `corpus/50-world/data/building-overlap-baseline.json` `.githooks/pre-commit` |
-| `W1-ORPHANED-SURFACE-SHADERS` | in_progress | CONSUMPTION arms (before/after) and the hardware before/after sweep on one Pod, both arms  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` `game/src/render/visual-foundation.js` `game/src/render/actor.js` `tools/visual/w1-30-surface-orphan-census.mjs` `tools/visual/w1-30-copy-seam-patch.mjs` `tools/visual/w1-30-surface-consumption.mjs` |
 | `RECONCILE-MAP-PROBE-S13` | reconciled |  | `orchestration/status/RECONCILE-MAP-PROBE-S13.json` |
 | `W1-MAP-DEFECTS-r1-remediation` | landed; four of five defects closed with evidence, one measurement still owed |  | `game/src/ui/system.js` `game/src/input/touch.js` `game/src/engine.js` `tools/harness/map-probe.mjs` `tools/map/fog-control.mjs` `tools/map/player-route.mjs` |
 | `W1-THORN-PLATES-C2` | built-awaiting-fresh-critic | IN ORDER. (1) MOVE THE WATERLINE TO THE QUAY — terrain.json/water.json, about 25 m of shor | `orchestration/status/W1-THORN-PLATES-C2.json` `reports/thorn-plates/2026-08-14-thorn-plates-chunk2.md` `game/src/render/lib/kits.js` `game/src/render/exterior.js` `game/data/world/settlements/thorn.json` `docs/art-direction/build-board.mjs` |
@@ -1546,15 +1551,12 @@ work is the difference between resuming and starting over.
 | `critic-w1-15-r4` | ? | none — verdict, ledger, publish and blog line are landed. The one open re-measurement is n | `orchestration/status/critic-w1-15-r4.json` `tools/stealth/critic-w1-15-r4.mjs` `tools/stealth/critic-w1-15-r4-live.mjs` `tools/stealth/critic-w1-15-r4-figure.mjs` `reports/w1-15/critic-r4.json` `corpus/90-verdicts/wave1/W1-15-r4.md` |
 | `PLAYABILITY` | measuring (successor 3) — six-sabotage matrix's 6 non-control arms verified twice; control unconfirmed green all session (persistent heavy fleet load, not a defect); standing live check ran but SLOW/UNMEASURED under the same load, not PLAYS/FAILS | SUPERSEDED — see successor_run_3_FINAL_live_results and conclusion_job_1 below. P13 is fix | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` `tools/playability/notice-over-game.mjs` |
 | `S39-falsifier` | done | none — instrument built, run, and its verdict written into ARBITRATION.md under S39. | `orchestration/status/S39-falsifier.json` `tools/input/arbiter-clock-s39.mjs` `tools/input/arbiter-clock-s39-shot.mjs` `reports/s39/arbiter-clock-s39.json` `reports/s39/arbiter-clock-s39-selftest.json` `corpus/00-doctrine/ARBITRATION.md` |
-| `PLT01-STEPRATE-critic` | reading | Read RI-PLT01 C.5, timefidelity.mjs, S39, loop.js. Then re-run the four null controls myse | `orchestration/status/PLT01-STEPRATE-critic.json` |
 | `judge-prose-r5` | running | read RI-MTH03, then answer 15 trials on PROV and QUAL before unblinding | `orchestration/status/judge-prose-r5.json` |
 | `W1-TOUCH-r2` | in_progress | --leg control (delete-the-fix), --leg boundary, then --serve-patched regression, then item | `game/src/engine.js` `game/src/input/gamepad.js` `game/src/input/hold-gate.js` `game/src/input/real.js` `game/src/input/touch.js` `orchestration/status/W1-TOUCH-r2.json` |
 | `PLAN-COST-EXPERIMENTS-critic` | in_progress | Write BLOCKING/CARRIED critique into orchestration/plans/COST-EXPERIMENTS.md, state verdic | `orchestration/status/PLAN-COST-EXPERIMENTS-critic.json` |
 | `measure-own-e-w1-hud-toast-b` | running | 1. re-derive 776/198/450/109. 2. state the counting rule for a tool-side E. 3. classify th | — |
 | `W1-12-r2-critic` | done | none — verdict published. Hand to the orchestrator. | `orchestration/status/W1-12-r2-critic.json` `corpus/90-verdicts/wave1/W1-12-r2.md` `corpus/90-verdicts/wave1/W1-12-r2.json` `corpus/90-verdicts/GAP-LEDGER.json` `corpus/90-verdicts/GAP-LEDGER.md` `tools/combat/critic-w1-12-r2-m3-chart.mjs` |
 | `W1-PROSE-TICS-r4-instrument` | ? | Dispatch a fresh judge to reports/packs/prose-tics-r5 (NOT the builder of the prose, NOT m | `orchestration/status/W1-PROSE-TICS-r4-instrument.json` `tools/blind/leakcheck.mjs` `tools/blind/mask-text.mjs` `tools/prose/build-r2-packs.mjs` `corpus/80-methods/RI-MTH03-blind-comparison-protocol.md` `reports/packs/prose-tics-r2/SUPERSEDED.md` |
-| `critic-w1-20` | running | write corpus/90-verdicts/wave1/W1-20-r1.{md,json}; verdict-validate; ledger; publish; bank | `orchestration/status/critic-w1-20.json` `tools/quests/critic-w1-20-reach.mjs` |
-| `critic-w1-attr-scale` | running | SUCCESSOR (round 2 of this critic run, resuming after the predecessor was killed by a usag | `orchestration/status/critic-w1-attr-scale.json` |
 | `PLT01-STEPRATE` | done | A critic with fresh context should judge §C.5 (RULES 22). The three things to attack: (1)  | `orchestration/status/PLT01-STEPRATE.json` `corpus/85-platform/RI-PLT01-frame-budget.md` `tools/platform/timefidelity.mjs` `reports/platform/PLT01-STEPRATE/timefidelity.json` `game/src/engine.js` `reports/blog-feed.jsonl` |
 | `COST-G3` | running | verify the 2-of-95 diagnosis; count verdicts myself | — |
 | `GATE-BLAST-RADIUS` | done | done. Follow-up NOT done here, named only: tools/check-data.mjs and tools/check-content.mj | `.githooks/pre-commit` `tools/check-shipped-files.mjs` `tools/bank.mjs` `game/src/sim/quest/defs.js` `tools/check-quests.mjs` |
@@ -1562,7 +1564,6 @@ work is the difference between resuming and starting over.
 | `P10-loader-retry` | done | none — piece complete. A critic should attack the instrument first: the honest attack is w | `game/src/engine.js` `game/index.html` `tools/playability/loader-retry.mjs` `reports/playability/loader-retry.json (GITIGNORED via reports/.gitignore — reproduce it with `node tools/playability/loader-retry.mjs --self-test`; the blog line deliberately does not link it, because a blog linking into reports/ is defect P1)` `docs/shots/2026-08-08-p10-a-503-is-no-longer-a-missing-file.png` `reports/blog-feed.jsonl` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
 | `critic-w1-23-r5` | measuring | browser CONSUMPTION run on the eleven texts round 4 wrote (contention WAIT, retrying); the | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` |
-| `judge-prose-r4-m5` | researching | None. Judgement written, revealed, scored, banked. Builder action: equalise [NAME-n] token | `orchestration/status/judge-prose-r4-m5.json` `reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md` |
 | `broken-blog-images-fix` | ? | none -- banked and pushed | `tools/progress.mjs` `docs/progress.html` `docs/index.html` `tools/playability/check-image-refs.mjs` `orchestration/NEXT-DISPATCH.md` |
 | `blog-2026-08-08-g` | done | none — published | `docs/blog/2026-08-08-the-black-screen-closed-and-the-fix-that-briefly-made-it-worse.md` `docs/blog/COVERED.md` `reports/blog-feed.jsonl` `orchestration/status/blog-2026-08-08-g.json` `docs/index.html` |
 | `W1-12-r2` | done | none — hand to a critic. corpus/90-verdicts/wave1/W1-12-r1.md is the spec this answers. | `orchestration/status/W1-12-r2.json` `game/data/combat/ai.json` `game/src/combat/ai.js` `game/src/combat/enemy.js` `game/src/combat/system.js` `tools/harness/ai-probe.mjs` |
