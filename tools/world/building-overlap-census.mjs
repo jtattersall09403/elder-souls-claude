@@ -86,6 +86,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname, '..');
 const J = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
@@ -418,8 +419,13 @@ function selfTest() {
 }
 
 // ---------------------------------------------------------------------------------------------
-// main
+// main — guarded, so another tool can import `censusPlan`/`penetrationDepth` without this file
+// reading the CALLER's process.argv and censusing the world as a side effect of being imported.
 // ---------------------------------------------------------------------------------------------
+const RUN_AS_SCRIPT = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (!RUN_AS_SCRIPT) { /* imported as a library: export only */ }
+else {
+
 if (args['self-test']) process.exit(selfTest());
 
 const plans = await buildPlans();
@@ -481,3 +487,5 @@ if (args.json) {
 }
 
 if (args.gate && total.overlap > 0) process.exit(1);
+
+} // end RUN_AS_SCRIPT

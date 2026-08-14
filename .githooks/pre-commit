@@ -47,6 +47,26 @@ if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/data/(dia
   node tools/check-prose.mjs || echo "pre-commit: prose-voice check could not run — see above."
 fi
 
+# Buildings inside other buildings. The class was never counted until W1-BUILDING-OVERLAP-CENSUS
+# did: 83 pairs interpenetrate by more than a wall, an eave and a porch, across 8 of 8 settlements,
+# and 63 of them are INVISIBLE to the shipped resolver because `planSettlement()`'s shrink pass and
+# `province.js#_deepOverlaps()` both compare axis-aligned footprints while `settlementSolids()`
+# rotates them by `yaw_deg`. The first two buildings a player meets were 7.02 x 4.00 m inside each
+# other, with a front door opening into the neighbour.
+#
+# A RATCHET, not an assertion (RULES.md rule 13 — the debt exists, so a fail-closed "zero" gate
+# would throw for every agent on the box). It fails only when the world gets WORSE: a settlement's
+# count goes up, a pair overlaps that did not, or a door ends up inside another building. ~2s, JSON
+# only, no browser. `node tools/check-building-overlap.mjs --self-break` proves it fires.
+#
+# WARNING, NOT BLOCKING, for check-quests' stated reason: town geometry belongs to several pieces
+# at once and banking in-flight work is worth more than a clean tree. REVERSIBLE: promote this to
+# blocking once the remaining 82 have been resolved by their own piece and the floor is low enough
+# that a red here is always a real regression rather than someone else's work in progress.
+if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/(data/world/(settlements|interiors)/|src/render/exterior\.js)'; then
+  node tools/check-building-overlap.mjs || echo "pre-commit: a building moved into another building — see above. Not blocking; fix it or re-freeze deliberately."
+fi
+
 # Does the game actually come up? smoke.mjs is an environment self-test and says so in
 # its own header — it never touches the engine, so a build whose engine throws during
 # setup passed every boot check on this tree while three agents lost measurement rounds
