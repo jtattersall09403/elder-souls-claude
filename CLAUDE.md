@@ -118,6 +118,31 @@ named one-step reversal that has actually been executed on a copy, an after, and
 largest known lever is that the fleet is essentially all Opus — 3,230 Opus requests against 29
 Sonnet — while the model-choice policy that would fix it has been written down and never applied.
 
+## Before every dispatch, and before writing anything into a document — the four-line check
+
+**Owner, 2026-08-14, on going to bed: *"Keep checking the actual repo rather than relying on your
+memory (bake that into your own system prompt or whatever your equivalent of claude.md is)."* This is
+that.** It is here rather than only in rule 0b because rule 0b is a principle and this is the moment it
+actually gets broken: writing a brief, at speed, from what you think you know.
+
+1. **Did I read it, or do I remember it?** Every number, every file path, every "X is unowned", every
+   "this covers that" — from a file opened or a command run **in this turn**. Not from a sibling's
+   summary, not from a status file's headline, not from earlier in this conversation.
+2. **Am I passing on a figure I did not derive?** A number inherited from another agent's report is
+   the same defect as an unverified document — it just travels faster. A piece was dispatched under
+   the headline *"72 of 83"* where the 72 came from a sibling's summary and the true number was **6**.
+   If a figure goes into a brief, either check it or mark it explicitly as unverified and tell the
+   agent to re-derive it.
+3. **`node tools/ownership.mjs --for <file>`, actually run.** Two agents were sent at the same four
+   findings in one afternoon because this was assumed rather than run. Note the opposite failure too:
+   a piece was held back for an hour on stale claims that a check would have cleared in seconds.
+4. **What would make this brief wrong?** Name it in the brief. Every good result today came from an
+   agent that could see the premise it was allowed to falsify — the overlap resolver overturned its own
+   dispatch, the backlog triage corrected its own population, the roadmap audit refused a count.
+
+**Put the same obligation in the brief itself.** An agent that inherits an unchecked premise will
+faithfully build on sand and report success.
+
 ## Running the fleet
 
 `orchestration/TICK.md` is the loop: measure contention, bank, top up. `node tools/dispatchable.mjs`
