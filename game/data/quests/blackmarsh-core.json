@@ -158,13 +158,18 @@
             "world_flags": [
               "ledger_toll_theft_buried",
               "gideon_porter_dismissed",
-              "gideon_quay_hostile_to_outlanders"
+              "gideon_quay_hostile_to_outlanders",
+              "quest_q_ledg_01_res_scapegoat_choice_recorded",
+              "quest_q_ledg_01_res_scapegoat_world_answered",
+              "quest_q_ledg_01_res_scapegoat_route_closed"
             ],
             "locks": [
               "Q-DOCK-01"
             ],
             "npc_disposition": {
-              "npc-porter-eeja": -60
+              "npc-porter-eeja": -60,
+              "factor-belliene": 3,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -196,13 +201,17 @@
             "world_flags": [
               "ledger_toll_theft_public",
               "gideon_toll_gate_reassigned",
-              "belliene_disgraced"
+              "belliene_disgraced",
+              "quest_q_ledg_01_res_expose_choice_recorded",
+              "quest_q_ledg_01_res_expose_world_answered",
+              "quest_q_ledg_01_res_expose_route_closed"
             ],
             "locks": [
               "Q-LEDG-04"
             ],
             "npc_disposition": {
-              "factor-belliene": -80
+              "factor-belliene": -80,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -237,13 +246,17 @@
             "world_flags": [
               "ledger_toll_theft_shared",
               "player_on_belliene_private_book",
-              "gideon_toll_gate_held"
+              "gideon_toll_gate_held",
+              "quest_q_ledg_01_res_blackmail_choice_recorded",
+              "quest_q_ledg_01_res_blackmail_world_answered",
+              "quest_q_ledg_01_res_blackmail_route_closed"
             ],
             "unlocks": [
               "Q-LEDG-04"
             ],
             "npc_disposition": {
-              "factor-belliene": 20
+              "factor-belliene": 20,
+              "ee-vashum": 2
             }
           },
           "attribute_scale_note": "W1-ATTR-SCALE. Was `personality: 40`. W1-ATTR-SCALE. Re-set from the MEASURED ceiling with reserve, not clamped to it. Attributes are earned only at +1 per multiple of 15 crossed in a governing skill (character/derive.js:359); the bought stream exists in engine.js _spendSouls() and is unfundable, because nothing in the build awards souls. So an attribute is worth `creation + 6 per governing skill` and no more, measured over 240 signatures in reports/faction-signature-sweep.json. The new value sits at or under `median ceiling - 2`; clamping to the ceiling itself is the zero-margin defect that shut Act IV for 11 of 40 signatures one point lower. Checked by tools/quests/attr-scale-audit.mjs."
@@ -268,13 +281,18 @@
             "world_flags": [
               "ledger_toll_theft_unproved",
               "wren_left_the_province",
-              "soulrest_run_abandoned"
+              "soulrest_run_abandoned",
+              "quest_q_ledg_01_res_warn_anse_choice_recorded",
+              "quest_q_ledg_01_res_warn_anse_world_answered",
+              "quest_q_ledg_01_res_warn_anse_route_closed"
             ],
             "locks": [
               "Q-SOUL-02"
             ],
             "npc_disposition": {
-              "master-anse": 40
+              "master-anse": 40,
+              "factor-belliene": -3,
+              "rootkeeper-ashul-tei": -2
             }
           }
         },
@@ -290,7 +308,18 @@
           "journal_index": 97,
           "outcome": "Belliene keeps two sets of weights, and the second set is in the locked press under the window. You take one stone of it. One stone is a whole argument.",
           "morally_better": null,
-          "added_by": "W1-15-r2"
+          "added_by": "W1-15-r2",
+          "consequences": {
+            "world_flags": [
+              "quest_q_ledg_01_q_ledg_01_steal_choice_recorded",
+              "quest_q_ledg_01_q_ledg_01_steal_world_answered",
+              "quest_q_ledg_01_q_ledg_01_steal_route_closed"
+            ],
+            "npc_disposition": {
+              "factor-belliene": 3,
+              "prefect-hallow": 2
+            }
+          }
         }
       ],
       "failure_states": [
@@ -389,6 +418,51 @@
           "on_resolution": [
             "res_expose",
             "res_warn_anse"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_ledg_01_res_scapegoat",
+          "name": "Consequence of scapegoat",
+          "on_resolution": [
+            "res_scapegoat"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_ledg_01_res_expose",
+          "name": "Consequence of expose",
+          "on_resolution": [
+            "res_expose"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_ledg_01_res_blackmail",
+          "name": "Consequence of blackmail",
+          "on_resolution": [
+            "res_blackmail"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_ledg_01_res_warn_anse",
+          "name": "Consequence of warn anse",
+          "on_resolution": [
+            "res_warn_anse"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_ledg_01_q_ledg_01_steal",
+          "name": "Consequence of q ledg 01  steal",
+          "on_resolution": [
+            "q_ledg_01__steal"
           ]
         }
       ],
@@ -523,10 +597,14 @@
             "world_flags": [
               "gideon_porters_in_the_book",
               "gideon_timber_gang_cut",
-              "gideon_quay_pay_settled"
+              "gideon_quay_pay_settled",
+              "quest_q_dock_01_res_book_choice_recorded",
+              "quest_q_dock_01_res_book_world_answered",
+              "quest_q_dock_01_res_book_route_closed"
             ],
             "npc_disposition": {
-              "npc-porter-eeja": 40
+              "npc-porter-eeja": 40,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -556,13 +634,17 @@
               "gideon_porters_in_the_book",
               "gideon_barges_stopped_four_days",
               "gideon_two_porters_taken",
-              "legion_watching_the_quay"
+              "legion_watching_the_quay",
+              "quest_q_dock_01_res_strike_choice_recorded",
+              "quest_q_dock_01_res_strike_world_answered",
+              "quest_q_dock_01_res_strike_route_closed"
             ],
             "locks": [
               "Q-LEDG-04"
             ],
             "npc_disposition": {
-              "npc-porter-eeja": 25
+              "npc-porter-eeja": 25,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -585,7 +667,10 @@
             "world_flags": [
               "gideon_eleven_deported",
               "gideon_quay_hostile_to_outlanders",
-              "soulrest_returnees_arrived"
+              "soulrest_returnees_arrived",
+              "quest_q_dock_01_res_assize_choice_recorded",
+              "quest_q_dock_01_res_assize_world_answered",
+              "quest_q_dock_01_res_assize_route_closed"
             ],
             "locks": [
               "Q-DOCK-03"
@@ -594,7 +679,8 @@
               "Q-SOUL-02"
             ],
             "npc_disposition": {
-              "npc-porter-eeja": -70
+              "npc-porter-eeja": -70,
+              "ee-vashum": 2
             }
           }
         },
@@ -610,7 +696,18 @@
           "journal_index": 95,
           "outcome": "You get into the dock office at the change of shift and copy the roll by the light coming off the water. Eleven gold a week, in the harbourmaster's own hand, for men he swore he had never hired.",
           "morally_better": null,
-          "added_by": "W1-15-r2"
+          "added_by": "W1-15-r2",
+          "consequences": {
+            "world_flags": [
+              "quest_q_dock_01_q_dock_01_sneak_choice_recorded",
+              "quest_q_dock_01_q_dock_01_sneak_world_answered",
+              "quest_q_dock_01_q_dock_01_sneak_route_closed"
+            ],
+            "npc_disposition": {
+              "npc-porter-eeja": -3,
+              "rootkeeper-ashul-tei": -2
+            }
+          }
         }
       ],
       "failure_states": [
@@ -664,6 +761,42 @@
             "res_book",
             "res_strike",
             "res_assize"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_dock_01_res_book",
+          "name": "Consequence of book",
+          "on_resolution": [
+            "res_book"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_dock_01_res_strike",
+          "name": "Consequence of strike",
+          "on_resolution": [
+            "res_strike"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_dock_01_res_assize",
+          "name": "Consequence of assize",
+          "on_resolution": [
+            "res_assize"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_dock_01_q_dock_01_sneak",
+          "name": "Consequence of q dock 01  sneak",
+          "on_resolution": [
+            "q_dock_01__sneak"
           ]
         }
       ],
@@ -806,13 +939,17 @@
             "world_flags": [
               "hollow_cutter_named",
               "eastern_root_track_closed",
-              "hulei_exiled"
+              "hulei_exiled",
+              "quest_q_deep_01_res_name_hulei_choice_recorded",
+              "quest_q_deep_01_res_name_hulei_world_answered",
+              "quest_q_deep_01_res_name_hulei_route_closed"
             ],
             "locks": [
               "Q-SAP-02"
             ],
             "npc_disposition": {
-              "speaker-teel-ashaan": 25
+              "speaker-teel-ashaan": 25,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -836,7 +973,10 @@
             "world_flags": [
               "hollow_blamed_the_sapcutters",
               "sapcutter_runners_killed",
-              "helstrom_sap_trade_closed"
+              "helstrom_sap_trade_closed",
+              "quest_q_deep_01_res_blame_sapcutters_choice_recorded",
+              "quest_q_deep_01_res_blame_sapcutters_world_answered",
+              "quest_q_deep_01_res_blame_sapcutters_route_closed"
             ],
             "locks": [
               "Q-SAP-01",
@@ -844,7 +984,11 @@
             ],
             "kills_npc": [
               "runner-ixtu-mel"
-            ]
+            ],
+            "npc_disposition": {
+              "speaker-teel-ashaan": -3,
+              "notary-sedda-vell": -2
+            }
           }
         },
         {
@@ -878,14 +1022,18 @@
             "world_flags": [
               "hollow_cutting_agreed",
               "eastern_sapwell_metered",
-              "helstrom_sap_trade_licensed"
+              "helstrom_sap_trade_licensed",
+              "quest_q_deep_01_res_broker_choice_recorded",
+              "quest_q_deep_01_res_broker_world_answered",
+              "quest_q_deep_01_res_broker_route_closed"
             ],
             "unlocks": [
               "Q-SAP-01"
             ],
             "npc_disposition": {
               "speaker-teel-ashaan": -10,
-              "cutter-ashaan-hulei": 30
+              "cutter-ashaan-hulei": 30,
+              "ee-vashum": 2
             }
           }
         },
@@ -901,7 +1049,18 @@
           "journal_index": 95,
           "outcome": "You follow the cutters out to the stand and lie in the mud a hundred paces off while they work. What the cutting leaves, you see them leave it.",
           "morally_better": null,
-          "added_by": "W1-15-r2"
+          "added_by": "W1-15-r2",
+          "consequences": {
+            "world_flags": [
+              "quest_q_deep_01_q_deep_01_sneak_choice_recorded",
+              "quest_q_deep_01_q_deep_01_sneak_world_answered",
+              "quest_q_deep_01_q_deep_01_sneak_route_closed"
+            ],
+            "npc_disposition": {
+              "speaker-teel-ashaan": -3,
+              "rootkeeper-ashul-tei": -2
+            }
+          }
         }
       ],
       "failure_states": [
@@ -983,6 +1142,42 @@
           "amount": 250,
           "on_resolution": [
             "res_blame_sapcutters"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_deep_01_res_name_hulei",
+          "name": "Consequence of name hulei",
+          "on_resolution": [
+            "res_name_hulei"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_deep_01_res_blame_sapcutters",
+          "name": "Consequence of blame sapcutters",
+          "on_resolution": [
+            "res_blame_sapcutters"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_deep_01_res_broker",
+          "name": "Consequence of broker",
+          "on_resolution": [
+            "res_broker"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_deep_01_q_deep_01_sneak",
+          "name": "Consequence of q deep 01  sneak",
+          "on_resolution": [
+            "q_deep_01__sneak"
           ]
         }
       ],

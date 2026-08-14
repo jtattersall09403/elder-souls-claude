@@ -79,7 +79,7 @@
           "minimum": 0
         }
       },
-      "description": "Rank the player must already hold to be offered this quest. Never a character-level gate \u2014 see RI-QST03."
+      "description": "Rank the player must already hold to be offered this quest. Never a character-level gate — see RI-QST03."
     },
     "discovery": {
       "enum": [
@@ -113,7 +113,11 @@
         "honest": {
           "type": "boolean",
           "description": "false when the giver's stated objective differs from their actual objective. If false, `deceit` MUST be present."
-        }
+        },
+        "disposition_min_note": {},
+        "disposition_min_race_blind": {},
+        "disposition_min_round1": {},
+        "disposition_min_round2_chain_floor_clamp": {}
       }
     },
     "opens_by": {
@@ -163,7 +167,9 @@
         "succession",
         "pilgrimage",
         "moral_dilemma",
-        "weird"
+        "weird",
+        "recovery",
+        "rescue"
       ]
     },
     "stakes": {
@@ -285,7 +291,12 @@
               "refuse",
               "betray",
               "confess",
-              "wait"
+              "wait",
+              "comply",
+              "expose",
+              "investigate",
+              "lie",
+              "sabotage"
             ]
           },
           "requires": {
@@ -331,6 +342,10 @@
               "faction_rank": {
                 "type": "object",
                 "additionalProperties": false,
+                "required": [
+                  "faction",
+                  "min_rank"
+                ],
                 "properties": {
                   "faction": {
                     "type": "string"
@@ -344,8 +359,10 @@
                 "type": "array",
                 "items": {
                   "type": "string"
-                },
-                "description": "Effect ids from corpus/25-magic/data/effects.json that this resolution requires the player to be able to cast or trigger (spell, scroll or enchanted item). ADDED wave 1 by W1-14 at RI-MAG04 \u00a7D's explicit request: without it Q3 (EFFECT-SPREAD), Q4 (NO-SKELETON-KEY), Q5 (SCHOOL-SPREAD), Q9 (TRAVERSAL-QUESTS) and Q12 (KNOWLEDGE-MAGIC) are all unmeasurable and RI-MAG04 fails closed. The change is purely additive - `requires` is additionalProperties:false, so every existing quest file still validates unchanged."
+                }
+              },
+              "condition": {
+                "type": "string"
               }
             }
           },
@@ -357,12 +374,10 @@
             "type": "integer"
           },
           "attribute_scale_note": {
-            "type": "string",
-            "description": "Why an attribute demand on this resolution was re-scaled: the old value, the measured ceiling it was set from, and the reserve left under it. Present so a later author reads the number as derived rather than arbitrary, and does not 'restore' it. This object is additionalProperties:false and the field was already in the shipped data before it was declared here."
+            "type": "string"
           },
           "skill_id_note": {
-            "type": "string",
-            "description": "Why a skill demand on this resolution was re-pointed at a different skill id: the old key, why no skill of that name exists, and why this one was chosen."
+            "type": "string"
           },
           "outcome": {
             "type": "string",
@@ -393,6 +408,15 @@
           "consequences": {
             "$ref": "#/$defs/consequences",
             "description": "What THIS ending does, on top of the quest-level `consequences` that every ending does. ADDED wave 1 by W1-18 as AM-QST04-W1-18-01: RI-QST09 X7 requires each exclusive pair to differ by >= 3 world_flags, a reward and >= 1 world entity, and with consequences declared only at quest level two exclusive resolutions of the same quest are IDENTICAL in the data by construction, so X7 is unmeasurable and fails closed. Purely additive - `resolutions[]` is additionalProperties:false, so every existing quest file still validates unchanged."
+          },
+          "added_by": {
+            "type": "string"
+          },
+          "joins_faction_note": {
+            "type": "string"
+          },
+          "requires_note": {
+            "type": "string"
           }
         }
       }
@@ -507,7 +531,10 @@
                   "environment",
                   "eavesdrop",
                   "later_quest",
-                  "corpse"
+                  "corpse",
+                  "dialogue",
+                  "magic",
+                  "overheard"
                 ]
               },
               "source": {
@@ -520,6 +547,28 @@
               "journal": {
                 "type": "integer",
                 "description": "OPTIONAL. The journal index the player writes when they learn this truth, i.e. the entry that IS this reveal in prose. ADDED wave 1 by W1-18 round 2 as AM-QST04-W1-18-02. QuestEngine.note() -- the verb that writes the MIDDLE of a journal -- had exactly one caller in game/src/ (the hooks.json journal branch, covering 11 of 120 quests), so for 109 quests nothing a player does could write an entry between opening and closing. A reveal learned in the world is the commonest reason a player writes something down, and the entry is usually ALREADY AUTHORED and unreachable: Q-MAIN-06's journal 40 IS rev_the_curve_predates and 55 IS rev_the_steward_named. Must name a non-terminal ('active' or 'branch') entry of the same quest -- note() refuses 'success'/'failure' -- and is checked by tools/check-quests.mjs. Purely additive: a row without it reveals and writes nothing, exactly as before."
+              },
+              "also_revealed_by": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "channel",
+                    "source"
+                  ],
+                  "properties": {
+                    "channel": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "note": {
+                "type": "string"
               }
             }
           }
@@ -596,6 +645,9 @@
     },
     "notes": {
       "type": "string"
+    },
+    "joins_note": {
+      "type": "string"
     }
   },
   "$defs": {
@@ -636,6 +688,12 @@
           }
         },
         "kills_npc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "joins_faction": {
           "type": "array",
           "items": {
             "type": "string"

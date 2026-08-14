@@ -117,6 +117,17 @@
             "res_count_the_shadows"
           ],
           "irreversible": false
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 36,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_count_what_you_reach",
+            "res_go_under",
+            "res_count_the_shadows"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -142,10 +153,14 @@
             },
             "world_flags": [
               "rootkeeper_slate_names_the_player",
-              "unnamed_well_counted_partial"
+              "unnamed_well_counted_partial",
+              "quest_q_root_00_res_count_what_you_reach_choice_recorded",
+              "quest_q_root_00_res_count_what_you_reach_world_answered",
+              "quest_q_root_00_res_count_what_you_reach_route_closed"
             ],
             "npc_disposition": {
-              "rootkeeper-jeen": 8
+              "rootkeeper-jeen": 8,
+              "gideon-court-factor": 2
             },
             "joins_faction": [
               "the_rootkeepers"
@@ -175,10 +190,14 @@
             "world_flags": [
               "rootkeeper_slate_names_the_player",
               "unnamed_well_counted_full",
-              "the_well_has_gained_roots"
+              "the_well_has_gained_roots",
+              "quest_q_root_00_res_go_under_choice_recorded",
+              "quest_q_root_00_res_go_under_world_answered",
+              "quest_q_root_00_res_go_under_route_closed"
             ],
             "npc_disposition": {
-              "rootkeeper-jeen": 12
+              "rootkeeper-jeen": 12,
+              "notary-sedda-vell": -2
             },
             "joins_faction": [
               "the_rootkeepers"
@@ -209,10 +228,14 @@
             "world_flags": [
               "rootkeeper_slate_names_the_player",
               "unnamed_well_counted_full",
-              "the_tenth_shadow_seen"
+              "the_tenth_shadow_seen",
+              "quest_q_root_00_res_count_the_shadows_choice_recorded",
+              "quest_q_root_00_res_count_the_shadows_world_answered",
+              "quest_q_root_00_res_count_the_shadows_route_closed"
             ],
             "npc_disposition": {
-              "rootkeeper-jeen": 12
+              "rootkeeper-jeen": 12,
+              "ee-vashum": 2
             },
             "joins_faction": [
               "the_rootkeepers"
@@ -249,6 +272,33 @@
           "unique_named": true,
           "id": "topic_the_tenth_shadow",
           "name": "the tenth shadow",
+          "on_resolution": [
+            "res_count_the_shadows"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_root_00_res_count_what_you_reach",
+          "name": "Consequence of count what you reach",
+          "on_resolution": [
+            "res_count_what_you_reach"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_root_00_res_go_under",
+          "name": "Consequence of go under",
+          "on_resolution": [
+            "res_go_under"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_root_00_res_count_the_shadows",
+          "name": "Consequence of count the shadows",
           "on_resolution": [
             "res_count_the_shadows"
           ]
@@ -344,6 +394,17 @@
             "res_tell_the_keeper"
           ],
           "irreversible": false
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 26,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_coast_road",
+            "res_line_the_boots",
+            "res_tell_the_keeper"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -369,10 +430,14 @@
             },
             "world_flags": [
               "vakh_runner_named",
-              "archon_buyer_supplied"
+              "archon_buyer_supplied",
+              "quest_q_vakh_00_res_coast_road_choice_recorded",
+              "quest_q_vakh_00_res_coast_road_world_answered",
+              "quest_q_vakh_00_res_coast_road_route_closed"
             ],
             "npc_disposition": {
-              "cutter-neeth": 8
+              "cutter-neeth": 8,
+              "gideon-court-factor": 2
             },
             "joins_faction": [
               "the_ixtu_vakh"
@@ -402,10 +467,14 @@
             "world_flags": [
               "vakh_runner_named",
               "archon_buyer_supplied",
-              "walked_the_reed_walk_carrying"
+              "walked_the_reed_walk_carrying",
+              "quest_q_vakh_00_res_line_the_boots_choice_recorded",
+              "quest_q_vakh_00_res_line_the_boots_world_answered",
+              "quest_q_vakh_00_res_line_the_boots_route_closed"
             ],
             "npc_disposition": {
-              "cutter-neeth": 12
+              "cutter-neeth": 12,
+              "notary-sedda-vell": -2
             },
             "joins_faction": [
               "the_ixtu_vakh"
@@ -436,11 +505,15 @@
             "world_flags": [
               "vakh_runner_named",
               "archon_buyer_supplied",
-              "the_keepers_know_the_archon_buyer"
+              "the_keepers_know_the_archon_buyer",
+              "quest_q_vakh_00_res_tell_the_keeper_choice_recorded",
+              "quest_q_vakh_00_res_tell_the_keeper_world_answered",
+              "quest_q_vakh_00_res_tell_the_keeper_route_closed"
             ],
             "npc_disposition": {
               "cutter-neeth": 6,
-              "rootkeeper-jeen": 10
+              "rootkeeper-jeen": 10,
+              "ee-vashum": 2
             },
             "joins_faction": [
               "the_ixtu_vakh"
@@ -479,6 +552,33 @@
           "name": "the buyer at the vat-house",
           "on_resolution": [
             "res_line_the_boots",
+            "res_tell_the_keeper"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_vakh_00_res_coast_road",
+          "name": "Consequence of coast road",
+          "on_resolution": [
+            "res_coast_road"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_vakh_00_res_line_the_boots",
+          "name": "Consequence of line the boots",
+          "on_resolution": [
+            "res_line_the_boots"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_vakh_00_res_tell_the_keeper",
+          "name": "Consequence of tell the keeper",
+          "on_resolution": [
             "res_tell_the_keeper"
           ]
         }
@@ -582,6 +682,17 @@
             "res_take_the_tag"
           ],
           "irreversible": false
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 38,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_over_the_pans",
+            "res_round_the_causeway",
+            "res_take_the_tag"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -607,10 +718,14 @@
             },
             "world_flags": [
               "court_tally_names_the_player",
-              "the_false_porter_recovered"
+              "the_false_porter_recovered",
+              "quest_q_cort_00_res_over_the_pans_choice_recorded",
+              "quest_q_cort_00_res_over_the_pans_world_answered",
+              "quest_q_cort_00_res_over_the_pans_route_closed"
             ],
             "npc_disposition": {
-              "undertaker-vaskh": 8
+              "undertaker-vaskh": 8,
+              "gideon-court-factor": 2
             },
             "joins_faction": [
               "the_drowned_court"
@@ -640,10 +755,14 @@
             "world_flags": [
               "court_tally_names_the_player",
               "the_false_porter_recovered",
-              "the_false_porter_did_not_drown"
+              "the_false_porter_did_not_drown",
+              "quest_q_cort_00_res_round_the_causeway_choice_recorded",
+              "quest_q_cort_00_res_round_the_causeway_world_answered",
+              "quest_q_cort_00_res_round_the_causeway_route_closed"
             ],
             "npc_disposition": {
-              "undertaker-vaskh": 12
+              "undertaker-vaskh": 12,
+              "notary-sedda-vell": -2
             },
             "joins_faction": [
               "the_drowned_court"
@@ -673,10 +792,14 @@
             },
             "world_flags": [
               "court_tally_names_the_player",
-              "the_false_porters_tag_taken"
+              "the_false_porters_tag_taken",
+              "quest_q_cort_00_res_take_the_tag_choice_recorded",
+              "quest_q_cort_00_res_take_the_tag_world_answered",
+              "quest_q_cort_00_res_take_the_tag_route_closed"
             ],
             "npc_disposition": {
-              "undertaker-vaskh": 4
+              "undertaker-vaskh": 4,
+              "ee-vashum": 2
             },
             "joins_faction": [
               "the_drowned_court"
@@ -716,6 +839,33 @@
           "on_resolution": [
             "res_over_the_pans",
             "res_round_the_causeway",
+            "res_take_the_tag"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_cort_00_res_over_the_pans",
+          "name": "Consequence of over the pans",
+          "on_resolution": [
+            "res_over_the_pans"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_cort_00_res_round_the_causeway",
+          "name": "Consequence of round the causeway",
+          "on_resolution": [
+            "res_round_the_causeway"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_cort_00_res_take_the_tag",
+          "name": "Consequence of take the tag",
+          "on_resolution": [
             "res_take_the_tag"
           ]
         }
@@ -810,6 +960,17 @@
             "res_hold_the_rate"
           ],
           "irreversible": false
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 26,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_work_it",
+            "res_get_the_block",
+            "res_hold_the_rate"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -834,10 +995,14 @@
               "the_dockhands": 10
             },
             "world_flags": [
-              "name_on_the_gideon_board"
+              "name_on_the_gideon_board",
+              "quest_q_dock_00_res_work_it_choice_recorded",
+              "quest_q_dock_00_res_work_it_world_answered",
+              "quest_q_dock_00_res_work_it_route_closed"
             ],
             "npc_disposition": {
-              "npc-porter-eeja": 8
+              "npc-porter-eeja": 8,
+              "gideon-court-factor": 2
             },
             "joins_faction": [
               "the_dockhands"
@@ -866,10 +1031,14 @@
             },
             "world_flags": [
               "name_on_the_gideon_board",
-              "gideon_crane_brake_fitted"
+              "gideon_crane_brake_fitted",
+              "quest_q_dock_00_res_get_the_block_choice_recorded",
+              "quest_q_dock_00_res_get_the_block_world_answered",
+              "quest_q_dock_00_res_get_the_block_route_closed"
             ],
             "npc_disposition": {
-              "npc-porter-eeja": 14
+              "npc-porter-eeja": 14,
+              "notary-sedda-vell": -2
             },
             "joins_faction": [
               "the_dockhands"
@@ -899,10 +1068,14 @@
             },
             "world_flags": [
               "name_on_the_gideon_board",
-              "gideon_board_rate_held"
+              "gideon_board_rate_held",
+              "quest_q_dock_00_res_hold_the_rate_choice_recorded",
+              "quest_q_dock_00_res_hold_the_rate_world_answered",
+              "quest_q_dock_00_res_hold_the_rate_route_closed"
             ],
             "npc_disposition": {
-              "npc-porter-eeja": 14
+              "npc-porter-eeja": 14,
+              "ee-vashum": 2
             },
             "joins_faction": [
               "the_dockhands"
@@ -939,6 +1112,33 @@
           "unique_named": true,
           "id": "acc_gideon_hiring_board",
           "name": "the hiring board in the shelter at the foot of the Gideon crane"
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_dock_00_res_work_it",
+          "name": "Consequence of work it",
+          "on_resolution": [
+            "res_work_it"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_dock_00_res_get_the_block",
+          "name": "Consequence of get the block",
+          "on_resolution": [
+            "res_get_the_block"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_dock_00_res_hold_the_rate",
+          "name": "Consequence of hold the rate",
+          "on_resolution": [
+            "res_hold_the_rate"
+          ]
         }
       ],
       "consequences": {

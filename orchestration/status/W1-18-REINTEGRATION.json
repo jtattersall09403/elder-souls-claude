@@ -1,0 +1,101 @@
+{
+  "task_id": "W1-18-REINTEGRATION",
+  "role": "builder",
+  "state": "in_progress",
+  "started": "2026-08-14",
+  "branch": "codex/wave1-build-experiment",
+  "brief": "Re-integrate W1-18's quest delivery, reverted by the 2026-08-10 five-parent octopus c9603f64 on its p5 side. Source of truth for the content: 9a0999fa 'Complete W1-18 quest engine and journal seams'.",
+
+  "could_not_do": [
+    "WIP — nothing is finished yet. Blockers are listed here FIRST as they are found, per the dispatch."
+  ],
+
+  "the_correction_that_matters_most": {
+    "claim_in_the_dispatch": "Recipe from PARTIAL-REVERTS: `git show 9a0999fa:<path> > <path>` per file.",
+    "why_that_is_UNSAFE_as_written": "9a0999fa is 4 days old. `git diff HEAD 9a0999fa` is NOT W1-18's delta — it also reverts everything every other agent has done since. game/src/engine.js alone would LOSE 1,122 lines (41 commits since the revert); game/src/harness/api.js would lose 119 (14 commits). Blind whole-file restore on those files reproduces exactly the disease this piece exists to repair.",
+    "what_is_actually_safe": "Measured per file whether HEAD has moved since the revert c9603f64. 14 of the 22 outstanding files are FROZEN — zero commits since — so for those a whole-file restore is byte-exact and loses nothing. The rest need a real three-way merge (base 091a6cec, ours HEAD, theirs 9a0999fa)."
+  },
+
+  "before_numbers_at_250aad60": {
+    "instrument": "node tools/analysis/quest-audit.mjs",
+    "quests": 202,
+    "quest_files": 19,
+    "multi_faction_consequence_pct": 6.44,
+    "multi_faction_verdict": "HARDFAIL (target >= 30, hard fail < 10)",
+    "X7_cosmetic_pairs": 267,
+    "X7_verdict": "FAIL (bar 0)",
+    "mean_branches": 1.03,
+    "mean_branches_verdict": "below (target >= 1.3, hard fail < 1.0)",
+    "confirmed": "All three reproduce the figures in the dispatch exactly. This is the before."
+  },
+
+  "file_triage": {
+    "group_A_frozen_safe_whole_file_restore": [
+      "corpus/30-quests/RI-QST04-quest-anatomy-schema.md",
+      "corpus/30-quests/quest.schema.json",
+      "game/data/quests/blackmarsh-coast.json",
+      "game/data/quests/blackmarsh-core.json",
+      "game/data/quests/faction-imperial-assize.json",
+      "game/data/quests/faction-joining-wave1.json",
+      "game/data/quests/faction-wet-ledger.json",
+      "game/data/quests/faction-xul-aneekh.json",
+      "game/data/quests/magic-utility.json",
+      "game/data/quests/mainline-act1.json",
+      "game/data/quests/mainline-act2.json",
+      "game/data/quests/mainline-act3.json",
+      "game/data/quests/mainline-act5.json",
+      "game/data/quests/mainline-backpath.json"
+    ],
+    "group_B_moved_uncontended_three_way_merge": [
+      "game/data/quests/mainline-act4.json",
+      "game/src/harness/api.js",
+      "game/src/sim/quest/machine.js",
+      "game/src/sim/quest/reveal-routes.js",
+      "tools/quests/reveal-route-audit.mjs"
+    ],
+    "group_B2_generated_regenerate_never_restore": [
+      "game/data/index.json"
+    ],
+    "group_C_contended_by_live_W1-20-r3-remediation": [
+      "game/src/engine.js",
+      "game/data/quests/faction-continuation-wave1.json"
+    ],
+    "already_at_head_no_action": [
+      "game/data/npcs/quest-witnesses.json",
+      "orchestration/status/W1-18-builder-codex-20260810.json"
+    ]
+  },
+
+  "gates_are_blind_to_this_defect": "Per PARTIAL-REVERTS-20260814: boot-check, check-data, check-content and check-quests ALL PASSED throughout the entire four-day incident. Do not read a green gate here as evidence of anything. The only instrument on the box that can see this loss is tools/analysis/quest-audit.mjs.",
+
+  "next_step": "Restore group A, verify JSON parses + quest-audit moves, land.",
+  "files_touched": ["orchestration/status/W1-18-REINTEGRATION.json"],
+  "files_claimed": [
+    "corpus/30-quests/RI-QST04-quest-anatomy-schema.md",
+    "corpus/30-quests/quest.schema.json",
+    "game/data/index.json",
+    "game/data/quests/blackmarsh-coast.json",
+    "game/data/quests/blackmarsh-core.json",
+    "game/data/quests/faction-continuation-wave1.json",
+    "game/data/quests/faction-imperial-assize.json",
+    "game/data/quests/faction-joining-wave1.json",
+    "game/data/quests/faction-wet-ledger.json",
+    "game/data/quests/faction-xul-aneekh.json",
+    "game/data/quests/magic-utility.json",
+    "game/data/quests/mainline-act1.json",
+    "game/data/quests/mainline-act2.json",
+    "game/data/quests/mainline-act3.json",
+    "game/data/quests/mainline-act4.json",
+    "game/data/quests/mainline-act5.json",
+    "game/data/quests/mainline-backpath.json",
+    "game/src/engine.js",
+    "game/src/harness/api.js",
+    "game/src/sim/quest/machine.js",
+    "game/src/sim/quest/reveal-routes.js",
+    "tools/quests/reveal-route-audit.mjs"
+  ],
+  "redundant_with": ["W1-20-r3-remediation"],
+  "notes": [
+    "redundant_with names W1-20-r3-remediation deliberately: the overlap on game/src/engine.js and game/data/quests/faction-continuation-wave1.json is known, declared, and sequenced — that piece lands first, this one merges on top."
+  ]
+}
