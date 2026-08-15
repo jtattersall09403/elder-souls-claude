@@ -377,8 +377,24 @@ try {
   out.fatal = fatal;
   const p = path.join(ROOT, 'reports/w1-04-r3-collision.json');
   fs.mkdirSync(path.dirname(p), { recursive: true });
-  fs.writeFileSync(p, JSON.stringify(out, null, 2));
-  console.log(`\nwrote ${path.relative(ROOT, p)}  page errors: ${errors.length}${fatal ? `  FATAL: ${fatal}` : ''}`);
+
+  // THE WRITE IS IN A `finally`, SO IT RUNS EVEN WHEN THE TRY BODY THREW BEFORE FILLING A SINGLE
+  // SECTION — and on 2026-08-15 it did exactly that, replacing a 1,425-line report with
+  // `"sections": {}, "errors": [], "fatal": null` and exiting 0. An empty run that reports no error
+  // is indistinguishable from a run that found nothing wrong, and it had already destroyed the
+  // previous run's evidence by the time anybody could read it. Two guards, both one-sided on
+  // purpose: never overwrite a real report with an empty one, and never exit 0 on an empty run.
+  const emptyRun = Object.keys(out.sections).length === 0;
+  if (emptyRun && fs.existsSync(p)) {
+    const keep = `${p}.EMPTY-RUN-REFUSED.json`;
+    fs.writeFileSync(keep, JSON.stringify(out, null, 2));
+    console.error(`\nREFUSED to overwrite ${path.relative(ROOT, p)}: this run produced 0 sections.`);
+    console.error(`the empty result is at ${path.relative(ROOT, keep)} so it can still be read.`);
+  } else {
+    fs.writeFileSync(p, JSON.stringify(out, null, 2));
+    console.log(`\nwrote ${path.relative(ROOT, p)}  page errors: ${errors.length}${fatal ? `  FATAL: ${fatal}` : ''}`);
+  }
+  if (emptyRun) fatal = fatal || 'run produced 0 sections';
   await B.close();
 }
 
