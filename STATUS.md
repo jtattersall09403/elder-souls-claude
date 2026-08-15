@@ -33,23 +33,17 @@ Alongside that: shrinking the documentation every agent reads before it can star
   the class verdict, on all three class routes — the window only reset its selection when the *speaker*
   changed, and the speaker never changes inside the Writ House. Also fixed: starting a new game with a
   conversation open crashed the simulation step.
-- **The menus have things drawn in them now — but two screens don't work.** The HUD went from **1 of
-  6 elements to 6 of 6** and moved off the top-right corner to the bottom rail where Morrowind's lives;
-  the inventory went from **zero pictorial elements to 22**, from one icon set serving five screens,
-  plus a paper doll wearing what you have equipped. All verified by a critic, including the HUD
-  correctly vanishing the instant a fight starts.
-  **Then it pressed the buttons, and:** the **journal search view has no way out** — one press traps
-  you there, 15 different actions fail to leave, and it survives closing and reopening the journal.
-  Its own on-screen hint promises the escape, and the function implementing that promise exists in the
-  code and is **called from nowhere**. **Equipping does nothing out of combat** — it silently applies
-  90 frames after you close the screen. And on a phone, **no list on any screen can be scrolled**.
-  All three are being fixed now.
-- **The camera still buries itself, and we now know in what.** Not a tree — the player stands under a
-  **raised deck in Lilmoth that does not exist to the collision system at all**, so three separate
-  checks all reported "nothing is blocking the camera" while the camera was inside it. Measured: 26
-  consecutive frames with the player hidden, against a limit of 6. The vegetation fix from earlier was
-  real and simply isn't what was blocking you here. Next piece is thin architecture — decks, balconies,
-  overhangs, stair undersides — which is exactly what a third-person camera hits in a town.
+- **The menus were made denser and became unreadable.** Sizing each panel to its contents cleared all
+  five density failures — and then a critic looked at the result: on the level-up screen the attribute
+  name, its value and its gauge are drawn **into the same pixels on 9 of 10 rows** ("STRENGTH" renders
+  as `STREN` with `12` through it); the character sheet's ten rows collide; **8 of 19 journal entries
+  are laid out past the bottom of the panel onto the world behind it**, and 11 of 19 print over the
+  footer. All at normal resolution.
+  **The measure rewarded it.** The density score counts any pixel that differs from the background — so
+  text printed on top of other text still counts as content, and the level-up screen's number *doubled*
+  as it became illegible. Shrinking the boxes was the right fix; nobody reflowed what was inside them.
+  That reflow is the work now, and the acceptance has been changed so a density number only counts
+  when the screen is also legible.
 - **The container screen prints the word `undefined`** as its title. Being fixed.
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its own author reported that honestly after catching that the *first* version of the measurement was
