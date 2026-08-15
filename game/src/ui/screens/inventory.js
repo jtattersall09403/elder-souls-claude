@@ -394,6 +394,16 @@ export function drawContainer(S, m) {
   const bandW = iw - 160 * s, bandDescTop = 80 * s;
   const bandLines = csel ? wrap(csel.description || '', faceOf('ink'), BODY.screen * s, bandW * 0.94) : [];
   const bandMaxLines = descLineCap(bh, bandDescTop, BODY.screen * s);
+  // T4 round 7, SECOND PASS — the fact block's layout is computed HERE and published, for the same
+  // reason `chrome.js` `row()` now publishes `columns_drawn`: **a check that reads a declaration
+  // cannot see a draw.** Round 6's `condition` fact was laid out at `r[0] + 300` inside a 276-wide
+  // band and `surface.js`'s clip removed it entirely, and nothing in `getUIState()` could tell —
+  // the band's `text` is the description, and the facts were never in the element at all. The
+  // round-7 fix (spread from the facts' own measured widths) is only worth as much as the check
+  // that can falsify it, so the geometry the draw callback uses is derived once, up here, and the
+  // callback consumes exactly it. `facts_right` is the laid-out right edge of the LAST fact in
+  // band-relative units; a drive tool asserts `facts_right <= rect[2]` and that assertion can fail.
+  const bandFacts = csel ? factLayout(csel, bandW, s) : null;
   S.el({
     id: 'container.band', kind: 'detail_panel',
     rect: [ix + 160 * s, by, bandW, bh], opacity: alpha,
@@ -410,6 +420,9 @@ export function drawContainer(S, m) {
       // by any tool, on any item, without re-deriving the wrap.
       description_lines_shown: Math.min(bandLines.length, bandMaxLines),
       description_lines_needed: bandLines.length,
+      facts: bandFacts.facts.map((f) => ({ key: f.key, value: f.value, x: +f.x.toFixed(2), w: +f.w.toFixed(2) })),
+      facts_right: +bandFacts.right.toFixed(2),
+      facts_fit: bandFacts.right <= bandW,
     } : null,
   }, (c, r) => {
     if (!csel) {
@@ -419,9 +432,6 @@ export function drawContainer(S, m) {
     const f = faceOf('ink'), fb = faceOf('bone');
     drawText(c, csel.name, r[0], r[1] + 22 * s, fb, 20 * s, ink());
     boneRule(c, r[0], r[1] + 30 * s, r[2] * 0.6, s, 606);
-    const facts = [['weight', csel.weight > 0 ? fmt(csel.weight) : 'nothing'],
-      ['gold', csel.value_gold ? String(csel.value_gold) : 'not for sale']];
-    if (csel.condition !== undefined && csel.condition !== null) facts.push(['condition', pct(csel.condition)]);
     // T4 round 7. THE THIRD FACT WAS BEING DRAWN OFF THE PANEL AND NOBODY HAD REPORTED IT.
     // `fx += 150` put fact 3 at `r[0] + 300` inside a band whose own rect is `iw - 160` = **276**
     // wide, so `condition` began 24 units past the right edge and `surface.js`'s clip
@@ -430,18 +440,14 @@ export function drawContainer(S, m) {
     // item in the game therefore showed its condition on the inventory screen and NOT in the
     // container, while `RI-UIX03` C7 lists "condition/durability if applicable" among the things
     // selecting an item must show. It is invisible on the shipped capture because the fixture's
-    // first row is a Bark token, which has no condition at all.
+    // first row is a Bark token, whose condition the fixture happens to omit.
     //
-    // Laid out from the facts' OWN measured widths now, spread across the band's real width, with
-    // the gap capped at the old 150 so a two-fact record looks as it did.
-    const fw = facts.map(([k, v]) => Math.max(measure(k, f, 13 * s), measure(v, fb, 15 * s)));
-    const fTotal = fw.reduce((a, b) => a + b, 0);
-    const fGap = facts.length > 1 ? Math.max(10 * s, Math.min(150 * s, (r[2] - fTotal) / (facts.length - 1))) : 0;
-    let fx = r[0];
-    for (let i = 0; i < facts.length; i++) {
-      drawText(c, facts[i][0], fx, r[1] + 44 * s, f, 13 * s, inkDim());
-      drawText(c, facts[i][1], fx, r[1] + 60 * s, fb, 15 * s, ink());
-      fx += fw[i] + fGap;
+    // SECOND PASS: the layout comes from `factLayout()` above, which is the SAME object published
+    // as `meta.facts` / `meta.facts_right`. It is derived once and drawn once, so the number a
+    // check reads and the number a glyph is drawn at cannot differ — the whole point.
+    for (const fact of bandFacts.facts) {
+      drawText(c, fact.key, r[0] + fact.x, r[1] + 44 * s, f, 13 * s, inkDim());
+      drawText(c, fact.value, r[0] + fact.x, r[1] + 60 * s, fb, 15 * s, ink());
     }
     const size = BODY.screen * s, lh = size * 1.44, descTop = 80 * s;
     // T4 round 6, RI-UIX06 FD4 (`corpus/90-verdicts/wave1/T4-r5.md`, "container.band clips its own
@@ -511,6 +517,42 @@ export function descLineCap(h, top, size) {
   const lh = size * 1.44;
   const descender = size * CAP_EM * (DESCENDER_Y - BASELINE) / CAP;
   return Math.max(1, Math.floor((h - top - descender - 2) / lh) + 1);
+}
+
+/**
+ * Where the container band's fact block actually lands — the ONE derivation, drawn and published.
+ *
+ * T4 round 7, second pass. The first pass spread the facts with
+ * `gap = Math.max(10*s, Math.min(150*s, (W - total) / (n - 1)))`, and that `Math.max` is a
+ * one-sided guard pointing the wrong way (`HAZARDS` §0b): when the three facts are wide enough that
+ * `(W - total)/(n-1)` falls under 10 units, the `max` **restores** a 10-unit gap and pushes the last
+ * fact back off the right edge — reintroducing, at wider data, exactly the clip it was written to
+ * remove. It also lands the three-fact case with its right edge at **precisely** `W`, i.e. on the
+ * clip boundary, where a sub-pixel rounding either way decides whether the last glyph survives.
+ *
+ * So the gap is clamped on ONE side only and the block is given two units of clearance:
+ * `gap = min(150, (W - 2 - total) / (n - 1))`, floored at 6 so labels cannot collide. The result
+ * carries `right`, and `right > W` is left TRUE rather than clamped away — a layout that genuinely
+ * cannot fit must be visible to `meta.facts_fit` and fail a check, not be silently squeezed until
+ * the glyphs touch. Nothing here decides what to draw; it decides where, once.
+ *
+ * @param {object} it   the selected record
+ * @param {number} W    the band's own width in px (the rect `surface.js` clips to)
+ * @param {number} s    the screen scale
+ */
+export function factLayout(it, W, s) {
+  const f = faceOf('ink'), fb = faceOf('bone');
+  const pairs = [['weight', it.weight > 0 ? fmt(it.weight) : 'nothing'],
+    ['gold', it.value_gold ? String(it.value_gold) : 'not for sale']];
+  if (it.condition !== undefined && it.condition !== null) pairs.push(['condition', pct(it.condition)]);
+  const w = pairs.map(([k, v]) => Math.max(measure(k, f, 13 * s), measure(v, fb, 15 * s)));
+  const total = w.reduce((a, b) => a + b, 0);
+  const gap = pairs.length > 1
+    ? Math.max(6 * s, Math.min(150 * s, (W - 2 * s - total) / (pairs.length - 1)))
+    : 0;
+  let x = 0;
+  const facts = pairs.map(([k, v], i) => { const at = x; x += w[i] + gap; return { key: k, value: v, x: at, w: w[i] }; });
+  return { facts, gap, total, right: facts.length ? facts[facts.length - 1].x + facts[facts.length - 1].w : 0 };
 }
 
 export function containerTitle(name, kind) {
