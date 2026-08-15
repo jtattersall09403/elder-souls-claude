@@ -17,17 +17,16 @@ catch (e) { console.error('publish: cost-refresh failed —', e.message, '(the p
 
 // The roadmap tracker. Refreshed BEFORE progress.mjs renders it, same reason as cost-refresh
 // above — the published percentage must never be older than this bank. Unlike cost-refresh, a
-// DRIFT between ROADMAP.md and orchestration/roadmap.json is a real defect (two sources of truth
-// disagreeing silently is the exact thing this project keeps finding) and this DOES fail the
-// build: printed loudly, exit code carried through. An UNVERIFIED step claim inside a clean,
-// non-drifted roadmap.json is reported on the page itself (rule: print it loudly) but does not
-// stop the commit — the tracker is meant to run constantly and a false "done" claim is everyone's
-// problem to see, not a reason to block a neighbour's unrelated commit.
+// The roadmap drift check used to run here against tools/roadmap.mjs. That tracker was deleted on
+// 2026-08-14 as over-engineered (749 lines and 88 KB of JSON where the owner wanted one short file
+// openable on a phone — that is STATUS.md). Coverage is still machine-checked, by a different tool:
+// `node tools/roadmap-coverage.mjs` exits non-zero if any reference item, plan or open gap has no
+// roadmap home, or if the order violates a recorded dependency. That is the check worth keeping.
 try {
-  execFileSync('node', [join(ROOT, 'tools/roadmap.mjs')], { cwd: ROOT, stdio: 'inherit' });
+  execFileSync('node', [join(ROOT, 'tools/roadmap-coverage.mjs')], { cwd: ROOT, stdio: 'inherit' });
 } catch (e) {
-  console.error('publish: tools/roadmap.mjs exited non-zero —', e.message);
-  console.error('publish: this is either ROADMAP.md/roadmap.json drift or the tool itself erroring; run `node tools/roadmap.mjs` directly to see which.');
+  console.error('publish: tools/roadmap-coverage.mjs exited non-zero —', e.message);
+  console.error('publish: a reference item, plan or open gap has no roadmap home, or the order violates a recorded dependency.');
   process.exitCode = 1;
 }
 

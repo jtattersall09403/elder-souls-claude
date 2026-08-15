@@ -13,11 +13,18 @@ import { computeReport, discoverVerdicts } from './verdict-staleness.mjs';
 // its own — the instrument is the only thing that prices tokens (rule 10). costHtml() never
 // throws: this page is regenerated inside the pre-commit hook.
 import { costHtml, COST_CSS } from './cost-report.mjs';
-// The roadmap tracker (owner: "I MUST always always have a way to instantly check how far
-// through the roadmap we are ... it must always be correct"). Same rule as the cost programme:
-// this file computes no progress of its own — tools/roadmap.mjs verifies every claim against its
-// evidence and writes docs/data/roadmap.json; roadmapHtml() only draws that file.
-import { roadmapHtml, ROADMAP_CSS } from './roadmap-report.mjs';
+// The roadmap tracker was DELETED on 2026-08-14 as over-engineered — 749 lines and 88 KB of JSON
+// where the owner wanted one short file they could open on a phone. That file is STATUS.md at the
+// repo root, written by hand and kept short so writing it stays cheap. This page links to it rather
+// than recomputing it. (The orchestrator deleted the module without checking who imported it, which
+// broke `publish` silently for several hours — hence this comment rather than a bare removal.)
+const ROADMAP_CSS = '';
+const roadmapHtml = () => `<div class="card" style="margin-bottom:18px">
+  <div class="l">Where we are</div>
+  <p style="margin:.5em 0 0">The short, plain-English answer to <em>what will I find if I open the game
+  now</em> lives in <a href="https://github.com/jtattersall09403/elder-souls-claude/blob/codex/wave1-build-experiment/STATUS.md"><code>STATUS.md</code></a>,
+  and the ordered plan in <a href="https://github.com/jtattersall09403/elder-souls-claude/blob/codex/wave1-build-experiment/orchestration/ROADMAP.md"><code>ROADMAP.md</code></a>.</p>
+</div>`;
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const P = (...a) => join(ROOT, ...a);
