@@ -98,7 +98,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-15 10:19:57Z &middot; auto-refresh 20s</div>
+  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-15 12:27:52Z &middot; auto-refresh 20s</div>
 </header>
 <div class="wrap">
 
@@ -110,7 +110,8 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </div>
 
 <section class="cost"><h2 id="cost">What this is costing <span class="dimtext">(the efficiency programme &mdash; <code>orchestration/COST.md</code>)</span></h2>
-<div class="cost-banner cost-banner-ok">Reading taken <b>2026-08-15 10:15Z</b> (4 min ago) at commit <code>1a3151f</code>, and it refreshes on every bank.</div><div class="cost-hero">
+<div class="cost-banner cost-banner-bad"><b>Cost regeneration FAILED at 2026-08-15 12:23Z.</b> tools/cost.mjs did not finish within 25s and was killed. The transcript grows every hour, so if this persists the instrument needs an incremental roll-up rather than a full re-parse.<br>
+      The figures below are the <b>last good reading, taken 2026-08-15 10:15Z &mdash; 2.2 h ago</b>. They are not current. Fix the instrument before quoting them.</div><div class="cost-hero">
   <div class="cost-hero-main">
     <div class="cost-hero-l">Spend to date</div>
     <div class="cost-hero-n">$8,313.54</div>
@@ -640,13 +641,13 @@ measured over 2 h</title><circle cx="792.0" cy="133.2" r="4.5" fill="#199e70" st
     Priced from the table published in the ledger, effective 2026-08-08: claude-opus-5 input $5 / cache write 5m $6.25 / cache write 1h $10 / cache read $0.5 / output $25 per Mtok · claude-sonnet-5 input $2 / cache write 5m $2.5 / cache write 1h $4 / cache read $0.2 / output $10 per Mtok · claude-haiku-4-5 input $1 / cache write 5m $1.25 / cache write 1h $2 / cache read $0.1 / output $5 per Mtok</div></section>
 
 <div class="grid">
-  <div class="card"><div class="n">151</div><div class="l">Reference items</div></div>
+  <div class="card"><div class="n">152</div><div class="l">Reference items</div></div>
   <div class="card"><div class="n">477</div><div class="l">Subsystems judged</div></div>
-  <div class="card"><div class="n">81</div><div class="l">Verdicts filed</div></div>
-  <div class="card"><div class="n bad">1/81</div><div class="l">Verdicts passing</div></div>
-  <div class="card"><div class="n warn">3/88</div><div class="l">Verdicts fresh at HEAD</div></div>
-  <div class="card"><div class="n warn">82</div><div class="l">Open gaps</div></div>
-  <div class="card"><div class="n">171,239</div><div class="l">Game LOC</div></div>
+  <div class="card"><div class="n">82</div><div class="l">Verdicts filed</div></div>
+  <div class="card"><div class="n bad">1/82</div><div class="l">Verdicts passing</div></div>
+  <div class="card"><div class="n warn">3/89</div><div class="l">Verdicts fresh at HEAD</div></div>
+  <div class="card"><div class="n warn">83</div><div class="l">Open gaps</div></div>
+  <div class="card"><div class="n">171,553</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">64</div><div class="l">Quests</div></div>
   <div class="card"><div class="n">37,752</div><div class="l">Dialogue words</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Bar gates met</div></div>
@@ -941,7 +942,7 @@ table.sc-tbl td.d{color:var(--ink)}
 <tr><td><code>QST</code></td><td>Quests &amp; factions</td><td>9</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
 <tr><td><code>STL</code></td><td></td><td>2</td><td style="width:40%"><div class="bar"><i style="width:24%"></i></div></td></tr>
 <tr><td><code>TRV</code></td><td></td><td>2</td><td style="width:40%"><div class="bar"><i style="width:24%"></i></div></td></tr>
-<tr><td><code>UIX</code></td><td></td><td>9</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
+<tr><td><code>UIX</code></td><td></td><td>10</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
 <tr><td><code>VIS</code></td><td>Visual</td><td>10</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
 <tr><td><code>WLD</code></td><td>World design</td><td>16</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
 <tr><td><code>WPN</code></td><td></td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
@@ -1067,6 +1068,7 @@ table.sc-tbl td.d{color:var(--ink)}
 <tr><td><code>RI-UIX07</code></td><td>The out-of-combat HUD — what persists when nothing is trying to kill you, and how the two sets change hands</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>measured</td><td><span class="ok">yes</span></td><td><code>ui.hud.world</code></td></tr>
 <tr><td><code>RI-UIX08</code></td><td>The dialogue window — a floating index of keywords you find by reading, not a menu of replies</td><td>structure</td><td><span class="tag morrowind">morrowind</span></td><td>measured</td><td><span class="ok">yes</span></td><td><code>ui.dialogue.presentation dialogue.topics.discovery dialogue.disposition</code></td></tr>
 <tr><td><code>RI-UIX09</code></td><td>Populated density and object iconography — a Morrowind screen is full of drawn things, and nothing in this corpus could fail a screen that is empty of them</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>measured</td><td><span class="ok">yes</span></td><td><code>ui.style.diegesis</code></td></tr>
+<tr><td><code>RI-UIX10</code></td><td>Operability — every affordance a screen draws must be workable through the shipped input path, and the screen must show what it did</td><td>structure</td><td><span class="tag neutral">neutral</span></td><td>measured</td><td>&mdash;</td><td><code>ui.menu.inventory ui.menu.journal</code></td></tr>
 <tr><td><code>RI-VIS01</code></td><td>The bifurcation protocol — art direction and fidelity are judged separately, never together</td><td>structure</td><td><span class="tag neutral">neutral</span></td><td>constructed</td><td>&mdash;</td><td><code>visual.process.judgement visual.process.declaration visual.process.contamination visual.artdirection visual.renderer</code></td></tr>
 <tr><td><code>RI-VIS02</code></td><td>Fidelity reference set — current-generation shots we are measured against</td><td>image</td><td><span class="tag modern-fidelity">modern-fidelity</span></td><td>derived</td><td><span class="ok">yes</span></td><td><code>visual.renderer.lighting visual.renderer.materials visual.renderer.atmosphere visual.renderer.water visual.renderer.foliage visual.renderer.sky visual.renderer.drawdistance</code></td></tr>
 <tr><td><code>RI-VIS03</code></td><td>Fidelity as measurable quantities — the image-metric battery</td><td>number</td><td><span class="tag modern-fidelity">modern-fidelity</span></td><td>constructed</td><td>&mdash;</td><td><code>visual.renderer.lighting visual.renderer.materials visual.renderer.postprocess visual.renderer.shadows visual.renderer.atmosphere visual.renderer.sky visual.renderer.antialiasing visual.renderer.lod visual.process.measurement</code></td></tr>
@@ -1105,6 +1107,7 @@ table.sc-tbl td.d{color:var(--ink)}
 <h2>Verdicts</h2>
 <table><tr><th>Wave</th><th>Piece</th><th>Subsystem</th><th>Result</th><th>Single biggest gap</th></tr>
 <tr><td>1</td><td>T4-r1</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
+<tr><td>1</td><td>T4-r2</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 <tr><td>1</td><td>w1-00-r2</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 <tr><td>1</td><td>w1-00</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 <tr><td>1</td><td>w1-01-province-stream-pump</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
@@ -1190,72 +1193,73 @@ table.sc-tbl td.d{color:var(--ink)}
 
 <h2>Verdict staleness <span class="dimtext">(reported, not a gate &mdash; a stale verdict is a fact for the next dispatch, not a downgrade)</span></h2>
 <div class="sub" style="margin-bottom:10px">
-  88 verdict(s) at HEAD 1a3151f &mdash;
+  89 verdict(s) at HEAD 7c63111 &mdash;
   <span class="ok">3 fresh</span>,
   <span class="bad">43 stale</span>,
-  <span class="dimtext">42 unknown</span>
+  <span class="dimtext">43 unknown</span>
   (unknown = no <code>depends_on</code> declared, no commit stamp, or an unresolvable commit &mdash; not assessed, not assumed fresh).
   Detail: <code>node tools/verdict-staleness.mjs</code>.
 </div>
 <table><tr><th>Piece</th><th>Status</th><th>Since</th><th>Why</th></tr>
-<tr><td><code>T4-r1</code></td><td class="bad">stale</td><td class="rem">ed14093</td><td class="rem">2 of 305 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/86-ui/RI-UIX08-dialogue-window.md</code></td></tr>
-<tr><td><code>w1-00-r2</code></td><td class="bad">stale</td><td class="rem">445bfa6</td><td class="rem">763 of 6024 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md</code></td></tr>
-<tr><td><code>w1-00</code></td><td class="bad">stale</td><td class="rem">8714e38</td><td class="rem">753 of 6546 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md</code></td></tr>
-<tr><td><code>w1-01-province-stream-pump</code></td><td class="bad">stale</td><td class="rem">8734986</td><td class="rem">558 of 4803 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/85-platform/RI-PLT03-load-streaming-and-hitches.md</code></td></tr>
+<tr><td><code>T4-r1</code></td><td class="bad">stale</td><td class="rem">ed14093</td><td class="rem">2 of 397 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/86-ui/RI-UIX08-dialogue-window.md</code></td></tr>
+<tr><td><code>T4-r2</code></td><td class="dimtext">unknown</td><td class="rem">b60afe4</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
+<tr><td><code>w1-00-r2</code></td><td class="bad">stale</td><td class="rem">445bfa6</td><td class="rem">763 of 6113 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md</code></td></tr>
+<tr><td><code>w1-00</code></td><td class="bad">stale</td><td class="rem">8714e38</td><td class="rem">753 of 6635 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md</code></td></tr>
+<tr><td><code>w1-01-province-stream-pump</code></td><td class="bad">stale</td><td class="rem">8734986</td><td class="rem">558 of 4892 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/85-platform/RI-PLT03-load-streaming-and-hitches.md</code></td></tr>
 <tr><td><code>w1-01-r2</code></td><td class="dimtext">unknown</td><td class="rem">b17121c</td><td class="rem">commit b17121cb1e9a0d8f4e8bb0a3b7c0e6a0e3a3f0aa is not resolvable in this repository's history</td></tr>
-<tr><td><code>W1-01</code></td><td class="bad">stale</td><td class="rem">341cd48</td><td class="rem">731 of 5955 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG06-souls-yield-and-pace.md</code></td></tr>
-<tr><td><code>W1-02-r1</code></td><td class="ok">fresh</td><td class="rem">6b1a142</td><td class="rem">4417 file(s) changed since 6b1a142, none inside the declared depends_on</td></tr>
-<tr><td><code>W1-03-r1</code></td><td class="ok">fresh</td><td class="rem">652b1d7</td><td class="rem">4111 file(s) changed since 652b1d7, none inside the declared depends_on</td></tr>
-<tr><td><code>W1-04-r1</code></td><td class="ok">fresh</td><td class="rem">3ba93e0</td><td class="rem">4259 file(s) changed since 3ba93e04f53e8827153134ebe255085b84682acf, none inside the declared depends_on</td></tr>
+<tr><td><code>W1-01</code></td><td class="bad">stale</td><td class="rem">341cd48</td><td class="rem">731 of 6044 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG06-souls-yield-and-pace.md</code></td></tr>
+<tr><td><code>W1-02-r1</code></td><td class="ok">fresh</td><td class="rem">6b1a142</td><td class="rem">4507 file(s) changed since 6b1a142, none inside the declared depends_on</td></tr>
+<tr><td><code>W1-03-r1</code></td><td class="ok">fresh</td><td class="rem">652b1d7</td><td class="rem">4201 file(s) changed since 652b1d7, none inside the declared depends_on</td></tr>
+<tr><td><code>W1-04-r1</code></td><td class="ok">fresh</td><td class="rem">3ba93e0</td><td class="rem">4349 file(s) changed since 3ba93e04f53e8827153134ebe255085b84682acf, none inside the declared depends_on</td></tr>
 <tr><td><code>W1-04-r2</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
 <tr><td><code>W1-04</code></td><td class="dimtext">unknown</td><td class="rem">c36653e</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-04</code></td><td class="dimtext">unknown</td><td class="rem">3ee6ada</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-04</code></td><td class="dimtext">unknown</td><td class="rem">1fda355</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-07-r2</code></td><td class="bad">stale</td><td class="rem">4a5f13f</td><td class="rem">596 of 5433 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG02-stat-sheet.md</code></td></tr>
-<tr><td><code>w1-07-r3</code></td><td class="bad">stale</td><td class="rem">b48859f</td><td class="rem">571 of 4997 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/22-character/RI-CHR01-character-creation.md</code></td></tr>
-<tr><td><code>w1-07</code></td><td class="bad">stale</td><td class="rem">65275dc</td><td class="rem">616 of 5754 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG02-stat-sheet.md</code></td></tr>
-<tr><td><code>w1-08-w1-29-r1</code></td><td class="bad">stale</td><td class="rem">be17753</td><td class="rem">563 of 4884 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md</code></td></tr>
-<tr><td><code>w1-08-w1-29-r2</code></td><td class="bad">stale</td><td class="rem">dcf1d36</td><td class="rem">533 of 4591 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md</code></td></tr>
-<tr><td><code>w1-09-combat-core-r2</code></td><td class="bad">stale</td><td class="rem">04d8208</td><td class="rem">621 of 5707 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-AI02-telegraph-doctrine.md</code></td></tr>
-<tr><td><code>w1-09-r3</code></td><td class="bad">stale</td><td class="rem">93f3d2d</td><td class="rem">601 of 5329 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-AI02-telegraph-doctrine.md</code></td></tr>
-<tr><td><code>W1-09</code></td><td class="bad">stale</td><td class="rem">f7b5468</td><td class="rem">735 of 5960 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md</code></td></tr>
-<tr><td><code>W1-10-r2</code></td><td class="bad">stale</td><td class="rem">5e1a861</td><td class="rem">22 of 5446 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/12-weapons/RI-WPN01-moveset-slot-contract.md</code></td></tr>
-<tr><td><code>W1-10</code></td><td class="bad">stale</td><td class="rem">6eb8f04</td><td class="rem">572 of 5140 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md</code></td></tr>
-<tr><td><code>W1-10</code></td><td class="bad">stale</td><td class="rem">65275dc</td><td class="rem">618 of 5754 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/12-weapons/RI-WPN01-moveset-slot-contract.md</code></td></tr>
+<tr><td><code>w1-07-r2</code></td><td class="bad">stale</td><td class="rem">4a5f13f</td><td class="rem">596 of 5522 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG02-stat-sheet.md</code></td></tr>
+<tr><td><code>w1-07-r3</code></td><td class="bad">stale</td><td class="rem">b48859f</td><td class="rem">571 of 5086 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/22-character/RI-CHR01-character-creation.md</code></td></tr>
+<tr><td><code>w1-07</code></td><td class="bad">stale</td><td class="rem">65275dc</td><td class="rem">616 of 5843 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG02-stat-sheet.md</code></td></tr>
+<tr><td><code>w1-08-w1-29-r1</code></td><td class="bad">stale</td><td class="rem">be17753</td><td class="rem">563 of 4973 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md</code></td></tr>
+<tr><td><code>w1-08-w1-29-r2</code></td><td class="bad">stale</td><td class="rem">dcf1d36</td><td class="rem">534 of 4681 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md</code></td></tr>
+<tr><td><code>w1-09-combat-core-r2</code></td><td class="bad">stale</td><td class="rem">04d8208</td><td class="rem">621 of 5796 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-AI02-telegraph-doctrine.md</code></td></tr>
+<tr><td><code>w1-09-r3</code></td><td class="bad">stale</td><td class="rem">93f3d2d</td><td class="rem">601 of 5418 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-AI02-telegraph-doctrine.md</code></td></tr>
+<tr><td><code>W1-09</code></td><td class="bad">stale</td><td class="rem">f7b5468</td><td class="rem">735 of 6049 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md</code></td></tr>
+<tr><td><code>W1-10-r2</code></td><td class="bad">stale</td><td class="rem">5e1a861</td><td class="rem">22 of 5535 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/12-weapons/RI-WPN01-moveset-slot-contract.md</code></td></tr>
+<tr><td><code>W1-10</code></td><td class="bad">stale</td><td class="rem">6eb8f04</td><td class="rem">572 of 5229 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md</code></td></tr>
+<tr><td><code>W1-10</code></td><td class="bad">stale</td><td class="rem">65275dc</td><td class="rem">618 of 5843 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/12-weapons/RI-WPN01-moveset-slot-contract.md</code></td></tr>
 <tr><td><code>W1-11</code></td><td class="dimtext">unknown</td><td class="rem">5c4c5b0</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-12-r1</code></td><td class="dimtext">unknown</td><td class="rem">e97347f</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-12-r2</code></td><td class="dimtext">unknown</td><td class="rem">9063779</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-13-death-and-the-hearth-loop</code></td><td class="bad">stale</td><td class="rem">0a8a4d0</td><td class="rem">563 of 4816 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG04-hearth-and-death.md</code></td></tr>
+<tr><td><code>w1-13-death-and-the-hearth-loop</code></td><td class="bad">stale</td><td class="rem">0a8a4d0</td><td class="rem">563 of 4905 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG04-hearth-and-death.md</code></td></tr>
 <tr><td><code>w1-13-death-and-the-hearth-loop</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
-<tr><td><code>w1-13-r3</code></td><td class="bad">stale</td><td class="rem">37d64e3</td><td class="rem">18 of 4281 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
-<tr><td><code>w1-13-r4</code></td><td class="bad">stale</td><td class="rem">e74df06</td><td class="rem">18 of 4112 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
-<tr><td><code>W1-14-r2</code></td><td class="bad">stale</td><td class="rem">7e7993d</td><td class="rem">581 of 5238 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG03-skills-by-use.md</code></td></tr>
-<tr><td><code>W1-14-r3</code></td><td class="bad">stale</td><td class="rem">34d1387</td><td class="rem">11 of 3879 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/magic/cast-classes.json</code></td></tr>
-<tr><td><code>W1-14-r4</code></td><td class="bad">stale</td><td class="rem">9fadada</td><td class="rem">17 of 3592 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/magic/cast-classes.json</code></td></tr>
-<tr><td><code>W1-14</code></td><td class="bad">stale</td><td class="rem">75c8e3a</td><td class="rem">611 of 5768 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG03-skills-by-use.md</code></td></tr>
-<tr><td><code>w1-15</code></td><td class="bad">stale</td><td class="rem">7e7993d</td><td class="rem">580 of 5238 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/80-methods/RI-MTH07-world-coupling.md</code></td></tr>
+<tr><td><code>w1-13-r3</code></td><td class="bad">stale</td><td class="rem">37d64e3</td><td class="rem">18 of 4371 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
+<tr><td><code>w1-13-r4</code></td><td class="bad">stale</td><td class="rem">e74df06</td><td class="rem">18 of 4202 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
+<tr><td><code>W1-14-r2</code></td><td class="bad">stale</td><td class="rem">7e7993d</td><td class="rem">581 of 5327 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG03-skills-by-use.md</code></td></tr>
+<tr><td><code>W1-14-r3</code></td><td class="bad">stale</td><td class="rem">34d1387</td><td class="rem">11 of 3969 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/magic/cast-classes.json</code></td></tr>
+<tr><td><code>W1-14-r4</code></td><td class="bad">stale</td><td class="rem">9fadada</td><td class="rem">17 of 3682 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/magic/cast-classes.json</code></td></tr>
+<tr><td><code>W1-14</code></td><td class="bad">stale</td><td class="rem">75c8e3a</td><td class="rem">611 of 5857 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG03-skills-by-use.md</code></td></tr>
+<tr><td><code>w1-15</code></td><td class="bad">stale</td><td class="rem">7e7993d</td><td class="rem">580 of 5327 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/80-methods/RI-MTH07-world-coupling.md</code></td></tr>
 <tr><td><code>w1-15</code></td><td class="dimtext">unknown</td><td class="rem">9126e02</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-15</code></td><td class="dimtext">unknown</td><td class="rem">9063779</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-15</code></td><td class="bad">stale</td><td class="rem">21c9566</td><td class="rem">602 of 5531 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/README.md</code></td></tr>
+<tr><td><code>w1-15</code></td><td class="bad">stale</td><td class="rem">21c9566</td><td class="rem">602 of 5620 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/README.md</code></td></tr>
 <tr><td><code>W1-16-r2</code></td><td class="dimtext">unknown</td><td class="rem">5d88b7e</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-16-r3</code></td><td class="dimtext">unknown</td><td class="rem">2032744</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-17-act5-argument</code></td><td class="bad">stale</td><td class="rem">3ba93e0</td><td class="rem">14 of 4259 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/40-dialogue/RI-DLG01-topic-graph.md</code></td></tr>
+<tr><td><code>w1-17-act5-argument</code></td><td class="bad">stale</td><td class="rem">3ba93e0</td><td class="rem">14 of 4349 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/40-dialogue/RI-DLG01-topic-graph.md</code></td></tr>
 <tr><td><code>w1-17</code></td><td class="dimtext">unknown</td><td class="rem">6c979e3</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-19</code></td><td class="bad">stale</td><td class="rem">be17753</td><td class="rem">561 of 4884 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/50-world/RI-WLD09-the-opacity-budget.md</code></td></tr>
-<tr><td><code>w1-19</code></td><td class="bad">stale</td><td class="rem">86c0ff7</td><td class="rem">549 of 4656 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/40-dialogue/RI-DLG01-topic-graph.md</code></td></tr>
-<tr><td><code>W1-20</code></td><td class="bad">stale</td><td class="rem">d98ca28</td><td class="rem">417 of 3198 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/blackwood.json</code></td></tr>
+<tr><td><code>w1-19</code></td><td class="bad">stale</td><td class="rem">be17753</td><td class="rem">561 of 4973 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/50-world/RI-WLD09-the-opacity-budget.md</code></td></tr>
+<tr><td><code>w1-19</code></td><td class="bad">stale</td><td class="rem">86c0ff7</td><td class="rem">550 of 4746 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/40-dialogue/RI-DLG01-topic-graph.md</code></td></tr>
+<tr><td><code>W1-20</code></td><td class="bad">stale</td><td class="rem">d98ca28</td><td class="rem">418 of 3288 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/blackwood.json</code></td></tr>
 <tr><td><code>W1-20</code></td><td class="dimtext">unknown</td><td class="rem">6220e0f</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-21</code></td><td class="dimtext">unknown</td><td class="rem">07f8b75</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-21</code></td><td class="dimtext">unknown</td><td class="rem">e97347f</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>W1-22-B2-blind</code></td><td class="bad">stale</td><td class="rem">72baa12</td><td class="rem">1 of 4470 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/80-methods/RI-MTH03-blind-comparison-protocol.md</code></td></tr>
-<tr><td><code>w1-22-r1</code></td><td class="bad">stale</td><td class="rem">78aebc7</td><td class="rem">508 of 4499 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/80-methods/RI-MTH03-blind-comparison-protocol.md</code></td></tr>
-<tr><td><code>w1-22-r2</code></td><td class="bad">stale</td><td class="rem">5d88b7e</td><td class="rem">37 of 3984 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
-<tr><td><code>w1-23-lore-registry-and-the-provinces-canon</code></td><td class="bad">stale</td><td class="rem">5c4c5b0</td><td class="rem">58 of 4267 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/SCORING.md</code></td></tr>
+<tr><td><code>W1-22-B2-blind</code></td><td class="bad">stale</td><td class="rem">72baa12</td><td class="rem">1 of 4560 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/80-methods/RI-MTH03-blind-comparison-protocol.md</code></td></tr>
+<tr><td><code>w1-22-r1</code></td><td class="bad">stale</td><td class="rem">78aebc7</td><td class="rem">509 of 4589 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/80-methods/RI-MTH03-blind-comparison-protocol.md</code></td></tr>
+<tr><td><code>w1-22-r2</code></td><td class="bad">stale</td><td class="rem">5d88b7e</td><td class="rem">37 of 4074 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
+<tr><td><code>w1-23-lore-registry-and-the-provinces-canon</code></td><td class="bad">stale</td><td class="rem">5c4c5b0</td><td class="rem">58 of 4357 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/SCORING.md</code></td></tr>
 <tr><td><code>w1-23-lore-registry-and-the-provinces-canon</code></td><td class="dimtext">unknown</td><td class="rem">0f5f456</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-23-lore-registry-and-the-provinces-canon</code></td><td class="dimtext">unknown</td><td class="rem">37bbb6f</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-25</code></td><td class="dimtext">unknown</td><td class="rem">fdef3d6</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-26-r1</code></td><td class="bad">stale</td><td class="rem">8744ead</td><td class="rem">567 of 4894 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md</code></td></tr>
-<tr><td><code>w1-26-r2</code></td><td class="bad">stale</td><td class="rem">402d01a</td><td class="rem">1 of 3856 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md</code></td></tr>
+<tr><td><code>w1-26-r1</code></td><td class="bad">stale</td><td class="rem">8744ead</td><td class="rem">567 of 4983 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md</code></td></tr>
+<tr><td><code>w1-26-r2</code></td><td class="bad">stale</td><td class="rem">402d01a</td><td class="rem">1 of 3946 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md</code></td></tr>
 <tr><td><code>w1-26-r3</code></td><td class="dimtext">unknown</td><td class="rem">ec0b767</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-30-shadow-casters-r1</code></td><td class="dimtext">unknown</td><td class="rem">97845f0</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-30c</code></td><td class="dimtext">unknown</td><td class="rem">2634eb0</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
@@ -1263,27 +1267,27 @@ table.sc-tbl td.d{color:var(--ink)}
 <tr><td><code>W1-30E-r1</code></td><td class="dimtext">unknown</td><td class="rem">318ecdf</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-30S-r1</code></td><td class="dimtext">unknown</td><td class="rem">91fbb20</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-attr-scale-r1</code></td><td class="dimtext">unknown</td><td class="rem">692bcc8</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>W1-CROSSING</code></td><td class="bad">stale</td><td class="rem">2fe47f5</td><td class="rem">6 of 3569 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/world/roads.json</code></td></tr>
+<tr><td><code>W1-CROSSING</code></td><td class="bad">stale</td><td class="rem">2fe47f5</td><td class="rem">6 of 3659 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/world/roads.json</code></td></tr>
 <tr><td><code>corpus/90-verdicts/wave1/W1-DEPLOY-r1.json</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
 <tr><td><code>w1-deploy-r2</code></td><td class="dimtext">unknown</td><td class="rem">db449a5</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>W1-F10-CHARACTERS</code></td><td class="bad">stale</td><td class="rem">1c40739</td><td class="rem">3 of 313 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/70-visual/RI-VIS10-character-design.md</code></td></tr>
-<tr><td><code>W1-FACTIONS-r1</code></td><td class="bad">stale</td><td class="rem">44f8432</td><td class="rem">547 of 4669 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/README.md</code></td></tr>
+<tr><td><code>W1-F10-CHARACTERS</code></td><td class="bad">stale</td><td class="rem">1c40739</td><td class="rem">3 of 405 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/70-visual/RI-VIS10-character-design.md</code></td></tr>
+<tr><td><code>W1-FACTIONS-r1</code></td><td class="bad">stale</td><td class="rem">44f8432</td><td class="rem">548 of 4759 changed file(s) fall inside depends_on &mdash; e.g. <code>game/data/audio/ambience/README.md</code></td></tr>
 <tr><td><code>W1-FACTIONS</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
 <tr><td><code>first-ten-minutes</code></td><td class="dimtext">unknown</td><td class="rem">a8e4c93</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-library-martial-r4</code></td><td class="dimtext">unknown</td><td class="rem">3d4c88d</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-library-books-and-the-reading-surface</code></td><td class="dimtext">unknown</td><td class="rem">4c90402</td><td class="rem">commit 4c904020 is not resolvable in this repository's history</td></tr>
 <tr><td><code>w1-map-defects-r1</code></td><td class="dimtext">unknown</td><td class="rem">bfae92e</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>corpus/90-verdicts/wave1/W1-MAP-r1.json</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
-<tr><td><code>w1-map-r2</code></td><td class="bad">stale</td><td class="rem">f291b01</td><td class="rem">9 of 3763 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
+<tr><td><code>w1-map-r2</code></td><td class="bad">stale</td><td class="rem">f291b01</td><td class="rem">9 of 3853 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
 <tr><td><code>w1-orphaned-surface-shaders-r1</code></td><td class="dimtext">unknown</td><td class="rem">fb42ad1</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>w1-population</code></td><td class="dimtext">unknown</td><td class="rem">28909e1</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>w1-prose-blind-in-world-prose-and-npc-voice</code></td><td class="bad">stale</td><td class="rem">d750b6c</td><td class="rem">1 of 4629 changed file(s) fall inside depends_on &mdash; e.g. <code>tools/prose/judge-fragment-openers.mjs</code></td></tr>
+<tr><td><code>w1-prose-blind-in-world-prose-and-npc-voice</code></td><td class="bad">stale</td><td class="rem">d750b6c</td><td class="rem">1 of 4719 changed file(s) fall inside depends_on &mdash; e.g. <code>tools/prose/judge-fragment-openers.mjs</code></td></tr>
 <tr><td><code>w1-prose-tics-r4-blind-pack-judged-and-voided</code></td><td class="dimtext">unknown</td><td class="rem">652b1d7</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-READABLES-r2</code></td><td class="dimtext">unknown</td><td class="rem">64dd5f9</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 <tr><td><code>W1-ROAD-JOIN</code></td><td class="dimtext">unknown</td><td class="rem">a2031bb</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
-<tr><td><code>W1-SAVE-r1</code></td><td class="bad">stale</td><td class="rem">b27373f</td><td class="rem">562 of 4951 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-break-critic.mjs</code></td></tr>
-<tr><td><code>w1-souls-r2</code></td><td class="bad">stale</td><td class="rem">a5a637d</td><td class="rem">30 of 4407 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG06-souls-yield-and-pace.md</code></td></tr>
-<tr><td><code>w1-souls-r3</code></td><td class="bad">stale</td><td class="rem">e97347f</td><td class="rem">8 of 4032 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
+<tr><td><code>W1-SAVE-r1</code></td><td class="bad">stale</td><td class="rem">b27373f</td><td class="rem">562 of 5040 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-break-critic.mjs</code></td></tr>
+<tr><td><code>w1-souls-r2</code></td><td class="bad">stale</td><td class="rem">a5a637d</td><td class="rem">30 of 4497 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/20-progression/RI-PRG06-souls-yield-and-pace.md</code></td></tr>
+<tr><td><code>w1-souls-r3</code></td><td class="bad">stale</td><td class="rem">e97347f</td><td class="rem">8 of 4122 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/00-doctrine/ARBITRATION.md</code></td></tr>
 <tr><td><code>corpus/90-verdicts/wave1/W1-TOUCH-r1.json</code></td><td class="dimtext">unknown</td><td class="rem">&mdash;</td><td class="rem">no build.commit_sha on this verdict — RULES.md #12 requires one</td></tr>
 <tr><td><code>w1-visual-blind-protocol-a-r1</code></td><td class="dimtext">unknown</td><td class="rem">21795f5</td><td class="rem">no build.depends_on declared on this verdict — staleness cannot be assessed honestly, so this tool does not guess one</td></tr>
 </table>
@@ -1356,6 +1360,7 @@ table.sc-tbl td.d{color:var(--ink)}
 <tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
 <tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
 <tr><td class="gapq"></td><td><code></code></td><td class="rem">Re-derive buildings[].door as a point ON the entry wall: b.{x,z} offset by half the drawn depth along entrySideLocal(b), which render/exterior.js already computes in order to cut the doorway.,Re-derive continuity.exterior_spawn as a point ~1.5 m OUTSIDE that wall point, clamped out of every neighbouring footprint - the same clamp applyInteriorBounds() already applies to continuity.interior_spawn, pointed the other way.,Add the assertion to tools/check-building-fits-room.mjs, which already exists and already has a --self-break: no exterior_spawn may satisfy insideBuilding(plan, x, z, 0). Prove it goes red by moving one spawn inward.</td><td class="warn">open</td></tr>
+<tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
 <tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
 <tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>
 <tr><td class="gapq"></td><td><code></code></td><td class="rem">[object Object]</td><td class="warn">open</td></tr>

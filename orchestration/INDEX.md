@@ -2,7 +2,7 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `694c8d65`: **1048 tools**, **160 reference items**,
+drift. At `7c63111d`: **1048 tools**, **160 reference items**,
 **57 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
@@ -163,8 +163,8 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 
 | piece | state | files claimed |
 |---|---|---|
-| `DLG-FIRST-NPC-TEACHES-NOTHING` | recorded-for-the-next-dialogue-piece | `orchestration/status/DLG-FIRST-NPC-TEACHES-NOTHING.json` |
 | `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
+| `DLG-FIRST-NPC-TEACHES-NOTHING` | recorded-for-the-next-dialogue-piece | `orchestration/status/DLG-FIRST-NPC-TEACHES-NOTHING.json` |
 | `W1-UIX08-GATE-G` | arms-built-and-sealed-awaiting-judges | `tools/blind/played-pair/` `reports/blind/uix08-gate-g/` `orchestration/status/W1-UIX08-GATE-G.json` |
 | `T4-r2-builder` | in_progress | `game/src/ui/icons.js` `game/src/ui/hud-world.js` `game/src/ui/compass.js` `game/src/ui/hud.js` +14 |
 | `W1-G1-CAMERA-OCCLUSION` | measuring | `orchestration/status/W1-G1-CAMERA-OCCLUSION.json` `tools/camera/cam-occlusion-walk.mjs` `corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/` |
