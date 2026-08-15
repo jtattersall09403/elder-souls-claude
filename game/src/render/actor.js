@@ -993,29 +993,125 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
       //    grows out of a head instead of being stuck onto one
       if (M.crest > 0.01) B.skin.ellipsoid(P(0,.140,.008),[S(.070),S(.030),S(.058)],hi,10);
     }else if(artFamily==='humanoid'){
-      B.skin.ellipsoid(P(0,.080,.004),[S(.100),S(.132),S(.098)],hi,16);
+      // EVERY LANDMARK ON THE UPPER FACE WAS INSIDE THE SKULL, WHICH IS WHY 148 OF 408 NPCs READ AS
+      // BALD EGGS DESPITE SEVEN LANDMARKS AND 4,534 HEAD-BONE TRIANGLES.
+      //
+      // The skull is an ellipsoid; the landmarks were authored as typed-in `z` constants. Those two
+      // facts cannot be reconciled by eye, and they were not. Measured this turn by solving the
+      // ellipsoid for the skull's own surface height above each landmark's (x, y) — every number
+      // below is head-local metres BEFORE `headScale`, and the arithmetic is in
+      // `orchestration/status/W1-F10-r6.json`:
+      //
+      //   eye,   front z 0.0870 against a skull surface of 0.0928 ->   5.8 mm BURIED
+      //   pupil, front z 0.0936 against 0.0928                    ->   0.7 mm proud
+      //   brow ridge, inner end                                    ->   6.9 mm BURIED
+      //   orbit rim, top of the ring                               ->  13.8 mm BURIED
+      //   nasal bridge, upper end                                  ->  28.8 mm BURIED
+      //   mandible line, front end, against the JAW mass           ->  27.6 mm BURIED
+      //
+      // So the entire face above the nose was a smooth ovoid with seven invisible things inside it,
+      // and the only feature clearing the surface at all was 0.7 mm of pupil. That is the same
+      // defect class as the hands (round 4) and the feet (this round, one joint further down), and
+      // it is the third time it has been found: **geometry that exists, is drawn, and is enclosed.**
+      //
+      // THE REMEDY IS TO STOP TYPING `z` IN. A landmark is placed against the surface it is meant to
+      // shape, derived from the same ellipsoid binding that emits that surface, so a future skull
+      // edit moves the face with it instead of silently swallowing it. `sink` says how far a
+      // landmark is bedded in; a tube whose AXIS lies on the surface is half embedded and half proud
+      // by construction, which is both readable and impossible to detach.
+      const SKULL = { c: [0, .080, .004], r: [.100, .132, .098] };
+      // THE JAW LED THE FACE, WHICH IS WHY EVEN A HEAD WITH LANDMARKS READ AS A MUZZLE. It was
+      // `{ c: [0, .002, .071], r: [.072, .040, .070] }` — front face at z 0.141 against the NOSE at
+      // 0.130 and the skull at 0.102, so the most forward point of a human head was its jaw, by
+      // 11 mm over the nose. On the plate the nose leads by a wide margin and the jaw falls away
+      // under the cheek. Pulled back so the order is nose 0.130 > jaw 0.116 > skull 0.102, which is
+      // the one proportion on this face that can be stated as an inequality rather than a taste.
+      const JAW = { c: [0, .002, .060], r: [.072, .040, .056] };
+      B.skin.ellipsoid(P(...SKULL.c), [S(SKULL.r[0]), S(SKULL.r[1]), S(SKULL.r[2])], hi, 16);
       B.skin.ellipsoid(P(0,.045,.096),[S(.025),S(.040),S(.034)],hi,10);             // nose
-      B.skin.ellipsoid(P(0,.002,.071),[S(.072),S(.040),S(.070)],hi,12);            // jaw/chin
-      B.skin.ellipsoid(P(-.105,.076,0),[S(.018),S(.038),S(.014)],hi,8);
+      B.skin.ellipsoid(P(...JAW.c), [S(JAW.r[0]), S(JAW.r[1]), S(JAW.r[2])], hi, 12);   // jaw/chin
+      B.skin.ellipsoid(P(-.105,.076,0),[S(.018),S(.038),S(.014)],hi,8);            // ear
       B.skin.ellipsoid(P( .105,.076,0),[S(.018),S(.038),S(.014)],hi,8);
+      const surfZ = (E, x, y) => {
+        const u = (x - E.c[0]) / E.r[0], w = (y - E.c[1]) / E.r[1], k = 1 - u * u - w * w;
+        return k <= 0 ? null : E.c[2] + E.r[2] * Math.sqrt(k);
+      };
+      // The face is TWO masses and a landmark belongs to whichever is in front at its own (x, y).
+      // The mandible line was placed against the skull and the jaw ellipsoid is 46 mm in front of
+      // the skull at the chin, so it was inside the jaw rather than on it.
+      const faceZ = (x, y) => Math.max(surfZ(SKULL, x, y) ?? -9, surfZ(JAW, x, y) ?? -9);
+      // A landmark that runs ACROSS the face must FOLLOW the face. A straight tube between two
+      // points on a curved mass sinks in the middle; this walks the curve instead.
+      const along = (x0, y0, x1, y1, n) => Array.from({ length: n }, (_, i) =>
+        [x0 + (x1 - x0) * (i / (n - 1)), y0 + (y1 - y0) * (i / (n - 1))]);
+      // `proud` IS THE ONLY NUMBER THAT MATTERS AND IT IS NOW THE ONE THAT IS TYPED. A landmark's
+      // radius sets how WIDE the form is; how far it stands off the surface is a separate thing,
+      // and the first two cuts of this block conflated them — a tube of radius r bedded by a fixed
+      // `sink` stood (r - sink) proud, so the fat landmarks became wires standing a centimetre off
+      // an otherwise smooth ovoid and the face read as a mask made of cables. The axis is now
+      // placed so a tube stands exactly `proud` metres above the surface whatever its radius.
+      // These values are millimetres on a 264 mm head, because the plate's landmarks are shading
+      // breaks and not lumps: at this scale a 2-4 mm swell under a key light is a cheekbone and a
+      // 10 mm one is a scar.
+      const ridge = (pts, r0, r1, proud = 0.0025, seg = 7) => {
+        for (let i = 0; i + 1 < pts.length; i++) {
+          const t0 = i / (pts.length - 1), t1 = (i + 1) / (pts.length - 1);
+          const ra = r0 + (r1 - r0) * t0, rb = r0 + (r1 - r0) * t1;
+          const a = pts[i], b = pts[i + 1];
+          B.skin.tube(P(a[0], a[1], faceZ(a[0], a[1]) - ra + proud), P(b[0], b[1], faceZ(b[0], b[1]) - rb + proud),
+            S(ra), S(rb), hi, hi, 0, seg, 2);
+          // A ball at every interior joint, for the same reason the digit builder puts one at every
+          // knuckle: two tapered tubes meeting at an angle leave a wedge uncovered on the OUTSIDE
+          // of the bend, and the end caps of the two tubes then read as a hard step. Without these
+          // the brow and the mandible rendered as lengths of segmented cable laid on the face
+          // rather than as one continuous form. At seg 4 a joint ball is 32 triangles.
+          if (i + 2 < pts.length) B.skin.ball(P(b[0], b[1], faceZ(b[0], b[1]) - rb + proud), S(rb), hi, 4);
+        }
+      };
       // The same seven landmarks, against `refs/modern/character_closeup/REF-ER__steam-dyules-
       // 2764067250.jpg` opened rather than described: brow, orbit rim, nostril wing, cheekbone,
       // jaw edge and the underside of the chin all read as form there under a soft key. The
       // seventh, "crest root", has no human referent, so this family carries the nasal bridge
       // (glabella to tip) in its place — stated here rather than quietly counted as the same thing.
+      // THE REFERENCE, OPENED RATHER THAN DESCRIBED, and it overturned the first cut of this block.
+      // `refs/modern/character_closeup/REF-ER__steam-dyules-2764067250.jpg` at native 1920x1080:
+      // NOTHING ON THAT FACE PROTRUDES. The eye is a DARK RECESS with a small light iris; the brow
+      // is a soft shelf whose read is the SHADOW under it; the cheekbone is a gentle swell; the
+      // mouth is a seam between two low lips. Every landmark reads because of what is in shadow
+      // beside it, not because of a lump standing off the skull.
+      //
+      // A union-of-convex-primitives builder cannot cut a socket, so the recess is made the only
+      // way it can be: by raising what SURROUNDS the eye — brow above, cheek below — and leaving
+      // the eyeball itself close to flush. A first cut of this block put the ball 7 mm proud inside
+      // a full 8-arc orbit ring and rendered a gargoyle in goggles; that arm is in
+      // `W1-F10-r6/sheets/` beside this one precisely so the difference is arguable rather than
+      // asserted. Radii and sink depths below are therefore ALL smaller than that first cut.
       for (const s of [-1, 1]) {
-        B.skin.tube(P(s*.010,.120,.070), P(s*.072,.106,.056), S(.020), S(.012), hi, hi, 0, 7, 2);  // brow ridge
-        for (let k = 0; k < 6; k++) {
-          const a0 = (k/6)*Math.PI*2, a1 = ((k+1)/6)*Math.PI*2, rr = .034;
-          B.skin.tube(P(s*.042 + Math.cos(a0)*rr, .086 + Math.sin(a0)*rr, .066),
-            P(s*.042 + Math.cos(a1)*rr, .086 + Math.sin(a1)*rr, .066), S(.008), S(.008), hi, hi, 0, 5, 1);  // orbit rim
+        ridge(along(s*.006, .122, s*.080, .102, 4), .019, .013, .0040);              // brow ridge
+        // Lids, not a ring. Only the arcs a face actually carries as ridges: over the top of the
+        // eye and under it. The full circle read as spectacles.
+        for (const [a0d, a1d, r] of [[200, 250, .0060], [250, 300, .0065], [300, 340, .0055],
+          [20, 60, .0050], [60, 110, .0055], [110, 160, .0050]]) {
+          const rr = .034, a0 = a0d * Math.PI / 180, a1 = a1d * Math.PI / 180;
+          const p0 = [s*.042 + Math.cos(a0)*rr, .086 + Math.sin(a0)*rr];
+          const p1 = [s*.042 + Math.cos(a1)*rr, .086 + Math.sin(a1)*rr];
+          B.skin.tube(P(p0[0], p0[1], faceZ(p0[0], p0[1]) - r + .0020), P(p1[0], p1[1], faceZ(p1[0], p1[1]) - r + .0020),
+            S(r), S(r), hi, hi, 0, 5, 1);
         }
-        B.skin.ellipsoid(P(s*.021,.034,.098),[S(.014),S(.012),S(.015)],hi,8);                       // naris
-        B.skin.tube(P(s*.074,.064,.058), P(s*.052,.012,.036), S(.019), S(.024), hi, hi, 0, 7, 2);   // cheek-to-jaw
-        B.skin.tube(P(s*.018,-.018,.092), P(s*.064,.022,.006), S(.012), S(.019), hi, hi, 0, 7, 2);  // mandible line
+        B.skin.ellipsoid(P(s*.021,.034,.098),[S(.014),S(.012),S(.015)],hi,8);       // naris (in the nose)
+        ridge(along(s*.078, .060, s*.058, .020, 3), .022, .028, .0022);              // cheekbone
+        ridge(along(s*.014, -.024, s*.068, .022, 4), .015, .022, .0022);             // mandible line
       }
-      B.skin.ellipsoid(P(0,-.020,.074),[S(.036),S(.020),S(.046)],hi,10);                            // chin underside
-      B.skin.tube(P(0,.108,.058), P(0,.062,.092), S(.013), S(.020), hi, hi, 0, 7, 2);               // nasal bridge
+      B.skin.ellipsoid(P(0,-.024,.056),[S(.034),S(.020),S(.040)],hi,10);            // chin underside
+      ridge(along(0, .110, 0, .062, 3), .015, .022, .0028);                          // nasal bridge
+      // A MOUTH. There was none — not buried, ABSENT — and it is the first thing the r5 judgement
+      // lists as missing from a humanoid head. Two low lips with the dark seam between them added
+      // as a presentation piece below, because a same-colour crease is exactly the cue that failed
+      // to survive the low-key interiors those faces were photographed in. Placed off the plate's
+      // own proportion: the mouth sits about 45% of the way from the nose base (y 0.005) to the
+      // underside of the chin (y -0.040), not halfway down the jaw where the first cut put it.
+      ridge(along(-.026, -.007, .026, -.007, 5), .0085, .0085, .0025);               // upper lip
+      ridge(along(-.024, -.026, .024, -.026, 5), .0095, .0095, .0030);               // lower lip
     }else if(artFamily==='undead'){
       // A narrow corpse volume supports the separate bone skull/ribs without smuggling the
       // player's reptile snout and crest underneath them.
@@ -1338,7 +1434,19 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
   // `extra` multiplies offset AND scale on top of `M.build`. Head-attached pieces pass the family
   // head scale through it, so eyes, pupils and horns shrink with the skull rather than staying at
   // their old size on a smaller head — which would have turned the proportion fix into bug eyes.
-  const addPresentation=(boneId,geo,offset,scale=[1,1,1],rot=[0,0,0],label='form',material=familyMat,extra=1)=>{const bi=index.get(boneId);if(bi===undefined)return;bakeCurvature(geo);const mesh=new THREE.Mesh(geo,material);mesh.name=`actor-family-form:${artFamily}:${label}@${boneId}`;mesh.castShadow=true;mesh.receiveShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const bs=M.build*extra,local=new THREE.Matrix4().compose(new THREE.Vector3(offset[0]*bs,offset[1]*bs,offset[2]*bs),q,new THREE.Vector3(scale[0]*bs,scale[1]*bs,scale[2]*bs));const rootLocal=artFamily==='beast'?restWorld[bi].clone().multiply(local):null;group.add(mesh);presentation.push({bi,mesh,local,rootLocal});};
+  // `extra` REPLACES the build scale rather than multiplying it, and that is a fix, not a style
+  // choice. `headScale` above already SOLVES for build — its whole derivation is
+  // `(TARGET_EXTENT - 0.070 * build) / headTopLocal`, chosen so a heavy character is not a
+  // different number of heads tall. Multiplying build back in afterwards applied the compensation
+  // twice to every head-attached piece, and only to those pieces: the skinned skull is scaled by
+  // `headScale` alone. Measured on the shipped roster, the two scales disagree by the build factor,
+  // so on any variant with `build < 1` the eyes and pupils were pulled INWARD relative to the skull
+  // they sit in and disappeared, while `build > 1` pushed them out on stalks. Running the visible-
+  // surface census over the six `base.humanoid` variants, eyes were worth ZERO visible pixels on
+  // every light-build variant and thousands on `hum.legion-heavy` (build 1.20) — the same code,
+  // the same head, one number apart. Body pieces are unaffected: they pass no `extra` and still
+  // scale by `M.build`.
+  const addPresentation=(boneId,geo,offset,scale=[1,1,1],rot=[0,0,0],label='form',material=familyMat,extra=null)=>{const bi=index.get(boneId);if(bi===undefined)return;bakeCurvature(geo);const mesh=new THREE.Mesh(geo,material);mesh.name=`actor-family-form:${artFamily}:${label}@${boneId}`;mesh.castShadow=true;mesh.receiveShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const bs=extra===null?M.build:extra,local=new THREE.Matrix4().compose(new THREE.Vector3(offset[0]*bs,offset[1]*bs,offset[2]*bs),q,new THREE.Vector3(scale[0]*bs,scale[1]*bs,scale[2]*bs));const rootLocal=artFamily==='beast'?restWorld[bi].clone().multiply(local):null;group.add(mesh);presentation.push({bi,mesh,local,rootLocal});};
   // The SAME `headScale` the skinned head block above solved for — one binding, read twice, so a
   // future change to the canon cannot leave the eyes at the old size on a new skull.
   const hScale = headScale;
@@ -1418,13 +1526,33 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     // it was "a wooden artist's mannequin". It carried 329 of 408 NPCs before the race routing fix
     // and still carries 148. Eye and pupil are separate geometry, as B8 requires, and they are cut
     // from the same cloth as the saxhleel pair immediately above so improving one improves both.
-    const hEyeMat=(mats.bone||mats.metal).clone();hEyeMat.color.setHex(0xd8d2c4);hEyeMat.roughness=.28;
-    const hPupilMat=mats.darkStone.clone();hPupilMat.color.setHex(0x140f0c);
+    // A sclera at 0xd8d2c4 is the brightest thing on the head and, on a ball standing proud of the
+    // skull, it was the ONLY thing the eye read as. The plate's sclera is in shadow almost
+    // everywhere and the iris is the small dark accent; this pair is pulled toward that.
+    const hEyeMat=(mats.bone||mats.metal).clone();hEyeMat.color.setHex(0xa79f8c);hEyeMat.roughness=.34;
+    const hPupilMat=mats.darkStone.clone();hPupilMat.color.setHex(0x1a1310);
+    // THE EYE WAS 5.8 mm INSIDE THE SKULL and only 0.7 mm of pupil ever cleared it. These z values
+    // are no longer typed: they are the skull ellipsoid's own surface height at the eye's (x, y),
+    // solved from the SAME numbers the skinned head block emits — 0.0928 at (0.042, 0.086) — with
+    // the ball seated 6 mm into its socket so it stands proud without floating. The orbit rim now
+    // ringing it (skinned, 8 mm proud) is what turns a proud ball into an eye rather than a bead.
+    // For comparison, the saxhleel eye — the one that DOES read in `sheets/07-faces-after.png` —
+    // clears its own skull by 11.8 mm, and that is the number this is set against.
+    const H_SKULL_Z_AT_EYE = 0.0928;
     for(const s of [-1,1]){
       const side=s<0?'l':'r';
-      addPresentation('head',new THREE.SphereGeometry(.021,10,7),[s*.042,.086,.074],[1,.80,.62],[0,0,0],`eye-${side}`,hEyeMat,hScale);
-      addPresentation('head',new THREE.SphereGeometry(.0085,8,6),[s*.042,.086,.090],[.78,1,.42],[0,0,0],`pupil-${side}`,hPupilMat,hScale);
+      // Seated 12 mm in, so the ball's front stands ~1 mm proud AT ITS CENTRE and falls behind the
+      // skull toward its edges. That is what makes the visible patch an ALMOND rather than a
+      // circle: the eye is the frontmost surface only where the skull has curved away from it.
+      addPresentation('head',new THREE.SphereGeometry(.021,10,7),[s*.042,.086,H_SKULL_Z_AT_EYE-.012],[1,.80,.62],[0,0,0],`eye-${side}`,hEyeMat,hScale);
+      addPresentation('head',new THREE.SphereGeometry(.0075,8,6),[s*.042,.086,H_SKULL_Z_AT_EYE+.001],[.80,1,.40],[0,0,0],`pupil-${side}`,hPupilMat,hScale);
     }
+    // The dark slot between the two lip rolls the skinned block just built. A mouth was absent
+    // entirely — the r5 judgement names it first — and a same-colour crease is precisely the cue
+    // that vanished in the low-key interiors those faces were photographed in, which is why this
+    // one carries contrast the way the pupil does rather than relying on shading alone.
+    const hMouthMat=mats.darkStone.clone();hMouthMat.color.setHex(0x2b1d17);
+    addPresentation('head',new THREE.SphereGeometry(1,12,6),[0,-.014,.112],[.026,.0035,.009],[0,0,0],'mouth-line',hMouthMat,hScale);
   }
 
   return { group, bones, index, skeleton, meshes, rootBone, restWorld, waterU, secondary, secondaryMat: frillMat, equipment, equipmentMat:equipMat, presentation };
