@@ -410,10 +410,18 @@ const masd = (xs) => (xs.length < 2 ? 0 : xs.slice(1).reduce((s, v, i) => s + Ma
 // the same alternation there is just consecutive captures of one unchanging tree: its paired
 // difference must collapse to ~0. A control that has never been seen to differ from the experiment
 // is a second copy of the experiment (RULES rule 6), and this one is watched.
-async function alternate(g, { pairs, settle }) {
+async function alternate(g, { pairs, settle, warmup = 240, giFirst = false }) {
   await placeScene(g);
+  // `--gi-first --warmup 0` reproduces the ORDER OF HARNESS CALLS that lands a run in the dark
+  // regime: setGI before the camera pose, and no long settle. Measured as the first capture of a
+  // fresh process, that order gives a GI-off floor of 4.63 with shadow_levels 28 and holds it flat
+  // from frame 2 to frame 360; the default order (camera, long settle, then setGI) gives 14.29 with
+  // shadow_levels 33 — on the pinned-baseline tree too, which has no GI code in it. Which regime the
+  // fix is measured in matters, because 28 is the fresh-process number and the blind verdict's own
+  // corroboration was that our shadow_levels swept low against the reference on 5 of 5 pairs.
+  if (giFirst) await setGI(g, false);
   await g.h('camera', CAMERA);
-  await g.h('stepFrames', 240); // warm once, up front — the drift the block design rode on happens here
+  if (warmup > 0) await g.h('stepFrames', warmup);
   const off = [], on = [];
   for (let i = 0; i < pairs; i++) {
     await setGI(g, false);
@@ -583,7 +591,9 @@ if (args['null-control']) {
 if (args.alternate) {
   const pairs = Number(args.pairs || 6);
   const settle = Number(args.settle || 12);
-  const { off, on } = await alternate(g, { pairs, settle });
+  const warmup = args.warmup === undefined ? 240 : Number(args.warmup);
+  const giFirst = args['gi-first'] === true;
+  const { off, on } = await alternate(g, { pairs, settle, warmup, giFirst });
   const diffs = on.map((o, i) => +(o.p10_luma - off[i].p10_luma).toFixed(3));
   const p90diffs = on.map((o, i) => +(o.p90_luma - off[i].p90_luma).toFixed(3));
   const meanDiff = diffs.reduce((s, v) => s + v, 0) / diffs.length;
@@ -594,7 +604,7 @@ if (args.alternate) {
   const smallest = Math.min(...diffs);
   result.alternating = {
     note: 'off/on interleaved at ONE pose after a single 240-frame warm-up, so capture-order drift lands on both arms and cancels in the paired difference. This replaces the two-still block comparison as the load-bearing measurement — see the comment on `alternate()` for the RTX A4500 numbers that killed the block design.',
-    pairs, settle_frames: settle, subsample_step: MOTION_STEP,
+    pairs, settle_frames: settle, subsample_step: MOTION_STEP, warmup_frames: warmup, gi_set_before_camera: giFirst,
     p10_off_series: offSeries, p10_on_series: on.map((o) => o.p10_luma),
     paired_p10_differences: diffs, paired_p90_differences: p90diffs,
     mean_paired_p10_difference: +meanDiff.toFixed(3),
