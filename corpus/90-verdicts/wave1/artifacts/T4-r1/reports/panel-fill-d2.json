@@ -1,0 +1,161 @@
+{
+ "produced_by": "inline python: modal panel colour by 3-bit quantisation over the getUIState() panel rect, then the CIE76 dE>6 fraction",
+ "item": "RI-UIX09 \u00a7A D1/D2",
+ "panel_rect_source": "getUIState() largest kind:panel element",
+ "panel_rect": [
+  200,
+  160,
+  1520,
+  780
+ ],
+ "caveat": "UPPER BOUNDS. Every menu panel renders at screen_alpha 0.94, so world texture behind the panel contributes to the dE>6 fraction. The true UI-only fill is lower than every figure below.",
+ "morrowind_reference": {
+  "inventory": 0.61,
+  "journal_spread": 0.48,
+  "character_sheet": 0.42,
+  "book_page": 0.44,
+  "source": "RI-UIX09 \u00a7A, read off corpus/70-visual/refs/morrowind/REF-A12b/ plates; pixel_metrics_valid false for that folder, tolerance +/-0.05"
+ },
+ "bar": {
+  "P4_pass": 0.35,
+  "P4_hard_fail": 0.15
+ },
+ "screens": {
+  "fixture-inventory__1920x1080.png": {
+   "modal_background_rgb": [
+    40,
+    56,
+    40
+   ],
+   "modal_share": 0.24,
+   "D2_fill_fraction": 0.2074,
+   "verdict": "below bar"
+  },
+  "fixture-journal__1920x1080.png": {
+   "modal_background_rgb": [
+    168,
+    160,
+    144
+   ],
+   "modal_share": 0.1728,
+   "D2_fill_fraction": 0.349,
+   "verdict": "below bar"
+  },
+  "fixture-levelup__1920x1080.png": {
+   "modal_background_rgb": [
+    216,
+    216,
+    200
+   ],
+   "modal_share": 0.2688,
+   "D2_fill_fraction": 0.1723,
+   "verdict": "below bar"
+  },
+  "fixture-journal-search__1920x1080.png": {
+   "modal_background_rgb": [
+    168,
+    160,
+    144
+   ],
+   "modal_share": 0.2109,
+   "D2_fill_fraction": 0.2773,
+   "verdict": "below bar"
+  },
+  "inventory__1920x1080.png": {
+   "modal_background_rgb": [
+    48,
+    64,
+    48
+   ],
+   "modal_share": 0.2714,
+   "D2_fill_fraction": 0.1312,
+   "verdict": "HARD FAIL"
+  },
+  "journal__1920x1080.png": {
+   "modal_background_rgb": [
+    176,
+    168,
+    152
+   ],
+   "modal_share": 0.1988,
+   "D2_fill_fraction": 0.2397,
+   "verdict": "below bar"
+  },
+  "sheet__1920x1080.png": {
+   "modal_background_rgb": [
+    48,
+    64,
+    48
+   ],
+   "modal_share": 0.2966,
+   "D2_fill_fraction": 0.0686,
+   "verdict": "HARD FAIL"
+  },
+  "container__1920x1080.png": {
+   "modal_background_rgb": [
+    136,
+    88,
+    56
+   ],
+   "modal_share": 0.7147,
+   "D2_fill_fraction": 0.0332,
+   "verdict": "HARD FAIL"
+  },
+  "map__1920x1080.png": {
+   "modal_background_rgb": [
+    184,
+    176,
+    152
+   ],
+   "modal_share": 0.1148,
+   "D2_fill_fraction": 0.3903,
+   "verdict": "PASS"
+  },
+  "spells__1920x1080.png": {
+   "modal_background_rgb": [
+    40,
+    32,
+    24
+   ],
+   "modal_share": 0.3269,
+   "D2_fill_fraction": 0.3054,
+   "verdict": "below bar"
+  },
+  "wait__1920x1080.png": {
+   "modal_background_rgb": [
+    48,
+    64,
+    48
+   ],
+   "modal_share": 0.3033,
+   "D2_fill_fraction": 0.0612,
+   "verdict": "HARD FAIL"
+  }
+ },
+ "D1_declared": {
+  "populated_inventory": 0,
+  "pictorial_kind_vocabulary_counted": [
+   "icon",
+   "item_icon",
+   "doll",
+   "portrait",
+   "map_terrain",
+   "glyph_object",
+   "paperdoll",
+   "depiction"
+  ],
+  "kinds_actually_present_in_the_inventory_panel": {
+   "list_row": 15,
+   "category": 11,
+   "divider": 3,
+   "panel_header": 1,
+   "encumbrance": 1,
+   "gold": 1,
+   "scroll_extent": 1,
+   "detail_panel": 1,
+   "hint": 1
+  },
+  "note": "The map screen DOES declare pictorial kinds (map_terrain, map_place x2, map_player), so the build is capable of them and the inventory simply has none."
+ },
+ "worst_screen": "container__1920x1080.png"
+}

@@ -1,0 +1,152 @@
+{
+ "produced_by": "inline python over game/data/items/**, game/data/dialogue/** and game/data/books/**, re-derived at the moment of writing rather than inherited",
+ "why_not_content_stats": "RI-UIX03 method step 1 names tools/analysis/content-stats.mjs, whose output carries a coverage.items FILE LIST and no item-statistics block and no uncorroborated_proper_nouns field. Recorded as a method deviation in the verdict.",
+ "item_files": [
+  "game/data/items/carried.json",
+  "game/data/items/thorn.json",
+  "game/data/items/writ.json"
+ ],
+ "n_item_records_raw": 49,
+ "n_distinct_ids": 47,
+ "duplicate_ids": {
+  "stamped-writ": 2,
+  "rotted-hall-key": 2
+ },
+ "duplicate_id_note": "stamped-writ is defined in writ.json and again in carried.json; rotted-hall-key in carried.json and again in thorn.json. The records differ \u2014 one copy of each carries a description and the other does not \u2014 so which record a screen reads decides whether the item is described. No corpus row covers id uniqueness and none was invented for this.",
+ "kinds": [
+  "armour",
+  "book",
+  "clothing",
+  "document",
+  "ingredient",
+  "key",
+  "letter",
+  "misc",
+  "potion",
+  "talisman",
+  "tool",
+  "weapon"
+ ],
+ "categories_on_screen": [
+  "All",
+  "Weapon",
+  "Armour",
+  "Clothing",
+  "Potion",
+  "Ingredient",
+  "Book",
+  "Tool",
+  "Misc",
+  "Quest"
+ ],
+ "C5_categories": 10,
+ "C5_floor": 8,
+ "C5": "PASS",
+ "C2_N6_weightless": [
+  {
+   "id": "stamped-writ",
+   "kind": "document",
+   "category": "quest",
+   "exempt_under_C2": false,
+   "file": "game/data/items/carried.json"
+  },
+  {
+   "id": "rotted-hall-key",
+   "kind": "key",
+   "category": "quest",
+   "exempt_under_C2": true,
+   "file": "game/data/items/carried.json"
+  },
+  {
+   "id": "sealed-letter-stormhold",
+   "kind": "letter",
+   "category": "quest",
+   "exempt_under_C2": true,
+   "file": "game/data/items/carried.json"
+  },
+  {
+   "id": "counted-crate-tally",
+   "kind": "document",
+   "category": "quest",
+   "exempt_under_C2": false,
+   "file": "game/data/items/carried.json"
+  },
+  {
+   "id": "eshis-knife",
+   "kind": "weapon",
+   "category": null,
+   "exempt_under_C2": false,
+   "file": "game/data/items/thorn.json"
+  },
+  {
+   "id": "amended-writ",
+   "kind": "document",
+   "category": "quest",
+   "exempt_under_C2": false,
+   "file": "game/data/items/writ.json"
+  }
+ ],
+ "C2_N6": "FAIL. eshis-knife is kind \"weapon\" and carries no weight, no value_gold and no description at all; stamped-writ, amended-writ and counted-crate-tally are category \"quest\" at weight 0. C2 exemption list is closed and reads letters, keys, gold \u2014 rotted-hall-key and sealed-letter-stormhold are correctly exempt.",
+ "sectionC_row1_mean_desc_words": 28.1,
+ "sectionC_row1_band": "12-45",
+ "sectionC_row1": "PASS",
+ "sectionC_row2_max_desc_words": 34,
+ "sectionC_row2_ceiling": 120,
+ "sectionC_row2": "PASS",
+ "sectionC_row3_item_description_words": 1263,
+ "sectionC_row3_dialogue_denominators": {
+  "conservative_named_prose_fields": 22538,
+  "landed_census_figure": 31473,
+  "all_long_strings_minus_declared_design_note_keys": 87547
+ },
+ "sectionC_row3_ratio_under_each": {
+  "conservative_named_prose_fields": 0.05604,
+  "landed_census_figure": 0.04013,
+  "all_long_strings_minus_declared_design_note_keys": 0.01443
+ },
+ "sectionC_row3_budget": 0.05,
+ "sectionC_row3_hard_fail": 0.2,
+ "sectionC_row3": "DEPENDS ON A DENOMINATOR NOBODY HAS DEFINED. Under the most conservative reading (only the six named prose fields) the ratio is 0.0560 and is MARGINALLY OVER the 0.05 budget; under the landed census figure it is 0.0401 and passes; under all long strings minus declared design-note keys it is 0.0144 and passes comfortably. THE AR-2 HARD FAIL AT 0.20 IS NOT APPROACHED UNDER ANY OF THE THREE, which is what B6 turns on. The items own provenance note calls 0.05 \"the weakest of these\" numbers and says it was chosen as an order of magnitude rather than derived; this measurement is the case it warned about.",
+ "sectionC_row4_uncorroborated": [
+  {
+   "id": "shell-scale-hauberk",
+   "tokens": [
+    "Cool"
+   ],
+   "sentence_initial_false_positive": true
+  },
+  {
+   "id": "silt-strider-silk-sash",
+   "tokens": [
+    "Wearing"
+   ],
+   "sentence_initial_false_positive": true
+  },
+  {
+   "id": "marsh-marrow",
+   "tokens": [
+    "Alchemists"
+   ],
+   "sentence_initial_false_positive": true
+  }
+ ],
+ "sectionC_row4_count": 3,
+ "sectionC_row4_pct": 6.4,
+ "sectionC_row4_ceiling_pct": 10,
+ "sectionC_row4": "PASS \u2014 and all three hits (Cool, Wearing, Alchemists) are sentence-initial ordinary words rather than proper nouns, so the true figure is 0%.",
+ "sectionC_row5_empty_desc": [
+  {
+   "id": "eshis-knife",
+   "kind": "weapon",
+   "file": "game/data/items/thorn.json"
+  },
+  {
+   "id": "amended-writ",
+   "kind": "document",
+   "file": "game/data/items/writ.json"
+  }
+ ],
+ "sectionC_row5_required": 0,
+ "sectionC_row5": "FAIL",
+ "M-L1": "FAIL on row 5 outright, and row 3 is denominator-dependent. M-L1 requires all five rows in band."
+}

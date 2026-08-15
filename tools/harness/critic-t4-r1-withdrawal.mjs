@@ -70,5 +70,5 @@ try {
     return { n_enemies: es.length, eid: eid || null, spawned, aggro, frames,
       encounter: (() => { try { return H.getEncounterState(); } catch (e) { return 'ERR ' + e.message; } })(),
       uistate_has_combat_phase: Object.prototype.hasOwnProperty.call(H.getUIState(), 'combat_phase') };
-  }, 90000);
+  }, 240000);
 } finally { save(); await h.close(); console.log('done'); }
