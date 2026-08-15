@@ -1,8 +1,8 @@
 {
   "schema": "elder-souls/t4-r7-container-drive@1",
-  "at": "2026-08-15T22:48:19.582Z",
+  "at": "2026-08-15T23:14:10.581Z",
   "label": "live",
-  "commit": "5ec636a838e4b5040307e2ad3560d125ed80f087",
+  "commit": "378c93522a8733be504096f1577596ce0170d292",
   "checks": [
     {
       "id": "R3a the container screen opens and names itself",
@@ -19,6 +19,11 @@
       "id": "R1b the R1 arm can disagree — a deliberately unfittable NAME comes back truncated:true",
       "pass": true,
       "detail": "probe row drew name 'A probe rec…' (truncated=true); its 11.5 / 96 columns held: true"
+    },
+    {
+      "id": "K0 a real DOM key event moves the container selection (arms must disagree)",
+      "pass": false,
+      "detail": "selection eshis-knife -(ArrowDown)-> eshis-knife -(KeyS)-> eshis-knife — KEY PATH DEAD: every key-driven check below is UNMEASURED, not failed"
     },
     {
       "id": "R2 every fact — condition included — is laid out INSIDE the band rect that clips it",
@@ -212,6 +217,14 @@
       ],
       "facts_right": 274,
       "facts_fit": true
+    },
+    "k0": {
+      "selected": [
+        "eshis-knife",
+        "eshis-knife",
+        "eshis-knife"
+      ],
+      "rows_visible": 4
     },
     "conditioned": {
       "item": "eshis-knife",
