@@ -3,13 +3,219 @@
   "roadmap_item": "T4",
   "round": 7,
   "role": "builder",
-  "state": "in_progress",
-  "answering": "corpus/90-verdicts/wave1/T4-r6.md (FAIL, piece score 2) at pin 8cde4128, under ARBITRATION S61 and S62",
-  "files_touched": [
+  "state": "delivered_unjudged",
+  "answering": "corpus/90-verdicts/wave1/T4-r6.md + .json (FAIL, piece score 2) under ARBITRATION S56/S57/S58/S59/S60/S61/S63/S64 and HAZARDS 22",
+  "resumed_from": "the container restart at ~20:03. My predecessor banked b9b48766 and its further work survived only in the quarantine commit 86181c27 (ref refs/orphaned/2026-08-15-container-restart).",
+
+  "what_i_could_not_do": [
+    {
+      "id": "KEYS-DEAD-IN-MY-OWN-INSTRUMENT",
+      "what": "K0 FAILS. No real DOM KeyboardEvent moves the container selection in tools/ui/t4-r7-container-drive.mjs. Measured this run at commit 378c9352: selection eshis-knife -(ArrowDown)-> eshis-knife -(KeyS)-> eshis-knife, with 4 rows visible. ArrowDown and KeyS are the SAME binding (game/data/input/profiles.json .desktop.move.back = [\"KeyS\",\"ArrowDown\"], read this run), so this is not an unbound code.",
+      "consequence": "R3b (side switch) and R3c (transfer both directions) are UNMEASURED, scored 0 fail-closed, and are NOT attributable to this build. My geometry change moves every row rect on this screen, so operability on r7 geometry genuinely wants re-driving and I did not achieve it.",
+      "the_part_that_matters": "The first two runs of this tool reported R3b as a FAILURE — 'left/right does not switch sides' — against a screen whose sides switch fine under the r6 critic's t4-r2-critic-drive.mjs (H1 pass, H2 44->45->44). The tool's own I0 header warned that a detached listener would produce exactly that, and nothing acted on the warning. K0 exists now so the instrument's silence can never again be filed as the build's defect.",
+      "who_should_do_it": "The round-7 critic, with tools/ui/t4-r2-critic-drive.mjs H0-H3, which is the instrument known to operate this screen. I did not diagnose why mine differs and I am not claiming it is the game."
+    },
+    {
+      "id": "C7-STILL-VIOLATED-AND-I-CAN-NOW-PROVE-NO-GEOMETRY-OF-THIS-PANEL-SATISFIES-IT",
+      "what": "RI-UIX03 C7 wants the description 'unabbreviated and untruncated'. The band shows 4 lines where round 6 showed 2, complete for 20 of 45 carried records where round 6 was complete for 0. It is not 45 of 45 and this round does not claim C7.",
+      "the_arithmetic_that_says_it_is_unreachable_here": "Measured offline over all 45 records in game/data/items/carried.json through the game's OWN wrap()/faceOf()/BODY.screen and inventory.js's own descLineCap(): at the shipped band (276 wide, 172 tall, first description baseline 80, 19px body) the cap is 4 and the need histogram is {3 lines: 1, 4: 19, 5: 23, 6: 2}. Six lines need 164 units of prose under an 80-unit header inside a 172-unit band. Widening the band is the only lever, and the band's width is 436 minus the depiction plate: plate 150 -> 20 of 45 complete; plate 120 -> 31; plate 90 -> 41; plate 60 -> 44; plate 0 -> 45 of 45. C7 is reached ONLY by deleting the depiction.",
+      "why_the_depiction_cannot_go": "The plate is 7,894 of this panel's ink pixels at density 0.4028 against a panel reading 0.1685, and it is RI-UIX09 DN5's own pass condition ('the item-detail panel leads with a depiction'). Shrinking it 150 -> 90 loses roughly 5,800 ink pixels and gains roughly 1,354 back as prose, which puts D2 near 0.148 — under DN4's floor. Both directions fail.",
+      "so_what_this_is": "A genuine conflict between RI-UIX03 C7 and RI-UIX09 DN5/DN4 inside a 480-wide container, not a layout oversight. Filed as an arbitration question below. I did not resolve it and I did not pretend to."
+    },
+    {
+      "id": "TWO-NAMES-STILL-ELLIPSISED-AGAINST-A-REMEDY-CLAUSE-ASKING-FOR-AT-MOST-ONE",
+      "what": "The r6 remedy's acceptance clause 2 is 'at most 1 item name ellipsised across both sides'. My driven run shows 2: 'Bog-iron maul' -> 'Bog-iron m…' and 'Rootweave cowl' -> 'Rootweave …'.",
+      "the_arithmetic": "The name column is 95.43 units wide, and row() ellipsises at col.w - 10, so 85.43 units of text room. Measured through the game's own measure()/faceOf('ink') at 17px: Bog-iron maul 88.13 (short 2.70), Sapwood bow 89.35 (short 3.92), Boiled hide jack 97.68 (short 12.25), Rootweave cowl 103.31 (short 17.88), Black-water draught 130.23 (short 44.80). Chitin cuirass 84.21 fits.",
+      "why_i_did_not_fix_it": "Clearing all of them needs ~+45 units of name column per side, i.e. a panel roughly 28% wider. The container passes DN4 at 0.1685 with a margin of 0.0185 over a demonstrated band of 0.0159 — a spare of 0.0026. Growing 480 -> 520 alone divides D2 by 1.083 to about 0.1555, margin 0.0055, which is INSIDE the band and therefore 'unresolved' under S61, which fails closed. Growing the box to satisfy clause 2 would take a passing screen to a failing one, which is round 6's mistake with the sign flipped.",
+      "the_cheapest_partial_i_did_NOT_take_and_why": "Gutter 24 -> 12 buys +6 units per side at no cost in panel area (the gutter is inside the panel, so ink and denominator both hold), clearing 2 of the 5 over-long names. I did not take it because I could not re-measure a further geometry change through a worktree arm inside this turn, and shipping an unmeasured geometry change is exactly what round 6 did. Named here so the next round can take it WITH a capture attached. REVERSIBLE."
+    },
+    {
+      "id": "CLAUSE-2-AND-CLAUSE-4-OF-THE-R6-REMEDY-CANNOT-BOTH-BE-MET",
+      "what": "The r6 remedy asks for at most 1 truncated name (clause 2) AND container D2 >= 0.1538 (clause 4). The name arithmetic needs a panel ~28% wider; the density arithmetic forbids widening it at all. I met clause 1, clause 3 and clause 4 and failed clause 2, and I am saying which rather than splitting the difference."
+    },
+    {
+      "id": "THE-BROWSER-DIES-MID-RUN-EVERY-TIME-AND-I-DID-NOT-FIND-OUT-WHY",
+      "what": "All three drive runs closed the page immediately after shoot('02-conditioned'), throwing 'Target page, context or browser has been closed'. Not diagnosed. It may be the box reaping under contention (HAZARDS 10) or a crash on the 3.4 MB screenshot. The report now survives it (see the teardown fix) but the cause is unknown."
+    },
+    {
+      "id": "ONE-CAPTURE-CONFIG-OF-EIGHT",
+      "what": "Every number here is 1920x1080. RI-UIX06 FD4's pass condition is 0 clipping at all 8 capture configs and I measured one, exactly as round 6 did. The other seven are unmeasured, not extrapolated."
+    },
+    {
+      "id": "NO-BLIND-PAIR",
+      "what": "RI-UIX09 DN7 and the blind pairs on RI-UIX03/04/06/07 did not run. A subagent cannot spawn a fresh judge. Fail-closed. The orchestrator owes them under CLAUDE.md rule 0e."
+    }
+  ],
+
+  "files_i_claim": [
     "game/src/ui/screens/inventory.js",
     "game/src/ui/chrome.js",
     "tools/ui/t4-r7-inkbudget.mjs",
+    "tools/ui/t4-r7-container-drive.mjs",
+    "corpus/90-verdicts/wave1/artifacts/T4-r7/**",
     "orchestration/status/W1-T4-r7.json"
   ],
-  "note": "Claim written before the AFTER capture so siblings see the claim while the browser runs. Full report follows in this file."
+  "files_i_did_NOT_touch_and_that_are_someone_else_s": [
+    "tools/ui/t4-r4-critic-overlap.mjs — the unsatisfiable clause. The brief says it is not mine and the orchestrator's own dead end is recorded in orchestration/status/T4-R4-CLAUSE-THE-ORCHESTRATOR-OWES.json. Left alone.",
+    "tools/visual/f10-r11-crowd-stance.mjs, tools/visual/f4-r2-light.mjs, corpus/90-verdicts/wave1/artifacts/W1-F10-r11/ — siblings' in-flight files, dirty in the shared tree throughout my round. Never in any --paths I passed."
+  ],
+
+  "recovered_from_the_quarantine": {
+    "commit": "86181c27 (branch orphaned/2026-08-15-container-restart)",
+    "kept_and_banked": [
+      "game/src/ui/chrome.js — row() decides the ellipsis ONCE, up front, and publishes meta.columns_drawn = {text, declared, truncated}. This is the most valuable thing in the quarantine and it is why R1 can now fail.",
+      "tools/ui/t4-r7-inkbudget.mjs — the rewrite adding band_perturb / band_mode / band_ref / band_thresh. Its band_ref arm is what answers job 3.",
+      "tools/ui/t4-r7-container-drive.mjs — kept as a skeleton, but three of its checks were repaired before I would believe any of them (below).",
+      "the capture directories, moved WHOLESALE to corpus/90-verdicts/wave1/artifacts/T4-r7/recovered-from-quarantine/ so nothing mistakes them for this round's authoritative arms."
+    ],
+    "discarded": [
+      "corpus/90-verdicts/wave1/artifacts/T4-r7/reports/critic-d2.json — a failed run. Its screens all read 'no capture on disk' at paths like /home/user/elder-souls-claude/container,container_no_name,levelup/live-world__1920x1080.png, i.e. --screens was consumed as --out. It is debris from importing t4-r2-critic-measure.mjs, which RUNS on import (the r6 verdict's own secondary observation 7). I hit the same trap twice and deleted the file both times; the durable fix is still to split d2()/decodePNG() into a library with no import side effect."
+    ],
+    "the_quarantined_AFTER_arm_is_better_than_i_assumed_and_here_is_the_check": "Its manifest commit is e998e0ab, which I first read as 'a sibling's HEAD, therefore void under HAZARDS 22'. Re-derived: `git merge-base --is-ancestor b9b48766 e998e0ab` returns TRUE and `git log --oneline -1 e998e0ab` is the r7 build's own headline — e998e0ab IS the r7 build, and /home/user/t4r7-after is a real worktree checked out at it. So that arm was 22-clean all along. I did not inherit that conclusion either way; I ran both commands. It is superseded below only because game/src/ui changed after it."
+  },
+
+  "the_claim_i_was_told_to_verify_rather_than_inherit": {
+    "predecessor_s_headline": "b9b48766: 'no numeric column can truncate again'",
+    "verdict": "TRUE on the shipped path, and it is now falsifiable, which it was not when the claim was made.",
+    "why_the_original_check_could_not_have_verified_it": "The tool's R1 split the row ELEMENT's `text` on a double space and looked for the ellipsis. But chrome.js row() builds `text` from cols.map(c => c.text) — the DECLARED strings — and applies the ellipsis inside the draw callback. Round 6 drew the weight '11.5' as '11…' and its element text still read 'Bog-iron maul  11.5  96'; that exact string is in round 6's manifest AND in the recovered r7 run's own data.rows. A check reading `text` reports 0 truncated numbers against a screen visibly drawing one. That is HAZARDS 22's shape in a different instrument: an arm that cannot disagree with the thing it tests.",
+    "what_it_reads_now": "meta.columns_drawn[i].truncated — the post-ellipsis string, decided once in row() and consumed by the draw callback, so the number a check reads and the glyphs drawn cannot differ.",
+    "measured": {
+      "commit": "378c93522a8733be504096f1577596ce0170d292 (game/src/ui byte-identical to the measured commit a2ef1e5c — `git diff a2ef1e5c 378c9352 -- game/src/ui/` is empty)",
+      "R1": "PASS — 4 rows driven, 0 columns after the name truncated. Widths published by the build itself: name 95.43, weight 32.74, gold 23.84 units.",
+      "per_row": [
+        "container.mine.row.eshis-knife    'Eshi's knife' | '0.0'  | '—'   — none truncated",
+        "container.theirs.row.bog-iron-maul 'Bog-iron m…' | '11.5' | '96'  — NAME truncated, both numbers whole",
+        "container.theirs.row.reed-cutter   'Reed-cutter' | '3.0'  | '42'  — none truncated",
+        "container.theirs.row.rootweave-cowl 'Rootweave …' | '0.6' | '18'  — NAME truncated, both numbers whole"
+      ],
+      "R1b_the_positive_control": "PASS. A probe record named 'A probe record whose name is far too long to fit in any column this screen owns' was inserted into window.__ENGINE.ui.data.items and put in a real container, so drawContainer() laid it out and row() published what it drew. Its NAME came back 'A probe rec…' truncated:true — the reader is alive — while its 11.5 and 96 columns held. Then the probe was deleted and the fixture restored. A guard nobody has seen fail is not evidence (RULES rule 6), and this one has now been seen to fire."
+    },
+    "the_caveat_i_am_volunteering": "The two numeric columns are sized to the widest value across BOTH lists, so they cannot truncate and cannot change width while you SCROLL — but they DO change width when you open a different container. In this fixture the widest gold is '96' (11.84 units); a container holding a 400-gold item gives a wider gold column and a correspondingly narrower name column. Never a truncated number; sometimes a differently-placed column. Reported rather than discovered by the critic."
+  },
+
+  "job_1_the_density_regression_round_6_introduced": {
+    "method": "S59 preservation, run exactly as the r6 remedy specifies. A git worktree (/home/user/t4r7-after) checked out --detach at the delivered commit, tools/node_modules and node_modules symlinked (HAZARDS 7), measured by invoking THAT WORKTREE'S OWN copy of the tool — `node /home/user/t4r7-after/tools/ui/t4-r2-measure.mjs` — not the main tree's with an --entry flag (HAZARDS 22).",
+    "the_discriminator_asserted_before_any_number_was_believed": {
+      "manifest_commit": "a2ef1e5cf620dc268203babc500dd99b2551435e",
+      "delivered_sha": "a2ef1e5cf620dc268203babc500dd99b2551435e",
+      "result": "MATCH — this arm ran the tree it names",
+      "and_since": "`git diff a2ef1e5c HEAD -- game/src/ui/` is empty, so the geometry measured is the geometry delivered."
+    },
+    "table": {
+      "note": "r6 column = the recovered before-arm at 8cde4128, whose container reads 0.1459 — identical to the r6 critic's own independently-measured HEAD-clean figure. pin column = the r6 critic's worktree at 76cd4848, quoted from its verdict and NOT re-derived by me.",
+      "container":         { "pin_76cd4848_per_r6_critic": 0.1538, "r6_shipped": 0.1459, "r7_delivered": 0.1685 },
+      "container_no_name": { "pin_76cd4848_per_r6_critic": 0.1449, "r6_shipped": 0.1380, "r7_delivered": 0.1600 },
+      "levelup":           { "pin_76cd4848_per_r6_critic": 0.1521, "r6_shipped": 0.1494, "r7_delivered": 0.1494 },
+      "inventory":         { "pin_76cd4848_per_r6_critic": 0.1557, "r6_shipped": 0.1563, "r7_delivered": 0.1563 },
+      "journal":           { "pin_76cd4848_per_r6_critic": 0.1740, "r6_shipped": 0.1670, "r7_delivered": 0.1669 },
+      "sheet":             { "pin_76cd4848_per_r6_critic": 0.1730, "r6_shipped": 0.1622, "r7_delivered": 0.1621 },
+      "spells":            { "pin_76cd4848_per_r6_critic": 0.3048, "r6_shipped": 0.3075, "r7_delivered": 0.3075 }
+    },
+    "against_the_r6_preservation_clause": {
+      "container_D2_>=_0.15": "MET — 0.1685",
+      "container_D2_>=_0.1538_its_value_at_76cd4848": "MET — 0.1685, +0.0147 over the pin and +0.0226 over what round 6 shipped",
+      "levelup_not_below_0.1494": "MET — 0.1494, unmoved. game/src/ui/screens/progress.js is untouched by this round.",
+      "journal_and_sheet_move_0.0001": "Rounding in the manifest between two captures, not code — no journal or sheet file changed this round."
+    },
+    "where_the_ink_came_from_and_it_is_not_a_bigger_box": "The box got SMALLER: 480x460 -> 480x452, and the eight units came off the two lowest-density regions on the screen (the 18-unit list/band gap at density 0.0105 and the 16-unit inner top gap at 0.0592, against a panel then reading 0.1459). Those units, plus 16 units taken from the centre gutter at density 0.0509, went into the depiction plate (140 -> 150, density 0.4028) and into two more lines of description. This is S56 applied to the part of the box that had no contents at all, and it is the opposite of padding the numerator — S57's concern does not arise because no element TYPE disappeared."
+  },
+
+  "job_2_the_rule_the_remedy_did_not_know_about": {
+    "the_weight_column": "CLOSED, and verified above rather than inherited — 0 numeric columns truncate on the shipped path, and the check that says so has been made capable of saying otherwise.",
+    "the_description": "NOT closed. See what_i_could_not_do. 4 lines where round 6 drew 2; complete for 20 of 45 records where round 6 was complete for 0; C7 wants 45 of 45 and no geometry of a 480-wide container reaches it.",
+    "a_third_defect_nobody_had_reported_and_it_was_shipped_in_the_game": {
+      "what": "Round 6's band drew its facts at fx += 150, so a THIRD fact began at r[0] + 300 inside a band whose own rect is 276 wide. surface.js clips to the declared rect, so 'condition' — label and value — was removed entirely on every conditioned item in the container. RI-UIX03 C7 lists 'condition/durability if applicable' among the things selecting an item must show.",
+      "why_no_capture_ever_showed_it": "The fixture round 6 photographed leads with a Bark token, whose condition the fixture omits, so the third fact never existed in the picture.",
+      "fixed_and_measured": "inventory.js factLayout() now derives the block from the facts' own measured widths, ONCE, and both the draw callback and meta.facts/meta.facts_right consume that same object. Driven: item eshis-knife, 3 facts (weight/gold/condition), last right edge 274.00 against a band 276 wide — inside, with the 2 units of clearance factLayout reserves.",
+      "and_i_repaired_my_predecessor_s_own_fix_while_verifying_it": "Its gap was `Math.max(10*s, Math.min(150*s, (W - total)/(n-1)))`. That Math.max is a one-sided guard pointing the wrong way (HAZARDS 0b): when three facts are wide enough that the even spread falls under 10 units, the max RESTORES 10 and pushes the last fact back off the right edge — reintroducing the clip at wider data. It also landed the three-fact case with its right edge at exactly W, on the clip boundary. factLayout() clamps on one side only, reserves 2 units, floors the gap at 6, and — this is the point — leaves right > W TRUE rather than clamping it away, so meta.facts_fit can be false and R2 can fail.",
+      "and_the_check_could_not_fail_either": "My predecessor's R2 ended `push('R2 ...', true, ...)` — a literal true. Same family as R1 reading the declaration. It is arithmetic on the published layout now."
+    }
+  },
+
+  "job_3_the_live_corpus_defect_measured": {
+    "the_question": "S61 / the r6 critic's filed defect: RI-UIX09's D2 moved 0.0108 on a 0.06% image change because the modal colour it references shifted. Quantify the spread.",
+    "the_answer_and_it_changes_the_mechanism": "D2 IS NOT NOISY. IT IS ANCHORED TO A MOVING REFERENCE. Four arms, all at the delivered commit, all in corpus/90-verdicts/wave1/artifacts/T4-r7/reports/t4-r7-inkbudget-delivered.json:",
+    "arms": {
+      "band_perturb": "0.0000 on EVERY screen. S61's method taken literally: dither +-1 LSB on 0.06% of the panel's pixels (130 px on the container), 6 independent seeds, D2 recomputed end to end with the mode re-derivation included. An imperceptible change to the pixels moves D2 by nothing at all.",
+      "band_mode": "0.0000 on EVERY screen. rival_buckets_considered = 0 — no rival colour bucket sits within 2N counts of the leader, so a perturbation of that size cannot promote one. The modal bucket cannot flip. That is a finding, not an absence of one.",
+      "band_ref": "0.0159 container, 0.0160 levelup, 0.0146 container_no_name — the dominant term everywhere, and the mechanism the r6 critic actually caught. D2 re-derives its reference PER CAPTURE, so shift the reference by the demonstrated cross-capture distance and re-measure.",
+      "band_thresh": "0.0128 container, 0.0181 levelup — the dE00 5.0-7.0 sweep, kept for continuity with the r6 verdict. It is a sensitivity, not a noise."
+    },
+    "the_sensitivity_curve_container_panel": {
+      "method": "--ref-de swept over the three reference shifts actually observed in this project, six directions each, bisected in sRGB to land exactly on the target dE00 (dE00 is not a metric and has no unique inverse, so bisection answers the only well-posed question).",
+      "0.305_dE00": "band_ref 0.0029 — the container's OWN modal colour between the r6 and r7 captures, [132,85,55] -> [133,85,55]",
+      "0.843_dE00": "band_ref 0.0089 — the sheet's shift the r6 critic demonstrated, [42,55,43] -> [45,57,45]",
+      "1.905_dE00": "band_ref 0.0159 — the level-up shift the r6 critic demonstrated, [221,220,211] -> [220,217,204]",
+      "the_rate": "approximately 0.0085 of D2 per 1.0 dE00 of reference movement, and 0.0000 per unit of imperceptible pixel change."
+    },
+    "what_this_corrects_and_it_is_not_a_contradiction": "The r6 critic's number stands; its mechanism was half-attributed. The 0.06% of pixels did not move D2 — the modal colour moving 0.843-1.905 dE00 did, and the 0.06% merely accompanied it. This matters because the two mechanisms have different fixes: averaging over captures or denoising buys nothing (band_perturb is already 0.0000), whereas pinning the reference to the panel's DECLARED ground colour from getUIState().materials — which the r6 critic itself proposed — removes the whole dominant term and collapses the container's band from 0.0159 to band_thresh's 0.0128.",
+    "does_a_0.06_percent_perturbation_really_move_it_three_times_the_headroom": "No, and I am saying so against my own interest, because a wide band makes a pass HARDER under S61, not easier. The container's headroom this round is 0.0185; its band charged with the largest reference shift seen anywhere in this project is 0.0159; its band at its OWN observed reference shift is 0.0029.",
+    "and_i_charged_myself_the_worst_number_anyway": "Every S61 verdict below uses ref-de 1.905, the level-up shift, on panels whose own references moved 0.305. That is deliberately conservative."
+  },
+
+  "s61_verdicts_at_the_delivered_commit": {
+    "rule": "S61: DN4 may fail on one capture; it may never pass on one. Above the floor by less than the demonstrated band is 'unresolved', and unresolved fails closed.",
+    "container": { "d2": 0.1685, "floor": 0.15, "margin": 0.0185, "band": 0.0159, "band_from": "ref", "verdict": "PASS", "note": "0.0026 of spare over the band. Thin, and named as thin." },
+    "container_no_name": { "d2": 0.16, "floor": 0.15, "margin": 0.0100, "band": 0.0146, "band_from": "ref", "verdict": "UNRESOLVED — FAILS CLOSED", "note": "Up 0.1380 -> 0.1600 this round and still short. It needs +995 ink px to clear the band. This is the screen the round did not finish and I am not calling it a pass." },
+    "levelup":   { "d2": 0.1494, "floor": 0.15, "margin": -0.0006, "band": 0.0181, "band_from": "thresh", "verdict": "FAIL", "note": "Pre-existing and NOT this round's. game/src/ui/screens/progress.js is untouched; it reads 0.1494 before and after. The r6 critic proved the same thing with a delete-the-fix arm." }
+  },
+
+  "against_the_r6_remedy_acceptance_clause_by_clause": [
+    { "clause": "1 — ZERO weight values ellipsised", "result": "MET", "evidence": "R1 + R1b, read off meta.columns_drawn: 0 of 4 rows, both sides, and the reader is proven able to say otherwise." },
+    { "clause": "2 — at most 1 item name ellipsised across both sides", "result": "NOT MET — 2", "evidence": "Bog-iron maul, Rootweave cowl. Arithmetic and the reason I did not chase it are in what_i_could_not_do." },
+    { "clause": "3 — container.band renders >= 4 wrapped lines", "result": "MET", "evidence": "descLineCap(172, 80, 19) = 4, verified independently offline against the game's own type metrics; the drive report's band meta reports shown=4/needed=5 on the ui-journal fixture's bark token and shown=1/needed=1 on eshis-knife. Round 6 drew 2." },
+    { "clause": "4 — PRESERVATION per S59, worktree at the delivered commit, manifest commit asserted", "result": "MET", "evidence": "container 0.1685 >= 0.15 and >= 0.1538; levelup 0.1494 not below 0.1494; manifest commit == a2ef1e5c asserted before any number was read." }
+  ],
+
+  "instrument_repairs_i_made_and_why_each_one_was_needed": [
+    "R1 read the DECLARED text where the defect is in the DRAWN text. It could not fail. Now reads meta.columns_drawn, and REFUSES (does not pass) against a build that publishes no such field.",
+    "R2 was `push('R2 ...', true, ...)`. It could not fail. Now asserts meta.facts_right <= band rect width, on numbers the screen drew with.",
+    "R1b did not exist. A hostile probe row now proves the R1 reader fires.",
+    "K0 did not exist. The tool's own I0 header predicted exactly the failure the first two runs suffered and nothing checked for it. Now the key path is falsified BEFORE any key-driven result is believed.",
+    "R3b compared row `focused` flags, which two different rows can satisfy identically; now reads the engine's focus.side, the field the working H1 reads.",
+    "R3c read getUIState().screen.rows.length, which is undefined here and threw, killing the run before it wrote anything; now reads window.__ENGINE.sim.inventory.",
+    "state: 'ui-journal' was forced on launchGame. The working container prober does not pass it. Now opt-in.",
+    "await h.close() hung forever when a sibling closed the page, so the process sat past its own timeout holding four passing checks nobody could read. Now raced against a 20s ceiling, with the teardown recorded as data — HAZARDS 13's shape from the inside, and HAZARDS 18's empty-run refusal added alongside."
+  ],
+
+  "arbitration_questions": [
+    {
+      "question": "RI-UIX03 C7 requires the full description unabbreviated and untruncated. RI-UIX09 DN5 requires the detail panel to lead with a depiction, and DN4 requires D2 >= 0.15. Measured over all 45 carried records, the container band satisfies C7 at 45 of 45 ONLY with the depiction deleted (plate 0), and shrinking the plate to 90 to reach 41 of 45 puts D2 near 0.148, under the floor. Which yields?",
+      "what_i_did_not_do": "I did not weaken either row and I did not pretend to satisfy C7. The build takes every line the room genuinely holds (2 -> 4) and publishes description_lines_shown / description_lines_needed so the shortfall is readable off getUIState() on any item without re-deriving the wrap.",
+      "the_shape_of_an_answer_i_would_expect": "Either the band is not the only place a description may live (a press-to-read expansion is a Morrowind affordance and costs no panel area at rest), or C7 is scoped to a surface that can hold it. Both are rulings, neither is a build."
+    },
+    {
+      "question": "S61 makes the band fail-closed and requires it measured per screen. Measured here, band_perturb and band_mode are 0.0000 on every screen and the entire band is band_ref — the per-capture re-derivation of the modal colour. If the reference were pinned to the declared ground colour from getUIState().materials, the band would collapse to the threshold sweep alone. Should the band be measured against a moving reference at all, when the movement is a property of the INSTRUMENT rather than of the build?",
+      "note": "Asked against my own interest: the band I published is the largest of the four arms and it is the one my container has to clear."
+    }
+  ],
+
+  "hazards_worth_adding": [
+    {
+      "shape": "A CHECK THAT READS A DECLARATION CANNOT SEE A DRAW, AND IT WILL REPORT GREEN.",
+      "instances_in_this_thread_alone": "round 4/5's gold column declared a value the clip removed entirely; round 6's weight column declared '11.5' and drew '11…'; round 6's condition fact was declared and clipped away whole; round 7's own R1 split the declared text and reported 0 truncations; round 7's own R2 was a literal true.",
+      "the_general_form": "This is HAZARDS 22 in the UI: 22 is 'your baseline was never loaded', this is 'your assertion was never rendered'. The fix in both cases is the same and costs one field — make the thing under test PUBLISH what it actually did, and read that. chrome.js row() and inventory.js factLayout() are the two examples; both derive once and are consumed by the draw, so the published number and the drawn glyph cannot disagree by construction.",
+      "the_tell": "If a check would return the same answer against a build with the drawing code deleted, it is reading a declaration."
+    },
+    {
+      "shape": "A TOOL'S OWN HEADER WARNED OF THE EXACT FAILURE AND THREE RUNS FILED IT AS THE BUILD'S DEFECT ANYWAY.",
+      "detail": "t4-r7-container-drive.mjs's I0 note said a detached listener would make every key-driven check fail against a fine game. Two runs then reported 'left/right does not switch sides' on a screen the r6 critic had already driven green. A warning in prose is not a check; promote it to one that runs FIRST and gates everything downstream."
+    }
+  ],
+
+  "evidence": {
+    "preservation_arm_S22_clean": "corpus/90-verdicts/wave1/artifacts/T4-r7/worktree-delivered/measure-delivered-1920x1080.json (commit a2ef1e5c asserted) + screens/",
+    "s61_bands": "corpus/90-verdicts/wave1/artifacts/T4-r7/reports/t4-r7-inkbudget-delivered.json",
+    "s61_before_for_the_delta": "corpus/90-verdicts/wave1/artifacts/T4-r7/reports/t4-r7-inkbudget-recovered-before.json (8cde4128, container 0.1459)",
+    "reference_shift_sensitivity": "corpus/90-verdicts/wave1/artifacts/T4-r7/reports/t4-r7-inkbudget-sens-refde{0.305,0.843,1.905}.json",
+    "driven": "corpus/90-verdicts/wave1/artifacts/T4-r7/drive-live/t4-r7-drive-live.json + shots/ (commit 378c9352; game/src/ui byte-identical to a2ef1e5c)",
+    "recovered_unjudged": "corpus/90-verdicts/wave1/artifacts/T4-r7/recovered-from-quarantine/** — kept because it is real, labelled because it is not this round's authoritative arm"
+  },
+
+  "for_the_critic": [
+    "Do not take R3b/R3c from my report in either direction. K0 says my instrument cannot press a key on this screen; use tools/ui/t4-r2-critic-drive.mjs, which drove H0-H3 green in round 6, and re-drive operability on r7 geometry — every row rect moved.",
+    "The two remaining numbers to falsify are container 0.1685 and its band 0.0159. The arm is a worktree at a2ef1e5c and the manifest carries the commit; check that field before believing anything, including mine.",
+    "container_no_name is 'unresolved, fails closed' by my own instrument and I have not hidden it behind the container's pass.",
+    "I did not grade this round and I am not claiming a score."
+  ]
 }
