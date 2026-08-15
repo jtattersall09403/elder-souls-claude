@@ -128,6 +128,18 @@ const SIGN_REACH_M = 2.6;
  * `getUIState()`'s conversation fields keeps its answer.
  */
 const DIALOGUE_WINDOW = true;
+/**
+ * W1-UIX08-CENSUS-ROUTE. Character creation runs on the same window (`RI-UIX08` §H).
+ *
+ * The owner, having played the deployed build: *"It also wasn't being used for the dialogue in the
+ * character creation/new game flow, which it should be."* It was the first conversation a new
+ * player ever had and it was the only one still on `render/ui.js`'s vellum reply panel.
+ *
+ * Set this to false and the census goes back to that panel, whole — not partly. That is the
+ * control arm, and `_censusRouted()` is the one predicate every site reads so the two surfaces can
+ * never both be up in one scene, which is the outcome the previous piece correctly refused.
+ */
+const CENSUS_WINDOW = true;
 import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand, rootTopicIds, infoFor, topicLabel } from './character/converse.js';
 import { topicKey } from './core/topics.js';
 import { buildOverheardIndex, buildDirectionsIndex, RumourBook, RoadBook, learnTopics, RUMOUR_TOPIC } from './sim/quest/topic-supply.js';
@@ -3530,8 +3542,14 @@ export class Engine {
     if (!this.renderer) return null;
     if (!this.conversation.open) {
       if (!this.censusSurface || !this.censusSurface.open) this.renderer.ui.setModel(null);
-      this.renderer.ui.setSuppressed(false);
-      if (this.ui) this.ui.dialogueClosed();
+      // W1-UIX08-CENSUS-ROUTE. NOT UNCONDITIONALLY, and this guard is load-bearing rather than
+      // defensive: this function runs on paths that have nothing to do with the census (a load, a
+      // cell change, closing a conversation elsewhere), and un-suppressing here while creation is
+      // routed would put the vellum panel back UNDER the dialogue window — two dialogue surfaces
+      // painted at once, in the one scene the whole piece exists to keep on a single window.
+      const routed = this._censusRouted();
+      this.renderer.ui.setSuppressed(routed);
+      if (this.ui && !routed) this.ui.dialogueClosed();
       // W1-UIX08-INPUT-FIX. Hand the pad's D-pad back to the world. The lock is NOT re-requested
       // here: a browser only grants pointer lock inside a user gesture, and `input/real.js`'s
       // mousedown handler already re-requests it on the next click, which is exactly how leaving
@@ -3672,6 +3690,110 @@ export class Engine {
   }
 
   /**
+   * W1-UIX08-CENSUS-ROUTE — THE CENSUS, AS THE DIALOGUE WINDOW SEES IT (`RI-UIX08` §H).
+   *
+   * The owner played the deployed build and said: *"It also wasn't being used for the dialogue in
+   * the character creation/new game flow, which it should be."* This is the read that fixes it.
+   * It is deliberately shaped like `_dialogueCtx()` — same field names for the same jobs — so the
+   * window is one window with one vocabulary rather than two screens that happen to share a file.
+   *
+   * IT ADDS NO CONTENT AND COMPOSES NO ENGLISH. Every string in here came out of
+   * `buildCensusModel()`, which came out of `character/census.js`, which came out of
+   * `game/data/dialogue/topics/writ-house.json`. The "she is waiting for N more" aside is
+   * authored; `character/scene.js` fills the count. Nothing in this function writes a sentence,
+   * which is the rule `buildCensusModel`'s own header sets and the reason `awaiting` — a
+   * developer's sentence about RI-JRN01 O6 — must never reach a draw call.
+   *
+   * THE UTTERANCE KEYS ARE THE ONE PIECE OF REAL MACHINERY. `census.state()` is rebuilt every
+   * frame and `spoken` is cleared at every answer, so the transcript cannot be derived from the
+   * state and cannot be deduped by text: `writ.class-questions` is ONE node that asks ten
+   * different dilemmas, and a `pick` node re-emits its waiting-line every frame until the count is
+   * made up. Each string therefore carries a key naming the node and what the string is, and
+   * `DialogueHistory.appendKeyed()` prints each key exactly once. That is what turns a surface
+   * that showed one node at a time into `RI-UIX08` §D3's running transcript.
+   *
+   * @returns {object|null} null when nothing is open or nobody is saying anything
+   */
+  _censusDialogueCtx() {
+    if (!CENSUS_WINDOW) return null;
+    const s = this.censusSurface;
+    if (!s || !s.open || !this.census || this.census.done) return null;
+    const st = this.census.state();
+    const rec = st.speaker ? this._npcRecord(st.speaker) : null;
+    // The SAME model the vellum panel is built from, and that is the point: the two surfaces are
+    // fed by one function, so "which nodes has the route reached" can never be a question.
+    // `buildCensusModel` returns null at a paused node with nothing on it — RI-JRN01 O6's
+    // hand-back, where nobody is talking and there must therefore be no panel of any kind.
+    const model = buildCensusModel(this.chData, st, s, rec);
+    if (!model) return null;
+
+    const nd = model.node;
+    const kind = model.input_kind;
+    const said = [];
+    const sp = model.spoken || [];
+    for (let i = 0; i < sp.length; i++) said.push({ key: `${nd}#s${i}:${sp[i]}`, text: sp[i] });
+    if (model.preamble) said.push({ key: `${nd}#p`, text: model.preamble });
+    if (model.record) {
+      said.push({ key: `${nd}#w`, heading: model.record.name || null, text: model.record.lines.join('  ') });
+    }
+    if (model.line) said.push({ key: `${nd}#l:${model.question_id || '-'}`, text: model.line });
+    if (model.aside) said.push({ key: `${nd}#a:${model.aside}`, text: model.aside });
+
+    // §H2. The typed buffer is a ROW, above §D2's rule, in the section the item gives to what you
+    // DO with this person rather than what you ASK them. `▁` is the caret the vellum panel drew
+    // (`render/ui.js:457`); keeping it is what makes an empty buffer legible as a place to type
+    // rather than as a blank row.
+    const rows = [];
+    if (kind === 'text') rows.push({ id: 'census.typed', label: `${model.typed || ''}▁`, typed: true });
+
+    const picked = new Set(model.picked || []);
+    const opts = (model.options || []).map((o, i) => ({
+      id: `census.${i}`, label: o.text, picked: picked.has(o.id), aside: o.aside || null,
+    }));
+
+    return {
+      open: true,
+      census: true,
+      // `npc` is the transcript's identity. It is the SPEAKER and not the scene, so walking from
+      // the barge hold to the Writ House opens a fresh page in front of a different woman —
+      // §D3's "walking away and talking to somebody else is a different conversation", and the
+      // same ruling `Census.enter()` makes when it clears `spoken` at the hand-back.
+      npc: `census:${st.speaker || '-'}`,
+      speaker: rec ? [rec.name, rec.title].filter(Boolean).join(', ') : (model.speaker_name || ''),
+      disposition: null,
+      goodbye: null,
+      node: nd,
+      input_kind: kind,
+      takes_input: !!s.takesInput,
+      typed: kind === 'text' ? (model.typed || '') : '',
+      // Two signature fields for `UISystem.build()`'s repaint key, because both of these move
+      // without the frame, the node or the focus moving: the ten dilemmas on one node, and the
+      // marks appearing on a multi-select as you name each one.
+      question_key: model.question_id || null,
+      picked_sig: (model.picked || []).join('|'),
+      actions: rows,
+      topics: opts,
+      linkable: [],
+      utterances: said,
+    };
+  }
+
+  /**
+   * Is character creation being drawn by the `RI-UIX08` window rather than by the old vellum
+   * panel? One predicate, read by the three places that have to agree: `_censusSync` (which
+   * suppresses the panel), `_conversationSync` (which must not un-suppress it out from under the
+   * census) and `_censusStep` (which routes the input to whichever surface is drawing).
+   *
+   * Flip `CENSUS_WINDOW` to false and all three answer no together. That is the delete-the-fix
+   * arm, and it is one boolean for the same reason `DIALOGUE_WINDOW` is.
+   */
+  _censusRouted() {
+    return !!(DIALOGUE_WINDOW && CENSUS_WINDOW && this.ui
+      && this.censusSurface && this.censusSurface.open
+      && this.census && !this.census.done);
+  }
+
+  /**
    * W1-UIX08-INPUT-FIX — CLIENT PIXELS IN, SURFACE PIXELS OUT, AND ONE OWNER OF THAT SUM.
    *
    * A mouse and a finger both arrive in CSS client coordinates relative to the viewport. The
@@ -3760,6 +3882,29 @@ export class Engine {
     const rec = st.speaker ? this._npcRecord(st.speaker) : null;
     const model = buildCensusModel(this.chData, st, this.censusSurface, rec);
     if (this.renderer) this.renderer.ui.setModel(model);
+    // ---- W1-UIX08-CENSUS-ROUTE: THE ONE LINE THAT WAS MISSING ---------------------------------
+    //
+    // `_conversationSync()` has called `setSuppressed(DIALOGUE_WINDOW)` since the window shipped;
+    // this function never did, and that single omission is the whole of why a new player met the
+    // old vellum reply panel for the first conversation of the game and the RI-UIX08 window for
+    // every one after it. The model is still SET and still laid out above — a dozen probes read
+    // `option_count`, `panel_height_frac` and `text` off `renderer.ui.metrics()` and every one of
+    // them keeps its answer — and only the PAINT is suppressed.
+    //
+    // `_censusRouted()` rather than the bare constant, so the panel comes back the moment the
+    // census closes and the un-suppress cannot be forgotten on a path that skips this function.
+    if (this.renderer) {
+      const routed = this._censusRouted();
+      if (routed) this.renderer.ui.setSuppressed(true);
+      else if (!this.conversation.open) {
+        this.renderer.ui.setSuppressed(false);
+        // The scene is over: drop the transcript so the first person the player talks to in the
+        // world opens on a clean page rather than under the Warden-Scribe's questions.
+        if (this.ui && this.ui.dialogue && String(this.ui.dialogue.speaker || '').startsWith('census:')) {
+          this.ui.dialogueClosed();
+        }
+      }
+    }
     for (const n of this.sim.npcs) n.speaking = (n.eid === st.speaker);
     return model;
   }
@@ -3892,7 +4037,35 @@ export class Engine {
     }
     if (this._censusPending) return;
     const st = this.census.state();
-    const r = this.censusSurface.step(input, st);
+    let r = null;
+    if (this._censusRouted()) {
+      // ---- W1-UIX08-CENSUS-ROUTE: the window drives itself, exactly as a conversation does ----
+      //
+      // This mirrors `_conversationStep()`'s branch line for line, and that symmetry is the
+      // point: the census and a conversation are the same window taking the same closed action
+      // set through the same `dialogueStep()` on the same fixed step, so a mouse, a thumb, a
+      // keyboard and a pad all land in one place for both. `dialogueStep` returns WHICH ROW the
+      // caret is on; `CensusSurface.commit()` — the only copy of the answer semantics in the
+      // build — is what turns that into a value.
+      //
+      // `sel` is written from the window's caret rather than tracked separately. There is one
+      // caret in this scene and `UISystem.dialogueFocus` is it; `censusSurface.sel` is now a
+      // projection of it, which is what stops the drawn highlight and the answered row from
+      // being able to disagree.
+      const act = this.ui.dialogueStep(input, this._uiCtx());
+      // `block` is the universal "no": a typed character, then a pick. It is NOT close — there
+      // is nothing to close (§H1) — and `takeBack()` is the same function the vellum route calls.
+      if (input.pressedName('block') && this.censusSurface.takeBack()) this._censusSync();
+      if (act && act.kind === 'census_confirm') {
+        if (act.idx >= 0) this.censusSurface.sel = act.idx;
+        r = this.censusSurface.commit(st, { useTyped: !!act.typed });
+        // A pick that did not complete the count, or an un-pick, commits nothing and must still
+        // redraw: the mark on the row and her waiting-line are the only feedback the player gets.
+        if (!r) this._censusSync();
+      }
+    } else {
+      r = this.censusSurface.step(input, st);
+    }
     // The conversation has the input while it is open (RI-UIX03: it does not pause the sim,
     // it only takes the buttons).
     input.consumeUI(CENSUS_ACTIONS);
@@ -4599,7 +4772,10 @@ export class Engine {
       // W1-UIX08. `null` unless somebody is talking to you. The window is driven by this field
       // rather than by a UI mode, because RI-UIX08 §D6 keeps the world running behind the panel
       // and `pausesSimulation()` must not learn about conversations.
-      dialogue: DIALOGUE_WINDOW ? this._dialogueCtx() : null,
+      // W1-UIX08-CENSUS-ROUTE: `|| this._censusDialogueCtx()`, in that order, because
+      // `Engine.talkTo()` throws if the census has the conversation — the two can never both be
+      // live, and the order records which one wins if that assertion is ever relaxed.
+      dialogue: DIALOGUE_WINDOW ? (this._dialogueCtx() || this._censusDialogueCtx()) : null,
       // W1-26 r4. The title surface is up: `ui/system.js build()` draws no HUD at all while this
       // is true. Read live off the surface rather than off a mode flag, because `getTitleState()`
       // is what every probe and the acceptance ("0 HUD strings drawn while getTitleState().shown

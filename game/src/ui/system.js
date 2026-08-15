@@ -773,10 +773,18 @@ export class UISystem {
     // reads `getUIState()` twice on the SAME frame, once before and once after following a link,
     // would get the pre-link window back. The signature carries the speaker, the length of the
     // transcript, the focus and the arm, which between them are everything that can move.
+    // §H ADDS THREE MORE THINGS THAT MOVE WHILE NOTHING ELSE DOES, and every one of them is a
+    // character on screen. `_censusTypeChar` mutates the typed buffer OUTSIDE the fixed step, on
+    // a keystroke, and nothing else in this key would move — so without `census_typed` a player
+    // typing their name would watch an unchanging row. `picked` is the same story for the four
+    // multi-select nodes, and `node` covers the ten questionnaire dilemmas, which share a node id
+    // and a speaker and differ only in the question.
+    const cd = ctx.dialogue && ctx.dialogue.census ? ctx.dialogue : null;
     const dsig = ctx.dialogue && ctx.dialogue.open
       ? `${ctx.dialogue.npc}:${this.dialogue.blocks.length}:${ctx.dialogue.said_topic || '-'}:` +
         `${this.dialogueFocus.pane}${this.dialogueFocus.linkIdx},${this.dialogueFocus.rowIdx}:` +
-        `${this.dialogueScroll},${this.dialogueColScroll}:${this.dialogueArm.links ? 'L' : 'l'}${this.dialogueArm.opaque ? 'O' : 'o'}`
+        `${this.dialogueScroll},${this.dialogueColScroll}:${this.dialogueArm.links ? 'L' : 'l'}${this.dialogueArm.opaque ? 'O' : 'o'}` +
+        (cd ? `:C${cd.node}/${cd.question_key || '-'}/${cd.typed || ''}/${cd.picked_sig || ''}/${cd.topics.length}` : '')
       : '-';
     const sig = touchSignature(ctx) + '#' + focusSignature(this.mode, this.focus)
       + '#d:' + dsig
@@ -1054,7 +1062,10 @@ export class UISystem {
     const dx = this._edge('x', input.uiMoveX || input.moveX, ctx.frame);
     const dy = this._edge('y', -(input.uiMoveY || input.moveY), ctx.frame);
 
-    if (dx > 0 && f.pane === 'prose') { f.pane = 'column'; f.rowIdx = Math.min(f.rowIdx, nRows - 1); }
+    // `Math.max(0, …)` because a census node that is only speaking — a paused hand-back, or the
+    // node the scene stops on — has an EMPTY column, and `nRows - 1` is then -1. A rowIdx of -1
+    // is a caret pointing at nothing that `_dialogueConfirm` would read as `m.topics[-1]`.
+    if (dx > 0 && f.pane === 'prose') { f.pane = 'column'; f.rowIdx = Math.max(0, Math.min(f.rowIdx, nRows - 1)); }
     else if (dx < 0 && f.pane === 'column') { f.pane = 'prose'; }
     else if (dy) {
       if (f.pane === 'prose') {
@@ -1063,7 +1074,7 @@ export class UISystem {
         // readable in the arm where nothing is lit. This is what keeps the ablated arm playable.
         else this.dialogueScroll = Math.max(0, this.dialogueScroll - dy);
       } else {
-        f.rowIdx = clamp(f.rowIdx + dy, 0, nRows - 1);
+        f.rowIdx = clamp(f.rowIdx + dy, 0, Math.max(0, nRows - 1));
         const first = m.actions.length;
         if (f.rowIdx >= first && L) {
           const i = f.rowIdx - first;
@@ -1088,7 +1099,10 @@ export class UISystem {
     this.dialoguePointerConfirm = null;
     if (clicked) { this.dialoguePressed = true; return this._dialogueConfirm(m, L, 'pointer'); }
 
-    if (input.pressedName('roll')) return { kind: 'goodbye' };
+    // §H1: `roll` is Goodbye and there is no Goodbye in the census. A player who backed out of
+    // character creation would be a body with no name, no race and no writ standing in the Writ
+    // House — which is the state `Engine._assertBodyRace()` throws on.
+    if (!m.census && input.pressedName('roll')) return { kind: 'goodbye' };
     if (!input.pressedName('interact')) { this.dialoguePressed = false; return null; }
     this.dialoguePressed = true;
     return this._dialogueConfirm(m, L, f.pane === 'prose' ? 'link' : 'column');
@@ -1097,6 +1111,20 @@ export class UISystem {
   /** What confirming on the currently focused thing does. One branch set, four input devices. */
   _dialogueConfirm(m, L, via) {
     const f = this.dialogueFocus;
+    // §H — THE CENSUS'S CONFIRM, AND IT DECIDES NOTHING ABOUT THE ANSWER. It reports which row
+    // the caret is on and whether that row is the typed buffer; `CensusSurface.commit()` is still
+    // the only place in the build that turns a row into a value, so the window route and the old
+    // vellum route cannot drift into two different character creations (RULES rule 10).
+    if (m.census) {
+      if (f.pane !== 'column') return null;                        // the prose is unlit here
+      const nA = m.actions.length;
+      if (f.rowIdx < nA) {
+        const a = m.actions[f.rowIdx];
+        return a && a.typed ? { kind: 'census_confirm', typed: true, idx: -1, via } : null;
+      }
+      const idx = f.rowIdx - nA;
+      return m.topics[idx] ? { kind: 'census_confirm', typed: false, idx, via } : null;
+    }
     const nRows = m.actions.length + m.topics.length + 1;
     if (f.pane === 'prose') {
       const topic = L && L.link_topics ? L.link_topics[f.linkIdx] : null;
