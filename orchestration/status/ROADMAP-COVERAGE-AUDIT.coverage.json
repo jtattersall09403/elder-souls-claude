@@ -1,11 +1,11 @@
 {
- "generated": "2026-08-15T12:23:09.999Z",
+ "generated": "2026-08-15T12:55:35.006Z",
  "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
  "method": "Inventory derived by fs walk + generated ledgers. Mapping authored by the audit agent after reading every RI title/front-matter, every plan heading, and every open gap record.",
  "inventory_counts": {
   "reference_items": 152,
   "plans": 49,
-  "open_gaps": 83,
+  "open_gaps": 84,
   "proposed_roadmap_items": 69
  },
  "rings": {
@@ -1489,10 +1489,11 @@
     "GAP-W1-ui-detectors-that-cannot-see",
     "GAP-W1-ui-hud-world-set-unbuilt-and-misplaced",
     "GAP-W1-ui-journal-search-view-has-no-exit",
-    "GAP-W1-ui-map-outside-the-ar2-detectors"
+    "GAP-W1-ui-map-outside-the-ar2-detectors",
+    "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
    ],
-   "n_open_gaps": 6,
-   "blocking_gaps": 5,
+   "n_open_gaps": 7,
+   "blocking_gaps": 6,
    "plans": [
     "W1-21",
     "W1-HUD-TOAST"
@@ -3799,7 +3800,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 4,
+   "verdicts": 5,
    "best_score_0_10": 6,
    "state": "judged_at_or_above_bar"
   },
@@ -3817,7 +3818,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 6,
+   "verdicts": 7,
    "best_score_0_10": 7,
    "state": "judged_at_or_above_bar"
   },
@@ -3852,7 +3853,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 4,
+   "verdicts": 5,
    "best_score_0_10": 5,
    "state": "judged_below_bar"
   },
@@ -3869,7 +3870,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 2,
+   "verdicts": 3,
    "best_score_0_10": 5,
    "state": "judged_below_bar"
   },
@@ -3887,7 +3888,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 2,
+   "verdicts": 3,
    "best_score_0_10": 2,
    "state": "judged_below_bar"
   },
@@ -3904,7 +3905,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 2,
+   "verdicts": 3,
    "best_score_0_10": 2,
    "state": "judged_below_bar"
   },
@@ -3921,9 +3922,9 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 1,
-   "best_score_0_10": 2,
-   "state": "judged_below_bar"
+   "verdicts": 2,
+   "best_score_0_10": 8,
+   "state": "judged_at_or_above_bar"
   },
   {
    "id": "RI-AUD01",
@@ -5999,6 +6000,16 @@
    "severity": "blocking",
    "path": "ui.hud.minimalism",
    "what": "Every AR-2 detector this piece ships predates the map and none of them opens it — ui-layer's 8 viewpoints, ui-metrics' 6 screens, ui-forbidden's 4 menus, ui-cen",
+   "covered_by": [
+    "T4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it",
+   "severity": "blocking",
+   "path": "ui.menu.inventory",
+   "what": "Every screen draws its panel at the same fixed rect [200, 160, 1520, 780] — 57.2% of a 1920x1080 frame — whatever it is holding, because game/src/ui/chrome.js:7",
    "covered_by": [
     "T4"
    ],
