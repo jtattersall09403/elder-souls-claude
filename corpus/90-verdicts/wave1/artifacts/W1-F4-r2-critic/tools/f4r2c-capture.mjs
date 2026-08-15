@@ -123,6 +123,9 @@ const setupOk = await g.page.evaluate(() => {
   window.__restore = () => {
     window.__cfgFn = () => {}; window.__cfgError = null;
     for (const [o, i, v, c] of window.__saved.lights) { o.intensity = i; o.visible = v; if (c && o.color) o.color.copy(c); }
+    // the cheap §3-D2 ablation is a UNIFORM, so it survives a light-intensity restore and would
+    // leak into every later arm if it were not put back explicitly.
+    if (window.__sunLight && window.__sunLight.shadow) window.__sunLight.shadow.intensity = 1;
     delete R.scene.__envWrote; delete R.scene.__envBase;
     R.scene.environmentIntensity = window.__saved.envI;
   };
@@ -232,8 +235,51 @@ const BATTERY = [
   ['x0b-control-recheck', '() => {}'],
 ];
 
+/**
+ * `--mode matched`: THE ARM THAT DECIDES THE ROUND'S RULING, AND ITS ACCEPTANCE ARMS WITH IT.
+ *
+ * `x1-moonkey` — the key recoloured to `sky.js:644`'s own night blue and nothing else touched —
+ * measured **17.07 deg** on the sealed pair01 crop, above `RI-VIS03`'s 15 deg minimum, which is
+ * verbatim the overturn condition the round's ruling named. BUT it also dropped mean lit `Yp`
+ * 0.394 -> 0.3597 and mean shadow `Yp` 0.1714 -> 0.1303, because `(0.549, 0.663, 0.847)` carries
+ * Rec.709 luminance 0.6521 against `(1.000, 0.940, 0.820)`'s 0.9441. **That is hue bought with
+ * brightness — the exact trade S59 was written about and the exact trade the shipped change went
+ * out of its way to avoid.** So the arm is not yet an overturn; it is a question.
+ *
+ * This mode asks it properly: the same recolour with the key's INTENSITY scaled by 0.9441/0.6521
+ * = 1.4478 so the key's luminous output is unchanged, plus the four arms S60 clause (a) needs
+ * (`shadows_off` for the lit mask, `key_off`, `env_off`) measured INSIDE that configuration rather
+ * than inherited from the shipped one, plus a `base` re-capture last as the run's own noise floor.
+ * The frame's own mean `Yp` is reported so "matched" is a measurement and not an assertion.
+ */
+const KEY_SHIPPED = [1.000, 0.940, 0.820], MOONC = [0.549, 0.663, 0.847];
+const LUM = (c) => 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+const KCOMP = +(LUM(KEY_SHIPPED) / LUM(MOONC)).toFixed(4);
+const moonKeyMatched = (extra = '') => `() => {
+  const s = window.__scene();
+  const o = window.__sunLight;
+  if (o) { o.color.setRGB(${MOONC[0]}, ${MOONC[1]}, ${MOONC[2]}); o.intensity = o.intensity * ${KCOMP}; }
+  ${extra}
+}`;
+const MATCHED = [
+  ['y0-base', '() => {}'],
+  ['y1-moonkey-lummatched', moonKeyMatched()],
+  ['y1-shadows_off', moonKeyMatched('window.__sunLight.shadow.intensity = 0;')],
+  ['y1-key_off', moonKeyMatched('s.traverse((o) => { if (o.isDirectionalLight && o.parent === s) o.intensity = 0; });')],
+  ['y1-env_off', moonKeyMatched('window.__envScale(0);')],
+  // and the best of the screening arms, luminance-compensated: moon-blue key + a warm ambient at
+  // 4x hemisphere/fill, which screened at 16.15 deg with `retention` 0.7132 and `C_shadow` 10.371.
+  ['y2-moonkey-warmamb-amb400-lummatched', moonKeyMatched(`
+    s.traverse((o) => {
+      if (o.isHemisphereLight && o.parent === s) { o.color.setRGB(1.000, 0.700, 0.400); o.intensity = o.intensity * 4; }
+      else if (o.isAmbientLight && o.parent === s) { o.color.setRGB(1.000, 0.700, 0.400); o.intensity = o.intensity * 4; }
+    });`)],
+  ['y0-base-recheck', '() => {}'],
+];
+
 const manifest = {
   at: new Date().toISOString(), mode: MODE, entry: ENTRY, served: servedSources(ENTRY),
+  key_luminance_compensation: { shipped_key: KEY_SHIPPED, moon_key: MOONC, rec709: [LUM(KEY_SHIPPED), LUM(MOONC)], factor: KCOMP },
   renderer: attestation, resolution: [CW, CH], seed: SEED,
   evidence_class: attestation && attestation.class === 'HARDWARE' ? 'HARDWARE' : 'SOFTWARE — differential only (HAZARDS §15)',
   rows: [], aborted: null,
@@ -247,6 +293,38 @@ try {
   await call('teleport', st.place.x, st.place.z);
   await call('stepFrames', 4);
   await call('setWeather', 'clear');
+
+  if (MODE === 'matched') {
+    const hour = Number(args.hour || 8);
+    await call('setTimeOfDay', hour);
+    const s = await call('snapshot');
+    await poseAt(s.v.player.pos, st.camera);
+    await call('stepFrames', SETTLE);
+    for (const [id, src] of MATCHED) {
+      const r = await capture(path.join(OUT, `${id}.png`), src);
+      manifest.rows.push({ mode: MODE, hour, candidate: id, ...r });
+      console.log(`  ${id.padEnd(24)} ${r.error ? 'ERROR ' + r.error : `${r.liveness} sun=${r.readback.sunIntensity} sunCol=${JSON.stringify(r.readback.sunColour)} env=${r.readback.environmentIntensity}`}`);
+    }
+  }
+
+  if (MODE === 'weathercheck') {
+    // THE PRESERVATION CLAIM THIS ROUND MADE AND NEVER CAPTURED. The shipped source comment says
+    // `overcast-flat` and `storm` "ARE UNTOUCHED AT THEIR OWN WEATHER ... safe by arithmetic",
+    // because `hor.lerp(neutral, overcast)` erases the edit AT FULL OVERCAST. `hemi.color` IS
+    // `hor` after that lerp — `sky.js` copies it — so reading the hemisphere's colour back off the
+    // live scene measures the surviving weight directly. If it is not the neutral, `(1-overcast)`
+    // is not zero and the edit is not erased.
+    for (const weather of String(args.weathers || 'clear,overcast,rain,storm,fog').split(',')) {
+      const w = await call('setWeather', weather);
+      if (!w.ok) { manifest.rows.push({ mode: MODE, weather, error: w.e }); console.log(`  ${weather}: REFUSED ${w.e}`); continue; }
+      await call('setTimeOfDay', Number(args.hour || 13));
+      await call('stepFrames', SETTLE);
+      const rb = await g.page.evaluate(() => window.__readback());
+      const r = await capture(path.join(OUT, `${weather}.png`), '() => {}');
+      manifest.rows.push({ mode: MODE, weather, hour: Number(args.hour || 13), readback: rb, ...r });
+      console.log(`  ${weather.padEnd(10)} hemiCol=${JSON.stringify(rb.hemiRootColour)} ambCol=${JSON.stringify(rb.ambientRootColour)} sun=${rb.sunIntensity} hemi=${rb.hemiSceneRoot}`);
+    }
+  }
 
   if (MODE === 'lights') {
     for (const hour of [8, 13, 19.5]) {
