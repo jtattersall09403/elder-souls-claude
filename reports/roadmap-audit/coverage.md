@@ -2,13 +2,13 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-15T19:10:13.418Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-15T19:47:29.484Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
 | reference items (`corpus/**/RI-*.md`) | 152 | 0 |
 | plans (`orchestration/plans/*`) | 49 | 0 |
-| open gaps (`GAP-LEDGER.json`) | 90 | 0 |
+| open gaps (`GAP-LEDGER.json`) | 92 | 0 |
 | proposed roadmap items | 69 | — |
 
 ## Proposed items
@@ -30,14 +30,14 @@
 | `G1` | The camera | RI-CMB06 RI-CAM01 RI-CAM02 RI-CAM03 RI-CAM04 RI-CAM05 RI-CAM06 RI-CAM07 | RI-CAM03 RI-CAM04 | 0 (0) | W1-06 | built_below_bar | **none** |
 | `F1` | Materials and surface response | — | — | 3 (2) | W1-30 W1-30C W1-30S | planned_unjudged | V1 |
 | `F2` | Shadow, contact and ambient occlusion | RI-VIS03 RI-VIS04 | — | 1 (1) | W1-30 W1-30A W1-30B W1-30S | built_below_bar | V2 |
-| `F3` | Ambient and bounce fill | RI-VIS03 RI-VIS04 | — | 1 (1) | W1-30 W1-30B W1-30S | built_below_bar | V3 |
-| `F4` | Light, sky and atmosphere | RI-VIS04 | — | 2 (1) | W1-30 W1-30B W1-30S | built_below_bar | V4/V12 |
+| `F3` | Ambient and bounce fill | RI-VIS03 RI-VIS04 | — | 2 (2) | W1-30 W1-30B W1-30S | built_below_bar | V3 |
+| `F4` | Light, sky and atmosphere | RI-VIS04 | — | 3 (2) | W1-30 W1-30B W1-30S | built_below_bar | V4/V12 |
 | `F5` | The frame pipeline | RI-VIS04 | — | 0 (0) | W1-30 W1-30A W1-30S | at_bar | V5 |
 | `F6` | Terrain and vegetation surfaces | RI-WLD15 RI-WLD16 | RI-WLD15 RI-WLD16 | 0 (0) | W1-30 W1-30F | planned_unjudged | V9/V10 |
 | `F7` | The water surface | RI-WLD10 | — | 2 (2) | W1-03 W1-30 W1-30H | built_below_bar | V11 |
 | `F8` | The building kit and settlement silhouette | RI-WLD14 | — | 1 (1) | W1-30-LIBRARY W1-30 W1-30E | built_below_bar | V8 |
 | `F9` | Interiors and practical light | RI-STL01 | — | 1 (1) | W1-30 W1-30G | built_below_bar | partial:V4 |
-| `F10` | Characters and creatures | RI-CAM07 RI-VIS08 RI-VIS10 | — | 4 (2) | W1-24 W1-30-LIBRARY W1-30 W1-30D | built_below_bar | V6 |
+| `F10` | Characters and creatures | RI-CAM07 RI-VIS08 RI-VIS10 | — | 5 (2) | W1-24 W1-30-LIBRARY W1-30 W1-30D | built_below_bar | V6 |
 | `F11` | Animation quality | RI-WPN05 RI-VIS08 | — | 1 (1) | W1-30 W1-30D | built_below_bar | V7 |
 | `F12` | VFX and particles | RI-MAG05 | — | 1 (0) | W1-30 W1-30H | built_below_bar | V13 |
 | `F13` | Art direction and region identity | RI-WLD04 RI-VIS05 RI-VIS07 RI-UIX06 | RI-VIS05 | 1 (1) | W1-30 W1-30K | built_below_bar | V15 |
@@ -228,13 +228,13 @@
 | `RI-VIS01` | 70-visual | neutral | I3 | 0 | — | never_judged |
 | `RI-VIS02` | 70-visual | modern-fidelity | I5 | 1 | 0 | judged_below_bar |
 | `RI-VIS03` | 70-visual | modern-fidelity | I3 F2 F3 | 3 | 6 | judged_at_or_above_bar |
-| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 5 | 8 | judged_at_or_above_bar |
+| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 6 | 8 | judged_at_or_above_bar |
 | `RI-VIS05` | 70-visual | morrowind | F13 | 0 | — | never_judged |
 | `RI-VIS06` | 70-visual | neutral | I3 | 5 | 5 | judged_below_bar |
 | `RI-VIS07` | 70-visual | morrowind | F13 | 1 | 4 | judged_below_bar |
-| `RI-VIS08` | 70-visual | modern-fidelity | F10 F11 | 4 | 3 | judged_below_bar |
+| `RI-VIS08` | 70-visual | modern-fidelity | F10 F11 | 5 | 3 | judged_below_bar |
 | `RI-VIS09` | 70-visual | neutral | I5 | 0 | — | never_judged |
-| `RI-VIS10` | 70-visual | morrowind | F10 I5 | 2 | 2 | judged_below_bar |
+| `RI-VIS10` | 70-visual | morrowind | F10 I5 | 3 | 2 | judged_below_bar |
 | `RI-MTH01` | 80-methods | neutral | I1 | 2 | 6 | judged_at_or_above_bar |
 | `RI-MTH02` | 80-methods | neutral | I1 | 3 | 7 | judged_at_or_above_bar |
 | `RI-MTH03` | 80-methods | neutral | I3 | 2 | 5 | judged_below_bar |
@@ -315,6 +315,8 @@
 | `GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage` | major | `combat.hitbox.sweep` | G2 |
 | `GAP-W1-f1-actor-body-shader-does-not-link` | blocking | `render.fidelity.character` | F1 F10 |
 | `GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground` | major | `render.art.character` | F10 |
+| `GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins` | major | `render.art.character` | F10 |
+| `GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour` | blocking | `render.fidelity.ibl` | F4 F3 |
 | `GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence` | blocking | `visual.renderer.water` | F7 |
 | `GAP-W1-faction-ladders-are-bricked-up-at-rank-5` | blocking | `quests.faction.rankgating` | P7 |
 | `GAP-W1-faction-ladders-are-doors-onto-empty-corridors` | blocking | `quests.faction.escalation` | P7 P8 |
