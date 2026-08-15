@@ -16,7 +16,8 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   town has 14 different bodies between 408 people.
 - **The water, round three** — two of the four things the bar requires of water were never in the
   shader at all.
-- **The container screen, round seven** — the fix for the missing prices broke the weight column.
+- **Judging the container screen** — round seven closed the density regression and found a third
+  defect nobody had reported.
 
 ## If you play right now, expect this
 
@@ -46,17 +47,19 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   pixels on 9 of 10 rows, and 8 of 19 journal entries laid out past the panel onto the world. Both are
   now **0**. The columns had been sized as *fractions* of the row, which was right at the old wide
   panel and collided at the new narrow one, because font sizes are fixed pixels.
-- **The menus were judged independently and FAILED, scoring 2 of 10.** The reflow work is real and the
-  judge confirmed it — level-up's rows read at both sizes, and the journal now runs **0 of 19** blocks
-  off the page across all ten spreads. It fails on the **container** screen, on two things nobody had
-  looked at: its description **declares 137 characters and draws 100** — ten words simply gone, with no
-  "…" to tell you they were cut, and *the same sentence draws whole on the inventory screen* — and
-  **all seven rows declare a gold price and not one of them draws it**, because the price column starts
-  12 units past the edge of the box that clips it. **Both are now fixed** — every row shows its price,
-  and the description ends in a "…" instead of just stopping. **But the fix was judged too, and failed
-  again**: making the price column fit shrank *every* column by 27%, so item names truncate harder and
-  the **weight** column now truncates too — `11.5` → `11…`, which is not a shortened label, it is a
-  wrong number. Round seven is on it, and truncation is now ruled out as an answer.
+- **The menus were judged independently and FAILED at 2 of 10 — twice — and round seven has now closed
+  the worst of it.** The reflow work was confirmed by the judge: level-up's rows read at both sizes and
+  the journal runs **0 of 19** blocks off the page. The container was the failure: its description
+  **declared 137 characters and drew 100** — ten words gone with no "…" — and **all seven rows declared
+  a gold price and none drew one**. Both were fixed, and the fix then broke the weight column (`11.5` →
+  `11…`), which is not a shortened label but a wrong number. **Now: no numeric column truncates at all,
+  the density regression is not just repaired but better than before it broke, and a third defect
+  nobody had reported is fixed** — the item's condition was being drawn 24 units outside its own box
+  and clipped away entirely on every conditioned item.
+  **Two of the checks meant to catch this could not fail.** One read the text the screen *declared*
+  rather than what it *drew*, so it passed no matter what; another was written as a literal `true`.
+  Both now assert real published numbers, and both were proven to go red on a deliberately broken row
+  first.
 - **⚠ That measurement scare is closed, and the answer was the opposite.** I said an hour ago that a
   filed verdict's numbers wouldn't reproduce and to distrust the screen scores. They reproduce
   **exactly**. The four "isolated" copies the builder compared had all quietly measured **the same
