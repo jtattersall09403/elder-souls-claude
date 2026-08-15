@@ -205,6 +205,54 @@ caught only when somebody compared what the frames actually contained against wh
 **Verify your verbs exist** (`grep` the harness), **verify your gate's argument names**, and **make
 `call()` throw on an unknown verb** rather than swallow it.
 
+## 18. A report tool that writes in a `finally` block destroys the previous run when THIS run fails
+
+**Caught 2026-08-15 by the stop hook, not by any check we wrote.** `reports/w1-04-r3-collision.json`
+was sitting uncommitted in the working tree, **1,425 lines shorter than the version in `HEAD`**. Its
+entire content was:
+
+```json
+{ "tool": "tools/world/w1-04-r3-collision.mjs", "commit": null,
+  "sections": {}, "errors": [], "fatal": null }
+```
+
+**Zero sections, zero errors, no fatal — and the process exited 0.** A run that measured nothing is
+byte-for-byte indistinguishable from a run that found nothing wrong, and it had already overwritten
+the real measurement by the time anyone could read it. Restored with `git checkout --`; nothing was
+lost, purely because the deletion had not yet been committed.
+
+**The mechanism generalises, and it is not one file. Counted 2026-08-15:**
+
+```sh
+grep -rlz --include=*.mjs -P '\}\s*finally\s*\{[^}]*writeFileSync' tools/ | tr '\0' '\n' | grep -c .
+```
+
+returns **31** — including `f10-r7-appearance.mjs` and `f10-r7-ground-truth.mjs`, which are the tools
+the character rounds shoot their evidence with. It is a shape we like, for a good reason:
+
+```js
+try   { /* fill out.sections, section by section */ }
+finally { fs.writeFileSync(reportPath, JSON.stringify(out)); await B.close(); }
+```
+
+The `finally` exists so a crashed run still leaves a partial report — which is right. But it also
+means **a run that dies on line 1 writes an empty report over a complete one**, and if it dies before
+`fatal` is set (a browser that never launches under contention, an import that throws, a `pkill` from
+a sibling — see §10) it writes `errors: []` too. The exit code is computed from `fatal || errors.length`,
+so an empty run exits **0**.
+
+**The fix, and both halves are one-sided on purpose (§0b):** refuse to overwrite an existing report
+with a zero-section run, diverting it to `<report>.EMPTY-RUN-REFUSED.json` so the failure is still
+readable; and treat a zero-section run as fatal so it cannot exit 0. Landed on
+`tools/world/w1-04-r3-collision.mjs`. **A guard that only ever refuses to destroy evidence cannot
+itself manufacture a pass** — which is why it is safe to copy into any sibling tool with the same
+`finally`, and it should be.
+
+**This is §9 and §17's failure from a third direction.** §9: cited evidence that never reaches the
+remote. §17: cited evidence overwritten by a later round. §18: cited evidence overwritten by a run
+that *failed*, reporting success. All three end with a document pointing at something that is not what
+it was written against.
+
 ## 17. A filed verdict's artefacts are immutable — reused capture tools hard-code their output path
 
 **Caught 2026-08-15, in flight.** A builder ran a capture and four files under
