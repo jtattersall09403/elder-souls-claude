@@ -10,8 +10,8 @@
 preserved on a side branch and all four rounds have been restarted from it — nothing is lost, but
 roughly two hours of work has to be re-derived rather than trusted. Same four jobs, all on ring 1:
 
-- **The sun, round two** — the key light was judged and failed; our daylight has no colour in it, and
-  the fix is a number that already exists in the file.
+- **Judging the sun, round two** — the colour fix did not work, and the builder thinks the problem
+  isn't the light at all.
 - **Characters, round eleven** — the crowd. Every NPC in the game stands in one identical pose, and a
   town has 14 different bodies between 408 people.
 - **The water, round three** — two of the four things the bar requires of water were never in the
@@ -32,16 +32,13 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
 
 **Still wrong, and you will see it:**
 - **Dialogue: clicking works, and character creation now uses the same window.** Both faults you found
-  are closed. On the first: there was **no pointer path in the entire interface** — a rule written for
-  the combat HUD's thumbstick screens said *"no cursor, no hover, no click target"* and was silently
-  inherited by the dialogue window. The keyboard always worked; the mouse and touch did nothing, so
-  every control you could see was a picture of a control. On the second: character creation ran on the
-  old panel, so the first conversation a new player ever had was the worse one. It now runs on the
-  Morrowind window, all-or-nothing by construction so you can never see both in one scene.
+  are closed. There was **no pointer path in the entire interface** — a rule written for the combat
+  HUD's thumbstick screens said *"no cursor, no hover, no click target"* and was silently inherited by
+  the dialogue window, so every control you could see was a picture of a control. And character
+  creation ran on the old panel, so the first conversation a new player ever had was the worse one.
   **Driving it turned up a bug that would have trapped you:** creation **dead-ended permanently** at
-  the class verdict, on all three class routes — the window only reset its selection when the *speaker*
-  changed, and the speaker never changes inside the Writ House. Also fixed: starting a new game with a
-  conversation open crashed the simulation step.
+  the class verdict on all three routes, because the window only reset its selection when the *speaker*
+  changed and the speaker never changes inside the Writ House.
 - **The menus are denser *and* readable now.** Sizing each panel to its contents cleared all five
   density failures and then made the text collide — level-up drew name, value and gauge into the same
   pixels on 9 of 10 rows, and 8 of 19 journal entries laid out past the panel onto the world. Both are
@@ -81,20 +78,18 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   nobody knows what draws the marsh stripes**, and that is the honest state.
 - **The container screen prints the word `undefined`** as its title. Being fixed.
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
-  its own author reported that honestly after catching that the *first* version of the measurement was
-  void: 93.7% of the improvement it was about to claim reproduced with no fix in the tree at all.
+  its author caught that 93.7% of the gain it was about to claim reproduced with no fix in the tree.
 - **The characters were being drawn inside-out — fixed, and confirmed by eye.** Your winding tip was
   right and bigger than the report you sent: **153,344 of 227,850 triangles (67.3%)** had normals
-  disagreeing with winding, body meshes **13 of 13 inverted**, three generators each wrong differently.
-  Now zero, photographed on hardware over 332 frames. A Gideon market stand that held *chrome-and-glass
-  skeletons with black shards jutting from their backs* now holds solid people in blue, green and brown
-  clothes.
+  disagreeing with winding, body meshes **13 of 13 inverted**. Now zero, photographed on hardware over
+  332 frames. A Gideon market stand that held *chrome-and-glass skeletons with black shards jutting
+  from their backs* now holds solid people in coloured clothes.
 - **Four more things about the cast, all fixed and all from one shared body plan.** 44% of them were on
   a generic body with **no eye geometry at all** (79 → 260 NPCs routed correctly); **everyone was the
   wrong height** (0 of 41 in the 7–8 head band → 41 of 41); the clothing textures were pasted **5.5×
   too fine**, which averages to a flat colour — a smith who was one tone shoulder-to-ankle now has a
-  sash, cord rings, a hem and a yoke, and *a background NPC in the same frame gained a sash nobody
-  targeted*; and the eyes went from cream googly balls to dark sockets.
+  sash, cord rings, a hem and a yoke, and *a background NPC gained one nobody targeted*; and the eyes
+  went from cream googly balls to dark sockets.
 - **People stand on the ground now, and it is photographed.** NPC positions came from one authored
   constant per settlement, never compared to the terrain. At Lilmoth, of 31 people drawn, **12 were
   underground and 15 were in the air, worst 35 metres up**. Now zero and zero, confirmed on hardware.
@@ -186,16 +181,27 @@ frame was unreachable. **It has now been judged, and it failed at 2 of 10** — 
 it: **at midday the settlement casts large readable shadows in 8 of 12 camera angles**, shot in motion
 on real hardware over 54 frames. At 08:00 there is still no building shadow on the ground at any angle.
 
-**A correction I owe you.** I wrote here that the worst-scoring shot was "flat shadowless olive ground
-before, a large soft cast shadow after". **That was me narrating what I expected to see.** Re-measured:
-that crop was **already 69–78% in shadow before the change** — 90.6% of its pixels got *darker*. The
-fix did not put it into shadow; it removed the fill that was making the existing shadow legible.
+**A correction I owe you.** I described the worst-scoring shot as going from "flat shadowless ground"
+to "a large soft cast shadow". That was me narrating what I expected to see: re-measured, the crop was
+**already 69–78% in shadow beforehand** and 90.6% of its pixels got *darker*. The fix removed the fill
+that was hiding the existing shadow.
 
 **And the judge found the thing the numbers were missing: our sunlight has no colour.** The corpus's
-own detector was sitting unused — our daylight key reads below its hard-fail line at 9 of 14
-measurements, where six real photographs read 16–143°. The proof is inside our own build: at night the
-game *does* tint its key light and passes; the daylight recipe sets the tint to exactly zero. The
-remedy is a number that already exists in the file.
+own detector was sitting unused — our daylight key reads **7.2°** against a minimum of 15, where six
+real photographs read 16–143°.
+
+**Round two tried to fix it and could not, and two things I told you about it were wrong.** I said the
+remedy was a number that already exists in the file. It isn't: warming the key measured **worse**, and
+the night-time "proof" I cited that the mechanism works turns out not to touch the moon at all — the
+moon's colour is hard-coded where no lighting recipe reaches it. Eleven different configurations were
+measured and every one lands between 5.8° and 7.3°, nowhere near 15.
+
+**The builder's conclusion, which a judge is now testing, would change the order of the work:** colour
+in a picture is the surface times the light, and **when every surface in the world is the same olive,
+the light barely matters**. That is exactly what all five blind judges wrote in words. If it holds,
+the thing blocking us is giving surfaces different materials, not tuning the sun — and I also have to
+withdraw "13:00 good, 08:00 empty": shadow area swings **fivefold across a camera orbit at a fixed
+sun**, so that claim was an artefact of looking from one angle.
 
 **That is because the acceptance number I wrote was wrong, and I have ruled it void.** It asked how
 much the picture changes when you switch the sun off — but *a pixel in shadow does not change when you
@@ -239,12 +245,10 @@ moved from 91.2%.
 
 **What has landed, and it is all plumbing rather than model choice:** the documentation every agent
 must read before starting fell from **145,000 tokens to 69,000**, paid back on every agent forever;
-the landing tool no longer spends five minutes on a step that times out under load and which the CI
-redoes anyway; **3.2 GB of dead GPU captures** were pruned off a disk that was at 96% and silently
-failing writes; and agents were leaving background waiters armed that **re-woke them after they had
-finished** — one burned 39,000 tokens and eight turns that way.
-
-Together those moved the rate about 1.7 points. Real, but small against a target of 25%.
+the landing tool stopped spending five minutes on a step the CI redoes anyway; **3.2 GB of dead GPU
+captures** were pruned off a disk at 96% that was silently failing writes; and agents were leaving
+background waiters armed that **re-woke them after they had finished** — one burned 39,000 tokens that
+way. Together those moved the rate about 1.7 points. Real, but small against a target of 25%.
 
 **My read:** today's spend bought findings that were worth it — the characters were being drawn
 inside-out, the dialogue window had no mouse support at all, and the capture path can return frames
