@@ -283,9 +283,25 @@ async function measure(name, opener) {
     else if (o.mode) await HH.openMenu(o.mode, {});
     await HH.stepFrames(3);
     const st = HH.getUIState();
+    // THE PANEL RECT IS DERIVED WHEN THE BUILD DOES NOT PUBLISH ONE, AND THE CONTROL ARM IS WHY.
+    //
+    // `getUIState().panel_rect` is a T4-r2 addition (RI-UIX09's own §Harness-additions asked for
+    // it). The delete-the-fix arm runs on the round-1 commit, which does not have it — so the first
+    // control run produced `fill: null` on every screen and there was no comparison at all, which
+    // is a worse outcome than a wrong number because it looks like an absence of evidence rather
+    // than a broken instrument. RI-UIX09 method 4 defines the rect independently anyway ("the
+    // largest `kind: 'panel'` element in `getUIState()`"), so the tool computes it and uses the
+    // published field only to check the two agree.
+    const panels = (st.elements || []).filter((e) => e.kind === 'panel' && e.visible)
+      .sort((a, b) => (b.rect[2] * b.rect[3]) - (a.rect[2] * a.rect[3]));
+    const derived = panels.length ? panels[0].rect.slice() : null;
     return {
       mode: st.mode, combat_phase: st.combat_phase, combat_phase_source: st.combat_phase_source,
-      panel_rect: st.panel_rect, pictorial: st.pictorial, materials: st.materials,
+      panel_rect: derived,
+      panel_rect_published: st.panel_rect || null,
+      panel_rect_source: st.panel_rect ? 'published+derived' : 'derived (build publishes none)',
+      panel_rect_agrees: st.panel_rect && derived ? JSON.stringify(st.panel_rect) === JSON.stringify(derived) : null,
+      pictorial: st.pictorial, materials: st.materials,
       materials_painted: st.materials_painted, hud_world: st.hud && st.hud.world,
       elements: st.elements, screen: st.screen,
       shot: await HH.screenshot(),
@@ -314,6 +330,17 @@ async function measure(name, opener) {
     pictorial_declared: r.pictorial,
     pictorial_ids: pictorialEls.map((e) => e.id),
     panel_rect: r.panel_rect,
+    panel_rect_source: r.panel_rect_source,
+    panel_rect_agrees: r.panel_rect_agrees,
+    // The DECLARED half of D1, computed here as well as read, so the control arm — which publishes
+    // no `pictorial` block — still produces a count rather than a blank.
+    pictorial_measured: {
+      on_screen: r.elements.filter((e) => e.visible && PICTORIAL.has(e.kind)).length,
+      in_panel: r.panel_rect ? r.elements.filter((e) => e.visible && PICTORIAL.has(e.kind)
+        && e.rect[0] >= r.panel_rect[0] - 1 && e.rect[1] >= r.panel_rect[1] - 1
+        && e.rect[0] + e.rect[2] <= r.panel_rect[0] + r.panel_rect[2] + 1
+        && e.rect[1] + e.rect[3] <= r.panel_rect[1] + r.panel_rect[3] + 1).length : 0,
+    },
     frame_sanity: sanity,
     panel_sanity: panelSanity,
     // A fill figure is NOT produced from a frame that failed the screen. Reporting one would be
@@ -343,7 +370,7 @@ async function measure(name, opener) {
   rec.combat_phase = r.combat_phase;
   rec.combat_phase_source = r.combat_phase_source;
   out.screens[name] = rec;
-  console.log(`[${name}] elements ${rec.element_count}  pictorial ${rec.pictorial_declared ? rec.pictorial_declared.in_panel : '-'}`
+  console.log(`[${name}] elements ${rec.element_count}  pictorial ${rec.pictorial_measured.in_panel}`
     + `  fill ${rec.panel_fill.fill}`);
   writeOut();
 }
@@ -448,7 +475,7 @@ const worstFill = Object.entries(out.screens)
   .filter(([, v]) => v.panel_fill && v.panel_fill.fill !== null)
   .sort((a, b) => a[1].panel_fill.fill - b[1].panel_fill.fill)[0];
 console.log('\n--- T4 round 2, ' + LABEL + ' at ' + W + 'x' + H + ' (commit ' + out.commit.slice(0, 10) + ') ---');
-console.log('D1 declared, inventory panel : ' + (inv.pictorial_declared ? inv.pictorial_declared.in_panel : 'n/a')
+console.log('D1 declared, inventory panel : ' + (inv.pictorial_measured ? inv.pictorial_measured.in_panel : 'n/a')
   + '  (round 1: 0)');
 console.log('D1 observed, inventory rows  : '
   + (inv.d1_observed ? `${inv.d1_observed.rows_with_3_plus_hues_in_leading_48px} of ${inv.d1_observed.rows} rows carry >=3 hues in the leading 48px` : 'n/a'));
