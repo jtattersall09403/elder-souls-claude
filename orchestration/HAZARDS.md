@@ -205,6 +205,37 @@ caught only when somebody compared what the frames actually contained against wh
 **Verify your verbs exist** (`grep` the harness), **verify your gate's argument names**, and **make
 `call()` throw on an unknown verb** rather than swallow it.
 
+## 17. A filed verdict's artefacts are immutable — reused capture tools hard-code their output path
+
+**Caught 2026-08-15, in flight.** A builder ran a capture and four files under
+`corpus/90-verdicts/wave1/artifacts/T4-r2/` changed — a *previous round's* evidence, for a verdict
+already filed and landed.
+
+**Why it matters:** a verdict's cited artefacts are the record of what was judged. Overwrite them and
+the verdict silently points at images it was never written against. It becomes an unfalsifiable claim,
+which is the same harm as evidence that never lands (§9) — arriving from the opposite direction.
+
+**The cause is almost never intent. It is a hard-coded output path in a reused tool.** A capture script
+written for round 2 writes to `artifacts/T4-r2/` *by construction*, so running it in round 5 re-points at
+round 2's directory. Same family as `f10-r3-materials.mjs`, which **runs its entire capture on import**
+so a Pod told to run a different tool ran that one and recorded the wrong tool name in its manifest.
+
+**Three rules:**
+
+1. **Never write into another round's artefact directory.** Yours is `artifacts/<your-piece-id>/`.
+2. **Check the tool's output path before you run it**, especially one you inherited. Parameterise it
+   rather than working around it, and say so, or the next round inherits the same trap.
+3. **If you have already overwritten one, `git checkout` it** — landed artefacts are on the remote, so
+   restoring costs nothing. Do not try to reconstruct it by re-running; you will produce a *different*
+   image and the verdict will still be citing something it never saw.
+
+**The general shape, worth carrying:** an inherited tool carries its author's assumptions in its
+constants. This project has now been bitten by hard-coded output paths, hard-coded entry points
+(a gate that silently ignored `--entry`), hard-coded dates (screenshot filenames stamped with the day
+the tool was written), and a hard-coded renderer verdict (`getPerfStats()._unmeasurable` asserting
+"this container is SwiftShader" on a run reporting an RTX A4500). **Read the constants before you trust
+the output.**
+
 ## 15. The capture path can return a frame that is not a picture of anything — and nothing goes red
 
 **Found 2026-08-15, and it outranks any single visual defect, because every visual judgement this
