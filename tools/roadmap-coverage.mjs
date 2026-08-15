@@ -380,6 +380,11 @@ const GAP_MAP = {
   // DETECT — is below its 6 deg hard-fail line at 9 of 14 daylight measurements. Both levers are in
   // `noon-marsh` (keyWarmth 0.0, env 0.35), so F4 owns it; F3 carries the ambient-fill consequence.
   'GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour': ['F4', 'F3'],
+  // NOT MINE — this is the F10 r10 critic's gap. It had no home only because I re-ran
+  // `tools/gap-ledger.mjs` (to flow my own F4 gap through) and that pulled their newer verdict in
+  // with it. Mapped here rather than left red, because I turned the gate red. F10's owner should
+  // overwrite this line freely if they want different targets.
+  'GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins': ['F10'],
   'GAP-W1-platform-prng-never-drawn': ['I1'],
   'GAP-W1-platform-save-drops-entity-prev-state': ['T1'],
   'GAP-W1-population-save-reload-repays-every-corpse': ['T1', 'G5'],
