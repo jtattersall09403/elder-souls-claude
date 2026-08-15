@@ -1,0 +1,194 @@
+{
+  "schema": "elder-souls/gate-g-dialogue-repro@1",
+  "at": "2026-08-15T12:58:04.168Z",
+  "commit": null,
+  "revision": null,
+  "tag": "before",
+  "state": "helstrom-market",
+  "checks": [
+    {
+      "id": "I0 INSTRUMENT: a real DOM key reaches the input pipeline",
+      "pass": true,
+      "detail": "real.attached=true, ArrowRight -> pipeline.moveX=1"
+    },
+    {
+      "id": "D1-0 talking to Neekhu",
+      "pass": true,
+      "detail": "speaker='Neekhu', 9 topic(s): [\"dying-far-from-the-tree\",\"latest rumors\",\"sap-from-a-cup\",\"the road to Archon\",\"the road to Blackrose\",\"the road to Gideon\",\"the road to Stormhold\",\"the-wall-at-the-grange\",\"what-we-will-not-do\"]"
+    },
+    {
+      "id": "D1-1 asking \"latest rumors\" names Neekhu's rumour",
+      "pass": true,
+      "detail": "blocks 1 -> 2; topics now include 'the-carriers': true ([\"dying-far-from-the-tree\",\"latest rumors\",\"sap-from-a-cup\",\"the-carriers\",\"the road to Archon\",\"the road to Blackrose\",\"the road to Gideon\",\"the road to Stormhold\",\"the-wall-at-the-grange\",\"what-we-will-not-do\"])"
+    },
+    {
+      "id": "D1-2 (pre-fix) three presses on \"the carriers\" produce THREE IDENTICAL FRAMES — the reported defect",
+      "pass": true,
+      "detail": "blocks stayed at 2 and lines at 7 across all 3 presses: #1 blocks=2 lines=7 text_changed=false, #2 blocks=2 lines=7 text_changed=false, #3 blocks=2 lines=7 text_changed=false"
+    },
+    {
+      "id": "D2-0 talking to Sigurd",
+      "pass": true,
+      "detail": "speaker='Sigurd'"
+    },
+    {
+      "id": "D2-1 walked every inline link once (background -> the ninth cohort -> its own links)",
+      "pass": true,
+      "detail": "followed, in order: [\"the-ninth-cohort\",\"the-old-imperial-forts\",\"the-curfew\"]; blocks now 4"
+    },
+    {
+      "id": "D2-2 (pre-fix) confirming 'the-curfew' a second (non-adjacent) time appends a BYTE-IDENTICAL duplicate paragraph — the reported defect",
+      "pass": true,
+      "detail": "'the-curfew' now has 2 block(s) in history; identical heading+length: true ([{\"topic\":\"the-curfew\",\"heading\":\"the curfew\",\"chars\":87},{\"topic\":\"the-curfew\",\"heading\":\"the curfew\",\"chars\":87}])"
+    }
+  ],
+  "data": {
+    "instrument": {
+      "attached": true,
+      "moveX": 1
+    },
+    "defect1_opened": {
+      "speaker": "Neekhu",
+      "topics": [
+        "dying-far-from-the-tree",
+        "latest rumors",
+        "sap-from-a-cup",
+        "the road to Archon",
+        "the road to Blackrose",
+        "the road to Gideon",
+        "the road to Stormhold",
+        "the-wall-at-the-grange",
+        "what-we-will-not-do"
+      ],
+      "actions": [
+        "persuasion"
+      ]
+    },
+    "defect1_after_rumour": {
+      "topics": [
+        "dying-far-from-the-tree",
+        "latest rumors",
+        "sap-from-a-cup",
+        "the-carriers",
+        "the road to Archon",
+        "the road to Blackrose",
+        "the road to Gideon",
+        "the road to Stormhold",
+        "the-wall-at-the-grange",
+        "what-we-will-not-do"
+      ],
+      "blocks": 2,
+      "tail": {
+        "topic": "latest rumors",
+        "heading": "latest rumors",
+        "chars": 136
+      }
+    },
+    "defect1_before_press": {
+      "blocks": 2,
+      "lines": 7,
+      "focus": {
+        "pane": "prose",
+        "linkIdx": 0,
+        "rowIdx": 2
+      },
+      "tail": {
+        "topic": "latest rumors",
+        "heading": "latest rumors",
+        "chars": 136
+      }
+    },
+    "defect1_presses": [
+      {
+        "press": 1,
+        "blocks": 2,
+        "lines": 7,
+        "tail": {
+          "topic": "latest rumors",
+          "heading": "latest rumors",
+          "chars": 136
+        },
+        "topics_known": 2,
+        "text_changed": false
+      },
+      {
+        "press": 2,
+        "blocks": 2,
+        "lines": 7,
+        "tail": {
+          "topic": "latest rumors",
+          "heading": "latest rumors",
+          "chars": 136
+        },
+        "topics_known": 2,
+        "text_changed": false
+      },
+      {
+        "press": 3,
+        "blocks": 2,
+        "lines": 7,
+        "tail": {
+          "topic": "latest rumors",
+          "heading": "latest rumors",
+          "chars": 136
+        },
+        "topics_known": 2,
+        "text_changed": false
+      }
+    ],
+    "defect1_shots": [
+      "before-defect1-000-before-any-press.png",
+      "before-defect1-001-after-press-1.png",
+      "before-defect1-002-after-press-2.png",
+      "before-defect1-003-after-press-3.png"
+    ],
+    "defect2_opened": {
+      "speaker": "Sigurd",
+      "link_topics": []
+    },
+    "defect2_topics_walked": [
+      "the-ninth-cohort",
+      "the-old-imperial-forts",
+      "the-curfew"
+    ],
+    "defect2_before_repeat": {
+      "blocks": 4,
+      "lines": 16,
+      "focus": {
+        "pane": "prose",
+        "linkIdx": 3,
+        "rowIdx": 1
+      },
+      "tail": {
+        "topic": "the-curfew",
+        "heading": "the curfew",
+        "chars": 87
+      },
+      "caret_still_on_last_link": true
+    },
+    "defect2_after_repeat": {
+      "blocks": 5,
+      "lines": 20,
+      "tail": {
+        "topic": "the-curfew",
+        "heading": "the curfew",
+        "chars": 87
+      },
+      "matching_blocks_for_last_topic": [
+        {
+          "topic": "the-curfew",
+          "heading": "the curfew",
+          "chars": 87
+        },
+        {
+          "topic": "the-curfew",
+          "heading": "the curfew",
+          "chars": 87
+        }
+      ],
+      "dup_count": 2,
+      "dup_identical": true
+    },
+    "errors": []
+  }
+}

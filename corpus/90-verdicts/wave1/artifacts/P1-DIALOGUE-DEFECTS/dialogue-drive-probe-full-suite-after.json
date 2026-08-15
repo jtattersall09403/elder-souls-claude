@@ -1,0 +1,809 @@
+{
+  "schema": "elder-souls/uix08-drive-probe@1",
+  "at": "2026-08-15T13:11:50.543Z",
+  "commit": null,
+  "state": "helstrom-market",
+  "mode": "world",
+  "interactions": [
+    {
+      "action": "keydown ArrowRight (cross to column)",
+      "before": {
+        "focus": {
+          "pane": "prose",
+          "linkIdx": 0,
+          "rowIdx": 0
+        },
+        "lines": 1,
+        "tail": null,
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 0
+        },
+        "lines": 1,
+        "tail": null,
+        "topics": 11,
+        "open": true
+      }
+    },
+    {
+      "action": "keydown ArrowDown (walk the column)",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 0
+        },
+        "lines": 1,
+        "tail": null,
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 1
+        },
+        "lines": 1,
+        "tail": null,
+        "topics": 11,
+        "open": true
+      }
+    },
+    {
+      "action": "keydown KeyE (confirm the focused column row)",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 1
+        },
+        "lines": 1,
+        "tail": null,
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 1
+        },
+        "lines": 6,
+        "tail": "dying far from the tree",
+        "topics": 11,
+        "open": true
+      },
+      "lines_delta": 5,
+      "new_block": {
+        "topic": "dying-far-from-the-tree",
+        "heading": "dying far from the tree",
+        "chars": 167
+      }
+    },
+    {
+      "action": "keydown KeyE on column row 0",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 0
+        },
+        "lines": 1,
+        "tail": null,
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 0
+        },
+        "lines": 1,
+        "tail": null,
+        "topics": 11,
+        "open": true
+      },
+      "label": "Persuasion"
+    },
+    {
+      "action": "keydown KeyE on column row 1",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 1
+        },
+        "lines": 1,
+        "tail": null,
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 1
+        },
+        "lines": 6,
+        "tail": "dying far from the tree",
+        "topics": 11,
+        "open": true
+      },
+      "label": "dying far from the tree"
+    },
+    {
+      "action": "keydown KeyE on column row 2",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 2
+        },
+        "lines": 6,
+        "tail": "dying far from the tree",
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 2
+        },
+        "lines": 12,
+        "tail": "emptying the coast",
+        "topics": 11,
+        "open": true
+      },
+      "label": "emptying the coast"
+    },
+    {
+      "action": "keydown KeyE on column row 3",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 3
+        },
+        "lines": 12,
+        "tail": "emptying the coast",
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 3
+        },
+        "lines": 17,
+        "tail": "latest rumors",
+        "topics": 11,
+        "open": true
+      },
+      "label": "latest rumors"
+    },
+    {
+      "action": "keydown KeyE on column row 4",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 4
+        },
+        "lines": 17,
+        "tail": "latest rumors",
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 4
+        },
+        "lines": 23,
+        "tail": "the high walks",
+        "topics": 11,
+        "open": true
+      },
+      "label": "the high walks"
+    },
+    {
+      "action": "keydown KeyE on column row 5",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 5
+        },
+        "lines": 23,
+        "tail": "the high walks",
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 5
+        },
+        "lines": 29,
+        "tail": "the peoples",
+        "topics": 11,
+        "open": true
+      },
+      "label": "the peoples"
+    },
+    {
+      "action": "keydown KeyE on column row 6",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 6
+        },
+        "lines": 29,
+        "tail": "the peoples",
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 6
+        },
+        "lines": 36,
+        "tail": "the road to Archon",
+        "topics": 11,
+        "open": true
+      },
+      "label": "the road to Archon"
+    },
+    {
+      "action": "keydown KeyE on column row 7",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 7
+        },
+        "lines": 36,
+        "tail": "the road to Archon",
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 7
+        },
+        "lines": 41,
+        "tail": "the road to Blackrose",
+        "topics": 11,
+        "open": true
+      },
+      "label": "the road to Blackrose"
+    },
+    {
+      "action": "keydown KeyE on column row 8",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 8
+        },
+        "lines": 41,
+        "tail": "the road to Blackrose",
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 8
+        },
+        "lines": 47,
+        "tail": "the road to Gideon",
+        "topics": 11,
+        "open": true
+      },
+      "label": "the road to Gideon"
+    },
+    {
+      "action": "keydown KeyE on column row 9",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 9
+        },
+        "lines": 47,
+        "tail": "the road to Gideon",
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 9
+        },
+        "lines": 53,
+        "tail": "the road to Stormhold",
+        "topics": 11,
+        "open": true
+      },
+      "label": "the road to Stormhold"
+    },
+    {
+      "action": "keydown KeyE on column row 10",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 10
+        },
+        "lines": 53,
+        "tail": "the road to Stormhold",
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 10
+        },
+        "lines": 58,
+        "tail": "the wall at the grange",
+        "topics": 11,
+        "open": true
+      },
+      "label": "the wall at the grange"
+    },
+    {
+      "action": "keydown KeyE on column row 11",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 11
+        },
+        "lines": 58,
+        "tail": "the wall at the grange",
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 11
+        },
+        "lines": 64,
+        "tail": "what we will not do",
+        "topics": 11,
+        "open": true
+      },
+      "label": "what your people will not do"
+    },
+    {
+      "action": "keydown KeyE on Goodbye",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 12
+        },
+        "lines": 64,
+        "tail": "what we will not do",
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": null,
+        "lines": null,
+        "tail": null,
+        "topics": 0,
+        "open": false
+      }
+    },
+    {
+      "action": "keydown Space (roll = back out)",
+      "before": {
+        "focus": {
+          "pane": "prose",
+          "linkIdx": 0,
+          "rowIdx": 0
+        },
+        "lines": 1,
+        "tail": null,
+        "topics": 9,
+        "open": true
+      },
+      "after": {
+        "focus": null,
+        "lines": null,
+        "tail": null,
+        "topics": 0,
+        "open": false
+      }
+    },
+    {
+      "action": "click column row 'dying far from the tree'",
+      "before": {
+        "focus": {
+          "pane": "prose",
+          "linkIdx": 0,
+          "rowIdx": 0
+        },
+        "lines": 1,
+        "tail": null,
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 1
+        },
+        "lines": 6,
+        "tail": "dying far from the tree",
+        "topics": 11,
+        "open": true
+      },
+      "rect": [
+        1131,
+        306,
+        315,
+        44
+      ]
+    },
+    {
+      "action": "DELETE-THE-FIX: click column row with the pointer hook removed",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 1
+        },
+        "lines": 6,
+        "tail": "dying far from the tree",
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 1
+        },
+        "lines": 6,
+        "tail": "dying far from the tree",
+        "topics": 11,
+        "open": true
+      },
+      "rect": [
+        1131,
+        306,
+        315,
+        44
+      ]
+    },
+    {
+      "action": "click Goodbye",
+      "before": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 1
+        },
+        "lines": 6,
+        "tail": "dying far from the tree",
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": null,
+        "lines": null,
+        "tail": null,
+        "topics": 0,
+        "open": false
+      },
+      "rect": [
+        1131,
+        808,
+        315,
+        44
+      ]
+    },
+    {
+      "action": "tap column row 'dying far from the tree'",
+      "before": {
+        "focus": {
+          "pane": "prose",
+          "linkIdx": 0,
+          "rowIdx": 0
+        },
+        "lines": 1,
+        "tail": null,
+        "topics": 11,
+        "open": true
+      },
+      "after": {
+        "focus": {
+          "pane": "column",
+          "linkIdx": 0,
+          "rowIdx": 1
+        },
+        "lines": 6,
+        "tail": "dying far from the tree",
+        "topics": 11,
+        "open": true
+      },
+      "rect": [
+        1131,
+        306,
+        315,
+        44
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "I0 INSTRUMENT: a real DOM key reaches the input pipeline",
+      "pass": true,
+      "detail": "real.attached=true, ArrowRight -> pipeline.moveX=1, KeyE -> pendingPress=256"
+    },
+    {
+      "id": "S0 the window is open with somebody to talk to",
+      "pass": true,
+      "detail": "speaker 'Sheem', 1 action row(s), 11 topic(s)"
+    },
+    {
+      "id": "K1 ArrowRight moves the caret from the prose to the topic column",
+      "pass": true,
+      "detail": "focus prose:0 -> column:0"
+    },
+    {
+      "id": "K2 ArrowDown walks the column one row",
+      "pass": true,
+      "detail": "rowIdx 0 -> 1"
+    },
+    {
+      "id": "K3 KeyE on a focused column topic ANSWERS — the transcript grows",
+      "pass": true,
+      "detail": "1 -> 6 lines; last block heading 'dying far from the tree' (167 chars)"
+    },
+    {
+      "id": "K3b the answer is APPENDED, not replaced (§D1)",
+      "pass": true,
+      "detail": "1 -> 2 block(s)"
+    },
+    {
+      "id": "K4 every topic row in the column answers when confirmed",
+      "pass": false,
+      "detail": "11/12 rows produced a new block; dead rows: Persuasion"
+    },
+    {
+      "id": "K5a ArrowLeft crosses back to the prose",
+      "pass": true,
+      "detail": "focus column:11 -> prose:0"
+    },
+    {
+      "id": "K5 following an inline link with KeyE does something",
+      "pass": false,
+      "detail": "0/0 link(s) followed produced a new block or a new column entry"
+    },
+    {
+      "id": "K6a the caret reaches the Goodbye row",
+      "pass": true,
+      "detail": "rowIdx 12 of 12 (actions 1 + topics 11)"
+    },
+    {
+      "id": "K6 Goodbye closes the conversation",
+      "pass": true,
+      "detail": "window open true -> false, conversation true -> false"
+    },
+    {
+      "id": "K7 Space backs out of the conversation",
+      "pass": true,
+      "detail": "window open true -> false"
+    },
+    {
+      "id": "M1 clicking a topic in the column answers it",
+      "pass": true,
+      "detail": "clicked 'dying far from the tree' at 1131,306,315,44; 1 -> 6 lines, last heading 'dying far from the tree'"
+    },
+    {
+      "id": "M2 an inline link can be clicked",
+      "pass": false,
+      "detail": "no topic_link element on screen to click"
+    },
+    {
+      "id": "X1 DELETE-THE-FIX: with the pointer hook removed the same click does nothing",
+      "pass": true,
+      "detail": "hook was present=true; 6 -> 6 lines, 2 -> 2 blocks (this is the pre-fix behaviour the owner reported)"
+    },
+    {
+      "id": "M3 clicking Goodbye closes the conversation",
+      "pass": true,
+      "detail": "window open true -> false"
+    },
+    {
+      "id": "I1 INSTRUMENT: the touch listeners are attached",
+      "pass": true,
+      "detail": "touch.enabled=true, attached=true, surface hook=true"
+    },
+    {
+      "id": "T1 tapping a topic in the column answers it",
+      "pass": true,
+      "detail": "tapped 'dying far from the tree'; 1 -> 6 lines"
+    }
+  ],
+  "data": {
+    "instrument": {
+      "attached": true,
+      "moveX": 1,
+      "pending": 256
+    },
+    "opened": {
+      "eid": "agaceph-sheem",
+      "topics": 11,
+      "speaker": "Sheem",
+      "actions": 1
+    },
+    "per_topic": [
+      {
+        "row": 0,
+        "label": "Persuasion",
+        "focus": "column:0",
+        "lines_before": 1,
+        "lines_after": 1,
+        "answered": false,
+        "heading": null,
+        "disposition": "69 -> 69"
+      },
+      {
+        "row": 1,
+        "label": "dying far from the tree",
+        "focus": "column:1",
+        "lines_before": 1,
+        "lines_after": 6,
+        "answered": true,
+        "heading": "dying far from the tree",
+        "disposition": "69 -> 69"
+      },
+      {
+        "row": 2,
+        "label": "emptying the coast",
+        "focus": "column:2",
+        "lines_before": 6,
+        "lines_after": 12,
+        "answered": true,
+        "heading": "emptying the coast",
+        "disposition": "69 -> 69"
+      },
+      {
+        "row": 3,
+        "label": "latest rumors",
+        "focus": "column:3",
+        "lines_before": 12,
+        "lines_after": 17,
+        "answered": true,
+        "heading": "latest rumors",
+        "disposition": "69 -> 69"
+      },
+      {
+        "row": 4,
+        "label": "the high walks",
+        "focus": "column:4",
+        "lines_before": 17,
+        "lines_after": 23,
+        "answered": true,
+        "heading": "the high walks",
+        "disposition": "69 -> 69"
+      },
+      {
+        "row": 5,
+        "label": "the peoples",
+        "focus": "column:5",
+        "lines_before": 23,
+        "lines_after": 29,
+        "answered": true,
+        "heading": "the peoples",
+        "disposition": "69 -> 69"
+      },
+      {
+        "row": 6,
+        "label": "the road to Archon",
+        "focus": "column:6",
+        "lines_before": 29,
+        "lines_after": 36,
+        "answered": true,
+        "heading": "the road to Archon",
+        "disposition": "69 -> 69"
+      },
+      {
+        "row": 7,
+        "label": "the road to Blackrose",
+        "focus": "column:7",
+        "lines_before": 36,
+        "lines_after": 41,
+        "answered": true,
+        "heading": "the road to Blackrose",
+        "disposition": "69 -> 69"
+      },
+      {
+        "row": 8,
+        "label": "the road to Gideon",
+        "focus": "column:8",
+        "lines_before": 41,
+        "lines_after": 47,
+        "answered": true,
+        "heading": "the road to Gideon",
+        "disposition": "69 -> 69"
+      },
+      {
+        "row": 9,
+        "label": "the road to Stormhold",
+        "focus": "column:9",
+        "lines_before": 47,
+        "lines_after": 53,
+        "answered": true,
+        "heading": "the road to Stormhold",
+        "disposition": "69 -> 69"
+      },
+      {
+        "row": 10,
+        "label": "the wall at the grange",
+        "focus": "column:10",
+        "lines_before": 53,
+        "lines_after": 58,
+        "answered": true,
+        "heading": "the wall at the grange",
+        "disposition": "69 -> 69"
+      },
+      {
+        "row": 11,
+        "label": "what your people will not do",
+        "focus": "column:11",
+        "lines_before": 58,
+        "lines_after": 64,
+        "answered": true,
+        "heading": "what we will not do",
+        "disposition": "69 -> 69"
+      }
+    ],
+    "per_link": [],
+    "delete_the_fix": {
+      "had_hook": true,
+      "lines": [
+        6,
+        6
+      ],
+      "blocks": [
+        2,
+        2
+      ]
+    },
+    "touch_instrument": {
+      "enabled": true,
+      "attached": true,
+      "hook": true
+    },
+    "errors": []
+  }
+}
