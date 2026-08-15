@@ -12,8 +12,8 @@
   and occlusion only reach a fifth of the picture, and this is the fix for that.
 - **Judging the character work** — an independent critic, shooting the new standing pose on real
   hardware, which the builder shipped without a photograph and said so itself.
-- **Checking the water fix** — an independent critic on the marsh streaks, which are 28% better and
-  not gone.
+- **The water, round two** — round one was judged and failed; the sea still acts as a 17% mirror when
+  you look straight at it.
 - **The container screen** — it hides ten words of its own description and prints no gold prices.
 
 ## If you play right now, expect this
@@ -56,12 +56,16 @@
   "…" to tell you they were cut, and *the same sentence draws whole on the inventory screen* — and
   **all seven rows declare a gold price and not one of them draws it**, because the price column starts
   12 units past the edge of the box that clips it. Being fixed now.
-- **The water's streaks are 28% better and still there.** They turned out not to be the waves at all:
-  the sea was compositing a **61% mirror at every viewing angle**, including looking straight down,
-  where real water reflects about 2%. Two things the previous rounds believed were wrong — the stripes
-  are not axis-aligned (they run at −50°), and nine earlier "no effect" results were unreadable because
-  the patch being measured was mostly *terrain*. Fixed for the physically wrong case only; the residual
-  is plainly visible and **the marsh lanes are not fixed**.
+- **The water: I told you it was 28% better yesterday. A judge has now failed it at 2 of 10, and the
+  "28%" was mostly the water getting darker.** The diagnosis was right — the sea was compositing a
+  **61% mirror at every viewing angle**, including looking straight down, where real water reflects
+  about 2% — and the fix is real. But the tool that reported the improvement prints **three** numbers
+  and only the one that fell was passed on: the other two went **up** 12% and 48%. Measured properly,
+  the water is 16.9% *dimmer* and the fine-scale stripes are 5.8% *stronger*. Worst of all, **the four
+  camera positions a player actually occupies are indistinguishable between before and after** — the
+  whole visible effect lives at a straight-down camera 120 m up that the game never puts you in. Round
+  two is building the real fix now, and it is in the same file: the sea still composites a fixed **17%
+  mirror when you look straight at it**.
 - **The container screen prints the word `undefined`** as its title. Being fixed.
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its own author reported that honestly after catching that the *first* version of the measurement was
