@@ -69,7 +69,7 @@ finish anything.
 ## Afterwards
 
 1. Play the first build.
-2. Open `PROMPT-verbatim.txt` and answer the five questions **about that build**,
+2. Open `PROMPT-verbatim.md` and answer the five questions **about that build**,
    in your own words, and save them to a file.
 3. Play the second build.
 4. Answer the same five questions about it, and save them to a second file.
