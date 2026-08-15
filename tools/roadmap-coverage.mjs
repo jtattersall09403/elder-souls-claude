@@ -379,6 +379,9 @@ const GAP_MAP = {
   'GAP-W1-two-placement-mechanisms-collide': ['W5'],
   'GAP-W1-ui-detectors-that-cannot-see': ['T4', 'I1'],
   'GAP-W1-ui-hud-world-set-unbuilt-and-misplaced': ['T4'],
+  // T4 round 2's gap. One press of confirm on the journal's chronicle makes the journal a search
+  // box for the session; `backOrSub()` is defined at ui/system.js:711 and called nowhere.
+  'GAP-W1-ui-journal-search-view-has-no-exit': ['T4'],
   'GAP-W1-ui-map-outside-the-ar2-detectors': ['T4'],
   'GAP-W1-w1-30d-guard-misses-part-deletion': ['F10', 'I2'],
   'GAP-W1-w1-30e-street-gate-never-ran': ['F8', 'I2'],

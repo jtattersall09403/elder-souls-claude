@@ -1,6 +1,6 @@
 {
   "schema": "elder-souls/t4-twohand@1",
-  "at": "2026-08-15T10:42:03.865Z",
+  "at": "2026-08-15T10:46:24.782Z",
   "steps": [
     {
       "at": "after keydown",
@@ -87,7 +87,51 @@
       "resolution": "1920x1080",
       "dpr": 1,
       "camera_pose": "menu overlay over the fixture world camera; no orbit — the subject is a 2D surface"
+    },
+    {
+      "file": "corpus/90-verdicts/wave1/artifacts/T4-r2c/screens/critic-journal-chronicle__1920x1080.png",
+      "note": "the journal on arrival — the chronicle",
+      "state": {
+        "mode": "journal",
+        "focus": {
+          "view": "chronicle",
+          "page": 0,
+          "indexIdx": 0,
+          "ringIdx": 0,
+          "query": ""
+        }
+      },
+      "resolution": "1920x1080",
+      "dpr": 1,
+      "camera_pose": "menu overlay over the fixture world camera; no orbit — the subject is a 2D surface"
+    },
+    {
+      "file": "corpus/90-verdicts/wave1/artifacts/T4-r2c/screens/critic-journal-stuck-search__1920x1080.png",
+      "note": "the SAME journal after ONE press of confirm: `focus.journal.view` is `search`, and no action in the closed set returns it",
+      "state": {
+        "mode": "journal",
+        "focus": {
+          "view": "search",
+          "page": 0,
+          "indexIdx": 0,
+          "ringIdx": 0,
+          "query": ""
+        }
+      },
+      "resolution": "1920x1080",
+      "dpr": 1,
+      "camera_pose": "menu overlay over the fixture world camera; no orbit — the subject is a 2D surface"
+    },
+    {
+      "file": "corpus/90-verdicts/wave1/artifacts/T4-r2c/screens/critic-world-hud__1920x1080.png",
+      "note": "the world HUD out of combat — the world set on the bottom rail",
+      "state": {
+        "mode": "world",
+        "focus": null
+      },
+      "resolution": "1920x1080",
+      "dpr": 1,
+      "camera_pose": "menu overlay over the fixture world camera; no orbit — the subject is a 2D surface"
     }
-  ],
-  "error": "page.evaluate: ReferenceError: m is not defined\n    at eval (eval at evaluate (:290:30), <anonymous>:1:65)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at /home/user/elder-souls-claude/tools/ui/t4-r2-critic-twohand.mjs:95:22"
+  ]
 }
