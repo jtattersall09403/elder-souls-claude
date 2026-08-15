@@ -1,14 +1,19 @@
 # Where we are right now
 
-**Last updated: 2026-08-15, midday.** One screen. If this is more than a day old, distrust it and say so.
+**Last updated: 2026-08-15, afternoon.** One screen. If this is more than a day old, distrust it and say so.
 
 ---
 
 ## What the agents are working on this minute
 
-**Making the game look like a game.** Specifically: surfaces responding to light, and things sitting *on* the ground instead of floating above it.
+**Making the game look like a game** — four agents, all on ring 1:
 
-Alongside that: shrinking the documentation every agent reads before it can start (done today — 145k tokens down to 69k).
+- **Making the sun the dominant light.** This is the one that matters. See the section below: shadows
+  and occlusion only reach a fifth of the picture, and this is the fix for that.
+- **The water banding** — the sea reads as flat stripes rather than water.
+- **Photographing the player from eight angles on real hardware**, before and after yesterday's body
+  work. The body was given hips and a waist and *nobody has looked at it in the running game yet*.
+- **Reading the menus again** after the reflow, as an independent check rather than the builder's own.
 
 ## If you play right now, expect this
 
@@ -96,8 +101,11 @@ Alongside that: shrinking the documentation every agent reads before it can star
 - **Not yet photographed, and one thing got worse.** None of this is confirmed in the running game —
   the orbit frames the "slabs" verdict was made of have not been re-shot. And the fix **increased small
   cracks between body parts by 12%**, which the builder reported rather than hid, having tried two
-  predicted fixes that both made it worse still.
-  no waist, no shoulder line, shield and sword as planks. That verdict is unchanged.
+  predicted fixes that both made it worse still. **This is being shot on real hardware right now** —
+  the eight-angle player orbit, both before and after, which is the exact picture the last four
+  judgements were written against.
+- **The last independent look at the player is still the live verdict:** no waist, no shoulder line,
+  shield and sword as planks. Until the orbit above comes back, that verdict is unchanged.
 - **Still owed on characters:** none of this has been photographed in the game yet. And there is a
   measured reason the foot work kept photographing as "no change" — the three camera stands used for
   character captures offer **at most 34 mm of ground height difference between the two feet**, so a
@@ -153,7 +161,6 @@ So shadows and occlusion only affect the fifth of the light coming straight from
 other four-fifths washes the result out. **That is why three correct fixes changed nothing a person
 could see** — and why the next work is the lighting recipe rather than more shadow features.
 
-## The honest standard
 ## The honest standard
 
 **Do not assume anything is "delivered to 7/10" yet.** The bar is min-over-axes ≥ 7.0 and the visual work currently scores **5** — measured, not guessed: the first blind comparison against real reference plates ran on 14 August and **our images lost 5 out of 5**.
