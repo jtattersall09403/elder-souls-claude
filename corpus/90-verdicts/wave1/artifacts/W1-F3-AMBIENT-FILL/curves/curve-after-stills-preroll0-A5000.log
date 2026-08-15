@@ -1,0 +1,19 @@
+  frame    2  t=9.000185  p10=14.294  p90=54.348  shadow_levels=33
+  frame    4  t=9.00037  p10=14.297  p90=54.352  shadow_levels=33
+  frame    8  t=9.000741  p10=14.295  p90=54.358  shadow_levels=33
+  frame   12  t=9.001111  p10=14.29  p90=54.364  shadow_levels=33
+  frame   20  t=9.001852  p10=14.298  p90=54.346  shadow_levels=33
+  frame   30  t=9.002778  p10=14.29  p90=54.354  shadow_levels=33
+  frame   45  t=9.004167  p10=14.288  p90=54.357  shadow_levels=33
+  frame   60  t=9.005556  p10=14.29  p90=54.358  shadow_levels=33
+  frame   90  t=9.008333  p10=14.292  p90=54.346  shadow_levels=33
+  frame  120  t=9.011111  p10=14.293  p90=54.34  shadow_levels=33
+  frame  180  t=9.016667  p10=14.296  p90=54.344  shadow_levels=33
+  frame  240  t=9.022222  p10=14.291  p90=54.345  shadow_levels=33
+  frame  360  t=9.033333  p10=14.288  p90=54.333  shadow_levels=33
+renderer: ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA) (software=false)
+GI off: p10=4.641 p90=54.703 falloff=11.7861 shadow_levels=28 local_contrast_med=6.172
+GI on:  p10=15.001 p90=54.548 falloff=3.6363 shadow_levels=34 local_contrast_med=4.328
+PASS  GI-ON-RAISES-SHADOW-FLOOR  — p10_luma off=4.641 on=15.001 — the fix must actually raise the darkest-decile mean
+PASS  GI-ON-INCREASES-SHADOW-DETAIL  — shadow_levels (image-leakcheck.mjs's own definition) off=28 on=34 — distinct luma levels below the 25th percentile
+PASS  GI-ON-DOES-NOT-BRIGHTEN-THE-LIT-END  — p90_luma off=54.703 on=54.548 — a pixel already at or above its neighbourhood's own brightness should receive ~nothing; this is what a flat lift CANNOT do
