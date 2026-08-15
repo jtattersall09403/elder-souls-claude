@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-15T17:49:53Z",
+  "generated": "2026-08-15T18:27:35Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 94,
+  "verdicts_read": 95,
   "counts": {
-    "total": 89,
-    "open": 88,
+    "total": 90,
+    "open": 89,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -76,7 +76,8 @@
       "GAP-W1-attr-scale-ceilings-rest-on-an-unmeasured-souls-economy"
     ],
     "render.art.character": [
-      "GAP-W1-character-surface-is-assembled-from-primitives-not-built"
+      "GAP-W1-character-surface-is-assembled-from-primitives-not-built",
+      "GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground"
     ],
     "combat.frames.timing": [
       "GAP-W1-combat-exemplar-has-no-danger"
@@ -257,6 +258,7 @@
     "GAP-W1-quest-givers-not-in-the-world: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "AUDB2-F1: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-W1-w1-30s-seam-incomplete: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
+    "GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-FCT-03: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "corpus/90-verdicts/wave1/W1-FACTIONS-r1.json: unsatisfied verdict has no biggest_gap; validator should reject it.",
@@ -353,6 +355,7 @@
     "corpus/90-verdicts/wave1/W1-26-r2.json: gap_closure references unknown gap_id RI-JRN01/HF3-imperative-on-the-hud.",
     "corpus/90-verdicts/wave1/W1-26-r2.json: gap_closure references unknown gap_id RI-JRN01/HF5-touch-leg-unmeasurable-round-1.",
     "corpus/90-verdicts/wave1/W1-26-r2.json: gap_closure references unknown gap_id RI-JRN01/O6-control-precedes-definition.",
+    "corpus/90-verdicts/wave1/W1-F10-r9-CRITIC.json: closure of GAP-W1-character-surface-is-assembled-from-primitives-not-built is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-F7-WATER-r1.json: closure of GAP-W1-03-water-surface-undrawn-and-frozen is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-FACTIONS-r2.json: gap_closure is object where the schema requires an array. Its closures are IGNORED — any gap it meant to close stays open.",
     "corpus/90-verdicts/wave1/W1-LIBRARY-r1.json: gap_closure references unknown gap_id K9-book-item-word-ratio.",
@@ -410,6 +413,7 @@
     "STALE-RISK GAP-W1-30c-wetness-mask-blind-to-instancematrix: still open, and 4 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-visual-blind-protocol-a-chunk2, crit-w1-orphaned-surface-shaders-r1-3c19, crit-w1-visual-blind-protocol-a-r2-verdict). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-w1-30d-guard-misses-part-deletion: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-orphaned-surface-shaders-r1-3c19, crit-w1-visual-blind-protocol-a-r2-verdict). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-w1-30e-street-gate-never-ran: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-orphaned-surface-shaders-r1-3c19, crit-w1-visual-blind-protocol-a-r2-verdict). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-character-surface-is-assembled-from-primitives-not-built: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-r9-stance). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-f1-actor-body-shader-does-not-link: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-characters-a71c). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-population-save-reload-repays-every-corpse: still open, and 2 later verdict(s) have been filed on the same piece or path since (critic-w1-souls-r2, critic-w1-souls). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-PACK-01: still open, and 2 later verdict(s) have been filed on the same piece or path since (judge-prose-packs-r1, crit-w1-30c-r1-2634eb0e). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
@@ -1456,7 +1460,16 @@
       },
       "superseded_by": null,
       "age_waves": 0,
-      "filed_since": []
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-F10-r9-CRITIC.json",
+          "run_id": "crit-w1-f10-r9-stance",
+          "at": "2026-08-15T19:10:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-combat-exemplar-has-no-danger",
@@ -1887,6 +1900,38 @@
           "opened_gap": "GAP-W1-character-surface-is-assembled-from-primitives-not-built"
         }
       ]
+    },
+    {
+      "gap_id": "GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground",
+      "subsystem_path": "render.art.character",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-f10-r9-stance",
+      "opened_in": "corpus/90-verdicts/wave1/W1-F10-r9-CRITIC.json",
+      "piece_id": "W1-F10-r9-CRITIC",
+      "severity": "major",
+      "what": "Round 9's pelvis roll raised the whole figure relative to its own root, and nothing takes the rise back out. MEASURED THREE WAYS AND THEY AGREE. (1) On the built rig across the full 96-frame idle: the lower ankle rises a mean of 7.96 mm (min 7.1, max 8.87). (2) In the RUNNING GAME on an RTX A5000, at the flat player stand where ground = 2.680 m in both arms, the drawn ankles go from 0.0890 / 0.0901 m above ground to 0.0961 / 0.1012 m — +7.1 mm and +11.1 mm. (3) The sole is not the ankle: `game/src/render/actor.js` states its own measured geometry, that the skinned sole hangs 88 mm below the foot bone and clears the ground by 2 mm on the un-conformed NPC path. Applying that constant, the number of frames in the idle loop on which BOTH soles are clear of the ground goes from 24 of 96 to 68 of 96, and the largest gap under the lower sole goes from 2.0 mm to 10.9 mm. THE ROUND'S STATED REASON FOR NOT FIXING IT IS FALSE. Its status file says 'r7/r8's foot conform is designed to absorb exactly this... so it is plausibly absorbed'. It cannot be. `footConformDelta` is `clamp(groundAt(x,z) - groundY)` — a terrain DIFFERENCE term whose value on flat ground is exactly zero, which that same file calls 'the correct null, which a pin can never have', and which round 7 measured at 0.0000 m at all three F10 stands. A term that is identically zero cannot absorb a constant. The left/right foot difference on flat ground also got worse, not better: 0.0011 m -> 0.0052 m as drawn in the running game, and 0.00109 -> 0.00521 m across the loop on the rig.",
+      "why_it_matters": "Every character in the game — the player and all 408 NPCs, because the change is on the single shared `idle_ready` layer — now stands about a centimetre above the floor for most of its idle loop instead of touching it, and the one system that could have hidden it is mathematically incapable of doing so on flat ground, which is where almost every NPC in every settlement stands.",
+      "remedy": "In `game/data/combat/clips.json`, take the rise back out where it was put in, NOT with a constant `root_offset` on `idle_loop` (the round is right that a constant there is a vertical step at the attack/idle boundary). Two buildable options, in preference order. (A) Add `idle_ready.root_offset.y = [[0,-0.0080],[3,-0.0080]]` — the stance layer is additive and already pinned at both ends by the termination rule, so a constant THERE is continuous by construction, which is exactly the property `root_offset` on the loop lacks. (B) If the additive layer's root offset is not consumed, reduce the free-leg knee bend from 8.248 deg to the value that levels the feet at 0.0900 rather than at 0.0989 by bisecting on the LOWER ankle's absolute height instead of on the left/right difference — the round solved the wrong objective, not with the wrong method. DONE means: `node tools/visual/f10-r9c-c3-audit.mjs` reports `B_feet.summary.rise_of_lower_ankle_m.mean` within 1 mm of 0 and `after.lr_diff_max_m` no worse than the before arm's 0.00109 m; `node tools/harness/anim-tune.mjs` still reports 0 of 14 over 0.35 m with worst `snapOut` <= 0.0122 m; and C3 still reads >= 2 of 3 over 3 deg at both frames.",
+      "remedy_action": null,
+      "remedy_acceptance": null,
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r9-critic/c3-audit.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r9-critic/stance-pair-hardware/before-manifest.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r9-critic/stance-pair-hardware/after-manifest.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r9-critic/looked/FEET-before-after__yaw000.png"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence",

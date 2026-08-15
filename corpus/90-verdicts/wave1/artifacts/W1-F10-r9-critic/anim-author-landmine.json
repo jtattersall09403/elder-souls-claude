@@ -1,0 +1,476 @@
+{
+  "tool": "critic reproduction, W1-F10-r9-CRITIC",
+  "question": "does tools/harness/anim-author.mjs --write revert round 9? tested on a git-archive HEAD copy, never on the shared tree",
+  "commands": [
+    "git archive HEAD game tools package.json | tar -x -C <scratch>",
+    "git show 741bafb7^:tools/harness/anim-author.mjs > <scratch>/tools/harness/anim-author-PRE.mjs",
+    "node tools/harness/anim-author.mjs      --only thrust --out out-HEAD.json",
+    "node tools/harness/anim-author-PRE.mjs  --only thrust --out out-PRE.json"
+  ],
+  "note": "--only re-solves ONLY the named archetype and copies the rest, so thrust is the arm that exercises the termination-rule emitter; cut_diagonal in the same output is copied and proves nothing.",
+  "thrust_termination_endpoints_rz": {
+    "pelvis": {
+      "shipped": [
+        [
+          0,
+          5
+        ],
+        [
+          0.3,
+          0
+        ],
+        [
+          2.7,
+          0
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "pre_sync_generator": null,
+      "head_generator": [
+        [
+          0,
+          5
+        ],
+        [
+          0.3,
+          0
+        ],
+        [
+          2.7,
+          0
+        ],
+        [
+          3,
+          5
+        ]
+      ]
+    },
+    "spine_00": {
+      "shipped": [
+        [
+          0,
+          -5
+        ],
+        [
+          0.3,
+          0
+        ],
+        [
+          2.7,
+          0
+        ],
+        [
+          3,
+          -5
+        ]
+      ],
+      "pre_sync_generator": null,
+      "head_generator": [
+        [
+          0,
+          -5
+        ],
+        [
+          0.3,
+          0
+        ],
+        [
+          2.7,
+          0
+        ],
+        [
+          3,
+          -5
+        ]
+      ]
+    },
+    "spine_02": {
+      "shipped": [
+        [
+          0,
+          -6
+        ],
+        [
+          0.3,
+          0
+        ],
+        [
+          2.7,
+          0
+        ],
+        [
+          3,
+          -6
+        ]
+      ],
+      "pre_sync_generator": null,
+      "head_generator": [
+        [
+          0,
+          -6
+        ],
+        [
+          0.3,
+          0
+        ],
+        [
+          2.7,
+          0
+        ],
+        [
+          3,
+          -6
+        ]
+      ]
+    },
+    "thigh_l": {
+      "shipped": [
+        [
+          0,
+          -5
+        ],
+        [
+          0.3,
+          0
+        ],
+        [
+          2.7,
+          0
+        ],
+        [
+          3,
+          -5
+        ]
+      ],
+      "pre_sync_generator": null,
+      "head_generator": [
+        [
+          0,
+          -5
+        ],
+        [
+          0.3,
+          0
+        ],
+        [
+          2.7,
+          0
+        ],
+        [
+          3,
+          -5
+        ]
+      ]
+    },
+    "thigh_r": {
+      "shipped": [
+        [
+          0,
+          -5
+        ],
+        [
+          0.3,
+          0
+        ],
+        [
+          2.7,
+          0
+        ],
+        [
+          3,
+          -5
+        ]
+      ],
+      "pre_sync_generator": null,
+      "head_generator": [
+        [
+          0,
+          -5
+        ],
+        [
+          0.3,
+          0
+        ],
+        [
+          2.7,
+          0
+        ],
+        [
+          3,
+          -5
+        ]
+      ]
+    },
+    "neck": {
+      "shipped": [
+        [
+          0,
+          5
+        ],
+        [
+          0.3,
+          0
+        ],
+        [
+          2.7,
+          0
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "pre_sync_generator": null,
+      "head_generator": [
+        [
+          0,
+          5
+        ],
+        [
+          0.3,
+          0
+        ],
+        [
+          2.7,
+          0
+        ],
+        [
+          3,
+          5
+        ]
+      ]
+    }
+  },
+  "idle_loop_pelvis_rz": {
+    "shipped": {
+      "rz": [
+        [
+          0,
+          0
+        ],
+        [
+          1.5,
+          1.2
+        ],
+        [
+          3,
+          0
+        ]
+      ]
+    },
+    "pre_sync_generator": null,
+    "head_generator": {
+      "rz": [
+        [
+          0,
+          0
+        ],
+        [
+          1.5,
+          1.2
+        ],
+        [
+          3,
+          0
+        ]
+      ]
+    }
+  },
+  "idle_ready_roundtrips_at_head": true,
+  "idle_loop_roundtrips_at_head": false,
+  "residual_divergence": {
+    "what": "idle_loop rx amplitudes",
+    "shipped": {
+      "spine_00": [
+        [
+          0,
+          0
+        ],
+        [
+          0.75,
+          0.68
+        ],
+        [
+          1.5,
+          0
+        ],
+        [
+          2.25,
+          -0.68
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "neck": [
+        [
+          0,
+          0
+        ],
+        [
+          1.5,
+          0.75
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "upperarm_r": [
+        [
+          0,
+          0
+        ],
+        [
+          1.5,
+          1.2
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "upperarm_l": [
+        [
+          0,
+          0
+        ],
+        [
+          1.5,
+          -1.2
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "thigh_l": [
+        [
+          0,
+          0
+        ],
+        [
+          1.5,
+          0.52
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "thigh_r": [
+        [
+          0,
+          0
+        ],
+        [
+          1.5,
+          -0.52
+        ],
+        [
+          3,
+          0
+        ]
+      ]
+    },
+    "head_generator": {
+      "spine_00": [
+        [
+          0,
+          0
+        ],
+        [
+          0.75,
+          0.45
+        ],
+        [
+          1.5,
+          0
+        ],
+        [
+          2.25,
+          -0.45
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "neck": [
+        [
+          0,
+          0
+        ],
+        [
+          1.5,
+          0.5
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "upperarm_r": [
+        [
+          0,
+          0
+        ],
+        [
+          1.5,
+          0.8
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "upperarm_l": [
+        [
+          0,
+          0
+        ],
+        [
+          1.5,
+          -0.8
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "thigh_l": [
+        [
+          0,
+          0
+        ],
+        [
+          1.5,
+          0.35
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "thigh_r": [
+        [
+          0,
+          0
+        ],
+        [
+          1.5,
+          -0.35
+        ],
+        [
+          3,
+          0
+        ]
+      ]
+    }
+  },
+  "verdict": "the landmine was REAL and is TWO-THIRDS disarmed: idle_ready and the termination endpoints round-trip at HEAD; idle_loop does not. anim-author --write is still not safe to run blind."
+}
