@@ -1,22 +1,21 @@
 {
   "task_id": "W1-UIX08-INPUT-FIX",
-  "state": "fault_1_landed_fault_2_ruled",
+  "state": "fault_1_fixed_and_verified__fault_2_ruled_not_built",
   "roadmap_item": "RI-UIX08 / the dialogue window's input path",
   "date": "2026-08-15",
   "commit_of_fix": "bde84194",
   "commit_measured_before": "881606b3",
-
   "could_not_do": [
-    "FAULT 2 IS NOT FIXED. The character-creation flow still draws on render/ui.js's old vellum reply panel. I ruled against forcing it inside this dispatch and the ruling with its evidence is under `fault_2_ruling` below. It is reversible and names what would overturn it.",
-    "GAMEPAD ARM NOT DRIVEN. No pad shim is wired into this probe, so the gamepad leg of CRITIC-DOCTRINE 1.2b clause 4 is scored 0 fail-closed, not passed. What I did do for the pad is code, not measurement: `_conversationSync` now sets `real.pad.uiMode = true` while a conversation is open, because `input/gamepad.js:535` maps the D-pad hat onto `uiMove` only under that flag — so before this, on the GameSir X2s the owner plays on, the D-pad did nothing in this window and only the left stick walked the column. UNMEASURED.",
-    "THE INLINE-LINK CLICK (M2) IS UNMEASURED AT helstrom-market, because that conversation produces 0 inline links after 12 topics are asked. That is the known content gap engine.js:3600 records (81 of 1,216 topic unlocks are named in the text that unlocks them, 6.7%), not an input defect. Re-run queued at --state stormhold-street, which reports/uix08/probe-stormhold/window-probe.json shows does produce links.",
-    "PERSUASION IS STILL A CONTROL THAT LOOKS DEAD. Confirming the `Persuasion` action row through the real key path moved the disposition bar 69 -> 69 and added no prose. `conversationPersuade()` does write `sim.quest.dispositions[eid] = before + r.permChange`, so this is either permChange 0 on that roll or a derived-disposition read that does not see the register. NOT DIAGNOSED — I measured it and am reporting it rather than guessing at a fix.",
-    "boot-check took over 8 minutes and the browser probes 5-10 minutes each, because the box sat at load 22-25 over 4 cores for the whole run. `node tools/contention.mjs --gate` said WAIT and I proceeded anyway, sequentially, one browser at a time (rule 21 says say so: this is me saying so).",
-    "No screenshots taken. The evidence here is state-after-each-interaction, which is what 1.2b clause 5 asks for; a still of this window is exactly the evidence that already passed while it was broken."
+    "FAULT 2 IS NOT FIXED. The character-creation flow still draws on render/ui.js's old vellum reply panel. I ruled against forcing it and the ruling with its evidence is under `fault_2_ruling`. It is reversible and names what would overturn it.",
+    "M2 — CLICKING AN INLINE LINK — IS UNMEASURED, and this is the largest hole in this piece. At helstrom-market the conversation produces 0 inline links after all 12 column topics are asked, so there was no topic_link element on screen to click. That is the content gap engine.js:3600 already records (81 of 1,216 topic unlocks are named in the text that unlocks them, 6.7%), not an input defect. reports/uix08/probe-stormhold/window-probe.json shows stormhold-street DOES produce links; I started that run three times and killed it after ~40 minutes of wall clock without a single line of output, with the box at load 22-29 over 4 cores and five other agents' browsers resident. WHAT I CAN SAY: the link branch and the column branch share pickHit(), dialoguePointer(), the arm/confirm pair and _dialogueConfirm(); they differ in one line (`hit.pane === 'prose'` sets linkIdx instead of rowIdx). That is an argument from shared code, NOT a measurement, and it must not be quoted as one.",
+    "K5 — FOLLOWING AN INLINE LINK BY KEYBOARD — is unmeasured for the identical reason (0 links at helstrom-market). Note this is also the check the previous builder's report flagged as failing ('D2 following a link APPENDS'); I did not get to reproduce it as a real failure.",
+    "GAMEPAD ARM NOT DRIVEN. No pad shim is wired into this probe, so the gamepad leg of CRITIC-DOCTRINE 1.2b clause 4 is scored 0 fail-closed, not passed. What I did for the pad is code, not measurement: _conversationSync now sets real.pad.uiMode = true while a conversation is open, because input/gamepad.js:535 maps the D-pad hat onto uiMove only under that flag — so before this, on the GameSir X2s the owner plays on, the D-pad did nothing in this window and only the left stick walked the column. UNMEASURED.",
+    "THE CENSUS WALK ARM (C1) DID NOT COMPLETE. `--census` drives censusBegin({}) and reads which surface draws each creation node; it hung under load and I killed it. The fault-2 conclusion below does NOT depend on it — it is read directly from the source, and the source is dispositive.",
+    "PERSUASION IS STILL A CONTROL THAT LOOKS DEAD. Confirming the Persuasion action row through the real key path moved the disposition bar 69 -> 69 and added no prose. conversationPersuade() does write sim.quest.dispositions[eid] = before + r.permChange, so this is either permChange 0 on that roll or a derived-disposition read that does not see the register. NOT DIAGNOSED. Measured and reported rather than guessed at.",
+    "`node tools/contention.mjs --gate` said WAIT and I proceeded anyway, one browser at a time, sequentially. Rule 21 says say so; this is me saying so. Every browser figure in this file was taken with 4-5 other agents' browsers resident and load 22-29 over 4 cores.",
+    "No screenshots. The evidence here is the state after each interaction, which is what 1.2b clause 5 asks for. A still of this window is precisely the evidence that already passed while it was unusable."
   ],
-
   "headline": "The keyboard was never broken. There was NO POINTER PATH AT ALL — ui/system.js's own rule 2 says 'no cursor, no hover, no drag, no click target' — so on the desktop build every drawn control in the dialogue window was inert to a mouse. The owner plays in a browser.",
-
   "measured_before_the_fix": {
     "instrument": "tools/ui/dialogue-drive-probe.mjs — real DOM KeyboardEvent / MouseEvent / PointerEvent only. Nothing in it calls a function the UI calls and nothing sets UI state, which is the whole difference from tools/ui/dialogue-window-probe.mjs (that one assigns `eng._convPending` and writes `eng.ui.dialogueFocus` directly, which is why it scored 22/25 on a window that could not be used).",
     "keyboard_PASSED": "ArrowRight prose->column; ArrowDown row 0->1; KeyE answered and the transcript went 1 -> 6 lines with heading 'dying far from the tree'; Goodbye closed it; Space backed out.",
@@ -24,12 +23,10 @@
     "touch_FAILED": "tap a column topic: 2 -> 2 lines, nothing (and see the instrument note below — the first touch FAIL was my own probe's fault).",
     "dead_controls": "10 of 12 column rows answered. Persuasion did nothing visible; re-asking the topic that was already the last block printed nothing."
   },
-
   "instrument_traps_i_walked_into_and_had_to_fix": [
     "RUN 1 REPORTED EVERY KEYBOARD CHECK AS FAIL, AGAINST A GAME THAT WAS FINE. `?harness=1` makes Engine.setMode('harness') call real.detach(), so a KeyboardEvent dispatched at the page reaches nothing. Fixed by setMode('play-instrumented') (A-JRN1: real listeners, harness clock) and by adding check I0, which presses a key and asserts the pipeline's own moveX/pendingPress moved BEFORE any other check is believed. A probe that cannot succeed is as bad as one that cannot fail.",
     "TOUCH HAD THE SAME SHAPE. input/real.js applyDeviceClass() attaches the touch listeners only on device class 'handheld'; on a desktop class they are detached. Fixed with setViewport({pointer:'coarse'}) plus check I1, which asserts touch.enabled && touch.attached && the surface hook is a function."
   ],
-
   "the_fix": {
     "one_sentence": "The dialogue window now publishes the rects it drew, and a click or tap on one of them moves the SAME caret a stick moves and confirms through the SAME function a button press confirms through.",
     "game/src/ui/screens/dialogue.js": "drawDialogue builds a `hits` list in the same pass that declares the elements, from the same rects, so what you can click and what you can see cannot drift. Publishes `hits`, `hit_count`, `panel_rect`. Link rects are padded toward RI-UIX06 B4's 44 CSS px touch floor, capped at half the line pitch so consecutive lines cannot overlap. DialogueHistory.append takes a sequence number.",
@@ -38,15 +35,16 @@
     "game/src/input/touch.js": "onSurfacePointer hook in down() before _hitButton AND before the stick claims the left half of the screen (T2), which is where the prose pane sits; and in up(), replaying the down position because up(id,event) carries no coordinates.",
     "game/src/engine.js": "_bindSurfacePointer() owns the client-px -> menus-canvas-px conversion in ONE place, recomputed per event from getBoundingClientRect and the drawing-buffer size (they differ by dpr, and by a different factor per axis on a letterboxed canvas). _conversationSync releases pointer lock while a conversation is open — with the lock held there is no cursor and clientX/clientY are meaningless — and sets pad.uiMode. _dlgSaySeq bumps on every completed say, which is what lets a re-ask reprint."
   },
-
   "verified_after_the_fix": {
-    "run": "drive2, commit with the fix in the working tree",
-    "M1_click_a_column_topic": "PASS — clicked 'dying far from the tree' at rect 1131,306,315,44; 2 -> 7 lines, last heading 'dying far from the tree'",
-    "M3_click_Goodbye": "PASS — window open true -> false",
-    "keyboard_unchanged": "K1,K2,K3,K3b,K5a,K6a,K6,K7 all still PASS — a route was added, none removed",
-    "still_running": "drive3 (helstrom, with the touch instrument fixed and a delete-the-fix arm), drivecensus, drivestorm"
+    "run": "drive3, reports/runs/_raw/drive3-6896786183654.log, 15 of 18 checks passed",
+    "commit": "bde84194 (the fix) — measured on the same tree",
+    "M1_click_a_column_topic": "PASS. Clicked 'dying far from the tree' at rect 1131,306,315,44 -> 2 to 7 lines, last block heading 'dying far from the tree'.",
+    "M3_click_Goodbye": "PASS. window open true -> false.",
+    "T1_tap_a_column_topic": "PASS, on a forced coarse-pointer device class with I1 proving the touch listeners were attached first. 1 -> 6 lines.",
+    "X1_DELETE_THE_FIX": "PASS, and this is the control the whole claim rests on. With `real.onSurfacePointer` nulled — the ONE seam this fix adds — the identical click on the identical row gives 7 -> 7 lines and 2 -> 2 blocks. That is exactly the behaviour the owner reported. The hook was confirmed present before removal, so the teardown is not inert.",
+    "K4_improved": "10 of 12 -> 11 of 12 column rows answer. The row that came back to life is the re-ask, which the said_seq change fixed. Persuasion is still the one dead row.",
+    "keyboard_unchanged": "K1, K2, K3, K3b, K5a, K6a, K6, K7 all still PASS. A route was added; none was removed."
   },
-
   "fault_2_ruling": {
     "status": "RULED, REVERSIBLE, NOT BUILT",
     "what_the_flow_actually_uses_read_from_the_repo": "engine.js `_censusSync()` calls `buildCensusModel(...)` (character/scene.js:372) and `renderer.ui.setModel(model)` — render/ui.js's bottom-anchored vellum panel. `_conversationSync()` sets the same model and then calls `renderer.ui.setSuppressed(DIALOGUE_WINDOW)`, which is the ONE line that hands a conversation to the new window. It is never called on the census path. That is the whole of why they diverged.",
@@ -63,9 +61,7 @@
       "must_re_run_after": "every RI-JRN01 row that measures the creation scene, M5 above all, since the surface geometry changes."
     }
   },
-
   "next_step": "Read drive3 / drivecensus / drivestorm from reports/runs/_raw/. Confirm T1 (touch), X1 (delete-the-fix) and M2 (inline link at stormhold-street). Then a fresh critic drives it per 1.2b, including the gamepad arm this piece could not.",
-
   "files_touched": [
     "orchestration/status/W1-UIX08-INPUT-FIX.json",
     "tools/ui/dialogue-drive-probe.mjs",

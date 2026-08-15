@@ -1,0 +1,20 @@
+[harness]   ok   I0 INSTRUMENT: a real DOM key reaches the input pipeline  real.attached=true, ArrowRight -> pipeline.moveX=1, KeyE -> pendingPress=256
+[harness]   ok   S0 the window is open with somebody to talk to  speaker 'Sheem', 1 action row(s), 11 topic(s)
+[harness]   ok   K1 ArrowRight moves the caret from the prose to the topic column  focus prose:0 -> column:0
+[harness]   ok   K2 ArrowDown walks the column one row  rowIdx 0 -> 1
+[harness]   ok   K3 KeyE on a focused column topic ANSWERS — the transcript grows  1 -> 6 lines; last block heading 'dying far from the tree' (167 chars)
+[harness]   ok   K3b the answer is APPENDED, not replaced (§D1)  1 -> 2 block(s)
+[harness]   FAIL K4 every topic row in the column answers when confirmed  11/12 rows produced a new block; dead rows: Persuasion
+[harness]   ok   K5a ArrowLeft crosses back to the prose  focus column:11 -> prose:0
+[harness]   FAIL K5 following an inline link with KeyE does something  0/0 link(s) followed produced a new block or a new column entry
+[harness]   ok   K6a the caret reaches the Goodbye row  rowIdx 12 of 12 (actions 1 + topics 11)
+[harness]   ok   K6 Goodbye closes the conversation  window open true -> false, conversation true -> false
+[harness]   ok   K7 Space backs out of the conversation  window open true -> false
+[harness]   ok   M1 clicking a topic in the column answers it  clicked 'dying far from the tree' at 1131,306,315,44; 2 -> 7 lines, last heading 'dying far from the tree'
+[harness]   FAIL M2 an inline link can be clicked  no topic_link element on screen to click
+[harness]   ok   X1 DELETE-THE-FIX: with the pointer hook removed the same click does nothing  hook was present=true; 7 -> 7 lines, 2 -> 2 blocks (this is the pre-fix behaviour the owner reported)
+[harness]   ok   M3 clicking Goodbye closes the conversation  window open true -> false
+[harness]   ok   I1 INSTRUMENT: the touch listeners are attached  touch.enabled=true, attached=true, surface hook=true
+[harness]   ok   T1 tapping a topic in the column answers it  tapped 'dying far from the tree'; 1 -> 6 lines
+[harness] 
+15/18 checks passed
