@@ -2,35 +2,70 @@
   "task_id": "W1-F10-CHARACTER-CRITIC",
   "role": "critic",
   "roadmap_item": "F10",
-  "state": "running",
+  "state": "done",
   "baseline_commit": "1c40739ed8119343fc3556b64cf40b619cf47dc4",
   "branch": "codex/wave1-build-experiment",
-  "what_i_could_not_do_first": [
-    "RI-VIS08 §B3/B4/B5/B6 (material separation, texel density, contact shadow, subsurface) are NOT yet answered on hardware. Local frames are SwiftShader and W1-30-EVIDENCE §4 forbids an appearance claim from them. A hardware run is in flight (reports/runpod-gpu/runs/f10-characters-hw).",
-    "RI-VIS10 B1 (race legibility) and C4/D4 need a FRESH JUDGE. Rule 0 forbids summoning one via create_session; per RULES.md rule 0 the correct result is to build the pack, audit it, and score the check not_run/fail-closed rather than judge my own pack.",
-    "refs/characters/ C5 is n=0 (no modern humanoid turnaround exists). The cap that puts on the verdict is stated in the verdict."
+  "verdict": "corpus/90-verdicts/wave1/W1-F10-CHARACTERS.json",
+  "result": "FAIL. Ordered pair, never averaged: ART 1/10 (RI-VIS10) x FIDELITY 3/10 (RI-VIS08). Wave-1 gate is 7.0.",
+
+  "what_i_could_not_do_stated_first": [
+    "RI-VIS10 B1 (race legibility), C4 (reads at 8-10 m) and D4 (rank at 20 m) need a FRESH JUDGE. RULES.md rule 0 records create_session as approval-gated (MCP error -32003) and rule 25 forbids judging a pack I built. All three scored FAIL under the item's own 'an unpublished census fails its check' rule; the B1 <40% cap-at-4 was NOT applied because I did not measure it. The packs exist in the artifacts dir for whoever can run them.",
+    "RI-VIS08 B1, B3, B4 and B5 have their hardware frames in hand but the pixel statistics were not computed; B6 (subsurface) was never captured at all - my sweep has no backlit setup. All five scored 0 fail-closed per CRITIC-DOCTRINE 7.3 and are recorded as OWED. Five of the eight STATIC checks are therefore at 0 because of me, not because of the build - which is exactly why FIDELITY is scored 3 (the item's own band for 'B2 below budget') rather than the arithmetic's 1.",
+    "17 of the 93 hardware frames contain no subject: Ixtei (race argonian) stands out at sea off the Lilmoth pier. My capture tool reported '0 red' for them because it cannot tell an empty frame from a full one. That is a defect in tools/visual/f10-character-sweep.mjs and it needs a subject-coverage assertion before reuse.",
+    "refs/characters/ slot C5 is n=0 (no modern humanoid turnaround exists), so no cross-angle judgement here is made against a like-for-like artefact. The cap that puts on the verdict is stated in verdict markdown 0.4.",
+    "RI-VIS10 E4 (adjacency) could not be demonstrated either way: the Lilmoth plaza held no NPC on screen in any of the 4 wide frames.",
+    "One claim I made mid-pass was WRONG and is withdrawn in verdict markdown 0.5: I reported two M1 reference videos missing from disk after reading a truncated 'ls | head'. Re-run, refs/video/ holds 10 files and the generated set has 254 routed members with 0 missing.",
+    "Two RunPod attempts died on a Pod-agent HTTP 404 on /job before any frame was taken. Both Pods terminated, deletion confirmed. The third succeeded. Total spend across all three: under one cent."
   ],
-  "measured_so_far": {
-    "RI-VIS08_trace_contract": "complete - 0 missing fields across 5 scenarios, 3005 frames",
-    "DYNAMIC_fails": ["C2 jerk (0.0545 stairs, 0.0670 attack_chain vs 0.030)", "C5 blending (pose_step 0.198-0.294 m vs 0.15; blend_frames 0 in 3 of 5)", "C10 variety (0 hit-reaction clips in 3005 frames)"],
-    "B2_triangles": "player/saxhleel 15142 (bar 25000); humanoid 15752 (bar 12000, pass); beast 4834 (bar 12000, fail)",
-    "RI-VIS10_C1": "R = H/h across 41 shipped figures: min 5.87 median 6.58 max 6.84; ZERO inside the 7.0-8.0 default band; 2 outside the hard 6.0-8.5 band",
-    "RI-VIS10_C2": "median pairwise IoU 0.9109 (bar <=0.80) over 552 pairs; max 1.0000 (bar <0.93); several pairs byte-identical",
-    "RI-VIS10_D1": "no garment vocabulary exists anywhere in game/data - scores 0 fail-closed by the item's own rule",
-    "race_mapping": "renderer.js:693 maps only race==='saxhleel'||'naga' to the saxhleel art family; 181 of 408 NPCs carry race 'argonian' and therefore render on base.humanoid"
+
+  "headline_measurements": {
+    "evidence_class": "HARDWARE - ANGLE (NVIDIA, Vulkan 1.4.312, RTX A5000). 93 frames, 0 red, Pod 06c0v1xyyroy78 terminated and deletion confirmed.",
+    "rig_is_sound": "RI-VIS08 §A trace complete (0 missing fields, 3005 frames, 5 scenarios). C1 55-60 poses/s; C3 foot slide 6 mm vs 30 mm bar; C4 root-motion r = 1.0000; C6 no T-pose; C7 grip error 0.000 m; C8 foot IK 100% on 20-deg slope AND stairs; C9 secondary lag 7.5-25.2 frames. DYNAMIC 7/10.",
+    "surface_is_not": "STATIC 1/8. B2 player 15142 tris vs 25000, beast 4834 vs 12000. B7 289 crack px in 179 of 640 posed frames. B8 base.humanoid has NO eye geometry and carries 329 of 408 NPCs.",
+    "RI-VIS10_C1": "R = H/h over 41 shipped figures: min 5.87, median 6.58, max 6.84. ZERO inside the 7.0-8.0 band.",
+    "RI-VIS10_C2": "median pairwise IoU 0.9109 (bar <=0.80), max 1.0000 (bar <0.93). 41 figures collapse to 12 distinct silhouettes. An argonian rootkeeper and a breton mudborn are pixel-identical.",
+    "RI-VIS10_C3": "hip tilt 0.000 deg at both sampled idle frames - no weight shift at all.",
+    "RI-VIS10_B4": "1 of 7 facial landmarks.",
+    "RI-VIS10_D1": "the garment vocabulary does not exist anywhere in game/data - scores 0 by the item's own rule.",
+    "cheapest_fix": "renderer.js:693 routes only race saxhleel|naga to the reptilian body. 'argonian' carries 181 of 408 NPCs - 44.4% of the roster and the actual race of Black Marsh - and renders on base.humanoid."
   },
-  "next_step": "Land the tooling and evidence; complete NPC frames; hardware run; write verdict + ranked remedy list.",
+
+  "answers_to_the_dispatch": {
+    "is_the_owner_right": "Yes, and specifically: proportion (6.5 heads), joint construction (ellipsoids on a slab), face (1 of 7 landmarks), silhouette duplication (12 outlines for 41 figures) and garment vocabulary (2 of 8 materials, no wear).",
+    "rig_or_rebuild": "KEEP THE RIG, REBUILD THE SURFACE. Every failing number is a property of the mesh; every passing number is a property of the skeleton and the animation system. The one non-mesh fix is C5's crossFadeFrom."
+  },
+
+  "corpus_extended": ["RI-VIS10 B3 amended: 'texture-only OR ABSENT' for crest, snout and tail. Strictly stricter; it turns this verdict's own B3 from PASS to FAIL and DESIGN from 3/18 to 2/18, which is the test that it is not self-serving."],
+  "gates_run": ["node tools/verdict-validate.mjs -> OK", "node tools/corpus-index.mjs --check -> CORPUS COHERENCE GATE PASSED", "node tools/gap-ledger.mjs -> gap homed", "node tools/roadmap-coverage.mjs -> my gap now mapped to F10; the one remaining unmapped gap (GAP-W1-ui-hud-world-set-unbuilt-and-misplaced) belongs to the in-flight T4 screens critic, not to me"],
+  "declared_overlap_note": "tools/visual/f10-character-sweep.mjs and f10-silhouette.mjs are new files under tools/visual/, which W1-30V claims as a directory. No collision: both filenames are unique to this piece and neither existed before.",
+
   "files_claimed": [
     "orchestration/status/W1-F10-CHARACTER-CRITIC.json",
     "corpus/90-verdicts/wave1/W1-F10-CHARACTERS.md",
     "corpus/90-verdicts/wave1/W1-F10-CHARACTERS.json",
     "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/",
+    "corpus/70-visual/RI-VIS10-character-design.md",
     "tools/visual/f10-character-sweep.mjs",
-    "tools/visual/f10-silhouette.mjs"
+    "tools/visual/f10-silhouette.mjs",
+    "tools/roadmap-coverage.mjs",
+    "orchestration/ROADMAP.md",
+    "docs/shots/2026-08-15-f10-player-orbit-90deg-hardware.png",
+    "docs/shots/2026-08-15-f10-npc-closeup-hardware.png"
   ],
   "files_touched": [
     "orchestration/status/W1-F10-CHARACTER-CRITIC.json",
+    "corpus/90-verdicts/wave1/W1-F10-CHARACTERS.md",
+    "corpus/90-verdicts/wave1/W1-F10-CHARACTERS.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/",
+    "corpus/70-visual/RI-VIS10-character-design.md",
     "tools/visual/f10-character-sweep.mjs",
-    "tools/visual/f10-silhouette.mjs"
+    "tools/visual/f10-silhouette.mjs",
+    "tools/roadmap-coverage.mjs",
+    "orchestration/ROADMAP.md",
+    "corpus/90-verdicts/GAP-LEDGER.json",
+    "corpus/90-verdicts/GAP-LEDGER.md",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-15-f10-player-orbit-90deg-hardware.png",
+    "docs/shots/2026-08-15-f10-npc-closeup-hardware.png"
   ]
 }

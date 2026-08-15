@@ -1,0 +1,1350 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-F10-CHARACTERS",
+  "piece_title": "F10 — characters and creatures: the player and every NPC, judged against the character reference set",
+  "subsystem_paths": [
+    "render.art.character",
+    "render.art.silhouette",
+    "render.fidelity.character",
+    "render.fidelity.animation"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-f10-characters-a71c",
+    "role": "critic.visual",
+    "started_at": "2026-08-15T08:05:00Z",
+    "finished_at": "2026-08-15T09:05:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": false
+  },
+  "build": {
+    "commit_sha": "1c40739ed8119343fc3556b64cf40b619cf47dc4",
+    "branch": "codex/wave1-build-experiment",
+    "harness_commands": [
+      {
+        "cmd": "node tools/visual/f10-character-sweep.mjs --tag hw --max-npc 4 --canvas 1280x720 --gpu hardware --require-hardware",
+        "exit": 0,
+        "note": "on RunPod Pod 06c0v1xyyroy78, RTX A5000; 93 frames, 0 red; Pod terminated and deletion confirmed"
+      },
+      {
+        "cmd": "node tools/visual/f10-silhouette.mjs --res=768 --pose=idle_loop",
+        "exit": 0
+      },
+      {
+        "cmd": "node tools/visual/actor-orbit-holes.mjs --res=512 --angles=8 --distances=4",
+        "exit": 1,
+        "note": "exits non-zero on FAIL by design: 289 crack px in 179 of 640 frames"
+      },
+      {
+        "cmd": "node corpus/80-methods/capture-trace.mjs --scenario locomotion_flat --frames 600",
+        "seed": 3030,
+        "exit": 0
+      },
+      {
+        "cmd": "node corpus/80-methods/capture-trace.mjs --scenario locomotion_slope20 --frames 600",
+        "seed": 3030,
+        "exit": 0
+      },
+      {
+        "cmd": "node corpus/80-methods/capture-trace.mjs --scenario locomotion_stairs --frames 600",
+        "seed": 3030,
+        "exit": 0
+      },
+      {
+        "cmd": "node corpus/80-methods/capture-trace.mjs --scenario attack_chain --frames 600",
+        "seed": 3030,
+        "exit": 0
+      },
+      {
+        "cmd": "node corpus/80-methods/capture-trace.mjs --scenario hit_reactions --frames 600",
+        "seed": 3030,
+        "exit": 0
+      },
+      {
+        "cmd": "node corpus/80-methods/anim-metrics.mjs traces/f10/*/trace.jsonl",
+        "exit": 0
+      },
+      {
+        "cmd": "node tools/visual/character-refs.mjs --check",
+        "exit": 0,
+        "note": "254 routed members, 0 missing on disk"
+      }
+    ],
+    "depends_on": [
+      "corpus/70-visual/RI-VIS08-character-animation-fidelity.md",
+      "corpus/70-visual/RI-VIS10-character-design.md",
+      "corpus/70-visual/refs/characters/INDEX.md",
+      "corpus/70-visual/refs/characters/character-reference-set.json",
+      "game/data/npcs/",
+      "game/data/progression/races.json",
+      "game/data/combat/clips.json",
+      "game/data/combat/skeleton.json",
+      "game/src/render/actor.js",
+      "game/src/render/renderer.js"
+    ]
+  },
+  "bifurcation": {
+    "axis": "both-separately",
+    "declared_before_citation": true,
+    "fidelity_refs": [
+      "RI-VIS08"
+    ],
+    "art_refs": [
+      "RI-VIS10"
+    ],
+    "note": "Two disjoint score sets, two disjoint reference lists, reported as an ordered pair ART x FIDELITY and never averaged (CC-5). The ART side cites no modern reference; the FIDELITY side cites no Morrowind reference."
+  },
+  "reference_items": [
+    {
+      "id": "RI-VIS10",
+      "path": "corpus/70-visual/RI-VIS10-character-design.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "DESIGN = 10 * (checks passed) / 18, band",
+      "native_score": 1.1,
+      "native_max": 10,
+      "native_verdict": "0-2 band: three of the §F top-five tells are present (human with a lizard head; everyone is the same man; brand-new clothes on a poor province). 2 of 18 checks pass under the B3 amendment this verdict filed; 3 of 18 under the bar as it stood. Both land in the same band, so ART is 1 either way.",
+      "score_0_10": 1,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "B1",
+          "result": "fail",
+          "value": "no fresh judge obtainable; census unpublished",
+          "threshold": ">= 80% named correctly",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__player__yaw000.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__player__closeup-lit.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__npc-blackwood-company-factor__yaw090.png"
+          ],
+          "note": "RULES.md rule 0 forbids summoning a judge (create_session is approval-gated, MCP error -32003) and rule 25 forbids judging a pack I built. The item's own rule fails an unpublished census rather than removing it. The <40% cap is NOT applied, because I did not measure it."
+        },
+        {
+          "id": "B2",
+          "result": "fail",
+          "value": "saxhleel 3/10; base.humanoid 0/10",
+          "threshold": "reptilian races >= 7/10",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/roster-census.json"
+          ],
+          "note": "Present: snout, crest/horn, non-human eye. Absent: throat plating, scale flow, non-human ear, TAIL, non-plantigrade leg, clawed hand, jaw line. Below 5/10 is the item's 'a human with a head prop'."
+        },
+        {
+          "id": "B3",
+          "result": "fail",
+          "value": "crest and snout are geometry; TAIL IS ABSENT ENTIRELY",
+          "threshold": "crest, snout and tail each geometry — absent does not satisfy this arm (as amended by this verdict)",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/B3__player__closeup-lit-orbit30.png"
+          ],
+          "note": "Under the bar AS IT STOOD this check PASSED, because B3 scored only features 'scored present in B2' and an absent tail was removed from its denominator. That is a seam, and this verdict closed it by AMENDING RI-VIS10 B3 so that absent counts as failing for crest, snout and tail — a strictly stricter rule that makes this very verdict worse (DESIGN 3/18 -> 2/18). CRITIC-DOCTRINE §1.3's guard is met: the extension is not the reason anything passes."
+        },
+        {
+          "id": "B4",
+          "result": "fail",
+          "value": "1 of 7 facial landmarks",
+          "threshold": ">= 5 of 7",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__player__closeup-lit.png"
+          ],
+          "note": "Only a crest root. No brow ridge, orbit rim, naris, cheek-to-jaw line, mandible line or chin underside. <=2 is the item's 'a smooth blank'."
+        },
+        {
+          "id": "C1",
+          "result": "fail",
+          "value": "R over 41 figures: min 5.87, median 6.58, max 6.84; 0 of 41 inside 7.0-8.0; 2 of 41 outside 6.0-8.5",
+          "threshold": "inside the declared or default band (7.0-8.0 man/mer, 6.5-7.5 heavy)",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/f10-silhouette.json"
+          ]
+        },
+        {
+          "id": "C2",
+          "result": "fail",
+          "value": "median pairwise IoU 0.9109, max 1.0000 over 552 pairs; 41 figures collapse to 12 distinct silhouettes",
+          "threshold": "median <= 0.80 and no pair >= 0.93",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/vis10-C2-silhouette-duplication.json"
+          ],
+          "note": "An argonian rootkeeper and a breton mudborn are pixel-identical at yaw 0."
+        },
+        {
+          "id": "C3",
+          "result": "fail",
+          "value": "shoulder tilt 0.152/0.320 deg; hip tilt 0.000/0.000 deg; elbow diff 4.231/8.019 deg",
+          "threshold": ">= 2 of 3 axes exceed 3 deg at both frames",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/vis10-C3-stance.json"
+          ],
+          "note": "The hip line is exactly level at both sampled idle frames: no weight shift at all."
+        },
+        {
+          "id": "C4",
+          "result": "fail",
+          "value": "no fresh judge obtainable; census unpublished",
+          "threshold": "both correct on >= 90% of the roster",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C3__player__8m.png"
+          ]
+        },
+        {
+          "id": "D1",
+          "result": "fail",
+          "value": "the garment vocabulary does not exist (grep -rln garment game/data/ returns no match)",
+          "threshold": ">= 90% of 32 actors map to exactly one row",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/roster-census.json"
+          ],
+          "note": "Scores 0 by the item's own fail-closed rule, not 'unknown'."
+        },
+        {
+          "id": "D2",
+          "result": "pass",
+          "value": "0 occurrences of all eight generic-fantasy garments",
+          "threshold": "0 occurrences",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__player__yaw000.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__player__closeup-lit.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__npc-blackwood-company-factor__yaw090.png"
+          ],
+          "note": "No plate cuirass, mail hauberk, heraldic tabard, pointed hood, horned helm, pauldron-and-cape, buckled jerkin with bracers, or cuffed riding boots on any of 5 subjects at 8 angles."
+        },
+        {
+          "id": "D3",
+          "result": "fail",
+          "value": "2 of 8 materials (woven reed, chitin plate)",
+          "threshold": ">= 5 of 8",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__player__yaw000.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__player__closeup-lit.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__npc-blackwood-company-factor__yaw090.png"
+          ],
+          "note": "<=2 is the item's 'the wardrobe is cloth and leather, i.e. anywhere'."
+        },
+        {
+          "id": "D4",
+          "result": "fail",
+          "value": "no fresh judge obtainable; census unpublished",
+          "threshold": ">= 5 of 6 sorted correctly",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__player__yaw000.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__player__closeup-lit.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__npc-blackwood-company-factor__yaw090.png"
+          ]
+        },
+        {
+          "id": "D5",
+          "result": "fail",
+          "value": "0 of 5 subjects show hem dirt, a mend, or asymmetric contact wear at any of 8 angles",
+          "threshold": ">= 60% of the roster",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__player__yaw000.png"
+          ]
+        },
+        {
+          "id": "E1",
+          "result": "fail",
+          "value": "32 actors for 408 NPCs (1 per 12.75); townsman 97 = 23.8%",
+          "threshold": ">= 34 actors AND no bucket above 10%",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/roster-census.json"
+          ],
+          "note": "Fails both arms, exactly as the item's own 2026-08-14 baseline predicted."
+        },
+        {
+          "id": "E2",
+          "result": "pass",
+          "value": "6 distinct head-height values among the sampled townsman figures",
+          "threshold": ">= 4",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/f10-silhouette.json"
+          ],
+          "note": "Head height is a proxy for 'distinct head/face variant'; the morph registry does vary crest, snout and horn per variant."
+        },
+        {
+          "id": "E3",
+          "result": "fail",
+          "value": "3 body archetypes (slight, average, heavy); no child, no stooped-old",
+          "threshold": ">= 4",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/f10-silhouette.json"
+          ],
+          "note": "Not 1, so the cap-at-3 hard fail is not triggered."
+        },
+        {
+          "id": "E4",
+          "result": "fail",
+          "value": "not demonstrable: 0 NPCs on screen in any of the 4 wide frames at the Lilmoth stand",
+          "threshold": "0 duplicate-tuple pairs within 15 m",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/E4__lilmoth__1.png"
+          ],
+          "note": "Census unpublished, therefore failed rather than removed. The absence of NPCs from the plaza is itself recorded as a secondary observation."
+        },
+        {
+          "id": "E5",
+          "result": "fail",
+          "value": "4 races hold >= 5% share (argonian 44.4%, saxhleel 18.9%, imperial 14.5%, dunmer 14.0%); only saxhleel is visually distinguishable",
+          "threshold": "every race with >= 5% share distinguishable on screen",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/vis10-C2-silhouette-duplication.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__npc-dockmaster-weeja-sen__yaw000.png"
+          ],
+          "note": "RI-MTH07 CONSUMPTION is unmet: the race roster is data-only for 329 of 408 NPCs."
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "The census is skipped because it is tedious — avoided: 14 of 18 censuses published.",
+        "The wardrobe is authored once, for the hero, and the crowd gets a recolour.",
+        "The garment vocabulary is never written, so D1 sits at 0 forever.",
+        "'It's stylised' — the test that separates the real thing from the excuse is B3, and B3 had a seam that let an absent feature through. Closed by this verdict."
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/manifest.json"
+      ],
+      "why_not_ten": "Three of the item's five top tells are present. The body is assembled from primitive solids (ellipsoid shoulders on a slab torso), the face carries 1 of 7 landmarks, the whole roster is 5.9-6.9 heads tall against a 7.0-8.0 band, 41 figures collapse to 12 silhouettes with pairs at IoU 1.0000, and the garment vocabulary the item requires does not exist.",
+      "path_to_ten": "The ranked list in the verdict markdown §7, items 1-6 and 10: route argonian to the saxhleel art family; raise the head-count canon into 7.0-8.0; give base.humanoid eyes and both families a built face (>= 5 of 7 landmarks); rebuild the shoulder/torso/limb surface out of primitives; add tail, ear, claw and jaw geometry to reach B2 >= 7/10; author the faction x rank x region garment vocabulary and dress the roster to D3 >= 5/8 and D5 >= 60%; raise the actor count to >= 34 with no bucket above 10%.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-VIS08",
+      "path": "corpus/70-visual/RI-VIS08-character-animation-fidelity.md",
+      "side": "modern-fidelity",
+      "kind": "number",
+      "native_scale": "min(STATIC = 10*(B passed)/8, DYNAMIC = 10*(C passed)/10), band",
+      "native_score": 3,
+      "native_max": 10,
+      "native_verdict": "3-4 band: B2 below budget. STATIC 1/8 = 1.25, DYNAMIC 7/10 = 7.0, min = 1.25; the item's own band table is a ceiling under SCORING.md §1.2 and places a below-budget B2 at 3-4.",
+      "score_0_10": 3,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "B1",
+          "result": "unmeasurable",
+          "value": "outline-fit facet metric not computed",
+          "threshold": "Facets <= 1.5 per 1000 px",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__player__yaw000.png"
+          ],
+          "note": "Scored 0 fail-closed per CRITIC-DOCTRINE §7.3. Owed for the next round. The threshold is also unvalidated against measured current-gen data by the item's own provenance note."
+        },
+        {
+          "id": "B2",
+          "result": "fail",
+          "value": "player/saxhleel 15142 tris; humanoid 15752; beast 4834",
+          "threshold": "player/named NPC >= 25000; common enemy >= 12000; boss/large creature >= 40000",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/roster-census.json"
+          ],
+          "note": "Above the 6000-triangle hard-fail floor, so the cap-at-3 for B2 is NOT triggered; the 3-4 band for 'B2 below budget' is."
+        },
+        {
+          "id": "B3",
+          "result": "unmeasurable",
+          "value": "orbit-30 pair captured, patch specular statistic not computed",
+          "threshold": "highest and lowest patch delta differ by >= 2x",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/B3__player__closeup-lit-orbit30.png"
+          ],
+          "note": "Scored 0 fail-closed. The frames exist on hardware and the metric is a short follow-up."
+        },
+        {
+          "id": "B4",
+          "result": "unmeasurable",
+          "value": "HFR on the character crop not computed",
+          "threshold": "HFR >= 0.05",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__player__closeup-lit.png"
+          ],
+          "note": "Scored 0 fail-closed."
+        },
+        {
+          "id": "B5",
+          "result": "unmeasurable",
+          "value": "foot-ground junction darkening not computed",
+          "threshold": "junction >= 25% darker than ground 100 px away",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__player__yaw000.png"
+          ],
+          "note": "Scored 0 fail-closed. Ground shadows are visibly present in the hardware frames, but an impression is not the metric."
+        },
+        {
+          "id": "B6",
+          "result": "unmeasurable",
+          "value": "no backlit capture was taken",
+          "threshold": "thin parts >= 1.6x brighter than thick parts",
+          "hard_fail": false,
+          "evidence": [],
+          "note": "Scored 0 fail-closed. This is the critic's omission, not a property of the build."
+        },
+        {
+          "id": "B7",
+          "result": "fail",
+          "value": "289 crack px across 179 of 640 frames; worst parry_sweep@1 at 45 deg, 4 m; through-gaps at calf/foot and head/hand seams",
+          "threshold": "no visible collapse at any extreme pose",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/f10-silhouette.json"
+          ],
+          "note": "Measured over the 20 shipped pose archetypes from clips.json, not fabricated poses."
+        },
+        {
+          "id": "B8",
+          "result": "fail",
+          "value": "saxhleel has eye-l/r + pupil-l/r as separate geometry; base.humanoid has NO eye geometry (family-form parts are hair-cap and tailored-tunic only). base.humanoid carries 329 of 408 NPCs.",
+          "threshold": "separate geometry + specular highlight",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__npc-blackwood-company-factor__closeup-lit.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/roster-census.json"
+          ],
+          "note": "Scored against the item's guard that the score is a minimum across characters, not the player's score."
+        },
+        {
+          "id": "C1",
+          "result": "pass",
+          "value": "55.3-60 distinct poses/s; hold_ratio 0.0000 on all five scenarios",
+          "threshold": ">= 24/s and hold_ratio <= 0.10",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-locomotion_flat.json"
+          ]
+        },
+        {
+          "id": "C2",
+          "result": "fail",
+          "value": "J = 0.0670 (attack_chain), 0.0545 (locomotion_stairs)",
+          "threshold": "<= 0.010 pass, > 0.030 fail",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-attack_chain.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-locomotion_stairs.json"
+          ]
+        },
+        {
+          "id": "C3",
+          "result": "pass",
+          "value": "Slide_mean 0.0063 m worst case, p95 0.0074 m",
+          "threshold": "Slide_mean <= 0.03 m",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-locomotion_flat.json"
+          ]
+        },
+        {
+          "id": "C4",
+          "result": "pass",
+          "value": "Pearson r = 1.0000, ratio 1.0000 on all five scenarios",
+          "threshold": "r >= 0.90 and ratio in [0.95, 1.05] on committed actions",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-attack_chain.json"
+          ]
+        },
+        {
+          "id": "C5",
+          "result": "fail",
+          "value": "blend_frames 0 in 3 of 5 scenarios; max pose_step 0.198-0.294 m in all 5",
+          "threshold": "blend_frames >= 5 for locomotion transitions, pose_step <= 0.05 m",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-locomotion_flat.json"
+          ],
+          "note": "The item's own 'How we lose' names this by mechanism: action.play() without crossFadeFrom."
+        },
+        {
+          "id": "C6",
+          "result": "pass",
+          "value": "min Hamming distance to rest pose 28-34 across 3005 frames",
+          "threshold": "> 6",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-hit_reactions.json"
+          ]
+        },
+        {
+          "id": "C7",
+          "result": "pass",
+          "value": "max grip_err 0.000 m over 600 frames per scenario",
+          "threshold": "<= 0.02 m",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-attack_chain.json"
+          ]
+        },
+        {
+          "id": "C8",
+          "result": "pass",
+          "value": "100% of planted frames in band, on 20-degree slope and on stairs",
+          "threshold": ">= 95% with h in [-0.005, 0.03] m",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-locomotion_slope20.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-locomotion_stairs.json"
+          ]
+        },
+        {
+          "id": "C9",
+          "result": "pass",
+          "value": "lag 7.5-25.2 frames; frill chain delays 4/7/10",
+          "threshold": "lag >= 2 frames and non-zero proxy motion",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-locomotion_flat.json"
+          ]
+        },
+        {
+          "id": "C10",
+          "result": "fail",
+          "value": "11 distinct clips over 3005 frames; 0 hit-reaction clips, including in the hit_reactions scenario; 2 idle variants",
+          "threshold": ">= 3 hit reactions by direction, >= 2 idle variants, per-weapon-class attack sets",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-hit_reactions.json"
+          ],
+          "note": "anim-metrics.mjs returns pass:true here while printing 'idle=1, hit=0' and deferring population completeness to the critic. Scored against the item, not the tool."
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "mixer.clipAction(x).play() with no crossfade — C5, blend_frames 0 with a 0.235 m bone jump.",
+        "A beautiful player and grey-box enemies — inverted here: base.humanoid, which carries 329 of 408 NPCs, has no eye geometry at all.",
+        "The 40 px readability test is skipped because it feels pedantic — D1 was not run; recorded as owed."
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/manifest.json"
+      ],
+      "why_not_ten": "STATIC is 1 of 8: the player is 15142 triangles against a 25000 bar, the creature 4834 against 12000, the skin opens 289 crack pixels across 179 of 640 posed frames, and the art family carrying 80.6% of the roster has no eye geometry. Five further STATIC checks (B1, B3, B4, B5, B6) were not computed by this critic and are 0 fail-closed. DYNAMIC is 7 of 10: jerk, blending and animation variety fail.",
+      "path_to_ten": "Rebuild the body surface off the existing skeleton (verdict markdown §7 items 3-5): raise the player to >= 25000 triangles and the creature to >= 12000, close the skin cracks at the calf/foot and head/hand seams, give base.humanoid eye and pupil geometry. Then C5 (crossFadeFrom on locomotion transitions, blend_frames >= 5, pose_step <= 0.05 m), C2 (the jerk follows the hard cut and should fall with it), and C10 (author >= 3 directional hit reactions). Finally run the five unrun B-checks on the hardware frames that already exist.",
+      "ten_by_wave": 3
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/manifest.json",
+      "kind": "report",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "source": "ours",
+      "note": "93 rows, 0 red, evidence_class HARDWARE, renderer ANGLE (NVIDIA, Vulkan 1.4.312, RTX A5000)."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/subjects.json",
+      "kind": "report",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "source": "ours",
+      "note": "The five subjects enumerated from listEntities(): player (saxhleel), 2 imperial, 1 saxhleel, 1 argonian."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__player__yaw000.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": [
+          2766,
+          3.58,
+          5013.834
+        ],
+        "distance_m": 2.834,
+        "yaw_deg": 0,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961797226
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "projected_foot_row": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__player__yaw090.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": [
+          2768.834,
+          3.58,
+          5011
+        ],
+        "distance_m": 2.834,
+        "yaw_deg": 90,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "projected_foot_row": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__player__yaw180.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": [
+          2766,
+          3.58,
+          5008.166
+        ],
+        "distance_m": 2.834,
+        "yaw_deg": 180,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": {
+          "ndc": [
+            0,
+            0.6809723961797226
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "projected_foot_row": {
+          "ndc": [
+            0,
+            -0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__player__closeup-lit.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": [
+          2766.311,
+          4.174,
+          5011.854
+        ],
+        "distance_m": 0.909,
+        "yaw_deg": null,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": null,
+        "projected_foot_row": null
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/B3__player__closeup-lit-orbit30.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": [
+          2766.697,
+          4.174,
+          5011.585
+        ],
+        "distance_m": 0.909,
+        "yaw_deg": null,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": null,
+        "projected_foot_row": null
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C3__player__8m.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": [
+          2770,
+          3.58,
+          5017.928
+        ],
+        "distance_m": 8,
+        "yaw_deg": null,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": null,
+        "projected_foot_row": null
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C2__player__closeup-night.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": [
+          2766.311,
+          4.174,
+          5011.854
+        ],
+        "distance_m": 0.909,
+        "yaw_deg": null,
+        "fov_deg": 60,
+        "time_of_day": "t2100",
+        "weather": "clear",
+        "projected_head_row": null,
+        "projected_foot_row": null
+      },
+      "time_of_day": "t2100"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/IDLE__player__f000.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": [
+          2766,
+          3.58,
+          5013.834
+        ],
+        "distance_m": 2.834,
+        "yaw_deg": null,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": null,
+        "projected_foot_row": null
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/IDLE__player__f120.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": null,
+        "distance_m": null,
+        "yaw_deg": null,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": null,
+        "projected_foot_row": null
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__npc-dockmaster-weeja-sen__yaw000.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": [
+          2804.61,
+          1.27,
+          5035.774
+        ],
+        "distance_m": 2.834,
+        "yaw_deg": 0,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "projected_foot_row": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961797224
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__npc-dockmaster-weeja-sen__closeup-lit.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": [
+          2804.921,
+          1.864,
+          5033.794
+        ],
+        "distance_m": 0.909,
+        "yaw_deg": null,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": null,
+        "projected_foot_row": null
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__npc-blackwood-company-factor__yaw090.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": [
+          2752.974,
+          3.58,
+          5031.89
+        ],
+        "distance_m": 2.834,
+        "yaw_deg": 90,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "projected_foot_row": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__npc-blackwood-company-factor__closeup-lit.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": [
+          2750.451,
+          4.174,
+          5032.744
+        ],
+        "distance_m": 0.909,
+        "yaw_deg": null,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": null,
+        "projected_foot_row": null
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__npc-harbourmistress-tesh__yaw090.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": [
+          2803.184,
+          1.27,
+          5028.79
+        ],
+        "distance_m": 2.834,
+        "yaw_deg": 90,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "projected_foot_row": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.6809723961798316
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/E4__lilmoth__1.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/f10-character-sweep.mjs --tag hw --gpu hardware --require-hardware",
+      "seed": 20260814,
+      "source": "ours",
+      "note": "1280x720, 60-degree FOV, t1300 clear unless the filename says otherwise; camera pose and projected head/foot rows recorded per row in ours-hardware/manifest.json. HARDWARE evidence class.",
+      "resolution": "1280x720",
+      "camera_pose": {
+        "eye": null,
+        "distance_m": null,
+        "yaw_deg": 90,
+        "fov_deg": 60,
+        "time_of_day": "t1300",
+        "weather": "clear",
+        "projected_head_row": null,
+        "projected_foot_row": null
+      },
+      "time_of_day": "t1300"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/f10-silhouette.json",
+      "kind": "report",
+      "produced_by": "node tools/visual/f10-silhouette.mjs --res=768 --pose=idle_loop",
+      "source": "ours",
+      "note": "RI-VIS10 C1 and C2: per-figure H, head height, R, and 552 pairwise IoU values over 41 shipped figures."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/vis10-C2-silhouette-duplication.json",
+      "kind": "report",
+      "produced_by": "node tools/visual/f10-silhouette.mjs",
+      "source": "ours",
+      "note": "41 figures collapse to 12 distinct silhouette signatures; 8 groups hold more than one identical figure."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/vis10-C3-stance.json",
+      "kind": "report",
+      "produced_by": "node over traces/f10/locomotion_flat/trace.jsonl",
+      "source": "ours",
+      "note": "RI-VIS10 C3: shoulder tilt, hip tilt and elbow-angle difference at two separated idle frames."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/roster-census.json",
+      "kind": "report",
+      "produced_by": "node over game/data/npcs/*.json and game/data/progression/races.json",
+      "source": "ours",
+      "note": "408 NPC records, 32 actors, 88 (race,actor) pairs, 12 race strings, and the count per art family."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/empty-frame-audit.json",
+      "kind": "report",
+      "produced_by": "node over the hardware manifest",
+      "source": "ours",
+      "note": "Per-subject PNG size medians; the record of the 17 frames that contain no subject."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-locomotion_flat.json",
+      "kind": "report",
+      "produced_by": "node corpus/80-methods/anim-metrics.mjs traces/f10/locomotion_flat/trace.jsonl",
+      "seed": 3030,
+      "source": "ours",
+      "note": "RI-VIS08 §C metrics over the locomotion_flat scenario, 600 frames; missing_fields is empty."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-locomotion_slope20.json",
+      "kind": "report",
+      "produced_by": "node corpus/80-methods/anim-metrics.mjs traces/f10/locomotion_slope20/trace.jsonl",
+      "seed": 3030,
+      "source": "ours",
+      "note": "RI-VIS08 §C metrics over the locomotion_slope20 scenario, 600 frames; missing_fields is empty."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-locomotion_stairs.json",
+      "kind": "report",
+      "produced_by": "node corpus/80-methods/anim-metrics.mjs traces/f10/locomotion_stairs/trace.jsonl",
+      "seed": 3030,
+      "source": "ours",
+      "note": "RI-VIS08 §C metrics over the locomotion_stairs scenario, 600 frames; missing_fields is empty."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-attack_chain.json",
+      "kind": "report",
+      "produced_by": "node corpus/80-methods/anim-metrics.mjs traces/f10/attack_chain/trace.jsonl",
+      "seed": 3030,
+      "source": "ours",
+      "note": "RI-VIS08 §C metrics over the attack_chain scenario, 600 frames; missing_fields is empty."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-hit_reactions.json",
+      "kind": "report",
+      "produced_by": "node corpus/80-methods/anim-metrics.mjs traces/f10/hit_reactions/trace.jsonl",
+      "seed": 3030,
+      "source": "ours",
+      "note": "RI-VIS08 §C metrics over the hit_reactions scenario, 600 frames; missing_fields is empty."
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-VIS08",
+      "status": "not_possible",
+      "not_possible_reason": "The item's own method makes its blind pass conditional: 'using RI-VIS02 REF-M6 as the reference if and only if a usable reference image exists; otherwise record the pair as skipped'. REF-M6 (modern/character_closeup/REF-M6__rdr2-horseshoe-overlook-camp.jpg) is a mid-distance rear view; our matched artefact is a close-up at >= 40% frame height. A pack built from these two would measure the framing difference, not the fidelity.",
+      "pack_artifacts": []
+    },
+    {
+      "ref_item": "RI-VIS10",
+      "status": "not_possible",
+      "not_possible_reason": "The item declares blind_pair: no by construction — it forbids a modern design target under CC-2, and Morrowind's characters are a fidelity mismatch so gross that a judge would be answering 'which is higher resolution'.",
+      "pack_artifacts": []
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "A5",
+          "result": "pass",
+          "note": "155 frames in attack_chain carry 2+ weighted clips; 22 of those fall in phase=='active'. All 22 inspected: every one is roll_light cross-fading with itself (e.g. roll_light:0.65 + roll_light:0.35) during a roll's active window. No attack clip is blended out of during its active phase, so no committed attack is cancellable."
+        },
+        {
+          "id": "A7",
+          "result": "pass",
+          "note": "Root-motion authority r = 1.0000 and ratio = 1.0000 on all five scenarios; translation comes from the animation, not from a capsule dragging the mesh."
+        },
+        {
+          "id": "A1",
+          "result": "not_applicable",
+          "note": "Hit resolution is not in this piece's subsystem paths; judged by the combat piece."
+        },
+        {
+          "id": "A2",
+          "result": "not_applicable",
+          "note": "Damage computation is not in this piece's subsystem paths."
+        },
+        {
+          "id": "A3",
+          "result": "not_applicable",
+          "note": "Menu/world-clock coupling is not in this piece's subsystem paths."
+        },
+        {
+          "id": "A4",
+          "result": "not_applicable",
+          "note": "Enemy windup frame data is judged by the combat piece; this piece measured animation quality, not telegraph timing."
+        },
+        {
+          "id": "A6",
+          "result": "not_applicable",
+          "note": "Enemy level-scaling is not in this piece's subsystem paths."
+        },
+        {
+          "id": "A8",
+          "result": "not_applicable",
+          "note": "Skill gating of hit resolution is not in this piece's subsystem paths."
+        },
+        {
+          "id": "A9",
+          "result": "not_applicable",
+          "note": "Fatigue coupling is not in this piece's subsystem paths."
+        },
+        {
+          "id": "A10",
+          "result": "not_applicable",
+          "note": "Topic lists during combat are not in this piece's subsystem paths."
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/anim-attack_chain.json"
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B6",
+          "result": "pass",
+          "note": "Item descriptions as the lore vector: the character work delivers no lore text at all, so it cannot outrank NPC dialogue and books."
+        },
+        {
+          "id": "B1",
+          "result": "not_applicable",
+          "note": "HUD markers are judged by the UI piece; UI was disabled for every capture in this verdict."
+        },
+        {
+          "id": "B2",
+          "result": "not_applicable",
+          "note": "Rest-point menus are not in this piece's subsystem paths."
+        },
+        {
+          "id": "B3",
+          "result": "not_applicable",
+          "note": "Dialogue density is judged by the dialogue piece."
+        },
+        {
+          "id": "B4",
+          "result": "not_applicable",
+          "note": "Loot generation is not in this piece's subsystem paths."
+        },
+        {
+          "id": "B5",
+          "result": "not_applicable",
+          "note": "Merchant pricing is not in this piece's subsystem paths."
+        },
+        {
+          "id": "B7",
+          "result": "not_applicable",
+          "note": "Quest resolution paths are not in this piece's subsystem paths."
+        },
+        {
+          "id": "B8",
+          "result": "not_applicable",
+          "note": "World level-scaling is not in this piece's subsystem paths."
+        },
+        {
+          "id": "B9",
+          "result": "not_applicable",
+          "note": "Essential-NPC invulnerability is not in this piece's subsystem paths."
+        },
+        {
+          "id": "B10",
+          "result": "not_applicable",
+          "note": "Death and world state are not in this piece's subsystem paths."
+        },
+        {
+          "id": "B11",
+          "result": "not_applicable",
+          "note": "Rumour variety is judged by the dialogue piece."
+        },
+        {
+          "id": "B12",
+          "result": "not_applicable",
+          "note": "Non-violent encounter exits are judged by the parley piece."
+        },
+        {
+          "id": "B13",
+          "result": "not_applicable",
+          "note": "Transport modalities are judged by the travel piece."
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/manifest.json"
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 1,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "weights": {
+      "RI-VIS10": 1,
+      "RI-VIS08": 1
+    },
+    "band_label": "ART 1/10 x FIDELITY 3/10 — an ordered pair, never averaged (CC-5). The rig is sound; the surface hung on it is not built.",
+    "confidence": "high",
+    "ordered_pair": {
+      "ART": 1,
+      "FIDELITY": 3
+    },
+    "aggregation_note": "min, because RI-VIS01 §E gates the wave on min(ART, FIDELITY) and these two items are gates on disjoint axes rather than two dimensions of one thing. The pair is the real result; the scalar exists only for the progress page."
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "ART 1/10 is below the wave-1 gate of 7.0 and below RI-VIS10's own <6 wave-blocking threshold.",
+    "FIDELITY 3/10 is below the wave-1 gate of 7.0 and below RI-VIS08's own <6 wave-blocking threshold.",
+    "Three of RI-VIS10's five top tells are present: a human with a lizard head, everyone is the same man, and brand-new clothes on a poor province."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-character-surface-is-assembled-from-primitives-not-built",
+    "subsystem_path": "render.art.character",
+    "what": "The visible body of every character in the game is an assembly of primitive solids rather than a built figure, and the numbers say so on both axes at once. Shoulders are glossy ellipsoids attached to a flat rectangular torso plate; the pelvis is a trapezoid; limbs are tapered cones; the player's legs terminate in points with no foot. The face carries 1 of 7 landmarks (a crest root, and nothing else — no brow ridge, orbit rim, naris, cheek-to-jaw line, mandible line or chin underside). The whole shipped roster is 5.87-6.84 heads tall (median 6.58) against RI-VIS10 C1's 7.0-8.0 band, with 0 of 41 figures inside it. The player is 15142 triangles against RI-VIS08 B2's 25000 and the creature 4834 against 12000. The skin opens 289 crack pixels across 179 of 640 posed frames at the calf/foot and head/hand seams. The art family that carries 329 of 408 NPCs has no eye geometry at all. Crucially this is NOT a rig defect: the same build passes RI-VIS08 C1, C3, C4, C6, C7, C8 and C9 with foot slide at 6 mm against a 30 mm bar, root-motion r = 1.0000, grip error 0.000 m and foot IK holding 100% of planted frames on a 20-degree slope and on stairs.",
+    "why_it_matters": "It is the reason the owner, playing the game, said the player character and every NPC look frankly ridiculous — a viewer identifies an ellipsoid stuck to a slab in the first half-second, before texture, light or animation is considered at all.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__player__yaw090.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__player__closeup-lit.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__npc-blackwood-company-factor__closeup-lit.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/f10-silhouette.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/roster-census.json"
+    ],
+    "severity": "blocking",
+    "remedy": {
+      "action": "Rebuild the visible character surface on the existing skeleton — do not touch the rig, the clips or the IK, which measure well. In game/src/render/actor.js: (1) replace the ellipsoid-shoulder / slab-torso construction with a continuous shoulder-to-chest surface and tapered limbs, and give the player a foot; (2) add the facial landmark geometry — brow ridge, orbit rim, naris, cheek-to-jaw line, mandible line, chin underside — to both base.saxhleel and base.humanoid, and give base.humanoid the eye and pupil parts base.saxhleel already has; (3) change the per-family head scale in CHARACTER_SPECS so the head-count canon lands in band.",
+      "targets": [
+        "game/src/render/actor.js",
+        "game/src/render/actor.js CHARACTER_SPECS morph head scale"
+      ],
+      "acceptance": "node tools/visual/f10-silhouette.mjs --res=768 --pose=idle_loop reports >= 90% of shipped figures with R inside 7.0-8.0 (6.5-7.5 for naga and orsimer) and none outside 6.0-8.5; RI-VIS08 B2 reports >= 25000 triangles for the player and >= 12000 for the beast family; RI-VIS10 B4 counts >= 5 of 7 facial landmarks producing visible form shading under a 45-degree key; RI-VIS08 B8 passes on every art family, not only saxhleel; node tools/visual/actor-orbit-holes.mjs --res=512 --angles=8 --distances=4 reports 0 crack pixels.",
+      "ref_item": "RI-VIS10",
+      "estimated_size": "L"
+    }
+  },
+  "secondary_observations": [
+    "CHEAPEST HIGH-VALUE FIX, and it is one predicate: game/src/render/renderer.js:693 selects the art family with (n.race==='saxhleel'||n.race==='naga')?'saxhleel':'humanoid'. The string 'argonian' carries 181 of 408 NPC records — 44.4% of the roster, and the actual reptilian race of Black Marsh — and is not in that test, so those NPCs render on base.humanoid: no snout, no crest, no horn, no eyes. 329 of 408 NPCs land on that family in total. This is the mechanical cause of RI-VIS10 C2's IoU 1.0000 pairs (an argonian rootkeeper and a breton mudborn are pixel-identical) and of E5 failing. It is not the biggest gap because fixing it alone leaves the player — already on the saxhleel family — exactly as it is, and the owner named the player first.",
+    "The 12 race strings in use include 'none' and 'mixed', and 'argonian' is not among the 10 ids declared in game/data/progression/races.json. The data and the declaration have drifted apart.",
+    "NPC placement: subject npc-lilmoth-apothecary-12 (Ixtei, an apothecary) stands in open water off the Lilmoth pier — all 17 of her frames are sea and sky. Two further NPCs in C4__npc-dockmaster-weeja-sen__yaw000.png stand waist-deep in water with their feet below the jetty deck.",
+    "The Lilmoth plaza at the char-player stand held no NPC on screen in any of the four wide frames, which is why RI-VIS10 E4 could not be demonstrated either way.",
+    "RI-VIS08 C7 measures grip_err at 0.000 m, so the sword that crosses the player's entire silhouette at 90 and 180 degrees is not an attachment bug — it is a weapon-scale art decision, and it belongs to the weapons piece rather than to F10.",
+    "My own capture tool reported '0 red' for 17 frames that contain no subject at all. A tool that cannot distinguish an empty frame from a full one will certify an absence as a capture; tools/visual/f10-character-sweep.mjs needs a subject-coverage assertion before it is reused."
+  ],
+  "gap_closure": [],
+  "corpus_extended": [
+    {
+      "id": "RI-VIS10",
+      "kind": "amendment",
+      "path": "corpus/70-visual/RI-VIS10-character-design.md",
+      "what": "B3's hard fail now reads 'texture-only OR ABSENT' for crest, snout and tail, and its pass condition says an absent feature does not satisfy that arm.",
+      "why": "B3 scored only features 'scored present in B2', so an absent feature was removed from its denominator and could not fail it. This build has no tail geometry at all and therefore PASSED B3 — the single design check it passed — while failing B2 at 3/10. The item's own §F#1 calls a species asserted rather than built the cardinal sin; absent is a worse instance of it than painted, yet scored better.",
+      "direction": "stricter",
+      "self_serving_check": "Re-applied to this verdict it turns B3 from PASS to FAIL and moves DESIGN from 3/18 to 2/18. The amendment makes the amending critic's own piece worse, which is the test that it is not self-serving. It is not the reason any piece passes anything."
+    }
+  ],
+  "method_deviations": [
+    {
+      "what": "RI-VIS10 B1, C4 and D4 require a fresh judge with no answer key. None could be obtained: RULES.md rule 0 records create_session as approval-gated (MCP error -32003) and rule 25 forbids judging a pack I built.",
+      "why": "Scored FAIL under the item's own rule that an unpublished census fails its check rather than being removed. The B1 <40% cap-at-4 was NOT applied, because that requires a measurement I do not have."
+    },
+    {
+      "what": "RI-VIS10 C1 and C2 were measured on an offline orthographic rasterisation of the shipped actor rather than on an in-game frame.",
+      "why": "The item requires published pixel numbers reproducible by a second critic and pairwise IoU over binary masks. An in-game frame has a world behind the figure and no ID buffer is exposed, so segmenting one would be a guess; a perspective camera would also make R depend on the distance the critic happened to choose. The rasteriser reproduces the game's own family selection (from race) and variant selection (from the npc:<eid> hash), and makes no colour, material or light claim."
+    },
+    {
+      "what": "RI-VIS08 B1, B3, B4, B5 and B6 were not computed.",
+      "why": "B6 was never captured (no backlit setup — the critic's omission). B1, B3, B4 and B5 have their hardware frames in hand but the pixel statistics were not run within this pass. All five scored 0 fail-closed per CRITIC-DOCTRINE §7.3, and all five are recorded as owed for the next round rather than absorbed into the build's score."
+    },
+    {
+      "what": "Two RunPod attempts failed before any frame was taken, with the Pod agent returning HTTP 404 on GET /job within 250 ms of submission.",
+      "why": "Recorded rather than hidden. Both Pods were terminated and deletion confirmed by API lookup. The third attempt succeeded and produced all 93 hardware frames."
+    }
+  ],
+  "arbitration_questions": [],
+  "source_reads": [
+    {
+      "path": "game/src/render/renderer.js:693",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read only after the argonian/breton IoU 1.0000 result was measured, to make the remedy name a line rather than a wish."
+    },
+    {
+      "path": "game/src/render/actor.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read after the part census and silhouette measurements, to name the family and character-spec mechanism in the remedy."
+    },
+    {
+      "path": "game/data/npcs/*.json, game/data/progression/races.json",
+      "purpose": "quote-written-content",
+      "note": "These are the authored population; the censuses in §2 are counts over them."
+    },
+    {
+      "path": "corpus/80-methods/anim-metrics.mjs",
+      "purpose": "locate-harness",
+      "note": "To confirm what its C10 pass condition actually tests before scoring C10 against the item instead of against the tool."
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is false. RI-VIS08 B1/B3/B4/B5/B6 were not computed and RI-VIS10 B1/C4/D4 could not obtain a fresh judge; every one is scored 0 or FAIL fail-closed per CRITIC-DOCTRINE §7.3 and SCORING.md §1.1, none omitted and none averaged away. The escalation ladder was applied and did not need to be: the gap was found at step 1 (put our capture beside the plate and look) and was then confirmed at higher zoom (the offline rasteriser at 768 px), on a changed sample (five subjects across two art families rather than the player alone), and on a second-order property (silhouette IoU across the roster rather than 'is there a character')."
+  },
+  "notes": "The gap ledger for these subsystem paths was read only AFTER raw measurement was complete, per CRITIC-DOCTRINE §8. The recorded prior scores (RI-VIS08 3/10, RI-CAM07 4/10) were treated as claims to attack rather than inherit: RI-VIS08 lands at 3 again, but for the first time with a measured basis — a full five-scenario §A trace, a triangle census and a part census — rather than an impression, and the DYNAMIC half of it is now known to be at 7/10 rather than uniformly poor. One claim I made mid-pass was wrong and is withdrawn in the markdown §0.5: I reported two M1 reference videos missing from disk after reading a truncated `ls | head`; re-run, refs/video/ holds 10 files and a walk of the generated set finds 254 routed members with 0 missing. Two defects in the reference set itself are filed in markdown §8: one of the four D1 ESO plates depicts a human woman in a hat rather than an Argonian, and the C4 full-body plates are headless armour item renders, which means RI-VIS10 C1's head-count canon has no reference side to be compared against at all. One corpus amendment was filed mid-pass and is declared in corpus_extended: RI-VIS10 B3's absent-feature seam, tightened. Three further findings are recorded in the markdown §8 as data defects in refs/characters/ and a return-value mismatch in anim-metrics.mjs, and are deliberately NOT built inside this critique per CRITIC-DOCTRINE §1.3's bounding guard."
+}

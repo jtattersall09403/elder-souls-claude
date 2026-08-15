@@ -114,7 +114,24 @@ redguard, khajiit, orsimer, bosmer), minimum five, and the player.
 |---|---|---|---|---|
 | **B1** | **Race legibility at 3 m** | Show a **fresh judge** (fresh context, no lore, no answer key) the 3 m still with all UI off, and the closed list of the ten race names plus *"a human"* and *"cannot tell"*. One still per race. **Publish the answer sheet.** | ≥ 80% named correctly | < 60%. **< 40% caps the item at 4** — if the player cannot tell what species they are looking at, no other design property is reachable |
 | **B2** | **Non-human feature census** | Ten rows, each yes/no from the close-up: (1) skull elongation or snout; (2) crest, horn, frill or spine on the head; (3) non-human eye — slit or all-dark pupil, no human sclera triangle; (4) throat/neck plating distinct from the facial surface; (5) scale or plate flow that follows the body's forms rather than sitting as a tile; (6) non-human ear, or a deliberate absence with a visible auditory feature; (7) tail with its own root, taper and thickness change; (8) non-plantigrade leg, or a declared reason; (9) clawed hand with non-human finger count or proportion; (10) a jaw and mouth line that could not close like a human's. **Publish the ten answers per race.** | reptilian races ≥ 7/10; beast races ≥ 4/10; man/mer races n/a (skipped, not scored) | reptilian < 5/10 → **the race is a human with a head prop** |
-| **B3** | **The features are geometry, not paint** | For every feature scored *present* in B2, take the orbit-30° pair (the same capture RI-VIS08 §B3 already requires) and check whether the feature's occluding contour moves against the silhouette between the two frames | ≥ 70% of present features are geometry, **and** crest, snout and tail are all geometry if present | any of crest / snout / tail is texture-only → **painted-on species** |
+| **B3** | **The features are geometry, not paint** | For every feature scored *present* in B2, take the orbit-30° pair (the same capture RI-VIS08 §B3 already requires) and check whether the feature's occluding contour moves against the silhouette between the two frames | ≥ 70% of present features are geometry, **and crest, snout and tail are each geometry — an absent one does not satisfy this arm** | any of crest / snout / tail is texture-only **or absent** → **painted-on species** |
+
+> **AMENDED wave 1 (`W1-F10-CHARACTERS` critic, 2026-08-15) — the absent-feature seam. This
+> tightens the item; it relaxes nothing.**
+>
+> B3 as first written scored only the features *"scored present in B2"*, so a feature that is
+> **absent altogether** was removed from B3's denominator and could not fail it. The first build
+> judged against this item exercised exactly that seam: it has **no tail geometry at all**, and so
+> passed B3 — the one design check it passed — while failing B2 at 3/10. The item's own §F#1 is
+> *"a human with a lizard head… the species is a head mesh and a scale texture"*, and *no tail at
+> all* is a worse instance of that failure than a painted one, yet it scored better.
+>
+> **The rule is now: for crest, snout and tail specifically, absent counts as failing, exactly as
+> texture-only does.** The ≥ 70% arm is unchanged and still runs over present features only.
+> Re-applied to `W1-F10-CHARACTERS`, this turns its B3 from PASS to FAIL and moves `DESIGN` from
+> 3/18 to 2/18 — the amendment makes that verdict **worse**, which is the test that it is not
+> self-serving. `CRITIC-DOCTRINE` §1.3's guards are met: this only ADDS strictness, and it is not
+> the reason any piece passes.
 | **B4** | **The face is built** | Count facial landmarks that produce visible form shading under a 45° key: brow ridge, orbit rim, nostril or naris, cheek-to-jaw line, lip or mandible line, chin/jaw underside, crest or ear root. **Seven rows, published.** | ≥ 5 of 7 | ≤ 2 → **a smooth blank with a texture on it**. (Eyes are RI-VIS08 §B8 and are not counted here) |
 
 ### §C — Proportion, silhouette and stance
