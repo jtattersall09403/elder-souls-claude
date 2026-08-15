@@ -1,0 +1,14 @@
+{
+  "schema": "elder-souls/t4-ju5@1",
+  "at": "2026-08-15T10:39:58.401Z",
+  "state": "ui-journal",
+  "checks": [
+    {
+      "id": "JU5-A the first capture is non-empty",
+      "pass": true,
+      "detail": "19 rendered journal entries"
+    }
+  ],
+  "data": {},
+  "error": "page.evaluate: TypeError: jr.entries.map is not a function\n    at eval (eval at evaluate (:290:30), <anonymous>:8:44)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at /home/user/elder-souls-claude/tools/ui/t4-r2-critic-ju5.mjs:80:30"
+}
