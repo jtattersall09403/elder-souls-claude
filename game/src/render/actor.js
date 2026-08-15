@@ -1316,6 +1316,12 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
   };
 
   const meshes = [];
+  // THE SKIN COLOUR THIS ACTOR ACTUALLY ENDED UP WITH, captured rather than re-derived. The eye
+  // block far below sets its sclera and iris as fractions OF IT, because an eye is only readable
+  // relative to the face around it — see that block for the plate measurement that fixes the
+  // fractions. `skinHex` alone is not the answer: it is undefined for an actor built without a
+  // race tint, in which case the palette/wear base is the real colour.
+  let resolvedSkin = null;
   for (const key of BODY_SURFACES) {
     if (B[key].count === 0) continue;
     // The variant's own material spec, at last consumed. `palette` and `wear` came from
@@ -1324,6 +1330,7 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     const mat = bodyMaterialBase(key, matVariant.palette, matVariant.wear).clone();
     if (key === 'skin' && skinHex !== undefined) mat.color.setHex(skinHex);
     if (key === 'cloth' && tintHex !== undefined) mat.color.setHex(tintHex);
+    if (key === 'skin') resolvedSkin = mat.color.clone();
     installWaterline(mat, waterU);
     const mesh = new THREE.SkinnedMesh(paintBody(B[key].build(), key, L, artFamily), mat);
     mesh.name = `actor-body:${artFamily}:${key}`;
@@ -1529,8 +1536,59 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     // A sclera at 0xd8d2c4 is the brightest thing on the head and, on a ball standing proud of the
     // skull, it was the ONLY thing the eye read as. The plate's sclera is in shadow almost
     // everywhere and the iris is the small dark accent; this pair is pulled toward that.
-    const hEyeMat=(mats.bone||mats.metal).clone();hEyeMat.color.setHex(0xa79f8c);hEyeMat.roughness=.34;
-    const hPupilMat=mats.darkStone.clone();hPupilMat.color.setHex(0x1a1310);
+    // ---- ROUND 7: THE EYE WAS A BRIGHT CREAM BEAD, AND THE PLATE SAYS THE OPPOSITE ------------
+    //
+    // Round 6 moved this eye from invisible to too visible. `W1-F10-r6-appearance` sheet 03 shows
+    // it on hardware: a cream dot that is the brightest thing on a Dunmer's head, and in most
+    // frames only one of the two catches light at all.
+    //
+    // MEASURED OFF THE PLATE, not described. `refs/modern/character_closeup/REF-ER__steam-dyules-
+    // 2764067250.jpg` decoded at native 1920x1080 and sampled with Rec.709 luma
+    // (`0.2126R + 0.7152G + 0.0722B`), mean over the patch:
+    //
+    //   open eye (iris + sclera), 25x25 at (820,300)     63.6      max in patch 134.9
+    //   eye socket / lash line,   17x17 at (800,315)     77.6
+    //   cheek below the eye,      29x29 at (790,400)    157.4
+    //   forehead,                 33x33 at (900,150)    151.7
+    //   nose bridge,              21x21 at (930,380)    153.1
+    //
+    // So on the reference the eye region is **0.40x the skin around it**, and the BRIGHTEST pixel
+    // anywhere inside the eye — the iris catch — is **0.86x the cheek**, i.e. still darker than the
+    // face. That is the whole structure: a dark recess with one small light accent in it, and
+    // nothing in the eye brighter than the skin.
+    //
+    // The old constants were the other way round. Sclera 0xa79f8c is luma 159.3; a Dunmer's skin
+    // (`renderer.js RACE_TINT.dunmer` = 0x6b5a63) is luma 94.3. **The eye was 1.69x the face where
+    // the plate is 0.40x** — off by a factor of 4.2 — and the pupil at 0x1a1310 (luma 18.3) was
+    // 0.19x, so the small accent was the DARKEST thing rather than the lightest.
+    //
+    // AND A CONSTANT CANNOT BE RIGHT HERE, which is the more useful half of the finding. The same
+    // 0xa79f8c is 1.69x a Dunmer and 0.89x a Nord (0xc8b096, luma 179.2): one bead, one invisible.
+    // Both are now fractions OF THIS ACTOR'S OWN SKIN, so the relationship the plate measures holds
+    // across all twelve race tints instead of at one of them.
+    //
+    // `tools/visual/f10-r7-eye-contrast.mjs` recomputes both ratios over every shipped race tint
+    // and fails if any eye is brighter than the face it sits in.
+    // THESE ARE LINEAR SCALES, AND THAT IS THE WHOLE REASON THEY ARE NOT 0.40 AND 0.86.
+    // `THREE.Color.setHex` decodes sRGB into the linear working space and `multiplyScalar` scales
+    // it there, while the plate's 0.404 and 0.857 are ratios of DISPLAYED luma on an sRGB image.
+    // The two are a gamma apart: displayed_ratio ~ linear_ratio^(1/2.2), so the linear scale that
+    // lands on the plate's ratio is ratio^2.2 — 0.404^2.2 = 0.136 and 0.857^2.2 = 0.712. Setting
+    // 0.40 and 0.86 directly measured back as 0.65 and 0.93 and would have left the eye almost as
+    // bright as it was, which `f10-r7-eye-contrast.mjs` printed before these numbers were changed.
+    const EYE_SCLERA_OF_SKIN = 0.136;  // -> displayed 0.404x skin;  plate: 63.6 / 157.4
+    const EYE_IRIS_OF_SKIN   = 0.712;  // -> displayed 0.857x skin;  plate: 134.9 / 157.4
+    const eyeBase = resolvedSkin ? resolvedSkin.clone() : new THREE.Color(0x8a7d6e);
+    const hEyeMat=(mats.bone||mats.metal).clone();
+    hEyeMat.color.copy(eyeBase).multiplyScalar(EYE_SCLERA_OF_SKIN);
+    // Rougher than the old 0.34: a tight specular lobe on a sphere is precisely how "only one of
+    // the two catches light" happened. A recess should read from its value, not from a highlight
+    // that exists at one bearing.
+    hEyeMat.roughness=.62;
+    if (hEyeMat.emissive) { hEyeMat.emissive.setHex(0x000000); hEyeMat.emissiveIntensity = 0; }
+    const hPupilMat=mats.darkStone.clone();
+    hPupilMat.color.copy(eyeBase).multiplyScalar(EYE_IRIS_OF_SKIN);
+    hPupilMat.roughness=.45;
     // THE EYE WAS 5.8 mm INSIDE THE SKULL and only 0.7 mm of pupil ever cleared it. These z values
     // are no longer typed: they are the skull ellipsoid's own surface height at the eye's (x, y),
     // solved from the SAME numbers the skinned head block emits — 0.0928 at (0.042, 0.086) — with
