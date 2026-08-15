@@ -664,6 +664,60 @@ const PLAN = {
 };
 
 /**
+ * THE SKULL, WRITTEN ONCE, BECAUSE TWO THINGS ARE SIZED AGAINST IT AND ONLY ONE OF THEM KNEW.
+ *
+ * Round 6 solved the canon of proportion by SHRINKING THE HEAD — `headScale` is 0.803 on the
+ * shipped player — and applied it to the skull, the face landmarks, the eyes, the mouth and the
+ * horns. Head-slot EQUIPMENT was never in that list, so every helm, cap and circlet in the game has
+ * since been drawn at 1.0 on a 0.80 head. Measured on the shipped player by
+ * `tools/visual/f10-r8-headgear.mjs`: the head's own skinned geometry is **173.5 mm** across and the
+ * `reed` head piece is **351.7 mm** — **2.03x the head** — with its lower edge **13.9 mm below the
+ * top of the eye**, i.e. drawn straight through it. `W1-F10-r7-appearance` §4 photographed that and
+ * called it *"more disfiguring than either thing round 7 fixed"*.
+ *
+ * These are the same numbers the skinned head block emits its skull ellipsoid from. They live here
+ * so that a future edit to a skull moves the hat with it, which is the same rule round 6 established
+ * for the face landmarks — *"the remedy is to stop typing `z` in"* — applied one layer further out.
+ * Head-LOCAL metres, before `headScale`.
+ */
+const SKULL_BY_FAMILY = {
+  saxhleel: { c: [0, .085, .005], r: [.108, .132, .126] },
+  humanoid: { c: [0, .080, .004], r: [.100, .132, .098] },
+  // the undead skull is a scaled dodecahedron: `DodecahedronGeometry(.13,1)` at [0,.07,.02]
+  // scaled [.88,1.08,.86], so its extent is (.1144, .1404, .1118).
+  undead: { c: [0, .070, .020], r: [.1144, .1404, .1118] },
+};
+
+/**
+ * The half-extents of the skull's cross-section at head-local height `y` — i.e. the surface a band
+ * or a helmet rim actually rests on. Returns null above the crown.
+ */
+function skullSpanAt(artFamily, y) {
+  const E = SKULL_BY_FAMILY[artFamily] || SKULL_BY_FAMILY.humanoid;
+  const k = 1 - ((y - E.c[1]) / E.r[1]) ** 2;
+  return k <= 0 ? null : [E.r[0] * Math.sqrt(k), E.r[2] * Math.sqrt(k)];
+}
+
+/**
+ * Where headgear sits, head-local, and the one number that decides whether these people have faces.
+ *
+ * MEASURED, this turn, on the shipped build: the saxhleel eye's top is at head-local **0.1087**
+ * (`.09 + .026 * .72`) and the humanoid's at **0.1028** (`.086 + .021 * .80`); the humanoid brow
+ * ridge tops out at **0.141** and the saxhleel one at **0.170**. `HEADGEAR_Y` is above every eye and
+ * above the humanoid brow, so a band crosses a brow ridge — which is what a band does — and never an
+ * eye. The three head pieces are all built from it and all scale with `headScale`.
+ *
+ * REVERSIBLE, and named so it can be argued with: this rules that **no shipped headgear covers the
+ * face**, including the heavy set, which was a closed bucket helm 1.95x the head. A visored great
+ * helm is a legitimate thing for a heavy tier to wear; it is not a legitimate thing for the tier
+ * that 148 of 408 NPCs are rendered in, and the evidence that decided it is that `chitin` and
+ * `xanmeer` lost the eye at **17 of 17** and **15 of 15** scored bearings. What would overturn it:
+ * a critic showing the heavy tier reading as under-armoured at 8 m. The constant to change is this
+ * one, for `heavy` only.
+ */
+const HEADGEAR_Y = 0.158;
+
+/**
  * Joint balls, so a bent elbow reads as a joint rather than two disconnected tubes.
  *
  * WHY THE RADIUS IS NOW DERIVED AND NOT AUTHORED — this is the transparency defect, and the
@@ -962,7 +1016,11 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     // mandible. RI-VIS08 refuses Morrowind references for characters (~1,000 triangles), so the
     // construction target is the modern plate; the art direction stays Black Marsh.
     if(artFamily==='saxhleel'){
-      B.skin.ellipsoid(P(0,0.085,0.005),[S(.108),S(.132),S(.126)],hi,14);          // skull
+      // ONE SKULL, TWO READERS. These were typed literals here and again, as an oversize helmet,
+      // in the equipment block below — which is how a hat came to be 2.03x the head it sits on.
+      // `SKULL_BY_FAMILY.saxhleel` is those same numbers, and both blocks now read it.
+      const SK = SKULL_BY_FAMILY.saxhleel;
+      B.skin.ellipsoid(P(...SK.c),[S(SK.r[0]),S(SK.r[1]),S(SK.r[2])],hi,14);        // skull
       B.skin.tube(P(0, 0.070, 0.075), P(0, 0.028, 0.075+0.160*M.snout), S(0.085), S(0.047), hi, hi, 0, 10, 3); // snout
       B.skin.tube(P(0, 0.035, 0.065), P(0, 0.012, 0.065+0.140*M.snout), S(0.062), S(0.036), hi, hi, 0, 10, 3); // jaw
       for (let k = 0; k < 3 && M.crest > 0.01; k++) {
@@ -1019,7 +1077,9 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
       // edit moves the face with it instead of silently swallowing it. `sink` says how far a
       // landmark is bedded in; a tube whose AXIS lies on the surface is half embedded and half proud
       // by construction, which is both readable and impossible to detach.
-      const SKULL = { c: [0, .080, .004], r: [.100, .132, .098] };
+      // Read from the shared table rather than typed again — see the saxhleel branch above and
+      // `SKULL_BY_FAMILY`'s header for what the second copy cost.
+      const SKULL = SKULL_BY_FAMILY.humanoid;
       // THE JAW LED THE FACE, WHICH IS WHY EVEN A HEAD WITH LANDMARKS READ AS A MUZZLE. It was
       // `{ c: [0, .002, .071], r: [.072, .040, .070] }` — front face at z 0.141 against the NOSE at
       // 0.130 and the skull at 0.102, so the most forward point of a human head was its jaw, by
@@ -1375,11 +1435,61 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
   const addEquip=(set,slot,boneId,geo,offset,scale=[1,1,1],rot=[0,0,0])=>{const bi=index.get(boneId);if(bi===undefined)return;bakeCurvature(geo);const mesh=new THREE.Mesh(geo,equipMat[set]);mesh.name=`actor-equipment:${set}:${slot}@${boneId}`;mesh.castShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const local=new THREE.Matrix4().compose(new THREE.Vector3(...offset),q,new THREE.Vector3(...scale));group.add(mesh);equipment.push({set,slot,bi,mesh,local});};
   for(const set of ['reed','chitin','xanmeer']){
     const heavy=set==='xanmeer',mid=set==='chitin';
-    // Headgear sat a clean 4-5 cm off the skull (a 0.145 circlet around a 0.098 skull radius at
-    // that height), so `stagger_recoil` opened sky between helm and head. Each set now sits on the
-    // skull it is worn on: the circlet inside the skull radius, the chitin cap lowered so its rim
-    // meets the temple rather than hovering above it.
-    addEquip(set,'head','head',heavy?new THREE.CylinderGeometry(.132,.152,.20,10):mid?new THREE.SphereGeometry(.126,12,7,0,Math.PI*2,0,Math.PI*.58):new THREE.TorusGeometry(.104,.028,5,12,Math.PI*1.55),[0,heavy?.125:mid?.062:.105,-.010],heavy?[1.06,1,1.06]:[1,1,1],heavy?[0,0,0]:mid?[0,0,0]:[Math.PI/2,0,.35]);
+    // ---- HEADGEAR: it was a plank across the eyes, on every head that wears one ---------------
+    //
+    // THE MEASUREMENT THAT CONDEMNED THE OLD LINE (`tools/visual/f10-r8-headgear.mjs`, run before
+    // this change, 96 bearings over 2 families x 3 sets):
+    //
+    //   set      hat_w   head_w  ratio  below_eye_top  eye visible at worst bearing  bearings lost
+    //   reed     0.352   0.174   2.03x       13.9 mm            0.634 / 0.067            5 of 32
+    //   chitin   0.277   0.174   1.60x       59.6 mm            0.000                   32 of 32
+    //   xanmeer  0.339   0.174   1.95x       67.2 mm            0.000                   30 of 30
+    //
+    // Sixty-nine of ninety-six bearings had NO EYE IN THEM AT ALL. Round 7's eye work — the change
+    // its own appearance judgement called the round's clearest visual win — was being deleted at
+    // render time by a helmet, and the two armoured sets were worse than the one that got reported.
+    //
+    // TWO CAUSES, AND ONLY THE FIRST IS OBVIOUS.
+    //   1. `headScale` (round 6's canon-of-proportion solve, 0.803 on the player) reaches the
+    //      skull, the face, the eyes and the horns and NEVER REACHED EQUIPMENT. A 1.0 hat on a 0.80
+    //      head is 25% oversize before anything else is wrong.
+    //   2. The heights were typed in. The circlet's local y was 0.105 with a 0.028 tube — 0.077 to
+    //      0.133 — and the eye is at 0.090. It was drawn THROUGH the eye, and no scale fixes that.
+    //
+    // All three now: (a) carry `headScale` on offset AND scale, so they shrink with the head they
+    // are worn on; (b) take their radius from `skullSpanAt()` — the same ellipsoid the skinned head
+    // is emitted from — so they rest ON the skull instead of floating around it or sinking into it;
+    // (c) start at `HEADGEAR_Y`, which is above every eye in the game.
+    const hgScale = headScale;
+    const hgSpan = skullSpanAt(artFamily, HEADGEAR_Y) || [.092, .100];
+    const E = SKULL_BY_FAMILY[artFamily] || SKULL_BY_FAMILY.humanoid;
+    // helm: rim at HEADGEAR_Y, crown clearing the top of the skull, tapered rather than a bucket.
+    const helmH = (E.c[1] + E.r[1] * 1.10 + .022) - HEADGEAR_Y;
+    // cap: a hemisphere on the skull's own surface, cut off where its rim reaches HEADGEAR_Y.
+    const capTheta = Math.acos(Math.max(-1, Math.min(1, (HEADGEAR_Y - E.c[1]) / (E.r[1] * 1.05))));
+    addEquip(set, 'head', 'head',
+      heavy ? new THREE.CylinderGeometry(.55, 1, 1, 12)
+        : mid ? new THREE.SphereGeometry(1, 14, 8, 0, Math.PI * 2, 0, capTheta)
+          // A LASHED CORD BAND, not a brim. Unit torus so the ring can be made elliptical to match
+          // a skull that is deeper than it is wide (saxhleel: 0.108 x 0.126); the 40-degree gap is
+          // where it is tied. RI-VIS10 §D3's vocabulary is cord and bone, not buckles (§D2).
+          //
+          // `rotateZ` IS BAKED INTO THE GEOMETRY AND THAT IS NOT A STYLE CHOICE. `addEquip` composes
+          // T*R*S, so a rotation passed as `rot` is applied AFTER the scale: spinning the band about
+          // its own axis there would rotate an already-elliptical ring off the skull's axes and make
+          // it 265 mm wide on a 174 mm head — measured, before this was moved. Baked into the
+          // geometry the spin acts on a CIRCLE, where it only moves the gap, and the ellipse is then
+          // formed by the scale in the head's own axes. It puts the tie at the back of the head.
+          : new THREE.TorusGeometry(1, .17, 6, 18, Math.PI * 1.78).rotateZ(-0.86),
+      heavy ? [0, (HEADGEAR_Y + helmH / 2) * hgScale, E.c[2] * hgScale]
+        : mid ? [0, E.c[1] * hgScale, E.c[2] * hgScale]
+          : [0, HEADGEAR_Y * hgScale, E.c[2] * hgScale],
+      heavy ? [hgSpan[0] * 1.14 * hgScale, helmH * hgScale, hgSpan[1] * 1.14 * hgScale]
+        : mid ? [E.r[0] * 1.05 * hgScale, E.r[1] * 1.05 * hgScale, E.r[2] * 1.05 * hgScale]
+          // torus local axes: X and Y are the ring, Z is the tube's thickness axis. `Rx(PI/2)` below
+          // maps local Y to world Z and local Z to world -Y, so this is (width, depth, thickness).
+          : [hgSpan[0] * 1.02 * hgScale, hgSpan[1] * 1.02 * hgScale, .095 * hgScale],
+      (heavy || mid) ? [0, 0, 0] : [Math.PI / 2, 0, 0]);
     // Chest plates follow the torso as a tapered shell. A capsule transformed by the live spine
     // read as one horizontal log from shoulder to shoulder in the canonical rear camera.
     addEquip(set,'chest','spine_02',torsoShellGeometry(set),[0,-.04,-.012],[1,1,1]);
