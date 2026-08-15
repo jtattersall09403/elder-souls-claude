@@ -7,39 +7,30 @@
   "branch": "codex/wave1-build-experiment",
   "date": "2026-08-15",
   "headline": "A per-frame capture sanity gate that fails loudly, with thresholds derived from 932 real captures rather than chosen, and every arm proven to fire for the right reason. The incident's own two headline numbers could NOT be used as hard gates and that is reported rather than hidden.",
-
   "could_not_do": [
     "**THE ORIGINAL DEGENERATE FRAMES DO NOT EXIST ON DISK, so the gate has never been run against the actual frame it was built for.** `corpus/90-verdicts/wave1/artifacts/W1-F3-AMBIENT-FILL/hw-dark-regime-L4/` contains `head-result.json`, `control-result.json`, two console logs and an nvidia-smi CSV — no PNGs (`ls` this turn). The incident arm in the self-test is a RECONSTRUCTION carrying the recorded statistics (p10 7.493, p90 7.523, shadow_levels 1, local_contrast_med 0), not the frame. It is labelled as such in the output. Anyone re-running the paid capture should save the stills.",
-
-    "**HAZARDS.md §15's own prescription does not survive measurement, and this is the most important thing in this file.** §15 says a capture with '~1 distinct shadow level and ~0 local contrast is broken and must fail loudly. You already compute these statistics; the cost is an `if`.' Calibrated over **932 real captures from 366 directories** under `reports/`: `shadow_levels` has corpus p01=0 and p02=1 against the incident's 1, and 34 of 932 real frames score below 6; `local_contrast_med` has corpus p05=0 against the incident's 0, and **177 of 932 real frames have a median local contrast of exactly 0** (large flat regions — sky, water, UI panels — sit either side of the median). Armed as hard gates the pair rejects **324 of 932 real captures, 34.76%**. NEITHER LEAVES A GAP between good frames and the broken one. They ship as reported-but-not-fatal, armable with `--strict`. The incident is still caught, by D1 (span), which it fails by three orders of magnitude.",
-
-    "**SUBJECT PRESENCE IS AMBER, NOT A HARD GATE, because its measured error rate does not earn one.** On the F10 run (the only labelled set in the repo — 17 frames known empty, 76 known full) the shipped threshold catches **15 of 17 empties against 5 of 76 false reds**. Catching the last two costs 22 of 76 good frames. A 7% false-red rate applied as a hard gate would start eating good evidence within one sweep. `--require-subject` promotes it for callers who want it.",
-
+    "**HAZARDS.md §15's own prescription does not survive measurement, and this is the most important finding here.** §15 says a capture with '~1 distinct shadow level and ~0 local contrast is broken and must fail loudly. You already compute these statistics; the cost is an `if`.' Calibrated over **932 real captures from 366 directories** under `reports/`: `shadow_levels` has corpus p01=0 and p02=1 against the incident's 1, with 34 of 932 real frames below 6; `local_contrast_med` has corpus p05=0 against the incident's 0, with **177 of 932 real frames at exactly 0** (sky, water and UI panels sit either side of the median). Armed as hard gates the pair rejects **324 of 932 real captures, 34.76%**. I then tried the obvious repair — the 90th percentile of local contrast instead of the median, 'is there detail ANYWHERE' — and recalibrated over 368 frames: **local_contrast_p90 also reaches exactly 0 on real frames** (p01=0, p05=0.1957), and a 0.6 line rejected 161 of 368, 43.75%. NEITHER STATISTIC LEAVES A GAP IN ANY FORMULATION I TESTED. Both ship reported-but-not-fatal, armable with `--strict`. The incident is still caught — by D1 (span), which it fails by three orders of magnitude.",
+    "**THE GATE CANNOT CATCH A PERFECTLY SMOOTH FULL-RANGE GRADIENT, and a self-test arm asserts that it cannot,** so the suite is not read as claiming coverage it lacks. That is the hole D3 would have filled. It is accepted because a smooth gradient has never been observed from this capture path while frames with zero local contrast and a real scene in them are 19% of the corpus. It would reopen on a corpus of only CURRENT full-scene captures — much of `reports/` is cached crops, UI shots and blind-pack plates.",
+    "**SUBJECT PRESENCE IS AMBER, NOT A HARD GATE, because its measured error rate does not earn one.** On the F10 run (the only labelled set in the repo — 17 frames known empty, 76 known full) the shipped threshold catches **15 of 17 empties against 6 of 76 false reds**. Catching the last two costs 22 of 76 good frames. A 7% false-red rate applied as a hard gate would start eating good evidence within one sweep. `--require-subject` promotes it for callers who want it.",
     "**THE NIGHT CONFOUND IS UNSOLVED.** Every false red the subject test produces is a night frame: at low contrast the centre band stops differing from its flanks. Contrast normalisation was tried and made the curve strictly worse (4 of 17 caught at zero false reds; 14 of 17 only at 23 false reds). A deliberately-kept self-test arm — a dark scene WITH a figure in it — goes amber, so the limitation is visible in the suite rather than only in a comment.",
-
     "**I DID NOT RE-RUN ANY CAPTURE.** Everything measured here comes from PNGs already on disk. No browser was launched, no GPU Pod was rented, no frame was recaptured. That was the brief and it is also why the retrospective numbers below are cheap.",
-
     "**I DID NOT LOOK FOR THE ROOT CAUSE** of the degenerate capture — the brief forbade it and four hypotheses were already refuted by W1-F3-AMBIENT-FILL. The mechanism remains unidentified. This gate catches it; it does not explain it.",
-
-    "**Two frames in the F10 run are flagged DEGENERATE and I cannot prove they are broken rather than merely extreme.** `C2__npc-blackwood-company-factor__{closeup,fullbody}-night.png` have median luma 0 with 75-77% of the frame in one bucket, while their siblings at the same time of day in the same scene have dominant_frac 0.09 and entropy 6.0. They are crushed to absolute black over three quarters of their area. That is not usable evidence for an appearance claim either way, but 'broken capture' is a stronger claim than I have evidence for.",
-
+    "**The two most suspicious frames in the F10 run are NOT caught by the hard gate, only soft-flagged.** `C2__npc-blackwood-company-factor__{closeup,fullbody}-night.png` have median luma 0 and 75-77% of the frame in one bucket while their siblings at the same time of day in the same scene have dominant_frac 0.09 and entropy 6.0. They trip D2* and D3* — the two demoted tests — and nothing else. An earlier draft of this piece did hard-fail them, and I removed that when the calibration showed those tests reject a third of the real corpus. So the honest position is: the gate reports them and does not void them, and I cannot prove they are broken rather than merely extreme.",
     "**`tools/visual/frame-liveness.mjs` was not mine to begin with and its author may object.** See `decisions` below."
   ],
-
   "what_was_built": {
     "tools/visual/frame-liveness.mjs": "The gate. Two independent questions — is this an image (D1-D7), and is the subject in it. Exports `gateBuffer` for capture-time use, `metrics`/`classify` for inspection, a `--calibrate` mode that re-derives the thresholds from any corpus, and `--self-test`.",
     "hard_tests": {
       "D1 luma_span": "p99-p01. corpus p01=33, 3 of 932 below 6.0. incident 0.03. THIS IS THE TEST THAT CATCHES THE INCIDENT.",
-      "D3 local_contrast_p90": "90th percentile of |centre - mean(8 neighbours)|. Replaces the median, which is 0 on 177 real frames. Catches a smooth gradient — wide span, no detail anywhere.",
       "D4 luma_entropy": "bits over the 256-bin luma histogram. corpus p01=0.98, 6 of 932 below 0.9. a uniform frame is 0.",
       "D5 dominant_frac": "share of the largest 5-bit RGB bucket. corpus p99=0.75, 5 of 932 above 0.92. catches a camera buried in a plank.",
-      "D6 structure_ratio": "blockStd*sqrt(px per block)/pixelStd over a 16x12 grid — ~1 for pure noise, corpus p01=4.59, 2 of 932 below 2.5. RESOLUTION-FREE by construction; its first draft used a raw block range and was resolution-dependent, scoring 18 at 320x240 and ~4 at 1920x1080 for the same noise.",
-      "D7 duplicate": "a frame byte-identical to its predecessor (motion) or to any other setup's frame (stills) means the capture did not advance."
+      "D6 structure_ratio": "blockStd*sqrt(px per block)/pixelStd over a 16x12 grid — ~1 for pure noise, corpus p01=4.59, 2 of 932 below 2.5. RESOLUTION-FREE by construction; its first draft used a raw block range and scored 18 at 320x240 against ~4 at 1920x1080 for the same noise, so a fixed line on it meant different things on different captures.",
+      "D7 duplicate": "a frame byte-identical to its predecessor (motion) or to any other setup's frame (stills) means the capture did not advance.",
+      "MEASURED COST OF THE WHOLE HARD BATTERY": "**7 of 932 real captures rejected, 0.75%** — D4 6, D5 5, D1 3, D6 2 (frames trip more than one). That is what makes it safe to fail loudly on."
     },
-    "soft_tests": "D2 shadow_levels and D3* local_contrast_med — the incident's own numbers, reported on every frame, fatal only under --strict, with the corpus measurement that demoted them recorded in `SOFT_TESTS` in the module.",
+    "soft_tests": "D2 shadow_levels, D3* local_contrast_med and D3'* local_contrast_p90 — reported on every frame, fatal only under --strict, with the corpus measurements that demoted them recorded in `SOFT_TESTS` in the module.",
     "subject_presence": "centre-vs-flank luma over the projected subject box. The box comes from the capture tool's own projected head/foot rows where available — the one input a pixel test must not invent for itself (HAZARDS §0) — and the fallback is labelled in every row and in the JSON."
   },
-
   "proof_the_arms_can_fail": {
     "command": "node tools/visual/frame-liveness.mjs --self-test",
     "result": "PASSED, 16 arms",
@@ -51,49 +42,46 @@
     ],
     "the_arm_that_is_kept_red_on_purpose": "A dark scene WITH a figure in it. It passes every image test and still trips the subject amber. That is the night confound, visible in the suite instead of buried in a comment."
   },
-
   "retrospective_what_the_gate_would_have_caught": {
     "run": "reports/runpod-gpu/runs/f10-characters-hw3/artifacts/f10/hw — 93 hardware frames, originally reported `0 red`",
-    "command": "node tools/visual/frame-liveness.mjs --in <frames> --manifest <boxes derived from the run's own projected head/foot NDC>",
-    "result": "2 DEGENERATE, 20 subject-amber, 71 LIVE",
-    "against_the_known_labels": "15 of the 17 known-empty frames caught; 5 of 76 known-good frames false-redded",
+    "command": "node tools/visual/frame-liveness.mjs --in <frames> --manifest reports/i2-capture-sanity/f10-subject-boxes.json",
+    "result": "72 LIVE, 21 subject-amber, 0 degenerate, 2 carrying soft flags",
+    "against_the_known_labels": "**15 of the 17 known-empty frames caught; 6 of 76 known-good frames false-redded.** The 17 are exactly the frames of npc-lilmoth-apothecary-12, per W1-F10-CHARACTER-CRITIC's own words: 'Ixtei (race argonian) stands out at sea off the Lilmoth pier'.",
     "output": "reports/i2-capture-sanity/retro-f10-characters-hw3.json",
-    "note": "The two DEGENERATE frames were `status: ok` in the original manifest. No captures were re-run."
+    "note": "No captures were re-run. The subject boxes were derived from the run's OWN recorded projected head/foot NDC, so the box is independent of the pixels being judged."
   },
-
   "calibration": {
     "command": "node tools/visual/frame-liveness.mjs --calibrate reports --sample 4 --json reports/i2-capture-sanity/calibration-reports.json",
     "corpus": "932 frames from 366 directories under reports/, 0 unreadable",
-    "outputs": ["reports/i2-capture-sanity/calibration-reports.txt", "reports/i2-capture-sanity/calibration-reports.json"],
-    "rule_applied": "each hard threshold sits below the worst real capture observed and above the value the known degenerate capture produced; where the two did not leave a gap the test was demoted rather than tuned until it looked decisive"
+    "outputs": [
+      "reports/i2-capture-sanity/calibration-reports.txt",
+      "reports/i2-capture-sanity/calibration-reports.json"
+    ],
+    "rule_applied": "each hard threshold sits below the worst real capture observed and above the value the known degenerate capture produced; where the two did not leave a gap the test was demoted rather than tuned until it looked decisive",
+    "second_run": "node tools/visual/frame-liveness.mjs --calibrate reports --sample 1 (368 frames) — the local_contrast_p90 recalibration that demoted D3' as well. reports/i2-capture-sanity/calibration-p90.{txt,json}"
   },
-
   "hazards_15a_revision_fix": {
     "what_changed": "`createSnapshot` in tools/runpod/lib/local.mjs now archives the COMMITTED revision by default instead of the working tree. `--worktree` opts back in to uncommitted edits. The excluded uncommitted paths are NAMED in the run log and recorded in the run state as `source_excluded_dirty_paths`, and the resolved sha is recorded as `source_revision`.",
     "why_no_caller_breaks": "every existing invocation still runs; one that already passed --revision gets exactly what it got before. A builder testing an uncommitted edit is told, by name, which paths were left out and how to include them.",
     "proof": "tools/runpod/test/runpod.test.mjs — 24 of 24 pass (was 23, of which the 1 failure was the old default's test, correctly broken by the change). The new test is TWO-ARMED on one fixture: a neighbour's broken mid-edit to game/icons.js is absent from the default snapshot and present under --worktree. Both arms are required to disagree.",
     "reversible": "revert the `worktree` default in createSnapshot and the flag in cli.mjs; the two-armed test names exactly what would change."
   },
-
   "wired_in": {
     "tools/visual/deck.mjs": "every frame gated at capture time in `shoot()`; a non-LIVE frame is `status: red` with the reason in the manifest rather than `ok`; D7 across the deck catches two different setups producing a byte-identical frame; thresholds stamped into the manifest.",
     "tools/visual/deck-motion.mjs": "every frame gated in the capture loop; a sequence with any degenerate frame goes RED with the count and the first offender, ahead of the existing `moving`/`player_moved` checks — a sequence of 180 distinct, moving, degenerate frames satisfies both of those and is worth nothing.",
     "tools/visual/f10-character-sweep.mjs": "the subject case. The box comes from this file's own `framing` projection. `status: red` only for a frame that is not a picture; subject presence is recorded as `subject_amber` with its measured error rate stamped into the manifest.",
     "not_wired": "tools/visual/gpu-deck.mjs and collect-run.mjs need no change — gpu-deck batches deck.mjs and deck-motion.mjs onto the Pod and inherits the gate; collect-run copies manifests, which now carry the verdicts."
   },
-
   "decisions": [
     "**TOOK OVER `tools/visual/frame-liveness.mjs` rather than adding a second tool.** When I arrived it existed (240 lines, mtime 09:06:54 today), was UNTRACKED (`git ls-files` empty, `git log` empty — it has never been banked), was imported by nothing in the tree, and ITS SELF-TEST FAILED: the `street, no subject` arm returned LIVE. No live status file listed it in `files_touched`. Shipping a near-duplicate of a broken tool is worse than repairing it. The predecessor's version is preserved at the scratchpad path recorded in `artifacts` below. REVERSIBLE: the repair is a superset and can be split back out if its author objects.",
     "**Hard gate on the image question, amber on the subject question.** Sizing the claim to the evidence: the image thresholds sit in clear gaps and reject <1% of a 932-frame real corpus; the subject statistic's measured false-red rate is 7%. Making both fatal would have produced a check that eats good evidence, which is how a check earns the right to be ignored. WOULD BE OVERTURNED BY: a subject statistic that separates the F10 labels cleanly, or a labelled set where the night confound does not appear.",
     "**Frames are still written before they are judged.** A degenerate frame is the artefact you want to look at. The verdict goes in the manifest; the bytes stay on disk."
   ],
-
   "what_would_make_this_wrong": [
     "If the 932-frame corpus under reports/ is not representative of what the capture tools produce now — it includes old runs, blind packs and cached captures. The calibration command is in the module and re-running it on a fresh corpus is one command.",
     "If the F10 labels are wrong. They come from W1-F10-CHARACTER-CRITIC's own status file: 'Ixtei (race argonian) stands out at sea off the Lilmoth pier'. I mapped that to subject id `npc-lilmoth-apothecary-12` and got exactly 17 of 93, which matches the stated count — but I did not look at the frames myself.",
     "If the gate is never actually run. It is wired into three capture tools; nothing yet fails CI on it."
   ],
-
   "files_touched": [
     "tools/visual/frame-liveness.mjs",
     "tools/visual/deck.mjs",
@@ -104,7 +92,8 @@
     "tools/runpod/test/runpod.test.mjs",
     "tools/i2/eval-subject.mjs",
     "reports/i2-capture-sanity/",
-    "orchestration/status/I2-CAPTURE-SANITY.json"
+    "orchestration/status/I2-CAPTURE-SANITY.json",
+    "corpus/90-verdicts/wave1/artifacts/I2-CAPTURE-SANITY/"
   ],
   "files_claimed": [
     "tools/visual/frame-liveness.mjs",
@@ -116,7 +105,16 @@
     "tools/runpod/test/runpod.test.mjs",
     "tools/i2/",
     "reports/i2-capture-sanity/",
-    "orchestration/status/I2-CAPTURE-SANITY.json"
+    "orchestration/status/I2-CAPTURE-SANITY.json",
+    "corpus/90-verdicts/wave1/artifacts/I2-CAPTURE-SANITY/"
   ],
-  "next_step": "A critic with fresh context. The two things most worth attacking: (1) whether the hard thresholds hold on a corpus of only CURRENT captures rather than the historical mix, and (2) whether the subject statistic is worth keeping at all given a 7% false-red rate — it may be better to demand the projected box everywhere and refuse otherwise."
+  "next_step": "A critic with fresh context. The two things most worth attacking: (1) whether the hard thresholds hold on a corpus of only CURRENT captures rather than the historical mix, and (2) whether the subject statistic is worth keeping at all given a 7% false-red rate — it may be better to demand the projected box everywhere and refuse otherwise.",
+  "evidence": {
+    "self_test_output": "docs/shots/2026-08-15-i2-capture-sanity-self-test.txt (exit 0, 16 arms)",
+    "calibration": "reports/i2-capture-sanity/calibration-reports.{txt,json} and calibration-p90.{txt,json}",
+    "retrospective": "reports/i2-capture-sanity/retro-f10-characters-hw3.json",
+    "subject_roc_derivation": "tools/i2/eval-subject.mjs — the script that measured the operating curve against the labelled set",
+    "predecessor_version_preserved": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/frame-liveness.PREDECESSOR-09-06-54.mjs (scratchpad, not durable — the file was untracked so there is no git copy)",
+    "DURABLE_COPIES": "corpus/90-verdicts/wave1/artifacts/I2-CAPTURE-SANITY/ — reports/ is gitignored in this repo (reports/.gitignore is `*`), so everything written there is invisible to the remote (HAZARDS §9). The tracked copies live here with a README explaining each."
+  }
 }

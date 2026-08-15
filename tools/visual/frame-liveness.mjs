@@ -161,13 +161,14 @@ export const T = {
   min_luma_entropy: 0.9,       // D4  bits.     corpus p01=0.98, 6/932 below. uniform frame = 0.
   max_dominant_frac: 0.92,     // D5  share.    corpus p99=0.75, 5/932 above. uniform frame = 1.
   min_structure_ratio: 2.5,    // D6  ratio.    corpus p01=4.59, 2/932 below. pure noise ~1.
-  min_local_contrast_p90: 0.6, // D3' see below — armed only if calibration showed a gap.
+  min_local_contrast_p90: 0,   // D3' DISARMED — calibration found no gap. See SOFT_TESTS.
 
   // --- REPORTED, NOT FATAL. These are the incident's own two headline numbers, and neither can
   //     be used as a hard gate in this repo, which is a finding rather than an omission. See
   //     SOFT_TESTS below for the measurement that demoted them.
   soft_min_shadow_levels: 6,
   soft_min_local_contrast_med: 0.3,
+  soft_min_local_contrast_p90: 0.6,
 
   // --- is the subject in it -----------------------------------------------------------------
   // DERIVED FROM REAL LABELLED DATA, not from synthetic frames: the 93-frame F10 hardware run in
@@ -207,7 +208,35 @@ export const SOFT_TESTS = {
   shadow_levels: { corpus_p01: 0, corpus_p02: 1, corpus_p05: 6, incident: 1, real_frames_below_6: 34, of: 932, gap: false },
   local_contrast_med: { corpus_p05: 0, corpus_p95: 1.5264, incident: 0, real_frames_at_zero: 177, of: 932, gap: false },
   combined_rejection_if_armed: '324 of 932 real captures (34.76%)',
+
+  // THE SECOND ATTEMPT AT D3, AND IT FAILED THE SAME WAY. Because the MEDIAN local contrast is 0
+  // on 177 real frames, the obvious repair is to ask the 90th percentile instead: is there detail
+  // ANYWHERE in this frame. Recalibrated over 368 frames from 368 directories:
+  //
+  //     local_contrast_p90   min 0   p01 0   p05 0.1957   p50 3.2638   max 16.388
+  //
+  // Real captures reach exactly 0 here too, and a 0.6 line rejected 161 of 368 (43.75%). So there
+  // is NO formulation of "local contrast" in this corpus that separates a good frame from the
+  // broken one, and D3 is disarmed in both forms rather than tuned until it looked decisive.
+  local_contrast_p90: { corpus_p01: 0, corpus_p05: 0.1957, corpus_p50: 3.2638, rejection_at_0_6: '161 of 368 (43.75%)', gap: false },
 };
+
+/**
+ * THE BLIND SPOT THIS LEAVES, stated rather than discovered later. With D3 disarmed in both
+ * forms, a frame that is a PERFECTLY SMOOTH FULL-RANGE GRADIENT passes every hard test: it has a
+ * wide span (D1), high entropy (D4), no dominant bucket (D5) and strong low-frequency structure
+ * (D6). Nothing here would call it degenerate.
+ *
+ * That is accepted deliberately. A smooth gradient has never been observed coming out of this
+ * capture path — it is a synthetic shape — whereas frames with zero local contrast and a real
+ * scene in them are 19% of the corpus and arrive constantly. Rejecting a fifth of real evidence
+ * to close a hypothetical hole is the worse trade.
+ *
+ * WHAT WOULD REOPEN IT: a corpus of only CURRENT full-scene captures, excluding the cached crops,
+ * UI shots and blind-pack plates that make up much of the historical `reports/` tree. If real
+ * local_contrast_p90 has a floor above zero there, D3' can be armed at that floor. The command is
+ * one line and it is in this file.
+ */
 
 /** Filled in below the calibration run; see the status file for the command and its output. */
 export const DERIVATION = {
@@ -473,6 +502,7 @@ export function classify(m, s, opts = {}) {
   // Reported on every frame, fatal only under --strict. See SOFT_TESTS for why.
   if (m.shadow_levels < t.soft_min_shadow_levels) soft.push(`D2* shadow_levels ${m.shadow_levels} < ${t.soft_min_shadow_levels} (reported, not fatal: 34 of 932 real captures are also below this)`);
   if (m.local_contrast_med < t.soft_min_local_contrast_med) soft.push(`D3* local_contrast_med ${m.local_contrast_med} < ${t.soft_min_local_contrast_med} (reported, not fatal: 177 of 932 real captures have a median of exactly 0)`);
+  if (m.local_contrast_p90 !== undefined && m.local_contrast_p90 < t.soft_min_local_contrast_p90) soft.push(`D3'* local_contrast_p90 ${m.local_contrast_p90} < ${t.soft_min_local_contrast_p90} (reported, not fatal: real captures reach 0 here too — corpus p01 = 0)`);
   if (opts.strict && soft.length) fails.push(...soft);
 
   if (fails.length) return { verdict: 'DEGENERATE', why: fails, soft };
@@ -480,6 +510,7 @@ export function classify(m, s, opts = {}) {
 
   if (s.bg_bucket_coverage > t.max_bg_coverage) {
     return {
+      soft,
       verdict: 'SUBJECT_UNDECIDABLE',
       why: [`SUB background model saturated (${s.bg_bucket_coverage} of colour space appears in the border ring) — cannot tell subject from backdrop, and will not guess`],
     };
@@ -488,11 +519,12 @@ export function classify(m, s, opts = {}) {
   // The decision, on the statistic whose error rate is published in SUBJECT_ROC.
   if (s.centre_flank_luma < t.min_centre_flank) {
     return {
+      soft,
       verdict: 'NO_SUBJECT',
       why: [`SUB centre_flank_luma ${s.centre_flank_luma} < ${t.min_centre_flank} — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC).`],
     };
   }
-    return { verdict: 'LIVE', why: [] };
+    return { verdict: 'LIVE', why: [], soft };
 }
 
 /** One-call convenience used by the capture paths. `box` may be null. */
@@ -576,8 +608,14 @@ if (IS_CLI && args['self-test']) {
     // here so the limitation is visible in the suite instead of living only in a comment, and it
     // is why subject presence is AMBER and not a hard fail.
     ['D1  DARK scene WITH a figure — KNOWN night false-red', mkPng(W, H, (x, y) => { const c = withFigure(street, 0.42)(x, y); return [c[0] >> 2, c[1] >> 2, c[2] >> 2]; }), 'NO_SUBJECT', null],
-    // ---- D3 local contrast: a smooth gradient spans widely and has no detail ------------------
-    ['D3  smooth vertical gradient (wide span, no detail)', mkPng(W, H, (x, y) => { const v = Math.round(y * 255 / H); return [v, v, v]; }), 'DEGENERATE', 'D3'],
+    // ---- THE KNOWN BLIND SPOT, kept as an arm so it stays visible ----------------------------
+    // A perfectly smooth full-range gradient is NOT caught, and this arm asserts that it is not,
+    // so nobody reads the suite as claiming coverage it does not have. D3 would catch it, and D3
+    // is disarmed in both its formulations because real captures in this repo reach exactly the
+    // same values (SOFT_TESTS.local_contrast_p90: corpus p01 = 0, a 0.6 line rejects 43.75% of
+    // real frames). The subject amber below is the only thing that fires here, and that is not
+    // the image test doing its job.
+    ['D3  smooth gradient — DOCUMENTED BLIND SPOT, not caught', mkPng(W, H, (x, y) => { const v = Math.round(y * 255 / H); return [v, v, v]; }), 'NO_SUBJECT', null],
     // ---- D5 one surface: camera buried in a plank --------------------------------------------
     ['D5  camera inside a plank (98% one flat brown)', mkPng(W, H, (x, y) => (x < W * 0.98 ? [96, 74, 52] : [jit(150, x, y), jit(170, x, y), jit(200, x, y)])), 'DEGENERATE', 'D5'],
     // ---- D6 no low-frequency structure. Full-range noise, so D1/D2/D4 all pass comfortably and
