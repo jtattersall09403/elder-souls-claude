@@ -311,6 +311,7 @@ const GAP_MAP = {
   'GAP-PROSE-01': ['P2'],
   'GAP-W1-02-m68-unanswerable': ['W2', 'I3'],
   'GAP-W1-03-water-surface-undrawn-and-frozen': ['F7', 'W9'],
+  'GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence': ['F7'],
   'GAP-W1-12-approach-cannot-close-on-a-walking-player': ['G4'],
   'GAP-W1-12-m3-chase-bot-dwell-on-the-items-own-fixture': ['G4'],
   'GAP-W1-character-surface-is-assembled-from-primitives-not-built': ['F10'],
