@@ -51,12 +51,12 @@ async function capture() {
 /** Walk every page of the chronicle and concatenate, so a capture is the whole journal. */
 async function captureAll() {
   await h.h('openMenu', 'journal');
-  await h.h('uiFocus', { journal: { view: 'chronicle', page: 0 } });
+  await h.h('uiFocus', { view: 'chronicle', page: 0 });
   await h.h('stepFrames', 2);
   const all = [];
   const seen = new Set();
   for (let p = 0; p < 24; p++) {
-    await h.h('uiFocus', { journal: { view: 'chronicle', page: p } });
+    await h.h('uiFocus', { view: 'chronicle', page: p });
     await h.h('stepFrames', 2);
     const c = await capture();
     let added = 0;
