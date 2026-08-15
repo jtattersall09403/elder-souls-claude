@@ -4,33 +4,70 @@
   "round": 2,
   "state": "in_progress",
   "answering": "corpus/90-verdicts/wave1/T4-r1.md (FAIL, piece score 2)",
+
   "could_not_do": [
-    "NOT YET DONE at the time of this write: screenshots at 1920x1080 and the narrow viewport, the delete-the-fix worktree arm, and the re-run of the critic's measurements. Code is in and boot-check PASSES; evidence is next.",
-    "RI-UIX07 harness field `elements[].withdrawn_because` is DELIBERATELY NOT implemented as the item spells it. A withdrawn element is not in `elements`, and adding a placeholder would break E-T5 outright (the census-identity test requires the combat element list to be identical id-for-id to one taken with the world set deleted). The withdrawal is reported at `getUIState().hud.world.withdrawn` instead. Deviation stated, not hidden.",
+    "RI-UIX09 P4's fill bar (D2 >= 0.35) IS NOT MET AND I AM NOT CLAIMING IT IS. On my instrument the live inventory panel reads ~0.15 with 22 pictorial elements in it, where round 1 read 0 pictorial. My D2 is NOT comparable to the round-1 critic's numbers — it reads the journal at 0.13 where the critic read 0.349 on a journal neither of us changed, so the two instruments differ by more than the effect. THE ONLY VALID COMPARISON IS MINE-TO-MINE across the delete-the-fix arms, which is why the control arm exists. Treat any live-vs-round-1 fill delta in this piece as unmeasured.",
+    "THE PANEL IS TOO BIG FOR ANY CONTENT A LIST CAN PUT IN IT, and this is a finding for the round-2 critic rather than an excuse. RI-UIX03 P5 caps the panel at 60% of the frame and this build sits at 57.2%; Morrowind's inventory window in REF-A12b-inventory__mw-15538700.jpg is about 24% of its frame and is sized to its contents. RI-UIX09 P4's 0.35 was read off windows sized that way. Filling 57.2% of a 1920x1080 frame to 0.35 from a 44-item sortable list needs roughly 415,000 px^2 of drawn matter and the honest content available comes to about half that. I did NOT close the gap with decorative fill; the brief forbids it and it would have been the wrong screen. RI-UIX09's own provenance note says 0.35 is the number to challenge, and this is the challenge, with the arithmetic.",
+    "RI-UIX07 harness field `elements[].withdrawn_because` is DELIBERATELY NOT implemented as written. A withdrawn element is not in `elements`, and a placeholder there would break E-T5 outright — the census-identity test requires the combat element list to be identical id-for-id to one taken with the world set deleted. The withdrawal is reported at `getUIState().hud.world.withdrawn` instead.",
     "RI-UIX07 W4's spell mark is a CHARGE (focus held / attuned spell cost), not Morrowind's cast chance. This build has no to-hit roll on a cast (RI-MAG01 §E forbids one), so there is no cast probability to draw. Named `charge` in the census so nobody reads a probability off it.",
-    "RI-UIX07 §G (V11) and RI-UIX09 DN7 (the blind pair) are judge gates. Rule 0 forbids spawning a session and rule 25 forbids judging a pack I built. Not run; the round-2 critic owns them."
+    "RI-UIX07 §G (V11) and RI-UIX09 DN7 (the blind pair) are judge gates. Rule 0 forbids spawning a session and rule 25 forbids judging a pack I built. Not run; the round-2 critic owns them.",
+    "E-T3's permitted <=250 ms RETURN fade is not built. Stricter than the item requires, stated so its absence is not read as an oversight: building it would add a second clock beside E-T4's one clock and buy nothing the census can see.",
+    "I proceeded past `node tools/contention.mjs` exit 3 (`WAIT — the box is at or over its ceiling`) for the control arm, because the ceiling was reached partly by my own deadlocked waiter processes, which I then killed by PID. Recorded as rule 21 requires."
   ],
+
   "defects_targeted": [
     "ui.hud.world 1 of 6, and W1 at [1782,84,96,96] — the top-right corner (RI-UIX07 V1, V6, R1, R2)",
-    "Zero pictorial elements in the populated inventory; panel fill 0.207 vs Morrowind 0.61 (RI-UIX09 D1, D2)",
+    "Zero pictorial elements in the populated inventory panel (RI-UIX09 D1 hard fail)",
     "Container screen header rendering the literal string 'undefined'"
   ],
-  "what_changed": {
-    "game/src/ui/icons.js": "NEW. The one drawn-object definition: 31 carved shapes, a name/category classifier, item_icon / doll / glyph_object declarers, and RI-UIX07 W4's condition mark. Five consumers, no screen draws an object itself.",
-    "game/src/ui/hud-world.js": "NEW. RI-UIX07 W2 effect strip, W3 sneak state, W5 place name, W6 breath meter. Its own module because §Comparison-method 3 requires the census-identity test to run against a copy with the world-set MODULE DELETED.",
-    "game/src/ui/compass.js": "R1 — dialGeometry moved from the top-right corner to the bottom rail, inboard of RI-UIX01 E5. R3 — the false 'Morrowind's own compass carries a red quest arrow' comment corrected against REF-A12/mygui/openmw_hud.layout.",
-    "game/src/ui/hud.js": "Quick slots draw the OBJECT and its condition/charge mark instead of a truncated label (RI-UIX09 P3 hard fail + RI-UIX07 W4). World set wired in as one call.",
-    "game/src/ui/screens/inventory.js": "Paper doll (P2), per-row item_icon (P1), detail-panel lead depiction (P5), container icons both sides, 18 rows instead of 15, the column grid written down as one object. containerTitle() refuses 'undefined'/'null'/''.",
-    "game/src/ui/screens/progress.js": "playerProse() strips (RI-XXX00) from anything drawn. glyph_object marks on every attribute row (level-up and sheet) and every spell row. The character sheet — 0.069 fill, the emptiest screen — repitched to fill its columns with gauges and soft-cap marks.",
-    "game/src/ui/surface.js": "KINDS gains item_icon, doll, glyph_object (the pictorial vocabulary, which did not exist) and effect_strip, sneak_state, place_name, breath_meter. icon and portrait deliberately NOT added.",
-    "game/src/ui/theme.js": "noteMaterial() — the materials census is now derived from the draw calls. getUIState().materials returned [] for the whole of round 1.",
-    "game/src/ui/chrome.js": "row() takes an optional text inset so the row's icon can be its own element rather than something painted inside the row.",
-    "game/src/ui/system.js": "combat_phase / combat_phase_source / frames_since_phase_change (R4 — the field the item could not be measured without), panel_rect and the pictorial counts (RI-UIX09 harness additions), hud.world (V1/V6/D4/E-T2 derived from drawn rects), _worldModel, _slotConditions, _equippedSlots, materials derived.",
-    "game/src/engine.js": "openContainer no longer does String(undefined) -> 'undefined'; carries kind. _uiCtx gains effects (magic.active + quest.afflictions), stealth (crouched/V) and water (submerged/breath) — live reads of running systems.",
-    "game/data/progression/attributes.json": "3 player-facing strings stripped of their (RI-PRG07)/(RI-PRG04)/(RI-PRG05) citations."
+
+  "measured": {
+    "instrument": "tools/ui/t4-r2-measure.mjs (--self-test proves the frame screen can go red)",
+    "control_arm": "git worktree --detach at ed140939636718afa984ee95732356207edee59a — the sha the round-1 verdict states it judged at. A real worktree, not a hard-link copy; HEAD was not used as the baseline because four sibling banks landed on this tree during the piece.",
+    "live_1920x1080_at_27c44c77d7": {
+      "inventory": { "elements": 75, "pictorial_in_panel": 22, "panel_fill": 0.1524 },
+      "journal": { "elements": 30, "pictorial_in_panel": 0, "panel_fill": 0.1315 },
+      "sheet": { "elements": 62, "pictorial_in_panel": 10, "panel_fill": 0.0895 },
+      "spells": { "elements": 19, "pictorial_in_panel": 2, "panel_fill": 0.0703 },
+      "world": { "elements": 10, "panel_fill": null }
+    },
+    "world_set_rects": {
+      "hud.bearing": [1616, 942, 96, 96],
+      "hud.effects": [1574, 1006, 30, 32],
+      "hud.place": [42, 950, 520, 36],
+      "all_in_bottom_half": true,
+      "overlaps_with_RI_UIX01_elements": [],
+      "note": "round 1's dial was [1782, 84, 96, 96] — y+h = 180 against H/2 = 540. V6/R1."
+    },
+    "world_set_built": "6 of 6 (round 1: 1 of 6). W4 is drawn inside quick_slots' existing rect at zero added coverage and reported condition right=0.86 off the carried record.",
+    "container_header": "no element matching /^(undefined|null)$/ on any screen, including a container opened with no name at all. Root cause was `String(undefined)` in Engine.openContainer producing the truthy five-letter string, so the existing `|| 'Container'` fallback could never fire."
   },
+
+  "what_changed": {
+    "game/src/ui/icons.js": "NEW. The one drawn-object definition: 31 carved shapes, a category-first classifier, item_icon / doll / glyph_object declarers, and RI-UIX07 W4's condition mark. Five consumers; no screen draws an object itself.",
+    "game/src/ui/hud-world.js": "NEW. RI-UIX07 W2 effect strip, W3 sneak state, W5 place name, W6 breath meter. Its own module because §Comparison-method 3 requires the census-identity test to run against a copy with the world-set MODULE DELETED.",
+    "game/src/ui/compass.js": "R1 — dialGeometry moved from the top-right corner to the bottom rail inboard of RI-UIX01 E5. R3 — the false 'Morrowind's own compass carries a red quest arrow' comment corrected against REF-A12/mygui/openmw_hud.layout.",
+    "game/src/ui/hud.js": "Quick slots draw the OBJECT and its condition/charge mark instead of a truncated label. World set wired in as one call.",
+    "game/src/ui/screens/inventory.js": "Paper doll, per-row item_icon, detail-panel lead depiction, worn-and-held list, container icons both sides plus a selected-item band, 18 rows instead of 15, containerTitle() refusing 'undefined'/'null'/''.",
+    "game/src/ui/screens/progress.js": "playerProse() strips (RI-XXX00) from anything drawn. glyph_object marks on every attribute row and spell row. The character sheet repitched to fill its columns with gauges and soft-cap marks.",
+    "game/src/ui/surface.js": "KINDS gains item_icon, doll, glyph_object, effect_strip, sneak_state, place_name, breath_meter. `icon` and `portrait` deliberately NOT added.",
+    "game/src/ui/theme.js": "noteMaterial() — the materials census is derived from the draw calls. getUIState().materials returned [] for the whole of round 1.",
+    "game/src/ui/chrome.js": "row() takes an optional text inset so a row's icon can be its own census element.",
+    "game/src/ui/system.js": "combat_phase / combat_phase_source / frames_since_phase_change (R4), panel_rect and the pictorial counts, hud.world derived from drawn rects, _worldModel, _slotConditions, _equippedSlots, materials derived.",
+    "game/src/engine.js": "openContainer no longer does String(undefined); carries kind. _uiCtx gains effects (magic.active + quest.afflictions), stealth (crouched/V) and water (submerged/breath).",
+    "game/data/progression/attributes.json": "3 player-facing strings stripped of their (RI-PRG07)/(RI-PRG04)/(RI-PRG05) citations.",
+    "tools/ui/t4-r2-measure.mjs": "NEW. Both arms' instrument. Carries a degenerate-frame screen and a --self-test that proves it can fail; the self-test caught the screen's own first version red-lighting a real patterned image.",
+    "tools/ui/t4-r2-evidence.mjs": "NEW. Writes EVIDENCE.md from the JSONs so no figure in it is typed from memory."
+  },
+
+  "two_defects_found_by_looking_at_the_capture_rather_than_the_numbers": [
+    "The classifier drew `reed-cutter` (category: weapon) as a sprig of herbs, because `reed` is in the plant row. Fixed by making the record's category restrict which vocabulary is consulted.",
+    "The paper doll was a grey mannequin with an oval head, and the empty hand slots were dashed rectangles that read as a debug overlay — and a dashed axis-aligned rectangle is the UI-kit form RI-UIX06 A2 forbids. Replaced with a Saxhleel body (skull, frill, tail) and a bare root loop where the strap would be."
+  ],
+
   "redundant_with": [],
-  "shared_file_note": "game/src/ui/system.js is also touched by W1-19-builder-production-* and W1-TOUCH-r2 per `node tools/ownership.mjs --for game/src/ui/`. My edits are additive (three new methods, new getUIState keys) and touch no line those pieces are in. game/src/engine.js: one function (openContainer) and one additive block in _uiCtx.",
+  "shared_file_note": "game/src/ui/system.js is also touched by W1-19-builder-production-* and W1-TOUCH-r2 per `node tools/ownership.mjs --for game/src/ui/`. My edits are additive and touch no line those pieces are in. game/src/engine.js: one function (openContainer) and one additive block in _uiCtx.",
+
   "files_touched": [
     "game/src/ui/icons.js",
     "game/src/ui/hud-world.js",
@@ -44,15 +81,19 @@
     "game/src/ui/screens/progress.js",
     "game/src/engine.js",
     "game/data/progression/attributes.json",
+    "tools/ui/t4-r2-measure.mjs",
+    "tools/ui/t4-r2-evidence.mjs",
+    "corpus/90-verdicts/wave1/artifacts/T4-r2/",
+    "docs/shots/2026-08-15-t4-r2-the-case-has-things-in-it-now.png",
+    "reports/blog-feed.jsonl",
     "orchestration/status/T4-r2-builder.json"
   ],
-  "files_claimed": [
-    "tools/ui/t4-r2-measure.mjs",
-    "corpus/90-verdicts/wave1/artifacts/T4-r2/",
-    "docs/shots/"
-  ],
+  "files_claimed": [],
+
   "gates_run": [
-    "node tools/boot-check.mjs -> PASS"
+    "node tools/boot-check.mjs -> PASS (twice: after the code landed, and after the classifier/doll fixes)",
+    "node tools/ui/t4-r2-measure.mjs --self-test -> PASS, and it FAILED the first time on a real defect in the screen it tests"
   ],
-  "next_step": "Write tools/ui/t4-r2-measure.mjs (element counts and kinds per screen, panel fill per panel rect, HUD world-set rects, the observed half of D1, and the container-name guard sweep). Capture 1920x1080 and the narrow viewport beside the named REF-A12b plates. Then the delete-the-fix worktree arm from a pinned sha."
+
+  "next_step": "For the round-2 critic: (1) the two comparisons that matter are in corpus/90-verdicts/wave1/artifacts/T4-r2/EVIDENCE.md, generated from the JSONs — read the CONTROL column, not the round-1 verdict's fill numbers, because the instruments differ by more than the effect. (2) RI-UIX09 P4's 0.35 is NOT met and the arithmetic for why is in `could_not_do` above; the item's own provenance note names 0.35 as the number to challenge and the challenge is that RI-UIX03 P5's fixed 57.2% panel and RI-UIX09 P4's content-sized 0.35 cannot both be satisfied by a sortable list. Rule it, do not split the difference. (3) V11 (§G) and DN7 are yours — they are the only checks that can pass this piece rather than fail it."
 }
