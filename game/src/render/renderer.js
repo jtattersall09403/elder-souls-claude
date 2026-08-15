@@ -635,6 +635,37 @@ export class Renderer {
   }
 
   /**
+   * THE GROUND, FOR A CHARACTER THAT IS NOT THE PLAYER.
+   *
+   * `poseFromRig`/`poseStatic` take an optional `water` argument, and its `groundAt` is what the
+   * terrain foot conform reads. Only `renderer.js:1144` — the PLAYER — ever passed one. So the
+   * conform round 6 wrote reached one character out of 409, and `W1-F10-r6-appearance` measured
+   * exactly that from the frames: 12 of 12 NPC foot pairs byte-identical. It is `RI-MTH07`'s
+   * consumption shape — a correct rule with one caller — and this method is the second and third
+   * callers, not a second copy of the rule.
+   *
+   * `y: -9999, wetness: 0` is the documented "no waterline" value in `poseFromRig`'s own header,
+   * so this changes the feet and nothing about the wet-body shader. One object, reused, because it
+   * is handed to every enemy and every NPC on every frame; the closure reads `this.cell` when it is
+   * CALLED, so it follows a cell change without being rebuilt.
+   */
+  _actorGround() {
+    // TERRAIN ONLY, AND RETURNING null IS THE POINT. In an interior the resolver answers with the
+    // ROOM's floor while an NPC's `pos[1]` is still its settlement's authored constant — at Lilmoth
+    // that is 2.68 against a floor of 0, so a conform would clamp every interior foot 0.25 m
+    // through the floorboards. The conform is a TERRAIN conform; where there is no terrain it does
+    // not run, and the three callers below get their pre-round-7 behaviour unchanged.
+    if (this.cell !== 'province' && this.cell !== 'exterior') return null;
+    if (!this._actorGroundArg) {
+      this._actorGroundArg = {
+        y: -9999, wetness: 0,
+        groundAt: (x, z) => (this.groundResolver ? this.groundResolver(x, z) : this.groundAt(x, z, undefined, this.cell)),
+      };
+    }
+    return this._actorGroundArg;
+  }
+
+  /**
    * Any live rig, borrowed purely as a BONE LIST so an actor with no combat body of its own
    * (a villager) can still be built as a humanoid. Its pose is never read.
    */
@@ -667,8 +698,12 @@ export class Renderer {
       // a box that never moved, which is why the round-3 critic could not judge an enemy
       // swing either.
       const eb = C && C.bodyOf ? C.bodyOf(e.eid) : null;
-      if (!(eb && poseFromRig(mesh, eb))) {
-        poseStatic(mesh, this._anyRig(sim), e.pos, e.yaw);
+      // `_actorGround()` is the third argument this call has never had. Without it the terrain
+      // foot conform inside `poseFromRig` is skipped for every enemy in the game — the same
+      // omission `syncNPCs` carried, on the line the r6 pass named (`:670` is THIS line, and it
+      // is enemies; NPCs are in `syncNPCs` below).
+      if (!(eb && poseFromRig(mesh, eb, this._actorGround()))) {
+        poseStatic(mesh, this._anyRig(sim), e.pos, e.yaw, this._actorGround());
         mesh.scale.y = e.state === 'DEAD' ? 0.18 : 1;
       }
       mesh.visible = true;
@@ -712,7 +747,38 @@ export class Renderer {
       }
       // A villager has no combat body, so the rig is borrowed for its bone list only and the
       // group transform poses it — a proper humanoid standing still, rather than a box.
-      poseStatic(mesh, this._anyRig(sim), n.pos, n.yaw);
+      //
+      // ---- THE AUTHORED HEIGHT IS A SETTLEMENT CONSTANT, NOT A HEIGHT --------------------------
+      //
+      // `sim/npc.js:62` takes `pos[1]` verbatim from the authored `post.pos[1]` and nothing has
+      // ever compared it to the ground. MEASURED 2026-08-15 by
+      // `tools/visual/f10-r7-npc-ground-census.mjs` against the shipped build at the Lilmoth player
+      // stand: of the **31 NPCs actually drawn there, 12 are more than 0.15 m BELOW the ground
+      // (worst 2.31 m — entirely underground) and 15 are more than 0.15 m ABOVE it (worst
+      // +35.39 m).** Four of thirty-one are standing on the ground.
+      //
+      // It is not per-NPC error, it is the shape of the data. Enumerated over all 18 files in
+      // `game/data/npcs/` (408 records, 346 with a `post.pos`), the authored y takes ONE OR TWO
+      // distinct values per settlement — gideon 2.72; thorn 13.31; stormhold 4 and 141.12;
+      // helstrom 6 and 27.22 — and Lilmoth's 54 records carry 0.37, 0.4, 2, 2.68 and 7.37 over
+      // ground that is 2.680. It is a per-settlement constant applied to people standing in
+      // different places, so it cannot track terrain and does not.
+      //
+      // So the DRAWN character stands on the ground under it. This is a presentation decision of
+      // exactly the kind `_drawnGroundY`, `Province._placeSite()` and the ground-cover instancing
+      // already make: `n.pos` — what the simulation, the stealth cones and `world-collision.js`
+      // read — is not touched.
+      //
+      // REVERSIBLE IN ONE LINE, and here is what would overturn it: an NPC that is genuinely on a
+      // balcony, a stair landing or an upper floor. None exists today (the authored values are
+      // settlement constants), and when one does, the record needs a real per-NPC height and this
+      // line should prefer it. Deleting the three lines below restores the old behaviour exactly.
+      const gy = this.cell === 'province' || this.cell === 'exterior'
+        ? (this.groundResolver ? this.groundResolver(n.pos[0], n.pos[2]) : this.groundAt(n.pos[0], n.pos[2], undefined, this.cell))
+        : n.pos[1];
+      const drawPos = this._npcDrawPos || (this._npcDrawPos = [0, 0, 0]);
+      drawPos[0] = n.pos[0]; drawPos[1] = Number.isFinite(gy) ? gy : n.pos[1]; drawPos[2] = n.pos[2];
+      poseStatic(mesh, this._anyRig(sim), drawPos, n.yaw, this._actorGround());
       mesh.visible = n.visible !== false;
     }
     for (const [eid, mesh] of this.npcMeshes) {
@@ -1142,7 +1208,7 @@ export class Renderer {
     const cb = sim._combat && sim._combat.player;
     const water = this._playerWaterline(sim);
     if (!(cb && poseFromRig(this.playerMesh, cb, water))) {
-      poseStatic(this.playerMesh, this._anyRig(sim), sim.player.pos, sim.player.yaw);
+      poseStatic(this.playerMesh, this._anyRig(sim), sim.player.pos, sim.player.yaw, this._actorGround());
     }
     // S18 / RI-CAM07: the character is third-person ALWAYS, so it is drawn always. This line
     // used to read `!c.override`, which hid the player for every posed-camera capture in the
