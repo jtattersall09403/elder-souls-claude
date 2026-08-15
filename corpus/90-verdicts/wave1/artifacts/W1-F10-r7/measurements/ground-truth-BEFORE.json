@@ -1,0 +1,406 @@
+{
+  "tool": "f10-r7-ground-truth",
+  "at": "2026-08-15T14:13:38.423Z",
+  "seed": 1,
+  "renderer": {
+    "renderer_string": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "hardware": false,
+    "software_renderer": true,
+    "unknown": false,
+    "class": "SOFTWARE",
+    "evidence_class": "SOFTWARE — valid for geometry, layout, composition, determinism and census. NOT valid for antialiasing, bloom, AO, IBL or any appearance claim (W1-30-EVIDENCE §4).",
+    "reason": "the reported renderer names a software rasteriser: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "decided_from": "renderer-string",
+    "hardware_requested": false,
+    "fell_back": false,
+    "renderer_source": "live page WEBGL_debug_renderer_info",
+    "backend": null,
+    "backend_attempts": [],
+    "chromium_args": [
+      "--force-color-profile=srgb",
+      "--font-render-hinting=none",
+      "--disable-lcd-text",
+      "--disable-skia-runtime-opts",
+      "--hide-scrollbars",
+      "--mute-audio",
+      "--disable-background-timer-throttling",
+      "--disable-renderer-backgrounding",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-partial-raster",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-new-content-rendering-timeout",
+      "--enable-unsafe-swiftshader",
+      "--use-gl=angle",
+      "--use-angle=swiftshader"
+    ]
+  },
+  "stands": [
+    {
+      "M1": {
+        "engine_groundAt": 2.68,
+        "field_heightAt": 2.68,
+        "renderer_groundResolver": 2.68,
+        "player_pos_y": 2.68,
+        "combat_body_pos_y": 2.68,
+        "body_airborne": false,
+        "cell": "province",
+        "gap_body_minus_ground": 0
+      },
+      "M2": {
+        "drawn_surface_y": 4.187519704674606,
+        "drawn_surface_mesh": "actor-equipment:reed:chest@spine_02",
+        "collision_ground_y": 2.68,
+        "drawn_minus_collision": 1.5075197046746056
+      },
+      "M3": {
+        "player": {
+          "foot_l": {
+            "x": 2766.1,
+            "y": 2.766848744473948,
+            "z": 5010.940571447241
+          },
+          "foot_r": {
+            "x": 2765.9,
+            "y": 2.7669294174644072,
+            "z": 5010.939428579875
+          },
+          "pelvis": {
+            "x": 2766,
+            "y": 3.656888888888889,
+            "z": 5011
+          },
+          "head": {
+            "x": 2766.0000099196986,
+            "y": 4.316053934750608,
+            "z": 5010.969983140492
+          },
+          "rigged": true,
+          "civilian": false
+        },
+        "npcs": [
+          {
+            "eid": "blackwood-company-factor",
+            "name": "npc:blackwood-company-factor",
+            "pos_y": 2.68,
+            "groundAt_here": 2.68,
+            "pos_minus_ground": 0,
+            "drawn_surface_y": 4.529168773591959,
+            "feet": {
+              "foot_l": {
+                "x": 2750.0765466007083,
+                "y": 2.77,
+                "z": 5031.792154887101
+              },
+              "foot_r": {
+                "x": 2750.083526500049,
+                "y": 2.77,
+                "z": 5031.992033052505
+              },
+              "pelvis": {
+                "x": 2750.14,
+                "y": 3.66,
+                "z": 5031.89
+              },
+              "head": {
+                "x": 2750.14,
+                "y": 4.32,
+                "z": 5031.89
+              },
+              "rigged": false,
+              "civilian": true
+            }
+          },
+          {
+            "eid": "dockmaster-weeja-sen",
+            "name": "npc:dockmaster-weeja-sen",
+            "pos_y": 0.37,
+            "groundAt_here": 2.490521089967002,
+            "pos_minus_ground": -2.120521089967002,
+            "drawn_surface_y": 2.3863786064632246,
+            "feet": {
+              "foot_l": {
+                "x": 2804.67,
+                "y": 0.46000000000000013,
+                "z": 5033.04
+              },
+              "foot_r": {
+                "x": 2804.67,
+                "y": 0.46000000000000013,
+                "z": 5032.839999999999
+              },
+              "pelvis": {
+                "x": 2804.61,
+                "y": 1.35,
+                "z": 5032.94
+              },
+              "head": {
+                "x": 2804.61,
+                "y": 2.0100000000000002,
+                "z": 5032.94
+              },
+              "rigged": false,
+              "civilian": true
+            }
+          },
+          {
+            "eid": "harbourmistress-tesh",
+            "name": "npc:harbourmistress-tesh",
+            "pos_y": 0.37,
+            "groundAt_here": 2.68,
+            "pos_minus_ground": -2.31,
+            "drawn_surface_y": 2.579985180479669,
+            "feet": {
+              "foot_l": {
+                "x": 2800.3158333538336,
+                "y": 0.46000000000000013,
+                "z": 5028.901501750164
+              },
+              "foot_r": {
+                "x": 2800.4644623189292,
+                "y": 0.46000000000000013,
+                "z": 5028.767675628893
+              },
+              "pelvis": {
+                "x": 2800.35,
+                "y": 1.35,
+                "z": 5028.79
+              },
+              "head": {
+                "x": 2800.35,
+                "y": 2.0100000000000002,
+                "z": 5028.79
+              },
+              "rigged": false,
+              "civilian": true
+            }
+          }
+        ]
+      },
+      "M4": {
+        "what": "groundResolver returns real+5.0 m for one frame; a foot that consumes it must move.",
+        "player_delta": {
+          "foot_l_dy": 0.24930442545704956,
+          "foot_r_dy": 0.24932425887606158,
+          "pelvis_dy": -0.0006857638888888573
+        },
+        "player_restored_delta": {
+          "foot_l_dy": -0.0014232494804393703,
+          "foot_r_dy": -0.0013818100460443183,
+          "pelvis_dy": -0.0014027777777778638
+        },
+        "npc_delta": {
+          "foot_l_dy": 0,
+          "foot_r_dy": 0,
+          "pelvis_dy": 0
+        },
+        "npc_eid": "blackwood-company-factor"
+      },
+      "M5": {
+        "npc_records": 60,
+        "npc_meshes": 60,
+        "npc_meshes_visible": 31,
+        "groundAt_calls": 600,
+        "ms_for_whole_roster": 1.22,
+        "ms_per_1000_calls": 2.033,
+        "budget_note": "a 60 Hz frame is 16.67 ms",
+        "checksum": -12494.271874558906
+      },
+      "M6": {
+        "stance_width_m": 0.24,
+        "worst_per_foot_height_difference_m": 0.0343,
+        "worst_at": [
+          2778,
+          5012.5
+        ],
+        "mean_per_foot_difference_m": 0.00353,
+        "samples": 289,
+        "note": "this is the entire magnitude the conform delta can have at this stand"
+      },
+      "stand": "char-player"
+    },
+    {
+      "M1": {
+        "engine_groundAt": 2.68,
+        "field_heightAt": 2.68,
+        "renderer_groundResolver": 2.68,
+        "player_pos_y": 2.68,
+        "combat_body_pos_y": 2.68,
+        "body_airborne": false,
+        "cell": "province",
+        "gap_body_minus_ground": 0
+      },
+      "M2": {
+        "drawn_surface_y": 4.17971294451572,
+        "drawn_surface_mesh": "actor-equipment:reed:chest@spine_02",
+        "collision_ground_y": 2.68,
+        "drawn_minus_collision": 1.49971294451572
+      },
+      "M3": {
+        "player": {
+          "foot_l": {
+            "x": 2780,
+            "y": 2.7586890087441756,
+            "z": 5040.84290215589
+          },
+          "foot_r": {
+            "x": 2779.8,
+            "y": 2.7590986755089553,
+            "z": 5040.837098543389
+          },
+          "pelvis": {
+            "x": 2779.9,
+            "y": 3.648888888888889,
+            "z": 5040.9
+          },
+          "head": {
+            "x": 2779.900046675237,
+            "y": 4.307773474970443,
+            "z": 5040.865325312672
+          },
+          "rigged": true,
+          "civilian": false
+        },
+        "npcs": [
+          {
+            "eid": "blackwood-company-factor",
+            "name": "npc:blackwood-company-factor",
+            "pos_y": 2.68,
+            "groundAt_here": 2.68,
+            "pos_minus_ground": 0,
+            "drawn_surface_y": 4.529168773591959,
+            "feet": {
+              "foot_l": {
+                "x": 2750.0765466007083,
+                "y": 2.77,
+                "z": 5031.792154887101
+              },
+              "foot_r": {
+                "x": 2750.083526500049,
+                "y": 2.77,
+                "z": 5031.992033052505
+              },
+              "pelvis": {
+                "x": 2750.14,
+                "y": 3.66,
+                "z": 5031.89
+              },
+              "head": {
+                "x": 2750.14,
+                "y": 4.32,
+                "z": 5031.89
+              },
+              "rigged": false,
+              "civilian": true
+            }
+          },
+          {
+            "eid": "dockmaster-weeja-sen",
+            "name": "npc:dockmaster-weeja-sen",
+            "pos_y": 0.37,
+            "groundAt_here": 2.490521089967002,
+            "pos_minus_ground": -2.120521089967002,
+            "drawn_surface_y": 2.4495794255169887,
+            "feet": {
+              "foot_l": {
+                "x": 2804.67,
+                "y": 0.46000000000000013,
+                "z": 5033.04
+              },
+              "foot_r": {
+                "x": 2804.67,
+                "y": 0.46000000000000013,
+                "z": 5032.839999999999
+              },
+              "pelvis": {
+                "x": 2804.61,
+                "y": 1.35,
+                "z": 5032.94
+              },
+              "head": {
+                "x": 2804.61,
+                "y": 2.0100000000000002,
+                "z": 5032.94
+              },
+              "rigged": false,
+              "civilian": true
+            }
+          },
+          {
+            "eid": "harbourmistress-tesh",
+            "name": "npc:harbourmistress-tesh",
+            "pos_y": 0.37,
+            "groundAt_here": 2.68,
+            "pos_minus_ground": -2.31,
+            "drawn_surface_y": 2.6299479707775926,
+            "feet": {
+              "foot_l": {
+                "x": 2800.3519615242267,
+                "y": 0.46000000000000013,
+                "z": 5028.906602540378
+              },
+              "foot_r": {
+                "x": 2800.451961524227,
+                "y": 0.46000000000000013,
+                "z": 5028.733397459621
+              },
+              "pelvis": {
+                "x": 2800.35,
+                "y": 1.35,
+                "z": 5028.79
+              },
+              "head": {
+                "x": 2800.35,
+                "y": 2.0100000000000002,
+                "z": 5028.79
+              },
+              "rigged": false,
+              "civilian": true
+            }
+          }
+        ]
+      },
+      "M4": {
+        "what": "groundResolver returns real+5.0 m for one frame; a foot that consumes it must move.",
+        "player_delta": {
+          "foot_l_dy": 0.24961092173808996,
+          "foot_r_dy": 0.24964422671265307,
+          "pelvis_dy": -0.0003732638888891415
+        },
+        "player_restored_delta": {
+          "foot_l_dy": -0.0006845083195869961,
+          "foot_r_dy": -0.0006175438873734507,
+          "pelvis_dy": -0.0006527777777778354
+        },
+        "npc_delta": {
+          "foot_l_dy": 0,
+          "foot_r_dy": 0,
+          "pelvis_dy": 0
+        },
+        "npc_eid": "blackwood-company-factor"
+      },
+      "M5": {
+        "npc_records": 60,
+        "npc_meshes": 60,
+        "npc_meshes_visible": 31,
+        "groundAt_calls": 600,
+        "ms_for_whole_roster": 0.975,
+        "ms_per_1000_calls": 1.625,
+        "budget_note": "a 60 Hz frame is 16.67 ms",
+        "checksum": -12496.271704886345
+      },
+      "M6": {
+        "stance_width_m": 0.24,
+        "worst_per_foot_height_difference_m": 0.025,
+        "worst_at": [
+          2773.9,
+          5030.4
+        ],
+        "mean_per_foot_difference_m": 0.00117,
+        "samples": 289,
+        "note": "this is the entire magnitude the conform delta can have at this stand"
+      },
+      "stand": "street-lilmoth"
+    }
+  ],
+  "failed": "page.evaluate: Target page, context or browser has been closed"
+}

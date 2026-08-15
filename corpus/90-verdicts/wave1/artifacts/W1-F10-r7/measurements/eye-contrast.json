@@ -1,0 +1,184 @@
+{
+  "tool": "f10-r7-eye-contrast",
+  "plate": {
+    "eye_mean": 63.6,
+    "eye_max": 134.9,
+    "skin_mean": 157.4
+  },
+  "bar": {
+    "recess": 0.404,
+    "accent": 0.857
+  },
+  "constants": {
+    "EYE_SCLERA_OF_SKIN": 0.136,
+    "EYE_IRIS_OF_SKIN": 0.712
+  },
+  "races": 9,
+  "rows": [
+    {
+      "race": "altmer",
+      "skin": "0xc4c096",
+      "skin_luma": 189.8,
+      "sclera": "0x4d4c39",
+      "sclera_luma": 74.8,
+      "iris": "0xa8a580",
+      "iris_luma": 163,
+      "ratio_recess": 0.394,
+      "ratio_accent": 0.859,
+      "pass": true
+    },
+    {
+      "race": "bosmer",
+      "skin": "0x9c8a63",
+      "skin_luma": 139,
+      "sclera": "0x3c3423",
+      "sclera_luma": 52.5,
+      "iris": "0x867654",
+      "iris_luma": 118.9,
+      "ratio_recess": 0.378,
+      "ratio_accent": 0.855,
+      "pass": true
+    },
+    {
+      "race": "breton",
+      "skin": "0xc0a98c",
+      "skin_luma": 171.8,
+      "sclera": "0x4c4235",
+      "sclera_luma": 67.2,
+      "iris": "0xa59178",
+      "iris_luma": 147.4,
+      "ratio_recess": 0.391,
+      "ratio_accent": 0.858,
+      "pass": true
+    },
+    {
+      "race": "dunmer",
+      "skin": "0x6b5a63",
+      "skin_luma": 94.3,
+      "sclera": "0x271f23",
+      "sclera_luma": 33,
+      "iris": "0x5b4c54",
+      "iris_luma": 79.8,
+      "ratio_recess": 0.35,
+      "ratio_accent": 0.847,
+      "pass": true
+    },
+    {
+      "race": "imperial",
+      "skin": "0xb9a189",
+      "skin_luma": 164.4,
+      "sclera": "0x493e34",
+      "sclera_luma": 63.6,
+      "iris": "0x9f8a75",
+      "iris_luma": 140.9,
+      "ratio_recess": 0.387,
+      "ratio_accent": 0.857,
+      "pass": true
+    },
+    {
+      "race": "khajiit",
+      "skin": "0xa3855a",
+      "skin_luma": 136.3,
+      "sclera": "0x3f321f",
+      "sclera_luma": 51.4,
+      "iris": "0x8c724c",
+      "iris_luma": 116.8,
+      "ratio_recess": 0.377,
+      "ratio_accent": 0.857,
+      "pass": true
+    },
+    {
+      "race": "nord",
+      "skin": "0xc8b096",
+      "skin_luma": 179.2,
+      "sclera": "0x4f4539",
+      "sclera_luma": 70.3,
+      "iris": "0xac9780",
+      "iris_luma": 153.8,
+      "ratio_recess": 0.392,
+      "ratio_accent": 0.858,
+      "pass": true
+    },
+    {
+      "race": "orsimer",
+      "skin": "0x7d8a63",
+      "skin_luma": 132.4,
+      "sclera": "0x2f3423",
+      "sclera_luma": 49.7,
+      "iris": "0x6b7654",
+      "iris_luma": 113.2,
+      "ratio_recess": 0.375,
+      "ratio_accent": 0.855,
+      "pass": true
+    },
+    {
+      "race": "redguard",
+      "skin": "0x8a6547",
+      "skin_luma": 106.7,
+      "sclera": "0x342417",
+      "sclera_luma": 38.5,
+      "iris": "0x76563c",
+      "iris_luma": 90.9,
+      "ratio_recess": 0.361,
+      "ratio_accent": 0.852,
+      "pass": true
+    }
+  ],
+  "before_round7": [
+    {
+      "race": "altmer",
+      "skin_luma": 189.8,
+      "ratio_recess": 0.839,
+      "ratio_accent": 0.839
+    },
+    {
+      "race": "bosmer",
+      "skin_luma": 139,
+      "ratio_recess": 1.146,
+      "ratio_accent": 1.146
+    },
+    {
+      "race": "breton",
+      "skin_luma": 171.8,
+      "ratio_recess": 0.927,
+      "ratio_accent": 0.927
+    },
+    {
+      "race": "dunmer",
+      "skin_luma": 94.3,
+      "ratio_recess": 1.69,
+      "ratio_accent": 1.69
+    },
+    {
+      "race": "imperial",
+      "skin_luma": 164.4,
+      "ratio_recess": 0.969,
+      "ratio_accent": 0.969
+    },
+    {
+      "race": "khajiit",
+      "skin_luma": 136.3,
+      "ratio_recess": 1.169,
+      "ratio_accent": 1.169
+    },
+    {
+      "race": "nord",
+      "skin_luma": 179.2,
+      "ratio_recess": 0.889,
+      "ratio_accent": 0.889
+    },
+    {
+      "race": "orsimer",
+      "skin_luma": 132.4,
+      "ratio_recess": 1.203,
+      "ratio_accent": 1.203
+    },
+    {
+      "race": "redguard",
+      "skin_luma": 106.7,
+      "ratio_recess": 1.493,
+      "ratio_accent": 1.493
+    }
+  ],
+  "failures": 0
+}
