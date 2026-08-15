@@ -83,6 +83,12 @@ Alongside that: shrinking the documentation every agent reads before it can star
 - **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
   out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
   it. Shadows still crush to black; that fix is being built now.
+- **Both dialogue bugs the judges hit are fixed.** The highlighted phrase that did nothing turned out
+  not to be a UI bug at all: the topic was real, but *that speaker* could never answer it — her rumour
+  handed out a topic gated to a different kind of person. So the fix is in **what gets marked as a
+  link**, not in the pressing: a phrase is only drawn as followable if the person you are talking to
+  can actually answer it. And re-asking a topic no longer prints the paragraph twice — it moves the
+  existing answer to the bottom instead.
 - **Dialogue: the topic links work, and were preferred — the first real quality judgement this project
   has ever completed.** Two people played two builds of the game blind — ours, and one with the inline
   links removed but every topic still reachable from the list. Neither knew which was which. **Both

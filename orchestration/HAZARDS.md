@@ -66,6 +66,36 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 5a. `reports/runpod-gpu/runs` is the top disk consumer — prune it, nothing else comes close
+
+Measured 2026-08-15 at **96% full, 1.6 GB free**, with four agents live and two of them capturing:
+
+| | size |
+|---|---|
+| `reports/runpod-gpu/runs` | **4.6 GB** |
+| `.git` | 2.1 GB |
+| `corpus` | 1.5 GB |
+| everything else | under 500 MB |
+
+Each paid GPU run leaves **100–150 MB** of raw frames behind, and nothing ever removes them. Deleting
+the 46 run directories older than 8 hours reclaimed **3.2 GB** and took the box from 96% to 88%.
+
+**The retention rule: keep GPU run directories for 8 hours, delete older ones.** Eight hours is chosen
+so no live agent can be mid-run — a long capture is ~10 minutes — while still leaving same-session runs
+inspectable.
+
+**Two things that make this safe, and one that makes it necessary:**
+
+- `reports/` is **gitignored**, so nothing there is on the branch and nothing is lost from history.
+- Verdicts do cite paths under `reports/runpod-gpu/` — but per §9 those citations were **already
+  unreachable off this box**, because evidence under `reports/` never lands. Cited evidence belongs in
+  `corpus/90-verdicts/<wave>/artifacts/<piece>/`, and the citations that matter already point there.
+- Disk exhaustion here is not a warning, it is a **silent failure** (§5): writes fail while deletes
+  still succeed, and an agent reads that as its own code being broken.
+
+**Check `df -h .` before starting a capture sweep**, and prune before you rent a Pod rather than after
+a run has failed for a reason that looks like anything but disk.
+
 ## 14b. `land` cannot untrack a file that still exists on disk once you gitignore it
 
 Small, and it will cost you three attempts if you do not know it. Found 2026-08-15 cleaning up a `tmp/`
