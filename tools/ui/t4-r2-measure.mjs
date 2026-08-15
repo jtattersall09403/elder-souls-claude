@@ -94,7 +94,12 @@ function decodePNG(buf) {
 const args = parseArgs();
 const LABEL = String(args.label || 'live');
 const W = Number(args.width || 1920), H = Number(args.height || 1080);
-const OUT = path.join(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r2'));
+// `path.join(REPO_ROOT, '/abs/path')` CONCATENATES rather than resetting, so the control arm's
+// `--out /tmp/...` wrote to `<worktree>/tmp/...` and every "where did the control go" check looked
+// in the wrong place for twenty minutes. Absolute paths are honoured.
+const OUT = path.isAbsolute(String(args.out || ''))
+  ? String(args.out)
+  : path.join(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r2'));
 const SHOTS = path.join(OUT, 'screens');
 fs.mkdirSync(SHOTS, { recursive: true });
 
