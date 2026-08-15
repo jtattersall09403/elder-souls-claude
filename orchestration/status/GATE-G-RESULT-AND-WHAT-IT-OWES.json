@@ -1,0 +1,30 @@
+{
+  "task_id": "GATE-G-RESULT-AND-WHAT-IT-OWES",
+  "title": "RI-UIX08 §G ran — the first played quality gate in this project's history. It returns, and it owes three things.",
+  "state": "resolved",
+  "owner": "orchestrator",
+  "at": "2026-08-15T12:40:00Z",
+  "roadmap_item": "I3",
+
+  "the_result": "SEPARABLE, no leak found — row 2 of the disposition table, so the gate RETURNS and §G's ladder row applies to RI-UIX08. Both judges independently preferred the arm with inline topic links. The separability reader confirmed the accounts are distinguishable on FIVE independent points — the mechanism, the same unprompted exemplar (Sigurd's background line), the same worst-thing per arm, and the same direction of preference — and settled it from the screenshots rather than the prose: matched frames of the same NPC speaking the same sentence show 'the Ninth Cohort' blue-violet in one arm and plain amber in the other.",
+
+  "why_this_matters_beyond_one_item": "Measured 2026-08-15: 98 reference items declare `blind_pair: yes`; before today ZERO verdicts had ever run one. This is the first played quality gate this project has completed, and it demonstrates the pattern works end to end — pack-builder seals the arms, the orchestrator spawns fresh judges (a critic cannot: create_session is approval-gated and subagents cannot spawn subagents), a third fresh reader rules on separability. CLAUDE.md rule 0e now binds the orchestrator to do this. Ring 0's I3 owns doing it at scale; 97 items still have never had theirs run.",
+
+  "discipline_verified_not_asserted": "The reader checked whether each judge really sealed its first-arm answers before playing the second, using file mtimes against the harness session timestamps: player 1's osprey answers last modified 10:47:16 with the first quillon run at 10:51:19; player 2's quillon answers 10:51:09 with the first osprey run at 10:56:54. Because those are LAST-modification times, neither sealed document was touched again. It also checked the specific tell — whether any first-arm answer reads like a comparison — and found none.",
+
+  "owed_1_the_instrument_leaks_and_must_be_reworded_before_reuse": "§G's question 2 reads 'When you clicked a coloured word, did it feel like following something, or like pressing a button?' — which PRESUPPOSES THE MECHANISM. Entering the ablated arm therefore announces what is under test. Both judges said so in writing, unprompted. The reader ruled it does not void the pack, because it cannot be exploited without playing; but it is a demand characteristic landing squarely on the preference answers. REWORD BEFORE ANY REUSE, and treat this as a general lesson for the other 97 unrun gates: a gate's own question can tell the judge what to look for.",
+
+  "owed_2_the_feature_reaches_players_unreliably_and_this_is_the_real_finding": "Of 6 NPCs sampled: the mechanism was ABSENT on 2, PRESENT on 4, and REPORTED by a judge on only 2 of those 4 — and on one of those (Neekhu) the phrase was DEAD when pressed three times. Six of twelve market NPCs were never visited by either judge. 189 of 420 captures sit in byte-identical cross-arm groups. So the inline link works and is preferred WHERE IT LANDS, and it lands on roughly half of conversations and is noticed in half of those. This is the same shape as the separately-recorded finding that the FIRST NPC a player meets has no links at all: the mechanism is real, and its placement is not.",
+
+  "owed_3_two_live_defects_the_judges_hit_while_playing": [
+    "A HIGHLIGHTED PHRASE THAT DOES NOTHING WHEN CONFIRMED — Neekhu's 'The carriers', three attempts, identical frames, captured in quillon/shots5/012,016,020,022. Independently corroborated by the separability reader. This is CRITIC-DOCTRINE 1.2b's exact hard fail: a control that is drawn and does nothing is worse than an absent one.",
+    "CONFIRMING THE SAME PHRASE TWICE APPENDS THE IDENTICAL PARAGRAPH VERBATIM — 'the curfew' doubled, quillon/shots4/025. Note a re-ask idempotency bug was fixed earlier the same day by keying on an engine say-counter, so EITHER that fix is incomplete OR this is a second path into the same defect. Do not assume it is the same bug."
+  ],
+
+  "scope_limit_on_the_gate_itself": "Both judges only ever saw helstrom-market — the driver has no walk command beyond `talk`, so 'this town' in question 3 means the dozen people standing in one square. Whatever this gate concludes, it concludes about that market. Recorded so the result is not quoted more broadly than it earned.",
+
+  "next_step": "Dispatch the two live defects (owed 3) as a build piece — they are player-visible and cheap. The reachability finding (owed 2) belongs with P1, the topic web, as a PLACEMENT requirement rather than a density average. The prompt rewording (owed 1) belongs with I3 before any of the other 97 gates run, because reusing a leaky question 97 times is how a systemic bias gets built.",
+
+  "files_claimed": ["orchestration/status/GATE-G-RESULT-AND-WHAT-IT-OWES.json"],
+  "files_touched": ["orchestration/status/GATE-G-RESULT-AND-WHAT-IT-OWES.json"]
+}
