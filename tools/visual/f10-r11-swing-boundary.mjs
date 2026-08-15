@@ -140,6 +140,62 @@ if (args['self-test']) {
     ok: stanceRootOffsetY(mutated, 0, 1.0) === -0.05 && IDLE_ROOT_Y !== -0.05,
     shipped: IDLE_ROOT_Y, mutated: stanceRootOffsetY(mutated, 0, 1.0),
   });
+  // 5 — THE SHIPPED PATH, not the function under it. Arms 1-4 exercise `buildSwing` directly and
+  // would all stay green if nothing ever passed it the term — which is exactly the state the
+  // quarantined round 11 work was recovered in, and exactly the shape of `RI-MTH07`'s consumption
+  // defect: a correct rule with no caller. This arm builds a `MovesetLibrary` the way
+  // `combat/system.js` does and reads the clip the GAME would play.
+  const { MovesetLibrary } = await import(pathToFileURL(join(ROOT, 'game/src/combat/moveset.js')).href);
+  // The same loader every combat tool in this repo uses, so the data is the game's data.
+  const { loadCombatData } = await import(pathToFileURL(join(ROOT, 'tools/lib/combat-node.mjs')).href);
+  const data = loadCombatData();
+  const movesets = data.weaponMovesets;
+  const mk = (s) => new MovesetLibrary(data.clipRegistry, data.weaponClasses, movesets, data.skeleton, data.hitgeometry, s);
+  const libOld = mk(undefined);
+  const libNew = mk(IDLE_ROOT_Y);
+  const wid = Object.keys(movesets)[0];
+  const sid = Object.keys(movesets[wid].slots)[0];
+  const cOld = libOld.clipFor(wid, sid);
+  const cNew = libNew.clipFor(wid, sid);
+  results.push({
+    arm: '5 the SHIPPED MovesetLibrary path carries the term into the clip the game plays (arms 1-4 pass even when NOTHING calls buildSwing with it — this is the arm that catches an unwired fix)',
+    ok: cOld.rootOffsetYAt(0) === 0 && cNew.rootOffsetYAt(0) === r2(IDLE_ROOT_Y),
+    weapon: wid, slot: sid,
+    frame0_without: cOld.rootOffsetYAt(0), frame0_with: cNew.rootOffsetYAt(0),
+  });
+
+  // 6 — PRESERVATION (S59). WHAT COULD THIS HAVE TRADED AWAY, and the answer is measured over the
+  // whole registry rather than argued from the key list. The one thing 1,160 clips carry that
+  // this must not move is the ACTIVE window — `RI-CMB04` §B's `peak_tip_speed_mps` is solved over
+  // it, `calibrateExcursion` damps against it, and `_bladeLength` reads it. The curve's keys at
+  // phase 1.0 and 2.0 bracket that band and neither is touched, so the claim is that the sampled
+  // curve is IDENTICAL inside it. Sampled at 601 points instead of asserted.
+  const { sampleCurve } = await import(pathToFileURL(join(ROOT, 'game/src/combat/clips.js')).href);
+  let maxAll = 0; let maxActive = 0; let maxStep = 0;
+  for (const id of clipIds) {
+    const reg = registry.clips[id];
+    if (!reg || !reg.profile) continue;
+    const a = buildSwing(reg.profile, { yawGain: 1, accGain: 1 }).root_offset.y;
+    const b = buildSwing(reg.profile, { yawGain: 1, accGain: 1, stanceRootY: IDLE_ROOT_Y }).root_offset.y;
+    let prev = null;
+    for (let i = 0; i <= 600; i++) {
+      const p = (3 * i) / 600;
+      const d = Math.abs(sampleCurve(a, p) - sampleCurve(b, p));
+      if (d > maxAll) maxAll = d;
+      if (p >= 1 && p <= 2 && d > maxActive) maxActive = d;
+      if (prev !== null) maxStep = Math.max(maxStep, Math.abs(d - prev));
+      prev = d;
+    }
+  }
+  results.push({
+    arm: '6 PRESERVATION — the ACTIVE window (phase 1.0..2.0, where peak_tip_speed and the blade solve live) is sampled IDENTICALLY in both arms over all 1,160 clips',
+    ok: maxActive === 0,
+    max_delta_active_window_m: maxActive,
+    max_delta_anywhere_m: +maxAll.toFixed(6),
+    max_delta_change_per_1_600th_phase_m: +maxStep.toExponential(3),
+    reading: 'the 8 mm lives entirely in the anticipation and the settle, ramps in over the whole startup, and is exactly 0 across the band every combat instrument measures',
+  });
+
   const pass = results.every((r) => r.ok);
   console.log(JSON.stringify({ tool: 'f10-r11-swing-boundary --self-test', results, pass }, null, 2));
   process.exit(pass ? 0 : 1);
