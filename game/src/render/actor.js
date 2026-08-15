@@ -2089,6 +2089,35 @@ function ensureBuilt(group, rigSource) {
 }
 
 /**
+ * THE ONE DEFINITION OF "ride the terrain under THIS foot", shared by both posing paths.
+ *
+ * It exists because round 6 wrote this rule into `poseFromRig` only, and `poseFromRig` is reached
+ * by the player and by nothing else — so 408 NPCs and every enemy kept the old behaviour while the
+ * repo believed the rule had been applied to characters. That is `RI-MTH07`'s consumption failure:
+ * a correct rule with one caller. A second copy of the arithmetic in `poseStatic` would be the
+ * same defect deferred by a week, so there is one function and two callers.
+ *
+ * `groundY` is the height the character's own body is placed at; the delta is how much the ground
+ * under this particular foot differs from it. Flat ground gives exactly zero — the null a pin can
+ * never have. Clamped to a stair riser either way.
+ *
+ * @param {(x:number,z:number)=>number} groundAt  the SAME height function terrain draws/collides with
+ * @param {number} x  world x of the foot bone
+ * @param {number} z  world z of the foot bone
+ * @param {number} groundY  the body's own placed height
+ * @returns {number} metres to shift this foot, in [-0.25, 0.25]
+ */
+export function footConformDelta(groundAt, x, z, groundY) {
+  const d = groundAt(x, z) - groundY;
+  return d < -0.25 ? -0.25 : d > 0.25 ? 0.25 : d;
+}
+
+/** Scratch for `poseStatic`'s conform. Module-level so the static path allocates nothing per frame
+ *  either — 31 NPC meshes were visible at the Lilmoth stand and this runs on every one, every frame. */
+const _CONFORM_M = new THREE.Matrix4();
+const _CONFORM_V = new THREE.Vector3();
+
+/**
  * Drive the actor from a live `CombatBody`. This is the whole consumer: it writes the rig's
  * own world matrices into the skeleton and hangs the weapon off the grip hand's world frame.
  *
@@ -2190,7 +2219,19 @@ export function poseFromRig(group, body, water) {
       //
       // Clamped to a stair riser so a stand whose collision surface is a deck or a boardwalk above
       // the terrain field cannot swallow the leg the way the old constant did.
-      e[13] += Math.max(-0.25, Math.min(0.25, gy - groundY));
+      //
+      // ROUND 7 MEASURED THE CLAMP INSTEAD OF ASSUMING IT. `W1-F10-r6-appearance` explained the
+      // player's byte-identical static foot frames with this clamp SATURATING on a raised
+      // boardwalk, and named its own falsifier: `groundAt(2766, 5011)` coming back within 0.25 m of
+      // the player's `pos[1]`. `tools/visual/f10-r7-ground-truth.mjs` called it. `engine.teleport`
+      // (engine.js:8767) sets `p.pos[1] = this.groundAt(x, z)` and `renderer.groundResolver`
+      // (engine.js:543) is that same function, so `gy - groundY` at a standing character is
+      // `groundAt(x,z) - groundAt(x,z)` = 0 by construction. MEASURED at all three F10 stands:
+      // gap 0.0000 m, and a +5 m perturbation of the resolver moves this foot 0.2493 m, i.e. the
+      // clamp is live and simply has nothing to do. The saturation story is refuted; the clamp is
+      // kept because a body placed by something OTHER than `teleport` (a fall, a deck, an
+      // interior floor) can still differ from the terrain field, and 0.25 m is a stair riser.
+      e[13] += footConformDelta(water.groundAt, x, z, groundY);
     }
   }
   if (!A.rigged) {
@@ -2303,8 +2344,22 @@ export function poseFromRig(group, body, water) {
 /**
  * The fallback for an actor with no combat body: build the body at the rest pose against a
  * borrowed rig definition and pose it with the group transform, as before.
+ *
+ * THIS IS THE PATH EVERY NPC IN THE GAME TAKES, and until round 7 nothing about the ground
+ * reached it. `renderer.js:715` called it with four arguments; the terrain conform lived in
+ * `poseFromRig`, which only the player reaches. `W1-F10-r6-appearance` measured the consequence
+ * from the frames — 12 of 12 NPC foot pairs byte-identical — and attributed it to `renderer.js:670`
+ * posing NPCs without a `water` argument. THAT LINE IS THE ENEMY PATH, not the NPC one (`:670` sits
+ * inside `syncEntities`, over `sim.entities`; NPCs are `syncNPCs` at `:715`). Both lacked it, so
+ * the conclusion held and the mechanism did not — recorded here because the next reader will
+ * otherwise go to `:670` looking for NPCs and find enemies.
+ *
+ * @param {{groundAt?:(x:number,z:number)=>number}} [water] the same optional argument `poseFromRig`
+ *        takes. When it carries a `groundAt`, the two terminal foot bones ride the ground under
+ *        them exactly as the player's do, through the SAME `footConformDelta`. Omitted, this
+ *        function behaves precisely as it did before round 7.
  */
-export function poseStatic(group, rigDefSource, pos, yawDeg) {
+export function poseStatic(group, rigDefSource, pos, yawDeg, water) {
   const A = group.userData.actor;
   if (!A) return false;
   if (!A.built) {
@@ -2339,6 +2394,43 @@ export function poseStatic(group, rigDefSource, pos, yawDeg) {
       item.mesh.matrix.copy(spine).multiply(local);item.mesh.matrixWorldNeedsUpdate=true;
     }
     A.staticPresentationBound=true;
+  }
+  // ---- the terrain conform, on the path 408 NPCs and every static enemy take ------------------
+  //
+  // The player's version writes bone WORLD matrices and shifts `e[13]`. This path never writes a
+  // bone: the group carries position and yaw and the bones stay at their authored rest LOCAL
+  // transforms, which is what makes it cheap. So the same delta is applied by solving for the
+  // local position that puts the bone's world position where the delta wants it — exact under the
+  // group's yaw and scale, rather than the "add dy to position.y and hope the parent is upright"
+  // shortcut, which is wrong the moment a rig has a rotated shin.
+  //
+  // Recomputed from the stored REST position every frame rather than accumulated. An accumulating
+  // conform walks a foot into the ground over a few hundred frames and looks exactly like a
+  // physics bug, which is the sort of thing nobody finds until it is in a video.
+  if (water && typeof water.groundAt === 'function') {
+    const S = A.built;
+    if (!A.footConform) {
+      A.footConform = [];
+      for (const id of ['foot_l', 'foot_r']) {
+        const i = S.index === undefined ? undefined : S.index.get(id);
+        const bone = i === undefined ? null : S.bones[i];
+        if (bone && bone.parent) A.footConform.push({ bone, rest: bone.position.clone() });
+      }
+    }
+    if (A.footConform.length) {
+      group.updateMatrixWorld(true);
+      for (const f of A.footConform) {
+        f.bone.position.copy(f.rest);
+        f.bone.updateMatrixWorld(true);
+        const e = f.bone.matrixWorld.elements;
+        const dy = footConformDelta(water.groundAt, e[12], e[14], pos[1]);
+        if (dy === 0) continue;
+        _CONFORM_V.set(e[12], e[13] + dy, e[14]);
+        _CONFORM_M.copy(f.bone.parent.matrixWorld).invert();
+        f.bone.position.copy(_CONFORM_V.applyMatrix4(_CONFORM_M));
+        f.bone.updateMatrixWorld(true);
+      }
+    }
   }
   return true;
 }
