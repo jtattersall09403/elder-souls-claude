@@ -45,6 +45,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { WorldField } from '../../game/src/world/field.js';
 import { artFamilyForRace } from '../../game/src/render/lib/race-art.js';
 
@@ -56,6 +57,16 @@ for (let i = 2; i < process.argv.length; i++) {
   args[k] = (process.argv[i + 1] && !process.argv[i + 1].startsWith('--')) ? process.argv[++i] : true;
 }
 const J = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
+
+/**
+ * MAIN-MODULE GUARD. Without it, `import { variantFor } from './f10-r7a-shotlist.mjs'` runs this file's ENTIRE
+ * census in the importer's process — which is HAZARDS §16's third defect, and it happened here:
+ * a one-line `import()` written to check the foot model against three probe readings kicked off a
+ * 1,442,401-point scan and printed its table before the check ran. The CLI below is unchanged when
+ * the file is executed directly.
+ */
+const IS_CLI = Boolean(process.argv[1]) && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
 
 /** `actor.js:2060-2064`, verbatim. FNV-1a over the group name. */
 export function fnv1a(key) {
@@ -97,7 +108,7 @@ export function variantFor(eid, family, pools) {
 // ══════════════════════════════════════════════════════════════════════════════════════════════
 // SELF-TEST — arms required to disagree.
 // ══════════════════════════════════════════════════════════════════════════════════════════════
-if (args['self-test']) {
+if (IS_CLI && args['self-test']) {
   const fails = [];
   const src = fs.readFileSync(path.join(ROOT, 'game/src/render/actor.js'), 'utf8');
   const { pools, count } = poolsFromActorSource(src);
@@ -136,6 +147,7 @@ if (args['self-test']) {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════════════════════
+if (IS_CLI) {
 const field = new WorldField(J('game/data/world/terrain.json'), J('game/data/world/regions.json'), J('game/data/world/water.json'));
 const { pools } = poolsFromActorSource(fs.readFileSync(path.join(ROOT, 'game/src/render/actor.js'), 'utf8'));
 
@@ -214,4 +226,5 @@ console.log('\neid                       variant                 race        dis
 for (const p of people.slice(0, Number(args.top || 40))) {
   console.log(`${p.eid.padEnd(25)} ${String(p.variant).padEnd(22)} ${p.race.padEnd(11)} ${String(p.dist_from_stand_m).padStart(5)} `
     + `${String(p.authored_y).padStart(9)} ${String(p.ground_y).padStart(8)} ${String(p.ground_error_m).padStart(8)}`);
+}
 }

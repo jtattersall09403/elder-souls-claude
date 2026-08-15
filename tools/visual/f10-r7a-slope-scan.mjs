@@ -45,6 +45,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { WorldField } from '../../game/src/world/field.js';
 
 const ROOT = path.resolve(new URL('../..', import.meta.url).pathname);
@@ -56,18 +57,57 @@ for (let i = 2; i < process.argv.length; i++) {
 }
 const J = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
 
-const STANCE = 0.24;          // r7's census stance width, kept so the numbers are comparable
+/**
+ * MAIN-MODULE GUARD. Without it, `import { spreadAt } from './f10-r7a-slope-scan.mjs'` runs this file's ENTIRE
+ * scan in the importer's process — which is HAZARDS §16's third defect, and it happened here:
+ * a one-line `import()` written to check the foot model against three probe readings kicked off a
+ * 1,442,401-point scan and printed its table before the check ran. The CLI below is unchanged when
+ * the file is executed directly.
+ */
+const IS_CLI = Boolean(process.argv[1]) && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+
+/**
+ * THE FOOT GEOMETRY IS MEASURED, NOT ASSUMED — AND THE FIRST VERSION OF THIS FILE GOT IT WRONG
+ * IN A WAY THAT WOULD HAVE WASTED THE PAID RUN.
+ *
+ * v1 sampled a symmetric `±0.12 m` cross on BOTH axes and ranked on whichever was larger. Its top
+ * pick, `2978,4746`, scored **0.6811 m** — all of it north-south. Then
+ * `f10-r7-appearance.mjs --probe-only` stood the player there and read the actual bones:
+ *
+ *   foot_l (2978.100, 4745.944) ground 1.9216   foot_r (2977.900, 4745.936) ground 1.8959
+ *   stance 0.2001 m, per-foot ground difference **0.0258 m**
+ *
+ * The feet are separated along **x**, so a ridge running north-south — the thing v1 ranked highest
+ * — is exactly the ridge a foot pair cannot see. The scan was measuring a real feature of the
+ * terrain that the effect under test is blind to, and would have sent a Pod to photograph another
+ * null: the same failure as the three stands this tool exists to replace, arriving one level up.
+ *
+ * So the offsets below are the ones the probe actually read, and the ranking is on the axis the
+ * feet actually occupy. `--axis both` restores v1's behaviour for anyone who wants it.
+ */
+const FOOT = {
+  l: { dx: +0.1003, dz: -0.056 },
+  r: { dx: -0.1003, dz: -0.064 },
+  source: 'measured live at three stands by f10-r7-appearance.mjs --probe-only, 2026-08-15; stance came back 0.2001-0.2006 m at all three',
+};
+const STANCE = 0.2006;        // measured, not the 0.24 m r7's census assumed
 const HALF = STANCE / 2;
-const BODY_SCALE_M = 1.0;     // slope is judged over the scale a body occupies, not over 0.24 m
+const BODY_SCALE_M = 1.0;     // slope is judged over the scale a body occupies, not over the stance
 
 // ══════════════════════════════════════════════════════════════════════════════════════════════
 // SELF-TEST — the arms must DISAGREE (HAZARDS §0: a self-test whose arms agree about a false
 // premise proves nothing). A flat plane must score zero and a ramp must score its own gradient.
 // ══════════════════════════════════════════════════════════════════════════════════════════════
 export function spreadAt(h, x, z) {
+  // `bones` is the one that matters: the ground under the LEFT foot bone against the ground under
+  // the RIGHT foot bone, at the offsets the probe measured. `ew`/`ns` are kept because they say
+  // WHY a point scores what it does — a high `ns` and a low `bones` is a ridge the feet straddle
+  // lengthwise, which is precisely the trap that produced this file's first, wrong, top pick.
+  const bones = Math.abs(h(x + FOOT.l.dx, z + FOOT.l.dz) - h(x + FOOT.r.dx, z + FOOT.r.dz));
   const ew = Math.abs(h(x - HALF, z) - h(x + HALF, z));
   const ns = Math.abs(h(x, z - HALF) - h(x, z + HALF));
-  return { ew: +ew.toFixed(4), ns: +ns.toFixed(4), worst: +Math.max(ew, ns).toFixed(4) };
+  return { bones: +bones.toFixed(4), ew: +ew.toFixed(4), ns: +ns.toFixed(4), worst: +Math.max(ew, ns).toFixed(4) };
 }
 export function slopeDeg(h, x, z) {
   const dx = (h(x + BODY_SCALE_M / 2, z) - h(x - BODY_SCALE_M / 2, z)) / BODY_SCALE_M;
@@ -75,11 +115,11 @@ export function slopeDeg(h, x, z) {
   return +(Math.atan(Math.hypot(dx, dz)) * 180 / Math.PI).toFixed(2);
 }
 
-if (args['self-test']) {
+if (IS_CLI && args['self-test']) {
   const fails = [];
   const flat = () => 7.5;
   const s1 = spreadAt(flat, 0, 0);
-  if (s1.worst !== 0) fails.push(`a flat plane must spread 0, got ${s1.worst}`);
+  if (s1.worst !== 0 || s1.bones !== 0) fails.push(`a flat plane must spread 0, got ${JSON.stringify(s1)}`);
   if (slopeDeg(flat, 0, 0) !== 0) fails.push(`a flat plane must be 0 deg, got ${slopeDeg(flat, 0, 0)}`);
   // A 45-degree ramp in +x: spread over 0.24 m must be 0.24 m, and slope must be 45.
   const ramp = (x) => x;
@@ -91,16 +131,26 @@ if (args['self-test']) {
   // pair and loud to an east-west one. Without the two-axis sample the scan would miss half the
   // world's slopes depending on which way they happen to run.
   if (!(s2.ew > 0 && s2.ns === 0 && s2.worst === s2.ew)) fails.push('two-axis sampling is not picking the loud axis');
+  // THE CHECK THAT WOULD HAVE CAUGHT v1's WRONG TOP PICK, and it is the reason this file was
+  // revised: a ridge running NORTH-SOUTH is loud on the `ns` probe and INVISIBLE to the feet,
+  // because the feet are separated east-west. `bones` must say so and `worst` must not.
+  const ridgeNS = (x, z) => z;              // ground rises with z: a slope the feet straddle lengthwise
+  const s4 = spreadAt(ridgeNS, 10, 10);
+  if (!(s4.ns > 0.19)) fails.push(`a 45 deg north-south ramp must be loud on ns, got ${s4.ns}`);
+  if (!(s4.bones < 0.01)) fails.push(`the feet are separated east-west, so a north-south ramp must be near-silent at the bones, got ${s4.bones}`);
+  if (!(s4.worst > s4.bones * 10)) fails.push('worst and bones must be able to disagree — that disagreement is the whole finding');
   // And a step must beat a smooth slope of the same average: 0.24 m over 0.24 m at a cliff edge.
   const step = (x) => (x > 20 ? 3 : 0);
   const s3 = spreadAt(step, 20, 0);
   if (s3.ew !== 3) fails.push(`a 3 m step must spread 3 m, got ${s3.ew}`);
+  if (s3.bones !== 3) fails.push(`a 3 m east-west step must be 3 m at the bones too, got ${s3.bones}`);
   console.log(fails.length ? `SELF-TEST FAILED\n  ${fails.join('\n  ')}`
-    : 'SELF-TEST PASSED — 6 checks, arms required to disagree');
+    : 'SELF-TEST PASSED — 11 checks, arms required to disagree');
   process.exit(fails.length ? 1 : 0);
 }
 
 // ══════════════════════════════════════════════════════════════════════════════════════════════
+if (IS_CLI) {
 const terrain = J('game/data/world/terrain.json');
 const regions = J('game/data/world/regions.json');
 const water = J('game/data/world/water.json');
@@ -126,13 +176,13 @@ console.log(`scanning ${(2 * RADIUS / STEP) ** 2 | 0} points around ${cx},${cz} 
 
 const hits = [];
 let scanned = 0;
-let bestAnywhere = { worst: -1 };
+let bestAnywhere = { bones: -1 };
 for (let x = cx - RADIUS; x <= cx + RADIUS; x += STEP) {
   for (let z = cz - RADIUS; z <= cz + RADIUS; z += STEP) {
     scanned++;
     const s = spreadAt(h, x, z);
-    if (s.worst > bestAnywhere.worst) bestAnywhere = { x: +x.toFixed(2), z: +z.toFixed(2), ...s };
-    if (s.worst < 0.10) continue;                    // below this a frame cannot show it
+    if (s.bones > bestAnywhere.bones) bestAnywhere = { x: +x.toFixed(2), z: +z.toFixed(2), ...s };
+    if (s.bones < 0.10) continue;                    // below this a frame cannot show it
     const deg = slopeDeg(h, x, z);
     if (deg > WALK_MAX_DEG) continue;                // not a stand: the body slides off
     const y = h(x, z);
@@ -140,17 +190,17 @@ for (let x = cx - RADIUS; x <= cx + RADIUS; x += STEP) {
     if (depth > 0.02) continue;                      // a wet foot photographs the waterline
     hits.push({
       x: +x.toFixed(2), z: +z.toFixed(2), y: +y.toFixed(3),
-      spread_ew_m: s.ew, spread_ns_m: s.ns, worst_per_foot_m: s.worst,
+      per_foot_at_bones_m: s.bones, spread_ew_m: s.ew, spread_ns_m: s.ns, worst_either_axis_m: s.worst,
       slope_deg: deg, water_depth_m: +Number(depth || 0).toFixed(3),
       dist_from_centre_m: +Math.hypot(x - cx, z - cz).toFixed(1),
     });
   }
 }
-hits.sort((a, b) => b.worst_per_foot_m - a.worst_per_foot_m);
+hits.sort((a, b) => b.per_foot_at_bones_m - a.per_foot_at_bones_m);
 
 const out = {
   tool: 'f10-r7a-slope-scan', generated: new Date().toISOString(),
-  centre: [cx, cz], radius_m: RADIUS, step_m: STEP, stance_m: STANCE,
+  centre: [cx, cz], radius_m: RADIUS, step_m: STEP, stance_m: STANCE, foot_offsets: FOOT,
   walk_max_deg: WALK_MAX_DEG,
   equivalence_note: 'renderer.js:630-634 province branch is field.heightAt(x,z), and engine.js:543 '
     + 'sets renderer.groundResolver to engine.groundAt which delegates to it — so this scan asks '
@@ -158,17 +208,19 @@ const out = {
   points_scanned: scanned,
   usable_stands: hits.length,
   best_ignoring_all_filters: bestAnywhere,
+  ranked_on: 'per_foot_at_bones_m — the ground under the left foot bone against the ground under the right, at the offsets f10-r7-appearance.mjs --probe-only measured live',
   top: hits.slice(0, TOP),
 };
 const OUT = args.out ? path.resolve(args.out) : null;
 if (OUT) { fs.mkdirSync(path.dirname(OUT), { recursive: true }); fs.writeFileSync(OUT, `${JSON.stringify(out, null, 2)}\n`); }
 
-console.log(`\n${scanned} points scanned; ${hits.length} usable (spread >= 0.10 m, slope <= ${WALK_MAX_DEG} deg, dry)`);
-console.log(`best spread ignoring every filter: ${bestAnywhere.worst} m at ${bestAnywhere.x},${bestAnywhere.z}`);
-console.log('\n     x         z        y   per-foot   ew      ns    slope  dist');
+console.log(`\n${scanned} points scanned; ${hits.length} usable (per-foot AT THE BONES >= 0.10 m, slope <= ${WALK_MAX_DEG} deg, dry)`);
+console.log(`best at the bones ignoring every filter: ${bestAnywhere.bones} m at ${bestAnywhere.x},${bestAnywhere.z}`);
+console.log('\n     x         z        y   at-bones   ew      ns    slope  dist');
 for (const p of hits.slice(0, TOP)) {
   console.log(`${String(p.x).padStart(9)} ${String(p.z).padStart(9)} ${String(p.y).padStart(8)} `
-    + `${String(p.worst_per_foot_m).padStart(8)} ${String(p.spread_ew_m).padStart(7)} `
+    + `${String(p.per_foot_at_bones_m).padStart(8)} ${String(p.spread_ew_m).padStart(7)} `
     + `${String(p.spread_ns_m).padStart(7)} ${String(p.slope_deg).padStart(6)} ${String(p.dist_from_centre_m).padStart(6)}`);
 }
 if (OUT) console.log(`\nwrote ${OUT}`);
+}
