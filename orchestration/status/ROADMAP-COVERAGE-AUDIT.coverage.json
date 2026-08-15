@@ -1,11 +1,11 @@
 {
- "generated": "2026-08-15T13:55:33.118Z",
+ "generated": "2026-08-15T15:39:34.979Z",
  "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
  "method": "Inventory derived by fs walk + generated ledgers. Mapping authored by the audit agent after reading every RI title/front-matter, every plan heading, and every open gap record.",
  "inventory_counts": {
   "reference_items": 152,
   "plans": 49,
-  "open_gaps": 84,
+  "open_gaps": 86,
   "proposed_roadmap_items": 69
  },
  "rings": {
@@ -214,16 +214,18 @@
    ],
    "n_ref_items": 2,
    "never_judged": [],
-   "open_gaps": [],
-   "n_open_gaps": 0,
-   "blocking_gaps": 0,
+   "open_gaps": [
+    "GAP-W1-visual-fix-not-reaching-blind-frames"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
    "plans": [
     "W1-30",
     "W1-30A",
     "W1-30B",
     "W1-30S"
    ],
-   "derived_state": "at_bar",
+   "derived_state": "built_below_bar",
    "old_roadmap_home": "V2"
   },
   {
@@ -237,15 +239,17 @@
    ],
    "n_ref_items": 2,
    "never_judged": [],
-   "open_gaps": [],
-   "n_open_gaps": 0,
-   "blocking_gaps": 0,
+   "open_gaps": [
+    "GAP-W1-visual-fix-not-reaching-blind-frames"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
    "plans": [
     "W1-30",
     "W1-30B",
     "W1-30S"
    ],
-   "derived_state": "at_bar",
+   "derived_state": "built_below_bar",
    "old_roadmap_home": "V3"
   },
   {
@@ -259,10 +263,11 @@
    "n_ref_items": 1,
    "never_judged": [],
    "open_gaps": [
-    "GAP-W1-height-fog-credit-unanchored"
+    "GAP-W1-height-fog-credit-unanchored",
+    "GAP-W1-visual-fix-not-reaching-blind-frames"
    ],
-   "n_open_gaps": 1,
-   "blocking_gaps": 0,
+   "n_open_gaps": 2,
+   "blocking_gaps": 1,
    "plans": [
     "W1-30",
     "W1-30B",
@@ -1486,14 +1491,15 @@
    "open_gaps": [
     "GAP-W1-map-fix-drops-the-journal-from-the-page-walk",
     "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
+    "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them",
     "GAP-W1-ui-detectors-that-cannot-see",
     "GAP-W1-ui-hud-world-set-unbuilt-and-misplaced",
     "GAP-W1-ui-journal-search-view-has-no-exit",
     "GAP-W1-ui-map-outside-the-ar2-detectors",
     "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
    ],
-   "n_open_gaps": 7,
-   "blocking_gaps": 6,
+   "n_open_gaps": 8,
+   "blocking_gaps": 7,
    "plans": [
     "W1-21",
     "W1-HUD-TOAST"
@@ -3506,7 +3512,7 @@
    ],
    "bucket": "method_doctrine",
    "judged": true,
-   "verdicts": 4,
+   "verdicts": 5,
    "best_score_0_10": 5,
    "state": "judged_below_bar"
   },
@@ -3800,7 +3806,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 5,
+   "verdicts": 6,
    "best_score_0_10": 6,
    "state": "judged_at_or_above_bar"
   },
@@ -3818,7 +3824,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 7,
+   "verdicts": 8,
    "best_score_0_10": 7,
    "state": "judged_at_or_above_bar"
   },
@@ -3853,7 +3859,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 5,
+   "verdicts": 6,
    "best_score_0_10": 5,
    "state": "judged_below_bar"
   },
@@ -3870,7 +3876,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 3,
+   "verdicts": 4,
    "best_score_0_10": 5,
    "state": "judged_below_bar"
   },
@@ -3888,7 +3894,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 3,
+   "verdicts": 4,
    "best_score_0_10": 2,
    "state": "judged_below_bar"
   },
@@ -3905,8 +3911,8 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 3,
-   "best_score_0_10": 2,
+   "verdicts": 4,
+   "best_score_0_10": 5,
    "state": "judged_below_bar"
   },
   {
@@ -3922,7 +3928,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 2,
+   "verdicts": 3,
    "best_score_0_10": 8,
    "state": "judged_at_or_above_bar"
   },
@@ -5965,6 +5971,16 @@
    "bucket": "build"
   },
   {
+   "id": "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them",
+   "severity": "blocking",
+   "path": "ui.style.diegesis",
+   "what": "The per-screen boxes landed by round 4 are smaller than the content laid out into them and the content was not re-pitched to match, so at 1920x1080 on the shipp",
+   "covered_by": [
+    "T4"
+   ],
+   "bucket": "build"
+  },
+  {
    "id": "GAP-W1-ui-detectors-that-cannot-see",
    "severity": "blocking",
    "path": "ui.hud.minimalism",
@@ -6012,6 +6028,18 @@
    "what": "Every screen draws its panel at the same fixed rect [200, 160, 1520, 780] — 57.2% of a 1920x1080 frame — whatever it is holding, because game/src/ui/chrome.js:7",
    "covered_by": [
     "T4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-visual-fix-not-reaching-blind-frames",
+   "severity": "blocking",
+   "path": "render.process.measurement",
+   "what": "Protocol A re-ran five pairs after F1 (PBR materials), F2 (contact shadows + AO) and F3 (ambient/GI fill) all landed and each measured green on its own instrume",
+   "covered_by": [
+    "F4",
+    "F2",
+    "F3"
    ],
    "bucket": "build"
   },
