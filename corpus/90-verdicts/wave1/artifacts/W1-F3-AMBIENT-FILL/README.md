@@ -104,57 +104,49 @@ way anyway* — and nothing except the delete-the-fix control would have caught 
 numbers are still in `reports/runpod-gpu/runs/w1-f3-ambient-fill/` and are kept deliberately: a
 confound that is deleted once a better instrument exists cannot teach anybody anything.
 
-### The finding underneath it — and the first explanation for it was wrong
+### The finding underneath it: the first capture of a process is not like the others
 
-The obvious reading was "the scene warms up, and the first capture catches it cold". **I measured that
-and it is false.** A 13-sample curve with GI held off, taken on an RTX A4500 from the teleport
-onwards, is flat:
+The plain statement of what was measured, on two renderers, with nothing inferred:
 
-```
-frame    4   p10=14.297      frame  120   p10=14.293
-frame   12   p10=14.290      frame  180   p10=14.296
-frame   20   p10=14.298      frame  240   p10=14.291
-frame   30   p10=14.290      frame  300   p10=14.286
-frame   45   p10=14.288      frame  420   p10=14.287
-frame   60   p10=14.290      frame  600   p10=14.300
-frame   90   p10=14.292
-```
+- Captures **1 and 2** of a process, at the VP04 pose: **4.641** then **15.001** (head tree) and
+  **4.641** then **14.353** (fix removed).
+- Every **later** capture in those same processes, at the same pose, reads **~14.29** — the paired
+  GI-off series is `[14.287, 14.287, 14.287, 14.287, 14.289, 14.300]`.
 
-Range across the whole sweep: **0.014 luma**. `shadow_levels` is 33 at every one of the thirteen
-samples. There is no scene-age drift. And in the *same process*, minutes later and with the world now
-well over a thousand frames old, the two-still arm still returned **4.641** — so world age neither
-causes the dark reading nor prevents it.
+So the first capture is the outlier and everything after it agrees. **The mechanism is not
+identified**, and three candidate explanations have been tested and ruled out:
 
-**What actually distinguishes the two, from three measurements:**
+1. **The analysis, not the frame.** The stills are analysed at full resolution and the later sweeps on
+   a 3× subsample, which would be an obvious way to manufacture a difference. Recomputed offline from
+   the saved PNGs: the still reads **4.641** at step 1 and **4.629** at step 3; the orbit frame reads
+   **14.290** at step 1 and **14.311** at step 3. The two frames genuinely differ. The analysis does
+   not.
+2. **The world clock.** A live probe shows it advancing 9.000 → 9.0222 hours across 240 frames — 40
+   seconds of game time, nowhere near enough sun movement to triple a shadow floor — and shows
+   `pauseClock(true)` stopping it dead.
+3. **Scene age, and a camera jump in a running world.** Both were tested with a curve at prerolls 0,
+   90 and 300, and all three came back flat: 13 samples, range 0.014 luma, `shadow_levels` 33 at every
+   sample.
 
-| sequence | shadow floor |
-|---|---|
-| teleport → pose camera → **4** frames | 14.297 |
-| teleport → **90** frames → pose camera → **30** frames | **4.641** |
-| teleport → **90** frames → pose camera → **240** frames | 14.287 |
+**And that third result is worth more as a lesson than as a finding, because it was worthless as a
+finding.** The curve was written into the file *after* the two stills, so its first sample was the
+process's **third** capture — by which point the thing it was aimed at was already over. It could not
+have detected the effect under any circumstances. It came back flat twice, and twice that flatness was
+read as a real negative result. **A blind instrument's null result looks exactly like a true null.**
+The curve now runs before any other capture and exits immediately after; the logs of both the blind
+version and the corrected one are in `curves/`.
 
-The dark reading appears only when the camera is **jumped in an already-running world and measured too
-soon after the jump**. Something re-converges after a camera move — it is settled by 240 frames and
-plainly is not by 30 — and when the world has not been running beforehand there is nothing to
-re-converge. **The mechanism is unidentified and is named here rather than guessed at.**
+### What this does and does not mean for the blind pack
 
-The world clock was the first suspect and is ruled out by measurement, not by argument: a live probe
-shows it advancing 9.000 → 9.0222 hours across 240 frames (40 seconds of game time — nowhere near
-enough sun movement to triple a shadow floor) and shows `pauseClock(true)` stopping it dead.
+`tools/visual/deck.mjs` produced our side of the pack. It poses the camera and steps `deck.json`'s
+`capture.settle_frames`, which is **12**, and it never calls `pauseClock` — which is exposed at
+`game/src/harness/api.js:195` while `HARNESS.md` §6 requires the clock pinned for a comparable
+screenshot. That is a real protocol defect and worth fixing on its own.
 
-### Why this reaches past F3
-
-`tools/visual/deck.mjs` produced our side of the blind comparison pack. Read from the repo: it poses
-the camera and then steps `deck.json`'s `capture.settle_frames`, which is **12**, inside a loop that
-has already been running the world through previous setups — and it never calls `pauseClock`, which
-is exposed at `game/src/harness/api.js:195` while `HARNESS.md` §6 requires the clock pinned for a
-comparable screenshot.
-
-Twelve frames is **inside the window this piece measured as crushed at thirty**. That does not prove
-the pack was captured dark — 12 is not 30, and the intermediate curve is unmeasured at the time of
-writing — but it is the same condition, and it is cheap to settle. Until it is settled, *"crushed to a
-near-uniform black"* has a plausible second author, and nobody should pay five judges again on a pack
-built by the same path.
+But it is **one process taking many captures**, so on the evidence above only its *first* frame would
+sit in the affected condition, not all of them. An earlier draft of this file claimed more than that,
+on the strength of an explanation that has since been ruled out; the claim is withdrawn and this is
+what survives it.
 
 ---
 
