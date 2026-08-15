@@ -36,7 +36,7 @@ Alongside that: shrinking the documentation every agent reads before it can star
 - **The menus were made denser and became unreadable.** Sizing each panel to its contents cleared all
   five density failures — and then a critic looked at the result: on the level-up screen the attribute
   name, its value and its gauge are drawn **into the same pixels on 9 of 10 rows** ("STRENGTH" renders
-  as `STREN` with `12` through it); the character sheet's ten rows collide; **8 of 19 journal entries
+  as `STREN` with `12` through it); three of the character sheet's ten rows collide; **8 of 19 journal entries
   are laid out past the bottom of the panel onto the world behind it**, and 11 of 19 print over the
   footer. All at normal resolution.
   **The measure rewarded it.** The density score counts any pixel that differs from the background — so
