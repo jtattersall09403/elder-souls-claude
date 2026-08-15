@@ -1,0 +1,433 @@
+{
+  "schema_version": "elder-souls/verdict@1",
+  "piece_id": "T4-r6",
+  "piece_title": "The Morrowind screens, round 6 — the container's gold column and its clipped description",
+  "subsystem_paths": [
+    "ui.style.diegesis",
+    "ui.screens.container",
+    "ui.screens.inventory"
+  ],
+  "wave": 1,
+  "roadmap_item": "T4",
+  "critic": {
+    "run_id": "crit-t4-r6",
+    "role": "critic.ui",
+    "model": "claude-opus-5",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true,
+    "built_none_of_it": true,
+    "note": "I was handed the builder's status file as my work list by the brief, so I read it BEFORE measuring — a deviation from CRITIC-DOCTRINE §8's ordering, recorded here rather than hidden. It cuts one way only: the builder's central claim is the thing I set out to falsify, and I falsified it."
+  },
+  "build": {
+    "commit": "b0a9f7168c0b49b0c56c8de0245b8d49a85a28ec",
+    "branch": "codex/wave1-build-experiment",
+    "prior_pin": "76cd48486363626a1081f43241c2a50600c8994f"
+  },
+  "headline": "Round 6 fixed both defects it was sent to fix, and introduced a hard fail doing it. The gold column now draws on all seven rows and the description now ellipsises instead of vanishing — both verified from my own captures. But the same change drops the container's RI-UIX09 D2 from 0.1538 to 0.1459, across DN4's 0.15 hard-fail floor, and the builder's claim that it moves D2 by 0.0000 came from a four-arm experiment in which no arm ran the code it named. Round 5's numbers reproduce exactly at round 5's own pin.",
+  "job_1_the_reproduction_question": {
+    "ruling": "ROUND 5'S FILED NUMBERS ARE CORRECT AND THEY REPRODUCE EXACTLY. TODAY'S NUMBERS ARE ALSO CORRECT. THE INSTRUMENT IS DETERMINISTIC. The builder's four arms are void — none of them ran the tree it named.",
+    "how_the_arms_were_void": "tools/lib/cli.mjs:11 derives REPO_ROOT from the SCRIPT'S OWN location, and tools/lib/browser.mjs resolveEntry() (line 81/91) serves REPO_ROOT/game. So an arm is isolated only if it is run through the CLONE'S OWN copy of the tool. t4-r2-measure.mjs:296 records `git rev-parse HEAD` with cwd=REPO_ROOT. All four of the builder's manifests record a LIVE SIBLING's HEAD, timestamped to the minute each arm ran: 22d6fb39 (17:15, a gitignore commit), f42cb9be (17:24, F10 r9), 0a67808f (17:39, F10 r9 status), dffbd4bc (17:44, F10 r9 critic). None is HEAD, none is the pin.",
+    "proof_that_a_real_arm_records_differently": [
+      "A control clone built with tools/control-clone.mjs resolves REPO_ROOT to /tmp/elder-souls-control-clones/... where `git rev-parse HEAD` THROWS, so the tool records commit:\"unknown\". Measured, this run.",
+      "A real `git worktree add --detach <dir> 76cd4848` resolves REPO_ROOT to the worktree and records commit:76cd4848... Measured, this run.",
+      "Therefore arm 4 — claimed to be a byte-identical worktree at 76cd4848 — recorded a sibling's SHA because it ran the SHARED tree's tools, and so served the SHARED tree's game/. The same holds for arms 1-3."
+    ],
+    "what_a_correct_pin_run_returns": {
+      "method": "git worktree at 76cd4848, tools/node_modules symlinked, measured through THAT WORKTREE'S OWN tools/ui/t4-r2-measure.mjs",
+      "manifest_commit_field": "76cd48486363626a1081f43241c2a50600c8994f",
+      "inventory": 0.1557,
+      "journal": 0.174,
+      "sheet": 0.173,
+      "spells": 0.3048,
+      "levelup": 0.1521,
+      "container": 0.1538,
+      "container_no_name": 0.1449,
+      "round_5_filed": "inventory 0.1557, journal 0.174, sheet 0.173, spells 0.304, levelup 0.1521-0.1522, container 0.1538, container_no_name 0.1449",
+      "verdict": "IDENTICAL on every screen. Round 5's critic measured correctly."
+    },
+    "is_the_instrument_non_deterministic": "NO. I recomputed d2() over round 5's OWN stored PNGs and got 0.1522 / 0.1538 / 0.1449 back exactly, and over round 6's stored PNGs got 0.1495 / 0.1459 exactly. Same image in, same number out. The variance the builder saw was never in the measure; it was that every arm rendered the same tree.",
+    "but_the_measure_IS_fragile_and_here_is_the_number": {
+      "finding": "D2 re-derives its own reference (the panel's modal colour) per capture, and a large pixel population sits at the dE=6 boundary. On the container panel, 0.67% of the panel lies in the dE 5.5-6.5 band, and sweeping the threshold 5.0 -> 7.0 moves D2 from 0.1756 to 0.1599 at the pin and 0.1678 to 0.1523 at HEAD — a span of ~0.0157, roughly FOUR TIMES round 5's entire 0.0038 margin over the hard-fail floor.",
+      "the_sharper_case": "The sheet panel differs between the two captures by 166 pixels (0.06% of the panel) and its MODAL COLOUR moved [42,55,43] -> [45,57,45] — and D2 moved 0.0108. Level-up differs by 66 pixels (0.03%), modal colour moved [221,220,211] -> [220,217,204], D2 moved 0.0026. A sub-perceptual shift in the panel's ground re-scores every pixel in the panel against a new reference.",
+      "consequence_for_RI_UIX09": "DN4's 0.15 floor is being applied to a quantity whose sensitivity to imperceptible input change exceeds the margins it is adjudicating. That is a finding about the ROW, not about any build, and it is the third member of the family S58 and S59 name. It is filed as a corpus defect below, NOT used to excuse this round.",
+      "why_this_does_not_rescue_the_container": "The container's fall is consistent at EVERY threshold (0.1756->0.1678 at dE5.0, 0.1657->0.1572 at dE6.0, 0.1599->0.1523 at dE7.0) and its modal colour did NOT move. It is real matter loss, not threshold drift — and the delete-the-fix arm below attributes it."
+    }
+  },
+  "job_1b_the_attribution_the_builder_could_not_do": {
+    "method": "Three arms, all mine, each a git worktree measured through its own tools, each manifest's commit field verified. Arm A = 76cd4848 (round 5's pin). Arm B = b0a9f716 (HEAD) with ONLY game/src/ui/screens/inventory.js reverted to its 76cd4848 content — the delete-the-fix control RULES.md rule 6 requires. Arm C = b0a9f716 clean.",
+    "table": {
+      "container": {
+        "pin_76cd4848": 0.1538,
+        "HEAD_fix_deleted": 0.1538,
+        "HEAD_clean": 0.1459
+      },
+      "levelup": {
+        "pin_76cd4848": 0.1521,
+        "HEAD_fix_deleted": 0.1495,
+        "HEAD_clean": 0.1495
+      },
+      "inventory": {
+        "pin_76cd4848": 0.1557,
+        "HEAD_fix_deleted": 0.1564,
+        "HEAD_clean": 0.1564
+      },
+      "journal": {
+        "pin_76cd4848": 0.174,
+        "HEAD_fix_deleted": 0.167,
+        "HEAD_clean": 0.167
+      },
+      "sheet": {
+        "pin_76cd4848": 0.173,
+        "HEAD_fix_deleted": 0.1622,
+        "HEAD_clean": 0.1622
+      },
+      "spells": {
+        "pin_76cd4848": 0.3048,
+        "HEAD_fix_deleted": 0.308,
+        "HEAD_clean": 0.308
+      }
+    },
+    "ruling_container": "The container reads 0.1538 at the pin AND 0.1538 at HEAD with round 6's inventory.js removed — identical to four decimals. It reads 0.1459 with round 6's inventory.js present. NOTHING that landed between the pin and HEAD moved the container's D2 except this round's own change, and that change moved it by -0.0079, which is the whole distance from a pass to a DN4 hard fail. The builder's 'my inventory.js change moves container's D2 by exactly 0.0000' is exactly inverted.",
+    "ruling_levelup": "The builder is RIGHT about level-up. progress.js is byte-unchanged across 76cd4848..b0a9f716 (git diff --stat empty), and level-up reads 0.1495 both with and without round 6's change, against 0.1521 at the pin. Level-up's DN4 breach is real, is pre-existing, and is NOT this round's doing.",
+    "what_moved_levelup": "Re-derived, not inherited: `git log --oneline 76cd4848..b0a9f716 -- game/` returns FIVE commits, not the two the builder reported — b0a9f716 (this round), d2900dc8 (F4 key light), f42cb9be (F10 r9 contrapposto), b0f3224e (F7 water), 3ca135ad (F10 r8 waist). game/src/render/lib/lighting-recipes.js and game/src/render/sky.js changed in that window as LANDED COMMITS; the builder classified them as a sibling's uncommitted drift and its attribution arm reverted only water.js and actor.js. So even had that arm run, it was incomplete. I have not isolated which of the four moved level-up and do not claim to."
+  },
+  "job_2_the_two_defects": {
+    "gold_column": {
+      "result": "FIXED, and verified from my own captures, not the builder's.",
+      "evidence": "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-rows-WITHFIX-4x.png vs critic-container-rows-NOFIX-4x.png — same crop box, two arms. Without the fix: no gold column anywhere. With it: '—' (bark token, correctly gold-less), '30', '96', '55' on the carried side; the theirs side likewise.",
+      "driven_not_photographed": "CRITIC-DOCTRINE §1.2b satisfied through tools/ui/t4-r2-critic-drive.mjs, which dispatches real DOM KeyboardEvents through the shipped handler: H0 the container opens and names itself (headers ['Reed Creel','Carried','Reed Creel']); H1 left/right switches side (0->1); H2 items transfer in BOTH directions through real presses (carried 44 -take-> 45 -put-> 44); H3 no container name never prints the literal 'undefined'/'null' across four fixture shapes. All four pass."
+    },
+    "description_band": {
+      "result": "The silent clip is FIXED. The text no longer vanishes — it ends in a visible ellipsis.",
+      "evidence": "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-band-WITHFIX-3x.png (my capture): 'A palm-sized disc of Hist bark with / three notches in the rim. Everyone...'",
+      "but": "It is fixed against RI-UIX06 FD4 and BROKEN against RI-UIX03 C7, which the round-5 remedy did not account for. See below."
+    }
+  },
+  "job_3_the_declared_cost_judged": {
+    "the_scoping_claim_is_TRUE_but_the_citation_does_not_resolve": "The builder cites 'T4-r5.md line 773' in writing. corpus/90-verdicts/wave1/T4-r5.md is 472 lines long; there is no line 773. The intended source is T4-r5.JSON line 773, and T4-r5.md line 137 says the same thing. The substance is verified independently: RI-UIX09 P3 reads 'the HUD's quick-slot cluster' and DN3's row is 'P3 quick slots'. DN3 IS scoped to the quick-slot cluster and does not fail a container list row. The claim is right; the citation is a file-name error and is recorded because a citation that resolves to nothing is how a number survives unchecked.",
+    "so_is_the_truncation_acceptable": "NO — and it does not need a judgement call, because an existing row already settles half of it and a measurement settles the other half.",
+    "half_one_the_description_RI_UIX03_C7": "RI-UIX03 C7: 'selecting an item shows: name, weight, value, condition/durability if applicable, and the full `description` string, unabbreviated and untruncated'. C8 puts containers on that same screen ('corpses, chests and barrels use the same screen'). The shipped band shows 2 of 4-6 lines ending in an ellipsis, for 42 of 45 carried records. C7 is violated. C7 is judged by M-C3, which requires ALL FOUR of C6/C7/C8/C9, so M-C3 now fails. Round 5's remedy offered 'equals the declared string, OR ends in an ellipsis' — a verdict's remedy cannot licence what a reference item forbids, and CRITIC-DOCTRINE §1.3 guard 1 forbids me relaxing C7 to accept it. The builder followed the remedy in good faith; the remedy was under-specified against C7.",
+    "half_two_the_columns_and_a_defect_the_builder_did_not_report": "The builder reported the NAME column's cost. It did not report that the same 27% cut truncates the WEIGHT column: 'Bog-iron maul 11.5' becomes 'Bog-iron ... 11...' — a NUMERIC VALUE rendered unreadable. Visible in my own two-arm crop pair. A truncated name is an inconvenience; a weight shown as '11...' is a number the player cannot use to decide what to leave behind, which is precisely the decision RI-UIX03 C6 says value-per-weight exists to serve.",
+    "and_it_is_measurable": "The truncation is not only a look. It is the matter loss that the delete-the-fix arm attributes: seven rows lost glyphs from the name and weight columns and gained six short gold figures, net -0.0079 on D2, across DN4's floor.",
+    "on_growing_the_box_the_builder_s_reasoning_is_JUDGED_SOUND_but_for_a_reason_it_did_not_have": "The builder declined to grow the box, citing S58's corrected mechanism (a bigger box without proportionally more ink lowers D2). That reasoning is correct as far as it goes and the restraint was right. But the real reason it was right is sharper: the delete-the-fix arm shows the container had only 0.0038 of headroom and this round spent 0.0079 of it, so ANY change to that screen that is not ink-positive now fails DN4. The remedy is not to grow the box and it is not to revert — it is that the row is too narrow for what it carries, which is S56's shrink-the-box question arriving from the other side, exactly as the brief anticipated."
+  },
+  "job_4_the_two_things_it_did_not_do": {
+    "operability_re_pressed_not_taken_on_trust": {
+      "verdict": "THE BUILDER'S ASSERTION HOLDS. Measured, not assumed.",
+      "method": "tools/ui/t4-r3-critic.mjs and tools/ui/t4-r2-critic-drive.mjs, real DOM events through the shipped handler, at HEAD.",
+      "results": "JX0, JX1, JX2a, JX2b, JX2c, JX3, JX4, JX5, JX6 — all pass. EQ1 pass (row focused, equipment changed within 1 frame of 15; frame 43->43, paused, as RI-UIX03 P1 requires). EQ1b pass. EQ2 pass (refused row narrates: 'You cannot get a grip on the sapwood bow. It is not made for your hands.'). TS0, TS1, TS2, TS3, TS3b — all pass. H0-H3 pass. The row rect is unchanged and hit-testing is unaffected; the builder was right and is now evidenced rather than asserted.",
+      "what_did_NOT_pass": "IC1 FAIL — the in-combat commitment is not narrated on screen ('no row in [reed-cutter, chitin-cuirass, bog-iron-maul] could be focused by walking the list' while in combat). TS5 FAIL (diagnostic) — a 40-frame held KEYBOARD direction moves 1 row while the equivalent held TOUCH drag moves 6, so the missing axis repeat is a KEYBOARD defect, not device-neutral as previously characterised. MAP1 NOT RUN — the browser closed before the map leg; scored 0 fail-closed, not 'unknown'. M1 (click a row) fails in the instrument, but RI-UIX10 OP4's own pass clause is 'responds, OR no pointer path declared and nothing drawn implies one', which round 5 recorded and which still holds; not a defect and not this round's.",
+      "none_of_these_are_attributable_to_round_6": "IC1, TS5 and MAP1 sit in code this round did not touch (git diff b0a9f716^..b0a9f716 touches one game file: game/src/ui/screens/inventory.js)."
+    },
+    "the_unsatisfiable_clause": {
+      "the_builder_s_derivation_is_CONFIRMED_by_my_own_reading": "game/src/ui/screens/progress.js (byte-unchanged across 76cd4848..b0a9f716): the sheet's attribute row declares rect [ax, y, attrW, (attrH-4)*s] and inside it draws the gauge trough at gx = r[0]+40*s, gw = r[2]-56*s, gy = r[1]+26*s — i.e. from x+40 to x+(attrW-16), spanning nearly the row's full width, on its own line BELOW the name/value text, on every row. tools/ui/t4-r4-critic-overlap.mjs's rowProfile() marks a column 'ink' if ANY pixel across the row's FULL height differs from the modal colour. The gauge therefore paints nearly every column, no run of >=3 empty columns can exist, and `rows_with_fewer_than_two_separators: 0` is unsatisfiable on the sheet regardless of legibility. Level-up draws name, value and gauge side by side on ONE line, so its half of the clause tests what it was written to test and is unaffected. CONFIRMED.",
+      "the_proposed_replacement_is_JUDGED_CORRECT": "Restricting the sheet's arm to the text sub-band — rowProfile() against [ax, y, attrW, 20*s], the name/value line, ending before the gauge starts at y+26*s — measures the thing round 4's remedy meant (does the name collide with the value) without asking a two-line row to behave like a one-line row. It is the right fix.",
+      "I_DID_NOT_LAND_IT_AND_HERE_IS_WHY": "CRITIC-DOCTRINE §1.3 guard 1 lets a critic ADD but never relax; guard 3 says bound it. The clause currently fails closed, and rewriting it makes it satisfiable — i.e. it could become the reason a piece passes. I am the critic scoring this piece, so landing it mid-round would be grading against an instrument I had just loosened, which is the same conflict that kept the round-5 critic off RI-UIX06 and this builder off this file. Filed as owed, with the exact patch specified above so it costs the next agent nothing. REVERSIBLE: the orchestrator may land it directly — it bears on no score in this verdict, because I scored the sheet arm fail-closed exactly as it stands.",
+      "who_owns_it": "The orchestrator or the next T4 builder. It is a two-line change to tools/ui/t4-r4-critic-overlap.mjs."
+    }
+  },
+  "the_ui_metrics_question_the_brief_asked_me_to_answer": {
+    "state": "tools/metrics/ui-metrics.mjs exists and runs (38,647 bytes). Its screen list is `const SCREENS = String(args.screens || 'inventory,journal,book,levelup,sheet,spells,map').split(',')` at line 63. The container is NOT in it. The builder's statement is accurate.",
+    "why_it_is_not_a_one_word_fix": "The run loop at line 378 opens each screen with `h.h('openMenu', screen)`. A container does not open that way — system.js opens it via openContainer(name, contents) with an entity, which is why every container-capable instrument in tools/ui/ has its own opener. Adding 'container' to the default list would open nothing and measure nothing.",
+    "whose_job": "NOT the next T4 builder's, and not a critique's to build (§1.3 guard 3). It is a HARNESS gap and belongs to whoever owns tools/metrics/ui-metrics.mjs: give its loop a container branch mirroring t4-r2-measure.mjs's `HH.openContainer(...)` call, then FD1/FD2/FD3/FD5/FD6/FD7 become reachable on the container for the first time. Until then those six checks are unmeasured ON THE CONTAINER and I have scored them 0 fail-closed per §7.3, which is part of why RI-UIX06 does not score higher than it does."
+  },
+  "bifurcation": {
+    "axis": "both-separately",
+    "declared_before_citation": true,
+    "fidelity_refs": [
+      "RI-UIX06 (FIDELITY side: F17/F18/F19, checks FD1-FD7)"
+    ],
+    "art_refs": [
+      "RI-UIX06 (ART side: P09, checks AD1-AD7)",
+      "RI-UIX09"
+    ],
+    "note": "=== VIS DECLARATION === PASS 1, JUDGEMENT SIDE: ART_DIRECTION. PROPERTIES: RI-UIX09 populated density and object iconography, RI-UIX06 P09. PERMITTED: REF-A12b Morrowind interface plates, RI-VIS05 §H. FORBIDDEN: every modern AAA screenshot. === PASS 2, JUDGEMENT SIDE: FIDELITY. PROPERTIES: F18 layout integrity, M-F18.1/2/3. PERMITTED: our own captures at 1920x1080. FORBIDDEN: every Morrowind plate. Both declared before any reference was cited. No Morrowind plate is cited on the fidelity side and no modern reference on the art side; the two defects judged on the fidelity side are geometric (declared text against its own element rect), not matters of style. CC-7 was NOT used: at no point is low rendering quality excused as art direction."
+  },
+  "reference_items": [
+    "RI-UIX03",
+    "RI-UIX04",
+    "RI-UIX06",
+    "RI-UIX07",
+    "RI-UIX09",
+    "RI-UIX10"
+  ],
+  "per_item": [
+    {
+      "id": "RI-UIX09",
+      "score": 2,
+      "result": "FAIL — hard fail",
+      "why": "DN4 (P4 fill, worst screen) HARD FAIL: container 0.1459 and level-up 0.1495, both below the 0.15 floor, measured on clean worktrees at the delivered commit. The item's own aggregation rule: 'any hard fail caps at 2'. DN7 (blind pair) not run — see blind_comparisons.",
+      "this_rounds_share": "The container half is round 6's own doing, proven by delete-the-fix (0.1538 without the change, 0.1459 with it). The level-up half is not.",
+      "why_not_ten": "A screen below the item's own hard-fail floor cannot score above 2 by the item's stated aggregation.",
+      "path_to_ten": "Clear DN4 on every populated screen (D2 >= 0.35 for the ladder's 8, not merely >= 0.15), then run DN7's blind pair. The container needs the row-width remedy below; level-up needs its own pass and is not this round's.",
+      "ten_by_wave": "wave 2"
+    },
+    {
+      "id": "RI-UIX06",
+      "score": 4,
+      "result": "improved, not evidenced to the bar",
+      "why": "FD4's two named instances from round 5 are demonstrably cleared at 1920x1080 from my own captures — the gold column draws inside the row rect on all seven rows both sides, and the band's text no longer draws past its clip with nothing to show for it. But FD4's pass condition is '0 clipping, 0 overlap, 0 overflow at ALL 8 capture configs' and I measured one. FD1/FD2/FD3/FD5/FD6/FD7 were not re-run this round and the container is outside ui-metrics.mjs's screen list, so they are unmeasured on this screen and scored 0 fail-closed per §7.3.",
+      "why_not_ten": "Seven of eight capture configs unmeasured; six FIDELITY checks unreachable on the container until the harness gap above is closed.",
+      "path_to_ten": "Close the ui-metrics.mjs container gap, then run FD1-FD7 across all 8 configs with 0 clipping at each.",
+      "ten_by_wave": "wave 2"
+    },
+    {
+      "id": "RI-UIX03",
+      "score": 3,
+      "result": "FAIL on M-C3",
+      "why": "M-C3 requires ALL FOUR of C6/C7/C8/C9. C8 holds (containers use the same two-panel screen; H0-H3 operate it). C7 does NOT: the band renders 2 of the 4-6 wrapped lines for 42 of 45 carried records and ends in an ellipsis, against C7's 'the full description string, unabbreviated and untruncated'. C6's value-per-weight decision is further degraded by a weight column that now renders '11...'.",
+      "why_not_ten": "C7 is violated on the shipped screen and C6's affordance is impaired by the truncated weight.",
+      "path_to_ten": "The remedy in biggest_gap. C7 is satisfied only by the whole string being readable, not by an honest ellipsis.",
+      "ten_by_wave": "wave 2"
+    },
+    {
+      "id": "RI-UIX10",
+      "score": 6,
+      "result": "holds; one leg unmeasured, scored 0",
+      "why": "OP1 keyboard: every container affordance operated through real DOM events (H0-H3), plus JX0-JX6, EQ1/EQ1b/EQ2 all pass. OP3 touch: TS0-TS3b pass. OP4 mouse passes on its own 'no pointer path declared' clause, as round 5 recorded. OP7: EQ1 changes state at frame 1 of a 15-frame window; EQ2's refusal narrates. Against that: MAP1 did not run (browser closed) and is scored 0 fail-closed, and IC1 fails — the in-combat commitment is not narrated on screen.",
+      "why_not_ten": "MAP1 unmeasured; IC1 fails; TS5 shows held keyboard direction does not repeat while held touch does.",
+      "path_to_ten": "Re-run MAP1 to completion, narrate the in-combat commitment on screen, and give the keyboard the same axis repeat touch already has.",
+      "ten_by_wave": "wave 2"
+    },
+    {
+      "id": "RI-UIX04",
+      "score": 6,
+      "result": "unchanged by this round, carried at round 5's level",
+      "why": "The journal's exit routes JX0-JX6 all pass at HEAD. No journal code changed this round (the round's only game file is inventory.js). Not re-derived beyond the exit legs.",
+      "why_not_ten": "J2/J9/J10's density and extent were not re-measured this round.",
+      "path_to_ten": "Re-run RI-UIX04's own method on a populated journal.",
+      "ten_by_wave": "wave 2"
+    },
+    {
+      "id": "RI-UIX07",
+      "score": 5,
+      "result": "not moved by this round, not re-measured",
+      "why": "The world HUD is untouched by this round's single-file change. Carried, not re-derived. Recorded so it is not mistaken for a fresh pass.",
+      "why_not_ten": "Not measured this round.",
+      "path_to_ten": "Run RI-UIX07's own method.",
+      "ten_by_wave": "wave 2"
+    }
+  ],
+  "score": {
+    "overall_0_10": 2,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "min over the six items: RI-UIX03 3, RI-UIX04 6, RI-UIX06 4, RI-UIX07 5, RI-UIX09 2, RI-UIX10 6. The min is 2 and it is set by RI-UIX09's DN4 hard fail. Round 5 also scored 2 — but for a defect that predated it. This round's 2 is set by a hard fail THIS ROUND INTRODUCED, on a screen that measured 0.1538 (a pass) with this round's change removed. RI-UIX06 rose 2 -> 4 because the two FD4 instances really are fixed; that improvement is real and is why the piece is not worse than round 5 overall, only differently broken.",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "RI-UIX09 DN4 hard fail: container D2 0.1459 < 0.15, and level-up 0.1495 < 0.15.",
+    "RI-UIX03 M-C3 fails on C7: the container's description is truncated where C7 requires it unabbreviated and untruncated.",
+    "Overall 2 is below the piece's pass_threshold of 7."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry",
+    "subsystem_path": "ui.menu.inventory",
+    "severity": "blocking",
+    "what": "The container's list rows and detail band are sized below their own content, and round 6 paid for the gold column out of the other columns' width rather than out of the row's. Measured: pitching the three columns against usable=144 units instead of half=198 cut every column 27%, which truncated 3 of 4 visible names and — unreported by the builder — the WEIGHT column, rendering 'Bog-iron maul 11.5' as 'Bog-iron ... 11...'. The net matter loss drops container D2 from 0.1538 to 0.1459, across RI-UIX09 DN4's 0.15 hard-fail floor. Separately the band shows 2 of the 4-6 wrapped lines that 42 of 45 carried records need, violating RI-UIX03 C7.",
+    "why_it_matters": "The player opens a chest and cannot read what a thing weighs or what it is called, on the one screen whose entire job is deciding what to carry and what to leave behind.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-rows-WITHFIX-4x.png",
+      "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-rows-NOFIX-4x.png",
+      "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-band-WITHFIX-3x.png",
+      "corpus/90-verdicts/wave1/artifacts/T4-r6c/measure-truepin/measure-live-1920x1080.json",
+      "corpus/90-verdicts/wave1/artifacts/T4-r6c/measure-deletefix/measure-live-1920x1080.json",
+      "corpus/90-verdicts/wave1/artifacts/T4-r6c/measure-headfix/measure-live-1920x1080.json",
+      "corpus/90-verdicts/wave1/artifacts/T4-r6c/diff/spatial-diff.json"
+    ],
+    "remedy": {
+      "action": "In game/src/ui/screens/inventory.js drawContainer(), stop making the three columns compete inside a 182-unit row: either give the container screen its own wider inner width (the panel is 480 of 1920 px and RI-UIX03 P5's ceiling is 60% of screen AREA, so there is room), or right-align the weight+gold pair against the row's right edge and give the name column the remainder. Reflow container.band so the description fits by layout rather than by ellipsis.",
+      "targets": [
+        "game/src/ui/screens/inventory.js"
+      ],
+      "acceptance": "All of: (1) ZERO weight values ellipsised across all seven rows on both sides at the shipped ui-journal fixture — a number is drawn whole or the column is widened until it is; (2) at most 1 item name ellipsised across both sides; (3) container.band renders >= 4 wrapped lines, satisfying RI-UIX03 C7 for the 42 of 45 carried records needing 4+, by reflow and not by shrinking type below RI-UIX06's readability floor; (4) PRESERVATION per S59 — container D2 >= 0.15 AND >= 0.1538 (its value at 76cd4848), and level-up D2 not below 0.1495 — every number measured on a git worktree checked out at the DELIVERED commit and run through THAT WORKTREE'S OWN tools/ui/t4-r2-measure.mjs, with the manifest's commit field asserted equal to the delivered SHA before any number is believed.",
+      "ref_item": "RI-UIX09 DN4, RI-UIX03 C7/M-C3",
+      "estimated_size": "one screen, one file, plus a three-arm worktree measurement"
+    }
+  },
+  "secondary_observations": [
+    "The builder's citation 'T4-r5.md line 773' does not resolve — that file is 472 lines. The intended source is T4-r5.json:773. The substance is correct and independently verified.",
+    "IC1 fails: the in-combat commitment is not narrated on screen. Not this round's code.",
+    "TS5: a 40-frame held KEYBOARD direction moves 1 row where the equivalent held TOUCH drag moves 6. The missing axis repeat is a keyboard defect, not device-neutral.",
+    "MAP1 did not run — the browser closed before the map leg. Scored 0 fail-closed.",
+    "The builder's 'only two commits touched game/src since the pin' is wrong: `git log 76cd4848..b0a9f716 -- game/` returns five, and lighting-recipes.js and sky.js changed as landed commits rather than as a sibling's uncommitted drift.",
+    "An absolute --out passed to tools/ui/t4-* was silently nested under a duplicated repo root (path.join, not path.resolve) until b4e62e58 fixed 13 tools this session. A duplicated-root path escapes the .gitignore written for the real path, so debris under it gets committed while the identical file at its true path is correctly ignored. Worth a HAZARDS section alongside §17.",
+    "Importing tools/ui/t4-r2-critic-measure.mjs for its d2() RUNS it, and its default --out is a FILED round's artifact directory (T4-r2c). I tripped this once this session and the file was restored. The tool's own header warns of it; the durable fix is to split d2()/decodePNG() into a library that has no side effect on import."
+  ],
+  "corpus_extended": [],
+  "corpus_defects_filed": [
+    {
+      "id": "CORPUS-DEFECT-RI-UIX09-D2-is-hypersensitive-at-its-own-threshold",
+      "item": "RI-UIX09",
+      "what": "D2 is defined as the fraction of a panel's pixels differing from THE PANEL'S OWN MODAL COLOUR by dE > 6. The reference is re-derived per capture, and a large pixel population sits at the boundary. Measured this round: the sheet panel's modal colour moved [42,55,43] -> [45,57,45] across two captures differing by 166 pixels (0.06% of the panel), and D2 moved 0.0108. Level-up: 66 pixels (0.03%), D2 moved 0.0026. On the container, 0.67% of the panel lies in the dE 5.5-6.5 band and a threshold sweep of 5.0-7.0 spans ~0.0157 of D2.",
+      "why_it_matters": "DN4's 0.15 hard-fail floor is being applied to a quantity whose response to imperceptible input change is several times the margins it adjudicates. Round 5 passed the container by 0.0038. A measure that can move 0.0108 on a 0.06% image change cannot reliably pass or fail anything near its floor.",
+      "this_is_the_third_of_a_family": "S58 (the density measure could not distinguish a reflowed screen from an illegible one) and S59 (an unpaired criterion satisfied by deleting the player) named the pattern. This is the same defect one level down: not a blind metric or an unpaired one, but an UNSTABLE one.",
+      "proposed_fix_NOT_APPLIED": "Fix the reference instead of re-deriving it: measure D2 against the panel's DECLARED ground colour from getUIState().materials rather than the modal colour of the capture, and/or report D2 as a band across dE 5.0-7.0 with the hard fail firing only when the WHOLE band is below 0.15. Either makes the number stable against sub-perceptual change.",
+      "explicitly_not_used_to_excuse_this_round": "The container's fall is consistent at every threshold and its modal colour did not move. It is real matter loss and it is attributed to this round by delete-the-fix. This defect is filed because it is true, not because it helps anyone."
+    },
+    {
+      "id": "CORPUS-HOLE-no-row-fails-a-truncated-VALUE-in-a-list-row",
+      "what": "Nothing in the corpus fails a numeric value truncated to unreadability in a list row. RI-UIX09 DN3's truncated-label hard fail is scoped to the HUD quick-slot cluster by P3's own words. RI-UIX06 FD4/M-F18.1 fires on text whose bounding box EXCEEDS its container — an ellipsised value does not exceed, so it passes. RI-UIX03 C7 covers the DETAIL PANEL's description, not the list row's columns; C2 requires weight to EXIST, not to be legible. RI-UIX04 J2 is journal entries.",
+      "ids_checked_before_declaring_the_hole": [
+        "RI-UIX01",
+        "RI-UIX02",
+        "RI-UIX03",
+        "RI-UIX04",
+        "RI-UIX05",
+        "RI-UIX06",
+        "RI-UIX07",
+        "RI-UIX08",
+        "RI-UIX09",
+        "RI-UIX10",
+        "RI-VIS01",
+        "RI-VIS05",
+        "RI-VIS09"
+      ],
+      "the_sentence_1_3_asks_for": "I can see that 'Bog-iron ... 11...' is bad and no row I have will fail it.",
+      "bounded_not_built": "Per §1.3 guard 3 I am not writing a reference item inside a critique. It is one row and it belongs in RI-UIX06 §E as an M-F18.7, or in RI-UIX03 as a C11: 'a numeric value in a list row is rendered whole or the column is widened; an ellipsised number is a hard fail.' Filed for the item's owner.",
+      "did_not_affect_my_score": "The piece is failed by RI-UIX09 DN4, an existing row, on an existing hard fail. Nothing I would have written is load-bearing for the 2."
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "check": "DN7",
+      "ref_item": "RI-UIX09",
+      "status": "not_possible",
+      "not_possible_reason": "RI-UIX09 declares blind_pair: yes and DN7 requires a FRESH judge with no project context. A subagent cannot spawn subagents and create_session is approval-gated, so I cannot produce one. Fail-closed: DN7 is scored as not passed and RI-UIX09 cannot reach its 8 ladder rung, which requires DN7. THE ORCHESTRATOR OWES THIS (CLAUDE.md rule 0e)."
+    },
+    {
+      "check": "blind pair",
+      "ref_item": "RI-UIX03",
+      "status": "not_possible",
+      "not_possible_reason": "blind_pair: yes; no fresh judge available to a subagent. Orchestrator owes it (rule 0e)."
+    },
+    {
+      "check": "blind pair",
+      "ref_item": "RI-UIX04",
+      "status": "not_possible",
+      "not_possible_reason": "blind_pair: yes; no fresh judge available to a subagent. Orchestrator owes it (rule 0e)."
+    },
+    {
+      "check": "blind pair",
+      "ref_item": "RI-UIX06",
+      "status": "not_possible",
+      "not_possible_reason": "blind_pair: yes; no fresh judge available to a subagent. Orchestrator owes it (rule 0e)."
+    },
+    {
+      "check": "blind pair",
+      "ref_item": "RI-UIX07",
+      "status": "not_possible",
+      "not_possible_reason": "blind_pair: yes; no fresh judge available to a subagent. Orchestrator owes it (rule 0e)."
+    }
+  ],
+  "arbitration": {
+    "AR-1": {
+      "status": "pass",
+      "checks": [
+        "A3 pause mid-fight — EQ1 recorded frame 43 -> 43 with the menu open OUT of combat, which RI-UIX03 P1 requires; the IC leg confirmed a fight actually runs (IC0 pass, inCombat=true) and the world clock was not frozen by this round's change. A6/A8 not applicable: this round's single game file is a UI draw path and touches no hit resolution, no damage, no enemy stats.",
+        "A10 talking mid-fight — not re-run this round; round 5's result stands and no code on that path changed."
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/reports/t4-r3-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/logs/t4-r3-critic.log"
+      ]
+    },
+    "AR-2": {
+      "status": "pass",
+      "checks": [
+        "B5 soul-currency purchase — the container's value column is denominated in GOLD and reads '30', '96', '55', with 'not for sale' for the quest token. No price anywhere is denominated in souls. Seam S15 holds, and this round makes it MORE visible than round 5 did, where the whole column was clipped away and the player could not see the currency at all.",
+        "B4 procedural loot — the container's contents come from the hand-placed ui-journal fixture; H3 exercised four fixture shapes and the contents did not vary.",
+        "B6 item descriptions as the lore vector — NOT re-measured this round. Noted rather than claimed: this round REDUCES the amount of item description a player can read, which moves in the safe direction for B6 and the wrong direction for RI-UIX03 C7."
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-rows-WITHFIX-4x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-band-WITHFIX-3x.png"
+      ]
+    }
+  },
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-ui-container-clips-its-own-declared-text",
+      "status": "partially-closed",
+      "closed_by_builder_of_fix": false,
+      "measured_value": "gold column: 7 of 7 rows draw their declared figure inside the row rect, both sides. band: description now ends in a visible ellipsis, nothing drawn past the clip.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-rows-WITHFIX-4x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-rows-NOFIX-4x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-band-WITHFIX-3x.png"
+      ],
+      "note": "PARTIALLY closed, not closed. The RI-UIX06 FD4 silent-clip defect is genuinely gone on both instances, verified on a critic-taken two-arm capture pair. But the mechanism chosen for the band (truncate to the existing rect) violates RI-UIX03 C7 (full description, unabbreviated and untruncated), and the mechanism chosen for the rows (re-pitch every column 27% narrower) truncates the WEIGHT column to \"11...\" and costs 0.0079 of D2, taking the container across RI-UIX09 DN4 hard floor. The successor gap is GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry. NOTE: the ledger refuses intra-wave closure (closure must come from a later wave), so this entry is recorded for the reader rather than applied by the generator."
+    },
+    {
+      "gap_id": "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them",
+      "status": "open",
+      "closed_by_builder_of_fix": false,
+      "note": "Still open, and this round is a fresh instance of exactly it: the columns were re-pitched against a new denominator without the row being re-sized for what it carries. Round 4 gap-closure clause 1 sheet arm confirmed unsatisfiable by construction from my own reading of progress.js; replacement clause specified in the verdict and deliberately not landed by me."
+    }
+  ],
+  "method_deviations": [
+    "I read the builder's status file before measuring, because the brief made it my work list. CRITIC-DOCTRINE §8 asks for the reverse ordering. Recorded, and it cut against the builder rather than for it.",
+    "RI-UIX09 method step 5 (blind pair) not run — no fresh judge available to a subagent. Fail-closed.",
+    "RI-UIX06 FD4 measured at 1920x1080 only, not at all 8 capture configs. The other seven are unmeasured and scored fail-closed, not extrapolated.",
+    "My dE76 boundary profile in threshold-sensitivity.json is an APPROXIMATION used only to characterise the population near the threshold; it diverges from the tool's dE00 on the journal panel (my modal pick differs), and I have not used its journal figures for anything. Every D2 number I rule on comes from the unmodified d2()."
+  ],
+  "arbitration_questions": [
+    {
+      "question": "S58's corrected mechanism says D2 fell in round 4 because the DENOMINATOR fell when the panel shrank. This round shows a third mechanism: D2 moving 0.0108 on a 0.06% image change because the MODAL COLOUR the measure references moved. Should DN4's hard fail be allowed to fire on a single capture at all, or must it require agreement across a threshold band?",
+      "both_sides": "FOR firing on a single capture: a floor that needs three measurements is a floor nobody runs, and the container's fall here is consistent across the whole band, so the strict reading caught a real regression. AGAINST: round 5 passed the container by 0.0038 on a measure demonstrated to move 0.0108 on an imperceptible change, so that pass was inside the instrument's own noise and neither critic could have known.",
+      "not_ruled_by_me": "I scored against DN4 exactly as written and the piece fails on it. I am not weakening it; §1.3 guard 1 forbids that. This is for the dimension owner."
+    },
+    {
+      "question": "Round 5's remedy offered 'the rendered description equals the declared string, OR ends in an ellipsis'. RI-UIX03 C7 requires it 'unabbreviated and untruncated'. May a verdict's remedy licence what a reference item forbids?",
+      "both_sides": "FOR: the remedy is the builder's instruction and a builder who follows it exactly should not be failed for it. AGAINST: a remedy is one critic's sentence and a reference item is the bar; if remedies could relax items, any critic could lower any row by writing a lenient remedy.",
+      "my_working_answer_which_the_owner_may_reverse": "The item wins and the builder is not blamed. I have scored C7 as violated but recorded plainly that the builder followed the remedy in good faith, and the defect I promote is the underlying size problem, not the builder's compliance."
+    }
+  ],
+  "source_reads": [
+    "LOCATING: tools/lib/cli.mjs:11 (REPO_ROOT derivation), tools/lib/browser.mjs:78-93 (resolveEntry serves REPO_ROOT/game), tools/ui/t4-r2-measure.mjs:296 (the commit field), tools/lib/control-clone.mjs:48 (clone root) — all read to establish WHY the builder's arms were void, then PROVEN by running a real clone and a real worktree and comparing the recorded commit fields.",
+    "DIAGNOSING: game/src/ui/screens/progress.js:243-276 (the sheet gauge spans the row) — read only to confirm a gap already demonstrated, per §1.1.",
+    "DIAGNOSING: game/src/ui/screens/inventory.js diff at b0a9f716 — read to make the remedy concrete after the defect was demonstrated from captures.",
+    "QUOTING WRITTEN CONTENT: corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md:86 (C7), corpus/86-ui/RI-UIX09-populated-density-and-object-iconography.md:100,141 (P3/DN3), tools/metrics/ui-metrics.mjs:63 (SCREENS list).",
+    "No score in this verdict rests on a source claim without a corresponding output artifact."
+  ],
+  "artifacts": [
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/measure-truepin/measure-live-1920x1080.json",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/measure-truepin/screens/",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/measure-deletefix/measure-live-1920x1080.json",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/measure-deletefix/screens/",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/measure-headfix/measure-live-1920x1080.json",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/measure-headfix/screens/",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-rows-WITHFIX-4x.png",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-rows-NOFIX-4x.png",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-band-WITHFIX-3x.png",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-band-NOFIX-3x.png",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/diff/spatial-diff.json",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/diff/threshold-sensitivity.json",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/diff/diff-container.png",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/diff/diff-levelup.png",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/diff/diff-sheet.png",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/reports/t4-r3-critic.json",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/reports-drive/",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/logs/t4-r3-critic.log",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/logs/drive.log",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/logs/measure-truepin.log",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/logs/measure-deletefix.log",
+    "corpus/90-verdicts/wave1/artifacts/T4-r6c/logs/measure-headfix.log"
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is FALSE: RI-UIX09 method step 5 (blind pair) could not run for want of a fresh judge; RI-UIX06 FD4 was measured at 1 of 8 capture configs; FD1/2/3/5/6/7 are unreachable on the container until ui-metrics.mjs gains a container opener; MAP1's browser closed before the leg ran. Every one of these is scored 0 or fail-closed, none is recorded as 'unknown' or omitted. blind_done_where_required is FALSE for five of six items, all blind_pair: yes, all not_possible for the same structural reason — the orchestrator owes them under rule 0e."
+  },
+  "notes": [
+    "The most useful thing in this verdict is not the score. It is that a filed verdict's numbers were challenged, the challenge was itself testable, and the test found the challenge void while confirming the original. Round 5's critic measured correctly.",
+    "The builder deserves saying plainly: it reported its own uncertainty at length, refused to game the metric when gaming it was available, declined to grow the box for a reason that turns out to be right, re-derived a critic's claim instead of trusting it, and declined to edit an instrument mid-round. Every one of those calls was correct. The experiment it built to defend itself was the one thing it got wrong, and it got it wrong in the direction of exonerating its own change.",
+    "The general lesson, and it generalises past this round: FOUR ARMS AGREEING TO FOUR DECIMAL PLACES IS NOT CONVERGENT EVIDENCE — IT IS THE SIGNATURE OF FOUR RUNS OF THE SAME THING. A control that cannot possibly differ from its treatment will always agree with it. HAZARDS §11 says to freeze arms by construction; the missing half is to VERIFY THE FREEZE HELD, and here the verification was free because every manifest already carried the commit it actually ran."
+  ]
+}
