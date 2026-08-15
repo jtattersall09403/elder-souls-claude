@@ -15,6 +15,7 @@ const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 import { buildScene, makeActor, terrainHeight } from './scene.js';
 import { buildInterior, clearInterior, buildGenericHall } from './interior.js';
 import { makeRiggedActor, poseFromRig, poseStatic } from './actor.js';
+import { artFamilyForRace } from './lib/race-art.js';
 import { Sky, WEATHER } from './sky.js';
 import { Province } from '../world/province.js';
 import { SIGNATURE_KINDS } from '../world/signature.js';
@@ -43,6 +44,10 @@ import { resolveGrade, identityGrade, easeGrade } from './post/grade.js';
 // Keyed by the `race` field on the NPC record; unknown races fall back to the first.
 const RACE_TINT = {
   saxhleel: [0x4f6141, 0x3d5136],
+  // `argonian` is the same people as `saxhleel` (see lib/race-art.js) but it is 181 of 408 records,
+  // so giving it the identical pair would paint 44% of the province one colour. A neighbouring
+  // marsh green, not a different species.
+  argonian: [0x5a6b48, 0x44543a],
   naga: [0x3f5a46, 0x2f4436],
   imperial: [0xb9a189, 0x5a4a38],
   dunmer: [0x6b5a63, 0x3a2f3c],
@@ -690,7 +695,12 @@ export class Renderer {
         // Race tint is now handed to the actor at build time — `makeRiggedActor` clones the
         // skin and cloth materials per actor, so a Dunmer and an Imperial in the same room are
         // not the same colour and no caller has to reach into the child list to fix it.
-        mesh = makeRiggedActor(this.mats, tint[1], tint[0], (n.race==='saxhleel'||n.race==='naga')?'saxhleel':'humanoid');
+        // The art family comes from `lib/race-art.js`, not from an inline test. This line used to
+        // read `(n.race==='saxhleel'||n.race==='naga')?'saxhleel':'humanoid'`, which sent all 181
+        // `argonian` records — 44.4% of the roster, in the Argonians' own province — onto the
+        // human body plan. `tools/check-race-art.mjs` fails if the shipped data grows a race
+        // string that map does not carry.
+        mesh = makeRiggedActor(this.mats, tint[1], tint[0], artFamilyForRace(n.race));
         // Non-combat townspeople wear the tinted skinned cloth body. Combat equipment sets are
         // selected from equip-load, a field civilians do not own; showing a guessed armour set
         // made every hall look like a formation of identical helmeted soldiers.

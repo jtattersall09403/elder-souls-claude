@@ -1,15 +1,61 @@
 {
   "task_id": "W1-F10-r2-builder",
   "roadmap_item": "F10",
-  "state": "starting",
+  "state": "in-progress",
   "started": "2026-08-15",
+  "commit_context": "branch codex/wave1-build-experiment, base f8f6b44b",
   "could_not_do": [
-    "Nothing yet — task just started. This field is written FIRST and stays first."
+    "NOT YET DONE — hardware eight-angle orbits and motion captures for the player AND NPCs. The winding fix changes what every frame shows, so any capture taken before it is void as evidence; captures are the next step and are unmeasured as of this write.",
+    "NOT YET DONE — delete-the-fix on a control clone from a pinned baseline via a real git worktree.",
+    "NOT YET STARTED — verdict §7 fixes 2 (proportion), 3 (face landmarks + humanoid eyes), 4 (shoulder/torso continuity + triangle budget), 5 (reptilian features), 6 (garment vocabulary), 7 (cross-fade), 8 (hit reactions), 9 (stance), 10 (actor count). Fix 1 is done and measured.",
+    "The verdict's own five unrun STATIC checks (B1 faceting, B3 material separation, B4 texel density, B5 contact shadow, B6 subsurface) remain unrun by me too."
   ],
-  "summary": "Round-2 surface rebuild of characters/creatures against the FAIL verdict W1-F10-CHARACTERS. Keep the rig (DYNAMIC 7/10, all passing numbers are skeleton); rebuild the mesh.",
-  "files_touched": [],
-  "files_claimed": [
+  "headline": "The characters were being drawn inside-out. Three separate geometry generators had inverted triangle winding; the two that build the entire body accounted for 153,344 of 227,850 triangles rendering with a normal pointing away from the camera. Fixed, 0 remaining, with a guard that goes red.",
+  "done_and_measured": [
+    {
+      "id": "winding",
+      "what": "Inverted triangle winding in three generators in game/src/render/actor.js",
+      "instrument": "tools/visual/mesh-winding.mjs (new), signed-volume + normal-agreement + boundary-edge, 13 subjects / 715 meshes",
+      "before": "65 of 715 meshes with NEGATIVE signed volume; 153,344 of 227,850 triangles whose authored normal disagrees with their winding (67.3%). actor-body:<family>:skin 13/13 inverted (102,708/109,792), actor-body:<family>:cloth 13/13 inverted (49,088/51,896).",
+      "after": "0 of 715 inverted; 0 of 227,850 disagreeing. Tool exits 0.",
+      "generators_fixed": [
+        "MeshBuilder.tube / .ball / .ellipsoid — side walls wound A,C,B (inward). tube's end CAPS were always correct, which is why the disagreement was 94% and not 100% and why one mesh carried two conventions.",
+        "garmentTabGeometry — the whole index list inverted. Invisible to a normal check because computeVertexNormals() derives normals FROM winding; only signed volume caught it (13/13 :legs meshes negative).",
+        "torsoShellGeometry — CAPS ONLY inverted, walls always correct. 36 tris per shell, matching the measured 144/720 on tailored-tunic over 4 meshes exactly."
+      ],
+      "why_it_matters": "With FrontSide (every actor material; no mesh is DoubleSide) WebGL culls by screen-space winding. Inverted winding culls the NEAR surface and draws the FAR one — the owner's see-through report, and not a hole, so the previous round's gap-pixel census counted it as one and hole-filling could never reach it. It also inverted the lighting on 94% of the visible body, which is a direct contributor to the critic's finding #1 ('ellipsoid shoulders on a slab torso') because shading is what makes a form read as a form.",
+      "control": "mesh-winding.mjs --self-test reverses a correct sphere and asserts the tool goes red; it does. A separate control geometry (mirror-x with no index reversal) reproduces the classic flip at -1.075e-1. All seven THREE built-ins used by the presentation path measure positive, so the comparison is against the engine's own convention, not against my reasoning."
+    },
+    {
+      "id": "fix1-race-routing",
+      "what": "verdict §7 fix 1 — route the reptilian races to the reptilian body",
+      "before": "renderer.js:693 tested (race==='saxhleel'||race==='naga'); 181 argonian records fell through to base.humanoid. npcs_per_art_family = {saxhleel: 79, humanoid: 329}.",
+      "after": "npcs_per_art_family = {saxhleel: 260, humanoid: 148} — meets the >=260 acceptance exactly. Median pairwise silhouette IoU 0.9109 -> 0.8954; the argonian-vs-breton IoU 1.0000 pair named in the verdict is gone.",
+      "ruling_on_the_data_defect": "BOTH, but not by rewriting 181 records. Saxhleel is the endonym and Argonian the Cyrodilic exonym for one people, so content using both is lore working, not a typo; what was wrong is that the renderer treated a NAME as a BODY PLAN. The map now lives once in game/src/render/lib/race-art.js and covers all 12 in-use strings plus none/mixed/khajiit with stated reasons. races.json is deliberately untouched: its own invariant is sum(attribute_deltas)==12 per race record and four checkers read races.map(r=>r.id), so an alias row there would break a progression invariant to solve a rendering problem. REVERSIBLE — overturned if a later piece needs argonian and saxhleel to differ in reaction or standing; nothing in disposition.js or race-reactions.json distinguishes them today.",
+      "drift_guard": "tools/visual/f10-silhouette.mjs held a hand-copy of the predicate annotated 'verbatim'. It now imports the same function renderer.js calls, so the instrument cannot measure the old world. tools/check-race-art.mjs walks the shipped NPC data and exits non-zero on any race string with no declared body plan; --self-test proves it goes red."
+    }
+  ],
+  "files_touched": [
+    "game/src/render/actor.js",
+    "game/src/render/renderer.js",
+    "game/src/render/lib/race-art.js",
+    "game/src/render/lib/rigs.js",
+    "tools/check-race-art.mjs",
+    "tools/visual/mesh-winding.mjs",
+    "tools/visual/f10-silhouette.mjs",
     "orchestration/status/W1-F10-r2-builder.json"
   ],
-  "next_step": "Read the verdict json+md, open the reference plates, then survey game/src/render/ character construction."
+  "files_claimed": [
+    "game/src/render/actor.js",
+    "game/src/render/renderer.js",
+    "game/src/render/lib/race-art.js",
+    "game/src/render/lib/rigs.js",
+    "tools/check-race-art.mjs",
+    "tools/visual/mesh-winding.mjs",
+    "tools/visual/f10-silhouette.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r2/",
+    "orchestration/status/W1-F10-r2-builder.json"
+  ],
+  "ownership_note": "node tools/ownership.mjs --for game/src/render/actor.js reports W1-30-builder-20260812 as having TOUCHED it, 13h old, files_claimed: []. No live claim, so no declared conflict. Recorded rather than assumed.",
+  "next_step": "Capture hardware eight-angle orbits + motion for player AND NPCs to see the winding fix (all prior character frames are void as evidence), then verdict §7 fix 2 (head morph axis is already added to MORPH_KEYS and rigs.js; HEAD_SCALE per family still to be applied in actor.js buildSkeleton) and fix 3 (face landmarks, humanoid eyes)."
 }
