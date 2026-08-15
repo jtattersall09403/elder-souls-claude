@@ -62,7 +62,7 @@ const R = resolve(HERE, '../..');
 const THREE = await import(pathToFileURL(join(R, 'game/vendor/three/three.module.js')).href);
 
 const opts = { part: 'foot', family: 'saxhleel', equipped: false, json: null, selfTest: false,
-  res: 384, bearings: [0, 45, 90, 135, 180, 225, 270, 315], elev: 12, posed: false, ground: null, png: null, half: null, target: null, subject: null };
+  res: 384, bearings: [0, 45, 90, 135, 180, 225, 270, 315], elev: 12, posed: false, ground: null, png: null, half: null, target: null, subject: null, character: null, shade: false, clip: 'idle_loop', phase: 0 };
 for (const a of process.argv.slice(2)) {
   const [k, v] = a.replace(/^--/, '').split('=');
   if (k === 'posed') opts.posed = true;
@@ -78,6 +78,10 @@ for (const a of process.argv.slice(2)) {
   else if (k === 'png') opts.png = resolve(v);
   else if (k === 'half') opts.half = Number(v);
   else if (k === 'subject') opts.subject = v;
+  else if (k === 'character') opts.character = v;
+  else if (k === 'shade') opts.shade = true;
+  else if (k === 'clip') opts.clip = v;
+  else if (k === 'phase') opts.phase = Number(v);
   else if (k === 'target') opts.target = v.split(',').map(Number);
 }
 
@@ -105,6 +109,13 @@ function rasterise(tris, cam) {
 
   const depth = new Float64Array(N * N).fill(Infinity);
   const owner = new Int32Array(N * N).fill(-1);
+  const tri = new Int32Array(N * N).fill(-1);
+  // Interpolated SMOOTH normal per pixel. Flat per-triangle normals were the first version and
+  // they made every 7-segment landmark tube read as a hard-edged cable, because a cylinder's
+  // facets are exactly what smooth normals exist to hide. The game ships smooth normals, so a
+  // preview shaded flat systematically over-reports how lumpy a face is — and it was about to make
+  // this round tune a set of landmarks against a defect in its own instrument.
+  const nrmBuf = new Float32Array(N * N * 3);
   const names = [];
   const nameIx = new Map();
   const idOf = (s) => { let i = nameIx.get(s); if (i === undefined) { i = names.length; names.push(s); nameIx.set(s, i); } return i; };
@@ -117,7 +128,8 @@ function rasterise(tris, cam) {
       p.dot(fwd)];
   };
 
-  for (const t of tris) {
+  for (let ti = 0; ti < tris.length; ti++) {
+    const t = tris[ti];
     const oid = idOf(t.owner);
     const a = proj(t.v[0], t.v[1], t.v[2]);
     const b = proj(t.v[3], t.v[4], t.v[5]);
@@ -137,11 +149,17 @@ function rasterise(tris, cam) {
         if (w0 < 0 || w1 < 0 || w0 + w1 > 1) continue;
         const z = a[2] + w1 * (b[2] - a[2]) + w0 * (c[2] - a[2]);
         const k = py * N + px;
-        if (z < depth[k]) { depth[k] = z; owner[k] = oid; }
+        if (z < depth[k]) {
+          depth[k] = z; owner[k] = oid; tri[k] = ti;
+          if (t.n) {
+            const w2 = 1 - w0 - w1;
+            for (let c = 0; c < 3; c++) nrmBuf[k * 3 + c] = t.n[c] * w2 + t.n[3 + c] * w1 + t.n[6 + c] * w0;
+          } else nrmBuf[k * 3] = nrmBuf[k * 3 + 1] = nrmBuf[k * 3 + 2] = 0;
+        }
       }
     }
   }
-  return { depth, owner, names, N };
+  return { depth, owner, tri, nrmBuf, names, N, view: { right, up, fwd } };
 }
 
 /** Per-owner visible pixel census + depth relief, over the whole raster. */
@@ -240,9 +258,15 @@ const group = actorMod.makeRiggedActor(mats, 0x8f9aa6, 0x8d9a72, opts.family);
 // enough to swallow its own eye, and the instrument correctly reported 0 visible eye pixels for a
 // figure nobody ships.
 group.name = opts.subject || (opts.family === 'saxhleel' ? 'player' : 'anon');
+if (opts.character) group.userData.actor.characterId = opts.character;
 const rig = new Rig(skel, hitgeo);
 rig.rx.fill(0); rig.ry.fill(0); rig.rz.fill(0);
-addPose(rig, clips.archetypes.idle_loop || Object.values(clips.archetypes)[0], 0, 1);
+// MOTION, NOT STILLS. The owner's standing directive is that a character claim needs the body in
+// motion, and HAZARDS 16 is what happens when a capture only thinks it is moving. This one has no
+// harness verb to get wrong: `--clip=locomotion_cycle --phase=<0..1>` drives the SAME `addPose`
+// the game drives, and the phase is a number this file passes, so a sequence that does not move
+// is visible as a sequence of identical frames rather than as a silent success.
+addPose(rig, clips.archetypes[opts.clip] || clips.archetypes.idle_loop || Object.values(clips.archetypes)[0], opts.phase, 1);
 rig.evaluate([0, 0, 0], 0, 0, 0.1, 1.0);
 // `water` is the third argument and it is what switches the PRESENTATION IK on: `poseFromRig`
 // conforms the two terminal foot bones to `water.groundAt(x, z)` whenever the actor is not
@@ -304,7 +328,9 @@ group.traverse((o) => {
       skinMats.push(built.bones[j].matrixWorld.clone().multiply(built.skeleton.boneInverses[j]));
     }
   }
-  const tmp = new THREE.Vector3(), acc = new THREE.Vector3();
+  const tmp = new THREE.Vector3(), acc = new THREE.Vector3(), nv = new THREE.Vector3();
+  const nrmAttr = g.attributes.normal || null;
+  const NM = M ? new THREE.Matrix3().getNormalMatrix(M) : null;
   const skinVertex = (ii) => {
     acc.set(0, 0, 0);
     let tot = 0;
@@ -325,14 +351,13 @@ group.traverse((o) => {
       const d = dominant(ia);
       owner = `${surface}@${boneName.get(d) || d}`;
     } else owner = o.name;
-    const vv = [];
+    const vv = [], nn = [];
     for (const ii of [ia, ib, ic]) {
-      if (skinned && opts.posed) { const s = skinVertex(ii); vv.push(s.x, s.y, s.z); continue; }
-      v.fromBufferAttribute(pos, ii);
-      if (M) v.applyMatrix4(M);
-      vv.push(v.x, v.y, v.z);
+      if (skinned && opts.posed) { const s = skinVertex(ii); vv.push(s.x, s.y, s.z); }
+      else { v.fromBufferAttribute(pos, ii); if (M) v.applyMatrix4(M); vv.push(v.x, v.y, v.z); }
+      if (nrmAttr) { nv.fromBufferAttribute(nrmAttr, ii); if (NM) nv.applyMatrix3(NM); nn.push(nv.x, nv.y, nv.z); }
     }
-    tris.push({ owner, v: vv });
+    tris.push({ owner, v: vv, n: nrmAttr ? nn : null });
   }
 });
 
@@ -351,7 +376,7 @@ const CROPS = {
   foot: { target: [ankle.x, ankle.y - 0.01, ankle.z + 0.04], half: 0.18,
     want: /^skin@foot_l$/, want_label: 'skin@foot_l (the sole, heel, ball and toes)' },
   face: { target: [head.x, head.y + 0.075, head.z + 0.05], half: 0.16,
-    want: /eye-|pupil-/, want_label: 'eye and pupil family forms' },
+    want: /eye-|pupil-|mouth-line/, want_label: 'eye, pupil and mouth family forms' },
   leg: { target: [ankle.x, ankle.y + 0.20, ankle.z], half: 0.35, want: /^skin@foot_l$/, want_label: 'skin@foot_l' },
 };
 const crop = { ...(CROPS[opts.part] || CROPS.foot) };
@@ -388,9 +413,38 @@ if (opts.png) {
     let h = 0; for (const c of name) h = (h * 31 + c.charCodeAt(0)) >>> 0;
     return [80 + (h & 127), 80 + ((h >> 7) & 127), 80 + ((h >> 14) & 127)];
   };
+  // SHADED MODE EXISTS BECAUSE A CENSUS CANNOT TELL YOU WHETHER A FACE READS. The owner map proves
+  // a landmark reaches the frontmost surface; only a shaded image says whether a viewer would see
+  // it. Flat per-triangle N.L under one key plus a fill — deliberately harsher than the game's
+  // lighting, so a landmark that survives here is not surviving on a generous light.
+  const albedo = (name) => name === 'GROUND' ? [90, 105, 70]
+    : /pupil|mouth-line/.test(name) ? [26, 20, 16]
+      : /eye-/.test(name) ? [167, 159, 140]   // the SHIPPED hEyeMat 0xa79f8c, not a guess — a preview
+                                            // that paints the sclera brighter than the material
+                                            // makes an eye look like a bulging ping-pong ball and
+                                            // this one did, for two tuning passes.
+        : /:cloth@|equipment|tunic|hair-cap/.test(name) ? [126, 132, 150]
+          : /:bone@|claw/.test(name) ? [206, 196, 168] : [162, 150, 118];
+  const L = [0.42, 0.78, 0.46]; const ln = Math.hypot(...L);
+  const nrm = new THREE.Vector3(), e1 = new THREE.Vector3(), e2 = new THREE.Vector3();
   for (let k = 0; k < N * N; k++) {
-    const c = r.owner[k] < 0 ? [16, 16, 20] : colour(r.names[r.owner[k]]);
-    rgb[k * 3] = c[0]; rgb[k * 3 + 1] = c[1]; rgb[k * 3 + 2] = c[2];
+    if (r.owner[k] < 0) { rgb[k * 3] = 16; rgb[k * 3 + 1] = 16; rgb[k * 3 + 2] = 20; continue; }
+    const name = r.names[r.owner[k]];
+    if (!opts.shade) { const c = colour(name); rgb[k * 3] = c[0]; rgb[k * 3 + 1] = c[1]; rgb[k * 3 + 2] = c[2]; continue; }
+    const T3 = tris[r.tri[k]];
+    if (T3.n && (r.nrmBuf[k*3] || r.nrmBuf[k*3+1] || r.nrmBuf[k*3+2])) {
+      nrm.set(r.nrmBuf[k*3], r.nrmBuf[k*3+1], r.nrmBuf[k*3+2]).normalize();
+    } else {
+      const t = T3.v;
+      e1.set(t[3] - t[0], t[4] - t[1], t[5] - t[2]);
+      e2.set(t[6] - t[0], t[7] - t[1], t[8] - t[2]);
+      nrm.crossVectors(e1, e2).normalize();
+    }
+    let nl = (nrm.x * L[0] + nrm.y * L[1] + nrm.z * L[2]) / ln;
+    if (nrm.dot(r.view.fwd) > 0) nl = -nl;                    // face the camera; winding is not trusted
+    const lit = 0.22 + 0.78 * Math.max(0, nl);
+    const a = albedo(name);
+    for (let c = 0; c < 3; c++) rgb[k * 3 + c] = Math.min(255, Math.round(a[c] * lit));
   }
   const stride = N * 3, raw = Buffer.alloc(N * (stride + 1));
   for (let y = 0; y < N; y++) rgb.copy(raw, y * (stride + 1) + 1, y * stride, (y + 1) * stride);

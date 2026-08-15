@@ -1,0 +1,102 @@
+{
+  "task_id": "W1-F10-r6",
+  "roadmap_item": "F10",
+  "role": "builder — the two defects the r5 appearance judgement named: the feet that do not exist on screen, and the humanoid face that does not read",
+  "state": "delivered and banked; feet landed separately and first, as briefed; both fixes measured against a pinned control at 6df8d003; NOT independently judged",
+  "date": "2026-08-15",
+  "branch": "codex/wave1-build-experiment",
+
+  "what_i_could_not_do": [
+    "I TOOK NO HARDWARE FRAMES AND RENTED NO POD. Every image and every number in this piece comes from an OFFLINE rasteriser I wrote (`tools/visual/f10-r6-visible-surface.mjs`), which builds the shipped actor in Node, poses it through the game's own `poseFromRig`, and z-buffers it. It is the same geometry and the same pose code the game runs, and it is NOT the game's renderer: no shadows, no ambient occlusion, no textures, no post, and a two-term light I chose. So my claim is precisely 'the geometry the camera can see has changed, in these ways, by these amounts', and it is NOT 'the game looks like this'. A GPU capture through `f10-r5-appearance.mjs` on the same two arms would settle what I cannot, and the whole point of the r5 pack is that it now exists and costs $0.026.",
+
+    "MY FIRST TWO CUTS OF THE FACE WERE WORSE THAN THE EGG THEY REPLACED AND ONLY LOOKING CAUGHT IT. Cut 1 put the eyeball 7 mm proud inside a full 8-arc orbit ring and rendered a gargoyle in goggles. Cut 2 flattened it and still read as a mask made of cables. Both passed every number I had — eye pixels went from 0 to thousands in both — because a visible-pixel census cannot tell a face from a lumpy mask. I only found it by rendering the thing and opening the file. THAT IS THE SAME LESSON RI-VIS08 B2 STATES: statistics can fail a build and can never pass one. If I had shipped cut 1 the census in this file would have looked identical.",
+
+    "MY OWN PREVIEW LIED TO ME TWICE AND BOTH LIES WERE ABOUT THE THING I WAS TUNING. (1) It shaded flat, so every 7-segment landmark tube read as a hard-edged cable and I nearly tuned the landmarks to compensate for a defect in my instrument; the game ships smooth normals, so I added normal interpolation and re-judged. (2) Its albedo table painted the sclera at 0xd8d2c4 when the shipped material is 0xa79f8c, which made the eyes look like bulging ping-pong balls for two tuning passes. Both are fixed and both are commented in the tool. A third such error I have not found would look exactly like these two.",
+
+    "I DID NOT MEASURE WHETHER THE WALK IMPROVED, ONLY THAT THE FOOT IS NOW THERE TO PLANT. The r5 judgement's walk finding was 'a stiff shuffle ... no heel strike and no toe-off, because there is no foot'. The foot now exists on screen through the cycle (sheet 03, four phases, all four frames differing between the arms), and the pin that overwrote the foot's animated vertical motion with a constant is gone — so the animated lift is no longer being erased, which it demonstrably was. But I did NOT re-run `f10-r5-walk-silhouette.mjs`, so the leg-band-over-head-band ratio of 3.56 is UNRETESTED and I make no claim on it. That tool exists, is committed, and is one command.",
+
+    "I FIXED NOTHING FOR THE 260 REPTILIAN NPCs' FACES AND DID NOT TRY. The r5 judgement is that the reptile faces read and the human ones do not; I took it at its word and worked the human half. The saxhleel family is touched only by the `extra`/`build` scale correction, which is a fix for it too — `sax.hive-drone` (build 0.80) went from ZERO visible eye pixels to 2,908 and `sax.deep-warden` (build 1.22) from 8,398 down to 1,353 — but I did not open a single reptile face to check that nothing else moved. `player.saxhleel` is build 1.00 and is byte-for-byte the correct null at 1,805 both sides.",
+
+    "THE HOLE CLAUDE.md NAMES IS STILL A HOLE AND THIS ROUND SAT IN IT. The character directive's requirement 4 says RI-VIS08 §D stops at fidelity and NOTHING IN THE CORPUS COVERS CHARACTER DESIGN. Every aesthetic call I made this round — how proud a cheekbone should be, where a mouth sits between nose and chin, whether an eye should be flush or proud — was made against one opened plate and my own judgement, with no written bar to fail against. So a critic can falsify my measurements and cannot falsify my taste, and any pass this earns is worth less than it looks. Requirement 1's character reference SET (images AND motion, at Skyrim/ESO level) still does not exist; `I5` owns it.",
+
+    "I SCORED NO RI ACCEPTANCE ROW AND RAN NO BLIND GATE. `RI-VIS10` B4 ('facial landmarks', scored 1 of 7 when the critic's word was 'a smooth blank') is now arguable on the humanoid family from sheet 02, and `RI-VIS08` B8 (eye and pupil as separate geometry, a MINIMUM across characters) is arguable from the per-variant census. I built both packs, so my opinion on either is void by construction (CLAUDE.md 0e). Only the orchestrator can spawn the judge."
+  ],
+
+  "headline": "Both defects were the SAME defect the hands had, and neither was in the geometry. The player's feet were 68 mm UNDERGROUND: the presentation IK pinned the ankle to `groundY + 0.02` when the rig puts it at 0.090 and the sole hangs 88 mm below the bone, so round 4's heel, sole, ball and three clawed toes were drawn every frame into the dirt — which is exactly why r5's two arms were byte-identical there. And the humanoid face was not featureless, it was ENCLOSED: the eye sat 5.8 mm inside the skull ellipsoid with 0.7 mm of pupil clearing it, the brow ridge 6.9 mm in, the orbit rim 13.8 mm in and the nasal bridge 28.8 mm in — with a second, independent bug scaling head-attached pieces by `build` on top of a headScale that already solves for build, which put the eyes of 52 of 148 humanoid NPCs at literally ZERO visible pixels and the eyes of the heavy variants on stalks.",
+
+  "the_two_findings": {
+    "feet": {
+      "what": "`poseFromRig`'s terrain conform ended `e[13] = gy + .02` — a constant pin, 2 cm above the ground.",
+      "why_that_is_wrong": "`game/data/combat/skeleton.json` places `foot_l` at world y 0.0900 in rest, and `buildSkeleton`'s own foot block states its own number: 'the sole's underside has to land at foot-local y = -0.088'. So the pin dropped the bone 70 mm and took the whole foot with it.",
+      "measured_not_reasoned": "The shipped player posed through `poseFromRig`, reading the skinned world y of every vertex whose dominant influence is `foot_l`: WITHOUT the conform `skin@foot_l` spans y 0.0020..0.1539 (sole 2 mm above ground); WITH it, -0.0680..0.0839 (sole 68 mm below), and `bone@foot_l` — the 36 claw vertices — spans -0.0466..-0.0302, entirely underground.",
+      "why_r5_saw_no_difference": "Both of r5's arms had their feet under the terrain, so replacing the foot geometry changed nothing a camera could see. The flat floating cap in `04-feet-player.png` is the CLOTH calf, which is not conformed and therefore stops at the rest ankle 81 mm above the grass while the foot is beneath it.",
+      "the_fix": "`e[13] += clamp(gy - groundY, -0.25, 0.25)` — a DELTA, not a pin. On flat ground the shift is exactly zero, which is the correct null a pin can never have; on a slope or a stair each foot rides its own terrain. It also stops overwriting the animated vertical motion of the foot with a constant, which is what flattened every heel strike and toe-off. Clamped to a stair riser so a deck or boardwalk above the terrain field cannot swallow the leg.",
+      "acceptance": "The brief's condition was 'the foot frames stop being byte-identical'. 24 of 24 foot frames differ between the arms (8 bearings x 3 pitches), against r5's 0 of 3 static and 1 of 8 walking on hardware. Visible `skin@foot_l` pixels over 8 bearings: 30,984 -> 37,981, and the three clawed toes go from invisible to the most legible thing at the end of the leg (sheet 01)."
+    },
+    "face": {
+      "what": "Two independent bugs, both burial.",
+      "bug_1_landmarks_authored_against_a_typed_z": "The skull is an ellipsoid; the landmarks were typed-in z constants. Solving the ellipsoid for its own surface height above each landmark's (x, y) — head-local metres, before headScale: eye front 0.0870 vs surface 0.0928 = 5.8 mm BURIED; pupil 0.0936 = 0.7 mm proud; brow ridge inner end 6.9 mm buried; orbit rim top 13.8 mm buried; nasal bridge upper end 28.8 mm buried; mandible line 27.6 mm buried inside the JAW mass, which it was never measured against. The only features clearing anything were the nose, the ears and the jaw.",
+      "bug_2_the_scale_was_applied_twice": "`addPresentation` computed `bs = M.build * extra`, and head pieces pass `extra = headScale`. But `headScale` ALREADY solves for build — its derivation is `(TARGET_EXTENT - 0.070 * build) / headTopLocal`, written precisely so a heavy character is not a different number of heads tall. Multiplying build back in applied the compensation twice, and only to the head-attached pieces: the skinned skull is scaled by `headScale` alone. `extra` now REPLACES the build scale. Body pieces pass no `extra` and are untouched.",
+      "the_population": "COUNTED, not inherited. `game/data/npcs/*.json`: 408 records with a race, 148 in the humanoid family. `characterFor()` hashes `npc:<eid>` into the base.humanoid pool, and its own filter excludes `hum.drowned` from that pool, so the five reachable variants carry 37/30/29/27/25. The two whose eyes measured ZERO visible pixels — `hum.dunmer-lean` and `hum.imperial-clerk` — carry 52 of the 148, i.e. 35.1%.",
+      "the_fix": "The skull and jaw ellipsoids are named bindings; `faceZ(x,y)` returns whichever mass is in front at that (x,y); every landmark is placed against it with an explicit `proud` in millimetres rather than a `sink` that meant different things for different radii. Lids replace the full orbit ring. The eye is seated 12 mm in so its front stands ~1 mm proud at the centre and falls behind the skull toward its edges, which is what makes the visible patch an almond rather than a circle. A joint ball at every interior ridge joint, for the reason the digit builder has one at every knuckle. A MOUTH, which was absent entirely — two low lips plus a dark seam as a presentation piece. And the JAW was pulled back: it front-faced at z 0.141 against the nose at 0.130, so the most forward point of a human head was its jaw; the order is now nose 0.130 > jaw 0.116 > skull 0.102.",
+      "acceptance": "Eye/pupil/mouth visible pixels over 4 bearings, per shipped variant, BEFORE (pinned 6df8d003) -> AFTER: imperial-clerk 0 -> 3,512; dunmer-lean 0 -> 3,752; drowned 0 -> 3,928; legion-heavy 7,120 -> 2,232; breton-stout 4,438 -> 3,058; marauder 5,691 -> 2,971. Three variants went from nothing to something and the whole family collapsed into one band, which is the point — the spread was the double-scaling. Saxhleel, same fix, same instrument: hive-drone (build 0.80) 0 -> 2,908; deep-warden (build 1.22) 8,398 -> 1,353; player (build 1.00) 1,805 -> 1,805, the exact null."
+    }
+  },
+
+  "regression_guards_run": {
+    "delete_the_fix": "Run against an EXPLICIT PINNED SHA, 6df8d003, not HEAD~1. Verified free of my work before use: `git show 6df8d003:game/src/render/actor.js | grep -c 'e\\[13\\]=gy+\\.02'` returns 1 and `grep -c 'THE HEIGHT WAS PINNED TO A CONSTANT'` returns 0. The control tree is that blob copied over a full copy of `game/` and `tools/`, and its sha256 was compared against `git show`'s: both 4445a0d27e9e18a3...",
+    "crack_tally": "`actor-orbit-holes.mjs --angles=12`, both arms. humanoid 3,066 crack px in 1,155 frames -> 3,078 in 1,142 (+0.4% px, -13 frames). saxhleel 2,894 in 1,192 -> 2,831 in 1,247 (-2.2% px). Both arms FAIL the tool's own gate, before and after; this is a no-regression check, not a pass.",
+    "digit_gates": "`character-digit-read.mjs --part=hand` 0 of 6 outside the gate (fractions 0.46+); `--part=foot` 0 of 8 outside the gate. Both unchanged — and it is worth recording that the foot gate PASSED at 0.24-0.29 throughout the period the foot was 68 mm underground, because it selects triangles by dominant skin weight and therefore measures a foot in isolation from everything that could hide it. It answers 'is a foot shaped like a foot' and cannot answer 'can you see a foot'.",
+    "instrument_self_test": "`f10-r6-visible-surface.mjs --self-test` — a sphere buried inside a larger one must score ZERO visible pixels and the same sphere moved out must score hundreds. The FIRST fixture I wrote failed and the tool was right: I had placed the 'buried' eye's front at 0.100 against a skull surface of 0.098, so it was 2 mm proud. The corrected fixture is kept with that note, because it is the same 2 mm margin the shipped pupil was living on."
+  },
+
+  "instruments_built": {
+    "tools/visual/f10-r6-visible-surface.mjs": "The whole actor — body surfaces, equipment, family forms — rasterised orthographically with a z-buffer from arbitrary bearings, with EVERY FRONTMOST PIXEL LABELLED WITH THE PART THAT OWNS IT. Skinned triangles are `<surface>@<dominant bone>`, rigid pieces carry their mesh name. Optionally posed through the game's own `poseFromRig` with a supplied `groundAt`, so the presentation IK is in the measurement rather than assumed away, with the ground plane as a real occluder. Smooth normal interpolation and a shaded mode, because a census cannot tell a face from a mask. Motion via `--clip=locomotion_cycle --phase=`, which drives the same `addPose` the game drives and has no harness verb to get wrong (HAZARDS 16)."
+  },
+
+  "hazards_worth_recording": [
+    "A TOOL THAT LEAVES `group.name` UNSET MEASURES A CHARACTER NOBODY SHIPS. `characterFor()` (actor.js:1867) resolves the morph variant from `group.name` alone, hashing it into the family pool, with `player` special-cased. My first face run left it anonymous, got a variant whose snout swallowed its own eye, and the instrument correctly reported 0 visible eye pixels for a figure that does not exist in the game. It cost about an hour and it would have been a false finding if I had believed it. `character-digit-read.mjs` sets the name; that is why.",
+    "A PASSING GATE IS NOT EVIDENCE THAT THE THING IS VISIBLE. `character-digit-read --part=foot` returned 'ok' on 8 of 8 subjects, every day the foot was underground, because it selects by dominant skin weight and so cannot see an occluder that belongs to another bone. Any gate that isolates its subject before measuring it has this shape."
+  ],
+
+  "evidence": {
+    "where": "corpus/90-verdicts/wave1/artifacts/W1-F10-r6/",
+    "open_this_first": "sheets/01-feet-before-after.png — rounded stubs half-sunk in the grass become feet with three splayed clawed toes, four bearings, both arms.",
+    "then": "sheets/02-face-before-after.png (a bald ovoid with a jutting muzzle becomes a face with brow, eyes, nose, cheekbones, mouth and chin — and it is a CRUDE face, which is the honest word for it), then sheets/03-walk-feet-before-after.png (four phases of `locomotion_cycle`, all four differing between the arms).",
+    "frames": "frames/ — 24 individual before/after PNGs at 352 px.",
+    "reproduce": "node tools/visual/f10-r6-visible-surface.mjs --part=foot --ground=0 --elev=14 --half=0.32 --target=0,0.11,0 --equipped --shade --bearings=0,45,90,180 ; and --part=face --family=humanoid --character=hum.dunmer-lean --bearings=0,30,60,90 --shade"
+  },
+
+  "references_opened": [
+    "CLAUDE.md, the character directive — all four requirements; requirement 4's hole is why my aesthetic calls are unfalsifiable and I say so above.",
+    "orchestration/status/W1-F10-r5-appearance.json — in full, including all seven entries of its `what_i_could_not_do`.",
+    "orchestration/HAZARDS.md 15, 15a, 16.",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r5-appearance/sheets/04-feet-player.png and 07-faces-after.png, cropped and enlarged 3-4x rather than viewed at sheet scale — the flat floating cap at the end of the leg is only legible enlarged, and it is what identified the calf as the lowest drawn thing.",
+    "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764067250.jpg at native 1920x1080. It OVERTURNED my first cut: nothing on that face protrudes, the eye is a dark recess with a small light iris, and every landmark reads because of what is in shadow beside it. That is what sent the eyeball from 7 mm proud back to ~1 mm and replaced the orbit ring with lids.",
+    "game/src/render/actor.js — buildSkeleton's head and foot blocks, addPresentation, CHARACTER_SPECS, characterFor, ensureBuilt, poseFromRig.",
+    "game/data/combat/skeleton.json (foot_l offset [0,-0.42,0.06], world y 0.0900), game/data/npcs/*.json (18 files, 408 raced records).",
+    "tools/visual/character-digit-read.mjs — read in full and RUN, not edited (W1-30V holds tools/visual/)."
+  ],
+
+  "files_touched": [
+    "game/src/render/actor.js",
+    "tools/visual/f10-r6-visible-surface.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r6/",
+    "orchestration/status/W1-F10-r6.json"
+  ],
+  "files_claimed": [
+    "tools/visual/f10-r6-visible-surface.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r6/",
+    "orchestration/status/W1-F10-r6.json"
+  ],
+  "ownership_note": "`node tools/ownership.mjs --for tools/visual/f10-r6-visible-surface.mjs` RUN, not assumed: one live piece, W1-30V, holding a CLAIMED hold on `tools/visual/` as a directory. So this piece adds a NEW FILE ONLY and edits nothing W1-30V has touched — the same precedent rounds 3, 4 and 5 all followed, and the reason r5's finding about `f10-r3-materials.mjs`'s missing main-module guard is STILL unfixed: it belongs to whoever holds that directory. `--for game/src/render/actor.js` RUN: one live piece, W1-30-builder-20260812, hold type `touched` (not `claimed`), 17 h old. I edited it, because a `touched` hold is not a claim and F10 cannot be built without it; round 4 did the same.",
+
+  "what_the_next_round_should_do_and_why": [
+    "PUT THESE TWO ARMS ON A GPU. `f10-r5-appearance.mjs` runs the whole shot list on a Pod for $0.026 and the control fixture pattern is already built; the one thing I cannot supply is a photograph of the running game, and it is the thing the owner's directive actually asks for.",
+    "RE-RUN `f10-r5-walk-silhouette.mjs` ON BOTH ARMS. The pin that overwrote the foot's animated height is gone, so the heel-strike and toe-off cues can now exist; whether they DO is one command and I did not run it.",
+    "THE BAR, NOT THE BUILD. Every aesthetic number in this round is unfalsifiable because nothing in the corpus covers character DESIGN (CLAUDE.md's character directive, requirement 4). A reference item that closes that seam is worth more than another builder round on the same face.",
+    "THE REPTILE FACE AND BODY. r5's verdict on the whole figure — 'slabs: a broad flat-fronted torso, legs merging into one column at most bearings, no deltoid, one uninflected colour per surface, a neck nearly as wide as the skull' — is untouched by this round and is now the largest thing left in the frame."
+  ],
+
+  "redundant_with": []
+}
