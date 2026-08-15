@@ -1,0 +1,1397 @@
+{
+  "at": "2026-08-15T18:17:46.677Z",
+  "mode": "s60",
+  "arm": "landed",
+  "entry": "game/index.html",
+  "renderer": {
+    "renderer_string": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "hardware": false,
+    "software_renderer": true,
+    "unknown": false,
+    "class": "SOFTWARE",
+    "evidence_class": "SOFTWARE — valid for geometry, layout, composition, determinism and census. NOT valid for antialiasing, bloom, AO, IBL or any appearance claim (W1-30-EVIDENCE §4).",
+    "reason": "the reported renderer names a software rasteriser: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "decided_from": "renderer-string",
+    "hardware_requested": false,
+    "fell_back": false,
+    "renderer_source": "live page WEBGL_debug_renderer_info",
+    "backend": null,
+    "backend_attempts": [],
+    "chromium_args": [
+      "--force-color-profile=srgb",
+      "--font-render-hinting=none",
+      "--disable-lcd-text",
+      "--disable-skia-runtime-opts",
+      "--hide-scrollbars",
+      "--mute-audio",
+      "--disable-background-timer-throttling",
+      "--disable-renderer-backgrounding",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-partial-raster",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-new-content-rendering-timeout",
+      "--enable-unsafe-swiftshader",
+      "--use-gl=angle",
+      "--use-angle=swiftshader"
+    ]
+  },
+  "resolution": [
+    1920,
+    1080
+  ],
+  "seed": 20260814,
+  "evidence_class": "SOFTWARE — differential only (HAZARDS §15)",
+  "rows": [
+    {
+      "mode": "s60",
+      "pair": "pair01",
+      "hour": 8,
+      "crop": [
+        300,
+        150,
+        512,
+        512
+      ],
+      "config": "base",
+      "null_control": false,
+      "env": {
+        "time_of_day": 8.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/base/pair01.png",
+      "sha": "8b8db3cc099c002b06559cf3d2f4d523242e1a54c49ff3beffb72819b6ad8306",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair01",
+      "hour": 8,
+      "crop": [
+        300,
+        150,
+        512,
+        512
+      ],
+      "config": "shadows_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 8.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/shadows_off/pair01.png",
+      "sha": "2a13491751951fa970b7f1a9fabfcfb8586acb98d8bd29e73004204ae650467a",
+      "readback": {
+        "shadowMapEnabled": false,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair01",
+      "hour": 8,
+      "crop": [
+        300,
+        150,
+        512,
+        512
+      ],
+      "config": "key_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 8.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/key_off/pair01.png",
+      "sha": "d178e07a199a05e79efd5ff7227c400d33986fbac420305d5eb6a5085e027ce1",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 5.6,
+        "dirCount": 4,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair01",
+      "hour": 8,
+      "crop": [
+        300,
+        150,
+        512,
+        512
+      ],
+      "config": "env_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 8.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/env_off/pair01.png",
+      "sha": "50c8c4cc1aefcfe181e69a252865ce0409d8de78d12d320f568a51775be82fff",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair01",
+      "hour": 8,
+      "crop": [
+        300,
+        150,
+        512,
+        512
+      ],
+      "config": "base_recheck",
+      "null_control": false,
+      "env": {
+        "time_of_day": 8.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/base_recheck/pair01.png",
+      "sha": "7f0dc08ff9bb781086a97873e4783b434cc21e02d86f2346697f404e24441505",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair02",
+      "hour": 13,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "config": "base",
+      "null_control": false,
+      "env": {
+        "time_of_day": 13.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/base/pair02.png",
+      "sha": "61f6238c448f955a4109f5b449a91e82dba02ad53865a7cf0923f80c8ae35569",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair02",
+      "hour": 13,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "config": "shadows_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 13.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/shadows_off/pair02.png",
+      "sha": "2e2e860811bda757dd8f407129a2b879bd810f04531ca9ce58c12ec0959a338c",
+      "readback": {
+        "shadowMapEnabled": false,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair02",
+      "hour": 13,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "config": "key_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 13.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/key_off/pair02.png",
+      "sha": "9bcf33a709067325cea61f651c6e274030fa07121c0986e227c413c0e62c2c74",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 5.6,
+        "dirCount": 4,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair02",
+      "hour": 13,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "config": "env_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 13.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/env_off/pair02.png",
+      "sha": "4118feeefe8df17bd93c4eb9625eba60fde873ac346b892231f1a662f377bf84",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair02",
+      "hour": 13,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "config": "base_recheck",
+      "null_control": false,
+      "env": {
+        "time_of_day": 13.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/base_recheck/pair02.png",
+      "sha": "1335d5a44bd3d6f64b62ca770f3b8140f3221b096ebb060956df423d31cb279a",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair03",
+      "hour": 13,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "config": "base",
+      "null_control": false,
+      "env": {
+        "time_of_day": 13.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/base/pair03.png",
+      "sha": "e330699a88fd7d644d8d56b2f6fd217d6fce346bb9271c456066ff3343786599",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair03",
+      "hour": 13,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "config": "shadows_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 13.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/shadows_off/pair03.png",
+      "sha": "8e37f8b274638e5f1a4ab6c5b1ba564c84bbf5429b22b0f13457e412471c921e",
+      "readback": {
+        "shadowMapEnabled": false,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair03",
+      "hour": 13,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "config": "key_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 13.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/key_off/pair03.png",
+      "sha": "217b7b1d825c0b5e4f47f047eaacd7f639422be4cb8921e7692da0ca59006f6f",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 5.6,
+        "dirCount": 4,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair03",
+      "hour": 13,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "config": "env_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 13.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/env_off/pair03.png",
+      "sha": "6ab105e79a6355947af24465b425fec592c49d6e8cef6ac41d56797745b2f077",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair03",
+      "hour": 13,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "config": "base_recheck",
+      "null_control": false,
+      "env": {
+        "time_of_day": 13.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/base_recheck/pair03.png",
+      "sha": "c7c709310bf3e3fc1689bbbc353086c15d6f446d83742526b7f6cb8cd72c3186",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair04",
+      "hour": 8,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "config": "base",
+      "null_control": false,
+      "env": {
+        "time_of_day": 8.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/base/pair04.png",
+      "sha": "10b88b7f579a98401bf4e622ac9e3e1fac4659a800222fffdce13c5f3009d15a",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair04",
+      "hour": 8,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "config": "shadows_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 8.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/shadows_off/pair04.png",
+      "sha": "0cdbd690a6156645a21f56c0dbd937e77e28913f425cc3e956b4ab33bafe51ee",
+      "readback": {
+        "shadowMapEnabled": false,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair04",
+      "hour": 8,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "config": "key_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 8.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/key_off/pair04.png",
+      "sha": "01d7f0c8652c71d5e9de7653b426792079e208eb684e539d570d914a9a89e25f",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 5.6,
+        "dirCount": 4,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair04",
+      "hour": 8,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "config": "env_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 8.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/env_off/pair04.png",
+      "sha": "e268010947135b7ac5c96b9a05a12ce5cbb4c36965594faf73bdeffc9befc76d",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair04",
+      "hour": 8,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "config": "base_recheck",
+      "null_control": false,
+      "env": {
+        "time_of_day": 8.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/base_recheck/pair04.png",
+      "sha": "9a16de60c88acfdbf1b576afeef5e7813d477cfc4f8b17fb99ea5a166badce4d",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair05",
+      "hour": 19.5,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "config": "base",
+      "null_control": false,
+      "env": {
+        "time_of_day": 19.501111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/base/pair05.png",
+      "sha": "bc5e6ac8478c158937e3aefe2546cbd8df6f34b092e8d0e7728cd8ada8b0d43c",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair05",
+      "hour": 19.5,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "config": "shadows_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 19.501111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/shadows_off/pair05.png",
+      "sha": "cf7b0da5bda8ff85489ca6e060eb9cb75b144a1b1103dd184e58b331ef080fea",
+      "readback": {
+        "shadowMapEnabled": false,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair05",
+      "hour": 19.5,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "config": "key_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 19.501111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/key_off/pair05.png",
+      "sha": "ea7c0f443760aca64b8ea1822519202d7572598f29825c7a5e3b25dfcabe7279",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0,
+        "moonIntensity": 0,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 5.6,
+        "dirCount": 4,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair05",
+      "hour": 19.5,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "config": "env_off",
+      "null_control": false,
+      "env": {
+        "time_of_day": 19.501111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/env_off/pair05.png",
+      "sha": "07383c07038ba75a9b983fb67f1daaae34b80e7360fd08bc78fef1d60c4fbe3f",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "pair05",
+      "hour": 19.5,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "config": "base_recheck",
+      "null_control": false,
+      "env": {
+        "time_of_day": 19.501111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/base_recheck/pair05.png",
+      "sha": "d94e272ea645bba51457f26c038c88555e095914fa01170959a76e535afb9ab9",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "prsv-dusk",
+      "hour": 6,
+      "crop": [
+        300,
+        150,
+        512,
+        512
+      ],
+      "config": "base",
+      "null_control": true,
+      "env": {
+        "time_of_day": 6.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/base/prsv-dusk.png",
+      "sha": "9133ea84432a6450777a65eae36dc02f7c1c4cb245beccef3fc868911707b597",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.45959,
+        "moonIntensity": 0.31383,
+        "hemiTotal": 5.1612,
+        "ambientTotal": 0.575,
+        "dirTotal": 6.3734,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.95,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "prsv-dusk",
+      "hour": 6,
+      "crop": [
+        300,
+        150,
+        512,
+        512
+      ],
+      "config": "shadows_off",
+      "null_control": true,
+      "env": {
+        "time_of_day": 6.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/shadows_off/prsv-dusk.png",
+      "sha": "c4a41bbc7bf76868ee0b6d557c239dead0b13d58e7431f7215dc1b305e9d233c",
+      "readback": {
+        "shadowMapEnabled": false,
+        "sunIntensity": 0.45978,
+        "moonIntensity": 0.31362,
+        "hemiTotal": 5.1613,
+        "ambientTotal": 0.5751,
+        "dirTotal": 6.3734,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.95,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "prsv-dusk",
+      "hour": 6,
+      "crop": [
+        300,
+        150,
+        512,
+        512
+      ],
+      "config": "key_off",
+      "null_control": true,
+      "env": {
+        "time_of_day": 6.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/key_off/prsv-dusk.png",
+      "sha": "2350d85c2ae1e0d4b81d00cbb79687d77c14c968b3fe4c61f8092af7bcf34422",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0,
+        "moonIntensity": 0,
+        "hemiTotal": 5.1613,
+        "ambientTotal": 0.5751,
+        "dirTotal": 5.6,
+        "dirCount": 4,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.95,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "prsv-dusk",
+      "hour": 6,
+      "crop": [
+        300,
+        150,
+        512,
+        512
+      ],
+      "config": "env_off",
+      "null_control": true,
+      "env": {
+        "time_of_day": 6.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/env_off/prsv-dusk.png",
+      "sha": "b957134098f3d1f26ee9375f0c8365a714679b34ed8aa97f2432a3541a06ad26",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.46016,
+        "moonIntensity": 0.3132,
+        "hemiTotal": 5.1613,
+        "ambientTotal": 0.5751,
+        "dirTotal": 6.3734,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "s60",
+      "pair": "prsv-dusk",
+      "hour": 6,
+      "crop": [
+        300,
+        150,
+        512,
+        512
+      ],
+      "config": "base_recheck",
+      "null_control": true,
+      "env": {
+        "time_of_day": 6.001111,
+        "weather": "clear",
+        "tide": {
+          "phase": 0,
+          "state": "RISING",
+          "height_m": {
+            "topal": 0,
+            "padomaic": 0
+          },
+          "cycle_real_min": 12,
+          "mean_range_m": {
+            "topal": 0.66,
+            "padomaic": 1.2
+          }
+        }
+      },
+      "file": "reports/f4c/A-s60-landed/base_recheck/prsv-dusk.png",
+      "sha": "eee073bb1706a8e7b696b674b53337013ae9b4a4b7caf2640cabc25d0bd4d291",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.46036,
+        "moonIntensity": 0.31299,
+        "hemiTotal": 5.1614,
+        "ambientTotal": 0.5751,
+        "dirTotal": 6.3733,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.95,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    }
+  ],
+  "aborted": null
+}
