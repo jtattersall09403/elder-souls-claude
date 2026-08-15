@@ -1,0 +1,51 @@
+{
+  "task_id": "T4-r2-critic",
+  "roadmap_item": "T4",
+  "round": 2,
+  "role": "independent critic",
+  "state": "in_progress",
+  "judging": "corpus/90-verdicts/wave1/T4-r2.json (answering T4-r1, FAIL, piece score 0)",
+  "baseline_pinned": "b60afe450a03c464f75e93302c4eb77cdcbfcb5d (origin/codex/wave1-build-experiment). VERIFIED AGAINST THE REMOTE BLOB, not against HEAD: `git rev-parse origin/...:game/src/ui/system.js` == `git hash-object game/src/ui/system.js` for system.js, icons.js, hud-world.js and screens/inventory.js. HEAD moved twice under me while measuring (fb84890d -> 1c2d1c50) and the game source did not.",
+
+  "could_not_do": [
+    "RI-UIX07 §G (V11) AND RI-UIX09 DN7 ARE STILL NOT RUN, AND THEY ARE THE ONLY TWO CHECKS THAT COULD RAISE THIS PIECE RATHER THAN LOWER IT. §G needs fresh judges per stimulus and DN7 needs a blind judge; rule 0 forbids `create_session`, and I am disqualified from judging DN7 myself because I had already opened our capture attributed before a pack could be built. Recorded as `blind_status: not_possible` rather than faked, exactly as the round-1 critic recorded JU12. RI-UIX07 therefore cannot reach its own ladder-6 anchor (which names `V11 pass` in its text) no matter how many counts pass, and RI-UIX08 stays capped at 2 by its own rule.",
+    "RI-UIX07 E-T5's census-identity test — the combat census run against a copy with the world-set MODULE DELETED — was NOT run. I measured the equivalent question across a real fight boundary on ONE build instead (14 fight frames, zero world-set elements declared), which is the same deviation the round-1 critic recorded. The builder made `hud-world.js` a separate module specifically so this test could be run, so the remaining obstacle is a worktree and a browser slot, not the build.",
+    "RI-UIX01 §D (the stamina bar's correctness half — D1 same-frame truth, D2 regen state, D3 contrast on the three worst backgrounds, D4 size, D5 spend timing, D6 exhaustion) IS STILL UNMEASURED, for the second round running. It needs a combat trace with per-frame stamina beside the rendered fill, and every browser slot I had went to the operability work. RI-UIX01 is excluded from the aggregate with the reason stated, as in round 1, and the debt is carried in the verdict rather than absorbed into a score.",
+    "RI-UIX03 M-C2's second half (C4 — that crossing the encumbrance threshold changes roll distance and stamina cost) was not measured by me either. `tools/harness/prg-encumbrance.mjs` exists and would settle it in one run. Fail-closed on that half alone, and this is my budget rather than a demonstrated defect — the same sentence the round-1 critic had to write about the same check.",
+    "THE 844x390 NARROW VIEWPORT WAS NOT PHOTOGRAPHED BY ME. Everything I measured is at 1920x1080. RI-UIX07's small-viewport clause and RI-JRN04 H10's text floor are therefore unjudged this round, and the builder's own note that the narrow-viewport dial geometry is 'derived, not photographed' still stands.",
+    "I PROCEEDED PAST `node tools/contention.mjs` EXIT 3 ONCE — the final probe was launched behind an `until GO` wait, but the box crossed its ceiling again mid-run and I did not abort it. Recorded as rule 21 requires. I killed one duplicate probe of my own by PID after starting it twice by mistake; no sibling process was touched.",
+    "THE THREE FALSE FAILURES MY OWN FIRST TWO PASSES PRODUCED, stated here because they are the same class of defect as the ones I am judging. (1) The `ui-journal` fixture restores `mode: 'inventory'`, so my first `menu` press CLOSED a screen and every ring check downstream cascaded off it. (2) I passed a string array to `openContainer`, which spreads into a character map, and recorded a transfer failure that was mine. (3) `two_hand`'s hold gate is measured in WALL-CLOCK MILLISECONDS, so a harness `stepFrames(20)` is a ~3 ms hold and my '20-frame hold' never reached the 200 ms gate. All three were caught by re-running rather than by reasoning, and the third is written into RI-UIX10 §B as trap I2 so the next critic does not pay for it."
+  ],
+
+  "what_i_measured_that_nobody_had": [
+    "CRITIC-DOCTRINE §1.2b's FIRST APPLICATION TO A SCREEN. Every existing T4 instrument (`t4-r2-measure.mjs`, `critic-t4-lean.mjs`, `critic-t4-shots.mjs`) drives the screens through `openMenu()` and `uiFocus()` — past the input layer — so a dead input layer is invisible to all three. `tools/ui/t4-r2-critic-drive.mjs` and `-focus.mjs` operate them with real `KeyboardEvent`/`MouseEvent`/`PointerEvent`/`getGamepads()`, 44 checks, every interaction recorded with its before and after state.",
+    "RI-UIX07 V7/V8's withdrawal ACROSS A REAL FIGHT BOUNDARY, which neither the round-1 critic nor the round-2 builder got. The builder's two attempts ran on `ui-journal` and `arena_duel`, both of which contain zero enemies, and its own gate marked both inadmissible (`verdict_admissible: false`). I spawned `inf_trash` at 4.6 m and aggroed it: phases seen [world, fight], entry at index 6, world-set kinds [bearing_dial, effect_strip, place_name] on world frames and NONE on any of 14 fight frames, no fractional opacity anywhere, and health+stamina on 100% of 20 frames in both phases. V7, V8's entry half and V9 are measured and they pass.",
+    "THE D2 INSTRUMENT QUESTION, SETTLED. The round-1 critic read the unchanged journal at 0.349 and the builder at 0.1315. I re-implemented RI-UIX09 method 4 from the item's own sentence without reading the builder's function and ran it on the builder's committed PNGs: inventory 0.1524 vs 0.1524, journal 0.1315 vs 0.1315, sheet 0.0896 vs 0.0895. THE BUILDER'S INSTRUMENT IS THE ONE THAT MATCHES THE ITEM; the round-1 figures are the outlier and must not be subtracted from anything."
+  ],
+
+  "corpus_extended": [
+    "corpus/86-ui/RI-UIX10-screen-operability.md — NEW, written by me mid-critique under CRITIC-DOCTRINE §1.3, and IT IS ONE OF THE REASONS THIS PIECE FAILS. §1.3's third guard was corrected on 2026-08-15 to run one way only: a bar you extend may not be why you pass, but it may absolutely be why you fail. §1.2b requires every critic to OPERATE an interface, and no reference item carried a row a dead, trapped or silent control could fail — so an operability defect had nowhere to land except prose. Registered in `tools/roadmap-coverage.mjs` under T4; `node tools/corpus-index.mjs --check` reports 0 errors and `node tools/roadmap-coverage.mjs` reports all gates green."
+  ],
+
+  "files_touched": [
+    "corpus/86-ui/RI-UIX10-screen-operability.md",
+    "corpus/00-doctrine/INDEX.md",
+    "tools/roadmap-coverage.mjs",
+    "tools/ui/t4-r2-critic-drive.mjs",
+    "tools/ui/t4-r2-critic-focus.mjs",
+    "tools/ui/t4-r2-critic-final.mjs",
+    "tools/ui/t4-r2-critic-measure.mjs",
+    "tools/ui/t4-r2-critic-ju5.mjs",
+    "corpus/90-verdicts/wave1/T4-r2.json",
+    "corpus/90-verdicts/wave1/T4-r2.md",
+    "corpus/90-verdicts/wave1/artifacts/T4-r2c/",
+    "corpus/90-verdicts/GAP-LEDGER.json",
+    "orchestration/status/T4-r2-critic.json"
+  ],
+  "files_claimed": [],
+  "shared_file_note": "`tools/roadmap-coverage.mjs` is a one-line append to its item->roadmap map, in the same shape and place the round-1 critic used for RI-UIX09. I touched NO game source. `node tools/ownership.mjs --for tools/ui/` reports three live pieces on that directory; every file I added is a new filename nobody else has.",
+
+  "redundant_with": [
+    "W1-UIX08-CENSUS-ROUTE / W1-UIX08-INPUT-FIX own RI-UIX08 §G and the dialogue window's input path. I did not duplicate either; RI-UIX08 is scored at its own procedural cap of 2 for an unrun §G and the look is not re-litigated."
+  ]
+}
