@@ -104,22 +104,57 @@ way anyway* — and nothing except the delete-the-fix control would have caught 
 numbers are still in `reports/runpod-gpu/runs/w1-f3-ambient-fill/` and are kept deliberately: a
 confound that is deleted once a better instrument exists cannot teach anybody anything.
 
-### The finding underneath it, which is bigger than F3
+### The finding underneath it — and the first explanation for it was wrong
 
-Whatever settles between those two captures moves the shadow floor from **4.6 to 14.3 luma with no
-shader change at all** — more than twenty times the entire effect of the remedy commissioned to fix
-it. After a 240-frame warm-up the same measurement is stable to 0.013 luma.
+The obvious reading was "the scene warms up, and the first capture catches it cold". **I measured that
+and it is false.** A 13-sample curve with GI held off, taken on an RTX A4500 from the teleport
+onwards, is flat:
 
-So a frame captured shortly after a teleport is **far darker in shade than the same frame once the
-scene has settled**, and the game's visual tools do not wait: `pauseClock` is exposed on the harness
-(`game/src/harness/api.js:195`) and **no tool under `tools/visual/` or `tools/harness/` calls it**,
-though `HARNESS.md` §6 requires the clock pinned for a comparable screenshot.
+```
+frame    4   p10=14.297      frame  120   p10=14.293
+frame   12   p10=14.290      frame  180   p10=14.296
+frame   20   p10=14.298      frame  240   p10=14.291
+frame   30   p10=14.290      frame  300   p10=14.286
+frame   45   p10=14.288      frame  420   p10=14.287
+frame   60   p10=14.290      frame  600   p10=14.300
+frame   90   p10=14.292
+```
 
-**This bears directly on the blind re-judge.** If the original comparison pack was captured in that
-unsettled state — and this instrument's first version was, by default — then our side was judged on a
-shadow floor a player never actually sees, and *"crushed to a near-uniform black"* may be describing
-the capture procedure as much as the renderer. Nobody should pay five judges again until the pack's
-capture path is checked against this.
+Range across the whole sweep: **0.014 luma**. `shadow_levels` is 33 at every one of the thirteen
+samples. There is no scene-age drift. And in the *same process*, minutes later and with the world now
+well over a thousand frames old, the two-still arm still returned **4.641** — so world age neither
+causes the dark reading nor prevents it.
+
+**What actually distinguishes the two, from three measurements:**
+
+| sequence | shadow floor |
+|---|---|
+| teleport → pose camera → **4** frames | 14.297 |
+| teleport → **90** frames → pose camera → **30** frames | **4.641** |
+| teleport → **90** frames → pose camera → **240** frames | 14.287 |
+
+The dark reading appears only when the camera is **jumped in an already-running world and measured too
+soon after the jump**. Something re-converges after a camera move — it is settled by 240 frames and
+plainly is not by 30 — and when the world has not been running beforehand there is nothing to
+re-converge. **The mechanism is unidentified and is named here rather than guessed at.**
+
+The world clock was the first suspect and is ruled out by measurement, not by argument: a live probe
+shows it advancing 9.000 → 9.0222 hours across 240 frames (40 seconds of game time — nowhere near
+enough sun movement to triple a shadow floor) and shows `pauseClock(true)` stopping it dead.
+
+### Why this reaches past F3
+
+`tools/visual/deck.mjs` produced our side of the blind comparison pack. Read from the repo: it poses
+the camera and then steps `deck.json`'s `capture.settle_frames`, which is **12**, inside a loop that
+has already been running the world through previous setups — and it never calls `pauseClock`, which
+is exposed at `game/src/harness/api.js:195` while `HARNESS.md` §6 requires the clock pinned for a
+comparable screenshot.
+
+Twelve frames is **inside the window this piece measured as crushed at thirty**. That does not prove
+the pack was captured dark — 12 is not 30, and the intermediate curve is unmeasured at the time of
+writing — but it is the same condition, and it is cheap to settle. Until it is settled, *"crushed to a
+near-uniform black"* has a plausible second author, and nobody should pay five judges again on a pack
+built by the same path.
 
 ---
 
