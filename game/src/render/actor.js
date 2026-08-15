@@ -123,6 +123,50 @@ export function bakeCurvature(geometry, thresholdDeg = 35) {
   return geometry;
 }
 
+/**
+ * THE TRIANGLE WINDING OF EVERY PRIMITIVE IN THIS CLASS WAS INVERTED, AND IT DREW THE WHOLE BODY.
+ *
+ * Found 2026-08-15 by `tools/visual/mesh-winding.mjs`, after the owner passed on a diagnosis
+ * another agent reached on a different Three.js project with the same symptom. Measured on the
+ * shipped roster, 13 subjects, before the fix:
+ *
+ *     actor-body:<family>:skin    13 of 13 meshes  signed volume NEGATIVE   102,708 / 109,792
+ *                                                                           triangles whose
+ *                                                                           authored normal
+ *                                                                           disagrees with winding
+ *     actor-body:<family>:cloth   13 of 13 meshes  signed volume NEGATIVE    49,088 /  51,896
+ *
+ * Three.js's own `SphereGeometry` measures +1.075e-1 on the same instrument; ours measured the
+ * same magnitude NEGATIVE. That comparison is what makes this a fact rather than an argument about
+ * conventions: our generator disagreed with the engine's own geometry.
+ *
+ * WHAT IT LOOKED LIKE, and why five rounds of hole-filling never touched it. With `FrontSide`
+ * (the default, and what every actor material uses — no mesh here is `DoubleSide`), WebGL culls
+ * back faces by SCREEN-SPACE winding. Inverted winding means the near surface of the body is
+ * classified as back-facing and culled, and the far surface — the inside of the character's back —
+ * is what gets drawn. That is exactly the "you can see through the character" report. It is not a
+ * hole, so a gap-pixel census counts it as one and filling holes cannot fix it; this project closed
+ * five real geometric gaps (9,254 -> 2,204 px) and the characters still looked wrong, because this
+ * was underneath all of it.
+ *
+ * AND IT BROKE THE SHADING, WHICH IS THE OTHER HALF. The authored vertex normals were always
+ * correct — `vert()` is handed an outward normal by every call site — so with the far surface
+ * drawn, 94% of the visible body was lit by a normal pointing away from the camera. Forms cannot
+ * read as forms under an inverted normal: this is a direct contributor to the critic's finding #1,
+ * "the shoulders are two glossy ellipsoids stuck to the sides of a flat rectangular torso plate".
+ *
+ * THE DEFECT WAS IN THE SIDE WALLS ONLY. `tube()`'s two end caps were always wound correctly, which
+ * is why the disagreement was 94% and not 100% — one mesh carried both conventions at once. Derived
+ * by hand and confirmed by the instrument: for `tube`, the surface frame (_u, _v, _w) is
+ * right-handed with _u the outward radial, so the old order `A, C, B` gave a face normal of
+ * `_w x _v = -_u`, i.e. inward.
+ *
+ * THE GUARD. `node tools/visual/mesh-winding.mjs` runs over the roster and exits non-zero on any
+ * mesh with negative signed volume or any triangle whose authored normal disagrees with its
+ * winding; `--self-test` proves it goes red by reversing a correct sphere. Do not "fix" a future
+ * winding complaint by setting a material to `DoubleSide` — that hides the culling symptom and
+ * leaves the lighting inverted, which is the worse half.
+ */
 class MeshBuilder {
   constructor() {
     this.pos = [];
@@ -189,7 +233,8 @@ class MeshBuilder {
         const i2 = (i + 1) % radial;
         const A = base + j * radial + i, B = base + j * radial + i2;
         const C = base + (j + 1) * radial + i, D = base + (j + 1) * radial + i2;
-        this.tri(A, C, B); this.tri(B, C, D);
+        // WINDING. This read `tri(A, C, B); tri(B, C, D)` and was INVERTED — see the class header.
+        this.tri(A, B, C); this.tri(B, D, C);
       }
     }
     // Close both ends. Open limb tubes expose their back faces at elbows, wrists and armour
@@ -226,7 +271,8 @@ class MeshBuilder {
         const i2 = (i + 1) % ring;
         const A = base + j * ring + i, B = base + j * ring + i2;
         const C = base + (j + 1) * ring + i, D = base + (j + 1) * ring + i2;
-        this.tri(A, C, B); this.tri(B, C, D);
+        // WINDING. This read `tri(A, C, B); tri(B, C, D)` and was INVERTED — see the class header.
+        this.tri(A, B, C); this.tri(B, D, C);
       }
     }
   }
@@ -246,7 +292,8 @@ class MeshBuilder {
     }
     for(let j=0;j<seg;j++)for(let i=0;i<ring;i++){
       const i2=(i+1)%ring,A=base+j*ring+i,B=base+j*ring+i2,C=base+(j+1)*ring+i,D=base+(j+1)*ring+i2;
-      this.tri(A,C,B);this.tri(B,C,D);
+      // WINDING. This read `tri(A,C,B);tri(B,C,D)` and was INVERTED — see the class header.
+      this.tri(A,B,C);this.tri(B,D,C);
     }
   }
 

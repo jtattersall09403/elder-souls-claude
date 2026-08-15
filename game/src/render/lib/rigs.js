@@ -47,6 +47,15 @@ export const MORPH_KEYS = Object.freeze({
   crest: 1,          // saxhleel: head crest and dorsal crest size (0 removes it)
   horn: 1,           // saxhleel: brow horn size (0 removes them)
   hand: 1,           // hand and digit scale
+  // THE CANON OF PROPORTION IS A MORPH AXIS, because it is the one number that made every figure
+  // in the game read as slightly dwarfish and there was no way to say it. `W1-F10-CHARACTERS` C1,
+  // measured over the 41 shipped figures: R = height/head ran 5.87-6.84, median 6.58, and **0 of
+  // 41** sat in RI-VIS10's 7.0-8.0 band. `head` multiplies the whole cranial group about the head
+  // bone's origin — skull, snout, jaw, crest, every facial landmark and the eye pieces — so a
+  // variant can be long-headed or fine-headed without touching a bone offset, which is where the
+  // hurtboxes live. The families carry a base scale of their own (`HEAD_SCALE` in actor.js); this
+  // is the per-character multiplier on top of it.
+  head: 1,
 });
 
 const RIGS = new Map();
