@@ -1,0 +1,13 @@
+[harness]   ok   I0 INSTRUMENT real listeners attached and a movement key reaches the pipeline  real.attached=true, input.moveX=1
+[harness]   ok   I1 INSTRUMENT the touch listeners are attached on device class handheld  real.touch.attached=true, enabled=true
+[harness]   ok   TS0 INSTRUMENT the list is at its first row before the stick is measured  focus.rowIdx=0 (a drag DOWN cannot move a focus already on the last row, and reporting that as a dead stick is a probe defect, not a build defect)
+[harness]   ok   TS1 (OP3) the floating touch stick walks an open screen's list  focus {"col":1,"tagIdx":0,"rowIdx":0,"sortIdx":0} -(drag down 120 px)-> {"col":1,"tagIdx":0,"rowIdx":1,"sortIdx":0} on mode 'inventory'
+[harness]   ok   TS2 (OP3, §C "the directional half") three flicks reach a row three away  rowIdx 1 -(3 separate flicks)-> 4
+[harness]   ok   TS3 (OP3) a sideways touch drag moves between the screen's columns  focus.col 1 -(drag left 140 px)-> 0
+[harness]   ok   TS3b the item column is back in focus before the repeat measurement  focus.col=1
+[harness]   FAIL TS4 DIAGNOSTIC a 40-frame HELD touch drag moves more than one row (axis repeat)  rowIdx 4 -(one 40-frame held drag)-> 5
+[harness]   FAIL TS5 DIAGNOSTIC a 40-frame HELD keyboard direction moves more than one row  rowIdx 5 -(one 40-frame held KeyS)-> 6  << compare with TS4: if both are 1, the missing repeat is device-neutral, not a touch defect
+[harness]   FAIL MAP1 the map's place list has more than one row to walk  mode='map'; the screen's own foot line []; list_row elements 0; placeIdx {"view":"world","placeIdx":0} -(down)-> {"view":"world","placeIdx":0} -(up)-> {"view":"world","placeIdx":0}
+[harness] 
+7/10 checks passed
+[harness] page errors: []

@@ -1,0 +1,12 @@
+[harness]   PASS M-P1 outside combat the inventory PAUSES the world — frame 12 -> 12 over 120 steps (delta 0 of 120), in_combat false
+[harness]   PASS M-P2 INSIDE combat the inventory does NOT pause the world (S14) — frame 18 -> 138 over 120 steps (delta 120 of 120), in_combat true
+[harness]   PASS P8 no time dilation: 37 steps advance exactly 37 frames with the menu open — 138 -> 175
+[harness]   PASS M-P4 P5 occlusion: <=55% opacity, <=60% of screen area, and the world still reaches >=30% of the centre 40%x40% — opacity 0.5, area 57.2%, the world moves 89.6% of centre pixels under a screen covering 100.0% of them (control, outside the screen: 80.8%)
+[harness]   PASS M-P3 P6 input liveness: `roll` is not swallowed by the menu in combat — player states seen: ["IDLE","BACKSTEP"]; stamina spent 14; menu still open: inventory
+[harness]   PASS P4 combat beginning mid-menu resumes the world, silently, with the screen still open — 0/30 before aggro, 60/60 after, mode still 'inventory'
+[harness]   PASS M-P5 P7 equipping in a fight is an animation-committed action of ≥30 frames — {"item":"chitin-cuirass","before":286,"equip_start":true,"equip_end":true,"commit_frames":30}
+[harness]   PASS E11 no transient toast on screen during an active fight (§C) — 0 toasts
+[harness]   PASS PAD the interface opens, navigates, confirms and closes on a GameSir X2s alone — open true, stick moved focus true, d-pad moved exactly one column 1->0, irrelevant input stable true, closed true (final mode world)
+[harness]   PASS SURFACES all seven surfaces open and draw — {"inventory":44,"journal":37,"sheet":59,"spells":16,"levelup":36,"book":14,"container":27}
+[harness] ui-pause: 10/10
+[harness] artifacts: /home/user/elder-souls-claude/reports/runs/UI-PAUSE

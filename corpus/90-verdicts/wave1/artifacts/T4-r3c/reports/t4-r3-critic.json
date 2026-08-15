@@ -1,6 +1,6 @@
 {
   "schema": "elder-souls/t4-r3-critic@1",
-  "at": "2026-08-15T12:27:36.104Z",
+  "at": "2026-08-15T12:34:46.910Z",
   "state": "ui-journal",
   "checks": [
     {
@@ -10,15 +10,433 @@
     },
     {
       "id": "JX0 confirm on the chronicle still enters the search view",
-      "pass": null,
-      "detail": "view='null', query='null'"
+      "pass": true,
+      "detail": "view='search', query=''"
+    },
+    {
+      "id": "JX1 at least one action in the closed set returns the journal from search to the chronicle",
+      "pass": true,
+      "detail": "1 of 15 escape: [\"roll (back)->chronicle\"]"
+    },
+    {
+      "id": "JX2a back removes exactly one letter per press, as the foot hint promises",
+      "pass": true,
+      "detail": "typed 'BCD' then back x5: [\"journal/search/'BCD'\",\"journal/search/'BC'\",\"journal/search/'B'\",\"journal/search/''\",\"journal/chronicle/''\",\"world/null/'null'\"]"
+    },
+    {
+      "id": "JX2b back on an EMPTY line returns to the chronicle and stays in the journal",
+      "pass": true,
+      "detail": "empty-line press 3; chronicle at press 4"
+    },
+    {
+      "id": "JX2c a further back then leaves the journal — the top-level exit is not lost",
+      "pass": true,
+      "detail": "press 5 -> mode 'world'"
+    },
+    {
+      "id": "JX3 the search view does not survive a close and a re-open (OP6)",
+      "pass": true,
+      "detail": "entered search with query 'BC', closed to 'world', re-opened: view='chronicle' query=''"
+    },
+    {
+      "id": "JX4 walking to a peer screen and back returns the chronicle, not the search box",
+      "pass": true,
+      "detail": "search(query='BC') -> 'spells' -> back to 'journal': view='chronicle' query=''"
+    },
+    {
+      "id": "JX5 the quest-index sub-view also has an exit that stays in the journal",
+      "pass": true,
+      "detail": "index -(back)-> mode='journal' view='chronicle'"
+    },
+    {
+      "id": "JX6 back on the chronicle still LEAVES the journal (backOrSub did not swallow the exit)",
+      "pass": true,
+      "detail": "chronicle -(back)-> mode='world'"
+    },
+    {
+      "id": "EQ1 (RI-UIX10 O3) confirm on a weapon row out of combat changes something WITHIN 15 FRAMES",
+      "pass": true,
+      "detail": "row 'Bog-iron maul  11.5  96  8.3': equipment [\"chitin-cuirass@chest\",\"reed-cutter@right\"] -> f+1 [\"bog-iron-maul@right\",\"chitin-cuirass@chest\"] -> f+15 [\"bog-iron-maul@right\",\"chitin-cuirass@chest\"]; frame 43 -> 43 (paused, as RI-UIX03 P1 requires); doll [\"inventory.worn.body\",\"inventory.worn.right\"] -> [\"inventory.worn.body\",\"inventory.worn.right\"]; screen moved by f+1=true, by f+15=true"
+    },
+    {
+      "id": "EQ1b the change is on the FIRST frame, not merely inside the window",
+      "pass": true,
+      "detail": "screen/equipment moved at f+1: true"
+    },
+    {
+      "id": "EQ2 (O3) confirm on a row the game REFUSES still shows the player something within 15 frames",
+      "pass": true,
+      "detail": "row 'Sapwood bow  2.2  130  59.1': equipment [\"bog-iron-maul@right\",\"chitin-cuirass@chest\"] -> [\"bog-iron-maul@right\",\"chitin-cuirass@chest\"] (refused by policy); toast elements before [] after [{\"id\":\"hud.toast\",\"text\":\"You cannot get a grip on the sapwood bow. It is not made for your hands.\"}]; screen moved=false"
+    },
+    {
+      "id": "IC0 GATE a fight is actually running",
+      "pass": true,
+      "detail": "spawn {\"eid\":\"e0\",\"aggro\":true}, inCombat=true"
+    },
+    {
+      "id": "IC1 (O3) the in-combat commitment is NARRATED on the screen while it runs",
+      "pass": false,
+      "detail": "no row in [\"reed-cutter\",\"chitin-cuirass\",\"bog-iron-maul\"] could be focused by walking the list"
+    },
+    {
+      "id": "I1 INSTRUMENT the touch listeners are attached on device class handheld",
+      "pass": true,
+      "detail": "real.touch.attached=true, enabled=true"
+    },
+    {
+      "id": "TS1 (OP3) the floating touch stick walks an open screen's list",
+      "pass": false,
+      "detail": "focus {\"col\":1,\"tagIdx\":0,\"rowIdx\":43,\"sortIdx\":0} -(drag down 120 px)-> {\"col\":1,\"tagIdx\":0,\"rowIdx\":43,\"sortIdx\":0} on mode 'inventory'"
+    },
+    {
+      "id": "TS2 (OP3, §C \"the directional half\") three flicks reach a row three away",
+      "pass": false,
+      "detail": "rowIdx 43 -(3 separate flicks)-> 43"
+    },
+    {
+      "id": "TS3 (OP3) a sideways touch drag moves between the screen's columns",
+      "pass": true,
+      "detail": "focus.col 1 -(drag left 140 px)-> 0"
+    },
+    {
+      "id": "TS3b the item column is back in focus before the repeat measurement",
+      "pass": true,
+      "detail": "focus.col=1"
+    },
+    {
+      "id": "TS4 DIAGNOSTIC a 40-frame HELD touch drag moves more than one row (axis repeat)",
+      "pass": false,
+      "detail": "rowIdx 43 -(one 40-frame held drag)-> 43"
+    },
+    {
+      "id": "TS5 DIAGNOSTIC a 40-frame HELD keyboard direction moves more than one row",
+      "pass": false,
+      "detail": "rowIdx 43 -(one 40-frame held KeyS)-> 43  << compare with TS4: if both are 1, the missing repeat is device-neutral, not a touch defect"
     }
   ],
   "data": {
     "i0": {
       "attached": true,
       "moveX": 1
-    }
-  },
-  "error": "page.evaluate: Target page, context or browser has been closed\n    at key (/home/user/elder-souls-claude/tools/ui/t4-r3-critic.mjs:47:16)\n    at goto (/home/user/elder-souls-claude/tools/ui/t4-r3-critic.mjs:87:59)\n    at async enterSearch (/home/user/elder-souls-claude/tools/ui/t4-r3-critic.mjs:96:3)\n    at async file:///home/user/elder-souls-claude/tools/ui/t4-r3-critic.mjs:146:101"
+    },
+    "journal_exit_enumeration": [
+      {
+        "action": "roll (back)",
+        "code": "Space",
+        "mode_after": "journal",
+        "view_after": "chronicle",
+        "query_after": "",
+        "leaves_search_stays_in_journal": true
+      },
+      {
+        "action": "block",
+        "code": "KeyF",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      },
+      {
+        "action": "parry",
+        "code": "KeyV",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      },
+      {
+        "action": "heavy",
+        "code": "KeyR",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      },
+      {
+        "action": "sprint",
+        "code": "ShiftLeft",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      },
+      {
+        "action": "jump",
+        "code": "KeyX",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      },
+      {
+        "action": "use_item",
+        "code": "Digit1",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      },
+      {
+        "action": "lock_on",
+        "code": "Tab",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      },
+      {
+        "action": "two_hand",
+        "code": "KeyG",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      },
+      {
+        "action": "crouch",
+        "code": "KeyC",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      },
+      {
+        "action": "spell_cycle",
+        "code": "KeyT",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      },
+      {
+        "action": "up",
+        "code": "KeyW",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      },
+      {
+        "action": "down",
+        "code": "KeyS",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      },
+      {
+        "action": "left",
+        "code": "KeyA",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      },
+      {
+        "action": "right",
+        "code": "KeyD",
+        "mode_after": "journal",
+        "view_after": "search",
+        "query_after": "",
+        "leaves_search_stays_in_journal": false
+      }
+    ],
+    "journal_back_walk": {
+      "typed": "BCD",
+      "walk": [
+        {
+          "press": 0,
+          "view": "search",
+          "query": "BCD",
+          "mode": "journal"
+        },
+        {
+          "press": 1,
+          "view": "search",
+          "query": "BC",
+          "mode": "journal"
+        },
+        {
+          "press": 2,
+          "view": "search",
+          "query": "B",
+          "mode": "journal"
+        },
+        {
+          "press": 3,
+          "view": "search",
+          "query": "",
+          "mode": "journal"
+        },
+        {
+          "press": 4,
+          "view": "chronicle",
+          "query": "",
+          "mode": "journal"
+        },
+        {
+          "press": 5,
+          "view": null,
+          "query": null,
+          "mode": "world"
+        }
+      ]
+    },
+    "journal_reopen": {
+      "before": {
+        "view": "search",
+        "page": 0,
+        "indexIdx": 0,
+        "ringIdx": 2,
+        "query": "BC"
+      },
+      "closed_mode": "world",
+      "after": {
+        "view": "chronicle",
+        "page": 0,
+        "indexIdx": 0,
+        "ringIdx": 0,
+        "query": ""
+      }
+    },
+    "journal_peer_walk": {
+      "before": {
+        "view": "search",
+        "page": 0,
+        "indexIdx": 0,
+        "ringIdx": 2,
+        "query": "BC"
+      },
+      "peer_mode": "spells",
+      "after": {
+        "view": "chronicle",
+        "page": 0,
+        "indexIdx": 0,
+        "ringIdx": 0,
+        "query": ""
+      }
+    },
+    "journal_index_exit": {
+      "entered": "index",
+      "after_back": {
+        "mode": "journal",
+        "view": "chronicle"
+      }
+    },
+    "journal_top_level_back": {
+      "before": {
+        "view": "chronicle",
+        "page": 0,
+        "indexIdx": 0,
+        "ringIdx": 0,
+        "query": ""
+      },
+      "after_mode": "world"
+    },
+    "equip_out_of_combat": {
+      "row": "Bog-iron maul  11.5  96  8.3",
+      "before": {
+        "equipped": [
+          "chitin-cuirass@chest",
+          "reed-cutter@right"
+        ],
+        "frame": 43
+      },
+      "at_f1": {
+        "equipped": [
+          "bog-iron-maul@right",
+          "chitin-cuirass@chest"
+        ],
+        "frame": 43,
+        "screen_moved": true
+      },
+      "at_f15": {
+        "equipped": [
+          "bog-iron-maul@right",
+          "chitin-cuirass@chest"
+        ],
+        "frame": 43,
+        "screen_moved": true
+      },
+      "doll_before": [
+        "inventory.worn.body",
+        "inventory.worn.right"
+      ],
+      "doll_after": [
+        "inventory.worn.body",
+        "inventory.worn.right"
+      ]
+    },
+    "equip_refused": {
+      "row": "Sapwood bow  2.2  130  59.1",
+      "equipped_before": [
+        "bog-iron-maul@right",
+        "chitin-cuirass@chest"
+      ],
+      "equipped_after": [
+        "bog-iron-maul@right",
+        "chitin-cuirass@chest"
+      ],
+      "toast_before": [],
+      "toast_after": [
+        {
+          "id": "hud.toast",
+          "text": "You cannot get a grip on the sapwood bow. It is not made for your hands."
+        }
+      ],
+      "screen_moved": false
+    },
+    "ic_spawn": {
+      "eid": "e0",
+      "aggro": true,
+      "in_combat": true
+    },
+    "i1": {
+      "touch_attached": true,
+      "enabled": true
+    },
+    "touch_one_flick": {
+      "before": {
+        "col": 1,
+        "tagIdx": 0,
+        "rowIdx": 43,
+        "sortIdx": 0
+      },
+      "after": {
+        "col": 1,
+        "tagIdx": 0,
+        "rowIdx": 43,
+        "sortIdx": 0
+      }
+    },
+    "touch_three_flicks": {
+      "from": 43,
+      "to": 43
+    },
+    "touch_horizontal": {
+      "before": {
+        "col": 1,
+        "tagIdx": 0,
+        "rowIdx": 43,
+        "sortIdx": 0
+      },
+      "after": {
+        "col": 0,
+        "tagIdx": 0,
+        "rowIdx": 43,
+        "sortIdx": 0
+      }
+    },
+    "repeat": {
+      "touch_hold_40f": [
+        43,
+        43
+      ],
+      "keyboard_hold_40f": [
+        43,
+        43
+      ]
+    },
+    "errors": []
+  }
 }

@@ -1,0 +1,53 @@
+{
+  "tool": "frame-liveness",
+  "dir": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/T4-r3c/screens",
+  "thresholds": {
+    "min_luma_span": 6,
+    "min_luma_entropy": 0.9,
+    "max_dominant_frac": 0.92,
+    "min_structure_ratio": 2.5,
+    "min_local_contrast_p90": 0,
+    "soft_min_shadow_levels": 6,
+    "soft_min_local_contrast_med": 0.3,
+    "soft_min_local_contrast_p90": 0.6,
+    "min_centre_flank": 6,
+    "max_bg_coverage": 0.55
+  },
+  "derivation": {
+    "corpus": "PENDING CALIBRATION",
+    "rule": "each threshold sits below the worst real capture observed and above the value the known degenerate capture produced; both numbers are recorded per row",
+    "rows": {}
+  },
+  "subject_tested": false,
+  "counts": {
+    "LIVE": 1
+  },
+  "frames": [
+    {
+      "file": "ic-equip-mid-commitment__1920x1080.png",
+      "hash": "96aa58891f135a56",
+      "width": 1920,
+      "height": 1080,
+      "luma_p01": 13,
+      "luma_p05": 22,
+      "luma_p10": 43,
+      "luma_p50": 86,
+      "luma_p90": 153,
+      "luma_p95": 159,
+      "luma_p99": 170,
+      "luma_span": 157,
+      "shadow_levels": 77,
+      "local_contrast_med": 0.9642,
+      "local_contrast_p90": 16.0931,
+      "luma_entropy": 7.1802,
+      "dominant_frac": 0.0415,
+      "unique_buckets": 583,
+      "block_range": 142.8366,
+      "pixel_std": 42.7899,
+      "structure_ratio": 88.8333,
+      "verdict": "LIVE",
+      "why": [],
+      "soft": []
+    }
+  ]
+}

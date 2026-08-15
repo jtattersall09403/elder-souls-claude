@@ -1,0 +1,87 @@
+{
+  "task_id": "T4-r3-critic",
+  "roadmap_item": "T4",
+  "round": 3,
+  "role": "critic",
+  "state": "done",
+  "verdict": "FAIL — piece score 2, min over items, against a wave-1 gate of 7.0",
+  "judged_at": "7c63111d040b32bb081c49b28b8e0ecf40f9f12b",
+
+  "could_not_do": [
+    "THE THREE PLAYED GATES DID NOT RUN AND CANNOT RUN FROM A SUBAGENT. RI-UIX06 §G (six fresh Bootstrap judges on six --blank-world screens), RI-UIX07 §G/V11, and RI-UIX08 §G. `create_session` is approval-gated and CLAUDE.md rule 0 forbids me touching it; rule 0e places this squarely with the orchestrator. Each is scored 0 fail-closed within its item rather than omitted, and each caps its item. RI-UIX07 is the sharpest case: it is at 10/11 on the count and its own 6 rung NAMES V11 pass as a condition, so the count reaching the rung cannot buy it.",
+
+    "I BROKE MY OWN INSTRUMENT THREE TIMES AND CAUGHT ALL THREE, AND THEY ARE HERE RATHER THAN IN THE VERDICT AS FINDINGS. (1) `getUIState().focus` is `this.focus[this.mode]` — the ACTIVE screen's focus, FLAT — and I read `focus.journal` first, so every journal check returned `view: null` and would have read as a dead screen. Caught on the first run because JX0 (a check whose only job is to prove the trap's own door still opens) went red. (2) My refused-row leg matched `/bow/i` and landed on a 'Mud-slip bowl', then PASSED on a toast left over from the previous leg's successful equip — a false pass, which is worse than a false fail. Now selected by `meta.item_id === 'hist-sap-bow'` with `uiToast(null)` called immediately before the press. (3) `t4-r3-density.mjs` compared `d2()`'s RETURN OBJECT against the float 0.15, so my first density run reported `hard_fails: []` on four screens that all hard-fail — the exact shape of the defect this piece is failing on, in my own tool. All three are in the verdict's `method_deviations`.",
+
+    "TWO CHECKS IN MY FULL RUN MEASURED THE PROBE'S OWN HISTORY AND I THREW THEM AWAY RATHER THAN REPORT THEM. TS1/TS2 read `focus.rowIdx 43` — the LAST row of a 44-item carried list, left there by the equip legs — where a downward drag correctly cannot move, and reported a dead stick on a build whose stick works. The IC leg's row selector walked off the end of the list and pressed confirm on a `misc` bowl, which `_confirm()` queues nothing for, so it measured a press the UI never accepted and called it a dead commitment. Both are re-run in isolation with a new `--legs` filter and committed as separate artifacts with their own logs; the probe now asserts `TS0` (the list is at row 0) before it measures the stick, and selects the in-combat row by item id.",
+
+    "RI-UIX03 §B-§E ARE CARRIED FROM ROUND 2, NOT RE-RUN. What makes that defensible rather than lazy is a repo read taken in the same turn as the claim: `git diff --stat 398bd592..a711f451 -- game/data/` is EMPTY, so not one byte of the item data those five rows read has moved since the builder's own baseline. It is still the second-weakest claim in the verdict and I name it as such: if a sibling changed how a row is DRAWN without changing its data, my 8/13 is stale in a direction I cannot see. RI-UIX06 AD2/AD3/AD6 and RI-UIX07 V1-V6 are carried on the same footing; AD1 and V7/V8/V9 I re-measured.",
+
+    "RI-UIX06's FIDELITY SIDE IS UNCAPTURED FOR THE THIRD ROUND and AD4 is fail-closed on a measurement nobody has taken for the third round. I scored the ART side with its scope written on it rather than fail-closing FIDELITY to 0 and setting the piece min to 0 for a third round, because a 0 that says nothing about the build is worse than a number with its scope on it. The honest sentence is in the verdict: the item's ship gate `min(ART, FIDELITY) >= 6` is NOT SATISFIED AND CANNOT BE EVALUATED.",
+
+    "RI-UIX01 §D IS UNMEASURED FOR THE THIRD CONSECUTIVE ROUND AND I DID NOT MEASURE IT EITHER. I excluded it from the aggregate with its reason rather than scoring it, and I say plainly in the verdict that it should be its own piece: its six checks are about the stamina bar's correctness UNDER COMBAT, and its comparison method wants a `ui-combat` viewpoint set of eight poses that does not exist in `tools/harness/viewpoints.json` plus a combat trace with `--ui-visible`. Nothing about it is a screens-piece measurement, which is exactly why three critics in a row have deferred it for the same honest reason. Creating that piece is dispatch, not critique, so I recommended it and did not do it.",
+
+    "RI-UIX03 C4 (that crossing the encumbrance threshold changes roll distance and stamina cost) was not run — third round. `tools/harness/prg-encumbrance.mjs` exists and would settle it in one run. RI-UIX07 E-T5's deletion arm (a worktree with `game/src/ui/hud-world.js` removed) and V10's pixel half (the `ui-world` viewpoint sweep, which still does not exist) were not run. RI-UIX07 W6 (breath) has still never been observed drawn because nobody has submerged the body.",
+
+    "I DID NOT RUN A DELETE-THE-FIX ARM MYSELF. The builder ran one, in a real `git worktree` at `398bd592` with `tools/node_modules` symlinked per HAZARDS 7, and got 8/13 on the same probe that gives 12/13 on the fixed tree. I re-ran the FIXED arm with that same probe, byte-identical, and got the opposite result to the control — which is the half a critic is allowed to own. A critic re-running the builder's own control arm would be re-running the builder's evidence.",
+
+    "I PROCEEDED PAST NO CONTENTION WAIT. Every browser run in this piece was launched behind a `node tools/contention.mjs` GO, checked in the same shell invocation before the launch. Six browser sessions in total; peak concurrency two, against a ceiling of six. All browsers are dead at the end of this piece and every background waiter I armed has completed or been stopped by id."
+  ],
+
+  "what_i_found": {
+    "the_three_defects_round_3_was_sent_at": {
+      "journal_search_trap": "FIXED, and by BOTH clauses its own foot hint advertises. `JX1`: of the fifteen actions in the closed set plus both axes, `roll` returns `view: 'chronicle'` and stays in the journal. `JX2a`: typed 'BCD', back x5 -> 'BCD' -> 'BC' -> 'B' -> '' -> chronicle -> world. `JX2b`: empty line at press 3, chronicle at press 4. `JX2c`: press 5 leaves the journal, so the top-level exit was NOT swallowed by backOrSub(). `JX3`: closed to world and re-opened -> chronicle, query ''. `JX4`: swap_right to spells and swap_left back -> chronicle, query '' (the peer walk is a SECOND door into the reset and round 2 was caught by exactly that one). `JX5`: the OTHER sub-view, the quest index, also exits to the chronicle. `JX6`: back on the chronicle still leaves the journal.",
+      "equip_silent_out_of_combat": "FIXED, and measured at O3's ACTUAL window rather than at sixty frames. `EQ1`: confirm on 'Bog-iron maul' out of combat moves the equipment AT f+1 — `[chitin-cuirass@chest, reed-cutter@right]` -> `[bog-iron-maul@right, chitin-cuirass@chest]` — with the screen open and `getFrame()` 43 -> 43, so the pause rule is intact. Round 2 and the round-3 evidence both measured at 60 frames; a control that moved at frame 40 would pass both and fail O3. `IC1`: in a FIGHT, where RI-UIX03 P7 requires 30 committed frames, eight frames after the press the row carries `meta.equipping`, the detail panel carries `meta.equipping`, and the foot hint reads 'Putting on the bog-iron maul. You are standing still for it.' — PHOTOGRAPHED, which is the arm the builder declared and stated plainly it had never captured. `IC2` and `ui-pause` M-P5: the in-combat commitment is still 30 frames and still lands.",
+      "touch_stick_never_reaches_the_pipeline": "FIXED, on both axes. On a fresh fixture with `TS0` asserting `focus.rowIdx = 0`: `TS1` 0 -> 1 on a 120 px drag; `TS2` three separate flicks reach a row three away, 1 -> 4; `TS3` a sideways drag moves `focus.col` 1 -> 0. Corroborated independently by the round-2 critic's own `focus.mjs` TS1, 2 -> 3."
+    },
+
+    "the_thing_the_orchestrator_should_read_twice": "RE-RUNNING `t4-r2-critic-drive.mjs` BYTE-IDENTICAL AT THE FIXED BUILD GIVES 28/36 — THE SAME COUNT AND THE SAME EIGHT FAILING CHECKS AS ITS STORED ROUND-2 RUN. That looks like nothing changed and it is not what it looks like. THREE OF THE EIGHT ARE THE PROBE'S OWN, and I demonstrated each rather than assuming it: `D6` presses back ONCE on a one-character query and asserts the view left 'search', but back now correctly REMOVES ONE LETTER — the check encodes round 2's broken behaviour as its pass condition. `D7` calls `goto('journal')`, which returns immediately when you are already in the journal, so it re-reads `D6`'s state and calls it a re-open. `H2` passes a STRING ARRAY to `openContainer`, which spreads into a character map; `focus.mjs`, which passes objects, measures 44 -> 45 -> 44 on the same build in the same session. Of the other five: `C5` is a narrated policy refusal (confirm on `hist-sap-bow` puts 'You cannot get a grip on the sapwood bow. It is not made for your hands.' on the HUD thirteen frames later); `C7` is documented trap I2; `M1` is the declared absence of a pointer path; and `F1`/`T2` are a map screen with ZERO discovered places, settled from the screen's own rendered foot line 'I have not written anything down yet.' rather than from the discovery data. LEFT UNREPAIRED, THIS PROBE WILL REPORT A FIXED BUILD AS BROKEN FOR THE REST OF THE WAVE.",
+
+    "why_the_piece_still_fails": "RI-UIX09 DN4. Every screen still draws its panel at the fixed `[200, 160, 1520, 780]` = 57.2% of frame, and P4 wants D2 >= 0.35 with a hard fail below 0.15. Measured on captures I took at this commit, all 8 of which `frame-liveness` reports LIVE: journal 0.1314, level-up 0.0910, sheet 0.0895, spells 0.0702, container 0.0572 — FIVE HARD FAILS — and inventory 0.1524, the only populated screen above the floor and still less than half the bar. My instrument agrees with the builder's to four decimals on ALL SIX screens. The builder reported this undone rather than half-done, first, in its own status file, with the two measured obstacles that make it a per-screen job rather than one constant — and it did not pad a number or add decorative fill, which I checked: each screen's element count and pictorial count are what they were.",
+
+    "the_arbitration_question_i_refused_to_settle": "RI-UIX03 P7 states the equip commitment UNCONDITIONALLY while its own comparison method measures it CONDITIONALLY ('during combat'), and round 3 set the commitment to 0 frames out of combat. CRITIC-DOCTRINE §7.4 forbids me inventing a ruling and §2.4 forbids me deferring to the builder's, so I stated both sides in `arbitration_questions` and scored M-P5 on the item's own comparison method, which measures a fight. IT IS NOT A FREE PASS AND I SAID SO: if P7 is read as unconditional, M-P5's hard fail ('instant equip swap') fires and RI-UIX03 drops from 3 to 2. The piece score does not move either way, which is why this is a question for the dimension owner rather than a finding."
+  },
+
+  "scores": {
+    "RI-UIX10": "8/8, no hard fail -> ladder 8 (up from 2). Round 2's two hard fails and its touch fail are all closed, verified by pressing every one of them, and the item was written by the round-2 critic rather than by me.",
+    "RI-UIX04": "10/12 -> 6. journal-ui.mjs 11/11 at this commit; JU5 unmeasurable on the only fixture, JU12 blind not possible.",
+    "RI-UIX07": "10/11 -> 5. V7/V8/V9 re-measured across a real boundary; V11 (§G) unrun and it is a NAMED condition of the 6 rung.",
+    "RI-UIX06": "ART 6/7 -> 4. AD1 re-measured at 9 of 9 materials; AD4 unrun for the third round; AD7 (§G) unrun; FIDELITY uncaptured, so the ship gate cannot be evaluated.",
+    "RI-UIX03": "8/13 -> 3. §A re-measured 10/10 including M-P5's 30 committed frames; §B-§E carried behind an empty data diff.",
+    "RI-UIX08": "2, procedural cap for an unrun §G. Not re-litigated — its §G is being judged in a separate piece and I neither duplicated nor credited it.",
+    "RI-UIX09": "5/7 with DN4 hard-failing on five screens -> 2. THIS IS THE MIN AND THE GAP.",
+    "RI-UIX01": "EXCLUDED from the aggregate with its reason. §D unmeasured for three rounds; recommend it become its own piece on ui.hud.combat."
+  },
+
+  "biggest_gap": "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it. Remedy: replace chrome.js:70's single BOX with a per-screen rect and re-pitch each screen's sc.inner offsets. Take the four cheap ones first (journal, level-up, sheet, spells); leave the inventory for a second step because its COLS needs 1046 units of width before the detail panel gets any. Acceptance is a re-run of t4-r2-measure.mjs + t4-r3-density.mjs reporting hard_fails: [] and D2 >= 0.35 on those four, WITH NO NEW DRAWN ELEMENT (element_count unchanged +/-2, so the fill comes from sizing and not from filler), plus a delete-the-fix arm that puts all five hard fails back.",
+
+  "gap_closed": "GAP-W1-ui-journal-search-view-has-no-exit — CLOSED against its own stated acceptance, re-measured word for word, and by more than the acceptance asked for. NOTE: both T4 rounds are wave 1, so tools/gap-ledger.mjs will ignore the closure by design (a closure must come from a LATER wave's critic) and the row will keep reading `open`. That is the mechanism working, not a rejection for cause; a wave-2 critic on ui.menu.journal can close it in one line by pointing at this verdict.",
+
+  "bar_sufficiency_1_3": "I checked whether these items can express what this piece needs to be good at, and they can — recorded even though the answer is yes, because its absence is indistinguishable from never having asked. The one candidate hole is the axis repeat: a list you can walk one press at a time is 'operable' under RI-UIX10 O1 and no item asks whether walking it is BEARABLE (a 40-frame held touch drag moves one row, 4 -> 5; a 40-frame held KeyS moves one row, 5 -> 6; the 44-item carried list therefore costs 43 presses). Ids checked before deciding: RI-UIX01, RI-UIX02, RI-UIX03, RI-UIX04, RI-UIX05, RI-UIX06, RI-UIX07, RI-UIX08, RI-UIX09, RI-UIX10, RI-JRN02, RI-JRN03, RI-JRN04, RI-JRN09, RI-CAM02. I did NOT extend the bar, for two reasons: RI-JRN03 KB2 already legislates key auto-repeat in the OPPOSITE direction ('every handler checks event.repeat and ignores repeats'), so a new row demanding repeat would collide with an existing one rather than fill a hole, and §1.3 lets me only add and never weaken; and it is not what caps this piece. Two of the seven items I was handed were written by the two previous critics under this same rule, and a third would have been a reflex rather than a finding. I DID file one corpus bug rather than absorb it into a score: RI-UIX10's ladder tops out at 8 with no 9 or 10 rung, so as written it cannot express 'beats the reference', which SCORING.md §0 requires at ship. It is in that item's why_not_ten.",
+
+  "files_touched": [
+    "corpus/90-verdicts/wave1/T4-r3.json",
+    "corpus/90-verdicts/wave1/T4-r3.md",
+    "corpus/90-verdicts/wave1/artifacts/T4-r3c/",
+    "corpus/90-verdicts/GAP-LEDGER.json",
+    "corpus/90-verdicts/GAP-LEDGER.md",
+    "tools/ui/t4-r3-critic.mjs",
+    "tools/ui/t4-r3-density.mjs",
+    "orchestration/status/T4-r3-critic.json"
+  ],
+  "files_claimed": [],
+  "ownership_note": "`node tools/ownership.mjs --for <path>` was RUN, not assumed, for every file I write: corpus/90-verdicts/wave1/T4-r3.json, T4-r3.md, corpus/90-verdicts/GAP-LEDGER.json, orchestration/status/T4-r3-critic.json and tools/ui/t4-r3-critic.mjs all report 'nobody live has declared this file'. I touched NO game source and NO existing reference item. I landed with `node tools/land.mjs --paths`, never a whole-tree bank, and never `git read-tree origin/<branch> && git add -A`.",
+
+  "instruments": {
+    "reused_byte_identical": [
+      "tools/ui/t4-r2-critic-drive.mjs — the round-2 critic's 36-check affordance walk. 28/36.",
+      "tools/ui/t4-r2-critic-focus.mjs — the round-2 critic's five-leg probe. 12/13, against the builder's control-worktree 8/13. THE STRONGEST ARTIFACT IN THE VERDICT.",
+      "tools/ui/t4-r2-measure.mjs — the capture and census tool.",
+      "tools/ui/t4-r2-critic-measure.mjs — imported for its `d2()`, so the instrument question settled in round 2 is not re-opened.",
+      "tools/harness/ui-pause.mjs (10/10), tools/analysis/journal-ui.mjs (11/11), tools/visual/frame-liveness.mjs (9 frames, all LIVE)."
+    ],
+    "written_by_me": [
+      "tools/ui/t4-r3-critic.mjs — six legs (jx, eq, eqr, ic, ts, map) behind a `--legs` filter, so a later critic can re-measure ONE property without paying for a twenty-minute browser session. That flag exists because my own instrument corrections cost three full runs.",
+      "tools/ui/t4-r3-density.mjs — RI-UIX09 DN4 over captures taken at the judged commit, re-deriving S56's per-screen frame fractions rather than quoting them."
+    ]
+  }
+}

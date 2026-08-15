@@ -1,0 +1,137 @@
+{
+  "schema": "elder-souls/t4-r3-critic@1",
+  "at": "2026-08-15T12:44:06.920Z",
+  "state": "ui-journal",
+  "checks": [
+    {
+      "id": "I0 INSTRUMENT real listeners attached and a movement key reaches the pipeline",
+      "pass": true,
+      "detail": "real.attached=true, input.moveX=1"
+    },
+    {
+      "id": "I1 INSTRUMENT the touch listeners are attached on device class handheld",
+      "pass": true,
+      "detail": "real.touch.attached=true, enabled=true"
+    },
+    {
+      "id": "TS0 INSTRUMENT the list is at its first row before the stick is measured",
+      "pass": true,
+      "detail": "focus.rowIdx=0 (a drag DOWN cannot move a focus already on the last row, and reporting that as a dead stick is a probe defect, not a build defect)"
+    },
+    {
+      "id": "TS1 (OP3) the floating touch stick walks an open screen's list",
+      "pass": true,
+      "detail": "focus {\"col\":1,\"tagIdx\":0,\"rowIdx\":0,\"sortIdx\":0} -(drag down 120 px)-> {\"col\":1,\"tagIdx\":0,\"rowIdx\":1,\"sortIdx\":0} on mode 'inventory'"
+    },
+    {
+      "id": "TS2 (OP3, §C \"the directional half\") three flicks reach a row three away",
+      "pass": true,
+      "detail": "rowIdx 1 -(3 separate flicks)-> 4"
+    },
+    {
+      "id": "TS3 (OP3) a sideways touch drag moves between the screen's columns",
+      "pass": true,
+      "detail": "focus.col 1 -(drag left 140 px)-> 0"
+    },
+    {
+      "id": "TS3b the item column is back in focus before the repeat measurement",
+      "pass": true,
+      "detail": "focus.col=1"
+    },
+    {
+      "id": "TS4 DIAGNOSTIC a 40-frame HELD touch drag moves more than one row (axis repeat)",
+      "pass": false,
+      "detail": "rowIdx 4 -(one 40-frame held drag)-> 5"
+    },
+    {
+      "id": "TS5 DIAGNOSTIC a 40-frame HELD keyboard direction moves more than one row",
+      "pass": false,
+      "detail": "rowIdx 5 -(one 40-frame held KeyS)-> 6  << compare with TS4: if both are 1, the missing repeat is device-neutral, not a touch defect"
+    },
+    {
+      "id": "MAP1 the map's place list has more than one row to walk",
+      "pass": false,
+      "detail": "mode='map'; the screen's own foot line []; list_row elements 0; placeIdx {\"view\":\"world\",\"placeIdx\":0} -(down)-> {\"view\":\"world\",\"placeIdx\":0} -(up)-> {\"view\":\"world\",\"placeIdx\":0}"
+    }
+  ],
+  "data": {
+    "i0": {
+      "attached": true,
+      "moveX": 1
+    },
+    "i1": {
+      "touch_attached": true,
+      "enabled": true
+    },
+    "touch_one_flick": {
+      "before": {
+        "col": 1,
+        "tagIdx": 0,
+        "rowIdx": 0,
+        "sortIdx": 0
+      },
+      "after": {
+        "col": 1,
+        "tagIdx": 0,
+        "rowIdx": 1,
+        "sortIdx": 0
+      }
+    },
+    "touch_three_flicks": {
+      "from": 1,
+      "to": 4
+    },
+    "touch_horizontal": {
+      "before": {
+        "col": 1,
+        "tagIdx": 0,
+        "rowIdx": 4,
+        "sortIdx": 0
+      },
+      "after": {
+        "col": 0,
+        "tagIdx": 0,
+        "rowIdx": 4,
+        "sortIdx": 0
+      }
+    },
+    "repeat": {
+      "touch_hold_40f": [
+        4,
+        5
+      ],
+      "keyboard_hold_40f": [
+        5,
+        6
+      ]
+    },
+    "map": {
+      "mode": "map",
+      "foot": [],
+      "list_rows": 0,
+      "focus_before": {
+        "view": "world",
+        "placeIdx": 0
+      },
+      "after_down": {
+        "view": "world",
+        "placeIdx": 0
+      },
+      "after_up": {
+        "view": "world",
+        "placeIdx": 0
+      },
+      "texts": [
+        "5",
+        "LIGHT",
+        "Sesh-Anaat",
+        "S",
+        "thorn-hall",
+        "The Province",
+        "stick: the places you have found   ·   confirm: where I am   ·   back: close",
+        "I have not written anything down yet."
+      ]
+    },
+    "errors": []
+  }
+}
