@@ -72,7 +72,16 @@ Alongside that: shrinking the documentation every agent reads before it can star
 - **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
   out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
   it. Shadows still crush to black; that fix is being built now.
-- Dialogue is shallow — asking about one topic mostly does not open others. Being fixed.
+- **Dialogue: the topic links work, and were preferred — the first real quality judgement this project
+  has ever completed.** Two people played two builds of the game blind — ours, and one with the inline
+  links removed but every topic still reachable from the list. Neither knew which was which. **Both
+  preferred ours**, and a third reader who never played confirmed their accounts were genuinely
+  distinguishable rather than a coin-flip.
+  **The catch, and it is the useful part:** of six people they talked to, the links were **absent on
+  two, present on four, and noticed on only two** — and on one of those the highlighted phrase **did
+  nothing when pressed**. So the feature works and is liked *where it lands*, and it lands on about
+  half of conversations. Combined with the first NPC you meet having no links at all, most players
+  would never discover it. Fixing placement is now the work, not adding more links.
 - Some buildings still overlap each other; 24 doors still open into another building.
 
 ## The honest standard
