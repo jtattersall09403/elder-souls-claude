@@ -194,10 +194,36 @@ let lastRef = null;
 // (measured both ways this session, non-deterministically), and REF_EVERY then carries that
 // garbage forward. Step a few frames before the first measurement so the first reference is real.
 await g.h('stepFrames', 5);
-const wantRef_ = (i) => i % REF_EVERY === 0;
+// A FIFTH DEFECT, FOUND WHEN THE ARM STOPPED BEING CONSTANT (G1-ARCHITECTURE-COLLISION).
+// §C.1 compares the player's pixel count to "its unoccluded pixel count AT THE SAME POSE".
+// `--ref-every` carries one reference forward for N frames, which is sound only while the camera
+// distance is unchanged — and on the walk this file was written against, `armLen` was pinned at
+// 3.993 m for every frame, so it was. The moment the spring arm actually WORKS the camera closes
+// on the player, the player grows on screen, and a reference sampled 9 frames ago at a longer arm
+// is a count of a smaller figure: measured here as `occludedPx` 1348 against a carried `refPx` 883,
+// ratio 1.53. The reference-integrity guard then scores those frames `null` — so the defect
+// announces itself rather than passing silently, which is the guard doing its job — but it also
+// means a fixed camera CANNOT be measured with a stale reference. The distance, not the frame
+// count, decides: re-sample whenever the arm has moved by more than RI-CAM01 §E's own ±0.02 m
+// distance tolerance.
+// A SIXTH DEFECT, AND IT IS THE PREDECESSOR'S SECOND ONE WEARING DIFFERENT CLOTHES. The 5-frame
+// warm-up above settles the SIM. It does not settle the RENDER PIPELINE: on the first measured
+// frame of two separate runs the occluded arm returned `occludedPx: 0` against a healthy
+// `refPx: 1337` — i.e. showing and hiding the player changed no pixels at all, while the player
+// demonstrably drew 1,337 px in isolation on the same frame. Reproducible, frame-specific, and it
+// scores `occluded: true`, so unlike the reference defect it biases toward FAILING a build rather
+// than passing one — but it is wrong either way, and one bad frame is a sixth of the §C.1 run-length
+// bar. One throwaway measurement before the loop, whose numbers are discarded, costs one frame and
+// removes it.
+await measureFrame(true, false);
+const ARM_REF_TOLERANCE_M = 0.02;
+let armAtRef = null;
+const wantRef_ = (i, armLen) => i % REF_EVERY === 0
+  || armAtRef === null
+  || (Number.isFinite(armLen) && Math.abs(armLen - armAtRef) > ARM_REF_TOLERANCE_M);
 for (let i = 0; i <= FRAMES; i++) {
   const f = FROM + i;
-  let m;
+  let m, wantRefThisFrame = false;
   // SURVIVE A FLEET-WIDE KILL. Both arms of the previous attempt died at elapsed 123 s with
   // "Target page, context or browser has been closed" — the signature of a sibling's
   // `pkill -f headless_shell` (HAZARDS §10), which is not this tool's to prevent. Crashing here
@@ -206,13 +232,18 @@ for (let i = 0; i <= FRAMES; i++) {
   // that it is short.
   try {
     if (i > 0) await g.h('stepFrames', 1);
-    m = await measureFrame(wantRef_(i), true);
+    // Cheap pre-read: the arm length for THIS frame, so the reference decision can be made before
+    // the expensive readback rather than after it. No render, no pixels — microseconds.
+    const armNow = await g.page.evaluate(() => window.__ENGINE.sim.camera.armLen);
+    wantRefThisFrame = wantRef_(i, armNow);
+    m = await measureFrame(wantRefThisFrame, true);
   } catch (e) {
     aborted = { at_index: i, frames_measured: rows.length, reason: String(e && e.message || e) };
     console.error(`cam-occlusion-walk: walk ended early after ${rows.length} frame(s) — ${aborted.reason}`);
     break;
   }
-  const wantRef = wantRef_(i);
+  const wantRef = wantRefThisFrame;
+  if (wantRef) armAtRef = m.armLen;
 
   // HAZARDS §15, per frame and not per run: is this a picture of anything at all? Measured on the
   // exact canvas the pixel diff was taken from. `metrics`/`classify` are the shipped battery from

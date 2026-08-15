@@ -1,0 +1,34 @@
+{
+ "schema": "elder-souls/cam-occluder-id@1",
+ "tag": "id-r1",
+ "when": "2026-08-15T14:23:39.215Z",
+ "opening": {
+  "start": "debug",
+  "debug_spawn": {
+   "state": "default",
+   "file": "game/data/states/default.json",
+   "settlement": "lilmoth",
+   "why_it_exists": "a known world coordinate to measure terrain and weather from, with no scene to drive"
+  },
+  "interior": null,
+  "settlement": null,
+  "pos": [
+   2766.5,
+   2.68,
+   5011
+  ],
+  "yaw": 180
+ },
+ "window": [
+  275,
+  315
+ ],
+ "every": 5,
+ "frames": 9,
+ "occluder_frequency": {
+  "(unnamed)": 9,
+  "settlement-batch:100:n:esCurvature:1:false,normal:3:false,position:3:false,uv:2:false": 4
+ },
+ "frames_with_any_occluder": 9,
+ "frames_camera_inside_a_solid": 0
+}

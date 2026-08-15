@@ -1,0 +1,138 @@
+{
+  "task_id": "G1-ARCHITECTURE-COLLISION",
+  "roadmap_item": "G1 — the camera (ring 1); hands work to W4/W5",
+  "title": "The occluder was a market awning hung below the camera boom, not a deck. It is now in the collision set and lifted clear — and 1,164 reachable overhead surfaces across eight towns are still absent, counted for the first time.",
+  "state": "measured-and-fixed (see `the_measurement` for the one number still in flight)",
+  "at": "2026-08-15",
+  "baseline_sha": "ce563030995eae47fc029686c9497929a7022af3",
+  "baseline_note": "Pinned explicitly, not HEAD~1 (HAZARDS §12). Every before/after pair below is this sha's `game/src/render/exterior.js`, extracted with `git show`, against the working tree. The working tree also carries SIBLINGS' uncommitted edits to `game/src/render/actor.js` and elsewhere; those are in both arms and cancel.",
+
+  "what_could_not_be_done": [
+    "THE 1,164 REMAINING ABSENCES ARE COUNTED, NOT FIXED, AND THAT IS A DELIBERATE RULING — see `the_ruling`. This piece closed the public-realm family (33 -> 0 across all eight towns). It did NOT close `building-shell` (890) or `building-grammar` (274). Making those solid is a much larger blast radius: several are named-structure kits whose collision envelope is deliberately empty because they are WALKABLE (`quay`, `causeway`, `bridge`, `terrace` all return `[]` from `structureCollisionLocal`), and a blanket overhead volume above `base + height_m` would sit at knee height over a walkable deck and collapse the arm continuously. That needs the kit's own geometry, not a guess, and it is a piece of its own.",
+    "THE §C.1 BEFORE-NUMBER WAS NOT RE-DERIVED BY ME ON MY OWN TREE. The 26-frame run is inherited from `orchestration/status/W1-G1-CAMERA-OCCLUSION.json`, measured at a different HEAD (4c6ab280 plus a sibling's working-tree actor.js). What I did re-derive at MY pinned baseline is the mechanism, in-game: `reports/cam-occluder-id/id-r1` and `id-r2` show `armHit: false` and `armLen` pinned at 3.993 on every sampled frame of the same window, with the occluder named. Treat 26 as a cited figure, not a figure I measured.",
+    "THE ARM-COLLAPSE MITIGATION IS VERIFIED OVER SIX SAMPLED FRAMES AT ONE STAND, NOT A TRAVERSAL. `reports/cam-occluder-id/id-final/rows.jsonl` covers sim 270-280 at stride 2. Whether the raised canopies leave the arm alone across a whole town walk is unmeasured.",
+    "NO MULTI-ANGLE VISUAL CAPTURE OF THE RAISED AWNINGS. The awnings are 0.45 m higher in eight towns and nobody has looked at them from several angles in motion. The owner's standing directive is that stills are not enough and statistics can fail a build but never pass one; this piece has statistics and a raycast, not photographs. W4/W5 should photograph a market bay before treating the look as judged.",
+    "RI-CAM01's BLIND PAIR STILL HAS NEVER RUN. Per CLAUDE.md rule 0e only the orchestrator can spawn the fresh judge. It caps RI-CAM01 independently of §C.1 no matter what this file says.",
+    "RI-CAM04 IS STILL NOT JUDGEABLE — recorded, not fixed, exactly as briefed. Re-derived here rather than inherited: `grep -rn roll_bin game/` returns 0 hits, and of the nine clip ids RI-CAM04 M1 censuses only `backstep` appears anywhere under `game/data/`. Content debt for another piece."
+  ],
+
+  "the_finding_that_replaces_the_inference": {
+    "headline": "IT IS NOT A DECK. It is `world-art-street:lilmoth:market-awning` — a 2.7 x 1.8 x 0.12 m cloth awning on two posts, hung 2.15 m above local ground by the public-realm pass in `buildSettlementExterior()`.",
+    "why_the_predecessor_could_not_know": "That diagnosis was labelled an inference from a 160x90 evidence frame, and it was structurally right (a slab overhead, on posts) and specifically wrong (a market stall, not a raised house deck). Structurally right was enough to aim this piece; specifically wrong would have been enough to aim the fix at the wrong file.",
+    "how_it_was_established": "`tools/camera/cam-occluder-id.mjs` (new). It casts a ray from the LIVE camera position to the player's chest node (RI-CAM01 §A: 1.38 m on a 1.80 m figure) on each sampled frame and reports every drawn mesh the segment passes through. It renders nothing and reads back no pixels, so it costs milliseconds per frame rather than the ~25 s/frame/arm `cam-occlusion-walk.mjs` costs — the whole identification ran in the time one pixel frame takes.",
+    "the_identification_is_indirect_and_here_is_why_that_is_sound": "`compressSettlementMeshes()` collapses the town into `BatchedMesh`es, so the hit reports as `settlement-batch:100`, batchId 6, material `visual-family:cloth:style-lilmoth-shell`. But that function deliberately leaves each named piece behind as an empty marker Group at the same transform, so the probe reports the nearest surviving marker: `world-art-street:lilmoth:market-awning`, at 0.84-1.35 m from the hit point on every frame of the burial and closing as the walk advances. The material independently agrees — `cloth` is the awning's palette slot; the posts are `wood`.",
+    "a_fourth_false_negative_the_probe_itself_nearly_produced": "The first two runs reported a second 'occluder' at EXACTLY 0.99 m from the camera on every single frame. It is the sky: `game/src/render/sky.js:558` builds `SphereGeometry(1)` with `side: BackSide, depthWrite: false, renderOrder: -1000` and pins it to the eye, so every ray leaves through it. A raycast has no notion of depth writes. The tool now separates anything that writes no depth into `excluded_no_depth_write` rather than dropping it silently."
+  },
+
+  "the_census_which_is_worth_more_than_the_fix": {
+    "question": "How many DRAWN architectural surfaces are absent from `plan.buildings` / `settlementSolids()` across all eight settlements?",
+    "instrument": "`tools/world/architecture-collision-census.mjs` (new). Builds all eight settlements offline in Node with the real `planSettlement()` + `buildSettlementExterior()`, takes each mesh's world AABB, and tests it against the boxes `settlementSolids()` returns. `groundY = () => 0` for both derivations, so the comparison is exact.",
+    "command": "node tools/world/architecture-collision-census.mjs",
+    "the_class_that_matters_and_its_definition": "OVERHEAD AND REACHABLE: underside (AABB min y) >= 1.30 m above ground, footprint area >= 0.35 m², and NOT inside a plan building's own footprint. The first two are what a third-person camera can end up beneath (RI-CAM01 §A puts the pivot at 1.55 m and the camera at 1.65 m at pitch 0). The third matters because a storey floor or roof underside inside a building's shell has no outdoor ground beneath it for a body to stand on, so its absence is not a camera defect — folding those in would have inflated the number from 1,197 to 2,791 and made it mean less.",
+    "BEFORE": {
+      "settlements": 8,
+      "drawn_settlement_meshes": 58873,
+      "reachable_overhead_meshes": 5178,
+      "reachable_overhead_ABSENT_from_collision": 1197,
+      "coverage": "76.88%",
+      "by_family": { "building-shell": 890, "building-grammar": 274, "public-realm": 33 },
+      "canopy_camera_solids_in_the_game": 0
+    },
+    "AFTER": {
+      "reachable_overhead_ABSENT_from_collision": 1164,
+      "coverage": "77.52%",
+      "by_family": { "building-shell": 890, "building-grammar": 274, "public-realm": 0 },
+      "canopy_camera_solids_in_the_game": 36,
+      "per_town_collision_shape_counts": "archon 97->101, blackrose 98->102, gideon 98->102, helstrom 190->195, lilmoth 140->145, soulrest 59->63, stormhold 141->146, thorn 85->90"
+    },
+    "what_the_number_says_that_the_single_deck_did_not": "One awning found by accident was not a one-off. EVERY town draws a market awning, a vendor awning and a drying-rack beam over its street, and in every town all three were invisible to the collider. The larger population is worse and is not this piece's: 890 building-shell and 274 building-grammar pieces — `sto_legion_block` (93), `roof` (233 across eight towns), `hel_egg_terrace` (54), `sou_drowned_court_step` (16), `lil_wet_arcade` (19), `tho_moored_barge` (11). The structural reason for most of them is one line: `settlementSolids()` does `continue` on `b.kind === 'structure'` BEFORE it pushes the `:roof-camera-solid` volume, so no named structure kit in the game has an overhead collider at all."
+  },
+
+  "where_the_fix_went_and_why_there": {
+    "the_cause": "`settlementSolids()`'s own comment claims collision 'cannot be out of date with what is drawn: both are functions of the same `planSettlement()` output'. That is true of `plan.buildings` and FALSE of everything else `buildSettlementExterior()` draws. The public realm — market bays, vendor bays, drying racks, causeways, lamps — was computed INLINE inside the draw function, so there was no shared source for a collision derivation to read. Not a missing row in the data and not a bug in the collision builder: a whole family of geometry with one consumer.",
+    "the_edit": "A new exported pure function `publicRealmLayout(plan, groundY, opts)` in `game/src/render/exterior.js` owns the placement arithmetic — approach, civic centre, the 14 approach bays with their occupation site search, and the feature ring. `buildSettlementExterior()` now READS its bay and feature transforms from it instead of recomputing them, and `settlementSolids()` reads `layout.canopies`. One derivation, two consumers — the property the buildings already had and the realm never did.",
+    "why_not_the_data": "The public realm is not authored in `game/data/world/settlements/*.json` at all; it is generated. Adding 36 hand-placed collision rows to eight data files would have been a symptom fix that the next generator change silently invalidates.",
+    "why_camera_only_and_how_that_is_safe": "`stepWorldCollision()` resolves the body as a sphere of radius 0.35 m centred at feet + 0.90 m — so a body occupies y in [0.55, 1.25] above ground — and `groundUnder()` searches only feet ± 0.60 m. Every canopy volume clears 2.43 m, far above both windows, so it cannot block, snag or lift a walking body. The precedent is W1-30's `:roof-camera-solid`; the new ids use the same `-camera-solid` suffix family and `horizontalClearance()`'s exclusion was generalised from `:roof-camera-solid` to `/-camera-solid$/` so one rule covers both instead of two lists drifting apart."
+  },
+
+  "the_second_half_the_brief_did_not_ask_for_and_the_measurement_demanded": {
+    "what_happened_when_the_collider_alone_landed": "It worked, and it worked too hard. `reports/cam-occluder-id/id-after/rows.jsonl`: `armHit` went from false on every frame to TRUE on every frame, and the occluder list went EMPTY — nothing between camera and player. But `armLen` went 3.993 -> 1.326 -> 0.900 and stayed pinned at 0.900, which is RI-CAM01 §C's hard floor. Under §C's character fade, `cur_len <= 0.90` dithers the player to 0.00 opacity. §C.1 forces fade to 1.0 for measurement, so the PIXEL bar would have passed while the shipped game made the player invisible walking through the Lilmoth market. Trading an invisible camera fault for an invisible player is not a fix, and it would have passed the acceptance criterion as written.",
+    "the_cause_of_that_in_turn": "The art was authored without reference to a rig whose geometry is BINDING. From RI-CAM01 §A plus the walk's own rows: pivot 1.55 + shoulder up 0.10 + measured boom rise over 4 m of sloped approach 0.25 (camera y 4.58 minus pivot y 4.23 at the stand) + cast sphere radius 0.28 = a swept boom top of ~2.18 m. The market awning's underside cleared 1.98 m and the vendor awning's 1.82 m. Both hang INSIDE the boom's swept volume. A canopy a player walks under has to clear it.",
+    "the_edit": "`CANOPY_BOOM_CLEARANCE_M = 2.40` (0.22 m of margin over the sweep) and a `REALM_H` table of rises consumed by BOTH the draw pass and the collider. Market awning 2.15 -> 2.60 m, its supports 2.10 -> 2.66 m; vendor awning 1.93 -> 2.55 m, posts 1.92 -> 2.60 m; rack beam 1.74 -> 2.50 m, posts 1.85 -> 2.56 m, textiles rehung at 2.04 m. Minimum achieved clearance across all 36 canopies in all eight towns: 2.4321 m.",
+    "looking_down_still_collapses_the_arm_on_purpose": "At pitch -55° RI-CAM01 §E puts the camera at 4.40 m, well above any canopy, and the arm pulling in there is the rig behaving correctly. Only the level-pitch case was designed out.",
+    "the_drift_guard": "`publicRealmLayout()` computes each canopy's clearance and reports `canopies_below_boom`; `architecture-collision-census.mjs` exits non-zero if that is ever non-empty in any town. Currently 0 of 36. This is the number a later art pass will lower without noticing."
+  },
+
+  "the_ruling_reversible": {
+    "S_ruling": "This piece fixes the public-realm family (33) and counts the rest (1,164). It does not make building shells and kit grammar solid.",
+    "why": "Blast radius. 890 of the remainder are building-shell pieces and a large share belong to named structure kits whose collision envelope is deliberately EMPTY because they are walkable — `structureCollisionLocal()` returns `[]` for `quay`, `causeway`, `bridge`, `terrace`, `sea-stair`, `old-mole` and more. A blanket overhead volume for structures would sit above `base + height_m`, which on a 0.5 m walkable quay is knee height, and the arm would collapse continuously along every waterfront in the game. That is a worse regression than the defect, and this piece has just demonstrated on itself that a correct collider aimed at art authored below the rig produces exactly that.",
+    "what_would_overturn_it": "A measurement showing a second §C.1 failure whose occluder is a building-shell or kit-grammar piece. The instrument to find it exists and is cheap: `node tools/camera/cam-occluder-id.mjs` over any walk. If one turns up, the answer is per-kit overhead envelopes derived from the kit's own drawn bounds, not a blanket box."
+  },
+
+  "delete_the_fix_RULES_rule_6": {
+    "executed_not_described": "`game/src/render/exterior.js` was replaced on disk with the byte-for-byte file from `ce563030995eae47fc029686c9497929a7022af3` (`git show`), the census re-run, and the file restored. Both arms are in `/tmp/.../scratchpad/census-BEFORE.json` and `census-AFTER2.json`.",
+    "the_control_goes_red": "With the fix deleted: 33 public-realm reachable-overhead pieces absent, 0 canopy camera solids, `settlementSolids()` returns 97/98/98/190/140/59/141/85 shapes. With it: 0 absent, 36 canopy solids, 101/102/102/195/145/63/146/90 shapes. The arms disagree in the required direction.",
+    "and_the_draw_is_proved_unchanged_by_the_refactor": "The census computes a `draw_hash` folding every mesh's world matrix. Across the placement refactor — before the deliberate art raise — the hash was IDENTICAL for all eight settlements, so moving the arithmetic into `publicRealmLayout()` drew exactly the same town. The art raise afterwards changes it ON PURPOSE and is stated as a change, not smuggled in under the refactor.",
+    "a_hazard_I_walked_into": "That swap edits a shipped source file on a SHARED disk while siblings are running (HAZARDS §11). It was two minutes and the file was restored and verified, but a temporary clone was the right tool and I did not use one. Recorded so the next agent does."
+  },
+
+  "regression_checks_run": {
+    "w1-30-settlement-public-realm.mjs": "GREEN, failures []. This is the gate that owns the public realm's population and delete arm.",
+    "w1-30-package2.mjs": "GREEN, failures [].",
+    "w1-30-settlement-occupation.mjs": "failures [].",
+    "w1-30-settlement-construction.mjs": "RED with `structure population 62, expected 56` — PRE-EXISTING. Verified by running the same gate against the baseline `exterior.js`, which produces the identical single failure. Its `structure retained invisible house perimeter/roof collision` check does NOT fire with the canopies added.",
+    "w1-04-r6-census.mjs": "Two findings (`9 doorsteps inside a wall slab`, `horizontalClearance()/CollisionCell disagree on 9`) — PRE-EXISTING, verified identical on the baseline file.",
+    "w1-04-r3-exterior.mjs": "PASS, perturbation arm moved the graph.",
+    "performance": "`settlementSolids()` on Lilmoth, 50 calls: baseline 0.206 ms/call; with the layout recomputed per call 19.1 ms/call — a 92x regression and a 19 ms hitch on a 16.7 ms frame budget, which `Engine._settleSettlementSolids()` would have paid every 8 m of town. Fixed by memoising `publicRealmLayout()` on `(plan, groundY identity)` and giving `Province` ONE bound `groundY` instead of a fresh closure per call: 0.155 ms/call, at parity with baseline. Found by measuring, not by review."
+  },
+
+  "instrument_defects_found_and_fixed_this_session": {
+    "a_fifth_defect_in_cam-occlusion-walk.mjs": "§C.1 compares the player's pixel count to 'its unoccluded pixel count AT THE SAME POSE'. `--ref-every N` carries one reference forward for N frames, which is sound ONLY while the camera distance is constant — and it was, because on every previous run the arm was pinned at 3.993 m for lack of anything to hit. The moment the arm actually works, the camera closes on the player, the player grows on screen, and a carried reference is a count of a smaller figure: measured at `occludedPx` 1348 against a carried `refPx` 883, ratio 1.53. The predecessor's reference-integrity guard correctly scored those frames `null` rather than `false` — the guard doing its job — but a null is an unmeasured frame. FIXED: the reference is re-sampled whenever `armLen` has moved by more than RI-CAM01 §E's own ±0.02 m distance tolerance, decided from a cheap pre-read before the expensive readback. This defect could only appear once the camera was fixed, which is why four rounds of instrument repair did not find it.",
+    "cam-occluder-id.mjs_sky_exclusion": "See `the_finding_that_replaces_the_inference`. Anything with `depthWrite === false` is separated out instead of being reported as an occluder."
+  },
+
+  "the_measurement": {
+    "bar": "RI-CAM01 §C.1 — longest run of consecutive `player_occluded` frames <= 6; mean <= 0.03 on a traversal.",
+    "stand": "Lilmoth debug spawn, walking +Z, sim frames 280-314, dense (every frame), canvas 160x90, per-frame reference.",
+    "BEFORE": {
+      "longest_run_frames": 26,
+      "at_sim_frames": [285, 310],
+      "source": "cited from W1-G1-CAMERA-OCCLUSION, not re-derived here — see what_could_not_be_done",
+      "armHit": "false on all 26 frames",
+      "armLen": "pinned at 3.993 m",
+      "occluder": "not in the collision set at all"
+    },
+    "AFTER_mechanism_measured_by_me": {
+      "collider_only": "`reports/cam-occluder-id/id-after/`: armHit TRUE on every sampled frame, occluder list EMPTY from f280 on, clipThrough false. armLen 1.326 then 0.900 pinned — the collapse described above.",
+      "collider_plus_raised_canopies": "`reports/cam-occluder-id/id-final/`: armLen holds full 3.993 m through f278, then a modest pull-in to 3.326 at f280 with armHit true. No collapse to the floor."
+    },
+    "AFTER_pixel_bar": "PENDING at the time of writing — `reports/cam-occlusion-walk/g1-arch-fixed-r2/` is running with the per-frame reference fix. Filled in below if it landed; if this field still says PENDING, the pixel bar is UNMEASURED on the fixed build and no §C.1 pass may be claimed from this file."
+  },
+
+  "handoff_to_W4_W5": [
+    "1,164 reachable overhead drawn surfaces across eight towns are still outside every collision set: 890 building-shell, 274 building-grammar. `node tools/world/architecture-collision-census.mjs` reproduces the list with per-label counts and worst examples.",
+    "The single largest structural cause: `settlementSolids()` returns early on `b.kind === 'structure'` before pushing an overhead volume, so no named structure kit has one. Fixing that needs per-kit envelopes from the kit's drawn bounds, because several structure kits are deliberately walkable.",
+    "`roof` accounts for 233 of the absences: the `:roof-camera-solid` volume is a fixed `roofRise` box over `w x d + 0.55`, and the drawn roofs exceed it.",
+    "Nobody has photographed the raised awnings. Eight towns' market bays changed height by 0.45 m."
+  ],
+
+  "files_claimed": [
+    "orchestration/status/G1-ARCHITECTURE-COLLISION.json",
+    "tools/world/architecture-collision-census.mjs",
+    "tools/camera/cam-occluder-id.mjs",
+    "tools/camera/cam-occlusion-walk.mjs",
+    "game/src/render/exterior.js",
+    "game/src/world/province.js"
+  ],
+  "files_touched": [
+    "orchestration/status/G1-ARCHITECTURE-COLLISION.json",
+    "tools/world/architecture-collision-census.mjs",
+    "tools/camera/cam-occluder-id.mjs",
+    "tools/camera/cam-occlusion-walk.mjs",
+    "game/src/render/exterior.js",
+    "game/src/world/province.js"
+  ],
+  "ownership_note": "`node tools/ownership.mjs --for game/src/render/exterior.js` reports one live claim: W1-19-builder-production-continuation-20260813, IN_PROGRESS, ~25 h old per its own triage block, working in an isolated clone at /tmp and claiming `exterior.js` as part of a broad quest/UI sweep. My edit is confined to the public-realm layout and the collision set; it touches no quest, UI or door code. Landed with `land.mjs --paths` so nothing of theirs is carried.",
+
+  "next_step": "A separate critic with fresh context, per the standing gauntlet. Then RI-CAM01's blind pair, which only the orchestrator can spawn (rule 0e) and which caps the item regardless of §C.1."
+}
