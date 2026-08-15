@@ -96,6 +96,35 @@ inspectable.
 **Check `df -h .` before starting a capture sweep**, and prune before you rent a Pod rather than after
 a run has failed for a reason that looks like anything but disk.
 
+## 14c. `--paths` is ONE comma-separated argument — space-separating it banked a quarter of the work
+
+**Caught 2026-08-15 by reading the commit, not by any output.** This was run:
+
+```sh
+node tools/land.mjs "headline" --paths orchestration/HAZARDS.md tools/world/w1-04-r3-collision.mjs \
+  reports/w1-04-r3-exterior-offline.json reports/blind/protocol-a-w1-r2-SEALED-KEY
+```
+
+`val('paths')` reads **only `argv[i + 1]`**, so one path landed. The other three fell through to the
+bare-word collector and became **body paragraphs of the commit message** — they are legible in
+`3373be81`'s message, describing files the commit does not contain. And `land` printed
+`1 path(s) ... verified 1 path(s)` and exited **0**, because one path is exactly what it was given
+and it verified that one honestly. Nothing lied; the tool answered a different question from the one
+asked.
+
+**Correct:** `--paths a,b,c` — commas, no spaces.
+
+**Guarded, one-sided (§0b):** `land` now refuses when a message word is also an existing path in the
+repo, prints the comma-joined command you meant, and exits 2. Three arms, required to disagree:
+the space-separated form refuses; the comma form proceeds; a genuine multi-paragraph message with no
+stray path proceeds. The guard can only ever *stop* a bank, so it cannot manufacture one.
+
+**The general shape is worth more than the fix.** A success line counts what the tool *received*, not
+what you *meant* — the same distance between the question asked and the question answered as §9
+(evidence added to an index that is then thrown away) and §18 (an empty run reported as no errors).
+When a bank prints a smaller number than the number of things you handed it, that gap is the whole
+signal, and there is no other one.
+
 ## 14b. `land` cannot untrack a file that still exists on disk once you gitignore it
 
 Small, and it will cost you three attempts if you do not know it. Found 2026-08-15 cleaning up a `tmp/`
