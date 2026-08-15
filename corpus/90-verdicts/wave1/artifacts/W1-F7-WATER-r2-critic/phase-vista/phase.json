@@ -1,0 +1,284 @@
+{
+  "tool": "f7-r2-critic-phase",
+  "generated": "2026-08-15T22:30:42.516Z",
+  "commit": "dcf50b6d028431b49762577027305d114410f617",
+  "seed": 20260814,
+  "site": "vista-deep-marshes",
+  "pose": "c-vista-11-d26",
+  "canvas": [
+    960,
+    540
+  ],
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "reps": 5,
+  "mode": "replicate",
+  "step_between_captures": 8,
+  "head_expression_asserted": "PASS — game/src/render/water.js carries the round-2 weight verbatim",
+  "what_this_separates": "the replicate series moves the water phase and NOTHING else; the interleaved pairs swap arm order every other replicate so phase drift cancels to first order",
+  "replicate_series": [
+    {
+      "frame": "frames/rep-c-vista-11-d26-0.png",
+      "water_mask_px": 296068,
+      "water_mask_pct": 57.11,
+      "m12": {
+        "water_px": 296068,
+        "water_frac": 0.57112,
+        "FresnelDelta": 0.00653,
+        "NormalEnergy": null,
+        "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+        "ShoreDelta": 0.01584,
+        "ReflCorr": null,
+        "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+        "TemporalVar": null,
+        "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+        "grazing_rows": [
+          0,
+          134
+        ],
+        "downward_rows": [
+          405,
+          539
+        ],
+        "normal_window": null
+      },
+      "masked": {
+        "water_px_in_crop": 146794,
+        "mean_luma": 73.764,
+        "band_rms": 14.4324,
+        "band_contrast": 0.19566,
+        "lane_bearing_screen_deg": -72,
+        "lane_power": 4.6489,
+        "lane_aniso": 3.03,
+        "lane_power_normalised": 0.000854
+      },
+      "replicate": 0,
+      "arm": "HEAD, untouched — no shader edit of any kind"
+    },
+    {
+      "frame": "frames/rep-c-vista-11-d26-1.png",
+      "water_mask_px": 296067,
+      "water_mask_pct": 57.11,
+      "m12": {
+        "water_px": 296067,
+        "water_frac": 0.57112,
+        "FresnelDelta": 0.00345,
+        "NormalEnergy": null,
+        "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+        "ShoreDelta": 0.01794,
+        "ReflCorr": null,
+        "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+        "TemporalVar": null,
+        "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+        "grazing_rows": [
+          0,
+          134
+        ],
+        "downward_rows": [
+          405,
+          539
+        ],
+        "normal_window": null
+      },
+      "masked": {
+        "water_px_in_crop": 146741,
+        "mean_luma": 74.779,
+        "band_rms": 14.5473,
+        "band_contrast": 0.19454,
+        "lane_bearing_screen_deg": 84,
+        "lane_power": 8.1869,
+        "lane_aniso": 4.24,
+        "lane_power_normalised": 0.001464
+      },
+      "replicate": 1,
+      "arm": "HEAD, untouched — no shader edit of any kind"
+    },
+    {
+      "frame": "frames/rep-c-vista-11-d26-2.png",
+      "water_mask_px": 295888,
+      "water_mask_pct": 57.08,
+      "m12": {
+        "water_px": 295888,
+        "water_frac": 0.57077,
+        "FresnelDelta": -0.0014,
+        "NormalEnergy": null,
+        "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+        "ShoreDelta": 0.01718,
+        "ReflCorr": null,
+        "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+        "TemporalVar": null,
+        "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+        "grazing_rows": [
+          0,
+          134
+        ],
+        "downward_rows": [
+          405,
+          539
+        ],
+        "normal_window": null
+      },
+      "masked": {
+        "water_px_in_crop": 146616,
+        "mean_luma": 74.997,
+        "band_rms": 14.5673,
+        "band_contrast": 0.19424,
+        "lane_bearing_screen_deg": -88,
+        "lane_power": 5.7337,
+        "lane_aniso": 3.8,
+        "lane_power_normalised": 0.001019
+      },
+      "replicate": 2,
+      "arm": "HEAD, untouched — no shader edit of any kind"
+    },
+    {
+      "frame": "frames/rep-c-vista-11-d26-3.png",
+      "water_mask_px": 296118,
+      "water_mask_pct": 57.12,
+      "m12": {
+        "water_px": 296118,
+        "water_frac": 0.57122,
+        "FresnelDelta": 0.00087,
+        "NormalEnergy": null,
+        "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+        "ShoreDelta": 0.01182,
+        "ReflCorr": null,
+        "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+        "TemporalVar": null,
+        "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+        "grazing_rows": [
+          0,
+          134
+        ],
+        "downward_rows": [
+          405,
+          539
+        ],
+        "normal_window": null
+      },
+      "masked": {
+        "water_px_in_crop": 146840,
+        "mean_luma": 74.264,
+        "band_rms": 14.5049,
+        "band_contrast": 0.19532,
+        "lane_bearing_screen_deg": -86,
+        "lane_power": 10.538,
+        "lane_aniso": 5.84,
+        "lane_power_normalised": 0.001911
+      },
+      "replicate": 3,
+      "arm": "HEAD, untouched — no shader edit of any kind"
+    },
+    {
+      "frame": "frames/rep-c-vista-11-d26-4.png",
+      "water_mask_px": 295898,
+      "water_mask_pct": 57.08,
+      "m12": {
+        "water_px": 295898,
+        "water_frac": 0.57079,
+        "FresnelDelta": 0.00803,
+        "NormalEnergy": null,
+        "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+        "ShoreDelta": 0.00988,
+        "ReflCorr": null,
+        "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+        "TemporalVar": null,
+        "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+        "grazing_rows": [
+          0,
+          134
+        ],
+        "downward_rows": [
+          405,
+          539
+        ],
+        "normal_window": null
+      },
+      "masked": {
+        "water_px_in_crop": 146629,
+        "mean_luma": 72.928,
+        "band_rms": 14.3944,
+        "band_contrast": 0.19738,
+        "lane_bearing_screen_deg": 88,
+        "lane_power": 8.9207,
+        "lane_aniso": 4.45,
+        "lane_power_normalised": 0.001677
+      },
+      "replicate": 4,
+      "arm": "HEAD, untouched — no shader edit of any kind"
+    }
+  ],
+  "interleaved_pairs": [],
+  "pageErrors": [],
+  "mask": {
+    "meshes_hidden": 94,
+    "from": "frames/water-hidden-c-vista-11-d26.png"
+  },
+  "replicate_band": {
+    "what": "THE BAND. Same shader, same pose, same process — only the water phase moves. Any acceptance margin smaller than `range` here is unresolved and fails closed (ARBITRATION S61).",
+    "FresnelDelta": {
+      "n": 5,
+      "min": -0.0014,
+      "max": 0.00803,
+      "range": 0.00943,
+      "mean": 0.0035,
+      "sd": 0.00389
+    },
+    "ShoreDelta": {
+      "n": 5,
+      "min": 0.00988,
+      "max": 0.01794,
+      "range": 0.00806,
+      "mean": 0.01453,
+      "sd": 0.00351
+    },
+    "TemporalVar": {
+      "n": 0,
+      "note": "fewer than two readings; no band"
+    },
+    "mean_luma": {
+      "n": 5,
+      "min": 72.928,
+      "max": 74.997,
+      "range": 2.069,
+      "mean": 74.1464,
+      "sd": 0.8319
+    },
+    "lane_power": {
+      "n": 5,
+      "min": 4.6489,
+      "max": 10.538,
+      "range": 5.8891,
+      "mean": 7.60564,
+      "sd": 2.39335
+    },
+    "lane_aniso": {
+      "n": 5,
+      "min": 3.03,
+      "max": 5.84,
+      "range": 2.81,
+      "mean": 4.272,
+      "sd": 1.03159
+    },
+    "lane_power_normalised": {
+      "n": 5,
+      "min": 0.00085,
+      "max": 0.00191,
+      "range": 0.00106,
+      "mean": 0.00139,
+      "sd": 0.00044
+    },
+    "water_mask_pct": {
+      "n": 5,
+      "min": 57.08,
+      "max": 57.12,
+      "range": 0.04,
+      "mean": 57.1,
+      "sd": 0.01871
+    }
+  }
+}
