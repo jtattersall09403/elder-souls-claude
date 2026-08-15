@@ -1,0 +1,144 @@
+{
+  "schema": "elder-souls/protocol-a-pairing-key@1",
+  "warning": "SEALED. This file names which frame is on which arm. Ruling S51: it must not travel with the pack.",
+  "seed_base": 20260815,
+  "jpeg_q": 95,
+  "built": [
+    {
+      "name": "pair01",
+      "ours": {
+        "file": "reports/runpod-gpu/runs/protocol-a-r2/artifacts/deck/frames/char-player__t0800__clear.png",
+        "crop": "300,150,512,512"
+      },
+      "ref": {
+        "file": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764143924.jpg",
+        "crop": "100,100,512,512"
+      },
+      "density_parity": true
+    },
+    {
+      "name": "pair02",
+      "ours": {
+        "file": "reports/runpod-gpu/runs/protocol-a-r2/artifacts/deck/frames/char-player__t1300__clear.png",
+        "crop": "200,480,512,512"
+      },
+      "ref": {
+        "file": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764130815.jpg",
+        "crop": "1408,300,512,512"
+      },
+      "density_parity": true
+    },
+    {
+      "name": "pair03",
+      "ours": {
+        "file": "reports/runpod-gpu/runs/protocol-a-r2/artifacts/deck/frames/char-npc__t1300__clear.png",
+        "crop": "1100,150,512,512"
+      },
+      "ref": {
+        "file": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764130857.jpg",
+        "crop": "1408,0,512,512"
+      },
+      "density_parity": true
+    },
+    {
+      "name": "pair04",
+      "ours": {
+        "file": "reports/runpod-gpu/runs/protocol-a-r2/artifacts/deck/frames/char-npc__t0800__clear.png",
+        "crop": "200,480,512,512"
+      },
+      "ref": {
+        "file": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764067220.jpg",
+        "crop": "1350,540,512,512"
+      },
+      "density_parity": true
+    },
+    {
+      "name": "pair05",
+      "ours": {
+        "file": "reports/runpod-gpu/runs/protocol-a-r2/artifacts/deck/frames/char-player__t1930__clear.png",
+        "crop": "1100,150,512,512"
+      },
+      "ref": {
+        "file": "corpus/70-visual/refs/modern/character_closeup/REF-W3__steam-1902321246.jpg",
+        "crop": "1350,540,512,512"
+      },
+      "density_parity": true
+    }
+  ],
+  "refused": 0,
+  "table_source": "reports/blind/protocol-a-w1-r2/pairing-r2.json",
+  "counterbalanced": {
+    "ruling": "W1-VISUAL-BLIND-PROTOCOL-A-r1 §1 — ours on A for exactly ceil(n/2) pairs, planned before any image was looked at",
+    "planned_ours_side": [
+      "A",
+      "B",
+      "A",
+      "B",
+      "A"
+    ],
+    "seed_search": [
+      {
+        "pair": "pair01",
+        "planned_ours_side": "A",
+        "seed_start": 20260815,
+        "seed_used": 20260816,
+        "seeds_skipped": 1
+      },
+      {
+        "pair": "pair02",
+        "planned_ours_side": "B",
+        "seed_start": 20260816,
+        "seed_used": 20260817,
+        "seeds_skipped": 1
+      },
+      {
+        "pair": "pair03",
+        "planned_ours_side": "A",
+        "seed_start": 20260817,
+        "seed_used": 20260819,
+        "seeds_skipped": 2
+      },
+      {
+        "pair": "pair04",
+        "planned_ours_side": "B",
+        "seed_start": 20260818,
+        "seed_used": 20260818,
+        "seeds_skipped": 0
+      },
+      {
+        "pair": "pair05",
+        "planned_ours_side": "A",
+        "seed_start": 20260819,
+        "seed_used": 20260819,
+        "seeds_skipped": 0
+      }
+    ]
+  },
+  "byte_equalisation": {
+    "what": "both arms padded to an identical file length with a zero-filled private ancillary PNG chunk (esPd) before IEND; pixels untouched",
+    "why": "image-leakcheck `bytes` is a held-out provenance channel and it swept 5/5 on the un-equalised r2 pack — a render with real material detail costs more PNG bytes than a JPEG-sourced reference crop, so the improvement under test was itself the leak",
+    "status": "ACTIVE EQUALISATION — a `bytes` tie in this pack is true by construction and is NOT evidence of blindness",
+    "pairs": [
+      {
+        "pair": "pair01",
+        "target_bytes": 422314
+      },
+      {
+        "pair": "pair02",
+        "target_bytes": 423591
+      },
+      {
+        "pair": "pair03",
+        "target_bytes": 442281
+      },
+      {
+        "pair": "pair04",
+        "target_bytes": 332843
+      },
+      {
+        "pair": "pair05",
+        "target_bytes": 306112
+      }
+    ]
+  }
+}

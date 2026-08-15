@@ -1,0 +1,24 @@
+{
+  "pair": "pair02",
+  "ours": {
+    "source": "reports/runpod-gpu/runs/protocol-a-r2/artifacts/deck/frames/char-player__t1300__clear.png",
+    "crop": "200,480,512,512",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "note": "native 1:1 crop, then a shared JPEG q=95 round trip (4:4:4), then PNG"
+  },
+  "ref": {
+    "source": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764130815.jpg",
+    "crop": "1408,300,512,512",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "note": "native 1:1 crop, then a shared JPEG q=95 round trip (4:4:4), then PNG"
+  },
+  "density_parity": true,
+  "lighting_match": "flat daylight on a plain built masonry surface; both windows are a large, largely unbroken surface under diffuse light, which is the condition that exposes flat shading",
+  "mismatch_recorded": "the first window chosen here (100,100) caught a creature limb at the frame edge. RI-VIS06 §A asks for a patch of ground, foliage, water or a material close-up, so the window was moved to plain masonry. Recorded because the move was made after looking, not before. E1 (r2): our window moved from 150,480 to 200,480 because the current build draws a region name-plate at x 42..180, y 962..983 that r1 did not have, and r1's window caught its last two glyphs. Verified by opening the crop, before and after."
+}

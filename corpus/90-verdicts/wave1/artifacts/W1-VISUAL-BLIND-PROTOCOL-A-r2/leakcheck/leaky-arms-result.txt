@@ -1,0 +1,18 @@
+===== leaky-quantised =====
+PROVENANCE CHANNELS — these GATE. A sweep here means the pack is sortable without judging the render.
+  distinct_levels     held-out 0/5             0.0313   a quantised or palette-reduced arm has fewer luma levels  <-- LEAK
+  duplicate_rows      held-out 0/0 (5 tied)    1        a resampled or upscaled arm repeats scanlines; a native crop does not
+GATE: RED — distinct_levels decides the pack without reading the render. Do not dispatch a judge.
+EXIT=3
+===== leaky-resolution =====
+PROVENANCE CHANNELS — these GATE. A sweep here means the pack is sortable without judging the render.
+  distinct_levels     held-out 2/5             0.5      a quantised or palette-reduced arm has fewer luma levels
+  duplicate_rows      held-out 1/1 (4 tied)    0.5      a resampled or upscaled arm repeats scanlines; a native crop does not
+GATE: GREEN — no held-out provenance channel decides the pack. Power is weak (see the header); this is a floor, not a proof.
+EXIT=0
+===== leaky-resolution-all =====
+PROVENANCE CHANNELS — these GATE. A sweep here means the pack is sortable without judging the render.
+  distinct_levels     held-out 2/5             0.5      a quantised or palette-reduced arm has fewer luma levels
+  duplicate_rows      held-out 5/5             0.0313   a resampled or upscaled arm repeats scanlines; a native crop does not  <-- LEAK
+GATE: RED — duplicate_rows decides the pack without reading the render. Do not dispatch a judge.
+EXIT=3

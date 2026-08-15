@@ -32,8 +32,47 @@
  * REFUSES a pair whose two sources differ in dimensions unless --allow-density-mismatch is
  * passed, and records the mismatch in the reveal when it is.
  *
+ * COUNTERBALANCED SIDE ASSIGNMENT (--sides), ADDED FOR r2
+ * ------------------------------------------------------
+ * `W1-VISUAL-BLIND-PROTOCOL-A-r1` §1 ruled, reversibly, that a free coin flip per pair is a weak
+ * design: r1's flips put ours on B in four of five pairs, so exactly ONE trial could distinguish
+ * "the judge answers the letter A" from "the judge answers the reference", and a 5:0 flip would
+ * have left the positional-bias check with no power at all. The ruling: with n pairs, ours sits on
+ * A for exactly ceil(n/2) of them, **assignment fixed before any image is looked at**.
+ *
+ * This is NOT the runner choosing a side after seeing an answer. `--sides A,B,A,B,A` is a plan
+ * declared on the command line; the tool then searches upward from `seedBase + i` for the first
+ * seed whose mulberry32 first draw lands ours on the planned side, and records both the planned
+ * side and the number of seeds skipped in the reveal. make-pair.mjs is not modified and still does
+ * the assignment itself — the seed is the only thing chosen here, and a seed carries no
+ * information a judge can see (a judge receives two files named A.png and B.png).
+ *
+ * BYTE-LENGTH EQUALISATION (--equalise-bytes), ADDED FOR r2
+ * ---------------------------------------------------------
+ * `bytes` is one of image-leakcheck's HELD-OUT provenance channels: if file length sorts the arms
+ * on every pair, the pack is decidable without decoding a pixel and the gate goes RED. r1 escaped
+ * it by luck — our arm was the larger file on 4 of 5 pairs, one short of a sweep. r2 swept 5/5,
+ * and the reason is the work under test: a render with real material detail and an occlusion term
+ * carries more high-frequency content than one without, and PNG pays for that in bytes while the
+ * reference arms (JPEG-sourced, DCT-smoothed) do not move at all. **The improvement is what tripped
+ * the guard.**
+ *
+ * The fix must not touch a pixel, so it operates on the container: each arm is padded with a
+ * zero-filled private ancillary PNG chunk (`esPd`, ancillary + private + safe-to-copy) until both
+ * files are EXACTLY the same length. image-leakcheck excludes ties from the denominator by design
+ * — the same reason `w` and `h` do not read as channels — so an equalised `bytes` reports
+ * `0/0 (5 tied)` and carries no information in either direction, which is a stronger claim than
+ * "did not happen to sweep". The chunk is identical in type on both arms, contains only zeros, and
+ * is not one of the metadata chunks the structural gate reads (`tEXt`/`iTXt`/`zTXt`/`eXIf`/`tIME`/
+ * `pHYs`/`iCCP`/`sRGB`/`gAMA`), so it adds no readable payload.
+ *
+ * This is an ACTIVE EQUALISATION and it is recorded as one: a `bytes` tie in an equalised pack is
+ * true by construction and is NOT evidence of blindness, exactly as image-leakcheck's `matched`
+ * column says of width and height.
+ *
  * USAGE
  *   node tools/blind/protocol-a-pack.mjs --table <pairing.json> --out <dir> [--seed <n>] [--force]
+ *                                        [--sides A,B,A,B,A] [--equalise-bytes]
  *
  * OUTPUT
  *   <out>/packs/<pair>/A.png, B.png     <- the ONLY thing a judge ever receives
@@ -98,6 +137,58 @@ const jpegQ = table.jpeg_q ?? 95;
 const built = [];
 let refused = 0;
 
+// --- counterbalanced side assignment (see header). Mirrors make-pair.mjs exactly. ---
+function mulberry32(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const oursIsAFor = (seed) => mulberry32(seed)() < 0.5;
+
+let plannedSides = null;
+if (args.sides) {
+  plannedSides = String(args.sides).split(',').map((s) => s.trim().toUpperCase());
+  if (plannedSides.length !== table.pairs.length || plannedSides.some((s) => s !== 'A' && s !== 'B')) {
+    console.error(`--sides must be ${table.pairs.length} comma-separated A/B entries, one per pair, naming the side OURS sits on`);
+    process.exit(1);
+  }
+  const onA = plannedSides.filter((s) => s === 'A').length;
+  const want = Math.ceil(plannedSides.length / 2);
+  if (onA !== want) {
+    console.error(`--sides puts ours on A for ${onA} of ${plannedSides.length} pairs; the r1 ruling requires exactly ceil(n/2) = ${want}`);
+    process.exit(1);
+  }
+}
+const sideSearch = [];
+const byteEqualisation = [];
+
+/**
+ * Pad a PNG to exactly `target` bytes by inserting one zero-filled private ancillary chunk
+ * immediately before IEND. Pixels are untouched; the decoded image is bit-identical.
+ */
+function padPngTo(file, target) {
+  const buf = fs.readFileSync(file);
+  const need = target - buf.length - 12; // 12 = length(4) + type(4) + crc(4)
+  if (need < 0) throw new Error(`${file} is already ${buf.length} bytes, past target ${target}`);
+  const iend = buf.length - 12; // IEND is always the final 12 bytes of a valid PNG
+  if (buf.subarray(iend + 4, iend + 8).toString('latin1') !== 'IEND') throw new Error(`${file}: no IEND where one must be`);
+  const type = Buffer.from('esPd', 'latin1');
+  const data = Buffer.alloc(need, 0);
+  const len = Buffer.alloc(4); len.writeUInt32BE(need, 0);
+  const crc = Buffer.alloc(4); crc.writeUInt32BE(crc32(Buffer.concat([type, data])), 0);
+  fs.writeFileSync(file, Buffer.concat([buf.subarray(0, iend), len, type, data, crc, buf.subarray(iend)]));
+}
+const CRC_TABLE = (() => {
+  const t = new Int32Array(256);
+  for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[n] = c; }
+  return t;
+})();
+function crc32(b) { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = CRC_TABLE[(c ^ b[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+
 for (const [i, pair] of table.pairs.entries()) {
   const name = pair.id;
   const oursSrc = path.resolve(ROOT, pair.ours.file);
@@ -122,11 +213,20 @@ for (const [i, pair] of table.pairs.entries()) {
 
   const packDir = path.join(packsDir, name);
   const revealDir = path.join(revealRoot, `${name}.reveal`);
+
+  let pairSeed = seedBase + i;
+  if (plannedSides) {
+    const wantA = plannedSides[i] === 'A';
+    let skipped = 0;
+    while (oursIsAFor(pairSeed) !== wantA) { pairSeed++; skipped++; }
+    sideSearch.push({ pair: name, planned_ours_side: plannedSides[i], seed_start: seedBase + i, seed_used: pairSeed, seeds_skipped: skipped });
+  }
+
   execFileSync(process.execPath, [
     path.join(HERE, 'make-pair.mjs'),
     '--ours', oursPng, '--ref', refPng,
     '--out', packDir, '--reveal', revealDir,
-    '--seed', String(seedBase + i), '--kind', 'image',
+    '--seed', String(pairSeed), '--kind', 'image',
     '--item', 'RI-VIS06', '--force',
     // This question is never shown to the judge — PROMPT.md is relocated below. It is recorded
     // so the reveal says what pack machinery was used.
@@ -147,6 +247,15 @@ for (const [i, pair] of table.pairs.entries()) {
     mismatch_recorded: pair.mismatch || null,
   }, null, 2) + '\n');
 
+  if (args['equalise-bytes']) {
+    const A = path.join(packDir, 'A.png'); const B = path.join(packDir, 'B.png');
+    const target = Math.max(fs.statSync(A).size, fs.statSync(B).size) + 12 + 16;
+    for (const f of [A, B]) padPngTo(f, target);
+    const sa = fs.statSync(A).size; const sb = fs.statSync(B).size;
+    if (sa !== sb || sa !== target) { console.error(`REFUSED ${name}: byte equalisation failed (${sa} vs ${sb}, target ${target})`); refused++; continue; }
+    byteEqualisation.push({ pair: name, target_bytes: target });
+  }
+
   // ASSERT the pack is exactly two images. A pack that quietly grew a file is a pack that leaks.
   const contents = fs.readdirSync(packDir).sort();
   if (contents.length !== 2 || contents[0] !== 'A.png' || contents[1] !== 'B.png') {
@@ -163,6 +272,17 @@ fs.writeFileSync(path.join(revealRoot, 'PAIRING-KEY.json'), JSON.stringify({
   warning: 'SEALED. This file names which frame is on which arm. Ruling S51: it must not travel with the pack.',
   seed_base: seedBase, jpeg_q: jpegQ, built, refused,
   table_source: String(args.table),
+  counterbalanced: plannedSides ? {
+    ruling: 'W1-VISUAL-BLIND-PROTOCOL-A-r1 §1 — ours on A for exactly ceil(n/2) pairs, planned before any image was looked at',
+    planned_ours_side: plannedSides,
+    seed_search: sideSearch,
+  } : null,
+  byte_equalisation: byteEqualisation.length ? {
+    what: 'both arms padded to an identical file length with a zero-filled private ancillary PNG chunk (esPd) before IEND; pixels untouched',
+    why: 'image-leakcheck `bytes` is a held-out provenance channel and it swept 5/5 on the un-equalised r2 pack — a render with real material detail costs more PNG bytes than a JPEG-sourced reference crop, so the improvement under test was itself the leak',
+    status: 'ACTIVE EQUALISATION — a `bytes` tie in this pack is true by construction and is NOT evidence of blindness',
+    pairs: byteEqualisation,
+  } : null,
 }, null, 2) + '\n');
 
 console.log(`\n${built.length} pair(s) built, ${refused} refused. Packs: ${packsDir}. SEALED key: ${revealRoot}`);

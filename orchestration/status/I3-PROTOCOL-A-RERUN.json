@@ -1,0 +1,207 @@
+{
+  "schema": "elder-souls/status@1",
+  "item": "I3",
+  "ring": 0,
+  "piece": "RI-VIS06 Protocol A re-run (r2) — stage 1 of 2, PACK BUILDER",
+  "date": "2026-08-15",
+  "branch_head_at_build": "f52ab49566448b7ce2f8402494b1ff1f718a7fca",
+  "state": "PACK BUILT, LEAK-CHECKED GREEN, SEALED — READY FOR THE ORCHESTRATOR TO SPAWN JUDGES",
+
+  "MY_OWN_OPINION_IS_VOID_BY_CONSTRUCTION": "I built both arms and I have looked at all ten images. Rule 25 and RI-VIS06 §D's 'judge has prior context' row: I cannot judge this pack and nothing in this file is a judgement of how our render compares to the references. Where I quote a statistic from image-leakcheck's QUALITY block I quote it as the tool prints it — reported, never gating, and not a result. The result does not exist until five fresh judges have answered.",
+
+  "WHAT_I_COULD_NOT_DO_FIRST": [
+    {
+      "id": "N1",
+      "what": "I could not make the judges naive. This is r1's deviation D1, unfixed and unfixable by me.",
+      "detail": "A subagent spawned in this repository inherits the project CLAUDE.md, so a judge knows an in-development game exists. r1 recorded the direction of the residual bias and it is unchanged: a judge who knows a game is being built may be charitable toward whichever image looks like a game build, which flatters our side and biases AGAINST finding a gap. A verdict finding our side losing is strengthened by this; a verdict finding our side WINNING is fatally weakened by it — and that matters more in r2 than it did in r1, because r2 is the first run where ours winning is a live possibility. Owed remedy, unchanged from r1: run the judges from a working directory with no project CLAUDE.md in scope."
+    },
+    {
+      "id": "N2",
+      "what": "I could not seal the key against a determined reader — only against loss and against tampering.",
+      "detail": "The key is committed at corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/ because evidence under reports/ never reaches the remote and this container has restarted twice in a day. COMMITMENT.json records the sha256 of every mapping at build time, so a mapping cannot be silently rewritten after the answers are in. Neither stops a judge that goes looking. What keeps this blind is procedural: each judge gets two absolute paths and the verbatim prompt and nothing else."
+    },
+    {
+      "id": "N3",
+      "what": "I could not test whether image-leakcheck catches a leak that affects fewer than all pairs. I found that it does not.",
+      "detail": "See FINDINGS/F3. This is a limit of the gate, discovered by making it fail on purpose, not a defect in this pack."
+    },
+    {
+      "id": "N4",
+      "what": "I did not apply r1's owed remedies D3 and D4, on purpose.",
+      "detail": "r1 owes an in-focus daylight plate (D3: pair02/pair03 reference windows sit in background bokeh) and a low-light mid-distance exterior plate (D4: pair05 subject scale differs). Both remedies swap a plate. Swapping a plate changes what the judge is comparing, and a changed pair cannot be read against r1's answer — which is the entire purpose of this run. They remain owed for the first Protocol A run whose purpose is not comparison with r1. Cost of the choice, stated plainly: r2 inherits both confounds, and r1's R5 (depth of field) is still not buildable evidence."
+    },
+    {
+      "id": "N5",
+      "what": "I did not run Protocol B, and no agent involved in this pack may judge it.",
+      "detail": "RI-VIS06 §D: one agent answering both A and B is a void result. Protocol B remains untested in this project."
+    },
+    {
+      "id": "N6",
+      "what": "I burned one Pod by accident, ~$0.01.",
+      "detail": "I ran `node tools/visual/gpu-deck.mjs --help`, which rents a Pod rather than printing help — the hazard was in my brief and I ran it anyway. Pod b5e34vgc2guuq7 was terminated by id with deletion confirmed. It ran the wrong profile (smoke) and produced nothing used here."
+    }
+  ],
+
+  "WHY_THIS_RUNS": "Protocol A has run once, on 2026-08-14, and ours lost 5 of 5 (corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.md). Three remedies came out of it — F1 materials, F2 contact shadows/AO, F3 ambient fill — and all three are in HEAD. The question this pack exists to answer is whether three days of visual work moved a judgement made by an agent that cannot see the label. Under Ruling S55 the cap for a wave with zero Protocol A pairs is now 2, so this is also what lifts the cap.",
+
+  "WHAT_THE_ORCHESTRATOR_MUST_SPAWN": {
+    "how_many_judges": 5,
+    "one_judge_per_pair": true,
+    "never_two_pairs_to_one_agent": "RI-VIS06 §D: fresh agent per run. A single agent answering two pairs is a contaminated result, and an agent answering both Protocol A and Protocol B is a void one.",
+    "model_note": "Opus. CLAUDE.md 0d carves out 3D visuals work for Opus always, and this is a judgement about how the scene looks.",
+    "what_each_judge_receives": [
+      "The two absolute file paths for its pair, and nothing else: /home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/<pair>/A.png and .../B.png",
+      "The verbatim prompt, pasted byte-for-byte from /home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/prompts/PROMPT-A-verbatim.txt",
+      "An instruction to open both images and answer in exactly the prompt's format, adding nothing"
+    ],
+    "what_each_judge_must_NOT_receive": [
+      "The word Morrowind, the word Black Marsh, the project brief, RI-VIS05, or any indication that one image is from an in-development game (§A)",
+      "Any path under SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/, the pairing table, or this status file",
+      "Any hint of which arm is ours, which pair number it is judging relative to the others, or that a previous run exists",
+      "Any statistic from leakcheck/. The judge is the instrument; the statistics are not evidence for it and must not be shown to it."
+    ],
+    "pairs": [
+      { "pair": "pair01", "A": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair01/A.png", "B": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair01/B.png" },
+      { "pair": "pair02", "A": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair02/A.png", "B": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair02/B.png" },
+      { "pair": "pair03", "A": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair03/A.png", "B": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair03/B.png" },
+      { "pair": "pair04", "A": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair04/A.png", "B": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair04/B.png" },
+      { "pair": "pair05", "A": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair05/A.png", "B": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair05/B.png" }
+    ],
+    "capture_the_answers": "Write each answer to disk EXACTLY as returned, before opening any key. Do not clean it up, do not re-ask because you dislike it, and never run best-of-N — RI-VIS06 §Comparison method step 4 calls that judge-shopping and §Failure threshold voids the protocol for it. If a run must be discarded (prompt leak, malformed output), record the discard and its reason.",
+    "then_and_only_then": "Open SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/, verify each mapping.json against COMMITMENT.json, and record the reveal.",
+    "stage_2": "A separate agent that built nothing and judged nothing writes the verdict at corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.{json,md} and appends the five §E blocks to corpus/90-verdicts/w01-visual-blind.md. It applies the §Scoring cap table and, if ours wins any pair, the §C escalation below."
+  },
+
+  "ESCALATION_IF_OURS_WINS": {
+    "when": "RI-VIS06 §C. Ours winning Protocol A is treated as implausible until proven, and r1's note that it 'should never happen in the first several waves' now has to be read against the fact that F1/F2/F3 landed specifically to change it. Escalate anyway — the clause is not conditional on the wave's expectations.",
+    "step_1": "A FRESH judge, not the one that produced the win.",
+    "step_2": "The identical prompt with prompts/PROMPT-A-escalation.txt appended verbatim. That file is byte-identical to RI-VIS06 §C (verified: 499 bytes, exact match). It does not say which image is which.",
+    "step_3": "A crop escalation — three 512x512 crops of each image at 1:1, no downscaling. NOTE, and it is a real problem the orchestrator must rule on: our arms are ALREADY 512x512 native crops, so 'three 512x512 crops at 1:1' has no room left inside them. The buildable reading is three 256x256 sub-windows at 1:1 from each arm; the alternative is re-cutting three fresh 512x512 windows from the same source frames and plates, which needs a pack rebuild and a new key. I have not chosen for you because either choice changes the instrument and the choice belongs above me.",
+    "if_ours_still_wins": "Record it as a genuine result with a note, per §C, and check the RI-VIS03 metrics."
+  },
+
+  "WHAT_KEEPS_IT_BLIND": {
+    "structural": [
+      "Each pack directory holds exactly A.png and B.png and nothing else — asserted by the builder per pair, and re-asserted by image-leakcheck's structural gate.",
+      "make-pair.mjs's own PROMPT.md and pack.json are RELOCATED to the reveal side, not shipped: §A gives the judge 'the two images, the prompt below, and nothing else', and make-pair's generic question is not Protocol A's.",
+      "The sealed key lives outside the pack tree (--reveal-root), so a judge handed the pack directory cannot walk into the key via its parent.",
+      "Both arms: PNG, identical dimensions (512x512), identical bit depth, colour type and interlace, no tEXt/iTXt/zTXt/eXIf/tIME/pHYs/iCCP/sRGB/gAMA chunks on either side.",
+      "Native resolution on both arms, no upscaling: every reference plate is 1920x1080 and our capture is 1920x1080, so a 512x512 native crop covers the same angular field on both sides. This is why the pairing table excludes the 4K and 2560x1440 plates.",
+      "Both arms pass through the same JPEG q95 quantiser and the same PNG writer, so the 8x8 DCT signature cannot label an arm — blockiness_8px 3/5, p=0.5.",
+      "File length equalised to the byte on every pair (see FINDINGS/F2)."
+    ],
+    "procedural": [
+      "One fresh agent per pair; the runner asserts no prior project material in the judge context beyond the inherited CLAUDE.md (N1).",
+      "Answers captured to disk before any key is opened.",
+      "Prompt quoted byte-for-byte from a file, never paraphrased."
+    ],
+    "S51_check": {
+      "counterpart_class": "A — an authentic external artefact. The B-side arms are Steam screenshots of shipped titles (4x Elden Ring, 1x The Witcher 3) that exist on disk under corpus/70-visual/refs/modern/character_closeup/ independently of any table in RI-VIS06.",
+      "disconnected_script_test": "Could a short script that has read RI-VIS06's tables, and has never run the game, reproduce a judge's answer? No. RI-VIS06 contains no acceptance table describing what either arm should look like — it describes a PROCEDURE. Our arm is not derivable from it: it is a photograph of the running game.",
+      "generated_through_the_runtime_a_player_uses": "Yes. tools/visual/deck.mjs drives the actual game in a browser on an NVIDIA RTX A4500 (ANGLE/Vulkan), reported HARDWARE, 1920x1080.",
+      "design_columns_stripped": "Yes. Nothing travelling with the pack says what either arm depicts, what time of day it is, which lighting profile it matched, or how many pairs share a source."
+    }
+  },
+
+  "COUNTERBALANCED_SIDES": {
+    "why": "r1's own ruling (W1-VISUAL-BLIND-PROTOCOL-A-r1 §1, reversible): a free coin flip put ours on B in four of five pairs, leaving exactly ONE trial able to distinguish 'the judge answers the letter A' from 'the judge answers the reference'. A 5:0 flip would have left the positional-bias check with no power at all.",
+    "plan_declared_before_any_image_was_opened": "A,B,A,B,A — ours on A for pair01, pair03, pair05; ours on B for pair02, pair04. Three of five is ceil(5/2), which the builder enforces and refuses to build without.",
+    "how": "protocol-a-pack.mjs --sides searches upward from seedBase+i for the first seed whose mulberry32 first draw lands ours on the planned side, and records the seed and the number skipped in PAIRING-KEY.json. make-pair.mjs is unmodified and still performs the assignment; only the seed is chosen, and a seed carries no information a judge can see.",
+    "what_this_buys_the_verdict": "The positional-bias check now has up to five informative trials instead of one. Under the null that answers are independent of image content, five answers all agreeing with the key is p=0.0313 one-sided — the same weak floor r1 quoted, but the letter/side confound is gone by construction rather than by luck."
+  },
+
+  "FINDINGS": [
+    {
+      "id": "F1",
+      "severity": "would have labelled our arm in two of five pairs",
+      "what": "The current build draws a region name-plate ('western-rootlands') into the canvas at x 42..~180, y 962..983, and r1's crop window at (150,480) catches its last two glyphs. Both pair02 and pair04 use that window, so two of our five arms shipped with legible burnt-in text until I moved them.",
+      "how_found": "By opening the crops. Not by a statistic — image-leakcheck was GREEN on the version that contained the text, because a few dozen text pixels move no summary statistic. This is HAZARDS §15's lesson arriving at the other end of the pipeline: the numbers were fine and the picture was not.",
+      "why_r1_did_not_hit_it": "r1's shipped pack/pair04/B.png contains no text at the same crop — the name-plate is new since 2026-08-14. r1's pairing table enumerated three HUD elements (status bars, compass, hotbar) and its windows cleared all three; it was correct when written and is now incomplete.",
+      "fix": "Our window on pair02 and pair04 moved from 150,480 to 200,480 — a 50 px translation on the same frame, same scale, same y, chosen to clear x=180 with margin. Verified by re-opening both crops and by counting near-white pixels (0 in both). Recorded in the pairing table as deviation E1.",
+      "owed": "RI-VIS06 §D's HUD row is enforced by eye and by nothing else. A capture-time assertion that no chrome rectangle intersects a declared blind-crop window would have caught this before it reached a pack. Not built here — it is a tool, not a pack."
+    },
+    {
+      "id": "F2",
+      "severity": "gated the pack RED before equalisation",
+      "what": "image-leakcheck's `bytes` channel swept 5/5 on the first r2 pack. Our arm was the larger file on all five pairs, so the pack was sortable by file length without decoding a pixel. GATE: RED, exit 3.",
+      "why": "A PNG of a render with real material detail and an occlusion term carries more high-frequency content than a PNG of a JPEG-sourced reference crop, whose DCT quantisation has already smoothed it. Our r2 crops are 25-30% larger than the same windows in r1 (pair01 330,353 -> 422,286; pair03 340,860 -> 442,253), while the reference arms are byte-identical to r1's. r1 escaped the gate by one pair — ours was larger on 4 of 5, one short of a sweep. THE WORK UNDER TEST IS WHAT TRIPPED THE GUARD.",
+      "fix": "protocol-a-pack.mjs --equalise-bytes pads each arm with a zero-filled private ancillary PNG chunk (esPd) until both files are exactly the same length. Pixels untouched — every quality statistic is identical before and after, and the decoded images hash the same. image-leakcheck excludes ties from the denominator by design, so `bytes` now reports 0/0 (5 tied).",
+      "honesty": "This is an ACTIVE equalisation. A `bytes` tie in this pack is true by construction and is NOT evidence of blindness, exactly as the tool's `matched` column says of width and height. PAIRING-KEY.json records it in those words."
+    },
+    {
+      "id": "F3",
+      "severity": "a limit of the gate, found by making it fail on purpose",
+      "what": "image-leakcheck gates on a SWEEP, so a provenance leak present on fewer than all pairs cannot gate however blatant it is.",
+      "evidence": "Three deliberately leaky copies of the REAL r2 pack, each isolating one channel (leakcheck/leaky-arms-result.txt): (a) reference arm quantised to 8 luma levels on every pair -> distinct_levels 0/5, p=0.0313, GATE RED, exit 3. (b) reference arm of ONE pair downsampled 2x and re-upsampled -> duplicate_rows decides 1 of 5, p=0.5, GATE GREEN, exit 0 — THE GUARD MISSES IT. (c) the identical injection applied to all five -> duplicate_rows 5/5, p=0.0313, GATE RED, exit 3.",
+      "note_on_the_control_itself": "The first draft of the leaky arms re-saved through Pillow's convert('RGB'), silently changing PNG colour type 6 -> 2, and the structural gate fired on that instead. The guard went red for a defect the control had introduced rather than the one it meant to inject — a self-test arm that proves the wrong thing. Fixed by preserving mode and re-equalising length, and recorded here rather than quietly corrected.",
+      "what_it_means_for_this_pack": "The per-pair checks that DO run unconditionally are structural — dimensions, bit depth, colour type, interlace, chunks, exactly-two-files — and all five pairs pass those. What cannot be ruled out is a single-pair STATISTICAL leak. Given F1 was exactly a single-pair-class defect that no statistic saw, the reasonable reading is that eyes on every crop are load-bearing here and the battery is a floor under them, which is what its own header says."
+    },
+    {
+      "id": "F4",
+      "severity": "reported, not acted on — the brief asks for it to be reported and not silently fixed",
+      "what": "The §A prompt enumerates, as its judging criteria, the exact axes F1/F2/F3 were built to move: 'material response: do different surfaces respond to light differently', 'do shadowed areas still contain readable detail', 'shadows... tight at contact'. A prompt that names the remedies as its criteria is a prompt aimed at this experiment's hypothesis.",
+      "why_it_is_NOT_a_leak_of_the_kind_that_voids": "The prompt predates r1 and is unchanged; it was written before any of those remedies existed, and r1 was judged under the identical text. It does not tell the judge which arm is which, and it does not presuppose a mechanism belonging to either arm. What it does do is make the comparison SENSITIVE to precisely the three things we changed — which is a property of the instrument, not a defect in the pack, and it cuts both ways: if the remedies did not work, this prompt is the one most likely to say so.",
+      "action_taken": "NONE, deliberately. Rewording mid-experiment breaks comparability with r1, which is the whole point of r2. Reported here so the verdict can weigh it.",
+      "second_observation_on_the_escalation_prompt": "PROMPT-A-escalation.txt tells the judge that one image is a browser render by a small team and the other a shipped AAA frame. That is a real hint about what to look for, deliberately asymmetric (it only raises the bar), and it is the item's own text — §C says so explicitly. It fires only if ours wins."
+    }
+  ],
+
+  "CAPTURE": {
+    "evidence_class": "HARDWARE — valid for appearance claims",
+    "gpu": "NVIDIA RTX A4500, SECURE, $0.250/hr",
+    "renderer_string": "ANGLE (NVIDIA, Vulkan 1.3.277 (NVIDIA NVIDIA RTX A4500 (0x00002232)), NVIDIA)",
+    "revision_pinned": "f52ab49566448b7ce2f8402494b1ff1f718a7fca (--revision, HAZARDS §15a). Six uncommitted sibling paths were EXCLUDED from the paid run and are listed in capture/capture-r2.log; none of them is under test here.",
+    "deck": "tools/blind/deck-protocol-a.json --profile chars — the same deck, the same two setups, the same three times, the same seed 20260814 and the same 1920x1080 canvas as r1's capture. Nothing in the shot list was changed.",
+    "counts": "6 planned, 6 ok, 0 red, 30.2s of rendering",
+    "frame_liveness_HAZARDS_15": {
+      "tool": "node tools/visual/frame-liveness.mjs --in <frames> --no-subject, run on the Pod at capture time and preserved at capture/frame-liveness.json; deck.mjs also gates every frame through gateBuffer at write time",
+      "result": "6 frames, {\"LIVE\":6} — no frame is degenerate",
+      "per_frame": [
+        "char-npc__t0800__clear   span=167 shadow=32 lc=1.2117 H=6.2182",
+        "char-npc__t1300__clear   span=167 shadow=36 lc=1.2580 H=6.3443",
+        "char-npc__t1930__clear   span= 72 shadow= 2 lc=0.2682 H=4.1146",
+        "char-player__t0800__clear span=162 shadow=44 lc=1.3669 H=6.6711",
+        "char-player__t1300__clear span=163 shadow=48 lc=1.3655 H=6.7125",
+        "char-player__t1930__clear span= 96 shadow= 7 lc=0.5249 H=5.3381"
+      ],
+      "the_two_dusk_frames": "char-npc__t1930 (shadow_levels 2, local contrast 0.27) sits close to the degenerate end of the corpus and is LIVE only on span and entropy. It is NOT used by any pair. char-player__t1930 (shadow 7, lc 0.52) IS pair05's source and is the weakest frame in the pack; that is worth knowing when reading pair05's answer, and it compounds r1's D4.",
+      "subject_presence_NOT_tested": "--no-subject. These crops are deliberately subject-neutral per §A, so 'is the character in frame' is the wrong question for them; 'is this an image' is the right one and it was asked and answered."
+    },
+    "motion_HAZARDS_16": "This pack contains NO motion. Protocol A §A is a still-image protocol — 'one capture from the fixed eight, 1920x1080 PNG' — so there is nothing here for §16 to void, and I did not invent a motion arm the item does not ask for. The verbs were therefore not exercised and I make no motion claim of any kind. The owner's stills-are-not-enough directive is not satisfied by this pack and is not meant to be; it belongs to F10 and the character work.",
+    "pod_hygiene": "Pod ety3dkk5y27knz terminated in mandatory cleanup with deletion confirmed by API lookup; the ephemeral template deleted and confirmed too. Plus the accidental Pod in N6, also terminated by id with deletion confirmed. No bare `runpod cleanup` was run at any point."
+  },
+
+  "LEAKCHECK_RESULT": {
+    "command": "node tools/blind/image-leakcheck.mjs --packs corpus/.../W1-VISUAL-BLIND-PROTOCOL-A-r2/pack --reveals <sealed key>",
+    "gate": "GREEN, exit 0 — no held-out provenance channel decides the pack",
+    "structural_gate": "5 pairs — both arms PNG, identical dimensions, bit depth, colour type and interlace, no text/EXIF/timestamp chunks, each pack directory exactly [A.png, B.png]",
+    "self_test": "node tools/blind/image-leakcheck.mjs --self-test — SELF-TEST PASS, 7 arms, every injected channel caught with the right severity and the clean arm still passing",
+    "own_leaky_arms": "Three built from the real r2 bytes; two fire, one exposes a real limit. See FINDINGS/F3.",
+    "power_caveat_quoted_not_suppressed": "'Five trials is weak power: a clean sweep by chance is p=0.0313 per rule, one-sided.' and 'GATE: GREEN — ... Power is weak; this is a floor, not a proof.'",
+    "quality_statistics_are_NOT_a_result": "The tool prints edge_energy, sd_luma, mean_luma, shadow_levels and local_contrast_med and states on every line that they never gate. They are on file at leakcheck/leakcheck-r2.json for whoever writes the verdict; I am not interpreting them, and Ruling W2 says a statistic must not be bolted on to firm up a forced choice. The verdict writer should read them only AFTER the judges have answered, and record them as mechanical corroboration or contradiction, never as confidence."
+  },
+
+  "ARTEFACTS": {
+    "pack_the_judges_read": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair0{1..5}/{A,B}.png",
+    "verbatim_prompt": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/prompts/PROMPT-A-verbatim.txt",
+    "escalation_prompt": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/prompts/PROMPT-A-escalation.txt",
+    "prompt_provenance": "Both files are copied from r1's artifacts and were re-verified against RI-VIS06 this turn by extracting the fenced blocks from the item and comparing byte-for-byte: §A block 1368 bytes, EXACT MATCH; §C escalation block 499 bytes, EXACT MATCH. The prompt is not rewritten and not paraphrased.",
+    "sealed_key": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/ (mappings, PAIRING-KEY.json, pairing-r2.json, crop records, SEAL-README.md)",
+    "commitment": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/COMMITMENT.json — sha256 of all 10 pack images, all 5 mappings and both prompts, written at build time",
+    "leakcheck": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/{leakcheck-r2.txt,leakcheck-r2.json,leaky-arms-result.txt}",
+    "capture": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/capture/{capture-r2.log,deck-manifest.json,frame-liveness.json}",
+    "reproduction_scripts": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/{build-table.mjs,leaky-arms.mjs}",
+    "tool_changes": "tools/blind/protocol-a-pack.mjs — two additive flags, --sides (counterbalancing, per r1's ruling) and --equalise-bytes (F2). Neither changes behaviour when the flag is absent, so r1's pack remains reproducible.",
+    "gpu_run_dir": "reports/runpod-gpu/runs/protocol-a-r2/ — NOT committed (reports/ is gitignored and HAZARDS §5a prunes it at 8 hours). Everything cited above was copied under corpus/ first."
+  },
+
+  "READ_AFTER_WRITE": {
+    "keys_written": "2026-08-15T13:46:08Z (mtime, all five mapping.json)",
+    "pack_images_written": "2026-08-15T13:46:08Z",
+    "first_read_of_the_mappings": "2026-08-15T13:46:30Z (atime) — my own COMMITMENT.json hashing pass, 22 seconds after the write and before any judge exists. I record it rather than let a later reader chase it, which is the mistake r1's verdict had to spend a section on.",
+    "judgements_captured": "not yet — no judge has run",
+    "limit_stated_plainly": "The filesystem is mounted relatime: an atime records the FIRST read after a write and is not updated by later reads within 24h. These timestamps can prove a read happened; they cannot prove one did not."
+  },
+
+  "NEXT": "Orchestrator: spawn five fresh Opus judges, one per pair, each given only its two absolute image paths and the verbatim prompt. Capture the five answers to disk. Then dispatch stage 2 — an agent that built nothing and judged nothing — to open the key, verify it against COMMITMENT.json, apply the §Scoring cap table and the §C escalation if ours won anything, and write corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.{json,md} plus the five §E blocks into corpus/90-verdicts/w01-visual-blind.md."
+}
