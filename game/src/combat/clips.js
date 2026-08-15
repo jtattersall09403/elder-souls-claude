@@ -193,9 +193,46 @@ function closeLoop(tracks) {
 }
 
 /**
+ * The additive stance layer's ROOT OFFSET, metres, at `phase`, scaled by `weight`.
+ *
+ * **Why this exists, and it is the whole of F10 r10's job 1.** `addPose` below is a pose blend:
+ * it iterates `archetype.tracks` and adds Euler angles. It has never read `root_offset`, so
+ * `idle_ready.root_offset.y` and `block_hold.root_offset.y` were both authored into
+ * `clips.json` and consumed by nothing — `block_hold`'s carried a 3 cm guard crouch that has
+ * never once been applied.
+ *
+ * That mattered the moment the stance layer gained a contrapposto (r9, RI-VIS10 §C3). Rolling
+ * `pelvis.rz +5` raises one hip 8.87 mm and lowers the other 8.56 mm ABOUT THE PELVIS ORIGIN,
+ * and levelling the feet again can only be done by SHORTENING a leg, which only ever raises a
+ * foot. So the figure ended 7.96 mm off the floor and **no rotation can put it back**:
+ * `tools/visual/f10-r10-stance-height.mjs` §C measures the whole headroom available by
+ * straightening the weight-bearing knee at **2.13 mm of the 8.87 mm required**, and it buys
+ * even that only by locking the knee at 179.87°. A root TRANSLATION is arithmetically required,
+ * and the stance layer is the only place it can live and stay continuous.
+ *
+ * **Continuous by construction, which a constant on the LOOP is not.** The rise is present
+ * exactly when this archetype's tracks are, so a compensation carried on the same archetype
+ * appears and disappears with the thing it cancels. A constant on `idle_loop.root_offset`
+ * instead would sink a GUARDING character 8 mm into the floor, because `block_hold` carries no
+ * pelvis roll and therefore no rise — measured, `IDLE_GUARD` rise is −0.97 mm, not +7.96 mm.
+ *
+ * @param {object} archetype an entry from clips.json §archetypes
+ * @param {number} phase 0..3
+ * @param {number} weight the same blend weight `addPose` is called with
+ * @returns {number} metres; 0 when the archetype declares no offset
+ */
+export function stanceRootOffsetY(archetype, phase, weight) {
+  const keys = archetype && archetype.root_offset && archetype.root_offset.y;
+  if (!keys || keys.length === 0) return 0;
+  return sampleCurve(keys, phase) * (weight === undefined ? 1 : weight);
+}
+
+/**
  * Additive stance layer: applied ON TOP of a locomotion loop so a walking character still
  * holds its weapon, and a blocking character still shifts its weight. Purely a pose blend —
- * it never touches timing, displacement or a hitbox.
+ * it never touches timing, displacement or a hitbox. The layer's VERTICAL is separate and
+ * deliberately so: see `stanceRootOffsetY` above, which the caller adds to the loop's own
+ * root offset before `Rig.evaluate`, because this function has no access to the root.
  */
 export function addPose(rig, archetype, phase, weight) {
   const tracks = archetype.tracks || {};

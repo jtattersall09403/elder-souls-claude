@@ -12,7 +12,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { Clip, LoopClip, addPose } from '../../game/src/combat/clips.js';
+import { Clip, LoopClip, addPose, stanceRootOffsetY } from '../../game/src/combat/clips.js';
 import { Rig } from '../../game/src/combat/skeleton.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -61,11 +61,17 @@ function measure(weapon, mv, ms, m, clip) {
   const socketsOf = () => [rig.socketA.slice(), rig.socketB.slice()];
 
   // the idle pose the swing leaves from and returns to, sampled the way actor.poseLocomotion does
+  //
+  // F10 r10: `+ stanceRootOffsetY(idlePose, 0, 1.0)` is not decoration — WITHOUT it this harness
+  // measures an idle arm at one height against an attack arm at another and calls the difference
+  // zero, which is exactly the boundary `snapOut` exists to catch. `actor.js:401` adds the same
+  // term with the same phase and weight; if the two ever disagree, this tool reports a snap the
+  // game does not have, or misses one it does.
   const idleAt = (k) => {
     rig.clearPose();
     idleLoop.applyPose(rig, k);
     addPose(rig, idlePose, 0, 1.0);
-    rig.evaluate(pos, 0, idleLoop.rootOffsetYAt(k), w.socket_a_dist_m, w.socket_b_dist_m);
+    rig.evaluate(pos, 0, idleLoop.rootOffsetYAt(k) + stanceRootOffsetY(idlePose, 0, 1.0), w.socket_a_dist_m, w.socket_b_dist_m);
     return socketsOf();
   };
 

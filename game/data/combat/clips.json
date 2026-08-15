@@ -34,7 +34,7 @@
  },
  "archetypes": {
   "cut_diagonal": {
-   "note": "Authored from corpus/70-visual/refs/souls-behaviour/anim/attacks/er-ER_Moveset_Neutral_Attack_Chain_Longsword.gif (81 frames, 14.286 fps, MANIFEST record). What that clip shows and what this curve now reproduces: the blade drops back and down behind the right hip, rises to an overhead cock with the torso rotated away and the weight on the back foot, and the cut is a DIAGONAL arc through the centreline led by the hips. The recovery is a short follow-through that DECELERATES onto the ready pose — the reference clip's own per-frame motion energy decays monotonically to its resting baseline over the last third of the animation and ends at rest, which the previous curve did not: it over-rotated to a peak at phase 2.4 and then snapped back.",
+   "note": "Authored from corpus/70-visual/refs/souls-behaviour/anim/attacks/er-ER_Moveset_Neutral_Attack_Chain_Longsword.gif (81 frames, 14.286 fps, MANIFEST record). What that clip shows and what this curve now reproduces: the blade drops back and down behind the right hip, rises to an overhead cock with the torso rotated away and the weight on the back foot, and the cut is a DIAGONAL arc through the centreline led by the hips. The recovery is a short follow-through that DECELERATES onto the ready pose — the reference clip's own per-frame motion energy decays monotonically to its resting baseline over the last third of the animation and ends at rest, which the previous curve did not: it over-rotated to a peak at phase 2.4 and then snapped back. TERMINATION HEIGHT (F10 r10): root_offset.y is -0.00796 at phase 0 and 3, not 0. This archetype's endpoints carry the r9 contrapposto (pelvis.rz 5, thigh_l.rx 8.248), so its terminal pose stands 8.87 mm higher than a straight-legged one — and the idle stance layer now drops the root by the same amount to put the feet back on the floor. Leaving these at 0 makes the attack/idle boundary a vertical STEP: measured on tools/harness/anim-tune.mjs, snapIn went 0.0000 -> 0.0080 m on all 14 weapon moves and worst snapOut 0.0122 -> 0.0166 m. §termination_rule is about the POSE; this is the same rule for the ROOT.",
    "solved": {
     "startup_blend": 0.7,
     "swing_scale": 0.22,
@@ -78,7 +78,7 @@
     "y": [
      [
       0,
-      0
+      -0.00796
      ],
      [
       1,
@@ -94,7 +94,7 @@
      ],
      [
       3,
-      0
+      -0.00796
      ]
     ]
    },
@@ -1352,7 +1352,7 @@
    }
   },
   "chop_overhead": {
-   "note": "Axe. Authored against ds1-boss-moves/Gargoyle-Smash.gif and Artorias_-_Heavy_Slam.gif: the head is raised straight over the shoulder, held, and driven down the centreline with almost no torso twist, and the settle is LONG — the head buries low and the body is pulled back off it. The settle is now authored as a deceleration onto the ready pose rather than a second excursion.",
+   "note": "Axe. Authored against ds1-boss-moves/Gargoyle-Smash.gif and Artorias_-_Heavy_Slam.gif: the head is raised straight over the shoulder, held, and driven down the centreline with almost no torso twist, and the settle is LONG — the head buries low and the body is pulled back off it. The settle is now authored as a deceleration onto the ready pose rather than a second excursion. TERMINATION HEIGHT (F10 r10): root_offset.y is -0.00796 at phase 0 and 3, not 0. This archetype's endpoints carry the r9 contrapposto (pelvis.rz 5, thigh_l.rx 8.248), so its terminal pose stands 8.87 mm higher than a straight-legged one — and the idle stance layer now drops the root by the same amount to put the feet back on the floor. Leaving these at 0 makes the attack/idle boundary a vertical STEP: measured on tools/harness/anim-tune.mjs, snapIn went 0.0000 -> 0.0080 m on all 14 weapon moves and worst snapOut 0.0122 -> 0.0166 m. §termination_rule is about the POSE; this is the same rule for the ROOT.",
    "solved": {
     "startup_blend": 0.7,
     "swing_scale": 0.23,
@@ -1396,7 +1396,7 @@
     "y": [
      [
       0,
-      0
+      -0.00796
      ],
      [
       1,
@@ -1412,7 +1412,7 @@
      ],
      [
       3,
-      0
+      -0.00796
      ]
     ]
    },
@@ -2378,7 +2378,7 @@
    }
   },
   "thrust": {
-   "note": "Spear and dagger. Authored against ds1-boss-moves/Ornstein-Thrust.gif and Kings-Thrust.gif: the weapon is chambered beside the hip with the point already on line, the body drops into a lunge, and the whole displacement is LINEAR along the point. Almost no arc — which is exactly why a spear's swept volume is a narrow tube and why stepping 20 cm sideways beats it. The recovery pulls the point back off line and settles on the ready pose.",
+   "note": "Spear and dagger. Authored against ds1-boss-moves/Ornstein-Thrust.gif and Kings-Thrust.gif: the weapon is chambered beside the hip with the point already on line, the body drops into a lunge, and the whole displacement is LINEAR along the point. Almost no arc — which is exactly why a spear's swept volume is a narrow tube and why stepping 20 cm sideways beats it. The recovery pulls the point back off line and settles on the ready pose. TERMINATION HEIGHT (F10 r10): root_offset.y is -0.00796 at phase 0 and 3, not 0. This archetype's endpoints carry the r9 contrapposto (pelvis.rz 5, thigh_l.rx 8.248), so its terminal pose stands 8.87 mm higher than a straight-legged one — and the idle stance layer now drops the root by the same amount to put the feet back on the floor. Leaving these at 0 makes the attack/idle boundary a vertical STEP: measured on tools/harness/anim-tune.mjs, snapIn went 0.0000 -> 0.0080 m on all 14 weapon moves and worst snapOut 0.0122 -> 0.0166 m. §termination_rule is about the POSE; this is the same rule for the ROOT.",
    "solved": {
     "startup_blend": 0.1,
     "swing_scale": 0.49,
@@ -2422,7 +2422,7 @@
     "y": [
      [
       0,
-      0
+      -0.00796
      ],
      [
       1,
@@ -2438,7 +2438,7 @@
      ],
      [
       3,
-      0
+      -0.00796
      ]
     ]
    },
@@ -3326,7 +3326,7 @@
    }
   },
   "sweep_wide": {
-   "note": "Halberd. Authored against ds1-boss-moves/Kings-Horizontal.gif and Golem-Side-Slash.gif: drawn to the right rear at shoulder height and swept HORIZONTALLY across the front arc. The old curve over-rotated PAST the target and then unwound, which is how a 108-frame R1 came to sweep 665° at 59.1 m/s. It now arrives on line as the hitbox opens, carries through the arc at a bounded rate, and unwinds onto the ready pose.",
+   "note": "Halberd. Authored against ds1-boss-moves/Kings-Horizontal.gif and Golem-Side-Slash.gif: drawn to the right rear at shoulder height and swept HORIZONTALLY across the front arc. The old curve over-rotated PAST the target and then unwound, which is how a 108-frame R1 came to sweep 665° at 59.1 m/s. It now arrives on line as the hitbox opens, carries through the arc at a bounded rate, and unwinds onto the ready pose. TERMINATION HEIGHT (F10 r10): root_offset.y is -0.00796 at phase 0 and 3, not 0. This archetype's endpoints carry the r9 contrapposto (pelvis.rz 5, thigh_l.rx 8.248), so its terminal pose stands 8.87 mm higher than a straight-legged one — and the idle stance layer now drops the root by the same amount to put the feet back on the floor. Leaving these at 0 makes the attack/idle boundary a vertical STEP: measured on tools/harness/anim-tune.mjs, snapIn went 0.0000 -> 0.0080 m on all 14 weapon moves and worst snapOut 0.0122 -> 0.0166 m. §termination_rule is about the POSE; this is the same rule for the ROOT.",
    "solved": {
     "startup_blend": 0.25,
     "swing_scale": 0.17,
@@ -3370,7 +3370,7 @@
     "y": [
      [
       0,
-      0
+      -0.00796
      ],
      [
       1,
@@ -3386,7 +3386,7 @@
      ],
      [
       3,
-      0
+      -0.00796
      ]
     ]
    },
@@ -5275,7 +5275,7 @@
    }
   },
   "block_hold": {
-   "note": "Shield up, weight back, weapon held low and ready. A held pose, not a motion.",
+   "note": "Shield up, weight back, weapon held low and ready. A held pose, not a motion. ROOT OFFSET ZEROED (F10 r10): this carried -0.03 and was consumed by NOTHING — addPose() read `tracks` only until r10 taught it `root_offset`. Making it live unchanged would have sunk every guarding character 30 mm THROUGH the floor, because block_hold authors no leg bend: its measured foot height is already -0.97 mm against the pre-contrapposto baseline, not +30. A real guard crouch needs knee tracks first; until they exist the honest value is 0.",
    "root_forward": [
     [
      0,
@@ -5290,11 +5290,11 @@
     "y": [
      [
       0,
-      -0.03
+      0
      ],
      [
       3,
-      -0.03
+      0
      ]
     ]
    },
@@ -6475,7 +6475,7 @@
    }
   },
   "idle_ready": {
-   "note": "Weapon low and to the side, guard not raised. The neutral the frame data is measured from. CONTRAPPOSTO (F10 r9, RI-VIS10 C3): the weight is on ONE leg — pelvis rolls +5, both thighs counter-roll -5 so the legs still hang vertical under it, and the spine curves -3/-4 so the SHOULDER line tilts opposite the HIP line. Before this the hip line was flat to 0.000 deg and the shoulder line to 0.313 deg, which is RI-VIS10 §F#6, \"a symmetric A-pose with the arms lowered\".",
+   "note": "Weapon low and to the side, guard not raised. The neutral the frame data is measured from. CONTRAPPOSTO (F10 r9, RI-VIS10 C3): the weight is on ONE leg — pelvis rolls +5, both thighs counter-roll -5 so the legs still hang vertical under it, and the spine curves -3/-4 so the SHOULDER line tilts opposite the HIP line. Before this the hip line was flat to 0.000 deg and the shoulder line to 0.313 deg, which is RI-VIS10 §F#6, \"a symmetric A-pose with the arms lowered\". ROOT DROP (F10 r10): the roll raises one hip 8.87 mm and lowers the other 8.56 mm about the pelvis ORIGIN, and levelling the feet again can only SHORTEN a leg, which only ever raises a foot — so the whole figure stood 7.96 mm (loop mean) off the floor. No rotation can put it back: straightening the weight-bearing knee buys 2.13 mm of the 8.87 mm needed, and only by locking it at 179.87 deg (tools/visual/f10-r10-stance-height.mjs §C). -0.00796 is the measured loop-mean rise, carried HERE so that it is present exactly when the roll that causes it is — block_hold has no pelvis roll and so needs none.",
    "root_forward": [
     [
      0,
@@ -6490,11 +6490,11 @@
     "y": [
      [
       0,
-      0
+      -0.00796
      ],
      [
       3,
-      0
+      -0.00796
      ]
     ]
    },
@@ -7678,7 +7678,7 @@
    }
   },
   "stance_switch": {
-   "note": "RI-WPN06 §A's stance switch: 36 f@60, root-locked, uncancellable. The offhand is stowed across the back and the weapon hand is joined by the second hand on the grip. Root-locked means root_forward is flat zero -- the character does not move, which is what makes the 36 frames a real cost.",
+   "note": "RI-WPN06 §A's stance switch: 36 f@60, root-locked, uncancellable. The offhand is stowed across the back and the weapon hand is joined by the second hand on the grip. Root-locked means root_forward is flat zero -- the character does not move, which is what makes the 36 frames a real cost. TERMINATION HEIGHT (F10 r10): root_offset.y is -0.00796 at phase 0 and 3, not 0. This archetype's endpoints carry the r9 contrapposto (pelvis.rz 5, thigh_l.rx 8.248), so its terminal pose stands 8.87 mm higher than a straight-legged one — and the idle stance layer now drops the root by the same amount to put the feet back on the floor. Leaving these at 0 makes the attack/idle boundary a vertical STEP: measured on tools/harness/anim-tune.mjs, snapIn went 0.0000 -> 0.0080 m on all 14 weapon moves and worst snapOut 0.0122 -> 0.0166 m. §termination_rule is about the POSE; this is the same rule for the ROOT.",
    "root_forward": [
     [
      0,
@@ -7693,7 +7693,7 @@
     "y": [
      [
       0,
-      0
+      -0.00796
      ],
      [
       1.5,
@@ -7701,7 +7701,7 @@
      ],
      [
       3,
-      0
+      -0.00796
      ]
     ]
    },
@@ -8013,7 +8013,7 @@
    }
   },
   "quick_swap": {
-   "note": "The 24 f@60 quick swap. Same shape as the stance switch and for the same stated reason (RI-WPN06 §A: an instant, frame-zero toggle makes the decision free in the middle of a fight); shorter, because it moves one item rather than re-gripping the weapon.",
+   "note": "The 24 f@60 quick swap. Same shape as the stance switch and for the same stated reason (RI-WPN06 §A: an instant, frame-zero toggle makes the decision free in the middle of a fight); shorter, because it moves one item rather than re-gripping the weapon. TERMINATION HEIGHT (F10 r10): root_offset.y is -0.00796 at phase 0 and 3, not 0. This archetype's endpoints carry the r9 contrapposto (pelvis.rz 5, thigh_l.rx 8.248), so its terminal pose stands 8.87 mm higher than a straight-legged one — and the idle stance layer now drops the root by the same amount to put the feet back on the floor. Leaving these at 0 makes the attack/idle boundary a vertical STEP: measured on tools/harness/anim-tune.mjs, snapIn went 0.0000 -> 0.0080 m on all 14 weapon moves and worst snapOut 0.0122 -> 0.0166 m. §termination_rule is about the POSE; this is the same rule for the ROOT.",
    "root_forward": [
     [
      0,
@@ -8028,11 +8028,11 @@
     "y": [
      [
       0,
-      0
+      -0.00796
      ],
      [
       3,
-      0
+      -0.00796
      ]
     ]
    },
