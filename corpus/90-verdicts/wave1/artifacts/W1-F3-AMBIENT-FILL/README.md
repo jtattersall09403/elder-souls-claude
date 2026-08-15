@@ -51,13 +51,37 @@ That is the fix being real, directional, and the cause of its own number.
 this piece that carries away "shadows are no longer crushed" is carrying away more than the evidence
 supports.
 
+### In the verdict's own vocabulary
+
+The verdict corroborated its judges with two statistics from `image-leakcheck.mjs`, and R3's stated
+acceptance is written in the first of them. Both, measured **paired**:
+
+| statistic | GI off | GI on | paired change |
+|---|---|---|---|
+| `shadow_levels` — cluster C, R3's own acceptance metric, 5/5 pairs named the reference | 33 in all six captures | 34 in all six | **+1 level, in every pair** |
+| `local_contrast_med` — cluster A, 5/5 pairs named the reference | 4.685 | 4.325 | **−0.359, i.e. −7.7%** |
+
 ### The cost, stated rather than buried
 
-`local_contrast_med` — one of the two statistics the blind verdict used to corroborate its judges, and
-the one for cluster A — moves the **wrong way**: 6.172 → 4.328 on the still pair, about 30%. The
-bounce average is mechanically a soft blur of nearby lit colour, and averaging a wide neighbourhood
-into a very dark pixel washes out what little texture the base shading carried. Reducing
-`uGIStrength` from 0.55 to the shipped 0.22 improved this and did not remove it.
+`local_contrast_med` moves the **wrong way**. The bounce average is mechanically a soft blur of nearby
+lit colour, and averaging a wide neighbourhood into a very dark pixel washes out what little texture
+the base shading carried. Reducing `uGIStrength` from 0.55 to the shipped 0.22 improved this and did
+not remove it.
+
+**The size of that cost is itself a correction.** The confounded block design put it at about 30%
+(6.172 → 4.328). Paired, it is **7.7%**. Both the benefit and the cost were inflated by the same
+artefact, and the honest figures are the paired ones. This is worth stating plainly because the
+tempting move — quoting the paired benefit and the block-design cost, or vice versa — would be
+choosing a number per claim.
+
+### The control is watched moving, not merely watched
+
+`RULES.md` rule 6: *a control you have never seen fail is not evidence, it is a second copy of the
+experiment.* On the pinned-baseline tree the paired change in `local_contrast_med` is **−0.001** and
+the per-angle shadow lifts are `[0, −0.003, 0.003, 0.002, −0.007, 0, −0.010, −0.002]` — every one
+inside ±0.01 luma, against `[0.623, 0.359, 0.692, 0.350, 0.218, 0.121, 0.537, 0.289]` with the fix
+present. The control does not merely fail to reproduce the effect; it sits at zero on every axis the
+head tree moves on.
 
 ---
 
@@ -137,6 +161,7 @@ no GPU and no repo state, so a reader can reproduce it.
 | `sw-deletefix/` | SwiftShader delete-the-fix, the independent replication of the confound |
 | `reports/runpod-gpu/runs/w1-f3-ambient-fill/` | RTX A4500, block design — the run that falsified its own design |
 | `reports/runpod-gpu/runs/w1-f3-paired/` | RTX A5000, paired and alternating, head tree + pinned-baseline control |
-| `reports/runpod-gpu/runs/w1-f3-final/` | RTX-class, the same with the verdict's own two statistics carried through the paired arm |
+| `hw-final-a5000/` | **the citable evidence** — RTX A5000, paired and alternating, head tree and pinned-baseline control, with the verdict's own two statistics. Full run at `reports/runpod-gpu/runs/w1-f3-final/` |
+| `hw-paired-a5000/` | the first paired run, same conclusions, kept as an independent repeat |
 
 The instrument is `tools/visual/w1-f3-ambient-fill.mjs`.
