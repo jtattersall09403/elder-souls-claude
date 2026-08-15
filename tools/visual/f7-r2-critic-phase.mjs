@@ -222,6 +222,7 @@ const R1_BLOCK_R1 = `float esFresnel=pow(1.0-esView,2.2);
  * the aliasing pair and nothing else. */
 const FINE_TERMS = 'outgoingLight+=vec3(.006,.010,.011)*esCaustic+vec3(.003,.005,.006)*esShimmer+vec3(.006,.010,.012)*esPulse+vec3(.007,.010,.011)*(esRipples-.5)+vec3(.005,.007,.008)*(esCapillary-.5)+vec3(.004,.006,.007)*(esMicro-.5);';
 const FINE_TERMS_NOCAP = 'outgoingLight+=vec3(.006,.010,.011)*esCaustic+vec3(.003,.005,.006)*esShimmer+vec3(.006,.010,.012)*esPulse+vec3(.007,.010,.011)*(esRipples-.5);';
+const CAUSTIC_TERM = 'vec3(.006,.010,.011)*esCaustic+';
 const waterSrc = fs.readFileSync(path.join(REPO, 'game/src/render/water.js'), 'utf8');
 if (!waterSrc.includes(FINE_TERMS)) console.error('WARNING: the fine-terms line is not verbatim in water.js; the no-fine-sines arm will be VACUOUS and is not a result.');
 const asserted = waterSrc.includes(HEAD_W) && waterSrc.includes('float esF0=.02;');
@@ -385,6 +386,18 @@ if (MODE === 'lanes') {
     // the water darkened: constant amplitude against a dimmer background. The shader's own comment
     // above them reads "they must not become visible wallpaper".
     ['no-fine-sines', [[FINE_TERMS, FINE_TERMS_NOCAP]]],
+    // ROUND 2 OF THE LANE HUNT. `no-fine-sines` FALSIFIED the aliasing account: deleting the two
+    // sub-pixel terms left lane power at 0.3669 against 0.3661, same -50 bearing. The better
+    // candidate is `esCaustic = pow(.5+.5*sin(x*.72+p)*sin(z*.61-p), 3.0)` — a PRODUCT of two
+    // low-frequency sines, and sin(ax)sin(bz) = .5[cos(ax-bz) - cos(ax+bz)], so it carries two beat
+    // components with wavevectors (.72,-.61) and (.72,+.61). Both have wavelength 6.66 m = 32.1 px
+    // at this pose's measured 0.2072 m/px, and their BANDS lie at -49.7 and +49.7 degrees against a
+    // lane bearing measured at -50 on every single arm. This time it gets ablated, not derived.
+    ['no-caustic', [[CAUSTIC_TERM, '']]],
+    // And the fail-closed arm: every additive fine term gone at once. If the lanes survive THIS,
+    // they are not in the additive layer at all and the search moves to the base colour, the
+    // reflection UV warp or the vertex normals.
+    ['no-additives', [[FINE_TERMS, '']]],
   ];
   out.lanes = { what: 'the reflection weight ablated term by term at the top-down pose, replicated, so "what draws the lanes" is answered with a band rather than a single frame', arms: {} };
   for (let r = 0; r < REPS; r++) {
