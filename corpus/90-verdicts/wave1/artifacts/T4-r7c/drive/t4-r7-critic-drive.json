@@ -1,0 +1,3521 @@
+{
+  "schema": "elder-souls/t4-r7-critic-drive@1",
+  "at": "2026-08-15T23:47:29.637Z",
+  "state": "ui-journal",
+  "commit": "63fc6d8b8b0eebc73edb4b44897359e866c18c4b",
+  "checks": [
+    {
+      "id": "G1 real DOM keys reach the engine (listeners attached AND a key moves input)",
+      "pass": true,
+      "detail": "real.attached=true, ArrowRight -> input.moveX=1"
+    },
+    {
+      "id": "G0 the container opens on the ui-journal fixture and names itself",
+      "pass": true,
+      "detail": "mode container, headers [\"Reed Creel\",\"Carried\",\"Reed Creel\"], 7 rows, panel [720,314,480,452]"
+    },
+    {
+      "id": "G4 R1 on the SHIPPED fixture: no numeric column ellipsised on any of the rows both sides",
+      "pass": true,
+      "detail": "7 rows, 0 truncated numbers, 5 truncated names [\"Black-water draught -> Black-wat…\",\"Bog-iron maul -> Bog-iron m…\",\"Boiled hide jack -> Boiled hide…\",\"Bog-iron maul -> Bog-iron m…\",\"Rootweave cowl -> Rootweav…\"]"
+    },
+    {
+      "id": "G4b the r6 remedy clause 2 — at most 1 item name ellipsised across both sides",
+      "pass": false,
+      "detail": "5 names ellipsised on the shipped fixture"
+    },
+    {
+      "id": "G5 a HOSTILE numeric probe (weight 987654.5, gold 987654321) does not truncate a number",
+      "pass": false,
+      "detail": "columns drawn [\"Numprobe->Num… TRUNCATED\",\"987655->987655\",\"987654321->98765… TRUNCATED\"]; name column width 52.81"
+    },
+    {
+      "id": "G5b the probe still leaves the NAME column able to draw something",
+      "pass": true,
+      "detail": "name column drew \"Num…\" at width 52.81"
+    },
+    {
+      "id": "G6 R2 across ALL 45 records: every fact block is laid out inside the band rect that clips it",
+      "pass": true,
+      "detail": "45 records; 0 publish no layout; 0 overflow; widest right edge 274.00 vs band width 276"
+    },
+    {
+      "id": "G6b no numeric column truncates on ANY of the 45 records, one at a time",
+      "pass": true,
+      "detail": "0 truncated numeric columns []"
+    },
+    {
+      "id": "G6c RI-UIX03 C7: the resting band shows every line of the description for all 45 records",
+      "pass": false,
+      "detail": "0 of 45 records complete at rest; needed-histogram {\"5\":45}"
+    },
+    {
+      "id": "G7 S57(b): every record in a 45-row container is reachable with real presses",
+      "pass": false,
+      "detail": "8 rows drawn; 44 distinct records selected in 70 real ArrowDown presses"
+    },
+    {
+      "id": "G2 R3b: left/right switches which side of the container has focus",
+      "pass": true,
+      "detail": "focus.side 0 -(KeyD)-> 1 -(KeyA)-> 0"
+    },
+    {
+      "id": "G3 R3c: items transfer in BOTH directions through real presses",
+      "pass": true,
+      "detail": "carried 44 -(KeyD,KeyE take)-> 45 -(KeyA,KeyE put)-> 44"
+    },
+    {
+      "id": "G8 S65(1) guard (b): the truncated description has a route — one input reaches the rest of it",
+      "pass": false,
+      "detail": "22 bound controls pressed on 'reed-cutter' (needs 5 lines, shows 4); none increased the lines shown and none put the remainder of the string on screen"
+    }
+  ],
+  "data": {
+    "wired": {
+      "attached": true,
+      "moveX": 1
+    },
+    "open": {
+      "mode": "container",
+      "headers": [
+        "Reed Creel",
+        "Carried",
+        "Reed Creel"
+      ],
+      "panel_rect": [
+        720,
+        314,
+        480,
+        452
+      ],
+      "rows": 7,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "effect_strip": 1,
+        "place_name": 1,
+        "panel": 1,
+        "panel_header": 3,
+        "scroll_extent": 1,
+        "list_row": 7,
+        "item_icon": 8,
+        "divider": 1,
+        "detail_panel": 1,
+        "hint": 1
+      }
+    },
+    "g4": {
+      "rows": [
+        {
+          "id": "container.mine.row.hist-bark-token",
+          "columns_drawn": [
+            {
+              "w": 89.50880000000001,
+              "text": "Bark token",
+              "declared": "Bark token",
+              "truncated": false
+            },
+            {
+              "w": 32.736,
+              "text": "0.1",
+              "declared": "0.1",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "—",
+              "declared": "—",
+              "truncated": false
+            }
+          ]
+        },
+        {
+          "id": "container.mine.row.black-water-draught",
+          "columns_drawn": [
+            {
+              "w": 89.50880000000001,
+              "text": "Black-wat…",
+              "declared": "Black-water draught",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.4",
+              "declared": "0.4",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "30",
+              "declared": "30",
+              "truncated": false
+            }
+          ]
+        },
+        {
+          "id": "container.mine.row.bog-iron-maul",
+          "columns_drawn": [
+            {
+              "w": 89.50880000000001,
+              "text": "Bog-iron m…",
+              "declared": "Bog-iron maul",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "11.5",
+              "declared": "11.5",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "96",
+              "declared": "96",
+              "truncated": false
+            }
+          ]
+        },
+        {
+          "id": "container.mine.row.boiled-hide-jack",
+          "columns_drawn": [
+            {
+              "w": 89.50880000000001,
+              "text": "Boiled hide…",
+              "declared": "Boiled hide jack",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "4.2",
+              "declared": "4.2",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "55",
+              "declared": "55",
+              "truncated": false
+            }
+          ]
+        },
+        {
+          "id": "container.theirs.row.bog-iron-maul",
+          "columns_drawn": [
+            {
+              "w": 89.50880000000001,
+              "text": "Bog-iron m…",
+              "declared": "Bog-iron maul",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "11.5",
+              "declared": "11.5",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "96",
+              "declared": "96",
+              "truncated": false
+            }
+          ]
+        },
+        {
+          "id": "container.theirs.row.reed-cutter",
+          "columns_drawn": [
+            {
+              "w": 89.50880000000001,
+              "text": "Reed-cutter",
+              "declared": "Reed-cutter",
+              "truncated": false
+            },
+            {
+              "w": 32.736,
+              "text": "3.0",
+              "declared": "3.0",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "42",
+              "declared": "42",
+              "truncated": false
+            }
+          ]
+        },
+        {
+          "id": "container.theirs.row.rootweave-cowl",
+          "columns_drawn": [
+            {
+              "w": 89.50880000000001,
+              "text": "Rootweav…",
+              "declared": "Rootweave cowl",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.6",
+              "declared": "0.6",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "18",
+              "declared": "18",
+              "truncated": false
+            }
+          ]
+        }
+      ],
+      "numTrunc": [],
+      "nameTrunc": [
+        {
+          "id": "container.mine.row.black-water-draught",
+          "column": 0,
+          "declared": "Black-water draught",
+          "drawn": "Black-wat…"
+        },
+        {
+          "id": "container.mine.row.bog-iron-maul",
+          "column": 0,
+          "declared": "Bog-iron maul",
+          "drawn": "Bog-iron m…"
+        },
+        {
+          "id": "container.mine.row.boiled-hide-jack",
+          "column": 0,
+          "declared": "Boiled hide jack",
+          "drawn": "Boiled hide…"
+        },
+        {
+          "id": "container.theirs.row.bog-iron-maul",
+          "column": 0,
+          "declared": "Bog-iron maul",
+          "drawn": "Bog-iron m…"
+        },
+        {
+          "id": "container.theirs.row.rootweave-cowl",
+          "column": 0,
+          "declared": "Rootweave cowl",
+          "drawn": "Rootweav…"
+        }
+      ],
+      "missing": []
+    },
+    "g5": {
+      "probe": {
+        "ok": true
+      },
+      "probeRow": {
+        "id": "container.theirs.row.t4-r7c-numprobe",
+        "text": "Numprobe  987655  987654321",
+        "rect": [
+          972,
+          420,
+          190,
+          34
+        ],
+        "focused": false,
+        "item_id": "t4-r7c-numprobe",
+        "columns_drawn": [
+          {
+            "w": 52.8096,
+            "text": "Num…",
+            "declared": "Numprobe",
+            "truncated": true
+          },
+          {
+            "w": 47.51039999999999,
+            "text": "987655",
+            "declared": "987655",
+            "truncated": false
+          },
+          {
+            "w": 51.68000000000001,
+            "text": "98765…",
+            "declared": "987654321",
+            "truncated": true
+          }
+        ]
+      },
+      "rows": [
+        {
+          "id": "container.mine.row.hist-bark-token",
+          "columns_drawn": [
+            {
+              "w": 52.8096,
+              "text": "Bark …",
+              "declared": "Bark token",
+              "truncated": true
+            },
+            {
+              "w": 47.51039999999999,
+              "text": "0.1",
+              "declared": "0.1",
+              "truncated": false
+            },
+            {
+              "w": 51.68000000000001,
+              "text": "—",
+              "declared": "—",
+              "truncated": false
+            }
+          ]
+        },
+        {
+          "id": "container.mine.row.black-water-draught",
+          "columns_drawn": [
+            {
+              "w": 52.8096,
+              "text": "Blac…",
+              "declared": "Black-water draught",
+              "truncated": true
+            },
+            {
+              "w": 47.51039999999999,
+              "text": "0.4",
+              "declared": "0.4",
+              "truncated": false
+            },
+            {
+              "w": 51.68000000000001,
+              "text": "30",
+              "declared": "30",
+              "truncated": false
+            }
+          ]
+        },
+        {
+          "id": "container.mine.row.bog-iron-maul",
+          "columns_drawn": [
+            {
+              "w": 52.8096,
+              "text": "Bog-i…",
+              "declared": "Bog-iron maul",
+              "truncated": true
+            },
+            {
+              "w": 47.51039999999999,
+              "text": "11.5",
+              "declared": "11.5",
+              "truncated": false
+            },
+            {
+              "w": 51.68000000000001,
+              "text": "96",
+              "declared": "96",
+              "truncated": false
+            }
+          ]
+        },
+        {
+          "id": "container.mine.row.boiled-hide-jack",
+          "columns_drawn": [
+            {
+              "w": 52.8096,
+              "text": "Boile…",
+              "declared": "Boiled hide jack",
+              "truncated": true
+            },
+            {
+              "w": 47.51039999999999,
+              "text": "4.2",
+              "declared": "4.2",
+              "truncated": false
+            },
+            {
+              "w": 51.68000000000001,
+              "text": "55",
+              "declared": "55",
+              "truncated": false
+            }
+          ]
+        },
+        {
+          "id": "container.theirs.row.bog-iron-maul",
+          "columns_drawn": [
+            {
+              "w": 52.8096,
+              "text": "Bog-i…",
+              "declared": "Bog-iron maul",
+              "truncated": true
+            },
+            {
+              "w": 47.51039999999999,
+              "text": "11.5",
+              "declared": "11.5",
+              "truncated": false
+            },
+            {
+              "w": 51.68000000000001,
+              "text": "96",
+              "declared": "96",
+              "truncated": false
+            }
+          ]
+        },
+        {
+          "id": "container.theirs.row.t4-r7c-numprobe",
+          "columns_drawn": [
+            {
+              "w": 52.8096,
+              "text": "Num…",
+              "declared": "Numprobe",
+              "truncated": true
+            },
+            {
+              "w": 47.51039999999999,
+              "text": "987655",
+              "declared": "987655",
+              "truncated": false
+            },
+            {
+              "w": 51.68000000000001,
+              "text": "98765…",
+              "declared": "987654321",
+              "truncated": true
+            }
+          ]
+        }
+      ]
+    },
+    "g6": [
+      {
+        "id": "reed-cutter",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Reed-cutter",
+              "declared": "Reed-cutter",
+              "truncated": false
+            },
+            {
+              "w": 32.736,
+              "text": "3.0",
+              "declared": "3.0",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "42",
+              "declared": "42",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "warden-issue-sabre",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Warden-is…",
+              "declared": "Warden-issue sabre",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "3.4",
+              "declared": "3.4",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "180",
+              "declared": "180",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "hooked-gutting-knife",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Hooked gu…",
+              "declared": "Hooked gutting knife",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.9",
+              "declared": "0.9",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "14",
+              "declared": "14",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "bog-iron-maul",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Bog-iron m…",
+              "declared": "Bog-iron maul",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "11.5",
+              "declared": "11.5",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "96",
+              "declared": "96",
+              "truncated": false
+            }
+          ],
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Bog-iron m…",
+              "declared": "Bog-iron maul",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "11.5",
+              "declared": "11.5",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "96",
+              "declared": "96",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "hist-sap-bow",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Sapwood …",
+              "declared": "Sapwood bow",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "2.2",
+              "declared": "2.2",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "130",
+              "declared": "130",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "chitin-cuirass",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Chitin cuir…",
+              "declared": "Chitin cuirass",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "7.5",
+              "declared": "7.5",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "210",
+              "declared": "210",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "boiled-hide-jack",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Boiled hide…",
+              "declared": "Boiled hide jack",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "4.2",
+              "declared": "4.2",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "55",
+              "declared": "55",
+              "truncated": false
+            }
+          ],
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Boiled hide…",
+              "declared": "Boiled hide jack",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "4.2",
+              "declared": "4.2",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "55",
+              "declared": "55",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "legion-greaves",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Legion gre…",
+              "declared": "Legion greaves, worn",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "5.8",
+              "declared": "5.8",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "88",
+              "declared": "88",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "shell-scale-hauberk",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Shell-scale …",
+              "declared": "Shell-scale hauberk",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "9.1",
+              "declared": "9.1",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "340",
+              "declared": "340",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "rootweave-cowl",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Rootweav…",
+              "declared": "Rootweave cowl",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.6",
+              "declared": "0.6",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "18",
+              "declared": "18",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "factors-coat",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Factor's c…",
+              "declared": "Factor's coat",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "1.4",
+              "declared": "1.4",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "120",
+              "declared": "120",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "wet-season-boots",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Wet-seaso…",
+              "declared": "Wet-season boots",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "1.1",
+              "declared": "1.1",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "24",
+              "declared": "24",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "silt-strider-silk-sash",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Dres silk s…",
+              "declared": "Dres silk sash",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.2",
+              "declared": "0.2",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "260",
+              "declared": "260",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "black-water-draught",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Black-wat…",
+              "declared": "Black-water draught",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.4",
+              "declared": "0.4",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "30",
+              "declared": "30",
+              "truncated": false
+            }
+          ],
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Black-wat…",
+              "declared": "Black-water draught",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.4",
+              "declared": "0.4",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "30",
+              "declared": "30",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "fever-cut",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Fever-cut",
+              "declared": "Fever-cut",
+              "truncated": false
+            },
+            {
+              "w": 32.736,
+              "text": "0.4",
+              "declared": "0.4",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "46",
+              "declared": "46",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "sleeper-draught",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Sleeper's d…",
+              "declared": "Sleeper's draught",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.3",
+              "declared": "0.3",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "65",
+              "declared": "65",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "marsh-marrow",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Marsh-mar…",
+              "declared": "Marsh-marrow root",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.2",
+              "declared": "0.2",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "4",
+              "declared": "4",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "hackle-lo-leaf",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Hackle-lo l…",
+              "declared": "Hackle-lo leaf",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.1",
+              "declared": "0.1",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "3",
+              "declared": "3",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "kwama-cuttle",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Kwama cu…",
+              "declared": "Kwama cuttle",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.3",
+              "declared": "0.3",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "9",
+              "declared": "9",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "resin-of-the-comb",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Comb resin",
+              "declared": "Comb resin",
+              "truncated": false
+            },
+            {
+              "w": 32.736,
+              "text": "0.5",
+              "declared": "0.5",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "22",
+              "declared": "22",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "the-drowned-ford",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "On the Dro…",
+              "declared": "On the Drowning at the Ford",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "1.2",
+              "declared": "1.2",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "35",
+              "declared": "35",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "pilots-chart-book",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Pilot's char…",
+              "declared": "Pilot's chart-book, Topal shore",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "1.6",
+              "declared": "1.6",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "140",
+              "declared": "140",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "ledger-fragment",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Ledger lea…",
+              "declared": "Ledger leaf, water-damaged",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.4",
+              "declared": "0.4",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "—",
+              "declared": "—",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "reed-lantern",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Reed lante…",
+              "declared": "Reed lantern",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "1.0",
+              "declared": "1.0",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "16",
+              "declared": "16",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "shore-compass",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Shore com…",
+              "declared": "Shore compass, boxed",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.8",
+              "declared": "0.8",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "210",
+              "declared": "210",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "bone-picks",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Bone picks…",
+              "declared": "Bone picks, set of five",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.3",
+              "declared": "0.3",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "48",
+              "declared": "48",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "weighing-stone",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Factor's w…",
+              "declared": "Factor's weighing stone",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "2.5",
+              "declared": "2.5",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "30",
+              "declared": "30",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "fire-drill",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Fire-drill a…",
+              "declared": "Fire-drill and tinder",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.7",
+              "declared": "0.7",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "8",
+              "declared": "8",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "salt-brick",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Salt brick",
+              "declared": "Salt brick",
+              "truncated": false
+            },
+            {
+              "w": 32.736,
+              "text": "2.0",
+              "declared": "2.0",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "12",
+              "declared": "12",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "carved-egg",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Carved egg",
+              "declared": "Carved egg",
+              "truncated": false
+            },
+            {
+              "w": 32.736,
+              "text": "0.2",
+              "declared": "0.2",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "5",
+              "declared": "5",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "cracked-shell-cup",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Shell cup, …",
+              "declared": "Shell cup, cracked",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.3",
+              "declared": "0.3",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "2",
+              "declared": "2",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "coil-of-twine",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Coil of wei…",
+              "declared": "Coil of weir twine",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "1.3",
+              "declared": "1.3",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "6",
+              "declared": "6",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "guar-jerky",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Dried guar",
+              "declared": "Dried guar",
+              "truncated": false
+            },
+            {
+              "w": 32.736,
+              "text": "0.6",
+              "declared": "0.6",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "5",
+              "declared": "5",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "stamped-writ",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Reed-case …",
+              "declared": "Reed-case writ, stamped",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.0",
+              "declared": "0.0",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "—",
+              "declared": "—",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "rotted-hall-key",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Key, hall",
+              "declared": "Key, hall",
+              "truncated": false
+            },
+            {
+              "w": 32.736,
+              "text": "0.0",
+              "declared": "0.0",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "—",
+              "declared": "—",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "sealed-letter-stormhold",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Sealed lett…",
+              "declared": "Sealed letter, Stormhold",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.0",
+              "declared": "0.0",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "—",
+              "declared": "—",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "hist-bark-token",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Bark token",
+              "declared": "Bark token",
+              "truncated": false
+            },
+            {
+              "w": 32.736,
+              "text": "0.1",
+              "declared": "0.1",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "—",
+              "declared": "—",
+              "truncated": false
+            }
+          ],
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Bark token",
+              "declared": "Bark token",
+              "truncated": false
+            },
+            {
+              "w": 32.736,
+              "text": "0.1",
+              "declared": "0.1",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "—",
+              "declared": "—",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "counted-crate-tally",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Crate tally,…",
+              "declared": "Crate tally, three counts",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.0",
+              "declared": "0.0",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "—",
+              "declared": "—",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "resin-lamp-oil",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Flask of la…",
+              "declared": "Flask of lamp resin",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.9",
+              "declared": "0.9",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "11",
+              "declared": "11",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "netting-needle",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Netting ne…",
+              "declared": "Netting needle",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.2",
+              "declared": "0.2",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "3",
+              "declared": "3",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "warden-whistle",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Warden's …",
+              "declared": "Warden's whistle",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.1",
+              "declared": "0.1",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "90",
+              "declared": "90",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "moth-silk-robe",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Moth-silk r…",
+              "declared": "Moth-silk robe",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.9",
+              "declared": "0.9",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "400",
+              "declared": "400",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "root-speakers-rod",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Root-spea…",
+              "declared": "Root-speaker's rod",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "3.0",
+              "declared": "3.0",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "140",
+              "declared": "140",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "mud-slip-bowl",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Mud-slip b…",
+              "declared": "Mud-slip bowl",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "1.1",
+              "declared": "1.1",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "4",
+              "declared": "4",
+              "truncated": false
+            }
+          ]
+        ]
+      },
+      {
+        "id": "iron-gall-inkhorn",
+        "band_w": 276,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "facts": [
+            {
+              "key": "weight",
+              "value": "0.1",
+              "x": 0,
+              "w": 32.2
+            },
+            {
+              "key": "gold",
+              "value": "not for sale",
+              "x": 96.26,
+              "w": 61.84
+            },
+            {
+              "key": "condition",
+              "value": "100 in 100",
+              "x": 222.16,
+              "w": 51.84
+            }
+          ],
+          "facts_right": 274,
+          "facts_fit": true,
+          "shown": 4,
+          "needed": 5,
+          "truncated": true
+        },
+        "row_cols": [
+          [
+            {
+              "w": 89.50880000000001,
+              "text": "Inkhorn, ir…",
+              "declared": "Inkhorn, iron-gall",
+              "truncated": true
+            },
+            {
+              "w": 32.736,
+              "text": "0.4",
+              "declared": "0.4",
+              "truncated": false
+            },
+            {
+              "w": 29.755199999999995,
+              "text": "26",
+              "declared": "26",
+              "truncated": false
+            }
+          ]
+        ]
+      }
+    ],
+    "c7_population": {
+      "n": 45,
+      "complete": 0,
+      "histogram": {
+        "5": 45
+      }
+    },
+    "g7": {
+      "rows_visible": 8,
+      "distinct_reached": 44,
+      "presses": 70,
+      "walk": [
+        "hist-bark-token",
+        "black-water-draught",
+        "bog-iron-maul",
+        "boiled-hide-jack",
+        "bone-picks",
+        "carved-egg",
+        "chitin-cuirass",
+        "coil-of-twine",
+        "resin-of-the-comb",
+        "counted-crate-tally",
+        "silt-strider-silk-sash",
+        "guar-jerky",
+        "factors-coat",
+        "weighing-stone",
+        "fever-cut",
+        "fire-drill",
+        "resin-lamp-oil",
+        "hackle-lo-leaf",
+        "hooked-gutting-knife",
+        "iron-gall-inkhorn"
+      ],
+      "reached": [
+        "hist-bark-token",
+        "black-water-draught",
+        "bog-iron-maul",
+        "boiled-hide-jack",
+        "bone-picks",
+        "carved-egg",
+        "chitin-cuirass",
+        "coil-of-twine",
+        "resin-of-the-comb",
+        "counted-crate-tally",
+        "silt-strider-silk-sash",
+        "guar-jerky",
+        "factors-coat",
+        "weighing-stone",
+        "fever-cut",
+        "fire-drill",
+        "resin-lamp-oil",
+        "hackle-lo-leaf",
+        "hooked-gutting-knife",
+        "iron-gall-inkhorn",
+        "rotted-hall-key",
+        "kwama-cuttle",
+        "ledger-fragment",
+        "legion-greaves",
+        "marsh-marrow",
+        "moth-silk-robe",
+        "mud-slip-bowl",
+        "netting-needle",
+        "the-drowned-ford",
+        "pilots-chart-book",
+        "reed-lantern",
+        "stamped-writ",
+        "reed-cutter",
+        "rootweave-cowl",
+        "salt-brick",
+        "hist-sap-bow",
+        "sealed-letter-stormhold",
+        "cracked-shell-cup",
+        "shell-scale-hauberk",
+        "shore-compass",
+        "sleeper-draught",
+        "warden-whistle",
+        "warden-issue-sabre",
+        "wet-season-boots"
+      ]
+    },
+    "g2": {
+      "before": {
+        "side": 0,
+        "rowIdx": 43,
+        "otherIdx": 0
+      },
+      "after_right": {
+        "side": 1,
+        "rowIdx": 43,
+        "otherIdx": 0
+      },
+      "after_left": {
+        "side": 0,
+        "rowIdx": 43,
+        "otherIdx": 0
+      }
+    },
+    "g3": {
+      "before": 44,
+      "after_take": 45,
+      "after_put": 44,
+      "lists": {
+        "w0": [
+          "black-water-draught",
+          "bog-iron-maul",
+          "boiled-hide-jack",
+          "bone-picks",
+          "carved-egg",
+          "chitin-cuirass",
+          "coil-of-twine",
+          "counted-crate-tally",
+          "cracked-shell-cup",
+          "factors-coat",
+          "fever-cut",
+          "fire-drill",
+          "guar-jerky",
+          "hackle-lo-leaf",
+          "hist-bark-token",
+          "hist-sap-bow",
+          "hooked-gutting-knife",
+          "iron-gall-inkhorn",
+          "kwama-cuttle",
+          "ledger-fragment",
+          "legion-greaves",
+          "marsh-marrow",
+          "moth-silk-robe",
+          "mud-slip-bowl",
+          "netting-needle",
+          "pilots-chart-book",
+          "reed-cutter",
+          "reed-lantern",
+          "resin-lamp-oil",
+          "resin-of-the-comb",
+          "rootweave-cowl",
+          "rotted-hall-key",
+          "salt-brick",
+          "sealed-letter-stormhold",
+          "shell-scale-hauberk",
+          "shore-compass",
+          "silt-strider-silk-sash",
+          "sleeper-draught",
+          "stamped-writ",
+          "the-drowned-ford",
+          "warden-issue-sabre",
+          "warden-whistle",
+          "weighing-stone",
+          "wet-season-boots"
+        ],
+        "w1": [
+          "black-water-draught",
+          "bog-iron-maul",
+          "boiled-hide-jack",
+          "bone-picks",
+          "carved-egg",
+          "chitin-cuirass",
+          "coil-of-twine",
+          "counted-crate-tally",
+          "cracked-shell-cup",
+          "factors-coat",
+          "fever-cut",
+          "fire-drill",
+          "guar-jerky",
+          "hackle-lo-leaf",
+          "hist-bark-token",
+          "hist-sap-bow",
+          "hooked-gutting-knife",
+          "iron-gall-inkhorn",
+          "kwama-cuttle",
+          "ledger-fragment",
+          "legion-greaves",
+          "marsh-marrow",
+          "moth-silk-robe",
+          "mud-slip-bowl",
+          "netting-needle",
+          "pilots-chart-book",
+          "reed-cutter",
+          "reed-lantern",
+          "resin-lamp-oil",
+          "resin-of-the-comb",
+          "rootweave-cowl",
+          "rotted-hall-key",
+          "salt-brick",
+          "sealed-letter-stormhold",
+          "shell-scale-hauberk",
+          "shore-compass",
+          "silt-strider-silk-sash",
+          "sleeper-draught",
+          "stamped-writ",
+          "the-drowned-ford",
+          "warden-issue-sabre",
+          "warden-whistle",
+          "weighing-stone",
+          "wet-season-boots",
+          "bog-iron-maul"
+        ],
+        "w2": [
+          "black-water-draught",
+          "bog-iron-maul",
+          "boiled-hide-jack",
+          "bone-picks",
+          "carved-egg",
+          "chitin-cuirass",
+          "coil-of-twine",
+          "counted-crate-tally",
+          "cracked-shell-cup",
+          "factors-coat",
+          "fever-cut",
+          "fire-drill",
+          "guar-jerky",
+          "hackle-lo-leaf",
+          "hist-bark-token",
+          "hist-sap-bow",
+          "hooked-gutting-knife",
+          "iron-gall-inkhorn",
+          "kwama-cuttle",
+          "ledger-fragment",
+          "legion-greaves",
+          "marsh-marrow",
+          "moth-silk-robe",
+          "mud-slip-bowl",
+          "netting-needle",
+          "pilots-chart-book",
+          "reed-cutter",
+          "reed-lantern",
+          "resin-lamp-oil",
+          "resin-of-the-comb",
+          "rootweave-cowl",
+          "rotted-hall-key",
+          "salt-brick",
+          "sealed-letter-stormhold",
+          "shell-scale-hauberk",
+          "shore-compass",
+          "silt-strider-silk-sash",
+          "sleeper-draught",
+          "stamped-writ",
+          "the-drowned-ford",
+          "warden-whistle",
+          "weighing-stone",
+          "wet-season-boots",
+          "bog-iron-maul"
+        ]
+      }
+    },
+    "g8": {
+      "record": "reed-cutter",
+      "needed": 5,
+      "shown": 4,
+      "tried": [
+        {
+          "code": "KeyE",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk",
+            "container.theirs.row.wet-season-boots",
+            "container.theirs.icon.wet-season-boots"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "Enter",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "KeyF",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "KeyV",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "KeyR",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "Space",
+          "mode_before": "container",
+          "mode_after": "world",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "KeyX",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "Digit1",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "Digit2",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "Tab",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "KeyG",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "Digit3",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "Digit4",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "KeyC",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "KeyZ",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "KeyT",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "ShiftLeft",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": null,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "KeyW",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": 4,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "KeyS",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": 4,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "KeyQ",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": 4,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "KeyH",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": 4,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        },
+        {
+          "code": "KeyI",
+          "mode_before": "container",
+          "mode_after": "container",
+          "shown_before": 4,
+          "shown_after": 4,
+          "new_element_ids": [
+            "container.mine.row.shell-scale-hauberk",
+            "container.mine.icon.shell-scale-hauberk"
+          ],
+          "full_text_on_screen": false
+        }
+      ],
+      "route": null
+    }
+  },
+  "summary": {
+    "passed": 8,
+    "failed": 5,
+    "na": 0
+  }
+}

@@ -1,0 +1,5 @@
+[harness]   ok   B0 the band read is of the record it names (selection assertion, not assumption)  45 of 45 reads select the record opened; distinct band items ["reed-cutter","warden-issue-sabre","hooked-gutting-knife","bog-iron-maul","hist-sap-bow","chitin-cuirass","boiled-hide-jack","legion-greaves"]
+[harness]   FAIL B1 RI-UIX03 C7 at rest: the band shows every line of the description, per record  20 of 45 records complete at rest; needed-line histogram {"1":2,"3":1,"4":17,"5":23,"6":2}
+[harness]   ok   B2 R2 per record: every fact block — condition included — lies inside the band rect that clips it  45 records publish a layout, 0 overflow; widest right edge 274 vs band width 276; fact-count histogram {"2":36,"3":9}
+[harness]   ok   B3 no numeric column truncates on any of the 45 records while it is the selected row  0 truncated numeric columns []
+[harness] written: /home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/T4-r7c/drive/t4-r7-critic-band.json
