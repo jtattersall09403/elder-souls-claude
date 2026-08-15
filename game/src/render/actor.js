@@ -31,6 +31,11 @@ import * as THREE from '../../vendor/three/three.module.js';
 import { creatureArt } from './world-art.js';
 import { registerRig, registerCharacter, character, charactersOf, resolveMorph, variantKey, SKELETON_ID }
   from './lib/rigs.js';
+// MATERIAL_API.md §1: nothing else may construct a MeshStandardMaterial for a world surface, and
+// the character body IS a world surface. `lib/kits.js` consumes the same factory for architecture;
+// this is D's half of the same contract. TEXEL_METRES is §5's seam — one UV unit is that many
+// metres of surface, which is the number `MeshBuilder` now unwraps against.
+import { worldMaterial, TEXEL_METRES } from './visual-foundation.js';
 
 // ---------------------------------------------------------------------------------------
 // Geometry helpers. Everything is authored directly into typed arrays with skin indices and
@@ -168,10 +173,35 @@ export function bakeCurvature(geometry, thresholdDeg = 35) {
  * leaves the lighting inverted, which is the worse half.
  */
 class MeshBuilder {
-  constructor() {
+  /**
+   * @param mpt metres of surface one UV unit covers — `TEXEL_METRES[family]`, exactly as
+   *   `MATERIAL_API.md` §5 requires and `lib/kits.js` has always done (`p[axis] / mpt`).
+   *
+   * WHY THIS ARGUMENT EXISTS — the F10 round-3 defect, and it is a scale bug, not a missing asset.
+   * The round-2 appearance pass reported "the surfaces are flat and uniform ... no material work at
+   * all, one colour of cloth over one colour of skin, no seam or fold anywhere", and the obvious
+   * reading is that characters have no textures. They always had them: `scene.js` builds
+   * `mats.skin` and `mats.cloth` through `worldMaterial()`, so every body has been carrying the
+   * authored `brown_leather` and `rough_linen` albedo/normal/roughness sets since 2026-08-14.
+   *
+   * What was wrong is the scale they were pasted at. Every UV here was PARAMETRIC — `u = i/radial`,
+   * `v = t*2` — with no metres in it, so the tile size on a character was set by how long the limb
+   * happened to be. Measured by `tools/visual/character-texel-density.mjs` over 13 subjects and 26
+   * body meshes before this change: skin **5.52x too dense** (0.127 m per tile against a target of
+   * 0.700), cloth **2.53x** (0.218 against 0.550). A 1 k texture at 12.7 cm per tile is eight
+   * texels to the millimetre; the mip chain resolves it to its own mean colour at every framing a
+   * player ever sees, which is precisely "one flat colour".
+   *
+   * So the primitives below unwrap in METRES: `u` is arc length around, `v` is distance along, both
+   * divided by `mpt`. The cap centres are placed a true radius away in UV so an end cap has the
+   * same texel density as the wall it closes rather than a degenerate sliver.
+   */
+  constructor(mpt = 1) {
+    this.mpt = mpt > 0 ? mpt : 1;
     this.pos = [];
     this.nrm = [];
     this.uv = [];
+    this.col = [];
     this.si = [];
     this.sw = [];
     this.idx = [];
@@ -185,6 +215,9 @@ class MeshBuilder {
     this.si.push(bones[0], bones[1], 0, 0);
     this.sw.push(weights[0], weights[1], 0, 0);
     this.uv.push(uv[0],uv[1]);
+    // Painted later, in one pass over the finished surface — see `paintGarment`. White here so a
+    // primitive that is never painted is exactly what it was before, not silently darkened.
+    this.col.push(1, 1, 1);
   }
 
   tri(a, b, c) { this.idx.push(a, b, c); }
@@ -203,6 +236,7 @@ class MeshBuilder {
     if (Math.abs(_w.z) > 0.9) _u.set(1, 0, 0);
     _u.crossVectors(_u, _w).normalize();
     _v.crossVectors(_w, _u).normalize();
+    const circ = 2 * Math.PI * ((r0 + r1) / 2);
     const base = this.count;
     for (let j = 0; j <= rings; j++) {
       const t = j / rings;
@@ -225,7 +259,11 @@ class MeshBuilder {
           const s = t / blend;
           wp = 0.5 * (1 - s * s * (3 - 2 * s));
         }
-        this.vert(p, n, [bone, parent < 0 ? bone : parent], [1 - wp, wp],[i/radial,t*2]);
+        // WORLD-SPACE UV. `u` is arc length around the tube at its mean radius, `v` is distance
+        // along it, both in metres divided by `mpt`. Mean radius rather than the local one so the
+        // wrap does not shear on a strongly tapered segment; the residual is under a texel.
+        this.vert(p, n, [bone, parent < 0 ? bone : parent], [1 - wp, wp],
+          [(i / radial) * circ / this.mpt, (t * len) / this.mpt]);
       }
     }
     for (let j = 0; j < rings; j++) {
@@ -243,8 +281,14 @@ class MeshBuilder {
     // their rings, so they remain sealed through deformation.
     const start=this.count, end=this.count+1;
     const startParent=(blend>0&&parent>=0) ? .5 : 0;
-    this.vert(a.clone(),_w.clone().multiplyScalar(-1),[bone,parent<0?bone:parent],[1-startParent,startParent],[.5,.5]);
-    this.vert(b.clone(),_w.clone(),[bone,bone],[1,0],[.5,.5]);
+    // Cap centres sit a TRUE RADIUS away in UV from the ring they close, on the `v` axis. A cap
+    // triangle then has UV area `pi*r^2/mpt^2` against a world area of `pi*r^2`, i.e. the same
+    // texel density as the wall. Placing them at the ring's own `v` (which is what `[.5,.5]` did)
+    // collapses every cap triangle to a UV sliver, and a sliver reads to any density instrument —
+    // and to the mip selector — as infinitely coarse.
+    const uMid=circ/(2*this.mpt);
+    this.vert(a.clone(),_w.clone().multiplyScalar(-1),[bone,parent<0?bone:parent],[1-startParent,startParent],[uMid,-r0/this.mpt]);
+    this.vert(b.clone(),_w.clone(),[bone,bone],[1,0],[uMid,(len+r1)/this.mpt]);
     for(let i=0;i<radial;i++){
       const i2=(i+1)%radial, first=base+i, last=base+rings*radial+i;
       this.tri(start,base+i2,first);
@@ -262,7 +306,11 @@ class MeshBuilder {
         const th = (i / (seg * 2)) * Math.PI * 2;
         const nx = sp * Math.cos(th), ny = cp, nz = sp * Math.sin(th);
         const p = new THREE.Vector3(c.x + nx * r, c.y + ny * r * squash, c.z + nz * r + (nz > 0 ? nz * fwd : 0));
-        this.vert(p, new THREE.Vector3(nx, ny, nz), [bone, bone], [1, 0],[i/(seg*2),j/seg]);
+        // Equirectangular unwrap in metres: `u` runs the equator's arc length, `v` the pole-to-pole
+        // arc. Correct at the equator and compressed at the poles, which is what every sphere
+        // unwrap does and what the density instrument's area weighting is there to see through.
+        this.vert(p, new THREE.Vector3(nx, ny, nz), [bone, bone], [1, 0],
+          [(i/(seg*2))*(2*Math.PI*r)/this.mpt, (j/seg)*(Math.PI*r*(1+squash)/2)/this.mpt]);
       }
     }
     const ring = seg * 2;
@@ -280,6 +328,9 @@ class MeshBuilder {
   /** Ellipsoidal terminal mass, emitted into the sealed skinned surface. */
   ellipsoid(c, radii, bone, seg = 14) {
     const [rx,ry,rz]=radii,base=this.count,ring=seg*2;
+    // Same equirectangular unwrap as `ball`, sized off the mean equatorial and meridional radii so
+    // a flattened chest ellipsoid does not get a rounder body's tile size.
+    const rEq=(rx+rz)/2, uSpan=2*Math.PI*rEq/this.mpt, vSpan=Math.PI*((rEq+ry)/2)/this.mpt;
     for(let j=0;j<=seg;j++){
       const phi=(j/seg)*Math.PI,sp=Math.sin(phi),cp=Math.cos(phi);
       for(let i=0;i<ring;i++){
@@ -287,7 +338,7 @@ class MeshBuilder {
         const x=sp*ct,y=cp,z=sp*st;
         const p=new THREE.Vector3(c.x+x*rx,c.y+y*ry,c.z+z*rz);
         const n=new THREE.Vector3(x/rx,y/ry,z/rz).normalize();
-        this.vert(p,n,[bone,bone],[1,0],[i/ring,j/seg]);
+        this.vert(p,n,[bone,bone],[1,0],[(i/ring)*uSpan,(j/seg)*vSpan]);
       }
     }
     for(let j=0;j<seg;j++)for(let i=0;i<ring;i++){
@@ -302,6 +353,7 @@ class MeshBuilder {
     g.setAttribute('position', new THREE.Float32BufferAttribute(this.pos, 3));
     g.setAttribute('normal', new THREE.Float32BufferAttribute(this.nrm, 3));
     g.setAttribute('uv', new THREE.Float32BufferAttribute(this.uv, 2));
+    g.setAttribute('color', new THREE.Float32BufferAttribute(this.col, 3));
     g.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(this.si, 4));
     g.setAttribute('skinWeight', new THREE.Float32BufferAttribute(this.sw, 4));
     g.setIndex(this.idx);
@@ -378,6 +430,164 @@ function installWaterline(mat, sharedUniforms) {
   const priorKey = Object.hasOwn(mat, 'customProgramCacheKey') ? mat.customProgramCacheKey.bind(mat) : null;
   mat.customProgramCacheKey = () => `es-waterline-v1:${priorKey ? priorKey() : ''}`;
   mat.needsUpdate = true;
+}
+
+// ---------------------------------------------------------------------------------------
+// THE CHARACTER MATERIAL BANK — and the declaration that was never wired to anything.
+//
+// `lib/rigs.js` declares `material` as one of the five variant axes a character may vary, and all
+// seventeen `CHARACTER_SPECS` below fill it in: `material: { skin, cloth, palette, wear }`, with
+// `wear` running from 0.15 on the deep warden to 0.95 on the drowned, and a region palette on every
+// one. `variantKey()` hashes all four into the census identity, so the registry has been counting
+// seventeen distinct characters on the strength of them.
+//
+// `ensureBuilt` read TWO of the four. `mat.skin` and `mat.cloth` became tint hexes; `mat.palette`
+// and `mat.wear` reached nothing. `scene.js` builds `mats.skin`/`mats.cloth` as
+// `worldMaterial('skin'|'cloth', { color })` with no variant options at all, so every character in
+// Black Marsh was drawn at `wear: 0`, `palette: 'neutral'`, `wearFrom: 'texture'` — the defaults —
+// and the seventeen declarations were decoration.
+//
+// THAT IS WHY THIS IS A FIX AND NOT AN ART COMMISSION. The round-2 appearance pass called the flat
+// surfaces "the next gap, and it is bigger than the one just closed", and the whole apparatus for
+// closing it was already built and already declared: `MATERIAL_API.md` §3's four live axes, §6a's
+// `wearFrom: 'geometry'` — which is a written REQUEST to this file ("Bake `esCurvature` onto your
+// kit parts and your rigs ... this is the only route to the plan's `wear reads` gate") — and
+// `bakeCurvature()` at the bottom of `MeshBuilder.build()`, which has been baking that attribute
+// onto every character surface the whole time with nothing reading it.
+//
+// WHY THE BANK IS HERE AND NOT IN `scene.js`. `mats.skin` and `mats.cloth` are shared: `places.js`
+// hangs market awnings off `mats.cloth` and `scene.js`'s showcase builds a static villager from
+// `mats.skin`. Turning on `vertexColors` there would multiply an awning by a vertex colour it does
+// not have (three.js reads a missing `color` attribute as undefined, not as white). So the body
+// surfaces get their own bank, keyed by variant, and the shared world materials are left alone.
+//
+// ONE MATERIAL PER (family, palette, wear) ACROSS THE WHOLE PROVINCE. 408 NPCs resolve to at most
+// seventeen variants; the bank is a Map, so the seventeenth Saxhleel costs a `clone()` for its tint
+// and its waterline uniforms and nothing else.
+const _bodyMaterialBank = new Map();
+export const BODY_SURFACES = Object.freeze(['cloth', 'skin', 'bone']);
+function bodyMaterialBase(family, palette, wear) {
+  const key = `${family}|${palette}|${wear.toFixed(2)}`;
+  let m = _bodyMaterialBank.get(key);
+  if (!m) {
+    m = worldMaterial(family, {
+      palette,
+      wear,
+      // §6a: `texture` wear derives its curvature mask from the base normal map, and C measured that
+      // it moves rims and faces within about one percentage point of each other against a bar of 8%
+      // — "no amount of tuning the threshold turns it into an edge detector". `geometry` reads the
+      // `esCurvature` attribute `bakeCurvature()` already writes, so a seam, a hem, a knuckle and
+      // the arris of a chitin fitting are where the pigment has gone.
+      wearFrom: 'geometry',
+      // The garment structure — sash, yoke, hem, cord lashing, countershading, scale rows — is
+      // painted per vertex in `paintBody`. It costs no triangle and no draw call, and because it
+      // lives on the shared body plan it improves all seventeen characters in one edit.
+      vertexColors: true,
+    });
+    m.name = `visual-family:${family}:actor-body`;
+    _bodyMaterialBank.set(key, m);
+  }
+  return m;
+}
+
+/**
+ * The garment and hide pass — the seam, the sash, the hem and the wear, per vertex.
+ *
+ * WHAT THIS ANSWERS, verbatim from the round-2 appearance pass: *"each figure is one colour of
+ * cloth over one colour of skin, with no seam, trim, belt, fold or wear anywhere."*
+ *
+ * WHY VERTEX COLOUR RATHER THAN MORE GEOMETRY OR MORE TEXTURES. A third texture set per garment is
+ * a `visual-foundation` census `duplicate` by construction (MATERIAL_API §4: "if I want a second one
+ * of these, am I writing a spec or writing a definition?"). More geometry costs triangles on a body
+ * that is already at 28,136 against a 12,000 bar. A vertex colour costs three floats per vertex, no
+ * draw call, no triangle, and it multiplies the authored albedo rather than replacing it — so the
+ * linen weave and the hide grain still read underneath the panel it belongs to.
+ *
+ * THE DESIGN SIDE IS ARGONIA'S, NOT SKYRIM'S. `RI-VIS10` is `side: morrowind` and its §D2 lists
+ * "buckled leather jerkin with bracers" among the generic-fantasy items that must appear ZERO
+ * times, so the obvious buckle-and-strap read off the Skyrim full-body plates is exactly the wrong
+ * one to copy. What is built instead is §D3's material vocabulary: a wrapped sash rather than a
+ * belt, cord lashing at the forearm and shin (`refs/context/ESO-argonian_character__steam-1634540211.jpg`
+ * shows precisely this — corded wraps from wrist to elbow), a shoulder yoke in a second tone, a
+ * hem, and bone fittings as separate geometry. The modern plates govern how WELL it is made
+ * (RI-VIS08 §B3/§B4); they do not govern what it is.
+ *
+ * ALL THRESHOLDS ARE IN METRES IN REST SPACE, against `skeleton.json`'s own bone heights
+ * (pelvis 0.980, spine_00 1.100, spine_02 1.340, knee 0.510, ankle 0.090), read at build time from
+ * the rig rather than retyped, so a skeleton edit moves the sash with the waist.
+ */
+function paintBody(geometry, key, L, artFamily) {
+  const pos = geometry.attributes.position, nrm = geometry.attributes.normal, col = geometry.attributes.color;
+  if (!pos || !col) return geometry;
+  // A deterministic 1-in-1000 hash on quantised position: the same vertex always gets the same
+  // mottle, on every actor and in every capture, so two frames of one figure cannot differ by it.
+  const mottle = (x, y, z) => {
+    const s = Math.sin(Math.round(x * 380) * 12.9898 + Math.round(y * 380) * 78.233 + Math.round(z * 380) * 37.719) * 43758.5453;
+    return s - Math.floor(s);
+  };
+  // A soft-edged band: 1 inside, 0 outside, with `soft` metres of ramp. Hard bands alias into a
+  // crawling line the moment the figure moves; this is the cheapest anti-aliasing there is.
+  const band = (v, centre, half, soft = 0.010) =>
+    1 - Math.min(1, Math.max(0, (Math.abs(v - centre) - half) / soft));
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+    const nzv = nrm ? nrm.getZ(i) : 0;
+    const r = Math.hypot(x, z);
+    let v = 1 + (mottle(x, y, z) - 0.5) * 0.09;   // break-up, +-4.5%
+    let warm = 0;                                  // +1 pushes toward hide, -1 toward bleached fibre
+    if (key === 'cloth') {
+      // The tunic body, the yoke above it and the leggings below are three panels of one garment,
+      // and a panel boundary is the single most legible thing on both reference plates.
+      if (y > L.chestY + 0.010) { v *= 1.13; warm -= 0.35; }            // shoulder yoke, lighter
+      if (y < L.pelvisY - 0.085) { v *= 0.87; warm += 0.20; }            // leggings, a second cloth
+      // The wrapped sash. Morrowind's transposition, not a buckled belt: two overlapping wraps at
+      // slightly different heights, the lower one darker, so it reads as wound rather than fastened.
+      v *= 1 - 0.42 * band(y, L.waistY - 0.010, 0.030);
+      v *= 1 - 0.26 * band(y, L.waistY + 0.042, 0.016);
+      warm += 0.8 * band(y, L.waistY - 0.010, 0.034);
+      // The tunic hem, and the legging cuff above the ankle.
+      v *= 1 - 0.30 * band(y, L.pelvisY - 0.085, 0.014, 0.006);
+      v *= 1 - 0.34 * band(y, L.ankleY + 0.130, 0.020, 0.008);
+      // Vertical seams — front centre, back centre and the two side seams. Measured as ARC length
+      // so the seam is 12 mm wide on a narrow arm and 12 mm wide on a broad chest, instead of
+      // fanning out with radius the way an angular threshold does.
+      if (r > 0.02) {
+        const th = Math.atan2(x, z);
+        let d = Math.PI;
+        for (const s of [0, Math.PI / 2, Math.PI, -Math.PI / 2]) {
+          let dd = Math.abs(th - s); if (dd > Math.PI) dd = 2 * Math.PI - dd;
+          d = Math.min(d, dd);
+        }
+        v *= 1 - 0.20 * Math.max(0, 1 - (d * r) / 0.012);
+      }
+      // §D5, "the clothes have been worn": a damp/dirt gradient rising from the hem. The marsh is
+      // ankle-deep and everybody's lower garment is dirty; this is also the one wear cue that
+      // survives at the 8-10 m gameplay range, where a mend or a patch does not.
+      v *= 1 - 0.16 * Math.min(1, Math.max(0, (L.kneeY - y) / L.kneeY));
+    } else if (key === 'skin') {
+      // COUNTERSHADING. Dark dorsal, pale ventral — universal in reptiles, and the ESO plate's
+      // throat and belly are visibly paler than its back. +Z is the character's front (the snout is
+      // built at +z in the head block below), so the normal's z component is the whole test.
+      v *= 0.89 + 0.23 * (nzv * 0.5 + 0.5);
+      // Scale rows, on the reptilian body only. A 3.4 cm pitch is a scute at arm's length and a
+      // texture at ten metres, which is the correct behaviour for it — and it is `B2` row 5's
+      // "scale or plate flow that follows the body's forms rather than sitting as a tile",
+      // because it is a function of the surface's own height rather than of a UV grid.
+      if (artFamily === 'saxhleel') v *= 1 + 0.055 * Math.sin(y / 0.034 * Math.PI * 2);
+      // The throat and the underside of the jaw take the pale ventral tone further; on both the
+      // Morrowind and the ESO Argonian this is the brightest patch on the figure.
+      if (y > L.neckY - 0.02 && y < L.neckY + 0.14 && nzv > 0.25) v *= 1.10;
+    } else if (key === 'bone') {
+      // Fittings are pale and slightly uneven — river-shell and bone are not injection-moulded.
+      v *= 0.94 + 0.12 * mottle(z, x, y);
+    }
+    const rC = Math.min(1.6, Math.max(0, v * (1 + 0.11 * warm)));
+    const gC = Math.min(1.6, Math.max(0, v));
+    const bC = Math.min(1.6, Math.max(0, v * (1 - 0.15 * warm)));
+    col.setXYZ(i, rC, gC, bC);
+  }
+  col.needsUpdate = true;
+  return geometry;
 }
 
 // ---------------------------------------------------------------------------------------
@@ -468,7 +678,14 @@ const JOINT_SURFACE = {
  * drawn character cannot be built against a different bone list than the fight is using — the
  * arrays are the same length, in the same order, by construction.
  */
-function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphSpec=null) {
+function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphSpec=null, materialSpec=null) {
+  // The other two thirds of the variant's `material` axis. Defaults are the pre-2026-08-15 values,
+  // so an actor built without a spec (the arena dummy, a tool driving `makeRiggedActor` directly)
+  // is exactly what it was rather than silently un-weathered.
+  const matVariant = {
+    palette: (materialSpec && materialSpec.palette) || 'neutral',
+    wear: Math.min(1, Math.max(0, Number((materialSpec && materialSpec.wear) ?? 0))),
+  };
   // The morph is the variant axis that has to REBUILD geometry rather than tint it, or "twelve
   // distinct characters" is twelve colours of one character. Every multiplier below lands on a
   // radius or an ornament dimension; none of them touches a bone offset, because a bone offset is
@@ -494,7 +711,12 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
   const restWorld = bones.map((b) => b.matrixWorld.clone());
   const boneInverses = restWorld.map((m) => m.clone().invert());
 
-  const B = { skin: new MeshBuilder(), cloth: new MeshBuilder() };
+  // One builder per material family, each unwrapping against its own family's declared texel
+  // density. `bone` is the third surface, and it exists for a measurable reason: RI-VIS08 B3 asks
+  // for "≥ 3 materially distinct regions" whose specular response differs by ≥ 2x, and a body with
+  // exactly two surfaces cannot answer it however well those two are made.
+  const B = { skin: new MeshBuilder(TEXEL_METRES.skin), cloth: new MeshBuilder(TEXEL_METRES.cloth),
+    bone: new MeshBuilder(TEXEL_METRES.bone) };
   const originOf = (id) => new THREE.Vector3().setFromMatrixPosition(restWorld[index.get(id)]);
 
   for (const [id, spec] of Object.entries(PLAN)) {
@@ -585,6 +807,55 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
   // lat sweep — the ribcage-into-waist taper
   if (s00I !== undefined) B.cloth.ellipsoid(originOf('spine_00').add(new THREE.Vector3(0, .045 * M.build, -.006)),
     [.196 * M.build * M.shoulders, .130 * M.build, .128 * M.build * M.belly], s00I, 14);
+
+  // ---- dress: the Argonian material vocabulary, as geometry -----------------------------
+  //
+  // RI-VIS10 §D3 asks for five of eight materials from RI-VIS05's Black Marsh list — lashed cord,
+  // woven reed or rush, chitin plate, bone fitting, hide, river-shell, resin, wet-wood — to appear
+  // on at least one shipped garment, and §D2 forbids the generic-fantasy read outright: "buckled
+  // leather jerkin with bracers" must occur ZERO times. So the fittings here are LASHED CORD and
+  // BONE, not buckles and straps. `refs/context/ESO-argonian_character__steam-1634540211.jpg`,
+  // opened for this piece, shows the cord wraps running wrist to elbow on both arms; that plate is
+  // routed FIDELITY-only (INDEX.md §4), so it is cited here for construction quality and not as the
+  // design target — the design comes from Argonia.
+  //
+  // Cord is fibre, so it is emitted into the CLOTH surface and darkened by the paint pass; only the
+  // fittings, which are hard and pale, need the third material to be worth its draw call.
+  const lash = (fromId, toId, ts, over) => {
+    const fi = index.get(fromId), ti = index.get(toId);
+    if (fi === undefined || ti === undefined) return;
+    const a = originOf(fromId), b = originOf(toId);
+    const spec = PLAN[fromId];
+    if (!spec) return;
+    const dir = b.clone().sub(a);
+    for (const t of ts) {
+      const r = rScale(spec.r0 + (spec.r1 - spec.r0) * t) + over;
+      const p0 = a.clone().addScaledVector(dir, t - 0.018);
+      const p1 = a.clone().addScaledVector(dir, t + 0.018);
+      // Two rings of section rather than one: a single ring reads as a painted line at any
+      // distance, and the point of making it geometry is that it moves against the silhouette
+      // (RI-VIS10 B3's own test for whether a feature is geometry or paint).
+      B.cloth.tube(p0, p1, r, r, fi, fi, 0, 10, 1);
+    }
+  };
+  for (const side of ['l', 'r']) {
+    lash(`lowerarm_${side}`, `hand_${side}`, [0.22, 0.46, 0.70], 0.0075 * M.build);
+    lash(`calf_${side}`, `foot_${side}`, [0.30, 0.62], 0.0085 * M.build);
+  }
+  // Bone fittings — the third surface. A sash toggle at the front of the wrap and a pair of
+  // shoulder clasps where the yoke meets it. Small, hard, pale, and welded into their own skinned
+  // surface so they cannot detach in a pose (the lesson of the four floating crest cones).
+  if (s00I !== undefined) {
+    B.bone.ellipsoid(originOf('spine_00').add(new THREE.Vector3(0, -.030 * M.build, .150 * M.build * M.belly)),
+      [.036 * M.build, .052 * M.build, .022 * M.build], s00I, 7);
+  }
+  for (const side of ['l', 'r']) {
+    const clavI = index.get(`clavicle_${side}`);
+    if (clavI === undefined || chestI === undefined) continue;
+    const sign = side === 'l' ? -1 : 1;
+    B.bone.ellipsoid(originOf('spine_02').add(new THREE.Vector3(sign * .112 * M.build * M.shoulders, .092 * M.build, .058 * M.build)),
+      [.030 * M.build, .020 * M.build, .026 * M.build], chestI, 6);
+  }
 
   // ---- the head ------------------------------------------------------------------------
   // This is Black Marsh and the player is Saxhleel, so the skull is long, the snout carries
@@ -802,14 +1073,25 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
   // an actor nobody has fed water data to this frame draws bone dry, not soaked at y=0.
   const waterU = { uWaterY: { value: -9999 }, uWetness: { value: 0 } };
 
+  // The rest-space landmarks the garment pass measures against. Read off the rig, never retyped, so
+  // a skeleton edit moves the sash with the waist instead of leaving it floating at an old height.
+  const yOf = (id) => (index.get(id) === undefined ? null : originOf(id).y);
+  const L = {
+    pelvisY: yOf('pelvis') ?? 0.98, waistY: yOf('spine_00') ?? 1.10, chestY: yOf('spine_02') ?? 1.34,
+    neckY: yOf('neck') ?? 1.54, kneeY: yOf('calf_l') ?? 0.51, ankleY: yOf('foot_l') ?? 0.09,
+  };
+
   const meshes = [];
-  for (const key of ['cloth', 'skin']) {
+  for (const key of BODY_SURFACES) {
     if (B[key].count === 0) continue;
-    const mat = (key === 'skin' ? mats.skin : mats.cloth).clone();
+    // The variant's own material spec, at last consumed. `palette` and `wear` came from
+    // CHARACTER_SPECS and reached nothing before this; `wearFrom: 'geometry'` is MATERIAL_API §6a's
+    // standing request to this file, answered.
+    const mat = bodyMaterialBase(key, matVariant.palette, matVariant.wear).clone();
     if (key === 'skin' && skinHex !== undefined) mat.color.setHex(skinHex);
     if (key === 'cloth' && tintHex !== undefined) mat.color.setHex(tintHex);
     installWaterline(mat, waterU);
-    const mesh = new THREE.SkinnedMesh(B[key].build(), mat);
+    const mesh = new THREE.SkinnedMesh(paintBody(B[key].build(), key, L, artFamily), mat);
     mesh.name = `actor-body:${artFamily}:${key}`;
     mesh.castShadow = true;
     mesh.receiveShadow = true;
@@ -1502,7 +1784,7 @@ function ensureBuilt(group, rigSource) {
   // and Imperial in a room the same person again.
   const skinHex = A.skinHex !== undefined ? A.skinHex : mat.skin;
   const tintHex = A.tintHex !== undefined ? A.tintHex : mat.cloth;
-  A.built = buildSkeleton(rigSource, A.mats, tintHex, skinHex, A.artFamily, spec && spec.morph);
+  A.built = buildSkeleton(rigSource, A.mats, tintHex, skinHex, A.artFamily, spec && spec.morph, mat);
   const rigId = (spec && spec.base) || FAMILY_BASE[A.artFamily] || 'base.humanoid';
   const vkey = spec ? variantKey(spec.base, spec) : null;
   A.built.group.traverse((o) => {

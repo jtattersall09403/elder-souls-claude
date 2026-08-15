@@ -518,7 +518,7 @@ try {
 
 
     // ---- C0. the opening, and the first thing the window is asked to draw ---------------------
-    await h.page.evaluate(() => { window.__ENGINE.censusBegin({}); });
+    await h.page.evaluate(() => { window.__ENGINE.censusBegin({}); window.__HARNESS.renderedTextClear(); });
     await h.h('stepFrames', 4);
     let c = await readCensus();
     const first = { node: c.node, window: c.new_window_open, suppressed: c.old_panel_suppressed };
@@ -557,6 +557,20 @@ try {
       log(`  shot ${SHOT}  (node '${c.node}', census mode=${c.census_mode})`);
     }
     if (OPEN_ONLY) {
+      // C0b — THE SAME PIXEL QUESTION AS C1b, ASKED AT ONE NODE. This is what makes `--open-only`
+      // a usable delete-the-fix arm rather than just a screenshot: it reports what the OLD panel
+      // painted at the opening node, so the two arms of the pair produce opposite numbers on one
+      // frozen tree. `complete` is checked because the accessor is fail-closed and an incomplete
+      // answer is ignorance, not absence.
+      const reg0 = await h.page.evaluate(() => {
+        const r = window.__HARNESS.getRenderedText({ surface: 'dialogue' });
+        return { complete: r.complete, distinct_count: r.distinct_count, distinct: r.distinct.slice(0, 6) };
+      });
+      report.data.open_only_old_panel_text = reg0;
+      push('C0b PIXELS at the opening node: the old vellum panel painted no text',
+        reg0.complete && reg0.distinct_count === 0,
+        `complete=${reg0.complete}, ${reg0.distinct_count} distinct string(s) on the 'dialogue' surface` +
+        (reg0.distinct_count ? ` — e.g. ${JSON.stringify(reg0.distinct.slice(0, 4))}` : ''));
       report.checks = checks;
       report.data.errors = h.errors ? h.errors.slice(0, 10) : [];
       writeJson(path.join(OUT, 'drive-probe-census-open.json'), report);

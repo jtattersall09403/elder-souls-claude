@@ -1,0 +1,197 @@
+{
+  "label": "live",
+  "viewport": [
+    844,
+    390
+  ],
+  "commit": "e4bb809b0f610a89189b761ecc043f3e0d9b1b0d",
+  "screens": {
+    "world": {
+      "mode": "world",
+      "element_count": 10,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "effect_strip": 1,
+        "place_name": 1
+      },
+      "pictorial_declared": {
+        "kinds_counted": [
+          "item_icon",
+          "doll",
+          "glyph_object"
+        ],
+        "on_screen": 0,
+        "in_panel": 0,
+        "by_kind": {
+          "item_icon": 0,
+          "doll": 0,
+          "glyph_object": 0
+        },
+        "item_rows": 0,
+        "item_icons": 0
+      },
+      "pictorial_ids": [],
+      "panel_rect": null,
+      "panel_rect_source": "derived (build publishes none)",
+      "panel_rect_agrees": null,
+      "pictorial_measured": {
+        "on_screen": 0,
+        "in_panel": 0
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 76,
+        "local_contrast_med": 0.213,
+        "local_contrast_p95": 64.965,
+        "p10": 0,
+        "p90": 25,
+        "spread": 25,
+        "reason": null
+      },
+      "panel_sanity": null,
+      "panel_fill": {
+        "fill": null,
+        "reason": "no panel on this frame"
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        },
+        {
+          "id": "hud.place",
+          "text": "thorn-hall"
+        }
+      ],
+      "ri_citations": [],
+      "undefined_headers": [],
+      "materials": [
+        "chitin",
+        "root",
+        "ink",
+        "bone",
+        "resin",
+        "shell",
+        "clay"
+      ],
+      "materials_painted": [
+        "chitin",
+        "root",
+        "ink",
+        "bone",
+        "resin",
+        "shell",
+        "clay"
+      ],
+      "hud_world": {
+        "set": {
+          "W1_bearing_dial": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat"
+          },
+          "W2_effect_strip": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat, ≥1 effect",
+            "expected": true
+          },
+          "W3_sneak_state": {
+            "built": true,
+            "drawn": false,
+            "conditional": "both phases, while sneaking",
+            "expected": false
+          },
+          "W4_condition_marks": {
+            "built": true,
+            "drawn": true,
+            "conditional": "both phases, always",
+            "inside": "hud.quickslots",
+            "added_px": 0,
+            "values": {
+              "right": 0.86,
+              "left": null,
+              "spell": null,
+              "item": 0
+            }
+          },
+          "W5_place_name": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat, ≤3 s after a cell change",
+            "expected": true
+          },
+          "W6_breath_meter": {
+            "built": true,
+            "drawn": false,
+            "conditional": "both phases, while submerged",
+            "expected": false
+          }
+        },
+        "elements": [
+          {
+            "id": "hud.bearing",
+            "kind": "bearing_dial",
+            "rect": [
+              1616,
+              942,
+              96,
+              96
+            ],
+            "in_bottom_half": true
+          },
+          {
+            "id": "hud.effects",
+            "kind": "effect_strip",
+            "rect": [
+              1574,
+              1006,
+              30,
+              32
+            ],
+            "in_bottom_half": true
+          },
+          {
+            "id": "hud.place",
+            "kind": "place_name",
+            "rect": [
+              42,
+              950,
+              520,
+              36
+            ],
+            "in_bottom_half": true
+          }
+        ],
+        "all_in_bottom_half": true,
+        "overlaps": [],
+        "persistent_count": 3,
+        "coverage_pct": 1.3935,
+        "withdrawn": [],
+        "withdrawn_because": null
+      },
+      "combat_phase": "world",
+      "combat_phase_source": "encounter"
+    }
+  },
+  "notes": []
+}
