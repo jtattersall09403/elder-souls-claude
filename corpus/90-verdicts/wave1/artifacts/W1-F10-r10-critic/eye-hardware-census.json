@@ -1,0 +1,96 @@
+{
+  "tool": "inline census over the paid RTX A5000 FP frames, run 20260815-191123Z-18243, f10-r10c-pair",
+  "box": "x 480-1440, y 280-860 of 1920x1080 \u2014 the whole face, IDENTICAL in both arms",
+  "amber_test": "r>=70 and r-g>=28 and g-b>=18 and b<=90 (the iris; the olive headgear fails r-g and the stone dock fails g-b)",
+  "pupil_proxy": "near-black pixels (r+g+b<90) inside the amber bounding box",
+  "per_bearing": {
+    "b180": {
+      "before": {
+        "amber_px": 466,
+        "amber_bbox": [
+          764,
+          499,
+          1149,
+          538
+        ],
+        "near_black_px_in_amber_bbox": 1544
+      },
+      "after": {
+        "amber_px": 1113,
+        "amber_bbox": [
+          740,
+          527,
+          1167,
+          627
+        ],
+        "near_black_px_in_amber_bbox": 8571
+      }
+    },
+    "b090": {
+      "before": {
+        "amber_px": 280,
+        "amber_bbox": [
+          1276,
+          479,
+          1289,
+          510
+        ],
+        "near_black_px_in_amber_bbox": 61
+      },
+      "after": {
+        "amber_px": 1174,
+        "amber_bbox": [
+          1275,
+          500,
+          1322,
+          549
+        ],
+        "near_black_px_in_amber_bbox": 656
+      }
+    },
+    "b045": {
+      "before": {
+        "amber_px": 249,
+        "amber_bbox": [
+          844,
+          299,
+          1433,
+          762
+        ],
+        "near_black_px_in_amber_bbox": 98057
+      },
+      "after": {
+        "amber_px": 89,
+        "amber_bbox": [
+          844,
+          284,
+          1433,
+          762
+        ],
+        "near_black_px_in_amber_bbox": 105007
+      }
+    },
+    "b000": {
+      "before": {
+        "amber_px": 19,
+        "amber_bbox": [
+          727,
+          304,
+          1013,
+          774
+        ],
+        "near_black_px_in_amber_bbox": 42225
+      },
+      "after": {
+        "amber_px": 19,
+        "amber_bbox": [
+          727,
+          326,
+          1000,
+          774
+        ],
+        "near_black_px_in_amber_bbox": 38412
+      }
+    }
+  }
+}

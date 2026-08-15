@@ -1,0 +1,262 @@
+{
+  "geometry": {
+    "CP_camera_dist_m": 2.486,
+    "FP_camera_dist_m": 0.475,
+    "gameplay_free_arm_m": 4.1,
+    "note": "CAMERA_CONST.arm_free_m = 4.10 m is the arm a player actually orbits at; the CP capture stands CLOSER than that, so it is a MORE generous test of visibility than gameplay, not a less generous one."
+  },
+  "frames": [
+    {
+      "frame": "CP__player__yaw000.png",
+      "tag": "FEET",
+      "canvas": [
+        1920,
+        1080
+      ],
+      "px_per_m": 376.2,
+      "mm_per_px": 2.658,
+      "camera_dist_m": 2.486,
+      "crop_px": [
+        691,
+        821,
+        1229,
+        1048
+      ],
+      "zoom": 6,
+      "changed_px": 219555,
+      "changed_frac": 0.105881,
+      "mean_delta_over_changed": 23.53,
+      "max_delta": 531,
+      "bbox": [
+        558,
+        103,
+        1426,
+        1079
+      ]
+    },
+    {
+      "frame": "CP__player__yaw090.png",
+      "tag": "FEET",
+      "canvas": [
+        1920,
+        1080
+      ],
+      "px_per_m": 376.2,
+      "mm_per_px": 2.658,
+      "camera_dist_m": 2.486,
+      "crop_px": [
+        691,
+        821,
+        1229,
+        1048
+      ],
+      "zoom": 6,
+      "changed_px": 233352,
+      "changed_frac": 0.112535,
+      "mean_delta_over_changed": 27.48,
+      "max_delta": 663,
+      "bbox": [
+        394,
+        98,
+        1825,
+        1079
+      ]
+    },
+    {
+      "frame": "CP__player__yaw180.png",
+      "tag": "FEET",
+      "canvas": [
+        1920,
+        1080
+      ],
+      "px_per_m": 376.2,
+      "mm_per_px": 2.658,
+      "camera_dist_m": 2.486,
+      "crop_px": [
+        691,
+        821,
+        1229,
+        1048
+      ],
+      "zoom": 6,
+      "changed_px": 228206,
+      "changed_frac": 0.110053,
+      "mean_delta_over_changed": 26.36,
+      "max_delta": 757,
+      "bbox": [
+        349,
+        97,
+        1475,
+        1079
+      ]
+    },
+    {
+      "frame": "CP__player__yaw000.png",
+      "tag": "FIGURE",
+      "canvas": [
+        1920,
+        1080
+      ],
+      "px_per_m": 376.2,
+      "mm_per_px": 2.658,
+      "camera_dist_m": 2.486,
+      "crop_px": [
+        576,
+        54,
+        1344,
+        1069
+      ],
+      "zoom": 2,
+      "changed_px": 219555,
+      "changed_frac": 0.105881,
+      "mean_delta_over_changed": 23.53,
+      "max_delta": 531,
+      "bbox": [
+        558,
+        103,
+        1426,
+        1079
+      ]
+    },
+    {
+      "frame": "CP__player__yaw090.png",
+      "tag": "FIGURE",
+      "canvas": [
+        1920,
+        1080
+      ],
+      "px_per_m": 376.2,
+      "mm_per_px": 2.658,
+      "camera_dist_m": 2.486,
+      "crop_px": [
+        576,
+        54,
+        1344,
+        1069
+      ],
+      "zoom": 2,
+      "changed_px": 233352,
+      "changed_frac": 0.112535,
+      "mean_delta_over_changed": 27.48,
+      "max_delta": 663,
+      "bbox": [
+        394,
+        98,
+        1825,
+        1079
+      ]
+    },
+    {
+      "frame": "FP__player__b000.png",
+      "tag": "FACE",
+      "canvas": [
+        1920,
+        1080
+      ],
+      "px_per_m": 1969.4,
+      "mm_per_px": 0.508,
+      "camera_dist_m": 0.475,
+      "crop_px": [
+        538,
+        216,
+        1382,
+        670
+      ],
+      "zoom": 5,
+      "changed_px": 586002,
+      "changed_frac": 0.282601,
+      "mean_delta_over_changed": 58.72,
+      "max_delta": 687,
+      "bbox": [
+        117,
+        171,
+        1915,
+        1079
+      ]
+    },
+    {
+      "frame": "FP__player__b045.png",
+      "tag": "FACE",
+      "canvas": [
+        1920,
+        1080
+      ],
+      "px_per_m": 1969.4,
+      "mm_per_px": 0.508,
+      "camera_dist_m": 0.475,
+      "crop_px": [
+        538,
+        216,
+        1382,
+        670
+      ],
+      "zoom": 5,
+      "changed_px": 502478,
+      "changed_frac": 0.242322,
+      "mean_delta_over_changed": 64.51,
+      "max_delta": 737,
+      "bbox": [
+        354,
+        171,
+        1740,
+        1079
+      ]
+    },
+    {
+      "frame": "FP__player__b090.png",
+      "tag": "FACE",
+      "canvas": [
+        1920,
+        1080
+      ],
+      "px_per_m": 1969.4,
+      "mm_per_px": 0.508,
+      "camera_dist_m": 0.475,
+      "crop_px": [
+        538,
+        216,
+        1382,
+        670
+      ],
+      "zoom": 5,
+      "changed_px": 533539,
+      "changed_frac": 0.257301,
+      "mean_delta_over_changed": 51.38,
+      "max_delta": 642,
+      "bbox": [
+        395,
+        159,
+        1626,
+        1079
+      ]
+    },
+    {
+      "frame": "FP__player__b180.png",
+      "tag": "FACE",
+      "canvas": [
+        1920,
+        1080
+      ],
+      "px_per_m": 1969.4,
+      "mm_per_px": 0.508,
+      "camera_dist_m": 0.475,
+      "crop_px": [
+        538,
+        216,
+        1382,
+        670
+      ],
+      "zoom": 5,
+      "changed_px": 595817,
+      "changed_frac": 0.287335,
+      "mean_delta_over_changed": 68.84,
+      "max_delta": 762,
+      "bbox": [
+        3,
+        178,
+        1812,
+        1079
+      ]
+    }
+  ]
+}
