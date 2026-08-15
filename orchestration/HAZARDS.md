@@ -117,6 +117,37 @@ read **11.5 hours** old by mtime and **122 hours** by `git log` — a 10.6× err
 misdirect a fresh dispatch at an already-answered brief. Hundreds of files share a bulk-checkout
 timestamp. Use git dates.
 
+## 16. No capture in this project had ever photographed a MOVING player — `setInput` is not a verb
+
+**Found 2026-08-15, and it voids a class of evidence rather than a single run.**
+
+`grep -rn setInput game/` returns **0**. It is not a harness verb and never was. Two separate character
+rounds opened their motion sequences with it, and `call()` **swallows the failure silently** — so the
+capture ran, produced frames, reported success, and the player never moved.
+
+Measured, and the contrast is not subtle: across one round's entire "walk" sequence the background
+border ring changed on **0.2%** of pixels. A run that actually drives the player moves **71.35%**.
+
+**So every motion claim made before this date rests on frames of a stationary character.** The owner's
+standing directive — *"stills are not enough… motion captures, e.g. rotating the camera around the
+player"* — was being satisfied on paper by sequences in which nothing moved.
+
+**Two sibling defects found in the same pass, same shape:**
+
+- **`gateBuffer` was being called with argument names it does not have** (`{framing, canvas}` where it
+  expects `{box, subject}`), so **subject-presence never ran on any character frame.** The gate existed,
+  was invoked, and checked nothing.
+- **Importing `f10-r3-materials.mjs` runs its entire capture and exits** — no main-module guard. A Pod
+  told to run a different tool ran that one instead, and the manifest recorded the wrong tool name.
+  Cost $0.019 and a wasted Pod, and it means one round's tool could never have produced its own shot
+  list.
+
+**The common lesson, and it is the expensive one: a harness call that fails silently is worse than one
+that throws.** Three separate instruments here reported success while doing nothing, and each was
+caught only when somebody compared what the frames actually contained against what the tool claimed.
+**Verify your verbs exist** (`grep` the harness), **verify your gate's argument names**, and **make
+`call()` throw on an unknown verb** rather than swallow it.
+
 ## 15. The capture path can return a frame that is not a picture of anything — and nothing goes red
 
 **Found 2026-08-15, and it outranks any single visual defect, because every visual judgement this
