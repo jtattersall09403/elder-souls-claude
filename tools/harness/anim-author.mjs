@@ -110,13 +110,24 @@ const LIE_MAX_F = 7;       // §A budget 8, tightened by the measured one-frame 
 const T_REACT_MIN_F = 20;  // §A budget 19, tightened by the same frame
 
 // ---- the pose the whole fight returns to -----------------------------------------------
+// MUST STAY EQUAL TO `clips.json §archetypes.idle_ready.tracks`. It is a SECOND COPY of the idle
+// stance — this file writes the termination-rule endpoints from it (below) while the shipped
+// stance itself is hand-authored in `clips.json`, so the two drift silently and a regeneration
+// then pins every attack's endpoints to a stance the game does not hold.
+// The contrapposto rows are F10 r9 (RI-VIS10 C3): the idle measured 0.313 deg of shoulder tilt and
+// EXACTLY 0.000 of hip tilt, i.e. §F#6's "symmetric A-pose with the arms lowered".
 const IDLE = {
-  spine_00: { rx: 3 },
-  spine_02: { ry: -6 },
+  spine_00: { rx: 3, rz: -5 },
+  spine_02: { ry: -6, rz: -6 },
   upperarm_r: { rx: -18, rz: -6 },
   lowerarm_r: { rx: -38 },
   upperarm_l: { rx: -12, rz: 6 },
   lowerarm_l: { rx: -30 },
+  pelvis: { rz: 5 },                       // weight on one leg: the hip line rises
+  thigh_l: { rz: -5, rx: 8.248 },          // legs stay vertical under the rolled pelvis;
+  thigh_r: { rz: -5 },                     //   rx is the FREE leg's knee, solved (see calf_l)
+  calf_l: { rx: -16.496 },                 // = -2 x thigh_l.rx, so the shin stays under the hip
+  neck: { rz: 5 },                         // head near level over the tilted shoulders
 };
 const idleOf = (bone, ch) => ((IDLE[bone] || {})[ch] !== undefined ? IDLE[bone][ch] : 0);
 
@@ -189,7 +200,17 @@ const IDLE_LOOP = {
   root_offset: { y: [[0.0, 0.0], [0.75, -0.008], [1.5, 0.0], [2.25, -0.008], [3.0, 0.0]] },
   tracks: {
     spine_00: { rx: [[0.0, 0], [0.75, 0.45], [1.5, 0], [2.25, -0.45], [3.0, 0]] },
-    spine_02: { ry: [[0.0, 0], [1.0, 0.55], [2.0, -0.55], [3.0, 0]] },
+    // F10 r9 — THE WEIGHT SHIFTS, and RI-VIS10 C3 requires it: "the two frames differ". The
+    // static contrapposto lives in `idle_ready`; these two curves are the SHIFT of it, so frame 0
+    // and frame 120 of a standing character are not the same stand. Both close at phase 3.0.
+    // MIRRORED HERE ON PURPOSE: line ~920 does `clipsDoc.archetypes.idle_loop = IDLE_LOOP`, so a
+    // regeneration would otherwise silently delete them from `clips.json`.
+    // PRE-EXISTING DIVERGENCE, NOT MINE AND NOT FIXED HERE: the shipped `clips.json` carries rx
+    // amplitudes 0.68 / 0.82 / 0.75 / 1.2 / 0.52 where this constant carries 0.45 / 0.55 / 0.5 /
+    // 0.8 / 0.35, i.e. the file was hand-tuned after it was last generated. `--write` reverts that
+    // too, and it did so before this round existed.
+    pelvis: { rz: [[0.0, 0], [1.5, 1.2], [3.0, 0]] },
+    spine_02: { ry: [[0.0, 0], [1.0, 0.55], [2.0, -0.55], [3.0, 0]], rz: [[0.0, 0], [1.5, -0.9], [3.0, 0]] },
     neck: { rx: [[0.0, 0], [1.5, 0.5], [3.0, 0]] },
     upperarm_r: { rx: [[0.0, 0], [1.5, 0.8], [3.0, 0]] },
     upperarm_l: { rx: [[0.0, 0], [1.5, -0.8], [3.0, 0]] },
@@ -457,10 +478,28 @@ function buildArch(def, t, swing, ext, bury, cham, hitFrac) {
   // Clip.applyPose(), which is NOT the idle value, so the first and last frames of the clip
   // would differ from the idle pose by exactly that channel. That is a boundary snap with no
   // motion in it at all — 6 degrees of shoulder is 0.27 m at a spear's tip.
+  //
+  // F10 r9 — A CONSTANT TRACK IS THE RIGHT SHAPE FOR A LEAN AND THE WRONG SHAPE FOR A STANCE,
+  // and the difference was measured, not reasoned. `[[0,v],[3,v]]` holds `v` through the ENTIRE
+  // move. For `spine_00.rx = 3` (a 3 degree forward lean) that is harmless. For the contrapposto
+  // channels below — a 5 degree pelvis roll and an 11 degree spine counter-curve — it means the
+  // character holds a STANDING WEIGHT SHIFT through a jump: `actor-orbit-holes.mjs` went
+  // `jump_arc@1` 93 -> 269 crack px and `jump_arc@0.7` 86 -> 159 when this round first wrote them
+  // as constants, +249 of a +521 total regression, from one airborne archetype.
+  //
+  // The termination rule binds the ENDPOINTS. So stance-only channels are pinned at both ends and
+  // return to the authored neutral through the body of the move; everything else keeps the
+  // constant it has always had.
+  const STANCE_ONLY = new Set(['pelvis.rz', 'thigh_l.rz', 'thigh_r.rz', 'spine_00.rz',
+    'spine_02.rz', 'neck.rz', 'thigh_l.rx', 'calf_l.rx']);
   for (const bone of Object.keys(IDLE)) {
     for (const ch of Object.keys(IDLE[bone])) {
       tracks[bone] = tracks[bone] || {};
-      if (!tracks[bone][ch]) tracks[bone][ch] = [[0.0, IDLE[bone][ch]], [3.0, IDLE[bone][ch]]];
+      if (tracks[bone][ch]) continue;
+      const v = IDLE[bone][ch];
+      tracks[bone][ch] = STANCE_ONLY.has(`${bone}.${ch}`)
+        ? [[0.0, v], [0.3, 0], [2.7, 0], [3.0, v]]
+        : [[0.0, v], [3.0, v]];
     }
   }
   return {
