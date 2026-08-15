@@ -304,11 +304,32 @@ export function tagColumn(S, id, x, y, w, tags, selected, alpha, focused) {
  * Selection is a shell inlay under the row: a material catching the light, not a hover fill.
  */
 export function row(S, id, kind, x, y, w, h, cols, selected, alpha, meta, inset) {
+  // T4 round 7. THE ELLIPSIS IS DECIDED HERE NOW, NOT INSIDE THE DRAW CALLBACK, SO IT CAN BE READ.
+  //
+  // Every T4 defect in this thread has the same shape: the row DECLARES something the row does not
+  // DRAW. Round 4/5's gold column declared a value clipped away entirely; round 6's weight column
+  // declared `11.5` and drew `11…`. `element.text` reported the declaration in both cases, so
+  // `getUIState()` — the thing every instrument in this repo reads — could not see either, and the
+  // gold defect survived two rounds of measurement because of it. `RI-UIX09`'s own "How we lose"
+  // says it: *a self-report cannot see a canvas draw*.
+  //
+  // So the truncation decision is made once, up here, and published as `meta.columns_drawn`
+  // alongside the width it was measured against. `text` keeps its old meaning (the declared
+  // strings, joined) so nothing that greps it changes; `columns_drawn[i].text` is what a player
+  // actually sees and `columns_drawn[i].truncated` is the difference between the two. The draw
+  // callback below now consumes exactly these strings, so the two cannot disagree by construction.
+  const s0 = S.s;
+  const columnsDrawn = cols.map((col) => {
+    const f = faceOf(col.face || 'ink'), sz = (col.size || 17) * s0;
+    const raw = String(col.text === null || col.text === undefined ? '' : col.text);
+    const t = ellipsise(raw, f, sz, col.w * s0 - 10 * s0);
+    return { w: col.w, text: t, declared: raw, truncated: t !== raw };
+  });
   return S.el({
     id, kind,
     rect: [x, y, w, h],
     text: cols.map((c) => c.text).filter((t) => t !== null && t !== undefined && t !== '').join('  '),
-    focused: !!selected, opacity: alpha, meta,
+    focused: !!selected, opacity: alpha, meta: { ...(meta || {}), columns_drawn: columnsDrawn },
   }, (c, r) => {
     const s = S.s;
     if (selected) shellInlay(c, r[0], r[1], r[2], r[3], s, idHash(id));
@@ -317,10 +338,11 @@ export function row(S, id, kind, x, y, w, h, cols, selected, alpha, meta, inset)
     // counts a picture rather than a row that happens to contain one, and this argument is the
     // only thing `row()` needs to know about it. `undefined` keeps every existing caller identical.
     let cx = r[0] + (inset === undefined ? 8 : inset) * s;
-    for (const col of cols) {
+    for (let ci = 0; ci < cols.length; ci++) {
+      const col = cols[ci];
       const f = faceOf(col.face || 'ink');
       const sz = (col.size || 17) * s;
-      const t = ellipsise(String(col.text === null || col.text === undefined ? '' : col.text), f, sz, col.w * s - 10 * s);
+      const t = columnsDrawn[ci].text;          // the SAME string `meta.columns_drawn` published
       const wpx = measure(t, f, sz);
       const tx = col.align === 'right' ? cx + col.w * s - 10 * s - wpx
         : col.align === 'centre' ? cx + (col.w * s) / 2 - wpx / 2 : cx;
