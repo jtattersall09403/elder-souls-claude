@@ -1,0 +1,24 @@
+{
+  "schema": "elder-souls/t4-r3-critic@1",
+  "at": "2026-08-15T12:27:36.104Z",
+  "state": "ui-journal",
+  "checks": [
+    {
+      "id": "I0 INSTRUMENT real listeners attached and a movement key reaches the pipeline",
+      "pass": true,
+      "detail": "real.attached=true, input.moveX=1"
+    },
+    {
+      "id": "JX0 confirm on the chronicle still enters the search view",
+      "pass": null,
+      "detail": "view='null', query='null'"
+    }
+  ],
+  "data": {
+    "i0": {
+      "attached": true,
+      "moveX": 1
+    }
+  },
+  "error": "page.evaluate: Target page, context or browser has been closed\n    at key (/home/user/elder-souls-claude/tools/ui/t4-r3-critic.mjs:47:16)\n    at goto (/home/user/elder-souls-claude/tools/ui/t4-r3-critic.mjs:87:59)\n    at async enterSearch (/home/user/elder-souls-claude/tools/ui/t4-r3-critic.mjs:96:3)\n    at async file:///home/user/elder-souls-claude/tools/ui/t4-r3-critic.mjs:146:101"
+}
