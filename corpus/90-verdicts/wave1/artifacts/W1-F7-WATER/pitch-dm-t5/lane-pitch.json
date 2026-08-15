@@ -1,0 +1,186 @@
+{
+  "tool": "w1-water-lane-pitch",
+  "site": "vista-deep-marshes",
+  "time": 13,
+  "height_m": 120,
+  "label": "t5",
+  "only": [
+    "term-no-reflection",
+    "term-no-standard-lighting"
+  ],
+  "canvas": [
+    960,
+    540
+  ],
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "seed": 20260814,
+  "commit": "3ca135ad1d7bc4b1cd07796512974819fe188721",
+  "scale": {
+    "fov": 50,
+    "aspect": 1.7777777777777777,
+    "camPos": [
+      3123.5,
+      121.16,
+      3715
+    ],
+    "px_per_m_worldX": 4.8251,
+    "px_per_m_worldZ": 4.8251,
+    "screen_of_origin": [
+      480,
+      270
+    ],
+    "screen_of_plusX": [
+      238.7,
+      270
+    ],
+    "screen_of_plusZ": [
+      480,
+      28.7
+    ]
+  },
+  "metres_per_pixel": {
+    "worldX": 0.2072,
+    "worldZ": 0.2072
+  },
+  "arms": [
+    {
+      "arm": "baseline",
+      "kind": "mesh-class",
+      "what": "untouched",
+      "applied": {
+        "hidden": 0
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 4.09,
+      "lane_angle": -50,
+      "lane_aniso": 4.03,
+      "x_rms": 7.711,
+      "x_peak_lag_px": 182,
+      "x_peak_period_m": 37.72,
+      "x_peak_r": 0.346,
+      "z_rms": 6.081,
+      "z_peak_lag_px": 183,
+      "z_peak_period_m": 37.93,
+      "z_peak_r": 0.153,
+      "x_rms_vs_floor_pct": -2.9,
+      "lane_power_vs_floor_pct": 5.4,
+      "lane_aniso_vs_floor_pct": 12.9,
+      "verdict": "no effect on the lanes"
+    },
+    {
+      "arm": "surface-hidden",
+      "kind": "mesh-class",
+      "what": "the water table only",
+      "applied": {
+        "hidden": 48
+      },
+      "meshes_hidden": 48,
+      "vacuous": false,
+      "lane_power": 0.393,
+      "lane_angle": -56,
+      "lane_aniso": 1.54,
+      "x_rms": 1.208,
+      "x_peak_lag_px": 16,
+      "x_peak_period_m": 3.32,
+      "x_peak_r": 0.248,
+      "z_rms": 0.987,
+      "z_peak_lag_px": 16,
+      "z_peak_period_m": 3.32,
+      "z_peak_r": 0.219,
+      "x_rms_vs_floor_pct": -84.8,
+      "lane_power_vs_floor_pct": -89.9,
+      "lane_aniso_vs_floor_pct": -56.9,
+      "verdict": "REMOVES THE LANES"
+    },
+    {
+      "arm": "term-no-reflection",
+      "kind": "term",
+      "what": "esSurface = esDepth: the planar/screen reflection texture contributes nothing, the depth colour and all wave terms stay",
+      "applied": {
+        "materials": 11,
+        "edits_applied": 3
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 4.95,
+      "lane_angle": -50,
+      "lane_aniso": 8.62,
+      "x_rms": 3.921,
+      "x_peak_lag_px": 184,
+      "x_peak_period_m": 38.13,
+      "x_peak_r": 0.281,
+      "z_rms": 3.386,
+      "z_peak_lag_px": 152,
+      "z_peak_period_m": 31.5,
+      "z_peak_r": 0.121,
+      "x_rms_vs_floor_pct": -50.6,
+      "lane_power_vs_floor_pct": 27.6,
+      "lane_aniso_vs_floor_pct": 141.5,
+      "verdict": "REMOVES THE LANES"
+    },
+    {
+      "arm": "term-no-standard-lighting",
+      "kind": "term",
+      "what": "the final mix weight to 1.0, discarding the 32% of three.js standard lighting that reaches the water pixel",
+      "applied": {
+        "materials": 11,
+        "edits_applied": 3
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 3.582,
+      "lane_angle": -50,
+      "lane_aniso": 2.61,
+      "x_rms": 9.886,
+      "x_peak_lag_px": 184,
+      "x_peak_period_m": 38.13,
+      "x_peak_r": 0.355,
+      "z_rms": 7.589,
+      "z_peak_lag_px": 182,
+      "z_peak_period_m": 37.72,
+      "z_peak_r": 0.161,
+      "x_rms_vs_floor_pct": 24.4,
+      "lane_power_vs_floor_pct": -7.7,
+      "lane_aniso_vs_floor_pct": -26.9,
+      "verdict": "no effect on the lanes"
+    },
+    {
+      "arm": "nothing-restore-control",
+      "kind": "mesh-class",
+      "what": "floor",
+      "applied": {
+        "hidden": 0
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 3.879,
+      "lane_angle": -50,
+      "lane_aniso": 3.57,
+      "x_rms": 7.944,
+      "x_peak_lag_px": 184,
+      "x_peak_period_m": 38.13,
+      "x_peak_r": 0.349,
+      "z_rms": 6.221,
+      "z_peak_lag_px": 182,
+      "z_peak_period_m": 37.72,
+      "z_peak_r": 0.157,
+      "x_rms_vs_floor_pct": 0,
+      "lane_power_vs_floor_pct": 0,
+      "lane_aniso_vs_floor_pct": 0,
+      "verdict": "no effect on the lanes"
+    }
+  ],
+  "checks": {
+    "FLOOR-IS-STABLE": "PASS — floor rms 7.944 against baseline 7.711; the site is reproducible enough to read the arms",
+    "METRIC-CAN-SEE-LANES": "PASS — hiding the water table drops profile rms 7.944 -> 1.208 (85%), so this metric can go red",
+    "NO-ARM-IS-VACUOUS": "PASS — every shader arm landed at least one substitution",
+    "NULL-CONTROL-MUST-NOT-FIX": "FAIL — null control did not run"
+  },
+  "pageErrors": []
+}

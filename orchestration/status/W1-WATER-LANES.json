@@ -1,31 +1,60 @@
 {
   "task_id": "W1-WATER-LANES",
-  "title": "Job 1: the axis-aligned marsh lanes in render/water.js. Job 2: height-fog re-take at HEAD (measurement only, no source edit).",
-  "state": "measuring",
-  "commit_at_start": "52d66578",
+  "title": "F7 — the water surface. Name the term that owns the marsh lanes, then fix it.",
+  "roadmap_item": "F7",
+  "state": "delivered-awaiting-critic",
+  "pinned_revision": "3ca135ad1d7bc4b1cd07796512974819fe188721",
   "could_not_do": [
-    "PROCEEDED PAST tools/contention.mjs's WAIT. The box sat at 5-6 browser instances and load 6.3-6.7 per core (ceiling 4.0) continuously; I waited 486 s across 17 polls with tools/probe.mjs --until and the gate never opened. Rule 21 permits proceeding if declared, and rule 0 forbids stalling. I launch ONE browser per run and keep it for the whole run. Every timing figure in this task is therefore taken under heavy contention and no timing figure is published.",
-    "Open — filled in as gaps appear."
+    "THE FIX REDUCES THE STREAKS BY 28%. IT DOES NOT REMOVE THEM. Measured top-down at vista-deep-marshes: banding amplitude X rms 7.711 -> 5.484 on the baseline shot, floor 7.981 -> 5.799. The residual streaking is still plainly visible in corpus/90-verdicts/wave1/artifacts/W1-F7-WATER/before-after-topdown.png and a reader comparing the two halves will see a modest change, not a cure. Do not let any downstream document describe the marsh lanes as fixed.",
+    "THE REMAINING CAUSE IS NAMED BUT NOT FIXED. The residual is the content of the planar reflection target itself: renderer.js:125 allocates it at HALF canvas resolution and renderer.js:1424 refreshes it only when the camera has moved 0.24 m or 6 frames have passed. A smeared, low-resolution, up-to-6-frames-stale image of the canopy is what is being composited onto the water. Changing that touches renderer.js, which this piece does not own, and it is a performance trade rather than a one-line correction. It needs its own round.",
+    "THE BRIEF'S PREMISE THAT THE LANES ARE AXIS-ALIGNED IS FALSE, and I did not discover that until the measurement was rebuilt. Measured top-down, where screen axes ARE world axes, the banding sits at a world bearing of -50 degrees and does not lie on either axis. The axis-aligned 20 m lanes named in water.js's own file header belong to a defect that was already fixed; the header describes the pre-fix state and has been read ever since as a description of the present one.",
+    "ROUNDS 1 AND 2 ARE UNREADABLE AND THEIR NINE NEGATIVE RESULTS SHOULD NOT BE CITED. They measured a perspective crop at vista-deep-marshes (x 560-900, y 300-470) whose dominant high-frequency structure is a terrain weave, not water. Proof: with every water mesh hidden that crop keeps its structure and merely dims (band energy -35.8%, anisotropy 2.28 against a floor of 2.37), and it reports its strongest banding at -46 screen degrees, which is not an axis. A crop that survives deleting the thing under test cannot carry a negative result about it.",
+    "NO TIMING FIGURE IS PUBLISHED. Box load ranged 1.52 to 3.92 per core across the run and the headless browser died mid-run six times; every figure here is a pixel measurement, none is a timing one.",
+    "THE SIX BROWSER DEATHS ARE NOT DIAGNOSED. The headless GPU process dies after roughly four recompile-and-readback cycles. I worked around it by batching arms (--only) and writing the result JSON after every arm rather than at the end. The batches are independent runs against the same pinned revision with the same seed and camera, not one run split, and each batch carries its own positive control and floor. If the deaths are a real leak they are somebody's bug and I have not found it.",
+    "EYE-BLACKWOOD IS BROKEN AS A SITE AND I DID NOT FIX IT. The deck's eye-blackwood setup at HEAD puts the camera under terrain — the frame is a green plane overhead with floating slabs, and the region label reads western-rootlands, not blackwood. Frame: corpus/90-verdicts/wave1/artifacts/W1-F7-WATER/owner-eb-before/frames/00-baseline.png. Its floor also measures rho 0.339 where the same site measured 0.945 at f614c869, so the site is not self-similar at HEAD either. The brief asked for eye-blackwood evidence and this is why there is none; I substituted the 13 region vistas instead. Not my file and not this item — it needs raising against the deck."
   ],
-  "next_step": "Run tools/visual/w1-water-lane-terms.mjs at vista-deep-marshes to name the owning shader term.",
+  "next_step": "Dispatch a fresh build critic. The biggest remaining gap is the reflection target itself (renderer.js:125 half-resolution, renderer.js:1424 6-frame staleness), which is not this piece's file.",
+  "what_was_established": {
+    "the_owning_term": "esReflection — the planar/screen water reflection, worth about 41% of every water pixel. Ablating it (esSurface=esDepth) drops banding amplitude from rms 7.944 to 3.921, a 50.6% fall, and is the ONLY one of fourteen single-term arms that crosses the removes-the-lanes threshold.",
+    "the_specific_defect_fixed": "esGrazing took max(esFresnel, smoothstep(10,52,dist)*.72). The distance term carried no view-angle factor, so it OVERRODE Fresnel rather than broadening it: every water pixel beyond 52 m got a reflection weight of .25+.72*.50 = .610 regardless of viewing angle. Water seen from straight overhead — normal incidence, where real water reflects about 2% — was composited as a 61% mirror. The fix multiplies the distance term by (1.0-esView), the same linear grazing factor esFresnel is built from.",
+    "weights_before_after": "straight down at 120 m .610 -> .250; grazing marsh vista at 60 m .627 -> .627; close oblique water at 8 m .359 -> .359. Only the physically wrong case moves.",
+    "arms_that_were_innocent": "vEsWaterWave (vertex lift), the diffuse modulation, esSlope (normal perturbation), both reflection UV warps, the screen-space reflection blend, the fine additive row, all shadows, and the water:shoreline: mesh class. Each moved the metric by less than the run's own floor drift.",
+    "the_shoreline_lattice_is_real_but_is_not_the_lanes": "province.js's wet-bank band builder emits a genuinely axis-aligned lattice: 2,694 quads, 100% axis-aligned, modal world-space gaps 0.46 / 24.08 / 24.54 m summing to a 25.0 m pitch, measured off the live geometry rather than read off the source (WATER_SEG 24 over TILE_M 300 = 12.5 m, stepped by 2). It contributes NOTHING to the visible banding (lane_power 3.991 against a floor of 3.897). It is a latent defect — a wet edge quantised to a 25 m grid instead of following the shoreline — and it is not F7's.",
+    "measured_not_assumed": "The live camera renders at fov 50, not the 60 in renderer.js:121's constructor, because renderer.js:1230 re-assigns it every frame. Metres-per-pixel (0.2072) was measured by projecting two world points 50 m apart through the live camera matrices, not derived from the constant."
+  },
+  "controls": {
+    "delete_the_fix": "Control clone from the EXPLICIT pinned sha 3ca135ad (not HEAD~1), water.js restored with `git show 3ca135ad:game/src/render/water.js`, verified 0 occurrences of esView in the clone against 4 in the repo. The old numbers came back exactly: baseline X rms 7.711 and floor 7.981, against 5.484 and 5.799 on the fixed tree.",
+    "positive_control": "surface-hidden rides in every batch. It drops profile rms 79-85% in every run, so the metric is never assumed to be able to fail — it is shown failing in each batch before any negative row in that batch is read.",
+    "null_control": "null-recolour-and-amplitude — the depth colour changed and every wave slope amplitude halved. A visible change to the water that does not touch the wave geometry or the reflection weight. It PASSED on both arms: lanes stayed at rms 5.606 against floor 5.799 (fixed) and 7.877 against 7.981 (pinned). It is the plausible wrong answer, not the trivial one; 'hide the water' is the diagnosis and is carried separately as the positive control."
+  },
+  "preservation_S59": {
+    "A_still_reflects": "PASS — ablating the reflection after the fix still changes 43.83% of the frame, so the reflection is still being composited. Demonstrated by perturbation, not asserted.",
+    "B_still_moves": "PASS — six frames ten steps apart, every consecutive pair differs by at least 1.74% of pixels against the ~0.2% stationary-frame floor.",
+    "C_still_reads_as_water_at_grazing_angles": "PASS — of the 13 region vistas (pitch -11 deg at 26 m), 7 are byte-identical across the two arms and the 5 that moved are exactly the water-bearing ones, all slightly darker. Largest mean-RGB shift 10.9 of ~100 at crimson-coast.",
+    "D_thirteen_regions_still_differ": "PASS — minimum pairwise distance across all 78 pairs is 6.36 (salt-hills / stone-forest) and is IDENTICAL on both arms."
+  },
   "declared_overlap": {
-    "game/src/render/water.js": "W1-30S touched it in its seam pass and is 'builder_owned_complete' with files_claimed: []. The r1 critic of W1-30-SHADOW-CASTERS explicitly handed this file's lane defect to the orchestrator, who handed it to me. I am claiming it; W1-30S is not holding it."
+    "game/src/render/water.js": "W1-30S touched it in its seam pass and is builder_owned_complete with files_claimed: []. The r1 critic of W1-30-SHADOW-CASTERS handed this file's lane defect to the orchestrator, who handed it to me. I claimed it and edited it.",
+    "game/src/world/province.js": "Claimed, MEASURED, NOT EDITED. W1-30-builder-20260812 has it in files_touched with files_claimed: [] and is 20h old. I read its shore-band builder and measured its lattice; I changed nothing in it, so the claim can be released."
   },
   "files_touched": [
     "orchestration/status/W1-WATER-LANES.json",
-    "tools/visual/w1-water-lane-terms.mjs"
+    "game/src/render/water.js",
+    "tools/visual/w1-water-lane-owner.mjs",
+    "tools/visual/w1-water-lane-pitch.mjs",
+    "tools/visual/w1-water-preserve.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-15-water-reflection-weight-before-after.png"
   ],
   "files_claimed": [
     "game/src/render/water.js",
-    "tools/visual/w1-water-lane-terms.mjs",
-    "tools/visual/w1-heightfog-retake.mjs",
-    "corpus/90-verdicts/wave1/artifacts/W1-WATER-LANES/"
+    "tools/visual/w1-water-lane-owner.mjs",
+    "tools/visual/w1-water-lane-pitch.mjs",
+    "tools/visual/w1-water-preserve.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER/"
   ],
-  "notes": [],
-  "triage": {
-    "date": "2026-08-14",
-    "by": "STRANDED-TRIAGE-20260814",
-    "finding": "UNRESOLVED",
-    "evidence": "tools/visual/w1-water-lane-terms.mjs (the term-ablation instrument this piece's own next_step calls for running) is built and committed (df9a9a06, 2026-08-14T16:01:44Z, and carried again in the bank commit 551c9722 at 17:07:39Z which explicitly lists 'W1-WATER-LANES [measuring] — 1 file(s): tools/visual/w1-water-lane-terms.mjs' in its ownership accounting). Not independently verified for this dispatch: whether the instrument has actually been RUN against vista-deep-marshes (the next_step's literal ask) and produced a result, versus merely built. No reports/w1-water-lanes*.json or equivalent output artifact was found under reports/ in the time available for this piece specifically. Leaving state alone pending that check."
-  }
+  "notes": [
+    "The predecessor's next_step — run w1-water-lane-terms.mjs at vista-deep-marshes — had in fact already been run three times; its outputs are at reports/visual-truth/water-lane-terms/. The 2026-08-14 triage looked for a file named for the task and the tool writes to a path named for the site. Recorded so the next reader does not pay for that a third time."
+  ]
 }

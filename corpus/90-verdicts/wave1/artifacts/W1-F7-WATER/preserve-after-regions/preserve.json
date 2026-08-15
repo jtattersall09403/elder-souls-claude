@@ -1,0 +1,147 @@
+{
+  "tool": "w1-water-preserve",
+  "commit": "4f31fbf5d47ebe7ff55fecc3bd84cdb87e5267d2",
+  "time": 13,
+  "canvas": [
+    640,
+    360
+  ],
+  "seed": 20260814,
+  "has_fix": true,
+  "A_reflects": null,
+  "B_moves": null,
+  "D_regions": {
+    "count": 13,
+    "rows": [
+      {
+        "region": "blackwood",
+        "setup": "vista-blackwood",
+        "mean_rgb": [
+          40.68,
+          64.08,
+          34.47
+        ]
+      },
+      {
+        "region": "clay-moor",
+        "setup": "vista-clay-moor",
+        "mean_rgb": [
+          73.34,
+          45.35,
+          24.32
+        ]
+      },
+      {
+        "region": "crimson-coast",
+        "setup": "vista-crimson-coast",
+        "mean_rgb": [
+          85.84,
+          91.91,
+          99.47
+        ]
+      },
+      {
+        "region": "deep-marshes",
+        "setup": "vista-deep-marshes",
+        "mean_rgb": [
+          53.03,
+          71.78,
+          72.28
+        ]
+      },
+      {
+        "region": "eastern-rootlands",
+        "setup": "vista-eastern-rootlands",
+        "mean_rgb": [
+          99.28,
+          114.04,
+          107.67
+        ]
+      },
+      {
+        "region": "hive",
+        "setup": "vista-hive",
+        "mean_rgb": [
+          94.9,
+          77.68,
+          46.75
+        ]
+      },
+      {
+        "region": "marauders-coast",
+        "setup": "vista-marauders-coast",
+        "mean_rgb": [
+          90.19,
+          111.31,
+          110.2
+        ]
+      },
+      {
+        "region": "salt-hills",
+        "setup": "vista-salt-hills",
+        "mean_rgb": [
+          43.96,
+          51.86,
+          37.43
+        ]
+      },
+      {
+        "region": "stone-forest",
+        "setup": "vista-stone-forest",
+        "mean_rgb": [
+          44.87,
+          57.77,
+          35.27
+        ]
+      },
+      {
+        "region": "stone-wastes",
+        "setup": "vista-stone-wastes",
+        "mean_rgb": [
+          102.7,
+          88.56,
+          70.6
+        ]
+      },
+      {
+        "region": "thornmarsh",
+        "setup": "vista-thornmarsh",
+        "mean_rgb": [
+          71.49,
+          57.57,
+          43.4
+        ]
+      },
+      {
+        "region": "valus-ridge",
+        "setup": "vista-valus-ridge",
+        "mean_rgb": [
+          120.67,
+          145.29,
+          133.72
+        ]
+      },
+      {
+        "region": "western-rootlands",
+        "setup": "vista-western-rootlands",
+        "mean_rgb": [
+          81.54,
+          85.28,
+          63.41
+        ]
+      }
+    ],
+    "pairs": 78,
+    "min_pairwise_distance": 6.36,
+    "closest_pair": [
+      "salt-hills",
+      "stone-forest"
+    ]
+  },
+  "checks": {
+    "A-WATER-STILL-REFLECTS": "not run",
+    "B-WATER-STILL-MOVES": "not run",
+    "D-REGIONS-STILL-DIFFER": "PASS — the closest of 78 region pairs (salt-hills / stone-forest) is still 6.36 apart in mean RGB"
+  },
+  "pageErrors": []
+}

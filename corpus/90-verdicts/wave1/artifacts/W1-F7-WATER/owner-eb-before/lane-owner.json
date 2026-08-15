@@ -1,0 +1,233 @@
+{
+  "tool": "w1-water-lane-owner",
+  "site": "eye-blackwood",
+  "time": 13,
+  "label": "before",
+  "crop": [
+    60,
+    420,
+    300,
+    500
+  ],
+  "canvas": [
+    960,
+    540
+  ],
+  "seed": 20260814,
+  "commit": "a327948b61599600709c3225db82ffba7831c05a",
+  "baseline_band_energy": 7.982,
+  "baseline_lane": {
+    "lane_power": 13.774,
+    "lane_angle": 78,
+    "lane_aniso": 11.41
+  },
+  "lattice_census": {
+    "water-other": {
+      "meshes": 1,
+      "verts": 4,
+      "quads": 1,
+      "axis_aligned_quads": 0,
+      "axis_aligned_pct": 0,
+      "x": {
+        "distinct": 2,
+        "span_m": 420,
+        "top_gaps": [
+          {
+            "gap_m": 420,
+            "count": 1
+          }
+        ]
+      },
+      "z": {
+        "distinct": 2,
+        "span_m": 420,
+        "top_gaps": [
+          {
+            "gap_m": 420,
+            "count": 1
+          }
+        ]
+      }
+    },
+    "water-surface": {
+      "meshes": 32,
+      "verts": 38444,
+      "quads": 9611,
+      "axis_aligned_quads": 0,
+      "axis_aligned_pct": 0,
+      "x": {
+        "distinct": 121,
+        "span_m": 1500,
+        "top_gaps": [
+          {
+            "gap_m": 12.5,
+            "count": 120
+          }
+        ]
+      },
+      "z": {
+        "distinct": 121,
+        "span_m": 1500,
+        "top_gaps": [
+          {
+            "gap_m": 12.5,
+            "count": 120
+          }
+        ]
+      }
+    },
+    "shoreline-band": {
+      "meshes": 32,
+      "verts": 9280,
+      "quads": 2320,
+      "axis_aligned_quads": 2320,
+      "axis_aligned_pct": 100,
+      "x": {
+        "distinct": 171,
+        "span_m": 1500,
+        "top_gaps": [
+          {
+            "gap_m": 0.46,
+            "count": 110
+          },
+          {
+            "gap_m": 24.08,
+            "count": 50
+          },
+          {
+            "gap_m": 24.54,
+            "count": 10
+          }
+        ]
+      },
+      "z": {
+        "distinct": 171,
+        "span_m": 1500,
+        "top_gaps": [
+          {
+            "gap_m": 0.46,
+            "count": 110
+          },
+          {
+            "gap_m": 24.08,
+            "count": 50
+          },
+          {
+            "gap_m": 24.54,
+            "count": 10
+          }
+        ]
+      }
+    }
+  },
+  "arms": [
+    {
+      "arm": "both-hidden",
+      "kind": "positive-control",
+      "what": "every water mesh, surface and shoreline band together — the r1 critic arm, known red. If it is not red here, no other row is readable",
+      "meshes_hidden": 65,
+      "hidden_names": {
+        "water": 1,
+        "water:blackwood": 18,
+        "water:shoreline:blackwood": 18,
+        "water:marauders-coast": 9,
+        "water:shoreline:marauders-coast": 9,
+        "water:hive": 2,
+        "water:shoreline:hive": 2,
+        "water:western-rootlands": 3,
+        "water:shoreline:western-rootlands": 3
+      },
+      "rho_vs_baseline": 0.247,
+      "band_energy": 7.419,
+      "band_energy_pct_of_baseline": 92.9,
+      "lane_power": 20.523,
+      "lane_angle": 78,
+      "lane_aniso": 15.36,
+      "lane_power_pct_of_baseline": 149,
+      "whole_frame_changed_pct": 81.37,
+      "vacuous": false,
+      "lane_power_vs_floor_pct": 33.8,
+      "lane_aniso_vs_floor_pct": 17.2,
+      "energy_vs_floor_pct": -8.5,
+      "verdict": "no effect on the lanes"
+    },
+    {
+      "arm": "surface-only-hidden",
+      "kind": "cell",
+      "what": "the water TABLE hidden, the wet-bank bands left standing",
+      "meshes_hidden": 33,
+      "hidden_names": {
+        "water": 1,
+        "water:blackwood": 18,
+        "water:marauders-coast": 9,
+        "water:hive": 2,
+        "water:western-rootlands": 3
+      },
+      "rho_vs_baseline": 0.197,
+      "band_energy": 7.469,
+      "band_energy_pct_of_baseline": 93.6,
+      "lane_power": 49.283,
+      "lane_angle": 76,
+      "lane_aniso": 36.94,
+      "lane_power_pct_of_baseline": 357.8,
+      "whole_frame_changed_pct": 93.94,
+      "vacuous": false,
+      "lane_power_vs_floor_pct": 221.3,
+      "lane_aniso_vs_floor_pct": 181.8,
+      "energy_vs_floor_pct": -7.9,
+      "verdict": "MAKES THE BANDING WORSE"
+    },
+    {
+      "arm": "shoreline-only-hidden",
+      "kind": "cell",
+      "what": "the wet-bank BANDS hidden, the water table left standing — the hypothesis",
+      "meshes_hidden": 32,
+      "hidden_names": {
+        "water:shoreline:blackwood": 18,
+        "water:shoreline:marauders-coast": 9,
+        "water:shoreline:hive": 2,
+        "water:shoreline:western-rootlands": 3
+      },
+      "rho_vs_baseline": 0.39,
+      "band_energy": 7.952,
+      "band_energy_pct_of_baseline": 99.6,
+      "lane_power": 19.002,
+      "lane_angle": 78,
+      "lane_aniso": 15.33,
+      "lane_power_pct_of_baseline": 138,
+      "whole_frame_changed_pct": 82.53,
+      "vacuous": false,
+      "lane_power_vs_floor_pct": 23.9,
+      "lane_aniso_vs_floor_pct": 16.9,
+      "energy_vs_floor_pct": -1.9,
+      "verdict": "no effect on the lanes"
+    },
+    {
+      "arm": "nothing-restore-control",
+      "kind": "floor",
+      "what": "nothing — the site nondeterminism floor",
+      "meshes_hidden": 0,
+      "hidden_names": {},
+      "rho_vs_baseline": 0.339,
+      "band_energy": 8.106,
+      "band_energy_pct_of_baseline": 101.6,
+      "lane_power": 15.337,
+      "lane_angle": 80,
+      "lane_aniso": 13.11,
+      "lane_power_pct_of_baseline": 111.3,
+      "whole_frame_changed_pct": 86.39,
+      "vacuous": false,
+      "lane_power_vs_floor_pct": 0,
+      "lane_aniso_vs_floor_pct": 0,
+      "energy_vs_floor_pct": 0,
+      "verdict": "no effect on the lanes"
+    }
+  ],
+  "checks": {
+    "INSTRUMENT-CAN-SEE-LANES": "FAIL — both-hidden rho 0.247 did not collapse against floor 0.339; every other row in this run is void",
+    "NO-ARM-IS-VACUOUS": "PASS — every non-floor arm hid at least one mesh",
+    "WHICH-CELL-OWNS-THE-LANES": "INTERACTION — neither single arm collapses the lanes (surface 0.197, shoreline 0.39) while both together does (0.247); this is the two-guards-for-one-defect shape, not an owner"
+  },
+  "pageErrors": [],
+  "floor_rho": 0.339
+}

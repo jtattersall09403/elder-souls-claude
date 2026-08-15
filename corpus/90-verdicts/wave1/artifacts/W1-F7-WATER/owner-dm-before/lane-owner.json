@@ -1,0 +1,237 @@
+{
+  "tool": "w1-water-lane-owner",
+  "site": "vista-deep-marshes",
+  "time": 13,
+  "label": "before",
+  "crop": [
+    560,
+    900,
+    300,
+    470
+  ],
+  "canvas": [
+    960,
+    540
+  ],
+  "seed": 20260814,
+  "commit": "01d96c5d882667eedb8fdcf72d85ffa00183c5de",
+  "baseline_band_energy": 11.177,
+  "baseline_lane": {
+    "lane_power": 4.113,
+    "lane_angle": -46,
+    "lane_aniso": 2.39
+  },
+  "lattice_census": {
+    "water-other": {
+      "meshes": 1,
+      "verts": 4,
+      "quads": 1,
+      "axis_aligned_quads": 0,
+      "axis_aligned_pct": 0,
+      "x": {
+        "distinct": 2,
+        "span_m": 420,
+        "top_gaps": [
+          {
+            "gap_m": 420,
+            "count": 1
+          }
+        ]
+      },
+      "z": {
+        "distinct": 2,
+        "span_m": 420,
+        "top_gaps": [
+          {
+            "gap_m": 420,
+            "count": 1
+          }
+        ]
+      }
+    },
+    "water-surface": {
+      "meshes": 47,
+      "verts": 67940,
+      "quads": 16985,
+      "axis_aligned_quads": 0,
+      "axis_aligned_pct": 0,
+      "x": {
+        "distinct": 145,
+        "span_m": 1800,
+        "top_gaps": [
+          {
+            "gap_m": 12.5,
+            "count": 144
+          }
+        ]
+      },
+      "z": {
+        "distinct": 145,
+        "span_m": 1800,
+        "top_gaps": [
+          {
+            "gap_m": 12.5,
+            "count": 144
+          }
+        ]
+      }
+    },
+    "shoreline-band": {
+      "meshes": 46,
+      "verts": 10776,
+      "quads": 2694,
+      "axis_aligned_quads": 2694,
+      "axis_aligned_pct": 100,
+      "x": {
+        "distinct": 205,
+        "span_m": 1800,
+        "top_gaps": [
+          {
+            "gap_m": 0.46,
+            "count": 132
+          },
+          {
+            "gap_m": 24.08,
+            "count": 60
+          },
+          {
+            "gap_m": 24.54,
+            "count": 12
+          }
+        ]
+      },
+      "z": {
+        "distinct": 205,
+        "span_m": 1800,
+        "top_gaps": [
+          {
+            "gap_m": 0.46,
+            "count": 132
+          },
+          {
+            "gap_m": 24.08,
+            "count": 60
+          },
+          {
+            "gap_m": 24.54,
+            "count": 12
+          }
+        ]
+      }
+    }
+  },
+  "arms": [
+    {
+      "arm": "both-hidden",
+      "kind": "positive-control",
+      "what": "every water mesh, surface and shoreline band together — the r1 critic arm, known red. If it is not red here, no other row is readable",
+      "meshes_hidden": 94,
+      "hidden_names": {
+        "water": 1,
+        "water:eastern-rootlands": 25,
+        "water:shoreline:eastern-rootlands": 24,
+        "water:western-rootlands": 6,
+        "water:shoreline:western-rootlands": 6,
+        "water:deep-marshes": 14,
+        "water:shoreline:deep-marshes": 14,
+        "water:crimson-coast": 1,
+        "water:shoreline:crimson-coast": 1,
+        "water:stone-forest": 1,
+        "water:shoreline:stone-forest": 1
+      },
+      "rho_vs_baseline": 0.824,
+      "band_energy": 7.241,
+      "band_energy_pct_of_baseline": 64.8,
+      "lane_power": 1.849,
+      "lane_angle": -46,
+      "lane_aniso": 2.3,
+      "lane_power_pct_of_baseline": 45,
+      "whole_frame_changed_pct": 41.92,
+      "vacuous": false,
+      "lane_power_vs_floor_pct": -55.9,
+      "lane_aniso_vs_floor_pct": -3,
+      "energy_vs_floor_pct": -35.8,
+      "verdict": "weaker banding, same anisotropy — dimmed the crop rather than unbanding it"
+    },
+    {
+      "arm": "surface-only-hidden",
+      "kind": "cell",
+      "what": "the water TABLE hidden, the wet-bank bands left standing",
+      "meshes_hidden": 48,
+      "hidden_names": {
+        "water": 1,
+        "water:eastern-rootlands": 25,
+        "water:western-rootlands": 6,
+        "water:deep-marshes": 14,
+        "water:crimson-coast": 1,
+        "water:stone-forest": 1
+      },
+      "rho_vs_baseline": 0.811,
+      "band_energy": 7.277,
+      "band_energy_pct_of_baseline": 65.1,
+      "lane_power": 1.872,
+      "lane_angle": -46,
+      "lane_aniso": 2.28,
+      "lane_power_pct_of_baseline": 45.5,
+      "whole_frame_changed_pct": 41.95,
+      "vacuous": false,
+      "lane_power_vs_floor_pct": -55.3,
+      "lane_aniso_vs_floor_pct": -3.8,
+      "energy_vs_floor_pct": -35.5,
+      "verdict": "weaker banding, same anisotropy — dimmed the crop rather than unbanding it"
+    },
+    {
+      "arm": "shoreline-only-hidden",
+      "kind": "cell",
+      "what": "the wet-bank BANDS hidden, the water table left standing — the hypothesis",
+      "meshes_hidden": 46,
+      "hidden_names": {
+        "water:shoreline:eastern-rootlands": 24,
+        "water:shoreline:western-rootlands": 6,
+        "water:shoreline:deep-marshes": 14,
+        "water:shoreline:crimson-coast": 1,
+        "water:shoreline:stone-forest": 1
+      },
+      "rho_vs_baseline": 0.97,
+      "band_energy": 11.104,
+      "band_energy_pct_of_baseline": 99.3,
+      "lane_power": 4.209,
+      "lane_angle": -46,
+      "lane_aniso": 2.59,
+      "lane_power_pct_of_baseline": 102.3,
+      "whole_frame_changed_pct": 13.1,
+      "vacuous": false,
+      "lane_power_vs_floor_pct": 0.4,
+      "lane_aniso_vs_floor_pct": 9.3,
+      "energy_vs_floor_pct": -1.5,
+      "verdict": "no effect on the lanes"
+    },
+    {
+      "arm": "nothing-restore-control",
+      "kind": "floor",
+      "what": "nothing — the site nondeterminism floor",
+      "meshes_hidden": 0,
+      "hidden_names": {},
+      "rho_vs_baseline": 0.993,
+      "band_energy": 11.276,
+      "band_energy_pct_of_baseline": 100.9,
+      "lane_power": 4.191,
+      "lane_angle": -46,
+      "lane_aniso": 2.37,
+      "lane_power_pct_of_baseline": 101.9,
+      "whole_frame_changed_pct": 17.67,
+      "vacuous": false,
+      "lane_power_vs_floor_pct": 0,
+      "lane_aniso_vs_floor_pct": 0,
+      "energy_vs_floor_pct": 0,
+      "verdict": "no effect on the lanes"
+    }
+  ],
+  "checks": {
+    "INSTRUMENT-CAN-SEE-LANES": "FAIL — both-hidden rho 0.824 did not collapse against floor 0.993; every other row in this run is void",
+    "NO-ARM-IS-VACUOUS": "PASS — every non-floor arm hid at least one mesh",
+    "WHICH-CELL-OWNS-THE-LANES": "INTERACTION — neither single arm collapses the lanes (surface 0.811, shoreline 0.97) while both together does (0.824); this is the two-guards-for-one-defect shape, not an owner"
+  },
+  "pageErrors": [],
+  "floor_rho": 0.993
+}

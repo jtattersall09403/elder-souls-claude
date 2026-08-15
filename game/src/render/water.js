@@ -64,7 +64,8 @@ export function installWaterShader(mat) {
       // importantly, `normal` is declared by normal_fragment_begin AFTER color_fragment, so
       // the old injection referenced it before declaration and the water draw never linked.
       .replace('#include <opaque_fragment>',`
-        float esFresnel=pow(1.0-clamp(abs(dot(normalize(normal),normalize(vViewPosition))),0.0,1.0),2.2);
+        float esView=clamp(abs(dot(normalize(normal),normalize(vViewPosition))),0.0,1.0);
+        float esFresnel=pow(1.0-esView,2.2);
         vec3 esSky=vec3(0.20,0.37,0.44);
         vec2 esReflUV=clamp(vEsWaterReflectionCoord.xy/max(.0001,vEsWaterReflectionCoord.w)*.5+.5,vec2(.001),vec2(.999));
         esReflUV+=esSlope*.0015;
@@ -80,7 +81,30 @@ export function installWaterShader(mat) {
         // Distance raises the grazing response across a broad marsh vista while the actual
         // view/normal term preserves it on close oblique water. Reflected radiance is colour
         // graded back into the regional water rather than copied as a white mirror.
-        float esGrazing=max(esFresnel,smoothstep(10.0,52.0,length(vViewPosition))*.72);
+        //
+        // W1-WATER-LANES / F7. The distance term used to be smoothstep(10.,52.,d)*.72 with no
+        // view-angle factor, so it OVERRODE the Fresnel term instead of broadening it: every water
+        // pixel beyond 52 m took a reflection weight of .25+.72*.50 = .610 no matter what angle it
+        // was seen from. Water viewed from straight overhead — normal incidence, where real water
+        // reflects about 2% — was composited as a 61% mirror of the planar reflection target, and
+        // that target is half-resolution (renderer.js:125) and refreshed at most every 6 frames
+        // (renderer.js:1424). The smeared image of the canopy in it is what reads as the long
+        // light/dark streaks across the marshes.
+        //
+        // Measured, not argued (top-down at 120 m, vista-deep-marshes, revision 3ca135ad):
+        // ablating the reflection entirely — esSurface=esDepth — drops the banding amplitude
+        // from rms 7.944 to 3.921, a 50.6% fall and the only single-term arm of the fourteen run
+        // that crosses the "removes the lanes" threshold. Every wave term (vEsWaterWave, esSlope,
+        // both reflection UV warps, the fine additive row), every shadow, and the shoreline band
+        // mesh class were each ablated separately and moved it by less than the run's own floor
+        // drift. Evidence: corpus/90-verdicts/wave1/artifacts/W1-F7-WATER/.
+        //
+        // The (1.0-esView) factor makes distance BROADEN the grazing response rather than
+        // replace it. It is deliberately the same linear grazing factor esFresnel is built from,
+        // so the two cannot disagree about what "grazing" means. Weights before -> after:
+        // straight down at 120 m .610 -> .250; the grazing marsh vista at 60 m .627 -> .627;
+        // close oblique water at 8 m .359 -> .359. Only the case that was physically wrong moves.
+        float esGrazing=max(esFresnel,smoothstep(10.0,52.0,length(vViewPosition))*.72*(1.0-esView));
         float esReflLuma=dot(esReflection,vec3(.2126,.7152,.0722));
         esReflection=mix(esReflection,vec3(esReflLuma*.70,esReflLuma*.83,esReflLuma*.88),.48);
         vec3 esDepth=vec3(.038,.105,.118)+diffuseColor.rgb*.21;
@@ -96,7 +120,7 @@ export function installWaterShader(mat) {
         outgoingLight=mix(outgoingLight,vec3(.055,.064,.048)+outgoingLight*.34,esShore*.76);
         outgoingLight+=vec3(.095,.105,.082)*esFoam;
         #include <opaque_fragment>`);
-  };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v14`;animatedWaterMaterials.add(mat);
+  };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v15`;animatedWaterMaterials.add(mat);
 }
 
 /** Drive all live water shaders from the fixed simulation frame. */
