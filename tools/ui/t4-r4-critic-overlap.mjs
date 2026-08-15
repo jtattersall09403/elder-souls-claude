@@ -50,7 +50,7 @@ const args = parseArgs();
 const RECTS = path.join(REPO_ROOT, String(args.rects || 'corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-critic.json'));
 const SHOTS = path.join(REPO_ROOT, String(args.shots || 'corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens'));
 const CONTROL = args.control ? path.join(REPO_ROOT, String(args.control)) : null;
-const OUT = path.join(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r4c/reports'));
+const OUT = path.resolve(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r4c/reports'));
 ensureDir(OUT);
 
 const FG = 24;        // rgb distance from the panel's modal colour that counts as "something drawn"

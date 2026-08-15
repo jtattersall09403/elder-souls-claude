@@ -37,7 +37,7 @@ import { decodePNG } from './t4-r2-critic-measure.mjs';
 
 const args = parseArgs();
 if (wantsHelp(args)) usage('t4-r4-critic.mjs [--out <dir>] [--shots <dir>] [--legs pager,overlap]');
-const OUT = path.join(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r4c/reports'));
+const OUT = path.resolve(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r4c/reports'));
 const SHOTS = path.join(REPO_ROOT, String(args.shots || 'corpus/90-verdicts/wave1/artifacts/T4-r4c/screens'));
 ensureDir(OUT); ensureDir(SHOTS);
 const LEGS = String(args.legs || 'all').split(',').map((x) => x.trim()).filter(Boolean);

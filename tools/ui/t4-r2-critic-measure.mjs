@@ -26,7 +26,7 @@ import { REPO_ROOT, parseArgs, log, ensureDir } from '../lib/cli.mjs';
 import { labFromSrgb255, de2000 } from '../lib/colour.mjs';
 
 const args = parseArgs();
-const OUT = path.join(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r2c/reports'));
+const OUT = path.resolve(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r2c/reports'));
 ensureDir(OUT);
 
 // ---- a minimal PNG reader (RGBA8, non-interlaced) --------------------------------------------

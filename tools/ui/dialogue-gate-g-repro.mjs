@@ -36,7 +36,7 @@ EXIT 0 = ran and checks match the expected arm · 1 = a check failed · 2 = coul
 
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
-const OUT = path.join(REPO_ROOT, String(args.out || 'reports/uix08/gate-g-repro'));
+const OUT = path.resolve(REPO_ROOT, String(args.out || 'reports/uix08/gate-g-repro'));
 ensureDir(OUT);
 const STATE = String(args.state || 'helstrom-market');
 const AFTER = !!args.after;

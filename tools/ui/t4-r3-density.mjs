@@ -31,7 +31,7 @@ import { decodePNG, d2 } from './t4-r2-critic-measure.mjs';
 
 const args = parseArgs();
 const MEASURE = path.join(REPO_ROOT, String(args.measure || 'corpus/90-verdicts/wave1/artifacts/T4-r3c/measure'));
-const OUT = path.join(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r3c/reports'));
+const OUT = path.resolve(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r3c/reports'));
 ensureDir(OUT);
 
 const livePath = path.join(MEASURE, 'measure-live-1920x1080.json');

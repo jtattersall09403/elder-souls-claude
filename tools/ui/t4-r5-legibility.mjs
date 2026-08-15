@@ -69,7 +69,7 @@ import { REPO_ROOT, parseArgs, log, ensureDir, writeJson } from '../lib/cli.mjs'
 const args = parseArgs();
 const OUT = path.isAbsolute(String(args.out || ''))
   ? String(args.out)
-  : path.join(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r5/legibility'));
+  : path.resolve(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r5/legibility'));
 const SHOTS = path.join(OUT, 'screens');
 ensureDir(OUT); ensureDir(SHOTS);
 const STATE = String(args.state || 'ui-journal');
