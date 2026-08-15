@@ -295,8 +295,10 @@ for (const code of [codeA, codeB]) {
 }
 
 // ---- what a judge is handed ---------------------------------------------------------------------
-const promptSrc = path.join(REPO_ROOT, 'reports/blind/uix08-gate-g/PROMPT-G-verbatim.txt');
-if (fs.existsSync(promptSrc)) fs.copyFileSync(promptSrc, path.join(OUT, 'PROMPT-verbatim.txt'));
+const promptSrc = path.join(REPO_ROOT, 'reports/blind/uix08-gate-g/PROMPT-G-verbatim.md');
+if (fs.existsSync(promptSrc)) fs.copyFileSync(promptSrc, path.join(OUT, 'PROMPT-verbatim.md'));
+const prefSrc = path.join(REPO_ROOT, 'reports/blind/uix08-gate-g/POST-PROMPT-preference.md');
+if (fs.existsSync(prefSrc)) fs.copyFileSync(prefSrc, path.join(OUT, 'POST-PROMPT-preference.md'));
 const protoSrc = path.join(REPO_ROOT, 'reports/blind/uix08-gate-g/DRIVER-PROTOCOL.md');
 if (fs.existsSync(protoSrc)) fs.copyFileSync(protoSrc, path.join(OUT, 'DRIVER-PROTOCOL.md'));
 
@@ -333,6 +335,21 @@ writeJson(path.join(REVEAL, 'mapping.json'), {
   note: 'Open only after every judge has recorded its five answers verbatim and the separability '
       + 'reader has returned. Reading this before then destroys the run and cannot be undone.',
 });
+
+// A TRACKED TWIN OF THE KEY, and it exists because of a defect this build hit. `reports/.gitignore`
+// excludes everything under `reports/` except markdown, so `mapping.json` landed nowhere: the key
+// to a sealed pack would have died with the container while the pack it unlocks was reproducible.
+// The twin is markdown, so the ignore rule tracks it by rule rather than by a force-add somebody
+// has to remember. Same bytes, same discipline: it is outside the pack and it is named in no
+// document a judge receives.
+fs.writeFileSync(path.join(REVEAL, 'MAPPING.md'),
+  `# The key — do not open before the answers are on disk\n\n`
+  + `Opening this before every judge has recorded its five answers verbatim, and before the\n`
+  + `separability reader has returned, destroys the run and cannot be undone.\n\n`
+  + `- built: ${pack.built_at}\n- baseline commit: \`${COMMIT}\`\n- seed: \`${seed}\`\n`
+  + `- **ablated arm: \`${ablatedIs}\`**\n- **our arm: \`${ablatedIs === codeA ? codeB : codeA}\`**\n\n`
+  + `Rebuild the identical pack:\n\n\`\`\`\nnode tools/blind/played-pair/build-arms.mjs \\\n`
+  + `  --out <dir> --reveal <dir> --commit ${COMMIT} --seed ${seed} --force\n\`\`\`\n`);
 
 log(`built ${arms.length} arms at ${OUT}`);
 for (const a of arms) log(`  ${a.codename}  ${a.entry}  (${a.comment_lines_redacted} comment lines redacted in ${a.files_redacted} files)`);

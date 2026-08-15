@@ -6,7 +6,6 @@
   "branch": "codex/wave1-build-experiment",
   "state": "arms-built-and-sealed-awaiting-judges",
   "at": "2026-08-15",
-
   "what_i_could_not_do_stated_first": [
     "I DID NOT JUDGE ANYTHING AND MY OPINION OF THE TWO ARMS IS WORTHLESS BY CONSTRUCTION. I built both, so I know which is which, and saying so is the correct outcome rather than a hedge. Nothing below is a claim about which arm reads better.",
     "THE PACK LIVES IN SCRATCH AND DIES WITH THE CONTAINER. It is 113 MB and does not belong in git. It is REPRODUCIBLE BYTE-FOR-BYTE from the recorded commit + seed — the rebuild command is in the key file — and the codenames and the arm assignment are functions of the seed alone, so a rebuild after a restart produces the SAME two codenames with the SAME assignment. Rebuild takes ~55 s.",
@@ -15,7 +14,6 @@
     "I DID NOT MEASURE HOW OFTEN A JUDGE WILL MEET A LIT WORD IN TEN MINUTES OF PLAY. I measured the two things that bracket it: OFFLINE, 441 of 1,273 shipped answers (34.6%) light at least one word from their own AddTopic targets alone, regardless of who is speaking; and LIVE, at `helstrom-market` the first lit word appeared on the 9th (person, topic) pair tried. What I did not do is run a naive ten-minute session and count. A judge who asks ~10 questions is very likely to meet one; 'very likely' is an inference from those two numbers, not a measurement.",
     "THE ARMS WERE VERIFIED PLAYABLE AT ONE VIEWPORT (1920x1080) AND ONE WORLD STATE (`helstrom-market`). Neither arm was played at a phone viewport and neither was played in a second town."
   ],
-
   "what_the_orchestrator_must_spawn": {
     "count": 3,
     "judges": [
@@ -25,8 +23,8 @@
         "receives": [
           "the pack directory path (both arm codenames are in <pack>/pack.json)",
           "<pack>/DRIVER-PROTOCOL.md — how to play, and the one sentence of premise",
-          "<pack>/PROMPT-verbatim.txt — the five questions",
-          "reports/blind/uix08-gate-g/POST-PROMPT-preference.txt — opened ONLY after both sets of five answers are on disk"
+          "<pack>/PROMPT-verbatim.md — the five questions",
+          "<pack>/POST-PROMPT-preference.md — opened ONLY after both sets of five answers are on disk"
         ],
         "plays": "BOTH arms, ten minutes each, at least three conversations in each, in the order codename-A then codename-B",
         "writes": "five verbatim answers per arm, to two separate files, the first written BEFORE the second arm is started"
@@ -49,7 +47,7 @@
         ],
         "must_not_receive": [
           "the reference item, the plan, the source",
-          "reports/blind/uix08-gate-g/.reveal/mapping.json",
+          "reports/blind/uix08-gate-g/.reveal/MAPPING.md and .reveal/mapping.json",
           "<pack>/pack.json",
           "reports/blind/uix08-gate-g/leakcheck.json"
         ]
@@ -61,37 +59,36 @@
       "Do not try to work out which build is which before your answers are written to disk.",
       "Answer the five questions in the words they are written in. There are five and there is no sixth."
     ],
-    "reveal_discipline": "reports/blind/uix08-gate-g/.reveal/mapping.json is opened by the ORCHESTRATOR only after all five answer files and the separability reader's answer exist on disk. It is outside the pack (leak-check L1/L1b prove it) and it is named in no document a judge receives."
+    "reveal_discipline": "reports/blind/uix08-gate-g/.reveal/MAPPING.md (and its untracked twin mapping.json) is opened by the ORCHESTRATOR only after all five answer files and the separability reader's answer exist on disk. It is outside the pack (leak-check L1/L1b prove it) and it is named in no document a judge receives."
   },
-
   "the_two_urls": {
     "how_they_are_served": "There is no long-lived server and there must not be one — a judge cannot hold a browser open between its own turns. `play.mjs` serves the arm it is playing on an OS-assigned ephemeral port for the life of one run and closes it. The judge never types a URL; it names an arm codename.",
     "arm_roots": "<pack>/<codename>/game/index.html, served with <pack>/<codename>/game as the document root",
-    "codenames_for_seed_20260815": ["osprey", "quillon"],
+    "codenames_for_seed_20260815": [
+      "osprey",
+      "quillon"
+    ],
     "note": "The codenames are drawn from a neutral list of twelve marsh minerals and birds before the coin decides which arm is ablated, so the draw cannot be conditioned on the assignment."
   },
-
   "the_pack": {
     "path": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/gate-g/pack",
     "size": "113 MB including the extracted baseline",
     "rebuild_if_the_container_restarted": "node tools/blind/played-pair/build-arms.mjs --out <dir> --reveal reports/blind/uix08-gate-g/.reveal --commit <the sha in mapping.json> --seed 20260815 --force",
     "then_regate": "node tools/blind/played-pair/leakcheck-arms.mjs --pack <dir> --reveal reports/blind/uix08-gate-g/.reveal   # must exit 0 BEFORE a judge is dispatched"
   },
-
   "files_landed": [
     "tools/blind/played-pair/tells.mjs",
     "tools/blind/played-pair/build-arms.mjs",
     "tools/blind/played-pair/play.mjs",
     "tools/blind/played-pair/leakcheck-arms.mjs",
-    "reports/blind/uix08-gate-g/PROMPT-G-verbatim.txt",
-    "reports/blind/uix08-gate-g/POST-PROMPT-preference.txt",
+    "reports/blind/uix08-gate-g/PROMPT-G-verbatim.md",
+    "reports/blind/uix08-gate-g/POST-PROMPT-preference.md",
     "reports/blind/uix08-gate-g/DRIVER-PROTOCOL.md",
     "reports/blind/uix08-gate-g/SEPARABILITY-READER.md",
-    "reports/blind/uix08-gate-g/leakcheck.json",
-    "reports/blind/uix08-gate-g/leakcheck-selftest.json",
+    "reports/blind/uix08-gate-g/EVIDENCE.md",
+    "reports/blind/uix08-gate-g/.reveal/MAPPING.md",
     "reports/blind/uix08-gate-g/sealing/lit-ours.png",
     "reports/blind/uix08-gate-g/sealing/lit-ablated.png",
-    "reports/blind/uix08-gate-g/.reveal/mapping.json",
     "game/src/ui/system.js",
     "orchestration/status/W1-UIX08-GATE-G.json"
   ],
@@ -101,13 +98,11 @@
     "orchestration/status/W1-UIX08-GATE-G.json"
   ],
   "contention_note": "Ran with `node tools/contention.mjs` before every browser. Two runs proceeded against a WAIT (load 4.29 and 5.16 per core against a 4.0 ceiling), stated here per rule 21: neither was a timing measurement, so starvation could make them slow but not wrong, and one screenshot did time out at 30 s and was re-taken with a 180 s budget. A sibling (`tools/ui/dialogue-drive-probe.mjs`) was running against the dialogue window at the same time; it touches no file this piece owns.",
-
   "what_was_built": {
     "the_ablation": "`game/src/ui/system.js` line 150, `this.dialogueArm = { links: true → false, opaque: false }`. One token, one line, one file. It removes the inline lighting and nothing else: measured live, the topic column is IDENTICAL between the two arms at every one of the 10 steps of the paired smoke session, and the prose, the speaker, the disposition number and the Goodbye button are the same objects in the same rects.",
     "why_that_is_the_arm_§G_asks_for": "§G: 'the same window, the same prose, the same topic column, with the inline links removed and the topics they would have added present in the column from the start.' Both arms grant a topic at the moment the answer that carries it is DISPLAYED — which is a moment both arms share. The rejected formulation keyed the grant on 'the click that would have unlocked it', which does not exist in an arm with no links; a plan reviewer caught that and this is the repaired version.",
     "the_defect_found_and_fixed_in_the_ablation_itself": "`_dialogueCtx()` builds `linkable` from ALL of `rows`, which INCLUDES the service rows (`barter`, `training`, `travel`) that §D2 puts above the rule. The ablated arm filtered its extras against `topics` only, so every service row was appended a SECOND time into the alphabetical ask-about run — exactly the failure §D2 names by name. That is a control made worse for a reason unrelated to the thing under test, i.e. HAZARDS §0's broken null wearing a plausible arm's clothes. Fixed before the arms were cut (commit a2b81ea4); the extras now exclude the action ids too."
   },
-
   "verification": {
     "baseline_pinned": "each build pins `git rev-parse HEAD` at build time and records it in the KEY, never in the pack — the sealing commit's own headline names the ablated arm, so publishing the sha would have let a judge be told the answer by our own commit message. Found by the leak-check, not by inspection.",
     "leak_check": {
@@ -142,7 +137,6 @@
       "offline_bracket": "441 of 1,273 shipped answers (34.6%) light at least one word from their OWN AddTopic targets alone, independent of speaker; 817 (64.2%) would light if the column held every topic in the game. Derived by running the shipped `markLinks()` over `game/data/dialogue/topics/*.json`."
     }
   },
-
   "rulings": [
     {
       "id": "GATE-G-R1",
@@ -168,10 +162,14 @@
       "overturned_by": "a file whose comments are load-bearing at runtime (none found; every rewritten file is re-parsed and restored if it stops parsing)."
     }
   ],
-
   "what_would_make_this_brief_wrong": [
     "If a judge CAN separate the arms without playing — a channel I did not think of. The separability reader is asked this directly (question 3 of its four) rather than being told the pack is clean.",
     "If the arms turn out to be inseparable in ten minutes of ordinary play because the lit word is too rare. The 34.6% floor is over ANSWERS, not over ten-minute sessions, and the live search needed nine tries. If both players name no difference, the correct disposition is `inert` and the correct response is to fix how often the prose names its own topics — NOT to re-run the gate until it flatters.",
     "If `helstrom-market` is an unrepresentative town. Both arms were only ever played there."
-  ]
+  ],
+  "not_landed_and_why": {
+    "reports/blind/uix08-gate-g/leakcheck.json + leakcheck-selftest.json": "reports/.gitignore excludes every .json under reports/ by design — 'reproducible by re-running the tool that made it', which these are. Their numbers are quoted in EVIDENCE.md, which IS tracked.",
+    "reports/blind/uix08-gate-g/.reveal/mapping.json": "same rule. A markdown twin, .reveal/MAPPING.md, carries the identical mapping and IS tracked — found the hard way: the key to a sealed pack would otherwise have died with the container while the pack it unlocks stayed reproducible.",
+    "the pack itself": "113 MB of extracted game tree; rebuildable byte-for-byte from the commit + seed in MAPPING.md."
+  }
 }
