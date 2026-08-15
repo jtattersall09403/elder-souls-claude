@@ -1,0 +1,36 @@
+{
+  "task_id": "G1-THE-REAL-OCCLUDER-IS-ARCHITECTURE",
+  "title": "The camera is not blocked by trees. It is under a deck that does not exist to the collision system — and one absence produces three false negatives at once.",
+  "state": "recorded-for-dispatch",
+  "owner": "orchestrator",
+  "at": "2026-08-15T15:10:00Z",
+  "roadmap_item": "G1, and it hands work to W4/W5",
+
+  "the_measurement": "RI-CAM01 §C.1's automatic fail is NOT cleared. Against the shipped build: a CLOSED run of 26 consecutive `player_occluded` frames (sim 285-310) against a bar of <= 6. Mean 0.65 against a bar of 0.03. At 60 Hz that is 0.43 s, where the item's own rationale is that anything past 0.1 s hides a roll's i-frame window. The run begins and ends inside the measured frames, so 26 is a complete measurement and not a window-truncated lower bound — a wider window can only make it worse.",
+
+  "the_finding_that_relocates_the_problem": "THE PLAYER IS UNDER A RAISED DECK IN LILMOTH, AND THAT DECK IS NOT IN `plan.buildings` — nearest entry is 13.9 m away — so it never becomes a `settlementSolids()` collision box. ONE ABSENCE PRODUCES THREE FALSE NEGATIVES SIMULTANEOUSLY: (1) the spring arm reports `armHit: false` on every frame with `armLen` pinned at 3.993 m, because a thing that is not in the collider set cannot be hit; (2) the §D `clip_through` detector reads false even on frames where the camera is inside the slab, because §D is defined against that same collision set; and (3) the occluder fade never fires, because it is canopy-only. Three instruments agreeing that nothing is wrong, all of them reading the same empty set.",
+
+  "why_this_matters_beyond_the_camera": "This is the same shape as the diagnosis a previous round reached about trees — `InstancedMesh` canopy was never wired into any `CollisionCell`, so the arm was working exactly as designed against a set a tree could not be a member of. That was fixed for vegetation. THE SAME HOLE EXISTS FOR ARCHITECTURE, and architecture is worse: a deck, a balcony, an overhang or a stair underside is exactly the geometry a third-person camera collides with in a town. THE NEXT PIECE IS THIN OR ABSENT ARCHITECTURE IN THE COLLISION SET, NOT MORE VEGETATION WORK.",
+
+  "the_fix_that_landed_is_real_but_orthogonal": "Commit b476b55d's camera-to-actor sightline test works and is live in this region (Lilmoth is `western-rootlands`, canopy radius 4.5 m, well past the ~1.06 m threshold below which the segment test can never beat the old proximity bubble). Both arms were byte-identical on every frame here — not because the fix is inert, but because the occluder is not a tree. The control was proved non-inert by construction rather than by the arms differing: `occlusion-sightline-check.mjs` Arm A reports proximity-only VISIBLE and with-sightline hidden. That is rule 6 done properly on a case where the arms legitimately agree.",
+
+  "four_instrument_defects_found_in_a_tool_that_had_never_been_RUN": [
+    "THE REFERENCE ARM RECORDED AN IMPOSSIBLE NUMBER AND NOBODY READ IT. The predecessor's probe carries `occludedPx 2568` against `refPx 161` — a ratio of 15.95, i.e. more occluded pixels than the player has — from sampling the reference at frame 0 before the scene settled and carrying it forward. Silently, that scores frames `occluded: false`. IT MANUFACTURES A PASS. Fixed with warm-up plus a guard scoring such frames null.",
+    "The manifest was written only at completion, so an aborted walk lost 100% of its frames. Two runs died mid-walk — the predecessor's, and this one's, killed at elapsed 123 s by HAZARDS §10's fleet-wide `pkill` signature. Now per-frame JSONL plus a partial manifest on abort.",
+    "Frame labels drifted 5 frames from sim frames the moment a warm-up was added. Now read from `sim.frame`.",
+    "Added §15's per-frame liveness gate (0 non-LIVE) and §16's motion proof (1.92 m travelled, 36/36 frames moved), after verifying `queueInputs`/`stepFrames` actually exist and that the harness call dies loudly rather than swallowing."
+  ],
+
+  "a_deviation_the_successor_must_know": "The colour-diff proxy standing in for an ID buffer reads 0.53 on a PROVABLY UNOCCLUDED player, not 1.0 — so it is biased toward declaring occlusion. It does not threaten this result (the run frames fall to 34 px of 595, far past any bias) but it would threaten a marginal one. Do not reuse it for a close call without fixing it.",
+
+  "ri_cam04_is_not_judgeable_and_that_is_the_finding": "Not a zero against the build: `roll_bin` is untraced (0 hits) and EIGHT OF ITS NINE directional roll clips are absent from `game/data/`. That is corpus and content debt. The agent verified this with its own greps rather than inheriting the method script's claims. RI-CAM03 needs ~25,200 locked frames for M1 alone and its required `onScreen(eid)` harness method does not exist — that is a round of its own, not a follow-on.",
+
+  "still_owed": "RI-CAM01's blind pair has never run. Per CLAUDE.md rule 0e only the orchestrator can spawn the judge, and it caps the item independently of §C.1 no matter what the measurement says.",
+
+  "someone_is_still_running_pkill": "This agent's browsers were killed mid-run at elapsed 123 s by a fleet-wide `pkill -f headless_shell`. HAZARDS §10 has forbidden that since yesterday, with three siblings' captures lost to it. It is still happening. Kill by PID only.",
+
+  "next_step": "Dispatch: put thin and absent architecture into the collision set — decks, balconies, overhangs, stair undersides — and re-measure RI-CAM01 §C.1 against it. Acceptance: the longest closed run of `player_occluded` frames falls to <= 6 at the Lilmoth stand, with the deck present in the collider set and `armHit` true on frames where the camera is inside it. Then run RI-CAM01's blind pair.",
+
+  "files_claimed": ["orchestration/status/G1-THE-REAL-OCCLUDER-IS-ARCHITECTURE.json"],
+  "files_touched": ["orchestration/status/G1-THE-REAL-OCCLUDER-IS-ARCHITECTURE.json"]
+}
