@@ -718,6 +718,34 @@ function skullSpanAt(artFamily, y) {
 const HEADGEAR_Y = 0.158;
 
 /**
+ * THE EYE, AS A FRACTION OF THE FACE IT SITS IN — one binding, now read by BOTH body plans.
+ *
+ * Round 7 measured these off `refs/modern/character_closeup/REF-ER__steam-dyules-2764067250.jpg`
+ * at native 1920x1080 with Rec.709 luma: the eye region is **0.404x** the cheek beside it and the
+ * brightest pixel anywhere inside the eye — the iris catch — is **0.857x**, i.e. *nothing in the eye
+ * is brighter than the skin*. The values are LINEAR scales because `Color.setHex` decodes sRGB into
+ * the linear working space and `multiplyScalar` scales it there; `0.404^2.2 = 0.136` and
+ * `0.857^2.2 = 0.712`. All of that is round 7's work and none of it is re-derived here.
+ *
+ * WHAT IS NEW IS WHO READS THEM. Round 7 declared them INSIDE the `base.humanoid` branch, so they
+ * governed 148 of 408 NPCs and nobody else. The player is `player.saxhleel`, and the saxhleel eye
+ * was a typed `0xe2c46c` with an emissive on top: luma 196.0 against a saxhleel skin of 90.9 —
+ * **2.16x the face**, which is worse than the 1.69x Dunmer that round 7 was written to fix, on the
+ * one character the owner looks at most and on the **260 of 408** NPCs (`argonian` 181, `saxhleel`
+ * 77, `naga` 2, counted from `game/data/npcs/*.json`) that share that body plan.
+ * `W1-F10-r7-appearance` photographed it: *"the saxhleel NPCs behind the Imperial still carry bright
+ * amber beads, which is the defect round 7 named, on the other body plan."*
+ *
+ * `tools/visual/f10-r7-eye-contrast.mjs` reads these two names out of this file and now scores the
+ * saxhleel races as well as the nine humanoid ones.
+ */
+const EYE_SCLERA_OF_SKIN = 0.136;  // -> displayed 0.404x skin;  plate: 63.6 / 157.4
+const EYE_IRIS_OF_SKIN   = 0.712;  // -> displayed 0.857x skin;  plate: 134.9 / 157.4
+
+/** Rec.709 luma in the LINEAR working space THREE.Color holds. */
+function linearLuma(c) { return 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b; }
+
+/**
  * Joint balls, so a bent elbow reads as a joint rather than two disconnected tubes.
  *
  * WHY THE RADIUS IS NOW DERIVED AND NOT AUTHORED — this is the transparency defect, and the
@@ -1616,8 +1644,47 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
       addPresentation(`lowerarm_${side}`,new THREE.CapsuleGeometry(.021,.23,4,8),[0,-.12,.015],[1,1,1],[0,0,side==='l'?-.08:.08],`radius-${side}`);
     }
   }else if(artFamily==='saxhleel'){
-    const eyeMat=(mats.bone||mats.metal).clone();eyeMat.color.setHex(0xe2c46c);eyeMat.emissive?.setHex(0x352006);eyeMat.emissiveIntensity=.45;
-    const pupilMat=mats.darkStone.clone();pupilMat.color.setHex(0x090b08);
+    // ---- THE SAXHLEEL EYE: THE HUE IS ART DIRECTION, THE VALUE IS THE PLATE --------------------
+    //
+    // `0xe2c46c` is Morrowind's Argonian amber and it stays: `CLAUDE.md`'s rule is that Morrowind
+    // wins everywhere outside the fight, `RI-VIS10` B2 row 3 asks for a non-human eye, and a big
+    // amber iris with a dark slit is what one is. What was wrong is that it was a BRIGHTNESS as
+    // well as a hue — luma 196.0 on a face of 90.9, plus an emissive, so it was the brightest thing
+    // on the character from every bearing and under every light.
+    //
+    // WHAT DOES NOT TRANSFER FROM THE HUMANOID SOLVE, stated so it can be argued with. Round 7 put
+    // the humanoid's big sphere at the RECESS fraction (0.404x skin) and the small one at the
+    // ACCENT (0.857x), because on the plate a human eye is mostly sclera in shadow with a small
+    // bright iris. A saxhleel eye is not built that way — the visible ball IS the iris. So the roles
+    // are swapped here: the ball carries the ACCENT and the slit carries the dark. The bar that
+    // does transfer, and the one that was actually being failed, is the plate's real constraint:
+    // **nothing in the eye may be brighter than the skin around it**. At the accent fraction the
+    // ball lands at 0.857x its own actor's skin whatever race tint that actor drew.
+    //
+    // THE EMISSIVE IS GONE, and that is not tidying. An emissive term is added after albedo, so an
+    // emissive eye can exceed the face under any light no matter what its colour says — which makes
+    // the measurement above unfalsifiable. REVERSIBLE: if a critic wants glowing eyes at night, the
+    // right shape is a light-level-driven term that `f10-r7-eye-contrast.mjs` can also read, not a
+    // constant that hides from it.
+    const SAX_EYE_HUE = 0xe2c46c;
+    const saxSkin = resolvedSkin ? resolvedSkin.clone() : new THREE.Color(0x4f6141);
+    const tonedTo = (hueHex, targetLuma) => {
+      const c = new THREE.Color(hueHex), l = linearLuma(c);
+      return c.multiplyScalar(l > 1e-5 ? targetLuma / l : 0);
+    };
+    const eyeMat=(mats.bone||mats.metal).clone();
+    eyeMat.color.copy(tonedTo(SAX_EYE_HUE, linearLuma(saxSkin) * EYE_IRIS_OF_SKIN));
+    // Rougher, for round 7's reason: a tight specular lobe on a sphere is how "only one of the two
+    // catches light" happens, and a recess should read from its value rather than from a highlight
+    // that exists at one bearing.
+    eyeMat.roughness=.62;
+    if (eyeMat.emissive) { eyeMat.emissive.setHex(0x000000); eyeMat.emissiveIntensity = 0; }
+    // The slit. A fixed near-black was fine on one tint and invisible on another for exactly the
+    // reason round 7 gives about the sclera, so it is a fraction of the same skin — well below the
+    // recess bar, because a pupil is the darkest thing on a face and not merely a dark thing.
+    const pupilMat=mats.darkStone.clone();
+    pupilMat.color.copy(saxSkin).multiplyScalar(EYE_SCLERA_OF_SKIN * 0.35);
+    pupilMat.roughness=.45;
     addPresentation('head',new THREE.SphereGeometry(.026,10,7),[-.052,.09,.112],[1,.72,.58],[0,0,0],'eye-l',eyeMat,hScale);
     addPresentation('head',new THREE.SphereGeometry(.026,10,7),[ .052,.09,.112],[1,.72,.58],[0,0,0],'eye-r',eyeMat,hScale);
     addPresentation('head',new THREE.SphereGeometry(.010,8,5),[-.052,.09,.132],[.62,1,.40],[0,0,0],'pupil-l',pupilMat,hScale);
@@ -1686,8 +1753,8 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     // lands on the plate's ratio is ratio^2.2 — 0.404^2.2 = 0.136 and 0.857^2.2 = 0.712. Setting
     // 0.40 and 0.86 directly measured back as 0.65 and 0.93 and would have left the eye almost as
     // bright as it was, which `f10-r7-eye-contrast.mjs` printed before these numbers were changed.
-    const EYE_SCLERA_OF_SKIN = 0.136;  // -> displayed 0.404x skin;  plate: 63.6 / 157.4
-    const EYE_IRIS_OF_SKIN   = 0.712;  // -> displayed 0.857x skin;  plate: 134.9 / 157.4
+    // The two constants moved to module scope so the saxhleel branch above reads the SAME binding —
+    // see `EYE_SCLERA_OF_SKIN`'s header for why that mattered. Nothing about this family changed.
     const eyeBase = resolvedSkin ? resolvedSkin.clone() : new THREE.Color(0x8a7d6e);
     const hEyeMat=(mats.bone||mats.metal).clone();
     hEyeMat.color.copy(eyeBase).multiplyScalar(EYE_SCLERA_OF_SKIN);
