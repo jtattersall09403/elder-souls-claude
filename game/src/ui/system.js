@@ -839,7 +839,13 @@ export class UISystem {
     // drawn — see UISurface.beginScreen(). The HUD is drawn first and outside that rectangle,
     // so opening the inventory mid-fight dims the screen and not your health bar.
     const alpha = ctx.inCombat ? COMBAT_ALPHA : CALM_ALPHA;
-    if (this.isMenu()) S.beginScreen(screenRect(S), alpha);
+    // T4 round 4. `screenRect(S)` with no id fell back to the single old `BOX` for every screen —
+    // harmless while every screen WAS that box, but after GAP-W1-ui-panel-is-a-fixed-box the
+    // in-combat opacity compositing rect (UISurface.beginScreen/endScreen, the `destination-in`
+    // mask) must match the SAME rect `screen()` drew the panel at, or the mask clips a screen
+    // smaller than its own panel, or leaves a stale-sized hole around a shrunk one. `this.mode` is
+    // exactly the id `screen()` was called with two lines below, in every case in the switch.
+    if (this.isMenu()) S.beginScreen(screenRect(S, this.mode), alpha);
     switch (this.mode) {
       case 'inventory': drawInventory(S, this._inventoryModel(ctx)); break;
       case 'container': drawContainer(S, this._containerModel(ctx)); break;
@@ -935,7 +941,19 @@ export class UISystem {
     // §D1: following a link "appends the answer to the bottom of the history pane. It does not
     // clear the pane." The heading is the topic's own words in `header` colour; the greeting,
     // which opened the transcript above, carries none.
-    if (d.said) this.dialogue.append(d.said_topic, d.said_heading || null, d.said, d.said_seq);
+    //
+    // P1 defect 2's smaller half. `DialogueHistory.append()` now moves a re-asked topic's block
+    // to the end instead of duplicating it (see its own comment), which is a no-op ON THE TEXT
+    // when that topic was already the current last block — but if the player had scrolled UP to
+    // re-read earlier answers, "the same answer, still on screen" should still bring them back to
+    // it, exactly as §D3 promises ("scrolled to the bottom"). `lastSeq` changing is `append()`'s
+    // own signal that a genuinely new say was just processed (fresh block OR moved-to-end), so
+    // resetting scroll here can never fire on the 60Hz re-read of an unchanged `d.said`.
+    if (d.said) {
+      const seqBefore = this.dialogue.lastSeq;
+      this.dialogue.append(d.said_topic, d.said_heading || null, d.said, d.said_seq);
+      if (this.dialogue.lastSeq !== seqBefore) this.dialogueScroll = 0;
+    }
 
     // §D2, and it is the thing only the picture carries: what you can DO with this person goes
     // above the rule, what you can ASK them about the world goes below it, alphabetically.
