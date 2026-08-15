@@ -1,0 +1,130 @@
+{
+  "task_id": "W1-F10-r4",
+  "roadmap_item": "F10",
+  "role": "builder — hands and feet, round 4",
+  "state": "delivered and banked; measured on both arms with one instrument; NO GAME FRAMES CAPTURED and one open regression stated first",
+  "date": "2026-08-15",
+  "branch": "codex/wave1-build-experiment",
+  "baseline_commit": "b175da8e9323ed8149fe1fda5fe7ccfdf5244a33",
+  "baseline_verified_free_of_this_work_by": "git show b175da8e:game/src/render/actor.js | grep -c 'clawed\\|CLAW' -> 0",
+  "treatment_commit": "73ee7f47",
+
+  "what_i_could_not_do": [
+    "I TOOK NO FRAME OF THE ACTUAL GAME, AND THAT IS THE CHARACTER DIRECTIVE'S REQUIREMENT #3 UNMET. `tools/visual/f10-r4-digits.mjs` is written, imports `selectByProximity` as instructed, and was started locally; it produced ZERO frames in over thirty minutes and was still in browser warm-up when I finished, at `node tools/contention.mjs` load 3.08/core under SwiftShader. I did not rent a GPU Pod for it — that was a judgement call under a budget I had already spent on finding the actual defect, and it is the single largest hole in this round. EVERY APPEARANCE CLAIM I MAKE COMES FROM OFFLINE RENDERS OF THE BUILT GEOMETRY (`corpus/90-verdicts/wave1/artifacts/W1-F10-r4/geometry/`), which have no game lighting, no materials and no post chain. They are evidence about GEOMETRY and nothing else. A critic must take the frames before this round is judged on appearance, and `f10-r4-digits.mjs --tag hw --gpu hardware --require-hardware` is the command; r3 paid $0.026 for 152 frames on the same path.",
+
+    "THE ORBIT HOLE DETECTOR WENT UP AND I HAVE NOT CLOSED IT OUT. `node tools/visual/actor-orbit-holes.mjs`: control `b175da8e` **1,736 crack px in 1,002 of 5,760 frames**, treatment **5,758 in 2,502**. At `--angles=8` with JSON, 566 -> 1,942. MY READING, AND IT IS PARTIAL: the detector counts enclosed background pixels and excludes 'legitimate through-gaps' by a depth-spread heuristic, and two adjacent fingers seen against each other defeat that heuristic — which is exactly the daylight this round exists to create. The border tally supports that in part: `actor-body:saxhleel:skin/hand_r` moves 559 -> 47,637 border-weighted px and `skin/foot_l` 11,628 -> 47,428. BUT `actor-body:saxhleel:cloth/calf_l` moves 8,881 -> 61,788 and I CANNOT EXPLAIN THAT WITH FINGERS. There may be a real seam at the ankle, where I shrank `PLAN.foot_l` from r0 0.062 to 0.056 and replaced one fat lozenge with a sole/heel/ball trio. I chased and eliminated one hypothesis (a wedge at the digit bend — I added knuckle balls, and it moved the number by only 145 px, so that was not it). I ran out of piece before eliminating the ankle. This is the first thing to attack and the tallies are in `metrics/orbit-holes-{BEFORE,AFTER}.json`.",
+
+    "I DID NOT FIX THE HEADS, AND I DID NOT ADD HEAD GEOMETRY — WHICH WAS THE INSTRUCTION. The brief said find out whether the unreadable landmarks are scale, shading or placement BEFORE adding geometry. I built `tools/visual/character-face-relief.mjs` for it. What it says: **74.7% of head-bone vertices are buried** — behind another surface on the same ray by more than 3 mm. That is the highest of any bone I measured. BUT THE WITHIN-FIGURE BASELINE REFUSES THE OBVIOUS CONCLUSION: `spine_02` is 0.631, `pelvis` 0.506, `upperarm_l` 0.467. The whole body is built from deliberately overlapping welded volumes, so half of everything is buried by design, and the head's +12 points over the trunk is a SIGNAL, NOT A PROOF. `relief_p95` of 73 mm is dominated by the snout, not by any landmark. So the honest verdict is: the evidence leans toward placement and does not establish it, and the instrument to settle it now exists. Both arms report 0.747 identically, which confirms I changed nothing there.",
+
+    "THE WALK IS STILL A GLIDE AND I MAKE NO CLAIM ABOUT IT. I did not capture motion, so I have no basis for one. My only contribution is indirect: there is now something at the end of the leg to plant — a heel, a sole, a ball and three clawed toes instead of one lozenge — and the brief's own hypothesis was that feet might partly fix it. That hypothesis is UNTESTED by me.",
+
+    "FRAME TIME REMAINS UNMEASURED AND I ADDED COST I COULD NOT TIME. `getPerfStats()._unmeasurable` still hard-codes 'This container is SwiftShader'; I did not patch it and `game/src/engine.js` carries a sibling's uncommitted edit right now, so it was not mine to touch this turn. WHAT I CAN STATE EXACTLY, measured offline on both arms with the same instrument: every biped actor goes **25,404 -> 27,788 visible triangles (+2,384, +9.4%)** and **draw calls are UNCHANGED at 29**. That last number is the point: the claws went into the existing `bone` surface rather than a fourth one, so unlike r3 — which cost +1 draw call per actor, up to +19% in a settlement — this round costs zero. An intermediate version of this work cost +3,392 triangles; trimming the segment counts on the five small terminal ellipsoids (which are 4*seg^2 each) recovered 1,008 of them with no measurable effect on any gate.",
+
+    "THE STRENGTHS ARE MY JUDGEMENT AGAINST ONE PLATE, AND NOBODY HAS CHECKED THEM. Palm half-extents (50 x 42 x 21 mm), digit length (92 mm on the middle finger), splay (26 -> 40 mm), curl (two segments through ~30 degrees), claw length (30 mm) and the forearm's new wrist radius (40 mm, down from 58 mm) are all authored numbers set by eye against `refs/context/ESO-argonian_character__steam-1634540211.jpg` and against an offline render I looked at twice and corrected once. The first attempt made the wrist joint ball the largest mass in the hand and it read as a sphere with claws; I caught that by rendering it, not by reasoning about it.",
+
+    "MY FIRST TWO INSTRUMENT DESIGNS WERE BOTH WRONG AND I ONLY CAUGHT THEM BECAUSE THE NUMBERS WERE ABSURD. A bounding-box selection reported a **555 mm hand** (it had swallowed the forearm and part of the hip) and a mesh-matrix transform reported a **1,062 mm hand** (the guard cylinder measured in the wrong frame). Both printed confident tables first. Selection is now by dominant skin weight and rigid pieces are transformed by their own `item.local`. Anyone reading the numbers in this file should note that two plausible tables were produced before the right one.",
+
+    "I DID NOT ADOPT `selectByProximity` INTO THE TWO CLAIMED SWEEP TOOLS. `node tools/ownership.mjs --for tools/visual/f10-character-sweep.mjs` and `--for tools/visual/f10-r2-appearance.mjs` each return one live piece, W1-30V, holding a CLAIMED hold, 15 h old — run this turn, not assumed. So I imported the fix into a new file rather than editing theirs. Both of those tools still select in list order and will still photograph the sea until W1-30V adopts it.",
+
+    "I DID NOT SCORE RI-VIS10 B2 ROW 9, RI-VIS08 B1/B3/B4/B5/B6, OR ANY BLIND GATE. Row 9 ('clawed hand with non-human finger count or proportion') is now answerable and I believe it is a YES on every reptilian figure — four digits, each clawed, the claws in a distinct hard pale material — but a builder scoring its own acceptance is not evidence, and row 9 is measured from a CLOSE-UP which I did not take."
+  ],
+
+  "headline": "The digits were never absent. `git log -L 989,1008:game/src/render/actor.js` puts a palm, three fingers, an opposed thumb, a sole and three toes in the file from commit `fdd41f0a` on 2026-08-12 — present at round 3's own baseline, and r3's status file says the opposite. What was wrong is that they were inside other volumes: the `PLAN` leaf tubes ran straight down the digit axis, the palm was a 14 x 18 x 9.6 cm block reaching to within 25 mm of the fingertips, and on the player and every combatant the `hands` equipment slot fitted a 15.6 cm-diameter, 19 cm-long closed cylinder over the whole hand. Measured: separated_fraction 0.003 on the smallest-handed combatant — half a millimetre of daylight across a 196 mm hand.",
+
+  "the_diagnosis_and_how_it_was_derived": {
+    "what_refuted_the_brief": "`git log --oneline -5 -L 989,1008:game/src/render/actor.js` and `git show f86acd5b:game/src/render/actor.js | grep -c 'Three fingers and an opposed thumb'` -> 1. One command, run before writing anything, per CLAUDE.md 0b.",
+    "the_instrument": "`tools/visual/character-digit-read.mjs` (new). Orthographic silhouette of one hand or foot down its own back-of-hand axis at 0.5 mm/px, selected by DOMINANT SKIN WEIGHT (rigid equipment by its `@bone` name and its own `item.local`). Per scan row, the number of maximal occupied runs; `separated_span_mm` is the extent of rows with >= 2 runs, `separated_fraction` is that over the whole span. It answers the question a player asks — can I see a finger — rather than counting triangles, which is RI-VIS08 B2's own warning that a statistic can fail a build and never pass one.",
+    "the_self_test_and_why_it_has_the_shape_it_has": "Four free bars -> 4 lobes, fraction 1.00. The SAME bars with a slab over 80% of them -> still 4 lobes, fraction 0.201. The lobe COUNT does not move, and that is deliberate: it proves a lobe count alone cannot tell a hand from a stump, which is why the gate requires the fraction too.",
+    "the_bar": "~0.59, EYEBALLED (not computed) off `corpus/70-visual/refs/context/ESO-argonian_character__steam-1634540211.jpg`, opened at native 1920x1080 with both hands cropped and enlarged 3x: wrist-to-claw-tip ~510 px, background visible between the digits over ~300 px. The hand gate is set SLACKER at 0.40 so passing it is not generous. The FOOT gate is 0.18 and is ANATOMICAL, NOT PHOTOGRAPHIC — a real human foot scores ~0.13 on this metric because the sole is legitimately most of its length, and applying the hand's 0.40 would have made me sculpt a wrong foot to satisfy a mis-specified gate, which is HAZARDS 15's exact lesson. No bare-foot plate exists in `refs/characters/` to calibrate against. REVERSIBLE the moment one does."
+  },
+
+  "what_changed": [
+    {
+      "id": "1. the PLAN leaf tubes stop being a hand and become a wrist",
+      "what": "`hand_l/r` from `local [0,-0.095,0.012] r 0.055->0.042` to `[0,-0.030,0.006] r 0.040->0.038`; `foot_l/r` from `[0,-0.045,0.155] r 0.062->0.048` to `[0,-0.040,0.055] r 0.056->0.046`. The 9.5 cm sausage occupied exactly the space the fingers leave the palm through.",
+      "the_joint_balls_are_untouched_and_that_matters": "`jointRadius()` derives a joint ball from the LARGEST radius any segment has there, so it still takes the max and is still tangent to the widest tube by construction. The transparency wedge this derivation exists to close cannot reopen from these edits."
+    },
+    {
+      "id": "2. the forearm tapers, because a 116 mm wrist mandates a 116 mm ball",
+      "what": "`lowerarm_l/r.r1` 0.058 -> 0.040. This was NOT in my plan and I found it by rendering the geometry: with the palm cut to its real 92 mm width, the derived wrist ball became the largest mass in the hand and it read as a sphere with claws hanging off it. The forearm now runs 150 mm at the elbow to 80 mm at the wrist, which is what the ESO plate shows — a corded forearm narrowing to a clear narrow wrist, from which the hand WIDENS."
+    },
+    {
+      "id": "3. the palm is a plate and the sole is a foot",
+      "what": "Palm: half-extents 0.070 x 0.090 x 0.048 -> 0.050 x 0.042 x 0.021, plus a knuckle ridge. Foot: one lozenge of 0.075 x 0.052 x 0.135 -> a sole, a heel and a ball of the foot. The sole's underside is held at foot-local y = -0.088, because the ankle sits at world y 0.0900 (read off `skeleton.json`'s offset chain, not retyped) and moving it would lift the character off the ground or bury it."
+    },
+    {
+      "id": "4. the digits curl, and every one of them has a claw",
+      "what": "Each digit is two segments through ~30 degrees with a knuckle ball, then a claw. The middle finger is longest (a per-digit length factor), the thumb leaves the palm sideways and forward from its own origin. Claws are emitted into the EXISTING `bone` surface — so zero extra draw calls — and darkened in `paintBody` because on the plate the claws are the darkest thing on the hand, not the palest.",
+      "the_darkening_rule_is_fragile_and_says_so_in_the_code": "The discriminator is height: everything else in the `bone` surface is a sash toggle at rest y ~1.07 or a shoulder clasp at ~1.43, while hand claws hang at ~0.72 and foot claws sit at ~0.02, so `y < L.pelvisY - 0.12` separates them. A future fitting authored below the pelvis — a knee strap, a boot clasp — would be darkened as a claw. The fix then is a build-time flag, not a smaller margin.",
+      "the_design_call": "Four digits, not five. `RI-VIS10` B2 row 9 asks for a clawed hand with non-human finger count OR proportion, and `refs/characters/INDEX.md` 4 routes the ESO plate FIDELITY-only under RI-VIS10 A2 — so it governs how well the hand is made and not what an Argonian hand is. The construction came from the plate; the count did not."
+    },
+    {
+      "id": "5. the hands equipment guard is a wrist cuff, not a mitten",
+      "what": "`taperedGuardGeometry(.078,.062,.19,.76)` at offset `[0,-.055,0]` -> `(.070,.062,.09,.76)` at `[0,.010,0]`. It spanned hand-local y +0.040 to -0.150, i.e. over the palm, over all four digits and past the knuckles. It now spans +0.055 to -0.035: still covering the wrist joint it is armour for, ending above the knuckle ridge.",
+      "why_this_is_also_the_right_design": "The ESO plate's corded wrap runs wrist to elbow and STOPS at the wrist; the hand below it is bare, scaled and clawed. And RI-VIS10 D2 forbids 'buckled leather jerkin with BRACERS' as a generic-fantasy read, so this is a reason to keep the piece small and lashed rather than to grow it.",
+      "one_line_reversal": "Restore the two literals in that `addEquip(set,'hands',...)` call. Everything else in this round survives and only the combatant arm of the digit gate goes back to 0.003."
+    }
+  ],
+
+  "delete_the_fix": {
+    "control_arm": "A real `git worktree add --detach <dir> b175da8e`, with `node_modules` and `tools/node_modules` symlinked in (HAZARDS 7 — a worktree cannot render without them). TODAY'S INSTRUMENTS WERE COPIED INTO IT, so the instrument is held constant and only the code under test is reverted.",
+    "result": "Control: hand civilian 12 of 12 fail (0.341-0.346), hand combatant 12 of 12 fail (0.003-0.335), foot 12 of 12 fail (0.063-0.067). Treatment: 0 of 12, 0 of 12, 0 of 12. The two arms genuinely disagree on all three; this is not an inert fix and not an inert control.",
+    "HAZARDS_12_AND_14_BOTH_HAPPENED_TO_THIS_PIECE": "Two orchestrator whole-tree banks, `08fe44d8` and `1e60f58d`, both titled 'In-flight: ... F10 r4 ...', carried this piece's uncommitted `actor.js` into `HEAD` before it landed — so my own `land.mjs --paths` commit shows only 23 insertions, and a control taken from `HEAD~1` would have contained the fix and come back green. It did not bite because the baseline was pinned to an explicit sha at the start of the piece and CHECKED (`grep -c` returned 0), which is the whole point of that rule."
+  },
+
+  "regression_guards_run": {
+    "texel_density": "`node tools/visual/character-texel-density.mjs --sample=5` — worst deviation 1.13x, PASS. r3's fix survives; the new primitives unwrap in metres like the rest.",
+    "winding": "`node tools/visual/mesh-winding.mjs` — 0 of 744 meshes inverted, 0 of 376,072 triangles disagree with their winding, no DoubleSide. The 2026-08-15 inside-out defect has not been reintroduced.",
+    "orbit_holes": "REGRESSED — see `what_i_could_not_do` #2. This is the one guard that did not come back clean and I am not softening it."
+  },
+
+  "performance": {
+    "measured_offline_on_both_arms_same_instrument": "Biped visible triangles per actor: saxhleel 25,404 -> 27,788 (+9.4%), humanoid 26,258 -> 28,642 (+9.1%), undead 23,692 -> 25,564 (+7.9%). Beast unchanged at 8,430 (no biped body).",
+    "draw_calls": "29 -> 29 on saxhleel, 24 -> 24 on humanoid, 31 -> 31 on undead. UNCHANGED, because the claws reuse the `bone` surface r3 already paid for.",
+    "frame_time": "UNMEASURED, because `getPerfStats()._unmeasurable` still refuses it. I am not claiming the cost is free.",
+    "reversible_in_one_block": "Restore the five terminal ellipsoids and the two `digit()` calls to their pre-round literals; the fix disappears and the triangles come back."
+  },
+
+  "evidence": {
+    "where": "corpus/90-verdicts/wave1/artifacts/W1-F10-r4/ — README.md carries the shas, the reproduction commands and the four things a critic should attack.",
+    "open_this_first": "geometry/hand-before-after.png and geometry/foot-before-after.png.",
+    "what_they_are_NOT": "They are OFFLINE SHADED RENDERS OF THE BUILT GEOMETRY, not game frames. No game lighting, no materials, no post chain. They must not be cited as game frames and no material, colour or lighting claim may be made from them.",
+    "what_i_saw_when_i_opened_them": "BEFORE, hand: a smooth egg with three short stubs below it and a fourth off to one side; from the palm side the egg is nearly all of the silhouette. AFTER, same geometry pipeline, same views: the forearm narrows into a wrist, the palm is a wider flat plate, a knuckle ridge runs across it, and four digits hang free with background between them, each curling forward through a knuckle to a pointed claw. BEFORE, foot: one fat lozenge with three toe-stubs poking 25 mm out of its front. AFTER: a heel, a sole, a ball, and three clawed toes.",
+    "metrics": "metrics/ carries digit-read and face-relief JSON for BOTH arms, and the orbit-hole tallies for both."
+  },
+
+  "references_opened": [
+    "corpus/70-visual/refs/context/ESO-argonian_character__steam-1634540211.jpg — opened at native 1920x1080, both hands cropped and enlarged 3x with a brightness lift. What is in it and what this round took from it: a broad FLAT back-of-hand plate; digits about as long as the palm hanging free with background between them over most of their length; a clear inward CURL so the silhouette is a hook not a fan; a distinct DARKER pointed claw on every digit; and corded wrap running wrist to elbow that STOPS AT THE WRIST, leaving the hand bare — which is what settled the equipment guard.",
+    "corpus/70-visual/refs/context/ESO-argonian_character__steam-{1362731834,1536362381,431594657}.jpg — all three opened. NO FEET VISIBLE IN ANY OF THE FOUR PLATES (grass, skirt, or cropped at the chest), which is why the foot gate is anatomical.",
+    "corpus/70-visual/refs/modern/character_fullbody/REF-CF-SK__skyrim-{leather,iron,glass,dragonscale,ebony}-armor-*-fullbody.png — five opened. **ALL FIVE ARE CUIRASS RENDERS ON A TRANSPARENT CARD: no head, no hands, no feet.** `refs/characters/INDEX.md` 1 describes the C4 slot as 'Full-body humanoid, head to foot'. It is not, and no hand or foot bar can come from that folder.",
+    "corpus/70-visual/refs/characters/INDEX.md — 1 counts, 3 pairing table, 4 routing (FIDELITY-only for both the ESO and the Skyrim sets), 5 what is missing, 6 how the set gets misused.",
+    "corpus/70-visual/RI-VIS10 B2 row 9 (clawed hand, non-human finger count or proportion), row 8 (non-plantigrade leg or a declared reason — the reason is now IN THE CODE: the bone chain is frozen because hitgeometry.json declares every hurtbox as a segment of a bone), B3, B4, C1, D2, D3.",
+    "corpus/70-visual/RI-VIS08 B2, B3, B5 — read for the acceptance wording.",
+    "orchestration/HAZARDS.md 7, 11, 12, 13, 14, 15, 15a."
+  ],
+
+  "files_touched": [
+    "game/src/render/actor.js",
+    "tools/visual/character-digit-read.mjs",
+    "tools/visual/character-face-relief.mjs",
+    "tools/visual/f10-r4-digits.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r4/",
+    "orchestration/status/W1-F10-r4.json"
+  ],
+  "files_claimed": [
+    "game/src/render/actor.js",
+    "tools/visual/character-digit-read.mjs",
+    "tools/visual/character-face-relief.mjs",
+    "tools/visual/f10-r4-digits.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r4/",
+    "orchestration/status/W1-F10-r4.json"
+  ],
+  "ownership_note": "`node tools/ownership.mjs --for game/src/render/actor.js` RUN, not assumed: one live piece, W1-30-builder-20260812, 15 h old, `touched` with no declared claim — no conflict. `--for tools/visual/f10-character-sweep.mjs`, `--for tools/visual/f10-r2-appearance.mjs` and `--for tools/visual/f10-r3-materials.mjs`: all three return W1-30V holding a CLAIMED hold, so all three are IMPORTED FROM and none is edited. `node tools/contention.mjs`: 3 browser instances, load 3.08/core against a 4.0 ceiling — GO with room for 3, and I took one.",
+
+  "cost": {
+    "gpu": "NONE. No Pod was rented and none was orphaned. This is a saving against r3's $0.026 and it is also the reason this round has no game frames — see what_i_could_not_do #1.",
+    "waiters": "Five background tasks were armed (four hole-detector runs, one browser capture) and all are accounted for; the browser capture is the one still running and it is named in what_i_could_not_do #1 rather than waited on, per HAZARDS 13."
+  },
+
+  "redundant_with": []
+}

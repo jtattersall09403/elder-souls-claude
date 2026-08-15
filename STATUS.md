@@ -1,6 +1,6 @@
 # Where we are right now
 
-**Last updated: 2026-08-14, late evening.** One screen. If this is more than a day old, distrust it and say so.
+**Last updated: 2026-08-15, midday.** One screen. If this is more than a day old, distrust it and say so.
 
 ---
 
