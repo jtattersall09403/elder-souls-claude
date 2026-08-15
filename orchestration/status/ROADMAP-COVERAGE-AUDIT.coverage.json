@@ -1,11 +1,11 @@
 {
- "generated": "2026-08-15T18:55:06.649Z",
+ "generated": "2026-08-15T19:10:13.418Z",
  "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
  "method": "Inventory derived by fs walk + generated ledgers. Mapping authored by the audit agent after reading every RI title/front-matter, every plan heading, and every open gap record.",
  "inventory_counts": {
   "reference_items": 152,
   "plans": 49,
-  "open_gaps": 89,
+  "open_gaps": 90,
   "proposed_roadmap_items": 69
  },
  "rings": {
@@ -1493,6 +1493,7 @@
    "open_gaps": [
     "GAP-W1-map-fix-drops-the-journal-from-the-page-walk",
     "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
+    "GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry",
     "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them",
     "GAP-W1-ui-container-clips-its-own-declared-text",
     "GAP-W1-ui-detectors-that-cannot-see",
@@ -1501,8 +1502,8 @@
     "GAP-W1-ui-map-outside-the-ar2-detectors",
     "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
    ],
-   "n_open_gaps": 9,
-   "blocking_gaps": 8,
+   "n_open_gaps": 10,
+   "blocking_gaps": 9,
    "plans": [
     "W1-21",
     "W1-HUD-TOAST"
@@ -5930,6 +5931,16 @@
    "covered_by": [
     "C7",
     "C8"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry",
+   "severity": "blocking",
+   "path": "ui.menu.inventory",
+   "what": "The container's list rows and detail band are sized below their own content, and round 6 paid for the gold column out of the other columns' width rather than ou",
+   "covered_by": [
+    "T4"
    ],
    "bucket": "build"
   },

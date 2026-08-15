@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-15T18:27:35Z",
+  "generated": "2026-08-15T19:09:29Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 95,
+  "verdicts_read": 96,
   "counts": {
-    "total": 90,
-    "open": 89,
+    "total": 91,
+    "open": 90,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -198,6 +198,11 @@
     "crime.witness.model": [
       "GAP-W1-stealth-crime-model-not-coupled-to-the-world"
     ],
+    "ui.menu.inventory": [
+      "GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry",
+      "GAP-W1-ui-container-clips-its-own-declared-text",
+      "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
+    ],
     "world.interior.continuity": [
       "GAP-W1-the-doorstep-cannot-get-you-back-in"
     ],
@@ -206,10 +211,6 @@
     ],
     "ui.style.diegesis": [
       "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them"
-    ],
-    "ui.menu.inventory": [
-      "GAP-W1-ui-container-clips-its-own-declared-text",
-      "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
     ],
     "ui.hud.minimalism": [
       "GAP-W1-ui-detectors-that-cannot-see",
@@ -270,6 +271,8 @@
     "corpus/90-verdicts/wave1/T4-r3.json: closure of GAP-W1-ui-journal-search-view-has-no-exit is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/T4-r4.json: closure of GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/T4-r4.json: closure of GAP-W1-ui-journal-search-view-has-no-exit is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/T4-r6.json: closure of GAP-W1-ui-container-clips-its-own-declared-text is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/T4-r6.json: closure of GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-00-r2.json: closure of GAP-W1-platform-prng-never-drawn is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-01-province-stream-r1.json: gap_closure references unknown gap_id GAP-W1-province-never-streamed.",
     "corpus/90-verdicts/wave1/W1-01-r2.json: closure of GAP-W1-world-trunk-road-below-the-waterline is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
@@ -373,6 +376,7 @@
     "STALE-RISK GAP-W1-ui-journal-search-view-has-no-exit: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-t4-r3, crit-t4-r4, crit-t4-r5). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-t4-r4, crit-t4-r5). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-t4-r5). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry: still open, and 6 later verdict(s) have been filed on the same piece or path since (critic-w1-21-r2, crit-t4-r1-3c19, crit-t4-r2, crit-t4-r3, crit-t4-r4, crit-t4-r5). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-platform-prng-never-drawn: still open, and 5 later verdict(s) have been filed on the same piece or path since (crit-w1-00-r2-k4m9, crit-w1-09-r2-3c19, crit-w1-09-r3-3c19, crit-w1-deploy-r2-3c19, crit-w1-30s-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-platform-save-drops-entity-prev-state: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-save-r1-live-audit, crit-w1-map-r2-a91f). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-world-trunk-road-below-the-waterline: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-01-r2-world-b4e2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
@@ -3698,6 +3702,98 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-seven-tenths-of-the-indoor-floor-is-at-the-top-of-the-light-scale"
+        }
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry",
+      "subsystem_path": "ui.menu.inventory",
+      "opened_wave": 1,
+      "opened_by": "crit-t4-r6",
+      "opened_in": "corpus/90-verdicts/wave1/T4-r6.json",
+      "piece_id": "T4-r6",
+      "severity": "blocking",
+      "what": "The container's list rows and detail band are sized below their own content, and round 6 paid for the gold column out of the other columns' width rather than out of the row's. Measured: pitching the three columns against usable=144 units instead of half=198 cut every column 27%, which truncated 3 of 4 visible names and — unreported by the builder — the WEIGHT column, rendering 'Bog-iron maul 11.5' as 'Bog-iron ... 11...'. The net matter loss drops container D2 from 0.1538 to 0.1459, across RI-UIX09 DN4's 0.15 hard-fail floor. Separately the band shows 2 of the 4-6 wrapped lines that 42 of 45 carried records need, violating RI-UIX03 C7.",
+      "why_it_matters": "The player opens a chest and cannot read what a thing weighs or what it is called, on the one screen whose entire job is deciding what to carry and what to leave behind.",
+      "remedy": {
+        "action": "In game/src/ui/screens/inventory.js drawContainer(), stop making the three columns compete inside a 182-unit row: either give the container screen its own wider inner width (the panel is 480 of 1920 px and RI-UIX03 P5's ceiling is 60% of screen AREA, so there is room), or right-align the weight+gold pair against the row's right edge and give the name column the remainder. Reflow container.band so the description fits by layout rather than by ellipsis.",
+        "targets": [
+          "game/src/ui/screens/inventory.js"
+        ],
+        "acceptance": "All of: (1) ZERO weight values ellipsised across all seven rows on both sides at the shipped ui-journal fixture — a number is drawn whole or the column is widened until it is; (2) at most 1 item name ellipsised across both sides; (3) container.band renders >= 4 wrapped lines, satisfying RI-UIX03 C7 for the 42 of 45 carried records needing 4+, by reflow and not by shrinking type below RI-UIX06's readability floor; (4) PRESERVATION per S59 — container D2 >= 0.15 AND >= 0.1538 (its value at 76cd4848), and level-up D2 not below 0.1495 — every number measured on a git worktree checked out at the DELIVERED commit and run through THAT WORKTREE'S OWN tools/ui/t4-r2-measure.mjs, with the manifest's commit field asserted equal to the delivered SHA before any number is believed.",
+        "ref_item": "RI-UIX09 DN4, RI-UIX03 C7/M-C3",
+        "estimated_size": "one screen, one file, plus a three-arm worktree measurement"
+      },
+      "remedy_action": "In game/src/ui/screens/inventory.js drawContainer(), stop making the three columns compete inside a 182-unit row: either give the container screen its own wider inner width (the panel is 480 of 1920 px and RI-UIX03 P5's ceiling is 60% of screen AREA, so there is room), or right-align the weight+gold pair against the row's right edge and give the name column the remainder. Reflow container.band so the description fits by layout rather than by ellipsis.",
+      "remedy_acceptance": "All of: (1) ZERO weight values ellipsised across all seven rows on both sides at the shipped ui-journal fixture — a number is drawn whole or the column is widened until it is; (2) at most 1 item name ellipsised across both sides; (3) container.band renders >= 4 wrapped lines, satisfying RI-UIX03 C7 for the 42 of 45 carried records needing 4+, by reflow and not by shrinking type below RI-UIX06's readability floor; (4) PRESERVATION per S59 — container D2 >= 0.15 AND >= 0.1538 (its value at 76cd4848), and level-up D2 not below 0.1495 — every number measured on a git worktree checked out at the DELIVERED commit and run through THAT WORKTREE'S OWN tools/ui/t4-r2-measure.mjs, with the manifest's commit field asserted equal to the delivered SHA before any number is believed.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-rows-WITHFIX-4x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-rows-NOFIX-4x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/crops/critic-container-band-WITHFIX-3x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/measure-truepin/measure-live-1920x1080.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/measure-deletefix/measure-live-1920x1080.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/measure-headfix/measure-live-1920x1080.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r6c/diff/spatial-diff.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-21-r2.json",
+          "run_id": "critic-w1-21-r2",
+          "at": "2026-08-08T03:46:17Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-detectors-that-cannot-see"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r1.json",
+          "run_id": "crit-t4-r1-3c19",
+          "at": "2026-08-15T09:10:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-hud-world-set-unbuilt-and-misplaced"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r2.json",
+          "run_id": "crit-t4-r2",
+          "at": "2026-08-15T11:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-journal-search-view-has-no-exit"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r3.json",
+          "run_id": "crit-t4-r3",
+          "at": "2026-08-15T12:55:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r4.json",
+          "run_id": "crit-t4-r4",
+          "at": "2026-08-15T14:30:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r5.json",
+          "run_id": "crit-t4-r5",
+          "at": "2026-08-15T17:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-container-clips-its-own-declared-text"
         }
       ]
     },

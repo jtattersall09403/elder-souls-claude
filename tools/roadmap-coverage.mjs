@@ -363,6 +363,11 @@ const GAP_MAP = {
   // REWARDED the regression (Ruling S58). Sizing the box was right; nothing reflowed inside it.
   'GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them': ['T4'],
   'GAP-W1-ui-container-clips-its-own-declared-text': ['T4'],
+  // T4 round 6. The successor to the row above: round 6 cleared the silent clip and paid for it by
+  // re-pitching every column 27% narrower, which truncates the WEIGHT column and costs 0.0079 of
+  // RI-UIX09 D2 — taking the container from 0.1538 (a pass) to 0.1459 (DN4 hard fail). Attributed
+  // by a three-arm worktree delete-the-fix, not asserted.
+  'GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry': ['T4'],
   // Protocol A r2 lost 5/5 again with F1/F2/F3 all landed and green. Measured cause: 45.7% of the
   // light is indirect and cannot be occluded, so shadows and AO act on 19% of the frame. F4 owns the
   // remedy; F2 and F3 carry the consequence.
