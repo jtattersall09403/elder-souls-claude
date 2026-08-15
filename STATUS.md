@@ -12,8 +12,8 @@
   first change all day that should be visible the moment you walk outside.
 - **Characters, round ten** — the new standing pose was judged and it lifted everyone off the floor;
   that, and an eye that still doesn't read as an eye.
-- **The water, round two** — round one was judged and failed; the sea still acts as a 17% mirror when
-  you look straight at it.
+- **Judging the water, round two** — the sea is visibly deeper and less washed-out at eye level, and
+  the stripes are still there.
 - **Judging the container screen fix** — and settling a worrying finding: a filed verdict's numbers
   don't reproduce on a byte-identical copy of the code it judged.
 
@@ -57,10 +57,10 @@
   "…" to tell you they were cut, and *the same sentence draws whole on the inventory screen* — and
   **all seven rows declare a gold price and not one of them draws it**, because the price column starts
   12 units past the edge of the box that clips it. **Both are now fixed** — every row shows its price,
-  and the description ends in a "…" when there is more, instead of just stopping. Two honest costs the
-  builder declared against itself: making the price column fit shrank *every* column by 27%, so long
-  item names now truncate harder (`Black-water draught` → `Black-wat…`); and most items still show only
-  2 of the 4–6 lines they need, because the box was not made bigger. Being judged now.
+  and the description ends in a "…" instead of just stopping. **But the fix was judged too, and failed
+  again**: making the price column fit shrank *every* column by 27%, so item names truncate harder and
+  the **weight** column now truncates too — `11.5` → `11…`, which is not a shortened label, it is a
+  wrong number. Round seven is on it, and truncation is now ruled out as an answer.
 - **⚠ That measurement scare is closed, and the answer was the opposite.** I said an hour ago that a
   filed verdict's numbers wouldn't reproduce and to distrust the screen scores. They reproduce
   **exactly**. The four "isolated" copies the builder compared had all quietly measured **the same
@@ -77,8 +77,13 @@
   the water is 16.9% *dimmer* and the fine-scale stripes are 5.8% *stronger*. Worst of all, **the four
   camera positions a player actually occupies are indistinguishable between before and after** — the
   whole visible effect lives at a straight-down camera 120 m up that the game never puts you in. Round
-  two is building the real fix now, and it is in the same file: the sea still composites a fixed **17%
-  mirror when you look straight at it**.
+  two has now landed and **this one you would see**: at eye level, where round one moved nothing, a
+  pale washed-out sheet with a smeared ghost of the tree trunks smeared across the foreground becomes
+  **deeper teal-green, with the reflection confined to the middle distance**. The mirror at normal
+  incidence went from 30% to 2%, which is what real water does. **The streaks are still there** — and
+  the builder proved my own diagnosis wrong: I said that fixed mirror was what drew them, and it isn't.
+  They survive its removal. What's left is that the reflection is drawn at half resolution and refreshed
+  only every six frames, in a file this piece doesn't own. Being judged now.
 - **The container screen prints the word `undefined`** as its title. Being fixed.
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its own author reported that honestly after catching that the *first* version of the measurement was
@@ -164,35 +169,20 @@
 
 ## Why the game doesn't look better — answered today, and it's one number
 
-The blind comparison was re-run and **we lost 5 of 5 again**, exactly as before three fixes landed.
-Every judge named the same two absences: no material differentiation, and no contact shadow. Those are
-the two things the fixes delivered and measured as delivered.
+Two independent blind comparisons against real reference photographs, and **we lost 5 of 5 both
+times** — the second one *after* three correct fixes landed. Every judge named the same two absences:
+no material differentiation, and no contact shadow. Those are exactly the two things the fixes
+delivered and measured as delivered.
 
-**The diagnosis is now in, and it is not that the fixes are broken. They work. They are being applied
-to 19% of the picture.**
+**The diagnosis: the fixes work, and they were being applied to 19% of the picture.** Measured on the
+exact window the judges looked at — **turning off every shadow in the game changed the judged pixels
+less than photographing the same frame twice did**, while the sky's ambient dome moved them **28 times
+as much as the entire shadow map**. The reason is that **46% of the light in a frame was indirect and
+none of it could be shadowed**: the sky's contribution is a dome that, in the renderer's own comment,
+contains *"no terrain, no settlement and no canopy"*, so it lights every surface as if nothing were in
+the way.
 
-Measured on the exact window the judges looked at, as change from the shipped game:
-
-| turning this off | changes the picture by |
-|---|---|
-| the **entire** sun shadow map | **0.78** |
-| the ambient occlusion | **0.92** |
-| *(re-taking the same photo, camera unmoved)* | *1.25* |
-| the sky's ambient dome | **21.79** |
-
-**Turning off every shadow in the game changes the judged pixels less than photographing it twice.**
-The sky dome moves them **28 times as much as the entire shadow map.**
-
-The reason: **46% of the light in a frame is indirect — and none of it can be shadowed.** The sky's
-contribution is an analytic dome that, in the renderer's own comment, contains *"no terrain, no
-settlement and no canopy"*. It lights every surface as if nothing were in the way. And the occlusion
-texture that would let a surface darken itself is switched off on **53 of 53** materials on screen.
-
-So shadows and occlusion only affect the fifth of the light coming straight from the sun, and the
-other four-fifths washes the result out. **That is why three correct fixes changed nothing a person
-could see** — and why the next work is the lighting recipe rather than more shadow features.
-
-**That rebalance has now landed, and it is four numbers.** Daytime key light ×3, sky ×0.75, fill
+**The rebalance has now landed, and it is four numbers.** Daytime key light ×3, sky ×0.75, fill
 ×0.75, ambient dome cut to a third; night got its own moon lever, because the moon had no control at
 all — at 19:30 the game was scaling a *sun* of intensity 0.0126 while the light actually carrying the
 frame was unreachable. **The thing to look at:** the shot that scores *worst* on the acceptance number
