@@ -1,0 +1,138 @@
+{
+  "figures": 41,
+  "distinct_signatures": 12,
+  "identical_groups": [
+    [
+      "saxhleel/saxhleel/outlaw",
+      "saxhleel/saxhleel/townsman"
+    ],
+    [
+      "humanoid/breton/mudborn",
+      "humanoid/none/mudborn",
+      "humanoid/argonian/legionary",
+      "humanoid/imperial/merchant",
+      "humanoid/dunmer/merchant",
+      "humanoid/argonian/villager",
+      "humanoid/argonian/townsman",
+      "humanoid/argonian/townsman",
+      "humanoid/argonian/townsman",
+      "humanoid/argonian/rootkeeper"
+    ],
+    [
+      "humanoid/imperial/clerk",
+      "humanoid/argonian/townsman",
+      "humanoid/argonian/legionary",
+      "humanoid/argonian/townsman"
+    ],
+    [
+      "saxhleel/saxhleel/fisher",
+      "saxhleel/saxhleel/merchant"
+    ],
+    [
+      "humanoid/dunmer/legionary",
+      "humanoid/argonian/villager",
+      "humanoid/argonian/villager"
+    ],
+    [
+      "humanoid/dunmer/townsman",
+      "humanoid/argonian/innkeeper",
+      "humanoid/argonian/innkeeper",
+      "humanoid/argonian/villager",
+      "humanoid/imperial/innkeeper",
+      "humanoid/argonian/villager",
+      "humanoid/argonian/dres-factor",
+      "humanoid/khajiit/sapcutter"
+    ],
+    [
+      "humanoid/argonian/innkeeper",
+      "humanoid/argonian/healer",
+      "humanoid/argonian/townsman",
+      "humanoid/dunmer/merchant",
+      "humanoid/argonian/legionary",
+      "humanoid/dunmer/enchanter"
+    ],
+    [
+      "saxhleel/saxhleel/archivist",
+      "saxhleel/saxhleel/townsman"
+    ]
+  ],
+  "c2": {
+    "pairs_n": 552,
+    "median_iou": 0.9109,
+    "max_iou": 1,
+    "worst_pairs": [
+      {
+        "yaw": 0,
+        "a": "humanoid/breton/mudborn",
+        "b": "humanoid/none/mudborn",
+        "iou": 1
+      },
+      {
+        "yaw": 0,
+        "a": "humanoid/breton/mudborn",
+        "b": "humanoid/imperial/merchant",
+        "iou": 1
+      },
+      {
+        "yaw": 0,
+        "a": "humanoid/breton/mudborn",
+        "b": "humanoid/argonian/rootkeeper",
+        "iou": 1
+      },
+      {
+        "yaw": 0,
+        "a": "humanoid/none/mudborn",
+        "b": "humanoid/imperial/merchant",
+        "iou": 1
+      },
+      {
+        "yaw": 0,
+        "a": "humanoid/none/mudborn",
+        "b": "humanoid/argonian/rootkeeper",
+        "iou": 1
+      },
+      {
+        "yaw": 0,
+        "a": "saxhleel/saxhleel/townsman",
+        "b": "saxhleel/saxhleel/archivist",
+        "iou": 1
+      },
+      {
+        "yaw": 0,
+        "a": "saxhleel/saxhleel/fisher",
+        "b": "saxhleel/saxhleel/merchant",
+        "iou": 1
+      },
+      {
+        "yaw": 0,
+        "a": "humanoid/argonian/townsman",
+        "b": "humanoid/argonian/legionary",
+        "iou": 1
+      },
+      {
+        "yaw": 0,
+        "a": "humanoid/argonian/townsman",
+        "b": "humanoid/dunmer/merchant",
+        "iou": 1
+      },
+      {
+        "yaw": 0,
+        "a": "humanoid/argonian/townsman",
+        "b": "humanoid/argonian/healer",
+        "iou": 1
+      },
+      {
+        "yaw": 0,
+        "a": "humanoid/argonian/townsman",
+        "b": "humanoid/dunmer/enchanter",
+        "iou": 1
+      },
+      {
+        "yaw": 0,
+        "a": "humanoid/argonian/legionary",
+        "b": "humanoid/dunmer/merchant",
+        "iou": 1
+      }
+    ]
+  }
+}

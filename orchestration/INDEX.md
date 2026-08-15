@@ -2,8 +2,8 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `ffc14133`: **1018 tools**, **159 reference items**,
-**58 pieces in flight**.
+drift. At `6126c792`: **1022 tools**, **159 reference items**,
+**56 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
 only works if it is cheap to read. **The full listings are generated beside this file and are
@@ -11,7 +11,7 @@ deliberately off the read path. Grep them; do not read them.**
 
 | what you want to know | the one line that answers it |
 |---|---|
-| does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1018, one line each |
+| does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1022, one line each |
 | which reference item governs this? | `grep -i <word> orchestration/index/ITEMS.md` — all 159, with their `judges:` paths |
 | is there a harness verb for it? | `grep -i <word> orchestration/index/HARNESS.md` — 445 verbs |
 | who is in this file right now? | `node tools/ownership.mjs --for <path>` |
@@ -98,9 +98,9 @@ Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 
 `grep -i <word> orchestration/index/TOOLS.md` for the one you want.
 
-`harness` 262 · `world` 164 · `quests` 65 · `analysis` 49 · `experience` 39 · `render` 38 · `visual` 37 · `dialogue` 28 · `lore` 27 · `journey` 23 · `weapons` 20 · `runpod` 16 · `lib` 15 · `ui` 15 · `audio` 13 · `capture` 13 · `combat` 12 · `camera` 11 · `platform` 11 · `touch` 11 · `blind` 10 · `prose` 9 · `uesp` 9 · `metrics` 7 · `progression` 7 · `composition` 6 · `playability` 6 · `stealth` 6 · `assets` 5 · `critic` 5 · `map` 5 · `readables` 4 · `coherence` 3 · `economy` 3 · `w1-26-r3` 3 · `forensics` 2 · `gamepad` 2 · `input` 2 · `merge` 2 · `corpus` 1 · `persistence` 1 · `refs` 1 · `w1-26-continuation` 1 · `w1-26-r4` 1
+`harness` 264 · `world` 164 · `quests` 65 · `analysis` 49 · `experience` 39 · `visual` 39 · `render` 38 · `dialogue` 28 · `lore` 27 · `journey` 23 · `weapons` 20 · `runpod` 16 · `lib` 15 · `ui` 15 · `audio` 13 · `capture` 13 · `combat` 12 · `camera` 11 · `platform` 11 · `touch` 11 · `blind` 10 · `prose` 9 · `uesp` 9 · `metrics` 7 · `progression` 7 · `composition` 6 · `playability` 6 · `stealth` 6 · `assets` 5 · `critic` 5 · `map` 5 · `readables` 4 · `coherence` 3 · `economy` 3 · `w1-26-r3` 3 · `forensics` 2 · `gamepad` 2 · `input` 2 · `merge` 2 · `corpus` 1 · `persistence` 1 · `refs` 1 · `w1-26-continuation` 1 · `w1-26-r4` 1
 
-> **284 of 1018 tools have no header comment**, so nobody can tell what they
+> **286 of 1022 tools have no header comment**, so nobody can tell what they
 > do without reading them. That is a rediscovery tax paid by every agent that meets one.
 
 ## Reference items — 159, by family
@@ -151,7 +151,7 @@ were stale — the second by a third. **Ask the tree, it costs one command:**
 `game/data/world/population-posts.json` is a **generated cache**, not a source. Never hand-edit it;
 re-run `node tools/world/build-population.mjs --write`.
 
-## In flight right now — 58 live pieces
+## In flight right now — 56 live pieces
 
 **Read the status file of anything near your files before you write**, and record your own as you
 go (`files_touched`, `files_claimed`). Three container restarts in one day killed every agent
@@ -162,11 +162,10 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 
 | piece | state | files claimed |
 |---|---|---|
-| `W1-F10-CHARACTER-CRITIC` | running | `orchestration/status/W1-F10-CHARACTER-CRITIC.json` `corpus/90-verdicts/wave1/W1-F10-CHARACTERS-critic.md` `corpus/90-verdicts/wave1/W1-F10-CHARACTERS-critic.json` `corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/` +2 |
+| `W1-F10-CHARACTER-CRITIC` | running | `orchestration/status/W1-F10-CHARACTER-CRITIC.json` `tools/visual/f10-character-sweep.mjs` `tools/visual/f10-silhouette.mjs` `corpus/90-verdicts/wave1/W1-F10-CHARACTERS.md` +2 |
+| `W1-F3-AMBIENT-FILL` | in_progress | `orchestration/status/W1-F3-AMBIENT-FILL.json` `tools/visual/w1-f3-ambient-fill.mjs` `corpus/90-verdicts/wave1/artifacts/W1-F3-AMBIENT-FILL/` `game/src/render/post/composite.js` +4 |
 | `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
-| `W1-F3-AMBIENT-FILL` | in_progress | `orchestration/status/W1-F3-AMBIENT-FILL.json` `game/src/render/post/composite.js` `game/src/render/renderer.js` `tools/visual/w1-f3-ambient-fill.mjs` +2 |
 | `W1-G1-CAMERA-OCCLUSION` | measuring | `orchestration/status/W1-G1-CAMERA-OCCLUSION.json` `tools/camera/cam-occlusion-walk.mjs` `corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/` |
-| `T4-critic` | measuring | — **declares nothing** |
 | `AUDIT-R1-LIST` | running | `orchestration/status/AUDIT-R1-LIST.json` `orchestration/NEXT-DISPATCH.md` `tools/dispatch-staleness.mjs` `reports/blog-feed.jsonl` |
 | `COST-G3` | running | `orchestration/status/COST-G3.json` `tools/rigour.mjs` `corpus/90-verdicts/RIGOUR-SCHEMA.md` |
 | `PLAN-COST-EXPERIMENTS-critic` | in_progress | `orchestration/status/PLAN-COST-EXPERIMENTS-critic.json` `orchestration/plans/COST-EXPERIMENTS.md` |
@@ -190,7 +189,6 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 | `W1-DLG-TOPIC-WEB` | building | `orchestration/status/W1-DLG-TOPIC-WEB.json` `game/src/character/converse.js` `game/data/dialogue/topics/` `game/data/npcs/` +2 |
 | `W1-DOOR-YAW-SWEEP` | in_progress | `orchestration/status/W1-DOOR-YAW-SWEEP.json` `tools/harness/door-yaw-sweep.mjs` `tools/harness/door-yaw-teardown.mjs` `tools/harness/door-yaw-consume.mjs` +7 |
 | `W1-MAP-DEFECTS-r2` | in_progress | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/blog-feed.jsonl` +1 |
-| `W1-UIX08-dialogue-window` | built-probe-running | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` `game/src/ui/screens/dialogue.js` `game/src/ui/screens/dialogue-links.js` +11 |
 | `critic-w1-04-r6` | abandoned | `corpus/90-verdicts/wave1/W1-04-r6.md` `corpus/90-verdicts/wave1/W1-04-r6.json` `orchestration/status/critic-w1-04-r6.json` `tools/world/critic-` +2 |
 | `critic-w1-23-r5` | abandoned | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` `corpus/90-verdicts/wave1/W1-23-r5.md` `corpus/90-verdicts/wave1/W1-23-r5.json` +2 |
 | `critic-w1-26-r4` | abandoned | `corpus/90-verdicts/wave1/W1-26-r4.md` `corpus/90-verdicts/wave1/W1-26-r4.json` `orchestration/status/critic-w1-26-r4.json` `tools/journey/critic-` +1 |
