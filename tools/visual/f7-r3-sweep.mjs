@@ -178,8 +178,19 @@ function shoreProfile(png, water) {
   for (let b = 1; b <= MAXD; b++) prof.push(cnt[b] >= 40 ? +(sum[b] / cnt[b]).toFixed(3) : null);
   const usable = prof.map((v, i) => [i + 1, v]).filter(([, v]) => v !== null);
   if (usable.length < 12) return { profile: prof, gradient_width_px: null, reason: `only ${usable.length} distance bins carry >= 40 px; the waterline in this frame is too short to profile` };
-  const first = usable[0][1], last = usable[usable.length - 1][1], span = last - first;
-  if (Math.abs(span) < 0.6) return { profile: prof, gradient_width_px: null, near_shore_luma: first, open_water_luma: last, span: +span.toFixed(3), reason: 'near-shore and open-water luma differ by < 0.6/255; there is no transition to measure the width of' };
+  // THE OPEN-WATER END MUST BE A PLATEAU, NOT THE LAST BIN. The first version of this measure
+  // took L(48) as the open-water value; on a profile that rises to a plateau and then drifts back
+  // down (which is what the deck vista actually produces — the far water is dimmer than the
+  // mid-water) the last bin can sit level with d = 3, and the width collapses to 1 px whatever
+  // the arm did. Caught in the band run before any arm was measured. The plateau is the median of
+  // the 24-48 px bins; the near-shore end is the mean of the first two.
+  const nearBins = usable.filter(([d]) => d <= 2).map(([, v]) => v);
+  const plateauBins = usable.filter(([d]) => d >= 24).map(([, v]) => v).sort((a, b) => a - b);
+  if (!nearBins.length || plateauBins.length < 6) return { profile: prof, gradient_width_px: null, reason: 'not enough near-shore or open-water bins to anchor the two ends of the profile' };
+  const first = nearBins.reduce((a, b) => a + b, 0) / nearBins.length;
+  const last = plateauBins[Math.floor(plateauBins.length / 2)];
+  const span = last - first;
+  if (Math.abs(span) < 0.6) return { profile: prof, gradient_width_px: null, near_shore_luma: +first.toFixed(3), open_water_luma: +last.toFixed(3), span: +span.toFixed(3), reason: 'near-shore and open-water luma differ by < 0.6/255; there is no transition to measure the width of' };
   const at = (frac) => {
     const target = first + span * frac;
     for (const [d, v] of usable) if (span > 0 ? v >= target : v <= target) return d;
@@ -187,7 +198,7 @@ function shoreProfile(png, water) {
   };
   const d10 = at(0.10), d90 = at(0.90);
   return {
-    profile: prof, near_shore_luma: first, open_water_luma: last, span: +span.toFixed(3),
+    profile: prof, near_shore_luma: +first.toFixed(3), open_water_luma: +last.toFixed(3), span: +span.toFixed(3),
     d10_px: d10, d90_px: d90, gradient_width_px: Math.max(1, d90 - d10),
     note: 'width is the 10%-90% rise distance of mean luma vs distance-from-land inside the water mask. A hard intersection line is 1-2 px. RI-VIS04 §9 TELL names the hard line as the defect; M12 ShoreDelta scores it HIGH, which is why both are printed.',
   };
