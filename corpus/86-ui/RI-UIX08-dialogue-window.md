@@ -98,6 +98,14 @@ Measured from REF-A12c, corroborated against `openmw_dialogue_window.layout`.
 There is no seventh element. No portrait, no relationship meter, no reply-tone icons, no timer, no
 "[Persuade]" chrome — persuasion is an ordinary line at the top of the topic list (§D2).
 
+> **AMENDED 2026-08-15 by `W1-UIX08-CENSUS-ROUTE` — see §H.** Nothing above is struck and nothing
+> above is weakened; §A remains the bar for **a conversation with somebody in the world**, which is
+> the only thing this item contemplated when it was written. §H adds the one other place this
+> window is now used — **character creation** — states which of these six elements are present
+> there and which are *required to be absent*, and keeps "no seventh element" binding in both
+> modes. A critic scoring a census capture against §A alone will score the wrong thing; read §H
+> first and score census frames against it.
+
 ### §B — Where it all is. Geometry, from the layout file, verbatim.
 
 `openmw_dialogue_window.layout`, window nominal **588 × 433**, `MinSize` **380 × 230**:
@@ -247,6 +255,137 @@ participant.*
 narrowest supported viewport showing the fixed column starves the prose below `RI-UIX06`'s
 readability floor — in which case the column gets a min/max clamp, not a percentage.*
 
+### §H — Census mode: the same window, running character creation *(AMENDMENT, added 2026-08-15)*
+
+**Status: amendment, not a rewrite.** §A–§G are unaltered. This section is additive and it binds
+only frames in which the character-creation scene is the thing being drawn. Author:
+`W1-UIX08-CENSUS-ROUTE`, `provenance: constructed` for this section only — §A–§G remain
+`provenance: measured` against the plates in §0, and **no reference plate shows Morrowind's
+character creation inside its dialogue window**, because in Morrowind it is not (see §H5).
+
+**Why it exists.** The owner played the deployed build and reported: *"It also wasn't being used for
+the dialogue in the character creation/new game flow, which it should be."* That is the first
+conversation any new player ever has, and it was the last one still drawn by `game/src/render/ui.js`'s
+bottom-anchored vellum reply panel — the surface this item's hard fail is written about. The game
+presented two dialogue interfaces and the worse one went first.
+
+The previous piece (`orchestration/status/W1-UIX08-INPUT-FIX.json`, `fault_2_ruling`) declined to
+route it and was right to, on the grounds that a **partial** route would put both surfaces inside one
+five-minute scene. It named the blocker precisely: the census asks in shapes the window had no
+element for. This section rules on those shapes so the route can be complete.
+
+**What the census actually asks.** Counted from `game/data/dialogue/topics/writ-house.json` on
+2026-08-15 by `node -e` over the parsed `nodes` array — 22 nodes: **8 `choice`, 4 `pick`, 3 `text`,
+1 `questionnaire`** (one node, ten dilemmas), **1 `observed`**, 2 conditional and 5 with no input at
+all (`hold.come-to`, `hold.wake`, `hold.out`, `writ.enter`, `writ.strange-check`).
+
+---
+
+**H1 — Which of §A's six elements are present, and which are *required* to be absent.**
+
+| §A element | Census mode | Why |
+|---|---|---|
+| 1. the floating panel | **present, unchanged** | §D6 and §E1 are exactly as valuable here: creation happens in the barge hold and in the Writ House, and `RI-JRN01` M5 independently requires the world visible behind it |
+| 2. the title strip, speaker centred | **present, unchanged** | `Jeeh-Ei` in the hold, `Warden-Scribe Tuleeh-Ma` at the desk. The scene has always attributed every line to somebody in the room (`RI-JRN01` O7) |
+| 3. the history pane | **present, and it is a gain** | The vellum panel showed one node at a time. §D3's running transcript means the ten dilemmas and her replies to them accumulate as a conversation you can scroll back through |
+| 4. the topic column | **present, carrying the node's answers** (§H2) | |
+| 5. the disposition bar | **ABSENT, REQUIRED** | Before the writ is stamped there is no character for anybody to have a disposition toward. Drawing one would put `sim.player`'s boot default on screen as a fact about a person who does not exist yet — the same defect `W1-26` r3 photographed on the title screen. `RI-DLG04` has nothing to move here |
+| 6. the Goodbye button | **ABSENT, REQUIRED** | There is no way out of character creation. §D5 says Goodbye is *"the only way out that the window advertises"*; where there is no way out it must advertise none, and a Goodbye drawn here would be `CRITIC-DOCTRINE` §1.2b's **control that is drawn and does nothing** — a hard fail, and worse than an absent control because it lies to the player |
+
+**Absent means absent from the element census, not merely unpressable.** A greyed-out Goodbye is the
+same lie with an excuse attached.
+
+**There is still no seventh element.** The two shapes the window had no affordance for are expressed
+*inside* element 4, and that is the substance of H2. Everything §A forbids is still forbidden here:
+no portrait, no progress meter, no "Step 3 of 7" (`RI-JRN01` O8 forbids it independently), no timer.
+
+---
+
+**H2 — The two new row semantics inside element 4, and neither is a new element.**
+
+**H2a — the multi-select mark, for the four `pick` nodes.** `writ.class-custom-favoured` and
+`-neglected` take 2, `-secondary` takes 2, `-primary` takes 3. A window that cannot show which you
+have already named is a window those nodes cannot be answered in.
+
+The mark is a **`· ` prefix inside the row's own text**, not a second colour. §E3 measures that every
+column entry is one bronze and §F1 rules read/unread marking off; a picked mark drawn as a colour
+would be indistinguishable from the affordance §F1 exists to prevent. A prefix lives in the row's
+`text`, so it is in the declared element census a probe reads and not only in the pixels.
+
+The count is reported by **her**, in the prose, from authored text: `writ-house.json` supplies the
+line and `game/src/character/scene.js` fills the number (*"She is waiting for 2 more."*). **No
+sentence anywhere on this route is composed by the engine out of ids, stat names or numbers** —
+that is `buildCensusModel`'s own standing rule and the reason `awaiting`, a developer's sentence
+about a corpus item, must never reach a draw call.
+
+**H2b — the typed name, for the three `text` nodes.** The typed buffer is a **row in the column,
+above §D2's rule**, drawn as the typed characters followed by the `▁` caret.
+
+It goes above the rule because §D2 already divides that column into *what you can **do** with this
+person* and *what you can **ask** them about the world*. Telling somebody your name is the first.
+This is the section the reference itself puts `Persuasion` and `Barter` in; it is not a new section
+and not a new element.
+
+It must be operable by **every** device, and the two routes are the ones the scene already had:
+type on a keyboard (`RI-JRN01` O17 — *"typing on a keyboard still works and overrides whatever is
+highlighted"* — unchanged), or walk the caret onto one of the ledger names the node offers and
+confirm that instead. **A build in which the name can only be typed fails O17's stick-and-a-button
+clause; a build in which it can only be chosen from the ledger fails O17's keyboard clause.**
+
+---
+
+**H3 — Census-mode affordances may not leak into an ordinary conversation, and this is measurable.**
+
+A conversation frame must declare **six** elements including the disposition meter and the exit, and
+must contain **no** picked mark and **no** typed row. A census frame must declare **four** and no
+`dialogue_exit`. The two modes are distinguishable in the published metrics (`census: true`), which
+also keeps census frames from being mistaken for §G's ablated arm — both report `links_enabled:
+false`, for entirely different reasons: the ablated arm has had the mechanism removed, the census has
+no topic vocabulary in existence yet for anything to be lit *with*.
+
+**H4 — What a critic must now measure.** These are additions to the Comparison method below, and
+they are `1.2b` checks — the screen must **work**, not merely look right.
+
+1. **The per-node element census.** Walk the whole creation scene and record, for every node the
+   graph reaches, which surface drew it and which elements it declared. **Every node on the new
+   window, or none.** A scene split across two dialogue surfaces is a hard fail of this section
+   whichever way the split falls, and it fails even if both halves are individually correct.
+2. **Operate every affordance of every input shape** through the real handler — a `choice`, all ten
+   `questionnaire` dilemmas or a stated sample, an `observed`, a `pick` taken to completion *and*
+   un-picked at least once, and a `text` node committed **both ways** (typed, and from the ledger).
+   Record the state after each, per §1.2b clause 5.
+3. **The absences, positively.** Assert `dialogue.disposition` and `dialogue.goodbye` are not in the
+   census element census, and that both **are** in an ordinary conversation's, in the same run. An
+   absence measured without its presence-control is not a measurement.
+4. **Delete-the-fix.** The route is one boolean (`CENSUS_WINDOW` in `game/src/engine.js`). With it
+   false the census must return to the vellum panel — every node, not some — which is what proves
+   the pass above was carried by this change and not by something else.
+
+**H5 — What this section deliberately does not claim, and the honest weakness in it.**
+
+**Morrowind does not do this.** Its character creation is its own set of full-screen menus — the
+class picker, the birthsign picker, the specialization lists — and `REF-A12b-char_creation__mw-
+132183942.jpg` shows one of them: a panel over Seyda Neen, not a dialogue window. So **§H has no
+reference plate behind it and cannot have one**, and it must not be read as measured. What it is
+instead is this build's own ruling, and the argument for it is `RI-JRN01`'s, not Morrowind's: our
+creation scene is *a conversation with two women who write you down*, which Morrowind's is not, and a
+conversation belongs in the conversation window.
+
+**The reversible ruling, and the evidence that would overturn it.** Ruling: creation runs on this
+window, in the shape above. It is overturned by a §G-form human gate in which a participant who has
+played both reports the creation scene as **worse** to use on this window than on the vellum panel —
+most plausibly on the typed name, which is the one affordance with no reference behind it and the one
+place a player could reasonably expect a text field rather than a row. If that is what a gate finds,
+the fix named in advance is a text affordance defined here as a **seventh element scoped to census
+mode**, which is a deliberate amendment to §A and must be argued as one — not a quiet addition.
+
+**And one thing this section does not fix.** The census now inherits the window's geometry unchanged,
+including its height, at the paused hand-back nodes where the scene has given the body back and the
+player is walking (`hold.out`). The vellum panel there was a bottom strip; this is a centred panel.
+It is translucent and the world is visible through it (§E1), and it takes no input, but a reviewer
+who thinks a centred panel is the wrong shape for a frame in which the player is walking is looking
+at a real question this amendment does not answer.
+
 ## Comparison method
 
 1. **Static, no browser.** Open the six files in §0. For each of §A's six elements, name the
@@ -283,6 +422,17 @@ readability floor — in which case the column gets a min/max clamp, not a perce
 **Hard fail (caps the item at 2 regardless of every other row):** the window renders a list of
 selectable *replies* instead of prose with inline links. That is the current build's state, it is
 the reason this item was written, and no amount of correct palette redeems it.
+
+**Second hard fail, added 2026-08-15 by the §H amendment (also caps the item at 2):** the game
+presents **more than one dialogue surface**. Either the character-creation scene is drawn on a
+different surface from the rest of the game, or it is split across both within one scene. The owner
+met the first of those in the deployed build; the second is the failure the previous piece refused to
+ship and is the worse of the two, because it makes the inconsistency visible inside five minutes.
+
+**The native scale above is unchanged and stays out of 48.** §H is a **gate**, like §G — it can cap
+the item and it can fail it, and it adds no axis to average against. This is deliberate: an amendment
+that quietly re-based the denominator would make every score recorded before today incomparable with
+every score recorded after it.
 
 **Native → ladder anchors — the row mandated by `SCORING.md` §1.2 and §1.2a.** The native scale is
 the six mechanical rows above (0/4/8 each, so a native 0–48) **capped by §G**. Derived from this

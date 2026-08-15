@@ -2,8 +2,8 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `2f3c7511`: **1036 tools**, **159 reference items**,
-**57 pieces in flight**.
+drift. At `9ab17331`: **1036 tools**, **159 reference items**,
+**56 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
 only works if it is cheap to read. **The full listings are generated beside this file and are
@@ -152,7 +152,7 @@ were stale — the second by a third. **Ask the tree, it costs one command:**
 `game/data/world/population-posts.json` is a **generated cache**, not a source. Never hand-edit it;
 re-run `node tools/world/build-population.mjs --write`.
 
-## In flight right now — 57 live pieces
+## In flight right now — 56 live pieces
 
 **Read the status file of anything near your files before you write**, and record your own as you
 go (`files_touched`, `files_claimed`). Three container restarts in one day killed every agent
@@ -166,7 +166,6 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 | `T4-r2-builder` | in_progress | `game/src/ui/icons.js` `game/src/ui/hud-world.js` `game/src/ui/compass.js` `game/src/ui/hud.js` +14 |
 | `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
 | `W1-UIX08-CENSUS-ROUTE` | in_progress | `orchestration/status/W1-UIX08-CENSUS-ROUTE.json` |
-| `I2-CAPTURE-SANITY` | in_progress | `orchestration/status/I2-CAPTURE-SANITY.json` `tools/visual/frame-liveness.mjs` `tools/visual/deck.mjs` `tools/visual/deck-motion.mjs` +2 |
 | `W1-G1-CAMERA-OCCLUSION` | measuring | `orchestration/status/W1-G1-CAMERA-OCCLUSION.json` `tools/camera/cam-occlusion-walk.mjs` `corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/` |
 | `AUDIT-R1-LIST` | running | `orchestration/status/AUDIT-R1-LIST.json` `orchestration/NEXT-DISPATCH.md` `tools/dispatch-staleness.mjs` `reports/blog-feed.jsonl` |
 | `COST-G3` | running | `orchestration/status/COST-G3.json` `tools/rigour.mjs` `corpus/90-verdicts/RIGOUR-SCHEMA.md` |
