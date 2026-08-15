@@ -8,8 +8,8 @@
 
 **Making the game look like a game** — four agents, all on ring 1:
 
-- **Making the sun the dominant light.** This is the one that matters. See the section below: shadows
-  and occlusion only reach a fifth of the picture, and this is the fix for that.
+- **Judging the sun.** The key-light rebalance landed — this is the one that matters, and it is the
+  first change all day that should be visible the moment you walk outside.
 - **Judging the character work** — an independent critic, shooting the new standing pose on real
   hardware, which the builder shipped without a photograph and said so itself.
 - **The water, round two** — round one was judged and failed; the sea still acts as a 17% mirror when
@@ -81,39 +81,21 @@
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its own author reported that honestly after catching that the *first* version of the measurement was
   void: 93.7% of the improvement it was about to claim reproduced with no fix in the tree at all.
-- **The characters were being drawn inside-out — fixed, and now confirmed by eye.** Your winding tip
-  was right and bigger than the report you sent: **153,344 of 227,850 triangles (67.3%)** had normals
-  disagreeing with winding; the body meshes were **13 of 13 inverted**. Front faces were culled, so you
-  were seeing the inside of the far surface. Three generators, each wrong differently. Now zero.
-  **Photographed on real hardware, before and after, 332 frames.** A market stand in Gideon that held
-  *chrome-and-glass skeletons with black shards jutting from their backs* now holds solid people in
-  blue, green and brown clothes. The NPC a critic called "a bald egg head, a wooden artist's mannequin"
-  is a coherent matte figure. A lizard NPC went from a chrome insect to a green-coated figure with a
-  snout.
-  Also fixed: **44% of the cast was on a generic body with no eye geometry at all** (79 → 260 NPCs
-  routed correctly), and **everyone was the wrong height** (0 of 41 in the 7–8 head band → 41 of 41).
-- **Characters have clothes with detail on them now.** The flat-colour problem turned out to be two
-  things, both already paid for: all 17 characters **already declared** a palette and a wear level and
-  **nothing read them**; and the body's texture coordinates were wrong by **5.5×**, so the authored
-  linen and leather — bound and on disk the whole time — were pasted about eight texels to the
-  millimetre, which averages out to a single flat colour. Fixed: a smith NPC that was one uninterrupted
-  tone from shoulder to ankle now has a sash with a bone toggle, three cord rings per forearm, a hem, a
-  yoke and tonal variation. **A background NPC in the same frame gained a sash too — nobody targeted
-  it**, which is the shared body plan working as intended.
+- **The characters were being drawn inside-out — fixed, and confirmed by eye.** Your winding tip was
+  right and bigger than the report you sent: **153,344 of 227,850 triangles (67.3%)** had normals
+  disagreeing with winding, body meshes **13 of 13 inverted**, three generators each wrong differently.
+  Now zero, photographed on hardware over 332 frames. A Gideon market stand that held *chrome-and-glass
+  skeletons with black shards jutting from their backs* now holds solid people in blue, green and brown
+  clothes.
+- **Four more things about the cast, all fixed and all from one shared body plan.** 44% of them were on
+  a generic body with **no eye geometry at all** (79 → 260 NPCs routed correctly); **everyone was the
+  wrong height** (0 of 41 in the 7–8 head band → 41 of 41); the clothing textures were pasted **5.5×
+  too fine**, which averages to a flat colour — a smith who was one tone shoulder-to-ankle now has a
+  sash, cord rings, a hem and a yoke, and *a background NPC in the same frame gained a sash nobody
+  targeted*; and the eyes went from cream googly balls to dark sockets.
 - **People stand on the ground now, and it is photographed.** NPC positions came from one authored
   constant per settlement, never compared to the terrain. At Lilmoth, of 31 people drawn, **12 were
-  underground and 15 were in the air (worst 35 metres up)**; four of thirty-one stood on the ground.
-  Now zero and zero, confirmed on hardware — in the before frame people are simply *absent*, in the
-  after frame they stand beside the wall. It turned out to be **mostly a Lilmoth defect**: five of the
-  eight towns were already fine.
-- **The eyes are the clearest win of the day.** The same Imperial goes from two cream googly eyeballs
-  to two dark sockets, and against the reference photograph the new version is on the right side of it
-  where the old one was its opposite. Two caveats, both found by the agent that made it: it may have
-  overshot — under a hat brim the eye can vanish entirely — and **the player character got nothing from
-  it**, because the fix landed in the human block and the player is a saxhleel.
-- **A new defect nobody had reported: a wide-brim hat is drawn as a flat hexagonal plank across the
-  eyebrows**, hiding the wearer's eyes completely. At conversation distance that is more disfiguring
-  than either thing this round fixed.
+  underground and 15 were in the air, worst 35 metres up**. Now zero and zero, confirmed on hardware.
 - **The bodies were measurably cones — now they have hips and a waist.** Nobody could say *how* wrong
   the torso was, because no instrument in the project could tell a cone from a body. One was written,
   and the answer was blunt: the **hip was 18% narrower than the waist on 11 of 11 figures**, and the
@@ -201,6 +183,26 @@ texture that would let a surface darken itself is switched off on **53 of 53** m
 So shadows and occlusion only affect the fifth of the light coming straight from the sun, and the
 other four-fifths washes the result out. **That is why three correct fixes changed nothing a person
 could see** — and why the next work is the lighting recipe rather than more shadow features.
+
+**That rebalance has now landed, and it is four numbers.** Daytime key light ×3, sky ×0.75, fill
+×0.75, ambient dome cut to a third; night got its own moon lever, because the moon had no control at
+all — at 19:30 the game was scaling a *sun* of intensity 0.0126 while the light actually carrying the
+frame was unreachable. **The thing to look at:** the shot that scores *worst* on the acceptance number
+is the one where the fix visibly worked — flat shadowless olive ground before, a large soft cast
+shadow with readable stonework after.
+
+**That is because the acceptance number I wrote was wrong, and I have ruled it void.** It asked how
+much the picture changes when you switch the sun off — but *a pixel in shadow does not change when you
+switch the sun off*, so the measure shrinks exactly as the fix succeeds and the build is penalised for
+casting shadows. Replaced with the same test taken **only on the lit parts of the frame**, plus a
+clause that the shadowed area must not shrink. **This is the fourth metric in two days that got better
+when the game got worse, or worse when it got better, and three of the four were mine.**
+
+**Two honest limits, both the builder's own words.** Only **2 of the 5** outdoor lighting recipes were
+rebalanced; dawn and dusk (roughly 05:20–06:40 and 17:20–18:40) still carry the old flat look, and
+applying the new numbers there was *measured and refused* because it crushed the bottom tenth of the
+frame to black. And there is **not one moving frame** in the whole piece — nine camera setups, all
+stills. A critic is shooting it in motion now.
 
 ## The honest standard
 
