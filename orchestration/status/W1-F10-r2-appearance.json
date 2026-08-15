@@ -1,0 +1,92 @@
+{
+  "task_id": "W1-F10-r2-appearance",
+  "roadmap_item": "F10",
+  "role": "appearance evidence (not a builder, not the round-2 critic)",
+  "state": "delivered — hardware before/after captured, opened and judged; three named gaps remain",
+  "date": "2026-08-15",
+  "branch": "codex/wave1-build-experiment",
+
+  "could_not_do": [
+    "47 OF THE 166 FRAMES IN EACH ARM CONTAIN NO SUBJECT, and I found that by opening frames, not by a gate. Two of the seven selected NPCs — `Archein Salts-Her-Own-Reeds` (argonian) and `Dead-Water Koor-Nakh` (naga) — are returned by `listEntities()` at [-2.399, 0, 3.101] and [-0.626, 0, -2.824], i.e. within four metres of the world origin, which in Black Marsh is open sea. Every frame of them is water and sky: 8 orbit + 2 close-up each, plus 20 idle frames of the argonian = 40. A further 7 orbit angles put the camera inside a building wall (Weeja-Sen at yaw 225/270/315, Halvo Nirith at yaw 045/090/135/180). 119 of 166 frames per arm do contain their subject. THE CONSEQUENCE THAT MATTERS: of the four reptilian-family subjects I selected, only two (the player and Weeja-Sen) were actually photographed, so the reptilian family is evidenced by two figures and not four.",
+    "renderCpuMs — THE FRAME TIME ITSELF — IS REFUSED BY THE HARNESS, ON HARDWARE. `getPerfStats()` returns `renderCpuMs: 0` with `_unmeasurable.renderCpuMs = 'Tier-H. This container is SwiftShader…'`, on a run whose own WebGL context reports `ANGLE (NVIDIA, Vulkan 1.3.277 (NVIDIA RTX A4500))`. The gate is written against the container, not against the renderer string the same page already publishes, so no paid GPU run can obtain a frame time through this verb. I did not patch it — `game/src/engine.js` is not mine and a sibling is live in `game/src/ui/`. I report the two indirect proxies I do have (below) and label the frame time UNMEASURED.",
+    "NO BLIND COMPARISON AGAINST A SKYRIM OR ESO PLATE. `RI-VIS08`'s comparison method runs its blind pass 'if and only if a usable reference image exists' and refuses Morrowind references for characters. The character reference set is `I5` and is still being acquired. So my answer to 'does it look better' is a comparison of our tree against our own tree, which is the question the orchestrator asked; it is NOT an answer to 'is it at the level of Skyrim and ESO', and nothing here should be read as one.",
+    "THE PLAYER'S FACE IS STILL UNPHOTOGRAPHED AT CLOSE RANGE. The two close-ups I take are at camera bearings 20° and 200° around the head, and in third person the player yaws with the camera, so both land on the muzzle in near-profile with a crest and a shield in the way. The eight-angle orbit does resolve eight sides of the player at full-figure framing (the yaw-180 plate is a front view), but the FACE slot does not. An NPC has no such problem and Corvus Aldeyn's head is photographed properly from both bearings.",
+    "I DID NOT RUN THE FIVE UNRUN RI-VIS08 STATIC CHECKS (B1 faceting, B3 material separation, B4 texel density, B5 contact shadow, B6 subsurface). They were out of scope for this piece and remain unrun, as the builder said.",
+    "I DID NOT ADOPT `tools/visual/frame-liveness.mjs`. Its subject half false-REDs on real captures (16 of 16, per the builder) and `I2` is rebuilding it. I computed the HAZARDS §15 degeneracy statistics myself, per frame, in `tools/visual/f10-r2-pair-sheet.mjs`, and I judged subject presence by opening frames. Where I say a frame is empty, I looked at it."
+  ],
+
+  "the_answer": {
+    "does_it_look_better": "YES, AND VISIBLY — this is not a marginal call and it does not need a metric to see. The single clearest plate is `sheets/orbit-gideon.png`, where Belliene's stand in Gideon holds four or five townspeople in one frame: BEFORE they are chrome-and-glass skeletons with metallic segmented limbs and black shards jutting from their backs; AFTER they are solid people standing in blue, green and brown clothes. Corvus Aldeyn — the figure the round-1 critic named as 'a bald egg head with no face… a wooden artist's mannequin' — goes from a shattered mirror-ball head and a chrome sphere for a shoulder to a matte, opaque, coherent human figure with a readable head, neck, shoulder, arm and leg. Weeja-Sen goes from a chrome-plated insectile thing to a green-coated lizard person with a proper snout. That is the winding fix, seen on hardware, on both body families, on the player and on four NPCs.",
+    "what_is_still_wrong": [
+      "THE HEADS ARE STILL EGGS. The seven landmarks are in the geometry and they do not read at conversation distance. At the close-up framing (`sheets/faces.png`, subject ~40% of frame height) every humanoid head is a smooth ovoid with a cap; a brow or a jaw shows only as a soft shading gradient, and no eye is legible on any humanoid subject. The reptilian heads read better because the snout is a large silhouette feature. The critic's 'bald egg head' complaint is REDUCED, NOT ANSWERED.",
+      "THE BODIES HAVE NO MASS. Every figure is a narrow column. At yaw 180 Corvus is roughly 1 part wide to 11 parts tall; arms hang as straight cylinders with no elbow break, and there is no visible hand or foot at any angle. The proportion fix put the figures in the 7.0–8.0 head band and the figures are now correctly TALL, but nothing gave them width or depth.",
+      "THE SURFACES ARE FLAT AND UNIFORM, AND IN ONE RESPECT THE AFTER LOOKS PLAINER THAN THE BEFORE. Before the fix the renderer was drawing the inside of the far surface, which meant several garment and skin layers were visible at once and the figure looked busy. Correctly wound, each figure is one colour of cloth over one colour of skin, with no seam, trim, belt, fold or wear anywhere. THE HONEST READING: the geometry defect is fixed and what it was hiding is that there is no material work at all. That is the next gap, and it is bigger than the one just closed.",
+      "THE WALK IS A GLIDE. `sheets/walk-player.png` is 24 captured frames over 72 sim frames with a tracking camera. Across the six frames where the player is walking directly away, the silhouette is unchanged — no leg swing breaks the robe column, no shoulder counter-rotation, no head bob. This is the same defect as the verdict's hip tilt 0.000°, seen rather than measured, and it is unchanged by this round.",
+      "THE STREETS READ AS EMPTY. `sheets/street.png` is four settlements photographed from 9 m with 60–136 NPCs reported in range, and in most of the twelve plates the player is the only person visible. Whatever this is — placement, culling distance, or NPCs standing inside buildings — it is not a character-model problem and it is not changed by this round, but it is the reason a player would say the world feels unpeopled."
+    ],
+    "score_i_would_give_it": "I am not the round-2 critic and I do not issue the verdict. If I had to put a number beside the round-1 ART 1 / FIDELITY 3: the ART axis has genuinely moved — a figure that reads as a clothed person rather than a chrome skeleton is worth several points — but it is nowhere near the wave-1 gate of 7, because the heads, the mass and the materials are all still absent. The bar is not met and nobody should read this pack as saying it is."
+  },
+
+  "method": {
+    "arms": "Two RunPod Pods, both NVIDIA RTX A4500 SECURE at $0.250/hr, run in parallel so the two arms could not drift apart in time. after = `84ebc58c1e4b2a216c5dee1ca8712c112a9ec7e3`. before = `4dcd26d01ffb2d5118594843da9bd714737978f9`, kept at `refs/control/f10-r2-baseline`.",
+    "the_control_is_a_real_delete_the_fix_and_only_of_the_code_under_test": "The before arm is NOT an old commit. It is HEAD's tree with `game/src/render/` swapped for `f8f6b44b`'s, built with `git commit-tree` against a temporary index so the working tree was never touched. `git diff --name-status HEAD 4dcd26d0` returns exactly four paths — `actor.js` M, `lib/race-art.js` D, `lib/rigs.js` M, `renderer.js` M — so every sibling's UI work, the world, the data and MY OWN INSTRUMENT are identical in both arms and only the character render code differs. HAZARDS §12: `HEAD` is not the baseline; the baseline is the pinned sha, and the instrument is held constant while the code under test is reverted.",
+    "why_two_pods_and_not_one": "`--revision` snapshots one committed tree with `git archive`; there is no way to carry two trees to one Pod. Two Pods cost $0.04 in total and buy a fully frozen pair of arms. HAZARDS §15a: both were pinned with `--revision`, so neither inherited a sibling's uncommitted edits.",
+    "hardware_attested_not_claimed": "Both manifests carry the renderer string read off the live WebGL context: after `ANGLE (NVIDIA, Vulkan 1.3.277 (NVIDIA NVIDIA RTX A4500 (0x00002232)), NVIDIA)`, before `ANGLE (NVIDIA, Vulkan 1.4.303 (NVIDIA NVIDIA RTX A4500 (0x00002232)), NVIDIA)`, both classified `HARDWARE — valid for appearance claims`. `--require-hardware` was set, so a SwiftShader fallback would have aborted the run rather than mislabelled it.",
+    "subject_selection_is_arm_symmetric_by_construction": "Subjects are enumerated from `listEntities()` across four stands, sorted by (family, race, eid) and taken distinct-race-first, up to three per family, with `blackwood-company-factor` pinned as mandatory. The family test is a LOCAL race-string table, deliberately not an import of `game/src/render/lib/race-art.js` — that file does not exist in the before arm. Both arms independently selected the same seven subjects at the same seven world positions, which the two `subjects.json` files show.",
+    "frame_sanity": "Per frame, both arms, in `sheets/*.stats.json`: luma p10/p50/p90, span, distinct shadow levels, median local contrast. The worst after-frame in any sheet has shadow_levels 2 and local_contrast_med 1.59 (a frame whose lower half is a wall in shadow); the degenerate capture HAZARDS §15 describes is shadow_levels 1 with local_contrast_med 0, and nothing here is near it. These numbers say the frames are images. They do NOT say a subject is in them, and I did not use them to claim that — I opened frames."
+  },
+
+  "performance_the_builder_flagged_and_did_not_measure": {
+    "what_was_asked": "The humanoid body went 15,752 -> 28,136 triangles against a stated need of 12,000, across 408 NPCs. Is that affordable?",
+    "measured_on_hardware_both_arms": "Triangles submitted per frame in populated settlements: street-lilmoth 1,246,588 -> 1,866,106 (+49.7%); street-gideon 2,558,374 -> 3,168,690 (+23.9%); street-thorn is in `metrics/perf-before-after.json`. Draw calls 624 -> 732 and 889 -> 997. Geometry memory 60.8 -> 83.5 MB and 53.5 -> 75.9 MB. JS heap 278 -> 358 MB and 300 -> 371 MB. Skinned mesh count is unchanged (138 and 136), so this is denser meshes and not more of them.",
+    "frame_time_itself": "UNMEASURED, because the harness refuses it — see could_not_do. Two indirect proxies, both weak, both pointing the same way: (1) the identical 166-frame capture script took 45.1 s in the after arm and 45.9 s in the before arm on the same GPU model, i.e. the heavier tree was not slower; (2) `rafTicks` at the same three script points was 964/974/? after against 973/983/? before, a difference under 1%. Neither is a frame time. Both are workloads dominated by teleports, sim stepping and PNG encoding rather than by rasterisation, so they bound the cost loosely from above and no more.",
+    "my_reading": "On this evidence the triangle rise is AFFORDABLE ON A DESKTOP GPU and the risk that remains is memory and mobile, not desktop raster: +23 MB of geometry and +80 MB of heap in a single settlement is the number I would watch, not the triangles. REVERSIBLE: overturned the moment a real frame-time reading on a mid-range or mobile GPU shows a regression. The lever the builder named — the two tube literals raising `humanoid` from 15,752 to 28,136 — is still the cheapest way back, and `humanoid`'s own bar is 12,000, so it is over-provisioned by more than 2x whatever the frame time says."
+  },
+
+  "artefacts": {
+    "where": "corpus/90-verdicts/wave1/artifacts/W1-F10-r2/r2-appearance/",
+    "open_this_first": "sheets/00-summary.png",
+    "sheets": [
+      "00-summary.png — one pair per subject",
+      "orbit-gideon.png — THE CLEAREST RESULT: four to five townspeople in frame, chrome skeletons before, clothed people after",
+      "orbit-corvus.png — Corvus Aldeyn, eight angles, the 'bald egg head' NPC on base.humanoid",
+      "orbit-player.png — the player, eight angles",
+      "orbit-weeja.png — Weeja-Sen, the reptilian body",
+      "faces.png — close-up heads, seven subjects, two bearings",
+      "walk-player.png — the walk cycle, camera tracking, every sixth sim frame",
+      "street.png — four settlements at 9 m"
+    ],
+    "also": "pairs-before/ and pairs-after/ carry five full-resolution pairs for zooming; metrics/ carries both manifests, subjects.json and perf-before-after.json; README.md states the shas and the four-file diff.",
+    "raw_runs_not_committed": "reports/runpod-gpu/runs/f10-r2-appearance-{after,before}/ hold all 332 frames. Per HAZARDS §9 nothing under reports/ is cited as evidence; everything cited is under corpus/."
+  },
+
+  "findings_for_round_3": [
+    "MATERIALS ARE NOW THE BIGGEST CHARACTER GAP, bigger than the one just closed. Correct winding revealed that every figure is one flat colour of cloth over one flat colour of skin: no seam, trim, belt, fold, wear, or tonal variation anywhere on any of the seven subjects at any of eight angles. This is why the 'after' can look plainer than the 'before' even though it is strictly more correct.",
+    "THE HEADS NEED SILHOUETTE, NOT MORE LANDMARKS. Seven landmarks are in the mesh and none of them reads at close-up framing on a humanoid. Whatever the next round does, its acceptance must be an OPENED FRAME at C1 framing, not a landmark count.",
+    "`listEntities()` RETURNS NPCs AT THE WORLD ORIGIN. Two of seven selected NPCs sit within four metres of [0,0,0]. Any tool that trusts those positions photographs the sea. This is a harness or placement defect and it silently wasted 40 of my 332 frames.",
+    "`getPerfStats()._unmeasurable` READS THE CONTAINER, NOT THE RENDERER. It hard-codes 'This container is SwiftShader' and zeroes `renderCpuMs` even when the page's own WebGL context reports an NVIDIA GPU. Until that reads the same attestation the capture tools already publish, NO paid GPU run in this project can produce a frame time — which is the exact number RI-PLT01 exists to protect.",
+    "THE PLAYER'S HEAD NEEDS A FACING-INDEPENDENT CLOSE-UP. In third person the player yaws with the camera, so a camera orbit cannot bring its face round. A harness verb that pins player facing, or a close-up taken while the player is locked on to something, would close it.",
+    "THE STREETS LOOK UNPEOPLED at 9 m in both arms despite 60–136 NPCs reported in range. Not a character-model problem; worth someone's afternoon."
+  ],
+
+  "cost": {
+    "pods": "9bymy8m84fmdqf (after) and m5vs5laruljozp (before), both RTX A4500 SECURE at $0.250/hr, both terminated in the mandatory cleanup path with deletion confirmed by a subsequent API lookup returning not found, and both ephemeral templates deleted and confirmed too.",
+    "spend": "~3.6 min of Pod wall time each; about $0.03 in total across both arms.",
+    "guards_followed": "Every GPU command was backgrounded with nohup+disown so a shell timeout could not orphan a Pod. `cleanup` was never run bare. RUNPOD_OWNER was set per arm. `--revision` was passed on both."
+  },
+
+  "files_touched": [
+    "tools/visual/f10-r2-appearance.mjs",
+    "tools/visual/f10-r2-pair-sheet.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r2/r2-appearance/",
+    "orchestration/status/W1-F10-r2-appearance.json"
+  ],
+  "files_claimed": [
+    "tools/visual/f10-r2-appearance.mjs",
+    "tools/visual/f10-r2-pair-sheet.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r2/r2-appearance/",
+    "orchestration/status/W1-F10-r2-appearance.json"
+  ],
+  "ownership_note": "`node tools/ownership.mjs --for tools/visual/f10-r2-appearance.mjs` was RUN, not assumed: it reports one live piece, W1-30V, 14 h old, holding a directory-level claim over `tools/visual/`. Both of my files are new files that no other status file names, and I edited nothing of theirs. I deliberately did NOT touch `tools/visual/frame-liveness.mjs`, `deck.mjs`, `deck-motion.mjs`, `gpu-deck.mjs` or `collect-run.mjs`, which `I2-CAPTURE-SANITY` claims and is actively rewriting. `node tools/contention.mjs` reported the box AT OR OVER its browser ceiling (5 instances, load 5.71/core against 4.0), so I took no local browser capture at all — every frame in this pack was taken on a rented GPU, which cost nothing in local contention.",
+  "redundant_with": []
+}
