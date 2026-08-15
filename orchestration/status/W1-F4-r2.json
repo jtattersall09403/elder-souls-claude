@@ -1,0 +1,180 @@
+{
+  "task_id": "W1-F4-r2",
+  "role": "builder",
+  "roadmap_item": "F4 — light, sky and atmosphere, ring 1, ROUND 2",
+  "at": "2026-08-15T23:55:00Z",
+  "base_commit_at_start": "c43ce8ca",
+  "branch": "codex/wave1-build-experiment",
+  "state": "LANDED AND MEASURED, AND IT DOES NOT CLOSE THE ITEM. The hard fail that capped round 1 at 2/10 — `RI-VIS04` §2's own DETECT, `M6 hue_offset` — is STILL A HARD FAIL after this round: 7.16 deg -> 7.32 deg on the sealed judged crop, against a minimum of 15 and a hard fail below 6. I am reporting that as the headline rather than the eleven things I did measure, because it is what the round was for. What this round actually produced is the reason WHY, measured rather than argued, and a lever class ruled out so that round 3 does not spend itself on it again.",
+
+  "WHAT_I_COULD_NOT_DO_STATED_FIRST": [
+    "I DID NOT MOVE `hue_offset`, AND I NOW BELIEVE F4 ALONE CANNOT. Eleven measured configurations at the pair01 window — seven page-side candidates, three source arms, one control replicate — and the full spread of `hue_offset` on the sealed judged crop is 5.84 to 7.34 degrees. The bar is 15, the hard fail is 6, and this repo's own vendored modern-fidelity plates read 12.49-143.28 on the same instrument in the same session. NOT ONE CONFIGURATION CLEARED 8. The shipped change is the best of them and it is worth +0.16 deg. I am not going to describe that as progress toward 15.",
+
+    "AND WARMING THE KEY — THE REMEDY MY BRIEF NAMED — MEASURED WORSE, NOT BETTER. `hue_offset` on the sealed crop: control 7.16, `warm 0.70` 5.84, `warm 1.00 + cool 0.60` 5.84. Warming the key LOWERS it, consistently, at every strength I tried. The mechanism is legible once measured: the shadow side of this world is ALREADY the warm one — the daytime `hor` triple was (0.760, 0.790, 0.700), a pale yellow-green, and it is what `hemi.color`, `fill.color`, the fog lerp and the probe's `horizon` all take their hue from — so warming a key that is already (1.00, 0.94, 0.82) moves the LIT quartile TOWARD the shadow quartile and closes the gap the metric measures. The brief's premise is falsified by its own instrument and I am recording that rather than tuning around it.",
+
+    "THE CONTROLLED EXPERIMENT MY BRIEF CITED DOES NOT SAY WHAT IT IS SAID TO SAY, AND THIS MATTERS BECAUSE THE WHOLE REMEDY RESTS ON IT. The brief and the r1 verdict both argue: at night `night-moon` sets `keyWarmth: -0.80` and `hue_offset` passes at 22-33 deg; `noon-marsh` sets `keyWarmth: 0.0` and it fails; therefore set `keyWarmth`. READ THE SOURCE: `sky.js:815` applies `keyWarmth` to `sunCol`, which is written to `this.sun.color` — and at 19:30 `sun.intensity` is 0.0126 (the r1 builder measured this off the live scene and wrote it into the recipe comment). The light that actually carries a night frame is `this.moon`, constructed at `sky.js:644` as `new THREE.DirectionalLight(0x8ca9d8, 0)` — a HARDCODED COOL BLUE that NO recipe field touches, `keyWarmth` included. So the night's 22-33 deg comes from a hardcoded blue key against a region-tinted warm ambient, and `keyWarmth: -0.80` is very nearly a no-op there. `keyWarmth` is not the lever the night proves, and setting it by day was measured and refused above.",
+
+    "I RAISED `env` TO 0.55, MEASURED IT, AND TOOK IT BACK OUT — AND THAT WAS AN S59 TRADE I ALMOST SHIPPED. The reasoning was sound: the probe is the only ambient term that carries the sky's hue and is resolvable, round 1 cut it 1.00 -> 0.35, and S60 clause (a) had a measured 1.625x of headroom. Measured, both arms: sealed-crop lit-subset ratio 3.457 -> 2.163, FULL FRAME 3.270 -> 2.015 at tau1 and 1.9845 at tau8 — BELOW THE 2.0 BAR, an outright fail of the piece's own acceptance. It bought `hue_offset` 7.16 -> 7.25. Nine hundredths of a degree for the acceptance. Refused, reverted, and the arm is kept as `metrics/budget-r2-env055-REFUSED.json` so round 3 does not repay for it.",
+
+    "`envGroundBounce` 0.38 -> 0.22 WENT IN AND CAME OUT FOR A WORSE REASON THAN THAT ONE: it was confounded with the other two changes in the same arm and I never gave it an arm of its own, so I do not know what it did. An unmeasured number is not a kept number, and shipping it would have put a value in the file that no measurement supports.",
+
+    "JOB 3 — `overcast-flat` AND `storm` — IS NOT THIS ROUND'S, AND I AM SAYING SO RATHER THAN LEAVING IT AMBIGUOUS. I captured nothing in overcast or storm. My ruling: it belongs to round 3 and it should be its OWN round, not a rider on a colour round, because an overcast sky IS the light source and the S60/M6 battery has to be re-derived for a keyless recipe before any number about it means anything. What I can say that is new: the sky.js change I shipped is BIT-IDENTICAL AT FULL OVERCAST BY CONSTRUCTION — twelve lines below the edit, `hor.lerp(neutralGrey, overcast)` erases it as overcast rises — so this round cannot have moved those two recipes even accidentally, and round 3 inherits them exactly as round 1 left them.",
+
+    "I DID NOT RE-SHOOT THE BEFORE ARM IN MOTION. The many-angles sweep I ran is of the SHIPPED build only, so it characterises what a player sees now and is NOT a before/after. The r1 critic's 54 motion frames are of the r1 build and are not comparable to mine. Stills-and-orbit for the shipped arm, no before arm in motion — that is a gap in this piece.",
+
+    "EVERY CAPTURE IS SOFTWARE (SwiftShader). No Pod, no hardware confirmation of any window. It is differential by construction — all arms of one window run in one process at one pose (HAZARDS §15) — but the BEFORE and AFTER arms of the source change are two processes against two source states, and I did NOT get a byte-identical null control across them, so see the noise-floor entry below rather than assuming determinism.",
+
+    "MY NOISE FLOOR IS LARGE AND I AM NOT HIDING IT. `base_recheck` — the shipped configuration re-captured from an unmoved camera after every other arm — differs from `base` by mean|d|rgb 1.856 on the sealed crop and 2.503 on the full frame. Arms of 8-26 sit on top of that. So `hemi_off` at 2.177 and `fill_off` at 2.038 are 1.17x and 1.10x their own floor: I read them as UNRESOLVED, not as zero, and every conclusion below that rests on them says 'unresolvable', not 'absent'.",
+
+    "I DID NOT RUN THE 08:00 HOUR-SWEEP I SET OUT TO RUN. The first attempt did one hour in five minutes and was killed by its own timeout with nothing written; I killed it by PID and re-scoped. What replaced it is narrower and is reported as what it is: two hours, not thirteen.",
+
+    "`RI-VIS04` §2 IS STILL ABSENT BY ITS OWN DETECT, BEFORE AND AFTER THIS ROUND, and its 'Blocks score above' value is 5. Nothing here changes that and I am not going to argue that it should."
+  ],
+
+  "WHAT_I_RECOVERED_FROM_THE_QUARANTINE_AND_WHAT_I_DISCARDED": {
+    "commit": "86181c27 (`refs/orphaned/2026-08-15-container-restart`)",
+    "DISCARDED — `game/src/render/renderer.js` (+39 lines)": "MY BRIEF ATTRIBUTED THIS TO ME AND IT IS NOT MINE. I read the diff before touching it: it adds `Renderer._anyStance(sim)` and threads a `stance` argument into `poseStatic()` for enemies and NPCs, and its own comment cites `RI-VIS10` C3 arm (b) and `W1-F10-r10-CRITIC`'s 60-of-60 hip-line measurement. That is F10 round 11's NPC stance work, which the same restart also killed. It has nothing to do with light, sky or atmosphere. I discarded it from my recovery rather than banking it under F4, and F10 r11's replacement should take it — it is still in the quarantine commit and `git show 86181c27:game/src/render/renderer.js` gets it back. This is the second time in two days a figure or a file has travelled between agents on a summary rather than a check.",
+    "KEPT — `tools/visual/f4-r2-light.mjs` (426 lines)": "Genuine F4 r2 work and worth keeping: four modes (`hoursweep`, `weather`, `screen`, `angles`), page-side mechanics copied verbatim from the r1 critic's `f4c-critic.mjs` so the two instruments agree by construction, a per-arm live readback of sun/moon/hemisphere/probe so an arm that failed to apply is visible as data, a served-source sha256 against HAZARDS §22, the §3-D2 tau curve, and HAZARDS §18's refuse-to-overwrite-with-a-zero-row-run guard. It had NEVER BEEN RUN — no report, no frame, no status file. Every line was unverified and I treated it that way.",
+    "WHAT I FOUND WRONG IN IT WHEN I RAN IT": "A backtick inside a template literal in my own added comment killed it on import (my bug, fixed); and more usefully, its `--mode screen` records the live readback but computes NO metric, so it could rank candidates only by eye. I did not add a metric to it — I ran the r1 critic's already-validated `f4c-analyse.mjs --vis03` over its PNGs instead, which is the same instrument the r1 verdict used and reuses rather than reimplements.",
+    "WHAT I ADDED": "`hemi_off` and `fill_off` arms, a `--mode budget`, a `--mode equiv`, a `shadows_off_u` ablation and a second candidate battery. All measured below."
+  },
+
+  "THE_FINDING_OF_THE_ROUND — THE LIGHT BUDGET, ABLATED ONE TERM AT A TIME, WHICH NOTHING IN THIS PROJECT HAD EVER DONE": {
+    "why_it_did_not_exist": "S60 clause (a) compares the KEY against the PROBE. It puts the hemisphere and the ambient fill in NEITHER arm. So the frame's third and fourth lights had never been switched off by any instrument here, and 'which term carries the shadow side' was an argument every previous round reasoned from rather than a number anyone had.",
+    "window": "pair01, 08:00 clear, the sealed judged crop [300,150,512,512] — the pixels five blind judges actually looked at (S64)",
+    "instrument": "tools/visual/f4-r2-light.mjs --mode budget, arms applied per-frame in `scene.onBeforeRender` because `sky.apply()` rewrites the lights every frame; each arm's live readback recorded so a no-op arm is visible as data",
+    "sealed_crop_mean_abs_drgb": {
+      "key_off": 26.3266,
+      "env_off": 8.1013,
+      "hemi_off": 2.1774,
+      "fill_off": 2.0384,
+      "shadows_off_u": 2.4906,
+      "NOISE FLOOR (base re-captured after every other arm)": 1.8557
+    },
+    "full_frame_mean_abs_drgb": {
+      "key_off": 25.727, "env_off": 8.4023, "hemi_off": 2.5208, "fill_off": 2.4074, "shadows_off_u": 2.8511,
+      "NOISE FLOOR": 2.5028
+    },
+    "what_it_says": "THE HEMISPHERE AND THE AMBIENT FILL ARE UNRESOLVABLE AGAINST THE CAPTURE'S OWN NOISE. Switching off a HemisphereLight of live intensity 5.0011 moves the judged window 1.17x as much as re-taking the same photograph; switching off the AmbientLight (live intensity 0.4669) moves it 1.10x. You cannot colour a shadow with a light whose removal you cannot distinguish from drift — which is exactly why the page-side battery that cooled the hemisphere by 40% at constant luminance moved `hue_offset` by 0.18 deg.",
+    "and_what_it_says_about_round_1": "Round 1 cut `sky` 0.42 -> 0.315 and `fill` 0.30 -> 0.225. On this measurement those two edits bought nothing and cost nothing, and no arm round 1 ran could have told it so. I left them where they are for that reason — not because they are right, but because moving them is measurably spending nothing.",
+    "the_one_lever_left": "`env_off` at 8.10 is 4.4x the floor. The probe is the only ambient term that is resolvable, and its colour is baked from `zenith`, `horizon` and `ground` in `bakeEnvironmentProbe()`. That is why the change I shipped is on `horizon` and not on a recipe multiplier."
+  },
+
+  "WHAT_LANDED": {
+    "one_paragraph": "THREE NUMBERS ON ONE EXPRESSION IN `game/src/render/sky.js`. The daytime end of the horizon colour goes from (0.760, 0.790, 0.700) — a pale yellow-green — to (0.677, 0.790, 0.944), a pale sky-blue, AT MATCHED REC.709 LUMINANCE (0.77706 against 0.77707). Nothing else changed: `lighting-recipes.js` is byte-identical in its VALUES to round 1 (comments added recording the two refusals), no recipe multiplier moved, no post-processing, no shadow fit, no material, no shader.",
+    "why_that_line_and_not_a_recipe_value": "`hor` is read FOUR times in `apply()` — `hemi.color`, `fill.color`, the fog colour lerp, and `bakeEnvironmentProbe`'s `horizon` — so it is the single term every ambient path in a daylight frame takes its hue from, including the one term the ablation says is resolvable.",
+    "the_S59_guard_is_inside_the_lever_rather_than_beside_it": "Matched luminance means the change CANNOT buy hue with brightness. That is the specific trade S59 was written about and the one a 'make it bluer' edit would otherwise smuggle in.",
+    "two_preservation_clauses_that_hold_BY_CONSTRUCTION_rather_than_by_assertion": [
+      "NIGHT IS UNTOUCHED. The term is `lerp(nightEnd, dayEnd, day)` and only `dayEnd` moved, so at `day = 0` the expression is bit-identical. `night-moon` cannot have moved.",
+      "`overcast-flat` AND `storm` ARE UNTOUCHED AT THEIR OWN WEATHER. Twelve lines below the edit, `hor.lerp(neutral, overcast)` — at full overcast the result is the neutral and the edit is erased. The two recipes this round does not own are safe by arithmetic, not by my promising to be careful."
+    ],
+    "how_to_revert_in_one_step": "In `game/src/render/sky.js` restore the three day-end constants in the `hor` triple to `0.760`, `0.790`, `0.700`. That is the entire change. EXECUTED, NOT ASSERTED: the before arm in every table below IS the reverted state — it is the landed r1 build measured with the same tool at the same pose before I touched the file, and the `env 0.55` arm was reverted the same way and re-measured to confirm the file goes back."
+  },
+
+  "THE_ACCEPTANCE — S60 BOTH CLAUSES, S64 BOTH DOMAINS, AS A CURVE OVER TAU": {
+    "bar": "clause (a) `key_off >= 2.0x env_off` ON THE LIT SUBSET; clause (b) cast-shadow AREA FRACTION does not fall. S64: the sealed judged crop is the domain, the full frame is reported alongside always, and a divergence between them is itself a finding.",
+    "window": "pair01, 08:00 clear",
+    "sealed_judged_crop": {
+      "before_landed_r1":       { "tau1": 3.4571, "tau2": 3.4402, "tau4": 3.4222, "tau8": 3.4033, "tau16": 3.3720 },
+      "after_r2_SHIPPED":       { "tau1": 3.3834, "tau2": 3.3674, "tau4": 3.3508, "tau8": 3.3322, "tau16": 3.3014 },
+      "refused_env055":         { "tau1": 2.1634, "tau2": 2.1523, "tau4": 2.1422, "tau8": 2.1288, "tau16": 2.1075 },
+      "verdict": "clause (a) PASSES at every tau on the shipped arm. It falls 2.1% from the before arm, which is inside the noise floor, and I am reporting it as a fall rather than rounding it away."
+    },
+    "full_frame": {
+      "before_landed_r1":       { "tau1": 3.2701, "tau2": 3.2606, "tau4": 3.2458, "tau8": 3.2168, "tau16": 3.1713 },
+      "after_r2_SHIPPED":       { "tau1": 3.1918, "tau2": 3.1826, "tau4": 3.1679, "tau8": 3.1397, "tau16": 3.0956 },
+      "refused_env055":         { "tau1": 2.0148, "tau2": 2.0093, "tau4": 2.0008, "tau8": 1.9845, "tau16": 1.9572 },
+      "verdict": "clause (a) PASSES at every tau on the shipped arm, and the crop and the frame AGREE — no divergence, which S64 asks be reported either way. The refused arm is exactly where the two domains disagree, passing the crop at 2.13 and failing the frame at 1.98, and that disagreement is why it was refused."
+    },
+    "clause_b_cast_shadow_area_fraction": {
+      "sealed_crop_before": { "tau1": 0.06024, "tau8": 0.04031, "tau16": 0.03007 },
+      "sealed_crop_after":  { "tau1": 0.06003, "tau8": 0.04046, "tau16": 0.03012 },
+      "full_frame_before":  { "tau1": 0.08476, "tau8": 0.04862, "tau16": 0.03143 },
+      "full_frame_after":   { "tau1": 0.08450, "tau8": 0.04868, "tau16": 0.03148 },
+      "verdict": "NOT A TRADE, AND NOT A PRESERVATION EITHER — the movements are -0.35% to +0.37% and THEY CHANGE SIGN WITH TAU, which is the signature of noise rather than of an effect. I am recording it as 'unmoved within the instrument' rather than claiming clause (b) was preserved, because a quantity that wanders both ways cannot evidence either.",
+      "and_a_separate_pass_worth_naming": "cast-shadow area at tau8 is 4.03% on the crop and 4.87% on the full frame, both above `RI-VIS04` §3-D2's `>= 0.03 in a daylight exterior` floor. §3-D2 is the clause the r1 critic added and this is the first build measured against it."
+    }
+  },
+
+  "JOB_1 — THE METRIC THE ROUND EXISTS FOR, AND ELEVEN CONFIGURATIONS THAT DO NOT MOVE IT": {
+    "instrument": "tools/visual/f4c-analyse.mjs --vis03 — the r1 critic's implementation of RI-VIS03 M2/M6 from the item's own §0 pseudocode. REUSED, NOT REIMPLEMENTED, and RE-VALIDATED rather than inherited: I ran it over this repo's own vendored `corpus/70-visual/refs/modern/exterior_daylight/` population myself and reproduced ALL SIX of the r1 critic's plate figures EXACTLY (96.08, 73.43, 94.52, 16.06, 143.28, 109.09) plus two the critic did not report.",
+    "reference_population_n8": { "hue_offset_deg_range": "12.49 – 143.28", "note": "One plate (REF-ER steam-neulyiaa-2774897392 at 12.49) is BELOW the 15 deg minimum. The reference population is not uniformly above the bar and I am not going to present it as though it were. Seven of eight clear it; all eight clear the 6 deg hard fail by a wide margin." },
+    "bar": "RI-VIS03 exterior_daylight: hue_offset >= 15 deg, HARD FAIL below 6",
+    "the_soft_page_side_battery_sealed_crop": [
+      { "id": "c0-control (landed r1)", "hue_offset": 7.16, "retention": 0.6901, "C_shadow": 14.146 },
+      { "id": "c1-cool40", "hue_offset": 7.34, "retention": 0.6706, "C_shadow": 14.083 },
+      { "id": "c2-warm70", "hue_offset": 5.84, "retention": 0.6881, "C_shadow": 15.124 },
+      { "id": "c3-warm70-cool40", "hue_offset": 5.96, "retention": 0.6721, "C_shadow": 14.909 },
+      { "id": "c4-warm70-cool40-amb146", "hue_offset": 6.22, "retention": 0.7114, "C_shadow": 15.137 },
+      { "id": "c5-warm100-cool60-amb146", "hue_offset": 5.84, "retention": 0.7095, "C_shadow": 15.424 },
+      { "id": "c6-warm70-cool40-amb146-env157", "hue_offset": 6.02, "retention": 0.7401, "C_shadow": 15.859 }
+    ],
+    "the_source_arms_sealed_crop": [
+      { "arm": "BEFORE, landed r1", "hue_offset": 7.16, "retention": 0.6901, "C_shadow": 14.146, "C_local_med": 0.0242 },
+      { "arm": "AFTER, horizon only — SHIPPED", "hue_offset": 7.32, "retention": 0.6926, "C_shadow": 12.377, "C_local_med": 0.0241 },
+      { "arm": "REFUSED, horizon + env 0.55 + bounce 0.22", "hue_offset": 7.25, "retention": 0.7240, "C_shadow": 12.672, "C_local_med": 0.0243 }
+    ],
+    "the_source_arms_full_frame": [
+      { "arm": "BEFORE, landed r1", "hue_offset": 3.71, "retention": 0.9672, "C_shadow": 11.599, "C_local_med": 0.0294 },
+      { "arm": "REFUSED, horizon + env 0.55", "hue_offset": 4.43, "retention": 0.8533, "C_shadow": 10.910, "C_local_med": 0.0304 }
+    ],
+    "the_wrong_way_numbers_stated_as_plainly_as_the_rest": "`C_shadow` on the sealed crop falls 14.146 -> 12.377, a 12.5% LOSS, on the arm I shipped. It remains 2.06x the `exterior_daylight` minimum of 6, and `retention` is flat (0.6901 -> 0.6926, above the 0.60 minimum), so `RI-VIS04` §3-D3 is satisfied — but the chroma in the shadows went DOWN on a change whose entire purpose was to put colour into them, and that is the most uncomfortable number in this file. My reading, offered as a hypothesis and not as a result: the shadow side got bluer and simultaneously less saturated, because the new horizon is closer to neutral in a*b* than the old yellow-green was even though it is further from the key in HUE. I did not design an arm that separates those and I am not going to assert it.",
+    "MY_RULING_AND_WHAT_WOULD_OVERTURN_IT": "F4 CANNOT CLOSE `RI-VIS04` §2 BY ITSELF, AND ROUND 3 SHOULD NOT BE ANOTHER LIGHTING-VALUE ROUND. M6 `hue_offset` is a CHROMA-WEIGHTED CIRCULAR MEAN OF HUE over the lit and shadowed quartiles, and a pixel's hue is albedo TIMES illuminant. When every surface in the frame shares one olive albedo — which is precisely what all five Protocol A judges wrote in their own words, *'every surface returns the same flat matte olive-grey'* — the illuminant's hue is a second-order term in the product, and no redistribution of light between four lights of the same intensity budget can make it first-order. The strongest evidence FOR this reading is the one the r1 verdict already published and read the other way: `hue_offset` PASSES at 22-33 deg at night, where the key is a hardcoded (0.549, 0.663, 0.847) blue — an illuminant hue difference far larger than anything reachable by day — and where the frame is dark enough that albedo saturates less. OVERTURNED BY: any configuration of `key`/`sky`/`fill`/`env`/`keyWarmth`/`envGroundBounce` and the sky colours that measures `hue_offset >= 15` on the sealed pair01 crop without failing S60 clause (a). One such measurement kills this ruling outright, and I would rather be shown wrong cheaply than have round 3 assume I am right."
+  },
+
+  "JOB_2 — THE SHADOWS, AND A PREMISE IN MY BRIEF THAT DOES NOT SURVIVE MEASUREMENT": {
+    "what_the_brief_said": "'At 13:00 the settlement casts large readable shadows in 8 of 12 angles; at 08:00 there is no building shadow on the ground in any of 12 angles. Find out why.'",
+    "what_I_measured": "At the Lilmoth settlement pose (yaw 180, 9 m, pitch -14), landed build, `RI-VIS04` §3-D2's own shadow-map ablation mask as a tau curve: 08:00 cast-shadow area 10.431% at tau8 and 14.136% at tau1; 13:00 13.801% at tau8 and 18.895% at tau1. THE 08:00 FRAME IS AT 76% OF THE 13:00 FRAME'S CAST-SHADOW AREA AND BOTH ARE THREE TO FOUR TIMES §3-D2's 3% FLOOR. There is no hole at 08:00 in the quantity §3 names.",
+    "so_what_is_the_08_00_defect": "It is a statement about the GROUND specifically, not about cast shadow, and the two are not the same measurement. The sun at 08:00 reads back off the live scene at elevation 33.704 deg (`sunDirUnit` [0.7203, 0.5549, 0.4162]) — hand-derived from `sky.js`'s `elev = sin((h-6)/24*2pi)` and `dir = (cos(azim)*0.75, elev, sin(azim)*0.75).normalize()`, and the live readback matches to three decimals. That is not a low sun and it is not a fit failure: the readback also gives `shadowCamera.right` 142.845, `shadowNormalBias` 0.09765 and `shadowBias` -8.6562e-5, and 0.09765 is exactly `texel * 1.4` for `texel = 2*142.845/4096`, so `_fitShadow` is doing what its source says at both hours. WHAT I DID NOT DO is separate ground-plane shadow from building self-shadow inside the mask, which is the measurement that would actually answer the brief's question. Round 3 should ask it that way.",
+    "and_the_DETECT_that_could_not_fire": "`RI-VIS04` §3's original `SHADOW_MASK < 3%` clause is the darkest quartile of the foreground BY CONSTRUCTION. Re-derived on my own frames, independently of the r1 critic: `shadow_mask_frac` is 0.2458, 0.2492, 0.2488, 0.2496, 0.2490, 0.2369, 0.2381, 0.2458 across eight frames of three different builds. It never leaves 0.237-0.250. The r1 critic's §3-D2 amendment is correct and this is a second, independent confirmation of it."
+  },
+
+  "AN_INSTRUMENT_RESULT_WORTH_MORE_THAN_MY_BUILD_CHANGE — THE SHADOW ABLATION IS NOW ~10x CHEAPER, PROVED RATHER THAN ASSERTED": {
+    "the_problem": "`RI-VIS04` §3-D2 specifies `renderer.shadowMap.enabled = false` with every material marked `needsUpdate` — correctly, because the flag is compiled into the program. On this box under SwiftShader that is a full-scene shader recompile per arm, measured at roughly FIVE MINUTES PER HOUR OF A SWEEP: my first thirteen-hour diagnosis did one hour in five minutes and was killed by its own timeout with nothing written.",
+    "the_substitute": "`game/vendor/three/three.core.js` REVISION = '180', and r180 carries `LightShadow.intensity`, which is a UNIFORM: the shader computes `shadowValue = 1 - intensity*(1-shadowValue)`, so 0 means fully lit with no program change.",
+    "NOT_ASSUMED_EQUIVALENT_—_MEASURED_BOTH_WAYS_AT_TWO_HOURS": {
+      "cast_shadow_area_tau8": { "08:00": { "uniform": 0.10431, "shadowMap": 0.10364 }, "13:00": { "uniform": 0.13801, "shadowMap": 0.13763 } },
+      "cast_shadow_area_tau1": { "08:00": { "uniform": 0.14136, "shadowMap": 0.13794 }, "13:00": { "uniform": 0.18895, "shadowMap": 0.18655 } },
+      "the_test_that_settles_it": "The two ABLATION FORMS differ from each other by mean|d|luma 0.3368 and area@tau8 0.00034. The SAME CONFIGURATION re-captured twice in the same process differs by 1.0918 and 0.00095. THE TWO FORMS DIFFER BY LESS THAN A THIRD OF THE CAPTURE'S OWN RUN-TO-RUN NOISE, while the signal they are both measuring is 4.086 and 0.10431 — four times and a hundred times the floor respectively.",
+      "what_it_does_NOT_prove": "They are NOT byte-identical (`frames_identical: false` in `metrics/ablation-equivalence.json`), and I have only checked two hours at one pose on one renderer class. This licenses the cheap form for AREA FRACTIONS at daylight exteriors. It does not license it for anything that turns on individual pixels."
+    },
+    "recommendation": "`RI-VIS04` §3-D2 should name the uniform form as a permitted implementation with this equivalence run cited, or the clause is unaffordable to run at any breadth on a software renderer — which is the same shape as the clause it replaced being uncomputable in principle."
+  },
+
+  "THINGS_I_GOT_WRONG_IN_FLIGHT_AND_FIXED": {
+    "1_I_overloaded_the_box_and_it_cost_wall_clock": "I ran three heavy jobs at once and took the load average to 24.25 on 4 cores; `node tools/contention.mjs` returned WAIT. I killed my own plate analysis BY PID (HAZARDS §10 — never `pkill -f`, the fleet shares this box) and ran one browser at a time afterwards. The plate job had already produced eight rows, which is why the instrument validation survived.",
+    "2_an_inherited_flag_parser_ate_my_output_path_and_exited_0": "`f4c-analyse.mjs`'s `flag()` returns every non-`--` argument after its flag to the END of argv, so `--vis03 <files> --out <path>` feeds `<path>` to ffmpeg as a 44th input image. It crashed after doing all 43 files and the wrapper still exited 0 — HAZARDS §18's family, from a third direction. Worked around by ordering `--out` first; NOT fixed in the tool, because `tools/visual/` is claimed directory-wide by W1-30V and this is not my file. FILED HERE so the next reader does not lose six minutes to it.",
+    "3_my_own_added_comment_killed_the_tool_on_import": "A backtick inside a template literal. Caught by `node --check` before it cost a run; `node --check` now runs before every launch."
+  },
+
+  "what_should_happen_next": {
+    "1_ROUND_3_SHOULD_NOT_BE_ANOTHER_LIGHTING_VALUE_ROUND": "See the ruling above. Eleven configurations, a spread of 5.84-7.34 deg against a bar of 15. The next thing that can move `RI-VIS04` §2's DETECT is albedo variety, which is F1's item, not F4's — and F1 measured green (orphaned surface materials 321/422 -> 0) while five blind judges wrote 'every surface returns the same flat matte olive-grey', which is `I3`'s open question and outranks this.",
+    "2_THE_MOON_STILL_CANNOT_CAST_A_SHADOW": "`sky.js:645`, `moon.castShadow = false`. S64 already ruled the night's clause (b) `inapplicable` AND ruled that an `inapplicable` must carry the absence forward as a candidate defect. It is carried forward here. Unchanged by this round and still the obvious next thing at night.",
+    "3_overcast_flat_AND_storm_ARE_STILL_UNMEASURED": "Its own round, per my ruling above. My change cannot have touched them and the arithmetic reason is in the source comment.",
+    "4_THE_08_00_QUESTION_NEEDS_A_DIFFERENT_MASK": "Separate ground-plane cast shadow from building self-shadow inside the §3-D2 mask, or the question 'why is there no shadow ON THE GROUND' cannot be answered by a measurement that counts both.",
+    "5_SOMEONE_SHOULD_TAKE_THE_ORPHANED_renderer.js": "It is F10 r11's, it is 39 lines of real stance work, and it is sitting in `86181c27` with nothing pointing at it except this file."
+  },
+
+  "evidence": {
+    "root": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2/",
+    "metrics": "metrics/ — the three-arm S60 clause table over tau in both domains, the light budget, the ablation-form equivalence, the M6 before/after on crop and full frame, the vendored-plate population, the soft candidate battery, and the REFUSED env-0.55 arm kept deliberately.",
+    "frames": "frames/ — pair01 before and after at 1920x1080 and on the sealed judged crop, plus the 08:00 settlement frame.",
+    "reports_not_banked": "reports/f4r2/ is gitignored (HAZARDS §9) and does NOT reach the remote. Everything cited above was copied into the artifacts directory.",
+    "renderer_class": "SOFTWARE (SwiftShader) for every capture. No Pod."
+  },
+
+  "files_claimed": [
+    "orchestration/status/W1-F4-r2.json",
+    "tools/visual/f4-r2-light.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r2/"
+  ],
+  "files_touched": [
+    "orchestration/status/W1-F4-r2.json",
+    "game/src/render/sky.js",
+    "game/src/render/lib/lighting-recipes.js",
+    "tools/visual/f4-r2-light.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r2/"
+  ],
+  "ownership_note": "`node tools/ownership.mjs --for` was run on both source files before editing. `game/src/render/lib/lighting-recipes.js`: nobody live has declared it. `game/src/render/sky.js`: touched by W1-30-builder-20260812 (1.1d old, native-gpu-remediation-in-progress) — my edit is three constants on one expression, the same file the r1 builder took a one-line edit in for the same reason. `tools/visual/` is claimed directory-wide by W1-30V (1.1d old); `f4-r2-light.mjs` is F4 round 2's own file, created by my predecessor, and I did not touch W1-30V's files. Landed with `land.mjs --paths a,b,c` (commas, no spaces — HAZARDS §14c) so that the F10 r11 and F7 r2 critic files live in the tree alongside mine did not travel with it.",
+  "self_grading_note": "I have not graded this piece and will not. A fresh critic follows. What I will say is which way I expect it to go: the hard fail that capped round 1 is still a hard fail, and nothing in this file argues otherwise."
+}

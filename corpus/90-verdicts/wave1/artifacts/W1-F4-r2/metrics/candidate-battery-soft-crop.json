@@ -1,0 +1,96 @@
+{
+  "at": "2026-08-15T22:49:42.354Z",
+  "bar": "RI-VIS03 M2/M6 — exterior_daylight: retention >= 0.60 (hard fail < 0.30), hue_offset >= 15 deg (hard fail < 6), C_shadow >= 6, C_local_med >= 0.045",
+  "rows": [
+    {
+      "file": "reports/f4r2/crops/pair01__c0-control.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0.0012,
+      "M2": {
+        "C_global": 0.1047,
+        "C_local_med": 0.0242
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2458,
+        "retention": 0.6901,
+        "hue_offset_deg": 7.16,
+        "C_shadow": 14.146,
+        "mean_Yp_shadow": 0.1714,
+        "mean_Yp_lit": 0.3937
+      }
+    },
+    {
+      "file": "reports/f4r2/crops/pair01__c1-cool40.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0.0012,
+      "M2": {
+        "C_global": 0.105,
+        "C_local_med": 0.0243
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2494,
+        "retention": 0.6706,
+        "hue_offset_deg": 7.34,
+        "C_shadow": 14.083,
+        "mean_Yp_shadow": 0.1697,
+        "mean_Yp_lit": 0.3922
+      }
+    },
+    {
+      "file": "reports/f4r2/crops/pair01__c2-warm70.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0.0012,
+      "M2": {
+        "C_global": 0.1055,
+        "C_local_med": 0.0243
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2484,
+        "retention": 0.6881,
+        "hue_offset_deg": 5.84,
+        "C_shadow": 15.124,
+        "mean_Yp_shadow": 0.1681,
+        "mean_Yp_lit": 0.392
+      }
+    },
+    {
+      "file": "reports/f4r2/crops/pair01__c3-warm70-cool40.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0.0012,
+      "M2": {
+        "C_global": 0.1058,
+        "C_local_med": 0.0244
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2475,
+        "retention": 0.6721,
+        "hue_offset_deg": 5.96,
+        "C_shadow": 14.909,
+        "mean_Yp_shadow": 0.1665,
+        "mean_Yp_lit": 0.3912
+      }
+    },
+    {
+      "file": "reports/f4r2/crops/pair01__c4-warm70-cool40-amb146.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0.0012,
+      "M2": {
+        "C_global": 0.1059,
+        "C_local_med": 0.0243
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2485,
+        "retention": 0.7114,
+        "hue_offset_deg": 6.22,
+        "C_shadow": 15.137,
+        "mean_Yp_shadow": 0.1685,
+        "mean_Yp_lit": 0.3939
+      }
+    }
+  ]
+}

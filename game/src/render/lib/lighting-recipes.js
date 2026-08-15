@@ -175,17 +175,24 @@ export function knownLightingRecipes() { return [...REGISTRY.keys()].sort(); }
 // finding about round 1 too: its `sky` 0.42 -> 0.315 and `fill` 0.30 -> 0.225 bought nothing
 // either, and no arm in round 1 could have told it so.
 //
-// `env` is the one ambient term that IS resolvable (4.4x the floor), and it is what carries the
-// sky's hue into the shadow side, so round 1 cutting it 1.00 -> 0.35 is what emptied the shadows
-// — the r1 critic's new `RI-VIS04` §3-D3, `retention` 0.7199 -> 0.4526 and `C_shadow` 9.762 ->
-// 4.785 at pair03. It goes back up, and the ceiling is not chosen by taste: S60 clause (a)
-// requires `key_off >= 2x env_off`, measured 26.33/8.10 = 3.25 on the crop, so `env` has exactly
-// 1.625x of headroom before the acceptance fails. 0.35 -> 0.55 is 1.571x and lands INSIDE it with
-// margin for the capture noise, at a predicted ratio of 2.07.
+// `env` IS THE ONE AMBIENT TERM THAT IS RESOLVABLE (4.4x the floor) — AND I TRIED RAISING IT AND
+// TOOK IT BACK OUT. THE ATTEMPT AND ITS REFUSAL ARE RECORDED HERE SO ROUND 3 DOES NOT REPAY FOR
+// THEM. The reasoning was sound on paper: the probe is what carries the sky's hue into the shadow
+// side, round 1 cut it 1.00 -> 0.35, and S60 clause (a) measured 26.33/8.10 = 3.25 on the crop
+// left 1.625x of headroom before the acceptance fails. `env: 0.55` is 1.571x, inside it.
 //
-// `envGroundBounce` 0.38 -> 0.22: how much of the probe's LOWER hemisphere is the brown ground
-// (0.34, 0.31, 0.24) rather than sky. Less brown in the ambient is more sky in the ambient, and
-// it costs nothing in `env_off` because it moves colour, not intensity.
+// MEASURED, BOTH ARMS, SAME TOOL, SAME WINDOW, SAME POSE:
+//   sealed crop  key_off 26.33 -> 25.29,  env_off 8.10 -> 12.45,  ratio 3.250 -> 2.031
+//   full frame   key_off 25.73 -> 24.54,  env_off 8.40 -> 13.03,  ratio 3.062 -> 1.883  ** FAIL **
+// `env_off` rose 1.537x against the 1.571x asked for, so the lever did exactly what it says. It
+// bought `hue_offset` on the sealed crop 7.16 -> 7.25: NINE HUNDREDTHS OF A DEGREE, against a bar
+// of 15. A full-frame FAIL of the piece's own acceptance and a crop pass by 1.6% — a margin S61
+// requires be read as `unresolved` and failed closed — for 0.09 deg. That is S59's trade exactly,
+// committed while trying to repair S59's trade, and it is refused. `env` stays at 0.35.
+//
+// `envGroundBounce` was moved 0.38 -> 0.22 in the same arm and is ALSO put back, for a different
+// and worse reason: it was confounded with the other two changes and I never gave it an arm of
+// its own, so I do not know what it did. An unmeasured number is not a kept number.
 //
 // `key` STAYS AT 3.00. Warming or strengthening the key measured WORSE on the metric this round
 // exists to move — seven page-side candidates, `hue_offset` 7.16 (control) down to 5.84 at
@@ -196,7 +203,7 @@ export function knownLightingRecipes() { return [...REGISTRY.keys()].sort(); }
 // REVERT IN ONE STEP: set `env` back to 0.35 and `envGroundBounce` back to 0.38 here, and restore
 // the three `hor` day-end constants in `sky.js` to 0.760 / 0.790 / 0.700.
 registerLightingRecipe('noon-marsh', variantOf('exterior', {
-  key: 3.00, sky: 0.315, fill: 0.225, env: 0.55, envGroundBounce: 0.22,
+  key: 3.00, sky: 0.315, fill: 0.225, env: 0.35, envGroundBounce: 0.38,
   fog: { extinction: 0.90, height: 1.0, inscatter: 0.10 }, exposure: 1.0,
 }));
 

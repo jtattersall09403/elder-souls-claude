@@ -1,0 +1,42 @@
+{
+  "at": "2026-08-15T23:09:37.861Z",
+  "bar": "RI-VIS03 M2/M6 — exterior_daylight: retention >= 0.60 (hard fail < 0.30), hue_offset >= 15 deg (hard fail < 6), C_shadow >= 6, C_local_med >= 0.045",
+  "rows": [
+    {
+      "file": "reports/f4r2/crops/BEFORE-landed__pair01-crop.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0.0012,
+      "M2": {
+        "C_global": 0.1047,
+        "C_local_med": 0.0242
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2458,
+        "retention": 0.6901,
+        "hue_offset_deg": 7.16,
+        "C_shadow": 14.146,
+        "mean_Yp_shadow": 0.1714,
+        "mean_Yp_lit": 0.3937
+      }
+    },
+    {
+      "file": "reports/f4r2/crops/AFTER-r2__pair01-crop.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0.0012,
+      "M2": {
+        "C_global": 0.1084,
+        "C_local_med": 0.0243
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2492,
+        "retention": 0.724,
+        "hue_offset_deg": 7.25,
+        "C_shadow": 12.672,
+        "mean_Yp_shadow": 0.1856,
+        "mean_Yp_lit": 0.4179
+      }
+    }
+  ]
+}

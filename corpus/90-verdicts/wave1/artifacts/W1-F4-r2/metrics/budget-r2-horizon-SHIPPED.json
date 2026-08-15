@@ -1,0 +1,129 @@
+{
+  "at": "2026-08-15T23:14:15.648Z",
+  "mode": "budget",
+  "arm": "r2horizon",
+  "entry": "game/index.html",
+  "served": {
+    "game_dir": "/home/user/elder-souls-claude/game",
+    "sha256_16": {
+      "src/render/lib/lighting-recipes.js": "241690686dca41ac",
+      "src/render/sky.js": "5fd64d937c3c06df"
+    }
+  },
+  "renderer": {
+    "renderer_string": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "hardware": false,
+    "software_renderer": true,
+    "unknown": false,
+    "class": "SOFTWARE",
+    "evidence_class": "SOFTWARE — valid for geometry, layout, composition, determinism and census. NOT valid for antialiasing, bloom, AO, IBL or any appearance claim (W1-30-EVIDENCE §4).",
+    "reason": "the reported renderer names a software rasteriser: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "decided_from": "renderer-string",
+    "hardware_requested": false,
+    "fell_back": false,
+    "renderer_source": "live page WEBGL_debug_renderer_info",
+    "backend": null,
+    "backend_attempts": [],
+    "chromium_args": [
+      "--force-color-profile=srgb",
+      "--font-render-hinting=none",
+      "--disable-lcd-text",
+      "--disable-skia-runtime-opts",
+      "--hide-scrollbars",
+      "--mute-audio",
+      "--disable-background-timer-throttling",
+      "--disable-renderer-backgrounding",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-partial-raster",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-new-content-rendering-timeout",
+      "--enable-unsafe-swiftshader",
+      "--use-gl=angle",
+      "--use-angle=swiftshader"
+    ]
+  },
+  "resolution": [
+    1920,
+    1080
+  ],
+  "seed": 20260814,
+  "evidence_class": "SOFTWARE — differential only (HAZARDS §15)",
+  "rows": [
+    {
+      "mode": "budget",
+      "window": "pair01",
+      "hour": 8,
+      "crop": [
+        300,
+        150,
+        512,
+        512
+      ],
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "sunColour": [
+          1,
+          0.94,
+          0.82
+        ],
+        "sunCastShadow": true,
+        "sunDirUnit": [
+          0.7203,
+          0.5549,
+          0.4162
+        ],
+        "sunElevationDeg": 33.704,
+        "moonIntensity": 0,
+        "moonColour": [
+          0.2623,
+          0.3968,
+          0.6867
+        ],
+        "moonCastShadow": false,
+        "hemiTotal": 5.0011,
+        "hemiColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "ambientTotal": 0.4669,
+        "ambientColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "shadowMapSize": 4096,
+        "shadowCamera": {
+          "left": -142.845,
+          "right": 142.845,
+          "near": 0.5,
+          "far": 725.691
+        },
+        "shadowBias": -0.000086562,
+        "shadowNormalBias": 0.09765,
+        "cfgError": null
+      },
+      "full": {
+        "key_off": 25.7433,
+        "env_off": 8.613,
+        "hemi_off": 2.5384,
+        "fill_off": 2.4176,
+        "shadows_off_u": 2.8493
+      },
+      "noise_floor_full": 2.5025,
+      "files": {
+        "base": "reports/f4r2/budget-r2horizon/pair01/base.png",
+        "key_off": "reports/f4r2/budget-r2horizon/pair01/key_off.png",
+        "env_off": "reports/f4r2/budget-r2horizon/pair01/env_off.png",
+        "hemi_off": "reports/f4r2/budget-r2horizon/pair01/hemi_off.png",
+        "fill_off": "reports/f4r2/budget-r2horizon/pair01/fill_off.png",
+        "shadows_off_u": "reports/f4r2/budget-r2horizon/pair01/shadows_off_u.png",
+        "base_recheck": "reports/f4r2/budget-r2horizon/pair01/base_recheck.png"
+      }
+    }
+  ],
+  "aborted": null
+}
