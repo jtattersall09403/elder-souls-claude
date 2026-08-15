@@ -1,0 +1,19 @@
+{
+  "task_id": "I2-CAPTURE-SANITY",
+  "roadmap_item": "I2",
+  "state": "in_progress",
+  "started": "2026-08-15",
+  "could_not_do": [
+    "Nothing yet — just started. This field is written first and kept honest."
+  ],
+  "headline": "Per-frame capture sanity gate + subject-presence check, with proven-red arms.",
+  "next_step": "Read HAZARDS §15/§15a, ROADMAP ring 0, W1-F3-AMBIENT-FILL.json; enumerate capture paths.",
+  "files_touched": [
+    "orchestration/status/I2-CAPTURE-SANITY.json"
+  ],
+  "files_claimed": [
+    "tools/visual/frame-sanity.mjs",
+    "tools/visual/frame-sanity-selftest.mjs",
+    "orchestration/status/I2-CAPTURE-SANITY.json"
+  ]
+}

@@ -149,10 +149,41 @@ function note(action, before, after, extra) {
 function focusStr(f) { return f ? `${f.pane}:${f.pane === 'prose' ? f.linkIdx : f.rowIdx}` : 'none'; }
 
 try {
-  await h.h('setRenderRate', 60);
+  // ---- THE INSTRUMENT, AND ITS OWN FALSIFICATION ----------------------------------------------
+  //
+  // `?harness=1` DETACHES the real DOM listeners (`Engine.setMode`: mode 'harness' calls
+  // `real.detach()`), so a `KeyboardEvent` dispatched at the page reaches nothing and every check
+  // in this file would report FAIL against a game that might be fine. The first run of this probe
+  // did exactly that. `play-instrumented` is the mode A-JRN1 defines for this: real listeners,
+  // harness-driven clock. `setRenderRate(0)` stops the rAF loop stepping underneath us.
+  await h.h('setMode', 'play-instrumented');
+  await h.h('setRenderRate', 0);
   await h.h('setDevicePixelRatio', 1);
   await h.h('loadState', STATE);
+  await h.h('setMode', 'play-instrumented');
   await h.h('stepFrames', 4);
+
+  // RULE 4: a probe that cannot fail is worse than no probe — and a probe that cannot SUCCEED is
+  // just as bad. Prove the key path is live before believing anything below it: press a movement
+  // key and watch the pipeline's own axis move. If this is 0 the instrument is dead and every
+  // FAIL after it is meaningless.
+  const wired = await h.page.evaluate(() => {
+    const eng = window.__ENGINE;
+    const attached = !!(eng.real && eng.real.attached);
+    window.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight', key: 'ArrowRight', bubbles: true, cancelable: true }));
+    const moveX = eng.input.moveX;
+    window.dispatchEvent(new KeyboardEvent('keyup', { code: 'ArrowRight', key: 'ArrowRight', bubbles: true }));
+    window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyE', key: 'e', bubbles: true, cancelable: true }));
+    const pending = eng.input.pendingPress;
+    window.dispatchEvent(new KeyboardEvent('keyup', { code: 'KeyE', key: 'e', bubbles: true }));
+    return { attached, moveX, pending };
+  });
+  await h.h('stepFrames', 2);
+  report.data.instrument = wired;
+  push('I0 INSTRUMENT: a real DOM key reaches the input pipeline',
+    wired.attached && Math.abs(wired.moveX) > 0.5 && wired.pending !== 0,
+    `real.attached=${wired.attached}, ArrowRight -> pipeline.moveX=${wired.moveX}, KeyE -> pendingPress=${wired.pending}`);
+  if (!wired.attached) throw new Error('the real input listeners are not attached — nothing below this could be measured');
 
   // ---- open a conversation -------------------------------------------------------------------
   //
