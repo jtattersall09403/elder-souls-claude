@@ -10,10 +10,11 @@
 
 - **Making the sun the dominant light.** This is the one that matters. See the section below: shadows
   and occlusion only reach a fifth of the picture, and this is the fix for that.
-- **The water banding** — the sea reads as flat stripes rather than water.
 - **Photographing the player from eight angles on real hardware**, before and after yesterday's body
   work. The body was given hips and a waist and *nobody has looked at it in the running game yet*.
-- **Reading the menus again** after the reflow, as an independent check rather than the builder's own.
+- **Checking the water fix** — an independent critic on the marsh streaks, which are 28% better and
+  not gone.
+- **The container screen** — it hides ten words of its own description and prints no gold prices.
 
 ## If you play right now, expect this
 
@@ -48,6 +49,19 @@
   0.15 floor, because the overlapping ink that had been inflating it stopped counting. That is the
   clearest possible confirmation that the measure was rewarding the defect, and the builder flagged the
   thin margin rather than padding it out of sight.
+- **The menus were judged independently and FAILED, scoring 2 of 10.** The reflow work is real and the
+  judge confirmed it — level-up's rows read at both sizes, and the journal now runs **0 of 19** blocks
+  off the page across all ten spreads. It fails on the **container** screen, on two things nobody had
+  looked at: its description **declares 137 characters and draws 100** — ten words simply gone, with no
+  "…" to tell you they were cut, and *the same sentence draws whole on the inventory screen* — and
+  **all seven rows declare a gold price and not one of them draws it**, because the price column starts
+  12 units past the edge of the box that clips it. Being fixed now.
+- **The water's streaks are 28% better and still there.** They turned out not to be the waves at all:
+  the sea was compositing a **61% mirror at every viewing angle**, including looking straight down,
+  where real water reflects about 2%. Two things the previous rounds believed were wrong — the stripes
+  are not axis-aligned (they run at −50°), and nine earlier "no effect" results were unreadable because
+  the patch being measured was mostly *terrain*. Fixed for the physically wrong case only; the residual
+  is plainly visible and **the marsh lanes are not fixed**.
 - **The container screen prints the word `undefined`** as its title. Being fixed.
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its own author reported that honestly after catching that the *first* version of the measurement was
