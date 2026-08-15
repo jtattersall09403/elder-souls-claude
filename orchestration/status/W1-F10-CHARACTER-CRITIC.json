@@ -1,0 +1,21 @@
+{
+  "task_id": "W1-F10-CHARACTER-CRITIC",
+  "role": "critic",
+  "roadmap_item": "F10",
+  "state": "running",
+  "baseline_commit": "1c40739ed8119343fc3556b64cf40b619cf47dc4",
+  "branch": "codex/wave1-build-experiment",
+  "could_not_do_yet": [
+    "Nothing captured yet - all 13 counterpart slots empty at start."
+  ],
+  "next_step": "Read CLAUDE.md character directive, CRITIC-DOCTRINE 1.3, SCORING.md, RI-VIS08, RI-VIS10, refs/characters/INDEX.md; open plates.",
+  "files_claimed": [
+    "orchestration/status/W1-F10-CHARACTER-CRITIC.json",
+    "corpus/90-verdicts/wave1/W1-F10-CHARACTERS-critic.md",
+    "corpus/90-verdicts/wave1/W1-F10-CHARACTERS-critic.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/",
+    "corpus/70-visual/refs/characters/ours/",
+    "tools/capture/f10-character-sweep.mjs"
+  ],
+  "files_touched": ["orchestration/status/W1-F10-CHARACTER-CRITIC.json"]
+}

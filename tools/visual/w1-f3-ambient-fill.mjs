@@ -86,10 +86,13 @@ function luma(png, x, y) {
   return 0.2126 * png.data[i] + 0.7152 * png.data[i + 1] + 0.0722 * png.data[i + 2];
 }
 
-function analyze(png, crop) {
+/** `step` subsamples the crop on both axes. Used ONLY by the motion/orbit sweep, where dozens of
+ * frames are analysed and the comparison is always within that sweep (arm vs arm at the same step),
+ * never against the full-resolution stills above. The stills use step=1. */
+function analyze(png, crop, step = 1) {
   const { x0, x1, y0, y1 } = crop;
   const lumas = [];
-  for (let y = y0; y < y1; y += 1) for (let x = x0; x < x1; x += 1) lumas.push(luma(png, x, y));
+  for (let y = y0; y < y1; y += step) for (let x = x0; x < x1; x += step) lumas.push(luma(png, x, y));
   lumas.sort((a, b) => a - b);
   const n = lumas.length;
   const mean = lumas.reduce((s, v) => s + v, 0) / n;
@@ -145,18 +148,101 @@ function solveLiftForP10(png, crop, targetP10) {
   return (lo + hi) / 2;
 }
 
-async function captureArm(g, { giFill }) {
+/** THE DELETE-THE-FIX ARM CANNOT SET THIS SWITCH, AND THAT IS THE POINT. On a clone restored to the
+ * pinned pre-F3 baseline, `renderer.setVisualFeature` throws `unknown renderer feature 'giFill'`
+ * (it validates against `this.quality`, which has no such key before F3). Swallowing that is not
+ * leniency — it is how the control arm reports "the fix is genuinely absent from this tree" instead
+ * of dying. `gi_feature_present` records which happened, and `--compare-to` gates on it. */
+let giFeaturePresent = null;
+async function setGI(g, on) {
+  try {
+    await g.h('setVisualFeature', 'giFill', !!on);
+    if (giFeaturePresent === null) giFeaturePresent = true;
+    return true;
+  } catch (err) {
+    giFeaturePresent = false;
+    if (!/unknown renderer feature/i.test(String(err && err.message))) throw err;
+    return false;
+  }
+}
+
+async function shoot(g) {
+  const url = await g.page.evaluate(async () => window.__HARNESS.screenshot());
+  return PNG.sync.read(Buffer.from(url.split(',')[1], 'base64'));
+}
+
+async function placeScene(g) {
   await g.h('teleport', 3820, 859);
   await g.h('exitInterior').catch(() => {});
   await g.h('setWeather', 'clear');
   await g.h('setTimeOfDay', 9);
   await g.h('stepFrames', 90);
-  await g.h('setVisualFeature', 'giFill', !!giFill);
+}
+
+async function captureArm(g, { giFill }) {
+  await placeScene(g);
+  await setGI(g, giFill);
   await g.h('camera', CAMERA);
   await g.h('stepFrames', 30);
-  const url = await g.page.evaluate(async () => window.__HARNESS.screenshot());
-  return PNG.sync.read(Buffer.from(url.split(',')[1], 'base64'));
+  return shoot(g);
 }
+
+// ---- motion and multiple angles ---------------------------------------------------------------
+// The dispatch brief, and the owner directive it quotes: "stills are not enough". Shadow fill is
+// precisely the kind of change that reads fine in one still and bands or crawls once the camera
+// moves, and F2 shipped on stills alone (recorded against it by the orchestrator). Two sweeps:
+//
+//   ORBIT — the camera circles the SAME look point at a fixed radius, so the claim "the shadow floor
+//   lifts and the lit end does not" is tested against many different surfaces, sun-relative angles
+//   and occluder geometries rather than one favourable framing. A fix that only works from the
+//   surveyed pose fails here.
+//
+//   FINE SWEEP — small (1.5 degree) yaw increments around the base pose, i.e. adjacent frames of an
+//   actual camera pan. The instability this is built to catch is TEMPORAL: a screen-space bounce
+//   term whose kernel reprojection is unstable makes the shadow floor swim frame to frame. Metric is
+//   the mean absolute successive difference (MASD) of p10_luma along the sweep, compared BETWEEN
+//   arms — GI on must not be materially noisier than GI off, which is the untouched baseline for
+//   whatever camera/foliage jitter the scene already has (HAZARDS.md §8: only within-arm comparison
+//   across a noisy axis carries signal, so the arms are compared on their own noise, not on a diff).
+const ORBIT_CENTRE = [3820.0, 14.2, 859.0];
+const ORBIT_RADIUS = Math.hypot(CAMERA.pos[0] - ORBIT_CENTRE[0], CAMERA.pos[2] - ORBIT_CENTRE[2]);
+const ORBIT_HEIGHT = CAMERA.pos[1];
+const MOTION_STEP = 3; // subsample: within-sweep comparison only, see analyze()
+
+function orbitPose(deg) {
+  const t = (deg * Math.PI) / 180;
+  return {
+    pos: [ORBIT_CENTRE[0] + ORBIT_RADIUS * Math.cos(t), ORBIT_HEIGHT, ORBIT_CENTRE[2] + ORBIT_RADIUS * Math.sin(t)],
+    look: ORBIT_CENTRE.slice(), fov: CAMERA.fov,
+  };
+}
+
+/** Yaw the look direction by `deg` about the base pose's own position — a camera pan, not a move. */
+function pannedPose(deg) {
+  const dx = CAMERA.look[0] - CAMERA.pos[0], dz = CAMERA.look[2] - CAMERA.pos[2];
+  const t = (deg * Math.PI) / 180;
+  return {
+    pos: CAMERA.pos.slice(),
+    look: [CAMERA.pos[0] + dx * Math.cos(t) - dz * Math.sin(t), CAMERA.look[1], CAMERA.pos[2] + dx * Math.sin(t) + dz * Math.cos(t)],
+    fov: CAMERA.fov,
+  };
+}
+
+async function sweep(g, poses, giFill, { save = null } = {}) {
+  await placeScene(g);
+  await setGI(g, giFill);
+  const rows = [];
+  for (let i = 0; i < poses.length; i++) {
+    await g.h('camera', poses[i].pose);
+    await g.h('stepFrames', poses[i].settle ?? 4);
+    const png = await shoot(g);
+    if (save) fs.writeFileSync(path.join(save, `${poses[i].label}-gi-${giFill ? 'on' : 'off'}.png`), PNG.sync.write(png));
+    rows.push({ label: poses[i].label, ...analyze(png, CROP, MOTION_STEP) });
+  }
+  return rows;
+}
+
+const masd = (xs) => (xs.length < 2 ? 0 : xs.slice(1).reduce((s, v, i) => s + Math.abs(v - xs[i]), 0) / (xs.length - 1));
 
 const g = await launchGame({
   entry: args.entry || 'game/index.html', width: WIDTH, height: HEIGHT,
@@ -184,6 +270,7 @@ const mOn = analyze(pngOn, CROP);
 const result = {
   entry: args.entry || 'game/index.html',
   renderer: rendererString, software_renderer: softwareRenderer,
+  gi_feature_present: giFeaturePresent,
   camera: CAMERA, crop: CROP, place: 'town-thorn (VP04 pose)', time_of_day: 9, weather: 'clear',
   gi_off: mOff, gi_on: mOn,
   checks: [
@@ -249,6 +336,102 @@ if (args['null-control']) {
   };
 }
 
+if (args.motion) {
+  const frames = path.join(OUT, 'motion');
+  fs.mkdirSync(frames, { recursive: true });
+  const orbitDeg = Number(args['orbit-step'] || 45);
+  const orbitPoses = [];
+  for (let d = 0; d < 360; d += orbitDeg) orbitPoses.push({ label: `orbit-${String(d).padStart(3, '0')}`, pose: orbitPose(d), settle: 8 });
+  const panN = Number(args['pan-frames'] || 12);
+  const panPoses = [];
+  for (let i = 0; i < panN; i++) panPoses.push({ label: `pan-${String(i).padStart(2, '0')}`, pose: pannedPose(i * 1.5), settle: 2 });
+
+  const orbitOff = await sweep(g, orbitPoses, false, { save: frames });
+  const orbitOn = await sweep(g, orbitPoses, true, { save: frames });
+  const panOff = await sweep(g, panPoses, false);
+  const panOn = await sweep(g, panPoses, true);
+
+  const perAngle = orbitOff.map((o, i) => ({
+    angle: o.label,
+    p10_off: o.p10_luma, p10_on: orbitOn[i].p10_luma,
+    p90_off: o.p90_luma, p90_on: orbitOn[i].p90_luma,
+    mean_off: o.mean_luma, mean_on: orbitOn[i].mean_luma,
+    shadow_levels_off: o.shadow_levels, shadow_levels_on: orbitOn[i].shadow_levels,
+  }));
+  const anglesLifted = perAngle.filter((r) => r.p10_on > r.p10_off).length;
+  const worstP90Drift = Math.max(...perAngle.map((r) => Math.abs(r.p90_on - r.p90_off) / Math.max(r.p90_off, 1e-6)));
+  const masdOff = masd(panOff.map((r) => r.p10_luma));
+  const masdOn = masd(panOn.map((r) => r.p10_luma));
+
+  result.motion = {
+    note: 'stills are not enough (owner directive, 2026-08-14). Orbit = the same look point seen from '
+      + `${orbitPoses.length} camera positions ${ORBIT_RADIUS.toFixed(1)}m out; pan = ${panN} adjacent frames of a 1.5-degree-per-frame yaw, i.e. what a moving camera actually sees. `
+      + `Motion frames are analysed on a ${MOTION_STEP}x subsample of the same crop, so their absolute numbers are NOT comparable with the full-resolution stills above — only arm-vs-arm within this section.`,
+    orbit_radius_m: +ORBIT_RADIUS.toFixed(2), orbit_centre: ORBIT_CENTRE, subsample_step: MOTION_STEP,
+    per_angle: perAngle,
+    pan_p10_off: panOff.map((r) => r.p10_luma), pan_p10_on: panOn.map((r) => r.p10_luma),
+    pan_masd_p10_off: +masdOff.toFixed(4), pan_masd_p10_on: +masdOn.toFixed(4),
+    checks: [
+      {
+        id: 'GI-LIFTS-THE-SHADOW-FLOOR-AT-EVERY-ANGLE',
+        ok: anglesLifted === perAngle.length,
+        detail: `${anglesLifted}/${perAngle.length} orbit angles have p10_luma(on) > p10_luma(off). A fix that only works from the one surveyed pose fails here.`,
+      },
+      {
+        id: 'GI-LEAVES-THE-LIT-END-ALONE-AT-EVERY-ANGLE',
+        ok: worstP90Drift < 0.06,
+        detail: `worst-case |p90 drift| across all orbit angles = ${(worstP90Drift * 100).toFixed(2)}% (must stay under 6%, the same threshold the still uses) — the still's lit-end stability is not a lucky framing.`,
+      },
+      {
+        id: 'GI-DOES-NOT-CRAWL-UNDER-CAMERA-MOTION',
+        ok: masdOn <= Math.max(masdOff * 1.5, masdOff + 0.5),
+        detail: `frame-to-frame mean absolute successive difference of p10_luma along a 1.5-degree-per-frame pan: off=${masdOff.toFixed(4)}, on=${masdOn.toFixed(4)}. `
+          + 'The GI-off arm is the scene\'s OWN motion noise (foliage, sub-pixel sampling, TAA-free aliasing — HAZARDS.md §8), so the bar is "GI adds no material instability on top of it", not "GI is perfectly still".',
+      },
+    ],
+  };
+  console.log(`motion: ${anglesLifted}/${perAngle.length} angles lifted, worst p90 drift ${(worstP90Drift * 100).toFixed(2)}%, pan MASD off=${masdOff.toFixed(3)} on=${masdOn.toFixed(3)}`);
+  for (const c of result.motion.checks) console.log(`${c.ok ? 'PASS' : 'FAIL'}  ${c.id}  — ${c.detail}`);
+}
+
+// ---- delete-the-fix: this run is a pinned-baseline clone, compared against the head run ---------
+// RULES rule 6 / the five non-negotiables: a fix is not a fix until it has been deleted on a copy and
+// the OLD number has come back. HAZARDS.md §12 is why the clone must come from the PINNED sha and not
+// from HEAD — a sibling's whole-tree bank carries an uncommitted edit into HEAD and turns this green
+// for the wrong reason. The two claims below are deliberately different: (1) the fix is really gone
+// from the control tree (the feature switch does not exist at all), and (2) the control's shadow floor
+// is back at the head run's GI-OFF number and nowhere near its GI-ON number.
+if (args['compare-to']) {
+  const head = JSON.parse(fs.readFileSync(path.resolve(REPO, args['compare-to']), 'utf8'));
+  const ctrl = mOn.p10_luma; // on this tree both "arms" are the same tree; use the second capture
+  const headOff = head.gi_off.p10_luma, headOn = head.gi_on.p10_luma;
+  const distOff = Math.abs(ctrl - headOff), distOn = Math.abs(ctrl - headOn);
+  result.delete_the_fix = {
+    compared_to: args['compare-to'],
+    head_renderer: head.renderer, head_software_renderer: head.software_renderer,
+    control_p10: ctrl, head_gi_off_p10: headOff, head_gi_on_p10: headOn,
+    note: 'the control tree is the pinned pre-F3 baseline (HAZARDS.md §12: pinned sha, NOT HEAD). Both of this run\'s captures are the same tree because the giFill switch does not exist there — which is itself check 1.',
+    checks: [
+      {
+        id: 'FIX-IS-ACTUALLY-ABSENT-FROM-THE-CONTROL-TREE',
+        ok: giFeaturePresent === false,
+        detail: `renderer.setVisualFeature('giFill') ${giFeaturePresent === false ? 'threw \'unknown renderer feature\' — the fix is genuinely torn out' : 'SUCCEEDED, so this tree still has the fix and nothing below means anything'}`,
+      },
+      {
+        id: 'OLD-NUMBER-COMES-BACK',
+        ok: giFeaturePresent === false && distOff < distOn,
+        detail: `control p10_luma=${ctrl} sits ${distOff.toFixed(3)} from the head run's GI-OFF p10 (${headOff}) and ${distOn.toFixed(3)} from its GI-ON p10 (${headOn}) — the fix's improvement must NOT survive its own removal`,
+      },
+      {
+        id: 'BOTH-ARMS-ON-THE-SAME-RENDERER',
+        ok: String(head.renderer || '') === String(rendererString || ''),
+        detail: `control renderer "${rendererString}" vs head run renderer "${head.renderer}" — two arms on two different renderers are not comparable (dispatch brief item 2)`,
+      },
+    ],
+  };
+  for (const c of result.delete_the_fix.checks) console.log(`${c.ok ? 'PASS' : 'FAIL'}  ${c.id}  — ${c.detail}`);
+}
+
 fs.writeFileSync(path.join(OUT, 'result.json'), JSON.stringify(result, null, 2));
 console.log(`renderer: ${rendererString} (software=${softwareRenderer})`);
 console.log(`GI off: p10=${mOff.p10_luma} p90=${mOff.p90_luma} falloff=${mOff.falloff_ratio} shadow_levels=${mOff.shadow_levels} local_contrast_med=${mOff.local_contrast_med}`);
@@ -259,5 +442,12 @@ if (result.null_control_global_lift) {
   for (const c of result.null_control_global_lift.checks) console.log(`${c.ok ? 'PASS' : 'FAIL'}  ${c.id}  — ${c.detail}`);
 }
 await g.close();
-const allOk = result.checks.every((c) => c.ok) && (!result.null_control_global_lift || result.null_control_global_lift.checks.every((c) => c.ok));
+// On a --compare-to (delete-the-fix) run the primary checks are EXPECTED to fail — the whole point is
+// that the tree has no fix in it — so gating on them would make a correct control look broken. That
+// run is gated on its own delete-the-fix checks instead, and on nothing else.
+const allOk = result.delete_the_fix
+  ? result.delete_the_fix.checks.every((c) => c.ok)
+  : result.checks.every((c) => c.ok)
+    && (!result.null_control_global_lift || result.null_control_global_lift.checks.every((c) => c.ok))
+    && (!result.motion || result.motion.checks.every((c) => c.ok));
 process.exit(allOk ? 0 : 1);
