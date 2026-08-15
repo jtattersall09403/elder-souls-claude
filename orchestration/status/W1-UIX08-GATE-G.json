@@ -1,0 +1,177 @@
+{
+  "task_id": "W1-UIX08-GATE-G",
+  "role": "gate-builder (stage 1 of 2 — builds and seals the arms, judges nothing)",
+  "item": "corpus/86-ui/RI-UIX08-dialogue-window.md §G",
+  "roadmap_item": "the RI-UIX08 human gate — the quality verdict that caps the item at 2 while `not_run`",
+  "branch": "codex/wave1-build-experiment",
+  "state": "arms-built-and-sealed-awaiting-judges",
+  "at": "2026-08-15",
+
+  "what_i_could_not_do_stated_first": [
+    "I DID NOT JUDGE ANYTHING AND MY OPINION OF THE TWO ARMS IS WORTHLESS BY CONSTRUCTION. I built both, so I know which is which, and saying so is the correct outcome rather than a hedge. Nothing below is a claim about which arm reads better.",
+    "THE PACK LIVES IN SCRATCH AND DIES WITH THE CONTAINER. It is 113 MB and does not belong in git. It is REPRODUCIBLE BYTE-FOR-BYTE from the recorded commit + seed — the rebuild command is in the key file — and the codenames and the arm assignment are functions of the seed alone, so a rebuild after a restart produces the SAME two codenames with the SAME assignment. Rebuild takes ~55 s.",
+    "QUARANTINE DOES NOT COVER A JUDGE THAT DIFFS THE TWO SERVED TREES. The arms are byte-identical apart from one token on one line of `game/src/ui/system.js`; a judge that fetches that path from both ports and diffs them identifies the arms in one command. No static site served over HTTP can prevent this. It is prevented by PROTOCOL and DETECTED afterwards: `play.mjs` records every HTTP path the browser asked for, the engine fetches each module exactly once (`cache-control: no-store`), so a second hit on a source path is a fetch the engine did not make. On the verification runs that count was 0.",
+    "THE BOX IS SLOW AND THE DRIVER IS SLOW WITH IT. A 27-step session took 7m08s of wall clock at load 2.92/core, ~16 s per step, because each run replays from boot. Judges must be told to BATCH — 15-25 actions per run, not 3 — or they will spend the day on reboots. This is a cost, not a defect, and it is stated rather than discovered.",
+    "I DID NOT MEASURE HOW OFTEN A JUDGE WILL MEET A LIT WORD IN TEN MINUTES OF PLAY. I measured the two things that bracket it: OFFLINE, 441 of 1,273 shipped answers (34.6%) light at least one word from their own AddTopic targets alone, regardless of who is speaking; and LIVE, at `helstrom-market` the first lit word appeared on the 9th (person, topic) pair tried. What I did not do is run a naive ten-minute session and count. A judge who asks ~10 questions is very likely to meet one; 'very likely' is an inference from those two numbers, not a measurement.",
+    "THE ARMS WERE VERIFIED PLAYABLE AT ONE VIEWPORT (1920x1080) AND ONE WORLD STATE (`helstrom-market`). Neither arm was played at a phone viewport and neither was played in a second town."
+  ],
+
+  "what_the_orchestrator_must_spawn": {
+    "count": 3,
+    "judges": [
+      {
+        "role": "player 1",
+        "model": "fresh context, has read NEITHER the item, NOR the plan, NOR the source",
+        "receives": [
+          "the pack directory path (both arm codenames are in <pack>/pack.json)",
+          "<pack>/DRIVER-PROTOCOL.md — how to play, and the one sentence of premise",
+          "<pack>/PROMPT-verbatim.txt — the five questions",
+          "reports/blind/uix08-gate-g/POST-PROMPT-preference.txt — opened ONLY after both sets of five answers are on disk"
+        ],
+        "plays": "BOTH arms, ten minutes each, at least three conversations in each, in the order codename-A then codename-B",
+        "writes": "five verbatim answers per arm, to two separate files, the first written BEFORE the second arm is started"
+      },
+      {
+        "role": "player 2",
+        "model": "as player 1, a DIFFERENT fresh agent",
+        "receives": "identical materials",
+        "plays": "BOTH arms, in the OPPOSITE order to player 1 — the order is the dispatcher's to assign and is not recorded in the pack",
+        "writes": "as player 1"
+      },
+      {
+        "role": "separability reader (the THIRD reader S52 requires)",
+        "model": "fresh context, plays NOTHING",
+        "receives": [
+          "both players' five answers per arm, labelled by codename only",
+          "both players' preference answer",
+          "both players' screenshot directories, unedited",
+          "reports/blind/uix08-gate-g/SEPARABILITY-READER.md — which is its whole brief"
+        ],
+        "must_not_receive": [
+          "the reference item, the plan, the source",
+          "reports/blind/uix08-gate-g/.reveal/mapping.json",
+          "<pack>/pack.json",
+          "reports/blind/uix08-gate-g/leakcheck.json"
+        ]
+      }
+    ],
+    "prohibitions_to_put_in_every_judge_brief_verbatim": [
+      "Do not read anything under corpus/86-ui/, reports/uix08/, reports/blind/uix08-gate-g/ (except the two files you are handed), orchestration/status/W1-UIX08*, or game/src/ui/.",
+      "Do not fetch any URL by hand and do not read the served source. The server records every path it answers and that record is read afterwards.",
+      "Do not try to work out which build is which before your answers are written to disk.",
+      "Answer the five questions in the words they are written in. There are five and there is no sixth."
+    ],
+    "reveal_discipline": "reports/blind/uix08-gate-g/.reveal/mapping.json is opened by the ORCHESTRATOR only after all five answer files and the separability reader's answer exist on disk. It is outside the pack (leak-check L1/L1b prove it) and it is named in no document a judge receives."
+  },
+
+  "the_two_urls": {
+    "how_they_are_served": "There is no long-lived server and there must not be one — a judge cannot hold a browser open between its own turns. `play.mjs` serves the arm it is playing on an OS-assigned ephemeral port for the life of one run and closes it. The judge never types a URL; it names an arm codename.",
+    "arm_roots": "<pack>/<codename>/game/index.html, served with <pack>/<codename>/game as the document root",
+    "codenames_for_seed_20260815": ["osprey", "quillon"],
+    "note": "The codenames are drawn from a neutral list of twelve marsh minerals and birds before the coin decides which arm is ablated, so the draw cannot be conditioned on the assignment."
+  },
+
+  "the_pack": {
+    "path": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/gate-g/pack",
+    "size": "113 MB including the extracted baseline",
+    "rebuild_if_the_container_restarted": "node tools/blind/played-pair/build-arms.mjs --out <dir> --reveal reports/blind/uix08-gate-g/.reveal --commit <the sha in mapping.json> --seed 20260815 --force",
+    "then_regate": "node tools/blind/played-pair/leakcheck-arms.mjs --pack <dir> --reveal reports/blind/uix08-gate-g/.reveal   # must exit 0 BEFORE a judge is dispatched"
+  },
+
+  "files_landed": [
+    "tools/blind/played-pair/tells.mjs",
+    "tools/blind/played-pair/build-arms.mjs",
+    "tools/blind/played-pair/play.mjs",
+    "tools/blind/played-pair/leakcheck-arms.mjs",
+    "reports/blind/uix08-gate-g/PROMPT-G-verbatim.txt",
+    "reports/blind/uix08-gate-g/POST-PROMPT-preference.txt",
+    "reports/blind/uix08-gate-g/DRIVER-PROTOCOL.md",
+    "reports/blind/uix08-gate-g/SEPARABILITY-READER.md",
+    "reports/blind/uix08-gate-g/leakcheck.json",
+    "reports/blind/uix08-gate-g/leakcheck-selftest.json",
+    "reports/blind/uix08-gate-g/sealing/lit-ours.png",
+    "reports/blind/uix08-gate-g/sealing/lit-ablated.png",
+    "reports/blind/uix08-gate-g/.reveal/mapping.json",
+    "game/src/ui/system.js",
+    "orchestration/status/W1-UIX08-GATE-G.json"
+  ],
+  "files_claimed": [
+    "tools/blind/played-pair/",
+    "reports/blind/uix08-gate-g/",
+    "orchestration/status/W1-UIX08-GATE-G.json"
+  ],
+  "contention_note": "Ran with `node tools/contention.mjs` before every browser. Two runs proceeded against a WAIT (load 4.29 and 5.16 per core against a 4.0 ceiling), stated here per rule 21: neither was a timing measurement, so starvation could make them slow but not wrong, and one screenshot did time out at 30 s and was re-taken with a 180 s budget. A sibling (`tools/ui/dialogue-drive-probe.mjs`) was running against the dialogue window at the same time; it touches no file this piece owns.",
+
+  "what_was_built": {
+    "the_ablation": "`game/src/ui/system.js` line 150, `this.dialogueArm = { links: true → false, opaque: false }`. One token, one line, one file. It removes the inline lighting and nothing else: measured live, the topic column is IDENTICAL between the two arms at every one of the 10 steps of the paired smoke session, and the prose, the speaker, the disposition number and the Goodbye button are the same objects in the same rects.",
+    "why_that_is_the_arm_§G_asks_for": "§G: 'the same window, the same prose, the same topic column, with the inline links removed and the topics they would have added present in the column from the start.' Both arms grant a topic at the moment the answer that carries it is DISPLAYED — which is a moment both arms share. The rejected formulation keyed the grant on 'the click that would have unlocked it', which does not exist in an arm with no links; a plan reviewer caught that and this is the repaired version.",
+    "the_defect_found_and_fixed_in_the_ablation_itself": "`_dialogueCtx()` builds `linkable` from ALL of `rows`, which INCLUDES the service rows (`barter`, `training`, `travel`) that §D2 puts above the rule. The ablated arm filtered its extras against `topics` only, so every service row was appended a SECOND time into the alphabetical ask-about run — exactly the failure §D2 names by name. That is a control made worse for a reason unrelated to the thing under test, i.e. HAZARDS §0's broken null wearing a plausible arm's clothes. Fixed before the arms were cut (commit a2b81ea4); the extras now exclude the action ids too."
+  },
+
+  "verification": {
+    "baseline_pinned": "each build pins `git rev-parse HEAD` at build time and records it in the KEY, never in the pack — the sealing commit's own headline names the ablated arm, so publishing the sha would have let a judge be told the answer by our own commit message. Found by the leak-check, not by inspection.",
+    "leak_check": {
+      "tool": "node tools/blind/played-pair/leakcheck-arms.mjs",
+      "result_on_the_real_pack": "0 red of 9 rows",
+      "rows": "L1 key not in pack · L1b key dir outside pack · L2 arm names neutral · L3 titles identical · L4a no unexplained asymmetric tell (asymmetric=2, both explained by the ablation token) · L4b this item never named · L4c 182 residual subject tells, identical on both ports, informational · L5 arms differ in exactly one file and one line pair · L6 both arms parse · L7 arms are NOT identical",
+      "L5_and_L7_are_deliberately_opposed": "one reds if the arms differ too much, the other if they do not differ at all — HAZARDS §0b's two-sided guard, rather than one that can only see the deviation its author expected"
+    },
+    "the_guard_has_actually_fired": {
+      "tool": "node tools/blind/played-pair/leakcheck-arms.mjs --self-test",
+      "what_it_does": "builds a DELIBERATELY LEAKY pair (no redaction, directories named `ours-arm` and `ablated-arm`, page titles naming the arm) and a clean pair, and asserts the gate reds on one and greens on the other",
+      "result": "LEAKY: 5 rows red (L2, L3, L4a, L4b, L5), 2,783 tell hits. CLEAN: 0 rows red, 178 tell hits. Exit 0.",
+      "why_this_matters": "RULES rule 6 — a control you have never seen fail is not evidence, it is a second copy of the experiment"
+    },
+    "leaks_the_check_actually_caught_during_the_build": [
+      "`pack.json` published `baseline_commit`, and the commit that seals the pack has a headline naming the ablated arm — a judge with the sha could have been told the answer by `git show`. Removed; the sha lives in the key.",
+      "`pack.json`'s own `schema` string read `elder-souls/uix08-gate-g-pack@1` and named the item. Renamed to `elder-souls/played-pair@1`.",
+      "The tool directory was `tools/blind/uix08-gate-g/`, and the driver protocol handed to the judge quotes that path. Renamed to `tools/blind/played-pair/`.",
+      "Tell-matched redaction ALONE left `dialogue.js`'s opening line — 'a floating index of keywords you find by reading, not a menu of replies' — which names the mechanism under test and carries no tell because it is a description rather than a label. Redaction was changed to strip EVERY pure-comment line (29,588 lines in 162 files per arm), with each rewritten file re-parsed and restored to its original bytes if it no longer parsed. 0 files needed restoring."
+    ],
+    "both_arms_playable": {
+      "smoke_ours": "10 steps, 1 conversation, production render, shipped HUD, no debug overlay (the `helstrom-market` label bottom-left is `hud.place` / kind `place_name`, the shipped S54 out-of-combat element shown ≤3 s after a cell change — checked in `game/src/ui/hud-world.js:213`, not a debug artefact)",
+      "smoke_ablated": "the same 10-step script, same speaker, same disposition, COLUMN IDENTICAL AT EVERY STEP",
+      "three_conversations": "a 27-step session reached three different people (Neekhu, Anxthari, Ixthek), asked topics of each and left each, in 7m08s of wall clock",
+      "http_double_fetches_on_an_honest_run": 0
+    },
+    "the_arms_visibly_differ_in_the_running_game": {
+      "found": "Neekhu / `latest rumors` at `helstrom-market` — the answer reads 'The carriers have raised their rate on the Thorn run…' and `the carriers` is a topic in her column",
+      "ours_arm": "links_total 1, `the-carriers` lit blue and underlined inside the prose — reports/blind/uix08-gate-g/sealing/lit-ours.png",
+      "ablated_arm": "links_total 0 on the identical person and topic — reports/blind/uix08-gate-g/sealing/lit-ablated.png",
+      "how_hard_it_was_to_find": "the 9th (person, topic) pair tried at that state. The first eight lit nothing.",
+      "offline_bracket": "441 of 1,273 shipped answers (34.6%) light at least one word from their OWN AddTopic targets alone, independent of speaker; 817 (64.2%) would light if the column held every topic in the game. Derived by running the shipped `markLinks()` over `game/data/dialogue/topics/*.json`."
+    }
+  },
+
+  "rulings": [
+    {
+      "id": "GATE-G-R1",
+      "text": "The arms are frozen by `git archive <sha> game`, not by `git worktree add`. A worktree checks out the WHOLE repository — 1.8 GB of reports/ and corpus/ — and two of them filled the disk mid-build (No space left on device, 96% full, 5.9 GB reclaimed by removing them). `git archive` reads the commit's tree object, never touches the working tree, and yields the same frozen bytes for the paths we serve at 36 MB. HAZARDS §11 forbids a copy that MOVES; a tree object cannot move.",
+      "reversible": true,
+      "overturned_by": "an arm that needs a path outside game/ — at which point archive the extra paths, not the whole repo."
+    },
+    {
+      "id": "GATE-G-R2",
+      "text": "The five questions are in PROMPT-G-verbatim.txt verbatim and there is no sixth. The 'which build was better' question §G's ladder row requires is in a SEPARATE file the judge opens only after both sets of five answers are on disk. Asking it inside the five would make every answer a comparison, and Ruling W2 is explicit that 'can you tell these apart' is a leak check and never the quality verdict.",
+      "reversible": true,
+      "overturned_by": "a reader showing the split cost more than it bought — e.g. judges answering the five about the pair rather than about the build in front of them."
+    },
+    {
+      "id": "GATE-G-R3",
+      "text": "The judge's machine-readable view (`session.json`) publishes speaker, disposition text, the column rows and which pane the cursor is in — and NOT links_total, links_enabled, link_topics or linkable. The column rows are read off the declared element list rather than off the window's own summary, so the view is arm-blind by construction rather than by my having remembered to delete a key. The prose itself is only in the screenshots, on purpose: the owner's directive is that static inspection is not evidence, and a JSON field is not a picture.",
+      "reversible": false
+    },
+    {
+      "id": "GATE-G-R4",
+      "text": "Redaction strips every pure-comment line in game/src/**/*.js in BOTH arms identically, rather than only the lines carrying a tell. A tell-list as the only filter is HAZARDS §0b's one-sided guard: it sees the leaks its author thought of. The demoted tell-list is still used — by the leak-check, to hunt what is LEFT.",
+      "reversible": true,
+      "overturned_by": "a file whose comments are load-bearing at runtime (none found; every rewritten file is re-parsed and restored if it stops parsing)."
+    }
+  ],
+
+  "what_would_make_this_brief_wrong": [
+    "If a judge CAN separate the arms without playing — a channel I did not think of. The separability reader is asked this directly (question 3 of its four) rather than being told the pack is clean.",
+    "If the arms turn out to be inseparable in ten minutes of ordinary play because the lit word is too rare. The 34.6% floor is over ANSWERS, not over ten-minute sessions, and the live search needed nine tries. If both players name no difference, the correct disposition is `inert` and the correct response is to fix how often the prose names its own topics — NOT to re-run the gate until it flatters.",
+    "If `helstrom-market` is an unrepresentative town. Both arms were only ever played there."
+  ]
+}
