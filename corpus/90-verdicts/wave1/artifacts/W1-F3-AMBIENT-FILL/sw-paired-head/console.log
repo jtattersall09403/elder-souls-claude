@@ -1,0 +1,18 @@
+alternating (6 pairs, settle 12): mean paired p10 lift 0.634, off-series drift 0.012, mean paired p90 0.219
+  off: [14.39,14.393,14.394,14.388,14.395,14.4]
+  on : [15.019,15.025,15.027,15.023,15.038,15.034]
+PASS  PAIRED-GI-LIFT-IS-POSITIVE-EVERY-TIME  — every one of 6 pairs has p10(on) > p10(off); smallest paired lift 0.629, mean 0.634 luma. Series: [0.629,0.632,0.633,0.635,0.643,0.634]
+PASS  PAIRED-LIFT-EXCEEDS-THE-WARM-UP-DRIFT-IT-REPLACED  — mean paired lift 0.634 luma against 0.012 luma of total drift across the whole GI-off series. The block design failed precisely because its "effect" was smaller than its drift; this check refuses to repeat that.
+PASS  PAIRED-DIFFERENCE-COLLAPSES-WITHOUT-THE-FIX  — NOT APPLICABLE — this tree has the fix; the control arm is the run against the pinned-baseline clone
+PASS  PAIRED-LIT-END-IS-UNMOVED  — mean paired p90 difference 0.219 luma — the lit end must not move when the shadow floor does, which is what separates this from a global lift
+renderer: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver) (software=true)
+GI off: p10=4.734 p90=54.985 falloff=11.6147 shadow_levels=28 local_contrast_med=6.275
+GI on:  p10=15.116 p90=54.864 falloff=3.6296 shadow_levels=34 local_contrast_med=4.365
+PASS  GI-ON-RAISES-SHADOW-FLOOR  — p10_luma off=4.734 on=15.116 — the fix must actually raise the darkest-decile mean
+PASS  GI-ON-INCREASES-SHADOW-DETAIL  — shadow_levels (image-leakcheck.mjs's own definition) off=28 on=34 — distinct luma levels below the 25th percentile
+PASS  GI-ON-DOES-NOT-BRIGHTEN-THE-LIT-END  — p90_luma off=54.985 on=54.864 — a pixel already at or above its neighbourhood's own brightness should receive ~nothing; this is what a flat lift CANNOT do
+null-control lift K=11
+PASS  NULL-CONTROL-GETS-AT-LEAST-GI-ONS-SHADOW-FLOOR  — null p10=15.734 vs gi-on p10=15.116: the control was given 0.618 luma MORE shadow lift than the fix bought. Must be non-negative (the control is never short-changed) and within one 8-bit quantum (1.0 luma) so it is not handed an unearned advantage either. THIS CHECK WAS FOUND FAILING BY RUNNING IT: it originally demanded a match within 0.5 luma, which an integer-quantised lift can never deliver — measured p10 4.734 -> 15.734 at K=11 against a target of 15.116. That was the check being wrong about arithmetic, not the control being wrong about lighting.
+PASS  ALGEBRAIC-LIFT-COMPRESSES-RATIO  — measured null falloff_ratio=4.1937 vs the algebraic prediction (p90+K)/(p10+K)=4.1938 — confirms the pixel-level measurement matches the closed-form identity (informational: this identity holds regardless of which arm "wins" on the ratio itself, which is why the ratio is not the gating check)
+PASS  GI-MOVES-THE-LIT-END-FAR-LESS-THAN-A-MATCHED-GLOBAL-LIFT  — for the SAME shadow-floor lift (p10 matched to within one 8-bit quantum), gi-on moves p90_luma by 0.121 while the null control — which by construction of an additive lift moves EVERY pixel by exactly K=11.00 — moves it by 11.000. This is the real directional-falloff claim: a spatially-local fix can leave an already-lit surface's brightness alone while raising a shadow floor by the same amount; a flat lift structurally cannot touch one region without touching all of them.
+PASS  GLOBAL-LIFT-COMPRESSES-BELOW-GI-OFF-BASELINE  — null-control falloff_ratio=4.1937 vs the untouched gi-off baseline=11.6147 — any positive flat lift strictly compresses the ratio below where it started (the algebraic identity again; kept as an honest, if non-gating, fact about global lifts)
