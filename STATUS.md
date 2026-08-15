@@ -10,8 +10,8 @@
 
 - **Making the sun the dominant light.** This is the one that matters. See the section below: shadows
   and occlusion only reach a fifth of the picture, and this is the fix for that.
-- **Photographing the player from eight angles on real hardware**, before and after yesterday's body
-  work. The body was given hips and a waist and *nobody has looked at it in the running game yet*.
+- **Judging the character work** — an independent critic, shooting the new standing pose on real
+  hardware, which the builder shipped without a photograph and said so itself.
 - **Checking the water fix** — an independent critic on the marsh streaks, which are 28% better and
   not gone.
 - **The container screen** — it hides ten words of its own description and prints no gold prices.
@@ -112,14 +112,26 @@
 - **The player's own eye was the worst in the game** — 2.16× the brightness of their face, worse than
   the case that was fixed two rounds ago, affecting the player and **260 of 408** NPC records. Now
   0.847×.
-- **Not yet photographed, and one thing got worse.** None of this is confirmed in the running game —
-  the orbit frames the "slabs" verdict was made of have not been re-shot. And the fix **increased small
-  cracks between body parts by 12%**, which the builder reported rather than hid, having tried two
-  predicted fixes that both made it worse still. **This is being shot on real hardware right now** —
-  the eight-angle player orbit, both before and after, which is the exact picture the last four
-  judgements were written against.
+- **The body is now photographed on real hardware, and the change is visible.** Eight angles, before
+  and after, on an RTX A4500 — the exact picture the last four judgements were written against. The
+  waist reads at player distance.
+- **And the character was standing like a shop mannequin — that is now fixed but NOT yet photographed.**
+  Measured on the pose the game actually draws: shoulder tilt 0.3°, **hip tilt exactly 0.000°**, and
+  frames two seconds apart were the identical stand. A real person's weight sits on one leg. The fix
+  puts the hips and shoulders on opposite tilts on the shared stance layer, so **one edit moved the
+  player and all 408 NPCs**. The catch is honest and the builder led with it: the paid photo run
+  happened *before* the stance was written, so **the stance itself has never been seen on hardware** —
+  a critic is shooting it now, along with eight face frames that were photographed and never opened.
+- **Two costs of that fix, both found by measurement.** Rolling the hips floated one foot **17.4 mm**
+  off the ground; that was solved properly (both feet now land level) but leaves the whole character
+  standing **8.9 mm higher**, which nobody has yet checked in the game. And the small-cracks number
+  went up another 0.8%.
+- **The four-round argument about "cracks" in the body got a photograph and a ruling.** The tool that
+  counts them **emits no images**, so four rounds argued about the number blind. Someone finally dumped
+  the frames and looked: the two largest "cracks" are **daylight between a hanging forearm and the
+  body, capped by the greatsword's crossguard** — you can see the crossguard. Not holes.
 - **The last independent look at the player is still the live verdict:** no waist, no shoulder line,
-  shield and sword as planks. Until the orbit above comes back, that verdict is unchanged.
+  shield and sword as planks. A critic is re-judging it now.
 - **Still owed on characters:** none of this has been photographed in the game yet. And there is a
   measured reason the foot work kept photographing as "no change" — the three camera stands used for
   character captures offer **at most 34 mm of ground height difference between the two feet**, so a
