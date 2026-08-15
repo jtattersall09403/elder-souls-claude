@@ -10,8 +10,8 @@
 
 - **Judging the sun.** The key-light rebalance landed — this is the one that matters, and it is the
   first change all day that should be visible the moment you walk outside.
-- **Characters, round ten** — the new standing pose was judged and it lifted everyone off the floor;
-  that, and an eye that still doesn't read as an eye.
+- **Characters, round eleven** — the crowd. Every NPC in the game stands in one identical pose, and a
+  town has 14 different bodies between 408 people.
 - **Judging the water, round two** — the sea is visibly deeper and less washed-out at eye level, and
   the stripes are still there.
 - **Judging the container screen fix** — and settling a worrying finding: a filed verdict's numbers
@@ -133,12 +133,14 @@
   running game on real hardware: **frames of the idle loop where both soles are clear of the ground go
   from 24 of 96 to 68 of 96**, largest gap 2 mm → 11 mm. All 409 characters hover slightly. Being fixed
   now; the remedy is one line of data.
-- **The eye had a pupil worth literally zero pixels — now it has one.** Eight face frames shot on
-  hardware two rounds ago went unopened until today; what they showed was *a flat amber lozenge — no
-  pupil, no lid, no orbit*. The pupil existed the whole time and was worth **0 pixels at every camera
-  angle on 4 of 5 face shapes**, and the cause was not the eye: **the snout was in front of it.** Moved
-  6 mm out and 12 mm forward — **0 → 10,316 pupil pixels**, and every one of 30 angle-and-subject pairs
-  now shows one. "No lid, no orbit" still stands, and none of this is photographed yet.
+- **The eye had a pupil worth literally zero pixels — now it has one, and it reads in conversation.**
+  The pupil existed the whole time and rendered **0 pixels at every camera angle on 4 of 5 face
+  shapes**, and the cause was not the eye: **the snout was in front of it.** Moved 6 mm out and 12 mm
+  forward, then photographed on real hardware: **at talking distance you now see a dark pupil with a
+  catchlight in it.** Step back to third-person distance and it is still two amber smudges, and "no
+  lid, no orbit" still stands.
+- **The hover is fixed and photographed** — both feet back down within a millimetre of where they sat
+  before the new pose, cross-checked by two independently written capture tools.
 - **Some good news in the same verdict:** the character bar now has **12 of its 18 checks published**
   for the first time, and the head-count proportion check **has quietly gone from a hard fail to a pass**
   — 0 of 41 figures in band, to 41 of 41.
