@@ -308,7 +308,18 @@ try {
 } catch (e) {
   push('run', false, `threw: ${String((e && e.message) || e)}`);
 } finally {
-  await h.close();
+  // THE REPORT IS THE DELIVERABLE AND A DEAD BROWSER MUST NOT EAT IT. Measured on this round's
+  // own second run: a sibling's kill closed the page after R2, the catch above recorded the throw
+  // correctly — and then `await h.close()` never returned, so the process sat past its own
+  // `timeout` holding four passing checks that nobody could read. `HAZARDS` §13's shape from the
+  // inside: the run had its result and blocked on the teardown. So the close is raced against a
+  // ceiling and a teardown that will not finish is itself recorded as a check.
+  const closed = await Promise.race([
+    h.close().then(() => 'closed').catch((e) => 'close threw: ' + String((e && e.message) || e)),
+    new Promise((res) => setTimeout(() => res('TIMED OUT after 20s — browser left for the box to reap'), 20000)),
+  ]);
+  report.data.teardown = closed;
+  if (closed !== 'closed') log(`  note  teardown: ${closed}`);
 }
 
 // HAZARDS §18, copied here on purpose: a run that measured nothing must not overwrite a run that
