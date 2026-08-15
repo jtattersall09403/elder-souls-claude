@@ -1,0 +1,177 @@
+{
+  "schema": "elder-souls/t4-r3-density@1",
+  "at": "2026-08-15T17:46:31.940Z",
+  "measure_dir": "corpus/90-verdicts/wave1/artifacts/T4-r6/measure-attrib",
+  "bar": 0.35,
+  "hard_fail_below": 0.15,
+  "screens": {
+    "world": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r6/measure-attrib/screens/live-world__1920x1080.png",
+      "panel_rect": null
+    },
+    "inventory": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r6/measure-attrib/screens/live-inventory__1920x1080.png",
+      "panel_rect": [
+        200,
+        150,
+        1520,
+        780
+      ],
+      "d2_critic": 0.1564,
+      "d2_detail": {
+        "mode_rgb": [
+          44,
+          57,
+          45
+        ],
+        "pixels": 1185600
+      },
+      "d2_builder_same_run": 0.1564,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.5718,
+      "matter_px2": 185428,
+      "panel_px2_at_bar": 529794,
+      "frame_fraction_at_bar": 0.2555,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "journal": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r6/measure-attrib/screens/live-journal__1920x1080.png",
+      "panel_rect": [
+        595,
+        325,
+        730,
+        430
+      ],
+      "d2_critic": 0.167,
+      "d2_detail": {
+        "mode_rgb": [
+          187,
+          178,
+          156
+        ],
+        "pixels": 313900
+      },
+      "d2_builder_same_run": 0.167,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1514,
+      "matter_px2": 52421,
+      "panel_px2_at_bar": 149774,
+      "frame_fraction_at_bar": 0.0722,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "sheet": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r6/measure-attrib/screens/live-sheet__1920x1080.png",
+      "panel_rect": [
+        680,
+        295,
+        560,
+        490
+      ],
+      "d2_critic": 0.1622,
+      "d2_detail": {
+        "mode_rgb": [
+          45,
+          57,
+          45
+        ],
+        "pixels": 274400
+      },
+      "d2_builder_same_run": 0.1622,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1323,
+      "matter_px2": 44508,
+      "panel_px2_at_bar": 127166,
+      "frame_fraction_at_bar": 0.0613,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "spells": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r6/measure-attrib/screens/live-spells__1920x1080.png",
+      "panel_rect": [
+        730,
+        365,
+        460,
+        350
+      ],
+      "d2_critic": 0.308,
+      "d2_detail": {
+        "mode_rgb": [
+          27,
+          26,
+          24
+        ],
+        "pixels": 161000
+      },
+      "d2_builder_same_run": 0.308,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.0776,
+      "matter_px2": 49588,
+      "panel_px2_at_bar": 141680,
+      "frame_fraction_at_bar": 0.0683,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "levelup": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r6/measure-attrib/screens/live-levelup__1920x1080.png",
+      "panel_rect": [
+        720,
+        300,
+        480,
+        480
+      ],
+      "d2_critic": 0.1495,
+      "d2_detail": {
+        "mode_rgb": [
+          220,
+          217,
+          204
+        ],
+        "pixels": 230400
+      },
+      "d2_builder_same_run": 0.1495,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1111,
+      "matter_px2": 34445,
+      "panel_px2_at_bar": 98414,
+      "frame_fraction_at_bar": 0.0475,
+      "hard_fail": true,
+      "meets_bar": false
+    },
+    "container": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r6/measure-attrib/screens/live-container__1920x1080.png",
+      "panel_rect": [
+        720,
+        310,
+        480,
+        460
+      ],
+      "d2_critic": 0.1459,
+      "d2_detail": {
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 220800
+      },
+      "d2_builder_same_run": 0.1459,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1065,
+      "matter_px2": 32215,
+      "panel_px2_at_bar": 92043,
+      "frame_fraction_at_bar": 0.0444,
+      "hard_fail": true,
+      "meets_bar": false
+    },
+    "container_no_name": {
+      "error": "no capture on disk",
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r6/measure-attrib/screens/live-container_no_name__1920x1080.png"
+    }
+  },
+  "hard_fails": [
+    "levelup",
+    "container"
+  ]
+}
