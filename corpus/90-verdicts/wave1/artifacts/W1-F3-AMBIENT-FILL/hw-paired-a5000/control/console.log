@@ -1,0 +1,22 @@
+alternating (6 pairs, settle 12): mean paired p10 lift -0.001, off-series drift 0.013, mean paired p90 0.004
+  off: [14.287,14.287,14.287,14.287,14.289,14.3]
+  on : [14.281,14.285,14.287,14.284,14.299,14.296]
+PASS  PAIRED-GI-LIFT-IS-POSITIVE-EVERY-TIME  — NOT APPLICABLE — this tree has no giFill switch, so this run is the inert-control arm and is judged by PAIRED-DIFFERENCE-COLLAPSES-WITHOUT-THE-FIX instead
+PASS  PAIRED-LIFT-EXCEEDS-THE-WARM-UP-DRIFT-IT-REPLACED  — mean paired lift -0.001 luma against 0.013 luma of total drift across the whole GI-off series. The block design failed precisely because its "effect" was smaller than its drift; this check refuses to repeat that.
+PASS  PAIRED-DIFFERENCE-COLLAPSES-WITHOUT-THE-FIX  — the giFill switch does not exist on this tree, so the alternation is just consecutive captures of one unchanging tree: mean paired difference -0.001 luma (must be under 0.5). This is the inert-control arm — if it does NOT collapse, the alternating instrument is measuring its own procedure and not the shader.
+PASS  PAIRED-LIT-END-IS-UNMOVED  — mean paired p90 difference 0.004 luma — the lit end must not move when the shadow floor does, which is what separates this from a global lift
+motion: 2/8 angles lifted, worst p90 drift 0.01%, pan MASD off=0.128 on=0.128
+PASS  GI-LIFTS-THE-SHADOW-FLOOR-AT-EVERY-ANGLE  — NOT APPLICABLE — no giFill switch on this tree; per-angle lifts here are the inert-control arm: [0,-0.003,0.003,0.002,-0.007,0,-0.01,-0.002]
+PASS  GI-LEAVES-THE-LIT-END-ALONE-AT-EVERY-ANGLE  — worst-case |p90 drift| across all orbit angles = 0.01% (must stay under 6%, the same threshold the still uses) — the still's lit-end stability is not a lucky framing.
+PASS  PER-ANGLE-LIFT-COLLAPSES-WITHOUT-THE-FIX  — inert-control arm: with the fix physically absent the toggle is a no-op, so every per-angle "lift" must be noise — largest |lift| 0.010 luma (bar: 0.5)
+PASS  GI-DOES-NOT-CRAWL-UNDER-CAMERA-MOTION  — frame-to-frame mean absolute successive difference of p10_luma along a 1.5-degree-per-frame pan: off=0.1284, on=0.1284. The GI-off arm is the scene's OWN motion noise (foliage, sub-pixel sampling, TAA-free aliasing — HAZARDS.md §8), so the bar is "GI adds no material instability on top of it", not "GI is perfectly still".
+PASS  FIX-IS-ACTUALLY-ABSENT-FROM-THE-CONTROL-TREE  — renderer.setVisualFeature('giFill') threw 'unknown renderer feature' — the fix is genuinely torn out
+FAIL  OLD-NUMBER-COMES-BACK-PAIRED  — mean PAIRED p10 lift: this control tree -0.001 luma, head tree 0.631 luma. Removing the fix must collapse the paired lift to nothing.
+PASS  BLOCK-COMPARISON-IS-CONFOUNDED-AND-IS-NOT-EVIDENCE  — RECORDED, NOT GATED. The old block-design claim was "the control's second capture returns to the head run's GI-OFF number". It does not: control second capture=14.353, head GI-OFF=4.641 (distance 9.712), head GI-ON=15.001 (distance 0.648). That is not the fix surviving its own removal — it is the block design measuring capture ORDER. The first capture of both trees is identical; only the second diverges, on a tree where the shader is physically absent. This row exists so the confound stays visible in the evidence instead of being quietly deleted once a better instrument replaced it.
+PASS  BOTH-ARMS-ON-THE-SAME-RENDERER  — control renderer "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)" vs head run renderer "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)" — two arms on two different renderers are not comparable (dispatch brief item 2)
+renderer: ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA) (software=false)
+GI off: p10=4.641 p90=54.703 falloff=11.7861 shadow_levels=28 local_contrast_med=6.172
+GI on:  p10=14.353 p90=54.347 falloff=3.7864 shadow_levels=33 local_contrast_med=4.679
+PASS  GI-ON-RAISES-SHADOW-FLOOR  — p10_luma off=4.641 on=14.353 — the fix must actually raise the darkest-decile mean
+PASS  GI-ON-INCREASES-SHADOW-DETAIL  — shadow_levels (image-leakcheck.mjs's own definition) off=28 on=33 — distinct luma levels below the 25th percentile
+PASS  GI-ON-DOES-NOT-BRIGHTEN-THE-LIT-END  — p90_luma off=54.703 on=54.347 — a pixel already at or above its neighbourhood's own brightness should receive ~nothing; this is what a flat lift CANNOT do
