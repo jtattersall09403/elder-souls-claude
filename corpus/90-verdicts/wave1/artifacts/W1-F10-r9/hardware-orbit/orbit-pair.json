@@ -1,0 +1,31 @@
+{
+  "tool": "f10-r9-orbit-pair.mjs",
+  "generated": "2026-08-15T16:57:23.388Z",
+  "roadmap_item": "F10",
+  "slots": "CP,FP",
+  "arms": {
+    "after": {
+      "actor_sha256": "f02d90947673585c84aa3ea388037814f6cca1994d5c97b4e6d63b0951e1d708"
+    },
+    "before": {
+      "actor_sha256": "f48b8e9549ea793604a1485b20e0252f6f50c6890fcff991b00a81bac2400c58",
+      "pinned_at": "01d96c5d"
+    }
+  },
+  "runs": [
+    {
+      "tag": "after",
+      "exit": 0,
+      "signal": null
+    },
+    {
+      "tag": "before",
+      "exit": 0,
+      "signal": null
+    }
+  ],
+  "restore": {
+    "restored_sha256": "f02d90947673585c84aa3ea388037814f6cca1994d5c97b4e6d63b0951e1d708",
+    "ok": true
+  }
+}
