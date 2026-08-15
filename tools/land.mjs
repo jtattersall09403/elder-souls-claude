@@ -665,6 +665,21 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     console.error('usage: node tools/land.mjs "headline" [body...] [--paths a,b] [--exclude p] [--dry-run] [--sync] [--self-test]');
     process.exit(2);
   }
+  // `--paths` IS COMMA-SEPARATED, AND SPACE-SEPARATING IT SILENTLY LANDS ONLY THE FIRST PATH.
+  // Caught 2026-08-15: `--paths a.md b.mjs c.json` landed `a.md`, swept `b.mjs` and `c.json` into the
+  // commit MESSAGE as body paragraphs, and printed "1 path(s) ... verified 1 path(s)" — a success
+  // line for a bank that carried a quarter of what it was given. Refusing is one-sided (§0b): a
+  // message word that is also an existing path in this repo is never prose, and this guard can only
+  // ever stop a bank, never widen one.
+  const strayPaths = words.slice(1).filter((w) => !w.startsWith('-') && existsSync(join(HERE, w)));
+  if (strayPaths.length) {
+    console.error(`land: REFUSED — ${strayPaths.length} message word(s) are existing paths in this repo:`);
+    for (const p of strayPaths) console.error(`         ${p}`);
+    console.error('       `--paths` takes ONE comma-separated argument. You almost certainly meant:');
+    console.error(`         --paths ${[val('paths'), ...strayPaths].filter(Boolean).join(',')}`);
+    console.error('       If a path really is part of your headline, put the whole message in one quoted argument.');
+    process.exit(2);
+  }
   const opts = {
     paths: val('paths') ? val('paths').split(',').map((s) => s.trim()).filter(Boolean) : null,
     exclude: val('exclude') ? val('exclude').split(',').map((s) => s.trim()).filter(Boolean) : [],
