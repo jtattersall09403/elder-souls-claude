@@ -168,7 +168,7 @@ export function tagColumn(S, id, x, y, w, tags, selected, alpha, focused) {
  * One row of a list. `cols` is [{text, w, align, face, size, colour}].
  * Selection is a shell inlay under the row: a material catching the light, not a hover fill.
  */
-export function row(S, id, kind, x, y, w, h, cols, selected, alpha, meta) {
+export function row(S, id, kind, x, y, w, h, cols, selected, alpha, meta, inset) {
   return S.el({
     id, kind,
     rect: [x, y, w, h],
@@ -177,7 +177,11 @@ export function row(S, id, kind, x, y, w, h, cols, selected, alpha, meta) {
   }, (c, r) => {
     const s = S.s;
     if (selected) shellInlay(c, r[0], r[1], r[2], r[3], s, idHash(id));
-    let cx = r[0] + 8 * s;
+    // T4-r2: the text columns can be pushed right to leave room for the row's drawn object
+    // (RI-UIX09 P1). The icon is its OWN element — the row does not draw it — so the census
+    // counts a picture rather than a row that happens to contain one, and this argument is the
+    // only thing `row()` needs to know about it. `undefined` keeps every existing caller identical.
+    let cx = r[0] + (inset === undefined ? 8 : inset) * s;
     for (const col of cols) {
       const f = faceOf(col.face || 'ink');
       const sz = (col.size || 17) * s;

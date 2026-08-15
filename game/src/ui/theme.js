@@ -106,6 +106,7 @@ export function idHash(s) {
  * Traces a closed path; the caller fills and/or strokes it.
  */
 export function chitinPath(ctx, x, y, w, h, s, seed) {
+  noteMaterial(ctx, 'chitin');
   const seg = Math.max(3, Math.round(Math.min(w, h) / (26 * s)));
   const k = seed | 0;
   ctx.beginPath();
@@ -131,6 +132,7 @@ export function chitinPath(ctx, x, y, w, h, s, seed) {
  * is larger than chitin's and the period is shorter, so the two edges are told apart in a crop.
  */
 export function parchmentPath(ctx, x, y, w, h, s, seed) {
+  noteMaterial(ctx, 'parchment');
   const step = Math.max(4, Math.round(7 * s));
   const k = seed | 0;
   ctx.beginPath();
@@ -154,12 +156,30 @@ export function parchmentPath(ctx, x, y, w, h, s, seed) {
 // ---- surfaces ---------------------------------------------------------------------------
 
 /**
+ * Record that a material was actually PAINTED on this frame.
+ *
+ * T4 round 2. `getUIState().materials` returned `[]` for the whole of round 1 while the screens
+ * were visibly made of seven of the nine — the field filtered on `element.material`, which only
+ * `screen()`'s panel ever sets — so RI-UIX06 AD1's nine-material census had to be done entirely by
+ * eye off crops. This is the derived answer: every helper that lays down a material says so as it
+ * paints, `UISurface.begin()` clears the set each frame, and `state()` reports the union. It goes
+ * EMPTY if the drawing stops, which a hand-written list would not, and that is the whole point.
+ *
+ * It is a set on the context rather than on the surface because `theme.js` is handed a 2D context
+ * and never sees the surface — the same reason `render/text-register.js` hangs `__esOwnerId` there.
+ */
+export function noteMaterial(ctx, key) {
+  if (ctx && ctx.__esMaterials && key) ctx.__esMaterials.add(key);
+}
+
+/**
  * A panel of one material. This is the only way a background gets drawn in this interface.
  * @param {string} material one of MATERIALS
  * @param {number} alpha    0..1 — a panel over a live fight is translucent (RI-UIX03 P5)
  */
 export function panel(ctx, material, x, y, w, h, s, seed, alpha) {
   const a = alpha === undefined ? 1 : alpha;
+  noteMaterial(ctx, material);
   ctx.save();
   ctx.globalAlpha = a;
   switch (material) {
@@ -282,6 +302,7 @@ export function panel(ctx, material, x, y, w, h, s, seed, alpha) {
  * Drawn as the panel's own edge so there is no separate 1 px border anywhere (G4).
  */
 export function rootLashing(ctx, x, y, w, h, s, seed) {
+  noteMaterial(ctx, 'root');
   ctx.save();
   ctx.lineCap = 'round';
   // the bound root itself
@@ -331,6 +352,7 @@ export function rootLashing(ctx, x, y, w, h, s, seed) {
  * which is A5 ("nothing glows for UI reasons") satisfied by giving the highlight a direction.
  */
 export function shellInlay(ctx, x, y, w, h, s, seed) {
+  noteMaterial(ctx, 'shell');
   ctx.save();
   const g = ctx.createLinearGradient(x, y, x + w * 0.6, y + h);
   g.addColorStop(0, Ca('shell_cold', 0.10));
@@ -348,6 +370,7 @@ export function shellInlay(ctx, x, y, w, h, s, seed) {
  * than by an emissive halo. Used for the focus bar and the status buildup meters.
  */
 export function resinFill(ctx, x, y, w, h, s, key) {
+  noteMaterial(ctx, 'resin');
   ctx.save();
   const g = ctx.createLinearGradient(x, y, x, y + h);
   g.addColorStop(0, Ca(key, 0.75));
@@ -364,6 +387,7 @@ export function resinFill(ctx, x, y, w, h, s, key) {
 
 /** A worked bone pip — the level-up attribute markers, the healing-charge count, list bullets. */
 export function bonePip(ctx, cx, cy, r, s, filled, seed) {
+  noteMaterial(ctx, 'bone');
   ctx.beginPath();
   for (let t = 0; t <= 7; t++) {
     const a = (t / 7) * Math.PI * 2 - 0.4;
@@ -380,6 +404,7 @@ export function bonePip(ctx, cx, cy, r, s, filled, seed) {
 
 /** A bone divider: a worked splinter, not a hairline (G4 forbids a 1 px border). */
 export function boneRule(ctx, x, y, w, s, seed) {
+  noteMaterial(ctx, 'bone');
   ctx.save();
   ctx.beginPath();
   ctx.moveTo(x, y);
