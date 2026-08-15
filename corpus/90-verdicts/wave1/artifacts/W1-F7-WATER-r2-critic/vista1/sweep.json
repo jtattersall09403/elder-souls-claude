@@ -1,0 +1,243 @@
+{
+  "tool": "f7-r2-sweep",
+  "site": "vista-deep-marshes",
+  "generated": "2026-08-15T19:46:28.913Z",
+  "seed": 20260814,
+  "time_of_day": 13,
+  "canvas": [
+    960,
+    540
+  ],
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "null_control_constant": 0.086,
+  "commit": "3c0ad7322a613194d40c8c656b02e33c88f3771c",
+  "player": [
+    3123.5,
+    1.16,
+    3715
+  ],
+  "deck_declared_region": "deep-marshes",
+  "region_probe": {
+    "field_region": "deep-marshes",
+    "getWaterAt": {
+      "depth_m": 0.717,
+      "band": "W3",
+      "substrate": "SUCK",
+      "region": "deep-marshes",
+      "region_name": "The Deep Marshes",
+      "sea": null,
+      "tidal": false,
+      "k": 4.5,
+      "ground_y": 1.163,
+      "surface_y": 1.88
+    }
+  },
+  "head_expression_asserted": "PASS — game/src/render/water.js contains the round-2 weight verbatim",
+  "arms": {
+    "surface-hidden": {
+      "what": "POSITIVE CONTROL and WATER_MASK source — the water table hidden",
+      "kind": "mesh",
+      "poses": {
+        "c-vista-11-d26": {
+          "why": "the deck vista pose — what a player judges the world by, and the r1 critic's M12 pose"
+        }
+      },
+      "meshes_hidden": 48
+    },
+    "water-hidden": {
+      "what": "both water classes hidden — the M12 WATER_MASK source and the probe mask",
+      "kind": "mesh",
+      "poses": {
+        "c-vista-11-d26": {
+          "why": "the deck vista pose — what a player judges the world by, and the r1 critic's M12 pose",
+          "masked": {
+            "water_mask_pct_of_frame": 0.32,
+            "water_px_in_crop": 881,
+            "mean_luma": 46.265,
+            "band_rms": 15.6818,
+            "band_contrast": 0.33896,
+            "lanes_on_water": null
+          }
+        }
+      },
+      "meshes_hidden": 94
+    },
+    "fixed": {
+      "what": "HEAD — the round-2 Schlick weight, no edit",
+      "kind": "shader",
+      "poses": {
+        "c-vista-11-d26": {
+          "why": "the deck vista pose — what a player judges the world by, and the r1 critic's M12 pose",
+          "masked": {
+            "water_mask_pct_of_frame": 56.13,
+            "water_px_in_crop": 144186,
+            "mean_luma": 74.684,
+            "band_rms": 14.632,
+            "band_contrast": 0.19592,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": 60,
+              "lane_power": 18.3239,
+              "lane_aniso": 1.81,
+              "lane_power_normalised": 0.003285
+            }
+          },
+          "m12": {
+            "water_mask_px": 296385,
+            "water_mask_pct": 57.17,
+            "sequence_frames": 5,
+            "values": {
+              "water_px": 296385,
+              "water_frac": 0.57173,
+              "FresnelDelta": -0.01381,
+              "NormalEnergy": null,
+              "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+              "ShoreDelta": 0.01222,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": 0.00318,
+              "tvReason": null,
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": null
+            },
+            "band_verdict": {
+              "FresnelDelta": "FAIL (< 0.05)",
+              "NormalEnergy": "UNMEASURABLE (0 fail-closed)",
+              "ShoreDelta": "FAIL (< 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "PASS (>= 0.002)"
+            }
+          }
+        }
+      }
+    },
+    "prefix": {
+      "what": "round 1 as shipped (b0f3224e): weight = .25 + max(pow(1-esView,2.2), smoothstep(10,52,d)*.72*(1-esView)) * .50",
+      "kind": "shader",
+      "poses": {
+        "c-vista-11-d26": {
+          "why": "the deck vista pose — what a player judges the world by, and the r1 critic's M12 pose",
+          "masked": {
+            "water_mask_pct_of_frame": 56.46,
+            "water_px_in_crop": 144886,
+            "mean_luma": 83.181,
+            "band_rms": 15.4712,
+            "band_contrast": 0.186,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": -6,
+              "lane_power": 21.7048,
+              "lane_aniso": 1.56,
+              "lane_power_normalised": 0.003137
+            }
+          },
+          "m12": {
+            "water_mask_px": 297146,
+            "water_mask_pct": 57.32,
+            "sequence_frames": 5,
+            "values": {
+              "water_px": 297146,
+              "water_frac": 0.5732,
+              "FresnelDelta": -0.06692,
+              "NormalEnergy": null,
+              "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+              "ShoreDelta": 0.04828,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": 0.00246,
+              "tvReason": null,
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": null
+            },
+            "band_verdict": {
+              "FresnelDelta": "FAIL (< 0.05)",
+              "NormalEnergy": "UNMEASURABLE (0 fail-closed)",
+              "ShoreDelta": "PASS (>= 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "PASS (>= 0.002)"
+            }
+          }
+        }
+      },
+      "edits_applied": 5,
+      "edits_expected": 1
+    },
+    "nothing-restore-control": {
+      "what": "the floor: untouched, captured last, so run drift is measured rather than assumed",
+      "kind": "mesh",
+      "poses": {
+        "c-vista-11-d26": {
+          "why": "the deck vista pose — what a player judges the world by, and the r1 critic's M12 pose",
+          "masked": {
+            "water_mask_pct_of_frame": 56.18,
+            "water_px_in_crop": 144137,
+            "mean_luma": 74.88,
+            "band_rms": 14.6129,
+            "band_contrast": 0.19515,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": -90,
+              "lane_power": 15.8254,
+              "lane_aniso": 1.53,
+              "lane_power_normalised": 0.002822
+            }
+          },
+          "m12": {
+            "water_mask_px": 296157,
+            "water_mask_pct": 57.13,
+            "sequence_frames": 5,
+            "values": {
+              "water_px": 296157,
+              "water_frac": 0.57129,
+              "FresnelDelta": 0.00598,
+              "NormalEnergy": null,
+              "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+              "ShoreDelta": 0.01023,
+              "ReflCorr": null,
+              "reflReason": "only 1 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": 0.00312,
+              "tvReason": null,
+              "grazing_rows": [
+                1,
+                135
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": null
+            },
+            "band_verdict": {
+              "FresnelDelta": "FAIL (< 0.05)",
+              "NormalEnergy": "UNMEASURABLE (0 fail-closed)",
+              "ShoreDelta": "FAIL (< 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "PASS (>= 0.002)"
+            }
+          }
+        }
+      },
+      "meshes_hidden": 0
+    }
+  },
+  "checks": {
+    "PROBE-IS-CALIBRATED": "NOT RUN — no probe row in this batch may be read as a weight"
+  },
+  "pageErrors": []
+}
