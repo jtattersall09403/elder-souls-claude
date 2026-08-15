@@ -1,0 +1,23 @@
+{
+  "task_id": "DLG-FIRST-NPC-TEACHES-NOTHING",
+  "title": "The first person a player meets has no topic links, in either arm — the feature is invisible exactly where it must teach itself",
+  "state": "recorded-for-the-next-dialogue-piece",
+  "owner": "orchestrator",
+  "at": "2026-08-15T11:00:00Z",
+  "roadmap_item": "P1",
+
+  "the_finding": "Reported by a blind judge during the RI-UIX08 §G played gate, unprompted, and flagged by it as 'not a complaint about either build': in BOTH arms, Xeeth — the first person the player talks to at helstrom-market — has NO coloured words at all. The judge's own words: 'Judged on Xeeth alone the two builds are indistinguishable, and a player who concludes from him that the left pane is inert will not go back.'",
+
+  "why_this_is_safe_to_act_on_now": "It is ARM-INDEPENDENT. The judge observed it in both arms, so recording it reveals nothing about which arm is ablated and cannot contaminate the gate. Nothing else from the judging is being acted on until the separability reader has reported.",
+
+  "why_it_matters_more_than_it_sounds": "The inline topic link is the whole claim of the dialogue window — that a conversation hands you a thread you choose to pull. A feature that is absent from the first conversation a player has is a feature most players will never discover, because the cost of the discovery is going back to a pane you have already concluded is inert. This is not a rendering defect and no appearance check could see it: the window is correct, the links work, and 441 of 1,273 shipped answers (34.6%) light at least one word. The defect is WHERE they are.",
+
+  "the_measured_context": "34.6% of answers light >= 1 word overall. The gate's pack-builder had to try NINE (person, topic) pairs before finding one that demonstrated a live inline link. So the density is not uniform, and the opening is on the wrong side of the distribution.",
+
+  "the_remedy_named": "Not 'add more links' — that is the padding answer and it would dilute the mechanism. The remedy is to ensure the FIRST conversation a player has contains at least one live inline link on a topic worth pulling, and ideally that the first link teaches by leading somewhere visibly new. Whoever owns P1 (the topic web) should treat opening-conversation link density as a placement requirement with its own row, not as a consequence of the corpus average.",
+
+  "a_second_scope_limit_from_the_same_report": "The judges never left helstrom-market — the driver has no walk command beyond `talk`, so 'this town' in the gate's third question means the dozen people standing in one square. Whatever the gate concludes, it concludes about one market. That is a limit on the gate, recorded here so it is not quoted more broadly than it earned.",
+
+  "files_claimed": ["orchestration/status/DLG-FIRST-NPC-TEACHES-NOTHING.json"],
+  "files_touched": ["orchestration/status/DLG-FIRST-NPC-TEACHES-NOTHING.json"]
+}
