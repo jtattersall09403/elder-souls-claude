@@ -8,14 +8,13 @@
 
 **Making the game look like a game** — four agents, all on ring 1:
 
-- **Judging the sun.** The key-light rebalance landed — this is the one that matters, and it is the
-  first change all day that should be visible the moment you walk outside.
+- **The sun, round two** — the key light was judged and failed; our daylight has no colour in it, and
+  the fix is a number that already exists in the file.
 - **Characters, round eleven** — the crowd. Every NPC in the game stands in one identical pose, and a
   town has 14 different bodies between 408 people.
 - **Judging the water, round two** — the sea is visibly deeper and less washed-out at eye level, and
   the stripes are still there.
-- **Judging the container screen fix** — and settling a worrying finding: a filed verdict's numbers
-  don't reproduce on a byte-identical copy of the code it judged.
+- **The container screen, round seven** — the fix for the missing prices broke the weight column.
 
 ## If you play right now, expect this
 
@@ -41,15 +40,10 @@
   changed, and the speaker never changes inside the Writ House. Also fixed: starting a new game with a
   conversation open crashed the simulation step.
 - **The menus are denser *and* readable now.** Sizing each panel to its contents cleared all five
-  density failures, and then made the text collide — level-up drew name, value and gauge into the same
+  density failures and then made the text collide — level-up drew name, value and gauge into the same
   pixels on 9 of 10 rows, and 8 of 19 journal entries laid out past the panel onto the world. Both are
-  now **0**. The cause was subtle: the columns were sized as *fractions* of the row, which was correct
-  at the old wide panel and collided at the new narrow one, because font sizes are fixed pixels. Fixed
-  by measuring the longest attribute name the game actually has, rather than guessing a fraction.
-  **And the density score fell when the text stopped overlapping** — level-up sits at 0.1521 against a
-  0.15 floor, because the overlapping ink that had been inflating it stopped counting. That is the
-  clearest possible confirmation that the measure was rewarding the defect, and the builder flagged the
-  thin margin rather than padding it out of sight.
+  now **0**. The columns had been sized as *fractions* of the row, which was right at the old wide
+  panel and collided at the new narrow one, because font sizes are fixed pixels.
 - **The menus were judged independently and FAILED, scoring 2 of 10.** The reflow work is real and the
   judge confirmed it — level-up's rows read at both sizes, and the journal now runs **0 of 19** blocks
   off the page across all ten spreads. It fails on the **container** screen, on two things nobody had
@@ -187,9 +181,20 @@ the way.
 **The rebalance has now landed, and it is four numbers.** Daytime key light ×3, sky ×0.75, fill
 ×0.75, ambient dome cut to a third; night got its own moon lever, because the moon had no control at
 all — at 19:30 the game was scaling a *sun* of intensity 0.0126 while the light actually carrying the
-frame was unreachable. **The thing to look at:** the shot that scores *worst* on the acceptance number
-is the one where the fix visibly worked — flat shadowless olive ground before, a large soft cast
-shadow with readable stonework after.
+frame was unreachable. **It has now been judged, and it failed at 2 of 10** — but with one real win in
+it: **at midday the settlement casts large readable shadows in 8 of 12 camera angles**, shot in motion
+on real hardware over 54 frames. At 08:00 there is still no building shadow on the ground at any angle.
+
+**A correction I owe you.** I wrote here that the worst-scoring shot was "flat shadowless olive ground
+before, a large soft cast shadow after". **That was me narrating what I expected to see.** Re-measured:
+that crop was **already 69–78% in shadow before the change** — 90.6% of its pixels got *darker*. The
+fix did not put it into shadow; it removed the fill that was making the existing shadow legible.
+
+**And the judge found the thing the numbers were missing: our sunlight has no colour.** The corpus's
+own detector was sitting unused — our daylight key reads below its hard-fail line at 9 of 14
+measurements, where six real photographs read 16–143°. The proof is inside our own build: at night the
+game *does* tint its key light and passes; the daylight recipe sets the tint to exactly zero. The
+remedy is a number that already exists in the file.
 
 **That is because the acceptance number I wrote was wrong, and I have ruled it void.** It asked how
 much the picture changes when you switch the sun off — but *a pixel in shadow does not change when you
@@ -198,11 +203,11 @@ casting shadows. Replaced with the same test taken **only on the lit parts of th
 clause that the shadowed area must not shrink. **This is the fourth metric in two days that got better
 when the game got worse, or worse when it got better, and three of the four were mine.**
 
-**Two honest limits, both the builder's own words.** Only **2 of the 5** outdoor lighting recipes were
-rebalanced; dawn and dusk (roughly 05:20–06:40 and 17:20–18:40) still carry the old flat look, and
-applying the new numbers there was *measured and refused* because it crushed the bottom tenth of the
-frame to black. And there is **not one moving frame** in the whole piece — nine camera setups, all
-stills. A critic is shooting it in motion now.
+**The coverage hole is bigger than it looked, and not where I said.** Only **2 of the 5** outdoor
+lighting recipes were rebalanced. Dawn and dusk are a smaller band than I reported — 6.5% of the day,
+not the ~10% I wrote — but **overcast and storm weather cover 59% of daylight** across the thirteen
+regions' own weather, and neither was touched. So most of the time you spend outdoors is still lit by
+the old flat budget.
 
 ## The honest standard
 
