@@ -112,32 +112,37 @@ Alongside that: shrinking the documentation every agent reads before it can star
   would never discover it. Fixing placement is now the work, not adding more links.
 - Some buildings still overlap each other; 24 doors still open into another building.
 
-## The blind comparison was re-run today, and we lost 5 of 5 again
+## Why the game doesn't look better — answered today, and it's one number
 
-**This is the most important thing on this page.** On 14 August, five independent judges compared our
-frames against real reference plates without knowing which was which, and preferred the reference every
-time. Three fixes came out of that — materials, contact shadows, ambient fill — **all three landed, all
-three measured green on their own tests.**
+The blind comparison was re-run and **we lost 5 of 5 again**, exactly as before three fixes landed.
+Every judge named the same two absences: no material differentiation, and no contact shadow. Those are
+the two things the fixes delivered and measured as delivered.
 
-**Re-run today: we lost 5 of 5 again.** The score did not move.
+**The diagnosis is now in, and it is not that the fixes are broken. They work. They are being applied
+to 19% of the picture.**
 
-**And every judge named the same two things**, unprompted and independently: *"every surface returns
-the same flat matte olive-grey"*, *"thatch, plaster, stone and ground all return light identically"*,
-*"no contact darkening and no cast shadows at all, so nothing sits in space"*. Those are exactly the
-two things the three fixes were built to deliver.
+Measured on the exact window the judges looked at, as change from the shipped game:
 
-**Two details that make this worse, not better:**
-- **The judges are biased in our favour** — they can't be made fully naive on this setup — and we still lost.
-- **Our images are sharper than the references**, which are degraded JPEGs. Three judges said so
-  unprompted. So this is not about resolution or jagged edges, which we win. It is entirely about
-  light and material.
+| turning this off | changes the picture by |
+|---|---|
+| the **entire** sun shadow map | **0.78** |
+| the ambient occlusion | **0.92** |
+| *(re-taking the same photo, camera unmoved)* | *1.25* |
+| the sky's ambient dome | **21.79** |
 
-**What it means:** three fixes each passed a number built for it, and none of them changed what a
-person sees. That is the project's own rule landing on us — *a statistic can fail a build and can never
-pass one*. The next piece of work is finding out why, and **no new visual features are being built
-until that is answered**, because building a fourth fix on an instrument that doesn't predict the
-judgement would be spending for nothing.
+**Turning off every shadow in the game changes the judged pixels less than photographing it twice.**
+The sky dome moves them **28 times as much as the entire shadow map.**
 
+The reason: **46% of the light in a frame is indirect — and none of it can be shadowed.** The sky's
+contribution is an analytic dome that, in the renderer's own comment, contains *"no terrain, no
+settlement and no canopy"*. It lights every surface as if nothing were in the way. And the occlusion
+texture that would let a surface darken itself is switched off on **53 of 53** materials on screen.
+
+So shadows and occlusion only affect the fifth of the light coming straight from the sun, and the
+other four-fifths washes the result out. **That is why three correct fixes changed nothing a person
+could see** — and why the next work is the lighting recipe rather than more shadow features.
+
+## The honest standard
 ## The honest standard
 
 **Do not assume anything is "delivered to 7/10" yet.** The bar is min-over-axes ≥ 7.0 and the visual work currently scores **5** — measured, not guessed: the first blind comparison against real reference plates ran on 14 August and **our images lost 5 out of 5**.
