@@ -1,0 +1,595 @@
+{
+  "tool": "f7-r2-critic-phase",
+  "generated": "2026-08-15T22:35:48.972Z",
+  "commit": "00e1ee5e02a84dcb91d1edfa3e903d182b493f5c",
+  "seed": 20260814,
+  "site": "vista-deep-marshes",
+  "pose": "e-eye-yaw090",
+  "canvas": [
+    960,
+    540
+  ],
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "reps": 4,
+  "mode": "look",
+  "step_between_captures": 8,
+  "head_expression_asserted": "PASS — game/src/render/water.js carries the round-2 weight verbatim",
+  "what_this_separates": "the replicate series moves the water phase and NOTHING else; the interleaved pairs swap arm order every other replicate so phase drift cancels to first order",
+  "replicate_series": [],
+  "interleaved_pairs": [],
+  "pageErrors": [],
+  "mask": {
+    "meshes_hidden": 94,
+    "from": "frames/water-hidden-e-eye-yaw090.png"
+  },
+  "look": {
+    "what": "both arms at eight eye-level orbit bearings and three shoreline close-ups, so the round's central visual claim and the ShoreDelta regression can be SEEN rather than inferred",
+    "poses": {
+      "orbit-eye-yaw000": {
+        "arms": {
+          "fixed": {
+            "frame": "frames/look-orbit-eye-yaw000-fixed.png",
+            "water_mask_px": 267548,
+            "water_mask_pct": 51.61,
+            "m12": {
+              "water_px": 267548,
+              "water_frac": 0.5161,
+              "FresnelDelta": 0.04599,
+              "NormalEnergy": 0.19891,
+              "normalReason": null,
+              "ShoreDelta": 0.01287,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 288,
+                "y": 256,
+                "k": 128
+              }
+            },
+            "masked": {
+              "water_px_in_crop": 267548,
+              "mean_luma": 72.344,
+              "band_rms": 12.8408,
+              "band_contrast": 0.1775,
+              "lane_bearing_screen_deg": -84,
+              "lane_power": 12.3004,
+              "lane_aniso": 5.17,
+              "lane_power_normalised": 0.00235
+            }
+          },
+          "prefix": {
+            "frame": "frames/look-orbit-eye-yaw000-prefix.png",
+            "water_mask_px": 269200,
+            "water_mask_pct": 51.93,
+            "m12": {
+              "water_px": 269200,
+              "water_frac": 0.51929,
+              "FresnelDelta": -0.07753,
+              "NormalEnergy": 0.16496,
+              "normalReason": null,
+              "ShoreDelta": 0.05665,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 288,
+                "y": 256,
+                "k": 128
+              }
+            },
+            "masked": {
+              "water_px_in_crop": 269200,
+              "mean_luma": 84.549,
+              "band_rms": 13.775,
+              "band_contrast": 0.16292,
+              "lane_bearing_screen_deg": 86,
+              "lane_power": 20.2504,
+              "lane_aniso": 6.66,
+              "lane_power_normalised": 0.002833
+            }
+          }
+        },
+        "meshes_hidden": 94,
+        "edits_applied": 5,
+        "delta": {
+          "mean_luma_pct": -14.44,
+          "band_contrast_pct": 8.95,
+          "ShoreDelta": -0.04378,
+          "FresnelDelta": 0.12352
+        }
+      },
+      "orbit-eye-yaw045": {
+        "arms": {
+          "fixed": {
+            "frame": "frames/look-orbit-eye-yaw045-fixed.png",
+            "water_mask_px": 290405,
+            "water_mask_pct": 56.02,
+            "m12": {
+              "water_px": 290405,
+              "water_frac": 0.56019,
+              "FresnelDelta": 0.01401,
+              "NormalEnergy": 0.19422,
+              "normalReason": null,
+              "ShoreDelta": 0.02821,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 224,
+                "y": 256,
+                "k": 128
+              }
+            },
+            "masked": {
+              "water_px_in_crop": 290405,
+              "mean_luma": 69.214,
+              "band_rms": 11.5716,
+              "band_contrast": 0.16719,
+              "lane_bearing_screen_deg": 88,
+              "lane_power": 19.6441,
+              "lane_aniso": 5.1,
+              "lane_power_normalised": 0.004101
+            }
+          },
+          "prefix": {
+            "VACUOUS": "the prefix edit matched nothing"
+          }
+        },
+        "meshes_hidden": 94
+      },
+      "orbit-eye-yaw090": {
+        "arms": {
+          "fixed": {
+            "frame": "frames/look-orbit-eye-yaw090-fixed.png",
+            "water_mask_px": 299912,
+            "water_mask_pct": 57.85,
+            "m12": {
+              "water_px": 299912,
+              "water_frac": 0.57853,
+              "FresnelDelta": 0.0397,
+              "NormalEnergy": 0.15001,
+              "normalReason": null,
+              "ShoreDelta": 0.00968,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 352,
+                "y": 320,
+                "k": 128
+              }
+            },
+            "masked": {
+              "water_px_in_crop": 299912,
+              "mean_luma": 66.389,
+              "band_rms": 11.2035,
+              "band_contrast": 0.16876,
+              "lane_bearing_screen_deg": -88,
+              "lane_power": 11.3008,
+              "lane_aniso": 7.34,
+              "lane_power_normalised": 0.002564
+            }
+          },
+          "prefix": {
+            "frame": "frames/look-orbit-eye-yaw090-prefix.png",
+            "water_mask_px": 300820,
+            "water_mask_pct": 58.03,
+            "m12": {
+              "water_px": 300820,
+              "water_frac": 0.58029,
+              "FresnelDelta": -0.08103,
+              "NormalEnergy": 0.12775,
+              "normalReason": null,
+              "ShoreDelta": 0.03969,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 352,
+                "y": 320,
+                "k": 128
+              }
+            },
+            "masked": {
+              "water_px_in_crop": 300820,
+              "mean_luma": 79.418,
+              "band_rms": 11.9313,
+              "band_contrast": 0.15023,
+              "lane_bearing_screen_deg": -82,
+              "lane_power": 22.0335,
+              "lane_aniso": 5.04,
+              "lane_power_normalised": 0.003493
+            }
+          }
+        },
+        "meshes_hidden": 94,
+        "edits_applied": 1,
+        "delta": {
+          "mean_luma_pct": -16.41,
+          "band_contrast_pct": 12.33,
+          "ShoreDelta": -0.03001,
+          "FresnelDelta": 0.12073
+        }
+      },
+      "orbit-eye-yaw135": {
+        "arms": {
+          "fixed": {
+            "frame": "frames/look-orbit-eye-yaw135-fixed.png",
+            "water_mask_px": 316009,
+            "water_mask_pct": 60.96,
+            "m12": {
+              "water_px": 316009,
+              "water_frac": 0.60959,
+              "FresnelDelta": 0.00837,
+              "NormalEnergy": 0.32238,
+              "normalReason": null,
+              "ShoreDelta": 0.02169,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 528,
+                "y": 224,
+                "k": 128
+              }
+            },
+            "masked": {
+              "water_px_in_crop": 316009,
+              "mean_luma": 72.553,
+              "band_rms": 11.2622,
+              "band_contrast": 0.15523,
+              "lane_bearing_screen_deg": 84,
+              "lane_power": 3.5867,
+              "lane_aniso": 6.08,
+              "lane_power_normalised": 0.000681
+            }
+          },
+          "prefix": {
+            "VACUOUS": "the prefix edit matched nothing"
+          }
+        },
+        "meshes_hidden": 94
+      },
+      "orbit-eye-yaw180": {
+        "arms": {
+          "fixed": {
+            "frame": "frames/look-orbit-eye-yaw180-fixed.png",
+            "water_mask_px": 323353,
+            "water_mask_pct": 62.38,
+            "m12": {
+              "water_px": 323353,
+              "water_frac": 0.62375,
+              "FresnelDelta": 0.01356,
+              "NormalEnergy": 0.23994,
+              "normalReason": null,
+              "ShoreDelta": 0.00597,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 640,
+                "y": 208,
+                "k": 128
+              }
+            },
+            "masked": {
+              "water_px_in_crop": 323353,
+              "mean_luma": 67.979,
+              "band_rms": 11.0756,
+              "band_contrast": 0.16293,
+              "lane_bearing_screen_deg": 88,
+              "lane_power": 8.0566,
+              "lane_aniso": 9.82,
+              "lane_power_normalised": 0.001743
+            }
+          },
+          "prefix": {
+            "frame": "frames/look-orbit-eye-yaw180-prefix.png",
+            "water_mask_px": 324506,
+            "water_mask_pct": 62.6,
+            "m12": {
+              "water_px": 324506,
+              "water_frac": 0.62598,
+              "FresnelDelta": -0.09881,
+              "NormalEnergy": 0.22211,
+              "normalReason": null,
+              "ShoreDelta": 0.03896,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 624,
+                "y": 224,
+                "k": 128
+              }
+            },
+            "masked": {
+              "water_px_in_crop": 324506,
+              "mean_luma": 85.921,
+              "band_rms": 11.9433,
+              "band_contrast": 0.139,
+              "lane_bearing_screen_deg": 88,
+              "lane_power": 7.8325,
+              "lane_aniso": 6.8,
+              "lane_power_normalised": 0.001061
+            }
+          }
+        },
+        "meshes_hidden": 94,
+        "edits_applied": 2,
+        "delta": {
+          "mean_luma_pct": -20.88,
+          "band_contrast_pct": 17.22,
+          "ShoreDelta": -0.03299,
+          "FresnelDelta": 0.11237
+        }
+      },
+      "orbit-eye-yaw225": {
+        "arms": {
+          "fixed": {
+            "frame": "frames/look-orbit-eye-yaw225-fixed.png",
+            "water_mask_px": 310768,
+            "water_mask_pct": 59.95,
+            "m12": {
+              "water_px": 310768,
+              "water_frac": 0.59948,
+              "FresnelDelta": 0.01967,
+              "NormalEnergy": 0.33899,
+              "normalReason": null,
+              "ShoreDelta": 0.02064,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 288,
+                "y": 272,
+                "k": 128
+              }
+            },
+            "masked": {
+              "water_px_in_crop": 310768,
+              "mean_luma": 65.638,
+              "band_rms": 11.5541,
+              "band_contrast": 0.17603,
+              "lane_bearing_screen_deg": -90,
+              "lane_power": 16.9629,
+              "lane_aniso": 5.24,
+              "lane_power_normalised": 0.003937
+            }
+          },
+          "prefix": {
+            "frame": "frames/look-orbit-eye-yaw225-prefix.png",
+            "water_mask_px": 311704,
+            "water_mask_pct": 60.13,
+            "m12": {
+              "water_px": 311704,
+              "water_frac": 0.60128,
+              "FresnelDelta": -0.07508,
+              "NormalEnergy": 0.2605,
+              "normalReason": null,
+              "ShoreDelta": 0.04685,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 288,
+                "y": 272,
+                "k": 128
+              }
+            },
+            "masked": {
+              "water_px_in_crop": 311704,
+              "mean_luma": 78.663,
+              "band_rms": 12.2565,
+              "band_contrast": 0.15581,
+              "lane_bearing_screen_deg": 68,
+              "lane_power": 15.8764,
+              "lane_aniso": 5.58,
+              "lane_power_normalised": 0.002566
+            }
+          }
+        },
+        "meshes_hidden": 94,
+        "edits_applied": 1,
+        "delta": {
+          "mean_luma_pct": -16.56,
+          "band_contrast_pct": 12.98,
+          "ShoreDelta": -0.02621,
+          "FresnelDelta": 0.09475
+        }
+      },
+      "orbit-eye-yaw270": {
+        "arms": {
+          "fixed": {
+            "frame": "frames/look-orbit-eye-yaw270-fixed.png",
+            "water_mask_px": 311726,
+            "water_mask_pct": 60.13,
+            "m12": {
+              "water_px": 311726,
+              "water_frac": 0.60132,
+              "FresnelDelta": 0.04677,
+              "NormalEnergy": 0.17317,
+              "normalReason": null,
+              "ShoreDelta": 0.03371,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 304,
+                "y": 304,
+                "k": 128
+              }
+            },
+            "masked": {
+              "water_px_in_crop": 311726,
+              "mean_luma": 68.601,
+              "band_rms": 11.394,
+              "band_contrast": 0.16609,
+              "lane_bearing_screen_deg": 88,
+              "lane_power": 23.4144,
+              "lane_aniso": 7.65,
+              "lane_power_normalised": 0.004975
+            }
+          },
+          "prefix": {
+            "VACUOUS": "the prefix edit matched nothing"
+          }
+        },
+        "meshes_hidden": 94
+      },
+      "orbit-eye-yaw315": {
+        "arms": {
+          "fixed": {
+            "frame": "frames/look-orbit-eye-yaw315-fixed.png",
+            "water_mask_px": 302660,
+            "water_mask_pct": 58.38,
+            "m12": {
+              "water_px": 302660,
+              "water_frac": 0.58383,
+              "FresnelDelta": 0.08224,
+              "NormalEnergy": 0.17295,
+              "normalReason": null,
+              "ShoreDelta": 0.01327,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 144,
+                "y": 272,
+                "k": 256
+              }
+            },
+            "masked": {
+              "water_px_in_crop": 302660,
+              "mean_luma": 65.733,
+              "band_rms": 11.594,
+              "band_contrast": 0.17638,
+              "lane_bearing_screen_deg": -84,
+              "lane_power": 22.5633,
+              "lane_aniso": 7.56,
+              "lane_power_normalised": 0.005222
+            }
+          },
+          "prefix": {
+            "VACUOUS": "the prefix edit matched nothing"
+          }
+        },
+        "meshes_hidden": 94
+      }
+    }
+  }
+}
