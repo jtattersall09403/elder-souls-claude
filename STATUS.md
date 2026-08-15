@@ -14,7 +14,8 @@
   hardware, which the builder shipped without a photograph and said so itself.
 - **The water, round two** — round one was judged and failed; the sea still acts as a 17% mirror when
   you look straight at it.
-- **The container screen** — it hides ten words of its own description and prints no gold prices.
+- **Judging the container screen fix** — and settling a worrying finding: a filed verdict's numbers
+  don't reproduce on a byte-identical copy of the code it judged.
 
 ## If you play right now, expect this
 
@@ -55,7 +56,17 @@
   looked at: its description **declares 137 characters and draws 100** — ten words simply gone, with no
   "…" to tell you they were cut, and *the same sentence draws whole on the inventory screen* — and
   **all seven rows declare a gold price and not one of them draws it**, because the price column starts
-  12 units past the edge of the box that clips it. Being fixed now.
+  12 units past the edge of the box that clips it. **Both are now fixed** — every row shows its price,
+  and the description ends in a "…" when there is more, instead of just stopping. Two honest costs the
+  builder declared against itself: making the price column fit shrank *every* column by 27%, so long
+  item names now truncate harder (`Black-water draught` → `Black-wat…`); and most items still show only
+  2 of the 4–6 lines they need, because the box was not made bigger. Being judged now.
+- **⚠ Something is wrong with how we measure the screens, and it is bigger than the screens.** The
+  round-6 builder could not reproduce round 5's filed density numbers **even on a byte-identical
+  checkout of the exact commit round 5 was judged on** — it reads a hard fail where the verdict records
+  a pass, in four separate arms. It proved its own change is not the cause (moves the number by exactly
+  0.0000) and reported it rather than working around it. Until that is settled, treat density scores on
+  these screens as unreliable in both directions.
 - **The water: I told you it was 28% better yesterday. A judge has now failed it at 2 of 10, and the
   "28%" was mostly the water getting darker.** The diagnosis was right — the sea was compositing a
   **61% mirror at every viewing angle**, including looking straight down, where real water reflects
