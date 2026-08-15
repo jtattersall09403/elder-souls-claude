@@ -1,0 +1,314 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-F10-r10-CRITIC",
+  "piece_title": "F10 round 10 — the round nothing was photographed in, photographed: the feet came down 8.0 mm on an RTX A5000, the pupil reads at conversation distance, and the stance reaches 0 of 60 drawn NPCs in the running game",
+  "subsystem_paths": ["render.art.character", "render.art.silhouette"],
+  "wave": 1,
+  "roadmap_item": "F10",
+
+  "critic": {
+    "run_id": "crit-w1-f10-r10",
+    "role": "critic.visual",
+    "started_at": "2026-08-15T19:07:00Z",
+    "finished_at": "2026-08-15T20:05:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": "n/a — RI-VIS10 is `blind_pair: no` by construction (§Comparison method 7). The builder's status file WAS read first because the brief directed it and because its `what_i_could_not_do` list is this critique's work list. Departure from CRITIC-DOCTRINE §8's ordering, recorded rather than hidden. Every number below was re-derived by a command run in this turn, and one of the builder's claims is overturned."
+  },
+
+  "build": {
+    "commit_sha": "c119ba97 (working tree; the four judged files are byte-identical to HEAD and to the builder's declared `ae482ddbe7`)",
+    "branch": "codex/wave1-build-experiment",
+    "judged_commit_note": "All offline measurement ran against `git archive HEAD` extracted to a scratch tree (HAZARDS §20c), NOT the shared working tree — a sibling has `game/src/render/water.js` modified on disk. The paid run snapshotted the committed revision, per HAZARDS §15a.",
+    "harness_commands": [
+      { "cmd": "npm run gpu:doctor && npm run gpu:list", "exit": 0, "note": "11/11 green; RTX 3070/A4000/A4500/3090/A5000/L4 priced and eligible" },
+      { "cmd": "node tools/visual/f10-r10c-pair.mjs --self-test", "exit": 0, "note": "5 arms; arms 4 and 5 are the ones this pair needs — only the AFTER arm defines AND calls `stanceRootOffsetY`, and `idle_ready.root_offset.y` / `block_hold.root_offset.y` / `render/actor.js` all differ" },
+      { "cmd": "npm run gpu:test -- --max-runtime 22 --max-price 0.55 --command 'node tools/visual/f10-r10c-pair.mjs --out \"$RUNPOD_ARTIFACT_DIR/pair\" --slots CP,FP --canvas 1920x1080 --gpu hardware --require-hardware --expect-after-clips a50ce106…'", "exit": 0, "note": "Pod gk2x3j9typzpy1, NVIDIA RTX A5000 SECURE $0.270/hr, ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA RTX A5000)), HARDWARE. 24 frames, 12 per arm, liveness {\"LIVE\":12} on both, 0 red. All four files restored and sha-verified. Pod terminated, deletion confirmed by 404. ~4m of Pod life." },
+      { "cmd": "node tools/visual/f10-r10c-look.mjs --self-test && --run <pair> --out <mine>", "exit": 0, "note": "self-test arms are required to disagree: identical frames must read 0 changed px, one injected pixel must be found and located exactly" },
+      { "cmd": "node tools/visual/f10-r10c-npc-live.mjs --self-test && --x 2785.6 --z 5047.0 --out <mine>", "exit": 0, "note": "THE RUNNING-GAME arm of job 3. Local SwiftShader — a bone-matrix read, not an appearance claim." },
+      { "cmd": "node tools/visual/f10-r10-stance-height.mjs --self-test && --json=<mine>", "exit": 0, "note": "the builder's instrument, re-run; every published number reproduces" },
+      { "cmd": "node tools/visual/f10-r9c-c3-audit.mjs --json=<mine>", "exit": 0, "note": "the R9 CRITIC's OWN tool, UNMODIFIED, on this tree" },
+      { "cmd": "node tools/harness/anim-tune.mjs", "exit": 0, "note": "independent re-run of the boundary gate the round claims it preserved" },
+      { "cmd": "node tools/harness/anim-author.mjs --only thrust --out <scratch>  (in the git-archive scratch tree)", "exit": 0, "note": "the landmine, reproduced on a copy — and it disagrees with the round's stated mechanism" },
+      { "cmd": "node tools/visual/f10-r10-crowd-draw.mjs --self-test && --json=<mine>", "exit": 0 },
+      { "cmd": "node tools/visual/f10-silhouette.mjs --res=1024 --pose=idle_loop --json=<mine>", "exit": 0, "note": "C1 and C2, on the standing verdict's pose and roster" },
+      { "cmd": "node tools/visual/f10-r9c-crowd-census.mjs --json=<mine>", "exit": 0, "note": "E1–E5, 408 records across 18 files, re-enumerated this turn" },
+      { "cmd": "node tools/contention.mjs", "exit": 0, "note": "GO, 2 browser instances live, room for 4 more — run before the local browser" },
+      { "cmd": "node tools/ownership.mjs --for corpus/70-visual/RI-VIS10-character-design.md ; --for orchestration/HAZARDS.md", "exit": 0, "note": "nobody live on either" },
+      { "cmd": "node tools/roadmap-coverage.mjs && node tools/readpath.mjs", "exit": 0, "note": "all gates green after the RI-VIS10 C3 amendment" }
+    ],
+    "depends_on": [
+      "orchestration/status/W1-F10-r10.json",
+      "corpus/90-verdicts/wave1/W1-F10-r9-CRITIC.json",
+      "corpus/70-visual/RI-VIS10-character-design.md",
+      "corpus/00-doctrine/CRITIC-DOCTRINE.md",
+      "corpus/00-doctrine/ARBITRATION.md",
+      "orchestration/HAZARDS.md",
+      "game/data/combat/clips.json",
+      "game/src/combat/clips.js",
+      "game/src/combat/actor.js",
+      "game/src/render/actor.js",
+      "game/src/render/renderer.js",
+      "game/src/combat/swing.js",
+      "game/src/sim/camera.js"
+    ]
+  },
+
+  "bifurcation": {
+    "axis": "art-direction",
+    "declared_before_citation": true,
+    "art_refs": ["RI-VIS10"],
+    "fidelity_refs": [],
+    "note": "DECLARED BEFORE ANY REFERENCE WAS OPENED, and it is the same declaration r9 made for the same reason: the change under judgement is a stance root term and an eye's seating, and the item that judges a stance and a species' features on the design side is RI-VIS10, which is `side: morrowind`. No modern AAA reference is cited as a design target (RI-VIS01 CC-2). RI-VIS08 was NOT re-run; FIDELITY is NOT re-judged, and the standing 3/10 below is the standing verdict's number, explicitly not mine. Two findings that belong to VIS08 are handed over in `secondary_observations` rather than scored here (RI-VIS10 §Comparison method 6) — including the eye, whose geometry and catchlight are VIS08 §B8 by this item's own §A seam table."
+  },
+
+  "reference_items": [
+    {
+      "id": "RI-VIS10",
+      "path": "corpus/70-visual/RI-VIS10-character-design.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "DESIGN = 10 * (checks passed) / 18, band",
+      "native_score": 1.67,
+      "native_max": 10,
+      "score_0_10": 2,
+      "measured": "13 of 18 checks published a census this turn — the 12-census floor is cleared, so the item scores its arithmetic rather than the 0 its fail-closed floor would force",
+      "native_verdict": "3 of 18 pass (B3, C1, E2) under the C3 amendment this verdict files; 4 of 18 under the bar as r9 left it, which is r9's own number. EITHER WAY the band is 0–2 and ART is 2, so the amendment is NOT what holds the score down — 15 (or 14) checks fail for reasons that predate it. No hard fail fires: B3 passes so the crest/snout/tail cap does not apply; E3 is 3 bands not 1; D2 was not measured so its ≥3 cap is not applied; B1 was not measured so its <40% cap is not applied.",
+      "why_not_ten": "Fifteen of eighteen checks fail. Three of them (B1, C4, D4) cannot be run by any agent below the orchestrator; one (D1) fails on a data artefact that does not exist; two (D2, D5) were deliberately not run and are bounded and failed closed; the other nine are measured failures with numbers on the page.",
+      "path_to_ten": "In cost order: (1) bake the stance layer and a per-NPC `idle_loop` phase offset into `poseStatic`'s existing one-time bind — closes C3 arm (b) and moves E4, at the same per-frame cost; (2) publish D2 and D5 — closed-list counts over the roster, no judge, no Pod; (3) B2 needs 4 more of its 10 rows: neck plating, scale flow that follows form, an auditory feature, a non-plantigrade leg; (4) B4 needs a brow ridge and an orbit rim — the item's own §A seam says the EYE is VIS08's, so the pupil this round landed cannot move B4 and the orbit around it can; (5) D3 needs six of eight RI-VIS05 materials to reach a garment, and today two do; (6) E1/E5 need the rendered-body pool widened from 14 to ≥ 34; (7) B1, C4 and D4 need the orchestrator to spawn fresh judges (CLAUDE.md rule 0e).",
+      "ten_by_wave": 3,
+      "checks": [
+        { "id": "B1", "result": "fail", "value": "not run — no fresh judge obtainable", "threshold": ">= 80% named correctly", "hard_fail_applied": false, "note": "CLAUDE.md rule 0e: only the orchestrator can spawn a fresh judge; `create_session` raises an approval prompt, which rule 0 forbids, and a subagent cannot spawn subagents. Failed closed per the item's own rule. The <40% cap is NOT applied because nothing was measured. THE ORCHESTRATOR OWES THIS — this is the third consecutive F10 verdict to record it." },
+        { "id": "B2", "result": "fail", "value": "6 of 10 on the saxhleel player — UP FROM 5, and the row that moved is round 10's", "threshold": "reptilian >= 7/10; < 5/10 is 'a human with a head prop'", "census": {
+            "1_skull_elongation_or_snout": "YES — a distinct forward muzzle, readable at yaw 090 and 270 on the paid orbit",
+            "2_crest_horn_frill_or_spine_on_head": "YES — cone spikes on the cranium, readable at yaw 000, 315 and in the FP close-ups",
+            "3_non_human_eye_slit_or_all_dark_pupil_no_sclera": "**YES — THIS ROW MOVED.** r9 measured it NO: 'a flat amber lozenge with NO pupil of any kind'. On the RTX A5000 FP b180 close-up the AFTER arm shows, on BOTH eyes, an amber iris with an all-dark pupil inside it and NO white sclera triangle. Counted over an identical box in both arms (x 480–1440, y 280–860): amber pixels 466 -> 1113 at b180 and 280 -> 1174 at b090. In the BEFORE arm's own 9x crop of the same region there is no iris at all.",
+            "4_throat_or_neck_plating_distinct_from_the_facial_surface": "NO — the neck is a smooth continuation of the jaw at every bearing of the eight-angle orbit",
+            "5_scale_or_plate_flow_following_the_body_forms": "NO — at 5x the surface is a uniform regular speckle that follows no form",
+            "6_non_human_ear_or_a_visible_auditory_feature": "NO — nothing reads as one",
+            "7_tail_with_its_own_root_taper_and_thickness_change": "YES — a long curved tapering tail rooted at the pelvis, unmistakable at yaw 045/090/270/315",
+            "8_non_plantigrade_leg_or_a_declared_reason": "NO — two straight parallel tubes on flat plantigrade boots",
+            "9_clawed_hand_with_non_human_finger_count_or_proportion": "YES — CARRIED FROM r9, NOT RE-DERIVED BY ME. I did not shoot the character-against-a-void crack frames r9 read this from; at CP framing the hands are on the sword grip and read as knobs. Declared rather than silently inherited.",
+            "10_a_jaw_and_mouth_line_that_could_not_close_like_a_human_s": "YES on the muzzle geometry — but NO mouth line of any kind is drawn on it. Scored as r9 scored it, so the 5 -> 6 comparison is arithmetic and not a moved goalpost."
+          }, "note": "The 5 -> 6 movement is real, measured on paid hardware, and belongs to round 10. It does not flip the check: 6 is below the 7/10 bar. It does move the build off the '< 5/10 = a human with a head prop' line by one more row.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/FACE__FP-b180__BEFORE-top_AFTER-mid_DIFF-bottom__5x.png", "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/EYE-R__FP-b180__BEFORE-top_AFTER-bottom__9x.png", "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/B2-B3-ORBIT-8-yaws__AFTER__hardware.png", "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/eye-hardware-census.json"] },
+        { "id": "B3", "result": "pass", "value": "crest, snout and tail are each present AND geometry; 5 of 5 present features are geometry (100%)", "threshold": ">= 70% geometry AND crest, snout and tail each geometry and present", "note": "RE-DERIVED from my own eight-bearing hardware orbit rather than carried from r9: between yaw 000 and 045 the tail's occluding contour swings from almost hidden to fully extended against the background, the crest cones' contour changes, and the snout appears and is lost again by 180. This is the one design check the build passes and it is not this round's — the tail landed before r9.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/B2-B3-ORBIT-8-yaws__AFTER__hardware.png"] },
+        { "id": "B4", "result": "fail", "value": "1 of 7 landmarks — unchanged", "threshold": ">= 5 of 7; <= 2 is 'a smooth blank with a texture on it'", "census": { "brow_ridge": "NO", "orbit_rim": "NO — the eye is a bead sitting proud of the skin with no rim shadow on any side", "nostril_or_naris": "NO", "cheek_to_jaw_line": "NO — a smooth mass with one broad specular stripe down its centre", "lip_or_mandible_line": "NO", "chin_or_jaw_underside": "NO", "crest_or_ear_root": "YES — the cone spikes have a readable dark separation at their root" }, "note": "THE ITEM'S OWN §A SEAM PUTS THE EYE IN RI-VIS08 §B8 AND B4 SAYS SO EXPLICITLY: '(Eyes are RI-VIS08 §B8 and are not counted here)'. So round 10's pupil, which is real, CANNOT move B4 — and the ORBIT around it, which the builder named as the largest thing it left undone, is exactly what B4 would count. The builder's own reading of the ESO plates ('the eye reads because of the dark rim and the shadowed orbit around it') is the same conclusion arrived at independently.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/FACE__FP-b180__BEFORE-top_AFTER-mid_DIFF-bottom__5x.png", "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/FACE__FP-b090__BEFORE-top_AFTER-mid_DIFF-bottom__5x.png"] },
+        { "id": "C1", "result": "pass", "value": "R = 7.38 min / 7.50 median / 7.68 max over 41 figures at idle_loop@0; 41 of 41 inside the band", "threshold": "inside 7.0-8.0 for man/mer, 6.5-7.5 for the heavy races; outside 6.0-8.5 fails", "note": "PUBLISHED PIXEL NUMBERS, as the item demands: figure height 928–930 px, head height 121–126 px at res 1024. Run on the standing verdict's own pose and roster so the comparison is arithmetic. Not this round's — it belongs to the proportion work of rounds 6–8.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-silhouette-idle_loop.json"] },
+        { "id": "C2", "result": "fail", "value": "median pairwise IoU 0.8574 over 552 pairs; max 1.0000", "threshold": "median <= 0.80 AND no pair >= 0.93", "note": "Both arms fail and the second fails absolutely: several pairs read IoU 1.0000 — identical silhouettes, not similar ones. Named at yaw 0: humanoid/breton/mudborn vs humanoid/none/mudborn; humanoid/breton/mudborn vs humanoid/imperial/merchant; saxhleel/saxhleel/townsman vs saxhleel/argonian/rootkeeper; saxhleel/saxhleel/townsman vs saxhleel/saxhleel/archivist.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-silhouette-idle_loop.json"] },
+        { "id": "C3", "result": "fail", "value": "arm (a) PASSES, arm (b) FAILS 0 of 60. Under the bar as r9 left it this check reads PASS.", "threshold": "(a) >= 2 of 3 exceed 3 deg at both frames and the frames differ; (b) NEW — >= 90% of DRAWN NPCs likewise", "census": {
+            "arm_a_player_idle": "PASS, re-derived on the r9 critic's own unmodified `f10-r9c-c3-audit.mjs`: AFTER frame 0 shoulder −6.2974, hip +5.0000, elbow 8.0000 (3 of 3 over 3 deg); frame 120 shoulder −6.1674, hip +5.6000, elbow 8.0000 (3 of 3); the frames differ. Its BEFORE arm reads 1 of 3.",
+            "arm_b_the_drawn_crowd": "FAIL, 0 of 60. Measured in the RUNNING GAME off `bone.matrixWorld` on the objects the renderer drew, at the Lilmoth crowd stand: every one of the 60 drawn NPCs reads hip-line dy = 0.000000 m and shoulder-line dy = 0.000000 m — EXACTLY zero, not small — while the player in the same frame reads −0.018289 m and +0.047948 m.",
+            "why": "`renderer.js:syncNPCs` calls `poseStatic` and only `poseStatic`; `poseStatic`'s own header is 'Non-combat people use the rig's authored REST pose'. The stance layer is shared; the code path that applies it is not."
+          }, "note": "THE BUILDER'S JOB-3 FINDING IS CONFIRMED, IN THE RUNNING GAME AND NOT ONLY IN THE SOURCE — and it is the reason this verdict amends C3. The instrument's own self-test caught my first attempt returning a FALSE CONFIRMATION: a pose signature hashed from `bone.quaternion` reported the player and all 60 NPCs in one identical pose, because `poseFromRig` writes bone WORLD matrices and never touches the local quaternion. Arm 1 of the self-test exists precisely to fail that, and it did.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/npc-live/npc-live.json", "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-c3-audit-r9tool.json", "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-crowd-draw.json"] },
+        { "id": "C4", "result": "fail", "value": "not run — no fresh judge obtainable", "threshold": "both correct on >= 90% of the roster", "note": "Same structural hole as B1 (rule 0e). THE ORCHESTRATOR OWES THIS." },
+        { "id": "D1", "result": "fail", "value": "0 — the garment vocabulary table does not exist", "threshold": ">= 90% of the 32 actors map to exactly one row", "note": "Re-checked this turn rather than carried: `ls game/data/` lists 22 directories and none is a garment vocabulary; a grep for `garment_vocabulary` / `garmentVocabulary` over `game/data/` returns nothing. The item's own fail-closed rule applies." },
+        { "id": "D2", "result": "fail", "value": "census not published", "threshold": "0 occurrences of the closed generic-fantasy list", "note": "NOT MEASURED, and failed for that reason rather than guessed. CRITIC-DOCTRINE §1.3's third guard — bound it: a truthful D2 needs all 32 actors' outfits looked at, which is a piece of work and not a pass. Its >= 3 cap is NOT applied because nothing was measured. Second consecutive round to name it as the cheapest remaining census." },
+        { "id": "D3", "result": "fail", "value": "2 of 8 required materials reach a garment", "threshold": ">= 5 of 8; <= 2 is 'the wardrobe is cloth and leather, i.e. anywhere'", "census": { "lashed_cord": "absent", "woven_reed_or_rush": "PRESENT — the `reed` equipment set", "chitin_plate": "PRESENT — the `chitin` equipment set", "bone_fitting": "absent from every garment", "hide": "absent", "river_shell": "absent", "resin": "absent from every garment — the `resin` visual family exists in `render/lib/kits.js` and reaches buildings, not dress", "wet_wood": "absent" }, "note": "RE-DERIVED BY A DIFFERENT ROUTE FROM r9's, and it agrees. r9 built 160 probe actors and grouped meshes by `visualFamily`; I read the equipment material cache directly at `game/src/render/actor.js:1497`, which constructs exactly three sets — `reed`, `chitin` and `xanmeer` (a clone of `mats.darkStone`, i.e. stone, and on none of the eight). Two instruments, one number." },
+        { "id": "D4", "result": "fail", "value": "not run — no fresh judge obtainable", "threshold": ">= 5 of 6 sorted correctly", "note": "Same structural hole as B1 and C4 (rule 0e). THE ORCHESTRATOR OWES THIS." },
+        { "id": "D5", "result": "fail", "value": "census not published", "threshold": ">= 60% of the roster shows wear", "note": "NOT MEASURED. Same bounding reason as D2." },
+        { "id": "E1", "result": "fail", "value": "ACTOR ARM: 32 distinct actors for 408 records = 1 per 12.75, against a required 34; largest bucket `townsman` 97 = 23.8% against a 10% ceiling. DRAWN ARM: 14 reachable bodies for 408 records = 1 per 29.14; largest drawn bucket `hum.marauder` 37 = 9.1%.", "threshold": ">= 1 per 12 AND no bucket above 10%, on both arms", "note": "Reproduced on BOTH of the builder's instruments and on the r9 critic's, independently, and all three agree. The builder's own observation stands and is worth keeping: the two arms disagree about WHICH clause fails — the `actor` arm blows the 10% ceiling and nearly meets the count, and the drawn arm passes the ceiling at 9.1% and misses the count by more than twice the margin. By race: argonian's 181 records share 9 bodies, saxhleel's 77 share 9, and breton+imperial+dunmer+nord's 138 share ONE pool of 5. The round measured this, published it, and built no new bodies — its stated fallback, taken knowingly and reported as such.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-crowd-draw.json", "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-crowd-census-E1-E5.json"] },
+        { "id": "E2", "result": "pass", "value": "14 distinct rendered bodies among the 97 `townsman` records", "threshold": ">= 4; 1 means every townsman is the same man", "note": "Passed on the most generous available reading, stated so it can be argued with — as r9 stated it. 14 is also the ENTIRE reachable pool, so E2 passes precisely because E1's pool is small enough for one actor bucket to exhaust it.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-crowd-census-E1-E5.json"] },
+        { "id": "E3", "result": "fail", "value": "3 bands of 5 — slight, average, heavy", "threshold": ">= 4 of {child, slight, average, heavy, stooped-old}; 1 caps the item at 3", "census": { "distinct_rendered_build_values": [0.8, 0.84, 0.86, 0.9, 0.94, 1.0, 1.04, 1.1, 1.12, 1.14, 1.18, 1.2, 1.22], "child": "ABSENT — no shipped row is below 0.70", "slight": "present", "average": "present", "heavy": "present", "stooped_old": "UNREACHABLE — `CHARACTER_SPECS` carries no spine-curvature or age morph axis" }, "note": "The `1 caps the item at 3` hard fail does NOT fire.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-crowd-census-E1-E5.json"] },
+        { "id": "E4", "result": "fail", "value": "93 pairs of identically-rendered NPCs within 15 m of each other in the same settlement", "threshold": "0 pairs; >= 3 means the duplication is visible in one shot", "method_deviation": "the item asks for a 60-second walk counting pairs ON SCREEN TOGETHER; this counts authored posts within 15 m in one settlement. Declared, not substituted silently — carried from r9's instrument, re-run this turn. NOTE that C3 arm (b) now makes E4 worse than this number says: the 60 drawn NPCs are not merely the same BODY in places, they are all in the same POSE." },
+        { "id": "E5", "result": "fail", "value": "in Helstrom (78 NPCs), 4 races hold >= 5% share and 2 of them — saxhleel and dunmer — draw no body another race there does not also draw", "threshold": "every race with >= 5% share is distinguishable on screen", "note": "Scored on SHAPE. Both columns published so a second critic may score it on tint and get a different, stated answer.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-crowd-census-E1-E5.json"] }
+      ]
+    },
+    {
+      "id": "RI-VIS08",
+      "path": "corpus/70-visual/RI-VIS08-character-animation-fidelity.md",
+      "side": "modern-fidelity",
+      "measured": "NOT RE-RUN THIS ROUND",
+      "score_0_10": null,
+      "native_verdict": "NOT JUDGED. This verdict declares `axis: art-direction` and ran no §A bone trace, no `anim-metrics`, and none of §B/§C/§D. The standing `W1-F10-CHARACTERS` FIDELITY score of 3/10 is reported below as THAT verdict's number, not as mine. Two observations belonging to this item — the eye's geometry and catchlight (§B8) and the headgear band that does not touch the cranium — are handed over in `secondary_observations` rather than scored here."
+    }
+  ],
+
+  "artifacts": [
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/B2-B3-ORBIT-8-yaws__AFTER__hardware.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/FIGURE__CP-yaw000__BEFORE-top_AFTER-mid_DIFF-bottom__2x.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/FIGURE__CP-yaw090__BEFORE-top_AFTER-mid_DIFF-bottom__2x.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/FEET__CP-yaw000__BEFORE-top_AFTER-mid_DIFF-bottom__6x.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/SOLES-RULED__CP-yaw000__BEFORE-top_AFTER-bottom__6x.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/FACE__FP-b180__BEFORE-top_AFTER-mid_DIFF-bottom__5x.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/FACE__FP-b090__BEFORE-top_AFTER-mid_DIFF-bottom__5x.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/FACE__FP-b000__BEFORE-top_AFTER-mid_DIFF-bottom__5x.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/EYE-R__FP-b180__BEFORE-top_AFTER-bottom__9x.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/EYE-L__FP-b180__BEFORE-top_AFTER-bottom__9x.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/HEAD-AT-2.5m__CP-yaw180__BEFORE-top_AFTER-bottom__4x.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/look.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/npc-live/npc-live.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/eye-hardware-census.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-stance-height.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-c3-audit-r9tool.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-crowd-draw.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-crowd-census-E1-E5.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-silhouette-idle_loop.json",
+    "reports/runpod-gpu/runs/20260815-191123Z-18243/artifacts/pair/ (24 RTX A5000 frames, 12 per arm, + both manifests)",
+    "tools/visual/f10-r10c-pair.mjs + tools/visual/f10-r10c-before/ (the four pinned BEFORE blobs)",
+    "tools/visual/f10-r10c-look.mjs",
+    "tools/visual/f10-r10c-npc-live.mjs"
+  ],
+
+  "blind_comparisons": [
+    { "item": "RI-VIS10", "blind_status": "not_required", "reason": "`blind_pair: no` in the item's front matter, with the reason written into its own Comparison method §7." },
+    { "item": "RI-VIS10 B1 / C4 / D4", "blind_status": "not_possible", "reason": "These are FRESH-JUDGE forced-choice checks, and a subagent cannot spawn one: `create_session` raises an approval prompt, which CLAUDE.md rule 0 forbids, and a subagent cannot spawn subagents. Recorded as `not_possible` and FAILED CLOSED per CLAUDE.md rule 0e. THREE CHECKS OF EIGHTEEN — 17% of this item's score — HAVE NOW BEEN UNRUNNABLE IN THREE CONSECUTIVE VERDICTS. I OWE NOTHING HERE AND THE ORCHESTRATOR OWES ALL THREE." }
+  ],
+
+  "arbitration": {
+    "AR-1": {
+      "status": "pass",
+      "checks": [
+        "A4/A5 (untelegraphed attack, animation cancel) — the change under judgement adds a ROOT TRANSLATION to the additive stance layer, which is live on every non-committed frame, and hand-authors matching endpoints onto six non-looping archetypes. That is exactly the surface on which a vertical discontinuity at the attack/idle boundary appears as an animation cancel. RE-RUN INDEPENDENTLY on the git-archive scratch tree: `node tools/harness/anim-tune.mjs` reports snapIn 0.0000 on ALL FOURTEEN weapon classes, worst snapOut 0.0122 m (dagger:light), and 0 of 14 over the 0.35 m line. The r9 verdict's preservation bound is exactly 0.0122 and it is met to the digit. The builder also published the intermediate state it refused to hide — with the drop in and the six endpoints not yet shifted, snapIn went 0.0000 -> 0.0080 on all 14 and worst snapOut 0.0122 -> 0.0166. That is the regression, and it is closed.",
+        "A1/A2/A3/A6/A7/A8/A9/A10 — not applicable to a root offset, an eye's seating and a crowd census; no hit resolution, damage roll, menu, level or aggro path was touched or judged. Recorded rather than silently skipped."
+      ],
+      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/anim-tune-after-critic.txt"]
+    },
+    "AR-2": {
+      "status": "pass",
+      "checks": [
+        "B1 (objective markers) — 24 hardware frames at eight orbit bearings and four face bearings inspected at native resolution with the UI off. No arrow, pin, waypoint, distance readout or edge indicator appears in either arm. A NARROW pass on inspected pixels, not a HUD audit.",
+        "B3 (minimal dialogue) — the crowd census walked all 408 records and every one carries `topics`; none is vend-only or shout-only. Not a substitute for RI-DLG's own sampled word count.",
+        "B4/B5/B6/B7/B8/B9/B10/B11/B12/B13 — not applicable. Recorded rather than silently skipped."
+      ],
+      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/looked/B2-B3-ORBIT-8-yaws__AFTER__hardware.png"]
+    }
+  },
+
+  "score": {
+    "overall_0_10": 2,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "aggregation_note": "min over axes, per RI-VIS01 §E's gate on min(ART, FIDELITY). The pair is the real result; the scalar exists only for the progress page.",
+    "ordered_pair": { "ART": 2, "FIDELITY": 3 },
+    "band_label": "ART 2/10 x FIDELITY 3/10 — an ordered pair, never averaged (CC-5). NEITHER MOVED. ART stays at 2; FIDELITY is the standing verdict's number, NOT re-measured here.",
+    "confidence": "medium-high",
+    "did_either_move": "NEITHER MOVED, AND THAT IS NOT THE SAME AS NOTHING HAVING HAPPENED. ART stays at 2. Round 10 landed two improvements that are real, measured and now PHOTOGRAPHED ON PAID HARDWARE — the drawn foot came down 8.0 mm and the lower ankle is back within 0.9 mm of the pre-contrapposto baseline, and the pupil reads on both eyes at conversation distance where before there was no iris at all — and RI-VIS10's arithmetic cannot register either, because both live inside checks that fail for other reasons (B2 moved 5/10 to 6/10 against a 7/10 bar; the eye's orbit is B4's and its geometry is VIS08's). I have deliberately NOT amended the bar to reward them: an amendment that raises the score of the round that prompted it is the self-serving move CRITIC-DOCTRINE §1.3 forbids. The one amendment I did file makes the score WORSE. FIDELITY did not move because RI-VIS08 was not run and no claim is made about it."
+  },
+
+  "status": "FAIL",
+  "status_reasons": [
+    "2/10 against a pass threshold of 7.",
+    "Fifteen of RI-VIS10's eighteen checks fail, including E1, which the item's own scoring names as one of the four whose failure keeps a piece out of the 7-8 band.",
+    "C3 — the check the last two rounds of F10 were built to pass — fails its new crowd arm 0 of 60, measured in the running game. Two rounds of 'one edit moved every character' were true of one character.",
+    "Three checks (B1, C4, D4) have never been runnable by any critic this project has spawned, and are failed closed for the third consecutive verdict."
+  ],
+
+  "biggest_gap": {
+    "gap_id": "GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins",
+    "subsystem_path": "render.art.character",
+    "what": "Rounds 9 and 10 put a contrapposto and then a root drop on the shared `idle_ready` stance layer, and BOTH REACH EXACTLY ONE DRAWN CHARACTER PLUS THE COMBAT ENEMIES. MEASURED IN THE RUNNING GAME, not read out of the source: at the Lilmoth crowd stand, reading `bone.matrixWorld` off the objects the renderer drew, all 60 drawn NPCs report hip-line dy = 0.000000 m and shoulder-line dy = 0.000000 m — exactly zero — while the player in the same frame reports -0.018289 m and +0.047948 m. `renderer.js:syncNPCs` calls `poseStatic` and only `poseStatic`; `poseStatic`'s own header reads 'Non-combat people use the rig's authored REST pose', and it binds presentation meshes once against `built.restWorld` and never evaluates a clip or a stance layer. So RI-VIS10 §F#6 — 'a symmetric A-pose with the arms lowered, identical on every NPC' — is present on every NPC in every settlement, unchanged by two rounds of work aimed squarely at it. THE r9 VERDICT'S OWN `why_it_matters` IS WRONG ON ITS NPC HALF: 'the player and all 408 NPCs, because the change is on the single shared idle_ready layer' — the LAYER is shared, the CODE PATH that applies it is not. The builder found this and re-derived it rather than inheriting it; I confirmed it in the running game, which is the arm it had not done. It also makes E4 worse than E4's own number says: the 93 adjacent duplicate pairs are not merely the same body, they are the same body in the same pose.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/npc-live/npc-live.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-crowd-draw.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-c3-audit-r9tool.json"
+    ],
+    "why_it_matters": "A player walking into Lilmoth sees sixty people and one of them is posed. The stance work is the only part of F10 that has ever passed a design check, and it is invisible to the player everywhere except on their own character — who they mostly see from behind. This is the single largest gap between what the verdicts say F10 has achieved and what the owner would find if they opened the game right now.",
+    "remedy": "In `game/src/render/actor.js:poseStatic`, extend the existing ONE-TIME bind. It already caches under `A.staticPresentationBound` and already computes `built.restWorld`; add, inside that same block: (1) `addPose(rig, clips.archetypes.idle_ready, 0, 1.0)` plus `stanceRootOffsetY(idle_ready, 0, 1.0)` baked into the rest matrices before the presentation meshes are bound, so every NPC gets the contrapposto AND the root drop that keeps its feet on the floor; and (2) a per-NPC phase offset `FNV1a('npc:'+eid) % idle_loop.period` sampled into the same bake, so the crowd is not frozen at one point of one breathing cycle. Per-frame cost is unchanged — this is a one-time bind, not a per-frame evaluation. DONE means: `node tools/visual/f10-r10c-npc-live.mjs --x 2785.6 --z 5047.0` reports (a) `npc_hip_line_dy_m.max_abs` >= 0.010 and `npc_shoulder_line_dy_m.max_abs` >= 0.030 — i.e. the crowd carries the same stance the player does — and (b) `npc_pose_signatures.distinct` >= 8 over >= 50 drawn NPCs, which is the phase-offset arm and cannot be satisfied by the stance alone. PRESERVATION per S59, and it is the clause that stops (a) being bought by shoving the crowd through the floor: every drawn NPC's `foot_l_y` and `foot_r_y` must stay within 2 mm of its own pre-change value at the same stand, and `node tools/harness/anim-tune.mjs` must still report 0 of 14 over 0.35 m with worst snapOut <= 0.0122 m."
+  },
+
+  "corpus_extended": [
+    {
+      "id": "RI-VIS10",
+      "change": "AMENDED §C row C3 (ADD-only, tightening): C3 passes only if the stand reaches the DRAWN CROWD as well as the player — >= 90% of drawn NPCs in the largest settlement showing >= 2 of 3 numbers over 3 deg.",
+      "why": "C3 as written measures one idle on one character, while this item's own §F#6 states the failure as 'a symmetric A-pose with the arms lowered, IDENTICAL ON EVERY NPC. C3.' The check table carried no NPC arm, so a build could author a stance on a layer no NPC's code path evaluates, pass C3, and leave §F#6 present on 408 of 409 figures — which is exactly what two rounds of F10 did.",
+      "guards": "ADD-only: arm (a) is unchanged and no threshold moved. NOT the reason anything passes — it moves this round from 4 of 18 to 3 of 18 and retroactively turns W1-F10-r9's C3 pass into a fail, exactly as the B3 amendment did to the verdict that wrote it. Bounded: arm (b) needs one browser session and a bone read, and `tools/visual/f10-r10c-npc-live.mjs` is banked and self-tested. The band and the ART score are 0-2 and 2 with or without it, so the amendment is provably not what holds the score down.",
+      "coverage": "node tools/roadmap-coverage.mjs — all gates green after the edit; node tools/readpath.mjs — all probes ok."
+    },
+    {
+      "id": "HAZARDS §20d",
+      "change": "Filed: `anim-author --write` DOES destroy the r10 `root_offset` endpoints, but the mechanism round 10 recorded is wrong in both halves, and the remedy it proposed would not have worked.",
+      "why": "The round's status file records `swing.js`'s `r2()` as 'two decimal places… the smallest value it can emit is 10 mm' and concludes 'fixing the generator needs a precision change, not a value change'. `swing.js:64` is `Math.round(x * 1000) / 1000` — THREE decimals, 1 mm steps, and -0.00796 would survive as -0.008. The endpoints die at `swing.js:311-318`, where `rootY` is built from hard-coded literals with no stance term at all. Verified on a copy per §20a's own method. A hazard filed with the wrong mechanism sends the next builder at the wrong line."
+    }
+  ],
+
+  "method_deviations": [
+    { "check": "RI-VIS10 B1, C4, D4", "deviation": "not run at all", "why": "each needs a fresh judge; CLAUDE.md rule 0e states only the orchestrator can spawn one. Failed closed at 0, never omitted and never marked 'unknown'." },
+    { "check": "RI-VIS10 D2, D5", "deviation": "not run at all", "why": "CRITIC-DOCTRINE §1.3's third guard — bound it. A truthful D2 or D5 needs all 32 actors' outfits looked at; that is a piece of work, not a pass." },
+    { "check": "RI-VIS10 B2 row 9 (clawed hand)", "deviation": "CARRIED FROM r9, not re-derived", "why": "r9 read it from character-against-a-void crack frames; I shot CP/FP only, and at CP framing the hands are on the sword grip. Declared in the census row itself so the 6/10 can be argued with." },
+    { "check": "RI-VIS10 E4", "deviation": "authored posts within 15 m in one settlement, not a 60-second walk counting pairs on screen together", "why": "carried from r9's instrument and re-run; neither a superset nor a subset of the item's number, and labelled as such wherever it appears." },
+    { "check": "RI-VIS08 (whole item)", "deviation": "not re-run", "why": "this verdict declares `axis: art-direction`. The FIDELITY half of the ordered pair is the standing verdict's number and explicitly not a re-measurement." },
+    { "check": "the running-game NPC probe", "deviation": "run on local SwiftShader, not on paid hardware", "why": "it reads bone world matrices off the scene graph. It is a geometry claim, not an appearance claim, and W1-30-EVIDENCE §4 governs the latter. Every APPEARANCE claim in this verdict comes from the RTX A5000 frames." },
+    { "check": "all offline measurement", "deviation": "run against `git archive HEAD` in a scratch tree rather than the working tree", "why": "HAZARDS §20c — a sibling has `game/src/render/water.js` modified on disk. It happened to be syntactically valid this hour; that is luck, not a method." },
+    { "check": "critic ordering", "deviation": "the builder's status file was read before measurement, contrary to CRITIC-DOCTRINE §8", "why": "the brief directed it and the file's `what_i_could_not_do` list IS the work list. Mitigated by re-deriving every number from a command run in this turn and by overturning one of the builder's own claims." }
+  ],
+
+  "arbitration_questions": [
+    {
+      "id": "S59-preservation-clause-on-lr_diff_max_m",
+      "question": "The r9 verdict's `DONE means` includes `after.lr_diff_max_m` no worse than the before arm's 0.00109 m. Round 10 reports 0.00521, ruled against chasing it, and named its own overturn condition: 'overturned if the 5.2 mm reads as visible in frames.' Is the clause met, and if not, is it the build or the criterion that is wrong?",
+      "my_ruling": "THE BUILDER'S RULING STANDS. THE CLAUSE IS VOID AS WRITTEN AND THE FAULT IS THE CRITERION'S, NOT THE BUILD'S — this is S59's own shape, arriving from the other side. I answered the overturn condition on hardware, which is the one thing only a critic could do. THE 5.2 mm IS NOT VISIBLE. (1) Arithmetic, published: the CP capture stands at 2.486 m and renders 376.2 px/m at 1080 rows, so 5.2 mm is 1.96 px. The camera a player actually orbits at is `CAMERA_CONST.arm_free_m` = 4.10 m (`game/src/sim/camera.js:63`), where it is 1.19 px at 1080p and 0.59 px at the harness's own 960x540 default — so my capture is a MORE generous test than gameplay, not a less generous one. (2) Look, published: at 6x with a ruled grid, the two soles in the AFTER arm are already 13 px apart for a reason that has nothing to do with height — one foot stands 17 mm nearer the camera and the perspective term dominates the height term by 6:1. (3) Noise floor, measured: the boot band's mean luma-sum is 74.7 of 765 under a dither whose per-pixel standard deviation is 45.4. A sub-2-px edge shift inside a near-black dithered region is not a thing an eye recovers. (4) The structural argument is also correct and I checked it: 0.00109 was the difference of two IDENTICAL legs under an ANTI-symmetric loop, and contrapposto requires the legs to be geometrically different (155.4 deg against 171.9 deg), so the same +-0.52 deg loop rotation produces a different vertical response on each. The builder's search reproduces exactly on its own instrument — 1-DOF floor 0.00260, 2-DOF 0.00260, 3-DOF 0.00228 and only by inverting the breathing loop's own amplitude. AND ROUND 10 DID NOT CAUSE IT: on hardware the drawn per-foot difference is 0.0052 m in BOTH arms, so this is r9's number inherited, not r10's regression. REPLACEMENT CLAUSE, both parts required: (a) `after.lr_diff_max_m` <= 0.00600 m — the value the contrapposto structurally implies, with headroom, and a real bound because 0.00521 sits under it; and (b) PRESERVATION, which is what the original clause was reaching for and named the wrong quantity for: the LOWER ankle's absolute height above ground must stay within 1 mm of the pre-contrapposto baseline, measured on the built rig across the full 96-frame loop. On this build (b) reads 0.07770 m against a baseline 0.07774 m — 0.04 mm — so the substance the clause wanted is met.",
+      "reversible": true,
+      "what_would_overturn_it": "A capture at the game's real presentation resolution and lighting in which a reader who was not told what to look for identifies one foot as sitting higher than the other. My frames are 1920x1080 on an RTX A5000 with the sun where the game puts it, and it does not happen."
+    },
+    {
+      "id": "S60-the-acceptance-instrument-is-blind-to-the-mechanism-it-accepts",
+      "question": "The r9 verdict's `DONE means` also names `node tools/visual/f10-r9c-c3-audit.mjs` reporting `B_feet.summary.rise_of_lower_ankle_m.mean` within 1 mm of 0. Run unmodified on this tree it still reports 0.00796. Does F10 r10's job 1 fail?",
+      "my_ruling": "NO. THE CRITERION IS VOID AS WRITTEN — S60 ALMOST VERBATIM, AND THE FAULT IS THE r9 CRITIC'S, WHICH IS TO SAY IT IS THE INSTRUMENT I INHERITED. `f10-r9c-c3-audit.mjs`'s `pose()` reproduces `poseLocomotion` as it stood BEFORE round 10 and computes `rootDy` from the LOOP only, so it structurally cannot see a stance-layer root term. **The metric is evaluated off the support of the thing it measures**: no fix of this shape can ever turn it green, and a build that deleted the stance entirely would score better on it than a build that compensated the stance correctly. The builder refused to edit it — 'editing a critic's acceptance instrument to agree with my own fix is metric-shopping' — and that was the right call and is why the disagreement is visible at all. I SETTLED IT WITH AN INSTRUMENT THAT HAS NO STAKE IN EITHER ARM: the paid RTX A5000 frames. At the flat player stand, ground = 2.680 m in BOTH arms and identical to 4 decimals, the drawn foot bones go foot_l 2.7761 -> 2.7681 (-8.0 mm) and foot_r 2.7812 -> 2.7733 (-7.9 mm). Against the pre-contrapposto baseline the r9 critic itself photographed (0.0890 / 0.0901 above ground), round 10's lower ankle sits at 0.0881 — 0.9 mm BELOW the original baseline, i.e. the hover is gone. My BEFORE arm reproduces the r9 critic's AFTER arm to the digit (0.0961 / 0.1012), which cross-checks two independently written capture tools against each other. THE SUBSTANCE OF THE CLAUSE IS MET. REPLACEMENT: name `tools/visual/f10-r10-stance-height.mjs`'s `A_states.IDLE.rise_vs_before_engine_r10_m` (0.00000 on this build) or the hardware manifest's `slope_stands[char-player].measured.foot_l.y` minus `.ground`, not the r9 tool. The r9 tool needs a one-line mirror of `actor.js:401` before it is quoted again by anybody."
+    }
+  ],
+
+  "secondary_observations": [
+    {
+      "id": "the-hover-fix-is-photographed-and-it-is-real",
+      "note": "PAID HARDWARE, ONE POD, ONE PROCESS, FOUR FILES SWAPPED TOGETHER. `f10-r9c-stance-pair.mjs` could not shoot this pair: it swaps ONE file against a baseline pinned to r9's own before, and round 10's change is spread over four files with `15a6841c` as its base. Swapping only `clips.json` would have put r10's DATA under r9's CODE — a `root_offset` nothing consumes — and produced a sheet that looked like evidence and contained none. So `f10-r10c-pair.mjs` moves all four together, each pinned by sha256 at the swap and again at the restore, with self-test arms that require `stanceRootOffsetY` to be defined AND called in exactly one arm. THE PAIR IS CLEAN: three 300x300 background regions (ground left, ground right, sky) report **0 changed pixels of 90,000** between the arms, so every one of the 219,555 changed pixels in CP yaw000 belongs to the character, its equipment and its cast shadow. Round 10's job 1 numbers reproduce exactly on the builder's own instrument as well: IDLE rise 0.00796 -> 0.00000, planted-foot minimum WALK 0.07772 -> 0.08680 -> 0.07884, RUN 0.07758 -> 0.08675 -> 0.07879, SPRINT 0.07794 -> 0.08725 -> 0.07929. The builder also published the number that moved the WRONG way and I confirm it: the WALK/RUN/SPRINT loop MEAN is still +7.3 / +9.2 / +10.7 mm high, because the mean averages the planted foot with a swinging one that the shortened free leg lifts higher. Both numbers are in its json and it said so first."
+    },
+    {
+      "id": "block_hold-went-to-zero-and-that-is-a-live-behaviour-change-nobody-asked-for-and-it-is-correct",
+      "note": "CHECKED, BECAUSE THE BRIEF WAS RIGHT TO FLAG IT. Before r10, `block_hold.root_offset.y = -0.03` was dead data — `addPose` iterated `tracks` only. Round 10 taught the engine to read `root_offset`, which would have made that 3 cm LIVE. `root_offset` translates the WHOLE rig, feet included, so it is not a crouch: it would have put every guarding character's soles 30 mm under the ground. The builder zeroed it. VERIFIED THREE WAYS: (1) the code path — `actor.js:401` passes `this.moves._blockPose` to `stanceRootOffsetY`, which returns 0 for `[[0,0],[3,0]]`; (2) the measurement — IDLE_GUARD, WALK_GUARD, RUN_GUARD and SPRINT_GUARD all read IDENTICAL rise values on the pre-r10 and post-r10 engines (-0.00097 and 0.00000), so guarding behaviour is unchanged in both directions; (3) the record — `clips.json`'s own `block_hold.note` now carries the deletion, its reason and the condition for restoring it ('a real guard crouch needs knee tracks first'). An authored intention was deleted; it was deleted in the data, in writing, with its restoration condition. That is the right way to do it and I would have failed it if it had been done silently."
+    },
+    {
+      "id": "the-pupil-reads-at-conversation-distance-and-nowhere-else",
+      "note": "PHOTOGRAPHED. The FP capture frames the face at 0.475 m — the game's own `dialogue_arm_max_m` is 0.60 m, so FP IS conversation framing. At b180 the BEFORE arm shows two flat amber crescents at the sides of the snout with nothing inside them; the AFTER arm shows two amber almonds each with an all-dark pupil and a white specular catchlight at its top edge. Counted over an identical box in both arms: amber 466 -> 1113 px at b180, 280 -> 1174 px at b090. AND IT DOES NOT SURVIVE THE ORBIT. At the CP framing of 2.486 m — still closer than the 4.10 m a player actually orbits at — the same eyes are two amber smudges and the pupil is not resolvable; I magnified 4x to be sure. So the honest statement is narrow and it is the one the item asks for: the eye now reads as an eye in conversation, and reads as a coloured patch at every distance beyond it. The builder's own 'no lid, no orbit still stands' is confirmed and it is the larger half: at 9x the eye is a bead sitting proud of the skin with no rim shadow on any side, which is why B4 stays at 1 of 7 and why B4 is where the remaining work scores."
+    },
+    {
+      "id": "what-a-player-sees-in-my-own-words-before-any-number",
+      "note": "Eight bearings on an RTX A5000, whole figure in frame. A pale blue-grey padded barrel with no waist, on two thick parallel tubes that end in olive drums. A small dark head with a muzzle and two cone spikes. A very long dark tail sweeping out behind — real geometry, and it reads more like a scorpion's sting than a lizard's tail: it is as long as a leg, curves up and then to a point, and is rooted high. A black hexagonal shield slab and a greatsword crossing the body. At every one of the eight bearings both legs are vertical and parallel, the boots are level and shoulder-width, and the pelvis is not displaced over either leg. THE CONTRAPPOSTO THAT PASSES C3 AT 5 DEGREES IS NOT LEGIBLE AS A STANCE AT THE DISTANCE A PLAYER STANDS. The r9 critic wrote that C3's 3 degrees is 'a floor, not a target' and I am confirming it from a different capture: the difference between the arms is visible in a difference mask and is not visible as a person shifting their weight."
+    },
+    {
+      "id": "three-findings-handed-to-the-fidelity-critic-not-scored-here",
+      "note": "RI-VIS10 §Comparison method 6 requires anything really about mesh quality to go to the fidelity side. (1) THE EYE IS RI-VIS08 §B8's, by this item's own §A seam table — 'Are its eyes separate geometry with a catchlight? FIDELITY, RI-VIS08 §B8'. Round 10's change is a geometry reseat and it produces a visible catchlight. It should be scored there and it has never been. (2) The headgear band still does not touch the cranium: at FP b000 in BOTH arms there is background visible in the gap on the left side, on hardware — r9 reported this and it is unchanged. (3) The whole figure is rendered under a dither so coarse that in the boot band the per-pixel luma standard deviation is 45.4 on a mean of 74.7 (of 765). That is a presentation property, not a character one, and it is why sub-2-px geometry claims about this build cannot be settled by looking."
+    },
+    {
+      "id": "the-instrument-that-was-blind-and-what-rested-on-it",
+      "note": "ANSWERED, AND THE ANSWER IS 'NOTHING EARLIER'. `tools/harness/anim-tune.mjs` reproduces `poseLocomotion` rather than calling it, and until this round it omitted the stance root term. BUT the stance root term did not exist until this round: my pair runner's self-test arm 4 confirms that at `15a6841c` neither `clips.js` nor `combat/actor.js` contains the string `stanceRootOffsetY`, and `addPose` read `tracks` only. So the harness was not blind before r10 — it became blind at the instant r10's job 1 landed, and r10 corrected it in the same commit. NO EARLIER GREEN READING RESTS ON THE OMISSION. What DOES rest on it, and is the finding worth keeping, is structural: the harness holds a SECOND COPY of `poseLocomotion`, so every future change to the real one silently desynchronises the gate that protects the attack/idle boundary. That is `HAZARDS §20a`'s shape (a generator holding a second copy of the idle) arriving in a different file. Round 10 papered it with a comment; it should be a call into `poseLocomotion`, or a test that asserts the two agree."
+    },
+    {
+      "id": "the-landmine-was-filed-with-the-wrong-mechanism",
+      "note": "OVERTURNED, ON A COPY, AND THE CORRECTION MATTERS BECAUSE IT CHANGES THE FIX. The round records `swing.js`'s `r2()` as 'two decimal places… the smallest value it can emit is 10 mm' and concludes 'fixing the generator needs a precision change, not a value change'. `game/src/combat/swing.js:64` is `Math.round(x * 1000) / 1000` — THREE decimals; the smallest step is 1 mm and -0.00796 would survive rounding as -0.008, an error of 0.04 mm. The endpoints die at lines 311-318, where `rootY` is built from HARD-CODED LITERALS — `[0.0, 0.0]` at phase 0, `[3.0, -0.01 + cr*0.25]` at phase 3 — with no stance term in the expression at all. REPRODUCED: `git archive HEAD` to a scratch tree, `node tools/harness/anim-author.mjs --only thrust --out <scratch>`, and `thrust.root_offset.y` comes back `[[0,0],…,[3,0]]` against a shipped `[[0,-0.00796],…,[3,-0.00796]]`. So the round's WARNING is right and urgent and its DIAGNOSIS would have sent the next builder to widen a rounding function that is already wide enough. Filed as HAZARDS §20d. The same run re-derives §20a: `idle_loop` `spine_00.rx` 0.68 -> 0.45 and `neck.rx` 0.75 -> 0.5, 33.8% and 33.3% shrinks of the hand-tuned breathing, still live."
+    },
+    {
+      "id": "my-own-instrument-nearly-produced-a-false-confirmation",
+      "note": "RECORDED BECAUSE IT IS THE FAILURE SHAPE HAZARDS §0 NAMES. My first NPC probe hashed each bone's LOCAL quaternion into a pose signature, and reported the player and all 60 NPCs sharing ONE identical signature — which would have 'confirmed' the finding I was sent to test, spectacularly and wrongly. `poseFromRig` writes bone WORLD matrices and never touches the local quaternion, so a local-rotation reader is blind to the player's pose by construction. Self-test arm 1 — 'the player's signature must DIFFER from the modal NPC signature' — went red and caught it. The corrected reader takes `inverse(group.matrixWorld) * bone.matrixWorld`, which is path-agnostic. The finding survived the correction; the point is that a self-test arm whose job is to fail when the instrument agrees too easily is what stood between this verdict and a confidently wrong headline."
+    },
+    {
+      "id": "outside-F10-and-not-mine",
+      "note": "`anim-tune` still reports 'over declared peak: 1/14' — spear:heavy at ratio 1.07 against RI-CMB04's declared column. Pre-existing, unrelated to this round, and for the combat critic. It was in r9's verdict too and nobody has taken it."
+    }
+  ],
+
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground",
+      "status": "closed-on-the-player-and-combat-enemies-only",
+      "note": "CLOSED WHERE IT WAS MEASURED AND NOT WHERE IT WAS CLAIMED. On hardware, at the flat player stand with ground = 2.680 m identical in both arms, the drawn foot bones fall 8.0 mm (left) and 7.9 mm (right), putting the lower ankle at 88.1 mm above ground against the pre-contrapposto baseline of 89.0 mm that the r9 critic itself photographed. On the built rig the IDLE rise is 0.00796 -> 0.00000 and the planted-foot minimum on WALK/RUN/SPRINT is +9.1/+9.2/+9.3 mm -> +1.1/+1.2/+1.4 mm. C3 arm (a) still passes, anim-tune still reports 0 of 14 over 0.35 m with worst snapOut 0.0122 m. BUT THE GAP'S OWN `why_it_matters` NAMED 408 NPCs AND THE FIX REACHES NONE OF THEM — because they never had the hover either. The gap statement was half wrong when it was written; the half that was true is fixed."
+    }
+  ],
+
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "`ran_every_assigned_method` is FALSE and this is the honest count. Of RI-VIS10's eighteen checks I published a census for thirteen. Three (B1, C4, D4) cannot be run by any agent below the orchestrator; one (D1) fails on a data artefact that does not exist, re-verified this turn; two (D2, D5) I deliberately did not run and bounded, per §1.3's third guard. One row of B2 (clawed hand) is carried from r9 and labelled as carried. RI-VIS08 was not run and FIDELITY is not re-judged. CRITIC-DOCTRINE §1.2b's operability protocol has no surface here — this piece ships no interface — but that means every claim I make is about pictures, poses and matrices, not about play."
+  },
+
+  "notes": [
+    "COST. One Pod, RTX A5000 SECURE at $0.270/hr, ~4 minutes of Pod life, `--max-price 0.55`, terminated in mandatory cleanup with deletion confirmed by a subsequent 404 and the ephemeral template deleted too. Roughly $0.02. One local browser session on SwiftShader for the NPC probe, run after `tools/contention.mjs` returned GO with room for four more. Everything else ran offline against a `git archive HEAD` scratch tree.",
+    "WHAT THE HARDWARE PAIR ACTUALLY COST TO BUILD, because the next round will want it: the four BEFORE blobs are vendored under `tools/visual/f10-r10c-before/` and pinned by sha256, so `f10-r10c-pair.mjs` reproduces this exact pair on demand and refuses to run if any blob has drifted. The AFTER arm is gated by `--expect-after-clips`. Both arms returned `{\"LIVE\":12}` with 0 red frames and all four files sha-verified on restore.",
+    "ORDERING, recorded as CRITIC-DOCTRINE §8 requires: the builder's status file and the r9 verdict were read FIRST, because the brief directed it. Everything after that was re-derived. The r9 verdict's own headline was overturned (its `why_it_matters` is wrong on the NPC half), one of the builder's own hazard filings was overturned (§20d), and my own first instrument was overturned by its own self-test. Nothing below is inherited except the one B2 row that says so.",
+    "WHAT I COULD NOT DO, AS PLAINLY AS WHAT I DID. (1) B1, C4 and D4 — no fresh judge, rule 0e, and the orchestrator owes all three for the third verdict running. (2) D2 and D5 — deliberately not run and bounded; they remain the cheapest way for the next round to move this score, and they have been the cheapest way for two rounds. (3) RI-VIS08 not re-run, so FIDELITY is not mine. (4) I shot CP and FP only, so I have no character-against-a-void crack frames and B2 row 9 is carried. (5) I did not shoot the 30-degree orbit pair B3 nominally asks for; I used 0 and 45 from the same eight-bearing sheet, which answers the contour-motion question by the same mechanism at a wider baseline — declared, not substituted silently. (6) My NPC probe ran on 60 drawn NPCs at one settlement, not 408 across eighteen; 60 of 60 at exactly 0.000000 is a strong sample but it is a sample. (7) I opened no new motion references; the motion question was settled last round and this round's change is a translation and a bead.",
+    "ONE THING THE ROUND DID THAT DESERVES SAYING PLAINLY. Its `what_i_could_not_do` list is six entries long, leads with the criterion it failed rather than the fix it landed, publishes a search that did not succeed with all three of its floors, names the number that moved the wrong way, and tells the next round the cheapest thing to do is photograph its own work. Two of the six entries turned out to be things I could close in an afternoon for two cents, and I could only close them because they were written down. The one entry that was wrong (§20d) was wrong in a way that was checkable in ten minutes precisely because it named the file and the line."
+  ]
+}
