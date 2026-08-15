@@ -1,0 +1,16 @@
+[harness]   inventory 1280x720@1: buffer 1280x720 image 1280x720 stem 0.8 px (1539 samples, region detail_panel), 75 visible elements, edge ΔE2000 55.437 over 3076 edge px
+[harness]   journal 1280x720@1: buffer 1280x720 image 1280x720 stem 0.8 px (2332 samples, region journal_entry), 23 visible elements, edge ΔE2000 15.064 over 1565 edge px
+[harness]   levelup 1280x720@1: buffer 1280x720 image 1280x720 stem 0.8 px (1657 samples, region attribute_preview), 39 visible elements, edge ΔE2000 54.192 over 1284 edge px
+[harness]   sheet 1280x720@1: buffer 1280x720 image 1280x720 stem 0.828 px (128 samples, region hint), 62 visible elements, edge ΔE2000 42.48 over 1404 edge px
+[harness]   spells 1280x720@1: buffer 1280x720 image 1280x720 stem 0.8 px (484 samples, region hint), 19 visible elements, edge ΔE2000 29.539 over 1260 edge px
+[harness]   inventory 1280x720@2: buffer 2560x1440 image 2560x1440 stem 0.882 px (5121 samples, region detail_panel), 75 visible elements, edge ΔE2000 26.65 over 6199 edge px
+[harness]   journal 1280x720@2: buffer 2560x1440 image 2560x1440 stem 0.842 px (7209 samples, region journal_entry), 23 visible elements, edge ΔE2000 54.606 over 3264 edge px
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: Target page, context or browser has been closed
+    at Object.h (/home/user/elder-souls-claude/tools/lib/browser.mjs:228:30)
+    at /home/user/elder-souls-claude/tools/metrics/ui-metrics.mjs:385:36
+
+Node.js v22.22.2

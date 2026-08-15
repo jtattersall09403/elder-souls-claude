@@ -1,0 +1,1230 @@
+{
+  "schema": "elder-souls/t4-r4-critic@1",
+  "at": "2026-08-15T16:30:45.333Z",
+  "checks": [
+    {
+      "id": "I0 the shipped input layer is attached and a real key reaches the pipeline",
+      "pass": true,
+      "detail": "{\"attached\":true,\"moveX\":1}"
+    },
+    {
+      "id": "JP0 the journal opens through real presses",
+      "pass": true,
+      "detail": "mode=journal"
+    },
+    {
+      "id": "JP1 paging right reaches every journal entry the data holds",
+      "pass": true,
+      "detail": "19 distinct entries seen over 40 page states; data holds 19"
+    },
+    {
+      "id": "JP2 the journal declares a page count while paging",
+      "pass": true,
+      "detail": "page_count texts: [\"1 of 10\",\"2 of 10\",\"3 of 10\",\"4 of 10\",\"5 of 10\",\"6 of 10\",\"7 of 10\",\"8 of 10\",\"9 of 10\",\"10 of 10\",\"10 of 10\",\"10 of 10\"]"
+    },
+    {
+      "id": "JP3 entries visible per spread",
+      "pass": true,
+      "detail": "per page: [2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]"
+    },
+    {
+      "id": "JP4 every quest in the data has an index row on screen",
+      "pass": true,
+      "detail": "5 index rows drawn, 5 quests in data: [\"The Company Man\",\"Eleven Gold a Week\",\"The Reading of the Count\",\"Eleven Empty Boxes\",\"The Count of the Drowned\"]"
+    },
+    {
+      "id": "JP5 no journal entry block is drawn past the panel foot (J2 \"rendered whole\")",
+      "pass": true,
+      "detail": "journal.entry.Q-LILM-01.30 bottom=610 panel_bottom=755 over=-145px"
+    },
+    {
+      "id": "CP0 the container screen is up",
+      "pass": true,
+      "detail": "mode=container"
+    },
+    {
+      "id": "CP1 the carried side scrolls to every one of its rows (S57 (b))",
+      "pass": true,
+      "detail": "44 distinct carried rows reached over 44 presses; data holds 44"
+    },
+    {
+      "id": "CP2 the extent marker reports the true total while scrolled",
+      "pass": true,
+      "detail": "extent meta={\"from\":40,\"shown\":4,\"total\":44}"
+    },
+    {
+      "id": "OV-levelup no attribute-row glyph ink falls inside the gauge's own x-span",
+      "pass": false,
+      "detail": "4 of 10 rows overlap; worst 0.732 of the row's ink inside the gauge span"
+    },
+    {
+      "id": "OV-sheet no attribute-row glyph ink falls inside the gauge's own x-span",
+      "pass": false,
+      "detail": "2 of 10 rows overlap; worst 0.503 of the row's ink inside the gauge span"
+    }
+  ],
+  "data": {
+    "journal_entries_in_data": 19,
+    "journal_pages": [
+      {
+        "page": 0,
+        "entries": 2,
+        "page_count_text": "1 of 10",
+        "entry_ids": [
+          "journal.entry.Q-MAIN-01.3",
+          "journal.entry.Q-MAIN-01.10"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            270.66
+          ],
+          [
+            1073,
+            395,
+            230,
+            270.66
+          ]
+        ]
+      },
+      {
+        "page": 1,
+        "entries": 2,
+        "page_count_text": "2 of 10",
+        "entry_ids": [
+          "journal.entry.Q-MAIN-02.10",
+          "journal.entry.Q-SOUL-02.8"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            270.66
+          ],
+          [
+            1073,
+            395,
+            230,
+            187.44
+          ]
+        ]
+      },
+      {
+        "page": 2,
+        "entries": 2,
+        "page_count_text": "3 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.8",
+          "journal.entry.Q-MAIN-02.20"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            159.7
+          ],
+          [
+            1073,
+            395,
+            230,
+            270.66
+          ]
+        ]
+      },
+      {
+        "page": 3,
+        "entries": 2,
+        "page_count_text": "4 of 10",
+        "entry_ids": [
+          "journal.entry.Q-MAIN-02.30",
+          "journal.entry.Q-MAIN-01.20"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            242.92
+          ],
+          [
+            1073,
+            395,
+            230,
+            242.92
+          ]
+        ]
+      },
+      {
+        "page": 4,
+        "entries": 2,
+        "page_count_text": "5 of 10",
+        "entry_ids": [
+          "journal.entry.Q-DOCK-01.10",
+          "journal.entry.Q-SOUL-02.10"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            187.44
+          ],
+          [
+            1073,
+            395,
+            230,
+            187.44
+          ]
+        ]
+      },
+      {
+        "page": 5,
+        "entries": 2,
+        "page_count_text": "6 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.10",
+          "journal.entry.Q-DOCK-01.20"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            159.7
+          ],
+          [
+            1073,
+            395,
+            230,
+            159.7
+          ]
+        ]
+      },
+      {
+        "page": 6,
+        "entries": 2,
+        "page_count_text": "7 of 10",
+        "entry_ids": [
+          "journal.entry.Q-MAIN-01.30",
+          "journal.entry.Q-LILM-01.20"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            187.44
+          ],
+          [
+            1073,
+            395,
+            230,
+            159.7
+          ]
+        ]
+      },
+      {
+        "page": 7,
+        "entries": 2,
+        "page_count_text": "8 of 10",
+        "entry_ids": [
+          "journal.entry.Q-SOUL-02.20",
+          "journal.entry.Q-MAIN-02.45"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            159.7
+          ],
+          [
+            1073,
+            395,
+            230,
+            242.92
+          ]
+        ]
+      },
+      {
+        "page": 8,
+        "entries": 2,
+        "page_count_text": "9 of 10",
+        "entry_ids": [
+          "journal.entry.Q-MAIN-01.45",
+          "journal.entry.Q-DOCK-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            242.92
+          ],
+          [
+            1073,
+            395,
+            230,
+            187.44
+          ]
+        ]
+      },
+      {
+        "page": 9,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 10,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 11,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 12,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 13,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 14,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 15,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 16,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 17,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 18,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 19,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 20,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 21,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 22,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 23,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 24,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 25,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 26,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 27,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 28,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 29,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 30,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 31,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 32,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 33,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 34,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 35,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 36,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 37,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 38,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      },
+      {
+        "page": 39,
+        "entries": 1,
+        "page_count_text": "10 of 10",
+        "entry_ids": [
+          "journal.entry.Q-LILM-01.30"
+        ],
+        "entry_rects": [
+          [
+            797,
+            395,
+            230,
+            215.18
+          ]
+        ]
+      }
+    ],
+    "journal_entries_seen": 19,
+    "journal_kinds": {
+      "health_bar": 1,
+      "stamina_bar": 1,
+      "focus_bar": 1,
+      "heal_charges": 1,
+      "equip_load": 1,
+      "quick_slots": 1,
+      "interact_prompt": 1,
+      "bearing_dial": 1,
+      "effect_strip": 1,
+      "place_name": 1,
+      "panel": 1,
+      "panel_header": 2,
+      "journal_index_row": 5,
+      "journal_entry": 1,
+      "divider": 1,
+      "page_count": 1,
+      "hint": 1
+    },
+    "journal_entry_overflow": [
+      {
+        "id": "journal.entry.Q-LILM-01.30",
+        "rect": [
+          797,
+          395,
+          230,
+          215.18
+        ],
+        "bottom": 610.1800000000001,
+        "panel_bottom": 755,
+        "over_panel_px": -145,
+        "over_hint_px": -107
+      }
+    ],
+    "journal_panel_rect": [
+      595,
+      325,
+      730,
+      430
+    ],
+    "journal_hint_rect": [
+      617,
+      717,
+      686,
+      26
+    ],
+    "container_kinds": {
+      "health_bar": 1,
+      "stamina_bar": 1,
+      "focus_bar": 1,
+      "heal_charges": 1,
+      "equip_load": 1,
+      "quick_slots": 1,
+      "interact_prompt": 1,
+      "bearing_dial": 1,
+      "effect_strip": 1,
+      "place_name": 1,
+      "panel": 1,
+      "panel_header": 3,
+      "scroll_extent": 1,
+      "list_row": 7,
+      "item_icon": 8,
+      "divider": 1,
+      "detail_panel": 1,
+      "hint": 1
+    },
+    "carried_in_data": 44,
+    "container_walk_len": 44,
+    "levelup_attribute_rows": [
+      {
+        "id": "levelup.attr.strength",
+        "rect": [
+          742,
+          422,
+          244,
+          26
+        ],
+        "text": "STRENGTH 12",
+        "ink_x": [
+          749,
+          983
+        ],
+        "gauge_x": [
+          755,
+          830
+        ],
+        "ink_px": 41,
+        "ink_px_inside_gauge_span": 30,
+        "ink_fraction_inside_gauge": 0.732
+      },
+      {
+        "id": "levelup.attr.endurance",
+        "rect": [
+          742,
+          452,
+          244,
+          26
+        ],
+        "text": "ENDURANCE 20",
+        "ink_x": [
+          742,
+          983
+        ],
+        "gauge_x": [
+          821,
+          903
+        ],
+        "ink_px": 100,
+        "ink_px_inside_gauge_span": 3,
+        "ink_fraction_inside_gauge": 0.03
+      },
+      {
+        "id": "levelup.attr.agility",
+        "rect": [
+          742,
+          482,
+          244,
+          26
+        ],
+        "text": "AGILITY 10",
+        "ink_x": [
+          742,
+          985
+        ],
+        "gauge_x": [
+          884,
+          958
+        ],
+        "ink_px": 303,
+        "ink_px_inside_gauge_span": 83,
+        "ink_fraction_inside_gauge": 0.274
+      },
+      {
+        "id": "levelup.attr.speed",
+        "rect": [
+          742,
+          512,
+          244,
+          26
+        ],
+        "text": "SPEED 10",
+        "ink_x": [
+          743,
+          983
+        ],
+        "gauge_x": [
+          883,
+          957
+        ],
+        "ink_px": 1101,
+        "ink_px_inside_gauge_span": 508,
+        "ink_fraction_inside_gauge": 0.461
+      },
+      {
+        "id": "levelup.attr.vigour",
+        "rect": [
+          742,
+          542,
+          244,
+          26
+        ],
+        "text": "VIGOUR 10",
+        "ink_x": [
+          742,
+          985
+        ],
+        "gauge_x": null,
+        "ink_px": 1332,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      },
+      {
+        "id": "levelup.attr.willpower",
+        "rect": [
+          742,
+          572,
+          244,
+          26
+        ],
+        "text": "WILLPOWER 10",
+        "ink_x": [
+          742,
+          985
+        ],
+        "gauge_x": null,
+        "ink_px": 1177,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      },
+      {
+        "id": "levelup.attr.intellect",
+        "rect": [
+          742,
+          602,
+          244,
+          26
+        ],
+        "text": "INTELLECT 10",
+        "ink_x": [
+          742,
+          985
+        ],
+        "gauge_x": null,
+        "ink_px": 846,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      },
+      {
+        "id": "levelup.attr.hist-bond",
+        "rect": [
+          742,
+          632,
+          244,
+          26
+        ],
+        "text": "HIST-BOND 10",
+        "ink_x": [
+          743,
+          985
+        ],
+        "gauge_x": null,
+        "ink_px": 1467,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      },
+      {
+        "id": "levelup.attr.personality",
+        "rect": [
+          742,
+          662,
+          244,
+          26
+        ],
+        "text": "PERSONALITY 10",
+        "ink_x": [
+          742,
+          985
+        ],
+        "gauge_x": null,
+        "ink_px": 1294,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      },
+      {
+        "id": "levelup.attr.luck",
+        "rect": [
+          742,
+          692,
+          244,
+          26
+        ],
+        "text": "LUCK 10",
+        "ink_x": [
+          742,
+          965
+        ],
+        "gauge_x": null,
+        "ink_px": 2777,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      }
+    ],
+    "sheet_attribute_rows": [
+      {
+        "id": "sheet.attr.strength",
+        "rect": [
+          901,
+          359,
+          161,
+          32
+        ],
+        "text": "STRENGTH 12",
+        "ink_x": [
+          904,
+          999
+        ],
+        "gauge_x": [
+          903,
+          916
+        ],
+        "ink_px": 70,
+        "ink_px_inside_gauge_span": 24,
+        "ink_fraction_inside_gauge": 0.343
+      },
+      {
+        "id": "sheet.attr.endurance",
+        "rect": [
+          901,
+          395,
+          161,
+          32
+        ],
+        "text": "ENDURANCE 20",
+        "ink_x": [
+          901,
+          1019
+        ],
+        "gauge_x": null,
+        "ink_px": 591,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      },
+      {
+        "id": "sheet.attr.agility",
+        "rect": [
+          901,
+          431,
+          161,
+          32
+        ],
+        "text": "AGILITY 10",
+        "ink_x": [
+          958,
+          983
+        ],
+        "gauge_x": [
+          902,
+          903
+        ],
+        "ink_px": 24,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      },
+      {
+        "id": "sheet.attr.speed",
+        "rect": [
+          901,
+          467,
+          161,
+          32
+        ],
+        "text": "SPEED 10",
+        "ink_x": [
+          902,
+          1045
+        ],
+        "gauge_x": null,
+        "ink_px": 142,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      },
+      {
+        "id": "sheet.attr.vigour",
+        "rect": [
+          901,
+          503,
+          161,
+          32
+        ],
+        "text": "VIGOUR 10",
+        "ink_x": [
+          901,
+          1061
+        ],
+        "gauge_x": [
+          901,
+          958
+        ],
+        "ink_px": 973,
+        "ink_px_inside_gauge_span": 489,
+        "ink_fraction_inside_gauge": 0.503
+      },
+      {
+        "id": "sheet.attr.willpower",
+        "rect": [
+          901,
+          539,
+          161,
+          32
+        ],
+        "text": "WILLPOWER 10",
+        "ink_x": [
+          901,
+          1061
+        ],
+        "gauge_x": null,
+        "ink_px": 965,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      },
+      {
+        "id": "sheet.attr.intellect",
+        "rect": [
+          901,
+          575,
+          161,
+          32
+        ],
+        "text": "INTELLECT 10",
+        "ink_x": [
+          901,
+          1061
+        ],
+        "gauge_x": null,
+        "ink_px": 900,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      },
+      {
+        "id": "sheet.attr.hist-bond",
+        "rect": [
+          901,
+          611,
+          161,
+          32
+        ],
+        "text": "HIST-BOND 10",
+        "ink_x": [
+          901,
+          1061
+        ],
+        "gauge_x": null,
+        "ink_px": 1157,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      },
+      {
+        "id": "sheet.attr.personality",
+        "rect": [
+          901,
+          647,
+          161,
+          32
+        ],
+        "text": "PERSONALITY 10",
+        "ink_x": [
+          901,
+          1061
+        ],
+        "gauge_x": null,
+        "ink_px": 827,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      },
+      {
+        "id": "sheet.attr.luck",
+        "rect": [
+          901,
+          683,
+          161,
+          32
+        ],
+        "text": "LUCK 10",
+        "ink_x": [
+          904,
+          1061
+        ],
+        "gauge_x": null,
+        "ink_px": 1038,
+        "ink_px_inside_gauge_span": 0,
+        "ink_fraction_inside_gauge": 0
+      }
+    ]
+  },
+  "passed": 10,
+  "total": 12
+}

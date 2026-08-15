@@ -1,0 +1,200 @@
+[harness] {
+  "schema": "elder-souls/t4-critic-measure@1",
+  "at": "2026-08-15T16:30:44.130Z",
+  "screens": {
+    "world": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-world__1920x1080.png",
+      "panel_rect": null
+    },
+    "inventory": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-inventory__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.1524,
+        "mode_rgb": [
+          44,
+          57,
+          45
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.1524
+    },
+    "journal": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-journal__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.1315,
+        "mode_rgb": [
+          172,
+          165,
+          147
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.1315
+    },
+    "sheet": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-sheet__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.0896,
+        "mode_rgb": [
+          44,
+          57,
+          45
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.0896
+    },
+    "spells": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-spells__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.0703,
+        "mode_rgb": [
+          27,
+          26,
+          24
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.0703
+    },
+    "levelup": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-levelup__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.091,
+        "mode_rgb": [
+          219,
+          217,
+          204
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.091
+    },
+    "container": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-container__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.0572,
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.0572
+    },
+    "container_no_name": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-container_no_name__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.0554,
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.0554
+    }
+  },
+  "notes": []
+}
+[harness]   ok   I0 the shipped input layer is attached and a real key reaches the pipeline  {"attached":true,"moveX":1}
+[harness]   ok   JP0 the journal opens through real presses  mode=journal
+[harness]   ok   JP1 paging right reaches every journal entry the data holds  19 distinct entries seen over 40 page states; data holds 19
+[harness]   ok   JP2 the journal declares a page count while paging  page_count texts: ["1 of 10","2 of 10","3 of 10","4 of 10","5 of 10","6 of 10","7 of 10","8 of 10","9 of 10","10 of 10","10 of 10","10 of 10"]
+[harness]   ok   JP3 entries visible per spread  per page: [2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+[harness]   ok   JP4 every quest in the data has an index row on screen  5 index rows drawn, 5 quests in data: ["The Company Man","Eleven Gold a Week","The Reading of the Count","Eleven Empty Boxes","The Count of the Drowned"]
+[harness]   ok   JP5 no journal entry block is drawn past the panel foot (J2 "rendered whole")  journal.entry.Q-LILM-01.30 bottom=610 panel_bottom=755 over=-145px
+[harness]   ok   CP0 the container screen is up  mode=container
+[harness]   ok   CP1 the carried side scrolls to every one of its rows (S57 (b))  44 distinct carried rows reached over 44 presses; data holds 44
+[harness]   ok   CP2 the extent marker reports the true total while scrolled  extent meta={"from":40,"shown":4,"total":44}
+[harness]   FAIL OV-levelup no attribute-row glyph ink falls inside the gauge's own x-span  4 of 10 rows overlap; worst 0.732 of the row's ink inside the gauge span
+[harness]   FAIL OV-sheet no attribute-row glyph ink falls inside the gauge's own x-span  2 of 10 rows overlap; worst 0.503 of the row's ink inside the gauge span
+[harness] 
+10/12 checks passed  ->  /home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/T4-r5c/reports/t4-r4-critic.json

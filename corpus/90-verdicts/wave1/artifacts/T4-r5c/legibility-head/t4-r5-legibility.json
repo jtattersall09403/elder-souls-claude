@@ -1,0 +1,256 @@
+{
+  "schema": "elder-souls/t4-r5-legibility@1",
+  "at": "2026-08-15T16:16:50.496Z",
+  "state": "ui-journal",
+  "widths": [
+    {
+      "w": 1920,
+      "h": 1080
+    },
+    {
+      "w": 1280,
+      "h": 720
+    }
+  ],
+  "screens": {
+    "1920x1080/levelup": {
+      "failed": "step timed out after 90s"
+    },
+    "1920x1080/sheet": {
+      "mode": "sheet",
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/legibility-head/screens/1920x1080-sheet.png",
+      "panel_rect": [
+        680,
+        295,
+        560,
+        490
+      ],
+      "counts": {
+        "journal_entry": 0,
+        "hint": 1,
+        "attribute_row": 10
+      },
+      "findings": {
+        "overflow": [],
+        "truncation": [],
+        "overlap": [
+          {
+            "id": "sheet.attr.strength",
+            "rect": [
+              901.44,
+              359,
+              161.4,
+              32
+            ],
+            "text": "STRENGTH 12",
+            "gap_threshold_px": 3,
+            "separators": 1,
+            "runs": 2,
+            "span": 161
+          },
+          {
+            "id": "sheet.attr.willpower",
+            "rect": [
+              901.44,
+              539,
+              161.4,
+              32
+            ],
+            "text": "WILLPOWER 10",
+            "gap_threshold_px": 3,
+            "separators": 0,
+            "runs": 1,
+            "span": 158
+          },
+          {
+            "id": "sheet.attr.intellect",
+            "rect": [
+              901.44,
+              575,
+              161.4,
+              32
+            ],
+            "text": "INTELLECT 10",
+            "gap_threshold_px": 3,
+            "separators": 1,
+            "runs": 2,
+            "span": 158
+          }
+        ]
+      },
+      "clean": false
+    },
+    "1920x1080/spells": {
+      "mode": "spells",
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/legibility-head/screens/1920x1080-spells.png",
+      "panel_rect": [
+        730,
+        365,
+        460,
+        350
+      ],
+      "counts": {
+        "journal_entry": 0,
+        "hint": 1,
+        "attribute_row": 0
+      },
+      "findings": {
+        "overflow": [],
+        "truncation": [],
+        "overlap": []
+      },
+      "clean": true
+    },
+    "1920x1080/journal_pages_checked": 2,
+    "1920x1080/journal": {
+      "mode": "journal",
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/legibility-head/screens/1920x1080-journal.png",
+      "panel_rect": [
+        595,
+        325,
+        730,
+        430
+      ],
+      "counts": {
+        "journal_entry": 2,
+        "hint": 1,
+        "attribute_row": 0
+      },
+      "findings": {
+        "overflow": [],
+        "truncation": [],
+        "overlap": []
+      },
+      "clean": true
+    },
+    "1920x1080/container": {
+      "failed": "step timed out after 90s"
+    },
+    "1280x720/levelup": {
+      "mode": "levelup",
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/legibility-head/screens/1280x720-levelup.png",
+      "panel_rect": [
+        480,
+        200,
+        320,
+        320
+      ],
+      "counts": {
+        "journal_entry": 0,
+        "hint": 1,
+        "attribute_row": 10
+      },
+      "findings": {
+        "overflow": [],
+        "truncation": [],
+        "overlap": [
+          {
+            "id": "levelup.attr.personality",
+            "rect": [
+              494.67,
+              441.33,
+              162.77,
+              17.33
+            ],
+            "text": "PERSONALITY 10",
+            "gap_threshold_px": 2,
+            "separators": 1,
+            "runs": 2,
+            "span": 149
+          }
+        ]
+      },
+      "clean": false
+    },
+    "1280x720/sheet": {
+      "mode": "sheet",
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/legibility-head/screens/1280x720-sheet.png",
+      "panel_rect": [
+        453.33,
+        196.67,
+        373.33,
+        326.67
+      ],
+      "counts": {
+        "journal_entry": 0,
+        "hint": 1,
+        "attribute_row": 10
+      },
+      "findings": {
+        "overflow": [],
+        "truncation": [],
+        "overlap": []
+      },
+      "clean": true
+    },
+    "1280x720/spells": {
+      "mode": "spells",
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/legibility-head/screens/1280x720-spells.png",
+      "panel_rect": [
+        486.67,
+        243.33,
+        306.67,
+        233.33
+      ],
+      "counts": {
+        "journal_entry": 0,
+        "hint": 1,
+        "attribute_row": 0
+      },
+      "findings": {
+        "overflow": [],
+        "truncation": [],
+        "overlap": []
+      },
+      "clean": true
+    },
+    "1280x720/journal_pages_checked": 2,
+    "1280x720/journal": {
+      "mode": "journal",
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/legibility-head/screens/1280x720-journal.png",
+      "panel_rect": [
+        396.67,
+        216.67,
+        486.67,
+        286.67
+      ],
+      "counts": {
+        "journal_entry": 2,
+        "hint": 1,
+        "attribute_row": 0
+      },
+      "findings": {
+        "overflow": [],
+        "truncation": [],
+        "overlap": []
+      },
+      "clean": true
+    },
+    "1280x720/container": {
+      "mode": "container",
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/legibility-head/screens/1280x720-container.png",
+      "panel_rect": [
+        480,
+        206.67,
+        320,
+        306.67
+      ],
+      "counts": {
+        "journal_entry": 0,
+        "hint": 1,
+        "attribute_row": 0
+      },
+      "findings": {
+        "overflow": [],
+        "truncation": [],
+        "overlap": []
+      },
+      "clean": true
+    }
+  },
+  "frame_liveness": {
+    "ran": true,
+    "ok": true,
+    "output": "LIVE                 1280x720-container.png                       span= 213 shadow=  0 lc=  0.0266 H= 3.3087 subj= 0.279\nLIVE                 1280x720-journal.png                         span= 202 shadow=  0 lc=  0.0797 H= 3.7867 subj=0.3954\nLIVE                 1280x720-levelup.png                         span= 222 shadow=  0 lc=  0.0627 H= 3.5142 subj=0.2912\nLIVE                 1280x720-sheet.png                           span= 213 shadow=  0 lc=  0.0797 H= 3.5662 subj= 0.354\nLIVE                 1280x720-spells.png                          span= 213 shadow=  0 lc=  0.0531 H=  3.285 subj=0.2089\nLIVE                 1920x1080-journal.png                        span= 205 shadow=  0 lc=  0.0797 H=   3.78 subj=0.3971\nLIVE                 1920x1080-sheet.png                          span= 213 shadow=  0 lc=  0.0797 H= 3.5537 subj=0.3516\nLIVE                 1920x1080-spells.png                         span= 213 shadow=  0 lc=  0.0266 H= 3.2851 subj=0.2095\n\n8 frames: {\"LIVE\":8}\nNOTE: no manifest supplied projected subject rows, so every subject test used the centre-of-frame fallback box. That box is assumed, not measured.\n\nOK: every frame is a real image, and every frame contains a subject."
+  }
+}

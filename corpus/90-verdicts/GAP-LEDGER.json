@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-15T14:30:07Z",
+  "generated": "2026-08-15T17:08:54Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 92,
+  "verdicts_read": 93,
   "counts": {
-    "total": 87,
-    "open": 86,
+    "total": 88,
+    "open": 87,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -203,6 +203,10 @@
     "ui.style.diegesis": [
       "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them"
     ],
+    "ui.menu.inventory": [
+      "GAP-W1-ui-container-clips-its-own-declared-text",
+      "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
+    ],
     "ui.hud.minimalism": [
       "GAP-W1-ui-detectors-that-cannot-see",
       "GAP-W1-ui-map-outside-the-ar2-detectors"
@@ -212,9 +216,6 @@
     ],
     "ui.menu.journal": [
       "GAP-W1-ui-journal-search-view-has-no-exit"
-    ],
-    "ui.menu.inventory": [
-      "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
     ],
     "render.process.measurement": [
       "GAP-W1-visual-fix-not-reaching-blind-frames",
@@ -258,6 +259,7 @@
     "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-PROSE-01: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-PACK-01: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
+    "corpus/90-verdicts/wave1/T4-r5.json: closure of GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/T4-r2.json: closure of GAP-W1-ui-hud-world-set-unbuilt-and-misplaced is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/T4-r3.json: closure of GAP-W1-ui-journal-search-view-has-no-exit is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/T4-r4.json: closure of GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
@@ -360,8 +362,9 @@
     "corpus/90-verdicts/wave1/W1-SAVE-r1.json: closure of GAP-W1-platform-save-drops-entity-prev-state is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json: closure of GAP-W1-pbr-material-set-unbound is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "STALE-RISK GAP-W1-ui-hud-world-set-unbuilt-and-misplaced: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-t4-r2, crit-t4-r3, crit-t4-r4). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-ui-journal-search-view-has-no-exit: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-t4-r3, crit-t4-r4). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-t4-r4). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-journal-search-view-has-no-exit: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-t4-r3, crit-t4-r4, crit-t4-r5). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-t4-r4, crit-t4-r5). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-t4-r5). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-platform-prng-never-drawn: still open, and 5 later verdict(s) have been filed on the same piece or path since (crit-w1-00-r2-k4m9, crit-w1-09-r2-3c19, crit-w1-09-r3-3c19, crit-w1-deploy-r2-3c19, crit-w1-30s-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-platform-save-drops-entity-prev-state: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-save-r1-live-audit, crit-w1-map-r2-a91f). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-world-trunk-road-below-the-waterline: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-01-r2-world-b4e2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
@@ -3981,6 +3984,58 @@
       },
       "superseded_by": null,
       "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r5.json",
+          "run_id": "crit-t4-r5",
+          "at": "2026-08-15T17:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-container-clips-its-own-declared-text"
+        }
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-ui-container-clips-its-own-declared-text",
+      "subsystem_path": "ui.menu.inventory",
+      "opened_wave": 1,
+      "opened_by": "crit-t4-r5",
+      "opened_in": "corpus/90-verdicts/wave1/T4-r5.json",
+      "piece_id": "T4",
+      "severity": "blocking",
+      "what": "The container screen renders less than it declares, at 1920x1080, in the shipped ui-journal fixture, and the clip is silent. (a) container.band's declared description is 137 characters (game/data/items/carried.json:426, echoed verbatim in getUIState()) and the panel draws 100 of them — '...Everyone who sees it knows what it means' — dropping 'and nobody has yet explained it to you.' with no ellipsis and no line drawn anywhere in the frame; the identical string renders WHOLE on the inventory screen's larger detail panel, which is the cleanest possible demonstration that this is box size and not data. (b) All SEVEN list rows on both sides declare a gold value ('Bog-iron maul  11.5  96', 'Reed-cutter  3.0  42') and NONE draws one: the row's three columns are pitched at 0.60/0.19/0.19 of `half` (= 194 units at half = 198) on top of an ICON+10 = 38-unit inset, inside a row rect `half - 16` = 182 units wide, so the gold column BEGINS 12 units past the rect's own right edge and surface.js's 'the declared rect IS the clip' removes it entirely.",
+      "why_it_matters": "The container is the screen where the player decides what a thing is worth carrying, and the price is the one column that is missing — on both sides of the trade.",
+      "remedy": {
+        "action": "In game/src/ui/screens/inventory.js, drawContainer(): (1) subtract the inset before apportioning the row columns — with `usable = (half - 16) - (ICON + 10)`, pitch name/weight/gold as fractions of `usable`, not of `half`; (2) size container.band for its own wrapped description — `wrap(description, faceOf('ink'), BODY.screen * s, r[2] * 0.94).length` lines at `size * 1.44`, added to the 106-unit header block, is the height it needs — or ellipsise explicitly so the player can see the sentence was cut.",
+        "targets": [
+          "game/src/ui/screens/inventory.js"
+        ],
+        "acceptance": "At 1920x1080 AND at 1280x720 on the ui-journal fixture with the three-item Reed Creel opener: (i) all 7 container list rows render their declared gold figure — 0 rows with a column origin beyond rect[0]+rect[2]; (ii) the rendered container.band description equals the declared string, or ends in an ellipsis, for every item reachable in the container fixture; (iii) PRESERVATION (ARBITRATION S59): container.band.depiction stays at its full 140 px (RI-UIX09 DN5) and container D2 stays >= 0.15 — round 5 already spent `listTop` to protect exactly this and the fix must not take it back; (iv) tools/ui/t4-r5-legibility.mjs stays clean, AFTER it is fixed to call setMode('play-instrumented') and assert real.attached before its paging sweep, or its journal leg keeps checking one page and reporting a pass.",
+        "ref_item": "RI-UIX06",
+        "estimated_size": "S"
+      },
+      "remedy_action": "In game/src/ui/screens/inventory.js, drawContainer(): (1) subtract the inset before apportioning the row columns — with `usable = (half - 16) - (ICON + 10)`, pitch name/weight/gold as fractions of `usable`, not of `half`; (2) size container.band for its own wrapped description — `wrap(description, faceOf('ink'), BODY.screen * s, r[2] * 0.94).length` lines at `size * 1.44`, added to the 106-unit header block, is the height it needs — or ellipsise explicitly so the player can see the sentence was cut.",
+      "remedy_acceptance": "At 1920x1080 AND at 1280x720 on the ui-journal fixture with the three-item Reed Creel opener: (i) all 7 container list rows render their declared gold figure — 0 rows with a column origin beyond rect[0]+rect[2]; (ii) the rendered container.band description equals the declared string, or ends in an ellipsis, for every item reachable in the container fixture; (iii) PRESERVATION (ARBITRATION S59): container.band.depiction stays at its full 140 px (RI-UIX09 DN5) and container D2 stays >= 0.15 — round 5 already spent `listTop` to protect exactly this and the fix must not take it back; (iv) tools/ui/t4-r5-legibility.mjs stays clean, AFTER it is fixed to call setMode('play-instrumented') and assert real.attached before its paging sweep, or its journal leg keeps checking one page and reporting a pass.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r5c/crops/container-panel-3x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r5c/crops/container-desc-tail-5x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r5c/crops/container-blackwater-8x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r5c/crops/inventory-panel-1x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r5c/excerpts/container-text-clipped.md",
+        "corpus/90-verdicts/wave1/artifacts/T4-r5c/measure/measure-head-1920x1080.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r5c/reports/frame-liveness-head.txt"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
       "filed_since": []
     },
     {
@@ -4169,6 +4224,14 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r5.json",
+          "run_id": "crit-t4-r5",
+          "at": "2026-08-15T17:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-container-clips-its-own-declared-text"
         }
       ]
     },
@@ -4290,6 +4353,14 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r5.json",
+          "run_id": "crit-t4-r5",
+          "at": "2026-08-15T17:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-container-clips-its-own-declared-text"
         }
       ]
     },
