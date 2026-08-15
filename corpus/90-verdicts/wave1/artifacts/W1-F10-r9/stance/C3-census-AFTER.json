@@ -1,0 +1,61 @@
+{
+  "tool": "f10-r9-stance.mjs",
+  "generated": "2026-08-15T17:22:30.915Z",
+  "item": "RI-VIS10 §C3 — the stand is not a mannequin",
+  "roadmap_item": "F10",
+  "pose_layers": [
+    "base  : LoopClip(clips.archetypes.idle_loop, period 96)   — game/src/combat/moves.js:524",
+    "layer : addPose(clips.archetypes.idle_ready, phase 0, w 1) — game/src/combat/actor.js:374"
+  ],
+  "measured_from": "world joint positions after Rig.evaluate(), game/src/combat/skeleton.js",
+  "census": [
+    {
+      "frame": 0,
+      "phase": 0,
+      "a_shoulder_tilt_deg": -6.297,
+      "b_hip_tilt_deg": 5,
+      "c_elbow_difference_deg": 8,
+      "also_clavicle_tilt_deg": -6.297,
+      "elbow_l_deg": 150,
+      "elbow_r_deg": 142,
+      "abs": {
+        "a": 6.297,
+        "b": 5,
+        "c": 8
+      }
+    },
+    {
+      "frame": 120,
+      "phase": 0.75,
+      "a_shoulder_tilt_deg": -6.167,
+      "b_hip_tilt_deg": 5.6,
+      "c_elbow_difference_deg": 8,
+      "also_clavicle_tilt_deg": -6.167,
+      "elbow_l_deg": 150,
+      "elbow_r_deg": 142,
+      "abs": {
+        "a": 6.167,
+        "b": 5.6,
+        "c": 8
+      }
+    }
+  ],
+  "c3": {
+    "threshold_deg": 3,
+    "exceeding_at_frame_0": 3,
+    "exceeding_at_frame_120": 3,
+    "which_exceed_frame_0": [
+      true,
+      true,
+      true
+    ],
+    "which_exceed_frame_120": [
+      true,
+      true,
+      true
+    ],
+    "frames_differ": true,
+    "verdict": "PASS",
+    "why": "at least 2 of 3 exceed 3 degrees at both frames, and the frames differ"
+  }
+}
