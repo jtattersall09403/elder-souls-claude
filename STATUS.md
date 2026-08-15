@@ -33,17 +33,16 @@ Alongside that: shrinking the documentation every agent reads before it can star
   the class verdict, on all three class routes — the window only reset its selection when the *speaker*
   changed, and the speaker never changes inside the Writ House. Also fixed: starting a new game with a
   conversation open crashed the simulation step.
-- **The menus were made denser and became unreadable.** Sizing each panel to its contents cleared all
-  five density failures — and then a critic looked at the result: on the level-up screen the attribute
-  name, its value and its gauge are drawn **into the same pixels on 9 of 10 rows** ("STRENGTH" renders
-  as `STREN` with `12` through it); three of the character sheet's ten rows collide; **8 of 19 journal entries
-  are laid out past the bottom of the panel onto the world behind it**, and 11 of 19 print over the
-  footer. All at normal resolution.
-  **The measure rewarded it.** The density score counts any pixel that differs from the background — so
-  text printed on top of other text still counts as content, and the level-up screen's number *doubled*
-  as it became illegible. Shrinking the boxes was the right fix; nobody reflowed what was inside them.
-  That reflow is the work now, and the acceptance has been changed so a density number only counts
-  when the screen is also legible.
+- **The menus are denser *and* readable now.** Sizing each panel to its contents cleared all five
+  density failures, and then made the text collide — level-up drew name, value and gauge into the same
+  pixels on 9 of 10 rows, and 8 of 19 journal entries laid out past the panel onto the world. Both are
+  now **0**. The cause was subtle: the columns were sized as *fractions* of the row, which was correct
+  at the old wide panel and collided at the new narrow one, because font sizes are fixed pixels. Fixed
+  by measuring the longest attribute name the game actually has, rather than guessing a fraction.
+  **And the density score fell when the text stopped overlapping** — level-up sits at 0.1521 against a
+  0.15 floor, because the overlapping ink that had been inflating it stopped counting. That is the
+  clearest possible confirmation that the measure was rewarding the defect, and the builder flagged the
+  thin margin rather than padding it out of sight.
 - **The container screen prints the word `undefined`** as its title. Being fixed.
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its own author reported that honestly after catching that the *first* version of the measurement was
