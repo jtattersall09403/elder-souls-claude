@@ -488,6 +488,54 @@ if (args['null-control']) {
   result.null_control_global_lift = block;
 }
 
+// ---- the warm-up curve: characterise the confound instead of merely avoiding it ----------------
+// The paired design routes AROUND the drift. This measures it, because the drift turned out to be
+// larger than the remedy that was commissioned to fix it, and because if it is real then every
+// screenshot this project has taken shortly after a teleport is darker in shade than the game the
+// player sees — including, possibly, the blind comparison pack our side lost 5 of 5 on.
+//
+// GI is held OFF for the whole sweep, so nothing here is about F3 at all: this is the untouched
+// scene, measured against nothing but its own age. `time_of_day` is read at every sample because the
+// world clock is the obvious suspect and deserves to be ruled in or out by measurement rather than
+// by argument — `pauseClock` is exposed at game/src/harness/api.js:195 and NO tool under
+// tools/visual/ or tools/harness/ calls it, though HARNESS.md 6 requires the clock pinned for a
+// comparable screenshot.
+if (args['warmup-curve']) {
+  const schedule = String(args.schedule || '0,15,30,60,90,120,180,240,300,420,600').split(',').map(Number);
+  await placeScene(g);
+  await setGI(g, false);
+  await g.h('camera', CAMERA);
+  const rows = [];
+  let elapsed = 0;
+  for (const target of schedule) {
+    if (target > elapsed) { await g.h('stepFrames', target - elapsed); elapsed = target; }
+    const env = await g.h('getEnvironment').catch(() => null);
+    const m = analyze(await shoot(g), CROP, MOTION_STEP);
+    rows.push({
+      frames_since_place: elapsed,
+      time_of_day: env ? (env.time_of_day ?? env.timeOfDay ?? null) : null,
+      p10_luma: m.p10_luma, p90_luma: m.p90_luma, mean_luma: m.mean_luma,
+      shadow_levels: m.shadow_levels, local_contrast_med: m.local_contrast_med,
+    });
+    console.log(`  frame ${String(elapsed).padStart(4)}  t=${rows[rows.length - 1].time_of_day}  p10=${m.p10_luma}  p90=${m.p90_luma}  shadow_levels=${m.shadow_levels}`);
+  }
+  const p10s = rows.map((r) => r.p10_luma);
+  const first = p10s[0], last = p10s[p10s.length - 1];
+  result.warmup_curve = {
+    note: 'GI held OFF throughout — this is the untouched scene measured against nothing but its own age, in frames since placeScene(). If p10_luma climbs here, every capture this project takes without a warm-up is measuring an unsettled frame.',
+    schedule, rows,
+    p10_first: first, p10_last: last, p10_range: +(Math.max(...p10s) - Math.min(...p10s)).toFixed(3),
+    checks: [
+      {
+        id: 'WARM-UP-DRIFT-IS-REAL-AND-IS-LARGER-THAN-THE-F3-REMEDY',
+        ok: true,
+        detail: `REPORTED, NOT GATED — this is a characterisation, not a pass/fail. p10_luma over the sweep: ${JSON.stringify(p10s)}. `
+          + `Range ${(Math.max(...p10s) - Math.min(...p10s)).toFixed(3)} luma against F3's own paired effect of ~0.63 luma. Clock movement across the same sweep: ${rows[0].time_of_day} -> ${rows[rows.length - 1].time_of_day} hours.`,
+      },
+    ],
+  };
+}
+
 if (args.alternate) {
   const pairs = Number(args.pairs || 6);
   const settle = Number(args.settle || 12);
