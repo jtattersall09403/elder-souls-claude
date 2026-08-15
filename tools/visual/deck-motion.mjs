@@ -35,6 +35,7 @@ import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { launchForCapture, resolveGpuMode } from './lib/gpu-launch.mjs';
 import { manifestRendererFields, rendererBanner } from './lib/renderer-class.mjs';
+import { gateBuffer, T as LIVENESS_T } from './frame-liveness.mjs';
 
 const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const args = {};
@@ -275,7 +276,7 @@ for (const seq of sequences) {
   const row = {
     sequence: seq.id, script: scriptId, why: seq.why,
     frames_planned: frames, capture_every: EVERY, frames_captured: 0,
-    status: 'red', reason: null, distinct_frames: 0, moving: false,
+    status: 'red', reason: null, distinct_frames: 0, moving: false, degenerate_frames: 0, degenerate_first: null,
     dir: path.relative(REPO, dir), contact_sheet: null, hashes: [], samples: [],
   };
   rows.push(row);
@@ -331,6 +332,15 @@ for (const seq of sequences) {
       seen.add(hash);
       row.hashes.push(hash);
       row.frames_captured++;
+      // PER-FRAME SANITY GATE — HAZARDS.md §15, roadmap I2. `distinct_frames` below already asks
+      // "did the picture change"; it cannot ask "is any of these a picture at all". A sequence of
+      // 180 distinct degenerate frames passes the distinctness test perfectly. This asks the other
+      // question, once per frame, at capture time.
+      const live = gateBuffer(buf, { label: `${seq.id}/${file}`, subject: false, throwOnDegenerate: false });
+      if (live.verdict !== 'LIVE') {
+        row.degenerate_frames = (row.degenerate_frames || 0) + 1;
+        if (!row.degenerate_first) row.degenerate_first = { file, verdict: live.verdict, why: live.why };
+      }
       if (i % SHEET_EVERY === 0) {
         const s = await call('snapshot');
         if (s.ok) {
@@ -384,6 +394,16 @@ for (const seq of sequences) {
     row.player_moved = travelled > 0.25 || anims.size > 1 || states.size > 1
       || row.player_yaw_span_deg > 15 || row.camera_yaw_span_deg > 15;
     if (afterError) { row.reason = afterError; console.log(`  RED  ${seq.id} — ${afterError}`); continue; }
+    // A THIRD CHECK, and it is prior to both of the above: were these frames PICTURES?
+    // HAZARDS.md §15. A sequence of 180 distinct, moving, degenerate frames satisfies (a) and (b)
+    // completely — the hashes differ, the player travelled — and is worth nothing. This is the
+    // failure that produced a +223% result from a near-uniform capture with every gate green.
+    if (row.degenerate_frames) {
+      const d = row.degenerate_first;
+      row.reason = `${row.degenerate_frames} of ${row.frames_captured} frames are not pictures of anything (first: ${d.file} ${d.verdict} — ${(d.why || []).join('; ')}). The sequence may well have moved; it is still not usable evidence.`;
+      console.log(`  RED  ${seq.id} — ${row.reason}`);
+      continue;
+    }
     if (!row.moving) {
       row.reason = `captured ${row.frames_captured} frames but only ${seen.size} are distinct: nothing moved, so this is one still repeated and not a motion sequence`;
       console.log(`  RED  ${seq.id} — ${row.reason}`);
@@ -426,6 +446,7 @@ const manifest = {
   schema: 'elder-souls/visual-deck-motion@1',
   tag: TAG, profile: PROFILE_NAME, seed: SEED, canvas: [CW, CH],
   deck_version: DECK.version, deck_manifest_hash: DECK.manifest_hash,
+  frame_liveness_thresholds: LIVENESS_T,
   commit: process.env.GIT_COMMIT || null,
   build: { name: build.name, version: build.version, commit: build.commit, three: build.threeVersion },
   gpu_mode_requested: GPU_MODE,

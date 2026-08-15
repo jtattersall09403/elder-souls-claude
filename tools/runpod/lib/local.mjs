@@ -66,14 +66,45 @@ export async function commandExists(name) {
   return result.code === 0;
 }
 
-export async function createSnapshot({ repoRoot, revision, paths, tempDir, log }) {
+/**
+ * Snapshot the source a paid run will execute.
+ *
+ * THE DEFAULT IS THE COMMITTED REVISION, AND IT DID NOT USED TO BE. `HAZARDS.md` §15a: a paid run
+ * used to snapshot `revision + worktree changes` whenever `--revision` was omitted, which is to
+ * say it shipped whatever every other agent on this shared box happened to have uncommitted at
+ * that instant. A mid-edit to `game/src/ui/icons.js` by one builder killed BOTH ARMS of another
+ * agent's paid run — the experiment's two arms differed by whatever a neighbour was typing.
+ *
+ * `--revision <rev>` still pins an explicit revision. What changed is the default: with neither
+ * flag, this now archives the committed `HEAD` rather than the working tree, and NAMES the
+ * uncommitted paths it left behind so a builder testing an uncommitted edit finds out immediately
+ * instead of from a confusing result. `worktree: true` (CLI `--worktree`) restores the old
+ * behaviour for callers who genuinely want their working bytes and accept the contamination.
+ *
+ * No caller breaks: every existing invocation still runs, and one that passed `--revision`
+ * already gets exactly what it got before.
+ */
+export async function createSnapshot({ repoRoot, revision, paths, tempDir, log, worktree = false }) {
   const archivePath = path.join(tempDir, 'source.tar.gz');
   const revisionResult = await runProcess('git', ['rev-parse', `${revision || 'HEAD'}^{commit}`], { cwd: repoRoot });
   const resolvedRevision = revisionResult.stdout.trim();
   let dirty = false;
   let fileCount = 0;
+  let excludedDirtyPaths = [];
 
-  if (revision) {
+  if (!worktree) {
+    // What are we NOT shipping? Say it out loud rather than leaving it to be discovered.
+    const status = await runProcess('git', ['status', '--porcelain=v1', '--untracked-files=all', '--', ...paths], { cwd: repoRoot });
+    excludedDirtyPaths = status.stdout.split('\n').map((l) => l.slice(3).trim()).filter(Boolean);
+    if (excludedDirtyPaths.length && log) {
+      log(`Snapshot pinned to committed ${resolvedRevision.slice(0, 12)} (HAZARDS.md §15a). ${excludedDirtyPaths.length} uncommitted path(s) EXCLUDED from this paid run:`);
+      for (const p of excludedDirtyPaths.slice(0, 12)) log(`    excluded  ${p}`);
+      if (excludedDirtyPaths.length > 12) log(`    ... and ${excludedDirtyPaths.length - 12} more`);
+      log('    If one of those is the change you are testing, bank it first (node tools/land.mjs) or pass --worktree to include uncommitted edits and accept a sibling\'s in-flight files with them.');
+    }
+  }
+
+  if (!worktree) {
     await runProcess('git', ['archive', '--format=tar.gz', `--output=${archivePath}`, resolvedRevision, '--', ...paths], {
       cwd: repoRoot,
       log,
@@ -89,8 +120,8 @@ export async function createSnapshot({ repoRoot, revision, paths, tempDir, log }
       catch { return false; }
     });
     if (!files.length) throw new Error(`snapshot paths selected no files: ${paths.join(', ')}`);
-    const status = await runProcess('git', ['status', '--porcelain=v1', '--untracked-files=all', '--', ...paths], { cwd: repoRoot });
-    dirty = Boolean(status.stdout.trim());
+    const status2 = await runProcess('git', ['status', '--porcelain=v1', '--untracked-files=all', '--', ...paths], { cwd: repoRoot });
+    dirty = Boolean(status2.stdout.trim());
     fileCount = files.length;
     const listPath = path.join(tempDir, 'snapshot-files');
     fs.writeFileSync(listPath, Buffer.from(`${files.join('\0')}\0`));
@@ -109,7 +140,7 @@ export async function createSnapshot({ repoRoot, revision, paths, tempDir, log }
     stream.on('end', resolve);
   });
   const sha256 = hash.digest('hex');
-  return { archivePath, revision: resolvedRevision, dirty, fileCount, bytes, sha256, paths };
+  return { archivePath, revision: resolvedRevision, dirty, fileCount, bytes, sha256, paths, worktree, excludedDirtyPaths };
 }
 
 export function findSshKey(explicitPath) {

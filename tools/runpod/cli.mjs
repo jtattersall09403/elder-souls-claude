@@ -106,7 +106,11 @@ RUN OPTIONS
   --max-runtime <min>    Whole lifecycle deadline, capped by config (default: 20)
   --gpu <RunPod GPU ID>  Restrict to an allowed type; repeat for fallbacks
   --cloud <type>         all, community, or secure (default: all)
-  --revision <rev>       Archive this committed revision instead of the worktree
+  --revision <rev>       Archive this committed revision (default: HEAD)
+  --worktree             Include UNCOMMITTED working-tree edits in the snapshot. Off by default
+                         since HAZARDS.md §15a: the shared tree carries every other agent's
+                         in-flight files, and a mid-edit by a neighbour has killed both arms of
+                         a paid run. Use it only when the change under test is uncommitted.
   --include <path>       Add a repo-relative path to the default snapshot; repeatable
   --only-path <path>     Replace default snapshot paths; repeatable
   --artifact-dir <path>  Local run directory (default: reports/runpod-gpu/runs/<run-id>)
@@ -570,11 +574,15 @@ export async function runCommand(args, config, dependencies = {}) {
 
     state.status = 'snapshotting';
     save();
-    const snapshot = await createSnapshotImpl({ repoRoot: REPO_ROOT, revision: args.revision, paths: sourcePaths(args, config), tempDir, log });
+    const snapshot = await createSnapshotImpl({ repoRoot: REPO_ROOT, revision: args.revision, worktree: args.worktree === true, paths: sourcePaths(args, config), tempDir, log });
     state.source = { ...snapshot };
     delete state.source.archivePath;
     save();
-    log(`Snapshot ${snapshot.revision}${snapshot.dirty ? ' + worktree changes' : ''}: ${snapshot.fileCount} files, ${(snapshot.bytes / 1048576).toFixed(1)} MiB, sha256=${snapshot.sha256}`);
+    log(`Snapshot ${snapshot.revision}${snapshot.worktree && snapshot.dirty ? ' + WORKTREE CHANGES (--worktree: this run carries whatever is uncommitted on this shared box)' : ' (committed revision, HAZARDS.md §15a)'}: ${snapshot.fileCount} files, ${(snapshot.bytes / 1048576).toFixed(1)} MiB, sha256=${snapshot.sha256}`);
+    state.source_revision = snapshot.revision;
+    state.source_worktree = Boolean(snapshot.worktree);
+    state.source_excluded_dirty_paths = snapshot.excludedDirtyPaths || [];
+    save();
 
     state.status = 'selecting';
     save();
