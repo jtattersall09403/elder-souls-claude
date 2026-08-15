@@ -104,49 +104,59 @@ way anyway* — and nothing except the delete-the-fix control would have caught 
 numbers are still in `reports/runpod-gpu/runs/w1-f3-ambient-fill/` and are kept deliberately: a
 confound that is deleted once a better instrument exists cannot teach anybody anything.
 
-### The finding underneath it: the first capture of a process is not like the others
+### The finding underneath it: there are two regimes, and the paired number lives in only one
 
-The plain statement of what was measured, on two renderers, with nothing inferred:
+Run the curve as the **first** capture of a fresh process — which is what it took three attempts to
+actually do — and the picture is unambiguous. GI held off, RTX A5000, twelve samples:
 
-- Captures **1 and 2** of a process, at the VP04 pose: **4.641** then **15.001** (head tree) and
-  **4.641** then **14.353** (fix removed).
-- Every **later** capture in those same processes, at the same pose, reads **~14.29** — the paired
-  GI-off series is `[14.287, 14.287, 14.287, 14.287, 14.289, 14.300]`.
+```
+frame    2   p10=4.625   shadow_levels=28      frame   90   p10=4.634   shadow_levels=28
+frame    6   p10=4.625   shadow_levels=28      frame  120   p10=4.634   shadow_levels=28
+frame   12   p10=4.627   shadow_levels=28      frame  180   p10=4.639   shadow_levels=28
+frame   20   p10=4.626   shadow_levels=28      frame  240   p10=4.642   shadow_levels=28
+frame   30   p10=4.629   shadow_levels=28      frame  360   p10=4.649   shadow_levels=28
+```
 
-So the first capture is the outlier and everything after it agrees. **The mechanism is not
-identified**, and three candidate explanations have been tested and ruled out:
+**4.63, flat, from frame 2 to frame 360.** There is no warm-up. The dark reading is the true,
+stable GI-off state of this scene, and `shadow_levels` sits at **28** throughout.
 
-1. **The analysis, not the frame.** The stills are analysed at full resolution and the later sweeps on
-   a 3× subsample, which would be an obvious way to manufacture a difference. Recomputed offline from
-   the saved PNGs: the still reads **4.641** at step 1 and **4.629** at step 3; the orbit frame reads
-   **14.290** at step 1 and **14.311** at step 3. The two frames genuinely differ. The analysis does
-   not.
-2. **The world clock.** A live probe shows it advancing 9.000 → 9.0222 hours across 240 frames — 40
-   seconds of game time, nowhere near enough sun movement to triple a shadow floor — and shows
-   `pauseClock(true)` stopping it dead.
-3. **Scene age, and a camera jump in a running world.** Both were tested with a curve at prerolls 0,
-   90 and 300, and all three came back flat: 13 samples, range 0.014 luma, `shadow_levels` 33 at every
-   sample.
+But the paired measurement in §1 has its GI-off arm at **14.29**, with `shadow_levels` **33**. Same
+scene, same pose, same GPU, same process. **These are two different regimes**, and which one a run
+lands in depends on the order of the harness calls that set it up — `setGI` before `camera` gives
+4.63; `camera` first, then a long settle, then `setGI`, gives 14.29 — **and it does so on the
+pinned-baseline tree too, which has no GI code in it at all.** So it is not the GI switch. What it is
+remains unidentified, and I am not going to guess at it in an evidence file.
 
-**And that third result is worth more as a lesson than as a finding, because it was worthless as a
-finding.** The curve was written into the file *after* the two stills, so its first sample was the
-process's **third** capture — by which point the thing it was aimed at was already over. It could not
-have detected the effect under any circumstances. It came back flat twice, and twice that flatness was
-read as a real negative result. **A blind instrument's null result looks exactly like a true null.**
-The curve now runs before any other capture and exits immediately after; the logs of both the blind
-version and the corrected one are in `curves/`.
+**Why this does not weaken the F3 result, and exactly what it does limit.** The head tree and the
+control tree were run through the *identical* procedure, so they sit in the identical regime, and the
+only difference between them is the F3 shader. +0.631 with the shader, −0.001 without it: the effect
+is attributable, and the delete-the-fix guarantees that whatever 14.29 represents.
 
-### What this does and does not mean for the blind pack
+What is **not** established is F3's effect in the *other* regime — and that is the regime that matters
+most, because `shadow_levels = 28` is the fresh-process number and the blind verdict's own
+corroboration was that our `shadow_levels` swept low against the reference on 5 of 5 pairs. **The
+measurement that would actually predict a re-judge — F3's paired effect with the GI-off baseline at
+4.63 — has not been made.** It is one run away (`--alternate` with the 240-frame warm-up removed) and
+it should be made before anybody pays for judges.
 
-`tools/visual/deck.mjs` produced our side of the pack. It poses the camera and steps `deck.json`'s
-`capture.settle_frames`, which is **12**, and it never calls `pauseClock` — which is exposed at
-`game/src/harness/api.js:195` while `HARNESS.md` §6 requires the clock pinned for a comparable
-screenshot. That is a real protocol defect and worth fixing on its own.
+### Three explanations tested and ruled out, and one lesson about testing
 
-But it is **one process taking many captures**, so on the evidence above only its *first* frame would
-sit in the affected condition, not all of them. An earlier draft of this file claimed more than that,
-on the strength of an explanation that has since been ruled out; the claim is withdrawn and this is
-what survives it.
+- **The analysis.** Stills are analysed at full resolution and the sweeps on a 3× subsample.
+  Recomputed offline from the saved PNGs: the still reads 4.641 at step 1 and 4.629 at step 3; the
+  orbit frame reads 14.290 at step 1 and 14.311 at step 3. The frames differ. The analysis does not.
+- **The world clock.** A live probe shows it advancing 9.000 → 9.0222 hours across 240 frames — 40
+  seconds of game time — and `pauseClock(true)` stopping it dead. Ruled out as this mechanism, though
+  the fact that **no tool under `tools/visual/` or `tools/harness/` calls `pauseClock`** while
+  `HARNESS.md` §6 requires the clock pinned is a real protocol defect worth fixing on its own.
+- **Scene age, and a camera jump in an already-running world.** Tested at prerolls 0, 90 and 300; all
+  three came back flat.
+
+**That last one was worthless as evidence and is the most useful thing in this section.** The curve
+was written into the file *after* the two stills, so its first sample was the process's **third**
+capture — it was in the 14.29 regime before it took a single reading, and could not have detected
+anything. It came back flat twice, and twice that flatness was read as a real negative result and
+written up as a conclusion. **A blind instrument's null looks exactly like a true null.** Both
+versions' logs are in `curves/` so the difference is on the record rather than quietly corrected.
 
 ---
 
