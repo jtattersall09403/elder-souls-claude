@@ -84,8 +84,12 @@ for (const f of npcFiles) {
   const items = Array.isArray(d) ? d : (d.npcs || d.records || []);
   for (const n of items) roster.push({ eid: n.eid || n.id, race: n.race, actor: n.actor, name: n.name });
 }
-// renderer.js:693, verbatim: (n.race==='saxhleel'||n.race==='naga') ? 'saxhleel' : 'humanoid'
-const familyOf = (race) => ((race === 'saxhleel' || race === 'naga') ? 'saxhleel' : 'humanoid');
+// THE PREDICATE IS IMPORTED, NOT MIRRORED. This line used to be a hand-copy of renderer.js:693
+// annotated "verbatim" — a mirror that no check could keep honest, and precisely the shape of
+// defect this project keeps paying for. `renderer.js` and this tool now call the same function, so
+// a future edit to the routing cannot leave the instrument measuring the old world.
+const { artFamilyForRace } = await import(pathToFileURL(join(R, 'game/src/render/lib/race-art.js')).href);
+const familyOf = (race) => artFamilyForRace(race);
 const SAMPLE = Number(process.env.F10_SAMPLE || 40);
 const step = Math.max(1, Math.floor(roster.length / SAMPLE));
 const sample = [{ eid: 'player', race: 'saxhleel', actor: 'player', name: 'player' },

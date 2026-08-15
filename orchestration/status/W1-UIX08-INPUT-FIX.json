@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-UIX08-INPUT-FIX",
+  "state": "in_progress",
+  "roadmap_item": "RI-UIX08 / dialogue window input path",
+  "started": "2026-08-15",
+  "could_not_do": [
+    "Nothing yet - just started. This field is first per dispatch and stays first."
+  ],
+  "summary": "Live defect: (1) dialogue topics cannot be selected; (2) character-creation/new-game flow does not use the RI-UIX08 dialogue window at all.",
+  "next_step": "Read HAZARDS 11-14, CRITIC-DOCTRINE 1.2b, RI-UIX08 item; locate dialogue window source and input handlers.",
+  "files_touched": [
+    "orchestration/status/W1-UIX08-INPUT-FIX.json"
+  ],
+  "files_claimed": [
+    "game/src/ui/dialogue.js",
+    "game/src/character/scene.js",
+    "tools/"
+  ]
+}
