@@ -255,6 +255,41 @@ Break tasks down to an appropriate size for each sonnet agent."*
 
 **The default is Sonnet.** Opus is the exception and must be *justified at dispatch*.
 
+### C5a — 3D visuals work is ALWAYS Opus. Owner's ruling, 2026-08-15, and it overrides the default.
+
+**Owner, verbatim:** *"please allocate any 3D visuals work to opus not sonnet, I've found Sonnet isn't
+up to it."* This is not a preference to be traded against the cost target — it is a quality floor, and
+the cost programme's own charter says the four guards must hold **together**.
+
+**What counts as 3D visuals, and read this broadly rather than narrowly:** anything that changes,
+measures or judges what is drawn in the three-dimensional scene. Materials and shaders, lighting,
+shadows and occlusion, post-processing, terrain, vegetation, water, sky and atmosphere, the building
+kit and its geometry, characters and creatures, animation, VFX, the camera, LOD, and any capture or
+comparison work whose output is a judgement about how the scene *looks*. In roadmap terms that is the
+whole of **`F1`–`F14`, `G1`**, and `I2`/`I3` when they are producing or judging frames.
+
+**What does not count**, and stays on the default: 2D UI panel geometry against known rects, data and
+content censuses, text and prose work, quest and dialogue structure, tooling, sweeps, enumeration, and
+mechanical verification of a decided plan.
+
+**Corroborating evidence from our own record, which the orchestrator should have noticed before being
+told.** `F2` (contact shadows and ambient occlusion) was routed to Sonnet on 2026-08-14. It landed, and
+it landed with two tells: it shipped with the surface-normal sign inverted at one point — blacking out
+the entire frame, caught only because someone looked at a screenshot while `boot-check` passed
+throughout — and it shipped a **known unsolved artifact**, derivative-based normals reading every
+low-poly terrain facet as its own plane, producing a visible grid on settlement ground. The honest
+mitigation was a cap; the real fix needs a G-buffer normal target. That is exactly the shape of "not up
+to it": the work completes and self-reports, but the harder structural choice is not taken.
+
+**The boundary case, stated so it is a decision rather than an accident:** the dialogue-window
+verification dispatched on 2026-08-15 is on Sonnet, because it checks a flat UI panel against exact
+MyGUI widget rects — mechanical comparison against a known answer, not a judgement about a rendered
+scene. **Reversible**: if it struggles, or if a critic overturns it on anything visual, the carve-out
+widens to all capture-and-compare work regardless of dimensionality.
+
+**Tripwire.** If any `F`-series or `G1` piece is found to have been dispatched on Sonnet after this
+ruling, that is a process failure to record, not a saving.
+
 - **Opus, and the list is deliberately short:** critics, plan reviewers, arbiters, blind judges,
   anything producing a score or a verdict, anything *designing* a control or a null arm, and the
   orchestrator. **That is the quality guard and it does not move** — the gauntlet is what catches the

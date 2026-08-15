@@ -232,6 +232,9 @@ const RI_MAP = {
   // 86-ui
   'RI-UIX01': ['G6'], 'RI-UIX02': ['P3'], 'RI-UIX03': ['C3', 'T4'], 'RI-UIX04': ['P3', 'T4'],
   'RI-UIX05': ['P4'], 'RI-UIX06': ['T4', 'F13'], 'RI-UIX07': ['T4'], 'RI-UIX08': ['P1', 'T4'],
+  // Authored 2026-08-14 by the T4 critic under CRITIC-DOCTRINE 1.3 — it found the screens bar could
+  // not express whether a menu looks populated or empty, and closed the hole rather than reporting it.
+  'RI-UIX09': ['T4'],
   // 87-audio
   'RI-AUD01': ['G6'], 'RI-AUD02': ['E9', 'T3'], 'RI-AUD03': ['E9'], 'RI-AUD04': ['E9'], 'RI-AUD05': ['E9'],
   // 88-journeys
