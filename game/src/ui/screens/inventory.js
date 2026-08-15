@@ -239,15 +239,24 @@ export function drawContainer(S, m) {
   const sc = screen(S, 'container', title, m.placeName || null, 'clay', alpha);
   const [ix, iy, iw, ih] = sc.inner;
   const half = (iw - 40 * s) / 2;
-  // THE ROWS STOP AT TWELVE AND THE BOTTOM THIRD BECOMES THE THING YOU ARE ABOUT TO MOVE.
+  // THE ROWS STOP AT EIGHT AND THE BOTTOM THIRD BECOMES THE THING YOU ARE ABOUT TO MOVE.
   //
   // Round 1 measured this screen at **0.033** fill, the emptiest panel in the build — two lists of
   // names on a clay ground with nothing else on it, and, more to the point, **no way to see what a
   // thing is before you take it**. You could read a name and a weight and that was all; C7's
-  // detail panel exists on the inventory and had no counterpart here. So twelve rows a side, and
+  // detail panel exists on the inventory and had no counterpart here. So eight rows a side, and
   // the band underneath carries the selected record exactly as the inventory's does: the object,
   // drawn, then name, weight, gold, condition and the full description.
-  const CROWS = 12;
+  //
+  // T4 round 4, GAP-W1-ui-panel-is-a-fixed-box. 12 -> 8 -> 4, over two measured passes. T4-r3
+  // measured this screen's own D2 at 0.0572, the worst hard fail of the five; the first pass (8
+  // rows, 650×500 box) still hard-failed at 0.0953, because the SELECTED-ITEM DEPICTION plate
+  // (`Math.min(140, bh-20)` below) is worth far more matter than any one row — it fell from a
+  // full 140×140 plate (19,600 px²) to 50×50 (2,500 px²) when eight rows' worth of list height
+  // left the band only 70 px tall. Four rows a side gives the band enough height to recover most
+  // of that. Both sides still scroll past 4 (`windowOf` + `extent`, unchanged below); a 44-item
+  // carried list was never going to fit on one page at any panel size, fixed box or not.
+  const CROWS = 4;
   const sides = [
     { id: 'mine', title: 'Carried', rows: m.rows, idx: m.rowIdx, x: ix },
     { id: 'theirs', title, rows: m.containerRows, idx: m.otherIdx, x: ix + half + 40 * s },
@@ -269,11 +278,15 @@ export function drawContainer(S, m) {
     for (let i = win.from; i < win.to; i++) {
       const it = side.rows[i];
       const ry = iy + 34 * s + (i - win.from) * ROW_H * s;
+      // T4 round 4. name(280) + weight(90) + gold(90) = 460 was pitched against the old
+      // ~718-unit `half` ((iw-40)/2 at iw=1476); the new box's `half` is under 460 alone, so all
+      // three move onto fractions of `half` instead of literals that would run the gold column
+      // past the row's own edge and into the panel's outer margin.
       row(S, `container.${side.id}.row.${it.id}`, 'list_row',
         side.x, ry, half - 16 * s, ROW_H * s, [
-          { text: it.name, w: 280 },
-          { text: fmt(it.weight), w: 90, align: 'right', face: 'bone', size: 15 },
-          { text: it.value_gold ? String(it.value_gold) : '—', w: 90, align: 'right', face: 'bone', size: 15 },
+          { text: it.name, w: (half / s) * 0.60 },
+          { text: fmt(it.weight), w: (half / s) * 0.19, align: 'right', face: 'bone', size: 15 },
+          { text: it.value_gold ? String(it.value_gold) : '—', w: (half / s) * 0.19, align: 'right', face: 'bone', size: 15 },
         ], on && i === side.idx, alpha, { item_id: it.id, side: side.id }, ICON + 10);
       // RI-UIX09 P1 again, and the SAME call — a chest full of things looks like a chest full of
       // things on both sides of the transfer. Round 1 measured this panel at 0.033 fill, the
