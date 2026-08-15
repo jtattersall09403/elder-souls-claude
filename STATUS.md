@@ -73,24 +73,23 @@ Alongside that: shrinking the documentation every agent reads before it can star
   tone from shoulder to ankle now has a sash with a bone toggle, three cord rings per forearm, a hem, a
   yoke and tonal variation. **A background NPC in the same frame gained a sash too — nobody targeted
   it**, which is the shared body plan working as intended.
-- **The feet were 68 mm underground, and half the faces had their features buried inside the skull.**
-  Both turned out to be the *same* defect the hands had — geometry that exists, is drawn every frame,
-  and is enclosed by something else. Neither was a modelling problem.
-  **Feet:** the code that sits a character on the ground was written as a *pin* — it forced the ankle to
-  a fixed height — but the sole hangs 88 mm below the ankle bone, so it drove the whole foot 68 mm into
-  the dirt. That is why the last round's before-and-after photographs were byte-identical: **both had
-  their feet buried.** The flat pale shape you'd have seen was the trouser cuff. Now a *delta* instead
-  of a pin, so flat ground moves the foot exactly zero and slopes work per foot — and, as a bonus, it
-  had been overwriting the foot's up-and-down motion, which is what erased heel-strike and toe-off from
-  the walk.
-  **Faces:** the landmarks were placed at hand-typed depths against a curved skull, so the eye sat
-  5.8 mm inside the head and the jawline 27.6 mm inside the jaw. A second bug scaled heads twice.
-  Net effect: two character variants — **52 of the 148 human NPCs** — rendered *zero* eye pixels. All
-  six variants now sit in one band. A human head's most forward point was previously its **jaw**; it is
-  now the nose. And there was **no mouth at all**, on anyone.
-  **Not yet photographed in the game.** All of that is measured from an offline renderer, not the
-  game's own. A hardware pass costs about three pence and is running now — until it lands, treat this
-  as a promise.
+- **Faces are fixed and photographed. Feet are not — and the reason is a missing argument.**
+  **Faces: clearly better on hardware.** All 16 NPC face close-ups changed; a smooth brown ovoid with a
+  muzzle is now a face with brow, orbits, eyes, nose, mouth and chin. The one character predicted *not*
+  to change came back byte-identical on 4 of 4 frames — the control working exactly as it should.
+  **New defect, named honestly by the same agent:** the eye now reads as a **bright cream bead**, and
+  usually only one of the two catches light. The reference photograph has the opposite structure — a
+  dark recess with a small bright iris. The eye went from invisible to too visible.
+  **Feet: still missing where it counts.** The code that sits a character on the ground is **never
+  called for NPCs at all** — the call omits an argument, so none of the 408 has ever had it run. And
+  the player's own starting position is a raised boardwalk where the fix's safety clamp saturates, so
+  **the player still has no feet where he loads in.** It does work when walking on grass, where a
+  detached brown dome became a foot at the end of the leg — though at full size it reads as a dark
+  hoof-like lump.
+  **And the walk is unchanged.** The camera provably moved (42% of the frame border changes per step,
+  against 0.2% when stationary) but the gait measurements did not shift at all. Last round's hope that
+  removing the ground-pin would restore heel-strike and toe-off is **not supported** — that is now
+  measured rather than assumed.
 - **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
   out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
   it. Shadows still crush to black; that fix is being built now.
