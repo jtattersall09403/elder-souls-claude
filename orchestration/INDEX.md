@@ -2,7 +2,7 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `27189380`: **1045 tools**, **160 reference items**,
+drift. At `a95be2b8`: **1045 tools**, **160 reference items**,
 **57 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which

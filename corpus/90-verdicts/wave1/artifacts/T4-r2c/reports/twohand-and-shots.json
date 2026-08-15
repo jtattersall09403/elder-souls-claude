@@ -1,0 +1,93 @@
+{
+  "schema": "elder-souls/t4-twohand@1",
+  "at": "2026-08-15T10:42:03.865Z",
+  "steps": [
+    {
+      "at": "after keydown",
+      "hold": {
+        "action": "two_hand",
+        "tDown": 83.33333333333334,
+        "gate": {
+          "frames": 12
+        },
+        "fired": false
+      },
+      "pendingPress": 0,
+      "frame": 5
+    },
+    {
+      "at": "after 20 fixed steps, still down",
+      "hold": {
+        "fired": false,
+        "tDown": 83.33333333333334
+      },
+      "pendingPress": 0,
+      "frame": 5
+    },
+    {
+      "at": "immediately after keyup, before any step",
+      "pendingPress": 0,
+      "edges": [
+        {
+          "button": "menu",
+          "edge": "down",
+          "recv_step": 4,
+          "attributed_step": 4
+        }
+      ],
+      "frame": 5
+    },
+    {
+      "at": "after 1 step",
+      "edges": [
+        {
+          "button": "menu",
+          "edge": "down",
+          "recv_step": 4,
+          "attributed_step": 4
+        }
+      ],
+      "hud": "full",
+      "mode": "inventory"
+    }
+  ],
+  "checks": [
+    {
+      "id": "TH1 the hold record survives 20 fixed steps and the gate is reached",
+      "pass": true,
+      "detail": "hold record after 20 steps: {\"fired\":false,\"tDown\":83.33333333333334}; gate frames {\"frames\":12}"
+    },
+    {
+      "id": "TH2 a 20 f@60 hold of KeyG switches the HUD mode",
+      "pass": false,
+      "detail": "hud.mode full -> full on mode 'inventory'; pendingPress after keyup = 0; edges after 1 step = [{\"button\":\"menu\",\"edge\":\"down\",\"recv_step\":4,\"attributed_step\":4}]"
+    }
+  ],
+  "before": {
+    "mode": "inventory",
+    "hud": "full"
+  },
+  "after": {
+    "mode": "inventory",
+    "hud": "full"
+  },
+  "shots": [
+    {
+      "file": "corpus/90-verdicts/wave1/artifacts/T4-r2c/screens/critic-inventory__1920x1080.png",
+      "note": "the inventory as a player reaches it: `menu` from the world, nothing else pressed",
+      "state": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 0,
+          "sortIdx": 0
+        }
+      },
+      "resolution": "1920x1080",
+      "dpr": 1,
+      "camera_pose": "menu overlay over the fixture world camera; no orbit — the subject is a 2D surface"
+    }
+  ],
+  "error": "page.evaluate: ReferenceError: m is not defined\n    at eval (eval at evaluate (:290:30), <anonymous>:1:65)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at /home/user/elder-souls-claude/tools/ui/t4-r2-critic-twohand.mjs:95:22"
+}
