@@ -489,6 +489,745 @@
       "materials": [
         "parchment"
       ]
+    },
+    "sheet": {
+      "mode": "sheet",
+      "element_count": 50,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "panel": 1,
+        "panel_header": 1,
+        "sheet_row": 8,
+        "divider": 2,
+        "attribute_row": 10,
+        "skill_row": 19,
+        "hint": 1
+      },
+      "pictorial_ids": [],
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "panel_rect_source": "derived (build publishes none)",
+      "panel_rect_agrees": null,
+      "pictorial_measured": {
+        "on_screen": 0,
+        "in_panel": 0
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 60,
+        "local_contrast_med": 4.213,
+        "local_contrast_p95": 43.913,
+        "p10": 0,
+        "p90": 61,
+        "spread": 61,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 44,
+        "local_contrast_med": 10.995,
+        "local_contrast_p95": 32.073,
+        "p10": 51,
+        "p90": 64,
+        "spread": 13,
+        "reason": null
+      },
+      "panel_fill": {
+        "fill": 0.044,
+        "mode_rgb": [
+          44,
+          57,
+          45
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.quickslots",
+          "text": "Black-water draught / Spark-Dart"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        },
+        {
+          "id": "sheet.header",
+          "text": "Nameless"
+        },
+        {
+          "id": "sheet.fact.recorded_as",
+          "text": "recorded as saxhleel"
+        },
+        {
+          "id": "sheet.fact.raised",
+          "text": "raised null"
+        },
+        {
+          "id": "sheet.fact.trade",
+          "text": "trade outlander"
+        },
+        {
+          "id": "sheet.fact.tide",
+          "text": "tide the-shadow"
+        },
+        {
+          "id": "sheet.fact.level",
+          "text": "level 6"
+        },
+        {
+          "id": "sheet.fact.souls",
+          "text": "souls 9400"
+        },
+        {
+          "id": "sheet.fact.reputation",
+          "text": "reputation 0"
+        },
+        {
+          "id": "sheet.fact.bounty",
+          "text": "bounty 0"
+        },
+        {
+          "id": "sheet.attr.strength",
+          "text": "STRENGTH 12"
+        },
+        {
+          "id": "sheet.attr.endurance",
+          "text": "ENDURANCE 20"
+        },
+        {
+          "id": "sheet.attr.agility",
+          "text": "AGILITY 10"
+        },
+        {
+          "id": "sheet.attr.speed",
+          "text": "SPEED 10"
+        },
+        {
+          "id": "sheet.attr.vigour",
+          "text": "VIGOUR 10"
+        },
+        {
+          "id": "sheet.attr.willpower",
+          "text": "WILLPOWER 10"
+        },
+        {
+          "id": "sheet.attr.intellect",
+          "text": "INTELLECT 10"
+        },
+        {
+          "id": "sheet.attr.hist-bond",
+          "text": "HIST-BOND 10"
+        },
+        {
+          "id": "sheet.attr.personality",
+          "text": "PERSONALITY 10"
+        },
+        {
+          "id": "sheet.attr.luck",
+          "text": "LUCK 10"
+        },
+        {
+          "id": "sheet.skill.acrobatics",
+          "text": "Acrobatics  15"
+        },
+        {
+          "id": "sheet.skill.alchemy",
+          "text": "Alchemy  5"
+        },
+        {
+          "id": "sheet.skill.athletics",
+          "text": "Athletics  25"
+        },
+        {
+          "id": "sheet.skill.axes-maces",
+          "text": "Axes & Maces  5"
+        },
+        {
+          "id": "sheet.skill.blades",
+          "text": "Blades  5"
+        },
+        {
+          "id": "sheet.skill.claw-fang",
+          "text": "Claw & Fang  5"
+        },
+        {
+          "id": "sheet.skill.greatweapons",
+          "text": "Greatweapons  5"
+        },
+        {
+          "id": "sheet.skill.marksman",
+          "text": "Marksman  25"
+        },
+        {
+          "id": "sheet.skill.mercantile",
+          "text": "Mercantile  5"
+        },
+        {
+          "id": "sheet.skill.polearms",
+          "text": "Polearms  5"
+        },
+        {
+          "id": "sheet.skill.root-speech",
+          "text": "Root-Speech  10"
+        },
+        {
+          "id": "sheet.skill.security",
+          "text": "Security  15"
+        },
+        {
+          "id": "sheet.skill.shieldcraft",
+          "text": "Shieldcraft  5"
+        },
+        {
+          "id": "sheet.skill.sneak",
+          "text": "Sneak  20"
+        },
+        {
+          "id": "sheet.skill.sorcery",
+          "text": "Sorcery  5"
+        },
+        {
+          "id": "sheet.skill.speechcraft",
+          "text": "Speechcraft  5"
+        },
+        {
+          "id": "sheet.skill.survival",
+          "text": "Survival  25"
+        },
+        {
+          "id": "sheet.skill.veiling",
+          "text": "Veiling  5"
+        },
+        {
+          "id": "sheet.skill.warding",
+          "text": "Warding  5"
+        },
+        {
+          "id": "sheet.hint",
+          "text": "What is written on your case, and what you can do."
+        }
+      ],
+      "ri_citations": [],
+      "undefined_headers": [],
+      "materials": [
+        "reed"
+      ]
+    },
+    "spells": {
+      "mode": "spells",
+      "element_count": 15,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "panel": 1,
+        "panel_header": 1,
+        "spell_row": 2,
+        "divider": 1,
+        "detail_panel": 1,
+        "hint": 1
+      },
+      "pictorial_ids": [],
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "panel_rect_source": "derived (build publishes none)",
+      "panel_rect_agrees": null,
+      "pictorial_measured": {
+        "on_screen": 0,
+        "in_panel": 0
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 60,
+        "local_contrast_med": 0.213,
+        "local_contrast_p95": 28.834,
+        "p10": 0,
+        "p90": 34,
+        "spread": 34,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 51,
+        "local_contrast_med": 0.425,
+        "local_contrast_p95": 17.468,
+        "p10": 24,
+        "p90": 36,
+        "spread": 12,
+        "reason": null
+      },
+      "panel_fill": {
+        "fill": 0.0684,
+        "mode_rgb": [
+          27,
+          26,
+          24
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.quickslots",
+          "text": "Black-water draught / Spark-Dart"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        },
+        {
+          "id": "spells.header",
+          "text": "Spark-Dart"
+        },
+        {
+          "id": "spells.row.spark_dart",
+          "text": "Spark-Dart  NaN"
+        },
+        {
+          "id": "spells.row.slowfall",
+          "text": "Slowfall  NaN"
+        },
+        {
+          "id": "spells.hint",
+          "text": "Attuning is a hearth action. In a fight you cycle what is already attuned, and the fight does not stop for it."
+        }
+      ],
+      "ri_citations": [],
+      "undefined_headers": [],
+      "materials": [
+        "chitin"
+      ]
+    },
+    "levelup": {
+      "mode": "levelup",
+      "element_count": 27,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "panel": 1,
+        "panel_header": 1,
+        "level_value": 1,
+        "souls_held": 1,
+        "souls_to_next": 1,
+        "divider": 2,
+        "attribute_row": 10,
+        "attribute_preview": 1,
+        "hint": 1
+      },
+      "pictorial_ids": [],
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "panel_rect_source": "derived (build publishes none)",
+      "panel_rect_agrees": null,
+      "pictorial_measured": {
+        "on_screen": 0,
+        "in_panel": 0
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 81,
+        "local_contrast_med": 0.425,
+        "local_contrast_p95": 71.458,
+        "p10": 0,
+        "p90": 221,
+        "spread": 221,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 67,
+        "local_contrast_med": 0.928,
+        "local_contrast_p95": 71.29,
+        "p10": 203,
+        "p90": 222,
+        "spread": 19,
+        "reason": null
+      },
+      "panel_fill": {
+        "fill": 0.0894,
+        "mode_rgb": [
+          219,
+          217,
+          204
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.quickslots",
+          "text": "Black-water draught / Spark-Dart"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        },
+        {
+          "id": "levelup.header",
+          "text": "The hearth"
+        },
+        {
+          "id": "levelup.level",
+          "text": "6"
+        },
+        {
+          "id": "levelup.souls",
+          "text": "9400"
+        },
+        {
+          "id": "levelup.next",
+          "text": "788"
+        },
+        {
+          "id": "levelup.attr.strength",
+          "text": "STRENGTH 12"
+        },
+        {
+          "id": "levelup.attr.endurance",
+          "text": "ENDURANCE 20"
+        },
+        {
+          "id": "levelup.attr.agility",
+          "text": "AGILITY 10"
+        },
+        {
+          "id": "levelup.attr.speed",
+          "text": "SPEED 10"
+        },
+        {
+          "id": "levelup.attr.vigour",
+          "text": "VIGOUR 10"
+        },
+        {
+          "id": "levelup.attr.willpower",
+          "text": "WILLPOWER 10"
+        },
+        {
+          "id": "levelup.attr.intellect",
+          "text": "INTELLECT 10"
+        },
+        {
+          "id": "levelup.attr.hist-bond",
+          "text": "HIST-BOND 10"
+        },
+        {
+          "id": "levelup.attr.personality",
+          "text": "PERSONALITY 10"
+        },
+        {
+          "id": "levelup.attr.luck",
+          "text": "LUCK 10"
+        },
+        {
+          "id": "levelup.preview",
+          "text": "STR-scaling damage; shield stability; heavy-weapon requirement Max equip load (RI-PRG07); carry capacity for loot; forcing doors and chests"
+        },
+        {
+          "id": "levelup.hint",
+          "text": "Confirm twice to spend. Nothing is spent until the second time."
+        }
+      ],
+      "ri_citations": [
+        "levelup.preview"
+      ],
+      "undefined_headers": [],
+      "materials": [
+        "bone"
+      ]
+    },
+    "container": {
+      "mode": "container",
+      "element_count": 31,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "panel": 1,
+        "panel_header": 3,
+        "list_row": 18,
+        "hint": 1
+      },
+      "pictorial_ids": [],
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "panel_rect_source": "derived (build publishes none)",
+      "panel_rect_agrees": null,
+      "pictorial_measured": {
+        "on_screen": 0,
+        "in_panel": 0
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 48,
+        "local_contrast_med": 0,
+        "local_contrast_p95": 28.741,
+        "p10": 0,
+        "p90": 94,
+        "spread": 94,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": false,
+        "levels": 35,
+        "local_contrast_med": 0,
+        "local_contrast_p95": 17.869,
+        "p10": 93,
+        "p90": 96,
+        "spread": 3,
+        "reason": "DEGENERATE FRAME: levels=35 (need >=8), local_contrast_p95=17.869 (need >0.5), p90-p10=3 (need >=4). This is not a dark picture, it is not a picture. The capture path returned a near-uniform buffer."
+      },
+      "panel_fill": {
+        "fill": 0.0387,
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.quickslots",
+          "text": "Black-water draught / Spark-Dart"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        },
+        {
+          "id": "container.header",
+          "text": "Reed Creel"
+        },
+        {
+          "id": "container.mine.head",
+          "text": "Carried"
+        },
+        {
+          "id": "container.mine.row.hist-bark-token",
+          "text": "Bark token  0.1  —"
+        },
+        {
+          "id": "container.mine.row.black-water-draught",
+          "text": "Black-water draught  0.4  30"
+        },
+        {
+          "id": "container.mine.row.bog-iron-maul",
+          "text": "Bog-iron maul  11.5  96"
+        },
+        {
+          "id": "container.mine.row.boiled-hide-jack",
+          "text": "Boiled hide jack  4.2  55"
+        },
+        {
+          "id": "container.mine.row.bone-picks",
+          "text": "Bone picks, set of five  0.3  48"
+        },
+        {
+          "id": "container.mine.row.carved-egg",
+          "text": "Carved egg  0.2  5"
+        },
+        {
+          "id": "container.mine.row.chitin-cuirass",
+          "text": "Chitin cuirass  7.5  210"
+        },
+        {
+          "id": "container.mine.row.coil-of-twine",
+          "text": "Coil of weir twine  1.3  6"
+        },
+        {
+          "id": "container.mine.row.resin-of-the-comb",
+          "text": "Comb resin  0.5  22"
+        },
+        {
+          "id": "container.mine.row.counted-crate-tally",
+          "text": "Crate tally, three counts  0.0  —"
+        },
+        {
+          "id": "container.mine.row.silt-strider-silk-sash",
+          "text": "Dres silk sash  0.2  260"
+        },
+        {
+          "id": "container.mine.row.guar-jerky",
+          "text": "Dried guar  0.6  5"
+        },
+        {
+          "id": "container.mine.row.factors-coat",
+          "text": "Factor's coat  1.4  120"
+        },
+        {
+          "id": "container.mine.row.weighing-stone",
+          "text": "Factor's weighing stone  2.5  30"
+        },
+        {
+          "id": "container.mine.row.fever-cut",
+          "text": "Fever-cut  0.4  46"
+        },
+        {
+          "id": "container.theirs.head",
+          "text": "Reed Creel"
+        },
+        {
+          "id": "container.theirs.row.bog-iron-maul",
+          "text": "Bog-iron maul  11.5  96"
+        },
+        {
+          "id": "container.theirs.row.reed-cutter",
+          "text": "Reed-cutter  3.0  42"
+        },
+        {
+          "id": "container.theirs.row.rootweave-cowl",
+          "text": "Rootweave cowl  0.6  18"
+        },
+        {
+          "id": "container.hint",
+          "text": "Confirm moves one thing across. There is no button that decides what is worth keeping."
+        }
+      ],
+      "ri_citations": [],
+      "undefined_headers": [],
+      "materials": [
+        "clay"
+      ],
+      "d1_observed": {
+        "rows": 18,
+        "rows_with_3_plus_hues_in_leading_48px": 18,
+        "min_hues": 3,
+        "per_row": [
+          {
+            "id": "container.mine.row.hist-bark-token",
+            "hues": 5
+          },
+          {
+            "id": "container.mine.row.black-water-draught",
+            "hues": 3
+          },
+          {
+            "id": "container.mine.row.bog-iron-maul",
+            "hues": 3
+          },
+          {
+            "id": "container.mine.row.boiled-hide-jack",
+            "hues": 4
+          },
+          {
+            "id": "container.mine.row.bone-picks",
+            "hues": 4
+          },
+          {
+            "id": "container.mine.row.carved-egg",
+            "hues": 4
+          }
+        ]
+      }
     }
   },
   "notes": []

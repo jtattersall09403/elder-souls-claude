@@ -6,7 +6,7 @@ is read off a measurement file at generation time; none is typed.
 | arm | commit | viewport | instrument |
 |---|---|---|---|
 | **live** (this round) | `27c44c77d775e90cf4c2fa25c51c4287b6aefc99` | 1920×1080 | `tools/ui/t4-r2-measure.mjs` |
-| **control** (delete-the-fix) | `ed140939636718afa984ee95732356207edee59a` | 1920×1080 | the same file, copied into the worktree — **3 of 3 screens usable** |
+| **control** (delete-the-fix) | `ed140939636718afa984ee95732356207edee59a` | 1920×1080 | the same file, copied into the worktree — **7 of 7 screens usable** |
 
 **The control is a real `git worktree` at a pinned sha, not a hard-link copy of the live tree**
 (`git worktree add --detach <dir> ed140939636718afa984ee95732356207edee59a`), which is the commit
@@ -25,16 +25,17 @@ rect's own modal colour.
 | world | 0 | 0 | — | — |
 | inventory | 0 | 22 | 0.1174 | 0.1524 |
 | journal | 0 | 0 | 0.1311 | 0.1315 |
-| sheet | — | 10 | — | 0.0895 |
-| spells | — | 2 | — | 0.0703 |
-| levelup | — | 10 | — | 0.0911 |
+| sheet | 0 | 10 | 0.044 | 0.0895 |
+| spells | 0 | 2 | 0.0684 | 0.0703 |
+| levelup | 0 | 10 | 0.0894 | 0.0911 |
+| container | 0 | — | 0.0387 | — |
 
 **Both arms are measured with the same file.** The control publishes no `panel_rect`,
 no `pictorial` block and no `hud.world` — those are this round's additions — so the tool
 derives the panel rect and counts the pictorial kinds itself, per RI-UIX09 method 4's own
 definition ("the largest `kind: 'panel'` element").
 
-> The control arm produced **3 usable screen(s)**; any row showing a dash in the
+> The control arm produced **7 usable screen(s)**; any row showing a dash in the
 > control column failed on that arm and is an absence of evidence, not a zero.
 
 ## Every frame was screened before it was measured
@@ -55,9 +56,13 @@ deliberately patterned control image.
 | inventory | live | 83 | 59.982 | 0 → 64 | yes |
 | journal | control | 99 | 141.27 | 0 → 178 | yes |
 | journal | live | 99 | 141.27 | 0 → 178 | yes |
+| sheet | control | 60 | 43.913 | 0 → 61 | yes |
 | sheet | live | 82 | 72.189 | 0 → 63 | yes |
+| spells | control | 60 | 28.834 | 0 → 34 | yes |
 | spells | live | 61 | 29.644 | 0 → 34 | yes |
+| levelup | control | 81 | 71.458 | 0 → 221 | yes |
 | levelup | live | 79 | 74.154 | 0 → 221 | yes |
+| container | control | 48 | 28.741 | 0 → 94 | yes |
 
 ## RI-UIX07 — the world set
 
@@ -91,7 +96,7 @@ The control arm reports **no `hud.world` block at all** — the field did not ex
 ## Reference-item ids in player-facing text
 
 Live: **none on any screen**.
-Control: **none found on the screens this run reached**.
+Control: **[["levelup",["levelup.preview"]]]**.
 
 ## What is missing, stated first rather than last
 
