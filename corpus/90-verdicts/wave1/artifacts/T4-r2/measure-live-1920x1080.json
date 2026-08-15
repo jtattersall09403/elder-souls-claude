@@ -1298,6 +1298,892 @@
       },
       "combat_phase": "world",
       "combat_phase_source": "encounter"
+    },
+    "spells": {
+      "mode": "spells",
+      "element_count": 19,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "effect_strip": 1,
+        "place_name": 1,
+        "panel": 1,
+        "panel_header": 1,
+        "spell_row": 2,
+        "glyph_object": 2,
+        "divider": 1,
+        "detail_panel": 1,
+        "hint": 1
+      },
+      "pictorial_declared": {
+        "kinds_counted": [
+          "item_icon",
+          "doll",
+          "glyph_object"
+        ],
+        "on_screen": 2,
+        "in_panel": 2,
+        "by_kind": {
+          "item_icon": 0,
+          "doll": 0,
+          "glyph_object": 2
+        },
+        "item_rows": 0,
+        "item_icons": 0
+      },
+      "pictorial_ids": [
+        "spells.mark.spark_dart",
+        "spells.mark.slowfall"
+      ],
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "panel_rect_source": "published+derived",
+      "panel_rect_agrees": true,
+      "pictorial_measured": {
+        "on_screen": 2,
+        "in_panel": 2
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 61,
+        "local_contrast_med": 0.213,
+        "local_contrast_p95": 29.644,
+        "p10": 0,
+        "p90": 34,
+        "spread": 34,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 51,
+        "local_contrast_med": 0.425,
+        "local_contrast_p95": 17.513,
+        "p10": 24,
+        "p90": 37,
+        "spread": 13,
+        "reason": null
+      },
+      "panel_fill": {
+        "fill": 0.0703,
+        "mode_rgb": [
+          27,
+          26,
+          24
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        },
+        {
+          "id": "hud.place",
+          "text": "thorn-hall"
+        },
+        {
+          "id": "spells.header",
+          "text": "Spark-Dart"
+        },
+        {
+          "id": "spells.row.spark_dart",
+          "text": "Spark-Dart  NaN"
+        },
+        {
+          "id": "spells.row.slowfall",
+          "text": "Slowfall  NaN"
+        },
+        {
+          "id": "spells.hint",
+          "text": "Attuning is a hearth action. In a fight you cycle what is already attuned, and the fight does not stop for it."
+        }
+      ],
+      "ri_citations": [],
+      "undefined_headers": [],
+      "materials": [
+        "chitin",
+        "root",
+        "ink",
+        "bone",
+        "resin",
+        "shell",
+        "clay"
+      ],
+      "materials_painted": [
+        "chitin",
+        "root",
+        "ink",
+        "bone",
+        "resin",
+        "shell",
+        "clay"
+      ],
+      "hud_world": {
+        "set": {
+          "W1_bearing_dial": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat"
+          },
+          "W2_effect_strip": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat, ≥1 effect",
+            "expected": true
+          },
+          "W3_sneak_state": {
+            "built": true,
+            "drawn": false,
+            "conditional": "both phases, while sneaking",
+            "expected": false
+          },
+          "W4_condition_marks": {
+            "built": true,
+            "drawn": true,
+            "conditional": "both phases, always",
+            "inside": "hud.quickslots",
+            "added_px": 0,
+            "values": {
+              "right": 0.86,
+              "left": null,
+              "spell": null,
+              "item": 0
+            }
+          },
+          "W5_place_name": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat, ≤3 s after a cell change",
+            "expected": true
+          },
+          "W6_breath_meter": {
+            "built": true,
+            "drawn": false,
+            "conditional": "both phases, while submerged",
+            "expected": false
+          }
+        },
+        "elements": [
+          {
+            "id": "hud.bearing",
+            "kind": "bearing_dial",
+            "rect": [
+              1616,
+              942,
+              96,
+              96
+            ],
+            "in_bottom_half": true
+          },
+          {
+            "id": "hud.effects",
+            "kind": "effect_strip",
+            "rect": [
+              1574,
+              1006,
+              30,
+              32
+            ],
+            "in_bottom_half": true
+          },
+          {
+            "id": "hud.place",
+            "kind": "place_name",
+            "rect": [
+              42,
+              950,
+              520,
+              36
+            ],
+            "in_bottom_half": true
+          }
+        ],
+        "all_in_bottom_half": true,
+        "overlaps": [],
+        "persistent_count": 3,
+        "coverage_pct": 1.3935,
+        "withdrawn": [],
+        "withdrawn_because": null
+      },
+      "combat_phase": "world",
+      "combat_phase_source": "encounter"
+    },
+    "levelup": {
+      "mode": "levelup",
+      "element_count": 39,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "effect_strip": 1,
+        "place_name": 1,
+        "panel": 1,
+        "panel_header": 1,
+        "level_value": 1,
+        "souls_held": 1,
+        "souls_to_next": 1,
+        "divider": 2,
+        "attribute_row": 10,
+        "glyph_object": 10,
+        "attribute_preview": 1,
+        "hint": 1
+      },
+      "pictorial_declared": {
+        "kinds_counted": [
+          "item_icon",
+          "doll",
+          "glyph_object"
+        ],
+        "on_screen": 10,
+        "in_panel": 10,
+        "by_kind": {
+          "item_icon": 0,
+          "doll": 0,
+          "glyph_object": 10
+        },
+        "item_rows": 0,
+        "item_icons": 0
+      },
+      "pictorial_ids": [
+        "levelup.mark.strength",
+        "levelup.mark.endurance",
+        "levelup.mark.agility",
+        "levelup.mark.speed",
+        "levelup.mark.vigour",
+        "levelup.mark.willpower",
+        "levelup.mark.intellect",
+        "levelup.mark.hist-bond",
+        "levelup.mark.personality",
+        "levelup.mark.luck"
+      ],
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "panel_rect_source": "published+derived",
+      "panel_rect_agrees": true,
+      "pictorial_measured": {
+        "on_screen": 10,
+        "in_panel": 10
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 79,
+        "local_contrast_med": 0.425,
+        "local_contrast_p95": 74.289,
+        "p10": 0,
+        "p90": 221,
+        "spread": 221,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 67,
+        "local_contrast_med": 0.928,
+        "local_contrast_p95": 73.444,
+        "p10": 203,
+        "p90": 222,
+        "spread": 19,
+        "reason": null
+      },
+      "panel_fill": {
+        "fill": 0.091,
+        "mode_rgb": [
+          219,
+          217,
+          204
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        },
+        {
+          "id": "hud.place",
+          "text": "thorn-hall"
+        },
+        {
+          "id": "levelup.header",
+          "text": "The hearth"
+        },
+        {
+          "id": "levelup.level",
+          "text": "6"
+        },
+        {
+          "id": "levelup.souls",
+          "text": "9400"
+        },
+        {
+          "id": "levelup.next",
+          "text": "788"
+        },
+        {
+          "id": "levelup.attr.strength",
+          "text": "STRENGTH 12"
+        },
+        {
+          "id": "levelup.attr.endurance",
+          "text": "ENDURANCE 20"
+        },
+        {
+          "id": "levelup.attr.agility",
+          "text": "AGILITY 10"
+        },
+        {
+          "id": "levelup.attr.speed",
+          "text": "SPEED 10"
+        },
+        {
+          "id": "levelup.attr.vigour",
+          "text": "VIGOUR 10"
+        },
+        {
+          "id": "levelup.attr.willpower",
+          "text": "WILLPOWER 10"
+        },
+        {
+          "id": "levelup.attr.intellect",
+          "text": "INTELLECT 10"
+        },
+        {
+          "id": "levelup.attr.hist-bond",
+          "text": "HIST-BOND 10"
+        },
+        {
+          "id": "levelup.attr.personality",
+          "text": "PERSONALITY 10"
+        },
+        {
+          "id": "levelup.attr.luck",
+          "text": "LUCK 10"
+        },
+        {
+          "id": "levelup.preview",
+          "text": "STR-scaling damage; shield stability; heavy-weapon requirement Max equip load; carry capacity for loot; forcing doors and chests"
+        },
+        {
+          "id": "levelup.hint",
+          "text": "Confirm twice to spend. Nothing is spent until the second time."
+        }
+      ],
+      "ri_citations": [],
+      "undefined_headers": [],
+      "materials": [
+        "chitin",
+        "root",
+        "ink",
+        "parchment",
+        "bone",
+        "resin",
+        "shell",
+        "clay"
+      ],
+      "materials_painted": [
+        "chitin",
+        "root",
+        "ink",
+        "parchment",
+        "bone",
+        "resin",
+        "shell",
+        "clay"
+      ],
+      "hud_world": {
+        "set": {
+          "W1_bearing_dial": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat"
+          },
+          "W2_effect_strip": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat, ≥1 effect",
+            "expected": true
+          },
+          "W3_sneak_state": {
+            "built": true,
+            "drawn": false,
+            "conditional": "both phases, while sneaking",
+            "expected": false
+          },
+          "W4_condition_marks": {
+            "built": true,
+            "drawn": true,
+            "conditional": "both phases, always",
+            "inside": "hud.quickslots",
+            "added_px": 0,
+            "values": {
+              "right": 0.86,
+              "left": null,
+              "spell": null,
+              "item": 0
+            }
+          },
+          "W5_place_name": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat, ≤3 s after a cell change",
+            "expected": true
+          },
+          "W6_breath_meter": {
+            "built": true,
+            "drawn": false,
+            "conditional": "both phases, while submerged",
+            "expected": false
+          }
+        },
+        "elements": [
+          {
+            "id": "hud.bearing",
+            "kind": "bearing_dial",
+            "rect": [
+              1616,
+              942,
+              96,
+              96
+            ],
+            "in_bottom_half": true
+          },
+          {
+            "id": "hud.effects",
+            "kind": "effect_strip",
+            "rect": [
+              1574,
+              1006,
+              30,
+              32
+            ],
+            "in_bottom_half": true
+          },
+          {
+            "id": "hud.place",
+            "kind": "place_name",
+            "rect": [
+              42,
+              950,
+              520,
+              36
+            ],
+            "in_bottom_half": true
+          }
+        ],
+        "all_in_bottom_half": true,
+        "overlaps": [],
+        "persistent_count": 3,
+        "coverage_pct": 1.3935,
+        "withdrawn": [],
+        "withdrawn_because": null
+      },
+      "combat_phase": "world",
+      "combat_phase_source": "encounter"
+    },
+    "container": {
+      "mode": "container",
+      "element_count": 49,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "effect_strip": 1,
+        "place_name": 1,
+        "panel": 1,
+        "panel_header": 3,
+        "scroll_extent": 1,
+        "list_row": 15,
+        "item_icon": 16,
+        "divider": 1,
+        "detail_panel": 1,
+        "hint": 1
+      },
+      "pictorial_declared": {
+        "kinds_counted": [
+          "item_icon",
+          "doll",
+          "glyph_object"
+        ],
+        "on_screen": 16,
+        "in_panel": 16,
+        "by_kind": {
+          "item_icon": 16,
+          "doll": 0,
+          "glyph_object": 0
+        },
+        "item_rows": 15,
+        "item_icons": 16
+      },
+      "pictorial_ids": [
+        "container.mine.icon.hist-bark-token",
+        "container.mine.icon.black-water-draught",
+        "container.mine.icon.bog-iron-maul",
+        "container.mine.icon.boiled-hide-jack",
+        "container.mine.icon.bone-picks",
+        "container.mine.icon.carved-egg",
+        "container.mine.icon.chitin-cuirass",
+        "container.mine.icon.coil-of-twine",
+        "container.mine.icon.resin-of-the-comb",
+        "container.mine.icon.counted-crate-tally",
+        "container.mine.icon.silt-strider-silk-sash",
+        "container.mine.icon.guar-jerky",
+        "container.theirs.icon.bog-iron-maul",
+        "container.theirs.icon.reed-cutter",
+        "container.theirs.icon.rootweave-cowl",
+        "container.band.depiction"
+      ],
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "panel_rect_source": "published+derived",
+      "panel_rect_agrees": true,
+      "pictorial_measured": {
+        "on_screen": 16,
+        "in_panel": 16
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 57,
+        "local_contrast_med": 0,
+        "local_contrast_p95": 44.988,
+        "p10": 0,
+        "p90": 94,
+        "spread": 94,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 43,
+        "local_contrast_med": 0,
+        "local_contrast_p95": 31.312,
+        "p10": 93,
+        "p90": 97,
+        "spread": 4,
+        "reason": null
+      },
+      "panel_fill": {
+        "fill": 0.0572,
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        },
+        {
+          "id": "hud.place",
+          "text": "thorn-hall"
+        },
+        {
+          "id": "container.header",
+          "text": "Reed Creel"
+        },
+        {
+          "id": "container.mine.head",
+          "text": "Carried"
+        },
+        {
+          "id": "container.mine.row.hist-bark-token",
+          "text": "Bark token  0.1  —"
+        },
+        {
+          "id": "container.mine.row.black-water-draught",
+          "text": "Black-water draught  0.4  30"
+        },
+        {
+          "id": "container.mine.row.bog-iron-maul",
+          "text": "Bog-iron maul  11.5  96"
+        },
+        {
+          "id": "container.mine.row.boiled-hide-jack",
+          "text": "Boiled hide jack  4.2  55"
+        },
+        {
+          "id": "container.mine.row.bone-picks",
+          "text": "Bone picks, set of five  0.3  48"
+        },
+        {
+          "id": "container.mine.row.carved-egg",
+          "text": "Carved egg  0.2  5"
+        },
+        {
+          "id": "container.mine.row.chitin-cuirass",
+          "text": "Chitin cuirass  7.5  210"
+        },
+        {
+          "id": "container.mine.row.coil-of-twine",
+          "text": "Coil of weir twine  1.3  6"
+        },
+        {
+          "id": "container.mine.row.resin-of-the-comb",
+          "text": "Comb resin  0.5  22"
+        },
+        {
+          "id": "container.mine.row.counted-crate-tally",
+          "text": "Crate tally, three counts  0.0  —"
+        },
+        {
+          "id": "container.mine.row.silt-strider-silk-sash",
+          "text": "Dres silk sash  0.2  260"
+        },
+        {
+          "id": "container.mine.row.guar-jerky",
+          "text": "Dried guar  0.6  5"
+        },
+        {
+          "id": "container.theirs.head",
+          "text": "Reed Creel"
+        },
+        {
+          "id": "container.theirs.row.bog-iron-maul",
+          "text": "Bog-iron maul  11.5  96"
+        },
+        {
+          "id": "container.theirs.row.reed-cutter",
+          "text": "Reed-cutter  3.0  42"
+        },
+        {
+          "id": "container.theirs.row.rootweave-cowl",
+          "text": "Rootweave cowl  0.6  18"
+        },
+        {
+          "id": "container.band",
+          "text": "A palm-sized disc of Hist bark with three notches in the rim. Everyone who sees it knows what it means and nobody has yet explained it to you."
+        },
+        {
+          "id": "container.hint",
+          "text": "Confirm moves one thing across. There is no button that decides what is worth keeping."
+        }
+      ],
+      "ri_citations": [],
+      "undefined_headers": [],
+      "materials": [
+        "chitin",
+        "root",
+        "ink",
+        "parchment",
+        "bone",
+        "resin",
+        "reed",
+        "shell",
+        "clay"
+      ],
+      "materials_painted": [
+        "chitin",
+        "root",
+        "ink",
+        "parchment",
+        "bone",
+        "resin",
+        "reed",
+        "shell",
+        "clay"
+      ],
+      "d1_observed": {
+        "rows": 15,
+        "rows_with_3_plus_hues_in_leading_48px": 15,
+        "min_hues": 6,
+        "per_row": [
+          {
+            "id": "container.mine.row.hist-bark-token",
+            "hues": 10
+          },
+          {
+            "id": "container.mine.row.black-water-draught",
+            "hues": 13
+          },
+          {
+            "id": "container.mine.row.bog-iron-maul",
+            "hues": 11
+          },
+          {
+            "id": "container.mine.row.boiled-hide-jack",
+            "hues": 12
+          },
+          {
+            "id": "container.mine.row.bone-picks",
+            "hues": 12
+          },
+          {
+            "id": "container.mine.row.carved-egg",
+            "hues": 7
+          }
+        ]
+      },
+      "hud_world": {
+        "set": {
+          "W1_bearing_dial": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat"
+          },
+          "W2_effect_strip": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat, ≥1 effect",
+            "expected": true
+          },
+          "W3_sneak_state": {
+            "built": true,
+            "drawn": false,
+            "conditional": "both phases, while sneaking",
+            "expected": false
+          },
+          "W4_condition_marks": {
+            "built": true,
+            "drawn": true,
+            "conditional": "both phases, always",
+            "inside": "hud.quickslots",
+            "added_px": 0,
+            "values": {
+              "right": 0.86,
+              "left": null,
+              "spell": null,
+              "item": 0
+            }
+          },
+          "W5_place_name": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat, ≤3 s after a cell change",
+            "expected": true
+          },
+          "W6_breath_meter": {
+            "built": true,
+            "drawn": false,
+            "conditional": "both phases, while submerged",
+            "expected": false
+          }
+        },
+        "elements": [
+          {
+            "id": "hud.bearing",
+            "kind": "bearing_dial",
+            "rect": [
+              1616,
+              942,
+              96,
+              96
+            ],
+            "in_bottom_half": true
+          },
+          {
+            "id": "hud.effects",
+            "kind": "effect_strip",
+            "rect": [
+              1574,
+              1006,
+              30,
+              32
+            ],
+            "in_bottom_half": true
+          },
+          {
+            "id": "hud.place",
+            "kind": "place_name",
+            "rect": [
+              42,
+              950,
+              520,
+              36
+            ],
+            "in_bottom_half": true
+          }
+        ],
+        "all_in_bottom_half": true,
+        "overlaps": [],
+        "persistent_count": 3,
+        "coverage_pct": 1.3935,
+        "withdrawn": [],
+        "withdrawn_because": null
+      },
+      "combat_phase": "world",
+      "combat_phase_source": "encounter"
     }
   },
   "notes": []

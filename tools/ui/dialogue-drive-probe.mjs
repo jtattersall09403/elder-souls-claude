@@ -104,6 +104,84 @@ async function tap(x, y) {
   await h.h('stepFrames', 3);
 }
 
+/**
+ * Type a real printable character. NOT `key()`: `input/real.js` takes a printable key as TEXT
+ * before the control map sees it (and only while `textFocus()` is true), so this route and the
+ * button route are different code paths and a probe that used `key('KeyF')` would be testing the
+ * button map. `KeyE` types an `e` on a text node — it does not commit — which is exactly the
+ * distinction W1-26 r2 §3 measured as `"Silt-Under-Salt"` arriving as `"il-Un"`.
+ */
+async function type(str) {
+  for (const ch of str) {
+    await h.page.evaluate((c) => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { code: `Key${c.toUpperCase()}`, key: c, bubbles: true, cancelable: true }));
+      window.dispatchEvent(new KeyboardEvent('keyup', { code: `Key${c.toUpperCase()}`, key: c, bubbles: true }));
+    }, ch);
+  }
+  await h.h('stepFrames', 2);
+}
+
+/** A real Backspace. Same route as `type`, opposite direction. */
+async function backspace() {
+  await h.page.evaluate(() => {
+    window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Backspace', key: 'Backspace', bubbles: true, cancelable: true }));
+    window.dispatchEvent(new KeyboardEvent('keyup', { code: 'Backspace', key: 'Backspace', bubbles: true }));
+  });
+  await h.h('stepFrames', 2);
+}
+
+/**
+ * The census scene as both surfaces see it, plus the census graph's own state. Everything here is
+ * READ; nothing in this function moves anything.
+ */
+async function readCensus() {
+  return h.page.evaluate(() => {
+    const A = window.__HARNESS, eng = window.__ENGINE;
+    const s = A.getUIState();
+    const w = s.dialogue_window || null;
+    const old = s.dialogue_surface || null;
+    const st = eng.getCensusState ? eng.getCensusState() : null;
+    const els = (s.elements || []).filter((e) => e.visible && String(e.id).startsWith('dialogue.'));
+    return {
+      node: st ? st.node : null,
+      done: !!(st && st.done),
+      paused: !!(st && st.paused),
+      resume_by: st ? st.resume_by || null : null,
+      input_kind: st && st.input ? st.input.kind : null,
+      question: st && st.question ? st.question.id : null,
+      // WHICH SURFACE IS DRAWING. The whole of fault 2 in one pair of booleans.
+      new_window_open: !!(w && w.open),
+      // NOT the same question, and run 1 conflated them. `dialogue_surface.open` is a LAYOUT
+      // fact that `setSuppressed()` deliberately keeps true so a dozen existing probes keep
+      // their answers; `renderer.ui.suppressed` is the branch that decides whether anything is
+      // handed to `fillText`. Both are recorded so the difference stays legible.
+      old_panel_open: !!(old && old.open),
+      old_panel_suppressed: eng.renderer && eng.renderer.ui ? !!eng.renderer.ui.suppressed : null,
+      census_mode: !!(w && w.census),
+      census_node: w ? w.census_node : null,
+      elements_present: w ? w.elements_present : null,
+      picked_rows: w ? w.picked_rows : null,
+      typed: w ? w.census_typed : null,
+      speaker: w ? w.speaker : null,
+      lines: w ? w.lines_total : null,
+      blocks: w ? w.blocks.length : null,
+      tail: w && w.blocks.length ? w.blocks[w.blocks.length - 1] : null,
+      topics: w ? w.topics.length : 0,
+      actions: w ? w.actions.length : 0,
+      focus: w ? w.focus : null,
+      has_exit: els.some((e) => e.kind === 'dialogue_exit'),
+      has_dispo: els.some((e) => e.kind === 'disposition_meter'),
+      typed_row: els.filter((e) => e.id === 'dialogue.census.typed').map((e) => e.text),
+      rows: els.filter((e) => e.kind === 'list_row').map((e) => ({ id: e.id, text: e.text, focused: !!e.focused })),
+      surface_sel: eng.censusSurface ? eng.censusSurface.sel : null,
+      surface_picked: eng.censusSurface ? eng.censusSurface.picked.slice() : null,
+      surface_typed: eng.censusSurface ? eng.censusSurface.typed : null,
+      spec: eng.census ? JSON.parse(JSON.stringify(eng.census.spec || {})) : null,
+      character: eng.census ? JSON.parse(JSON.stringify(eng.census.character || {})) : null,
+    };
+  });
+}
+
 /** Everything the window publishes about itself, plus the declared elements. */
 async function read() {
   return h.page.evaluate(() => {
@@ -127,6 +205,10 @@ async function read() {
       conv_open: !!(eng.conversation && eng.conversation.open),
       topics_known: A.questTopicsKnown ? A.questTopicsKnown().length : null,
       legacy_open: !!(s.dialogue_surface && s.dialogue_surface.open),
+      has_exit: els.some((e) => e.kind === 'dialogue_exit'),
+      has_dispo: els.some((e) => e.kind === 'disposition_meter'),
+      census_mode: !!(w && w.census),
+      elements_present: w ? w.elements_present : null,
       census_open: !!(eng.censusSurface && eng.censusSurface.open),
       census_takes_input: !!(eng.censusSurface && eng.censusSurface.takesInput),
       elements: els.map((e) => ({ id: e.id, kind: e.kind, rect: e.rect.map((v) => Math.round(v)), text: e.text, focused: !!e.focused })),
@@ -194,41 +276,363 @@ try {
   // nothing about which is right; it establishes what is, which is the first thing the fix for
   // fault 2 needs and the thing that has never been written down.
   if (CENSUS) {
+    // ---- W1-UIX08-CENSUS-ROUTE. The owner: "It also wasn't being used for the dialogue in the
+    // character creation/new game flow, which it should be." This arm walks the WHOLE creation
+    // scene, driving every node through real DOM events, and records for every node which of the
+    // two surfaces PAINTED it. §1.2b clause 3 in a number.
+    //
+    // WHAT IS *NOT* REAL INPUT HERE, said plainly. Two things, and both are openings rather than
+    // affordances: `censusBegin({})` starts the scene (the world arm opens a conversation through
+    // `A.talkTo` for the same reason), and a PAUSED node — RI-JRN01 O6's hand-back, where the
+    // player has the body and must walk or reach — is resumed through `censusEnter`. Walking a
+    // body across a room is not one of this window's affordances and driving it would be measuring
+    // the movement code. Every control on the window itself is operated by a real event.
+    //
+    // THE INSTRUMENT TRAP THIS ARM'S FIRST RUN WALKED INTO, recorded so the next reader does not.
+    // `getUIState().dialogue_surface.open` IS NOT "the old vellum panel is on screen". `render/
+    // ui.js setSuppressed()` skips the PAINT BLOCK ONLY — the layout still runs and `metrics()`
+    // still reports what the panel WOULD have been, deliberately, so that the dozen probes reading
+    // `option_count` and `panel_height_frac` keep their answers. Run 1 therefore reported "11 nodes
+    // on the new window AND 11 on the old panel" against a build where the old panel painted
+    // nothing. Two instruments are used instead, and they are independent:
+    //
+    //   (a) `renderer.ui.suppressed` — the shipped boolean that gates the paint block. Not a
+    //       proxy: it is the branch itself.
+    //   (b) the RENDERED-TEXT REGISTER (`A.getRenderedText({surface:'dialogue'})`), which is fed
+    //       by the draw call and cannot drift from the frame because it IS the frame's text. If
+    //       the old panel painted, its strings are in it. `complete` is checked, because that
+    //       accessor is fail-closed and an incomplete result is ignorance, not absence.
     await h.h('setMode', 'play-instrumented');
     await h.h('setRenderRate', 0);
-    const walk = await h.page.evaluate(() => {
-      const A = window.__HARNESS, eng = window.__ENGINE;
-      const seen = [];
-      eng.censusBegin({});
-      for (let i = 0; i < 40; i++) {
-        const st = eng.getCensusState();
-        if (!st || st.done) break;
-        A.stepFrames(1);
-        const ui = A.getUIState();
-        seen.push({
-          node: st.node,
-          input_kind: st.input ? st.input.kind : null,
-          options: eng.censusSurface ? eng.censusSurface.options.length : 0,
-          old_panel_open: !!(ui.dialogue_surface && ui.dialogue_surface.open),
-          old_panel_options: (ui.dialogue_surface && ui.dialogue_surface.option_count !== undefined) ? ui.dialogue_surface.option_count : null,
-          new_window_open: !!(ui.dialogue_window && ui.dialogue_window.open),
-        });
-        // Advance by answering the first option, through the census's own commit path.
-        const opts = eng.censusSurface ? eng.censusSurface.options : [];
-        if (!opts.length) { if (eng.census.paused) eng.censusEnter(null); else break; }
-        else { try { eng.censusAnswer(opts[0].id); } catch { break; } A.stepFrames(1); }
+
+    /**
+     * One complete pass through character creation, taking a named branch at `writ.class-routes`.
+     * Run three times, because the three routes reach different node kinds: `named` reaches
+     * neither a `pick` nor the questionnaire, `custom` reaches all four `pick` nodes and a third
+     * `text` node, and `questionnaire` reaches the ten dilemmas. A single walk that answered row 0
+     * everywhere — which is what run 1 did — measures a third of the scene and looks complete.
+     */
+    async function walkCensus(routeRow, opts = {}) {
+      const walkRows = !!opts.walkRows;
+      await h.page.evaluate(() => { window.__ENGINE.censusBegin({}); window.__HARNESS.renderedTextClear(); });
+      await h.h('stepFrames', 4);
+      const walk = [];
+      const evidence = { picks: [], typed: [], choices: [], questionnaire: [] };
+      let guard = 0;
+      while (guard++ < 120) {
+        const c = await readCensus();
+        if (c.done || c.node === null) break;
+        const rec = {
+          node: c.node, input_kind: c.input_kind, question: c.question, paused: c.paused,
+          window_open: c.new_window_open, census_mode: c.census_mode,
+          old_panel_suppressed: c.old_panel_suppressed,
+          old_panel_layout_open: c.old_panel_open,
+          elements_present: c.elements_present,
+          has_exit: c.has_exit, has_dispo: c.has_dispo,
+          rows: c.rows.length, blocks: c.blocks, lines: c.lines,
+        };
+
+        if (c.paused) {
+          rec.resumed = `harness:${c.resume_by}`;
+          walk.push(rec);
+          const ok = await h.page.evaluate(() => { try { window.__ENGINE.censusEnter(null); return true; } catch { return false; } });
+          if (!ok) { rec.stuck = 'censusEnter refused'; break; }
+          await h.h('stepFrames', 3);
+          continue;
+        }
+        if (!c.input_kind) { rec.stuck = 'no input kind and not paused'; walk.push(rec); break; }
+
+        // Walk the caret across the rows this node offers (§1.2b clause 2) and record that the
+        // DRAWN focus followed it. A linear graph means only one row can be CONFIRMED per node,
+        // so "operate every affordance" here is: every row is reachable and visibly marked, and
+        // one is committed. Capped at 8 — `writ.birthsign` offers thirteen signs and this box has
+        // killed two runs at 40 minutes of wall clock. `rows` and `rows_walked` are both recorded
+        // so a reader sees which nodes were sampled rather than exhausted.
+        if (walkRows) {
+          const ROW_CAP = 8;
+          const rowsSeen = [];
+          for (let i = 0; i < Math.min(ROW_CAP, Math.max(0, c.rows.length - 1)); i++) {
+            await key('ArrowDown', 1);
+            const s2 = await readCensus();
+            rowsSeen.push({ idx: s2.focus ? s2.focus.rowIdx : null, focused: (s2.rows.find((r) => r.focused) || {}).text || null });
+          }
+          rec.rows_walked = rowsSeen.length;
+          rec.rows_marked = rowsSeen.filter((r) => r.focused !== null).length;
+          rec.rows_idx_moved = rowsSeen.filter((r, i) => r.idx === i + 1).length;
+          for (let i = 0; i < rowsSeen.length; i++) await key('ArrowUp', 1);
+        }
+
+        // The branch point. Walk the caret to the requested route and confirm there.
+        if (c.node === 'writ.class-routes') {
+          for (let i = 0; i < routeRow; i++) await key('ArrowDown', 1);
+          const at = await readCensus();
+          rec.route_row = at.focus ? at.focus.rowIdx : null;
+          rec.route_label = (at.rows.find((r) => r.focused) || {}).text || null;
+          await key('KeyE');
+          const after = await readCensus();
+          rec.advanced = after.node !== c.node;
+          walk.push(rec);
+          continue;
+        }
+
+        if (c.input_kind === 'pick') {
+          // §H2a. Confirm a row, watch the mark appear; confirm the SAME row, watch it go; then
+          // complete the count and watch the node advance.
+          await key('KeyE');
+          const s2 = await readCensus();
+          const marked = (s2.picked_rows || []).length;
+          await key('KeyE');
+          const s3 = await readCensus();
+          const unmarked = (s3.picked_rows || []).length;
+          const trail = [
+            { act: 'confirm row 0', picked_rows: s2.picked_rows, surface_picked: s2.surface_picked, row_text: (s2.rows[0] || {}).text },
+            { act: 'confirm row 0 again (un-pick)', picked_rows: s3.picked_rows, surface_picked: s3.surface_picked, row_text: (s3.rows[0] || {}).text },
+          ];
+          let steps = 0, asides = s3.blocks;
+          while (steps++ < 14) {
+            const cur = await readCensus();
+            if (cur.node !== c.node || cur.done) break;
+            await key('KeyE');
+            const nx = await readCensus();
+            trail.push({ act: `confirm row ${cur.focus ? cur.focus.rowIdx : '?'}`, picked_rows: nx.picked_rows, node: nx.node, blocks: nx.blocks, tail: nx.tail && nx.tail.chars });
+            if (nx.node !== c.node || nx.done) { asides = nx.blocks - asides; break; }
+            await key('ArrowDown', 1);
+          }
+          const after = await readCensus();
+          evidence.picks.push({
+            node: c.node, marked_after_first: marked, marked_after_unpick: unmarked,
+            trail, advanced_to: after.node, spec_custom: after.spec ? after.spec.custom : null,
+          });
+          rec.pick_mark_appeared = marked === 1;
+          rec.pick_mark_removed = unmarked === 0;
+          rec.advanced = after.node !== c.node;
+          walk.push(rec);
+          continue;
+        }
+
+        if (c.input_kind === 'text') {
+          const ev = { node: c.node, route: null };
+          // The routes O17 requires, alternately, so both are measured rather than one being
+          // assumed from the other: type it, or walk the caret onto an offered ledger name.
+          const useLedger = evidence.typed.length === 1;
+          if (useLedger) {
+            await key('ArrowDown', 1);
+            const onRow = await readCensus();
+            ev.route = 'ledger';
+            ev.chose = (onRow.rows.find((r) => r.focused) || {}).text || null;
+            ev.typed_row_before = onRow.typed_row;
+            await key('Enter');
+            const done = await readCensus();
+            ev.after_node = done.node;
+            ev.spec = done.spec;
+          } else {
+            ev.route = 'typed';
+            ev.typed_row_before = c.typed_row;
+            // `KeyE` is `interact`. On a text node it must type an `e` and NOT commit — that is
+            // W1-26 r2 §3's exact defect ("Silt-Under-Salt" arriving as "il-Un") and it is
+            // measured here rather than assumed, by typing a word that contains one.
+            await type('Sathel');
+            const t1 = await readCensus();
+            ev.after_typing = { typed: t1.typed, surface_typed: t1.surface_typed, row: t1.typed_row, node: t1.node };
+            await backspace();
+            const t2 = await readCensus();
+            ev.after_backspace = { typed: t2.typed, surface_typed: t2.surface_typed, row: t2.typed_row };
+            await key('Enter');
+            const done = await readCensus();
+            ev.after_node = done.node;
+            ev.spec = done.spec;
+          }
+          evidence.typed.push(ev);
+          rec.text_route = ev.route;
+          rec.advanced = ev.after_node !== c.node;
+          walk.push(rec);
+          continue;
+        }
+
+        // choice / observed / questionnaire — one confirm, and record what it produced.
+        await key('KeyE');
+        const after = await readCensus();
+        const row = {
+          node: c.node, kind: c.input_kind, question: c.question, rows: c.rows.length,
+          confirmed: (c.rows.find((r) => r.focused) || {}).text || null,
+          blocks: `${c.blocks} -> ${after.blocks}`, advanced_to: after.node, question_after: after.question,
+        };
+        (c.input_kind === 'questionnaire' ? evidence.questionnaire : evidence.choices).push(row);
+        rec.advanced = after.node !== c.node || after.question !== c.question || after.done;
+        walk.push(rec);
+        if (!rec.advanced) { rec.stuck = 'confirm produced no change'; break; }
       }
-      return seen;
+      const end = await readCensus();
+      // What the OLD panel painted during the whole pass. Fed by the draw call, so a zero here is
+      // a zero of pixels rather than a zero of intentions.
+      const reg = await h.page.evaluate(() => {
+        const r = window.__HARNESS.getRenderedText({ surface: 'dialogue' });
+        return { complete: r.complete, distinct_count: r.distinct_count, distinct: r.distinct.slice(0, 8), instrumented: r.surfaces_instrumented };
+      });
+      return { walk, evidence, done: end.done, spec: end.spec, character: end.character, old_panel_text: reg };
+    }
+
+    // THE PRESENCE CONTROL RUNS FIRST, and that ordering is not cosmetic. Run 2 measured the
+    // census, left it open on a node it could not answer, and then threw `talkTo: the census has
+    // the conversation` — losing the control entirely. A control that only runs when the
+    // experiment succeeded is a control that is absent exactly when it is needed.
+    // ---- THE PRESENCE CONTROL. An absence measured without one is not a measurement. -----------
+    await h.h('loadState', STATE);
+    await h.h('setMode', 'play-instrumented');
+    await h.h('stepFrames', 4);
+    await h.page.evaluate(() => {
+      const A = window.__HARNESS;
+      let best = null;
+      for (const n of A.listNPCs()) {
+        const st = A.talkTo(n.eid);
+        if (st && st.topics && st.topics.length > (best ? best.topics : -1)) best = { eid: n.eid, topics: st.topics.length };
+      }
+      if (best) A.talkTo(best.eid);
     });
-    report.data.census_walk = walk;
-    const onNew = walk.filter((w) => w.new_window_open).length;
-    const onOld = walk.filter((w) => w.old_panel_open).length;
-    push('C1 the character-creation flow uses the RI-UIX08 dialogue window',
-      walk.length > 0 && onNew === walk.length,
-      `${walk.length} creation node(s) drawn: ${onNew} on the RI-UIX08 window, ${onOld} on the old ` +
-      `render/ui.js reply panel. Input kinds seen: ` +
-      [...new Set(walk.map((w) => w.input_kind))].join(', '));
+    await h.h('stepFrames', 3);
+    const conv = await read();
+    report.data.presence_control = {
+      open: conv.open, census_mode: conv.census_mode, elements_present: conv.elements_present,
+      has_exit: conv.has_exit, has_dispo: conv.has_dispo,
+    };
+    push('C7 PRESENCE CONTROL: an ordinary conversation in the SAME run still has all six elements',
+      conv.open && !conv.census_mode && conv.has_exit && conv.has_dispo
+        && JSON.stringify(conv.elements_present) === '[1,2,3,4,5,6]',
+      `conversation window open=${conv.open}, census mode=${conv.census_mode}, ` +
+      `dialogue_exit=${conv.has_exit}, disposition_meter=${conv.has_dispo}, ` +
+      `elements_present=${JSON.stringify(conv.elements_present)} ` +
+      '(if these were also absent, C3 would be measuring a window that draws nothing)');
+    const rowsC = conv.elements.filter((e) => e.kind === 'list_row');
+    push('C8 LEAK CONTROL: no census affordance appears in an ordinary conversation',
+      conv.open && !conv.elements.some((e) => e.id === 'dialogue.census.typed')
+        && !rowsC.some((e) => String(e.text || '').startsWith('· ')),
+      `${rowsC.length} column row(s): ` +
+      `${conv.elements.filter((e) => e.id === 'dialogue.census.typed').length} typed row(s), ` +
+      `${rowsC.filter((e) => String(e.text || '').startsWith('· ')).length} carrying a picked mark (both must be 0)`);
+
+
+    // ---- C0. the opening, and the first thing the window is asked to draw ---------------------
+    await h.page.evaluate(() => { window.__ENGINE.censusBegin({}); });
+    await h.h('stepFrames', 4);
+    let c = await readCensus();
+    const first = { node: c.node, window: c.new_window_open, suppressed: c.old_panel_suppressed };
+    // `hold.come-to` is DELIBERATELY silent — RI-JRN01 O6, a body before anybody asks you
+    // anything — and `buildCensusModel` returns null there, so NO surface draws. Resume it and
+    // measure the first node that actually says something, which is what a new player sees first.
+    if (c.paused) {
+      await h.page.evaluate(() => { window.__ENGINE.censusEnter(null); });
+      await h.h('stepFrames', 4);
+      c = await readCensus();
+    }
+    report.data.census_open = {
+      first_node_silent: first, first_speaking_node: c.node,
+      window: c.new_window_open, census_mode: c.census_mode, suppressed: c.old_panel_suppressed,
+      speaker: c.speaker,
+    };
+    push('C0 the first thing a new player is told is drawn by the RI-UIX08 window, with the old panel suppressed',
+      c.new_window_open && c.census_mode && c.old_panel_suppressed === true,
+      `'${first.node}' is silent by design (O6: no surface, and none drew). First speaking node ` +
+      `'${c.node}': window open=${c.new_window_open} (census mode=${c.census_mode}), ` +
+      `render/ui.js suppressed=${c.old_panel_suppressed}, speaker '${c.speaker}'`);
+
+    // ---- the three routes --------------------------------------------------------------------
+    const runs = {};
+    runs.custom = await walkCensus(1, { walkRows: true });
+    runs.questionnaire = await walkCensus(2);
+    runs.named = await walkCensus(0);
+    report.data.runs = runs;
+
+    const allWalks = [].concat(runs.custom.walk, runs.questionnaire.walk, runs.named.walk);
+    const drew = allWalks.filter((w) => w.window_open).length;
+    const notSuppressed = allWalks.filter((w) => w.old_panel_suppressed !== true).length;
+    const silent = allWalks.filter((w) => !w.window_open);
+    push('C1 EVERY node of character creation is drawn by the RI-UIX08 window; the old panel is suppressed at all of them',
+      allWalks.length > 0 && notSuppressed === 0 && silent.every((w) => w.paused),
+      `${allWalks.length} node visit(s) over three class routes: ${drew} drew the RI-UIX08 window, ` +
+      `${notSuppressed} left render/ui.js unsuppressed (must be 0). ` +
+      `${silent.length} drew no surface at all — all paused hand-back nodes: ` +
+      `${silent.every((w) => w.paused)} (${[...new Set(silent.map((w) => w.node))].join(', ') || 'none'}). ` +
+      `Input kinds: ${[...new Set(allWalks.map((w) => w.input_kind || 'none'))].join(', ')}`);
+
+    const regs = [runs.custom.old_panel_text, runs.questionnaire.old_panel_text, runs.named.old_panel_text];
+    push('C1b PIXELS: the old vellum panel painted no text at all during any of the three passes',
+      regs.every((r) => r.complete && r.distinct_count === 0),
+      regs.map((r, i) => `pass ${i}: complete=${r.complete}, ${r.distinct_count} distinct string(s) on the ` +
+        `'dialogue' surface${r.distinct_count ? ` — e.g. ${JSON.stringify(r.distinct.slice(0, 3))}` : ''}`).join(' | '));
+
+    push('C2 all three routes complete — every node was answered through the window',
+      runs.custom.done && runs.questionnaire.done && runs.named.done,
+      `custom done=${runs.custom.done} (${runs.custom.walk.length} visits), ` +
+      `questionnaire done=${runs.questionnaire.done} (${runs.questionnaire.walk.length} visits), ` +
+      `named done=${runs.named.done} (${runs.named.walk.length} visits)`);
+
+    // §H1 — THE ABSENCES, POSITIVELY. The presence control is C7.
+    const censusFrames = allWalks.filter((w) => w.window_open);
+    const withExit = censusFrames.filter((w) => w.has_exit).length;
+    const withDispo = censusFrames.filter((w) => w.has_dispo).length;
+    const four = censusFrames.filter((w) => JSON.stringify(w.elements_present) === '[1,2,3,4]').length;
+    push('C3 §H1 no Goodbye and no disposition bar anywhere in creation, and the element census is 4 of 6',
+      censusFrames.length > 0 && withExit === 0 && withDispo === 0 && four === censusFrames.length,
+      `over ${censusFrames.length} census frame(s): ${withExit} declared a dialogue_exit, ` +
+      `${withDispo} a disposition_meter (both must be 0); ${four} declared exactly elements [1,2,3,4]`);
+
+    // §H2a — the multi-select mark.
+    const pk = runs.custom.evidence.picks;
+    push('C4 §H2a a pick is marked in the column, confirming it again removes the mark, and the count commits',
+      pk.length === 4 && pk.every((p) => p.marked_after_first === 1 && p.marked_after_unpick === 0 && p.advanced_to !== p.node),
+      pk.length ? pk.map((p) => `${p.node}: 1st pick -> ${p.marked_after_first} mark, un-pick -> ` +
+        `${p.marked_after_unpick}, advanced to '${p.advanced_to}'`).join(' | ') : 'no pick node reached');
+    const cust = pk.length ? pk[pk.length - 1].spec_custom : null;
+    push('C4b §H2a what the marks committed reached the character spec',
+      !!(cust && (cust.favoured || []).length === 2 && (cust.neglected || []).length === 2
+        && (cust.primary || []).length === 3 && (cust.secondary || []).length === 2),
+      `spec.custom after the four pick nodes: ${JSON.stringify(cust)}`);
+
+    // §H2b — the typed name, both routes.
+    const ty = runs.custom.evidence.typed;
+    const typedRun = ty.find((t) => t.route === 'typed');
+    push('C5 §H2b typing on a real keyboard reaches the typed row, and KeyE types an e rather than committing',
+      !!(typedRun && typedRun.after_typing && typedRun.after_typing.typed === 'Sathel'
+        && typedRun.after_typing.node === typedRun.node
+        && typedRun.after_backspace && typedRun.after_backspace.typed === 'Sathe'),
+      typedRun ? `typed row '${(typedRun.typed_row_before || []).join('')}' -> '${typedRun.after_typing.typed}' ` +
+        `(node still '${typedRun.after_typing.node}', so the 'e' did not commit) -> after Backspace ` +
+        `'${typedRun.after_backspace.typed}'` : 'no text node reached');
+    push('C5b §H2b the typed name is what gets committed',
+      !!(typedRun && typedRun.spec && typedRun.spec.hatchName === 'Sathe'),
+      typedRun ? `spec.hatchName after Enter = ${JSON.stringify(typedRun.spec && typedRun.spec.hatchName)} ` +
+        `(expected 'Sathe'), node '${typedRun.node}' -> '${typedRun.after_node}'` : 'no text node reached');
+    const ledgerRun = ty.find((t) => t.route === 'ledger');
+    push('C5c §H2b RI-JRN01 O17\'s other half — a ledger name is chosen with the caret instead',
+      !!(ledgerRun && ledgerRun.chose && ledgerRun.after_node !== ledgerRun.node
+        && ledgerRun.spec && ledgerRun.spec.givenName === ledgerRun.chose),
+      ledgerRun ? `chose '${ledgerRun.chose}' -> spec.givenName=${JSON.stringify(ledgerRun.spec && ledgerRun.spec.givenName)}, ` +
+        `node '${ledgerRun.node}' -> '${ledgerRun.after_node}'` : 'only one text node reached');
+
+    // the questionnaire — ten dilemmas on one node.
+    const qs = runs.questionnaire.evidence.questionnaire;
+    push('C6 the questionnaire asks a run of distinct dilemmas and every answer moves it on',
+      qs.length >= 8 && new Set(qs.map((q) => q.question)).size === qs.length,
+      `${qs.length} dilemma(s) answered, ${new Set(qs.map((q) => q.question)).size} distinct question id(s): ` +
+      qs.map((q) => q.question).join(', '));
+
+    // every caret step landed where it was aimed
+    const walked = runs.custom.walk.filter((w) => w.rows_walked);
+    const moved = walked.reduce((a, w) => a + (w.rows_idx_moved || 0), 0);
+    const asked = walked.reduce((a, w) => a + (w.rows_walked || 0), 0);
+    const marked = walked.reduce((a, w) => a + (w.rows_marked || 0), 0);
+    push('C6b every row the caret was walked onto moved the focus and was drawn focused',
+      asked > 0 && moved === asked && marked === asked,
+      `${asked} ArrowDown press(es) over ${walked.length} node(s): ${moved} moved rowIdx by exactly 1, ` +
+      `${marked} left a drawn row marked focused (capped at 8 rows per node — see the comment)`);
+
+    const stuck = allWalks.filter((w) => w.stuck);
+    push('C6c nothing in the scene got stuck',
+      stuck.length === 0,
+      stuck.map((s) => `${s.node}(${s.stuck})`).join(', ') || 'no node failed to advance across three full routes');
+
     report.checks = checks;
+    report.data.errors = h.errors ? h.errors.slice(0, 10) : [];
     writeJson(path.join(OUT, 'drive-probe-census.json'), report);
     log(`\n${checks.filter((c) => c.pass).length}/${checks.length} checks passed`);
     await h.close();

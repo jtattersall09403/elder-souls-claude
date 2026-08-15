@@ -363,13 +363,25 @@ they are `1.2b` checks — the screen must **work**, not merely look right.
 
 **H5 — What this section deliberately does not claim, and the honest weakness in it.**
 
-**Morrowind does not do this.** Its character creation is its own set of full-screen menus — the
-class picker, the birthsign picker, the specialization lists — and `REF-A12b-char_creation__mw-
-132183942.jpg` shows one of them: a panel over Seyda Neen, not a dialogue window. So **§H has no
-reference plate behind it and cannot have one**, and it must not be read as measured. What it is
-instead is this build's own ruling, and the argument for it is `RI-JRN01`'s, not Morrowind's: our
-creation scene is *a conversation with two women who write you down*, which Morrowind's is not, and a
-conversation belongs in the conversation window.
+**Morrowind does not do this.** Its character creation is its own family of panels — appearance and
+race, then class, then birthsign — and not its dialogue window.
+`REF-A12b/REF-A12b-char_creation__mw-132183942.jpg` was opened while writing this section and it
+shows the race panel: three columns (`Appearance` with a rotating portrait, the `Race` list,
+`Skill Bonus` and `Specials`), arrow-stepper rows for **Change Sex / Change Face / Change Hair**, and
+`Back` and `OK` buttons in the bottom-right. **None of those six things is in this window's
+vocabulary.** So **§H has no reference plate behind it and cannot have one**; it must not be read as
+measured. What it is instead is this build's own ruling, argued from `RI-JRN01` rather than from
+Morrowind: our creation scene is *a conversation with two women who write you down*, which
+Morrowind's is not, and a conversation belongs in the conversation window.
+
+**Two things the plate does settle, and one of them corrects an earlier draft of this section.**
+That draft called Morrowind's creation *"full-screen menus"*. **It is not full-screen.** It is a
+floating, bordered, translucent panel roughly centred over the running world — the dock planks, the
+water, the census-house wall and a tree are all visible around and through it, and the border is the
+same tan-ochre band the dialogue window uses. So the *shape* §H gives our creation scene — a floating
+translucent panel over the place you are standing in — is the shape Morrowind's own creation has, even
+though the contents are not. That is corroboration of §A1 and §E1 in the creation context
+specifically, and it is `RI-JRN01` M5's requirement arriving from the reference side.
 
 **The reversible ruling, and the evidence that would overturn it.** Ruling: creation runs on this
 window, in the shape above. It is overturned by a §G-form human gate in which a participant who has

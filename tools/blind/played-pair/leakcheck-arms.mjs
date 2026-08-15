@@ -28,8 +28,8 @@
 // of the number line, rather than one that can only see the deviation its author expected.
 //
 // USAGE
-//   node tools/blind/uix08-gate-g/leakcheck-arms.mjs --pack <dir> [--reveal <dir>] [--json out]
-//   node tools/blind/uix08-gate-g/leakcheck-arms.mjs --self-test [--scratch <dir>]
+//   node tools/blind/played-pair/leakcheck-arms.mjs --pack <dir> [--reveal <dir>] [--json out]
+//   node tools/blind/played-pair/leakcheck-arms.mjs --self-test [--scratch <dir>]
 //
 // EXIT 0 clean · 3 at least one channel leaks — DO NOT dispatch a judge · 1 usage/IO
 'use strict';
@@ -222,7 +222,7 @@ if (args['self-test']) {
   const scratch = path.resolve(String(args.scratch || path.join(REPO_ROOT, '.leakcheck-selftest')));
   fs.rmSync(scratch, { recursive: true, force: true });
   ensureDir(scratch);
-  const builder = path.join(REPO_ROOT, 'tools/blind/uix08-gate-g/build-arms.mjs');
+  const builder = path.join(REPO_ROOT, 'tools/blind/played-pair/build-arms.mjs');
   const build = (name, extra) => execFileSync(process.execPath,
     [builder, '--out', path.join(scratch, name, 'pack'), '--reveal', path.join(scratch, name, 'key'),
       '--seed', '99', '--force', ...extra], { stdio: 'pipe', encoding: 'utf8' });
