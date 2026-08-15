@@ -185,6 +185,56 @@ try {
     `real.attached=${wired.attached}, ArrowRight -> pipeline.moveX=${wired.moveX}, KeyE -> pendingPress=${wired.pending}`);
   if (!wired.attached) throw new Error('the real input listeners are not attached — nothing below this could be measured');
 
+  // ---- CENSUS ARM: which window does a NEW GAME actually put in front of the player? ----------
+  //
+  // §1.2b clause 3: "check it is actually the screen in use, everywhere it should be. Ask: which
+  // code paths open this kind of screen, and do they all open THIS one?" This arm walks the real
+  // opening — `censusBegin({})`, which is what `_titleApply('new')` calls — and reads which of
+  // the two surfaces is drawing, per node, with the node's own input kind beside it. It asserts
+  // nothing about which is right; it establishes what is, which is the first thing the fix for
+  // fault 2 needs and the thing that has never been written down.
+  if (CENSUS) {
+    await h.h('setMode', 'play-instrumented');
+    await h.h('setRenderRate', 0);
+    const walk = await h.page.evaluate(() => {
+      const A = window.__HARNESS, eng = window.__ENGINE;
+      const seen = [];
+      eng.censusBegin({});
+      for (let i = 0; i < 40; i++) {
+        const st = eng.getCensusState();
+        if (!st || st.done) break;
+        A.stepFrames(1);
+        const ui = A.getUIState();
+        seen.push({
+          node: st.node,
+          input_kind: st.input ? st.input.kind : null,
+          options: eng.censusSurface ? eng.censusSurface.options.length : 0,
+          old_panel_open: !!(ui.dialogue_surface && ui.dialogue_surface.open),
+          old_panel_options: (ui.dialogue_surface && ui.dialogue_surface.option_count !== undefined) ? ui.dialogue_surface.option_count : null,
+          new_window_open: !!(ui.dialogue_window && ui.dialogue_window.open),
+        });
+        // Advance by answering the first option, through the census's own commit path.
+        const opts = eng.censusSurface ? eng.censusSurface.options : [];
+        if (!opts.length) { if (eng.census.paused) eng.censusEnter(null); else break; }
+        else { try { eng.censusAnswer(opts[0].id); } catch { break; } A.stepFrames(1); }
+      }
+      return seen;
+    });
+    report.data.census_walk = walk;
+    const onNew = walk.filter((w) => w.new_window_open).length;
+    const onOld = walk.filter((w) => w.old_panel_open).length;
+    push('C1 the character-creation flow uses the RI-UIX08 dialogue window',
+      walk.length > 0 && onNew === walk.length,
+      `${walk.length} creation node(s) drawn: ${onNew} on the RI-UIX08 window, ${onOld} on the old ` +
+      `render/ui.js reply panel. Input kinds seen: ` +
+      [...new Set(walk.map((w) => w.input_kind))].join(', '));
+    report.checks = checks;
+    writeJson(path.join(OUT, 'drive-probe-census.json'), report);
+    log(`\n${checks.filter((c) => c.pass).length}/${checks.length} checks passed`);
+    await h.close();
+    process.exit(checks.every((c) => c.pass) ? 0 : 1);
+  }
+
   // ---- open a conversation -------------------------------------------------------------------
   //
   // OPENING is not what is under test and the world route needs a body walked into range, so the
@@ -391,6 +441,37 @@ try {
       `clicked '${linkEl.text}' at ${linkEl.rect.join(',')}; ${bm.lines} -> ${am.lines} lines, ` +
       `${bm.topics.length} -> ${am.topics.length} topics`);
   }
+  // ---- X1. DELETE-THE-FIX, in the same browser, on the same click ------------------------------
+  //
+  // RULES rule 6, and rule 6's second clause specifically: confirm the control is not itself
+  // inert. The teardown removes the ONE seam this fix adds — `real.onSurfacePointer`, the hook
+  // `input/real.js` consults before turning `Mouse0` into `light` — and nothing else. If the same
+  // click on the same row still answers with the hook gone, then something other than this change
+  // was carrying the result and the pass above means nothing.
+  bm = await read();
+  const rowX = bm.elements.find((e) => e.kind === 'list_row' && String(e.id).startsWith('dialogue.topic/'));
+  if (rowX) {
+    const saved = await h.page.evaluate(() => {
+      const r = window.__ENGINE.real;
+      window.__SAVED_HOOK = r.onSurfacePointer;
+      r.onSurfacePointer = null;
+      return typeof window.__SAVED_HOOK === 'function';
+    });
+    const bx = await read();
+    await click(rowX.rect[0] + rowX.rect[2] / 2, rowX.rect[1] + rowX.rect[3] / 2);
+    const ax = await read();
+    await h.page.evaluate(() => { window.__ENGINE.real.onSurfacePointer = window.__SAVED_HOOK; });
+    note('DELETE-THE-FIX: click column row with the pointer hook removed', bx, ax, { rect: rowX.rect });
+    report.data.delete_the_fix = { had_hook: saved, lines: [bx.lines, ax.lines], blocks: [bx.blocks.length, ax.blocks.length] };
+    push('X1 DELETE-THE-FIX: with the pointer hook removed the same click does nothing',
+      saved && ax.lines === bx.lines && ax.blocks.length === bx.blocks.length,
+      `hook was present=${saved}; ${bx.lines} -> ${ax.lines} lines, ${bx.blocks.length} -> ${ax.blocks.length} blocks ` +
+      '(this is the pre-fix behaviour the owner reported)');
+  } else {
+    push('X1 DELETE-THE-FIX: with the pointer hook removed the same click does nothing', false,
+      'no list_row to click for the control arm');
+  }
+
   bm = await read();
   const byeEl = bm.elements.find((e) => e.kind === 'dialogue_exit');
   if (!byeEl) {
@@ -404,6 +485,21 @@ try {
   }
 
   // ---- T1. touch. §1.2b clause 4 -----------------------------------------------------------------
+  //
+  // AND THE SECOND INSTRUMENT TRAP IN THIS FILE. `input/real.js applyDeviceClass()` attaches the
+  // touch listeners ONLY on device class `handheld`; on a desktop class they are detached, so a
+  // `PointerEvent` reaches nothing and T1 fails against a game that might be fine. That is the
+  // same shape as the harness-mode trap at the top and it cost this probe a second run. Force the
+  // class through A-JRN4's own door and then ASSERT the listeners are live before believing T1.
+  await h.h('setViewport', { pointer: 'coarse' });
+  const touchWired = await h.page.evaluate(() => {
+    const t = window.__ENGINE.real.touch;
+    return { enabled: !!t.enabled, attached: !!t.attached, hook: typeof t.onSurfacePointer === 'function' };
+  });
+  report.data.touch_instrument = touchWired;
+  push('I1 INSTRUMENT: the touch listeners are attached',
+    touchWired.enabled && touchWired.attached && touchWired.hook,
+    `touch.enabled=${touchWired.enabled}, attached=${touchWired.attached}, surface hook=${touchWired.hook}`);
   await h.page.evaluate(() => {
     const A = window.__HARNESS;
     let best = null;

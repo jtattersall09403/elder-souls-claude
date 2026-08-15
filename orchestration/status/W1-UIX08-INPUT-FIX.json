@@ -1,19 +1,50 @@
 {
   "task_id": "W1-UIX08-INPUT-FIX",
   "state": "in_progress",
-  "roadmap_item": "RI-UIX08 / dialogue window input path",
-  "started": "2026-08-15",
+  "roadmap_item": "RI-UIX08 / the dialogue window's input path",
+  "date": "2026-08-15",
   "could_not_do": [
-    "Nothing yet - just started. This field is first per dispatch and stays first."
+    "FAULT 2 (character creation does not use this window) is NOT fixed yet. Diagnosis only so far.",
+    "Gamepad arm not driven: no pad shim wired in this probe. Scored 0 fail-closed per CRITIC-DOCTRINE 1.2b clause 4 until driven.",
+    "The first run of my own drive probe reported EVERY keyboard check FAIL. That was MY INSTRUMENT, not the game: '?harness=1' calls real.detach(), so DOM KeyboardEvents reached nothing. Fixed with setMode('play-instrumented') plus an I0 instrument check that must pass before any other result is believed."
   ],
-  "summary": "Live defect: (1) dialogue topics cannot be selected; (2) character-creation/new-game flow does not use the RI-UIX08 dialogue window at all.",
-  "next_step": "Read HAZARDS 11-14, CRITIC-DOCTRINE 1.2b, RI-UIX08 item; locate dialogue window source and input handlers.",
+  "headline": "The keyboard/pad path was NEVER broken. MOUSE AND TOUCH WERE: there is no pointer path in ui/system.js at all (its own rule 2), so every drawn control in the dialogue window was inert to a click. The owner plays in a browser with a mouse.",
+  "measured_before_fix": {
+    "commit": "881606b3",
+    "probe": "tools/ui/dialogue-drive-probe.mjs (real DOM KeyboardEvent/MouseEvent/PointerEvent, nothing calls a UI function)",
+    "keyboard": "K1 ArrowRight prose->column PASS; K2 ArrowDown row 0->1 PASS; K3 KeyE answered, 1->6 lines PASS; K6 Goodbye closes PASS; K7 Space backs out PASS",
+    "mouse": "M1 click a column topic: 2->2 lines, NO EFFECT. M3 click Goodbye: window open true->true, NO EFFECT.",
+    "touch": "T1 tap a column topic: 2->2 lines, NO EFFECT.",
+    "other_dead_controls": "K4 10/12 column rows answered. Dead: 'Persuasion' (disposition 69->69, no block); re-asking the topic that is already the last block appends nothing (DialogueHistory.append idempotency guard)."
+  },
+  "fix": [
+    "game/src/ui/screens/dialogue.js: drawDialogue publishes a `hits` list built from the same rects the elements are declared with, plus `panel_rect`. Link rects padded toward the RI-UIX06 B4 touch floor without overlapping the next line.",
+    "game/src/ui/system.js: dialoguePointer(x,y,phase) hit-tests, moves the ONE caret, arms on press and confirms on release over the same control; dialogueStep consumes the confirm and routes it through the new _dialogueConfirm(), so mouse/touch/key/pad all decide the action in one place on a fixed step.",
+    "game/src/input/real.js: onSurfacePointer hook on mousedown/mouseup/mousemove, before Mouse0->light and before the pointer-lock request.",
+    "game/src/input/touch.js: onSurfacePointer hook in down()/up(), before _hitButton and before the stick claims the left half of the screen.",
+    "game/src/engine.js: _bindSurfacePointer() owns the client-px -> menus-canvas-px mapping in one place; _conversationSync releases pointer lock and sets pad.uiMode while a conversation is open."
+  ],
+  "next_step": "Re-run tools/ui/dialogue-drive-probe.mjs; expect M1/M2/M3/T1 to pass. Then delete-the-fix. Then fault 2.",
   "files_touched": [
-    "orchestration/status/W1-UIX08-INPUT-FIX.json"
+    "orchestration/status/W1-UIX08-INPUT-FIX.json",
+    "tools/ui/dialogue-drive-probe.mjs",
+    "tools/ui/dialogue-input-diag.mjs",
+    "game/src/ui/screens/dialogue.js",
+    "game/src/ui/system.js",
+    "game/src/input/real.js",
+    "game/src/input/touch.js",
+    "game/src/engine.js"
   ],
   "files_claimed": [
-    "game/src/ui/dialogue.js",
-    "game/src/character/scene.js",
-    "tools/"
-  ]
+    "game/src/ui/screens/dialogue.js",
+    "game/src/ui/system.js",
+    "game/src/input/real.js",
+    "game/src/input/touch.js",
+    "game/src/engine.js",
+    "tools/ui/dialogue-drive-probe.mjs"
+  ],
+  "declared_overlap": {
+    "W1-TOUCH-r2": "claims input/real.js and input/touch.js. My edits there are TWO additive hook call sites each (onSurfacePointer), null everywhere except while a conversation is open. No existing branch changed.",
+    "T4-r2-builder": "live in game/src/ui/screens/. I do not touch screens/progress.js, screens/inventory.js or hud.js."
+  }
 }

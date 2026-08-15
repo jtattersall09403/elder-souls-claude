@@ -285,6 +285,17 @@ export class TouchInput {
     this.lastTouchMs = tDown;
     this.visible = true;
     this.onActivity && this.onActivity('touch');
+    // W1-UIX08-INPUT-FIX — a tap on the dialogue window is a tap on the dialogue window.
+    //
+    // BEFORE `_hitButton` and before the stick, because the left half of the screen is the
+    // stick's origin (T2) and the dialogue window's prose pane sits in it. Without this, tapping
+    // a lit word on a phone starts walking. `onSurfacePointer` is null unless a conversation is
+    // open and returns false unless the tap is inside the panel, so nothing else in this file
+    // changes behaviour: the drawer, the petals, the stick and the camera are untouched.
+    if (this.onSurfacePointer && this.onSurfacePointer(x, y, 'down')) {
+      this.pointers.set(id, { role: 'surface', x, y });
+      return 'surface';
+    }
     const hit = this._hitButton(x, y);
     if (hit) {
       this.pointers.set(id, { role: 'button', action: hit.action, control: hit, downFrame: this.frame(), tDown });
@@ -343,6 +354,13 @@ export class TouchInput {
     this.lastTouchFrame = this.frame();
     this.lastTouchMs = tUp;
     if (p.role === 'stick') { this.stick.active = false; this.stick.x = 0; this.stick.y = 0; this.pipe.setMove(0, 0); return; }
+    // W1-UIX08-INPUT-FIX. The lift that completes the tap. `up(id, event)` carries no
+    // coordinates — nothing in this class needed them before — so the down position is replayed
+    // from the pointer record. A finger that slides off the row it landed on therefore still
+    // reads as a press and release on that row; a drag-to-cancel would need `move()` to update
+    // `p.x/p.y`, and that is deliberately NOT done here, because a thumb on a 44 px row wanders
+    // by several pixels on every tap and cancelling on that is how a touch control feels broken.
+    if (p.role === 'surface') { this.onSurfacePointer && this.onSurfacePointer(p.x, p.y, 'up'); return; }
     if (p.role === 'button' && p.action && !p.control.drawer) {
       const h = this.held.get(p.action);
       this.held.delete(p.action);
