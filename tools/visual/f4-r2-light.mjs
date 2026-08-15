@@ -106,6 +106,20 @@ const setupOk = await g.page.evaluate(() => {
       for (const m of mats) if (m) m.needsUpdate = true;
     });
   };
+  /**
+   * THE SAME ABLATION WITHOUT THE SHADER RECOMPILE. `renderer.shadowMap.enabled = false` is
+   * compiled into every program, so §3-D2's form costs a full-scene recompile per arm — measured
+   * on this box at roughly five minutes per hour of a sweep under SwiftShader, which is what
+   * killed the first attempt at this diagnosis. three r180 (`game/vendor/three/three.core.js`
+   * REVISION = '180') carries `LightShadow.intensity`, which is a UNIFORM: the shader computes
+   * `shadowValue = 1 - intensity * (1 - shadowValue)`, so 0 means "fully lit" without touching
+   * the program. NOT ASSUMED EQUIVALENT — `--equiv` measures both forms at one pose and the run
+   * refuses to use this one unless they agree.
+   */
+  window.__shadowIntensity = (v) => {
+    const s = window.__sunLight;
+    if (s && s.shadow) s.shadow.intensity = v;
+  };
   window.__cfgFn = () => {};
   const prev = R.scene.onBeforeRender ? R.scene.onBeforeRender.bind(R.scene) : null;
   R.scene.onBeforeRender = function (...a) {
@@ -120,6 +134,7 @@ const setupOk = await g.page.evaluate(() => {
     R.scene.traverse((o) => { if (o.isLight) { delete o.__wrote; delete o.__base; } });
     delete R.scene.__envWrote; delete R.scene.__envBase;
     for (const [o, i, v] of window.__saved.lights) { o.intensity = i; o.visible = v; }
+    window.__shadowIntensity(1);
     window.__shadowMap(window.__saved.shadowMap);
     R.scene.environmentIntensity = window.__saved.envI;
   };
@@ -157,8 +172,15 @@ console.log(`arm=${ARM} entry=${ENTRY} sun found, shadowMap=${setupOk.mapSize}, 
 const CONFIGS = {
   base:        '() => {}',
   shadows_off: '() => { window.__shadowMap(false); }',
+  shadows_off_u: '() => { window.__shadowIntensity(0); }',
   key_off:     '() => { const s = window.__scene(); s.traverse((o) => { if (o.isDirectionalLight && o.parent === s) window.__setLight(o, 0); }); }',
   env_off:     '() => { window.__envScale(0); }',
+  // THE TWO ARMS NOBODY HAS EVER RUN. S60 clause (a) compares the KEY against the PROBE and puts
+  // the hemisphere and the ambient fill in NEITHER arm, so the frame's fourth and fifth lights
+  // have never been ablated by anything in this project. Without them "which term carries the
+  // shadow side" is an argument, and choosing a lever from an argument is how round 1 got here.
+  hemi_off:    '() => { const s = window.__scene(); s.traverse((o) => { if (o.isHemisphereLight) window.__setLight(o, 0); }); }',
+  fill_off:    '() => { const s = window.__scene(); s.traverse((o) => { if (o.isAmbientLight) window.__setLight(o, 0); }); }',
 };
 
 /**
@@ -184,15 +206,25 @@ const MIX = `
   };
   const WARM = [1.000, 0.855, 0.660];   // ~4800 K sunlight
   const COOL = [0.148, 0.393, 0.798];   // the day zenith's own ratio, normalised
+  // MEASURED, NOT GUESSED: the first candidate battery moved hue_offset by 0.18 deg on the sealed
+  // pair01 crop (7.16 -> 7.34) with `cool = 0.40`, because CONSTANT LUMINANCE pulls a lerp back
+  // toward where it started when the start is already near the target's luminance. The night
+  // recipe reaches 22-33 deg with a key of [0.549, 0.663, 0.847] — a hardcoded cool moon — so the
+  // MAGNITUDE of tint that works on this scene's olive albedo is known, and these two targets are
+  // that magnitude, applied without the luminance normaliser fighting them.
+  const WARM_HARD = [1.000, 0.760, 0.480];
+  const COOL_HARD = [0.480, 0.680, 1.000];
+  const mixRaw = (c, t, k) => { if (k <= 0) return; c.setRGB(c.r * (1 - k) + t[0] * k, c.g * (1 - k) + t[1] * k, c.b * (1 - k) + t[2] * k); };
 `;
-function candidateCfg({ warm = 0, cool = 0, skyMul = 1, fillMul = 1, envMul = 1 }) {
+function candidateCfg({ warm = 0, cool = 0, skyMul = 1, fillMul = 1, envMul = 1, hard = false }) {
+  const W = hard ? 'WARM_HARD' : 'WARM', C = hard ? 'COOL_HARD' : 'COOL', M = hard ? 'mixRaw' : 'mixTo';
   return `() => {
     ${MIX}
     const s = window.__scene();
     s.traverse((o) => {
-      if (o.isDirectionalLight && o.parent === s && o === window.__sunLight) mixTo(o.color, WARM, ${warm});
-      else if (o.isHemisphereLight) { mixTo(o.color, COOL, ${cool}); if (${skyMul} !== 1) window.__setLight(o, window.__lightBase(o) * ${skyMul}); }
-      else if (o.isAmbientLight) { mixTo(o.color, COOL, ${cool}); if (${fillMul} !== 1) window.__setLight(o, window.__lightBase(o) * ${fillMul}); }
+      if (o.isDirectionalLight && o.parent === s && o === window.__sunLight) ${M}(o.color, ${W}, ${warm});
+      else if (o.isHemisphereLight) { ${M}(o.color, ${C}, ${cool}); if (${skyMul} !== 1) window.__setLight(o, window.__lightBase(o) * ${skyMul}); }
+      else if (o.isAmbientLight) { ${M}(o.color, ${C}, ${cool}); if (${fillMul} !== 1) window.__setLight(o, window.__lightBase(o) * ${fillMul}); }
     });
     if (${envMul} !== 1) window.__envScale(${envMul});
   }`;
@@ -302,8 +334,68 @@ const reportPath = path.join(OUT, `${MODE}.json`);
 try {
   const setup = DECK.setups.find((s) => s.id === String(args.setup || 'char-player'));
 
+  if (MODE === 'budget') {
+    // WHICH LIGHT CARRIES WHICH PART OF THE FRAME. Five arms at one judged window, each ablating
+    // exactly one term, reported on the SEALED JUDGED CROP and the full frame (S64: the crop is
+    // the domain, the frame is always reported alongside). `base_recheck` last, so the run carries
+    // its own noise floor and a delta smaller than it is reported as unresolved rather than real.
+    const WIN = { pair01: { setup: 'char-player', hour: 8, crop: [300, 150, 512, 512] }, pair03: { setup: 'char-npc', hour: 13, crop: [1100, 150, 512, 512] } };
+    for (const wid of String(args.windows || 'pair01').split(',')) {
+      const w = WIN[wid];
+      const st = DECK.setups.find((s) => s.id === w.setup);
+      await call('teleport', st.place.x, st.place.z);
+      await call('stepFrames', 4);
+      await call('setWeather', 'clear');
+      await call('setTimeOfDay', w.hour);
+      const sp = await subjectPos(st.camera.subject);
+      await poseAt(sp, st.camera);
+      await call('stepFrames', SETTLE);
+      const dir = path.join(OUT, wid); fs.mkdirSync(dir, { recursive: true });
+      const shots = {};
+      for (const c of ['base', 'key_off', 'env_off', 'hemi_off', 'fill_off', 'shadows_off_u', 'base_recheck']) {
+        shots[c] = await capture(path.join(dir, `${c}.png`), c === 'base_recheck' ? 'base' : c);
+      }
+      const dl = (a, b) => { const A = rawOf(a), B = rawOf(b); const n = Math.min(A.length, B.length) / 3; let s = 0; for (let i = 0; i < n; i++) s += (Math.abs(A[i * 3] - B[i * 3]) + Math.abs(A[i * 3 + 1] - B[i * 3 + 1]) + Math.abs(A[i * 3 + 2] - B[i * 3 + 2])) / 3; return +(s / n).toFixed(4); };
+      const row = { mode: MODE, window: wid, hour: w.hour, crop: w.crop, readback: shots.base.readback, full: {}, noise_floor_full: dl(shots.base.abs, shots.base_recheck.abs) };
+      for (const c of ['key_off', 'env_off', 'hemi_off', 'fill_off', 'shadows_off_u']) row.full[c] = dl(shots.base.abs, shots[c].abs);
+      row.files = Object.fromEntries(Object.entries(shots).map(([k, v]) => [k, v.file]));
+      manifest.rows.push(row);
+      console.log(`  ${wid} FULL FRAME mean|d|rgb   ${Object.entries(row.full).map(([k, v]) => `${k}=${v}`).join('  ')}   [noise floor ${row.noise_floor_full}]`);
+    }
+  }
+
+  if (MODE === 'equiv') {
+    // ONE POSE, BOTH ABLATION FORMS. §3-D2 names `renderer.shadowMap.enabled = false`; this run
+    // is the licence to use the uniform form instead of it, and it is required to fail if the two
+    // disagree. Reported as the full tau curve, not at one tau, and as the SHA of each frame.
+    await call('teleport', setup.place.x, setup.place.z);
+    await call('stepFrames', 4);
+    await call('setWeather', 'clear');
+    const sp = await subjectPos('player');
+    for (const hour of String(args.hours || '8,13').split(',').map(Number)) {
+      await call('setTimeOfDay', hour);
+      await poseAt(sp, { yaw_deg: Number(args.yaw || 180), pitch_deg: -14, distance_m: 9.0, lookHeight: 1.2 });
+      await call('stepFrames', SETTLE);
+      const dir = path.join(OUT, `t${hour}`); fs.mkdirSync(dir, { recursive: true });
+      const b = await capture(path.join(dir, 'base.png'), 'base');
+      const su = await capture(path.join(dir, 'shadows_off_u.png'), 'shadows_off_u');
+      const sm = await capture(path.join(dir, 'shadows_off.png'), 'shadows_off');
+      const b2 = await capture(path.join(dir, 'base_recheck.png'), 'base');
+      const areaU = shadowAreaCurve(b.abs, su.abs);
+      const areaM = shadowAreaCurve(b.abs, sm.abs);
+      manifest.rows.push({
+        mode: MODE, hour, area_uniform: areaU, area_shadowmap: areaM,
+        base_sha: b.sha, base_recheck_sha: b2.sha, base_deterministic: b.sha === b2.sha,
+        uniform_sha: su.sha, shadowmap_sha: sm.sha, frames_identical: su.sha === sm.sha,
+        readback: b.readback,
+      });
+      console.log(`  t=${hour} uniform tau8=${areaU.tau8} tau1=${areaU.tau1} | shadowMap tau8=${areaM.tau8} tau1=${areaM.tau1} | base deterministic=${b.sha === b2.sha} | arms byte-identical=${su.sha === sm.sha}`);
+    }
+  }
+
   if (MODE === 'hoursweep') {
     const hours = String(args.hours || '6,7,8,9,10,11,12,13,14,15,16,17,18').split(',').map(Number);
+    const offArm = String(args.off || 'shadows_off_u');
     await call('teleport', setup.place.x, setup.place.z);
     await call('stepFrames', 4);
     await call('setWeather', String(args.weather || 'clear'));
@@ -314,7 +406,7 @@ try {
       await call('stepFrames', SETTLE);
       const dir = path.join(OUT, `t${hour}`); fs.mkdirSync(dir, { recursive: true });
       const b = await capture(path.join(dir, 'base.png'), 'base');
-      const s = await capture(path.join(dir, 'shadows_off.png'), 'shadows_off');
+      const s = await capture(path.join(dir, 'shadows_off.png'), offArm);
       const area = (b.abs && s.abs) ? shadowAreaCurve(b.abs, s.abs) : null;
       manifest.rows.push({ mode: MODE, hour, base: b.file, shadows_off: s.file, readback: b.readback, area, liveness: [b.liveness, s.liveness] });
       console.log(`  t=${String(hour).padEnd(4)} elev=${String(b.readback.sunElevationDeg).padEnd(8)} sun=${String(b.readback.sunIntensity).padEnd(8)} castShadow=${b.readback.sunCastShadow} nbias=${b.readback.shadowNormalBias} cam=${b.readback.shadowCamera ? b.readback.shadowCamera.right : '-'}  area@8=${area ? area.tau8 : '-'}  area@1=${area ? area.tau1 : '-'}`);
@@ -347,16 +439,30 @@ try {
   if (MODE === 'screen') {
     // The candidates. `c0` is the CONTROL and it must reproduce the landed build exactly — if it
     // does not, the rig itself is moving the frame and nothing below means anything.
-    const CANDIDATES = [
-      { id: 'c0-control', warm: 0, cool: 0 },
-      { id: 'c1-cool40', warm: 0, cool: 0.40 },
-      { id: 'c2-warm70', warm: 0.70, cool: 0 },
-      { id: 'c3-warm70-cool40', warm: 0.70, cool: 0.40 },
-      { id: 'c4-warm70-cool40-amb146', warm: 0.70, cool: 0.40, skyMul: 1.46, fillMul: 1.47 },
-      { id: 'c5-warm100-cool60-amb146', warm: 1.00, cool: 0.60, skyMul: 1.46, fillMul: 1.47 },
-      { id: 'c6-warm70-cool40-amb146-env157', warm: 0.70, cool: 0.40, skyMul: 1.46, fillMul: 1.47, envMul: 1.57 },
-      { id: 'c7-warm100-cool55-amb190', warm: 1.00, cool: 0.55, skyMul: 1.90, fillMul: 1.90 },
-    ];
+    const SETS = {
+      soft: [
+        { id: 'c0-control', warm: 0, cool: 0 },
+        { id: 'c1-cool40', warm: 0, cool: 0.40 },
+        { id: 'c2-warm70', warm: 0.70, cool: 0 },
+        { id: 'c3-warm70-cool40', warm: 0.70, cool: 0.40 },
+        { id: 'c4-warm70-cool40-amb146', warm: 0.70, cool: 0.40, skyMul: 1.46, fillMul: 1.47 },
+        { id: 'c5-warm100-cool60-amb146', warm: 1.00, cool: 0.60, skyMul: 1.46, fillMul: 1.47 },
+        { id: 'c6-warm70-cool40-amb146-env157', warm: 0.70, cool: 0.40, skyMul: 1.46, fillMul: 1.47, envMul: 1.57 },
+        { id: 'c7-warm100-cool55-amb190', warm: 1.00, cool: 0.55, skyMul: 1.90, fillMul: 1.90 },
+      ],
+      // The second battery. `d0` REPEATS the control, so this run carries its own replicate of the
+      // landed build and a drift between the two batteries is visible rather than assumed.
+      hard: [
+        { id: 'd0-control', warm: 0, cool: 0 },
+        { id: 'd1-coolhard100', hard: true, warm: 0, cool: 1.00 },
+        { id: 'd2-warmhard100', hard: true, warm: 1.00, cool: 0 },
+        { id: 'd3-both100', hard: true, warm: 1.00, cool: 1.00 },
+        { id: 'd4-both100-amb250', hard: true, warm: 1.00, cool: 1.00, skyMul: 2.50, fillMul: 2.50 },
+        { id: 'd5-both100-amb250-env50', hard: true, warm: 1.00, cool: 1.00, skyMul: 2.50, fillMul: 2.50, envMul: 0.50 },
+        { id: 'd6-both60-amb180', hard: true, warm: 0.60, cool: 0.60, skyMul: 1.80, fillMul: 1.80 },
+      ],
+    };
+    const CANDIDATES = SETS[String(args.set || 'soft')] || SETS.soft;
     const windows = String(args.windows || 'pair01,pair03').split(',');
     const WIN = {
       pair01: { setup: 'char-player', hour: 8 },
