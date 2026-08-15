@@ -911,10 +911,20 @@ export class UISystem {
     // and the topics they would have added present in the column FROM THE START. That is a build
     // a reasonable team could ship (it is what most dialogue systems do), which is exactly what
     // makes it a plausible control rather than a broken one.
+    // THE ARM'S EXTRAS MUST EXCLUDE THE ACTION ROWS, AND THIS LINE IS A REPAIR, NOT A TWEAK.
+    // `_dialogueCtx()` builds `linkable` from ALL of `rows`, which includes the SERVICE rows
+    // (`barter`, `training`, `travel`, …) that §D2 puts ABOVE the rule as things you DO with this
+    // person. Filtering the extras only against `topics` therefore appended every service row a
+    // second time, into the alphabetical ASK-about run — which is precisely the failure §D2 names
+    // ("a build that mixes `Barter` into the alphabetical run has lost the distinction"). That is
+    // a defect in the CONTROL, unrelated to the thing under test, and a control that is worse for
+    // an unrelated reason is `HAZARDS` §0's broken null wearing a plausible arm's clothes: the
+    // judge would be separating a mixed-up column, not a missing inline link.
     const linksOn = this.dialogueArm.links !== false;
     let columnTopics = topics;
     if (!linksOn) {
       const have = new Set(topics.map((t) => t.id));
+      for (const a of actions) have.add(a.id);
       const extra = (d.linkable || []).filter((t) => !have.has(t.id));
       columnTopics = topics.concat(extra).sort((a, b) => a.label.localeCompare(b.label));
     }
