@@ -1,0 +1,261 @@
+{
+  "tool": "f7-r2-weights-offline",
+  "generated": "2026-08-15T18:54:07.484Z",
+  "dir": "reports/visual-truth/f7-r2/probes2",
+  "file_asserts": {
+    "r2_schlick_in_file": true,
+    "r2_f0_in_file": true,
+    "r2_distance_broadening_in_file": true,
+    "r2_mix_in_file": true
+  },
+  "poses": {
+    "topdown-120": {
+      "usable_water_px": 409633,
+      "closed_form_validation": {
+        "mean_abs_error_vs_gpu": 0.0787,
+        "worst_abs_error": 1,
+        "pearson_r": -0.1142,
+        "verdict": "FAIL — the closed form and the GPU disagree; the round-1 row is withheld"
+      },
+      "bins": {
+        "all_water": {
+          "round2_measured": {
+            "n": 409633,
+            "mean": 0.0897,
+            "p05": 0.0187,
+            "median": 0.0888,
+            "p95": 0.1725
+          },
+          "round2_from_closed_form": {
+            "n": 409633,
+            "mean": 0.0925,
+            "p05": 0.02,
+            "median": 0.073,
+            "p95": 0.4201
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        },
+        "near_normal_esView_gt_0_99": {
+          "round2_measured": {
+            "n": 168789,
+            "mean": 0.0537,
+            "p05": 0.024,
+            "median": 0.0545,
+            "p95": 0.0944
+          },
+          "round2_from_closed_form": {
+            "n": 168789,
+            "mean": 0.02,
+            "p05": 0.02,
+            "median": 0.02,
+            "p95": 0.02
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        },
+        "near_normal_esView_gt_0_90": {
+          "round2_measured": {
+            "n": 188548,
+            "mean": 0.0584,
+            "p05": 0.024,
+            "median": 0.0581,
+            "p95": 0.1075
+          },
+          "round2_from_closed_form": {
+            "n": 188548,
+            "mean": 0.02,
+            "p05": 0.02,
+            "median": 0.02,
+            "p95": 0.02
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        },
+        "dist_110_130_m": {
+          "round2_measured": {
+            "n": 2172,
+            "mean": 0.0692,
+            "p05": 0.0202,
+            "median": 0.0597,
+            "p95": 0.1525
+          },
+          "round2_from_closed_form": {
+            "n": 2172,
+            "mean": 0.1389,
+            "p05": 0.076,
+            "median": 0.1366,
+            "p95": 0.2819
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        },
+        "dist_55_65_m": {
+          "round2_measured": {
+            "n": 2976,
+            "mean": 0.0348,
+            "p05": 0.0083,
+            "median": 0.0264,
+            "p95": 0.0868
+          },
+          "round2_from_closed_form": {
+            "n": 2976,
+            "mean": 0.4394,
+            "p05": 0.3662,
+            "median": 0.425,
+            "p95": 0.5056
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        },
+        "dist_55_65_grazing_esView_lt_0_20": {
+          "round2_measured": {
+            "n": 7,
+            "mean": 0.0489,
+            "p05": 0.0083,
+            "median": 0.0524,
+            "p95": 0.0793
+          },
+          "round2_from_closed_form": {
+            "n": 7,
+            "mean": 0.6515,
+            "p05": 0.5958,
+            "median": 0.6194,
+            "p95": 0.8774
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        },
+        "grazing_esView_lt_0_20": {
+          "round2_measured": {
+            "n": 8995,
+            "mean": 0.0295,
+            "p05": 0,
+            "median": 0.022,
+            "p95": 0.0793
+          },
+          "round2_from_closed_form": {
+            "n": 8995,
+            "mean": 0.6049,
+            "p05": 0.3757,
+            "median": 0.5555,
+            "p95": 0.9182
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        }
+      }
+    },
+    "d-water-edge": {
+      "usable_water_px": 208233,
+      "closed_form_validation": {
+        "mean_abs_error_vs_gpu": 0.1989,
+        "worst_abs_error": 0.9487,
+        "pearson_r": 0.5774,
+        "verdict": "FAIL — the closed form and the GPU disagree; the round-1 row is withheld"
+      },
+      "bins": {
+        "all_water": {
+          "round2_measured": {
+            "n": 208233,
+            "mean": 0.3685,
+            "p05": 0.0969,
+            "median": 0.2796,
+            "p95": 0.8923
+          },
+          "round2_from_closed_form": {
+            "n": 208233,
+            "mean": 0.296,
+            "p05": 0.0385,
+            "median": 0.2141,
+            "p95": 0.795
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        },
+        "near_normal_esView_gt_0_99": {
+          "round2_measured": {
+            "n": 0,
+            "note": "no pixel in this bin"
+          },
+          "round2_from_closed_form": {
+            "n": 0,
+            "note": "no pixel in this bin"
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        },
+        "near_normal_esView_gt_0_90": {
+          "round2_measured": {
+            "n": 0,
+            "note": "no pixel in this bin"
+          },
+          "round2_from_closed_form": {
+            "n": 0,
+            "note": "no pixel in this bin"
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        },
+        "dist_110_130_m": {
+          "round2_measured": {
+            "n": 20,
+            "mean": 0.6989,
+            "p05": 0.5934,
+            "median": 0.7435,
+            "p95": 0.9979
+          },
+          "round2_from_closed_form": {
+            "n": 20,
+            "mean": 0.5937,
+            "p05": 0.5644,
+            "median": 0.604,
+            "p95": 0.6389
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        },
+        "dist_55_65_m": {
+          "round2_measured": {
+            "n": 275,
+            "mean": 0.594,
+            "p05": 0.1253,
+            "median": 0.594,
+            "p95": 1
+          },
+          "round2_from_closed_form": {
+            "n": 275,
+            "mean": 0.6147,
+            "p05": 0.4121,
+            "median": 0.6349,
+            "p95": 0.7428
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        },
+        "dist_55_65_grazing_esView_lt_0_20": {
+          "round2_measured": {
+            "n": 217,
+            "mean": 0.6821,
+            "p05": 0.2916,
+            "median": 0.7451,
+            "p95": 1
+          },
+          "round2_from_closed_form": {
+            "n": 217,
+            "mean": 0.6533,
+            "p05": 0.6089,
+            "median": 0.6442,
+            "p95": 0.7443
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        },
+        "grazing_esView_lt_0_20": {
+          "round2_measured": {
+            "n": 72092,
+            "mean": 0.5594,
+            "p05": 0.079,
+            "median": 0.6415,
+            "p95": 1
+          },
+          "round2_from_closed_form": {
+            "n": 72092,
+            "mean": 0.5994,
+            "p05": 0.4,
+            "median": 0.559,
+            "p95": 0.8581
+          },
+          "round1_from_closed_form": "VOID — the closed form does not reproduce the measured round-2 weight"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,231 @@
+{
+  "tool": "f7-r2-sweep",
+  "site": "vista-deep-marshes",
+  "generated": "2026-08-15T18:56:24.214Z",
+  "seed": 20260814,
+  "time_of_day": 13,
+  "canvas": [
+    960,
+    540
+  ],
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "null_control_constant": 0.086,
+  "commit": "1d83c25d2d41f172840c2f824ea877909fcdd559",
+  "player": [
+    3123.5,
+    1.16,
+    3715
+  ],
+  "deck_declared_region": "deep-marshes",
+  "region_probe": {
+    "field_region": "deep-marshes",
+    "getWaterAt": {
+      "depth_m": 0.717,
+      "band": "W3",
+      "substrate": "SUCK",
+      "region": "deep-marshes",
+      "region_name": "The Deep Marshes",
+      "sea": null,
+      "tidal": false,
+      "k": 4.5,
+      "ground_y": 1.163,
+      "surface_y": 1.88
+    }
+  },
+  "head_expression_asserted": "PASS — game/src/render/water.js contains the round-2 weight verbatim",
+  "arms": {
+    "surface-hidden": {
+      "what": "POSITIVE CONTROL and WATER_MASK source — the water table hidden",
+      "kind": "mesh",
+      "poses": {
+        "topdown-120": {
+          "why": "r1's own pose — straight down at 120 m; clause (a) case 1, clause (c), clause (d)",
+          "r1_unmasked": {
+            "lane_power": 0.522,
+            "lane_angle": -90,
+            "lane_aniso": 1.59,
+            "x_rms": 2.524,
+            "z_rms": 1.632
+          }
+        },
+        "c-vista-11-d26": {
+          "why": "the deck vista pose — what a player judges the world by, and the r1 critic's M12 pose"
+        },
+        "d-water-edge": {
+          "why": "the water_edge shot clause (b) names: low over the water with bank and sky above the waterline, so ReflCorr and NormalEnergy are obtainable"
+        }
+      },
+      "meshes_hidden": 48
+    },
+    "water-hidden": {
+      "what": "both water classes hidden — the M12 WATER_MASK source and the probe mask",
+      "kind": "mesh",
+      "poses": {
+        "topdown-120": {
+          "why": "r1's own pose — straight down at 120 m; clause (a) case 1, clause (c), clause (d)",
+          "r1_unmasked": {
+            "lane_power": 0.508,
+            "lane_angle": -56,
+            "lane_aniso": 1.66,
+            "x_rms": 2.484,
+            "z_rms": 1.334
+          },
+          "masked": {
+            "water_mask_pct_of_frame": 0.89,
+            "water_px_in_crop": 2152,
+            "mean_luma": 40.294,
+            "band_rms": 7.9494,
+            "band_contrast": 0.19729,
+            "lanes_on_water": null
+          }
+        },
+        "c-vista-11-d26": {
+          "why": "the deck vista pose — what a player judges the world by, and the r1 critic's M12 pose",
+          "masked": {
+            "water_mask_pct_of_frame": 0.27,
+            "water_px_in_crop": 819,
+            "mean_luma": 52.364,
+            "band_rms": 17.2712,
+            "band_contrast": 0.32983,
+            "lanes_on_water": null
+          }
+        },
+        "d-water-edge": {
+          "why": "the water_edge shot clause (b) names: low over the water with bank and sky above the waterline, so ReflCorr and NormalEnergy are obtainable",
+          "masked": {
+            "water_mask_pct_of_frame": 0.4,
+            "water_px_in_crop": 1511,
+            "mean_luma": 45.319,
+            "band_rms": 16.8055,
+            "band_contrast": 0.37082,
+            "lanes_on_water": null
+          }
+        }
+      },
+      "meshes_hidden": 94
+    },
+    "fixed": {
+      "what": "HEAD — the round-2 Schlick weight, no edit",
+      "kind": "shader",
+      "poses": {
+        "topdown-120": {
+          "why": "r1's own pose — straight down at 120 m; clause (a) case 1, clause (c), clause (d)",
+          "r1_unmasked": {
+            "lane_power": 4.856,
+            "lane_angle": -50,
+            "lane_aniso": 8.3,
+            "x_rms": 4.002,
+            "z_rms": 3.506
+          },
+          "masked": {
+            "water_mask_pct_of_frame": 86.78,
+            "water_px_in_crop": 198111,
+            "mean_luma": 69.917,
+            "band_rms": 11.0766,
+            "band_contrast": 0.15843,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": -52,
+              "lane_power": 4.0889,
+              "lane_aniso": 2.34,
+              "lane_power_normalised": 0.000836
+            }
+          },
+          "m12": {
+            "water_mask_px": 455766,
+            "water_mask_pct": 87.92,
+            "sequence_frames": 0,
+            "values": {
+              "water_px": 455766,
+              "water_frac": 0.87918,
+              "FresnelDelta": -0.0078,
+              "NormalEnergy": null,
+              "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+              "ShoreDelta": 0.04335,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": null
+            },
+            "band_verdict": {
+              "FresnelDelta": "FAIL (< 0.05)",
+              "NormalEnergy": "UNMEASURABLE (0 fail-closed)",
+              "ShoreDelta": "PASS (>= 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "UNMEASURABLE (0 fail-closed)"
+            }
+          }
+        },
+        "c-vista-11-d26": {
+          "why": "the deck vista pose — what a player judges the world by, and the r1 critic's M12 pose",
+          "masked": {
+            "water_mask_pct_of_frame": 55.95,
+            "water_px_in_crop": 143732,
+            "mean_luma": 71.978,
+            "band_rms": 14.3391,
+            "band_contrast": 0.19921,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": -90,
+              "lane_power": 16.7092,
+              "lane_aniso": 1.66,
+              "lane_power_normalised": 0.003225
+            }
+          },
+          "m12": {
+            "water_mask_px": 294976,
+            "water_mask_pct": 56.9,
+            "sequence_frames": 5,
+            "values": {
+              "water_px": 294976,
+              "water_frac": 0.56901,
+              "FresnelDelta": 0.03549,
+              "NormalEnergy": null,
+              "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+              "ShoreDelta": 0.00245,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": 0.00268,
+              "tvReason": null,
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": null
+            },
+            "band_verdict": {
+              "FresnelDelta": "FAIL (< 0.05)",
+              "NormalEnergy": "UNMEASURABLE (0 fail-closed)",
+              "ShoreDelta": "FAIL (< 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "PASS (>= 0.002)"
+            }
+          }
+        }
+      }
+    }
+  },
+  "checks": {},
+  "pageErrors": [],
+  "scale": {
+    "fov": 50,
+    "m_per_px_X": 0.2072,
+    "m_per_px_Z": 0.2072
+  }
+}

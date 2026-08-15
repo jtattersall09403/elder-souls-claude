@@ -1,0 +1,384 @@
+{
+  "tool": "f7-r2-sweep",
+  "site": "vista-deep-marshes",
+  "generated": "2026-08-15T18:44:32.595Z",
+  "seed": 20260814,
+  "time_of_day": 13,
+  "canvas": [
+    960,
+    540
+  ],
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "null_control_constant": 0.086,
+  "commit": "791c7badd285508328dc7be4a13323bc2658927a",
+  "player": [
+    3123.5,
+    1.16,
+    3715
+  ],
+  "deck_declared_region": "deep-marshes",
+  "region_probe": {
+    "field_region": "deep-marshes",
+    "getWaterAt": {
+      "depth_m": 0.717,
+      "band": "W3",
+      "substrate": "SUCK",
+      "region": "deep-marshes",
+      "region_name": "The Deep Marshes",
+      "sea": null,
+      "tidal": false,
+      "k": 4.5,
+      "ground_y": 1.163,
+      "surface_y": 1.88
+    }
+  },
+  "head_expression_asserted": "PASS — game/src/render/water.js contains the round-2 weight verbatim",
+  "arms": {
+    "surface-hidden": {
+      "what": "POSITIVE CONTROL and WATER_MASK source — the water table hidden",
+      "kind": "mesh",
+      "poses": {
+        "d-water-edge": {
+          "why": "the water_edge shot clause (b) names: low over the water with bank and sky above the waterline, so ReflCorr and NormalEnergy are obtainable"
+        }
+      },
+      "meshes_hidden": 48
+    },
+    "water-hidden": {
+      "what": "both water classes hidden — the M12 WATER_MASK source and the probe mask",
+      "kind": "mesh",
+      "poses": {
+        "d-water-edge": {
+          "why": "the water_edge shot clause (b) names: low over the water with bank and sky above the waterline, so ReflCorr and NormalEnergy are obtainable",
+          "masked": {
+            "water_mask_pct_of_frame": 0.63,
+            "water_px_in_crop": 2201,
+            "mean_luma": 40.428,
+            "band_rms": 14.785,
+            "band_contrast": 0.36571,
+            "lanes_on_water": null
+          }
+        }
+      },
+      "meshes_hidden": 94
+    },
+    "probe-ramp": {
+      "what": "a known grey ramp: outgoingLight = vec3(gl_FragCoord.x/(W-1)). Measured column by column, this IS the transfer curve from a written value to a stored byte, including tone mapping and colour space, whatever they are",
+      "kind": "probe",
+      "poses": {
+        "d-water-edge": {
+          "why": "the water_edge shot clause (b) names: low over the water with bank and sky above the waterline, so ReflCorr and NormalEnergy are obtainable",
+          "probe": {
+            "water_px": 7385,
+            "curve": {
+              "in": [
+                0.8362877997914494,
+                0.8435870698644421,
+                0.8446298227320125,
+                0.8456725755995829,
+                0.8467153284671532,
+                0.8477580813347236,
+                0.848800834202294,
+                0.8498435870698644,
+                0.8508863399374348,
+                0.8519290928050052,
+                0.8529718456725756,
+                0.8540145985401459,
+                0.8550573514077163,
+                0.8561001042752867,
+                0.8571428571428571,
+                0.8581856100104275,
+                0.8592283628779979,
+                0.8602711157455682,
+                0.8613138686131386,
+                0.862356621480709,
+                0.8633993743482794,
+                0.8644421272158499,
+                0.8654848800834203,
+                0.8665276329509907,
+                0.867570385818561,
+                0.8686131386861314,
+                0.8696558915537018,
+                0.8706986444212722,
+                0.8717413972888426,
+                0.872784150156413,
+                0.8738269030239834,
+                0.8748696558915537,
+                0.8759124087591241,
+                0.8769551616266945,
+                0.8779979144942649,
+                0.8790406673618353,
+                0.8800834202294057,
+                0.881126173096976,
+                0.8821689259645464,
+                0.8832116788321168,
+                0.8842544316996872,
+                0.8852971845672576,
+                0.886339937434828,
+                0.8873826903023984,
+                0.8884254431699687,
+                0.8894681960375391,
+                0.8905109489051095,
+                0.908237747653806,
+                0.9092805005213764,
+                0.9103232533889468,
+                0.9113660062565172,
+                0.913451511991658,
+                0.9155370177267987,
+                0.9165797705943691,
+                0.9176225234619395,
+                0.9186652763295099,
+                0.9197080291970803,
+                0.921793534932221,
+                0.9238790406673618,
+                0.9249217935349322,
+                0.9259645464025026,
+                0.927007299270073,
+                0.9280500521376434,
+                0.9290928050052137,
+                0.9301355578727841,
+                0.9311783107403545,
+                0.9322210636079249,
+                0.9332638164754953,
+                0.9343065693430657,
+                0.935349322210636,
+                0.9363920750782064,
+                0.9374348279457768,
+                0.9384775808133472,
+                0.9395203336809176,
+                0.940563086548488,
+                0.9416058394160584,
+                0.9426485922836287,
+                0.9436913451511991,
+                0.9447340980187695,
+                0.9457768508863399,
+                0.9468196037539103,
+                0.9478623566214807,
+                0.948905109489051,
+                0.9499478623566214,
+                0.9509906152241918,
+                0.9520333680917622,
+                0.9530761209593326,
+                0.954118873826903,
+                0.9551616266944735,
+                0.9562043795620438,
+                0.959332638164755,
+                0.9645464025026069,
+                0.9655891553701773,
+                0.9666319082377477,
+                0.9676746611053181,
+                0.9687174139728885,
+                0.9697601668404588,
+                0.9708029197080292,
+                0.9718456725755996
+              ],
+              "out": [
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                160.95,
+                173
+              ],
+              "columns_used": 99,
+              "span_bytes": 12.1
+            }
+          }
+        }
+      },
+      "edits_applied": 5,
+      "edits_expected": 1
+    },
+    "probe-dist": {
+      "what": "grey = view distance / 200 m. Geometry, so it is the SAME field on both arms and one capture serves both",
+      "kind": "probe",
+      "poses": {
+        "d-water-edge": {
+          "why": "the water_edge shot clause (b) names: low over the water with bank and sky above the waterline, so ReflCorr and NormalEnergy are obtainable",
+          "probe": {
+            "water_px": 5371,
+            "decoded_through": "probe-ramp, this run, this pose",
+            "all_water": {
+              "n": 5371,
+              "mean": 0.8375,
+              "p05": 0.8363,
+              "median": 0.8363,
+              "p95": 0.8363
+            }
+          }
+        }
+      },
+      "edits_applied": 5,
+      "edits_expected": 1
+    },
+    "probe-esview": {
+      "what": "grey = esView, the |N.V| the shader itself computes AFTER the ripple normal perturbation. Also arm-independent",
+      "kind": "probe",
+      "poses": {
+        "d-water-edge": {
+          "why": "the water_edge shot clause (b) names: low over the water with bank and sky above the waterline, so ReflCorr and NormalEnergy are obtainable",
+          "probe": {
+            "water_px": 9147,
+            "decoded_through": "probe-ramp, this run, this pose",
+            "all_water": {
+              "n": 9147,
+              "mean": 0.838,
+              "p05": 0.8363,
+              "median": 0.8363,
+              "p95": 0.8363
+            }
+          }
+        }
+      },
+      "edits_applied": 5,
+      "edits_expected": 1
+    },
+    "probe-w-prefix": {
+      "what": "grey = ROUND 1's composited mix weight, same instrument, so the two weight fields differ by nothing but the expression",
+      "kind": "probe",
+      "poses": {
+        "d-water-edge": {
+          "why": "the water_edge shot clause (b) names: low over the water with bank and sky above the waterline, so ReflCorr and NormalEnergy are obtainable",
+          "probe": {
+            "water_px": 9887,
+            "decoded_through": "probe-ramp, this run, this pose",
+            "all_water": {
+              "n": 9887,
+              "mean": 0.8644,
+              "p05": 0.8363,
+              "median": 0.8363,
+              "p95": 0.9718
+            },
+            "bins": {
+              "near_normal_esView_gt_0_90": {
+                "n": 52,
+                "mean": 0.9718,
+                "p05": 0.9718,
+                "median": 0.9718,
+                "p95": 0.9718
+              },
+              "dist_110_130_m": {
+                "n": 0,
+                "note": "no pixel matched this bin"
+              },
+              "dist_55_65_m": {
+                "n": 0,
+                "note": "no pixel matched this bin"
+              },
+              "dist_55_65_m_grazing_esView_lt_0_20": {
+                "n": 0,
+                "note": "no pixel matched this bin"
+              },
+              "grazing_esView_lt_0_20_any_dist": {
+                "n": 0,
+                "note": "no pixel matched this bin"
+              }
+            }
+          }
+        }
+      },
+      "edits_applied": 10,
+      "edits_expected": 2
+    }
+  },
+  "checks": {},
+  "pageErrors": []
+}
