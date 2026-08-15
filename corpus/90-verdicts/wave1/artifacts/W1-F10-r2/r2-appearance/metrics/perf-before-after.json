@@ -1,0 +1,61 @@
+{
+  "what": "getPerfStats() in three populated settlements, same seed, same stands, same GPU model (RTX A4500), arms differing only in game/src/render/",
+  "gpu_after": "ANGLE (NVIDIA, Vulkan 1.3.277 (NVIDIA NVIDIA RTX A4500 (0x00002232)), NVIDIA)",
+  "gpu_before": "ANGLE (NVIDIA, Vulkan 1.4.303 (NVIDIA NVIDIA RTX A4500 (0x00002232)), NVIDIA)",
+  "rows": [
+    {
+      "stand": "street-lilmoth",
+      "npcs_in_range": 136,
+      "triangles_before": 1246588,
+      "triangles_after": 1866106,
+      "triangles_pct": 49.7,
+      "draw_calls_before": 624,
+      "draw_calls_after": 732,
+      "skinned_meshes_before": 138,
+      "skinned_meshes_after": 138,
+      "geometry_mb_before": 60.78,
+      "geometry_mb_after": 83.501,
+      "heap_mb_before": 278.4,
+      "heap_mb_after": 358.3,
+      "sim_ms_before": 0.57767,
+      "sim_ms_after": 0.58575,
+      "render_cpu_ms": "REFUSED BY THE HARNESS. getPerfStats()._unmeasurable hard-codes \"This container is SwiftShader\" and returns renderCpuMs 0 — on a run whose own WebGL context reports an NVIDIA RTX A4500. The gate reads the container, not the renderer string, so a real hardware frame time cannot be obtained through this verb today. That is a round-3 fix in game/src/engine.js, not something this piece could work around."
+    },
+    {
+      "stand": "street-gideon",
+      "npcs_in_range": 136,
+      "triangles_before": 2558374,
+      "triangles_after": 3168690,
+      "triangles_pct": 23.9,
+      "draw_calls_before": 889,
+      "draw_calls_after": 997,
+      "skinned_meshes_before": 136,
+      "skinned_meshes_after": 136,
+      "geometry_mb_before": 53.528,
+      "geometry_mb_after": 75.904,
+      "heap_mb_before": 300.4,
+      "heap_mb_after": 371.2,
+      "sim_ms_before": 0.37483,
+      "sim_ms_after": 0.42783,
+      "render_cpu_ms": "REFUSED BY THE HARNESS. getPerfStats()._unmeasurable hard-codes \"This container is SwiftShader\" and returns renderCpuMs 0 — on a run whose own WebGL context reports an NVIDIA RTX A4500. The gate reads the container, not the renderer string, so a real hardware frame time cannot be obtained through this verb today. That is a round-3 fix in game/src/engine.js, not something this piece could work around."
+    },
+    {
+      "stand": "street-thorn",
+      "npcs_in_range": 136,
+      "triangles_before": 1139002,
+      "triangles_after": 1758520,
+      "triangles_pct": 54.4,
+      "draw_calls_before": 530,
+      "draw_calls_after": 638,
+      "skinned_meshes_before": 138,
+      "skinned_meshes_after": 138,
+      "geometry_mb_before": 51.948,
+      "geometry_mb_after": 74.669,
+      "heap_mb_before": 345.9,
+      "heap_mb_after": 398.8,
+      "sim_ms_before": 0.44217,
+      "sim_ms_after": 0.43625,
+      "render_cpu_ms": "REFUSED BY THE HARNESS. getPerfStats()._unmeasurable hard-codes \"This container is SwiftShader\" and returns renderCpuMs 0 — on a run whose own WebGL context reports an NVIDIA RTX A4500. The gate reads the container, not the renderer string, so a real hardware frame time cannot be obtained through this verb today. That is a round-3 fix in game/src/engine.js, not something this piece could work around."
+    }
+  ]
+}

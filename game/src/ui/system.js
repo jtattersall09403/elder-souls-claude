@@ -894,6 +894,7 @@ export class UISystem {
    */
   _dialogueModel(ctx) {
     const d = ctx.dialogue;
+    if (d.census) return this._censusWindowModel(d);
     // A new person: open a fresh transcript. §D3 says the history is never cleared MID-
     // conversation; walking away and talking to somebody else is a different conversation.
     if (this.dialogue.speaker !== d.npc) {
@@ -954,6 +955,80 @@ export class UISystem {
   }
 
   /**
+   * §H — THE SAME WINDOW, RUNNING CHARACTER CREATION.
+   *
+   * THE DEFECT THIS CLOSES, in the owner's own words after playing the deployed build: *"It also
+   * wasn't being used for the dialogue in the character creation/new game flow, which it should
+   * be."* The first conversation any new player ever has was on `render/ui.js`'s bottom-anchored
+   * vellum reply panel while every other conversation in the game was on this window — the game
+   * presented two dialogue interfaces and the worse one went first. The mechanism was one line:
+   * `Engine._conversationSync()` calls `renderer.ui.setSuppressed(DIALOGUE_WINDOW)` and
+   * `_censusSync()` never did.
+   *
+   * WHAT MAKES THIS A FULL ROUTE RATHER THAN A PARTIAL ONE. The census asks in five shapes — 8
+   * `choice`, 4 `pick`, 3 `text`, 1 `questionnaire` (ten dilemmas on one node), 1 `observed`,
+   * counted from `game/data/dialogue/topics/writ-house.json` at the time of writing — and the
+   * previous piece ruled correctly that routing only the shapes the window already had elements
+   * for would put BOTH surfaces inside one five-minute scene. So all five run here, and the two
+   * shapes the window had no affordance for are expressed inside §A's six elements rather than by
+   * adding a seventh:
+   *
+   *   * `pick` — the multi-select mark is a `· ` prefix inside the row's own text (§H2). Not a
+   *     colour, because §E3 measures one bronze for every column entry and §F1 rules out marking.
+   *     The "she is waiting for N more" line is AUTHORED text in her voice (`scene.js` builds it
+   *     from `writ-house.json`) and goes into the transcript as prose, where everything else she
+   *     says goes. Nothing here composes English out of ids or numbers.
+   *   * `text` — the typed name is a ROW, above the §D2 rule, in the section the item already
+   *     defines as "what you can DO with this person" as against "what you can ASK them about the
+   *     world". Typing your name is the former. It is operable by every device: type on a
+   *     keyboard (`RI-JRN01` O17, unchanged — `Engine._censusTypeChar` still feeds it), or walk
+   *     the caret onto a ledger name and confirm that instead.
+   *
+   * And two elements are ABSENT rather than optional: there is no disposition before a character
+   * exists, and there is no way out of character creation for a Goodbye to advertise. See
+   * `drawDialogue`'s comments at each site, and `RI-UIX08` §H1.
+   */
+  _censusWindowModel(d) {
+    // Two speakers, two conversations: Jeeh-Ei in the barge hold and the Warden-Scribe in the
+    // Writ House. §D3's "never cleared mid-conversation" is exactly right about both — what was
+    // said in the hold was said in the hold, which is the same ruling `Census.enter()` makes
+    // about `spoken` for the same reason.
+    if (this.dialogue.speaker !== d.npc) {
+      this.dialogue.open(d.npc, null);
+      // THE CARET STARTS IN THE COLUMN, and this is not cosmetic. In a conversation it starts in
+      // the prose because the prose is where the mechanism is — you read, you notice a blue word.
+      // A census has no topic vocabulary and therefore no links at all, so a caret parked in the
+      // prose would be a caret on nothing, and the first thing a new player pressed would do
+      // nothing at all.
+      this.dialogueFocus = { pane: 'column', linkIdx: 0, rowIdx: 0 };
+      this.dialogueScroll = 0; this.dialogueColScroll = 0;
+    }
+    for (const u of d.utterances || []) this.dialogue.appendKeyed(u.key, u.heading || null, u.text);
+    return {
+      census: true,
+      census_node: d.node || null,
+      census_input_kind: d.input_kind || null,
+      census_typed: d.typed || '',
+      takes_input: !!d.takes_input,
+      speaker: d.speaker,
+      disposition: null,
+      blocks: this.dialogue.blocks,
+      topics: d.topics || [],
+      actions: d.actions || [],
+      // Nothing to light and nothing that would answer if it were lit. Published as an empty set
+      // rather than left undefined so `drawDialogue`'s `linkable` field is a measured zero.
+      linkable: [],
+      links_enabled: false,
+      interior_alpha: this.dialogueArm.opaque ? 1 : undefined,
+      focus: this.dialogueFocus,
+      pressed: this.dialoguePressed,
+      scroll_up: this.dialogueScroll,
+      column_scroll: this.dialogueColScroll,
+      goodbye: null,
+    };
+  }
+
+  /**
    * One fixed step of the open dialogue window. Called by `Engine._conversationStep()`.
    *
    * THE CLOSED ACTION SET, AND IT IS THE SAME FOUR THINGS EVERY OTHER SURFACE USES. There is no
@@ -971,7 +1046,9 @@ export class UISystem {
     const m = this._dialogueModel(ctx);
     const L = this.dialogueMetrics;
     const nLinks = L ? L.links_total : 0;
-    const nRows = m.actions.length + m.topics.length + 1;          // + Goodbye
+    // §H1: no Goodbye in the census, so the column's last row is the last option and the caret
+    // must not be able to walk one row past it onto nothing.
+    const nRows = m.actions.length + m.topics.length + (m.census ? 0 : 1);
     const f = this.dialogueFocus;
 
     const dx = this._edge('x', input.uiMoveX || input.moveX, ctx.frame);

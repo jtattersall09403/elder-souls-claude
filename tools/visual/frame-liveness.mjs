@@ -154,13 +154,21 @@ for (let i = 2; i < process.argv.length; i++) {
  * this repo; `DERIVATION` records the observed minimum, the incident value, and the placement.
  */
 export const T = {
-  // --- is this an image ---------------------------------------------------------------------
-  min_luma_span: 6.0,          // D1  p99 - p01
-  min_shadow_levels: 6,        // D2  distinct rounded luma below the median
-  min_local_contrast: 0.30,    // D3  median |centre - mean(8 neighbours)|
-  min_luma_entropy: 2.2,       // D4  bits, over the 256-bin luma histogram
-  max_dominant_frac: 0.92,     // D5  share of the largest 5-bit RGB bucket
-  min_structure_ratio: 2.5,    // D6  blockStd*sqrt(px/block)/pixelStd — ~1 is noise, real scenes are >>1
+  // --- HARD FAILS. Each threshold sits in a CLEAR GAP between the real corpus and a non-picture.
+  //     The rejection rate against 932 real captures is recorded per row; the whole battery
+  //     rejects well under 1% of real evidence, which is what makes it safe to fail loudly on.
+  min_luma_span: 6.0,          // D1  p99-p01.  corpus p01=33, 3/932 below. incident 0.03.
+  min_luma_entropy: 0.9,       // D4  bits.     corpus p01=0.98, 6/932 below. uniform frame = 0.
+  max_dominant_frac: 0.92,     // D5  share.    corpus p99=0.75, 5/932 above. uniform frame = 1.
+  min_structure_ratio: 2.5,    // D6  ratio.    corpus p01=4.59, 2/932 below. pure noise ~1.
+  min_local_contrast_p90: 0.6, // D3' see below — armed only if calibration showed a gap.
+
+  // --- REPORTED, NOT FATAL. These are the incident's own two headline numbers, and neither can
+  //     be used as a hard gate in this repo, which is a finding rather than an omission. See
+  //     SOFT_TESTS below for the measurement that demoted them.
+  soft_min_shadow_levels: 6,
+  soft_min_local_contrast_med: 0.3,
+
   // --- is the subject in it -----------------------------------------------------------------
   // DERIVED FROM REAL LABELLED DATA, not from synthetic frames: the 93-frame F10 hardware run in
   // reports/runpod-gpu/runs/f10-characters-hw3/, where the 17 frames of npc-lilmoth-apothecary-12
@@ -171,46 +179,34 @@ export const T = {
 };
 
 /**
- * THE SUBJECT TEST'S MEASURED PERFORMANCE, on the only labelled set this repo has. Published
- * because a screen whose error rate is unknown is a screen nobody can size their trust to.
+ * WHY THE INCIDENT'S OWN TWO NUMBERS ARE NOT HARD GATES. `HAZARDS.md` §15 says a capture with
+ * "~1 distinct shadow level and ~0 local contrast is broken and must fail loudly. You already
+ * compute these statistics; the cost is an `if`." That was optimistic, and the measurement says
+ * so. Calibrated over **932 real captures from 366 directories** under `reports/`:
  *
- *   threshold   empties caught (of 17)   false reds (of 76 good frames)
- *      4.0            8                        6
- *      6.0           14                        6      <-- shipped
- *      8.0           15                        9
- *     10.0           16                       16
- *     11.5           17                       22
+ *   shadow_levels        corpus p01 = 0, p02 = 1.   The incident scored 1.
+ *                        34 of 932 real frames score below 6, and real frames reach 0 — any
+ *                        frame whose median luma is 0 has no levels BELOW its median by
+ *                        definition, which is most heavily crushed night frames.
+ *   local_contrast_med   corpus p05 = 0.            The incident scored 0.
+ *                        177 of 932 real frames have a median local contrast of exactly 0,
+ *                        because large flat regions — sky, water, UI panels — sit either side
+ *                        of the median.
  *
- * THERE IS NO CLEAN SEPARATION, and that is the honest headline: catching the last three empties
- * costs 22 of 76 good frames. So subject presence is reported as AMBER by default and does not
- * fail the run — `--require-subject` promotes it to a hard fail for callers who want it. At 7.9%
- * false reds a hard gate would eat good evidence, and a check that eats good evidence is a check
- * that earns the right to be ignored.
+ * NEITHER LEAVES A GAP: the value the broken frame produced is a value good frames also produce.
+ * Shipping them as hard fails would have rejected **324 of 932 real captures, 34.76%**, which is
+ * not a gate, it is a shredder. They are reported on every frame and can be armed with `--strict`
+ * for a caller who wants them, and the incident is still caught — by D1, which it fails by three
+ * orders of magnitude.
  *
- * WHAT WAS TRIED AND REJECTED, so nobody repeats it:
- *  - OFF-BACKGROUND COLOUR SETS (the previous draft's connected-component test). On this same run
- *    it returned NO_SUBJECT for 85 of 93 frames. At 4-bit-per-channel quantisation a character's
- *    cloth and skin land in the same buckets as the town behind it, so almost nothing inside the
- *    box is "off background". It passed a synthetic self-test at 320x240 because the border ring
- *    there samples few buckets — HAZARDS §0 exactly: the arms agreed about a false premise.
- *  - CONTRAST NORMALISATION (dividing by the frame's own pixel standard deviation) to fix the
- *    night-frame confound. It made the curve strictly worse: 4 of 17 caught at zero false reds,
- *    14 of 17 only at 23 false reds. Recorded because it is the obvious next idea.
- *  - THE PROJECTION, which would need no pixels at all. Every frame in the run reports
- *    head.on_screen and foot.on_screen true and an identical 491px projected box, including all
- *    17 empties: the harness places the camera from the subject's nominal world position and
- *    nothing is drawn there. The geometry cannot see this failure.
+ * This is the rule stated at the top of the file being obeyed rather than quoted: where the real
+ * corpus and the incident do not leave a gap, the test does not ship as a hard fail.
  */
-export const SUBJECT_ROC = {
-  labelled_set: 'reports/runpod-gpu/runs/f10-characters-hw3/artifacts/f10/hw — 93 frames, 17 known empty (subject npc-lilmoth-apothecary-12), 76 known full',
-  statistic: 'centre_flank_luma',
-  curve: [
-    { threshold: 4.0, caught_of_17: 8, false_red_of_76: 6 },
-    { threshold: 6.0, caught_of_17: 14, false_red_of_76: 6, shipped: true },
-    { threshold: 8.0, caught_of_17: 15, false_red_of_76: 9 },
-    { threshold: 10.0, caught_of_17: 16, false_red_of_76: 16 },
-    { threshold: 11.5, caught_of_17: 17, false_red_of_76: 22 },
-  ],
+export const SOFT_TESTS = {
+  calibrated_on: '932 frames from 366 directories under reports/, 2026-08-15 (node tools/visual/frame-liveness.mjs --calibrate reports --sample 4)',
+  shadow_levels: { corpus_p01: 0, corpus_p02: 1, corpus_p05: 6, incident: 1, real_frames_below_6: 34, of: 932, gap: false },
+  local_contrast_med: { corpus_p05: 0, corpus_p95: 1.5264, incident: 0, real_frames_at_zero: 177, of: 932, gap: false },
+  combined_rejection_if_armed: '324 of 932 real captures (34.76%)',
 };
 
 /** Filled in below the calibration run; see the status file for the command and its output. */
@@ -283,6 +279,10 @@ export function metrics(png) {
   }
   lc.sort((a, b) => a - b);
   const local_contrast_med = lc.length ? lc[lc.length >> 1] : 0;
+  // The MEDIAN of local contrast is 0 in 177 of 932 real captures in this repo — large flat
+  // regions (sky, water, UI panels) drag it to the floor on perfectly good frames. The p90 asks
+  // the question that actually matters: is there detail ANYWHERE in this frame.
+  const local_contrast_p90 = lc.length ? lc[Math.min(lc.length - 1, Math.floor(lc.length * 0.9))] : 0;
 
   // D5 — the single most common 5-bit RGB bucket.
   let top = 0;
@@ -347,6 +347,7 @@ export function metrics(png) {
     luma_span: P.p99 - P.p01,
     shadow_levels,
     local_contrast_med: +local_contrast_med.toFixed(4),
+    local_contrast_p90: +local_contrast_p90.toFixed(4),
     luma_entropy: +entropy.toFixed(4),
     dominant_frac: +(top / N).toFixed(4),
     unique_buckets: buckets.size,
@@ -459,17 +460,23 @@ export function subjectPresence(png, box) {
 
 /** Apply the thresholds. Separated from measurement so both can be inspected independently. */
 export function classify(m, s, opts = {}) {
-  const t = opts.T || T;
+  const t = { ...T, ...(opts.T || {}) };
   const fails = [];
+  const soft = [];
   if (m.luma_span < t.min_luma_span) fails.push(`D1 span ${m.luma_span} < ${t.min_luma_span}`);
-  if (m.shadow_levels < t.min_shadow_levels) fails.push(`D2 shadow_levels ${m.shadow_levels} < ${t.min_shadow_levels}`);
-  if (m.local_contrast_med < t.min_local_contrast) fails.push(`D3 local_contrast ${m.local_contrast_med} < ${t.min_local_contrast}`);
   if (m.luma_entropy < t.min_luma_entropy) fails.push(`D4 entropy ${m.luma_entropy} < ${t.min_luma_entropy}`);
   if (m.dominant_frac > t.max_dominant_frac) fails.push(`D5 dominant_frac ${m.dominant_frac} > ${t.max_dominant_frac}`);
   if (m.structure_ratio < t.min_structure_ratio) fails.push(`D6 structure_ratio ${m.structure_ratio} < ${t.min_structure_ratio} — no composition above the noise floor`);
+  if (t.min_local_contrast_p90 > 0 && m.local_contrast_p90 !== undefined && m.local_contrast_p90 < t.min_local_contrast_p90) {
+    fails.push(`D3 local_contrast_p90 ${m.local_contrast_p90} < ${t.min_local_contrast_p90} — no detail anywhere in the frame`);
+  }
+  // Reported on every frame, fatal only under --strict. See SOFT_TESTS for why.
+  if (m.shadow_levels < t.soft_min_shadow_levels) soft.push(`D2* shadow_levels ${m.shadow_levels} < ${t.soft_min_shadow_levels} (reported, not fatal: 34 of 932 real captures are also below this)`);
+  if (m.local_contrast_med < t.soft_min_local_contrast_med) soft.push(`D3* local_contrast_med ${m.local_contrast_med} < ${t.soft_min_local_contrast_med} (reported, not fatal: 177 of 932 real captures have a median of exactly 0)`);
+  if (opts.strict && soft.length) fails.push(...soft);
 
-  if (fails.length) return { verdict: 'DEGENERATE', why: fails };
-  if (!s || opts.subject === false) return { verdict: 'LIVE', why: [] };
+  if (fails.length) return { verdict: 'DEGENERATE', why: fails, soft };
+  if (!s || opts.subject === false) return { verdict: 'LIVE', why: [], soft };
 
   if (s.bg_bucket_coverage > t.max_bg_coverage) {
     return {
@@ -493,7 +500,7 @@ export function liveness(png, box, opts = {}) {
   const m = metrics(png);
   const s = opts.subject === false ? null : subjectPresence(png, box);
   const c = classify(m, s, opts);
-  return { ...m, ...(s || {}), verdict: c.verdict, why: c.why };
+  return { ...m, ...(s || {}), verdict: c.verdict, why: c.why, soft: c.soft || [] };
 }
 
 /**
@@ -707,10 +714,10 @@ if (IS_CLI && args.calibrate) {
   }
   if (!rows.length) { console.error(`calibrate: no readable PNGs under ${root}`); process.exit(2); }
 
-  const KEYS = ['luma_span', 'shadow_levels', 'local_contrast_med', 'luma_entropy', 'dominant_frac', 'structure_ratio'];
+  const KEYS = ['luma_span', 'shadow_levels', 'local_contrast_med', 'local_contrast_p90', 'luma_entropy', 'dominant_frac', 'structure_ratio'];
   // The incident's values, from hw-dark-regime-L4/head-result.json. Entropy, dominant_frac and
   // profile_range were never recorded for it — marked null rather than guessed.
-  const INCIDENT = { luma_span: 0.03, shadow_levels: 1, local_contrast_med: 0, luma_entropy: null, dominant_frac: null, structure_ratio: null };
+  const INCIDENT = { luma_span: 0.03, shadow_levels: 1, local_contrast_med: 0, local_contrast_p90: null, luma_entropy: null, dominant_frac: null, structure_ratio: null };
   console.log(`calibrate: ${read} frames from ${dirs.size} directories under ${path.relative(process.cwd(), root)} (${failed} unreadable)\n`);
   console.log('metric                     min       p01       p05       p50       max   incident');
   const summary = {};
