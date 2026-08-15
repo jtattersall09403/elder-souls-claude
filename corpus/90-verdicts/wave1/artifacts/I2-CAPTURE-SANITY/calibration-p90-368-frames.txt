@@ -1,0 +1,191 @@
+calibrate: 368 frames from 368 directories under reports (0 unreadable)
+
+metric                     min       p01       p05       p50       max   incident
+luma_span                    0        19        64       154       231   0.03
+shadow_levels                0         0         8        53       209   1
+local_contrast_med           0         0         0     0.447     3.918   0
+local_contrast_p90           0         0    0.1957    3.2638    16.388   -
+luma_entropy                 0    1.8231    4.4975    6.0219    7.1634   -
+dominant_frac           0.0355    0.0401    0.0572    0.1484         1   -
+structure_ratio              0   18.5139   33.6206   58.3129  185.6121   -
+
+Worst 14 real frames by luma_span — check these are genuinely bad captures, not good evidence a threshold is about to eat:
+  span=   0 shadow=  0 lc=       0 H=      0 dom=     1 str=       0  reports/runs/capture-cache/game@b91b0aae20cb526b/1f8b872fc388d0314021fc850d39771954ff0b0c8d4c5fd59eadf02a91152c61.png
+  span=   3 shadow=  1 lc=       0 H= 1.8231 dom=0.5624 str= 64.0657  reports/runs/capture-cache/game@65bde32f2c765b24/f0064243620952ec6e542b0bc87d7b6524797211e38b50b6ba641be96805b35b.png
+  span=   3 shadow=  2 lc=       0 H= 0.3413 dom=0.9627 str=       0  reports/runs/capture-cache/game@aeeb74937e406edf/6a3d22cab7cdda9795d85e560032d86459d65ae1948f216fd68c59f874f48bb8.png
+  span=  19 shadow=  2 lc=       0 H= 3.2343 dom=0.5753 str= 67.2735  reports/runs/capture-cache/game@851a494108445a35/143e47548375aa4122d7b3a0afcb3d5efbeede92b7e14fa1fa9b2e637370d9b3.png
+  span=  26 shadow=  0 lc=       0 H= 1.2043 dom=0.9066 str= 61.1687  reports/runs/capture-cache/game@ddaaa7c049fe51e2/7910736ddb913828d0290104400c9e28378ab99ed4c572e954e7bf62363c64da.png
+  span=  33 shadow= 21 lc=  0.4265 H= 4.7832 dom=0.2084 str= 18.5139  reports/blind/protocol-a-w1/PACK/packs/pair04/A.png
+  span=  39 shadow= 21 lc=       0 H= 2.4746 dom=0.5364 str= 65.0507  reports/runs/capture-cache/game@bfad376a3703bf29/058204a4ff4a7077583fa9ef94fe25f2f0f19b1d67b59c32ee534a7e22faaec2.png
+  span=  52 shadow= 27 lc=  0.2851 H= 5.5866 dom=0.1973 str= 57.3227  reports/runpod-gpu/runs/deck-hw-openingframe/artifacts/opening/hw-openingframe/frames/hw-openingframe-opening-desktop-000-title.png
+  span=  52 shadow= 27 lc=  0.2851 H= 5.5866 dom=0.1973 str= 57.3227  reports/runpod-gpu/runs/deck-hw-openingframe3/artifacts/opening/hw-openingframe3/frames/hw-openingframe3-opening-desktop-000-title.png
+  span=  52 shadow= 27 lc=  0.2851 H= 5.5866 dom=0.1973 str= 57.3227  reports/runpod-gpu/runs/opening-thorn3/artifacts/opening/hw-opening-thorn3/frames/hw-opening-thorn3-opening-desktop-000-title.png
+  span=  52 shadow= 23 lc=       0 H= 5.3807 dom=0.1919 str= 60.7557  reports/runs/capture-cache/game@ffad360614ab9bba/0a9e4f9d853c3a7e6e214790530701d47476e4220890e9996e6e18211eb7df1a.png
+  span=  53 shadow= 29 lc=  0.3213 H= 5.6461 dom=0.1929 str= 84.3661  reports/runpod-gpu/runs/opening-thorn/artifacts/opening/hw-opening-thorn/frames/hw-opening-thorn-opening-desktop-000-title.png
+  span=  53 shadow= 29 lc=  0.3218 H= 5.6452 dom=0.1769 str= 84.6937  reports/spawn-yaw/capture/thorn-sw/frames/thorn-sw-desktop-000-title.png
+  span=  53 shadow= 29 lc=  0.3213 H= 5.6371 dom=0.1769 str= 85.1398  reports/thorn-plates/frames/opening/desktop-00-title.png
+
+Against the SHIPPED thresholds (image test only — calibration does not judge subject presence):
+  DEGENERATE  reports/blade/look-cgs/cgs_drowned_reaper-f04.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/blade/look-cgs-DELETED/cgs_drowned_reaper-f16.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/blade/look-spr/spr_fishers_gig-f20.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/r4-shots/blackwood.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/region-shots/capture-001.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/region-shots-prebush/capture-001.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/region-shots-service/frame-001.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/render/frames/cgs_drowned_reaper-f18-lowres.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/render/look/cgs_drowned_reaper-f04.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/render/motion/ssw_garrison_sword-f00.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runpod-gpu/runs/20260814-101609Z-4498/artifacts/w1-30a/sheet-eye-deep-marshes-before-after.png  D3 local_contrast 0.125 < 0.3
+  DEGENERATE  reports/runpod-gpu/runs/20260814-101609Z-4498/artifacts/w1-30a/frames/eye-deep-marshes__after-flatgrade__pan000.png  D3 local_contrast 0.1335 < 0.3
+  DEGENERATE  reports/runpod-gpu/runs/20260814-103013Z-28319/artifacts/proof/frames/gpuproof-000-interior-inside.png  D2 shadow_levels 0 < 6; D3 local_contrast 0.0542 < 0.3
+  DEGENERATE  reports/runpod-gpu/runs/deck-hw-openingframe/artifacts/opening/hw-openingframe/frames/hw-openingframe-opening-desktop-000-title.png  D3 local_contrast 0.2851 < 0.3
+  DEGENERATE  reports/runpod-gpu/runs/deck-hw-openingframe3/artifacts/opening/hw-openingframe3/frames/hw-openingframe3-opening-desktop-000-title.png  D3 local_contrast 0.2851 < 0.3
+  DEGENERATE  reports/runpod-gpu/runs/opening-thorn3/artifacts/opening/hw-opening-thorn3/frames/hw-opening-thorn3-opening-desktop-000-title.png  D3 local_contrast 0.2851 < 0.3
+  DEGENERATE  reports/runpod-gpu/runs/w1-30b-r2/artifacts/probe/motion/daynight-000.png  D2 shadow_levels 0 < 6; D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runpod-gpu/runs/w1-30b-r5/artifacts/roughness/roughness-null.png  D3 local_contrast 0.0271 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R1/map-after-forged-restore.png  D3 local_contrast 0.16 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2/consume-A.png  D3 local_contrast 0.142 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-FORBIDDEN/after-hit.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1280x720@1/inventory/ui.png  D3 local_contrast 0.2779 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1280x720@1/map/ui.png  D3 local_contrast 0.1788 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1280x720@1/sheet/ui.png  D3 local_contrast 0.2682 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1280x720@1/spells/ui.png  D3 local_contrast 0.1424 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1280x720@2/levelup/ui.png  D3 local_contrast 0.233 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1280x720@2/map/ui.png  D3 local_contrast 0.0797 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1280x720@2/spells/ui.png  D3 local_contrast 0.0797 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1920x1080@1/levelup/ui.png  D3 local_contrast 0.2682 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1920x1080@1/map/ui.png  D3 local_contrast 0.1063 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1920x1080@1/spells/ui.png  D3 local_contrast 0.0894 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1920x1080@2/inventory/ui.png  D3 local_contrast 0.2144 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1920x1080@2/levelup/ui.png  D3 local_contrast 0.2126 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1920x1080@2/map/ui.png  D3 local_contrast 0.0361 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1920x1080@2/sheet/ui.png  D3 local_contrast 0.2144 < 0.3
+  DEGENERATE  reports/runs/CRITIC-W1-21-R2-UI-METRICS/1920x1080@2/spells/ui.png  D3 local_contrast 0.0266 < 0.3
+  DEGENERATE  reports/runs/MAG-VFX/control.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/SHOTS/VP01-vista-wide.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/UI-LAYER/ui_combat_neutral/A.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/UI-LAYER/ui_menu_inventory/A.png  D3 local_contrast 0.2772 < 0.3
+  DEGENERATE  reports/runs/UI-LAYER/ui_menu_map/A.png  D3 local_contrast 0.1788 < 0.3
+  DEGENERATE  reports/runs/UI-LAYER/ui_menu_map_local/A.png  D3 local_contrast 0.1165 < 0.3
+  DEGENERATE  reports/runs/UI-LAYER/ui_menu_sheet/A.png  D3 local_contrast 0.2682 < 0.3
+  DEGENERATE  reports/runs/UI-LAYER/ui_menu_spells/A.png  D3 local_contrast 0.1353 < 0.3
+  DEGENERATE  reports/runs/UI-LAYER/ui_world_neutral/A.png  D3 local_contrast 0.0011 < 0.3
+  DEGENERATE  reports/runs/UI-METRICS/1280x720@1/inventory/ui.png  D3 local_contrast 0.1992 < 0.3
+  DEGENERATE  reports/runs/UI-METRICS/1280x720@1/levelup/ui.png  D3 local_contrast 0.2582 < 0.3
+  DEGENERATE  reports/runs/UI-METRICS/1280x720@1/sheet/ui.png  D3 local_contrast 0.1788 < 0.3
+  DEGENERATE  reports/runs/UI-METRICS/1280x720@1/spells/ui.png  D3 local_contrast 0.0797 < 0.3
+  DEGENERATE  reports/runs/UI-METRICS/1280x720@2/levelup/ui.png  D3 local_contrast 0.2047 < 0.3
+  DEGENERATE  reports/runs/UI-METRICS/1280x720@2/spells/ui.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/UI-METRICS/1920x1080@1/levelup/ui.png  D3 local_contrast 0.2126 < 0.3
+  DEGENERATE  reports/runs/UI-METRICS/1920x1080@1/spells/ui.png  D3 local_contrast 0.0441 < 0.3
+  DEGENERATE  reports/runs/UI-METRICS/1920x1080@2/book/ui.png  D3 local_contrast 0.2938 < 0.3
+  DEGENERATE  reports/runs/UI-METRICS/1920x1080@2/inventory/ui.png  D3 local_contrast 0.2144 < 0.3
+  DEGENERATE  reports/runs/UI-METRICS/1920x1080@2/levelup/ui.png  D3 local_contrast 0.1775 < 0.3
+  DEGENERATE  reports/runs/UI-METRICS/1920x1080@2/sheet/ui.png  D3 local_contrast 0.2144 < 0.3
+  DEGENERATE  reports/runs/UI-METRICS/1920x1080@2/spells/ui.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/W1-21-R2/map-forged-save.png  D3 local_contrast 0.009 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3/consume-arm-full.png  D3 local_contrast 0.189 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-FORBIDDEN/after-hit.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-LAYER/ui_menu_inventory/A.png  D3 local_contrast 0.2682 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-LAYER/ui_menu_map/A.png  D3 local_contrast 0.1425 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-LAYER/ui_menu_map_local/A.png  D3 local_contrast 0.1063 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-LAYER/ui_menu_sheet/A.png  D3 local_contrast 0.2513 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-LAYER/ui_menu_spells/A.png  D3 local_contrast 0.116 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-LAYER/ui_world_neutral/A.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-METRICS/1920x1080@1/levelup/ui.png  D3 local_contrast 0.2667 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-METRICS/1920x1080@1/map/ui.png  D3 local_contrast 0.0894 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-METRICS/1920x1080@1/spells/ui.png  D3 local_contrast 0.0797 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-METRICS/1920x1080@2/inventory/ui.png  D3 local_contrast 0.2144 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-METRICS/1920x1080@2/levelup/ui.png  D3 local_contrast 0.2126 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-METRICS/1920x1080@2/map/ui.png  D3 local_contrast 0.0266 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-METRICS/1920x1080@2/sheet/ui.png  D3 local_contrast 0.2144 < 0.3
+  DEGENERATE  reports/runs/W1-21-R3-UI-METRICS/1920x1080@2/spells/ui.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@03555e25200d77e2/6378f319f24244d4953b5c7055a553ae2502d20b8a2c6cc6b21c2fc182f038db.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@06e0fd644e62c3e4/0d249fa8878628c00d2a7cd467ee9d05bca1af797ebc55306622fd32e5e6c2ea.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@0e8bf3d5cb0b499c/0cc4e2bb8c0ef5cffc0f1bd181578ff913878ad9831cf72786b99d57a858bde1.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@0f009773e6de5bc8/a9c370e107905130f2a8835370de0eca43464cf9e5341e5b642da1312c6d981c.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@0f65e8f4582ab681/bb521fd0793cd25579e12a055ed36201b42bbc271de1a5786d597d70f1527da4.png  D2 shadow_levels 4 < 6; D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@12021005f0565d2e/4279efbab0ec79eb7ea016af5f1bbba809b30318a4a34cd4bc97c3e44e7fa999.png  D3 local_contrast 0.0896 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@12350e48a60cbb5a/3724b3d35a63bf7926c7748e53bed2184e9070a5c39efd9a91929b1b3c7371cc.png  D3 local_contrast 0.0097 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@132c6719cc5fb470/12007be3abe00e9b771aa820f8e195610bf8a3d364147f212a3c890e17ccb500.png  D2 shadow_levels 5 < 6; D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@15af91b0f76ff762/e45946dc25bab1b63d4fc255270c96a50be4423cc6ff9a84e7d5308e4d9b6d6f.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@166c05ad46fa7967/c8847720295320c1e71b19a18bfe156f130e7e359577c1cec33c9c9b00051061.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@16bc5337d6d2ea15/42ab06382b710354a16e1f12546f1aba6954c23e0f4b141aef83144e5eeac5df.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@1ce3fc1557eb0c48/60125cf8ed4bd13d85f7495532aa77bd8f742a20fd6c91957fb361a980702921.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@1ec87ab222aca26a/45d77fe6e00de6183e2555ac37387d443ef0e98c6ee8072367520477baea5597.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@226f270c45f48ce5/1c8b0d6d7735419851f82e677a17f97a96224dafcb99f0b4c5d905be8ca49af5.png  D3 local_contrast 0.0266 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@23a1146653c96742/3224759d0005b357e12965d57afc26dcf3c0d65ae2ddcb20d3d3276df44a3339.png  D3 local_contrast 0.0896 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@293bebe3022ffe15/05cbef97d5416df64df5a9b9afc99e8a573a1d9f7b9e5fed1b44aa5a9b26f8a1.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@297653959385eb07/15d4ebd1afc9c746c8ad4b60f09b73f46aab1de470dc8e944c3c460fa7907c3b.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@29a53513edc5cedf/31059dcc3684d190805665928974568e1dc646e02be5873a5ab723d65c93fd71.png  D3 local_contrast 0.2343 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@2af837933e0e3113/6e4ed8f23cfa9c21b7d039615790979e99bd368adc202507289efdfdf410b812.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@3501700a1185d701/2d73ce9c4533813bb4755d02c99af9b6496012cb6ec938184b941769663ff5d1.png  D3 local_contrast 0.0797 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@3795955ce4672b9f/a3be7e423d745eb23a9aca72b6772a18eb8254b828f78f0b3805f1fc1fd4171b.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@3d1e4a46fce1992a/c64f59f6db2f041477c6e1787e99802d3bf9d47bea92cab14acaa06c7f098406.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@482d3dc176fc9609/1206a1ef350238d06147d47317f6a5c860cdd65c5d8dc553711e84546a9ab0a9.png  D3 local_contrast 0.0623 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@4c11a6c8d81d2ebd/80630609f1bf3898938037cff61fa6dab4cac8e14e127b5e562eb36e699fd237.png  D3 local_contrast 0.0271 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@53225beec01e05e1/0d648d142fc077833f5cbf5c110471ebc8dcd9d0225bf2618a7dfcc047c295f1.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@5c40ce0324aaf93e/2ebfe08d5a814c4275da6c93eea35635807e75de3e833616c09cf19692a9a0e6.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@60206bfabb28d69b/96fb92dd3d2b8e627dd79ca588caf6b3afae813f72a511ce2b652c9314a7b589.nocache.8274.6.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@63b955b7b7250542/3226199c29cf6337eeb9ae99ecd264bbb25fb98bee639f0c02d9b7391e0c5ea7.png  D2 shadow_levels 4 < 6; D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@65bde32f2c765b24/f0064243620952ec6e542b0bc87d7b6524797211e38b50b6ba641be96805b35b.png  D1 span 3 < 6; D2 shadow_levels 1 < 6; D3 local_contrast 0 < 0.3; D4 entropy 1.8231 < 2.2
+  DEGENERATE  reports/runs/capture-cache/game@6a05f0a8f0d76c7a/9994cde29a2685b0160ab7059b37b24e46aef0747c8d4953f4e67ccc2f6f9ba6.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@6f9ecf4e0d1d5433/b6f61440b7d7c8a06ab85cc2a2b04ffa26079da702ca50a1f1533efc8f6dbb82.png  D3 local_contrast 0.2587 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@755e5dbef6a2600e/b7b575f091ef5b8afe42120d3f8905b0736757f426f9858c4ef86ba6db67f790.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@7a7af82b1fb676a5/1f894852eb1029096cc12c6bdfa0e0f0ae71a8810f4359e879c2e80201a6d939.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@7e753da92ceeffcb/12b2a571d1dfa045e6abfd5d20824853c026d8e6a1b7179b6d3e56ce5f85acc5.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@82846d21ff49d9f3/c188a2cb2d572b4ed46b9cf304eeac0987ad593e45ec84146533628fd72053b5.png  D3 local_contrast 0.0271 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@83d9e249ba47eedc/345c95f227b79547b219312f96db0800c5e24cf26d346aac9a1f4685913e4f71.png  D3 local_contrast 0.0797 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@851a494108445a35/143e47548375aa4122d7b3a0afcb3d5efbeede92b7e14fa1fa9b2e637370d9b3.png  D2 shadow_levels 2 < 6; D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@89066aaa9c690fad/55febf4d855e3ad0829626ee797e6b44b9fa7e8efe9aa9a7dbf984fcafac690c.png  D3 local_contrast 0.0894 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@8adb57e8d86af918/b78e203e6672a2049963ea4e244348f098356918bcd3abf99268f9d6753f76d1.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@8bf1c9673c1cbe5c/197bb510a08a6ccbf5b46897d698988e389a964331ba9b301f2fd04c8c0ec5a0.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@915f37a69220fdfe/a787ddedb865d6eb728694f7d512bafe4c370c93e26aed0824323639722f5da9.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@9646823193dd0def/74df0832e25c4a26a919d6ddb41b44f8ddbd490bd96906cb2b233377835aed7d.png  D3 local_contrast 0.2416 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@96b5598dbaf2a245/8e1e7572fbc94071221f5ae00565f5d2fc3fa872fa9adb048a9aeec17c29f603.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@9709460d146078cd/b4a918341a6a68b4a940d827829a042a91dc1d20d87fc0060a0f71e962938b9d.png  D3 local_contrast 0.2343 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@9be56db53c56fd4c/036936a9cc8d8ef6b2f7d31a7e3fa9fc7a099c552d952b3b0610983bc980dc63.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@9c1ce521936bc820/0445761a89536817175e3e1d93af868d0606fce3186084b602e221f0f128e9d5.png  D3 local_contrast 0.2343 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@9e5b72ff6c0764d7/b32413031676b1eafd449799acd44da4d51ba68cdc25c932fdbb289382adf345.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@a223df8366409cb0/799e01c559e10e81ab2ef01c5d9c86a7e7dad79bb674754bff1a4c2f8fd8a645.png  D3 local_contrast 0.0712 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@a927609911132abb/a7a876aafa2edb50db973f029927495266fa92e59c48fe7d4333dd2bb8034266.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@aae2fec2436d581c/0e7e34beaa16142f3b6193c49e98a6285d79247ff63978fbcbe16a706d8e42e2.png  D3 local_contrast 0 < 0.3; D4 entropy 2.064 < 2.2
+  DEGENERATE  reports/runs/capture-cache/game@ab2f074ec70f4463/68597024ee3c57524e60e61cee0d4899725d645ed757682555a074503808c221.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@aeeb74937e406edf/6a3d22cab7cdda9795d85e560032d86459d65ae1948f216fd68c59f874f48bb8.png  D1 span 3 < 6; D2 shadow_levels 2 < 6; D3 local_contrast 0 < 0.3; D4 entropy 0.3413 < 2.2; D5 dominant_frac 0.9627 > 0.92; D6 structure_ratio 0 < 2.5 — no composition above the noise floor
+  DEGENERATE  reports/runs/capture-cache/game@b27f72621b0ffaee/97abc6991fe652afef0648b37399a01629a82f2b862b6e4aa5b389fe38006027.png  D3 local_contrast 0.2228 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@b297a12295f55ce7/21e0ca511ae617c673817d0c32f0398ea7144b143b013aa5880e2f084bbc86a2.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@b3fc288197bf3293/100e0d4ef9a12ff55df77aac9141a87cfa7a0ef8965d0108f3b2fb58b975de77.png  D3 local_contrast 0.1155 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@b560d7bcd3f947dc/37abdd9f9a8e006fd684be2931c14a3f35a78256daca659bb021b7fd3e898f8d.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@b91b0aae20cb526b/1f8b872fc388d0314021fc850d39771954ff0b0c8d4c5fd59eadf02a91152c61.png  D1 span 0 < 6; D2 shadow_levels 0 < 6; D3 local_contrast 0 < 0.3; D4 entropy 0 < 2.2; D5 dominant_frac 1 > 0.92; D6 structure_ratio 0 < 2.5 — no composition above the noise floor
+  DEGENERATE  reports/runs/capture-cache/game@bfad376a3703bf29/058204a4ff4a7077583fa9ef94fe25f2f0f19b1d67b59c32ee534a7e22faaec2.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@c6f2a289f3d405de/e6e25c2f7cf578e071387c28f47d44eee6b049ee22fdada0f660c1987cb6165d.png  D3 local_contrast 0.0436 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@cc5aeebdb8342800/00eaceeb2395590b283fd335194116d59e54d982c20da0e7fea9780847856ea9.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@cd2b3bb4a6955a80/a0d8142f55097c1679880ce56703b8563f395e400faaeb2db860d4c51655fd54.png  D3 local_contrast 0.0261 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@cd8fc1d0fe5d6031/1547456801cedc0fa9d9834e2eb76bcfb24756d34eefe7d9efe89e6b31a8f839.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@cdbbf0e82c7b5224/b986314212a7e22a34a2a7fc5266a1d71e4c540b14b0d8a5c7978b8adee0fd78.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@ce564567e0c3c962/5b50ce6ce6c3aaec44da38339b3eb7c41ca8a90c394ffde0e4802c1c5fc833ec.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@cf8bf8455018ddd0/263952aaad3e4f2360cdafcdffb2c512e3fef09388d9e506f1e3fcc35a6fbc21.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@d2a9b2306cd6ce3a/0cbec7973bbe4960f24b611208a921f1ebc63a59bbb6bb56618cb60ab65fe6f5.png  D3 local_contrast 0.0894 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@d66b7a76a2711f50/81c955b563dad3067d7b20419455919f77614ee258b6ddb2a4fb91e784221b6e.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@da7be315ab77a8a4/f0f13f00955977623b3e9d7f0a99c441274c1030a37ebd34b8cf8db156d9cf61.png  D3 local_contrast 0.1166 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@ddaaa7c049fe51e2/7910736ddb913828d0290104400c9e28378ab99ed4c572e954e7bf62363c64da.png  D2 shadow_levels 0 < 6; D3 local_contrast 0 < 0.3; D4 entropy 1.2043 < 2.2
+  DEGENERATE  reports/runs/capture-cache/game@df03085f961bada0/f63dbbe785ad735c583f3f828f95c52a0aa10c7b4062aa3d1b61eb1e8eada462.png  D3 local_contrast 0.0797 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@e11af8d729b70b75/cfe7d80c7fb6252c083edeecedad05b0976626deb1b49e03a757df1adbbb9dab.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@e2a200f1651658ec/d4a5702e6db76cb7548dc36e09bbedd110a98da46456e5a76d74a517bf55b927.png  D3 local_contrast 0.0632 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@e7d4a2a5474be7d3/a6a25a1945b8f44c30fa91f71bfca6ef568d07ce10667529bf34cc23297a1338.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@e8c4581ca7b897cc/c4e85786de960a80a66bd7dc110e5fc201afc8757bfc374567d50e3f322bb8bc.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@f06585fd8cb37fe0/7c6dd79e39a719dd4469208979a2092e0a7d030ff81317eecd392710614a781f.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@f25f5c41b563272c/c9c224fd2a1a50a2970ce263e8c7eb52afb506e4ccafbcd79dbec183365a029b.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@faab2b9d65ff2fd1/c4c618e0a6e94cdbf7a751bc177388b619bb2124dc7a78563fd7a225ab3e8d2a.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@fefe8ee249821b63/19913449956f1fc21c7bb4896798c1677890558d39650671ab9438d837edef6a.png  D3 local_contrast 0.0181 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@ff3ab9f9b85d55ab/07c219b6b1fa01882efcc5ee4447d4b8b80e7809795511b6ae4f984df5ffff4b.png  D3 local_contrast 0.0174 < 0.3
+  DEGENERATE  reports/runs/capture-cache/game@ffad360614ab9bba/0a9e4f9d853c3a7e6e214790530701d47476e4220890e9996e6e18211eb7df1a.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/w1-07/scene/shots/00-hold.hatch-name.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/w1-14-r3/vfx/after_impact.png  D3 local_contrast 0 < 0.3
+  DEGENERATE  reports/w1-24/cam07/_arm_a.png  D3 local_contrast 0.0797 < 0.3
+  DEGENERATE  reports/w1-30a/probe/sheet-eye-deep-marshes-before-after.png  D3 local_contrast 0.125 < 0.3
+  DEGENERATE  reports/w1-touch/shots-keyboard/2026-08-08-w1-touch-differential-01-title-first-launch.png  D3 local_contrast 0.0363 < 0.3
+  DEGENERATE  reports/wld12-blind/f00.png  D3 local_contrast 0.0187 < 0.3
+
+161 of 368 real frames (43.75%) would be rejected as degenerate by the shipped thresholds.
