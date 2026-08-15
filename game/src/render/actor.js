@@ -511,7 +511,11 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     const parent = defs[bi].parent === null ? -1 : index.get(defs[bi].parent);
     const k = /^clavicle/.test(id) ? M.shoulders : /^(pelvis|spine_00)$/.test(id) ? M.belly
       : id === 'neck' ? M.neck : /^hand_/.test(id) ? M.hand : 1;
-    B[spec.mat].tube(a, b, rScale(spec.r0) * k, rScale(spec.r1) * k, bi, parent, spec.blend);
+    // RADIAL 12 -> 14, RINGS 5 -> 6. RI-VIS08 B2 wants >= 25,000 triangles on the player and the
+    // shipped figure carried 15,142 — a limb section coarse enough that B1's faceting metric is
+    // measuring the tessellation rather than the modelling. This is the cheapest honest way to
+    // spend the budget: section, on the parts that are actually round.
+    B[spec.mat].tube(a, b, rScale(spec.r0) * k, rScale(spec.r1) * k, bi, parent, spec.blend, 14, 6);
   }
   for (const [id, mat] of Object.entries(JOINT_SURFACE)) {
     const bi = index.get(id);
@@ -521,16 +525,66 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     const k = id === 'neck' ? M.neck : /^hand_/.test(id) ? M.hand : 1;
     const r = rScale(jointRadius(id)) * k;
     if (r <= 0) continue;
-    B[mat].ball(originOf(id), r, bi, 10);
+    B[mat].ball(originOf(id), r, bi, 12);
   }
 
   // Anatomical volumes bridge the mechanically useful skeleton tubes into a readable body.
   // They are emitted into the same sealed, skinned surfaces, so they cannot lag behind motion
   // or recreate the translucent-overlap defect that separate transparent shells produced.
   const pelvisI=index.get('pelvis');
-  if(pelvisI!==undefined)B.cloth.ellipsoid(originOf('pelvis').add(new THREE.Vector3(0,.035,0)),[.185*M.build*M.belly,.13*M.build,.135*M.build*M.belly],pelvisI,12);
+  if(pelvisI!==undefined)B.cloth.ellipsoid(originOf('pelvis').add(new THREE.Vector3(0,.035,0)),[.185*M.build*M.belly,.13*M.build,.135*M.build*M.belly],pelvisI,14);
   const chestI=index.get('spine_02');
-  if(chestI!==undefined)B.cloth.ellipsoid(originOf('spine_02').add(new THREE.Vector3(0,.025,0)),[.228*M.build*M.shoulders,.20*M.build,.142*M.build],chestI,14);
+  if(chestI!==undefined)B.cloth.ellipsoid(originOf('spine_02').add(new THREE.Vector3(0,.025,0)),[.228*M.build*M.shoulders,.20*M.build,.142*M.build],chestI,18);
+
+  // THE SHOULDER GIRDLE — the critic's finding #1, and the thing a viewer registers in the first
+  // half-second: *"The shoulders are two glossy ellipsoids stuck to the sides of a flat
+  // rectangular torso plate… On the ESO plate the same regions are a continuous surface with
+  // deltoid, trapezius and clavicle reading as one form; on ours they are separable objects."*
+  //
+  // Two things were making that true and the winding fault above was one of them — with the far
+  // surface drawn and its normals facing away, no amount of modelling could have made a form read
+  // as a form. The other is that there was genuinely nothing between the chest ellipsoid and the
+  // shoulder joint ball: a clavicle tube ran across the gap and the two masses met at a step.
+  //
+  // What is added, all of it welded into the same skinned surface as the rest of the body (so it
+  // participates in every pose and cannot separate — the lesson of the four floating crest cones):
+  //
+  //   trapezius   a tapered tube from the neck base out to each clavicle end, weighted half into
+  //               spine_02, which is the continuous neck-to-shoulder slope the reference has and
+  //               ours did not.
+  //   deltoid     an ellipsoid capping the top of each upper arm and running a third of the way
+  //               down it, skinned to the arm so it moves as muscle rather than as a pauldron.
+  //   pectoral    a pair on the chest front, so the torso has a front plane and a side plane
+  //               instead of one undifferentiated slab.
+  //   lat sweep   an ellipsoid at spine_00, wider than deep, taking the ribcage down into the
+  //               waist so the trunk tapers rather than stopping.
+  //
+  // Every one of them reads `M.build` and `M.shoulders`, so the shared-body-plan property holds:
+  // widening the base moves all of them on all seventeen characters, which is the whole design.
+  const s00I = index.get('spine_00');
+  for (const side of ['l', 'r']) {
+    const sign = side === 'l' ? -1 : 1;
+    const clavI = index.get(`clavicle_${side}`);
+    const armI = index.get(`upperarm_${side}`);
+    if (clavI === undefined || armI === undefined || chestI === undefined) continue;
+    const neckBase = originOf('spine_02').add(new THREE.Vector3(0, .085 * M.build, 0));
+    const armTop = originOf(`upperarm_${side}`);
+    // trapezius: neck base out to the shoulder, blended into the chest so it creases rather than
+    // shearing when the spine turns.
+    B.cloth.tube(neckBase, armTop, .072 * M.build * M.shoulders, .098 * M.build * M.shoulders,
+      clavI, chestI, 0.55, 12, 4);
+    // deltoid: a cap over the top of the arm, elongated down it.
+    const elbow = index.get(`lowerarm_${side}`) !== undefined ? originOf(`lowerarm_${side}`) : null;
+    const down = elbow ? elbow.clone().sub(armTop).multiplyScalar(0.30) : new THREE.Vector3(0, -.09 * M.build, 0);
+    B.skin.ellipsoid(armTop.clone().add(down.clone().multiplyScalar(0.55)),
+      [.104 * M.build * M.shoulders, .112 * M.build, .100 * M.build], armI, 12);
+    // pectoral
+    B.cloth.ellipsoid(originOf('spine_02').add(new THREE.Vector3(sign * .098 * M.build * M.shoulders, .018 * M.build, .092 * M.build)),
+      [.098 * M.build * M.shoulders, .078 * M.build, .062 * M.build], chestI, 11);
+  }
+  // lat sweep — the ribcage-into-waist taper
+  if (s00I !== undefined) B.cloth.ellipsoid(originOf('spine_00').add(new THREE.Vector3(0, .045 * M.build, -.006)),
+    [.196 * M.build * M.shoulders, .130 * M.build, .128 * M.build * M.belly], s00I, 14);
 
   // ---- the head ------------------------------------------------------------------------
   // This is Black Marsh and the player is Saxhleel, so the skull is long, the snout carries
@@ -856,18 +910,18 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     // masses give it scapulae, a tapered waist and a descending tail, while the combat rig remains
     // the sole pose authority. Limb pieces below ride upper/lower/terminal bones separately so a
     // lunge bends at shoulder, wrist, hip and hock rather than translating four glued pegs.
-    addPresentation('spine_00',new THREE.SphereGeometry(.30,18,12),[0,-.10,.28],[1.18,.78,1.42],[0,0,0],'ribcage');
-    addPresentation('pelvis',new THREE.SphereGeometry(.27,16,10),[0,.03,-.20],[1.02,.80,1.30],[0,0,0],'haunch-mass');
-    addPresentation('spine_00',new THREE.SphereGeometry(.22,14,9),[0,-.11,-.10],[.90,.72,1.32],[0,0,0],'tapered-loin');
-    addPresentation('spine_02',new THREE.CapsuleGeometry(.135,.34,6,12),[0,-.18,.27],[1,.80,1],[Math.PI/2,0,0],'neck');
+    addPresentation('spine_00',new THREE.SphereGeometry(.30,22,14),[0,-.10,.28],[1.18,.78,1.42],[0,0,0],'ribcage');
+    addPresentation('pelvis',new THREE.SphereGeometry(.27,20,13),[0,.03,-.20],[1.02,.80,1.30],[0,0,0],'haunch-mass');
+    addPresentation('spine_00',new THREE.SphereGeometry(.22,18,12),[0,-.11,-.10],[.90,.72,1.32],[0,0,0],'tapered-loin');
+    addPresentation('spine_02',new THREE.CapsuleGeometry(.135,.34,10,20),[0,-.18,.27],[1,.80,1],[Math.PI/2,0,0],'neck');
     addPresentation('spine_02',new THREE.DodecahedronGeometry(.20,2),[0,-.19,.60],[1.12,.80,1.40],[0,0,0],'wedge-skull');
-    addPresentation('spine_02',new THREE.SphereGeometry(.145,14,9),[0,-.245,.79],[.78,.55,1.42],[0,0,0],'muzzle-mass');
+    addPresentation('spine_02',new THREE.SphereGeometry(.145,18,12),[0,-.245,.79],[.78,.55,1.42],[0,0,0],'muzzle-mass');
     addPresentation('spine_02',new THREE.BoxGeometry(.19,.045,.32),[0,-.32,.78],[1,1,1],[.08,0,0],'lower-jaw');
     // Three diminishing, slightly offset tail sections avoid the pipe silhouette and carry the
     // pelvis motion through a heavy base into a narrow terminal whip.
-    addPresentation('pelvis',new THREE.CapsuleGeometry(.16,.36,6,11),[.015,.00,-.49],[1,.84,1],[Math.PI/2-.10,0,.03],'tail-base');
-    addPresentation('pelvis',new THREE.CapsuleGeometry(.105,.40,6,10),[-.025,-.055,-.80],[1,.82,1],[Math.PI/2-.20,.05,-.06],'tail-mid');
-    addPresentation('pelvis',new THREE.ConeGeometry(.082,.48,9),[.035,-.13,-1.11],[1,1,1],[-Math.PI/2+.28,.04,.08],'tail-whip');
+    addPresentation('pelvis',new THREE.CapsuleGeometry(.16,.36,10,18),[.015,.00,-.49],[1,.84,1],[Math.PI/2-.10,0,.03],'tail-base');
+    addPresentation('pelvis',new THREE.CapsuleGeometry(.105,.40,10,18),[-.025,-.055,-.80],[1,.82,1],[Math.PI/2-.20,.05,-.06],'tail-mid');
+    addPresentation('pelvis',new THREE.ConeGeometry(.082,.48,16),[.035,-.13,-1.11],[1,1,1],[-Math.PI/2+.28,.04,.08],'tail-whip');
     const eyeMat=mats.bone.clone();eyeMat.color.setHex(0xd3b957);eyeMat.emissive.setHex(0x5a3108);eyeMat.emissiveIntensity=.7;
     for(const sx of [-1,1])addPresentation('spine_02',new THREE.SphereGeometry(.032,10,7),[sx*.118,-.145,.715],[1,.78,.62],[0,0,0],`eye-${sx<0?'l':'r'}`,eyeMat);
     for(const sx of [-1,1]){
@@ -877,12 +931,12 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
       // offsets are metres above the beast's low body and produced disconnected feet even when
       // transformed coherently. Connected local chains supply the quadruped's true attachment
       // points while the bounded lunge deformation below moves the complete chain together.
-      addPresentation('spine_00',new THREE.CapsuleGeometry(.070,.20,5,9),[sx*.235,-.255,.40],[1,.92,.86],[0,0,sx*.52],`fore-upper-${side}`);
-      addPresentation('spine_00',new THREE.CapsuleGeometry(.052,.17,5,9),[sx*.345,-.405,.43],[1,.96,.84],[0,0,-sx*.16],`fore-lower-${side}`);
-      addPresentation('spine_00',new THREE.SphereGeometry(.076,11,7),[sx*.37,-.515,.50],[1.42,.42,1.30],[0,0,0],`fore-paw-${side}`);
-      addPresentation('spine_00',new THREE.SphereGeometry(.115,12,8),[sx*.225,-.22,-.35],[1.12,1.32,1.18],[0,0,0],`hind-haunch-${side}`);
-      addPresentation('spine_00',new THREE.CapsuleGeometry(.065,.22,5,9),[sx*.365,-.39,-.43],[1,.96,.88],[0,0,sx*.22],`hind-hock-${side}`);
-      addPresentation('spine_00',new THREE.SphereGeometry(.085,11,7),[sx*.42,-.515,-.50],[1.55,.45,1.48],[0,0,0],`hind-paw-${side}`);
+      addPresentation('spine_00',new THREE.CapsuleGeometry(.070,.20,6,12),[sx*.235,-.255,.40],[1,.92,.86],[0,0,sx*.52],`fore-upper-${side}`);
+      addPresentation('spine_00',new THREE.CapsuleGeometry(.052,.17,6,12),[sx*.345,-.405,.43],[1,.96,.84],[0,0,-sx*.16],`fore-lower-${side}`);
+      addPresentation('spine_00',new THREE.SphereGeometry(.076,14,9),[sx*.37,-.515,.50],[1.42,.42,1.30],[0,0,0],`fore-paw-${side}`);
+      addPresentation('spine_00',new THREE.SphereGeometry(.115,16,11),[sx*.225,-.22,-.35],[1.12,1.32,1.18],[0,0,0],`hind-haunch-${side}`);
+      addPresentation('spine_00',new THREE.CapsuleGeometry(.065,.22,6,12),[sx*.365,-.39,-.43],[1,.96,.88],[0,0,sx*.22],`hind-hock-${side}`);
+      addPresentation('spine_00',new THREE.SphereGeometry(.085,14,9),[sx*.42,-.515,-.50],[1.55,.45,1.48],[0,0,0],`hind-paw-${side}`);
       for(let toe=-1;toe<=1;toe++)addPresentation('spine_00',new THREE.ConeGeometry(.016,.12,6),[sx*.42+toe*.032,-.525,-.39-Math.abs(toe)*.018],[1,1,1],[Math.PI/2,0,0],`hind-toe-${side}-${toe+1}`,mats.bone);
     }
     for(let i=0;i<7;i++)addPresentation(i<3?'pelvis':'spine_00',new THREE.ConeGeometry(.062-i*.005,.21-i*.013,7),[(i%2?1:-1)*.018,.13,-.40+i*.17],[1,.72,1],[-Math.PI/2-.18,0,(i%2?1:-1)*.12],`dorsal-${i}`);
