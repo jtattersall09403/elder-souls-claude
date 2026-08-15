@@ -273,7 +273,47 @@ tree at that moment. **A mid-edit to `game/src/ui/icons.js` by one builder kille
 agent's paid run.** The CLI's existing `--revision` flag pins it. Pass it on every paid run and record
 the sha — otherwise the arms of your experiment differ by whatever a neighbour happened to be typing.
 
-## 13. Agents stall waiting on their own monitors — take the measurement or declare it unmeasured
+## 13. DO NOT USE `Monitor` OR A BACKGROUND WAIT AS YOUR LAST ACTION. This is a prohibition, not advice.
+
+**Six agents have now ended a turn in a wait state on 2026-08-15 alone.** Two of them did it *after* the
+briefing told them not to, and one did it after a direct message telling it to stop. **So the rule has
+been rewritten as a prohibition, because the advisory version demonstrably does not work.**
+
+> **You may not end a turn waiting on a `Monitor`, a background task, or a poll loop. If a result has
+> not arrived by the time you would otherwise stop, land what you have and record the missing piece as
+> `"unmeasured, because X"`.**
+
+**Why agents do it, and why the instinct is wrong.** It is not laziness — it is conscientiousness. The
+agent wants the verification before claiming the result. But the deliverable is almost always the
+*fix*, not the evidence: a repaired probe landed and honestly labelled *"verification not run"* is worth
+more today than a perfect verification that never arrives, because the unrepaired probe is meanwhile
+reporting a fixed build as broken. **An honest gap is cheap. A blocked agent produces nothing at all.**
+
+**Three practical replacements, in order of preference:**
+
+1. **Run it in the foreground with a timeout.** `timeout 240 node tools/whatever.mjs`. If it does not
+   finish, you have your answer: it is too slow to be part of this piece, which is itself a finding.
+2. **Write to a file and read the file later in the same turn.** Never pipe a long capture through
+   `| tail` — that buffers the whole pipeline and makes a healthy run look hung (two capture runs were
+   killed that way, ~40 minutes each).
+3. **Take a cheaper proxy and say it is a proxy.**
+
+**And know what is actually slow here before you blame your code:** `gl.readPixels` was measured at
+**10–20 seconds per call** under load. A dense frame-by-frame walk is expensive by nature, not broken.
+
+**Suspect the monitor before the run.** Several of these stalls were on runs that had *already
+finished* — the notification was stale. One agent's own `pgrep` loop was matching **its own waiter
+shells**, so the condition could never clear: a check contaminated by the thing doing the checking,
+which is §0's failure family wearing different clothes.
+
+**Disarm every waiter you arm, by PID, as your last act.** A background waiter left armed keeps firing
+after its agent completes and **wakes the agent again each time**. Measured: one agent's final report
+was delivered eight times and its total went from ~500k to **539k tokens and 381 tool calls**, every one
+of them after the work was landed and verified. `TaskStop` reports the agent as `completed`, so the
+orchestrator **cannot** kill them — only you can, and only before you stop.
+
+### 13-old. The original advisory wording, kept because its incidents are the evidence
+
 
 **Measured on the evening of 2026-08-14: four separate agents stalled waiting on background tasks, and
 one of them stalled twice.** Each ended its turn with some variant of *"I'll wait for the monitor to
