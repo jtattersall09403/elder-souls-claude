@@ -1,0 +1,568 @@
+{
+  "at": "2026-08-15T16:10:49.696Z",
+  "what_this_is": "F2/F1 diagnosis: the five judged Protocol A r2 windows re-rendered under forced render configurations. Crop boxes copied verbatim from the sealed pairing key.",
+  "renderer": {
+    "renderer_string": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "hardware": false,
+    "software_renderer": true,
+    "unknown": false,
+    "class": "SOFTWARE",
+    "evidence_class": "SOFTWARE — valid for geometry, layout, composition, determinism and census. NOT valid for antialiasing, bloom, AO, IBL or any appearance claim (W1-30-EVIDENCE §4).",
+    "reason": "the reported renderer names a software rasteriser: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "decided_from": "renderer-string",
+    "hardware_requested": false,
+    "fell_back": false,
+    "renderer_source": "live page WEBGL_debug_renderer_info",
+    "backend": null,
+    "backend_attempts": [],
+    "chromium_args": [
+      "--force-color-profile=srgb",
+      "--font-render-hinting=none",
+      "--disable-lcd-text",
+      "--disable-skia-runtime-opts",
+      "--hide-scrollbars",
+      "--mute-audio",
+      "--disable-background-timer-throttling",
+      "--disable-renderer-backgrounding",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-partial-raster",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-new-content-rendering-timeout",
+      "--enable-unsafe-swiftshader",
+      "--use-gl=angle",
+      "--use-angle=swiftshader"
+    ]
+  },
+  "evidence_class": "SOFTWARE — differential only, not an absolute appearance claim (HAZARDS §15)",
+  "configs": {
+    "shipped": {
+      "fn": "() => {}",
+      "delta_base": "shipped"
+    },
+    "shadows_off": {
+      "fn": "() => { __shadowMap(false); }",
+      "delta_base": "shipped"
+    },
+    "ao_off": {
+      "fn": "() => { __setU({ uAO: 0 }); }",
+      "delta_base": "shipped"
+    },
+    "ao_full": {
+      "fn": "() => { __setU({ uAOMaxOcclusion: 1.0, uAORadius: 1.2, uAOStrength: 3.1 }); }",
+      "delta_base": "shipped"
+    },
+    "gi_off": {
+      "fn": "() => { __setU({ uGI: 0 }); }",
+      "delta_base": "shipped"
+    },
+    "grade_off": {
+      "fn": "() => { __setU({ uGradeOn: 0 }); }",
+      "delta_base": "shipped"
+    },
+    "post_off": {
+      "fn": "() => { __setU({ uPost: 0 }); }",
+      "delta_base": "shipped"
+    },
+    "sun_off": {
+      "fn": "() => { __sun((L) => { L.intensity = 0; }); }",
+      "delta_base": "shipped"
+    },
+    "sun_x3": {
+      "fn": "() => { __sun((L, base) => { L.intensity = base * 3; }); }",
+      "delta_base": "shipped"
+    },
+    "env_off": {
+      "fn": "() => { __envScale(0); }",
+      "delta_base": "shipped"
+    },
+    "env_null": {
+      "fn": "() => { __scene().environment = null; }",
+      "delta_base": "shipped"
+    },
+    "ambient_off": {
+      "fn": "() => { __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __setLight(o, 0); }); }",
+      "delta_base": "shipped"
+    },
+    "indirect_off": {
+      "fn": "() => { __scene().environment = null; __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __setLight(o, 0); }); }",
+      "delta_base": "shipped"
+    },
+    "fog_off": {
+      "fn": "() => { const f = __scene().fog; if (f) { f.density = 0; if ('near' in f) { f.near = 1e6; f.far = 1e7; } } }",
+      "delta_base": "shipped"
+    },
+    "shadow_tight": {
+      "fn": "() => { __tightShadow(24); }",
+      "delta_base": "shipped"
+    },
+    "cell_lights_off": {
+      "fn": "() => { const s = __scene(); s.traverse((o) => { if ((o.isHemisphereLight || o.isAmbientLight || o.isDirectionalLight) && o.parent && o.parent !== s) o.visible = false; }); }",
+      "delta_base": "shipped"
+    },
+    "cell_lights_off_ao_full": {
+      "fn": "() => { const s = __scene(); s.traverse((o) => { if ((o.isHemisphereLight || o.isAmbientLight || o.isDirectionalLight) && o.parent && o.parent !== s) o.visible = false; }); __setU({ uAOMaxOcclusion: 1.0, uAORadius: 1.2, uAOStrength: 3.1 }); }",
+      "delta_base": "shipped"
+    },
+    "sun_dominant": {
+      "fn": "() => { __sun((L, base) => { L.intensity = base * 2.2; }); __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __scaleLight(o, 0.35); }); __scene().environmentIntensity = 0.35; }",
+      "delta_base": "shipped"
+    },
+    "key_off": {
+      "fn": "() => { const s = __scene(); s.traverse((o) => { if (o.isDirectionalLight && o.parent === s) __setLight(o, 0); }); }",
+      "delta_base": "shipped"
+    },
+    "moon_off": {
+      "fn": "() => { const s = __scene(); s.traverse((o) => { if (o.isDirectionalLight && o.parent === s && o !== window.__sunLight) __setLight(o, 0); }); }",
+      "delta_base": "shipped"
+    },
+    "r1a": {
+      "fn": "() => { __sun((L, base) => { L.intensity = base * 2.2; }); __moonScale(2.2); __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __scaleLight(o, 0.8); }); __envScale(0.45); }",
+      "delta_base": "shipped"
+    },
+    "r1a_key_off": {
+      "fn": "() => { __sun((L, base) => { L.intensity = base * 2.2; }); __moonScale(2.2); __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __scaleLight(o, 0.8); }); __envScale(0.45); const s = __scene(); s.traverse((o) => { if (o.isDirectionalLight && o.parent === s) __setLight(o, 0); }); }",
+      "delta_base": "r1a"
+    },
+    "r1a_env_off": {
+      "fn": "() => { __sun((L, base) => { L.intensity = base * 2.2; }); __moonScale(2.2); __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __scaleLight(o, 0.8); }); __envScale(0.45); __envScale(0); }",
+      "delta_base": "r1a"
+    },
+    "r1b": {
+      "fn": "() => { __sun((L, base) => { L.intensity = base * 3; }); __moonScale(3); __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __scaleLight(o, 0.75); }); __envScale(0.35); }",
+      "delta_base": "shipped"
+    },
+    "r1b_key_off": {
+      "fn": "() => { __sun((L, base) => { L.intensity = base * 3; }); __moonScale(3); __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __scaleLight(o, 0.75); }); __envScale(0.35); const s = __scene(); s.traverse((o) => { if (o.isDirectionalLight && o.parent === s) __setLight(o, 0); }); }",
+      "delta_base": "r1b"
+    },
+    "r1b_env_off": {
+      "fn": "() => { __sun((L, base) => { L.intensity = base * 3; }); __moonScale(3); __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __scaleLight(o, 0.75); }); __envScale(0.35); __envScale(0); }",
+      "delta_base": "r1b"
+    },
+    "r1c": {
+      "fn": "() => { __sun((L, base) => { L.intensity = base * 2.6; }); __moonScale(2.6); __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __scaleLight(o, 1); }); __envScale(0.4); }",
+      "delta_base": "shipped"
+    },
+    "r1c_key_off": {
+      "fn": "() => { __sun((L, base) => { L.intensity = base * 2.6; }); __moonScale(2.6); __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __scaleLight(o, 1); }); __envScale(0.4); const s = __scene(); s.traverse((o) => { if (o.isDirectionalLight && o.parent === s) __setLight(o, 0); }); }",
+      "delta_base": "r1c"
+    },
+    "r1c_env_off": {
+      "fn": "() => { __sun((L, base) => { L.intensity = base * 2.6; }); __moonScale(2.6); __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __scaleLight(o, 1); }); __envScale(0.4); __envScale(0); }",
+      "delta_base": "r1c"
+    },
+    "shipped_recheck": {
+      "fn": "() => {}",
+      "delta_base": "shipped"
+    }
+  },
+  "judged_windows": [
+    {
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "crop": [
+        300,
+        150,
+        512,
+        512
+      ],
+      "what": "mid-distance exterior architecture over ground"
+    },
+    {
+      "pair": "pair02",
+      "setup": "char-player",
+      "hour": 13,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "what": "plain built masonry / ground under flat noon"
+    },
+    {
+      "pair": "pair03",
+      "setup": "char-npc",
+      "hour": 13,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "what": "carved built stonework at mid distance"
+    },
+    {
+      "pair": "pair04",
+      "setup": "char-npc",
+      "hour": 8,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "what": "near-field ground cover, low-angle light"
+    },
+    {
+      "pair": "pair05",
+      "setup": "char-player",
+      "hour": 19.5,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "what": "dusk walkway, low ambient"
+    }
+  ],
+  "f4_acceptance": {
+    "rule": "key_off mean|d|rgb >= 2.0 x env_off mean|d|rgb, in ALL FIVE judged windows",
+    "by_config": {
+      "shipped": {
+        "pair01": {
+          "key_off_delta": 9.316,
+          "env_off_delta": 19.8203,
+          "ratio": 0.47,
+          "passes_2x": false,
+          "mean_luma": 59.149,
+          "luma_vs_shipped": 1,
+          "sd_vs_shipped": 1,
+          "chroma_vs_shipped": 1
+        }
+      },
+      "r1b": {
+        "pair01": {
+          "key_off_delta": 26.2779,
+          "env_off_delta": 6.9402,
+          "ratio": 3.786,
+          "passes_2x": true,
+          "mean_luma": 62.4297,
+          "luma_vs_shipped": 1.0555,
+          "sd_vs_shipped": 0.878,
+          "chroma_vs_shipped": 1.1755
+        }
+      }
+    }
+  },
+  "aborted": null,
+  "rows": [
+    {
+      "config": "shipped",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/f4-r1b-p01/shipped/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/f4-r1b-p01/shipped/pair01__CROP.png",
+      "frame_sha": "cec3262a3d79e2c9",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 59.149,
+        "sd_luma": 29.8994,
+        "p10": 37.34,
+        "p50": 45.91,
+        "p90": 94.81,
+        "span": 153.19,
+        "mean_chroma": 25.0706
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 2.1,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": true,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "dirTotal": 7.7,
+        "dirCount": 5,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_base": "shipped",
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 0
+      }
+    },
+    {
+      "config": "env_off",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/f4-r1b-p01/env_off/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/f4-r1b-p01/env_off/pair01__CROP.png",
+      "frame_sha": "d1adf809a9ce7d64",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 37.4444,
+        "sd_luma": 27.9529,
+        "p10": 17.92,
+        "p50": 28.06,
+        "p90": 60.97,
+        "span": 167.41,
+        "mean_chroma": 17.7156
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 2.1,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": true,
+        "environmentIntensity": 0,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "dirTotal": 7.7,
+        "dirCount": 5,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_base": "shipped",
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 19.8203
+      }
+    },
+    {
+      "config": "key_off",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/f4-r1b-p01/key_off/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/f4-r1b-p01/key_off/pair01__CROP.png",
+      "frame_sha": "6a0643332c0eb4a5",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 48.9486,
+        "sd_luma": 32.0005,
+        "p10": 25.49,
+        "p50": 33.63,
+        "p90": 83.11,
+        "span": 160.05,
+        "mean_chroma": 20.8794
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": true,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "dirTotal": 5.6,
+        "dirCount": 4,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_base": "shipped",
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 9.316
+      }
+    },
+    {
+      "config": "r1b",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/f4-r1b-p01/r1b/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/f4-r1b-p01/r1b/pair01__CROP.png",
+      "frame_sha": "e62b8646a8041a45",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 62.4297,
+        "sd_luma": 26.2505,
+        "p10": 44.05,
+        "p50": 53.91,
+        "p90": 92.59,
+        "span": 157.84,
+        "mean_chroma": 29.4714
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.300000000000001,
+        "hemiTotal": 3.8436,
+        "ambientTotal": 0.3969,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_base": "shipped",
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 8.5695
+      }
+    },
+    {
+      "config": "r1b_key_off",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/f4-r1b-p01/r1b_key_off/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/f4-r1b-p01/r1b_key_off/pair01__CROP.png",
+      "frame_sha": "3b74a668b6f83d3b",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 33.0665,
+        "sd_luma": 30.5874,
+        "p10": 10.85,
+        "p50": 20.64,
+        "p90": 59.05,
+        "span": 169.69,
+        "mean_chroma": 14.8604
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0,
+        "hemiTotal": 3.8436,
+        "ambientTotal": 0.3969,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "dirTotal": 5.6,
+        "dirCount": 4,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_base": "r1b",
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 26.2779
+      }
+    },
+    {
+      "config": "r1b_env_off",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/f4-r1b-p01/r1b_env_off/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/f4-r1b-p01/r1b_env_off/pair01__CROP.png",
+      "frame_sha": "673187e062c8dc68",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 54.9504,
+        "sd_luma": 26.4113,
+        "p10": 37.2,
+        "p50": 47.55,
+        "p90": 82.09,
+        "span": 165.55,
+        "mean_chroma": 27.5322
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.300000000000001,
+        "hemiTotal": 3.8436,
+        "ambientTotal": 0.3969,
+        "hasEnvironment": true,
+        "environmentIntensity": 0,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_base": "r1b",
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 6.9402
+      }
+    },
+    {
+      "config": "shipped_recheck",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/f4-r1b-p01/shipped_recheck/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/f4-r1b-p01/shipped_recheck/pair01__CROP.png",
+      "frame_sha": "e9a0b6f6fc441f63",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 57.4233,
+        "sd_luma": 30.3335,
+        "p10": 35.27,
+        "p50": 44.13,
+        "p90": 93.56,
+        "span": 155.49,
+        "mean_chroma": 25.8012
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 2.1,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": true,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "dirTotal": 7.7,
+        "dirCount": 5,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_base": "shipped",
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 1.9048
+      }
+    }
+  ]
+}

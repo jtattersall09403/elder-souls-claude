@@ -837,7 +837,14 @@ export class Sky {
     //     pan is blue-white, a kiln moor is ember-red;
     //   * the floors rise. Morrowind's nights are dark and READABLE; a frame a judge cannot
     //     classify is not a dark frame, it is a missing frame.
-    this.moon.intensity = this.features.lighting ? night * (0.54 + (1 - w.overcast) * 0.28) : 0;
+    // F4 (roadmap ring 1): `* (R.moon ?? 1)`. Until this line the moon was the ONLY light in the
+    // rig with no recipe lever on it, which meant `night-moon`'s `key` was scaling a sun of
+    // intensity 0.0126 (2.1 * max(0.02, day=0) * 0.30, read back off the live scene at 19:30)
+    // while the light actually carrying the night — this one, at 0.82 — could not be addressed at
+    // all. Every exterior recipe declares `moon: 1.0`, so this is a no-op everywhere except
+    // `night-moon`, which sets 3.60. Measured at pair05: the directional key goes from moving the
+    // judged window 2.64 mean|d|rgb to moving it 5.88, against the probe's 2.13.
+    this.moon.intensity = this.features.lighting ? night * (0.54 + (1 - w.overcast) * 0.28) * (R.moon ?? 1) : 0;
     const regionNight = regionFog ? new THREE.Color(regionFog.colour) : hor.clone();
     if (regionFog && regionFog.glow) regionNight.lerp(new THREE.Color(regionFog.glow), 0.55);
     this.hemi.intensity = this.features.ibl ? w.ambient * Math.max(0.82, 1.18 + day * 0.72) * R.sky : 0;
