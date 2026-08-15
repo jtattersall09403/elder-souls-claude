@@ -3,9 +3,9 @@
   "role": "builder",
   "item": "corpus/86-ui/RI-UIX08-dialogue-window.md",
   "branch": "codex/wave1-build-experiment",
-  "state": "built-probe-running",
+  "state": "built-measured-deletefix-confirmed-awaiting-critic",
   "started_at": "2026-08-14",
-  "next_step": "finish tools/ui/dialogue-window-probe.mjs run; delete-the-fix arm on a control clone; blog line; verdict note",
+  "next_step": "What could not be done, first: RI-UIX08 section G (the human gate) was NOT run — a builder may not judge its own work (rules 22/25); create_session is approval-gated on this box. Score G not_run; the item's own aggregation caps this piece at 2 until a judge runs it. A critic should: (1) run section G against the built ablated arm (__ENGINE.ui.dialogueArm.links=false, live and captured); (2) resolve the stormhold-street colour anomaly named in EVIDENCE-ADDENDUM-2026-08-15.md section 4 (column ΔE 21.06, link ΔE 15.52, vs bar ≤8 — focused/hover-ramp bleed suspected, not confirmed); (3) re-run D2 (following a link APPENDS) against a guaranteed-answerable link — this session's one live example happened to hit a topic the speaker could not answer, which by the window's own documented design (engine.js, the _convPending site) correctly appends no line while still learning the topic (D3/D4 both passed), so D2's FAIL there is very likely a probe-strictness gap rather than a window defect, but was not re-confirmed. What IS done: the probe ran to completion twice, live, at two NPCs/states (helstrom-market: 22/25; stormhold-street: 24/26); the delete-the-fix arm ran on a properly pinned baseline clone (dc3f9a80, an actual git worktree checkout, not a hard-link of the live moving tree) and BOTH its checks pass (new window gone; old reply menu genuinely back with 11 real options) — the first attempt found and this session fixed a real instrument bug in tools/ui/dialogue-window-probe.mjs's own field paths, confirmed with a raw diagnostic before and after. Full detail: reports/uix08/EVIDENCE-ADDENDUM-2026-08-15.md.",
   "files_touched": [
     "orchestration/status/W1-UIX08-dialogue-window.json",
     "reports/uix08/READING-NOTE.md",
@@ -62,6 +62,11 @@
     {
       "id": "UIX08-R5",
       "text": "The old render/ui.js reply panel is suppressed from PAINTING but still laid out and still reported by metrics(), so every existing probe reading getUIState() conversation fields keeps its answer. setVisible(false) would have zeroed them."
+    },
+    {
+      "id": "UIX08-R6",
+      "text": "2026-08-15: the delete-the-fix probe's own X2 check ('old reply menu is back') read s.open/s.option_count at getUIState()'s TOP LEVEL, which only exist there inside the `!this.ui` branch of engine.js#getUIState() — a branch that never runs, because this.ui (W1-21's UISystem) always exists in the shipped build. So X2 read undefined/undefined regardless of DIALOGUE_WINDOW and FAILED even when the teardown genuinely worked. Confirmed with a raw harness diagnostic against the pinned worktree (DIALOGUE_WINDOW=false): top-level open/option_count are undefined; s.dialogue_surface.{open,option_count} are {true,11}, with the full old menu's rendered_text present. Fixed in tools/ui/dialogue-window-probe.mjs to read the nested path; re-run on the same pinned commit (dc3f9a80) now passes both X1 and X2.",
+      "reversible": false
     }
   ],
   "triage": {
