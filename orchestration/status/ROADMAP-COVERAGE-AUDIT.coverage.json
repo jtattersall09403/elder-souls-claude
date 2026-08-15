@@ -1,9 +1,9 @@
 {
- "generated": "2026-08-15T10:27:11.462Z",
+ "generated": "2026-08-15T10:30:00.699Z",
  "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
  "method": "Inventory derived by fs walk + generated ledgers. Mapping authored by the audit agent after reading every RI title/front-matter, every plan heading, and every open gap record.",
  "inventory_counts": {
-  "reference_items": 151,
+  "reference_items": 152,
   "plans": 49,
   "open_gaps": 82,
   "proposed_roadmap_items": 69
@@ -1478,10 +1478,13 @@
     "RI-UIX06",
     "RI-UIX07",
     "RI-UIX08",
-    "RI-UIX09"
+    "RI-UIX09",
+    "RI-UIX10"
    ],
-   "n_ref_items": 6,
-   "never_judged": [],
+   "n_ref_items": 7,
+   "never_judged": [
+    "RI-UIX10"
+   ],
    "open_gaps": [
     "GAP-W1-map-fix-drops-the-journal-from-the-page-walk",
     "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
@@ -3905,6 +3908,23 @@
    "verdicts": 1,
    "best_score_0_10": 0,
    "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-UIX10",
+   "file": "corpus/86-ui/RI-UIX10-screen-operability.md",
+   "area": "86-ui",
+   "title": "Operability — every affordance a screen draws must be workable through the shipped input path, and the screen must show what it did",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "T4"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
   },
   {
    "id": "RI-AUD01",

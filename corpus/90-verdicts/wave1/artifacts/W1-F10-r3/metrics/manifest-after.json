@@ -1,0 +1,6677 @@
+{
+  "tool": "f10-r3-materials",
+  "tag": "hw",
+  "generated": "2026-08-15T10:22:08.317Z",
+  "renderer_string": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+  "software_renderer": false,
+  "evidence_class": "HARDWARE — valid for appearance claims.",
+  "renderer_attestation": {
+    "class": "HARDWARE",
+    "decided_from": "renderer-string",
+    "reason": "the reported renderer names a GPU vendor and no software rasteriser: ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+    "unknown": false,
+    "hardware_requested": true,
+    "fell_back": false,
+    "source": "live page WEBGL_debug_renderer_info"
+  },
+  "canvas": [
+    960,
+    540
+  ],
+  "seed": 20260814,
+  "fov_deg": 60,
+  "subject_height_m": 1.8,
+  "subject_height_source": "declared fallback 1.8 m — no harness verb reports body height",
+  "max_offset_m": 80,
+  "max_offset_provenance": "DECLARED, not derived. game/data/npcs/*.json carries a position on 0 of 408 records, so it cannot be calibrated offline; the per-stand distributions below are published so the next reader can overturn it against the real population.",
+  "subject_offset_distributions": [
+    {
+      "stand": "char-player",
+      "n": 60,
+      "min": 26.2,
+      "p10": 41,
+      "median": 5720,
+      "p90": 5728.4,
+      "max": 6000.7,
+      "within_max_offset": 27,
+      "beyond_max_offset": 33,
+      "all_m": [
+        26.2,
+        38.7,
+        39.7,
+        40.9,
+        40.9,
+        41,
+        41,
+        41,
+        41.2,
+        42.5,
+        44.4,
+        44.8,
+        44.8,
+        47.2,
+        51.8,
+        51.9,
+        51.9,
+        52,
+        52.1,
+        52.5,
+        52.6,
+        52.7,
+        52.9,
+        53.1,
+        53.2,
+        54.9,
+        58.1,
+        5717.8,
+        5719,
+        5719.5,
+        5720,
+        5720.1,
+        5720.1,
+        5720.1,
+        5720.1,
+        5720.5,
+        5721.1,
+        5721.3,
+        5721.5,
+        5721.7,
+        5722,
+        5722.6,
+        5722.8,
+        5722.9,
+        5723.2,
+        5723.5,
+        5723.6,
+        5724,
+        5724.2,
+        5725.3,
+        5725.7,
+        5726.1,
+        5726.2,
+        5726.4,
+        5728.4,
+        5728.7,
+        5989.6,
+        5998.8,
+        5999.5,
+        6000.7
+      ]
+    },
+    {
+      "stand": "street-lilmoth",
+      "n": 60,
+      "min": 14.1,
+      "p10": 19.6,
+      "median": 5752.9,
+      "p90": 5761.3,
+      "max": 6023.7,
+      "within_max_offset": 27,
+      "beyond_max_offset": 33,
+      "all_m": [
+        14.1,
+        14.5,
+        18.6,
+        19,
+        19,
+        19.4,
+        19.6,
+        19.8,
+        19.8,
+        19.9,
+        19.9,
+        20,
+        20.1,
+        20.6,
+        20.8,
+        20.9,
+        20.9,
+        21.1,
+        21.5,
+        22.8,
+        23.8,
+        26,
+        28.3,
+        28.9,
+        31.1,
+        32.7,
+        60.4,
+        5750.7,
+        5752.1,
+        5752.5,
+        5752.9,
+        5752.9,
+        5753,
+        5753,
+        5753,
+        5753.3,
+        5754.2,
+        5754.2,
+        5754.4,
+        5754.6,
+        5755,
+        5755.5,
+        5755.7,
+        5755.9,
+        5756.1,
+        5756.4,
+        5756.7,
+        5756.9,
+        5757.1,
+        5758.4,
+        5758.6,
+        5758.8,
+        5758.9,
+        5759.3,
+        5761.3,
+        5761.6,
+        6012.7,
+        6021.8,
+        6022.5,
+        6023.7
+      ]
+    },
+    {
+      "stand": "street-gideon",
+      "n": 109,
+      "min": 11.1,
+      "p10": 44.9,
+      "median": 2969.8,
+      "p90": 3150.1,
+      "max": 5679.1,
+      "within_max_offset": 27,
+      "beyond_max_offset": 82,
+      "all_m": [
+        11.1,
+        11.5,
+        12.8,
+        14.5,
+        14.7,
+        14.8,
+        17,
+        40.1,
+        44.5,
+        44.8,
+        44.9,
+        44.9,
+        45.1,
+        49.6,
+        51.2,
+        53.4,
+        53.9,
+        54.2,
+        54.5,
+        55.5,
+        55.7,
+        56,
+        57.4,
+        62.8,
+        62.9,
+        62.9,
+        63.2,
+        2963.7,
+        2964.4,
+        2964.7,
+        2965.2,
+        2965.4,
+        2966.2,
+        2966.3,
+        2966.5,
+        2966.6,
+        2966.6,
+        2966.7,
+        2966.9,
+        2967,
+        2967.1,
+        2967.2,
+        2967.2,
+        2967.3,
+        2967.4,
+        2967.5,
+        2967.6,
+        2967.6,
+        2968,
+        2968.4,
+        2968.7,
+        2968.9,
+        2969.3,
+        2969.5,
+        2969.8,
+        2969.9,
+        2970,
+        2970.1,
+        2970.5,
+        2970.6,
+        2971.1,
+        2971.4,
+        2971.5,
+        2971.5,
+        2971.6,
+        2971.7,
+        2972.1,
+        2972.9,
+        2972.9,
+        2973.1,
+        2973.4,
+        2973.5,
+        2973.6,
+        2974.5,
+        2974.9,
+        2975,
+        2975.3,
+        2975.3,
+        3089.3,
+        3106.2,
+        3141.3,
+        3143.1,
+        3144.1,
+        3144.5,
+        3144.6,
+        3144.6,
+        3144.7,
+        3144.8,
+        3145.9,
+        3146.1,
+        3146.7,
+        3147.3,
+        3147.9,
+        3148,
+        3148.3,
+        3149.7,
+        3149.9,
+        3150,
+        3150.1,
+        3150.3,
+        3152.1,
+        3152.4,
+        3154,
+        3154,
+        3155,
+        5661.5,
+        5677.5,
+        5678.6,
+        5679.1
+      ]
+    }
+  ],
+  "rejected_subjects": [
+    {
+      "eid": "lilmoth-weaver-7",
+      "name": "Drusilla Silvanus",
+      "race": "imperial",
+      "pos": [
+        3.67,
+        0,
+        4.71
+      ],
+      "offset_m": 5717.8,
+      "reason": "enumerated at stand char-player but 5718 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-1-partner0",
+      "name": "Casimir Aurelius",
+      "race": "imperial",
+      "pos": [
+        3.96765,
+        0,
+        3.15576
+      ],
+      "offset_m": 5719,
+      "reason": "enumerated at stand char-player but 5719 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8-lodger0",
+      "name": "Velas Ralen",
+      "race": "dunmer",
+      "pos": [
+        2.427734,
+        0,
+        3.52672
+      ],
+      "offset_m": 5719.5,
+      "reason": "enumerated at stand char-player but 5719 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6-apprentice1",
+      "name": "Xaal-Shaa",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        5.05
+      ],
+      "offset_m": 5720,
+      "reason": "enumerated at stand char-player but 5720 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-mudborn-shrine",
+      "name": "Beem-Ja",
+      "race": "saxhleel",
+      "pos": [
+        3.99,
+        0,
+        1.98
+      ],
+      "offset_m": 5720.1,
+      "reason": "enumerated at stand char-player but 5720 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-market",
+      "name": "Drusilla Voranus",
+      "race": "imperial",
+      "pos": [
+        2.03,
+        0,
+        3.02
+      ],
+      "offset_m": 5720.1,
+      "reason": "enumerated at stand char-player but 5720 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-archivist-ledger",
+      "name": "Vashu-Nei",
+      "race": "saxhleel",
+      "pos": [
+        4.11,
+        0,
+        1.84
+      ],
+      "offset_m": 5720.1,
+      "reason": "enumerated at stand char-player but 5720 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-5",
+      "name": "Shaa-Hist",
+      "race": "argonian",
+      "pos": [
+        3.32,
+        0,
+        2.25
+      ],
+      "offset_m": 5720.1,
+      "reason": "enumerated at stand char-player but 5720 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-rootpost",
+      "name": "Xal-Tsona",
+      "race": "argonian",
+      "pos": [
+        -2.05543,
+        0,
+        4.78383
+      ],
+      "offset_m": 5720.5,
+      "reason": "enumerated at stand char-player but 5721 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-healer",
+      "name": "Drelas Vorin",
+      "race": "dunmer",
+      "pos": [
+        -1.74266,
+        0,
+        3.94706
+      ],
+      "offset_m": 5721.1,
+      "reason": "enumerated at stand char-player but 5721 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-apothecary-12",
+      "name": "Ixtei",
+      "race": "argonian",
+      "pos": [
+        2.05,
+        0,
+        1.67
+      ],
+      "offset_m": 5721.3,
+      "reason": "enumerated at stand char-player but 5721 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-13",
+      "name": "Deekgul",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        3.28
+      ],
+      "offset_m": 5721.5,
+      "reason": "enumerated at stand char-player but 5722 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0",
+      "name": "Kaal-Xal",
+      "race": "argonian",
+      "pos": [
+        -3.68,
+        0,
+        4.29
+      ],
+      "offset_m": 5721.7,
+      "reason": "enumerated at stand char-player but 5722 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6-lodger0",
+      "name": "Ravel Beleth",
+      "race": "dunmer",
+      "pos": [
+        3.94098,
+        0,
+        -0.25847
+      ],
+      "offset_m": 5722,
+      "reason": "enumerated at stand char-player but 5722 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-3",
+      "name": "Nartise Sedran",
+      "race": "dunmer",
+      "pos": [
+        -3.83,
+        0,
+        3.42
+      ],
+      "offset_m": 5722.6,
+      "reason": "enumerated at stand char-player but 5723 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-inn-stilt",
+      "name": "Lukiul-Teekh",
+      "race": "argonian",
+      "pos": [
+        -3.63545,
+        0,
+        3.07696
+      ],
+      "offset_m": 5722.8,
+      "reason": "enumerated at stand char-player but 5723 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "miredancer-omu-ei",
+      "name": "Omu-Ei",
+      "race": "saxhleel",
+      "pos": [
+        -1.74511,
+        0,
+        1.90952
+      ],
+      "offset_m": 5722.9,
+      "reason": "enumerated at stand char-player but 5723 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-smith-9",
+      "name": "Seil-Shaa",
+      "race": "argonian",
+      "pos": [
+        -3.02455,
+        0,
+        2.30833
+      ],
+      "offset_m": 5723.2,
+      "reason": "enumerated at stand char-player but 5723 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0-partner1",
+      "name": "Ixwux",
+      "race": "argonian",
+      "pos": [
+        -2.67886,
+        0,
+        1.77332
+      ],
+      "offset_m": 5723.5,
+      "reason": "enumerated at stand char-player but 5723 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-shrine",
+      "name": "Nutsleek",
+      "race": "argonian",
+      "pos": [
+        3.73177,
+        0,
+        -1.9848
+      ],
+      "offset_m": 5723.6,
+      "reason": "enumerated at stand char-player but 5724 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-10",
+      "name": "Mota-Xthari",
+      "race": "argonian",
+      "pos": [
+        -2.5,
+        0,
+        1
+      ],
+      "offset_m": 5724,
+      "reason": "enumerated at stand char-player but 5724 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-4",
+      "name": "Xulei",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        0.21
+      ],
+      "offset_m": 5724.2,
+      "reason": "enumerated at stand char-player but 5724 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2-elder0",
+      "name": "Jix-Ixt",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        -1.045
+      ],
+      "offset_m": 5725.3,
+      "reason": "enumerated at stand char-player but 5725 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-7-sibling0",
+      "name": "Xanmeermeer",
+      "race": "argonian",
+      "pos": [
+        -1.88,
+        0,
+        -1.24
+      ],
+      "offset_m": 5725.7,
+      "reason": "enumerated at stand char-player but 5726 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "miredancer-sap-speaker",
+      "name": "Sap-Speaker Neekh-Otei",
+      "race": "saxhleel",
+      "pos": [
+        -2.475,
+        0,
+        -1.35366
+      ],
+      "offset_m": 5726.1,
+      "reason": "enumerated at stand char-player but 5726 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-smith-9-sibling0",
+      "name": "Uxith-Keth",
+      "race": "argonian",
+      "pos": [
+        -1.45199,
+        0,
+        -2.00501
+      ],
+      "offset_m": 5726.2,
+      "reason": "enumerated at stand char-player but 5726 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2-sibling1",
+      "name": "Vokh-Mota",
+      "race": "argonian",
+      "pos": [
+        1.45,
+        0,
+        -3.87
+      ],
+      "offset_m": 5726.4,
+      "reason": "enumerated at stand char-player but 5726 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-pawn",
+      "name": "Naheesh-Xeech",
+      "race": "argonian",
+      "pos": [
+        -3.98,
+        0,
+        -3.11
+      ],
+      "offset_m": 5728.4,
+      "reason": "enumerated at stand char-player but 5728 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8-apprentice1",
+      "name": "Quintus Nerentius",
+      "race": "imperial",
+      "pos": [
+        -1.45,
+        0,
+        -4.88
+      ],
+      "offset_m": 5728.7,
+      "reason": "enumerated at stand char-player but 5729 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-widow-tesla-vor",
+      "name": "Widow Tesla Vor",
+      "race": "saxhleel",
+      "pos": [
+        4891,
+        2,
+        -589
+      ],
+      "offset_m": 5989.6,
+      "reason": "enumerated at stand char-player but 5990 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-ineve-corrano",
+      "name": "Ineve Corrano",
+      "race": "saxhleel",
+      "pos": [
+        4911.9,
+        2,
+        -590.9
+      ],
+      "offset_m": 5998.8,
+      "reason": "enumerated at stand char-player but 5999 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-skara-hull-chalk",
+      "name": "Skara Hull-Chalk",
+      "race": "dunmer",
+      "pos": [
+        4910.2,
+        2,
+        -592.2
+      ],
+      "offset_m": 5999.5,
+      "reason": "enumerated at stand char-player but 5999 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-eleen",
+      "name": "Eleen",
+      "race": "dunmer",
+      "pos": [
+        4906.8,
+        2,
+        -594.8
+      ],
+      "offset_m": 6000.7,
+      "reason": "enumerated at stand char-player but 6001 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-7",
+      "name": "Drusilla Silvanus",
+      "race": "imperial",
+      "pos": [
+        3.67,
+        0,
+        4.71
+      ],
+      "offset_m": 5750.7,
+      "reason": "enumerated at stand street-lilmoth but 5751 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-1-partner0",
+      "name": "Casimir Aurelius",
+      "race": "imperial",
+      "pos": [
+        3.8253,
+        0,
+        2.98152
+      ],
+      "offset_m": 5752.1,
+      "reason": "enumerated at stand street-lilmoth but 5752 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8-lodger0",
+      "name": "Velas Ralen",
+      "race": "dunmer",
+      "pos": [
+        2.455468,
+        0,
+        3.30344
+      ],
+      "offset_m": 5752.5,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6-apprentice1",
+      "name": "Xaal-Shaa",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        5.05
+      ],
+      "offset_m": 5752.9,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-mudborn-shrine",
+      "name": "Beem-Ja",
+      "race": "saxhleel",
+      "pos": [
+        3.99,
+        0,
+        1.98
+      ],
+      "offset_m": 5752.9,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-market",
+      "name": "Drusilla Voranus",
+      "race": "imperial",
+      "pos": [
+        2.03,
+        0,
+        3.02
+      ],
+      "offset_m": 5753,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-archivist-ledger",
+      "name": "Vashu-Nei",
+      "race": "saxhleel",
+      "pos": [
+        4.11,
+        0,
+        1.84
+      ],
+      "offset_m": 5753,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-5",
+      "name": "Shaa-Hist",
+      "race": "argonian",
+      "pos": [
+        3.32,
+        0,
+        2.25
+      ],
+      "offset_m": 5753,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-rootpost",
+      "name": "Xal-Tsona",
+      "race": "argonian",
+      "pos": [
+        -1.83086,
+        0,
+        4.79766
+      ],
+      "offset_m": 5753.3,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-apothecary-12",
+      "name": "Ixtei",
+      "race": "argonian",
+      "pos": [
+        2.05,
+        0,
+        1.67
+      ],
+      "offset_m": 5754.2,
+      "reason": "enumerated at stand street-lilmoth but 5754 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-healer",
+      "name": "Drelas Vorin",
+      "race": "dunmer",
+      "pos": [
+        -1.81532,
+        0,
+        3.73412
+      ],
+      "offset_m": 5754.2,
+      "reason": "enumerated at stand street-lilmoth but 5754 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-13",
+      "name": "Deekgul",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        3.28
+      ],
+      "offset_m": 5754.4,
+      "reason": "enumerated at stand street-lilmoth but 5754 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0",
+      "name": "Kaal-Xal",
+      "race": "argonian",
+      "pos": [
+        -3.68,
+        0,
+        4.29
+      ],
+      "offset_m": 5754.6,
+      "reason": "enumerated at stand street-lilmoth but 5755 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6-lodger0",
+      "name": "Ravel Beleth",
+      "race": "dunmer",
+      "pos": [
+        3.72196,
+        0,
+        -0.20694
+      ],
+      "offset_m": 5755,
+      "reason": "enumerated at stand street-lilmoth but 5755 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-3",
+      "name": "Nartise Sedran",
+      "race": "dunmer",
+      "pos": [
+        -3.83,
+        0,
+        3.42
+      ],
+      "offset_m": 5755.5,
+      "reason": "enumerated at stand street-lilmoth but 5755 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-inn-stilt",
+      "name": "Lukiul-Teekh",
+      "race": "argonian",
+      "pos": [
+        -3.4409,
+        0,
+        2.96392
+      ],
+      "offset_m": 5755.7,
+      "reason": "enumerated at stand street-lilmoth but 5756 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "miredancer-omu-ei",
+      "name": "Omu-Ei",
+      "race": "saxhleel",
+      "pos": [
+        -1.70022,
+        0,
+        1.68904
+      ],
+      "offset_m": 5755.9,
+      "reason": "enumerated at stand street-lilmoth but 5756 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-smith-9",
+      "name": "Seil-Shaa",
+      "race": "argonian",
+      "pos": [
+        -2.8791,
+        0,
+        2.13666
+      ],
+      "offset_m": 5756.1,
+      "reason": "enumerated at stand street-lilmoth but 5756 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0-partner1",
+      "name": "Ixwux",
+      "race": "argonian",
+      "pos": [
+        -2.52772,
+        0,
+        1.60664
+      ],
+      "offset_m": 5756.4,
+      "reason": "enumerated at stand street-lilmoth but 5756 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-shrine",
+      "name": "Nutsleek",
+      "race": "argonian",
+      "pos": [
+        3.51354,
+        0,
+        -2.0396
+      ],
+      "offset_m": 5756.7,
+      "reason": "enumerated at stand street-lilmoth but 5757 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-10",
+      "name": "Mota-Xthari",
+      "race": "argonian",
+      "pos": [
+        -2.5,
+        0,
+        1
+      ],
+      "offset_m": 5756.9,
+      "reason": "enumerated at stand street-lilmoth but 5757 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-4",
+      "name": "Xulei",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        0.21
+      ],
+      "offset_m": 5757.1,
+      "reason": "enumerated at stand street-lilmoth but 5757 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2-elder0",
+      "name": "Jix-Ixt",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        -1.27
+      ],
+      "offset_m": 5758.4,
+      "reason": "enumerated at stand street-lilmoth but 5758 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-7-sibling0",
+      "name": "Xanmeermeer",
+      "race": "argonian",
+      "pos": [
+        -1.88,
+        0,
+        -1.24
+      ],
+      "offset_m": 5758.6,
+      "reason": "enumerated at stand street-lilmoth but 5759 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "miredancer-sap-speaker",
+      "name": "Sap-Speaker Neekh-Otei",
+      "race": "saxhleel",
+      "pos": [
+        -2.26,
+        0,
+        -1.28732
+      ],
+      "offset_m": 5758.8,
+      "reason": "enumerated at stand street-lilmoth but 5759 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-smith-9-sibling0",
+      "name": "Uxith-Keth",
+      "race": "argonian",
+      "pos": [
+        -1.45398,
+        0,
+        -1.78002
+      ],
+      "offset_m": 5758.9,
+      "reason": "enumerated at stand street-lilmoth but 5759 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2-sibling1",
+      "name": "Vokh-Mota",
+      "race": "argonian",
+      "pos": [
+        1.45,
+        0,
+        -3.87
+      ],
+      "offset_m": 5759.3,
+      "reason": "enumerated at stand street-lilmoth but 5759 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-pawn",
+      "name": "Naheesh-Xeech",
+      "race": "argonian",
+      "pos": [
+        -3.98,
+        0,
+        -3.11
+      ],
+      "offset_m": 5761.3,
+      "reason": "enumerated at stand street-lilmoth but 5761 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8-apprentice1",
+      "name": "Quintus Nerentius",
+      "race": "imperial",
+      "pos": [
+        -1.45,
+        0,
+        -4.88
+      ],
+      "offset_m": 5761.6,
+      "reason": "enumerated at stand street-lilmoth but 5762 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-widow-tesla-vor",
+      "name": "Widow Tesla Vor",
+      "race": "saxhleel",
+      "pos": [
+        4891,
+        2,
+        -589
+      ],
+      "offset_m": 6012.7,
+      "reason": "enumerated at stand street-lilmoth but 6013 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-ineve-corrano",
+      "name": "Ineve Corrano",
+      "race": "saxhleel",
+      "pos": [
+        4911.9,
+        2,
+        -590.9
+      ],
+      "offset_m": 6021.8,
+      "reason": "enumerated at stand street-lilmoth but 6022 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-skara-hull-chalk",
+      "name": "Skara Hull-Chalk",
+      "race": "dunmer",
+      "pos": [
+        4910.2,
+        2,
+        -592.2
+      ],
+      "offset_m": 6022.5,
+      "reason": "enumerated at stand street-lilmoth but 6022 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-eleen",
+      "name": "Eleen",
+      "race": "dunmer",
+      "pos": [
+        4906.8,
+        2,
+        -594.8
+      ],
+      "offset_m": 6023.7,
+      "reason": "enumerated at stand street-lilmoth but 6024 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-mudborn-chapel",
+      "name": "Deeh",
+      "race": "saxhleel",
+      "pos": [
+        2.8,
+        0,
+        5.83
+      ],
+      "offset_m": 2963.7,
+      "reason": "enumerated at stand street-gideon but 2964 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "antiquarian-decius-arral",
+      "name": "Decius Arral",
+      "race": "imperial",
+      "pos": [
+        -1.46942,
+        0,
+        5.85584
+      ],
+      "offset_m": 2964.4,
+      "reason": "enumerated at stand street-gideon but 2964 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-7",
+      "name": "Drusilla Silvanus",
+      "race": "imperial",
+      "pos": [
+        3.67,
+        0,
+        4.71
+      ],
+      "offset_m": 2964.7,
+      "reason": "enumerated at stand street-gideon but 2965 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6-apprentice1",
+      "name": "Xaal-Shaa",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        5.05
+      ],
+      "offset_m": 2965.2,
+      "reason": "enumerated at stand street-gideon but 2965 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-rootpost",
+      "name": "Xal-Tsona",
+      "race": "argonian",
+      "pos": [
+        -1.60629,
+        0,
+        4.81149
+      ],
+      "offset_m": 2965.4,
+      "reason": "enumerated at stand street-gideon but 2965 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-archivist-assize",
+      "name": "Sextia Naevia",
+      "race": "imperial",
+      "pos": [
+        1.45,
+        0,
+        3.57
+      ],
+      "offset_m": 2966.2,
+      "reason": "enumerated at stand street-gideon but 2966 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0",
+      "name": "Kaal-Xal",
+      "race": "argonian",
+      "pos": [
+        -3.68,
+        0,
+        4.29
+      ],
+      "offset_m": 2966.3,
+      "reason": "enumerated at stand street-gideon but 2966 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8-lodger0",
+      "name": "Velas Ralen",
+      "race": "dunmer",
+      "pos": [
+        2.483203,
+        0,
+        3.08016
+      ],
+      "offset_m": 2966.5,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-1-partner0",
+      "name": "Casimir Aurelius",
+      "race": "imperial",
+      "pos": [
+        3.68295,
+        0,
+        2.80728
+      ],
+      "offset_m": 2966.6,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-market",
+      "name": "Drusilla Voranus",
+      "race": "imperial",
+      "pos": [
+        2.03,
+        0,
+        3.02
+      ],
+      "offset_m": 2966.6,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-healer",
+      "name": "Drelas Vorin",
+      "race": "dunmer",
+      "pos": [
+        -1.88798,
+        0,
+        3.52118
+      ],
+      "offset_m": 2966.7,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-13",
+      "name": "Deekgul",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        3.28
+      ],
+      "offset_m": 2966.9,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-smith-11",
+      "name": "Lucia Sabinus",
+      "race": "imperial",
+      "pos": [
+        4.85,
+        0,
+        2.21
+      ],
+      "offset_m": 2967,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-3",
+      "name": "Nartise Sedran",
+      "race": "dunmer",
+      "pos": [
+        -3.83,
+        0,
+        3.42
+      ],
+      "offset_m": 2967.1,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-5",
+      "name": "Shaa-Hist",
+      "race": "argonian",
+      "pos": [
+        3.32,
+        0,
+        2.25
+      ],
+      "offset_m": 2967.2,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "archein-salts-her-own-reeds",
+      "name": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "pos": [
+        -2.39873,
+        0,
+        3.10078
+      ],
+      "offset_m": 2967.2,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-trader-2",
+      "name": "Corvus Maronius",
+      "race": "imperial",
+      "pos": [
+        4.51,
+        0,
+        1.92
+      ],
+      "offset_m": 2967.3,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-mudborn-shrine",
+      "name": "Beem-Ja",
+      "race": "saxhleel",
+      "pos": [
+        3.99,
+        0,
+        1.98
+      ],
+      "offset_m": 2967.4,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-archivist-ledger",
+      "name": "Vashu-Nei",
+      "race": "saxhleel",
+      "pos": [
+        4.11,
+        0,
+        1.84
+      ],
+      "offset_m": 2967.5,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-keeper-court",
+      "name": "Tuk-Wuxal",
+      "race": "argonian",
+      "pos": [
+        -2.28,
+        0,
+        2.71
+      ],
+      "offset_m": 2967.6,
+      "reason": "enumerated at stand street-gideon but 2968 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-inn-stilt",
+      "name": "Lukiul-Teekh",
+      "race": "argonian",
+      "pos": [
+        -3.24635,
+        0,
+        2.85088
+      ],
+      "offset_m": 2967.6,
+      "reason": "enumerated at stand street-gideon but 2968 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-apothecary-12",
+      "name": "Ixtei",
+      "race": "argonian",
+      "pos": [
+        2.05,
+        0,
+        1.67
+      ],
+      "offset_m": 2968,
+      "reason": "enumerated at stand street-gideon but 2968 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-smith-9",
+      "name": "Seil-Shaa",
+      "race": "argonian",
+      "pos": [
+        -2.73365,
+        0,
+        1.964992
+      ],
+      "offset_m": 2968.4,
+      "reason": "enumerated at stand street-gideon but 2968 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "miredancer-omu-ei",
+      "name": "Omu-Ei",
+      "race": "saxhleel",
+      "pos": [
+        -1.65533,
+        0,
+        1.46856
+      ],
+      "offset_m": 2968.7,
+      "reason": "enumerated at stand street-gideon but 2969 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0-partner1",
+      "name": "Ixwux",
+      "race": "argonian",
+      "pos": [
+        -2.37658,
+        0,
+        1.43996
+      ],
+      "offset_m": 2968.9,
+      "reason": "enumerated at stand street-gideon but 2969 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-10",
+      "name": "Mota-Xthari",
+      "race": "argonian",
+      "pos": [
+        -2.5,
+        0,
+        1
+      ],
+      "offset_m": 2969.3,
+      "reason": "enumerated at stand street-gideon but 2969 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6-lodger0",
+      "name": "Ravel Beleth",
+      "race": "dunmer",
+      "pos": [
+        3.50294,
+        0,
+        -0.15541
+      ],
+      "offset_m": 2969.5,
+      "reason": "enumerated at stand street-gideon but 2970 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-keeper-shrine",
+      "name": "Casimir Balbinus",
+      "race": "imperial",
+      "pos": [
+        2.03148,
+        0,
+        -0.14452
+      ],
+      "offset_m": 2969.8,
+      "reason": "enumerated at stand street-gideon but 2970 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-4",
+      "name": "Xulei",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        0.21
+      ],
+      "offset_m": 2969.9,
+      "reason": "enumerated at stand street-gideon but 2970 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-warder-6",
+      "name": "Drelas Sarethi",
+      "race": "dunmer",
+      "pos": [
+        -1.2909,
+        0,
+        0.0991
+      ],
+      "offset_m": 2970,
+      "reason": "enumerated at stand street-gideon but 2970 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-fisher-3",
+      "name": "Wuxvakh",
+      "race": "argonian",
+      "pos": [
+        2.58,
+        0,
+        -0.53
+      ],
+      "offset_m": 2970.1,
+      "reason": "enumerated at stand street-gideon but 2970 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-weaver-12",
+      "name": "Lucius Menandra",
+      "race": "imperial",
+      "pos": [
+        4.45,
+        0,
+        -1.3
+      ],
+      "offset_m": 2970.5,
+      "reason": "enumerated at stand street-gideon but 2971 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-sapcutter-lowmarket",
+      "name": "Ranit gro-Bura",
+      "race": "orsimer",
+      "pos": [
+        1.45,
+        0,
+        -0.88
+      ],
+      "offset_m": 2970.6,
+      "reason": "enumerated at stand street-gideon but 2971 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-keeper-grange",
+      "name": "Onwen Dares",
+      "race": "dunmer",
+      "pos": [
+        2.52,
+        0,
+        -1.61
+      ],
+      "offset_m": 2971.1,
+      "reason": "enumerated at stand street-gideon but 2971 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-7-sibling0",
+      "name": "Xanmeermeer",
+      "race": "argonian",
+      "pos": [
+        -1.88,
+        0,
+        -1.24
+      ],
+      "offset_m": 2971.4,
+      "reason": "enumerated at stand street-gideon but 2971 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "miredancer-sap-speaker",
+      "name": "Sap-Speaker Neekh-Otei",
+      "race": "saxhleel",
+      "pos": [
+        -2.045,
+        0,
+        -1.22098
+      ],
+      "offset_m": 2971.5,
+      "reason": "enumerated at stand street-gideon but 2971 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-shrine",
+      "name": "Nutsleek",
+      "race": "argonian",
+      "pos": [
+        3.29531,
+        0,
+        -2.0944
+      ],
+      "offset_m": 2971.5,
+      "reason": "enumerated at stand street-gideon but 2971 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2-elder0",
+      "name": "Jix-Ixt",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        -1.495
+      ],
+      "offset_m": 2971.6,
+      "reason": "enumerated at stand street-gideon but 2972 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-smith-9-sibling0",
+      "name": "Uxith-Keth",
+      "race": "argonian",
+      "pos": [
+        -1.45597,
+        0,
+        -1.55503
+      ],
+      "offset_m": 2971.7,
+      "reason": "enumerated at stand street-gideon but 2972 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-keeper-apothecary",
+      "name": "Marius Balbinus",
+      "race": "imperial",
+      "pos": [
+        2.18,
+        0,
+        -2.53
+      ],
+      "offset_m": 2972.1,
+      "reason": "enumerated at stand street-gideon but 2972 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "archein-weighs-the-season",
+      "name": "Archein Weighs-The-Season",
+      "race": "argonian",
+      "pos": [
+        -1.2439,
+        0,
+        -2.78974
+      ],
+      "offset_m": 2972.9,
+      "reason": "enumerated at stand street-gideon but 2973 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-apothecary-8",
+      "name": "Julia Carinus",
+      "race": "imperial",
+      "pos": [
+        3.99,
+        0,
+        -3.61
+      ],
+      "offset_m": 2972.9,
+      "reason": "enumerated at stand street-gideon but 2973 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-legionary-9",
+      "name": "Lucia Drusius",
+      "race": "imperial",
+      "pos": [
+        2.62,
+        0,
+        -3.61
+      ],
+      "offset_m": 2973.1,
+      "reason": "enumerated at stand street-gideon but 2973 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-fisher-3-apprentice1",
+      "name": "Sells-Paper",
+      "race": "argonian",
+      "pos": [
+        1.59,
+        0,
+        -3.76
+      ],
+      "offset_m": 2973.4,
+      "reason": "enumerated at stand street-gideon but 2973 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2-sibling1",
+      "name": "Vokh-Mota",
+      "race": "argonian",
+      "pos": [
+        1.45,
+        0,
+        -3.87
+      ],
+      "offset_m": 2973.5,
+      "reason": "enumerated at stand street-gideon but 2974 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-pawn",
+      "name": "Naheesh-Xeech",
+      "race": "argonian",
+      "pos": [
+        -3.98,
+        0,
+        -3.11
+      ],
+      "offset_m": 2973.6,
+      "reason": "enumerated at stand street-gideon but 2974 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-trader-5",
+      "name": "Nux-Ojel",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        -4.38
+      ],
+      "offset_m": 2974.5,
+      "reason": "enumerated at stand street-gideon but 2974 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-apothecary-1-apprentice1",
+      "name": "Nuxanmeer",
+      "race": "argonian",
+      "pos": [
+        -3.01,
+        0,
+        -4.6
+      ],
+      "offset_m": 2974.9,
+      "reason": "enumerated at stand street-gideon but 2975 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8-apprentice1",
+      "name": "Quintus Nerentius",
+      "race": "imperial",
+      "pos": [
+        -1.45,
+        0,
+        -4.88
+      ],
+      "offset_m": 2975,
+      "reason": "enumerated at stand street-gideon but 2975 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-keeper-chapel",
+      "name": "Muul-Nalpa",
+      "race": "argonian",
+      "pos": [
+        2.68289,
+        0,
+        -5.81255
+      ],
+      "offset_m": 2975.3,
+      "reason": "enumerated at stand street-gideon but 2975 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-keeper-smithy",
+      "name": "Xeechlith",
+      "race": "argonian",
+      "pos": [
+        -2.98,
+        0,
+        -4.94
+      ],
+      "offset_m": 2975.3,
+      "reason": "enumerated at stand street-gideon but 2975 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-rootkeepers",
+      "name": "the rootkeepers of the rotting quarter",
+      "race": "saxhleel",
+      "pos": [
+        2719.51,
+        2.68,
+        5040.13
+      ],
+      "offset_m": 3089.3,
+      "reason": "enumerated at stand street-gideon but 3089 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "blackwood-company-factor",
+      "name": "Corvus Aldeyn",
+      "race": "imperial",
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ],
+      "offset_m": 3106.2,
+      "reason": "enumerated at stand street-gideon but 3106 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "harbourmistress-tesh",
+      "name": "Ottavia Tesh",
+      "race": "imperial",
+      "pos": [
+        2800.35,
+        0.37,
+        5028.79
+      ],
+      "offset_m": 3141.3,
+      "reason": "enumerated at stand street-gideon but 3141 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-apothecary",
+      "name": "Digs-Paper",
+      "race": "argonian",
+      "pos": [
+        2799.18,
+        7.37,
+        5032.83
+      ],
+      "offset_m": 3143.1,
+      "reason": "enumerated at stand street-gideon but 3143 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-4-elder0",
+      "name": "Teekh-Seil",
+      "race": "argonian",
+      "pos": [
+        2800.96,
+        7.37,
+        5032.29
+      ],
+      "offset_m": 3144.1,
+      "reason": "enumerated at stand street-gideon but 3144 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "shipwright-oleen",
+      "name": "Oleen",
+      "race": "nord",
+      "pos": [
+        2798.95,
+        7.37,
+        5035.19
+      ],
+      "offset_m": 3144.5,
+      "reason": "enumerated at stand street-gideon but 3145 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-5-sibling0",
+      "name": "Shal-Naga",
+      "race": "argonian",
+      "pos": [
+        2799.55,
+        7.37,
+        5034.65
+      ],
+      "offset_m": 3144.6,
+      "reason": "enumerated at stand street-gideon but 3145 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-customs",
+      "name": "Neekhei",
+      "race": "argonian",
+      "pos": [
+        2800.24,
+        7.37,
+        5033.91
+      ],
+      "offset_m": 3144.6,
+      "reason": "enumerated at stand street-gideon but 3145 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-ledger-house",
+      "name": "Aemilia Carinus",
+      "race": "imperial",
+      "pos": [
+        2798.81,
+        7.37,
+        5035.59
+      ],
+      "offset_m": 3144.7,
+      "reason": "enumerated at stand street-gideon but 3145 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "spellwright-lilmoth",
+      "name": "Tsona-Ixtu",
+      "race": "argonian",
+      "pos": [
+        2797.9749,
+        2.68,
+        5036.6
+      ],
+      "offset_m": 3144.8,
+      "reason": "enumerated at stand street-gideon but 3145 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-4-sibling1",
+      "name": "Bevene Sedran",
+      "race": "dunmer",
+      "pos": [
+        2776.64,
+        7.073602,
+        5061.79
+      ],
+      "offset_m": 3145.9,
+      "reason": "enumerated at stand street-gideon but 3146 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6",
+      "name": "Cuts-Teeth",
+      "race": "argonian",
+      "pos": [
+        2793.8,
+        7.37,
+        5043.2
+      ],
+      "offset_m": 3146.1,
+      "reason": "enumerated at stand street-gideon but 3146 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "rootkeeper-under-the-temple",
+      "name": "Keeper-Under-the-Temple",
+      "race": "saxhleel",
+      "pos": [
+        2806.61,
+        0.37,
+        5029.81
+      ],
+      "offset_m": 3146.7,
+      "reason": "enumerated at stand street-gideon but 3147 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "dockmaster-weeja-sen",
+      "name": "Weeja-Sen",
+      "race": "saxhleel",
+      "pos": [
+        2804.61,
+        0.37,
+        5032.94
+      ],
+      "offset_m": 3147.3,
+      "reason": "enumerated at stand street-gideon but 3147 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-1",
+      "name": "Listens-Fever",
+      "race": "argonian",
+      "pos": [
+        2793.34,
+        7.37,
+        5046.46
+      ],
+      "offset_m": 3147.9,
+      "reason": "enumerated at stand street-gideon but 3148 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-wharf-cutters",
+      "name": "the wharf-end yard",
+      "race": "saxhleel",
+      "pos": [
+        2810,
+        0.4,
+        5028
+      ],
+      "offset_m": 3148,
+      "reason": "enumerated at stand street-gideon but 3148 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-yard-brothers",
+      "name": "the Lilmoth cutters",
+      "race": "saxhleel",
+      "pos": [
+        2773.66,
+        2.68,
+        5068.55
+      ],
+      "offset_m": 3148.3,
+      "reason": "enumerated at stand street-gideon but 3148 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2",
+      "name": "Tsamaat",
+      "race": "argonian",
+      "pos": [
+        2781.85,
+        0.37,
+        5061.74
+      ],
+      "offset_m": 3149.7,
+      "reason": "enumerated at stand street-gideon but 3150 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-10-partner0",
+      "name": "Lukiul-Skei",
+      "race": "argonian",
+      "pos": [
+        2783.73,
+        0.37,
+        5059.96
+      ],
+      "offset_m": 3149.9,
+      "reason": "enumerated at stand street-gideon but 3150 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0-child0",
+      "name": "Deelith-Muul",
+      "race": "argonian",
+      "pos": [
+        2784.37,
+        0.37,
+        5059.4
+      ],
+      "offset_m": 3150,
+      "reason": "enumerated at stand street-gideon but 3150 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-scribe",
+      "name": "Publius Sabinus",
+      "race": "imperial",
+      "pos": [
+        2783.48,
+        0.37,
+        5060.6
+      ],
+      "offset_m": 3150.1,
+      "reason": "enumerated at stand street-gideon but 3150 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-11",
+      "name": "Vei-Jix",
+      "race": "argonian",
+      "pos": [
+        2784.1,
+        0.37,
+        5060.23
+      ],
+      "offset_m": 3150.3,
+      "reason": "enumerated at stand street-gideon but 3150 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8",
+      "name": "Athyn Dares",
+      "race": "dunmer",
+      "pos": [
+        2788.82,
+        6.969603,
+        5057.7
+      ],
+      "offset_m": 3152.1,
+      "reason": "enumerated at stand street-gideon but 3152 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-inn-drowned",
+      "name": "Kutsleek",
+      "race": "argonian",
+      "pos": [
+        2787.85,
+        7.37,
+        5059.18
+      ],
+      "offset_m": 3152.4,
+      "reason": "enumerated at stand street-gideon but 3152 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-yard",
+      "name": "Lucia Tullianus",
+      "race": "imperial",
+      "pos": [
+        2794.17,
+        0.37,
+        5054.61
+      ],
+      "offset_m": 3154,
+      "reason": "enumerated at stand street-gideon but 3154 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-3-sibling0",
+      "name": "Wux-Zuka",
+      "race": "argonian",
+      "pos": [
+        2792.27,
+        0.37,
+        5056.72
+      ],
+      "offset_m": 3154,
+      "reason": "enumerated at stand street-gideon but 3154 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-smithy",
+      "name": "Sethan Vaun",
+      "race": "dunmer",
+      "pos": [
+        2794.32,
+        0.37,
+        5055.93
+      ],
+      "offset_m": 3155,
+      "reason": "enumerated at stand street-gideon but 3155 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-widow-tesla-vor",
+      "name": "Widow Tesla Vor",
+      "race": "saxhleel",
+      "pos": [
+        4891,
+        2,
+        -589
+      ],
+      "offset_m": 5661.5,
+      "reason": "enumerated at stand street-gideon but 5662 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-eleen",
+      "name": "Eleen",
+      "race": "dunmer",
+      "pos": [
+        4906.8,
+        2,
+        -594.8
+      ],
+      "offset_m": 5677.5,
+      "reason": "enumerated at stand street-gideon but 5678 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-skara-hull-chalk",
+      "name": "Skara Hull-Chalk",
+      "race": "dunmer",
+      "pos": [
+        4910.2,
+        2,
+        -592.2
+      ],
+      "offset_m": 5678.6,
+      "reason": "enumerated at stand street-gideon but 5679 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-ineve-corrano",
+      "name": "Ineve Corrano",
+      "race": "saxhleel",
+      "pos": [
+        4911.9,
+        2,
+        -590.9
+      ],
+      "offset_m": 5679.1,
+      "reason": "enumerated at stand street-gideon but 5679 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    }
+  ],
+  "stand_errors": [],
+  "subjects": [
+    {
+      "id": "player",
+      "kind": "player",
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ],
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "stand": {
+        "id": "char-player",
+        "x": 2766,
+        "z": 5011
+      },
+      "height": 1.8,
+      "offset_m": 0
+    },
+    {
+      "id": "npc-gideon-smith-10",
+      "kind": "npc",
+      "pos": [
+        449.27,
+        2.72,
+        2938.99
+      ],
+      "eid": "gideon-smith-10",
+      "label": "Deekjul",
+      "race": "argonian",
+      "family": "reptilian",
+      "stand": {
+        "id": "street-gideon",
+        "x": 459.3,
+        "z": 2934.2
+      },
+      "height": 1.8,
+      "offset_m": 11.1
+    },
+    {
+      "id": "npc-spellwright-gideon",
+      "kind": "npc",
+      "pos": [
+        446.9,
+        2.72,
+        2937.4
+      ],
+      "eid": "spellwright-gideon",
+      "label": "Neloth Sedran",
+      "race": "dunmer",
+      "family": "humanoid",
+      "stand": {
+        "id": "street-gideon",
+        "x": 459.3,
+        "z": 2934.2
+      },
+      "height": 1.8,
+      "offset_m": 12.8
+    },
+    {
+      "id": "npc-assizer-corvo",
+      "kind": "npc",
+      "pos": [
+        452.77,
+        2.72,
+        2921.27
+      ],
+      "eid": "assizer-corvo",
+      "label": "Corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "stand": {
+        "id": "street-gideon",
+        "x": 459.3,
+        "z": 2934.2
+      },
+      "height": 1.8,
+      "offset_m": 14.5
+    },
+    {
+      "id": "npc-npc-porter-eeja",
+      "kind": "npc",
+      "pos": [
+        452.97,
+        2.72,
+        2920.83
+      ],
+      "eid": "npc-porter-eeja",
+      "label": "Eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "stand": {
+        "id": "street-gideon",
+        "x": 459.3,
+        "z": 2934.2
+      },
+      "height": 1.8,
+      "offset_m": 14.8
+    }
+  ],
+  "frames": [
+    {
+      "file": "C4__player__yaw000.png",
+      "status": "ok",
+      "bytes": 928879,
+      "hash": "1690b5fbca805168",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 7,
+        "luma_p05": 16,
+        "luma_p10": 29,
+        "luma_p50": 90,
+        "luma_p90": 175,
+        "luma_p95": 179,
+        "luma_p99": 195,
+        "luma_span": 188,
+        "shadow_levels": 90,
+        "local_contrast_med": 0.857,
+        "local_contrast_p90": 12.6042,
+        "luma_entropy": 7.1293,
+        "dominant_frac": 0.0619,
+        "unique_buckets": 848,
+        "block_range": 161.4927,
+        "pixel_std": 60.7064,
+        "structure_ratio": 47.9593,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 0,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766,
+          3.58,
+          5013.834
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961797226
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__player__yaw045.png",
+      "status": "ok",
+      "bytes": 987962,
+      "hash": "d76171278827d515",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 5,
+        "luma_p05": 11,
+        "luma_p10": 22,
+        "luma_p50": 77,
+        "luma_p90": 172,
+        "luma_p95": 177,
+        "luma_p99": 195,
+        "luma_span": 190,
+        "shadow_levels": 77,
+        "local_contrast_med": 1.0607,
+        "local_contrast_p90": 13.0421,
+        "luma_entropy": 7.1851,
+        "dominant_frac": 0.0635,
+        "unique_buckets": 846,
+        "block_range": 177.2489,
+        "pixel_std": 59.8073,
+        "structure_ratio": 46.8329,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 45,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2768.004,
+          3.58,
+          5013.004
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.3703066112953005e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.3703066112953005e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__player__yaw090.png",
+      "status": "ok",
+      "bytes": 1026058,
+      "hash": "89b610e5f618a077",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 1,
+        "luma_p05": 6,
+        "luma_p10": 7,
+        "luma_p50": 64,
+        "luma_p90": 157,
+        "luma_p95": 165,
+        "luma_p99": 176,
+        "luma_span": 175,
+        "shadow_levels": 64,
+        "local_contrast_med": 1.696,
+        "local_contrast_p90": 18.0467,
+        "luma_entropy": 7.0567,
+        "dominant_frac": 0.075,
+        "unique_buckets": 665,
+        "block_range": 168.5557,
+        "pixel_std": 52.0698,
+        "structure_ratio": 44.2598,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 90,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2768.834,
+          3.58,
+          5011
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__player__yaw135.png",
+      "status": "ok",
+      "bytes": 1160814,
+      "hash": "f80cf110b804e956",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 1,
+        "luma_p05": 9,
+        "luma_p10": 12,
+        "luma_p50": 69,
+        "luma_p90": 123,
+        "luma_p95": 165,
+        "luma_p99": 179,
+        "luma_span": 178,
+        "shadow_levels": 69,
+        "local_contrast_med": 2.5977,
+        "local_contrast_p90": 17.9022,
+        "luma_entropy": 7.1656,
+        "dominant_frac": 0.0734,
+        "unique_buckets": 960,
+        "block_range": 168.1511,
+        "pixel_std": 43.3453,
+        "structure_ratio": 41.5881,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 135,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2768.004,
+          3.58,
+          5008.996
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__player__yaw180.png",
+      "status": "ok",
+      "bytes": 1080114,
+      "hash": "f381622e403d3598",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 1,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 64,
+        "luma_p90": 158,
+        "luma_p95": 167,
+        "luma_p99": 173,
+        "luma_span": 172,
+        "shadow_levels": 64,
+        "local_contrast_med": 2.0436,
+        "local_contrast_p90": 18.3878,
+        "luma_entropy": 7.1985,
+        "dominant_frac": 0.0672,
+        "unique_buckets": 921,
+        "block_range": 163.1687,
+        "pixel_std": 48.1535,
+        "structure_ratio": 44.4,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 180,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766,
+          3.58,
+          5008.166
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961797226
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__player__yaw225.png",
+      "status": "ok",
+      "bytes": 1057571,
+      "hash": "625ffa8b0e7379d9",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 3,
+        "luma_p05": 10,
+        "luma_p10": 20,
+        "luma_p50": 88,
+        "luma_p90": 165,
+        "luma_p95": 172,
+        "luma_p99": 178,
+        "luma_span": 175,
+        "shadow_levels": 88,
+        "local_contrast_med": 1.6427,
+        "local_contrast_p90": 16.1188,
+        "luma_entropy": 7.2589,
+        "dominant_frac": 0.0514,
+        "unique_buckets": 1116,
+        "block_range": 167.6655,
+        "pixel_std": 53.5861,
+        "structure_ratio": 46.9333,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 225,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2763.996,
+          3.58,
+          5008.996
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.369361572253028e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.369361572253028e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__player__yaw270.png",
+      "status": "ok",
+      "bytes": 1014185,
+      "hash": "7d6a64aac94b32ae",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 9,
+        "luma_p05": 13,
+        "luma_p10": 26,
+        "luma_p50": 86,
+        "luma_p90": 170,
+        "luma_p95": 176,
+        "luma_p99": 179,
+        "luma_span": 170,
+        "shadow_levels": 86,
+        "local_contrast_med": 1.4203,
+        "local_contrast_p90": 15.7359,
+        "luma_entropy": 7.182,
+        "dominant_frac": 0.0593,
+        "unique_buckets": 914,
+        "block_range": 158.4927,
+        "pixel_std": 55.515,
+        "structure_ratio": 45.6531,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 270,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2763.166,
+          3.58,
+          5011
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__player__yaw315.png",
+      "status": "ok",
+      "bytes": 956226,
+      "hash": "a8b678aa782a7212",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 6,
+        "luma_p05": 11,
+        "luma_p10": 28,
+        "luma_p50": 98,
+        "luma_p90": 174,
+        "luma_p95": 176,
+        "luma_p99": 179,
+        "luma_span": 173,
+        "shadow_levels": 98,
+        "local_contrast_med": 0.8484,
+        "local_contrast_p90": 12.1044,
+        "luma_entropy": 7.1297,
+        "dominant_frac": 0.0733,
+        "unique_buckets": 936,
+        "block_range": 168.9872,
+        "pixel_std": 58.2798,
+        "structure_ratio": 47.5707,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 315,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2763.996,
+          3.58,
+          5013.004
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3674714941684826e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3674714941684826e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C1__player__b20.png",
+      "status": "ok",
+      "bytes": 1095036,
+      "hash": "76c7ca2766aa00ea",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 9,
+        "luma_p05": 17,
+        "luma_p10": 29,
+        "luma_p50": 81,
+        "luma_p90": 168,
+        "luma_p95": 175,
+        "luma_p99": 194,
+        "luma_span": 185,
+        "shadow_levels": 81,
+        "local_contrast_med": 2.4341,
+        "local_contrast_p90": 16.6467,
+        "luma_entropy": 7.2888,
+        "dominant_frac": 0.0408,
+        "unique_buckets": 1012,
+        "block_range": 151.2827,
+        "pixel_std": 52.9308,
+        "structure_ratio": 44.8475,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C1",
+      "subject": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "bearing": 20
+    },
+    {
+      "file": "C1__player__b200.png",
+      "status": "ok",
+      "bytes": 1220205,
+      "hash": "2703a756186faf24",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 6,
+        "luma_p05": 16,
+        "luma_p10": 24,
+        "luma_p50": 74,
+        "luma_p90": 156,
+        "luma_p95": 168,
+        "luma_p99": 174,
+        "luma_span": 168,
+        "shadow_levels": 74,
+        "local_contrast_med": 4.6413,
+        "local_contrast_p90": 21.468,
+        "luma_entropy": 7.183,
+        "dominant_frac": 0.0326,
+        "unique_buckets": 1290,
+        "block_range": 152.7635,
+        "pixel_std": 44.3868,
+        "structure_ratio": 42.8601,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C1",
+      "subject": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "bearing": 200
+    },
+    {
+      "file": "B3__player__yaw060.png",
+      "status": "ok",
+      "bytes": 1059450,
+      "hash": "a2d59826900013b4",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 9,
+        "luma_p10": 16,
+        "luma_p50": 73,
+        "luma_p90": 164,
+        "luma_p95": 175,
+        "luma_p99": 193,
+        "luma_span": 191,
+        "shadow_levels": 73,
+        "local_contrast_med": 1.5454,
+        "local_contrast_p90": 14.8659,
+        "luma_entropy": 7.3022,
+        "dominant_frac": 0.0525,
+        "unique_buckets": 755,
+        "block_range": 181.2492,
+        "pixel_std": 56.6203,
+        "structure_ratio": 46.3503,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "B3",
+      "subject": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 60,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 1.949,
+        "eye": [
+          2767.688,
+          3.58,
+          5011.974
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -2.2557129219800142e-7,
+            -0.9905052113306654
+          ],
+          "z": 1.9485573688862523,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -2.2557129219800142e-7,
+            0.9905052113306658
+          ],
+          "z": 1.9485573688862523,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "B3__player__yaw090.png",
+      "status": "ok",
+      "bytes": 1129506,
+      "hash": "bc01b89350e11210",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 8,
+        "luma_p10": 19,
+        "luma_p50": 66,
+        "luma_p90": 155,
+        "luma_p95": 164,
+        "luma_p99": 176,
+        "luma_span": 176,
+        "shadow_levels": 66,
+        "local_contrast_med": 2.7819,
+        "local_contrast_p90": 18.8882,
+        "luma_entropy": 7.199,
+        "dominant_frac": 0.0579,
+        "unique_buckets": 722,
+        "block_range": 169.7991,
+        "pixel_std": 46.8446,
+        "structure_ratio": 41.7779,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "B3",
+      "subject": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 90,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 1.949,
+        "eye": [
+          2767.949,
+          3.58,
+          5011
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.9905053988456276
+          ],
+          "z": 1.9485570000001644,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.9905053988456282
+          ],
+          "z": 1.9485570000001644,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-gideon-smith-10__yaw000.png",
+      "status": "ok",
+      "bytes": 1091622,
+      "hash": "0632fe67533d0f9a",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 9,
+        "luma_p50": 49,
+        "luma_p90": 100,
+        "luma_p95": 107,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 49,
+        "local_contrast_med": 2.9905,
+        "local_contrast_p90": 14.83,
+        "luma_entropy": 6.7106,
+        "dominant_frac": 0.0862,
+        "unique_buckets": 251,
+        "block_range": 105.7637,
+        "pixel_std": 34.177,
+        "structure_ratio": 38.6178,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-gideon-smith-10",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw": 0,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          449.27,
+          3.62,
+          2941.824
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961797226
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 11.1
+    },
+    {
+      "file": "C4__npc-gideon-smith-10__yaw045.png",
+      "status": "ok",
+      "bytes": 1130080,
+      "hash": "b8a37955f331ed79",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 3,
+        "luma_p10": 10,
+        "luma_p50": 65,
+        "luma_p90": 102,
+        "luma_p95": 108,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 65,
+        "local_contrast_med": 2.9462,
+        "local_contrast_p90": 10.6612,
+        "luma_entropy": 6.7267,
+        "dominant_frac": 0.0691,
+        "unique_buckets": 231,
+        "block_range": 100.416,
+        "pixel_std": 32.8944,
+        "structure_ratio": 37.1517,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-gideon-smith-10",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw": 45,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          451.274,
+          3.62,
+          2940.994
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.8900780845450275e-16,
+            -0.68097239658065
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.8900780845450275e-16,
+            0.6809723965806503
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 11.1
+    },
+    {
+      "file": "C4__npc-gideon-smith-10__yaw090.png",
+      "status": "ok",
+      "bytes": 1092069,
+      "hash": "b7bfb400c8f11a23",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 1,
+        "luma_p10": 5,
+        "luma_p50": 62,
+        "luma_p90": 102,
+        "luma_p95": 108,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 62,
+        "local_contrast_med": 3.3291,
+        "local_contrast_p90": 17.2379,
+        "luma_entropy": 6.71,
+        "dominant_frac": 0.1133,
+        "unique_buckets": 244,
+        "block_range": 102.6616,
+        "pixel_std": 37.2269,
+        "structure_ratio": 38.8669,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-gideon-smith-10",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw": 90,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          452.104,
+          3.62,
+          2938.99
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589758e-16,
+            -0.680972396179818
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589758e-16,
+            0.6809723961798183
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 11.1
+    },
+    {
+      "file": "C4__npc-gideon-smith-10__yaw135.png",
+      "status": "ok",
+      "bytes": 1122865,
+      "hash": "e9175759112fe8cc",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 5,
+        "luma_p50": 73,
+        "luma_p90": 102,
+        "luma_p95": 107,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 73,
+        "local_contrast_med": 3.0976,
+        "local_contrast_p90": 10.694,
+        "luma_entropy": 6.5811,
+        "dominant_frac": 0.1167,
+        "unique_buckets": 246,
+        "block_range": 105.146,
+        "pixel_std": 35.4977,
+        "structure_ratio": 38.6445,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-gideon-smith-10",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw": 135,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          451.274,
+          3.62,
+          2936.986
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 11.1
+    },
+    {
+      "file": "C4__npc-gideon-smith-10__yaw180.png",
+      "status": "ok",
+      "bytes": 1120610,
+      "hash": "6fcfb3fc13618e6d",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 4,
+        "luma_p50": 68,
+        "luma_p90": 97,
+        "luma_p95": 104,
+        "luma_p99": 114,
+        "luma_span": 114,
+        "shadow_levels": 68,
+        "local_contrast_med": 3.2316,
+        "local_contrast_p90": 11.7478,
+        "luma_entropy": 6.5878,
+        "dominant_frac": 0.1164,
+        "unique_buckets": 198,
+        "block_range": 104.4847,
+        "pixel_std": 33.925,
+        "structure_ratio": 37.892,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-gideon-smith-10",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw": 180,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          449.27,
+          3.62,
+          2936.156
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 11.1
+    },
+    {
+      "file": "C4__npc-gideon-smith-10__yaw225.png",
+      "status": "ok",
+      "bytes": 1135802,
+      "hash": "98b996de2aa1f5be",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 6,
+        "luma_p50": 64,
+        "luma_p90": 98,
+        "luma_p95": 104,
+        "luma_p99": 114,
+        "luma_span": 114,
+        "shadow_levels": 64,
+        "local_contrast_med": 3.0543,
+        "local_contrast_p90": 10.5685,
+        "luma_entropy": 6.6508,
+        "dominant_frac": 0.0976,
+        "unique_buckets": 200,
+        "block_range": 100.9571,
+        "pixel_std": 32.503,
+        "structure_ratio": 40.3603,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-gideon-smith-10",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw": 225,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          447.266,
+          3.62,
+          2936.986
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.1983095056017005e-13,
+            -0.680972396580737
+          ],
+          "z": 2.834264998331357,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.1983095056017005e-13,
+            0.6809723965807374
+          ],
+          "z": 2.834264998331357,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 11.1
+    },
+    {
+      "file": "C4__npc-gideon-smith-10__yaw270.png",
+      "status": "ok",
+      "bytes": 1106630,
+      "hash": "e639b7a77491d27c",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 5,
+        "luma_p50": 59,
+        "luma_p90": 96,
+        "luma_p95": 104,
+        "luma_p99": 115,
+        "luma_span": 115,
+        "shadow_levels": 59,
+        "local_contrast_med": 2.7943,
+        "local_contrast_p90": 10.0371,
+        "luma_entropy": 6.544,
+        "dominant_frac": 0.1077,
+        "unique_buckets": 199,
+        "block_range": 104.9293,
+        "pixel_std": 31.2688,
+        "structure_ratio": 38.433,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-gideon-smith-10",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw": 270,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          446.436,
+          3.62,
+          2938.99
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 11.1
+    },
+    {
+      "file": "C4__npc-gideon-smith-10__yaw315.png",
+      "status": "ok",
+      "bytes": 1125404,
+      "hash": "0e714df19a149289",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 11,
+        "luma_p50": 64,
+        "luma_p90": 99,
+        "luma_p95": 106,
+        "luma_p99": 115,
+        "luma_span": 115,
+        "shadow_levels": 64,
+        "local_contrast_med": 2.8853,
+        "local_contrast_p90": 9.6158,
+        "luma_entropy": 6.6164,
+        "dominant_frac": 0.0799,
+        "unique_buckets": 213,
+        "block_range": 103.3068,
+        "pixel_std": 30.0724,
+        "structure_ratio": 38.867,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-gideon-smith-10",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw": 315,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          447.266,
+          3.62,
+          2940.994
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.7199710569359996e-14,
+            -0.6809723965806597
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.7199710569359996e-14,
+            0.68097239658066
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 11.1
+    },
+    {
+      "file": "C1__npc-gideon-smith-10__b20.png",
+      "status": "ok",
+      "bytes": 1143216,
+      "hash": "6601ca368cb513d6",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 4,
+        "luma_p10": 9,
+        "luma_p50": 28,
+        "luma_p90": 70,
+        "luma_p95": 78,
+        "luma_p99": 106,
+        "luma_span": 106,
+        "shadow_levels": 28,
+        "local_contrast_med": 2.7769,
+        "local_contrast_p90": 12.3736,
+        "luma_entropy": 6.326,
+        "dominant_frac": 0.0733,
+        "unique_buckets": 450,
+        "block_range": 80.6608,
+        "pixel_std": 24.1907,
+        "structure_ratio": 36.7791,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C1",
+      "subject": "npc-gideon-smith-10",
+      "race": "argonian",
+      "family": "reptilian",
+      "bearing": 20,
+      "offset_m": 11.1
+    },
+    {
+      "file": "C1__npc-gideon-smith-10__b200.png",
+      "status": "ok",
+      "bytes": 1104202,
+      "hash": "7154dd14a6816f04",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 1,
+        "luma_p05": 7,
+        "luma_p10": 12,
+        "luma_p50": 46,
+        "luma_p90": 85,
+        "luma_p95": 93,
+        "luma_p99": 103,
+        "luma_span": 102,
+        "shadow_levels": 46,
+        "local_contrast_med": 2.4453,
+        "local_contrast_p90": 7.9937,
+        "luma_entropy": 6.5803,
+        "dominant_frac": 0.0888,
+        "unique_buckets": 272,
+        "block_range": 75.7995,
+        "pixel_std": 27.6409,
+        "structure_ratio": 44.4054,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C1",
+      "subject": "npc-gideon-smith-10",
+      "race": "argonian",
+      "family": "reptilian",
+      "bearing": 200,
+      "offset_m": 11.1
+    },
+    {
+      "file": "B3__npc-gideon-smith-10__yaw060.png",
+      "status": "ok",
+      "bytes": 1119216,
+      "hash": "c5b0e2a2629cd9c5",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 5,
+        "luma_p50": 61,
+        "luma_p90": 100,
+        "luma_p95": 107,
+        "luma_p99": 115,
+        "luma_span": 115,
+        "shadow_levels": 61,
+        "local_contrast_med": 2.9105,
+        "local_contrast_p90": 11.2336,
+        "luma_entropy": 6.6467,
+        "dominant_frac": 0.1125,
+        "unique_buckets": 243,
+        "block_range": 99.035,
+        "pixel_std": 33.9917,
+        "structure_ratio": 38.0039,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "B3",
+      "subject": "npc-gideon-smith-10",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw": 60,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 1.949,
+        "eye": [
+          450.957,
+          3.62,
+          2939.964
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -2.2557129219800142e-7,
+            -0.9905052113306654
+          ],
+          "z": 1.9485573688862523,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -2.2557129219800142e-7,
+            0.9905052113306658
+          ],
+          "z": 1.9485573688862523,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 11.1
+    },
+    {
+      "file": "B3__npc-gideon-smith-10__yaw090.png",
+      "status": "ok",
+      "bytes": 1103136,
+      "hash": "193878cef86204b5",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 4,
+        "luma_p50": 42,
+        "luma_p90": 100,
+        "luma_p95": 106,
+        "luma_p99": 114,
+        "luma_span": 114,
+        "shadow_levels": 42,
+        "local_contrast_med": 3.3942,
+        "local_contrast_p90": 17.7932,
+        "luma_entropy": 6.6539,
+        "dominant_frac": 0.1279,
+        "unique_buckets": 249,
+        "block_range": 102.914,
+        "pixel_std": 36.2613,
+        "structure_ratio": 38.2932,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "B3",
+      "subject": "npc-gideon-smith-10",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw": 90,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 1.949,
+        "eye": [
+          451.219,
+          3.62,
+          2938.99
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.9905053988457144
+          ],
+          "z": 1.9485569999999939,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.9905053988457149
+          ],
+          "z": 1.9485569999999939,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 11.1
+    },
+    {
+      "file": "C4__npc-spellwright-gideon__yaw000.png",
+      "status": "ok",
+      "bytes": 1143592,
+      "hash": "c7d717fcb812166b",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 5,
+        "luma_p10": 11,
+        "luma_p50": 62,
+        "luma_p90": 101,
+        "luma_p95": 107,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 62,
+        "local_contrast_med": 3.2498,
+        "local_contrast_p90": 12.3734,
+        "luma_entropy": 6.7696,
+        "dominant_frac": 0.0654,
+        "unique_buckets": 193,
+        "block_range": 94.506,
+        "pixel_std": 31.7907,
+        "structure_ratio": 39.8313,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-spellwright-gideon",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw": 0,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          446.9,
+          3.62,
+          2940.234
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 12.8
+    },
+    {
+      "file": "C4__npc-spellwright-gideon__yaw045.png",
+      "status": "ok",
+      "bytes": 1081002,
+      "hash": "a4214f4b1d5bbd29",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 6,
+        "luma_p50": 55,
+        "luma_p90": 98,
+        "luma_p95": 106,
+        "luma_p99": 115,
+        "luma_span": 115,
+        "shadow_levels": 55,
+        "local_contrast_med": 2.385,
+        "local_contrast_p90": 9.8471,
+        "luma_entropy": 6.5857,
+        "dominant_frac": 0.0951,
+        "unique_buckets": 198,
+        "block_range": 102.7589,
+        "pixel_std": 35.1536,
+        "structure_ratio": 44.6245,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-spellwright-gideon",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw": 45,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          448.904,
+          3.62,
+          2939.404
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.8900780845450275e-16,
+            -0.68097239658065
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.8900780845450275e-16,
+            0.6809723965806503
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 12.8
+    },
+    {
+      "file": "C4__npc-spellwright-gideon__yaw090.png",
+      "status": "ok",
+      "bytes": 1116635,
+      "hash": "d878c5ea572ee8c2",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 1,
+        "luma_p10": 5,
+        "luma_p50": 48,
+        "luma_p90": 99,
+        "luma_p95": 106,
+        "luma_p99": 115,
+        "luma_span": 115,
+        "shadow_levels": 48,
+        "local_contrast_med": 3.1757,
+        "local_contrast_p90": 14.4595,
+        "luma_entropy": 6.7106,
+        "dominant_frac": 0.1039,
+        "unique_buckets": 217,
+        "block_range": 102.4317,
+        "pixel_std": 35.1878,
+        "structure_ratio": 40.8108,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-spellwright-gideon",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw": 90,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          449.734,
+          3.62,
+          2937.4
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589758e-16,
+            -0.680972396179818
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589758e-16,
+            0.6809723961798183
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 12.8
+    },
+    {
+      "file": "C4__npc-spellwright-gideon__yaw135.png",
+      "status": "ok",
+      "bytes": 1103528,
+      "hash": "5f3ccab8583453b9",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 4,
+        "luma_p50": 69,
+        "luma_p90": 102,
+        "luma_p95": 108,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 69,
+        "local_contrast_med": 2.9176,
+        "local_contrast_p90": 10.688,
+        "luma_entropy": 6.6328,
+        "dominant_frac": 0.1228,
+        "unique_buckets": 406,
+        "block_range": 104.9146,
+        "pixel_std": 34.857,
+        "structure_ratio": 39.5283,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-spellwright-gideon",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw": 135,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          448.904,
+          3.62,
+          2935.396
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.8351171268175413e-16,
+            -0.68097239658065
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.8351171268175413e-16,
+            0.6809723965806503
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 12.8
+    },
+    {
+      "file": "C4__npc-spellwright-gideon__yaw180.png",
+      "status": "ok",
+      "bytes": 1122499,
+      "hash": "c6bcd8c1d8b6b592",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 2,
+        "luma_p10": 5,
+        "luma_p50": 74,
+        "luma_p90": 103,
+        "luma_p95": 108,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 74,
+        "local_contrast_med": 3.4923,
+        "local_contrast_p90": 14.286,
+        "luma_entropy": 6.6166,
+        "dominant_frac": 0.1068,
+        "unique_buckets": 221,
+        "block_range": 105.4811,
+        "pixel_std": 36.0215,
+        "structure_ratio": 38.9856,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-spellwright-gideon",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw": 180,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          446.9,
+          3.62,
+          2934.566
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 12.8
+    },
+    {
+      "file": "C4__npc-spellwright-gideon__yaw225.png",
+      "status": "ok",
+      "bytes": 1141253,
+      "hash": "c6d79b558af13d01",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 4,
+        "luma_p10": 11,
+        "luma_p50": 72,
+        "luma_p90": 103,
+        "luma_p95": 108,
+        "luma_p99": 117,
+        "luma_span": 117,
+        "shadow_levels": 72,
+        "local_contrast_med": 3.0817,
+        "local_contrast_p90": 9.6584,
+        "luma_entropy": 6.6677,
+        "dominant_frac": 0.0711,
+        "unique_buckets": 328,
+        "block_range": 101.0912,
+        "pixel_std": 31.9191,
+        "structure_ratio": 41.4885,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-spellwright-gideon",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw": 225,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          444.896,
+          3.62,
+          2935.396
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.701070276090549e-14,
+            -0.6809723965806597
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.701070276090549e-14,
+            0.68097239658066
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 12.8
+    },
+    {
+      "file": "C4__npc-spellwright-gideon__yaw270.png",
+      "status": "ok",
+      "bytes": 1126632,
+      "hash": "37378729b8f0bade",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 5,
+        "luma_p10": 14,
+        "luma_p50": 66,
+        "luma_p90": 103,
+        "luma_p95": 109,
+        "luma_p99": 117,
+        "luma_span": 117,
+        "shadow_levels": 66,
+        "local_contrast_med": 3.1253,
+        "local_contrast_p90": 10.6788,
+        "luma_entropy": 6.6276,
+        "dominant_frac": 0.1073,
+        "unique_buckets": 192,
+        "block_range": 104.734,
+        "pixel_std": 30.2192,
+        "structure_ratio": 37.6154,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-spellwright-gideon",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw": 270,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          444.066,
+          3.62,
+          2937.4
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 12.8
+    },
+    {
+      "file": "C4__npc-spellwright-gideon__yaw315.png",
+      "status": "ok",
+      "bytes": 1047297,
+      "hash": "ce8c127e66a536c9",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 1,
+        "luma_p50": 41,
+        "luma_p90": 94,
+        "luma_p95": 103,
+        "luma_p99": 114,
+        "luma_span": 114,
+        "shadow_levels": 41,
+        "local_contrast_med": 1.9992,
+        "local_contrast_p90": 9.1612,
+        "luma_entropy": 6.2737,
+        "dominant_frac": 0.2525,
+        "unique_buckets": 205,
+        "block_range": 98.2539,
+        "pixel_std": 36.3481,
+        "structure_ratio": 43.0832,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-spellwright-gideon",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw": 315,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          444.896,
+          3.62,
+          2939.404
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.7199710569359996e-14,
+            -0.6809723965806597
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.7199710569359996e-14,
+            0.68097239658066
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 12.8
+    },
+    {
+      "file": "C1__npc-spellwright-gideon__b20.png",
+      "status": "ok",
+      "bytes": 1111212,
+      "hash": "9381ebe304bc5d44",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 1,
+        "luma_p10": 5,
+        "luma_p50": 39,
+        "luma_p90": 73,
+        "luma_p95": 79,
+        "luma_p99": 96,
+        "luma_span": 96,
+        "shadow_levels": 39,
+        "local_contrast_med": 2.2862,
+        "local_contrast_p90": 9.2601,
+        "luma_entropy": 6.3129,
+        "dominant_frac": 0.1225,
+        "unique_buckets": 254,
+        "block_range": 77.4089,
+        "pixel_std": 27.3424,
+        "structure_ratio": 41.8683,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C1",
+      "subject": "npc-spellwright-gideon",
+      "race": "dunmer",
+      "family": "humanoid",
+      "bearing": 20,
+      "offset_m": 12.8
+    },
+    {
+      "file": "C1__npc-spellwright-gideon__b200.png",
+      "status": "ok",
+      "bytes": 1097680,
+      "hash": "2952f03903805987",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 1,
+        "luma_p10": 5,
+        "luma_p50": 31,
+        "luma_p90": 86,
+        "luma_p95": 94,
+        "luma_p99": 105,
+        "luma_span": 105,
+        "shadow_levels": 31,
+        "local_contrast_med": 2.3814,
+        "local_contrast_p90": 8.7386,
+        "luma_entropy": 6.5218,
+        "dominant_frac": 0.1354,
+        "unique_buckets": 338,
+        "block_range": 85.7381,
+        "pixel_std": 31.8134,
+        "structure_ratio": 43.4634,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C1",
+      "subject": "npc-spellwright-gideon",
+      "race": "dunmer",
+      "family": "humanoid",
+      "bearing": 200,
+      "offset_m": 12.8
+    },
+    {
+      "file": "B3__npc-spellwright-gideon__yaw060.png",
+      "status": "ok",
+      "bytes": 1085608,
+      "hash": "795e5c4a5412811f",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 6,
+        "luma_p50": 22,
+        "luma_p90": 89,
+        "luma_p95": 101,
+        "luma_p99": 113,
+        "luma_span": 113,
+        "shadow_levels": 22,
+        "local_contrast_med": 2.1613,
+        "local_contrast_p90": 7.553,
+        "luma_entropy": 6.2479,
+        "dominant_frac": 0.1072,
+        "unique_buckets": 215,
+        "block_range": 102.8548,
+        "pixel_std": 32.3672,
+        "structure_ratio": 46.2707,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "B3",
+      "subject": "npc-spellwright-gideon",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw": 60,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 1.949,
+        "eye": [
+          448.587,
+          3.62,
+          2938.374
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -2.2557129219800142e-7,
+            -0.9905052113306654
+          ],
+          "z": 1.9485573688862523,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -2.2557129219800142e-7,
+            0.9905052113306658
+          ],
+          "z": 1.9485573688862523,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 12.8
+    },
+    {
+      "file": "B3__npc-spellwright-gideon__yaw090.png",
+      "status": "ok",
+      "bytes": 1107405,
+      "hash": "8fd022d9ee2fcd35",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 4,
+        "luma_p10": 8,
+        "luma_p50": 60,
+        "luma_p90": 97,
+        "luma_p95": 105,
+        "luma_p99": 114,
+        "luma_span": 114,
+        "shadow_levels": 60,
+        "local_contrast_med": 2.814,
+        "local_contrast_p90": 12.8386,
+        "luma_entropy": 6.632,
+        "dominant_frac": 0.0872,
+        "unique_buckets": 198,
+        "block_range": 94.3773,
+        "pixel_std": 33.8372,
+        "structure_ratio": 40.9138,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "B3",
+      "subject": "npc-spellwright-gideon",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw": 90,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 1.949,
+        "eye": [
+          448.849,
+          3.62,
+          2937.4
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.9905053988456856
+          ],
+          "z": 1.9485570000000507,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.990505398845686
+          ],
+          "z": 1.9485570000000507,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 12.8
+    },
+    {
+      "file": "C4__npc-assizer-corvo__yaw000.png",
+      "status": "ok",
+      "bytes": 1146311,
+      "hash": "a1fd99f0735d8a18",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 7,
+        "luma_p10": 14,
+        "luma_p50": 62,
+        "luma_p90": 100,
+        "luma_p95": 107,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 62,
+        "local_contrast_med": 3.8402,
+        "local_contrast_p90": 17.8477,
+        "luma_entropy": 6.8186,
+        "dominant_frac": 0.0573,
+        "unique_buckets": 224,
+        "block_range": 91.1808,
+        "pixel_std": 32.7241,
+        "structure_ratio": 37.7984,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-assizer-corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw": 0,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          452.77,
+          3.62,
+          2924.104
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.5
+    },
+    {
+      "file": "C4__npc-assizer-corvo__yaw045.png",
+      "status": "ok",
+      "bytes": 1151443,
+      "hash": "804a0ea852d96e73",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 11,
+        "luma_p10": 21,
+        "luma_p50": 66,
+        "luma_p90": 101,
+        "luma_p95": 107,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 66,
+        "local_contrast_med": 3.0354,
+        "local_contrast_p90": 10.2772,
+        "luma_entropy": 6.6873,
+        "dominant_frac": 0.0753,
+        "unique_buckets": 235,
+        "block_range": 98.8186,
+        "pixel_std": 28.356,
+        "structure_ratio": 40.4913,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-assizer-corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw": 45,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          454.774,
+          3.62,
+          2923.274
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.8900780845450275e-16,
+            -0.68097239658065
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.8900780845450275e-16,
+            0.6809723965806503
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.5
+    },
+    {
+      "file": "C4__npc-assizer-corvo__yaw090.png",
+      "status": "ok",
+      "bytes": 1073339,
+      "hash": "221fa87252fbb00c",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 35,
+        "luma_p05": 42,
+        "luma_p10": 46,
+        "luma_p50": 68,
+        "luma_p90": 84,
+        "luma_p95": 90,
+        "luma_p99": 110,
+        "luma_span": 75,
+        "shadow_levels": 55,
+        "local_contrast_med": 1.6771,
+        "local_contrast_p90": 5.6141,
+        "luma_entropy": 5.9264,
+        "dominant_frac": 0.0999,
+        "unique_buckets": 211,
+        "block_range": 44.8287,
+        "pixel_std": 15.4554,
+        "structure_ratio": 32.2541,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-assizer-corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw": 90,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          455.604,
+          3.62,
+          2921.27
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589758e-16,
+            -0.680972396179818
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589758e-16,
+            0.6809723961798183
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.5
+    },
+    {
+      "file": "C4__npc-assizer-corvo__yaw135.png",
+      "status": "ok",
+      "bytes": 1173932,
+      "hash": "78722c187e5ae925",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 13,
+        "luma_p10": 24,
+        "luma_p50": 71,
+        "luma_p90": 102,
+        "luma_p95": 108,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 71,
+        "local_contrast_med": 3.3481,
+        "local_contrast_p90": 11.5245,
+        "luma_entropy": 6.729,
+        "dominant_frac": 0.0652,
+        "unique_buckets": 260,
+        "block_range": 88.4865,
+        "pixel_std": 28.4282,
+        "structure_ratio": 38.732,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-assizer-corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw": 135,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          454.774,
+          3.62,
+          2919.266
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.8351171268175413e-16,
+            -0.68097239658065
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.8351171268175413e-16,
+            0.6809723965806503
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.5
+    },
+    {
+      "file": "C4__npc-assizer-corvo__yaw180.png",
+      "status": "ok",
+      "bytes": 1151447,
+      "hash": "75a9b6bc87d45361",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 6,
+        "luma_p10": 12,
+        "luma_p50": 56,
+        "luma_p90": 99,
+        "luma_p95": 106,
+        "luma_p99": 115,
+        "luma_span": 115,
+        "shadow_levels": 56,
+        "local_contrast_med": 3.958,
+        "local_contrast_p90": 18.6964,
+        "luma_entropy": 6.7729,
+        "dominant_frac": 0.0693,
+        "unique_buckets": 228,
+        "block_range": 92.3166,
+        "pixel_std": 33.5812,
+        "structure_ratio": 37.4805,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-assizer-corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw": 180,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          452.77,
+          3.62,
+          2918.436
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.5
+    },
+    {
+      "file": "C4__npc-assizer-corvo__yaw225.png",
+      "status": "ok",
+      "bytes": 1172481,
+      "hash": "90b202a8abc2c10b",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 5,
+        "luma_p10": 17,
+        "luma_p50": 68,
+        "luma_p90": 101,
+        "luma_p95": 107,
+        "luma_p99": 115,
+        "luma_span": 115,
+        "shadow_levels": 68,
+        "local_contrast_med": 3.4012,
+        "local_contrast_p90": 12.0506,
+        "luma_entropy": 6.7601,
+        "dominant_frac": 0.078,
+        "unique_buckets": 205,
+        "block_range": 100.6706,
+        "pixel_std": 30.7505,
+        "structure_ratio": 38.3846,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-assizer-corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw": 225,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          450.766,
+          3.62,
+          2919.266
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.701070276090549e-14,
+            -0.6809723965806597
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.701070276090549e-14,
+            0.68097239658066
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.5
+    },
+    {
+      "file": "C4__npc-assizer-corvo__yaw270.png",
+      "status": "ok",
+      "bytes": 1084796,
+      "hash": "8c8cc570e6d5d627",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 33,
+        "luma_p05": 38,
+        "luma_p10": 41,
+        "luma_p50": 59,
+        "luma_p90": 75,
+        "luma_p95": 79,
+        "luma_p99": 85,
+        "luma_span": 52,
+        "shadow_levels": 48,
+        "local_contrast_med": 1.6337,
+        "local_contrast_p90": 4.6763,
+        "luma_entropy": 5.6784,
+        "dominant_frac": 0.1029,
+        "unique_buckets": 183,
+        "block_range": 38.4274,
+        "pixel_std": 12.7891,
+        "structure_ratio": 31.4508,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-assizer-corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw": 270,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          449.936,
+          3.62,
+          2921.27
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.5
+    },
+    {
+      "file": "C4__npc-assizer-corvo__yaw315.png",
+      "status": "ok",
+      "bytes": 1156599,
+      "hash": "3426b6185954a4f6",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 7,
+        "luma_p10": 19,
+        "luma_p50": 64,
+        "luma_p90": 101,
+        "luma_p95": 108,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 64,
+        "local_contrast_med": 3.0994,
+        "local_contrast_p90": 10.9381,
+        "luma_entropy": 6.7282,
+        "dominant_frac": 0.0649,
+        "unique_buckets": 188,
+        "block_range": 93.5878,
+        "pixel_std": 29.3413,
+        "structure_ratio": 37.3125,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-assizer-corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw": 315,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          450.766,
+          3.62,
+          2923.274
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.7199710569359996e-14,
+            -0.6809723965806597
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.7199710569359996e-14,
+            0.68097239658066
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.5
+    },
+    {
+      "file": "C1__npc-assizer-corvo__b20.png",
+      "status": "ok",
+      "bytes": 1118566,
+      "hash": "ce846847be39cc2b",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 7,
+        "luma_p50": 27,
+        "luma_p90": 73,
+        "luma_p95": 79,
+        "luma_p99": 92,
+        "luma_span": 92,
+        "shadow_levels": 27,
+        "local_contrast_med": 2.5709,
+        "local_contrast_p90": 11.1804,
+        "luma_entropy": 6.3141,
+        "dominant_frac": 0.0896,
+        "unique_buckets": 383,
+        "block_range": 73.1348,
+        "pixel_std": 25.0706,
+        "structure_ratio": 40.3121,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C1",
+      "subject": "npc-assizer-corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "bearing": 20,
+      "offset_m": 14.5
+    },
+    {
+      "file": "C1__npc-assizer-corvo__b200.png",
+      "status": "ok",
+      "bytes": 1153945,
+      "hash": "9ae8472aa4ee9555",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 4,
+        "luma_p10": 12,
+        "luma_p50": 36,
+        "luma_p90": 84,
+        "luma_p95": 93,
+        "luma_p99": 105,
+        "luma_span": 105,
+        "shadow_levels": 36,
+        "local_contrast_med": 2.8653,
+        "local_contrast_p90": 12.0712,
+        "luma_entropy": 6.5736,
+        "dominant_frac": 0.0621,
+        "unique_buckets": 286,
+        "block_range": 95.9522,
+        "pixel_std": 28.3476,
+        "structure_ratio": 42.0722,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C1",
+      "subject": "npc-assizer-corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "bearing": 200,
+      "offset_m": 14.5
+    },
+    {
+      "file": "B3__npc-assizer-corvo__yaw060.png",
+      "status": "ok",
+      "bytes": 1140046,
+      "hash": "8181a405817711c4",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 4,
+        "luma_p10": 14,
+        "luma_p50": 58,
+        "luma_p90": 95,
+        "luma_p95": 103,
+        "luma_p99": 114,
+        "luma_span": 114,
+        "shadow_levels": 58,
+        "local_contrast_med": 2.9108,
+        "local_contrast_p90": 10.9535,
+        "luma_entropy": 6.6898,
+        "dominant_frac": 0.0663,
+        "unique_buckets": 281,
+        "block_range": 97.6765,
+        "pixel_std": 30.5184,
+        "structure_ratio": 41.4087,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "B3",
+      "subject": "npc-assizer-corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw": 60,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 1.949,
+        "eye": [
+          454.457,
+          3.62,
+          2922.244
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -2.2557129219800142e-7,
+            -0.9905052113306654
+          ],
+          "z": 1.9485573688862523,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -2.2557129219800142e-7,
+            0.9905052113306658
+          ],
+          "z": 1.9485573688862523,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.5
+    },
+    {
+      "file": "B3__npc-assizer-corvo__yaw090.png",
+      "status": "ok",
+      "bytes": 1119765,
+      "hash": "d2012219009a901a",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 5,
+        "luma_p10": 13,
+        "luma_p50": 55,
+        "luma_p90": 95,
+        "luma_p95": 103,
+        "luma_p99": 115,
+        "luma_span": 115,
+        "shadow_levels": 55,
+        "local_contrast_med": 2.749,
+        "local_contrast_p90": 11.1611,
+        "luma_entropy": 6.7176,
+        "dominant_frac": 0.0548,
+        "unique_buckets": 214,
+        "block_range": 92.7597,
+        "pixel_std": 30.817,
+        "structure_ratio": 42.2927,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "B3",
+      "subject": "npc-assizer-corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw": 90,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 1.949,
+        "eye": [
+          454.719,
+          3.62,
+          2921.27
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.9905053988457144
+          ],
+          "z": 1.9485569999999939,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.9905053988457149
+          ],
+          "z": 1.9485569999999939,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.5
+    },
+    {
+      "file": "C4__npc-npc-porter-eeja__yaw000.png",
+      "status": "ok",
+      "bytes": 1137728,
+      "hash": "f8f24a6a7d3b3f35",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 5,
+        "luma_p10": 12,
+        "luma_p50": 50,
+        "luma_p90": 98,
+        "luma_p95": 106,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 50,
+        "local_contrast_med": 3.6901,
+        "local_contrast_p90": 17.517,
+        "luma_entropy": 6.7734,
+        "dominant_frac": 0.0778,
+        "unique_buckets": 234,
+        "block_range": 93.9364,
+        "pixel_std": 32.9747,
+        "structure_ratio": 37.6746,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-npc-porter-eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 0,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          452.97,
+          3.62,
+          2923.664
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.8
+    },
+    {
+      "file": "C4__npc-npc-porter-eeja__yaw045.png",
+      "status": "ok",
+      "bytes": 1143442,
+      "hash": "bb0dda50c9716008",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 8,
+        "luma_p10": 19,
+        "luma_p50": 65,
+        "luma_p90": 100,
+        "luma_p95": 107,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 65,
+        "local_contrast_med": 2.9816,
+        "local_contrast_p90": 10.0618,
+        "luma_entropy": 6.6826,
+        "dominant_frac": 0.0752,
+        "unique_buckets": 245,
+        "block_range": 99.4694,
+        "pixel_std": 29.0748,
+        "structure_ratio": 40.3949,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-npc-porter-eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 45,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          454.974,
+          3.62,
+          2922.834
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.6916198856678235e-14,
+            -0.6809723965806596
+          ],
+          "z": 2.8342649983316788,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.6916198856678235e-14,
+            0.6809723965806599
+          ],
+          "z": 2.8342649983316788,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.8
+    },
+    {
+      "file": "C4__npc-npc-porter-eeja__yaw090.png",
+      "status": "ok",
+      "bytes": 1120221,
+      "hash": "27024df7207e68db",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 37,
+        "luma_p05": 43,
+        "luma_p10": 46,
+        "luma_p50": 66,
+        "luma_p90": 84,
+        "luma_p95": 88,
+        "luma_p99": 102,
+        "luma_span": 65,
+        "shadow_levels": 55,
+        "local_contrast_med": 1.9183,
+        "local_contrast_p90": 5.9445,
+        "luma_entropy": 5.8835,
+        "dominant_frac": 0.1006,
+        "unique_buckets": 186,
+        "block_range": 42.1016,
+        "pixel_std": 14.6975,
+        "structure_ratio": 29.9868,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-npc-porter-eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 90,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          455.804,
+          3.62,
+          2920.83
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.8
+    },
+    {
+      "file": "C4__npc-npc-porter-eeja__yaw135.png",
+      "status": "ok",
+      "bytes": 1176907,
+      "hash": "3c77c07cb695f9a6",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 1,
+        "luma_p05": 17,
+        "luma_p10": 28,
+        "luma_p50": 73,
+        "luma_p90": 103,
+        "luma_p95": 109,
+        "luma_p99": 117,
+        "luma_span": 116,
+        "shadow_levels": 73,
+        "local_contrast_med": 3.418,
+        "local_contrast_p90": 11.6333,
+        "luma_entropy": 6.6982,
+        "dominant_frac": 0.0656,
+        "unique_buckets": 239,
+        "block_range": 88.5444,
+        "pixel_std": 27.3673,
+        "structure_ratio": 38.6121,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-npc-porter-eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 135,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          454.974,
+          3.62,
+          2918.826
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.73887183778145e-14,
+            -0.6809723965806597
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.73887183778145e-14,
+            0.68097239658066
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.8
+    },
+    {
+      "file": "C4__npc-npc-porter-eeja__yaw180.png",
+      "status": "ok",
+      "bytes": 1151212,
+      "hash": "9eb2987a04707a84",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 6,
+        "luma_p10": 14,
+        "luma_p50": 67,
+        "luma_p90": 101,
+        "luma_p95": 107,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 67,
+        "local_contrast_med": 3.9385,
+        "local_contrast_p90": 17.9454,
+        "luma_entropy": 6.7816,
+        "dominant_frac": 0.0586,
+        "unique_buckets": 224,
+        "block_range": 94.7821,
+        "pixel_std": 33.2009,
+        "structure_ratio": 38.5057,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-npc-porter-eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 180,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          452.97,
+          3.62,
+          2917.996
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.8
+    },
+    {
+      "file": "C4__npc-npc-porter-eeja__yaw225.png",
+      "status": "ok",
+      "bytes": 1174967,
+      "hash": "318acaa830f01513",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 9,
+        "luma_p10": 21,
+        "luma_p50": 70,
+        "luma_p90": 101,
+        "luma_p95": 107,
+        "luma_p99": 115,
+        "luma_span": 115,
+        "shadow_levels": 70,
+        "local_contrast_med": 3.2585,
+        "local_contrast_p90": 11.4472,
+        "luma_entropy": 6.7279,
+        "dominant_frac": 0.0809,
+        "unique_buckets": 211,
+        "block_range": 97.8213,
+        "pixel_std": 29.1492,
+        "structure_ratio": 38.0655,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-npc-porter-eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 225,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          450.966,
+          3.62,
+          2918.826
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            9.450390422725138e-17,
+            -0.68097239658065
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            9.450390422725138e-17,
+            0.6809723965806503
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.8
+    },
+    {
+      "file": "C4__npc-npc-porter-eeja__yaw270.png",
+      "status": "ok",
+      "bytes": 1056268,
+      "hash": "46fa93f4512b1923",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 30,
+        "luma_p05": 37,
+        "luma_p10": 41,
+        "luma_p50": 61,
+        "luma_p90": 79,
+        "luma_p95": 83,
+        "luma_p99": 91,
+        "luma_span": 61,
+        "shadow_levels": 54,
+        "local_contrast_med": 1.508,
+        "local_contrast_p90": 5.0607,
+        "luma_entropy": 5.8642,
+        "dominant_frac": 0.0874,
+        "unique_buckets": 181,
+        "block_range": 48.3202,
+        "pixel_std": 14.4299,
+        "structure_ratio": 36.9019,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-npc-porter-eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 270,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          450.136,
+          3.62,
+          2920.83
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.680972396179818
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798183
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.8
+    },
+    {
+      "file": "C4__npc-npc-porter-eeja__yaw315.png",
+      "status": "ok",
+      "bytes": 1148157,
+      "hash": "b2462f51b3f67cde",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 3,
+        "luma_p10": 15,
+        "luma_p50": 62,
+        "luma_p90": 100,
+        "luma_p95": 107,
+        "luma_p99": 116,
+        "luma_span": 116,
+        "shadow_levels": 62,
+        "local_contrast_med": 3.0179,
+        "local_contrast_p90": 11.0624,
+        "luma_entropy": 6.7359,
+        "dominant_frac": 0.0651,
+        "unique_buckets": 201,
+        "block_range": 104.5023,
+        "pixel_std": 30.7583,
+        "structure_ratio": 39.0761,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C4",
+      "subject": "npc-npc-porter-eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 315,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          450.966,
+          3.62,
+          2922.834
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            9.450390422725138e-17,
+            -0.68097239658065
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            9.450390422725138e-17,
+            0.6809723965806503
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.8
+    },
+    {
+      "file": "C1__npc-npc-porter-eeja__b20.png",
+      "status": "ok",
+      "bytes": 1109030,
+      "hash": "c842df5185ab3834",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 0,
+        "luma_p10": 5,
+        "luma_p50": 27,
+        "luma_p90": 70,
+        "luma_p95": 77,
+        "luma_p99": 97,
+        "luma_span": 97,
+        "shadow_levels": 27,
+        "local_contrast_med": 2.6337,
+        "local_contrast_p90": 11.7856,
+        "luma_entropy": 6.2529,
+        "dominant_frac": 0.1049,
+        "unique_buckets": 416,
+        "block_range": 69.7571,
+        "pixel_std": 24.169,
+        "structure_ratio": 37.9555,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C1",
+      "subject": "npc-npc-porter-eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "bearing": 20,
+      "offset_m": 14.8
+    },
+    {
+      "file": "C1__npc-npc-porter-eeja__b200.png",
+      "status": "ok",
+      "bytes": 1117907,
+      "hash": "1efac53436543e90",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 1,
+        "luma_p10": 6,
+        "luma_p50": 26,
+        "luma_p90": 75,
+        "luma_p95": 83,
+        "luma_p99": 98,
+        "luma_span": 98,
+        "shadow_levels": 26,
+        "local_contrast_med": 2.6437,
+        "local_contrast_p90": 11.5524,
+        "luma_entropy": 6.3181,
+        "dominant_frac": 0.0994,
+        "unique_buckets": 364,
+        "block_range": 81.5443,
+        "pixel_std": 25.6763,
+        "structure_ratio": 39.7402,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "C1",
+      "subject": "npc-npc-porter-eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "bearing": 200,
+      "offset_m": 14.8
+    },
+    {
+      "file": "B3__npc-npc-porter-eeja__yaw060.png",
+      "status": "ok",
+      "bytes": 1135054,
+      "hash": "911737cd2208883f",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 2,
+        "luma_p10": 12,
+        "luma_p50": 59,
+        "luma_p90": 96,
+        "luma_p95": 104,
+        "luma_p99": 115,
+        "luma_span": 115,
+        "shadow_levels": 59,
+        "local_contrast_med": 2.915,
+        "local_contrast_p90": 10.7966,
+        "luma_entropy": 6.683,
+        "dominant_frac": 0.066,
+        "unique_buckets": 285,
+        "block_range": 96.9627,
+        "pixel_std": 31.0376,
+        "structure_ratio": 41.3218,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "B3",
+      "subject": "npc-npc-porter-eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 60,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 1.949,
+        "eye": [
+          454.658,
+          3.62,
+          2921.804
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -2.2557129219800142e-7,
+            -0.9905052113306654
+          ],
+          "z": 1.9485573688862523,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -2.2557129219800142e-7,
+            0.9905052113306658
+          ],
+          "z": 1.9485573688862523,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.8
+    },
+    {
+      "file": "B3__npc-npc-porter-eeja__yaw090.png",
+      "status": "ok",
+      "bytes": 1127733,
+      "hash": "08127777e579ff6d",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 6,
+        "luma_p10": 16,
+        "luma_p50": 60,
+        "luma_p90": 97,
+        "luma_p95": 105,
+        "luma_p99": 115,
+        "luma_span": 115,
+        "shadow_levels": 60,
+        "local_contrast_med": 2.876,
+        "local_contrast_p90": 11.2886,
+        "luma_entropy": 6.7526,
+        "dominant_frac": 0.0575,
+        "unique_buckets": 260,
+        "block_range": 96.5028,
+        "pixel_std": 30.5269,
+        "structure_ratio": 41.4506,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "B3",
+      "subject": "npc-npc-porter-eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw": 90,
+      "pose": {
+        "ok": true,
+        "e": null,
+        "dist": 1.949,
+        "eye": [
+          454.919,
+          3.62,
+          2920.83
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.9905053988457144
+          ],
+          "z": 1.9485569999999939,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.9905053988457149
+          ],
+          "z": 1.9485569999999939,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "offset_m": 14.8
+    },
+    {
+      "file": "M__walk__f000.png",
+      "status": "ok",
+      "bytes": 1156367,
+      "hash": "3c79c1cb99a45494",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 69,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 69,
+        "local_contrast_med": 2.5064,
+        "local_contrast_p90": 17.9372,
+        "luma_entropy": 7.1549,
+        "dominant_frac": 0.0744,
+        "unique_buckets": 966,
+        "block_range": 174.0542,
+        "pixel_std": 43.2492,
+        "structure_ratio": 41.5573,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 0,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f003.png",
+      "status": "ok",
+      "bytes": 1156136,
+      "hash": "8f45d921f7c26a5a",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 68,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 68,
+        "local_contrast_med": 2.5077,
+        "local_contrast_p90": 17.9069,
+        "luma_entropy": 7.156,
+        "dominant_frac": 0.0742,
+        "unique_buckets": 964,
+        "block_range": 174.259,
+        "pixel_std": 43.2599,
+        "structure_ratio": 41.5679,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 3,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f006.png",
+      "status": "ok",
+      "bytes": 1156534,
+      "hash": "e1bdaa5167906e96",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 68,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 68,
+        "local_contrast_med": 2.5072,
+        "local_contrast_p90": 17.8935,
+        "luma_entropy": 7.1559,
+        "dominant_frac": 0.0745,
+        "unique_buckets": 967,
+        "block_range": 174.1329,
+        "pixel_std": 43.2553,
+        "structure_ratio": 41.5579,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 6,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f009.png",
+      "status": "ok",
+      "bytes": 1156476,
+      "hash": "e69878677b6d0aa7",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 68,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 68,
+        "local_contrast_med": 2.5062,
+        "local_contrast_p90": 17.8711,
+        "luma_entropy": 7.1548,
+        "dominant_frac": 0.0741,
+        "unique_buckets": 969,
+        "block_range": 174.2289,
+        "pixel_std": 43.237,
+        "structure_ratio": 41.5502,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 9,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f012.png",
+      "status": "ok",
+      "bytes": 1156503,
+      "hash": "815c39e2dc91a1d9",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 68,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 68,
+        "local_contrast_med": 2.512,
+        "local_contrast_p90": 17.8865,
+        "luma_entropy": 7.1559,
+        "dominant_frac": 0.0745,
+        "unique_buckets": 965,
+        "block_range": 174.263,
+        "pixel_std": 43.2565,
+        "structure_ratio": 41.5633,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 12,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f015.png",
+      "status": "ok",
+      "bytes": 1156379,
+      "hash": "06d625a7c9cc3cda",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 68,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 68,
+        "local_contrast_med": 2.5065,
+        "local_contrast_p90": 17.8418,
+        "luma_entropy": 7.1564,
+        "dominant_frac": 0.0739,
+        "unique_buckets": 972,
+        "block_range": 174.1708,
+        "pixel_std": 43.2558,
+        "structure_ratio": 41.5598,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 15,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f018.png",
+      "status": "ok",
+      "bytes": 1156574,
+      "hash": "259b06f3353bcfd2",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 68,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 68,
+        "local_contrast_med": 2.4995,
+        "local_contrast_p90": 17.886,
+        "luma_entropy": 7.1559,
+        "dominant_frac": 0.0734,
+        "unique_buckets": 959,
+        "block_range": 174.3754,
+        "pixel_std": 43.2463,
+        "structure_ratio": 41.5471,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 18,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f021.png",
+      "status": "ok",
+      "bytes": 1156273,
+      "hash": "bf47418493a7de8b",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 68,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 68,
+        "local_contrast_med": 2.508,
+        "local_contrast_p90": 17.8801,
+        "luma_entropy": 7.156,
+        "dominant_frac": 0.0746,
+        "unique_buckets": 968,
+        "block_range": 174.2173,
+        "pixel_std": 43.2705,
+        "structure_ratio": 41.5639,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 21,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f024.png",
+      "status": "ok",
+      "bytes": 1156644,
+      "hash": "b870e8f09fb0d865",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 68,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 68,
+        "local_contrast_med": 2.5073,
+        "local_contrast_p90": 17.8606,
+        "luma_entropy": 7.156,
+        "dominant_frac": 0.0742,
+        "unique_buckets": 969,
+        "block_range": 174.0166,
+        "pixel_std": 43.2644,
+        "structure_ratio": 41.5654,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 24,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f027.png",
+      "status": "ok",
+      "bytes": 1156048,
+      "hash": "07a6b0398ced935b",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 68,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 68,
+        "local_contrast_med": 2.508,
+        "local_contrast_p90": 17.8758,
+        "luma_entropy": 7.1556,
+        "dominant_frac": 0.0739,
+        "unique_buckets": 959,
+        "block_range": 174.2441,
+        "pixel_std": 43.2617,
+        "structure_ratio": 41.5601,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 27,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f030.png",
+      "status": "ok",
+      "bytes": 1156147,
+      "hash": "94d3a8fa490ad644",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 68,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 68,
+        "local_contrast_med": 2.501,
+        "local_contrast_p90": 17.8801,
+        "luma_entropy": 7.1546,
+        "dominant_frac": 0.0747,
+        "unique_buckets": 966,
+        "block_range": 174.0935,
+        "pixel_std": 43.268,
+        "structure_ratio": 41.5608,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 30,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f033.png",
+      "status": "ok",
+      "bytes": 1156153,
+      "hash": "2ab5bcf2655bc236",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 68,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 68,
+        "local_contrast_med": 2.5078,
+        "local_contrast_p90": 17.8833,
+        "luma_entropy": 7.1541,
+        "dominant_frac": 0.0747,
+        "unique_buckets": 965,
+        "block_range": 174.0321,
+        "pixel_std": 43.2639,
+        "structure_ratio": 41.5694,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 33,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f036.png",
+      "status": "ok",
+      "bytes": 1156108,
+      "hash": "539b49df91980fea",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 69,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 69,
+        "local_contrast_med": 2.5074,
+        "local_contrast_p90": 17.8928,
+        "luma_entropy": 7.1557,
+        "dominant_frac": 0.0745,
+        "unique_buckets": 966,
+        "block_range": 174.092,
+        "pixel_std": 43.2785,
+        "structure_ratio": 41.5791,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 36,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f039.png",
+      "status": "ok",
+      "bytes": 1156269,
+      "hash": "e8c11645025b274b",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 69,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 69,
+        "local_contrast_med": 2.499,
+        "local_contrast_p90": 17.9002,
+        "luma_entropy": 7.1548,
+        "dominant_frac": 0.0745,
+        "unique_buckets": 967,
+        "block_range": 174.0957,
+        "pixel_std": 43.2534,
+        "structure_ratio": 41.5657,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 39,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f042.png",
+      "status": "ok",
+      "bytes": 1155918,
+      "hash": "355e9fe51f1a5006",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 69,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 69,
+        "local_contrast_med": 2.4992,
+        "local_contrast_p90": 17.8995,
+        "luma_entropy": 7.1554,
+        "dominant_frac": 0.0741,
+        "unique_buckets": 958,
+        "block_range": 174.2815,
+        "pixel_std": 43.27,
+        "structure_ratio": 41.5704,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 42,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f045.png",
+      "status": "ok",
+      "bytes": 1155766,
+      "hash": "ad294a0815162e0e",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 2,
+        "luma_p05": 10,
+        "luma_p10": 13,
+        "luma_p50": 69,
+        "luma_p90": 123,
+        "luma_p95": 166,
+        "luma_p99": 179,
+        "luma_span": 177,
+        "shadow_levels": 69,
+        "local_contrast_med": 2.4997,
+        "local_contrast_p90": 17.8867,
+        "luma_entropy": 7.1557,
+        "dominant_frac": 0.0746,
+        "unique_buckets": 967,
+        "block_range": 174.1619,
+        "pixel_std": 43.2737,
+        "structure_ratio": 41.5719,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 45,
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.680474412740253e-16,
+            -0.6438284568743013
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.680474412740253e-16,
+            0.6438284568743017
+          ],
+          "z": 2.9977802438692445,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    }
+  ],
+  "frames_ok": 76,
+  "frames_red": 0
+}

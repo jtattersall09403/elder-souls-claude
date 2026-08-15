@@ -2,7 +2,7 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `f2d6d09d`: **1044 tools**, **159 reference items**,
+drift. At `1c2d1c50`: **1044 tools**, **160 reference items**,
 **56 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
@@ -12,7 +12,7 @@ deliberately off the read path. Grep them; do not read them.**
 | what you want to know | the one line that answers it |
 |---|---|
 | does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1044, one line each |
-| which reference item governs this? | `grep -i <word> orchestration/index/ITEMS.md` — all 159, with their `judges:` paths |
+| which reference item governs this? | `grep -i <word> orchestration/index/ITEMS.md` — all 160, with their `judges:` paths |
 | is there a harness verb for it? | `grep -i <word> orchestration/index/HARNESS.md` — 445 verbs |
 | who is in this file right now? | `node tools/ownership.mjs --for <path>` |
 | am I about to collide with someone? | `node tools/ownership.mjs --conflicts` |
@@ -104,13 +104,13 @@ Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 > **293 of 1044 tools have no header comment**, so nobody can tell what they
 > do without reading them. That is a rediscovery tax paid by every agent that meets one.
 
-## Reference items — 159, by family
+## Reference items — 160, by family
 
 `grep -i <word> orchestration/index/ITEMS.md` for the item, its `judges:` paths and its file.
 **Never assemble an item set by listing a directory** — a piece was once scored against a set built
 that way and seven of its twelve items judged none of its declared paths.
 
-`RI-AI` 7 · `RI-AUD` 5 · `RI-CAM` 7 · `RI-CHR` 3 · `RI-CMB` 12 · `RI-CMP` 3 · `RI-CRM` 2 · `RI-DLG` 9 · `RI-EXP` 6 · `RI-JRN` 9 · `RI-LOR` 16 · `RI-MAG` 6 · `RI-MTH` 7 · `RI-PLT` 3 · `RI-PRG` 9 · `RI-QST` 9 · `RI-STL` 2 · `RI-TRV` 2 · `RI-UIX` 9 · `RI-VIS` 10 · `RI-WLD` 16 · `RI-WPN` 7
+`RI-AI` 7 · `RI-AUD` 5 · `RI-CAM` 7 · `RI-CHR` 3 · `RI-CMB` 12 · `RI-CMP` 3 · `RI-CRM` 2 · `RI-DLG` 9 · `RI-EXP` 6 · `RI-JRN` 9 · `RI-LOR` 16 · `RI-MAG` 6 · `RI-MTH` 7 · `RI-PLT` 3 · `RI-PRG` 9 · `RI-QST` 9 · `RI-STL` 2 · `RI-TRV` 2 · `RI-UIX` 10 · `RI-VIS` 10 · `RI-WLD` 16 · `RI-WPN` 7
 
 ## Read these before you re-derive them
 
