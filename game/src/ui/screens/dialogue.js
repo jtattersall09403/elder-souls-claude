@@ -151,29 +151,53 @@ export class DialogueHistory {
    * §D1: clicking a blue word "appends the answer to the bottom of the history pane. It does not
    * clear the pane, it does not open a sub-window, and it does not close the conversation."
    *
-   * WHY THERE IS A SEQUENCE NUMBER, AND WHAT IT REPLACED. `_dialogueModel()` calls this on EVERY
-   * build, with whatever `Conversation` last said, so something has to stop one answer being
-   * pushed sixty times a second. That something used to be "the last block already has this
-   * topic and this text" — which is true of a re-ask as well, so **asking the same person the
-   * same question twice in a row printed nothing at all**. Measured through the real input path
-   * on 2026-08-15: 10 of 12 column rows answered, and one of the two dead ones was dead only
-   * because it was the topic asked immediately before it. A row you can press that prints
-   * nothing is CRITIC-DOCTRINE §1.2b's drawn-and-does-nothing, and Morrowind re-prints.
+   * WHY THERE IS A SEQUENCE NUMBER. `_dialogueModel()` calls this on EVERY build, with whatever
+   * `Conversation` last said, so something has to stop one answer being pushed sixty times a
+   * second. `seq` is the engine's count of completed says (`Engine._dlgSaySeq`), so "the same
+   * say-event, read again this frame" and "a genuinely new say" are finally different values —
+   * that gate is unchanged and still runs first, below.
    *
-   * `seq` is the engine's count of completed says (`Engine._dlgSaySeq`), so "the same answer
-   * again" and "this answer, still on screen" are finally different values. The old text guard
-   * is kept for callers that pass no seq — several probes construct a history directly.
+   * P1 / GATE-G-RESULT-AND-WHAT-IT-OWES.json `owed_3`, defect 2 — WHY THIS IS NOT A PLAIN
+   * PUSH ANY MORE. Once the seq gate passes, the OLD code always pushed a fresh block. For a
+   * topic that is not the one just asked, that is right — Morrowind re-prints, and this is the
+   * fix that made "asking the same question twice in a row" stop printing nothing at all
+   * (measured 2026-08-15: 10 of 12 column rows answered, one dead only because it was the topic
+   * asked immediately before it). But when the topic being confirmed is the SAME one already
+   * sitting as the current last block — Sigurd's "the curfew", confirmed twice at
+   * `quillon/shots4/020` then `024` — "always push" prints the identical heading and the
+   * identical paragraph a second time, verbatim, directly beneath the first. Both Gate G judges
+   * named this, independently, as the worst thing in the build (`SEPARABILITY-VERDICT.md` §2).
+   * Reproduced byte-for-byte by `tools/ui/dialogue-gate-g-repro.mjs`, check D2-2.
+   *
+   * THE FIX KEEPS BOTH PROPERTIES RATHER THAN TRADING ONE FOR THE OTHER: search the WHOLE
+   * transcript (not only the last block) for an existing block with this exact `(topic, text)`.
+   * If one exists, move it to the end instead of pushing a copy — the same answer surfaces at
+   * the bottom, exactly as §D1 promises, and no paragraph is ever printed twice. If none exists —
+   * a genuinely new answer, or the same topic with DIFFERENT text (disposition moved, a
+   * different info now wins) — push it, unchanged from before. A re-ask of the current last
+   * block is therefore a no-op on the visible text (it was already at the bottom); that is a much
+   * narrower residual than "any repeat prints nothing", and it never fabricates or duplicates a
+   * paragraph, which is the thing two independent players actually met and called broken.
    */
   append(topicId, heading, text, seq) {
     if (!text) return this;
+    const t = String(text);
     if (seq !== undefined && seq !== null) {
       if (this.lastSeq === seq) return this;
       this.lastSeq = seq;
     } else {
       const last = this.blocks[this.blocks.length - 1];
-      if (last && last.topic === topicId && last.text === String(text)) return this;   // idempotent
+      if (last && last.topic === topicId && last.text === t) return this;   // idempotent
     }
-    this.blocks.push({ heading: heading || null, text: String(text), topic: topicId || null });
+    if (topicId) {
+      const dupIdx = this.blocks.findIndex((b) => b.topic === topicId && b.text === t);
+      if (dupIdx >= 0) {
+        const [existing] = this.blocks.splice(dupIdx, 1);
+        this.blocks.push(existing);
+        return this;
+      }
+    }
+    this.blocks.push({ heading: heading || null, text: t, topic: topicId || null });
     return this;
   }
 

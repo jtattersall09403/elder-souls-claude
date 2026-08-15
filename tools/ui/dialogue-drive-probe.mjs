@@ -744,8 +744,37 @@ try {
   //
   // §1.2b clause 2: enumerate every affordance and operate each one. Walk back to the top of the
   // column and press E on each row in turn, recording what each one produced.
+  //
+  // RE-OPEN FIRST, ON A FRESH TRANSCRIPT. K3 just answered row 1 ("dying far from the tree" in a
+  // typical run); walking back to row 0 and pressing every row again would ask that SAME topic a
+  // second time as this loop's very first act, before it has tested anything. That is not "every
+  // row, once" (§1.2b clause 2's own words) — it is one row contaminated by K3, and it silently
+  // exercises P1's re-ask/no-duplicate behaviour (`DialogueHistory.append()`) as a side effect
+  // instead of on purpose.
+  //
+  // `DialogueHistory` only resets on a SPEAKER CHANGE (§D3: never cleared mid-conversation, and
+  // that includes across a close/reopen with the SAME person — walking away and back is not a
+  // different conversation with them). So closing and re-`talkTo`-ing the same eid keeps the
+  // contaminated transcript; talking to somebody else first, then back, actually starts fresh.
+  const anyoneElse = await h.page.evaluate((eid) => {
+    const A = window.__HARNESS;
+    const other = (A.listNPCs() || []).find((n) => n.eid !== eid);
+    return other ? other.eid : null;
+  }, opened.eid);
+  if (anyoneElse) {
+    await h.page.evaluate((eid) => { try { window.__HARNESS.closeMenu(); } catch { /* */ } window.__HARNESS.talkTo(eid); }, anyoneElse);
+    await h.h('stepFrames', 2);
+  }
+  await h.page.evaluate(() => { try { window.__HARNESS.closeMenu(); } catch { /* */ } });
+  await h.h('stepFrames', 2);
+  await h.page.evaluate((eid) => { window.__HARNESS.talkTo(eid); }, opened.eid);
+  await h.h('stepFrames', 3);
   const perTopic = [];
+  after = await read();
   const nRows = after.actions.length + after.topics.length;
+  // A fresh open starts focus back in the prose pane (§H1 / `_dialogueModel`'s "new person"
+  // branch); cross to the column before walking it, same as K1 did the first time.
+  if (after.focus && after.focus.pane !== 'column') { await key('ArrowRight'); after = await read(); }
   for (let i = 0; i < 40 && after.focus && after.focus.rowIdx > 0; i++) await key('ArrowUp', 1);
   after = await read();
   for (let row = 0; row < nRows; row++) {
@@ -754,12 +783,22 @@ try {
     await key('KeyE');
     await h.h('stepFrames', 2);
     const a = await read();
+    // P1 / GATE-G-RESULT-AND-WHAT-IT-OWES.json `owed_3`, defect 2. `DialogueHistory.append()` no
+    // longer pushes a byte-identical second copy of a topic's answer when that topic is re-asked
+    // (two Gate G judges independently called the duplicate paragraph the worst thing in the
+    // build) — it moves the EXISTING block to the end instead. `lines_after > lines_before` is
+    // therefore no longer the right test for "this confirm did something": a re-ask that
+    // correctly avoided duplicating still changes the TAIL (the block that was already there is
+    // now the newest thing said), which `lines` alone cannot see. Comparing the tail catches both
+    // a fresh answer (new block, new tail) and a de-duplicated re-ask (moved block, new tail)
+    // while still failing honestly on a truly inert control (tail unchanged, nothing moved).
+    const tailChanged = JSON.stringify(a.tail) !== JSON.stringify(b.tail);
     perTopic.push({
       row,
       label: (b.elements.find((e) => e.focused && e.kind === 'list_row') || {}).text || null,
       focus: focusStr(b.focus),
       lines_before: b.lines, lines_after: a.lines,
-      answered: a.lines > b.lines,
+      answered: a.lines > b.lines || tailChanged,
       heading: a.tail ? a.tail.heading : null,
       disposition: `${b.disposition} -> ${a.disposition}`,
     });
