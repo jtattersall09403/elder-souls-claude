@@ -2679,6 +2679,214 @@ export function settlementFootprintClearance(plan,x,z,margin=0){
 }
 
 /**
+ * THE PUBLIC REALM, PLACED ONCE, FOR BOTH THE THING THAT DRAWS IT AND THE THING THAT COLLIDES IT.
+ *
+ * WHY THIS EXISTS — G1. `settlementSolids()`'s own comment claims collision is "built from the PLAN
+ * and not from the scene graph, so it cannot be out of date with what is drawn: both are functions
+ * of the same `planSettlement()` output". That is true of `plan.buildings`. It was FALSE of the
+ * public realm, which `buildSettlementExterior()` invented inline — market bays, vendor bays,
+ * drying racks, causeways, lamps — with no entry in the plan and therefore nothing for
+ * `settlementSolids()` to derive from. One consumer of one derivation is not two derivations of
+ * one source; it is a hole.
+ *
+ * WHAT THAT HOLE COST, measured rather than argued: `reports/cam-occluder-id/id-r2/` casts a ray
+ * from the live camera to the player through the 26-frame burial at Lilmoth and names the occluder
+ * — the batch instance whose nearest surviving marker is `world-art-street:lilmoth:market-awning`,
+ * material `visual-family:cloth:style-lilmoth-shell`. A 2.7 x 1.8 m cloth awning at 2.15 m, drawn
+ * by the pass below, absent from every collision set in the game. `armHit` was false on all 26
+ * frames because a thing that is not in the collider set cannot be hit.
+ *
+ * SO: the placement arithmetic lives HERE, once, and both consumers read it. The draw pass takes
+ * its bay and feature transforms from this function; `settlementSolids()` takes `canopies` from it.
+ * Changing a market bay's radius now moves the awning and its collider in the same edit, which is
+ * exactly the property the buildings already had and the realm never did.
+ *
+ * ONLY THE OVERHEAD PIECES BECOME SOLID, AND ONLY TO THE CAMERA. `stepWorldCollision()` resolves
+ * the body as a sphere of radius 0.35 m centred at `feet + 0.90 m`, so a body occupies
+ * y in [0.55, 1.25] above ground, and `groundUnder()` searches only `feet ± 0.60 m`. Every volume
+ * emitted here has its underside at or above `CANOPY_MIN_UNDERSIDE_M`, which is above both windows:
+ * a canopy cannot block, snag or lift a walking body. The precedent is W1-30's
+ * `:roof-camera-solid`, and the id suffix is deliberately the same family so
+ * `horizontalClearance()`'s existing exclusion catches these too.
+ *
+ * @param {object} plan  from `planSettlement`
+ * @param {(x:number,z:number)=>number} groundY  the SAME surface the player walks on
+ * @returns {object} `{approach, centre, courtR, bays, features, canopies}`
+ */
+export const CANOPY_MIN_UNDERSIDE_M = 1.30;
+
+/**
+ * HOW HIGH A STREET CANOPY HAS TO HANG, DERIVED FROM THE RIG RATHER THAN CHOSEN BY EYE.
+ *
+ * G1, SECOND HALF. Putting the market awning into the collision set made the spring arm see it —
+ * `armHit` went from false on 26 of 26 burial frames to true on every sampled frame, and nothing
+ * was left between the camera and the player. It also made the arm **slam to its 0.90 m floor**,
+ * which under RI-CAM01 §C's character fade means the player dithers to 0.00 opacity while walking
+ * past a market stall. Measured, not predicted: `reports/cam-occluder-id/id-after/rows.jsonl`
+ * records `armLen` 1.326 then 0.900 held. Trading an invisible camera fault for an invisible
+ * PLAYER is not a fix.
+ *
+ * The cause is the art, not the arm. RI-CAM01 §A is BINDING and the awning was authored without
+ * reference to it:
+ *
+ *     pivot height above ground contact        1.55 m
+ *   + shoulder offset, camera up               0.10 m
+ *   + measured boom rise over 4 m of a sloped   ~0.25 m   (camera y − pivot y at the Lilmoth stand,
+ *     approach at level pitch                              4.58 − 4.23, from the walk's own rows)
+ *   + collision probe sphere radius            0.28 m
+ *   ------------------------------------------------
+ *     swept top of the boom                    ~2.18 m
+ *
+ * So a canopy a player is meant to walk under must clear **2.40 m** to the underside — 0.22 m of
+ * margin over the sweep. The old market awning cleared 1.98 m and the vendor awning 1.82 m: both
+ * hang INSIDE the boom's swept volume, which is why the camera was buried under one of them.
+ *
+ * These are rises to the piece's CENTRE, so each carries its own half-thickness and the extra
+ * vertical reach of its drawn `rotation.z` tilt. `publicRealmLayout()` asserts the resulting
+ * clearance and drops any canopy that fails, so this table cannot silently drift back down.
+ *
+ * Looking DOWN is deliberately still allowed to collapse the arm: at pitch −55° RI-CAM01 §E puts
+ * the camera at 4.40 m, far above any canopy, and pulling in there is the rig behaving correctly
+ * rather than a defect to design out.
+ */
+export const CANOPY_BOOM_CLEARANCE_M = 2.40;
+const REALM_H = {
+  market_awning: 2.60, market_support: 2.66, market_support_centre: 1.33,
+  vendor_awning: 2.55, vendor_post: 2.60, vendor_post_centre: 1.30,
+  rack_beam: 2.50, rack_post: 2.56, rack_post_centre: 1.28, rack_textile_centre: 2.04,
+};
+export function realmHeights() { return { ...REALM_H, clearance_m: CANOPY_BOOM_CLEARANCE_M }; }
+
+/**
+ * MEMOISED, AND THE MEASUREMENT IS WHY. `settlementSolids()` is rebuilt by
+ * `Engine._settleSettlementSolids()` every time the player crosses 8 m of a town, and this layout
+ * runs `settlementApproach()` plus a 7 x 40-site clearance search over every building. Measured on
+ * Lilmoth (33 buildings): `settlementSolids()` went from **0.21 ms to 19.1 ms** per call when the
+ * layout was recomputed each time — a 19 ms hitch on a 16.7 ms frame budget, i.e. a visible stutter
+ * bought to fix a camera. Cached on the plan, the second call is free.
+ *
+ * The cache key is the plan object AND the `groundY` function identity, so a caller that swaps the
+ * terrain gets a fresh layout rather than a stale one. `province.js` therefore hands over ONE bound
+ * function instead of minting a closure per call; a caller that does mint a closure per call simply
+ * misses the cache and gets today's uncached behaviour, which is correct but slow — never wrong.
+ */
+const REALM_LAYOUT_CACHE = new WeakMap();
+
+export function publicRealmLayout(plan, groundY, opts = {}) {
+  const cacheable = plan && typeof plan === 'object'
+    && opts.clearSettlementApproach === undefined
+    && opts.regionalPublicRealm === undefined
+    && opts.settlementOccupation === undefined;
+  if (cacheable) {
+    const hit = REALM_LAYOUT_CACHE.get(plan);
+    if (hit && hit.groundY === groundY) return hit.layout;
+  }
+  const layout = computePublicRealmLayout(plan, groundY, opts);
+  if (cacheable) REALM_LAYOUT_CACHE.set(plan, { groundY, layout });
+  return layout;
+}
+
+function computePublicRealmLayout(plan, groundY, opts = {}) {
+  const gy = (x, z) => (groundY ? groundY(x, z) : 0);
+  const approach = settlementApproach(plan, opts.clearSettlementApproach !== false);
+  const centreX = approach.focus[0], centreZ = approach.focus[1];
+  const cy = Number.isFinite(gy(centreX, centreZ)) ? gy(centreX, centreZ) : 0;
+  const courtR = plan.id === 'lilmoth' || plan.id === 'helstrom' ? 5.8 : 4.8;
+  const regionalRealm = opts.regionalPublicRealm !== false;
+  const occupiedRealm = regionalRealm && opts.settlementOccupation !== false;
+  const approachR = approach.reach;
+  const occupiedBays = [1, 3, 5, 7, 9, 11, 13];
+  const ROLE_NAMES = ['marker', 'handcart', 'drying-rack', 'vendor'];
+
+  const bays = [];
+  for (let i = 0; i < 14; i++) {
+    const t = (i + .5) / 14;
+    const [dirX, dirZ] = approach.direction, baseYaw = approach.yaw, curve = approach.bend * Math.sin(Math.PI * t);
+    const x = centreX - dirX * approachR * (1 - t) + Math.cos(baseYaw) * curve;
+    const z = centreZ - dirZ * approachR * (1 - t) - Math.sin(baseYaw) * curve;
+    const tx = dirX * approachR + Math.cos(baseYaw) * approach.bend * Math.PI * Math.cos(Math.PI * t);
+    const tz = dirZ * approachR - Math.sin(baseYaw) * approach.bend * Math.PI * Math.cos(Math.PI * t);
+    const yaw = Math.atan2(tx, tz);
+    const y = Number.isFinite(gy(x, z)) ? gy(x, z) : cy;
+    const pieceYaw = yaw + ((hashStr(plan.id) >> i) & 3) * .012;
+    const bay = { i, t, x, y, z, yaw, pieceYaw, occupation: null };
+    const occupationIndex = occupiedBays.indexOf(i);
+    if (occupiedRealm && occupationIndex >= 0) {
+      const preferredSide = occupationIndex % 2 ? 1 : -1, role = occupationIndex % 4;
+      // The route itself is footprint-clear, but a cart or rack beside it has a larger envelope.
+      // Search near-to-far on the alternating side first, then its opposite, and retain the first
+      // 1.45 m-radius site with real air around authored construction. Dense towns fall back to
+      // the widest available site and expose the negative clearance to the fail-closed gate.
+      const sites = [];
+      for (const along of [0, -1.5, 1.5, -3, 3]) for (const offset of [2.35, 3.10, 3.85, 4.60]) for (const side of [preferredSide, -preferredSide]) {
+        const sx = x + Math.cos(yaw) * side * offset + Math.sin(yaw) * along, sz = z - Math.sin(yaw) * side * offset + Math.cos(yaw) * along;
+        sites.push({ x: sx, z: sz, side, offset, along, clearance: settlementFootprintClearance(plan, sx, sz, 1.45) });
+      }
+      const admissible = sites.filter(s => s.clearance >= .15).sort((a, b) => Math.abs(a.along) - Math.abs(b.along) || a.offset - b.offset || (a.side === preferredSide ? -1 : 1) - (b.side === preferredSide ? -1 : 1) || b.clearance - a.clearance);
+      const site = admissible[0] || sites.sort((a, b) => b.clearance - a.clearance || Math.abs(a.along) - Math.abs(b.along) || a.offset - b.offset)[0];
+      const ox = site.x, oz = site.z;
+      const oy = Number.isFinite(gy(ox, oz)) ? gy(ox, oz) : y;
+      bay.occupation = { index: occupationIndex, role, role_name: ROLE_NAMES[role], side: site.side, ox, oy, oz, site };
+    }
+    bays.push(bay);
+  }
+
+  const featureCount = Math.min(8, Math.max(4, Math.round(plan.buildings.length / 5)));
+  const features = [];
+  for (let i = 0; i < featureCount; i++) {
+    const a = i / featureCount * Math.PI * 2 + (hashStr(plan.id) % 17) * .03, r = courtR + 2.0 + (i % 2) * 1.4;
+    const x = centreX + Math.sin(a) * r, z = centreZ + Math.cos(a) * r;
+    const y = Number.isFinite(gy(x, z)) ? gy(x, z) : cy;
+    features.push({ i, a, r, x, y, z, kind: ['market', 'bench', 'lamp', 'barrel'][i % 4] });
+  }
+
+  // The overhead volumes, sized from the SAME literals the `add()` calls below use. `tilt` is the
+  // drawn `rotation.z`, which an axis-aligned-in-local box cannot represent; it is folded into the
+  // half-height as the extra vertical reach it actually produces (`sin(tilt) * half-length`), so
+  // the collider is never smaller than the mesh it stands for.
+  const deg = (rad) => rad * 180 / Math.PI;
+  const canopy = (id, groundRef, cx, rise, cz, w, h, d, yawRad, tilt) => {
+    const hy = h / 2 + Math.abs(Math.sin(tilt || 0)) * w / 2;
+    const cyy = groundRef + rise;
+    return {
+      id, c: [cx, cyy, cz], h: [w / 2, hy, d / 2], yaw_deg: deg(yawRad),
+      // Clearance of the underside above the ground the body stands on at this point. This is the
+      // number that must stay above `CANOPY_MIN_UNDERSIDE_M`, not the absolute world height.
+      clearance_m: +(rise - hy).toFixed(4),
+    };
+  };
+  const canopies = [];
+  for (const f of features) {
+    if (f.kind !== 'market') continue;
+    canopies.push(canopy(`realm-market-${f.i}:canopy-camera-solid`, f.y, f.x, REALM_H.market_awning, f.z, 2.7, .12, 1.8, f.a, (f.i & 1) ? .08 : -.08));
+  }
+  for (const b of bays) {
+    const o = b.occupation;
+    if (!o) continue;
+    if (o.role === 3) canopies.push(canopy(`realm-vendor-${b.i}:canopy-camera-solid`, o.oy, o.ox, REALM_H.vendor_awning, o.oz, 2.28, .10, 1.30, b.yaw, o.side * .055));
+    if (o.role === 2) canopies.push(canopy(`realm-rack-${b.i}:canopy-camera-solid`, o.oy, o.ox, REALM_H.rack_beam, o.oz, 1.82, .10, .10, b.yaw + Math.PI * .5, 0));
+  }
+  // FAIL CLOSED RATHER THAN SHIP A BODY-BLOCKER. If a canopy's underside ever dropped into the body
+  // sphere's window this would stop being a camera volume and start being a wall in the street, and
+  // the symptom would be a player mysteriously stuck beside a market stall. Such a volume is
+  // DROPPED, not clamped: a camera improvement is never worth a traversal regression, and the count
+  // is published so the drop cannot be silent.
+  const rejected = canopies.filter((c) => c.clearance_m < CANOPY_MIN_UNDERSIDE_M);
+  const kept = canopies.filter((c) => c.clearance_m >= CANOPY_MIN_UNDERSIDE_M);
+  // The second, stricter assertion: every canopy a player walks under must also clear the camera
+  // boom's swept volume, or the collider that makes it honest also makes the arm collapse onto it.
+  // Reported rather than thrown so a caller can see the number;
+  // `tools/world/architecture-collision-census.mjs` gates it at zero across all eight towns.
+  const belowBoom = kept.filter((c) => c.clearance_m < CANOPY_BOOM_CLEARANCE_M).map((c) => c.id);
+  return {
+    approach, centre: [centreX, cy, centreZ], courtR, regionalRealm, occupiedRealm,
+    approachR, approachStep: approachR / 14, occupiedBays, bays, features,
+    canopies: kept, canopies_rejected_too_low: rejected, canopies_below_boom: belowBoom,
+    canopy_min_underside_m: CANOPY_MIN_UNDERSIDE_M, canopy_boom_clearance_m: CANOPY_BOOM_CLEARANCE_M,
+  };
+}
+
+/**
  * Build a whole settlement's exterior into `root`.
  *
  * @param {THREE.Object3D} root
@@ -2790,12 +2998,17 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
   const add=(mesh,x,y,z,ry=0,label='street')=>{mesh.position.set(x,y,z);mesh.rotation.y=ry;mesh.castShadow=true;mesh.receiveShadow=true;mesh.name=`world-art-street:${plan.id}:${label}`;street.add(mesh);out.meshes++;};
   // Keep the civic focus near the authored power centre, but never under the hall or another
   // footprint. This same result drives the shipping route and the native street-height camera.
-  const approach=settlementApproach(plan,opts.clearSettlementApproach!==false);
-  const centreX=approach.focus[0],centreZ=approach.focus[1];
-  const cy=Number.isFinite(groundY(centreX,centreZ))?groundY(centreX,centreZ):0;
-  const courtR=plan.id==='lilmoth'||plan.id==='helstrom'?5.8:4.8;
-  const regionalRealm=opts.regionalPublicRealm!==false;
-  const occupiedRealm=regionalRealm&&opts.settlementOccupation!==false;
+  // G1: every number below that also decides where a COLLIDER goes now comes out of
+  // `publicRealmLayout()` rather than being recomputed here. The awning that buried the camera at
+  // Lilmoth for 26 frames was drawn by this pass from arithmetic no other file could see; a second
+  // copy of that arithmetic in `settlementSolids()` would have been a second thing to drift.
+  const layout=publicRealmLayout(plan,groundY,opts);
+  const approach=layout.approach;
+  const centreX=layout.centre[0],centreZ=layout.centre[2];
+  const cy=layout.centre[1];
+  const courtR=layout.courtR;
+  const regionalRealm=layout.regionalRealm;
+  const occupiedRealm=layout.occupiedRealm;
   const wetTown=['helstrom','lilmoth','thorn'].includes(plan.id);
   // Terrain-following pavers. One large disc clipped through the deliberately rough ground and
   // looked like a decal; small founded stones preserve relief while reading as a made place.
@@ -2826,24 +3039,17 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
   // became the dominant object in all eight town frames. These bays keep a readable route while
   // exposing the ground between construction units and using the town's darker structural
   // palette rather than a generic road surface.
-  const approachR=approach.reach;
+  const approachR=layout.approachR;
   // The authored approach advances by the same amount in X and Z, so its world-space step is
   // sqrt(2) longer than either component. Route parts sized from one component left conspicuous
   // gaps even when their local lengths nominally matched the sampling interval.
-  const approachStep=approachR/14;
-  const occupiedBays=[1,3,5,7,9,11,13];
+  const approachStep=layout.approachStep;
+  const occupiedBays=layout.occupiedBays;
   const occupationSites=[];
   let approachOccupation=0;
   for(let i=0;i<14;i++){
-    const t=(i+.5)/14;
-    const [dirX,dirZ]=approach.direction,baseYaw=approach.yaw,curve=approach.bend*Math.sin(Math.PI*t);
-    const x=centreX-dirX*approachR*(1-t)+Math.cos(baseYaw)*curve;
-    const z=centreZ-dirZ*approachR*(1-t)-Math.sin(baseYaw)*curve;
-    const tx=dirX*approachR+Math.cos(baseYaw)*approach.bend*Math.PI*Math.cos(Math.PI*t);
-    const tz=dirZ*approachR-Math.sin(baseYaw)*approach.bend*Math.PI*Math.cos(Math.PI*t);
-    const yaw=Math.atan2(tx,tz);
-    const y=Number.isFinite(groundY(x,z))?groundY(x,z):cy;
-    const pieceYaw=yaw+((hashStr(plan.id)>>i)&3)*.012;
+    const bay=layout.bays[i];
+    const {t,x,y,z,yaw,pieceYaw}=bay;
     if(regionalRealm&&wetTown){
       for(let lane=-1;lane<=1;lane++){
         const across=lane*.68+(((hashStr(plan.id+i)>>(lane+2))&3)-1.5)*.035;
@@ -2880,20 +3086,12 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
     }
     const occupationIndex=occupiedBays.indexOf(i);
     if(occupiedRealm&&occupationIndex>=0){
-      const preferredSide=occupationIndex%2?1:-1,role=occupationIndex%4;
-      // The route itself is footprint-clear, but a cart or rack beside it has a larger envelope.
-      // Search near-to-far on the alternating side first, then its opposite, and retain the first
-      // 1.45 m-radius site with real air around authored construction. Dense towns fall back to
-      // the widest available site and expose the negative clearance to the fail-closed gate.
-      const sites=[];
-      for(const along of [0,-1.5,1.5,-3,3])for(const offset of [2.35,3.10,3.85,4.60])for(const side of [preferredSide,-preferredSide]){
-        const sx=x+Math.cos(yaw)*side*offset+Math.sin(yaw)*along,sz=z-Math.sin(yaw)*side*offset+Math.cos(yaw)*along;
-        sites.push({x:sx,z:sz,side,offset,along,clearance:settlementFootprintClearance(plan,sx,sz,1.45)});
-      }
-      const admissible=sites.filter(s=>s.clearance>=.15).sort((a,b)=>Math.abs(a.along)-Math.abs(b.along)||a.offset-b.offset||(a.side===preferredSide?-1:1)-(b.side===preferredSide?-1:1)||b.clearance-a.clearance);
-      const site=admissible[0]||sites.sort((a,b)=>b.clearance-a.clearance||Math.abs(a.along)-Math.abs(b.along)||a.offset-b.offset)[0];
-      const side=site.side,ox=site.x,oz=site.z;
-      const oy=Number.isFinite(groundY(ox,oz))?groundY(ox,oz):y;
+      // The site search that decides where the bay's furniture stands — and therefore where the
+      // vendor awning and the rack beam hang — lives in `publicRealmLayout()` so that the collider
+      // and the mesh cannot end up in different places. Read it; do not recompute it.
+      const occ=bay.occupation;
+      const role=occ.role,site=occ.site;
+      const side=occ.side,ox=occ.ox,oz=occ.oz,oy=occ.oy;
       // Give each occupied bay a founded work mat. It prevents carts, racks and goods from
       // reading as scattered primitives on an otherwise untouched terrain sheet.
       if(wetTown){
@@ -2932,20 +3130,20 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
         for(let k=0;k<3;k++)add(ico(.15+(k&1)*.04,1,k===1?P.accent:P.stone),ox+Math.cos(yaw)*(k-1)*.36,oy+.57,oz-Math.sin(yaw)*(k-1)*.36,0,'approach-cart-load');
       }else if(role===2){
         // Drying/work rack: a broad readable frame with deterministic cloth strips and baskets.
-        for(const post of [-1,1])add(cyl(.065,.10,1.85,6,P.wood),ox+Math.cos(yaw)*post*.78,oy+.93,oz-Math.sin(yaw)*post*.78,0,'approach-rack-post');
-        add(box(1.82,.10,.10,P.wood),ox,oy+1.74,oz,yaw+Math.PI*.5,'approach-rack-beam');
+        for(const post of [-1,1])add(cyl(.065,.10,REALM_H.rack_post,6,P.wood),ox+Math.cos(yaw)*post*.78,oy+REALM_H.rack_post_centre,oz-Math.sin(yaw)*post*.78,0,'approach-rack-post');
+        add(box(1.82,.10,.10,P.wood),ox,oy+REALM_H.rack_beam,oz,yaw+Math.PI*.5,'approach-rack-beam');
         for(let k=-1;k<=1;k++){
           const textile=box(.38,.76,.045,(k&1)?P.accent:P.cloth);textile.rotation.z=k*.055;
-          add(textile,ox+Math.cos(yaw)*k*.49,oy+1.28,oz-Math.sin(yaw)*k*.49,yaw,'approach-rack-textile');
+          add(textile,ox+Math.cos(yaw)*k*.49,oy+REALM_H.rack_textile_centre,oz-Math.sin(yaw)*k*.49,yaw,'approach-rack-textile');
         }
         for(const k of [-1,1])add(cyl(.24,.31,.28,8,P.wood),ox+Math.cos(yaw)*k*.58+Math.sin(yaw)*.52,oy+.18,oz-Math.sin(yaw)*k*.58+Math.cos(yaw)*.52,yaw,'approach-rack-basket');
       }else{
         // Compact vendor bay: counter and canopy make one foreground focal rather than another
         // lonely signpost, with wares deliberately above the ground plane.
         add(box(1.95,.20,.72,P.wood),ox,oy+.74,oz,yaw,'approach-vendor-counter');
-        for(const post of [-1,1])add(cyl(.065,.10,1.92,6,P.wood),ox+Math.cos(yaw)*post*.82,oy+.96,oz-Math.sin(yaw)*post*.82,0,'approach-vendor-post');
+        for(const post of [-1,1])add(cyl(.065,.10,REALM_H.vendor_post,6,P.wood),ox+Math.cos(yaw)*post*.82,oy+REALM_H.vendor_post_centre,oz-Math.sin(yaw)*post*.82,0,'approach-vendor-post');
         const awning=box(2.28,.10,1.30,P.cloth);awning.rotation.z=side*.055;
-        add(awning,ox,oy+1.93,oz,yaw,'approach-vendor-awning');
+        add(awning,ox,oy+REALM_H.vendor_awning,oz,yaw,'approach-vendor-awning');
         for(let k=0;k<4;k++)add(ico(.14+(k&1)*.04,1,k&1?P.accent:P.stone),ox+Math.cos(yaw)*(k-1.5)*.38,oy+.94,oz-Math.sin(yaw)*(k-1.5)*.38,0,'approach-vendor-wares');
       }
       occupationSites.push({bay:i,role:['marker','handcart','drying-rack','vendor'][role],x:+ox.toFixed(3),z:+oz.toFixed(3),side,offset:site.offset,along:site.along,clearance:+site.clearance.toFixed(3)});
@@ -2974,14 +3172,20 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
       }
     }
   }
-  const featureCount=Math.min(8,Math.max(4,Math.round(plan.buildings.length/5)));
+  const featureCount=layout.features.length;
   for(let i=0;i<featureCount;i++){
-    const a=i/featureCount*Math.PI*2+(hashStr(plan.id)%17)*.03,r=courtR+2.0+(i%2)*1.4,x=centreX+Math.sin(a)*r,z=centreZ+Math.cos(a)*r,y=Number.isFinite(groundY(x,z))?groundY(x,z):cy;
+    // Same reason as the bays: `market-awning` is the piece that buried the camera, so its centre
+    // is authored once, in `publicRealmLayout()`, and read by both consumers.
+    const {a,x,y,z}=layout.features[i];
     if(i%4===0){
-      // roofed work/market bay with two structural uprights and a visibly occupied counter
+      // roofed work/market bay with two structural uprights and a visibly occupied counter.
+      // G1: the awning and its uprights hang at `REALM_H`, which is derived from RI-CAM01 §A's
+      // boom sweep rather than chosen by eye. At the old 2.15 m the canopy sat INSIDE the swept
+      // volume of a level camera boom — which is how a player walking the Lilmoth market ended up
+      // buried under one for 26 frames with every camera telemetry field reading healthy.
       add(box(2.4,.18,1.1,P.wood),x,y+.82,z,a,'market-counter');
-      for(const s of [-1,1])add(cyl(.08,.12,2.1,7,P.wood),x+Math.cos(a)*s*.95,y+1.05,z-Math.sin(a)*s*.95,a,'market-support');
-      const awning=box(2.7,.12,1.8,P.cloth);awning.rotation.z=(i&1)?.08:-.08;add(awning,x,y+2.15,z,a,'market-awning');
+      for(const s of [-1,1])add(cyl(.08,.12,REALM_H.market_support,7,P.wood),x+Math.cos(a)*s*.95,y+REALM_H.market_support_centre,z-Math.sin(a)*s*.95,a,'market-support');
+      const awning=box(2.7,.12,1.8,P.cloth);awning.rotation.z=(i&1)?.08:-.08;add(awning,x,y+REALM_H.market_awning,z,a,'market-awning');
       for(let k=0;k<4;k++){const wa=ico(.16+(k%2)*.05,1,k%2?P.accent:P.stone);add(wa,x+Math.cos(a)*(k-1.5)*.42,y+1.04,z-Math.sin(a)*(k-1.5)*.42,a,'market-goods');}
     }else if(i%4===1){
       add(box(2.2,.18,.52,P.wood),x,y+.48,z,a,'bench');
@@ -3040,11 +3244,26 @@ export function structureCollisionLocal(b) {
 
 /**
  * The collision shapes for every building within `radius` of (x, z).
+ *
+ * G1: ALSO the public realm's overhead canopies. Until 2026-08-15 this function returned buildings
+ * and nothing else, while `buildSettlementExterior()` drew a whole street of market bays, vendor
+ * bays and drying racks that no collider knew about. That absence is what
+ * `orchestration/status/G1-THE-REAL-OCCLUDER-IS-ARCHITECTURE.json` found: it defeats the spring arm
+ * (`armHit` cannot be true for a thing outside the set), the §D `clip_through` test (defined
+ * against this same set) and the occluder fade (canopy-instances only) simultaneously. The canopies
+ * come from `publicRealmLayout()`, the one place their transforms are authored, so the collider and
+ * the mesh move together.
+ *
  * @returns {Array} `game/src/sim/collision.js` shape specs
  */
 export function settlementSolids(plan, x, z, radius, groundY) {
   const shapes = [];
   const R2 = radius * radius;
+  for (const c of publicRealmLayout(plan, groundY).canopies) {
+    const dx = c.c[0] - x, dz = c.c[2] - z;
+    if (dx * dx + dz * dz > R2) continue;
+    shapes.push({ k: 'box', c: c.c, h: c.h, yaw_deg: c.yaw_deg, id: c.id });
+  }
   for (const b of plan.buildings) {
     const dx = b.x - x, dz = b.z - z;
     if (dx * dx + dz * dz > R2) continue;
@@ -3131,7 +3350,10 @@ export function horizontalClearance(shapes, x, z) {
     // two dimensions; projecting that elevated volume as well would turn every point beneath a
     // roof's x/z footprint into a fictitious ground collision. The stable id is authored at the
     // volume's creation site and excludes only that explicitly overhead-only primitive.
-    if (String(s.id || '').endsWith(':roof-camera-solid')) continue;
+    // G1 generalised the suffix from `:roof-camera-solid` to the whole `-camera-solid` family so
+    // that the public realm's canopies are excluded by the same rule for the same reason, rather
+    // than by a second list somewhere else that can fall out of step with this one.
+    if (/-camera-solid$/.test(String(s.id || ''))) continue;
     const yaw = (s.yaw_deg || 0) * Math.PI / 180;
     const cy = Math.cos(yaw), sy = Math.sin(yaw);
     const rx = x - s.c[0], rz = z - s.c[2];

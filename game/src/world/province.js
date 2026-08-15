@@ -1750,7 +1750,12 @@ export class Province {
   settlementSolidsNear(x, z, radius = 45) {
     const p = this.settlementAt(x, z);
     if (!p) return null;
-    return { id: p.id, shapes: settlementSolids(p, x, z, radius, (bx, bz) => this._meshY(bx, bz)) };
+    // ONE bound function, not a fresh closure per call. `settlementSolids()` now derives the public
+    // realm's canopy colliders through `publicRealmLayout()`, which is memoised on
+    // `(plan, groundY-identity)`. A new arrow function here would miss that cache on every rebuild
+    // and put a measured 19 ms back on the frame the player crosses 8 m of town.
+    this._solidsGroundY = this._solidsGroundY || ((bx, bz) => this._meshY(bx, bz));
+    return { id: p.id, shapes: settlementSolids(p, x, z, radius, this._solidsGroundY) };
   }
 
   /** Which building's footprint this world point is inside, across every town. Audit only. */

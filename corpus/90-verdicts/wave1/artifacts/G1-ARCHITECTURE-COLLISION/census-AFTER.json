@@ -1,0 +1,1616 @@
+{
+ "schema": "elder-souls/architecture-collision-census@1",
+ "when": "2026-08-15T14:39:43.148Z",
+ "definition": {
+  "overhead_min_underside_y_m": 1.3,
+  "overhead_min_footprint_area_m2": 0.35,
+  "covered": "world AABB centre inside one settlementSolids() oriented box",
+  "ground": "groundY = () => 0 for both derivations",
+  "graph": "logical (non-batched) settlement graph"
+ },
+ "totals": {
+  "settlements": 8,
+  "drawn_meshes": 58873,
+  "drawn_absent_from_collision": 26501,
+  "reachable_overhead_meshes": 5178,
+  "reachable_overhead_absent": 1164,
+  "reachable_overhead_coverage_frac": 0.7752
+ },
+ "canopy_gate": {
+  "heights": {
+   "market_awning": 2.6,
+   "market_support": 2.66,
+   "market_support_centre": 1.33,
+   "vendor_awning": 2.55,
+   "vendor_post": 2.6,
+   "vendor_post_centre": 1.3,
+   "rack_beam": 2.5,
+   "rack_post": 2.56,
+   "rack_post_centre": 1.28,
+   "rack_textile_centre": 2.04,
+   "clearance_m": 2.4
+  },
+  "canopies_below_boom": [],
+  "result": "GREEN"
+ },
+ "perSettlement": [
+  {
+   "id": "archon",
+   "draw_hash": 1071066950,
+   "canopies": 4,
+   "canopies_below_boom": 0,
+   "min_canopy_clearance_m": 2.4321,
+   "plan_buildings": 22,
+   "collision_shapes": 101,
+   "camera_solids": 20,
+   "canopy_camera_solids": 4,
+   "drawn_meshes": 5720,
+   "drawn_absent_from_collision": 3125,
+   "overhead_meshes": 826,
+   "reachable_overhead_meshes": 287,
+   "reachable_overhead_absent": 64,
+   "reachable_overhead_absent_by_family": {
+    "building-grammar": 19,
+    "building-shell": 45
+   },
+   "reachable_overhead_absent_by_label": {
+    "roof": 16,
+    "arc_naga_lintel": 10,
+    "arc_guild_office": 8,
+    "archon-apothecary": 4,
+    "archon-guild-office": 3,
+    "arc_kiln_stack": 3,
+    "archon-kiln-house": 3,
+    "arc_clay_dome": 2,
+    "shellwall": 2,
+    "archon-ward": 2,
+    "archon-shrine": 2,
+    "archon-house-1": 2,
+    "archon-house-2": 2,
+    "arc_dye_vat": 1,
+    "archon-inn": 1,
+    "archon-rootpost": 1,
+    "archon-house-0": 1,
+    "archon-old-kiln": 1
+   },
+   "worst_examples": [
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      3796.56,
+      4.78,
+      3858.78
+     ],
+     "minY": 4.7,
+     "maxY": 4.86,
+     "area": 88.3,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      3808.95,
+      7.38,
+      3858.52
+     ],
+     "minY": 7.3,
+     "maxY": 7.46,
+     "area": 47.32,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      3768.22,
+      4.18,
+      3855.49
+     ],
+     "minY": 4.1,
+     "maxY": 4.26,
+     "area": 41.15,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:archon-ward",
+     "kit": null,
+     "label": "archon-ward",
+     "c": [
+      3808.69,
+      6.85,
+      3858.14
+     ],
+     "minY": 6.76,
+     "maxY": 6.94,
+     "area": 39.79,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      3804.47,
+      4.98,
+      3850.82
+     ],
+     "minY": 4.9,
+     "maxY": 5.06,
+     "area": 27.59,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      3814.78,
+      8.38,
+      3848.1
+     ],
+     "minY": 8.3,
+     "maxY": 8.46,
+     "area": 26.79,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:arc_clay_dome",
+     "kit": null,
+     "label": "arc_clay_dome",
+     "c": [
+      3781.19,
+      3.23,
+      3798.51
+     ],
+     "minY": 2.89,
+     "maxY": 3.57,
+     "area": 19.35,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:archon-apothecary",
+     "kit": null,
+     "label": "archon-apothecary",
+     "c": [
+      3804.92,
+      4.45,
+      3850.36
+     ],
+     "minY": 4.36,
+     "maxY": 4.54,
+     "area": 19.28,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    }
+   ]
+  },
+  {
+   "id": "blackrose",
+   "draw_hash": -2133891295,
+   "canopies": 4,
+   "canopies_below_boom": 0,
+   "min_canopy_clearance_m": 2.4321,
+   "plan_buildings": 22,
+   "collision_shapes": 102,
+   "camera_solids": 20,
+   "canopy_camera_solids": 4,
+   "drawn_meshes": 6363,
+   "drawn_absent_from_collision": 3416,
+   "overhead_meshes": 869,
+   "reachable_overhead_meshes": 415,
+   "reachable_overhead_absent": 138,
+   "reachable_overhead_absent_by_family": {
+    "building-shell": 124,
+    "building-grammar": 14
+   },
+   "reachable_overhead_absent_by_label": {
+    "roof": 52,
+    "bla_furred_parapet": 23,
+    "bla_fortress_wall": 11,
+    "bla_gallows_frame": 9,
+    "bla_corridor_gate": 7,
+    "bla_visitor_shed": 6,
+    "shellwall": 5,
+    "bla_warder_house": 5,
+    "blackrose-prison": 4,
+    "blackrose-clerk": 4,
+    "blackrose-warders-hall": 3,
+    "blackrose-smithy": 2,
+    "blackrose-shrine": 2,
+    "blackrose-house-1": 2,
+    "blackrose-pawn": 1,
+    "bla_prison_block": 1,
+    "blackrose-house-2": 1
+   },
+   "worst_examples": [
+    {
+     "name": "(unnamed)",
+     "group": "kit:bla_warder_house",
+     "kit": null,
+     "label": "bla_warder_house",
+     "c": [
+      1869.3,
+      6.75,
+      4459.4
+     ],
+     "minY": 6.44,
+     "maxY": 7.06,
+     "area": 31.09,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:bla_visitor_shed",
+     "kit": null,
+     "label": "bla_visitor_shed",
+     "c": [
+      1891.22,
+      3.72,
+      4445.6
+     ],
+     "minY": 3.1,
+     "maxY": 4.35,
+     "area": 23.45,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:bla_visitor_shed",
+     "kit": null,
+     "label": "bla_visitor_shed",
+     "c": [
+      1894.78,
+      3.72,
+      4454.4
+     ],
+     "minY": 3.1,
+     "maxY": 4.35,
+     "area": 21.72,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:bla_warder_house",
+     "kit": null,
+     "label": "bla_warder_house",
+     "c": [
+      1914.5,
+      4.35,
+      4439.25
+     ],
+     "minY": 4.15,
+     "maxY": 4.55,
+     "area": 13.96,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:bla_visitor_shed",
+     "kit": null,
+     "label": "bla_visitor_shed",
+     "c": [
+      1911.9,
+      2.4,
+      4460.9
+     ],
+     "minY": 2,
+     "maxY": 2.8,
+     "area": 9.03,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:bla_warder_house",
+     "kit": null,
+     "label": "bla_warder_house",
+     "c": [
+      1880.31,
+      3.04,
+      4442.3
+     ],
+     "minY": 2.9,
+     "maxY": 3.19,
+     "area": 6.84,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:bla_warder_house",
+     "kit": null,
+     "label": "bla_warder_house",
+     "c": [
+      1880.3,
+      3.04,
+      4452.75
+     ],
+     "minY": 2.9,
+     "maxY": 3.19,
+     "area": 6.59,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:bla_warder_house",
+     "kit": null,
+     "label": "bla_warder_house",
+     "c": [
+      1894.69,
+      3.04,
+      4449.51
+     ],
+     "minY": 2.9,
+     "maxY": 3.19,
+     "area": 6.59,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    }
+   ]
+  },
+  {
+   "id": "gideon",
+   "draw_hash": -1936782935,
+   "canopies": 4,
+   "canopies_below_boom": 0,
+   "min_canopy_clearance_m": 2.4321,
+   "plan_buildings": 22,
+   "collision_shapes": 102,
+   "camera_solids": 20,
+   "canopy_camera_solids": 4,
+   "drawn_meshes": 7701,
+   "drawn_absent_from_collision": 3642,
+   "overhead_meshes": 1120,
+   "reachable_overhead_meshes": 489,
+   "reachable_overhead_absent": 114,
+   "reachable_overhead_absent_by_family": {
+    "building-grammar": 19,
+    "building-shell": 95
+   },
+   "reachable_overhead_absent_by_label": {
+    "roof": 42,
+    "gid_square_arcade": 17,
+    "gid_tile_roof": 12,
+    "gid_timber_frame": 8,
+    "gid_toll_house": 6,
+    "gideon-inn": 5,
+    "gideon-tollhouse": 4,
+    "gid_grain_barn": 4,
+    "gideon-grange": 3,
+    "gideon-court": 2,
+    "gideon-lowmarket": 2,
+    "gid_market_cross": 2,
+    "gid_chapel_porch": 2,
+    "shellwall": 1,
+    "gideon-smithy": 1,
+    "gideon-apothecary": 1,
+    "gideon-rootpost": 1,
+    "gideon-house-1": 1
+   },
+   "worst_examples": [
+    {
+     "name": "(unnamed)",
+     "group": "kit:gid_grain_barn",
+     "kit": null,
+     "label": "gid_grain_barn",
+     "c": [
+      457.92,
+      6.29,
+      2909.76
+     ],
+     "minY": 5,
+     "maxY": 7.59,
+     "area": 29.61,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:gid_grain_barn",
+     "kit": null,
+     "label": "gid_grain_barn",
+     "c": [
+      422.2,
+      5.74,
+      2887.08
+     ],
+     "minY": 4.56,
+     "maxY": 6.92,
+     "area": 27.43,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:gid_toll_house",
+     "kit": null,
+     "label": "gid_toll_house",
+     "c": [
+      476.43,
+      5.12,
+      2911.21
+     ],
+     "minY": 4.28,
+     "maxY": 5.96,
+     "area": 16.34,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:gid_toll_house",
+     "kit": null,
+     "label": "gid_toll_house",
+     "c": [
+      412.42,
+      5.12,
+      2914.79
+     ],
+     "minY": 4.28,
+     "maxY": 5.96,
+     "area": 15.63,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:gid_toll_house",
+     "kit": null,
+     "label": "gid_toll_house",
+     "c": [
+      401.42,
+      5.12,
+      2914.79
+     ],
+     "minY": 4.28,
+     "maxY": 5.96,
+     "area": 15.63,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:gid_toll_house",
+     "kit": null,
+     "label": "gid_toll_house",
+     "c": [
+      455.29,
+      5.12,
+      2882.97
+     ],
+     "minY": 4.28,
+     "maxY": 5.96,
+     "area": 14.91,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:gid_grain_barn",
+     "kit": null,
+     "label": "gid_grain_barn",
+     "c": [
+      442.23,
+      4.21,
+      2898.77
+     ],
+     "minY": 3.34,
+     "maxY": 5.08,
+     "area": 13.24,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:gid_grain_barn",
+     "kit": null,
+     "label": "gid_grain_barn",
+     "c": [
+      440.18,
+      4.21,
+      2898.77
+     ],
+     "minY": 3.34,
+     "maxY": 5.08,
+     "area": 13.24,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    }
+   ]
+  },
+  {
+   "id": "helstrom",
+   "draw_hash": 1239009097,
+   "canopies": 5,
+   "canopies_below_boom": 0,
+   "min_canopy_clearance_m": 2.4321,
+   "plan_buildings": 40,
+   "collision_shapes": 195,
+   "camera_solids": 37,
+   "canopy_camera_solids": 5,
+   "drawn_meshes": 10871,
+   "drawn_absent_from_collision": 3894,
+   "overhead_meshes": 2343,
+   "reachable_overhead_meshes": 1685,
+   "reachable_overhead_absent": 253,
+   "reachable_overhead_absent_by_family": {
+    "building-shell": 168,
+    "building-grammar": 85
+   },
+   "reachable_overhead_absent_by_label": {
+    "hel_egg_terrace": 54,
+    "hel_lashed_stair": 24,
+    "hel_bole_arch": 19,
+    "hel_shell_roof": 19,
+    "helstrom-inn-tide": 13,
+    "shellwall": 12,
+    "hel_rootgate": 9,
+    "helstrom-archive": 9,
+    "helstrom-warders": 8,
+    "hel_hollow_bole": 7,
+    "helstrom-hollow-bole": 5,
+    "hel_sap_gutter": 5,
+    "helstrom-hist-shrine": 5,
+    "helstrom-legation": 5,
+    "hel_root_pillar": 5,
+    "helstrom-apothecary": 5,
+    "helstrom-house-0": 5,
+    "helstrom-house-3": 5,
+    "helstrom-rootpost": 4,
+    "helstrom-deep-market": 4,
+    "helstrom-house-1": 4,
+    "helstrom-undertemple": 3,
+    "helstrom-inn-gate": 3,
+    "helstrom-inn-egg": 3,
+    "helstrom-house-7": 3,
+    "helstrom-house-2": 2,
+    "helstrom-house-4": 2,
+    "helstrom-house-5": 2,
+    "helstrom-house-8": 2,
+    "helstrom-house-11": 2,
+    "helstrom-smithy": 1,
+    "helstrom-scriptorium": 1,
+    "helstrom-house-9": 1,
+    "helstrom-quarantine": 1,
+    "helstrom-old-gate": 1
+   },
+   "worst_examples": [
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:helstrom-house-1",
+     "kit": null,
+     "label": "helstrom-house-1",
+     "c": [
+      2215.47,
+      3.85,
+      2820.24
+     ],
+     "minY": 3.76,
+     "maxY": 3.94,
+     "area": 109.92,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:helstrom-house-2",
+     "kit": null,
+     "label": "helstrom-house-2",
+     "c": [
+      2251.66,
+      3.85,
+      2789.21
+     ],
+     "minY": 3.76,
+     "maxY": 3.94,
+     "area": 106.75,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:helstrom-house-9",
+     "kit": null,
+     "label": "helstrom-house-9",
+     "c": [
+      2203.51,
+      3.85,
+      2743.21
+     ],
+     "minY": 3.76,
+     "maxY": 3.94,
+     "area": 102.23,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:hel_hollow_bole",
+     "kit": null,
+     "label": "hel_hollow_bole",
+     "c": [
+      2202.91,
+      9.15,
+      2817.85
+     ],
+     "minY": 7.37,
+     "maxY": 10.94,
+     "area": 101.2,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:hel_hollow_bole",
+     "kit": null,
+     "label": "hel_hollow_bole",
+     "c": [
+      2243.34,
+      9.15,
+      2755.29
+     ],
+     "minY": 7.37,
+     "maxY": 10.94,
+     "area": 97.93,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:helstrom-house-8",
+     "kit": null,
+     "label": "helstrom-house-8",
+     "c": [
+      2213.49,
+      3.85,
+      2761.39
+     ],
+     "minY": 3.76,
+     "maxY": 3.94,
+     "area": 91.44,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:helstrom-house-3",
+     "kit": null,
+     "label": "helstrom-house-3",
+     "c": [
+      2234.4,
+      3.85,
+      2793.67
+     ],
+     "minY": 3.76,
+     "maxY": 3.94,
+     "area": 86.97,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:helstrom-legation",
+     "kit": null,
+     "label": "helstrom-legation",
+     "c": [
+      2314.97,
+      5.45,
+      2813.95
+     ],
+     "minY": 5.36,
+     "maxY": 5.54,
+     "area": 86.52,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    }
+   ]
+  },
+  {
+   "id": "lilmoth",
+   "draw_hash": -1563090780,
+   "canopies": 5,
+   "canopies_below_boom": 0,
+   "min_canopy_clearance_m": 2.4321,
+   "plan_buildings": 33,
+   "collision_shapes": 145,
+   "camera_solids": 28,
+   "canopy_camera_solids": 5,
+   "drawn_meshes": 9714,
+   "drawn_absent_from_collision": 4115,
+   "overhead_meshes": 1509,
+   "reachable_overhead_meshes": 452,
+   "reachable_overhead_absent": 151,
+   "reachable_overhead_absent_by_family": {
+    "building-shell": 84,
+    "building-grammar": 67
+   },
+   "reachable_overhead_absent_by_label": {
+    "roof": 19,
+    "lil_wet_arcade": 19,
+    "lilmoth-house-4": 16,
+    "lilmoth-healer": 14,
+    "lil_tide_mark": 10,
+    "lilmoth-inn-stilt": 9,
+    "lil_sunk_facade": 8,
+    "lilmoth-house-0": 8,
+    "lilmoth-yard": 6,
+    "lil_stilt_platform": 5,
+    "lilmoth-apothecary": 5,
+    "lil_salvage_stair": 5,
+    "lil_pile_cluster": 4,
+    "lil_reed_shack": 4,
+    "lil_boom_chain": 3,
+    "lilmoth-pawn": 3,
+    "lilmoth-inn-drowned": 2,
+    "lil_customs_hall": 2,
+    "lilmoth-sugar-cellar": 2,
+    "lilmoth-market": 1,
+    "lilmoth-smithy": 1,
+    "lilmoth-scribe": 1,
+    "lilmoth-shrine": 1,
+    "lilmoth-house-2": 1,
+    "lil_drowned_window": 1,
+    "lilmoth-boom-house": 1
+   },
+   "worst_examples": [
+    {
+     "name": "(unnamed)",
+     "group": "kit:lil_customs_hall",
+     "kit": null,
+     "label": "lil_customs_hall",
+     "c": [
+      2757.54,
+      4.33,
+      5054.87
+     ],
+     "minY": 3.76,
+     "maxY": 4.9,
+     "area": 34.41,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:lil_pile_cluster",
+     "kit": null,
+     "label": "lil_pile_cluster",
+     "c": [
+      2716.49,
+      2.72,
+      5028.07
+     ],
+     "minY": 2.6,
+     "maxY": 2.84,
+     "area": 18.21,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:lil_customs_hall",
+     "kit": null,
+     "label": "lil_customs_hall",
+     "c": [
+      2736.43,
+      2.06,
+      5024.25
+     ],
+     "minY": 1.69,
+     "maxY": 2.44,
+     "area": 15.16,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:lil_wet_arcade",
+     "kit": null,
+     "label": "lil_wet_arcade",
+     "c": [
+      2737.76,
+      5.34,
+      5045.81
+     ],
+     "minY": 5.3,
+     "maxY": 5.38,
+     "area": 14.2,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:lil_wet_arcade",
+     "kit": null,
+     "label": "lil_wet_arcade",
+     "c": [
+      2737.76,
+      8.52,
+      5045.81
+     ],
+     "minY": 8.32,
+     "maxY": 8.72,
+     "area": 13.05,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:lil_wet_arcade",
+     "kit": null,
+     "label": "lil_wet_arcade",
+     "c": [
+      2789.66,
+      5.26,
+      5064.02
+     ],
+     "minY": 5.22,
+     "maxY": 5.29,
+     "area": 11.06,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:lil_pile_cluster",
+     "kit": null,
+     "label": "lil_pile_cluster",
+     "c": [
+      2792.57,
+      8.54,
+      5059.31
+     ],
+     "minY": 8.44,
+     "maxY": 8.63,
+     "area": 10.38,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:lil_wet_arcade",
+     "kit": null,
+     "label": "lil_wet_arcade",
+     "c": [
+      2789.66,
+      8.06,
+      5064.02
+     ],
+     "minY": 7.88,
+     "maxY": 8.24,
+     "area": 10.17,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    }
+   ]
+  },
+  {
+   "id": "soulrest",
+   "draw_hash": 225048113,
+   "canopies": 4,
+   "canopies_below_boom": 0,
+   "min_canopy_clearance_m": 2.4321,
+   "plan_buildings": 15,
+   "collision_shapes": 63,
+   "camera_solids": 14,
+   "canopy_camera_solids": 4,
+   "drawn_meshes": 3737,
+   "drawn_absent_from_collision": 1773,
+   "overhead_meshes": 652,
+   "reachable_overhead_meshes": 216,
+   "reachable_overhead_absent": 44,
+   "reachable_overhead_absent_by_family": {
+    "building-grammar": 11,
+    "building-shell": 33
+   },
+   "reachable_overhead_absent_by_label": {
+    "sou_drowned_court_step": 16,
+    "sou_salt_block": 6,
+    "soulrest-quay": 4,
+    "sou_rib_frame": 3,
+    "roof": 3,
+    "soulrest-boneyard": 3,
+    "shellwall": 2,
+    "soulrest-market": 2,
+    "soulrest-pawn": 2,
+    "soulrest-grey-hist": 1,
+    "soulrest-smithy": 1,
+    "soulrest-salt-house": 1
+   },
+   "worst_examples": [
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:soulrest-boneyard",
+     "kit": null,
+     "label": "soulrest-boneyard",
+     "c": [
+      593.93,
+      4.45,
+      4879.72
+     ],
+     "minY": 4.36,
+     "maxY": 4.54,
+     "area": 143.69,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:soulrest-market",
+     "kit": null,
+     "label": "soulrest-market",
+     "c": [
+      626.25,
+      4.45,
+      4894.49
+     ],
+     "minY": 4.36,
+     "maxY": 4.54,
+     "area": 117.49,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:soulrest-quay",
+     "kit": null,
+     "label": "soulrest-quay",
+     "c": [
+      595.23,
+      4.25,
+      4903.44
+     ],
+     "minY": 4.16,
+     "maxY": 4.34,
+     "area": 102.82,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      620.08,
+      4.98,
+      4906.48
+     ],
+     "minY": 4.9,
+     "maxY": 5.06,
+     "area": 78.87,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:soulrest-smithy",
+     "kit": null,
+     "label": "soulrest-smithy",
+     "c": [
+      619.94,
+      4.45,
+      4906.04
+     ],
+     "minY": 4.36,
+     "maxY": 4.54,
+     "area": 71.05,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      609.88,
+      4.98,
+      4882.9
+     ],
+     "minY": 4.9,
+     "maxY": 5.06,
+     "area": 30.6,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      607.98,
+      4.98,
+      4900.94
+     ],
+     "minY": 4.9,
+     "maxY": 5.06,
+     "area": 30.6,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:sou_drowned_court_step",
+     "kit": null,
+     "label": "sou_drowned_court_step",
+     "c": [
+      613.7,
+      2.2,
+      4874.66
+     ],
+     "minY": 1.89,
+     "maxY": 2.52,
+     "area": 30.22,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    }
+   ]
+  },
+  {
+   "id": "stormhold",
+   "draw_hash": 947534405,
+   "canopies": 5,
+   "canopies_below_boom": 0,
+   "min_canopy_clearance_m": 2.4321,
+   "plan_buildings": 33,
+   "collision_shapes": 146,
+   "camera_solids": 28,
+   "canopy_camera_solids": 5,
+   "drawn_meshes": 9835,
+   "drawn_absent_from_collision": 4619,
+   "overhead_meshes": 1851,
+   "reachable_overhead_meshes": 1290,
+   "reachable_overhead_absent": 343,
+   "reachable_overhead_absent_by_family": {
+    "building-grammar": 45,
+    "building-shell": 298
+   },
+   "reachable_overhead_absent_by_label": {
+    "sto_legion_block": 93,
+    "roof": 84,
+    "sto_bloom_course": 56,
+    "sto_watch_tower": 18,
+    "stormhold-praetorium": 11,
+    "sto_grid_barrack": 11,
+    "stormhold-inn-lean": 11,
+    "sto_pass_gate": 9,
+    "shellwall": 8,
+    "sto_salt_kiln": 8,
+    "stormhold-scribe": 4,
+    "stormhold-archive": 3,
+    "stormhold-customs": 3,
+    "sto_customs_shed": 3,
+    "stormhold-inn-pass": 3,
+    "stormhold-chapel": 3,
+    "stormhold-rootpost": 2,
+    "stormhold-gaol": 2,
+    "stormhold-kiln": 2,
+    "stormhold-house-1": 2,
+    "stormhold-market": 1,
+    "stormhold-smithy": 1,
+    "stormhold-shrine": 1,
+    "stormhold-house-0": 1,
+    "stormhold-house-2": 1,
+    "stormhold-house-3": 1,
+    "stormhold-house-4": 1
+   },
+   "worst_examples": [
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      2139.93,
+      4.38,
+      795.27
+     ],
+     "minY": 4.3,
+     "maxY": 4.46,
+     "area": 141.55,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      2130.75,
+      4.38,
+      783.61
+     ],
+     "minY": 4.3,
+     "maxY": 4.46,
+     "area": 141.55,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:stormhold-house-0",
+     "kit": null,
+     "label": "stormhold-house-0",
+     "c": [
+      2139.63,
+      3.85,
+      794.89
+     ],
+     "minY": 3.76,
+     "maxY": 3.94,
+     "area": 127.18,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      2213.98,
+      4.98,
+      779.98
+     ],
+     "minY": 4.9,
+     "maxY": 5.06,
+     "area": 119.78,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      2206.42,
+      4.98,
+      791.76
+     ],
+     "minY": 4.9,
+     "maxY": 5.06,
+     "area": 119.78,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      2203.63,
+      4.98,
+      794.58
+     ],
+     "minY": 4.9,
+     "maxY": 5.06,
+     "area": 115.38,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      2192.73,
+      4.98,
+      802.36
+     ],
+     "minY": 4.9,
+     "maxY": 5.06,
+     "area": 115.38,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      2128.72,
+      4.38,
+      794.65
+     ],
+     "minY": 4.3,
+     "maxY": 4.46,
+     "area": 110.31,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    }
+   ]
+  },
+  {
+   "id": "thorn",
+   "draw_hash": 2010813501,
+   "canopies": 5,
+   "canopies_below_boom": 0,
+   "min_canopy_clearance_m": 2.4321,
+   "plan_buildings": 24,
+   "collision_shapes": 90,
+   "camera_solids": 18,
+   "canopy_camera_solids": 5,
+   "drawn_meshes": 4932,
+   "drawn_absent_from_collision": 1917,
+   "overhead_meshes": 854,
+   "reachable_overhead_meshes": 344,
+   "reachable_overhead_absent": 57,
+   "reachable_overhead_absent_by_family": {
+    "building-shell": 43,
+    "building-grammar": 14
+   },
+   "reachable_overhead_absent_by_label": {
+    "roof": 13,
+    "tho_moored_barge": 11,
+    "tho_charter_post": 6,
+    "shellwall": 3,
+    "thorn-sapwell": 3,
+    "thorn-gate": 3,
+    "writ-house": 3,
+    "thorn-inn": 2,
+    "thorn-trader": 2,
+    "tho_boom_chain": 2,
+    "thorn-rootpost": 2,
+    "tho_bow_rack": 2,
+    "tho_lean_to": 1,
+    "tho_stilt_house": 1,
+    "thorn-apothecary": 1,
+    "tho_pile_cluster": 1,
+    "barge-hold": 1
+   },
+   "worst_examples": [
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      3837.27,
+      4.98,
+      876.15
+     ],
+     "minY": 4.9,
+     "maxY": 5.06,
+     "area": 129.44,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:thorn-trader",
+     "kit": null,
+     "label": "thorn-trader",
+     "c": [
+      3837.45,
+      4.45,
+      875.77
+     ],
+     "minY": 4.36,
+     "maxY": 4.54,
+     "area": 118.87,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:thorn-apothecary",
+     "kit": null,
+     "label": "thorn-apothecary",
+     "c": [
+      3831.46,
+      4.45,
+      873.37
+     ],
+     "minY": 4.36,
+     "maxY": 4.54,
+     "area": 115.28,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      3848.79,
+      4.98,
+      872.86
+     ],
+     "minY": 4.9,
+     "maxY": 5.06,
+     "area": 102.56,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:thorn-sapwell",
+     "kit": null,
+     "label": "thorn-sapwell",
+     "c": [
+      3825.43,
+      4.65,
+      882.76
+     ],
+     "minY": 4.56,
+     "maxY": 4.74,
+     "area": 53.63,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit-elevations:thorn-rootpost",
+     "kit": null,
+     "label": "thorn-rootpost",
+     "c": [
+      3812.97,
+      4.25,
+      889.74
+     ],
+     "minY": 4.16,
+     "maxY": 4.34,
+     "area": 53.63,
+     "covered": false,
+     "overhead": true,
+     "family": "building-grammar",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "roof",
+     "kit": null,
+     "label": "roof",
+     "c": [
+      3831.79,
+      6.61,
+      873.78
+     ],
+     "minY": 4.98,
+     "maxY": 8.25,
+     "area": 51.58,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    },
+    {
+     "name": "(unnamed)",
+     "group": "kit:tho_moored_barge",
+     "kit": null,
+     "label": "tho_moored_barge",
+     "c": [
+      3816.62,
+      1.52,
+      893.74
+     ],
+     "minY": 1.37,
+     "maxY": 1.67,
+     "area": 51.58,
+     "covered": false,
+     "overhead": true,
+     "family": "building-shell",
+     "inside_footprint": null,
+     "reachable": true
+    }
+   ]
+  }
+ ]
+}
