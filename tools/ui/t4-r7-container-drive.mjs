@@ -224,6 +224,32 @@ try {
     await h.h('stepFrames', 3);
   }
 
+  // ---- K0: DOES A REAL KEY REACH THIS SCREEN AT ALL? ------------------------------------------
+  //
+  // The tool's own I0 note says a `?harness=1` page detaches the real listeners so every negative
+  // below would be the instrument's fault, not the build's — and then the first two runs of this
+  // file went on to report "left/right does not switch sides" and walked eight ArrowDowns without
+  // the selection moving once, on a screen whose sides switch fine under `t4-r2-critic-drive.mjs`.
+  // The note was right and nothing acted on it. So the falsification is a CHECK now, and it runs
+  // BEFORE anything that depends on a key: if K0 fails, every key-driven result below is void by
+  // construction and must be read as unmeasured rather than as a defect.
+  //
+  // `ArrowDown` and `KeyS` are the SAME binding (`game/data/input/profiles.json` `.desktop.move
+  // .back = ["KeyS","ArrowDown"]`, read this run), so both are pressed before concluding the path
+  // is dead — a single unbound code would otherwise look identical to a detached listener.
+  await h.h('setMode', 'play-instrumented');
+  const kPre = await snap();
+  await key('ArrowDown');
+  const kArrow = await snap();
+  await key('KeyS');
+  const kS = await snap();
+  const sel = (s) => (s.band && s.band.meta ? s.band.meta.item_id : null);
+  const keysReach = sel(kArrow) !== sel(kPre) || sel(kS) !== sel(kPre) || sel(kS) !== sel(kArrow);
+  report.data.k0 = { selected: [sel(kPre), sel(kArrow), sel(kS)], rows_visible: kPre.rows.length };
+  push('K0 a real DOM key event moves the container selection (arms must disagree)', keysReach,
+    `selection ${sel(kPre)} -(ArrowDown)-> ${sel(kArrow)} -(KeyS)-> ${sel(kS)}`
+    + (keysReach ? '' : ' — KEY PATH DEAD: every key-driven check below is UNMEASURED, not failed'));
+
   // ---- R2: walk with real keys to a conditioned item and check the fact block fits ------------
   let conditioned = null;
   for (let i = 0; i < 12 && !conditioned; i++) {
@@ -285,9 +311,12 @@ try {
   const mid = await snap();
   const sideOf = (s) => (s.focus && s.focus.container ? s.focus.container.side : (s.focus ? s.focus.side : null));
   report.data.sides = [sideOf(before), sideOf(mid)];
-  push('R3b left/right switches which side of the container has focus',
-    sideOf(before) !== null && sideOf(mid) !== null && sideOf(before) !== sideOf(mid),
-    `focus.side ${JSON.stringify(sideOf(before))} -> ${JSON.stringify(sideOf(mid))}`);
+  push(`R3b left/right switches which side of the container has focus${keysReach ? '' : ' [UNMEASURED — K0 failed]'}`,
+    keysReach ? (sideOf(before) !== null && sideOf(mid) !== null && sideOf(before) !== sideOf(mid)) : false,
+    keysReach
+      ? `focus.side ${JSON.stringify(sideOf(before))} -> ${JSON.stringify(sideOf(mid))}`
+      : `not run: K0 showed no key reaches this screen in this instrument, so a null result here `
+        + `says nothing about the build. Scored 0 fail-closed, not attributed.`);
 
   const nBefore = (mid.carried || []).length;
   await key('KeyE');
@@ -300,9 +329,12 @@ try {
   const sPut = await snap();
   const nPut = (sPut.carried || []).length;
   report.data.carried_counts = [nBefore, nTake, nPut];
-  push('R3c items transfer in BOTH directions through real key presses',
-    nTake === nBefore + 1 && nPut === nBefore,
-    `sim.inventory ${nBefore} -(take)-> ${nTake} -(put)-> ${nPut}`);
+  push(`R3c items transfer in BOTH directions through real key presses${keysReach ? '' : ' [UNMEASURED — K0 failed]'}`,
+    keysReach ? (nTake === nBefore + 1 && nPut === nBefore) : false,
+    keysReach
+      ? `sim.inventory ${nBefore} -(take)-> ${nTake} -(put)-> ${nPut}`
+      : `not run: K0 showed no key reaches this screen in this instrument. sim.inventory read `
+        + `${nBefore} / ${nTake} / ${nPut} and that is the instrument's silence, not the build's.`);
 
   await shoot('03-after-transfers');
 } catch (e) {
