@@ -7104,6 +7104,36 @@ export class Engine {
       // bus and does not run on a paused frame, so "did anything happen here" is a delta and
       // not a count. See `_afterStep`'s paused branch.
       this._busAtPause = this.bus.count;
+      // ---- T4 round 3: THE PAUSED FRAME IS WHERE TOUCH LOST ITS STICK -----------------------
+      //
+      // `RI-UIX10` OP3, hard fail on the touch arm: *"a screen that opens on touch and whose list
+      // cannot be walked"*. The critic measured the break rather than its cause — `pointerdown`
+      // in the left half set `touch.stick.active = true`, a `pointermove` set `stick.y = -1`, and
+      // after four fixed steps `input.moveX` and `input.moveY` were **still 0** and the focus had
+      // not moved. On a handheld you could open every screen and turn every page and walk no list
+      // on any of them, which is every screen unusable on a phone.
+      //
+      // **The cause is this branch.** `stepOnce()` opens with `if (sim.realInput)
+      // sim.realInput.tick(sim.frame)` — and `RealInput.tick()` calling `TouchInput.tick()` is
+      // THE ONLY PLACE the floating stick is pushed into the pipeline (`touch.js` `tick()`:
+      // `if (this.stick.active) … this.pipe.setMove(…)`). A finger does not emit a discrete
+      // press per frame the way a key does; it holds a position, and something has to read that
+      // position once per step. This branch returns before `stepOnce()`, so on a paused frame
+      // nothing read it. Out of combat EVERY screen pauses (`RI-UIX03` §A P1, working exactly as
+      // designed), so the stick was dead on every screen and live nowhere the screens are.
+      //
+      // Keyboard and pad were unaffected and that is why this survived two rounds: both deliver
+      // EDGES through listeners into `pendingPress`, which `latchForStep()` below picks up
+      // without any per-step poll. Only the analogue channel needs the tick, and only touch
+      // feeds the analogue channel while a screen is open.
+      //
+      // It is the same call `stepOnce()` makes, with the same argument, and it is idempotent on
+      // a frame that does not advance: `_pollHolds(frame * STEP_MS)` re-offered the same
+      // timestamp promotes nothing new, and in mode `play` both hold pollers are skipped here
+      // anyway (`RealInput.tick`'s `modeOf() !== 'play'` guard, `TouchInput.playClock`). So this
+      // does NOT disarm `RI-UIX10` trap I2 — a gated hold still cannot cross on a paused screen
+      // in a harness, because the clock is what is frozen, not the poll.
+      if (this.sim.realInput) this.sim.realInput.tick(this.sim.frame);
       this.input.latchForStep(this.sim.frame);
       if (this.sim.uiDriver) this.sim.uiDriver(this.input);
       return;
