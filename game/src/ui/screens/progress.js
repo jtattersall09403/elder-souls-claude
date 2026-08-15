@@ -17,7 +17,7 @@
 'use strict';
 
 import { C, Ca, boneRule, bonePip, shellInlay, chitinPath, idHash } from '../theme.js';
-import { screen, row, column, hint, extent, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
+import { screen, screenRect, row, column, hint, hintLines, extent, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
 import { drawText, faceOf, measure, wrap, writeLines, ellipsise } from '../type.js';
 import { glyphObject, drawObject, ATTRIBUTE_SHAPE } from '../icons.js';
 
@@ -53,7 +53,11 @@ const SCHOOL_SHAPE = {
 export function drawLevelUp(S, m) {
   const s = S.s;
   const alpha = m.inCombat ? COMBAT_ALPHA : CALM_ALPHA;
-  const sc = screen(S, 'levelup', 'The hearth', m.hearthName || null, 'bone', alpha);
+  const levelUpHint = m.souls >= m.soulsToNext
+    ? 'Confirm twice to spend. Nothing is spent until the second time.'
+    : 'Not enough souls yet. Come back.';
+  const fl = hintLines(levelUpHint, screenRect(S, 'levelup')[2] - 44 * s, s);
+  const sc = screen(S, 'levelup', 'The hearth', m.hearthName || null, 'bone', alpha, fl);
   const [ix, iy, iw, ih] = sc.inner;
 
   // ---- what it costs, in souls. There is no other currency on this screen. -----------------
@@ -99,6 +103,19 @@ export function drawLevelUp(S, m) {
   // OWN content sets: the cap-tick label 8 units below the gauge (see below) needs the row to be
   // at least ~30 units before it starts drawing into the next row.
   const rowH = 30 * s, colW = iw * 0.56;
+  // T4 round 5 (`ARBITRATION` S58 — "ink drawn over ink still counts, and it is not legible"). The
+  // round-4 layout put the value column at a FIXED FRACTION of `colW` (0.27) — a proportion that
+  // held at the old 826-unit `colW` and collided on 9 of 10 rows at the new 244-unit one, because
+  // the fraction shrank with the box but the GLYPHS did not: font sizes are fixed pixels, not a
+  // fraction of anything. So the column widths are measured from the actual longest string that
+  // will be drawn in them (`measure()`, the same metric `drawText` itself uses), not guessed from
+  // the box's own width. `PERSONALITY` is the widest name at this face/size — 71px — and every
+  // value is at most two digits (`hard_cap` is 99) — 15px — so the name column reserves 71+14 and
+  // the value column reserves 15+10, both with an explicit gap to the next column rather than an
+  // adjoining edge, so `tools/ui/t4-r5-legibility.mjs`'s separator check has margin, not a near-miss.
+  const nameColW = Math.max(...m.attributes.map((a) => measure(a.name, faceOf('bone'), 15 * s))) + 14 * s;
+  const valueColW = Math.max(...m.attributes.map((a) => measure(String(a.value), faceOf('bone'), 19 * s))) + 10 * s;
+  const nameX0 = 44 * s, valueX0 = nameX0 + nameColW, gaugeX0 = valueX0 + valueColW + 8 * s;
   m.attributes.forEach((a, i) => {
     const y = iy + 58 * s + i * rowH;
     const on = i === m.attrIdx;
@@ -108,16 +125,14 @@ export function drawLevelUp(S, m) {
       meta: { attribute: a.id, value: a.value, soft_cap: a.soft_cap, hard_cap_curve: a.hard_cap_curve },
     }, (c, r) => {
       if (on) shellInlay(c, r[0], r[1], r[2], r[3], s, idHash(a.id));
-      drawText(c, a.name, r[0] + 44 * s, r[1] + 26 * s, faceOf('bone'), 15 * s, ink());
-      // T4 round 4. The value offset (220) and the gauge's start/width (262, colW-280) were fixed
-      // units pitched against the old 826-unit colW (iw*0.56 at iw=1476). `colW` is smaller now,
-      // so all three move onto fractions of `r[2]` (== colW here) rather than literals that would
-      // put the gauge past the row's own right edge, or on top of the value, at the new width.
-      drawText(c, String(a.value), r[0] + r[2] * 0.27, r[1] + 27 * s, faceOf('bone'), 19 * s, ink());
-      // the gauge, with the soft cap cut into it (L8)
+      drawText(c, a.name, r[0] + nameX0, r[1] + 26 * s, faceOf('bone'), 15 * s, ink());
+      drawText(c, String(a.value), r[0] + valueX0, r[1] + 27 * s, faceOf('bone'), 19 * s, ink());
+      // the gauge, with the soft cap cut into it (L8). Takes whatever is left of the row after the
+      // measured name and value columns, clamped to a sane minimum rather than trusting the
+      // remainder is always positive.
       // A2: not a plain rectangle. The gauge is a bone trough with a cut edge, exactly as the
       // HUD's bars are, so nothing on any screen in this interface is an axis-aligned box.
-      const gx = r[0] + r[2] * 0.32, gw = r[2] * 0.64, gy = r[1] + 16 * s, gh = 10 * s;
+      const gx = r[0] + gaugeX0, gw = Math.max(30 * s, r[0] + r[2] - 10 * s - gx), gy = r[1] + 16 * s, gh = 10 * s;
       chitinPath(c, gx, gy, gw, gh, s, idHash(a.id) & 0xffff);
       c.save(); c.clip();
       c.fillStyle = C('parchment'); c.fillRect(gx - 2, gy - 2, gw + 4, gh + 4);
@@ -178,10 +193,7 @@ export function drawLevelUp(S, m) {
     writeLines(c, ls2, r[0], y, 'ink', size, lh, ink());
   });
 
-  hint(S, 'levelup.hint', ix, iy + ih + 4 * s, iw,
-    m.souls >= m.soulsToNext
-      ? 'Confirm twice to spend. Nothing is spent until the second time.'
-      : 'Not enough souls yet. Come back.', alpha);
+  hint(S, 'levelup.hint', ix, iy + ih + 4 * s, iw, levelUpHint, alpha);
 }
 
 /** The character sheet: identity, the ten, and the skills. Morrowind breadth (S2). */
@@ -230,6 +242,13 @@ export function drawSheet(S, m) {
   // content, same as level-up's rowH, rather than from the arithmetic target alone.
   const ax = ix + colW + 24 * s, attrW = colW * 0.92, attrH = 36;
   column(S, 'sheet.rule1', ax - 14 * s, iy, 2 * s, ih, alpha);
+  // T4 round 5 (`ARBITRATION` S58). Same defect as level-up's row, same fix: `r[2]*0.40` was a
+  // fraction of `attrW` tuned to the OLD ~502-unit column, and at the new ~161-unit `attrW` it put
+  // the value inside the longest names ("PERSONALITY" 66px at this face/size vs. a 0.40 offset of
+  // 64px). The value column now starts after the measured longest name plus a real gap, exactly as
+  // the level-up screen's row does — the gauge is unaffected, it was already drawn on its own line
+  // below the name/value and never collided.
+  const sheetValueX = 40 * s + Math.max(...m.attributes.map((a) => measure(a.name, faceOf('bone'), 14 * s))) + 10 * s;
   m.attributes.forEach((a, i) => {
     const y = iy + i * attrH * s;
     S.el({
@@ -238,9 +257,7 @@ export function drawSheet(S, m) {
       meta: { attribute: a.id, value: a.value, soft_cap: a.soft_cap },
     }, (c, r) => {
       drawText(c, a.name, r[0] + 40 * s, r[1] + 20 * s, faceOf('bone'), 14 * s, ink());
-      // T4 round 4. 200 was pitched against the old ~502-unit attrW; fraction of r[2] instead, as
-      // the level-up screen's own attribute row already does.
-      drawText(c, String(a.value), r[0] + r[2] * 0.40, r[1] + 21 * s, faceOf('bone'), 16 * s, ink());
+      drawText(c, String(a.value), r[0] + sheetValueX, r[1] + 21 * s, faceOf('bone'), 16 * s, ink());
       // the same bone trough the level-up screen cuts, so one attribute reads the same way on
       // both screens rather than being a number here and a gauge there
       const gx = r[0] + 40 * s, gw = r[2] - 56 * s, gy = r[1] + 26 * s, gh = 8 * s;
@@ -295,7 +312,13 @@ export function drawSpells(S, m) {
   const s = S.s;
   const alpha = m.inCombat ? COMBAT_ALPHA : CALM_ALPHA;
   const sel = m.spells[m.rowIdx] || null;
-  const sc = screen(S, 'spells', sel ? sel.name : 'Attuned', m.focusLabel || null, 'chitin', alpha);
+  const spellsHint = 'Attuning is a hearth action. In a fight you cycle what is already attuned, and the fight does not stop for it.';
+  // T4 round 5. This hint measures 549px at 14px body against a 460-wide box's 416px inner width —
+  // it was drawn as one unwrapped line and ran off the panel's own right edge, losing its last
+  // eight words with no ellipsis (`ARBITRATION` S58). `hintLines()` tells `screen()` how tall the
+  // wrapped hint will actually be so the footer band is sized for it before the panel is drawn.
+  const fl = hintLines(spellsHint, screenRect(S, 'spells')[2] - 44 * s, s);
+  const sc = screen(S, 'spells', sel ? sel.name : 'Attuned', m.focusLabel || null, 'chitin', alpha, fl);
   const [ix, iy, iw, ih] = sc.inner;
   const lw = iw * 0.46;
   // T4 round 4. 18 was a flat cap against the old 674-unit `ih` (18*34=612 fit under it with
@@ -340,8 +363,7 @@ export function drawSpells(S, m) {
     const size = 16 * s, lh = size * 1.46;
     writeLines(c, wrap(sel.description || '', faceOf('ink'), size, r[2]), r[0], y, 'ink', size, lh, ink());
   });
-  hint(S, 'spells.hint', ix, iy + ih + 4 * s, iw,
-    'Attuning is a hearth action. In a fight you cycle what is already attuned, and the fight does not stop for it.', alpha);
+  hint(S, 'spells.hint', ix, iy + ih + 4 * s, iw, spellsHint, alpha);
 }
 
 function windowOf(n, sel, size) {

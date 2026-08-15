@@ -24,7 +24,7 @@
 'use strict';
 
 import { C, Ca, panel, rootLashing, boneRule, shellInlay, chitinPath, idHash, luminance, contrast } from './theme.js';
-import { drawText, faceOf, measure, ellipsise } from './type.js';
+import { drawText, faceOf, measure, ellipsise, wrap } from './type.js';
 
 /**
  * THE INK IS CHOSEN BY THE PAPER, and this is the guard against the failure that this build
@@ -107,8 +107,18 @@ export const BOX = { x: 200, y: 160, w: 1520, h: 780 };   // 57.2% of 1920×1080
 // assumed matter stays constant under a resize — true enough for `RI-UIX09` P4's own arithmetic to
 // motivate the fix, wrong by nearly 2× once actually measured on a real page of flowing text).
 const BOXES = {
-  // 550×430 = 236,500 px² = 11.4% of frame. idxW cut again, 190 -> 140.
-  journal: { w: 550, h: 430 },
+  // T4 round 5 (`ARBITRATION` S58). 550 -> 730, h UNCHANGED at 430. Round 4's 550-wide box gave
+  // the chronicle a 140px column (`colW`) that could not hold this fixture's own longest entries —
+  // measured (`wrap()` over every entry in `game/data/states/ui-journal.json` at the real font):
+  // the tallest wrapped block needs 480.8 units against a 294-unit column, so 8 of 19 entries were
+  // laid out past the panel's own foot. `colW` is a function of the box width (`(iw-226)/2`), and
+  // the round-4 verdict's own remedy note says growing the box back is fine and does not undo S56
+  // ("57.2% is a ceiling, not a target"): 730x430 = 313,900 px² = 15.1% of frame, still far under
+  // it. At `colW=230` the worst block measures 286.7 against the SAME 294-unit column (no height
+  // change needed) — 7.3 units of margin, verified by running the real packing loop over the real
+  // fixture (0 of 19 blocks overflow, `tools/ui/t4-r5-legibility.mjs`'s JOURNAL-OVERFLOW leg).
+  // idxW stays 140 (unchanged since round 4; not implicated in the overflow).
+  journal: { w: 730, h: 430 },
   // 480×480 = 230,400 px² = 11.1% of frame. `rowH` cut again, 36 -> 30 — the row's own content
   // (the cap-tick label under the gauge) is what sets 30 as the floor, not an arithmetic target;
   // 58 + 10×30 = 358 fits under `ih` (480 - 106 = 374) with 16 units to spare.
@@ -158,10 +168,34 @@ export function screenRect(S, id) {
 }
 
 /**
+ * A hint's own line height, in 1080p units. Shared between `hint()` (which wraps and draws at
+ * this pitch) and `screen()` (which must reserve room for however many lines `hint()` will need)
+ * so the two can never drift apart the way the single fixed "30 px at the foot" band used to —
+ * T4 round 4 sized two boxes (container, spells) narrower than their own declared hint text, so
+ * `hint()` drew past the panel's own right/bottom edge with no wrap at all (`ARBITRATION` S58).
+ */
+export const HINT_LINE_H = 20;
+
+/**
+ * How many lines `hint(text, w)` will draw at this scale — the number a caller needs BEFORE it
+ * calls `screen()`, because `screen()`'s footer band has to be sized for it. `screenRect(S, id)`
+ * gives the panel's width independently of `screen()`, so this is not circular: get the rect,
+ * measure the wrap, then call `screen()` with the answer.
+ */
+export function hintLines(text, w, s) {
+  return Math.max(1, wrap(text, faceOf('ink'), 14 * s, w).length);
+}
+
+/**
  * The panel and its frame. Declares ONE element (`panel`) covering the whole screen box, plus
  * one `panel_header`. Everything drawn afterwards declares itself.
+ *
+ * `footerLines` (default 1) is how many lines the screen's OWN foot hint will need at this panel's
+ * width — pass `hintLines(hintText, screenRect(S, id)[2] - 44*S.s, S.s)`. Getting this right is
+ * what keeps a two-line hint (container, spells) fully inside the panel instead of drawn off its
+ * own bottom edge.
  */
-export function screen(S, id, title, subtitle, material, alpha) {
+export function screen(S, id, title, subtitle, material, alpha, footerLines) {
   const s = S.s;
   setPaper(material);
   const r = screenRect(S, id);
@@ -187,9 +221,12 @@ export function screen(S, id, title, subtitle, material, alpha) {
     }
     boneRule(c, q[0] + 20 * s, q[1] + hh - 4 * s, q[2] - 40 * s, s, seed + 5);
   });
-  // The inner box leaves 30 px at the foot for the hint line, so the hint is INSIDE the
-  // panel and cannot be clipped by its own edge.
-  return { rect: r, inner: [r[0] + 22 * s, r[1] + hh + 10 * s, r[2] - 44 * s, r[3] - hh - 52 * s], seed, alpha };
+  // The inner box leaves 30 px at the foot for a ONE-LINE hint, so the hint is INSIDE the panel
+  // and cannot be clipped by its own edge; each extra `footerLines` beyond 1 reserves one more
+  // `HINT_LINE_H`, matching exactly what `hint()` below will actually draw.
+  const fl = Math.max(1, footerLines || 1);
+  const footer = (52 + (fl - 1) * HINT_LINE_H) * s;
+  return { rect: r, inner: [r[0] + 22 * s, r[1] + hh + 10 * s, r[2] - 44 * s, r[3] - hh - footer], seed, alpha, footerLines: fl };
 }
 
 /** A worked-bone divider between columns. Not a 1 px border (G4). */
@@ -296,11 +333,27 @@ export function extent(S, id, x, y, w, h, from, shown, total, alpha) {
   });
 }
 
-/** A line of prose under a screen, telling you what the buttons do. Never numeric. */
+/**
+ * A line of prose under a screen, telling you what the buttons do. Never numeric.
+ *
+ * T4 round 5 (`ARBITRATION` S58). Round 4 drew this as ONE unwrapped line regardless of `w`, so a
+ * hint longer than the panel was wide ran off the panel's own right edge and was cut mid-word —
+ * `container.hint` and `spells.hint` both did this at 1920x1080. It now WRAPS to `w` the same way
+ * every other block of prose in this interface does (`wrap()`, the journal/book/spell-detail
+ * function), and the caller is responsible for having reserved enough vertical room via
+ * `screen(..., hintLines(text, w, s))` — see that function's own comment. Never truncates and
+ * never ellipsises: a hint is an instruction, not a name, and RI-UIX04 J2's "never truncated" is
+ * as much this line's rule as it is a journal entry's.
+ */
 export function hint(S, id, x, y, w, text, alpha) {
-  return S.el({ id, kind: 'hint', rect: [x, y, w, 26 * (S.s)], text, opacity: alpha }, (c, r) => {
-    const f = faceOf('ink'), sz = 14 * S.s;
-    drawText(c, text, r[0], r[1] + 18 * S.s, f, sz, inkDim());
+  const s = S.s;
+  const lines = wrap(text, faceOf('ink'), 14 * s, w);
+  const lh = HINT_LINE_H * s;
+  const h = Math.max(26 * s, lines.length * lh + 6 * s);
+  return S.el({ id, kind: 'hint', rect: [x, y, w, h], text, opacity: alpha }, (c, r) => {
+    const f = faceOf('ink'), sz = 14 * s;
+    let yy = r[1] + 18 * s;
+    for (const l of lines) { drawText(c, l, r[0], yy, f, sz, inkDim()); yy += lh; }
   });
 }
 
