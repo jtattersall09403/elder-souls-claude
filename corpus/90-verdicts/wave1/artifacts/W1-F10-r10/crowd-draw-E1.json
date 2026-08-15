@@ -1,0 +1,178 @@
+{
+  "tool": "f10-r10-crowd-draw.mjs",
+  "role": "W1-F10 r10 builder — RI-VIS10 E1 on the critic-added arm, global; and the NPC pose path",
+  "generated": "2026-08-15T19:03:06.091Z",
+  "item": "RI-VIS10 §E1 (as amended by W1-F10-r9-CRITIC), §C3, §F#6",
+  "enumeration": {
+    "command": "readdirSync('game/data/npcs') -> 18 json files",
+    "files": [
+      "faction-givers.json",
+      "mainline.json",
+      "named-states.json",
+      "pop-archon.json",
+      "pop-blackrose.json",
+      "pop-gideon.json",
+      "pop-helstrom.json",
+      "pop-lilmoth.json",
+      "pop-soulrest.json",
+      "pop-stormhold.json",
+      "pop-thorn.json",
+      "pop-trades.json",
+      "quest-givers.json",
+      "quest-witnesses.json",
+      "spellwrights.json",
+      "thorn.json",
+      "tribes.json",
+      "writ-house.json"
+    ],
+    "n_npcs": 408
+  },
+  "E1_drawn": {
+    "n_npcs": 408,
+    "distinct_drawn_bodies": 14,
+    "npcs_per_drawn_body": 29.14,
+    "distinct_actor_field_values": 32,
+    "largest_drawn_bucket": {
+      "key": "hum.marauder",
+      "n": 37,
+      "pct": 9.1
+    },
+    "full_distribution": [
+      {
+        "key": "hum.marauder",
+        "n": 37,
+        "pct": 9.1
+      },
+      {
+        "key": "sax.salt-elder",
+        "n": 32,
+        "pct": 7.8
+      },
+      {
+        "key": "sax.helstrom-guard",
+        "n": 31,
+        "pct": 7.6
+      },
+      {
+        "key": "hum.legion-heavy",
+        "n": 30,
+        "pct": 7.4
+      },
+      {
+        "key": "sax.hist-broad",
+        "n": 29,
+        "pct": 7.1
+      },
+      {
+        "key": "hum.breton-stout",
+        "n": 29,
+        "pct": 7.1
+      },
+      {
+        "key": "sax.hive-drone",
+        "n": 29,
+        "pct": 7.1
+      },
+      {
+        "key": "sax.marsh-lean",
+        "n": 28,
+        "pct": 6.9
+      },
+      {
+        "key": "player.saxhleel",
+        "n": 28,
+        "pct": 6.9
+      },
+      {
+        "key": "sax.deep-warden",
+        "n": 28,
+        "pct": 6.9
+      },
+      {
+        "key": "sax.thorn-hunter",
+        "n": 28,
+        "pct": 6.9
+      },
+      {
+        "key": "hum.dunmer-lean",
+        "n": 27,
+        "pct": 6.6
+      },
+      {
+        "key": "sax.naga-tall",
+        "n": 27,
+        "pct": 6.6
+      },
+      {
+        "key": "hum.imperial-clerk",
+        "n": 25,
+        "pct": 6.1
+      }
+    ],
+    "by_race": {
+      "saxhleel": {
+        "n": 77,
+        "distinct_bodies": 9
+      },
+      "breton": {
+        "n": 10,
+        "distinct_bodies": 5
+      },
+      "imperial": {
+        "n": 59,
+        "distinct_bodies": 5
+      },
+      "dunmer": {
+        "n": 57,
+        "distinct_bodies": 5
+      },
+      "nord": {
+        "n": 12,
+        "distinct_bodies": 5
+      },
+      "none": {
+        "n": 1,
+        "distinct_bodies": 1
+      },
+      "mixed": {
+        "n": 1,
+        "distinct_bodies": 1
+      },
+      "redguard": {
+        "n": 1,
+        "distinct_bodies": 1
+      },
+      "naga": {
+        "n": 2,
+        "distinct_bodies": 2
+      },
+      "argonian": {
+        "n": 181,
+        "distinct_bodies": 9
+      },
+      "khajiit": {
+        "n": 6,
+        "distinct_bodies": 3
+      },
+      "orsimer": {
+        "n": 1,
+        "distinct_bodies": 1
+      }
+    },
+    "reading": "The `actor` field is the simulation's vocabulary and the camera never sees it. What the camera sees is `characterFor(group.name)`, and that is the number here."
+  },
+  "NPC_pose_path": {
+    "question": "what pose are the 408 drawn in?",
+    "method": "read game/src/render/renderer.js this turn; syncNPCs is the loop over sim.npcs and this is every pose call inside it",
+    "pose_calls_inside_syncNPCs": [
+      "poseStatic"
+    ],
+    "finding": "poseStatic ONLY. No NPC evaluates a clip, a locomotion loop or the additive stance layer.",
+    "consequences": [
+      "RI-VIS10 C3 (contrapposto) reaches 0 of 408 NPCs. It is authored on idle_ready and applied in actor.poseLocomotion, which no NPC calls.",
+      "F10 r10's root drop likewise reaches 0 of 408 NPCs — so the r9 verdict's why_it_matters (\"the player and all 408 NPCs ... now stands about a centimetre above the floor\") is wrong on the NPC half. The hover was the player's and the combat enemies'.",
+      "All 408 stand in one identical rest pose, differing only by position, yaw and scale. RI-VIS10 §F#6 names exactly that as a failure."
+    ],
+    "what_would_close_it": "poseStatic already binds presentation meshes ONCE against `built.restWorld` and caches it (`staticPresentationBound`). The cheap fix with the same per-frame cost is to bake the stance layer — and a per-NPC phase offset of idle_loop — into that one-time bind, so each NPC gets contrapposto and a different point of the breathing cycle without any per-frame rig evaluation. That is a pose-variety change, not a body-count change, and it would move C2/C3/E4 rather than E1."
+  }
+}
