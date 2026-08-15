@@ -32,6 +32,8 @@ t4-r2-critic-drive.mjs — operate every Morrowind screen through the shipped in
 
   --state <id>   world state to load (default: ui-journal)
   --out <dir>    report directory (default corpus/90-verdicts/wave1/artifacts/T4-r2c/reports)
+  --entry <path> alternate game/index.html to serve (e.g. a tools/control-clone.mjs clone, for a
+                 delete-the-fix run) — default is this repo's own game/index.html
 
 EXIT 0 = every check passes · 1 = a check failed · 2 = could not run.
 `;
@@ -48,6 +50,24 @@ const push = (id, pass, detail) => {
   log(`  ${pass ? 'ok  ' : 'FAIL'} ${id}  ${detail}`);
 };
 
+/**
+ * I1 REPAIR. A third outcome for a check whose correct behaviour is neither "the action
+ * succeeded" nor "the game is broken" — a narrated policy refusal (C5b), or a fixture with
+ * nothing to exercise (F1's place walk, T2 on a zero-row screen). `pass: null` so
+ * `checks.every`/`.filter(c => c.pass)` treat it as neither a pass nor a fail; it is reported
+ * separately in the run summary rather than folded into either bucket.
+ *
+ * `ok` is NOT "did the interesting thing happen" — it is "did the check resolve cleanly into the
+ * declared not-applicable shape". A narrated refusal that stays silent, or a zero-row screen whose
+ * OTHER control (e.g. the view swap) also fails to move, is still scored `pass: false` — a real
+ * fail — because "not-applicable" is a finding you earn by observing the game do the right thing
+ * on its one remaining testable half, not an escape hatch from a broken control.
+ */
+const pushNA = (id, ok, detail) => {
+  checks.push({ id, pass: ok ? null : false, outcome: ok ? 'not-applicable' : 'fail', detail });
+  log(`  ${ok ? 'n/a ' : 'FAIL'} ${id}  ${detail}`);
+};
+
 const report = {
   schema: 'elder-souls/t4-screens-drive@1',
   at: new Date().toISOString(),
@@ -57,7 +77,10 @@ const report = {
   data: {},
 };
 
-const h = await launchGame({ width: 1920, height: 1080, timeout: 300000 });
+// `--entry <clone>/game/index.html`, the same convention `tools/lib/browser.mjs` gives every
+// other probe in the tree, so this tool can be pointed at a `tools/control-clone.mjs` control
+// clone for a delete-the-fix run without a second copy of the file.
+const h = await launchGame({ width: 1920, height: 1080, timeout: 300000, entry: args.entry });
 let exit = 0;
 
 // ---- real input primitives -------------------------------------------------------------------
@@ -344,19 +367,35 @@ try {
   }
 
   // C5 — EQUIP through the real path. RI-UIX03 P7 / M-P5.
+  //
+  // I1 REPAIR. This state's weapon-shaped walk lands FIRST on `hist-sap-bow` (element id
+  // `inventory.row.hist-sap-bow`), which `Engine._finishEquipCommit()` refuses by policy — no
+  // loadout patch exists for its moveset. Confirming it correctly leaves the equipment unchanged;
+  // the round-2 probe scored that unconditionally as C5 failing, which is a correct game
+  // misread as broken. It is not a dead control either, so a silent pass would be just as wrong —
+  // W1-16 r4 built a toast specifically so the refusal is said. C5 below therefore SKIPS the
+  // refused row to test a row that actually equips; C5b, immediately after, tests the refused row
+  // on its own terms as a third outcome (see `pushNA`).
   {
-    // find a weapon row by walking until the detail names one, then confirm
+    // find an EQUIPPABLE weapon row by walking until the detail names one, then confirm.
+    //
+    // I1 REPAIR, FOUND BY ACTUALLY RUNNING THIS: the pre-existing regex had no word boundary, so
+    // `/bow/i` matches inside "Mud-slip **bowl**" (dishware, not a weapon) — exactly the false
+    // positive the round-3 critic's own status file warned about ("landed on a 'Mud-slip bowl'").
+    // `\b...\b` fixes it: "bowl" has no boundary between 'w' and 'l' (both word characters), so it
+    // no longer matches, while "Sapwood bow" still does.
     let found = null;
     for (let i = 0; i < 40; i++) {
       const r = await read();
       const foc = r.rows.find((x) => x.focused);
-      if (foc && /maul|knife|blade|axe|spear|club|staff|bow/i.test(String(foc.text))) { found = foc; break; }
+      if (foc && /\b(?:maul|knife|blade|axe|spear|club|staff|bow)\b/i.test(String(foc.text)) &&
+          !/\.hist-sap-bow$/.test(String(foc.id))) { found = foc; break; }
       await key('KeyS', 1);
     }
     const pre = await read();
     const wPre = await world();
     if (!found) {
-      push('C5 confirming a weapon row equips it', false, 'no weapon row could be focused by walking the list');
+      push('C5 confirming a weapon row equips it', false, 'no equippable weapon row could be focused by walking the list');
     } else {
       await key('KeyE');
       await h.h('stepFrames', 40);
@@ -364,9 +403,68 @@ try {
       const wPost = await world();
       note(`keydown KeyE (confirm) on weapon row '${found.text}'`, pre, post,
         { equipped_before: wPre.equipped, equipped_after: wPost.equipped });
+      // I1 REPAIR, FOUND BY THE DELETE-THE-FIX ARM: "the equipped array changed" is not the same
+      // claim as "this row got equipped". Breaking `Engine._finishEquipCommit()`'s slot write on a
+      // control clone (leaving the slot-clearing loop above it intact) UNEQUIPPED the previously
+      // worn item without ever equipping the new one — the array still changed, byte for byte, and
+      // the old assertion here read that as a pass. Assert the SPECIFIC item now carries the slot.
+      const itemId = String(found.id).replace(/^inventory\.row\./, '');
+      const landed = wPost.equipped.some((e) => e.startsWith(itemId + '@'));
       push('C5 confirming a weapon row equips it',
-        J(wPre.equipped) !== J(wPost.equipped),
-        `row '${found.text}': equipment ${J(wPre.equipped)} -> ${J(wPost.equipped)}`);
+        landed,
+        `row '${found.text}' (${itemId}): equipment ${J(wPre.equipped)} -> ${J(wPost.equipped)}; ` +
+        `'${itemId}' now in equipped=${landed}`);
+    }
+  }
+
+  // C5b — THE ROW THE GAME REFUSES. `inventory.row.hist-sap-bow` is the row a naive weapon-shaped
+  // walk lands on FIRST on this fixture (round 2's and round 3's probes both hit it). Confirming
+  // it is a correct, narrated policy decline, verified on the same toast channel round 3 used:
+  // clear the channel, confirm, and read it back rather than trust a stale line. Scored
+  // `not-applicable` rather than pass (which would hide that this row does nothing) or fail
+  // (which is what this probe did before this repair, and is what round 2 and round 3 both
+  // reported as a defect in the probe rather than the game).
+  {
+    // I1 REPAIR, FOUND BY ACTUALLY RUNNING THIS TWICE: neither `goto('inventory')` (a no-op when
+    // already inside the inventory, the same trap D7 had) NOR a full close-to-world-and-reopen
+    // resets the column/category/row focus — measured directly: closing and reopening still left
+    // the walk on the row C5 stopped at, because the inventory KEEPS your last position across a
+    // close/reopen (deliberate UX, not a bug). Navigate back to the known start explicitly:
+    // category column, top category (tagIdx 0 = 'all'), item column, top row.
+    for (let i = 0; i < 6; i++) { const x = await read(); if (x.mode === 'world') break; await key('Escape'); }
+    await goto('inventory');
+    for (let i = 0; i < 3; i++) { const x = await read(); if (x.focus.col === 0) break; await key('KeyA'); }
+    for (let i = 0; i < 25; i++) { const x = await read(); if (x.focus.tagIdx === 0) break; await key('KeyW', 1); }
+    for (let i = 0; i < 3; i++) { const x = await read(); if (x.focus.col === 1) break; await key('KeyD'); }
+    for (let i = 0; i < 25; i++) { const x = await read(); if (x.focus.rowIdx === 0) break; await key('KeyW', 1); }
+    let bow = null;
+    for (let i = 0; i < 45; i++) {
+      const r = await read();
+      const foc = r.rows.find((x) => x.focused);
+      if (foc && /\.hist-sap-bow$/.test(String(foc.id))) { bow = foc; break; }
+      await key('KeyS', 1);
+    }
+    if (!bow) {
+      pushNA('C5b confirming the refused weapon row does nothing to the inventory, but says so',
+        false, 'the hist-sap-bow row was not reachable by walking the list in 45 presses');
+    } else {
+      await h.page.evaluate(() => { window.__ENGINE.uiToast(null); });
+      await h.h('stepFrames', 2);
+      const pre = await read();
+      const wPre = await world();
+      await key('KeyE', 2);
+      await h.h('stepFrames', 13);
+      const post = await read();
+      const wPost = await world();
+      const toastAfter = post.elements.filter((e) => /toast/i.test(String(e.id)));
+      note(`keydown KeyE (confirm) on the REFUSED weapon row '${bow.text}'`, pre, post,
+        { equipped_before: wPre.equipped, equipped_after: wPost.equipped, toast: toastAfter });
+      const unchanged = J(wPre.equipped) === J(wPost.equipped);
+      const narrated = toastAfter.length > 0 && toastAfter.some((e) => /grip|hands|cannot/i.test(String(e.text)));
+      pushNA('C5b confirming the refused weapon row does nothing to the inventory, but says so',
+        unchanged && narrated,
+        `row '${bow.text}' (${bow.id}): equipment ${J(wPre.equipped)} -> ${J(wPost.equipped)} ` +
+        `(unchanged=${unchanged}); toast after confirm: ${J(toastAfter.map((e) => e.text))} (narrated=${narrated})`);
     }
   }
 
@@ -460,23 +558,43 @@ try {
           `ringIdx ${b5.focus.ringIdx} -> ${m5.focus.ringIdx}; query '${b5.focus.query}' -> '${a5.focus.query}'`);
 
         // D6 — THE WAY OUT. `roll` (Space) is the back verb everywhere else in this interface.
+        //
+        // I1 REPAIR. The old assertion here — "one back press on a one-character query leaves
+        // search outright" — was round 2's OWN broken behaviour, encoded as the pass condition.
+        // The screen's foot hint now promises "back to remove one", and it does: one back press
+        // removes the LAST character. D5 typed exactly one character, so one back press must
+        // return the query to empty while STAYING in the search view (leaving search to the
+        // chronicle takes one MORE press, on an already-empty query — see D7/JX2 in the round-3
+        // probe). Re-asserted against the shipped promise, not the old defect.
         const b6 = await read();
+        const qBefore = String((b6.focus && b6.focus.query) || '');
         await key('Space');
         const a6 = await read();
+        const qAfter = String((a6.focus && a6.focus.query) || '');
         note('keydown Space (roll = back) inside the search view', b6, a6,
           { view_before: b6.focus && b6.focus.view, mode_after: a6.mode, focus_after: a6.focus });
-        push('D6 back inside the search view returns to the journal, not out of it',
-          a6.mode === 'journal' && a6.focus && a6.focus.view !== 'search',
-          `mode ${b6.mode} -> ${a6.mode}; view '${b6.focus.view}' -> '${a6.focus ? a6.focus.view : '(no journal focus)'}'`);
+        push('D6 back inside the search view removes one character and stays in search',
+          a6.mode === 'journal' && a6.focus && a6.focus.view === 'search' &&
+          qAfter.length === Math.max(0, qBefore.length - 1),
+          `mode ${b6.mode} -> ${a6.mode}; view '${b6.focus.view}' -> '${a6.focus ? a6.focus.view : '(no journal focus)'}'; ` +
+          `query '${qBefore}' (len ${qBefore.length}) -> '${qAfter}' (len ${qAfter.length})`);
 
-        // D7 — and if it closed the screen: does re-opening the journal put you BACK in search
-        // with the same query? A sticky sub-view is a trap, not a screen.
+        // D7 — does CLOSING and RE-OPENING the journal put you back in search with the same
+        // query? A sticky sub-view is a trap, not a screen.
+        //
+        // I1 REPAIR. `goto('journal')`'s own first line returns immediately when `mode ===
+        // target` — after D6 we are ALREADY in 'journal', so the old D7 was a no-op that
+        // re-read D6's own state and called it a re-open; it could not fail no matter what
+        // persistence did. Close all the way to the world first, so this check exercises what
+        // its name claims and can go red if a sub-view survives a real close/reopen.
+        for (let i = 0; i < 6; i++) { const x = await read(); if (x.mode === 'world') break; await key('Escape'); }
+        const closed = await read();
         await goto('journal');
         const a7 = await read();
-        report.data.journal_reopen = { mode: a7.mode, focus: a7.focus };
-        push('D7 re-opening the journal returns to the chronicle, not to a stuck search box',
-          a7.mode === 'journal' && a7.focus && a7.focus.view !== 'search',
-          `after walking back to the journal: view '${a7.focus ? a7.focus.view : '?'}', query '${a7.focus ? a7.focus.query : '?'}'`);
+        report.data.journal_reopen = { closed_mode: closed.mode, mode: a7.mode, focus: a7.focus };
+        push('D7 closing and re-opening the journal returns to the chronicle, not a stuck search box',
+          closed.mode === 'world' && a7.mode === 'journal' && a7.focus && a7.focus.view !== 'search',
+          `closed fully to '${closed.mode}'; re-opened: view '${a7.focus ? a7.focus.view : '?'}', query '${a7.focus ? a7.focus.query : '?'}'`);
       }
     }
   }
@@ -495,11 +613,32 @@ try {
   }
 
   // ---- F. THE MAP -------------------------------------------------------------------------------
+  //
+  // I1 REPAIR. F1 used to assert two things in one AND: the place walk moves `placeIdx`, AND
+  // confirm swaps the view. On `states/ui-journal.json` the player has never stood inside any
+  // POI's built pad (`game/src/sim/discovery.js` derives places from that footprint alone, by
+  // design — see its own header), so `pre.rows.length === 0` here and there is no place to walk.
+  // That is a property of the FIXTURE, not a broken control, and scoring the compound check 0
+  // hid the one half this fixture CAN exercise. Split: with zero rows, only the view swap is
+  // asserted, scored as a third outcome (not-applicable) rather than pass or fail — the next
+  // critic should still add a fixture that has stood somewhere, so the place-walk half gets a
+  // real population.
   {
     await goto('map');
     const pre = await read();
-    if (pre.mode !== 'map') { push('F1 the map screen walks its places and swaps its view', false, `never reached; mode=${pre.mode}`); }
-    else {
+    if (pre.mode !== 'map') {
+      push('F1 the map screen walks its places and swaps its view', false, `never reached; mode=${pre.mode}`);
+    } else if (pre.rows.length === 0) {
+      await key('KeyE');
+      const post = await read();
+      note('keydown KeyE (confirm) on the map with zero discovered places', pre, post,
+        { view_before: pre.focus.view, view_after: post.focus.view });
+      pushNA('F1 the map screen walks its places and swaps its view',
+        post.focus.view !== pre.focus.view,
+        `fixture has 0 discovered places (rows=${pre.rows.length}), so the place-walk half cannot ` +
+        `be exercised on this state — needs a fixture where the player has stood somewhere; ` +
+        `view swap alone: '${pre.focus.view}' -> '${post.focus.view}'`);
+    } else {
       await key('KeyS');
       const mid = await read();
       note('keydown KeyS (down) on the map', pre, mid);
@@ -539,7 +678,11 @@ try {
     // Opening a container is an ENGINE event (walking up to a crate), not a screen affordance, so
     // the open itself is a harness call — exactly as the dialogue probe opens a conversation with
     // `talkTo`. Every control ON the screen below is operated with real events.
-    await h.page.evaluate(() => { window.__HARNESS.openContainer('Reed Creel', ['bog-iron-maul']); });
+    // I1 REPAIR. `openContainer(name, contents)` does `contents.map(c => ({ ...c }))` — spreading
+    // a STRING (`'bog-iron-maul'`) copies its characters into a map (`{0:'b',1:'o',...}`), not an
+    // item. `focus.mjs` passes real item objects and transfers 44 -> 45 -> 44 on this same build;
+    // this was the probe's own defect, not the game's, per the round-3 verdict.
+    await h.page.evaluate(() => { window.__HARNESS.openContainer('Reed Creel', [{ id: 'bog-iron-maul', count: 1 }]); });
     await h.h('stepFrames', 4);
     const pre = await read();
     push('H0 the container screen opens and names itself',
@@ -580,7 +723,7 @@ try {
       await h.h('stepFrames', 2);
       const badHeaders = {};
       for (const [label, val] of [['absent', undefined], ['null', null], ['empty', ''], ['literal', 'undefined']]) {
-        await h.page.evaluate((v) => { window.__HARNESS.openContainer(v, ['bog-iron-maul']); }, val);
+        await h.page.evaluate((v) => { window.__HARNESS.openContainer(v, [{ id: 'bog-iron-maul', count: 1 }]); }, val);
         await h.h('stepFrames', 3);
         const rr = await read();
         badHeaders[label] = rr.headers;
@@ -678,8 +821,15 @@ try {
 
     // T2 — the DIRECTIONAL half. The floating stick is a real drag in the left half of the frame;
     // without it a touch player can open a screen and not walk its rows.
+    //
+    // I1 REPAIR. T1's tap (`touch.swap_right`) leaves this probe on whatever screen sits next in
+    // the ring after inventory — empirically `map` — and `states/ui-journal.json` has 0
+    // discovered places there, the same fixture gap F1 has. A stick cannot move focus over a list
+    // of nothing, so a zero-row screen is scored `not-applicable`, not a dead stick; it still
+    // fails if the drag does something it should not (changes mode outright).
     {
       const b2 = await read();
+      const hasRows = b2.rows.length > 0;
       await h.page.evaluate(() => {
         const cv = document.querySelector('canvas');
         const r = cv.getBoundingClientRect();
@@ -699,9 +849,18 @@ try {
       await h.h('stepFrames', 3);
       const post2 = await read();
       note('touch drag on the left half (the floating stick)', b2, post2, { mid_focus: mid2.focus });
-      push('T2 the floating stick walks the open screen\'s rows',
-        J(b2.focus) !== J(post2.focus) || J(b2.focus) !== J(mid2.focus),
-        `focus ${J(b2.focus)} -> (mid) ${J(mid2.focus)} -> ${J(post2.focus)} on mode '${post2.mode}'`);
+      const moved = J(b2.focus) !== J(post2.focus) || J(b2.focus) !== J(mid2.focus);
+      if (hasRows) {
+        push('T2 the floating stick walks the open screen\'s rows',
+          moved,
+          `focus ${J(b2.focus)} -> (mid) ${J(mid2.focus)} -> ${J(post2.focus)} on mode '${post2.mode}'`);
+      } else {
+        pushNA('T2 the floating stick walks the open screen\'s rows',
+          post2.mode === b2.mode,
+          `mode '${b2.mode}' has 0 rows to walk (fixture has no discovered places — the same gap as ` +
+          `F1), so this half is not-applicable on this fixture; drag recorded anyway: focus ` +
+          `${J(b2.focus)} -> (mid) ${J(mid2.focus)} -> ${J(post2.focus)}, moved=${moved}, mode unchanged=${post2.mode === b2.mode}`);
+      }
     }
     await h.h('setViewport', { pointer: 'fine' });
     await h.h('stepFrames', 2);
@@ -730,8 +889,13 @@ try {
   report.checks = checks;
   report.data.errors = h.errors ? h.errors.slice(0, 10) : [];
   writeJson(path.join(OUT, 'screens-drive.json'), report);
-  exit = checks.every((c) => c.pass) ? 0 : 1;
-  log(`\n${checks.filter((c) => c.pass).length}/${checks.length} checks passed`);
+  // I1 REPAIR. `pass: null` (see `pushNA`) is a third outcome — not-applicable — and must move
+  // neither the exit code nor the pass count. Only an explicit `pass === false` fails the run.
+  const passedN = checks.filter((c) => c.pass === true).length;
+  const naN = checks.filter((c) => c.pass === null).length;
+  const failedN = checks.filter((c) => c.pass === false).length;
+  exit = failedN === 0 ? 0 : 1;
+  log(`\n${passedN}/${checks.length} checks passed, ${naN} not-applicable, ${failedN} failed`);
 } catch (e) {
   log(`could not run: ${e && e.message || e}`);
   report.error = String(e && e.stack || e);
