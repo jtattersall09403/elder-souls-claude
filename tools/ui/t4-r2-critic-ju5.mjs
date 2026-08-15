@@ -79,7 +79,12 @@ try {
   // ---- advance the quest through >= 3 more stages, through the game's own writer -------------
   const wrote = await h.page.evaluate(() => {
     const eng = window.__ENGINE;
-    const jr = eng.sim.quest.journal;
+    // `sim.quest.journal` is the raw entries ARRAY; the `Journal` wrapper with `write()` lives on
+    // the quest engine. Measured, not assumed: `sim.quest.journal.map` is not a function.
+    const jr = (eng.questEngine && eng.questEngine.journal && typeof eng.questEngine.journal.write === 'function')
+      ? eng.questEngine.journal
+      : (eng.sim.quest.journalStore || null);
+    if (!jr || typeof jr.write !== 'function') return [{ refused: 'no Journal.write() reachable; looked at questEngine.journal and sim.quest.journalStore' }];
     const quests = {};
     for (const doc of Object.values(eng.data.quests || {})) for (const q of (doc.quests || [])) quests[q.id] = q;
     const out = [];

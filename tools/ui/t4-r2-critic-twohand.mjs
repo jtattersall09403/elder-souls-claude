@@ -92,7 +92,8 @@ try {
       for (let i = 0; i < 10; i++) {
         const m = await h.page.evaluate(() => window.__HARNESS.getUIState().mode);
         if (m === 'journal') break;
-        await h.page.evaluate(() => window.dispatchEvent(new KeyboardEvent('keydown', { code: m === 'world' ? 'KeyM' : 'Digit3', key: 'x', bubbles: true, cancelable: true })));
+        const code = m === 'world' ? 'KeyM' : 'Digit3';
+        await h.page.evaluate((c) => window.dispatchEvent(new KeyboardEvent('keydown', { code: c, key: 'x', bubbles: true, cancelable: true })), code);
         await h.h('stepFrames', 2);
         await h.page.evaluate(() => window.dispatchEvent(new KeyboardEvent('keyup', { code: 'Digit3', key: 'x', bubbles: true })));
         await h.page.evaluate(() => window.dispatchEvent(new KeyboardEvent('keyup', { code: 'KeyM', key: 'm', bubbles: true })));

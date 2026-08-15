@@ -101,10 +101,13 @@ exactly what shipped: `tools/ui/dialogue-window-probe.mjs` scored 22/25 by assig
 |---|---|---|---|
 | **I0** | `?harness=1` / `setMode('harness')` | `Engine.setMode` calls `real.detach()`, so a `KeyboardEvent` dispatched at the page reaches nothing and **every check below it fails against a game that is fine**. | `setMode('play-instrumented')` — real listeners, harness-driven clock. Then assert `real.attached` **and** that a movement key moves `input.moveX`, before believing anything. |
 | **I1** | device class | `input/real.js applyDeviceClass()` attaches the touch listeners **only** on class `handheld`. On a desktop class a `PointerEvent` reaches nothing. | `setViewport({pointer:'coarse'})`, then assert `real.touch.attached`. |
-| **I2** | **hold gates are in MILLISECONDS** | `desktop.hold_gate_frames` is consumed by `promotedAtRelease(tDown, tUp, gate)` — **wall clock**, not frames. Under `setRenderRate(0)` a `stepFrames(20)` costs ~0 ms, so a "20-frame hold" is a ~3 ms hold and the gated action never fires. This trap cost the `T4` round-2 critic a false failure against `two_hand` on its first two passes. | Hold with a real `setTimeout` longer than the gate (200 ms for `two_hand`), or read `framesHeld` off the hold record. |
+| **I2** | **a hold gate cannot be crossed on a paused screen** | `desktop.hold_gate_frames` is consumed by `promotedAtRelease(tDown, tUp, gate)`, and `hold-gate.js` `inputNow()` returns **`frame * STEP_MS` in every mode except `play`**. Outside combat an open screen **pauses the world** (`RI-UIX03` §A, working as designed), so `getFrame()` does not advance — measured: still **5** after `stepFrames(20)`. `framesHeld` therefore computes **0** against a 12-frame gate, the hold never promotes, and **a perfectly healthy gated control reports dead**. In mode `play` the gate reads `event.timeStamp` and a real player is unaffected. | Drive the gate in mode `play`, or step the world with the screen shut, or read `real._holds[control].fired` and `framesHeld` rather than the outcome. **Never** conclude from a harness run that a gated control on a paused screen is broken. |
 
-**I2 is new and is contributed by this item.** The other two are `dialogue-drive-probe.mjs`'s and are
-cited rather than re-derived.
+**I2 is new and is contributed by this item, and it is the expensive one.** The `T4` round-2 critic
+recorded a `two_hand` failure **three times** — a 4-frame hold, an 8-frame-plus-400 ms-wall-clock
+hold, and a 20-frame hold — before reading the four pipeline points that showed the frame counter
+frozen at 5. Two of those three would have gone into a verdict as a defect. I0 and I1 are
+`dialogue-drive-probe.mjs`'s and are cited rather than re-derived.
 
 ### §C — The device arms
 
