@@ -1,0 +1,80 @@
+{
+  "schema": "elder-souls/uix08-drive-probe@1",
+  "at": "2026-08-15T10:10:53.097Z",
+  "commit": "287f7ff7",
+  "state": "helstrom-market",
+  "mode": "census",
+  "interactions": [],
+  "checks": [
+    {
+      "id": "I0 INSTRUMENT: a real DOM key reaches the input pipeline",
+      "pass": true,
+      "detail": "real.attached=true, ArrowRight -> pipeline.moveX=1, KeyE -> pendingPress=256"
+    },
+    {
+      "id": "C7 PRESENCE CONTROL: an ordinary conversation in the SAME run still has all six elements",
+      "pass": true,
+      "detail": "conversation window open=true, census mode=false, dialogue_exit=true, disposition_meter=true, elements_present=[1,2,3,4,5,6] (if these were also absent, C3 would be measuring a window that draws nothing)"
+    },
+    {
+      "id": "C8 LEAK CONTROL: no census affordance appears in an ordinary conversation",
+      "pass": true,
+      "detail": "11 column row(s): 0 typed row(s), 0 carrying a picked mark (both must be 0)"
+    },
+    {
+      "id": "C0 the first thing a new player is told is drawn by the RI-UIX08 window, with the old panel suppressed",
+      "pass": true,
+      "detail": "'hold.come-to' is silent by design (O6: no surface, and none drew). First speaking node 'hold.hatch-name': window open=true (census mode=true), render/ui.js suppressed=true, speaker 'Jeeh-Ei'"
+    },
+    {
+      "id": "C0b PIXELS at the opening node: the old vellum panel painted no text",
+      "pass": true,
+      "detail": "complete=true, 0 distinct string(s) on the 'dialogue' surface"
+    }
+  ],
+  "data": {
+    "instrument": {
+      "attached": true,
+      "moveX": 1,
+      "pending": 256
+    },
+    "presence_control": {
+      "open": true,
+      "census_mode": false,
+      "elements_present": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "has_exit": true,
+      "has_dispo": true
+    },
+    "census_open": {
+      "first_node_silent": {
+        "node": "hold.come-to",
+        "window": false,
+        "suppressed": true
+      },
+      "first_speaking_node": "hold.hatch-name",
+      "window": true,
+      "census_mode": true,
+      "suppressed": true,
+      "speaker": "Jeeh-Ei"
+    },
+    "shot": {
+      "path": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/wt-census-control/docs/shots/2026-08-15-uix08-census-FIX-new-dialogue-window.png",
+      "node": "hold.hatch-name",
+      "speaker": "Jeeh-Ei",
+      "census_mode": true
+    },
+    "open_only_old_panel_text": {
+      "complete": true,
+      "distinct_count": 0,
+      "distinct": []
+    },
+    "errors": []
+  }
+}
