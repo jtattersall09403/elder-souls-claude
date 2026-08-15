@@ -1,0 +1,14 @@
+alternating (6 pairs, settle 12): mean paired p10 lift 0.631, off-series drift 0.008, mean paired p90 0.211
+  off: [14.291,14.289,14.296,14.288,14.289,14.293]
+  on : [14.924,14.921,14.926,14.921,14.92,14.919]
+PASS  PAIRED-GI-LIFT-IS-POSITIVE-EVERY-TIME  — every one of 6 pairs has p10(on) > p10(off); smallest paired lift 0.626, mean 0.631 luma. Series: [0.633,0.632,0.63,0.633,0.631,0.626]
+PASS  PAIRED-LIFT-EXCEEDS-THE-WARM-UP-DRIFT-IT-REPLACED  — mean paired lift 0.631 luma against 0.008 luma of total drift across the whole GI-off series. The block design failed precisely because its "effect" was smaller than its drift; this check refuses to repeat that.
+PASS  PAIRED-DIFFERENCE-COLLAPSES-WITHOUT-THE-FIX  — NOT APPLICABLE — this tree has the fix; the control arm is the run against the pinned-baseline clone
+PASS  PAIRED-SHADOW-LEVELS-MOVE-THE-WAY-THE-VERDICT-ASKED  — shadow_levels, the statistic R3's acceptance is written in and the one 5/5 blind pairs named the reference on: off [33,33,33,33,33,33] -> on [33,33,34,34,34,34], mean paired change 0.667. Must not go DOWN in any pair.
+PASS  PAIRED-LIT-END-IS-UNMOVED  — mean paired p90 difference 0.211 luma — the lit end must not move when the shadow floor does, which is what separates this from a global lift
+renderer: ANGLE (NVIDIA, Vulkan 1.4.303 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA) (software=false)
+GI off: p10=4.641 p90=55.646 falloff=11.9894 shadow_levels=28 local_contrast_med=6.217
+GI on:  p10=7.493 p90=7.523 falloff=1.004 shadow_levels=1 local_contrast_med=0
+PASS  GI-ON-RAISES-SHADOW-FLOOR  — p10_luma off=4.641 on=7.493 — the fix must actually raise the darkest-decile mean
+FAIL  GI-ON-INCREASES-SHADOW-DETAIL  — shadow_levels (image-leakcheck.mjs's own definition) off=28 on=1 — distinct luma levels below the 25th percentile
+FAIL  GI-ON-DOES-NOT-BRIGHTEN-THE-LIT-END  — p90_luma off=55.646 on=7.523 — a pixel already at or above its neighbourhood's own brightness should receive ~nothing; this is what a flat lift CANNOT do

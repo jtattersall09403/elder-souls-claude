@@ -139,7 +139,53 @@ measurement that would actually predict a re-judge — F3's paired effect with t
 4.63 — has not been made.** It is one run away (`--alternate` with the 240-frame warm-up removed) and
 it should be made before anybody pays for judges.
 
-### Three explanations tested and ruled out, and one lesson about testing
+### Replicated on three GPUs and a software renderer
+
+The paired lift is not a property of one card or one run:
+
+| renderer | mean paired p10 lift | control (fix torn out) |
+|---|---|---|
+| RTX A5000, run 1 | **+0.631** | −0.001 |
+| RTX A5000, run 2 | **+0.631** | −0.001 |
+| NVIDIA L4 | **+0.631** | **−0.001** |
+| SwiftShader (software, local) | **+0.634** | — |
+
+Four independent measurements agreeing to the third decimal, with the delete-the-fix control at
+−0.001 on both cards that ran it. Whatever else is uncertain in this file, **the size and the
+attribution of F3's effect are not.**
+
+`shadow_levels` is slightly softer than the single-run figure suggested: the A5000 gave +1 in all six
+pairs, the L4 gave `[33,33,33,33,33,33] → [33,33,34,34,34,34]`, a mean of **+0.667**. The honest range
+is +0.67 to +1.0 levels out of 33.
+
+### A fourth explanation tested and refuted — and what the L4 run showed instead
+
+I thought the two regimes were set by **harness call order**: `setGI` before the camera pose giving
+4.63, camera-then-settle-then-`setGI` giving 14.29. So the alternating arm was given `--warmup 0
+--gi-first` to reproduce the dark order deliberately. **It did not work.** The off-series still came
+back `[14.291, 14.289, 14.296, 14.288, 14.289, 14.293]` with `shadow_levels` 33. Call order is not it
+either. That is the fourth candidate explanation this piece has tested and had refuted.
+
+What the same run *did* show is a cleaner account of the original confound. In that process the two
+still captures read:
+
+```
+capture 1 (GI off): p10=4.641  p90=55.646  shadow_levels=28  local_contrast_med=6.217
+capture 2 (GI on) : p10=7.493  p90= 7.523  shadow_levels= 1  local_contrast_med=0
+```
+
+`p90` collapsed from 55.6 to 7.5, `shadow_levels` to **1**, `local_contrast_med` to **0** — that is not
+a lit scene, it is a near-uniform frame. **And the pinned-baseline control, which has no GI code at
+all, produced the identical degenerate second capture** (p10 7.493, p90 7.522, `shadow_levels` 1).
+
+So the block design's second still is not a picture of the scene under a different setting; it is
+sometimes not a usable picture at all, and whatever it is does not depend on the shader. Earlier runs
+returned 15.001 and 14.353 for that capture, which looked plausible enough to publish a +223% result
+from. **The failure mode is a capture that is unreliable rather than a scene that is changing**, and
+that is a better explanation of the original 93.7% than any of the four hypotheses tested above. It
+remains an explanation, not a mechanism: what makes that capture degenerate is still unidentified.
+
+### Four explanations tested and ruled out, and one lesson about testing
 
 - **The analysis.** Stills are analysed at full resolution and the sweeps on a 3× subsample.
   Recomputed offline from the saved PNGs: the still reads 4.641 at step 1 and 4.629 at step 3; the
@@ -200,5 +246,6 @@ no GPU and no repo state, so a reader can reproduce it.
 | `reports/runpod-gpu/runs/w1-f3-paired/` | RTX A5000, paired and alternating, head tree + pinned-baseline control |
 | `hw-final-a5000/` | **the citable evidence** — RTX A5000, paired and alternating, head tree and pinned-baseline control, with the verdict's own two statistics. Full run at `reports/runpod-gpu/runs/w1-f3-final/` |
 | `hw-paired-a5000/` | the first paired run, same conclusions, kept as an independent repeat |
+| `hw-dark-regime-L4/` | the NVIDIA L4 replication, and the run whose degenerate second still is the best account of the original confound |
 
 The instrument is `tools/visual/w1-f3-ambient-fill.mjs`.

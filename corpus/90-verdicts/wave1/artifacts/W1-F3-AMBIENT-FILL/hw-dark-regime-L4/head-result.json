@@ -1,0 +1,174 @@
+{
+  "entry": "game/index.html",
+  "renderer": "ANGLE (NVIDIA, Vulkan 1.4.303 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)",
+  "software_renderer": false,
+  "gi_feature_present": true,
+  "capture_size": [
+    1920,
+    1080
+  ],
+  "requested_size": [
+    1920,
+    1080
+  ],
+  "camera": {
+    "pos": [
+      3859,
+      15,
+      860
+    ],
+    "look": [
+      3820,
+      14.2,
+      859
+    ],
+    "fov": 60
+  },
+  "crop": {
+    "x0": 0,
+    "x1": 1450,
+    "y0": 140,
+    "y1": 1080
+  },
+  "place": "town-thorn (VP04 pose)",
+  "time_of_day": 9,
+  "weather": "clear",
+  "gi_off": {
+    "mean_luma": 32.7,
+    "p10_luma": 4.641,
+    "p90_luma": 55.646,
+    "falloff_ratio": 11.9894,
+    "shadow_levels": 28,
+    "local_contrast_med": 6.217
+  },
+  "gi_on": {
+    "mean_luma": 7.496,
+    "p10_luma": 7.493,
+    "p90_luma": 7.523,
+    "falloff_ratio": 1.004,
+    "shadow_levels": 1,
+    "local_contrast_med": 0
+  },
+  "checks": [
+    {
+      "id": "GI-ON-RAISES-SHADOW-FLOOR",
+      "ok": true,
+      "detail": "p10_luma off=4.641 on=7.493 — the fix must actually raise the darkest-decile mean"
+    },
+    {
+      "id": "GI-ON-INCREASES-SHADOW-DETAIL",
+      "ok": false,
+      "detail": "shadow_levels (image-leakcheck.mjs's own definition) off=28 on=1 — distinct luma levels below the 25th percentile"
+    },
+    {
+      "id": "GI-ON-DOES-NOT-BRIGHTEN-THE-LIT-END",
+      "ok": false,
+      "detail": "p90_luma off=55.646 on=7.523 — a pixel already at or above its neighbourhood's own brightness should receive ~nothing; this is what a flat lift CANNOT do"
+    }
+  ],
+  "alternating": {
+    "note": "off/on interleaved at ONE pose after a single 240-frame warm-up, so capture-order drift lands on both arms and cancels in the paired difference. This replaces the two-still block comparison as the load-bearing measurement — see the comment on `alternate()` for the RTX A4500 numbers that killed the block design.",
+    "pairs": 6,
+    "settle_frames": 12,
+    "subsample_step": 3,
+    "warmup_frames": 0,
+    "gi_set_before_camera": true,
+    "p10_off_series": [
+      14.291,
+      14.289,
+      14.296,
+      14.288,
+      14.289,
+      14.293
+    ],
+    "p10_on_series": [
+      14.924,
+      14.921,
+      14.926,
+      14.921,
+      14.92,
+      14.919
+    ],
+    "paired_p10_differences": [
+      0.633,
+      0.632,
+      0.63,
+      0.633,
+      0.631,
+      0.626
+    ],
+    "paired_p90_differences": [
+      0.211,
+      0.21,
+      0.209,
+      0.23,
+      0.199,
+      0.205
+    ],
+    "mean_paired_p10_difference": 0.631,
+    "mean_paired_p90_difference": 0.211,
+    "off_series_drift_range": 0.008,
+    "shadow_levels_off_series": [
+      33,
+      33,
+      33,
+      33,
+      33,
+      33
+    ],
+    "shadow_levels_on_series": [
+      33,
+      33,
+      34,
+      34,
+      34,
+      34
+    ],
+    "mean_paired_shadow_levels_difference": 0.667,
+    "local_contrast_med_off_series": [
+      4.674,
+      4.686,
+      4.678,
+      4.679,
+      4.683,
+      4.682
+    ],
+    "local_contrast_med_on_series": [
+      4.33,
+      4.325,
+      4.328,
+      4.339,
+      4.332,
+      4.317
+    ],
+    "mean_paired_local_contrast_difference": -0.352,
+    "gi_feature_present": true,
+    "checks": [
+      {
+        "id": "PAIRED-GI-LIFT-IS-POSITIVE-EVERY-TIME",
+        "ok": true,
+        "detail": "every one of 6 pairs has p10(on) > p10(off); smallest paired lift 0.626, mean 0.631 luma. Series: [0.633,0.632,0.63,0.633,0.631,0.626]"
+      },
+      {
+        "id": "PAIRED-LIFT-EXCEEDS-THE-WARM-UP-DRIFT-IT-REPLACED",
+        "ok": true,
+        "detail": "mean paired lift 0.631 luma against 0.008 luma of total drift across the whole GI-off series. The block design failed precisely because its \"effect\" was smaller than its drift; this check refuses to repeat that."
+      },
+      {
+        "id": "PAIRED-DIFFERENCE-COLLAPSES-WITHOUT-THE-FIX",
+        "ok": true,
+        "detail": "NOT APPLICABLE — this tree has the fix; the control arm is the run against the pinned-baseline clone"
+      },
+      {
+        "id": "PAIRED-SHADOW-LEVELS-MOVE-THE-WAY-THE-VERDICT-ASKED",
+        "ok": true,
+        "detail": "shadow_levels, the statistic R3's acceptance is written in and the one 5/5 blind pairs named the reference on: off [33,33,33,33,33,33] -> on [33,33,34,34,34,34], mean paired change 0.667. Must not go DOWN in any pair."
+      },
+      {
+        "id": "PAIRED-LIT-END-IS-UNMOVED",
+        "ok": true,
+        "detail": "mean paired p90 difference 0.211 luma — the lit end must not move when the shadow floor does, which is what separates this from a global lift"
+      }
+    ]
+  }
+}
