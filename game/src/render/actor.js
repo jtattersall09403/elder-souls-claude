@@ -580,6 +580,18 @@ function paintBody(geometry, key, L, artFamily) {
     } else if (key === 'bone') {
       // Fittings are pale and slightly uneven — river-shell and bone are not injection-moulded.
       v *= 0.94 + 0.12 * mottle(z, x, y);
+      // CLAWS ARE KERATIN AND KERATIN IS DARK. They share this surface because keratin is hard and
+      // specular and belongs with bone far better than with hide, and because a fourth surface
+      // would cost a draw call per actor — but on the ESO plate the claws are the DARKEST thing on
+      // the hand, not the palest, and a pale claw reads as a fitting glued to a fingertip.
+      //
+      // The discriminator is height, and it is honest about being one: everything else in this
+      // surface is a sash toggle at the waist (rest y ~1.07) or a shoulder clasp (~1.43), while
+      // hand claws hang at ~0.72 and foot claws sit at ~0.02. `L.pelvisY` is read off the rig at
+      // build time (0.980) so a skeleton edit moves the threshold with the body. FRAGILE IF a
+      // future fitting is authored below the pelvis — a knee-strap or a boot clasp would be
+      // darkened as a claw. If that happens the fix is a flag at build time, not a smaller margin.
+      if (y < L.pelvisY - 0.12) v *= 0.42 + 0.10 * mottle(y, z, x);
     }
     const rC = Math.min(1.6, Math.max(0, v * (1 + 0.11 * warm)));
     const gC = Math.min(1.6, Math.max(0, v));
@@ -620,10 +632,26 @@ const PLAN = {
   calf_l: { to: 'foot_l', r0: 0.098, r1: 0.068, mat: 'cloth', blend: 0.4 },
   calf_r: { to: 'foot_r', r0: 0.098, r1: 0.068, mat: 'cloth', blend: 0.4 },
   // Leaf bones: no child to measure against, so these carry an authored local extent.
-  hand_l: { local: [0, -0.095, 0.012], r0: 0.055, r1: 0.042, mat: 'skin', blend: 0.4 },
-  hand_r: { local: [0, -0.095, 0.012], r0: 0.055, r1: 0.042, mat: 'skin', blend: 0.4 },
-  foot_l: { local: [0, -0.045, 0.155], r0: 0.062, r1: 0.048, mat: 'skin', blend: 0 },
-  foot_r: { local: [0, -0.045, 0.155], r0: 0.062, r1: 0.048, mat: 'skin', blend: 0 },
+  //
+  // THESE FOUR WERE THE MASSES THAT SWALLOWED THE DIGITS, and the digits have been built since
+  // 2026-08-12 (`fdd41f0a`). `hand_l` was a 9.5 cm tube of r 0.055 -> 0.042 running straight down
+  // the digit axis: a 11 cm-diameter sausage occupying exactly the space the fingers leave the palm
+  // through. `foot_l` was a 6.2 cm-radius tube running 15.5 cm forward along the toes. Neither is a
+  // hand or a foot; both are the wrist and the ankle, and that is all they are now. The volume that
+  // makes a palm and a sole is the shaped ellipsoid emitted further down, which can be flat — a tube
+  // cannot, and a hand is above all a FLAT thing (`refs/context/ESO-argonian_character__steam-
+  // 1634540211.jpg`, both hands opened at native resolution and enlarged 3x for this piece: the back
+  // of the hand is a broad plate, clearly wider than it is thick, and the digits hang free off it).
+  //
+  // The joint balls are NOT shrunk with them. `jointRadius('hand_l')` derives from the LARGEST
+  // radius any segment has at that joint — `lowerarm_l.r1 = 0.058` — precisely so it can bridge the
+  // wedge on the outside of a wrist bend, and shrinking it would reopen the transparency defect that
+  // derivation exists to close. So the wrist stays sealed at 0.058 while the hand stops pretending
+  // to be a cylinder.
+  hand_l: { local: [0, -0.034, 0.006], r0: 0.050, r1: 0.044, mat: 'skin', blend: 0.4 },
+  hand_r: { local: [0, -0.034, 0.006], r0: 0.050, r1: 0.044, mat: 'skin', blend: 0.4 },
+  foot_l: { local: [0, -0.040, 0.055], r0: 0.056, r1: 0.046, mat: 'skin', blend: 0 },
+  foot_r: { local: [0, -0.040, 0.055], r0: 0.056, r1: 0.046, mat: 'skin', blend: 0 },
 };
 
 /**
@@ -986,25 +1014,109 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     }
   }
 
-  // Hands and feet need terminal anatomy. A tapered forearm ending in one capped tube was the
-  // canonical "rubber hose" failure in the hardware close-up. Three splayed digits and forward
-  // toes remain rigid to their terminal bones, so they cannot disturb hit volumes or IK.
+  // ---- hands and feet ---------------------------------------------------------------------
+  //
+  // WHAT WAS ACTUALLY WRONG, BECAUSE THE BRIEF FOR THIS ROUND HAD IT WRONG AND SO DID THE ROUND
+  // BEFORE IT. `orchestration/status/W1-F10-r3-materials.json` opens its own `could_not_do` with
+  // "HANDS AND FEET ARE STILL ABSENT ... no fingers, no palm, no toes, no sole". A palm ellipsoid,
+  // three fingers, an opposed thumb, a sole and three toes have been in this block since
+  // `fdd41f0a` on 2026-08-12; `git show f86acd5b:game/src/render/actor.js | grep -c "Three fingers
+  // and an opposed thumb"` returns 1 at r3's own pinned baseline. The digits were not absent.
+  //
+  // They were BURIED. Measured by `tools/visual/character-digit-read.mjs` (new, this piece) on the
+  // shipped roster at `b175da8e`, silhouetting each hand down its own back-of-hand axis:
+  //
+  //   civilian hand   separated_fraction 0.341 - 0.346 on 12 of 12  (and the separation is the
+  //                                                                  THUMB; the three fingers
+  //                                                                  never leave the palm mass)
+  //   combatant hand  separated_fraction 0.003 - 0.335 on 12 of 12  (0.003 = 0.5 mm of daylight
+  //                                                                  across a 196 mm hand)
+  //   foot            separated_fraction 0.063 - 0.067 on 12 of 12  (22.5 mm of separated toe)
+  //
+  // against an eyeballed ~0.59 on the ESO Argonian plate. Three volumes did the burying and all
+  // three are addressed: the `PLAN` leaf tubes (see the note there), the palm/sole ellipsoids
+  // below, and — the largest of them for the player and every combatant — the `hands` equipment
+  // guard, which was a 15.6 cm-diameter closed cylinder 19 cm long over the whole hand (see the
+  // `addEquip(set,'hands',...)` note).
+  //
+  // THE REFERENCE, OPENED RATHER THAN DESCRIBED. `corpus/70-visual/refs/context/
+  // ESO-argonian_character__steam-1634540211.jpg`, native 1920x1080, both hands cropped and
+  // enlarged 3x. What is in it: a broad FLAT back-of-hand plate; digits about as long as the palm,
+  // hanging free with background visible between them over most of their length; a clear inward
+  // CURL so the silhouette is a hook rather than a fan; and a distinct, darker, pointed CLAW on
+  // every digit, which is the single most legible non-human feature on the whole figure.
+  // `refs/characters/INDEX.md` §4 routes that plate FIDELITY-only under `RI-VIS10` §A2, so it
+  // governs how well a hand is made and not what an Argonian hand is — which is the use made of it:
+  // the claw count stays at four digits (Argonian, `RI-VIS10` B2 row 9's "non-human finger count"),
+  // and only the construction is taken from the plate.
+  //
+  // THE CLAWS ARE IN THE `bone` SURFACE, WHICH COSTS NO DRAW CALL. That surface already exists for
+  // RI-VIS08 B3's third material; keratin is hard and specular and belongs to it far better than to
+  // `skin`. This also turns `RI-VIS10` B2 row 9 from NO to YES on every reptilian figure we ship,
+  // which r3 recorded as the thing it most regretted leaving.
+  const digit = (S, bi, pts, r0, r1, rClaw) => {
+    // A digit is two segments and a claw, not one tube. One tube cannot curl, and a straight
+    // digit reads as a peg at every distance; the curl is also what makes the digit survive the
+    // EDGE view, where a flat fan of tubes disappears.
+    for (let s = 0; s + 1 < pts.length; s++) {
+      const t0 = s / (pts.length - 1), t1 = (s + 1) / (pts.length - 1);
+      B.skin.tube(pts[s], pts[s + 1], r0 + (r1 - r0) * t0, r0 + (r1 - r0) * t1, bi, bi, 0, 6, 2);
+    }
+    const tip = pts[pts.length - 1], prev = pts[pts.length - 2];
+    const claw = tip.clone().add(tip.clone().sub(prev).setLength(S * 0.030));
+    B.bone.tube(tip, claw, rClaw, rClaw * 0.14, bi, bi, 0, 5, 1);
+  };
   for (const [id, sideSign] of [['hand_l',-1],['hand_r',1]]) {
     const bi=index.get(id); if (bi===undefined) continue;
     const h=M.hand*M.build;
     const hm=restWorld[bi], P=(x,y,z)=>new THREE.Vector3(x*h,y*h,z*h).applyMatrix4(hm);
-    B.skin.ellipsoid(P(0,-.055,.025),[.070*h,.090*h,.048*h],bi,10);
-    // Three fingers and an opposed thumb. The gate reads "hands have separated digits"; a hand
-    // whose thumb is one of four parallel tubes has digits but not a thumb, so the fourth tube
-    // leaves the palm sideways and forward, from a different origin.
-    for(let k=-1;k<=1;k++) B.skin.tube(P(k*.025,-.084,.022),P(k*.038,-.174,.045+Math.abs(k)*.012),.016*h,.006*h,bi,bi,0,7,3);
-    B.skin.tube(P(sideSign*.052,-.060,.018),P(sideSign*.098,-.132,.060),.015*h,.006*h,bi,bi,0,7,3);
+    // THE PALM IS A PLATE, NOT A LOZENGE. It was half-extents 0.070 x 0.090 x 0.048 — a 14 cm wide,
+    // 18 cm long, 9.6 cm THICK block, reaching to y = -0.145 while the fingers ended at -0.174. Two
+    // and a half centimetres of a nine-centimetre finger were outside it. Now 9.2 x 7.6 x 3.8 cm,
+    // which is a hand's actual aspect and is what the plate shows.
+    B.skin.ellipsoid(P(0,-.060,.014),[.046*h,.038*h,.019*h],bi,10);
+    // A knuckle ridge, so the digits leave a form rather than a smooth edge.
+    B.skin.ellipsoid(P(0,-.090,.022),[.044*h,.014*h,.017*h],bi,8);
+    // Three fingers, middle longest, splaying and curling forward. The gate reads "hands have
+    // separated digits"; a hand whose thumb is one of four parallel tubes has digits but not a
+    // thumb, so the fourth leaves the palm sideways and forward, from a different origin.
+    for(let k=-1;k<=1;k++){
+      const L1 = 1 - 0.13 * Math.abs(k);         // the outer two are shorter, as a hand's are
+      digit(h, bi, [
+        P(k*.030, -.088,            .018),
+        P(k*.042, -.088 - .052*L1,  .040),
+        P(k*.050, -.088 - .092*L1,  .070),
+      ], .0150*h, .0080*h, .0080*h);
+    }
+    digit(h, bi, [
+      P(sideSign*.042, -.052, .020),
+      P(sideSign*.068, -.088, .048),
+      P(sideSign*.078, -.112, .074),
+    ], .0145*h, .0080*h, .0080*h);
   }
   for (const id of ['foot_l','foot_r']) {
     const bi=index.get(id); if (bi===undefined) continue;
     const fm=restWorld[bi], P=(x,y,z)=>new THREE.Vector3(x,y,z).applyMatrix4(fm);
-    B.skin.ellipsoid(P(0,-.035,.115),[.075,.052,.135],bi,10);
-    for(let k=-1;k<=1;k++) B.skin.tube(P(k*.030,-.038,.155),P(k*.045,-.040,.275-Math.abs(k)*.018),.018,.006,bi,bi,0,7,3);
+    // THE SOLE IS FLAT AND HAS A HEEL. It was half-extents 0.075 x 0.052 x 0.135 — a 15 cm wide,
+    // 10.4 cm thick, 27 cm long lozenge with three toes ending 2.5 cm past its front. The ankle sits
+    // at y = 0.090 in rest space (read off `skeleton.json`, not retyped: `foot_l` world y = 0.0900),
+    // so the sole's underside has to land at foot-local y = -0.088 and it still does — that number
+    // is held, because moving it would lift the character off the ground or bury it.
+    B.skin.ellipsoid(P(0,-.050,.070),[.050*M.build,.038,.098],bi,11);
+    B.skin.ellipsoid(P(0,-.046,-.012),[.044*M.build,.042,.040],bi,8);   // heel
+    B.skin.ellipsoid(P(0,-.052,.144),[.048*M.build,.026,.026],bi,7);   // ball of the foot
+    // Toes, splayed and clawed. `RI-VIS10` B2 row 8 asks for a non-plantigrade leg "or a declared
+    // reason", and the declared reason is here rather than in a status file: a digitigrade stance
+    // needs a different bone chain, `skeleton.json` declares the rest offsets `Rig.evaluate()` uses,
+    // and `hitgeometry.json` declares every hurtbox as a segment OF a bone — so re-hocking the leg
+    // would move the drawn body off the thing that can be hit. The foot is plantigrade and clawed.
+    for(let k=-1;k<=1;k++){
+      const L1 = 1 - 0.16 * Math.abs(k);
+      digit(1, bi, [
+        P(k*.030, -.056, .158),
+        P(k*.042, -.058, .158 + .074*L1),
+      ], .0165, .0090, .0090);
+    }
   }
 
   // ---- the tail ------------------------------------------------------------------------
@@ -1145,7 +1257,25 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     // Layered gorget and shoulder shells keep armour readable without obscuring the pose.
     addEquip(set,'chest','spine_02',new THREE.TorusGeometry(.176,.018,5,14,Math.PI*1.65),[0,.142,.015],[1,1,.74],[Math.PI/2,0,.28]);
     for(const s of [-1,1])addEquip(set,'chest',s<0?'upperarm_l':'upperarm_r',new THREE.SphereGeometry(heavy?.078:.064,12,7,0,Math.PI*2,0,Math.PI*.55),[0,.002,0],[1.02,.48,.72],[0,0,s*.22]);
-    for(const s of [-1,1])addEquip(set,'hands',s<0?'hand_l':'hand_r',taperedGuardGeometry(heavy?.105:mid?.095:.078,heavy?.088:mid?.078:.062,heavy?.22:.19,heavy?.86:.76),[0,-.055,0],[1,1,1]);
+    // THE `hands` GUARD IS A WRIST CUFF, NOT A MITTEN, and this one line was the largest single
+    // contributor to "every close-up shows a stump" on the player and every combatant.
+    //
+    // It was `taperedGuardGeometry(.078,.062,.19,.76)` at offset `[0,-.055,0]`: a CLOSED cylinder
+    // 15.6 cm across and 19 cm long, spanning hand-local y = +0.040 down to y = -0.150, i.e. over
+    // the palm, over all four digits, and past the knuckles. Measured with
+    // `tools/visual/character-digit-read.mjs --equipped` at `b175da8e`: separated_fraction fell to
+    // **0.003** on the smaller-handed characters — half a millimetre of daylight across a 196 mm
+    // hand — against 0.341 for the same character with the guard hidden. The hand was not missing.
+    // It was inside a tube.
+    //
+    // The reference settles what it should be instead: `refs/context/ESO-argonian_character__
+    // steam-1634540211.jpg`, opened, shows corded wrap running wrist to elbow and STOPPING AT THE
+    // WRIST — the hand below it is bare, scaled and clawed. So the guard is now 9 cm long and sits
+    // at y = +0.010, spanning +0.055 to -0.035: it still covers the wrist joint it is armour for,
+    // and it ends above the knuckle ridge. `RI-VIS10` §D2 also forbids "buckled leather jerkin with
+    // BRACERS" as a generic-fantasy read, which is a reason to keep this small and lashed rather
+    // than to grow it.
+    for(const s of [-1,1])addEquip(set,'hands',s<0?'hand_l':'hand_r',taperedGuardGeometry(heavy?.086:mid?.080:.070,heavy?.078:mid?.072:.062,heavy?.11:.09,heavy?.86:.76),[0,.010,0],[1,1,1]);
     for(const s of [-1,1])addEquip(set,'legs',s<0?'calf_l':'calf_r',taperedGuardGeometry(heavy?.13:mid?.115:.095,heavy?.10:mid?.09:.072,heavy?.38:.34,heavy?.86:.78),[0,-.17,0],[1,1,1]);
     // A belt, hanging front panel and oblique bindings integrate the set across the torso and
     // pelvis. Without these junctions every slot read as an unrelated primitive glued to a rig.
