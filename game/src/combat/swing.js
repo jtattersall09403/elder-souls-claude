@@ -61,7 +61,19 @@ export const FOLLOW_PHASE = { light: 0.24, medium: 0.26, heavy: 0.34, ultra: 0.3
 /** Root-forward overshoot at the end of the active window — the "settle" of RI-WPN05 §E. */
 const SETTLE = { light: 0.00, medium: 0.035, heavy: 0.055, ultra: 0.075, ranged: 0.0 };
 
-function r2(x) { return Math.round(x * 1000) / 1000; }
+/**
+ * **THE NAME IS THE TRAP AND IT HAS ALREADY COST A ROUND.** `r2` rounds to **three** decimals,
+ * not two. `orchestration/status/W1-F10-r10.json` filed a landmine against it reading *"two
+ * decimal places, so the generator cannot express a 7.96 mm offset at all"*, concluded that
+ * fixing it *"needs a precision change, not a value change"*, and would have sent the next
+ * builder to widen a function that is already wide enough; the r10 critic overturned it
+ * (`HAZARDS §20d`). Its smallest non-zero step is **1 mm**, and −0.00796 survives it as −0.008.
+ *
+ * Exported so `tools/visual/f10-r11-swing-boundary.mjs` arm 3 can test that claim against THIS
+ * function rather than against a copy of it — a test that re-implements the thing it tests is
+ * testing its own re-implementation, and this is precisely the assertion that was wrong.
+ */
+export function r2(x) { return Math.round(x * 1000) / 1000; }
 
 /**
  * Build a `Clip`-compatible archetype object from a swing profile.
