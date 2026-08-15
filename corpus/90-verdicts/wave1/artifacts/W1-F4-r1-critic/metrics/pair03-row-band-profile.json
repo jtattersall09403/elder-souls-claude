@@ -1,0 +1,114 @@
+{
+  "at": "2026-08-15T19:13:31.718Z",
+  "what": "The builder's OWN two banked pair03 judged crops, profiled by 32-row band. The claim under test is ARBITRATION S60's and STATUS.md's: 'before is a uniformly lit flat olive ground with no shadow anywhere; after is a large soft cast shadow across the lower two thirds with sunlit patches between'.",
+  "source_frames": [
+    "corpus/90-verdicts/wave1/artifacts/F4-KEY-LIGHT/frames/pair03__BEFORE-revert__judged-crop.png",
+    "corpus/90-verdicts/wave1/artifacts/F4-KEY-LIGHT/frames/pair03__AFTER__judged-crop.png"
+  ],
+  "result": "NOT ONE of the sixteen 32-row bands got brighter. The largest fall is the TOP band - the carved stonework said to have become readable as stone - at -32.07 luma, -28 percent.",
+  "pixels": {
+    "brighter_gt_1_pct": 8.7,
+    "darker_lt_minus_1_pct": 90.61,
+    "within_1_pct": 0.69,
+    "max_positive_delta": 28.3,
+    "max_negative_delta": -115.6
+  },
+  "row_bands": [
+    {
+      "row_band": 0,
+      "before": 115.24,
+      "after": 83.17,
+      "delta": -32.07
+    },
+    {
+      "row_band": 32,
+      "before": 124.78,
+      "after": 95.45,
+      "delta": -29.33
+    },
+    {
+      "row_band": 64,
+      "before": 121.89,
+      "after": 98.66,
+      "delta": -23.23
+    },
+    {
+      "row_band": 96,
+      "before": 83.11,
+      "after": 65.71,
+      "delta": -17.4
+    },
+    {
+      "row_band": 128,
+      "before": 78.65,
+      "after": 63.24,
+      "delta": -15.41
+    },
+    {
+      "row_band": 160,
+      "before": 54.51,
+      "after": 46.8,
+      "delta": -7.71
+    },
+    {
+      "row_band": 192,
+      "before": 40.48,
+      "after": 33.13,
+      "delta": -7.34
+    },
+    {
+      "row_band": 224,
+      "before": 49.94,
+      "after": 31.37,
+      "delta": -18.57
+    },
+    {
+      "row_band": 256,
+      "before": 46.48,
+      "after": 25.34,
+      "delta": -21.13
+    },
+    {
+      "row_band": 288,
+      "before": 39.37,
+      "after": 20.46,
+      "delta": -18.91
+    },
+    {
+      "row_band": 320,
+      "before": 30.49,
+      "after": 15.21,
+      "delta": -15.29
+    },
+    {
+      "row_band": 352,
+      "before": 30.06,
+      "after": 14.22,
+      "delta": -15.84
+    },
+    {
+      "row_band": 384,
+      "before": 29.36,
+      "after": 13.09,
+      "delta": -16.28
+    },
+    {
+      "row_band": 416,
+      "before": 28.44,
+      "after": 11.97,
+      "delta": -16.47
+    },
+    {
+      "row_band": 448,
+      "before": 27.2,
+      "after": 10.75,
+      "delta": -16.45
+    },
+    {
+      "row_band": 480,
+      "before": 26.34,
+      "after": 9.85,
+      "delta": -16.49
+    }
+  ]
+}
