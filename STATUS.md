@@ -22,11 +22,16 @@ Alongside that: shrinking the documentation every agent reads before it can star
 - The map opens, shows the whole province, and hides only the markers you haven't found.
 
 **Still wrong, and you will see it:**
-- **You cannot select topics in the dialogue window, and character creation doesn't use it.** You found
-  both. The window itself is *right* — it measures identically to your own Morrowind reference — but
-  every check we had tested how it looks, none tested that it works. Both faults are being fixed, and
-  a rule is now in the doctrine that any screen must be driven with real key presses and clicks, with
-  every control operated. A control that is drawn and does nothing is a hard fail.
+- **Dialogue: clicking now works — the mouse had never been wired up at all.** Not a bug in the window;
+  there was **no pointer path in the entire interface**. A rule written for the combat HUD's
+  thumbstick screens — *"no cursor, no hover, no click target"* — was silently inherited by a window
+  whose own spec describes what a click does. The keyboard always worked (arrow keys and E); the mouse
+  and touch did nothing, so every control you could see was a picture of a control. Mouse, touch,
+  keyboard and gamepad now all route through one place. Asking the same topic twice also printed
+  nothing, and now doesn't.
+  **Still open:** character creation still uses the old panel. Routing it through the new window needs
+  three things the window has no element for — multi-select, a typed name, and a "waiting for two
+  more" aside — so it is a real piece of design work rather than a one-line switch. Next up.
 - **The menus are text tables where Morrowind's are painted objects.** Measured: **zero** pictorial
   elements in the inventory — no icons, no paper doll, no portraits. Panel fill 0.21 against
   Morrowind's 0.61. The out-of-combat HUD has **1 of its 6 elements**, and that one sits in the
