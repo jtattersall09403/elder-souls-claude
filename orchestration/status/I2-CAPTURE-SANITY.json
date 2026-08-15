@@ -1,19 +1,36 @@
 {
   "task_id": "I2-CAPTURE-SANITY",
-  "roadmap_item": "I2",
+  "roadmap_item": "I2 — capture and the Deck (ring 0)",
+  "role": "builder",
   "state": "in_progress",
+  "branch": "codex/wave1-build-experiment",
   "started": "2026-08-15",
   "could_not_do": [
-    "Nothing yet — just started. This field is written first and kept honest."
+    "IN PROGRESS — this list is written first and kept honest as I go."
   ],
-  "headline": "Per-frame capture sanity gate + subject-presence check, with proven-red arms.",
-  "next_step": "Read HAZARDS §15/§15a, ROADMAP ring 0, W1-F3-AMBIENT-FILL.json; enumerate capture paths.",
+  "headline": "Per-frame capture sanity gate (is this an image?) + subject-presence gate (is the subject in it?), thresholds derived from the real on-disk capture corpus, with arms proven to go red.",
+  "findings_so_far": [
+    "`tools/visual/frame-liveness.mjs` ALREADY EXISTED when I arrived: 240 lines, mtime 09:06:54 today, and it is UNTRACKED — `git ls-files tools/visual/frame-liveness.mjs` returns nothing and `git log -- <it>` is empty. It has never been banked.",
+    "ITS SELF-TEST FAILS TODAY. `node tools/visual/frame-liveness.mjs --self-test` → arm (d) `street, no subject` returns LIVE where it wants NO_SUBJECT (subject_frac=0.098 vs threshold 0.045, subject_row_frac=0.4319 vs 0.25). So the shipped-but-unbanked tool cannot tell a building from a character — a false GREEN in exactly the direction the F10 defect ran.",
+    "NOTHING IMPORTS IT. Grep over the tree (excluding node_modules) finds `frame-liveness` referenced only inside its own file and in the generated `orchestration/index/TOOLS.md`. It is wired into no capture path.",
+    "Its thresholds (min_shadow_levels 12, min_local_contrast 0.8, min_subject_frac 0.045, min_subject_rows 0.25) are round chosen numbers with no recorded derivation.",
+    "GROUND TRUTH for the degenerate capture is on disk as JSON, not PNG: corpus/90-verdicts/wave1/artifacts/W1-F3-AMBIENT-FILL/hw-dark-regime-L4/{head,control}-result.json. gi_on = mean 7.496 / p10 7.493 / p90 7.523 / shadow_levels 1 / local_contrast_med 0, IDENTICAL in the head and pinned-control trees. The degenerate stills themselves were never saved as PNGs, so the gate cannot be regression-tested against the original frame — only against a reconstruction with the same statistics."
+  ],
+  "decisions": [
+    "TAKING OVER `tools/visual/frame-liveness.mjs` rather than creating a second tool at `frame-sanity.mjs`. Reason: it is untracked, no live status file lists it in `files_touched` (W1-30V lists build-deck/deck.json/deck.mjs/frame-stats/contact-sheet/deck-compare; W1-UIX08-INPUT-FIX has an empty files_touched and claims `tools/` at directory level for a dialogue-input piece), and shipping a near-duplicate of a broken tool is worse than repairing it. REVERSIBLE: if its author reappears and objects, the repair is a superset and can be split back out.",
+    "NOT hunting the root cause of the degenerate capture (brief says so explicitly; four hypotheses already refuted by W1-F3-AMBIENT-FILL)."
+  ],
+  "next_step": "Derive thresholds from the real capture corpus (thousands of PNGs under reports/runpod-gpu/runs and reports/visual-truth), rebuild the gate, fix the failing arm, wire in, fix --revision default.",
   "files_touched": [
     "orchestration/status/I2-CAPTURE-SANITY.json"
   ],
   "files_claimed": [
-    "tools/visual/frame-sanity.mjs",
-    "tools/visual/frame-sanity-selftest.mjs",
+    "tools/visual/frame-liveness.mjs",
+    "tools/visual/deck.mjs",
+    "tools/visual/deck-motion.mjs",
+    "tools/visual/gpu-deck.mjs",
+    "tools/visual/collect-run.mjs",
     "orchestration/status/I2-CAPTURE-SANITY.json"
-  ]
+  ],
+  "redundant_with": []
 }

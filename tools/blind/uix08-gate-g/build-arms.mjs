@@ -92,18 +92,32 @@ const rnd = mulberry32(seed);
 const git = (...a) => execFileSync('git', a, { cwd: REPO_ROOT, encoding: 'utf8' }).trim();
 const COMMIT = String(args.commit || git('rev-parse', 'HEAD'));
 
-function worktreeFor(commit) {
-  const dir = path.join(path.dirname(OUT), `base-${commit}`);
-  if (fs.existsSync(path.join(dir, 'game', 'index.html'))) return dir;
-  ensureDir(path.dirname(dir));
+/**
+ * The pinned `game/` tree, extracted from the COMMIT OBJECT, not copied from the working tree.
+ *
+ * This started as `git worktree add --detach`, which is the right instrument for a control clone
+ * and the wrong one here — it checks out the WHOLE repository, and this repository is 1.8 GB of
+ * `reports/` and `corpus/` artefacts. Two of them filled the disk mid-build (`No space left on
+ * device`, 96% full), which is the failure `browser.mjs assertCaptureDiskSpace` exists to make
+ * loud and which here killed the build instead.
+ *
+ * `git archive <sha> game` gives exactly the same frozen bytes for exactly the paths we serve —
+ * it reads the commit's tree object and never touches the working tree — at 36 MB instead of
+ * 1.8 GB. It is not the "hard-link copy of the live tree" that `HAZARDS` §11 forbids; the thing
+ * §11 forbids is a copy that MOVES, and a tree object cannot move.
+ */
+function extractGameAt(commit, dest) {
+  ensureDir(dest);
   try {
-    execFileSync('git', ['worktree', 'add', '--detach', dir, commit], { cwd: REPO_ROOT, stdio: 'pipe' });
+    execFileSync('bash', ['-c', `git archive ${commit} game | tar -x -C ${JSON.stringify(dest)}`],
+      { cwd: REPO_ROOT, stdio: 'pipe' });
   } catch (e) {
-    die(EXIT.INTERNAL, `could not create a git worktree at ${commit}: ${e.message}\n` +
-      '  A hard-link copy of the live tree is NOT an acceptable substitute — it moves under the ' +
-      'experiment, which is the whole reason HAZARDS §11 exists.');
+    die(EXIT.INTERNAL, `could not extract game/ at ${commit}: ${e.message}`);
   }
-  return dir;
+  if (!fs.existsSync(path.join(dest, 'game', 'index.html'))) {
+    die(EXIT.INTERNAL, `git archive ${commit} produced no game/index.html at ${dest}`);
+  }
+  return path.join(dest, 'game');
 }
 
 // ---- codenames: neutral, orderless, and drawn before anything knows which arm is which ---------
@@ -201,11 +215,10 @@ function walk(dir, filter) {
 }
 
 // ---- build -------------------------------------------------------------------------------------
-const base = worktreeFor(COMMIT);
-const baseGame = path.join(base, 'game');
-if (!fs.existsSync(path.join(baseGame, 'index.html'))) {
-  die(EXIT.MISSING_GAME, `no game/index.html in the pinned worktree ${base}`);
-}
+const base = path.join(path.dirname(OUT), `base-${COMMIT.slice(0, 12)}`);
+const baseGame = fs.existsSync(path.join(base, 'game', 'index.html'))
+  ? path.join(base, 'game')
+  : extractGameAt(COMMIT, base);
 
 if (fs.existsSync(OUT)) {
   if (!args.force && fs.readdirSync(OUT).length) die(EXIT.USAGE, `${OUT} exists and is not empty (use --force)`);
@@ -288,12 +301,14 @@ const protoSrc = path.join(REPO_ROOT, 'reports/blind/uix08-gate-g/DRIVER-PROTOCO
 if (fs.existsSync(protoSrc)) fs.copyFileSync(protoSrc, path.join(OUT, 'DRIVER-PROTOCOL.md'));
 
 // pack.json carries NO mapping. Everything in it is safe for a judge to read.
+// NOTHING IN HERE MAY BE A ROUTE BACK TO THE REPO. The first build published
+// `baseline_commit`, and the commit that seals this pack has a headline naming the ablated arm in
+// so many words — so a judge with the sha could `git show` it and be told the answer by our own
+// commit message. The sha, the seed and the worktree path live in the KEY, which is outside the
+// pack; what is left here is what a judge needs to run the tool and nothing else.
 const pack = {
-  schema: 'elder-souls/uix08-gate-g-pack@1',
+  schema: 'elder-souls/played-pair@1',
   built_at: new Date().toISOString(),
-  baseline_commit: COMMIT,
-  worktree: base,
-  seed,
   leaky: LEAKY,
   arms: arms.map((a) => ({ codename: a.codename, dir: a.dir, entry: a.entry })),
   redaction: arms.map((a) => ({

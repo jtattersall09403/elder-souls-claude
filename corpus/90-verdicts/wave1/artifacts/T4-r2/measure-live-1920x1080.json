@@ -4,7 +4,7 @@
     1920,
     1080
   ],
-  "commit": "825a51a989037904b608967fcb179bca8f9e3f40",
+  "commit": "27c44c77d775e90cf4c2fa25c51c4287b6aefc99",
   "screens": {
     "world": {
       "mode": "world",
@@ -39,6 +39,17 @@
       },
       "pictorial_ids": [],
       "panel_rect": null,
+      "frame_sanity": {
+        "ok": true,
+        "levels": 75,
+        "local_contrast_med": 0.213,
+        "local_contrast_p95": 65.241,
+        "p10": 0,
+        "p90": 25,
+        "spread": 25,
+        "reason": null
+      },
+      "panel_sanity": null,
       "panel_fill": {
         "fill": null,
         "reason": "no panel on this frame"
@@ -177,7 +188,7 @@
     },
     "inventory": {
       "mode": "inventory",
-      "element_count": 71,
+      "element_count": 75,
       "kinds": {
         "health_bar": 1,
         "stamina_bar": 1,
@@ -194,10 +205,10 @@
         "encumbrance": 1,
         "doll": 1,
         "divider": 5,
+        "item_icon": 21,
+        "list_row": 20,
         "category": 11,
         "gold": 1,
-        "list_row": 18,
-        "item_icon": 19,
         "scroll_extent": 1,
         "detail_panel": 1,
         "hint": 1
@@ -208,18 +219,20 @@
           "doll",
           "glyph_object"
         ],
-        "on_screen": 20,
-        "in_panel": 20,
+        "on_screen": 22,
+        "in_panel": 22,
         "by_kind": {
-          "item_icon": 19,
+          "item_icon": 21,
           "doll": 1,
           "glyph_object": 0
         },
-        "item_rows": 18,
-        "item_icons": 19
+        "item_rows": 20,
+        "item_icons": 21
       },
       "pictorial_ids": [
         "inventory.doll",
+        "inventory.worn.body",
+        "inventory.worn.right",
         "inventory.icon.hist-bark-token",
         "inventory.icon.black-water-draught",
         "inventory.icon.bog-iron-maul",
@@ -246,8 +259,28 @@
         1520,
         780
       ],
+      "frame_sanity": {
+        "ok": true,
+        "levels": 83,
+        "local_contrast_med": 4.213,
+        "local_contrast_p95": 59.982,
+        "p10": 0,
+        "p90": 64,
+        "spread": 64,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 75,
+        "local_contrast_med": 11.782,
+        "local_contrast_p95": 64.885,
+        "p10": 51,
+        "p90": 85,
+        "spread": 34,
+        "reason": null
+      },
       "panel_fill": {
-        "fill": 0.1592,
+        "fill": 0.1524,
         "mode_rgb": [
           44,
           57,
@@ -289,6 +322,14 @@
         {
           "id": "inventory.encumbrance",
           "text": "81.7 / 183"
+        },
+        {
+          "id": "inventory.wornrow.body",
+          "text": "Chitin cuirass"
+        },
+        {
+          "id": "inventory.wornrow.right",
+          "text": "Reed-cutter"
         },
         {
           "id": "inventory.sort",
@@ -444,10 +485,18 @@
         "clay"
       ],
       "d1_observed": {
-        "rows": 18,
-        "rows_with_3_plus_hues_in_leading_48px": 18,
-        "min_hues": 8,
+        "rows": 20,
+        "rows_with_3_plus_hues_in_leading_48px": 20,
+        "min_hues": 6,
         "per_row": [
+          {
+            "id": "inventory.wornrow.body",
+            "hues": 6
+          },
+          {
+            "id": "inventory.wornrow.right",
+            "hues": 6
+          },
           {
             "id": "inventory.row.hist-bark-token",
             "hues": 13
@@ -463,14 +512,6 @@
           {
             "id": "inventory.row.boiled-hide-jack",
             "hues": 12
-          },
-          {
-            "id": "inventory.row.bone-picks",
-            "hues": 12
-          },
-          {
-            "id": "inventory.row.carved-egg",
-            "hues": 8
           }
         ]
       },
@@ -609,8 +650,28 @@
         1520,
         780
       ],
+      "frame_sanity": {
+        "ok": true,
+        "levels": 99,
+        "local_contrast_med": 1.218,
+        "local_contrast_p95": 141.27,
+        "p10": 0,
+        "p90": 178,
+        "spread": 178,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 89,
+        "local_contrast_med": 2,
+        "local_contrast_p95": 128.555,
+        "p10": 154,
+        "p90": 181,
+        "spread": 27,
+        "reason": null
+      },
       "panel_fill": {
-        "fill": 0.1311,
+        "fill": 0.1315,
         "mode_rgb": [
           172,
           165,
@@ -887,12 +948,32 @@
         1520,
         780
       ],
+      "frame_sanity": {
+        "ok": true,
+        "levels": 82,
+        "local_contrast_med": 4.213,
+        "local_contrast_p95": 72.189,
+        "p10": 0,
+        "p90": 63,
+        "spread": 63,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 71,
+        "local_contrast_med": 11.927,
+        "local_contrast_p95": 68.622,
+        "p10": 51,
+        "p90": 68,
+        "spread": 17,
+        "reason": null
+      },
       "panel_fill": {
-        "fill": 0.0951,
+        "fill": 0.0895,
         "mode_rgb": [
-          42,
-          55,
-          43
+          44,
+          57,
+          45
         ],
         "pixels": 1185600,
         "rect": [
@@ -1242,8 +1323,28 @@
         1520,
         780
       ],
+      "frame_sanity": {
+        "ok": true,
+        "levels": 61,
+        "local_contrast_med": 0.213,
+        "local_contrast_p95": 29.644,
+        "p10": 0,
+        "p90": 34,
+        "spread": 34,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 51,
+        "local_contrast_med": 0.425,
+        "local_contrast_p95": 17.513,
+        "p10": 24,
+        "p90": 37,
+        "spread": 13,
+        "reason": null
+      },
       "panel_fill": {
-        "fill": 0.0695,
+        "fill": 0.0703,
         "mode_rgb": [
           27,
           26,
@@ -1464,8 +1565,28 @@
         1520,
         780
       ],
+      "frame_sanity": {
+        "ok": true,
+        "levels": 79,
+        "local_contrast_med": 0.425,
+        "local_contrast_p95": 74.154,
+        "p10": 0,
+        "p90": 221,
+        "spread": 221,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 67,
+        "local_contrast_med": 0.928,
+        "local_contrast_p95": 73.434,
+        "p10": 203,
+        "p90": 222,
+        "spread": 19,
+        "reason": null
+      },
       "panel_fill": {
-        "fill": 0.0912,
+        "fill": 0.0911,
         "mode_rgb": [
           219,
           217,
@@ -1676,743 +1797,7 @@
       },
       "combat_phase": "world",
       "combat_phase_source": "encounter"
-    },
-    "container": {
-      "mode": "container",
-      "element_count": 57,
-      "kinds": {
-        "health_bar": 1,
-        "stamina_bar": 1,
-        "focus_bar": 1,
-        "heal_charges": 1,
-        "equip_load": 1,
-        "quick_slots": 1,
-        "interact_prompt": 1,
-        "bearing_dial": 1,
-        "effect_strip": 1,
-        "place_name": 1,
-        "panel": 1,
-        "panel_header": 3,
-        "list_row": 21,
-        "item_icon": 21,
-        "hint": 1
-      },
-      "pictorial_declared": {
-        "kinds_counted": [
-          "item_icon",
-          "doll",
-          "glyph_object"
-        ],
-        "on_screen": 21,
-        "in_panel": 21,
-        "by_kind": {
-          "item_icon": 21,
-          "doll": 0,
-          "glyph_object": 0
-        },
-        "item_rows": 21,
-        "item_icons": 21
-      },
-      "pictorial_ids": [
-        "container.mine.icon.hist-bark-token",
-        "container.mine.icon.black-water-draught",
-        "container.mine.icon.bog-iron-maul",
-        "container.mine.icon.boiled-hide-jack",
-        "container.mine.icon.bone-picks",
-        "container.mine.icon.carved-egg",
-        "container.mine.icon.chitin-cuirass",
-        "container.mine.icon.coil-of-twine",
-        "container.mine.icon.resin-of-the-comb",
-        "container.mine.icon.counted-crate-tally",
-        "container.mine.icon.silt-strider-silk-sash",
-        "container.mine.icon.guar-jerky",
-        "container.mine.icon.factors-coat",
-        "container.mine.icon.weighing-stone",
-        "container.mine.icon.fever-cut",
-        "container.mine.icon.fire-drill",
-        "container.mine.icon.resin-lamp-oil",
-        "container.mine.icon.hackle-lo-leaf",
-        "container.theirs.icon.bog-iron-maul",
-        "container.theirs.icon.reed-cutter",
-        "container.theirs.icon.rootweave-cowl"
-      ],
-      "panel_rect": [
-        200,
-        160,
-        1520,
-        780
-      ],
-      "panel_fill": {
-        "fill": 0.0465,
-        "mode_rgb": [
-          132,
-          85,
-          55
-        ],
-        "pixels": 1185600,
-        "rect": [
-          200,
-          160,
-          1520,
-          780
-        ]
-      },
-      "texts": [
-        {
-          "id": "hud.heal",
-          "text": "5"
-        },
-        {
-          "id": "hud.equipload",
-          "text": "LIGHT"
-        },
-        {
-          "id": "hud.prompt",
-          "text": "Sesh-Anaat"
-        },
-        {
-          "id": "hud.bearing",
-          "text": "S"
-        },
-        {
-          "id": "hud.place",
-          "text": "thorn-hall"
-        },
-        {
-          "id": "container.header",
-          "text": "Reed Creel"
-        },
-        {
-          "id": "container.mine.head",
-          "text": "Carried"
-        },
-        {
-          "id": "container.mine.row.hist-bark-token",
-          "text": "Bark token  0.1  —"
-        },
-        {
-          "id": "container.mine.row.black-water-draught",
-          "text": "Black-water draught  0.4  30"
-        },
-        {
-          "id": "container.mine.row.bog-iron-maul",
-          "text": "Bog-iron maul  11.5  96"
-        },
-        {
-          "id": "container.mine.row.boiled-hide-jack",
-          "text": "Boiled hide jack  4.2  55"
-        },
-        {
-          "id": "container.mine.row.bone-picks",
-          "text": "Bone picks, set of five  0.3  48"
-        },
-        {
-          "id": "container.mine.row.carved-egg",
-          "text": "Carved egg  0.2  5"
-        },
-        {
-          "id": "container.mine.row.chitin-cuirass",
-          "text": "Chitin cuirass  7.5  210"
-        },
-        {
-          "id": "container.mine.row.coil-of-twine",
-          "text": "Coil of weir twine  1.3  6"
-        },
-        {
-          "id": "container.mine.row.resin-of-the-comb",
-          "text": "Comb resin  0.5  22"
-        },
-        {
-          "id": "container.mine.row.counted-crate-tally",
-          "text": "Crate tally, three counts  0.0  —"
-        },
-        {
-          "id": "container.mine.row.silt-strider-silk-sash",
-          "text": "Dres silk sash  0.2  260"
-        },
-        {
-          "id": "container.mine.row.guar-jerky",
-          "text": "Dried guar  0.6  5"
-        },
-        {
-          "id": "container.mine.row.factors-coat",
-          "text": "Factor's coat  1.4  120"
-        },
-        {
-          "id": "container.mine.row.weighing-stone",
-          "text": "Factor's weighing stone  2.5  30"
-        },
-        {
-          "id": "container.mine.row.fever-cut",
-          "text": "Fever-cut  0.4  46"
-        },
-        {
-          "id": "container.mine.row.fire-drill",
-          "text": "Fire-drill and tinder  0.7  8"
-        },
-        {
-          "id": "container.mine.row.resin-lamp-oil",
-          "text": "Flask of lamp resin  0.9  11"
-        },
-        {
-          "id": "container.mine.row.hackle-lo-leaf",
-          "text": "Hackle-lo leaf  0.1  3"
-        },
-        {
-          "id": "container.theirs.head",
-          "text": "Reed Creel"
-        },
-        {
-          "id": "container.theirs.row.bog-iron-maul",
-          "text": "Bog-iron maul  11.5  96"
-        },
-        {
-          "id": "container.theirs.row.reed-cutter",
-          "text": "Reed-cutter  3.0  42"
-        },
-        {
-          "id": "container.theirs.row.rootweave-cowl",
-          "text": "Rootweave cowl  0.6  18"
-        },
-        {
-          "id": "container.hint",
-          "text": "Confirm moves one thing across. There is no button that decides what is worth keeping."
-        }
-      ],
-      "ri_citations": [],
-      "undefined_headers": [],
-      "materials": [
-        "chitin",
-        "root",
-        "ink",
-        "parchment",
-        "bone",
-        "resin",
-        "reed",
-        "shell",
-        "clay"
-      ],
-      "materials_painted": [
-        "chitin",
-        "root",
-        "ink",
-        "parchment",
-        "bone",
-        "resin",
-        "reed",
-        "shell",
-        "clay"
-      ],
-      "d1_observed": {
-        "rows": 21,
-        "rows_with_3_plus_hues_in_leading_48px": 21,
-        "min_hues": 6,
-        "per_row": [
-          {
-            "id": "container.mine.row.hist-bark-token",
-            "hues": 10
-          },
-          {
-            "id": "container.mine.row.black-water-draught",
-            "hues": 13
-          },
-          {
-            "id": "container.mine.row.bog-iron-maul",
-            "hues": 11
-          },
-          {
-            "id": "container.mine.row.boiled-hide-jack",
-            "hues": 12
-          },
-          {
-            "id": "container.mine.row.bone-picks",
-            "hues": 12
-          },
-          {
-            "id": "container.mine.row.carved-egg",
-            "hues": 7
-          }
-        ]
-      },
-      "hud_world": {
-        "set": {
-          "W1_bearing_dial": {
-            "built": true,
-            "drawn": true,
-            "conditional": "out of combat"
-          },
-          "W2_effect_strip": {
-            "built": true,
-            "drawn": true,
-            "conditional": "out of combat, ≥1 effect",
-            "expected": true
-          },
-          "W3_sneak_state": {
-            "built": true,
-            "drawn": false,
-            "conditional": "both phases, while sneaking",
-            "expected": false
-          },
-          "W4_condition_marks": {
-            "built": true,
-            "drawn": true,
-            "conditional": "both phases, always",
-            "inside": "hud.quickslots",
-            "added_px": 0,
-            "values": {
-              "right": 0.86,
-              "left": null,
-              "spell": null,
-              "item": 0
-            }
-          },
-          "W5_place_name": {
-            "built": true,
-            "drawn": true,
-            "conditional": "out of combat, ≤3 s after a cell change",
-            "expected": true
-          },
-          "W6_breath_meter": {
-            "built": true,
-            "drawn": false,
-            "conditional": "both phases, while submerged",
-            "expected": false
-          }
-        },
-        "elements": [
-          {
-            "id": "hud.bearing",
-            "kind": "bearing_dial",
-            "rect": [
-              1616,
-              942,
-              96,
-              96
-            ],
-            "in_bottom_half": true
-          },
-          {
-            "id": "hud.effects",
-            "kind": "effect_strip",
-            "rect": [
-              1574,
-              1006,
-              30,
-              32
-            ],
-            "in_bottom_half": true
-          },
-          {
-            "id": "hud.place",
-            "kind": "place_name",
-            "rect": [
-              42,
-              950,
-              520,
-              36
-            ],
-            "in_bottom_half": true
-          }
-        ],
-        "all_in_bottom_half": true,
-        "overlaps": [],
-        "persistent_count": 3,
-        "coverage_pct": 1.3935,
-        "withdrawn": [],
-        "withdrawn_because": null
-      },
-      "combat_phase": "world",
-      "combat_phase_source": "encounter"
-    },
-    "container_no_name": {
-      "mode": "container",
-      "element_count": 53,
-      "kinds": {
-        "health_bar": 1,
-        "stamina_bar": 1,
-        "focus_bar": 1,
-        "heal_charges": 1,
-        "equip_load": 1,
-        "quick_slots": 1,
-        "interact_prompt": 1,
-        "bearing_dial": 1,
-        "effect_strip": 1,
-        "place_name": 1,
-        "panel": 1,
-        "panel_header": 3,
-        "list_row": 19,
-        "item_icon": 19,
-        "hint": 1
-      },
-      "pictorial_declared": {
-        "kinds_counted": [
-          "item_icon",
-          "doll",
-          "glyph_object"
-        ],
-        "on_screen": 19,
-        "in_panel": 19,
-        "by_kind": {
-          "item_icon": 19,
-          "doll": 0,
-          "glyph_object": 0
-        },
-        "item_rows": 19,
-        "item_icons": 19
-      },
-      "pictorial_ids": [
-        "container.mine.icon.hist-bark-token",
-        "container.mine.icon.black-water-draught",
-        "container.mine.icon.bog-iron-maul",
-        "container.mine.icon.boiled-hide-jack",
-        "container.mine.icon.bone-picks",
-        "container.mine.icon.carved-egg",
-        "container.mine.icon.chitin-cuirass",
-        "container.mine.icon.coil-of-twine",
-        "container.mine.icon.resin-of-the-comb",
-        "container.mine.icon.counted-crate-tally",
-        "container.mine.icon.silt-strider-silk-sash",
-        "container.mine.icon.guar-jerky",
-        "container.mine.icon.factors-coat",
-        "container.mine.icon.weighing-stone",
-        "container.mine.icon.fever-cut",
-        "container.mine.icon.fire-drill",
-        "container.mine.icon.resin-lamp-oil",
-        "container.mine.icon.hackle-lo-leaf",
-        "container.theirs.icon.reed-cutter"
-      ],
-      "panel_rect": [
-        200,
-        160,
-        1520,
-        780
-      ],
-      "panel_fill": {
-        "fill": 0.0447,
-        "mode_rgb": [
-          132,
-          85,
-          55
-        ],
-        "pixels": 1185600,
-        "rect": [
-          200,
-          160,
-          1520,
-          780
-        ]
-      },
-      "texts": [
-        {
-          "id": "hud.heal",
-          "text": "5"
-        },
-        {
-          "id": "hud.equipload",
-          "text": "LIGHT"
-        },
-        {
-          "id": "hud.prompt",
-          "text": "Sesh-Anaat"
-        },
-        {
-          "id": "hud.bearing",
-          "text": "S"
-        },
-        {
-          "id": "hud.place",
-          "text": "thorn-hall"
-        },
-        {
-          "id": "container.header",
-          "text": "Container"
-        },
-        {
-          "id": "container.mine.head",
-          "text": "Carried"
-        },
-        {
-          "id": "container.mine.row.hist-bark-token",
-          "text": "Bark token  0.1  —"
-        },
-        {
-          "id": "container.mine.row.black-water-draught",
-          "text": "Black-water draught  0.4  30"
-        },
-        {
-          "id": "container.mine.row.bog-iron-maul",
-          "text": "Bog-iron maul  11.5  96"
-        },
-        {
-          "id": "container.mine.row.boiled-hide-jack",
-          "text": "Boiled hide jack  4.2  55"
-        },
-        {
-          "id": "container.mine.row.bone-picks",
-          "text": "Bone picks, set of five  0.3  48"
-        },
-        {
-          "id": "container.mine.row.carved-egg",
-          "text": "Carved egg  0.2  5"
-        },
-        {
-          "id": "container.mine.row.chitin-cuirass",
-          "text": "Chitin cuirass  7.5  210"
-        },
-        {
-          "id": "container.mine.row.coil-of-twine",
-          "text": "Coil of weir twine  1.3  6"
-        },
-        {
-          "id": "container.mine.row.resin-of-the-comb",
-          "text": "Comb resin  0.5  22"
-        },
-        {
-          "id": "container.mine.row.counted-crate-tally",
-          "text": "Crate tally, three counts  0.0  —"
-        },
-        {
-          "id": "container.mine.row.silt-strider-silk-sash",
-          "text": "Dres silk sash  0.2  260"
-        },
-        {
-          "id": "container.mine.row.guar-jerky",
-          "text": "Dried guar  0.6  5"
-        },
-        {
-          "id": "container.mine.row.factors-coat",
-          "text": "Factor's coat  1.4  120"
-        },
-        {
-          "id": "container.mine.row.weighing-stone",
-          "text": "Factor's weighing stone  2.5  30"
-        },
-        {
-          "id": "container.mine.row.fever-cut",
-          "text": "Fever-cut  0.4  46"
-        },
-        {
-          "id": "container.mine.row.fire-drill",
-          "text": "Fire-drill and tinder  0.7  8"
-        },
-        {
-          "id": "container.mine.row.resin-lamp-oil",
-          "text": "Flask of lamp resin  0.9  11"
-        },
-        {
-          "id": "container.mine.row.hackle-lo-leaf",
-          "text": "Hackle-lo leaf  0.1  3"
-        },
-        {
-          "id": "container.theirs.head",
-          "text": "Container"
-        },
-        {
-          "id": "container.theirs.row.reed-cutter",
-          "text": "Reed-cutter  3.0  42"
-        },
-        {
-          "id": "container.hint",
-          "text": "Confirm moves one thing across. There is no button that decides what is worth keeping."
-        }
-      ],
-      "ri_citations": [],
-      "undefined_headers": [],
-      "materials": [
-        "chitin",
-        "root",
-        "ink",
-        "parchment",
-        "bone",
-        "resin",
-        "reed",
-        "shell",
-        "clay"
-      ],
-      "materials_painted": [
-        "chitin",
-        "root",
-        "ink",
-        "parchment",
-        "bone",
-        "resin",
-        "reed",
-        "shell",
-        "clay"
-      ],
-      "d1_observed": {
-        "rows": 19,
-        "rows_with_3_plus_hues_in_leading_48px": 19,
-        "min_hues": 6,
-        "per_row": [
-          {
-            "id": "container.mine.row.hist-bark-token",
-            "hues": 10
-          },
-          {
-            "id": "container.mine.row.black-water-draught",
-            "hues": 13
-          },
-          {
-            "id": "container.mine.row.bog-iron-maul",
-            "hues": 11
-          },
-          {
-            "id": "container.mine.row.boiled-hide-jack",
-            "hues": 12
-          },
-          {
-            "id": "container.mine.row.bone-picks",
-            "hues": 12
-          },
-          {
-            "id": "container.mine.row.carved-egg",
-            "hues": 7
-          }
-        ]
-      },
-      "hud_world": {
-        "set": {
-          "W1_bearing_dial": {
-            "built": true,
-            "drawn": true,
-            "conditional": "out of combat"
-          },
-          "W2_effect_strip": {
-            "built": true,
-            "drawn": true,
-            "conditional": "out of combat, ≥1 effect",
-            "expected": true
-          },
-          "W3_sneak_state": {
-            "built": true,
-            "drawn": false,
-            "conditional": "both phases, while sneaking",
-            "expected": false
-          },
-          "W4_condition_marks": {
-            "built": true,
-            "drawn": true,
-            "conditional": "both phases, always",
-            "inside": "hud.quickslots",
-            "added_px": 0,
-            "values": {
-              "right": 0.86,
-              "left": null,
-              "spell": null,
-              "item": 0
-            }
-          },
-          "W5_place_name": {
-            "built": true,
-            "drawn": true,
-            "conditional": "out of combat, ≤3 s after a cell change",
-            "expected": true
-          },
-          "W6_breath_meter": {
-            "built": true,
-            "drawn": false,
-            "conditional": "both phases, while submerged",
-            "expected": false
-          }
-        },
-        "elements": [
-          {
-            "id": "hud.bearing",
-            "kind": "bearing_dial",
-            "rect": [
-              1616,
-              942,
-              96,
-              96
-            ],
-            "in_bottom_half": true
-          },
-          {
-            "id": "hud.effects",
-            "kind": "effect_strip",
-            "rect": [
-              1574,
-              1006,
-              30,
-              32
-            ],
-            "in_bottom_half": true
-          },
-          {
-            "id": "hud.place",
-            "kind": "place_name",
-            "rect": [
-              42,
-              950,
-              520,
-              36
-            ],
-            "in_bottom_half": true
-          }
-        ],
-        "all_in_bottom_half": true,
-        "overlaps": [],
-        "persistent_count": 3,
-        "coverage_pct": 1.3935,
-        "withdrawn": [],
-        "withdrawn_because": null
-      },
-      "combat_phase": "world",
-      "combat_phase_source": "encounter"
     }
   },
-  "notes": [],
-  "container_name_guard": [
-    {
-      "passed": "(absent)",
-      "why": "no name passed at all — the shape that shipped the defect",
-      "headers": [
-        "Container",
-        "Carried",
-        "Container"
-      ],
-      "any_undefined": false
-    },
-    {
-      "passed": null,
-      "why": "explicit null",
-      "headers": [
-        "Container",
-        "Carried",
-        "Container"
-      ],
-      "any_undefined": false
-    },
-    {
-      "passed": "",
-      "why": "empty string",
-      "headers": [
-        "Container",
-        "Carried",
-        "Container"
-      ],
-      "any_undefined": false
-    },
-    {
-      "passed": "undefined",
-      "why": "the literal word, arriving as text from a second call site",
-      "headers": [
-        "Container",
-        "Carried",
-        "Container"
-      ],
-      "any_undefined": false
-    },
-    {
-      "passed": "Reed Creel",
-      "why": "a good name — the control arm, which MUST come through unchanged",
-      "headers": [
-        "Reed Creel",
-        "Carried",
-        "Reed Creel"
-      ],
-      "any_undefined": false
-    }
-  ]
+  "notes": []
 }

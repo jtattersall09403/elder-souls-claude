@@ -224,7 +224,7 @@ try {
   }
 
   writeJson(path.join(OUT, 'session.json'), {
-    schema: 'elder-souls/uix08-gate-g-session@1',
+    schema: 'elder-souls/played-pair-session@1',
     at: new Date().toISOString(),
     arm: arm.codename,
     state: STATE,
