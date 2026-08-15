@@ -29,6 +29,46 @@ touches, which is what makes two items safe to run in parallel.
 delivered **and independently judged at or above the bar** (min-over-axes ≥ 7.0). Delivered and judged
 are different words here.
 
+### Item-specific implementation leads
+
+Some roadmap items have bounded external source candidates in
+[`IMPLEMENTATION-LEADS.md`](IMPLEMENTATION-LEADS.md). A dispatch for a mapped item points to that
+item's exact heading. The builder inspects those candidates and records its own `used`, `adapted`,
+`concept-only` or `declined` disposition in the task's existing findings, with the decisive reason.
+These leads inform implementation choice. Ring order, item scope, acceptance, ownership,
+dependencies, critic independence and done-state remain governed by this roadmap, the linked plan
+and the corpus. Current agents continue their assigned work; the routing applies when a mapped item
+next enters planning, remediation or building.
+
+Mapped items by ring: ring 0 [`I2`](IMPLEMENTATION-LEADS.md#i2--capture-and-the-deck); ring 1
+[`G1`](IMPLEMENTATION-LEADS.md#g1--camera), [`F1`](IMPLEMENTATION-LEADS.md#f1--materials-and-surface-response),
+[`F4`](IMPLEMENTATION-LEADS.md#f4--light-sky-and-atmosphere),
+[`F5`](IMPLEMENTATION-LEADS.md#f5--frame-pipeline),
+[`F6`](IMPLEMENTATION-LEADS.md#f6--terrain-and-vegetation),
+[`F8`](IMPLEMENTATION-LEADS.md#f8--building-kit),
+[`F10`](IMPLEMENTATION-LEADS.md#f10--characters-and-creatures),
+[`F11`](IMPLEMENTATION-LEADS.md#f11--animation-quality),
+[`F12`](IMPLEMENTATION-LEADS.md#f12--vfx),
+[`F13`](IMPLEMENTATION-LEADS.md#f13--art-direction-and-region-identity) and
+[`F14`](IMPLEMENTATION-LEADS.md#f14--performance-and-lod); ring 2
+[`G2`](IMPLEMENTATION-LEADS.md#g2--the-exchange),
+[`G3`](IMPLEMENTATION-LEADS.md#g3--weapons-and-movesets),
+[`G4`](IMPLEMENTATION-LEADS.md#g4--enemies-that-can-fight-you),
+[`G5`](IMPLEMENTATION-LEADS.md#g5--bosses-and-encounters),
+[`G6`](IMPLEMENTATION-LEADS.md#g6--combat-impact-feedback) and
+[`G7`](IMPLEMENTATION-LEADS.md#g7--combat-feel); ring 3
+[`W1`](IMPLEMENTATION-LEADS.md#w1--terrain-form-and-road-network),
+[`W4`](IMPLEMENTATION-LEADS.md#w4--settlements-with-an-outside),
+[`W5`](IMPLEMENTATION-LEADS.md#w5--doors-interiors-and-continuity),
+[`W6`](IMPLEMENTATION-LEADS.md#w6--landmarks-and-prose-directions),
+[`W7`](IMPLEMENTATION-LEADS.md#w7--getting-around),
+[`W8`](IMPLEMENTATION-LEADS.md#w8--dungeons-xanmeers-and-ruins),
+[`W10`](IMPLEMENTATION-LEADS.md#w10--living-world) and
+[`W11`](IMPLEMENTATION-LEADS.md#w11--strangeness-and-built-alienness); ring 4
+[`C6`](IMPLEMENTATION-LEADS.md#c6--magic-projectiles),
+[`C7`](IMPLEMENTATION-LEADS.md#c7--stealth-and-theft) and
+[`C8`](IMPLEMENTATION-LEADS.md#c8--crime-and-justice).
+
 ---
 
 ## Ring 0 — Instruments. Continuous, never "finished"
