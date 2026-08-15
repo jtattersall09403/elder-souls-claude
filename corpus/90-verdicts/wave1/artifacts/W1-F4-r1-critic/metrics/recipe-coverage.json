@@ -1,0 +1,96 @@
+{
+  "at": "2026-08-15T19:07:36.770Z",
+  "method": "Arithmetic transcribed from game/src/render/sky.js apply() (elev/day/dusk/night) and recipeForConditions() in game/src/render/lib/lighting-recipes.js, evaluated at 1-minute resolution. Weather shares are the stationary distribution of each region machine in game/data/world/weather.json by power iteration, mapped through sky.js WEATHER overcast/rain to recipeForConditions().",
+  "caveat": "Weather and hour are treated as independent. weather.json carries per-state `diurnal` multipliers, so this is a first-order estimate, not exact.",
+  "clear_weather_clock_share_pct": {
+    "night-moon": 48.54,
+    "dusk-canopy": 6.53,
+    "noon-marsh": 44.93
+  },
+  "clear_weather_bands": [
+    [
+      "00:00",
+      "night-moon"
+    ],
+    [
+      "05:50",
+      "dusk-canopy"
+    ],
+    [
+      "06:37",
+      "noon-marsh"
+    ],
+    [
+      "17:24",
+      "dusk-canopy"
+    ],
+    [
+      "18:11",
+      "night-moon"
+    ]
+  ],
+  "rebalanced_by_F4": [
+    "noon-marsh",
+    "night-moon"
+  ],
+  "untouched_by_F4": [
+    "dusk-canopy",
+    "overcast-flat",
+    "storm"
+  ],
+  "daytime_share_under_untouched_recipe_by_region": {
+    "Blackwood": {
+      "share_under_untouched_recipe": 79.7,
+      "unknown_states": []
+    },
+    "The Clay Moor": {
+      "share_under_untouched_recipe": 45.4,
+      "unknown_states": []
+    },
+    "Crimson Coast": {
+      "share_under_untouched_recipe": 70.1,
+      "unknown_states": []
+    },
+    "The Deep Marshes": {
+      "share_under_untouched_recipe": 100,
+      "unknown_states": []
+    },
+    "Eastern Rootlands": {
+      "share_under_untouched_recipe": 45.3,
+      "unknown_states": []
+    },
+    "The Hive": {
+      "share_under_untouched_recipe": 19.8,
+      "unknown_states": []
+    },
+    "Marauder's Coast": {
+      "share_under_untouched_recipe": 71.3,
+      "unknown_states": []
+    },
+    "The Salt Hills": {
+      "share_under_untouched_recipe": 68.8,
+      "unknown_states": []
+    },
+    "The Stone Forest": {
+      "share_under_untouched_recipe": 65.9,
+      "unknown_states": []
+    },
+    "Stone Wastes": {
+      "share_under_untouched_recipe": 39.1,
+      "unknown_states": []
+    },
+    "Thornmarsh": {
+      "share_under_untouched_recipe": 73.1,
+      "unknown_states": []
+    },
+    "Valus Ridge": {
+      "share_under_untouched_recipe": 44.2,
+      "unknown_states": []
+    },
+    "Western Rootlands": {
+      "share_under_untouched_recipe": 45.3,
+      "unknown_states": []
+    }
+  },
+  "unweighted_mean_pct": 59.1
+}

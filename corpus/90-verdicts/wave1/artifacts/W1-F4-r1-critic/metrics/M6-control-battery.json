@@ -1,5 +1,5 @@
 {
-  "at": "2026-08-15T18:32:40.003Z",
+  "at": "2026-08-15T19:07:15.643Z",
   "bar": "RI-VIS03 M2/M6 — exterior_daylight: retention >= 0.60 (hard fail < 0.30), hue_offset >= 15 deg (hard fail < 6), C_shadow >= 6, C_local_med >= 0.045",
   "rows": [
     {
@@ -54,6 +54,168 @@
         "C_shadow": 4.903,
         "mean_Yp_shadow": 0.1421,
         "mean_Yp_lit": 0.394
+      }
+    },
+    {
+      "file": "corpus/70-visual/refs/modern/exterior_daylight/REF-ER__steam-neulyiaa-2772935437.jpg",
+      "W": 3840,
+      "H": 2160,
+      "sky_frac": 0.0227,
+      "M2": {
+        "C_global": 0.1773,
+        "C_local_med": 0.0774
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2442,
+        "retention": 0.7515,
+        "hue_offset_deg": 16.06,
+        "C_shadow": 9.115,
+        "mean_Yp_shadow": 0.1265,
+        "mean_Yp_lit": 0.565
+      }
+    },
+    {
+      "file": "corpus/70-visual/refs/modern/exterior_daylight/REF-ER__steam-neulyiaa-2773437892.jpg",
+      "W": 3840,
+      "H": 2160,
+      "sky_frac": 0.0535,
+      "M2": {
+        "C_global": 0.218,
+        "C_local_med": 0.032
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2366,
+        "retention": 0.7179,
+        "hue_offset_deg": 143.28,
+        "C_shadow": 2.913,
+        "mean_Yp_shadow": 0.0724,
+        "mean_Yp_lit": 0.6092
+      }
+    },
+    {
+      "file": "corpus/70-visual/refs/modern/exterior_daylight/REF-ER__steam-neulyiaa-2773437917.jpg",
+      "W": 3840,
+      "H": 2160,
+      "sky_frac": 0.1708,
+      "M2": {
+        "C_global": 0.1653,
+        "C_local_med": 0.0478
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2072,
+        "retention": 0.6686,
+        "hue_offset_deg": 109.09,
+        "C_shadow": 4.675,
+        "mean_Yp_shadow": 0.1348,
+        "mean_Yp_lit": 0.5557
+      }
+    },
+    {
+      "file": "reports/f4c/A-s60-before/base/pair01.png",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.053,
+      "M2": {
+        "C_global": 0.1453,
+        "C_local_med": 0.0254
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2367,
+        "retention": 0.6068,
+        "hue_offset_deg": 3.23,
+        "C_shadow": 10.806,
+        "mean_Yp_shadow": 0.1126,
+        "mean_Yp_lit": 0.4509
+      }
+    },
+    {
+      "file": "reports/f4c/A-s60-landed/base/pair01.png",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.0476,
+      "M2": {
+        "C_global": 0.1449,
+        "C_local_med": 0.0293
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2376,
+        "retention": 0.9652,
+        "hue_offset_deg": 3.72,
+        "C_shadow": 11.612,
+        "mean_Yp_shadow": 0.1237,
+        "mean_Yp_lit": 0.4659
+      }
+    },
+    {
+      "file": "reports/f4c/A-s60-before/base/pair02.png",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.0477,
+      "M2": {
+        "C_global": 0.1479,
+        "C_local_med": 0.0249
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2372,
+        "retention": 0.6999,
+        "hue_offset_deg": 2.93,
+        "C_shadow": 11.048,
+        "mean_Yp_shadow": 0.1108,
+        "mean_Yp_lit": 0.4551
+      }
+    },
+    {
+      "file": "reports/f4c/A-s60-landed/base/pair02.png",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.0477,
+      "M2": {
+        "C_global": 0.1437,
+        "C_local_med": 0.0307
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2381,
+        "retention": 1.1553,
+        "hue_offset_deg": 4,
+        "C_shadow": 11.429,
+        "mean_Yp_shadow": 0.1253,
+        "mean_Yp_lit": 0.4641
+      }
+    },
+    {
+      "file": "reports/f4c/A-s60-before/base/pair03.png",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.0502,
+      "M2": {
+        "C_global": 0.1159,
+        "C_local_med": 0.0167
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2374,
+        "retention": 0.7199,
+        "hue_offset_deg": 14.15,
+        "C_shadow": 9.762,
+        "mean_Yp_shadow": 0.0926,
+        "mean_Yp_lit": 0.3597
+      }
+    },
+    {
+      "file": "reports/f4c/A-s60-landed/base/pair03.png",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.0322,
+      "M2": {
+        "C_global": 0.129,
+        "C_local_med": 0.0211
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2419,
+        "retention": 0.4526,
+        "hue_offset_deg": 12.4,
+        "C_shadow": 4.785,
+        "mean_Yp_shadow": 0.0476,
+        "mean_Yp_lit": 0.3434
       }
     }
   ]

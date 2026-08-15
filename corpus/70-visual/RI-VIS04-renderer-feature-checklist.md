@@ -97,6 +97,43 @@ that fires · **MIN BAR** = the minimum acceptable configuration.
 - **METRIC:** M6 (all), M11 (cascade transitions can register as pops).
 - **MIN BAR:** 3 cascades × 2048², PCF 3×3 minimum, shadow distance ≥ 150 m.
 
+> **AMENDED 2026-08-15 — ADDED by the `F4` round-1 critic (`corpus/90-verdicts/wave1/W1-F4-r1.md`
+> §8). NOTHING ABOVE IS REMOVED AND NO THRESHOLD IS LOWERED. This adds a DETECT that can fire and
+> a preservation clause; both can only ever cost a build points, never earn it any.**
+>
+> **§3-D2 — the `SHADOW_MASK < 3%` clause above cannot detect the absence of shadows, so it must
+> not be the only test.** `RI-VIS03` §0 defines
+> `SHADOW_MASK = FG_MASK AND Yp < percentile(Yp[FG_MASK], 25)` — the darkest **quartile** of the
+> foreground, *by construction*. It is ≈25% of the foreground whether the scene casts one shadow or
+> none. Measured across ten frames of this build, before and after a lighting change that
+> demonstrably added cast shadow, `SHADOW_MASK` frac sat between **0.2329 and 0.2498** in every
+> single one. The `< 3%` clause can only fire when the sky fills more than ~88% of the frame. It is
+> the same misdomained-metric family as rulings **S58**, **S59** and **S60**.
+>
+> **The test that does work — the SHADOW-MAP ABLATION MASK.** Capture the same pose twice: shipped,
+> and with `renderer.shadowMap.enabled = false` (every material marked `needsUpdate`, or the flag is
+> a silent no-op — it is compiled into the program). A pixel is **cast-shadowed** when the
+> shadow-map-off frame is brighter than the shipped frame by more than `tau` in display luma. Report
+> the area fraction as a **curve over `tau ∈ {1, 2, 4, 8, 16}`**, never at a single chosen `tau`.
+> **`cast_shadow_area_fraction` at `tau = 8` ≥ 0.03 in a daylight exterior**, or §3 is absent. This
+> mask is derived from the shadow map itself rather than from a luminance percentile, so it measures
+> what §3 names.
+>
+> **§3-D3 — WHAT IS INSIDE THE SHADOW IS PART OF HAVING SHADOWS.** A build can add cast-shadow area
+> by removing the light that fills shadows, and score better on every "is there a shadow" test while
+> the picture gets worse. Measured on this build: at the `pair03` window, cast-shadow area rose
+> (77.9% → 79.2% at `tau = 1`) while `M6 retention` fell **0.7199 → 0.4526** and `M6 C_shadow` fell
+> **9.762 → 4.785**, through the `exterior_daylight` minimum of 6. So, binding alongside the area
+> clause: **`M6 retention` and `M6 C_shadow` may not fall below their `RI-VIS03` profile minima in a
+> window whose cast-shadow area rose.** A shadow you cannot see into is a hole, and §2's whole
+> purpose is that the environment lights it.
+>
+> **Bound.** These two clauses are DETECT and preservation only. They add no route to a higher §14
+> mark and no route to a higher score for any build; a critic may cite them to withhold a mark and
+> never to grant one. Overturned if a shadow-map ablation proves unavailable to a harness, in which
+> case §3 falls back to the penumbra and cascade-ring tests above and records the area clause
+> `UNVERIFIED`, which counts as absent.
+
 ---
 
 ### §4 — Ambient occlusion (SSAO/GTAO or equivalent)
