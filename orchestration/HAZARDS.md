@@ -234,6 +234,43 @@ caught only when somebody compared what the frames actually contained against wh
 **Verify your verbs exist** (`grep` the harness), **verify your gate's argument names**, and **make
 `call()` throw on an unknown verb** rather than swallow it.
 
+## 19. The branch the session was told to deliver on was 1,439 commits behind the branch we work on
+
+**Found 2026-08-15 by a builder reading its own brief, not by any check.** The F10 round-9 brief named
+`claude/morrowind-souls-threejs-game-mou39v` as the branch to develop on. The checked-out branch is
+`codex/wave1-build-experiment`, and the builder said so in the first line of its report rather than
+quietly obeying either one.
+
+**Measured before doing anything about it:**
+
+```sh
+git rev-list --left-right --count \
+  origin/claude/morrowind-souls-threejs-game-mou39v...origin/codex/wave1-build-experiment
+#   0    1439
+git merge-base --is-ancestor origin/claude/... origin/codex/wave1-build-experiment   # → true
+```
+
+**Zero commits on one side, 1,439 on the other, and a strict-ancestor relationship** — the two never
+diverged. `claude/…` was a stale pointer at an old merge *from* `codex/wave1-build-experiment`, last
+moved 2026-08-11, and its final commit is literally a merge of the branch it is now behind.
+
+**So nothing was lost and nothing conflicted**, and the fix is a fast-forward, which git will refuse
+if it is anything else:
+
+```sh
+git push origin HEAD:refs/heads/claude/morrowind-souls-threejs-game-mou39v
+#   509941a9..0a67808f
+```
+
+**Two things worth keeping.** First, **the working tree was NOT switched.** Agents were mid-run,
+`land.mjs` resolves its branch from the checked-out upstream, and moving a shared tree under running
+agents is §2d and §11's failure. Mirroring the ref costs one push and disturbs nobody. Second, and
+more useful: **a stale branch pointer is silent in exactly the way that matters** — every bank all
+session reported `verified … against the remote blob` and every one of them was true, because they
+verified against the branch they pushed to. A tool that checks its own push cannot notice it is
+pushing somewhere nobody is reading. **Re-run the fast-forward whenever the work needs to be visible
+on the named branch; there is no mechanism doing it.**
+
 ## 18. A report tool that writes in a `finally` block destroys the previous run when THIS run fails
 
 **Caught 2026-08-15 by the stop hook, not by any check we wrote.** `reports/w1-04-r3-collision.json`
