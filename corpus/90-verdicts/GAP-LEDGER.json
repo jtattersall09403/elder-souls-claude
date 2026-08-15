@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-15T14:09:08Z",
+  "generated": "2026-08-15T14:30:07Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 91,
+  "verdicts_read": 92,
   "counts": {
-    "total": 86,
-    "open": 85,
+    "total": 87,
+    "open": 86,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -200,6 +200,9 @@
     "stealth.fence.economy": [
       "GAP-W1-the-fence-buys-your-victims-own-furniture"
     ],
+    "ui.style.diegesis": [
+      "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them"
+    ],
     "ui.hud.minimalism": [
       "GAP-W1-ui-detectors-that-cannot-see",
       "GAP-W1-ui-map-outside-the-ar2-detectors"
@@ -257,6 +260,8 @@
     "GAP-PACK-01: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "corpus/90-verdicts/wave1/T4-r2.json: closure of GAP-W1-ui-hud-world-set-unbuilt-and-misplaced is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/T4-r3.json: closure of GAP-W1-ui-journal-search-view-has-no-exit is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/T4-r4.json: closure of GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/T4-r4.json: closure of GAP-W1-ui-journal-search-view-has-no-exit is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-00-r2.json: closure of GAP-W1-platform-prng-never-drawn is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-01-province-stream-r1.json: gap_closure references unknown gap_id GAP-W1-province-never-streamed.",
     "corpus/90-verdicts/wave1/W1-01-r2.json: closure of GAP-W1-world-trunk-road-below-the-waterline is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
@@ -354,8 +359,9 @@
     "corpus/90-verdicts/wave1/W1-READABLES-r2.json: gap_closure references unknown gap_id GAP-W1-environment-channel-has-no-object.",
     "corpus/90-verdicts/wave1/W1-SAVE-r1.json: closure of GAP-W1-platform-save-drops-entity-prev-state is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json: closure of GAP-W1-pbr-material-set-unbound is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
-    "STALE-RISK GAP-W1-ui-hud-world-set-unbuilt-and-misplaced: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-t4-r2, crit-t4-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-ui-journal-search-view-has-no-exit: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-t4-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-hud-world-set-unbuilt-and-misplaced: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-t4-r2, crit-t4-r3, crit-t4-r4). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-journal-search-view-has-no-exit: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-t4-r3, crit-t4-r4). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-t4-r4). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-platform-prng-never-drawn: still open, and 5 later verdict(s) have been filed on the same piece or path since (crit-w1-00-r2-k4m9, crit-w1-09-r2-3c19, crit-w1-09-r3-3c19, crit-w1-deploy-r2-3c19, crit-w1-30s-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-platform-save-drops-entity-prev-state: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-save-r1-live-audit, crit-w1-map-r2-a91f). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-world-trunk-road-below-the-waterline: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-01-r2-world-b4e2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
@@ -3930,6 +3936,54 @@
       ]
     },
     {
+      "gap_id": "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them",
+      "subsystem_path": "ui.style.diegesis",
+      "opened_wave": 1,
+      "opened_by": "crit-t4-r4",
+      "opened_in": "corpus/90-verdicts/wave1/T4-r4.json",
+      "piece_id": "T4-r4",
+      "severity": "blocking",
+      "what": "The per-screen boxes landed by round 4 are smaller than the content laid out into them and the content was not re-pitched to match, so at 1920x1080 on the shipped ui-journal fixture: (1) 9 of 10 level-up attribute rows and all ten character-sheet rows draw the attribute NAME, its VALUE and its GAUGE into the same pixels — 'STRENGTH' renders as STREN with 12 printed through it, and so on down all ten; (2) 8 of 19 journal entry blocks are laid out ending below the panel's own bottom edge (panel [685,325,550,430], foot y=755; worst journal.entry.Q-MAIN-01.10 at y=860, 105 px onto the world and cut in half by the panel edge) and 11 of 19 end below the top of the foot hint at y=717, so entry prose is printed over 'Left and right turn the page...'; (3) the container's foot hint renders '...what is worth keep' against a declared '...what is worth keeping.' and the spells hint loses its last eight words; (4) two of five quest-index names and at least one carried item name ellipsise. RI-UIX06 FD4's hard-fail column is 'any clipping, overlap or overflow at 1920x1080' and there are six. The same crops taken from a delete-the-fix worktree at c792e8d7 show every one of these legible, so the regression is round 4's and removing round 4's boxes removes it. AND THE REASON IT MATTERS BEYOND THE SIX INSTANCES: RI-UIX09's D2 counts pixels differing from the panel's modal colour, so INK DRAWN ON TOP OF INK STILL COUNTS — the level-up screen went from 0.0910 to 0.1855 and became unreadable in the same edit. The density metric is not safe to optimise on its own.",
+      "why_it_matters": "The screen where the player spends souls cannot be read, and the journal — the one document this game asks the player to actually read — prints its prose over its own instructions and off the edge of the paper.",
+      "remedy": {
+        "action": "DO NOT UNDO S56 — the panel had no business being 57.2% of frame, and the delete-the-fix arm proves the smaller boxes are what cleared five hard fails. Re-pitch the CONTENTS instead. (1) game/src/ui/screens/progress.js, drawLevelUp() and drawSheet(): lay the attribute row out as three DISJOINT fractions of its own rect instead of the old fixed offsets — a name column, a right-aligned value column, and a gauge that starts at x >= name_w + value_w. (2) game/src/ui/screens/text.js, drawJournal(): the paging loop breaks a column only when the running height plus the block exceeds colH AND the column is already non-empty, so a block TALLER than colH is placed anyway and overflows — colH is ih - 30*s = 294 units and a wrapped entry at colW 140 px is about 397. Either split a block across columns or reduce the entry's own height to fit. (3) game/src/ui/screens/inventory.js and text.js: the container and spells foot hints must wrap or shrink to the panel's inner width instead of running off it. If re-pitching needs some width back, that is allowed and S56 still holds — S56 ruled 57.2% is a CEILING and named no target, and Morrowind's own inventory window is about 24% of frame, not 11%.",
+        "targets": [
+          "game/src/ui/screens/progress.js",
+          "game/src/ui/screens/text.js",
+          "game/src/ui/screens/inventory.js",
+          "game/src/ui/chrome.js"
+        ],
+        "acceptance": "(1) node tools/ui/t4-r4-critic-overlap.mjs reports rows_with_fewer_than_two_separators: 0 on BOTH levelup and sheet (today 9 of 10 and 3 of 10) and the 6x crop shows ten readable NAME / value / gauge rows. (2) The JP5 check in tools/ui/t4-r4-critic.mjs, moved INSIDE the paging loop so it runs on every page, reports 0 of 19 journal_entry rects whose bottom exceeds the panel's inner foot (today 8 of 19 past the panel and 11 of 19 past the hint). (3) The rendered container and spells hints contain their whole declared strings (today the container renders 'what is worth keep' against a declared 'what is worth keeping.'). (4) AND BOTH NUMBERS TOGETHER, because they trade off: node tools/ui/t4-r2-measure.mjs then node tools/ui/t4-r3-density.mjs must still report every named screen at or above 0.15, and the delete-the-fix arm re-run at c792e8d7 must still put the five hard fails back.",
+        "ref_item": "RI-UIX06",
+        "estimated_size": "one builder round — three files, layout arithmetic only, no new elements and no new data"
+      },
+      "remedy_action": "DO NOT UNDO S56 — the panel had no business being 57.2% of frame, and the delete-the-fix arm proves the smaller boxes are what cleared five hard fails. Re-pitch the CONTENTS instead. (1) game/src/ui/screens/progress.js, drawLevelUp() and drawSheet(): lay the attribute row out as three DISJOINT fractions of its own rect instead of the old fixed offsets — a name column, a right-aligned value column, and a gauge that starts at x >= name_w + value_w. (2) game/src/ui/screens/text.js, drawJournal(): the paging loop breaks a column only when the running height plus the block exceeds colH AND the column is already non-empty, so a block TALLER than colH is placed anyway and overflows — colH is ih - 30*s = 294 units and a wrapped entry at colW 140 px is about 397. Either split a block across columns or reduce the entry's own height to fit. (3) game/src/ui/screens/inventory.js and text.js: the container and spells foot hints must wrap or shrink to the panel's inner width instead of running off it. If re-pitching needs some width back, that is allowed and S56 still holds — S56 ruled 57.2% is a CEILING and named no target, and Morrowind's own inventory window is about 24% of frame, not 11%.",
+      "remedy_acceptance": "(1) node tools/ui/t4-r4-critic-overlap.mjs reports rows_with_fewer_than_two_separators: 0 on BOTH levelup and sheet (today 9 of 10 and 3 of 10) and the 6x crop shows ten readable NAME / value / gauge rows. (2) The JP5 check in tools/ui/t4-r4-critic.mjs, moved INSIDE the paging loop so it runs on every page, reports 0 of 19 journal_entry rects whose bottom exceeds the panel's inner foot (today 8 of 19 past the panel and 11 of 19 past the hint). (3) The rendered container and spells hints contain their whole declared strings (today the container renders 'what is worth keep' against a declared 'what is worth keeping.'). (4) AND BOTH NUMBERS TOGETHER, because they trade off: node tools/ui/t4-r2-measure.mjs then node tools/ui/t4-r3-density.mjs must still report every named screen at or above 0.15, and the delete-the-fix arm re-run at c792e8d7 must still put the five hard fails back.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/levelup-rows-6x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/sheet-panel-2x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/journal-panel-plus-margin-2x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/container-hint-3x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/spells-panel-2x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/control-levelup-1x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-overlap.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/frame-liveness-head.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
+    },
+    {
       "gap_id": "GAP-W1-ui-detectors-that-cannot-see",
       "subsystem_path": "ui.hud.minimalism",
       "opened_wave": 1,
@@ -4051,6 +4105,14 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r4.json",
+          "run_id": "crit-t4-r4",
+          "at": "2026-08-15T14:30:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them"
         }
       ]
     },
@@ -4099,6 +4161,14 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r4.json",
+          "run_id": "crit-t4-r4",
+          "at": "2026-08-15T14:30:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them"
         }
       ]
     },
@@ -4212,7 +4282,16 @@
       },
       "superseded_by": null,
       "age_waves": 0,
-      "filed_since": []
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r4.json",
+          "run_id": "crit-t4-r4",
+          "at": "2026-08-15T14:30:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-visual-fix-not-reaching-blind-frames",

@@ -1,0 +1,101 @@
+{
+  "task_id": "T4-r4-critic",
+  "roadmap_item": "T4",
+  "round": 4,
+  "role": "critic",
+  "state": "done",
+  "verdict": "FAIL — piece score 2 (min over seven items). AR-1 pass, AR-2 pass.",
+  "judging": "corpus/90-verdicts/wave1/T4-r4.md + .json",
+  "baseline_pin": "BLOBS, NOT A COMMIT — chrome.js 5921cc2b, screens/text.js cfc9125f, screens/progress.js f46f7fe6, screens/inventory.js 79d64ff3, ui/system.js 830ae9de. Identical at bc936a39, 5d887461, ce563030 and on disk; `git diff --stat 5d887461..HEAD -- game/src/ui/ game/data/` is EMPTY.",
+  "control_pin": "c792e8d7926dd4850cf719c071490eefb83c190b (the commit before the round-4 commit), run in a fresh sparse worktree",
+
+  "could_not_do": [
+    "NO BLIND PAIR AND NO PLAYED GATE COULD BE RUN — FIVE OF THEM. RI-UIX09 DN7, RI-UIX04 JU12, RI-UIX06 AD7 (§G Bootstrap), RI-UIX07 V11 (§G played gate) and RI-UIX08 §G all need FRESH judges with no project context. CLAUDE.md rule 0 forbids me raising an approval prompt and rule 0e places spawning them with the ORCHESTRATOR. Every one is recorded `not_possible` with its reason and scored fail-closed, never omitted. This is the fourth consecutive round in which that is the answer for JU12 and AD7 — it is a structural hole, not a scheduling accident.",
+
+    "RI-UIX06's FIDELITY METHOD CANNOT BE RUN AS WRITTEN: its comparison-method step 9 names `node tools/metrics/ui-metrics.mjs`, which the item itself records as 'owed by the methods owner and does not exist'. I ran the closest executable variant for M-F18.1 and M-F18.2 only (declared element rects against the panel rect; a per-column foreground profile inside each attribute row) and scored FD1, FD2, FD3, FD5, FD6 and FD7 as 0 fail-closed. The 8-config sweep (4 resolutions x 2 DPRs) was NOT run — the hard fail fired at 1920x1080, which is the hard-fail column's own condition, but the PASS condition for FD4 needs all eight and I did not produce it.",
+
+    "MY OWN INSTRUMENT PRODUCED VOID PIXEL NUMBERS AND frame-liveness CAUGHT IT. tools/ui/t4-r4-critic.mjs runs with setRenderRate(0), so the page's presented buffer does not advance and `page.screenshot()` returned BYTE-IDENTICAL frames — `node tools/visual/frame-liveness.mjs` reported DUPLICATE on 3 of 4. Every pixel figure that script's OVERLAP leg printed (the '3 of 10' and '4 of 10' in its own JSON) is VOID and must not be quoted. Its ELEMENT RECTS are sound. The numbers in the verdict come from tools/ui/t4-r4-critic-overlap.mjs, recomputed offline against t4-r2-measure.mjs captures which go through canvas.toDataURL() and which frame-liveness passes LIVE. THE BRIEF MANDATED frame-liveness ON EVERY FRAME AND THAT IS THE ONLY REASON THIS WAS CAUGHT.",
+
+    "THREE MORE INSTRUMENT DEFECTS OF MY OWN, RECORDED RATHER THAN SHIPPED AS FINDINGS. (a) My probe's first run read the input-attach flag at `eng.input.real.attached` instead of `eng.real.attached` and omitted `setMode('play-instrumented')`, so it reported I0 false and then hung for four minutes; both fixed and the run repeated. (b) Its JP5 check read the element census AFTER the paging loop rather than inside it, so it reported PASS on page 10 (one short entry) — the real answer, 8 of 19 blocks past the panel foot, was computed offline over the rects the same probe recorded for all ten spreads, and the check needs moving inside the loop. (c) My first overlap metric was a colour heuristic and it broke twice: the level-up gauge plate is (42,55,43) and misses a `G > B + 12` test by one unit, and the character sheet's own panel ground is (44,57,45) — the same colour — so 'dark and low chroma' matched the background and reported 73% of a row as ink. Discarded and replaced with RI-UIX09's own foreground definition.",
+
+    "THE DELETE-THE-FIX WORKTREE IS SPARSE AND COULD NOT RUN EVERYTHING. `df -h .` reported 3.2 GB free against a ~10 GB full checkout, so the worktree is `git sparse-checkout set game tools` with tools/node_modules symlinked. It is a real worktree at a real pinned sha running the real tools, and it produced the delete-the-fix density arm and the control captures. What it could NOT run is anything importing t4-r2-critic-measure.mjs's own default manifest (absent from the sparse tree), which is why the control has captures and density but NO per-row element rects — the control evidence for the layout regression is therefore the CROP rather than a number. Also: inventory and spells TIMED OUT in the control arm under browser contention and are recorded as unmeasured there rather than inferred.",
+
+    "MY HEAD SWEEP CRASHED IN ITS WITHDRAWAL LEGS. `node tools/ui/t4-r2-measure.mjs` wrote all eight captures and the manifest, then died with 'page.evaluate: Target page, context or browser has been closed'. RI-UIX07 V7/V8/V9 are therefore CARRIED from round 3 behind `git diff --stat 7c63111d..HEAD -- game/src/ui/hud.js` = EMPTY, not re-measured. Same for RI-UIX03 §B-§E and RI-UIX06 AD2/AD3/AD5/AD6, behind an empty `git diff -- game/data/`.",
+
+    "RI-UIX01 §D IS UNMEASURED FOR THE FOURTH CONSECUTIVE ROUND and is excluded from the aggregate again. Its comparison method needs a `ui-combat` viewpoint set that does not exist in tools/harness/viewpoints.json. Round 3 recommended it become its own piece on `ui.hud.combat`; it has not been dispatched and I repeat the recommendation rather than creating it.",
+
+    "I READ THE ROUND-3 VERDICT AND THE BUILDER'S STATUS FILE BEFORE MEASURING ANYTHING, because my dispatch brief handed me both. That departs from CRITIC-DOCTRINE §8's ordering. It is recorded in the verdict's `critic` block and `notes` rather than implied, and it cost nothing here because no blind pack could be built anyway. What I did NOT do is inherit a number: the two figures the brief handed me as 'verify these, do not inherit' — the D2 table and the 18/20 re-press — were both re-derived from my own runs and both hold."
+  ],
+
+  "what_i_found": {
+    "headline": "The number round 4 was sent at moved honestly and the delete-the-fix arm proves it. But the screens it shrank are now BROKEN: on the level-up screen the attribute name, its value and its gauge are drawn into the same pixels on 9 of 10 rows, the character sheet's ten rows collide likewise, 8 of 19 journal entry blocks are drawn past the bottom of their own panel onto the world, and two foot hints are cut mid-word. RI-UIX06 FD4's hard fail is 'any clipping, overlap or overflow at 1920x1080' and there are six.",
+
+    "ri_uix09_dn4_verified_not_inherited": {
+      "journal": "0.1314 -> 0.1805 (builder claimed 0.1805)",
+      "sheet": "0.0895 -> 0.1713 (claimed 0.1713)",
+      "levelup": "0.0910 -> 0.1855 (claimed 0.1855)",
+      "spells": "0.0702 -> 0.3026 (claimed 0.3026)",
+      "container": "0.0572 -> 0.1525 (claimed 0.1523 from a single-screen probe; my full sweep gives 0.1525 — the thin margin is real and it is 0.0025)",
+      "inventory": "0.1524 -> 0.1557 (unchanged box)",
+      "note": "All five claims stand. My instrument agrees with the builder's to four decimals on ALL SEVEN measured states. frame-liveness on the captures: 8 frames, {\"LIVE\":8}."
+    },
+
+    "the_seventh_state_the_builder_could_not_measure": "`container_no_name` — the container screen holding ONE item — measures 0.1434, BELOW the 0.15 floor, so `t4-r3-density.mjs` exits non-zero with hard_fails: [\"container_no_name\"]. I RULED IT EXCLUDED from DN4 (it exists in the instrument to drive the container-title guard; RI-UIX09 warns against measuring D2 on near-empty samples; round 3 excluded the same state at 0.0554) and named what would overturn me: a capture of an ordinarily-looted container — two or three things in a crate — measuring below 0.15. If that exists, RI-UIX09 is 2 rather than 5.",
+
+    "delete_the_fix_ran_for_real": "Fresh sparse worktree at c792e8d7, same sweep: journal 0.1314, sheet 0.0895, levelup 0.0911, container 0.0572, container_no_name 0.0554 — FIVE HARD FAILS BACK, panel 57.2% of frame on every one. And the control's captures show the level-up rows LEGIBLE (name | value | gauge in three columns, with the soft/hard cap labels), which is the second half of the arm and the one that carries the biggest gap.",
+
+    "arbitration_S57_both_conditions_hold": "(a) NO ELEMENT TYPE DISAPPEARED on either screen whose count fell — journal keeps journal_index_row, journal_entry, page_count, divider, hint; container keeps panel_header, scroll_extent, list_row, item_icon, divider, detail_panel, hint. The whole fall is journal_entry 9 -> 2 and list_row/item_icon 15/16 -> 7/8. (b) EVERYTHING IS REACHABLE BY PAGING, operated with real KeyboardEvents, not arithmetic: 19 of 19 journal entries over 10 spreads by KeyD (page counts '1 of 10' ... '10 of 10'); 44 of 44 carried rows by KeyS; the extent marker reads {from:40, shown:4, total:44} at the end; all 5 quest-index rows drawn against 5 quests in the data. THE ELEMENT-COUNT FALL IS PAGINATION AND I FAILED NOTHING ON IT.",
+
+    "round_3_fixes_survive_the_resize": "The round-3 critic's own instrument, byte-identical, at these blobs: 18/20. JX0-JX6 (journal exit by every route), EQ1/EQ1b (equip at f+1 with the frame counter frozen) and TS0-TS3b (touch drag and flick, both axes) all green; the two reds are TS4/TS5, the axis-repeat diagnostic that instrument's own author declared device-neutral. Independently: the REPAIRED t4-r2-critic-drive.mjs gives 32/37 passed, 3 not-applicable, 2 failed at these blobs, against round 3's 28/36 on the unrepaired probe — and neither red is a dead affordance (C7 is trap I2; M1 is the declared absence of a pointer path). ui-pause.mjs is 10/10 including PAD and SURFACES.",
+
+    "the_compositing_seam_checked": "Every `screen(S, id, ...)` call site was enumerated (bindings, journal, book, map, levelup, sheet, spells, inventory, container, wait) and each id equals the `this.mode` value in system.js's switch, one for one, so `beginScreen(screenRect(S, this.mode))` and the panel agree. Empirically ui-pause SURFACES opens and draws all seven and every capture shows an intact panel.",
+
+    "the_regression_measured": {
+      "levelup": "9 of 10 attribute rows draw name/value/gauge with FEWER THAN TWO separators between foreground runs (metric: foreground = >24 rgb from the panel's modal colour, separator = >=3 empty columns). Photographed at 6x: 'STRENGTH' renders as STREN with 12 printed through it.",
+      "sheet": "3 of 10 by the same metric — which UNDER-REPORTS, because the sheet's ground (44,57,45) is close to its own ink; the crop shows all ten colliding. I report the number I trust and the picture, and say which is which.",
+      "journal": "8 of 19 entry blocks end below the panel's bottom edge (panel [685,325,550,430], foot y=755; worst journal.entry.Q-MAIN-01.10 at y=860 — 105 px onto the world, cut in half by the panel edge); 11 of 19 end below the top of the foot hint at y=717 and print over it.",
+      "hints": "container renders '...what is worth keep' against a declared '...what is worth keeping.'; spells loses its last eight words.",
+      "index_and_rows": "2 of 5 quest-index names ellipsised ('The Reading of the ...'); a carried item reads 'Black-water dr...'."
+    },
+
+    "the_finding_about_the_bar": "RI-UIX09's D2 counts pixels differing from the panel's modal colour, so INK DRAWN ON TOP OF INK STILL COUNTS. The level-up screen went 0.0910 -> 0.1855 and became unreadable in the same edit. The row that catches this — RI-UIX06 FD4 — sits on a FIDELITY side that had never been captured in four rounds; three verdicts recorded it 'uncaptured' and scored ART alone. Had I done the same, nothing in my hands would have failed a level-up screen you cannot read. I did NOT extend the corpus (FD4 already says exactly what is wrong, with a hard fail); the one-sentence addition I would file, for RI-UIX09's owner, is that P4's fill must be read beside FD4."
+  },
+
+  "per_item_scores": {
+    "RI-UIX03": "3 (7/13 — §A re-measured 10/10; M-E2 flips because the ten attribute values cannot be read)",
+    "RI-UIX04": "5 (9/12 — JU9 flips on the journal overflow; was 6)",
+    "RI-UIX06": "2 (FD4 HARD FAIL, six instances at 1920x1080; was 4 on ART alone)",
+    "RI-UIX07": "5 (10/11, V11 unrun, carried behind an empty hud.js diff)",
+    "RI-UIX08": "2 (procedural cap, unrun §G — in flight elsewhere, neither duplicated nor credited)",
+    "RI-UIX09": "5 (5/7, NO HARD FAIL — was 2)",
+    "RI-UIX10": "8 (8/8 — re-pressed after the resize)",
+    "RI-UIX01": "excluded, fourth round, §D unmeasured"
+  },
+
+  "biggest_gap": "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them — three files, layout arithmetic only, with a four-clause acceptance that re-runs BOTH the density and the layout numbers together and re-runs the delete-the-fix arm at c792e8d7.",
+
+  "gap_closure_recorded": {
+    "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it": "OPEN — three of four acceptance clauses met (hard_fails cleared on the six named screens; no new drawn element, and S57's two conditions verified by operating the screens; delete-the-fix restores all five). It stays open on clause (b): D2 >= 0.35 is met on NONE of journal, level-up, sheet or spells.",
+    "GAP-W1-ui-journal-search-view-has-no-exit": "CLOSED and re-verified after the resize — all eight JX legs green."
+  },
+
+  "arbitration_questions_raised": [
+    "Does RI-UIX09 P4's 'every populated screen' include a screen whose SECOND list is nearly empty? The container crosses the 0.15 floor on CONTENTS, not on layout: 0.1525 at three items in the chest, 0.1434 at one. I ruled it excluded and named the reversal evidence; a dimension owner may prefer 'measured on the worst reachable populated state', which would make a fixed box insufficient for any screen whose content varies.",
+    "Is RI-UIX03 L5 ('all ten attributes on screen simultaneously with their current values') satisfied by DECLARATION or by LEGIBILITY? I scored it by legibility and flipped M-E2. The general form matters more than the instance: every structural row in RI-UIX03 and RI-UIX04 is written as 'is it shown', and this is the first round in which a build has shown something that cannot be read."
+  ],
+
+  "files_touched": [
+    "corpus/90-verdicts/wave1/T4-r4.md",
+    "corpus/90-verdicts/wave1/T4-r4.json",
+    "corpus/90-verdicts/wave1/artifacts/T4-r4c/**",
+    "corpus/90-verdicts/GAP-LEDGER.json",
+    "corpus/90-verdicts/GAP-LEDGER.md",
+    "tools/ui/t4-r4-critic.mjs",
+    "tools/ui/t4-r4-critic-overlap.mjs",
+    "orchestration/status/T4-r4-critic.json"
+  ],
+  "ownership_note": "I touched no game source. The two new tools are new files under tools/ui/ with no existing owner; the two verdict files and the artifact tree are mine by construction; GAP-LEDGER.{json,md} are GENERATED by `node tools/gap-ledger.mjs` from the verdicts and are regenerated, not hand-edited.",
+  "validation": "node tools/verdict-validate.mjs corpus/90-verdicts/wave1/T4-r4.json => OK (1 warning: corpus_extended empty, which is a deliberate §1.3 decision explained in the verdict). node tools/gap-ledger.mjs regenerated; the new gap is in both GAP-LEDGER.json and GAP-LEDGER.md.",
+
+  "waiters_disarmed": "NO MONITOR WAS EVER ARMED — HAZARDS 13 is a prohibition and every browser run in this pass was either foregrounded with a timeout or nohup'd to a log file that was read back in the same turn. THE NINE PIDs I STARTED WERE RECORDED INDIVIDUALLY AND EACH WAS CHECKED BY PID: 18169/18170 (HEAD sweep), 13824/13825 (control sweep), 10156 (probe run 1, killed deliberately after it hung on a missing setMode), 28026 (probe run 2), 30332 (ui-pause), 7737 (drive), 4771 (control probe) — all nine confirmed GONE with `ps -p <pid>` before this file was written. TWO browser process groups ARE still alive on the box (parents 14389, started 14:27:29, and 20228, started 14:30:09) and I DID NOT TOUCH THEM: neither PID is in my list, both started after my last launch, and they belong to siblings. HAZARDS 10 warns against exactly the blanket `pgrep headless_shell | xargs kill` that would have taken them. The delete-the-fix worktree was removed with `git worktree remove --force` so it does not leak 55 MB on a box at 93%."
+}

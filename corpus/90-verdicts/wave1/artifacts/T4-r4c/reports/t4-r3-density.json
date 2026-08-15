@@ -1,0 +1,198 @@
+{
+  "schema": "elder-souls/t4-r3-density@1",
+  "at": "2026-08-15T14:03:40.158Z",
+  "measure_dir": "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure",
+  "bar": 0.35,
+  "hard_fail_below": 0.15,
+  "screens": {
+    "world": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens/live-world__1920x1080.png",
+      "panel_rect": null
+    },
+    "inventory": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens/live-inventory__1920x1080.png",
+      "panel_rect": [
+        200,
+        150,
+        1520,
+        780
+      ],
+      "d2_critic": 0.1557,
+      "d2_detail": {
+        "mode_rgb": [
+          44,
+          57,
+          45
+        ],
+        "pixels": 1185600
+      },
+      "d2_builder_same_run": 0.1557,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.5718,
+      "matter_px2": 184598,
+      "panel_px2_at_bar": 527423,
+      "frame_fraction_at_bar": 0.2544,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "journal": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens/live-journal__1920x1080.png",
+      "panel_rect": [
+        685,
+        325,
+        550,
+        430
+      ],
+      "d2_critic": 0.1805,
+      "d2_detail": {
+        "mode_rgb": [
+          188,
+          178,
+          156
+        ],
+        "pixels": 236500
+      },
+      "d2_builder_same_run": 0.1805,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1141,
+      "matter_px2": 42688,
+      "panel_px2_at_bar": 121966,
+      "frame_fraction_at_bar": 0.0588,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "sheet": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens/live-sheet__1920x1080.png",
+      "panel_rect": [
+        680,
+        295,
+        560,
+        490
+      ],
+      "d2_critic": 0.1713,
+      "d2_detail": {
+        "mode_rgb": [
+          42,
+          55,
+          43
+        ],
+        "pixels": 274400
+      },
+      "d2_builder_same_run": 0.1713,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1323,
+      "matter_px2": 47005,
+      "panel_px2_at_bar": 134300,
+      "frame_fraction_at_bar": 0.0648,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "spells": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens/live-spells__1920x1080.png",
+      "panel_rect": [
+        730,
+        365,
+        460,
+        350
+      ],
+      "d2_critic": 0.3026,
+      "d2_detail": {
+        "mode_rgb": [
+          27,
+          26,
+          24
+        ],
+        "pixels": 161000
+      },
+      "d2_builder_same_run": 0.3026,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.0776,
+      "matter_px2": 48719,
+      "panel_px2_at_bar": 139197,
+      "frame_fraction_at_bar": 0.0671,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "levelup": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens/live-levelup__1920x1080.png",
+      "panel_rect": [
+        720,
+        300,
+        480,
+        480
+      ],
+      "d2_critic": 0.1855,
+      "d2_detail": {
+        "mode_rgb": [
+          221,
+          220,
+          211
+        ],
+        "pixels": 230400
+      },
+      "d2_builder_same_run": 0.1855,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1111,
+      "matter_px2": 42739,
+      "panel_px2_at_bar": 122111,
+      "frame_fraction_at_bar": 0.0589,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "container": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens/live-container__1920x1080.png",
+      "panel_rect": [
+        720,
+        310,
+        480,
+        460
+      ],
+      "d2_critic": 0.1525,
+      "d2_detail": {
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 220800
+      },
+      "d2_builder_same_run": 0.1525,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1065,
+      "matter_px2": 33672,
+      "panel_px2_at_bar": 96206,
+      "frame_fraction_at_bar": 0.0464,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "container_no_name": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens/live-container_no_name__1920x1080.png",
+      "panel_rect": [
+        720,
+        310,
+        480,
+        460
+      ],
+      "d2_critic": 0.1434,
+      "d2_detail": {
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 220800
+      },
+      "d2_builder_same_run": 0.1434,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1065,
+      "matter_px2": 31663,
+      "panel_px2_at_bar": 90466,
+      "frame_fraction_at_bar": 0.0436,
+      "hard_fail": true,
+      "meets_bar": false
+    }
+  },
+  "hard_fails": [
+    "container_no_name"
+  ]
+}
