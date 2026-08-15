@@ -1,0 +1,134 @@
+{
+  "task_id": "W1-F10-r5-appearance",
+  "roadmap_item": "F10",
+  "role": "capture and judgement — the character directive's requirement #3, unmet for four rounds",
+  "state": "delivered and banked; 318 hardware frames of the actual game across two arms on one GPU; judgement written in plain English; NO GAME GEOMETRY CHANGED",
+  "date": "2026-08-15",
+  "branch": "codex/wave1-build-experiment",
+
+  "what_i_could_not_do": [
+    "I DID NOT JUDGE NPC FEET, AND I WILL NOT PRETEND THE IDENTICAL FRAMES SAY OTHERWISE. 10 of 15 NPC foot close-ups are byte-identical between the arms — but they are dark interior frames at `street-gideon` with `shadow_levels: 0` and a `NO_SUBJECT` liveness verdict, so 'identical' there means 'two pictures of the same darkness', not 'unchanged geometry'. The player's foot evidence IS sound (all three static F1 frames LIVE, luma span 163-176, byte-identical) and every claim I make about feet rests on the player alone. A next round wanting NPC feet must either light the interior, pick outdoor NPCs, or use `setTimeOfDay`+an exterior stand.",
+
+    "I DID NOT FIX THE MAIN-MODULE GUARD IN `f10-r3-materials.mjs`, WHICH IS THE ACTUAL REPO DEFECT I FOUND. `node tools/ownership.mjs --for tools/visual/f10-r5-appearance.mjs` (run this turn) returns one live piece, `W1-30V`, holding a CLAIMED hold on the whole of `tools/visual/`. So I added `tools/visual/lib/subject-proximity.mjs` alongside rather than editing theirs, and `f10-r4-digits.mjs` STILL carries the import that detonates. Every future agent who imports `f10-r3-materials.mjs` will lose their run the same way I lost $0.019. The one-line fix is the guard `gpu-deck.mjs:433` already uses, and it belongs to whoever holds that directory.",
+
+    "MY WALK INSTRUMENT'S TORSO BAND IS CONTAMINATED AND I DID NOT ISOLATE IT. `walk-silhouette` returns leg 27.777 px against head 7.807 (ratio 3.56, against a stick-at-zero null of 1.92) — that part is sound and it is what refuses the word 'glide'. But the TORSO band returns 47.015 px, higher than the leg band, and I believe that is the shield and the sword swinging inside that band rather than torso motion. I did not mask the equipment out, so `leg_over_torso: 0.59` must NOT be read as 'the torso moves more than the legs'. The fix is a per-band equipment mask or a capture with the loadout cleared, and it is one line of `setLoadout`.",
+
+    "I MEASURED NO FRAME TIME AND THIS ROUND ADDED NO COST TO MEASURE. `getPerfStats()._unmeasurable` still hard-codes 'This container is SwiftShader' and I did not patch it; the paid Pod would have been the one place it could have been answered honestly and I spent the budget on frames instead. That was a deliberate trade and it leaves round 4's '+9.4% triangles, +0 draw calls' still untimed on hardware.",
+
+    "I SCORED NO BLIND GATE AND NO RI ACCEPTANCE ROW. `RI-VIS10` B2 row 9 (clawed hand, non-human finger count or proportion) is now answerable from `stills/hand-AFTER-four-clawed-digits.png` and I believe it is a YES on every reptilian figure — but I built the pack, so my opinion on it is void by construction (CLAUDE.md 0e). `RI-VIS08` B1/B3/B4/B5/B6 are likewise untouched. The frames a blind judge would need now exist, which is the one thing about this that is new.",
+
+    "I DID NOT CAPTURE A SECOND BODY FAMILY IN MOTION. All 24 motion frames are the player, who is `saxhleel`. Whether the humanoid rig walks the same way is unmeasured; I have only static orbits for the imperial and the dunmer.",
+
+    "THE FIRST POD RENTED RAN THE WRONG TOOL AND I PAID FOR IT. Run `20260815-123332Z-1200`, RTX A4500, 279 s, $0.0194 — the command said `f10-r5-appearance.mjs` and the manifest that came home says `\"tool\": \"f10-r3-materials\"`. See `what_i_found_in_the_tooling` #3. I have kept those 152 frames because they are real hardware evidence on the same GPU model and they supplied the stick-at-zero null control, but the money was not planned and the mistake was mine: I imported from a script instead of a library and did not check the first line of the log."
+  ],
+
+  "headline": "The hands are fixed and you can see it in the game: the same NPC, the same camera, the same GPU, one file different — an egg with three stubs becomes four clawed digits with the room visible between them, and 52 of 60 hand close-ups differ between the arms by a median 5.6-7.2% of the whole frame. The feet are NOT fixed and the evidence is the cleanest number in the pack: on the player's foot close-ups, NOT ONE PIXEL differs between the arms, on frames whose luma span is 156-176. And 148 of 408 NPCs have no face at all — the humanoid head is a bald ovoid with no eyes, nose, mouth, ears, brow or jaw, from all four bearings.",
+
+  "the_capture": {
+    "why_a_pod_and_not_this_box": "The orchestrator overrode round 4's judgement call and was right. Two arms, 318 frames, HARDWARE, 372 s wall, $0.0258. Round 4 spent over thirty minutes on this box under SwiftShader and produced zero frames of its own shot list.",
+    "pod": "62ug0qier3s75u, NVIDIA RTX A4500, driver 550.127.05, SECURE, $0.25/hr. TERMINATED AND CONFIRMED (`run.json` cleanup.terminated: true, templateCleanup.deleted: true). The first pod, usz4bjrg4uocnk, likewise.",
+    "renderer_both_arms": "ANGLE (NVIDIA, Vulkan 1.3.277 (NVIDIA NVIDIA RTX A4500 (0x00002232)), NVIDIA) — evidence_class HARDWARE on both manifests.",
+    "both_arms_one_gpu_one_process": "The brief asked for a before/after pair on the same GPU MODEL. This is stronger: the same GPU, the same Pod, the same shell script. Arm 1 renders the tree as committed; arm 2 copies `tools/visual/fixtures/f10-r5-control-actor.js` over `game/src/render/actor.js` and re-runs. Engine, UI, data, capture tool, driver, seed and stands are all held constant.",
+    "baseline_pin": "b175da8e, NOT HEAD~1 (HAZARDS 12 — two orchestrator whole-tree banks carried r4's edit into HEAD before it landed). CHECKED, not assumed: `git show b175da8e:game/src/render/actor.js | grep -c 'clawed\\|CLAW'` -> 0 against 16 at HEAD, and the fixture's sha256 555d7fb132a2e086251582e118e76e5c408a3257e1cff283cb98e9bd30e01300 equals `git show b175da8e:… | sha256sum`. The Pod re-printed both shas into `arm-proof.txt` at run time.",
+    "why_a_file_swap_and_not_a_whole_tree_control": "`game/` also moved in engine.js and three UI files between b175da8e and HEAD — a sibling's work, not character work. A whole-tree control would revert those too and put four extra variables into a character comparison. The swap is safe because the two versions have IDENTICAL import and export sets (4 imports, 7 exports, checked with grep on both).",
+    "snapshot_revision": "0a258604ececd0be637d04a297cbca5ccf61cee7, pinned with --revision (HAZARDS 15a). Verified by reading the blobs at that revision, not by trusting the log: `git ls-tree 0a258604 -- tools/visual/f10-r5-appearance.mjs` and `git show 0a258604:… | grep -n subject-proximity`.",
+    "shot_list": "159 frames per arm: C4 orbit 8 x 5 subjects = 40; FA face 4 x 5 = 20; H1 hand 8 x 5 = 40; H2 hand off-axis 4 x 5 = 20; F1 foot 3 x 5 = 15; M walk 16; MF walking feet 8.",
+    "subjects": "player (saxhleel) + Deekjul (argonian, 11.1 m) + Neloth Sedran (dunmer, 12.8 m) + Corvo (imperial, 14.5 m) + Eeja (saxhleel, 14.8 m). Both body families, four races.",
+    "selection": "`selectByProximity`, from the new library. 148 of 229 enumerated NPCs across three stands were rejected as unplaced BEFORE a frame was spent on them (33 + 33 + 82), median offsets 5,720 m / 5,752.9 m / 2,969.8 m. That figure was in my brief; I re-derived it from my own run rather than inheriting it.",
+    "liveness": "gateBuffer called with its REAL parameter names on all 159 frames, with a projected subject box on 159 of 159. Verdicts: LIVE 141, NO_SUBJECT 18. The 18 are named in the README and none of them carries a claim."
+  },
+
+  "the_judgement_in_one_line_each": {
+    "hands": "YES, BETTER, AND VISIBLY SO. 52 of 60 hand close-ups differ, median 5.6-7.2% of frame, max 55.9%; C4 differs on 40 of 40. Still wrong: the digits are near-constant-thickness sausages and the claws are nearly as long as the segments carrying them, so from below the hand reads as a raptor's foot or a gripper. It is a hand now; it is not yet a good hand.",
+    "feet": "NO. NOT ONE PIXEL DIFFERS on the player's foot close-ups — 3 of 3 static F1 frames byte-identical, 7 of 8 walking foot frames byte-identical, the eighth at 0.053%, all LIVE with luma span 156-176. The legs end in flat-bottomed trouser cylinders. The heel, sole, ball and three clawed toes round 4 built are not on screen. HYPOTHESIS for the next builder, not a finding: the leg clothing volume is a solid tapered tube whose rim sits at or below the ankle and the foot is built inside it — the same defect class as r4's own headline, one joint further down.",
+    "faces": "SPLIT, AND THE HUMAN HALF IS THE WORST THING IN THESE FRAMES. Reptilian heads have a snout, two yellow eyes, a nostril and a crest, and read at conversation distance. Humanoid heads are bald ovoids: no eyes, no nose, no mouth, no ears, no brow, no jaw, no hair, from all four bearings. COUNTED THIS TURN from `game/data/npcs/*.json` (18 files, 408 records with a race): reptilian 260, humanoid 148. So 148 of 408 = 36.3% of the cast has no face, and the 6 khajiit in that 148 get a human egg, which is its own gap.",
+    "walk": "NOT A RIGID GLIDE, BUT A STIFF SHUFFLE. Leg-band silhouette XOR 27.777 px against head-band 7.807 (ratio 3.56) versus a stick-at-zero null of 2.767 / 1.441 (ratio 1.92) — there is a leg cycle above the noise. What is missing is the two loudest cues: no heel strike and no toe-off, because there is no foot. The before and after arms agree to within 0.03 px on every band, which is the correct null — round 4 changed no animation.",
+    "r4_open_regression": "NOT VISIBLE. The daylight `actor-orbit-holes.mjs` counts is the room showing BETWEEN THE DIGITS, which is the point of the round and exactly the 'legitimate through-gap' r4 guessed the depth heuristic could not distinguish. On the ankle hypothesis the evidence is unusually clean: the player is saxhleel, the same body whose `cloth/calf_l` tally moved 8,881 -> 61,788 offline, and its foot frames are BYTE-IDENTICAL between the arms. A seam worth 53,000 border pixels offline produces zero changed pixels in a live frame pointed at that ankle. That does not prove the offline number wrong; it proves the regression is not visible, which is what I was asked.",
+    "overall": "No, the characters do not look good. The figures read as slabs — a broad flat-fronted torso, legs merging into one column at most bearings, no deltoid, one uninflected colour per surface, a neck nearly as wide as the skull. Round 4 fixed the hands, and the hands were never the first thing you look at."
+  },
+
+  "what_i_found_in_the_tooling": [
+    {
+      "id": "1. `setInput` IS NOT A HARNESS VERB, so no capture in this project has ever photographed a moving player",
+      "evidence": "`grep -rn setInput game/` -> 0 matches. `f10-r3-materials.mjs:341` and `f10-r4-digits.mjs:267` both open their motion block with `await call('setInput', { forward: 1 })`; `call()` turns a missing method into `{ok:false}` and neither tool checks it. The frames still differ from each other because water and foliage move, so nothing looked wrong.",
+      "measured_not_eyeballed": "Across r3's whole 'walk', the outer 6% border ring — pure background, since the camera tracks the body — changes on 185 of 91,904 pixels, 0.2%, first frame against last. The same measurement on this round's walk, same camera rule, same canvas: 65,576 of 91,904, 71.35%.",
+      "the_real_path": "`queueInputs`: a `move` event sets moveX/moveY and THEY PERSIST until another event changes them (`game/src/input/pipeline.js:211-213`). This round queues one event per simulated frame and the player travelled 3.315 m over 64 frames with the stick at 0.55."
+    },
+    {
+      "id": "2. THE LIVENESS GATE HAS BEEN CALLED WITH ARGUMENT NAMES IT DOES NOT HAVE",
+      "evidence": "`frame-liveness.mjs:605` is `gateBuffer(buf, { box, subject, label, throwOnDegenerate })`. r3 and r4 both call `gateBuffer(buf, { framing, canvas })`. Neither key exists, so `box` was null and `subject` was false on EVERY frame either tool ever took — the 'is the thing I am measuring in it' half of HAZARDS 15 never ran, and `subject_box.from` would have said so in the manifest if anyone had read it.",
+      "fixed_here": "159 of 159 frames carry a projected box and a recorded verdict."
+    },
+    {
+      "id": "3. IMPORTING `f10-r3-materials.mjs` RUNS ITS ENTIRE CAPTURE AND EXITS — and this cost real money",
+      "evidence": "That file has no main-module guard; its only early exit is `--self-test`, and its module body then calls `launchForCapture` and ends in `process.exit()` at line 377. Pod run `20260815-123332Z-1200` was told to run `f10-r5-appearance.mjs`; the manifest that came home says `\"tool\": \"f10-r3-materials\"`, `\"seed\": 20260814`, 76 frames in r3's slots and none of mine. $0.0194.",
+      "the_consequence_for_round_4": "`f10-r4-digits.mjs:40` carries the identical import, so round 4's tool could NEVER have produced its own H1/H2/F1 shot list — a second, independent reason that round reported 'ZERO frames in over thirty minutes' on top of SwiftShader being slow.",
+      "what_i_did_and_did_not_do": "Added `tools/visual/lib/subject-proximity.mjs`, a real library, with `sourceMatchesR3()` proving the two copies have not drifted (returns identical: true, and the r5 manifest records it every run). Did NOT fix r3's guard — see `what_i_could_not_do` #2. Also added a first log line naming the tool, because the only way to have caught this at the time was to notice the manifest afterwards."
+    }
+  ],
+
+  "instruments_built": {
+    "tools/visual/f10-r5-appearance.mjs": "The capture. Region-scale framing for face/hand/foot from skeleton.json's own offset chain (head 1.6400, hand_l 0.9100, foot_l 0.0900, height_m 1.78, summed by script not retyped); each hand bearing shot to BOTH sides of the body axis along the camera's own right vector, because `listEntities()` reports no yaw and a hand's azimuth is unknown; `mustCall` for verbs whose failure must not be swallowed; motion via queueInputs with the player's position recorded every frame.",
+    "tools/visual/f10-r5-walk-silhouette.mjs": "Per-row silhouette XOR banded head/torso/leg, with a walking-vs-frozen self-test, 5/5 green. ITS FIRST DESIGN WAS WRONG AND ITS OWN SELF-TEST REFUSED IT: counting off-background pixels per row scores a scissoring leg at exactly 0, because two bars moving apart keep the same pixel count. The statistic had to be sensitive to WHERE the mask is. The self-test's second failure was in the fixture, not the tool — the synthetic figure's feet touched the border ring, which is the background model, teaching the mask that the figure's own colour was background.",
+    "tools/visual/lib/subject-proximity.mjs": "`selectByProximity` as an actual library, plus `sourceMatchesR3()`.",
+    "tools/visual/fixtures/f10-r5-control-actor.js": "b175da8e's actor.js, byte-identical, so a control arm can run on a Pod that has no `.git`."
+  },
+
+  "cost": {
+    "gpu": "$0.0452 total: run 1 $0.0194 (279 s, wasted on the detonating import, but it supplied the stick-at-zero null control and 152 hardware frames on the same GPU model) + run 2 $0.0258 (372 s, 318 frames).",
+    "pods_terminated": "BOTH, confirmed in run.json: usz4bjrg4uocnk terminated 12:38:08Z, 62ug0qier3s75u terminated 12:48:01Z; both ephemeral templates deleted. `runpod cleanup` was never run with no arguments. RUNPOD_OWNER was set to a per-agent value so a sibling's bare cleanup could not touch them.",
+    "waiters": "Four background waiters were armed and ALL FOUR WERE DISARMED BY ID before finishing (bp5c5728t, byspt8t80, betmkpkbx, bztulx564, bfvz0pxmr). Local browser processes from the smoke test were killed by PID, never with a fleet-wide `pkill -f headless_shell` (HAZARDS 10)."
+  },
+
+  "regression_guards_run": {
+    "game_geometry": "UNCHANGED. This piece touched no file under `game/`. `git diff b175da8e..HEAD -- game/src/render/actor.js` is round 4's work, not mine.",
+    "delete_the_fix": "Run, on hardware, in one process: 120 of 159 frames differ between the arms and 39 are byte-identical. It is neither an inert fix nor an inert control, and WHERE it is inert is itself the finding — the identical frames are the feet and the humanoid faces."
+  },
+
+  "evidence": {
+    "where": "corpus/90-verdicts/wave1/artifacts/W1-F10-r5-appearance/ — README.md carries the judgement, the provenance and the reproduction commands.",
+    "open_this_first": "sheets/02-hands-argonian.png (the win), then sheets/04-feet-player.png and sheets/07-faces-after.png (the misses).",
+    "the_two_frames_that_settle_it": "stills/hand-BEFORE-an-egg-with-stubs.png beside stills/hand-AFTER-four-clawed-digits.png.",
+    "metrics": "metrics/arm-pixel-diff.json (per-slot changed/identical/max%), metrics/walk-silhouette-{AFTER,BEFORE}.json, metrics/capture-manifest-{AFTER,BEFORE}.json.",
+    "raw_frames_not_committed": "318 PNGs, ~330 MB, in reports/runpod-gpu/runs/f10-r5-appearance-r2/artifacts/ — W1-30-EVIDENCE section 5."
+  },
+
+  "references_opened": [
+    "CLAUDE.md, the character directive — all four requirements, and requirement 3 is what this piece is for.",
+    "orchestration/status/W1-F10-r4.json — read in full; its `what_i_could_not_do` is the brief.",
+    "orchestration/HAZARDS.md 4, 5, 10, 11, 12, 13, 14, 15, 15a.",
+    "orchestration/plans/W1-30-EVIDENCE.md section 5 — what is committed and what is not.",
+    "game/data/combat/skeleton.json — bone offset chain summed by script for the region heights.",
+    "game/src/input/pipeline.js:100-235 — queueInputs and latchForStep, which is where the setInput finding came from.",
+    "game/src/engine.js:11607 listEntities — confirmed not range-filtered.",
+    "tools/visual/frame-liveness.mjs:440-620 — subjectPresence, classify and gateBuffer's real signature.",
+    "tools/visual/f10-r3-materials.mjs and f10-r4-digits.mjs — read, imported from, NOT edited (W1-30V holds tools/visual/)."
+  ],
+
+  "files_touched": [
+    "tools/visual/f10-r5-appearance.mjs",
+    "tools/visual/f10-r5-walk-silhouette.mjs",
+    "tools/visual/lib/subject-proximity.mjs",
+    "tools/visual/fixtures/f10-r5-control-actor.js",
+    "tools/visual/fixtures/README.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r5-appearance/",
+    "orchestration/status/W1-F10-r5-appearance.json"
+  ],
+  "files_claimed": [
+    "tools/visual/f10-r5-appearance.mjs",
+    "tools/visual/f10-r5-walk-silhouette.mjs",
+    "tools/visual/lib/subject-proximity.mjs",
+    "tools/visual/fixtures/",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r5-appearance/",
+    "orchestration/status/W1-F10-r5-appearance.json"
+  ],
+  "ownership_note": "`node tools/ownership.mjs --for tools/visual/f10-r5-appearance.mjs` RUN, not assumed: one live piece, W1-30V, 17 h old, holding a CLAIMED hold on `tools/visual/` as a directory. Reading its own status file, it has TOUCHED six files there (build-deck, deck.json, deck.mjs, frame-stats, contact-sheet, deck-compare) and none of mine. Rounds 3 and 4 both created new files in that directory under the same claim; I have followed that precedent — new files only, no edit to any file W1-30V has touched. `--for game/src/render/actor.js` returns W1-30-builder-20260812, `touched`, and I did not edit it either. `node tools/contention.mjs` before the local smoke: 0 browser instances, load 0.54/core against a 4.0 ceiling.",
+
+  "what_the_next_round_should_do_and_why": [
+    "THE FEET, and it is the cheapest big win left: the geometry already exists and is provably invisible. Find the leg clothing volume that swallows it. The delete-the-fix arm for that is already built — `f10-r5-appearance.mjs --tag <arm>` on a Pod, and the pass condition is simply that F1 and MF stop being byte-identical.",
+    "THE HUMANOID FACE, 148 of 408 characters, and the most disfiguring thing in the pack. Note that CLAUDE.md's character directive names a hole here: `RI-VIS08` section D stops at fidelity and nothing in the corpus covers character DESIGN, so a face built now is judged against an incomplete bar.",
+    "A BLIND JUDGE ON THESE FRAMES. The pack a Protocol-A pair needs now exists and is hardware-attested on both arms. `RI-VIS10` B2 row 9 is answerable from one still."
+  ],
+
+  "redundant_with": []
+}
