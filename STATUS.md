@@ -44,6 +44,12 @@ Alongside that: shrinking the documentation every agent reads before it can star
   code and is **called from nowhere**. **Equipping does nothing out of combat** — it silently applies
   90 frames after you close the screen. And on a phone, **no list on any screen can be scrolled**.
   All three are being fixed now.
+- **The camera still buries itself, and we now know in what.** Not a tree — the player stands under a
+  **raised deck in Lilmoth that does not exist to the collision system at all**, so three separate
+  checks all reported "nothing is blocking the camera" while the camera was inside it. Measured: 26
+  consecutive frames with the player hidden, against a limit of 6. The vegetation fix from earlier was
+  real and simply isn't what was blocking you here. Next piece is thin architecture — decks, balconies,
+  overhangs, stair undersides — which is exactly what a third-person camera hits in a town.
 - **The container screen prints the word `undefined`** as its title. Being fixed.
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its own author reported that honestly after catching that the *first* version of the measurement was
