@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-15T19:09:29Z",
+  "generated": "2026-08-15T19:46:50Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 96,
+  "verdicts_read": 98,
   "counts": {
-    "total": 91,
-    "open": 90,
+    "total": 93,
+    "open": 92,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -77,7 +77,8 @@
     ],
     "render.art.character": [
       "GAP-W1-character-surface-is-assembled-from-primitives-not-built",
-      "GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground"
+      "GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground",
+      "GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins"
     ],
     "combat.frames.timing": [
       "GAP-W1-combat-exemplar-has-no-danger"
@@ -101,6 +102,9 @@
     ],
     "render.fidelity.character": [
       "GAP-W1-f1-actor-body-shader-does-not-link"
+    ],
+    "render.fidelity.ibl": [
+      "GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour"
     ],
     "visual.renderer.water": [
       "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence"
@@ -259,6 +263,7 @@
     "GAP-W1-quest-givers-not-in-the-world: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "AUDB2-F1: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-W1-w1-30s-seam-incomplete: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
+    "GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-FCT-03: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
@@ -358,6 +363,7 @@
     "corpus/90-verdicts/wave1/W1-26-r2.json: gap_closure references unknown gap_id RI-JRN01/HF3-imperative-on-the-hud.",
     "corpus/90-verdicts/wave1/W1-26-r2.json: gap_closure references unknown gap_id RI-JRN01/HF5-touch-leg-unmeasurable-round-1.",
     "corpus/90-verdicts/wave1/W1-26-r2.json: gap_closure references unknown gap_id RI-JRN01/O6-control-precedes-definition.",
+    "corpus/90-verdicts/wave1/W1-F10-r10-CRITIC.json: closure of GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-F10-r9-CRITIC.json: closure of GAP-W1-character-surface-is-assembled-from-primitives-not-built is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-F7-WATER-r1.json: closure of GAP-W1-03-water-surface-undrawn-and-frozen is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-FACTIONS-r2.json: gap_closure is object where the schema requires an array. Its closures are IGNORED — any gap it meant to close stays open.",
@@ -417,7 +423,8 @@
     "STALE-RISK GAP-W1-30c-wetness-mask-blind-to-instancematrix: still open, and 4 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-visual-blind-protocol-a-chunk2, crit-w1-orphaned-surface-shaders-r1-3c19, crit-w1-visual-blind-protocol-a-r2-verdict). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-w1-30d-guard-misses-part-deletion: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-orphaned-surface-shaders-r1-3c19, crit-w1-visual-blind-protocol-a-r2-verdict). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-w1-30e-street-gate-never-ran: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-orphaned-surface-shaders-r1-3c19, crit-w1-visual-blind-protocol-a-r2-verdict). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-character-surface-is-assembled-from-primitives-not-built: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-r9-stance). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-character-surface-is-assembled-from-primitives-not-built: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-r9-stance, crit-w1-f10-r10). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-r10). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-f1-actor-body-shader-does-not-link: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-characters-a71c). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-population-save-reload-repays-every-corpse: still open, and 2 later verdict(s) have been filed on the same piece or path since (critic-w1-souls-r2, critic-w1-souls). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-PACK-01: still open, and 2 later verdict(s) have been filed on the same piece or path since (judge-prose-packs-r1, crit-w1-30c-r1-2634eb0e). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
@@ -1472,6 +1479,14 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-F10-r10-CRITIC.json",
+          "run_id": "crit-w1-f10-r10",
+          "at": "2026-08-15T20:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins"
         }
       ]
     },
@@ -1923,6 +1938,84 @@
         "corpus/90-verdicts/wave1/artifacts/W1-F10-r9-critic/stance-pair-hardware/before-manifest.json",
         "corpus/90-verdicts/wave1/artifacts/W1-F10-r9-critic/stance-pair-hardware/after-manifest.json",
         "corpus/90-verdicts/wave1/artifacts/W1-F10-r9-critic/looked/FEET-before-after__yaw000.png"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-F10-r10-CRITIC.json",
+          "run_id": "crit-w1-f10-r10",
+          "at": "2026-08-15T20:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins"
+        }
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins",
+      "subsystem_path": "render.art.character",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-f10-r10",
+      "opened_in": "corpus/90-verdicts/wave1/W1-F10-r10-CRITIC.json",
+      "piece_id": "W1-F10-r10-CRITIC",
+      "severity": "major",
+      "what": "Rounds 9 and 10 put a contrapposto and then a root drop on the shared `idle_ready` stance layer, and BOTH REACH EXACTLY ONE DRAWN CHARACTER PLUS THE COMBAT ENEMIES. MEASURED IN THE RUNNING GAME, not read out of the source: at the Lilmoth crowd stand, reading `bone.matrixWorld` off the objects the renderer drew, all 60 drawn NPCs report hip-line dy = 0.000000 m and shoulder-line dy = 0.000000 m — exactly zero — while the player in the same frame reports -0.018289 m and +0.047948 m. `renderer.js:syncNPCs` calls `poseStatic` and only `poseStatic`; `poseStatic`'s own header reads 'Non-combat people use the rig's authored REST pose', and it binds presentation meshes once against `built.restWorld` and never evaluates a clip or a stance layer. So RI-VIS10 §F#6 — 'a symmetric A-pose with the arms lowered, identical on every NPC' — is present on every NPC in every settlement, unchanged by two rounds of work aimed squarely at it. THE r9 VERDICT'S OWN `why_it_matters` IS WRONG ON ITS NPC HALF: 'the player and all 408 NPCs, because the change is on the single shared idle_ready layer' — the LAYER is shared, the CODE PATH that applies it is not. The builder found this and re-derived it rather than inheriting it; I confirmed it in the running game, which is the arm it had not done. It also makes E4 worse than E4's own number says: the 93 adjacent duplicate pairs are not merely the same body, they are the same body in the same pose.",
+      "why_it_matters": "A player walking into Lilmoth sees sixty people and one of them is posed. The stance work is the only part of F10 that has ever passed a design check, and it is invisible to the player everywhere except on their own character — who they mostly see from behind. This is the single largest gap between what the verdicts say F10 has achieved and what the owner would find if they opened the game right now.",
+      "remedy": "In `game/src/render/actor.js:poseStatic`, extend the existing ONE-TIME bind. It already caches under `A.staticPresentationBound` and already computes `built.restWorld`; add, inside that same block: (1) `addPose(rig, clips.archetypes.idle_ready, 0, 1.0)` plus `stanceRootOffsetY(idle_ready, 0, 1.0)` baked into the rest matrices before the presentation meshes are bound, so every NPC gets the contrapposto AND the root drop that keeps its feet on the floor; and (2) a per-NPC phase offset `FNV1a('npc:'+eid) % idle_loop.period` sampled into the same bake, so the crowd is not frozen at one point of one breathing cycle. Per-frame cost is unchanged — this is a one-time bind, not a per-frame evaluation. DONE means: `node tools/visual/f10-r10c-npc-live.mjs --x 2785.6 --z 5047.0` reports (a) `npc_hip_line_dy_m.max_abs` >= 0.010 and `npc_shoulder_line_dy_m.max_abs` >= 0.030 — i.e. the crowd carries the same stance the player does — and (b) `npc_pose_signatures.distinct` >= 8 over >= 50 drawn NPCs, which is the phase-offset arm and cannot be satisfied by the stance alone. PRESERVATION per S59, and it is the clause that stops (a) being bought by shoving the crowd through the floor: every drawn NPC's `foot_l_y` and `foot_r_y` must stay within 2 mm of its own pre-change value at the same stand, and `node tools/harness/anim-tune.mjs` must still report 0 of 14 over 0.35 m with worst snapOut <= 0.0122 m.",
+      "remedy_action": null,
+      "remedy_acceptance": null,
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/npc-live/npc-live.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-crowd-draw.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r10-critic/repro-c3-audit-r9tool.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
+    },
+    {
+      "gap_id": "GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour",
+      "subsystem_path": "render.fidelity.ibl",
+      "opened_wave": 1,
+      "opened_by": "crit-f4-r1",
+      "opened_in": "corpus/90-verdicts/wave1/W1-F4-r1.json",
+      "piece_id": "W1-F4-r1",
+      "severity": "blocking",
+      "what": "F4 bought cast-shadow visibility by cutting the light that fills shadows, and it raised a key that is the same colour as everything else. Two measurements, one cause. (1) At pair03 — the window the piece itself presents as its result — cast-shadow area rose (68.75% -> 76.93% at tau=8) while M6 `retention` fell 0.7199 -> 0.4526 and M6 `C_shadow` fell 9.762 -> 4.785, through RI-VIS03's exterior_daylight minimum of 6. On the builder's own banked judged crop `retention` falls 0.4202 -> 0.2693, THROUGH the 0.30 hard-fail line RI-VIS03 labels 'crushed blacks / no ambient / no IBL'. Open `frames/pair03__BEFORE-sourcerevert__AFTER__AFTER-shadowmap-OFF.png`: the third panel is the same frame with the shadow map switched off and it is fully sunlit, so the whole window is genuinely in the building's shadow — and the middle panel shows there is now nothing to see inside it. (2) M6 `hue_offset`, which RI-VIS04 §2 names as its DETECT and RI-VIS03 calls the one-number test for 'a single white DirectionalLight plus a white AmbientLight', reads 3.72 deg on the landed build against a 6 deg hard-fail line and a 15 deg minimum, while six vendored modern-fidelity plates measured on the same instrument in the same session read 16.06 to 143.28 deg. F4 moved it by +0.49 deg. This is also, independently, the verbatim complaint of all five Protocol A r2 judges: 'every surface returns the same flat matte olive-grey'.",
+      "why_it_matters": "F4 exists because three green visual fixes moved no human judgement. This one moves real quantities — the key IS dominant now at four of five windows, and there IS more cast-shadow area everywhere. But the two things the judges actually named are hue separation and readable occlusion, and on the corpus's own metrics for both, the frame after F4 is still a one-light frame with holes in it. A fourth round that adds more key without fixing the fill and the colour will spend against an instrument we can already show does not predict the judgement.",
+      "remedy": {
+        "action": "Two levers, both already in the file, neither of which F4 used. (1) `noon-marsh` declares `keyWarmth: 0.0`. It is a LIVE lever — sky.js:815-816 lerps the sun colour toward the horizon for positive values and the zenith for negative — and dusk-canopy uses 0.85, overcast-flat -0.30, night-moon -0.80. Warm the noon key (start at +0.45) and cool the fill, so lit and shadowed surfaces stop returning the same hue. (2) The env cut from 1.00 to 0.35 was applied as a flat scalar; the shadowed side is exactly where it was doing useful work. Either restore env toward ~0.55-0.65 and take the key dominance back from `sky`/`fill` instead, or add a dedicated shadow-fill term, and re-measure. BOTH must be measured at the same windows in the same run, because they trade against each other: warming the key raises hue_offset and raising env lowers the key ratio.",
+        "targets": [
+          "game/src/render/lib/lighting-recipes.js"
+        ],
+        "acceptance": "AT THE SAME FIVE JUDGED WINDOWS, ALL THREE, and paired per S59 so neither can be bought with the other: (i) M6 `hue_offset` >= 6.0 deg in every daylight window, which is only the hard-fail line and not yet the 15 deg bar — say so; (ii) M6 `retention` >= 0.60 and M6 `C_shadow` >= 6 in every window whose cast-shadow area rose, measured on the FULL FRAME and on the sealed crop; (iii) S60 clause (a) — lit-subset key_off >= 2x env_off — must NOT fall at any window that already passes it (pair01 3.32/3.12, pair02 5.58/3.55, pair04-crop 5.49, pair05 4.45/4.83 are the numbers to hold), and clause (b) cast-shadow area must not fall. Every number from `tools/visual/f4c-critic.mjs --mode s60` against a SOURCE-LEVEL revert, not a page-side rig edit."
+      },
+      "remedy_action": "Two levers, both already in the file, neither of which F4 used. (1) `noon-marsh` declares `keyWarmth: 0.0`. It is a LIVE lever — sky.js:815-816 lerps the sun colour toward the horizon for positive values and the zenith for negative — and dusk-canopy uses 0.85, overcast-flat -0.30, night-moon -0.80. Warm the noon key (start at +0.45) and cool the fill, so lit and shadowed surfaces stop returning the same hue. (2) The env cut from 1.00 to 0.35 was applied as a flat scalar; the shadowed side is exactly where it was doing useful work. Either restore env toward ~0.55-0.65 and take the key dominance back from `sky`/`fill` instead, or add a dedicated shadow-fill term, and re-measure. BOTH must be measured at the same windows in the same run, because they trade against each other: warming the key raises hue_offset and raising env lowers the key ratio.",
+      "remedy_acceptance": "AT THE SAME FIVE JUDGED WINDOWS, ALL THREE, and paired per S59 so neither can be bought with the other: (i) M6 `hue_offset` >= 6.0 deg in every daylight window, which is only the hard-fail line and not yet the 15 deg bar — say so; (ii) M6 `retention` >= 0.60 and M6 `C_shadow` >= 6 in every window whose cast-shadow area rose, measured on the FULL FRAME and on the sealed crop; (iii) S60 clause (a) — lit-subset key_off >= 2x env_off — must NOT fall at any window that already passes it (pair01 3.32/3.12, pair02 5.58/3.55, pair04-crop 5.49, pair05 4.45/4.83 are the numbers to hold), and clause (b) cast-shadow area must not fall. Every number from `tools/visual/f4c-critic.mjs --mode s60` against a SOURCE-LEVEL revert, not a page-side rig edit.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/M6-control-battery.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/frames/pair03__BEFORE-sourcerevert__AFTER__AFTER-shadowmap-OFF.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/S60-lit-subset-and-shadow-preservation.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/pair03-row-band-profile.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,
