@@ -153,17 +153,27 @@ function solveLiftForP10(png, crop, targetP10) {
  * (it validates against `this.quality`, which has no such key before F3). Swallowing that is not
  * leniency — it is how the control arm reports "the fix is genuinely absent from this tree" instead
  * of dying. `gi_feature_present` records which happened, and `--compare-to` gates on it. */
+// NOTE, found by running it and not by reading the code: `g.h()` from tools/lib/browser.mjs does NOT
+// throw on an in-page error — it calls `die()`, which exits the whole process (EXIT 12,
+// HARNESS_ERROR). So a try/catch around `g.h('setVisualFeature', …)` is dead code, and the first
+// version of this function was exactly that: the control run died with
+// `setVisualFeature() threw: unknown renderer feature 'giFill'` instead of recording the absence.
+// The evaluate has to happen in the page, where the throw is catchable.
 let giFeaturePresent = null;
 async function setGI(g, on) {
-  try {
-    await g.h('setVisualFeature', 'giFill', !!on);
+  const res = await g.page.evaluate(async (enabled) => {
+    try { await window.__HARNESS.setVisualFeature('giFill', enabled); return { ok: true }; }
+    catch (e) { return { ok: false, err: String((e && e.message) || e) }; }
+  }, !!on);
+  if (res.ok) {
     if (giFeaturePresent === null) giFeaturePresent = true;
     return true;
-  } catch (err) {
-    giFeaturePresent = false;
-    if (!/unknown renderer feature/i.test(String(err && err.message))) throw err;
-    return false;
   }
+  if (!/unknown renderer feature/i.test(res.err)) {
+    throw new Error(`setVisualFeature('giFill') failed for a reason that is NOT "the fix is absent": ${res.err}`);
+  }
+  giFeaturePresent = false;
+  return false;
 }
 
 async function shoot(g) {
@@ -244,9 +254,13 @@ async function sweep(g, poses, giFill, { save = null } = {}) {
 
 const masd = (xs) => (xs.length < 2 ? 0 : xs.slice(1).reduce((s, v, i) => s + Math.abs(v - xs[i]), 0) / (xs.length - 1));
 
+// `--gpu hardware` is the spelling the rest of the fleet's GPU tools use (deck.mjs,
+// deck-motion.mjs, opening-capture.mjs, and gpu-deck.mjs's generated Pod command); `--hardware-gpu`
+// is kept because this file's own header documented it. Both mean the same thing.
+const wantsHardware = args['hardware-gpu'] === true || args.hardwareGpu === true
+  || String(args.gpu || '').toLowerCase() === 'hardware';
 const g = await launchGame({
-  entry: args.entry || 'game/index.html', width: WIDTH, height: HEIGHT,
-  hardwareGpu: args['hardware-gpu'] === true || args.hardwareGpu === true,
+  entry: args.entry || 'game/index.html', width: WIDTH, height: HEIGHT, hardwareGpu: wantsHardware,
 });
 await g.h('ready');
 
@@ -258,9 +272,30 @@ const rendererString = await g.page.evaluate(() => {
   return dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
 });
 const softwareRenderer = /swiftshader|llvmpipe|software/i.test(String(rendererString || ''));
+// A Pod that silently falls back to SwiftShader produces a run that LOOKS like hardware evidence and
+// is not — the exact failure `classifyRenderer` in gpu-deck.mjs was written for. A paid run must die
+// here rather than write a plausible result.json (dispatch brief item 2: a software renderer is
+// worthless for appearance claims).
+if (args['require-hardware'] && softwareRenderer) {
+  await g.close();
+  throw new Error(`--require-hardware was set and the renderer is "${rendererString}" — this run would be software evidence wearing a hardware label`);
+}
 
 const pngOff = await captureArm(g, { giFill: false });
 const pngOn = await captureArm(g, { giFill: true });
+// A headed hardware run (`--hardware-gpu`, which is how the Pod arm runs) gives the page less than
+// the requested viewport because the browser's own chrome takes vertical space, so the canvas — and
+// therefore the capture — can be smaller than WIDTHxHEIGHT. Clamping the crop to what actually came
+// back is the difference between a real measurement and a screenful of NaN read past the buffer.
+// The crop is clamped ONCE, from the first capture, so both arms are measured over identical pixels.
+if (pngOff.width !== WIDTH || pngOff.height !== HEIGHT) {
+  CROP.x1 = Math.min(CROP.x1, pngOff.width);
+  CROP.y1 = Math.min(CROP.y1, pngOff.height);
+  CROP.y0 = Math.min(CROP.y0, Math.max(0, pngOff.height - 1));
+}
+if (pngOn.width !== pngOff.width || pngOn.height !== pngOff.height) {
+  throw new Error(`the two arms captured at different sizes (${pngOff.width}x${pngOff.height} vs ${pngOn.width}x${pngOn.height}) — they are not comparable`);
+}
 fs.writeFileSync(path.join(OUT, 'gi-off.png'), PNG.sync.write(pngOff));
 fs.writeFileSync(path.join(OUT, 'gi-on.png'), PNG.sync.write(pngOn));
 
@@ -271,6 +306,7 @@ const result = {
   entry: args.entry || 'game/index.html',
   renderer: rendererString, software_renderer: softwareRenderer,
   gi_feature_present: giFeaturePresent,
+  capture_size: [pngOff.width, pngOff.height], requested_size: [WIDTH, HEIGHT],
   camera: CAMERA, crop: CROP, place: 'town-thorn (VP04 pose)', time_of_day: 9, weather: 'clear',
   gi_off: mOff, gi_on: mOn,
   checks: [
@@ -402,7 +438,18 @@ if (args.motion) {
 // from the control tree (the feature switch does not exist at all), and (2) the control's shadow floor
 // is back at the head run's GI-OFF number and nowhere near its GI-ON number.
 if (args['compare-to']) {
-  const head = JSON.parse(fs.readFileSync(path.resolve(REPO, args['compare-to']), 'utf8'));
+  // The head run may still be in flight when this control finishes (they are deliberately run in
+  // parallel on one box). Losing a completed set of captures to a missing comparison file would be
+  // absurd, so the raw numbers are written either way and the failure is stated, not swallowed.
+  const headPath = path.resolve(REPO, args['compare-to']);
+  const head = fs.existsSync(headPath) ? JSON.parse(fs.readFileSync(headPath, 'utf8')) : null;
+  if (!head) {
+    result.delete_the_fix = {
+      error: `compare-to file not present when this run finished: ${headPath}. This run's own numbers above are intact; re-derive the comparison from the head run's result.json by hand.`,
+      control_p10: mOn.p10_luma, gi_feature_present: giFeaturePresent,
+      checks: [{ id: 'HEAD-RUN-RESULT-AVAILABLE', ok: false, detail: 'the head run had not written result.json yet' }],
+    };
+  } else {
   const ctrl = mOn.p10_luma; // on this tree both "arms" are the same tree; use the second capture
   const headOff = head.gi_off.p10_luma, headOn = head.gi_on.p10_luma;
   const distOff = Math.abs(ctrl - headOff), distOn = Math.abs(ctrl - headOn);
@@ -429,6 +476,7 @@ if (args['compare-to']) {
       },
     ],
   };
+  }
   for (const c of result.delete_the_fix.checks) console.log(`${c.ok ? 'PASS' : 'FAIL'}  ${c.id}  — ${c.detail}`);
 }
 
