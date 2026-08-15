@@ -358,6 +358,7 @@ const GAP_MAP = {
   // The F1 critic's finding: two onBeforeCompile hooks declare uWetness/esWet twice, the actor
   // program fails to link, and no character has a body. F1 owns it; F10 carries the consequence.
   'GAP-W1-f1-actor-body-shader-does-not-link': ['F1', 'F10'],
+  'GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground': ['F10'],
   // The screens got denser and became unreadable: the density measure counts ink over ink, so it
   // REWARDED the regression (Ruling S58). Sizing the box was right; nothing reflowed inside it.
   'GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them': ['T4'],

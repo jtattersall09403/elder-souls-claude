@@ -1,11 +1,11 @@
 {
- "generated": "2026-08-15T17:53:23.934Z",
+ "generated": "2026-08-15T18:55:06.649Z",
  "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
  "method": "Inventory derived by fs walk + generated ledgers. Mapping authored by the audit agent after reading every RI title/front-matter, every plan heading, and every open gap record.",
  "inventory_counts": {
   "reference_items": 152,
   "plans": 49,
-  "open_gaps": 88,
+  "open_gaps": 89,
   "proposed_roadmap_items": 69
  },
  "rings": {
@@ -405,9 +405,10 @@
    "open_gaps": [
     "GAP-W1-character-surface-is-assembled-from-primitives-not-built",
     "GAP-W1-f1-actor-body-shader-does-not-link",
+    "GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground",
     "GAP-W1-w1-30d-guard-misses-part-deletion"
    ],
-   "n_open_gaps": 3,
+   "n_open_gaps": 4,
    "blocking_gaps": 2,
    "plans": [
     "W1-24",
@@ -3549,7 +3550,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 3,
+   "verdicts": 4,
    "best_score_0_10": 3,
    "state": "judged_below_bar"
   },
@@ -3584,8 +3585,8 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 1,
-   "best_score_0_10": 1,
+   "verdicts": 2,
+   "best_score_0_10": 2,
    "state": "judged_below_bar"
   },
   {
@@ -5568,6 +5569,16 @@
    "what": "Restoring the surface pass on cloned materials put two fragment-shader preambles into one program on actor body materials, and they collide on two identifiers. ",
    "covered_by": [
     "F1",
+    "F10"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground",
+   "severity": "major",
+   "path": "render.art.character",
+   "what": "Round 9's pelvis roll raised the whole figure relative to its own root, and nothing takes the rise back out. MEASURED THREE WAYS AND THEY AGREE. (1) On the buil",
+   "covered_by": [
     "F10"
    ],
    "bucket": "build"
