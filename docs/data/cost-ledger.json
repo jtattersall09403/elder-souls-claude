@@ -1,14 +1,14 @@
 {
   "schema": "elder-souls/cost-ledger@1",
-  "generated_at": "2026-08-15T07:40:52.255Z",
+  "generated_at": "2026-08-15T08:04:52.093Z",
   "generator": "tools/cost.mjs",
-  "commit": "5173ebc",
+  "commit": "ffc1413",
   "source": "~/.claude/projects/-home-user-elder-souls-claude",
   "stale_after_minutes": 45,
   "window": {
     "from": "2026-08-05T22:16:46.017Z",
-    "to": "2026-08-15T07:40:46.417Z",
-    "hours": 225.4,
+    "to": "2026-08-15T08:04:42.910Z",
+    "hours": 225.8,
     "complete": true
   },
   "comparable_key": "sha1:2e492d83b9953130",
@@ -39,31 +39,31 @@
     }
   },
   "coverage": {
-    "files_total": 526,
-    "files_read": 526,
-    "bytes_read": 812398749,
+    "files_total": 530,
+    "files_read": 530,
+    "bytes_read": 813443482,
     "complete": true
   },
   "drivers": {
-    "requests": 64034,
-    "mean_context_tokens": 210860,
-    "pie_tokens": 1670258289,
-    "requests_per_agent_hour": 69.75
+    "requests": 64096,
+    "mean_context_tokens": 210902,
+    "pie_tokens": 1672423998,
+    "requests_per_agent_hour": 69.44
   },
   "denominator": {
     "definition": "active_clock_hours",
-    "active_hours": 66,
-    "agent_hours": 918,
-    "span_hours": 225.4
+    "active_hours": 67,
+    "agent_hours": 923,
+    "span_hours": 225.8
   },
   "headline": {
-    "spend_to_date_usd": 7938.26,
-    "burn_usd_per_hour": 6.05,
+    "spend_to_date_usd": 7948.53,
+    "burn_usd_per_hour": 5.35,
     "burn_window_hours": 1,
-    "ch_usd_per_hour": 120.28,
-    "ch_pct_of_baseline": 103.8,
-    "usd_per_agent_hour": 8.65,
-    "usd_per_agent_hour_pct_of_baseline": 99.3
+    "ch_usd_per_hour": 118.63,
+    "ch_pct_of_baseline": 102.4,
+    "usd_per_agent_hour": 8.61,
+    "usd_per_agent_hour_pct_of_baseline": 98.9
   },
   "baseline": {
     "usd_per_hour": 115.88,
@@ -353,70 +353,78 @@
     },
     {
       "t": "2026-08-15T06:00:00.000Z",
-      "usd_per_hour": 3.03,
-      "usd_per_agent_hour": 3.03,
+      "usd_per_hour": 5.48,
+      "usd_per_agent_hour": 5.48,
       "mean_agents": 1,
-      "commit": "5173ebc",
+      "commit": "1c40739",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-15T08:00:00.000Z",
+      "usd_per_hour": 2.67,
+      "usd_per_agent_hour": 0.53,
+      "mean_agents": 5,
+      "commit": "ffc1413",
       "window_hours": 2
     }
   ],
   "by_model": [
     {
       "model": "claude-opus-5",
-      "usd": 7662.91,
-      "requests": 58217,
+      "usd": 7672.8,
+      "requests": 58273,
       "tokens": {
-        "input": 1327064,
-        "cache_write_5m": 194486348,
-        "cache_write_1h": 10662021,
-        "cache_read": 12131383510,
-        "output": 10736854
+        "input": 1348197,
+        "cache_write_5m": 194679633,
+        "cache_write_1h": 10696914,
+        "cache_read": 12146378168,
+        "output": 10766155
       }
     },
     {
       "model": "claude-sonnet-5",
-      "usd": 275.35,
-      "requests": 5817,
+      "usd": 275.73,
+      "requests": 5823,
       "tokens": {
-        "input": 371298,
-        "cache_write_5m": 14699081,
+        "input": 371310,
+        "cache_write_5m": 14814413,
         "cache_write_1h": 0,
-        "cache_read": 1149297475,
-        "output": 800346
+        "cache_read": 1149704238,
+        "output": 800818
       }
     }
   ],
   "by_token_class": [
     {
       "class": "input",
-      "usd": 7.38,
-      "tokens": 1698362
+      "usd": 7.48,
+      "tokens": 1719507
     },
     {
       "class": "cache_write_5m",
-      "usd": 1252.29,
-      "tokens": 209185429
+      "usd": 1253.78,
+      "tokens": 209494046
     },
     {
       "class": "cache_write_1h",
-      "usd": 106.62,
-      "tokens": 10662021
+      "usd": 106.97,
+      "tokens": 10696914
     },
     {
       "class": "cache_read",
-      "usd": 6295.55,
-      "tokens": 13280680985
+      "usd": 6303.13,
+      "tokens": 13296082406
     },
     {
       "class": "output",
-      "usd": 276.42,
-      "tokens": 11537200
+      "usd": 277.16,
+      "tokens": 11566973
     }
   ],
   "guards": {
     "g1_parallelism": {
-      "mean_agents": 13.91,
-      "mean_agents_present": 14,
+      "mean_agents": 13.78,
+      "mean_agents_present": 13.87,
       "floor": 12,
       "divergence_flag": false,
       "status": "ok",

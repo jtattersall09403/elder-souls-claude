@@ -2,8 +2,8 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `5173ebc7`: **1018 tools**, **159 reference items**,
-**57 pieces in flight**.
+drift. At `ffc14133`: **1018 tools**, **159 reference items**,
+**58 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
 only works if it is cheap to read. **The full listings are generated beside this file and are
@@ -151,7 +151,7 @@ were stale — the second by a third. **Ask the tree, it costs one command:**
 `game/data/world/population-posts.json` is a **generated cache**, not a source. Never hand-edit it;
 re-run `node tools/world/build-population.mjs --write`.
 
-## In flight right now — 57 live pieces
+## In flight right now — 58 live pieces
 
 **Read the status file of anything near your files before you write**, and record your own as you
 go (`files_touched`, `files_claimed`). Three container restarts in one day killed every agent
@@ -162,6 +162,8 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 
 | piece | state | files claimed |
 |---|---|---|
+| `W1-F10-CHARACTER-CRITIC` | running | `orchestration/status/W1-F10-CHARACTER-CRITIC.json` `corpus/90-verdicts/wave1/W1-F10-CHARACTERS-critic.md` `corpus/90-verdicts/wave1/W1-F10-CHARACTERS-critic.json` `corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/` +2 |
+| `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
 | `W1-F3-AMBIENT-FILL` | in_progress | `orchestration/status/W1-F3-AMBIENT-FILL.json` `game/src/render/post/composite.js` `game/src/render/renderer.js` `tools/visual/w1-f3-ambient-fill.mjs` +2 |
 | `W1-G1-CAMERA-OCCLUSION` | measuring | `orchestration/status/W1-G1-CAMERA-OCCLUSION.json` `tools/camera/cam-occlusion-walk.mjs` `corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/` |
 | `T4-critic` | measuring | — **declares nothing** |
@@ -193,7 +195,6 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 | `critic-w1-23-r5` | abandoned | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` `corpus/90-verdicts/wave1/W1-23-r5.md` `corpus/90-verdicts/wave1/W1-23-r5.json` +2 |
 | `critic-w1-26-r4` | abandoned | `corpus/90-verdicts/wave1/W1-26-r4.md` `corpus/90-verdicts/wave1/W1-26-r4.json` `orchestration/status/critic-w1-26-r4.json` `tools/journey/critic-` +1 |
 | `judge-prose-r5` | abandoned | `orchestration/status/judge-prose-r5.json` `reports/packs/prose-tics-r5.answers/judge-prose-r5/` `reports/blog-feed.jsonl` |
-| `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
 | `WIRING-AUDIT` | ? | — **declares nothing** |
 | `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
 | `RECONCILE-MAP-PROBE-S13` | reconciled | `orchestration/status/RECONCILE-MAP-PROBE-S13.json` |

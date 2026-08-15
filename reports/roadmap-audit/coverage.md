@@ -2,11 +2,11 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-14T19:21:04.722Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-15T08:04:52.363Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
-| reference items (`corpus/**/RI-*.md`) | 150 | 0 |
+| reference items (`corpus/**/RI-*.md`) | 151 | 0 |
 | plans (`orchestration/plans/*`) | 49 | 0 |
 | open gaps (`GAP-LEDGER.json`) | 80 | 0 |
 | proposed roadmap items | 69 | — |
@@ -42,7 +42,7 @@
 | `F12` | VFX and particles | RI-MAG05 | — | 1 (0) | W1-30 W1-30H | built_below_bar | V13 |
 | `F13` | Art direction and region identity | RI-WLD04 RI-VIS05 RI-VIS07 RI-UIX06 | RI-VIS05 | 1 (1) | W1-30 W1-30K | built_below_bar | V15 |
 | `F14` | Performance, LOD and budgets | RI-PLT01 | — | 0 (0) | W1-30 | built_below_bar | V16 |
-| `T4` | The Morrowind screens | RI-UIX03 RI-UIX04 RI-UIX06 RI-UIX07 RI-UIX08 | RI-UIX07 RI-UIX08 | 4 (3) | W1-21 W1-HUD-TOAST | built_below_bar | partial:V14 |
+| `T4` | The Morrowind screens | RI-UIX03 RI-UIX04 RI-UIX06 RI-UIX07 RI-UIX08 RI-UIX09 | RI-UIX07 RI-UIX08 RI-UIX09 | 4 (3) | W1-21 W1-HUD-TOAST | built_below_bar | partial:V14 |
 
 ### Ring 2 — The body, the camera and the fight — Souls owns everything in here.
 
@@ -253,6 +253,7 @@
 | `RI-UIX06` | 86-ui | neutral | T4 F13 | 2 | 5 | judged_below_bar |
 | `RI-UIX07` | 86-ui | morrowind | T4 | 0 | — | never_judged |
 | `RI-UIX08` | 86-ui | morrowind | P1 T4 | 0 | — | never_judged |
+| `RI-UIX09` | 86-ui | morrowind | T4 | 0 | — | never_judged |
 | `RI-AUD01` | 87-audio | souls | G6 | 1 | 6 | judged_at_or_above_bar |
 | `RI-AUD02` | 87-audio | modern-fidelity | E9 T3 | 1 | 6 | judged_at_or_above_bar |
 | `RI-AUD03` | 87-audio | morrowind | E9 | 4 | 5 | judged_below_bar |
