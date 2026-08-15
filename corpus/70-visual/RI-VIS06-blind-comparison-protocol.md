@@ -396,6 +396,16 @@ That is now false for Protocol A and is corrected here rather than left to misle
 `corpus/90-verdicts/w01-visual-blind.md` with the verdict at
 `corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.{json,md}`.
 
+**Protocol A ran a second time, 2026-08-15, after three landed remedies — recorded, and the cap did
+not move.** Round 2 counterbalanced the side assignment per r1's own reversible ruling (ours on A for
+exactly `ceil(5/2)` pairs, fixed before any image was opened), which gives the positional-bias check
+in the Comparison method above full power for the first time: under an alternating assignment, any
+fixed-letter answering strategy can match the reference on at most 3 of 5 pairs, and round 2's judges
+matched 5 of 5. The confidence spread (four `high`, one `medium`) and the outcome-table row it maps to
+(row 1, cap 5) are unchanged from round 1. **No threshold in this item was changed.** Verdict at
+`corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.{json,md}`, §E blocks appended to
+`corpus/90-verdicts/w01-visual-blind.md`.
+
 **The §A prompt is validated: the predicted failure did not occur.** All five judges returned the
 exact answer block on the **first attempt** — no drift out of format, no re-ask, no discard, and no
 `SINGLE BIGGEST GAP` that was a mood rather than something buildable. **No amendment to the prompt
