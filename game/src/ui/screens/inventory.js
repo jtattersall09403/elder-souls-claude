@@ -86,16 +86,34 @@ export function drawInventory(S, m) {
   // RI-UIX09 P2. The figure, wearing the objects — Morrowind's own arrangement, measured off
   // `REF-A12b-inventory__mw-15538700.jpg`: encumbrance bar at the top of the left column, the
   // dressed body under it, the armour reading at its foot.
-  drawDoll(S, 'inventory.doll', ix, iy + 68 * s, dollW, 470 * s, m.equipped || {}, alpha);
+  drawDoll(S, 'inventory.doll', ix, iy + 68 * s, dollW, 400 * s, m.equipped || {}, alpha);
+  // What is on the figure, named and drawn, with each thing's condition under it. Morrowind puts
+  // `Armor: 42` at the foot of its doll; this is the same place answering the same question, and
+  // it is the one place in the game where "how worn is the thing in my hand" is legible at rest.
+  const wornSlots = ['head', 'body', 'legs', 'feet', 'hands', 'right', 'left']
+    .filter((k) => (m.equipped || {})[k]).slice(0, 4);
   S.el({
     id: 'inventory.worn', kind: 'divider',
-    rect: [ix, iy + 540 * s, dollW, 26 * s], text: null, opacity: alpha,
-    meta: { worn_count: Object.keys(m.equipped || {}).filter((k) => (m.equipped || {})[k]).length },
+    rect: [ix, iy + 476 * s, dollW, 24 * s], text: null, opacity: alpha,
+    meta: { worn_count: wornSlots.length, slots: wornSlots },
   }, (c, r) => {
     boneRule(c, r[0], r[1] + 2 * s, r[2], s, 313);
-    const n = Object.keys(m.equipped || {}).filter((k) => (m.equipped || {})[k]).length;
-    drawText(c, n === 1 ? 'one thing worn or held' : `${n} things worn or held`,
+    drawText(c, wornSlots.length === 1 ? 'worn and held' : 'worn and held',
       r[0] + 2 * s, r[1] + 20 * s, faceOf('ink'), 13 * s, inkDim());
+  });
+  wornSlots.forEach((k, i) => {
+    const it = m.equipped[k];
+    const wy = iy + (502 + i * 30) * s;
+    itemIcon(S, 'inventory.worn.' + k, ix, wy, 26 * s, 26 * s, it, alpha,
+      { condition: it.condition === null || it.condition === undefined ? null : it.condition });
+    S.el({
+      id: 'inventory.wornrow.' + k, kind: 'list_row',
+      rect: [ix + 30 * s, wy, dollW - 30 * s, 26 * s], text: it.name, opacity: alpha,
+      meta: { item_id: it.id, slot: k, equipped: true },
+    }, (c, r) => {
+      const f = faceOf('ink'), sz = 13 * s;
+      drawText(c, ellipsise(it.name, f, sz, r[2] - 4 * s), r[0], r[1] + 18 * s, f, sz, ink());
+    });
   });
   const sortY = iy + 574 * s;
   S.el({
@@ -202,6 +220,15 @@ export function drawContainer(S, m) {
   const sc = screen(S, 'container', title, m.placeName || null, 'clay', alpha);
   const [ix, iy, iw, ih] = sc.inner;
   const half = (iw - 40 * s) / 2;
+  // THE ROWS STOP AT TWELVE AND THE BOTTOM THIRD BECOMES THE THING YOU ARE ABOUT TO MOVE.
+  //
+  // Round 1 measured this screen at **0.033** fill, the emptiest panel in the build — two lists of
+  // names on a clay ground with nothing else on it, and, more to the point, **no way to see what a
+  // thing is before you take it**. You could read a name and a weight and that was all; C7's
+  // detail panel exists on the inventory and had no counterpart here. So twelve rows a side, and
+  // the band underneath carries the selected record exactly as the inventory's does: the object,
+  // drawn, then name, weight, gold, condition and the full description.
+  const CROWS = 12;
   const sides = [
     { id: 'mine', title: 'Carried', rows: m.rows, idx: m.rowIdx, x: ix },
     { id: 'theirs', title, rows: m.containerRows, idx: m.otherIdx, x: ix + half + 40 * s },
@@ -215,12 +242,16 @@ export function drawContainer(S, m) {
       drawText(c, side.title, r[0], r[1] + 20 * s, faceOf('bone'), 16 * s, on ? ink() : inkDim());
       boneRule(c, r[0], r[1] + 26 * s, r[2], s, idHash(side.id));
     });
-    const win = windowOf(side.rows.length, side.idx, ROWS);
+    const win = windowOf(side.rows.length, side.idx, CROWS);
+    if (side.rows.length > CROWS) {
+      extent(S, `container.${side.id}.extent`, side.x + half - 12 * s, iy + 34 * s, 12 * s,
+        CROWS * ROW_H * s, win.from, CROWS, side.rows.length, alpha);
+    }
     for (let i = win.from; i < win.to; i++) {
       const it = side.rows[i];
       const ry = iy + 34 * s + (i - win.from) * ROW_H * s;
       row(S, `container.${side.id}.row.${it.id}`, 'list_row',
-        side.x, ry, half, ROW_H * s, [
+        side.x, ry, half - 16 * s, ROW_H * s, [
           { text: it.name, w: 280 },
           { text: fmt(it.weight), w: 90, align: 'right', face: 'bone', size: 15 },
           { text: it.value_gold ? String(it.value_gold) : '—', w: 90, align: 'right', face: 'bone', size: 15 },
@@ -239,6 +270,46 @@ export function drawContainer(S, m) {
       }, (c, r) => drawText(c, 'Nothing here.', r[0] + 4 * s, r[1] + 18 * s, faceOf('ink'), 14 * s, inkDim()));
     }
   }
+  // ---- the band: what you have selected, drawn, on whichever side you are standing in --------
+  const by = iy + (34 + CROWS * ROW_H + 18) * s;
+  const bh = ih - (34 + CROWS * ROW_H + 18) * s;
+  const selSide = m.side === 0 ? m.rows : m.containerRows;
+  const selIdx = m.side === 0 ? m.rowIdx : m.otherIdx;
+  const csel = selSide[selIdx] || null;
+  column(S, 'container.band.rule', ix, by - 10 * s, iw, 2 * s, alpha);
+  if (csel) {
+    const plate = Math.min(140 * s, bh - 20 * s);
+    itemIcon(S, 'container.band.depiction', ix, by + 6 * s, plate, plate, csel, alpha,
+      { condition: csel.condition === null || csel.condition === undefined ? null : csel.condition });
+  }
+  S.el({
+    id: 'container.band', kind: 'detail_panel',
+    rect: [ix + 160 * s, by, iw - 160 * s, bh], opacity: alpha,
+    text: csel ? csel.description : null,
+    meta: csel ? {
+      item_id: csel.id, weight: csel.weight, value_gold: csel.value_gold, condition: csel.condition,
+      side: m.side === 0 ? 'mine' : 'theirs', depiction_element: 'container.band.depiction',
+    } : null,
+  }, (c, r) => {
+    if (!csel) {
+      drawText(c, 'nothing selected', r[0], r[1] + 24 * s, faceOf('ink'), 15 * s, inkDim());
+      return;
+    }
+    const f = faceOf('ink'), fb = faceOf('bone');
+    drawText(c, csel.name, r[0], r[1] + 24 * s, fb, 20 * s, ink());
+    boneRule(c, r[0], r[1] + 32 * s, r[2] * 0.6, s, 606);
+    const facts = [['weight', csel.weight > 0 ? fmt(csel.weight) : 'nothing'],
+      ['gold', csel.value_gold ? String(csel.value_gold) : 'not for sale']];
+    if (csel.condition !== undefined && csel.condition !== null) facts.push(['condition', pct(csel.condition)]);
+    let fx = r[0];
+    for (const [k, v] of facts) {
+      drawText(c, k, fx, r[1] + 58 * s, f, 13 * s, inkDim());
+      drawText(c, v, fx, r[1] + 78 * s, fb, 15 * s, ink());
+      fx += 150 * s;
+    }
+    const size = BODY.screen * s, lh = size * 1.44;
+    writeLines(c, wrap(csel.description || '', f, size, r[2] * 0.94), r[0], r[1] + 106 * s, 'ink', size, lh, ink());
+  });
   hint(S, 'container.hint', ix, iy + ih + 4 * s, iw,
     'Confirm moves one thing across. There is no button that decides what is worth keeping.', alpha);
 }

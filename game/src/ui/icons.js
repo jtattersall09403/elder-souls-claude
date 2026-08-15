@@ -433,7 +433,7 @@ export const SHAPE_NAMES = Object.keys(SHAPES);
 const WORDS = [
   [/\b(maul|hammer|warhammer|club|cudgel)\b/, 'maul'],
   [/\b(axe|hatchet|adze)\b/, 'axe'],
-  [/\b(dagger|knife|shiv|dirk|blade)\b/, 'dagger'],
+  [/\b(dagger|knife|shiv|dirk|blade|cutter|cleaver|fang|tooth|razor)\b/, 'dagger'],
   [/\b(spear|pike|glaive|harpoon|trident)\b/, 'spear'],
   [/\b(bow|longbow|shortbow)\b/, 'bow'],
   [/\b(staff|stave|wand|rod)\b/, 'staff'],
@@ -471,6 +471,31 @@ const BY_CATEGORY = {
 };
 
 /**
+ * WHAT EACH CATEGORY IS ALLOWED TO LOOK LIKE, and this table is a bug fix rather than a nicety.
+ *
+ * The first version matched `WORDS` against the whole name with no regard to the record's own
+ * category, and the shipped fixture broke it immediately: **`reed-cutter`, `category: "weapon"`,
+ * was drawn as a sprig of herbs**, because `reed` is in the plant row and the plant row is tested
+ * before nothing else could catch it. Seen in the first capture, at the left hand of the paper
+ * doll, which is exactly the sort of thing only a screenshot finds.
+ *
+ * The category is the stronger signal and it comes from the data rather than from prose, so it
+ * goes first: inside a known category only that category's own vocabulary is consulted, and a name
+ * word from another world cannot reach across. An unknown or absent category still gets the full
+ * list, so a record with no `category` is classified as well as it was before.
+ */
+const CATEGORY_VOCAB = {
+  weapon: ['maul', 'axe', 'dagger', 'spear', 'bow', 'staff', 'sword'],
+  armour: ['helm', 'cuirass', 'greaves', 'boots', 'gloves', 'shield'],
+  clothing: ['robe', 'boots', 'gloves', 'helm', 'ring', 'amulet'],
+  potion: ['bottle'],
+  ingredient: ['herb', 'mushroom', 'food', 'bottle'],
+  book: ['book', 'scroll'],
+  tool: ['tool', 'key', 'rope', 'pouch', 'bottle', 'pot'],
+  quest: ['writ', 'scroll', 'book', 'key', 'coin'],
+};
+
+/**
  * Which object an item is drawn as. THE ONLY CLASSIFIER — every consumer calls this one.
  *
  * @param {{id?:string, name?:string, category?:string, kind?:string}} item
@@ -479,8 +504,12 @@ const BY_CATEGORY = {
 export function shapeFor(item) {
   if (!item) return 'bundle';
   const name = String(item.name || item.id || '').toLowerCase();
-  for (const [re, shape] of WORDS) if (re.test(name)) return shape;
-  const cat = String(item.category || item.kind || 'misc').toLowerCase();
+  const cat = String(item.category || item.kind || '').toLowerCase();
+  const vocab = CATEGORY_VOCAB[cat] || null;
+  for (const [re, shape] of WORDS) {
+    if (vocab && vocab.indexOf(shape) < 0) continue;
+    if (re.test(name)) return shape;
+  }
   return BY_CATEGORY[cat] || 'bundle';
 }
 
@@ -577,47 +606,84 @@ export function drawDoll(S, id, x, y, w, h, slots, alpha) {
   }, (c, r) => {
     const cx = r[0] + r[2] / 2, top = r[1] + r[3] * 0.04, bh = r[3] * 0.92;
     const seed = idHash(id);
-    const unit = Math.min(r[2], bh * 0.42);
+    const B = (fx, fy, fw, fh) => [r[0] + r[2] * fx, top + bh * fy, r[2] * fw, bh * fh];
 
-    // ---- the body under the kit. Bone-and-hide, drawn, never a silhouette rectangle. --------
-    carve(c, oval(c, cx, top + bh * 0.09, unit * 0.19, bh * 0.075, s, seed), 'leather', s, seed);          // head
-    carve(c, poly(c, [[0.34, 0.17], [0.66, 0.17], [0.72, 0.46], [0.28, 0.46]],
-      r[0], top, r[2], bh, s, seed + 1), 'leather', s, seed + 1);                                          // torso
-    carve(c, poly(c, [[0.30, 0.46], [0.47, 0.46], [0.45, 0.92], [0.32, 0.92]],
-      r[0], top, r[2], bh, s, seed + 2), 'leather', s, seed + 2);                                          // left leg
-    carve(c, poly(c, [[0.53, 0.46], [0.70, 0.46], [0.68, 0.92], [0.55, 0.92]],
-      r[0], top, r[2], bh, s, seed + 3), 'leather', s, seed + 3);                                          // right leg
-    carve(c, poly(c, [[0.20, 0.19], [0.32, 0.19], [0.30, 0.56], [0.18, 0.56]],
-      r[0], top, r[2], bh, s, seed + 4), 'leather', s, seed + 4);                                          // left arm
-    carve(c, poly(c, [[0.68, 0.19], [0.80, 0.19], [0.82, 0.56], [0.70, 0.56]],
-      r[0], top, r[2], bh, s, seed + 5), 'leather', s, seed + 5);                                          // right arm
+    // ---- the body under the kit -------------------------------------------------------------
+    //
+    // A SAXHLEEL BODY, not a mannequin. The first version drew an oval head on a slab torso and
+    // the capture showed exactly that: a grey shop dummy standing in a green window, which is a
+    // worse answer to P2 than the text it replaced. This one has the silhouette the player
+    // character has — a long back-swept skull, a neck frill, a heavy tail counterbalancing
+    // forward — so the figure in the case is recognisably the person you are playing.
+    //
+    // The tail is the load-bearing detail at this size. At 200×470 units the head is about 30 px
+    // and reads as a shape rather than a face; the tail is 90 px of unmistakable silhouette, and
+    // silhouette is what RI-UIX06 §D asks a small drawn thing to survive on.
+    carve(c, poly(c, [[0.52, 0.62], [0.62, 0.66], [0.86, 0.86], [0.96, 0.99], [0.86, 0.99],
+      [0.62, 0.80], [0.50, 0.72]], r[0], top, r[2], bh, s, seed + 9), 'chitin', s, seed + 9);   // tail
+    carve(c, poly(c, [[0.30, 0.46], [0.46, 0.46], [0.45, 0.78], [0.48, 0.92], [0.30, 0.92], [0.32, 0.78]],
+      r[0], top, r[2], bh, s, seed + 2), 'leather', s, seed + 2);                                // near leg
+    carve(c, poly(c, [[0.54, 0.46], [0.70, 0.46], [0.68, 0.78], [0.70, 0.92], [0.52, 0.92], [0.55, 0.78]],
+      r[0], top, r[2], bh, s, seed + 3), 'leather', s, seed + 3);                                // far leg
+    carve(c, poly(c, [[0.33, 0.18], [0.67, 0.18], [0.73, 0.34], [0.70, 0.48], [0.30, 0.48], [0.27, 0.34]],
+      r[0], top, r[2], bh, s, seed + 1), 'leather', s, seed + 1);                                // torso
+    carve(c, poly(c, [[0.22, 0.20], [0.33, 0.22], [0.31, 0.42], [0.34, 0.58], [0.25, 0.59], [0.20, 0.42]],
+      r[0], top, r[2], bh, s, seed + 4), 'leather', s, seed + 4);                                // near arm
+    carve(c, poly(c, [[0.67, 0.22], [0.78, 0.20], [0.80, 0.42], [0.75, 0.59], [0.66, 0.58], [0.69, 0.42]],
+      r[0], top, r[2], bh, s, seed + 5), 'leather', s, seed + 5);                                // far arm
+    carve(c, poly(c, [[0.44, 0.15], [0.56, 0.15], [0.57, 0.19], [0.43, 0.19]],
+      r[0], top, r[2], bh, s, seed + 6), 'chitin', s, seed + 6);                                 // neck
+    // the skull: brow forward, cranium swept back over the neck
+    carve(c, poly(c, [[0.38, 0.10], [0.44, 0.05], [0.56, 0.05], [0.62, 0.09], [0.68, 0.12],
+      [0.58, 0.15], [0.42, 0.15]], r[0], top, r[2], bh, s, seed + 7), 'chitin', s, seed + 7);
+    // the frill, three bone spines off the back of the skull
+    c.save();
+    for (let i = 0; i < 3; i++) {
+      const y0 = top + bh * (0.07 + i * 0.022);
+      c.beginPath();
+      c.moveTo(r[0] + r[2] * 0.60, y0);
+      c.lineTo(r[0] + r[2] * (0.76 + i * 0.03), y0 - bh * 0.012);
+      c.strokeStyle = Ca('bone_dim', 0.85); c.lineWidth = Math.max(1.2, 2.2 * s); c.stroke();
+    }
+    // the eye: one mark, so the figure is facing you
+    c.beginPath();
+    c.arc(r[0] + r[2] * 0.455, top + bh * 0.095, Math.max(1.2, 2.2 * s), 0, Math.PI * 2);
+    c.fillStyle = Ca('resin_pale', 0.9); c.fill();
+    c.restore();
 
     // ---- the kit, over the body, one call per slot into the shared table -------------------
     const place = (item, fx, fy, fw, fh, k) => {
       if (!item) return;
-      drawObject(c, shapeFor(item), r[0] + r[2] * fx, top + bh * fy, r[2] * fw, bh * fh, s, seed + 40 + k, item);
+      const [bx, by, bw, bhh] = B(fx, fy, fw, fh);
+      drawObject(c, shapeFor(item), bx, by, bw, bhh, s, seed + 40 + k, item);
     };
-    place(sl.body, 0.24, 0.15, 0.52, 0.34, 0);
-    place(sl.head, 0.34, 0.01, 0.32, 0.16, 1);
-    place(sl.legs, 0.28, 0.46, 0.44, 0.30, 2);
-    place(sl.feet, 0.28, 0.76, 0.44, 0.20, 3);
-    place(sl.hands, 0.62, 0.44, 0.24, 0.16, 4);
-    place(sl.right, 0.72, 0.16, 0.30, 0.52, 5);
-    place(sl.left, -0.02, 0.16, 0.30, 0.52, 6);
+    place(sl.body, 0.25, 0.16, 0.50, 0.33, 0);
+    place(sl.legs, 0.28, 0.45, 0.44, 0.30, 2);
+    place(sl.feet, 0.28, 0.74, 0.44, 0.20, 3);
+    place(sl.head, 0.36, 0.00, 0.30, 0.16, 1);
+    place(sl.hands, 0.62, 0.45, 0.22, 0.15, 4);
+    place(sl.right, 0.74, 0.14, 0.28, 0.50, 5);
+    place(sl.left, -0.02, 0.14, 0.28, 0.50, 6);
 
-    // ---- the empty slots, marked as sockets so "nothing equipped" is drawn, not absent -----
-    const socket = (fx, fy, fw, fh, on) => {
+    // ---- what is NOT worn, said in a lashing rather than in a dashed box ---------------------
+    //
+    // The first version drew empty slots as dashed rectangles and the capture showed three grey
+    // dotted boxes hovering beside the figure — indistinguishable from a debug overlay, and a
+    // dashed axis-aligned rectangle is precisely the UI-kit form RI-UIX06 A2 forbids ("no element
+    // is a plain rectangle"). An empty hand is now a bare root loop where the strap would be:
+    // a made thing with nothing in it.
+    const empty = (fx, fy, fw, fh, on) => {
       if (on) return;
+      const [bx, by, bw, bhh] = B(fx, fy, fw, fh);
       c.save();
       c.beginPath();
-      c.rect(r[0] + r[2] * fx, top + bh * fy, r[2] * fw, bh * fh);
-      c.setLineDash([4 * s, 5 * s]);
-      c.strokeStyle = Ca('bone_dim', 0.30); c.lineWidth = Math.max(1, 1.4 * s); c.stroke();
+      c.ellipse(bx + bw / 2, by + bhh * 0.5, bw * 0.26, bhh * 0.16, 0, 0, Math.PI * 2);
+      c.strokeStyle = Ca('root', 0.55); c.lineWidth = Math.max(1.2, 2.2 * s); c.stroke();
       c.restore();
     };
-    socket(0.34, 0.01, 0.32, 0.15, sl.head);
-    socket(0.72, 0.18, 0.28, 0.48, sl.right);
-    socket(0.00, 0.18, 0.28, 0.48, sl.left);
+    empty(0.74, 0.14, 0.28, 0.50, sl.right);
+    empty(-0.02, 0.14, 0.28, 0.50, sl.left);
+    empty(0.36, 0.00, 0.30, 0.16, sl.head);
   });
 }
 
