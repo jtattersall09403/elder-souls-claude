@@ -524,7 +524,14 @@ if (args['warmup-curve']) {
   // then SETTLE, calling `pauseClock` never. Sampling at 12 is the difference between a claim about
   // the pack and an extrapolation toward it.
   const schedule = String(args.schedule || '4,12,20,30,45,60,90,120,180,240,300,420,600').split(',').map(Number);
-  await placeScene(g, 0);
+  // `--preroll N` steps N frames after the teleport BEFORE the camera is posed. It is the whole
+  // experiment. With preroll 0 the shadow floor is already 14.29 at frame 4 and stays there through
+  // frame 600 — flat, no scene-age drift, which REFUTES the first explanation this piece reached for.
+  // With preroll 90 the same scene measured 30 frames after the camera move reads 4.64 and 240 frames
+  // after it reads 14.29. So the settling is triggered by a camera JUMP in an already-running world,
+  // not by the world being young — and `deck.mjs`, which produced our side of the blind pack, poses
+  // its camera and then steps `settle_frames: 12`.
+  await placeScene(g, Number(args.preroll || 0));
   await setGI(g, false);
   await g.h('camera', CAMERA);
   const rows = [];
