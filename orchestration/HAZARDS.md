@@ -66,6 +66,57 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 20. Three traps found by the F10 r9 critic, 2026-08-15 — a generator that reverts a round, a `--pose` that silently means something else, and a shared tree that is mid-edit under you
+
+**20a. `tools/harness/anim-author.mjs` holds a SECOND COPY of the idle stance, and `--write` used to
+revert the round that was in flight.** The generator declares its own `IDLE` / `IDLE_LOOP` constants
+(~line 113) and regenerates `idle_loop` wholesale, while the shipped stance is hand-authored in
+`game/data/combat/clips.json`. **Verified on a copy, not asserted**: `git archive HEAD` into a scratch
+tree, then `node tools/harness/anim-author.mjs --only thrust --out <scratch>` with the generator at
+`741bafb7^` (before round 9's sync) —
+
+| `thrust` track | shipped | PRE-sync generator | HEAD generator |
+|---|---|---|---|
+| `pelvis.rz` | `[[0,5],[0.3,0],[2.7,0],[3,5]]` | **null** | `[[0,5],[0.3,0],[2.7,0],[3,5]]` |
+| `spine_00 / spine_02 / thigh_l / thigh_r / neck .rz` | present | **null** | present |
+| `idle_loop.pelvis.rz` | `[[0,0],[1.5,1.2],[3,0]]` | **absent** | present |
+
+So the landmine was real: `--write` before `741bafb7` would have stripped the termination-rule
+endpoints from **every re-solved archetype** — re-opening the 15× weapon-socket snap regression that
+round had just closed — and deleted the weight-shift curve `RI-VIS10` C3's "the two frames differ" arm
+depends on. Round 9 fixed it and said so.
+
+**It is not fully disarmed and the round said that too.** At HEAD, `idle_ready` and the termination
+endpoints round-trip exactly; `idle_loop` does **not** — the generator still writes rx amplitudes
+`0.45 / 0.55 / 0.5 / 0.8` where the shipped file carries `0.68 / 0.82 / 0.75 / 1.2`, a ~34% shrink of
+the breathing, hand-tuned by somebody before round 9. **`anim-author.mjs --write` is still not safe to
+run blind.** Before running it: `git archive HEAD` to a scratch tree, run `--out` there, and diff
+`idle_ready` and `idle_loop` against the shipped file.
+
+**20b. A `--pose` flag that falls back to `Object.values(...)[0]` names one archetype and measures
+another — but at phase 0 it is benign, and the difference matters.** `tools/visual/f10-silhouette.mjs`
+line 109 and `tools/visual/f10-r8-torso.mjs` line 277 both read
+`clips.archetypes[opts.pose] || Object.values(clips.archetypes)[0]`, and both default to
+`pose: 'idle'`. **`clips.json` has no archetype called `idle`** — the names are `idle_ready` and
+`idle_loop` — and `Object.keys(archetypes)[0]` is **`cut_diagonal`**. So the banner says `idle@0` and
+the lookup lands on an attack. Round 9 recorded this against `f10-r8-torso.mjs` as *"r8's headline
+trunk numbers were measured mid-swing"*.
+
+**Half of that is wrong, and it was worth checking.** Evaluated on the built rig, `cut_diagonal@0` is
+**byte-identical to `idle_ready@0`** on all 20 bones, in both the pre-round and post-round clip blobs —
+every non-looping archetype begins *from* the stand, which is what the termination rule is for. At
+`phase 0` the fallback measures the idle after all. It diverges the moment the phase is non-zero
+(`cut_diagonal@1.5` differs on 18 of 20 bones). **So: the trap is real and one key rename from
+biting, but do not assume a past number was taken mid-swing — check the phase the tool used.**
+
+**20c. Measure off `git archive HEAD`, not off the shared working tree.** At 17:52 on 2026-08-15 a
+sibling had `game/src/render/water.js` half-written on disk: `node --check` on the working copy threw
+`SyntaxError: missing ) after argument list`, while the same file at `HEAD` checked clean. Every tool
+that imports `game/src/render/actor.js` transitively imports it, so three offline instruments died on
+a defect that belonged to nobody's experiment. `--revision HEAD` already protects a **paid** run
+(§15a); nothing protects a **local** one. `git archive HEAD | tar -x -C <scratch>` costs 2.5 GB and
+about four seconds and makes the arms of an experiment stop moving.
+
 ## 5a. `reports/runpod-gpu/runs` is the top disk consumer — prune it, nothing else comes close
 
 Measured 2026-08-15 at **96% full, 1.6 GB free**, with four agents live and two of them capturing:

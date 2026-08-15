@@ -174,7 +174,30 @@ derived that way **this turn** and are the baseline a later run compares against
 
 | # | Check | Instrument | Pass | Fail |
 |---|---|---|---|---|
-| **E1** | **Visual actors against population** | `distinct(actor) / count(npcs)` and `max(actor bucket) / count(npcs)` | ≥ 1 actor per 12 NPCs (**≥ 34** at n=408) **and** no actor above 10% of the population (**≤ 40** at n=408) | at the 2026-08-14 baseline this check **fails on both arms**: 32 actors, and `townsman` at 97 = 23.8% |
+| **E1** | **Visual actors against population** | `distinct(actor) / count(npcs)` and `max(actor bucket) / count(npcs)`, **and the same two ratios over the body the renderer actually draws** (see the amendment below) | ≥ 1 actor per 12 NPCs (**≥ 34** at n=408) **and** no actor above 10% of the population (**≤ 40** at n=408), **on both the `actor` arm and the rendered-body arm** | at the 2026-08-14 baseline this check **fails on both arms**: 32 actors, and `townsman` at 97 = 23.8% |
+
+> **AMENDED wave 1 (`W1-F10-r9` critic, 2026-08-15) — E1 must also count the body that is DRAWN.
+> This tightens the item; it relaxes nothing, and it is not the reason anything passes: E1 already
+> failed on the `actor` arm and fails harder on the new one.**
+>
+> E1 as first written counts the `actor` field, and so does every denominator in §D and §E. Read
+> this turn in `game/src/render/actor.js` (`characterFor`, ~line 2319) and
+> `game/src/render/renderer.js:738`: **the visible body is not chosen by `actor` at all.** It is
+> `CHARACTER_SPECS[ pool(artFamilyForRace(race))[ FNV1a('npc:'+eid) % pool.length ] ]` — a hash of
+> the entity id over a fixed pool per art family. `actor` reaches the simulation and never reaches
+> the camera. A census over it is therefore counting a column no viewer can see, which is the
+> `RI-MTH07` CONSUMPTION defect arriving inside this item's own instrument.
+>
+> **The rule is now: publish both arms.** The rendered arm's denominators are the same two ratios
+> over `distinct(rendered characterId)` and `max(rendered characterId bucket)`. Measure it by
+> building each record through the real `makeRiggedActor` → `poseFromRig` path and reading the
+> `characterId` the actor module stamps on the built meshes — output, not source.
+>
+> **Measured at the 2026-08-15 build, by `tools/visual/f10-r9c-crowd-census.mjs`:** the reachable
+> pool is **9** bodies for `saxhleel` and **5** for `humanoid` — **14 for 408 records, one per 29**,
+> against a bar of one per 12. So the rendered arm fails by more than twice the margin the `actor`
+> arm fails by, and the number that has been quoted in every round to date (32 actors) is the
+> flattering one.
 | **E2** | **Head variety inside one actor** | Count distinct head/face variants rendered under the single largest `actor` value | ≥ 4 | 1 → every townsman is the same man |
 | **E3** | **Age and build spread** | Count distinct body archetypes rendered anywhere: child, slight, average, heavy, stooped-old | ≥ 4 | **1 caps the item at 3** — one body for a whole province |
 | **E4** | **Adjacency** | One 60-second walk through the largest settlement. Count pairs of NPCs **on screen at the same time** sharing an identical `(actor, head, garment, scale)` tuple within 15 m | 0 pairs | ≥ 3 pairs → the duplication is not a statistic, it is visible in one shot |
