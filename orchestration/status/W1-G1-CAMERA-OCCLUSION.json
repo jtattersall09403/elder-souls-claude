@@ -12,7 +12,7 @@
     "The occluder at sim 285+ was identified from a 160x90 evidence frame plus geometry, NOT from a high-resolution multi-angle capture. Stated as an inference below, not as a measured fact."
   ],
 
-  "headline": "RI-CAM01 §C.1's automatic fail is NOT CLEARED. On the shipped build, in the measured window, the longest run of consecutive player_occluded frames is AT LEAST 12 and was still open when this file was written — against a bar of <= 6. The b476b55d sightline fix is real and does what it claims, but it is not the fix for THIS occluder, and both arms are byte-identical over the window.",
+  "headline": "RI-CAM01 §C.1's automatic fail is NOT CLEARED. On the shipped build there is a CLOSED run of 26 consecutive player_occluded frames (sim 285..310) against a bar of <= 6 — over four times the bar, and 0.43 s at 60 Hz, where §C.1's own rationale is that anything past 0.1 s is long enough to hide a roll's i-frame window. The b476b55d sightline fix is real and does what it claims, but it is not the fix for THIS occluder: both arms of the delete-the-fix are byte-identical over the whole window.",
 
   "the_measurement": {
     "bar": "RI-CAM01 §C.1: player_occluded[f] = 1 if the character's visible pixel count is < 0.35x its unoccluded count at the same pose (fade forced to 1.0). Longest run <= 6 frames; mean <= 0.03 on a traversal.",
@@ -20,10 +20,15 @@
     "sampling": "dense — every frame, no sub-sampling (M2b permits every-4th; run-length bars are not safely measurable at stride 4, so dense was used)",
     "canvas": "160x90",
     "arm_fix_on_shipped": {
-      "longest_run_frames": ">= 12 (sim 285..296+, still open at time of writing)",
-      "mean_occluded": ">= 0.5455 over the frames scored so far",
+      "longest_run_frames": 26,
+      "longest_run_at_sim_frames": [285, 310],
+      "longest_run_is_closed": "yes — the run begins and ends inside the measured frames, so 26 is a complete measurement of this event, not a window-truncated lower bound",
+      "longest_run_seconds_at_60hz": 0.43,
+      "mean_occluded_over_window": 0.7027,
+      "frames_scored_when_this_was_written": 37,
       "pass_longest_run": false,
-      "pass_mean": false
+      "pass_mean": false,
+      "note": "The walk was still advancing toward sim 455 when this file was written; rows.jsonl is appended per frame, so the completed manifest can only add runs, never remove this one."
     },
     "arm_control_delete_the_fix": {
       "flag": "renderer.province.occlusionSightline = false — the fix's own documented control arm",
@@ -37,7 +42,9 @@
     "inference": "The saved evidence frame reports/cam-occlusion-walk/g1-fixon-r3/frames/f0275.png shows the player beneath a RAISED DECK ON POSTS in Lilmoth, with the camera also under the deck looking at the player through vertical posts. The occluder is ARCHITECTURAL, not vegetal.",
     "why_the_fix_cannot_help": "Province.updateOcclusion only ever hides canopy InstancedMesh instances registered by _registerOccludable (game/src/world/province.js:1315 registers only b.kind === 'canopy'). A deck post is not a canopy instance and is never a candidate, so the segment test cannot hide it — which is exactly why both arms are byte-identical here.",
     "why_the_spring_arm_cannot_help_either": "settlementSolids() (game/src/render/exterior.js:3045) does build box shapes for buildings, and the player is inside Lilmoth so a settlement CollisionCell exists — yet armHit is false on every frame. Posts are thin; a 0.28 m sphere cast passes between them. RI-CAM01 §C.1 names this case in its own opening: the failure 'which a fade-only implementation still suffers whenever the obstruction is thin enough that the sphere cast misses it'. M2b names the route too: cam-walk-boardwalk, 'a stilt-village boardwalk with railings, the thin-geometry case a sphere cast most often misses'.",
-    "consequence_for_the_next_piece": "The remedy that would move this number is NOT more vegetation work. It is either (a) near-field occluder fade extended beyond canopy instances to settlement/deck geometry, or (b) thin-geometry handling in the arm. Whoever takes it should not re-derive the vegetation diagnosis — it is correct, landed, and orthogonal to this occluder."
+    "the_deck_is_not_in_plan_buildings_either": "game/data/world/settlements/lilmoth.json puts the settlement origin at [2766.5, 2.77, 5027.5] and carries 33 buildings (18 interior, 5 sealed-with-reason, 10 structure). Through the burial the player sits at roughly offset [0, -1.7] from that origin, and the NEAREST plan building is lilmoth-house-4 at offset [-13.94, 4.6, -1.33] — about 13.9 m away. So the deck overhead is not a plan building, is therefore not turned into a box by settlementSolids(), and is therefore not in the CollisionCell at all.",
+    "all_three_of_RI-CAM01s_protections_are_blind_to_the_same_geometry": "Because that deck is in neither the collision set nor the occludable registry, it simultaneously defeats (1) the spring arm — armHit false on every frame; (2) the §D clip_through detector, which is defined against 'the same collision set used in §C' and so reports false even on the frames where the camera is visibly inside the deck slab (see frames/f0295.png); and (3) the near-field occluder fade, which only ever considers canopy instances. This is one absence producing three false negatives, and it is why the frame looks catastrophic while every camera telemetry field reads healthy.",
+    "consequence_for_the_next_piece": "The remedy that would move this number is NOT more vegetation work. It is either (a) near-field occluder fade extended beyond canopy instances to settlement/deck geometry, or (b) getting the deck geometry into the collision set so the arm and clip_through can both see it. Whoever takes it should not re-derive the vegetation diagnosis — it is correct, landed, and orthogonal to this occluder."
   },
 
   "delete_the_fix_discipline_RULES_rule_6": {
