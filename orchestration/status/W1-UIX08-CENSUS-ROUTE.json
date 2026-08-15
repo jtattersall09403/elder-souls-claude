@@ -1,9 +1,4 @@
 {
-  "task_id": "W1-UIX08-CENSUS-ROUTE",
-  "state": "in_progress",
-  "date": "2026-08-15",
-  "roadmap_item": "RI-UIX08 §H / the second half of the defect the owner reported from playing the deployed build",
-  "headline": "Character creation now runs on the RI-UIX08 dialogue window, whole. The route needed two affordances the window had no element for; both are expressed INSIDE §A's six elements, and RI-UIX08 is amended with a §H that says so and says what a critic measures.",
   "could_not_do": [
     "WIP — the delete-the-fix arm has not run yet. Everything else below is measured.",
     "THE PAUSED HAND-BACK NODES KEEP THE FULL WINDOW GEOMETRY AND I DID NOT FIX THAT. At `hold.out` the census hands the body back and the player walks out of the barge hold with a centred, translucent, ~43%-of-frame panel up, where the vellum panel was a bottom strip. It takes no input and the world is visible through it (§E1), and routing it anywhere else would be the partial route the previous piece correctly refused — but a reviewer who thinks a centred panel is the wrong shape for a frame in which the player is walking is looking at a real question this piece does not answer. Recorded in RI-UIX08 §H5 as well as here so it cannot be lost.",
@@ -11,8 +6,13 @@
     "PERSUASION IS UNTOUCHED AND STILL UNDIAGNOSED. The previous piece measured it as a control that looks dead (69 -> 69, no prose). The census does not touch it: `_censusDialogueCtx` builds no action rows except the typed buffer, so no persuade row exists during creation and nothing I changed can have moved that number either way. I did not re-measure it and I am not claiming anything about it.",
     "INLINE LINKS ARE STILL UNMEASURED BY CLICK. Unchanged from the previous piece and out of scope here — the census produces zero links by construction (no topic vocabulary exists before the writ is stamped), which is a different fact from the conversation-side hole.",
     "I DID NOT DRIVE THE TITLE SCREEN'S 'NEW GAME' BUTTON. The scene is opened with `censusBegin({})` — what `_titleApply('new')` calls — exactly as the world arm opens a conversation through `A.talkTo`. The two paused hand-back nodes are resumed through `censusEnter` for the same reason: walking a body across a room is not one of this window's affordances. Every control ON the window is operated by a real DOM event.",
-    "`node tools/contention.mjs` said WAIT before the first run and I proceeded anyway, one browser at a time, sequentially; later runs were taken at 2-3 browsers and load 12-14 over 4 cores. Rule 21 says say so; this is me saying so."
+    "`node tools/contention.mjs` said WAIT before the first run and I proceeded anyway, one browser at a time, sequentially; later runs were taken at 1-3 browsers and load 9-15 over 4 cores. Rule 21 says say so; this is me saying so."
   ],
+  "task_id": "W1-UIX08-CENSUS-ROUTE",
+  "state": "in_progress",
+  "date": "2026-08-15",
+  "roadmap_item": "RI-UIX08 §H / the second half of the defect the owner reported from playing the deployed build",
+  "headline": "Character creation now runs on the RI-UIX08 dialogue window, whole. The route needed two affordances the window had no element for; both are expressed INSIDE §A's six elements, and RI-UIX08 is amended with a §H that says so and says what a critic measures.",
   "the_defect_the_probe_found_in_my_own_fix": {
     "headline": "THE SCENE DEAD-ENDED FOREVER AT `writ.class-verdict`, ON ALL THREE CLASS ROUTES, AND ONLY DRIVING EVERY NODE FOUND IT.",
     "mechanism": "The dialogue window owns its own caret (`UISystem.dialogueFocus`), and I reset it only when the SPEAKER changed. Inside the Writ House the speaker never changes, so the caret carried the previous node's row index into the next node. `writ.class-verdict` offers exactly ONE row; the caret arrived on row 2 or row 6; `_dialogueConfirm` read `m.topics[6]`, got undefined, and returned null. A row you can see, a button you can press, and a scene that cannot be finished — CRITIC-DOCTRINE §1.2b's drawn-and-does-nothing, in the one place in the game a player cannot walk away from.",
@@ -57,6 +57,32 @@
     "kinds": "8 choice, 4 pick, 3 text, 1 questionnaire (one node, ten dilemmas), 1 observed, 2 conditional, 5 with no input (hold.come-to, hold.wake, hold.out, writ.enter, writ.strange-check)",
     "note": "The previous piece's grep over the raw file gave the same five input kinds. I re-derived it from the parsed nodes rather than inheriting the figure, per CLAUDE.md's four-line check clause 2."
   },
+  "verified": {
+    "instrument": "tools/ui/dialogue-drive-probe.mjs --census. Real DOM events only: KeyboardEvent for the caret and for confirm, printable KeyboardEvents through input/real.js's TEXT route for the typed name, Backspace, Enter. Nothing in the census arm calls a function the UI also calls and nothing sets UI state. The two instrument traps the previous piece documented are guarded by I0 (a real key must reach input.moveX / pendingPress before anything below is believed) — that guard PASSED on every run.",
+    "run": "16 of 16 checks passed. reports/uix08/drive-probe-census.json, copied to corpus/90-verdicts/wave1/artifacts/W1-UIX08-CENSUS-ROUTE/ because reports/ is gitignored and HAZARDS §9 says cited evidence there never reaches the remote.",
+    "commit": "287f7ff7 (the landed fix). engine.js at that commit is byte-identical to the tree the run was taken on — checked with `diff <(git show 287f7ff7:game/src/engine.js) game/src/engine.js`.",
+    "C0": "PASS. `hold.come-to` is silent by design (RI-JRN01 O6 — a body before anybody asks you anything) and NO surface draws there, correctly. The first node that speaks, `hold.hatch-name`, opens on the RI-UIX08 window in census mode with render/ui.js suppressed. Speaker 'Jeeh-Ei'.",
+    "C1": "PASS. 49 node visits over all three class routes: 46 drew the RI-UIX08 window, 0 left render/ui.js unsuppressed, and the 3 that drew no surface at all are the paused hand-back node. Input kinds exercised: none, text, observed, choice, pick, questionnaire — all five shapes the census has.",
+    "C1b_PIXELS": "PASS, and this is the check that matters most because run 1 got it wrong. The old vellum panel painted ZERO distinct strings on the 'dialogue' surface across all three passes, read from the RENDERED-TEXT REGISTER (`getRenderedText({surface:'dialogue'})`), which is fed by the draw call and cannot drift from the frame. `complete: true` on all three, so it is absence and not ignorance.",
+    "C2": "PASS. All three routes RUN TO COMPLETION: custom done (16 visits), questionnaire done (21), named done (12).",
+    "C3": "PASS. Over 46 census frames: 0 declared a `dialogue_exit`, 0 a `disposition_meter`, and all 46 declared exactly elements [1,2,3,4]. §H1 measured rather than asserted.",
+    "C4": "PASS on all four pick nodes. First confirm -> 1 mark in the column; confirming the same row again -> 0 marks; completing the count advances the node. writ.class-custom-favoured -> -neglected -> -primary -> -secondary -> writ.class-verdict.",
+    "C4b": "PASS. What the marks committed reached the spec: favoured 2, neglected 2, primary 3, secondary 2 — e.g. {\"name\":\"Sathe\",\"favoured\":[\"strength\",\"endurance\"],\"neglected\":[\"agility\",\"speed\"],\"primary\":[\"blades\",\"axes-maces\",\"polearms\"],\"secondary\":[\"greatweapons\",\"marksman\"]}. RI-MTH07-shaped: the drawn mark and the written field are the same fact.",
+    "C5": "PASS. The typed row went '▁' -> 'Sathel' under real printable keydowns -> 'Sathe' after a real Backspace. The word contains an 'e' on purpose: KeyE is `interact`, and it TYPED rather than committing (node still 'hold.hatch-name' afterwards), which is W1-26 r2 §3's exact defect measured rather than assumed.",
+    "C5b": "PASS. spec.hatchName == 'Sathe' after Enter — the typed name, not a ledger name.",
+    "C5c": "PASS. RI-JRN01 O17's other half on a different text node: the caret walked past the typed row onto a ledger name, Enter committed it, spec.givenName == 'Teeba-Ei' == the row that was focused.",
+    "C6": "PASS. The questionnaire asked 10 dilemmas with 10 distinct question ids (q1..q8, q10, q11) and every answer moved it on. RI-JRN01/W1-26 r2 measured 0 of 10 questions reaching the frame once; they reach it here and each is its own block in the transcript.",
+    "C6b": "PASS. 70 ArrowDown presses over 11 nodes: 70 moved rowIdx by exactly 1 and 70 left a drawn row marked focused. Capped at 8 rows per node (writ.birthsign offers thirteen) and the cap is recorded per node in the report.",
+    "C6c": "PASS. No node failed to advance across three full routes. This is the check that was RED before the caret fix.",
+    "C7_PRESENCE_CONTROL": "PASS, and it runs FIRST on purpose. An ordinary conversation in the same browser session still declares all six elements including the exit and the disposition meter. Without this, C3's zeros could be a window that draws nothing.",
+    "C8_LEAK_CONTROL": "PASS. Over 11 conversation column rows: 0 typed rows, 0 carrying a picked mark. §H3's no-leak clause, measured."
+  },
+  "delete_the_fix": {
+    "method": "A REAL `git worktree add --detach` at the landed commit 287f7ff7 — not a hard-link of the live tree — with `tools/node_modules` and the root `node_modules` symlinked in (HAZARDS §7: a worktree cannot render the game without them and fails as GAME_BROKEN). Both arms are served from that frozen clone, which is HAZARDS §11's freeze-by-construction rather than a drift detector.",
+    "the_teardown_is_one_line": "`diff <(git show 287f7ff7:game/src/engine.js) <worktree>/game/src/engine.js` prints exactly `142c142 const CENSUS_WINDOW = true;` -> `false;` and nothing else.",
+    "result": "THE CONTROL ARM GOES RED, at the check the whole piece rests on. With CENSUS_WINDOW false, the first speaking node `hold.hatch-name` reports `window open=false, census mode=false, render/ui.js suppressed=false, speaker null` — the census is back on the old vellum panel, which is exactly the behaviour the owner reported.",
+    "the_control_is_not_over-broad_either": "C7 and C8 still PASS in the control arm: an ordinary conversation keeps all six elements and the window works normally. So the teardown removes the census route and nothing else — it is not a switch that simply turns the window off."
+  },
   "files_touched": [
     "orchestration/status/W1-UIX08-CENSUS-ROUTE.json",
     "corpus/86-ui/RI-UIX08-dialogue-window.md",
@@ -64,8 +90,19 @@
     "game/src/ui/system.js",
     "game/src/ui/screens/dialogue.js",
     "game/src/character/scene.js",
-    "tools/ui/dialogue-drive-probe.mjs"
+    "tools/ui/dialogue-drive-probe.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-UIX08-CENSUS-ROUTE/",
+    "docs/shots/2026-08-15-uix08-census-CONTROL-old-vellum-panel.png",
+    "docs/shots/2026-08-15-uix08-census-FIX-new-dialogue-window.png",
+    "reports/blog-feed.jsonl"
   ],
+  "what_changed_in_the_code": {
+    "game/src/character/scene.js": "`CensusSurface.step()` split into `step()` (unchanged behaviour, the vellum route and the control arm), `takeBack()` (block = delete a typed character, else un-pick) and `commit(state, {useTyped})` (the WHOLE of the answer semantics, and the only copy). Both drivers call the same two functions — RULES rule 10. One real bug fixed on the way: `via: this.typed ? 'typed' : 'ledger'` was evaluated two statements AFTER `this.typed = ''`, so it reported `ledger` on every text node in the scene including the ones the player typed. Trace data only, nothing branched on it, but a trace that says the opposite of what happened is worse than none.",
+    "game/src/engine.js": "`CENSUS_WINDOW` (the one-boolean control arm); `_censusDialogueCtx()` (the census as the window sees it, shaped like `_dialogueCtx()` on purpose, with the utterance keys that turn a one-node-at-a-time surface into §D3's running transcript); `_censusRouted()` (ONE predicate, read by the three sites that must agree); three lines in `_censusSync` (the missing `setSuppressed` — the actual defect); two in `_conversationSync` (do not un-suppress out from under the census); one in `_uiCtx`; the routed branch of `_censusStep`; and the `conversationClose()` guard in `censusBegin`.",
+    "game/src/ui/system.js": "`_censusWindowModel()` (the census branch of `_dialogueModel`, including the caret reset that the probe proved was needed); census branches in `dialogueStep` (no Goodbye row, no `roll`-to-exit) and `_dialogueConfirm` (returns which row, decides no answer); the `dsig` extension so a typed character, a pick mark and a questionnaire dilemma each repaint.",
+    "game/src/ui/screens/dialogue.js": "`DialogueHistory.appendKeyed()`; `census` mode in `drawDialogue` — elements 5 and 6 not declared, the `· ` picked prefix and the typed row inside element 4, and `census` / `census_node` / `picked_rows` / `elements_present` published so a probe reads the mode from the frame rather than inferring it.",
+    "tools/ui/dialogue-drive-probe.mjs": "the `--census` arm rewritten to drive the real input path over all three class routes, plus `--shot` and `--open-only` for the delete-the-fix pair. Reused rather than replaced, as the brief required."
+  },
   "files_claimed": [
     "corpus/86-ui/RI-UIX08-dialogue-window.md",
     "game/src/character/scene.js",
