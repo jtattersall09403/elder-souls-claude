@@ -577,7 +577,23 @@ out.dependency_order_violations = out.dependencies
 
 fs.mkdirSync(OUT, { recursive: true });
 fs.mkdirSync('orchestration/status', { recursive: true });
-fs.writeFileSync(JSON_OUT, JSON.stringify(out, null, 1));
+
+// WRITE ONLY WHEN SOMETHING OTHER THAN THE CLOCK CHANGED.
+// Both outputs carry a `generated` timestamp, so every run dirtied the working tree even when the
+// coverage was byte-identical — twice in six seconds on 2026-08-15, because a hook regenerates them
+// per commit. That is not harmless: with a fleet running, `git status` is how an orchestrator tells
+// its own work from an agent's (HAZARDS §21), and a file that is always dirty is a permanent false
+// positive in that check. Comparing with the timestamp line masked keeps the stamp honest when the
+// content really moves and silent when it does not.
+const withoutStamp = (s) => s.replace(/"generated":\s*"[^"]*"/g, '"generated":"-"')
+                             .replace(/^> Generated .*$/m, '> Generated -');
+const writeIfChanged = (p, next) => {
+  if (fs.existsSync(p) && withoutStamp(fs.readFileSync(p, 'utf8')) === withoutStamp(next)) return false;
+  fs.writeFileSync(p, next);
+  return true;
+};
+
+writeIfChanged(JSON_OUT, JSON.stringify(out, null, 1));
 
 /* ------------------------------------------------------------- readable md */
 const L = [];
@@ -624,7 +640,7 @@ L.push('| plan | title | covered by |');
 L.push('|---|---|---|');
 for (const p of planRows) L.push(`| \`${p.id}\` | ${p.title} | ${p.covered_by.join(' ') || '*process, not build scope*'} |`);
 L.push('');
-fs.writeFileSync(path.join(OUT, 'coverage.md'), L.join('\n'));
+writeIfChanged(path.join(OUT, 'coverage.md'), L.join('\n'));
 
 /* ------------------------------------------------------------------ gates */
 // Rule 24: a tool that cannot fail is not a tool. These arms are required to be able to go red.
