@@ -1,0 +1,51 @@
+{
+  "tool": "w1-water-preserve",
+  "commit": "4ecac6930af60db6b5f0660c21fe0bbd5d7bf138",
+  "time": 13,
+  "canvas": [
+    640,
+    360
+  ],
+  "seed": 20260814,
+  "has_fix": true,
+  "A_reflects": {
+    "changed_pct": 43.83,
+    "mean_abs_luma": 8.028,
+    "materials": 11,
+    "edits_applied": 4
+  },
+  "B_moves": {
+    "steps_between_frames": 10,
+    "consecutive": [
+      {
+        "changed_pct": 2.53,
+        "mean_abs_luma": 0.396
+      },
+      {
+        "changed_pct": 3.27,
+        "mean_abs_luma": 0.451
+      },
+      {
+        "changed_pct": 2.37,
+        "mean_abs_luma": 0.381
+      },
+      {
+        "changed_pct": 1.74,
+        "mean_abs_luma": 0.313
+      },
+      {
+        "changed_pct": 2.83,
+        "mean_abs_luma": 0.424
+      }
+    ],
+    "mean_abs_luma": 0.393,
+    "min_changed_pct": 1.74
+  },
+  "D_regions": null,
+  "checks": {
+    "A-WATER-STILL-REFLECTS": "PASS — removing the reflection still changes 43.83% of the frame, so the reflection is still being composited",
+    "B-WATER-STILL-MOVES": "PASS — every consecutive pair differs by at least 1.74% of pixels, well clear of the ~0.2% stationary-frame floor",
+    "D-REGIONS-STILL-DIFFER": "not run"
+  },
+  "pageErrors": []
+}

@@ -1,0 +1,163 @@
+{
+  "tool": "w1-water-lane-pitch",
+  "site": "vista-deep-marshes",
+  "time": 13,
+  "height_m": 120,
+  "label": "t6",
+  "only": [
+    "shadows-off"
+  ],
+  "canvas": [
+    960,
+    540
+  ],
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "seed": 20260814,
+  "commit": "3ca135ad1d7bc4b1cd07796512974819fe188721",
+  "scale": {
+    "fov": 50,
+    "aspect": 1.7777777777777777,
+    "camPos": [
+      3123.5,
+      121.16,
+      3715
+    ],
+    "px_per_m_worldX": 4.8251,
+    "px_per_m_worldZ": 4.8251,
+    "screen_of_origin": [
+      480,
+      270
+    ],
+    "screen_of_plusX": [
+      238.7,
+      270
+    ],
+    "screen_of_plusZ": [
+      480,
+      28.7
+    ]
+  },
+  "metres_per_pixel": {
+    "worldX": 0.2072,
+    "worldZ": 0.2072
+  },
+  "arms": [
+    {
+      "arm": "baseline",
+      "kind": "mesh-class",
+      "what": "untouched",
+      "applied": {
+        "hidden": 0
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 4.09,
+      "lane_angle": -50,
+      "lane_aniso": 4.03,
+      "x_rms": 7.711,
+      "x_peak_lag_px": 182,
+      "x_peak_period_m": 37.72,
+      "x_peak_r": 0.346,
+      "z_rms": 6.081,
+      "z_peak_lag_px": 183,
+      "z_peak_period_m": 37.93,
+      "z_peak_r": 0.153,
+      "x_rms_vs_floor_pct": -2.9,
+      "lane_power_vs_floor_pct": 4.8,
+      "lane_aniso_vs_floor_pct": 11.6,
+      "verdict": "no effect on the lanes"
+    },
+    {
+      "arm": "surface-hidden",
+      "kind": "mesh-class",
+      "what": "the water table only",
+      "applied": {
+        "hidden": 48
+      },
+      "meshes_hidden": 48,
+      "vacuous": false,
+      "lane_power": 0.393,
+      "lane_angle": -56,
+      "lane_aniso": 1.54,
+      "x_rms": 1.208,
+      "x_peak_lag_px": 16,
+      "x_peak_period_m": 3.32,
+      "x_peak_r": 0.248,
+      "z_rms": 0.987,
+      "z_peak_lag_px": 16,
+      "z_peak_period_m": 3.32,
+      "z_peak_r": 0.219,
+      "x_rms_vs_floor_pct": -84.8,
+      "lane_power_vs_floor_pct": -89.9,
+      "lane_aniso_vs_floor_pct": -57.3,
+      "verdict": "REMOVES THE LANES"
+    },
+    {
+      "arm": "shadows-off",
+      "kind": "cross-check",
+      "what": "every shadow off. If the -50 deg anisotropy is the sun casting tree shadows across the water, this is the arm that removes it",
+      "applied": {
+        "feature": "shadows=false",
+        "shadow_report_after_step": {
+          "castShadow": false,
+          "feature": false,
+          "intensity": 2.1
+        }
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 3.935,
+      "lane_angle": -50,
+      "lane_aniso": 3.73,
+      "x_rms": 7.798,
+      "x_peak_lag_px": 182,
+      "x_peak_period_m": 37.72,
+      "x_peak_r": 0.345,
+      "z_rms": 6.142,
+      "z_peak_lag_px": 182,
+      "z_peak_period_m": 37.72,
+      "z_peak_r": 0.16,
+      "x_rms_vs_floor_pct": -1.8,
+      "lane_power_vs_floor_pct": 0.8,
+      "lane_aniso_vs_floor_pct": 3.3,
+      "verdict": "no effect on the lanes"
+    },
+    {
+      "arm": "nothing-restore-control",
+      "kind": "mesh-class",
+      "what": "floor",
+      "applied": {
+        "hidden": 0
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 3.903,
+      "lane_angle": -50,
+      "lane_aniso": 3.61,
+      "x_rms": 7.94,
+      "x_peak_lag_px": 184,
+      "x_peak_period_m": 38.13,
+      "x_peak_r": 0.347,
+      "z_rms": 6.253,
+      "z_peak_lag_px": 182,
+      "z_peak_period_m": 37.72,
+      "z_peak_r": 0.161,
+      "x_rms_vs_floor_pct": 0,
+      "lane_power_vs_floor_pct": 0,
+      "lane_aniso_vs_floor_pct": 0,
+      "verdict": "no effect on the lanes"
+    }
+  ],
+  "checks": {
+    "FLOOR-IS-STABLE": "PASS — floor rms 7.94 against baseline 7.711; the site is reproducible enough to read the arms",
+    "METRIC-CAN-SEE-LANES": "PASS — hiding the water table drops profile rms 7.94 -> 1.208 (85%), so this metric can go red",
+    "NO-ARM-IS-VACUOUS": "PASS — every shader arm landed at least one substitution",
+    "NULL-CONTROL-MUST-NOT-FIX": "FAIL — null control did not run"
+  },
+  "pageErrors": []
+}

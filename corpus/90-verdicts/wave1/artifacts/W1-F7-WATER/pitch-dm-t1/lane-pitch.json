@@ -1,0 +1,161 @@
+{
+  "tool": "w1-water-lane-pitch",
+  "site": "vista-deep-marshes",
+  "time": 13,
+  "height_m": 120,
+  "label": "t1",
+  "only": [
+    "term-vertexwave-zero",
+    "term-diffuse-modulation-zero"
+  ],
+  "canvas": [
+    960,
+    540
+  ],
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "seed": 20260814,
+  "commit": "75d985fc112c2dd6477f0f7b0eb5148ced553221",
+  "scale": {
+    "fov": 50,
+    "aspect": 1.7777777777777777,
+    "camPos": [
+      3123.5,
+      121.16,
+      3715
+    ],
+    "px_per_m_worldX": 4.8251,
+    "px_per_m_worldZ": 4.8251,
+    "screen_of_origin": [
+      480,
+      270
+    ],
+    "screen_of_plusX": [
+      238.7,
+      270
+    ],
+    "screen_of_plusZ": [
+      480,
+      28.7
+    ]
+  },
+  "metres_per_pixel": {
+    "worldX": 0.2072,
+    "worldZ": 0.2072
+  },
+  "arms": [
+    {
+      "arm": "baseline",
+      "kind": "mesh-class",
+      "what": "untouched",
+      "applied": {
+        "hidden": 0
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 4.09,
+      "lane_angle": -50,
+      "lane_aniso": 4.03,
+      "x_rms": 7.711,
+      "x_peak_lag_px": 182,
+      "x_peak_period_m": 37.72,
+      "x_peak_r": 0.346,
+      "z_rms": 6.081,
+      "z_peak_lag_px": 183,
+      "z_peak_period_m": 37.93,
+      "z_peak_r": 0.153,
+      "x_rms_vs_floor_pct": -3.4,
+      "lane_power_vs_floor_pct": 5,
+      "lane_aniso_vs_floor_pct": 11.6,
+      "verdict": "no effect on the lanes"
+    },
+    {
+      "arm": "term-vertexwave-zero",
+      "kind": "term",
+      "what": "vEsWaterWave -> 0: the summed crossed-wave field driving the vertex lift AND the 0.8% diffuse modulation",
+      "applied": {
+        "materials": 11,
+        "edits_applied": 3
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 4.023,
+      "lane_angle": -50,
+      "lane_aniso": 3.89,
+      "x_rms": 7.818,
+      "x_peak_lag_px": 184,
+      "x_peak_period_m": 38.13,
+      "x_peak_r": 0.345,
+      "z_rms": 6.112,
+      "z_peak_lag_px": 183,
+      "z_peak_period_m": 37.93,
+      "z_peak_r": 0.15,
+      "x_rms_vs_floor_pct": -2,
+      "lane_power_vs_floor_pct": 3.2,
+      "lane_aniso_vs_floor_pct": 7.8,
+      "verdict": "no effect on the lanes"
+    },
+    {
+      "arm": "term-diffuse-modulation-zero",
+      "kind": "term",
+      "what": "the diffuse modulation ONLY: the wave field still lifts the vertices but no longer tints the colour",
+      "applied": {
+        "materials": 11,
+        "edits_applied": 3
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 3.94,
+      "lane_angle": -50,
+      "lane_aniso": 3.72,
+      "x_rms": 7.919,
+      "x_peak_lag_px": 184,
+      "x_peak_period_m": 38.13,
+      "x_peak_r": 0.343,
+      "z_rms": 6.206,
+      "z_peak_lag_px": 183,
+      "z_peak_period_m": 37.93,
+      "z_peak_r": 0.157,
+      "x_rms_vs_floor_pct": -0.8,
+      "lane_power_vs_floor_pct": 1.1,
+      "lane_aniso_vs_floor_pct": 3,
+      "verdict": "no effect on the lanes"
+    },
+    {
+      "arm": "nothing-restore-control",
+      "kind": "mesh-class",
+      "what": "floor",
+      "applied": {
+        "hidden": 0
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 3.897,
+      "lane_angle": -50,
+      "lane_aniso": 3.61,
+      "x_rms": 7.981,
+      "x_peak_lag_px": 184,
+      "x_peak_period_m": 38.13,
+      "x_peak_r": 0.346,
+      "z_rms": 6.23,
+      "z_peak_lag_px": 182,
+      "z_peak_period_m": 37.72,
+      "z_peak_r": 0.155,
+      "x_rms_vs_floor_pct": 0,
+      "lane_power_vs_floor_pct": 0,
+      "lane_aniso_vs_floor_pct": 0,
+      "verdict": "no effect on the lanes"
+    }
+  ],
+  "checks": {
+    "FLOOR-IS-STABLE": "PASS — floor rms 7.981 against baseline 7.711; the site is reproducible enough to read the arms",
+    "METRIC-CAN-SEE-LANES": "FAIL — hiding the water table left rms at undefined against floor 7.981; no row below is readable",
+    "NO-ARM-IS-VACUOUS": "PASS — every shader arm landed at least one substitution",
+    "NULL-CONTROL-MUST-NOT-FIX": "FAIL — null control did not run"
+  },
+  "pageErrors": []
+}

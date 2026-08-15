@@ -1,0 +1,159 @@
+{
+  "tool": "w1-water-lane-pitch",
+  "site": "vista-deep-marshes",
+  "time": 13,
+  "height_m": 120,
+  "label": "after",
+  "only": [
+    "null-recolour-and-amplitude"
+  ],
+  "canvas": [
+    960,
+    540
+  ],
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "seed": 20260814,
+  "commit": "3ca135ad1d7bc4b1cd07796512974819fe188721",
+  "scale": {
+    "fov": 50,
+    "aspect": 1.7777777777777777,
+    "camPos": [
+      3123.5,
+      121.16,
+      3715
+    ],
+    "px_per_m_worldX": 4.8251,
+    "px_per_m_worldZ": 4.8251,
+    "screen_of_origin": [
+      480,
+      270
+    ],
+    "screen_of_plusX": [
+      238.7,
+      270
+    ],
+    "screen_of_plusZ": [
+      480,
+      28.7
+    ]
+  },
+  "metres_per_pixel": {
+    "worldX": 0.2072,
+    "worldZ": 0.2072
+  },
+  "arms": [
+    {
+      "arm": "baseline",
+      "kind": "mesh-class",
+      "what": "untouched",
+      "applied": {
+        "hidden": 0
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 4.583,
+      "lane_angle": -50,
+      "lane_aniso": 5.97,
+      "x_rms": 5.484,
+      "x_peak_lag_px": 184,
+      "x_peak_period_m": 38.13,
+      "x_peak_r": 0.332,
+      "z_rms": 4.596,
+      "z_peak_lag_px": 152,
+      "z_peak_period_m": 31.5,
+      "z_peak_r": 0.131,
+      "x_rms_vs_floor_pct": -5.4,
+      "lane_power_vs_floor_pct": 5.1,
+      "lane_aniso_vs_floor_pct": 9.7,
+      "verdict": "no effect on the lanes"
+    },
+    {
+      "arm": "surface-hidden",
+      "kind": "mesh-class",
+      "what": "the water table only",
+      "applied": {
+        "hidden": 48
+      },
+      "meshes_hidden": 48,
+      "vacuous": false,
+      "lane_power": 0.393,
+      "lane_angle": -56,
+      "lane_aniso": 1.54,
+      "x_rms": 1.208,
+      "x_peak_lag_px": 16,
+      "x_peak_period_m": 3.32,
+      "x_peak_r": 0.248,
+      "z_rms": 0.987,
+      "z_peak_lag_px": 16,
+      "z_peak_period_m": 3.32,
+      "z_peak_r": 0.219,
+      "x_rms_vs_floor_pct": -79.2,
+      "lane_power_vs_floor_pct": -91,
+      "lane_aniso_vs_floor_pct": -71.7,
+      "verdict": "REMOVES THE LANES"
+    },
+    {
+      "arm": "null-recolour-and-amplitude",
+      "kind": "null-control",
+      "what": "depth colour changed and every slope amplitude halved — a visible change to the water that leaves the wave geometry alone; MUST NOT fix the lanes",
+      "applied": {
+        "materials": 11,
+        "edits_applied": 6
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 4.436,
+      "lane_angle": -50,
+      "lane_aniso": 5.71,
+      "x_rms": 5.606,
+      "x_peak_lag_px": 184,
+      "x_peak_period_m": 38.13,
+      "x_peak_r": 0.329,
+      "z_rms": 4.653,
+      "z_peak_lag_px": 166,
+      "z_peak_period_m": 34.4,
+      "z_peak_r": 0.134,
+      "x_rms_vs_floor_pct": -3.3,
+      "lane_power_vs_floor_pct": 1.7,
+      "lane_aniso_vs_floor_pct": 5,
+      "verdict": "no effect on the lanes"
+    },
+    {
+      "arm": "nothing-restore-control",
+      "kind": "mesh-class",
+      "what": "floor",
+      "applied": {
+        "hidden": 0
+      },
+      "meshes_hidden": 0,
+      "vacuous": false,
+      "lane_power": 4.362,
+      "lane_angle": -50,
+      "lane_aniso": 5.44,
+      "x_rms": 5.799,
+      "x_peak_lag_px": 184,
+      "x_peak_period_m": 38.13,
+      "x_peak_r": 0.334,
+      "z_rms": 4.754,
+      "z_peak_lag_px": 166,
+      "z_peak_period_m": 34.4,
+      "z_peak_r": 0.136,
+      "x_rms_vs_floor_pct": 0,
+      "lane_power_vs_floor_pct": 0,
+      "lane_aniso_vs_floor_pct": 0,
+      "verdict": "no effect on the lanes"
+    }
+  ],
+  "checks": {
+    "FLOOR-IS-STABLE": "PASS — floor rms 5.799 against baseline 5.484; the site is reproducible enough to read the arms",
+    "METRIC-CAN-SEE-LANES": "PASS — hiding the water table drops profile rms 5.799 -> 1.208 (79%), so this metric can go red",
+    "NO-ARM-IS-VACUOUS": "PASS — every shader arm landed at least one substitution",
+    "NULL-CONTROL-MUST-NOT-FIX": "PASS — the null control changed the water's colour and halved its slope amplitudes and the lanes stayed (rms 5.606 against floor 5.799)"
+  },
+  "pageErrors": []
+}
