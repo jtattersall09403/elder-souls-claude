@@ -40,20 +40,23 @@ Alongside that: shrinking the documentation every agent reads before it can star
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its own author reported that honestly after catching that the *first* version of the measurement was
   void: 93.7% of the improvement it was about to claim reproduced with no fix in the tree at all.
-- **The characters were being drawn inside-out — found and fixed today, from your tip.** The winding
-  hypothesis you passed on was right, and larger than the report you sent: **153,344 of 227,850
-  triangles (67.3%)** had their normal disagreeing with their winding, and the body meshes were
-  **13 of 13 inverted** — skin and clothing both. Front faces were culled, so you were seeing the
-  *inside of the far surface*. Three separate generators, each wrong in a different way. Now **zero**,
-  and the two body meshes went from open to closed. It survived five rounds of hole-filling because it
-  is not a hole.
-  Fixed alongside it: **44% of the cast rendered on a generic humanoid with no eye geometry at all**
-  (now routed properly, 79 → 260 NPCs); **everyone was the wrong height** (0 of 41 figures in the
-  correct 7–8 head band, now 41 of 41); and faces gained seven landmarks where the generic body had
-  none.
-  **Not yet confirmed by eye** — all of that is measured geometry, not appearance. No hardware frames
-  were taken, so nobody has *looked* at the result. Running now; until it lands this is a promise, not
-  a delivery.
+- **The characters were being drawn inside-out — fixed, and now confirmed by eye.** Your winding tip
+  was right and bigger than the report you sent: **153,344 of 227,850 triangles (67.3%)** had normals
+  disagreeing with winding; the body meshes were **13 of 13 inverted**. Front faces were culled, so you
+  were seeing the inside of the far surface. Three generators, each wrong differently. Now zero.
+  **Photographed on real hardware, before and after, 332 frames.** A market stand in Gideon that held
+  *chrome-and-glass skeletons with black shards jutting from their backs* now holds solid people in
+  blue, green and brown clothes. The NPC a critic called "a bald egg head, a wooden artist's mannequin"
+  is a coherent matte figure. A lizard NPC went from a chrome insect to a green-coated figure with a
+  snout.
+  Also fixed: **44% of the cast was on a generic body with no eye geometry at all** (79 → 260 NPCs
+  routed correctly), and **everyone was the wrong height** (0 of 41 in the 7–8 head band → 41 of 41).
+- **But the characters are still not good, and the next problem is now visible.** With the winding
+  fixed, what shows is that **there is no material work at all** — one flat colour of cloth over one
+  flat colour of skin, no seam, no fold, no wear anywhere. In that one respect the fixed version looks
+  *plainer* than the broken one. Heads are still eggs (seven facial landmarks are in the mesh and none
+  reads at conversation distance), there are **no hands or feet at any angle**, and walking is a glide —
+  across six frames the silhouette doesn't change. That is the next piece of work.
 - **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
   out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
   it. Shadows still crush to black; that fix is being built now.
