@@ -118,6 +118,39 @@ named one-step reversal that has actually been executed on a copy, an after, and
 largest known lever is that the fleet is essentially all Opus — 3,230 Opus requests against 29
 Sonnet — while the model-choice policy that would fix it has been written down and never applied.
 
+## 0e. Spawning blind judges is the ORCHESTRATOR's job, and nobody else can do it.
+
+**Measured 2026-08-15: `grep -rl "blind_pair: yes" corpus/ --include=*.md | wc -l` returns **98**.
+`grep -rln "blind_status: *run" corpus/90-verdicts/` returns **0**.** Ninety-eight reference items
+declare a blind pair as their quality gate. Not one verdict has ever run one. Protocol A ran once, on
+2026-08-14, and we lost 5 of 5 — that is the entire blind-judgement history of this project.
+
+**This is not laziness and it is not a corpus defect. It is a structural hole, and it sits with the
+orchestrator.** A blind gate needs a *fresh* judge with no project context. A critic cannot spawn one:
+`create_session` is approval-gated (rule 0 forbids it) and a subagent cannot spawn subagents. So every
+critic that reaches its item's quality gate writes `blind_status: not_possible` and fails closed — and
+the item is capped, correctly, forever. Three separate critics did exactly this in two days, each
+recording it honestly, each blocked by the same missing capability.
+
+**Only the orchestrator can spawn a fresh judge, and therefore must.** The pattern, proven on
+`RI-VIS06` Protocol A and repeated for `RI-UIX08` §G:
+
+1. **Dispatch a pack-builder** that constructs the arms, seals the key, leak-checks the pair, and writes
+   the verbatim prompt to a file. It must not judge, and its own opinion is void by construction because
+   it has seen both arms.
+2. **The orchestrator spawns the judges** — fresh agents, minimal brief, the prompt verbatim, no project
+   context, arm identity quarantined. Ruling **S51**: a pack whose counterpart arm is derivable from the
+   item's own tables is void.
+3. **A third fresh reader checks separability.** An inseparable pair is `inert` and cannot pass.
+
+**Treat an unrun gate as a live blocker, not a footnote.** It caps the item no matter how many
+structural checks pass — `RI-UIX08` scores 2 with a look measured at **ΔE 0.00** against the reference,
+purely because §G has not run. A tree of green leak-checks under an unrun quality gate is exactly the
+shape the visual audit found: *statistics can fail a build and can never pass one.*
+
+**Ring 0's `I3` owns closing this at scale.** Ninety-eight is too many to run one at a time, and the
+answer is a standing judge fleet, not heroics.
+
 ## 0d. "Continue" means deliver the whole roadmap. Do not stop at a good stopping point.
 
 **Owner, 2026-08-15, verbatim:** *"when I say 'continue', I mean continue with delivering the whole
