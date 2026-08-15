@@ -158,8 +158,19 @@ async function readWindow() {
     return {
       window: s.dialogue_window || null,
       elements: els.map((e) => ({ id: e.id, kind: e.kind, rect: e.rect.slice(), text: e.text, focused: e.focused, meta: e.meta || null })),
-      legacy_open: !!s.open,
-      legacy_options: s.option_count === undefined ? null : s.option_count,
+      // BUG FOUND AND FIXED 2026-08-15: this used to read `s.open`/`s.option_count` — fields that
+      // only ever existed on `getUIState()`'s TOP LEVEL in the `!this.ui` branch of
+      // `engine.js#getUIState()`. `this.ui` (the W1-21 UISystem) always exists in the shipped
+      // build, so that branch never runs and those two fields were always `undefined` here,
+      // whatever DIALOGUE_WINDOW was set to. The old reply-menu's real state — confirmed by a
+      // direct harness call with DIALOGUE_WINDOW=false, `option_count: 11`, `open: true`, full
+      // `rendered_text` — has lived at `s.dialogue_surface.{open,option_count}` since before this
+      // item existed (see `getUIState()`'s `st.dialogue_surface = ...` assignment). The bug meant
+      // the delete-the-fix arm's X2 check FAILED even though the teardown was working correctly —
+      // an instrument false-negative, not a regression. See RULES rule 4 and the verdict note.
+      legacy_open: !!(s.dialogue_surface && s.dialogue_surface.open),
+      legacy_options: (s.dialogue_surface && s.dialogue_surface.option_count !== undefined)
+        ? s.dialogue_surface.option_count : null,
       topics_known: window.__HARNESS.questTopicsKnown ? window.__HARNESS.questTopicsKnown().length : null,
     };
   });
@@ -533,7 +544,11 @@ try {
         await h.h('stepFrames', 2);
         const r = await readWindow();
         const buf = Buffer.from(String(await h.h('screenshot')).split(',')[1], 'base64');
-        const name = `2026-08-14-uix08-dialogue-${v.tag}-${arm}.png`;
+        // BUG FOUND AND FIXED 2026-08-15: this date used to be hard-coded '2026-08-14', so a
+        // re-run on any later day silently overwrote the previous day's evidence under a false
+        // date (rule 27 wants "a dated descriptive name" — a wrong one is worse than none,
+        // because it survives being stale). Derived from the run's own timestamp instead.
+        const name = `${report.at.slice(0, 10)}-uix08-dialogue-${STATE}-${v.tag}-${arm}.png`;
         fs.writeFileSync(path.join(SHOTS, name), buf);
         shots.push(name);
         const key = buf.length + ':' + buf.subarray(0, 4096).toString('base64');
