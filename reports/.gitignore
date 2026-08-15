@@ -57,3 +57,23 @@
 # every .json artifact, and every capture. Those are reproducible by re-running the tool that
 # made them, which is the test for whether something belongs in history.
 reports/runs/
+
+# 6. A SEALED BLIND KEY IS NOT EVIDENCE, IT IS THE ANSWER SHEET — and rule 2's `!**/*.md` was
+#    quietly letting parts of one into the repo. Noticed 2026-08-15: `PAIRING-KEY.json` is
+#    correctly caught by `*`, but the five `pair0N.reveal/make-pair.PROMPT.md` files under
+#    `protocol-a-w1-r2-SEALED-KEY/` were re-included by the markdown rule and sat untracked,
+#    one `git add -A` away from the branch.
+#
+#    Why that matters more than tidiness: a blind judge in this project CANNOT be made naive —
+#    the pack-builder established that a subagent inherits the project CLAUDE.md — so the only
+#    thing standing between a judge and the answer is that the answer is not in the repo. A
+#    directory literally named `.reveal`, tracked and greppable, removes that. It would not have
+#    voided round 2 (decoded and recorded in `orchestration/status/I3-PROTOCOL-A-R2-RESULT.json`),
+#    but ring 0's `I3` has 96 unrun gates ahead of it and this pattern would follow every one.
+#
+#    So: nothing inside a sealed-key directory is ever tracked, whatever its extension. This sits
+#    AFTER every re-include on purpose — a later rule wins in gitignore, which is exactly the
+#    ordering that let the .md rule reach in here. One-sided by construction: it can only ever
+#    exclude, so it cannot cause anything to be lost that a re-run of the pack builder would not
+#    reproduce.
+**/*SEALED-KEY*/
