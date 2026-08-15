@@ -625,8 +625,17 @@ const PLAN = {
   clavicle_r: { to: 'upperarm_r', r0: 0.105, r1: 0.088, mat: 'cloth', blend: 0.5 },
   upperarm_l: { to: 'lowerarm_l', r0: 0.094, r1: 0.075, mat: 'skin', blend: 0.45 },
   upperarm_r: { to: 'lowerarm_r', r0: 0.094, r1: 0.075, mat: 'skin', blend: 0.45 },
-  lowerarm_l: { to: 'hand_l', r0: 0.075, r1: 0.058, mat: 'skin', blend: 0.45 },
-  lowerarm_r: { to: 'hand_r', r0: 0.075, r1: 0.058, mat: 'skin', blend: 0.45 },
+  // `r1` WAS 0.058 — a 116 mm WRIST. That is not a detail: `jointRadius()` derives the wrist ball
+  // from the largest radius at that joint, so a 116 mm wrist mandates a 116 mm ball, and once the
+  // palm was cut to its real 92 mm width the ball became the single largest mass in the hand. An
+  // offline shaded render of the built geometry (four views, `hand-after.png`) showed it plainly:
+  // a sphere with claws hanging off it. The forearm tapers properly now — 150 mm at the elbow to
+  // 80 mm at the wrist — which is both what the ESO plate shows (a corded forearm narrowing to a
+  // clear narrow wrist, from which the hand WIDENS) and what makes the derived ball smaller than
+  // the palm it joins. The wedge seal is untouched: `jointRadius` still takes the max, so the ball
+  // is still tangent to the widest tube at that joint by construction.
+  lowerarm_l: { to: 'hand_l', r0: 0.075, r1: 0.040, mat: 'skin', blend: 0.45 },
+  lowerarm_r: { to: 'hand_r', r0: 0.075, r1: 0.040, mat: 'skin', blend: 0.45 },
   thigh_l: { to: 'calf_l', r0: 0.126, r1: 0.098, mat: 'cloth', blend: 0.4 },
   thigh_r: { to: 'calf_r', r0: 0.126, r1: 0.098, mat: 'cloth', blend: 0.4 },
   calf_l: { to: 'foot_l', r0: 0.098, r1: 0.068, mat: 'cloth', blend: 0.4 },
@@ -648,8 +657,8 @@ const PLAN = {
   // wedge on the outside of a wrist bend, and shrinking it would reopen the transparency defect that
   // derivation exists to close. So the wrist stays sealed at 0.058 while the hand stops pretending
   // to be a cylinder.
-  hand_l: { local: [0, -0.034, 0.006], r0: 0.050, r1: 0.044, mat: 'skin', blend: 0.4 },
-  hand_r: { local: [0, -0.034, 0.006], r0: 0.050, r1: 0.044, mat: 'skin', blend: 0.4 },
+  hand_l: { local: [0, -0.030, 0.006], r0: 0.040, r1: 0.038, mat: 'skin', blend: 0.4 },
+  hand_r: { local: [0, -0.030, 0.006], r0: 0.040, r1: 0.038, mat: 'skin', blend: 0.4 },
   foot_l: { local: [0, -0.040, 0.055], r0: 0.056, r1: 0.046, mat: 'skin', blend: 0 },
   foot_r: { local: [0, -0.040, 0.055], r0: 0.056, r1: 0.046, mat: 'skin', blend: 0 },
 };
@@ -1091,25 +1100,25 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     // 18 cm long, 9.6 cm THICK block, reaching to y = -0.145 while the fingers ended at -0.174. Two
     // and a half centimetres of a nine-centimetre finger were outside it. Now 9.2 x 7.6 x 3.8 cm,
     // which is a hand's actual aspect and is what the plate shows.
-    B.skin.ellipsoid(P(0,-.060,.014),[.046*h,.038*h,.019*h],bi,10);
+    B.skin.ellipsoid(P(0,-.058,.014),[.050*h,.042*h,.021*h],bi,10);
     // A knuckle ridge, so the digits leave a form rather than a smooth edge.
-    B.skin.ellipsoid(P(0,-.090,.022),[.044*h,.014*h,.017*h],bi,8);
+    B.skin.ellipsoid(P(0,-.092,.022),[.048*h,.015*h,.018*h],bi,8);
     // Three fingers, middle longest, splaying and curling forward. The gate reads "hands have
     // separated digits"; a hand whose thumb is one of four parallel tubes has digits but not a
     // thumb, so the fourth leaves the palm sideways and forward, from a different origin.
     for(let k=-1;k<=1;k++){
       const L1 = 1 - 0.13 * Math.abs(k);         // the outer two are shorter, as a hand's are
       digit(h, bi, [
-        P(k*.030, -.088,            .018),
-        P(k*.042, -.088 - .052*L1,  .040),
-        P(k*.050, -.088 - .092*L1,  .070),
-      ], .0150*h, .0080*h, .0080*h);
+        P(k*.026, -.090,            .018),
+        P(k*.034, -.090 - .052*L1,  .040),
+        P(k*.040, -.090 - .092*L1,  .068),
+      ], .0155*h, .0095*h, .0085*h);
     }
     digit(h, bi, [
-      P(sideSign*.042, -.052, .020),
-      P(sideSign*.068, -.088, .048),
-      P(sideSign*.078, -.112, .074),
-    ], .0145*h, .0080*h, .0080*h);
+      P(sideSign*.040, -.050, .020),
+      P(sideSign*.064, -.086, .048),
+      P(sideSign*.072, -.110, .072),
+    ], .0150*h, .0095*h, .0085*h);
   }
   for (const id of ['foot_l','foot_r']) {
     const bi=index.get(id); if (bi===undefined) continue;
