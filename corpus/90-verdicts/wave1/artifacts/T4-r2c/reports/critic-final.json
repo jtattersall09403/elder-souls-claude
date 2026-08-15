@@ -1,0 +1,254 @@
+{
+  "schema": "elder-souls/t4-critic-final@1",
+  "at": "2026-08-15T10:31:34.868Z",
+  "checks": [
+    {
+      "id": "HG1 the HUD full/minimal switch responds to a real 400 ms hold of KeyG",
+      "pass": false,
+      "detail": "hud.mode full -(KeyG down, 400 ms wall clock, up)-> full"
+    },
+    {
+      "id": "TSD1 the touch stick registers a drag",
+      "pass": true,
+      "detail": "stick after the move: {\"active\":true,\"ox\":345.59999999999997,\"oy\":540,\"x\":0,\"y\":-1}"
+    },
+    {
+      "id": "TSD2 the stick reaches the input pipeline",
+      "pass": false,
+      "detail": "pipeline move after 4 fixed steps: moveX=0, moveY=0"
+    },
+    {
+      "id": "TSD3 the stick walks the open screen's list",
+      "pass": false,
+      "detail": "focus {\"col\":1,\"tagIdx\":0,\"rowIdx\":0,\"sortIdx\":0} -> {\"col\":1,\"tagIdx\":0,\"rowIdx\":0,\"sortIdx\":0} on mode 'inventory'"
+    },
+    {
+      "id": "W3 the sneak state is drawn while sneaking",
+      "pass": true,
+      "detail": "crouched=false; world-set kinds before [\"bearing_dial\",\"effect_strip\",\"place_name\"], after [\"bearing_dial\",\"sneak_state\",\"effect_strip\",\"place_name\"]"
+    },
+    {
+      "id": "LG1 (RI-UIX03 M-E1 / S15) no gold anywhere on the level-up screen",
+      "pass": true,
+      "detail": "mode=levelup; currency_gold elements []; gold/drake/septim strings []"
+    },
+    {
+      "id": "LG2 no reference-item id is rendered in player-facing text (round 1 secondary #2)",
+      "pass": true,
+      "detail": "RI- citations on the level-up screen: []"
+    },
+    {
+      "id": "LG3 (M-E2 / L5) all ten attributes are on screen at once",
+      "pass": true,
+      "detail": "10 attribute_row elements; level '6', souls to next '788'"
+    }
+  ],
+  "data": {
+    "hud_switch": {
+      "before": "full",
+      "after": "full"
+    },
+    "touch_stick_chain": {
+      "before": {
+        "col": 1,
+        "tagIdx": 0,
+        "rowIdx": 0,
+        "sortIdx": 0
+      },
+      "chain": [
+        {
+          "at": "after pointerdown",
+          "stick": {
+            "active": true,
+            "ox": 345.59999999999997,
+            "oy": 540,
+            "x": 0,
+            "y": 0
+          },
+          "pointers": 1,
+          "menuOpen": true,
+          "moveX": 0,
+          "moveY": 0,
+          "uiMoveY": 0
+        },
+        {
+          "at": "after pointermove +140px",
+          "stick": {
+            "active": true,
+            "ox": 345.59999999999997,
+            "oy": 540,
+            "x": 0,
+            "y": -1
+          },
+          "moveX": 0,
+          "moveY": 0,
+          "uiMoveY": 0
+        },
+        {
+          "at": "after 4 fixed steps",
+          "stick": {
+            "active": true,
+            "ox": 345.59999999999997,
+            "oy": 540,
+            "x": 0,
+            "y": -1
+          },
+          "moveX": 0,
+          "moveY": 0,
+          "uiMoveY": 0,
+          "focus": {
+            "col": 1,
+            "tagIdx": 0,
+            "rowIdx": 0,
+            "sortIdx": 0
+          }
+        }
+      ],
+      "after": {
+        "col": 1,
+        "tagIdx": 0,
+        "rowIdx": 0,
+        "sortIdx": 0
+      }
+    },
+    "sneak": {
+      "kinds_before": [
+        "health_bar",
+        "stamina_bar",
+        "focus_bar",
+        "heal_charges",
+        "equip_load",
+        "quick_slots",
+        "interact_prompt",
+        "bearing_dial",
+        "effect_strip",
+        "place_name"
+      ],
+      "after": {
+        "kinds": [
+          "health_bar",
+          "stamina_bar",
+          "focus_bar",
+          "heal_charges",
+          "equip_load",
+          "quick_slots",
+          "interact_prompt",
+          "bearing_dial",
+          "sneak_state",
+          "effect_strip",
+          "place_name"
+        ],
+        "crouched": false,
+        "stealth": {
+          "set": {
+            "W1_bearing_dial": {
+              "built": true,
+              "drawn": true,
+              "conditional": "out of combat"
+            },
+            "W2_effect_strip": {
+              "built": true,
+              "drawn": true,
+              "conditional": "out of combat, ≥1 effect",
+              "expected": true
+            },
+            "W3_sneak_state": {
+              "built": true,
+              "drawn": true,
+              "conditional": "both phases, while sneaking",
+              "expected": true
+            },
+            "W4_condition_marks": {
+              "built": true,
+              "drawn": true,
+              "conditional": "both phases, always",
+              "inside": "hud.quickslots",
+              "added_px": 0,
+              "values": {
+                "right": 0.86,
+                "left": null,
+                "spell": null,
+                "item": 0
+              }
+            },
+            "W5_place_name": {
+              "built": true,
+              "drawn": true,
+              "conditional": "out of combat, ≤3 s after a cell change",
+              "expected": true
+            },
+            "W6_breath_meter": {
+              "built": true,
+              "drawn": false,
+              "conditional": "both phases, while submerged",
+              "expected": false
+            }
+          },
+          "elements": [
+            {
+              "id": "hud.bearing",
+              "kind": "bearing_dial",
+              "rect": [
+                1616,
+                942,
+                96,
+                96
+              ],
+              "in_bottom_half": true
+            },
+            {
+              "id": "hud.sneak",
+              "kind": "sneak_state",
+              "rect": [
+                42,
+                998,
+                40,
+                40
+              ],
+              "in_bottom_half": true
+            },
+            {
+              "id": "hud.effects",
+              "kind": "effect_strip",
+              "rect": [
+                1574,
+                1006,
+                30,
+                32
+              ],
+              "in_bottom_half": true
+            },
+            {
+              "id": "hud.place",
+              "kind": "place_name",
+              "rect": [
+                42,
+                950,
+                520,
+                36
+              ],
+              "in_bottom_half": true
+            }
+          ],
+          "all_in_bottom_half": true,
+          "overlaps": [],
+          "persistent_count": 4,
+          "coverage_pct": 1.4707,
+          "withdrawn": [],
+          "withdrawn_because": null
+        }
+      }
+    },
+    "levelup": {
+      "mode": "levelup",
+      "gold_kind": [],
+      "gold_text": [],
+      "ri_citation": [],
+      "attribute_rows": 10,
+      "souls_to_next": "788",
+      "level": "6"
+    }
+  },
+  "shots": [],
+  "error": "page.screenshot: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n\n    at shot (/home/user/elder-souls-claude/tools/ui/t4-r2-critic-final.mjs:59:26)\n    at /home/user/elder-souls-claude/tools/ui/t4-r2-critic-final.mjs:212:9"
+}
