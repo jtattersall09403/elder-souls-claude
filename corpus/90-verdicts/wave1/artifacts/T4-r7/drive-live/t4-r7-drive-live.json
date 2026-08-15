@@ -1,0 +1,328 @@
+{
+  "schema": "elder-souls/t4-r7-container-drive@1",
+  "at": "2026-08-15T22:48:19.582Z",
+  "label": "live",
+  "commit": "5ec636a838e4b5040307e2ad3560d125ed80f087",
+  "checks": [
+    {
+      "id": "R3a the container screen opens and names itself",
+      "pass": true,
+      "detail": "mode container, headers [\"Reed Creel\",\"Carried\",\"Reed Creel\"]"
+    },
+    {
+      "id": "R1 no weight or gold value is ellipsised on any visible row",
+      "pass": true,
+      "detail": "4 rows driven, 0 with a truncated number, read off meta.columns_drawn (names still truncated on 2, reported not hidden: [\"Bog-iron maul -> Bog-iron m…\",\"Rootweave cowl -> Rootweave …\"])",
+      "truncated_numbers": []
+    },
+    {
+      "id": "R1b the R1 arm can disagree — a deliberately unfittable NAME comes back truncated:true",
+      "pass": true,
+      "detail": "probe row drew name 'A probe rec…' (truncated=true); its 11.5 / 96 columns held: true"
+    },
+    {
+      "id": "R2 every fact — condition included — is laid out INSIDE the band rect that clips it",
+      "pass": true,
+      "detail": "item eshis-knife, 3 facts (weight/gold/condition), last right edge 274 vs band width 276 — inside"
+    },
+    {
+      "id": "run",
+      "pass": false,
+      "detail": "threw: page.evaluate: Target page, context or browser has been closed"
+    }
+  ],
+  "data": {
+    "panel_rect": [
+      720,
+      314,
+      480,
+      452
+    ],
+    "rows": [
+      {
+        "id": "container.mine.row.eshis-knife",
+        "text": "Eshi's knife  0.0  —",
+        "columns_drawn": [
+          {
+            "w": 95.42720000000001,
+            "text": "Eshi's knife",
+            "declared": "Eshi's knife",
+            "truncated": false
+          },
+          {
+            "w": 32.736,
+            "text": "0.0",
+            "declared": "0.0",
+            "truncated": false
+          },
+          {
+            "w": 23.836799999999997,
+            "text": "—",
+            "declared": "—",
+            "truncated": false
+          }
+        ]
+      },
+      {
+        "id": "container.theirs.row.bog-iron-maul",
+        "text": "Bog-iron maul  11.5  96",
+        "columns_drawn": [
+          {
+            "w": 95.42720000000001,
+            "text": "Bog-iron m…",
+            "declared": "Bog-iron maul",
+            "truncated": true
+          },
+          {
+            "w": 32.736,
+            "text": "11.5",
+            "declared": "11.5",
+            "truncated": false
+          },
+          {
+            "w": 23.836799999999997,
+            "text": "96",
+            "declared": "96",
+            "truncated": false
+          }
+        ]
+      },
+      {
+        "id": "container.theirs.row.reed-cutter",
+        "text": "Reed-cutter  3.0  42",
+        "columns_drawn": [
+          {
+            "w": 95.42720000000001,
+            "text": "Reed-cutter",
+            "declared": "Reed-cutter",
+            "truncated": false
+          },
+          {
+            "w": 32.736,
+            "text": "3.0",
+            "declared": "3.0",
+            "truncated": false
+          },
+          {
+            "w": 23.836799999999997,
+            "text": "42",
+            "declared": "42",
+            "truncated": false
+          }
+        ]
+      },
+      {
+        "id": "container.theirs.row.rootweave-cowl",
+        "text": "Rootweave cowl  0.6  18",
+        "columns_drawn": [
+          {
+            "w": 95.42720000000001,
+            "text": "Rootweave …",
+            "declared": "Rootweave cowl",
+            "truncated": true
+          },
+          {
+            "w": 32.736,
+            "text": "0.6",
+            "declared": "0.6",
+            "truncated": false
+          },
+          {
+            "w": 23.836799999999997,
+            "text": "18",
+            "declared": "18",
+            "truncated": false
+          }
+        ]
+      }
+    ],
+    "name_truncated_rows": [
+      {
+        "id": "container.theirs.row.bog-iron-maul",
+        "declared": "Bog-iron maul",
+        "drawn": "Bog-iron m…"
+      },
+      {
+        "id": "container.theirs.row.rootweave-cowl",
+        "declared": "Rootweave cowl",
+        "drawn": "Rootweave …"
+      }
+    ],
+    "r1b_probe_row": {
+      "id": "container.theirs.row.t4-r7-probe",
+      "text": "A probe record whose name is far too long to fit in any column this screen owns  11.5  96",
+      "rect": [
+        972,
+        386,
+        190,
+        34
+      ],
+      "focused": false,
+      "item_id": "t4-r7-probe",
+      "columns_drawn": [
+        {
+          "w": 95.42720000000001,
+          "text": "A probe rec…",
+          "declared": "A probe record whose name is far too long to fit in any column this screen owns",
+          "truncated": true
+        },
+        {
+          "w": 32.736,
+          "text": "11.5",
+          "declared": "11.5",
+          "truncated": false
+        },
+        {
+          "w": 23.836799999999997,
+          "text": "96",
+          "declared": "96",
+          "truncated": false
+        }
+      ]
+    },
+    "r1b_probe_band": {
+      "item_id": "eshis-knife",
+      "weight": 0,
+      "value_gold": 0,
+      "condition": 1,
+      "side": "mine",
+      "depiction_element": "container.band.depiction",
+      "description_truncated": false,
+      "description_lines_shown": 1,
+      "description_lines_needed": 1,
+      "facts": [
+        {
+          "key": "weight",
+          "value": "nothing",
+          "x": 0,
+          "w": 39.96
+        },
+        {
+          "key": "gold",
+          "value": "not for sale",
+          "x": 100.14,
+          "w": 61.84
+        },
+        {
+          "key": "condition",
+          "value": "100 in 100",
+          "x": 222.16,
+          "w": 51.84
+        }
+      ],
+      "facts_right": 274,
+      "facts_fit": true
+    },
+    "conditioned": {
+      "item": "eshis-knife",
+      "condition": 1,
+      "band_rect": [
+        902,
+        532,
+        276,
+        172
+      ],
+      "meta": {
+        "item_id": "eshis-knife",
+        "weight": 0,
+        "value_gold": 0,
+        "condition": 1,
+        "side": "mine",
+        "depiction_element": "container.band.depiction",
+        "description_truncated": false,
+        "description_lines_shown": 1,
+        "description_lines_needed": 1,
+        "facts": [
+          {
+            "key": "weight",
+            "value": "nothing",
+            "x": 0,
+            "w": 39.96
+          },
+          {
+            "key": "gold",
+            "value": "not for sale",
+            "x": 100.14,
+            "w": 61.84
+          },
+          {
+            "key": "condition",
+            "value": "100 in 100",
+            "x": 222.16,
+            "w": 51.84
+          }
+        ],
+        "facts_right": 274,
+        "facts_fit": true
+      }
+    },
+    "band_width": 276,
+    "band_facts": {
+      "facts": [
+        {
+          "key": "weight",
+          "value": "nothing",
+          "x": 0,
+          "w": 39.96
+        },
+        {
+          "key": "gold",
+          "value": "not for sale",
+          "x": 100.14,
+          "w": 61.84
+        },
+        {
+          "key": "condition",
+          "value": "100 in 100",
+          "x": 222.16,
+          "w": 51.84
+        }
+      ],
+      "facts_right": 274,
+      "facts_fit": true
+    },
+    "description_lines": [
+      {
+        "item": "eshis-knife",
+        "shown": 1,
+        "needed": 1
+      },
+      {
+        "item": "eshis-knife",
+        "shown": 1,
+        "needed": 1
+      },
+      {
+        "item": "eshis-knife",
+        "shown": 1,
+        "needed": 1
+      },
+      {
+        "item": "eshis-knife",
+        "shown": 1,
+        "needed": 1
+      },
+      {
+        "item": "eshis-knife",
+        "shown": 1,
+        "needed": 1
+      },
+      {
+        "item": "eshis-knife",
+        "shown": 1,
+        "needed": 1
+      },
+      {
+        "item": "eshis-knife",
+        "shown": 1,
+        "needed": 1
+      },
+      {
+        "item": "eshis-knife",
+        "shown": 1,
+        "needed": 1
+      }
+    ],
+    "teardown": "TIMED OUT after 20s — browser left for the box to reap"
+  }
+}
