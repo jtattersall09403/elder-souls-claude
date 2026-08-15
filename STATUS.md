@@ -35,19 +35,20 @@ Alongside that: shrinking the documentation every agent reads before it can star
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its own author reported that honestly after catching that the *first* version of the measurement was
   void: 93.7% of the improvement it was about to claim reproduced with no fix in the tree at all.
-- **The characters are bad, and we now know exactly why.** Judged for the first time against real
-  reference plates: **ART 1/10, FIDELITY 3/10.** Specifically — every figure is **5.9 to 6.8 heads
-  tall** when a real one is 7.5 to 8, so the whole cast reads slightly dwarfish and *none* of the 41
-  is in the right band; shoulders are ellipsoids on a slab torso and legs are cones; the face has
-  **1 of 7** landmarks; and **41 different characters collapse to 12 silhouettes** — an argonian
-  rootkeeper and a breton mudborn are *pixel-identical*. Nobody shifts their weight when standing.
-  **The skeleton underneath is sound** — feet don't slide, hands grip correctly, no T-pose in 3,005
-  frames — so this is a rebuild of the surface, not the rig.
-  **The cheapest single fix, now dispatched:** 181 of 408 NPCs are tagged `argonian`, but only
-  `saxhleel` and `naga` are routed to the reptilian body, so **44% of the cast renders on a generic
-  humanoid with no eye geometry at all**.
-  (A shader bug also removed every body entirely for part of yesterday; that is fixed — 124/124
-  programs link — but it was a regression on top of this, not this.)
+- **The characters were being drawn inside-out — found and fixed today, from your tip.** The winding
+  hypothesis you passed on was right, and larger than the report you sent: **153,344 of 227,850
+  triangles (67.3%)** had their normal disagreeing with their winding, and the body meshes were
+  **13 of 13 inverted** — skin and clothing both. Front faces were culled, so you were seeing the
+  *inside of the far surface*. Three separate generators, each wrong in a different way. Now **zero**,
+  and the two body meshes went from open to closed. It survived five rounds of hole-filling because it
+  is not a hole.
+  Fixed alongside it: **44% of the cast rendered on a generic humanoid with no eye geometry at all**
+  (now routed properly, 79 → 260 NPCs); **everyone was the wrong height** (0 of 41 figures in the
+  correct 7–8 head band, now 41 of 41); and faces gained seven landmarks where the generic body had
+  none.
+  **Not yet confirmed by eye** — all of that is measured geometry, not appearance. No hardware frames
+  were taken, so nobody has *looked* at the result. Running now; until it lands this is a promise, not
+  a delivery.
 - **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
   out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
   it. Shadows still crush to black; that fix is being built now.
