@@ -1,0 +1,6 @@
+[harness]   self-test: CIEDE2000 vs 10 published pairs — worst error 4.07e-5
+[harness]   self-test: correct composite   — 56 edge px, worst ΔE2000 0.16 (round-2 luma unit 0)
+[harness]   self-test: dark halo           — 56 edge px, worst ΔE2000 33.124 (round-2 luma unit 96)
+[harness]   self-test: light halo          — 56 edge px, worst ΔE2000 7.725 (round-2 luma unit 17)
+[harness]   self-test: zero-sample FD6 -> EMPTY
+[harness] self-test: FD6 fires on a halo, is silent on a legal blend, and reports EMPTY on nothing

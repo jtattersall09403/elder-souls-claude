@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-14T19:02:04Z",
+  "generated": "2026-08-15T08:45:48Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 86,
+  "verdicts_read": 88,
   "counts": {
-    "total": 81,
-    "open": 80,
+    "total": 83,
+    "open": 82,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -74,6 +74,9 @@
     ],
     "progression.level.attributes": [
       "GAP-W1-attr-scale-ceilings-rest-on-an-unmeasured-souls-economy"
+    ],
+    "render.art.character": [
+      "GAP-W1-character-surface-is-assembled-from-primitives-not-built"
     ],
     "combat.frames.timing": [
       "GAP-W1-combat-exemplar-has-no-danger"
@@ -200,6 +203,9 @@
     "ui.hud.minimalism": [
       "GAP-W1-ui-detectors-that-cannot-see",
       "GAP-W1-ui-map-outside-the-ar2-detectors"
+    ],
+    "ui.hud.world": [
+      "GAP-W1-ui-hud-world-set-unbuilt-and-misplaced"
     ],
     "render.process.measurement": [
       "GAP-W1-w1-30d-guard-misses-part-deletion",
@@ -378,6 +384,7 @@
     "STALE-RISK GAP-W1-30c-wetness-mask-blind-to-instancematrix: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-visual-blind-protocol-a-chunk2, crit-w1-orphaned-surface-shaders-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-w1-30d-guard-misses-part-deletion: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-orphaned-surface-shaders-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-w1-30e-street-gate-never-ran: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-orphaned-surface-shaders-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-f1-actor-body-shader-does-not-link: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-characters-a71c). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-population-save-reload-repays-every-corpse: still open, and 2 later verdict(s) have been filed on the same piece or path since (critic-w1-souls-r2, critic-w1-souls). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-PACK-01: still open, and 2 later verdict(s) have been filed on the same piece or path since (judge-prose-packs-r1, crit-w1-30c-r1-2634eb0e). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-road-join-has-no-gate: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-crossing). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
@@ -1376,6 +1383,48 @@
       ]
     },
     {
+      "gap_id": "GAP-W1-character-surface-is-assembled-from-primitives-not-built",
+      "subsystem_path": "render.art.character",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-f10-characters-a71c",
+      "opened_in": "corpus/90-verdicts/wave1/W1-F10-CHARACTERS.json",
+      "piece_id": "W1-F10-CHARACTERS",
+      "severity": "blocking",
+      "what": "The visible body of every character in the game is an assembly of primitive solids rather than a built figure, and the numbers say so on both axes at once. Shoulders are glossy ellipsoids attached to a flat rectangular torso plate; the pelvis is a trapezoid; limbs are tapered cones; the player's legs terminate in points with no foot. The face carries 1 of 7 landmarks (a crest root, and nothing else — no brow ridge, orbit rim, naris, cheek-to-jaw line, mandible line or chin underside). The whole shipped roster is 5.87-6.84 heads tall (median 6.58) against RI-VIS10 C1's 7.0-8.0 band, with 0 of 41 figures inside it. The player is 15142 triangles against RI-VIS08 B2's 25000 and the creature 4834 against 12000. The skin opens 289 crack pixels across 179 of 640 posed frames at the calf/foot and head/hand seams. The art family that carries 329 of 408 NPCs has no eye geometry at all. Crucially this is NOT a rig defect: the same build passes RI-VIS08 C1, C3, C4, C6, C7, C8 and C9 with foot slide at 6 mm against a 30 mm bar, root-motion r = 1.0000, grip error 0.000 m and foot IK holding 100% of planted frames on a 20-degree slope and on stairs.",
+      "why_it_matters": "It is the reason the owner, playing the game, said the player character and every NPC look frankly ridiculous — a viewer identifies an ellipsoid stuck to a slab in the first half-second, before texture, light or animation is considered at all.",
+      "remedy": {
+        "action": "Rebuild the visible character surface on the existing skeleton — do not touch the rig, the clips or the IK, which measure well. In game/src/render/actor.js: (1) replace the ellipsoid-shoulder / slab-torso construction with a continuous shoulder-to-chest surface and tapered limbs, and give the player a foot; (2) add the facial landmark geometry — brow ridge, orbit rim, naris, cheek-to-jaw line, mandible line, chin underside — to both base.saxhleel and base.humanoid, and give base.humanoid the eye and pupil parts base.saxhleel already has; (3) change the per-family head scale in CHARACTER_SPECS so the head-count canon lands in band.",
+        "targets": [
+          "game/src/render/actor.js",
+          "game/src/render/actor.js CHARACTER_SPECS morph head scale"
+        ],
+        "acceptance": "node tools/visual/f10-silhouette.mjs --res=768 --pose=idle_loop reports >= 90% of shipped figures with R inside 7.0-8.0 (6.5-7.5 for naga and orsimer) and none outside 6.0-8.5; RI-VIS08 B2 reports >= 25000 triangles for the player and >= 12000 for the beast family; RI-VIS10 B4 counts >= 5 of 7 facial landmarks producing visible form shading under a 45-degree key; RI-VIS08 B8 passes on every art family, not only saxhleel; node tools/visual/actor-orbit-holes.mjs --res=512 --angles=8 --distances=4 reports 0 crack pixels.",
+        "ref_item": "RI-VIS10",
+        "estimated_size": "L"
+      },
+      "remedy_action": "Rebuild the visible character surface on the existing skeleton — do not touch the rig, the clips or the IK, which measure well. In game/src/render/actor.js: (1) replace the ellipsoid-shoulder / slab-torso construction with a continuous shoulder-to-chest surface and tapered limbs, and give the player a foot; (2) add the facial landmark geometry — brow ridge, orbit rim, naris, cheek-to-jaw line, mandible line, chin underside — to both base.saxhleel and base.humanoid, and give base.humanoid the eye and pupil parts base.saxhleel already has; (3) change the per-family head scale in CHARACTER_SPECS so the head-count canon lands in band.",
+      "remedy_acceptance": "node tools/visual/f10-silhouette.mjs --res=768 --pose=idle_loop reports >= 90% of shipped figures with R inside 7.0-8.0 (6.5-7.5 for naga and orsimer) and none outside 6.0-8.5; RI-VIS08 B2 reports >= 25000 triangles for the player and >= 12000 for the beast family; RI-VIS10 B4 counts >= 5 of 7 facial landmarks producing visible form shading under a 45-degree key; RI-VIS08 B8 passes on every art family, not only saxhleel; node tools/visual/actor-orbit-holes.mjs --res=512 --angles=8 --distances=4 reports 0 crack pixels.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C4__player__yaw090.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__player__closeup-lit.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/ours-hardware/C1__npc-blackwood-company-factor__closeup-lit.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/f10-silhouette.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/metrics/roster-census.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
+    },
+    {
       "gap_id": "GAP-W1-combat-exemplar-has-no-danger",
       "subsystem_path": "combat.frames.timing",
       "opened_wave": 1,
@@ -1794,7 +1843,16 @@
       },
       "superseded_by": null,
       "age_waves": 0,
-      "filed_since": []
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-F10-CHARACTERS.json",
+          "run_id": "crit-w1-f10-characters-a71c",
+          "at": "2026-08-15T09:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-character-surface-is-assembled-from-primitives-not-built"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-faction-ladders-are-bricked-up-at-rank-5",
@@ -3896,6 +3954,52 @@
           "opened_gap": "GAP-W1-map-fix-drops-the-journal-from-the-page-walk"
         }
       ]
+    },
+    {
+      "gap_id": "GAP-W1-ui-hud-world-set-unbuilt-and-misplaced",
+      "subsystem_path": "ui.hud.world",
+      "opened_wave": 1,
+      "opened_by": "crit-t4-r1-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/T4-r1.json",
+      "piece_id": "T4-r1",
+      "severity": "blocking",
+      "what": "The out-of-combat HUD has 1 of its 6 required elements, and the one element it has is in the wrong half of the screen. RI-UIX07 §B closes the world set at six: W1 bearing dial, W2 active-effect strip, W3 sneak state, W4 condition and charge marks on the quick slots, W5 place-name announcement, W6 breath meter. Only W1 exists — W2, W3, W4, W5 and W6 appear in no element-kind vocabulary on any frame captured, in any mode, across four separate runs. And W1's rect is [1782, 84, 96, 96], so y + h = 180 against H/2 = 540: it sits wholly in the top half, where §D1 requires the bottom half and §D2 requires the bottom-right corner or the rail inboard of it. Measured against the item's own §A, every persistent element of Morrowind's HUD is anchored Left Bottom or Right Bottom and the top of the screen is empty.",
+      "why_it_matters": "For the ninety minutes of every hour the player is not fighting, the screen tells them their stamina — which they did not need — and nothing about where they are, which is the only question a markerless world poses; and the one element that would answer it is in the corner where a modern action-RPG puts its minimap, which is the register the whole interface is trying to stay out of.",
+      "remedy": {
+        "action": "Move the dial, then build the missing five cheapest-first. (1) In game/src/ui/compass.js, dialGeometry() computes cy = max(84*s + r, margin + r) — the top edge. Recompute it against the bottom edge so the dial anchors bottom-right, and where RI-UIX01's quick slots (E5, currently [1728,888,150,150]) and equip-load gauge (E9, [1758,852,120,24]) already hold that corner, place the dial immediately inboard on the same bottom rail; add the D4 overlap assertion against every RI-UIX01 rect. (2) Build W4 next because it costs nothing: a condition rule under the weapon slot and a cast-chance rule under the spell slot, drawn INSIDE E5's existing 150x150 rect, adding zero screen coverage — Morrowind draws both and they are visible as thin red rules in REF-A12c. (3) Then W3 sneak_state (40x40, both phases, only while hidden), W5 place_name (520x36, out of combat, <=3 s on cell change), W2 effect_strip (one glyph per active effect, <=12, growing leftward from the dial along the bottom edge), W6 breath_meter (400x24, both phases, only while submerged). (4) Add combat_phase, combat_phase_source: 'encounter' and frames_since_phase_change to getUIState(), read from the encounter state the AI reads and never recomputed in the UI layer, so V7 and V8 stop being proxy measurements.",
+        "targets": [
+          "game/src/ui/compass.js",
+          "game/src/ui/hud.js",
+          "game/src/ui/surface.js",
+          "game/src/ui/system.js",
+          "game/src/harness/api.js"
+        ],
+        "acceptance": "RI-UIX07 V1 reads 6 of 6: all six world-set kinds (bearing_dial, effect_strip, sneak_state, the condition/charge marks inside E5, place_name, breath_meter) appear in getUIState().elements under their declared conditions on a world frame, with the four refusals B1-B4 still held. V6 reads pass: every world-set element satisfies y + h > H/2 at 1920x1080 AND at 844x390, and intersects no RI-UIX01 element rect except W4, which is defined as being inside one. C3 world-set persistent coverage stays <= 1.5% and C4 union persistent stays <= 5.0% at 1920x1080 (the specified set computes to 0.52% and the shipped Souls set measures 2.49%, so the union has real headroom). And getUIState() returns a combat_phase field whose value on an aggro frame is 'fight' and on a quiet frame is 'world'.",
+        "ref_item": "RI-UIX07",
+        "estimated_size": "M"
+      },
+      "remedy_action": "Move the dial, then build the missing five cheapest-first. (1) In game/src/ui/compass.js, dialGeometry() computes cy = max(84*s + r, margin + r) — the top edge. Recompute it against the bottom edge so the dial anchors bottom-right, and where RI-UIX01's quick slots (E5, currently [1728,888,150,150]) and equip-load gauge (E9, [1758,852,120,24]) already hold that corner, place the dial immediately inboard on the same bottom rail; add the D4 overlap assertion against every RI-UIX01 rect. (2) Build W4 next because it costs nothing: a condition rule under the weapon slot and a cast-chance rule under the spell slot, drawn INSIDE E5's existing 150x150 rect, adding zero screen coverage — Morrowind draws both and they are visible as thin red rules in REF-A12c. (3) Then W3 sneak_state (40x40, both phases, only while hidden), W5 place_name (520x36, out of combat, <=3 s on cell change), W2 effect_strip (one glyph per active effect, <=12, growing leftward from the dial along the bottom edge), W6 breath_meter (400x24, both phases, only while submerged). (4) Add combat_phase, combat_phase_source: 'encounter' and frames_since_phase_change to getUIState(), read from the encounter state the AI reads and never recomputed in the UI layer, so V7 and V8 stop being proxy measurements.",
+      "remedy_acceptance": "RI-UIX07 V1 reads 6 of 6: all six world-set kinds (bearing_dial, effect_strip, sneak_state, the condition/charge marks inside E5, place_name, breath_meter) appear in getUIState().elements under their declared conditions on a world frame, with the four refusals B1-B4 still held. V6 reads pass: every world-set element satisfies y + h > H/2 at 1920x1080 AND at 844x390, and intersects no RI-UIX01 element rect except W4, which is defined as being inside one. C3 world-set persistent coverage stays <= 1.5% and C4 union persistent stays <= 5.0% at 1920x1080 (the specified set computes to 0.52% and the shipped Souls set measures 2.49%, so the union has real headroom). And getUIState() returns a combat_phase field whose value on an aggro frame is 'fight' and on a quiet frame is 'world'.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r1/uistate/withdrawal.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r1/uistate/lean.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r1/uistate/probe-all-modes.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r1/screens/fixture-world-hud__1920x1080.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r1/crops/world-hud-bearing-dial-5x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r1/crops/world-hud-quickslots-4x.png"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-ui-map-outside-the-ar2-detectors",

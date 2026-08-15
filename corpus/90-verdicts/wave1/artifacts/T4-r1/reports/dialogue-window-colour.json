@@ -1,0 +1,119 @@
+{
+ "produced_by": "inline python: glyph-core sampling (mean of the brightest 5% of each text region) and modal sampling for the bar fill, CIE76 dE against RI-UIX08 \u00a7C constants read from REF-A12/config/openmw.cfg lines 71-115",
+ "stimulus": "docs/shots/2026-08-14-uix08-dialogue-desktop-1920x1080-links.png",
+ "stimulus_caveat": "BUILDER-PRODUCED CAPTURE, not taken by this critic. Three of my own live runs lost every screenshot to H.screenshot() timeouts on a contended box.",
+ "method_note": "RI-UIX08 method step 3 requires sampling from the rendered frame rather than from a source constant, because a correct constant and an incorrect render is exactly the defect RI-UIX06 F17-F19 exist to catch.",
+ "families": {
+  "prose_body": {
+   "what": "the greeting line in the history pane",
+   "measured_rgb": [
+    202,
+    165,
+    96
+   ],
+   "target_hex": "#CAA560",
+   "target_rgb": [
+    202,
+    165,
+    96
+   ],
+   "dE": 0.0,
+   "verdict": "PASS <=4"
+  },
+  "topic_column_entry": {
+   "what": "the first topic line, \"dying far from the tree\"",
+   "measured_rgb": [
+    202,
+    165,
+    96
+   ],
+   "target_hex": "#CAA560",
+   "target_rgb": [
+    202,
+    165,
+    96
+   ],
+   "dE": 0.0,
+   "verdict": "PASS <=4"
+  },
+  "section_head_Persuasion": {
+   "what": "the action-section entry above the rule",
+   "measured_rgb": [
+    202,
+    165,
+    96
+   ],
+   "target_hex": "#DFC99F",
+   "target_rgb": [
+    223,
+    201,
+    159
+   ],
+   "dE": 21.01,
+   "verdict": "NOT EXERCISED \u2014 there is no answer block in this frame, so the header/normal_over family is never drawn. Deferred rather than failed."
+  },
+  "title_speaker_name": {
+   "what": "\"Sheem\" in the gap cut in the tiled border strip",
+   "measured_rgb": [
+    202,
+    165,
+    96
+   ],
+   "target_hex": "#CAA560",
+   "target_rgb": [
+    202,
+    165,
+    96
+   ],
+   "dE": 0.0,
+   "verdict": "PASS <=4"
+  },
+  "disposition_fill": {
+   "what": "the filled portion of the disposition bar reading 69/100",
+   "measured_rgb": [
+    53,
+    69,
+    159
+   ],
+   "target_hex": "#35459F",
+   "target_rgb": [
+    53,
+    69,
+    159
+   ],
+   "dE": 0.0,
+   "verdict": "PASS <=4"
+  }
+ },
+ "E4_green_check": "REFUSED CORRECTLY. RI-UIX08 \u00a7E4 establishes that the green topic list in the owner screenshot is a mod or user setting (glyph-core ~(144,196,146), matching no entry in the 45-entry [FontColor] table) and that vanilla renders the column in normal bronze #CAA560. Ours measures (202,165,96) = #CAA560, dE 0.00.",
+ "E3_read_unread_check": "F1 OBEYED. Every topic-column entry renders at one colour; nothing is marked read or exhausted.",
+ "E1_translucency": {
+  "panel_interior_over_npc": [
+   30,
+   36,
+   38
+  ],
+  "panel_interior_over_bare_ground": [
+   35,
+   35,
+   29
+  ],
+  "world_outside_panel": [
+   113,
+   93,
+   53
+  ],
+  "note": "Near-black and translucent, NOT parchment: the market stalls and the NPC body read through the prose pane. A paired with/without capture would be needed to state an alpha against OpenMWs 0.84 default, so this is scored at the middle rung."
+ },
+ "geometry": {
+  "panel_width_frac": 0.568,
+  "panel_height_frac": 0.75,
+  "reference_A1": {
+   "width_frac": 0.57,
+   "height_frac": 0.76
+  },
+  "topic_column_frac_of_panel": 0.289,
+  "layout_nominal_frac": 0.282,
+  "note": "REF-A12/mygui/openmw_dialogue_window.layout: history box MW_Box 8 8 381 381 Stretch; disposition MW_Progress_Blue 398 8 166 18 Right Top; topic list 398 31 166 328 Right VStretch; Goodbye 398 366 166 23 Right Bottom."
+ }
+}

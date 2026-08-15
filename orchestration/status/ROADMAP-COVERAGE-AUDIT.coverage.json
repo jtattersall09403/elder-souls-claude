@@ -1,11 +1,11 @@
 {
- "generated": "2026-08-15T08:34:47.548Z",
+ "generated": "2026-08-15T08:46:08.622Z",
  "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
  "method": "Inventory derived by fs walk + generated ledgers. Mapping authored by the audit agent after reading every RI title/front-matter, every plan heading, and every open gap record.",
  "inventory_counts": {
   "reference_items": 151,
   "plans": 49,
-  "open_gaps": 80,
+  "open_gaps": 82,
   "proposed_roadmap_items": 69
  },
  "rings": {
@@ -112,7 +112,6 @@
    "n_ref_items": 5,
    "never_judged": [
     "RI-VIS09",
-    "RI-VIS10",
     "RI-MTH05",
     "RI-MTH06"
    ],
@@ -396,15 +395,14 @@
     "RI-VIS10"
    ],
    "n_ref_items": 3,
-   "never_judged": [
-    "RI-VIS10"
-   ],
+   "never_judged": [],
    "open_gaps": [
+    "GAP-W1-character-surface-is-assembled-from-primitives-not-built",
     "GAP-W1-f1-actor-body-shader-does-not-link",
     "GAP-W1-w1-30d-guard-misses-part-deletion"
    ],
-   "n_open_gaps": 2,
-   "blocking_gaps": 1,
+   "n_open_gaps": 3,
+   "blocking_gaps": 2,
    "plans": [
     "W1-24",
     "W1-30-LIBRARY",
@@ -679,9 +677,7 @@
     "RI-AUD01"
    ],
    "n_ref_items": 2,
-   "never_judged": [
-    "RI-UIX01"
-   ],
+   "never_judged": [],
    "open_gaps": [
     "GAP-W1-m6-pan-correlation-passes-the-panner-it-was-built-to-catch"
    ],
@@ -1201,9 +1197,7 @@
     "RI-UIX08"
    ],
    "n_ref_items": 2,
-   "never_judged": [
-    "RI-UIX08"
-   ],
+   "never_judged": [],
    "open_gaps": [
     "GAP-W1-act5-argument-entry-shadowed",
     "GAP-W1-mainquest-topic-bootstrap"
@@ -1487,19 +1481,16 @@
     "RI-UIX09"
    ],
    "n_ref_items": 6,
-   "never_judged": [
-    "RI-UIX07",
-    "RI-UIX08",
-    "RI-UIX09"
-   ],
+   "never_judged": [],
    "open_gaps": [
     "GAP-W1-map-fix-drops-the-journal-from-the-page-walk",
     "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
     "GAP-W1-ui-detectors-that-cannot-see",
+    "GAP-W1-ui-hud-world-set-unbuilt-and-misplaced",
     "GAP-W1-ui-map-outside-the-ar2-detectors"
    ],
-   "n_open_gaps": 4,
-   "blocking_gaps": 3,
+   "n_open_gaps": 5,
+   "blocking_gaps": 4,
    "plans": [
     "W1-21",
     "W1-HUD-TOAST"
@@ -3547,7 +3538,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 2,
+   "verdicts": 3,
    "best_score_0_10": 3,
    "state": "judged_below_bar"
   },
@@ -3581,10 +3572,10 @@
     "I5"
    ],
    "bucket": "build",
-   "judged": false,
-   "verdicts": 0,
-   "best_score_0_10": null,
-   "state": "never_judged"
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 1,
+   "state": "judged_below_bar"
   },
   {
    "id": "RI-MTH01",
@@ -3770,10 +3761,10 @@
     "G6"
    ],
    "bucket": "build",
-   "judged": false,
-   "verdicts": 0,
-   "best_score_0_10": null,
-   "state": "never_judged"
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 0,
+   "state": "judged_below_bar"
   },
   {
    "id": "RI-UIX02",
@@ -3806,7 +3797,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 2,
+   "verdicts": 3,
    "best_score_0_10": 6,
    "state": "judged_at_or_above_bar"
   },
@@ -3824,7 +3815,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 4,
+   "verdicts": 5,
    "best_score_0_10": 7,
    "state": "judged_at_or_above_bar"
   },
@@ -3859,7 +3850,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 2,
+   "verdicts": 3,
    "best_score_0_10": 5,
    "state": "judged_below_bar"
   },
@@ -3875,10 +3866,10 @@
     "T4"
    ],
    "bucket": "build",
-   "judged": false,
-   "verdicts": 0,
-   "best_score_0_10": null,
-   "state": "never_judged"
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
   },
   {
    "id": "RI-UIX08",
@@ -3893,10 +3884,10 @@
     "T4"
    ],
    "bucket": "build",
-   "judged": false,
-   "verdicts": 0,
-   "best_score_0_10": null,
-   "state": "never_judged"
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 2,
+   "state": "judged_below_bar"
   },
   {
    "id": "RI-UIX09",
@@ -3910,10 +3901,10 @@
     "T4"
    ],
    "bucket": "build",
-   "judged": false,
-   "verdicts": 0,
-   "best_score_0_10": null,
-   "state": "never_judged"
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 0,
+   "state": "judged_below_bar"
   },
   {
    "id": "RI-AUD01",
@@ -5462,6 +5453,16 @@
    "bucket": "build"
   },
   {
+   "id": "GAP-W1-character-surface-is-assembled-from-primitives-not-built",
+   "severity": "blocking",
+   "path": "render.art.character",
+   "what": "The visible body of every character in the game is an assembly of primitive solids rather than a built figure, and the numbers say so on both axes at once. Shou",
+   "covered_by": [
+    "F10"
+   ],
+   "bucket": "build"
+  },
+  {
    "id": "GAP-W1-combat-exemplar-has-no-danger",
    "severity": "blocking",
    "path": "combat.frames.timing",
@@ -5951,6 +5952,16 @@
    "covered_by": [
     "T4",
     "I1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-ui-hud-world-set-unbuilt-and-misplaced",
+   "severity": "blocking",
+   "path": "ui.hud.world",
+   "what": "The out-of-combat HUD has 1 of its 6 required elements, and the one element it has is in the wrong half of the screen. RI-UIX07 §B closes the world set at six: ",
+   "covered_by": [
+    "T4"
    ],
    "bucket": "build"
   },

@@ -2,13 +2,13 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-15T08:34:47.548Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-15T08:46:08.622Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
 | reference items (`corpus/**/RI-*.md`) | 151 | 0 |
 | plans (`orchestration/plans/*`) | 49 | 0 |
-| open gaps (`GAP-LEDGER.json`) | 80 | 0 |
+| open gaps (`GAP-LEDGER.json`) | 82 | 0 |
 | proposed roadmap items | 69 | — |
 
 ## Proposed items
@@ -20,7 +20,7 @@
 | `I1` | The harness and determinism | RI-CMB07 RI-MTH01 RI-MTH02 | — | 5 (4) | W1-00 | built_below_bar | **none** |
 | `I2` | Capture and the Deck | RI-MTH04 RI-MTH06 | RI-MTH06 | 2 (1) | W1-30-EVIDENCE W1-30V | built_below_bar | V17 |
 | `I4` | Consumption as a gate | RI-MTH07 | — | 5 (3) | BUILDER-EXECUTION-CONTRACT | built_below_bar | **none** |
-| `I5` | The corpus audited and extended | RI-VIS02 RI-VIS09 RI-VIS10 RI-MTH05 RI-MTH06 | RI-VIS09 RI-VIS10 RI-MTH05 RI-MTH06 | 0 (0) | — | built_below_bar | F3 |
+| `I5` | The corpus audited and extended | RI-VIS02 RI-VIS09 RI-VIS10 RI-MTH05 RI-MTH06 | RI-VIS09 RI-MTH05 RI-MTH06 | 0 (0) | — | built_below_bar | F3 |
 | `I3` | The blind protocols | RI-DLG07 RI-VIS01 RI-VIS03 RI-VIS06 RI-MTH03 | RI-DLG07 RI-VIS01 | 2 (1) | W1-24 | built_below_bar | V17/F2 |
 
 ### Ring 1 — The frame — what a rendered pixel looks like. Wave 1 by owner directive.
@@ -37,12 +37,12 @@
 | `F7` | The water surface | RI-WLD10 | — | 1 (1) | W1-03 W1-30 W1-30H | built_below_bar | V11 |
 | `F8` | The building kit and settlement silhouette | RI-WLD14 | — | 1 (1) | W1-30-LIBRARY W1-30 W1-30E | built_below_bar | V8 |
 | `F9` | Interiors and practical light | RI-STL01 | — | 1 (1) | W1-30 W1-30G | built_below_bar | partial:V4 |
-| `F10` | Characters and creatures | RI-CAM07 RI-VIS08 RI-VIS10 | RI-VIS10 | 2 (1) | W1-24 W1-30-LIBRARY W1-30 W1-30D | built_below_bar | V6 |
+| `F10` | Characters and creatures | RI-CAM07 RI-VIS08 RI-VIS10 | — | 3 (2) | W1-24 W1-30-LIBRARY W1-30 W1-30D | built_below_bar | V6 |
 | `F11` | Animation quality | RI-WPN05 RI-VIS08 | — | 1 (1) | W1-30 W1-30D | built_below_bar | V7 |
 | `F12` | VFX and particles | RI-MAG05 | — | 1 (0) | W1-30 W1-30H | built_below_bar | V13 |
 | `F13` | Art direction and region identity | RI-WLD04 RI-VIS05 RI-VIS07 RI-UIX06 | RI-VIS05 | 1 (1) | W1-30 W1-30K | built_below_bar | V15 |
 | `F14` | Performance, LOD and budgets | RI-PLT01 | — | 0 (0) | W1-30 | built_below_bar | V16 |
-| `T4` | The Morrowind screens | RI-UIX03 RI-UIX04 RI-UIX06 RI-UIX07 RI-UIX08 RI-UIX09 | RI-UIX07 RI-UIX08 RI-UIX09 | 4 (3) | W1-21 W1-HUD-TOAST | built_below_bar | partial:V14 |
+| `T4` | The Morrowind screens | RI-UIX03 RI-UIX04 RI-UIX06 RI-UIX07 RI-UIX08 RI-UIX09 | — | 5 (4) | W1-21 W1-HUD-TOAST | built_below_bar | partial:V14 |
 
 ### Ring 2 — The body, the camera and the fight — Souls owns everything in here.
 
@@ -54,7 +54,7 @@
 | `G2` | The exchange | RI-CMB01 RI-CMB02 RI-CMB03 RI-CMB04 RI-CMB05 RI-CMB06 RI-CMB11 RI-PRG07 RI-MAG01 | — | 2 (1) | W1-09 | built_below_bar | partial:C3 |
 | `G3` | Weapons and movesets, wired | RI-CMB02 RI-WPN01 RI-WPN02 RI-WPN03 RI-WPN04 RI-WPN05 RI-WPN06 RI-WPN07 | — | 3 (3) | W1-10 W1-11 | built_below_bar | C2 |
 | `G5` | Bosses and encounter authorship | RI-AI06 RI-AI07 | RI-AI06 | 1 (0) | W1-12 | built_below_bar | C4/C7 |
-| `G6` | Combat HUD and impact feedback | RI-UIX01 RI-AUD01 | RI-UIX01 | 1 (0) | W1-11 W1-21 W1-HUD-TOAST | built_below_bar | **none** |
+| `G6` | Combat HUD and impact feedback | RI-UIX01 RI-AUD01 | — | 1 (0) | W1-11 W1-21 W1-HUD-TOAST | built_below_bar | **none** |
 | `G7` | How the fight feels | RI-CMB07 RI-CMB12 RI-DLG09 | RI-CMB12 | 1 (1) | W1-08 | built_below_bar | Step5/C6 |
 | `G8` | Healing, status and exhaustion | RI-CMB08 RI-CMB09 RI-CMB10 | RI-CMB08 RI-CMB10 | 0 (0) | — | built_below_bar | **none** |
 
@@ -91,7 +91,7 @@
 
 | id | item | ref items | never judged | open gaps (blocking) | plans | state | old roadmap |
 |---|---|---|---|---|---|---|---|
-| `P1` | The topic web and the dialogue window | RI-DLG01 RI-UIX08 | RI-UIX08 | 2 (2) | W1-17 W1-DLG-TOPIC-WEB | built_below_bar | Step3 |
+| `P1` | The topic web and the dialogue window | RI-DLG01 RI-UIX08 | — | 2 (2) | W1-17 W1-DLG-TOPIC-WEB | built_below_bar | Step3 |
 | `P2` | Voice, disposition and persuasion | RI-DLG02 RI-DLG03 RI-DLG04 RI-DLG06 RI-DLG07 RI-DLG08 | RI-DLG04 RI-DLG07 RI-DLG08 | 2 (1) | W1-17 | built_below_bar | Step3 |
 | `P3` | The journal | RI-DLG05 RI-UIX02 RI-UIX04 | RI-DLG05 | 1 (1) | W1-18 | built_below_bar | B1 |
 | `P4` | Books and readables with a reader | RI-LOR03 RI-UIX05 | — | 3 (2) | — | built_below_bar | B9 |
@@ -232,9 +232,9 @@
 | `RI-VIS05` | 70-visual | morrowind | F13 | 0 | — | never_judged |
 | `RI-VIS06` | 70-visual | neutral | I3 | 4 | 5 | judged_below_bar |
 | `RI-VIS07` | 70-visual | morrowind | F13 | 1 | 4 | judged_below_bar |
-| `RI-VIS08` | 70-visual | modern-fidelity | F10 F11 | 2 | 3 | judged_below_bar |
+| `RI-VIS08` | 70-visual | modern-fidelity | F10 F11 | 3 | 3 | judged_below_bar |
 | `RI-VIS09` | 70-visual | neutral | I5 | 0 | — | never_judged |
-| `RI-VIS10` | 70-visual | morrowind | F10 I5 | 0 | — | never_judged |
+| `RI-VIS10` | 70-visual | morrowind | F10 I5 | 1 | 1 | judged_below_bar |
 | `RI-MTH01` | 80-methods | neutral | I1 | 2 | 6 | judged_at_or_above_bar |
 | `RI-MTH02` | 80-methods | neutral | I1 | 3 | 7 | judged_at_or_above_bar |
 | `RI-MTH03` | 80-methods | neutral | I3 | 2 | 5 | judged_below_bar |
@@ -245,15 +245,15 @@
 | `RI-PLT01` | 85-platform | neutral | T3 F14 | 2 | 5 | judged_below_bar |
 | `RI-PLT02` | 85-platform | neutral | T3 | 0 | — | never_judged |
 | `RI-PLT03` | 85-platform | neutral | T3 | 3 | 2 | judged_below_bar |
-| `RI-UIX01` | 86-ui | souls | G6 | 0 | — | never_judged |
+| `RI-UIX01` | 86-ui | souls | G6 | 1 | 0 | judged_below_bar |
 | `RI-UIX02` | 86-ui | morrowind | P3 | 3 | 4 | judged_below_bar |
-| `RI-UIX03` | 86-ui | neutral | C3 T4 | 2 | 6 | judged_at_or_above_bar |
-| `RI-UIX04` | 86-ui | morrowind | P3 T4 | 4 | 7 | judged_at_or_above_bar |
+| `RI-UIX03` | 86-ui | neutral | C3 T4 | 3 | 6 | judged_at_or_above_bar |
+| `RI-UIX04` | 86-ui | morrowind | P3 T4 | 5 | 7 | judged_at_or_above_bar |
 | `RI-UIX05` | 86-ui | morrowind | P4 | 4 | 8 | judged_at_or_above_bar |
-| `RI-UIX06` | 86-ui | neutral | T4 F13 | 2 | 5 | judged_below_bar |
-| `RI-UIX07` | 86-ui | morrowind | T4 | 0 | — | never_judged |
-| `RI-UIX08` | 86-ui | morrowind | P1 T4 | 0 | — | never_judged |
-| `RI-UIX09` | 86-ui | morrowind | T4 | 0 | — | never_judged |
+| `RI-UIX06` | 86-ui | neutral | T4 F13 | 3 | 5 | judged_below_bar |
+| `RI-UIX07` | 86-ui | morrowind | T4 | 1 | 5 | judged_below_bar |
+| `RI-UIX08` | 86-ui | morrowind | P1 T4 | 1 | 2 | judged_below_bar |
+| `RI-UIX09` | 86-ui | morrowind | T4 | 1 | 0 | judged_below_bar |
 | `RI-AUD01` | 87-audio | souls | G6 | 1 | 6 | judged_at_or_above_bar |
 | `RI-AUD02` | 87-audio | modern-fidelity | E9 T3 | 1 | 6 | judged_at_or_above_bar |
 | `RI-AUD03` | 87-audio | morrowind | E9 | 4 | 5 | judged_below_bar |
@@ -304,6 +304,7 @@
 | `GAP-W1-act5-argument-entry-shadowed` | blocking | `dialogue.topics.filtering` | P1 P9 |
 | `GAP-W1-attr-scale-ceilings-rest-on-an-unmeasured-souls-economy` | major | `progression.level.attributes` | C2 |
 | `GAP-W1-audio-emitter-consumption` | blocking | `audio.ambience.region` | E9 I4 |
+| `GAP-W1-character-surface-is-assembled-from-primitives-not-built` | blocking | `render.art.character` | F10 |
 | `GAP-W1-combat-exemplar-has-no-danger` | blocking | `combat.frames.timing` | G7 I1 |
 | `GAP-W1-consumption-sweep-tripwire-is-a-name-grep` | major | `combat.camera.behaviour` | I4 |
 | `GAP-W1-creation-is-an-api-not-a-scene` | blocking | `journey.chargen.diegesis` | C1 |
@@ -352,6 +353,7 @@
 | `GAP-W1-the-naming-moment-is-still-orphan-text` | blocking | `journey.chargen.diegesis` | C1 |
 | `GAP-W1-two-placement-mechanisms-collide` | blocking | `?` | W5 |
 | `GAP-W1-ui-detectors-that-cannot-see` | blocking | `ui.hud.minimalism` | T4 I1 |
+| `GAP-W1-ui-hud-world-set-unbuilt-and-misplaced` | blocking | `ui.hud.world` | T4 |
 | `GAP-W1-ui-map-outside-the-ar2-detectors` | blocking | `ui.hud.minimalism` | T4 |
 | `GAP-W1-w1-30d-guard-misses-part-deletion` | major | `render.process.measurement` | F10 I2 |
 | `GAP-W1-w1-30e-street-gate-never-ran` | blocking | `render.process.measurement` | F8 I2 |
