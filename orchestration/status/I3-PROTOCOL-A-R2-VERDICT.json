@@ -1,0 +1,52 @@
+{
+  "task_id": "I3-PROTOCOL-A-R2-VERDICT",
+  "title": "Protocol A round 2 filed as a proper verdict — schema-valid, gap ledger regenerated",
+  "state": "resolved",
+  "owner": "orchestrator",
+  "at": "2026-08-15T16:25:00Z",
+  "roadmap_item": "I3",
+
+  "what_i_could_not_do_first": [
+    "I did not judge anything and could not have — the five judges answered and the decode was fixed before this task began. If the judging itself was wrong, nothing here detects it.",
+    "I do not have a per-pair verbatim judge transcript for round 2. r1 had JUDGEMENTS-r1.md; no JUDGEMENTS-r2.md file was produced this round. orchestration/status/I3-PROTOCOL-A-R2-RESULT.json gives only the aggregate synthesis across all five judges, so every per-pair blind_comparisons[] entry in the new verdict records CONFIDENCE and gap text as 'not separable by pair in the source' rather than inventing an attribution. This is recorded plainly in both the JSON verdict and the .md.",
+    "I did not open the sealed key at corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/ — not the mappings, not PAIRING-KEY.json, not pairing-r2.json. The reveal table in the verdict is the decode already supplied in the dispatch brief; only COMMITMENT.json and SEAL-README.md (procedural, decode-free) were read.",
+    "I did not independently re-derive the F1/F2/F3 instrument figures (orphaned-material count 321/422 -> 0, contact-junction ratio 0.722, ambient lift +0.631). They are quoted from I3-PROTOCOL-A-R2-RESULT.json, the file the dispatch brief designated as this task's source, and are flagged as such in the verdict rather than presented as independently checked.",
+    "I cannot confirm zero re-asks/discards for round 2 with r1's level of certainty — only that none is reported in the source file. Recorded as an inference from absence, not a positive confirmation.",
+    "gap_closure[] for GAP-W1-pbr-material-set-unbound was written into the verdict but tools/gap-ledger.mjs ignores it: the ledger only accepts a closure from a LATER wave's critic, and this verdict is wave 1 like the gap that opened it (the same rule silently ignores dozens of other same-wave r2/r3/r4 closures elsewhere in this corpus, so this is an existing corpus convention, not a defect I introduced). The re-measurement is still on record inside the verdict JSON itself for any reader who opens it directly."
+  ],
+
+  "what_was_filed": {
+    "verdict": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.{json,md} — schema-valid (node tools/verdict-validate.mjs, exit 0). Mirrors W1-VISUAL-BLIND-PROTOCOL-A-r1's structure.",
+    "record_blocks": "Five round-2 §E blocks appended to corpus/90-verdicts/w01-visual-blind.md, the location RI-VIS06 §E names, immediately after round 1's tally.",
+    "corpus_amendment": "corpus/70-visual/RI-VIS06-blind-comparison-protocol.md's provenance note extended with one paragraph recording the second execution, the counterbalanced-sides result, and that no threshold changed.",
+    "gap_ledger": "node tools/gap-ledger.mjs regenerated GAP-LEDGER.{json,md}. New gap opened: GAP-W1-visual-fix-not-reaching-blind-frames (render.process.measurement), the sharper finding this round actually produced — three remedies that measured green on their own instruments did not move the blind judgement, so diagnosing why outranks building anything new. GAP-W1-pbr-material-set-unbound (r1's gap) stays open; its re-measurement is recorded in the verdict but not reflected in the generated ledger row, per the wave-boundary rule above."
+  },
+
+  "the_result_recorded": {
+    "outcome": "Lost 5 of 5 again. Decoded against the counterbalance fixed before any image was opened: ours on A for pairs 01/03/05, B for 02/04; the judge's answer matched the reference on all five (B, A, B, A, B).",
+    "confidence_spread": "four high, one medium — identical to round 1",
+    "positional_bias_check": "now genuinely full-power rather than r1's single trial: under the alternating counterbalanced design, any fixed-letter strategy could match the reference on at most 3 of 5 pairs; the judges matched 5 of 5.",
+    "score": "FIDELITY capped at 5 (RI-VIS06 outcome table row 1, re-derived independently from round 2's own reported spread, not copied from r1), below the wave-1 pass threshold of 6.",
+    "the_headline_finding": "F1 (materials), F2 (contact shadows/AO) and F3 (ambient fill) all landed before this round ran and each measured green on its own instrument. The blind result did not move — the same two absences (no material differentiation; no contact shadow or AO) were named again in the aggregate synthesis. Statistics can fail a build and can never pass one.",
+    "method_deviations_recorded": "D1 and D3/D4 carried forward from r1 (unfixed, deliberately, for comparability with r1); D6 new — an ACTIVE byte-length equalisation was required to reach a leak-check GREEN, and r1's own pack is now known to have escaped the same sweep by one pair; D7 new — a HUD name-plate leak was caught by eye (not by the tool) and fixed before judging, and the pack-builder proved by deliberate injection that the leak-check gate is a sweep detector that misses a leak confined to a single pair."
+  },
+
+  "verification": {
+    "schema": "node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json -- OK, exit 0",
+    "gap_ledger": "node tools/gap-ledger.mjs -- exit 0, no new errors introduced by this verdict (checked the tool's own warning stream for this file's name specifically)",
+    "ownership": "node tools/ownership.mjs --for run against every file this task touched -- nobody live has declared any of them"
+  },
+
+  "files_claimed": [],
+  "files_touched": [
+    "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json",
+    "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.md",
+    "corpus/90-verdicts/w01-visual-blind.md",
+    "corpus/70-visual/RI-VIS06-blind-comparison-protocol.md",
+    "corpus/90-verdicts/GAP-LEDGER.json",
+    "corpus/90-verdicts/GAP-LEDGER.md",
+    "orchestration/status/I3-PROTOCOL-A-R2-VERDICT.json"
+  ],
+
+  "next_step": "GAP-W1-visual-fix-not-reaching-blind-frames is now the wave's actionable item and outranks new visual work, per its own acceptance criteria: force AO to full strength (uAOMaxOcclusion 1.0) and all 20 material sets bound on the exact five r2 capture setups, diff against shipped, and find out whether the terrain AO cap is hiding F1/F2's effect on precisely this class of scene. Separately owed before Protocol A round 3: an in-focus daylight plate for pair02/pair03, a low-light mid-distance plate for pair05, and a CLAUDE.md-free judge context. Not this task's job to dispatch — filing the verdict is complete."
+}

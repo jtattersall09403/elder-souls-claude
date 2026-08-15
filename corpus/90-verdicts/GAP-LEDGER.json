@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-15T12:55:35Z",
+  "generated": "2026-08-15T14:09:08Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 90,
+  "verdicts_read": 91,
   "counts": {
-    "total": 85,
-    "open": 84,
+    "total": 86,
+    "open": 85,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -214,6 +214,7 @@
       "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
     ],
     "render.process.measurement": [
+      "GAP-W1-visual-fix-not-reaching-blind-frames",
       "GAP-W1-w1-30d-guard-misses-part-deletion",
       "GAP-W1-w1-30e-street-gate-never-ran"
     ],
@@ -352,6 +353,7 @@
     "corpus/90-verdicts/wave1/W1-READABLES-r2.json: gap_closure references unknown gap_id GAP-W1-library-has-no-reader-on-the-world-side.",
     "corpus/90-verdicts/wave1/W1-READABLES-r2.json: gap_closure references unknown gap_id GAP-W1-environment-channel-has-no-object.",
     "corpus/90-verdicts/wave1/W1-SAVE-r1.json: closure of GAP-W1-platform-save-drops-entity-prev-state is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json: closure of GAP-W1-pbr-material-set-unbound is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "STALE-RISK GAP-W1-ui-hud-world-set-unbuilt-and-misplaced: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-t4-r2, crit-t4-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-ui-journal-search-view-has-no-exit: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-t4-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-platform-prng-never-drawn: still open, and 5 later verdict(s) have been filed on the same piece or path since (crit-w1-00-r2-k4m9, crit-w1-09-r2-3c19, crit-w1-09-r3-3c19, crit-w1-deploy-r2-3c19, crit-w1-30s-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
@@ -391,16 +393,16 @@
     "STALE-RISK GAP-W1-two-placement-mechanisms-collide: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-23-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-rendered-text-accessor-blind-to-the-hud-surface: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-26-r2-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-26-creation-cannot-be-completed-from-the-title: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-26-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-30c-wetness-mask-blind-to-instancematrix: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-visual-blind-protocol-a-chunk2, crit-w1-orphaned-surface-shaders-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-w1-30d-guard-misses-part-deletion: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-orphaned-surface-shaders-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-w1-30e-street-gate-never-ran: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-orphaned-surface-shaders-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-30c-wetness-mask-blind-to-instancematrix: still open, and 4 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-visual-blind-protocol-a-chunk2, crit-w1-orphaned-surface-shaders-r1-3c19, crit-w1-visual-blind-protocol-a-r2-verdict). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-w1-30d-guard-misses-part-deletion: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-orphaned-surface-shaders-r1-3c19, crit-w1-visual-blind-protocol-a-r2-verdict). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-w1-30e-street-gate-never-ran: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-orphaned-surface-shaders-r1-3c19, crit-w1-visual-blind-protocol-a-r2-verdict). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-f1-actor-body-shader-does-not-link: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-characters-a71c). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-population-save-reload-repays-every-corpse: still open, and 2 later verdict(s) have been filed on the same piece or path since (critic-w1-souls-r2, critic-w1-souls). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-PACK-01: still open, and 2 later verdict(s) have been filed on the same piece or path since (judge-prose-packs-r1, crit-w1-30c-r1-2634eb0e). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-road-join-has-no-gate: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-crossing). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-souls-alive-keyed-on-eid: still open, and 2 later verdict(s) have been filed on the same piece or path since (critic-w1-souls, critic-w1-attr-scale). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-souls-world-copy-of-the-values-is-53pc-stale: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-attr-scale). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-pbr-material-set-unbound: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-orphaned-surface-shaders-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today."
+    "STALE-RISK GAP-W1-pbr-material-set-unbound: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-orphaned-surface-shaders-r1-3c19, crit-w1-visual-blind-protocol-a-r2-verdict). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today."
   ],
   "load_errors": [],
   "gaps": [
@@ -1241,6 +1243,14 @@
           "status": "PROVISIONAL",
           "score": null,
           "opened_gap": "GAP-W1-f1-actor-body-shader-does-not-link"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json",
+          "run_id": "crit-w1-visual-blind-protocol-a-r2-verdict",
+          "at": "2026-08-15T16:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-visual-fix-not-reaching-blind-frames"
         }
       ]
     },
@@ -2822,6 +2832,14 @@
           "status": "PROVISIONAL",
           "score": null,
           "opened_gap": "GAP-W1-f1-actor-body-shader-does-not-link"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json",
+          "run_id": "crit-w1-visual-blind-protocol-a-r2-verdict",
+          "at": "2026-08-15T16:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-visual-fix-not-reaching-blind-frames"
         }
       ]
     },
@@ -4197,6 +4215,47 @@
       "filed_since": []
     },
     {
+      "gap_id": "GAP-W1-visual-fix-not-reaching-blind-frames",
+      "subsystem_path": "render.process.measurement",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-visual-blind-protocol-a-r2-verdict",
+      "opened_in": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json",
+      "piece_id": "w1-visual-blind-protocol-a-r2",
+      "severity": "blocking",
+      "what": "Protocol A re-ran five pairs after F1 (PBR materials), F2 (contact shadows + AO) and F3 (ambient/GI fill) all landed and each measured green on its own instrument — per orchestration/status/I3-PROTOCOL-A-R2-RESULT.json: orphaned surface materials 321/422 to 0; contact-junction ratio 0.722 against a >=25% bar; ambient lift +0.631 replicated across three GPUs with the control at -0.001. The blind result did not move: 0 of 5 again, four judges at CONFIDENCE high and one at medium (unchanged spread from r1), and the aggregate synthesis of all five judges again names the same two absences r1 found — no material differentiation between surfaces ('every surface returns the same flat matte olive-grey', 'thatch, plaster, stone and ground all return light identically', 'nothing reads as leather, metal, stone or vegetation') and no contact darkening or cast shadow ('no contact darkening and no cast shadows at all, so nothing sits in space', 'surfaces meet with no contact darkening'). The mechanical local_contrast_med statistic still sweeps 5/5 toward the reference on the same channel r1's leak-check also swept 5/5.",
+      "why_it_matters": "The remedies exist in the codebase and pass their own numeric gates, but a player looking at the world still sees what the r1 judges saw: every surface responding to light the same way, and nothing casting a contact shadow. An instrument passing its own gate has stopped being evidence that the player-visible problem is fixed, which is exactly the failure RI-VIS06 exists to catch.",
+      "remedy": {
+        "action": "Diagnose why F1/F2/F3 do not visibly change the five captured setups Protocol A draws from, BEFORE building anything new — per I3-PROTOCOL-A-R2-RESULT.json's own next_step. Re-render the exact five capture setups (char-npc and char-player at 08:00/13:00/19:30) with AO forced to full strength — uAOMaxOcclusion set to 1.0 instead of its current 0.6 cap (uAOStrength 3.1, radius 0.42) — and with all 20 authored material sets forced bound, and diff the result against the shipped configuration. If the terrain-artifact cap named in I3-PROTOCOL-A-R2-RESULT.json is confirmed as the cause (the cap was added deliberately to hide a derivative-normal grid artifact on low-poly terrain, and several of these pairs are terrain/vegetation-heavy), the remedy moves to the G-buffer normal-target limitation F2's own verdict already named as unsolved.",
+        "targets": [
+          "game/src/render/materials",
+          "game/src/render/ao (uAOMaxOcclusion / uAOStrength / radius)",
+          "tools/blind/deck-protocol-a.json"
+        ],
+        "acceptance": "A forced-full-strength render (uAOMaxOcclusion=1.0, all 20 material sets bound) of the same five capture setups shows a measurable difference from the shipped configuration on image-leakcheck's own quality statistics (local_contrast_med and shadow_levels move outside their current per-pair values by more than the tool's tie margin); AND the next Protocol A re-run's five judges' aggregate synthesis no longer names both 'no material differentiation' and 'no contact shadow / AO' as recurring absences.",
+        "ref_item": "RI-VIS06",
+        "estimated_size": "M"
+      },
+      "remedy_action": "Diagnose why F1/F2/F3 do not visibly change the five captured setups Protocol A draws from, BEFORE building anything new — per I3-PROTOCOL-A-R2-RESULT.json's own next_step. Re-render the exact five capture setups (char-npc and char-player at 08:00/13:00/19:30) with AO forced to full strength — uAOMaxOcclusion set to 1.0 instead of its current 0.6 cap (uAOStrength 3.1, radius 0.42) — and with all 20 authored material sets forced bound, and diff the result against the shipped configuration. If the terrain-artifact cap named in I3-PROTOCOL-A-R2-RESULT.json is confirmed as the cause (the cap was added deliberately to hide a derivative-normal grid artifact on low-poly terrain, and several of these pairs are terrain/vegetation-heavy), the remedy moves to the G-buffer normal-target limitation F2's own verdict already named as unsolved.",
+      "remedy_acceptance": "A forced-full-strength render (uAOMaxOcclusion=1.0, all 20 material sets bound) of the same five capture setups shows a measurable difference from the shipped configuration on image-leakcheck's own quality statistics (local_contrast_med and shadow_levels move outside their current per-pair values by more than the tool's tie margin); AND the next Protocol A re-run's five judges' aggregate synthesis no longer names both 'no material differentiation' and 'no contact shadow / AO' as recurring absences.",
+      "evidence": [
+        "orchestration/status/I3-PROTOCOL-A-R2-RESULT.json",
+        "corpus/90-verdicts/w01-visual-blind.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/leakcheck-r2.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
+    },
+    {
       "gap_id": "GAP-W1-w1-30d-guard-misses-part-deletion",
       "subsystem_path": "render.process.measurement",
       "opened_wave": 1,
@@ -4247,6 +4306,14 @@
           "status": "PROVISIONAL",
           "score": null,
           "opened_gap": "GAP-W1-f1-actor-body-shader-does-not-link"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json",
+          "run_id": "crit-w1-visual-blind-protocol-a-r2-verdict",
+          "at": "2026-08-15T16:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-visual-fix-not-reaching-blind-frames"
         }
       ]
     },
@@ -4292,6 +4359,14 @@
           "status": "PROVISIONAL",
           "score": null,
           "opened_gap": "GAP-W1-f1-actor-body-shader-does-not-link"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json",
+          "run_id": "crit-w1-visual-blind-protocol-a-r2-verdict",
+          "at": "2026-08-15T16:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-visual-fix-not-reaching-blind-frames"
         }
       ]
     },

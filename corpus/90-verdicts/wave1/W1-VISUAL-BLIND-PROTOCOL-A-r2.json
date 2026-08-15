@@ -1,0 +1,673 @@
+{
+  "schema_version": 1,
+  "document_type": "critic-verdict",
+  "piece_id": "w1-visual-blind-protocol-a-r2",
+  "piece_title": "Protocol A (fidelity blind), round 2 — five pairs, ours (post F1 materials / F2 contact-shadows+AO / F3 ambient fill) against the same class of modern reference plates as r1",
+  "subsystem_paths": [
+    "render.process.bifurcation",
+    "render.fidelity.materials",
+    "render.fidelity.shadows",
+    "render.fidelity.ao",
+    "render.fidelity.lighting",
+    "render.process.measurement"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-visual-blind-protocol-a-r2-verdict",
+    "role": "critic.fidelity",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-15T15:00:00Z",
+    "finished_at": "2026-08-15T16:20:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": false
+  },
+  "build": {
+    "commit_sha": "f52ab49566448b7ce2f8402494b1ff1f718a7fca",
+    "branch": "codex/wave1-build-experiment",
+    "harness_commands": [
+      {
+        "command": "node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json",
+        "cwd": "/home/user/elder-souls-claude"
+      },
+      {
+        "command": "node tools/gap-ledger.mjs",
+        "cwd": "/home/user/elder-souls-claude"
+      },
+      {
+        "command": "node tools/ownership.mjs --for corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json",
+        "cwd": "/home/user/elder-souls-claude",
+        "exit_code": 0
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "fidelity",
+    "declared_before_citation": true,
+    "fidelity_refs": [
+      "RI-VIS06 §A (Protocol A)",
+      "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764143924.jpg",
+      "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764130815.jpg",
+      "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764130857.jpg",
+      "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764067220.jpg",
+      "corpus/70-visual/refs/modern/character_closeup/REF-W3__steam-1902321246.jpg"
+    ],
+    "art_refs": [],
+    "note": "Protocol A is the FIDELITY side and refuses Morrowind imagery. No art-direction reference was consulted, no Morrowind image was opened, and Protocol B has still never been run by any agent in this project — RI-VIS06's side declaration voids both results if one agent runs both. This verdict draws on the same reference-plate population r1 used (4x Elden Ring, 1x The Witcher 3): per I3-PROTOCOL-A-RERUN.json's N4, the pack-builder deliberately did not swap r1's owed D3/D4 plates so that r2 stays comparable to r1."
+  },
+  "reference_items": [
+    {
+      "id": "RI-VIS06",
+      "path": "corpus/70-visual/RI-VIS06-blind-comparison-protocol.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "This item emits a CAP on FIDELITY (RI-VIS03), not a score of its own — see its §Scoring 'Aggregation' note. The cap is on 0-10.",
+      "native_score": 5,
+      "native_max": 10,
+      "native_verdict": "Ours loses all five pairs again — FIDELITY capped at 5 (outcome table row 1, same row as r1). Below the item's own failure threshold of 6, blocks the wave via the RI-VIS01 §E min() gate. THE BLIND RESULT DID NOT MOVE after F1, F2 and F3 landed and each measured green on its own instrument.",
+      "score_0_10": 5,
+      "measured": "full",
+      "why_not_ten": "Ours lost all five pairs again (0/5), this time under a counterbalanced side design that gives the positional-bias check full power rather than r1's single trial, after F1 (materials), F2 (contact shadows/AO) and F3 (ambient fill) landed and each measured green on its own instrument (orphaned surface materials 321/422 -> 0; contact-junction ratio 0.722 against a >=25% bar; ambient lift +0.631 replicated across three GPUs with the control at -0.001 — figures as reported in orchestration/status/I3-PROTOCOL-A-R2-RESULT.json, not independently re-derived by this verdict). All five judges' answers, in aggregate, again name the same two absences r1 found: no material differentiation between surfaces, and no contact darkening or cast shadow.",
+      "path_to_ten": "GAP-W1-visual-fix-not-reaching-blind-frames names the concrete next step: force AO to full strength (uAOMaxOcclusion 1.0 instead of the current 0.6 cap) and force all 20 authored material sets bound on the exact five r2 capture setups, diff against the shipped configuration, and find out whether the terrain-artifact AO cap named in I3-PROTOCOL-A-R2-RESULT.json is hiding the effect by design. Fix whatever the diagnosis finds; separately close r1's still-owed D3/D4 confounds (an in-focus daylight plate for pair02/pair03, a low-light mid-distance plate for pair05) and run the judges from a working directory with no project CLAUDE.md in scope (D1); then run Protocol A a third time.",
+      "ten_by_wave": 3,
+      "checks": [
+        {
+          "id": "A-pairs-run",
+          "result": "pass",
+          "value": 5,
+          "threshold": "5 pairs per wave (§A Runs)",
+          "evidence": [
+            "corpus/90-verdicts/w01-visual-blind.md"
+          ],
+          "note": "All five pairs ran. No pair was skipped."
+        },
+        {
+          "id": "A-fresh-judge-per-run",
+          "result": "pass",
+          "value": "5 fresh Opus agent contexts, one per pair, per CLAUDE.md 0d's visual-work carve-out",
+          "evidence": [
+            "orchestration/status/I3-PROTOCOL-A-R2-RESULT.json",
+            "orchestration/status/I3-PROTOCOL-A-RERUN.json"
+          ],
+          "note": "Each judge was to receive only the two absolute image paths and the verbatim prompt, per I3-PROTOCOL-A-RERUN.json's dispatch spec. This verdict did not itself dispatch the judges and is reading the dispatch spec and the decoded result, not a per-judge transcript."
+        },
+        {
+          "id": "A-judge-naive-to-project",
+          "result": "marginal",
+          "value": "not fully met, unchanged from r1's D1",
+          "evidence": [
+            "orchestration/status/I3-PROTOCOL-A-RERUN.json"
+          ],
+          "note": "Deviation D1 (carried from r1): judges inherit the project CLAUDE.md and so are not naive about an in-development game existing. Per I3-PROTOCOL-A-RERUN.json's own N1, this matters MORE in r2 than r1, because r2 is the first run where ours winning was a live possibility and the bias runs toward charity for a game build — i.e. AGAINST finding a gap, which strengthens a losing verdict. Ours lost again, so the strengthening direction applies."
+        },
+        {
+          "id": "D-prompt-verbatim",
+          "result": "pass",
+          "value": "re-verified byte-for-byte against RI-VIS06: §A block 1368 bytes exact match, §C escalation block 499 bytes exact match",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/prompts/PROMPT-A-verbatim.txt",
+            "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/prompts/PROMPT-A-escalation.txt",
+            "orchestration/status/I3-PROTOCOL-A-RERUN.json"
+          ],
+          "note": "Prompt text is unchanged from r1, deliberately, so the two runs stay comparable (I3-PROTOCOL-A-RERUN.json FINDINGS/F4)."
+        },
+        {
+          "id": "D-key-read-after-answers",
+          "result": "pass",
+          "value": "keys and pack images hashed into COMMITMENT.json at pack-build time (2026-08-15T13:46:08Z write, 13:46:30Z first read by the pack-builder's own hashing pass, before any judge existed)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/COMMITMENT.json",
+            "orchestration/status/I3-PROTOCOL-A-RERUN.json"
+          ],
+          "note": "LIMIT STATED PLAINLY: this verdict does NOT open the sealed key or check its atimes against the post-judging reveal, per its own brief (\"do not open the sealed key to check the decode\"). What is verified here is the pre-judging chain of custody — the mappings were hashed into COMMITMENT.json before any judge ran, so a mapping could not be silently rewritten after the answers were in. The post-judging read timestamp is not independently confirmed by this verdict; it relies on orchestration/status/I3-PROTOCOL-A-R2-RESULT.json's statement that decoding happened against the counterbalance fixed before any image was opened."
+        },
+        {
+          "id": "D-leakcheck-structural",
+          "result": "pass",
+          "value": "GATE: GREEN, exit 0",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/leakcheck-r2.txt"
+          ],
+          "note": "No held-out provenance channel decides the pack. Its own caveat is quoted rather than suppressed: 'Five trials is weak power... this is a floor, not a proof.' Two things had to be actively engineered to reach GREEN and are recorded as method_deviations rather than silently banked: the bytes channel initially swept RED (F2) and was fixed by an active length-equalisation, and a HUD name-plate leak was found by eye and fixed before the pack was built (F1) — image-leakcheck was GREEN on the contaminated version too, per F3's own demonstration that the gate is a sweep detector and misses a single-pair leak."
+        },
+        {
+          "id": "D-no-best-of-N",
+          "result": "pass",
+          "value": "no discard or re-ask reported",
+          "evidence": [
+            "orchestration/status/I3-PROTOCOL-A-R2-RESULT.json"
+          ],
+          "note": "Inferred from absence, not from an explicit confirmation: unlike r1, which had a JUDGEMENTS-r1.md file stating 'all five returned in the required format on the first attempt', no per-pair JUDGEMENTS-r2.md was produced for this run, so this verdict cannot independently confirm zero re-asks the way r1's verdict could. Recorded under 'what this verdict could not do'."
+        },
+        {
+          "id": "positional-bias-counterbalanced",
+          "result": "pass",
+          "value": "5 of 5 informative trials, full power for the first time",
+          "evidence": [
+            "orchestration/status/I3-PROTOCOL-A-RERUN.json"
+          ],
+          "note": "Per r1's own reversible ruling, r2's pack was built with ours on A for pairs 01/03/05 and B for 02/04 (fixed before any image was opened). The decoded reference position therefore alternates B,A,B,A,B across pairs 01-05, and the judges' answers matched the reference on all five. Any FIXED-letter strategy (always answer 'A', or always answer 'B') could match the reference on at most 3 of 5 pairs under this alternating design (whichever letter is chosen) — so the observed 5-of-5 match rules out fixed-letter bias with strictly more power than r1's single discriminating trial. Weak-power caveat still applies: under the null that answers are content-independent, P(5/5 match) = 1/32 = 0.0313, one-sided, the same floor r1 and image-leakcheck both quote."
+        },
+        {
+          "id": "C-escalation",
+          "result": "pass",
+          "value": "not triggered",
+          "evidence": [
+            "orchestration/status/I3-PROTOCOL-A-R2-RESULT.json"
+          ],
+          "note": "§C fires only if ours wins a pair. Ours won none, so no escalation was applied."
+        },
+        {
+          "id": "E-zero-runs-hard-fail",
+          "result": "pass",
+          "value": "5 pairs ran",
+          "threshold": "0 pairs ran => FIDELITY capped at 2 and status FAIL (Ruling S55)",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/w01-visual-blind.md"
+          ],
+          "note": "GATE EXISTS, DID NOT FIRE. Not the operative cap here — the operative cap comes from the outcome-table row for 'ours loses all pairs', unchanged from r1."
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "The named gap is a mood — DID NOT HAPPEN. The aggregate synthesis of all five judges' answers names two specific, buildable absences: no material differentiation between surfaces, and no contact darkening or cast shadow.",
+        "Judge-shopping — DID NOT HAPPEN, per the source available. No discard or re-ask is reported in orchestration/status/I3-PROTOCOL-A-R2-RESULT.json.",
+        "The leak nobody notices — CAUGHT BY EYE, TWICE, NOT BY THE TOOL. A HUD region name-plate had begun drawing into two of five crop windows (F1) and image-leakcheck was GREEN on the contaminated version; F3 separately proved by injection that the same gate is a sweep detector that misses a leak present on only one of five pairs.",
+        "Protocol A never runs — now run TWICE. This is the second execution in this project's history.",
+        "We stop running it once the game looks decent — DID NOT HAPPEN. This run happened specifically because three remedies had landed and might have made the team feel the gap was closed; it ran anyway, and the feeling was wrong."
+      ],
+      "evidence": [
+        "corpus/90-verdicts/w01-visual-blind.md",
+        "orchestration/status/I3-PROTOCOL-A-R2-RESULT.json",
+        "orchestration/status/I3-PROTOCOL-A-RERUN.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/leakcheck-r2.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/leakcheck-r2.json"
+      ],
+      "why_not_ten": "Ours lost all five pairs again (0/5), this time under a counterbalanced side design that gives the positional-bias check full power rather than r1's single trial, after F1 (materials), F2 (contact shadows/AO) and F3 (ambient fill) landed and each measured green on its own instrument (orphaned surface materials 321/422 -> 0; contact-junction ratio 0.722 against a >=25% bar; ambient lift +0.631 replicated across three GPUs with the control at -0.001 — figures as reported in orchestration/status/I3-PROTOCOL-A-R2-RESULT.json, not independently re-derived by this verdict). All five judges' answers, in aggregate, again name the same two absences r1 found: no material differentiation between surfaces, and no contact darkening or cast shadow.",
+      "path_to_ten": "GAP-W1-visual-fix-not-reaching-blind-frames names the concrete next step: force AO to full strength (uAOMaxOcclusion 1.0 instead of the current 0.6 cap) and force all 20 authored material sets bound on the exact five r2 capture setups, diff against the shipped configuration, and find out whether the terrain-artifact AO cap named in I3-PROTOCOL-A-R2-RESULT.json is hiding the effect by design. Fix whatever the diagnosis finds; separately close r1's still-owed D3/D4 confounds (an in-focus daylight plate for pair02/pair03, a low-light mid-distance plate for pair05) and run the judges from a working directory with no project CLAUDE.md in scope (D1); then run Protocol A a third time.",
+      "ten_by_wave": 3
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.md",
+      "kind": "report",
+      "produced_by": "this verdict — the cross-tabulation, the counterbalanced positional-bias ruling, the scoring, the method deviations and the read against r1",
+      "source": "mixed"
+    },
+    {
+      "path": "corpus/90-verdicts/w01-visual-blind.md",
+      "kind": "report",
+      "produced_by": "this verdict, appending the five round-2 §E record blocks at the location RI-VIS06 §E names",
+      "source": "mixed"
+    },
+    {
+      "path": "orchestration/status/I3-PROTOCOL-A-R2-RESULT.json",
+      "kind": "report",
+      "produced_by": "orchestrator, decoding five fresh Opus judges' answers against the counterbalance the pack-builder fixed before any image was opened",
+      "source": "mixed",
+      "note": "This is the primary source for this verdict, per the dispatch brief. Its figures for F1/F2/F3's own instrument results (orphaned-material count, contact-junction ratio, ambient lift) are quoted from it, not independently re-derived here."
+    },
+    {
+      "path": "orchestration/status/I3-PROTOCOL-A-RERUN.json",
+      "kind": "report",
+      "produced_by": "pack-builder stage-1 handoff: node tools/blind/protocol-a-pack.mjs --sides --equalise-bytes, then node tools/blind/image-leakcheck.mjs",
+      "source": "mixed"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/COMMITMENT.json",
+      "kind": "report",
+      "produced_by": "sha256 of all 10 pack images, 5 sealed mappings and both prompts, written at pack-build time (2026-08-15T13:46:08Z)",
+      "source": "mixed"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/SEAL-README.md",
+      "kind": "report",
+      "produced_by": "pack-builder, describing the seal's procedural (not cryptographic) discipline",
+      "source": "mixed",
+      "note": "Cited for its description of the blinding discipline only. This verdict did not open pairing-r2.json, PAIRING-KEY.json, or any pairNN.reveal/mapping.json inside this directory, per its own brief."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/leakcheck-r2.txt",
+      "kind": "log",
+      "produced_by": "node tools/blind/image-leakcheck.mjs --packs .../W1-VISUAL-BLIND-PROTOCOL-A-r2/pack --reveals <sealed key>",
+      "source": "mixed"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/leakcheck-r2.json",
+      "kind": "report",
+      "produced_by": "node tools/blind/image-leakcheck.mjs --packs .../W1-VISUAL-BLIND-PROTOCOL-A-r2/pack --reveals <sealed key> --json",
+      "source": "mixed"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/leaky-arms-result.txt",
+      "kind": "log",
+      "produced_by": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leaky-arms.mjs — three deliberately-leaky copies of the real r2 pack, each isolating one provenance channel, to test whether image-leakcheck catches a single-pair leak (it does not; FINDINGS/F3)",
+      "source": "mixed"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leaky-arms.mjs",
+      "kind": "report",
+      "produced_by": "pack-builder's reproduction script for the leaky-arms self-test",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/capture/capture-r2.log",
+      "kind": "log",
+      "produced_by": "tools/blind/deck-protocol-a.json --profile chars capture run on an NVIDIA RTX A4500",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/capture/deck-manifest.json",
+      "kind": "report",
+      "produced_by": "tools/visual GPU deck capture, 6 planned / 6 ok / 0 red, 30.2s of rendering, HARDWARE evidence class",
+      "seed": 20260814,
+      "resolution": "1920x1080",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/capture/frame-liveness.json",
+      "kind": "report",
+      "produced_by": "node tools/visual/frame-liveness.mjs --in <frames> --no-subject, run on the Pod at capture time",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/prompts/PROMPT-A-verbatim.txt",
+      "kind": "text-excerpt",
+      "produced_by": "quoted byte-for-byte from RI-VIS06 §A, re-verified this run (1368 bytes, exact match)",
+      "source": "reference"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/prompts/PROMPT-A-escalation.txt",
+      "kind": "text-excerpt",
+      "produced_by": "RI-VIS06 §C escalation paragraph, re-verified this run (499 bytes, exact match); NOT USED — ours won no pair",
+      "source": "reference",
+      "note": "Cited as negative evidence that the escalation prompt existed and was deliberately not fired."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/build-table.mjs",
+      "kind": "report",
+      "produced_by": "pack-builder's reproduction script for the r2 pairing table",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair01/A.png",
+      "kind": "blind-pack",
+      "resolution": "512x512",
+      "produced_by": "tools/blind/protocol-a-pack.mjs --sides --equalise-bytes; 512x512 native crop, shared JPEG q95 4:4:4 round trip then PNG, metadata stripped, byte-length equalised to its B side via a zero-filled private PNG chunk (F2)",
+      "source": "ours",
+      "note": "pair01 letter A — revealed as ours (counterbalanced plan: ours on A for pairs 01/03/05). The judge picked B. Frame-to-capture-slot mapping is in the sealed pairing-r2.json and was not opened by this verdict."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair01/B.png",
+      "kind": "blind-pack",
+      "resolution": "512x512",
+      "produced_by": "tools/blind/protocol-a-pack.mjs --sides --equalise-bytes; 512x512 crop of a paired modern reference plate, same round trip and byte-equalisation",
+      "source": "reference",
+      "note": "pair01 letter B — revealed as reference. The judge picked it."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair02/A.png",
+      "kind": "blind-pack",
+      "resolution": "512x512",
+      "produced_by": "tools/blind/protocol-a-pack.mjs --sides --equalise-bytes; window on this pair moved from (150,480) to (200,480) before pack build to clear a HUD region name-plate (FINDINGS/F1)",
+      "source": "reference",
+      "note": "pair02 letter A — revealed as reference (counterbalanced plan: ours on B for pairs 02/04). The judge picked it."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair02/B.png",
+      "kind": "blind-pack",
+      "resolution": "512x512",
+      "produced_by": "tools/blind/protocol-a-pack.mjs --sides --equalise-bytes; window on this pair moved from (150,480) to (200,480) before pack build to clear a HUD region name-plate (FINDINGS/F1)",
+      "source": "ours",
+      "note": "pair02 letter B — revealed as ours. The judge did not pick it."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair03/A.png",
+      "kind": "blind-pack",
+      "resolution": "512x512",
+      "produced_by": "tools/blind/protocol-a-pack.mjs --sides --equalise-bytes",
+      "source": "ours",
+      "note": "pair03 letter A — revealed as ours. The judge picked B."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair03/B.png",
+      "kind": "blind-pack",
+      "resolution": "512x512",
+      "produced_by": "tools/blind/protocol-a-pack.mjs --sides --equalise-bytes",
+      "source": "reference",
+      "note": "pair03 letter B — revealed as reference. The judge picked it."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair04/A.png",
+      "kind": "blind-pack",
+      "resolution": "512x512",
+      "produced_by": "tools/blind/protocol-a-pack.mjs --sides --equalise-bytes",
+      "source": "reference",
+      "note": "pair04 letter A — revealed as reference. The judge picked it."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair04/B.png",
+      "kind": "blind-pack",
+      "resolution": "512x512",
+      "produced_by": "tools/blind/protocol-a-pack.mjs --sides --equalise-bytes",
+      "source": "ours",
+      "note": "pair04 letter B — revealed as ours. The judge did not pick it."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair05/A.png",
+      "kind": "blind-pack",
+      "resolution": "512x512",
+      "produced_by": "tools/blind/protocol-a-pack.mjs --sides --equalise-bytes",
+      "source": "ours",
+      "note": "pair05 letter A — revealed as ours (the weakest source frame in the pack per capture/frame-liveness.json, compounding r1's D4 subject-scale mismatch). The judge picked B."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair05/B.png",
+      "kind": "blind-pack",
+      "resolution": "512x512",
+      "produced_by": "tools/blind/protocol-a-pack.mjs --sides --equalise-bytes",
+      "source": "reference",
+      "note": "pair05 letter B — revealed as reference. The judge picked it."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.json",
+      "kind": "report",
+      "produced_by": "round-1 verdict, cited for the comparison this verdict draws against it",
+      "source": "mixed"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.md",
+      "kind": "report",
+      "produced_by": "round-1 verdict prose, cited for the comparison this verdict draws against it",
+      "source": "mixed"
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-VIS06",
+      "status": "done",
+      "question": "Judging RENDER QUALITY ONLY, which of two 512x512 subject-neutral native crops is better rendered? (pair01, round 2 — post F1/F2/F3)",
+      "pack_artifacts": [
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair01/A.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair01/B.png"
+      ],
+      "blind_pick": "B",
+      "blind_rationale": "Per-pair verbatim rationale was not preserved in a JUDGEMENTS-r2.md file for this run (unlike r1); only the aggregate synthesis across all five pairs is available, from orchestration/status/I3-PROTOCOL-A-R2-RESULT.json: material-response absence ('every surface returns the same flat matte olive-grey', 'thatch, plaster, stone and ground all return light identically', 'nothing reads as leather, metal, stone or vegetation') and shadow/AO absence ('no contact darkening and no cast shadows at all, so nothing sits in space', 'surfaces meet with no contact darkening') were named across the run by all five judges; this verdict cannot attribute a specific one of those quotes to this specific pair.",
+      "reveal": {
+        "A": "ours",
+        "B": "reference"
+      },
+      "picked": "reference",
+      "rerun_triggered": false
+    },
+    {
+      "ref_item": "RI-VIS06",
+      "status": "done",
+      "question": "Judging RENDER QUALITY ONLY, which of two 512x512 subject-neutral native crops is better rendered? (pair02, round 2 — post F1/F2/F3)",
+      "pack_artifacts": [
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair02/A.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair02/B.png"
+      ],
+      "blind_pick": "A",
+      "blind_rationale": "See pair01's note: only the aggregate synthesis across all five pairs is available for this run, not a per-pair verbatim transcript.",
+      "reveal": {
+        "A": "reference",
+        "B": "ours"
+      },
+      "picked": "reference",
+      "rerun_triggered": false
+    },
+    {
+      "ref_item": "RI-VIS06",
+      "status": "done",
+      "question": "Judging RENDER QUALITY ONLY, which of two 512x512 subject-neutral native crops is better rendered? (pair03, round 2 — post F1/F2/F3)",
+      "pack_artifacts": [
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair03/A.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair03/B.png"
+      ],
+      "blind_pick": "B",
+      "blind_rationale": "See pair01's note: only the aggregate synthesis across all five pairs is available for this run, not a per-pair verbatim transcript.",
+      "reveal": {
+        "A": "ours",
+        "B": "reference"
+      },
+      "picked": "reference",
+      "rerun_triggered": false
+    },
+    {
+      "ref_item": "RI-VIS06",
+      "status": "done",
+      "question": "Judging RENDER QUALITY ONLY, which of two 512x512 subject-neutral native crops is better rendered? (pair04, round 2 — post F1/F2/F3)",
+      "pack_artifacts": [
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair04/A.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair04/B.png"
+      ],
+      "blind_pick": "A",
+      "blind_rationale": "See pair01's note: only the aggregate synthesis across all five pairs is available for this run, not a per-pair verbatim transcript.",
+      "reveal": {
+        "A": "reference",
+        "B": "ours"
+      },
+      "picked": "reference",
+      "rerun_triggered": false
+    },
+    {
+      "ref_item": "RI-VIS06",
+      "status": "done",
+      "question": "Judging RENDER QUALITY ONLY, which of two 512x512 subject-neutral native crops is better rendered? (pair05, round 2 — post F1/F2/F3)",
+      "pack_artifacts": [
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair05/A.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/pack/pair05/B.png"
+      ],
+      "blind_pick": "B",
+      "blind_rationale": "See pair01's note: only the aggregate synthesis across all five pairs is available for this run, not a per-pair verbatim transcript. This is the pair drawn from the weakest source frame in the pack (char-player__t1930, shadow_levels 7, local contrast 0.52 per capture/frame-liveness.json), compounding r1's D4 subject-scale confound.",
+      "reveal": {
+        "A": "ours",
+        "B": "reference"
+      },
+      "picked": "reference",
+      "rerun_triggered": false
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "not_applicable_reason": "AR-1 asks whether a Morrowind-flavoured mechanic contaminated the fight. This piece judges five 512x512 static image crops for render quality; no mechanic, no fight, and no combat trace is in scope.",
+      "checks": []
+    },
+    "ar2": {
+      "status": "not_applicable",
+      "not_applicable_reason": "AR-2 asks whether a Souls convention contaminated the world. Nothing in this piece touches world systems; the artefact under test is a blind image pack and its judgements.",
+      "checks": []
+    }
+  },
+  "score": {
+    "overall_0_10": 5,
+    "pass_threshold": 6,
+    "aggregation": "min",
+    "band_label": "Below bar — the wave is blocked again, and the diagnosis is now the remedy",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "blind_protocol_a_lost_all_pairs_again",
+    "fidelity_capped_at_5_below_threshold_6",
+    "landed_remedies_did_not_move_blind_result",
+    "method_deviation:active_byte_equalisation",
+    "method_deviation:judges_inherited_project_claude_md"
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-visual-fix-not-reaching-blind-frames",
+    "subsystem_path": "render.process.measurement",
+    "what": "Protocol A re-ran five pairs after F1 (PBR materials), F2 (contact shadows + AO) and F3 (ambient/GI fill) all landed and each measured green on its own instrument — per orchestration/status/I3-PROTOCOL-A-R2-RESULT.json: orphaned surface materials 321/422 to 0; contact-junction ratio 0.722 against a >=25% bar; ambient lift +0.631 replicated across three GPUs with the control at -0.001. The blind result did not move: 0 of 5 again, four judges at CONFIDENCE high and one at medium (unchanged spread from r1), and the aggregate synthesis of all five judges again names the same two absences r1 found — no material differentiation between surfaces ('every surface returns the same flat matte olive-grey', 'thatch, plaster, stone and ground all return light identically', 'nothing reads as leather, metal, stone or vegetation') and no contact darkening or cast shadow ('no contact darkening and no cast shadows at all, so nothing sits in space', 'surfaces meet with no contact darkening'). The mechanical local_contrast_med statistic still sweeps 5/5 toward the reference on the same channel r1's leak-check also swept 5/5.",
+    "why_it_matters": "The remedies exist in the codebase and pass their own numeric gates, but a player looking at the world still sees what the r1 judges saw: every surface responding to light the same way, and nothing casting a contact shadow. An instrument passing its own gate has stopped being evidence that the player-visible problem is fixed, which is exactly the failure RI-VIS06 exists to catch.",
+    "evidence": [
+      "orchestration/status/I3-PROTOCOL-A-R2-RESULT.json",
+      "corpus/90-verdicts/w01-visual-blind.md",
+      "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/leakcheck-r2.json"
+    ],
+    "severity": "blocking",
+    "remedy": {
+      "action": "Diagnose why F1/F2/F3 do not visibly change the five captured setups Protocol A draws from, BEFORE building anything new — per I3-PROTOCOL-A-R2-RESULT.json's own next_step. Re-render the exact five capture setups (char-npc and char-player at 08:00/13:00/19:30) with AO forced to full strength — uAOMaxOcclusion set to 1.0 instead of its current 0.6 cap (uAOStrength 3.1, radius 0.42) — and with all 20 authored material sets forced bound, and diff the result against the shipped configuration. If the terrain-artifact cap named in I3-PROTOCOL-A-R2-RESULT.json is confirmed as the cause (the cap was added deliberately to hide a derivative-normal grid artifact on low-poly terrain, and several of these pairs are terrain/vegetation-heavy), the remedy moves to the G-buffer normal-target limitation F2's own verdict already named as unsolved.",
+      "targets": [
+        "game/src/render/materials",
+        "game/src/render/ao (uAOMaxOcclusion / uAOStrength / radius)",
+        "tools/blind/deck-protocol-a.json"
+      ],
+      "acceptance": "A forced-full-strength render (uAOMaxOcclusion=1.0, all 20 material sets bound) of the same five capture setups shows a measurable difference from the shipped configuration on image-leakcheck's own quality statistics (local_contrast_med and shadow_levels move outside their current per-pair values by more than the tool's tie margin); AND the next Protocol A re-run's five judges' aggregate synthesis no longer names both 'no material differentiation' and 'no contact shadow / AO' as recurring absences.",
+      "ref_item": "RI-VIS06",
+      "estimated_size": "M"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "The positional-bias check is now genuinely full-power, not merely deterministic-bias-ruled-out. r1's free coin flip left one discriminating trial; r2's counterbalanced design (ours on A for pairs 01/03/05, B for 02/04, fixed before any image was opened) means any constant-letter strategy could match the reference on at most 3 of 5 pairs, and the observed match was 5 of 5. This is the payoff of r1's reversible ruling and should be kept for round 3.",
+      "evidence": [
+        "orchestration/status/I3-PROTOCOL-A-RERUN.json"
+      ],
+      "subsystem_path": "render.process.bifurcation"
+    },
+    {
+      "what": "Two leaks were caught before any judge saw the pack, and neither was caught by the automated gate. F1: a HUD region name-plate ('western-rootlands') had begun drawing into two of five crop windows since r1's capture; image-leakcheck was GREEN on the version containing legible burnt-in text, because a handful of text pixels move no summary statistic. F3, run deliberately to test the gate: a quantised leak on every pair goes RED, but the identical injection on only ONE pair goes GREEN and is missed — the battery is a sweep detector, and a leak affecting fewer than all pairs is invisible to it however blatant it is. RI-VIS06 §D's HUD row is currently enforced by eye and by nothing else.",
+      "evidence": [
+        "orchestration/status/I3-PROTOCOL-A-RERUN.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/leaky-arms-result.txt"
+      ],
+      "subsystem_path": "render.process.measurement"
+    },
+    {
+      "what": "Our r2 crops are 25-30% larger than the same windows in r1 (pair01 330,353 -> 422,286 bytes; pair03 340,860 -> 442,253 bytes), because real material detail and an occlusion term cost bytes while the JPEG-sourced reference crops are byte-identical to r1's. The bytes channel swept RED 5/5 on the first r2 pack build before an active zero-filled-chunk equalisation brought it to a tie. r1's own pack was one pair short of the same sweep (4 of 5), which in hindsight means r1's leak-check result was closer to a void condition than its verdict recorded.",
+      "evidence": [
+        "orchestration/status/I3-PROTOCOL-A-RERUN.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/leakcheck-r2.txt"
+      ],
+      "subsystem_path": "render.process.measurement"
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-pbr-material-set-unbound",
+      "status": "open",
+      "evidence": [
+        "orchestration/status/I3-PROTOCOL-A-R2-RESULT.json",
+        "corpus/90-verdicts/w01-visual-blind.md"
+      ],
+      "measured_value": "Still named by the aggregate of all five r2 judges as an absence — 'every surface returns the same flat matte olive-grey', 'thatch, plaster, stone and ground all return light identically', 'nothing reads as leather, metal, stone or vegetation' — after F1 (the remedy this gap named) landed and measured green on its own instrument (orphaned surface materials 321/422 to 0, per I3-PROTOCOL-A-R2-RESULT.json, not independently re-derived here).",
+      "acceptance_restated": "Two named materials in a single capture from the fixed eight slots produce measurably different specular response under the same light; and a Protocol A re-run returns 'everything responds to light identically' as no pair's SINGLE BIGGEST GAP.",
+      "closed_by_builder_of_fix": false,
+      "note": "Re-measured by this verdict, which built nothing and judged nothing, so the closure attempt is valid under SCORING.md §5 rule 1 regardless of outcome. Recorded as still OPEN, not closed and not partially-closed: the acceptance clause's own text was not met. This re-measurement happened one wave early — the acceptance text names a wave-2 re-run and this is a second run still within wave 1 — which this verdict states plainly rather than treating the early result as if it satisfied a wave-2 condition. A further limitation: this verdict does not have r2's per-pair breakdown of which absence was named as SINGLE BIGGEST versus SECOND GAP (no JUDGEMENTS-r2.md file exists), so it cannot say with the same precision as r1 whether material differentiation was any pair's single biggest gap this round — only that it was named in the aggregate synthesis. Superseded in practical terms by GAP-W1-visual-fix-not-reaching-blind-frames, which is the sharper, more buildable statement of the same underlying problem now that its own remedy has landed without effect — but this entry is left OPEN rather than marked 'superseded', because GAP-W1-visual-fix-not-reaching-blind-frames is a diagnosis-first gap about why the fix doesn't reach these frames, not a strictly harder version of the original material-binding gap, and superseding requires the latter."
+    }
+  ],
+  "corpus_extended": [
+    {
+      "id": "RI-VIS06",
+      "path": "corpus/70-visual/RI-VIS06-blind-comparison-protocol.md",
+      "area": "70-visual",
+      "judges": [
+        "render.process.bifurcation"
+      ],
+      "reason": "method_gap",
+      "note": "One amendment, recording that Protocol A has now run a second time and what changed about the instrument. (1) The provenance note is extended to record that a counterbalanced-sides re-run (r2) returned the same outcome-table row (cap 5, four high/one medium) as r1, and that the counterbalanced design gives the positional-bias check full power for the first time (any fixed-letter strategy caps at 3/5 under the alternating assignment; the judges matched 5/5). NO THRESHOLD WAS CHANGED and no number in the item was edited.",
+      "index_regenerated": false
+    }
+  ],
+  "method_deviations": [
+    {
+      "ref_item": "RI-VIS06",
+      "deviation": "D1 (carried from r1, unresolved) — the judges were not fully naive; a subagent in this repository inherits the project CLAUDE.md.",
+      "why": "Unchanged from r1. Per I3-PROTOCOL-A-RERUN.json's N1, this matters MORE in r2 than r1 because r2 was the first run where ours winning was a live possibility, and the residual bias (charity toward whatever looks like a game build) runs AGAINST finding a gap. Ours lost again, so a losing verdict is strengthened by this deviation, not weakened. Owed remedy unchanged: run the judges from a working directory with no project CLAUDE.md in scope.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-VIS06",
+      "deviation": "D3/D4 (carried from r1, deliberately not fixed) — pair02/pair03's reference windows are still out-of-focus background bokeh, and pair05's subject scale still mismatches (near-field material close-up vs our mid-distance dusk walkway, drawn from the weakest source frame in the pack).",
+      "why": "The pack-builder deliberately did NOT apply r1's owed D3/D4 remedies (swapping either plate), per I3-PROTOCOL-A-RERUN.json's N4: a changed pair could not be read against r1's answer on the same pair, which is the entire point of running r2 as a comparison. Cost stated plainly: r2 inherits both confounds. Owed remedy unchanged from r1: an in-focus daylight exterior plate for pair02/pair03, a low-light mid-distance exterior plate for pair05.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-VIS06",
+      "deviation": "D6 — an ACTIVE byte-length equalisation was applied to every pair, and this is not evidence of blindness.",
+      "why": "image-leakcheck's bytes channel swept RED 5/5 on the first r2 pack build: our PNGs run 25-30% larger than r1's at the same crop windows, because real material detail and an occlusion term carry more high-frequency content than a JPEG-sourced reference crop whose DCT quantisation has already smoothed it. protocol-a-pack.mjs --equalise-bytes padded each arm with a zero-filled private ancillary PNG chunk until both files in a pair were byte-identical in length; pixels are untouched and every quality statistic is unchanged by the padding. Because this equalisation is ACTIVE rather than incidental, the resulting bytes tie (0/0, 5 tied) in leakcheck-r2.txt is true by construction and must not be read as evidence the pack was naturally unsortable by file size — it was sortable, and the improvement under test is exactly what tripped the gate. Separately worth recording: r1's own pack escaped this same sweep by one pair (4 of 5, not 5 of 5), which in hindsight means r1's leak-check GREEN was one pair away from the same RED this pack hit before equalisation, and r1's verdict did not know this at the time.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-VIS06",
+      "deviation": "D7 — a HUD region name-plate leak was found by opening the crops, not by the leak-check tool, and fixed before any judge saw the pack; the tool's own limit (a sweep detector) was then confirmed by deliberate injection.",
+      "why": "The build now draws a region name ('western-rootlands') into the canvas at x 42-180, y 962-983 — new since r1's capture on 2026-08-14 — and r1's crop window at (150,480), reused for r2's pair02 and pair04, caught its last two glyphs. Two of five arms would have shipped with legible burnt-in text. image-leakcheck was GREEN on the contaminated version, because a few dozen text pixels move no summary statistic. The fix (window moved to (200,480), a 50px translation) was applied BEFORE the pack was built and BEFORE any judge ran, so it does not affect this run's scores directly — recorded here because it changes what the judged pack looked like relative to any earlier, undocumented window, and because the pack-builder went on to prove by deliberate injection (three leaky copies of the real pack, isolating one channel each) that the same gate misses a leak present on only one of five pairs while catching the identical leak swept across all five. That is a standing limit of the instrument, not a defect specific to this pack.",
+      "affects_scores": false
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.json",
+      "purpose": "quote-written-content",
+      "note": "Structure and prior-round figures to mirror and compare against."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.md",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/00-doctrine/VERDICT-SCHEMA.md",
+      "purpose": "locate-harness"
+    },
+    {
+      "path": "corpus/00-doctrine/SCORING.md",
+      "purpose": "locate-harness"
+    },
+    {
+      "path": "corpus/00-doctrine/verdict.schema.json",
+      "purpose": "locate-harness"
+    },
+    {
+      "path": "corpus/70-visual/RI-VIS06-blind-comparison-protocol.md",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "orchestration/status/I3-PROTOCOL-A-R2-RESULT.json",
+      "purpose": "quote-written-content",
+      "note": "The designated source for this verdict's facts."
+    },
+    {
+      "path": "orchestration/status/I3-PROTOCOL-A-RERUN.json",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/leakcheck-r2.txt",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/leakcheck-r2.json",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/leakcheck/leaky-arms-result.txt",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/SEAL-README.md",
+      "purpose": "quote-written-content",
+      "note": "Procedural description only; no pairNN.reveal/mapping.json, PAIRING-KEY.json or pairing-r2.json was opened."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r2/COMMITMENT.json",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/90-verdicts/GAP-LEDGER.json",
+      "purpose": "locate-harness"
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": true,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "This verdict built nothing and judged nothing, mirroring r1's chunk-2 role: the five judges answered before this verdict began, and this verdict's job was to read the already-decoded result correctly, not to re-judge it. conflict_of_interest is false because none of the work under judgement — the renderer, F1/F2/F3, the pack, the frames — was written or edited by this agent. Two things are disclosed here because the task explicitly required them and because smoothing them into the score would be dishonest: (1) the judges could not be made naive — a subagent in this repository inherits the project CLAUDE.md — and the pack-builder reasoned that this bias flatters our side, so a LOSS is strengthened by it, not weakened; ours lost. (2) three of the five judges (per the aggregate synthesis in I3-PROTOCOL-A-R2-RESULT.json) volunteered that our arm holds sharper silhouette edges and better fine detail while the reference plates are heavily blurred JPEGs — so this loss is demonstrably not about resolution, aliasing or sharpness, all of which our side wins; it is specifically about material response and light. 'escalation_ladder_used_if_gap_seemed_small' is true vacuously and deliberately, as in r1: RI-VIS06 §C's escalation fires only if ours wins a pair, and ours won none."
+  },
+  "notes": "SCORING RULING, NOT COPIED FROM r1 WITHOUT RE-CHECKING. r2's confidence spread — four `high`, one `medium` — is identical to r1's, so the same outcome-table application applies: row 2's own stated threshold is >= 2 medium/low answers, one is not two, so row 1 (cap 5) is the only remaining row describing a clean sweep of losses. This was re-derived from r2's own reported spread in orchestration/status/I3-PROTOCOL-A-R2-RESULT.json, not assumed from r1's number.\n\nWHAT CHANGED AND WHAT DID NOT. What changed for the better: the positional-bias check went from one discriminating trial (r1) to full power under a counterbalanced design (any fixed-letter strategy now caps at 3 of 5; the judges matched 5 of 5) — a genuine methodological improvement, kept for round 3. What did not change: the score. FIDELITY remains capped at 5, still below the wave-1 gate of 6, and the two absences named in aggregate by all five r2 judges are, in substance, the same two absences r1's judges named, despite three landed remedies that each measured green on their own instrument. That is the wave's real news from this run: not the score, which repeats, but the fact that the score's own gap did not move when the corpus's other verdicts say it should have. GAP-W1-visual-fix-not-reaching-blind-frames exists to carry that finding forward as buildable work, ranked above building anything new per I3-PROTOCOL-A-R2-RESULT.json's own next_step.\n\nWHAT THIS VERDICT COULD NOT DO, STATED HERE AND IN THE MARKDOWN'S OPENING SECTION. No JUDGEMENTS-r2.md file exists analogous to r1's, so this verdict has only the aggregate synthesis of all five judges' answers, not a per-pair verbatim transcript; blind_comparisons[].blind_rationale says so explicitly rather than fabricating a per-pair attribution. This verdict did not open the sealed key, the pairing table, or any mapping.json, per its own brief; the reveal table it records is the decode already provided in the dispatch brief, not independently re-derived. The F1/F2/F3 instrument figures (orphaned-material count, contact-junction ratio, ambient lift) are quoted from I3-PROTOCOL-A-R2-RESULT.json and were not independently re-measured by this verdict."
+}

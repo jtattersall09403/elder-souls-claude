@@ -139,3 +139,128 @@ BLIND RUN  wave 01  protocol A  pair 05
 
 **Tally: ours 0, reference 5.** Escalation not triggered on any pair, because RI-VIS06 §C fires only
 when ours wins. Confidence spread: four `high`, one `medium`.
+
+---
+
+## Round 2 — 2026-08-15, after F1 (materials), F2 (contact shadows/AO), F3 (ambient fill) landed
+
+Pack built by the `I3` Protocol A round-2 pack-builder
+(`orchestration/status/I3-PROTOCOL-A-RERUN.json`), counterbalanced sides (ours on A for pairs
+01/03/05, B for pairs 02/04, fixed before any image was opened) and an active byte-length
+equalisation (F2 in that file). Judged by five fresh Opus agent contexts. Decoded and reported in
+`orchestration/status/I3-PROTOCOL-A-R2-RESULT.json`, which is the source for these blocks.
+
+**No `JUDGEMENTS-r2.md` file was produced for this round**, unlike round 1. The per-pair `SINGLE
+BIGGEST GAP` / `SECOND GAP` / `WHAT THE LOSER DOES BETTER` lines below are therefore **not
+available split by pair** — only the aggregate synthesis across all five judges is on record. Each
+block below states this rather than inventing a per-pair attribution. The verdict at
+`corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.{json,md}` records the same limitation.
+
+```
+BLIND RUN  wave 01  protocol A  pair 01  (round 2)
+  ours: one of the six r2 capture setups (char-npc/char-player x 08:00/13:00/19:30, RTX A4500,
+    1920x1080, seed 20260814) — the pair-to-capture-slot mapping is in the sealed pairing-r2.json
+    and is not opened by this record, per this round's brief.
+  ref : one of the same reference-plate population as round 1 (4x Elden Ring, 1x The Witcher 3);
+    plate-to-pair mapping likewise sealed.
+  key : W1-VISUAL-BLIND-PROTOCOL-A-r2/SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/pair01.reveal/mapping.json
+    (A=ours, B=reference) — counterbalanced plan, not a free coin flip
+  judge: fresh Opus agent context, two image files + PROMPT-A-verbatim.txt and nothing else
+  BLIND PICK: B
+  CONFIDENCE: not separable by pair in the source (aggregate spread for the round: 4 high, 1 medium)
+  GAP TEXT: not separable by pair — see the round's aggregate synthesis below the last block.
+  REVEAL: B was the reference. Ours lost.
+  ESCALATION: not required (ours lost)
+  ACTION: aggregate gaps -> GAP-W1-visual-fix-not-reaching-blind-frames (diagnosis, ranked above new
+    visual work) and the still-open GAP-W1-pbr-material-set-unbound
+```
+
+```
+BLIND RUN  wave 01  protocol A  pair 02  (round 2)
+  ours: one of the six r2 capture setups — pairing sealed, not opened by this record.
+  ref : one of the round-1 reference-plate population — pairing sealed, not opened by this record.
+  key : W1-VISUAL-BLIND-PROTOCOL-A-r2/SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/pair02.reveal/mapping.json
+    (A=reference, B=ours) — counterbalanced plan
+  judge: fresh Opus agent context, two image files + PROMPT-A-verbatim.txt and nothing else
+  BLIND PICK: A
+  CONFIDENCE: not separable by pair in the source
+  GAP TEXT: not separable by pair — see the round's aggregate synthesis below the last block.
+  REVEAL: A was the reference. Ours lost.
+  ESCALATION: not required (ours lost)
+  NOTE ON THIS PAIR: the crop window was moved from (150,480) to (200,480) before the pack was
+    built, to clear a HUD region name-plate that had begun drawing into the frame since round 1
+    (I3-PROTOCOL-A-RERUN.json FINDINGS/F1). image-leakcheck was GREEN on the version containing the
+    text; the fix predates any judge running.
+  ACTION: aggregate gaps -> GAP-W1-visual-fix-not-reaching-blind-frames and GAP-W1-pbr-material-set-unbound
+```
+
+```
+BLIND RUN  wave 01  protocol A  pair 03  (round 2)
+  ours: one of the six r2 capture setups — pairing sealed, not opened by this record.
+  ref : one of the round-1 reference-plate population — pairing sealed, not opened by this record.
+  key : W1-VISUAL-BLIND-PROTOCOL-A-r2/SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/pair03.reveal/mapping.json
+    (A=ours, B=reference) — counterbalanced plan
+  judge: fresh Opus agent context, two image files + PROMPT-A-verbatim.txt and nothing else
+  BLIND PICK: B
+  CONFIDENCE: not separable by pair in the source
+  GAP TEXT: not separable by pair — see the round's aggregate synthesis below the last block.
+  REVEAL: B was the reference. Ours lost.
+  ESCALATION: not required (ours lost)
+  ACTION: aggregate gaps -> GAP-W1-visual-fix-not-reaching-blind-frames and GAP-W1-pbr-material-set-unbound
+```
+
+```
+BLIND RUN  wave 01  protocol A  pair 04  (round 2)
+  ours: one of the six r2 capture setups — pairing sealed, not opened by this record.
+  ref : one of the round-1 reference-plate population — pairing sealed, not opened by this record.
+  key : W1-VISUAL-BLIND-PROTOCOL-A-r2/SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/pair04.reveal/mapping.json
+    (A=reference, B=ours) — counterbalanced plan
+  judge: fresh Opus agent context, two image files + PROMPT-A-verbatim.txt and nothing else
+  BLIND PICK: A
+  CONFIDENCE: not separable by pair in the source (this round's one `medium` may or may not be this
+    pair — round 1's one `medium` was pair04, but the source for round 2 does not confirm which pair
+    carried it this time)
+  GAP TEXT: not separable by pair — see the round's aggregate synthesis below the last block.
+  REVEAL: A was the reference. Ours lost.
+  ESCALATION: not required (ours lost)
+  NOTE ON THIS PAIR: the crop window was moved from (150,480) to (200,480) before the pack was
+    built, for the same HUD-name-plate reason as pair02.
+  ACTION: aggregate gaps -> GAP-W1-visual-fix-not-reaching-blind-frames and GAP-W1-pbr-material-set-unbound
+```
+
+```
+BLIND RUN  wave 01  protocol A  pair 05  (round 2)
+  ours: char-player__t1930__clear.png source frame (per capture/frame-liveness.json, the weakest
+    frame in the r2 pack: shadow_levels 7, local contrast 0.52) — exact crop mapping sealed.
+  ref : one of the round-1 reference-plate population — pairing sealed, not opened by this record.
+  key : W1-VISUAL-BLIND-PROTOCOL-A-r2/SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/pair05.reveal/mapping.json
+    (A=ours, B=reference) — counterbalanced plan
+  judge: fresh Opus agent context, two image files + PROMPT-A-verbatim.txt and nothing else
+  BLIND PICK: B
+  CONFIDENCE: not separable by pair in the source
+  GAP TEXT: not separable by pair — see the round's aggregate synthesis below.
+  REVEAL: B was the reference. Ours lost.
+  ESCALATION: not required (ours lost)
+  DEVIATION ON THIS PAIR: subject scale still differs, carried unfixed from round 1 (D4) —
+    deliberately not corrected so the pair reads against round 1's answer.
+  ACTION: aggregate gaps -> GAP-W1-visual-fix-not-reaching-blind-frames and GAP-W1-pbr-material-set-unbound
+```
+
+**Round 2 tally: ours 0, reference 5 — same as round 1.** Escalation not triggered on any pair.
+Confidence spread: four `high`, one `medium` (identical spread to round 1; which specific pair
+carried the `medium` answer is not confirmed by the source for this round).
+
+**Round 2 aggregate gap text, quoted verbatim from `orchestration/status/I3-PROTOCOL-A-R2-RESULT.json`,
+not attributable to a specific pair:**
+
+> No material differentiation: "every surface returns the same flat matte olive-grey", "thatch,
+> plaster, stone and ground all return light identically", "nothing reads as leather, metal, stone
+> or vegetation."
+>
+> No shadow or ambient occlusion at all: "no contact darkening and no cast shadows at all, so
+> nothing sits in space", "surfaces meet with no contact darkening."
+
+**The finding this round adds:** F1 (materials), F2 (contact shadows/AO) and F3 (ambient fill) had
+all landed before this round ran, and each measured green on its own instrument. The blind result
+did not move. See `corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.md` for the full
+cross-tabulation, the counterbalanced positional-bias ruling, and the scoring.
