@@ -9,7 +9,7 @@
 'use strict';
 
 import { Rig } from './skeleton.js';
-import { addPose } from './clips.js';
+import { addPose, stanceRootOffsetY } from './clips.js';
 import { spendStamina, regenStamina, regenPoise, poiseHealthMax, updateExhaustion, inHyperArmour } from './rules.js';
 
 export class CombatBody {
@@ -371,7 +371,8 @@ export class CombatBody {
     else if (state === 'SPRINT') loop = this.moves._sprint;
     this._loopFrame++;
     loop.applyPose(this.rig, this._loopFrame);
-    addPose(this.rig, this.guardRaised ? this.moves._blockPose : this.moves._idlePose, 0, 1.0);
+    const stance = this.guardRaised ? this.moves._blockPose : this.moves._idlePose;
+    addPose(this.rig, stance, 0, 1.0);
     // A locomotion action needs a whole-body silhouette, not only a faster leg metronome.
     // These deterministic leans/lifts are written into the same authoritative rig consumed by
     // hurtboxes, sockets and rendering, so the faster visible pose cannot diverge from combat.
@@ -398,7 +399,14 @@ export class CombatBody {
     }
     this.anim = loop.id + (this.guardRaised ? '_guard' : '');
     this.animFrame = this._loopFrame % loop.period;
-    this.evaluateRig(loop.rootOffsetYAt(this._loopFrame));
+    // The stance layer's OWN vertical, added to the loop's. Without this term the r9 contrapposto
+    // stood the player and every combat enemy 7.96 mm off the floor for the whole idle loop and
+    // 9.1-9.3 mm off it on the planted foot of every walk, run and sprint frame — the
+    // `W1-F10-r9-CRITIC` biggest_gap. It is added HERE rather than as a constant on `idle_loop`
+    // because the rise belongs to the stance archetype: `block_hold` carries no pelvis roll and
+    // so has no rise, and a constant on the loop would push a guarding character 8 mm UNDER the
+    // ground. Same weight and phase as the `addPose` above, so the two cannot disagree.
+    this.evaluateRig(loop.rootOffsetYAt(this._loopFrame) + stanceRootOffsetY(stance, 0, 1.0));
     this.hitboxActive = false;
   }
 
