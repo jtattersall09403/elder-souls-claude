@@ -843,8 +843,14 @@ function torsoShellGeometry(kind='reed') {
   }
   // cap with separate centres, preventing a visible hollow at neck and waist in extreme poses
   for(const [r,flip] of [[0,true],[rings.length-1,false]]){
+    // WINDING — the third generator found inverted on 2026-08-15, and note that only its CAPS were
+    // wrong while its side walls were always right (the wall loop's frame is +y by +angle, which
+    // comes out outward; `MeshBuilder.tube`'s is +axis by +angle in a different handedness, which
+    // did not). Both caps were wound against their own authored normal: `(centre, q, i)` on the
+    // bottom rim gives a face normal of +y while `nrm` declares -y. 36 triangles per shell,
+    // matching the measured 144/720 disagreement on `tailored-tunic` over 4 meshes exactly.
     const centre=pos.length/3,[y]=rings[r];pos.push(0,y,0);nrm.push(0,flip?-1:1,0);uv.push(.5,.5);
-    for(let i=0;i<radial;i++){const q=(i+1)%radial;if(flip)idx.push(centre,r*radial+q,r*radial+i);else idx.push(centre,r*radial+i,r*radial+q);}
+    for(let i=0;i<radial;i++){const q=(i+1)%radial;if(flip)idx.push(centre,r*radial+i,r*radial+q);else idx.push(centre,r*radial+q,r*radial+i);}
   }
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(nrm,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);return g;
 }
@@ -859,7 +865,14 @@ function taperedGuardGeometry(top=.105,bottom=.078,length=.30,depth=.78,radial=1
 function garmentTabGeometry(width=.22,height=.38,depth=.025){
   const w=width/2,t=width*.34,y0=height/2,y1=-height/2,z=depth/2;
   const p=[-w,y0,-z,w,y0,-z,t,y1,-z,-t,y1,-z,-w,y0,z,w,y0,z,t,y1,z,-t,y1,z];
-  const i=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,3,7,6,3,6,2,0,4,7,0,7,3,1,2,6,1,6,5];
+  // WINDING — the second of the three generators found inverted on 2026-08-15. This list read
+  // `[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,3,7,6,3,6,2,0,4,7,0,7,3,1,2,6,1,6,5]`, whose first face
+  // (0,2,1) on the z=-depth/2 side has a face normal of +z, i.e. pointing INTO the wedge. Every
+  // triple below is that list with its winding reversed. It is invisible to a normal-agreement
+  // check because `computeVertexNormals()` derives the normals FROM the winding, so the normals
+  // agreed with a wrong surface — only the signed volume caught it (13 of 13 `:legs` meshes
+  // negative). That is why the instrument measures both and not just one.
+  const i=[0,1,2,0,2,3,4,6,5,4,7,6,0,5,1,0,4,5,3,6,7,3,2,6,0,7,4,0,3,7,1,6,2,1,5,6];
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));g.setIndex(i);g.computeVertexNormals();return g;
 }
 
