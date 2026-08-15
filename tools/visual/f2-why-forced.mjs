@@ -54,6 +54,34 @@ const JUDGED = [
 ];
 
 /**
+ * F4's PRESERVATION WINDOWS — ruling S59: an acceptance that names only what improves has three
+ * times been satisfied by something worse. These are the places F4's change can do damage that
+ * the five judged windows cannot see, because every judged window is a CLEAR EXTERIOR at 08:00,
+ * 13:00 or 19:30 and F4 moves numbers that reach further than that.
+ *
+ * Each one is here because a line of code says the change reaches it, not because it sounded
+ * prudent:
+ *   dusk      — `recipeForConditions()` selects `dusk-canopy` at 06:00 (dusk 1.00) and NO judged
+ *               window selects it, so it would otherwise ship unmeasured.
+ *   deepnight — `night-moon` at its darkest. `RI-WLD04` M17 step 6: "a frame a judge cannot
+ *               classify is not a dark frame, it is a missing frame", and the recipe's own comment
+ *               says a 19:30 street already measures ~6/255.
+ *   overcast  — `overcast-flat`, which F4 deliberately does NOT touch. The check is that clear and
+ *               overcast still order correctly after clear's ambient is cut.
+ *   interior  — `renderer.js:1298` calls `sky.apply()` on EVERY frame including inside a room, and
+ *               `sky.js:955` then writes `scene.environmentIntensity = R.env` from whichever
+ *               EXTERIOR recipe the hour selected. So an env cut made for a marsh at noon lands on
+ *               every interior in the game, and the 3x key lands there too.
+ */
+const PRESERVE = [
+  { pair: 'prsv-dusk',      setup: 'char-player', hour: 6,  crop: [300, 150, 512, 512], weather: 'clear',    what: 'dusk-canopy — the exterior recipe no judged window selects' },
+  { pair: 'prsv-deepnight', setup: 'char-player', hour: 1,  crop: [300, 150, 512, 512], weather: 'clear',    what: 'night-moon at its darkest — the readability floor' },
+  { pair: 'prsv-overcast',  setup: 'char-player', hour: 13, crop: [300, 150, 512, 512], weather: 'overcast', what: 'overcast-flat — a recipe F4 does not touch; clear must not out-ambient it' },
+  { pair: 'prsv-interior',  setup: 'char-player', hour: 13, crop: [300, 150, 512, 512], weather: 'clear', interior: 'archon-inn', what: 'an interior — sky.apply() writes environmentIntensity in here too' },
+];
+const WINDOWS = [...JUDGED, ...PRESERVE];
+
+/**
  * Each config is a function evaluated INSIDE the page, applied after the scene is posed and
  * before the frame is stepped. `shipped` must be first — every delta is against it.
  *
@@ -101,7 +129,21 @@ const CONFIGS = {
   // enforcement mechanism is broken and no other arm here means anything.
   sun_off:     `() => { __sun((L) => { L.intensity = 0; }); }`,
   sun_x3:      `() => { __sun((L, base) => { L.intensity = base * 3; }); }`,
-  env_off:     `() => { __scene().environment = null; }`,
+  // NOT `scene.environment = null`, for the same reason `fog_off` is not `scene.fog = null`.
+  // MEASURED, F4, 2026-08-15, three times in a row on pair01: an arm that nulls the environment
+  // every frame captures its OWN row fine and then the page is dead by the next arm —
+  // `Target page, context or browser has been closed` out of `stepFrames`. The identical sweep
+  // with `env_off` removed (`--configs shipped,key_off,shipped_recheck`) completes clean. Nulling
+  // the scene environment per frame makes three.js drop and re-derive the PMREM of the probe on
+  // every frame (`WebGLCubeUVMaps.onTextureDispose` — the same path `sky.js` relies on when it
+  // disposes an old probe), and on SwiftShader that churn takes the page out.
+  //
+  // `environmentIntensity = 0` is the same optical experiment — three.js folds it into the
+  // `envMapIntensity` uniform, so the probe delivers zero diffuse and zero specular — and it
+  // leaves the texture and its convolution alone. `env_null` below is kept ONLY as the
+  // cross-check that the two arms measure the same thing; do not put it in a long sweep.
+  env_off:     `() => { __envScale(0); }`,
+  env_null:    `() => { __scene().environment = null; }`,
   ambient_off: `() => { __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __setLight(o, 0); }); }`,
   indirect_off:`() => { __scene().environment = null; __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __setLight(o, 0); }); }`,
   // NOT `scene.fog = null`. Measured: nulling it makes a later consumer read `fog.color` and
@@ -138,6 +180,79 @@ const CONFIGS = {
   cell_lights_off_ao_full: `() => { const s = __scene(); s.traverse((o) => { if ((o.isHemisphereLight || o.isAmbientLight || o.isDirectionalLight) && o.parent && o.parent !== s) o.visible = false; }); __setU({ uAOMaxOcclusion: 1.0, uAORadius: 1.2, uAOStrength: 3.1 }); }`,
   sun_dominant: `() => { __sun((L, base) => { L.intensity = base * 2.2; }); __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __scaleLight(o, 0.35); }); __scene().environmentIntensity = 0.35; }`,
 
+  // ---- F4 (R1, the key-light rebalance) ---------------------------------------------------
+  //
+  // WHY `key_off` EXISTS AND `sun_off` IS NOT ENOUGH. F4's acceptance is stated as "`sun_off`
+  // delta >= 2x `env_off` delta in ALL FIVE judged windows". Derived from `sky.js` at the deck's
+  // own hours (`apply()` lines 778-793 and `recipeForConditions()`), pair05 is at 19:30, where
+  // `elev = sin(2*pi*(19.5-6)/24) = -0.383`, so `day = 0`, `night = 1` and the recipe selected is
+  // `night-moon`. There, `sun.intensity = w.sunIntensity * max(0.02, day) * R.key`
+  // = 2.1 * 0.02 * 0.30 = **0.0126**, i.e. the sun is off already; the directional key at 19:30 is
+  // `this.moon` (intensity `night * (0.54 + (1-overcast)*0.28)` = 0.82), and `sky.js:645` sets
+  // `moon.castShadow = false`. So a literal `sun_off` arm at pair05 measures nothing and the
+  // acceptance as written is UNSATISFIABLE THERE FOR A REASON THAT IS NOT ABOUT THE BALANCE.
+  //
+  // `key_off` is the arm the acceptance actually means: zero every directional light that is a
+  // direct child of the scene root — which is exactly `sky.js`'s sun and moon, and nothing else
+  // (every cell light is added to a group; see `cell_lights_off`, measured at 0.51, below noise).
+  // On pairs 01-04 `key_off` and `sun_off` are the same experiment because the moon is at 0 by day.
+  key_off:  `() => { const s = __scene(); s.traverse((o) => { if (o.isDirectionalLight && o.parent === s) __setLight(o, 0); }); }`,
+  moon_off: `() => { const s = __scene(); s.traverse((o) => { if (o.isDirectionalLight && o.parent === s && o !== window.__sunLight) __setLight(o, 0); }); }`,
+
+  // The three candidate rebalances, and their own `key_off`/`env_off` arms so the acceptance
+  // RATIO can be computed under each candidate rather than against the shipped baseline. Each is
+  // written as multipliers on the LIVE recipe value, so one arm covers `noon-marsh` (pairs 01-04)
+  // and `night-moon` (pair05) without either being hard-coded.
+  //
+  //   r1a  key x2.2  env x0.45  sky/fill x0.80   — the conservative one
+  //   r1b  key x3.0  env x0.35  sky/fill x0.75   — the one the arithmetic says clears the ratio
+  //   r1c  key x2.6  env x0.40  sky/fill x1.00   — ambient LEFT ALONE, to price what it is worth
+  //
+  // The arithmetic these come from, using pair01's measured budget (sun 11.30 luma, probe 23.58,
+  // hemisphere+fill 4.75, everything else 19.51, total 59.14): to reach key >= 2x probe the key
+  // must be multiplied by at least 4.17x whatever the probe is multiplied by. `sun_x3` says the
+  // key does NOT scale linearly — 3x the intensity bought +14.77 luma where linear predicts
+  // +22.60, a factor of 0.65 — so the multiplier has to carry that compression too.
+  ...(() => {
+    // `r1n` is the NIGHT candidate and it exists because `r1b` measured 1.975 at pair05 — a miss
+    // by 0.025 — while also costing 16% of the window's chroma. At night the ambient is not
+    // padding: `night-moon`'s own comment says it carries the region's hue, and cutting it is what
+    // makes a night unclassifiable. So r1n raises the key harder, cuts the probe harder, and
+    // leaves the hemisphere and the fill exactly where they are.
+    //
+    // `revert_day` and `revert_night` are the DELETE-THE-FIX control, run against the LANDED
+    // build: each is the exact reciprocal of the multipliers now written into `noon-marsh`
+    // (x3.0 / x0.35 / x0.75) and `night-moon` (moon x3.6 / env x0.26 / ambient x1.0), so applying
+    // one to the landed recipe puts the live rig back on the shipped values and the old number
+    // must come back.
+    //
+    // ONE THING THEY CANNOT UNDO, STATED HERE RATHER THAN DISCOVERED LATER: `sky.js:944` bakes the
+    // probe with `sunGain: R.key * max(0.05, day)`, so raising `noon-marsh.key` to 3.00 also
+    // tripled the sun lobe INSIDE the probe texture, and no page-side arm can reach the bake.
+    // `revert_day` therefore restores the lights and the probe's INTENSITY but not its content.
+    // That is why it is cross-checked at pair01, where a true pre-change capture exists from
+    // earlier in this session: if `revert_day` there does not come back to the real shipped
+    // numbers within the noise floor, it is not a usable proxy for pair02/03/04 and must not be
+    // read as one.
+    const cands = {
+      r1a: [2.2, 0.45, 0.80], r1b: [3.0, 0.35, 0.75], r1c: [2.6, 0.40, 1.00], r1n: [3.6, 0.26, 1.00],
+      revert_day: [1 / 3.0, 1 / 0.35, 1 / 0.75], revert_night: [1 / 3.6, 1 / 0.26, 1.0],
+    };
+    const out = {};
+    for (const [id, [K, E, C]] of Object.entries(cands)) {
+      // `o.parent === s` and not a bare traverse: `R.sky`/`R.fill` in `sky.js` scale ONLY
+      // `this.hemi` and `this.fill`, both added to the scene ROOT. An arm that also scaled the
+      // interior's own `interior-bounced-fill` HemisphereLight (`interior.js:909`, added to the
+      // interior group) would be measuring a change the recipe edit does not make — which matters
+      // exactly once, at `prsv-interior`, and would have made the interior look safer than it is.
+      const rig = `__sun((L, base) => { L.intensity = base * ${K}; }); __moonScale(${K}); const s = __scene(); s.traverse((o) => { if ((o.isHemisphereLight || o.isAmbientLight) && o.parent === s) __scaleLight(o, ${C}); }); __envScale(${E});`;
+      out[id] = `() => { ${rig} }`;
+      out[`${id}_key_off`] = { fn: `() => { ${rig} s.traverse((o) => { if (o.isDirectionalLight && o.parent === s) __setLight(o, 0); }); }`, base: id };
+      out[`${id}_env_off`] = { fn: `() => { ${rig} __envScale(0); }`, base: id };
+    }
+    return out;
+  })(),
+
   // THE DRIFT CONTROL, and it is not optional. Every arm of one window is captured from a sim
   // that has advanced by the arms before it — NPCs walk, foliage sways, the sky moves. So the
   // shipped configuration is captured AGAIN at the end of the sweep, from the most-advanced sim
@@ -146,15 +261,25 @@ const CONFIGS = {
   shipped_recheck: '() => {}',
 };
 
+/** A config is either a source string, or `{ fn, base }` where `base` names the config its delta
+ * is measured against. Default base is `shipped`. Without this every candidate's `env_off` arm
+ * would be differenced against the SHIPPED frame, which is not the ratio the acceptance asks for. */
+const cfgFn = (name) => (typeof CONFIGS[name] === 'string' ? CONFIGS[name] : CONFIGS[name].fn);
+const cfgBase = (name) => (typeof CONFIGS[name] === 'string' ? 'shipped' : (CONFIGS[name].base || 'shipped'));
+
 // `--configs a,b,c` and `--pairs pair01,pair04` narrow the sweep. A full 16-arm x 5-window run
 // is ~70 minutes on SwiftShader, so a follow-up that only needs four arms should cost four arms.
 const ONLY_CFG = args.configs ? String(args.configs).split(',').map((s) => s.trim()).filter(Boolean) : null;
 const ONLY_PAIR = args.pairs ? String(args.pairs).split(',').map((s) => s.trim()).filter(Boolean) : null;
-const ORDER = Object.keys(CONFIGS).filter((k) => !ONLY_CFG || ONLY_CFG.includes(k));
 if (ONLY_CFG) {
   const unknown = ONLY_CFG.filter((k) => !CONFIGS[k]);
   if (unknown.length) { console.error(`unknown config(s): ${unknown.join(', ')}. have: ${Object.keys(CONFIGS).join(', ')}`); process.exit(2); }
+  // A narrowed run that drops an arm's delta BASE silently produces `delta_vs_shipped: null` for
+  // that arm — a hole where the acceptance number should be. Pull the bases back in rather than
+  // leaving the reader to notice.
+  for (const k of [...ONLY_CFG]) { const b = cfgBase(k); if (!ONLY_CFG.includes(b)) ONLY_CFG.push(b); }
 }
+const ORDER = Object.keys(CONFIGS).filter((k) => !ONLY_CFG || ONLY_CFG.includes(k));
 
 const { g, attestation } = await launchForCapture({
   mode: resolveGpuMode(args), requireHardware: args['require-hardware'] === true,
@@ -224,6 +349,24 @@ await g.page.evaluate(() => {
   };
   window.__setLight = (o, v) => { o.intensity = v; o.__f2wrote = v; };
   window.__scaleLight = (o, k) => { window.__setLight(o, window.__lightBase(o) * k); };
+  // The moon is the directional key at night (`sky.js:644` — added to the scene root, and
+  // `castShadow = false`). A candidate that raises "the key" has to raise it too, or the arm is a
+  // daylight-only experiment wearing an all-hours name.
+  window.__moonScale = (k) => {
+    const s = R.scene;
+    s.traverse((o) => { if (o.isDirectionalLight && o.parent === s && o !== window.__sunLight) window.__scaleLight(o, k); });
+  };
+  // Same recover-the-recipe-value trick as `__lightBase`: `sky.apply()` writes
+  // `scene.environmentIntensity = R.env` every frame before this enforcer runs, so whenever the
+  // live value differs from what this enforcer last wrote, that live value IS the recipe's. Without
+  // this a multiplying env arm compounds to k^n after n frames, which is the exact confound that
+  // made the first version of this tool report `sun_x3` as darker than `indirect_off`.
+  window.__envScale = (k) => {
+    const s = R.scene;
+    if (s.__f2envWrote === undefined || s.__f2envWrote !== s.environmentIntensity) s.__f2envBase = s.environmentIntensity;
+    s.environmentIntensity = s.__f2envBase * k;
+    s.__f2envWrote = s.environmentIntensity;
+  };
   window.__sun = (fn) => {
     const L = window.__sunLight;
     if (!L) return;
@@ -296,6 +439,7 @@ await g.page.evaluate(() => {
     // Drop the per-light base bookkeeping, or an arm inherits the previous arm's idea of what
     // the recipe value was and its first enforced frame scales the wrong number.
     R.scene.traverse((o) => { if (o.isLight) { delete o.__f2wrote; delete o.__f2base; } });
+    delete R.scene.__f2envWrote; delete R.scene.__f2envBase;
     // `sky.apply()` only rewrites ITS OWN sun/hemi/fill each frame. A cell light zeroed or
     // hidden by an arm therefore stays zeroed or hidden forever unless it is restored here —
     // measured: after one `indirect_off` arm the scene's total hemisphere intensity never came
@@ -414,27 +558,50 @@ function meanAbsDelta(a, b) {
 }
 
 const rows = [];
+// WHY THIS RUN CANNOT BE ALLOWED TO DIE WITHOUT WRITING. The diagnosis run that commissioned F4
+// lost pair03/04/05 entirely to `Target page, context or browser has been closed` thrown out of
+// `call()`, and because `forced.json` is written only after the loops, EVERY row it had already
+// captured was lost with it and had to be recomputed from PNGs by hand. This build records the
+// death as data and writes what it has.
+let aborted = null;
 for (const cfgName of ORDER) fs.mkdirSync(path.join(OUT, cfgName), { recursive: true });
+const sweep = async () => {
 // WINDOW OUTER, CONFIG INNER. The first version of this loop had config outer and re-teleported
 // for all 60 rows; province streaming after a teleport dominates the run and it was ~2 minutes
 // per row. The place, the hour and the camera pose are identical across every arm of one window
 // by construction, so they are set ONCE and only the forced configuration changes inside — which
 // is also a stronger experiment: no arm can differ from another by a re-streamed world.
-for (const jw of JUDGED.filter((j) => !ONLY_PAIR || ONLY_PAIR.includes(j.pair))) {
+for (const jw of WINDOWS.filter((j) => !ONLY_PAIR || ONLY_PAIR.includes(j.pair))) {
   const setup = DECK.setups.find((s) => s.id === jw.setup);
   const where = await call('whereAmI');
   if (where.ok && where.v && where.v.interior) await call('exitInterior');
   await call('teleport', setup.place.x, setup.place.z);
   await call('stepFrames', 4);
-  await call('setWeather', 'clear');
+  await call('setWeather', jw.weather || 'clear');
   await call('setTimeOfDay', jw.hour);
-  const perr = await poseCamera(setup);
+  // ENTER FIRST, POSE SECOND, AND THE ORDER IS THE WHOLE POINT. Posing before entering put the
+  // camera at the player's EXTERIOR position and left it there while the player moved into the
+  // interior cell: the first `prsv-interior` capture came back mean 191.99, sd 5.28, and
+  // BYTE-IDENTICAL crop statistics under two different lighting configurations — a photograph of
+  // the sky with `archon-inn` written in the corner. `frame-liveness` passed it, because a smooth
+  // sky gradient is a perfectly live image; it is just not an image of a room. HAZARDS §15's
+  // second liveness question — "is the thing I am measuring in it" — and it was caught by opening
+  // the frame, not by a statistic.
+  let perr = null;
+  if (jw.interior) {
+    const ent = await call('enterInterior', jw.interior);
+    await call('stepFrames', 4);
+    const w2 = await call('whereAmI');
+    const inside = !!(w2.ok && w2.v && w2.v.interior);
+    if (!inside) perr = `NOT INSIDE '${jw.interior}': enterInterior ${ent.ok ? 'returned ' + JSON.stringify(ent.v).slice(0, 120) : 'failed: ' + ent.e}`;
+  }
+  perr = [perr, await poseCamera(setup)].filter(Boolean).join('; ') || null;
   await call('stepFrames', SETTLE);
   for (const cfgName of ORDER) {
     const dir = path.join(OUT, cfgName);
     // restore, then INSTALL this arm's forced configuration as the per-frame enforcer
     await g.page.evaluate(() => window.__restore());
-    await g.page.evaluate(`window.__cfgFn = (${CONFIGS[cfgName]});`);
+    await g.page.evaluate(`window.__cfgFn = (${cfgFn(cfgName)});`);
     // Three frames, not twelve. The camera does not move between arms, so F3's twelve-frame
     // camera-settle does not apply here; what does need frames is a shader recompile
     // (`shadows_off`) and one enforced pass. Twelve frames per arm advanced the sim by 144
@@ -458,7 +625,7 @@ for (const jw of JUDGED.filter((j) => !ONLY_PAIR || ONLY_PAIR.includes(j.pair)))
     execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', file, '-vf', `crop=${cw}:${ch}:${cx}:${cy}`, cropFile]);
     rows.push({
       config: cfgName, pair: jw.pair, setup: jw.setup, hour: jw.hour, what: jw.what,
-      pose_error: perr, frame: path.relative(REPO, file), crop_file: path.relative(REPO, cropFile),
+      pose_error: perr, weather: jw.weather || 'clear', interior: jw.interior || null, frame: path.relative(REPO, file), crop_file: path.relative(REPO, cropFile),
       frame_sha: crypto.createHash('sha256').update(buf).digest('hex').slice(0, 16),
       liveness: liveness.verdict, liveness_why: liveness.why && liveness.why.length ? liveness.why : null,
       stats: { mean_luma: st.mean_luma, sd_luma: st.sd_luma, p10: st.p10, p50: st.p50, p90: st.p90, span: st.span, mean_chroma: st.mean_chroma },
@@ -469,14 +636,52 @@ for (const jw of JUDGED.filter((j) => !ONLY_PAIR || ONLY_PAIR.includes(j.pair)))
     console.log(`  ${cfgName.padEnd(13)} ${jw.pair}  mean=${String(st.mean_luma).padStart(8)} sd=${String(st.sd_luma).padStart(7)} chroma=${String(st.mean_chroma).padStart(7)} ${liveness.verdict}  [${rb}]`);
   }
 }
+};
+try { await sweep(); }
+catch (e) {
+  aborted = { at_row: rows.length, error: String((e && e.message) || e).slice(0, 300) };
+  console.error(`\nSWEEP ABORTED after ${rows.length} row(s): ${aborted.error}`);
+  console.error('Rows captured before the abort are still written below — read `aborted` in forced.json.');
+}
 
-// deltas against shipped, per judged window
-const shipped = new Map(rows.filter((r) => r.config === 'shipped' && r._raw).map((r) => [r.pair, r._raw]));
+// deltas against each arm's declared base config, per judged window (default base: `shipped`)
+const byCfgPair = new Map(rows.filter((r) => r._raw).map((r) => [`${r.config}|${r.pair}`, r._raw]));
 for (const r of rows) {
   if (!r._raw) continue;
-  const base = shipped.get(r.pair);
+  const baseName = cfgBase(r.config);
+  const base = byCfgPair.get(`${baseName}|${r.pair}`);
+  r.delta_base = baseName;
   r.delta_vs_shipped = base ? { mean_abs_rgb: meanAbsDelta(r._raw, base) } : null;
   delete r._raw;
+}
+
+// The F4 acceptance, computed rather than left to a reader: per candidate, per window,
+// key_off delta / env_off delta, and the >= 2.0 verdict.
+const RATIO = {};
+for (const jw of WINDOWS) {
+  for (const fam of ['', ...Object.keys(CONFIGS)].filter((k) => k.endsWith('_key_off') || k === '')) {
+    const id = fam === '' ? 'shipped' : fam.replace(/_key_off$/, '');
+    const k = rows.find((r) => r.pair === jw.pair && r.config === (fam === '' ? 'key_off' : fam));
+    const e = rows.find((r) => r.pair === jw.pair && r.config === (fam === '' ? 'env_off' : `${id}_env_off`));
+    if (!k || !e || !k.delta_vs_shipped || !e.delta_vs_shipped) continue;
+    const kd = k.delta_vs_shipped.mean_abs_rgb, ed = e.delta_vs_shipped.mean_abs_rgb;
+    const bl = rows.find((r) => r.pair === jw.pair && r.config === id);
+    const sh = rows.find((r) => r.pair === jw.pair && r.config === 'shipped');
+    (RATIO[id] ||= {})[jw.pair] = {
+      key_off_delta: kd, env_off_delta: ed, ratio: +(kd / ed).toFixed(3),
+      passes_2x: kd >= 2 * ed,
+      mean_luma: bl ? bl.stats.mean_luma : null,
+      luma_vs_shipped: (bl && sh) ? +(bl.stats.mean_luma / sh.stats.mean_luma).toFixed(4) : null,
+      sd_vs_shipped: (bl && sh) ? +(bl.stats.sd_luma / sh.stats.sd_luma).toFixed(4) : null,
+      chroma_vs_shipped: (bl && sh) ? +(bl.stats.mean_chroma / sh.stats.mean_chroma).toFixed(4) : null,
+    };
+  }
+}
+console.log('\n--- F4 acceptance: key_off delta must be >= 2.0x env_off delta, in every judged window ---');
+for (const [id, byPair] of Object.entries(RATIO)) {
+  for (const [pair, v] of Object.entries(byPair)) {
+    console.log(`  ${id.padEnd(6)} ${pair}  key=${String(v.key_off_delta).padStart(8)} env=${String(v.env_off_delta).padStart(8)} ratio=${String(v.ratio).padStart(7)} ${v.passes_2x ? 'PASS' : 'fail'}   luma=${v.luma_vs_shipped}x sd=${v.sd_vs_shipped}x chroma=${v.chroma_vs_shipped}x of shipped`);
+  }
 }
 
 const out = {
@@ -484,11 +689,14 @@ const out = {
   what_this_is: 'F2/F1 diagnosis: the five judged Protocol A r2 windows re-rendered under forced render configurations. Crop boxes copied verbatim from the sealed pairing key.',
   renderer: attestation,
   evidence_class: attestation && attestation.class === 'HARDWARE' ? 'HARDWARE' : 'SOFTWARE — differential only, not an absolute appearance claim (HAZARDS §15)',
-  configs: Object.fromEntries(Object.keys(CONFIGS).map((k) => [k, CONFIGS[k]])),
+  configs: Object.fromEntries(Object.keys(CONFIGS).map((k) => [k, { fn: cfgFn(k), delta_base: cfgBase(k) }])),
   judged_windows: JUDGED.map(({ pair, setup, hour, crop, what }) => ({ pair, setup, hour, crop, what })),
+  preservation_windows: PRESERVE.map(({ pair, setup, hour, crop, what, weather, interior }) => ({ pair, setup, hour, crop, what, weather: weather || 'clear', interior: interior || null })),
+  f4_acceptance: { rule: 'key_off mean|d|rgb >= 2.0 x env_off mean|d|rgb, in ALL FIVE judged windows', by_config: RATIO },
+  aborted,
   rows,
 };
 fs.writeFileSync(path.join(OUT, 'forced.json'), JSON.stringify(out, null, 2));
 console.log(`\nwrote ${path.join(OUT, 'forced.json')}`);
-await g.close();
-process.exit(0);
+try { await g.close(); } catch { /* the browser is already gone; that is what `aborted` records */ }
+process.exit(aborted ? 4 : 0);

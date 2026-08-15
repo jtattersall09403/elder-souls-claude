@@ -47,7 +47,15 @@ export const LIGHTING_VARIANT_AXES = Object.freeze([
  */
 const EXTERIOR_RIG = Object.freeze({
   base: 'exterior',
-  key: 1.0,            // directional sun/moon multiplier
+  key: 1.0,            // directional SUN multiplier
+  // F4. The moon's own multiplier, and it exists because `key` could not reach it. `sky.js`
+  // computes `moon.intensity = night * (0.54 + (1-overcast)*0.28)` with no recipe term at all,
+  // while `sun.intensity = w.sunIntensity * max(0.02, day) * R.key` — so at 19:30, where
+  // `day = 0`, the sun is 2.1 * 0.02 * key and `night-moon`'s `key: 0.30` was scaling a light of
+  // intensity 0.0126 (measured in the live scene) while the light actually carrying the frame,
+  // the moon at 0.82, had no recipe lever on it at all. `key` was a dead parameter at night.
+  // 1.0 is exactly today's behaviour; only `night-moon` departs from it.
+  moon: 1.0,           // directional MOON multiplier
   keyWarmth: 0.0,      // -1 cools the key toward the sky, +1 warms it toward the horizon
   // WHY THE HEMISPHERE AND FILL ARE BELOW 1.0 AND THE SUN IS NOT. Before W1-30B the environment
   // probe was 128 clamped texels, baked once at boot and never rebuilt, and tagged sRGB while
@@ -76,6 +84,7 @@ const EXTERIOR_RIG = Object.freeze({
 const INTERIOR_RIG = Object.freeze({
   base: 'interior',
   key: 0.0,
+  moon: 0.0,           // there is no moon in a room; declared so both bases carry the same fields
   keyWarmth: 0.0,
   sky: 0.10,
   fill: 0.22,
@@ -127,13 +136,48 @@ export function knownLightingRecipes() { return [...REGISTRY.keys()].sort(); }
 // Full sun over open marsh. The key dominates, the sky is bright but not doing the key's job, and
 // the air is thin so the far bank is readable. Reference condition: everything else is read as a
 // departure from this.
+//
+// F4 (roadmap ring 1) — THESE FOUR NUMBERS ARE THE FIX, AND THE SENTENCE ABOVE WAS NOT TRUE WHEN
+// IT WAS WRITTEN. Measured on the exact 512x512 window five blind judges looked at
+// (`tools/visual/f2-why-forced.mjs`, pair01, 08:00 clear, crop copied from the sealed pairing
+// key), the shipped budget was: sun 19.1% of window luminance, the analytic sky probe 39.9%,
+// hemisphere+fill 8.0% — the light that CAN cast a shadow was 19% of the frame and the light that
+// CANNOT be occluded by anything was 46%. Turning off the entire 4096^2 sun shadow map moved the
+// judged pixels by 0.78 mean|d|rgb against an instrument noise floor of 1.25: less than re-taking
+// the same photograph. The probe moved them 21.79. That is why three green visual fixes lost a
+// blind comparison 5 of 5, twice.
+//
+// The acceptance F4 was given: `key_off` mean|d|rgb >= 2x `env_off` mean|d|rgb, in all five judged
+// windows. Before: 9.31 against 19.82, i.e. wrong way round by 2.1x. These numbers were chosen as
+// multipliers on the values below (key x3.0, env x0.35, sky and fill x0.75), measured as a forced
+// arm BEFORE they were written here, and the arm cleared it at 3.786 while the window got
+// BRIGHTER (mean luma 1.0555x shipped) and gained colour (mean chroma 1.1755x). The reason the
+// key can be tripled without washing the frame out is that it was never the thing making it
+// bright: the probe was.
+//
+// WHY x3 AND NOT x2.2. `sun_x3` measured +14.77 luma where linear predicts +22.60 — ACES tone
+// mapping takes a third of the key back at the top end — so a multiplier chosen off the linear
+// arithmetic lands short. The visible payoff is not brightness: at these values the building at
+// the pack's own pose CASTS A READABLE SHADOW ONTO THE GROUND, in a frame where the shipped build
+// renders the same ground flat. The shadow map was always there. Nothing could see it.
 registerLightingRecipe('noon-marsh', variantOf('exterior', {
-  key: 1.00, sky: 0.42, fill: 0.30, env: 1.00, envGroundBounce: 0.38,
+  key: 3.00, sky: 0.315, fill: 0.225, env: 0.35, envGroundBounce: 0.38,
   fog: { extinction: 0.90, height: 1.0, inscatter: 0.10 }, exposure: 1.0,
 }));
 
 // Low sun under canopy. The key is warm and weak because the leaves have it; the bounce is doing
 // most of the work and it is green. Long shadows want the far cascade, so shadow distance rises.
+//
+// F4 LOOKED AT THIS RECIPE AND REFUSED TO TOUCH IT, AND THE REFUSAL IS A MEASUREMENT, NOT A
+// SCOPE DECISION. `recipeForConditions()` selects this at 06:00 (dusk 1.00) and no judged window
+// selects it, so it was captured as one of F4's preservation windows. Under noon-marsh's new
+// multipliers the 06:00 frame went from mean luma 38.358 to 27.724 — 28% DARKER — with mean
+// chroma 22.002 to 13.112 (-40%) and full-frame p10 falling from 9.0 to 0.0, i.e. the bottom
+// tenth of the frame crushed to black. That is the failure noon-marsh's numbers avoid only
+// because at 08:00 `day = 1.0` and the key has something to give; here `day = 0.28`, so
+// `sun.intensity = 2.1 * 0.28 * 0.78 = 0.459` and tripling a key that small cannot pay for the
+// probe that was cut. A dusk balance needs its own measurement at its own hour, and until it has
+// one this recipe keeps the flat look F4 fixed at noon. Named, not smoothed over.
 registerLightingRecipe('dusk-canopy', variantOf('exterior', {
   key: 0.78, keyWarmth: 0.85, sky: 0.62, fill: 0.55, env: 0.95, envGroundBounce: 0.55,
   shadow: 1.25, fog: { extinction: 1.15, height: 1.25, inscatter: 0.55 }, exposure: 1.06,
@@ -164,7 +208,18 @@ registerLightingRecipe('night-moon', variantOf('exterior', {
   // hand their job to. Measured on an RTX A5000 with these at 0.60/0.55, a 19:30 street frame came
   // back at a mean luminance of 3.8/255, which is `RI-WLD04` M17 step 6's failure exactly: a frame
   // a judge cannot classify is not a dark frame, it is a missing frame.
-  key: 0.30, keyWarmth: -0.80, sky: 1.05, fill: 1.00, env: 0.75, envGroundBounce: 0.18,
+  // F4. `moon: 3.60` and `env: 0.195` are the night half of the key-light rebalance, and they are
+  // deliberately NOT noon-marsh's numbers. Measured at pair05 (19:30 clear, the fifth judged
+  // window): the shipped night ran key 2.64 against probe 4.65 — ratio 0.567, the same defect as
+  // noon. noon-marsh's multipliers applied here reached only 1.975, a miss, AND cost 16% of the
+  // window's chroma, because at night the hemisphere and the fill are not padding: the recipe's
+  // own note above says they carry the REGION's hue, and cutting them is what makes a night
+  // unclassifiable. So the night raises the key harder, cuts the probe harder, and leaves `sky`
+  // and `fill` exactly where they were. Measured at these values: ratio 2.757, mean luma 1.008x
+  // shipped, sd 1.0015x. `key` stays at 0.30 on purpose — it scales a sun of intensity 0.0126 at
+  // this hour, and raising it would also multiply the probe bake's `sunGain`, which is a change
+  // the arm did not measure.
+  key: 0.30, moon: 3.60, keyWarmth: -0.80, sky: 1.05, fill: 1.00, env: 0.195, envGroundBounce: 0.18,
   // AND WHY `exposure` IS THE BIG NUMBER HERE RATHER THAN `sky`/`fill`. Measured on an L4 at
   // 19:30, a Gideon street frame comes back at a mean luminance of about 6/255 and a Blackwood
   // vista at about 3/255 — `RI-WLD04` M17 step 6's "a frame a judge cannot classify is not a dark
@@ -228,7 +283,7 @@ export function resolveLightingRecipe(id, variant = {}) {
   const s = Number.isFinite(variant.intensity) ? variant.intensity : 1;
   return Object.freeze({
     ...recipe,
-    key: recipe.key * s, sky: recipe.sky * s, fill: recipe.fill * s, env: recipe.env * s,
+    key: recipe.key * s, moon: (recipe.moon ?? 1) * s, sky: recipe.sky * s, fill: recipe.fill * s, env: recipe.env * s,
     regionTint: variant.regionTint ?? null,
     timeOfDay: Number.isFinite(variant.timeOfDay) ? variant.timeOfDay : null,
     weather: variant.weather ?? null,
