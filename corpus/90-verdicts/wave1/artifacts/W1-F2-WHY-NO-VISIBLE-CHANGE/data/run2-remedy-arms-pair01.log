@@ -1,0 +1,21 @@
+composite reachable: true   sun light found: true name=(unnamed) shadowMap=4096
+  shipped       pair01  mean= 59.1417 sd=29.8991 chroma= 25.067 LIVE  [sun=2.1 shm=1 hemi=5.1248 env=1@1 fog=1 ext=142.85 aoCap=0.6]
+  shadows_off   pair01  mean= 59.0793 sd=30.1553 chroma=25.4611 LIVE  [sun=2.1 shm=0 hemi=5.1248 env=1@1 fog=1 ext=142.85 aoCap=0.6]
+  ao_full       pair01  mean= 54.4642 sd=30.9175 chroma=24.2036 LIVE  [sun=2.1 shm=1 hemi=5.1248 env=1@1 fog=1 ext=142.85 aoCap=1]
+  sun_off       pair01  mean= 48.6269 sd=32.0814 chroma=20.9809 LIVE  [sun=0 shm=1 hemi=5.1248 env=1@1 fog=1 ext=142.85 aoCap=0.6]
+  env_off       pair01  mean= 36.3613 sd= 28.168 chroma=17.9408 LIVE  [sun=2.1 shm=1 hemi=5.1248 env=0@1 fog=1 ext=142.85 aoCap=0.6]
+  indirect_off  pair01  mean= 32.8859 sd=28.6151 chroma=15.5333 LIVE  [sun=2.1 shm=1 hemi=0 env=0@1 fog=1 ext=142.85 aoCap=0.6]
+  fog_off       pair01  mean=190.6335 sd= 16.161 chroma=25.1681 LIVE  [sun=2.1 shm=1 hemi=0.4948 env=1@1 fog=1 ext=142.85 aoCap=0.6]
+  shadow_tight  pair01  mean= 57.2138 sd=30.3678 chroma= 25.802 LIVE  [sun=2.1 shm=1 hemi=0.4948 env=1@1 fog=1 ext=24 aoCap=0.6]
+  sun_dominant  pair01  mean= 53.5619 sd=27.0529 chroma=25.7423 LIVE  [sun=4.620000000000001 shm=1 hemi=0.1732 env=1@0.35 fog=1 ext=142.85 aoCap=0.6]
+  shipped_recheck pair01  mean= 57.0971 sd=  30.41 chroma= 25.936 LIVE  [sun=2.1 shm=1 hemi=0.4948 env=1@1 fog=1 ext=142.85 aoCap=0.6]
+  shipped       pair02  mean= 48.3364 sd=20.9161 chroma=29.9949 LIVE  [sun=2.1 shm=1 hemi=0.4948 env=1@1 fog=1 ext=142.85 aoCap=0.6]
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: Target page, context or browser has been closed
+    at call (/home/user/elder-souls-claude/tools/visual/f2-why-forced.mjs:322:28)
+    at /home/user/elder-souls-claude/tools/visual/f2-why-forced.mjs:415:24
+
+Node.js v22.22.2

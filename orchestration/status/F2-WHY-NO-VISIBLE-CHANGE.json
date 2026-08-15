@@ -1,0 +1,137 @@
+{
+  "task_id": "F2-WHY-NO-VISIBLE-CHANGE",
+  "role": "diagnosis",
+  "roadmap_item": "F2 / F1 diagnosis, ring 1",
+  "commissioned_by": "orchestration/status/I3-PROTOCOL-A-R2-RESULT.json",
+  "state": "answered — diagnosis complete, remedy named with an acceptance number, nothing built",
+  "at": "2026-08-15T15:20:00Z",
+  "base_commit_at_start": "8581f8a6",
+
+  "WHAT_I_COULD_NOT_DO_STATED_FIRST": [
+    "EVERY FRAME IN THIS PIECE IS SWIFTSHADER, NOT HARDWARE. This is a DIFFERENTIAL experiment — all arms of one window run in one process on one renderer with one pose — which is the construction HAZARDS §15 permits and which W1-F3 showed replicates hardware to three decimals on this exact pipeline. It is NOT an absolute appearance claim, and the remedy's acceptance number must be re-measured on a Pod before anything is judged against it. `tools/visual/f2-why-forced.mjs --gpu hardware` is the flag; I did not rent a Pod, because the question is a ratio between arms and a ratio is what software rendering preserves.",
+    "ONLY pair01 CARRIES THE FULL SIXTEEN-ARM SET. The light-budget arms (`sun_off`, `env_off`, `ambient_off`, `indirect_off`, `sun_x3`, `sun_dominant`, `shadow_tight`) were measured on pair01 only. pair02–pair05 carry `shipped`, `cell_lights_off`, `cell_lights_off_ao_full` and `shipped_recheck` and were still running when this landed. The single-window result should be treated as strong for pair01 and as a prediction for the other four. Re-running `node tools/visual/f2-why-forced.mjs` with no `--configs` completes it in about 70 minutes.",
+    "I LOST 68 OF 80 ROWS OF THE FIRST COMPLETE RUN and had to re-run. `fog_off` set `scene.fog = null`; a later consumer reads `fog.color` and threw inside `screenshot()`, and because the arm is re-applied every frame the page stayed poisoned for every subsequent arm and window. Fixed by zeroing the density instead, and the errored rows now log rather than being silently skipped. The `fog_off` arm as it stands is still an INSTRUMENT ARTEFACT and not usable evidence: density 0 makes the HeightFog return a near-white frame (mean luma 190.63, sd 16.16). Fog's real contribution is UNMEASURED.",
+    "THE FIRST TWO VERSIONS OF THIS TOOL PRODUCED SILENT NO-OP ARMS AND I ALMOST REPORTED THEM. `sky.apply()` rewrites the sun, hemisphere, ambient fill, fog and probe EVERY frame from the region/time recipe, and `renderer.shadowMap.enabled` is compiled into every material program. So one-shot edits were gone before the screenshot. Caught by an impossible number — `sun_x3` came back DARKER than `indirect_off` — not by reasoning. Every arm is now a per-frame enforcer with a readback recorded in its own row, and `sun_off`/`sun_x3` are the positive control that proves the mechanism (sun_x3 reads back at exactly 6.300 = 3 x 2.100, so it neither failed nor compounded).",
+    "I DID NOT MEASURE MATERIAL DIFFERENTIATION DIRECTLY. The judges' first finding — 'thatch, plaster, stone and ground all return light identically' — is here explained as a consequence of the light budget, and that explanation is REASONED, not measured. I did not build the arm that would test it (render each on-screen material's albedo/roughness under a dominant key and measure the rendered spread). What I did measure is that the material DATA is genuinely differentiated in the live scene: 53 distinct materials on screen, roughness spanning 0.30 to 0.97, all carrying albedo and normal maps.",
+    "I DID NOT RE-RUN A BLIND JUDGEMENT. This piece explains a blind loss; it does not produce a new one. Nothing here should be read as evidence that a remedy would win."
+  ],
+
+  "THE_ANSWER_IN_ONE_PARAGRAPH": "The three fixes are all working. They are being applied to a frame in which the one light that can cast a shadow supplies 19.1% of the luminance and 45.7% comes from indirect sources that cannot be shadowed or occluded by anything. Measured on the judged window of pair01, the mean absolute RGB delta against the shipped configuration is 21.79 for turning off the sky's image-based-lighting probe, 24.57 for turning off all indirect light, and 0.78 for turning off the ENTIRE sun shadow map and 0.92 for turning off F2's ambient occlusion. The instrument's own noise floor — the shipped configuration re-captured four arms later from the same pose — is 1.25. So BOTH of the things the five judges named as absent move the judged pixels LESS THAN RE-TAKING THE SAME PICTURE DOES, while the un-occludable ambient dome moves them 17x the noise floor. That is not a fix that failed to land. It is a fix landing on 19% of a frame.",
+
+  "the_three_candidate_causes_the_brief_named_ruled_one_by_one": {
+    "1_the_AO_is_throttled_where_this_pack_looks": "PARTLY TRUE AND NOT THE CAUSE. F2's AO is live in the judged window and its shipped setting is genuinely tiny: `ao_off` moves the window by 0.92 mean|d|rgb, BELOW the 1.25 noise floor. Releasing the cap to 1.0 and the radius to 1.2 m (`ao_full`) moves it by 6.04 — five times the floor, so the cap really is throttling it. BUT I OPENED THE IMAGE AND IT IS NOT BETTER. `ao_full` darkens the roof and the building's edges and makes the derivative-normal terrain artefact WORSE — the dashed facet grid F2's builder capped it to hide becomes the most prominent feature of the ground. It still produces no darkening where the building meets the ground. So uncapping alone is not the remedy; F2's own named limitation — a G-buffer normal target — is a precondition, not an optional follow-up.",
+    "2_the_captured_scenes_may_not_exercise_the_20_material_sets": "TRUE, AND SHARPER THAN THE BRIEF PUT IT. F1 is not a world-material fix at all. Read at `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` and `corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md`: its `orphans_by_category` is `actor (npc) 195, building 95, player 14, other 1` in the closing run (`actor 211, building 95, player 14, other 1` in the earlier run the brief's 321/422 figure comes from). So 68.5% of what F1 fixed was CHARACTER material — and the sealed pairing key records, for pairs 01, 03 and 04, 'no character in either window'. I opened all five of our crops and confirmed it: not one contains a character. TERRAIN HAD ZERO ORPHANS: `intact_by_category` lists `terrain: 5`, all of them already intact. Terrain is the majority of three of the five judged windows. F1's builder wrote the rest himself: the 101 intact materials have 'both of its variant axes pinned at zero in the shipped build — terrain is worldMaterial(\\'mud\\',{vertexColors:true}) with no wear, and nothing ever calls setWorldWetness()'. F1 could not have changed a pixel of pairs 01/03/04 and could at most have touched the building materials in 02/05.",
+    "3_something_later_in_the_post_chain_flattens_both": "REFUTED AS THE CAUSE, THOUGH THE GRADE IS DOING MOST OF THE COLOUR. `grade_off` moves the window by 1.73 and `post_off` by 1.90 — both barely above the noise floor, so neither is crushing anything. What the grade IS doing is carrying the colour: with it off, mean chroma in the judged window falls from 25.07 to 14.97 (measured in the first run, whose grade arm applied). The raw render is MORE monochrome than what ships, so the grade is compensating for the flatness rather than causing it."
+  },
+
+  "the_light_budget_measured_at_the_packs_own_pose": {
+    "window": "pair01 = char-player, 08:00 clear, crop 300,150,512,512 — the crop box copied verbatim from the sealed pairing key, not re-chosen",
+    "shipped_mean_luma": 59.14,
+    "rows": [
+      { "arm": "sun_off — the ONLY shadow-casting light reaching this frame", "mean_luma": 47.84, "contribution_luma": 11.30, "share_of_frame": "19.1%", "mean_abs_rgb_vs_shipped": 10.51 },
+      { "arm": "env_off — scene.environment, the analytic sky IBL probe", "mean_luma": 35.56, "contribution_luma": 23.58, "share_of_frame": "39.9%", "mean_abs_rgb_vs_shipped": 21.79 },
+      { "arm": "ambient_off — the sky's HemisphereLight + AmbientLight", "mean_luma": 54.39, "contribution_luma": 4.75, "share_of_frame": "8.0%", "mean_abs_rgb_vs_shipped": 4.45 },
+      { "arm": "indirect_off — probe + hemisphere + ambient together", "mean_luma": 32.14, "contribution_luma": 27.00, "share_of_frame": "45.7%", "mean_abs_rgb_vs_shipped": 24.57 }
+    ],
+    "the_ratio_that_matters": "indirect 27.00 luma against key 11.30 luma — the un-shadowable light is 2.4x the light that can cast a shadow.",
+    "why_that_indirect_light_cannot_be_occluded": "TWO independent reasons, both read out of the repo and confirmed against the live scene. (a) `scene.environment` is baked by `bakeEnvironmentProbe()` in `game/src/render/sky.js` and its own comment says what it is: an analytic zenith/horizon/ground-bounce dome with 'no terrain, no settlement and no canopy in this probe'. It delivers the same irradiance to a surface in a doorway as to one in open ground. (b) `worldMaterial()` in `game/src/render/visual-foundation.js` sets `aoMap: authored ? null : ...` and every one of the twenty families has an authored set, so aoMap is null on every material in the game. Confirmed live rather than inferred: of the 53 materials resident on screen at this pose, `hasAoMap` is false on 53 of 53. The ONLY occlusion term in the whole pipeline is F2's screen-space pass in the composite, which is capped at 0.6 with a 0.42 m radius and moves this window by 0.92."
+  },
+
+  "the_delta_table_that_is_the_finding": {
+    "what_it_is": "mean absolute RGB difference against the shipped configuration, over the exact 512x512 window five blind judges looked at. 0-255 scale. Every arm's readback is recorded in the row so an arm that failed to apply is visible as data.",
+    "noise_floor": 1.25,
+    "noise_floor_how": "`shipped_recheck` — the shipped configuration re-captured after three other arms from an unmoved camera. Any delta below this is not distinguishable from re-taking the same picture.",
+    "ordered": [
+      { "arm": "cell_lights_off", "delta": 0.51, "verdict": "BELOW NOISE — hypothesis refuted, see below" },
+      { "arm": "shadows_off — the entire sun shadow map, 4096x4096", "delta": 0.78, "verdict": "BELOW NOISE" },
+      { "arm": "ao_off — F2, at its shipped settings", "delta": 0.92, "verdict": "BELOW NOISE" },
+      { "arm": "gi_off — F3's ambient fill", "delta": 1.51, "verdict": "at the floor" },
+      { "arm": "grade_off", "delta": 1.73, "verdict": "at the floor" },
+      { "arm": "post_off — bloom, white balance, vignette", "delta": 1.90, "verdict": "at the floor" },
+      { "arm": "ambient_off", "delta": 4.45, "verdict": "3.6x floor" },
+      { "arm": "ao_full — F2 uncapped, radius 1.2 m", "delta": 6.04, "verdict": "4.8x floor, and WORSE to look at" },
+      { "arm": "sun_off", "delta": 10.51, "verdict": "8.4x floor" },
+      { "arm": "sun_x3", "delta": 13.20, "verdict": "10.6x floor" },
+      { "arm": "env_off — the sky IBL probe", "delta": 21.79, "verdict": "17.4x floor" },
+      { "arm": "indirect_off", "delta": 24.57, "verdict": "19.7x floor" }
+    ],
+    "the_sentence": "The sky's ambient dome moves the judged pixels 28 times as much as the sun's entire shadow map does."
+  },
+
+  "a_hypothesis_i_formed_and_my_own_arm_refuted": {
+    "what_i_thought": "The live probe found SIX DirectionalLights visible in the exterior frame with a summed intensity of 7.700, of which the sun is only 2.100 (27.3%). The other 5.600 belongs to `arena-warm-raking-key` (game/src/render/scene.js:286) and three keys from `game/src/render/places.js`, every one of them aimed at a 5-40 m shadow box centred on the WORLD ORIGIN — thousands of metres from the player — with `mapAllocated: false`. `grep -n layers game/src/render/scene.js game/src/render/interior.js` returns nothing, so nothing masks them by layer. It looked like a large, cheap, one-line win: four unshadowable art keys filling in exactly the shadows the sun casts.",
+    "what_the_arm_said": "`cell_lights_off` hides every Hemisphere/Ambient/Directional light that is not a direct child of the scene root. It works — the readback shows the directional count fall from 5 to 1 and the total from 7.700 to 2.100 — and the judged window moved by 0.51 mean|d|rgb, BELOW the 1.25 noise floor. They contribute nothing.",
+    "why": "`renderer.js:498 setCell()` does `for (const k of Object.keys(this.cells)) this.cells[k].visible = (k === name)`, and `scene.js:95` hides every prop group at build. Those lights sit inside groups whose `visible` is false, so three.js's `projectObject` never gathers them. My probe listed them because it checked each light's own `visible` and not its ancestors'.",
+    "why_this_is_recorded_rather_than_deleted": "It is exactly the shape of claim this repo has been burned by — a striking number, read off a live scene, that would have been true of the scene graph and false of the frame. It cost one arm to refute and it would have cost a builder a day."
+  },
+
+  "why_each_instrument_was_green_and_none_of_them_predicted_this": {
+    "F1": "`tools/visual/w1-30-surface-orphan-census.mjs` counts materials carrying orphaned `userData.surfaceUniforms` across the WHOLE scene. 305 of 406 really did go to 0. It cannot distinguish a material that is on screen from one that is not, and 68.5% of what it counted was character material excluded from every judged window by construction.",
+    "F2": "`tools/visual/w1-v2-contact-ao.mjs` measures a 16 px band on the `material_showcase` fixture — an authored wall-on-plinth at camera distance 2.6 m, 1280x720, with the pixel rows hardcoded. The contact ratio 0.722 is real ON THAT FIXTURE. The judged windows are production terrain and architecture at mid distance at 1920x1080, where a 0.42 m world-space AO radius subtends a handful of pixels.",
+    "F3": "`tools/visual/w1-f3-ambient-fill.mjs` measures `town-thorn` at viewpoint VP04, camera [3859,15,860], 09:00 clear. The pack is `western-rootlands` at [2766,5011] at 08:00/13:00/19:30. F3's own status file already said this: 'the blind pack sits in the [measurement regime] F3 has not been measured in'.",
+    "the_common_defect": "NOT ONE OF THE THREE WAS EVER MEASURED IN THE PACK'S OWN FRAMES. Each measured a quantity chosen by its own builder over a region chosen by its own builder, and each was right about that quantity. This is the doctrine line with a number attached: a statistic can fail a build and can never pass one — and it cannot even fail one it is not pointed at."
+  },
+
+  "did_any_forced_configuration_look_obviously_better": {
+    "answer": "NO, AND THIS IS THE MOST USEFUL THING IN THE PIECE. I opened every one.",
+    "sun_x3": "brighter and if anything FLATTER — the building washes out, and there is still no cast shadow anywhere.",
+    "sun_dominant": "sun x2.2, hemisphere and ambient x0.35, environmentIntensity 0.35 — i.e. the whole rebalance in one arm. Moodier, slightly more contrast under the eaves, and side by side with shipped at 512x512 the two are hard to tell apart. Still no cast shadow.",
+    "shadow_tight": "the sun's shadow volume refitted from a 142.85 m half-extent to 24 m — a six-fold resolution gain, 1.2 cm per texel — changes nothing visible. So the shadow FIT is not the defect and should not be built.",
+    "ao_full": "actively worse; the terrain facet grid becomes the dominant feature of the ground.",
+    "shadows_off": "indistinguishable from shipped, which is the whole finding.",
+    "env_off": "the largest change by far and the most informative image in the piece: at 12x amplification the difference between shipped and env_off covers the ENTIRE frame uniformly — every surface, at every distance, blown out — while the same amplification of shipped-vs-shadows_off is almost entirely black with the only lit pixels on the player and the boards directly beneath it. Those two images side by side are the diagnosis.",
+    "what_it_means": "The gap is not a knob set wrong. Rebalancing the budget is necessary and is not sufficient, because in these frames there is also almost nothing casting into the window and the terrain is a near-flat plane with an almost uniform vertex colour. A remedy that only turns the ambient down produces a darker version of the same flat picture."
+  },
+
+  "THE_REMEDY_NAMED_AND_BUILDABLE": {
+    "ranking": "The shipped LIGHTING BALANCE is the defect. F1, F2 and F3 are not defective and should not be reworked or reverted.",
+    "R1_make_the_key_dominant": {
+      "where": "the lighting recipes in `game/src/render/lib/lighting-recipes.js` and `sky.js`'s `apply()` — `envGroundBounce`/probe gain, `this.hemi.intensity`, `this.fill.intensity`, and the sun's own scale.",
+      "acceptance_number": "In all five judged windows, `sun_off` mean|d|rgb must be at least 2x `env_off` mean|d|rgb. Today it is the wrong way round by 2.1x (10.51 against 21.79). Equivalently: the direct key must supply >= 50% of window luminance; today 19.1%.",
+      "instrument": "`node tools/visual/f2-why-forced.mjs --configs shipped,sun_off,env_off,indirect_off,shipped_recheck` — already built, already measured at baseline, and it reports its own noise floor.",
+      "risk_named": "Turning the ambient down without raising the key darkens the game rather than shaping it. `sun_dominant` is the arm that shows this and it is NOT a pass."
+    },
+    "R2_make_the_remaining_ambient_occludable": {
+      "where": "`game/src/render/post/composite.js` — the AO term currently multiplies the FINAL composite colour (`c *= occ`) after the GI fill and before bloom. It should attenuate the ambient/IBL portion specifically, and it needs a real normal.",
+      "precondition": "The G-BUFFER NORMAL TARGET F2 named as its own unsolved limitation, and this piece is the evidence that it is a blocker rather than a nicety: `ao_full` proves the 0.6 cap is what is throttling the term (6.04 against 0.92) and the image proves that lifting the cap on derivative normals produces a facet grid instead of contact shadow.",
+      "acceptance_number": "`shadows_off` and `ao_off` must EACH move all five judged windows by at least 8.0 mean|d|rgb — 6.4x the current noise floor. Today they are 0.78 and 0.92, both below it.",
+      "cheaper_partial_worth_pricing_first": "bind a real `aoMap` on the authored path. `worldMaterial()` sets `aoMap: authored ? null : ...`, so every authored family — which is all twenty — ships with none. Sixteen of the twenty sets are CC0 photogrammetry and most such sets carry an AO map already."
+    },
+    "R3_the_material_finding_is_downstream_of_R1_and_should_not_get_its_own_piece_yet": "The material DATA is differentiated (53 distinct on-screen materials, roughness 0.30-0.97, all with albedo and normal maps). Roughness and normal detail are only visible under a dominant directional key; under a near-uniform dome a rough surface and a smooth one integrate to nearly the same value. Re-measure the judges' first finding AFTER R1 lands, not before.",
+    "what_should_NOT_be_built": [
+      "A tighter shadow-camera fit. Measured: a six-fold resolution gain changes nothing.",
+      "Layer-masking the cell lights. Measured: they contribute 0.51, below the noise floor. They are already gated by `setCell()`.",
+      "A fourth feature on top of F1/F2/F3. All three work."
+    ]
+  },
+
+  "tools_built": [
+    "tools/visual/f2-why-probe.mjs — reads the live scene at the pack's own five setups: every light with its intensity and shadow-camera fit, the renderer's shadow state, the environment/fog state, and every material resident in the camera frustum with its maps and its cast/receive flags. A state probe, so valid on SwiftShader.",
+    "tools/visual/f2-why-forced.mjs — re-renders the five judged windows under forced configurations, crops the exact sealed-key windows, and reports per-window statistics plus a per-arm READBACK of the live values at capture time. Carries its own noise floor (`shipped_recheck`) and its own positive control (`sun_off`/`sun_x3`). `--configs` and `--pairs` narrow it; `--gpu hardware` runs it on a Pod."
+  ],
+
+  "evidence": {
+    "root": "corpus/90-verdicts/wave1/artifacts/W1-F2-WHY-NO-VISIBLE-CHANGE/",
+    "the_two_images_that_are_the_diagnosis": [
+      "diffs/pair01__shipped-vs-shadows_off__x12.png — the entire sun shadow map, amplified 12x: almost entirely black, with the only affected pixels on the player and the boards under it. Nothing on the ground, nothing at the building's base.",
+      "diffs/pair01__shipped-vs-env_off__x12.png — the sky probe at the same amplification: the whole frame, every surface, blown out."
+    ],
+    "crops": "crops/pair01__<arm>.png — the judged 512x512 window under twelve forced configurations, so a reader can open them rather than read a number.",
+    "data": "data/forced-pair01-full.json (16 arms, pair01), data/forced-remedy.json, data/probe.json"
+  },
+
+  "files_claimed": [
+    "orchestration/status/F2-WHY-NO-VISIBLE-CHANGE.json",
+    "tools/visual/f2-why-probe.mjs",
+    "tools/visual/f2-why-forced.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F2-WHY-NO-VISIBLE-CHANGE/"
+  ],
+  "files_touched": [
+    "orchestration/status/F2-WHY-NO-VISIBLE-CHANGE.json",
+    "tools/visual/f2-why-probe.mjs",
+    "tools/visual/f2-why-forced.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F2-WHY-NO-VISIBLE-CHANGE/"
+  ],
+
+  "next_step": "R1 is the next dispatch and it is a lighting-recipe piece, not a post-processing one. It must be built against `tools/visual/f2-why-forced.mjs` with the acceptance number above, on hardware, and its builder must open the frames. R2 is blocked on the G-buffer normal target and should be priced before it is dispatched. Do NOT re-run Protocol A until R1 has landed and been measured: r2 already showed that re-judging a build whose judged pixels have not moved costs five judges and tells you nothing."
+}
