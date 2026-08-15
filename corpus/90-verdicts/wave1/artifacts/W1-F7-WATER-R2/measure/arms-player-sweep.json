@@ -1,0 +1,593 @@
+{
+  "tool": "f7-r2-sweep",
+  "site": "vista-deep-marshes",
+  "generated": "2026-08-15T19:22:59.067Z",
+  "seed": 20260814,
+  "time_of_day": 13,
+  "canvas": [
+    960,
+    540
+  ],
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "null_control_constant": 0.086,
+  "commit": "8cde4128ecbf744f3f720c58e79369911fe0785c",
+  "player": [
+    3123.5,
+    1.16,
+    3715
+  ],
+  "deck_declared_region": "deep-marshes",
+  "region_probe": {
+    "field_region": "deep-marshes",
+    "getWaterAt": {
+      "depth_m": 0.717,
+      "band": "W3",
+      "substrate": "SUCK",
+      "region": "deep-marshes",
+      "region_name": "The Deep Marshes",
+      "sea": null,
+      "tidal": false,
+      "k": 4.5,
+      "ground_y": 1.163,
+      "surface_y": 1.88
+    }
+  },
+  "head_expression_asserted": "PASS — game/src/render/water.js contains the round-2 weight verbatim",
+  "arms": {
+    "surface-hidden": {
+      "what": "POSITIVE CONTROL and WATER_MASK source — the water table hidden",
+      "kind": "mesh",
+      "poses": {
+        "b-pitch-55-d50": {
+          "why": "half-way down"
+        },
+        "e-eye-yaw090": {
+          "why": "eye level — water as a player meets it"
+        },
+        "h-grazing-2": {
+          "why": "nearly on the surface — the case the round-1 fix deliberately did not move"
+        }
+      },
+      "meshes_hidden": 48
+    },
+    "water-hidden": {
+      "what": "both water classes hidden — the M12 WATER_MASK source and the probe mask",
+      "kind": "mesh",
+      "poses": {
+        "b-pitch-55-d50": {
+          "why": "half-way down",
+          "masked": {
+            "water_mask_pct_of_frame": 0.9,
+            "water_px_in_crop": 1094,
+            "mean_luma": 31.666,
+            "band_rms": 13.9322,
+            "band_contrast": 0.43997,
+            "lanes_on_water": null
+          }
+        },
+        "e-eye-yaw090": {
+          "why": "eye level — water as a player meets it",
+          "masked": {
+            "water_mask_pct_of_frame": 0.9,
+            "water_px_in_crop": 4182,
+            "mean_luma": 35.103,
+            "band_rms": 15.5987,
+            "band_contrast": 0.44437,
+            "lanes_on_water": null
+          }
+        },
+        "h-grazing-2": {
+          "why": "nearly on the surface — the case the round-1 fix deliberately did not move",
+          "masked": {
+            "water_mask_pct_of_frame": 0.41,
+            "water_px_in_crop": 1638,
+            "mean_luma": 34.459,
+            "band_rms": 14.1221,
+            "band_contrast": 0.40983,
+            "lanes_on_water": null
+          }
+        }
+      },
+      "meshes_hidden": 94
+    },
+    "fixed": {
+      "what": "HEAD — the round-2 Schlick weight, no edit",
+      "kind": "shader",
+      "poses": {
+        "b-pitch-55-d50": {
+          "why": "half-way down",
+          "masked": {
+            "water_mask_pct_of_frame": 74.78,
+            "water_px_in_crop": 181895,
+            "mean_luma": 65.435,
+            "band_rms": 9.5132,
+            "band_contrast": 0.14538,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": 46,
+              "lane_power": 4.5032,
+              "lane_aniso": 1.52,
+              "lane_power_normalised": 0.001052
+            }
+          },
+          "m12": {
+            "water_mask_px": 392114,
+            "water_mask_pct": 75.64,
+            "sequence_frames": 0,
+            "values": {
+              "water_px": 392114,
+              "water_frac": 0.75639,
+              "FresnelDelta": 0.06447,
+              "NormalEnergy": null,
+              "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+              "ShoreDelta": 0.03137,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": null
+            },
+            "band_verdict": {
+              "FresnelDelta": "PASS (>= 0.05)",
+              "NormalEnergy": "UNMEASURABLE (0 fail-closed)",
+              "ShoreDelta": "PASS (>= 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "UNMEASURABLE (0 fail-closed)"
+            }
+          }
+        },
+        "e-eye-yaw090": {
+          "why": "eye level — water as a player meets it",
+          "masked": {
+            "water_mask_pct_of_frame": 58.22,
+            "water_px_in_crop": 150949,
+            "mean_luma": 71.108,
+            "band_rms": 11.5518,
+            "band_contrast": 0.16245,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": 0,
+              "lane_power": 33.386,
+              "lane_aniso": 4.54,
+              "lane_power_normalised": 0.006603
+            }
+          },
+          "m12": {
+            "water_mask_px": 306557,
+            "water_mask_pct": 59.14,
+            "sequence_frames": 0,
+            "values": {
+              "water_px": 306557,
+              "water_frac": 0.59135,
+              "FresnelDelta": 0.01597,
+              "NormalEnergy": 0.1579,
+              "normalReason": null,
+              "ShoreDelta": 0.01393,
+              "ReflCorr": null,
+              "reflReason": "only 3 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                3,
+                136
+              ],
+              "downward_rows": [
+                406,
+                539
+              ],
+              "normal_window": {
+                "x": 352,
+                "y": 320,
+                "k": 128
+              }
+            },
+            "band_verdict": {
+              "FresnelDelta": "FAIL (< 0.05)",
+              "NormalEnergy": "PASS (>= 0.035)",
+              "ShoreDelta": "FAIL (< 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "UNMEASURABLE (0 fail-closed)"
+            }
+          }
+        },
+        "h-grazing-2": {
+          "why": "nearly on the surface — the case the round-1 fix deliberately did not move",
+          "masked": {
+            "water_mask_pct_of_frame": 48.42,
+            "water_px_in_crop": 118260,
+            "mean_luma": 85.461,
+            "band_rms": 13.7384,
+            "band_contrast": 0.16076,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": -86,
+              "lane_power": 20.0987,
+              "lane_aniso": 1.84,
+              "lane_power_normalised": 0.002752
+            }
+          },
+          "m12": {
+            "water_mask_px": 254030,
+            "water_mask_pct": 49,
+            "sequence_frames": 0,
+            "values": {
+              "water_px": 254030,
+              "water_frac": 0.49003,
+              "FresnelDelta": 0.02358,
+              "NormalEnergy": 0.37473,
+              "normalReason": null,
+              "ShoreDelta": 0.0574,
+              "ReflCorr": null,
+              "reflReason": "only 2 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                3,
+                136
+              ],
+              "downward_rows": [
+                406,
+                539
+              ],
+              "normal_window": {
+                "x": 400,
+                "y": 304,
+                "k": 128
+              }
+            },
+            "band_verdict": {
+              "FresnelDelta": "FAIL (< 0.05)",
+              "NormalEnergy": "PASS (>= 0.035)",
+              "ShoreDelta": "PASS (>= 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "UNMEASURABLE (0 fail-closed)"
+            }
+          }
+        }
+      }
+    },
+    "prefix": {
+      "what": "round 1 as shipped (b0f3224e): weight = .25 + max(pow(1-esView,2.2), smoothstep(10,52,d)*.72*(1-esView)) * .50",
+      "kind": "shader",
+      "poses": {
+        "b-pitch-55-d50": {
+          "why": "half-way down",
+          "masked": {
+            "water_mask_pct_of_frame": 75.36,
+            "water_px_in_crop": 183097,
+            "mean_luma": 79.928,
+            "band_rms": 10.5744,
+            "band_contrast": 0.1323,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": 18,
+              "lane_power": 7.1351,
+              "lane_aniso": 1.59,
+              "lane_power_normalised": 0.001117
+            }
+          },
+          "m12": {
+            "water_mask_px": 394435,
+            "water_mask_pct": 76.09,
+            "sequence_frames": 0,
+            "values": {
+              "water_px": 394435,
+              "water_frac": 0.76087,
+              "FresnelDelta": 0.0225,
+              "NormalEnergy": 0.22924,
+              "normalReason": null,
+              "ShoreDelta": 0.06185,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 768,
+                "y": 144,
+                "k": 128
+              }
+            },
+            "band_verdict": {
+              "FresnelDelta": "FAIL (< 0.05)",
+              "NormalEnergy": "PASS (>= 0.035)",
+              "ShoreDelta": "PASS (>= 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "UNMEASURABLE (0 fail-closed)"
+            }
+          }
+        },
+        "e-eye-yaw090": {
+          "why": "eye level — water as a player meets it",
+          "masked": {
+            "water_mask_pct_of_frame": 58.54,
+            "water_px_in_crop": 151034,
+            "mean_luma": 85.511,
+            "band_rms": 12.2021,
+            "band_contrast": 0.1427,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": 0,
+              "lane_power": 56.0959,
+              "lane_aniso": 5.96,
+              "lane_power_normalised": 0.007672
+            }
+          },
+          "m12": {
+            "water_mask_px": 306859,
+            "water_mask_pct": 59.19,
+            "sequence_frames": 0,
+            "values": {
+              "water_px": 306859,
+              "water_frac": 0.59193,
+              "FresnelDelta": -0.0638,
+              "NormalEnergy": 0.13732,
+              "normalReason": null,
+              "ShoreDelta": 0.04523,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 352,
+                "y": 320,
+                "k": 128
+              }
+            },
+            "band_verdict": {
+              "FresnelDelta": "FAIL (< 0.05)",
+              "NormalEnergy": "PASS (>= 0.035)",
+              "ShoreDelta": "PASS (>= 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "UNMEASURABLE (0 fail-closed)"
+            }
+          }
+        },
+        "h-grazing-2": {
+          "why": "nearly on the surface — the case the round-1 fix deliberately did not move",
+          "masked": {
+            "water_mask_pct_of_frame": 48.43,
+            "water_px_in_crop": 118797,
+            "mean_luma": 98.074,
+            "band_rms": 14.1652,
+            "band_contrast": 0.14443,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": -80,
+              "lane_power": 26.0878,
+              "lane_aniso": 2.03,
+              "lane_power_normalised": 0.002712
+            }
+          },
+          "m12": {
+            "water_mask_px": 254589,
+            "water_mask_pct": 49.11,
+            "sequence_frames": 0,
+            "values": {
+              "water_px": 254589,
+              "water_frac": 0.49111,
+              "FresnelDelta": -0.05643,
+              "NormalEnergy": 0.36725,
+              "normalReason": null,
+              "ShoreDelta": 0.08988,
+              "ReflCorr": null,
+              "reflReason": "only 2 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                2,
+                136
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 400,
+                "y": 304,
+                "k": 128
+              }
+            },
+            "band_verdict": {
+              "FresnelDelta": "FAIL (< 0.05)",
+              "NormalEnergy": "PASS (>= 0.035)",
+              "ShoreDelta": "PASS (>= 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "UNMEASURABLE (0 fail-closed)"
+            }
+          }
+        }
+      },
+      "edits_applied": 4,
+      "edits_expected": 1
+    },
+    "nothing-restore-control": {
+      "what": "the floor: untouched, captured last, so run drift is measured rather than assumed",
+      "kind": "mesh",
+      "poses": {
+        "b-pitch-55-d50": {
+          "why": "half-way down",
+          "masked": {
+            "water_mask_pct_of_frame": 74.81,
+            "water_px_in_crop": 181968,
+            "mean_luma": 65.348,
+            "band_rms": 9.5212,
+            "band_contrast": 0.1457,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": 44,
+              "lane_power": 5.0609,
+              "lane_aniso": 1.62,
+              "lane_power_normalised": 0.001185
+            }
+          },
+          "m12": {
+            "water_mask_px": 392524,
+            "water_mask_pct": 75.72,
+            "sequence_frames": 0,
+            "values": {
+              "water_px": 392524,
+              "water_frac": 0.75718,
+              "FresnelDelta": 0.06461,
+              "NormalEnergy": null,
+              "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+              "ShoreDelta": 0.03159,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": null
+            },
+            "band_verdict": {
+              "FresnelDelta": "PASS (>= 0.05)",
+              "NormalEnergy": "UNMEASURABLE (0 fail-closed)",
+              "ShoreDelta": "PASS (>= 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "UNMEASURABLE (0 fail-closed)"
+            }
+          }
+        },
+        "e-eye-yaw090": {
+          "why": "eye level — water as a player meets it",
+          "masked": {
+            "water_mask_pct_of_frame": 58.15,
+            "water_px_in_crop": 150334,
+            "mean_luma": 71.98,
+            "band_rms": 11.3585,
+            "band_contrast": 0.1578,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": 0,
+              "lane_power": 30.0135,
+              "lane_aniso": 4.15,
+              "lane_power_normalised": 0.005793
+            }
+          },
+          "m12": {
+            "water_mask_px": 306555,
+            "water_mask_pct": 59.13,
+            "sequence_frames": 0,
+            "values": {
+              "water_px": 306555,
+              "water_frac": 0.59135,
+              "FresnelDelta": 0.02084,
+              "NormalEnergy": 0.16484,
+              "normalReason": null,
+              "ShoreDelta": 0.01717,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 352,
+                "y": 320,
+                "k": 128
+              }
+            },
+            "band_verdict": {
+              "FresnelDelta": "FAIL (< 0.05)",
+              "NormalEnergy": "PASS (>= 0.035)",
+              "ShoreDelta": "FAIL (< 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "UNMEASURABLE (0 fail-closed)"
+            }
+          }
+        },
+        "h-grazing-2": {
+          "why": "nearly on the surface — the case the round-1 fix deliberately did not move",
+          "masked": {
+            "water_mask_pct_of_frame": 48.38,
+            "water_px_in_crop": 118073,
+            "mean_luma": 85.441,
+            "band_rms": 13.791,
+            "band_contrast": 0.16141,
+            "lanes_on_water": {
+              "lane_bearing_screen_deg": -78,
+              "lane_power": 24.4247,
+              "lane_aniso": 2.22,
+              "lane_power_normalised": 0.003346
+            }
+          },
+          "m12": {
+            "water_mask_px": 253484,
+            "water_mask_pct": 48.9,
+            "sequence_frames": 0,
+            "values": {
+              "water_px": 253484,
+              "water_frac": 0.48897,
+              "FresnelDelta": 0.03783,
+              "NormalEnergy": 0.37884,
+              "normalReason": null,
+              "ShoreDelta": 0.05727,
+              "ReflCorr": null,
+              "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+              "TemporalVar": null,
+              "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+              "grazing_rows": [
+                0,
+                134
+              ],
+              "downward_rows": [
+                405,
+                539
+              ],
+              "normal_window": {
+                "x": 400,
+                "y": 304,
+                "k": 128
+              }
+            },
+            "band_verdict": {
+              "FresnelDelta": "FAIL (< 0.05)",
+              "NormalEnergy": "PASS (>= 0.035)",
+              "ShoreDelta": "PASS (>= 0.03)",
+              "ReflCorr": "UNMEASURABLE (0 fail-closed)",
+              "TemporalVar": "UNMEASURABLE (0 fail-closed)"
+            }
+          }
+        }
+      },
+      "meshes_hidden": 0
+    }
+  },
+  "checks": {
+    "PROBE-IS-CALIBRATED": "NOT RUN — no probe row in this batch may be read as a weight"
+  },
+  "pageErrors": []
+}

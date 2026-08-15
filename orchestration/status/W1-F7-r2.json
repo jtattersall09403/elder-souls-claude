@@ -1,0 +1,171 @@
+{
+  "task_id": "W1-F7-r2",
+  "title": "F7 — the water surface, round 2. The r1 verdict's Schlick remedy, built and measured against its own four acceptance clauses.",
+  "roadmap_item": "F7",
+  "state": "delivered-awaiting-critic",
+  "verdict_this_answers": "corpus/90-verdicts/wave1/W1-F7-WATER-r1.json (FAIL at 2). Its `biggest_gap.remedy` is the bar; clauses (a)-(d) are quoted in full in `the_four_clauses` below and scored one by one.",
+  "branch": "codex/wave1-build-experiment",
+
+  "what_i_could_not_do": [
+    "TWO OF THE FOUR ACCEPTANCE CLAUSES FAIL AND I AM NOT CLAIMING F7. Clause (b) fails: M12 FresnelDelta at the deck vista rose by +0.0531 within one process (prefix -0.06692 -> fixed -0.01381) and is still NEGATIVE, against a band of >= 0.05. Clause (c) fails as written: `lane_power_normalised` at the top-down pose went 0.000525 -> 0.000698, a RISE of 33.0%, where the clause demanded a fall of >= 40%. Nobody should read this status file as saying the marsh lanes are fixed. THEY ARE NOT, and they are visible in corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-R2/frames/arms-td-fixed-topdown-120.png at the same -50 degree bearing as before.",
+
+    "CLAUSE (d)'s PRESERVATION HALF CATCHES A REAL REGRESSION AND I DID NOT FIX IT. M12 `ShoreDelta` at the deck vista fell 0.04828 -> 0.01222 across the change, i.e. from passing its >= 0.03 band to failing it, measured on both arms in one process (reports copied to artifacts/W1-F7-WATER-R2/measure/arms-vista-sweep.json). This is exactly the trade ARBITRATION S59 exists to catch and it is the strongest argument against what I shipped. MY READING, MARKED AS INFERENCE AND NOT AS MEASUREMENT: ShoreDelta was being carried by the reflection weight's distance ramp rather than by any shoreline treatment — RI-VIS04 §9's MIN BAR clause 'shoreline depth fade' is scored MISSING by the r1 verdict itself, and what ships is province.js's 25 m axis-aligned band lattice — so removing the ramp's floor exposes that there is nothing underneath it. I did not test that reading and a critic should not accept it from me.",
+
+    "THE r1 VERDICT'S OWN PREDICTION FOR ITS REMEDY IS FALSIFIED, AND I FOLLOWED MY NUMBERS RATHER THAN THE BRIEF. The verdict predicted a physical 0.02 base would take 'a further ~26% off the residual' on the lane metric. Measured: at the top-down pose the ABSOLUTE water-masked lane power moved 3.6655 -> 3.7332, +1.8%, against a floor arm that itself drifts 0.7% (3.7604). The streaks did not fall. The whole of the +33.0% rise in `lane_power_normalised` is arithmetic on the darkening: the water lost 12.5% of its brightness (83.587 -> 73.142) and the metric divides by luma squared, 1/0.875^2 = +30.6%. So clause (c) as written cannot be satisfied by a remedy whose mechanism is to reduce the reflected light, and I say so with the arithmetic rather than quietly missing it.",
+
+    "CLAUSE (a) IS PASSED ON A MEASUREMENT THAT CARRIES A NAMED CAVEAT. The esView and weight probe frames are captured in separate render passes, and the water phase advances between them (uWaterPhase is driven from the simulation frame), so the ripple normals are NOT the same field in the two frames and a per-pixel join on esView is invalid. My offline check caught this itself: `f7-r2-weights-offline.mjs` reports mean_abs_error 0.1989 and Pearson r 0.577 between the closed form evaluated on the measured (esView, distance) pair and the weight the GPU measured, and it WITHHELD the round-1 row rather than print it. The clause (a) numbers I do report are the ones that need no esView field: the central window of the top-down frame (normal incidence by camera geometry alone) and the distance bins (distance does not animate).",
+
+    "I NEVER GOT THE ROUND-1 ARM'S WEIGHT AT THE GRAZING POSE OFF THE GPU. The run that would have measured it (reports/visual-truth/f7-r2/probes3) came back with the water drawn as a white sheet and a 9,887-pixel mask against 261,676 in the good run; it is kept in the artefacts as a failed run and none of its numbers are used. The claim that the grazing weight ROSE rather than fell is therefore ARITHMETIC on the two expressions, not a measurement: round 1 composited .25 + max(F, D)*.50 and round 2 composites max(Schlick, D), where D = smoothstep(10,52,d)*.72*(1-esView) is byte-identical in both; at a grazing pixel with D = .65 that is .575 -> .650.",
+
+    "THE HEADLESS GPU DIED ON FOUR OF SIX BROWSER RUNS, AND TWO CLAUSE POSES WERE LOST WITH THEM. `--only`/`--poses` batching and a JSON write after every pose recovered the rows, but the consequence is that no single process holds all three arms at all six poses: the null control ran only at the top-down pose, and the water-edge pose has the round-2 arm only. Round 1 recorded the same failure six times and did not diagnose it either.",
+
+    "M12 `ReflCorr` AND `NormalEnergy` ARE STILL UNMEASURABLE AT EVERY POSE I TOOK, exactly as the r1 critic recorded. `ReflCorr` reports '0 paired samples above the far half of the water' and `NormalEnergy` 'no 128x128 square window lies entirely inside WATER_MASK' at the top-down, vista AND water-edge poses. The water_edge pose I built for clause (b) does put sky and bank above the waterline (see artifacts/.../frames/arms-fixed-d-water-edge.png) and it still did not rescue them. Both are 0 fail-closed and NOT demonstrated absent.",
+
+    "THE M12 FresnelDelta INSTRUMENT HAS A NOISE FLOOR AS LARGE AS ITS OWN BAND AND I CANNOT NARROW IT. Two captures of the IDENTICAL round-2 arm at the identical vista pose, in two processes, read +0.03549 and -0.01381 — a spread of 0.049 against an acceptance band of >= 0.05. Only the WITHIN-process pair (prefix -> fixed, +0.0531) is worth anything, and I have exactly one of those. Clause (d)'s absolute floor of 70 on mean water luma has the same problem: the same arm read 69.917 and 73.142 in two runs.",
+
+    "I DID NOT TOUCH province.js's WET-BANK LATTICE and I am not claiming it is innocent. The r1 critic measured it changing 24.98% of a vista frame and 45.13% of a top-down frame and failing RI-WLD10 §10's 'shoreline blend with no hard intersection line'. I read it, I excluded its pixels from every probe mask so it could not contaminate a weight reading, and I changed nothing in it. It is a live, unowned defect and it is not F7's.",
+
+    "NO TIMING FIGURE. Every number here is a pixel measurement. I took no frame-time reading and the change's cost is unmeasured; a Schlick pow() replaces a pow(), so I expect it to be free, but expecting is not measuring.",
+
+    "I DID NOT RUN THE BLIND GATE. RI-WLD10 declares `blind_pair: yes` and M56 §5 has never run. CLAUDE.md rule 0e puts that with the ORCHESTRATOR. A builder cannot spawn a fresh judge and I did not try."
+  ],
+
+  "headline": "The .25 constant reflection floor is gone from game/src/render/water.js. At true normal incidence the composited weight falls from a MEASURED 0.2971 to 0.0240 — water's real Fresnel reflectance is about 2% — and at grazing it rises. The visible consequence lands at eye level, the pose round 1 moved by -0.3%: the water is 16.8% darker there and the smeared mirror of the canopy across the near surface is largely gone. But the marsh lanes are NOT fixed, two of the four acceptance clauses fail, and the preservation clause catches a real ShoreDelta regression.",
+
+  "the_change": {
+    "file": "game/src/render/water.js",
+    "before": "float esGrazing=max(esFresnel,smoothstep(10.0,52.0,length(vViewPosition))*.72*(1.0-esView));  ...  vec3 esSurface=mix(esDepth,esReflection,(.25+esGrazing*.50)*uWaterReflectionStrength);",
+    "after": "float esF0=.02; float esRefl=esF0+(1.0-esF0)*pow(1.0-esView,5.0); esRefl=max(esRefl,smoothstep(10.0,52.0,length(vViewPosition))*.72*(1.0-esView));  ...  vec3 esSurface=mix(esDepth,esReflection,esRefl*uWaterReflectionStrength);",
+    "also": "the now-unused `float esFresnel=pow(1.0-esView,2.2);` is deleted (it had no other reader), and customProgramCacheKey moves v15 -> v16 so no cached program can outlive the source change.",
+    "renderer_js_untouched": "true — the remedy is entirely inside the file F7 owns, as the verdict said it would be.",
+    "asserted_at_runtime": "every measurement run asserts the four literal substrings of the new expression against the live file before it captures anything and prints `head_expression_asserted`; every run in the artefacts printed PASS."
+  },
+
+  "the_four_clauses": {
+    "a_composited_weight": {
+      "clause": "the composited reflection weight straight down at 120 m is <= 0.05, and at the 60 m grazing marsh vista is >= 0.60, read off the same probe the build used",
+      "result": "PASS on both halves, measured off the GPU rather than derived",
+      "straight_down": "central 64x64 window of the top-down 120 m frame, where the camera geometry alone puts the water at normal incidence (measured esView median 1.000 in that window): ROUND 1 mean 0.2581 / median 0.2971; ROUND 2 mean 0.0221 / median 0.0240. 0.0240 <= 0.05. The 32x32 and 128x128 windows agree to within 0.0002 on round 2. Round 1's OWN claimed figure for this case was .250 and it measures 0.2971 — its arithmetic was near enough but low.",
+      "grazing": "at the water-edge pose, the bin esView < 0.20 over 72,092 water pixels: median 0.6415, mean 0.5594; the 55-65 m grazing bin (n = 217) median 0.7451. Both >= 0.60.",
+      "how_the_probe_works": "the shader writes the quantity itself into the frame as a GREY with alpha forced to 1, and a `probe-ramp` arm writes a known grey ramp across the same frame in the same run, which IS the transfer curve from a written value to a stored byte. That was not the first design: the first version packed weight/distance/esView into R/G/B and deleted `#include <tonemapping_fragment>` and `<colorspace_fragment>` from the water program. The strips reported 25 substitutions and a written vec3(.25,.50,.75) still came back as (136,199,212). ACESFilmicToneMapping (renderer.js:91, exposure .72 at :95) is a MATRIX and mixes channels, so a packed probe is unreadable — but both its matrices' rows sum to 1, so neutrals survive it, which is why every probe is grey. The ramp resolved 957-960 columns spanning 194-197 stored bytes on every run used."
+    },
+    "b_fresnel_delta": {
+      "clause": "RI-VIS03 M12 FresnelDelta at a water_edge shot is >= 0.05 and POSITIVE — it is -0.07790 today",
+      "result": "FAIL",
+      "measured": "deck vista pose, both arms in ONE process: prefix -0.06692 -> fixed -0.01381. It ROSE by +0.05311, which is the direction the change's own thesis requires and is the largest single move anyone has got on this instrument, but it is still on the wrong side of zero and 0.064 short of the band.",
+      "second_capture": "the identical round-2 arm at the identical pose in a different process read +0.03549. Two captures, spread 0.049, against a band of 0.05. Do not read either absolute number as reliable; read the within-process delta.",
+      "water_edge_pose": "built as the clause asks (camera 14 m out at -4 degrees, bank and sky above the waterline — artifacts/.../frames/arms-fixed-d-water-edge.png). The GPU died before the second arm reached it, so this clause is scored on the vista pose."
+    },
+    "c_lane_power_normalised": {
+      "clause": "lane_power_normalised on the water mask at vista-deep-marshes falls by >= 40% against b0f3224e's 0.000485, reported ALONGSIDE mean_luma",
+      "result": "FAIL AS WRITTEN, and I believe the clause is unsatisfiable by any remedy of this shape — with the arithmetic, per the brief's instruction to say so rather than work around it",
+      "measured_topdown_one_process": "prefix 0.000525 -> fixed 0.000698, +33.0%. Floor arm (untouched, captured last) 0.000698 — identical to fixed, so the run is self-similar and the number is real.",
+      "the_decomposition": "the ABSOLUTE water-masked lane power moved 3.6655 -> 3.7332, +1.8%, inside the floor arm's own 0.7% drift. mean_luma moved 83.587 -> 73.142, -12.5%. The metric is power / luma^2, and 1/0.875^2 = +30.6%. The +33.0% IS the darkening, to within 2 points. The streaks are neither better nor worse in absolute terms; they are unchanged and the water behind them is dimmer.",
+      "why_the_clause_cannot_be_met": "the clause was written to stop a darkening being read as de-streaking, which was exactly right as a GUARD. But as a PASS condition it requires the streak power to fall faster than the brightness it is divided by, and the only lever this remedy has is to reduce reflected light — which reduces the denominator. A remedy that removed the streaks entirely AND halved the brightness would still fail it.",
+      "proposed_replacement": "score the three together and require all three: absolute water-masked lane_power must fall, mean_luma must not fall below its own preservation floor, and lane_aniso must not rise. That is falsifiable, cannot be gamed by darkening, and it FAILS this build honestly — lane_aniso rose 1.54 -> 1.99 at the top-down pose, +29.2%, and anisotropy is a ratio of variances and is brightness-independent."
+    },
+    "d_preservation_S59": {
+      "clause": "mean luminance on the water mask does not fall below 70; the grazing-pose composite weight does not fall; M12 ShoreDelta stays >= 0.03",
+      "result": "MIXED — two of three hold, ShoreDelta does not",
+      "mean_luma": "73.142 at the top-down pose, above 70. BUT the same arm read 69.917 in another process, so the 70 floor sits inside this instrument's run-to-run spread and I do not think it discriminates. The reliable figure is the within-process fall: -12.5%.",
+      "grazing_weight": "does not fall; it rises. .25+max(F,D)*.50 -> max(Schlick,D) with D identical in both, so a grazing pixel at D = .65 goes .575 -> .650. ARITHMETIC, not measured — see what_i_could_not_do.",
+      "shore_delta": "FAILS. 0.04828 -> 0.01222 at the deck vista, one process, both arms. It crossed its own 0.03 band. This is the one clause that says do not ship this, and it is recorded first in what_i_could_not_do rather than buried here."
+    }
+  },
+
+  "every_number_the_instruments_emitted": {
+    "note": "S59 and the r1 verdict's secondary_observations both turn on round 1 reporting the one number that fell and not the two that rose, from the same tool call. So this block is EVERY figure both estimators emit at the top-down pose, in one process, whichever way it moves. Source: corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-R2/measure/arms-td-sweep.json.",
+    "topdown_120_r1_unmasked_estimator": {
+      "x_rms": "5.623 -> 4.331 (-23.0%)  [the one number round 1 would have quoted]",
+      "lane_power": "4.351 -> 4.798 (+10.3%)",
+      "lane_aniso": "5.73 -> 7.73 (+34.9%)",
+      "lane_angle_deg": "-50 -> -50 (unchanged)",
+      "z_rms": "4.554 -> 3.635 (-20.2%), re-read off arms-td-sweep.json this turn after I first wrote a figure from a different run's rows and caught it"
+    },
+    "topdown_120_r1_critic_masked_estimator": {
+      "water_mask_pct_of_frame": "87.69 -> 87.08",
+      "mean_luma": "83.587 -> 73.142 (-12.5%)",
+      "band_rms": "12.2759 -> 11.3517 (-7.5%)",
+      "band_contrast": "0.14686 -> 0.15520 (+5.7%)",
+      "masked_lane_power": "3.6655 -> 3.7332 (+1.8%)",
+      "masked_lane_aniso": "1.54 -> 1.99 (+29.2%)",
+      "lane_power_normalised": "0.000525 -> 0.000698 (+33.0%)",
+      "lane_bearing_screen_deg": "+6 -> -54"
+    },
+    "controls_at_the_topdown_pose": {
+      "floor_nothing_restore_control": "x_rms 4.401, masked lane_power 3.7604, lane_power_normalised 0.000698, mean_luma 73.417 — captured LAST, untouched. Against the fixed arm's 4.331 / 3.7332 / 0.000698 / 73.142 that is 1.6% / 0.7% / 0.0% / 0.4% of run drift, so every row above is readable.",
+      "positive_control_surface_hidden": "x_rms 2.524 against the floor's 4.401, a 43% fall — the metric is shown going red in this batch before any arm row in it is read.",
+      "null_control_null_uniform_dim": "THE PLAUSIBLE WRONG ANSWER (S52). The whole weight replaced by the CONSTANT 0.086 — the same average amount of reflection the round-2 arm produces, with no view-angle dependence at all. Result: mean_luma 73.776 (-11.7%), x_rms 4.579 (-18.6%), lane_power_normalised 0.00064 (+21.9%), lane_aniso 7.72 unmasked. IT REPRODUCES ALMOST EVERYTHING THE REAL CHANGE DOES ON THESE METRICS. That is the point of it and it is a finding, not a pass: `x_rms` and `lane_power_normalised` cannot tell a Fresnel from a dimmer switch, so neither can carry a claim about Fresnel. The clause that CAN tell them apart is (a), the composited weight itself — the null control's weight is 0.086 flat, failing both halves of clause (a) at once."
+    },
+    "the_poses_a_player_actually_occupies": {
+      "note": "the r1 verdict's central charge was that round 1 moved only a 120 m top-down camera nobody plays: vista +0.8%, eye level -0.3%, near-grazing -0.4%. Round 2's numbers at those poses, one process, both arms (measure/arms-player-sweep.json, measure/arms-vista-sweep.json):",
+      "c_vista_11_d26": "mean_luma 83.181 -> 74.684 (-10.2%); band_contrast 0.186 -> 0.19592 (+5.3%); masked lane_power_normalised 0.003137 -> 0.003285 (+4.7%); lane_aniso 1.56 -> 1.81; bearing -6 -> 60",
+      "b_pitch_55_d50": "mean_luma 79.928 -> 65.435 (-18.1%); band_contrast 0.1323 -> 0.14538 (+9.9%); absolute lane_power 7.1351 -> 4.5032 (-36.9%); normalised 0.001117 -> 0.001052 (-5.8%); aniso 1.59 -> 1.52",
+      "e_eye_yaw090": "mean_luma 85.511 -> 71.108 (-16.8%); band_contrast 0.1427 -> 0.16245 (+13.8%); absolute lane_power 56.0959 -> 33.386 (-40.5%); normalised 0.007672 -> 0.006603 (-13.9%); aniso 5.96 -> 4.54",
+      "h_grazing_2": "mean_luma 98.074 -> 85.461 (-12.9%); band_contrast 0.14443 -> 0.16076 (+11.3%); absolute lane_power 26.0878 -> 20.0987 (-23.0%); normalised 0.002712 -> 0.002752 (+1.5%); aniso 2.03 -> 1.84",
+      "READ_THIS_BEFORE_QUOTING_THE_FALLS": "the floor arm at these three perspective poses drifts 11-21% on absolute lane_power (b-pitch floor 5.0609 vs fixed 4.5032; eye floor 30.0135 vs fixed 33.386; grazing floor 24.4247 vs fixed 20.0987). The -23% at the grazing pose is INSIDE its own floor's spread and must not be quoted as a result. Only the top-down pose has a tight floor (0.7%). The brightness figures are not affected: the floor agrees with the fixed arm to 0.1-1.2% on mean_luma at all three."
+    }
+  },
+
+  "what_i_looked_at_and_what_i_saw": {
+    "method": "CLAUDE.md's standing directive: a still from one angle is how the transparency defect got declared fixed while broken. I opened the actual PNGs on both arms at four poses before quoting any statistic, and I am reporting what I saw including where it disagrees with a number.",
+    "eye_level_e_eye_yaw090": "THE CLEAREST DIFFERENCE AND IT IS AN IMPROVEMENT. On the round-1 arm the near water is a pale washed-out blue-grey sheet carrying a ghost image of the tree trunks smeared across the whole foreground. On the round-2 arm the near water is a deeper teal-green, the smeared mirror is largely gone from the near field, and the reflected trunks are confined to the middle distance where the grazing angles actually are. That is RI-WLD10 §8's 'black standing water' direction of travel for a region whose own data declares k = 4.5, and it is the opposite of RI-VIS04 §9's TELL, 'the same colour and brightness everywhere'. Frames: artifacts/.../frames/arms-player-prefix-e-eye-yaw090.png and arms-player-fixed-e-eye-yaw090.png.",
+    "top_down_120": "THE LANES ARE STILL THERE AND IF ANYTHING READ SLIGHTLY STRONGER. The same diagonal bands at roughly -50 degrees cross both frames; against the darker round-2 water they stand out a little more. This agrees with the measurement (absolute lane power +1.8%, anisotropy +29.2%) and it is why I am not claiming F7.",
+    "deck_vista": "close. Flipped side by side the round-2 near water is noticeably darker and greener and the round-1 near water bluer with a stronger sheen, but a player would not call one fixed and the other broken. The r1 critic said its two arms were indistinguishable here; mine are distinguishable but not transformative.",
+    "grazing_and_half_down": "consistent with the brightness numbers and unremarkable; the grazing pose keeps its reflections, which is what the change is supposed to do."
+  },
+
+  "the_ruling_i_made_and_what_would_overturn_it": {
+    "decision": "KEEP the change and hand it to a critic as a PARTIAL delivery, rather than revert it because clause (c) failed.",
+    "why": [
+      "The .25 floor is indefensible on its own terms: it composited 25% of a stale half-resolution image of the canopy onto water at normal incidence, where real water reflects about 2%. Measured, it was 0.2971. Removing it is right whatever a lane metric says.",
+      "The only instrument in the corpus that measures the property F7 changed — M12 FresnelDelta — moved +0.0531 in the required direction inside one process. It is the largest move anyone has recorded on it.",
+      "RI-WLD10 §10.1, 'water is opaque before it is reflective', with the Deep Marshes at k = 4.5 (0.67 m visibility), is better served by water that is 13-18% darker and carries no near-field mirror. The r1 critic's §8 FAIL was literally 'renders as a pale, uniformly bright steel-blue sheet'.",
+      "The two metrics that argue for reverting cannot distinguish this change from a dimmer switch: the null control, a flat constant weight with no Fresnel at all, reproduces x_rms -18.6% and lane_power_normalised +21.9% against the real change's -23.0% and +33.0%. Neither is evidence about Fresnel, so neither is evidence for restoring a floor known to be wrong."
+    ],
+    "what_would_overturn_it": [
+      "A capture showing the ShoreDelta regression is visible rather than metric-only — a hard water/land seam that reads worse to the eye at a shoreline shot. I did not take a dedicated shoreline close-up and that is the shot that would settle it.",
+      "Any evidence that the -12.5% to -18.1% darkening pushes a REGION OTHER THAN the Deep Marshes below what its own k declares. I measured one region at one tide state. RI-WLD10 M56 wants four regions and four tide states and the r1 critic could not run that matrix either.",
+      "A blind pair (RI-WLD10 M56 §5) ranking the round-1 arm above the round-2 arm. That gate has never been run and only the orchestrator can run it."
+    ]
+  },
+
+  "controls": {
+    "positive_control": "surface-hidden rides in EVERY batch — hiding the water table drops top-down x_rms from the floor's 4.401 to 2.524 (-43%), so the metric is shown able to go red inside each batch before any arm row in that batch is read.",
+    "floor": "nothing-restore-control, untouched, captured LAST in every batch, so drift across the run is measured rather than assumed. Top-down drift 0.4-1.6%; the perspective poses 11-21% and every figure quoted there is qualified with it.",
+    "null_control": "null-uniform-dim — the weight replaced by a CONSTANT equal to the round-2 arm's own frame-mean, so the reflection is dimmed by the same average amount with no view-angle dependence at all. This is the plausible wrong answer S52 demanded and NOT the trivial one: round 1's null control changed a constant inside the mix and could not alter spatial variance at all. Result recorded above; it did NOT fail, it succeeded at showing two of the metrics are brightness proxies.",
+    "arm_hygiene": "both shader arms are produced by live onBeforeCompile substitution in ONE process, and every arm asserts its own substitution count — an arm that matched nothing is written VACUOUS and is never read as a negative result. The probe mask additionally excludes every pixel where province.js's shoreline band mesh draws, so a second unprobed transparent layer cannot blend into a weight reading.",
+    "instrument_calibration": "the weight probe is calibrated in its own run by a known grey ramp and reports PROBE-IS-CALIBRATED / PROBE-ROUND-TRIP; the closed-form cross-check WITHHELD its round-1 row when it disagreed with the GPU rather than printing it."
+  },
+
+  "inherited_findings_i_can_confirm_or_correct": {
+    "hud_region_label_is_stuck": "CONFIRMED IN MY OWN FRAMES. Every frame I captured at (3123.5, 3715) reads `western-rootlands` bottom-left, while in the same process `field.regionAt` returns `deep-marshes` and `__HARNESS.getWaterAt` returns {region: deep-marshes, region_name: 'The Deep Marshes', k: 4.5, depth_m: 0.717, band: W3, substrate: SUCK, ground_y 1.163, surface_y 1.88}. Every one of my tools reads the ENGINE and prints it; nothing here is read off that label. I did not find the code that draws it either.",
+    "uWaterReflectionStrength_is_inert_as_an_ablation": "CONFIRMED by construction — bindWaterReflection rewrites it from the render loop every frame (water.js, bindWaterReflection). I used no ablation that writes it.",
+    "province_js_wet_bank_lattice": "NOT MINE, NOT INNOCENT, NOT TOUCHED. Recorded here so it is not lost: r1 critic measured it changing 24.98% of a vista frame and 45.13% of a top-down frame and failing RI-WLD10 §10's 'shoreline blend with no hard intersection line' and RI-VIS04 §9's 'shoreline depth fade' MIN BAR clause. It is the most likely reason ShoreDelta had nothing underneath the reflection ramp.",
+    "esSky_is_dead_code": "NEW, and small. `vec3 esSky=vec3(0.20,0.37,0.44);` is declared in the fragment injection and never read by any statement. Grep: `grep -c esSky game/src/render/water.js` returns 1. I left it alone — deleting it is a behaviour-free edit and this piece already changes the term next to it — but a future owner should know the shader has no sky-colour fallback at grazing, which is one reason grazing water can only ever be as bright as whatever the reflection target happens to hold."
+  },
+
+  "next_step": "Dispatch a fresh critic. It should re-run: `node tools/visual/f7-r2-sweep.mjs --out <dir> --only prefix,null-uniform-dim --poses topdown-120` (the tight-floor pose, all six numbers, three arms in one process), `--only prefix --poses c-vista-11-d26` (M12 both arms), and `node tools/visual/f7-critic-m12-offline.mjs --dir <dir>` — the sweep writes frames under the exact names that command expects, so the r1 critic's own instrument runs verbatim against this build. The two live questions for it are (1) whether the ShoreDelta regression is visible or metric-only, which needs a shoreline close-up I did not take, and (2) whether clause (c) should be replaced by the three-number form proposed above. THE BIGGEST REMAINING GAP IS NOT IN THIS FILE: the marsh lanes survive the removal of the reflection floor at the same -50 degree bearing with HIGHER anisotropy, so what draws them is not the reflection weight. r1 already ablated every wave term, every shadow and the shoreline mesh class through a top-down crop that can see them. What is left is the CONTENT of the reflection target — renderer.js:125 allocates it at half canvas resolution and renderer.js:1424 refreshes it only after 0.24 m of camera movement or six simulation frames — and that is a different file and a performance trade.",
+
+  "declared_overlap": {
+    "game/src/render/water.js": "`node tools/ownership.mjs --for game/src/render/water.js` run this turn returns `nobody live has declared this file`. W1-WATER-LANES (round 1) claimed it and is `delivered-awaiting-critic`; I am its successor round on the same roadmap item. Claimed and edited.",
+    "game/src/world/province.js": "read, NOT claimed, NOT edited. Its shoreline mesh class is excluded from my probe masks by name only.",
+    "tools/visual/f7-critic-*.mjs": "the r1 critic's instruments. Read in full, NOT edited — their numbers are what this round is measured against and a builder must not touch the ruler. f7-r2-sweep.mjs reimplements both estimators so the frames can be compared, and writes frames under the names f7-critic-m12-offline.mjs expects so that tool runs unmodified."
+  },
+
+  "files_touched": [
+    "game/src/render/water.js",
+    "tools/visual/f7-r2-sweep.mjs",
+    "tools/visual/f7-r2-weights-offline.mjs",
+    "orchestration/status/W1-F7-r2.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-R2/"
+  ],
+  "files_claimed": [
+    "game/src/render/water.js",
+    "tools/visual/f7-r2-sweep.mjs",
+    "tools/visual/f7-r2-weights-offline.mjs",
+    "orchestration/status/W1-F7-r2.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-R2/"
+  ],
+  "artifacts": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-R2/ — measure/ carries the raw JSON of all seven browser runs including the two that failed, frames/ carries 17 PNGs including both arms at four poses and the calibrated probe frames."
+}
