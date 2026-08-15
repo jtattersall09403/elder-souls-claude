@@ -1,0 +1,18 @@
+composite reachable: true   sun light found: true name=(unnamed) shadowMap=4096
+  shipped       pair01  mean= 59.1417 sd=29.8991 chroma= 25.067 LIVE  [sun=2.1/7.7 nDir=5 shm=1 hemi=5.1248 env=1@1 aoCap=0.6]
+  cell_lights_off pair01  mean= 58.6787 sd=30.0102 chroma=25.2553 LIVE  [sun=2.1/2.1 nDir=1 shm=1 hemi=5.1248 env=1@1 aoCap=0.6]
+  cell_lights_off_ao_full pair01  mean= 54.4642 sd=30.9175 chroma=24.2036 LIVE  [sun=2.1/2.1 nDir=1 shm=1 hemi=5.1248 env=1@1 aoCap=1]
+  shipped_recheck pair01  mean= 58.0082 sd= 30.186 chroma=25.5388 LIVE  [sun=2.1/7.7 nDir=5 shm=1 hemi=5.1248 env=1@1 aoCap=0.6]
+  shipped       pair02  mean= 48.9737 sd=20.7998 chroma=29.6999 LIVE  [sun=2.1/7.7 nDir=5 shm=1 hemi=5.1248 env=1@1 aoCap=0.6]
+  cell_lights_off pair02  mean=  48.805 sd=20.8285 chroma=29.7786 LIVE  [sun=2.1/2.1 nDir=1 shm=1 hemi=5.1248 env=1@1 aoCap=0.6]
+  cell_lights_off_ao_full pair02  mean= 46.9617 sd=19.9692 chroma=28.9645 LIVE  [sun=2.1/2.1 nDir=1 shm=1 hemi=5.1248 env=1@1 aoCap=1]
+  shipped_recheck pair02  mean= 48.5549 sd= 20.872 chroma=29.8919 LIVE  [sun=2.1/7.7 nDir=5 shm=1 hemi=5.1248 env=1@1 aoCap=0.6]
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: Target page, context or browser has been closed
+    at call (/home/user/elder-souls-claude/tools/visual/f2-why-forced.mjs:351:28)
+    at /home/user/elder-souls-claude/tools/visual/f2-why-forced.mjs:444:24
+
+Node.js v22.22.2
