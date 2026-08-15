@@ -1,0 +1,57 @@
+{
+  "schema": "elder-souls/protocol-a-commitment@1",
+  "what": "sha256 of every file a judge receives and of every sealed mapping, written at pack-build time. The mappings cannot be silently rewritten after the answers are in without this file disagreeing.",
+  "pack": {
+    "pack/pair01/A.png": {
+      "sha256": "d24d46836f01e9cbfe71fb07c4f9275d86f666ea306147feec6036b09404f410",
+      "bytes": 422314
+    },
+    "pack/pair01/B.png": {
+      "sha256": "a62ed4468c596760d9aea1711a11b18369f015d0feddbc347fafdf40c0115e3b",
+      "bytes": 422314
+    },
+    "pack/pair02/A.png": {
+      "sha256": "00f0ab17710b12c7f06170573c0f2646e55edb3ccc8d6e0f5aa4c1464e7376e8",
+      "bytes": 423591
+    },
+    "pack/pair02/B.png": {
+      "sha256": "42261bcbff2fa3cf1fb8c386b4c307b5357847774d74db444a40be52664c670b",
+      "bytes": 423591
+    },
+    "pack/pair03/A.png": {
+      "sha256": "b5f1257cb098477d252fbbc7e2ce6872fae507be25f4b391fc5fd1b72756f751",
+      "bytes": 442281
+    },
+    "pack/pair03/B.png": {
+      "sha256": "c2574a41b3a7f9633c04e3f6a2cda2802ba7fc3657b041628ef01b731b07b7b8",
+      "bytes": 442281
+    },
+    "pack/pair04/A.png": {
+      "sha256": "22b281947ed7843c359da7f8c7b679b3b5779632d4ff1ff7a32336cb463a2a51",
+      "bytes": 332843
+    },
+    "pack/pair04/B.png": {
+      "sha256": "d603bbadffbe7c4678b3dae66693b7ae3c4bc2b76d82a63f7302c68a55da2d39",
+      "bytes": 332843
+    },
+    "pack/pair05/A.png": {
+      "sha256": "69b61caceba103d460a95fce8e971da07e97d4eefb4a6df6974c5b2a308948e0",
+      "bytes": 306112
+    },
+    "pack/pair05/B.png": {
+      "sha256": "85c14a944da1f9e398f929c7be6eb9df9364f32245dd9d81ef3f3b9b466b9abc",
+      "bytes": 306112
+    }
+  },
+  "sealed_mappings": {
+    "SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/pair01.reveal/mapping.json": "ccfbafd5225be699c5971c62a1d1321f1e9fc74d6d5a1ecff4ea9ef1d05d72f1",
+    "SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/pair02.reveal/mapping.json": "f79174aad18f0c9b43520d4428b46fd68c6398d775db2535ef2ee4032bbdc8a6",
+    "SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/pair03.reveal/mapping.json": "f8b2c2c76ba47c0d8a3cfcf344fdaeebbc8effbeea391719c47d21f1d8fc86e6",
+    "SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/pair04.reveal/mapping.json": "2cddf981b25a39b58eb08529f9de71f90a86a9f6b4fe6ee1522c26a8bd9b21fb",
+    "SEALED-KEY-DO-NOT-OPEN-UNTIL-JUDGED/pair05.reveal/mapping.json": "5afa7b6ee45e79b3a7a5ada2e60a26e105162821097e9d4090a666052222a541"
+  },
+  "prompts": {
+    "prompts/PROMPT-A-escalation.txt": "1d00dc8cf786f7737a7a0f0d7e1394fe65fed24058a748c50a40baf5f6e82d7b",
+    "prompts/PROMPT-A-verbatim.txt": "569d73c04aa94f50628b4b129055905d09fa6749fbee05e0a15d8f133000b17e"
+  }
+}

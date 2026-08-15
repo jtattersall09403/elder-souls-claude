@@ -1,0 +1,24 @@
+{
+  "pair": "pair05",
+  "ours": {
+    "source": "reports/runpod-gpu/runs/protocol-a-r2/artifacts/deck/frames/char-player__t1930__clear.png",
+    "crop": "1100,150,512,512",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "note": "native 1:1 crop, then a shared JPEG q=95 round trip (4:4:4), then PNG"
+  },
+  "ref": {
+    "source": "corpus/70-visual/refs/modern/character_closeup/REF-W3__steam-1902321246.jpg",
+    "crop": "1350,540,512,512",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "note": "native 1:1 crop, then a shared JPEG q=95 round trip (4:4:4), then PNG"
+  },
+  "density_parity": true,
+  "lighting_match": "low ambient light with a warm local source; the question both windows put is whether shadowed regions still hold readable detail",
+  "mismatch_recorded": "SUBJECT SCALE DIFFERS AND IT IS THE WEAKEST PAIR IN THE SET. Ours is a mid-distance exterior walkway at dusk; the plate is a near-field material close-up (studded leather) under lamplight. The corpus holds no 1920x1080 low-light plate at mid-distance exterior scale — the nearest, REF-ER 2764067220, is spent on pair04 and its remaining windows are darker still. Recorded rather than substituted: a judge reading this pair is comparing surfaces at different distances."
+}
