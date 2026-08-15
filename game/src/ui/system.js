@@ -204,6 +204,19 @@ export class UISystem {
       throw new Error("openMenu('wait'): you cannot wait while enemies are engaged");
     }
     if (n === 'wait') this.focus.wait.hours = 1;
+    // T4 round 3, RI-UIX10 OP6 — a sub-view must not survive leaving the screen. The exit is the
+    // `backOrSub()` call site above; THIS is the other half, and without it the trap is merely
+    // narrower rather than gone: the critic walked out of the journal to a peer and back and
+    // landed in the search box again with the query intact, because neither `open()` nor
+    // `close()` touched `focus.journal`. `_walkPeer()` re-enters through this same `open()`, so
+    // one line covers the peer walk, `openMenu('journal')` and a close-and-re-open alike.
+    // The PAGE is deliberately kept — a reader's place in a long journal is worth remembering,
+    // and a page is a position rather than a mode you can be stuck in. `wait` above is the
+    // precedent for resetting an ephemeral focus field on entry.
+    if (n === 'journal') {
+      const j = this.focus.journal;
+      j.view = 'chronicle'; j.query = ''; j.ringIdx = 0;
+    }
     // W1-13 round 3, GAP-W1-levelup-screen-and-character-speak-different-languages. The screen
     // draws its rows from `game/data/progression/attributes.json`; the character carries
     // `sim.progression.attributes`. When those were two different vocabularies the room still
@@ -421,7 +434,16 @@ export class UISystem {
     const dy = this._edge('y', -navY, ctx.frame);
     if (dx || dy) this._move(dx, dy, ctx);
     if (input.pressedName('interact')) this._confirm(ctx);
-    if (!inCombat && input.pressedName('roll')) this.back();
+    // T4 round 3, RI-UIX10 OP5/OP6 — THE CALL SITE. This line read `this.back()`, and that one
+    // word is the whole of `GAP-W1-ui-journal-search-view-has-no-exit`: one press of confirm on
+    // the chronicle puts the journal into its search view, and `back()` pops the screen stack —
+    // which on the journal means LEAVING THE JOURNAL, not leaving the search box. The critic
+    // pressed all fifteen actions in the closed set plus both axes and none of them returned the
+    // chronicle; the view then survived a close and a re-open, so the journal was gone for the
+    // session. `backOrSub()` was written for exactly this, sits twenty lines below `back()`, and
+    // was called from nowhere — and the search view's own foot hint has been promising its
+    // behaviour ("back to remove one") the entire time.
+    if (!inCombat && input.pressedName('roll')) this.backOrSub();
     return taken;
   }
 

@@ -195,8 +195,13 @@ function drawSearch(S, m, sc, alpha) {
     y += lh * lines.length + 22 * s;
     if (y > iy + ih - 30 * s) break;
   }
+  // T4 round 3. The second clause is new and it is the half the screen was missing rather than
+  // decoration: the old hint promised "back to remove one" and stopped there, so a player with an
+  // empty line had been told what back does and not how to leave. `backOrSub()` empties the line
+  // one letter at a time and then returns the chronicle, and the hint now says both.
   hint(S, 'journal.hint', ix, iy + ih + 4 * s, iw,
-    'Walk the letters, confirm to add one, back to remove one. Results are in the order they happened.', alpha);
+    'Walk the letters, confirm to add one, back to remove one — back on an empty line returns to the journal. '
+    + 'Results are in the order they happened.', alpha);
 }
 
 // ---- the reading screen ------------------------------------------------------------------
