@@ -5,17 +5,32 @@
   "state": "running",
   "baseline_commit": "1c40739ed8119343fc3556b64cf40b619cf47dc4",
   "branch": "codex/wave1-build-experiment",
-  "could_not_do_yet": [
-    "Nothing captured yet - all 13 counterpart slots empty at start."
+  "what_i_could_not_do_first": [
+    "RI-VIS08 §B3/B4/B5/B6 (material separation, texel density, contact shadow, subsurface) are NOT yet answered on hardware. Local frames are SwiftShader and W1-30-EVIDENCE §4 forbids an appearance claim from them. A hardware run is in flight (reports/runpod-gpu/runs/f10-characters-hw).",
+    "RI-VIS10 B1 (race legibility) and C4/D4 need a FRESH JUDGE. Rule 0 forbids summoning one via create_session; per RULES.md rule 0 the correct result is to build the pack, audit it, and score the check not_run/fail-closed rather than judge my own pack.",
+    "refs/characters/ C5 is n=0 (no modern humanoid turnaround exists). The cap that puts on the verdict is stated in the verdict."
   ],
-  "next_step": "Read CLAUDE.md character directive, CRITIC-DOCTRINE 1.3, SCORING.md, RI-VIS08, RI-VIS10, refs/characters/INDEX.md; open plates.",
+  "measured_so_far": {
+    "RI-VIS08_trace_contract": "complete - 0 missing fields across 5 scenarios, 3005 frames",
+    "DYNAMIC_fails": ["C2 jerk (0.0545 stairs, 0.0670 attack_chain vs 0.030)", "C5 blending (pose_step 0.198-0.294 m vs 0.15; blend_frames 0 in 3 of 5)", "C10 variety (0 hit-reaction clips in 3005 frames)"],
+    "B2_triangles": "player/saxhleel 15142 (bar 25000); humanoid 15752 (bar 12000, pass); beast 4834 (bar 12000, fail)",
+    "RI-VIS10_C1": "R = H/h across 41 shipped figures: min 5.87 median 6.58 max 6.84; ZERO inside the 7.0-8.0 default band; 2 outside the hard 6.0-8.5 band",
+    "RI-VIS10_C2": "median pairwise IoU 0.9109 (bar <=0.80) over 552 pairs; max 1.0000 (bar <0.93); several pairs byte-identical",
+    "RI-VIS10_D1": "no garment vocabulary exists anywhere in game/data - scores 0 fail-closed by the item's own rule",
+    "race_mapping": "renderer.js:693 maps only race==='saxhleel'||'naga' to the saxhleel art family; 181 of 408 NPCs carry race 'argonian' and therefore render on base.humanoid"
+  },
+  "next_step": "Land the tooling and evidence; complete NPC frames; hardware run; write verdict + ranked remedy list.",
   "files_claimed": [
     "orchestration/status/W1-F10-CHARACTER-CRITIC.json",
-    "corpus/90-verdicts/wave1/W1-F10-CHARACTERS-critic.md",
-    "corpus/90-verdicts/wave1/W1-F10-CHARACTERS-critic.json",
+    "corpus/90-verdicts/wave1/W1-F10-CHARACTERS.md",
+    "corpus/90-verdicts/wave1/W1-F10-CHARACTERS.json",
     "corpus/90-verdicts/wave1/artifacts/W1-F10-CHARACTERS/",
-    "corpus/70-visual/refs/characters/ours/",
-    "tools/capture/f10-character-sweep.mjs"
+    "tools/visual/f10-character-sweep.mjs",
+    "tools/visual/f10-silhouette.mjs"
   ],
-  "files_touched": ["orchestration/status/W1-F10-CHARACTER-CRITIC.json"]
+  "files_touched": [
+    "orchestration/status/W1-F10-CHARACTER-CRITIC.json",
+    "tools/visual/f10-character-sweep.mjs",
+    "tools/visual/f10-silhouette.mjs"
+  ]
 }
