@@ -1747,10 +1747,50 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     const pupilMat=mats.darkStone.clone();
     pupilMat.color.copy(saxSkin).multiplyScalar(EYE_SCLERA_OF_SKIN * 0.35);
     pupilMat.roughness=.45;
-    addPresentation('head',new THREE.SphereGeometry(.026,10,7),[-.052,.09,.112],[1,.72,.58],[0,0,0],'eye-l',eyeMat,hScale);
-    addPresentation('head',new THREE.SphereGeometry(.026,10,7),[ .052,.09,.112],[1,.72,.58],[0,0,0],'eye-r',eyeMat,hScale);
-    addPresentation('head',new THREE.SphereGeometry(.010,8,5),[-.052,.09,.132],[.62,1,.40],[0,0,0],'pupil-l',pupilMat,hScale);
-    addPresentation('head',new THREE.SphereGeometry(.010,8,5),[ .052,.09,.132],[.62,1,.40],[0,0,0],'pupil-r',pupilMat,hScale);
+    // ---- F10 r10: THE EYE HAD A PUPIL AND IT WAS WORTH ZERO PIXELS FROM EVERY BEARING ---------
+    //
+    // Round 8 fixed this eye's VALUE (2.16x face luma -> 0.847x) and recorded, in its own words,
+    // that it did not touch its GEOMETRY OR SEATING. The r9 critic then opened the eight hardware
+    // face frames and read the result: "a flat amber lozenge, no pupil, no lid, no orbit".
+    //
+    // MEASURED, not inferred, on `tools/visual/f10-r6-visible-surface.mjs` (whose self-test builds
+    // a small sphere inside a big one and requires the buried arm to score 0 while the free arm
+    // does not), `--family=saxhleel --half=0.09 --elev=5`, five bearings:
+    //
+    //   BEFORE   eye-l/eye-r   862 / 862 / 1158 / 1085 / 6 px      pupil-l, pupil-r  0 px AT ALL FIVE
+    //   AFTER    eye-l/eye-r  1811 / 2287 / 2393 / 2172 / 1160     pupil            386 / 390 / 359 / 317 / 238
+    //
+    // WHY IT WAS ZERO, and it is not the reason the numbers first suggest. Both the eyeball and
+    // the pupil were PROUD of the head's own skin surface where that surface was sampled at the
+    // centreline — so "buried under its own skull" is the wrong diagnosis. Profiling the skinned
+    // skin across the eye's row (165 vertices, y within 12 mm of the eye) shows the real occluder
+    // is the SNOUT: skin reaches z 0.15809 at x 0.003 and z 0.10764 at x 0.051-0.059, against an
+    // eyeball whose front face sat at z 0.10119. The eye was 6.5 mm BEHIND the flank of the snout
+    // and only the outer sliver of the ellipsoid, where the surface falls away past x 0.067 to
+    // z 0.08032, ever escaped — which is exactly the amber CRESCENT in `FP__player__b180`. The
+    // pupil, narrower and on the centre of the eye, never escaped at all.
+    //
+    // So the fix is lateral as much as forward: +6 mm outward and +12 mm forward in head-local
+    // units (+4.8 / +9.6 mm world after `hScale`), which sets the eyeball 4.1 mm proud of the skin
+    // beside it rather than 6.5 mm behind it. Solved by sweeping the pair and reading the census,
+    // not chosen: x .052/.056/.058/.060/.062 were all measured, .056 first makes the pupil visible
+    // (230 px) and .058 is the last that improves it materially before the ball starts standing off
+    // the head. THE REFERENCE, OPENED RATHER THAN DESCRIBED:
+    // `refs/context/ESO-argonian_character__steam-431594657.jpg` (the equipment-screen close-up) and
+    // `__steam-1362731834.jpg` — a small bright amber almond with a DARK pupil in it, set under a
+    // heavy brow, the orbit around it in shadow. The value is r8's and stays; the pupil is what was
+    // missing from the picture, and it is now in it.
+    //
+    // WHAT THIS DOES NOT DO, said plainly: there is still no LID and no ORBIT on this family. The
+    // humanoid branch above carries six lid arcs and a brow ridge; `saxhleel` carries none, and a
+    // union-of-convex-primitives builder cannot cut a socket — the humanoid block's own note records
+    // that a full ring "read as spectacles" and that a 7 mm-proud ball inside one rendered a gargoyle
+    // in goggles. Two of the critic's four words are answered here (pupil, and the lozenge is now a
+    // ball that reads at 1160 px where it read at 6); "no lid, no orbit" is not.
+    addPresentation('head',new THREE.SphereGeometry(.026,10,7),[-.058,.09,.124],[1,.72,.58],[0,0,0],'eye-l',eyeMat,hScale);
+    addPresentation('head',new THREE.SphereGeometry(.026,10,7),[ .058,.09,.124],[1,.72,.58],[0,0,0],'eye-r',eyeMat,hScale);
+    addPresentation('head',new THREE.SphereGeometry(.010,8,5),[-.058,.09,.145],[.62,1,.40],[0,0,0],'pupil-l',pupilMat,hScale);
+    addPresentation('head',new THREE.SphereGeometry(.010,8,5),[ .058,.09,.145],[.62,1,.40],[0,0,0],'pupil-r',pupilMat,hScale);
     if(M.horn>.01)for(const s of [-1,1]) addPresentation('head',new THREE.ConeGeometry(.045*M.horn,.16*M.horn,7),[s*.055,.16,-.045],[1,1,1],[-.30,0,s*.10],`brow-horn-${s<0?'l':'r'}`,familyMat,hScale);
     // The four `spine-scale-*` cones that used to hang here are gone. They are now welded crest
     // tubes inside the skinned surface (see `buildSkeleton`'s tail/crest block) — same read, no
