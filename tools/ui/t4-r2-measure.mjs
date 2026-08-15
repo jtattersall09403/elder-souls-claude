@@ -99,7 +99,7 @@ const W = Number(args.width || 1920), H = Number(args.height || 1080);
 // in the wrong place for twenty minutes. Absolute paths are honoured.
 const OUT = path.isAbsolute(String(args.out || ''))
   ? String(args.out)
-  : path.join(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r2'));
+  : path.resolve(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r2'));
 const SHOTS = path.join(OUT, 'screens');
 fs.mkdirSync(SHOTS, { recursive: true });
 

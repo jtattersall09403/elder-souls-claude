@@ -53,7 +53,7 @@ EXIT 0 = every check passes · 1 = a check failed · 2 = could not run.
 
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
-const OUT = path.join(REPO_ROOT, String(args.out || 'reports/uix08'));
+const OUT = path.resolve(REPO_ROOT, String(args.out || 'reports/uix08'));
 const SHOTS = path.join(REPO_ROOT, 'docs/shots');
 ensureDir(OUT); ensureDir(SHOTS);
 const STATE = String(args.state || 'helstrom-market');

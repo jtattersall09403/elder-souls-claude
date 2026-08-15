@@ -25,7 +25,7 @@ import { parseArgs, wantsHelp, usage, log, REPO_ROOT, ensureDir, writeJson } fro
 
 const args = parseArgs();
 if (wantsHelp(args)) usage('t4-r2-critic-ju5.mjs [--state ui-journal] [--out <dir>]');
-const OUT = path.join(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r2c/reports'));
+const OUT = path.resolve(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r2c/reports'));
 ensureDir(OUT);
 const STATE = String(args.state || 'ui-journal');
 

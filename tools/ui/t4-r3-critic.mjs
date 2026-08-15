@@ -30,7 +30,7 @@ import { parseArgs, wantsHelp, usage, log, REPO_ROOT, ensureDir, writeJson } fro
 
 const args = parseArgs();
 if (wantsHelp(args)) usage('t4-r3-critic.mjs [--state ui-journal] [--out <dir>]');
-const OUT = path.join(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r3c/reports'));
+const OUT = path.resolve(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r3c/reports'));
 const SHOTS = path.join(REPO_ROOT, String(args.shots || 'corpus/90-verdicts/wave1/artifacts/T4-r3c/screens'));
 ensureDir(OUT); ensureDir(SHOTS);
 const STATE = String(args.state || 'ui-journal');

@@ -40,7 +40,7 @@ EXIT 0 = every check passes · 1 = a check failed · 2 = could not run.
 
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
-const OUT = path.join(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r2c/reports'));
+const OUT = path.resolve(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/artifacts/T4-r2c/reports'));
 ensureDir(OUT);
 const STATE = String(args.state || 'ui-journal');
 
