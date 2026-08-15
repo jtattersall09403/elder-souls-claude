@@ -1,0 +1,13 @@
+[harness]   PASS JU1 chronological default (J1) — 19 entries, ascending by (day, index): true
+[harness]   PASS JU2 interleave_ratio >= 0.5 on a >=4-quest / >=12-entry fixture — measured 0.8889 (grouped-view ceiling for this size 0.2222, date-interleaved ideal 0.8000); fixture 19 entries / 5 quests
+[harness]   PASS JU3 prohibitions, declared (§B) — []
+[harness]   PASS JU4 prohibitions, observed in the rendered text — []
+[harness]   PASS JU6 quest index: names only, no state decoration (J4-J6) — 5 index rows, 0 decorated
+[harness]   PASS JU7 search returns chronological results (J7) — query "count" -> 6 results, chronological true
+[harness]   PASS JU8 the journal offers no route to the map (S35 via S38; replaces the S30-era "no map" check) — 0 journal element(s) linking to the map; map exists=true (expected — S35), openMenu('map') threw=false (expected false)
+[harness]   PASS JU9 entries verbatim and untruncated (J2) — 0 altered, 0 truncated
+[harness]   PASS F5 no coordinate-shaped substring in the RENDERED journal (RI-DLG05 F5 / K5) — []
+[harness]   PASS JU11 pause rule: the journal stops the world out of combat — frame 2 -> 2 over 120 steps
+[harness]   PASS J10 extent is visible: a page count element exists — 
+[harness] journal-ui: 11/11
+[harness] artifacts: /home/user/elder-souls-claude/reports/runs/JOURNAL-UI

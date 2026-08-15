@@ -1,0 +1,18 @@
+{
+ "pin_version": 1,
+ "path": "corpus/90-verdicts/wave1/artifacts/T4-r3c/measure/screens/live-sheet__1920x1080.png",
+ "bytes": 1610901,
+ "sha256": "b31d108eb70eb2e92c24c5e94e401bd1877a28112e64c8f5f6351f0b73092186",
+ "produced_by": "node tools/ui/t4-r2-measure.mjs --out corpus/90-verdicts/wave1/artifacts/T4-r3c/measure --state ui-journal",
+ "regeneration_verified": null,
+ "decisive": {
+  "bytes": 1610901,
+  "note": "no structured extractor for this file type — the hash and the regeneration command are the pin"
+ },
+ "cited_by": [
+  "corpus/90-verdicts/wave1/T4-r3.json"
+ ],
+ "pinned_at": "2026-08-15T12:55:19.939Z",
+ "pinned_by": "verdict-evidence-20260814",
+ "note": "Raw file exceeds the 1 MiB pin threshold and is not tracked. This pin is its citation: the decisive numbers, the SHA-256 of the bytes they were read from, and the command that regenerates it. `node tools/verdict-evidence.mjs --verify` re-checks the hash on any machine that still holds the raw file."
+}

@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-15T10:55:04Z",
+  "generated": "2026-08-15T12:55:35Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 89,
+  "verdicts_read": 90,
   "counts": {
-    "total": 84,
-    "open": 83,
+    "total": 85,
+    "open": 84,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -210,6 +210,9 @@
     "ui.menu.journal": [
       "GAP-W1-ui-journal-search-view-has-no-exit"
     ],
+    "ui.menu.inventory": [
+      "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
+    ],
     "render.process.measurement": [
       "GAP-W1-w1-30d-guard-misses-part-deletion",
       "GAP-W1-w1-30e-street-gate-never-ran"
@@ -252,6 +255,7 @@
     "GAP-PROSE-01: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-PACK-01: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "corpus/90-verdicts/wave1/T4-r2.json: closure of GAP-W1-ui-hud-world-set-unbuilt-and-misplaced is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/T4-r3.json: closure of GAP-W1-ui-journal-search-view-has-no-exit is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-00-r2.json: closure of GAP-W1-platform-prng-never-drawn is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-01-province-stream-r1.json: gap_closure references unknown gap_id GAP-W1-province-never-streamed.",
     "corpus/90-verdicts/wave1/W1-01-r2.json: closure of GAP-W1-world-trunk-road-below-the-waterline is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
@@ -348,7 +352,8 @@
     "corpus/90-verdicts/wave1/W1-READABLES-r2.json: gap_closure references unknown gap_id GAP-W1-library-has-no-reader-on-the-world-side.",
     "corpus/90-verdicts/wave1/W1-READABLES-r2.json: gap_closure references unknown gap_id GAP-W1-environment-channel-has-no-object.",
     "corpus/90-verdicts/wave1/W1-SAVE-r1.json: closure of GAP-W1-platform-save-drops-entity-prev-state is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
-    "STALE-RISK GAP-W1-ui-hud-world-set-unbuilt-and-misplaced: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-t4-r2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-hud-world-set-unbuilt-and-misplaced: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-t4-r2, crit-t4-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-journal-search-view-has-no-exit: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-t4-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-platform-prng-never-drawn: still open, and 5 later verdict(s) have been filed on the same piece or path since (crit-w1-00-r2-k4m9, crit-w1-09-r2-3c19, crit-w1-09-r3-3c19, crit-w1-deploy-r2-3c19, crit-w1-30s-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-platform-save-drops-entity-prev-state: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-save-r1-live-audit, crit-w1-map-r2-a91f). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-world-trunk-road-below-the-waterline: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-01-r2-world-b4e2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
@@ -379,8 +384,8 @@
     "STALE-RISK GAP-W1-act5-argument-entry-shadowed: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-17-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-mainquest-topic-bootstrap: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-19-r2-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-faction-ladders-are-doors-onto-empty-corridors: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-20-r2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-ui-map-outside-the-ar2-detectors: still open, and 2 later verdict(s) have been filed on the same piece or path since (critic-w1-21-r2, crit-w1-map-defects-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-ui-detectors-that-cannot-see: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-map-defects-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-map-outside-the-ar2-detectors: still open, and 3 later verdict(s) have been filed on the same piece or path since (critic-w1-21-r2, crit-w1-map-defects-r1-3c19, crit-t4-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-detectors-that-cannot-see: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-map-defects-r1-3c19, crit-t4-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-audio-emitter-consumption: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-22-r2-s2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-23-both-registered-voices-on-slavery-are-colonists: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-23-r4, crit-w1-23-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-two-placement-mechanisms-collide: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-23-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
@@ -3957,6 +3962,14 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-map-fix-drops-the-journal-from-the-page-walk"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r3.json",
+          "run_id": "crit-t4-r3",
+          "at": "2026-08-15T12:55:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
         }
       ]
     },
@@ -4012,6 +4025,14 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-ui-journal-search-view-has-no-exit"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r3.json",
+          "run_id": "crit-t4-r3",
+          "at": "2026-08-15T12:55:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
         }
       ]
     },
@@ -4052,7 +4073,16 @@
       },
       "superseded_by": null,
       "age_waves": 0,
-      "filed_since": []
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r3.json",
+          "run_id": "crit-t4-r3",
+          "at": "2026-08-15T12:55:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-ui-map-outside-the-ar2-detectors",
@@ -4113,8 +4143,58 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-map-fix-drops-the-journal-from-the-page-walk"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r3.json",
+          "run_id": "crit-t4-r3",
+          "at": "2026-08-15T12:55:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
         }
       ]
+    },
+    {
+      "gap_id": "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it",
+      "subsystem_path": "ui.menu.inventory",
+      "opened_wave": 1,
+      "opened_by": "crit-t4-r3",
+      "opened_in": "corpus/90-verdicts/wave1/T4-r3.json",
+      "piece_id": "T4-r3",
+      "severity": "blocking",
+      "what": "Every screen draws its panel at the same fixed rect [200, 160, 1520, 780] — 57.2% of a 1920x1080 frame — whatever it is holding, because game/src/ui/chrome.js:70 defines ONE constant BOX consumed by screenRect() and therefore by every screen through screen(). RI-UIX09 P4 requires D2 >= 0.35 of that rect to be matter and hard-fails below 0.15. Measured on captures I took at 7c63111d and sanity-checked with tools/visual/frame-liveness.mjs (8 frames, all LIVE): journal 0.1314, level-up 0.0910, sheet 0.0895, spells 0.0702, container 0.0572 — FIVE HARD FAILS — and inventory 0.1524, the only populated screen above the floor and still less than half the bar. Two independent implementations of the item's own method 4 agree to four decimals on all six screens. The arithmetic that matters is the good news inside it, re-derived here rather than quoted from S56: at the matter each screen ALREADY draws, D2 >= 0.35 is reached at 24.9% of frame for the inventory, 21.5% for the journal, 14.9% for level-up, 14.6% for the sheet, 11.5% for spells and 9.3% for the container. Morrowind's own inventory window is about 24% of its frame. This is a sizing defect, not a content defect, and round 3 reported it undone rather than half-done — it did not pad a number and it did not add decorative fill.",
+      "why_it_matters": "A player opens the character sheet, the spell list, the level-up room or the journal and finds a room three-fifths furnished and two-fifths empty — six screens in a row that look unfinished, which is the first impression the interface makes and the one the owner will get in the first minute.",
+      "remedy": {
+        "action": "Replace game/src/ui/chrome.js:70's single `BOX = { x: 200, y: 160, w: 1520, h: 780 }` with a per-screen rect looked up by mode and consumed by screenRect(), then re-pitch each screen's absolute sc.inner offsets against its own box. TAKE THE FOUR CHEAP ONES FIRST — the journal (screens/text.js), the level-up screen and the character sheet (screens/progress.js) and the spell list all position against sc.inner in offsets that shrink cleanly, and the sheet additionally needs its skills column re-derived because it is written to FILL ih, which makes its contents height circular. LEAVE THE INVENTORY FOR A SECOND STEP: screens/inventory.js's COLS needs 200+20+132+24+640+30 = 1046 units of width before the detail panel gets any, so it cannot reach 24.9% by shrinking alone and needs its columns re-pitched, and it puts the worn band at iy + 476*s, the sort control at iy + 574*s and gold at iy + ih - 40*s, so any height below about 614 units collides.",
+        "targets": [
+          "game/src/ui/chrome.js",
+          "game/src/ui/screens/text.js",
+          "game/src/ui/screens/progress.js",
+          "game/src/ui/screens/inventory.js"
+        ],
+        "acceptance": "`node tools/ui/t4-r2-measure.mjs --out <dir>` then `node tools/ui/t4-r3-density.mjs --measure <dir> --out <reports>` reports `hard_fails: []` and `d2_critic >= 0.35` on journal, level-up, sheet and spells, with NO NEW DRAWN ELEMENT on any of them (each screen's `element_count` in measure-live-1920x1080.json unchanged within +/-2, so the fill comes from sizing and not from decorative filler). All captures must pass `node tools/visual/frame-liveness.mjs`. The delete-the-fix arm — restore the single BOX in a real worktree at the fix's own pinned sha — must put all five hard fails back.",
+        "ref_item": "RI-UIX09",
+        "estimated_size": "M"
+      },
+      "remedy_action": "Replace game/src/ui/chrome.js:70's single `BOX = { x: 200, y: 160, w: 1520, h: 780 }` with a per-screen rect looked up by mode and consumed by screenRect(), then re-pitch each screen's absolute sc.inner offsets against its own box. TAKE THE FOUR CHEAP ONES FIRST — the journal (screens/text.js), the level-up screen and the character sheet (screens/progress.js) and the spell list all position against sc.inner in offsets that shrink cleanly, and the sheet additionally needs its skills column re-derived because it is written to FILL ih, which makes its contents height circular. LEAVE THE INVENTORY FOR A SECOND STEP: screens/inventory.js's COLS needs 200+20+132+24+640+30 = 1046 units of width before the detail panel gets any, so it cannot reach 24.9% by shrinking alone and needs its columns re-pitched, and it puts the worn band at iy + 476*s, the sort control at iy + 574*s and gold at iy + ih - 40*s, so any height below about 614 units collides.",
+      "remedy_acceptance": "`node tools/ui/t4-r2-measure.mjs --out <dir>` then `node tools/ui/t4-r3-density.mjs --measure <dir> --out <reports>` reports `hard_fails: []` and `d2_critic >= 0.35` on journal, level-up, sheet and spells, with NO NEW DRAWN ELEMENT on any of them (each screen's `element_count` in measure-live-1920x1080.json unchanged within +/-2, so the fill comes from sizing and not from decorative filler). All captures must pass `node tools/visual/frame-liveness.mjs`. The delete-the-fix arm — restore the single BOX in a real worktree at the fix's own pinned sha — must put all five hard fails back.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r3c/reports/t4-r3-density.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r3c/reports/frame-liveness-measure.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r3c/measure/measure-live-1920x1080.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-w1-30d-guard-misses-part-deletion",

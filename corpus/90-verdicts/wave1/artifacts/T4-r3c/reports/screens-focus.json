@@ -1,0 +1,2349 @@
+{
+  "schema": "elder-souls/t4-critic-focus@1",
+  "at": "2026-08-15T12:37:47.646Z",
+  "state": "ui-journal",
+  "checks": [
+    {
+      "id": "I0 the real input listeners are attached",
+      "pass": true,
+      "detail": "real.attached=true"
+    },
+    {
+      "id": "EQ1 confirming a weapon row changes SOMETHING on the screen within 60 frames",
+      "pass": true,
+      "detail": "row 'Bog-iron maul  11.5  96  8.3': equipment [\"chitin-cuirass@chest\",\"reed-cutter@right\"] -> [\"bog-iron-maul@right\",\"chitin-cuirass@chest\"]; frame 5 -> 5; doll [\"inventory.worn.body\",\"inventory.worn.right\"] -> [\"inventory.worn.body\",\"inventory.worn.right\"]; screen moved=true"
+    },
+    {
+      "id": "EQ2 the equip lands once the screen is shut and time resumes",
+      "pass": true,
+      "detail": "equipment [\"chitin-cuirass@chest\",\"reed-cutter@right\"] -(confirm, menu open, 60f)-> [\"bog-iron-maul@right\",\"chitin-cuirass@chest\"] -(menu closed, 90f)-> [\"bog-iron-maul@right\",\"chitin-cuirass@chest\"]; frames 5 / 5 / 98"
+    },
+    {
+      "id": "HUD1 the full/minimal switch responds to a press held past its 12-frame gate",
+      "pass": false,
+      "detail": "hud.mode full -(20f hold of KeyG)-> full"
+    },
+    {
+      "id": "JS0 the search view is entered by confirming on the chronicle",
+      "pass": true,
+      "detail": "view='search'"
+    },
+    {
+      "id": "JS1 SOME action returns the journal from the search view to the chronicle",
+      "pass": true,
+      "detail": "'roll (back)' does it"
+    },
+    {
+      "id": "JS2 the journal does not persist the search view across a close and a re-open",
+      "pass": true,
+      "detail": "after closing and walking back to the journal: view='chronicle', query=''"
+    },
+    {
+      "id": "CT1 items transfer in both directions through real presses",
+      "pass": true,
+      "detail": "carried 44 -(take)-> 45 -(put)-> 44"
+    },
+    {
+      "id": "TS1 the floating touch stick walks an open screen's list",
+      "pass": true,
+      "detail": "focus {\"col\":1,\"tagIdx\":0,\"rowIdx\":2,\"sortIdx\":0} -(touch drag down 120 px)-> {\"col\":1,\"tagIdx\":0,\"rowIdx\":3,\"sortIdx\":0} on mode 'inventory'"
+    },
+    {
+      "id": "WD0 GATE the probe actually crossed the fight boundary",
+      "pass": true,
+      "detail": "phases seen [\"world\",\"fight\"]; spawn {\"eid\":\"e0\",\"aggro\":true}; entry at index 6"
+    },
+    {
+      "id": "WD1 (RI-UIX07 V7 / E-T2) no world-set element is declared on any fight frame",
+      "pass": true,
+      "detail": "world-set kinds on world frames [\"bearing_dial\",\"effect_strip\",\"place_name\"]; on fight frames [] over 14 fight frame(s)"
+    },
+    {
+      "id": "WD2 (RI-UIX07 V8 / E-T3) the withdrawal is instantaneous — no opacity ramp across entry",
+      "pass": true,
+      "detail": "frame 5 (world) declared 3 world element(s); frame 6 (fight) declared 0; fractional opacity anywhere=false"
+    },
+    {
+      "id": "WD3 (RI-UIX07 V9 / E-T1) the Souls set is on every frame in both phases",
+      "pass": true,
+      "detail": "20 frame(s); every one carries hud.health and hud.stamina: true"
+    }
+  ],
+  "data": {
+    "equip": {
+      "before": {
+        "n": 44,
+        "equipped": [
+          "chitin-cuirass@chest",
+          "reed-cutter@right"
+        ],
+        "frame": 5
+      },
+      "with_menu_open": {
+        "n": 44,
+        "equipped": [
+          "bog-iron-maul@right",
+          "chitin-cuirass@chest"
+        ],
+        "frame": 5
+      },
+      "after_close": {
+        "n": 44,
+        "equipped": [
+          "bog-iron-maul@right",
+          "chitin-cuirass@chest"
+        ],
+        "frame": 98
+      },
+      "doll_after": [
+        "inventory.worn.body",
+        "inventory.worn.right"
+      ]
+    },
+    "hud_switch": {
+      "before": "full",
+      "after": "full"
+    },
+    "journal_search_escape": {
+      "tried": [
+        {
+          "action": "roll (back)",
+          "code": "Space",
+          "mode_after": "journal",
+          "view_after": "chronicle",
+          "query_after": ""
+        }
+      ],
+      "escaped": "roll (back)"
+    },
+    "journal_after_reopen": {
+      "view": "chronicle",
+      "page": 0,
+      "indexIdx": 0,
+      "ringIdx": 0,
+      "query": ""
+    },
+    "container_open": {
+      "mode": "container",
+      "rows": 14,
+      "headers": [
+        "5",
+        "MEDIUM",
+        "Sesh-Anaat",
+        "You put on the bog-iron maul.",
+        "S",
+        "thorn-hall"
+      ]
+    },
+    "container_transfer": {
+      "before": 44,
+      "after_take": 45,
+      "after_put": 44
+    },
+    "touch_stick": {
+      "before": {
+        "col": 1,
+        "tagIdx": 0,
+        "rowIdx": 2,
+        "sortIdx": 0
+      },
+      "mid": {
+        "col": 1,
+        "tagIdx": 0,
+        "rowIdx": 3,
+        "sortIdx": 0
+      }
+    },
+    "spawn": {
+      "eid": "e0",
+      "aggro": true
+    },
+    "withdrawal": {
+      "spawn": {
+        "eid": "e0",
+        "aggro": true
+      },
+      "phases_seen": [
+        "world",
+        "fight"
+      ],
+      "boundary_crossed": true,
+      "entry_index": 6,
+      "world_set_on_world_frames": [
+        "bearing_dial",
+        "effect_strip",
+        "place_name"
+      ],
+      "world_set_on_fight_frames": [],
+      "souls_identical": false,
+      "any_fractional_opacity": false,
+      "frames": [
+        {
+          "tag": "pre",
+          "frame": 110,
+          "phase": "world",
+          "source": "encounter",
+          "since": 106,
+          "in_combat": false,
+          "world": [
+            {
+              "id": "hud.bearing",
+              "kind": "bearing_dial",
+              "opacity": 1,
+              "rect": [
+                1616,
+                942,
+                96,
+                96
+              ]
+            },
+            {
+              "id": "hud.effects",
+              "kind": "effect_strip",
+              "opacity": 1,
+              "rect": [
+                1574,
+                1006,
+                30,
+                32
+              ]
+            },
+            {
+              "id": "hud.place",
+              "kind": "place_name",
+              "opacity": 1,
+              "rect": [
+                42,
+                950,
+                520,
+                36
+              ]
+            }
+          ],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina",
+            "hud.toast"
+          ],
+          "all_hud": [
+            "hud.bearing",
+            "hud.effects",
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.place",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina",
+            "hud.toast"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": true
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": true
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [
+              {
+                "id": "hud.bearing",
+                "kind": "bearing_dial",
+                "rect": [
+                  1616,
+                  942,
+                  96,
+                  96
+                ],
+                "in_bottom_half": true
+              },
+              {
+                "id": "hud.effects",
+                "kind": "effect_strip",
+                "rect": [
+                  1574,
+                  1006,
+                  30,
+                  32
+                ],
+                "in_bottom_half": true
+              },
+              {
+                "id": "hud.place",
+                "kind": "place_name",
+                "rect": [
+                  42,
+                  950,
+                  520,
+                  36
+                ],
+                "in_bottom_half": true
+              }
+            ],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 3,
+            "coverage_pct": 1.3935,
+            "withdrawn": [],
+            "withdrawn_because": null
+          }
+        },
+        {
+          "tag": "pre",
+          "frame": 111,
+          "phase": "world",
+          "source": "encounter",
+          "since": 107,
+          "in_combat": false,
+          "world": [
+            {
+              "id": "hud.bearing",
+              "kind": "bearing_dial",
+              "opacity": 1,
+              "rect": [
+                1616,
+                942,
+                96,
+                96
+              ]
+            },
+            {
+              "id": "hud.effects",
+              "kind": "effect_strip",
+              "opacity": 1,
+              "rect": [
+                1574,
+                1006,
+                30,
+                32
+              ]
+            },
+            {
+              "id": "hud.place",
+              "kind": "place_name",
+              "opacity": 1,
+              "rect": [
+                42,
+                950,
+                520,
+                36
+              ]
+            }
+          ],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina",
+            "hud.toast"
+          ],
+          "all_hud": [
+            "hud.bearing",
+            "hud.effects",
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.place",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina",
+            "hud.toast"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": true
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": true
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [
+              {
+                "id": "hud.bearing",
+                "kind": "bearing_dial",
+                "rect": [
+                  1616,
+                  942,
+                  96,
+                  96
+                ],
+                "in_bottom_half": true
+              },
+              {
+                "id": "hud.effects",
+                "kind": "effect_strip",
+                "rect": [
+                  1574,
+                  1006,
+                  30,
+                  32
+                ],
+                "in_bottom_half": true
+              },
+              {
+                "id": "hud.place",
+                "kind": "place_name",
+                "rect": [
+                  42,
+                  950,
+                  520,
+                  36
+                ],
+                "in_bottom_half": true
+              }
+            ],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 3,
+            "coverage_pct": 1.3935,
+            "withdrawn": [],
+            "withdrawn_because": null
+          }
+        },
+        {
+          "tag": "pre",
+          "frame": 112,
+          "phase": "world",
+          "source": "encounter",
+          "since": 108,
+          "in_combat": false,
+          "world": [
+            {
+              "id": "hud.bearing",
+              "kind": "bearing_dial",
+              "opacity": 1,
+              "rect": [
+                1616,
+                942,
+                96,
+                96
+              ]
+            },
+            {
+              "id": "hud.effects",
+              "kind": "effect_strip",
+              "opacity": 1,
+              "rect": [
+                1574,
+                1006,
+                30,
+                32
+              ]
+            },
+            {
+              "id": "hud.place",
+              "kind": "place_name",
+              "opacity": 1,
+              "rect": [
+                42,
+                950,
+                520,
+                36
+              ]
+            }
+          ],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina",
+            "hud.toast"
+          ],
+          "all_hud": [
+            "hud.bearing",
+            "hud.effects",
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.place",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina",
+            "hud.toast"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": true
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": true
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [
+              {
+                "id": "hud.bearing",
+                "kind": "bearing_dial",
+                "rect": [
+                  1616,
+                  942,
+                  96,
+                  96
+                ],
+                "in_bottom_half": true
+              },
+              {
+                "id": "hud.effects",
+                "kind": "effect_strip",
+                "rect": [
+                  1574,
+                  1006,
+                  30,
+                  32
+                ],
+                "in_bottom_half": true
+              },
+              {
+                "id": "hud.place",
+                "kind": "place_name",
+                "rect": [
+                  42,
+                  950,
+                  520,
+                  36
+                ],
+                "in_bottom_half": true
+              }
+            ],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 3,
+            "coverage_pct": 1.3935,
+            "withdrawn": [],
+            "withdrawn_because": null
+          }
+        },
+        {
+          "tag": "pre",
+          "frame": 113,
+          "phase": "world",
+          "source": "encounter",
+          "since": 109,
+          "in_combat": false,
+          "world": [
+            {
+              "id": "hud.bearing",
+              "kind": "bearing_dial",
+              "opacity": 1,
+              "rect": [
+                1616,
+                942,
+                96,
+                96
+              ]
+            },
+            {
+              "id": "hud.effects",
+              "kind": "effect_strip",
+              "opacity": 1,
+              "rect": [
+                1574,
+                1006,
+                30,
+                32
+              ]
+            },
+            {
+              "id": "hud.place",
+              "kind": "place_name",
+              "opacity": 1,
+              "rect": [
+                42,
+                950,
+                520,
+                36
+              ]
+            }
+          ],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina",
+            "hud.toast"
+          ],
+          "all_hud": [
+            "hud.bearing",
+            "hud.effects",
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.place",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina",
+            "hud.toast"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": true
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": true
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [
+              {
+                "id": "hud.bearing",
+                "kind": "bearing_dial",
+                "rect": [
+                  1616,
+                  942,
+                  96,
+                  96
+                ],
+                "in_bottom_half": true
+              },
+              {
+                "id": "hud.effects",
+                "kind": "effect_strip",
+                "rect": [
+                  1574,
+                  1006,
+                  30,
+                  32
+                ],
+                "in_bottom_half": true
+              },
+              {
+                "id": "hud.place",
+                "kind": "place_name",
+                "rect": [
+                  42,
+                  950,
+                  520,
+                  36
+                ],
+                "in_bottom_half": true
+              }
+            ],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 3,
+            "coverage_pct": 1.3935,
+            "withdrawn": [],
+            "withdrawn_because": null
+          }
+        },
+        {
+          "tag": "pre",
+          "frame": 114,
+          "phase": "world",
+          "source": "encounter",
+          "since": 110,
+          "in_combat": false,
+          "world": [
+            {
+              "id": "hud.bearing",
+              "kind": "bearing_dial",
+              "opacity": 1,
+              "rect": [
+                1616,
+                942,
+                96,
+                96
+              ]
+            },
+            {
+              "id": "hud.effects",
+              "kind": "effect_strip",
+              "opacity": 1,
+              "rect": [
+                1574,
+                1006,
+                30,
+                32
+              ]
+            },
+            {
+              "id": "hud.place",
+              "kind": "place_name",
+              "opacity": 1,
+              "rect": [
+                42,
+                950,
+                520,
+                36
+              ]
+            }
+          ],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina",
+            "hud.toast"
+          ],
+          "all_hud": [
+            "hud.bearing",
+            "hud.effects",
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.place",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina",
+            "hud.toast"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": true
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": true
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [
+              {
+                "id": "hud.bearing",
+                "kind": "bearing_dial",
+                "rect": [
+                  1616,
+                  942,
+                  96,
+                  96
+                ],
+                "in_bottom_half": true
+              },
+              {
+                "id": "hud.effects",
+                "kind": "effect_strip",
+                "rect": [
+                  1574,
+                  1006,
+                  30,
+                  32
+                ],
+                "in_bottom_half": true
+              },
+              {
+                "id": "hud.place",
+                "kind": "place_name",
+                "rect": [
+                  42,
+                  950,
+                  520,
+                  36
+                ],
+                "in_bottom_half": true
+              }
+            ],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 3,
+            "coverage_pct": 1.3935,
+            "withdrawn": [],
+            "withdrawn_because": null
+          }
+        },
+        {
+          "tag": "pre",
+          "frame": 115,
+          "phase": "world",
+          "source": "encounter",
+          "since": 111,
+          "in_combat": false,
+          "world": [
+            {
+              "id": "hud.bearing",
+              "kind": "bearing_dial",
+              "opacity": 1,
+              "rect": [
+                1616,
+                942,
+                96,
+                96
+              ]
+            },
+            {
+              "id": "hud.effects",
+              "kind": "effect_strip",
+              "opacity": 1,
+              "rect": [
+                1574,
+                1006,
+                30,
+                32
+              ]
+            },
+            {
+              "id": "hud.place",
+              "kind": "place_name",
+              "opacity": 1,
+              "rect": [
+                42,
+                950,
+                520,
+                36
+              ]
+            }
+          ],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina",
+            "hud.toast"
+          ],
+          "all_hud": [
+            "hud.bearing",
+            "hud.effects",
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.place",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina",
+            "hud.toast"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": true
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": true,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": true
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [
+              {
+                "id": "hud.bearing",
+                "kind": "bearing_dial",
+                "rect": [
+                  1616,
+                  942,
+                  96,
+                  96
+                ],
+                "in_bottom_half": true
+              },
+              {
+                "id": "hud.effects",
+                "kind": "effect_strip",
+                "rect": [
+                  1574,
+                  1006,
+                  30,
+                  32
+                ],
+                "in_bottom_half": true
+              },
+              {
+                "id": "hud.place",
+                "kind": "place_name",
+                "rect": [
+                  42,
+                  950,
+                  520,
+                  36
+                ],
+                "in_bottom_half": true
+              }
+            ],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 3,
+            "coverage_pct": 1.3935,
+            "withdrawn": [],
+            "withdrawn_because": null
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 116,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 0,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 117,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 1,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 118,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 2,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 119,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 3,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 120,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 4,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 121,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 5,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 122,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 6,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 123,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 7,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 124,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 8,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 125,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 9,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 126,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 10,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 127,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 11,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 128,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 12,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        },
+        {
+          "tag": "post",
+          "frame": 129,
+          "phase": "fight",
+          "source": "encounter",
+          "since": 13,
+          "in_combat": true,
+          "world": [],
+          "souls": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "all_hud": [
+            "hud.equipload",
+            "hud.focus",
+            "hud.heal",
+            "hud.health",
+            "hud.prompt",
+            "hud.quickslots",
+            "hud.stamina"
+          ],
+          "hud_world": {
+            "set": {
+              "W1_bearing_dial": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat"
+              },
+              "W2_effect_strip": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≥1 effect",
+                "expected": false
+              },
+              "W3_sneak_state": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while sneaking",
+                "expected": false
+              },
+              "W4_condition_marks": {
+                "built": true,
+                "drawn": true,
+                "conditional": "both phases, always",
+                "inside": "hud.quickslots",
+                "added_px": 0,
+                "values": {
+                  "right": 0.74,
+                  "left": null,
+                  "spell": null,
+                  "item": 0
+                }
+              },
+              "W5_place_name": {
+                "built": true,
+                "drawn": false,
+                "conditional": "out of combat, ≤3 s after a cell change",
+                "expected": false
+              },
+              "W6_breath_meter": {
+                "built": true,
+                "drawn": false,
+                "conditional": "both phases, while submerged",
+                "expected": false
+              }
+            },
+            "elements": [],
+            "all_in_bottom_half": true,
+            "overlaps": [],
+            "persistent_count": 0,
+            "coverage_pct": 0,
+            "withdrawn": [
+              {
+                "id": "hud.effects",
+                "because": "combat_phase"
+              },
+              {
+                "id": "hud.place",
+                "because": "combat_phase"
+              }
+            ],
+            "withdrawn_because": "combat_phase"
+          }
+        }
+      ]
+    },
+    "errors": []
+  }
+}

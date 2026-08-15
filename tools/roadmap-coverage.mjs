@@ -382,6 +382,12 @@ const GAP_MAP = {
   // T4 round 2's gap. One press of confirm on the journal's chronicle makes the journal a search
   // box for the session; `backOrSub()` is defined at ui/system.js:711 and called nowhere.
   'GAP-W1-ui-journal-search-view-has-no-exit': ['T4'],
+  // T4 round 3's gap, and it is the one that keeps the piece at 2. Every screen draws its panel at
+  // the same fixed [200,160,1520,780] = 57.2% of frame whatever it holds, so five of the six
+  // populated screens sit under RI-UIX09 P4's hard-fail floor of 0.15 (journal 0.1314, level-up
+  // 0.0910, sheet 0.0895, spells 0.0702, container 0.0572) and none of the six reaches its bar of
+  // 0.35. ARBITRATION S56 ruled on it; round 3 reported it undone rather than half-done.
+  'GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it': ['T4'],
   'GAP-W1-ui-map-outside-the-ar2-detectors': ['T4'],
   'GAP-W1-w1-30d-guard-misses-part-deletion': ['F10', 'I2'],
   'GAP-W1-w1-30e-street-gate-never-ran': ['F8', 'I2'],

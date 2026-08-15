@@ -34,6 +34,11 @@ const OUT = path.join(REPO_ROOT, String(args.out || 'corpus/90-verdicts/wave1/ar
 const SHOTS = path.join(REPO_ROOT, String(args.shots || 'corpus/90-verdicts/wave1/artifacts/T4-r3c/screens'));
 ensureDir(OUT); ensureDir(SHOTS);
 const STATE = String(args.state || 'ui-journal');
+// `--legs jx,eq,eqr,ic,ts,map` runs a subset. Default is everything. It exists so a later critic
+// can re-measure ONE property without paying for a twenty-minute browser session, which is what
+// made my own instrument corrections expensive.
+const LEGS = String(args.legs || 'all').split(',').map((x) => x.trim()).filter(Boolean);
+const leg = (n) => LEGS.includes('all') || LEGS.includes(n);
 
 const checks = [];
 const push = (id, pass, detail) => { checks.push({ id, pass, detail }); log(`  ${pass ? 'ok  ' : 'FAIL'} ${id}  ${detail}`); };
@@ -88,6 +93,23 @@ async function goto(target) {
   }
   return (await read()).mode;
 }
+/**
+ * Put the item list back at its first row THROUGH REAL PRESSES.
+ *
+ * My second full run measured TS1/TS2/TS4/TS5 at `rowIdx 43` — the LAST row of a 44-item carried
+ * list, left there by the equip legs — where a downward drag correctly cannot move and the probe
+ * reports a dead stick on a build whose stick works. That is the same class of instrument defect
+ * `RI-UIX10` §B exists to stop, arriving from the probe's own history rather than from a trap, and
+ * it is why the touch legs are re-run in isolation with `--legs ts,map`.
+ */
+async function toTopOfList(maxPresses = 60) {
+  for (let i = 0; i < maxPresses; i++) {
+    const r = await read();
+    if (!r.focus || r.focus.rowIdx === undefined || r.focus.rowIdx === 0) return r.focus ? r.focus.rowIdx : null;
+    await key('KeyW', 1);
+  }
+  return (await read()).focus.rowIdx;
+}
 async function toWorld() {
   for (let i = 0; i < 8; i++) { const r = await read(); if (r.mode === 'world') return; await key('Escape'); }
 }
@@ -130,7 +152,7 @@ try {
   // ============================================================================================
   // JX — THE JOURNAL EXIT, BY EVERY ROUTE THE SCREEN ADVERTISES
   // ============================================================================================
-  {
+  if (leg('jx')) {
     // -- JX0. the trap's own door still opens (the fix must not have removed the feature) ------
     let r = await enterSearch(0);
     push('JX0 confirm on the chronicle still enters the search view',
@@ -255,7 +277,7 @@ try {
   // ============================================================================================
   // EQ — RI-UIX10 O3's ACTUAL WINDOW: FIFTEEN FRAMES, NOT SIXTY
   // ============================================================================================
-  {
+  if (leg('eq')) {
     await toWorld();
     await goto('inventory');
     let target = null;
@@ -298,18 +320,25 @@ try {
   // (`_loadoutForItem` has no patch for its moveset) and W1-16 r4 built `uiToast` so the refusal
   // is said. O3 asks whether the PLAYER can see the press land, so the toast is the whole
   // question, and it must be visible WITH THE SCREEN OPEN.
-  {
+  if (leg('eqr')) {
     await toWorld();
     await goto('inventory');
+    // BY ITEM ID, NOT BY NAME. My first pass matched /bow/i and landed on a "Mud-slip bowl", and
+    // the check then passed on a toast left over from the PREVIOUS leg's successful equip. Both
+    // halves of that are recorded in my status file: the row is now identified by
+    // `meta.item_id === 'hist-sap-bow'` (the row `drive.mjs` C5 lands on at both rounds) and the
+    // toast channel is cleared immediately before the press so that a stale line cannot pass it.
     let bow = null;
     for (let i = 0; i < 45; i++) {
       const r = await read();
       const f = r.rows.find((x) => x.focused);
-      if (f && /bow/i.test(String(f.text))) { bow = f; break; }
+      if (f && f.meta && f.meta.item_id === 'hist-sap-bow') { bow = f; break; }
       await key('KeyS', 1);
     }
-    if (!bow) push('EQ2 the refused weapon row says something to the player', false, 'no bow row reachable');
+    if (!bow) push('EQ2 the refused weapon row says something to the player', false, 'the `hist-sap-bow` row was not reachable by walking the list in 45 presses');
     else {
+      await h.page.evaluate(() => { window.__ENGINE.uiToast(null); });
+      await h.h('stepFrames', 2);
       const b = await read(); const wb = await inv();
       const hudBefore = await h.page.evaluate(() => (window.__HARNESS.getUIState().elements || [])
         .filter((e) => e.visible && /toast/i.test(String(e.id))).map((e) => ({ id: e.id, text: e.text })));
@@ -332,7 +361,7 @@ try {
   // ============================================================================================
   // IC — THE IN-COMBAT COMMITMENT, ITS NARRATION, AND THE REGRESSION IT COULD HAVE CAUSED
   // ============================================================================================
-  {
+  if (leg('ic')) {
     await toWorld();
     const spawned = await h.page.evaluate(() => {
       const A = window.__HARNESS;
@@ -349,13 +378,21 @@ try {
     push('IC0 GATE a fight is actually running', fighting, `spawn ${J(spawned)}, inCombat=${fighting}`);
     if (fighting) {
       await goto('inventory');
+      // BY ITEM ID. A name regex walked off the end of the list and pressed confirm on a
+      // `misc` bowl, which `_confirm()` queues NOTHING for — so the leg measured a press the UI
+      // never accepted and reported it as a dead commitment. Recorded in my status file.
+      // `reed-cutter` is the blade EQ1 displaced out of the right hand, so it is carried,
+      // unequipped and known-equippable on this fixture.
+      const WANT = ['reed-cutter', 'chitin-cuirass', 'bog-iron-maul'];
       let target = null;
-      for (let i = 0; i < 45; i++) {
+      for (let i = 0; i < 60 && !target; i++) {
         const r = await read();
         const f = r.rows.find((x) => x.focused);
-        if (f && /chitin|hide|cuirass|helm|greaves|maul|blade|bow/i.test(String(f.text)) && !(f.meta && f.meta.equipped)) { target = f; break; }
+        if (f && f.meta && WANT.includes(f.meta.item_id)) { target = f; break; }
         await key('KeyS', 1);
       }
+      if (!target) { push('IC1 (O3) the in-combat commitment is NARRATED on the screen while it runs', false, `no row in ${J(WANT)} could be focused by walking the list`); }
+      else {
       const b = await read(); const wb = await inv();
       await key('KeyE', 2);
       await h.h('stepFrames', 8);            // inside O3's 15-frame window, inside the 30-frame commit
@@ -383,6 +420,7 @@ try {
         wm.frame > wb.frame && J(wd.equipped) !== J(wb.equipped) && J(wm.equipped) === J(wb.equipped),
         `equipment ${J(wb.equipped)} -(press, +8f)-> ${J(wm.equipped)} -(+40f)-> ${J(wd.equipped)}; ` +
         `frames ${wb.frame} -> ${wm.frame} -> ${wd.frame} (the world runs in a fight: RI-UIX03 M-P2)`);
+      }
       await toWorld();
     }
   }
@@ -390,7 +428,7 @@ try {
   // ============================================================================================
   // TS — TOUCH, BEYOND ONE FLICK
   // ============================================================================================
-  {
+  if (leg('ts')) {
     await h.h('setViewport', { pointer: 'coarse' });
     await h.h('stepFrames', 2);
     const i1 = await h.page.evaluate(() => {
@@ -403,6 +441,9 @@ try {
 
     await toWorld();
     await goto('inventory');
+    const top = await toTopOfList();
+    push('TS0 INSTRUMENT the list is at its first row before the stick is measured', top === 0,
+      `focus.rowIdx=${top} (a drag DOWN cannot move a focus already on the last row, and reporting that as a dead stick is a probe defect, not a build defect)`);
     const drag = async (dx, dy, holdSteps) => h.page.evaluate(async ([ddx, ddy, hs]) => {
       const cv = document.querySelector('canvas');
       const r = cv.getBoundingClientRect();
@@ -446,6 +487,12 @@ try {
       c0.col !== c1.col, `focus.col ${c0.col} -(drag left 140 px)-> ${c1.col}`);
 
     // TS4 / TS5 — the missing repeat. Is it a TOUCH defect (OP3) or device-neutral?
+    // TS3 left the focus on COLUMN 0 (the categories), where a vertical move walks `tagIdx` and
+    // not `rowIdx`. My first pass did not put it back and read `rowIdx` unchanged on both arms,
+    // which is a probe artefact and not a repeat measurement. Back to the item column first.
+    await key('KeyD'); await h.h('stepFrames', 2);
+    const colNow = (await read()).focus.col;
+    push('TS3b the item column is back in focus before the repeat measurement', colNow === 1, `focus.col=${colNow}`);
     const h0 = (await read()).focus.rowIdx;
     await drag(0, 120, 40); await h.h('stepFrames', 40);
     const h1 = (await read()).focus.rowIdx;
@@ -461,6 +508,31 @@ try {
 
     await h.h('setViewport', { pointer: 'fine' });
     await h.h('stepFrames', 2);
+  }
+
+  // ============================================================================================
+  // MAP — settling `t4-r2-critic-drive.mjs` F1, which fails at BOTH rounds identically.
+  // F1 is a compound check: "the map screen walks its places AND swaps its view". The view swaps;
+  // `placeIdx` does not move. RI-UIX10 OP1's hard fail is "a drawn affordance with no input that
+  // works it", and a one-row list is not a dead control — so the question is a COUNT, and the
+  // screen prints the answer itself ("One place I have stood in." vs "Places I have stood in.").
+  // Read from the rendered census rather than from the discovery data, so it is output.
+  // ============================================================================================
+  if (leg('map')) {
+    await toWorld();
+    const m = await goto('map');
+    const st = await read();
+    const places = st.texts.filter((t) => /place[s]? I have stood in|I have not stood/i.test(String(t)));
+    const rows = st.rows.length;
+    const b = await read();
+    await key('KeyS'); const d1 = await read();
+    await key('KeyW'); const d2 = await read();
+    report.data.map = { mode: m, foot: places, list_rows: rows, focus_before: b.focus, after_down: d1.focus, after_up: d2.focus, texts: st.texts };
+    const single = places.some((t) => /^One place/i.test(String(t)));
+    push('MAP1 the map\'s place list has more than one row to walk',
+      rows > 1 && !single,
+      `mode='${m}'; the screen's own foot line ${J(places)}; list_row elements ${rows}; ` +
+      `placeIdx ${J(b.focus)} -(down)-> ${J(d1.focus)} -(up)-> ${J(d2.focus)}`);
   }
 
   report.checks = checks;

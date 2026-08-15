@@ -53,8 +53,15 @@ for (const [name, rec] of Object.entries(LIVE.screens || {})) {
   const row = { capture: path.relative(REPO_ROOT, p), panel_rect: rect };
   if (rect) {
     const png = decodePNG(fs.readFileSync(p));
-    row.d2_critic = d2(png, rect);
+    // `d2()` returns {fill, mode_rgb, pixels, rect} — a bare object comparison against 0.15 is
+    // always false, which is how a first pass of this file reported zero hard fails on four
+    // screens that all hard-fail. Recorded in my status file.
+    const m = d2(png, rect);
+    row.d2_critic = m.fill;
+    row.d2_detail = { mode_rgb: m.mode_rgb, pixels: m.pixels };
     row.d2_builder_same_run = rec.panel_fill ? rec.panel_fill.fill : null;
+    row.agrees_with_builder_instrument = row.d2_builder_same_run !== null
+      && Math.abs(row.d2_builder_same_run - row.d2_critic) < 0.0005;
     row.panel_fraction_of_frame = +((rect[2] * rect[3]) / (1920 * 1080)).toFixed(4);
     row.matter_px2 = Math.round(row.d2_critic * rect[2] * rect[3]);
     // S56's arithmetic, re-derived rather than quoted: at the matter this screen ALREADY draws,

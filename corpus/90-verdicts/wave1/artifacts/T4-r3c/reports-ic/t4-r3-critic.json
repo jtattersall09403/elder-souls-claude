@@ -1,0 +1,78 @@
+{
+  "schema": "elder-souls/t4-r3-critic@1",
+  "at": "2026-08-15T12:44:36.385Z",
+  "state": "ui-journal",
+  "checks": [
+    {
+      "id": "I0 INSTRUMENT real listeners attached and a movement key reaches the pipeline",
+      "pass": true,
+      "detail": "real.attached=true, input.moveX=1"
+    },
+    {
+      "id": "IC0 GATE a fight is actually running",
+      "pass": true,
+      "detail": "spawn {\"eid\":\"e0\",\"aggro\":true}, inCombat=true"
+    },
+    {
+      "id": "IC1 (O3) the in-combat commitment is NARRATED on the screen while it runs",
+      "pass": true,
+      "detail": "row.meta.equipping=true, detail.meta.equipping=true, hint says \"putting on\"=true, detail text says \"putting it on\"=false; hints=[\"Putting on the bog-iron maul. You are standing still for it.\"]"
+    },
+    {
+      "id": "IC2 (RI-UIX03 P7 regression) the in-combat swap still takes real frames and then lands",
+      "pass": true,
+      "detail": "equipment [\"chitin-cuirass@chest\",\"reed-cutter@right\"] -(press, +8f)-> [\"chitin-cuirass@chest\",\"reed-cutter@right\"] -(+40f)-> [\"bog-iron-maul@right\",\"chitin-cuirass@chest\"]; frames 20 -> 32 -> 72 (the world runs in a fight: RI-UIX03 M-P2)"
+    }
+  ],
+  "data": {
+    "i0": {
+      "attached": true,
+      "moveX": 1
+    },
+    "ic_spawn": {
+      "eid": "e0",
+      "aggro": true,
+      "in_combat": true
+    },
+    "ic_equip": {
+      "row": "Bog-iron maul  11.5  96  8.3",
+      "before": [
+        "chitin-cuirass@chest",
+        "reed-cutter@right"
+      ],
+      "mid": [
+        "chitin-cuirass@chest",
+        "reed-cutter@right"
+      ],
+      "after": [
+        "bog-iron-maul@right",
+        "chitin-cuirass@chest"
+      ],
+      "frames": [
+        20,
+        32,
+        72
+      ],
+      "mid_row_equipping": {
+        "id": "inventory.row.bog-iron-maul",
+        "remaining": 19
+      },
+      "mid_detail_equipping": {
+        "item_id": "bog-iron-maul",
+        "weight": 11.5,
+        "value_gold": 96,
+        "condition": 0.74,
+        "depiction_element": "inventory.detail.depiction",
+        "depiction_shape": "maul",
+        "equipping": true,
+        "equip_remaining_f": 19
+      },
+      "hint_texts": [
+        "Putting on the bog-iron maul. You are standing still for it."
+      ],
+      "hint_says_putting_on": true,
+      "detail_says_putting_it_on": false
+    },
+    "errors": []
+  }
+}
