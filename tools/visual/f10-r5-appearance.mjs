@@ -38,10 +38,17 @@
  *    subject happens to be standing. A further still off the same setup costs 0.086 s
  *    (`gpu-deck.mjs` COST_MODEL, fitted to two live runs), so this is nearly free.
  *
- * 4. **SUBJECT SELECTION IS `selectByProximity`, IMPORTED.** `listEntities()`
- *    (`game/src/engine.js:11607`) is not range-filtered; it returns every NPC in the sim. Both
- *    the older sweeps took the first N in list order and photographed open sea. The fix is
- *    exported from `f10-r3-materials.mjs` and is imported here, not copied.
+ * 4. **SUBJECT SELECTION IS `selectByProximity`, AND IT COMES FROM A LIBRARY, NOT FROM
+ *    `f10-r3-materials.mjs`.** `listEntities()` (`game/src/engine.js:11607`) is not
+ *    range-filtered; it returns every NPC in the sim, and the older sweeps took the first N in
+ *    list order and photographed open sea. `f10-r3-materials.mjs` exports the fix and invites
+ *    importers — **but it is a script with no main guard, so importing it runs r3's entire
+ *    76-frame capture and then calls `process.exit()`, and the importer never executes.** That
+ *    was measured, not reasoned: Pod run `20260815-123332Z-1200` on an RTX A4500 was told to run
+ *    THIS file and the manifest that came home says `"tool": "f10-r3-materials"`. $0.019.
+ *    `tools/visual/f10-r4-digits.mjs:40` has the same import and therefore the same defect.
+ *    The function now lives in `tools/visual/lib/subject-proximity.mjs`, which is a library, and
+ *    that file's `sourceMatchesR3()` proves the two copies have not drifted.
  *
  * WHERE THE REGION HEIGHTS COME FROM. `game/data/combat/skeleton.json`, offset chain summed by
  * script, not retyped: `head` 1.6400, `hand_l` 0.9100, `foot_l` 0.0900, `height_m` 1.78.
@@ -55,7 +62,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { launchForCapture, resolveGpuMode } from './lib/gpu-launch.mjs';
 import { manifestRendererFields, rendererBanner } from './lib/renderer-class.mjs';
-import { selectByProximity } from './f10-r3-materials.mjs';
+import { selectByProximity, sourceMatchesR3 } from './lib/subject-proximity.mjs';
 
 const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const args = {};
@@ -91,6 +98,13 @@ const MOTION_STEP = Number(args['motion-step'] || 4);
 const MOTION_STICK = Number(args['motion-stick'] || 0.55);   // engine.js: 0.55 is the walk ceiling
 const ORBIT_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315];
 const log = (...m) => { process.stdout.write(`${m.join(' ')}\n`); };
+
+// THE FIRST LINE OF EVERY RUN NAMES THE TOOL. A paid run was lost because a transitively imported
+// script hijacked the process and its log looked plausible; the only way to see it at the time
+// would have been to notice the manifest's `tool` field afterwards. Now the log says so up front.
+const PROXIMITY_DRIFT = sourceMatchesR3(fs, path, REPO);
+log(`TOOL f10-r5-appearance  selectByProximity from tools/visual/lib/subject-proximity.mjs `
+  + `(identical to the copy in f10-r3-materials.mjs: ${PROXIMITY_DRIFT.identical})`);
 
 /** Regions on the body axis, in metres above the feet. Sourced from skeleton.json, see header. */
 const REGION = {
@@ -402,6 +416,7 @@ const manifest = {
     + 'so every earlier F10 frame was gated with box=null and subject=false.',
   liveness_verdicts: verdicts,
   hard_calls: hardCalls,
+  proximity_source: { from: 'tools/visual/lib/subject-proximity.mjs', ...PROXIMITY_DRIFT },
   motion,
   max_offset_m: MAX_OFFSET_M,
   subject_offset_distributions: distributions,
