@@ -33,6 +33,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { launchForCapture, resolveGpuMode } from './lib/gpu-launch.mjs';
 import { manifestRendererFields, rendererBanner } from './lib/renderer-class.mjs';
+import { gateBuffer, T as LIVENESS_T } from './frame-liveness.mjs';
 
 const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const args = {};
@@ -130,12 +131,41 @@ const call = async (m, ...a) => {
   }
 };
 
+// THE PER-FRAME SANITY GATE (HAZARDS.md §15, roadmap I2). It runs HERE, at capture time, and not
+// later at analysis time, for one reason: the run that found this defect had ONE good capture and
+// ONE degenerate one in the same process, same scene, same pose. A per-run check would have
+// averaged them and reported a number. Every frame is asked, on its own, whether it is a picture
+// of anything before it is allowed to become evidence.
+//
+// The frame is still WRITTEN before it is judged — a degenerate frame is the artefact you want to
+// look at, not the one to throw away — and the verdict is recorded in the manifest row. A red row
+// is a finding, not a crash, which is this file's existing convention.
+const seenHashes = new Map();
+
+function gate(buf, file) {
+  return gateBuffer(buf, { label: file, subject: false, throwOnDegenerate: false });
+}
+
 async function shoot(file) {
   const shot = await call('screenshot');
   if (!shot.ok) throw new Error(shot.e);
   const buf = Buffer.from(String(shot.v).replace(/^data:image\/png;base64,/, ''), 'base64');
   fs.writeFileSync(path.join(SHOT_DIR, file), buf);
-  return { bytes: buf.length, hash: crypto.createHash('sha256').update(buf).digest('hex').slice(0, 16) };
+  const live = gate(buf, file);
+  if (live.verdict !== 'LIVE') {
+    console.log(`  !! ${file}: ${live.verdict} — ${(live.why || []).join('; ')}`);
+  }
+  return {
+    bytes: buf.length,
+    hash: crypto.createHash('sha256').update(buf).digest('hex').slice(0, 16),
+    liveness: live.verdict,
+    liveness_why: live.why && live.why.length ? live.why : null,
+    liveness_stats: {
+      luma_span: live.luma_span, shadow_levels: live.shadow_levels,
+      local_contrast_med: live.local_contrast_med, luma_entropy: live.luma_entropy,
+      dominant_frac: live.dominant_frac, structure_ratio: live.structure_ratio,
+    },
+  };
 }
 
 /** Put the camera where the setup says, in world space. Returns null on success. */
@@ -233,7 +263,11 @@ for (const setup of setups) {
       if (poseErr) { red(setup, { time: t.id, weather: w.id }, poseErr); continue; }
       const file = `${setup.id}__${t.id}__${w.id}.png`;
       try {
-        const { bytes, hash } = await shoot(file);
+        const { bytes, hash, liveness, liveness_why, liveness_stats } = await shoot(file);
+        // D7 across the deck. Two DIFFERENT setups that produce a byte-identical frame means the
+        // camera never moved, which is a capture failure the per-frame tests cannot see.
+        const twin = seenHashes.get(hash);
+        seenHashes.set(hash, file);
         const snap = await call('snapshot');
         const env = await call('getEnvConditions');
         // WHICH REGION IS THIS FRAME OF? — and why there are now two fields where there was one.
@@ -262,7 +296,15 @@ for (const setup of setups) {
         const terr = pos ? await call('getTerrainAt', pos[0], pos[2]) : { ok: false };
         rows.push({
           setup: setup.id, block: setup.block, label: setup.label, region: setup.region || null,
-          time: t.id, weather: w.id, status: 'ok', file, hash, bytes,
+          time: t.id, weather: w.id,
+          // A frame that is not a picture of anything is not "ok" and must never be counted as
+          // captured evidence. HAZARDS.md §15: every gate stayed green through the incident that
+          // produced this rule, and that is precisely what must stop.
+          status: (liveness === 'LIVE' && !twin) ? 'ok' : 'red',
+          reason: liveness !== 'LIVE' ? `frame-liveness ${liveness}: ${(liveness_why || []).join('; ')}`
+            : twin ? `byte-identical to ${twin} — two different setups produced the same frame, so the camera did not move` : undefined,
+          liveness, liveness_stats,
+          file, hash, bytes,
           weather_applied: wr.ok, weather_reported: env.ok ? env.v.weather : null,
           time_reported: env.ok ? env.v.time_of_day : null,
           player_y: pos ? pos[1] : null,
@@ -296,6 +338,7 @@ const manifest = {
   gpu_backend_attempts: attestation.backend_attempts && attestation.backend_attempts.length ? attestation.backend_attempts : null,
   ...manifestRendererFields(attestation),
   deck_drift: drift.length ? drift.map((k) => ({ axis: k, built_with: DECK.source_counts[k], live: live[k] })) : null,
+  frame_liveness_thresholds: LIVENESS_T,
   counts: { planned: setups.length * times.length * weathers.length, ok: rows.filter((r) => r.status === 'ok').length, red: rows.filter((r) => r.status === 'red').length },
   seconds: +((Date.now() - t0) / 1000).toFixed(1),
   rows,

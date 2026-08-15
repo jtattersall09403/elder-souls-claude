@@ -162,11 +162,55 @@ export const T = {
   max_dominant_frac: 0.92,     // D5  share of the largest 5-bit RGB bucket
   min_structure_ratio: 2.5,    // D6  blockStd*sqrt(px/block)/pixelStd — ~1 is noise, real scenes are >>1
   // --- is the subject in it -----------------------------------------------------------------
-  empty_subject_frac: 0.004,   // below this the box holds NOTHING — the confident NO_SUBJECT
-  min_subject_frac: 0.030,     // largest off-background component, as a fraction of the box
-  min_subject_rows: 0.30,      // that component's row span, as a fraction of the box's rows
-  min_subject_aspect: 1.20,    // that component's height / width — a figure is taller than wide
+  // DERIVED FROM REAL LABELLED DATA, not from synthetic frames: the 93-frame F10 hardware run in
+  // reports/runpod-gpu/runs/f10-characters-hw3/, where the 17 frames of npc-lilmoth-apothecary-12
+  // are known to be empty (she stands out at sea off the Lilmoth pier) and the other 76 are known
+  // to contain their subject. The measured operating curve is in SUBJECT_ROC below.
+  min_centre_flank: 6.0,       // mean |luma(centre band) - luma(flanking bands)| over the box rows
   max_bg_coverage: 0.55,       // above this the background model is saturated and cannot decide
+};
+
+/**
+ * THE SUBJECT TEST'S MEASURED PERFORMANCE, on the only labelled set this repo has. Published
+ * because a screen whose error rate is unknown is a screen nobody can size their trust to.
+ *
+ *   threshold   empties caught (of 17)   false reds (of 76 good frames)
+ *      4.0            8                        6
+ *      6.0           14                        6      <-- shipped
+ *      8.0           15                        9
+ *     10.0           16                       16
+ *     11.5           17                       22
+ *
+ * THERE IS NO CLEAN SEPARATION, and that is the honest headline: catching the last three empties
+ * costs 22 of 76 good frames. So subject presence is reported as AMBER by default and does not
+ * fail the run — `--require-subject` promotes it to a hard fail for callers who want it. At 7.9%
+ * false reds a hard gate would eat good evidence, and a check that eats good evidence is a check
+ * that earns the right to be ignored.
+ *
+ * WHAT WAS TRIED AND REJECTED, so nobody repeats it:
+ *  - OFF-BACKGROUND COLOUR SETS (the previous draft's connected-component test). On this same run
+ *    it returned NO_SUBJECT for 85 of 93 frames. At 4-bit-per-channel quantisation a character's
+ *    cloth and skin land in the same buckets as the town behind it, so almost nothing inside the
+ *    box is "off background". It passed a synthetic self-test at 320x240 because the border ring
+ *    there samples few buckets — HAZARDS §0 exactly: the arms agreed about a false premise.
+ *  - CONTRAST NORMALISATION (dividing by the frame's own pixel standard deviation) to fix the
+ *    night-frame confound. It made the curve strictly worse: 4 of 17 caught at zero false reds,
+ *    14 of 17 only at 23 false reds. Recorded because it is the obvious next idea.
+ *  - THE PROJECTION, which would need no pixels at all. Every frame in the run reports
+ *    head.on_screen and foot.on_screen true and an identical 491px projected box, including all
+ *    17 empties: the harness places the camera from the subject's nominal world position and
+ *    nothing is drawn there. The geometry cannot see this failure.
+ */
+export const SUBJECT_ROC = {
+  labelled_set: 'reports/runpod-gpu/runs/f10-characters-hw3/artifacts/f10/hw — 93 frames, 17 known empty (subject npc-lilmoth-apothecary-12), 76 known full',
+  statistic: 'centre_flank_luma',
+  curve: [
+    { threshold: 4.0, caught_of_17: 8, false_red_of_76: 6 },
+    { threshold: 6.0, caught_of_17: 14, false_red_of_76: 6, shipped: true },
+    { threshold: 8.0, caught_of_17: 15, false_red_of_76: 9 },
+    { threshold: 10.0, caught_of_17: 16, false_red_of_76: 16 },
+    { threshold: 11.5, caught_of_17: 17, false_red_of_76: 22 },
+  ],
 };
 
 /** Filled in below the calibration run; see the status file for the command and its output. */
@@ -374,6 +418,29 @@ export function subjectPresence(png, box) {
 
   const compW = best ? best.maxX - best.minX + 1 : 0;
   const compH = best ? best.maxY - best.minY + 1 : 0;
+
+  // CENTRE-VS-FLANK — the statistic that actually decides presence, and the only one here whose
+  // error rate is measured against real labelled frames (see SUBJECT_ROC). A figure standing in
+  // frame occupies the middle columns of its own rows, so those rows' centre band differs from
+  // the bands either side of it. Open water and sky does not differ from open water and sky.
+  //
+  // This is a LOCAL comparison — each row against its own flanks — which is why it survives what
+  // the global colour-set model did not: it never has to decide whether a colour "belongs to the
+  // background" in the abstract.
+  const lumAt = (x, y) => { const i = (y * W + x) * 4; return 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]; };
+  const cxm = (x0 + x1) >> 1;
+  const cw = Math.max(2, Math.round(W * 0.10));
+  const fwid = Math.max(2, Math.round(W * 0.10));
+  let cfSum = 0, cfN = 0;
+  for (let y = y0; y <= y1; y++) {
+    let c = 0, cn = 0, l = 0, ln = 0;
+    for (let x = cxm - cw; x <= cxm + cw; x++) { if (x < 0 || x >= W) continue; c += lumAt(x, y); cn++; }
+    for (let x = cxm - cw - fwid * 2; x < cxm - cw; x++) { if (x < 0) continue; l += lumAt(x, y); ln++; }
+    for (let x = cxm + cw + 1; x <= cxm + cw + fwid * 2; x++) { if (x >= W) continue; l += lumAt(x, y); ln++; }
+    if (!cn || !ln) continue;
+    cfSum += Math.abs(c / cn - l / ln); cfN++;
+  }
+  const centre_flank_luma = cfN ? cfSum / cfN : 0;
   return {
     subject_box: {
       x0, x1, y0, y1,
@@ -382,6 +449,7 @@ export function subjectPresence(png, box) {
     },
     bg_bucket_coverage: +bg_coverage.toFixed(4),
     offbg_frac: +(bw * bh ? offBg / (bw * bh) : 0).toFixed(4),
+    centre_flank_luma: +centre_flank_luma.toFixed(4),
     subject_frac: +(bw * bh && best ? best.area / (bw * bh) : 0).toFixed(4),
     subject_row_frac: +(bh && best ? compH / bh : 0).toFixed(4),
     subject_aspect: +(compW ? compH / compW : 0).toFixed(3),
@@ -410,37 +478,14 @@ export function classify(m, s, opts = {}) {
     };
   }
 
-  // THE CONFIDENT RED, and it is the F10 failure exactly: the box holds no off-background mass of
-  // any consequence. Open water and sky under a camera aimed at a character reads here. This
-  // conclusion does NOT need the projected box — an empty box is empty whichever rectangle you
-  // chose — so it is reported at full confidence either way.
-  if (s.subject_frac < t.empty_subject_frac) {
-    return { verdict: 'NO_SUBJECT', why: [`SUB the subject box holds no off-background mass at all (largest component ${s.subject_frac} of box, ${s.subject_component_px}px) — nothing is standing here`] };
-  }
-
-  // THE LINE THIS TOOL WILL NOT CROSS WITHOUT THE BOX. There IS off-background structure. Whether
-  // it is the subject or a piece of scenery cannot be settled from pixels alone: this tool's own
-  // self-test builds a street with a building and no character in it, and the building scores
-  // area 0.098, row span 0.43 and aspect 2.9 — comfortably past every "is it a figure" test a
-  // pixel count can pose. The previous draft of this file called that frame LIVE.
-  //
-  // So when nothing supplied the projected subject rows, the honest verdict is UNCONFIRMED, not
-  // LIVE. This is HAZARDS §0's lesson applied to the tool rather than to its test suite: the box
-  // is the disputed input, and a tool that fabricates it can only argue about what happens
-  // downstream of its own assumption.
-  if (!s.subject_box.box_supplied) {
+  // The decision, on the statistic whose error rate is published in SUBJECT_ROC.
+  if (s.centre_flank_luma < t.min_centre_flank) {
     return {
-      verdict: 'SUBJECT_UNCONFIRMED',
-      why: [`SUB something is in the centre of frame (component ${s.subject_frac} of box, aspect ${s.subject_aspect}) but no projected subject rows were supplied, so it cannot be distinguished from scenery. Pass --manifest with head_top_px/foot_bottom_px to make this decidable.`],
+      verdict: 'NO_SUBJECT',
+      why: [`SUB centre_flank_luma ${s.centre_flank_luma} < ${t.min_centre_flank} — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC).`],
     };
   }
-
-  const sf = [];
-  if (s.subject_frac < t.min_subject_frac) sf.push(`SUB component area ${s.subject_frac} < ${t.min_subject_frac} of box`);
-  if (s.subject_row_frac < t.min_subject_rows) sf.push(`SUB component spans ${s.subject_row_frac} of box rows < ${t.min_subject_rows}`);
-  if (s.subject_aspect < t.min_subject_aspect) sf.push(`SUB component aspect ${s.subject_aspect} < ${t.min_subject_aspect} — wider than tall, not a figure`);
-  if (sf.length) return { verdict: 'NO_SUBJECT', why: sf };
-  return { verdict: 'LIVE', why: [] };
+    return { verdict: 'LIVE', why: [] };
 }
 
 /** One-call convenience used by the capture paths. `box` may be null. */
@@ -517,7 +562,13 @@ if (IS_CLI && args['self-test']) {
     // ---- D1 span collapse: the observed incident's shape, and a scene that must survive -------
     ['D1  uniform grey 120 (the incident: span 0.03)', mkPng(W, H, () => [120, 120, 120]), 'DEGENERATE', 'D1'],
     ['D1  uniform sky-blue (any colour, not just black)', mkPng(W, H, () => [96, 134, 198]), 'DEGENERATE', 'D1'],
-    ['D1  a DARK but real scene (must NOT go DEGENERATE)', mkPng(W, H, (x, y) => { const c = street(x, y); return [c[0] >> 2, c[1] >> 2, c[2] >> 2]; }), 'SUBJECT_UNCONFIRMED', null],
+    // KNOWN FALSE RED, kept in the suite on purpose. A night-dark scene WITH a figure in it
+    // passes every image test (it is a picture) and still trips the subject amber, because at low
+    // contrast the centre band stops differing from its flanks. This is the same confound that
+    // produces 6 of the 6 false reds on the real labelled set — the night frames. It is recorded
+    // here so the limitation is visible in the suite instead of living only in a comment, and it
+    // is why subject presence is AMBER and not a hard fail.
+    ['D1  DARK scene WITH a figure — KNOWN night false-red', mkPng(W, H, (x, y) => { const c = withFigure(street, 0.42)(x, y); return [c[0] >> 2, c[1] >> 2, c[2] >> 2]; }), 'NO_SUBJECT', null],
     // ---- D3 local contrast: a smooth gradient spans widely and has no detail ------------------
     ['D3  smooth vertical gradient (wide span, no detail)', mkPng(W, H, (x, y) => { const v = Math.round(y * 255 / H); return [v, v, v]; }), 'DEGENERATE', 'D3'],
     // ---- D5 one surface: camera buried in a plank --------------------------------------------
@@ -529,8 +580,12 @@ if (IS_CLI && args['self-test']) {
     ['D6  fine noise, no composition (D1-D5 all pass)', mkPng(W, H, (x, y) => { const v = Math.round(rnd(x * 7919 + y * 104729) * 255); return [v, v, v]; }), 'DEGENERATE', 'D6'],
     // ---- subject presence, WITHOUT the projected box ------------------------------------------
     ['SUB open water and sky, nobody in it', mkPng(W, H, sea), 'NO_SUBJECT', null],
-    ['SUB a street with a BUILDING and nobody in it', mkPng(W, H, street), 'SUBJECT_UNCONFIRMED', null],
-    ['SUB the same street, WITH a figure', mkPng(W, H, withFigure(street, 0.42)), 'SUBJECT_UNCONFIRMED', null],
+    // The pair that killed the previous draft. Its off-background component test scored the
+    // BUILDING at area 0.098, rows 0.43, aspect 2.9 and called the empty street LIVE. The
+    // centre-vs-flank statistic separates them because a building is not in the middle of the
+    // rows the subject would occupy.
+    ['SUB a street with a BUILDING and nobody in it', mkPng(W, H, street), 'NO_SUBJECT', null],
+    ['SUB the same street, WITH a figure', mkPng(W, H, withFigure(street, 0.42)), 'LIVE', null],
     // ---- THE REFUSAL, and it is a real image, which is the whole point -------------------------
     // A mosaic wall: strong vertical composition (structure_ratio ~14.8, so nothing here is
     // degenerate) painted in colour so varied that the border ring alone covers 65% of the 4-bit
@@ -750,10 +805,32 @@ if (wantSubject && !boxes.size) console.log('NOTE: no manifest supplied projecte
 
 if (args.json) fs.writeFileSync(path.resolve(String(args.json)), `${JSON.stringify({ tool: 'frame-liveness', dir, thresholds: T, derivation: DERIVATION, subject_tested: wantSubject, counts, frames: rows }, null, 2)}\n`);
 
-const bad = rows.filter((r) => r.verdict !== 'LIVE');
-if (bad.length) {
-  console.error(`\nFAIL: ${bad.length} of ${files.length} frame(s) are not usable evidence: ${bad.slice(0, 8).map((r) => `${r.file}=${r.verdict}`).join(', ')}${bad.length > 8 ? ' ...' : ''}`);
+// EXIT POLICY, and the two halves are deliberately different.
+//
+//  HARD FAIL — DEGENERATE, UNREADABLE, DUPLICATE. These say the frame is not a picture, or is not
+//  a NEW picture. The evidence for those is the six-test battery, whose thresholds sit in a clear
+//  gap between the real corpus and the known incident, and whose arms are proven to fire for the
+//  right reason. A broken capture that is silently measured is HAZARDS §15 happening again.
+//
+//  AMBER — NO_SUBJECT, SUBJECT_UNDECIDABLE. Reported loudly, and NOT fatal unless the caller asks
+//  with --require-subject. The subject statistic's measured error rate on the only labelled set
+//  this repo has is 14 of 17 caught against 6 of 76 false reds (SUBJECT_ROC), and a 7.9% false-red
+//  rate applied as a hard gate would start eating good evidence within one sweep. A check that
+//  eats good evidence is a check that earns the right to be ignored, and this project has enough
+//  of those. Sizing the claim to the evidence is the point.
+const fatal = rows.filter((r) => r.verdict === 'DEGENERATE' || r.verdict === 'UNREADABLE' || r.verdict === 'DUPLICATE');
+const amber = rows.filter((r) => r.verdict === 'NO_SUBJECT' || r.verdict === 'SUBJECT_UNDECIDABLE');
+if (amber.length) {
+  console.error(`\nAMBER: ${amber.length} of ${files.length} frame(s) may not contain their subject: ${amber.slice(0, 6).map((r) => `${r.file}=${r.verdict}`).join(', ')}${amber.length > 6 ? ' ...' : ''}`);
+  console.error(`       Measured error rate of this test: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good. Do not read it as certainty in either direction.`);
+}
+if (fatal.length) {
+  console.error(`\nFAIL: ${fatal.length} of ${files.length} frame(s) are not pictures of anything: ${fatal.slice(0, 8).map((r) => `${r.file}=${r.verdict}`).join(', ')}${fatal.length > 8 ? ' ...' : ''}`);
   process.exit(1);
 }
-console.log('\nOK: every frame is a real image, and every frame contains a subject.');
+if (amber.length && args['require-subject']) {
+  console.error('\nFAIL: --require-subject was passed and the amber frames above did not clear it.');
+  process.exit(1);
+}
+console.log(fatal.length || amber.length ? '\nno degenerate frames.' : '\nOK: every frame is a real image, and every frame contains a subject.');
 }
