@@ -14,8 +14,8 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   the fix is a number that already exists in the file.
 - **Characters, round eleven** — the crowd. Every NPC in the game stands in one identical pose, and a
   town has 14 different bodies between 408 people.
-- **Judging the water, round two** — the sea is visibly deeper and less washed-out at eye level, and
-  the stripes are still there.
+- **The water, round three** — two of the four things the bar requires of water were never in the
+  shader at all.
 - **The container screen, round seven** — the fix for the missing prices broke the weight column.
 
 ## If you play right now, expect this
@@ -65,21 +65,17 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   agreeing to four decimal places was the tell, and it reads as rigour. The real comparison shows
   round 6's own change took the container from a pass to a fail. **Everything that was ever proved by
   "we deleted the fix and the old number came back" is now worth re-checking.**
-- **The water: I told you it was 28% better yesterday. A judge has now failed it at 2 of 10, and the
-  "28%" was mostly the water getting darker.** The diagnosis was right — the sea was compositing a
-  **61% mirror at every viewing angle**, including looking straight down, where real water reflects
-  about 2% — and the fix is real. But the tool that reported the improvement prints **three** numbers
-  and only the one that fell was passed on: the other two went **up** 12% and 48%. Measured properly,
-  the water is 16.9% *dimmer* and the fine-scale stripes are 5.8% *stronger*. Worst of all, **the four
-  camera positions a player actually occupies are indistinguishable between before and after** — the
-  whole visible effect lives at a straight-down camera 120 m up that the game never puts you in. Round
-  two has now landed and **this one you would see**: at eye level, where round one moved nothing, a
-  pale washed-out sheet with a smeared ghost of the tree trunks smeared across the foreground becomes
-  **deeper teal-green, with the reflection confined to the middle distance**. The mirror at normal
-  incidence went from 30% to 2%, which is what real water does. **The streaks are still there** — and
-  the builder proved my own diagnosis wrong: I said that fixed mirror was what drew them, and it isn't.
-  They survive its removal. What's left is that the reflection is drawn at half resolution and refreshed
-  only every six frames, in a file this piece doesn't own. Being judged now.
+- **The water: judged again, and kept — but the bar says we have been fixing the wrong quarter.** The
+  eye-level improvement is real and was confirmed from eight camera angles: at some bearings the pale
+  washed-out sheet becomes deeper teal-green with the reflection confined to the middle distance, and
+  at others the same change buys almost nothing. **The finding that matters: of the four things the
+  standard requires water to do, two are simply not in the code** — the colour does not vary with
+  depth (it is a constant), and there is no fade where water meets land. Two rounds went into tuning
+  the one component that already existed. Round three is building the missing two.
+  **And I have to correct myself again.** I said the leftover stripes were the reflection being drawn
+  at half resolution. Switch the reflection off entirely and **76% of the stripes remain**. The judge
+  then proposed two explanations of its own and killed both by the same test. **After two rounds
+  nobody knows what draws the marsh stripes**, and that is the honest state.
 - **The container screen prints the word `undefined`** as its title. Being fixed.
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its own author reported that honestly after catching that the *first* version of the measurement was
