@@ -34,3 +34,8 @@ reports/land-rescue/**/docs/
 reports/land-rescue/**/orchestration/INDEX.md
 reports/land-rescue/**/*.error.json
 docs/data/cost-ledger.error.json
+
+# Agent scratch written with a RELATIVE path by mistake (the scratchpad is an ABSOLUTE path
+# outside the repo). Swept into the tree by a whole-tree bank on 2026-08-15 — HAZARDS: a
+# temporary file in a shared tree becomes a committed file.
+tmp/
