@@ -314,6 +314,30 @@ been rewritten as a prohibition, because the advisory version demonstrably does 
 > not arrived by the time you would otherwise stop, land what you have and record the missing piece as
 > `"unmeasured, because X"`.**
 
+**NAMING THE TOOLS, because naming the behaviour has failed three times.** Seven agents stalled on
+2026-08-15; **three of them did it after their brief told them not to**, and one after the rule was
+promoted to a prohibition. So:
+
+> **Do not call `Monitor`. Do not pass `run_in_background`. Do not write a poll loop.**
+> **Block in the foreground with an explicit ceiling instead:**
+>
+> ```
+> timeout 600 node tools/whatever.mjs 2>&1 | tail -40
+> ```
+
+That waits up to ten minutes *inside your turn*, returns what it got, and **a timeout is itself a
+result** — it means the run is too slow to belong to this piece, which is worth writing down. If you
+need longer, write to a file, do other work, and read the file later in the same turn.
+
+**Do not pipe a still-running capture through `| tail`** — it buffers the whole pipeline and a healthy
+run looks hung. Two capture runs were killed that way at ~40 minutes each.
+
+**Why this keeps happening, so you can catch it in yourself:** it is not laziness, it is
+conscientiousness. The agent wants the verification before claiming the result. The correction is the
+priority — **the deliverable is almost always the fix, not the evidence.** A repaired thing landed and
+honestly labelled *"verification not run"* beats a perfect verification that never arrives, because
+meanwhile the broken thing is in the game.
+
 **Why agents do it, and why the instinct is wrong.** It is not laziness — it is conscientiousness. The
 agent wants the verification before claiming the result. But the deliverable is almost always the
 *fix*, not the evidence: a repaired probe landed and honestly labelled *"verification not run"* is worth
