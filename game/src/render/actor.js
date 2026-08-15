@@ -1058,13 +1058,30 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     // A digit is two segments and a claw, not one tube. One tube cannot curl, and a straight
     // digit reads as a peg at every distance; the curl is also what makes the digit survive the
     // EDGE view, where a flat fan of tubes disappears.
+    //
+    // THE KNUCKLE BALL IS NOT DECORATION — IT IS THE FILE'S OWN RULE AND IT WAS MEASURED HERE.
+    // A first cut of this block bent each digit through ~30 degrees with nothing at the joint, and
+    // `tools/visual/actor-orbit-holes.mjs` went from 1,736 crack px in 1,002 frames (control
+    // `b175da8e`) to **5,903 in 2,553** — a 3.4x regression, caught before landing, and caused by
+    // exactly the defect `jointRadius()`'s header describes: two tapered tubes meeting at an angle
+    // cover everything except a wedge on the OUTSIDE of the bend. The remedy is the same one, at
+    // digit scale: a ball at the joint whose radius is the largest radius any segment has there.
+    // It is also correct anatomy — a knuckle is a ball — and at `seg = 4` it costs 32 triangles.
     for (let s = 0; s + 1 < pts.length; s++) {
       const t0 = s / (pts.length - 1), t1 = (s + 1) / (pts.length - 1);
-      B.skin.tube(pts[s], pts[s + 1], r0 + (r1 - r0) * t0, r0 + (r1 - r0) * t1, bi, bi, 0, 6, 2);
+      const ra = r0 + (r1 - r0) * t0, rb = r0 + (r1 - r0) * t1;
+      B.skin.tube(pts[s], pts[s + 1], ra, rb, bi, bi, 0, 6, 2);
+      if (s + 2 < pts.length) B.skin.ball(pts[s + 1], rb, bi, 4);
     }
+    // The claw starts INSIDE the digit tip rather than at it. A separate surface cannot be welded
+    // to the skin surface, so overlap is the only weld available (the same rule the equipment
+    // fittings follow), and a claw that merely touches the fingertip opens the moment the hand
+    // moves. One claw radius of embedment costs nothing and cannot separate.
     const tip = pts[pts.length - 1], prev = pts[pts.length - 2];
-    const claw = tip.clone().add(tip.clone().sub(prev).setLength(S * 0.030));
-    B.bone.tube(tip, claw, rClaw, rClaw * 0.14, bi, bi, 0, 5, 1);
+    const dir = tip.clone().sub(prev).normalize();
+    const root = tip.clone().addScaledVector(dir, -rClaw * 1.6);
+    const claw = tip.clone().addScaledVector(dir, S * 0.030);
+    B.bone.tube(root, claw, rClaw, rClaw * 0.14, bi, bi, 0, 5, 1);
   };
   for (const [id, sideSign] of [['hand_l',-1],['hand_r',1]]) {
     const bi=index.get(id); if (bi===undefined) continue;

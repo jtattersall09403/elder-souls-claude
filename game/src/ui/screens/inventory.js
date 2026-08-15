@@ -77,6 +77,13 @@ export function drawInventory(S, m) {
   const s = S.s;
   const alpha = m.inCombat ? COMBAT_ALPHA : CALM_ALPHA;
   const sel = m.rows[m.rowIdx] || null;
+  // T4 round 3, RI-UIX10 O3 — the equip commitment, while it is running. Non-null only in a
+  // fight: out of combat `Engine._applyUIPending()` resolves the swap on the press, because the
+  // world is paused there and 30 frames off a stopped clock can never elapse. See that method's
+  // header for the seam ruling and what would overturn it.
+  const ep = m.equipPending || null;
+  const epRow = ep ? (m.rows.find((r) => r.id === ep.item) || null) : null;
+  const epName = epRow ? epRow.name : (ep ? ep.item : null);
   const sc = screen(S, 'inventory', sel ? sel.name : 'Carried', m.placeName || null, 'reed', alpha);
   const [ix, iy, iw, ih] = sc.inner;
 
@@ -167,6 +174,11 @@ export function drawInventory(S, m) {
     ], i === m.rowIdx && m.col === 1, alpha, {
       item_id: it.id, category: it.category, weight: it.weight, value_gold: it.value_gold,
       equipped: !!it.equipped, stolen: !!it.stolen,
+      // T4 round 3, RI-UIX10 O3. The row the press landed on says so while the commitment runs,
+      // so `getUIState()`'s own census answers "did anything change" rather than a critic having
+      // to infer it from the absence of a change.
+      equipping: !!(ep && ep.item === it.id),
+      equip_remaining_f: ep && ep.item === it.id ? ep.remaining_f : null,
     }, ICON + 10);
     // RI-UIX09 P1. The row's own depiction, ≥ 28 CSS px at 1080p, carrying the item's condition
     // as RI-UIX07 W4's mark — the same call the quick slots and the container columns make.
@@ -178,18 +190,25 @@ export function drawInventory(S, m) {
   // ---- column D: the item, in full ----------------------------------------------------------
   const dx = lx + lw + COLS.gapC * s, dw = ix + iw - dx;
   column(S, 'inventory.rule2', dx - 16 * s, iy, 2 * s, ih, alpha);
-  detail(S, 'inventory.detail', dx, iy, dw, ih, sel, alpha, m.col === 2, S);
+  detail(S, 'inventory.detail', dx, iy, dw, ih, sel, alpha, m.col === 2, ep && sel && ep.item === sel.id ? ep : null);
 
   hint(S, 'inventory.hint', ix, iy + ih + 4 * s, iw,
-    m.inCombat
-      ? 'The fight has not stopped. Equipping takes time you are standing still for.'
+    // T4 round 3, RI-UIX10 O3. THE FIRST BRANCH IS NEW and it is the narration OP7 failed for
+    // want of: an accepted press that shows nothing is indistinguishable from a dead control, and
+    // in a fight `RI-UIX03` P7 REQUIRES the swap to take 30 frames, so the only honest fix is to
+    // say so while they run. Out of combat there is no branch to take here — the world is paused,
+    // the commitment is unpayable, and `Engine._applyUIPending()` resolves the swap on the press.
+    ep
+      ? `Putting on the ${String(epName || 'it').toLowerCase()}. You are standing still for it.`
+      : m.inCombat
+        ? 'The fight has not stopped. Equipping takes time you are standing still for.'
       // W1-MAP-DEFECTS. The second sentence is the owner's defect, in words: they could not open
       // the map, because nothing in the game had ever mentioned that the pages turn or that a map
       // is one of them. It names the ACTION and never the key (RI-JRN03 DS5) — `swap` is one of
       // the sixteen closed action names, and it is what the pad's shoulder, the mouse wheel and
       // the touch drawer's arrows all are.
-      : 'Left and right change column. Up and down move. Confirm to equip, read or use. '
-        + 'Swap turns the page: the map, the journal, your case, your spells.',
+        : 'Left and right change column. Up and down move. Confirm to equip, read or use. '
+          + 'Swap turns the page: the map, the journal, your case, your spells.',
     alpha);
 }
 
@@ -390,7 +409,7 @@ function listHeader(S, id, x, y, w, alpha) {
  * picture drawn inside another element's callback is exactly the "everything drawn straight to
  * canvas is invisible" failure `surface.js`'s header exists to prevent.
  */
-function detail(S, id, x, y, w, h, it, alpha, focused) {
+function detail(S, id, x, y, w, h, it, alpha, focused, equipping) {
   const s = S.s;
   const plate = Math.min(150 * s, w - 40 * s);
   if (it) {
@@ -415,6 +434,9 @@ function detail(S, id, x, y, w, h, it, alpha, focused) {
       // The depiction is a sibling element, so say which one — a critic checking P5 should not
       // have to infer the pairing from two rects that happen to be adjacent.
       depiction_element: id + '.depiction', depiction_shape: shapeFor(it),
+      // T4 round 3, RI-UIX10 O3 — the in-progress state, on the panel the player is reading.
+      equipping: !!equipping,
+      equip_remaining_f: equipping ? equipping.remaining_f : null,
     } : null,
   }, (c, r) => {
     if (!it) {
@@ -445,6 +467,20 @@ function detail(S, id, x, y, w, h, it, alpha, focused) {
     yy += lines.length * lh + 16 * s;
     if (it.readable) drawText(c, 'It can be read.', r[0], yy, f, 14 * s, inkDim());
     if (it.equipped) drawText(c, 'In hand.', r[0], yy + 20 * s, f, 14 * s, inkDim());
+    // T4 round 3, RI-UIX10 O3. Drawn, not merely declared — a meta field a probe reads and a
+    // player cannot is the orphan-model failure (`RI-MTH07`) wearing a UI hat. The rule under it
+    // empties as the commitment runs, so the wait has a length rather than being an ellipsis.
+    if (equipping) {
+      const ey = yy + (it.equipped ? 40 : 20) * s;
+      drawText(c, 'Putting it on.', r[0], ey, faceOf('bone'), 14 * s, accent());
+      const total = Math.max(1, Number(equipping.commit_frames) || 30);
+      const left = Math.max(0, Math.min(total, Number(equipping.remaining_f) || 0));
+      const bw = Math.min(180 * s, r[2]);
+      c.fillStyle = Ca('chitin_dark', 0.55);
+      c.fillRect(r[0], ey + 8 * s, bw, 4 * s);
+      c.fillStyle = accent();
+      c.fillRect(r[0], ey + 8 * s, bw * (1 - left / total), 4 * s);
+    }
   });
 }
 
