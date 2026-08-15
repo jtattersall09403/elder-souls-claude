@@ -1,0 +1,82 @@
+{
+  "task_id": "T4-r3-builder",
+  "roadmap_item": "T4",
+  "round": 3,
+  "role": "builder",
+  "state": "done",
+  "answering": "corpus/90-verdicts/wave1/T4-r2.md (FAIL, piece score 2) — the three live defects a player hits, in the brief's priority order",
+  "baseline_pinned": "398bd592043d1a2e3af33dd86c2664ea8c89aa77. Pinned and VERIFIED FREE OF MY WORK BEFORE I TOUCHED ANYTHING: `git rev-parse HEAD:game/src/ui/system.js` == `git hash-object game/src/ui/system.js` == 4710f62729a2342fb3269bd7f0380dc7296f8750 at the moment of pinning. NOT `HEAD~1` — and that mattered, see could_not_do[4]: two sibling whole-tree banks (08fe44d8, 1e60f58d) carried my uncommitted edits into HEAD while I worked, so a HEAD~1 control WOULD have come back green. The control was a real `git worktree` at 398bd592 with `tools/node_modules` symlinked in (HAZARDS 7).",
+
+  "could_not_do": [
+    "RI-UIX09 DN4 / RULING S56 — THE PANEL SIZING IS NOT BUILT. This was the 'if you have room' item and I did not have room; I am reporting it undone rather than half-done, because a half-done version breaks six screens. WHAT I ESTABLISHED BY READING RATHER THAN GUESSING: the panel is ONE constant, `BOX = { x: 200, y: 160, w: 1520, h: 780 }` at `game/src/ui/chrome.js:70`, consumed by `screenRect()` and therefore by every screen through `screen()`. So 'size the panel to its contents' is not one edit to one constant — it is a per-screen box plus a rewrite of each screen's vertical layout, because every screen positions against `sc.inner` in ABSOLUTE offsets that assume the current height. Two measured examples: `screens/inventory.js` puts the worn band at `iy + 476*s`, the sort control at `iy + 574*s` and gold at `iy + ih - 40*s`, so any height below ~614 units collides; `screens/progress.js` `drawSheet` runs 8 fact rows at 34 units and 10 attribute rows at 42 units (272 and 420 units) while the skills column is written to FILL `ih`, so the sheet's contents height is circular until the skills window is re-derived. THE ARITHMETIC ALSO DOES NOT SURVIVE CONTACT WITH THE INVENTORY'S WIDTH: the critic's target of 24.9% of frame is ~805x641 at 4:3-ish, and `COLS` in `screens/inventory.js` needs 200+20+132+24+640+30 = 1046 units of WIDTH for its four columns before the detail panel gets any. So the inventory specifically cannot reach 24.9% by shrinking alone; it needs its columns re-pitched. The other four screens (journal 0.1315, level-up 0.0911, sheet 0.0896, spells 0.0703) are where a contents-sized box is genuinely cheap. I did NOT pad a number and I did not add decorative fill.",
+
+    "I PROCEEDED PAST A `node tools/contention.mjs` WAIT ONCE, and it is recorded here rather than left for someone to find. The second probe run (the one that verified the journal fix) was launched in a shell that ran `contention.mjs` and the probe with `;` rather than `&&`; contention printed `WAIT — the box is at or over its ceiling` and the probe ran anyway. It completed cleanly and its numbers agree with the two runs either side of it. Every other browser run in this piece was launched behind a GO.",
+
+    "THE AXIS REPEAT STILL CANNOT FIRE ON A PAUSED SCREEN, ON ANY DEVICE, AND I DELIBERATELY DID NOT FIX IT. Measured in my own passing evidence: TS1's held touch drag moved `focus.inventory.rowIdx` from 2 to 3 — EXACTLY ONE ROW — over 12 fixed steps. The cause is `UISystem._edge()` at `game/src/ui/system.js:566`, which gates the repeat on `held = frame - axis.since` against `REPEAT_FIRST = 14`; on a paused screen `ctx.frame` is `sim.frame` and does not advance, so `held` is always 0 and the repeat is unreachable. This is device-NEUTRAL — holding a direction on the keyboard on a paused screen moves one row too — so it is not a touch-arm fail and OP3's 'a list you can open and cannot walk' is now satisfied (it walks, one flick per row). THE REMEDY IS KNOWN AND I REFUSED IT ON A MEASURED RISK, not on a feeling: a monotonic UI tick (`sim.frame + uiPausedFrames`, both already live in `engine.js`) passed only to `_edge`. `REPEAT_FIRST` is 14 and SEVERAL SHIPPED PROBES HOLD KEYS FOR EXACTLY 14 FRAMES — `tools/ui/t4-r2-critic-focus.mjs`'s own `key(code, 14)` in the fifteen-action exit walk is one — so that change silently turns a one-row move into a two-row move underneath the instruments this piece is judged with. It needs its own piece with those probes re-run, not a line at the end of this one.",
+
+    "I DID NOT PHOTOGRAPH ANY OF IT. Everything here is driven state and element census through real DOM events; there is no PNG in my artifacts and I ran no `tools/visual/frame-liveness.mjs`, because I measured no frame. That is honest for what these three defects are — a trapped view, a silent control and a dead axis are all invisible in a still, which is `RI-UIX10`'s own opening argument — but it means the ONE thing I built that is a drawn thing rather than a state change, the in-combat 'Putting it on' line and its progress rule in `screens/inventory.js` `detail()`, IS DECLARED AND UNPHOTOGRAPHED. It is asserted in the element census (`detail_panel.meta.equipping`, `list_row.meta.equipping`, and the `inventory.hint` text) and it is NOT proven to be legible pixels. Score that arm 0 fail-closed if it matters to you; the capture that would settle it is an in-combat inventory shot 15 frames after a confirm on a weapon row.",
+
+    "RI-UIX10 OP2 (gamepad) WAS NOT RE-RUN BY ME. My paused-frame fix touches the shared input tick, so the pad arm deserves a re-run and got one only indirectly, through `t4-r2-critic-drive.mjs`. The pad's own path is unaffected by construction — `RealInput.pollGamepad()` runs from rAF and delivers EDGES into `pendingPress`, which `latchForStep()` picks up without any per-step poll — but 'unaffected by construction' is an argument and not a measurement.",
+
+    "HUD1 IN MY EVIDENCE IS RED IN ALL THREE RUNS AND IT IS NOT A DEFECT. `two_hand` reports dead at 8/13, 10/13 and 12/13 alike. It is `RI-UIX10` trap I2 — a gated hold cannot cross on a paused screen in a harness because `hold-gate.js inputNow()` returns `frame * STEP_MS` and the frame is frozen. The brief warned me about exactly this and it is the first thing I checked. My paused-frame fix does NOT disarm it and was not meant to: what is frozen is the clock, not the poll."
+  ],
+
+  "what_i_fixed": {
+    "1_journal_search_trap": {
+      "item": "RI-UIX10 OP5 (hard fail) + OP6; GAP-W1-ui-journal-search-view-has-no-exit",
+      "landed_alone_and_first": "7569bffb — 2 paths, verified against the remote blob, before the other two were written",
+      "change": "game/src/ui/system.js:446 — `this.back()` -> `this.backOrSub()`. That is the whole exit, and it is the call site the critic named. PLUS the other half the critic's own acceptance requires and the one line fixes nothing without: `open()` now resets `focus.journal` to `{view:'chronicle', query:'', ringIdx:0}` on entry, next to the `wait` precedent, so the trap does not survive a walk to a peer and back — `_walkPeer()` re-enters through the same `open()`. The PAGE is deliberately kept. `screens/text.js`'s foot hint, which promised 'back to remove one' and stopped there, now says what back does on an empty line.",
+      "measured": "CONTROL (worktree at 398bd592): JS1 FAIL, all 15 actions plus both axes leave `view:'search'`, `roll` exits the whole screen; JS2 FAIL, re-opening returns `view:'search'`. AFTER: JS1 ok — `roll` returns `view:'chronicle'` on the FIRST of the fifteen, so the walk stops there; JS2 ok — `{view:'chronicle', page:0, indexIdx:0, ringIdx:0, query:''}` after a close and a walk back."
+    },
+    "2_equip_is_silent_out_of_combat": {
+      "item": "RI-UIX10 OP7 (hard fail) / O3",
+      "change": "game/src/engine.js `_applyUIPending()` — the commitment's length is now read off `inCombat()` at the moment of the press: 30 frames plus the `actionableAt` hold on both bodies plus `iframe:false` IN A FIGHT, exactly as before; 0 out of one, so `_finishEquipCommit()` lands the swap in the same `_afterStep()`. PLUS the in-progress state, because O3 fails a commitment the screen does not show and the in-combat 30 frames are still 30: `_uiCtx()` publishes `equipPending {item, remaining_f, commit_frames}` read live off `_equipCommit`, `UISystem._inventoryModel()` passes it, and `screens/inventory.js` draws it three ways — the foot hint says 'Putting on the X. You are standing still for it.', the detail panel gains a 'Putting it on.' line over a rule that empties as the commitment runs, and the row and the panel both carry `meta.equipping` / `meta.equip_remaining_f`.",
+      "the_seam_question_the_brief_asked_me_to_settle": "RI-UIX03 P7's PROPERTY TEXT is unconditional — 'changing an equipped weapon or armour piece costs an animation-committed action of >= 30 frames during which the player is vulnerable' — but ITS OWN COMPARISON METHOD IS NOT. Comparison-method step 5 reads 'Equip a different weapon from the menu DURING COMBAT; assert the trace shows a committed state of >=30 frames with iframe:false', and M-P5 is scored on that run and only that run. So the item states the property unconditionally and measures it conditionally, and the out-of-combat case is genuinely unaddressed. THAT IS THE FINDING. I ruled it rather than asking: CLAUDE.md settles it — 'Souls wins INSIDE the fight; Morrowind wins everywhere else' — and out of combat there is no fight, no frame in which 'during which the player is vulnerable' can be true (RI-UIX03 P1 stops the world, measured at frame delta 0 of 120), and RI-UIX10's own bar cites Morrowind's inventory by name: 'the moment you equip something the figure in the corner is wearing it'. A 30-frame cost taken out of a stopped clock is not a cost, it is a hang. REVERSIBLE, and the evidence that would overturn it is written into the code comment: an amendment to P7 that states the commitment out of combat AND names what the player is vulnerable to on a stopped clock, or an item requiring a wind-down animation on the world body when a menu closes.",
+      "measured": "CONTROL: EQ1 FAIL — 60 frames with the screen open, `[chitin-cuirass@chest, reed-cutter@right]` unchanged, doll unchanged, list unchanged, detail unchanged, `screen moved=false`, frame 5 -> 5; it landed 90 frames AFTER the screen was shut. AFTER: EQ1 ok — `[chitin-cuirass@chest, reed-cutter@right]` -> `[bog-iron-maul@right, chitin-cuirass@chest]` WITH THE SCREEN STILL OPEN AND THE FRAME STILL 5, `screen moved=true`. EQ2 still ok."
+    },
+    "3_touch_stick_never_reaches_the_pipeline": {
+      "item": "RI-UIX10 OP3 (touch arm)",
+      "cause_found_not_guessed": "THE PAUSED BRANCH OF `Engine._step()` RETURNS BEFORE `stepOnce()`, AND `stepOnce()` IS THE ONLY CALLER OF `sim.realInput.tick(sim.frame)` (`game/src/sim/step.js:90`). `RealInput.tick()` calling `TouchInput.tick()` is the only place the floating stick is pushed into the pipeline — `touch.js` `tick()`: `if (this.stick.active) ... this.pipe.setMove(...)`. A finger holds a POSITION; something has to read that position once per step, and on a paused frame nothing did. Out of combat every screen pauses (RI-UIX03 P1, working as designed), so the stick was dead on every screen and live nowhere the screens are. Keyboard and pad were unaffected and that is why it survived two rounds: both deliver EDGES into `pendingPress`, which `latchForStep()` picks up with no per-step poll. Only touch feeds the analogue channel while a screen is open.",
+      "change": "game/src/engine.js `_step()` paused branch — `if (this.sim.realInput) this.sim.realInput.tick(this.sim.frame);` before `latchForStep`, the same call with the same argument `stepOnce()` makes. Idempotent on a frame that does not advance, and in mode `play` both hold pollers are skipped inside it anyway (`RealInput.tick`'s `modeOf() !== 'play'` guard and `TouchInput.playClock`), so it does not disarm trap I2.",
+      "measured": "CONTROL: TS1 FAIL — pointerdown in the left half then a 120 px drag, 12 fixed steps, `focus.inventory` `{col:1,tagIdx:0,rowIdx:2,sortIdx:0}` -> IDENTICAL. AFTER: TS1 ok — the same drag moves `rowIdx` 2 -> 3. One row, not more; see could_not_do[2] for why that is the repeat clock and not this fix."
+    }
+  },
+
+  "delete_the_fix": {
+    "method": "A real `git worktree` at the pinned sha 398bd592, detached, with `tools/node_modules` symlinked in per HAZARDS 7 (a worktree without it exits 70 and reports GAME_BROKEN). The same probe, the same fixture, the same 1920x1080.",
+    "control_arm": "8/13 — EQ1 FAIL, JS1 FAIL, JS2 FAIL, TS1 FAIL (+ HUD1, the I2 artefact)",
+    "after_journal_fix_only": "10/13 — JS1 and JS2 green, EQ1 and TS1 still red",
+    "after_all_three": "12/13 — EQ1, JS1, JS2, TS1 all green; only HUD1 red, and it is red in the control too",
+    "why_this_is_a_real_control_and_not_a_HEAD~1_one": "TWO sibling whole-tree banks landed WHILE I WAS WORKING and carried my uncommitted `game/src/ui/system.js` and `game/src/ui/screens/inventory.js` edits into HEAD under their own headlines (08fe44d8 'In-flight: T4 r3 fixes...', 1e60f58d 'In-flight: T4 r3, F10 r4, gate-G judge A'). `git show HEAD:game/src/ui/system.js | grep -c equipPending` returns 1. A `HEAD~1` control would have contained the fix and come back green. HAZARDS 12 and 14, both live, in one afternoon.",
+    "artifacts": [
+      "corpus/90-verdicts/wave1/artifacts/T4-r3b/reports/screens-focus--CONTROL-398bd592-worktree.json",
+      "corpus/90-verdicts/wave1/artifacts/T4-r3b/reports/screens-focus--after-journal-fix.json",
+      "corpus/90-verdicts/wave1/artifacts/T4-r3b/reports/screens-focus--after-all-three.json"
+    ]
+  },
+
+  "evidence_and_how_it_was_driven": "Every interaction is a real `KeyboardEvent` / `PointerEvent` through the shipped handler in `play-instrumented`, with I0 asserted (`real.attached=true`) before anything was believed and the state recorded after each press. I did NOT touch the probes: `tools/ui/t4-r2-critic-focus.mjs` and `tools/ui/t4-r2-critic-drive.mjs` are the CRITIC'S instruments, run byte-identical in the control worktree and on the fixed tree, which is the whole point of using theirs. `data.errors` is `[]` on the final run.",
+
+  "device_arms": {
+    "keyboard": "run, both arms — the fifteen-action exit walk, the equip confirm, the container transfer, the peer ring",
+    "touch": "run, both arms — pointerdown/pointermove/pointerup on `pointer:'coarse'`, I1 disarmed by `setViewport`",
+    "gamepad": "NOT re-run by me — see could_not_do[4]",
+    "mouse": "not applicable and not re-run; `game/src/ui/system.js` rule 2 declares no pointer path for these surfaces and OP4 passes a build that says so"
+  },
+
+  "files_touched": [
+    "game/src/ui/system.js",
+    "game/src/ui/screens/text.js",
+    "game/src/ui/screens/inventory.js",
+    "game/src/engine.js",
+    "corpus/90-verdicts/wave1/artifacts/T4-r3b/reports/",
+    "orchestration/status/T4-r3-builder.json"
+  ],
+  "files_claimed": [],
+  "shared_file_note": "`node tools/ownership.mjs --for game/src/ui/system.js` reported 5 live pieces and an UNDECLARED OVERLAP before I started, and I ran it before touching the file rather than assuming. I landed with `--paths` on both banks, never a whole-tree bank, and never `git read-tree origin/<branch> && git add -A`.",
+
+  "regression_checks": {
+    "RI-UIX03 §A": "`node tools/harness/ui-pause.mjs` — see gates_run. M-P5 (P7's >=30 committed frames) is the row my equip change could plausibly have broken, and it is measured IN COMBAT by that probe's own design: its P4 leg spawns and aggros `inf_trash` and asserts the world ran 60 of 60 frames immediately before the equip leg runs.",
+    "every screen still operable": "`node tools/ui/t4-r2-critic-drive.mjs` — the 44-check affordance walk across inventory, journal, sheet, spells, map, wait and container, re-run because my paused-frame change is in the shared input tick and therefore touches every screen, not just the two I fixed."
+  }
+}
