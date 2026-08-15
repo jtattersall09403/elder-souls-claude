@@ -1,0 +1,455 @@
+{
+  "tool": "f7-critic-look",
+  "site": "vista-deep-marshes",
+  "generated": "2026-08-15T17:35:02.597Z",
+  "seed": 20260814,
+  "canvas": [
+    720,
+    405
+  ],
+  "crop": [
+    150,
+    570,
+    45,
+    360
+  ],
+  "time_of_day": 13,
+  "player": [
+    3123.5,
+    1.16,
+    3715
+  ],
+  "deck_declared_region": "deep-marshes",
+  "region_probe": {
+    "field_region": "deep-marshes",
+    "dom_label": null,
+    "getWaterAt": {
+      "depth_m": 0.717,
+      "band": "W3",
+      "substrate": "SUCK",
+      "region": "deep-marshes",
+      "region_name": "The Deep Marshes",
+      "sea": null,
+      "tidal": false,
+      "k": 4.5,
+      "ground_y": 1.163,
+      "surface_y": 1.88
+    }
+  },
+  "arms": {
+    "fixed": {
+      "what": "HEAD b0f3224e as shipped",
+      "poses": {
+        "a-topdown-120": {
+          "why": "the builder's own pose — straight down at 120 m",
+          "mean": 75.007,
+          "rms": 26.375,
+          "orientation_whole_crop": {
+            "ridge_deg": 11.1,
+            "coherence": 0.193,
+            "energy": 722.0341
+          },
+          "orientation_by_tile": {
+            "tiles": [
+              {
+                "tile": "r0c0",
+                "ridge_deg": 4.7,
+                "coherence": 0.189,
+                "energy": 609.6867,
+                "radial_pred_deg": 36.9,
+                "dev_from_radial_deg": -32.2
+              },
+              {
+                "tile": "r0c1",
+                "ridge_deg": -5,
+                "coherence": 0.181,
+                "energy": 461.6593,
+                "radial_pred_deg": 90,
+                "dev_from_radial_deg": 85
+              },
+              {
+                "tile": "r0c2",
+                "ridge_deg": -0.2,
+                "coherence": 0.18,
+                "energy": 873.9991,
+                "radial_pred_deg": -36.9,
+                "dev_from_radial_deg": 36.7
+              },
+              {
+                "tile": "r1c0",
+                "ridge_deg": 11.4,
+                "coherence": 0.212,
+                "energy": 617.9884,
+                "radial_pred_deg": 0,
+                "dev_from_radial_deg": 11.4
+              },
+              {
+                "tile": "r1c1",
+                "ridge_deg": -3.8,
+                "coherence": 0.155,
+                "energy": 684.1541,
+                "radial_pred_deg": 0,
+                "dev_from_radial_deg": -3.8
+              },
+              {
+                "tile": "r1c2",
+                "ridge_deg": 1.9,
+                "coherence": 0.192,
+                "energy": 734.0971,
+                "radial_pred_deg": 0,
+                "dev_from_radial_deg": 1.9
+              },
+              {
+                "tile": "r2c0",
+                "ridge_deg": 11.7,
+                "coherence": 0.208,
+                "energy": 851.3317,
+                "radial_pred_deg": -36.9,
+                "dev_from_radial_deg": 48.6
+              },
+              {
+                "tile": "r2c1",
+                "ridge_deg": 31.9,
+                "coherence": 0.316,
+                "energy": 974.5258,
+                "radial_pred_deg": 90,
+                "dev_from_radial_deg": -58.1
+              },
+              {
+                "tile": "r2c2",
+                "ridge_deg": 13.4,
+                "coherence": 0.239,
+                "energy": 673.0624,
+                "radial_pred_deg": 36.9,
+                "dev_from_radial_deg": -23.5
+              }
+            ],
+            "circular_concentration": 0.932,
+            "mean_ridge_deg": 7.1,
+            "mean_abs_dev_from_radial_deg": 33.5,
+            "mean_abs_dev_from_centre_tile_deg": 11.4,
+            "reading": "parallel world lanes: dev_from_centre_tile small and dev_from_radial large. screen-space starburst: the reverse."
+          }
+        },
+        "b-pitch-55-d50": {
+          "why": "half-way down",
+          "mean": 66.642,
+          "rms": 26.47
+        },
+        "c-vista-11-d26": {
+          "why": "the deck vista pose — the shot a player judges a world by, and the RI-VIS03 M12 water_edge shot",
+          "mean": 78.859,
+          "rms": 39.976,
+          "ablation": {
+            "reflection_strength_when_off": [
+              0
+            ],
+            "reflection_strength_when_on": [
+              1
+            ],
+            "arm_live": "LIVE",
+            "whole_frame": {
+              "changed_pct": 54.24,
+              "mean_abs_delta": 11.273
+            },
+            "reflection_share_of_water_pixel": {
+              "n": 169177,
+              "mean_abs_delta": 19.321,
+              "mean_base_luma": 83.199,
+              "pct_of_water_pixel": 23.2
+            },
+            "water_coverage_pct": 58.02,
+            "shoreline_coverage_pct": 24.98,
+            "shoreline_share_of_its_own_pixels": {
+              "n": 72829,
+              "mean_abs_delta": 6.389,
+              "mean_base_luma": 88.285,
+              "pct_of_water_pixel": 7.2
+            }
+          }
+        },
+        "e-eye-yaw090": {
+          "why": "eye level — water as a player meets it",
+          "mean": 80.253,
+          "rms": 39.062
+        },
+        "h-grazing-2": {
+          "why": "nearly on the surface — the grazing case the fix deliberately does not move",
+          "mean": 90.868,
+          "rms": 45.79
+        }
+      },
+      "scale": {
+        "fov": 50,
+        "m_per_px_X": 0.2763,
+        "m_per_px_Z": 0.2763,
+        "screen_deg_of_world_plusX": 180,
+        "screen_deg_of_world_plusZ": -90
+      },
+      "motion": {
+        "stationary_consecutive": [
+          {
+            "changed_pct": 1.77,
+            "mean_abs_delta": 0.338
+          },
+          {
+            "changed_pct": 1.75,
+            "mean_abs_delta": 0.358
+          },
+          {
+            "changed_pct": 1.78,
+            "mean_abs_delta": 0.373
+          },
+          {
+            "changed_pct": 1.79,
+            "mean_abs_delta": 0.371
+          }
+        ],
+        "dolly_consecutive": [
+          {
+            "changed_pct": 81.68,
+            "mean_abs_delta": 27.459
+          },
+          {
+            "changed_pct": 81.17,
+            "mean_abs_delta": 27.032
+          },
+          {
+            "changed_pct": 82.44,
+            "mean_abs_delta": 28.112
+          },
+          {
+            "changed_pct": 82.14,
+            "mean_abs_delta": 27.982
+          }
+        ]
+      }
+    },
+    "prefix": {
+      "what": "the fix deleted: the (1.0-esView) factor removed from the distance term",
+      "poses": {
+        "a-topdown-120": {
+          "why": "the builder's own pose — straight down at 120 m",
+          "mean": 91.517,
+          "rms": 33.517,
+          "orientation_whole_crop": {
+            "ridge_deg": 5.4,
+            "coherence": 0.196,
+            "energy": 906.6361
+          },
+          "orientation_by_tile": {
+            "tiles": [
+              {
+                "tile": "r0c0",
+                "ridge_deg": 3.7,
+                "coherence": 0.204,
+                "energy": 799.1927,
+                "radial_pred_deg": 36.9,
+                "dev_from_radial_deg": -33.2
+              },
+              {
+                "tile": "r0c1",
+                "ridge_deg": -4.7,
+                "coherence": 0.216,
+                "energy": 641.1854,
+                "radial_pred_deg": 90,
+                "dev_from_radial_deg": 85.3
+              },
+              {
+                "tile": "r0c2",
+                "ridge_deg": -4.3,
+                "coherence": 0.195,
+                "energy": 1097.238,
+                "radial_pred_deg": -36.9,
+                "dev_from_radial_deg": 32.6
+              },
+              {
+                "tile": "r1c0",
+                "ridge_deg": 10.8,
+                "coherence": 0.228,
+                "energy": 764.7694,
+                "radial_pred_deg": 0,
+                "dev_from_radial_deg": 10.8
+              },
+              {
+                "tile": "r1c1",
+                "ridge_deg": -4.9,
+                "coherence": 0.161,
+                "energy": 918.2609,
+                "radial_pred_deg": 0,
+                "dev_from_radial_deg": -4.9
+              },
+              {
+                "tile": "r1c2",
+                "ridge_deg": -1.1,
+                "coherence": 0.205,
+                "energy": 939.2657,
+                "radial_pred_deg": 0,
+                "dev_from_radial_deg": -1.1
+              },
+              {
+                "tile": "r2c0",
+                "ridge_deg": 1.4,
+                "coherence": 0.2,
+                "energy": 1034.8162,
+                "radial_pred_deg": -36.9,
+                "dev_from_radial_deg": 38.3
+              },
+              {
+                "tile": "r2c1",
+                "ridge_deg": 25.6,
+                "coherence": 0.236,
+                "energy": 1056.0205,
+                "radial_pred_deg": 90,
+                "dev_from_radial_deg": -64.4
+              },
+              {
+                "tile": "r2c2",
+                "ridge_deg": 12.1,
+                "coherence": 0.246,
+                "energy": 888.295,
+                "radial_pred_deg": 36.9,
+                "dev_from_radial_deg": -24.8
+              }
+            ],
+            "circular_concentration": 0.945,
+            "mean_ridge_deg": 4.1,
+            "mean_abs_dev_from_radial_deg": 32.8,
+            "mean_abs_dev_from_centre_tile_deg": 9.2,
+            "reading": "parallel world lanes: dev_from_centre_tile small and dev_from_radial large. screen-space starburst: the reverse."
+          }
+        },
+        "b-pitch-55-d50": {
+          "why": "half-way down",
+          "mean": 77.859,
+          "rms": 32.167
+        },
+        "c-vista-11-d26": {
+          "why": "the deck vista pose — the shot a player judges a world by, and the RI-VIS03 M12 water_edge shot",
+          "mean": 77.37,
+          "rms": 39.674,
+          "ablation": {
+            "reflection_strength_when_off": [
+              0
+            ],
+            "reflection_strength_when_on": [
+              1
+            ],
+            "arm_live": "LIVE",
+            "whole_frame": {
+              "changed_pct": 54.58,
+              "mean_abs_delta": 11.771
+            },
+            "reflection_share_of_water_pixel": {
+              "n": 168860,
+              "mean_abs_delta": 20.21,
+              "mean_base_luma": 80.029,
+              "pct_of_water_pixel": 25.3
+            },
+            "water_coverage_pct": 57.91,
+            "shoreline_coverage_pct": 41.47,
+            "shoreline_share_of_its_own_pixels": {
+              "n": 120930,
+              "mean_abs_delta": 6.639,
+              "mean_base_luma": 82.702,
+              "pct_of_water_pixel": 8
+            }
+          }
+        },
+        "e-eye-yaw090": {
+          "why": "eye level — water as a player meets it",
+          "mean": 82,
+          "rms": 39.173
+        },
+        "h-grazing-2": {
+          "why": "nearly on the surface — the grazing case the fix deliberately does not move",
+          "mean": 91.52,
+          "rms": 45.984
+        }
+      },
+      "edits_applied": 5,
+      "scale": {
+        "fov": 50,
+        "m_per_px_X": 0.2763,
+        "m_per_px_Z": 0.2763,
+        "screen_deg_of_world_plusX": 180,
+        "screen_deg_of_world_plusZ": -90
+      },
+      "motion": {
+        "stationary_consecutive": [
+          {
+            "changed_pct": 1.74,
+            "mean_abs_delta": 0.32
+          },
+          {
+            "changed_pct": 1.84,
+            "mean_abs_delta": 0.288
+          },
+          {
+            "changed_pct": 1.75,
+            "mean_abs_delta": 0.252
+          },
+          {
+            "changed_pct": 1.79,
+            "mean_abs_delta": 0.237
+          }
+        ],
+        "dolly_consecutive": [
+          {
+            "changed_pct": 81.87,
+            "mean_abs_delta": 27.268
+          },
+          {
+            "changed_pct": 81.48,
+            "mean_abs_delta": 26.968
+          },
+          {
+            "changed_pct": 82.5,
+            "mean_abs_delta": 28.107
+          },
+          {
+            "changed_pct": 82.66,
+            "mean_abs_delta": 28.012
+          }
+        ]
+      }
+    }
+  },
+  "arm_comparison": {
+    "a-topdown-120": {
+      "prefix_rms": 33.517,
+      "fixed_rms": 26.375,
+      "delta_pct": -21.3,
+      "prefix_refl_pct_of_water_pixel": null,
+      "fixed_refl_pct_of_water_pixel": null
+    },
+    "b-pitch-55-d50": {
+      "prefix_rms": 32.167,
+      "fixed_rms": 26.47,
+      "delta_pct": -17.7,
+      "prefix_refl_pct_of_water_pixel": null,
+      "fixed_refl_pct_of_water_pixel": null
+    },
+    "c-vista-11-d26": {
+      "prefix_rms": 39.674,
+      "fixed_rms": 39.976,
+      "delta_pct": 0.8,
+      "prefix_refl_pct_of_water_pixel": 25.3,
+      "fixed_refl_pct_of_water_pixel": 23.2
+    },
+    "e-eye-yaw090": {
+      "prefix_rms": 39.173,
+      "fixed_rms": 39.062,
+      "delta_pct": -0.3,
+      "prefix_refl_pct_of_water_pixel": null,
+      "fixed_refl_pct_of_water_pixel": null
+    },
+    "h-grazing-2": {
+      "prefix_rms": 45.984,
+      "fixed_rms": 45.79,
+      "delta_pct": -0.4,
+      "prefix_refl_pct_of_water_pixel": null,
+      "fixed_refl_pct_of_water_pixel": null
+    }
+  }
+}

@@ -1,0 +1,403 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-F7-WATER-r1",
+  "piece_title": "F7 — the water surface. The reflection-weight fix, round 1 critic.",
+  "roadmap_item": "F7",
+  "subsystem_paths": [
+    "world.water.marsh",
+    "visual.renderer.water"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-f7-water-r1",
+    "role": "critic.visual.water",
+    "model": "claude-opus-5",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_measurement": true,
+    "note": "I built none of this. My dispatch brief quoted the builder's own claims up front, which departs from CRITIC-DOCTRINE §8's ordering; it is recorded rather than hidden. The brief instructed me to inherit no figure from it, and every number below is either re-derived by a command named in `source_reads`/`artifacts` or is quoted from the builder's own committed result JSON with the arithmetic redone by me. Ordering actually followed: M47, the deck-region census, the whole re-analysis of the builder's frames and the two-arm capture were all taken BEFORE reading corpus/90-verdicts/GAP-LEDGER.json for world.water.marsh."
+  },
+  "build": {
+    "commit_sha": "b0f3224e",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "control_pin": "3ca135ad1d7bc4b1cd07796512974819fe188721 — the builder's own pinned pre-fix revision, read from corpus/90-verdicts/wave1/artifacts/W1-F7-WATER/PINNED-SHA.txt",
+    "baseline_note": "The two arms in my own capture are NOT two trees. They are produced in one process by live onBeforeCompile editing, exactly as the builder's own tools do it, so the arms cannot differ by anything except the factor under test: `fixed` is HEAD; `prefix` replaces `smoothstep(10.0,52.0,length(vViewPosition))*.72*(1.0-esView)` with `smoothstep(10.0,52.0,length(vViewPosition))*.72`. The edit asserts its own substitution count and a zero count is reported VACUOUS rather than as a negative result. My re-analysis of the BUILDER's frames uses the builder's own committed PNGs from both trees and adds no arm of mine.",
+    "harness_commands": [
+      {
+        "cmd": "node corpus/80-methods/m-wld10-water-census.mjs",
+        "exit": 0,
+        "note": "RI-WLD10 M47, the S24 regional census. PASSED."
+      },
+      {
+        "cmd": "node tools/visual/f7-critic-deck-region.mjs",
+        "exit": 0,
+        "note": "44 teleport deck setups resolved through WorldField — the same class engine.js:337 builds — to test the builder's claim that eye-blackwood is a broken deck site."
+      },
+      {
+        "cmd": "node tools/visual/f7-critic-reanalyse.mjs --out reports/visual-truth/f7-critic/reanalyse.json",
+        "exit": 0,
+        "note": "re-reads the BUILDER's own committed frames on both arms with a water-masked, brightness-normalised banding metric and a lane-scale directional scan."
+      },
+      {
+        "cmd": "node tools/visual/f7-critic-look.mjs --site vista-deep-marshes --out reports/visual-truth/f7-critic/look-dm",
+        "exit": 0,
+        "note": "my own two-arm capture: five poses from straight down to near-grazing, plus a stationary and a dolly motion sequence per arm, at 720x405, seed from deck.json."
+      },
+      {
+        "cmd": "node tools/visual/f7-critic-m12-offline.mjs --dir reports/visual-truth/f7-critic/look-dm",
+        "exit": 0,
+        "note": "RI-VIS03 M12 on both arms from those frames, WATER_MASK taken from the renderer rather than hand-marked."
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "both-separately",
+    "declared_before_citation": true,
+    "fidelity_refs": [
+      "RI-VIS03",
+      "RI-VIS04"
+    ],
+    "art_refs": [
+      "RI-WLD10"
+    ],
+    "note": "Declared before any frame was opened. The FIDELITY half is RI-VIS04 §9's MIN BAR and RI-VIS03 M12's five sub-metrics, judged against modern references only; NO 2002 Morrowind screenshot is cited against it anywhere in this verdict. The ART-DIRECTION half is RI-WLD10 §8 (the Deep Marshes is 'black standing water with no tide and no bottom you want to find', k=4.5) and §10 points 1-6 ('water is opaque before it is reflective'), judged against the item's own prose. The two score sets are disjoint and share no reference item. The re-analysis figures are neither axis — they are numeric conformance of the build to its own before/after, and are scored as structure."
+  },
+  "reference_items": [
+    {
+      "id": "RI-WLD10",
+      "path": "corpus/50-world/RI-WLD10-the-water-model.md",
+      "side": "split",
+      "kind": "number",
+      "native_scale": "weighted sum of passed check weights M47..M56, max 100; we-lose floor 75; ladder 75/82/91 -> 4/6/8",
+      "native_score": 20,
+      "native_max": 100,
+      "native_verdict": "20/100 on the axes this verdict measured. M47 (weight 20) PASSES — I ran it. M56 (weight 4, `blind_pair: yes`) is 0, fail-closed: its blind rank cannot be run by a critic, and its non-blind half fails on measurement (below). M48-M55 (weight 76) were NOT measured by this verdict and are 0 by the fail-closed convention, NOT because they were demonstrated absent. This verdict therefore cannot raise or close RI-WLD10; W1-03-r1's standing judgement of the item stands and F7 does not touch it.",
+      "score_0_10": 2,
+      "justification": "not required below 7",
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/m47-s24-census.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26-reflection-off.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-h-grazing-2.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/reanalyse.json"
+      ],
+      "checks": [
+        {
+          "id": "M47",
+          "result": "pass",
+          "value": "S24 WATER CENSUS PASSED. Area-weighted WCI 0.294 in [0.22,0.42]; spread 0.86 >= 0.55; 5 regions <= 0.05; 2 at 0.00; 2 >= 0.60; 11 water classes; tidal set exactly the five §8 names. Run by me this turn, output committed. The Deep Marshes row declares k = 4.5, i.e. underwater visibility 3/k = 0.67 m.",
+          "threshold": "every bar in §8's derived table",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/m47-s24-census.txt"
+          ]
+        },
+        {
+          "id": "M56 §5 blind pair",
+          "result": "fail",
+          "value": "NOT RUN. `blind_status: not_possible` — see blind_comparisons. Scored 0 fail-closed, never 'unknown'.",
+          "threshold": "our median rank in the top half of 32 interleaved shots, judged fresh",
+          "hard_fail": false,
+          "evidence": []
+        },
+        {
+          "id": "M56 §3 region separability",
+          "result": "not_measured",
+          "value": "I captured ONE of the four regions M56 names (the Deep Marshes) and one tide state of four, so the 16-shot matrix does not exist and no Bhattacharyya distance was computed. Scored 0 fail-closed and stated rather than implied.",
+          "threshold": "no two of the four regions' water histograms below 0.25",
+          "hard_fail": false,
+          "evidence": []
+        },
+        {
+          "id": "§8 row 13 + §10.1 — 'black standing water', 'opaque before it is reflective'",
+          "result": "fail",
+          "value": "The Deep Marshes at (3123.5, 3715) — confirmed in-engine as region `deep-marshes`, `getWaterAt` returning {depth_m 0.717, band W3, substrate SUCK, k 4.5, tidal false} — renders as a pale, uniformly bright steel-blue sheet at every pose I took, from the vista pose down to 2 degrees off the surface. The single cleanest demonstration is the reflection off-switch: with `renderer.quality.waterReflection = false` (renderer.js:1415) the SAME frame becomes markedly darker and greener and reads much closer to the item's own description than the shipped frame does. Turning the reflection OFF makes this water look more like what RI-WLD10 says it is than turning it ON. Measured: the reflection accounts for 23.2% of a water pixel's brightness at the vista pose on the shipped build (mean |delta| 19.32 over mean base luma 83.20, on 169,177 masked water pixels), where §10.1 asks for water that is opaque first.",
+          "threshold": "§10.1: no region may read as reflective before it reads as opaque; Deep Marshes k = 4.5 => 0.67 m visibility",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26-reflection-off.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/look.json"
+          ]
+        },
+        {
+          "id": "§10 fidelity clause — 'shoreline blend with no hard intersection line'",
+          "result": "fail",
+          "value": "province.js's wet-bank builder emits a shoreline quantised to a 25.0 m axis-aligned lattice, which is the opposite of a blend. Derived from the source constants this turn: `WATER_SEG = 24` (province.js:31), `TILE_M = 300` (province.js:23), `step = TILE_M/WATER_SEG = 12.5 m`, and the emit loops step `ix`/`iz` by 2, so bands land on a 25.0 m grid; `band()` is only ever called with ax==bx or az==bz, so every quad is axis-aligned; half-width .46 gives a 0.92 m strip (province.js:1594-1601). MEASURED FROM OUTPUT, not only read: hiding `water:shoreline:` changes 24.98% of a vista frame and 45.13% of a top-down frame, and accounts for 7.2% of the brightness of the pixels it owns.",
+          "threshold": "§10 fidelity: 'shoreline blend with no hard intersection line (depth-fade against the depth buffer)'",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26-shoreline-hidden.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/look.json"
+          ]
+        }
+      ],
+      "why_not_ten": "M56 has never been run in either half: its blind rank is unrunnable by a critic and its 16-shot region/tide matrix was not captured by me. On the half I could measure, the Deep Marshes reads as a bright reflective sheet where the item declares black water at k=4.5, and the shoreline is a 25 m axis-aligned lattice where the item asks for a depth-fade blend. M48-M55 are unmeasured by this verdict entirely.",
+      "path_to_ten": "1) The orchestrator runs M56 §5's blind gate (CLAUDE.md rule 0e) after a pack-builder constructs the 32-shot interleave. 2) Capture the full M56 matrix: 4 regions x 4 tide states via `__HARNESS.setTide`, which exists (game/src/harness/api.js:403). 3) Close the biggest_gap below so the water's reflectance obeys its declared k. 4) Replace province.js's 25 m band lattice with a depth-buffer fade. 5) A separate piece measures M48-M55.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-VIS04",
+      "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+      "side": "modern-fidelity",
+      "kind": "checklist",
+      "native_scale": "§9 MIN BAR: four clauses, plus §DETECT's M12 conclusion",
+      "native_score": 2,
+      "native_max": 4,
+      "native_verdict": "2 of 4 MIN BAR clauses. HAVE: a planar reflection at half-res (renderer.js:125, confirmed by ablation — turning it off changes 54.24% of a vista frame and 23.2% of a water pixel's brightness) and depth-based colour (`esDepth`, water.js:110). MISSING: 'two scrolling normal maps at different scales and speeds' — there are no normal maps at all, only six procedural sine terms (water.js:52-57, :113-115); and 'shoreline depth fade' — what ships is the 25 m axis-aligned band lattice above, which is a hard geometric line and not a fade. §9's own TELL is quoted almost exactly by the frames: 'a flat blue/green semi-transparent plane. The same colour and brightness everywhere.'",
+      "score_0_10": 3,
+      "justification": "not required below 7",
+      "measured": "yes",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-h-grazing-2.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/m12-offline.json"
+      ],
+      "checks": [],
+      "why_not_ten": "Two of four MIN BAR clauses are absent and RI-VIS03 M12's bands are failed on more than one sub-metric (see the RI-VIS03 row), which §9 §DETECT calls the conclusive form of the blue-plane failure.",
+      "path_to_ten": "Add two scrolling normal maps at different scales/speeds in place of the procedural sine stack; replace the 25 m band lattice with a depth-buffer shoreline fade; close the biggest_gap so the Fresnel response is physical. Then re-run M12 and require every band.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-VIS03",
+      "path": "corpus/70-visual/RI-VIS03-fidelity-image-metrics.md",
+      "side": "modern-fidelity",
+      "kind": "number",
+      "native_scale": "M12's five sub-metrics against their bands; any two failing = 'water is a blue plane' hard fail",
+      "native_score": 2,
+      "native_max": 5,
+      "native_verdict": "2 of 5 M12 sub-metrics pass on the shipped build. MEASURED FAIL: FresnelDelta = -0.07790 against a band of >= 0.05 and a stated fail below 0.02 ('no Fresnel; uniform plane') — and it is NEGATIVE, meaning far grazing water is DARKER than near downward water, the inverse of Fresnel. Across the fix it went -0.04404 -> -0.07790, i.e. it moved AWAY from the band. That is the corpus's own instrument for exactly the property F7 changed, RI-VIS04 §9 names it conclusive, and the build never ran it. PASS: ShoreDelta 0.06861 (>= 0.03), TemporalVar 0.00234 (>= 0.002; it was 0.00113 and FAILING pre-fix, so the fix does move this one). UNMEASURABLE AT MY POSE and scored 0 fail-closed, not demonstrated absent: ReflCorr (0 paired above-water samples — the water mask reaches row 0 at the vista pose) and NormalEnergy (no 128x128 square lies wholly inside the ragged mask).",
+      "score_0_10": 2,
+      "justification": "not required below 7",
+      "measured": "yes",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/m12-offline.json"
+      ],
+      "checks": [
+        {
+          "id": "M12 FresnelDelta",
+          "result": "fail",
+          "value": "-0.04404 (pre-fix) -> -0.07790 (shipped). Band >= 0.05; fail < 0.02. The fix lowers the downward-viewed reflection weight and leaves grazing alone, so its own thesis requires this to RISE. It fell by 0.034. I have no repeat at this pose and therefore no noise floor for this instrument, and I say so rather than calling the direction certain; what is certain is that both arms are far below the band and on the wrong side of zero.",
+          "threshold": ">= 0.05, and > 0.02 to avoid the 'uniform plane' fail",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/m12-offline.json"
+          ]
+        },
+        {
+          "id": "M12 ShoreDelta",
+          "result": "pass",
+          "value": "0.05917 -> 0.06861, band >= 0.03",
+          "threshold": ">= 0.03",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/m12-offline.json"
+          ]
+        },
+        {
+          "id": "M12 TemporalVar",
+          "result": "pass",
+          "value": "0.00113 (pre-fix, FAILING) -> 0.00234 (shipped, passing), band >= 0.002, over 5 stationary frames per arm at the vista pose. Consecutive stationary frames differ by a mean of 0.24-0.37 luma units out of ~85, so the water does move, by about 0.4% of its own brightness.",
+          "threshold": ">= 0.002",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/look.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/m12-offline.json"
+          ]
+        },
+        {
+          "id": "M12 ReflCorr",
+          "result": "unmeasurable",
+          "value": "0 paired samples; scored 0 fail-closed per CRITIC-DOCTRINE §7.3. This is my pose's fault, not the build's, and it is recorded as such in method_deviations.",
+          "threshold": ">= 0.35",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/m12-offline.json"
+          ]
+        },
+        {
+          "id": "M12 NormalEnergy",
+          "result": "unmeasurable",
+          "value": "no 128x128 window inside the mask; scored 0 fail-closed. Same caveat.",
+          "threshold": ">= 0.035",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/m12-offline.json"
+          ]
+        }
+      ],
+      "why_not_ten": "FresnelDelta is negative on both arms and moved further from the band across the fix; two more sub-metrics could not be obtained from my pose and are 0 fail-closed.",
+      "path_to_ten": "Close the biggest_gap (a Schlick Fresnel over esView in place of the fixed .25 floor) and re-measure: FresnelDelta must be positive and >= 0.05. Then re-run M12 from a water_edge shot that keeps sky and bank above the waterline so ReflCorr and NormalEnergy are obtainable, and add two scrolling normal maps so NormalEnergy has something to read.",
+      "ten_by_wave": 2
+    }
+  ],
+  "artifacts": [
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/m47-s24-census.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/deck-region.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/reanalyse.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/look.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/m12-offline.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/builder-arms-recomputed.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/build-diffstat.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-a-topdown-120.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/prefix-a-topdown-120.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-b-pitch-55-d50.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/prefix-b-pitch-55-d50.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/prefix-c-vista-11-d26.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26-reflection-off.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/prefix-c-vista-11-d26-reflection-off.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26-water-hidden.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26-shoreline-hidden.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-e-eye-yaw090.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/prefix-e-eye-yaw090.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-h-grazing-2.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/prefix-h-grazing-2.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-motion-still-0.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-motion-dolly-3.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/prefix-motion-dolly-3.png"
+  ],
+  "blind_comparisons": [
+    {
+      "check": "M56 §5 — 'interleave our 16 with 16 Morrowind water shots and ask a fresh judge to rank all 32'",
+      "ref_item": "RI-WLD10",
+      "status": "not_possible",
+      "not_possible_reason": "RI-WLD10 declares `blind_pair: yes` and M56 §5 requires a FRESH judge with no project context. I have opened both arms attributed, so I am disqualified by construction; and a critic cannot spawn a fresh judge — `create_session` is approval-gated and CLAUDE.md rule 0 forbids calling it, and a subagent cannot spawn subagents. CLAUDE.md rule 0e places this with the ORCHESTRATOR and says so in as many words. I record it, fail closed at 0, and say plainly: THE ORCHESTRATOR OWES THIS GATE. Measured this turn: `grep -rl \"blind_pair: yes\" corpus/ --include=*.md | wc -l` returns 98 and `grep -rln \"blind_status: *run\" corpus/90-verdicts/` returns 0."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "A6/S25-R1 (frame numbers varying with depth)",
+          "result": "pass",
+          "value": "RI-WLD10's own automatic-fail list includes 'any frame number that varies with depth'. The F7 change is confined to one fragment-shader expression in game/src/render/water.js (`esGrazing`, water.js:107) and to nothing else — `git show --stat b0f3224e` touches water.js, three tools under tools/visual/, the status file, the artefact directory, reports/blog-feed.jsonl and one docs shot. No moveset, no constants file, no combat data. A fragment shader cannot alter a frame count."
+        },
+        {
+          "id": "A2 (dice damage) / A1 (to-hit roll)",
+          "result": "not_applicable",
+          "value": "no combat resolution path is touched by this piece"
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/build-diffstat.txt"
+      ],
+      "not_applicable_reason": "Only the depth/frame-invariance probe is reachable from a water-surface shader change; it is run and passes."
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B1 (objective markers / compass)",
+          "result": "pass",
+          "value": "Every frame I captured carries the same HUD: three bars top-left, a soul count, a compass rose showing cardinal letters only, and a small map inset bottom-right. No arrow, pin, waypoint, distance readout or edge indicator pointing at an objective appears in any of the 26 frames I took. Inspected as pixels, not as code."
+        },
+        {
+          "id": "RI-WLD10 automatic fail — 'a depth meter, depth number, or you-are-wading HUD element'",
+          "result": "pass",
+          "value": "The player stood in W3 water (getWaterAt depth_m 0.717) throughout my capture and NO depth readout appears anywhere on screen. §1's readout is the character's own silhouette and that is what ships."
+        },
+        {
+          "id": "RI-WLD10 automatic fail — 'a full-screen blue underwater filter'",
+          "result": "not_applicable",
+          "value": "no submerged (W5-D) pose was taken; this piece does not touch the submerged path and I did not measure it. Recorded rather than claimed."
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-h-grazing-2.png"
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 2,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "min over the three items this piece can move: RI-WLD10 2, RI-VIS04 3, RI-VIS03 2. The min is 2 and it is set jointly by RI-WLD10's unrun M56 blind gate and by RI-VIS03 M12's FresnelDelta, which is negative on both arms and moved further from its band across the fix. The build's identified defect is real and its weight arithmetic re-derives exactly; what fails is that the fix stops at the constant floor under the term it moved, that its headline number is taken on an instrument its own arms show rises when the water is replaced by a flat colour, and that on the four poses a player actually occupies the two arms are indistinguishable (+0.8%, -0.3%, -0.4%) and the frames are too.",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "PASS requires the overall score at or above the piece's pass_threshold. Min over the three items measured is 2 against a threshold of 7.",
+    "RI-WLD10 declares `blind_pair: yes` and M56 §5's blind rank HAS NOT BEEN RUN. It cannot be run by a critic (CLAUDE.md rule 0e) and is recorded `not_possible`, fail-closed at 0. An unrun quality gate caps the item regardless of what else passes.",
+    "RI-VIS03 M12 `FresnelDelta` is NEGATIVE on both arms (-0.04404 pre-fix, -0.07790 post-fix) against a band of >= 0.05 and a stated fail below 0.02 — 'no Fresnel; uniform plane'. It is the corpus's own instrument for the property F7 changed, it was never run by the build, and it did not move in the direction the fix's own thesis requires.",
+    "RI-VIS04 §9's MIN BAR is met on 2 of 4 clauses: there are no scrolling normal maps (six procedural sine terms instead) and no shoreline depth fade (a 25.0 m axis-aligned band lattice instead).",
+    "The headline claim 'reduces the streaks by 28%' is measured with an instrument that rises 42.8% when the water's entire fragment output is replaced by one constant colour, and the SAME tool's directional metrics moved the opposite way across the fix (lane_power +12.1%, lane_aniso +48.1%) and were not reported. The claim's magnitude does survive a better instrument (-27.1% on water-masked, brightness-normalised lane power) but the evidence offered for it does not support it.",
+    "The fix changes only the pose nobody plays. Across my five poses on both arms: straight down at 120 m -21.3%; half-way down -17.7%; the deck vista pose +0.8%; eye level -0.3%; near-grazing -0.4%. Four of five are inside the run's own reproducibility band, and the pre- and post-fix vista frames are visually indistinguishable."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence",
+    "subsystem_path": "visual.renderer.water",
+    "severity": "blocking",
+    "what": "The fix moved the distance term and stopped at the constant floor the distance term was standing on. `game/src/render/water.js:111` still reads `esSurface=mix(esDepth,esReflection,(.25+esGrazing*.50)*uWaterReflectionStrength)`, and line 112 carries 0.68 of that into the frame, so EVERY water pixel at EVERY viewing angle still composites a fixed 0.25 x 0.68 = 17% of the planar/screen reflection target — at normal incidence, where the Fresnel reflectance of water is about 2%. The target is half-resolution (renderer.js:125, verified) and refreshed only when the camera has moved 0.24 m or six simulation frames have passed (renderer.js:1424, verified), so what is composited is a smeared, stale image of the canopy. MEASURED FROM OUTPUT, not argued: with `renderer.quality.waterReflection = false` the reflection accounts for 23.2% of a water pixel's brightness at the deck vista pose on the shipped build (mean |delta| 19.321 over mean base luma 83.199, on 169,177 renderer-derived water-mask pixels), and the same frame with it off is markedly darker and greener and reads closer to RI-WLD10 §8's 'black standing water' for a region the same data file declares at k = 4.5 (0.67 m visibility). AND THE BUILDER'S OWN NUMBERS SAY THIS IS THE REMAINING TERM, not renderer.js. Its fourteen-arm sweep is linear in that mix weight: its two measured points on the pinned tree are (weight 0.610 -> x_rms 7.711) and (weight 0.000 -> x_rms 3.921, the `term-no-reflection` arm), the line through them is x_rms = 3.921 + 6.213w, and it predicts 5.474 at weight 0.250 against the 5.484 the shipped build actually measures — 0.2% error. Setting the base to a physical 0.02 predicts 4.05: a further 26% off the residual and 94% of everything the reflection weight can buy, in the file F7 owns, without touching renderer.js at all. The build named renderer.js's half-res target and 6-frame staleness as 'the remaining cause' and declared them out of its ownership; its own arithmetic points at the constant in its own file.",
+    "why_it_matters": "A player walking the Deep Marshes in third person sees a pale reflective sheet where the world's own data says black water, and the streaks F7 exists to remove are still there — the fix's whole visible effect lives at a straight-down 120 m camera the game never puts anybody in.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26-reflection-off.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/prefix-c-vista-11-d26.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/look.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/m12-offline.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/reanalyse.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/builder-arms-recomputed.txt"
+    ],
+    "remedy": "In `game/src/render/water.js`, replace the fixed floor with a Schlick Fresnel over the SAME `esView` the file already computes, so the distance term broadens the grazing response instead of adding a floor under it:\n    float esF0 = 0.02;\n    float esRefl = esF0 + (1.0 - esF0) * pow(1.0 - esView, 5.0);\n    esRefl = max(esRefl, smoothstep(10.0, 52.0, length(vViewPosition)) * 0.72 * (1.0 - esView));\n    vec3 esSurface = mix(esDepth, esReflection, esRefl * uWaterReflectionStrength);\nDONE means all four of these, and the fourth is the S59 preservation clause naming what must not get worse:\n(a) the composited reflection weight straight down at 120 m is <= 0.05, and at the 60 m grazing marsh vista is >= 0.60, read off the same probe the build used;\n(b) RI-VIS03 M12 `FresnelDelta` at a `water_edge` shot is >= 0.05 and POSITIVE — it is -0.07790 today (`node tools/visual/f7-critic-m12-offline.mjs`);\n(c) `lane_power_normalised` on the water mask at vista-deep-marshes falls by >= 40% against b0f3224e's 0.000485 (`node tools/visual/f7-critic-reanalyse.mjs`), reported ALONGSIDE mean_luma so a darkening cannot be read as a de-streaking again;\n(d) PRESERVATION — mean luminance on the water mask does not fall below 70 (it is 84.961 today, down from 102.223 pre-fix), the grazing-pose composite weight does not fall, and M12 `ShoreDelta` stays >= 0.03. Without (d) this remedy can be 'passed' by making the water black, which is the same shape of failure as the one being fixed."
+  },
+  "secondary_observations": [
+    "THE HEADLINE INSTRUMENT CANNOT CARRY THE HEADLINE. `x_rms` is the standard deviation of a crop's column-mean luminance over water AND land, unnormalised. The builder's own `term-truly-flat-water` arm replaces the whole water fragment output with ONE CONSTANT COLOUR and x_rms goes UP 42.8% (7.711 -> 11.393, angle flipping from -50 to +66). `term-no-standard-lighting` brightens the water: +24.4%. `term-no-reflection` darkens it: -50.6%. The metric tracks water brightness monotonically. This is the sibling of the defect the builder correctly diagnosed in rounds 1-2: a crop that survives deleting the thing under test cannot carry a NEGATIVE result about it, and a crop whose metric RISES when you delete it cannot carry a POSITIVE one.",
+    "THE BUILDER'S OWN TOOL PRINTED THE CONTRADICTION AND IT WAS NOT REPORTED. `lane_pitch.json` emits three numbers per arm. Across the fix: x_rms 7.711 -> 5.484 (-28.9%), lane_power 4.090 -> 4.583 (+12.1%), lane_aniso 4.03 -> 5.97 (+48.1%). Only the one that fell reached the status file, the shader comment and the roadmap line. This is exactly ARBITRATION S59's unpaired-metric pattern, with the pairing already present inside the builder's own output.",
+    "ON A BETTER INSTRUMENT THE 28% IS ROUGHLY RIGHT AND FOR THE WRONG REASON. Re-reading the builder's own frames restricted to the renderer's water mask (88.06% of the frame) and normalised by the water's own brightness: mean luma 102.223 -> 84.961 (-16.9%), lane-scale directional power/luma^2 0.000665 -> 0.000485 (-27.1%), lane_aniso on water 1.69 -> 1.49. So the streaks did fall by about a quarter — but fine-scale band contrast on water went the other way, 0.13731 -> 0.14534 (+5.8%), i.e. the water is 17% darker and relatively noisier than before.",
+    "THE -50 DEGREE WORLD BEARING IS NOT REPRODUCED WHEN LAND IS EXCLUDED. Re-running the builder's own projection-variance scan restricted to water pixels and band-passed at the lane scale (the builder's own peak lag is 184 px = 38.1 m, which a 9-tap high pass cannot see at all) gives a bearing of +6 degrees on BOTH arms with an anisotropy of only 1.69 and 1.49, and per-tile bearings on a 3x3 grid scattering across more than 100 degrees: prefix [-2, 72, 36, -4, -46, -36, 32, 44, -46], fixed [-2, 74, -20, -4, -52, 30, 32, 66, -44]. The water's pattern is weakly directional at best and has no single bearing; -50 is a figure from a scan over water AND land, and land is where the directional structure is.",
+    "THE NULL CONTROL WAS DOOMED BY CONSTRUCTION (S52) AND ITS PASS CARRIES NO INFORMATION. Both of its edits are provably inert against a luminance banding metric. Edit 1 changes the CONSTANT `vec3 esDepth` base from (.038,.105,.118) to (.140,.070,.055) — Rec.709 luma .0917 -> .0838 — and it enters as `mix(esDepth, esReflection, w)`, where a change to a constant term shifts the mean and cannot change the spatial variance the reflection contributes at all. Edit 2 halves the `esSlope` amplitudes; the SAME run's `term-slope-zero` arm set esSlope to ZERO and moved x_rms by -0.8% against a floor the tool itself treats as noise, so halving a term whose complete removal is inert is entailed inert. A control that could not have failed does not guard anything. It is 'the plausible wrong answer' in narrative only.",
+    "THE HUD REGION LABEL IS WRONG, AND IT IS WHY A GOOD SITE WAS BLAMED. Every frame in the builder's artefact set reads `western-rootlands` in the bottom-left — including its headline `before-after-topdown.png` captioned vista-deep-marshes, and its `owner-eb-before` frame at Blackwood. In-engine at the same coordinates, `field.regionAt(3123.5, 3715)` returns `deep-marshes` and `__HARNESS.getWaterAt` returns {region: 'deep-marshes', region_name: 'The Deep Marshes', k: 4.5, depth_m: 0.717, band: 'W3'}. Two different regions photographing the same label is a stuck readout, not two site bugs. Anything in this project that has been read off that label is unreliable.",
+    "EYE-BLACKWOOD: THE BREAKAGE IS CONFIRMED, THE ATTRIBUTION IS REFUTED. The frame is genuinely broken — the camera is under terrain, with the ground plane overhead. But it is not a deck-coordinate fault: `node tools/visual/f7-critic-deck-region.mjs` resolves all 44 teleport setups through the same `WorldField` the engine builds at engine.js:337, and `eye-blackwood` (1178, 3427.5) lands in `blackwood` with ground 3.72 m and water 4.42 m — 0.70 m of water, band W3, an ordinary wadeable site. Only 3 of 44 setups mismatch their declared region and none of them is a water site (`approach-archon` says crimson-coast and is in eastern-rootlands; `char-player` and `char-npc` declare no region). The failure is the `kind: gameplay` camera, and it needs raising against the camera rig, not the deck. Separately, `eye-crimson-coast` sits under 18.67 m of water (ground -16.93, surface 1.74) and is unusable as an eye-level site.",
+    "'THE WET-BANK LATTICE CONTRIBUTES NOTHING' IS OVERSTATED. The mechanism is confirmed from source: `WATER_SEG = 24`, `TILE_M = 300` give `step = 12.5 m`, the emit loops step by 2 so every band lands on a 25.0 m grid, `band()` is only ever called with ax==bx or az==bz so every quad is axis-aligned, and half-width .46 gives a 0.92 m strip (province.js:23, :31, :1594-1601). Measured from OUTPUT: hiding `water:shoreline:` changes 24.98% of a vista frame and 45.13% of a top-down frame, and accounts for 7.2% of the brightness of the pixels it owns. It does not carry the streaks — that part of the builder's finding stands — but a mesh painting a quarter to a half of every marsh frame on a 25 m axis-aligned grid is not 'nothing', and it is a live failure of RI-VIS04 §9's 'shoreline depth fade' and RI-WLD10 §10's 'shoreline blend with no hard intersection line'.",
+    "THE REFLECTION SHARE, RE-DERIVED INDEPENDENTLY. The builder's '~41% of every water pixel' is arithmetic on the shader (0.610 x 0.68 = 0.4148), correct as a weight and derived rather than measured, at the pre-fix top-down case. Measured from output on the shipped build at the deck vista pose, the reflection is 23.2% of a water pixel's brightness (25.3% on the pre-fix arm). Note that the obvious ablation — writing `uWaterReflectionStrength` to 0 — is INERT, because `bindWaterReflection` rewrites it from the render loop every frame; my first attempt read 1.1% before I caught it. The live off-switch is `renderer.quality.waterReflection = false` (renderer.js:1415), and I assert the uniform's value before and after ([1] -> [0]) so an inert arm cannot be read as a negative result."
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-03-water-surface-undrawn-and-frozen",
+      "subsystem_path": "world.water.marsh",
+      "status": "open",
+      "note": "Read AFTER my raw measurement, per CRITIC-DOCTRINE §8. It is about the waterline on the player's body and the surface being undrawn/frozen; F7 touched neither, and I did not re-measure its acceptance condition. Left open, untouched by this verdict."
+    }
+  ],
+  "corpus_extended": [
+    {
+      "proposed": true,
+      "written": false,
+      "id": "PROPOSED-RI-WLD10-M57",
+      "title": "Rendered water darkness must match the region's declared extinction coefficient",
+      "why": "CRITIC-DOCTRINE §1.3 asks whether the items handed to me could express what this piece must be good at. MOSTLY THEY CAN, and I want that on the record rather than a manufactured hole: RI-VIS03 M12 `FresnelDelta` is precisely the discriminator between 'water that reflects correctly' and 'water with fewer streaks', RI-VIS04 §9 names it conclusive, and RI-WLD10 §10.1 states 'water is opaque before it is reflective' in words. I checked RI-WLD10, RI-VIS01, RI-VIS03, RI-VIS04, RI-VIS05, RI-VIS07, RI-WLD04, RI-WLD11, RI-WLD16 before saying anything was missing. THE ONE REAL HOLE: RI-WLD10 §10.1 assigns every region an extinction coefficient k and M56 §6 only audits that no region DECLARES k < 0.30. Nothing anywhere checks that a region rendered at k = 4.5 actually looks like 0.67 m of visibility. The Deep Marshes ships as a bright reflective sheet and every numbered check in the item passes it.",
+      "sketch": "M57 — for each region with a declared k, capture VP06 and measure mean luminance and mean chroma on the renderer-derived WATER_MASK, plus the luminance ratio between water over the deepest and shallowest quartiles of the depth field in frame. FAIL if the measured water luminance does not fall monotonically with declared k across the 13 regions, or if any region with k >= 3.0 measures a mean water luminance above the 40th percentile of the frame's own histogram.",
+      "not_written_because": "CRITIC-DOCTRINE §1.3 guard 3 — closing this properly is a reference item plus a method script plus a 13-region capture matrix, which is a piece of work and not a pass. I have written the finding, named what is needed, and scored against what exists. It is filed here so it is not discovered again. NOTE FOR THE RECORD: this proposed row is NOT part of my score, in either direction."
+    }
+  ],
+  "method_deviations": [
+    "M56's 16-shot matrix (4 regions x 4 tide states) was NOT captured. I captured one region (the Deep Marshes) at one tide state, at 720x405 rather than the capture profile's resolution, because the box ran at load 10-20 over 4 cores for the whole session and a full matrix would not have completed. Region and sea separability are therefore scored 0 fail-closed and are NOT claimed to have been demonstrated absent.",
+    "RI-VIS03 M12 was run at the deck vista pose (26 m, -11 degrees). At that pose the water mask reaches the top of the frame, so `ReflCorr` has zero paired above-water samples, and the mask is too ragged around the trunks for a 128x128 window, so `NormalEnergy` has none either. Both are recorded UNMEASURABLE and scored 0 fail-closed per CRITIC-DOCTRINE §7.3. THAT MEANS M12's 'any two failing = blue plane' hard fail fires partly on MY pose choice, and I am NOT resting this verdict's FAIL on it: the FAIL stands on the measured `FresnelDelta` (-0.07790, negative, and moving the wrong way across the fix), on RI-VIS04 §9's two missing MIN BAR clauses, on RI-WLD10 §10.1, and on the unrun blind gate. A round-2 critic should re-run M12 from a shot with sky and bank above the waterline.",
+    "My two arms are a live shader edit in one process, not two checked-out trees. That is the builder's own method and it removes every confound except the one under test, but it is not a from-source rebuild of 3ca135ad, and my `prefix` arm is therefore a reconstruction of the pre-fix expression rather than the pinned tree itself. The builder's delete-the-fix control (0 occurrences of `esView` in a clone from the pinned sha against 4 in the repo, old numbers returning to 7.711/7.981) is the one that speaks to the tree, and I did not re-run it.",
+    "The `f7-critic-look` reflection ablation is `renderer.quality.waterReflection = false`, which is the renderer's own off-switch, not a shader edit. It asserts the resulting uniform value ([1] -> [0]) and reports the arm INERT if it does not move."
+  ],
+  "arbitration_questions": [],
+  "source_reads": [
+    "LOCATING/DIAGNOSING (CRITIC-DOCTRINE §1.1): game/src/render/water.js:107 (`esGrazing`), :111 (`esSurface` mix weight), :112 (0.68 carry) — read to make the remedy concrete after the defect was demonstrated from output.",
+    "DIAGNOSING: game/src/render/renderer.js:125 (`new THREE.WebGLRenderTarget(max(320, floor(canvas.width/2)), ...)` — the half-resolution reflection target) and :1424 (`moved = ... > .24*.24, stale = frame - waterReflectionFrame >= 6`). Both say exactly what the build claims they say; I quote them only to confirm the build's own description of what it did not fix.",
+    "DIAGNOSING: game/src/world/province.js:23 (`TILE_M = 300`), :31 (`WATER_SEG = 24`), :1594-1601 (the `band()` emitter). Read to derive the 25.0 m axis-aligned pitch AFTER measuring the lattice's screen coverage from output.",
+    "LOCATING: game/src/world/field.js:244 (`regionAt`) and game/src/harness/api.js:389/:403 (`getWaterAt`, `setTide`) — to build the deck-region census and to establish which region the site actually is."
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is FALSE: RI-WLD10 M56 needs 4 regions x 4 tide states and I captured 1x1; M48-M55 were not measured at all and are 0 fail-closed rather than demonstrated; RI-VIS03 M12's ReflCorr and NormalEnergy were unobtainable from my chosen pose and are 0 fail-closed. Every one of those is scored 0 or stated, never omitted, and the FAIL is NOT rested on any fail-closed row — it stands on measured FresnelDelta, on two missing RI-VIS04 §9 MIN BAR clauses, on RI-WLD10 §10.1 read off frames, and on the unrun blind gate. blind_done_where_required is FALSE: RI-WLD10 is `blind_pair: yes` and a critic cannot spawn a fresh judge (CLAUDE.md rule 0e); recorded not_possible, fail-closed. escalation_ladder_used_if_gap_seemed_small is TRUE and it is what produced the verdict: step 1 (zoom in) became re-reading the builder's own frames at 88% water-mask resolution with a normalised metric; step 2 (change the sample) became four more camera poses and a second region-attribution census; step 4 (the second-order property) became asking not 'did the number fall' but 'did the streaks fall as a fraction of the water's own brightness', which is where the answer changed."
+  },
+  "notes": [
+    "WHAT I COULD NOT DO, as plainly as what I did. (1) The blind gate. RI-WLD10 is `blind_pair: yes` and M56 §5 has not run; I cannot run it and said so under `blind_comparisons`. The orchestrator owes it (CLAUDE.md rule 0e). (2) One region, one tide state. M56 needs 4x4 and I captured 1x1. (3) M12's ReflCorr and NormalEnergy were unmeasurable at my pose and are 0 fail-closed, not demonstrated absent. (4) I did not re-run the builder's delete-the-fix control from the pinned sha; my `prefix` arm is a live shader reconstruction. (5) No timing figure: the box ran at load 10-20 over 4 cores throughout and every number here is a pixel measurement. (6) I did not find the code that draws the wrong region label; I established that it disagrees with `field.regionAt` and `getWaterAt` at the same coordinates and stopped there.",
+    "WHAT THE BUILD GOT RIGHT, and it is not nothing. The defect it identified is real and correctly described: the distance term did override Fresnel, and `max(esFresnel, smoothstep(10,52,d)*.72)` did give every water pixel past 52 m a 0.610 reflection weight at any viewing angle. I re-derived the weight arithmetic from water.js:107/:111 independently: straight down 0.610 -> 0.250, the 60 m grazing vista and the 8 m close oblique both unchanged, exactly as claimed. Its refusal to call the marsh lanes fixed, its `could_not_do` list, and its demolition of its own predecessor's nine unreadable negative results are all better practice than most of what this repo contains, and the last of those is the reason this round had a readable measurement to argue with at all."
+  ]
+}

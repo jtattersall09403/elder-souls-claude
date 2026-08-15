@@ -52,7 +52,7 @@ const SITE = String(args.site || 'vista-deep-marshes');
 const TIME = Number(args.time || 13);
 const OUT = path.resolve(REPO, args.out || `reports/visual-truth/f7-critic/look/${SITE}`);
 fs.mkdirSync(path.join(OUT, 'frames'), { recursive: true });
-const [CW, CH] = String(args.canvas || '960x540').split('x').map(Number);
+const [CW, CH] = String(args.canvas || '720x405').split('x').map(Number);
 const SEED = Number(args.seed || DECK.capture.seed);
 const { PNG } = await import(path.join(REPO, 'tools/node_modules/pngjs/lib/png.js'));
 
@@ -238,15 +238,12 @@ const reflStrengthNow = () => g.page.evaluate(() => {
   return [...vals];
 });
 
-const CROP = String(args.crop || '200,760,60,480').split(',').map(Number);
+const CROP = String(args.crop || '150,570,45,360').split(',').map(Number);
 const POSES = [
-  { id: 'a-topdown-120', run: () => topdown(120), deep: true, why: "the builder's own pose — straight down at 120 m" },
+  { id: 'a-topdown-120', run: () => topdown(120), why: "the builder's own pose — straight down at 120 m" },
   { id: 'b-pitch-55-d50', run: () => pose(90, -55, 50), why: 'half-way down' },
-  { id: 'c-vista-11-d26', run: () => pose(Number(s.camera.yaw_deg ?? 90), -11, 26), deep: true, why: 'the deck vista pose — the shot a player judges a world by' },
-  { id: 'd-eye-yaw000', run: () => pose(0, -8, 7), why: 'eye level, yaw 0 — water as a player meets it' },
-  { id: 'e-eye-yaw090', run: () => pose(90, -8, 7), why: 'eye level, yaw 90' },
-  { id: 'f-eye-yaw180', run: () => pose(180, -8, 7), why: 'eye level, yaw 180' },
-  { id: 'g-eye-yaw270', run: () => pose(270, -8, 7), why: 'eye level, yaw 270' },
+  { id: 'c-vista-11-d26', run: () => pose(Number(s.camera.yaw_deg ?? 90), -11, 26), deep: true, why: 'the deck vista pose — the shot a player judges a world by, and the RI-VIS03 M12 water_edge shot' },
+  { id: 'e-eye-yaw090', run: () => pose(90, -8, 7), why: 'eye level — water as a player meets it' },
   { id: 'h-grazing-2', run: () => pose(45, -2, 12), why: 'nearly on the surface — the grazing case the fix deliberately does not move' },
 ];
 const ARMS = [
@@ -309,11 +306,11 @@ for (const arm of ARMS) {
   // renderer.js:1424's 0.24 m / 6-frame reflection reprojection gate.
   await POSES[2].run(); await step(8);
   const still = [];
-  for (let i = 0; i < 6; i++) { still.push(lum(await shot(`${arm.id}-motion-still-${i}`))); await step(3); }
+  for (let i = 0; i < 5; i++) { still.push(lum(await shot(`${arm.id}-motion-still-${i}`))); await step(3); }
   const dolly = [];
   const yaw = Number(s.camera.yaw_deg ?? 90) * Math.PI / 180, pit = -11 * Math.PI / 180;
-  for (let i = 0; i < 6; i++) {
-    const d = 26 - i * 1.2;
+  for (let i = 0; i < 5; i++) {
+    const d = 26 - i * 1.5;
     await g.h('camera', { pos: [px - Math.sin(yaw) * Math.cos(pit) * d, py + 1.5 + Math.sin(-pit) * d, pz - Math.cos(yaw) * Math.cos(pit) * d], look: [px, py + 1.2, pz] });
     await step(3); dolly.push(lum(await shot(`${arm.id}-motion-dolly-${i}`)));
   }

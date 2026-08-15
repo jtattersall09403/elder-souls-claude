@@ -1,0 +1,104 @@
+{
+  "tool": "f7-critic-m12-offline",
+  "generated": "2026-08-15T17:48:06.803Z",
+  "dir": "reports/visual-truth/f7-critic/look-dm",
+  "pose": "c-vista-11-d26",
+  "bands": {
+    "FresnelDelta": {
+      "min": 0.05
+    },
+    "NormalEnergy": {
+      "min": 0.035
+    },
+    "ShoreDelta": {
+      "min": 0.03
+    },
+    "ReflCorr": {
+      "min": 0.35
+    },
+    "TemporalVar": {
+      "min": 0.002
+    }
+  },
+  "arms": {
+    "prefix": {
+      "base_frame": "reports/visual-truth/f7-critic/look-dm/frames/prefix-c-vista-11-d26.png",
+      "mask_from": "reports/visual-truth/f7-critic/look-dm/frames/prefix-c-vista-11-d26-water-hidden.png",
+      "water_mask_px": 169213,
+      "water_mask_pct": 58.03,
+      "sequence_frames": 5,
+      "m12": {
+        "water_px": 169213,
+        "water_frac": 0.58029,
+        "FresnelDelta": -0.04404,
+        "NormalEnergy": null,
+        "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+        "ShoreDelta": 0.05917,
+        "ReflCorr": null,
+        "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+        "TemporalVar": 0.00113,
+        "tvReason": null,
+        "grazing_rows": [
+          0,
+          100
+        ],
+        "downward_rows": [
+          304,
+          404
+        ],
+        "normal_window": null
+      },
+      "band_verdict": {
+        "FresnelDelta": "FAIL (< 0.05)",
+        "NormalEnergy": "UNMEASURABLE (scored 0 fail-closed)",
+        "ShoreDelta": "PASS (>= 0.03)",
+        "ReflCorr": "UNMEASURABLE (scored 0 fail-closed)",
+        "TemporalVar": "FAIL (< 0.002)"
+      }
+    },
+    "fixed": {
+      "base_frame": "reports/visual-truth/f7-critic/look-dm/frames/fixed-c-vista-11-d26.png",
+      "mask_from": "reports/visual-truth/f7-critic/look-dm/frames/fixed-c-vista-11-d26-water-hidden.png",
+      "water_mask_px": 169454,
+      "water_mask_pct": 58.11,
+      "sequence_frames": 5,
+      "m12": {
+        "water_px": 169454,
+        "water_frac": 0.58112,
+        "FresnelDelta": -0.0779,
+        "NormalEnergy": null,
+        "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+        "ShoreDelta": 0.06861,
+        "ReflCorr": null,
+        "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+        "TemporalVar": 0.00234,
+        "tvReason": null,
+        "grazing_rows": [
+          0,
+          100
+        ],
+        "downward_rows": [
+          304,
+          404
+        ],
+        "normal_window": null
+      },
+      "band_verdict": {
+        "FresnelDelta": "FAIL (< 0.05)",
+        "NormalEnergy": "UNMEASURABLE (scored 0 fail-closed)",
+        "ShoreDelta": "PASS (>= 0.03)",
+        "ReflCorr": "UNMEASURABLE (scored 0 fail-closed)",
+        "TemporalVar": "PASS (>= 0.002)"
+      }
+    }
+  },
+  "fix_effect": {
+    "FresnelDelta": "-0.04404 -> -0.0779",
+    "FresnelDelta_must_rise": "DID NOT RISE — the fix's own thesis is not visible in the corpus's own water instrument",
+    "ReflCorr": "null -> null",
+    "ShoreDelta": "0.05917 -> 0.06861",
+    "NormalEnergy": "null -> null",
+    "TemporalVar": "0.00113 -> 0.00234",
+    "two_or_more_failing": "RI-VIS03 M12: \"Any two of these failing = water is a blue plane\" hard fail; RI-VIS04 §9 §DETECT calls FresnelDelta < 0.02 with ReflCorr < 0.15 conclusive."
+  }
+}
