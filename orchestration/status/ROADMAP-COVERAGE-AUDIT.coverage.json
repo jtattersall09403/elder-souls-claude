@@ -1,11 +1,11 @@
 {
- "generated": "2026-08-15T17:14:36.850Z",
+ "generated": "2026-08-15T17:53:23.934Z",
  "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
  "method": "Inventory derived by fs walk + generated ledgers. Mapping authored by the audit agent after reading every RI title/front-matter, every plan heading, and every open gap record.",
  "inventory_counts": {
   "reference_items": 152,
   "plans": 49,
-  "open_gaps": 87,
+  "open_gaps": 88,
   "proposed_roadmap_items": 69
  },
  "rings": {
@@ -332,10 +332,11 @@
    "n_ref_items": 1,
    "never_judged": [],
    "open_gaps": [
-    "GAP-W1-03-water-surface-undrawn-and-frozen"
+    "GAP-W1-03-water-surface-undrawn-and-frozen",
+    "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence"
    ],
-   "n_open_gaps": 1,
-   "blocking_gaps": 1,
+   "n_open_gaps": 2,
+   "blocking_gaps": 2,
    "plans": [
     "W1-03",
     "W1-30",
@@ -3165,7 +3166,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 3,
+   "verdicts": 4,
    "best_score_0_10": 5,
    "state": "judged_below_bar"
   },
@@ -3459,7 +3460,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 2,
+   "verdicts": 3,
    "best_score_0_10": 6,
    "state": "judged_at_or_above_bar"
   },
@@ -3479,7 +3480,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 4,
+   "verdicts": 5,
    "best_score_0_10": 8,
    "state": "judged_at_or_above_bar"
   },
@@ -5568,6 +5569,16 @@
    "covered_by": [
     "F1",
     "F10"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence",
+   "severity": "blocking",
+   "path": "visual.renderer.water",
+   "what": "The fix moved the distance term and stopped at the constant floor the distance term was standing on. `game/src/render/water.js:111` still reads `esSurface=mix(e",
+   "covered_by": [
+    "F7"
    ],
    "bucket": "build"
   },

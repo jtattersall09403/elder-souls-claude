@@ -2,13 +2,13 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-15T17:14:36.850Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-15T17:53:23.934Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
 | reference items (`corpus/**/RI-*.md`) | 152 | 0 |
 | plans (`orchestration/plans/*`) | 49 | 0 |
-| open gaps (`GAP-LEDGER.json`) | 87 | 0 |
+| open gaps (`GAP-LEDGER.json`) | 88 | 0 |
 | proposed roadmap items | 69 | — |
 
 ## Proposed items
@@ -34,7 +34,7 @@
 | `F4` | Light, sky and atmosphere | RI-VIS04 | — | 2 (1) | W1-30 W1-30B W1-30S | built_below_bar | V4/V12 |
 | `F5` | The frame pipeline | RI-VIS04 | — | 0 (0) | W1-30 W1-30A W1-30S | at_bar | V5 |
 | `F6` | Terrain and vegetation surfaces | RI-WLD15 RI-WLD16 | RI-WLD15 RI-WLD16 | 0 (0) | W1-30 W1-30F | planned_unjudged | V9/V10 |
-| `F7` | The water surface | RI-WLD10 | — | 1 (1) | W1-03 W1-30 W1-30H | built_below_bar | V11 |
+| `F7` | The water surface | RI-WLD10 | — | 2 (2) | W1-03 W1-30 W1-30H | built_below_bar | V11 |
 | `F8` | The building kit and settlement silhouette | RI-WLD14 | — | 1 (1) | W1-30-LIBRARY W1-30 W1-30E | built_below_bar | V8 |
 | `F9` | Interiors and practical light | RI-STL01 | — | 1 (1) | W1-30 W1-30G | built_below_bar | partial:V4 |
 | `F10` | Characters and creatures | RI-CAM07 RI-VIS08 RI-VIS10 | — | 3 (2) | W1-24 W1-30-LIBRARY W1-30 W1-30D | built_below_bar | V6 |
@@ -210,7 +210,7 @@
 | `RI-WLD07` | 50-world | neutral | W8 | 8 | 6 | judged_at_or_above_bar |
 | `RI-WLD08` | 50-world | morrowind | W10 | 7 | 7 | judged_at_or_above_bar |
 | `RI-WLD09` | 50-world | morrowind | W11 | 3 | 6 | judged_at_or_above_bar |
-| `RI-WLD10` | 50-world | split | W9 F7 | 3 | 5 | judged_below_bar |
+| `RI-WLD10` | 50-world | split | W9 F7 | 4 | 5 | judged_below_bar |
 | `RI-WLD11` | 50-world | morrowind | W9 | 4 | 3 | judged_below_bar |
 | `RI-WLD12` | 50-world | morrowind | W2 | 1 | 5 | judged_below_bar |
 | `RI-WLD13` | 50-world | morrowind | W5 | 5 | 5 | judged_below_bar |
@@ -227,8 +227,8 @@
 | `RI-LOR08` | 60-lore | morrowind | P5 | 0 | — | never_judged |
 | `RI-VIS01` | 70-visual | neutral | I3 | 0 | — | never_judged |
 | `RI-VIS02` | 70-visual | modern-fidelity | I5 | 1 | 0 | judged_below_bar |
-| `RI-VIS03` | 70-visual | modern-fidelity | I3 F2 F3 | 2 | 6 | judged_at_or_above_bar |
-| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 4 | 8 | judged_at_or_above_bar |
+| `RI-VIS03` | 70-visual | modern-fidelity | I3 F2 F3 | 3 | 6 | judged_at_or_above_bar |
+| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 5 | 8 | judged_at_or_above_bar |
 | `RI-VIS05` | 70-visual | morrowind | F13 | 0 | — | never_judged |
 | `RI-VIS06` | 70-visual | neutral | I3 | 5 | 5 | judged_below_bar |
 | `RI-VIS07` | 70-visual | morrowind | F13 | 1 | 4 | judged_below_bar |
@@ -314,6 +314,7 @@
 | `GAP-W1-enemy-attacks-cannot-reach-contact-range` | blocking | `combat.hitbox.sweep` | G2 |
 | `GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage` | major | `combat.hitbox.sweep` | G2 |
 | `GAP-W1-f1-actor-body-shader-does-not-link` | blocking | `render.fidelity.character` | F1 F10 |
+| `GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence` | blocking | `visual.renderer.water` | F7 |
 | `GAP-W1-faction-ladders-are-bricked-up-at-rank-5` | blocking | `quests.faction.rankgating` | P7 |
 | `GAP-W1-faction-ladders-are-doors-onto-empty-corridors` | blocking | `quests.faction.escalation` | P7 P8 |
 | `GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist` | blocking | `progression.bonfire.function` | C2 |
