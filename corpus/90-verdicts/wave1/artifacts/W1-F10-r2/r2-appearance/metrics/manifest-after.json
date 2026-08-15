@@ -1,0 +1,6348 @@
+{
+  "schema": "f10-r2-appearance/1",
+  "tag": "after",
+  "canvas": [
+    960,
+    540
+  ],
+  "fov_deg": 60,
+  "seed": 20260814,
+  "orbit_angles": [
+    0,
+    45,
+    90,
+    135,
+    180,
+    225,
+    270,
+    315
+  ],
+  "per_family": 3,
+  "motion": {
+    "walk_frames": 24,
+    "walk_step": 3,
+    "idle_frames": 20,
+    "idle_step": 6
+  },
+  "stand_errors": [],
+  "mandatory_eids": [
+    "blackwood-company-factor"
+  ],
+  "mandatory_not_found": [],
+  "subjects": [
+    {
+      "id": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "kind": "player",
+      "eid": null,
+      "stand": "char-player",
+      "height_m": 1.8,
+      "height_source": "declared fallback 1.8 m — no harness verb reports body height"
+    },
+    {
+      "id": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "kind": "npc",
+      "eid": "blackwood-company-factor",
+      "stand": "char-player",
+      "height_m": 1.8,
+      "height_source": "declared fallback 1.8 m — no harness verb reports body height"
+    },
+    {
+      "id": "npc-humanoid-breton-factor-belliene",
+      "label": "Belliene",
+      "race": "breton",
+      "family": "humanoid",
+      "kind": "npc",
+      "eid": "factor-belliene",
+      "stand": "street-gideon",
+      "height_m": 1.8,
+      "height_source": "declared fallback 1.8 m — no harness verb reports body height"
+    },
+    {
+      "id": "npc-humanoid-dunmer-gideon-court-factor",
+      "label": "Halvo Nirith",
+      "race": "dunmer",
+      "family": "humanoid",
+      "kind": "npc",
+      "eid": "gideon-court-factor",
+      "stand": "street-gideon",
+      "height_m": 1.8,
+      "height_source": "declared fallback 1.8 m — no harness verb reports body height"
+    },
+    {
+      "id": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "kind": "npc",
+      "eid": "archein-salts-her-own-reeds",
+      "stand": "street-gideon",
+      "height_m": 1.8,
+      "height_source": "declared fallback 1.8 m — no harness verb reports body height"
+    },
+    {
+      "id": "npc-reptilian-naga-deadwater-koor-nakh",
+      "label": "Dead-Water Koor-Nakh",
+      "race": "naga",
+      "family": "reptilian",
+      "kind": "npc",
+      "eid": "deadwater-koor-nakh",
+      "stand": "street-thorn",
+      "height_m": 1.8,
+      "height_source": "declared fallback 1.8 m — no harness verb reports body height"
+    },
+    {
+      "id": "npc-reptilian-saxhleel-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "kind": "npc",
+      "eid": "dockmaster-weeja-sen",
+      "stand": "char-player",
+      "height_m": 1.8,
+      "height_source": "declared fallback 1.8 m — no harness verb reports body height"
+    }
+  ],
+  "perf": [
+    {
+      "stand": "street-lilmoth",
+      "npcs_in_range": 136,
+      "perf_stats": {
+        "simMs": 0.58575,
+        "renderCpuMs": 0,
+        "drawCalls": 732,
+        "triangles": 1866106,
+        "programsBound": 119,
+        "materials": 625,
+        "stateChanges": 732,
+        "skinnedMeshes": 138,
+        "shadowLights": 1,
+        "textureMB": 207,
+        "geometryMB": 83.501,
+        "heapUsed": 375737802,
+        "allocBytesThisStep": null,
+        "simStepsTotal": 784,
+        "rendersTotal": 323,
+        "rafTicks": 964,
+        "catchupClamps": 0,
+        "catchupDroppedMs": 0,
+        "_unmeasurable": {
+          "renderCpuMs": "Tier-H. This container is SwiftShader; a wall-clock render time here is a fact about the software rasteriser, not the game (RI-PLT01 §A/T1).",
+          "allocBytesThisStep": "requires --js-flags=--expose-gc and CDP Runtime.getHeapUsage; measured by the runner (A-JRN9), not self-reported."
+        }
+      },
+      "drawn": {
+        "meshes": 595,
+        "triangles": 367014,
+        "visible_cells": [
+          "province"
+        ]
+      }
+    },
+    {
+      "stand": "street-gideon",
+      "npcs_in_range": 136,
+      "perf_stats": {
+        "simMs": 0.42783,
+        "renderCpuMs": 0,
+        "drawCalls": 997,
+        "triangles": 3168690,
+        "programsBound": 119,
+        "materials": 592,
+        "stateChanges": 997,
+        "skinnedMeshes": 136,
+        "shadowLights": 1,
+        "textureMB": 195,
+        "geometryMB": 75.904,
+        "heapUsed": 389199420,
+        "allocBytesThisStep": null,
+        "simStepsTotal": 854,
+        "rendersTotal": 325,
+        "rafTicks": 974,
+        "catchupClamps": 0,
+        "catchupDroppedMs": 0,
+        "_unmeasurable": {
+          "renderCpuMs": "Tier-H. This container is SwiftShader; a wall-clock render time here is a fact about the software rasteriser, not the game (RI-PLT01 §A/T1).",
+          "allocBytesThisStep": "requires --js-flags=--expose-gc and CDP Runtime.getHeapUsage; measured by the runner (A-JRN9), not self-reported."
+        }
+      },
+      "drawn": {
+        "meshes": 596,
+        "triangles": 285548,
+        "visible_cells": [
+          "province"
+        ]
+      }
+    },
+    {
+      "stand": "street-thorn",
+      "npcs_in_range": 136,
+      "perf_stats": {
+        "simMs": 0.43625,
+        "renderCpuMs": 0,
+        "drawCalls": 638,
+        "triangles": 1758520,
+        "programsBound": 119,
+        "materials": 610,
+        "stateChanges": 638,
+        "skinnedMeshes": 138,
+        "shadowLights": 1,
+        "textureMB": 207,
+        "geometryMB": 74.669,
+        "heapUsed": 418133330,
+        "allocBytesThisStep": null,
+        "simStepsTotal": 924,
+        "rendersTotal": 327,
+        "rafTicks": 984,
+        "catchupClamps": 0,
+        "catchupDroppedMs": 0,
+        "_unmeasurable": {
+          "renderCpuMs": "Tier-H. This container is SwiftShader; a wall-clock render time here is a fact about the software rasteriser, not the game (RI-PLT01 §A/T1).",
+          "allocBytesThisStep": "requires --js-flags=--expose-gc and CDP Runtime.getHeapUsage; measured by the runner (A-JRN9), not self-reported."
+        }
+      },
+      "drawn": {
+        "meshes": 662,
+        "triangles": 277072,
+        "visible_cells": [
+          "province"
+        ]
+      }
+    }
+  ],
+  "renderer_string": "ANGLE (NVIDIA, Vulkan 1.3.277 (NVIDIA NVIDIA RTX A4500 (0x00002232)), NVIDIA)",
+  "software_renderer": false,
+  "evidence_class": "HARDWARE — valid for appearance claims.",
+  "renderer_attestation": {
+    "class": "HARDWARE",
+    "decided_from": "renderer-string",
+    "reason": "the reported renderer names a GPU vendor and no software rasteriser: ANGLE (NVIDIA, Vulkan 1.3.277 (NVIDIA NVIDIA RTX A4500 (0x00002232)), NVIDIA)",
+    "unknown": false,
+    "hardware_requested": true,
+    "fell_back": false,
+    "source": "live page WEBGL_debug_renderer_info"
+  },
+  "rows": [
+    {
+      "file": "ORBIT__player__yaw000.png",
+      "status": "ok",
+      "bytes": 927811,
+      "hash": "20b111d1d6ff8f2b",
+      "slot": "ORBIT",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 0,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766,
+          3.58,
+          5013.834
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961797226
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2766,
+        2.68,
+        5011
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__player__yaw045.png",
+      "status": "ok",
+      "bytes": 988099,
+      "hash": "592b3d3e90510c41",
+      "slot": "ORBIT",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 45,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2768.004,
+          3.58,
+          5013.004
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.3703066112953005e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.3703066112953005e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2766,
+        2.68,
+        5011
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__player__yaw090.png",
+      "status": "ok",
+      "bytes": 1026395,
+      "hash": "5c0a04061bf3aded",
+      "slot": "ORBIT",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 90,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2768.834,
+          3.58,
+          5011
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2766,
+        2.68,
+        5011
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__player__yaw135.png",
+      "status": "ok",
+      "bytes": 1159778,
+      "hash": "ac079d8803fbc82f",
+      "slot": "ORBIT",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 135,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2768.004,
+          3.58,
+          5008.996
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2766,
+        2.68,
+        5011
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__player__yaw180.png",
+      "status": "ok",
+      "bytes": 1079031,
+      "hash": "c585a84b89387561",
+      "slot": "ORBIT",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 180,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766,
+          3.58,
+          5008.166
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961797226
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2766,
+        2.68,
+        5011
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__player__yaw225.png",
+      "status": "ok",
+      "bytes": 1056584,
+      "hash": "de858f33ccc43e13",
+      "slot": "ORBIT",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 225,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2763.996,
+          3.58,
+          5008.996
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.369361572253028e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.369361572253028e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2766,
+        2.68,
+        5011
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__player__yaw270.png",
+      "status": "ok",
+      "bytes": 1013705,
+      "hash": "0bf54060f9f8528d",
+      "slot": "ORBIT",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 270,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2763.166,
+          3.58,
+          5011
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2766,
+        2.68,
+        5011
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__player__yaw315.png",
+      "status": "ok",
+      "bytes": 955283,
+      "hash": "29eb1c934654630c",
+      "slot": "ORBIT",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 315,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2763.996,
+          3.58,
+          5013.004
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3674714941684826e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3674714941684826e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2766,
+        2.68,
+        5011
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__player__yaw020.png",
+      "status": "ok",
+      "bytes": 969654,
+      "hash": "206f2ab948bdb802",
+      "slot": "FACE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 20,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2766.311,
+          4.174,
+          5011.854
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__player__yaw200.png",
+      "status": "ok",
+      "bytes": 1096296,
+      "hash": "823cb2f7db08b2cb",
+      "slot": "FACE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 200,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2765.689,
+          4.174,
+          5010.146
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-imperial-blackwood-company-factor__yaw000.png",
+      "status": "ok",
+      "bytes": 979317,
+      "hash": "06ae0759c2ec4860",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw_deg": 0,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2750.14,
+          3.58,
+          5034.724
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726507e-16,
+            -0.6809723961799408
+          ],
+          "z": 2.8342649999995047,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726507e-16,
+            0.6809723961799411
+          ],
+          "z": 2.8342649999995047,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2750.14,
+        2.68,
+        5031.89
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-imperial-blackwood-company-factor__yaw045.png",
+      "status": "ok",
+      "bytes": 968531,
+      "hash": "fdc2bd9218298e42",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw_deg": 45,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2752.144,
+          3.58,
+          5033.894
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.3703066112953005e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.3703066112953005e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2750.14,
+        2.68,
+        5031.89
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-imperial-blackwood-company-factor__yaw090.png",
+      "status": "ok",
+      "bytes": 1047761,
+      "hash": "233c8379b234f511",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw_deg": 90,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2752.974,
+          3.58,
+          5031.89
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2750.14,
+        2.68,
+        5031.89
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-imperial-blackwood-company-factor__yaw135.png",
+      "status": "ok",
+      "bytes": 1085790,
+      "hash": "0a0fe764cf4287a2",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw_deg": 135,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2752.144,
+          3.58,
+          5029.886
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.3712516503372619e-13,
+            -0.6809723965805727
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.3712516503372619e-13,
+            0.6809723965805731
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2750.14,
+        2.68,
+        5031.89
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-imperial-blackwood-company-factor__yaw180.png",
+      "status": "ok",
+      "bytes": 1053503,
+      "hash": "86123615b2cd7ec0",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw_deg": 180,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2750.14,
+          3.58,
+          5029.056
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961797226
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2750.14,
+        2.68,
+        5031.89
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-imperial-blackwood-company-factor__yaw225.png",
+      "status": "ok",
+      "bytes": 1059667,
+      "hash": "119446c6be1b7e01",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw_deg": 225,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2748.136,
+          3.58,
+          5029.886
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3674714941681721e-13,
+            -0.6809723965805727
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3674714941681721e-13,
+            0.6809723965805731
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2750.14,
+        2.68,
+        5031.89
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-imperial-blackwood-company-factor__yaw270.png",
+      "status": "ok",
+      "bytes": 995149,
+      "hash": "c6392a8fa1c52d14",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw_deg": 270,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2747.306,
+          3.58,
+          5031.89
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2750.14,
+        2.68,
+        5031.89
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-imperial-blackwood-company-factor__yaw315.png",
+      "status": "ok",
+      "bytes": 1016184,
+      "hash": "518e046af683a9bc",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw_deg": 315,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2748.136,
+          3.58,
+          5033.894
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3674714941684826e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3674714941684826e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2750.14,
+        2.68,
+        5031.89
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__npc-humanoid-imperial-blackwood-company-factor__yaw020.png",
+      "status": "ok",
+      "bytes": 1036494,
+      "hash": "1876f4c13d6715a9",
+      "slot": "FACE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw_deg": 20,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2750.451,
+          4.174,
+          5032.744
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__npc-humanoid-imperial-blackwood-company-factor__yaw200.png",
+      "status": "ok",
+      "bytes": 1090515,
+      "hash": "2a9da94d63b5c774",
+      "slot": "FACE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "yaw_deg": 200,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2749.829,
+          4.174,
+          5031.036
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-breton-factor-belliene__yaw000.png",
+      "status": "ok",
+      "bytes": 947918,
+      "hash": "3f98ac00cb4d97ad",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-breton-factor-belliene",
+      "label": "Belliene",
+      "race": "breton",
+      "family": "humanoid",
+      "yaw_deg": 0,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          402.53,
+          3.62,
+          2909.854
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        402.53,
+        2.72,
+        2907.02
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-breton-factor-belliene__yaw045.png",
+      "status": "ok",
+      "bytes": 961579,
+      "hash": "ae82b0fcbbce385c",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-breton-factor-belliene",
+      "label": "Belliene",
+      "race": "breton",
+      "family": "humanoid",
+      "yaw_deg": 45,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          404.534,
+          3.62,
+          2909.024
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.8900780845450275e-16,
+            -0.68097239658065
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.8900780845450275e-16,
+            0.6809723965806503
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        402.53,
+        2.72,
+        2907.02
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-breton-factor-belliene__yaw090.png",
+      "status": "ok",
+      "bytes": 927798,
+      "hash": "0b8f69caa1eb1020",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-breton-factor-belliene",
+      "label": "Belliene",
+      "race": "breton",
+      "family": "humanoid",
+      "yaw_deg": 90,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          405.364,
+          3.62,
+          2907.02
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589758e-16,
+            -0.680972396179818
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589758e-16,
+            0.6809723961798183
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        402.53,
+        2.72,
+        2907.02
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-breton-factor-belliene__yaw135.png",
+      "status": "ok",
+      "bytes": 943758,
+      "hash": "acb5a3c400d754b4",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-breton-factor-belliene",
+      "label": "Belliene",
+      "race": "breton",
+      "family": "humanoid",
+      "yaw_deg": 135,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          404.534,
+          3.62,
+          2905.016
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.8351171268175413e-16,
+            -0.68097239658065
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.8351171268175413e-16,
+            0.6809723965806503
+          ],
+          "z": 2.8342649983317187,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        402.53,
+        2.72,
+        2907.02
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-breton-factor-belliene__yaw180.png",
+      "status": "ok",
+      "bytes": 928801,
+      "hash": "a19308bc957453b8",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-breton-factor-belliene",
+      "label": "Belliene",
+      "race": "breton",
+      "family": "humanoid",
+      "yaw_deg": 180,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          402.53,
+          3.62,
+          2904.186
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        402.53,
+        2.72,
+        2907.02
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-breton-factor-belliene__yaw225.png",
+      "status": "ok",
+      "bytes": 939319,
+      "hash": "469720149c4a2b46",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-breton-factor-belliene",
+      "label": "Belliene",
+      "race": "breton",
+      "family": "humanoid",
+      "yaw_deg": 225,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          400.526,
+          3.62,
+          2905.016
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.701070276090549e-14,
+            -0.6809723965806597
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.701070276090549e-14,
+            0.68097239658066
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        402.53,
+        2.72,
+        2907.02
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-breton-factor-belliene__yaw270.png",
+      "status": "ok",
+      "bytes": 998004,
+      "hash": "a6b942b2b2cd053c",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-breton-factor-belliene",
+      "label": "Belliene",
+      "race": "breton",
+      "family": "humanoid",
+      "yaw_deg": 270,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          399.696,
+          3.62,
+          2907.02
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        402.53,
+        2.72,
+        2907.02
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-breton-factor-belliene__yaw315.png",
+      "status": "ok",
+      "bytes": 975141,
+      "hash": "a9ea3e71c46fbaaf",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-breton-factor-belliene",
+      "label": "Belliene",
+      "race": "breton",
+      "family": "humanoid",
+      "yaw_deg": 315,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          400.526,
+          3.62,
+          2909.024
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.7199710569359996e-14,
+            -0.6809723965806597
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.7199710569359996e-14,
+            0.68097239658066
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        402.53,
+        2.72,
+        2907.02
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__npc-humanoid-breton-factor-belliene__yaw020.png",
+      "status": "ok",
+      "bytes": 1068928,
+      "hash": "cfeb9bdda52987d3",
+      "slot": "FACE",
+      "subject": "npc-humanoid-breton-factor-belliene",
+      "label": "Belliene",
+      "race": "breton",
+      "family": "humanoid",
+      "yaw_deg": 20,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          402.841,
+          4.214,
+          2907.874
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__npc-humanoid-breton-factor-belliene__yaw200.png",
+      "status": "ok",
+      "bytes": 1048060,
+      "hash": "73afdb86c0c9a1a5",
+      "slot": "FACE",
+      "subject": "npc-humanoid-breton-factor-belliene",
+      "label": "Belliene",
+      "race": "breton",
+      "family": "humanoid",
+      "yaw_deg": 200,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          402.219,
+          4.214,
+          2906.166
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-dunmer-gideon-court-factor__yaw000.png",
+      "status": "ok",
+      "bytes": 1111321,
+      "hash": "307584b516b7ccb7",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-dunmer-gideon-court-factor",
+      "label": "Halvo Nirith",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw_deg": 0,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          450,
+          3.62,
+          2922.834
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        450,
+        2.72,
+        2920
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-dunmer-gideon-court-factor__yaw045.png",
+      "status": "ok",
+      "bytes": 1183445,
+      "hash": "a9f9ccf8b1592db2",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-dunmer-gideon-court-factor",
+      "label": "Halvo Nirith",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw_deg": 45,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          452.004,
+          3.62,
+          2922.004
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.6916198856678235e-14,
+            -0.6809723965806596
+          ],
+          "z": 2.8342649983316788,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.6916198856678235e-14,
+            0.6809723965806599
+          ],
+          "z": 2.8342649983316788,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        450,
+        2.72,
+        2920
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-dunmer-gideon-court-factor__yaw090.png",
+      "status": "ok",
+      "bytes": 1133372,
+      "hash": "f3576a18d5342693",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-dunmer-gideon-court-factor",
+      "label": "Halvo Nirith",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw_deg": 90,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          452.834,
+          3.62,
+          2920
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589758e-16,
+            -0.680972396179818
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589758e-16,
+            0.6809723961798183
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        450,
+        2.72,
+        2920
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-dunmer-gideon-court-factor__yaw135.png",
+      "status": "ok",
+      "bytes": 1199555,
+      "hash": "7ca5575558750fd0",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-dunmer-gideon-court-factor",
+      "label": "Halvo Nirith",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw_deg": 135,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          452.004,
+          3.62,
+          2917.996
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.73887183778145e-14,
+            -0.6809723965806597
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.73887183778145e-14,
+            0.68097239658066
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        450,
+        2.72,
+        2920
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-dunmer-gideon-court-factor__yaw180.png",
+      "status": "ok",
+      "bytes": 1191610,
+      "hash": "3952e36c5fd1e387",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-dunmer-gideon-court-factor",
+      "label": "Halvo Nirith",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw_deg": 180,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          450,
+          3.62,
+          2917.166
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        450,
+        2.72,
+        2920
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-dunmer-gideon-court-factor__yaw225.png",
+      "status": "ok",
+      "bytes": 1124561,
+      "hash": "2db3590be3c64bb5",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-dunmer-gideon-court-factor",
+      "label": "Halvo Nirith",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw_deg": 225,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          447.996,
+          3.62,
+          2917.996
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.701070276090549e-14,
+            -0.6809723965806597
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.701070276090549e-14,
+            0.68097239658066
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        450,
+        2.72,
+        2920
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-dunmer-gideon-court-factor__yaw270.png",
+      "status": "ok",
+      "bytes": 1130450,
+      "hash": "628d4a95e6310d72",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-dunmer-gideon-court-factor",
+      "label": "Halvo Nirith",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw_deg": 270,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          447.166,
+          3.62,
+          2920
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.680972396179818
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798183
+          ],
+          "z": 2.8342650000000162,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        450,
+        2.72,
+        2920
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-humanoid-dunmer-gideon-court-factor__yaw315.png",
+      "status": "ok",
+      "bytes": 1091394,
+      "hash": "35660829bebb739a",
+      "slot": "ORBIT",
+      "subject": "npc-humanoid-dunmer-gideon-court-factor",
+      "label": "Halvo Nirith",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw_deg": 315,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          447.996,
+          3.62,
+          2922.004
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.7199710569359996e-14,
+            -0.6809723965806597
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.7199710569359996e-14,
+            0.68097239658066
+          ],
+          "z": 2.8342649983316783,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        450,
+        2.72,
+        2920
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__npc-humanoid-dunmer-gideon-court-factor__yaw020.png",
+      "status": "ok",
+      "bytes": 1143358,
+      "hash": "c9feff351c7ef9da",
+      "slot": "FACE",
+      "subject": "npc-humanoid-dunmer-gideon-court-factor",
+      "label": "Halvo Nirith",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw_deg": 20,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          450.311,
+          4.214,
+          2920.854
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__npc-humanoid-dunmer-gideon-court-factor__yaw200.png",
+      "status": "ok",
+      "bytes": 1103024,
+      "hash": "05ee1e851afa8ab9",
+      "slot": "FACE",
+      "subject": "npc-humanoid-dunmer-gideon-court-factor",
+      "label": "Halvo Nirith",
+      "race": "dunmer",
+      "family": "humanoid",
+      "yaw_deg": 200,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          449.689,
+          4.214,
+          2919.146
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-argonian-archein-salts-her-own-re__yaw000.png",
+      "status": "ok",
+      "bytes": 597516,
+      "hash": "878ef8308f4d0bf7",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw_deg": 0,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          0.92,
+          0.9,
+          6.547
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726502e-16,
+            -0.6809723961798219
+          ],
+          "z": 2.834265,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726502e-16,
+            0.6809723961798219
+          ],
+          "z": 2.834265,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.92,
+        0,
+        3.712
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-argonian-archein-salts-her-own-re__yaw045.png",
+      "status": "ok",
+      "bytes": 611043,
+      "hash": "9646673369b287b6",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw_deg": 45,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2.924,
+          0.9,
+          5.717
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.92,
+        0,
+        3.712
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-argonian-archein-salts-her-own-re__yaw090.png",
+      "status": "ok",
+      "bytes": 608199,
+      "hash": "e24323f23f2119f4",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw_deg": 90,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.755,
+          0.9,
+          3.712
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589753e-16,
+            -0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589753e-16,
+            0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.92,
+        0,
+        3.712
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-argonian-archein-salts-her-own-re__yaw135.png",
+      "status": "ok",
+      "bytes": 611579,
+      "hash": "4d3e543f9cb70f61",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw_deg": 135,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2.924,
+          0.9,
+          1.708
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            4.725195211362657e-16,
+            -0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            4.725195211362657e-16,
+            0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.92,
+        0,
+        3.712
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-argonian-archein-salts-her-own-re__yaw180.png",
+      "status": "ok",
+      "bytes": 667452,
+      "hash": "f7da4e7eef6006e2",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw_deg": 180,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          0.92,
+          0.9,
+          0.878
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.954546477945301e-16,
+            -0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.954546477945301e-16,
+            0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.92,
+        0,
+        3.712
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-argonian-archein-salts-her-own-re__yaw225.png",
+      "status": "ok",
+      "bytes": 676237,
+      "hash": "6deaa98af940cb92",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw_deg": 225,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          -1.084,
+          0.9,
+          1.708
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            9.450390422725314e-17,
+            -0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            9.450390422725314e-17,
+            0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.92,
+        0,
+        3.712
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-argonian-archein-salts-her-own-re__yaw270.png",
+      "status": "ok",
+      "bytes": 626977,
+      "hash": "16b8c55c61ae7660",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw_deg": 270,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          -1.914,
+          0.9,
+          3.712
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.92,
+        0,
+        3.712
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-argonian-archein-salts-her-own-re__yaw315.png",
+      "status": "ok",
+      "bytes": 599110,
+      "hash": "a319de20de08abc2",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw_deg": 315,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          -1.084,
+          0.9,
+          5.717
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            9.450390422725314e-17,
+            -0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            9.450390422725314e-17,
+            0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.92,
+        0,
+        3.712
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__npc-reptilian-argonian-archein-salts-her-own-re__yaw020.png",
+      "status": "ok",
+      "bytes": 613465,
+      "hash": "ab60de71a177259c",
+      "slot": "FACE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw_deg": 20,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          1.231,
+          1.494,
+          4.567
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__npc-reptilian-argonian-archein-salts-her-own-re__yaw200.png",
+      "status": "ok",
+      "bytes": 686728,
+      "hash": "ae978bbf1005dc73",
+      "slot": "FACE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "yaw_deg": 200,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          0.609,
+          1.494,
+          2.858
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-naga-deadwater-koor-nakh__yaw000.png",
+      "status": "ok",
+      "bytes": 598167,
+      "hash": "13c25de07b9f7b62",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-naga-deadwater-koor-nakh",
+      "label": "Dead-Water Koor-Nakh",
+      "race": "naga",
+      "family": "reptilian",
+      "yaw_deg": 0,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          0.437,
+          0.9,
+          -0.994
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.437,
+        0,
+        -3.829
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-naga-deadwater-koor-nakh__yaw045.png",
+      "status": "ok",
+      "bytes": 613224,
+      "hash": "37fc2c4a3be40799",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-naga-deadwater-koor-nakh",
+      "label": "Dead-Water Koor-Nakh",
+      "race": "naga",
+      "family": "reptilian",
+      "yaw_deg": 45,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2.441,
+          0.9,
+          -1.825
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.437,
+        0,
+        -3.829
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-naga-deadwater-koor-nakh__yaw090.png",
+      "status": "ok",
+      "bytes": 612954,
+      "hash": "17147bc68f038632",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-naga-deadwater-koor-nakh",
+      "label": "Dead-Water Koor-Nakh",
+      "race": "naga",
+      "family": "reptilian",
+      "yaw_deg": 90,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.271,
+          0.9,
+          -3.829
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589753e-16,
+            -0.6809723961798219
+          ],
+          "z": 2.834265,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589753e-16,
+            0.6809723961798219
+          ],
+          "z": 2.834265,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.437,
+        0,
+        -3.829
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-naga-deadwater-koor-nakh__yaw135.png",
+      "status": "ok",
+      "bytes": 624783,
+      "hash": "e7c2fbb883a02225",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-naga-deadwater-koor-nakh",
+      "label": "Dead-Water Koor-Nakh",
+      "race": "naga",
+      "family": "reptilian",
+      "yaw_deg": 135,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2.441,
+          0.9,
+          -5.833
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            4.725195211362657e-16,
+            -0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            4.725195211362657e-16,
+            0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.437,
+        0,
+        -3.829
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-naga-deadwater-koor-nakh__yaw180.png",
+      "status": "ok",
+      "bytes": 674771,
+      "hash": "61c76df38f446c83",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-naga-deadwater-koor-nakh",
+      "label": "Dead-Water Koor-Nakh",
+      "race": "naga",
+      "family": "reptilian",
+      "yaw_deg": 180,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          0.437,
+          0.9,
+          -6.663
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.9545464779453004e-16,
+            -0.6809723961798219
+          ],
+          "z": 2.834265,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.9545464779453004e-16,
+            0.6809723961798219
+          ],
+          "z": 2.834265,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.437,
+        0,
+        -3.829
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-naga-deadwater-koor-nakh__yaw225.png",
+      "status": "ok",
+      "bytes": 695156,
+      "hash": "af57e1a0aa509374",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-naga-deadwater-koor-nakh",
+      "label": "Dead-Water Koor-Nakh",
+      "race": "naga",
+      "family": "reptilian",
+      "yaw_deg": 225,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          -1.567,
+          0.9,
+          -5.833
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            9.450390422725314e-17,
+            -0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            9.450390422725314e-17,
+            0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.437,
+        0,
+        -3.829
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-naga-deadwater-koor-nakh__yaw270.png",
+      "status": "ok",
+      "bytes": 641305,
+      "hash": "1425f3b976be845c",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-naga-deadwater-koor-nakh",
+      "label": "Dead-Water Koor-Nakh",
+      "race": "naga",
+      "family": "reptilian",
+      "yaw_deg": 270,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          -2.397,
+          0.9,
+          -3.829
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.437,
+        0,
+        -3.829
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-naga-deadwater-koor-nakh__yaw315.png",
+      "status": "ok",
+      "bytes": 596335,
+      "hash": "c9f4cb166177aec9",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-naga-deadwater-koor-nakh",
+      "label": "Dead-Water Koor-Nakh",
+      "race": "naga",
+      "family": "reptilian",
+      "yaw_deg": 315,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          -1.567,
+          0.9,
+          -1.825
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            9.450390422725314e-17,
+            -0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            9.450390422725314e-17,
+            0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        0.437,
+        0,
+        -3.829
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__npc-reptilian-naga-deadwater-koor-nakh__yaw020.png",
+      "status": "ok",
+      "bytes": 612466,
+      "hash": "23562ce8bbf794f5",
+      "slot": "FACE",
+      "subject": "npc-reptilian-naga-deadwater-koor-nakh",
+      "label": "Dead-Water Koor-Nakh",
+      "race": "naga",
+      "family": "reptilian",
+      "yaw_deg": 20,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          0.748,
+          1.494,
+          -2.974
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__npc-reptilian-naga-deadwater-koor-nakh__yaw200.png",
+      "status": "ok",
+      "bytes": 695174,
+      "hash": "1c51259e7200d608",
+      "slot": "FACE",
+      "subject": "npc-reptilian-naga-deadwater-koor-nakh",
+      "label": "Dead-Water Koor-Nakh",
+      "race": "naga",
+      "family": "reptilian",
+      "yaw_deg": 200,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          0.126,
+          1.494,
+          -4.683
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-saxhleel-dockmaster-weeja-sen__yaw000.png",
+      "status": "ok",
+      "bytes": 998417,
+      "hash": "e2d3ed9e90ac38f3",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-saxhleel-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 0,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2804.61,
+          1.27,
+          5035.774
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961797224
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2804.61,
+        0.37,
+        5032.94
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-saxhleel-dockmaster-weeja-sen__yaw045.png",
+      "status": "ok",
+      "bytes": 1121507,
+      "hash": "bf9ed3cd887f0f74",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-saxhleel-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 45,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2806.614,
+          1.27,
+          5034.944
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3665264551258998e-13,
+            -0.6809723965805728
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3665264551258998e-13,
+            0.6809723965805727
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2804.61,
+        0.37,
+        5032.94
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-saxhleel-dockmaster-weeja-sen__yaw090.png",
+      "status": "ok",
+      "bytes": 1059096,
+      "hash": "f108e3a1da359d80",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-saxhleel-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 90,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2807.444,
+          1.27,
+          5032.94
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.6809723961798316
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2804.61,
+        0.37,
+        5032.94
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-saxhleel-dockmaster-weeja-sen__yaw135.png",
+      "status": "ok",
+      "bytes": 1023665,
+      "hash": "005f0e39f9777efc",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-saxhleel-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 135,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2806.614,
+          1.27,
+          5030.936
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            -0.6809723965807274
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2804.61,
+        0.37,
+        5032.94
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-saxhleel-dockmaster-weeja-sen__yaw180.png",
+      "status": "ok",
+      "bytes": 993902,
+      "hash": "5a1e29d31e7a9c25",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-saxhleel-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 180,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2804.61,
+          1.27,
+          5030.106
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961799409
+          ],
+          "z": 2.8342649999995047,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961799408
+          ],
+          "z": 2.8342649999995047,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2804.61,
+        0.37,
+        5032.94
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-saxhleel-dockmaster-weeja-sen__yaw225.png",
+      "status": "ok",
+      "bytes": 1046782,
+      "hash": "fb15a6ef07723cd1",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-saxhleel-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 225,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2802.606,
+          1.27,
+          5030.936
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.369361572253028e-13,
+            -0.6809723965807274
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.369361572253028e-13,
+            0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2804.61,
+        0.37,
+        5032.94
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-saxhleel-dockmaster-weeja-sen__yaw270.png",
+      "status": "ok",
+      "bytes": 1025124,
+      "hash": "c3a54529071e39d3",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-saxhleel-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 270,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2801.776,
+          1.27,
+          5032.94
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798316
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2804.61,
+        0.37,
+        5032.94
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "ORBIT__npc-reptilian-saxhleel-dockmaster-weeja-sen__yaw315.png",
+      "status": "ok",
+      "bytes": 1057921,
+      "hash": "000a17ec3ffe863f",
+      "slot": "ORBIT",
+      "subject": "npc-reptilian-saxhleel-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 315,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2802.606,
+          1.27,
+          5034.944
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.3693615722527171e-13,
+            -0.6809723965805728
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.3693615722527171e-13,
+            0.6809723965805727
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "centre": [
+        2804.61,
+        0.37,
+        5032.94
+      ],
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__npc-reptilian-saxhleel-dockmaster-weeja-sen__yaw020.png",
+      "status": "ok",
+      "bytes": 1085250,
+      "hash": "0494f6ef9f84730f",
+      "slot": "FACE",
+      "subject": "npc-reptilian-saxhleel-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 20,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2804.921,
+          1.864,
+          5033.794
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "FACE__npc-reptilian-saxhleel-dockmaster-weeja-sen__yaw200.png",
+      "status": "ok",
+      "bytes": 980543,
+      "hash": "f4cc4f74ddc58082",
+      "slot": "FACE",
+      "subject": "npc-reptilian-saxhleel-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "yaw_deg": 200,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2804.299,
+          1.864,
+          5032.086
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "WALK__player-q35__f000.png",
+      "status": "ok",
+      "bytes": 1007550,
+      "hash": "7ee2d9df2e2eab5f",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 0,
+      "sim_frames": 3,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f001.png",
+      "status": "ok",
+      "bytes": 1018981,
+      "hash": "32bba1f9330c4515",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 1,
+      "sim_frames": 6,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f002.png",
+      "status": "ok",
+      "bytes": 1015922,
+      "hash": "89ad3619570b1845",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 2,
+      "sim_frames": 9,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f003.png",
+      "status": "ok",
+      "bytes": 1014373,
+      "hash": "94e59cc798176d18",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 3,
+      "sim_frames": 12,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f004.png",
+      "status": "ok",
+      "bytes": 1010934,
+      "hash": "b61fe114b2f5b300",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 4,
+      "sim_frames": 15,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f005.png",
+      "status": "ok",
+      "bytes": 1008214,
+      "hash": "0a0b8413c3d2f313",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 5,
+      "sim_frames": 18,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f006.png",
+      "status": "ok",
+      "bytes": 1009775,
+      "hash": "b7e2213e4f1e440a",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 6,
+      "sim_frames": 21,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f007.png",
+      "status": "ok",
+      "bytes": 1013067,
+      "hash": "ce3c33adc6d60da8",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 7,
+      "sim_frames": 24,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f008.png",
+      "status": "ok",
+      "bytes": 1008746,
+      "hash": "a72eca5d55f10537",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 8,
+      "sim_frames": 27,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f009.png",
+      "status": "ok",
+      "bytes": 1008815,
+      "hash": "2eb0812a0d04dbcd",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 9,
+      "sim_frames": 30,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f010.png",
+      "status": "ok",
+      "bytes": 1001287,
+      "hash": "4966531916e35f9d",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 10,
+      "sim_frames": 33,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f011.png",
+      "status": "ok",
+      "bytes": 999359,
+      "hash": "e4d5eb0a93277669",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 11,
+      "sim_frames": 36,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f012.png",
+      "status": "ok",
+      "bytes": 998346,
+      "hash": "d926ef62f4fd076d",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 12,
+      "sim_frames": 39,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.534,
+          3.58,
+          5013.191
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2765.908,
+        2.68,
+        5010.869
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f013.png",
+      "status": "ok",
+      "bytes": 1000745,
+      "hash": "a8240c061447c7a0",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 13,
+      "sim_frames": 42,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.442,
+          3.58,
+          5013.06
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2765.816,
+        2.68,
+        5010.738
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f014.png",
+      "status": "ok",
+      "bytes": 1003042,
+      "hash": "b54d3b25d771d09c",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 14,
+      "sim_frames": 45,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.35,
+          3.58,
+          5012.928
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2765.725,
+        2.68,
+        5010.607
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f015.png",
+      "status": "ok",
+      "bytes": 1006275,
+      "hash": "cbc4511f63010ec2",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 15,
+      "sim_frames": 48,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.259,
+          3.58,
+          5012.797
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2765.633,
+        2.68,
+        5010.476
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f016.png",
+      "status": "ok",
+      "bytes": 1007001,
+      "hash": "a06cfa6801a415bf",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 16,
+      "sim_frames": 51,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.167,
+          3.58,
+          5012.666
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2765.541,
+        2.68,
+        5010.345
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f017.png",
+      "status": "ok",
+      "bytes": 1008928,
+      "hash": "b9f7423c1e826dba",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 17,
+      "sim_frames": 54,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.075,
+          3.58,
+          5012.535
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2765.449,
+        2.68,
+        5010.214
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f018.png",
+      "status": "ok",
+      "bytes": 1011554,
+      "hash": "c963392949e98071",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 18,
+      "sim_frames": 57,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766.983,
+          3.58,
+          5012.404
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2765.358,
+        2.68,
+        5010.083
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f019.png",
+      "status": "ok",
+      "bytes": 1012512,
+      "hash": "942eec2ac55e6f4f",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 19,
+      "sim_frames": 60,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766.891,
+          3.58,
+          5012.273
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2765.266,
+        2.68,
+        5009.952
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f020.png",
+      "status": "ok",
+      "bytes": 1009197,
+      "hash": "df8e40a837756f25",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 20,
+      "sim_frames": 63,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766.8,
+          3.58,
+          5012.142
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2765.174,
+        2.68,
+        5009.82
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f021.png",
+      "status": "ok",
+      "bytes": 1008014,
+      "hash": "a6adf6bab73b33fb",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 21,
+      "sim_frames": 66,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766.708,
+          3.58,
+          5012.011
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2765.082,
+        2.68,
+        5009.689
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f022.png",
+      "status": "ok",
+      "bytes": 1007508,
+      "hash": "1408e7f442d839b9",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 22,
+      "sim_frames": 69,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766.616,
+          3.58,
+          5011.88
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2764.99,
+        2.68,
+        5009.558
+      ]
+    },
+    {
+      "file": "WALK__player-q35__f023.png",
+      "status": "ok",
+      "bytes": 1009138,
+      "hash": "1c098c9cb75e0854",
+      "slot": "WALK",
+      "subject": "player",
+      "label": "player walk q35",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 23,
+      "sim_frames": 72,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766.524,
+          3.58,
+          5011.749
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809724063093879
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809724063093883
+          ],
+          "z": 2.834264957839885,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "pos": [
+        2764.899,
+        2.68,
+        5009.427
+      ]
+    },
+    {
+      "file": "IDLE__player__f000.png",
+      "status": "ok",
+      "bytes": 998933,
+      "hash": "e4502f883dca6570",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 0,
+      "sim_frames": 0,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f001.png",
+      "status": "ok",
+      "bytes": 999958,
+      "hash": "260b0cdd0fbc4e79",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 1,
+      "sim_frames": 6,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f002.png",
+      "status": "ok",
+      "bytes": 1000480,
+      "hash": "37fde76c573b48c3",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 2,
+      "sim_frames": 12,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f003.png",
+      "status": "ok",
+      "bytes": 1000022,
+      "hash": "4d249e19c83d642a",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 3,
+      "sim_frames": 18,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f004.png",
+      "status": "ok",
+      "bytes": 1000309,
+      "hash": "8a8438466142d81d",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 4,
+      "sim_frames": 24,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f005.png",
+      "status": "ok",
+      "bytes": 1000291,
+      "hash": "0df2036a3e42be1c",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 5,
+      "sim_frames": 30,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f006.png",
+      "status": "ok",
+      "bytes": 1000231,
+      "hash": "cc117fcadc25a023",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 6,
+      "sim_frames": 36,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f007.png",
+      "status": "ok",
+      "bytes": 999996,
+      "hash": "71c5a7addcb323ce",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 7,
+      "sim_frames": 42,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f008.png",
+      "status": "ok",
+      "bytes": 999715,
+      "hash": "c7590ff34837bdab",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 8,
+      "sim_frames": 48,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f009.png",
+      "status": "ok",
+      "bytes": 999704,
+      "hash": "83bc17f5c3df2c90",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 9,
+      "sim_frames": 54,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f010.png",
+      "status": "ok",
+      "bytes": 999997,
+      "hash": "64c4d6174a2994f5",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 10,
+      "sim_frames": 60,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f011.png",
+      "status": "ok",
+      "bytes": 1000318,
+      "hash": "e12eeaeefb5df96a",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 11,
+      "sim_frames": 66,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f012.png",
+      "status": "ok",
+      "bytes": 999983,
+      "hash": "a0e5b8e29ef409cb",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 12,
+      "sim_frames": 72,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f013.png",
+      "status": "ok",
+      "bytes": 1000759,
+      "hash": "03cb51e1e97a32f6",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 13,
+      "sim_frames": 78,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f014.png",
+      "status": "ok",
+      "bytes": 1000294,
+      "hash": "361bc94adda68d9a",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 14,
+      "sim_frames": 84,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f015.png",
+      "status": "ok",
+      "bytes": 1000081,
+      "hash": "bb97fa2d27aab092",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 15,
+      "sim_frames": 90,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f016.png",
+      "status": "ok",
+      "bytes": 1000074,
+      "hash": "12745801b3d2aa39",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 16,
+      "sim_frames": 96,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f017.png",
+      "status": "ok",
+      "bytes": 1000493,
+      "hash": "471cc0352d7025cf",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 17,
+      "sim_frames": 102,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f018.png",
+      "status": "ok",
+      "bytes": 1000409,
+      "hash": "d964fad970459c56",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 18,
+      "sim_frames": 108,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__player__f019.png",
+      "status": "ok",
+      "bytes": 1000299,
+      "hash": "840d0fbdb65c1547",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "index": 19,
+      "sim_frames": 114,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2767.626,
+          3.58,
+          5013.322
+        ]
+      },
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f000.png",
+      "status": "ok",
+      "bytes": 605422,
+      "hash": "c75072582ef2c77a",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 0,
+      "sim_frames": 0,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f001.png",
+      "status": "ok",
+      "bytes": 609275,
+      "hash": "23d56b149e69c28d",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 1,
+      "sim_frames": 6,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f002.png",
+      "status": "ok",
+      "bytes": 611292,
+      "hash": "b12d01e77784bdb4",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 2,
+      "sim_frames": 12,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f003.png",
+      "status": "ok",
+      "bytes": 612209,
+      "hash": "a5085b66b855a34f",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 3,
+      "sim_frames": 18,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f004.png",
+      "status": "ok",
+      "bytes": 610724,
+      "hash": "b061fef7293aab8a",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 4,
+      "sim_frames": 24,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f005.png",
+      "status": "ok",
+      "bytes": 611274,
+      "hash": "a71655b948b17550",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 5,
+      "sim_frames": 30,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f006.png",
+      "status": "ok",
+      "bytes": 612971,
+      "hash": "74e5488d52717078",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 6,
+      "sim_frames": 36,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f007.png",
+      "status": "ok",
+      "bytes": 608637,
+      "hash": "10293abfc185d812",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 7,
+      "sim_frames": 42,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f008.png",
+      "status": "ok",
+      "bytes": 609903,
+      "hash": "ba027395718e5101",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 8,
+      "sim_frames": 48,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f009.png",
+      "status": "ok",
+      "bytes": 610308,
+      "hash": "e5a6a62897387e17",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 9,
+      "sim_frames": 54,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f010.png",
+      "status": "ok",
+      "bytes": 606886,
+      "hash": "599a9dfcc9a12f79",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 10,
+      "sim_frames": 60,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f011.png",
+      "status": "ok",
+      "bytes": 606862,
+      "hash": "8cd9d615fae84662",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 11,
+      "sim_frames": 66,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f012.png",
+      "status": "ok",
+      "bytes": 609352,
+      "hash": "46055eef87b93da7",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 12,
+      "sim_frames": 72,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f013.png",
+      "status": "ok",
+      "bytes": 610428,
+      "hash": "da31c4bb3b3eeb2d",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 13,
+      "sim_frames": 78,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f014.png",
+      "status": "ok",
+      "bytes": 610228,
+      "hash": "34ef1a83caf7dc7e",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 14,
+      "sim_frames": 84,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f015.png",
+      "status": "ok",
+      "bytes": 610608,
+      "hash": "f587e39dde493b3b",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 15,
+      "sim_frames": 90,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f016.png",
+      "status": "ok",
+      "bytes": 610059,
+      "hash": "9b9062d0751af65b",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 16,
+      "sim_frames": 96,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f017.png",
+      "status": "ok",
+      "bytes": 611128,
+      "hash": "7ed74f2f77934388",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 17,
+      "sim_frames": 102,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f018.png",
+      "status": "ok",
+      "bytes": 608855,
+      "hash": "b54f096f2358e5b1",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 18,
+      "sim_frames": 108,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-reptilian-argonian-archein-salts-her-own-re__f019.png",
+      "status": "ok",
+      "bytes": 607227,
+      "hash": "39720143c85e8c9c",
+      "slot": "IDLE",
+      "subject": "npc-reptilian-argonian-archein-salts-her-own-re",
+      "label": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "family": "reptilian",
+      "index": 19,
+      "sim_frames": 114,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          3.033,
+          0.9,
+          6.124
+        ]
+      },
+      "pos": [
+        1.407,
+        0,
+        3.802
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f000.png",
+      "status": "ok",
+      "bytes": 967988,
+      "hash": "5ef1904504a74865",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 0,
+      "sim_frames": 0,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f001.png",
+      "status": "ok",
+      "bytes": 963963,
+      "hash": "cdf2809f9535903a",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 1,
+      "sim_frames": 6,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f002.png",
+      "status": "ok",
+      "bytes": 963943,
+      "hash": "88169942e32a1368",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 2,
+      "sim_frames": 12,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f003.png",
+      "status": "ok",
+      "bytes": 964138,
+      "hash": "6c06d04bbd21d07b",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 3,
+      "sim_frames": 18,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f004.png",
+      "status": "ok",
+      "bytes": 963996,
+      "hash": "22e8e5994876fe50",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 4,
+      "sim_frames": 24,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f005.png",
+      "status": "ok",
+      "bytes": 964018,
+      "hash": "b721c0369c2efa66",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 5,
+      "sim_frames": 30,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f006.png",
+      "status": "ok",
+      "bytes": 963898,
+      "hash": "07dc577f59654112",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 6,
+      "sim_frames": 36,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f007.png",
+      "status": "ok",
+      "bytes": 963989,
+      "hash": "2905b36eb1fd18ca",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 7,
+      "sim_frames": 42,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f008.png",
+      "status": "ok",
+      "bytes": 964057,
+      "hash": "320cf4aa8cb563be",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 8,
+      "sim_frames": 48,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f009.png",
+      "status": "ok",
+      "bytes": 964232,
+      "hash": "11af725258fcb3a1",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 9,
+      "sim_frames": 54,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f010.png",
+      "status": "ok",
+      "bytes": 963884,
+      "hash": "0c0b172b21164882",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 10,
+      "sim_frames": 60,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f011.png",
+      "status": "ok",
+      "bytes": 964164,
+      "hash": "65a113b398ea117a",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 11,
+      "sim_frames": 66,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f012.png",
+      "status": "ok",
+      "bytes": 964092,
+      "hash": "850a95efdadd6a1d",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 12,
+      "sim_frames": 72,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f013.png",
+      "status": "ok",
+      "bytes": 964181,
+      "hash": "19cc1637a8496268",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 13,
+      "sim_frames": 78,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f014.png",
+      "status": "ok",
+      "bytes": 964007,
+      "hash": "e8e7cdbea0e249db",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 14,
+      "sim_frames": 84,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f015.png",
+      "status": "ok",
+      "bytes": 963834,
+      "hash": "238d5f15efa739cc",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 15,
+      "sim_frames": 90,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f016.png",
+      "status": "ok",
+      "bytes": 964084,
+      "hash": "4d2cd5a5340396c8",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 16,
+      "sim_frames": 96,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f017.png",
+      "status": "ok",
+      "bytes": 963960,
+      "hash": "3cc22cd61d1c48ce",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 17,
+      "sim_frames": 102,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f018.png",
+      "status": "ok",
+      "bytes": 964102,
+      "hash": "7f88111d93ad3f77",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 18,
+      "sim_frames": 108,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "IDLE__npc-humanoid-imperial-blackwood-company-factor__f019.png",
+      "status": "ok",
+      "bytes": 964060,
+      "hash": "996b4b3e36357a3b",
+      "slot": "IDLE",
+      "subject": "npc-humanoid-imperial-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "family": "humanoid",
+      "index": 19,
+      "sim_frames": 114,
+      "yaw_deg": 35,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2751.766,
+          3.58,
+          5034.212
+        ]
+      },
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ]
+    },
+    {
+      "file": "STREET__char-player__0.png",
+      "status": "ok",
+      "bytes": 914592,
+      "hash": "067ed96b1bca4ed7",
+      "slot": "STREET",
+      "stand": "char-player",
+      "yaw_deg": 0,
+      "time": "t1300"
+    },
+    {
+      "file": "STREET__char-player__1.png",
+      "status": "ok",
+      "bytes": 1045151,
+      "hash": "910b61387dbcd7e8",
+      "slot": "STREET",
+      "stand": "char-player",
+      "yaw_deg": 120,
+      "time": "t1300"
+    },
+    {
+      "file": "STREET__char-player__2.png",
+      "status": "ok",
+      "bytes": 1027399,
+      "hash": "b89df46f4521d3b4",
+      "slot": "STREET",
+      "stand": "char-player",
+      "yaw_deg": 240,
+      "time": "t1300"
+    },
+    {
+      "file": "STREET__street-lilmoth__0.png",
+      "status": "ok",
+      "bytes": 916120,
+      "hash": "19e411ed22350600",
+      "slot": "STREET",
+      "stand": "street-lilmoth",
+      "yaw_deg": 0,
+      "time": "t1300"
+    },
+    {
+      "file": "STREET__street-lilmoth__1.png",
+      "status": "ok",
+      "bytes": 1082375,
+      "hash": "198bf878df4a8e6d",
+      "slot": "STREET",
+      "stand": "street-lilmoth",
+      "yaw_deg": 120,
+      "time": "t1300"
+    },
+    {
+      "file": "STREET__street-lilmoth__2.png",
+      "status": "ok",
+      "bytes": 1053424,
+      "hash": "5464b7ac0e916822",
+      "slot": "STREET",
+      "stand": "street-lilmoth",
+      "yaw_deg": 240,
+      "time": "t1300"
+    },
+    {
+      "file": "STREET__street-gideon__0.png",
+      "status": "ok",
+      "bytes": 960460,
+      "hash": "b9566a04696c02ba",
+      "slot": "STREET",
+      "stand": "street-gideon",
+      "yaw_deg": 0,
+      "time": "t1300"
+    },
+    {
+      "file": "STREET__street-gideon__1.png",
+      "status": "ok",
+      "bytes": 985738,
+      "hash": "a9a782c169099397",
+      "slot": "STREET",
+      "stand": "street-gideon",
+      "yaw_deg": 120,
+      "time": "t1300"
+    },
+    {
+      "file": "STREET__street-gideon__2.png",
+      "status": "ok",
+      "bytes": 1275608,
+      "hash": "0a9779b493236b50",
+      "slot": "STREET",
+      "stand": "street-gideon",
+      "yaw_deg": 240,
+      "time": "t1300"
+    },
+    {
+      "file": "STREET__street-thorn__0.png",
+      "status": "ok",
+      "bytes": 970369,
+      "hash": "5f064805f511988b",
+      "slot": "STREET",
+      "stand": "street-thorn",
+      "yaw_deg": 0,
+      "time": "t1300"
+    },
+    {
+      "file": "STREET__street-thorn__1.png",
+      "status": "ok",
+      "bytes": 992139,
+      "hash": "67e1fa972f75fcd6",
+      "slot": "STREET",
+      "stand": "street-thorn",
+      "yaw_deg": 120,
+      "time": "t1300"
+    },
+    {
+      "file": "STREET__street-thorn__2.png",
+      "status": "ok",
+      "bytes": 961210,
+      "hash": "5b136a8c767b6918",
+      "slot": "STREET",
+      "stand": "street-thorn",
+      "yaw_deg": 240,
+      "time": "t1300"
+    }
+  ]
+}

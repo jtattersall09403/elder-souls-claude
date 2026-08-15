@@ -98,8 +98,19 @@ const matchLen = (decl, path) => {
 // exactly the kind of invisible regression this whole exercise exists to stop, so it runs here
 // instead, explicitly, in the same order and with the same non-blocking temperament the hook had.
 for (const [label, cmd] of [['gen-index', ['tools/gen-index.mjs']], ['publish', ['tools/publish.mjs']]]) {
-  try { execFileSync('node', cmd, { cwd: ROOT, stdio: 'pipe', timeout: 180_000 }); }
-  catch { console.log(`bank: ${label} failed — its generated files may be stale in this commit.`); }
+  try { execFileSync('node', cmd, { cwd: ROOT, stdio: 'pipe', timeout: 300_000 }); }
+  catch (e) {
+    // Non-blocking on purpose — a stale dashboard must never stop an agent banking its work. But the
+    // reason must not be swallowed: this printed the same unexplained line on six consecutive banks
+    // on 2026-08-15 while `node tools/publish.mjs` succeeded standalone, and nobody could tell whether
+    // it was a timeout under load, a real gate failure, or a crash. A warning you cannot diagnose is
+    // a warning people learn to scroll past. Timeout raised 180s -> 300s: publish alone takes ~70-100s
+    // on a quiet box and this one has run at load 22-29 over 4 cores all morning.
+    const why = e.signal === 'SIGTERM' ? `timed out after 300s (box load, most likely)`
+              : (e.stderr && e.stderr.toString().trim().split('\n').slice(-3).join(' | ')) || e.message;
+    console.log(`bank: ${label} failed — its generated files may be stale in this commit.`);
+    console.log(`bank:   reason: ${why}`);
+  }
 }
 
 // The five-minute wait for `.git/index.lock` is gone, and with it the eight consecutive refusals

@@ -2,7 +2,7 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `e945e01d`: **1036 tools**, **159 reference items**,
+drift. At `2f3c7511`: **1036 tools**, **159 reference items**,
 **57 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
@@ -163,9 +163,9 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 
 | piece | state | files claimed |
 |---|---|---|
-| `W1-UIX08-CENSUS-ROUTE` | in_progress | `orchestration/status/W1-UIX08-CENSUS-ROUTE.json` |
 | `T4-r2-builder` | in_progress | `game/src/ui/icons.js` `game/src/ui/hud-world.js` `game/src/ui/compass.js` `game/src/ui/hud.js` +14 |
 | `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
+| `W1-UIX08-CENSUS-ROUTE` | in_progress | `orchestration/status/W1-UIX08-CENSUS-ROUTE.json` |
 | `I2-CAPTURE-SANITY` | in_progress | `orchestration/status/I2-CAPTURE-SANITY.json` `tools/visual/frame-liveness.mjs` `tools/visual/deck.mjs` `tools/visual/deck-motion.mjs` +2 |
 | `W1-G1-CAMERA-OCCLUSION` | measuring | `orchestration/status/W1-G1-CAMERA-OCCLUSION.json` `tools/camera/cam-occlusion-walk.mjs` `corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/` |
 | `AUDIT-R1-LIST` | running | `orchestration/status/AUDIT-R1-LIST.json` `orchestration/NEXT-DISPATCH.md` `tools/dispatch-staleness.mjs` `reports/blog-feed.jsonl` |

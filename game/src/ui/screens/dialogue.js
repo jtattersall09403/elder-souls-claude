@@ -121,7 +121,29 @@ export class DialogueHistory {
     this.speaker = speaker || null;
     this.blocks = [];
     this.lastSeq = null;
+    this.keys = new Set();
     if (greeting) this.blocks.push({ heading: null, text: String(greeting), topic: null });
+    return this;
+  }
+
+  /**
+   * §H — the census route's append. Everything the census scene says arrives as an ordered list
+   * of utterances rebuilt from `census.state()` EVERY FRAME, so the dedup cannot be "is this the
+   * same text as last time": `writ.class-questions` is one node asked ten times, and the four
+   * `pick` nodes re-emit the same waiting-line each frame until the count is made up.
+   *
+   * The key is the node id plus what the string IS (`#s0`, `#p`, `#l:<question>`, `#a:<aside>`),
+   * so the ten dilemmas are ten blocks, `She is waiting for 2 more.` and `She is waiting for 1
+   * more.` are two, and none of them is ever printed twice. It is a different dedup from
+   * `append()`'s sequence number because it is answering a different question, and conflating
+   * the two is what made a re-asked topic print nothing for a week.
+   */
+  appendKeyed(key, heading, text) {
+    if (!text || !key) return this;
+    if (!this.keys) this.keys = new Set();
+    if (this.keys.has(key)) return this;
+    this.keys.add(key);
+    this.blocks.push({ heading: heading || null, text: String(text), topic: null, key });
     return this;
   }
 
@@ -155,7 +177,7 @@ export class DialogueHistory {
     return this;
   }
 
-  close() { this.speaker = null; this.blocks = []; this.lastSeq = null; return this; }
+  close() { this.speaker = null; this.blocks = []; this.lastSeq = null; this.keys = new Set(); return this; }
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -530,9 +552,16 @@ export function drawDialogue(S, m) {
   // one: it is a relationship stat read out of the simulation, not a task completing, and
   // RI-UIX08's arbitration header gives this item the arrangement of this window. Recorded as a
   // ruling in the status file rather than left as an unremarked overlap.
+  //
+  // ABSENT IN CENSUS MODE (§H1), AND ABSENT IS THE REQUIREMENT RATHER THAN A PERMISSION. Before
+  // the writ is stamped there is no character for anybody to have a disposition toward: the
+  // number would be `sim.player`'s boot default drawn over a person who does not exist yet,
+  // which is the same defect W1-26 r3 photographed on the title screen. `RI-DLG04` has nothing
+  // to move here and no route to move it with.
+  const census = !!m.census;
   const dispo = Math.max(0, Math.min(100, Math.round(Number(m.disposition) || 0)));
   const dispoText = `${dispo}/100`;
-  S.el({
+  if (!census) S.el({
     id: 'dialogue.disposition', kind: 'disposition_meter', rect: L.disposition,
     text: dispoText, meta: { element: 5, value: dispo, of: 100, is_word: false },
   }, (c, r) => {
@@ -565,20 +594,35 @@ export function drawDialogue(S, m) {
   const colScroll = Math.max(0, Math.min(Math.max(0, topics.length - rowsFit), m.column_scroll || 0));
   let ty = TC[1];
   const colFace = faceOf('ink');
-  const colRow = (id, kind, label, idx, isAction) => {
+  const pickedRows = [];
+  const colRow = (id, kind, label, idx, isAction, row) => {
     const focused = m.focus && m.focus.pane === 'column' && m.focus.rowIdx === idx;
+    // §H2 — THE PICKED MARK, AND IT IS A CHARACTER RATHER THAN A COLOUR ON PURPOSE. Four of the
+    // census's twenty-two nodes are multi-select: two favoured attributes, three primary skills.
+    // A window that cannot show which of the eleven you have already named is a window you cannot
+    // answer those nodes in. §E3 measures that every column entry is ONE bronze and §F1 rules
+    // read/unread marking off, so the mark may not be a second colour — it is the same `· `
+    // prefix `render/ui.js:476` used, which lives in the row's own text and is therefore in the
+    // element census a probe reads rather than only in the pixels.
+    const picked = !!(row && row.picked);
+    const shown = picked ? `· ${label}` : label;
+    if (picked) pickedRows.push(idx);
     hits.push({
-      kind: isAction ? 'action' : 'topic', pane: 'column', idx, text: label,
+      kind: isAction ? 'action' : 'topic', pane: 'column', idx, text: shown,
       topic: isAction ? null : id.split('/').pop(), rect: [TC[0], ty, TC[2], L.rowH],
     });
     S.el({
-      id, kind, rect: [TC[0], ty, TC[2], L.rowH], text: label, focused: !!focused,
-      meta: { element: 4, section: isAction ? 'actions' : 'topics', topic: isAction ? null : id.split('/').pop() },
+      id, kind, rect: [TC[0], ty, TC[2], L.rowH], text: shown, focused: !!focused,
+      meta: {
+        element: 4, section: isAction ? 'actions' : 'topics',
+        topic: isAction ? null : id.split('/').pop(),
+        ...(census ? { picked, typed_row: !!(row && row.typed) } : {}),
+      },
     }, (c, r) => {
       c.globalAlpha = 1;
       // §E3/§F1: ONE colour for every entry. No read/unread split, and the focused row is marked
       // by a cut mark in the margin rather than by a lightened fill (G6).
-      drawText(c, clip(label, colFace, L.rowPx, r[2] - 10 * u), r[0] + 6 * u, r[1] + L.rowH * 0.72,
+      drawText(c, clip(shown, colFace, L.rowPx, r[2] - 10 * u), r[0] + 6 * u, r[1] + L.rowH * 0.72,
         colFace, L.rowPx, DLG.normal);
       if (focused) {
         c.beginPath();
@@ -590,7 +634,8 @@ export function drawDialogue(S, m) {
     drawnText.push(label);
     ty += L.rowH;
   };
-  actions.forEach((a, i) => colRow(`dialogue.action.${a.id}`, 'list_row', a.label, i, true));
+  actions.forEach((a, i) => colRow(
+    a.typed ? 'dialogue.census.typed' : `dialogue.action.${a.id}`, 'list_row', a.label, i, true, a));
   if (actions.length) {
     // The rule. A worked-bone divider, not a 1 px hairline (RI-UIX06 G4).
     const ry = ty + L.rowH * 0.35;
@@ -605,33 +650,56 @@ export function drawDialogue(S, m) {
     ty = ry + L.rowH * 0.35;
   }
   const shown = topics.slice(colScroll, colScroll + rowsFit);
-  shown.forEach((t, i) => colRow(`dialogue.topic/${t.id}`, 'list_row', t.label, actions.length + colScroll + i, false));
+  shown.forEach((t, i) => colRow(`dialogue.topic/${t.id}`, 'list_row', t.label, actions.length + colScroll + i, false, t));
 
   // ---- 6. Goodbye (§A6, §D5) -----------------------------------------------------------------
   //
   // The full width of the topic column, caption centred, pinned to the corner. "It is the only way
   // out that the window advertises."
+  //
+  // ABSENT IN CENSUS MODE (§H1). There is no way out of character creation — no Escape, no walk
+  // away, no "come back later" — so a Goodbye drawn here would be a control that is drawn and
+  // does nothing, which CRITIC-DOCTRINE §1.2b calls a hard fail and calls worse than a control
+  // that is absent, because it lies to the player. §D5 says the button is the only way out the
+  // window advertises; where there is no way out it must advertise none.
   const byeIdx = actions.length + topics.length;
   const byeFocused = m.focus && m.focus.pane === 'column' && m.focus.rowIdx === byeIdx;
-  hits.push({ kind: 'goodbye', pane: 'column', idx: byeIdx, text: m.goodbye || 'Goodbye', topic: null, rect: L.goodbye.slice() });
-  S.el({
-    id: 'dialogue.goodbye', kind: 'dialogue_exit', rect: L.goodbye, text: m.goodbye || 'Goodbye',
-    focused: !!byeFocused, meta: { element: 6, full_column_width: true },
-  }, (c, r) => {
-    c.globalAlpha = 1;
-    // Bone: RI-UIX06 §A gives bone to "dividers, tick marks, level-up attribute pips, buttons".
-    c.fillStyle = Ca(byeFocused ? 'bone' : 'bone_dim', byeFocused ? 0.42 : 0.22);
-    c.fillRect(r[0], r[1], r[2], r[3]);
-    const f = faceOf('bone'), sz = Math.max(Number(S.ctx.__esMinTextPx) || 0, 12 * u);
-    const t = m.goodbye || 'Goodbye';
-    const w = measure(t, f, sz);
-    drawText(c, t, r[0] + r[2] / 2 - w / 2, r[1] + r[3] * 0.72, f, sz, DLG.header);
-  });
-  drawnText.push(m.goodbye || 'Goodbye');
+  if (!census) {
+    hits.push({ kind: 'goodbye', pane: 'column', idx: byeIdx, text: m.goodbye || 'Goodbye', topic: null, rect: L.goodbye.slice() });
+    S.el({
+      id: 'dialogue.goodbye', kind: 'dialogue_exit', rect: L.goodbye, text: m.goodbye || 'Goodbye',
+      focused: !!byeFocused, meta: { element: 6, full_column_width: true },
+    }, (c, r) => {
+      c.globalAlpha = 1;
+      // Bone: RI-UIX06 §A gives bone to "dividers, tick marks, level-up attribute pips, buttons".
+      c.fillStyle = Ca(byeFocused ? 'bone' : 'bone_dim', byeFocused ? 0.42 : 0.22);
+      c.fillRect(r[0], r[1], r[2], r[3]);
+      const f = faceOf('bone'), sz = Math.max(Number(S.ctx.__esMinTextPx) || 0, 12 * u);
+      const t = m.goodbye || 'Goodbye';
+      const w = measure(t, f, sz);
+      drawText(c, t, r[0] + r[2] / 2 - w / 2, r[1] + r[3] * 0.72, f, sz, DLG.header);
+    });
+    drawnText.push(m.goodbye || 'Goodbye');
+  }
 
   return {
     open: true,
     speaker: m.speaker || null,
+    // §H. WHICH MODE THIS FRAME IS, PUBLISHED, because two different things set `links_enabled`
+    // to false and a probe must not confuse them: §G's ablated arm (a conversation with the
+    // mechanism removed — the control the human gate reads as worse) and the census (a scene with
+    // no topic vocabulary to light, where zero links is the truth). `census_node` is the census
+    // graph's own node id, so the per-node element census cannot drift from the graph.
+    census: census,
+    census_node: census ? (m.census_node || null) : null,
+    census_input_kind: census ? (m.census_input_kind || null) : null,
+    census_takes_input: census ? !!m.takes_input : null,
+    census_typed: census ? (m.census_typed || '') : null,
+    picked_rows: pickedRows,
+    // The element census §A scores, computed HERE from what was actually declared rather than
+    // asserted by a reader: 6 in a conversation, 4 in the census (§H1 — no disposition to have,
+    // no way out to advertise).
+    elements_present: census ? [1, 2, 3, 4] : [1, 2, 3, 4, 5, 6],
     panel_px: [Math.round(L.panel[2]), Math.round(L.panel[3])],
     frame_px: [S.W, S.H],
     panel_width_frac: +(L.panel[2] / S.W).toFixed(4),

@@ -265,12 +265,20 @@ export class CensusSurface {
   /**
    * One fixed step of the surface, driven by the SAME latched input a swing is driven by.
    *
+   * THIS IS ONE OF TWO DRIVERS AND IT IS NOT THE MODEL. W1-UIX08-CENSUS-ROUTE routed the scene
+   * through the RI-UIX08 dialogue window, which owns its own caret (`UISystem.dialogueFocus`) and
+   * its own pointer path — so it cannot use the axis handling below, and it must not grow a
+   * second copy of the answer semantics underneath it (RULES rule 10: two parallel
+   * implementations of one system is how this build had a good detection model and a broken one
+   * at the same time). The answer semantics therefore live in `commit()` and the un-pick lives in
+   * `takeBack()`, and BOTH drivers call those two functions. This one keeps the vellum panel's
+   * behaviour byte-for-byte, because it is the arm the control clone runs.
+   *
    * @param {object} input   the InputPipeline, already latched for this frame
    * @param {object} state   census.state()
-   * @param {function} answer  called with the value when the player commits
    * @returns {null|object} what was committed this frame, for the trace
    */
-  step(input, state, answer) {
+  step(input, state) {
     if (!this.takesInput || !state || !state.input) { this.axisHeld = 0; this.axisFrames = 0; return null; }
 
     // --- move the caret. Analogue stick, D-pad or WASD; all three arrive as moveY.
@@ -282,24 +290,58 @@ export class CensusSurface {
       if (this.axisFrames >= REPEAT_FIRST && (this.axisFrames - REPEAT_FIRST) % REPEAT_EVERY === 0) this._move(dir);
     }
 
-    // --- take it back. `block` is the universal "no" here: un-pick on a pick node, delete a
-    // typed character on a text node. It is never a menu.
-    if (input.pressedName('block')) {
-      if (this.typed) this.typed = this.typed.slice(0, -1);
-      else if (this.picked.length) this.picked.pop();
-    }
+    if (input.pressedName('block')) this.takeBack();
 
     // --- commit. `interact` is the only affirmative button in the whole scene.
     if (!input.pressedName('interact')) return null;
+    return this.commit(state);
+  }
+
+  /**
+   * `block` is the universal "no" here: delete a typed character on a text node, un-pick on a
+   * pick node. It is never a menu.
+   *
+   * @returns {null|'typed'|'picked'} what it took back, so a caller can redraw only when
+   *   something actually moved.
+   */
+  takeBack() {
+    if (this.typed) { this.typed = this.typed.slice(0, -1); return 'typed'; }
+    if (this.picked.length) { this.picked.pop(); return 'picked'; }
+    return null;
+  }
+
+  /**
+   * Turn the caret's current position into an answer. The whole of the scene's answer semantics
+   * and the ONLY copy of them: the accumulate-then-commit of a `pick`, the ledger/typed pair of a
+   * `text` node, the single `correct` an `observed` node takes.
+   *
+   * `opts.useTyped` decides which of a text node's two routes is taken. It defaults to the old
+   * panel's rule — *anything typed wins over the highlighted ledger row* — so `step()` above is
+   * unchanged. The window passes it explicitly, because there the typed buffer is a ROW WITH A
+   * CARET ON IT (`RI-UIX08` §H2) and the player can therefore point at the ledger name they want
+   * after typing something they then thought better of. The old panel could not express that
+   * choice, which is why it did not have to make it.
+   *
+   * @param {object} state   census.state()
+   * @param {{useTyped?:boolean}} [opts]
+   * @returns {null|object} what was committed, for the trace
+   */
+  commit(state, opts = {}) {
+    if (!this.takesInput || !state || !state.input) return null;
     this.inputsTaken++;
     const kind = state.input.kind;
     const opt = this.options[this.sel] || null;
 
     if (kind === 'text') {
-      const value = this.typed ? this.typed : (opt ? opt.id : '');
-      const v = (value === 'refuse') ? 'refuse' : value;
+      // `via` USED TO BE COMPUTED AFTER THE BUFFER WAS CLEARED. The old line read
+      // `via: this.typed ? 'typed' : 'ledger'` two statements below `this.typed = ''`, so it
+      // reported `ledger` on every text node in the scene including the ones the player typed.
+      // Nothing downstream branched on it — it is trace data — but a trace that says the
+      // opposite of what happened is worse than no trace, and this route now has two ways in.
+      const useTyped = opts.useTyped === undefined ? !!this.typed : (!!opts.useTyped && !!this.typed);
+      const value = useTyped ? this.typed : (opt ? opt.id : '');
       this.typed = '';
-      return { value: v, committed: true, via: this.typed ? 'typed' : 'ledger' };
+      return { value, committed: true, via: useTyped ? 'typed' : 'ledger' };
     }
     if (kind === 'observed') return { value: 'correct', committed: true, via: 'option' };
     if (kind === 'pick') {
