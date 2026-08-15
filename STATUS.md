@@ -80,7 +80,23 @@ Alongside that: shrinking the documentation every agent reads before it can star
 - **A new defect nobody had reported: a wide-brim hat is drawn as a flat hexagonal plank across the
   eyebrows**, hiding the wearer's eyes completely. At conversation distance that is more disfiguring
   than either thing this round fixed.
-- **The body is still wrong.** Eight orbit angles of the player: a flat pale-blue sandwich-board torso,
+- **The bodies were measurably cones — now they have hips and a waist.** Nobody could say *how* wrong
+  the torso was, because no instrument in the project could tell a cone from a body. One was written,
+  and the answer was blunt: the **hip was 18% narrower than the waist on 11 of 11 figures**, and the
+  waist pinch measured **0.029 — identical to the reading a synthetic cone gives**. So "slabs" was
+  literally accurate. Fixed on the shared body plan, so **one edit moved all 17 characters**: hips now
+  wider than waists on 11 of 11, for 96 extra triangles and no new draw call.
+- **Armoured helmets were erasing people's eyes.** Not one hat — **69 of 96 camera bearings** lost the
+  eye entirely, with two armour sets losing it from *every* angle, because the head was shrunk without
+  shrinking what sits on it and the heights were hand-typed so the band drew straight through the eye.
+  Now 0 of 96.
+- **The player's own eye was the worst in the game** — 2.16× the brightness of their face, worse than
+  the case that was fixed two rounds ago, affecting the player and **260 of 408** NPC records. Now
+  0.847×.
+- **Not yet photographed, and one thing got worse.** None of this is confirmed in the running game —
+  the orbit frames the "slabs" verdict was made of have not been re-shot. And the fix **increased small
+  cracks between body parts by 12%**, which the builder reported rather than hid, having tried two
+  predicted fixes that both made it worse still.
   no waist, no shoulder line, shield and sword as planks. That verdict is unchanged.
 - **Still owed on characters:** none of this has been photographed in the game yet. And there is a
   measured reason the foot work kept photographing as "no change" — the three camera stands used for
