@@ -188,3 +188,10 @@ node tools/ownership.mjs --staged "${ES_TASK_ID:-}" || true
 # What was missing was never permission — it was seeing it. `--self-test` proves the checks fire.
 echo "pre-commit: citation-staleness gate (node tools/check-citations.mjs)"
 node tools/check-citations.mjs || echo "pre-commit: citation staleness above — a document is describing a repo that no longer exists. Not blocking; fix or hand over."
+
+# STATUS.md is the owner's window and had no guard until 2026-08-15, when the orchestrator
+# character-spliced it (a slice assignment given a string, not a list) — 176 lines became 1,635
+# lines of single letters and nothing noticed. Warning only: a status page is written by hand and
+# a blocking gate on prose would be the over-engineering the owner already rejected once.
+echo "pre-commit: STATUS.md sanity (node tools/check-status-sane.mjs)"
+node tools/check-status-sane.mjs || echo "pre-commit: STATUS.md above is not shaped like a status page. Not blocking; look at it."
