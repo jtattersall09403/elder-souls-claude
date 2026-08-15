@@ -185,6 +185,14 @@ Three rules:
    this box at load ~3–3.4 per core. A frame-by-frame pixel walk is not slow because something is
    broken; it is slow because that is what it costs. Budget for it or choose another instrument.
 
+**Disarm your waiters before you finish.** A background `Monitor` or `until`-loop left armed keeps
+firing after its agent has completed, and each notification **wakes the agent again**. Measured
+2026-08-15: one agent's final report was delivered eight separate times, each wake costing a turn, and
+its total went from ~500k to **539k tokens and 381 tool calls** — every one of them after the work was
+landed and verified. `TaskStop` reports the agent as `completed`, so the orchestrator cannot kill it;
+only the agent can, and only before it stops. Kill your own waiters by PID as your last act, and never
+arm one you do not intend to read.
+
 **And the deliverable is usually the fix, not the evidence.** A regression fix held back behind a
 perfect capture is worse than an honestly-labelled unverified fix, because the tree stays broken while
 the pack is assembled. Land the fix, label what is unverified, and let the evidence follow.
