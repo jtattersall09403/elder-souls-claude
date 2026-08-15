@@ -66,6 +66,44 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 23. The container took four agents at 20:03. Quarantine the orphans on a side ref — do NOT bank them.
+
+**Third restart in one day, and it killed a full fleet mid-round: T4 r7, F10 r11, F4 r2 and the F7 r2
+critic.** Symptom, and it is worth knowing because nothing announces it: `ListAgents` returns **"No
+reachable agents"** and no file in the working tree has been touched for hours, while `git status`
+still shows their edits. The agents are gone; their unbanked work is not.
+
+**What was lost and what survived.** Only one of the four had banked anything — T4 r7's `b9b48766`.
+The other three had **~1,500 lines between them and not one commit**: `actor.js` +302, `renderer.js`
++39, `swing.js` +29, `chrome.js` +28, three new tools of 208/423/426 lines, and three evidence
+directories. **Bank often is not advice, it is the whole difference between those two outcomes.**
+
+**What to do with the orphans, and what NOT to do.** Do **not** `land` them onto the working branch.
+Three hundred unverified lines in `actor.js` become `HEAD`'s claim the moment you do, every sibling
+that starts next inherits them as though they were finished, and a delete-the-fix arm taken against
+that `HEAD` is measuring somebody's abandoned half-thought (§12, §14). Equally, do not throw them
+away: they are real work.
+
+**Quarantine them on a side ref instead** — recoverable, pushed, and structurally incapable of being
+mistaken for a delivery:
+
+```sh
+git add -A -- game/src tools corpus/90-verdicts/wave1/artifacts
+ORPHAN=$(git commit-tree $(git write-tree) -p HEAD -m "QUARANTINE <date> — <what died>")
+git update-ref refs/orphaned/<date>-container-restart "$ORPHAN"
+git reset --mixed HEAD && git checkout -- . && git clean -f -d <the paths>
+git push origin "$ORPHAN":refs/heads/orphaned/<date>-container-restart
+```
+
+Then **re-dispatch each round with a pointer to the quarantine and one instruction: treat every line
+of it as unverified.** There is no status file saying what it intended, no measurement, and no note of
+which parts worked — so a successor that trusts it inherits an unchecked premise and will faithfully
+build on sand. Recovering a single file is `git show <orphan>:<path> > <path>`.
+
+**The asymmetry that decides this:** a quarantined orphan costs one command to recover and can never
+lie to anyone; an orphan banked into `HEAD` costs nothing to recover and lies to every agent that
+starts after it.
+
 ## 22. A CONTROL CLONE THAT RUNS THE MAIN TREE'S TOOL IS NOT A CONTROL. It measures the main tree.
 
 **Found 2026-08-15 by the T4 r6 critic, and it invalidates a whole class of arms across this repo, not

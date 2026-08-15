@@ -1,12 +1,14 @@
 # Where we are right now
 
-**Last updated: 2026-08-15, afternoon.** One screen. If this is more than a day old, distrust it and say so.
+**Last updated: 2026-08-15, late evening.** One screen. If this is more than a day old, distrust it and say so.
 
 ---
 
 ## What the agents are working on this minute
 
-**Making the game look like a game** — four agents, all on ring 1:
+**The container restarted at 20:03 and killed all four agents mid-round.** Their unfinished work is
+preserved on a side branch and all four rounds have been restarted from it — nothing is lost, but
+roughly two hours of work has to be re-derived rather than trusted. Same four jobs, all on ring 1:
 
 - **The sun, round two** — the key light was judged and failed; our daylight has no colour in it, and
   the fix is a number that already exists in the file.
