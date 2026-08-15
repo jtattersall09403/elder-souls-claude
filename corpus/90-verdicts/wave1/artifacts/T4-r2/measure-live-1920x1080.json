@@ -616,6 +616,688 @@
       },
       "combat_phase": "world",
       "combat_phase_source": "encounter"
+    },
+    "journal": {
+      "mode": "journal",
+      "element_count": 30,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "effect_strip": 1,
+        "place_name": 1,
+        "panel": 1,
+        "panel_header": 2,
+        "journal_index_row": 5,
+        "journal_entry": 9,
+        "divider": 1,
+        "page_count": 1,
+        "hint": 1
+      },
+      "pictorial_declared": {
+        "kinds_counted": [
+          "item_icon",
+          "doll",
+          "glyph_object"
+        ],
+        "on_screen": 0,
+        "in_panel": 0,
+        "by_kind": {
+          "item_icon": 0,
+          "doll": 0,
+          "glyph_object": 0
+        },
+        "item_rows": 0,
+        "item_icons": 0
+      },
+      "pictorial_ids": [],
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "panel_rect_source": "published+derived",
+      "panel_rect_agrees": true,
+      "pictorial_measured": {
+        "on_screen": 0,
+        "in_panel": 0
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 99,
+        "local_contrast_med": 1.213,
+        "local_contrast_p95": 141.27,
+        "p10": 0,
+        "p90": 178,
+        "spread": 178,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 89,
+        "local_contrast_med": 2,
+        "local_contrast_p95": 128.555,
+        "p10": 154,
+        "p90": 181,
+        "spread": 27,
+        "reason": null
+      },
+      "panel_fill": {
+        "fill": 0.1315,
+        "mode_rgb": [
+          172,
+          165,
+          147
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        },
+        {
+          "id": "hud.place",
+          "text": "thorn-hall"
+        },
+        {
+          "id": "journal.header",
+          "text": "Journal"
+        },
+        {
+          "id": "journal.index.head",
+          "text": "Quests"
+        },
+        {
+          "id": "journal.index.Q-LILM-01",
+          "text": "The Company Man"
+        },
+        {
+          "id": "journal.index.Q-DOCK-01",
+          "text": "Eleven Gold a Week"
+        },
+        {
+          "id": "journal.index.Q-MAIN-01",
+          "text": "The Reading of the Count"
+        },
+        {
+          "id": "journal.index.Q-MAIN-02",
+          "text": "Eleven Empty Boxes"
+        },
+        {
+          "id": "journal.index.Q-SOUL-02",
+          "text": "The Count of the Drowned"
+        },
+        {
+          "id": "journal.entry.Q-MAIN-01.3",
+          "text": "A clerk on the Soulrest customs bench told me the Drowned Court has been paying outlanders to carry its books, and paying well, because it will not put its own people on the road. He said it as though it were a joke about the Court and not about the road."
+        },
+        {
+          "id": "journal.entry.Q-MAIN-01.10",
+          "text": "Undersexton Aveline Rell has given me a sealed quarterly return to carry from Soulrest to the Court's factor in Gideon. She pays a hundred and twenty in advance, which is more than the work is worth, and she asked twice whether anyone had spoken to me on the stair."
+        },
+        {
+          "id": "journal.entry.Q-MAIN-02.10",
+          "text": "Rell wants eleven burial boxes counted and their weights written down. They came back from the wells at Bone Ladder and Salt-Egg Camp with nothing in them, which she says happens, and which she is nonetheless paying me to write down."
+        },
+        {
+          "id": "journal.entry.Q-SOUL-02.8",
+          "text": "There is a book in the Soulrest customs post that lists bodies burned by the Drowned Court, and the number for last season is written twice in two different hands."
+        },
+        {
+          "id": "journal.entry.Q-LILM-01.8",
+          "text": "There is a body in the rotting quarter with a Leyawiin charter in its satchel and no rot on it at all. Nobody in Lilmoth has reported a body in nine years."
+        },
+        {
+          "id": "journal.entry.Q-MAIN-02.20",
+          "text": "All eleven are empty and all eleven are the right weight for empty. The mortuary hands say the bodies went into the wells and did not come out as anything, not as sap, not as heat, not as the smell they expect. One of them would not go on talking about it inside."
+        },
+        {
+          "id": "journal.entry.Q-MAIN-02.30",
+          "text": "I sat on the burial stair after dark and there is a sound under the Stone Wastes. It is not surf and it is not wind in the salt-store. It is regular, and slow, and it has been going on longer than anyone in Soulrest has been paying attention to it."
+        },
+        {
+          "id": "journal.entry.Q-MAIN-01.20",
+          "text": "The seal on the return is a mortuary seal and it is not fresh. Whatever is in it was closed up before I was hired. At the Bone Ladder the keeper asked me whose count I was carrying and would not say what she meant."
+        },
+        {
+          "id": "journal.entry.Q-DOCK-01.10",
+          "text": "Eeja says the porters have been paid eleven gold a week short since Rain's Hand and that nobody will put a name to it. She is not asking me to fix it. She is asking me to count."
+        },
+        {
+          "id": "journal.pages",
+          "text": "1 of 2"
+        },
+        {
+          "id": "journal.hint",
+          "text": "Left and right turn the page. Confirm on a name in the margin to go to it."
+        }
+      ],
+      "ri_citations": [],
+      "undefined_headers": [],
+      "materials": [
+        "chitin",
+        "root",
+        "ink",
+        "parchment",
+        "bone",
+        "resin",
+        "shell",
+        "clay"
+      ],
+      "materials_painted": [
+        "chitin",
+        "root",
+        "ink",
+        "parchment",
+        "bone",
+        "resin",
+        "shell",
+        "clay"
+      ],
+      "hud_world": {
+        "set": {
+          "W1_bearing_dial": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat"
+          },
+          "W2_effect_strip": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat, ≥1 effect",
+            "expected": true
+          },
+          "W3_sneak_state": {
+            "built": true,
+            "drawn": false,
+            "conditional": "both phases, while sneaking",
+            "expected": false
+          },
+          "W4_condition_marks": {
+            "built": true,
+            "drawn": true,
+            "conditional": "both phases, always",
+            "inside": "hud.quickslots",
+            "added_px": 0,
+            "values": {
+              "right": 0.86,
+              "left": null,
+              "spell": null,
+              "item": 0
+            }
+          },
+          "W5_place_name": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat, ≤3 s after a cell change",
+            "expected": true
+          },
+          "W6_breath_meter": {
+            "built": true,
+            "drawn": false,
+            "conditional": "both phases, while submerged",
+            "expected": false
+          }
+        },
+        "elements": [
+          {
+            "id": "hud.bearing",
+            "kind": "bearing_dial",
+            "rect": [
+              1616,
+              942,
+              96,
+              96
+            ],
+            "in_bottom_half": true
+          },
+          {
+            "id": "hud.effects",
+            "kind": "effect_strip",
+            "rect": [
+              1574,
+              1006,
+              30,
+              32
+            ],
+            "in_bottom_half": true
+          },
+          {
+            "id": "hud.place",
+            "kind": "place_name",
+            "rect": [
+              42,
+              950,
+              520,
+              36
+            ],
+            "in_bottom_half": true
+          }
+        ],
+        "all_in_bottom_half": true,
+        "overlaps": [],
+        "persistent_count": 3,
+        "coverage_pct": 1.3935,
+        "withdrawn": [],
+        "withdrawn_because": null
+      },
+      "combat_phase": "world",
+      "combat_phase_source": "encounter"
+    },
+    "sheet": {
+      "mode": "sheet",
+      "element_count": 62,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "effect_strip": 1,
+        "place_name": 1,
+        "panel": 1,
+        "panel_header": 1,
+        "sheet_row": 8,
+        "divider": 2,
+        "attribute_row": 10,
+        "glyph_object": 10,
+        "skill_row": 19,
+        "hint": 1
+      },
+      "pictorial_declared": {
+        "kinds_counted": [
+          "item_icon",
+          "doll",
+          "glyph_object"
+        ],
+        "on_screen": 10,
+        "in_panel": 10,
+        "by_kind": {
+          "item_icon": 0,
+          "doll": 0,
+          "glyph_object": 10
+        },
+        "item_rows": 0,
+        "item_icons": 0
+      },
+      "pictorial_ids": [
+        "sheet.mark.strength",
+        "sheet.mark.endurance",
+        "sheet.mark.agility",
+        "sheet.mark.speed",
+        "sheet.mark.vigour",
+        "sheet.mark.willpower",
+        "sheet.mark.intellect",
+        "sheet.mark.hist-bond",
+        "sheet.mark.personality",
+        "sheet.mark.luck"
+      ],
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "panel_rect_source": "published+derived",
+      "panel_rect_agrees": true,
+      "pictorial_measured": {
+        "on_screen": 10,
+        "in_panel": 10
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 82,
+        "local_contrast_med": 4.213,
+        "local_contrast_p95": 72.189,
+        "p10": 0,
+        "p90": 63,
+        "spread": 63,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 71,
+        "local_contrast_med": 11.923,
+        "local_contrast_p95": 68.622,
+        "p10": 51,
+        "p90": 68,
+        "spread": 17,
+        "reason": null
+      },
+      "panel_fill": {
+        "fill": 0.0896,
+        "mode_rgb": [
+          44,
+          57,
+          45
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        },
+        {
+          "id": "hud.place",
+          "text": "thorn-hall"
+        },
+        {
+          "id": "sheet.header",
+          "text": "Nameless"
+        },
+        {
+          "id": "sheet.fact.recorded_as",
+          "text": "recorded as saxhleel"
+        },
+        {
+          "id": "sheet.fact.raised",
+          "text": "raised null"
+        },
+        {
+          "id": "sheet.fact.trade",
+          "text": "trade outlander"
+        },
+        {
+          "id": "sheet.fact.tide",
+          "text": "tide the-shadow"
+        },
+        {
+          "id": "sheet.fact.level",
+          "text": "level 6"
+        },
+        {
+          "id": "sheet.fact.souls",
+          "text": "souls 9400"
+        },
+        {
+          "id": "sheet.fact.reputation",
+          "text": "reputation 0"
+        },
+        {
+          "id": "sheet.fact.bounty",
+          "text": "bounty 0"
+        },
+        {
+          "id": "sheet.attr.strength",
+          "text": "STRENGTH 12"
+        },
+        {
+          "id": "sheet.attr.endurance",
+          "text": "ENDURANCE 20"
+        },
+        {
+          "id": "sheet.attr.agility",
+          "text": "AGILITY 10"
+        },
+        {
+          "id": "sheet.attr.speed",
+          "text": "SPEED 10"
+        },
+        {
+          "id": "sheet.attr.vigour",
+          "text": "VIGOUR 10"
+        },
+        {
+          "id": "sheet.attr.willpower",
+          "text": "WILLPOWER 10"
+        },
+        {
+          "id": "sheet.attr.intellect",
+          "text": "INTELLECT 10"
+        },
+        {
+          "id": "sheet.attr.hist-bond",
+          "text": "HIST-BOND 10"
+        },
+        {
+          "id": "sheet.attr.personality",
+          "text": "PERSONALITY 10"
+        },
+        {
+          "id": "sheet.attr.luck",
+          "text": "LUCK 10"
+        },
+        {
+          "id": "sheet.skill.acrobatics",
+          "text": "Acrobatics  15"
+        },
+        {
+          "id": "sheet.skill.alchemy",
+          "text": "Alchemy  5"
+        },
+        {
+          "id": "sheet.skill.athletics",
+          "text": "Athletics  25"
+        },
+        {
+          "id": "sheet.skill.axes-maces",
+          "text": "Axes & Maces  5"
+        },
+        {
+          "id": "sheet.skill.blades",
+          "text": "Blades  5"
+        },
+        {
+          "id": "sheet.skill.claw-fang",
+          "text": "Claw & Fang  5"
+        },
+        {
+          "id": "sheet.skill.greatweapons",
+          "text": "Greatweapons  5"
+        },
+        {
+          "id": "sheet.skill.marksman",
+          "text": "Marksman  25"
+        },
+        {
+          "id": "sheet.skill.mercantile",
+          "text": "Mercantile  5"
+        },
+        {
+          "id": "sheet.skill.polearms",
+          "text": "Polearms  5"
+        },
+        {
+          "id": "sheet.skill.root-speech",
+          "text": "Root-Speech  10"
+        },
+        {
+          "id": "sheet.skill.security",
+          "text": "Security  15"
+        },
+        {
+          "id": "sheet.skill.shieldcraft",
+          "text": "Shieldcraft  5"
+        },
+        {
+          "id": "sheet.skill.sneak",
+          "text": "Sneak  20"
+        },
+        {
+          "id": "sheet.skill.sorcery",
+          "text": "Sorcery  5"
+        },
+        {
+          "id": "sheet.skill.speechcraft",
+          "text": "Speechcraft  5"
+        },
+        {
+          "id": "sheet.skill.survival",
+          "text": "Survival  25"
+        },
+        {
+          "id": "sheet.skill.veiling",
+          "text": "Veiling  5"
+        },
+        {
+          "id": "sheet.skill.warding",
+          "text": "Warding  5"
+        },
+        {
+          "id": "sheet.hint",
+          "text": "What is written on your case, and what you can do."
+        }
+      ],
+      "ri_citations": [],
+      "undefined_headers": [],
+      "materials": [
+        "chitin",
+        "root",
+        "ink",
+        "parchment",
+        "bone",
+        "resin",
+        "reed",
+        "shell",
+        "clay"
+      ],
+      "materials_painted": [
+        "chitin",
+        "root",
+        "ink",
+        "parchment",
+        "bone",
+        "resin",
+        "reed",
+        "shell",
+        "clay"
+      ],
+      "hud_world": {
+        "set": {
+          "W1_bearing_dial": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat"
+          },
+          "W2_effect_strip": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat, ≥1 effect",
+            "expected": true
+          },
+          "W3_sneak_state": {
+            "built": true,
+            "drawn": false,
+            "conditional": "both phases, while sneaking",
+            "expected": false
+          },
+          "W4_condition_marks": {
+            "built": true,
+            "drawn": true,
+            "conditional": "both phases, always",
+            "inside": "hud.quickslots",
+            "added_px": 0,
+            "values": {
+              "right": 0.86,
+              "left": null,
+              "spell": null,
+              "item": 0
+            }
+          },
+          "W5_place_name": {
+            "built": true,
+            "drawn": true,
+            "conditional": "out of combat, ≤3 s after a cell change",
+            "expected": true
+          },
+          "W6_breath_meter": {
+            "built": true,
+            "drawn": false,
+            "conditional": "both phases, while submerged",
+            "expected": false
+          }
+        },
+        "elements": [
+          {
+            "id": "hud.bearing",
+            "kind": "bearing_dial",
+            "rect": [
+              1616,
+              942,
+              96,
+              96
+            ],
+            "in_bottom_half": true
+          },
+          {
+            "id": "hud.effects",
+            "kind": "effect_strip",
+            "rect": [
+              1574,
+              1006,
+              30,
+              32
+            ],
+            "in_bottom_half": true
+          },
+          {
+            "id": "hud.place",
+            "kind": "place_name",
+            "rect": [
+              42,
+              950,
+              520,
+              36
+            ],
+            "in_bottom_half": true
+          }
+        ],
+        "all_in_bottom_half": true,
+        "overlaps": [],
+        "persistent_count": 3,
+        "coverage_pct": 1.3935,
+        "withdrawn": [],
+        "withdrawn_because": null
+      },
+      "combat_phase": "world",
+      "combat_phase_source": "encounter"
     }
   },
   "notes": []
