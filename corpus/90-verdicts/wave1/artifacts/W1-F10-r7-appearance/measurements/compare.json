@@ -1,0 +1,2865 @@
+{
+  "tool": "f10-r7-appearance-read",
+  "generated": "2026-08-15T15:20:15.735Z",
+  "run_dir": "/home/user/elder-souls-claude/reports/runpod-gpu/runs/f10-r7-appearance/artifacts",
+  "statistics_imported_from": "tools/visual/f10-r6-appearance-compare.mjs (diffFrac, ringChangeFrac) — one implementation, one self-test",
+  "arms": {
+    "before": {
+      "renderer": null,
+      "frames": 90
+    },
+    "after": {
+      "renderer": null,
+      "frames": 90
+    }
+  },
+  "simulation_untouched_check": {
+    "before": {
+      "npcs_visible": 31,
+      "record_buried": 12,
+      "record_airborne": 15,
+      "drawn_buried": 12,
+      "drawn_airborne": 15
+    },
+    "after": {
+      "npcs_visible": 31,
+      "record_buried": 12,
+      "record_airborne": 15,
+      "drawn_buried": 0,
+      "drawn_airborne": 0
+    },
+    "record_columns_identical": true
+  },
+  "liveness_verdicts": {
+    "before": {
+      "LIVE": 82,
+      "NO_SUBJECT": 8
+    },
+    "after": {
+      "LIVE": 78,
+      "NO_SUBJECT": 12
+    }
+  },
+  "dead_frames": [
+    {
+      "arm": "before",
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw270.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 4.943 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "before",
+      "file": "C4__npc-shipwright-oleen__yaw135.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 4.136 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "before",
+      "file": "C4__npc-shipwright-oleen__yaw225.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 5.531 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "before",
+      "file": "C4__npc-shipwright-oleen__yaw270.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 0.6161 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "before",
+      "file": "C4__npc-shipwright-oleen__yaw315.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 5.0095 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "before",
+      "file": "FS__char-player__b045p-50.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 4.6932 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "before",
+      "file": "FS__slope-strong__b000p-18.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 3.5128 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "before",
+      "file": "MF__walk__f060.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 3.5245 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "after",
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw090.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 5.7447 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "after",
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw270.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 5.4131 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "after",
+      "file": "C4__npc-shipwright-oleen__yaw090.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 5.6343 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "after",
+      "file": "C4__npc-shipwright-oleen__yaw180.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 4.2753 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "after",
+      "file": "C4__npc-shipwright-oleen__yaw225.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 5.531 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "after",
+      "file": "C4__npc-shipwright-oleen__yaw270.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 0.6161 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "after",
+      "file": "C4__npc-shipwright-oleen__yaw315.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 5.0095 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "after",
+      "file": "FA__npc-lilmoth-keeper-scribe__record__b090.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 1.2652 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "after",
+      "file": "FA__npc-shipwright-oleen__ground__b000.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 5.5098 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "after",
+      "file": "FS__char-player__b045p-50.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 4.6932 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "after",
+      "file": "FS__slope-strong__b000p-18.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 3.5128 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    },
+    {
+      "arm": "after",
+      "file": "MF__walk__f060.png",
+      "verdict": "NO_SUBJECT",
+      "why": [
+        "SUB centre_flank_luma 3.5245 < 6 — the middle of the subject box does not differ from the frame either side of it, so nothing is standing there. Measured error rate at this threshold: catches 14 of 17 known-empty frames, false-reds 6 of 76 known-good (SUBJECT_ROC)."
+      ]
+    }
+  ],
+  "paired_frames": 90,
+  "by_slot": [
+    {
+      "slot": "C4",
+      "n": 16,
+      "identical": 3,
+      "live_both": 8,
+      "changed_frac_sum": 2.73922,
+      "changed_frac_mean": 0.3424,
+      "files_identical": [
+        "C4__npc-shipwright-oleen__yaw225.png",
+        "C4__npc-shipwright-oleen__yaw270.png",
+        "C4__npc-shipwright-oleen__yaw315.png"
+      ]
+    },
+    {
+      "slot": "CP",
+      "n": 8,
+      "identical": 7,
+      "live_both": 8,
+      "changed_frac_sum": 0,
+      "changed_frac_mean": 0,
+      "files_identical": [
+        "CP__player__yaw000.png",
+        "CP__player__yaw045.png",
+        "CP__player__yaw090.png",
+        "CP__player__yaw135.png",
+        "CP__player__yaw180.png",
+        "CP__player__yaw225.png",
+        "CP__player__yaw315.png"
+      ]
+    },
+    {
+      "slot": "FA",
+      "n": 16,
+      "identical": 0,
+      "live_both": 14,
+      "changed_frac_sum": 6.237150000000001,
+      "changed_frac_mean": 0.44551,
+      "files_identical": []
+    },
+    {
+      "slot": "FP",
+      "n": 4,
+      "identical": 4,
+      "live_both": 4,
+      "changed_frac_sum": 0,
+      "changed_frac_mean": 0,
+      "files_identical": [
+        "FP__player__b000.png",
+        "FP__player__b045.png",
+        "FP__player__b090.png",
+        "FP__player__b180.png"
+      ]
+    },
+    {
+      "slot": "FS",
+      "n": 9,
+      "identical": 7,
+      "live_both": 7,
+      "changed_frac_sum": 0,
+      "changed_frac_mean": 0,
+      "files_identical": [
+        "FS__char-player__b000p-18.png",
+        "FS__char-player__b045p-50.png",
+        "FS__char-player__b090p-18.png",
+        "FS__slope-moderate__b000p-18.png",
+        "FS__slope-moderate__b045p-50.png",
+        "FS__slope-strong__b000p-18.png",
+        "FS__slope-strong__b045p-50.png"
+      ]
+    },
+    {
+      "slot": "FSF",
+      "n": 6,
+      "identical": 4,
+      "live_both": 6,
+      "changed_frac_sum": 0,
+      "changed_frac_mean": 0,
+      "files_identical": [
+        "FSF__char-player__b000.png",
+        "FSF__char-player__b090.png",
+        "FSF__slope-moderate__b000.png",
+        "FSF__slope-strong__b000.png"
+      ]
+    },
+    {
+      "slot": "M",
+      "n": 16,
+      "identical": 15,
+      "live_both": 16,
+      "changed_frac_sum": 0,
+      "changed_frac_mean": 0,
+      "files_identical": [
+        "M__walk__f004.png",
+        "M__walk__f008.png",
+        "M__walk__f012.png",
+        "M__walk__f016.png",
+        "M__walk__f020.png",
+        "M__walk__f024.png",
+        "M__walk__f028.png",
+        "M__walk__f032.png",
+        "M__walk__f036.png",
+        "M__walk__f040.png",
+        "M__walk__f044.png",
+        "M__walk__f048.png",
+        "M__walk__f052.png",
+        "M__walk__f056.png",
+        "M__walk__f060.png"
+      ]
+    },
+    {
+      "slot": "MF",
+      "n": 8,
+      "identical": 8,
+      "live_both": 7,
+      "changed_frac_sum": 0,
+      "changed_frac_mean": 0,
+      "files_identical": [
+        "MF__walk__f004.png",
+        "MF__walk__f012.png",
+        "MF__walk__f020.png",
+        "MF__walk__f028.png",
+        "MF__walk__f036.png",
+        "MF__walk__f044.png",
+        "MF__walk__f052.png",
+        "MF__walk__f060.png"
+      ]
+    },
+    {
+      "slot": "W",
+      "n": 7,
+      "identical": 2,
+      "live_both": 7,
+      "changed_frac_sum": 0.01232,
+      "changed_frac_mean": 0.00176,
+      "files_identical": [
+        "W__close-b180.png",
+        "W__close-b270.png"
+      ]
+    }
+  ],
+  "face_dual_aim": [
+    {
+      "subject": "npc-lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "record_aim": {
+        "before_live": true,
+        "after_live": true
+      },
+      "ground_aim": {
+        "before_live": true,
+        "after_live": true
+      },
+      "matches_prediction": true
+    },
+    {
+      "subject": "npc-lilmoth-priest-6",
+      "variant": "sax.deep-warden",
+      "record_aim": {
+        "before_live": true,
+        "after_live": true
+      },
+      "ground_aim": {
+        "before_live": true,
+        "after_live": true
+      },
+      "matches_prediction": true
+    },
+    {
+      "subject": "npc-lilmoth-wharf-cutters",
+      "variant": "sax.marsh-lean",
+      "record_aim": {
+        "before_live": true,
+        "after_live": true
+      },
+      "ground_aim": {
+        "before_live": true,
+        "after_live": true
+      },
+      "matches_prediction": true
+    },
+    {
+      "subject": "npc-shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "record_aim": {
+        "before_live": true,
+        "after_live": true
+      },
+      "ground_aim": {
+        "before_live": true,
+        "after_live": true
+      },
+      "matches_prediction": true
+    }
+  ],
+  "per_foot": {
+    "before": [
+      {
+        "stand": "slope-strong",
+        "expected_per_foot_m": 0.4932,
+        "measured_per_foot_ground_m": 0.2202,
+        "drawn_foot_height_difference_m": 0.2202,
+        "stance_m": 0.2
+      },
+      {
+        "stand": "slope-moderate",
+        "expected_per_foot_m": 0.253,
+        "measured_per_foot_ground_m": 0.2507,
+        "drawn_foot_height_difference_m": 0.2295,
+        "stance_m": 0.2001
+      },
+      {
+        "stand": "char-player",
+        "expected_per_foot_m": 0,
+        "measured_per_foot_ground_m": 0,
+        "drawn_foot_height_difference_m": 0.0011,
+        "stance_m": 0.2006
+      }
+    ],
+    "after": [
+      {
+        "stand": "slope-strong",
+        "expected_per_foot_m": 0.4932,
+        "measured_per_foot_ground_m": 0.2202,
+        "drawn_foot_height_difference_m": 0.2202,
+        "stance_m": 0.2
+      },
+      {
+        "stand": "slope-moderate",
+        "expected_per_foot_m": 0.253,
+        "measured_per_foot_ground_m": 0.2507,
+        "drawn_foot_height_difference_m": 0.2295,
+        "stance_m": 0.2001
+      },
+      {
+        "stand": "char-player",
+        "expected_per_foot_m": 0,
+        "measured_per_foot_ground_m": 0,
+        "drawn_foot_height_difference_m": 0.0011,
+        "stance_m": 0.2006
+      }
+    ]
+  },
+  "motion": {
+    "before": {
+      "frames": 16,
+      "median_consecutive": 0.40015,
+      "min_consecutive": 0.30644,
+      "max_consecutive": 0.45146,
+      "manifest_motion": {
+        "attempted": true,
+        "queued": 69,
+        "frames": [
+          {
+            "i": 0,
+            "sim_frame": 4,
+            "pos": [
+              2765.867,
+              2.68,
+              5011
+            ],
+            "travelled_m": 0.133
+          },
+          {
+            "i": 1,
+            "sim_frame": 8,
+            "pos": [
+              2765.676,
+              2.68,
+              5011.024
+            ],
+            "travelled_m": 0.324
+          },
+          {
+            "i": 2,
+            "sim_frame": 12,
+            "pos": [
+              2765.559,
+              2.68,
+              5011.141
+            ],
+            "travelled_m": 0.463
+          },
+          {
+            "i": 3,
+            "sim_frame": 16,
+            "pos": [
+              2765.368,
+              2.68,
+              5011.165
+            ],
+            "travelled_m": 0.653
+          },
+          {
+            "i": 4,
+            "sim_frame": 20,
+            "pos": [
+              2765.251,
+              2.68,
+              5011.283
+            ],
+            "travelled_m": 0.801
+          },
+          {
+            "i": 5,
+            "sim_frame": 24,
+            "pos": [
+              2765.06,
+              2.68,
+              5011.306
+            ],
+            "travelled_m": 0.988
+          },
+          {
+            "i": 6,
+            "sim_frame": 28,
+            "pos": [
+              2764.942,
+              2.68,
+              5011.424
+            ],
+            "travelled_m": 1.14
+          },
+          {
+            "i": 7,
+            "sim_frame": 32,
+            "pos": [
+              2764.752,
+              2.68,
+              5011.448
+            ],
+            "travelled_m": 1.326
+          },
+          {
+            "i": 8,
+            "sim_frame": 36,
+            "pos": [
+              2764.634,
+              2.68,
+              5011.566
+            ],
+            "travelled_m": 1.478
+          },
+          {
+            "i": 9,
+            "sim_frame": 40,
+            "pos": [
+              2764.444,
+              2.68,
+              5011.589
+            ],
+            "travelled_m": 1.664
+          },
+          {
+            "i": 10,
+            "sim_frame": 44,
+            "pos": [
+              2764.326,
+              2.68,
+              5011.707
+            ],
+            "travelled_m": 1.817
+          },
+          {
+            "i": 11,
+            "sim_frame": 48,
+            "pos": [
+              2764.136,
+              2.68,
+              5011.731
+            ],
+            "travelled_m": 2.002
+          },
+          {
+            "i": 12,
+            "sim_frame": 52,
+            "pos": [
+              2764.018,
+              2.68,
+              5011.849
+            ],
+            "travelled_m": 2.156
+          },
+          {
+            "i": 13,
+            "sim_frame": 56,
+            "pos": [
+              2763.828,
+              2.68,
+              5011.872
+            ],
+            "travelled_m": 2.341
+          },
+          {
+            "i": 14,
+            "sim_frame": 60,
+            "pos": [
+              2763.71,
+              2.68,
+              5011.99
+            ],
+            "travelled_m": 2.495
+          },
+          {
+            "i": 15,
+            "sim_frame": 64,
+            "pos": [
+              2763.52,
+              2.68,
+              5012.014
+            ],
+            "travelled_m": 2.679
+          }
+        ],
+        "stick": 0.55,
+        "note": "player travelled 2.679 m over 64 simulated frames with the stick at 0.55",
+        "stand": "char-player"
+      },
+      "verdict": "MOVED — median consecutive ring change 40.02%",
+      "consecutive_ring_change": [
+        {
+          "from": "M__walk__f004.png",
+          "to": "M__walk__f008.png",
+          "ring_changed_frac": 0.36346
+        },
+        {
+          "from": "M__walk__f008.png",
+          "to": "M__walk__f012.png",
+          "ring_changed_frac": 0.38628
+        },
+        {
+          "from": "M__walk__f012.png",
+          "to": "M__walk__f016.png",
+          "ring_changed_frac": 0.37089
+        },
+        {
+          "from": "M__walk__f016.png",
+          "to": "M__walk__f020.png",
+          "ring_changed_frac": 0.3983
+        },
+        {
+          "from": "M__walk__f020.png",
+          "to": "M__walk__f024.png",
+          "ring_changed_frac": 0.43245
+        },
+        {
+          "from": "M__walk__f024.png",
+          "to": "M__walk__f028.png",
+          "ring_changed_frac": 0.45146
+        },
+        {
+          "from": "M__walk__f028.png",
+          "to": "M__walk__f032.png",
+          "ring_changed_frac": 0.45102
+        },
+        {
+          "from": "M__walk__f032.png",
+          "to": "M__walk__f036.png",
+          "ring_changed_frac": 0.4021
+        },
+        {
+          "from": "M__walk__f036.png",
+          "to": "M__walk__f040.png",
+          "ring_changed_frac": 0.40906
+        },
+        {
+          "from": "M__walk__f040.png",
+          "to": "M__walk__f044.png",
+          "ring_changed_frac": 0.4052
+        },
+        {
+          "from": "M__walk__f044.png",
+          "to": "M__walk__f048.png",
+          "ring_changed_frac": 0.41353
+        },
+        {
+          "from": "M__walk__f048.png",
+          "to": "M__walk__f052.png",
+          "ring_changed_frac": 0.40015
+        },
+        {
+          "from": "M__walk__f052.png",
+          "to": "M__walk__f056.png",
+          "ring_changed_frac": 0.38325
+        },
+        {
+          "from": "M__walk__f056.png",
+          "to": "M__walk__f060.png",
+          "ring_changed_frac": 0.35927
+        },
+        {
+          "from": "M__walk__f060.png",
+          "to": "M__walk__f064.png",
+          "ring_changed_frac": 0.30644
+        }
+      ]
+    },
+    "after": {
+      "frames": 16,
+      "median_consecutive": 0.40015,
+      "min_consecutive": 0.30644,
+      "max_consecutive": 0.45146,
+      "manifest_motion": {
+        "attempted": true,
+        "queued": 69,
+        "frames": [
+          {
+            "i": 0,
+            "sim_frame": 4,
+            "pos": [
+              2765.867,
+              2.68,
+              5011
+            ],
+            "travelled_m": 0.133
+          },
+          {
+            "i": 1,
+            "sim_frame": 8,
+            "pos": [
+              2765.676,
+              2.68,
+              5011.024
+            ],
+            "travelled_m": 0.324
+          },
+          {
+            "i": 2,
+            "sim_frame": 12,
+            "pos": [
+              2765.559,
+              2.68,
+              5011.141
+            ],
+            "travelled_m": 0.463
+          },
+          {
+            "i": 3,
+            "sim_frame": 16,
+            "pos": [
+              2765.368,
+              2.68,
+              5011.165
+            ],
+            "travelled_m": 0.653
+          },
+          {
+            "i": 4,
+            "sim_frame": 20,
+            "pos": [
+              2765.251,
+              2.68,
+              5011.283
+            ],
+            "travelled_m": 0.801
+          },
+          {
+            "i": 5,
+            "sim_frame": 24,
+            "pos": [
+              2765.06,
+              2.68,
+              5011.306
+            ],
+            "travelled_m": 0.988
+          },
+          {
+            "i": 6,
+            "sim_frame": 28,
+            "pos": [
+              2764.942,
+              2.68,
+              5011.424
+            ],
+            "travelled_m": 1.14
+          },
+          {
+            "i": 7,
+            "sim_frame": 32,
+            "pos": [
+              2764.752,
+              2.68,
+              5011.448
+            ],
+            "travelled_m": 1.326
+          },
+          {
+            "i": 8,
+            "sim_frame": 36,
+            "pos": [
+              2764.634,
+              2.68,
+              5011.566
+            ],
+            "travelled_m": 1.478
+          },
+          {
+            "i": 9,
+            "sim_frame": 40,
+            "pos": [
+              2764.444,
+              2.68,
+              5011.589
+            ],
+            "travelled_m": 1.664
+          },
+          {
+            "i": 10,
+            "sim_frame": 44,
+            "pos": [
+              2764.326,
+              2.68,
+              5011.707
+            ],
+            "travelled_m": 1.817
+          },
+          {
+            "i": 11,
+            "sim_frame": 48,
+            "pos": [
+              2764.136,
+              2.68,
+              5011.731
+            ],
+            "travelled_m": 2.002
+          },
+          {
+            "i": 12,
+            "sim_frame": 52,
+            "pos": [
+              2764.018,
+              2.68,
+              5011.849
+            ],
+            "travelled_m": 2.156
+          },
+          {
+            "i": 13,
+            "sim_frame": 56,
+            "pos": [
+              2763.828,
+              2.68,
+              5011.872
+            ],
+            "travelled_m": 2.341
+          },
+          {
+            "i": 14,
+            "sim_frame": 60,
+            "pos": [
+              2763.71,
+              2.68,
+              5011.99
+            ],
+            "travelled_m": 2.495
+          },
+          {
+            "i": 15,
+            "sim_frame": 64,
+            "pos": [
+              2763.52,
+              2.68,
+              5012.014
+            ],
+            "travelled_m": 2.679
+          }
+        ],
+        "stick": 0.55,
+        "note": "player travelled 2.679 m over 64 simulated frames with the stick at 0.55",
+        "stand": "char-player"
+      },
+      "verdict": "MOVED — median consecutive ring change 40.02%",
+      "consecutive_ring_change": [
+        {
+          "from": "M__walk__f004.png",
+          "to": "M__walk__f008.png",
+          "ring_changed_frac": 0.36346
+        },
+        {
+          "from": "M__walk__f008.png",
+          "to": "M__walk__f012.png",
+          "ring_changed_frac": 0.38628
+        },
+        {
+          "from": "M__walk__f012.png",
+          "to": "M__walk__f016.png",
+          "ring_changed_frac": 0.37089
+        },
+        {
+          "from": "M__walk__f016.png",
+          "to": "M__walk__f020.png",
+          "ring_changed_frac": 0.3983
+        },
+        {
+          "from": "M__walk__f020.png",
+          "to": "M__walk__f024.png",
+          "ring_changed_frac": 0.43245
+        },
+        {
+          "from": "M__walk__f024.png",
+          "to": "M__walk__f028.png",
+          "ring_changed_frac": 0.45146
+        },
+        {
+          "from": "M__walk__f028.png",
+          "to": "M__walk__f032.png",
+          "ring_changed_frac": 0.45102
+        },
+        {
+          "from": "M__walk__f032.png",
+          "to": "M__walk__f036.png",
+          "ring_changed_frac": 0.4021
+        },
+        {
+          "from": "M__walk__f036.png",
+          "to": "M__walk__f040.png",
+          "ring_changed_frac": 0.40906
+        },
+        {
+          "from": "M__walk__f040.png",
+          "to": "M__walk__f044.png",
+          "ring_changed_frac": 0.4052
+        },
+        {
+          "from": "M__walk__f044.png",
+          "to": "M__walk__f048.png",
+          "ring_changed_frac": 0.41353
+        },
+        {
+          "from": "M__walk__f048.png",
+          "to": "M__walk__f052.png",
+          "ring_changed_frac": 0.40015
+        },
+        {
+          "from": "M__walk__f052.png",
+          "to": "M__walk__f056.png",
+          "ring_changed_frac": 0.38325
+        },
+        {
+          "from": "M__walk__f056.png",
+          "to": "M__walk__f060.png",
+          "ring_changed_frac": 0.35927
+        },
+        {
+          "from": "M__walk__f060.png",
+          "to": "M__walk__f064.png",
+          "ring_changed_frac": 0.30644
+        }
+      ]
+    }
+  },
+  "variant_selection": {
+    "before": {
+      "quota": [
+        "hum.imperial-clerk",
+        "hum.breton-stout",
+        "hum.dunmer-lean",
+        "sax.deep-warden",
+        "sax.marsh-lean"
+      ],
+      "filled": {
+        "hum.imperial-clerk": "shipwright-oleen",
+        "hum.dunmer-lean": "lilmoth-keeper-scribe",
+        "sax.deep-warden": "lilmoth-priest-6",
+        "sax.marsh-lean": "lilmoth-wharf-cutters"
+      },
+      "missing": [
+        "hum.breton-stout"
+      ],
+      "pool_size": 27,
+      "proximity": {
+        "enumerated": 60,
+        "kept": 27,
+        "rejected": 33,
+        "distances": {
+          "stand": "crowd-lilmoth",
+          "n": 60,
+          "min": 7.8,
+          "p10": 12.5,
+          "median": 5761,
+          "p90": 5769.3,
+          "max": 6027.4,
+          "within_max_offset": 27,
+          "beyond_max_offset": 33,
+          "all_m": [
+            7.8,
+            9,
+            11.2,
+            11.5,
+            11.8,
+            12.4,
+            12.5,
+            12.5,
+            13.1,
+            13.3,
+            13.8,
+            15.2,
+            16.2,
+            17.3,
+            17.5,
+            17.8,
+            18.6,
+            19.6,
+            19.6,
+            21.3,
+            23.4,
+            23.6,
+            24.6,
+            27.1,
+            30.9,
+            38.5,
+            66.4,
+            5758.8,
+            5760.5,
+            5760.9,
+            5761,
+            5761,
+            5761.1,
+            5761.1,
+            5761.1,
+            5761.2,
+            5762.2,
+            5762.5,
+            5762.6,
+            5762.7,
+            5763.2,
+            5763.6,
+            5763.8,
+            5764.3,
+            5764.3,
+            5764.6,
+            5765,
+            5765,
+            5765.2,
+            5766.7,
+            5766.7,
+            5766.7,
+            5766.8,
+            5767.4,
+            5769.3,
+            5769.7,
+            6016.4,
+            6025.5,
+            6026.2,
+            6027.4
+          ]
+        }
+      }
+    },
+    "after": {
+      "quota": [
+        "hum.imperial-clerk",
+        "hum.breton-stout",
+        "hum.dunmer-lean",
+        "sax.deep-warden",
+        "sax.marsh-lean"
+      ],
+      "filled": {
+        "hum.imperial-clerk": "shipwright-oleen",
+        "hum.dunmer-lean": "lilmoth-keeper-scribe",
+        "sax.deep-warden": "lilmoth-priest-6",
+        "sax.marsh-lean": "lilmoth-wharf-cutters"
+      },
+      "missing": [
+        "hum.breton-stout"
+      ],
+      "pool_size": 27,
+      "proximity": {
+        "enumerated": 60,
+        "kept": 27,
+        "rejected": 33,
+        "distances": {
+          "stand": "crowd-lilmoth",
+          "n": 60,
+          "min": 7.8,
+          "p10": 12.5,
+          "median": 5761,
+          "p90": 5769.3,
+          "max": 6027.4,
+          "within_max_offset": 27,
+          "beyond_max_offset": 33,
+          "all_m": [
+            7.8,
+            9,
+            11.2,
+            11.5,
+            11.8,
+            12.4,
+            12.5,
+            12.5,
+            13.1,
+            13.3,
+            13.8,
+            15.2,
+            16.2,
+            17.3,
+            17.5,
+            17.8,
+            18.6,
+            19.6,
+            19.6,
+            21.3,
+            23.4,
+            23.6,
+            24.6,
+            27.1,
+            30.9,
+            38.5,
+            66.4,
+            5758.8,
+            5760.5,
+            5760.9,
+            5761,
+            5761,
+            5761.1,
+            5761.1,
+            5761.1,
+            5761.2,
+            5762.2,
+            5762.5,
+            5762.6,
+            5762.7,
+            5763.2,
+            5763.6,
+            5763.8,
+            5764.3,
+            5764.3,
+            5764.6,
+            5765,
+            5765,
+            5765.2,
+            5766.7,
+            5766.7,
+            5766.7,
+            5766.8,
+            5767.4,
+            5769.3,
+            5769.7,
+            6016.4,
+            6025.5,
+            6026.2,
+            6027.4
+          ]
+        }
+      }
+    }
+  },
+  "pairs": [
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw000.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "165434f44a31b5ac",
+      "sha_before": "535a039b8515d0cf",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.19452,
+      "mean_delta": 7.305,
+      "max_delta": 146,
+      "box_px": 103257
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw045.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "af1b4ba1f5f1b5ef",
+      "sha_before": "e84e41aa72f0fb73",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.13208,
+      "mean_delta": 4.818,
+      "max_delta": 131,
+      "box_px": 103257
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw090.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "26ab0507cc48c9a6",
+      "sha_before": "8869d5c87e1d65e3",
+      "verdict_before": "LIVE",
+      "verdict_after": "NO_SUBJECT",
+      "live_both": false,
+      "changed_frac": 0.3542,
+      "mean_delta": 10.53,
+      "max_delta": 175,
+      "box_px": 103257
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw135.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "703fd16fad589e79",
+      "sha_before": "3e9e68bf4b762759",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.89647,
+      "mean_delta": 28.024,
+      "max_delta": 211,
+      "box_px": 103257
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw180.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "d741426bedf7ded1",
+      "sha_before": "e98df6e1ffc7f8d5",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.47601,
+      "mean_delta": 16.708,
+      "max_delta": 221,
+      "box_px": 103257
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw225.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "0789bfd6c851c366",
+      "sha_before": "534a3dcf3d55c5fa",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.08715,
+      "mean_delta": 3.041,
+      "max_delta": 120,
+      "box_px": 103257
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw270.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "a10133da75fe644e",
+      "sha_before": "cded19ce8dcd2c42",
+      "verdict_before": "NO_SUBJECT",
+      "verdict_after": "NO_SUBJECT",
+      "live_both": false,
+      "changed_frac": 0.23219,
+      "mean_delta": 8.619,
+      "max_delta": 91,
+      "box_px": 103257
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw315.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "8f95598f8d39e092",
+      "sha_before": "bb87a213b166e10f",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.23085,
+      "mean_delta": 8.332,
+      "max_delta": 130,
+      "box_px": 103257
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw000.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "c9e9be205d0c8cfc",
+      "sha_before": "2af4b685bd4c8194",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.4916,
+      "mean_delta": 19.594,
+      "max_delta": 145,
+      "box_px": 103257
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw045.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "37f6bb7b9050b006",
+      "sha_before": "8f93caddf7e2a63d",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.23054,
+      "mean_delta": 6.627,
+      "max_delta": 119,
+      "box_px": 103257
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw090.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "2995c254e65d185d",
+      "sha_before": "f47fe71bb23c2b1f",
+      "verdict_before": "LIVE",
+      "verdict_after": "NO_SUBJECT",
+      "live_both": false,
+      "changed_frac": 0.32,
+      "mean_delta": 8.923,
+      "max_delta": 153,
+      "box_px": 103257
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw135.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "b927d19d00545172",
+      "sha_before": "7d606bb778a82828",
+      "verdict_before": "NO_SUBJECT",
+      "verdict_after": "LIVE",
+      "live_both": false,
+      "changed_frac": 0.04559,
+      "mean_delta": 0.779,
+      "max_delta": 30,
+      "box_px": 103257
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw180.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "df6a6146a43f3ada",
+      "sha_before": "304fd304bd3020d0",
+      "verdict_before": "LIVE",
+      "verdict_after": "NO_SUBJECT",
+      "live_both": false,
+      "changed_frac": 0.99366,
+      "mean_delta": 42.856,
+      "max_delta": 130,
+      "box_px": 103257
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw225.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "17202801a9a2c282",
+      "sha_before": "17202801a9a2c282",
+      "verdict_before": "NO_SUBJECT",
+      "verdict_after": "NO_SUBJECT",
+      "live_both": false,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw270.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "9e303e1e5851675c",
+      "sha_before": "9e303e1e5851675c",
+      "verdict_before": "NO_SUBJECT",
+      "verdict_after": "NO_SUBJECT",
+      "live_both": false,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw315.png",
+      "slot": "C4",
+      "part": null,
+      "subject": "npc-shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "4f13edb8c831cf22",
+      "sha_before": "4f13edb8c831cf22",
+      "verdict_before": "NO_SUBJECT",
+      "verdict_after": "NO_SUBJECT",
+      "live_both": false,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "CP__player__yaw000.png",
+      "slot": "CP",
+      "part": null,
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "ca3cf07138ba1083",
+      "sha_before": "ca3cf07138ba1083",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "CP__player__yaw045.png",
+      "slot": "CP",
+      "part": null,
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "5f8cc8ecc7581f2c",
+      "sha_before": "5f8cc8ecc7581f2c",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "CP__player__yaw090.png",
+      "slot": "CP",
+      "part": null,
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "3e61fa3cf5bfedee",
+      "sha_before": "3e61fa3cf5bfedee",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "CP__player__yaw135.png",
+      "slot": "CP",
+      "part": null,
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "a44347758b82ac5c",
+      "sha_before": "a44347758b82ac5c",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "CP__player__yaw180.png",
+      "slot": "CP",
+      "part": null,
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "d8ef9f0af6a39a6c",
+      "sha_before": "d8ef9f0af6a39a6c",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "CP__player__yaw225.png",
+      "slot": "CP",
+      "part": null,
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "b75034b357a8ac0f",
+      "sha_before": "b75034b357a8ac0f",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "CP__player__yaw270.png",
+      "slot": "CP",
+      "part": null,
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "d88364e92994a11f",
+      "sha_before": "a2b51594bd58d26c",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": 103257
+    },
+    {
+      "file": "CP__player__yaw315.png",
+      "slot": "CP",
+      "part": null,
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "d1a98c6a334ee571",
+      "sha_before": "d1a98c6a334ee571",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FA__npc-lilmoth-keeper-scribe__ground__b000.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "aim": "ground",
+      "stand": null,
+      "identical": false,
+      "sha_after": "0bcf5f503f9b42e6",
+      "sha_before": "6f29cb0d11cfdedd",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.50673,
+      "mean_delta": 15.467,
+      "max_delta": 185,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-lilmoth-keeper-scribe__ground__b090.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "aim": "ground",
+      "stand": null,
+      "identical": false,
+      "sha_after": "b6a8d84974441783",
+      "sha_before": "ad28a7ceb795a158",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.29721,
+      "mean_delta": 8.611,
+      "max_delta": 101,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-lilmoth-keeper-scribe__record__b000.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "aim": "record",
+      "stand": null,
+      "identical": false,
+      "sha_after": "6bd38ce49143072c",
+      "sha_before": "c3dd6b3ac465430f",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.69436,
+      "mean_delta": 21.851,
+      "max_delta": 185,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-lilmoth-keeper-scribe__record__b090.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "aim": "record",
+      "stand": null,
+      "identical": false,
+      "sha_after": "17519ae582a6e89d",
+      "sha_before": "fa0d64c6c3d931b8",
+      "verdict_before": "LIVE",
+      "verdict_after": "NO_SUBJECT",
+      "live_both": false,
+      "changed_frac": 0.57033,
+      "mean_delta": 16.834,
+      "max_delta": 142,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-lilmoth-priest-6__ground__b000.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-priest-6",
+      "variant": "sax.deep-warden",
+      "aim": "ground",
+      "stand": null,
+      "identical": false,
+      "sha_after": "e213862c91b5320e",
+      "sha_before": "22edffe486a50f13",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.45895,
+      "mean_delta": 16.277,
+      "max_delta": 214,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-lilmoth-priest-6__ground__b090.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-priest-6",
+      "variant": "sax.deep-warden",
+      "aim": "ground",
+      "stand": null,
+      "identical": false,
+      "sha_after": "04598a5bdb384d8d",
+      "sha_before": "61cda9e7b7ec6915",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.4406,
+      "mean_delta": 12.932,
+      "max_delta": 154,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-lilmoth-priest-6__record__b000.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-priest-6",
+      "variant": "sax.deep-warden",
+      "aim": "record",
+      "stand": null,
+      "identical": false,
+      "sha_after": "e8079cdfedb70e99",
+      "sha_before": "210fd1e26f9c0e90",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.6583,
+      "mean_delta": 42.615,
+      "max_delta": 202,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-lilmoth-priest-6__record__b090.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-priest-6",
+      "variant": "sax.deep-warden",
+      "aim": "record",
+      "stand": null,
+      "identical": false,
+      "sha_after": "5fcd6eb8b2ef0426",
+      "sha_before": "2c29695806cc4dcf",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.5908,
+      "mean_delta": 28.451,
+      "max_delta": 153,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-lilmoth-wharf-cutters__ground__b000.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-wharf-cutters",
+      "variant": "sax.marsh-lean",
+      "aim": "ground",
+      "stand": null,
+      "identical": false,
+      "sha_after": "4b1d58140b8c673d",
+      "sha_before": "5c0688566c52e58f",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.37417,
+      "mean_delta": 15.6,
+      "max_delta": 200,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-lilmoth-wharf-cutters__ground__b090.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-wharf-cutters",
+      "variant": "sax.marsh-lean",
+      "aim": "ground",
+      "stand": null,
+      "identical": false,
+      "sha_after": "f0504c179453bbfa",
+      "sha_before": "de06bb6673f25233",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.2421,
+      "mean_delta": 7.503,
+      "max_delta": 247,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-lilmoth-wharf-cutters__record__b000.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-wharf-cutters",
+      "variant": "sax.marsh-lean",
+      "aim": "record",
+      "stand": null,
+      "identical": false,
+      "sha_after": "c9ad7a608532f356",
+      "sha_before": "68de57c506f490bd",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.56303,
+      "mean_delta": 22.829,
+      "max_delta": 176,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-lilmoth-wharf-cutters__record__b090.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-wharf-cutters",
+      "variant": "sax.marsh-lean",
+      "aim": "record",
+      "stand": null,
+      "identical": false,
+      "sha_after": "57f7e8f1c56461f4",
+      "sha_before": "c3f320a9a82de09c",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.04329,
+      "mean_delta": 1.892,
+      "max_delta": 95,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-shipwright-oleen__ground__b000.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "aim": "ground",
+      "stand": null,
+      "identical": false,
+      "sha_after": "2ba65c24daa0d8ef",
+      "sha_before": "ff1556b8c652fb26",
+      "verdict_before": "LIVE",
+      "verdict_after": "NO_SUBJECT",
+      "live_both": false,
+      "changed_frac": 0.5934,
+      "mean_delta": 18.198,
+      "max_delta": 166,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-shipwright-oleen__ground__b090.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "aim": "ground",
+      "stand": null,
+      "identical": false,
+      "sha_after": "561994cdcdd7afbc",
+      "sha_before": "0855b7aff1c6bed7",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.19173,
+      "mean_delta": 5.22,
+      "max_delta": 125,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-shipwright-oleen__record__b000.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "aim": "record",
+      "stand": null,
+      "identical": false,
+      "sha_after": "06dbfd6b66318c56",
+      "sha_before": "ccf0916c18772b2d",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.55614,
+      "mean_delta": 28.651,
+      "max_delta": 222,
+      "box_px": 157975
+    },
+    {
+      "file": "FA__npc-shipwright-oleen__record__b090.png",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "aim": "record",
+      "stand": null,
+      "identical": false,
+      "sha_after": "74a6d67c9e92fbf9",
+      "sha_before": "ebab4a5124db57cc",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.61974,
+      "mean_delta": 26.146,
+      "max_delta": 174,
+      "box_px": 157975
+    },
+    {
+      "file": "FP__player__b000.png",
+      "slot": "FP",
+      "part": "face",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "e76d83c53b1bc070",
+      "sha_before": "e76d83c53b1bc070",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FP__player__b045.png",
+      "slot": "FP",
+      "part": "face",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "fe9a923c055b7509",
+      "sha_before": "fe9a923c055b7509",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FP__player__b090.png",
+      "slot": "FP",
+      "part": "face",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "f33df61bcb8abc21",
+      "sha_before": "f33df61bcb8abc21",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FP__player__b180.png",
+      "slot": "FP",
+      "part": "face",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "bae6368c5f677b9d",
+      "sha_before": "bae6368c5f677b9d",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FSF__char-player__b000.png",
+      "slot": "FSF",
+      "part": "figure",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "char-player",
+      "identical": true,
+      "sha_after": "8ea30b5e6d3c5e96",
+      "sha_before": "8ea30b5e6d3c5e96",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FSF__char-player__b090.png",
+      "slot": "FSF",
+      "part": "figure",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "char-player",
+      "identical": true,
+      "sha_after": "992772cf73f06123",
+      "sha_before": "992772cf73f06123",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FSF__slope-moderate__b000.png",
+      "slot": "FSF",
+      "part": "figure",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "slope-moderate",
+      "identical": true,
+      "sha_after": "cd2ddb1c3d1c1599",
+      "sha_before": "cd2ddb1c3d1c1599",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FSF__slope-moderate__b090.png",
+      "slot": "FSF",
+      "part": "figure",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "slope-moderate",
+      "identical": false,
+      "sha_after": "5eec6179f45fb6ec",
+      "sha_before": "1f633120813073a9",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": 103026
+    },
+    {
+      "file": "FSF__slope-strong__b000.png",
+      "slot": "FSF",
+      "part": "figure",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "slope-strong",
+      "identical": true,
+      "sha_after": "74c6a79d898a83c4",
+      "sha_before": "74c6a79d898a83c4",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FSF__slope-strong__b090.png",
+      "slot": "FSF",
+      "part": "figure",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "slope-strong",
+      "identical": false,
+      "sha_after": "2ea60eaacc6880ba",
+      "sha_before": "175fc5ba28bd9085",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": 103026
+    },
+    {
+      "file": "FS__char-player__b000p-18.png",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "char-player",
+      "identical": true,
+      "sha_after": "4fda93eaa784e85b",
+      "sha_before": "4fda93eaa784e85b",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FS__char-player__b045p-50.png",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "char-player",
+      "identical": true,
+      "sha_after": "182544425f6ba1f0",
+      "sha_before": "182544425f6ba1f0",
+      "verdict_before": "NO_SUBJECT",
+      "verdict_after": "NO_SUBJECT",
+      "live_both": false,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FS__char-player__b090p-18.png",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "char-player",
+      "identical": true,
+      "sha_after": "946ecdccf8c2743f",
+      "sha_before": "946ecdccf8c2743f",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FS__slope-moderate__b000p-18.png",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "slope-moderate",
+      "identical": true,
+      "sha_after": "fe86fcbded93eb5f",
+      "sha_before": "fe86fcbded93eb5f",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FS__slope-moderate__b045p-50.png",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "slope-moderate",
+      "identical": true,
+      "sha_after": "e23a850b9731b77c",
+      "sha_before": "e23a850b9731b77c",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FS__slope-moderate__b090p-18.png",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "slope-moderate",
+      "identical": false,
+      "sha_after": "767c1a298fc83f08",
+      "sha_before": "e2e56ee71bd8c65a",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": 202650
+    },
+    {
+      "file": "FS__slope-strong__b000p-18.png",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "slope-strong",
+      "identical": true,
+      "sha_after": "d18f43cb6b69f2f7",
+      "sha_before": "d18f43cb6b69f2f7",
+      "verdict_before": "NO_SUBJECT",
+      "verdict_after": "NO_SUBJECT",
+      "live_both": false,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FS__slope-strong__b045p-50.png",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "slope-strong",
+      "identical": true,
+      "sha_after": "1ad130befaf5edef",
+      "sha_before": "1ad130befaf5edef",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "FS__slope-strong__b090p-18.png",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": "slope-strong",
+      "identical": false,
+      "sha_after": "9c666905f8baa310",
+      "sha_before": "71936abbbc5a4a2a",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": 202650
+    },
+    {
+      "file": "MF__walk__f004.png",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "60d4ce416403bece",
+      "sha_before": "60d4ce416403bece",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "MF__walk__f012.png",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "06c6d984497c6fce",
+      "sha_before": "06c6d984497c6fce",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "MF__walk__f020.png",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "13247bf124f2db19",
+      "sha_before": "13247bf124f2db19",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "MF__walk__f028.png",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "c534e025349045cb",
+      "sha_before": "c534e025349045cb",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "MF__walk__f036.png",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "8c08dea676302aa3",
+      "sha_before": "8c08dea676302aa3",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "MF__walk__f044.png",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "fe3e199f6662d948",
+      "sha_before": "fe3e199f6662d948",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "MF__walk__f052.png",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "fb22d973b69a6843",
+      "sha_before": "fb22d973b69a6843",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "MF__walk__f060.png",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "696e81f15a80a678",
+      "sha_before": "696e81f15a80a678",
+      "verdict_before": "NO_SUBJECT",
+      "verdict_after": "NO_SUBJECT",
+      "live_both": false,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f004.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "a56e379ecf089d09",
+      "sha_before": "a56e379ecf089d09",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f008.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "053dc1e9e64bf4d1",
+      "sha_before": "053dc1e9e64bf4d1",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f012.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "28a1e6993f4b6f06",
+      "sha_before": "28a1e6993f4b6f06",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f016.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "4ae08a9b5ed4d863",
+      "sha_before": "4ae08a9b5ed4d863",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f020.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "cadd95d2e78667f2",
+      "sha_before": "cadd95d2e78667f2",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f024.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "3ce67de8ef610e14",
+      "sha_before": "3ce67de8ef610e14",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f028.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "87042837af310a65",
+      "sha_before": "87042837af310a65",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f032.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "d7c1d41833d56b15",
+      "sha_before": "d7c1d41833d56b15",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f036.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "ff78da6b4571fe47",
+      "sha_before": "ff78da6b4571fe47",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f040.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "35fd1f49797bd581",
+      "sha_before": "35fd1f49797bd581",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f044.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "367e1e02c3c5ba3e",
+      "sha_before": "367e1e02c3c5ba3e",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f048.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "0b4c2e24e42c0036",
+      "sha_before": "0b4c2e24e42c0036",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f052.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "3357ce00347ed86a",
+      "sha_before": "3357ce00347ed86a",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f056.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "eda16266bdd3709f",
+      "sha_before": "eda16266bdd3709f",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f060.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "797221e5b0d92c46",
+      "sha_before": "797221e5b0d92c46",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "M__walk__f064.png",
+      "slot": "M",
+      "part": null,
+      "subject": "player",
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "82eb986e16540985",
+      "sha_before": "ba8ee4881d3ef6c6",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 4,
+      "box_px": 103257
+    },
+    {
+      "file": "W__close-b000.png",
+      "slot": "W",
+      "part": null,
+      "subject": null,
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "53a757ba6dce6246",
+      "sha_before": "84673d7bbfc68cea",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.00277,
+      "mean_delta": 0.096,
+      "max_delta": 111,
+      "box_px": 518400
+    },
+    {
+      "file": "W__close-b090.png",
+      "slot": "W",
+      "part": null,
+      "subject": null,
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "d20fd98ed1341a50",
+      "sha_before": "e5f17b0a300be561",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.00368,
+      "mean_delta": 0.13,
+      "max_delta": 108,
+      "box_px": 518400
+    },
+    {
+      "file": "W__close-b180.png",
+      "slot": "W",
+      "part": null,
+      "subject": null,
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "ce5b90b48eea1497",
+      "sha_before": "ce5b90b48eea1497",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "W__close-b270.png",
+      "slot": "W",
+      "part": null,
+      "subject": null,
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": true,
+      "sha_after": "b8c50f211a426dc8",
+      "sha_before": "b8c50f211a426dc8",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0,
+      "mean_delta": 0,
+      "max_delta": 0,
+      "box_px": null
+    },
+    {
+      "file": "W__mid-b045.png",
+      "slot": "W",
+      "part": null,
+      "subject": null,
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "6645ef4a3e44bfda",
+      "sha_before": "c26678f116cbd8fc",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.00302,
+      "mean_delta": 0.111,
+      "max_delta": 109,
+      "box_px": 518400
+    },
+    {
+      "file": "W__raised-b045.png",
+      "slot": "W",
+      "part": null,
+      "subject": null,
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "cb02e755b774b201",
+      "sha_before": "65f222d037a9fed6",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.00238,
+      "mean_delta": 0.09,
+      "max_delta": 126,
+      "box_px": 518400
+    },
+    {
+      "file": "W__sky-b045.png",
+      "slot": "W",
+      "part": null,
+      "subject": null,
+      "variant": null,
+      "aim": null,
+      "stand": null,
+      "identical": false,
+      "sha_after": "2beb2fed6d575eb4",
+      "sha_before": "0996260f24267fe1",
+      "verdict_before": "LIVE",
+      "verdict_after": "LIVE",
+      "live_both": true,
+      "changed_frac": 0.00047,
+      "mean_delta": 0.017,
+      "max_delta": 114,
+      "box_px": 518400
+    }
+  ]
+}

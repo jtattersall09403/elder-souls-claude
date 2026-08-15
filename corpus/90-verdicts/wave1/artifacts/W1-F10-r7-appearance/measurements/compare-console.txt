@@ -1,0 +1,36 @@
+arms: before 90 frames, after 90, 90 paired
+SIMULATION UNTOUCHED CHECK: record columns identical between arms = true
+  before: visible 31, record buried/air 12/15, DRAWN buried/air 12/15
+  after:  visible 31, record buried/air 12/15, DRAWN buried/air 0/0
+liveness: {"before":{"LIVE":82,"NO_SUBJECT":8},"after":{"LIVE":78,"NO_SUBJECT":12}}
+
+slot     n  identical  live-both  mean changed_frac
+C4       16          3          8             0.3424
+CP        8          7          8                  0
+FA       16          0         14            0.44551
+FP        4          4          4                  0
+FS        9          7          7                  0
+FSF       6          4          6                  0
+M        16         15         16                  0
+MF        8          8          7                  0
+W         7          2          7            0.00176
+
+face dual-aim (prediction: after-arm face at the GROUND aim, before-arm face at the RECORD aim)
+  hum.dunmer-lean      npc-lilmoth-keeper-scribe          record-aim before=true after=true  ground-aim before=true after=true  -> AS PREDICTED
+  sax.deep-warden      npc-lilmoth-priest-6               record-aim before=true after=true  ground-aim before=true after=true  -> AS PREDICTED
+  sax.marsh-lean       npc-lilmoth-wharf-cutters          record-aim before=true after=true  ground-aim before=true after=true  -> AS PREDICTED
+  hum.imperial-clerk   npc-shipwright-oleen               record-aim before=true after=true  ground-aim before=true after=true  -> AS PREDICTED
+
+per-foot ground difference measured at the bones:
+  before slope-strong     ground diff 0.2202 m (scan said 0.4932); drawn foot height diff 0.2202 m
+  before slope-moderate   ground diff 0.2507 m (scan said 0.253); drawn foot height diff 0.2295 m
+  before char-player      ground diff 0 m (scan said 0); drawn foot height diff 0.0011 m
+  after  slope-strong     ground diff 0.2202 m (scan said 0.4932); drawn foot height diff 0.2202 m
+  after  slope-moderate   ground diff 0.2507 m (scan said 0.253); drawn foot height diff 0.2295 m
+  after  char-player      ground diff 0 m (scan said 0); drawn foot height diff 0.0011 m
+
+motion:
+  before: MOVED — median consecutive ring change 40.02%; manifest says player travelled 2.679 m over 64 simulated frames with the stick at 0.55
+  after: MOVED — median consecutive ring change 40.02%; manifest says player travelled 2.679 m over 64 simulated frames with the stick at 0.55
+
+wrote /home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-F10-r7-appearance/measurements/compare.json
