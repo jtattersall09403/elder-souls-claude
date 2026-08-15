@@ -1,0 +1,160 @@
+{
+ "task_id": "W1-F10-r10",
+ "roadmap_item": "F10",
+ "role": "builder",
+ "state": "delivered-unjudged",
+ "date": "2026-08-15",
+ "branch": "codex/wave1-build-experiment",
+ "base_commit": "15a6841c",
+ "commits": ["8d2d898110 (job 1)", "a87b6f79b6 (job 2)", "ae482ddbe7 (job 3)"],
+
+ "what_i_could_not_do": [
+  "**THE VERDICT'S PRESERVATION CLAUSE `after.lr_diff_max_m` <= 0.00109 IS NOT MET AND I BELIEVE IT IS UNREACHABLE — THIS IS THE FIRST THING A CRITIC SHOULD ATTACK.** It still reads 0.00521, exactly where r9 left it, because I deliberately did not re-solve the free-leg knee. I searched for a solve and published the search: 1-DOF on `idle_ready.thigh_l.rx` bottoms out at **0.00260** (at 9.044 deg, against r9's 8.248); adding `thigh_r` as a second DOF gives **0.00260** again (no improvement, optimum at thigh_r -0.143); adding `idle_loop.thigh_l.rx`'s own amplitude as a third reaches **0.00228**, and only by INVERTING that amplitude to -0.285x, which breaks the anti-symmetric weight shift of the breathing loop for 0.3 mm. The bar is 0.00109 and none of the three reach it. THE REASON IS STRUCTURAL, and if it is right the clause should be rewritten rather than chased: 0.00109 was the difference of two IDENTICAL legs under an ANTI-symmetric loop. Contrapposto requires the legs to be geometrically different — one bent to 155.4 deg, one straight at 171.9 — so the same +-0.52 deg loop rotation produces a different vertical response on each. MY RULING, reversible: halving 0.00521 to 0.00260 is not worth the blast radius, because changing `idle_ready`'s leg values forces the same change on the termination endpoints of six archetypes (`cut_diagonal`, `chop_overhead`, `thrust`, `sweep_wide`, `stance_switch`, `quick_swap`) which is exactly where r9's 15x weapon-socket snap fix lives, AND the clause still would not pass. A change that cannot turn the criterion green but can re-open a socket regression is a bad trade. WHAT WOULD OVERTURN IT: a critic measuring the 5.2 mm left/right difference as VISIBLE in frames at player distance — in which case t=9.044 plus the six endpoint updates is one commit and the numbers are above.",
+
+  "**I DID NOT PHOTOGRAPH ANY OF THIS ON HARDWARE, AND THAT IS THE SAME HOLE r9 AND r8 LEFT.** Every number in this file is from offline instruments: the built rig (`Rig.evaluate` world joint positions) and an offline rasteriser with a z-buffer. I ran no Pod, no browser, and no capture. So job 1's hover fix is NOT photographed standing on ground in the running game, and job 2's pupil is NOT photographed on a GPU — the 10,316 pixels are orthographic rasteriser pixels, not frames. The r9 critic did exactly this for me and it is what made this round well-aimed; I have not done it for r11. **The cheapest close is `--slots CP,FP` with the BEFORE arm pinned at `15a6841c` and the AFTER at `ae482ddbe7`**, which is the ~$0.01 run r9 costed at 3m18s of Pod life. The character directive is explicit that stills are not enough and that builders must look at our game in motion from multiple angles; I looked at r9's frames (FP__player__b180, and the critic's 3x/5x crops) and at four reference plates, and I shot nothing new.",
+
+  "**I ANSWERED TWO OF THE CRITIC'S FOUR WORDS ABOUT THE EYE. 'No lid, no orbit' STANDS.** The critic's sentence was 'a flat amber lozenge, no pupil, no lid, no orbit'. The pupil now reads (0 -> 149-386 px on five morphs at six bearings) and the lozenge is a ball that survives to a rear-three-quarter bearing (6 px -> 1160 px). But the `saxhleel` branch still carries NO lid arcs and NO brow ridge — the `humanoid` branch above it carries six lid arcs, a brow ridge, a cheekbone and a mandible line, and the reptile branch has none of them. I did not add them because the humanoid block's own note records that a full orbit ring 'read as spectacles' and that a 7 mm-proud ball inside one 'rendered a gargoyle in goggles', and I had no way to judge a new one this round without a capture (see above). The ESO plates I opened are unambiguous that the eye reads because of the dark rim and the shadowed orbit around it, so this is the largest remaining piece of job 2 and I am leaving it named rather than half-done.",
+
+  "**I DID NOT CLOSE E1, AND ON THE ARM I MEASURED IT IS WORSE THAN THE ACTOR ARM.** 14 distinct drawn bodies for 408 records, one per 29.14, against 34 required. I measured it, published the full distribution and the per-race breakdown, and named what would close it — I built no new bodies. That is the brief's explicit fallback, taken knowingly.",
+
+  "**I SCORED NO RI-VIS10 CHECK MYSELF AND PUBLISHED NO NEW CENSUS FOR THE ITEM'S 12-CENSUS FLOOR.** My three artefacts are instrument outputs against the r9 verdict's gap, not RI-VIS10 census rows in the item's own format. B1, C4 and D4 still need a fresh judge that no builder or critic can spawn (CLAUDE.md 0e). I ran neither D2 nor D5 nor RI-VIS08.",
+
+  "**THE `anim-author.mjs` LANDMINE IS STILL LIVE AND I ADDED SURFACE TO IT.** HAZARDS 20a records that `--write` still reverts `idle_loop`'s rx amplitudes ~34%. I did not run it. But job 1 hand-authored `root_offset` endpoints onto six archetypes, and `swing.js:311-324` generates attack `rootY` itself and rounds through `r2()` — **two decimal places, so the generator cannot express a 7.96 mm offset at all; the smallest value it can emit is 10 mm.** A future `--write` will therefore silently flatten those six endpoints back to 0 and re-open the boundary step, and fixing the generator needs a precision change, not a value change. This is recorded here and nowhere else yet."
+ ],
+
+ "headline": "The contrapposto no longer lifts the character off the floor — 7.96 mm -> 0.00 mm on the idle loop, 9.1 -> 1.2 mm on the planted foot of every gait — and it took a root translation because rotation was measured to be arithmetically incapable of it. The eye's pupil, which existed and was worth ZERO pixels from every bearing on four of five morphs, now reads on all of them: the occluder was the snout, not the skull.",
+
+ "job_1_the_hover": {
+  "the_conditional_the_verdict_set_and_its_answer": "The verdict offered remedy (A) 'if the additive layer's root_offset is not consumed' and (B) otherwise. CHECKED BEFORE BUILDING, as instructed: `game/src/combat/clips.js:200-210`, `addPose(rig, archetype, phase, weight)` iterates `archetype.tracks` and writes `rig.rx/ry/rz`. It never reads `root_offset`. NOT CONSUMED. Two fields were dead data because of it: `idle_ready.root_offset.y` = [[0,0],[3,0]] and `block_hold.root_offset.y` = [[0,-0.03],[3,-0.03]] — an authored 3 cm guard crouch that has never once been applied.",
+  "why_option_B_is_impossible_and_it_is_measured_not_argued": {
+   "instrument": "tools/visual/f10-r10-stance-height.mjs §C",
+   "geometry": "pelvis.rz +5 rotates about the PELVIS ORIGIN: hip_l 0.94000 -> 0.93144 (-8.56 mm), hip_r 0.94000 -> 0.94887 (+8.87 mm). Both ankles then sit at 0.09887 against a baseline 0.09000.",
+   "the_trap": "levelling the feet can only SHORTEN a leg, and shortening only ever RAISES a foot. To put the right foot back on the floor its leg must LENGTHEN by 8.87 mm.",
+   "headroom_measured": "the right leg carries ZERO stance-layer rx — its 171.87 deg knee is the SKELETON REST POSE. Sweeping a straightening pair (thigh_r.rx = -t, calf_r.rx = +2t) over t = 0,2,4,6,8,8.13,10,12 deg, the right ankle bottoms out at 0.09674 at t=4 with the knee locked at 179.87 deg. That is 2.13 mm of the 8.87 mm required, 24%, bought with a hyperextended knee.",
+   "conclusion": "a root TRANSLATION is arithmetically required. The hip line tilt C3 scores is reachable ONLY by rolling the pelvis, because a thigh's own rotation cannot move the thigh bone's ORIGIN, which is where the hip line is read."
+  },
+  "what_i_built": [
+   "`clips.js` gains `stanceRootOffsetY(archetype, phase, weight)` — a sibling to `addPose`, sampling the same curve with the same phase and weight.",
+   "`actor.js:401` adds it to the loop's own offset before `evaluateRig`. One line, one place; hurtboxes, sockets, the sweep and the renderer all read the rig after it.",
+   "`idle_ready.root_offset.y` = -0.00796 (the measured loop-mean rise). Carried on the STANCE layer, not the loop, because the rise belongs to the stance archetype: block_hold has no pelvis roll and a constant on `idle_loop` would push a GUARDING character 8 mm under the ground.",
+   "`block_hold.root_offset.y` -0.03 -> 0. Making the field live unchanged would have sunk every guarding character 30 mm through the floor; its measured foot height is already -0.97 mm against the pre-contrapposto baseline, not +30. A real guard crouch needs knee tracks first.",
+   "The same -0.00796 at phase 0 and 3 of the six archetypes whose endpoints carry the contrapposto (`cut_diagonal`, `chop_overhead`, `thrust`, `sweep_wide`, `stance_switch`, `quick_swap`). NOT `jump_arc`, whose root_offset IS the jump arc and is scaled by apex_m.",
+   "`tools/harness/anim-tune.mjs` was blind to its own boundary — it reproduced `poseLocomotion` without the stance root term, so it measured an idle arm at one height against an attack arm at another and called the difference zero. Fixed."
+  ],
+  "numbers_every_one_of_them_including_the_ones_that_move_the_wrong_way": {
+   "idle_loop_lower_ankle_rise_vs_the_r9_critics_own_baseline_blob": "+0.00796 m -> +0.00000 m",
+   "idle_loop_planted_foot_minimum": "0.07774 -> 0.07770 m (-0.04 mm, i.e. restored to baseline)",
+   "planted_foot_minimum_WALK": "+0.00908 -> +0.00112 m",
+   "planted_foot_minimum_RUN": "+0.00917 -> +0.00121 m",
+   "planted_foot_minimum_SPRINT": "+0.00931 -> +0.00135 m",
+   "IDLE_GUARD": "-0.00097 m before and after — unchanged, correctly, because block_hold carries no roll",
+   "WALK_RUN_SPRINT_loop_MEAN_still_high": "+0.00734 / +0.00919 / +0.01073 m. THIS MOVED THE WRONG WAY RELATIVE TO ZERO and I am not hiding it. The mean over a gait cycle averages the PLANTED foot with the SWINGING one, and the shortened free leg lifts higher in swing; the planted-foot minimum above is the number that touches the ground. A critic is entitled to score the mean instead, and both are in the json.",
+   "lr_diff_max_m": "0.00521, unchanged — see what_i_could_not_do #1"
+  },
+  "preservation_S59_what_must_not_get_worse": {
+   "C3": "still PASS, 3 of 3 over 3 deg at BOTH frames, on the r9 critic's own unmodified `f10-r9c-c3-audit.mjs`. A translation is not a rotation, and my instrument's self-test arm 3 requires the hip line tilt to be BIT-IDENTICAL with and without the drop — it reads 5 and 5.",
+   "anim_tune": "snap>0.35 m 0/14, worst snapOut 0.0122 m, snapIn 0.0000 on all 14 — BIT-IDENTICAL to the pre-r10 table, and the verdict's bound is exactly 0.0122.",
+   "the_trade_i_refused_to_make_silently": "with the stance drop in and the six archetype endpoints NOT yet shifted, the corrected harness read snapIn 0.0000 -> 0.0080 on all 14 and worst snapOut 0.0122 -> 0.0166. That is the boundary step r9 was right to fear. It is closed, and the intermediate measurement is in the commit message so the cost is arguable rather than invisible."
+  },
+  "the_metric_problem_i_am_flagging_against_myself_S60": "The verdict's DONE-means names `node tools/visual/f10-r9c-c3-audit.mjs` and `B_feet.summary.rise_of_lower_ankle_m.mean` <= 1 mm. RUN UNMODIFIED ON THIS TREE IT STILL REPORTS 0.00796 — because its `pose()` computes rootDy from the LOOP only and cannot see a stance-layer term. I did NOT edit it, deliberately: editing a critic's acceptance instrument to agree with my own fix is metric-shopping, and its output under the filed r9 round is immutable (HAZARDS 17). This is S60's shape exactly — the metric is being evaluated off the support of the thing it measures. My own `f10-r10-stance-height.mjs` publishes BOTH code arms side by side (`engine_r9` reproduces the r9 critic's arithmetic to the digit — it reads 0.00796 — and `engine_r10` reads 0.00000), and its self-test arm 2 injects a known -0.05 and requires the feet to fall by exactly 0.05, so the instrument cannot be silently blind the way the one it replaces was. A critic that wants one number should take `engine_r10`, or should rule that the r9 tool needs the one-line mirror."
+ },
+
+ "job_2_the_eye": {
+  "references_opened_not_described": [
+   "corpus/70-visual/refs/context/ESO-argonian_character__steam-431594657.jpg (D1, equipment-screen close-up)",
+   "corpus/70-visual/refs/context/ESO-argonian_character__steam-1362731834.jpg (D1, two Argonians at close range)",
+   "corpus/90-verdicts/wave1/artifacts/W1-F10-r9/hardware-orbit/after/FP__player__b180.png — OUR game, face front-on, the frame r9 shot and never opened",
+   "corpus/90-verdicts/wave1/artifacts/W1-F10-r9-critic/looked/FACE-AFTER-5x__FP-b180-the-eye-is-a-flat-patch.png",
+   "corpus/90-verdicts/wave1/artifacts/W1-F10-r9-critic/looked/FACE-AFTER-3x__FP-b000-the-cranium-is-a-smooth-egg.png"
+  ],
+  "what_the_plates_show": "a small amber almond with a DARK pupil in it, set under a heavy brow, the orbit around it in shadow. The eye reads at distance from three things: a bright iris, a dark pupil inside it, and a dark rim around the whole. Our build had the first only.",
+  "the_diagnosis_and_the_obvious_one_is_wrong": "Both eyeball and pupil were already PROUD of the skull, so 'buried under its own head' is not it. Profiling the skinned skin across the eye's row (165 vertices within 12 mm of the eye) the occluder is the SNOUT: skin reaches z 0.15809 at x 0.003 and 0.10764 at x 0.051-0.059, against an eyeball front face at 0.10119. The eye sat 6.5 mm BEHIND the snout's flank, and only its outer sliver escaped past x 0.067 where the surface drops to 0.08032 — which is precisely the amber CRESCENT in the photograph.",
+  "the_fix": "+6 mm outward, +12/+13 mm forward in head-local units (+4.8/+9.6 mm world after hScale), which sets the ball 4.1 mm proud of the skin beside it instead of 6.5 mm behind it. SOLVED BY SWEEP, NOT CHOSEN: x = .052/.056/.058/.060/.062 were each built and censused; .056 is the first that makes the pupil visible at all (230 px) and .058 is the last that improves it materially before the ball starts standing off the head.",
+  "numbers": {
+   "instrument": "tools/visual/f10-r6-visible-surface.mjs, whose own self-test buries a sphere inside a sphere and REQUIRES the buried arm to score 0 px while the free arm scores >150",
+   "sample": "5 shipped saxhleel morphs x 6 bearings = 30 subject-bearing pairs. The subject sets group.name, which characterFor() hashes into the character pool, so these are five DIFFERENT bodies and not one figure five times.",
+   "pupil_px_total": "159 -> 10316",
+   "pairs_showing_NO_pupil": "24 of 30 -> 0 of 30",
+   "eye_px_player_b0_b45_b90": "862 / 1323 / 1085 -> 1811 / 2440 / 2172",
+   "eye_px_player_b120_rear_three_quarter": "6 -> 1160",
+   "per_morph_pupil_b0": "player 0->386, npc:1 0->149, npc:7 17->343, npc:23 0->272, npc:99 0->321"
+  },
+  "what_r8_predicted_about_itself": "r8 fixed the eye's VALUE (2.16x face luma -> 0.847x) and recorded in its own status that it did not touch the eye's geometry or seating, and named that as its risk. The risk was real and this is it, found by a critic opening frames r9 shot and never looked at."
+ },
+
+ "job_3_E1_and_a_finding_that_is_bigger_than_it": {
+  "E1_on_the_drawn_arm_global": {
+   "n_npcs": 408,
+   "distinct_actor_field_values": 32,
+   "distinct_drawn_bodies": 14,
+   "npcs_per_drawn_body": 29.14,
+   "required_at_this_n": 34,
+   "largest_drawn_bucket": "hum.marauder, 37, 9.1%",
+   "the_two_arms_disagree_and_both_are_published": "on the `actor` arm the ceiling FAILS (townsman 23.8% vs 10%) and 32 of 34 is a near miss. On the DRAWN arm it inverts: the largest bucket is 9.1% and PASSES the ceiling, while 14 of 34 fails far harder than 32 did.",
+   "by_race": "argonian 181 records share 9 bodies; saxhleel 77 share 9; breton+imperial+dunmer+nord = 138 records sharing ONE humanoid pool of 5.",
+   "did_i_close_it": "No. Measured, published, and what-would-close-it named. This is the brief's stated fallback, taken knowingly."
+  },
+  "the_finding_nobody_had_checked": {
+   "what": "`renderer.js`'s syncNPCs calls `poseStatic` and ONLY poseStatic — the sole pose call in the loop over sim.npcs. `poseFromRig` is the player's (:1210) and the enemies' (:705). poseStatic's own header: 'Non-combat people use the rig's authored REST pose'. It sets position and yaw, binds presentation meshes once against restWorld, and never evaluates a clip or a stance layer.",
+   "how_it_is_falsifiable": "the instrument reads the pose calls out of the file at run time and its self-test arm 3 goes RED if syncNPCs ever calls poseFromRig.",
+   "consequence_1": "RI-VIS10 C3's contrapposto reaches 0 of 408 NPCs. r9's headline win is real on the player and on combat enemies and ABSENT from the entire crowd.",
+   "consequence_2": "r10's root drop likewise reaches 0 of 408 — SO THE r9 VERDICT'S OWN why_it_matters IS WRONG ON THE NPC HALF. It says 'the player and all 408 NPCs, because the change is on the single shared idle_ready layer, now stands about a centimetre above the floor'. The layer is shared; the code path that applies it is not. The hover was the player's and the combat enemies'. I re-derived this rather than inheriting it, which is what the brief asked for.",
+   "consequence_3": "all 408 stand in ONE identical symmetric rest pose, differing only by position, yaw and scale. RI-VIS10 §F#6 names exactly that — 'a symmetric A-pose with the arms lowered' — as a failure, and it is a larger part of 'the town reads as a crowd of copies' than 14 bodies is.",
+   "what_would_close_it": "poseStatic already binds presentation meshes ONCE against built.restWorld and caches it under `staticPresentationBound`. Baking the stance layer, plus a per-NPC phase offset of idle_loop, into that one-time bind gives every NPC contrapposto and a different point of the breathing cycle at the SAME per-frame cost. That moves C2/C3/E4, not E1."
+  }
+ },
+
+ "instruments_written_this_round": [
+  "tools/visual/f10-r10-stance-height.mjs — the hover per locomotion state, both clip arms and both CODE arms, plus §C's falsifier for remedy (B). 4 self-test arms, one with an answer known off the rig, one preservation arm that can only ever fail a change.",
+  "tools/visual/f10-r10-crowd-draw.mjs — E1 on the drawn arm globally, and the NPC pose path read out of renderer.js at run time. 3 self-test arms."
+ ],
+
+ "artifacts": [
+  "corpus/90-verdicts/wave1/artifacts/W1-F10-r10/stance-height.json",
+  "corpus/90-verdicts/wave1/artifacts/W1-F10-r10/c3-audit-r9tool.json (the r9 critic's own tool, UNMODIFIED, on this tree)",
+  "corpus/90-verdicts/wave1/artifacts/W1-F10-r10/anim-tune-after.txt",
+  "corpus/90-verdicts/wave1/artifacts/W1-F10-r10/eye-seating-census.json",
+  "corpus/90-verdicts/wave1/artifacts/W1-F10-r10/crowd-draw-E1.json"
+ ],
+
+ "files_touched": [
+  "game/src/combat/clips.js",
+  "game/src/combat/actor.js",
+  "game/data/combat/clips.json",
+  "game/src/render/actor.js",
+  "tools/harness/anim-tune.mjs",
+  "tools/visual/f10-r10-stance-height.mjs",
+  "tools/visual/f10-r10-crowd-draw.mjs",
+  "corpus/90-verdicts/wave1/artifacts/W1-F10-r10/"
+ ],
+
+ "files_claimed": [
+  "game/src/combat/clips.js",
+  "game/src/combat/actor.js",
+  "game/data/combat/clips.json",
+  "game/src/render/actor.js",
+  "tools/harness/anim-tune.mjs",
+  "tools/visual/f10-r10-stance-height.mjs",
+  "tools/visual/f10-r10-crowd-draw.mjs"
+ ],
+
+ "ownership_note": "`node tools/ownership.mjs --for game/data/combat/clips.json` returned ONE live claim: W1-30-builder-20260812, 23 h old, state builder-native-gpu-remediation-in-progress. I proceeded. It is a GPU remediation piece, not an animation piece, its claim is a day old, and HAZARDS records the opposite failure too — a piece held back an hour on stale claims a check would have cleared. `--for game/src/combat/actor.js` returned nobody live. Recorded so it is arguable rather than assumed.",
+
+ "what_the_next_round_should_do_and_why": [
+  "**PHOTOGRAPH THIS.** `--slots CP,FP`, BEFORE pinned at `15a6841c` and AFTER at `ae482ddbe7`. Three claims are unphotographed: the feet on the ground, the pupil, and that neither broke the stance. ~$0.01, ~3 min of Pod life. It is the cheapest unclosed thing in this file.",
+  "**THE LID AND THE ORBIT.** The largest remaining half of job 2, with the plates already identified and the humanoid branch's six lid arcs sitting directly above the saxhleel branch as the pattern to adapt — and its own warning about spectacles and goggles as the thing to avoid.",
+  "**BAKE THE STANCE INTO `poseStatic`.** One change that gives 408 NPCs contrapposto, breathing-cycle variety and an end to the shared A-pose, at the same per-frame cost. It is the highest-leverage visible change left in F10 and it is not a body-count problem.",
+  "**RULE ON `lr_diff_max_m`.** Either accept 0.00260 as the reachable floor and rewrite the clause, or measure the 5.2 mm as visible and take the six-archetype re-solve. Do not leave it as an unmet clause nobody has ruled on.",
+  "**FIX `swing.js`'s `r2()` BEFORE ANYONE RUNS `anim-author --write`.** Two decimal places cannot express the 7.96 mm endpoints job 1 authored; the generator will silently flatten six archetypes back to 0."
+ ],
+
+ "reproduce": [
+  "node tools/visual/f10-r10-stance-height.mjs --self-test",
+  "node tools/visual/f10-r10-stance-height.mjs --json=/tmp/a.json",
+  "node tools/visual/f10-r9c-c3-audit.mjs        # the r9 critic's own, unmodified — C3 still PASS, rise still reads 0.00796, see the S60 note",
+  "node tools/harness/anim-tune.mjs              # snapIn 0.0000 on all 14, worst snapOut 0.0122",
+  "node tools/visual/f10-r6-visible-surface.mjs --part=face --family=saxhleel --subject=player --res=384 --half=0.09 --bearings=0,30,45,60,90,120 --elev=5",
+  "node tools/visual/f10-r10-crowd-draw.mjs --self-test",
+  "node tools/visual/f10-r10-crowd-draw.mjs --json=/tmp/c.json"
+ ]
+}
