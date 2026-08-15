@@ -43,7 +43,7 @@
 'use strict';
 
 import { C, Ca, boneRule, bonePip, panel, chitinPath, idHash } from '../theme.js';
-import { screen, column, tagColumn, row, extent, hint, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
+import { screen, screenRect, column, tagColumn, row, extent, hint, hintLines, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
 import { drawText, faceOf, measure, wrap, writeLines, ellipsise, BODY } from '../type.js';
 import { itemIcon, drawDoll, drawObject, shapeFor } from '../icons.js';
 
@@ -236,7 +236,12 @@ export function drawContainer(S, m) {
   const s = S.s;
   const alpha = m.inCombat ? COMBAT_ALPHA : CALM_ALPHA;
   const title = containerTitle(m.containerName, m.containerKind);
-  const sc = screen(S, 'container', title, m.placeName || null, 'clay', alpha);
+  const containerHint = 'Confirm moves one thing across. There is no button that decides what is worth keeping.';
+  // T4 round 5 (`ARBITRATION` S58). Measured 457px at 14px body against a 480-wide box's 436px
+  // inner width — round 4 drew it as one unwrapped line and it was cut mid-word at the panel edge
+  // with no ellipsis (`…what is worth keep`). See `chrome.js` `hintLines()`/`hint()`.
+  const fl = hintLines(containerHint, screenRect(S, 'container')[2] - 44 * s, s);
+  const sc = screen(S, 'container', title, m.placeName || null, 'clay', alpha, fl);
   const [ix, iy, iw, ih] = sc.inner;
   const half = (iw - 40 * s) / 2;
   // THE ROWS STOP AT EIGHT AND THE BOTTOM THIRD BECOMES THE THING YOU ARE ABOUT TO MOVE.
@@ -257,6 +262,12 @@ export function drawContainer(S, m) {
   // of that. Both sides still scroll past 4 (`windowOf` + `extent`, unchanged below); a 44-item
   // carried list was never going to fit on one page at any panel size, fixed box or not.
   const CROWS = 4;
+  // T4 round 5. The 2-line hint (`fl` above) makes `screen()` reserve 20 more units in its footer,
+  // which would otherwise come straight out of `ih` and shrink the selected-item depiction plate
+  // below — the round-4 comment right above names exactly why that plate's size is what carries
+  // this screen's density margin (0.1525 against a 0.15 floor, a margin of 0.0025). So the top gap
+  // before the list rows shrinks by the same amount the footer grew, and the plate stays full size.
+  const listTop = Math.max(16, 34 - (fl - 1) * 20);
   const sides = [
     { id: 'mine', title: 'Carried', rows: m.rows, idx: m.rowIdx, x: ix },
     { id: 'theirs', title, rows: m.containerRows, idx: m.otherIdx, x: ix + half + 40 * s },
@@ -272,12 +283,12 @@ export function drawContainer(S, m) {
     });
     const win = windowOf(side.rows.length, side.idx, CROWS);
     if (side.rows.length > CROWS) {
-      extent(S, `container.${side.id}.extent`, side.x + half - 12 * s, iy + 34 * s, 12 * s,
+      extent(S, `container.${side.id}.extent`, side.x + half - 12 * s, iy + listTop * s, 12 * s,
         CROWS * ROW_H * s, win.from, CROWS, side.rows.length, alpha);
     }
     for (let i = win.from; i < win.to; i++) {
       const it = side.rows[i];
-      const ry = iy + 34 * s + (i - win.from) * ROW_H * s;
+      const ry = iy + listTop * s + (i - win.from) * ROW_H * s;
       // T4 round 4. name(280) + weight(90) + gold(90) = 460 was pitched against the old
       // ~718-unit `half` ((iw-40)/2 at iw=1476); the new box's `half` is under 460 alone, so all
       // three move onto fractions of `half` instead of literals that would run the gold column
@@ -303,8 +314,8 @@ export function drawContainer(S, m) {
     }
   }
   // ---- the band: what you have selected, drawn, on whichever side you are standing in --------
-  const by = iy + (34 + CROWS * ROW_H + 18) * s;
-  const bh = ih - (34 + CROWS * ROW_H + 18) * s;
+  const by = iy + (listTop + CROWS * ROW_H + 18) * s;
+  const bh = ih - (listTop + CROWS * ROW_H + 18) * s;
   const selSide = m.side === 0 ? m.rows : m.containerRows;
   const selIdx = m.side === 0 ? m.rowIdx : m.otherIdx;
   const csel = selSide[selIdx] || null;
@@ -342,8 +353,7 @@ export function drawContainer(S, m) {
     const size = BODY.screen * s, lh = size * 1.44;
     writeLines(c, wrap(csel.description || '', f, size, r[2] * 0.94), r[0], r[1] + 106 * s, 'ink', size, lh, ink());
   });
-  hint(S, 'container.hint', ix, iy + ih + 4 * s, iw,
-    'Confirm moves one thing across. There is no button that decides what is worth keeping.', alpha);
+  hint(S, 'container.hint', ix, iy + ih + 4 * s, iw, containerHint, alpha);
 }
 
 /**
