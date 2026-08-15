@@ -1,0 +1,436 @@
+{
+  "tool": "f7-r2-critic-phase",
+  "generated": "2026-08-15T23:05:38.275Z",
+  "commit": "86568f3b729418090f6b8fe32e4976775ceac414",
+  "seed": 20260814,
+  "site": "vista-deep-marshes",
+  "pose": "topdown-120",
+  "canvas": [
+    960,
+    540
+  ],
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "reps": 1,
+  "mode": "lanes",
+  "step_between_captures": 8,
+  "head_expression_asserted": "PASS — game/src/render/water.js carries the round-2 weight verbatim",
+  "what_this_separates": "the replicate series moves the water phase and NOTHING else; the interleaved pairs swap arm order every other replicate so phase drift cancels to first order",
+  "replicate_series": [],
+  "interleaved_pairs": [],
+  "pageErrors": [],
+  "mask": {
+    "meshes_hidden": 94,
+    "from": "frames/water-hidden-topdown-120.png"
+  },
+  "lanes": {
+    "what": "the reflection weight ablated term by term at the top-down pose, replicated, so \"what draws the lanes\" is answered with a band rather than a single frame",
+    "arms": {
+      "fixed": [
+        {
+          "frame": "frames/lanes-r0-fixed.png",
+          "water_mask_px": 456034,
+          "water_mask_pct": 87.97,
+          "m12": {
+            "water_px": 456034,
+            "water_frac": 0.8797,
+            "FresnelDelta": -0.00472,
+            "NormalEnergy": null,
+            "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+            "ShoreDelta": 0.04533,
+            "ReflCorr": null,
+            "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+            "TemporalVar": null,
+            "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+            "grazing_rows": [
+              0,
+              134
+            ],
+            "downward_rows": [
+              405,
+              539
+            ],
+            "normal_window": null
+          },
+          "masked": {
+            "water_px_in_crop": 201093,
+            "mean_luma": 73.798,
+            "band_rms": 11.3906,
+            "band_contrast": 0.15435,
+            "lane_bearing_screen_deg": -26,
+            "lane_power": 0.2907,
+            "lane_aniso": 1.96,
+            "lane_power_normalised": 0.000053
+          },
+          "replicate": 0
+        }
+      ],
+      "no-dist": [
+        {
+          "frame": "frames/lanes-r0-no-dist.png",
+          "water_mask_px": 455518,
+          "water_mask_pct": 87.87,
+          "m12": {
+            "water_px": 455518,
+            "water_frac": 0.8787,
+            "FresnelDelta": -0.00271,
+            "NormalEnergy": null,
+            "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+            "ShoreDelta": 0.03744,
+            "ReflCorr": null,
+            "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+            "TemporalVar": null,
+            "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+            "grazing_rows": [
+              0,
+              134
+            ],
+            "downward_rows": [
+              405,
+              539
+            ],
+            "normal_window": null
+          },
+          "masked": {
+            "water_px_in_crop": 201098,
+            "mean_luma": 73.146,
+            "band_rms": 11.3109,
+            "band_contrast": 0.15463,
+            "lane_bearing_screen_deg": -56,
+            "lane_power": 0.2597,
+            "lane_aniso": 1.86,
+            "lane_power_normalised": 0.000049
+          },
+          "replicate": 0
+        }
+      ],
+      "no-refl": [
+        {
+          "frame": "frames/lanes-r0-no-refl.png",
+          "water_mask_px": 454893,
+          "water_mask_pct": 87.75,
+          "m12": {
+            "water_px": 454893,
+            "water_frac": 0.87749,
+            "FresnelDelta": -0.00385,
+            "NormalEnergy": null,
+            "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+            "ShoreDelta": 0.0329,
+            "ReflCorr": null,
+            "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+            "TemporalVar": null,
+            "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+            "grazing_rows": [
+              0,
+              134
+            ],
+            "downward_rows": [
+              405,
+              539
+            ],
+            "normal_window": null
+          },
+          "masked": {
+            "water_px_in_crop": 200794,
+            "mean_luma": 70.396,
+            "band_rms": 11.0695,
+            "band_contrast": 0.15725,
+            "lane_bearing_screen_deg": -56,
+            "lane_power": 0.221,
+            "lane_aniso": 1.83,
+            "lane_power_normalised": 0.000045
+          },
+          "replicate": 0
+        }
+      ],
+      "prefix": [
+        {
+          "frame": "frames/lanes-r0-prefix.png",
+          "water_mask_px": 457858,
+          "water_mask_pct": 88.32,
+          "m12": {
+            "water_px": 457858,
+            "water_frac": 0.88321,
+            "FresnelDelta": -0.00619,
+            "NormalEnergy": null,
+            "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+            "ShoreDelta": 0.05581,
+            "ReflCorr": null,
+            "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+            "TemporalVar": null,
+            "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+            "grazing_rows": [
+              0,
+              134
+            ],
+            "downward_rows": [
+              405,
+              539
+            ],
+            "normal_window": null
+          },
+          "masked": {
+            "water_px_in_crop": 202222,
+            "mean_luma": 84.351,
+            "band_rms": 12.306,
+            "band_contrast": 0.14589,
+            "lane_bearing_screen_deg": -26,
+            "lane_power": 0.3422,
+            "lane_aniso": 1.73,
+            "lane_power_normalised": 0.000048
+          },
+          "replicate": 0
+        }
+      ],
+      "no-fine-sines": [
+        {
+          "frame": "frames/lanes-r0-no-fine-sines.png",
+          "water_mask_px": 455675,
+          "water_mask_pct": 87.9,
+          "m12": {
+            "water_px": 455675,
+            "water_frac": 0.879,
+            "FresnelDelta": -0.00705,
+            "NormalEnergy": null,
+            "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+            "ShoreDelta": 0.04136,
+            "ReflCorr": null,
+            "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+            "TemporalVar": null,
+            "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+            "grazing_rows": [
+              0,
+              134
+            ],
+            "downward_rows": [
+              405,
+              539
+            ],
+            "normal_window": null
+          },
+          "masked": {
+            "water_px_in_crop": 200940,
+            "mean_luma": 71.317,
+            "band_rms": 11.109,
+            "band_contrast": 0.15577,
+            "lane_bearing_screen_deg": -26,
+            "lane_power": 0.2696,
+            "lane_aniso": 1.87,
+            "lane_power_normalised": 0.000053
+          },
+          "replicate": 0
+        }
+      ],
+      "no-caustic": [
+        {
+          "frame": "frames/lanes-r0-no-caustic.png",
+          "water_mask_px": 455970,
+          "water_mask_pct": 87.96,
+          "m12": {
+            "water_px": 455970,
+            "water_frac": 0.87957,
+            "FresnelDelta": -0.00577,
+            "NormalEnergy": null,
+            "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+            "ShoreDelta": 0.0427,
+            "ReflCorr": null,
+            "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+            "TemporalVar": null,
+            "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+            "grazing_rows": [
+              0,
+              134
+            ],
+            "downward_rows": [
+              405,
+              539
+            ],
+            "normal_window": null
+          },
+          "masked": {
+            "water_px_in_crop": 201130,
+            "mean_luma": 72.543,
+            "band_rms": 11.2847,
+            "band_contrast": 0.15556,
+            "lane_bearing_screen_deg": -26,
+            "lane_power": 0.2741,
+            "lane_aniso": 1.96,
+            "lane_power_normalised": 0.000052
+          },
+          "replicate": 0
+        }
+      ],
+      "no-additives": [
+        {
+          "frame": "frames/lanes-r0-no-additives.png",
+          "water_mask_px": 455209,
+          "water_mask_pct": 87.81,
+          "m12": {
+            "water_px": 455209,
+            "water_frac": 0.8781,
+            "FresnelDelta": -0.00684,
+            "NormalEnergy": null,
+            "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+            "ShoreDelta": 0.03772,
+            "ReflCorr": null,
+            "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+            "TemporalVar": null,
+            "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+            "grazing_rows": [
+              0,
+              134
+            ],
+            "downward_rows": [
+              405,
+              539
+            ],
+            "normal_window": null
+          },
+          "masked": {
+            "water_px_in_crop": 200656,
+            "mean_luma": 69.263,
+            "band_rms": 10.8992,
+            "band_contrast": 0.15736,
+            "lane_bearing_screen_deg": -26,
+            "lane_power": 0.2383,
+            "lane_aniso": 1.83,
+            "lane_power_normalised": 0.00005
+          },
+          "replicate": 0
+        }
+      ]
+    },
+    "bands": {
+      "fixed": {
+        "n": 1,
+        "lane_power": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "lane_aniso": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "mean_luma": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "bearings": [
+          -26
+        ]
+      },
+      "no-dist": {
+        "n": 1,
+        "lane_power": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "lane_aniso": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "mean_luma": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "bearings": [
+          -56
+        ]
+      },
+      "no-refl": {
+        "n": 1,
+        "lane_power": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "lane_aniso": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "mean_luma": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "bearings": [
+          -56
+        ]
+      },
+      "prefix": {
+        "n": 1,
+        "lane_power": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "lane_aniso": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "mean_luma": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "bearings": [
+          -26
+        ]
+      },
+      "no-fine-sines": {
+        "n": 1,
+        "lane_power": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "lane_aniso": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "mean_luma": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "bearings": [
+          -26
+        ]
+      },
+      "no-caustic": {
+        "n": 1,
+        "lane_power": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "lane_aniso": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "mean_luma": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "bearings": [
+          -26
+        ]
+      },
+      "no-additives": {
+        "n": 1,
+        "lane_power": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "lane_aniso": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "mean_luma": {
+          "n": 1,
+          "note": "fewer than two readings; no band"
+        },
+        "bearings": [
+          -26
+        ]
+      }
+    }
+  }
+}

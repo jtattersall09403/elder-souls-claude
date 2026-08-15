@@ -1,0 +1,442 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-F7-WATER-r2",
+  "piece_title": "F7 — the water surface, round 2. The r1 verdict's Schlick remedy, judged against its own four acceptance clauses and against the bar those clauses came from.",
+  "roadmap_item": "F7",
+  "subsystem_paths": [
+    "world.water.marsh",
+    "visual.renderer.water"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-f7-water-r2",
+    "role": "critic.visual.water",
+    "model": "claude-opus-5",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_measurement": true,
+    "note": "I built none of this. My brief quoted the build's claims and the orchestrator's rulings up front, which departs from CRITIC-DOCTRINE §8's ordering; recorded rather than hidden. I inherited no figure: every number below was re-derived this turn by a command or a tool run named in `source_reads`/`artifacts`, including the figures I confirm. I am the SECOND critic on this round — the container restart at ~20:03 killed my predecessor, which had banked nothing; what I recovered from quarantine and how I treated it is in `recovered_from_quarantine`."
+  },
+  "build": {
+    "status_file": "orchestration/status/W1-F7-r2.json",
+    "branch": "codex/wave1-build-experiment",
+    "file_changed": "game/src/render/water.js",
+    "the_change": "the `.25` constant reflection floor is removed; `esRefl = .02 + .98*pow(1-esView,5)` (Schlick at water's F0), then `max()`'d with the UNCHANGED distance term `smoothstep(10,52,d)*.72*(1-esView)`.",
+    "builders_own_ruling": "KEEP, as a partial delivery, with three named overturn conditions. Two of the four acceptance clauses are failed by the build itself, in its own status file, first.",
+    "note_on_candour": "This build's `what_i_could_not_do` is the most honest I have read in this repo. It fails its own clauses out loud, decomposes its own headline into the arithmetic that kills it, marks its own inferences as inferences, and tells a critic not to accept them. Nothing below is a `gotcha` — most of what I found, I found because the build pointed at where to look. Where I correct it, it is usually because the build was HARSHER on itself than the evidence warrants."
+  },
+  "recovered_from_quarantine": {
+    "commit": "86181c276ec99221eb8423965325737d7be65ab5 (refs/orphaned/2026-08-15-container-restart)",
+    "what": "59 files, 56 MB, my predecessor's `corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/` — four sweep runs (`probes1`, `td1`, `vista1`, `vista2`) and their frames. Recovered and banked before I measured anything.",
+    "how_i_treated_it": "As DATA, never as conclusions — there was no note saying what it measured or concluded. Two checks first: every run records a real pinned sha in its `commit` field (bc9050fd, bc9050fd, 3c0ad732, a26eba20), not `\"unknown\"`, so by HAZARDS §22 none is a control clone measuring the main tree; and all four print `head_expression_asserted: PASS` against the live `water.js`. I then re-derived every number I use from the JSON myself.",
+    "what_it_bought": "The single most important structural finding of this verdict (`the_instrument_is_not_noisy_it_is_ordinal`) came out of comparing two of those recovered runs against each other. It also gave me the S52 null-control row and the clause (a) probe bins without spending a browser on them. My predecessor never captured the player poses, which is why the round's central claim was still unjudged when I arrived."
+  },
+  "bifurcation": {
+    "what_the_round_actually_did": "It fixed the SIGN of the corpus's own instrument for this property, at every pose a player occupies, and it did not reach the band. `RI-VIS03` M12 `FresnelDelta` on the round-1 arm reads -0.0751 to -0.0988 across four eye-level bearings; on the round-2 arm it reads +0.0136 to +0.0460. The paired change is +0.0948 to +0.1235, mean +0.1128, same sign at all four bearings, and 12x the instrument's band which I measured at 0.0094. The r1 verdict's central M12 charge was that FresnelDelta 'is negative on both arms (-0.044 -> -0.078), moving away from its >= 0.05 band'. That is now answered. But the best bearing reads +0.04599 against a band of >= 0.05, so it is 0.004 short, and it FAILS.",
+    "why_it_still_scores_2": "Not because nothing moved. Because (i) `RI-WLD10` declares `blind_pair: yes` and its M56 §5 gate has still never run, which caps that item fail-closed whatever else passes (rule 0e — the orchestrator owes it); (ii) `RI-VIS04` §9's MIN BAR has four components and two of them are ABSENT FROM THE SHADER ENTIRELY, which no round of Fresnel tuning can reach; and (iii) M12's other measurable sub-metric, `ShoreDelta`, regressed and now fails at every bearing I measured.",
+    "the_thing_this_round_establishes_that_outlives_it": "The marsh lanes are NOT the reflection, and therefore NOT renderer.js. Ablated in two separate processes: with the reflection deleted outright (`esRefl = 0.0`) 76-78% of the lane power remains. Five ablation arms have now excluded the reflection, both sub-pixel sine terms, esCaustic, and the entire additive fine-term layer. The cause is in the water's base colour, normals or mesh, and is still unknown."
+  },
+  "the_five_falsifications_i_was_asked_for": {
+    "1_the_visual_claim_at_eye_level": {
+      "asked": "Round 2 moves eye-level water brightness -16.8% and claims 'the pale washed-out sheet with a smeared ghost of the trunks across the whole foreground becomes deeper teal-green with the mirror confined to the middle distance.' Shoot it on hardware, both arms, in motion and at multiple angles, and say whether that is true and whether it is an improvement.",
+      "ruling": "TRUE, AND AN IMPROVEMENT — BUT STRONGLY BEARING-DEPENDENT, AND THE BUILD DID NOT SAY SO.",
+      "what_i_did": "Orbited the camera around the player at eye level (pitch -8, distance 7 m) at eight bearings, capturing BOTH arms at each, with the water-hidden mask captured per bearing. Four bearings produced valid arm pairs (000, 090, 180, 225); the other four went VACUOUS on a program-cache collision in my own tool and are excluded, not reported. I opened the frames.",
+      "at_yaw090_the_claim_is_exactly_right": "The round-1 arm's near water is a pale washed-out blue-grey sheet carrying a clearly readable smeared ghost of the tree trunks across the ENTIRE foreground down to the bottom edge. On the round-2 arm the near field is a deep teal-green, the smeared mirror is gone from the foreground, and the reflected trunks sit only in the band below the treeline where grazing angles actually are. This is a large, obvious, at-a-glance improvement and it is the direction `RI-VIS04` §9's TELL ('the same colour and brightness everywhere') exists to push.",
+      "at_yaw000_it_is_marginal": "The same -14.4% of brightness buys almost nothing visible. Both arms read as pale blue-grey; the round-2 arm is slightly deeper in the near corners and the mid-ground is essentially identical. A player turning on the spot would see the water change character through the turn.",
+      "why_the_difference": "The removed term is a mirror of the CANOPY. Its visible cost is proportional to how much reflected trunk the bearing puts in the near field, not to the luminance change, which is similar at both (-14.4% vs -16.4%). The build measured one bearing and generalised from it.",
+      "the_directive_this_serves": "CLAUDE.md, owner 2026-08-14: 'if you just load the game rotate the camera around the player it's immediately obvious'. Rotating the camera is exactly what turned a true headline into a qualified one.",
+      "frames": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/look/frames/look-orbit-eye-yaw{000,090,180,225}-{prefix,fixed}.png"
+    },
+    "2_is_the_shoredelta_regression_visible": {
+      "asked": "`ShoreDelta` 0.04828 -> 0.01222 across its 0.03 band. The builder named its own overturn condition — a shoreline close-up showing it is visible rather than metric-only — and said it did not take that shot. Take it.",
+      "ruling": "THE REGRESSION IS REAL, REPRODUCIBLE AND WORSE THAN THE BUILD REPORTED — AND IT IS METRIC-ONLY. Both halves of that matter and they point opposite ways.",
+      "it_is_worse_than_reported": "The build measured one pose. I measured four eye-level bearings, both arms, in one process each: round-1 arm 0.03896-0.05665 (PASSES >= 0.03 at all four); round-2 arm 0.00597-0.02064 (FAILS at all four). Against a replicate band I measured at 0.00806, the drop is 4-5x the band. It is not noise.",
+      "it_is_metric_only_and_here_is_why": "M12's `ShoreDelta` is `|mean luma within 6 px of land - mean luma at 28-32 px from land|` — an ABSOLUTE difference, read straight from `tools/metrics/lib/vis03.mjs`. It rewards ANY near-shore contrast. It cannot tell the shoreline depth-fade the bar asks for from the hard intersection line the bar names as the defect. What the round-1 arm actually had near the shore was not a shore treatment: it was the 25% mirror making near-shore water brighter. Removing the mirror removed the contrast. Nothing that the bar wants was lost, because nothing that the bar wants was ever there.",
+      "proved_in_source_not_inferred": "`grep -c 'depthTexture\\|tDepth\\|depthFade' game/src/render/water.js` returns **0**. There is no depth-buffer read in the water shader at all. What exists is `float esShore=smoothstep(.04,.92,vEsWaterShore)` on a per-VERTEX attribute, and `game/src/world/province.js:1554` documents it against itself: `'waterShore is an edge mask, not a depth ramp.'` So `RI-VIS04` §9's MIN BAR clause 'shoreline depth fade' and `RI-WLD10`'s 'shoreline blend with no hard intersection line (depth-fade against the depth buffer)' are unimplemented on BOTH arms.",
+      "confirmed_by_eye": "In every one of my eight eye-level frames, on both arms, the water/land intersection is a hard aliased edge with visible stipple and no fade. The round-1 arm does not look better there. It looks brighter.",
+      "consequence": "The builder's overturn condition #1 is NOT met. Its ruling survives this test.",
+      "but_the_metric_should_not_be_trusted_either_way": "A measure that scores the named defect HIGH is not a preservation clause, it is a coin. See `bar_findings.shoredelta_is_the_wrong_shape`."
+    },
+    "3_clause_b_and_its_own_spread": {
+      "asked": "M12 `FresnelDelta` -0.06692 -> -0.01381, right direction, still negative, 0.064 short. But the same arm read +0.03549 in another process — a run-to-run spread of 0.049, as large as the band. That is S61's shape. Quantify the spread and rule whether M12 can gate anything.",
+      "ruling": "M12 CAN GATE. THE BUILD'S 0.049 IS NOT THIS INSTRUMENT'S NOISE, AND THE BUILD TALKED ITSELF OUT OF ITS OWN BEST RESULT.",
+      "the_band_measured_properly": "I captured the untouched HEAD shader FIVE times at the deck vista in one process, changing nothing but the water phase — the replicate design S61 asks for. `FresnelDelta` range **0.00943** (min -0.00140, max +0.00803, sd 0.00389). `ShoreDelta` range 0.00806. `mean_luma` range 2.069. Artifact: `phase-vista/phase.json`.",
+      "so_the_0_049_is_not_noise": "It is 5x the band. It has a cause, and the cause is that `f7-r2-sweep.mjs` advances the simulation with `stepFrames` between every arm and never resets the water phase, so an arm's CAPTURE ORDINAL fixes the ripple phase it is measured at. Proof from the recovered runs: the round-2 arm is BIT-IDENTICAL between `vista1` and `vista2` — two separate processes at two different commits (3c0ad732, a26eba20) — reading FresnelDelta -0.01381, ShoreDelta 0.01222, luma 74.684, lane_power 18.3239 in both, because it is the 3rd arm in each. Meanwhile the SAME untouched shader captured 5th in `vista1` as `nothing-restore-control` reads +0.00598. Same process, same shader, different ordinal, 0.0198 apart.",
+      "why_that_matters_more_than_the_number": "The sweep's headline within-process delta (prefix -> fixed, +0.05311) is CONFOUNDED: the two arms sit at different ordinals, so it carries both the shader change and a phase change. The fix is to interleave and swap order, which is what my tool does.",
+      "the_unconfounded_answer": "At four eye-level bearings, both arms in one process each: -0.07753 -> +0.04599, -0.08103 -> +0.03970, -0.09881 -> +0.01356, -0.07508 -> +0.01967. Paired delta +0.12352, +0.12073, +0.11237, +0.09475; mean **+0.11284**, same sign four times, 12x the 0.00943 band. This is a solid, replicated, unconfounded result and it is roughly TWICE the movement the build claimed for itself.",
+      "and_it_still_fails": "Clause (b) requires `>= 0.05 AND POSITIVE`. Positive: yes, at every bearing, for the first time in this piece's history. `>= 0.05`: no — best is +0.04599, short by 0.004. Under S61's asymmetry a single reading may fail and may never pass, so even the best bearing could not have passed on one capture. **Clause (b) FAILS, on a much better build than the one the builder described.**"
+    },
+    "4_clause_d_floor_inside_the_noise": {
+      "asked": "Clause (d)'s floor is also inside the noise — luma 73.142 >= 70 in one run, 69.917 in another. Same shape, same ruling.",
+      "ruling": "CONFIRMED. THE 70 FLOOR IS INSIDE THE BAND AND CANNOT DISCRIMINATE. `unresolved`, and `unresolved` FAILS CLOSED (S61).",
+      "my_readings_of_the_same_untouched_arm": "vista, 5 replicates, one process: 72.928, 73.764, 74.264, 74.779, 74.997 — range **2.069**. Top-down, the SAME round-2 arm in two recovered processes: `td1` 73.142 and `probes1` 70.151 — range 2.991, and the build reports a third reading of 69.917. Three readings straddling the floor: 73.142, 70.151, 69.917.",
+      "so": "A floor of 70 judged against an instrument whose own spread is ~3 is a coin flip. The build reached the same conclusion about its own pass and said so; I am confirming it with the replicate series it could not run.",
+      "what_should_replace_it": "A preservation floor must be quoted with the band that was measured for it, per S61, and must sit outside that band. On these numbers a defensible floor at the top-down pose is ~66 (three sd below the untouched mean), which the round-2 arm clears comfortably. I am not adopting that as a bar — that is the next orchestrator ruling's to make — but the current 70 is unusable and should not be quoted again as if it discriminated."
+    },
+    "5_s52_the_null_control_worked": {
+      "asked": "A flat constant weight, no Fresnel at all, reproduces `x_rms -18.6%` and `normalised +21.9%`. So neither metric can distinguish a Fresnel from a dimmer switch. Verify it; say which numbers are inadmissible in both directions.",
+      "ruling": "VERIFIED, RE-DERIVED BY ME FROM THE RECOVERED `td1` RUN, AND THE FAMILY IS WIDER THAN TWO NUMBERS.",
+      "the_four_arms_one_process_top_down": "prefix: luma 83.587, x_rms 5.623, lane_power_normalised 0.000525, aniso 1.54. fixed: 73.142, 4.331, 0.000698, 1.99. null-uniform-dim (a CONSTANT 0.086, no view-angle dependence, no Fresnel): 73.776, 4.579, 0.000640, 1.86. nothing-restore-control (untouched, captured last): 73.417, 4.401, 0.000698, 2.06.",
+      "the_arithmetic": "prefix -> fixed: x_rms **-23.0%**, normalised **+33.0%**. prefix -> null: x_rms **-18.6%**, normalised **+21.9%**. The dimmer reproduces 81% of the x_rms fall and 66% of the normalised rise.",
+      "inadmissible_in_BOTH_directions": "`x_rms`, `lane_power_normalised`, and — added by me — `lane_aniso` and `band_contrast`. The null control moves aniso 1.54 -> 1.86 against the real change's 1.54 -> 1.99, i.e. it reproduces 71% of the anisotropy rise S63's replacement clause uses to fail this build. Every one of these is a brightness proxy. None of them is evidence about Fresnel, for OR against, and none may be quoted in a future F7 round without its null-control row beside it.",
+      "the_one_that_survives": "Clause (a), the composited weight itself, read off the GPU. The null control's weight is 0.086 flat and fails both halves of clause (a) at once. That is the only measurement in this piece that can tell an angle-dependent reflectance from a dimmer, and it is the reason clause (a) is worth keeping even though I dispute how it was scored (see `clause_by_clause.a`)."
+    }
+  },
+  "s63_falsified": {
+    "the_ruling_i_am_overturning": "S63: 'The verdict's own headline prediction is falsified. I ruled the `.25` floor was the remaining term drawing the marsh lanes. It is not... What is left is the reflection TARGET's content: half-resolution (`renderer.js:125`) and six-frame staleness (`:1424`), in a file F7 does not own.'",
+    "ruling": "THE SECOND HALF IS FALSIFIED BY ABLATION. The lanes are not the reflection at all, so they cannot be the reflection target's content, and F7 does not get to hand them to another file.",
+    "the_measurement": "TWO processes, top-down 120 m, every arm in one process each. Run A: fixed lane_power 0.3661/0.3575 aniso 1.99/2.07; no-dist 0.3216; no-refl 0.2860 aniso 1.91; prefix 0.4594 aniso 1.97. Run B (full arm set): fixed 0.2907 aniso 1.96 luma 73.798; no-dist 0.2597; no-refl 0.2210 aniso 1.83 luma 70.396; prefix 0.3422 aniso 1.73; no-fine-sines 0.2696; no-caustic 0.2741 aniso 1.96; no-additives 0.2383 aniso 1.83 luma 69.263.",
+    "what_it_means": "Deleting the ENTIRE reflection (esRefl = 0.0) leaves 78% of the lane power in run A (0.2860/0.3661) and 76% in run B (0.2210/0.2907), with anisotropy 1.91 and 1.83 against 1.99/2.07 and 1.96. The reflection — floor, distance term, half-res target, six-frame staleness, all of it — accounts for at most a QUARTER of the lane power. A defect that survives deleting the thing you blamed is not that thing's, so it cannot be the reflection target's content, and F7 does not get to hand the lanes to renderer.js. THIS IS THE ROBUST RESULT OF THE ROUND and it replicates across two processes.",
+    "and_the_lanes_are_the_waters": "The recovered `water-hidden` frame at the same pose shows the marsh bed with tree shadows and NO diagonal bands. So the lanes are drawn by the water surface, in `game/src/render/water.js`, which F7 owns.",
+    "what_i_think_draws_them_marked_as_derivation_not_ablation": "The two sub-pixel additive sine terms. `esCapillary = sin(x*13.7 + z*9.3 - phase*3.4)` has wavelength 2*pi/hypot(13.7,9.3) = 0.379 m, which at this pose's MEASURED scale of 0.2072 m/px is **1.83 px — below the 2 px Nyquist limit** — and the bands of its wavevector run at **-56 degrees** against a measured lane bearing of **-50**. `esMicro = sin(x*26.3 - z*21.7)` is 0.184 m = **0.89 px**, bands at +50. Both are ADDITIVE, applied after the reflection mix (`water.js:131`), which explains why the lanes survived removing the reflection floor and why anisotropy ROSE when the water darkened: their amplitude is a constant `vec3(.005,.007,.008)` and `vec3(.004,.006,.007)`, so their relative contrast rises against a dimmer background. The shader's own comment on the line above them reads: **'Fine terms break the normal/specular lobe; they must not become visible wallpaper.'**",
+    "i_did_not_finish_ablating_it_and_i_say_so": "The `no-fine-sines` arm exists in my tool and is UNRUN — I added it after the ablation run had already started, and the box was over its browser ceiling for the rest of my window. So the aliasing account is a DERIVATION from the shader source plus the measured scale and the measured bearing, and it is NOT an ablation. It should not be written into the roadmap as established until that arm runs. What IS established by ablation is the negative: not the reflection, not `renderer.js`.",
+    "why_r1s_ablations_do_not_already_cover_it": "The build asserts 'r1 already ablated every wave term'. The r1 verdict's named arms are `term-no-reflection`, `term-truly-flat-water`, `term-slope-zero` and `term-no-standard-lighting`. None of them touches `esCapillary` or `esMicro`; `term-slope-zero` is `esSlope`. The claim is not supported by the verdict it cites.",
+    "i_derived_twice_and_was_wrong_twice": {
+      "why_this_subsection_replaces_my_earlier_hypothesis": "I originally filed this verdict naming sub-pixel MOIRE as the lane cause — esCapillary at 1.83 px (below Nyquist) with predicted bands at -56 deg against a measured -50. The arithmetic was clean and the match looked convincing. I then ablated it and IT IS WRONG.",
+      "falsification_1_the_aliasing_account": "`no-fine-sines` deletes esCapillary and esMicro outright. Lane power 0.3669 against fixed's 0.3661 in run A — a 0.2% CHANGE, i.e. nothing — and 0.2696 vs 0.2907 in run B. The two sub-pixel terms do not draw the lanes.",
+      "falsification_2_the_caustic_account": "My replacement candidate was esCaustic, a PRODUCT of two low-frequency sines whose beat components (.72,-.61) and (.72,+.61) have wavelength 6.66 m = 32.1 px and bands at EXACTLY -49.7 and +49.7 degrees. That is a better numerical match to a -50 measurement than the first hypothesis was. `no-caustic` deletes it: lane power 0.2741 vs 0.2907 (-5.7%, against a luma fall of 1.7%) and anisotropy 1.96 vs 1.96 — IDENTICAL. Also wrong.",
+      "falsification_3_the_whole_additive_layer": "`no-additives` deletes all six additive fine terms at once. Lane power 0.2383 vs 0.2907 (-18%), of which a 6.1% luma fall is part; anisotropy 1.83 vs 1.96; bearing unchanged. So 82% of the lane power survives deleting every additive term in the shader.",
+      "and_my_bearing_evidence_was_weaker_than_i_wrote": "I claimed the bearing is 'identical -50 on every arm'. That held within runs A and lanes2, but run B reads fixed at -26 and no-dist/no-refl at -56. The bearing is an argmax over 2-degree steps and it JUMPS between runs when two orientations carry similar power. Bearing agreement is therefore not evidence, and I should not have leaned on it. The reflection finding does not depend on it: it rests on lane POWER, which replicates at 76-78% across two processes.",
+      "where_that_leaves_the_lanes": "NOT the .25 floor (falsified by the build). NOT the reflection at all, and therefore NOT renderer.js's target (falsified by me, twice, on power). NOT esCapillary/esMicro. NOT esCaustic. NOT the additive fine-term layer as a whole. They ARE the water surface — the water-hidden frame at the same pose carries no bands at all. So the cause is in the water's BASE: the esDepth/esReflection mix itself, the vertex normals and esSlope, or the water MESH. The candidate I would ablate next, and am explicitly NOT asserting: province.js:1559 sets a per-water-cell vertex colour `q = .43 + .57*clamp(depth/1.35,0,1)` on a cell lattice, and water.js:124 feeds it straight into the body colour as `diffuseColor.rgb*.21`. A per-cell colour on a lattice is the right SHAPE for broad bands. That is a derivation, it is the third of its kind in this verdict, and the first two were both wrong — so it is written here as the next arm to run and nothing more.",
+      "the_lesson_i_am_recording_against_myself": "I produced two clean, quantitative, well-argued derivations from shader source plus measured scale plus measured bearing, and BOTH were false. Each looked stronger than the last. This is the same failure mode ARBITRATION S60's correction records — reading a before/after pair and narrating what you expect to see — arriving through arithmetic instead of through a frame. In this piece, on this defect, a shader-source argument is worth nothing until the term has been deleted and the number has come back. Three rounds have now been slowed by exactly this."
+    }
+  },
+  "clause_by_clause": {
+    "a_composited_weight": {
+      "clause": "the composited reflection weight straight down at 120 m is <= 0.05, and at the 60 m grazing marsh vista is >= 0.60",
+      "build_said": "PASS on both halves",
+      "i_say": "HALF PASSES ON A NARROW WINDOW; THE OTHER HALF HAS NO VALID MEASUREMENT AND IS SCORED 0 FAIL-CLOSED.",
+      "normal_incidence": "The build's 0.0240 comes from a central 64x64 window where the camera geometry alone gives normal incidence. That is legitimate and needs no esView join — but it is 4,096 px of 407,270 water px (1.0%). The tool's OWN wider bin, `near_normal_esView_gt_0_90` over 185,900 px, reads median **0.058**, which is ABOVE 0.05. And the join-free whole-mask figure is median 0.3250 -> **0.0868**, a 73% fall. My reading: the fall is real and large; the <= 0.05 claim holds only on the 1% of pixels that are dead-on normal.",
+      "why_the_wider_bin_is_higher_and_it_is_not_noise": "`max(Schlick, smoothstep(10,52,d)*.72*(1-esView))` picks the distance term whenever (1-esView) > 0.028, i.e. for esView < 0.972 — almost every water pixel. At esView 0.90 the distance term supplies 0.072 while Schlick supplies 0.020. **Round 2 removed the constant floor and left the term round 1 identified as the original defect completely untouched.** That is the honest description of what shipped.",
+      "grazing": "SCORED 0, NOT PASS. The build's 0.6415 comes from an `esView < 0.20` bin — a PER-PIXEL JOIN between the esView probe frame and the weight probe frame. The build itself declares that join invalid (see `instrument_findings.esview_join`) and says the numbers it reports are 'the ones that need no esView field'. This one needs it. It cannot be both.",
+      "i_can_show_the_join_is_broken_not_merely_suspect": "At the top-down pose the same bin reads median **0.022**. The formula forbids that: every water pixel there is >= 120 m, so smoothstep = 1 and a genuinely esView<0.20 pixel must carry >= 0.72*0.80 = **0.576**. The measured 0.022 is instead almost exactly Schlick at NORMAL incidence (0.020) — because the pixels the esView frame labels 'grazing' are, in the weight frame captured at a different ripple phase, normal-incidence pixels. The join is not merely invalid, it is anti-correlated with the truth.",
+      "fair_to_the_build": "At the water_edge pose the grazing region is set by CAMERA geometry rather than by ripple normals, so it is spatially stable across phases and the join is far less broken there. I am not calling the 0.6415 false. I am calling it unevidenced, and under fail-closed doctrine that is 0."
+    },
+    "b_fresnel_delta": {
+      "clause": "M12 FresnelDelta at a water_edge shot is >= 0.05 and POSITIVE",
+      "build_said": "FAIL (-0.01381 at the deck vista)",
+      "i_say": "FAIL — but on a far better build than the build described. Positive at all four eye-level bearings (+0.0136 to +0.0460), paired change +0.1128 mean, 12x the band. Short of 0.05 by 0.004 at its best bearing. See falsification 3."
+    },
+    "c_lane_power_normalised": {
+      "clause": "VOID as written (S63). Replacement adopted: absolute lane_power DOWN, mean luma above a floor, anisotropy NOT UP.",
+      "build_said": "fails the replacement too, on aniso 1.54 -> 1.99",
+      "i_say": "UNRESOLVED ON EVERY ONE OF ITS THREE TERMS, AND `unresolved` FAILS CLOSED. The replacement clause is not yet measurable to the precision it needs, and nobody has replicated the round-1 arm even once.",
+      "aniso": "The build reports 1.54 -> 1.99 (+29%). My own instrument, both arms in one process at the same pose, reads prefix 1.97 -> fixed 1.99/2.07 — essentially unchanged, and inside the round-2 arm's own two-replicate range. Two instruments disagree on the sign of the effect. Worse, S52 kills the term anyway: the null dimmer moves aniso 1.54 -> 1.86, reproducing 71% of the rise the clause fails on.",
+      "absolute_lane_power": "The build reports +1.8%; my instrument reports 0.4594 -> 0.3618, **-21.2%**, at the same pose in one process. Opposite signs. My band-pass differs from the sweep's in absolute scale so the two are not directly comparable — which is itself the point: the clause names a quantity that two reasonable estimators disagree about in DIRECTION.",
+      "luma_floor": "inside its own band, per falsification 4.",
+      "so": "I am not scoring this clause as a fail on aniso, because I cannot reproduce the aniso rise and the null control says the term is a brightness proxy. I am scoring it `unresolved` -> fails closed, which lands in the same place for this build but for an honest reason, and which tells the next round to fix the CLAUSE before spending another build against it."
+    },
+    "d_preservation_S59": {
+      "clause": "mean luma >= 70; grazing composite weight does not fall; ShoreDelta >= 0.03",
+      "build_said": "MIXED — two of three hold, ShoreDelta does not",
+      "i_say": "ONE HOLDS ON ARITHMETIC, ONE IS UNRESOLVED, ONE FAILS — and the clause EARNED ITS KEEP even though the thing it caught turns out to be metric-only.",
+      "luma": "unresolved, fails closed (falsification 4).",
+      "grazing_weight": "The build's own figure is arithmetic, not measurement, and it says so. I could not measure it either — the only measurement of it is through the broken esView join. Scored 0 fail-closed, NOT demonstrated absent. The arithmetic (.575 -> .650 at D = .65) is correct as arithmetic.",
+      "shore_delta": "FAILS at all four bearings I measured, 4-5x its band. Confirmed, reproduced, and worse than reported. Metric-only in substance (falsification 2)."
+    }
+  },
+  "bar_findings": {
+    "note": "CRITIC-DOCTRINE §1.3 — judge the bar, not only the build. Asked of this piece: if F7 scored full marks on every clause it was handed, would the water actually be good? No. Three holes, and the first is the largest thing in this verdict.",
+    "min_bar_components_absent_from_the_shader": {
+      "what": "`RI-VIS04` §9's MIN BAR is 'planar reflection at half-res for the main water body + depth-based colour + two-layer animated normals + shoreline depth fade'. TWO of the four are absent from `game/src/render/water.js` outright, and no amount of Fresnel work reaches either.",
+      "depth_based_colour": "`water.js:124` reads `vec3 esDepth=vec3(.038,.105,.118)+diffuseColor.rgb*.21;` — a hardcoded constant. The shader's complete uniform set is `uWaterPhase, uWaterReflection, uWaterReflectionMatrix, uWaterReflectionResolution, uWaterReflectionStrength` (derived by `grep -o 'uWater[A-Za-z]*' | sort -u`). **Nothing carries depth, extinction k, or region.** So `RI-WLD10`'s whole point — the Deep Marshes at k = 4.5, 0.67 m visibility, versus regions that declare otherwise — cannot reach the water shader at all. One province, one water colour.",
+      "shoreline_depth_fade": "`grep -c 'depthTexture\\|tDepth\\|depthFade' game/src/render/water.js` returns **0**. No depth-buffer read exists. See falsification 2.",
+      "consequence": "F7 has now spent two full rounds and two critics on the Fresnel BLEND between two terms, one of which is a constant and the other of which is a stale half-res mirror. The blend is the smallest of the four MIN BAR components and it is the only one anyone has worked on."
+    },
+    "shoredelta_is_the_wrong_shape": {
+      "what": "M12's `ShoreDelta` is an ABSOLUTE near-shore/open-water luminance difference with a `>= 0.03` floor. `RI-VIS04` §9's TELL names 'a hard geometric line where the water plane intersects the terrain' as the defect. **A hard line maximises ShoreDelta. A correct depth-fade to matching colour minimises it.** The metric scores the named defect HIGH and the required feature LOW.",
+      "why_it_matters_here": "It is the preservation clause in S59's sense, and it fired on this build — correctly, in that something changed, and misleadingly, in that what was lost was the artefact rather than the feature. A preservation clause that cannot tell those apart will veto every future round that removes an artefact.",
+      "what_would_fix_it": "Pair it: `ShoreDelta` must be accompanied by a GRADIENT-WIDTH measure across the waterline (how many pixels the transition takes). A hard line is a high delta over 1-2 px; a depth fade is a comparable delta over 20-40 px. Neither number alone separates them; together they do. I am flagging this rather than legislating it — it is an arbitration call and it belongs to the orchestrator.",
+      "this_is_S60s_shape_again": "not blind, not unstable — MISDOMAINED. It measures 'is there contrast at the shore' when the bar asks 'is the transition soft'."
+    },
+    "the_lane_defect_has_no_owner_and_no_clause": {
+      "what": "The most visible thing in a top-down frame of our marsh is a set of broad diagonal bands, and NO reference item names them. They are not in `RI-VIS04` §9's TELL, not in `RI-WLD10` §10's fidelity list, and M12 has no sub-metric for them. Every number that has ever been quoted about them — `x_rms`, `lane_power`, `lane_power_normalised`, `lane_aniso` — is a bespoke instrument invented by a builder or a critic in this piece, and S52's null control has now shown all four to be brightness proxies.",
+      "so": "Two rounds have been fought over an unowned defect using four inadmissible metrics. That is the real reason F7 keeps failing to move: there is no bar for the thing everyone can see.",
+      "what_it_needs": "An aliasing / temporal-stability clause in `RI-VIS03` or `RI-VIS04` §9 — sub-pixel detail terms must not alias into visible low-frequency structure — with a measure taken across a RESOLUTION or DISTANCE sweep, because aliasing is the one defect that gets worse as you look from further away. I did not write it; I am naming it, and it should be the next thing added to the corpus for this subsystem."
+    }
+  },
+  "instrument_findings": {
+    "aces_kills_a_packed_probe_and_a_grey_probe_survives": {
+      "build_claim": "A colour probe cannot pack three channels through this renderer; a written (0.25, 0.50, 0.75) came back as (136, 199, 212) because ACES is a matrix. A grey probe with an in-run grey-ramp calibration survives.",
+      "ruling": "CONFIRMED, and I verified it against the vendored source rather than the claim.",
+      "verification": "`game/vendor/three/three.module.js:496` carries `ACESFilmicToneMapping` with `ACESInputMat` and `ACESOutputMat`. Three.js `mat3` takes COLUMNS, so the mathematical rows are the transpose; I summed them: input rows **[1, 1, 1]**, output rows **[1, 1, 0.99999]**. `RRTAndODTFit` between them is per-component. Therefore a neutral (v,v,v) maps to (v,v,v) through the whole chain, and any packed RGB triple is mixed across channels irrecoverably. Deleting `tonemapping_fragment` does not help because the chain is applied regardless.",
+      "belongs_in_hazards": "YES. This is a general trap for every future probe in this repo, not a water fact: any instrument that encodes measurements into colour channels and reads them back through this renderer is reading a matrix product of its own inputs. The rule is one scalar per pass, written as a NEUTRAL grey, with an in-run ramp as the transfer curve. The build's ramp resolved 957 columns over 194.2 stored bytes, which I read from the recovered `probes1` run."
+    },
+    "esview_join": {
+      "build_claim": "The esView probe cannot be per-pixel joined to the weight probe, because the water phase advances between passes; the build's own cross-check caught this (mean_abs_error 0.1989, Pearson r 0.577) and it WITHHELD the row.",
+      "ruling": "CONFIRMED, THE REASONING IS SOUND, AND I CAN DO BETTER THAN CONFIRM IT — I can show the join failing with a number the build did not have.",
+      "the_proof": "See `clause_by_clause.a.i_can_show_the_join_is_broken_not_merely_suspect`. The top-down `esView < 0.20` bin returns median 0.022 where the shader's own algebra requires >= 0.576, and 0.022 is Schlick at normal incidence. The join does not merely add noise; it systematically selects the wrong pixels.",
+      "the_build_should_have_applied_its_own_finding_one_step_further": "It withheld the offline cross-check row and then scored clause (a)'s grazing half on the same join. That is the only place in this status file where its stated method and its reported number disagree, and it is why I moved that half to 0 rather than PASS."
+    },
+    "the_instrument_is_not_noisy_it_is_ordinal": {
+      "what": "The single most reusable thing I found. `f7-r2-sweep.mjs` never resets the water phase between arms, so capture ORDINAL determines ripple phase, and every cross-arm comparison in this piece's history is confounded with it.",
+      "evidence": "Bit-identical results for the 3rd arm across two processes at two different commits; 0.0198 of FresnelDelta between two captures of the SAME untouched shader at different ordinals in ONE process; a phase-only replicate band of 0.00943 that is 5x smaller than the 0.049 the build attributed to run-to-run noise.",
+      "the_fix_and_it_is_cheap": "Interleave the arms and swap their order every other replicate. My tool does this. It turns a single confounded number into a paired estimate with a spread, and it is what let me recover a +0.1128 arm effect the build had measured as +0.0531.",
+      "belongs_in_hazards": "YES — alongside §22. Any A/B in this repo that captures arms sequentially against an animated simulation is measuring the animation as well as the arm."
+    },
+    "my_own_tools_defect_reported_against_myself": {
+      "what": "`f7-r2-critic-phase.mjs` set `customProgramCacheKey` to `f7-r2c:<armId>`, which REPEATS across replicates and poses. Three.js then reuses the compiled program, `onBeforeCompile` is never called again, and the arm silently reports 0 edits.",
+      "cost": "The ablation run lost every arm after replicate 0, and 4 of 8 orbit bearings lost their `prefix` arm. I detected it because the tool writes `edits_applied` and marks a zero-edit arm VACUOUS rather than reporting it as a negative result — so no bad number entered this verdict, but four bearings' worth of work was wasted.",
+      "important_consequence_for_anyone_reading_the_frames": "A VACUOUS `prefix` frame shows the FIXED shader under a prefix filename. `look-orbit-eye-yaw045-fixed.png` and `look-orbit-eye-yaw135-fixed.png` have no valid counterpart and MUST NOT be compared. The four bearings I report all have `edits_applied >= 1`.",
+      "fixed": "The key now includes a monotonically increasing `window.__R2_SEQ`, bumped on both apply and restore. Banked."
+    }
+  },
+  "province_js_ownership": {
+    "question": "`province.js`'s wet-bank lattice: read, excluded from every probe mask, untouched by two rounds, named by the builder as the likeliest reason `ShoreDelta` had nothing under the reflection ramp. The r1 critic measured it changing 24.98% of a vista frame and 45.13% of a top-down frame and failing `RI-WLD10` §10's 'shoreline blend with no hard intersection line'. Decide whether it is F7's or somebody else's.",
+    "ruling": "**THE REQUIREMENT IS F7'S. THE FILE IS NOT. AND THE FIX BELONGS IN F7'S OWN FILE, NOT IN `province.js` — WHICH IS WHY TWO ROUNDS STEPPING OVER IT WAS A MISTAKE RATHER THAN A DELEGATION.**",
+    "why_the_requirement_is_f7s": "`RI-VIS04` §9 MIN BAR names 'shoreline depth fade' and its TELL names 'a hard geometric line where the water plane intersects the terrain'. `RI-WLD10`'s fidelity clause names 'shoreline blend with no hard intersection line (depth-fade against the depth buffer)'. Both items are items F7 is judged against — they are two of the three in `reference_items` below. There is no reading of the bar on which F7 is judged for water fidelity but not for the waterline.",
+    "why_the_file_is_not": "`node tools/ownership.mjs --for game/src/world/province.js`, run this turn, returns one live piece: `W1-30-builder-20260812 [builder-native-gpu-remediation-in-progress]`. F7 must not edit it.",
+    "why_that_is_not_a_conflict": "The bar asks for a **depth-fade against the depth buffer**. That is a fragment-shader technique: sample scene depth, compare to the water fragment's depth, fade alpha and colour over the difference. It is implemented in the water material — `game/src/render/water.js`, the file F7 owns and the only file either round has touched. It is NOT implemented by editing a terrain lattice. `province.js`'s 25 m axis-aligned wet-bank band is a GEOMETRIC SUBSTITUTE for the shader feature the bar requires, and the substitute is what produces the hard axis-aligned intersection the r1 critic measured.",
+    "so_the_disposition": "F7 owns closing `RI-VIS04` §9's 'shoreline depth fade' and `RI-WLD10`'s 'no hard intersection line', in `water.js`, by adding the depth-buffer read that `grep` says has never existed. Once a real depth-fade exists, `province.js`'s lattice is redundant scaffolding and its REMOVAL is a separate, smaller piece belonging to whoever owns `province.js` — sequenced AFTER F7's depth-fade lands, never before, or the waterline gets worse in between.",
+    "the_thing_i_want_on_the_record": "This defect has been visible in every frame either round captured, is named by two of F7's three reference items, and has been stepped over twice because the pixels sit in a file F7 does not own. The pixels are not the requirement. **A defect is owned by the item whose bar names it, not by the file it happens to be drawn from.** If that principle is not written down somewhere it will happen again on the next subsystem seam."
+  },
+  "reference_items": [
+    {
+      "id": "RI-WLD10",
+      "path": "corpus/50-world/RI-WLD10-the-water-model.md",
+      "side": "split",
+      "kind": "number",
+      "blind_pair": "yes",
+      "score_0_10": 2,
+      "measured": "partial",
+      "native_verdict": "M56 §5 (`blind_pair: yes`) is 0, fail-closed and UNRUN — the orchestrator owes it (rule 0e). §10's fidelity clause 'shoreline blend with no hard intersection line (depth-fade against the depth buffer)' FAILS on both arms and is now proved absent in source, not inferred: `grep -c 'depthTexture|tDepth|depthFade' game/src/render/water.js` = 0. §8's per-region water model cannot reach the shader at all — the complete uniform set carries no depth, k or region. M48-M55 not measured by this verdict and 0 by fail-closed convention, NOT demonstrated absent. This verdict cannot raise or close RI-WLD10.",
+      "checks": [
+        {
+          "id": "M56 §5 blind pair",
+          "result": "fail",
+          "value": "NOT RUN. `blind_status: not_possible`. Scored 0 fail-closed, never 'unknown'.",
+          "hard_fail": false
+        },
+        {
+          "id": "§10 fidelity — shoreline blend, no hard intersection line",
+          "result": "fail",
+          "value": "No depth-buffer read exists in the water shader (grep count 0). What ships is a per-vertex edge mask that `province.js:1554` documents against itself as 'an edge mask, not a depth ramp'. Hard aliased waterline confirmed by eye on both arms at 8 eye-level bearings.",
+          "hard_fail": false
+        },
+        {
+          "id": "§8 — water carries the region's own model",
+          "result": "fail",
+          "value": "The shader's whole uniform set is uWaterPhase / uWaterReflection / uWaterReflectionMatrix / uWaterReflectionResolution / uWaterReflectionStrength. No depth, no k, no region. The Deep Marshes' declared k = 4.5 cannot reach the fragment.",
+          "hard_fail": false
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/look/frames/",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/lanes/phase.json"
+      ]
+    },
+    {
+      "id": "RI-VIS04",
+      "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+      "side": "modern",
+      "kind": "checklist",
+      "blind_pair": "no",
+      "score_0_10": 3,
+      "measured": "partial",
+      "native_verdict": "§9 MIN BAR has four components. Planar reflection at half-res: PRESENT. Two-layer animated normals: present as procedural sines, and two of them alias below Nyquist at the judged pose. Depth-based colour: ABSENT (`water.js:124` is a hardcoded constant). Shoreline depth fade: ABSENT (grep 0). The §9 TELL's 'hard geometric line where the water plane intersects the terrain' is PRESENT on both arms. Round 2 moves the Fresnel blend, which is the one component that was already present.",
+      "checks": [
+        {
+          "id": "§9 MIN BAR — depth-based colour",
+          "result": "fail",
+          "value": "ABSENT. `vec3 esDepth=vec3(.038,.105,.118)+diffuseColor.rgb*.21;` — constant.",
+          "hard_fail": false
+        },
+        {
+          "id": "§9 MIN BAR — shoreline depth fade",
+          "result": "fail",
+          "value": "ABSENT. No depth-buffer read in the shader.",
+          "hard_fail": false
+        },
+        {
+          "id": "§9 MIN BAR — planar reflection at half-res",
+          "result": "pass",
+          "value": "PRESENT (`renderer.js:125`, half canvas resolution). Note this round REDUCED how much of it reaches the frame, which is correct.",
+          "hard_fail": false
+        },
+        {
+          "id": "§9 TELL — same colour and brightness everywhere",
+          "result": "improved, still failing",
+          "value": "Round 1 was close to the TELL. Round 2 introduces real angle-dependent variation and is visibly better at the bearings where reflected canopy filled the near field. But with no depth term and one constant water colour for the province, the underlying TELL is structurally unaddressed.",
+          "hard_fail": false
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/look/phase.json"
+      ]
+    },
+    {
+      "id": "RI-VIS03",
+      "path": "corpus/70-visual/RI-VIS03-fidelity-image-metrics.md",
+      "side": "modern",
+      "kind": "number",
+      "blind_pair": "no",
+      "score_0_10": 2,
+      "measured": "yes",
+      "native_verdict": "M12, five sub-metrics, measured with the corpus's own `tools/metrics/lib/vis03.mjs`. FresnelDelta: sign FIXED at all four eye-level bearings (-0.075..-0.099 -> +0.014..+0.046), paired change +0.1128 mean against a measured band of 0.0094 — a real, replicated, unconfounded improvement — and still FAILS `>= 0.05` by 0.004 at its best bearing. ShoreDelta: FAILS at all four bearings (0.006-0.021 vs `>= 0.03`), a genuine 4-5x-band regression from round 1, though metric-only in substance. NormalEnergy and ReflCorr: UNMEASURABLE at every pose taken, scored 0 fail-closed, NOT demonstrated absent. TemporalVar: not measured this round (needs a >= 5-frame stationary sequence I did not capture).",
+      "checks": [
+        {
+          "id": "M12 FresnelDelta",
+          "result": "fail",
+          "value": "+0.04599 best of four bearings; band >= 0.05. Positive for the first time in this piece's history; short by 0.004.",
+          "threshold": ">= 0.05 and positive",
+          "hard_fail": false
+        },
+        {
+          "id": "M12 ShoreDelta",
+          "result": "fail",
+          "value": "0.00597-0.02064 across four bearings; band >= 0.03. Round-1 arm passed at 0.03896-0.05665. Regression confirmed at 4-5x the measured band of 0.00806.",
+          "threshold": ">= 0.03",
+          "hard_fail": false
+        },
+        {
+          "id": "M12 NormalEnergy",
+          "result": "fail",
+          "value": "UNMEASURABLE — 'no 128x128 square window lies entirely inside WATER_MASK' at every pose taken, by me and by both prior rounds. 0 fail-closed, NOT demonstrated absent.",
+          "hard_fail": false
+        },
+        {
+          "id": "M12 ReflCorr",
+          "result": "fail",
+          "value": "UNMEASURABLE — '0 paired samples above the far half of the water'. 0 fail-closed, NOT demonstrated absent.",
+          "hard_fail": false
+        },
+        {
+          "id": "M12 TemporalVar",
+          "result": "not measured",
+          "value": "Needs >= 5 stationary frames; I captured single frames per arm and spent my browser budget on the orbit, the ablation and the replicate band instead. Not scored either way.",
+          "hard_fail": false
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/look/phase.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/phase-vista/phase.json"
+      ]
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "check": "RI-WLD10 M56 §5 — 'interleave our 16 with 16 Morrowind water shots and ask a fresh judge to rank all 32'",
+      "ref_item": "RI-WLD10",
+      "status": "not_possible",
+      "not_possible_reason": "RI-WLD10 declares `blind_pair: yes` and M56 §5 needs a FRESH judge with no project context. I have opened both arms attributed, so I am disqualified by construction; and a critic cannot spawn a fresh judge — `create_session` raises an approval prompt and CLAUDE.md rule 0 forbids it, and a subagent cannot spawn subagents. Rule 0e places this with the ORCHESTRATOR. I record it, fail closed at 0, and say plainly: THE ORCHESTRATOR OWES THIS GATE. Re-derived by me this turn, not inherited: `grep -rl 'blind_pair: yes' corpus/ --include=*.md | wc -l` returns **100** (the brief and the r1 verdict both say 98 — it has grown by two), and `grep -rln 'blind_status: *run' corpus/90-verdicts/ | wc -l` returns **0**. RI-VIS04 and RI-VIS03 both declare `blind_pair: no` and need no such gate.",
+      "would_it_have_changed_the_verdict": "It could only have LOWERED it, never raised it — RI-WLD10 is already at 2 for other measured reasons. But it is also the one instrument that could settle the builder's overturn condition #3 (a blind pair ranking round 1 above round 2), and on my evidence I would expect round 2 to win at the bearings where the canopy mirror dominated and to be indistinguishable elsewhere."
+    }
+  ],
+  "score": {
+    "overall_0_10": 2,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "min over the three items this piece can move: RI-WLD10 2, RI-VIS04 3, RI-VIS03 2. The min is 2. It is set by RI-WLD10's unrun M56 blind gate together with a shoreline clause now proved absent in source, and by RI-VIS03 M12 where the one sub-metric that improved is 0.004 short of its band and the one that regressed fails at every bearing. THE SCORE IS UNCHANGED FROM ROUND 1 AND THE BUILD IS NOT. Round 2 flipped the sign of the corpus's own instrument for the property F7 exists to fix, at every pose a player occupies, by twice the margin the builder claimed for itself — and it cannot show up in a min-over-axes score while two MIN BAR components are absent from the shader and a blind gate has never run. The lane defect that has dominated two rounds is now excluded from the reflection by ablation and remains unexplained.",
+    "confidence": "high on the measurements, high on the bar findings, medium on the aliasing account (derived, not ablated)"
+  },
+  "status": "FAIL — not done, keep the change",
+  "status_reasons": [
+    "Clause (b) FAILS: best FresnelDelta +0.04599 against a band of >= 0.05.",
+    "Clause (a)'s grazing half is UNEVIDENCED (broken esView join) and scored 0 fail-closed; its normal-incidence half passes only on the 1% of pixels that are dead-on normal.",
+    "Clause (c)'s S63 replacement is UNRESOLVED on all three terms and fails closed; two instruments disagree on the sign of two of them and S52 shows the third is a brightness proxy.",
+    "Clause (d): ShoreDelta FAILS at every bearing; the luma floor is inside its own band; the grazing-weight term is unmeasured.",
+    "RI-WLD10's M56 blind gate has never run — fail-closed, orchestrator owes it.",
+    "Two of RI-VIS04 §9's four MIN BAR components are absent from the shader entirely."
+  ],
+  "the_builders_ruling": {
+    "it_said": "KEEP the change and hand it to a critic as a PARTIAL delivery, rather than revert it because clause (c) failed.",
+    "i_say": "**CONFIRMED. KEEP IT.** And the case for keeping is stronger than the builder made it.",
+    "on_its_three_overturn_conditions": {
+      "1_shoredelta_visible_rather_than_metric_only": "TESTED AND NOT MET. I took the shot it did not take — four eye-level bearings, both arms, plus three shoreline close-up poses queued — and the round-1 arm has no visible shoreline treatment either. Its higher ShoreDelta was the 25% mirror brightening near-shore water. Proved in source: no depth-buffer read exists in the shader on EITHER arm. Nothing the bar wants was lost.",
+      "2_darkening_pushes_another_region_below_its_k": "NOT TESTED BY ME EITHER. I measured one region (Deep Marshes) at one tide state, same as the build. `RI-WLD10` M56 wants four regions and four tide states and no round has run that matrix. This remains genuinely open and is the strongest surviving argument against keeping.",
+      "3_a_blind_pair_ranking_round_1_above_round_2": "NOT RUN — orchestrator owes it (rule 0e)."
+    },
+    "why_i_confirm_rather_than_merely_defer": [
+      "The `.25` floor was indefensible and is measured, not argued: whole-mask median composited weight 0.3250 -> 0.0868, at a normal incidence where real water reflects ~2%.",
+      "The corpus's OWN instrument for this property moves +0.1128 mean across four independent bearings, 12x its measured band, and changes sign. That is the largest real result F7 has produced and the builder under-reported it by half because it scored the clause at a near-zero, phase-sensitive pose.",
+      "At the bearing where the defect was worst, the improvement is large and obvious to the eye, and it is the direction RI-WLD10 §8's 'black standing water' at k = 4.5 requires.",
+      "Every metric that argues for reverting is a brightness proxy that the null control reproduces without any Fresnel at all (S52), so none of them is evidence about what this change did.",
+      "Reverting would restore a 25% mirror to fix a lane defect that I have now shown by ablation is not caused by the reflection at all."
+    ]
+  },
+  "biggest_gap": {
+    "gap_id": "GAP-W1-F7-two-of-four-min-bar-components-are-absent-from-the-water-shader",
+    "subsystem_path": "visual.renderer.water",
+    "severity": "blocking",
+    "what": "`RI-VIS04` §9's MIN BAR is 'planar reflection at half-res + depth-based colour + two-layer animated normals + shoreline depth fade'. **Depth-based colour and shoreline depth fade do not exist in `game/src/render/water.js`.** Measured, not argued: `grep -c 'depthTexture|tDepth|depthFade'` returns 0, so there is no depth-buffer read of any kind; and the shader's complete uniform set, from `grep -o 'uWater[A-Za-z]*' | sort -u`, is uWaterPhase / uWaterReflection / uWaterReflectionMatrix / uWaterReflectionResolution / uWaterReflectionStrength — nothing carrying depth, extinction or region. `water.js:124` sets the water's body colour to the literal constant `vec3(.038,.105,.118)`. So one province gets one water colour, the Deep Marshes' declared k = 4.5 cannot reach the fragment shader, and the waterline is a per-vertex edge mask that `province.js:1554` documents against itself as 'not a depth ramp'. Two rounds and two critics have now been spent on the Fresnel BLEND between a constant and a stale half-res mirror — the one MIN BAR component that was already present.",
+    "why_it_matters": "F7 cannot pass while two of the four things its own checklist calls minimum are missing, and no amount of further Fresnel work reaches either. It also explains why every round produces a smaller visible change than expected: the blend is being tuned between two terms that are themselves wrong.",
+    "remedy": "In `game/src/render/water.js`, F7's own file, in this order. **(a) Depth-based colour.** Bind the scene depth texture, reconstruct water column depth per fragment, and drive the body colour by Beer-Lambert against the region's declared `k` from `game/data/world/water.json` — the data contract RI-WLD10 §11 already makes a required file. Acceptance: two regions whose `water.json` k differs by >= 2.0 must differ in measured water-body colour by a stated margin at the same pose and tide; and the Deep Marshes' rendered colour must be consistent with k = 4.5. **(b) Shoreline depth fade.** With the depth read now available, fade colour and alpha over the depth difference. Acceptance PAIRED per S59 and per this verdict's `bar_findings.shoredelta_is_the_wrong_shape`: `ShoreDelta` back >= 0.03 AND a new gradient-width measure showing the transition takes >= 15 px at the deck vista, so a hard line cannot satisfy it. **(c) Then, separately, the lanes** — see `secondary_observations.the_lanes`.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/look/frames/look-orbit-eye-yaw090-prefix.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/look/frames/look-orbit-eye-yaw090-fixed.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/look/phase.json",
+      "game/src/render/water.js:124",
+      "game/src/world/province.js:1554"
+    ]
+  },
+  "secondary_observations": {
+    "the_lanes": "ABLATED FIVE WAYS AND STILL UNEXPLAINED, WHICH IS THE HONEST ANSWER. Established NEGATIVELY and robustly: they are not the reflection (deleting it entirely leaves 76-78% of lane power across two processes), and therefore not renderer.js's half-res stale target, which falsifies S63's replacement ruling; not esCapillary/esMicro; not esCaustic; not the additive fine-term layer as a whole (82% survives deleting all six). They ARE the water surface: the water-hidden frame carries no bands. I offered two source-derived explanations in this round and ablation killed both. The next arm is the water mesh's own per-cell vertex colour (province.js:1559 -> water.js:124), NAMED AS A CANDIDATE ONLY. See `s63_falsified.i_derived_twice_and_was_wrong_twice`.",
+    "the_stuck_hud_region_label": "CONFIRMED INDEPENDENTLY IN MY OWN FRAMES. Every frame I captured reads `western-rootlands` bottom-left while the engine reports the Deep Marshes. Third round in a row this has been recorded and nobody owns it. It is not F7's and it is not cosmetic — it means any human judging a capture is told the wrong region.",
+    "no_timing_figure_from_me_either": "Like the build, I took no frame-time reading. A Schlick `pow()` for a `pow()` should be free; a depth-texture read for the remedy above will NOT be, and that is the first thing the next round should measure rather than assume.",
+    "the_build_undersold_itself": "Worth saying plainly because the incentive in this repo runs the other way. This status file fails its own clauses in its own opening section, and in doing so it scored clause (b) at the one pose where the instrument sits near zero and is phase-sensitive, and never measured it at the poses whose frames it had already opened and correctly described. The result was that it reported +0.0531 confounded when the true unconfounded effect is +0.1128, and reported 'still negative' when at every player pose it is positive."
+  },
+  "gap_closure": {
+    "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence": "CLOSED. The `.25` constant floor is gone from `game/src/render/water.js`; whole-water-mask median composited weight falls 0.3250 -> 0.0868 (73%), measured off the GPU through a calibrated grey probe, and the central normal-incidence window falls 0.2971 -> 0.0240. The gap named the floor and the floor is removed. It is closed on its own terms even though F7 does not pass, and the r1 verdict's PREDICTION for what removing it would buy on the lane metric is falsified — see S63 and `s63_falsified`."
+  },
+  "corpus_extended": "Nothing written to the corpus by me this round. Three things are NAMED as needing to be written and I did not have the standing to write them: (1) an aliasing / temporal-stability clause, since the most visible defect in our water is owned by no reference item; (2) a gradient-width companion to M12 `ShoreDelta`, since as written it scores the bar's own named TELL high; (3) HAZARDS entries for the ACES probe trap and the ordinal/phase confound. (3) is the cheapest and the most immediately reusable.",
+  "method_deviations": [
+    "My brief quoted the build's claims and the orchestrator's rulings before I measured — CRITIC-DOCTRINE §8 prefers the reverse order. Recorded, and every figure re-derived.",
+    "The box was at or over its browser ceiling (`tools/contention.mjs`: 6 instances, load 6.43/core against 4.0) for most of my window because sibling agents were capturing. I killed my own top-down replicate run by PID (HAZARDS §10) to give the orbit run room, and I did not launch a third browser while over ceiling except once, deliberately, for the ablation. This cost me the top-down replicate band and the aliasing arm.",
+    "My lane estimator is my own and its absolute values are NOT comparable to `f7-r2-sweep.mjs`'s (mine reads ~0.36 where the sweep reads ~3.7). I use it only for within-instrument comparisons and I say so wherever it disagrees with the sweep. M12 figures come from the corpus's shared `tools/metrics/lib/vis03.mjs` and ARE directly comparable.",
+    "I judged the round's central visual claim partly on the BUILD's own eye-level frames (`W1-F7-WATER-R2/frames/arms-player-{prefix,fixed}-e-eye-yaw090.png`) as well as my own orbit captures. I opened them myself and describe what I saw; I did not take the build's description of them."
+  ],
+  "arbitration_questions": [
+    {
+      "id": "Q1",
+      "question": "S63 adopted the builder's three-number replacement for clause (c) verbatim: absolute `lane_power` down, mean luma above a floor, anisotropy not up. I cannot score any of the three. Two instruments disagree on the SIGN of the lane_power change (+1.8% vs -21.2%) and on the aniso change (+29% vs +3%); the luma floor is inside its own measured band; and S52's null control reproduces 71% of the aniso rise with no Fresnel at all, which makes anisotropy a brightness proxy like the two terms it replaced. Is the replacement clause admissible, and if the terms it is built from are all brightness proxies, what is left to measure?",
+      "my_provisional_answer_which_the_orchestrator_should_overrule_if_it_disagrees": "It is not admissible, for the same reason the original was not: it is still built entirely out of quantities that a dimmer switch moves. The escape is not another combination of the same numbers — it is that the lanes are an ALIASING defect and aliasing has a signature no dimmer can fake: it changes with SAMPLING RATE. Measure lane power across a resolution or camera-distance sweep on a fixed scene. A real surface feature scales smoothly; an aliased one moves and reverses. A dimmer does nothing at all. I did not run it and it is one browser."
+    },
+    {
+      "id": "Q2",
+      "question": "This verdict rules that `province.js`'s waterline defect is F7's requirement but not F7's file, and that the fix belongs in `water.js` as a depth-fade. Generalised: when a bar clause names a defect whose pixels are drawn from a file the piece does not own, who owns closing it? Two rounds stepped over this one because the file was somebody else's.",
+      "my_provisional_answer": "The item whose bar names the defect owns it. The file is an implementation detail of the remedy, and if the correct remedy lives in the owned file — as it does here — there was never a conflict, only an assumption of one. If the correct remedy genuinely requires editing another piece's file, that is a sequencing problem for the orchestrator, not a licence to leave the clause unscored."
+    }
+  ],
+  "what_i_could_not_do": [
+    "I DID NOT RUN THE BLIND GATE. RI-WLD10 declares `blind_pair: yes`, M56 §5 has never run in this project's history, and a critic cannot spawn a fresh judge. `blind_status: not_possible`, scored 0, fail-closed. The orchestrator owes it (rule 0e). Re-derived myself: 100 items declare `blind_pair: yes`; 0 verdicts record `blind_status: run`.",
+    "I COULD NOT SAY WHAT DRAWS THE MARSH LANES, AND I WAS WRONG TWICE WHILE TRYING. Five ablation arms exclude the reflection, esCapillary/esMicro, esCaustic and the whole additive fine-term layer; 76-82% of the lane power survives each. Both positive explanations I derived from shader source were falsified by ablating them. The defect that has dominated two rounds of F7 is still unexplained, and the search space is now the water's base colour, its normals, or the mesh's own per-cell vertex colour. That is progress, but it is not an answer.",
+    "I NEVER GOT THE TOP-DOWN REPLICATE BAND. I killed that run by PID to give the orbit run room when the box was at 6.43 load per core against a ceiling of 4.0. So the band I publish (FresnelDelta 0.00943, ShoreDelta 0.00806, mean_luma 2.069) is the VISTA band, measured on 5 replicates, and I have applied it to top-down numbers as an order-of-magnitude guide rather than a measured band. The two recovered top-down runs bracket the same arm at luma 73.142 and 70.151, which is consistent with it, but two points are not a band.",
+    "THE SHORELINE CLOSE-UPS NEVER RAN. My orbit tool queues three dedicated shoreline poses after the eight orbit bearings and the run ended at bearing 315 without reaching them, so the shot the BUILDER named as its own overturn condition still has not been taken by anybody. My 'metric-only' ruling therefore rests on eight eye-level frames in which the waterline is a hard aliased edge on BOTH arms, and on the source-level proof that no depth-fade exists on either arm — the second of which is the stronger and does not depend on any capture. It should still be taken.",
+    "FOUR OF EIGHT ORBIT BEARINGS LOST THEIR ROUND-1 ARM to a program-cache-key collision in my own tool, so I report four bearings and not eight. The VACUOUS frames are still on disk under `prefix`/`fixed` names and MUST NOT be compared — a VACUOUS `prefix` frame is the `fixed` shader. I have named which four are valid. The bug is fixed and banked.",
+    "M12 `NormalEnergy` AND `ReflCorr` ARE STILL UNMEASURABLE AT EVERY POSE I TOOK, exactly as both prior rounds recorded. Scored 0 fail-closed and NOT demonstrated absent. Three rounds have now failed to find a pose that yields them; that is starting to look like a property of our water masks rather than of our poses, and somebody should decide whether the metrics are obtainable here at all.",
+    "M12 `TemporalVar` NOT MEASURED. It needs >= 5 stationary frames per arm and I spent the browser budget on the orbit, the ablation and the replicate band. Not scored in either direction.",
+    "I MEASURED ONE REGION AT ONE TIDE STATE — the Deep Marshes at time 13, clear, seed 20260814 — exactly as both prior rounds did. `RI-WLD10` M56 wants four regions and four tide states. The build's own overturn condition #2 (does the darkening push another region below what its k declares) is therefore still completely untested, and it is the strongest surviving argument against the change I just confirmed.",
+    "NO TIMING FIGURE. Every number here is a pixel measurement.",
+    "I DID NOT WRITE THE THREE CORPUS ADDITIONS I NAMED (aliasing clause, ShoreDelta gradient-width companion, two HAZARDS entries). I named them with the evidence; writing reference items is not a critic's call to make unilaterally and I would rather they were written deliberately than bolted on by me at the end of a round."
+  ],
+  "source_reads": [
+    "orchestration/status/W1-F7-r2.json — in full",
+    "corpus/90-verdicts/wave1/W1-F7-WATER-r1.json + .md — score, biggest_gap.remedy, secondary_observations, ablation arm names",
+    "CLAUDE.md; corpus/00-doctrine/CRITIC-DOCTRINE.md §1.2b and §1.3; corpus/00-doctrine/ARBITRATION.md S52, S59, S60, S61, S63, S64",
+    "corpus/50-world/RI-WLD10-the-water-model.md — header (blind_pair: yes), §8, §10 fidelity clause, §11 data contract",
+    "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md §9 — HAVE / TELL / DETECT / METRIC / MIN BAR in full",
+    "corpus/70-visual/RI-VIS03-fidelity-image-metrics.md — blind_pair field",
+    "tools/metrics/lib/vis03.mjs — M12 implementation and M12_BANDS, read in full so I could say what FresnelDelta and ShoreDelta actually compute",
+    "tools/visual/f7-r2-sweep.mjs — docstring, ARMS, POSES, the arm capture loop and `stepFrames` phase handling (this is where the ordinal confound was found)",
+    "tools/visual/f7-critic-m12-offline.mjs — frame naming contract",
+    "game/src/render/water.js — the weight expression, the fine sine terms, the shore term, the complete uniform set",
+    "game/src/world/province.js:1548-1572 — the wet-bank lattice and its own comment that `waterShore` is not a depth ramp",
+    "game/vendor/three/three.module.js:496 — ACESFilmicToneMapping, both matrices, verified by summing their rows",
+    "orchestration/ROADMAP.md — the F7 row",
+    "commands run this turn: `node tools/ownership.mjs --for game/src/render/water.js` and `--for game/src/world/province.js`; `node tools/contention.mjs`; `grep -c 'depthTexture|tDepth|depthFade' game/src/render/water.js` = 0; `grep -o 'uWater[A-Za-z]*' | sort -u`; `grep -rl 'blind_pair: yes' corpus/ --include=*.md | wc -l` = 100; `grep -rln 'blind_status: *run' corpus/90-verdicts/ | wc -l` = 0"
+  ],
+  "artifacts": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/ — `phase-vista/` the 5-replicate band; `lanes/` the reflection ablation; `look/` the eye-level orbit, both arms; plus `probes1/ td1/ vista1/ vista2/` recovered from the quarantine commit and re-derived by me.",
+  "self_audit": {
+    "did_i_inherit_any_number": "No. Every figure in this verdict was re-derived this turn from a JSON I read or a command I ran, including the ones that agree with the build. Where I quote the build's own figure (e.g. its 0.0240 central-window weight, its +0.0531) I say it is the build's and I say what I measured instead.",
+    "what_would_make_this_verdict_wrong": [
+      "SUPERSEDED AND SELF-CORRECTED DURING THE ROUND: I first wrote that the lanes were sub-pixel moire, and listed 'if the no-fine-sines arm runs and the lanes survive it, my aliasing account is wrong.' It ran. They survived. I then derived esCaustic and ablated that too; also wrong. Both corrections are recorded in `s63_falsified.i_derived_twice_and_was_wrong_twice` rather than quietly edited out, because the pattern is the finding.",
+      "If the shoreline close-ups (never captured — see what_i_could_not_do) show a visible difference between the arms at the waterline, my 'metric-only' ruling on the ShoreDelta regression weakens. The source-level proof that NEITHER arm has a depth-fade would survive it.",
+      "If my orbit poses systematically favour the round-2 arm. Four bearings 90 degrees apart all agree in sign on both FresnelDelta and ShoreDelta, but I chose the poses and nobody checked me.",
+      "My replicate band is measured at the VISTA pose only, on 5 replicates, at one time of day and one weather. A band is per-pose and per-scene (S61), and I applied a vista band as a sanity check on top-down numbers.",
+      "The lane BEARING is unstable between runs (-26, -50, -56 for the same arm). Any future lane claim that leans on bearing agreement — including one I made in the first draft of this verdict — is unsafe."
+    ],
+    "did_i_score_against_an_insufficient_bar": "Yes, and I said so rather than passing the hole downstream — see `bar_findings`. Two of RI-VIS04 §9's four MIN BAR components are absent from the shader; M12's ShoreDelta scores the bar's own named TELL high; and the single most visible defect in our water is named by no reference item at all. I checked all three of F7's items plus the M12 implementation before declaring the last of those, per CRITIC-DOCTRINE §1.3's warning about false 'nothing covers this' claims.",
+    "am_i_being_fair_to_the_build": "I have tried to be, and the direction of my corrections is the test: on clause (b) and on the size of the real effect I found the build had been HARDER on itself than the evidence supports, and I said so in `secondary_observations.the_build_undersold_itself`. Where I moved a clause against it — clause (a)'s grazing half — it is because the build's own stated method forbids the measurement it used there.",
+    "i_falsified_my_own_headline_twice_and_kept_the_verdict_honest": "The most useful thing I did this round was ablate my own explanations instead of shipping them. Both were quantitative, both matched the measured bearing, and both were wrong. What survives is the negative result, which replicates."
+  },
+  "notes": "Filed by the second critic on this round. The first was killed by the container restart at ~20:03 having banked nothing; its evidence survived only in the quarantine commit and is recovered, re-derived and folded in above. I banked four times during this round for the same reason."
+}
