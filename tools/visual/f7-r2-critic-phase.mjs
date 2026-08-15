@@ -210,7 +210,13 @@ const R1_BLOCK_HEAD = `float esF0=.02;
         esRefl=max(esRefl,smoothstep(10.0,52.0,length(vViewPosition))*.72*(1.0-esView));`;
 const R1_BLOCK_R1 = `float esFresnel=pow(1.0-esView,2.2);
         float esRefl=.25+max(esFresnel,smoothstep(10.0,52.0,length(vViewPosition))*.72*(1.0-esView))*.50;`;
+/* The two sub-pixel additive sine terms, and the same line with ONLY those two dropped — every
+ * other fine term (caustic, shimmer, pulse, ripples) is left exactly as it is, so the arm isolates
+ * the aliasing pair and nothing else. */
+const FINE_TERMS = 'outgoingLight+=vec3(.006,.010,.011)*esCaustic+vec3(.003,.005,.006)*esShimmer+vec3(.006,.010,.012)*esPulse+vec3(.007,.010,.011)*(esRipples-.5)+vec3(.005,.007,.008)*(esCapillary-.5)+vec3(.004,.006,.007)*(esMicro-.5);';
+const FINE_TERMS_NOCAP = 'outgoingLight+=vec3(.006,.010,.011)*esCaustic+vec3(.003,.005,.006)*esShimmer+vec3(.006,.010,.012)*esPulse+vec3(.007,.010,.011)*(esRipples-.5);';
 const waterSrc = fs.readFileSync(path.join(REPO, 'game/src/render/water.js'), 'utf8');
+if (!waterSrc.includes(FINE_TERMS)) console.error('WARNING: the fine-terms line is not verbatim in water.js; the no-fine-sines arm will be VACUOUS and is not a result.');
 const asserted = waterSrc.includes(HEAD_W) && waterSrc.includes('float esF0=.02;');
 
 let commit = 'unknown';
@@ -258,6 +264,14 @@ async function measure(name) {
     masked: maskedStats(png, m, CROP),
   };
 }
+
+const spread = (vals) => {
+  const v = vals.filter((x) => typeof x === 'number' && Number.isFinite(x));
+  if (v.length < 2) return { n: v.length, note: 'fewer than two readings; no band' };
+  const mn = Math.min(...v), mx = Math.max(...v), mean = v.reduce((a, b) => a + b, 0) / v.length;
+  const sd = Math.sqrt(v.reduce((a, b) => a + (b - mean) ** 2, 0) / (v.length - 1));
+  return { n: v.length, min: +mn.toFixed(5), max: +mx.toFixed(5), range: +(mx - mn).toFixed(5), mean: +mean.toFixed(5), sd: +sd.toFixed(5) };
+};
 
 /* ------------------------------------------------------------- 1. THE REPLICATE SERIES ------ */
 if (MODE === 'replicate' || MODE === 'both') {
@@ -340,14 +354,57 @@ if (MODE === 'look') {
   }
 }
 
+/* ----------------------------- 2c. WHAT ACTUALLY DRAWS THE MARSH LANES ---------------------- */
+/* The r1 verdict ruled the `.25` floor was the remaining term drawing the lanes; the build
+ * falsified that, and S63 concluded what is left must be the reflection TARGET's content —
+ * half-resolution and six-frame staleness in `renderer.js`, a file F7 does not own. That
+ * conclusion skips a term. Round 2 removed the constant floor but left
+ * `max(..., smoothstep(10,52,d)*.72*(1-esView))` — the distance term round 1 identified as the
+ * original defect — completely untouched, and because `max` picks it whenever
+ * (1-esView) > .028 it governs almost every water pixel that is not dead-on normal. So before
+ * the defect is handed to another file, the term still sitting in F7's own file is ablated. */
+if (MODE === 'lanes') {
+  const LANE_ARMS = [
+    ['fixed', null],
+    ['no-dist', [[R1_BLOCK_HEAD, `float esF0=.02;
+        float esRefl=esF0+(1.0-esF0)*pow(1.0-esView,5.0);`]]],
+    ['no-refl', [[R1_BLOCK_HEAD, `float esRefl=0.0;`]]],
+    ['prefix', [[R1_BLOCK_HEAD, R1_BLOCK_R1]]],
+    // THE ALIASING ARM. `esCapillary` has wavelength 2*pi/hypot(13.7,9.3) = 0.379 m, which at the
+    // top-down 120 m pose's measured 0.2072 m/px is 1.83 px — BELOW the 2 px Nyquist limit — and
+    // the bands of its wavevector run at -56 deg against a measured lane bearing of -50/-54.
+    // `esMicro` is 0.184 m = 0.89 px. Both are ADDITIVE, applied after the reflection mix, which is
+    // why the lanes survived removing the reflection floor and why they got MORE anisotropic when
+    // the water darkened: constant amplitude against a dimmer background. The shader's own comment
+    // above them reads "they must not become visible wallpaper".
+    ['no-fine-sines', [[FINE_TERMS, FINE_TERMS_NOCAP]]],
+  ];
+  out.lanes = { what: 'the reflection weight ablated term by term at the top-down pose, replicated, so "what draws the lanes" is answered with a band rather than a single frame', arms: {} };
+  for (let r = 0; r < REPS; r++) {
+    for (const [id, edits] of LANE_ARMS) {
+      if (edits) { await applyEdits(id, edits); await step(6); const n = await editCount(); if (!n) { (out.lanes.arms[id] ||= []).push({ VACUOUS: 'the edit matched nothing' }); continue; } }
+      else { await restoreEdits(); await step(6); }
+      const row = await measure(`lanes-r${r}-${id}`);
+      row.replicate = r;
+      (out.lanes.arms[id] ||= []).push(row); write();
+      console.log(`lanes r${r} ${id}: lanePow=${row.masked.lane_power} aniso=${row.masked.lane_aniso} bearing=${row.masked.lane_bearing_screen_deg} luma=${row.masked.mean_luma}`);
+    }
+    await restoreEdits(); await step(6);
+  }
+  out.lanes.bands = {};
+  for (const [id, rows] of Object.entries(out.lanes.arms)) {
+    const ok = rows.filter((x) => x.masked);
+    out.lanes.bands[id] = {
+      n: ok.length,
+      lane_power: spread(ok.map((x) => x.masked.lane_power)),
+      lane_aniso: spread(ok.map((x) => x.masked.lane_aniso)),
+      mean_luma: spread(ok.map((x) => x.masked.mean_luma)),
+      bearings: ok.map((x) => x.masked.lane_bearing_screen_deg),
+    };
+  }
+}
+
 /* ------------------------------------------------------------- 3. THE BANDS ------------------ */
-const spread = (vals) => {
-  const v = vals.filter((x) => typeof x === 'number' && Number.isFinite(x));
-  if (v.length < 2) return { n: v.length, note: 'fewer than two readings; no band' };
-  const mn = Math.min(...v), mx = Math.max(...v), mean = v.reduce((a, b) => a + b, 0) / v.length;
-  const sd = Math.sqrt(v.reduce((a, b) => a + (b - mean) ** 2, 0) / (v.length - 1));
-  return { n: v.length, min: +mn.toFixed(5), max: +mx.toFixed(5), range: +(mx - mn).toFixed(5), mean: +mean.toFixed(5), sd: +sd.toFixed(5) };
-};
 if (out.replicate_series.length) {
   const R = out.replicate_series;
   out.replicate_band = {
