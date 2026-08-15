@@ -57,12 +57,16 @@ Alongside that: shrinking the documentation every agent reads before it can star
   snout.
   Also fixed: **44% of the cast was on a generic body with no eye geometry at all** (79 → 260 NPCs
   routed correctly), and **everyone was the wrong height** (0 of 41 in the 7–8 head band → 41 of 41).
-- **But the characters are still not good, and the next problem is now visible.** With the winding
-  fixed, what shows is that **there is no material work at all** — one flat colour of cloth over one
-  flat colour of skin, no seam, no fold, no wear anywhere. In that one respect the fixed version looks
-  *plainer* than the broken one. Heads are still eggs (seven facial landmarks are in the mesh and none
-  reads at conversation distance), there are **no hands or feet at any angle**, and walking is a glide —
-  across six frames the silhouette doesn't change. That is the next piece of work.
+- **Characters have clothes with detail on them now.** The flat-colour problem turned out to be two
+  things, both already paid for: all 17 characters **already declared** a palette and a wear level and
+  **nothing read them**; and the body's texture coordinates were wrong by **5.5×**, so the authored
+  linen and leather — bound and on disk the whole time — were pasted about eight texels to the
+  millimetre, which averages out to a single flat colour. Fixed: a smith NPC that was one uninterrupted
+  tone from shoulder to ankle now has a sash with a bone toggle, three cord rings per forearm, a hem, a
+  yoke and tonal variation. **A background NPC in the same frame gained a sash too — nobody targeted
+  it**, which is the shared body plan working as intended.
+- **Still wrong on characters, and honestly reported:** there are **no hands and no feet** — every
+  close-up shows a stump; heads still read as eggs; and the walk is still a glide. Next up.
 - **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
   out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
   it. Shadows still crush to black; that fix is being built now.
