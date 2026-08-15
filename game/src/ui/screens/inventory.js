@@ -45,6 +45,9 @@
 import { C, Ca, boneRule, bonePip, panel, chitinPath, idHash } from '../theme.js';
 import { screen, screenRect, column, tagColumn, row, extent, hint, hintLines, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
 import { drawText, faceOf, measure, wrap, writeLines, ellipsise, BODY } from '../type.js';
+// T4 round 7: `descLineCap()` below counts lines from the face's own metrics rather than from a
+// baseline-to-edge subtraction, so it needs the same four constants the rasteriser uses.
+import { CAP, CAP_EM, BASELINE, DESCENDER_Y } from '../glyphs.js';
 import { itemIcon, drawDoll, drawObject, shapeFor } from '../icons.js';
 
 export const SORTS = [
@@ -243,7 +246,13 @@ export function drawContainer(S, m) {
   const fl = hintLines(containerHint, screenRect(S, 'container')[2] - 44 * s, s);
   const sc = screen(S, 'container', title, m.placeName || null, 'clay', alpha, fl);
   const [ix, iy, iw, ih] = sc.inner;
-  const half = (iw - 40 * s) / 2;
+  // T4 round 7: the centre gutter, 40 -> 24. Measured on round 6's capture at `8cde4128`
+  // (`tools/ui/t4-r7-inkbudget.mjs`, region `centre gutter x204..262`): 449 ink in 8,816 px,
+  // density **0.0509** against the panel's own 0.1459 — the emptiest wide region on the screen
+  // after the two gaps. Sixteen units of it go to the two lists instead, i.e. eight more units of
+  // name column per side, at no cost in panel area at all.
+  const GUTTER = 24;
+  const half = (iw - GUTTER * s) / 2;
   // T4 round 6, RI-UIX06 FD4 (`corpus/90-verdicts/wave1/T4-r5.md`, "the container clips its own
   // gold column"). Round 4/5 pitched the three columns as fractions of `half` (0.60/0.19/0.19),
   // but `row()` starts drawing them `inset` units RIGHT of the row's own left edge (the icon
@@ -256,6 +265,29 @@ export function drawContainer(S, m) {
   // them — the row's own width MINUS the icon inset — so the three columns can never run past the
   // row's declared right edge regardless of how the row is sized.
   const usable = half / s - 16 - (ICON + 10);
+  // ---- T4 round 7: A TRUNCATED NUMBER IS A WRONG NUMBER --------------------------------------
+  //
+  // The T4 r6 critic filed this as a §1.3 hole — across 13 corpus ids checked, **no row fails a
+  // truncated numeric VALUE in a list row** — after finding round 6 had shipped `11.5` drawn as
+  // `11…`. Round 6 pitched the three columns as fixed fractions of `usable` (0.60/0.19/0.19), so
+  // the weight column got `0.19 × 144 − 10` = **17.4** units of text room against a widest real
+  // weight of **20.7** ("11.5" at 15px bone, measured just now over all 45 records in
+  // `game/data/items/carried.json`; widest gold is "400" at **17.8**). A truncated NAME is an
+  // inconvenience and the band below shows it in full on selection; a weight shown as `11…` is the
+  // one number `RI-UIX03` C6's value-per-weight decision is made on, and it is simply false.
+  //
+  // So the two numeric columns are sized to the widest value they will ever have to draw — over
+  // BOTH lists at once, not the visible window, so a column cannot change width while you scroll —
+  // and the name column takes every unit that is left. `row()` ellipsises at `col.w − 10`, so each
+  // carries its measured maximum plus that 10 and two units of slack. The 0.34 clamp is a guard
+  // against pathological data starving the name column, not a design number.
+  const goldText = (it) => (it.value_gold ? String(it.value_gold) : '—');
+  const numFace = faceOf('bone'), numSz = 15 * s;
+  const allRows = [...(m.rows || []), ...(m.containerRows || [])];
+  const widestCol = (text) => allRows.reduce((w, it) => Math.max(w, measure(text(it), numFace, numSz)), 0) / s;
+  const wCol = Math.min(usable * 0.34, widestCol((it) => fmt(it.weight)) + 12);
+  const gCol = Math.min(usable * 0.34, widestCol(goldText) + 12);
+  const nCol = usable - wCol - gCol;
   // THE ROWS STOP AT EIGHT AND THE BOTTOM THIRD BECOMES THE THING YOU ARE ABOUT TO MOVE.
   //
   // Round 1 measured this screen at **0.033** fill, the emptiest panel in the build — two lists of
@@ -279,10 +311,12 @@ export function drawContainer(S, m) {
   // below — the round-4 comment right above names exactly why that plate's size is what carries
   // this screen's density margin (0.1525 against a 0.15 floor, a margin of 0.0025). So the top gap
   // before the list rows shrinks by the same amount the footer grew, and the plate stays full size.
-  const listTop = Math.max(16, 34 - (fl - 1) * 20);
+  // T4 round 7: the floor drops 16 -> 8. That inner top gap measured 455 ink in 7,680 px,
+  // **0.0592**, and eight of its units buy the depiction plate ten more on a side (see `plate`).
+  const listTop = Math.max(8, 26 - (fl - 1) * 20);
   const sides = [
     { id: 'mine', title: 'Carried', rows: m.rows, idx: m.rowIdx, x: ix },
-    { id: 'theirs', title, rows: m.containerRows, idx: m.otherIdx, x: ix + half + 40 * s },
+    { id: 'theirs', title, rows: m.containerRows, idx: m.otherIdx, x: ix + half + GUTTER * s },
   ];
   for (const side of sides) {
     const on = (side.id === 'mine') === (m.side === 0);
@@ -306,9 +340,9 @@ export function drawContainer(S, m) {
       // lands inside the row's own declared rect instead of 12 units past it — see `usable` above.
       row(S, `container.${side.id}.row.${it.id}`, 'list_row',
         side.x, ry, half - 16 * s, ROW_H * s, [
-          { text: it.name, w: usable * 0.60 },
-          { text: fmt(it.weight), w: usable * 0.19, align: 'right', face: 'bone', size: 15 },
-          { text: it.value_gold ? String(it.value_gold) : '—', w: usable * 0.19, align: 'right', face: 'bone', size: 15 },
+          { text: it.name, w: nCol },
+          { text: fmt(it.weight), w: wCol, align: 'right', face: 'bone', size: 15 },
+          { text: goldText(it), w: gCol, align: 'right', face: 'bone', size: 15 },
         ], on && i === side.idx, alpha, { item_id: it.id, side: side.id }, ICON + 10);
       // RI-UIX09 P1 again, and the SAME call — a chest full of things looks like a chest full of
       // things on both sides of the transfer. Round 1 measured this panel at 0.033 fill, the
@@ -325,23 +359,41 @@ export function drawContainer(S, m) {
     }
   }
   // ---- the band: what you have selected, drawn, on whichever side you are standing in --------
-  const by = iy + (listTop + CROWS * ROW_H + 18) * s;
-  const bh = ih - (listTop + CROWS * ROW_H + 18) * s;
+  // T4 round 7: the list/band gap, 18 -> 10. It is the emptiest region on the whole screen —
+  // **91 ink pixels in 8,640**, density 0.0105 — so eight of its units are the cheapest matter this
+  // panel owns and they go to the band.
+  const BAND_GAP = 10;
+  const by = iy + (listTop + CROWS * ROW_H + BAND_GAP) * s;
+  const bh = ih - (listTop + CROWS * ROW_H + BAND_GAP) * s;
   const selSide = m.side === 0 ? m.rows : m.containerRows;
   const selIdx = m.side === 0 ? m.rowIdx : m.otherIdx;
   const csel = selSide[selIdx] || null;
   column(S, 'container.band.rule', ix, by - 10 * s, iw, 2 * s, alpha);
   if (csel) {
-    const plate = Math.min(140 * s, bh - 20 * s);
+    // T4 round 7: the cap rises 140 -> 150, and it is the one number on this screen that pays for
+    // itself. Measured: the plate is **7,894 ink pixels in 19,600** — density **0.4028**, a quarter
+    // of everything this panel draws in nine per cent of its area, against a panel that reads
+    // 0.1459 overall and a `RI-UIX09` DN4 floor of 0.15. Nothing else here is above the floor
+    // except a selected row. 150 is not a free parameter: the band's own text column starts at
+    // `ix + 160`, so a wider plate would draw under the name.
+    const plate = Math.min(150 * s, bh - 20 * s);
     itemIcon(S, 'container.band.depiction', ix, by + 6 * s, plate, plate, csel, alpha,
       { condition: csel.condition === null || csel.condition === undefined ? null : csel.condition });
   }
   // Computed here (not inside the draw callback) so `meta.description_truncated` is available to
   // any tool reading `getUIState()` without re-deriving the same wrap math a second time — the
   // exact `truncated` decision the draw callback below makes for real.
-  const bandW = iw - 160 * s, bandDescTop = 106 * s;
+  // T4 round 7: `descTop` 106 -> 80. Round 6's header block spent 106 units on a 20px name, a
+  // rule and two 13/15px fact lines that measure 34 units of cap between them; the rest was
+  // leading. Re-pitched to the type's own metrics — name baseline 22 (cap top 7.6, descender
+  // 26.6), rule 30, fact label 44, fact value 60 (descender 63.5), first description baseline 80
+  // (cap top 66.3) — the tightest clearance on the block is **2.8 units** and no glyph touches
+  // another, which is `ARBITRATION` S58's legibility clause and it is checked, not assumed.
+  // Together with the eight units the band gains from `BAND_GAP`, that is one more line of
+  // description: `floor((172 - 80)/27.36)` = **3**, where round 6 drew 2.
+  const bandW = iw - 160 * s, bandDescTop = 80 * s;
   const bandLines = csel ? wrap(csel.description || '', faceOf('ink'), BODY.screen * s, bandW * 0.94) : [];
-  const bandMaxLines = Math.max(1, Math.floor((bh - bandDescTop) / (BODY.screen * s * 1.44)));
+  const bandMaxLines = descLineCap(bh, bandDescTop, BODY.screen * s);
   S.el({
     id: 'container.band', kind: 'detail_panel',
     rect: [ix + 160 * s, by, bandW, bh], opacity: alpha,
@@ -350,6 +402,14 @@ export function drawContainer(S, m) {
       item_id: csel.id, weight: csel.weight, value_gold: csel.value_gold, condition: csel.condition,
       side: m.side === 0 ? 'mine' : 'theirs', depiction_element: 'container.band.depiction',
       description_truncated: bandLines.length > bandMaxLines,
+      // T4 round 7. `RI-UIX03` C7 wants the description "unabbreviated and untruncated" and
+      // `ARBITRATION` S62 rules that round 5's "…OR ends in an ellipsis" remedy could not licence
+      // the ellipsis. **This round does not satisfy C7 and does not claim to** — see the round-7
+      // status file for the arithmetic that says no geometry of this panel can. What it does is
+      // stop the shortfall being invisible: these two numbers make it readable off `getUIState()`
+      // by any tool, on any item, without re-deriving the wrap.
+      description_lines_shown: Math.min(bandLines.length, bandMaxLines),
+      description_lines_needed: bandLines.length,
     } : null,
   }, (c, r) => {
     if (!csel) {
@@ -357,18 +417,33 @@ export function drawContainer(S, m) {
       return;
     }
     const f = faceOf('ink'), fb = faceOf('bone');
-    drawText(c, csel.name, r[0], r[1] + 24 * s, fb, 20 * s, ink());
-    boneRule(c, r[0], r[1] + 32 * s, r[2] * 0.6, s, 606);
+    drawText(c, csel.name, r[0], r[1] + 22 * s, fb, 20 * s, ink());
+    boneRule(c, r[0], r[1] + 30 * s, r[2] * 0.6, s, 606);
     const facts = [['weight', csel.weight > 0 ? fmt(csel.weight) : 'nothing'],
       ['gold', csel.value_gold ? String(csel.value_gold) : 'not for sale']];
     if (csel.condition !== undefined && csel.condition !== null) facts.push(['condition', pct(csel.condition)]);
+    // T4 round 7. THE THIRD FACT WAS BEING DRAWN OFF THE PANEL AND NOBODY HAD REPORTED IT.
+    // `fx += 150` put fact 3 at `r[0] + 300` inside a band whose own rect is `iw - 160` = **276**
+    // wide, so `condition` began 24 units past the right edge and `surface.js`'s clip
+    // (`c.rect(...); c.clip()` — the same "the declared rect IS the clip" rule that hid the gold
+    // column and the description) removed the whole label and the whole value. Every conditioned
+    // item in the game therefore showed its condition on the inventory screen and NOT in the
+    // container, while `RI-UIX03` C7 lists "condition/durability if applicable" among the things
+    // selecting an item must show. It is invisible on the shipped capture because the fixture's
+    // first row is a Bark token, which has no condition at all.
+    //
+    // Laid out from the facts' OWN measured widths now, spread across the band's real width, with
+    // the gap capped at the old 150 so a two-fact record looks as it did.
+    const fw = facts.map(([k, v]) => Math.max(measure(k, f, 13 * s), measure(v, fb, 15 * s)));
+    const fTotal = fw.reduce((a, b) => a + b, 0);
+    const fGap = facts.length > 1 ? Math.max(10 * s, Math.min(150 * s, (r[2] - fTotal) / (facts.length - 1))) : 0;
     let fx = r[0];
-    for (const [k, v] of facts) {
-      drawText(c, k, fx, r[1] + 58 * s, f, 13 * s, inkDim());
-      drawText(c, v, fx, r[1] + 78 * s, fb, 15 * s, ink());
-      fx += 150 * s;
+    for (let i = 0; i < facts.length; i++) {
+      drawText(c, facts[i][0], fx, r[1] + 44 * s, f, 13 * s, inkDim());
+      drawText(c, facts[i][1], fx, r[1] + 60 * s, fb, 15 * s, ink());
+      fx += fw[i] + fGap;
     }
-    const size = BODY.screen * s, lh = size * 1.44, descTop = 106 * s;
+    const size = BODY.screen * s, lh = size * 1.44, descTop = 80 * s;
     // T4 round 6, RI-UIX06 FD4 (`corpus/90-verdicts/wave1/T4-r5.md`, "container.band clips its own
     // text"). `writeLines()` had no line cap, so a description longer than the band's own declared
     // height (`r[3]`, the SAME rect `surface.js`'s clip is built from) drew lines whose baseline
@@ -382,8 +457,21 @@ export function drawContainer(S, m) {
     // can hold, and ellipsises the last one it shows whenever there is more text after it -- the
     // declared rect is still the clip, but nothing is drawn past it that the player cannot also see
     // was cut.
+    //
+    // T4 round 7, and the honest part first: **THIS STILL VIOLATES `RI-UIX03` C7 AND THIS ROUND IS
+    // NOT CLAIMING OTHERWISE.** C7 wants the description "unabbreviated and untruncated";
+    // `ARBITRATION` S62 ruled that round 5's "…OR ends in an ellipsis" remedy could not licence the
+    // ellipsis and that the real defect is upstream of both. It is: measured over all 45 records at
+    // this exact wrap width, 1 needs 3 lines, 19 need 4, 23 need 5 and 2 need 6, and showing all
+    // six requires 164 units of description below an 80-unit header inside a band that is 172 tall
+    // — which is only reachable by deleting the 150x150 depiction, and that plate is 7,894 of this
+    // panel's 32,204 ink pixels and `RI-UIX09` DN5's own pass condition. The trade is measured in
+    // the round-7 status file and it is a real conflict between two reference items, not a layout
+    // oversight. What this round does is take every line the room genuinely holds — 2 -> **4**,
+    // complete for 20 of 45 records where round 6 was complete for none — via `descLineCap()`,
+    // which counts from the face's metrics instead of losing a line to a baseline subtraction.
     const wrapped = wrap(csel.description || '', f, size, r[2] * 0.94);
-    const maxLines = Math.max(1, Math.floor((r[3] - descTop) / lh));
+    const maxLines = descLineCap(r[3], descTop, size);
     let shown = wrapped;
     if (wrapped.length > maxLines) {
       shown = wrapped.slice(0, maxLines);
@@ -400,6 +488,31 @@ export function drawContainer(S, m) {
  * Exported so `tools/ui/t4-r2-measure.mjs` can drive it directly with the bad values and watch it
  * refuse — a guard nobody has seen fail is not evidence (RULES rule 6).
  */
+/**
+ * How many lines of body prose fit in a rect `h` tall whose first BASELINE sits at `top`.
+ *
+ * T4 round 7. Round 6 wrote this inline as `floor((h - top) / lineHeight)`, which measures from the
+ * baseline of the first line to the bottom of the rect and so throws away the whole ascent of the
+ * last line — **a full line, conservatively lost, on every screen that uses it.** At the container
+ * band's real numbers (`h` 172, `top` 80, 19px body, 1.44 leading) the old form returns
+ * `floor(92/27.36)` = **3** where four lines genuinely fit: the fourth baseline lands at 162.06 and
+ * its deepest descender at **166.4**, five and a half units inside a 172-unit rect.
+ *
+ * So it is written from the face's own metrics instead of from a rounding accident. `glyphs.js`
+ * gives cap height as `size × CAP_EM` and puts the descender at `DESCENDER_Y` against a `BASELINE`
+ * of `BASELINE` on a `CAP`-unit grid, so a line's ink runs from `baseline − size×CAP_EM` down to
+ * `baseline + size×CAP_EM×(DESCENDER_Y − BASELINE)/CAP`. The `+2` keeps the last descender two
+ * units clear of the clip rather than exactly on it.
+ *
+ * Fewer lines than this would be room thrown away; more would be `surface.js`'s clip eating ink
+ * that was drawn, which is the round-5 defect this whole thread started from.
+ */
+export function descLineCap(h, top, size) {
+  const lh = size * 1.44;
+  const descender = size * CAP_EM * (DESCENDER_Y - BASELINE) / CAP;
+  return Math.max(1, Math.floor((h - top - descender - 2) / lh) + 1);
+}
+
 export function containerTitle(name, kind) {
   const bad = new Set(['', 'undefined', 'null', 'nan', '[object object]']);
   const n = name === null || name === undefined ? '' : String(name).trim();

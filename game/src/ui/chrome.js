@@ -142,7 +142,26 @@ const BOXES = {
   // at 0.1421 — measured, not assumed), gives the band a full 166 px, which reaches the plate's
   // own 140 px cap. Both sides still scroll past 4 exactly as they scrolled past 8 (`windowOf` +
   // `extent`, unchanged). See inventory.js `drawContainer`.
-  container: { w: 480, h: 460 },
+  //
+  // T4 round 7. 460 -> 452, and the eight units come off DEAD GROUND, not off content. Measured on
+  // round 6's own capture at commit `8cde4128` with `tools/ui/t4-r7-inkbudget.mjs`, which
+  // decomposes the SAME differ-from-mode mask `d2()` builds into per-region ink:
+  //
+  //   panel-relative band          ink / area   density
+  //   the 18-unit list/band gap        91/8640    0.0105   <- eight of these units removed here
+  //   the 16-unit inner top gap       455/7680    0.0592   <- eight more
+  //   an unselected list row         1247/16320   0.0764
+  //   two lines of 19px prose        1503/16008   0.0939
+  //   panel header                   3798/25920   0.1465
+  //   a SELECTED row (shell inlay)   5466/16320   0.3349
+  //   the 140x140 depiction plate    7894/19600   0.4028
+  //   -- whole panel                32204/220800  0.1459
+  //
+  // The two gaps are the only regions on this screen an order of magnitude below the panel's own
+  // fill, so they are the only area that can be given back without giving back matter. Removing
+  // sixteen units of them and returning eight to the band (which the plate then grows into) is
+  // S56's "size the panel to its contents" applied to the one part of this box that has none.
+  container: { w: 480, h: 452 },
 };
 
 /** In-combat opacity. P5 caps it at 55%; 50% leaves the centre 40%×40% half world. */
