@@ -1,10 +1,15 @@
 {
   "task": "T4-critic",
-  "role": "independent critic",
+  "role": "independent critic (did not build any of this)",
   "piece": "T4 — the Morrowind screens (ring 1)",
-  "items": ["RI-UIX03","RI-UIX04","RI-UIX06","RI-UIX07","RI-UIX08(look)","RI-UIX01"],
+  "items": ["RI-UIX03", "RI-UIX04", "RI-UIX06", "RI-UIX07", "RI-UIX08 (look only)", "RI-UIX01"],
   "baseline_commit": "ec30c7b88356b39eac2c897afa47130105e3cf27",
-  "state": "started",
-  "could_not_do_yet": ["nothing rendered yet"],
-  "next_step": "read RI-UIX01, SCORING band rules, then boot the game headless and capture UI screens"
+  "state": "measuring",
+  "what_I_could_not_do_first": [
+    "RI-UIX06 §G's six-fresh-judge Bootstrap test and RI-UIX07 §G / RI-UIX08 §G's played gates: rule 0 forbids create_session and I am a single agent — a gate I judge myself is rule 25's self-graded pack. Scored not_run, capped as the items require, and handed back.",
+    "content-stats.mjs (RI-UIX03 method step 1) emits NO items block — its own output has coverage.items (a file list) and no item statistics. Computed the §C census myself from game/data/items/** and recorded the deviation.",
+    "Two live runs were killed by a renderer crash / step hang before the dialogue and level-up screens were reached; recaptured on the corpus's own states/ui-journal.json fixture."
+  ],
+  "contention_note": "node tools/contention.mjs reported WAIT at 4.19 load/core (ceiling 4.0) with 3 of 6 browser instances in use. I proceeded with ONE browser instance, as the protocol requires me to record.",
+  "next_step": "lean run on ui-journal fixture -> ui-metrics/ui-forbidden/journal-ui/dialogue-window-probe -> RI-UIX09 (the bar hole) -> verdict"
 }

@@ -1,0 +1,71 @@
+{
+  "n_items": 49,
+  "kinds": [
+    "weapon",
+    "armour",
+    "clothing",
+    "potion",
+    "ingredient",
+    "book",
+    "tool",
+    "misc",
+    "document",
+    "key",
+    "letter",
+    "talisman"
+  ],
+  "n_kinds": 12,
+  "weightless": 8,
+  "weightless_ids": [
+    "stamped-writ",
+    "rotted-hall-key",
+    "sealed-letter-stormhold",
+    "counted-crate-tally",
+    "eshis-knife",
+    "rotted-hall-key",
+    "stamped-writ",
+    "amended-writ"
+  ],
+  "desc_words": {
+    "mean": 25.8,
+    "max": 34,
+    "p95": 33
+  },
+  "empty_desc": 4,
+  "empty_ids": [
+    "eshis-knife",
+    "rotted-hall-key",
+    "stamped-writ",
+    "amended-writ"
+  ],
+  "templated_le3": 0,
+  "item_desc_words_total": 1263,
+  "dialogue_words": 31473,
+  "ratio": 0.04013,
+  "sample": [
+    {
+      "id": "reed-cutter",
+      "name": "Reed-cutter",
+      "weight": 3,
+      "value_gold": 42,
+      "kind": "weapon",
+      "description": "A working blade with a bill-hook curve near the tip, made for standing water and used on people since. The grip is bound with the same twine the fish-weirs use."
+    },
+    {
+      "id": "warden-issue-sabre",
+      "name": "Warden-issue sabre",
+      "weight": 3.4,
+      "value_gold": 180,
+      "kind": "weapon",
+      "description": "Legion pattern, made in Gideon under contract and stamped on the ricasso. The stamp is the valuable part; the steel is ordinary and rusts in a week if you do not oil it."
+    },
+    {
+      "id": "hooked-gutting-knife",
+      "name": "Hooked gutting knife",
+      "weight": 0.9,
+      "value_gold": 14,
+      "kind": "weapon",
+      "description": "Short, hooked, and worn thin on one side from being sharpened wrong for years. Every household on the Lilmoth waterfront has one and nobody would call it a weapon."
+    }
+  ]
+}
