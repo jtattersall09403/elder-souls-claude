@@ -5,7 +5,7 @@
   "state": "measured",
 
   "what_could_not_be_done": [
-    "THE FULL 0-500 WALK WAS NOT RUN. Measured window is sim frames 275..455 (181 frames, DENSE — every frame, no sub-sampling), fast-forwarded to 275 unmeasured. gl.readPixels-class readback is 10-20 s/call on this box; at 320x180 the observed rate was ~50 s/frame/arm, so the canvas was dropped to 160x90 to reach ~15 s/frame/arm. A full 500-frame dense walk in both arms remains out of turn-budget. If a longer run exists outside [275,455] this measurement does not see it — but see the result: the bar is already broken INSIDE the window, so a wider window can only make the number worse, never better.",
+    "THE FULL 0-500 WALK WAS NOT RUN, AND NEITHER WAS THE FULL 181-FRAME WINDOW I ASKED FOR. Measured: sim frames 275..314, 40 frames, DENSE (every frame, no sub-sampling), fast-forwarded to 275 unmeasured. gl.readPixels-class readback is 10-20 s/call on this box; at 320x180 the observed rate was ~50 s/frame/arm, so the canvas was dropped to 160x90, which reached ~15 s/frame/arm and then eased to ~25 s under fleet load. The remaining 141 frames would have been ~50 minutes of unattended running and were not taken. If a longer run exists outside [275,314] this measurement does not see it — but the bar is already broken INSIDE the measured frames by a CLOSED run, so a wider window can only make the number worse, never better.",
     "RI-CAM03 (lock-on framing) NOT JUDGED. Its own Comparison method M1 requires 7 scenarios at frames_locked >= 3600 each (~25,200 locked frames), plus M2's 40-pose pitch grid, M3, and 40 latency trials. That is a full round, not a leftover from a measurement task. The instrument exists (corpus/80-methods/m-cam03-lockon-framing.mjs delegating to tools/camera/cam-probe.mjs --probe lock,pitchlaw,latency and tools/camera/cam-pitch-instrument.mjs --m2); the `onScreen(eid)` harness method the item asks for is NOT in game/src/harness/api.js (grepped: 0 hits). Left named and unstarted.",
     "RI-CAM04 (directional roll clips) IS NOT JUDGEABLE AND THAT IS THE FINDING — see ri_cam04 below. Not a zero against the build; corpus/build debt.",
     "RI-CAM01's declared blind pair (two unlabelled arm_len time series, ours vs one generated from §C's law) was NOT run. CLAUDE.md rule 0e: only the orchestrator can spawn a fresh blind judge; a subagent cannot. This caps RI-CAM01 independently of §C.1.",
@@ -16,7 +16,10 @@
 
   "the_measurement": {
     "bar": "RI-CAM01 §C.1: player_occluded[f] = 1 if the character's visible pixel count is < 0.35x its unoccluded count at the same pose (fade forced to 1.0). Longest run <= 6 frames; mean <= 0.03 on a traversal.",
-    "window_sim_frames": [275, 455],
+    "window_requested_sim_frames": [275, 455],
+    "window_ACTUALLY_MEASURED_sim_frames": [275, 314],
+    "frames_actually_measured": 40,
+    "why_the_window_is_shorter_than_requested": "The walk was advancing at ~25 s/frame/arm with both arms in parallel and was stopped at 40 frames rather than left running unattended for a further ~50 minutes. This is stated because the requested window is what the command line says and the measured window is what the evidence covers, and those are different numbers. It does not weaken the result: the 26-frame run BEGINS AND ENDS inside the measured frames, so it is a closed measurement rather than a truncated lower bound, and a longer window can only add further runs.",
     "sampling": "dense — every frame, no sub-sampling (M2b permits every-4th; run-length bars are not safely measurable at stride 4, so dense was used)",
     "canvas": "160x90",
     "arm_fix_on_shipped": {
