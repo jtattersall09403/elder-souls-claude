@@ -2,7 +2,7 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `1a3151ff`: **1041 tools**, **159 reference items**,
+drift. At `272ba6c4`: **1044 tools**, **159 reference items**,
 **56 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
@@ -11,7 +11,7 @@ deliberately off the read path. Grep them; do not read them.**
 
 | what you want to know | the one line that answers it |
 |---|---|
-| does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1041, one line each |
+| does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1044, one line each |
 | which reference item governs this? | `grep -i <word> orchestration/index/ITEMS.md` — all 159, with their `judges:` paths |
 | is there a harness verb for it? | `grep -i <word> orchestration/index/HARNESS.md` — 445 verbs |
 | who is in this file right now? | `node tools/ownership.mjs --for <path>` |
@@ -99,9 +99,9 @@ Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 
 `grep -i <word> orchestration/index/TOOLS.md` for the one you want.
 
-`harness` 264 · `world` 164 · `quests` 65 · `analysis` 49 · `visual` 45 · `experience` 39 · `render` 38 · `dialogue` 28 · `lore` 27 · `journey` 23 · `ui` 22 · `weapons` 20 · `runpod` 16 · `lib` 15 · `blind` 14 · `audio` 13 · `capture` 13 · `combat` 12 · `camera` 11 · `platform` 11 · `touch` 11 · `prose` 9 · `uesp` 9 · `metrics` 7 · `progression` 7 · `composition` 6 · `playability` 6 · `stealth` 6 · `assets` 5 · `critic` 5 · `map` 5 · `readables` 4 · `coherence` 3 · `economy` 3 · `w1-26-r3` 3 · `forensics` 2 · `gamepad` 2 · `input` 2 · `merge` 2 · `corpus` 1 · `i2` 1 · `persistence` 1 · `refs` 1 · `w1-26-continuation` 1 · `w1-26-r4` 1
+`harness` 264 · `world` 164 · `quests` 65 · `analysis` 49 · `visual` 45 · `experience` 39 · `render` 38 · `dialogue` 28 · `lore` 27 · `ui` 25 · `journey` 23 · `weapons` 20 · `runpod` 16 · `lib` 15 · `blind` 14 · `audio` 13 · `capture` 13 · `combat` 12 · `camera` 11 · `platform` 11 · `touch` 11 · `prose` 9 · `uesp` 9 · `metrics` 7 · `progression` 7 · `composition` 6 · `playability` 6 · `stealth` 6 · `assets` 5 · `critic` 5 · `map` 5 · `readables` 4 · `coherence` 3 · `economy` 3 · `w1-26-r3` 3 · `forensics` 2 · `gamepad` 2 · `input` 2 · `merge` 2 · `corpus` 1 · `i2` 1 · `persistence` 1 · `refs` 1 · `w1-26-continuation` 1 · `w1-26-r4` 1
 
-> **293 of 1041 tools have no header comment**, so nobody can tell what they
+> **293 of 1044 tools have no header comment**, so nobody can tell what they
 > do without reading them. That is a rediscovery tax paid by every agent that meets one.
 
 ## Reference items — 159, by family
