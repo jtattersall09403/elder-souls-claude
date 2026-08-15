@@ -11,6 +11,10 @@ import { EnemyController, buildEnemyMoves, IMPLEMENTED_AI } from './enemy.js';
 import { buildMoveTable, equipTier, PLAYER_STATE_ENUM, ENEMY_STATE_ENUM, STATE_ENUM_EXTENSIONS } from './moves.js';
 import { LockOn } from './lockon.js';
 import { MovesetLibrary, SPINE_ALIASES } from './moveset.js';
+// The ONE definition of "how high does the additive stance layer hold the root" — the same
+// function `CombatBody.poseLocomotion` calls. Imported rather than copied for HAZARDS §20a's
+// reason: a second copy of the stance arithmetic is the defect deferred by a week.
+import { stanceRootOffsetY } from './clips.js';
 import { sweepAndResolve } from './resolve.js';
 import { staminaMaxFor } from './rules.js';
 import { bearingDeg, angleDelta, norm360 } from './geometry.js';
@@ -52,8 +56,17 @@ export class CombatSystem {
     // at all — its ids survive as aliases onto the roster baselines so every scenario file and
     // every W1-09 probe keeps working. One library, one slot resolver, one clip source: the
     // "declared here, hard-coded there" split that made 87 movesets unreachable cannot recur.
+    // The sixth argument is the height the character STANDS at, read off the shipped stance
+    // rather than written here as a literal: `stanceRootOffsetY(idle_ready, phase 0, weight 1)`
+    // is the same call `CombatBody.poseLocomotion` makes every frame (`combat/actor.js:405`), so
+    // the swing's first key and the idle's last cannot drift apart the way they have since r10.
+    // Without it, all 1,160 registry clips start at 0 against an idle at −0.00796 m and every
+    // attack in the game pops 7.96 mm the frame it begins — HAZARDS §20d, measured over the whole
+    // registry by `tools/visual/f10-r11-swing-boundary.mjs`.
     this.lib = (data.weaponClasses && data.clipRegistry && data.weaponMovesets)
-      ? new MovesetLibrary(data.clipRegistry, data.weaponClasses, data.weaponMovesets, data.skeleton, data.hitgeometry)
+      ? new MovesetLibrary(data.clipRegistry, data.weaponClasses, data.weaponMovesets, data.skeleton, data.hitgeometry,
+        (data.clips && data.clips.archetypes && data.clips.archetypes.idle_ready)
+          ? stanceRootOffsetY(data.clips.archetypes.idle_ready, 0, 1.0) : 0)
       : null;
     this.bodies = [];
     this.player = null;

@@ -73,10 +73,21 @@ export class MovesetLibrary {
    * @param {object} classes  game/data/weapons/classes.json
    * @param {object} movesets {weapon_id: moveset doc}
    */
-  constructor(registry, classes, movesets, skeleton, hitGeometry) {
+  constructor(registry, classes, movesets, skeleton, hitGeometry, stanceRootY) {
     this.registry = registry.clips;
     this.classes = classes;
     this.movesets = movesets;
+    // THE HEIGHT THE CHARACTER IS STANDING AT WHEN AN ATTACK BEGINS. See `clipFor`.
+    //
+    // Optional and defaulting to 0, which is the shipped behaviour before F10 r11, so all ten
+    // other construction sites of this class (`grep -rn "new MovesetLibrary" game/src tools/`,
+    // run this turn: `game/src/harness/weapons.js` and eight tools under `tools/`) keep the
+    // numbers they had. That is a deliberate divergence between the game and those tools and it
+    // is named as a candidate defect in `orchestration/status/W1-F10-r11.json` rather than left
+    // to be discovered — but it is a bounded one: `f10-r11-swing-boundary.mjs` arm 2b shows the
+    // INTERIOR keys of the curve are byte-identical with and without this term, and the interior
+    // is the active window every one of those tools measures.
+    this.stanceRootY = Number(stanceRootY) || 0;
     // The skeleton is needed because the arc a clip sweeps is now SOLVED against the real rig
     // rather than assumed from the declaration (swing.js §calibrateYawGain). Optional so that
     // data-only tools can still build a library; when it is absent the gain is 1 and that fact
@@ -460,9 +471,22 @@ export class MovesetLibrary {
     const drivenArc = slot.shape === 'shoot' ? Math.abs(slot.arc_sweep_deg)
       : Math.max(30, Math.abs(slot.arc_sweep_deg));
     const gk = this._yawGain(weaponId, slotId, reg, slot, this._bladeLength(weaponId));
+    // `stanceRootY` — HAZARDS §20d, closed for the 1,160 clips `anim-tune` cannot see.
+    //
+    // F10 r10 authored `idle_ready.root_offset.y = -0.00796` to put the contrapposto's feet back
+    // on the floor, and hand-carried the same value onto the phase-0/phase-3 endpoints of six
+    // attack ARCHETYPES so the idle→attack boundary did not step. `tools/harness/anim-tune.mjs`
+    // reads `snapIn 0.0000` on its fourteen rows and is right about them. **The fourteen are not
+    // the population.** Every weapon the player can hold resolves through this method, and
+    // `swing.js` builds its curve from literals with no stance term — measured this turn by
+    // `tools/visual/f10-r11-swing-boundary.mjs` over all **1,160** clips in
+    // `game/data/weapons/clip-registry.json`: phase 0 is **exactly 0 on 1,160 of 1,160**, against
+    // an idle standing at −0.00796 m. So every attack in the game began with a 7.96 mm vertical
+    // pop, and ended with one. With the term the residual is **0.04 mm on all 1,160** — `r2`'s
+    // 1 mm rounding, exactly what §20d predicted when it overturned r10's "two decimal places".
     let arch = buildSwing(
       { ...reg.profile, arc_deg: gsign * drivenArc },
-      { yawGain: gk, accGain: Math.min(1, Math.abs(gk)) });
+      { yawGain: gk, accGain: Math.min(1, Math.abs(gk)), stanceRootY: this.stanceRootY });
 
     // ---- RI-CMB04 §B's peak_tip_speed_mps, enforced on THIS clip at THIS clip's frame counts --
     //
