@@ -1,0 +1,2151 @@
+{
+  "subjects": [
+    {
+      "id": "player",
+      "kind": "player",
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ],
+      "label": "player",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "stand": {
+        "id": "char-player",
+        "x": 2766,
+        "z": 5011
+      },
+      "height": 1.8,
+      "offset_m": 0
+    },
+    {
+      "id": "npc-gideon-smith-10",
+      "kind": "npc",
+      "pos": [
+        449.27,
+        2.72,
+        2938.99
+      ],
+      "eid": "gideon-smith-10",
+      "label": "Deekjul",
+      "race": "argonian",
+      "family": "reptilian",
+      "stand": {
+        "id": "street-gideon",
+        "x": 459.3,
+        "z": 2934.2
+      },
+      "height": 1.8,
+      "offset_m": 11.1
+    },
+    {
+      "id": "npc-spellwright-gideon",
+      "kind": "npc",
+      "pos": [
+        446.9,
+        2.72,
+        2937.4
+      ],
+      "eid": "spellwright-gideon",
+      "label": "Neloth Sedran",
+      "race": "dunmer",
+      "family": "humanoid",
+      "stand": {
+        "id": "street-gideon",
+        "x": 459.3,
+        "z": 2934.2
+      },
+      "height": 1.8,
+      "offset_m": 12.8
+    },
+    {
+      "id": "npc-assizer-corvo",
+      "kind": "npc",
+      "pos": [
+        452.77,
+        2.72,
+        2921.27
+      ],
+      "eid": "assizer-corvo",
+      "label": "Corvo",
+      "race": "imperial",
+      "family": "humanoid",
+      "stand": {
+        "id": "street-gideon",
+        "x": 459.3,
+        "z": 2934.2
+      },
+      "height": 1.8,
+      "offset_m": 14.5
+    },
+    {
+      "id": "npc-npc-porter-eeja",
+      "kind": "npc",
+      "pos": [
+        452.97,
+        2.72,
+        2920.83
+      ],
+      "eid": "npc-porter-eeja",
+      "label": "Eeja",
+      "race": "saxhleel",
+      "family": "reptilian",
+      "stand": {
+        "id": "street-gideon",
+        "x": 459.3,
+        "z": 2934.2
+      },
+      "height": 1.8,
+      "offset_m": 14.8
+    }
+  ],
+  "rejected": [
+    {
+      "eid": "lilmoth-weaver-7",
+      "name": "Drusilla Silvanus",
+      "race": "imperial",
+      "pos": [
+        3.67,
+        0,
+        4.71
+      ],
+      "offset_m": 5717.8,
+      "reason": "enumerated at stand char-player but 5718 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-1-partner0",
+      "name": "Casimir Aurelius",
+      "race": "imperial",
+      "pos": [
+        3.96765,
+        0,
+        3.15576
+      ],
+      "offset_m": 5719,
+      "reason": "enumerated at stand char-player but 5719 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8-lodger0",
+      "name": "Velas Ralen",
+      "race": "dunmer",
+      "pos": [
+        2.427734,
+        0,
+        3.52672
+      ],
+      "offset_m": 5719.5,
+      "reason": "enumerated at stand char-player but 5719 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6-apprentice1",
+      "name": "Xaal-Shaa",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        5.05
+      ],
+      "offset_m": 5720,
+      "reason": "enumerated at stand char-player but 5720 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-mudborn-shrine",
+      "name": "Beem-Ja",
+      "race": "saxhleel",
+      "pos": [
+        3.99,
+        0,
+        1.98
+      ],
+      "offset_m": 5720.1,
+      "reason": "enumerated at stand char-player but 5720 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-market",
+      "name": "Drusilla Voranus",
+      "race": "imperial",
+      "pos": [
+        2.03,
+        0,
+        3.02
+      ],
+      "offset_m": 5720.1,
+      "reason": "enumerated at stand char-player but 5720 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-archivist-ledger",
+      "name": "Vashu-Nei",
+      "race": "saxhleel",
+      "pos": [
+        4.11,
+        0,
+        1.84
+      ],
+      "offset_m": 5720.1,
+      "reason": "enumerated at stand char-player but 5720 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-5",
+      "name": "Shaa-Hist",
+      "race": "argonian",
+      "pos": [
+        3.32,
+        0,
+        2.25
+      ],
+      "offset_m": 5720.1,
+      "reason": "enumerated at stand char-player but 5720 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-rootpost",
+      "name": "Xal-Tsona",
+      "race": "argonian",
+      "pos": [
+        -2.05543,
+        0,
+        4.78383
+      ],
+      "offset_m": 5720.5,
+      "reason": "enumerated at stand char-player but 5721 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-healer",
+      "name": "Drelas Vorin",
+      "race": "dunmer",
+      "pos": [
+        -1.74266,
+        0,
+        3.94706
+      ],
+      "offset_m": 5721.1,
+      "reason": "enumerated at stand char-player but 5721 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-apothecary-12",
+      "name": "Ixtei",
+      "race": "argonian",
+      "pos": [
+        2.05,
+        0,
+        1.67
+      ],
+      "offset_m": 5721.3,
+      "reason": "enumerated at stand char-player but 5721 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-13",
+      "name": "Deekgul",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        3.28
+      ],
+      "offset_m": 5721.5,
+      "reason": "enumerated at stand char-player but 5722 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0",
+      "name": "Kaal-Xal",
+      "race": "argonian",
+      "pos": [
+        -3.68,
+        0,
+        4.29
+      ],
+      "offset_m": 5721.7,
+      "reason": "enumerated at stand char-player but 5722 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6-lodger0",
+      "name": "Ravel Beleth",
+      "race": "dunmer",
+      "pos": [
+        3.94098,
+        0,
+        -0.25847
+      ],
+      "offset_m": 5722,
+      "reason": "enumerated at stand char-player but 5722 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-3",
+      "name": "Nartise Sedran",
+      "race": "dunmer",
+      "pos": [
+        -3.83,
+        0,
+        3.42
+      ],
+      "offset_m": 5722.6,
+      "reason": "enumerated at stand char-player but 5723 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-inn-stilt",
+      "name": "Lukiul-Teekh",
+      "race": "argonian",
+      "pos": [
+        -3.63545,
+        0,
+        3.07696
+      ],
+      "offset_m": 5722.8,
+      "reason": "enumerated at stand char-player but 5723 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "miredancer-omu-ei",
+      "name": "Omu-Ei",
+      "race": "saxhleel",
+      "pos": [
+        -1.74511,
+        0,
+        1.90952
+      ],
+      "offset_m": 5722.9,
+      "reason": "enumerated at stand char-player but 5723 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-smith-9",
+      "name": "Seil-Shaa",
+      "race": "argonian",
+      "pos": [
+        -3.02455,
+        0,
+        2.30833
+      ],
+      "offset_m": 5723.2,
+      "reason": "enumerated at stand char-player but 5723 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0-partner1",
+      "name": "Ixwux",
+      "race": "argonian",
+      "pos": [
+        -2.67886,
+        0,
+        1.77332
+      ],
+      "offset_m": 5723.5,
+      "reason": "enumerated at stand char-player but 5723 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-shrine",
+      "name": "Nutsleek",
+      "race": "argonian",
+      "pos": [
+        3.73177,
+        0,
+        -1.9848
+      ],
+      "offset_m": 5723.6,
+      "reason": "enumerated at stand char-player but 5724 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-10",
+      "name": "Mota-Xthari",
+      "race": "argonian",
+      "pos": [
+        -2.5,
+        0,
+        1
+      ],
+      "offset_m": 5724,
+      "reason": "enumerated at stand char-player but 5724 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-4",
+      "name": "Xulei",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        0.21
+      ],
+      "offset_m": 5724.2,
+      "reason": "enumerated at stand char-player but 5724 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2-elder0",
+      "name": "Jix-Ixt",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        -1.045
+      ],
+      "offset_m": 5725.3,
+      "reason": "enumerated at stand char-player but 5725 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-7-sibling0",
+      "name": "Xanmeermeer",
+      "race": "argonian",
+      "pos": [
+        -1.88,
+        0,
+        -1.24
+      ],
+      "offset_m": 5725.7,
+      "reason": "enumerated at stand char-player but 5726 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "miredancer-sap-speaker",
+      "name": "Sap-Speaker Neekh-Otei",
+      "race": "saxhleel",
+      "pos": [
+        -2.475,
+        0,
+        -1.35366
+      ],
+      "offset_m": 5726.1,
+      "reason": "enumerated at stand char-player but 5726 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-smith-9-sibling0",
+      "name": "Uxith-Keth",
+      "race": "argonian",
+      "pos": [
+        -1.45199,
+        0,
+        -2.00501
+      ],
+      "offset_m": 5726.2,
+      "reason": "enumerated at stand char-player but 5726 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2-sibling1",
+      "name": "Vokh-Mota",
+      "race": "argonian",
+      "pos": [
+        1.45,
+        0,
+        -3.87
+      ],
+      "offset_m": 5726.4,
+      "reason": "enumerated at stand char-player but 5726 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-pawn",
+      "name": "Naheesh-Xeech",
+      "race": "argonian",
+      "pos": [
+        -3.98,
+        0,
+        -3.11
+      ],
+      "offset_m": 5728.4,
+      "reason": "enumerated at stand char-player but 5728 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8-apprentice1",
+      "name": "Quintus Nerentius",
+      "race": "imperial",
+      "pos": [
+        -1.45,
+        0,
+        -4.88
+      ],
+      "offset_m": 5728.7,
+      "reason": "enumerated at stand char-player but 5729 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-widow-tesla-vor",
+      "name": "Widow Tesla Vor",
+      "race": "saxhleel",
+      "pos": [
+        4891,
+        2,
+        -589
+      ],
+      "offset_m": 5989.6,
+      "reason": "enumerated at stand char-player but 5990 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-ineve-corrano",
+      "name": "Ineve Corrano",
+      "race": "saxhleel",
+      "pos": [
+        4911.9,
+        2,
+        -590.9
+      ],
+      "offset_m": 5998.8,
+      "reason": "enumerated at stand char-player but 5999 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-skara-hull-chalk",
+      "name": "Skara Hull-Chalk",
+      "race": "dunmer",
+      "pos": [
+        4910.2,
+        2,
+        -592.2
+      ],
+      "offset_m": 5999.5,
+      "reason": "enumerated at stand char-player but 5999 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-eleen",
+      "name": "Eleen",
+      "race": "dunmer",
+      "pos": [
+        4906.8,
+        2,
+        -594.8
+      ],
+      "offset_m": 6000.7,
+      "reason": "enumerated at stand char-player but 6001 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-7",
+      "name": "Drusilla Silvanus",
+      "race": "imperial",
+      "pos": [
+        3.67,
+        0,
+        4.71
+      ],
+      "offset_m": 5750.7,
+      "reason": "enumerated at stand street-lilmoth but 5751 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-1-partner0",
+      "name": "Casimir Aurelius",
+      "race": "imperial",
+      "pos": [
+        3.8253,
+        0,
+        2.98152
+      ],
+      "offset_m": 5752.1,
+      "reason": "enumerated at stand street-lilmoth but 5752 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8-lodger0",
+      "name": "Velas Ralen",
+      "race": "dunmer",
+      "pos": [
+        2.455468,
+        0,
+        3.30344
+      ],
+      "offset_m": 5752.5,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6-apprentice1",
+      "name": "Xaal-Shaa",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        5.05
+      ],
+      "offset_m": 5752.9,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-mudborn-shrine",
+      "name": "Beem-Ja",
+      "race": "saxhleel",
+      "pos": [
+        3.99,
+        0,
+        1.98
+      ],
+      "offset_m": 5752.9,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-market",
+      "name": "Drusilla Voranus",
+      "race": "imperial",
+      "pos": [
+        2.03,
+        0,
+        3.02
+      ],
+      "offset_m": 5753,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-archivist-ledger",
+      "name": "Vashu-Nei",
+      "race": "saxhleel",
+      "pos": [
+        4.11,
+        0,
+        1.84
+      ],
+      "offset_m": 5753,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-5",
+      "name": "Shaa-Hist",
+      "race": "argonian",
+      "pos": [
+        3.32,
+        0,
+        2.25
+      ],
+      "offset_m": 5753,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-rootpost",
+      "name": "Xal-Tsona",
+      "race": "argonian",
+      "pos": [
+        -1.83086,
+        0,
+        4.79766
+      ],
+      "offset_m": 5753.3,
+      "reason": "enumerated at stand street-lilmoth but 5753 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-apothecary-12",
+      "name": "Ixtei",
+      "race": "argonian",
+      "pos": [
+        2.05,
+        0,
+        1.67
+      ],
+      "offset_m": 5754.2,
+      "reason": "enumerated at stand street-lilmoth but 5754 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-healer",
+      "name": "Drelas Vorin",
+      "race": "dunmer",
+      "pos": [
+        -1.81532,
+        0,
+        3.73412
+      ],
+      "offset_m": 5754.2,
+      "reason": "enumerated at stand street-lilmoth but 5754 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-13",
+      "name": "Deekgul",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        3.28
+      ],
+      "offset_m": 5754.4,
+      "reason": "enumerated at stand street-lilmoth but 5754 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0",
+      "name": "Kaal-Xal",
+      "race": "argonian",
+      "pos": [
+        -3.68,
+        0,
+        4.29
+      ],
+      "offset_m": 5754.6,
+      "reason": "enumerated at stand street-lilmoth but 5755 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6-lodger0",
+      "name": "Ravel Beleth",
+      "race": "dunmer",
+      "pos": [
+        3.72196,
+        0,
+        -0.20694
+      ],
+      "offset_m": 5755,
+      "reason": "enumerated at stand street-lilmoth but 5755 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-3",
+      "name": "Nartise Sedran",
+      "race": "dunmer",
+      "pos": [
+        -3.83,
+        0,
+        3.42
+      ],
+      "offset_m": 5755.5,
+      "reason": "enumerated at stand street-lilmoth but 5755 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-inn-stilt",
+      "name": "Lukiul-Teekh",
+      "race": "argonian",
+      "pos": [
+        -3.4409,
+        0,
+        2.96392
+      ],
+      "offset_m": 5755.7,
+      "reason": "enumerated at stand street-lilmoth but 5756 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "miredancer-omu-ei",
+      "name": "Omu-Ei",
+      "race": "saxhleel",
+      "pos": [
+        -1.70022,
+        0,
+        1.68904
+      ],
+      "offset_m": 5755.9,
+      "reason": "enumerated at stand street-lilmoth but 5756 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-smith-9",
+      "name": "Seil-Shaa",
+      "race": "argonian",
+      "pos": [
+        -2.8791,
+        0,
+        2.13666
+      ],
+      "offset_m": 5756.1,
+      "reason": "enumerated at stand street-lilmoth but 5756 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0-partner1",
+      "name": "Ixwux",
+      "race": "argonian",
+      "pos": [
+        -2.52772,
+        0,
+        1.60664
+      ],
+      "offset_m": 5756.4,
+      "reason": "enumerated at stand street-lilmoth but 5756 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-shrine",
+      "name": "Nutsleek",
+      "race": "argonian",
+      "pos": [
+        3.51354,
+        0,
+        -2.0396
+      ],
+      "offset_m": 5756.7,
+      "reason": "enumerated at stand street-lilmoth but 5757 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-10",
+      "name": "Mota-Xthari",
+      "race": "argonian",
+      "pos": [
+        -2.5,
+        0,
+        1
+      ],
+      "offset_m": 5756.9,
+      "reason": "enumerated at stand street-lilmoth but 5757 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-4",
+      "name": "Xulei",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        0.21
+      ],
+      "offset_m": 5757.1,
+      "reason": "enumerated at stand street-lilmoth but 5757 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2-elder0",
+      "name": "Jix-Ixt",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        -1.27
+      ],
+      "offset_m": 5758.4,
+      "reason": "enumerated at stand street-lilmoth but 5758 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-7-sibling0",
+      "name": "Xanmeermeer",
+      "race": "argonian",
+      "pos": [
+        -1.88,
+        0,
+        -1.24
+      ],
+      "offset_m": 5758.6,
+      "reason": "enumerated at stand street-lilmoth but 5759 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "miredancer-sap-speaker",
+      "name": "Sap-Speaker Neekh-Otei",
+      "race": "saxhleel",
+      "pos": [
+        -2.26,
+        0,
+        -1.28732
+      ],
+      "offset_m": 5758.8,
+      "reason": "enumerated at stand street-lilmoth but 5759 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-smith-9-sibling0",
+      "name": "Uxith-Keth",
+      "race": "argonian",
+      "pos": [
+        -1.45398,
+        0,
+        -1.78002
+      ],
+      "offset_m": 5758.9,
+      "reason": "enumerated at stand street-lilmoth but 5759 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2-sibling1",
+      "name": "Vokh-Mota",
+      "race": "argonian",
+      "pos": [
+        1.45,
+        0,
+        -3.87
+      ],
+      "offset_m": 5759.3,
+      "reason": "enumerated at stand street-lilmoth but 5759 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-pawn",
+      "name": "Naheesh-Xeech",
+      "race": "argonian",
+      "pos": [
+        -3.98,
+        0,
+        -3.11
+      ],
+      "offset_m": 5761.3,
+      "reason": "enumerated at stand street-lilmoth but 5761 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8-apprentice1",
+      "name": "Quintus Nerentius",
+      "race": "imperial",
+      "pos": [
+        -1.45,
+        0,
+        -4.88
+      ],
+      "offset_m": 5761.6,
+      "reason": "enumerated at stand street-lilmoth but 5762 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-widow-tesla-vor",
+      "name": "Widow Tesla Vor",
+      "race": "saxhleel",
+      "pos": [
+        4891,
+        2,
+        -589
+      ],
+      "offset_m": 6012.7,
+      "reason": "enumerated at stand street-lilmoth but 6013 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-ineve-corrano",
+      "name": "Ineve Corrano",
+      "race": "saxhleel",
+      "pos": [
+        4911.9,
+        2,
+        -590.9
+      ],
+      "offset_m": 6021.8,
+      "reason": "enumerated at stand street-lilmoth but 6022 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-skara-hull-chalk",
+      "name": "Skara Hull-Chalk",
+      "race": "dunmer",
+      "pos": [
+        4910.2,
+        2,
+        -592.2
+      ],
+      "offset_m": 6022.5,
+      "reason": "enumerated at stand street-lilmoth but 6022 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-eleen",
+      "name": "Eleen",
+      "race": "dunmer",
+      "pos": [
+        4906.8,
+        2,
+        -594.8
+      ],
+      "offset_m": 6023.7,
+      "reason": "enumerated at stand street-lilmoth but 6024 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-mudborn-chapel",
+      "name": "Deeh",
+      "race": "saxhleel",
+      "pos": [
+        2.8,
+        0,
+        5.83
+      ],
+      "offset_m": 2963.7,
+      "reason": "enumerated at stand street-gideon but 2964 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "antiquarian-decius-arral",
+      "name": "Decius Arral",
+      "race": "imperial",
+      "pos": [
+        -1.46942,
+        0,
+        5.85584
+      ],
+      "offset_m": 2964.4,
+      "reason": "enumerated at stand street-gideon but 2964 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-7",
+      "name": "Drusilla Silvanus",
+      "race": "imperial",
+      "pos": [
+        3.67,
+        0,
+        4.71
+      ],
+      "offset_m": 2964.7,
+      "reason": "enumerated at stand street-gideon but 2965 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6-apprentice1",
+      "name": "Xaal-Shaa",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        5.05
+      ],
+      "offset_m": 2965.2,
+      "reason": "enumerated at stand street-gideon but 2965 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-rootpost",
+      "name": "Xal-Tsona",
+      "race": "argonian",
+      "pos": [
+        -1.60629,
+        0,
+        4.81149
+      ],
+      "offset_m": 2965.4,
+      "reason": "enumerated at stand street-gideon but 2965 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-archivist-assize",
+      "name": "Sextia Naevia",
+      "race": "imperial",
+      "pos": [
+        1.45,
+        0,
+        3.57
+      ],
+      "offset_m": 2966.2,
+      "reason": "enumerated at stand street-gideon but 2966 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0",
+      "name": "Kaal-Xal",
+      "race": "argonian",
+      "pos": [
+        -3.68,
+        0,
+        4.29
+      ],
+      "offset_m": 2966.3,
+      "reason": "enumerated at stand street-gideon but 2966 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8-lodger0",
+      "name": "Velas Ralen",
+      "race": "dunmer",
+      "pos": [
+        2.483203,
+        0,
+        3.08016
+      ],
+      "offset_m": 2966.5,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-1-partner0",
+      "name": "Casimir Aurelius",
+      "race": "imperial",
+      "pos": [
+        3.68295,
+        0,
+        2.80728
+      ],
+      "offset_m": 2966.6,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-market",
+      "name": "Drusilla Voranus",
+      "race": "imperial",
+      "pos": [
+        2.03,
+        0,
+        3.02
+      ],
+      "offset_m": 2966.6,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-healer",
+      "name": "Drelas Vorin",
+      "race": "dunmer",
+      "pos": [
+        -1.88798,
+        0,
+        3.52118
+      ],
+      "offset_m": 2966.7,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-13",
+      "name": "Deekgul",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        3.28
+      ],
+      "offset_m": 2966.9,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-smith-11",
+      "name": "Lucia Sabinus",
+      "race": "imperial",
+      "pos": [
+        4.85,
+        0,
+        2.21
+      ],
+      "offset_m": 2967,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-3",
+      "name": "Nartise Sedran",
+      "race": "dunmer",
+      "pos": [
+        -3.83,
+        0,
+        3.42
+      ],
+      "offset_m": 2967.1,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-5",
+      "name": "Shaa-Hist",
+      "race": "argonian",
+      "pos": [
+        3.32,
+        0,
+        2.25
+      ],
+      "offset_m": 2967.2,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "archein-salts-her-own-reeds",
+      "name": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "pos": [
+        -2.39873,
+        0,
+        3.10078
+      ],
+      "offset_m": 2967.2,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-trader-2",
+      "name": "Corvus Maronius",
+      "race": "imperial",
+      "pos": [
+        4.51,
+        0,
+        1.92
+      ],
+      "offset_m": 2967.3,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-mudborn-shrine",
+      "name": "Beem-Ja",
+      "race": "saxhleel",
+      "pos": [
+        3.99,
+        0,
+        1.98
+      ],
+      "offset_m": 2967.4,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-archivist-ledger",
+      "name": "Vashu-Nei",
+      "race": "saxhleel",
+      "pos": [
+        4.11,
+        0,
+        1.84
+      ],
+      "offset_m": 2967.5,
+      "reason": "enumerated at stand street-gideon but 2967 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-keeper-court",
+      "name": "Tuk-Wuxal",
+      "race": "argonian",
+      "pos": [
+        -2.28,
+        0,
+        2.71
+      ],
+      "offset_m": 2967.6,
+      "reason": "enumerated at stand street-gideon but 2968 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-inn-stilt",
+      "name": "Lukiul-Teekh",
+      "race": "argonian",
+      "pos": [
+        -3.24635,
+        0,
+        2.85088
+      ],
+      "offset_m": 2967.6,
+      "reason": "enumerated at stand street-gideon but 2968 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-apothecary-12",
+      "name": "Ixtei",
+      "race": "argonian",
+      "pos": [
+        2.05,
+        0,
+        1.67
+      ],
+      "offset_m": 2968,
+      "reason": "enumerated at stand street-gideon but 2968 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-smith-9",
+      "name": "Seil-Shaa",
+      "race": "argonian",
+      "pos": [
+        -2.73365,
+        0,
+        1.964992
+      ],
+      "offset_m": 2968.4,
+      "reason": "enumerated at stand street-gideon but 2968 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "miredancer-omu-ei",
+      "name": "Omu-Ei",
+      "race": "saxhleel",
+      "pos": [
+        -1.65533,
+        0,
+        1.46856
+      ],
+      "offset_m": 2968.7,
+      "reason": "enumerated at stand street-gideon but 2969 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0-partner1",
+      "name": "Ixwux",
+      "race": "argonian",
+      "pos": [
+        -2.37658,
+        0,
+        1.43996
+      ],
+      "offset_m": 2968.9,
+      "reason": "enumerated at stand street-gideon but 2969 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-10",
+      "name": "Mota-Xthari",
+      "race": "argonian",
+      "pos": [
+        -2.5,
+        0,
+        1
+      ],
+      "offset_m": 2969.3,
+      "reason": "enumerated at stand street-gideon but 2969 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6-lodger0",
+      "name": "Ravel Beleth",
+      "race": "dunmer",
+      "pos": [
+        3.50294,
+        0,
+        -0.15541
+      ],
+      "offset_m": 2969.5,
+      "reason": "enumerated at stand street-gideon but 2970 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-keeper-shrine",
+      "name": "Casimir Balbinus",
+      "race": "imperial",
+      "pos": [
+        2.03148,
+        0,
+        -0.14452
+      ],
+      "offset_m": 2969.8,
+      "reason": "enumerated at stand street-gideon but 2970 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-4",
+      "name": "Xulei",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        0.21
+      ],
+      "offset_m": 2969.9,
+      "reason": "enumerated at stand street-gideon but 2970 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-warder-6",
+      "name": "Drelas Sarethi",
+      "race": "dunmer",
+      "pos": [
+        -1.2909,
+        0,
+        0.0991
+      ],
+      "offset_m": 2970,
+      "reason": "enumerated at stand street-gideon but 2970 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-fisher-3",
+      "name": "Wuxvakh",
+      "race": "argonian",
+      "pos": [
+        2.58,
+        0,
+        -0.53
+      ],
+      "offset_m": 2970.1,
+      "reason": "enumerated at stand street-gideon but 2970 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-weaver-12",
+      "name": "Lucius Menandra",
+      "race": "imperial",
+      "pos": [
+        4.45,
+        0,
+        -1.3
+      ],
+      "offset_m": 2970.5,
+      "reason": "enumerated at stand street-gideon but 2971 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-sapcutter-lowmarket",
+      "name": "Ranit gro-Bura",
+      "race": "orsimer",
+      "pos": [
+        1.45,
+        0,
+        -0.88
+      ],
+      "offset_m": 2970.6,
+      "reason": "enumerated at stand street-gideon but 2971 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-keeper-grange",
+      "name": "Onwen Dares",
+      "race": "dunmer",
+      "pos": [
+        2.52,
+        0,
+        -1.61
+      ],
+      "offset_m": 2971.1,
+      "reason": "enumerated at stand street-gideon but 2971 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-7-sibling0",
+      "name": "Xanmeermeer",
+      "race": "argonian",
+      "pos": [
+        -1.88,
+        0,
+        -1.24
+      ],
+      "offset_m": 2971.4,
+      "reason": "enumerated at stand street-gideon but 2971 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "miredancer-sap-speaker",
+      "name": "Sap-Speaker Neekh-Otei",
+      "race": "saxhleel",
+      "pos": [
+        -2.045,
+        0,
+        -1.22098
+      ],
+      "offset_m": 2971.5,
+      "reason": "enumerated at stand street-gideon but 2971 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-shrine",
+      "name": "Nutsleek",
+      "race": "argonian",
+      "pos": [
+        3.29531,
+        0,
+        -2.0944
+      ],
+      "offset_m": 2971.5,
+      "reason": "enumerated at stand street-gideon but 2971 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2-elder0",
+      "name": "Jix-Ixt",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        -1.495
+      ],
+      "offset_m": 2971.6,
+      "reason": "enumerated at stand street-gideon but 2972 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-smith-9-sibling0",
+      "name": "Uxith-Keth",
+      "race": "argonian",
+      "pos": [
+        -1.45597,
+        0,
+        -1.55503
+      ],
+      "offset_m": 2971.7,
+      "reason": "enumerated at stand street-gideon but 2972 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-keeper-apothecary",
+      "name": "Marius Balbinus",
+      "race": "imperial",
+      "pos": [
+        2.18,
+        0,
+        -2.53
+      ],
+      "offset_m": 2972.1,
+      "reason": "enumerated at stand street-gideon but 2972 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "archein-weighs-the-season",
+      "name": "Archein Weighs-The-Season",
+      "race": "argonian",
+      "pos": [
+        -1.2439,
+        0,
+        -2.78974
+      ],
+      "offset_m": 2972.9,
+      "reason": "enumerated at stand street-gideon but 2973 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-apothecary-8",
+      "name": "Julia Carinus",
+      "race": "imperial",
+      "pos": [
+        3.99,
+        0,
+        -3.61
+      ],
+      "offset_m": 2972.9,
+      "reason": "enumerated at stand street-gideon but 2973 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-legionary-9",
+      "name": "Lucia Drusius",
+      "race": "imperial",
+      "pos": [
+        2.62,
+        0,
+        -3.61
+      ],
+      "offset_m": 2973.1,
+      "reason": "enumerated at stand street-gideon but 2973 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-fisher-3-apprentice1",
+      "name": "Sells-Paper",
+      "race": "argonian",
+      "pos": [
+        1.59,
+        0,
+        -3.76
+      ],
+      "offset_m": 2973.4,
+      "reason": "enumerated at stand street-gideon but 2973 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2-sibling1",
+      "name": "Vokh-Mota",
+      "race": "argonian",
+      "pos": [
+        1.45,
+        0,
+        -3.87
+      ],
+      "offset_m": 2973.5,
+      "reason": "enumerated at stand street-gideon but 2974 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-pawn",
+      "name": "Naheesh-Xeech",
+      "race": "argonian",
+      "pos": [
+        -3.98,
+        0,
+        -3.11
+      ],
+      "offset_m": 2973.6,
+      "reason": "enumerated at stand street-gideon but 2974 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-trader-5",
+      "name": "Nux-Ojel",
+      "race": "argonian",
+      "pos": [
+        -1.45,
+        0,
+        -4.38
+      ],
+      "offset_m": 2974.5,
+      "reason": "enumerated at stand street-gideon but 2974 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-apothecary-1-apprentice1",
+      "name": "Nuxanmeer",
+      "race": "argonian",
+      "pos": [
+        -3.01,
+        0,
+        -4.6
+      ],
+      "offset_m": 2974.9,
+      "reason": "enumerated at stand street-gideon but 2975 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8-apprentice1",
+      "name": "Quintus Nerentius",
+      "race": "imperial",
+      "pos": [
+        -1.45,
+        0,
+        -4.88
+      ],
+      "offset_m": 2975,
+      "reason": "enumerated at stand street-gideon but 2975 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-keeper-chapel",
+      "name": "Muul-Nalpa",
+      "race": "argonian",
+      "pos": [
+        2.68289,
+        0,
+        -5.81255
+      ],
+      "offset_m": 2975.3,
+      "reason": "enumerated at stand street-gideon but 2975 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "gideon-keeper-smithy",
+      "name": "Xeechlith",
+      "race": "argonian",
+      "pos": [
+        -2.98,
+        0,
+        -4.94
+      ],
+      "offset_m": 2975.3,
+      "reason": "enumerated at stand street-gideon but 2975 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-rootkeepers",
+      "name": "the rootkeepers of the rotting quarter",
+      "race": "saxhleel",
+      "pos": [
+        2719.51,
+        2.68,
+        5040.13
+      ],
+      "offset_m": 3089.3,
+      "reason": "enumerated at stand street-gideon but 3089 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "blackwood-company-factor",
+      "name": "Corvus Aldeyn",
+      "race": "imperial",
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ],
+      "offset_m": 3106.2,
+      "reason": "enumerated at stand street-gideon but 3106 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "harbourmistress-tesh",
+      "name": "Ottavia Tesh",
+      "race": "imperial",
+      "pos": [
+        2800.35,
+        0.37,
+        5028.79
+      ],
+      "offset_m": 3141.3,
+      "reason": "enumerated at stand street-gideon but 3141 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-apothecary",
+      "name": "Digs-Paper",
+      "race": "argonian",
+      "pos": [
+        2799.18,
+        7.37,
+        5032.83
+      ],
+      "offset_m": 3143.1,
+      "reason": "enumerated at stand street-gideon but 3143 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-4-elder0",
+      "name": "Teekh-Seil",
+      "race": "argonian",
+      "pos": [
+        2800.96,
+        7.37,
+        5032.29
+      ],
+      "offset_m": 3144.1,
+      "reason": "enumerated at stand street-gideon but 3144 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "shipwright-oleen",
+      "name": "Oleen",
+      "race": "nord",
+      "pos": [
+        2798.95,
+        7.37,
+        5035.19
+      ],
+      "offset_m": 3144.5,
+      "reason": "enumerated at stand street-gideon but 3145 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-5-sibling0",
+      "name": "Shal-Naga",
+      "race": "argonian",
+      "pos": [
+        2799.55,
+        7.37,
+        5034.65
+      ],
+      "offset_m": 3144.6,
+      "reason": "enumerated at stand street-gideon but 3145 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-customs",
+      "name": "Neekhei",
+      "race": "argonian",
+      "pos": [
+        2800.24,
+        7.37,
+        5033.91
+      ],
+      "offset_m": 3144.6,
+      "reason": "enumerated at stand street-gideon but 3145 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-ledger-house",
+      "name": "Aemilia Carinus",
+      "race": "imperial",
+      "pos": [
+        2798.81,
+        7.37,
+        5035.59
+      ],
+      "offset_m": 3144.7,
+      "reason": "enumerated at stand street-gideon but 3145 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "spellwright-lilmoth",
+      "name": "Tsona-Ixtu",
+      "race": "argonian",
+      "pos": [
+        2797.9749,
+        2.68,
+        5036.6
+      ],
+      "offset_m": 3144.8,
+      "reason": "enumerated at stand street-gideon but 3145 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-4-sibling1",
+      "name": "Bevene Sedran",
+      "race": "dunmer",
+      "pos": [
+        2776.64,
+        7.073602,
+        5061.79
+      ],
+      "offset_m": 3145.9,
+      "reason": "enumerated at stand street-gideon but 3146 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-6",
+      "name": "Cuts-Teeth",
+      "race": "argonian",
+      "pos": [
+        2793.8,
+        7.37,
+        5043.2
+      ],
+      "offset_m": 3146.1,
+      "reason": "enumerated at stand street-gideon but 3146 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "rootkeeper-under-the-temple",
+      "name": "Keeper-Under-the-Temple",
+      "race": "saxhleel",
+      "pos": [
+        2806.61,
+        0.37,
+        5029.81
+      ],
+      "offset_m": 3146.7,
+      "reason": "enumerated at stand street-gideon but 3147 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "dockmaster-weeja-sen",
+      "name": "Weeja-Sen",
+      "race": "saxhleel",
+      "pos": [
+        2804.61,
+        0.37,
+        5032.94
+      ],
+      "offset_m": 3147.3,
+      "reason": "enumerated at stand street-gideon but 3147 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-cook-1",
+      "name": "Listens-Fever",
+      "race": "argonian",
+      "pos": [
+        2793.34,
+        7.37,
+        5046.46
+      ],
+      "offset_m": 3147.9,
+      "reason": "enumerated at stand street-gideon but 3148 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-wharf-cutters",
+      "name": "the wharf-end yard",
+      "race": "saxhleel",
+      "pos": [
+        2810,
+        0.4,
+        5028
+      ],
+      "offset_m": 3148,
+      "reason": "enumerated at stand street-gideon but 3148 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-yard-brothers",
+      "name": "the Lilmoth cutters",
+      "race": "saxhleel",
+      "pos": [
+        2773.66,
+        2.68,
+        5068.55
+      ],
+      "offset_m": 3148.3,
+      "reason": "enumerated at stand street-gideon but 3148 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-scribe-2",
+      "name": "Tsamaat",
+      "race": "argonian",
+      "pos": [
+        2781.85,
+        0.37,
+        5061.74
+      ],
+      "offset_m": 3149.7,
+      "reason": "enumerated at stand street-gideon but 3150 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-10-partner0",
+      "name": "Lukiul-Skei",
+      "race": "argonian",
+      "pos": [
+        2783.73,
+        0.37,
+        5059.96
+      ],
+      "offset_m": 3149.9,
+      "reason": "enumerated at stand street-gideon but 3150 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-factor-0-child0",
+      "name": "Deelith-Muul",
+      "race": "argonian",
+      "pos": [
+        2784.37,
+        0.37,
+        5059.4
+      ],
+      "offset_m": 3150,
+      "reason": "enumerated at stand street-gideon but 3150 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-scribe",
+      "name": "Publius Sabinus",
+      "race": "imperial",
+      "pos": [
+        2783.48,
+        0.37,
+        5060.6
+      ],
+      "offset_m": 3150.1,
+      "reason": "enumerated at stand street-gideon but 3150 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-legionary-11",
+      "name": "Vei-Jix",
+      "race": "argonian",
+      "pos": [
+        2784.1,
+        0.37,
+        5060.23
+      ],
+      "offset_m": 3150.3,
+      "reason": "enumerated at stand street-gideon but 3150 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-priest-8",
+      "name": "Athyn Dares",
+      "race": "dunmer",
+      "pos": [
+        2788.82,
+        6.969603,
+        5057.7
+      ],
+      "offset_m": 3152.1,
+      "reason": "enumerated at stand street-gideon but 3152 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-inn-drowned",
+      "name": "Kutsleek",
+      "race": "argonian",
+      "pos": [
+        2787.85,
+        7.37,
+        5059.18
+      ],
+      "offset_m": 3152.4,
+      "reason": "enumerated at stand street-gideon but 3152 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-yard",
+      "name": "Lucia Tullianus",
+      "race": "imperial",
+      "pos": [
+        2794.17,
+        0.37,
+        5054.61
+      ],
+      "offset_m": 3154,
+      "reason": "enumerated at stand street-gideon but 3154 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-weaver-3-sibling0",
+      "name": "Wux-Zuka",
+      "race": "argonian",
+      "pos": [
+        2792.27,
+        0.37,
+        5056.72
+      ],
+      "offset_m": 3154,
+      "reason": "enumerated at stand street-gideon but 3154 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "lilmoth-keeper-smithy",
+      "name": "Sethan Vaun",
+      "race": "dunmer",
+      "pos": [
+        2794.32,
+        0.37,
+        5055.93
+      ],
+      "offset_m": 3155,
+      "reason": "enumerated at stand street-gideon but 3155 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-widow-tesla-vor",
+      "name": "Widow Tesla Vor",
+      "race": "saxhleel",
+      "pos": [
+        4891,
+        2,
+        -589
+      ],
+      "offset_m": 5661.5,
+      "reason": "enumerated at stand street-gideon but 5662 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-eleen",
+      "name": "Eleen",
+      "race": "dunmer",
+      "pos": [
+        4906.8,
+        2,
+        -594.8
+      ],
+      "offset_m": 5677.5,
+      "reason": "enumerated at stand street-gideon but 5678 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-skara-hull-chalk",
+      "name": "Skara Hull-Chalk",
+      "race": "dunmer",
+      "pos": [
+        4910.2,
+        2,
+        -592.2
+      ],
+      "offset_m": 5678.6,
+      "reason": "enumerated at stand street-gideon but 5679 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    },
+    {
+      "eid": "npc-ineve-corrano",
+      "name": "Ineve Corrano",
+      "race": "saxhleel",
+      "pos": [
+        4911.9,
+        2,
+        -590.9
+      ],
+      "offset_m": 5679.1,
+      "reason": "enumerated at stand street-gideon but 5679 m from it — listEntities() is not range-filtered (engine.js:11517), so list order is not proximity"
+    }
+  ],
+  "distributions": [
+    {
+      "stand": "char-player",
+      "n": 60,
+      "min": 26.2,
+      "p10": 41,
+      "median": 5720,
+      "p90": 5728.4,
+      "max": 6000.7,
+      "within_max_offset": 27,
+      "beyond_max_offset": 33,
+      "all_m": [
+        26.2,
+        38.7,
+        39.7,
+        40.9,
+        40.9,
+        41,
+        41,
+        41,
+        41.2,
+        42.5,
+        44.4,
+        44.8,
+        44.8,
+        47.2,
+        51.8,
+        51.9,
+        51.9,
+        52,
+        52.1,
+        52.5,
+        52.6,
+        52.7,
+        52.9,
+        53.1,
+        53.2,
+        54.9,
+        58.1,
+        5717.8,
+        5719,
+        5719.5,
+        5720,
+        5720.1,
+        5720.1,
+        5720.1,
+        5720.1,
+        5720.5,
+        5721.1,
+        5721.3,
+        5721.5,
+        5721.7,
+        5722,
+        5722.6,
+        5722.8,
+        5722.9,
+        5723.2,
+        5723.5,
+        5723.6,
+        5724,
+        5724.2,
+        5725.3,
+        5725.7,
+        5726.1,
+        5726.2,
+        5726.4,
+        5728.4,
+        5728.7,
+        5989.6,
+        5998.8,
+        5999.5,
+        6000.7
+      ]
+    },
+    {
+      "stand": "street-lilmoth",
+      "n": 60,
+      "min": 14.1,
+      "p10": 19.6,
+      "median": 5752.9,
+      "p90": 5761.3,
+      "max": 6023.7,
+      "within_max_offset": 27,
+      "beyond_max_offset": 33,
+      "all_m": [
+        14.1,
+        14.5,
+        18.6,
+        19,
+        19,
+        19.4,
+        19.6,
+        19.8,
+        19.8,
+        19.9,
+        19.9,
+        20,
+        20.1,
+        20.6,
+        20.8,
+        20.9,
+        20.9,
+        21.1,
+        21.5,
+        22.8,
+        23.8,
+        26,
+        28.3,
+        28.9,
+        31.1,
+        32.7,
+        60.4,
+        5750.7,
+        5752.1,
+        5752.5,
+        5752.9,
+        5752.9,
+        5753,
+        5753,
+        5753,
+        5753.3,
+        5754.2,
+        5754.2,
+        5754.4,
+        5754.6,
+        5755,
+        5755.5,
+        5755.7,
+        5755.9,
+        5756.1,
+        5756.4,
+        5756.7,
+        5756.9,
+        5757.1,
+        5758.4,
+        5758.6,
+        5758.8,
+        5758.9,
+        5759.3,
+        5761.3,
+        5761.6,
+        6012.7,
+        6021.8,
+        6022.5,
+        6023.7
+      ]
+    },
+    {
+      "stand": "street-gideon",
+      "n": 109,
+      "min": 11.1,
+      "p10": 44.9,
+      "median": 2969.8,
+      "p90": 3150.1,
+      "max": 5679.1,
+      "within_max_offset": 27,
+      "beyond_max_offset": 82,
+      "all_m": [
+        11.1,
+        11.5,
+        12.8,
+        14.5,
+        14.7,
+        14.8,
+        17,
+        40.1,
+        44.5,
+        44.8,
+        44.9,
+        44.9,
+        45.1,
+        49.6,
+        51.2,
+        53.4,
+        53.9,
+        54.2,
+        54.5,
+        55.5,
+        55.7,
+        56,
+        57.4,
+        62.8,
+        62.9,
+        62.9,
+        63.2,
+        2963.7,
+        2964.4,
+        2964.7,
+        2965.2,
+        2965.4,
+        2966.2,
+        2966.3,
+        2966.5,
+        2966.6,
+        2966.6,
+        2966.7,
+        2966.9,
+        2967,
+        2967.1,
+        2967.2,
+        2967.2,
+        2967.3,
+        2967.4,
+        2967.5,
+        2967.6,
+        2967.6,
+        2968,
+        2968.4,
+        2968.7,
+        2968.9,
+        2969.3,
+        2969.5,
+        2969.8,
+        2969.9,
+        2970,
+        2970.1,
+        2970.5,
+        2970.6,
+        2971.1,
+        2971.4,
+        2971.5,
+        2971.5,
+        2971.6,
+        2971.7,
+        2972.1,
+        2972.9,
+        2972.9,
+        2973.1,
+        2973.4,
+        2973.5,
+        2973.6,
+        2974.5,
+        2974.9,
+        2975,
+        2975.3,
+        2975.3,
+        3089.3,
+        3106.2,
+        3141.3,
+        3143.1,
+        3144.1,
+        3144.5,
+        3144.6,
+        3144.6,
+        3144.7,
+        3144.8,
+        3145.9,
+        3146.1,
+        3146.7,
+        3147.3,
+        3147.9,
+        3148,
+        3148.3,
+        3149.7,
+        3149.9,
+        3150,
+        3150.1,
+        3150.3,
+        3152.1,
+        3152.4,
+        3154,
+        3154,
+        3155,
+        5661.5,
+        5677.5,
+        5678.6,
+        5679.1
+      ]
+    }
+  ]
+}
