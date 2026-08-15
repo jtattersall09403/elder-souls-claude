@@ -251,7 +251,28 @@ function panelFill(png, rect) {
   };
 }
 
-/** D1 observed. Distinct hues in a box, ignoring near-identical colours. */
+/**
+ * D1 observed. Distinct hues in a box, ignoring near-identical colours.
+ *
+ * ---- THIS MEASUREMENT IS INERT AS WRITTEN AND THE CONTROL ARM PROVED IT ----
+ *
+ * RI-UIX09 method 3 asks for "a region of ≥ 3 distinct hues **that is not glyph ink**". The
+ * clause I did not implement is the one after the comma, and it is the whole check: run against
+ * the delete-the-fix arm — an inventory with **zero** pictorial elements, measured — this function
+ * returns **15 of 15 rows passing, worst row 3 hues**. The leading 48 px of a text-only row
+ * contains the panel's woven ground, the ink of the item's name, the shell inlay under a selected
+ * row and the anti-aliasing between them, which is three hues before anything is drawn.
+ *
+ * So it cannot tell an icon from a name, both arms are the positive arm, and RULES rule 6's
+ * "inert control" applies to the instrument rather than to the teardown. **The observed half of D1
+ * is therefore reported as `inert` and NOT as a pass**, and the declared half (method 2, off the
+ * element census) is the only D1 figure this round stands behind.
+ *
+ * The fix for whoever takes it next, so it is not re-derived: classify each pixel against the
+ * panel's modal ground and against the two ink colours `getUIState().fonts` reports, discard both,
+ * and require the REMAINING area to exceed a floor. That distinguishes a drawn object from a word
+ * and would go red on the control arm, which is the property this version lacks.
+ */
 function distinctHues(png, x, y, w, h) {
   const seen = [];
   const x1 = Math.min(png.width, Math.round(x + w)), y1 = Math.min(png.height, Math.round(y + h));

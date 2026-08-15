@@ -190,6 +190,21 @@ if (invLive && invLive.d1_observed) {
     L.push(`Inventory, control: **${invCtl.d1_observed.rows_with_3_plus_hues_in_leading_48px} of ${invCtl.d1_observed.rows}**; worst row ${invCtl.d1_observed.min_hues}.`);
   }
   L.push('');
+  const invCtl2 = ctl && ctl.screens.inventory;
+  if (invCtl2 && invCtl2.d1_observed) {
+    L.push('> **AND THAT MAKES IT INERT, WHICH THE CONTROL ARM IS WHAT PROVED.** RI-UIX09 method 3 asks');
+    L.push('> for "a region of ≥ 3 distinct hues **that is not glyph ink**", and the clause after the');
+    L.push('> comma is not implemented. The control arm — an inventory with a **measured zero**');
+    L.push(`> pictorial elements — scores **${invCtl2.d1_observed.rows_with_3_plus_hues_in_leading_48px} of ${invCtl2.d1_observed.rows}** rows passing, worst row`);
+    L.push(`> ${invCtl2.d1_observed.min_hues} hues. The leading 48 px of a text-only row already holds the woven ground, the`);
+    L.push('> ink of the name, the shell inlay under a selected row and the anti-aliasing between them.');
+    L.push('> Both arms are the positive arm, so **the observed half of D1 is `inert`, not a pass**, and');
+    L.push('> the declared half (method 2, off the element census) is the only D1 figure this round');
+    L.push('> stands behind. The fix is recorded in `tools/ui/t4-r2-measure.mjs` above `distinctHues`:');
+    L.push('> discard pixels matching the panel ground and the two ink colours, and put a floor on the');
+    L.push('> remaining area. That would go red on the control arm; this version cannot.');
+    L.push('');
+  }
   L.push('RI-UIX09 method 3 asks for both halves precisely because they can disagree: "a build that draws');
   L.push('icons straight to canvas without registering elements passes 3 and fails 2; a build that registers');
   L.push('icon elements and draws nothing fails 3 and passes 2."');

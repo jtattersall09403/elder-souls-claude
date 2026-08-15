@@ -6,7 +6,7 @@ is read off a measurement file at generation time; none is typed.
 | arm | commit | viewport | instrument |
 |---|---|---|---|
 | **live** (this round) | `27c44c77d775e90cf4c2fa25c51c4287b6aefc99` | 1920×1080 | `tools/ui/t4-r2-measure.mjs` |
-| **control** (delete-the-fix) | `ed140939636718afa984ee95732356207edee59a` | 1920×1080 | the same file, copied into the worktree — **0 of 8 screens usable** |
+| **control** (delete-the-fix) | `ed140939636718afa984ee95732356207edee59a` | 1920×1080 | the same file, copied into the worktree — **3 of 3 screens usable** |
 
 **The control is a real `git worktree` at a pinned sha, not a hard-link copy of the live tree**
 (`git worktree add --detach <dir> ed140939636718afa984ee95732356207edee59a`), which is the commit
@@ -22,32 +22,20 @@ rect's own modal colour.
 
 | screen | D1 control | D1 live | D2 control | D2 live |
 |---|---|---|---|---|
-| world | — | 0 | — | — |
-| inventory | — | 22 | — | 0.1524 |
-| journal | — | 0 | — | 0.1315 |
+| world | 0 | 0 | — | — |
+| inventory | 0 | 22 | 0.1174 | 0.1524 |
+| journal | 0 | 0 | 0.1311 | 0.1315 |
 | sheet | — | 10 | — | 0.0895 |
 | spells | — | 2 | — | 0.0703 |
 | levelup | — | 10 | — | 0.0911 |
-| container | — | — | — | — |
-| container_no_name | — | — | — | — |
 
 **Both arms are measured with the same file.** The control publishes no `panel_rect`,
 no `pictorial` block and no `hud.world` — those are this round's additions — so the tool
 derives the panel rect and counts the pictorial kinds itself, per RI-UIX09 method 4's own
 definition ("the largest `kind: 'panel'` element").
 
-> **THE CONTROL ARM RAN AND EVERY SCREEN FAILED.** The worktree booted and the browser
-> launched, and then every step exceeded its budget or lost the page — the box was at
-> `load average: ~20` over 4 cores throughout, well past `tools/contention.mjs`'s ceiling
-> of 4.0 per core, and the baseline tree is the slower of the two to boot. **So every dash
-> in the control column is an absence of evidence, not a zero, and no delete-the-fix claim
-> in this file is made.** The per-screen failures are listed under "what is missing".
->
-> One control fact does survive, because it is structural rather than measured: the
-> baseline `getUIState()` has no `panel_rect`, no `pictorial` block, no `hud.world`, no
-> `combat_phase` — the tool's `panel_rect_source` reads `derived (build publishes none)` on
-> that arm — and `game/src/ui/icons.js` and `game/src/ui/hud-world.js` **do not exist in
-> that worktree at all**. `git -C <worktree> log --oneline -1` is the recorded sha above.
+> The control arm produced **3 usable screen(s)**; any row showing a dash in the
+> control column failed on that arm and is an absence of evidence, not a zero.
 
 ## Every frame was screened before it was measured
 
@@ -61,8 +49,11 @@ deliberately patterned control image.
 
 | screen | arm | levels | local_contrast_p95 | p10 → p90 | accepted |
 |---|---|---|---|---|---|
+| world | control | 75 | 64.625 | 0 → 24 | yes |
 | world | live | 75 | 65.241 | 0 → 25 | yes |
+| inventory | control | 81 | 53.655 | 0 → 64 | yes |
 | inventory | live | 83 | 59.982 | 0 → 64 | yes |
+| journal | control | 99 | 141.27 | 0 → 178 | yes |
 | journal | live | 99 | 141.27 | 0 → 178 | yes |
 | sheet | live | 82 | 72.189 | 0 → 63 | yes |
 | spells | live | 61 | 29.644 | 0 → 34 | yes |
@@ -105,20 +96,25 @@ Control: **none found on the screens this run reached**.
 ## What is missing, stated first rather than last
 
 - **The narrow-viewport pass did not complete.** The 844×390 landscape-phone captures are not in this evidence set.
-- **`world` failed on the control arm**: step timed out after 90s
-- **`inventory` failed on the control arm**: step timed out after 90s
-- **`journal` failed on the control arm**: page.evaluate: Target page, context or browser has been closed
-- **`sheet` failed on the control arm**: page.evaluate: Target page, context or browser has been closed
-- **`spells` failed on the control arm**: page.evaluate: Target page, context or browser has been closed
-- **`levelup` failed on the control arm**: page.evaluate: Target page, context or browser has been closed
-- **`container` failed on the control arm**: page.evaluate: Target page, context or browser has been closed
-- **`container_no_name` failed on the control arm**: page.evaluate: Target page, context or browser has been closed
 - **RI-UIX07 §G (V11) and RI-UIX09 DN7 are judge gates and were not run.** Rule 0 forbids spawning a session and rule 25 forbids judging a pack I built. They are the round-2 critic's.
 - **`D1` observed (method 3, the pixel half) is reported per screen in the JSON** under `d1_observed`; it is the half the item says will be dropped for being slow, so it is here.
 
 ## D1 observed — the pixel half
 
 Inventory, live: **20 of 20** item rows carry a region of ≥ 3 distinct hues in their leading 48 px; the worst row has 6.
+Inventory, control: **15 of 15**; worst row 3.
+
+> **AND THAT MAKES IT INERT, WHICH THE CONTROL ARM IS WHAT PROVED.** RI-UIX09 method 3 asks
+> for "a region of ≥ 3 distinct hues **that is not glyph ink**", and the clause after the
+> comma is not implemented. The control arm — an inventory with a **measured zero**
+> pictorial elements — scores **15 of 15** rows passing, worst row
+> 3 hues. The leading 48 px of a text-only row already holds the woven ground, the
+> ink of the name, the shell inlay under a selected row and the anti-aliasing between them.
+> Both arms are the positive arm, so **the observed half of D1 is `inert`, not a pass**, and
+> the declared half (method 2, off the element census) is the only D1 figure this round
+> stands behind. The fix is recorded in `tools/ui/t4-r2-measure.mjs` above `distinctHues`:
+> discard pixels matching the panel ground and the two ink colours, and put a floor on the
+> remaining area. That would go red on the control arm; this version cannot.
 
 RI-UIX09 method 3 asks for both halves precisely because they can disagree: "a build that draws
 icons straight to canvas without registering elements passes 3 and fails 2; a build that registers

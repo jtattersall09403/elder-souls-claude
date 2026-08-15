@@ -1,0 +1,495 @@
+{
+  "label": "baseline",
+  "viewport": [
+    1920,
+    1080
+  ],
+  "commit": "ed140939636718afa984ee95732356207edee59a",
+  "screens": {
+    "world": {
+      "mode": "world",
+      "element_count": 8,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1
+      },
+      "pictorial_ids": [],
+      "panel_rect": null,
+      "panel_rect_source": "derived (build publishes none)",
+      "panel_rect_agrees": null,
+      "pictorial_measured": {
+        "on_screen": 0,
+        "in_panel": 0
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 75,
+        "local_contrast_med": 0.213,
+        "local_contrast_p95": 64.625,
+        "p10": 0,
+        "p90": 24,
+        "spread": 24,
+        "reason": null
+      },
+      "panel_sanity": null,
+      "panel_fill": {
+        "fill": null,
+        "reason": "no panel on this frame"
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.quickslots",
+          "text": "Black-water draught / Spark-Dart"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        }
+      ],
+      "ri_citations": [],
+      "undefined_headers": [],
+      "materials": []
+    },
+    "inventory": {
+      "mode": "inventory",
+      "element_count": 44,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "panel": 1,
+        "panel_header": 1,
+        "encumbrance": 1,
+        "category": 11,
+        "gold": 1,
+        "divider": 3,
+        "list_row": 15,
+        "scroll_extent": 1,
+        "detail_panel": 1,
+        "hint": 1
+      },
+      "pictorial_ids": [],
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "panel_rect_source": "derived (build publishes none)",
+      "panel_rect_agrees": null,
+      "pictorial_measured": {
+        "on_screen": 0,
+        "in_panel": 0
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 81,
+        "local_contrast_med": 4.213,
+        "local_contrast_p95": 53.655,
+        "p10": 0,
+        "p90": 64,
+        "spread": 64,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 66,
+        "local_contrast_med": 11.782,
+        "local_contrast_p95": 60.556,
+        "p10": 51,
+        "p90": 78,
+        "spread": 27,
+        "reason": null
+      },
+      "panel_fill": {
+        "fill": 0.1174,
+        "mode_rgb": [
+          44,
+          57,
+          45
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.quickslots",
+          "text": "Black-water draught / Spark-Dart"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        },
+        {
+          "id": "inventory.header",
+          "text": "Bark token"
+        },
+        {
+          "id": "inventory.encumbrance",
+          "text": "81.7 / 183"
+        },
+        {
+          "id": "inventory.cat.all",
+          "text": "All"
+        },
+        {
+          "id": "inventory.cat.weapon",
+          "text": "Weapon"
+        },
+        {
+          "id": "inventory.cat.armour",
+          "text": "Armour"
+        },
+        {
+          "id": "inventory.cat.clothing",
+          "text": "Clothing"
+        },
+        {
+          "id": "inventory.cat.potion",
+          "text": "Potion"
+        },
+        {
+          "id": "inventory.cat.ingredient",
+          "text": "Ingredient"
+        },
+        {
+          "id": "inventory.cat.book",
+          "text": "Book"
+        },
+        {
+          "id": "inventory.cat.tool",
+          "text": "Tool"
+        },
+        {
+          "id": "inventory.cat.misc",
+          "text": "Misc"
+        },
+        {
+          "id": "inventory.cat.quest",
+          "text": "Quest"
+        },
+        {
+          "id": "inventory.sort",
+          "text": "sorted by name"
+        },
+        {
+          "id": "inventory.gold",
+          "text": "0 gold"
+        },
+        {
+          "id": "inventory.row.hist-bark-token",
+          "text": "Bark token  0.1  —  0.0"
+        },
+        {
+          "id": "inventory.row.black-water-draught",
+          "text": "Black-water draught  ×3  0.4  30  75.0"
+        },
+        {
+          "id": "inventory.row.bog-iron-maul",
+          "text": "Bog-iron maul  11.5  96  8.3"
+        },
+        {
+          "id": "inventory.row.boiled-hide-jack",
+          "text": "Boiled hide jack  4.2  55  13.1"
+        },
+        {
+          "id": "inventory.row.bone-picks",
+          "text": "Bone picks, set of five  ×5  0.3  48  160"
+        },
+        {
+          "id": "inventory.row.carved-egg",
+          "text": "Carved egg  0.2  5  25.0"
+        },
+        {
+          "id": "inventory.row.chitin-cuirass",
+          "text": "— Chitin cuirass  7.5  210  28.0"
+        },
+        {
+          "id": "inventory.row.coil-of-twine",
+          "text": "Coil of weir twine  1.3  6  4.6"
+        },
+        {
+          "id": "inventory.row.resin-of-the-comb",
+          "text": "Comb resin  ×2  0.5  22  44.0"
+        },
+        {
+          "id": "inventory.row.counted-crate-tally",
+          "text": "Crate tally, three counts  0.0  —  —"
+        },
+        {
+          "id": "inventory.row.silt-strider-silk-sash",
+          "text": "Dres silk sash  0.2  260  1300"
+        },
+        {
+          "id": "inventory.row.guar-jerky",
+          "text": "Dried guar  ×6  0.6  5  8.3"
+        },
+        {
+          "id": "inventory.row.factors-coat",
+          "text": "Factor's coat  1.4  120  85.7"
+        },
+        {
+          "id": "inventory.row.weighing-stone",
+          "text": "Factor's weighing stone  2.5  30  12.0"
+        },
+        {
+          "id": "inventory.row.fever-cut",
+          "text": "Fever-cut  ×2  0.4  46  115"
+        },
+        {
+          "id": "inventory.detail",
+          "text": "A palm-sized disc of Hist bark with three notches in the rim. Everyone who sees it knows what it means and nobody has yet explained it to you."
+        },
+        {
+          "id": "inventory.hint",
+          "text": "Left and right change column. Up and down move. Confirm to equip, read or use. Swap turns the page: the map, the journal, your case, your spells."
+        }
+      ],
+      "ri_citations": [],
+      "undefined_headers": [],
+      "materials": [
+        "reed"
+      ],
+      "d1_observed": {
+        "rows": 15,
+        "rows_with_3_plus_hues_in_leading_48px": 15,
+        "min_hues": 3,
+        "per_row": [
+          {
+            "id": "inventory.row.hist-bark-token",
+            "hues": 6
+          },
+          {
+            "id": "inventory.row.black-water-draught",
+            "hues": 4
+          },
+          {
+            "id": "inventory.row.bog-iron-maul",
+            "hues": 3
+          },
+          {
+            "id": "inventory.row.boiled-hide-jack",
+            "hues": 3
+          },
+          {
+            "id": "inventory.row.bone-picks",
+            "hues": 3
+          },
+          {
+            "id": "inventory.row.carved-egg",
+            "hues": 3
+          }
+        ]
+      }
+    },
+    "journal": {
+      "mode": "journal",
+      "element_count": 28,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "panel": 1,
+        "panel_header": 2,
+        "journal_index_row": 5,
+        "journal_entry": 9,
+        "divider": 1,
+        "page_count": 1,
+        "hint": 1
+      },
+      "pictorial_ids": [],
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "panel_rect_source": "derived (build publishes none)",
+      "panel_rect_agrees": null,
+      "pictorial_measured": {
+        "on_screen": 0,
+        "in_panel": 0
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 99,
+        "local_contrast_med": 1.213,
+        "local_contrast_p95": 141.27,
+        "p10": 0,
+        "p90": 178,
+        "spread": 178,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": true,
+        "levels": 89,
+        "local_contrast_med": 2,
+        "local_contrast_p95": 128.555,
+        "p10": 154,
+        "p90": 181,
+        "spread": 27,
+        "reason": null
+      },
+      "panel_fill": {
+        "fill": 0.1311,
+        "mode_rgb": [
+          172,
+          165,
+          147
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.quickslots",
+          "text": "Black-water draught / Spark-Dart"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        },
+        {
+          "id": "journal.header",
+          "text": "Journal"
+        },
+        {
+          "id": "journal.index.head",
+          "text": "Quests"
+        },
+        {
+          "id": "journal.index.Q-LILM-01",
+          "text": "The Company Man"
+        },
+        {
+          "id": "journal.index.Q-DOCK-01",
+          "text": "Eleven Gold a Week"
+        },
+        {
+          "id": "journal.index.Q-MAIN-01",
+          "text": "The Reading of the Count"
+        },
+        {
+          "id": "journal.index.Q-MAIN-02",
+          "text": "Eleven Empty Boxes"
+        },
+        {
+          "id": "journal.index.Q-SOUL-02",
+          "text": "The Count of the Drowned"
+        },
+        {
+          "id": "journal.entry.Q-MAIN-01.3",
+          "text": "A clerk on the Soulrest customs bench told me the Drowned Court has been paying outlanders to carry its books, and paying well, because it will not put its own people on the road. He said it as though it were a joke about the Court and not about the road."
+        },
+        {
+          "id": "journal.entry.Q-MAIN-01.10",
+          "text": "Undersexton Aveline Rell has given me a sealed quarterly return to carry from Soulrest to the Court's factor in Gideon. She pays a hundred and twenty in advance, which is more than the work is worth, and she asked twice whether anyone had spoken to me on the stair."
+        },
+        {
+          "id": "journal.entry.Q-MAIN-02.10",
+          "text": "Rell wants eleven burial boxes counted and their weights written down. They came back from the wells at Bone Ladder and Salt-Egg Camp with nothing in them, which she says happens, and which she is nonetheless paying me to write down."
+        },
+        {
+          "id": "journal.entry.Q-SOUL-02.8",
+          "text": "There is a book in the Soulrest customs post that lists bodies burned by the Drowned Court, and the number for last season is written twice in two different hands."
+        },
+        {
+          "id": "journal.entry.Q-LILM-01.8",
+          "text": "There is a body in the rotting quarter with a Leyawiin charter in its satchel and no rot on it at all. Nobody in Lilmoth has reported a body in nine years."
+        },
+        {
+          "id": "journal.entry.Q-MAIN-02.20",
+          "text": "All eleven are empty and all eleven are the right weight for empty. The mortuary hands say the bodies went into the wells and did not come out as anything, not as sap, not as heat, not as the smell they expect. One of them would not go on talking about it inside."
+        },
+        {
+          "id": "journal.entry.Q-MAIN-02.30",
+          "text": "I sat on the burial stair after dark and there is a sound under the Stone Wastes. It is not surf and it is not wind in the salt-store. It is regular, and slow, and it has been going on longer than anyone in Soulrest has been paying attention to it."
+        },
+        {
+          "id": "journal.entry.Q-MAIN-01.20",
+          "text": "The seal on the return is a mortuary seal and it is not fresh. Whatever is in it was closed up before I was hired. At the Bone Ladder the keeper asked me whose count I was carrying and would not say what she meant."
+        },
+        {
+          "id": "journal.entry.Q-DOCK-01.10",
+          "text": "Eeja says the porters have been paid eleven gold a week short since Rain's Hand and that nobody will put a name to it. She is not asking me to fix it. She is asking me to count."
+        },
+        {
+          "id": "journal.pages",
+          "text": "1 of 2"
+        },
+        {
+          "id": "journal.hint",
+          "text": "Left and right turn the page. Confirm on a name in the margin to go to it."
+        }
+      ],
+      "ri_citations": [],
+      "undefined_headers": [],
+      "materials": [
+        "parchment"
+      ]
+    }
+  },
+  "notes": []
+}
