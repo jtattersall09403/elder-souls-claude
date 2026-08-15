@@ -1,0 +1,149 @@
+{
+  "task_id": "W1-F10-r8",
+  "roadmap_item": "F10",
+  "role": "the body itself, which four rounds had not touched — plus the hat that was deleting round 7's eye work, and the player's own eye, which round 7 never reached",
+  "state": "three changes delivered and banked in three separate commits, each measured against a pinned control on this box; 9 frames from the running game on SwiftShader; NOT independently judged, NO blind gate ran, NO hardware frames",
+  "date": "2026-08-15",
+  "branch": "codex/wave1-build-experiment",
+  "base_commit": "01d96c5d",
+  "commits": [
+    "ddf3ad4a — the hat",
+    "75d985fc — the saxhleel/player eye",
+    "3ca135ad — the trunk"
+  ],
+
+  "what_i_could_not_do": [
+    "NO HARDWARE FRAMES, AND THEREFORE NO APPEARANCE CLAIM. Every frame here is SwiftShader (`renderer: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero)))`, the tool's own banner), which W1-30-EVIDENCE §4 bars from any colour, material or light finding. I did not rent a Pod. The reason is measurable rather than a preference: this box was at load 11.68 over 4 cores and SwiftShader returned **4 frames in ~9 minutes**, so the ~26-frame CP+FP+FA sheet I wanted was ~50 min per arm, and two 560 s foreground blocks (HAZARDS §13 forbids a background wait) bought 4 after-frames and 5 before-frames and nothing else. The eye change in particular is a COLOUR change and it is therefore UNPHOTOGRAPHED ON VALID HARDWARE — the numbers below are albedo arithmetic checked by `f10-r7-eye-contrast.mjs`, not pixels. r7 photographed 180 frames on an L4 for $0.029; this round should have done the same and did not.",
+
+    "THE PLAYER ORBIT — THE EXACT FRAMES THE 'STILL SLABS' VERDICT IS MADE OF — WAS NOT SHOT. `sheets/05-orbit-player-AFTER.png` in r7's artefacts is eight angles of the player and it is the picture the last four judgements were written against. I changed the trunk and I did not retake it. The capture ran out of wall-clock in the `FA` slot before it reached `CP`, and the slots run in file order. **A round that changes the body and does not re-shoot the body's own eight-angle orbit has not closed its own claim**, and the offline shaded renders in `sheets/offline-body-*` are a preview of the geometry, not that photograph. The right first action for round 9 is `--slots CP,FP` on a Pod, both arms, which is a ~$0.01 run.",
+
+    "I MADE THE TRANSPARENCY METRIC WORSE AND I COULD NOT GET IT BACK. `actor-orbit-holes.mjs`, 5,760 frames per arm, run four times: **5,725 crack px before, 6,405 after (+11.9%)**, frames with cracks 2,480 -> 2,525, and the worst single frame 141 px (0.1385% of silhouette) -> 340 px (0.293%). By pose the increase is concentrated in `locomotion_cycle` (616 -> 911) and `dead_collapse` (671 -> 921) while `idle_loop` (309 -> 298), `crit_thrust` (439 -> 357) and `guard_break_open` (320 -> 279) all improved. The borderers say what it is: `lowerarm_r` and `actor-equipment:reed:chest@spine_02` join the list, i.e. **a trunk with a waist has more daylight between a hanging arm and the body, and in a folded pose that daylight becomes an enclosed pocket**. I do not think that is the same defect as seeing sky through a shoulder, but I could not prove it, and the honest statement is that a number that has been treated as a regression guard on this file moved the wrong way by 12%. The verdict was FAIL before and is FAIL after; the FAIL is not mine.",
+
+    "I SWEPT THE HEM AND BOTH OF MY PREDICTIONS WERE WRONG, WHICH MEANS I DO NOT UNDERSTAND THIS LEVER. Trying to recover those crack pixels I moved the garment hem UP (local -.24, world 1.06) expecting less shear against a swinging thigh: **7,113 px, 11% worse**. I then moved it DOWN (local -.29, world 1.01) expecting more overlap with the hip: **7,228 px, 13% worse, and a worse worst frame at 0.4356%**. The shipped value (-.26) is simply the best of three measured points, not a solved one. The three readings are written into `torsoShellGeometry`'s comment so nobody nudges it by eye.",
+
+    "THE EYE'S GEOMETRY IS UNCHANGED AND MAY NOW BE TOO DARK. I changed the saxhleel eye's VALUE and not its size or seating. Round 7 recorded the same risk on the humanoid — *'at several bearings the humanoid eye is now hard to find at all'* — and I have applied the same direction of travel to the other 260 of 408 NPCs and the player without a hardware frame to check it against. The one SwiftShader pair I do have (`ground__b000`) shows the amber bead gone on the NPC at frame right, which is the intended result; whether what replaced it READS as an eye at conversation distance on real hardware is not established.",
+
+    "NO BLIND GATE, NO RI ACCEPTANCE ROW SCORED. `grep -rl \"blind_pair: yes\" corpus/ --include=*.md | wc -l` returns 98 and `grep -rln \"blind_status: *run\" corpus/90-verdicts/` returns 0, both run this turn. `RI-VIS10` is `blind_pair: no` by construction, so its 18 checks are reachable without one — and I scored none of them, because every one requires a published census and several require a fresh judge, which CLAUDE.md 0e says only the orchestrator can spawn. `RI-VIS08` B1/B2 are arguable from these frames and I did not argue them.",
+
+    "I DID NOT FIX `getPerfStats()._unmeasurable`, SO FRAME TIME IS STILL UNMEASURED. The brief asked me either to fix that predicate or to say plainly that I added cost I could not measure. I did not fix it. What I can state instead is the geometry: **27,768 -> 27,864 triangles on the shipped player, +96, +0.35%**, and no new draw call — the trunk change is radii and ring positions on primitives that already existed, and the headgear replaced three primitives with three primitives. So the cost added is near zero by construction rather than by measurement, which is a weaker claim than a frame time and a stronger one than nothing.",
+
+    "THE CHARACTER REFERENCE SET NOW EXISTS AND I USED ONLY A SLICE OF IT. `corpus/70-visual/refs/characters/INDEX.md` counts 13 slots, 252 files, 210 of them MOTION. I opened `modern/character_fullbody/REF-CF-SK__skyrim-leather-armor-male-fullbody.png` at native 2470x3568 and the two `character_closeup` Elden Ring plates r7 cites. **I opened no motion reference at all**, and §6 of that index names that exact failure: *'a character verdict built only from C1-C4 has not touched F10, which is animation.'* My defence is only that this round changed no animation; the trunk it changed is judged in motion and I did not look at motion."
+  ],
+
+  "headline": "THE TRUNK HAD NO WAIST ANYWHERE IN IT, AND THAT IS WHAT 'SANDWICH BOARD' MEANT — measured, not described: over 11 shipped figures the hip was **0.821x the WAIST** (a body's hip is wider than its waist) and the waist pinch was **0.029**, which is the reading this round's own instrument gives a synthetic CONE. Every mass in the trunk widened monotonically from the pelvis to the chest and a 0.196-wide lat sweep sat across the waist filling in what little dip the tubes left. After: **pinch 0.178 (6.1x), hip_flare 1.056, and every one of the 11 figures now has a hip at least as wide as its waist where every one of them was narrower.** Second, and it is the one thing in this round that is photographed in the running game: **the hat was a plank across the eyes and the two ARMOURED sets were worse than the one that got reported** — `chitin` and `xanmeer` lost the eye entirely at **32 of 32 and 30 of 30** scored bearings, `reed` at 5 more, **69 of 96 in total, now 0 of 96**. Third: **the player got nothing from round 7's eye fix and neither did 260 of 408 NPCs** — the saxhleel eye was a typed `0xe2c46c` at luma 196.0 on a face of 90.9, **2.16x**, worse than the 1.69x Dunmer round 7 was written to fix, and it is now 0.847x.",
+
+  "the_three_changes": {
+    "1_the_trunk_THE_ITEM_THIS_ROUND_WAS_FOR": {
+      "the_measurement_that_did_not_exist_before": "No instrument in `tools/visual/` could tell a cone from a body. `f10-silhouette.mjs` reports the head-count ratio R and pairwise IoU (is this figure the same as that one), `actor-orbit-holes` reports enclosed background, `character-face-relief` reports the head. So the four rounds of 'still slabs' were an eye and nothing else. `tools/visual/f10-r8-torso.mjs` rasterises the trunk ALONE — every triangle whose dominant bone is not `pelvis`/`spine_00`/`spine_02` is dropped — and takes its three heights from the rig's own rest positions rather than from fractions of the figure, so a heavy or a slight morph is measured at its own waist.",
+      "before_and_after_over_11_shipped_figures": {
+        "trunk_waist_pinch": "0.029 -> 0.178",
+        "trunk_hip_flare": "0.821 -> 1.056, and 11 of 11 were below 1.0 before while 11 of 11 are above it after (worst 1.011)",
+        "trunk_solidity": "0.973 -> 0.940 (1.00 is a flat plate)",
+        "trunk_depth_over_width": "0.873 -> 0.870",
+        "figure_waist_pinch_arms_included": "0.120 -> 0.133 — SMALL, and stated because it is the honest number: at the chest bone the front silhouette is shoulder-to-shoulder across two hanging arms, so the FIGURE outline is dominated by the arms and a trunk change moves it little.",
+        "triangles": "27,768 -> 27,864"
+      },
+      "what_actually_changed_in_the_shared_body_plan": [
+        "`PLAN.pelvis` r0 0.185 -> 0.198, r1 0.170 -> 0.158 — a hip, and a step down into a waist.",
+        "`PLAN.spine_00` r0 0.178 -> 0.160 — the waist itself, instead of a tube that stepped straight back up.",
+        "the pelvis ellipsoid 0.185x0.13x0.135 seated 35 mm ABOVE the pelvis bone -> 0.198x0.134x0.150 seated 12 mm above it: wider, deeper, and at the joint instead of climbing into the waist.",
+        "the lat sweep 0.196x0.130x0.128 -> 0.164x0.150x0.124 — this was the mass destroying the waist: at 0.196 it was WIDER than the pelvis and sat exactly where a trunk should be narrowest.",
+        "`torsoShellGeometry`'s three profiles re-cut from monotone (reed ran .14, .17, .192, .202 — its own narrowest point was its hem) to hip / WAIST / lower ribs / chest / yoke, at the SAME ring count so the triangle budget is untouched. Every ring is 4-13 mm proud of the body mass at its own height, checked against the new ellipsoids.",
+        "the belt torus 0.178/0.042 -> 0.134/0.042 — its outer edge was 0.220, wider than the new hip and 34% wider than the new waist, so once the trunk had a waist the belt would have put the cone straight back.",
+        "**`addEquip` now carries `M.build`**, which `addPresentation` has always carried. Without it a character built at 1.20 wore armour sized for 1.00 (its chest ellipsoid at .228 x 1.20 x 1.24 = .339 burst through a fixed .234 shell) and three of eleven figures still read `hip_flare` BELOW 1 after the trunk was rewaisted, because the FIXED garment set their waist while their MORPHED body set their hip. The `head` slot is exempt on purpose: `headScale` already solves the canon of proportion as a function OF `M.build`, in the opposite direction."
+      ],
+      "reuse_is_structural_not_hoped_for": "Every number above is on the shared body plan or on `torsoShellGeometry`, which all three equipment sets and the civilian `tailored-tunic` build from. `grep -c \"^  '\\\\(player\\\\|sax\\\\|hum\\\\|beast\\\\)\\\\.\" game/src/render/actor.js` returns **17**: seventeen characters, one edit. There is no per-character patch in this round."
+    },
+
+    "2_the_hat_THE_ONE_THAT_IS_PHOTOGRAPHED": {
+      "what_it_was": "Measured by `tools/visual/f10-r8-headgear.mjs` over 96 bearings (8 yaws x 3 elevations x 2 families x 3 sets), with precise vertex bounding boxes: the head's own skinned geometry is **173.5 mm** across on a saxhleel and **207.1 mm** on a humanoid, and the three head pieces were 249.0 / 250.6 / **315.2 mm** — up to **1.82x the head** — with their lower edges **13.9 / 58.0 / 65.7 mm BELOW the top of the eye**, i.e. drawn straight through it.",
+      "the_number_that_matters": "Eye pixels that survive the headgear, at the worst scored bearing: **reed 0.634 (saxhleel) and 0.067 (humanoid); chitin 0.000; xanmeer 0.000.** Bearings at which the eye is entirely gone: **69 of 96.** After: **1.000 everywhere, 0 of 96 lost**, and every piece now sits 27.7-45.9 mm ABOVE the top of the eye. The two ARMOURED sets were far worse than the `reed` circlet r7 reported, and nobody had ever looked at them.",
+      "two_causes_and_only_one_is_obvious": "(1) Round 6 solved the canon of proportion by SHRINKING THE HEAD — `headScale` is 0.803 on the shipped player — and applied it to the skull, the face, the eyes, the mouth and the horns. Head-slot EQUIPMENT was never in that list, so every helm in the game has been drawn at 1.0 on a 0.80 head since. (2) The heights were typed in: the circlet's local y was 0.105 with a 0.028 tube, spanning 0.077-0.133, and the eye is at 0.090. No amount of scaling fixes a hat that is inside the eye — which is round 6's own *'stop typing z in'* finding, one layer further out.",
+      "the_fix_is_derived_not_retuned": "`SKULL_BY_FAMILY` + `skullSpanAt()` are now module-level and the skinned head block and the head equipment read the SAME ellipsoid, so a future skull edit moves the hat with it. All three pieces scale with `headScale` and start at `HEADGEAR_Y = 0.158`, which is above every eye in the game (saxhleel eye top 0.1087, humanoid 0.1028) and above the humanoid brow ridge (0.141).",
+      "the_ruling_it_encodes_and_it_is_reversible": "**No shipped headgear covers the face, including the heavy set**, which was a closed bucket helm at 1.82x the head. A visored great helm is a legitimate thing for a heavy tier to wear; it is not a legitimate thing for the tier 148 of 408 NPCs are rendered in, and six rounds have been spent building faces that it deletes. What would overturn it: a critic showing the heavy tier reading as under-armoured at 8 m. The constant to change is `HEADGEAR_Y`, for `heavy` only."
+    },
+
+    "3_the_players_own_eye": {
+      "the_hole": "Round 7's constants were declared INSIDE the `base.humanoid` branch, so they governed 148 of 408 NPCs and nobody else. Counted this turn over `game/data/npcs/*.json` (18 files, 408 records): **argonian 181, saxhleel 77, naga 2 = 260 records** on `base.saxhleel`, plus the player, whose id is `player.saxhleel`.",
+      "the_number": "The saxhleel eye was a typed `0xe2c46c` (Rec.709 luma 196.0) with an emissive on top. Against its own race tints — saxhleel 0x4f6141 (90.9), argonian 0x5a6b48 (100.9), naga 0x3f5a46 (82.8) — that is **2.157x / 1.944x / 2.367x the face**. The worst humanoid case round 7 fixed was 1.69x. After: **0.847 / 0.843 / 0.845x**, all under the plate's 0.857 accent bar.",
+      "what_transfers_from_round_7_and_what_does_not": "The two constants transfer and are now one module-level binding read by both families. The ROLES do not: round 7 put the humanoid's big sphere at the recess fraction and the small one at the accent, because a human eye is mostly sclera in shadow with a small bright iris. A saxhleel eye is not built that way — the visible ball IS the iris — so the ball carries the accent here and the slit carries the dark. **The hue stays amber**: `CLAUDE.md` says Morrowind wins outside the fight and `RI-VIS10` B2 row 3 asks for a non-human eye. What was wrong was that the colour was a BRIGHTNESS as well as a hue.",
+      "the_emissive_is_gone_and_that_is_not_tidying": "An emissive term is added after albedo, so an emissive eye can exceed the face under any light whatever its colour says — which makes the measurement above unfalsifiable. REVERSIBLE: if a critic wants glowing eyes at night the right shape is a light-level-driven term `f10-r7-eye-contrast.mjs` can also read, not a constant that hides from it.",
+      "the_gate_now_covers_the_player": "`f10-r7-eye-contrast.mjs` scored 9 humanoid races and now scores 12, saxhleel included. It parses `SAX_EYE_HUE` and the pupil fraction out of `actor.js` and THROWS if they are missing, so a revert of this change fails the gate rather than silently passing it."
+    }
+  },
+
+  "the_evidence_and_what_it_is_worth": {
+    "the_frames": "`corpus/90-verdicts/wave1/artifacts/W1-F10-r8/frames/` — 9 frames from the running game, both arms in the same tool at the same seed and stand. The BEFORE arm's `actor.js` is sha256 `f48b8e95…`, which is **the same blob `W1-F10-r7.json` records as its own after arm**, derived independently here — so the two rounds agree on what the baseline was.",
+    "the_control_that_makes_the_pair_readable": "Two of the four `shipwright-oleen` frames are **BYTE-IDENTICAL between the arms** (`record__b000` 91e77e6e…, `record__b090` 716957a0…). Those cameras are aimed at the subject's authored height, where nobody has been drawn since round 7's placement fix, so they are empty scenery — and their being identical is the proof that the capture is deterministic and that the difference in the `ground__*` pair is geometry, not noise.",
+    "what_the_pair_shows": "`BEFORE__FA__npc-shipwright-oleen__ground__b000.png` carries a flat olive plank projecting sideways past the head silhouette across the eyebrows; `AFTER__…` has a slim band on the crown and a whole face under it. In the SAME pair, the saxhleel NPC at frame right carries a bright amber bead eye in the before and does not in the after.",
+    "liveness": "`frame-liveness.mjs --in frames`: 9 frames, 8 LIVE, no degenerate frames. One AMBER `NO_SUBJECT` on `BEFORE__…ground__b000.png`, which is a false red from the centre-of-frame fallback box — the tool's own stated rate is 6 false reds in 76 known-good frames, no manifest supplied projected boxes, and the frame plainly contains its subject.",
+    "the_regression_check_that_matters_most": "`f10-r7-appearance.mjs --probe-only` against the live game AFTER all three changes: 31 NPCs visible, **0 buried / 0 airborne as drawn** against 12/15 by record (identical to r7's reading, so the placement fix is intact), 13 distinct variants drawn, and the foot conform still moving a foot 0.2634 m at `slope-moderate` and 0.0011 m at the flat stand. Nothing I changed broke the running world."
+  },
+
+  "hazards_worth_recording": [
+    "**`actor-orbit-holes.mjs`'s RASTERISER CANNOT Z-SORT AN ORTHOGRAPHIC VIEW, AND THAT IS NOT OBVIOUS FROM READING IT.** `rasterise()` writes `pz[k] = cw`, the clip-space w, as its depth. Under a PERSPECTIVE projection that is the eye-space distance and the z-buffer is correct — which is what the tool was written for. Under an ORTHOGRAPHIC projection the w row of the matrix is (0,0,0,1), so `cw === 1` for every vertex in the scene, the z-buffer is a constant, and `owner` degenerates to *whichever triangle was submitted last*. `f10-silhouette.mjs` is safe because it reads only `cov`; **anything that asks an occlusion question through this function with an ortho camera is reading noise.** My first cut of `f10-r8-headgear.mjs` did exactly that and its self-test refused to pass — a hat lowered onto the eyes scored 0.80 where it should have scored 0. The instrument caught the instrument, which is the only reason the arms are required to disagree.",
+
+    "**`Box3.setFromObject` / `expandByObject` TRANSFORM THE GEOMETRY'S BOUNDING BOX, NOT ITS VERTICES, UNLESS YOU PASS `precise`.** A rotated torus is therefore measured as its rotated bounding CUBE. That over-reported the head band's width by **54%** (0.265 m against a true 0.172 m) in the first run of this tool, in BOTH arms, so it did not change the verdict — but a 54% error that cancels is still a 54% error and the next question it is asked may not be symmetric.",
+
+    "**A ROTATION PASSED TO `addEquip` IS APPLIED AFTER THE SCALE, SO SPINNING AN ELLIPTICAL RING TILTS IT OFF THE BODY'S AXES.** `Matrix4.compose` is T*R*S. The head band is a unit torus scaled non-uniformly to match a skull that is deeper than it is wide; the old code's `rot z = 0.35` was spinning that ellipse rather than the circle it was meant to spin. The fix is to bake the spin into the GEOMETRY (`.rotateZ()`), where it acts on a circle and only moves the arc gap. Also worth knowing: on the old torus that 0.35 was a no-op for its stated purpose anyway, because rotating a torus about its own symmetry axis does nothing but move the gap.",
+
+    "**A RIGID FITTING CAN BE PLUGGING A SKINNING SHEAR AND NOBODY FINDS OUT UNTIL SOMEBODY SHRINKS IT.** I thinned the belt's section from .042 to .026 and `actor-orbit-holes` went 5,725 -> 6,432 crack px with the new worst frame bordered by `cloth/pelvis` and `cloth/spine_00` — two SKINNED surfaces. The belt had been covering a shear at that joint for as long as it had been that size. The section is back at .042 and the ring radius carries the reduction instead. **When you shrink a piece of kit, re-run the hole check even though you did not touch the body.**",
+
+    "**MY OWN TWO NEW TOOLS CARRY `IS_CLI` AND THE ONE I EDITED DID NOT NEED IT — BUT `f10-r6-visible-surface.mjs` STILL RUNS ITS WHOLE CLI ON IMPORT.** r7 guarded `f10-r6-appearance-compare.mjs`; this sibling was not in that pass. I used it as a CLI so it cost me nothing, and I am recording it rather than fixing it because it is not this round's file and a blind edit to a tool I did not read in full is how the last four of these happened.",
+
+    "**A SLOT FILTER IS THE DIFFERENCE BETWEEN SOME EVIDENCE AND NONE.** `f10-r7-appearance.mjs` shoots ~90 frames, which is a rented Pod, and it has no way to shoot a third of them. I added `--slots` — additive, default-off, and it skips SCREENSHOTS ONLY: every scene reader, census, camera solve and gate still runs, so the manifest keeps its shape. Omitted, the tool behaves exactly as round 7 left it. It is also what let me get the before arm at all, and it is a one-line guard at the top of `shoot()` rather than a fork of the file."
+  ],
+
+  "what_the_next_round_should_do_and_why": [
+    "**SHOOT `--slots CP,FP` ON A POD, BOTH ARMS, WITH THE BASELINE PINNED AT sha256 `f48b8e95…`.** That is the eight-angle player orbit and the player face — the exact frames the 'still slabs' verdict has been written against for four rounds, and the exact frames this round changed and did not retake. r7 got 180 frames on an L4 for $0.029; this is ~20. The control fixture method is already proven twice and the arms are already identified.",
+    "**THE FIGURE SILHOUETTE IS STILL ARM-DOMINATED AND THAT IS THE NEXT REAL LEVER.** The trunk now has a waist (pinch 0.178) but the FIGURE pinch only moved 0.120 -> 0.133, because at the chest bone the front outline is shoulder-to-shoulder across two hanging arms. `RI-VIS10` C3 is the check that names this — *'the stand is not a mannequin'*, shoulder tilt, hip tilt and left-vs-right elbow difference, all three published at two frames — and the shipped idle almost certainly fails it. A stance with the arms off the body would change the silhouette more than any further radius edit.",
+    "**RECOVER THE 680 CRACK PIXELS OR RULE THAT THEY ARE NOT A DEFECT.** They are concentrated in `locomotion_cycle` and `dead_collapse` and their borderers are the arm and the garment hem, which is consistent with 'a waisted body has more daylight beside it' rather than with a hole in the surface. `actor-orbit-holes.mjs` already distinguishes a border-reachable through-gap from an enclosed pocket; what it cannot do is tell an enclosed pocket you can legitimately see through from one you cannot. That distinction is the fix, and it is in the instrument, not in the body.",
+    "**SCORE `RI-VIS10` PROPERLY — IT IS `blind_pair: no`, SO NOTHING BLOCKS IT BUT WORK.** Eighteen checks, each publishing a census, several needing only a fresh judge the orchestrator can spawn. C1 (canon of proportion) and C2 (silhouette IoU) already have an instrument in `f10-silhouette.mjs`; D1 needs the garment vocabulary table that does not exist and therefore scores 0 fail-closed; E1-E5 are pure counting over `game/data/npcs/*.json`. Nothing in F10 has ever been scored against this item and the item exists precisely because a fidelity pass was being read as though it covered the whole question.",
+    "**LOOK AT THE MOTION REFERENCES.** `refs/characters/` holds 210 motion files and this round opened none of them. §6 of its index names that failure by name."
+  ],
+
+  "references_opened": [
+    "CLAUDE.md — the character directive, all four requirements, and rule 0b's four-line check.",
+    "orchestration/status/W1-F10-r7-appearance.json in full, `what_i_could_not_do` first — its entries 4 (the hat), 3 (the body) and the `what_the_next_round_should_do` entry about `player.saxhleel` are the three things this round did.",
+    "orchestration/HAZARDS.md §§13, 15, 15a, 16, 17 in full, plus §10 (killed the orphaned browser by PID; `pgrep -f playwright_chromiumdev_profile` then `kill -9`). §5a: `df -h .` checked, 76% used, 9.2 GB free; nothing pruned.",
+    "corpus/70-visual/RI-VIS10-character-design.md in full — §A's seam, §C1-C4, §D2's forbidden generic-fantasy list (which is why the head band is lashed cord and not a buckled brim) and §D3's material vocabulary.",
+    "corpus/70-visual/refs/characters/INDEX.md in full, including §5's statement that C5 (a full-body turnaround) is n=0.",
+    "corpus/70-visual/refs/modern/character_fullbody/REF-CF-SK__skyrim-leather-armor-male-fullbody.png opened at native 2470x3568 — a shoulder line, a cinched waist and a flared skirt below it, three silhouette breaks where ours had none. Routed FIDELITY-only (INDEX.md §4), so it is cited for construction and not as a design target.",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r7-appearance/ — `sheets/05-orbit-player-AFTER.png`, `sheets/02-faces-by-variant-AFTER.png`, `frames/AFTER__CP__player__yaw000.png` and `frames/AFTER__FA__npc-shipwright-oleen__ground__b090.png`, all opened before anything was changed.",
+    "game/src/render/actor.js in full around `PLAN`, `jointRadius`, `buildSkeleton`'s anatomical volumes and shoulder girdle, `torsoShellGeometry`, `addEquip`, `addPresentation`, both family head blocks, `CHARACTER_SPECS`, `characterFor` and `poseFromRig`/`poseStatic`'s equipment visibility.",
+    "game/src/render/renderer.js `RACE_TINT`; game/src/render/lib/race-art.js in full.",
+    "tools/visual/actor-orbit-holes.mjs (`collectTriangles`, `rasterise`, `findHoles`), f10-silhouette.mjs, character-face-relief.mjs, f10-r6-visible-surface.mjs, f10-r7-eye-contrast.mjs and f10-r7-appearance.mjs — read before being imported or edited, which is how the ortho z-buffer defect was found."
+  ],
+
+  "files_touched": [
+    "game/src/render/actor.js",
+    "tools/visual/f10-r8-headgear.mjs",
+    "tools/visual/f10-r8-torso.mjs",
+    "tools/visual/f10-r7-eye-contrast.mjs",
+    "tools/visual/f10-r7-appearance.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r8/",
+    "orchestration/status/W1-F10-r8.json"
+  ],
+  "files_claimed": [
+    "game/src/render/actor.js",
+    "tools/visual/f10-r8-headgear.mjs",
+    "tools/visual/f10-r8-torso.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r8/",
+    "orchestration/status/W1-F10-r8.json"
+  ],
+  "ownership_note": "`node tools/ownership.mjs --for game/src/render/actor.js` RUN, not assumed: one live piece, `W1-30-builder-20260812` (20 h old, `builder-native-gpu-remediation-in-progress`), which lists `actor.js` in `files_touched` and has an EMPTY `files_claimed`. Rounds 6 and 7 of F10 both edited this file under the same condition and both recorded it; this round follows that precedent and touches only the character body plan, the head equipment and the two eye blocks — no material, shader, fog or GPU path. `--for tools/visual/` RUN: two live pieces (`W1-30V` running, `W1-WATER-LANES` measuring, both 20 h) with an UNDECLARED OVERLAP warning; `W1-30V` claims the directory but its own `files_touched` names six specific files and none is one of mine. So: NEW FILES ONLY there, with two exceptions, both additive and both no-ops when the new flag is absent — `f10-r7-eye-contrast.mjs` gains a saxhleel section (a finished F10 round's gate, extended to the races it did not cover) and `f10-r7-appearance.mjs` gains `--slots`. `corpus/90-verdicts/wave1/artifacts/` — this piece writes only into its own `W1-F10-r8/` directory (HAZARDS §17).",
+
+  "reproduce": [
+    "node tools/visual/f10-r8-torso.mjs --self-test         # 3 arms: slab, CONE, waisted — the cone is the one that matters",
+    "node tools/visual/f10-r8-torso.mjs --sample=10 --json=out.json",
+    "node tools/visual/f10-r8-headgear.mjs --self-test      # 3 arms: no hat, hat on the crown, same hat on the eyes",
+    "node tools/visual/f10-r8-headgear.mjs --json=out.json",
+    "node tools/visual/f10-r7-eye-contrast.mjs              # now 12 races, exits non-zero if any eye is brighter than its face",
+    "node tools/visual/actor-orbit-holes.mjs                # the regression guard: 5,725 before, 6,405 after",
+    "node tools/visual/f10-r7-appearance.mjs --probe-only --out <dir>",
+    "node tools/visual/f10-r7-appearance.mjs --slots FA --tag f10-r8-before --out <dir>   # with actor.js swapped to sha256 f48b8e95…",
+    "node tools/visual/frame-liveness.mjs --in <dir>/frames"
+  ],
+
+  "redundant_with": []
+}
