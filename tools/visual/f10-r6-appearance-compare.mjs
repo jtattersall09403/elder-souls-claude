@@ -43,8 +43,22 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 import { PNG } from 'pngjs';
 import { gateBuffer } from './frame-liveness.mjs';
+
+/**
+ * MAIN-MODULE GUARD, added 2026-08-15 by `W1-F10-r7-appearance`. Without it, `import { diffFrac }
+ * from './f10-r6-appearance-compare.mjs'` runs this file's ENTIRE comparison in the importer's
+ * process and then `process.exit()`s out of it — so the importer's own code never executes and its
+ * output is silently this file's. That is HAZARDS §16's third defect verbatim (*"importing
+ * `f10-r3-materials.mjs` runs its entire capture and exits"*), which cost a paid Pod and produced a
+ * manifest naming the wrong tool. It was reproduced here before being fixed: `--self-test` on the
+ * importer printed THIS file's self-test banner and exited.
+ *
+ * The CLI behaviour is unchanged: run directly, `IS_CLI` is true and everything below runs as before.
+ */
+const IS_CLI = Boolean(process.argv[1]) && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 
 const args = {};
 for (let i = 2; i < process.argv.length; i++) {
@@ -107,7 +121,7 @@ export function ringChangeFrac(a, b) {
 // HAZARDS §0's fifth failure shape, and this file's two statistics are exactly the kind that
 // return a plausible small number when they are measuring nothing.
 // ══════════════════════════════════════════════════════════════════════════════════════════════
-if (args['self-test']) {
+if (IS_CLI && args['self-test']) {
   const mk = (fn) => { const p = new PNG({ width: 64, height: 64 });
     for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) { const i = (y * 64 + x) * 4; const c = fn(x, y); p.data[i] = c[0]; p.data[i + 1] = c[1]; p.data[i + 2] = c[2]; p.data[i + 3] = 255; } return p; };
   const flat = mk(() => [40, 60, 40]);
@@ -133,10 +147,13 @@ if (args['self-test']) {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════════════════════
-const RUN = path.resolve(args.run || '');
-const OUT = path.resolve(args.out || path.join(RUN, 'compare'));
-if (!fs.existsSync(RUN)) { console.error(`no such run dir: ${RUN}`); process.exit(2); }
-fs.mkdirSync(OUT, { recursive: true });
+// Everything below is the CLI. Guarded so that an importer gets the two exported statistics and
+// nothing else — see the note on IS_CLI at the top of this file.
+const RUN = IS_CLI ? path.resolve(args.run || '') : null;
+const OUT = IS_CLI ? path.resolve(args.out || path.join(RUN, 'compare')) : null;
+if (IS_CLI && !fs.existsSync(RUN)) { console.error(`no such run dir: ${RUN}`); process.exit(2); }
+if (IS_CLI) fs.mkdirSync(OUT, { recursive: true });
+if (IS_CLI) {
 
 const arms = {};
 for (const arm of ['before', 'after']) {
@@ -263,3 +280,4 @@ for (const s of report.by_slot) {
 console.log('\nmotion:');
 for (const arm of ['before', 'after']) console.log(`  ${arm}: ${motion[arm].verdict}  (first->last ring ${motion[arm].first_to_last.ring_changed_frac}); manifest says ${motion[arm].manifest_motion && motion[arm].manifest_motion.note}`);
 console.log(`\nwrote ${path.join(OUT, 'compare.json')}`);
+}
