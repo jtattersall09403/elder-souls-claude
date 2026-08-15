@@ -1,0 +1,102 @@
+{
+  "tool": "critic inline probe, W1-F10-r9-CRITIC",
+  "item": "RI-VIS10 D3",
+  "generated": "2026-08-15T18:26:30.507Z",
+  "method": "160 probe actors across all four art families, built through makeRiggedActor -> poseFromRig; every mesh whose name matches a garment, grouped by its material userData.visualFamily",
+  "garment_material_families_found": [
+    {
+      "material_family": "cloth",
+      "garment_pieces": [
+        "actor-body:beast:cloth",
+        "actor-body:humanoid:cloth",
+        "actor-body:saxhleel:cloth",
+        "actor-body:undead:cloth",
+        "actor-secondary-frill:0",
+        "actor-secondary-frill:1",
+        "actor-secondary-frill:2"
+      ]
+    },
+    {
+      "material_family": "reed",
+      "garment_pieces": [
+        "actor-equipment:reed:back",
+        "actor-equipment:reed:chest",
+        "actor-equipment:reed:hands",
+        "actor-equipment:reed:head",
+        "actor-equipment:reed:legs"
+      ]
+    },
+    {
+      "material_family": "chitin",
+      "garment_pieces": [
+        "actor-equipment:chitin:back",
+        "actor-equipment:chitin:chest",
+        "actor-equipment:chitin:hands",
+        "actor-equipment:chitin:head",
+        "actor-equipment:chitin:legs"
+      ]
+    },
+    {
+      "material_family": "darkStone",
+      "garment_pieces": [
+        "actor-equipment:xanmeer:back",
+        "actor-equipment:xanmeer:chest",
+        "actor-equipment:xanmeer:hands",
+        "actor-equipment:xanmeer:head",
+        "actor-equipment:xanmeer:legs"
+      ]
+    },
+    {
+      "material_family": "skin",
+      "garment_pieces": [
+        "actor-family-form:humanoid:tailored-tunic"
+      ]
+    }
+  ],
+  "required_eight": [
+    {
+      "material": "lashed_cord",
+      "material_family_that_would_carry_it": null,
+      "present_on_a_garment": false
+    },
+    {
+      "material": "woven_reed_or_rush",
+      "material_family_that_would_carry_it": "reed",
+      "present_on_a_garment": true
+    },
+    {
+      "material": "chitin_plate",
+      "material_family_that_would_carry_it": "chitin",
+      "present_on_a_garment": true
+    },
+    {
+      "material": "bone_fitting",
+      "material_family_that_would_carry_it": "bone",
+      "present_on_a_garment": false
+    },
+    {
+      "material": "hide",
+      "material_family_that_would_carry_it": null,
+      "present_on_a_garment": false
+    },
+    {
+      "material": "river_shell",
+      "material_family_that_would_carry_it": null,
+      "present_on_a_garment": false
+    },
+    {
+      "material": "resin",
+      "material_family_that_would_carry_it": "resin",
+      "present_on_a_garment": false
+    },
+    {
+      "material": "wet_wood",
+      "material_family_that_would_carry_it": null,
+      "present_on_a_garment": false
+    }
+  ],
+  "present_count": 2,
+  "threshold": ">= 5 of 8 passes; <= 2 is the wardrobe is cloth and leather",
+  "verdict": "FAIL",
+  "side_finding": "actor-family-form:humanoid:tailored-tunic is drawn with the SKIN material family — reported to the fidelity critic (RI-VIS08 B3)"
+}
