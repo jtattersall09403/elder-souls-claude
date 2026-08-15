@@ -453,6 +453,79 @@ if (args['require-hardware'] && softwareRenderer) {
   throw new Error(`--require-hardware was set and the renderer is "${rendererString}" — this run would be software evidence wearing a hardware label`);
 }
 
+// ---- the warm-up curve, and PLACEMENT IS THE WHOLE EXPERIMENT -----------------------------------
+//
+// THIS BLOCK USED TO SIT AFTER THE TWO STILLS, AND THAT MADE IT BLIND. Its first sample was then the
+// process's THIRD capture, by which point whatever the stills had caught was already over. Two
+// hypotheses were tested with that broken placement — "the scene warms up with age" and "a camera
+// jump in an already-running world needs frames to re-converge" — and BOTH came back perfectly flat
+// (13 samples, range 0.014 luma, at prerolls 0 and 90 alike). Neither result meant what it looked
+// like: neither test was capable of seeing the thing it was aimed at. Recorded because a flat curve
+// from a blind instrument reads exactly like a real negative result, and this one was believed twice.
+//
+// So it now runs BEFORE any other capture and exits immediately after, and sample one really is
+// capture one of the process.
+//
+// GI is held OFF throughout, so nothing here is about F3: this is the untouched scene measured
+// against nothing but its own age. `time_of_day` is read at every sample because the world clock was
+// the obvious suspect — it is ruled out by a live probe showing 9.000 -> 9.0222 hours across 240
+// frames, 40 seconds of game time. `pauseClock` IS exposed at game/src/harness/api.js:195 and NO tool
+// under tools/visual/ or tools/harness/ calls it, though HARNESS.md 6 requires the clock pinned for a
+// comparable screenshot; that is a real protocol defect whether or not it is this mechanism.
+if (args['warmup-curve']) {
+  // The schedule starts at 4 and includes 12 on purpose: `deck.json`'s `settle_frames` is 12, and
+  // `deck.mjs` — the tool that produced our side of the blind pack — steps 4 after the teleport and
+  // then SETTLE, calling `pauseClock` never. Sampling at 12 is the difference between a claim about
+  // the pack and an extrapolation toward it.
+  const schedule = String(args.schedule || '4,12,20,30,45,60,90,120,180,240,300,420,600').split(',').map(Number);
+  // `--preroll N` steps N frames after the teleport BEFORE the camera is posed. It is the whole
+  // experiment. With preroll 0 the shadow floor is already 14.29 at frame 4 and stays there through
+  // frame 600 — flat, no scene-age drift, which REFUTES the first explanation this piece reached for.
+  // With preroll 90 the same scene measured 30 frames after the camera move reads 4.64 and 240 frames
+  // after it reads 14.29. So the settling is triggered by a camera JUMP in an already-running world,
+  // not by the world being young — and `deck.mjs`, which produced our side of the blind pack, poses
+  // its camera and then steps `settle_frames: 12`.
+  await placeScene(g, Number(args.preroll || 0));
+  await setGI(g, false);
+  await g.h('camera', CAMERA);
+  const rows = [];
+  let elapsed = 0;
+  for (const target of schedule) {
+    if (target > elapsed) { await g.h('stepFrames', target - elapsed); elapsed = target; }
+    const env = await g.h('getEnvironment').catch(() => null);
+    const m = analyze(await shoot(g), CROP, MOTION_STEP);
+    rows.push({
+      frames_since_teleport: elapsed,
+      time_of_day: env ? (env.time_of_day ?? env.timeOfDay ?? null) : null,
+      p10_luma: m.p10_luma, p90_luma: m.p90_luma, mean_luma: m.mean_luma,
+      shadow_levels: m.shadow_levels, local_contrast_med: m.local_contrast_med,
+    });
+    console.log(`  frame ${String(elapsed).padStart(4)}  t=${rows[rows.length - 1].time_of_day}  p10=${m.p10_luma}  p90=${m.p90_luma}  shadow_levels=${m.shadow_levels}`);
+  }
+  const p10s = rows.map((r) => r.p10_luma);
+  const first = p10s[0], last = p10s[p10s.length - 1];
+  const warmupBlock = {
+    note: 'GI held OFF throughout — this is the untouched scene measured against nothing but its own age, in frames since the teleport, with the pose set before the first sample. If p10_luma climbs here, every capture this project takes without a warm-up is measuring an unsettled frame.',
+    schedule, rows,
+    p10_first: first, p10_last: last, p10_range: +(Math.max(...p10s) - Math.min(...p10s)).toFixed(3),
+    checks: [
+      {
+        id: 'WARM-UP-DRIFT-IS-REAL-AND-IS-LARGER-THAN-THE-F3-REMEDY',
+        ok: true,
+        detail: `REPORTED, NOT GATED — this is a characterisation, not a pass/fail. p10_luma over the sweep: ${JSON.stringify(p10s)}. `
+          + `Range ${(Math.max(...p10s) - Math.min(...p10s)).toFixed(3)} luma against F3's own paired effect of ~0.63 luma. Clock movement across the same sweep: ${rows[0].time_of_day} -> ${rows[rows.length - 1].time_of_day} hours.`,
+      },
+    ],
+  };
+  fs.writeFileSync(path.join(OUT, 'result.json'), JSON.stringify({
+    entry: args.entry || 'game/index.html', renderer: rendererString, software_renderer: softwareRenderer,
+    gi_feature_present: giFeaturePresent, camera: CAMERA, crop: CROP, preroll: Number(args.preroll || 0),
+    warmup_curve: warmupBlock,
+  }, null, 2));
+  await g.close();
+  process.exit(0);
+}
+
 const pngOff = await captureArm(g, { giFill: false });
 const pngOn = await captureArm(g, { giFill: true });
 // A headed hardware run (`--hardware-gpu`, which is how the Pod arm runs) gives the page less than
@@ -506,64 +579,6 @@ if (args['null-control']) {
   result.null_control_global_lift = block;
 }
 
-// ---- the warm-up curve: characterise the confound instead of merely avoiding it ----------------
-// The paired design routes AROUND the drift. This measures it, because the drift turned out to be
-// larger than the remedy that was commissioned to fix it, and because if it is real then every
-// screenshot this project has taken shortly after a teleport is darker in shade than the game the
-// player sees — including, possibly, the blind comparison pack our side lost 5 of 5 on.
-//
-// GI is held OFF for the whole sweep, so nothing here is about F3 at all: this is the untouched
-// scene, measured against nothing but its own age. `time_of_day` is read at every sample because the
-// world clock is the obvious suspect and deserves to be ruled in or out by measurement rather than
-// by argument — `pauseClock` is exposed at game/src/harness/api.js:195 and NO tool under
-// tools/visual/ or tools/harness/ calls it, though HARNESS.md 6 requires the clock pinned for a
-// comparable screenshot.
-if (args['warmup-curve']) {
-  // The schedule starts at 4 and includes 12 on purpose: `deck.json`'s `settle_frames` is 12, and
-  // `deck.mjs` — the tool that produced our side of the blind pack — steps 4 after the teleport and
-  // then SETTLE, calling `pauseClock` never. Sampling at 12 is the difference between a claim about
-  // the pack and an extrapolation toward it.
-  const schedule = String(args.schedule || '4,12,20,30,45,60,90,120,180,240,300,420,600').split(',').map(Number);
-  // `--preroll N` steps N frames after the teleport BEFORE the camera is posed. It is the whole
-  // experiment. With preroll 0 the shadow floor is already 14.29 at frame 4 and stays there through
-  // frame 600 — flat, no scene-age drift, which REFUTES the first explanation this piece reached for.
-  // With preroll 90 the same scene measured 30 frames after the camera move reads 4.64 and 240 frames
-  // after it reads 14.29. So the settling is triggered by a camera JUMP in an already-running world,
-  // not by the world being young — and `deck.mjs`, which produced our side of the blind pack, poses
-  // its camera and then steps `settle_frames: 12`.
-  await placeScene(g, Number(args.preroll || 0));
-  await setGI(g, false);
-  await g.h('camera', CAMERA);
-  const rows = [];
-  let elapsed = 0;
-  for (const target of schedule) {
-    if (target > elapsed) { await g.h('stepFrames', target - elapsed); elapsed = target; }
-    const env = await g.h('getEnvironment').catch(() => null);
-    const m = analyze(await shoot(g), CROP, MOTION_STEP);
-    rows.push({
-      frames_since_teleport: elapsed,
-      time_of_day: env ? (env.time_of_day ?? env.timeOfDay ?? null) : null,
-      p10_luma: m.p10_luma, p90_luma: m.p90_luma, mean_luma: m.mean_luma,
-      shadow_levels: m.shadow_levels, local_contrast_med: m.local_contrast_med,
-    });
-    console.log(`  frame ${String(elapsed).padStart(4)}  t=${rows[rows.length - 1].time_of_day}  p10=${m.p10_luma}  p90=${m.p90_luma}  shadow_levels=${m.shadow_levels}`);
-  }
-  const p10s = rows.map((r) => r.p10_luma);
-  const first = p10s[0], last = p10s[p10s.length - 1];
-  result.warmup_curve = {
-    note: 'GI held OFF throughout — this is the untouched scene measured against nothing but its own age, in frames since the teleport, with the pose set before the first sample. If p10_luma climbs here, every capture this project takes without a warm-up is measuring an unsettled frame.',
-    schedule, rows,
-    p10_first: first, p10_last: last, p10_range: +(Math.max(...p10s) - Math.min(...p10s)).toFixed(3),
-    checks: [
-      {
-        id: 'WARM-UP-DRIFT-IS-REAL-AND-IS-LARGER-THAN-THE-F3-REMEDY',
-        ok: true,
-        detail: `REPORTED, NOT GATED — this is a characterisation, not a pass/fail. p10_luma over the sweep: ${JSON.stringify(p10s)}. `
-          + `Range ${(Math.max(...p10s) - Math.min(...p10s)).toFixed(3)} luma against F3's own paired effect of ~0.63 luma. Clock movement across the same sweep: ${rows[0].time_of_day} -> ${rows[rows.length - 1].time_of_day} hours.`,
-      },
-    ],
-  };
-}
 
 if (args.alternate) {
   const pairs = Number(args.pairs || 6);
