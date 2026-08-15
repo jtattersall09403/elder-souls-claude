@@ -285,7 +285,23 @@ const rows = [];
 let liveness = null;
 try { liveness = await import('./frame-liveness.mjs'); } catch (e) { liveness = null; log(`frame-liveness unavailable: ${e.message}`); }
 
+/**
+ * `--slots` — ROUND 8, ADDITIVE AND DEFAULT-OFF. Omitted, nothing changes: every slot is shot,
+ * exactly as round 7 shot them. Given (`--slots CP,FP,FA`) only those slots are photographed while
+ * every scene READER, census, camera solve and gate still runs, so the manifest keeps its shape and
+ * the numbers stay comparable — this skips screenshots, not measurements.
+ *
+ * WHY IT EXISTS: a full run is ~90 frames, which is a rented Pod. Round 8 changed the trunk, the
+ * headgear and the saxhleel eye, and those are visible in exactly three slots. A round that cannot
+ * afford the whole sheet should shoot the right third of it rather than shoot nothing — which is
+ * what would otherwise have happened here.
+ */
+const SLOTS = args.slots === undefined || args.slots === true ? null
+  : new Set(String(args.slots).split(',').map((x) => x.trim()).filter(Boolean));
+const wantSlot = (slot) => SLOTS === null || SLOTS.has(String(slot));
+
 async function shoot(file, meta, { box = null, subject = false } = {}) {
+  if (!wantSlot(meta && meta.slot)) { rows.push({ file, status: 'skipped_by_slots', ...meta }); return null; }
   const shot = await call('screenshot');
   if (!shot.ok) { rows.push({ file, status: 'red', reason: shot.e, ...meta }); log(`  RED ${file}: ${shot.e}`); return null; }
   const buf = Buffer.from(String(shot.v).replace(/^data:image\/png;base64,/, ''), 'base64');
