@@ -2027,7 +2027,42 @@ export function poseFromRig(group, body, water) {
       // keeps the matrix orthonormal on slopes and stairs without changing animation timing.
       let xx=e[0],xy=e[1],xz=e[2],dot=xx*nx+xy*ny+xz*nz;xx-=dot*nx;xy-=dot*ny;xz-=dot*nz;const xl=Math.hypot(xx,xy,xz)||1;xx/=xl;xy/=xl;xz/=xl;
       const zx=xy*nz-xz*ny,zy=xz*nx-xx*nz,zz=xx*ny-xy*nx;
-      e[0]=xx;e[1]=xy;e[2]=xz;e[4]=nx;e[5]=ny;e[6]=nz;e[8]=zx;e[9]=zy;e[10]=zz;e[13]=gy+.02;
+      e[0]=xx;e[1]=xy;e[2]=xz;e[4]=nx;e[5]=ny;e[6]=nz;e[8]=zx;e[9]=zy;e[10]=zz;
+      // THE HEIGHT WAS PINNED TO A CONSTANT AND THE CONSTANT WAS THE WHOLE FOOT.
+      //
+      // This line read `e[13] = gy + .02`, i.e. "put the ankle 2 cm above the terrain". The ankle
+      // is not 2 cm above the terrain and never was: `game/data/combat/skeleton.json` places
+      // `foot_l` at world y **0.0900** in rest, and the sole, heel, ball and toes built in
+      // `buildSkeleton` hang **88 mm BELOW** that bone (the block there states its own number:
+      // "the sole's underside has to land at foot-local y = -0.088"). So the pin dropped the foot
+      // bone by 70 mm and put the entire foot 68 mm UNDER THE GROUND.
+      //
+      // MEASURED, this turn, by posing the shipped player through this very function with
+      // `water.groundAt() = 0` and reading the skinned world positions of every vertex whose
+      // dominant influence is `foot_l`:
+      //
+      //   no conform (the NPC path)   skin@foot_l spans y  0.0020 .. 0.1539   sole 2 mm above ground
+      //   with conform (the PLAYER)   skin@foot_l spans y -0.0680 .. 0.0839   sole 68 mm BELOW it
+      //                               bone@foot_l (the claws) -0.0466 .. -0.0302 — ALL of it buried
+      //
+      // That is why `W1-F10-r5-appearance` found **not one pixel** of difference between an arm
+      // built at `b175da8e` and an arm built at HEAD on the player's foot close-ups, on frames whose
+      // luma span was 156-176: round 4 replaced geometry that no camera could see. It is also why
+      // the leg ends in a flat floating cap in `sheets/04-feet-player.png` — the cloth calf is NOT
+      // conformed, so it stops at the rest ankle 81 mm above the grass while the foot is under it.
+      //
+      // THE FIX IS A DELTA, NOT A PIN, and that is the important part rather than the constant.
+      // The rig has already placed this foot at its animated height above the character's own
+      // ground; conforming means "ride the terrain under THIS foot", which is a SHIFT by how much
+      // the ground here differs from the ground under the root. On flat ground the shift is exactly
+      // zero — the correct null, which a pin can never have — and on a slope or a stair each foot
+      // rides its own height. A pin also flattened every heel-strike and toe-off in the walk cycle,
+      // because it overwrote the animated vertical motion of the foot with a constant; a delta
+      // leaves that motion intact.
+      //
+      // Clamped to a stair riser so a stand whose collision surface is a deck or a boardwalk above
+      // the terrain field cannot swallow the leg the way the old constant did.
+      e[13] += Math.max(-0.25, Math.min(0.25, gy - groundY));
     }
   }
   if (!A.rigged) {
