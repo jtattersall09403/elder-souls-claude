@@ -2,20 +2,57 @@
   "task_id": "T4-r2-builder",
   "roadmap_item": "T4",
   "round": 2,
-  "state": "starting",
+  "state": "in_progress",
+  "answering": "corpus/90-verdicts/wave1/T4-r1.md (FAIL, piece score 2)",
   "could_not_do": [
-    "Nothing yet — just started. This list is written first and updated as blockers appear."
+    "NOT YET DONE at the time of this write: screenshots at 1920x1080 and the narrow viewport, the delete-the-fix worktree arm, and the re-run of the critic's measurements. Code is in and boot-check PASSES; evidence is next.",
+    "RI-UIX07 harness field `elements[].withdrawn_because` is DELIBERATELY NOT implemented as the item spells it. A withdrawn element is not in `elements`, and adding a placeholder would break E-T5 outright (the census-identity test requires the combat element list to be identical id-for-id to one taken with the world set deleted). The withdrawal is reported at `getUIState().hud.world.withdrawn` instead. Deviation stated, not hidden.",
+    "RI-UIX07 W4's spell mark is a CHARGE (focus held / attuned spell cost), not Morrowind's cast chance. This build has no to-hit roll on a cast (RI-MAG01 §E forbids one), so there is no cast probability to draw. Named `charge` in the census so nobody reads a probability off it.",
+    "RI-UIX07 §G (V11) and RI-UIX09 DN7 (the blind pair) are judge gates. Rule 0 forbids spawning a session and rule 25 forbids judging a pack I built. Not run; the round-2 critic owns them."
   ],
-  "answering": "corpus/90-verdicts/wave1/T4-r1.md (FAIL)",
   "defects_targeted": [
-    "ui.hud.world has 1 of 6 elements and it sits top-right at [1782,84,96,96]; RI-UIX07 D1 requires bottom half of frame",
-    "Zero pictorial elements in populated inventory; panel fill 0.207 vs Morrowind 0.61",
-    "Container screen header renders 'undefined'"
+    "ui.hud.world 1 of 6, and W1 at [1782,84,96,96] — the top-right corner (RI-UIX07 V1, V6, R1, R2)",
+    "Zero pictorial elements in the populated inventory; panel fill 0.207 vs Morrowind 0.61 (RI-UIX09 D1, D2)",
+    "Container screen header rendering the literal string 'undefined'"
   ],
-  "files_touched": [],
+  "what_changed": {
+    "game/src/ui/icons.js": "NEW. The one drawn-object definition: 31 carved shapes, a name/category classifier, item_icon / doll / glyph_object declarers, and RI-UIX07 W4's condition mark. Five consumers, no screen draws an object itself.",
+    "game/src/ui/hud-world.js": "NEW. RI-UIX07 W2 effect strip, W3 sneak state, W5 place name, W6 breath meter. Its own module because §Comparison-method 3 requires the census-identity test to run against a copy with the world-set MODULE DELETED.",
+    "game/src/ui/compass.js": "R1 — dialGeometry moved from the top-right corner to the bottom rail, inboard of RI-UIX01 E5. R3 — the false 'Morrowind's own compass carries a red quest arrow' comment corrected against REF-A12/mygui/openmw_hud.layout.",
+    "game/src/ui/hud.js": "Quick slots draw the OBJECT and its condition/charge mark instead of a truncated label (RI-UIX09 P3 hard fail + RI-UIX07 W4). World set wired in as one call.",
+    "game/src/ui/screens/inventory.js": "Paper doll (P2), per-row item_icon (P1), detail-panel lead depiction (P5), container icons both sides, 18 rows instead of 15, the column grid written down as one object. containerTitle() refuses 'undefined'/'null'/''.",
+    "game/src/ui/screens/progress.js": "playerProse() strips (RI-XXX00) from anything drawn. glyph_object marks on every attribute row (level-up and sheet) and every spell row. The character sheet — 0.069 fill, the emptiest screen — repitched to fill its columns with gauges and soft-cap marks.",
+    "game/src/ui/surface.js": "KINDS gains item_icon, doll, glyph_object (the pictorial vocabulary, which did not exist) and effect_strip, sneak_state, place_name, breath_meter. icon and portrait deliberately NOT added.",
+    "game/src/ui/theme.js": "noteMaterial() — the materials census is now derived from the draw calls. getUIState().materials returned [] for the whole of round 1.",
+    "game/src/ui/chrome.js": "row() takes an optional text inset so the row's icon can be its own element rather than something painted inside the row.",
+    "game/src/ui/system.js": "combat_phase / combat_phase_source / frames_since_phase_change (R4 — the field the item could not be measured without), panel_rect and the pictorial counts (RI-UIX09 harness additions), hud.world (V1/V6/D4/E-T2 derived from drawn rects), _worldModel, _slotConditions, _equippedSlots, materials derived.",
+    "game/src/engine.js": "openContainer no longer does String(undefined) -> 'undefined'; carries kind. _uiCtx gains effects (magic.active + quest.afflictions), stealth (crouched/V) and water (submerged/breath) — live reads of running systems.",
+    "game/data/progression/attributes.json": "3 player-facing strings stripped of their (RI-PRG07)/(RI-PRG04)/(RI-PRG05) citations."
+  },
+  "redundant_with": [],
+  "shared_file_note": "game/src/ui/system.js is also touched by W1-19-builder-production-* and W1-TOUCH-r2 per `node tools/ownership.mjs --for game/src/ui/`. My edits are additive (three new methods, new getUIState keys) and touch no line those pieces are in. game/src/engine.js: one function (openContainer) and one additive block in _uiCtx.",
+  "files_touched": [
+    "game/src/ui/icons.js",
+    "game/src/ui/hud-world.js",
+    "game/src/ui/compass.js",
+    "game/src/ui/hud.js",
+    "game/src/ui/surface.js",
+    "game/src/ui/theme.js",
+    "game/src/ui/chrome.js",
+    "game/src/ui/system.js",
+    "game/src/ui/screens/inventory.js",
+    "game/src/ui/screens/progress.js",
+    "game/src/engine.js",
+    "game/data/progression/attributes.json",
+    "orchestration/status/T4-r2-builder.json"
+  ],
   "files_claimed": [
-    "orchestration/status/T4-r2-builder.json",
-    "corpus/90-verdicts/wave1/artifacts/T4-r2/"
+    "tools/ui/t4-r2-measure.mjs",
+    "corpus/90-verdicts/wave1/artifacts/T4-r2/",
+    "docs/shots/"
   ],
-  "next_step": "Read verdict + RI-UIX07/03/09, open reference plates, run ownership check."
+  "gates_run": [
+    "node tools/boot-check.mjs -> PASS"
+  ],
+  "next_step": "Write tools/ui/t4-r2-measure.mjs (element counts and kinds per screen, panel fill per panel rect, HUD world-set rects, the observed half of D1, and the container-name guard sweep). Capture 1920x1080 and the narrow viewport beside the named REF-A12b plates. Then the delete-the-fix worktree arm from a pinned sha."
 }

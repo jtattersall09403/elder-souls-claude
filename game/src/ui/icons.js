@@ -185,38 +185,38 @@ function oval(c, cx, cy, rx, ry, s, seed) {
 const SHAPES = {
   sword(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.50, 0.02], [0.60, 0.16], [0.58, 0.62], [0.42, 0.62], [0.40, 0.16]],
-      x, y, w, h, s, seed), 'iron', s, seed)();
+      x, y, w, h, s, seed), 'iron', s, seed);
     carve(c, poly(c, [[0.22, 0.62], [0.78, 0.62], [0.78, 0.70], [0.22, 0.70]],
-      x, y, w, h, s, seed + 1), 'bronze', s, seed + 1)();
+      x, y, w, h, s, seed + 1), 'bronze', s, seed + 1);
     carve(c, poly(c, [[0.45, 0.70], [0.55, 0.70], [0.55, 0.92], [0.45, 0.92]],
-      x, y, w, h, s, seed + 2), 'leather', s, seed + 2)();
-    carve(c, oval(c, x + w * 0.50, y + h * 0.95, w * 0.09, h * 0.05, s, seed + 3), 'bronze', s, seed + 3)();
+      x, y, w, h, s, seed + 2), 'leather', s, seed + 2);
+    carve(c, oval(c, x + w * 0.50, y + h * 0.95, w * 0.09, h * 0.05, s, seed + 3), 'bronze', s, seed + 3);
   },
   dagger(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.50, 0.10], [0.62, 0.28], [0.56, 0.60], [0.44, 0.60], [0.38, 0.28]],
-      x, y, w, h, s, seed), 'iron', s, seed)();
+      x, y, w, h, s, seed), 'iron', s, seed);
     carve(c, poly(c, [[0.30, 0.60], [0.70, 0.60], [0.70, 0.66], [0.30, 0.66]],
-      x, y, w, h, s, seed + 1), 'bone', s, seed + 1)();
+      x, y, w, h, s, seed + 1), 'bone', s, seed + 1);
     carve(c, poly(c, [[0.44, 0.66], [0.56, 0.66], [0.54, 0.90], [0.46, 0.90]],
-      x, y, w, h, s, seed + 2), 'leather', s, seed + 2)();
+      x, y, w, h, s, seed + 2), 'leather', s, seed + 2);
   },
   axe(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.44, 0.06], [0.50, 0.90], [0.38, 0.90], [0.34, 0.06]],
-      x, y, w, h, s, seed), 'wood', s, seed)();
+      x, y, w, h, s, seed), 'wood', s, seed);
     carve(c, poly(c, [[0.44, 0.10], [0.86, 0.20], [0.90, 0.40], [0.44, 0.46]],
-      x, y, w, h, s, seed + 1), 'iron', s, seed + 1)();
+      x, y, w, h, s, seed + 1), 'iron', s, seed + 1);
   },
   maul(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.46, 0.10], [0.56, 0.10], [0.56, 0.94], [0.46, 0.94]],
-      x, y, w, h, s, seed), 'wood', s, seed)();
+      x, y, w, h, s, seed), 'wood', s, seed);
     carve(c, poly(c, [[0.16, 0.10], [0.86, 0.14], [0.86, 0.40], [0.16, 0.36]],
-      x, y, w, h, s, seed + 1), 'iron', s, seed + 1)();
+      x, y, w, h, s, seed + 1), 'iron', s, seed + 1);
   },
   spear(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.48, 0.90], [0.56, 0.90], [0.56, 0.30], [0.48, 0.30]],
-      x, y, w, h, s, seed), 'wood', s, seed)();
+      x, y, w, h, s, seed), 'wood', s, seed);
     carve(c, poly(c, [[0.52, 0.02], [0.68, 0.26], [0.52, 0.36], [0.36, 0.26]],
-      x, y, w, h, s, seed + 1), 'iron', s, seed + 1)();
+      x, y, w, h, s, seed + 1), 'iron', s, seed + 1);
   },
   bow(c, x, y, w, h, s, seed) {
     c.save();
@@ -235,21 +235,21 @@ const SHAPES = {
   },
   staff(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.46, 0.20], [0.56, 0.20], [0.58, 0.96], [0.44, 0.96]],
-      x, y, w, h, s, seed), 'wood', s, seed)();
-    carve(c, oval(c, x + w * 0.51, y + h * 0.15, w * 0.20, h * 0.15, s, seed + 1), 'amethyst', s, seed + 1)();
+      x, y, w, h, s, seed), 'wood', s, seed);
+    carve(c, oval(c, x + w * 0.51, y + h * 0.15, w * 0.20, h * 0.15, s, seed + 1), 'amethyst', s, seed + 1);
   },
   shield(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.16, 0.10], [0.84, 0.10], [0.78, 0.62], [0.50, 0.94], [0.22, 0.62]],
-      x, y, w, h, s, seed), 'wood', s, seed)();
-    carve(c, oval(c, x + w * 0.50, y + h * 0.42, w * 0.16, h * 0.16, s, seed + 1), 'iron', s, seed + 1)();
+      x, y, w, h, s, seed), 'wood', s, seed);
+    carve(c, oval(c, x + w * 0.50, y + h * 0.42, w * 0.16, h * 0.16, s, seed + 1), 'iron', s, seed + 1);
   },
   helm(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.20, 0.62], [0.22, 0.30], [0.50, 0.10], [0.78, 0.30], [0.80, 0.62],
-      [0.66, 0.62], [0.62, 0.42], [0.38, 0.42], [0.34, 0.62]], x, y, w, h, s, seed), 'iron', s, seed)();
+      [0.66, 0.62], [0.62, 0.42], [0.38, 0.42], [0.34, 0.62]], x, y, w, h, s, seed), 'iron', s, seed);
   },
   cuirass(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.24, 0.14], [0.40, 0.08], [0.60, 0.08], [0.76, 0.14], [0.80, 0.44],
-      [0.72, 0.90], [0.28, 0.90], [0.20, 0.44]], x, y, w, h, s, seed), 'iron', s, seed)();
+      [0.72, 0.90], [0.28, 0.90], [0.20, 0.44]], x, y, w, h, s, seed), 'iron', s, seed);
     c.save();
     c.beginPath(); c.moveTo(x + w * 0.50, y + h * 0.16); c.lineTo(x + w * 0.50, y + h * 0.86);
     c.strokeStyle = Ca('chitin_dark', 0.7); c.lineWidth = Math.max(1, 1.6 * s); c.stroke();
@@ -257,20 +257,20 @@ const SHAPES = {
   },
   greaves(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.26, 0.08], [0.74, 0.08], [0.70, 0.92], [0.56, 0.92], [0.50, 0.46],
-      [0.44, 0.92], [0.30, 0.92]], x, y, w, h, s, seed), 'leather', s, seed)();
+      [0.44, 0.92], [0.30, 0.92]], x, y, w, h, s, seed), 'leather', s, seed);
   },
   boots(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.28, 0.10], [0.56, 0.10], [0.58, 0.62], [0.86, 0.72], [0.86, 0.90],
-      [0.28, 0.90]], x, y, w, h, s, seed), 'leather', s, seed)();
+      [0.28, 0.90]], x, y, w, h, s, seed), 'leather', s, seed);
   },
   gloves(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.26, 0.34], [0.36, 0.10], [0.46, 0.10], [0.46, 0.30], [0.56, 0.10],
       [0.66, 0.12], [0.60, 0.36], [0.74, 0.44], [0.68, 0.90], [0.30, 0.90]],
-      x, y, w, h, s, seed), 'leather', s, seed)();
+      x, y, w, h, s, seed), 'leather', s, seed);
   },
   robe(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.40, 0.08], [0.60, 0.08], [0.74, 0.24], [0.68, 0.34], [0.78, 0.92],
-      [0.22, 0.92], [0.32, 0.34], [0.26, 0.24]], x, y, w, h, s, seed), 'cloth', s, seed)();
+      [0.22, 0.92], [0.32, 0.34], [0.26, 0.24]], x, y, w, h, s, seed), 'cloth', s, seed);
   },
   ring(c, x, y, w, h, s, seed) {
     c.save();
@@ -278,7 +278,7 @@ const SHAPES = {
     c.strokeStyle = C('resin'); c.lineWidth = Math.max(2, 4 * s); c.stroke();
     c.strokeStyle = Ca('resin_pale', 0.6); c.lineWidth = Math.max(1, 1.4 * s); c.stroke();
     c.restore();
-    carve(c, oval(c, x + w * 0.50, y + h * 0.24, w * 0.12, h * 0.12, s, seed), 'amethyst', s, seed)();
+    carve(c, oval(c, x + w * 0.50, y + h * 0.24, w * 0.12, h * 0.12, s, seed), 'amethyst', s, seed);
   },
   amulet(c, x, y, w, h, s, seed) {
     c.save();
@@ -288,11 +288,11 @@ const SHAPES = {
     c.strokeStyle = C('root'); c.lineWidth = Math.max(1.4, 2.4 * s); c.stroke();
     c.restore();
     carve(c, poly(c, [[0.50, 0.46], [0.66, 0.66], [0.50, 0.92], [0.34, 0.66]],
-      x, y, w, h, s, seed), 'shell', s, seed)();
+      x, y, w, h, s, seed), 'shell', s, seed);
   },
   bottle(c, x, y, w, h, s, seed, tint) {
     carve(c, poly(c, [[0.42, 0.08], [0.58, 0.08], [0.58, 0.28], [0.74, 0.48], [0.74, 0.90],
-      [0.26, 0.90], [0.26, 0.48], [0.42, 0.28]], x, y, w, h, s, seed), 'glass', s, seed)();
+      [0.26, 0.90], [0.26, 0.48], [0.42, 0.28]], x, y, w, h, s, seed), 'glass', s, seed);
     // the liquid, which is the thing you can tell one potion from another by
     c.save();
     poly(c, [[0.42, 0.08], [0.58, 0.08], [0.58, 0.28], [0.74, 0.48], [0.74, 0.90],
@@ -302,7 +302,7 @@ const SHAPES = {
     c.fillRect(x, y + h * 0.55, w, h * 0.45);
     c.restore();
     carve(c, poly(c, [[0.40, 0.00], [0.60, 0.00], [0.60, 0.12], [0.40, 0.12]],
-      x, y, w, h, s, seed + 5), 'wood', s, seed + 5)();
+      x, y, w, h, s, seed + 5), 'wood', s, seed + 5);
   },
   herb(c, x, y, w, h, s, seed) {
     c.save();
@@ -310,21 +310,21 @@ const SHAPES = {
     c.moveTo(x + w * 0.50, y + h * 0.94); c.quadraticCurveTo(x + w * 0.44, y + h * 0.50, x + w * 0.52, y + h * 0.16);
     c.strokeStyle = C('moss_deep'); c.lineWidth = Math.max(1.2, 2.2 * s); c.stroke();
     c.restore();
-    carve(c, oval(c, x + w * 0.32, y + h * 0.44, w * 0.20, h * 0.13, s, seed), 'plant', s, seed)();
-    carve(c, oval(c, x + w * 0.70, y + h * 0.34, w * 0.20, h * 0.13, s, seed + 1), 'plant', s, seed + 1)();
-    carve(c, oval(c, x + w * 0.52, y + h * 0.14, w * 0.16, h * 0.14, s, seed + 2), 'plant', s, seed + 2)();
+    carve(c, oval(c, x + w * 0.32, y + h * 0.44, w * 0.20, h * 0.13, s, seed), 'plant', s, seed);
+    carve(c, oval(c, x + w * 0.70, y + h * 0.34, w * 0.20, h * 0.13, s, seed + 1), 'plant', s, seed + 1);
+    carve(c, oval(c, x + w * 0.52, y + h * 0.14, w * 0.16, h * 0.14, s, seed + 2), 'plant', s, seed + 2);
   },
   mushroom(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.42, 0.50], [0.58, 0.50], [0.56, 0.92], [0.44, 0.92]],
-      x, y, w, h, s, seed), 'bone', s, seed)();
+      x, y, w, h, s, seed), 'bone', s, seed);
     carve(c, poly(c, [[0.14, 0.52], [0.26, 0.22], [0.50, 0.10], [0.74, 0.22], [0.86, 0.52]],
-      x, y, w, h, s, seed + 1), 'clay', s, seed + 1)();
+      x, y, w, h, s, seed + 1), 'clay', s, seed + 1);
   },
   book(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.18, 0.10], [0.80, 0.14], [0.82, 0.88], [0.20, 0.92]],
-      x, y, w, h, s, seed), 'leather', s, seed)();
+      x, y, w, h, s, seed), 'leather', s, seed);
     carve(c, poly(c, [[0.26, 0.16], [0.78, 0.19], [0.79, 0.84], [0.27, 0.87]],
-      x, y, w, h, s, seed + 1), 'paper', s, seed + 1)();
+      x, y, w, h, s, seed + 1), 'paper', s, seed + 1);
     c.save();
     c.beginPath(); c.moveTo(x + w * 0.20, y + h * 0.12); c.lineTo(x + w * 0.22, y + h * 0.90);
     c.strokeStyle = C('root'); c.lineWidth = Math.max(1.6, 3 * s); c.stroke();
@@ -332,9 +332,9 @@ const SHAPES = {
   },
   scroll(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.24, 0.16], [0.76, 0.16], [0.76, 0.86], [0.24, 0.86]],
-      x, y, w, h, s, seed), 'paper', s, seed)();
-    carve(c, oval(c, x + w * 0.50, y + h * 0.14, w * 0.30, h * 0.08, s, seed + 1), 'paper', s, seed + 1)();
-    carve(c, oval(c, x + w * 0.50, y + h * 0.88, w * 0.30, h * 0.08, s, seed + 2), 'paper', s, seed + 2)();
+      x, y, w, h, s, seed), 'paper', s, seed);
+    carve(c, oval(c, x + w * 0.50, y + h * 0.14, w * 0.30, h * 0.08, s, seed + 1), 'paper', s, seed + 1);
+    carve(c, oval(c, x + w * 0.50, y + h * 0.88, w * 0.30, h * 0.08, s, seed + 2), 'paper', s, seed + 2);
     c.save();
     for (let i = 0; i < 3; i++) {
       c.beginPath();
@@ -345,7 +345,7 @@ const SHAPES = {
   },
   writ(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.16, 0.16], [0.84, 0.16], [0.84, 0.84], [0.16, 0.84]],
-      x, y, w, h, s, seed), 'paper', s, seed)();
+      x, y, w, h, s, seed), 'paper', s, seed);
     c.save();
     c.beginPath(); c.moveTo(x + w * 0.16, y + h * 0.50); c.lineTo(x + w * 0.84, y + h * 0.50);
     c.strokeStyle = Ca('parchment_deep', 0.9); c.lineWidth = Math.max(1, 1.6 * s); c.stroke();
@@ -355,20 +355,20 @@ const SHAPES = {
       c.strokeStyle = Ca('ink_soft', 0.6); c.lineWidth = Math.max(1, 1.1 * s); c.stroke();
     }
     c.restore();
-    carve(c, oval(c, x + w * 0.66, y + h * 0.70, w * 0.13, h * 0.13, s, seed + 3), 'blood', s, seed + 3)();
+    carve(c, oval(c, x + w * 0.66, y + h * 0.70, w * 0.13, h * 0.13, s, seed + 3), 'blood', s, seed + 3);
   },
   key(c, x, y, w, h, s, seed) {
-    carve(c, oval(c, x + w * 0.50, y + h * 0.22, w * 0.18, h * 0.16, s, seed), 'bronze', s, seed)();
+    carve(c, oval(c, x + w * 0.50, y + h * 0.22, w * 0.18, h * 0.16, s, seed), 'bronze', s, seed);
     carve(c, poly(c, [[0.45, 0.34], [0.55, 0.34], [0.55, 0.92], [0.45, 0.92]],
-      x, y, w, h, s, seed + 1), 'bronze', s, seed + 1)();
+      x, y, w, h, s, seed + 1), 'bronze', s, seed + 1);
     carve(c, poly(c, [[0.55, 0.66], [0.76, 0.66], [0.76, 0.76], [0.55, 0.76]],
-      x, y, w, h, s, seed + 2), 'bronze', s, seed + 2)();
+      x, y, w, h, s, seed + 2), 'bronze', s, seed + 2);
   },
   tool(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.44, 0.28], [0.54, 0.28], [0.56, 0.94], [0.42, 0.94]],
-      x, y, w, h, s, seed), 'wood', s, seed)();
+      x, y, w, h, s, seed), 'wood', s, seed);
     carve(c, poly(c, [[0.20, 0.10], [0.80, 0.14], [0.78, 0.32], [0.22, 0.28]],
-      x, y, w, h, s, seed + 1), 'iron', s, seed + 1)();
+      x, y, w, h, s, seed + 1), 'iron', s, seed + 1);
   },
   rope(c, x, y, w, h, s, seed) {
     c.save();
@@ -382,37 +382,37 @@ const SHAPES = {
   },
   ingot(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.18, 0.62], [0.30, 0.36], [0.70, 0.36], [0.82, 0.62], [0.82, 0.82], [0.18, 0.82]],
-      x, y, w, h, s, seed), 'iron', s, seed)();
+      x, y, w, h, s, seed), 'iron', s, seed);
     carve(c, poly(c, [[0.30, 0.36], [0.70, 0.36], [0.66, 0.24], [0.34, 0.24]],
-      x, y, w, h, s, seed + 1), 'iron', s, seed + 1)();
+      x, y, w, h, s, seed + 1), 'iron', s, seed + 1);
   },
   coin(c, x, y, w, h, s, seed) {
-    carve(c, oval(c, x + w * 0.38, y + h * 0.62, w * 0.22, h * 0.20, s, seed), 'gold', s, seed)();
-    carve(c, oval(c, x + w * 0.62, y + h * 0.52, w * 0.22, h * 0.20, s, seed + 1), 'gold', s, seed + 1)();
-    carve(c, oval(c, x + w * 0.48, y + h * 0.36, w * 0.22, h * 0.20, s, seed + 2), 'gold', s, seed + 2)();
+    carve(c, oval(c, x + w * 0.38, y + h * 0.62, w * 0.22, h * 0.20, s, seed), 'gold', s, seed);
+    carve(c, oval(c, x + w * 0.62, y + h * 0.52, w * 0.22, h * 0.20, s, seed + 1), 'gold', s, seed + 1);
+    carve(c, oval(c, x + w * 0.48, y + h * 0.36, w * 0.22, h * 0.20, s, seed + 2), 'gold', s, seed + 2);
   },
   pouch(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.30, 0.30], [0.70, 0.30], [0.84, 0.62], [0.72, 0.90], [0.28, 0.90], [0.16, 0.62]],
-      x, y, w, h, s, seed), 'leather', s, seed)();
+      x, y, w, h, s, seed), 'leather', s, seed);
     c.save();
     c.beginPath(); c.moveTo(x + w * 0.30, y + h * 0.34); c.lineTo(x + w * 0.70, y + h * 0.34);
     c.strokeStyle = C('root'); c.lineWidth = Math.max(1.4, 2.6 * s); c.stroke();
     c.restore();
   },
   food(c, x, y, w, h, s, seed) {
-    carve(c, oval(c, x + w * 0.50, y + h * 0.58, w * 0.32, h * 0.30, s, seed), 'clay', s, seed)();
-    carve(c, poly(c, [[0.50, 0.28], [0.58, 0.14], [0.52, 0.28]], x, y, w, h, s, seed + 1), 'plant', s, seed + 1)();
+    carve(c, oval(c, x + w * 0.50, y + h * 0.58, w * 0.32, h * 0.30, s, seed), 'clay', s, seed);
+    carve(c, poly(c, [[0.50, 0.28], [0.58, 0.14], [0.52, 0.28]], x, y, w, h, s, seed + 1), 'plant', s, seed + 1);
   },
   pot(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.30, 0.24], [0.70, 0.24], [0.82, 0.56], [0.72, 0.88], [0.28, 0.88], [0.18, 0.56]],
-      x, y, w, h, s, seed), 'clay', s, seed)();
+      x, y, w, h, s, seed), 'clay', s, seed);
     carve(c, poly(c, [[0.26, 0.18], [0.74, 0.18], [0.74, 0.28], [0.26, 0.28]],
-      x, y, w, h, s, seed + 1), 'clay', s, seed + 1)();
+      x, y, w, h, s, seed + 1), 'clay', s, seed + 1);
   },
   /** The fallback, and it is a THING rather than a question mark: a bound bundle. */
   bundle(c, x, y, w, h, s, seed) {
     carve(c, poly(c, [[0.22, 0.26], [0.78, 0.26], [0.84, 0.86], [0.16, 0.86]],
-      x, y, w, h, s, seed), 'cloth', s, seed)();
+      x, y, w, h, s, seed), 'cloth', s, seed);
     c.save();
     c.beginPath(); c.moveTo(x + w * 0.18, y + h * 0.52); c.lineTo(x + w * 0.82, y + h * 0.52);
     c.strokeStyle = C('root'); c.lineWidth = Math.max(1.4, 2.6 * s); c.stroke();
@@ -580,17 +580,17 @@ export function drawDoll(S, id, x, y, w, h, slots, alpha) {
     const unit = Math.min(r[2], bh * 0.42);
 
     // ---- the body under the kit. Bone-and-hide, drawn, never a silhouette rectangle. --------
-    carve(c, oval(c, cx, top + bh * 0.09, unit * 0.19, bh * 0.075, s, seed), 'leather', s, seed)();          // head
+    carve(c, oval(c, cx, top + bh * 0.09, unit * 0.19, bh * 0.075, s, seed), 'leather', s, seed);          // head
     carve(c, poly(c, [[0.34, 0.17], [0.66, 0.17], [0.72, 0.46], [0.28, 0.46]],
-      r[0], top, r[2], bh, s, seed + 1), 'leather', s, seed + 1)();                                          // torso
+      r[0], top, r[2], bh, s, seed + 1), 'leather', s, seed + 1);                                          // torso
     carve(c, poly(c, [[0.30, 0.46], [0.47, 0.46], [0.45, 0.92], [0.32, 0.92]],
-      r[0], top, r[2], bh, s, seed + 2), 'leather', s, seed + 2)();                                          // left leg
+      r[0], top, r[2], bh, s, seed + 2), 'leather', s, seed + 2);                                          // left leg
     carve(c, poly(c, [[0.53, 0.46], [0.70, 0.46], [0.68, 0.92], [0.55, 0.92]],
-      r[0], top, r[2], bh, s, seed + 3), 'leather', s, seed + 3)();                                          // right leg
+      r[0], top, r[2], bh, s, seed + 3), 'leather', s, seed + 3);                                          // right leg
     carve(c, poly(c, [[0.20, 0.19], [0.32, 0.19], [0.30, 0.56], [0.18, 0.56]],
-      r[0], top, r[2], bh, s, seed + 4), 'leather', s, seed + 4)();                                          // left arm
+      r[0], top, r[2], bh, s, seed + 4), 'leather', s, seed + 4);                                          // left arm
     carve(c, poly(c, [[0.68, 0.19], [0.80, 0.19], [0.82, 0.56], [0.70, 0.56]],
-      r[0], top, r[2], bh, s, seed + 5), 'leather', s, seed + 5)();                                          // right arm
+      r[0], top, r[2], bh, s, seed + 5), 'leather', s, seed + 5);                                          // right arm
 
     // ---- the kit, over the body, one call per slot into the shared table -------------------
     const place = (item, fx, fy, fw, fh, k) => {

@@ -4595,6 +4595,41 @@ export class Engine {
       inventory: this.sim.inventory,
       container: this._openContainer ? this._openContainer.contents : [],
       containerName: this._openContainer ? this._openContainer.name : null,
+      containerKind: this._openContainer ? this._openContainer.kind : null,
+      // ---- RI-UIX07 §B W2/W3/W6 — the three world-set reads, from the systems that own them ----
+      //
+      // Every one of these is a LIVE READ of a running system, not a UI-side inference, for the
+      // same reason `combat_phase` is: an out-of-combat HUD computed from the UI's own idea of the
+      // world is an out-of-combat HUD that can be wrong while reporting that it cannot be. Named
+      // consumers, so RI-MTH07's CONSUMPTION question has an answer that can be perturbed:
+      //   * `effects`  ← `magic.active` (`sim/magic/system.js` line ~161, the timer rows that
+      //                  `stepEffects` expires and `applyEffects` pushes) + `quest.afflictions`.
+      //                  Cast a spell and a glyph appears; let it expire and it goes.
+      //   * `stealth`  ← `sim.stealth.p` — `crouched` is the sneak mode and `V` is the visibility
+      //                  the detection model actually thresholds on.
+      //   * `water`    ← `traversal.submerged` / `.breath` / `.breathMax`, the same three fields
+      //                  the drowning tick reads.
+      // NOTE WHAT IS ABSENT: no quest id, no destination, no bearing to anything. The world set
+      // cannot acquire a marker because nothing it is handed knows an objective exists.
+      effects: [
+        ...((this.magic && this.magic.active) || [])
+          .filter((a) => a && (a.remaining_f || 0) > 0)
+          .map((a) => ({ effect: a.effect, remaining_f: a.remaining_f })),
+        ...((this.sim.quest && this.sim.quest.afflictions) || [])
+          .map((a) => ({ effect: a.kind || 'disease', remaining_f: null })),
+      ],
+      stealth: this.sim.stealth ? {
+        sneaking: !!this.sim.stealth.p.crouched,
+        // "Hidden" is the state Morrowind's M7 reports: you are sneaking AND nothing has you.
+        // Read off the detection model's own visibility rather than off a second threshold.
+        hidden: !!this.sim.stealth.p.crouched && Number(this.sim.stealth.p.V || 0) < 0.5,
+        visibility: Number(this.sim.stealth.p.V || 0),
+      } : null,
+      water: this.traversal ? {
+        submerged: !!this.traversal.submerged,
+        breath: Number(this.traversal.breath) || 0,
+        breathMax: Number(this.traversal.breathMax) || 0,
+      } : null,
       loadMax: this._equipLoadMax(),
       burdenTier: burdenTierOf(this.sim.player.burdenRatio || 0).id
         || burdenTierOf(this.sim.player.burdenRatio || 0).name || 'unburdened',
@@ -5376,9 +5411,25 @@ export class Engine {
     };
   }
 
-  /** The container screen (RI-UIX03 C8). `contents` is hand-placed, per S12. */
-  openContainer(name, contents) {
-    this._openContainer = { name: String(name), contents: (contents || []).map((c) => ({ ...c })) };
+  /**
+   * The container screen (RI-UIX03 C8). `contents` is hand-placed, per S12.
+   *
+   * `String(name)` USED TO BE HERE AND IT IS WHY THE SCREEN RENDERED `undefined` TWICE.
+   * `String(undefined)` is the five-letter truthy string `"undefined"`, so
+   * `screens/inventory.js`'s `m.containerName || 'Container'` fallback — which was written, and
+   * looked right — could never fire, and the T4 round-1 critic photographed the result at 4×
+   * (`crops/container-undefined-header-4x.png`): `panel_header [200,160,1520,54] "undefined"` and
+   * `panel_header [980,224,718,28] "undefined"`. It called it "one line of data flow, and the most
+   * visible defect in the piece". This is that line. `kind` is carried too so the screen has a real
+   * name to fall back to rather than the word "Container".
+   */
+  openContainer(name, contents, opts) {
+    const n = name === null || name === undefined ? '' : String(name).trim();
+    this._openContainer = {
+      name: n && n.toLowerCase() !== 'undefined' && n.toLowerCase() !== 'null' ? n : null,
+      kind: (opts && opts.kind) || null,
+      contents: (contents || []).map((c) => ({ ...c })),
+    };
     return this.openMenu('container', {});
   }
 
