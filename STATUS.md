@@ -156,7 +156,7 @@ enumerated and not started.
 
 ## Cost
 
-**$8,280 spent, running at $120/hour — 103.6% of baseline.** The efficiency target is 25% of baseline
+**$8,618 spent, running at $118/hour — 101.9% of baseline** (was 103.6% a few hours ago). The efficiency target is 25% of baseline
 and we are not moving towards it. That is the honest position and it has not improved today.
 
 **Why, plainly.** The one large lever is model routing, and you ruled — correctly — that 3D visuals
@@ -164,8 +164,14 @@ work goes to the stronger model because the cheaper one was not up to it. That i
 fleet is currently doing, so the lever is closed while ring 1 runs. The mix is 89.5% expensive, barely
 moved from 91.2%.
 
-**What did land:** the documentation every agent must read before starting fell from **145,000 tokens
-to 69,000**, which is paid back on every agent forever.
+**What has landed, and it is all plumbing rather than model choice:** the documentation every agent
+must read before starting fell from **145,000 tokens to 69,000**, paid back on every agent forever;
+the landing tool no longer spends five minutes on a step that times out under load and which the CI
+redoes anyway; **3.2 GB of dead GPU captures** were pruned off a disk that was at 96% and silently
+failing writes; and agents were leaving background waiters armed that **re-woke them after they had
+finished** — one burned 39,000 tokens and eight turns that way.
+
+Together those moved the rate about 1.7 points. Real, but small against a target of 25%.
 
 **My read:** today's spend bought findings that were worth it — the characters were being drawn
 inside-out, the dialogue window had no mouse support at all, and the capture path can return frames
