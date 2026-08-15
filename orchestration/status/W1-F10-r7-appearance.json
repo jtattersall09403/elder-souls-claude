@@ -1,0 +1,146 @@
+{
+  "task_id": "W1-F10-r7-appearance",
+  "roadmap_item": "F10",
+  "role": "photograph what round 7 changed, on hardware, in the running game, and say plainly whether it looks better",
+  "state": "delivered and banked; 180 hardware frames on an NVIDIA L4, both arms back to back in one Pod, $0.029. NOT independently judged and NO blind gate ran.",
+  "date": "2026-08-15",
+  "branch": "codex/wave1-build-experiment",
+  "baseline_commit": "bb65607acf2f10a45a86198ad12a1f6b141e8cf8",
+  "treatment_commit": "d8c5cfc43ba508f27c03d22f789c1d7259efbad4",
+  "pod": "em4mkegywvlmr1, NVIDIA L4, driver 580.159.04, SECURE, $0.490/hr, 15:16:03Z-15:19:36Z = 3.55 min = $0.029; deletion confirmed by API lookup",
+  "renderer": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA) — attested HARDWARE in BOTH arms from the live page's WEBGL_debug_renderer_info",
+
+  "what_i_could_not_do": [
+    "THE WIDE CROWD SHOT — THE FRAME THE BRIEF CALLED 'THE SINGLE MOST VALUABLE IN THIS PIECE' — IS VERY NEARLY A NULL, AND THAT IS MY SHOT LIST'S FAULT, NOT THE RENDERER'S. Seven wide vantages over the Lilmoth crowd, identical cameras in both arms, and the mean fraction of pixels that differ is **0.176%**; two of the seven are BYTE-IDENTICAL because they are pointed at a wall. The census inside those same frames says 12 buried and 15 airborne became 0 and 0, so the change is real and it is *in* the picture — but at 16 m a person is ~52 px tall, most of the 31 are behind buildings, and what a reader actually sees is two small figures appearing beside a wall in `W__close-b000`. That IS the fix photographed, and it is a thin picture for the biggest claim this round had. A shot list that frames a 60 m street cannot show a 2.3 m vertical error on a 1.78 m person. The right frame is a HANDFUL of named people at 6-10 m, chosen because they are the buried ones, not a wide of the town.",
+
+    "I PHOTOGRAPHED THE FOOT CONFORM ON THE PLAYER, AND ROUND 7's FOOT CHANGE WAS FOR NPCs. So the `FS` slot is 7 of 9 BYTE-IDENTICAL between the arms and its per-foot numbers are the same in both (0.2202 m at `slope-strong`, 0.2507 m at `slope-moderate`, 0.0000 m at `char-player`). This is the same class of error as the three rounds before it — a capture aimed where the effect under test is not — arriving one level up: I fixed the STAND and kept the wrong SUBJECT. Round 7's own status says the player's conform already ran before the change (`foot_l` moved 0.2493 m under a +5 m ground perturbation in the BEFORE tree), and I read that and still shot the player. What the slot DOES establish is new and worth having — see `the_foot_conform_is_visible_at_last` — but it is not a before/after of round 7.",
+
+    "NO BLIND GATE RAN AND I SCORED NO RI ACCEPTANCE ROW. `RI-VIS08` B8 and `RI-VIS10` B4 are both arguable from these frames. I did not build the code, so my opinion is not void the way a builder's is — but I built the capture and chose the shot list, and CLAUDE.md 0e says only the orchestrator can spawn a fresh judge. `grep -rl \"blind_pair: yes\" corpus/ --include=*.md | wc -l` returns 98 and `grep -rln \"blind_status: *run\" corpus/90-verdicts/` returns 0, both run in this turn. This piece adds a 99th item's worth of frames to that pile and closes none of it.",
+
+    "THE `hum.breton-stout` QUOTA SLOT WENT UNFILLED, so 4 of 5 requested variants were photographed rather than 5. `hum.imperial-clerk` — the one that had never been in frame across four rounds — WAS filled, by `shipwright-oleen`, in both arms. But its eight-angle orbit is mostly WALL: 7 of 8 `C4` frames in the after arm gate `NO_SUBJECT` because the person it selected stands inside a building's footprint. So the variant that four rounds could not reach is now in the manifest and is still barely in a photograph. A variant quota needs a LINE-OF-SIGHT filter as well as a range filter, and mine had only the range filter.",
+
+    "I DID NOT MEASURE THE EYE RATIO IN THE FRAMES. Round 7's eye claim is an albedo ratio measured CPU-side over `RACE_TINT`; the hardware question is whether it READS as an eye, and I answered that by looking (see `does_it_look_better`), not by sampling pixels. Locating an eye in a 960x540 frame needs the eye's own world position projected, and no harness verb reports a bone position — `f10-r7-ground-truth.mjs` reaches into `built.index` for that, and wiring the same reach into the capture is a change I did not make. So 'the eye is 0.404x the cheek on hardware' is UNMEASURED here; 'the cream bead is gone and a dark socket is there instead' is what I can support.",
+
+    "THE OFFLINE VARIANT MODEL I BUILT DISAGREED WITH THE LIVE SCENE ON 4 OF 4 SUBJECTS AND I DID NOT FIND OUT WHY. `f10-r7a-shotlist.mjs` re-derives `characterFor()`'s FNV-1a hash from `actor.js` and predicted `hum.dunmer-lean` for `shipwright-oleen`; the running game stamped `hum.imperial-clerk`. It cost nothing because the capture reads `userData.actor.characterId` out of the live scene and never consults the model — but a planning tool that is wrong in a way nobody notices is exactly how a shot list goes bad, and this one is now wrong on the record. Its census columns (which use `heightAt`, not the hash) ARE confirmed: it predicts 12/15 at Lilmoth and the game drew 12/15.",
+
+    "THE CHARACTER REFERENCE SET STILL DOES NOT EXIST (`I5`). I opened `REF-ER__steam-dyules-2764067250.jpg` and `-2764143936.jpg` at full size before judging, because CLAUDE.md requirement 2 says to look at the plates rather than at a description of them. Two plates is not a reference set, there is no MOTION reference at all, and `RI-VIS08`'s comparison method runs its blind pass *'if and only if a usable reference image exists'*. My verdict below is therefore a comparison against two stills and my own eye, which is weaker than the bar the directive asks for."
+  ],
+
+  "headline": "YES ON TWO OF THE THREE, AND THE THIRD IS UNPHOTOGRAPHED BECAUSE I AIMED IT WRONG. **The placement fix is real and visible**: identical cameras, and people who were simply absent from the BEFORE frame are standing beside the wall in the AFTER one — the census inside those frames goes 12 buried / 15 airborne to 0 and 0 while the RECORD columns stay 12/15 in both arms, which is the proof the simulation was left alone. **The eye fix is the clearest visual win of the round**: the same Imperial's face goes from two cream googly eyeballs to two dark sockets between one arm and the other, and the plate says dark sockets. **But the body is still slabs.** Eight orbit angles of the player at figure distance and the r6 word for it is still the right one — a pale blue sandwich-board torso on two tube legs, no waist, no shoulder line, shield and sword as flat planks. And the single most disfiguring thing at conversational distance is nobody's round-7 defect and has never been reported: **a wide-brim hat is drawn as a flat hexagonal plank across the eyebrows**, in BOTH arms, and on a saxhleel it hides the eyes completely.",
+
+  "does_it_look_better": {
+    "the_verdict_in_one_line": "Better in two specific, checkable ways and unchanged in the way that decides whether the owner enjoys looking at these people. If they load the game right now the crowd at Lilmoth stands on the ground instead of half of it being buried and half of it floating, and the humans have eyes instead of ping-pong balls — and the characters still read as wooden mannequins in smocks.",
+
+    "1_npc_placement_YES_AND_IT_IS_VISIBLE": "`frames/BEFORE__W__close-b000.png` against `AFTER__W__close-b000.png`, same eye, same target, same GPU, same process. In the before frame the strip of ground beside the long building is EMPTY. In the after frame two people are standing on it. They were 2.31 m underground. The same pair of frames at `close-b090` shows a third. This is the fix, in a picture, and it is the first time it has been in one. What it is NOT is dramatic: they are ~50 px tall and you have to be told where to look. The census carried in the frames' own manifest is the strong form of the claim — 31 drawn, `drawn_buried` 12 -> 0, `drawn_airborne` 15 -> 0, `record_buried`/`record_airborne` 12/15 in BOTH arms.",
+
+    "2_the_eye_YES_AND_IT_IS_THE_BIGGEST_SINGLE_IMPROVEMENT": "`frames/BEFORE__FA__npc-lilmoth-keeper-scribe__record__b000.png` is a brown egg of a head with TWO LARGE CREAM EYEBALLS and dark pupils, at conversational distance, staring straight down the lens. It reads as a glove puppet. `AFTER__FA__npc-lilmoth-keeper-scribe__ground__b000.png` is the same person with the same body and the eyes are dark recesses in the brow shadow. Against `REF-ER__steam-dyules-2764067250.jpg`, opened at full size — a dark socket with one small bright iris catch and nothing in the eye brighter than the cheek — the after arm is on the right side of the plate and the before arm was the opposite of it. **The caveat is real though: it has gone a long way toward the other failure.** At several bearings the humanoid eye is now hard to find at all, and with the hat plank across the brow it disappears. The plate's eye is dark AND has a visible bright iris; ours is dark with the accent barely reading.",
+
+    "3_the_body_at_figure_distance_NO_UNCHANGED_STILL_SLABS": "`sheets/05-orbit-player-AFTER.png`, eight angles, and `sheets/07-figure-on-slope-AFTER.png`. The torso is a flat pale-blue slab with no waist and no shoulder line; the arms are tubes that barely separate from it; the legs are two olive cylinders; the shield hangs as a flat brown board and the sword is a stick. There is no cloth, no silhouette break at the hip, and nothing that reads as weight. r6's 'slabs' judgement across 40 orbit frames is STILL TRUE and this round did not touch it. Against the two Elden Ring plates it is not the same medium of object.",
+
+    "4_a_defect_NOBODY_HAS_REPORTED_and_it_is_the_first_thing_you_see": "A wide-brim hat is drawn as a **flat hexagonal plate sitting at eyebrow height**, projecting forward like a visor. `frames/BEFORE__FA__npc-shipwright-oleen__ground__b090.png` and the AFTER twin are the same plank in both arms, so it predates round 7 and nothing this round caused it. On a saxhleel head it covers the eye sockets entirely; on the Imperial it cuts across the brow. At conversational distance it is more disfiguring than either thing round 7 fixed. It is in `sheets/02-faces-by-variant-*.png` on every single head that wears one.",
+
+    "5_the_players_feet_are_still_under_the_drawn_ground_exactly_as_r7_predicted": "`frames/AFTER__FS__char-player__b090p-18.png`: the trouser legs end in olive tubes and there is no boot. Across all eight `CP` orbit angles the player has no visible feet. r7's `defect_2` said the ground skin is drawn 0.108 m proud of the surface characters are placed on and the whole 88 mm foot fits inside it, and declined to ship the one-liner because `_drawnGroundY` uses `bareHeightAt` under a deck and would drop a character 6.80 m into a gorge. That analysis is now photographed and it is correct."
+  },
+
+  "the_foot_conform_is_visible_at_last_even_though_it_is_not_round_7s": {
+    "what_the_stand_hunt_found": "Round 7 measured that the three stands every earlier round used offer at most 0.034 m of per-foot ground difference — *'a capture there is predetermined to be a null, whatever the GPU.'* `tools/visual/f10-r7a-slope-scan.mjs` scanned **361,201 points** around Lilmoth. Two stands were chosen and then CONFIRMED LIVE before any money was spent: `slope-strong` (3035, 4712) and `slope-moderate` (3002, 4727).",
+    "the_number_the_brief_asked_me_to_state": "Measured on the Pod at the actual `foot_l`/`foot_r` bone world positions, in both arms, identically: **`slope-strong` 0.2202 m of ground difference between the two feet at a stance of 0.2001 m; `slope-moderate` 0.2507 m at 0.2004 m; `char-player` 0.0000 m at 0.2006 m.** The DRAWN foot height difference tracks it: 0.2202 m, 0.2295 m, and **0.0011 m** at the old stand. So the conform moves a foot by 22 cm where the ground demands it and by 1 mm where it does not — which is the whole mechanism, and the first time this project has photographed it doing anything.",
+    "and_it_is_in_the_frames": "`sheets/06-feet-on-slope-AFTER.png` middle row: at `slope-moderate` the two boots are planted at plainly different heights on a wet flat, one down in a hollow. Top row, same sheet, `char-player`: no boots at all. Put beside each other they are the argument that four rounds of 'the feet look the same' were a fact about the stand.",
+    "why_it_still_is_not_round_7s_evidence": "Both arms are byte-identical here. The player's conform already ran before this round; round 7 gave it to NPCs. The correct shot is an NPC on this ground, and `setEntityPos` exists in the harness (`api.js:356`) so it is a reachable experiment — I did not run it."
+  },
+
+  "the_method_and_what_it_cost": {
+    "the_control": "Both arms back to back **in one Pod, on one GPU, in one process tree, against one snapshot**. `game/src/render/renderer.js` and `game/src/render/actor.js` reverted to the pinned baseline `bb65607a`, carried as fixtures because a Pod has no `.git`. Proved on the Pod, not asserted: after `102472ef...`/`f48b8e95...`, before `86924aec...`/`38fc78c2...`, restored back to the after pair. That `86924aec` is the same sha `W1-F10-r7.json` records for its own control arm and that `38fc78c2` is the same sha `W1-F10-r6-appearance` records as round 6's after arm — two rounds derived it independently and agree.",
+    "why_both_files_and_not_one": "Round 7's three changes span the pair — placement and the three conform call sites are in `renderer.js`, the eye and `poseStatic`'s new `water` parameter are in `actor.js`. Reverting one alone would have photographed a tree that never existed. The swap is safe because the import/export sets were DIFFED, not assumed: `renderer.js` identical on both, `actor.js` gains only `footConformDelta` and a fifth parameter, and `grep -rn footConformDelta game/ tools/` outside `actor.js` returns 0.",
+    "every_camera_is_a_pure_function_of_a_coordinate": "The change under test moves characters by up to 35 m, so a camera that follows its subject would re-frame between the arms and the pair would be measuring the camera. The one camera that IS derived from the live scene — the crowd anchor — uses only x, z and ground, all three untouched by round 7, and the read tool checks it came out identical: `{x: 2788.82, z: 5059.18, ground_y: 2.68}` in both arms.",
+    "the_control_check_that_runs_first": "`record_columns_identical: true`. If round 7 had touched anything the simulation reads, that would be false and every other number in the report would be suspect.",
+    "the_walk_moved_this_time": "HAZARDS §16. `queueInputs` (69 events) via `mustCall`, all six hard calls OK in both arms, player travelled **2.679 m** over 64 simulated frames, and the border-ring change rate — computed from the returned pixels, independent of what the manifest claims — is **40.02% median** in both arms against the 0.2% a stationary sequence returns.",
+    "cost": "**$0.029** for 180 hardware frames: Pod created 15:16:03Z, deletion confirmed 15:19:36Z, 3.55 min at $0.490/hr on an L4. Comparable to r6's 318 frames for $0.028. Pinned with `--revision d8c5cfc4`, which excluded 4 siblings' uncommitted files from the paid run (HAZARDS §15a)."
+  },
+
+  "hazards_worth_recording": [
+    "**A SLOPE SCAN THAT RANKS THE LOUDEST AXIS RANKS THE ONE THE FEET CANNOT SEE.** v1 of `f10-r7a-slope-scan.mjs` sampled a symmetric cross on both axes and took the maximum. Its top pick scored **0.6811 m**; `--probe-only` stood the player there and the bones read **0.0258 m**. All of that 0.68 m ran north-south and **the feet are separated east-west**. The scan was measuring a real feature of the terrain that the effect under test is blind to, and it would have sent the Pod to photograph a fourth consecutive null — the exact failure it was written to end, one level up. Fixed by taking the foot offsets from a live probe (`foot_l` +0.1003/-0.056, `foot_r` -0.1003/-0.064) and ranking on the ground difference BETWEEN THE BONES. The model then reproduced all three live readings to within 1 mm.",
+
+    "**AN OFFLINE RE-IMPLEMENTATION OF A DERIVATION IS A SECOND SOURCE OF TRUTH, AND IT DRIFTED IMMEDIATELY.** `f10-r7a-shotlist.mjs` re-derives `characterFor()`'s hash from `actor.js`'s own source rather than retyping the pools, which is the careful version — and it still disagreed with the running game on **4 of 4** subjects. The capture is unaffected because it reads `userData.actor.characterId` out of the live scene. The lesson is the ordering: a planning model is allowed to be a RANKER (which stand, roughly which people) and must never be the ANSWER, and anything it predicts must be re-read from the thing itself before it is spent on.",
+
+    "**MY OWN THREE NEW TOOLS ALL RAN THEIR WHOLE CLI ON IMPORT, AND ONE OF THEM DID IT TO ME.** A one-line `import()` written to check the foot model against three probe readings kicked off a 1,442,401-point scan and printed its table before the check ran. That is HAZARDS §16's third defect — *'importing `f10-r3-materials.mjs` runs its entire capture and exits'* — reproduced by an agent who had read the entry that morning. All three now carry `IS_CLI`. **`tools/visual/f10-r6-appearance-compare.mjs` had the same hole and it was live**: importing its two statistics ran round 6's entire comparison and `process.exit()`ed out of the importer. It is guarded now, which is what makes `f10-r7-appearance-read.mjs` able to import them instead of copying them.",
+
+    "**`node --check` AND A SELF-TEST DO NOT TELL YOU THE CAMERA IS POINTED AT A WALL.** Every tool here passes a self-test with arms required to disagree — 11, 10, 7, 5 checks — and the wide slot still came back at 0.176%. The only instrument that would have caught it is a cheap local frame, and the first version of this capture DID produce one: a SwiftShader smoke run showed an empty plaza, which is why the anchor moved from an offline centroid to the live scene. It moved to the right kind of anchor and still not close enough. **A geometry self-test proves the camera is where you asked; only a picture proves you asked for the right place.**",
+
+    "**`--probe-only` PAID FOR ITSELF TWICE IN ONE AFTERNOON AND COSTS NOTHING.** A mode that runs every scene READER against the live game and takes no screenshots finishes in ~3 minutes on SwiftShader where a full capture is ~45 s per frame. It found the wrong-axis slope stands and confirmed the replacements before a Pod existed. Its first run was killed by its own timeout and left NOTHING on disk although the crowd census had already completed; the write is now in a `finally`, which is HAZARDS §13's 'land what you have' applied to a measurement instead of a fix."
+  ],
+
+  "evidence": {
+    "where": "`corpus/90-verdicts/wave1/artifacts/W1-F10-r7-appearance/` — under `corpus/`, not `reports/`, because HAZARDS §9 records that cited evidence under an ignored path never reaches the remote. Written ONLY there (HAZARDS §17): this piece's tools take `--out` and have no default under `corpus/`.",
+    "sheets": "`sheets/01..09-*-{BEFORE,AFTER}.png` — nine before/after pairs, same tool, same scale, built by `build-sheets.sh`. 01 crowd, 02 faces by variant, 03 player face, 04 NPC orbit, 05 player orbit, 06 feet on slope, 07 figure on slope, 08 walk figure, 09 walk feet.",
+    "frames": "`frames/` — 15 full-resolution frames, the before/after pairs the verdict above actually cites, so a reader does not have to reconstruct them from a contact sheet.",
+    "measurements": "`measurements/compare.json` (the whole read), `compare-console.txt`, `arm-proof.txt` + `arm-shas-at-start.txt` (which file each arm rendered), `exits.txt` (0 and 0), `gpu.csv`, both manifests, both `subjects.json`, both capture logs.",
+    "the_local_probe": "`probe-local-swiftshader.json` / `.log` — the pre-spend confirmation of the two slope stands and the 31-NPC census, taken on this box before the Pod was rented.",
+    "raw": "`reports/runpod-gpu/runs/f10-r7-appearance/` — all 180 frames, gitignored and prunable.",
+    "pod_command": "`pod-command.sh`, exactly as run."
+  },
+
+  "reproduce": [
+    "node tools/visual/f10-r7a-slope-scan.mjs --centre 2766,5011 --radius 300 --step 1.0   # find a stand the feet can see",
+    "node tools/visual/f10-r7a-shotlist.mjs   --stand 2766,5011 --radius 60               # who is buried, and which body each wears",
+    "node tools/visual/f10-r7-appearance.mjs --probe-only --out <dir>                      # every scene reader, live, no frames, no spend",
+    "node tools/runpod/cli.mjs run --revision d8c5cfc4 --max-runtime 25 --command \"$(cat corpus/90-verdicts/wave1/artifacts/W1-F10-r7-appearance/pod-command.sh)\"",
+    "node tools/visual/f10-r7-appearance-read.mjs --run <run>/artifacts --out <dir>",
+    "bash corpus/90-verdicts/wave1/artifacts/W1-F10-r7-appearance/build-sheets.sh <run>/artifacts <sheets>",
+    "# every tool above: --self-test, arms required to disagree (11, 7, 10, 5 checks)"
+  ],
+
+  "a_finding_the_brief_did_not_ask_for": {
+    "the_burial_defect_was_almost_entirely_a_LILMOTH_defect": "Run in this turn, `f10-r7a-shotlist.mjs` over the posted records within 60 m of all eight settlement centroids: **lilmoth 29 buried / 19 airborne of 49**; soulrest 23 buried but the worst is only -0.22 m; archon 1 at -0.42 m; **blackrose, gideon, helstrom, stormhold and thorn: 0 and 0**. Their settlement constants happen to match their local ground. So the fix is province-wide and the thing the owner would have SEEN was concentrated in the town the game opens in.",
+    "and_the_worst_offender_is_not_in_the_data_files": "The data-file census tops out at +4.69 m, but the running game draws one at **+35.387 m** (confirmed live, twice, on this box and on the Pod). That person is placed procedurally, not authored, so anyone auditing `game/data/npcs/` for this defect will find a version of it that is five times too small."
+  },
+
+  "files_touched": [
+    "tools/visual/f10-r7-appearance.mjs",
+    "tools/visual/f10-r7-appearance-read.mjs",
+    "tools/visual/f10-r7a-slope-scan.mjs",
+    "tools/visual/f10-r7a-shotlist.mjs",
+    "tools/visual/f10-r6-appearance-compare.mjs",
+    "tools/visual/fixtures/f10-r7-control-renderer.js",
+    "tools/visual/fixtures/f10-r7-control-actor.js",
+    "tools/visual/fixtures/README.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r7-appearance/",
+    "orchestration/status/W1-F10-r7-appearance.json"
+  ],
+  "files_claimed": [
+    "tools/visual/f10-r7-appearance.mjs",
+    "tools/visual/f10-r7-appearance-read.mjs",
+    "tools/visual/f10-r7a-slope-scan.mjs",
+    "tools/visual/f10-r7a-shotlist.mjs",
+    "tools/visual/f10-r6-appearance-compare.mjs",
+    "tools/visual/fixtures/f10-r7-control-renderer.js",
+    "tools/visual/fixtures/f10-r7-control-actor.js",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r7-appearance/",
+    "orchestration/status/W1-F10-r7-appearance.json"
+  ],
+  "ownership_note": "`node tools/ownership.mjs --for tools/visual/` RUN, not assumed: two live pieces (`W1-30V` running, `W1-WATER-LANES` measuring, both 19 h old) with an UNDECLARED OVERLAP warning. `W1-30V` claims the whole `tools/visual/` DIRECTORY; its own `files_touched` lists six specific files and none is one of mine. So this piece adds NEW FILES ONLY there — the precedent every earlier F10 round followed — with ONE exception, `f10-r6-appearance-compare.mjs`, which is a finished F10 round's read tool that `W1-30V` predates and has not touched, and the edit is a two-line main-module guard that changes nothing when it is run directly. `--for corpus/90-verdicts/wave1/artifacts/` RUN: 8 live pieces, none of them F10, and this piece writes only into its own `W1-F10-r7-appearance/` directory (HAZARDS §17). `game/` was not touched at all: the brief said do not change game code and none was changed. GPU code path is read-only.",
+
+  "what_the_next_round_should_do_and_why": [
+    "**SHOOT THE CROWD FROM 6-10 m AT THE PEOPLE WHO WERE BURIED, BY NAME.** The wide-of-the-town frame is the wrong instrument and this round proved it at 0.176%. `measurements/after.manifest.json` `scene_census.crowd` names all 31 with their `record_error_m`; pick the six worst, stand 8 m away, and frame three of them per shot. The frames exist to be looked at, and a reader should not need an arrow.",
+    "**PUT AN NPC ON `slope-moderate` (3002, 4727) AND SHOOT ITS FEET.** That is round 7's actual foot claim and it is still unphotographed. `setEntityPos(eid, x, z, opts)` is a real harness verb (`api.js:356`); the stand is confirmed at 0.2507 m of per-foot ground difference; the control arm is already built and pinned. This is a cheap piece with a known answer shape.",
+    "**THE HAT IS A PLANK, AND IT IS THE FIRST THING YOU SEE.** A flat hexagonal plate across the eyebrows, on both arms, on every head that wears one, hiding a saxhleel's eyes completely. It is worth more to the owner's first impression than either thing round 7 fixed and it belongs to nobody. `sheets/02-faces-by-variant-AFTER.png` and `frames/*__FA__npc-shipwright-oleen__ground__b090.png`.",
+    "**THE HUMANOID EYE MAY HAVE OVERSHOT AND THE SAXHLEEL EYE DID NOT MOVE AT ALL.** Round 7's constants live in the `base.humanoid` block; the player is `player.saxhleel` and the `FP`/`CP` frames are BYTE-IDENTICAL between the arms — the character the owner looks at most got nothing. Meanwhile in `AFTER__FA__npc-lilmoth-keeper-scribe__ground__b000.png` the saxhleel NPCs behind the Imperial still carry bright amber beads, which is the defect round 7 named, on the other body plan. Both halves want the same treatment and one measurement.",
+    "**THE BODY IS THE ITEM NOW.** Placement, feet and eyes are detail work on a figure that still reads as a mannequin in a smock at the distance the player actually sees it. `sheets/05-orbit-player-AFTER.png` is eight angles of the argument. Nothing in F10's remaining detail list changes that; a silhouette does.",
+    "**AND `I5` IS STILL THE BLOCKER UNDER ALL OF IT.** I judged this against two Elden Ring stills because that is what the repo has. CLAUDE.md requirement 1 asks for images AND motion at Skyrim/ESO level before the character work is judged, and `RI-VIS08` will not run its blind pass without a usable reference. Every verdict this round including mine is worth less than it looks until that exists."
+  ],
+
+  "references_opened": [
+    "CLAUDE.md — the character directive, all four requirements. Requirement 3 ('builders and critics both look at our actual game, in motion; stills are not enough') is what the 16-frame walk and the two eight-angle orbits are for; requirement 2 is why the two plates were opened at full size before anything was judged.",
+    "orchestration/status/W1-F10-r7.json in full, `what_i_could_not_do` first. Its first entry commissioned this piece and its third entry — the 0.034 m measurement — decided the whole shot list.",
+    "orchestration/status/W1-F10-r6-appearance.json (keys and the capture/verdict sections), and W1-F10-r6-appearance/measurements/arm-shas-at-start.txt, which independently confirms the baseline actor.js sha.",
+    "orchestration/HAZARDS.md §§13, 15, 15a, 16, 17 in full, and §5a (checked `df -h .` first: 94%, 2.4-2.6 GB free throughout; no GPU run directory was older than 8 h so nothing was prunable and I pruned nothing).",
+    "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764067250.jpg and REF-ER__steam-dyules-2764143936.jpg — opened at full size, and they are the bar the verdict above is written against.",
+    "tools/visual/f10-r5-appearance.mjs and f10-r6-appearance-compare.mjs in full — the capture and the read this piece is descended from.",
+    "game/src/render/actor.js: `footConformDelta`, `poseFromRig`'s conform block, `characterFor`, `CHARACTER_SPECS`, `buildSkeleton`'s return, and the whole round-7 eye block including its plate measurements.",
+    "game/src/render/renderer.js: `groundAt`, `_actorGround`, `syncNPCs` with its full authored-height note.",
+    "game/src/world/field.js (`heightAt`, `depthAt`), game/src/world/traversal.json (`slope.max_walkable_deg` = 40, located with `find` after `game/data/combat/traversal.json` turned out not to exist), game/src/harness/api.js (verb list, `setEntityPos`, `teleport`, `listEntities`), game/src/sim/npc.js:62, game/src/engine.js `_anyNpcRecord` merge.",
+    "game/data/npcs/ — all 18 files parsed for posts, heights and ids, across all eight settlement centroids."
+  ],
+
+  "redundant_with": []
+}
