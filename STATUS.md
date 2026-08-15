@@ -87,8 +87,21 @@ enumerated and not started.
 
 ## Cost
 
-Roughly **37% of the weekly budget** spent, in about nine hours. The approach changed this evening: fewer agents at once, working sequentially, with cheaper models on mechanical work — so that the remaining budget lasts the week rather than ending on Saturday.
+**$8,280 spent, running at $120/hour — 103.6% of baseline.** The efficiency target is 25% of baseline
+and we are not moving towards it. That is the honest position and it has not improved today.
 
+**Why, plainly.** The one large lever is model routing, and you ruled — correctly — that 3D visuals
+work goes to the stronger model because the cheaper one was not up to it. That is most of what the
+fleet is currently doing, so the lever is closed while ring 1 runs. The mix is 89.5% expensive, barely
+moved from 91.2%.
+
+**What did land:** the documentation every agent must read before starting fell from **145,000 tokens
+to 69,000**, which is paid back on every agent forever.
+
+**My read:** today's spend bought findings that were worth it — the characters were being drawn
+inside-out, the dialogue window had no mouse support at all, and the capture path can return frames
+that are not pictures. None of those were findable cheaply. But that is a defence of *this* spend, not
+a plan, and the target still needs one.
 ---
 
 *Kept short on purpose. Detail lives in `orchestration/ROADMAP.md`; the honest failure record in `orchestration/HAZARDS.md`.*
