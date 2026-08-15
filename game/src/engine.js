@@ -3656,27 +3656,50 @@ export class Engine {
     const rows = new Map();
     for (const t of st.topics) rows.set(t.id, { id: t.id, label: t.text || topicLabel(t.id) });
     for (const e of c.extra || []) if (!rows.has(e.id)) rows.set(e.id, { id: e.id, label: topicLabel(e.id) });
-    // ---- THE LEARNED EDGES, AND THE FILTER THAT USED TO BE HERE WAS WRONG ---------------------
+    // ---- THE LEARNED EDGES, AND THIS FILTER IS BACK, NARROWER, BECAUSE THE REMOVAL SHIPPED A
+    // ---- CONTROL THAT IS DRAWN AND DOES NOTHING — CRITIC-DOCTRINE §1.2b'S EXACT HARD FAIL -------
     //
-    // This loop first read `if (infoFor(...)) rows.set(...)` — light an AddTopic target only if
-    // THIS person also has a bespoke answer to it. Measured in the running game at
-    // `helstrom-market`: **0 links in 36 lines of prose**, and offline over the whole shipped
-    // corpus the same filter takes 87–97 lightable spans per speaker down to 0–7. It made the
-    // central mechanism of the item invisible in every conversation in the build.
+    // P1 / GATE-G-RESULT-AND-WHAT-IT-OWES.json `owed_3`, defect 1. A judge pressed Neekhu's
+    // "The carriers" three times through the real input path and got three identical frames
+    // (`quillon/shots5/012,016,020,022`; reproduced byte-for-byte by
+    // `tools/ui/dialogue-gate-g-repro.mjs`, checks D1-1/D1-2). Diagnosis, from the data rather
+    // than assumed: Neekhu's "latest rumors" line (`dialogue/rumours.json#hel-carriers`) carries
+    // `to: ["the-carriers"]`, so the word entered `_dlgAdds` and got drawn — but `the-carriers`'s
+    // own infos (`dialogue/topics/20-tier-a.json`) are gated `a: "mudborn"` / `a: "sapcutter"`,
+    // and Neekhu's actor is `agaceph-weir`. `conversation.say('the-carriers')` therefore returns
+    // null for her, every time, structurally — not a hit-test bug, not a confirm-path bug: the
+    // colour promised an answer this speaker can never give. §C1: "a link that is not a promise
+    // is worse than no link." This is that link.
     //
-    // It was wrong because `AddTopic` is UNCONDITIONAL in Morrowind: the edge puts the word in
-    // your index, and whether the person in front of you has a view on it is a separate
-    // question. RI-UIX08 §D1 says so in terms — "it adds that word to the topic column
-    // permanently, FOR EVERY SPEAKER WHO HAS AN ANSWER TO IT ... the permanence is the point:
-    // the index is the player's accumulated vocabulary for the whole world."
+    // THE OLD COMMENT'S OWN MEASUREMENT IS THE REASON THIS STAYS NARROW RATHER THAN REVERTING.
+    // The prior `infoFor`-gated version collapsed 87–97 lightable spans per speaker to 0–7,
+    // because it filtered `rows` as a WHOLE — including `st.topics`, which `topicsFor()` (above,
+    // and read its own docstring) already restricts to what this speaker can answer. Re-applying
+    // that filter there would be pure regression. It is applied ONLY to `_dlgAdds` here, which is
+    // the one half nothing has ever filtered.
     //
-    // The promise a blue word makes is therefore "following this puts the word in your index",
-    // and it is kept in BOTH branches — see the `_convPending` site in `_afterStep()`, which
-    // learns the topic even when this speaker declines. A word whose click did nothing at all
-    // would be the "link that is not a promise" the item calls worse than no link; this is not
-    // that. And §C1's discriminator survives untouched: `Fighters Guild` stays bronze, because
-    // nothing has authored an edge to it.
-    for (const id of this._dlgAdds) if (!rows.has(id)) rows.set(id, { id, label: topicLabel(id) });
+    // THIS COSTS NOTHING ON THE "PERMANENT INDEX" PROMISE. `conversationSay()` already runs
+    // `learnTopics()` on `info.to` — including `the-carriers` — the instant the ORIGINATING
+    // answer (the rumour) is heard, unconditionally, before this function next runs. Excluding an
+    // edge from THIS speaker's own column/prose changes nothing about whether the word is in the
+    // player's permanent vocabulary; it only stops THIS speaker promising an answer she cannot
+    // give. `topicsFor()`'s own docstring already states the identical rule for a player's root
+    // topics: "a topic list that offers a word and then produces silence is the... defect this
+    // file has already been through once." This extends that rule to the one place it had not
+    // reached.
+    //
+    // `say()`'s own two success paths, replicated here without calling it (a probe, not a click):
+    // `infoFor()` finds a matching info, OR the topic is one of the 24 registered mysteries and
+    // `opacity.refusalFor()` would hand back a spoken decline (RI-WLD09 §B1) — that IS a real,
+    // visible answer, so it must not be filtered out even though `infoFor` alone says null.
+    const view = { ...c.player, ...this._talkPlayer() };
+    const canAnswer = (id) => !!infoFor(this.topicIndex, id, c.npc, view, this.canon || null)
+      || !!(this.opacity && this.opacity.refusalFor(id, c.npc));
+    for (const id of this._dlgAdds) {
+      if (rows.has(id)) continue;
+      if (!canAnswer(id)) continue;
+      rows.set(id, { id, label: topicLabel(id) });
+    }
 
     // §D2. What you can DO with this person, above the rule. `persuasion` is a real call into
     // `sim/dialogue/disposition.js persuade()` — the same one `conversationPersuade()` makes —
