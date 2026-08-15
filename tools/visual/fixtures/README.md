@@ -32,3 +32,37 @@ file with it. That is what lives here.
 
 Consumer: `tools/visual/f10-r5-appearance.mjs`, driven by the Pod command recorded in
 `corpus/90-verdicts/wave1/artifacts/W1-F10-r5-appearance/README.md`.
+
+## `f10-r7-control-renderer.js` and `f10-r7-control-actor.js`
+
+- **What they are:** `game/src/render/renderer.js` and `game/src/render/actor.js` exactly as they
+  stood at commit **`bb65607a`** — the baseline `orchestration/status/W1-F10-r7.json` pins, and the
+  same one its own delete-the-fix control used.
+- **How they were made:**
+  `git show bb65607a:game/src/render/renderer.js > tools/visual/fixtures/f10-r7-control-renderer.js`
+  and the same for `actor.js`.
+- **Proof they are byte-identical**, both checked on 2026-08-15 rather than asserted:
+  - renderer `sha256 86924aec71d6c39db15aa2282b1b6e555394503762c569d51e9dbbb91f738aa9` — which is
+    also the sha the r7 status file records for its own control arm, derived independently.
+  - actor `sha256 38fc78c2d9a66f154b63b17df44f48ba6cd845e37755a80344f4721a5450d39d` — which is the
+    sha `W1-F10-r6-appearance/measurements/arm-shas-at-start.txt` records as round 6's **after**
+    arm. The two rounds agree about what `bb65607a` contains.
+
+  ```sh
+  git show bb65607a:game/src/render/renderer.js | sha256sum
+  sha256sum tools/visual/fixtures/f10-r7-control-renderer.js
+  ```
+
+- **Why BOTH files, where r5 and r6 swapped one:** round 7's three changes span the pair. The NPC
+  ground placement and the three conform call sites are in `renderer.js`; the eye and
+  `poseStatic`'s new `water` parameter are in `actor.js`. Reverting one alone would photograph a
+  tree that never existed.
+- **Why the swap is safe:** the two files' import/export sets were diffed, not assumed.
+  `renderer.js` is **identical** on both (18 lines). `actor.js` gains exactly two things at HEAD —
+  `export function footConformDelta(...)` and a fifth `water` parameter on `poseStatic` — and
+  `grep -rn footConformDelta game/ tools/` outside `actor.js` and these fixtures returns **0**, so
+  nothing else in the tree consumes either. The baseline `renderer.js` calls `poseStatic` with
+  four arguments, which the baseline `actor.js` accepts.
+
+Consumer: `tools/visual/f10-r7-appearance.mjs`, driven by
+`corpus/90-verdicts/wave1/artifacts/W1-F10-r7-appearance/pod-command.sh`.
