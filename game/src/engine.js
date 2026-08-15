@@ -4860,6 +4860,18 @@ export class Engine {
         ? this._bossModel(this.sim.camera.fogTarget) : null,
       prompt: this._interactPrompt(),
       inventory: this.sim.inventory,
+      // T4 round 3, RI-UIX10 O3 — THE COMMITMENT MADE VISIBLE. `RI-UIX03` P7's 30 committed
+      // frames are required in a fight and are NOT what OP7 failed; what OP7 failed is that the
+      // screen said nothing while they ran, so a press and a dead control looked identical.
+      // `_applyUIPending()` resolves the swap in the same step out of combat, which leaves this
+      // field non-null only for the in-combat commitment — exactly the window O3 asks the screen
+      // to narrate. It is a live read of `_equipCommit`, the same object `_finishEquipCommit()`
+      // consumes, so the row that says "putting it on" and the frame it lands on cannot disagree.
+      equipPending: this._equipCommit ? {
+        item: this._equipCommit.item,
+        remaining_f: Math.max(0, (this._equipCommit.at || 0) - this.sim.frame),
+        commit_frames: this._equipCommit.commit_frames === undefined ? 30 : this._equipCommit.commit_frames,
+      } : null,
       container: this._openContainer ? this._openContainer.contents : [],
       containerName: this._openContainer ? this._openContainer.name : null,
       containerKind: this._openContainer ? this._openContainer.kind : null,
@@ -5705,6 +5717,47 @@ export class Engine {
    * the player is vulnerable. The swap does not happen at the press; it happens at the end of
    * the commitment, and `actionableAt` on the combat body is what makes those 30 frames real
    * rather than cosmetic.
+   *
+   * ---- T4 round 3: THE COMMITMENT IS A COMBAT RULE, AND OUT OF COMBAT IT WAS A SILENCE -------
+   *
+   * The `T4` round-2 critic pressed confirm on a weapon row out of combat, waited 60 frames with
+   * the screen open, and measured: equipment unchanged, paper doll unchanged, list unchanged,
+   * detail unchanged, `getFrame()` 5 -> 5. The swap then landed 90 frames after the screen was
+   * SHUT, with a toast the player was no longer looking at the screen to see. `RI-UIX10` OP7,
+   * hard fail: an accepted input that shows nothing is indistinguishable from a dead control.
+   *
+   * **The cause is two correct rules meeting.** `RI-UIX03` §A P1 pauses the world outside combat
+   * while a screen is open — measured at frame delta 0 of 120, and it is the best-evidenced thing
+   * in this whole piece. P7 then holds the swap until `sim.frame >= at`. Out of combat `sim.frame`
+   * NEVER REACHES `at`, so the commitment is not slow, it is unreachable: the player is asked to
+   * pay thirty frames out of a clock that is stopped.
+   *
+   * **THE SEAM, AND HOW IT IS RULED — reversible, and the evidence that would overturn it is
+   * named.** `RI-UIX03` P7's property text carries no combat qualifier: *"changing an equipped
+   * weapon or armour piece costs an animation-committed action of >= 30 frames DURING WHICH THE
+   * PLAYER IS VULNERABLE"*. But the item's own comparison method scopes it to a fight in both
+   * places it is measured — §Comparison-method 5 reads *"Equip a different weapon from the menu
+   * DURING COMBAT; assert the trace shows a committed state of >=30 frames with `iframe: false`"*,
+   * and M-P5 is scored on exactly that run. So the property is stated unconditionally and
+   * measured conditionally, and something has to decide the case the item does not measure.
+   *
+   * `CLAUDE.md` decides it: *"where Morrowind and Souls conflict, Souls wins INSIDE THE FIGHT —
+   * frames, stamina, hitboxes, animation, enemy behaviour. Morrowind wins everywhere else."*
+   * Out of combat there is no fight, no `iframe: false` window that anything can exploit, and no
+   * frame in which the clause "during which the player is vulnerable" can be true — the vulnerable
+   * window has measure zero because the world is stopped. Morrowind's inventory is the reference
+   * `RI-UIX10` §The-bar cites by name: *"the moment you equip something the figure in the corner is
+   * wearing it."* So out of combat the swap resolves on the press, in the same `_afterStep()`.
+   *
+   * **In combat NOTHING CHANGES**: the 30 frames, the `actionableAt` hold on both bodies and
+   * `iframe: false` are all still set, so `RI-UIX03` M-P5 measures exactly what it measured
+   * before. What changes there is that the commitment is now VISIBLE — `_uiCtx()` publishes
+   * `equipPending` and `screens/inventory.js` draws it, because O3 fails a commitment the screen
+   * does not show, not the commitment itself.
+   *
+   * *Reversible. What would overturn it: an amendment to `RI-UIX03` P7 that states the commitment
+   * out of combat too AND names what the player is vulnerable to on a stopped clock, or a
+   * reference item requiring a wind-down animation on the world body when a menu closes.*
    */
   _applyUIPending() {
     const act = this.ui.pending;
@@ -5713,11 +5766,18 @@ export class Engine {
     if (act.kind === 'equip') {
       const b = this.combat && this.combat.player;
       const f = this.sim.frame;
-      if (b) { b.actionableAt = Math.max(b.actionableAt || 0, f + 30); b.iframe = false; }
-      this.sim.player.actionableAt = Math.max(this.sim.player.actionableAt || 0, f + 30);
-      this._equipCommit = { item: act.item, at: f + 30 };
+      // Read once, here, rather than at `_finishEquipCommit()` — the commitment's length is
+      // decided by the world at the moment of the press, so a fight that starts during the
+      // commitment does not retroactively make the swap free or retroactively make it cost.
+      const fighting = this.inCombat();
+      const commit = fighting ? 30 : 0;
+      if (fighting) {
+        if (b) { b.actionableAt = Math.max(b.actionableAt || 0, f + 30); b.iframe = false; }
+        this.sim.player.actionableAt = Math.max(this.sim.player.actionableAt || 0, f + 30);
+      }
+      this._equipCommit = { item: act.item, at: f + commit, from: f, commit_frames: commit };
       const ev = this.bus.emit(f, 'equip_start');
-      ev.item = act.item; ev.commit_frames = 30; ev.iframe = false;
+      ev.item = act.item; ev.commit_frames = commit; ev.iframe = false; ev.in_combat = fighting;
     } else if (act.kind === 'use') {
       const row = this.sim.inventory.find((r) => r.id === act.item);
       if (row) { row.count = Math.max(0, (row.count || 1) - 1); if (!row.count) this.sim.inventory.splice(this.sim.inventory.indexOf(row), 1); }

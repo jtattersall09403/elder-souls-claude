@@ -1443,6 +1443,11 @@ export class UISystem {
       // doll and the list cannot disagree about what is equipped; P2's hard fail is "equipped
       // state is legible only as text", which is what the row name's `— ` prefix was.
       equipped: this._equippedSlots(ctx),
+      // T4 round 3, RI-UIX10 O3. Null except during an in-combat equip commitment (out of combat
+      // the swap resolves on the press — see `Engine._applyUIPending()`'s header for the seam
+      // ruling). The screen draws it so that a commitment reads as "in progress" rather than as
+      // "nothing happened", which is the whole of OP7's hard fail.
+      equipPending: ctx.equipPending || null,
       ...this.focus.inventory,
     };
   }
