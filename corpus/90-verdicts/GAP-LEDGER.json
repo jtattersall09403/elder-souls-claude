@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-15T17:08:54Z",
+  "generated": "2026-08-15T17:49:53Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 93,
+  "verdicts_read": 94,
   "counts": {
-    "total": 88,
-    "open": 87,
+    "total": 89,
+    "open": 88,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -100,6 +100,9 @@
     ],
     "render.fidelity.character": [
       "GAP-W1-f1-actor-body-shader-does-not-link"
+    ],
+    "visual.renderer.water": [
+      "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence"
     ],
     "quests.faction.rankgating": [
       "GAP-W1-faction-ladders-are-bricked-up-at-rank-5"
@@ -254,6 +257,7 @@
     "GAP-W1-quest-givers-not-in-the-world: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "AUDB2-F1: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-W1-w1-30s-seam-incomplete: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
+    "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-FCT-03: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "corpus/90-verdicts/wave1/W1-FACTIONS-r1.json: unsatisfied verdict has no biggest_gap; validator should reject it.",
     "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
@@ -349,6 +353,7 @@
     "corpus/90-verdicts/wave1/W1-26-r2.json: gap_closure references unknown gap_id RI-JRN01/HF3-imperative-on-the-hud.",
     "corpus/90-verdicts/wave1/W1-26-r2.json: gap_closure references unknown gap_id RI-JRN01/HF5-touch-leg-unmeasurable-round-1.",
     "corpus/90-verdicts/wave1/W1-26-r2.json: gap_closure references unknown gap_id RI-JRN01/O6-control-precedes-definition.",
+    "corpus/90-verdicts/wave1/W1-F7-WATER-r1.json: closure of GAP-W1-03-water-surface-undrawn-and-frozen is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-FACTIONS-r2.json: gap_closure is object where the schema requires an array. Its closures are IGNORED — any gap it meant to close stays open.",
     "corpus/90-verdicts/wave1/W1-LIBRARY-r1.json: gap_closure references unknown gap_id K9-book-item-word-ratio.",
     "corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.json: gap_closure references unknown gap_id GAP-W1-library-l8-corpus-short.",
@@ -1882,6 +1887,41 @@
           "opened_gap": "GAP-W1-character-surface-is-assembled-from-primitives-not-built"
         }
       ]
+    },
+    {
+      "gap_id": "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence",
+      "subsystem_path": "visual.renderer.water",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-f7-water-r1",
+      "opened_in": "corpus/90-verdicts/wave1/W1-F7-WATER-r1.json",
+      "piece_id": "W1-F7-WATER-r1",
+      "severity": "blocking",
+      "what": "The fix moved the distance term and stopped at the constant floor the distance term was standing on. `game/src/render/water.js:111` still reads `esSurface=mix(esDepth,esReflection,(.25+esGrazing*.50)*uWaterReflectionStrength)`, and line 112 carries 0.68 of that into the frame, so EVERY water pixel at EVERY viewing angle still composites a fixed 0.25 x 0.68 = 17% of the planar/screen reflection target — at normal incidence, where the Fresnel reflectance of water is about 2%. The target is half-resolution (renderer.js:125, verified) and refreshed only when the camera has moved 0.24 m or six simulation frames have passed (renderer.js:1424, verified), so what is composited is a smeared, stale image of the canopy. MEASURED FROM OUTPUT, not argued: with `renderer.quality.waterReflection = false` the reflection accounts for 23.2% of a water pixel's brightness at the deck vista pose on the shipped build (mean |delta| 19.321 over mean base luma 83.199, on 169,177 renderer-derived water-mask pixels), and the same frame with it off is markedly darker and greener and reads closer to RI-WLD10 §8's 'black standing water' for a region the same data file declares at k = 4.5 (0.67 m visibility). AND THE BUILDER'S OWN NUMBERS SAY THIS IS THE REMAINING TERM, not renderer.js. Its fourteen-arm sweep is linear in that mix weight: its two measured points on the pinned tree are (weight 0.610 -> x_rms 7.711) and (weight 0.000 -> x_rms 3.921, the `term-no-reflection` arm), the line through them is x_rms = 3.921 + 6.213w, and it predicts 5.474 at weight 0.250 against the 5.484 the shipped build actually measures — 0.2% error. Setting the base to a physical 0.02 predicts 4.05: a further 26% off the residual and 94% of everything the reflection weight can buy, in the file F7 owns, without touching renderer.js at all. The build named renderer.js's half-res target and 6-frame staleness as 'the remaining cause' and declared them out of its ownership; its own arithmetic points at the constant in its own file.",
+      "why_it_matters": "A player walking the Deep Marshes in third person sees a pale reflective sheet where the world's own data says black water, and the streaks F7 exists to remove are still there — the fix's whole visible effect lives at a straight-down 120 m camera the game never puts anybody in.",
+      "remedy": "In `game/src/render/water.js`, replace the fixed floor with a Schlick Fresnel over the SAME `esView` the file already computes, so the distance term broadens the grazing response instead of adding a floor under it:\n    float esF0 = 0.02;\n    float esRefl = esF0 + (1.0 - esF0) * pow(1.0 - esView, 5.0);\n    esRefl = max(esRefl, smoothstep(10.0, 52.0, length(vViewPosition)) * 0.72 * (1.0 - esView));\n    vec3 esSurface = mix(esDepth, esReflection, esRefl * uWaterReflectionStrength);\nDONE means all four of these, and the fourth is the S59 preservation clause naming what must not get worse:\n(a) the composited reflection weight straight down at 120 m is <= 0.05, and at the 60 m grazing marsh vista is >= 0.60, read off the same probe the build used;\n(b) RI-VIS03 M12 `FresnelDelta` at a `water_edge` shot is >= 0.05 and POSITIVE — it is -0.07790 today (`node tools/visual/f7-critic-m12-offline.mjs`);\n(c) `lane_power_normalised` on the water mask at vista-deep-marshes falls by >= 40% against b0f3224e's 0.000485 (`node tools/visual/f7-critic-reanalyse.mjs`), reported ALONGSIDE mean_luma so a darkening cannot be read as a de-streaking again;\n(d) PRESERVATION — mean luminance on the water mask does not fall below 70 (it is 84.961 today, down from 102.223 pre-fix), the grazing-pose composite weight does not fall, and M12 `ShoreDelta` stays >= 0.03. Without (d) this remedy can be 'passed' by making the water black, which is the same shape of failure as the one being fixed.",
+      "remedy_action": null,
+      "remedy_acceptance": null,
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/fixed-c-vista-11-d26-reflection-off.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/frames/prefix-c-vista-11-d26.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/look.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/m12-offline.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/reanalyse.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-CRITIC/measure/builder-arms-recomputed.txt"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-faction-ladders-are-bricked-up-at-rank-5",
