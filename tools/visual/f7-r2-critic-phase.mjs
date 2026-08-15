@@ -180,18 +180,25 @@ const applyEdits = (armId, edits) => g.page.evaluate(({ armId, edits }) => {
   const R = window.__ENGINE.renderer, mats = new Set();
   R.scene.traverse((o) => { const ms = o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : []; for (const m of ms) if (m && m.userData && m.userData.waterUniforms) mats.add(m); });
   window.__R2_EDITS = 0; window.__R2_MATS = mats;
+  // A cache key that repeats across replicates makes three.js reuse the compiled program, so
+  // onBeforeCompile is never called again and the arm silently reports 0 edits -> VACUOUS. The
+  // first run of this tool lost every arm after replicate 0 to exactly that. The key must be
+  // unique per APPLICATION, not per arm.
+  window.__R2_SEQ = (window.__R2_SEQ || 0) + 1;
   for (const m of mats) {
     if (!m.__r2OrigOBC) { m.__r2OrigOBC = m.onBeforeCompile; m.__r2OrigKey = m.customProgramCacheKey; }
     m.onBeforeCompile = function (shader, renderer) {
       m.__r2OrigOBC.call(this, shader, renderer);
       for (const [needle, rep] of edits) if (shader.fragmentShader.includes(needle)) { shader.fragmentShader = shader.fragmentShader.split(needle).join(rep); window.__R2_EDITS++; }
     };
-    m.customProgramCacheKey = () => `f7-r2c:${armId}`; m.needsUpdate = true;
+    const key = `f7-r2c:${armId}:${window.__R2_SEQ}`;
+    m.customProgramCacheKey = () => key; m.needsUpdate = true;
   }
   return { materials: mats.size };
 }, { armId, edits });
 const editCount = () => g.page.evaluate(() => window.__R2_EDITS || 0);
 const restoreEdits = () => g.page.evaluate(() => {
+  window.__R2_SEQ = (window.__R2_SEQ || 0) + 1;
   for (const m of (window.__R2_MATS || [])) if (m.__r2OrigOBC) { m.onBeforeCompile = m.__r2OrigOBC; m.customProgramCacheKey = m.__r2OrigKey; m.needsUpdate = true; }
   window.__R2_MATS = new Set();
 });
