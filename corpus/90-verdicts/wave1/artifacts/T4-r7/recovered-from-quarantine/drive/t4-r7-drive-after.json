@@ -1,0 +1,137 @@
+{
+  "schema": "elder-souls/t4-r7-container-drive@1",
+  "at": "2026-08-15T19:57:23.983Z",
+  "label": "after",
+  "commit": "e998e0abbdfd60d3df8b9544a421209538dc63ac",
+  "checks": [
+    {
+      "id": "R3a the container screen opens and names itself",
+      "pass": true,
+      "detail": "mode container, headers [\"Reed Creel\",\"Carried\",\"Reed Creel\"]"
+    },
+    {
+      "id": "R1 no weight or gold value is ellipsised on any visible row",
+      "pass": true,
+      "detail": "7 rows driven, 0 with a truncated number (names still truncated on 0, reported not hidden: [])",
+      "truncated_numbers": []
+    },
+    {
+      "id": "R2 the container band reports a condition for a conditioned item",
+      "pass": true,
+      "detail": "item hist-bark-token, condition 1, band 276 wide"
+    },
+    {
+      "id": "R3b left/right switches which side has focus",
+      "pass": false,
+      "detail": "focused row moved sides: [\"container.mine.row.hist-bark-token\"] -> [\"container.mine.row.hist-bark-token\"]"
+    },
+    {
+      "id": "run",
+      "pass": false,
+      "detail": "threw: page.evaluate: TypeError: Cannot read properties of undefined (reading 'length')\n    at eval (eval at evaluate (:290:30), <anonymous>:1:48)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+    }
+  ],
+  "data": {
+    "panel_rect": [
+      720,
+      314,
+      480,
+      452
+    ],
+    "rows": [
+      {
+        "id": "container.mine.row.hist-bark-token",
+        "text": "Bark token  0.1  —"
+      },
+      {
+        "id": "container.mine.row.black-water-draught",
+        "text": "Black-water draught  0.4  30"
+      },
+      {
+        "id": "container.mine.row.bog-iron-maul",
+        "text": "Bog-iron maul  11.5  96"
+      },
+      {
+        "id": "container.mine.row.boiled-hide-jack",
+        "text": "Boiled hide jack  4.2  55"
+      },
+      {
+        "id": "container.theirs.row.bog-iron-maul",
+        "text": "Bog-iron maul  11.5  96"
+      },
+      {
+        "id": "container.theirs.row.reed-cutter",
+        "text": "Reed-cutter  3.0  42"
+      },
+      {
+        "id": "container.theirs.row.rootweave-cowl",
+        "text": "Rootweave cowl  0.6  18"
+      }
+    ],
+    "name_truncated_rows": [],
+    "conditioned": {
+      "item": "hist-bark-token",
+      "condition": 1,
+      "band_rect": [
+        902,
+        532,
+        276,
+        172
+      ],
+      "meta": {
+        "item_id": "hist-bark-token",
+        "weight": 0.1,
+        "value_gold": 0,
+        "condition": 1,
+        "side": "mine",
+        "depiction_element": "container.band.depiction",
+        "description_truncated": true,
+        "description_lines_shown": 4,
+        "description_lines_needed": 5
+      }
+    },
+    "band_width": 276,
+    "description_lines": [
+      {
+        "item": "hist-bark-token",
+        "shown": 4,
+        "needed": 5
+      },
+      {
+        "item": "hist-bark-token",
+        "shown": 4,
+        "needed": 5
+      },
+      {
+        "item": "hist-bark-token",
+        "shown": 4,
+        "needed": 5
+      },
+      {
+        "item": "hist-bark-token",
+        "shown": 4,
+        "needed": 5
+      },
+      {
+        "item": "hist-bark-token",
+        "shown": 4,
+        "needed": 5
+      },
+      {
+        "item": "hist-bark-token",
+        "shown": 4,
+        "needed": 5
+      },
+      {
+        "item": "hist-bark-token",
+        "shown": 4,
+        "needed": 5
+      },
+      {
+        "item": "hist-bark-token",
+        "shown": 4,
+        "needed": 5
+      }
+    ]
+  }
+}
