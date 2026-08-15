@@ -23,11 +23,19 @@ Alongside that: shrinking the documentation every agent reads before it can star
 
 **Still wrong, and you will see it:**
 - Shadowed areas crush to black with no detail.
-- **Characters had no bodies for part of today — fixed a few minutes ago.** A shader failed to link, so
-  head, arms, legs and torso did not draw at all while horns, eyes, frills and equipment did. If you
-  looked at the game this evening, that is what you saw. **124 of 124 programs now link** and the full
-  figure renders, confirmed at eight orbit angles. Whether the characters look *good* is a separate,
-  still-open question — that needs the reference set, which is now on disk.
+- **The characters are bad, and we now know exactly why.** Judged for the first time against real
+  reference plates: **ART 1/10, FIDELITY 3/10.** Specifically — every figure is **5.9 to 6.8 heads
+  tall** when a real one is 7.5 to 8, so the whole cast reads slightly dwarfish and *none* of the 41
+  is in the right band; shoulders are ellipsoids on a slab torso and legs are cones; the face has
+  **1 of 7** landmarks; and **41 different characters collapse to 12 silhouettes** — an argonian
+  rootkeeper and a breton mudborn are *pixel-identical*. Nobody shifts their weight when standing.
+  **The skeleton underneath is sound** — feet don't slide, hands grip correctly, no T-pose in 3,005
+  frames — so this is a rebuild of the surface, not the rig.
+  **The cheapest single fix, now dispatched:** 181 of 408 NPCs are tagged `argonian`, but only
+  `saxhleel` and `naga` are routed to the reptilian body, so **44% of the cast renders on a generic
+  humanoid with no eye geometry at all**.
+  (A shader bug also removed every body entirely for part of yesterday; that is fixed — 124/124
+  programs link — but it was a regression on top of this, not this.)
 - **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
   out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
   it. Shadows still crush to black; that fix is being built now.
