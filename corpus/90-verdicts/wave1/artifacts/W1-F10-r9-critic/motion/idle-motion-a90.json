@@ -1,0 +1,93 @@
+{
+  "tool": "f10-r9c-idle-motion.mjs",
+  "generated": "2026-08-15T18:13:12.192Z",
+  "what": "the 96-frame idle the game plays, sampled at even intervals, BEFORE (top row) vs AFTER (bottom row)",
+  "claim_class": "SHAPE ONLY — offline rasteriser, no appearance claim (W1-30-EVIDENCE §4)",
+  "angle_deg": 90,
+  "res": 320,
+  "samples": 8,
+  "per_frame": [
+    {
+      "frame": 0,
+      "before_px": 14053,
+      "after_px": 14246,
+      "changed_px": 1125,
+      "iou": 0.9235
+    },
+    {
+      "frame": 12,
+      "before_px": 14009,
+      "after_px": 14204,
+      "changed_px": 1103,
+      "iou": 0.9248
+    },
+    {
+      "frame": 24,
+      "before_px": 13989,
+      "after_px": 14212,
+      "changed_px": 1069,
+      "iou": 0.927
+    },
+    {
+      "frame": 36,
+      "before_px": 13960,
+      "after_px": 14247,
+      "changed_px": 1033,
+      "iou": 0.9293
+    },
+    {
+      "frame": 48,
+      "before_px": 13969,
+      "after_px": 14260,
+      "changed_px": 1053,
+      "iou": 0.9281
+    },
+    {
+      "frame": 60,
+      "before_px": 14006,
+      "after_px": 14281,
+      "changed_px": 1063,
+      "iou": 0.9276
+    },
+    {
+      "frame": 72,
+      "before_px": 13986,
+      "after_px": 14197,
+      "changed_px": 1101,
+      "iou": 0.9248
+    },
+    {
+      "frame": 84,
+      "before_px": 14038,
+      "after_px": 14220,
+      "changed_px": 1122,
+      "iou": 0.9236
+    }
+  ],
+  "loop_range": {
+    "before_silhouette_iou_across_the_loop": null,
+    "note": "per-frame IoU below is BEFORE-vs-AFTER at the same frame",
+    "before_self_iou_vs_frame0": [
+      1,
+      0.9517,
+      0.9115,
+      0.9398,
+      0.9677,
+      0.9481,
+      0.9219,
+      0.9588
+    ],
+    "before_min_self_iou": 0.9115,
+    "after_self_iou_vs_frame0": [
+      1,
+      0.9525,
+      0.9075,
+      0.9323,
+      0.9598,
+      0.9437,
+      0.9196,
+      0.9601
+    ],
+    "after_min_self_iou": 0.9075
+  }
+}

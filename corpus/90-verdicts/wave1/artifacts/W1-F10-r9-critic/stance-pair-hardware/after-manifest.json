@@ -1,0 +1,6596 @@
+{
+  "tool": "f10-r7-appearance",
+  "tag": "after",
+  "generated": "2026-08-15T17:47:49.856Z",
+  "renderer_string": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+  "software_renderer": false,
+  "evidence_class": "HARDWARE — valid for appearance claims.",
+  "renderer_attestation": {
+    "class": "HARDWARE",
+    "decided_from": "renderer-string",
+    "reason": "the reported renderer names a GPU vendor and no software rasteriser: ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+    "unknown": false,
+    "hardware_requested": true,
+    "fell_back": false,
+    "source": "live page WEBGL_debug_renderer_info"
+  },
+  "canvas": [
+    960,
+    540
+  ],
+  "seed": 20260815,
+  "fov_deg": 60,
+  "subject_height_m": 1.78,
+  "out_dir": "/workspace/elder-souls-artifacts-20260815-174457Z-16266/stance-pair/after",
+  "stands": {
+    "crowd": {
+      "id": "crowd-lilmoth",
+      "x": 2785.6,
+      "z": 5047
+    },
+    "player": {
+      "id": "char-player",
+      "x": 2766,
+      "z": 5011,
+      "expected_per_foot_m": 0
+    },
+    "slopeStrong": {
+      "id": "slope-strong",
+      "x": 3035,
+      "z": 4712,
+      "expected_per_foot_m": 0.4932,
+      "expected_slope_deg": 13.23
+    },
+    "slopeModerate": {
+      "id": "slope-moderate",
+      "x": 3002,
+      "z": 4727,
+      "expected_per_foot_m": 0.253,
+      "expected_slope_deg": 6.72
+    }
+  },
+  "variant_quota": [
+    "hum.imperial-clerk",
+    "hum.breton-stout",
+    "hum.dunmer-lean",
+    "sax.deep-warden",
+    "sax.marsh-lean"
+  ],
+  "selection": {
+    "quota": [
+      "hum.imperial-clerk",
+      "hum.breton-stout",
+      "hum.dunmer-lean",
+      "sax.deep-warden",
+      "sax.marsh-lean"
+    ],
+    "filled": {
+      "hum.imperial-clerk": "shipwright-oleen",
+      "hum.dunmer-lean": "lilmoth-keeper-scribe",
+      "sax.deep-warden": "lilmoth-priest-6",
+      "sax.marsh-lean": "lilmoth-wharf-cutters"
+    },
+    "missing": [
+      "hum.breton-stout"
+    ],
+    "pool_size": 27,
+    "proximity": {
+      "enumerated": 60,
+      "kept": 27,
+      "rejected": 33,
+      "distances": {
+        "stand": "crowd-lilmoth",
+        "n": 60,
+        "min": 7.8,
+        "p10": 12.5,
+        "median": 5761,
+        "p90": 5769.3,
+        "max": 6027.4,
+        "within_max_offset": 27,
+        "beyond_max_offset": 33,
+        "all_m": [
+          7.8,
+          9,
+          11.2,
+          11.5,
+          11.8,
+          12.4,
+          12.5,
+          12.5,
+          13.1,
+          13.3,
+          13.8,
+          15.2,
+          16.2,
+          17.3,
+          17.5,
+          17.8,
+          18.6,
+          19.6,
+          19.6,
+          21.3,
+          23.4,
+          23.6,
+          24.6,
+          27.1,
+          30.9,
+          38.5,
+          66.4,
+          5758.8,
+          5760.5,
+          5760.9,
+          5761,
+          5761,
+          5761.1,
+          5761.1,
+          5761.1,
+          5761.2,
+          5762.2,
+          5762.5,
+          5762.6,
+          5762.7,
+          5763.2,
+          5763.6,
+          5763.8,
+          5764.3,
+          5764.3,
+          5764.6,
+          5765,
+          5765,
+          5765.2,
+          5766.7,
+          5766.7,
+          5766.7,
+          5766.8,
+          5767.4,
+          5769.3,
+          5769.7,
+          6016.4,
+          6025.5,
+          6026.2,
+          6027.4
+        ]
+      }
+    }
+  },
+  "subjects": [
+    {
+      "id": "npc-shipwright-oleen",
+      "kind": "npc",
+      "eid": "shipwright-oleen",
+      "label": "Oleen",
+      "race": "nord",
+      "variant": "hum.imperial-clerk",
+      "family": "humanoid",
+      "x": 2798.95,
+      "z": 5035.19,
+      "record_y": 7.37,
+      "ground_y": 2.68,
+      "ground_error_m": 4.69,
+      "offset_m": 17.8
+    },
+    {
+      "id": "npc-lilmoth-keeper-scribe",
+      "kind": "npc",
+      "eid": "lilmoth-keeper-scribe",
+      "label": "Publius Sabinus",
+      "race": "imperial",
+      "variant": "hum.dunmer-lean",
+      "family": "humanoid",
+      "x": 2783.48,
+      "z": 5060.6,
+      "record_y": 0.37,
+      "ground_y": 2.68,
+      "ground_error_m": -2.31,
+      "offset_m": 13.8
+    },
+    {
+      "id": "npc-lilmoth-priest-6",
+      "kind": "npc",
+      "eid": "lilmoth-priest-6",
+      "label": "Cuts-Teeth",
+      "race": "argonian",
+      "variant": "sax.deep-warden",
+      "family": "saxhleel",
+      "x": 2793.8,
+      "z": 5043.2,
+      "record_y": 7.37,
+      "ground_y": 2.68,
+      "ground_error_m": 4.69,
+      "offset_m": 9
+    },
+    {
+      "id": "npc-lilmoth-wharf-cutters",
+      "kind": "npc",
+      "eid": "lilmoth-wharf-cutters",
+      "label": "the wharf-end yard",
+      "race": "saxhleel",
+      "variant": "sax.marsh-lean",
+      "family": "saxhleel",
+      "x": 2810,
+      "z": 5028,
+      "record_y": 0.4,
+      "ground_y": 1.83,
+      "ground_error_m": -1.43,
+      "offset_m": 30.9
+    }
+  ],
+  "scene_census": {
+    "crowd": {
+      "cell": "province",
+      "npcs": [
+        {
+          "eid": "blackwood-company-factor",
+          "name": "Corvus Aldeyn",
+          "race": "imperial",
+          "variant": "hum.imperial-clerk",
+          "family": "humanoid",
+          "visible": true,
+          "record_y": 2.68,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 0,
+          "drawn_error_m": 0,
+          "x": 2750.14,
+          "z": 5031.89
+        },
+        {
+          "eid": "dockmaster-weeja-sen",
+          "name": "Weeja-Sen",
+          "race": "saxhleel",
+          "variant": "player.saxhleel",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 0.37,
+          "drawn_y": 2.491,
+          "ground_y": 2.491,
+          "record_error_m": -2.121,
+          "drawn_error_m": 0,
+          "x": 2804.61,
+          "z": 5032.94
+        },
+        {
+          "eid": "harbourmistress-tesh",
+          "name": "Ottavia Tesh",
+          "race": "imperial",
+          "variant": "hum.legion-heavy",
+          "family": "humanoid",
+          "visible": true,
+          "record_y": 0.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": -2.31,
+          "drawn_error_m": 0,
+          "x": 2800.35,
+          "z": 5028.79
+        },
+        {
+          "eid": "lilmoth-apothecary-12",
+          "name": "Ixtei",
+          "race": "argonian",
+          "variant": "player.saxhleel",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -41.029,
+          "ground_y": -41.029,
+          "record_error_m": 41.029,
+          "drawn_error_m": 0,
+          "x": 2.05,
+          "z": 1.67
+        },
+        {
+          "eid": "lilmoth-archivist-ledger",
+          "name": "Vashu-Nei",
+          "race": "saxhleel",
+          "variant": "sax.hive-drone",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.98,
+          "ground_y": -40.98,
+          "record_error_m": 40.98,
+          "drawn_error_m": 0,
+          "x": 4.11,
+          "z": 1.84
+        },
+        {
+          "eid": "lilmoth-cook-1",
+          "name": "Listens-Fever",
+          "race": "argonian",
+          "variant": "sax.thorn-hunter",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 7.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 4.69,
+          "drawn_error_m": 0,
+          "x": 2793.34,
+          "z": 5046.46
+        },
+        {
+          "eid": "lilmoth-cook-1-partner0",
+          "name": "Casimir Aurelius",
+          "race": "imperial",
+          "variant": "hum.legion-heavy",
+          "family": "humanoid",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.823,
+          "ground_y": -40.823,
+          "record_error_m": 40.823,
+          "drawn_error_m": 0,
+          "x": 3.94,
+          "z": 3.12
+        },
+        {
+          "eid": "lilmoth-cook-5",
+          "name": "Shaa-Hist",
+          "race": "argonian",
+          "variant": "sax.hive-drone",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.955,
+          "ground_y": -40.955,
+          "record_error_m": 40.955,
+          "drawn_error_m": 0,
+          "x": 3.32,
+          "z": 2.25
+        },
+        {
+          "eid": "lilmoth-cook-5-sibling0",
+          "name": "Shal-Naga",
+          "race": "argonian",
+          "variant": "sax.helstrom-guard",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 7.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 4.69,
+          "drawn_error_m": 0,
+          "x": 2799.55,
+          "z": 5034.65
+        },
+        {
+          "eid": "lilmoth-factor-0",
+          "name": "Kaal-Xal",
+          "race": "argonian",
+          "variant": "sax.hive-drone",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.668,
+          "ground_y": -40.668,
+          "record_error_m": 40.668,
+          "drawn_error_m": 0,
+          "x": -3.68,
+          "z": 4.29
+        },
+        {
+          "eid": "lilmoth-factor-0-child0",
+          "name": "Deelith-Muul",
+          "race": "argonian",
+          "variant": "sax.salt-elder",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 0.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": -2.31,
+          "drawn_error_m": 0,
+          "x": 2784.37,
+          "z": 5059.4
+        },
+        {
+          "eid": "lilmoth-factor-0-partner1",
+          "name": "Ixwux",
+          "race": "argonian",
+          "variant": "sax.deep-warden",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.971,
+          "ground_y": -40.971,
+          "record_error_m": 40.971,
+          "drawn_error_m": 0,
+          "x": -2.65,
+          "z": 1.74
+        },
+        {
+          "eid": "lilmoth-factor-4",
+          "name": "Xulei",
+          "race": "argonian",
+          "variant": "player.saxhleel",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -41.132,
+          "ground_y": -41.132,
+          "record_error_m": 41.132,
+          "drawn_error_m": 0,
+          "x": -1.45,
+          "z": 0.21
+        },
+        {
+          "eid": "lilmoth-factor-4-elder0",
+          "name": "Teekh-Seil",
+          "race": "argonian",
+          "variant": "sax.deep-warden",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 7.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 4.69,
+          "drawn_error_m": 0,
+          "x": 2800.96,
+          "z": 5032.29
+        },
+        {
+          "eid": "lilmoth-factor-4-sibling1",
+          "name": "Bevene Sedran",
+          "race": "dunmer",
+          "variant": "hum.legion-heavy",
+          "family": "humanoid",
+          "visible": true,
+          "record_y": 7.074,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 4.394,
+          "drawn_error_m": 0,
+          "x": 2776.64,
+          "z": 5061.79
+        },
+        {
+          "eid": "lilmoth-keeper-apothecary",
+          "name": "Digs-Paper",
+          "race": "argonian",
+          "variant": "sax.salt-elder",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 7.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 4.69,
+          "drawn_error_m": 0,
+          "x": 2799.18,
+          "z": 5032.83
+        },
+        {
+          "eid": "lilmoth-keeper-customs",
+          "name": "Neekhei",
+          "race": "argonian",
+          "variant": "sax.deep-warden",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 7.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 4.69,
+          "drawn_error_m": 0,
+          "x": 2800.24,
+          "z": 5033.91
+        },
+        {
+          "eid": "lilmoth-keeper-healer",
+          "name": "Drelas Vorin",
+          "race": "dunmer",
+          "variant": "hum.breton-stout",
+          "family": "humanoid",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.75,
+          "ground_y": -40.75,
+          "record_error_m": 40.75,
+          "drawn_error_m": 0,
+          "x": -1.76,
+          "z": 3.9
+        },
+        {
+          "eid": "lilmoth-keeper-inn-drowned",
+          "name": "Kutsleek",
+          "race": "argonian",
+          "variant": "sax.thorn-hunter",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 7.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 4.69,
+          "drawn_error_m": 0,
+          "x": 2787.85,
+          "z": 5059.18
+        },
+        {
+          "eid": "lilmoth-keeper-inn-stilt",
+          "name": "Lukiul-Teekh",
+          "race": "argonian",
+          "variant": "player.saxhleel",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.702,
+          "ground_y": -40.702,
+          "record_error_m": 40.702,
+          "drawn_error_m": 0,
+          "x": -3.6,
+          "z": 3.05
+        },
+        {
+          "eid": "lilmoth-keeper-ledger-house",
+          "name": "Aemilia Carinus",
+          "race": "imperial",
+          "variant": "hum.dunmer-lean",
+          "family": "humanoid",
+          "visible": true,
+          "record_y": 7.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 4.69,
+          "drawn_error_m": 0,
+          "x": 2798.81,
+          "z": 5035.59
+        },
+        {
+          "eid": "lilmoth-keeper-market",
+          "name": "Drusilla Voranus",
+          "race": "imperial",
+          "variant": "hum.dunmer-lean",
+          "family": "humanoid",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.783,
+          "ground_y": -40.783,
+          "record_error_m": 40.783,
+          "drawn_error_m": 0,
+          "x": 2.03,
+          "z": 3.02
+        },
+        {
+          "eid": "lilmoth-keeper-pawn",
+          "name": "Naheesh-Xeech",
+          "race": "argonian",
+          "variant": "sax.thorn-hunter",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.751,
+          "ground_y": -40.751,
+          "record_error_m": 40.751,
+          "drawn_error_m": 0,
+          "x": -3.98,
+          "z": -3.11
+        },
+        {
+          "eid": "lilmoth-keeper-rootpost",
+          "name": "Xal-Tsona",
+          "race": "argonian",
+          "variant": "sax.naga-tall",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.717,
+          "ground_y": -40.717,
+          "record_error_m": 40.717,
+          "drawn_error_m": 0,
+          "x": -2.01,
+          "z": 4.79
+        },
+        {
+          "eid": "lilmoth-keeper-scribe",
+          "name": "Publius Sabinus",
+          "race": "imperial",
+          "variant": "hum.dunmer-lean",
+          "family": "humanoid",
+          "visible": true,
+          "record_y": 0.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": -2.31,
+          "drawn_error_m": 0,
+          "x": 2783.48,
+          "z": 5060.6
+        },
+        {
+          "eid": "lilmoth-keeper-shrine",
+          "name": "Nutsleek",
+          "race": "argonian",
+          "variant": "sax.deep-warden",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.928,
+          "ground_y": -40.928,
+          "record_error_m": 40.928,
+          "drawn_error_m": 0,
+          "x": 3.69,
+          "z": -2
+        },
+        {
+          "eid": "lilmoth-keeper-smithy",
+          "name": "Sethan Vaun",
+          "race": "dunmer",
+          "variant": "hum.marauder",
+          "family": "humanoid",
+          "visible": true,
+          "record_y": 0.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": -2.31,
+          "drawn_error_m": 0,
+          "x": 2794.32,
+          "z": 5055.93
+        },
+        {
+          "eid": "lilmoth-keeper-yard",
+          "name": "Lucia Tullianus",
+          "race": "imperial",
+          "variant": "hum.marauder",
+          "family": "humanoid",
+          "visible": true,
+          "record_y": 0.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": -2.31,
+          "drawn_error_m": 0,
+          "x": 2794.17,
+          "z": 5054.61
+        },
+        {
+          "eid": "lilmoth-legionary-10",
+          "name": "Mota-Xthari",
+          "race": "argonian",
+          "variant": "sax.salt-elder",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -41.066,
+          "ground_y": -41.066,
+          "record_error_m": 41.066,
+          "drawn_error_m": 0,
+          "x": -2.5,
+          "z": 1
+        },
+        {
+          "eid": "lilmoth-legionary-10-partner0",
+          "name": "Lukiul-Skei",
+          "race": "argonian",
+          "variant": "sax.hive-drone",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 0.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": -2.31,
+          "drawn_error_m": 0,
+          "x": 2783.73,
+          "z": 5059.96
+        },
+        {
+          "eid": "lilmoth-legionary-11",
+          "name": "Vei-Jix",
+          "race": "argonian",
+          "variant": "sax.naga-tall",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 0.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": -2.31,
+          "drawn_error_m": 0,
+          "x": 2784.1,
+          "z": 5060.23
+        },
+        {
+          "eid": "lilmoth-legionary-13",
+          "name": "Deekgul",
+          "race": "argonian",
+          "variant": "sax.hive-drone",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.732,
+          "ground_y": -40.732,
+          "record_error_m": 40.732,
+          "drawn_error_m": 0,
+          "x": -1.45,
+          "z": 3.28
+        },
+        {
+          "eid": "lilmoth-mudborn-shrine",
+          "name": "Beem-Ja",
+          "race": "saxhleel",
+          "variant": "sax.hive-drone",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.973,
+          "ground_y": -40.973,
+          "record_error_m": 40.973,
+          "drawn_error_m": 0,
+          "x": 3.99,
+          "z": 1.98
+        },
+        {
+          "eid": "lilmoth-priest-6",
+          "name": "Cuts-Teeth",
+          "race": "argonian",
+          "variant": "sax.deep-warden",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 7.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 4.69,
+          "drawn_error_m": 0,
+          "x": 2793.8,
+          "z": 5043.2
+        },
+        {
+          "eid": "lilmoth-priest-6-apprentice1",
+          "name": "Xaal-Shaa",
+          "race": "argonian",
+          "variant": "sax.marsh-lean",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.713,
+          "ground_y": -40.713,
+          "record_error_m": 40.713,
+          "drawn_error_m": 0,
+          "x": -1.45,
+          "z": 5.05
+        },
+        {
+          "eid": "lilmoth-priest-6-lodger0",
+          "name": "Ravel Beleth",
+          "race": "dunmer",
+          "variant": "hum.breton-stout",
+          "family": "humanoid",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -41.023,
+          "ground_y": -41.023,
+          "record_error_m": 41.023,
+          "drawn_error_m": 0,
+          "x": 3.9,
+          "z": -0.25
+        },
+        {
+          "eid": "lilmoth-priest-8",
+          "name": "Athyn Dares",
+          "race": "dunmer",
+          "variant": "hum.marauder",
+          "family": "humanoid",
+          "visible": true,
+          "record_y": 6.97,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 4.29,
+          "drawn_error_m": 0,
+          "x": 2788.82,
+          "z": 5057.7
+        },
+        {
+          "eid": "lilmoth-priest-8-apprentice1",
+          "name": "Quintus Nerentius",
+          "race": "imperial",
+          "variant": "hum.dunmer-lean",
+          "family": "humanoid",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.655,
+          "ground_y": -40.655,
+          "record_error_m": 40.655,
+          "drawn_error_m": 0,
+          "x": -1.45,
+          "z": -4.88
+        },
+        {
+          "eid": "lilmoth-priest-8-lodger0",
+          "name": "Velas Ralen",
+          "race": "dunmer",
+          "variant": "hum.imperial-clerk",
+          "family": "humanoid",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.808,
+          "ground_y": -40.808,
+          "record_error_m": 40.808,
+          "drawn_error_m": 0,
+          "x": 2.43,
+          "z": 3.48
+        },
+        {
+          "eid": "lilmoth-rootkeepers",
+          "name": "the rootkeepers of the rotting quarter",
+          "race": "saxhleel",
+          "variant": "sax.hist-broad",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 2.68,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 0,
+          "drawn_error_m": 0,
+          "x": 2719.51,
+          "z": 5040.13
+        },
+        {
+          "eid": "lilmoth-scribe-2",
+          "name": "Tsamaat",
+          "race": "argonian",
+          "variant": "sax.thorn-hunter",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 0.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": -2.31,
+          "drawn_error_m": 0,
+          "x": 2781.85,
+          "z": 5061.74
+        },
+        {
+          "eid": "lilmoth-scribe-2-elder0",
+          "name": "Jix-Ixt",
+          "race": "argonian",
+          "variant": "sax.hist-broad",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -41.091,
+          "ground_y": -41.091,
+          "record_error_m": 41.091,
+          "drawn_error_m": 0,
+          "x": -1.45,
+          "z": -1.09
+        },
+        {
+          "eid": "lilmoth-scribe-2-sibling1",
+          "name": "Vokh-Mota",
+          "race": "argonian",
+          "variant": "sax.marsh-lean",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.672,
+          "ground_y": -40.672,
+          "record_error_m": 40.672,
+          "drawn_error_m": 0,
+          "x": 1.45,
+          "z": -3.87
+        },
+        {
+          "eid": "lilmoth-smith-9",
+          "name": "Seil-Shaa",
+          "race": "argonian",
+          "variant": "sax.helstrom-guard",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.872,
+          "ground_y": -40.872,
+          "record_error_m": 40.872,
+          "drawn_error_m": 0,
+          "x": -3,
+          "z": 2.27
+        },
+        {
+          "eid": "lilmoth-smith-9-sibling0",
+          "name": "Uxith-Keth",
+          "race": "argonian",
+          "variant": "sax.helstrom-guard",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.997,
+          "ground_y": -40.997,
+          "record_error_m": 40.997,
+          "drawn_error_m": 0,
+          "x": -1.45,
+          "z": -1.96
+        },
+        {
+          "eid": "lilmoth-weaver-3",
+          "name": "Nartise Sedran",
+          "race": "dunmer",
+          "variant": "hum.breton-stout",
+          "family": "humanoid",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.619,
+          "ground_y": -40.619,
+          "record_error_m": 40.619,
+          "drawn_error_m": 0,
+          "x": -3.83,
+          "z": 3.42
+        },
+        {
+          "eid": "lilmoth-weaver-3-sibling0",
+          "name": "Wux-Zuka",
+          "race": "argonian",
+          "variant": "sax.deep-warden",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 0.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": -2.31,
+          "drawn_error_m": 0,
+          "x": 2792.27,
+          "z": 5056.72
+        },
+        {
+          "eid": "lilmoth-weaver-7",
+          "name": "Drusilla Silvanus",
+          "race": "imperial",
+          "variant": "hum.marauder",
+          "family": "humanoid",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.985,
+          "ground_y": -40.985,
+          "record_error_m": 40.985,
+          "drawn_error_m": 0,
+          "x": 3.67,
+          "z": 4.71
+        },
+        {
+          "eid": "lilmoth-weaver-7-sibling0",
+          "name": "Xanmeermeer",
+          "race": "argonian",
+          "variant": "sax.marsh-lean",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -41.071,
+          "ground_y": -41.071,
+          "record_error_m": 41.071,
+          "drawn_error_m": 0,
+          "x": -1.88,
+          "z": -1.24
+        },
+        {
+          "eid": "lilmoth-wharf-cutters",
+          "name": "the wharf-end yard",
+          "race": "saxhleel",
+          "variant": "sax.marsh-lean",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 0.4,
+          "drawn_y": 1.83,
+          "ground_y": 1.83,
+          "record_error_m": -1.43,
+          "drawn_error_m": 0,
+          "x": 2810,
+          "z": 5028
+        },
+        {
+          "eid": "lilmoth-yard-brothers",
+          "name": "the Lilmoth cutters",
+          "race": "saxhleel",
+          "variant": "sax.naga-tall",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 2.68,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 0,
+          "drawn_error_m": 0,
+          "x": 2773.66,
+          "z": 5068.55
+        },
+        {
+          "eid": "miredancer-omu-ei",
+          "name": "Omu-Ei",
+          "race": "saxhleel",
+          "variant": "sax.salt-elder",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -40.965,
+          "ground_y": -40.965,
+          "record_error_m": 40.965,
+          "drawn_error_m": 0,
+          "x": -1.74,
+          "z": 1.87
+        },
+        {
+          "eid": "miredancer-sap-speaker",
+          "name": "Sap-Speaker Neekh-Otei",
+          "race": "saxhleel",
+          "variant": "player.saxhleel",
+          "family": "saxhleel",
+          "visible": false,
+          "record_y": 0,
+          "drawn_y": -41.048,
+          "ground_y": -41.048,
+          "record_error_m": 41.048,
+          "drawn_error_m": 0,
+          "x": -2.43,
+          "z": -1.34
+        },
+        {
+          "eid": "npc-eleen",
+          "name": "Eleen",
+          "race": "dunmer",
+          "variant": "hum.marauder",
+          "family": "humanoid",
+          "visible": true,
+          "record_y": 2,
+          "drawn_y": -33.387,
+          "ground_y": -33.387,
+          "record_error_m": 35.387,
+          "drawn_error_m": 0,
+          "x": 4906.8,
+          "z": -594.8
+        },
+        {
+          "eid": "npc-ineve-corrano",
+          "name": "Ineve Corrano",
+          "race": "saxhleel",
+          "variant": "sax.deep-warden",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 2,
+          "drawn_y": -33.077,
+          "ground_y": -33.077,
+          "record_error_m": 35.077,
+          "drawn_error_m": 0,
+          "x": 4911.9,
+          "z": -590.9
+        },
+        {
+          "eid": "npc-skara-hull-chalk",
+          "name": "Skara Hull-Chalk",
+          "race": "dunmer",
+          "variant": "hum.legion-heavy",
+          "family": "humanoid",
+          "visible": true,
+          "record_y": 2,
+          "drawn_y": -33.274,
+          "ground_y": -33.274,
+          "record_error_m": 35.274,
+          "drawn_error_m": 0,
+          "x": 4910.2,
+          "z": -592.2
+        },
+        {
+          "eid": "npc-widow-tesla-vor",
+          "name": "Widow Tesla Vor",
+          "race": "saxhleel",
+          "variant": "sax.helstrom-guard",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 2,
+          "drawn_y": -32.924,
+          "ground_y": -32.924,
+          "record_error_m": 34.924,
+          "drawn_error_m": 0,
+          "x": 4891,
+          "z": -589
+        },
+        {
+          "eid": "rootkeeper-under-the-temple",
+          "name": "Keeper-Under-the-Temple",
+          "race": "saxhleel",
+          "variant": "sax.hist-broad",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 0.37,
+          "drawn_y": 1.947,
+          "ground_y": 1.947,
+          "record_error_m": -1.577,
+          "drawn_error_m": 0,
+          "x": 2806.61,
+          "z": 5029.81
+        },
+        {
+          "eid": "shipwright-oleen",
+          "name": "Oleen",
+          "race": "nord",
+          "variant": "hum.imperial-clerk",
+          "family": "humanoid",
+          "visible": true,
+          "record_y": 7.37,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 4.69,
+          "drawn_error_m": 0,
+          "x": 2798.95,
+          "z": 5035.19
+        },
+        {
+          "eid": "spellwright-lilmoth",
+          "name": "Tsona-Ixtu",
+          "race": "argonian",
+          "variant": "sax.thorn-hunter",
+          "family": "saxhleel",
+          "visible": true,
+          "record_y": 2.68,
+          "drawn_y": 2.68,
+          "ground_y": 2.68,
+          "record_error_m": 0,
+          "drawn_error_m": 0,
+          "x": 2797.97,
+          "z": 5036.6
+        }
+      ],
+      "player": {
+        "pos": [
+          2797.15,
+          2.68,
+          5047
+        ],
+        "ground": 2.68
+      }
+    },
+    "crowd_anchor": {
+      "x": 2788.82,
+      "z": 5059.18,
+      "ground_y": 2.68,
+      "cluster_size": 14,
+      "from": "median x/z/ground of the 14 drawn NPCs nearest the crowd stand — all three untouched by round 7"
+    },
+    "player_stand": {
+      "player_pos": [
+        2766,
+        2.68,
+        5011
+      ]
+    }
+  },
+  "slope_stands": [
+    {
+      "stand": "slope-strong",
+      "x": 3035,
+      "z": 4712,
+      "player_pos": [
+        3035,
+        1.125,
+        4712
+      ],
+      "expected_per_foot_m": 0.4932,
+      "measured": {
+        "foot_l": {
+          "x": 3035.095,
+          "y": 1.2828,
+          "z": 4711.942,
+          "ground": 1.184
+        },
+        "foot_r": {
+          "x": 3034.897,
+          "y": 1.0614,
+          "z": 4711.94,
+          "ground": 0.9626
+        },
+        "stance_m": 0.1978,
+        "per_foot_ground_difference_m": 0.2214,
+        "per_foot_drawn_difference_m": 0.2214,
+        "rigged": true
+      }
+    },
+    {
+      "stand": "slope-moderate",
+      "x": 3002,
+      "z": 4727,
+      "player_pos": [
+        3002,
+        1.764,
+        4727
+      ],
+      "expected_per_foot_m": 0.253,
+      "measured": {
+        "foot_l": {
+          "x": 3002.086,
+          "y": 1.8253,
+          "z": 4726.945,
+          "ground": 1.7395
+        },
+        "foot_r": {
+          "x": 3001.888,
+          "y": 1.6024,
+          "z": 4726.936,
+          "ground": 1.4745
+        },
+        "stance_m": 0.1979,
+        "per_foot_ground_difference_m": 0.265,
+        "per_foot_drawn_difference_m": 0.2229,
+        "rigged": true
+      }
+    },
+    {
+      "stand": "char-player",
+      "x": 2766,
+      "z": 5011,
+      "player_pos": [
+        2766,
+        2.68,
+        5011
+      ],
+      "expected_per_foot_m": 0,
+      "measured": {
+        "foot_l": {
+          "x": 2766.076,
+          "y": 2.7761,
+          "z": 5010.949,
+          "ground": 2.68
+        },
+        "foot_r": {
+          "x": 2765.879,
+          "y": 2.7812,
+          "z": 5010.932,
+          "ground": 2.68
+        },
+        "stance_m": 0.1983,
+        "per_foot_ground_difference_m": 0,
+        "per_foot_drawn_difference_m": 0.0052,
+        "rigged": true
+      }
+    }
+  ],
+  "motion": {
+    "attempted": true,
+    "queued": 69,
+    "frames": [
+      {
+        "i": 0,
+        "sim_frame": 4,
+        "pos": [
+          2765.867,
+          2.68,
+          5011
+        ],
+        "travelled_m": 0.133
+      },
+      {
+        "i": 1,
+        "sim_frame": 8,
+        "pos": [
+          2765.676,
+          2.68,
+          5011.024
+        ],
+        "travelled_m": 0.324
+      },
+      {
+        "i": 2,
+        "sim_frame": 12,
+        "pos": [
+          2765.559,
+          2.68,
+          5011.141
+        ],
+        "travelled_m": 0.463
+      },
+      {
+        "i": 3,
+        "sim_frame": 16,
+        "pos": [
+          2765.368,
+          2.68,
+          5011.165
+        ],
+        "travelled_m": 0.653
+      },
+      {
+        "i": 4,
+        "sim_frame": 20,
+        "pos": [
+          2765.251,
+          2.68,
+          5011.283
+        ],
+        "travelled_m": 0.801
+      },
+      {
+        "i": 5,
+        "sim_frame": 24,
+        "pos": [
+          2765.06,
+          2.68,
+          5011.306
+        ],
+        "travelled_m": 0.988
+      },
+      {
+        "i": 6,
+        "sim_frame": 28,
+        "pos": [
+          2764.942,
+          2.68,
+          5011.424
+        ],
+        "travelled_m": 1.14
+      },
+      {
+        "i": 7,
+        "sim_frame": 32,
+        "pos": [
+          2764.752,
+          2.68,
+          5011.448
+        ],
+        "travelled_m": 1.326
+      },
+      {
+        "i": 8,
+        "sim_frame": 36,
+        "pos": [
+          2764.634,
+          2.68,
+          5011.566
+        ],
+        "travelled_m": 1.478
+      },
+      {
+        "i": 9,
+        "sim_frame": 40,
+        "pos": [
+          2764.444,
+          2.68,
+          5011.589
+        ],
+        "travelled_m": 1.664
+      },
+      {
+        "i": 10,
+        "sim_frame": 44,
+        "pos": [
+          2764.326,
+          2.68,
+          5011.707
+        ],
+        "travelled_m": 1.817
+      },
+      {
+        "i": 11,
+        "sim_frame": 48,
+        "pos": [
+          2764.136,
+          2.68,
+          5011.731
+        ],
+        "travelled_m": 2.002
+      },
+      {
+        "i": 12,
+        "sim_frame": 52,
+        "pos": [
+          2764.018,
+          2.68,
+          5011.849
+        ],
+        "travelled_m": 2.156
+      },
+      {
+        "i": 13,
+        "sim_frame": 56,
+        "pos": [
+          2763.828,
+          2.68,
+          5011.872
+        ],
+        "travelled_m": 2.341
+      },
+      {
+        "i": 14,
+        "sim_frame": 60,
+        "pos": [
+          2763.71,
+          2.68,
+          5011.99
+        ],
+        "travelled_m": 2.495
+      },
+      {
+        "i": 15,
+        "sim_frame": 64,
+        "pos": [
+          2763.52,
+          2.68,
+          5012.014
+        ],
+        "travelled_m": 2.679
+      }
+    ],
+    "stick": 0.55,
+    "note": "player travelled 2.679 m over 64 simulated frames with the stick at 0.55",
+    "stand": "char-player"
+  },
+  "liveness_call_note": "gateBuffer(buf, {box, subject, throwOnDegenerate:false}) — the real parameter names (HAZARDS §16).",
+  "liveness_verdicts": {
+    "LIVE": 12
+  },
+  "hard_calls": [
+    {
+      "verb": "setUIVisible",
+      "ok": true,
+      "error": null
+    },
+    {
+      "verb": "setTimeOfDay",
+      "ok": true,
+      "error": null
+    },
+    {
+      "verb": "setWeather",
+      "ok": true,
+      "error": null
+    },
+    {
+      "verb": "clearInputs",
+      "ok": true,
+      "error": null
+    },
+    {
+      "verb": "queueInputs",
+      "ok": true,
+      "error": null
+    },
+    {
+      "verb": "clearInputs",
+      "ok": true,
+      "error": null
+    }
+  ],
+  "proximity_source": {
+    "from": "tools/visual/lib/subject-proximity.mjs",
+    "mine": true,
+    "theirs": true,
+    "identical": true
+  },
+  "frames": [
+    {
+      "file": "W__close-b000.png",
+      "status": "skipped_by_slots",
+      "slot": "W",
+      "vantage": "close-b000",
+      "pose": {
+        "eye": [
+          2788.82,
+          4.43,
+          5075.18
+        ],
+        "target": [
+          2788.82,
+          4.08,
+          5059.18
+        ],
+        "back_m": 16,
+        "up_m": 1.75,
+        "bearing_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "anchor": {
+        "x": 2788.82,
+        "z": 5059.18,
+        "ground_y": 2.68,
+        "cluster_size": 14,
+        "from": "median x/z/ground of the 14 drawn NPCs nearest the crowd stand — all three untouched by round 7"
+      },
+      "npcs_visible": 31,
+      "drawn_buried": 0,
+      "drawn_airborne": 0,
+      "record_buried": 12,
+      "record_airborne": 15,
+      "subject_gate_note": "subject:false deliberately — this is a crowd frame, and the scene census in the manifest is its presence check"
+    },
+    {
+      "file": "W__close-b090.png",
+      "status": "skipped_by_slots",
+      "slot": "W",
+      "vantage": "close-b090",
+      "pose": {
+        "eye": [
+          2804.82,
+          4.43,
+          5059.18
+        ],
+        "target": [
+          2788.82,
+          4.08,
+          5059.18
+        ],
+        "back_m": 16,
+        "up_m": 1.75,
+        "bearing_deg": 90,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "anchor": {
+        "x": 2788.82,
+        "z": 5059.18,
+        "ground_y": 2.68,
+        "cluster_size": 14,
+        "from": "median x/z/ground of the 14 drawn NPCs nearest the crowd stand — all three untouched by round 7"
+      },
+      "npcs_visible": 31,
+      "drawn_buried": 0,
+      "drawn_airborne": 0,
+      "record_buried": 12,
+      "record_airborne": 15,
+      "subject_gate_note": "subject:false deliberately — this is a crowd frame, and the scene census in the manifest is its presence check"
+    },
+    {
+      "file": "W__close-b180.png",
+      "status": "skipped_by_slots",
+      "slot": "W",
+      "vantage": "close-b180",
+      "pose": {
+        "eye": [
+          2788.82,
+          4.43,
+          5043.18
+        ],
+        "target": [
+          2788.82,
+          4.08,
+          5059.18
+        ],
+        "back_m": 16,
+        "up_m": 1.75,
+        "bearing_deg": 180,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "anchor": {
+        "x": 2788.82,
+        "z": 5059.18,
+        "ground_y": 2.68,
+        "cluster_size": 14,
+        "from": "median x/z/ground of the 14 drawn NPCs nearest the crowd stand — all three untouched by round 7"
+      },
+      "npcs_visible": 31,
+      "drawn_buried": 0,
+      "drawn_airborne": 0,
+      "record_buried": 12,
+      "record_airborne": 15,
+      "subject_gate_note": "subject:false deliberately — this is a crowd frame, and the scene census in the manifest is its presence check"
+    },
+    {
+      "file": "W__close-b270.png",
+      "status": "skipped_by_slots",
+      "slot": "W",
+      "vantage": "close-b270",
+      "pose": {
+        "eye": [
+          2772.82,
+          4.43,
+          5059.18
+        ],
+        "target": [
+          2788.82,
+          4.08,
+          5059.18
+        ],
+        "back_m": 16,
+        "up_m": 1.75,
+        "bearing_deg": 270,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "anchor": {
+        "x": 2788.82,
+        "z": 5059.18,
+        "ground_y": 2.68,
+        "cluster_size": 14,
+        "from": "median x/z/ground of the 14 drawn NPCs nearest the crowd stand — all three untouched by round 7"
+      },
+      "npcs_visible": 31,
+      "drawn_buried": 0,
+      "drawn_airborne": 0,
+      "record_buried": 12,
+      "record_airborne": 15,
+      "subject_gate_note": "subject:false deliberately — this is a crowd frame, and the scene census in the manifest is its presence check"
+    },
+    {
+      "file": "W__mid-b045.png",
+      "status": "skipped_by_slots",
+      "slot": "W",
+      "vantage": "mid-b045",
+      "pose": {
+        "eye": [
+          2807.205,
+          6.68,
+          5077.565
+        ],
+        "target": [
+          2788.82,
+          4.08,
+          5059.18
+        ],
+        "back_m": 26,
+        "up_m": 4,
+        "bearing_deg": 45,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "anchor": {
+        "x": 2788.82,
+        "z": 5059.18,
+        "ground_y": 2.68,
+        "cluster_size": 14,
+        "from": "median x/z/ground of the 14 drawn NPCs nearest the crowd stand — all three untouched by round 7"
+      },
+      "npcs_visible": 31,
+      "drawn_buried": 0,
+      "drawn_airborne": 0,
+      "record_buried": 12,
+      "record_airborne": 15,
+      "subject_gate_note": "subject:false deliberately — this is a crowd frame, and the scene census in the manifest is its presence check"
+    },
+    {
+      "file": "W__raised-b045.png",
+      "status": "skipped_by_slots",
+      "slot": "W",
+      "vantage": "raised-b045",
+      "pose": {
+        "eye": [
+          2810.033,
+          16.68,
+          5080.393
+        ],
+        "target": [
+          2788.82,
+          3.88,
+          5059.18
+        ],
+        "back_m": 30,
+        "up_m": 14,
+        "bearing_deg": 45,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "anchor": {
+        "x": 2788.82,
+        "z": 5059.18,
+        "ground_y": 2.68,
+        "cluster_size": 14,
+        "from": "median x/z/ground of the 14 drawn NPCs nearest the crowd stand — all three untouched by round 7"
+      },
+      "npcs_visible": 31,
+      "drawn_buried": 0,
+      "drawn_airborne": 0,
+      "record_buried": 12,
+      "record_airborne": 15,
+      "subject_gate_note": "subject:false deliberately — this is a crowd frame, and the scene census in the manifest is its presence check"
+    },
+    {
+      "file": "W__sky-b045.png",
+      "status": "skipped_by_slots",
+      "slot": "W",
+      "vantage": "sky-b045",
+      "pose": {
+        "eye": [
+          2825.59,
+          42.68,
+          5095.95
+        ],
+        "target": [
+          2788.82,
+          3.88,
+          5059.18
+        ],
+        "back_m": 52,
+        "up_m": 40,
+        "bearing_deg": 45,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "anchor": {
+        "x": 2788.82,
+        "z": 5059.18,
+        "ground_y": 2.68,
+        "cluster_size": 14,
+        "from": "median x/z/ground of the 14 drawn NPCs nearest the crowd stand — all three untouched by round 7"
+      },
+      "npcs_visible": 31,
+      "drawn_buried": 0,
+      "drawn_airborne": 0,
+      "record_buried": 12,
+      "record_airborne": 15,
+      "subject_gate_note": "subject:false deliberately — this is a crowd frame, and the scene census in the manifest is its presence check"
+    },
+    {
+      "file": "FA__npc-shipwright-oleen__ground__b000.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-shipwright-oleen",
+      "eid": "shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "race": "nord",
+      "family": "humanoid",
+      "aim": "ground",
+      "aim_y": 2.68,
+      "bearing": 0,
+      "pose": {
+        "eye": [
+          2798.95,
+          4.426,
+          5035.66
+        ],
+        "target": [
+          2798.95,
+          4.36,
+          5035.19
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.3935090804625984e-16,
+            -0.7245813859190205
+          ],
+          "z": 0.49825181052069756,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.539607595415392e-16,
+            0.800548031373096
+          ],
+          "z": 0.45097102949157136,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the GROUND puts this person — the after arm draws them here"
+    },
+    {
+      "file": "FA__npc-shipwright-oleen__ground__b090.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-shipwright-oleen",
+      "eid": "shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "race": "nord",
+      "family": "humanoid",
+      "aim": "ground",
+      "aim_y": 2.68,
+      "bearing": 90,
+      "pose": {
+        "eye": [
+          2799.42,
+          4.426,
+          5035.19
+        ],
+        "target": [
+          2798.95,
+          4.36,
+          5035.19
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.090263620693897e-16,
+            -0.7245813859190205
+          ],
+          "z": 0.49825181052069756,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.3094113931230873e-16,
+            0.800548031373096
+          ],
+          "z": 0.45097102949157136,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the GROUND puts this person — the after arm draws them here"
+    },
+    {
+      "file": "FA__npc-shipwright-oleen__record__b000.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-shipwright-oleen",
+      "eid": "shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "race": "nord",
+      "family": "humanoid",
+      "aim": "record",
+      "aim_y": 7.37,
+      "bearing": 0,
+      "pose": {
+        "eye": [
+          2798.95,
+          9.116,
+          5035.66
+        ],
+        "target": [
+          2798.95,
+          9.05,
+          5035.19
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.3935090804625987e-16,
+            -0.724581385919017
+          ],
+          "z": 0.4982518105206974,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.5396075954153924e-16,
+            0.8005480313731005
+          ],
+          "z": 0.4509710294915712,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the AUTHORED height puts this person — the before arm draws them here"
+    },
+    {
+      "file": "FA__npc-shipwright-oleen__record__b090.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-shipwright-oleen",
+      "eid": "shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "race": "nord",
+      "family": "humanoid",
+      "aim": "record",
+      "aim_y": 7.37,
+      "bearing": 90,
+      "pose": {
+        "eye": [
+          2799.42,
+          9.116,
+          5035.19
+        ],
+        "target": [
+          2798.95,
+          9.05,
+          5035.19
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.0902636206938975e-16,
+            -0.724581385919017
+          ],
+          "z": 0.4982518105206974,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.3094113931230883e-16,
+            0.8005480313731005
+          ],
+          "z": 0.4509710294915712,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the AUTHORED height puts this person — the before arm draws them here"
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw000.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-shipwright-oleen",
+      "eid": "shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "race": "nord",
+      "yaw": 0,
+      "pose": {
+        "eye": [
+          2798.95,
+          3.57,
+          5037.676
+        ],
+        "target": [
+          2798.95,
+          3.57,
+          5035.19
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.4772732389726502e-16,
+            -0.7677438291443701
+          ],
+          "z": 2.486000000000786,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.4772732389726502e-16,
+            0.7677438291443701
+          ],
+          "z": 2.486000000000786,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw045.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-shipwright-oleen",
+      "eid": "shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "race": "nord",
+      "yaw": 45,
+      "pose": {
+        "eye": [
+          2800.708,
+          3.57,
+          5036.948
+        ],
+        "target": [
+          2798.95,
+          3.57,
+          5035.19
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 45,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            -1.557846377393716e-13,
+            -0.7676859461638761
+          ],
+          "z": 2.4861874426525983,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            -1.557846377393716e-13,
+            0.7676859461638761
+          ],
+          "z": 2.4861874426525983,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw090.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-shipwright-oleen",
+      "eid": "shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "race": "nord",
+      "yaw": 90,
+      "pose": {
+        "eye": [
+          2801.436,
+          3.57,
+          5035.19
+        ],
+        "target": [
+          2798.95,
+          3.57,
+          5035.19
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.2159098584589753e-16,
+            -0.7677438291445106
+          ],
+          "z": 2.486000000000331,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.2159098584589753e-16,
+            0.7677438291445106
+          ],
+          "z": 2.486000000000331,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw135.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-shipwright-oleen",
+      "eid": "shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "race": "nord",
+      "yaw": 135,
+      "pose": {
+        "eye": [
+          2800.708,
+          3.57,
+          5033.432
+        ],
+        "target": [
+          2798.95,
+          3.57,
+          5035.19
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            -1.5567690285854094e-13,
+            -0.7676859461640748
+          ],
+          "z": 2.4861874426519552,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            -1.5567690285854094e-13,
+            0.7676859461640748
+          ],
+          "z": 2.4861874426519552,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw180.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-shipwright-oleen",
+      "eid": "shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "race": "nord",
+      "yaw": 180,
+      "pose": {
+        "eye": [
+          2798.95,
+          3.57,
+          5032.704
+        ],
+        "target": [
+          2798.95,
+          3.57,
+          5035.19
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 180,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            0,
+            -0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            0,
+            0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw225.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-shipwright-oleen",
+      "eid": "shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "race": "nord",
+      "yaw": 225,
+      "pose": {
+        "eye": [
+          2797.192,
+          3.57,
+          5033.432
+        ],
+        "target": [
+          2798.95,
+          3.57,
+          5035.19
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 225,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.0773488087097652e-16,
+            -0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.0773488087097652e-16,
+            0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw270.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-shipwright-oleen",
+      "eid": "shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "race": "nord",
+      "yaw": 270,
+      "pose": {
+        "eye": [
+          2796.464,
+          3.57,
+          5035.19
+        ],
+        "target": [
+          2798.95,
+          3.57,
+          5035.19
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 270,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-shipwright-oleen__yaw315.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-shipwright-oleen",
+      "eid": "shipwright-oleen",
+      "variant": "hum.imperial-clerk",
+      "race": "nord",
+      "yaw": 315,
+      "pose": {
+        "eye": [
+          2797.192,
+          3.57,
+          5036.948
+        ],
+        "target": [
+          2798.95,
+          3.57,
+          5035.19
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 315,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            3.121079498831382e-13,
+            -0.7676859461639753
+          ],
+          "z": 2.4861874426522768,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            3.121079498831382e-13,
+            0.7676859461639753
+          ],
+          "z": 2.4861874426522768,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FA__npc-lilmoth-keeper-scribe__ground__b000.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "eid": "lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "race": "imperial",
+      "family": "humanoid",
+      "aim": "ground",
+      "aim_y": 2.68,
+      "bearing": 0,
+      "pose": {
+        "eye": [
+          2783.48,
+          4.426,
+          5061.07
+        ],
+        "target": [
+          2783.48,
+          4.36,
+          5060.6
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.3935090804624205e-16,
+            -0.7245813859208747
+          ],
+          "z": 0.4982518105197969,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.5396075954154873e-16,
+            0.8005480313740934
+          ],
+          "z": 0.4509710294906707,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the GROUND puts this person — the after arm draws them here"
+    },
+    {
+      "file": "FA__npc-lilmoth-keeper-scribe__ground__b090.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "eid": "lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "race": "imperial",
+      "family": "humanoid",
+      "aim": "ground",
+      "aim_y": 2.68,
+      "bearing": 90,
+      "pose": {
+        "eye": [
+          2783.95,
+          4.426,
+          5060.6
+        ],
+        "target": [
+          2783.48,
+          4.36,
+          5060.6
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.090263620693764e-16,
+            -0.7245813859199477
+          ],
+          "z": 0.4982518105202472,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.30941139312316e-16,
+            0.8005480313735949
+          ],
+          "z": 0.450971029491121,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the GROUND puts this person — the after arm draws them here"
+    },
+    {
+      "file": "FA__npc-lilmoth-keeper-scribe__record__b000.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "eid": "lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "race": "imperial",
+      "family": "humanoid",
+      "aim": "record",
+      "aim_y": 0.37,
+      "bearing": 0,
+      "pose": {
+        "eye": [
+          2783.48,
+          2.116,
+          5061.07
+        ],
+        "target": [
+          2783.48,
+          2.05,
+          5060.6
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.3935090804624202e-16,
+            -0.7245813859208766
+          ],
+          "z": 0.49825181051979694,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.539607595415487e-16,
+            0.8005480313740911
+          ],
+          "z": 0.45097102949067075,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the AUTHORED height puts this person — the before arm draws them here"
+    },
+    {
+      "file": "FA__npc-lilmoth-keeper-scribe__record__b090.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "eid": "lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "race": "imperial",
+      "family": "humanoid",
+      "aim": "record",
+      "aim_y": 0.37,
+      "bearing": 90,
+      "pose": {
+        "eye": [
+          2783.95,
+          2.116,
+          5060.6
+        ],
+        "target": [
+          2783.48,
+          2.05,
+          5060.6
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.0902636206937637e-16,
+            -0.7245813859199495
+          ],
+          "z": 0.49825181052024725,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.3094113931231593e-16,
+            0.8005480313735927
+          ],
+          "z": 0.45097102949112106,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the AUTHORED height puts this person — the before arm draws them here"
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw000.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "eid": "lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "race": "imperial",
+      "yaw": 0,
+      "pose": {
+        "eye": [
+          2783.48,
+          3.57,
+          5063.086
+        ],
+        "target": [
+          2783.48,
+          3.57,
+          5060.6
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw045.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "eid": "lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "race": "imperial",
+      "yaw": 45,
+      "pose": {
+        "eye": [
+          2785.238,
+          3.57,
+          5062.358
+        ],
+        "target": [
+          2783.48,
+          3.57,
+          5060.6
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 45,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.1546976174195303e-16,
+            -0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.1546976174195303e-16,
+            0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw090.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "eid": "lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "race": "imperial",
+      "yaw": 90,
+      "pose": {
+        "eye": [
+          2785.966,
+          3.57,
+          5060.6
+        ],
+        "target": [
+          2783.48,
+          3.57,
+          5060.6
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw135.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "eid": "lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "race": "imperial",
+      "yaw": 135,
+      "pose": {
+        "eye": [
+          2785.238,
+          3.57,
+          5058.842
+        ],
+        "target": [
+          2783.48,
+          3.57,
+          5060.6
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            3.123234196448801e-13,
+            -0.7676859461639753
+          ],
+          "z": 2.4861874426522768,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            3.123234196448801e-13,
+            0.7676859461639753
+          ],
+          "z": 2.4861874426522768,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw180.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "eid": "lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "race": "imperial",
+      "yaw": 180,
+      "pose": {
+        "eye": [
+          2783.48,
+          3.57,
+          5058.114
+        ],
+        "target": [
+          2783.48,
+          3.57,
+          5060.6
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 180,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            0,
+            -0.7677438291443701
+          ],
+          "z": 2.486000000000786,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            0,
+            0.7677438291443701
+          ],
+          "z": 2.486000000000786,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw225.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "eid": "lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "race": "imperial",
+      "yaw": 225,
+      "pose": {
+        "eye": [
+          2781.722,
+          3.57,
+          5058.842
+        ],
+        "target": [
+          2783.48,
+          3.57,
+          5060.6
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 225,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            -3.1189248012139633e-13,
+            -0.7676859461639753
+          ],
+          "z": 2.4861874426522768,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            -3.1189248012139633e-13,
+            0.7676859461639753
+          ],
+          "z": 2.4861874426522768,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw270.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "eid": "lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "race": "imperial",
+      "yaw": 270,
+      "pose": {
+        "eye": [
+          2780.994,
+          3.57,
+          5060.6
+        ],
+        "target": [
+          2783.48,
+          3.57,
+          5060.6
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 270,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "C4__npc-lilmoth-keeper-scribe__yaw315.png",
+      "status": "skipped_by_slots",
+      "slot": "C4",
+      "subject": "npc-lilmoth-keeper-scribe",
+      "eid": "lilmoth-keeper-scribe",
+      "variant": "hum.dunmer-lean",
+      "race": "imperial",
+      "yaw": 315,
+      "pose": {
+        "eye": [
+          2781.722,
+          3.57,
+          5062.358
+        ],
+        "target": [
+          2783.48,
+          3.57,
+          5060.6
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 315,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.0773488087097652e-16,
+            -0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.0773488087097652e-16,
+            0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FA__npc-lilmoth-priest-6__ground__b000.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-priest-6",
+      "eid": "lilmoth-priest-6",
+      "variant": "sax.deep-warden",
+      "race": "argonian",
+      "family": "saxhleel",
+      "aim": "ground",
+      "aim_y": 2.68,
+      "bearing": 0,
+      "pose": {
+        "eye": [
+          2793.8,
+          4.426,
+          5043.67
+        ],
+        "target": [
+          2793.8,
+          4.36,
+          5043.2
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.3935090804625984e-16,
+            -0.7245813859190205
+          ],
+          "z": 0.49825181052069756,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.539607595415392e-16,
+            0.800548031373096
+          ],
+          "z": 0.45097102949157136,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the GROUND puts this person — the after arm draws them here"
+    },
+    {
+      "file": "FA__npc-lilmoth-priest-6__ground__b090.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-priest-6",
+      "eid": "lilmoth-priest-6",
+      "variant": "sax.deep-warden",
+      "race": "argonian",
+      "family": "saxhleel",
+      "aim": "ground",
+      "aim_y": 2.68,
+      "bearing": 90,
+      "pose": {
+        "eye": [
+          2794.27,
+          4.426,
+          5043.2
+        ],
+        "target": [
+          2793.8,
+          4.36,
+          5043.2
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.090263620693764e-16,
+            -0.7245813859199477
+          ],
+          "z": 0.4982518105202472,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.30941139312316e-16,
+            0.8005480313735949
+          ],
+          "z": 0.450971029491121,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the GROUND puts this person — the after arm draws them here"
+    },
+    {
+      "file": "FA__npc-lilmoth-priest-6__record__b000.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-priest-6",
+      "eid": "lilmoth-priest-6",
+      "variant": "sax.deep-warden",
+      "race": "argonian",
+      "family": "saxhleel",
+      "aim": "record",
+      "aim_y": 7.37,
+      "bearing": 0,
+      "pose": {
+        "eye": [
+          2793.8,
+          9.116,
+          5043.67
+        ],
+        "target": [
+          2793.8,
+          9.05,
+          5043.2
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.3935090804625987e-16,
+            -0.724581385919017
+          ],
+          "z": 0.4982518105206974,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.5396075954153924e-16,
+            0.8005480313731005
+          ],
+          "z": 0.4509710294915712,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the AUTHORED height puts this person — the before arm draws them here"
+    },
+    {
+      "file": "FA__npc-lilmoth-priest-6__record__b090.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-priest-6",
+      "eid": "lilmoth-priest-6",
+      "variant": "sax.deep-warden",
+      "race": "argonian",
+      "family": "saxhleel",
+      "aim": "record",
+      "aim_y": 7.37,
+      "bearing": 90,
+      "pose": {
+        "eye": [
+          2794.27,
+          9.116,
+          5043.2
+        ],
+        "target": [
+          2793.8,
+          9.05,
+          5043.2
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.0902636206937647e-16,
+            -0.7245813859199441
+          ],
+          "z": 0.49825181052024703,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.30941139312316e-16,
+            0.8005480313735992
+          ],
+          "z": 0.45097102949112083,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the AUTHORED height puts this person — the before arm draws them here"
+    },
+    {
+      "file": "FA__npc-lilmoth-wharf-cutters__ground__b000.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-wharf-cutters",
+      "eid": "lilmoth-wharf-cutters",
+      "variant": "sax.marsh-lean",
+      "race": "saxhleel",
+      "family": "saxhleel",
+      "aim": "ground",
+      "aim_y": 1.83,
+      "bearing": 0,
+      "pose": {
+        "eye": [
+          2810,
+          3.576,
+          5028.47
+        ],
+        "target": [
+          2810,
+          3.51,
+          5028
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.3935090804625982e-16,
+            -0.7245813859190223
+          ],
+          "z": 0.4982518105206976,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.5396075954153916e-16,
+            0.8005480313730938
+          ],
+          "z": 0.4509710294915714,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the GROUND puts this person — the after arm draws them here"
+    },
+    {
+      "file": "FA__npc-lilmoth-wharf-cutters__ground__b090.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-wharf-cutters",
+      "eid": "lilmoth-wharf-cutters",
+      "variant": "sax.marsh-lean",
+      "race": "saxhleel",
+      "family": "saxhleel",
+      "aim": "ground",
+      "aim_y": 1.83,
+      "bearing": 90,
+      "pose": {
+        "eye": [
+          2810.47,
+          3.576,
+          5028
+        ],
+        "target": [
+          2810,
+          3.51,
+          5028
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.0902636206937637e-16,
+            -0.7245813859199495
+          ],
+          "z": 0.49825181052024725,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.3094113931231593e-16,
+            0.8005480313735927
+          ],
+          "z": 0.45097102949112106,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the GROUND puts this person — the after arm draws them here"
+    },
+    {
+      "file": "FA__npc-lilmoth-wharf-cutters__record__b000.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-wharf-cutters",
+      "eid": "lilmoth-wharf-cutters",
+      "variant": "sax.marsh-lean",
+      "race": "saxhleel",
+      "family": "saxhleel",
+      "aim": "record",
+      "aim_y": 0.4,
+      "bearing": 0,
+      "pose": {
+        "eye": [
+          2810,
+          2.146,
+          5028.47
+        ],
+        "target": [
+          2810,
+          2.08,
+          5028
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.3935090804625984e-16,
+            -0.7245813859190205
+          ],
+          "z": 0.49825181052069756,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.539607595415392e-16,
+            0.800548031373096
+          ],
+          "z": 0.45097102949157136,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the AUTHORED height puts this person — the before arm draws them here"
+    },
+    {
+      "file": "FA__npc-lilmoth-wharf-cutters__record__b090.png",
+      "status": "skipped_by_slots",
+      "slot": "FA",
+      "part": "face",
+      "subject": "npc-lilmoth-wharf-cutters",
+      "eid": "lilmoth-wharf-cutters",
+      "variant": "sax.marsh-lean",
+      "race": "saxhleel",
+      "family": "saxhleel",
+      "aim": "record",
+      "aim_y": 0.4,
+      "bearing": 90,
+      "pose": {
+        "eye": [
+          2810.47,
+          2.146,
+          5028
+        ],
+        "target": [
+          2810,
+          2.08,
+          5028
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.090263620693764e-16,
+            -0.7245813859199477
+          ],
+          "z": 0.4982518105202472,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.30941139312316e-16,
+            0.8005480313735949
+          ],
+          "z": 0.450971029491121,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "aim_note": "aimed where the AUTHORED height puts this person — the before arm draws them here"
+    },
+    {
+      "file": "FP__player__b000.png",
+      "status": "ok",
+      "bytes": 1074813,
+      "hash": "6f4f4cd79f2919d6",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 12,
+        "luma_p05": 21,
+        "luma_p10": 33,
+        "luma_p50": 75,
+        "luma_p90": 171,
+        "luma_p95": 175,
+        "luma_p99": 178,
+        "luma_span": 166,
+        "shadow_levels": 75,
+        "local_contrast_med": 2.1688,
+        "local_contrast_p90": 20.3403,
+        "luma_entropy": 7.0749,
+        "dominant_frac": 0.0746,
+        "unique_buckets": 1134,
+        "block_range": 144.1858,
+        "pixel_std": 53.0173,
+        "structure_ratio": 43.6968,
+        "subject_box": {
+          "x0": 303,
+          "x1": 657,
+          "y0": 38,
+          "y1": 482,
+          "box_supplied": true,
+          "from": "manifest (projected subject rows)"
+        },
+        "bg_bucket_coverage": 0.0552,
+        "offbg_frac": 0.0052,
+        "centre_flank_luma": 34.143,
+        "subject_frac": 0.0009,
+        "subject_row_frac": 0.027,
+        "subject_aspect": 0.632,
+        "subject_component_px": 139,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "subject_box": {
+        "x0": 303,
+        "x1": 657,
+        "y0": 38,
+        "y1": 482
+      },
+      "gated_subject": true,
+      "slot": "FP",
+      "part": "face",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "family": "saxhleel",
+      "bearing": 0,
+      "pose": {
+        "eye": [
+          2766,
+          4.426,
+          5011.47
+        ],
+        "target": [
+          2766,
+          4.36,
+          5011
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.3935090804625984e-16,
+            -0.7245813859190205
+          ],
+          "z": 0.49825181052069756,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.539607595415392e-16,
+            0.800548031373096
+          ],
+          "z": 0.45097102949157136,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FP__player__b045.png",
+      "status": "ok",
+      "bytes": 1093173,
+      "hash": "c8cc0b128cfa4d61",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 3,
+        "luma_p05": 16,
+        "luma_p10": 29,
+        "luma_p50": 60,
+        "luma_p90": 166,
+        "luma_p95": 172,
+        "luma_p99": 177,
+        "luma_span": 174,
+        "shadow_levels": 60,
+        "local_contrast_med": 1.9824,
+        "local_contrast_p90": 18.4291,
+        "luma_entropy": 6.8947,
+        "dominant_frac": 0.0975,
+        "unique_buckets": 982,
+        "block_range": 157.8731,
+        "pixel_std": 51.1567,
+        "structure_ratio": 44.3091,
+        "subject_box": {
+          "x0": 303,
+          "x1": 657,
+          "y0": 38,
+          "y1": 482,
+          "box_supplied": true,
+          "from": "manifest (projected subject rows)"
+        },
+        "bg_bucket_coverage": 0.0405,
+        "offbg_frac": 0.0132,
+        "centre_flank_luma": 35.6987,
+        "subject_frac": 0.0033,
+        "subject_row_frac": 0.0629,
+        "subject_aspect": 0.875,
+        "subject_component_px": 528,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "subject_box": {
+        "x0": 303,
+        "x1": 657,
+        "y0": 38,
+        "y1": 482
+      },
+      "gated_subject": true,
+      "slot": "FP",
+      "part": "face",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "family": "saxhleel",
+      "bearing": 45,
+      "pose": {
+        "eye": [
+          2766.333,
+          4.426,
+          5011.333
+        ],
+        "target": [
+          2766,
+          4.36,
+          5011
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 45,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            7.773114795055956e-13,
+            -0.7233342876302384
+          ],
+          "z": 0.49912994096327284,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            8.584735693931146e-13,
+            0.7988604033328178
+          ],
+          "z": 0.45194103430578375,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FP__player__b090.png",
+      "status": "ok",
+      "bytes": 1085711,
+      "hash": "2ae3b6f24823d27c",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 5,
+        "luma_p10": 9,
+        "luma_p50": 52,
+        "luma_p90": 116,
+        "luma_p95": 162,
+        "luma_p99": 172,
+        "luma_span": 172,
+        "shadow_levels": 52,
+        "local_contrast_med": 2.0976,
+        "local_contrast_p90": 17.2453,
+        "luma_entropy": 6.706,
+        "dominant_frac": 0.0801,
+        "unique_buckets": 779,
+        "block_range": 156.7931,
+        "pixel_std": 42.0185,
+        "structure_ratio": 42.4128,
+        "subject_box": {
+          "x0": 303,
+          "x1": 657,
+          "y0": 38,
+          "y1": 482,
+          "box_supplied": true,
+          "from": "manifest (projected subject rows)"
+        },
+        "bg_bucket_coverage": 0.0366,
+        "offbg_frac": 0.0029,
+        "centre_flank_luma": 13.4217,
+        "subject_frac": 0.0005,
+        "subject_row_frac": 0.0382,
+        "subject_aspect": 2.125,
+        "subject_component_px": 84,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "subject_box": {
+        "x0": 303,
+        "x1": 657,
+        "y0": 38,
+        "y1": 482
+      },
+      "gated_subject": true,
+      "slot": "FP",
+      "part": "face",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "family": "saxhleel",
+      "bearing": 90,
+      "pose": {
+        "eye": [
+          2766.47,
+          4.426,
+          5011
+        ],
+        "target": [
+          2766,
+          4.36,
+          5011
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.090263620693764e-16,
+            -0.7245813859199477
+          ],
+          "z": 0.4982518105202472,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.30941139312316e-16,
+            0.8005480313735949
+          ],
+          "z": 0.450971029491121,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FP__player__b180.png",
+      "status": "ok",
+      "bytes": 1163852,
+      "hash": "a34e8bc76b9befd2",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 9,
+        "luma_p10": 16,
+        "luma_p50": 58,
+        "luma_p90": 103,
+        "luma_p95": 151,
+        "luma_p99": 196,
+        "luma_span": 196,
+        "shadow_levels": 58,
+        "local_contrast_med": 3.1431,
+        "local_contrast_p90": 20.5912,
+        "luma_entropy": 7.0609,
+        "dominant_frac": 0.0394,
+        "unique_buckets": 1131,
+        "block_range": 166.7103,
+        "pixel_std": 40.6763,
+        "structure_ratio": 36.7131,
+        "subject_box": {
+          "x0": 303,
+          "x1": 657,
+          "y0": 38,
+          "y1": 482,
+          "box_supplied": true,
+          "from": "manifest (projected subject rows)"
+        },
+        "bg_bucket_coverage": 0.0474,
+        "offbg_frac": 0.0173,
+        "centre_flank_luma": 29.9806,
+        "subject_frac": 0.0008,
+        "subject_row_frac": 0.0562,
+        "subject_aspect": 3.571,
+        "subject_component_px": 131,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "subject_box": {
+        "x0": 303,
+        "x1": 657,
+        "y0": 38,
+        "y1": 482
+      },
+      "gated_subject": true,
+      "slot": "FP",
+      "part": "face",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "family": "saxhleel",
+      "bearing": 180,
+      "pose": {
+        "eye": [
+          2766,
+          4.426,
+          5010.53
+        ],
+        "target": [
+          2766,
+          4.36,
+          5011
+        ],
+        "dist": 0.475,
+        "fill": 0.62,
+        "bearing_deg": 180,
+        "pitch_deg": -8,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            0,
+            -0.7245813859190205
+          ],
+          "z": 0.49825181052069756,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            0,
+            0.800548031373096
+          ],
+          "z": 0.45097102949157136,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "CP__player__yaw000.png",
+      "status": "ok",
+      "bytes": 961254,
+      "hash": "029e4a9cbdfdc913",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 17,
+        "luma_p10": 27,
+        "luma_p50": 87,
+        "luma_p90": 175,
+        "luma_p95": 178,
+        "luma_p99": 195,
+        "luma_span": 195,
+        "shadow_levels": 87,
+        "local_contrast_med": 1.0354,
+        "local_contrast_p90": 14.4126,
+        "luma_entropy": 7.1397,
+        "dominant_frac": 0.0571,
+        "unique_buckets": 1021,
+        "block_range": 178.4459,
+        "pixel_std": 58.9464,
+        "structure_ratio": 46.7199,
+        "subject_box": {
+          "x0": 365,
+          "x1": 595,
+          "y0": 47,
+          "y1": 493,
+          "box_supplied": true,
+          "from": "manifest (projected subject rows)"
+        },
+        "bg_bucket_coverage": 0.0359,
+        "offbg_frac": 0.0351,
+        "centre_flank_luma": 36.2819,
+        "subject_frac": 0.0052,
+        "subject_row_frac": 0.0157,
+        "subject_aspect": 0.07,
+        "subject_component_px": 542,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "subject_box": {
+        "x0": 365,
+        "x1": 595,
+        "y0": 47,
+        "y1": 493
+      },
+      "gated_subject": true,
+      "slot": "CP",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "yaw": 0,
+      "pose": {
+        "eye": [
+          2766,
+          3.57,
+          5013.486
+        ],
+        "target": [
+          2766,
+          3.57,
+          5011
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "CP__player__yaw045.png",
+      "status": "ok",
+      "bytes": 1008527,
+      "hash": "8776e7163bdd7685",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 9,
+        "luma_p10": 18,
+        "luma_p50": 64,
+        "luma_p90": 172,
+        "luma_p95": 177,
+        "luma_p99": 195,
+        "luma_span": 195,
+        "shadow_levels": 64,
+        "local_contrast_med": 1.2489,
+        "local_contrast_p90": 13.9334,
+        "luma_entropy": 7.0952,
+        "dominant_frac": 0.0606,
+        "unique_buckets": 985,
+        "block_range": 181.3461,
+        "pixel_std": 59.4203,
+        "structure_ratio": 45.8867,
+        "subject_box": {
+          "x0": 365,
+          "x1": 595,
+          "y0": 47,
+          "y1": 493,
+          "box_supplied": true,
+          "from": "manifest (projected subject rows)"
+        },
+        "bg_bucket_coverage": 0.0447,
+        "offbg_frac": 0.026,
+        "centre_flank_luma": 25.5118,
+        "subject_frac": 0.0025,
+        "subject_row_frac": 0.0537,
+        "subject_aspect": 1.2,
+        "subject_component_px": 256,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "subject_box": {
+        "x0": 365,
+        "x1": 595,
+        "y0": 47,
+        "y1": 493
+      },
+      "gated_subject": true,
+      "slot": "CP",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "yaw": 45,
+      "pose": {
+        "eye": [
+          2767.758,
+          3.57,
+          5012.758
+        ],
+        "target": [
+          2766,
+          3.57,
+          5011
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 45,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.1546976174195303e-16,
+            -0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.1546976174195303e-16,
+            0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "CP__player__yaw090.png",
+      "status": "ok",
+      "bytes": 1047270,
+      "hash": "de80b0b1a077a70d",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 3,
+        "luma_p10": 12,
+        "luma_p50": 58,
+        "luma_p90": 157,
+        "luma_p95": 164,
+        "luma_p99": 176,
+        "luma_span": 176,
+        "shadow_levels": 58,
+        "local_contrast_med": 1.9378,
+        "local_contrast_p90": 17.0671,
+        "luma_entropy": 6.9606,
+        "dominant_frac": 0.0924,
+        "unique_buckets": 771,
+        "block_range": 170.9789,
+        "pixel_std": 50.8531,
+        "structure_ratio": 42.4542,
+        "subject_box": {
+          "x0": 365,
+          "x1": 595,
+          "y0": 47,
+          "y1": 493,
+          "box_supplied": true,
+          "from": "manifest (projected subject rows)"
+        },
+        "bg_bucket_coverage": 0.0308,
+        "offbg_frac": 0.0393,
+        "centre_flank_luma": 16.7333,
+        "subject_frac": 0.0156,
+        "subject_row_frac": 0.3266,
+        "subject_aspect": 3.395,
+        "subject_component_px": 1607,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "subject_box": {
+        "x0": 365,
+        "x1": 595,
+        "y0": 47,
+        "y1": 493
+      },
+      "gated_subject": true,
+      "slot": "CP",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "yaw": 90,
+      "pose": {
+        "eye": [
+          2768.486,
+          3.57,
+          5011
+        ],
+        "target": [
+          2766,
+          3.57,
+          5011
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "CP__player__yaw135.png",
+      "status": "ok",
+      "bytes": 1136668,
+      "hash": "cc8d69df6c58f7b7",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 2,
+        "luma_p10": 11,
+        "luma_p50": 58,
+        "luma_p90": 128,
+        "luma_p95": 171,
+        "luma_p99": 182,
+        "luma_span": 182,
+        "shadow_levels": 58,
+        "local_contrast_med": 2.3974,
+        "local_contrast_p90": 17.459,
+        "luma_entropy": 7.0225,
+        "dominant_frac": 0.0692,
+        "unique_buckets": 940,
+        "block_range": 164.5486,
+        "pixel_std": 44.6901,
+        "structure_ratio": 39.8702,
+        "subject_box": {
+          "x0": 365,
+          "x1": 595,
+          "y0": 47,
+          "y1": 493,
+          "box_supplied": true,
+          "from": "manifest (projected subject rows)"
+        },
+        "bg_bucket_coverage": 0.0471,
+        "offbg_frac": 0.0511,
+        "centre_flank_luma": 33.8244,
+        "subject_frac": 0.0248,
+        "subject_row_frac": 0.1857,
+        "subject_aspect": 1.186,
+        "subject_component_px": 2558,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "subject_box": {
+        "x0": 365,
+        "x1": 595,
+        "y0": 47,
+        "y1": 493
+      },
+      "gated_subject": true,
+      "slot": "CP",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "yaw": 135,
+      "pose": {
+        "eye": [
+          2767.758,
+          3.57,
+          5009.242
+        ],
+        "target": [
+          2766,
+          3.57,
+          5011
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            3.2320464261292954e-16,
+            -0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            3.2320464261292954e-16,
+            0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "CP__player__yaw180.png",
+      "status": "ok",
+      "bytes": 1084186,
+      "hash": "eb9c0e04f55dc46c",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 6,
+        "luma_p10": 16,
+        "luma_p50": 65,
+        "luma_p90": 164,
+        "luma_p95": 170,
+        "luma_p99": 183,
+        "luma_span": 183,
+        "shadow_levels": 65,
+        "local_contrast_med": 2.054,
+        "local_contrast_p90": 17.4704,
+        "luma_entropy": 7.2401,
+        "dominant_frac": 0.0595,
+        "unique_buckets": 883,
+        "block_range": 171.4511,
+        "pixel_std": 52.1513,
+        "structure_ratio": 43.4849,
+        "subject_box": {
+          "x0": 365,
+          "x1": 595,
+          "y0": 47,
+          "y1": 493,
+          "box_supplied": true,
+          "from": "manifest (projected subject rows)"
+        },
+        "bg_bucket_coverage": 0.0334,
+        "offbg_frac": 0.0379,
+        "centre_flank_luma": 26.2505,
+        "subject_frac": 0.0031,
+        "subject_row_frac": 0.0805,
+        "subject_aspect": 1.895,
+        "subject_component_px": 319,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "subject_box": {
+        "x0": 365,
+        "x1": 595,
+        "y0": 47,
+        "y1": 493
+      },
+      "gated_subject": true,
+      "slot": "CP",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "yaw": 180,
+      "pose": {
+        "eye": [
+          2766,
+          3.57,
+          5008.514
+        ],
+        "target": [
+          2766,
+          3.57,
+          5011
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 180,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            0,
+            -0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            0,
+            0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "CP__player__yaw225.png",
+      "status": "ok",
+      "bytes": 1058269,
+      "hash": "385a219ec4387ab5",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 0,
+        "luma_p05": 10,
+        "luma_p10": 19,
+        "luma_p50": 78,
+        "luma_p90": 165,
+        "luma_p95": 172,
+        "luma_p99": 178,
+        "luma_span": 178,
+        "shadow_levels": 78,
+        "local_contrast_med": 1.7856,
+        "local_contrast_p90": 15.9634,
+        "luma_entropy": 7.2455,
+        "dominant_frac": 0.0419,
+        "unique_buckets": 1100,
+        "block_range": 173.6351,
+        "pixel_std": 54.8833,
+        "structure_ratio": 46.2463,
+        "subject_box": {
+          "x0": 365,
+          "x1": 595,
+          "y0": 47,
+          "y1": 493,
+          "box_supplied": true,
+          "from": "manifest (projected subject rows)"
+        },
+        "bg_bucket_coverage": 0.0498,
+        "offbg_frac": 0.0863,
+        "centre_flank_luma": 31.719,
+        "subject_frac": 0.0374,
+        "subject_row_frac": 0.4027,
+        "subject_aspect": 2.647,
+        "subject_component_px": 3858,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "subject_box": {
+        "x0": 365,
+        "x1": 595,
+        "y0": 47,
+        "y1": 493
+      },
+      "gated_subject": true,
+      "slot": "CP",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "yaw": 225,
+      "pose": {
+        "eye": [
+          2764.242,
+          3.57,
+          5009.242
+        ],
+        "target": [
+          2766,
+          3.57,
+          5011
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 225,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.0773488087097652e-16,
+            -0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.0773488087097652e-16,
+            0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "CP__player__yaw270.png",
+      "status": "ok",
+      "bytes": 1021817,
+      "hash": "4eca0ec4af32c1ab",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 6,
+        "luma_p05": 19,
+        "luma_p10": 23,
+        "luma_p50": 75,
+        "luma_p90": 169,
+        "luma_p95": 176,
+        "luma_p99": 179,
+        "luma_span": 173,
+        "shadow_levels": 75,
+        "local_contrast_med": 1.5356,
+        "local_contrast_p90": 15.9404,
+        "luma_entropy": 7.1423,
+        "dominant_frac": 0.0562,
+        "unique_buckets": 1064,
+        "block_range": 157.361,
+        "pixel_std": 55.8122,
+        "structure_ratio": 45.126,
+        "subject_box": {
+          "x0": 365,
+          "x1": 595,
+          "y0": 47,
+          "y1": 493,
+          "box_supplied": true,
+          "from": "manifest (projected subject rows)"
+        },
+        "bg_bucket_coverage": 0.0437,
+        "offbg_frac": 0.0318,
+        "centre_flank_luma": 20.499,
+        "subject_frac": 0.0056,
+        "subject_row_frac": 0.1588,
+        "subject_aspect": 4.438,
+        "subject_component_px": 574,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "subject_box": {
+        "x0": 365,
+        "x1": 595,
+        "y0": 47,
+        "y1": 493
+      },
+      "gated_subject": true,
+      "slot": "CP",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "yaw": 270,
+      "pose": {
+        "eye": [
+          2763.514,
+          3.57,
+          5011
+        ],
+        "target": [
+          2766,
+          3.57,
+          5011
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 270,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.767743829144651
+          ],
+          "z": 2.4859999999998763,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "CP__player__yaw315.png",
+      "status": "ok",
+      "bytes": 982080,
+      "hash": "d4ef91891e9fe61c",
+      "liveness": {
+        "width": 960,
+        "height": 540,
+        "luma_p01": 5,
+        "luma_p05": 17,
+        "luma_p10": 26,
+        "luma_p50": 97,
+        "luma_p90": 174,
+        "luma_p95": 176,
+        "luma_p99": 179,
+        "luma_span": 174,
+        "shadow_levels": 97,
+        "local_contrast_med": 1.0092,
+        "local_contrast_p90": 13.6711,
+        "luma_entropy": 7.1039,
+        "dominant_frac": 0.0717,
+        "unique_buckets": 1066,
+        "block_range": 160.7065,
+        "pixel_std": 57.0831,
+        "structure_ratio": 46.7239,
+        "subject_box": {
+          "x0": 365,
+          "x1": 595,
+          "y0": 47,
+          "y1": 493,
+          "box_supplied": true,
+          "from": "manifest (projected subject rows)"
+        },
+        "bg_bucket_coverage": 0.0376,
+        "offbg_frac": 0.0808,
+        "centre_flank_luma": 33.6796,
+        "subject_frac": 0.0143,
+        "subject_row_frac": 0.4049,
+        "subject_aspect": 9.526,
+        "subject_component_px": 1479,
+        "verdict": "LIVE",
+        "why": [],
+        "soft": []
+      },
+      "subject_box": {
+        "x0": 365,
+        "x1": 595,
+        "y0": 47,
+        "y1": 493
+      },
+      "gated_subject": true,
+      "slot": "CP",
+      "subject": "player",
+      "variant": "player.saxhleel",
+      "yaw": 315,
+      "pose": {
+        "eye": [
+          2764.242,
+          3.57,
+          5012.758
+        ],
+        "target": [
+          2766,
+          3.57,
+          5011
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 315,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.0773488087097652e-16,
+            -0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.0773488087097652e-16,
+            0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FS__slope-strong__b000p-18.png",
+      "status": "skipped_by_slots",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "stand": "slope-strong",
+      "per_foot_ground_difference_m": 0.2214,
+      "per_foot_drawn_difference_m": 0.2214,
+      "stance_m": 0.1978,
+      "feet": {
+        "foot_l": {
+          "x": 3035.095,
+          "y": 1.2828,
+          "z": 4711.942,
+          "ground": 1.184
+        },
+        "foot_r": {
+          "x": 3034.897,
+          "y": 1.0614,
+          "z": 4711.94,
+          "ground": 0.9626
+        },
+        "stance_m": 0.1978,
+        "per_foot_ground_difference_m": 0.2214,
+        "per_foot_drawn_difference_m": 0.2214,
+        "rigged": true
+      },
+      "bearing": 0,
+      "pitch": -18,
+      "pose": {
+        "eye": [
+          3035,
+          1.391,
+          4712.509
+        ],
+        "target": [
+          3035,
+          1.225,
+          4712
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 0,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.2785902378937582e-16,
+            -0.5893601893245742
+          ],
+          "z": 0.5880946501482525,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.557842895187008e-16,
+            0.7180804131476844
+          ],
+          "z": 0.4826751663856556,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FS__slope-strong__b090p-18.png",
+      "status": "skipped_by_slots",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "stand": "slope-strong",
+      "per_foot_ground_difference_m": 0.2214,
+      "per_foot_drawn_difference_m": 0.2214,
+      "stance_m": 0.1978,
+      "feet": {
+        "foot_l": {
+          "x": 3035.095,
+          "y": 1.2828,
+          "z": 4711.942,
+          "ground": 1.184
+        },
+        "foot_r": {
+          "x": 3034.897,
+          "y": 1.0614,
+          "z": 4711.94,
+          "ground": 0.9626
+        },
+        "stance_m": 0.1978,
+        "per_foot_ground_difference_m": 0.2214,
+        "per_foot_drawn_difference_m": 0.2214,
+        "rigged": true
+      },
+      "bearing": 90,
+      "pitch": -18,
+      "pose": {
+        "eye": [
+          3035.509,
+          1.391,
+          4712
+        ],
+        "target": [
+          3035,
+          1.225,
+          4712
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 90,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.9178853568406372e-16,
+            -0.5893601893245742
+          ],
+          "z": 0.5880946501482525,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.336764342780512e-16,
+            0.7180804131476844
+          ],
+          "z": 0.4826751663856556,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FS__slope-strong__b045p-50.png",
+      "status": "skipped_by_slots",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "stand": "slope-strong",
+      "per_foot_ground_difference_m": 0.2214,
+      "per_foot_drawn_difference_m": 0.2214,
+      "stance_m": 0.1978,
+      "feet": {
+        "foot_l": {
+          "x": 3035.095,
+          "y": 1.2828,
+          "z": 4711.942,
+          "ground": 1.184
+        },
+        "foot_r": {
+          "x": 3034.897,
+          "y": 1.0614,
+          "z": 4711.94,
+          "ground": 0.9626
+        },
+        "stance_m": 0.1978,
+        "per_foot_ground_difference_m": 0.2214,
+        "per_foot_drawn_difference_m": 0.2214,
+        "rigged": true
+      },
+      "bearing": 45,
+      "pitch": -50,
+      "pose": {
+        "eye": [
+          3035.243,
+          1.635,
+          4712.243
+        ],
+        "target": [
+          3035,
+          1.225,
+          4712
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 45,
+        "pitch_deg": -50,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            -5.82946936184377e-13,
+            -0.35202387626660514
+          ],
+          "z": 0.6652612838513491,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            -9.58298219473902e-13,
+            0.5786870201587022
+          ],
+          "z": 0.40468824766901346,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FSF__slope-strong__b000.png",
+      "status": "skipped_by_slots",
+      "slot": "FSF",
+      "part": "figure",
+      "subject": "player",
+      "stand": "slope-strong",
+      "per_foot_ground_difference_m": 0.2214,
+      "per_foot_drawn_difference_m": 0.2214,
+      "stance_m": 0.1978,
+      "feet": {
+        "foot_l": {
+          "x": 3035.095,
+          "y": 1.2828,
+          "z": 4711.942,
+          "ground": 1.184
+        },
+        "foot_r": {
+          "x": 3034.897,
+          "y": 1.0614,
+          "z": 4711.94,
+          "ground": 0.9626
+        },
+        "stance_m": 0.1978,
+        "per_foot_ground_difference_m": 0.2214,
+        "per_foot_drawn_difference_m": 0.2214,
+        "rigged": true
+      },
+      "bearing": 0,
+      "pose": {
+        "eye": [
+          3035,
+          2.275,
+          4714.473
+        ],
+        "target": [
+          3035,
+          2.015,
+          4712
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": -6,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.4161778904471129e-16,
+            -0.7358058783483861
+          ],
+          "z": 2.579687724700947,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.5262946552587798e-16,
+            0.7930194534156717
+          ],
+          "z": 2.3935723730618004,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FSF__slope-strong__b090.png",
+      "status": "skipped_by_slots",
+      "slot": "FSF",
+      "part": "figure",
+      "subject": "player",
+      "stand": "slope-strong",
+      "per_foot_ground_difference_m": 0.2214,
+      "per_foot_drawn_difference_m": 0.2214,
+      "stance_m": 0.1978,
+      "feet": {
+        "foot_l": {
+          "x": 3035.095,
+          "y": 1.2828,
+          "z": 4711.942,
+          "ground": 1.184
+        },
+        "foot_r": {
+          "x": 3034.897,
+          "y": 1.0614,
+          "z": 4711.94,
+          "ground": 0.9626
+        },
+        "stance_m": 0.1978,
+        "per_foot_ground_difference_m": 0.2214,
+        "per_foot_drawn_difference_m": 0.2214,
+        "rigged": true
+      },
+      "bearing": 90,
+      "pose": {
+        "eye": [
+          3037.473,
+          2.275,
+          4712
+        ],
+        "target": [
+          3035,
+          2.015,
+          4712
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": -6,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.1242668356706692e-16,
+            -0.7358058783483861
+          ],
+          "z": 2.579687724700947,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.2894419828881694e-16,
+            0.7930194534156717
+          ],
+          "z": 2.3935723730618004,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FS__slope-moderate__b000p-18.png",
+      "status": "skipped_by_slots",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "stand": "slope-moderate",
+      "per_foot_ground_difference_m": 0.265,
+      "per_foot_drawn_difference_m": 0.2229,
+      "stance_m": 0.1979,
+      "feet": {
+        "foot_l": {
+          "x": 3002.086,
+          "y": 1.8253,
+          "z": 4726.945,
+          "ground": 1.7395
+        },
+        "foot_r": {
+          "x": 3001.888,
+          "y": 1.6024,
+          "z": 4726.936,
+          "ground": 1.4745
+        },
+        "stance_m": 0.1979,
+        "per_foot_ground_difference_m": 0.265,
+        "per_foot_drawn_difference_m": 0.2229,
+        "rigged": true
+      },
+      "bearing": 0,
+      "pitch": -18,
+      "pose": {
+        "eye": [
+          3002,
+          2.03,
+          4727.509
+        ],
+        "target": [
+          3002,
+          1.864,
+          4727
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 0,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.2785902378937582e-16,
+            -0.5893601893245733
+          ],
+          "z": 0.5880946501482525,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.5578428951870088e-16,
+            0.7180804131476867
+          ],
+          "z": 0.48267516638565544,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FS__slope-moderate__b090p-18.png",
+      "status": "skipped_by_slots",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "stand": "slope-moderate",
+      "per_foot_ground_difference_m": 0.265,
+      "per_foot_drawn_difference_m": 0.2229,
+      "stance_m": 0.1979,
+      "feet": {
+        "foot_l": {
+          "x": 3002.086,
+          "y": 1.8253,
+          "z": 4726.945,
+          "ground": 1.7395
+        },
+        "foot_r": {
+          "x": 3001.888,
+          "y": 1.6024,
+          "z": 4726.936,
+          "ground": 1.4745
+        },
+        "stance_m": 0.1979,
+        "per_foot_ground_difference_m": 0.265,
+        "per_foot_drawn_difference_m": 0.2229,
+        "rigged": true
+      },
+      "bearing": 90,
+      "pitch": -18,
+      "pose": {
+        "eye": [
+          3002.509,
+          2.03,
+          4727
+        ],
+        "target": [
+          3002,
+          1.864,
+          4727
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 90,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.9178853568406372e-16,
+            -0.5893601893245733
+          ],
+          "z": 0.5880946501482525,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.336764342780513e-16,
+            0.7180804131476867
+          ],
+          "z": 0.48267516638565544,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FS__slope-moderate__b045p-50.png",
+      "status": "skipped_by_slots",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "stand": "slope-moderate",
+      "per_foot_ground_difference_m": 0.265,
+      "per_foot_drawn_difference_m": 0.2229,
+      "stance_m": 0.1979,
+      "feet": {
+        "foot_l": {
+          "x": 3002.086,
+          "y": 1.8253,
+          "z": 4726.945,
+          "ground": 1.7395
+        },
+        "foot_r": {
+          "x": 3001.888,
+          "y": 1.6024,
+          "z": 4726.936,
+          "ground": 1.4745
+        },
+        "stance_m": 0.1979,
+        "per_foot_ground_difference_m": 0.265,
+        "per_foot_drawn_difference_m": 0.2229,
+        "rigged": true
+      },
+      "bearing": 45,
+      "pitch": -50,
+      "pose": {
+        "eye": [
+          3002.243,
+          2.274,
+          4727.243
+        ],
+        "target": [
+          3002,
+          1.864,
+          4727
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 45,
+        "pitch_deg": -50,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            -5.82946936184377e-13,
+            -0.35202387626660514
+          ],
+          "z": 0.6652612838513491,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            -9.582982194739026e-13,
+            0.5786870201587032
+          ],
+          "z": 0.40468824766901323,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FSF__slope-moderate__b000.png",
+      "status": "skipped_by_slots",
+      "slot": "FSF",
+      "part": "figure",
+      "subject": "player",
+      "stand": "slope-moderate",
+      "per_foot_ground_difference_m": 0.265,
+      "per_foot_drawn_difference_m": 0.2229,
+      "stance_m": 0.1979,
+      "feet": {
+        "foot_l": {
+          "x": 3002.086,
+          "y": 1.8253,
+          "z": 4726.945,
+          "ground": 1.7395
+        },
+        "foot_r": {
+          "x": 3001.888,
+          "y": 1.6024,
+          "z": 4726.936,
+          "ground": 1.4745
+        },
+        "stance_m": 0.1979,
+        "per_foot_ground_difference_m": 0.265,
+        "per_foot_drawn_difference_m": 0.2229,
+        "rigged": true
+      },
+      "bearing": 0,
+      "pose": {
+        "eye": [
+          3002,
+          2.914,
+          4729.473
+        ],
+        "target": [
+          3002,
+          2.654,
+          4727
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": -6,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.4161778904471129e-16,
+            -0.7358058783483865
+          ],
+          "z": 2.579687724700947,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.5262946552587798e-16,
+            0.7930194534156714
+          ],
+          "z": 2.3935723730618004,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FSF__slope-moderate__b090.png",
+      "status": "skipped_by_slots",
+      "slot": "FSF",
+      "part": "figure",
+      "subject": "player",
+      "stand": "slope-moderate",
+      "per_foot_ground_difference_m": 0.265,
+      "per_foot_drawn_difference_m": 0.2229,
+      "stance_m": 0.1979,
+      "feet": {
+        "foot_l": {
+          "x": 3002.086,
+          "y": 1.8253,
+          "z": 4726.945,
+          "ground": 1.7395
+        },
+        "foot_r": {
+          "x": 3001.888,
+          "y": 1.6024,
+          "z": 4726.936,
+          "ground": 1.4745
+        },
+        "stance_m": 0.1979,
+        "per_foot_ground_difference_m": 0.265,
+        "per_foot_drawn_difference_m": 0.2229,
+        "rigged": true
+      },
+      "bearing": 90,
+      "pose": {
+        "eye": [
+          3004.473,
+          2.914,
+          4727
+        ],
+        "target": [
+          3002,
+          2.654,
+          4727
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": -6,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.1242668356706692e-16,
+            -0.7358058783483865
+          ],
+          "z": 2.579687724700947,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.2894419828881694e-16,
+            0.7930194534156714
+          ],
+          "z": 2.3935723730618004,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FS__char-player__b000p-18.png",
+      "status": "skipped_by_slots",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "stand": "char-player",
+      "per_foot_ground_difference_m": 0,
+      "per_foot_drawn_difference_m": 0.0052,
+      "stance_m": 0.1983,
+      "feet": {
+        "foot_l": {
+          "x": 2766.076,
+          "y": 2.7761,
+          "z": 5010.949,
+          "ground": 2.68
+        },
+        "foot_r": {
+          "x": 2765.879,
+          "y": 2.7812,
+          "z": 5010.932,
+          "ground": 2.68
+        },
+        "stance_m": 0.1983,
+        "per_foot_ground_difference_m": 0,
+        "per_foot_drawn_difference_m": 0.0052,
+        "rigged": true
+      },
+      "bearing": 0,
+      "pitch": -18,
+      "pose": {
+        "eye": [
+          2766,
+          2.945,
+          5011.509
+        ],
+        "target": [
+          2766,
+          2.78,
+          5011
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 0,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.2798883437075336e-16,
+            -0.5902994851043142
+          ],
+          "z": 0.5874981847705022,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.5579137747019936e-16,
+            0.7185280608804545
+          ],
+          "z": 0.48265320638873893,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FS__char-player__b090p-18.png",
+      "status": "skipped_by_slots",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "stand": "char-player",
+      "per_foot_ground_difference_m": 0,
+      "per_foot_drawn_difference_m": 0.0052,
+      "stance_m": 0.1983,
+      "feet": {
+        "foot_l": {
+          "x": 2766.076,
+          "y": 2.7761,
+          "z": 5010.949,
+          "ground": 2.68
+        },
+        "foot_r": {
+          "x": 2765.879,
+          "y": 2.7812,
+          "z": 5010.932,
+          "ground": 2.68
+        },
+        "stance_m": 0.1983,
+        "per_foot_ground_difference_m": 0,
+        "per_foot_drawn_difference_m": 0.0052,
+        "rigged": true
+      },
+      "bearing": 90,
+      "pitch": -18,
+      "pose": {
+        "eye": [
+          2766.509,
+          2.945,
+          5011
+        ],
+        "target": [
+          2766,
+          2.78,
+          5011
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 90,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.9198325155613002e-16,
+            -0.5902994851043142
+          ],
+          "z": 0.5874981847705022,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.33687066205299e-16,
+            0.7185280608804545
+          ],
+          "z": 0.48265320638873893,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FS__char-player__b045p-50.png",
+      "status": "skipped_by_slots",
+      "slot": "FS",
+      "part": "foot",
+      "subject": "player",
+      "stand": "char-player",
+      "per_foot_ground_difference_m": 0,
+      "per_foot_drawn_difference_m": 0.0052,
+      "stance_m": 0.1983,
+      "feet": {
+        "foot_l": {
+          "x": 2766.076,
+          "y": 2.7761,
+          "z": 5010.949,
+          "ground": 2.68
+        },
+        "foot_r": {
+          "x": 2765.879,
+          "y": 2.7812,
+          "z": 5010.932,
+          "ground": 2.68
+        },
+        "stance_m": 0.1983,
+        "per_foot_ground_difference_m": 0,
+        "per_foot_drawn_difference_m": 0.0052,
+        "rigged": true
+      },
+      "bearing": 45,
+      "pitch": -50,
+      "pose": {
+        "eye": [
+          2766.243,
+          3.19,
+          5011.243
+        ],
+        "target": [
+          2766,
+          2.78,
+          5011
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 45,
+        "pitch_deg": -50,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            -5.829469361843768e-13,
+            -0.3520238762666056
+          ],
+          "z": 0.6652612838513492,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            -9.58298219473902e-13,
+            0.5786870201587013
+          ],
+          "z": 0.40468824766901357,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FSF__char-player__b000.png",
+      "status": "skipped_by_slots",
+      "slot": "FSF",
+      "part": "figure",
+      "subject": "player",
+      "stand": "char-player",
+      "per_foot_ground_difference_m": 0,
+      "per_foot_drawn_difference_m": 0.0052,
+      "stance_m": 0.1983,
+      "feet": {
+        "foot_l": {
+          "x": 2766.076,
+          "y": 2.7761,
+          "z": 5010.949,
+          "ground": 2.68
+        },
+        "foot_r": {
+          "x": 2765.879,
+          "y": 2.7812,
+          "z": 5010.932,
+          "ground": 2.68
+        },
+        "stance_m": 0.1983,
+        "per_foot_ground_difference_m": 0,
+        "per_foot_drawn_difference_m": 0.0052,
+        "rigged": true
+      },
+      "bearing": 0,
+      "pose": {
+        "eye": [
+          2766,
+          3.83,
+          5013.473
+        ],
+        "target": [
+          2766,
+          3.57,
+          5011
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 0,
+        "pitch_deg": -6,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.4161778904471129e-16,
+            -0.7358058783483865
+          ],
+          "z": 2.579687724700947,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.5262946552587798e-16,
+            0.7930194534156714
+          ],
+          "z": 2.3935723730618004,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "FSF__char-player__b090.png",
+      "status": "skipped_by_slots",
+      "slot": "FSF",
+      "part": "figure",
+      "subject": "player",
+      "stand": "char-player",
+      "per_foot_ground_difference_m": 0,
+      "per_foot_drawn_difference_m": 0.0052,
+      "stance_m": 0.1983,
+      "feet": {
+        "foot_l": {
+          "x": 2766.076,
+          "y": 2.7761,
+          "z": 5010.949,
+          "ground": 2.68
+        },
+        "foot_r": {
+          "x": 2765.879,
+          "y": 2.7812,
+          "z": 5010.932,
+          "ground": 2.68
+        },
+        "stance_m": 0.1983,
+        "per_foot_ground_difference_m": 0,
+        "per_foot_drawn_difference_m": 0.0052,
+        "rigged": true
+      },
+      "bearing": 90,
+      "pose": {
+        "eye": [
+          2768.473,
+          3.83,
+          5011
+        ],
+        "target": [
+          2766,
+          3.57,
+          5011
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 90,
+        "pitch_deg": -6,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            2.1242668356706692e-16,
+            -0.7358058783483865
+          ],
+          "z": 2.579687724700947,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.2894419828881694e-16,
+            0.7930194534156714
+          ],
+          "z": 2.3935723730618004,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f004.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 4,
+      "travelled_m": 0.1332999999999629,
+      "pose": {
+        "eye": [
+          2767.625,
+          3.57,
+          5009.242
+        ],
+        "target": [
+          2765.867,
+          3.57,
+          5011
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            3.2320464261292954e-16,
+            -0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            3.2320464261292954e-16,
+            0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "MF__walk__f004.png",
+      "status": "skipped_by_slots",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "sim_frame": 4,
+      "travelled_m": 0.1332999999999629,
+      "pose": {
+        "eye": [
+          2766.376,
+          2.945,
+          5011
+        ],
+        "target": [
+          2765.867,
+          2.78,
+          5011
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 90,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.9198325155613002e-16,
+            -0.5902994851043142
+          ],
+          "z": 0.5874981847705022,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.33687066205299e-16,
+            0.7185280608804545
+          ],
+          "z": 0.48265320638873893,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f008.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 8,
+      "travelled_m": 0.32445942735591854,
+      "pose": {
+        "eye": [
+          2767.435,
+          3.57,
+          5009.265
+        ],
+        "target": [
+          2765.676,
+          3.57,
+          5011.024
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            3.2302089921174776e-16,
+            -0.7672495129940088
+          ],
+          "z": 2.487601656214295,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            3.2302089921174776e-16,
+            0.7672495129940088
+          ],
+          "z": 2.487601656214295,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f012.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 12,
+      "travelled_m": 0.46349532899508405,
+      "pose": {
+        "eye": [
+          2767.317,
+          3.57,
+          5009.383
+        ],
+        "target": [
+          2765.559,
+          3.57,
+          5011.141
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            3.2320464261292954e-16,
+            -0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            3.2320464261292954e-16,
+            0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "MF__walk__f012.png",
+      "status": "skipped_by_slots",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "sim_frame": 12,
+      "travelled_m": 0.46349532899508405,
+      "pose": {
+        "eye": [
+          2766.068,
+          2.945,
+          5011.141
+        ],
+        "target": [
+          2765.559,
+          2.78,
+          5011.141
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 90,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.9198325155613002e-16,
+            -0.5902994851043142
+          ],
+          "z": 0.5874981847705022,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.33687066205299e-16,
+            0.7185280608804545
+          ],
+          "z": 0.48265320638873893,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f016.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 16,
+      "travelled_m": 0.6528934752315066,
+      "pose": {
+        "eye": [
+          2767.126,
+          3.57,
+          5009.407
+        ],
+        "target": [
+          2765.368,
+          3.57,
+          5011.165
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            -1.5567690285854094e-13,
+            -0.7676859461640748
+          ],
+          "z": 2.4861874426519552,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            -1.5567690285854094e-13,
+            0.7676859461640748
+          ],
+          "z": 2.4861874426519552,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f020.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 20,
+      "travelled_m": 0.8010780798397994,
+      "pose": {
+        "eye": [
+          2767.009,
+          3.57,
+          5009.525
+        ],
+        "target": [
+          2765.251,
+          3.57,
+          5011.283
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            3.123234196448801e-13,
+            -0.7676859461639753
+          ],
+          "z": 2.4861874426522768,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            3.123234196448801e-13,
+            0.7676859461639753
+          ],
+          "z": 2.4861874426522768,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "MF__walk__f020.png",
+      "status": "skipped_by_slots",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "sim_frame": 20,
+      "travelled_m": 0.8010780798397994,
+      "pose": {
+        "eye": [
+          2765.76,
+          2.945,
+          5011.283
+        ],
+        "target": [
+          2765.251,
+          2.78,
+          5011.283
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 90,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.9198325155613002e-16,
+            -0.5902994851043142
+          ],
+          "z": 0.5874981847705022,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.33687066205299e-16,
+            0.7185280608804545
+          ],
+          "z": 0.48265320638873893,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f024.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 24,
+      "travelled_m": 0.9883911422104401,
+      "pose": {
+        "eye": [
+          2766.818,
+          3.57,
+          5009.548
+        ],
+        "target": [
+          2765.06,
+          3.57,
+          5011.306
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            -1.5567690285854094e-13,
+            -0.7676859461640748
+          ],
+          "z": 2.4861874426519552,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            -1.5567690285854094e-13,
+            0.7676859461640748
+          ],
+          "z": 2.4861874426519552,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f028.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 28,
+      "travelled_m": 1.1395386127726967,
+      "pose": {
+        "eye": [
+          2766.701,
+          3.57,
+          5009.666
+        ],
+        "target": [
+          2764.942,
+          3.57,
+          5011.424
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            -1.9813334101045804e-9,
+            -0.7674676365097532
+          ],
+          "z": 2.4868946499599427,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            -1.9813334101045804e-9,
+            0.7674676365097532
+          ],
+          "z": 2.4868946499599427,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "MF__walk__f028.png",
+      "status": "skipped_by_slots",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "sim_frame": 28,
+      "travelled_m": 1.1395386127726967,
+      "pose": {
+        "eye": [
+          2765.452,
+          2.945,
+          5011.424
+        ],
+        "target": [
+          2764.942,
+          2.78,
+          5011.424
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 90,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.9207980643987428e-16,
+            -0.589548147400511
+          ],
+          "z": 0.5883565007487213,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.3364060981307776e-16,
+            0.7171102211011061
+          ],
+          "z": 0.48369760236403236,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f032.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 32,
+      "travelled_m": 1.325718552333099,
+      "pose": {
+        "eye": [
+          2766.51,
+          3.57,
+          5009.69
+        ],
+        "target": [
+          2764.752,
+          3.57,
+          5011.448
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.5632331214372626e-13,
+            -0.7676859461638761
+          ],
+          "z": 2.4861874426525983,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.5632331214372626e-13,
+            0.7676859461638761
+          ],
+          "z": 2.4861874426525983,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f036.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 36,
+      "travelled_m": 1.4782262952605276,
+      "pose": {
+        "eye": [
+          2766.392,
+          3.57,
+          5009.808
+        ],
+        "target": [
+          2764.634,
+          3.57,
+          5011.566
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            3.2320464261292954e-16,
+            -0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            3.2320464261292954e-16,
+            0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "MF__walk__f036.png",
+      "status": "skipped_by_slots",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "sim_frame": 36,
+      "travelled_m": 1.4782262952605276,
+      "pose": {
+        "eye": [
+          2765.143,
+          2.945,
+          5011.566
+        ],
+        "target": [
+          2764.634,
+          2.78,
+          5011.566
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 90,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.9198325155613002e-16,
+            -0.5902994851043142
+          ],
+          "z": 0.5874981847705022,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.33687066205299e-16,
+            0.7185280608804545
+          ],
+          "z": 0.48265320638873893,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f040.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 40,
+      "travelled_m": 1.6637251726171314,
+      "pose": {
+        "eye": [
+          2766.202,
+          3.57,
+          5009.831
+        ],
+        "target": [
+          2764.444,
+          3.57,
+          5011.589
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            -1.5567690285854094e-13,
+            -0.7676859461640748
+          ],
+          "z": 2.4861874426519552,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            -1.5567690285854094e-13,
+            0.7676859461640748
+          ],
+          "z": 2.4861874426519552,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f044.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 44,
+      "travelled_m": 1.8170296777982378,
+      "pose": {
+        "eye": [
+          2766.084,
+          3.57,
+          5009.949
+        ],
+        "target": [
+          2764.326,
+          3.57,
+          5011.707
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            3.123234196448801e-13,
+            -0.7676859461639753
+          ],
+          "z": 2.4861874426522768,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            3.123234196448801e-13,
+            0.7676859461639753
+          ],
+          "z": 2.4861874426522768,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "MF__walk__f044.png",
+      "status": "skipped_by_slots",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "sim_frame": 44,
+      "travelled_m": 1.8170296777982378,
+      "pose": {
+        "eye": [
+          2764.835,
+          2.945,
+          5011.707
+        ],
+        "target": [
+          2764.326,
+          2.78,
+          5011.707
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 90,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.9198325155613002e-16,
+            -0.5902994851043142
+          ],
+          "z": 0.5874981847705022,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.33687066205299e-16,
+            0.7185280608804545
+          ],
+          "z": 0.48265320638873893,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f048.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 48,
+      "travelled_m": 2.0021035163048446,
+      "pose": {
+        "eye": [
+          2765.894,
+          3.57,
+          5009.973
+        ],
+        "target": [
+          2764.136,
+          3.57,
+          5011.731
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            3.2320464261292954e-16,
+            -0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            3.2320464261292954e-16,
+            0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f052.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 52,
+      "travelled_m": 2.1558022845335754,
+      "pose": {
+        "eye": [
+          2765.776,
+          3.57,
+          5010.09
+        ],
+        "target": [
+          2764.018,
+          3.57,
+          5011.849
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.981333840921556e-9,
+            -0.7674676365097532
+          ],
+          "z": 2.4868946499599427,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.981333840921556e-9,
+            0.7674676365097532
+          ],
+          "z": 2.4868946499599427,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "MF__walk__f052.png",
+      "status": "skipped_by_slots",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "sim_frame": 52,
+      "travelled_m": 2.1558022845335754,
+      "pose": {
+        "eye": [
+          2764.527,
+          2.945,
+          5011.849
+        ],
+        "target": [
+          2764.018,
+          2.78,
+          5011.849
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 90,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.9198325155613002e-16,
+            -0.5902994851043142
+          ],
+          "z": 0.5874981847705022,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.33687066205299e-16,
+            0.7185280608804545
+          ],
+          "z": 0.48265320638873893,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f056.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 56,
+      "travelled_m": 2.340635986222185,
+      "pose": {
+        "eye": [
+          2765.586,
+          3.57,
+          5010.114
+        ],
+        "target": [
+          2763.828,
+          3.57,
+          5011.872
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            3.123234196448801e-13,
+            -0.7676859461639753
+          ],
+          "z": 2.4861874426522768,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            3.123234196448801e-13,
+            0.7676859461639753
+          ],
+          "z": 2.4861874426522768,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f060.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 60,
+      "travelled_m": 2.494703192766658,
+      "pose": {
+        "eye": [
+          2765.468,
+          3.57,
+          5010.232
+        ],
+        "target": [
+          2763.71,
+          3.57,
+          5011.99
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            3.2320464261292954e-16,
+            -0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            3.2320464261292954e-16,
+            0.7676859461641741
+          ],
+          "z": 2.4861874426516337,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "MF__walk__f060.png",
+      "status": "skipped_by_slots",
+      "slot": "MF",
+      "part": "foot",
+      "subject": "player",
+      "sim_frame": 60,
+      "travelled_m": 2.494703192766658,
+      "pose": {
+        "eye": [
+          2764.219,
+          2.945,
+          5011.99
+        ],
+        "target": [
+          2763.71,
+          2.78,
+          5011.99
+        ],
+        "dist": 0.535,
+        "fill": 0.55,
+        "bearing_deg": 90,
+        "pitch_deg": -18,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.9198325155613002e-16,
+            -0.5902994851043142
+          ],
+          "z": 0.5874981847705022,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            2.33687066205299e-16,
+            0.7185280608804545
+          ],
+          "z": 0.48265320638873893,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    },
+    {
+      "file": "M__walk__f064.png",
+      "status": "skipped_by_slots",
+      "slot": "M",
+      "subject": "player",
+      "sim_frame": 64,
+      "travelled_m": 2.6792861530638876,
+      "pose": {
+        "eye": [
+          2765.278,
+          3.57,
+          5010.255
+        ],
+        "target": [
+          2763.52,
+          3.57,
+          5012.014
+        ],
+        "dist": 2.486,
+        "fill": 0.62,
+        "bearing_deg": 135,
+        "pitch_deg": 0,
+        "camera_ok": true,
+        "camera_error": null
+      },
+      "projected": {
+        "bottom": {
+          "ndc": [
+            1.981333840921556e-9,
+            -0.7674676365097532
+          ],
+          "z": 2.4868946499599427,
+          "in_front": true,
+          "on_screen": true
+        },
+        "top": {
+          "ndc": [
+            1.981333840921556e-9,
+            0.7674676365097532
+          ],
+          "z": 2.4868946499599427,
+          "in_front": true,
+          "on_screen": true
+        }
+      }
+    }
+  ],
+  "frames_ok": 12,
+  "frames_red": 0
+}
