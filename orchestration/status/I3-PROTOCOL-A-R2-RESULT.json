@@ -1,0 +1,37 @@
+{
+  "task_id": "I3-PROTOCOL-A-R2-RESULT",
+  "title": "Protocol A round 2: we lost 5 of 5 again — and this time every judge named the same two things",
+  "state": "resolved",
+  "owner": "orchestrator",
+  "at": "2026-08-15T14:30:00Z",
+  "roadmap_item": "I3",
+
+  "result": "LOST 5 OF 5. Decoded against the counterbalance the pack-builder fixed BEFORE any image was opened (ours on A for pairs 01/03/05, ours on B for 02/04): pair01 winner B, pair02 winner A, pair03 winner B, pair04 winner A, pair05 winner B. Every one of those is the reference plate. Four judges at high confidence, one at medium.",
+
+  "the_comparison_that_matters": "r1 also lost 5 of 5, on 2026-08-14, BEFORE F1 (materials), F2 (contact shadows and AO) and F3 (ambient fill) landed. All three of those are now on the branch, all three measured green on their own instruments — orphaned surface materials 321/422 to 0, contact-junction ratio 0.722 against a >=25% bar, ambient lift +0.631 replicated across three GPUs with the control at -0.001. THE BLIND RESULT DID NOT MOVE.",
+
+  "what_all_five_judges_independently_named": "This is the finding, and it is far more useful than the score. Every judge's SINGLE BIGGEST GAP or SECOND GAP for our arm names the same two absences, in their own words: (1) NO MATERIAL DIFFERENTIATION — 'every surface returns the same flat matte olive-grey', 'thatch, plaster, stone and ground all return light identically', 'nothing reads as leather, metal, stone or vegetation'; and (2) NO SHADOW OR AMBIENT OCCLUSION AT ALL — 'no contact darkening and no cast shadows at all, so nothing sits in space', 'surfaces meet with no contact darkening'. Those are precisely the two things F1 and F2 were built to deliver and measured as delivered.",
+
+  "so_the_question_this_forces": "Why do two fixes that measure green on their own instruments produce no visible change to five independent judges? Candidates, none yet tested: (a) the AO is too weak where it matters — uAOStrength 3.1 but uAOMaxOcclusion CAPPED AT 0.6 and radius 0.42, and the cap was added deliberately to hide a derivative-normal grid artifact on low-poly terrain, so on exactly the terrain-heavy scenes in this pack it is throttled by design; (b) the deck scenes captured may not exercise the 20 authored material sets at all — several pairs are terrain and vegetation, not built surfaces; (c) something later in the post chain flattens both. THIS IS THE NEXT PIECE OF WORK AND IT OUTRANKS BUILDING ANYTHING NEW.",
+
+  "the_doctrine_this_confirms": "'Statistics can fail a build and can never pass one.' F1 and F2 each passed a numeric gate designed for it and neither moved a human judgement. The gates were not wrong — the orphan count really did go to zero and the contact ratio really is 0.722 — they were simply not measuring what a person sees. This is the exact failure the visual audit predicted and the reason RI-VIS06 exists.",
+
+  "two_things_that_make_this_result_stronger_not_weaker": [
+    "THE JUDGES ARE BIASED TOWARDS US AND WE STILL LOST. The pack-builder flagged, first, that a subagent here inherits the project CLAUDE.md and therefore cannot be made naive. It reasoned that the bias FLATTERS our side — so a win would have been weakened by it, and a loss is strengthened. We lost.",
+    "OUR IMAGES ARE SHARPER THAN THE REFERENCES AND STILL LOST. Three judges volunteered that our arm holds cleaner silhouette edges and better depth while the reference is 'heavily blurred and resolves almost no fine texture at distance' — the plates are degraded JPEGs. So the loss is NOT about resolution, aliasing or sharpness, all of which we win. It is entirely about light and material."
+  ],
+
+  "two_leaks_the_pack_builder_caught_that_would_have_voided_this": [
+    "A HUD NAME-PLATE HAD STARTED LABELLING OUR ARM. The build draws a region name at x 42-180, y 962-983, new since 14 Aug; r1's crop window caught its last two glyphs and TWO OF FIVE of our arms shipped with legible burnt-in text until the window moved. image-leakcheck was GREEN on the contaminated version, because a few dozen text pixels move no summary statistic.",
+    "THE IMPROVEMENT UNDER TEST WAS ITSELF THE LEAK. Our PNGs are 25-30% larger than r1's at the same windows, because real material detail and an occlusion term cost bytes while JPEG-sourced references do not. The byte sweep went RED 5/5. r1 ESCAPED THIS BY ONE PAIR, which means r1's own result was closer to void than anyone knew. Fixed by padding both arms to identical length with a zero-filled private PNG chunk, pixels untouched, and recorded as an ACTIVE equalisation that is therefore not evidence of blindness."
+  ],
+
+  "a_gap_in_the_guard_worth_keeping": "The leak battery is a SWEEP detector. The builder proved it: a quantised reference on every pair goes RED, but the same injection on ONE pair goes GREEN and is missed. So a sub-total statistical leak cannot gate — which is exactly the class the HUD name-plate belonged to. Found by opening the crops, not by the tool.",
+
+  "open_question_i_must_rule": "RI-VIS06 §C's escalation asks for three 512x512 crops at 1:1, but our arms ARE 512x512 natives, so there is no room. RULED: use 256x256 sub-windows at 1:1, chosen by a FIXED RULE (centre plus two fixed offsets) decided before any image is opened — never by picking interesting regions, which would be the judge choosing the evidence. Rebuilding the pack instead would change the instrument and break comparability with r1, which is the whole point of r2. Reversible.",
+
+  "next_step": "Dispatch the diagnosis: why do F1's materials and F2's occlusion not reach these frames? Start by rendering the exact five captured setups with AO forced to full strength and the material sets forced on, and compare against the shipped configuration. If the answer is 'the cap hides it on terrain', the remedy is the G-buffer normal target F2 named as its own unsolved limitation. Do NOT build new visual features until this is answered — three landed fixes producing no visible change is a measurement problem, and building a fourth on top of it would be spending against an instrument we know does not predict the judgement.",
+
+  "files_claimed": ["orchestration/status/I3-PROTOCOL-A-R2-RESULT.json"],
+  "files_touched": ["orchestration/status/I3-PROTOCOL-A-R2-RESULT.json"]
+}

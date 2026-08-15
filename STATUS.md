@@ -106,6 +106,32 @@ Alongside that: shrinking the documentation every agent reads before it can star
   would never discover it. Fixing placement is now the work, not adding more links.
 - Some buildings still overlap each other; 24 doors still open into another building.
 
+## The blind comparison was re-run today, and we lost 5 of 5 again
+
+**This is the most important thing on this page.** On 14 August, five independent judges compared our
+frames against real reference plates without knowing which was which, and preferred the reference every
+time. Three fixes came out of that — materials, contact shadows, ambient fill — **all three landed, all
+three measured green on their own tests.**
+
+**Re-run today: we lost 5 of 5 again.** The score did not move.
+
+**And every judge named the same two things**, unprompted and independently: *"every surface returns
+the same flat matte olive-grey"*, *"thatch, plaster, stone and ground all return light identically"*,
+*"no contact darkening and no cast shadows at all, so nothing sits in space"*. Those are exactly the
+two things the three fixes were built to deliver.
+
+**Two details that make this worse, not better:**
+- **The judges are biased in our favour** — they can't be made fully naive on this setup — and we still lost.
+- **Our images are sharper than the references**, which are degraded JPEGs. Three judges said so
+  unprompted. So this is not about resolution or jagged edges, which we win. It is entirely about
+  light and material.
+
+**What it means:** three fixes each passed a number built for it, and none of them changed what a
+person sees. That is the project's own rule landing on us — *a statistic can fail a build and can never
+pass one*. The next piece of work is finding out why, and **no new visual features are being built
+until that is answered**, because building a fourth fix on an instrument that doesn't predict the
+judgement would be spending for nothing.
+
 ## The honest standard
 
 **Do not assume anything is "delivered to 7/10" yet.** The bar is min-over-axes ≥ 7.0 and the visual work currently scores **5** — measured, not guessed: the first blind comparison against real reference plates ran on 14 August and **our images lost 5 out of 5**.
