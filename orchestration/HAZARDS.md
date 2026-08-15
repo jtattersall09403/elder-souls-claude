@@ -112,9 +112,34 @@ none of the code under test, produced the identical degenerate capture.** Earlie
 returned 15.001 and 14.353, plausible enough that a **+223% improvement** would have been published
 from them. Every gate stayed green throughout.
 
-**The rule: sanity-check every frame before you measure it, per frame and not per run.** A capture with
-~1 distinct shadow level and ~0 local contrast is broken and must fail loudly. You already compute these
-statistics; the cost is an `if`.
+**The rule: sanity-check every frame before you measure it, per frame and not per run.** Use
+**`node tools/visual/frame-liveness.mjs`**, which is wired into `deck.mjs`, `deck-motion.mjs` and the
+character sweep at capture time.
+
+> **CORRECTION, 2026-08-15 — the prescription this entry originally gave was wrong, and it was mine.**
+> It said a frame with *"~1 distinct shadow level and ~0 local contrast"* must fail loudly, and that
+> *"the cost is an `if`"*. Calibrated against **932 real captures from 366 directories**, that pair
+> armed as hard gates rejects **324 of 932 real frames — 34.76%**. `local_contrast_med` is **exactly 0
+> on 177 real frames** (sky, water, UI panels); `shadow_levels` has corpus p01 = 0 and p02 = 1, i.e.
+> *below* the incident's own value. The obvious repair — p90 local contrast, "is there detail
+> anywhere" — reaches 0 on real frames too and rejected 43.75%. **Neither statistic leaves a usable
+> gap in any formulation tested.**
+>
+> I derived a threshold from one incident's numbers and wrote it up as a rule without checking it
+> against the corpus. That is rule 0b's defect — asserting something about the repo that a command
+> would have refuted — committed inside the hazard entry warning about unmeasured claims. The agent
+> that was sent to implement it measured first and refused it, which is the job working.
+>
+> **What actually ships:** a five-test battery — span, entropy, dominant-colour, structure ratio and
+> duplicate detection — every threshold sitting in a *measured* gap. It rejects **7 of 932 real
+> captures (0.75%)**, and that low false-positive rate is precisely what makes failing loudly safe.
+> The original incident is still caught, by span, which it fails by three orders of magnitude. The two
+> statistics above still ship, reported but **not fatal**; `--strict` arms them.
+>
+> **The transferable lesson: a gate's threshold must be calibrated against the real population before
+> it is armed, not derived from the single failure that motivated it.** A gate that rejects a third of
+> honest work gets switched off, and then the protection is worth less than nothing because everyone
+> believes it is on. That is the same failure as §11's pinned-tree guard, arriving from the other side.
 
 **This is not the only way a frame lies here.** A separate `F10` capture tool reported `0 red` while
 **17 of its 93 frames contained no subject at all** — it could not tell an empty frame from a full one.
