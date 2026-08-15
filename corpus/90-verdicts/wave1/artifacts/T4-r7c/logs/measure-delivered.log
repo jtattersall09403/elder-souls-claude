@@ -1,0 +1,23 @@
+[world] elements 10  pictorial 0  fill null
+[inventory] elements 75  pictorial 22  fill 0.1563
+[journal] elements 23  pictorial 0  fill 0.1669
+[sheet] elements 62  pictorial 10  fill 0.1621
+[spells] elements 19  pictorial 2  fill 0.3075
+[levelup] elements 39  pictorial 10  fill 0.1494
+[container] elements 33  pictorial 8  fill 0.1685
+[container_no_name] elements 29  pictorial 6  fill 0.16
+[guard] "(absent)"->["Container","Carried","Container"]  null->["Container","Carried","Container"]  ""->["Container","Carried","Container"]  "undefined"->["Container","Carried","Container"]  "Reed Creel"->["Reed Creel","Carried","Reed Creel"]
+[withdrawal] before ["bearing_dial","effect_strip","place_name"]  after ["bearing_dial","effect_strip","place_name"]
+
+--- T4 round 2, critic-delivered at 1920x1080 (commit a2ef1e5cf6) ---
+D1 declared, inventory panel : 22  (round 1: 0)
+D1 observed, inventory rows  : 20 of 20 rows carry >=3 hues in the leading 48px
+D2 inventory panel fill      : 0.1563  (round 1: 0.207; Morrowind 0.61; P4 bar 0.35)
+D2 worst screen              : levelup 0.1494
+undefined headers anywhere   : false
+RI- citations in player text : false
+container-name guard         : refused all four bad values
+world set built              : 6 of 6  (round 1: 1 of 6)
+world set all in bottom half : true  rects [[1616,942,96,96],[1574,1006,30,32],[42,950,520,36]]
+world/souls rect overlaps    : []
+written: /home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/T4-r7c/measure-delivered/measure-critic-delivered-1920x1080.json

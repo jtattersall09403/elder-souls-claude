@@ -1,0 +1,14 @@
+[harness]   ok   G1 real DOM keys reach the engine (listeners attached AND a key moves input)  real.attached=true, ArrowRight -> input.moveX=1
+[harness]   ok   G0 the container opens on the ui-journal fixture and names itself  mode container, headers ["Reed Creel","Carried","Reed Creel"], 7 rows, panel [720,314,480,452]
+[harness]   ok   G4 R1 on the SHIPPED fixture: no numeric column ellipsised on any of the rows both sides  7 rows, 0 truncated numbers, 5 truncated names ["Black-water draught -> Black-wat…","Bog-iron maul -> Bog-iron m…","Boiled hide jack -> Boiled hide…","Bog-iron maul -> Bog-iron m…","Rootweave cowl -> Rootweav…"]
+[harness]   FAIL G4b the r6 remedy clause 2 — at most 1 item name ellipsised across both sides  5 names ellipsised on the shipped fixture
+[harness]   FAIL G5 a HOSTILE numeric probe (weight 987654.5, gold 987654321) does not truncate a number  columns drawn ["Numprobe->Num… TRUNCATED","987655->987655","987654321->98765… TRUNCATED"]; name column width 52.81
+[harness]   ok   G5b the probe still leaves the NAME column able to draw something  name column drew "Num…" at width 52.81
+[harness]   ok   G6 R2 across ALL 45 records: every fact block is laid out inside the band rect that clips it  45 records; 0 publish no layout; 0 overflow; widest right edge 274.00 vs band width 276
+[harness]   ok   G6b no numeric column truncates on ANY of the 45 records, one at a time  0 truncated numeric columns []
+[harness]   FAIL G6c RI-UIX03 C7: the resting band shows every line of the description for all 45 records  0 of 45 records complete at rest; needed-histogram {"5":45}
+[harness]   FAIL G7 S57(b): every record in a 45-row container is reachable with real presses  8 rows drawn; 44 distinct records selected in 70 real ArrowDown presses
+[harness]   ok   G2 R3b: left/right switches which side of the container has focus  focus.side 0 -(KeyD)-> 1 -(KeyA)-> 0
+[harness]   ok   G3 R3c: items transfer in BOTH directions through real presses  carried 44 -(KeyD,KeyE take)-> 45 -(KeyA,KeyE put)-> 44
+[harness]   FAIL G8 S65(1) guard (b): the truncated description has a route — one input reaches the rest of it  22 bound controls pressed on 'reed-cutter' (needs 5 lines, shows 4); none increased the lines shown and none put the remainder of the string on screen
+[harness] written: /home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/T4-r7c/drive/t4-r7-critic-drive.json
