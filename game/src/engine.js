@@ -2146,6 +2146,26 @@ export class Engine {
   // ---- the census scene ----------------------------------------------------------------------
 
   censusBegin(opts = {}) {
+    // ---- W1-UIX08-CENSUS-ROUTE: THE INVARIANT `talkTo()` ENFORCES FROM THE OTHER SIDE --------
+    //
+    // `talkTo()` throws `talkTo: the census has the conversation` — so the two can never both be
+    // live, in that direction. Nothing enforced it in THIS direction, and a conversation left
+    // open when creation starts is not merely untidy: `censusBegin` moves the player into the
+    // barge hold, the person they were talking to is no longer in the world, and the very next
+    // fixed step runs `_conversationStep -> _uiCtx -> _dialogueCtx -> npcDisposition`, which
+    // throws `nobody by that name is in the world` INSIDE THE FIXED STEP and takes the
+    // simulation loop with it (`stepFrames() threw`, exit 12).
+    //
+    // FOUND, not reasoned about: the census probe was reordered to run its presence control —
+    // an ordinary conversation — BEFORE the creation walk, and the whole run died at the first
+    // step of the new game. The reorder was made for an unrelated reason (a control that only
+    // runs when the experiment succeeds is absent exactly when it is needed), which is the sort
+    // of accident worth writing down.
+    //
+    // It is fixed here rather than in the probe because the probe was not doing anything the
+    // game cannot: `_titleApply('new')` calls this, and a player who opens the pause menu during
+    // a conversation and starts a new game arrives by exactly this route.
+    if (this.conversation && this.conversation.open) this.conversationClose();
     this.census.reset();
     // O6'S THREE STAMPS BELONG TO ONE OPENING, AND UNTIL NOW THEY BELONGED TO THE PAGE.
     //

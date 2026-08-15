@@ -1,0 +1,2369 @@
+{
+  "schema": "elder-souls/uix08-drive-probe@1",
+  "at": "2026-08-15T10:05:41.670Z",
+  "commit": "6d8e21fbeb8b",
+  "state": "helstrom-market",
+  "mode": "census",
+  "interactions": [],
+  "checks": [
+    {
+      "id": "I0 INSTRUMENT: a real DOM key reaches the input pipeline",
+      "pass": true,
+      "detail": "real.attached=true, ArrowRight -> pipeline.moveX=1, KeyE -> pendingPress=256"
+    },
+    {
+      "id": "C7 PRESENCE CONTROL: an ordinary conversation in the SAME run still has all six elements",
+      "pass": true,
+      "detail": "conversation window open=true, census mode=false, dialogue_exit=true, disposition_meter=true, elements_present=[1,2,3,4,5,6] (if these were also absent, C3 would be measuring a window that draws nothing)"
+    },
+    {
+      "id": "C8 LEAK CONTROL: no census affordance appears in an ordinary conversation",
+      "pass": true,
+      "detail": "11 column row(s): 0 typed row(s), 0 carrying a picked mark (both must be 0)"
+    },
+    {
+      "id": "C0 the first thing a new player is told is drawn by the RI-UIX08 window, with the old panel suppressed",
+      "pass": true,
+      "detail": "'hold.come-to' is silent by design (O6: no surface, and none drew). First speaking node 'hold.hatch-name': window open=true (census mode=true), render/ui.js suppressed=true, speaker 'Jeeh-Ei'"
+    },
+    {
+      "id": "C1 EVERY node of character creation is drawn by the RI-UIX08 window; the old panel is suppressed at all of them",
+      "pass": true,
+      "detail": "49 node visit(s) over three class routes: 46 drew the RI-UIX08 window, 0 left render/ui.js unsuppressed (must be 0). 3 drew no surface at all — all paused hand-back nodes: true (hold.come-to). Input kinds: none, text, observed, choice, pick, questionnaire"
+    },
+    {
+      "id": "C1b PIXELS: the old vellum panel painted no text at all during any of the three passes",
+      "pass": true,
+      "detail": "pass 0: complete=true, 0 distinct string(s) on the 'dialogue' surface | pass 1: complete=true, 0 distinct string(s) on the 'dialogue' surface | pass 2: complete=true, 0 distinct string(s) on the 'dialogue' surface"
+    },
+    {
+      "id": "C2 all three routes complete — every node was answered through the window",
+      "pass": true,
+      "detail": "custom done=true (16 visits), questionnaire done=true (21 visits), named done=true (12 visits)"
+    },
+    {
+      "id": "C3 §H1 no Goodbye and no disposition bar anywhere in creation, and the element census is 4 of 6",
+      "pass": true,
+      "detail": "over 46 census frame(s): 0 declared a dialogue_exit, 0 a disposition_meter (both must be 0); 46 declared exactly elements [1,2,3,4]"
+    },
+    {
+      "id": "C4 §H2a a pick is marked in the column, confirming it again removes the mark, and the count commits",
+      "pass": true,
+      "detail": "writ.class-custom-favoured: 1st pick -> 1 mark, un-pick -> 0, advanced to 'writ.class-custom-neglected' | writ.class-custom-neglected: 1st pick -> 1 mark, un-pick -> 0, advanced to 'writ.class-custom-primary' | writ.class-custom-primary: 1st pick -> 1 mark, un-pick -> 0, advanced to 'writ.class-custom-secondary' | writ.class-custom-secondary: 1st pick -> 1 mark, un-pick -> 0, advanced to 'writ.class-verdict'"
+    },
+    {
+      "id": "C4b §H2a what the marks committed reached the character spec",
+      "pass": true,
+      "detail": "spec.custom after the four pick nodes: {\"name\":\"Sathe\",\"favoured\":[\"strength\",\"endurance\"],\"neglected\":[\"agility\",\"speed\"],\"primary\":[\"blades\",\"axes-maces\",\"polearms\"],\"secondary\":[\"greatweapons\",\"marksman\"]}"
+    },
+    {
+      "id": "C5 §H2b typing on a real keyboard reaches the typed row, and KeyE types an e rather than committing",
+      "pass": true,
+      "detail": "typed row '▁' -> 'Sathel' (node still 'hold.hatch-name', so the 'e' did not commit) -> after Backspace 'Sathe'"
+    },
+    {
+      "id": "C5b §H2b the typed name is what gets committed",
+      "pass": true,
+      "detail": "spec.hatchName after Enter = \"Sathe\" (expected 'Sathe'), node 'hold.hatch-name' -> 'hold.out'"
+    },
+    {
+      "id": "C5c §H2b RI-JRN01 O17's other half — a ledger name is chosen with the caret instead",
+      "pass": true,
+      "detail": "chose 'Teeba-Ei' -> spec.givenName=\"Teeba-Ei\", node 'writ.given-name' -> 'writ.class-routes'"
+    },
+    {
+      "id": "C6 the questionnaire asks a run of distinct dilemmas and every answer moves it on",
+      "pass": true,
+      "detail": "10 dilemma(s) answered, 10 distinct question id(s): q1, q2, q3, q4, q5, q6, q7, q8, q10, q11"
+    },
+    {
+      "id": "C6b every row the caret was walked onto moved the focus and was drawn focused",
+      "pass": true,
+      "detail": "70 ArrowDown press(es) over 11 node(s): 70 moved rowIdx by exactly 1, 70 left a drawn row marked focused (capped at 8 rows per node — see the comment)"
+    },
+    {
+      "id": "C6c nothing in the scene got stuck",
+      "pass": true,
+      "detail": "no node failed to advance across three full routes"
+    }
+  ],
+  "data": {
+    "instrument": {
+      "attached": true,
+      "moveX": 1,
+      "pending": 256
+    },
+    "presence_control": {
+      "open": true,
+      "census_mode": false,
+      "elements_present": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "has_exit": true,
+      "has_dispo": true
+    },
+    "census_open": {
+      "first_node_silent": {
+        "node": "hold.come-to",
+        "window": false,
+        "suppressed": true
+      },
+      "first_speaking_node": "hold.hatch-name",
+      "window": true,
+      "census_mode": true,
+      "suppressed": true,
+      "speaker": "Jeeh-Ei"
+    },
+    "runs": {
+      "custom": {
+        "walk": [
+          {
+            "node": "hold.come-to",
+            "input_kind": null,
+            "question": null,
+            "paused": true,
+            "window_open": false,
+            "census_mode": false,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": false,
+            "elements_present": null,
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 0,
+            "blocks": null,
+            "lines": null,
+            "resumed": "harness:talk"
+          },
+          {
+            "node": "hold.hatch-name",
+            "input_kind": "text",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 11,
+            "blocks": 2,
+            "lines": 5,
+            "rows_walked": 8,
+            "rows_marked": 8,
+            "rows_idx_moved": 8,
+            "text_route": "typed",
+            "advanced": true
+          },
+          {
+            "node": "hold.out",
+            "input_kind": null,
+            "question": null,
+            "paused": true,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 0,
+            "blocks": 4,
+            "lines": 13,
+            "resumed": "harness:walk"
+          },
+          {
+            "node": "writ.race-observed",
+            "input_kind": "observed",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 1,
+            "blocks": 2,
+            "lines": 6,
+            "rows_walked": 0,
+            "rows_marked": 0,
+            "rows_idx_moved": 0,
+            "advanced": true
+          },
+          {
+            "node": "writ.sex",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 3,
+            "blocks": 3,
+            "lines": 10,
+            "rows_walked": 2,
+            "rows_marked": 2,
+            "rows_idx_moved": 2,
+            "advanced": true
+          },
+          {
+            "node": "writ.upbringing",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 4,
+            "blocks": 4,
+            "lines": 13,
+            "rows_walked": 3,
+            "rows_marked": 3,
+            "rows_idx_moved": 3,
+            "advanced": true
+          },
+          {
+            "node": "writ.given-name",
+            "input_kind": "text",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 9,
+            "blocks": 6,
+            "lines": 19,
+            "rows_walked": 8,
+            "rows_marked": 8,
+            "rows_idx_moved": 8,
+            "text_route": "ledger",
+            "advanced": true
+          },
+          {
+            "node": "writ.class-routes",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 3,
+            "blocks": 8,
+            "lines": 26,
+            "rows_walked": 2,
+            "rows_marked": 2,
+            "rows_idx_moved": 2,
+            "route_row": 1,
+            "route_label": "Tell her what you actually do.",
+            "advanced": true
+          },
+          {
+            "node": "writ.class-custom-name",
+            "input_kind": "text",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 11,
+            "blocks": 9,
+            "lines": 30,
+            "rows_walked": 8,
+            "rows_marked": 8,
+            "rows_idx_moved": 8,
+            "text_route": "typed",
+            "advanced": true
+          },
+          {
+            "node": "writ.class-custom-favoured",
+            "input_kind": "pick",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 10,
+            "blocks": 10,
+            "lines": 32,
+            "rows_walked": 8,
+            "rows_marked": 8,
+            "rows_idx_moved": 8,
+            "pick_mark_appeared": true,
+            "pick_mark_removed": true,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-custom-neglected",
+            "input_kind": "pick",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 8,
+            "blocks": 12,
+            "lines": 37,
+            "rows_walked": 7,
+            "rows_marked": 7,
+            "rows_idx_moved": 7,
+            "pick_mark_appeared": true,
+            "pick_mark_removed": true,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-custom-primary",
+            "input_kind": "pick",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 12,
+            "blocks": 14,
+            "lines": 42,
+            "rows_walked": 8,
+            "rows_marked": 8,
+            "rows_idx_moved": 8,
+            "pick_mark_appeared": true,
+            "pick_mark_removed": true,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-custom-secondary",
+            "input_kind": "pick",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 12,
+            "blocks": 17,
+            "lines": 48,
+            "rows_walked": 8,
+            "rows_marked": 8,
+            "rows_idx_moved": 8,
+            "pick_mark_appeared": true,
+            "pick_mark_removed": true,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-verdict",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 1,
+            "blocks": 19,
+            "lines": 55,
+            "rows_walked": 0,
+            "rows_marked": 0,
+            "rows_idx_moved": 0,
+            "advanced": true
+          },
+          {
+            "node": "writ.birthsign",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 9,
+            "blocks": 20,
+            "lines": 57,
+            "rows_walked": 8,
+            "rows_marked": 8,
+            "rows_idx_moved": 8,
+            "advanced": true
+          },
+          {
+            "node": "writ.stamp",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 1,
+            "blocks": 23,
+            "lines": 74,
+            "rows_walked": 0,
+            "rows_marked": 0,
+            "rows_idx_moved": 0,
+            "advanced": true
+          }
+        ],
+        "evidence": {
+          "picks": [
+            {
+              "node": "writ.class-custom-favoured",
+              "marked_after_first": 1,
+              "marked_after_unpick": 0,
+              "trail": [
+                {
+                  "act": "confirm row 0",
+                  "picked_rows": [
+                    0
+                  ],
+                  "surface_picked": [
+                    "strength"
+                  ],
+                  "row_text": "· STRENGTH"
+                },
+                {
+                  "act": "confirm row 0 again (un-pick)",
+                  "picked_rows": [],
+                  "surface_picked": [],
+                  "row_text": "STRENGTH"
+                },
+                {
+                  "act": "confirm row 0",
+                  "picked_rows": [
+                    0
+                  ],
+                  "node": "writ.class-custom-favoured",
+                  "blocks": 11,
+                  "tail": 26
+                },
+                {
+                  "act": "confirm row 1",
+                  "picked_rows": [],
+                  "node": "writ.class-custom-neglected",
+                  "blocks": 12,
+                  "tail": 111
+                }
+              ],
+              "advanced_to": "writ.class-custom-neglected",
+              "spec_custom": {
+                "name": "Sathe",
+                "favoured": [
+                  "strength",
+                  "endurance"
+                ],
+                "neglected": [],
+                "primary": [],
+                "secondary": []
+              }
+            },
+            {
+              "node": "writ.class-custom-neglected",
+              "marked_after_first": 1,
+              "marked_after_unpick": 0,
+              "trail": [
+                {
+                  "act": "confirm row 0",
+                  "picked_rows": [
+                    0
+                  ],
+                  "surface_picked": [
+                    "agility"
+                  ],
+                  "row_text": "· AGILITY"
+                },
+                {
+                  "act": "confirm row 0 again (un-pick)",
+                  "picked_rows": [],
+                  "surface_picked": [],
+                  "row_text": "AGILITY"
+                },
+                {
+                  "act": "confirm row 0",
+                  "picked_rows": [
+                    0
+                  ],
+                  "node": "writ.class-custom-neglected",
+                  "blocks": 13,
+                  "tail": 26
+                },
+                {
+                  "act": "confirm row 1",
+                  "picked_rows": [],
+                  "node": "writ.class-custom-primary",
+                  "blocks": 14,
+                  "tail": 78
+                }
+              ],
+              "advanced_to": "writ.class-custom-primary",
+              "spec_custom": {
+                "name": "Sathe",
+                "favoured": [
+                  "strength",
+                  "endurance"
+                ],
+                "neglected": [
+                  "agility",
+                  "speed"
+                ],
+                "primary": [],
+                "secondary": []
+              }
+            },
+            {
+              "node": "writ.class-custom-primary",
+              "marked_after_first": 1,
+              "marked_after_unpick": 0,
+              "trail": [
+                {
+                  "act": "confirm row 0",
+                  "picked_rows": [
+                    0
+                  ],
+                  "surface_picked": [
+                    "blades"
+                  ],
+                  "row_text": "· Blades"
+                },
+                {
+                  "act": "confirm row 0 again (un-pick)",
+                  "picked_rows": [],
+                  "surface_picked": [],
+                  "row_text": "Blades"
+                },
+                {
+                  "act": "confirm row 0",
+                  "picked_rows": [
+                    0
+                  ],
+                  "node": "writ.class-custom-primary",
+                  "blocks": 15,
+                  "tail": 26
+                },
+                {
+                  "act": "confirm row 1",
+                  "picked_rows": [
+                    0,
+                    1
+                  ],
+                  "node": "writ.class-custom-primary",
+                  "blocks": 16,
+                  "tail": 26
+                },
+                {
+                  "act": "confirm row 2",
+                  "picked_rows": [],
+                  "node": "writ.class-custom-secondary",
+                  "blocks": 17,
+                  "tail": 56
+                }
+              ],
+              "advanced_to": "writ.class-custom-secondary",
+              "spec_custom": {
+                "name": "Sathe",
+                "favoured": [
+                  "strength",
+                  "endurance"
+                ],
+                "neglected": [
+                  "agility",
+                  "speed"
+                ],
+                "primary": [
+                  "blades",
+                  "axes-maces",
+                  "polearms"
+                ],
+                "secondary": []
+              }
+            },
+            {
+              "node": "writ.class-custom-secondary",
+              "marked_after_first": 1,
+              "marked_after_unpick": 0,
+              "trail": [
+                {
+                  "act": "confirm row 0",
+                  "picked_rows": [
+                    0
+                  ],
+                  "surface_picked": [
+                    "greatweapons"
+                  ],
+                  "row_text": "· Greatweapons"
+                },
+                {
+                  "act": "confirm row 0 again (un-pick)",
+                  "picked_rows": [],
+                  "surface_picked": [],
+                  "row_text": "Greatweapons"
+                },
+                {
+                  "act": "confirm row 0",
+                  "picked_rows": [
+                    0
+                  ],
+                  "node": "writ.class-custom-secondary",
+                  "blocks": 18,
+                  "tail": 26
+                },
+                {
+                  "act": "confirm row 1",
+                  "picked_rows": [],
+                  "node": "writ.class-verdict",
+                  "blocks": 19,
+                  "tail": 220
+                }
+              ],
+              "advanced_to": "writ.class-verdict",
+              "spec_custom": {
+                "name": "Sathe",
+                "favoured": [
+                  "strength",
+                  "endurance"
+                ],
+                "neglected": [
+                  "agility",
+                  "speed"
+                ],
+                "primary": [
+                  "blades",
+                  "axes-maces",
+                  "polearms"
+                ],
+                "secondary": [
+                  "greatweapons",
+                  "marksman"
+                ]
+              }
+            }
+          ],
+          "typed": [
+            {
+              "node": "hold.hatch-name",
+              "route": "typed",
+              "typed_row_before": [
+                "▁"
+              ],
+              "after_typing": {
+                "typed": "Sathel",
+                "surface_typed": "Sathel",
+                "row": [
+                  "Sathel▁"
+                ],
+                "node": "hold.hatch-name"
+              },
+              "after_backspace": {
+                "typed": "Sathe",
+                "surface_typed": "Sathe",
+                "row": [
+                  "Sathe▁"
+                ]
+              },
+              "after_node": "hold.out",
+              "spec": {
+                "hatchName": "Sathe",
+                "hatchNameRefused": false,
+                "givenName": "",
+                "sex": "unrecorded",
+                "race": "saxhleel",
+                "upbringing": null,
+                "classId": null,
+                "custom": null,
+                "route": null,
+                "birthsign": null,
+                "birthsignSecond": null
+              }
+            },
+            {
+              "node": "writ.given-name",
+              "route": "ledger",
+              "chose": "Teeba-Ei",
+              "typed_row_before": [
+                "▁"
+              ],
+              "after_node": "writ.class-routes",
+              "spec": {
+                "hatchName": "Sathe",
+                "hatchNameRefused": false,
+                "givenName": "Teeba-Ei",
+                "sex": "male",
+                "race": "saxhleel",
+                "upbringing": "interior",
+                "classId": null,
+                "custom": null,
+                "route": null,
+                "birthsign": null,
+                "birthsignSecond": null
+              }
+            },
+            {
+              "node": "writ.class-custom-name",
+              "route": "typed",
+              "typed_row_before": [
+                "▁"
+              ],
+              "after_typing": {
+                "typed": "Sathel",
+                "surface_typed": "Sathel",
+                "row": [
+                  "Sathel▁"
+                ],
+                "node": "writ.class-custom-name"
+              },
+              "after_backspace": {
+                "typed": "Sathe",
+                "surface_typed": "Sathe",
+                "row": [
+                  "Sathe▁"
+                ]
+              },
+              "after_node": "writ.class-custom-favoured",
+              "spec": {
+                "hatchName": "Sathe",
+                "hatchNameRefused": false,
+                "givenName": "Teeba-Ei",
+                "sex": "male",
+                "race": "saxhleel",
+                "upbringing": "interior",
+                "classId": null,
+                "custom": {
+                  "name": "Sathe",
+                  "favoured": [],
+                  "neglected": [],
+                  "primary": [],
+                  "secondary": []
+                },
+                "route": "custom",
+                "birthsign": null,
+                "birthsignSecond": null
+              }
+            }
+          ],
+          "choices": [
+            {
+              "node": "writ.race-observed",
+              "kind": "observed",
+              "question": null,
+              "rows": 1,
+              "confirmed": "Correct her.",
+              "blocks": "2 -> 3",
+              "advanced_to": "writ.sex",
+              "question_after": null
+            },
+            {
+              "node": "writ.sex",
+              "kind": "choice",
+              "question": null,
+              "rows": 3,
+              "confirmed": "Male.",
+              "blocks": "3 -> 4",
+              "advanced_to": "writ.upbringing",
+              "question_after": null
+            },
+            {
+              "node": "writ.upbringing",
+              "kind": "choice",
+              "question": null,
+              "rows": 4,
+              "confirmed": "Black water, no bottom.",
+              "blocks": "4 -> 6",
+              "advanced_to": "writ.given-name",
+              "question_after": null
+            },
+            {
+              "node": "writ.class-verdict",
+              "kind": "choice",
+              "question": null,
+              "rows": 1,
+              "confirmed": "Let her write it.",
+              "blocks": "19 -> 20",
+              "advanced_to": "writ.birthsign",
+              "question_after": null
+            },
+            {
+              "node": "writ.birthsign",
+              "kind": "choice",
+              "question": null,
+              "rows": 9,
+              "confirmed": "The Full Root",
+              "blocks": "20 -> 23",
+              "advanced_to": "writ.stamp",
+              "question_after": null
+            },
+            {
+              "node": "writ.stamp",
+              "kind": "choice",
+              "question": null,
+              "rows": 1,
+              "confirmed": "Take the reed-case.",
+              "blocks": "23 -> null",
+              "advanced_to": null,
+              "question_after": null
+            }
+          ],
+          "questionnaire": []
+        },
+        "done": true,
+        "spec": {
+          "hatchName": "Sathe",
+          "hatchNameRefused": false,
+          "givenName": "Teeba-Ei",
+          "sex": "male",
+          "race": "saxhleel",
+          "upbringing": "interior",
+          "classId": null,
+          "custom": {
+            "name": "Sathe",
+            "favoured": [
+              "strength",
+              "endurance"
+            ],
+            "neglected": [
+              "agility",
+              "speed"
+            ],
+            "primary": [
+              "blades",
+              "axes-maces",
+              "polearms"
+            ],
+            "secondary": [
+              "greatweapons",
+              "marksman"
+            ]
+          },
+          "route": "custom",
+          "birthsign": "raj-xul",
+          "birthsignSecond": null
+        },
+        "character": {
+          "given_name": "Teeba-Ei",
+          "hatch_name": "Sathe",
+          "hatch_name_refused": false,
+          "sex": "male",
+          "race": "saxhleel",
+          "upbringing": "interior",
+          "upbringing_given_as": "black water, no bottom",
+          "class_id": "custom",
+          "class_name": "Sathe",
+          "class_family": "fighter",
+          "class_family_fit": 10,
+          "class_route": "custom",
+          "birthsign": "raj-xul",
+          "birthsign_second": null,
+          "attributes": {
+            "strength": 14,
+            "endurance": 16,
+            "agility": 9,
+            "speed": 7,
+            "vigour": 10,
+            "willpower": 10,
+            "intellect": 11,
+            "hist-bond": 14,
+            "personality": 10,
+            "luck": 11
+          },
+          "skills": {
+            "blades": 25,
+            "axes-maces": 25,
+            "polearms": 25,
+            "greatweapons": 15,
+            "marksman": 15,
+            "claw-fang": 5,
+            "shieldcraft": 5,
+            "sorcery": 5,
+            "root-speech": 10,
+            "warding": 5,
+            "veiling": 5,
+            "alchemy": 5,
+            "athletics": 15,
+            "acrobatics": 5,
+            "survival": 20,
+            "sneak": 20,
+            "security": 15,
+            "mercantile": 5,
+            "speechcraft": 5
+          },
+          "signature": {
+            "race": "saxhleel",
+            "class_family": "fighter",
+            "birthsign_family": "given",
+            "upbringing_class": "interior",
+            "key": "saxhleel|fighter|given|interior"
+          },
+          "powers": [
+            {
+              "sign": "raj-xul",
+              "scale": 1,
+              "power": {
+                "summary": "The tithe-gourd holds one more swallow.",
+                "effects": [
+                  {
+                    "kind": "flask_charges",
+                    "delta": 1,
+                    "note": "+1 tithe-gourd charge at every charge tier (RI-CMB08). At the 4-charge start this is +25% healing throughput; at the 10-charge cap, +10%. Deliberately front-loaded."
+                  }
+                ]
+              }
+            }
+          ],
+          "drawbacks": [],
+          "invariants": {
+            "attribute_total": 112,
+            "attribute_total_ok": true,
+            "race_delta_sum": 12,
+            "class_delta_sum": 0,
+            "skills_above_baseline": 10,
+            "skills_above_baseline_ok": true,
+            "max_skill": 25,
+            "max_skill_ok": true
+          },
+          "flags": [],
+          "route": "custom",
+          "writ_text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Teeba-Ei\nAlso called: Sathe\nObserved as: Saxhleel\nRaised at: black water, no bottom\nTrade declared: Sathe\nTide drawn on: The Full Root (Raj-Xul)\nSecond tide: None recorded.\nRecorded: Male.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-SAX-FIG\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+        },
+        "old_panel_text": {
+          "complete": true,
+          "distinct_count": 0,
+          "distinct": [],
+          "instrumented": [
+            "dialogue"
+          ]
+        }
+      },
+      "questionnaire": {
+        "walk": [
+          {
+            "node": "hold.come-to",
+            "input_kind": null,
+            "question": null,
+            "paused": true,
+            "window_open": false,
+            "census_mode": false,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": false,
+            "elements_present": null,
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 0,
+            "blocks": null,
+            "lines": null,
+            "resumed": "harness:talk"
+          },
+          {
+            "node": "hold.hatch-name",
+            "input_kind": "text",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 11,
+            "blocks": 2,
+            "lines": 5,
+            "text_route": "typed",
+            "advanced": true
+          },
+          {
+            "node": "hold.out",
+            "input_kind": null,
+            "question": null,
+            "paused": true,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 0,
+            "blocks": 4,
+            "lines": 13,
+            "resumed": "harness:walk"
+          },
+          {
+            "node": "writ.race-observed",
+            "input_kind": "observed",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 1,
+            "blocks": 2,
+            "lines": 6,
+            "advanced": true
+          },
+          {
+            "node": "writ.sex",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 3,
+            "blocks": 3,
+            "lines": 10,
+            "advanced": true
+          },
+          {
+            "node": "writ.upbringing",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 4,
+            "blocks": 4,
+            "lines": 13,
+            "advanced": true
+          },
+          {
+            "node": "writ.given-name",
+            "input_kind": "text",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 9,
+            "blocks": 6,
+            "lines": 19,
+            "text_route": "ledger",
+            "advanced": true
+          },
+          {
+            "node": "writ.class-routes",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 3,
+            "blocks": 8,
+            "lines": 26,
+            "route_row": 2,
+            "route_label": "Ask me something instead. I do not know what to call it.",
+            "advanced": true
+          },
+          {
+            "node": "writ.class-questions",
+            "input_kind": "questionnaire",
+            "question": "q1",
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 4,
+            "blocks": 10,
+            "lines": 36,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-questions",
+            "input_kind": "questionnaire",
+            "question": "q2",
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 4,
+            "blocks": 11,
+            "lines": 40,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-questions",
+            "input_kind": "questionnaire",
+            "question": "q3",
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 4,
+            "blocks": 12,
+            "lines": 45,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-questions",
+            "input_kind": "questionnaire",
+            "question": "q4",
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 4,
+            "blocks": 13,
+            "lines": 49,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-questions",
+            "input_kind": "questionnaire",
+            "question": "q5",
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 4,
+            "blocks": 14,
+            "lines": 53,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-questions",
+            "input_kind": "questionnaire",
+            "question": "q6",
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 4,
+            "blocks": 15,
+            "lines": 57,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-questions",
+            "input_kind": "questionnaire",
+            "question": "q7",
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 4,
+            "blocks": 16,
+            "lines": 62,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-questions",
+            "input_kind": "questionnaire",
+            "question": "q8",
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 4,
+            "blocks": 17,
+            "lines": 67,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-questions",
+            "input_kind": "questionnaire",
+            "question": "q10",
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 4,
+            "blocks": 18,
+            "lines": 71,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-questions",
+            "input_kind": "questionnaire",
+            "question": "q11",
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 4,
+            "blocks": 19,
+            "lines": 75,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-verdict",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 1,
+            "blocks": 20,
+            "lines": 80,
+            "advanced": true
+          },
+          {
+            "node": "writ.birthsign",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 9,
+            "blocks": 21,
+            "lines": 82,
+            "advanced": true
+          },
+          {
+            "node": "writ.stamp",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 1,
+            "blocks": 24,
+            "lines": 99,
+            "advanced": true
+          }
+        ],
+        "evidence": {
+          "picks": [],
+          "typed": [
+            {
+              "node": "hold.hatch-name",
+              "route": "typed",
+              "typed_row_before": [
+                "▁"
+              ],
+              "after_typing": {
+                "typed": "Sathel",
+                "surface_typed": "Sathel",
+                "row": [
+                  "Sathel▁"
+                ],
+                "node": "hold.hatch-name"
+              },
+              "after_backspace": {
+                "typed": "Sathe",
+                "surface_typed": "Sathe",
+                "row": [
+                  "Sathe▁"
+                ]
+              },
+              "after_node": "hold.out",
+              "spec": {
+                "hatchName": "Sathe",
+                "hatchNameRefused": false,
+                "givenName": "",
+                "sex": "unrecorded",
+                "race": "saxhleel",
+                "upbringing": null,
+                "classId": null,
+                "custom": null,
+                "route": null,
+                "birthsign": null,
+                "birthsignSecond": null
+              }
+            },
+            {
+              "node": "writ.given-name",
+              "route": "ledger",
+              "chose": "Teeba-Ei",
+              "typed_row_before": [
+                "▁"
+              ],
+              "after_node": "writ.class-routes",
+              "spec": {
+                "hatchName": "Sathe",
+                "hatchNameRefused": false,
+                "givenName": "Teeba-Ei",
+                "sex": "male",
+                "race": "saxhleel",
+                "upbringing": "interior",
+                "classId": null,
+                "custom": null,
+                "route": null,
+                "birthsign": null,
+                "birthsignSecond": null
+              }
+            }
+          ],
+          "choices": [
+            {
+              "node": "writ.race-observed",
+              "kind": "observed",
+              "question": null,
+              "rows": 1,
+              "confirmed": "Correct her.",
+              "blocks": "2 -> 3",
+              "advanced_to": "writ.sex",
+              "question_after": null
+            },
+            {
+              "node": "writ.sex",
+              "kind": "choice",
+              "question": null,
+              "rows": 3,
+              "confirmed": "Male.",
+              "blocks": "3 -> 4",
+              "advanced_to": "writ.upbringing",
+              "question_after": null
+            },
+            {
+              "node": "writ.upbringing",
+              "kind": "choice",
+              "question": null,
+              "rows": 4,
+              "confirmed": "Black water, no bottom.",
+              "blocks": "4 -> 6",
+              "advanced_to": "writ.given-name",
+              "question_after": null
+            },
+            {
+              "node": "writ.class-verdict",
+              "kind": "choice",
+              "question": null,
+              "rows": 1,
+              "confirmed": "Let her write it.",
+              "blocks": "20 -> 21",
+              "advanced_to": "writ.birthsign",
+              "question_after": null
+            },
+            {
+              "node": "writ.birthsign",
+              "kind": "choice",
+              "question": null,
+              "rows": 9,
+              "confirmed": "The Full Root",
+              "blocks": "21 -> 24",
+              "advanced_to": "writ.stamp",
+              "question_after": null
+            },
+            {
+              "node": "writ.stamp",
+              "kind": "choice",
+              "question": null,
+              "rows": 1,
+              "confirmed": "Take the reed-case.",
+              "blocks": "24 -> null",
+              "advanced_to": null,
+              "question_after": null
+            }
+          ],
+          "questionnaire": [
+            {
+              "node": "writ.class-questions",
+              "kind": "questionnaire",
+              "question": "q1",
+              "rows": 4,
+              "confirmed": "Pay, and count what they take.",
+              "blocks": "10 -> 11",
+              "advanced_to": "writ.class-questions",
+              "question_after": "q2"
+            },
+            {
+              "node": "writ.class-questions",
+              "kind": "questionnaire",
+              "question": "q2",
+              "rows": 4,
+              "confirmed": "Sit down beside them and stay until one of you speaks.",
+              "blocks": "11 -> 12",
+              "advanced_to": "writ.class-questions",
+              "question_after": "q3"
+            },
+            {
+              "node": "writ.class-questions",
+              "kind": "questionnaire",
+              "question": "q3",
+              "rows": 4,
+              "confirmed": "Cut the collar. It is one cut.",
+              "blocks": "12 -> 13",
+              "advanced_to": "writ.class-questions",
+              "question_after": "q4"
+            },
+            {
+              "node": "writ.class-questions",
+              "kind": "questionnaire",
+              "question": "q4",
+              "rows": 4,
+              "confirmed": "Write yourself onto it.",
+              "blocks": "13 -> 14",
+              "advanced_to": "writ.class-questions",
+              "question_after": "q5"
+            },
+            {
+              "node": "writ.class-questions",
+              "kind": "questionnaire",
+              "question": "q5",
+              "rows": 4,
+              "confirmed": "Rope, torch, down.",
+              "blocks": "14 -> 15",
+              "advanced_to": "writ.class-questions",
+              "question_after": "q6"
+            },
+            {
+              "node": "writ.class-questions",
+              "kind": "questionnaire",
+              "question": "q6",
+              "rows": 4,
+              "confirmed": "Walk. Carry her.",
+              "blocks": "15 -> 16",
+              "advanced_to": "writ.class-questions",
+              "question_after": "q7"
+            },
+            {
+              "node": "writ.class-questions",
+              "kind": "questionnaire",
+              "question": "q7",
+              "rows": 4,
+              "confirmed": "Give a share and make it look like more than it is.",
+              "blocks": "16 -> 17",
+              "advanced_to": "writ.class-questions",
+              "question_after": "q8"
+            },
+            {
+              "node": "writ.class-questions",
+              "kind": "questionnaire",
+              "question": "q8",
+              "rows": 4,
+              "confirmed": "Sign, and read it after.",
+              "blocks": "17 -> 18",
+              "advanced_to": "writ.class-questions",
+              "question_after": "q10"
+            },
+            {
+              "node": "writ.class-questions",
+              "kind": "questionnaire",
+              "question": "q10",
+              "rows": 4,
+              "confirmed": "Carry it back.",
+              "blocks": "18 -> 19",
+              "advanced_to": "writ.class-questions",
+              "question_after": "q11"
+            },
+            {
+              "node": "writ.class-questions",
+              "kind": "questionnaire",
+              "question": "q11",
+              "rows": 4,
+              "confirmed": "Climb over them both, fast.",
+              "blocks": "19 -> 20",
+              "advanced_to": "writ.class-verdict",
+              "question_after": null
+            }
+          ]
+        },
+        "done": true,
+        "spec": {
+          "hatchName": "Sathe",
+          "hatchNameRefused": false,
+          "givenName": "Teeba-Ei",
+          "sex": "male",
+          "race": "saxhleel",
+          "upbringing": "interior",
+          "classId": "wet-foot",
+          "custom": null,
+          "route": "questionnaire",
+          "birthsign": "raj-xul",
+          "birthsignSecond": null
+        },
+        "character": {
+          "given_name": "Teeba-Ei",
+          "hatch_name": "Sathe",
+          "hatch_name_refused": false,
+          "sex": "male",
+          "race": "saxhleel",
+          "upbringing": "interior",
+          "upbringing_given_as": "black water, no bottom",
+          "class_id": "wet-foot",
+          "class_name": "Wet-Foot",
+          "class_family": "thief",
+          "class_family_fit": null,
+          "class_route": "questionnaire",
+          "birthsign": "raj-xul",
+          "birthsign_second": null,
+          "attributes": {
+            "strength": 6,
+            "endurance": 12,
+            "agility": 17,
+            "speed": 15,
+            "vigour": 6,
+            "willpower": 10,
+            "intellect": 11,
+            "hist-bond": 14,
+            "personality": 10,
+            "luck": 11
+          },
+          "skills": {
+            "blades": 5,
+            "axes-maces": 5,
+            "polearms": 5,
+            "greatweapons": 5,
+            "marksman": 5,
+            "claw-fang": 5,
+            "shieldcraft": 5,
+            "sorcery": 5,
+            "root-speech": 10,
+            "warding": 5,
+            "veiling": 5,
+            "alchemy": 5,
+            "athletics": 15,
+            "acrobatics": 25,
+            "survival": 20,
+            "sneak": 25,
+            "security": 25,
+            "mercantile": 15,
+            "speechcraft": 5
+          },
+          "signature": {
+            "race": "saxhleel",
+            "class_family": "thief",
+            "birthsign_family": "given",
+            "upbringing_class": "interior",
+            "key": "saxhleel|thief|given|interior"
+          },
+          "powers": [
+            {
+              "sign": "raj-xul",
+              "scale": 1,
+              "power": {
+                "summary": "The tithe-gourd holds one more swallow.",
+                "effects": [
+                  {
+                    "kind": "flask_charges",
+                    "delta": 1,
+                    "note": "+1 tithe-gourd charge at every charge tier (RI-CMB08). At the 4-charge start this is +25% healing throughput; at the 10-charge cap, +10%. Deliberately front-loaded."
+                  }
+                ]
+              }
+            }
+          ],
+          "drawbacks": [],
+          "invariants": {
+            "attribute_total": 112,
+            "attribute_total_ok": true,
+            "race_delta_sum": 12,
+            "class_delta_sum": 0,
+            "skills_above_baseline": 7,
+            "skills_above_baseline_ok": true,
+            "max_skill": 25,
+            "max_skill_ok": true
+          },
+          "flags": [],
+          "route": "questionnaire",
+          "writ_text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Teeba-Ei\nAlso called: Sathe\nObserved as: Saxhleel\nRaised at: black water, no bottom\nTrade declared: Wet-Foot\nTide drawn on: The Full Root (Raj-Xul)\nSecond tide: None recorded.\nRecorded: Male.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-SAX-THI\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+        },
+        "old_panel_text": {
+          "complete": true,
+          "distinct_count": 0,
+          "distinct": [],
+          "instrumented": [
+            "dialogue"
+          ]
+        }
+      },
+      "named": {
+        "walk": [
+          {
+            "node": "hold.come-to",
+            "input_kind": null,
+            "question": null,
+            "paused": true,
+            "window_open": false,
+            "census_mode": false,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": false,
+            "elements_present": null,
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 0,
+            "blocks": null,
+            "lines": null,
+            "resumed": "harness:talk"
+          },
+          {
+            "node": "hold.hatch-name",
+            "input_kind": "text",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 11,
+            "blocks": 2,
+            "lines": 5,
+            "text_route": "typed",
+            "advanced": true
+          },
+          {
+            "node": "hold.out",
+            "input_kind": null,
+            "question": null,
+            "paused": true,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 0,
+            "blocks": 4,
+            "lines": 13,
+            "resumed": "harness:walk"
+          },
+          {
+            "node": "writ.race-observed",
+            "input_kind": "observed",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 1,
+            "blocks": 2,
+            "lines": 6,
+            "advanced": true
+          },
+          {
+            "node": "writ.sex",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 3,
+            "blocks": 3,
+            "lines": 10,
+            "advanced": true
+          },
+          {
+            "node": "writ.upbringing",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 4,
+            "blocks": 4,
+            "lines": 13,
+            "advanced": true
+          },
+          {
+            "node": "writ.given-name",
+            "input_kind": "text",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 9,
+            "blocks": 6,
+            "lines": 19,
+            "text_route": "ledger",
+            "advanced": true
+          },
+          {
+            "node": "writ.class-routes",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 3,
+            "blocks": 8,
+            "lines": 26,
+            "route_row": 0,
+            "route_label": "Name a trade the Office already has a word for.",
+            "advanced": true
+          },
+          {
+            "node": "writ.class-named",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 12,
+            "blocks": 9,
+            "lines": 28,
+            "advanced": true
+          },
+          {
+            "node": "writ.class-verdict",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 1,
+            "blocks": 11,
+            "lines": 36,
+            "advanced": true
+          },
+          {
+            "node": "writ.birthsign",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 9,
+            "blocks": 12,
+            "lines": 38,
+            "advanced": true
+          },
+          {
+            "node": "writ.stamp",
+            "input_kind": "choice",
+            "question": null,
+            "paused": false,
+            "window_open": true,
+            "census_mode": true,
+            "old_panel_suppressed": true,
+            "old_panel_layout_open": true,
+            "elements_present": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "has_exit": false,
+            "has_dispo": false,
+            "rows": 1,
+            "blocks": 15,
+            "lines": 55,
+            "advanced": true
+          }
+        ],
+        "evidence": {
+          "picks": [],
+          "typed": [
+            {
+              "node": "hold.hatch-name",
+              "route": "typed",
+              "typed_row_before": [
+                "▁"
+              ],
+              "after_typing": {
+                "typed": "Sathel",
+                "surface_typed": "Sathel",
+                "row": [
+                  "Sathel▁"
+                ],
+                "node": "hold.hatch-name"
+              },
+              "after_backspace": {
+                "typed": "Sathe",
+                "surface_typed": "Sathe",
+                "row": [
+                  "Sathe▁"
+                ]
+              },
+              "after_node": "hold.out",
+              "spec": {
+                "hatchName": "Sathe",
+                "hatchNameRefused": false,
+                "givenName": "",
+                "sex": "unrecorded",
+                "race": "saxhleel",
+                "upbringing": null,
+                "classId": null,
+                "custom": null,
+                "route": null,
+                "birthsign": null,
+                "birthsignSecond": null
+              }
+            },
+            {
+              "node": "writ.given-name",
+              "route": "ledger",
+              "chose": "Teeba-Ei",
+              "typed_row_before": [
+                "▁"
+              ],
+              "after_node": "writ.class-routes",
+              "spec": {
+                "hatchName": "Sathe",
+                "hatchNameRefused": false,
+                "givenName": "Teeba-Ei",
+                "sex": "male",
+                "race": "saxhleel",
+                "upbringing": "interior",
+                "classId": null,
+                "custom": null,
+                "route": null,
+                "birthsign": null,
+                "birthsignSecond": null
+              }
+            }
+          ],
+          "choices": [
+            {
+              "node": "writ.race-observed",
+              "kind": "observed",
+              "question": null,
+              "rows": 1,
+              "confirmed": "Correct her.",
+              "blocks": "2 -> 3",
+              "advanced_to": "writ.sex",
+              "question_after": null
+            },
+            {
+              "node": "writ.sex",
+              "kind": "choice",
+              "question": null,
+              "rows": 3,
+              "confirmed": "Male.",
+              "blocks": "3 -> 4",
+              "advanced_to": "writ.upbringing",
+              "question_after": null
+            },
+            {
+              "node": "writ.upbringing",
+              "kind": "choice",
+              "question": null,
+              "rows": 4,
+              "confirmed": "Black water, no bottom.",
+              "blocks": "4 -> 6",
+              "advanced_to": "writ.given-name",
+              "question_after": null
+            },
+            {
+              "node": "writ.class-named",
+              "kind": "choice",
+              "question": null,
+              "rows": 12,
+              "confirmed": "Salt-Blade",
+              "blocks": "9 -> 11",
+              "advanced_to": "writ.class-verdict",
+              "question_after": null
+            },
+            {
+              "node": "writ.class-verdict",
+              "kind": "choice",
+              "question": null,
+              "rows": 1,
+              "confirmed": "Let her write it.",
+              "blocks": "11 -> 12",
+              "advanced_to": "writ.birthsign",
+              "question_after": null
+            },
+            {
+              "node": "writ.birthsign",
+              "kind": "choice",
+              "question": null,
+              "rows": 9,
+              "confirmed": "The Full Root",
+              "blocks": "12 -> 15",
+              "advanced_to": "writ.stamp",
+              "question_after": null
+            },
+            {
+              "node": "writ.stamp",
+              "kind": "choice",
+              "question": null,
+              "rows": 1,
+              "confirmed": "Take the reed-case.",
+              "blocks": "15 -> null",
+              "advanced_to": null,
+              "question_after": null
+            }
+          ],
+          "questionnaire": []
+        },
+        "done": true,
+        "spec": {
+          "hatchName": "Sathe",
+          "hatchNameRefused": false,
+          "givenName": "Teeba-Ei",
+          "sex": "male",
+          "race": "saxhleel",
+          "upbringing": "interior",
+          "classId": "salt-blade",
+          "custom": null,
+          "route": "named",
+          "birthsign": "raj-xul",
+          "birthsignSecond": null
+        },
+        "character": {
+          "given_name": "Teeba-Ei",
+          "hatch_name": "Sathe",
+          "hatch_name_refused": false,
+          "sex": "male",
+          "race": "saxhleel",
+          "upbringing": "interior",
+          "upbringing_given_as": "black water, no bottom",
+          "class_id": "salt-blade",
+          "class_name": "Salt-Blade",
+          "class_family": "fighter",
+          "class_family_fit": null,
+          "class_route": "named",
+          "birthsign": "raj-xul",
+          "birthsign_second": null,
+          "attributes": {
+            "strength": 14,
+            "endurance": 16,
+            "agility": 13,
+            "speed": 11,
+            "vigour": 10,
+            "willpower": 10,
+            "intellect": 7,
+            "hist-bond": 14,
+            "personality": 6,
+            "luck": 11
+          },
+          "skills": {
+            "blades": 25,
+            "axes-maces": 15,
+            "polearms": 5,
+            "greatweapons": 5,
+            "marksman": 5,
+            "claw-fang": 5,
+            "shieldcraft": 25,
+            "sorcery": 5,
+            "root-speech": 10,
+            "warding": 5,
+            "veiling": 5,
+            "alchemy": 5,
+            "athletics": 25,
+            "acrobatics": 5,
+            "survival": 20,
+            "sneak": 20,
+            "security": 15,
+            "mercantile": 5,
+            "speechcraft": 5
+          },
+          "signature": {
+            "race": "saxhleel",
+            "class_family": "fighter",
+            "birthsign_family": "given",
+            "upbringing_class": "interior",
+            "key": "saxhleel|fighter|given|interior"
+          },
+          "powers": [
+            {
+              "sign": "raj-xul",
+              "scale": 1,
+              "power": {
+                "summary": "The tithe-gourd holds one more swallow.",
+                "effects": [
+                  {
+                    "kind": "flask_charges",
+                    "delta": 1,
+                    "note": "+1 tithe-gourd charge at every charge tier (RI-CMB08). At the 4-charge start this is +25% healing throughput; at the 10-charge cap, +10%. Deliberately front-loaded."
+                  }
+                ]
+              }
+            }
+          ],
+          "drawbacks": [],
+          "invariants": {
+            "attribute_total": 112,
+            "attribute_total_ok": true,
+            "race_delta_sum": 12,
+            "class_delta_sum": 0,
+            "skills_above_baseline": 8,
+            "skills_above_baseline_ok": true,
+            "max_skill": 25,
+            "max_skill_ok": true
+          },
+          "flags": [],
+          "route": "named",
+          "writ_text": "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON\nIssued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.\n\nName recorded: Teeba-Ei\nAlso called: Sathe\nObserved as: Saxhleel\nRaised at: black water, no bottom\nTrade declared: Salt-Blade\nTide drawn on: The Full Root (Raj-Xul)\nSecond tide: None recorded.\nRecorded: Male.\n\nCaste line: You walk the way people walk when they have been paid to walk somewhere.\nBounty ledger reference: TW-SAX-FIG\n\nThis case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+        },
+        "old_panel_text": {
+          "complete": true,
+          "distinct_count": 0,
+          "distinct": [],
+          "instrumented": [
+            "dialogue"
+          ]
+        }
+      }
+    },
+    "errors": []
+  }
+}

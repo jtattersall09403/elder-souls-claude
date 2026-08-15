@@ -26,6 +26,10 @@ dialogue-drive-probe.mjs — operate the dialogue window through the shipped inp
   --state <id>     world state to load (default: helstrom-market)
   --census         drive the character-creation / new-game flow instead of a world NPC
   --out <dir>      report directory (default reports/uix08)
+  --shot <path>    save a PNG of the first creation node that speaks (census arm only).
+                   The delete-the-fix pair is this flag run twice, once per arm.
+  --open-only      census arm: stop after the opening check. ~90 s instead of ~15 min, for
+                   when the thing wanted is the picture and not the walk.
 
 EXIT 0 = every check passes · 1 = a check failed · 2 = could not run.
 `;
@@ -36,6 +40,8 @@ const OUT = path.join(REPO_ROOT, String(args.out || 'reports/uix08'));
 ensureDir(OUT);
 const STATE = String(args.state || 'helstrom-market');
 const CENSUS = !!args.census;
+const SHOT = args.shot ? path.resolve(REPO_ROOT, String(args.shot)) : null;
+const OPEN_ONLY = !!args['open-only'];
 
 const checks = [];
 const push = (id, pass, detail) => {
@@ -534,6 +540,30 @@ try {
       `'${first.node}' is silent by design (O6: no surface, and none drew). First speaking node ` +
       `'${c.node}': window open=${c.new_window_open} (census mode=${c.census_mode}), ` +
       `render/ui.js suppressed=${c.old_panel_suppressed}, speaker '${c.speaker}'`);
+
+    // The picture, at the moment a new player first has something to read. Taken in BOTH arms of
+    // the delete-the-fix pair, from the same node, so the two frames differ by the one boolean and
+    // by nothing else. A still is not evidence that the window WORKS — that is what everything
+    // else in this file is for — but the owner asked to be able to see what has changed.
+    if (SHOT) {
+      // Render a real frame first: `setRenderRate(0)` stops the rAF loop, so without this the
+      // screenshot is of whatever was last composited rather than of the node just measured.
+      await h.h('setRenderRate', 1);
+      await h.h('stepFrames', 6);
+      ensureDir(path.dirname(SHOT));
+      await h.page.screenshot({ path: SHOT });
+      await h.h('setRenderRate', 0);
+      report.data.shot = { path: SHOT, node: c.node, speaker: c.speaker, census_mode: c.census_mode };
+      log(`  shot ${SHOT}  (node '${c.node}', census mode=${c.census_mode})`);
+    }
+    if (OPEN_ONLY) {
+      report.checks = checks;
+      report.data.errors = h.errors ? h.errors.slice(0, 10) : [];
+      writeJson(path.join(OUT, 'drive-probe-census-open.json'), report);
+      log(`\n${checks.filter((x) => x.pass).length}/${checks.length} checks passed (--open-only)`);
+      await h.close();
+      process.exit(checks.every((x) => x.pass) ? 0 : 1);
+    }
 
     // ---- the three routes --------------------------------------------------------------------
     const runs = {};
