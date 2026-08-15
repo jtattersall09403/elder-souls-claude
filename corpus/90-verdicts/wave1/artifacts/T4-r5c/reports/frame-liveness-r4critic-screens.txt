@@ -1,0 +1,12 @@
+LIVE                 container-scrolled__1920x1080.png            span= 165 shadow= 77 lc=  0.9635 H= 7.2045 subj=0.0005
+DUPLICATE            journal-page0__1920x1080.png                 span= 165 shadow= 77 lc=  0.9635 H= 7.2045 subj=0.0005
+                     \_ D7 byte-identical to the preceding frame container-scrolled__1920x1080.png — the capture did not advance
+DUPLICATE            levelup-attributes__1920x1080.png            span= 165 shadow= 77 lc=  0.9635 H= 7.2045 subj=0.0005
+                     \_ D7 byte-identical to the preceding frame journal-page0__1920x1080.png — the capture did not advance
+DUPLICATE            sheet-attributes__1920x1080.png              span= 165 shadow= 77 lc=  0.9635 H= 7.2045 subj=0.0005
+                     \_ D7 byte-identical to the preceding frame levelup-attributes__1920x1080.png — the capture did not advance
+
+4 frames: {"LIVE":1,"DUPLICATE":3}
+NOTE: no manifest supplied projected subject rows, so every subject test used the centre-of-frame fallback box. That box is assumed, not measured.
+
+FAIL: 3 of 4 frame(s) are not pictures of anything: journal-page0__1920x1080.png=DUPLICATE, levelup-attributes__1920x1080.png=DUPLICATE, sheet-attributes__1920x1080.png=DUPLICATE

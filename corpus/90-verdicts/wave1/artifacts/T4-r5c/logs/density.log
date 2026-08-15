@@ -1,0 +1,384 @@
+[harness] {
+  "schema": "elder-souls/t4-critic-measure@1",
+  "at": "2026-08-15T16:22:16.933Z",
+  "screens": {
+    "world": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-world__1920x1080.png",
+      "panel_rect": null
+    },
+    "inventory": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-inventory__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.1524,
+        "mode_rgb": [
+          44,
+          57,
+          45
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.1524
+    },
+    "journal": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-journal__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.1315,
+        "mode_rgb": [
+          172,
+          165,
+          147
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.1315
+    },
+    "sheet": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-sheet__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.0896,
+        "mode_rgb": [
+          44,
+          57,
+          45
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.0896
+    },
+    "spells": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-spells__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.0703,
+        "mode_rgb": [
+          27,
+          26,
+          24
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.0703
+    },
+    "levelup": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-levelup__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.091,
+        "mode_rgb": [
+          219,
+          217,
+          204
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.091
+    },
+    "container": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-container__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.0572,
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.0572
+    },
+    "container_no_name": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r2/screens/live-container_no_name__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": {
+        "fill": 0.0554,
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "d2_builder": 0.0554
+    }
+  },
+  "notes": []
+}
+[harness] {
+  "schema": "elder-souls/t4-r3-density@1",
+  "at": "2026-08-15T16:22:18.482Z",
+  "measure_dir": "corpus/90-verdicts/wave1/artifacts/T4-r5c/measure-live",
+  "bar": 0.35,
+  "hard_fail_below": 0.15,
+  "screens": {
+    "world": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/measure-live/screens/live-world__1920x1080.png",
+      "panel_rect": null
+    },
+    "inventory": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/measure-live/screens/live-inventory__1920x1080.png",
+      "panel_rect": [
+        200,
+        150,
+        1520,
+        780
+      ],
+      "d2_critic": 0.1557,
+      "d2_detail": {
+        "mode_rgb": [
+          44,
+          57,
+          45
+        ],
+        "pixels": 1185600
+      },
+      "d2_builder_same_run": 0.1557,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.5718,
+      "matter_px2": 184598,
+      "panel_px2_at_bar": 527423,
+      "frame_fraction_at_bar": 0.2544,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "journal": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/measure-live/screens/live-journal__1920x1080.png",
+      "panel_rect": [
+        595,
+        325,
+        730,
+        430
+      ],
+      "d2_critic": 0.174,
+      "d2_detail": {
+        "mode_rgb": [
+          187,
+          178,
+          156
+        ],
+        "pixels": 313900
+      },
+      "d2_builder_same_run": 0.174,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1514,
+      "matter_px2": 54619,
+      "panel_px2_at_bar": 156054,
+      "frame_fraction_at_bar": 0.0753,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "sheet": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/measure-live/screens/live-sheet__1920x1080.png",
+      "panel_rect": [
+        680,
+        295,
+        560,
+        490
+      ],
+      "d2_critic": 0.173,
+      "d2_detail": {
+        "mode_rgb": [
+          42,
+          55,
+          43
+        ],
+        "pixels": 274400
+      },
+      "d2_builder_same_run": 0.173,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1323,
+      "matter_px2": 47471,
+      "panel_px2_at_bar": 135631,
+      "frame_fraction_at_bar": 0.0654,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "spells": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/measure-live/screens/live-spells__1920x1080.png",
+      "panel_rect": [
+        730,
+        365,
+        460,
+        350
+      ],
+      "d2_critic": 0.304,
+      "d2_detail": {
+        "mode_rgb": [
+          27,
+          26,
+          24
+        ],
+        "pixels": 161000
+      },
+      "d2_builder_same_run": 0.304,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.0776,
+      "matter_px2": 48944,
+      "panel_px2_at_bar": 139840,
+      "frame_fraction_at_bar": 0.0674,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "levelup": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/measure-live/screens/live-levelup__1920x1080.png",
+      "panel_rect": [
+        720,
+        300,
+        480,
+        480
+      ],
+      "d2_critic": 0.1522,
+      "d2_detail": {
+        "mode_rgb": [
+          221,
+          220,
+          211
+        ],
+        "pixels": 230400
+      },
+      "d2_builder_same_run": 0.1522,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1111,
+      "matter_px2": 35067,
+      "panel_px2_at_bar": 100191,
+      "frame_fraction_at_bar": 0.0483,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "container": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/measure-live/screens/live-container__1920x1080.png",
+      "panel_rect": [
+        720,
+        310,
+        480,
+        460
+      ],
+      "d2_critic": 0.1538,
+      "d2_detail": {
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 220800
+      },
+      "d2_builder_same_run": 0.1538,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1065,
+      "matter_px2": 33959,
+      "panel_px2_at_bar": 97026,
+      "frame_fraction_at_bar": 0.0468,
+      "hard_fail": false,
+      "meets_bar": false
+    },
+    "container_no_name": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r5c/measure-live/screens/live-container_no_name__1920x1080.png",
+      "panel_rect": [
+        720,
+        310,
+        480,
+        460
+      ],
+      "d2_critic": 0.1449,
+      "d2_detail": {
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 220800
+      },
+      "d2_builder_same_run": 0.1449,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.1065,
+      "matter_px2": 31994,
+      "panel_px2_at_bar": 91411,
+      "frame_fraction_at_bar": 0.0441,
+      "hard_fail": true,
+      "meets_bar": false
+    }
+  },
+  "hard_fails": [
+    "container_no_name"
+  ]
+}
