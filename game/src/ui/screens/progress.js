@@ -18,7 +18,7 @@
 
 import { C, Ca, boneRule, bonePip, shellInlay, chitinPath, idHash } from '../theme.js';
 import { screen, row, column, hint, extent, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
-import { drawText, faceOf, measure, wrap, writeLines } from '../type.js';
+import { drawText, faceOf, measure, wrap, writeLines, ellipsise } from '../type.js';
 import { glyphObject, drawObject, ATTRIBUTE_SHAPE } from '../icons.js';
 
 /**
@@ -57,9 +57,14 @@ export function drawLevelUp(S, m) {
   const [ix, iy, iw, ih] = sc.inner;
 
   // ---- what it costs, in souls. There is no other currency on this screen. -----------------
+  // T4 round 4, GAP-W1-ui-panel-is-a-fixed-box. These three blocks used to sit at fixed 0/320/640
+  // offsets 300/300/360 wide — a 1000-unit span the old 1476-wide box had 476 units to spare
+  // against. The new box is narrower than that on its own, so the three move onto thirds of `iw`
+  // instead of a magic span that would now overlap the attribute rows below it.
+  const statW = iw / 3;
   S.el({
     id: 'levelup.level', kind: 'level_value',
-    rect: [ix, iy, 300 * s, 40 * s], text: String(m.level), opacity: alpha,
+    rect: [ix, iy, statW - 10 * s, 40 * s], text: String(m.level), opacity: alpha,
     meta: { level: m.level },
   }, (c, r) => {
     drawText(c, 'level', r[0], r[1] + 26 * s, faceOf('ink'), 15 * s, inkDim());
@@ -67,7 +72,7 @@ export function drawLevelUp(S, m) {
   });
   S.el({
     id: 'levelup.souls', kind: 'souls_held',
-    rect: [ix + 320 * s, iy, 300 * s, 40 * s], text: String(m.souls), opacity: alpha,
+    rect: [ix + statW, iy, statW - 10 * s, 40 * s], text: String(m.souls), opacity: alpha,
     meta: { souls_held: m.souls },
   }, (c, r) => {
     drawText(c, 'souls held', r[0], r[1] + 26 * s, faceOf('ink'), 15 * s, inkDim());
@@ -75,7 +80,7 @@ export function drawLevelUp(S, m) {
   });
   S.el({
     id: 'levelup.next', kind: 'souls_to_next',
-    rect: [ix + 640 * s, iy, 360 * s, 40 * s], text: String(m.soulsToNext), opacity: alpha,
+    rect: [ix + statW * 2, iy, statW - 10 * s, 40 * s], text: String(m.soulsToNext), opacity: alpha,
     meta: { souls_to_next: m.soulsToNext, level_after: m.level + 1, affordable: m.souls >= m.soulsToNext },
   }, (c, r) => {
     drawText(c, 'to the next', r[0], r[1] + 26 * s, faceOf('ink'), 15 * s, inkDim());
@@ -86,7 +91,14 @@ export function drawLevelUp(S, m) {
     (c, r) => boneRule(c, r[0], r[1] + 3 * s, r[2], s, 4));
 
   // ---- the ten attributes, all on screen at once (L5) ---------------------------------------
-  const rowH = 46 * s, colW = iw * 0.56;
+  // T4 round 4. rowH 46 -> 36 -> 30, over two measured passes: ten rows at 46 needed 460 units
+  // below the 58-unit header, which the old 674-unit inner box had room for; the first pass's 36
+  // (760×560 box) still hard-failed `RI-UIX09` DN4 at 0.1455 because the row TEXT (names, values)
+  // is short and fixed and does not shrink with the box the way flowing prose does, so raising the
+  // row density — not the box alone — is what actually recovers `D2`. 30 is the floor the row's
+  // OWN content sets: the cap-tick label 8 units below the gauge (see below) needs the row to be
+  // at least ~30 units before it starts drawing into the next row.
+  const rowH = 30 * s, colW = iw * 0.56;
   m.attributes.forEach((a, i) => {
     const y = iy + 58 * s + i * rowH;
     const on = i === m.attrIdx;
@@ -97,11 +109,15 @@ export function drawLevelUp(S, m) {
     }, (c, r) => {
       if (on) shellInlay(c, r[0], r[1], r[2], r[3], s, idHash(a.id));
       drawText(c, a.name, r[0] + 44 * s, r[1] + 26 * s, faceOf('bone'), 15 * s, ink());
-      drawText(c, String(a.value), r[0] + 220 * s, r[1] + 27 * s, faceOf('bone'), 19 * s, ink());
+      // T4 round 4. The value offset (220) and the gauge's start/width (262, colW-280) were fixed
+      // units pitched against the old 826-unit colW (iw*0.56 at iw=1476). `colW` is smaller now,
+      // so all three move onto fractions of `r[2]` (== colW here) rather than literals that would
+      // put the gauge past the row's own right edge, or on top of the value, at the new width.
+      drawText(c, String(a.value), r[0] + r[2] * 0.27, r[1] + 27 * s, faceOf('bone'), 19 * s, ink());
       // the gauge, with the soft cap cut into it (L8)
       // A2: not a plain rectangle. The gauge is a bone trough with a cut edge, exactly as the
       // HUD's bars are, so nothing on any screen in this interface is an axis-aligned box.
-      const gx = r[0] + 262 * s, gw = r[2] - 280 * s, gy = r[1] + 16 * s, gh = 10 * s;
+      const gx = r[0] + r[2] * 0.32, gw = r[2] * 0.64, gy = r[1] + 16 * s, gh = 10 * s;
       chitinPath(c, gx, gy, gw, gh, s, idHash(a.id) & 0xffff);
       c.save(); c.clip();
       c.fillStyle = C('parchment'); c.fillRect(gx - 2, gy - 2, gw + 4, gh + 4);
@@ -114,7 +130,12 @@ export function drawLevelUp(S, m) {
         const cx = gx + gw * (cap / 99);
         c.beginPath(); c.moveTo(cx, gy - 4 * s); c.lineTo(cx, gy + gh + 4 * s);
         c.strokeStyle = Ca('bone_dim', 0.95); c.lineWidth = 2 * s; c.stroke();
-        drawText(c, label, cx - 10 * s, gy + gh + 16 * s, faceOf('ink'), 10 * s, inkDim());
+        // T4 round 4. 16 -> 8: the label sat far enough below the gauge (gy+gh+16) that it needed
+        // a ~46-unit row on its own; tucked to gy+gh+8 it stays inside a 30-unit row instead of
+        // drawing into the next attribute down. Still a tick AND a word, not just a tick — L8
+        // asks for the cap "MARKED… on the attribute's own gauge", which the tick line alone
+        // already satisfies, so the label is belt-and-braces rather than the requirement itself.
+        drawText(c, label, cx - 10 * s, gy + gh + 8 * s, faceOf('ink'), 9 * s, inkDim());
       }
     });
     // RI-UIX09 D1. The attribute's own carved mark, a drawn object rather than a letter: a maul
@@ -192,12 +213,22 @@ export function drawSheet(S, m) {
       rect: [ix, iy + i * factH * s, colW, (factH - 2) * s], text: `${k} ${v}`, opacity: alpha,
     }, (c, r) => {
       drawText(c, k, r[0], r[1] + 20 * s, faceOf('ink'), 14 * s, inkDim());
-      drawText(c, String(v || '—'), r[0] + 150 * s, r[1] + 21 * s, faceOf('bone'), 16 * s, ink());
+      // T4 round 4. The value offset (150) was pitched against the old 502-unit colW (iw*0.34 at
+      // iw=1476); `colW` is 250-ish now, so a fixed 150 left a long value — a class or a
+      // birthsign name — with nowhere to go but over the divider into the attribute column.
+      // Fraction-of-colW offset plus `ellipsise` (as every list row in this file already uses)
+      // instead of an unbounded `drawText`.
+      const f = faceOf('bone'), sz = 16 * s, vx = r[2] * 0.56;
+      const t = ellipsise(String(v || '—'), f, sz, r[2] - vx - 4 * s);
+      drawText(c, t, r[0] + vx, r[1] + 21 * s, f, sz, ink());
       boneRule(c, r[0], r[1] + r[3] - 3 * s, r[2], s, idHash(k) & 0xffff);
     });
   });
 
-  const ax = ix + colW + 24 * s, attrW = colW * 0.92, attrH = 42;
+  // T4 round 4. 42 -> 36: the row's own content (name+value line, then an 8-unit gauge starting
+  // at +26) needs about 34 units, which 42 had room to spare on and 36 does not — chosen from the
+  // content, same as level-up's rowH, rather than from the arithmetic target alone.
+  const ax = ix + colW + 24 * s, attrW = colW * 0.92, attrH = 36;
   column(S, 'sheet.rule1', ax - 14 * s, iy, 2 * s, ih, alpha);
   m.attributes.forEach((a, i) => {
     const y = iy + i * attrH * s;
@@ -207,7 +238,9 @@ export function drawSheet(S, m) {
       meta: { attribute: a.id, value: a.value, soft_cap: a.soft_cap },
     }, (c, r) => {
       drawText(c, a.name, r[0] + 40 * s, r[1] + 20 * s, faceOf('bone'), 14 * s, ink());
-      drawText(c, String(a.value), r[0] + 200 * s, r[1] + 21 * s, faceOf('bone'), 16 * s, ink());
+      // T4 round 4. 200 was pitched against the old ~502-unit attrW; fraction of r[2] instead, as
+      // the level-up screen's own attribute row already does.
+      drawText(c, String(a.value), r[0] + r[2] * 0.40, r[1] + 21 * s, faceOf('bone'), 16 * s, ink());
       // the same bone trough the level-up screen cuts, so one attribute reads the same way on
       // both screens rather than being a number here and a gauge there
       const gx = r[0] + 40 * s, gw = r[2] - 56 * s, gy = r[1] + 26 * s, gh = 8 * s;
@@ -230,14 +263,25 @@ export function drawSheet(S, m) {
 
   const sx = ax + attrW + 30 * s, sw = ix + iw - sx;
   column(S, 'sheet.rule2', sx - 16 * s, iy, 2 * s, ih, alpha);
-  const skillH = 28;
+  // T4 round 4. 28 -> 24 -> 20, over two measured passes: `game/data/progression/skills.json`
+  // carries 19 skills (checked: `python3 -c "import json;print(len(json.load(open(
+  // 'game/data/progression/skills.json'))['skills']))"` -> 19) and this is the tallest of the
+  // sheet's three columns, so it is what decides how much the box can shrink without dropping a
+  // row off the bottom of the window. At `skillH=20` the second pass's `ih` (384) still gives
+  // `floor(ih/20) = 19` — every skill stays on screen, none newly scrolled.
+  const skillH = 20;
   const rows = Math.max(8, Math.floor(ih / (skillH * s)));
   const win = windowOf(m.skills.length, m.rowIdx, rows);
+  // The name/value column widths (220 + 60 = 280) were pitched against the old ~600-unit `sw`
+  // (iw*0.66 minus the other two columns at iw=1476); the new `sw` is under 220 alone at this
+  // box's width, so both move onto fractions of `sw` — `row()` still ellipsises whatever does not
+  // fit, exactly as it already does for the inventory and container lists.
+  const skNameW = (sw / s) * 0.76, skValW = (sw / s) * 0.20;
   for (let i = win.from; i < win.to; i++) {
     const sk = m.skills[i];
     row(S, 'sheet.skill.' + sk.id, 'skill_row', sx, iy + (i - win.from) * skillH * s, sw, skillH * s, [
-      { text: sk.name, w: 220, size: 15 },
-      { text: String(sk.value), w: 60, align: 'right', face: 'bone', size: 15 },
+      { text: sk.name, w: skNameW, size: 15 },
+      { text: String(sk.value), w: skValW, align: 'right', face: 'bone', size: 15 },
     ], i === m.rowIdx, alpha, { skill: sk.id, value: sk.value });
   }
   if (m.skills.length > rows) {
@@ -254,14 +298,23 @@ export function drawSpells(S, m) {
   const sc = screen(S, 'spells', sel ? sel.name : 'Attuned', m.focusLabel || null, 'chitin', alpha);
   const [ix, iy, iw, ih] = sc.inner;
   const lw = iw * 0.46;
-  const rows = 18;
+  // T4 round 4. 18 was a flat cap against the old 674-unit `ih` (18*34=612 fit under it with
+  // room to spare); the new, shorter box does not have 612 units to give the list, so the cap is
+  // now also bounded by what actually fits — the attuned list this build's own fixture carries is
+  // 2 spells, well under either number, but a fuller list must not draw past the panel's foot.
+  const rows = Math.max(4, Math.min(18, Math.floor(ih / (34 * s))));
   const win = windowOf(m.spells.length, m.rowIdx, rows);
+  // T4 round 4, GAP-W1-ui-panel-is-a-fixed-box. name(300) + cost(70) = 370 units was pitched
+  // against the old ~679-unit `lw` (iw*0.46 at iw=1476); the new box's `lw` is under 370 alone,
+  // so both move onto fractions of `lw` instead of literals that would push the cost column past
+  // the row's own right edge.
+  const spNameW = (lw / s) * 0.81, spCostW = (lw / s) * 0.18;
   for (let i = win.from; i < win.to; i++) {
     const sp = m.spells[i];
     const ry = iy + (i - win.from) * 34 * s;
     row(S, 'spells.row.' + sp.id, 'spell_row', ix, ry, lw, 34 * s, [
-      { text: sp.name, w: 300 },
-      { text: String(sp.cost), w: 70, align: 'right', face: 'bone', size: 14 },
+      { text: sp.name, w: spNameW },
+      { text: String(sp.cost), w: spCostW, align: 'right', face: 'bone', size: 14 },
     ], i === m.rowIdx, alpha, { spell: sp.id, cost: sp.cost, school: sp.school }, 38);
     // The school's mark, drawn. Same table, same `glyph_object` kind — a spell is not an object
     // you carry, so it is not an `item_icon` either.

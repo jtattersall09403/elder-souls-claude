@@ -66,16 +66,95 @@ function setPaper(material) {
   return PAPER;
 }
 
-/** Screen box, in 1080p units, sized against RI-UIX03 P5's ≤60% of screen area. */
+/**
+ * Screen box, in 1080p units, sized against RI-UIX03 P5's ≤60% of screen area.
+ *
+ * `BOX` is the default and is what every screen used until T4 round 4 — 57.2% of frame regardless
+ * of what the screen held. `ARBITRATION` S56 is explicit that P5's ceiling is not a size: *"57.2%
+ * is simply how ours was built; nothing requires it… the remedy is to size the panel to its
+ * contents, Morrowind-style."* `RI-UIX09` P4 wants `D2 >= 0.35` (panel fill) and hard-fails below
+ * 0.15; `GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it` is the single row
+ * this per-screen table exists to close.
+ *
+ * `BOXES` carries the five screens that were empty inside the old fixed box: journal, level-up,
+ * sheet, spells and container, each shrunk to what T4-r3's own measurement showed those screens
+ * actually draw (see each screen file's header comment for the arithmetic). Every id NOT in
+ * `BOXES` — inventory, map, book, wait, bindings — keeps the original `BOX`. Inventory is
+ * deliberately left alone: T4-r3 measured its own `COLS` needing 1046 units before the detail
+ * panel gets any width, which is a layout problem, not a resize, and inventory was not the hard
+ * fail (0.1524, above the 0.15 floor already).
+ */
 export const BOX = { x: 200, y: 160, w: 1520, h: 780 };   // 57.2% of 1920×1080
+
+/**
+ * Per-screen overrides, each centred in the 1920×1080 frame the same way `BOX` is (margins split
+ * evenly left/right and top/bottom) so a smaller panel does not appear to have drifted to a
+ * corner. `frac` is recorded only as a comment — the real number is whatever
+ * `tools/ui/t4-r3-density.mjs` measures, and that is the number to trust.
+ */
+// Measured mid-round, at the FIRST-PASS sizes below (now superseded — kept as the evidence for
+// why a second, smaller pass was necessary, via `node tools/ui/t4-r3-density.mjs` against
+// `corpus/90-verdicts/wave1/artifacts/T4-r4/measure`): 760×585 raised journal from 0.1314 to only
+// 0.1448 — STILL a hard fail (< 0.15) — and the same was true of sheet (0.1416) and level-up
+// (0.1455) at their own first-pass boxes. **The reason is that shrinking a box that holds mostly
+// FLOWING TEXT shrinks the visible MATTER almost in step with the area**: fewer characters fit on
+// the smaller page, so the ink pixels drop by nearly as much as the panel does, and `D2 =
+// matter/area` barely moves. Level-up's matter dropped 42.6% for a 64.1% area cut — much better
+// than journal's, because ten short, FIXED attribute labels and their carved marks do not shrink
+// with the column the way nineteen journal entries' prose does — but still not enough at the
+// first-pass size. The sizes below are the second pass: smaller again, informed by that same
+// measurement's own `matter_px2` column rather than by the arithmetic in T4-r3's verdict (which
+// assumed matter stays constant under a resize — true enough for `RI-UIX09` P4's own arithmetic to
+// motivate the fix, wrong by nearly 2× once actually measured on a real page of flowing text).
+const BOXES = {
+  // 550×430 = 236,500 px² = 11.4% of frame. idxW cut again, 190 -> 140.
+  journal: { w: 550, h: 430 },
+  // 480×480 = 230,400 px² = 11.1% of frame. `rowH` cut again, 36 -> 30 — the row's own content
+  // (the cap-tick label under the gauge) is what sets 30 as the floor, not an arithmetic target;
+  // 58 + 10×30 = 358 fits under `ih` (480 - 106 = 374) with 16 units to spare.
+  levelup: { w: 480, h: 480 },
+  // 560×490 = 274,400 px² = 13.2% of frame. `skillH` cut again, 24 -> 20 (384/20 = 19.2, still
+  // >= 19 with `Math.floor`, so every skill row stays), and `attrH` cut 42 -> 36 to fit the
+  // attribute column's own content (a name/value line, then an 8-unit gauge) rather than leaving
+  // the 6-unit-per-row slack the old box had room for.
+  sheet: { w: 560, h: 490 },
+  // 460×350 = 161,000 px² = 7.77% of frame. Spells' matter barely moved between the two passes
+  // (83,229 -> 61,660 for a 76% area cut) because the attuned list this build's fixture carries
+  // is two spells and two fixed-size school marks — almost none of its matter is flowing text, so
+  // it is the one screen where shrinking the box captures nearly all of it as `D2` gain, and the
+  // first pass already reached 0.2162. This box is smaller again to clear 0.35 with margin.
+  spells: { w: 460, h: 350 },
+  // 480×460 = 220,800 px² = 10.65% of frame. `CROWS` cut again, 8 -> 4: the first pass's biggest
+  // loss was not the list rows, it was the SELECTED-ITEM DEPICTION — `Math.min(140, bh-20)` fell
+  // from a full 140×140 plate (19,600 px²) to a 50×50 one (2,500 px²) because eight rows' worth of
+  // list height left the band only 70 px tall. Four rows a side, plus 40 more units of box height
+  // than the first four-row attempt measured (`h=420` gave a 106×106 plate and still hard-failed
+  // at 0.1421 — measured, not assumed), gives the band a full 166 px, which reaches the plate's
+  // own 140 px cap. Both sides still scroll past 4 exactly as they scrolled past 8 (`windowOf` +
+  // `extent`, unchanged). See inventory.js `drawContainer`.
+  container: { w: 480, h: 460 },
+};
 
 /** In-combat opacity. P5 caps it at 55%; 50% leaves the centre 40%×40% half world. */
 export const COMBAT_ALPHA = 0.50;
 export const CALM_ALPHA = 0.94;
 
-export function screenRect(S) {
+/**
+ * The rect a screen actually draws at, in device px. `id` selects the per-screen box; omitted (or
+ * unknown) falls back to `BOX`, so every call site that predates T4 round 4 — and there is one,
+ * `system.js`'s `beginScreen()`, which now passes `this.mode` — keeps working if it ever forgets
+ * to pass one, just at the old size rather than throwing.
+ */
+export function screenRect(S, id) {
   const s = S.s;
-  return [BOX.x * s, BOX.y * s, BOX.w * s, BOX.h * s];
+  const b = (id && BOXES[id]) || BOX;
+  const w = b.w, h = b.h;
+  // Centred in the 1080p frame: (1920-w)/2, (1080-h)/2. BOX itself is off this by 10 units
+  // vertically (160 rather than 150) — round 1's original choice, kept for BOX so nothing shifts
+  // under inventory/map/book/wait/bindings; every new per-screen box is centred exactly rather
+  // than inheriting that unexplained offset.
+  const x = (S.W / s - w) / 2, y = (S.H / s - h) / 2;
+  return [x * s, y * s, w * s, h * s];
 }
 
 /**
@@ -85,7 +164,7 @@ export function screenRect(S) {
 export function screen(S, id, title, subtitle, material, alpha) {
   const s = S.s;
   setPaper(material);
-  const r = screenRect(S);
+  const r = screenRect(S, id);
   const seed = idHash(id) & 0xffff;
   S.el({
     id: id + '.panel', kind: 'panel', rect: r, opacity: alpha, material,

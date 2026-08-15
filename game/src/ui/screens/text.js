@@ -55,7 +55,14 @@ export function drawJournal(S, m) {
   if (m.view === 'search') { drawSearch(S, m, sc, alpha); return; }
 
   // ---- the index: names only, no state decoration (J4, J5, J6) ----------------------------
-  const idxW = 250 * s;
+  // T4 round 4, GAP-W1-ui-panel-is-a-fixed-box. 250 -> 190 -> 140, over two measured passes: the
+  // index is a column of short quest names and was the widest fixed-width margin on a screen
+  // `RI-UIX09` DN4 hard-failed at 0.1314, and the first pass (190, box 760×585) still hard-failed
+  // at 0.1448 because the panel's flowing chronicle text loses matter almost as fast as area when
+  // the box shrinks (see chrome.js `BOXES`'s header comment). The row's own text column narrows
+  // with it (236 -> idxW/s - 14, the same 14-unit margin the header keeps) rather than staying a
+  // literal 236 that would now overflow idxW.
+  const idxW = 140 * s;
   S.el({
     id: 'journal.index.head', kind: 'panel_header',
     rect: [ix, iy, idxW, 26 * s], text: 'Quests', opacity: alpha,
@@ -63,7 +70,12 @@ export function drawJournal(S, m) {
     drawText(c, 'Quests', r[0], r[1] + 19 * s, faceOf('bone'), 15 * s, inkDim());
     boneRule(c, r[0], r[1] + 24 * s, r[2], s, 12);
   });
-  const idxRows = 16;
+  // T4 round 4. 16 was a flat cap against the old 674-unit `ih` (16*26+30=446 fit under it); the
+  // new, shorter box does not, so the cap is also bounded by what fits. This build's own fixture
+  // carries 5 distinct quests (`game/data/states/ui-journal.json`, checked: 5 unique `quest` ids
+  // across 19 entries), well under either number, but a longer quest log must not draw past the
+  // panel's own edge.
+  const idxRows = Math.max(4, Math.min(16, Math.floor((ih - 30 * s) / (26 * s))));
   const iwin = windowOf(m.index.length, m.indexIdx, idxRows);
   for (let i = iwin.from; i < iwin.to; i++) {
     const q = m.index[i];
@@ -71,7 +83,7 @@ export function drawJournal(S, m) {
       ix, iy + 30 * s + (i - iwin.from) * 26 * s, idxW, 26 * s,
       // The display name and NOTHING else. No badge, no colour, no count — J5 forbids all three,
       // and a count is also Q4.
-      [{ text: q.name, w: 236, size: 14 }],
+      [{ text: q.name, w: idxW / s - 14, size: 14 }],
       m.view === 'index' && i === m.indexIdx, alpha, { journal_id: q.journal_id });
   }
   if (m.index.length > idxRows) {
@@ -170,8 +182,15 @@ export function drawJournal(S, m) {
 function drawSearch(S, m, sc, alpha) {
   const s = S.s;
   const [ix, iy, iw, ih] = sc.inner;
-  letterRing(S, 'journal.ring', ix, iy + 52 * s, 420 * s, 230 * s, m.ringIdx, m.query, alpha);
-  const rx = ix + 460 * s, rw = iw - 460 * s;
+  // T4 round 4. The ring (420 fixed) and the results column's start (460 fixed) were pitched
+  // against the old 1476-unit iw; this screen's `iw` is 506 at the new box, where 460 alone left
+  // the results column 46 units wide — present, not absent, but too narrow to read a result in.
+  // Both move onto fractions of `iw`. This view is not one of `RI-UIX09`'s six measured screens,
+  // but round 3's journal-exit fix (`JX2a`-`JX2c`) is tested FROM inside it, so it must stay
+  // usable, not merely non-crashing.
+  const ringW = Math.min(420 * s, iw * 0.62);
+  letterRing(S, 'journal.ring', ix, iy + 52 * s, ringW, 230 * s, m.ringIdx, m.query, alpha);
+  const rx = ix + iw * 0.68, rw = iw - iw * 0.68;
   S.el({
     id: 'journal.results.head', kind: 'panel_header', rect: [rx, iy, rw, 26 * s],
     text: `${m.results.length} found`, opacity: alpha,
