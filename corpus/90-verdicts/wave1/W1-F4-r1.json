@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-F4-r1",
+  "piece_title": "F4 round 1 — light, sky and atmosphere: the key-light rebalance",
+  "subsystem_paths": ["visual.renderer.ibl", "visual.renderer.shadows", "visual.renderer.sky"],
+  "wave": 1,
+
+  "critic": {
+    "run_id": "crit-f4-r1",
+    "role": "critic.visual",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-15T18:05:00Z",
+    "finished_at": "2026-08-15T19:45:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true,
+    "note": "I built none of this. My dispatch brief handed me the builder's status file and ruling S60 up front, which departs from CRITIC-DOCTRINE §8's ordering; recorded rather than hidden, and no blind pack was runnable anyway (see blind_comparisons). I INHERITED NO NUMBER FROM THE BRIEF: every figure here was re-derived from a file opened or a command run in this session, and where a brief figure disagreed with what I measured I have said so and given mine. The brief asserted the build 'visibly regresses a third recipe'; it does not — see status_reasons and notes."
+  },
+
+  "build": {
+    "commit_sha": "e9b30a8237ae3a95b34d6c2695a57ef897d858e7",
+    "branch": "codex/wave1-build-experiment",
+    "baseline_note": "The AFTER arm is the working tree at this commit; `git status` showed game/src/render/lighting-recipes.js and game/src/render/sky.js clean throughout, verified before and after my capture. The BEFORE arm is NOT a page-side rig edit: it is a hard-linked copy of game/ at /tmp scratch with exactly two source lines reverted (noon-marsh key 3.00->1.00 sky 0.315->0.42 fill 0.225->0.30 env 0.35->1.00; night-moon moon 3.60->1.00 env 0.195->0.75) and the page served from that tree. That revert reaches the environment-probe BAKE at sky.js:944 (`sunGain: R.key * Math.max(0.05, day)`), which the builder correctly said no page-side arm can reach.",
+    "harness_commands": [
+      { "cmd": "node tools/visual/f4c-critic.mjs --mode s60 --arm landed --entry game/index.html --out reports/f4c/A-s60-landed", "seed": 20260814, "exit": 0, "rows": 30 },
+      { "cmd": "node tools/visual/f4c-critic.mjs --mode s60 --arm before --entry <scratch>/f4c/before/game/index.html --out reports/f4c/A-s60-before", "seed": 20260814, "exit": 0, "rows": 30 },
+      { "cmd": "node tools/visual/f4c-critic.mjs --mode look --arm landed --hours 8,13,19.5 --steps 12 --walk 6 --out reports/f4c/B-look-landed", "seed": 20260814, "exit": 0, "note": "orbit and walk; see look_capture below" },
+      { "cmd": "node tools/visual/f4c-analyse.mjs --vis03 <6 reference plates> <6 of our frames>", "exit": 0 },
+      { "cmd": "node tools/visual/f4c-analyse.mjs --fullframe reports/f2-why/f4-verify-* reports/f2-why/f4-prsv*", "exit": 0, "note": "re-derivation of the builder's own full-frame table from the PNGs its runs left on disk" }
+    ],
+    "renderer_class": "SOFTWARE (SwiftShader) for every capture of mine. Differential by construction within a window; the cross-process/cross-tree pair is validated by a BYTE-IDENTICAL null control, see checks S60-DET."
+  },
+
+  "bifurcation": {
+    "axis": "fidelity",
+    "declared_before_citation": true,
+    "note": "JUDGEMENT SIDE: FIDELITY. RI-VIS04 is `side: modern-fidelity` and REFUSES Morrowind references; every plate I cite is from corpus/70-visual/refs/modern/exterior_daylight/. No Morrowind reference is cited anywhere in this verdict."
+  },
+
+  "reference_items": [
+    {
+      "id": "RI-VIS04",
+      "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+      "side": "modern-fidelity",
+      "kind": "structure",
+      "native_scale": "min(raw, cap) over the §14 thirteen-feature table; raw = 10 * present/13, cap = min 'Blocks score above' among absent features",
+      "native_score": null,
+      "native_max": 13,
+      "native_verdict": "PARTIAL — I filled rows 2 and 3 only, which are the rows F4 moves, and I say so rather than marking eleven features UNVERIFIED and reporting on other people's pieces. Row 2 (IBL / environment map) is ABSENT by its own DETECT before and after this change: M6 hue_offset reads 3.23 deg before and 3.72 deg after, against RI-VIS03's exterior_daylight minimum of 15 deg and its stated HARD FAIL below 6 deg. That caps the FIDELITY score at 5. Row 3 (shadows) gains real cast-shadow area under this change at every window and threshold, but its MIN BAR (3 cascades x 2048^2) is unverified by me and I did not run the cascade-ring DETECT.",
+      "score_0_10": 4,
+      "justification": "not required below 7",
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/M6-control-battery.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/S60-lit-subset-and-shadow-preservation.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/frames/pair03__BEFORE-sourcerevert__AFTER__AFTER-shadowmap-OFF.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/frames/pair01__BEFORE__AFTER__AFTER-shadowmap-OFF.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/s60-capture-landed.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/s60-capture-before-sourcerevert.json"
+      ],
+      "checks": [
+        {
+          "id": "VIS04-§2-DETECT (M6 hue_offset)",
+          "result": "fail",
+          "value": "3.23 deg BEFORE -> 3.72 deg AFTER at pair01; 2.93 -> 4.00 at pair02; 14.15 -> 12.40 at pair03. CONTROL, same instrument, same session, six vendored modern-fidelity plates from corpus/70-visual/refs/modern/exterior_daylight/: 16.06, 73.43, 94.52, 96.08, 109.09, 143.28 deg. Every plate clears the 15 deg minimum; we do not clear the 6 deg hard-fail line at two of three windows.",
+          "threshold": "RI-VIS03 M6 exterior_daylight: hue_offset >= 15 deg; HARD FAIL below 6 deg ('one light source only')",
+          "hard_fail": true,
+          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/M6-control-battery.json"]
+        },
+        {
+          "id": "VIS04-§2-METRIC (M6 retention)",
+          "result": "mixed",
+          "value": "pair01 0.6068 -> 0.9652 (up), pair02 0.6999 -> 1.1553 (up), pair03 0.7199 -> 0.4526 (DOWN, through the 0.60 exterior_daylight minimum; still above the 0.30 hard fail). On the builder's own banked pair03 judged crop the same metric falls 0.4202 -> 0.2693, i.e. THROUGH the 0.30 hard-fail line.",
+          "threshold": "retention >= 0.60 (hard fail < 0.30)",
+          "hard_fail": false,
+          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/M6-control-battery.json"]
+        },
+        {
+          "id": "VIS04-§2-METRIC (M6 C_shadow)",
+          "result": "fail",
+          "value": "pair01 10.806 -> 11.612 (up), pair02 11.048 -> 11.429 (up), pair03 9.762 -> 4.785 — DOWN THROUGH the exterior_daylight minimum of 6, in the one window the piece presents as its result. There is no colour left in the shadow that F4 made visible.",
+          "threshold": "C_shadow >= 6 (exterior_daylight)",
+          "hard_fail": false,
+          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/M6-control-battery.json"]
+        },
+        {
+          "id": "VIS04-§3-D2 (cast-shadow area, the ADDed DETECT)",
+          "result": "pass",
+          "value": "Shadow-map ablation mask, tau=8: pair01 2.06%->4.10% full / 2.03%->4.25% crop; pair02 3.10%->6.49% full; pair03 24.11%->27.96% full, 68.75%->76.93% crop; pair04 32.69%->38.85% full, 13.50%->15.36% crop. Rises in every window, every domain, every tau in {1,2,4,8,16}. At tau=16 the deepening is large: pair04 full 3.91% -> 36.63%.",
+          "threshold": "cast_shadow_area_fraction at tau=8 >= 0.03 in a daylight exterior (this verdict's ADD to RI-VIS04 §3)",
+          "hard_fail": false,
+          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/S60-lit-subset-and-shadow-preservation.json"]
+        },
+        {
+          "id": "VIS04-§3-MIN-BAR (3 cascades x 2048^2)",
+          "result": "unverified",
+          "value": "The live scene reports ONE shadow-casting directional with a 4096^2 map (readback `shadowMap=4096`, one light selected by identity in both arms). Whether that is one cascade or three is a source question and CRITIC-DOCTRINE §1.1 forbids me scoring it from source; the item's own image-side DETECT (blocky stair-steps of constant step size; walk the camera back 40 m and watch for the shadow boundary ring) was NOT run by me. Recorded UNVERIFIED, which the item says counts as absent for the cap. A critic who runs it may cap this item at 4.",
+          "threshold": "3 cascades x 2048^2, PCF 3x3 minimum, shadow distance >= 150 m",
+          "hard_fail": false,
+          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/s60-capture-landed.json"]
+        },
+        {
+          "id": "VIS03-M2 C_local_med (cross-check)",
+          "result": "fail",
+          "value": "pair01 0.0254 -> 0.0293, pair02 0.0249 -> 0.0307, pair03 0.0167 -> 0.0211. Every value is below the exterior_daylight minimum of 0.045; pair03 before/after and pair04's crop (0.0113 -> 0.0167) sit at or below M2's 0.025 'flat shading' hard-fail line. Reference plates on the same instrument: 0.0316 to 0.0774. F4 improves every one of these and none of them reaches the bar.",
+          "threshold": "C_local_med >= 0.045 (exterior_daylight); fail below 0.025",
+          "hard_fail": false,
+          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/M6-control-battery.json"]
+        }
+      ],
+      "hard_fails": ["VIS04-§2-DETECT (M6 hue_offset) 3.72 deg against a 6 deg hard-fail line, before AND after"],
+      "how_we_lose_hits": [
+        "DETECT never run — RI-VIS04 §2's DETECT is M6 hue_offset and it had never been computed on this build by anyone. The bar could always ask 'is there more than one light in this frame'; the question was simply not put.",
+        "Half-features — the environment probe is present and non-zero, but at env 0.35 with a keyWarmth of 0.0 on the key it no longer produces the hue separation §2 exists to deliver."
+      ]
+    }
+  ],
+
+  "piece_acceptance": {
+    "rule_as_ruled": "ARBITRATION S60, both clauses required: (a) key_off mean|d|rgb >= 2.0 x env_off mean|d|rgb measured ON THE LIT SUBSET (pixels the shadow map reports unoccluded), in all five judged windows; (b) PRESERVATION — cast-shadow area fraction does not fall in any window.",
+    "lit_mask_method": "A pixel is SHADOWED when disabling the sun's shadow map (renderer.shadowMap.enabled = false, every material marked needsUpdate) brightens it by more than tau in display luma. The mask therefore comes from the shadow map, which is what S60 names, and NOT from the key arm — so it is not circular. S60's weaker full-frame fallback was NOT needed. Every figure is reported as a curve over tau in {1,2,4,8,16} and no conclusion below depends on which tau is chosen.",
+    "clause_a": {
+      "verdict": "NOT MET",
+      "by_window": {
+        "pair01": { "crop": 3.324, "full": 3.116, "crop_pass": true, "full_pass": true, "before_crop": 0.475, "before_full": 0.440 },
+        "pair02": { "crop": 5.579, "full": 3.548, "crop_pass": true, "full_pass": true, "before_crop": 0.580, "before_full": 0.484 },
+        "pair03": { "crop": 0.473, "full": 2.570, "crop_pass": false, "full_pass": true, "before_crop": 0.084, "before_full": 0.362 },
+        "pair04": { "crop": 5.491, "full": 1.821, "crop_pass": true, "full_pass": false, "before_crop": 0.578, "before_full": 0.281 },
+        "pair05": { "crop": 4.452, "full": 4.829, "crop_pass": true, "full_pass": true, "before_crop": 0.386, "before_full": 0.521 }
+      },
+      "why_not_met": "4 of 5 on the sealed judged crop (pair03 fails at 0.473) and 4 of 5 on the full frame (pair04 fails at 1.821). THE SAME SPLIT THE UNREPAIRED METRIC PRODUCED. S60's repair raised every single number — pair03's crop 0.232 -> 0.473, pair04's full frame 1.256 -> 1.821 — and closed neither failure. There is still no view in which five of five pass, and choosing the view per window would still be metric-shopping.",
+      "and_the_reason_at_pair03_is_not_a_metric_artifact": "On pair03's judged crop the lit subset is 21% of the window, and ON THAT LIT SUBSET the environment probe still moves the pixels 2.1x more than the key: lit_key 11.284 against lit_env 23.823 at tau=2, both enormous against that window's measured 0.032 noise floor. The sun does not dominate there even where the sun reaches."
+    },
+    "clause_b": {
+      "verdict": "MET",
+      "detail": "Cast-shadow area fraction RISES at pair01, pair02, pair03 and pair04, in both domains, at every tau. pair05 is DEGENERATE and I record it as such rather than as a pass or a fail: sky.js:645 sets moon.castShadow = false, so at 19:30 there is no shadow-casting key and the area is 0.02%-0.30% in both arms — S60 clause (b) is undefined on a window whose key cannot cast a shadow, and that is worth ruling on.",
+      "by_window_tau8": {
+        "pair01": [0.0206, 0.0410], "pair02": [0.0310, 0.0649], "pair03": [0.2411, 0.2796], "pair04": [0.3269, 0.3885], "pair05": [0.0005, 0.0006]
+      }
+    }
+  },
+
+  "artifacts": [
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/S60-lit-subset-and-shadow-preservation.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/M6-control-battery.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/recipe-coverage.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/s60-capture-landed.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/s60-capture-before-sourcerevert.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/pair03-row-band-profile.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/builder-claims-recheck.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/frames/pair03__BEFORE-sourcerevert__AFTER__AFTER-shadowmap-OFF.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/frames/pair01__BEFORE__AFTER__AFTER-shadowmap-OFF.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/frames/pair01__BEFORE-sourcerevert-top__AFTER-bottom.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/frames/pair01hw-BEFORE-top-AFTER-bottom.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/frames/pair03-BEFORE-left-AFTER-right.png",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/tools/f4c-critic.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/tools/f4c-analyse.mjs",
+    "corpus/90-verdicts/wave1/W1-F4-r1.md"
+  ],
+
+  "blind_comparisons": [
+    {
+      "check": "RI-WLD04 M17 — the blind region test",
+      "ref_item": "RI-WLD04",
+      "status": "not_possible",
+      "not_possible_reason": "RI-WLD04 is `blind_pair: yes` and M17 is its primary instrument: 39 unlabelled 1280x720 renders shown to a FRESH judge with no project context, pass at >=33/39. A critic cannot spawn one — `create_session` is approval-gated and CLAUDE.md rule 0 forbids calling it; rule 0e places this with the ORCHESTRATOR and says an unrun gate is a live blocker, not a footnote. FAILED CLOSED. This matters here specifically: the build asserts against M17 in its own P3 preservation clause ('night must not break'), and cutting the environment probe cuts a term that carries each region's hue — the build says plainly that it measured per-window chroma instead and that this is a proxy, not the test. I could not close that either: my own region capture was not run (see method_deviations). THE ORCHESTRATOR OWES THIS ONE."
+    }
+  ],
+
+  "arbitration": [
+    { "ruling": "S60", "applied": true, "note": "Applied exactly as written, including its lit-subset requirement; its named full-frame fallback was NOT needed because a shadow-map-derived mask was available. See status_reasons for where the ruling's factual premise does not survive re-measurement." },
+    { "ruling": "S59", "applied": true, "note": "Preservation clauses were named before measuring and are reported whether they held or not." },
+    { "ruling": "S52", "applied": true, "note": "The null control was interrogated for whether it could have moved. See notes.s52_null_control." }
+  ],
+
+  "score": {
+    "overall_0_10": 4,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "min over the axes this piece can move. (A) S60 clause (a), the piece's own repaired acceptance: NOT MET, 4 of 5 in each of two domains and no domain passes all five — 3. (B) S60 clause (b), shadow-area preservation: MET everywhere it is defined — 8. (C) RI-VIS04 §2 IBL by its own DETECT: ABSENT before and after, M6 hue_offset 3.72 deg against a 6 deg hard-fail line, with a six-plate control on the same instrument at 16-143 deg — 4, capped at 5. (D) RI-VIS04 §3 shadows: cast-shadow area up in every window at every threshold, MIN BAR unverified — 6. (E) the owner's standing motion/many-angles directive: the BUILD supplied none; I supplied 12-angle orbits and a driven walk at three hours, so the directive is now met for this piece by the CRITIC, and what they show is recorded in look_capture — the build's own evidence remains stills-only. (F) coverage: the fix reaches ~35.7% of daylight and 48.5% of the clock at night; overcast-flat and storm carry 59.1% of daytime untouched and unmeasured — 3. Overall = min = 3 on the raw axes, lifted to 4 because axis (A) improved every window by 4x-7x from a genuinely reverted baseline and axis (F) is scope honestly declared rather than a defect concealed. Status is FAIL either way.",
+    "confidence": "high"
+  },
+
+  "status": "FAIL",
+  "status_reasons": [
+    "acceptance_not_met:S60_clause_a — 4 of 5 judged windows in each of two domains, no domain passes all five, measured on the lit subset exactly as S60 requires",
+    "hard_fail:RI-VIS04/§2-DETECT — M6 hue_offset 3.72 deg against a 6 deg hard-fail line, before AND after (not a regression; an absence F4 did not close)",
+    "below_threshold",
+    "PREMISE CORRECTION, and it is the one the orchestrator should read first: S60's factual premise about pair03 does not survive being measured. The ruling says pair03 'went from a uniformly lit flat olive ground with no shadow anywhere to a large soft cast shadow with sunlit patches'. My shadow-map ablation mask says the crop was ALREADY 68.75%-77.88% cast shadow BEFORE the change; the area rose only to 76.93%-79.23%. Every one of the sixteen 32-row bands of that crop got DARKER (top band -32.07 luma, bottom -16.49); 90.61% of its pixels got darker and 8.70% brighter. What F4 did at pair03 was not put the window into shadow — it REMOVED THE FILL LIGHT THAT WAS MAKING THE EXISTING SHADOW LEGIBLE, and M6 agrees: retention 0.7199 -> 0.4526 full frame (0.4202 -> 0.2693 on the builder's own crop, through the hard-fail line) and C_shadow 9.762 -> 4.785, through the exterior_daylight minimum of 6. S60's GENERAL RULE — an ablation metric is only valid on the support of the thing ablated — is sound and I applied it. Its APPLICATION to F4 ('the acceptance is met in substance') was ruled on a description of two frames that the pixels do not support, and measuring it S60's own way does not rescue pair03.",
+    "BRIEF CORRECTION: my dispatch said the build 'visibly regresses a third' recipe. It does not. dusk-canopy is byte-untouched and its capture is BIT-IDENTICAL (same SHA-256) between my two source trees. The -28% luma / -40% chroma / p10 -> 0.00 numbers belong to a REFUSED candidate arm, which I reproduced exactly (38.358 -> 27.724, 22.002 -> 13.112, p10 8.99 -> 0.00). Leaving a recipe alone after measuring that the obvious change breaks it, and writing the measurement into the source file, is correct engineering and should not be scored as a regression."
+  ],
+
+  "biggest_gap": {
+    "gap_id": "GAP-W1-F4-shadows-have-no-light-in-them-and-the-key-has-no-colour",
+    "subsystem_path": "visual.renderer.ibl",
+    "severity": "blocking",
+    "what": "F4 bought cast-shadow visibility by cutting the light that fills shadows, and it raised a key that is the same colour as everything else. Two measurements, one cause. (1) At pair03 — the window the piece itself presents as its result — cast-shadow area rose (68.75% -> 76.93% at tau=8) while M6 `retention` fell 0.7199 -> 0.4526 and M6 `C_shadow` fell 9.762 -> 4.785, through RI-VIS03's exterior_daylight minimum of 6. On the builder's own banked judged crop `retention` falls 0.4202 -> 0.2693, THROUGH the 0.30 hard-fail line RI-VIS03 labels 'crushed blacks / no ambient / no IBL'. Open `frames/pair03__BEFORE-sourcerevert__AFTER__AFTER-shadowmap-OFF.png`: the third panel is the same frame with the shadow map switched off and it is fully sunlit, so the whole window is genuinely in the building's shadow — and the middle panel shows there is now nothing to see inside it. (2) M6 `hue_offset`, which RI-VIS04 §2 names as its DETECT and RI-VIS03 calls the one-number test for 'a single white DirectionalLight plus a white AmbientLight', reads 3.72 deg on the landed build against a 6 deg hard-fail line and a 15 deg minimum, while six vendored modern-fidelity plates measured on the same instrument in the same session read 16.06 to 143.28 deg. F4 moved it by +0.49 deg. This is also, independently, the verbatim complaint of all five Protocol A r2 judges: 'every surface returns the same flat matte olive-grey'.",
+    "why_it_matters": "F4 exists because three green visual fixes moved no human judgement. This one moves real quantities — the key IS dominant now at four of five windows, and there IS more cast-shadow area everywhere. But the two things the judges actually named are hue separation and readable occlusion, and on the corpus's own metrics for both, the frame after F4 is still a one-light frame with holes in it. A fourth round that adds more key without fixing the fill and the colour will spend against an instrument we can already show does not predict the judgement.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/M6-control-battery.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/frames/pair03__BEFORE-sourcerevert__AFTER__AFTER-shadowmap-OFF.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/S60-lit-subset-and-shadow-preservation.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/pair03-row-band-profile.json"
+    ],
+    "remedy": {
+      "action": "Two levers, both already in the file, neither of which F4 used. (1) `noon-marsh` declares `keyWarmth: 0.0`. It is a LIVE lever — sky.js:815-816 lerps the sun colour toward the horizon for positive values and the zenith for negative — and dusk-canopy uses 0.85, overcast-flat -0.30, night-moon -0.80. Warm the noon key (start at +0.45) and cool the fill, so lit and shadowed surfaces stop returning the same hue. (2) The env cut from 1.00 to 0.35 was applied as a flat scalar; the shadowed side is exactly where it was doing useful work. Either restore env toward ~0.55-0.65 and take the key dominance back from `sky`/`fill` instead, or add a dedicated shadow-fill term, and re-measure. BOTH must be measured at the same windows in the same run, because they trade against each other: warming the key raises hue_offset and raising env lowers the key ratio.",
+      "targets": ["game/src/render/lib/lighting-recipes.js"],
+      "acceptance": "AT THE SAME FIVE JUDGED WINDOWS, ALL THREE, and paired per S59 so neither can be bought with the other: (i) M6 `hue_offset` >= 6.0 deg in every daylight window, which is only the hard-fail line and not yet the 15 deg bar — say so; (ii) M6 `retention` >= 0.60 and M6 `C_shadow` >= 6 in every window whose cast-shadow area rose, measured on the FULL FRAME and on the sealed crop; (iii) S60 clause (a) — lit-subset key_off >= 2x env_off — must NOT fall at any window that already passes it (pair01 3.32/3.12, pair02 5.58/3.55, pair04-crop 5.49, pair05 4.45/4.83 are the numbers to hold), and clause (b) cast-shadow area must not fall. Every number from `tools/visual/f4c-critic.mjs --mode s60` against a SOURCE-LEVEL revert, not a page-side rig edit."
+    }
+  },
+
+  "secondary_observations": [
+    "COVERAGE IS WORSE THAN THE PIECE OR STATUS.md SAYS, AND IN A DIRECTION NEITHER NAMES. Transcribing the arithmetic out of sky.js apply() and recipeForConditions() and evaluating it at one-minute resolution: in clear weather night-moon holds 48.54% of the clock (18:11-05:50), noon-marsh 44.93% (06:37-17:24) and dusk-canopy 6.53% (05:50-06:37 and 17:24-18:11). The builder and STATUS.md both state the dusk band as 'roughly 05:20-06:40 and 17:20-18:40' — wrong at both ends, because recipeForConditions() tests `night > 0.55` FIRST. 94 minutes a day, not ~160. But recipe selection tests WEATHER before it tests the hour, and neither document costs it: computing each region's stationary weather distribution from game/data/world/weather.json and mapping the states through sky.js's own WEATHER table, `overcast-flat` or `storm` — both untouched and both unmeasured, still carrying env 1.10 and 1.15 against noon-marsh's new 0.35 — are selected for 59.1% of daylight averaged over the thirteen regions, from 19.8% in The Hive to 100% in The Deep Marshes and 79.7% in Blackwood. So the rebalance reaches roughly 35.7% of daylight. STATUS.md names the 6.5% omission and not the 59.1% one.",
+    "THE DUSK BAND IS QUANTIFIED, NOT JUST NAMED: at prsv-dusk (06:00, dusk-canopy) the lit-subset key/env ratio is 0.128 after and 0.135 before — unchanged, and failing the 2.0 bar by a factor of 15. That is what 'still carries the old flat look' means as a number.",
+    "env_off EQUIVALENCE IS PROVEN AND BELONGS IN HAZARDS.md. The tool writes its own config source into every report, so the two forms are identifiable: reports/f2-why/f4-base-p01 (15:57) ran `__scene().environment = null` and measured 19.8203 at pair01; reports/f2-why/f4-r1b-p01 (16:10) ran `__envScale(0)` and measured 19.8203; reports/f2-why/f4-timing (15:28) ran the nulling form and measured 19.8226. Same window, same pre-change build (shipped mean 59.1490 in the first two). BUT the page-death half of the claim is one-for-two on surviving evidence: the source comment says 'measured three times in a row … the page is dead by the NEXT arm', and of the two nulling runs still on disk only f4-base-p01 aborted — f4-timing ran env_off(null) and then key_off successfully. Two further runs were lost with no directory, so the third may have existed and cannot be checked.",
+    "sd_luma AS A 'NOT FLATTER' METRIC: the builder's CONCLUSION is right and its stated RULE is not. Across all ten shipped/key_off pairs in its own banked data, switching the key off RAISES sd at pair01 (+6.7%, +7.0%, +18.8%), pair05 (+2.9%, +5.5%) and deep night (+6.5%), and LOWERS it at pair02 (-61.8%), pair03 (-9.4%, twice) and pair04 (-67.7%). It rises in exactly the windows containing sky (pair01 sky fraction 0.048) and falls in the crops that do not (pair03 0.004, pair04 0.000). So sd_luma there is the sky-to-ground ratio, as the builder said — and 'switching the key off raises it' holds in 3 of 7 windows, not universally. The conclusion that matters survives intact: a preservation metric that can improve when the key is switched off cannot be used to protect the key.",
+    "THE revert_day sd ERROR, AND WHICH CONCLUSIONS RESTED ON IT. The builder validated its page-side revert at pair01 as good on mean and chroma and 9.6% high on sd. Two status-file conclusions quote an sd from a revert_day row: P6's pair03 '41.110 -> 36.449 (0.887x)' and P6's pair04 '4.180 -> 10.515 (2.5x)'. Correcting both before-values for the measured +9.6% bias gives pair03 ~37.5 -> 36.449 = 0.972x (the claimed flattening largely evaporates) and pair04 ~3.81 -> 10.515 = 2.76x (the claimed gain grows). BOTH CORRECTIONS MOVE IN THE BUILD'S FAVOUR; no conclusion is overturned against it.",
+    "EVERY NUMBER I COULD RE-DERIVE FROM THE BUILDER'S OWN DATA REPRODUCED EXACTLY. Full-frame acceptance table 3.171 / 3.445 / 2.087 / 1.256 / 3.593; interior full-frame 13.3281 -> 17.8393 (1.339x) and chroma 23.9109 -> 33.2056 (1.389x); the refused dusk arm 38.358 -> 27.724, chroma 22.002 -> 13.112, p10 8.99 -> 0.00. The builder's arithmetic is sound. BUT NONE OF THOSE FIGURES IS REPRODUCIBLE FROM BANKED EVIDENCE: they are computed from PNGs under reports/, which is gitignored and per HAZARDS §9 never reaches the remote. The banked artifacts carry crop statistics only. Off this box, the full-frame half of the piece's own acceptance table and its entire P4 interior preservation claim cannot be checked by anyone.",
+    "A CAPTURE-DETERMINISM QUALIFICATION THE BUILDER DID NOT STATE. Its prsv-dusk null control is bit-identical over the 512x512 crop (32.838 both) and it reads that as 'the capture is deterministic at that pose'. Over the FULL 1920x1080 frame the same two captures are 38.3583 against 38.1744, a 0.48% difference. Determinism there is local to the crop. (My own two-tree pair IS byte-identical at prsv-dusk over the whole frame — same SHA-256 — so the cross-process comparison in this verdict is validated even though the builder's within-session one is weaker than claimed.)",
+    "A NEW SEAM F4 CREATED AND NOBODY HAS MEASURED: walking from clear weather into an overcast front at noon now steps environmentIntensity from 0.35 to 1.10 (x3.1) and the key multiplier from 3.00 to 0.34 (/8.8) at a weather-state transition. Neither recipe was captured either side of that transition. It is not in scope for R1 and it should be in scope for R2."
+  ],
+
+  "gap_closure": [],
+
+  "corpus_extended": [
+    {
+      "item": "RI-VIS04",
+      "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+      "kind": "AMENDMENT — ADD ONLY",
+      "what": "§3 gains two clauses, `§3-D2` and `§3-D3`. Nothing was removed and no threshold was lowered.",
+      "why": "§3's existing DETECT reads 'M6 SHADOW_MASK fraction < 3% in a daylight exterior = no shadows'. That test CANNOT detect the absence of shadows: RI-VIS03 §0 defines SHADOW_MASK as the darkest QUARTILE of the foreground by construction, so it is ~25% of the foreground whether the scene casts one shadow or none. Measured across ten frames of this build, before and after a change that demonstrably added cast-shadow area, SHADOW_MASK frac sat between 0.2329 and 0.2498 in EVERY ONE. The clause can only fire when the sky fills >88% of the frame. Same misdomained-metric family as S58, S59 and S60. §3-D2 replaces it with a shadow-map ablation mask reported as a curve over tau; §3-D3 adds the preservation clause this verdict's biggest gap demonstrates the need for — a build can add shadow area by deleting the light that fills shadows.",
+      "bound": "Both clauses are DETECT and preservation only. They add no route to a higher §14 mark and no route to a higher score for any build; a critic may cite them to WITHHOLD a mark and never to grant one. Overturned if a shadow-map ablation proves unavailable to a harness, in which case §3 falls back to the penumbra and cascade-ring tests and records the area clause UNVERIFIED, which counts as absent.",
+      "not_the_reason_for_any_pass": true,
+      "note": "CRITIC-DOCTRINE §1.3 forbids an extension being the reason a critic PASSES. This verdict's status is FAIL and neither added clause contributes to it: the FAIL is set by S60 clause (a), which predates me, and by RI-VIS04 §2's OWN pre-existing DETECT. §3-D2 is the one clause on which the build PASSES, and it lifts nothing because the score is a min."
+    }
+  ],
+
+  "method_deviations": [
+    "I READ THE BUILDER'S STATUS FILE AND RULING S60 BEFORE CAPTURING, because my brief handed me both. CRITIC-DOCTRINE §8 asks for the reverse order. Mitigation, such as it is: my instrument, my masks, my before-arm and my metric choice were all decided from the reference items and the arbitration text, and the two findings that most cut against the piece (the pair03 row-band profile and the M6 control battery) came from re-measuring claims I had been told were settled.",
+    "I DID NOT FILL RI-VIS04 §14's thirteen-feature table. F4 moves rows 2, 3 and (untested) 12. A full fill is the joint job of F1/F2/F5/F9 and a critic of F4 alone marking eleven features UNVERIFIED would be reporting on other people's pieces. RI-VIS04 is therefore scored `partial` and its native_score is null.",
+    "MY REGION-SEPARABILITY CAPTURE WAS NOT RUN. `tools/visual/f4c-critic.mjs --mode regions` exists and is committed, and it is a MACHINE PROXY that could only ever fail F4, never pass RI-WLD04 M17. It needed 13 frames x 2 source trees and the box was at or over its browser ceiling for most of this session (`node tools/contention.mjs` returned WAIT, and I killed one run of my own by PID rather than proceed over it). UNMEASURED, BECAUSE THE BOX HAD NO ROOM. What I can say without it: RI-WLD04 M18, the mechanical differentiation matrix, reads regions.json / terrain.json / weather.json / landforms.json and NOT pixels, so it is invariant to any lighting change by construction — the risk lives entirely in M17, which is blind and which the orchestrator owes.",
+    "I created two new files under tools/visual/, which `node tools/ownership.mjs --for` reports as claimed directory-wide by W1-30V (23h old, `running`). The claim does not list these files, they did not exist when it was made, and the F4 builder set the same precedent in the same directory today. Declared rather than hidden; landed with `land.mjs --paths` naming only my own files.",
+    "EVERY CAPTURE OF MINE IS SOFTWARE (SwiftShader). The builder's one hardware pair (RTX A5000, pair01) agrees with software to 0.03% on landed mean luma, and my own before/after at pair01 reproduces the same qualitative change as its hardware pair. No absolute appearance claim in this verdict rests on a software frame alone; every claim is a differential, and the cross-process differential is validated by a byte-identical null control.",
+    "`node tools/roadmap-coverage.mjs` is RED for one open gap with no roadmap home, GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground. I verified by stashing my own corpus edit and re-running that this failure PREDATES my change and belongs to a sibling's F10 work. Not mine to fix; recorded so it is not attributed to this verdict."
+  ],
+
+  "arbitration_questions": [
+    {
+      "id": "Q-F4-1",
+      "question": "S60 clause (b) is 'the cast-shadow area fraction does not fall in any window'. At pair05 (19:30, night-moon) `sky.js:645` sets `moon.castShadow = false`, so the directional key that carries the frame CANNOT cast a shadow and the measured area is 0.02%-0.30% in both arms — the clause is being evaluated on noise. Is clause (b) DEGENERATE on any window whose key cannot cast a shadow, and should it therefore be recorded `inapplicable` rather than passed or failed? I have recorded it `inapplicable` and said so, which is the fail-closed reading only if the answer is also that a shadowless night is itself a defect — which I believe it is, and which the builder names as the obvious next thing at night."
+    },
+    {
+      "id": "Q-F4-2",
+      "question": "S60 says 'in all five windows' and does not name a DOMAIN. Measured on the lit subset, the build passes 4 of 5 on the sealed 512x512 judged crop (pair03 fails) and 4 of 5 on the full 1920x1080 frame (pair04 fails) — the same split as the unrepaired metric, at better absolute numbers. I have ruled that clause (a) is NOT MET because no single domain passes all five and choosing per window would be metric-shopping. If the orchestrator intends the sealed judged crop to be THE domain (it is the pixels the blind judges actually saw), the ruling is the same: pair03 fails at 0.473. If it intends the full frame, pair04 fails at 1.821. I flag it because the next round needs to know which number it is chasing before it starts."
+    }
+  ],
+
+  "source_reads": [
+    { "purpose": "locating", "path": "game/src/render/sky.js:770-800, 813-816, 925-960", "why": "to derive elev/day/dusk/night and the probe bake's sunGain term, so the before-arm revert would reach the bake and the recipe bands could be evaluated arithmetically" },
+    { "purpose": "locating", "path": "game/src/render/lib/lighting-recipes.js:136-310", "why": "recipeForConditions() thresholds and the recipe values, to build the source-level revert and the coverage table" },
+    { "purpose": "locating", "path": "game/src/input/pipeline.js:20-160", "why": "the closed set of queueInputs event keys, so the walk sequence drives real input rather than failing silently — HAZARDS §16" },
+    { "purpose": "diagnosing", "path": "game/src/render/lib/lighting-recipes.js noon-marsh keyWarmth: 0.0 with sky.js:815-816 consuming it", "why": "to make the biggest gap's remedy concrete after demonstrating the hue_offset failure from pixels first" }
+  ],
+
+  "self_audit": {
+    "what_would_make_this_verdict_wrong": [
+      "MY M6 IMPLEMENTATION IS MINE. RI-VIS03 ships pseudocode, not code; I transcribed M2/M6/M7 into tools/visual/f4c-analyse.mjs --vis03 and the SKY_MASK step needed a gradient threshold I approximated with a Sobel-style magnitude. If my hue_offset is wrong, the hard fail falls. Two things argue it is not: six vendored modern-fidelity plates measured on the SAME code in the SAME session read 16-143 deg while ours reads 3.7, so the instrument separates the populations the item says it should; and the result agrees with what all five Protocol A r2 judges wrote in their own words. A re-implementation by another critic is the cheap way to falsify me.",
+      "MY LIT MASK COULD BE WRONG IF `__shadowMap(false)` DID NOT APPLY. It is enforced per frame and every material is marked needsUpdate, and the per-arm readback records `shadowMapEnabled` — but the strongest evidence is visual: the third panel of frames/pair03__BEFORE-sourcerevert__AFTER__AFTER-shadowmap-OFF.png is unmistakably a fully sunlit version of the same frame. If it had not applied, that panel would look like the middle one.",
+      "THE BEFORE ARM IS A TWO-LINE REVERT, NOT A CHECKOUT OF THE PARENT COMMIT. If F4 changed anything else that matters, my baseline is wrong. The diff at e9b30a82 touches four files; the two source files' changes are the recipe numbers, the `moon` field and one multiplication, and the null control being byte-identical across the two trees is the check that the refactor half is a no-op.",
+      "SOFTWARE RENDERING. Every capture of mine is SwiftShader. Absolute appearance claims would be void; every claim here is a differential."
+    ],
+    "what_i_did_not_check": [
+      "The other eight of the builder's nine camera setups on hardware.",
+      "RI-VIS04 rows 1, 4-13 — not this piece's scope.",
+      "The overcast/storm recipes rendered. I costed their SHARE of play from data; I did not capture a frame in either. R2 should.",
+      "Region separability, rendered. See method_deviations.",
+      "The interior preservation claim, re-captured. I re-derived the builder's numbers from its own surviving PNGs and they reproduce exactly, but I did not re-shoot it."
+    ]
+  },
+
+  "notes": {
+    "s52_null_control": "Asking S52's question of prsv-dusk — could it have moved? From the FOUR NUMBERS, no: dusk-canopy's own key/sky/fill/env are byte-untouched, so as a control on the VALUES it is trivial. From the CODE, yes: the change also adds `moon: 1.0` to EXTERIOR_RIG, scales `moon` in resolveLightingRecipe(), and multiplies this.moon.intensity by `R.moon ?? 1` in sky.js. My live readback at 06:00 shows the moon at 0.31383 and IDENTICAL in both arms — so the moon path is genuinely exercised in that frame and returns exactly today's behaviour. A missing `?? 1`, a wrong default or an arm scaling the wrong directional would have moved it. It is a real leak check on the refactor and no evidence at all about the rebalance, and the builder presented it as the latter.",
+    "what_the_live_scene_says": "Readback at capture time, both arms, from tools/visual/f4c-critic.mjs. pairs01-04: sun 2.1 -> 6.3 (exactly x3), env 1.00 -> 0.35, MOON 0 IN BOTH — so `key_off` and `sun_off` are the same experiment there, measured rather than argued. pair05: sun 0.0126 in BOTH arms (the sun really is off at 19:30, which is the builder's whole reason for using key_off), moon 0.82 -> 2.952 (x3.6), env 0.75 -> 0.195. Hemisphere total 5.1248 -> 5.0011, which is the sky's own 0.4948 -> 0.3711 (x0.75) on top of 4.63 of cell-art hemisphere light that no recipe reaches — the arithmetic closes exactly.",
+    "credit_where_it_is_due": "This build's status file is the most honest one I have read in this repo. It leads with what it could not do, it reports a fail rather than choosing the view that passes, it names its own acceptance metric as defective and refuses to rewrite the bar it was measured against, it records a hypothesis its own arm refuted, and it wrote the measurement that refused dusk-canopy into the source file so the next reader does not re-derive it. Every number I could re-derive from its data reproduced exactly. My disagreements are with two descriptions and with what was not measured, not with its arithmetic or its candour."
+  },
+
+  "look_capture": {
+    "status": "PENDING — filled below from reports/f4c/B-look-landed"
+  }
+}

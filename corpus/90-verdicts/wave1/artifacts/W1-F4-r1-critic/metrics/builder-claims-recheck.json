@@ -1,0 +1,378 @@
+{
+  "at": "2026-08-15T19:13:51.410Z",
+  "what": "Independent re-derivation of every figure in orchestration/status/F4-KEY-LIGHT.json that could be recomputed from files still on this box. reports/ is gitignored and per HAZARDS §9 never reaches the remote, so NONE of the full-frame numbers below is reproducible off this machine from banked evidence.",
+  "rows": [
+    {
+      "run": "f4-verify-p01",
+      "pair": "pair01",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 70.1967,
+          "sd_luma": 42.1096,
+          "mean_chroma": 29.749,
+          "p10": 33.91
+        },
+        "env_off": {
+          "mean_luma": 61.4225,
+          "sd_luma": 43.994,
+          "mean_chroma": 27.3146,
+          "p10": 23.26
+        },
+        "key_off": {
+          "mean_luma": 41.2568,
+          "sd_luma": 49.1294,
+          "mean_chroma": 16.1236,
+          "p10": 5.14
+        },
+        "revert_day": {
+          "mean_luma": 67.2596,
+          "sd_luma": 45.5831,
+          "mean_chroma": 27.308,
+          "p10": 29.56
+        },
+        "shipped_recheck": {
+          "mean_luma": 69.0552,
+          "sd_luma": 42.6245,
+          "mean_chroma": 30.419,
+          "p10": 32.47
+        }
+      },
+      "full_frame_acceptance": {
+        "key_off_delta": 26.3561,
+        "env_off_delta": 8.3126,
+        "ratio": 3.171,
+        "passes_2x": true
+      }
+    },
+    {
+      "run": "f4-verify-p0203",
+      "pair": "pair02",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 72.8083,
+          "sd_luma": 41.2473,
+          "mean_chroma": 30.7576,
+          "p10": 33.99
+        },
+        "env_off": {
+          "mean_luma": 64.0435,
+          "sd_luma": 43.3846,
+          "mean_chroma": 28.2644,
+          "p10": 21.35
+        },
+        "key_off": {
+          "mean_luma": 41.1446,
+          "sd_luma": 49.4065,
+          "mean_chroma": 16.105,
+          "p10": 5.14
+        }
+      },
+      "full_frame_acceptance": {
+        "key_off_delta": 28.6491,
+        "env_off_delta": 8.3158,
+        "ratio": 3.445,
+        "passes_2x": true
+      }
+    },
+    {
+      "run": "f4-verify-p0203",
+      "pair": "pair03",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 50.8253,
+          "sd_luma": 38.9828,
+          "mean_chroma": 24.7538,
+          "p10": 10.71
+        },
+        "env_off": {
+          "mean_luma": 40.3167,
+          "sd_luma": 41.3272,
+          "mean_chroma": 19.9642,
+          "p10": 0
+        },
+        "key_off": {
+          "mean_luma": 28.5416,
+          "sd_luma": 39.5235,
+          "mean_chroma": 12.9483,
+          "p10": 1.99
+        }
+      },
+      "full_frame_acceptance": {
+        "key_off_delta": 19.6269,
+        "env_off_delta": 9.4038,
+        "ratio": 2.087,
+        "passes_2x": true
+      }
+    },
+    {
+      "run": "f4-verify-p03",
+      "pair": "pair03",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 50.8264,
+          "sd_luma": 38.984,
+          "mean_chroma": 24.7536,
+          "p10": 10.71
+        },
+        "env_off": {
+          "mean_luma": 40.3179,
+          "sd_luma": 41.3287,
+          "mean_chroma": 19.9639,
+          "p10": 0
+        },
+        "key_off": {
+          "mean_luma": 28.5428,
+          "sd_luma": 39.5255,
+          "mean_chroma": 12.9481,
+          "p10": 1.99
+        },
+        "revert_day": {
+          "mean_luma": 55.2564,
+          "sd_luma": 40.201,
+          "mean_chroma": 25.192,
+          "p10": 24.7
+        },
+        "revert_day_key_off": {
+          "mean_luma": 47.8334,
+          "sd_luma": 42.3507,
+          "mean_chroma": 21.7468,
+          "p10": 16.21
+        },
+        "revert_day_env_off": {
+          "mean_luma": 26.46,
+          "sd_luma": 38.5037,
+          "mean_chroma": 13.5165,
+          "p10": 0
+        }
+      },
+      "full_frame_acceptance": {
+        "key_off_delta": 19.6267,
+        "env_off_delta": 9.4036,
+        "ratio": 2.087,
+        "passes_2x": true
+      }
+    },
+    {
+      "run": "f4-verify-p04",
+      "pair": "pair04",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 44.6895,
+          "sd_luma": 38.013,
+          "mean_chroma": 21.941,
+          "p10": 10.71
+        },
+        "env_off": {
+          "mean_luma": 32.8803,
+          "sd_luma": 38.5626,
+          "mean_chroma": 16.977,
+          "p10": 0
+        },
+        "key_off": {
+          "mean_luma": 29.3344,
+          "sd_luma": 40.8923,
+          "mean_chroma": 12.8425,
+          "p10": 2.36
+        },
+        "revert_day": {
+          "mean_luma": 53.5741,
+          "sd_luma": 43.1491,
+          "mean_chroma": 23.469,
+          "p10": 23.63
+        },
+        "revert_day_key_off": {
+          "mean_luma": 48.6403,
+          "sd_luma": 45.1391,
+          "mean_chroma": 21.0126,
+          "p10": 16.33
+        }
+      },
+      "full_frame_acceptance": {
+        "key_off_delta": 13.3974,
+        "env_off_delta": 10.6629,
+        "ratio": 1.256,
+        "passes_2x": false
+      }
+    },
+    {
+      "run": "f4-verify-p05",
+      "pair": "pair05",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 19.2129,
+          "sd_luma": 22.3229,
+          "mean_chroma": 9.5584,
+          "p10": 0.72
+        },
+        "env_off": {
+          "mean_luma": 17.502,
+          "sd_luma": 22.4955,
+          "mean_chroma": 8.74,
+          "p10": 0
+        },
+        "key_off": {
+          "mean_luma": 13.0268,
+          "sd_luma": 22.0601,
+          "mean_chroma": 6.5247,
+          "p10": 0
+        },
+        "shipped_recheck": {
+          "mean_luma": 17.3959,
+          "sd_luma": 22.5301,
+          "mean_chroma": 8.5307,
+          "p10": 0
+        }
+      },
+      "full_frame_acceptance": {
+        "key_off_delta": 5.5246,
+        "env_off_delta": 1.5374,
+        "ratio": 3.593,
+        "passes_2x": true
+      }
+    },
+    {
+      "run": "f4-prsv-landed",
+      "pair": "prsv-dusk",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 38.1744,
+          "sd_luma": 36.9022,
+          "mean_chroma": 21.8803,
+          "p10": 8.99
+        }
+      }
+    },
+    {
+      "run": "f4-prsv-landed",
+      "pair": "prsv-overcast",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 62.1101,
+          "sd_luma": 45.2335,
+          "mean_chroma": 20.2223,
+          "p10": 23.55
+        }
+      }
+    },
+    {
+      "run": "f4-prsv-landed",
+      "pair": "prsv-interior",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 17.8393,
+          "sd_luma": 28.0647,
+          "mean_chroma": 33.2056,
+          "p10": 1.91
+        }
+      }
+    },
+    {
+      "run": "f4-prsv1",
+      "pair": "prsv-overcast",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 63.9243,
+          "sd_luma": 43.6877,
+          "mean_chroma": 18.9882,
+          "p10": 26.56
+        },
+        "r1b": {
+          "mean_luma": 54.6641,
+          "sd_luma": 45.5359,
+          "mean_chroma": 15.5742,
+          "p10": 17.85
+        }
+      }
+    },
+    {
+      "run": "f4-prsv1",
+      "pair": "prsv-interior",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 193.1913,
+          "sd_luma": 19.2248,
+          "mean_chroma": 18.1412,
+          "p10": 176.67
+        },
+        "r1b": {
+          "mean_luma": 193.1913,
+          "sd_luma": 19.2248,
+          "mean_chroma": 18.1412,
+          "p10": 176.67
+        }
+      }
+    },
+    {
+      "run": "f4-prsv2",
+      "pair": "prsv-dusk",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 38.3583,
+          "sd_luma": 36.8464,
+          "mean_chroma": 22.0019,
+          "p10": 8.99
+        },
+        "r1b": {
+          "mean_luma": 27.7235,
+          "sd_luma": 39.5192,
+          "mean_chroma": 13.1116,
+          "p10": 0
+        }
+      }
+    },
+    {
+      "run": "f4-prsv2",
+      "pair": "prsv-interior",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 13.3281,
+          "sd_luma": 27.4781,
+          "mean_chroma": 23.9109,
+          "p10": 3.4
+        },
+        "r1b": {
+          "mean_luma": 17.7543,
+          "sd_luma": 28.0733,
+          "mean_chroma": 33.0315,
+          "p10": 1.91
+        }
+      }
+    },
+    {
+      "run": "f4-prsv-deepnight",
+      "pair": "prsv-deepnight",
+      "full_frame": {
+        "shipped": {
+          "mean_luma": 18.8532,
+          "sd_luma": 22.0276,
+          "mean_chroma": 9.4564,
+          "p10": 0.72
+        },
+        "env_off": {
+          "mean_luma": 17.1233,
+          "sd_luma": 22.2158,
+          "mean_chroma": 8.6495,
+          "p10": 0
+        },
+        "key_off": {
+          "mean_luma": 13.1053,
+          "sd_luma": 22.0607,
+          "mean_chroma": 6.4724,
+          "p10": 0
+        },
+        "revert_night": {
+          "mean_luma": 15.9162,
+          "sd_luma": 22.1624,
+          "mean_chroma": 7.9798,
+          "p10": 0
+        }
+      },
+      "full_frame_acceptance": {
+        "key_off_delta": 5.1108,
+        "env_off_delta": 1.5617,
+        "ratio": 3.273,
+        "passes_2x": true
+      }
+    }
+  ]
+}
