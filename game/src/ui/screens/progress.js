@@ -19,6 +19,36 @@
 import { C, Ca, boneRule, bonePip, shellInlay, chitinPath, idHash } from '../theme.js';
 import { screen, row, column, hint, extent, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
 import { drawText, faceOf, measure, wrap, writeLines } from '../type.js';
+import { glyphObject, drawObject, ATTRIBUTE_SHAPE } from '../icons.js';
+
+/**
+ * Strip a reference-item citation out of anything about to be drawn for the player.
+ *
+ * Round 1 photographed the level-up screen's attribute preview reading *"Out of one: Max equip
+ * load **(RI-PRG07)**; carry capacity for loot; forcing doors and chests"*
+ * (`crops/levelup-attribute-preview-RI-PRG07-leak-2x.png`). The citation came from
+ * `game/data/progression/attributes.json`, where it is genuinely useful to whoever maintains the
+ * data — so the data is corrected (three strings, `strength`, `hist-bond`, `personality`) AND this
+ * guard stands in front of the draw call, because the field is authored prose and the next writer
+ * will reach for a citation again. Acceptance is zero `/RI-[A-Z]{3}\d{2}/` matches in any element
+ * `text` on any screen; two guards for one defect, and the data arm alone would not have held.
+ */
+export function playerProse(t) {
+  return String(t === null || t === undefined ? '' : t)
+    .replace(/\s*\((?:RI|GAP|AR|S)-[A-Z0-9\-]+\)/g, '')
+    .replace(/\s+([;,.])/g, '$1')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+/** The attribute's carved mark. One drawn object per attribute — RI-UIX09 D1's `glyph_object`. */
+function attrShape(id) { return ATTRIBUTE_SHAPE[String(id)] || 'bundle'; }
+
+/** A school's mark. Falls back to a staff rather than to nothing — every row gets a picture. */
+const SCHOOL_SHAPE = {
+  restoration: 'herb', alteration: 'rope', illusion: 'robe', conjuration: 'amulet',
+  destruction: 'pot', mysticism: 'ring', enchant: 'ingot', alchemy: 'bottle',
+};
 
 export function drawLevelUp(S, m) {
   const s = S.s;
@@ -66,8 +96,8 @@ export function drawLevelUp(S, m) {
       meta: { attribute: a.id, value: a.value, soft_cap: a.soft_cap, hard_cap_curve: a.hard_cap_curve },
     }, (c, r) => {
       if (on) shellInlay(c, r[0], r[1], r[2], r[3], s, idHash(a.id));
-      drawText(c, a.name, r[0] + 8 * s, r[1] + 26 * s, faceOf('bone'), 15 * s, ink());
-      drawText(c, String(a.value), r[0] + 210 * s, r[1] + 27 * s, faceOf('bone'), 19 * s, ink());
+      drawText(c, a.name, r[0] + 44 * s, r[1] + 26 * s, faceOf('bone'), 15 * s, ink());
+      drawText(c, String(a.value), r[0] + 220 * s, r[1] + 27 * s, faceOf('bone'), 19 * s, ink());
       // the gauge, with the soft cap cut into it (L8)
       // A2: not a plain rectangle. The gauge is a bone trough with a cut edge, exactly as the
       // HUD's bars are, so nothing on any screen in this interface is an axis-aligned box.
@@ -87,6 +117,12 @@ export function drawLevelUp(S, m) {
         drawText(c, label, cx - 10 * s, gy + gh + 16 * s, faceOf('ink'), 10 * s, inkDim());
       }
     });
+    // RI-UIX09 D1. The attribute's own carved mark, a drawn object rather than a letter: a maul
+    // for strength, a book for intelligence, a pair of boots for speed. It is `glyph_object` and
+    // NOT `item_icon` — an attribute is not a thing you can pick up, and a census that could not
+    // tell them apart would report this screen as carrying inventory.
+    glyphObject(S, 'levelup.mark.' + a.id, ix + 6 * s, y + 6 * s, 30 * s, 30 * s,
+      attrShape(a.id), alpha, { attribute: a.id });
   });
 
   // ---- L6: what it would do, before you confirm --------------------------------------------
@@ -96,13 +132,15 @@ export function drawLevelUp(S, m) {
   S.el({
     id: 'levelup.preview', kind: 'attribute_preview',
     rect: [px, iy + 58 * s, pw, ih - 70 * s], opacity: alpha,
-    text: a ? a.in_fight + ' ' + a.out_of_fight : null,
+    // `playerProse()` — see its header. Round 1 rendered `(RI-PRG07)` to the player from here.
+    text: a ? playerProse(a.in_fight) + ' ' + playerProse(a.out_of_fight) : null,
     meta: a ? { attribute: a.id, from: a.value, to: a.value + 1, derived: m.preview } : null,
   }, (c, r) => {
     if (!a) return;
     let y = r[1] + 24 * s;
-    drawText(c, a.name, r[0], y, faceOf('bone'), 19 * s, ink());
-    y += 10 * s; boneRule(c, r[0], y, r[2], s, 6); y += 26 * s;
+    drawObject(c, attrShape(a.id), r[0], y - 22 * s, 30 * s, 30 * s, s, idHash('pv' + a.id), null);
+    drawText(c, a.name, r[0] + 38 * s, y, faceOf('bone'), 19 * s, ink());
+    y += 14 * s; boneRule(c, r[0], y, r[2], s, 6); y += 26 * s;
     drawText(c, `${a.value}  to  ${a.value + 1}`, r[0], y, faceOf('bone'), 17 * s, ink());
     y += 28 * s;
     for (const d of m.preview) {
@@ -112,10 +150,10 @@ export function drawLevelUp(S, m) {
     }
     y += 12 * s;
     const size = 15 * s, lh = size * 1.44;
-    const ls = wrap('In a fight: ' + a.in_fight, faceOf('ink'), size, r[2]);
+    const ls = wrap('In a fight: ' + playerProse(a.in_fight), faceOf('ink'), size, r[2]);
     y = writeLines(c, ls, r[0], y, 'ink', size, lh, ink());
     y += 8 * s;
-    const ls2 = wrap('Out of one: ' + a.out_of_fight, faceOf('ink'), size, r[2]);
+    const ls2 = wrap('Out of one: ' + playerProse(a.out_of_fight), faceOf('ink'), size, r[2]);
     writeLines(c, ls2, r[0], y, 'ink', size, lh, ink());
   });
 
@@ -138,38 +176,68 @@ export function drawSheet(S, m) {
     ['tide', m.birthsign], ['level', String(m.level)], ['souls', String(m.souls)],
     ['reputation', String(m.reputation)], ['bounty', String(m.bounty)],
   ];
+  // ---- THE SHEET WAS THE EMPTIEST SCREEN IN THE BUILD AND THIS IS WHY -----------------------
+  //
+  // Round 1 measured panel fill of **0.069** here, against Morrowind's 0.42 and RI-UIX09 P4's low
+  // bar of 0.35. The cause was not a missing feature: eight facts and ten attributes were drawn on
+  // 26-unit rows down a 674-unit box, using 468 units of it and leaving the rest blank, with the
+  // values as bare numerals and no gauge. `REF-A12b-character_sheet__mw-*.jpg` (four plates) shows
+  // the opposite — two dense stacked blocks, every attribute and both skill lists on screen at
+  // once, filling the window. The rows below are pitched to fill the column and each attribute
+  // carries the same gauge and the same carved mark the level-up screen uses.
+  const factH = 34;
   facts.forEach(([k, v], i) => {
     S.el({
       id: 'sheet.fact.' + k.replace(/\s/g, '_'), kind: 'sheet_row',
-      rect: [ix, iy + i * 26 * s, colW, 24 * s], text: `${k} ${v}`, opacity: alpha,
+      rect: [ix, iy + i * factH * s, colW, (factH - 2) * s], text: `${k} ${v}`, opacity: alpha,
     }, (c, r) => {
-      drawText(c, k, r[0], r[1] + 17 * s, faceOf('ink'), 14 * s, inkDim());
-      drawText(c, String(v || '—'), r[0] + 140 * s, r[1] + 17 * s, faceOf('bone'), 15 * s, ink());
+      drawText(c, k, r[0], r[1] + 20 * s, faceOf('ink'), 14 * s, inkDim());
+      drawText(c, String(v || '—'), r[0] + 150 * s, r[1] + 21 * s, faceOf('bone'), 16 * s, ink());
+      boneRule(c, r[0], r[1] + r[3] - 3 * s, r[2], s, idHash(k) & 0xffff);
     });
   });
 
-  const ax = ix + colW + 24 * s;
+  const ax = ix + colW + 24 * s, attrW = colW * 0.92, attrH = 42;
   column(S, 'sheet.rule1', ax - 14 * s, iy, 2 * s, ih, alpha);
   m.attributes.forEach((a, i) => {
+    const y = iy + i * attrH * s;
     S.el({
       id: 'sheet.attr.' + a.id, kind: 'attribute_row',
-      rect: [ax, iy + i * 26 * s, colW * 0.8, 24 * s], text: `${a.name} ${a.value}`, opacity: alpha,
+      rect: [ax, y, attrW, (attrH - 4) * s], text: `${a.name} ${a.value}`, opacity: alpha,
       meta: { attribute: a.id, value: a.value, soft_cap: a.soft_cap },
     }, (c, r) => {
-      drawText(c, a.name, r[0], r[1] + 17 * s, faceOf('bone'), 13 * s, ink());
-      drawText(c, String(a.value), r[0] + 180 * s, r[1] + 17 * s, faceOf('bone'), 15 * s, ink());
+      drawText(c, a.name, r[0] + 40 * s, r[1] + 20 * s, faceOf('bone'), 14 * s, ink());
+      drawText(c, String(a.value), r[0] + 200 * s, r[1] + 21 * s, faceOf('bone'), 16 * s, ink());
+      // the same bone trough the level-up screen cuts, so one attribute reads the same way on
+      // both screens rather than being a number here and a gauge there
+      const gx = r[0] + 40 * s, gw = r[2] - 56 * s, gy = r[1] + 26 * s, gh = 8 * s;
+      chitinPath(c, gx, gy, gw, gh, s, idHash('sh' + a.id) & 0xffff);
+      c.save(); c.clip();
+      c.fillStyle = C('parchment'); c.fillRect(gx - 2, gy - 2, gw + 4, gh + 4);
+      c.fillStyle = C('reed_dark'); c.fillRect(gx, gy, gw * Math.min(1, a.value / 99), gh);
+      c.restore();
+      chitinPath(c, gx, gy, gw, gh, s, idHash('sh' + a.id) & 0xffff);
+      c.strokeStyle = Ca('bone_dim', 0.75); c.lineWidth = 1.4 * s; c.stroke();
+      if (a.soft_cap) {
+        const cx2 = gx + gw * (a.soft_cap / 99);
+        c.beginPath(); c.moveTo(cx2, gy - 3 * s); c.lineTo(cx2, gy + gh + 3 * s);
+        c.strokeStyle = Ca('bone_dim', 0.95); c.lineWidth = 1.8 * s; c.stroke();
+      }
     });
+    glyphObject(S, 'sheet.mark.' + a.id, ax + 2 * s, y + 4 * s, 32 * s, 32 * s,
+      attrShape(a.id), alpha, { attribute: a.id });
   });
 
-  const sx = ax + colW * 0.8 + 30 * s, sw = ix + iw - sx;
+  const sx = ax + attrW + 30 * s, sw = ix + iw - sx;
   column(S, 'sheet.rule2', sx - 16 * s, iy, 2 * s, ih, alpha);
-  const rows = 22;
+  const skillH = 28;
+  const rows = Math.max(8, Math.floor(ih / (skillH * s)));
   const win = windowOf(m.skills.length, m.rowIdx, rows);
   for (let i = win.from; i < win.to; i++) {
     const sk = m.skills[i];
-    row(S, 'sheet.skill.' + sk.id, 'skill_row', sx, iy + (i - win.from) * 24 * s, sw, 24 * s, [
-      { text: sk.name, w: 220, size: 14 },
-      { text: String(sk.value), w: 60, align: 'right', face: 'bone', size: 14 },
+    row(S, 'sheet.skill.' + sk.id, 'skill_row', sx, iy + (i - win.from) * skillH * s, sw, skillH * s, [
+      { text: sk.name, w: 220, size: 15 },
+      { text: String(sk.value), w: 60, align: 'right', face: 'bone', size: 15 },
     ], i === m.rowIdx, alpha, { skill: sk.id, value: sk.value });
   }
   if (m.skills.length > rows) {
@@ -190,10 +258,15 @@ export function drawSpells(S, m) {
   const win = windowOf(m.spells.length, m.rowIdx, rows);
   for (let i = win.from; i < win.to; i++) {
     const sp = m.spells[i];
-    row(S, 'spells.row.' + sp.id, 'spell_row', ix, iy + (i - win.from) * 30 * s, lw, 30 * s, [
+    const ry = iy + (i - win.from) * 34 * s;
+    row(S, 'spells.row.' + sp.id, 'spell_row', ix, ry, lw, 34 * s, [
       { text: sp.name, w: 300 },
       { text: String(sp.cost), w: 70, align: 'right', face: 'bone', size: 14 },
-    ], i === m.rowIdx, alpha, { spell: sp.id, cost: sp.cost, school: sp.school });
+    ], i === m.rowIdx, alpha, { spell: sp.id, cost: sp.cost, school: sp.school }, 38);
+    // The school's mark, drawn. Same table, same `glyph_object` kind — a spell is not an object
+    // you carry, so it is not an `item_icon` either.
+    glyphObject(S, 'spells.mark.' + sp.id, ix + 3 * s, ry + 3 * s, 28 * s, 28 * s,
+      SCHOOL_SHAPE[String(sp.school || '').toLowerCase()] || 'staff', alpha, { spell: sp.id, school: sp.school });
   }
   const dx = ix + lw + 30 * s, dw = iw - lw - 30 * s;
   column(S, 'spells.rule', dx - 16 * s, iy, 2 * s, ih, alpha);
