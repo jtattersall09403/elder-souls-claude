@@ -1,0 +1,1739 @@
+{
+  "at": "2026-08-15T19:04:06.430Z",
+  "mode": "look",
+  "arm": "landed",
+  "entry": "game/index.html",
+  "renderer": {
+    "renderer_string": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "hardware": false,
+    "software_renderer": true,
+    "unknown": false,
+    "class": "SOFTWARE",
+    "evidence_class": "SOFTWARE — valid for geometry, layout, composition, determinism and census. NOT valid for antialiasing, bloom, AO, IBL or any appearance claim (W1-30-EVIDENCE §4).",
+    "reason": "the reported renderer names a software rasteriser: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "decided_from": "renderer-string",
+    "hardware_requested": false,
+    "fell_back": false,
+    "renderer_source": "live page WEBGL_debug_renderer_info",
+    "backend": null,
+    "backend_attempts": [],
+    "chromium_args": [
+      "--force-color-profile=srgb",
+      "--font-render-hinting=none",
+      "--disable-lcd-text",
+      "--disable-skia-runtime-opts",
+      "--hide-scrollbars",
+      "--mute-audio",
+      "--disable-background-timer-throttling",
+      "--disable-renderer-backgrounding",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-partial-raster",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-new-content-rendering-timeout",
+      "--enable-unsafe-swiftshader",
+      "--use-gl=angle",
+      "--use-angle=swiftshader"
+    ]
+  },
+  "resolution": [
+    1280,
+    720
+  ],
+  "seed": 20260814,
+  "evidence_class": "SOFTWARE — differential only (HAZARDS §15)",
+  "rows": [
+    {
+      "mode": "orbit",
+      "hour": 8,
+      "yaw_deg": 0,
+      "file": "reports/f4c/B-look-landed/orbit-t8/yaw000.png",
+      "sha": "9c759d70065516e45e7e8487e44fdd90ef2d35d02a7e0da100a8a335a98b2b0d",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 75.4066,
+        "sd_luma": 42.7776,
+        "p10": 40.4,
+        "p50": 57.77,
+        "p90": 163.85,
+        "mean_chroma": 29.6721,
+        "mean_rgb": [
+          75.44,
+          77.304,
+          56.509
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 8,
+      "yaw_deg": 30,
+      "file": "reports/f4c/B-look-landed/orbit-t8/yaw030.png",
+      "sha": "5a78b2eb60c83340f8c2ac95c9fb575fbbbc6b598386170e975173946500afcb",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 72.1123,
+        "sd_luma": 40.173,
+        "p10": 39.13,
+        "p50": 55.55,
+        "p90": 146.84,
+        "mean_chroma": 30.443,
+        "mean_rgb": [
+          73.323,
+          73.878,
+          51.057
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 8,
+      "yaw_deg": 60,
+      "file": "reports/f4c/B-look-landed/orbit-t8/yaw060.png",
+      "sha": "d1881a29635750e3e7f04a9b7c28ae8bdc90095ae508931664312cc0beb98c36",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 71.7154,
+        "sd_luma": 40.5426,
+        "p10": 38.77,
+        "p50": 54.77,
+        "p90": 156.91,
+        "mean_chroma": 30.9298,
+        "mean_rgb": [
+          73.622,
+          73.363,
+          49.775
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 8,
+      "yaw_deg": 90,
+      "file": "reports/f4c/B-look-landed/orbit-t8/yaw090.png",
+      "sha": "3ae0ffa876effc126d8c73c8150aa94fbfcaee1f450c1c5e83b022e5be56a5c5",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 65.5169,
+        "sd_luma": 35.0358,
+        "p10": 37.48,
+        "p50": 53.69,
+        "p90": 112.03,
+        "mean_chroma": 30.8845,
+        "mean_rgb": [
+          68.311,
+          67,
+          42.601
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 8,
+      "yaw_deg": 120,
+      "file": "reports/f4c/B-look-landed/orbit-t8/yaw120.png",
+      "sha": "6b775311bf311ef6e9ab5e883fa02e497ea6a06df636d6eee3f3213c55d5c789",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 64.6816,
+        "sd_luma": 32.6061,
+        "p10": 38.76,
+        "p50": 53.62,
+        "p90": 110.58,
+        "mean_chroma": 30.5141,
+        "mean_rgb": [
+          68.155,
+          66.053,
+          40.868
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 8,
+      "yaw_deg": 150,
+      "file": "reports/f4c/B-look-landed/orbit-t8/yaw150.png",
+      "sha": "db03ec81a732fbfeec2bc580c4bab1899a4cbd952bbb0e999c6f3662915ab4ea",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 60.579,
+        "sd_luma": 25.1147,
+        "p10": 37.41,
+        "p50": 54.69,
+        "p90": 93.22,
+        "mean_chroma": 29.3655,
+        "mean_rgb": [
+          64.6,
+          61.829,
+          36.361
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 8,
+      "yaw_deg": 180,
+      "file": "reports/f4c/B-look-landed/orbit-t8/yaw180.png",
+      "sha": "c481f8e7d4dc57e475eb9c29ae94e81bcb59de2f5fd026b0c57322923d09e8d3",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 62.7709,
+        "sd_luma": 24.9218,
+        "p10": 35.75,
+        "p50": 58.26,
+        "p90": 91.62,
+        "mean_chroma": 29.7377,
+        "mean_rgb": [
+          67.209,
+          63.926,
+          38.261
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 8,
+      "yaw_deg": 210,
+      "file": "reports/f4c/B-look-landed/orbit-t8/yaw210.png",
+      "sha": "90839cfce610ef1356bf2b706d7e4ed9992ce9ec4c0609b4f1d7e26146d8b7d2",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 75.6588,
+        "sd_luma": 35.9374,
+        "p10": 42.27,
+        "p50": 70.6,
+        "p90": 111.74,
+        "mean_chroma": 30.8146,
+        "mean_rgb": [
+          80.32,
+          76.76,
+          51.021
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 8,
+      "yaw_deg": 240,
+      "file": "reports/f4c/B-look-landed/orbit-t8/yaw240.png",
+      "sha": "af518300240cb979420d6448f3445e4152671d60b616b2a41ae166c49684a82a",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 91.4756,
+        "sd_luma": 47.8897,
+        "p10": 47.19,
+        "p50": 76.68,
+        "p90": 178.12,
+        "mean_chroma": 31.7518,
+        "mean_rgb": [
+          95.365,
+          92.6,
+          68.887
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 8,
+      "yaw_deg": 270,
+      "file": "reports/f4c/B-look-landed/orbit-t8/yaw270.png",
+      "sha": "233d9c6dfff3ca1a0927050bc433aad5e972b10dd7433dbebacce8840fd07ea7",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 89.5936,
+        "sd_luma": 50.7275,
+        "p10": 42.14,
+        "p50": 71.92,
+        "p90": 178.04,
+        "mean_chroma": 31.1045,
+        "mean_rgb": [
+          91.62,
+          91.007,
+          69.623
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 8,
+      "yaw_deg": 300,
+      "file": "reports/f4c/B-look-landed/orbit-t8/yaw300.png",
+      "sha": "8160aabaacaf1012b5341acefb475f03fa369f968c869e6ed3c19a4e78110376",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 86.882,
+        "sd_luma": 48.2142,
+        "p10": 41.27,
+        "p50": 69.4,
+        "p90": 173.55,
+        "mean_chroma": 32.0107,
+        "mean_rgb": [
+          87.243,
+          88.604,
+          68.758
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 8,
+      "yaw_deg": 330,
+      "file": "reports/f4c/B-look-landed/orbit-t8/yaw330.png",
+      "sha": "85c6014f504b6b0576a01276fc4bcd101043656896dcc97affe45424cc730e2b",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 78.7838,
+        "sd_luma": 45.743,
+        "p10": 39.4,
+        "p50": 60.12,
+        "p90": 169.92,
+        "mean_chroma": 31.4103,
+        "mean_rgb": [
+          78.495,
+          80.727,
+          60.384
+        ]
+      }
+    },
+    {
+      "mode": "walk",
+      "hour": 8,
+      "k": 0,
+      "moved_m_from_start": 0,
+      "pos": [
+        2766,
+        2.68,
+        5011
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t8/f00.png",
+      "sha": "6b921f6cda3ec9223087f72c140a35c2fb6c53cbd1ee94b34613c05e5001499a",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 8,
+      "k": 1,
+      "moved_m_from_start": 0.267,
+      "pos": [
+        2766,
+        2.68,
+        5011.2667
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t8/f01.png",
+      "sha": "5d051494d16caa2f7249f2fda9b7a0bcb47f9bcbc35a83a8655451bbf812fa93",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 8,
+      "k": 2,
+      "moved_m_from_start": 0.96,
+      "pos": [
+        2766,
+        2.68,
+        5011.96
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t8/f02.png",
+      "sha": "fc420597677fb3944c85d71295f99dc66ccf594f15c119d549bd66cef962eff6",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 8,
+      "k": 3,
+      "moved_m_from_start": 1.653,
+      "pos": [
+        2766,
+        2.68,
+        5012.6533
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t8/f03.png",
+      "sha": "c6e1ef78235368e0de9d3d2a7bb5c6194bb558d8e28a657a5f717f82bcd3f75d",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 8,
+      "k": 4,
+      "moved_m_from_start": 2.347,
+      "pos": [
+        2766,
+        2.68,
+        5013.3467
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t8/f04.png",
+      "sha": "6e8ecd35a8606869feeb331a37ea97926e3e2e0ce498df0084827c0fa65d3cac",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 8,
+      "k": 5,
+      "moved_m_from_start": 3.04,
+      "pos": [
+        2766,
+        2.68,
+        5014.04
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t8/f05.png",
+      "sha": "f7d3aeca00fde8c322d2a8183b63772984e75fd6b2e902467421556dde4ae471",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "orbit",
+      "hour": 13,
+      "yaw_deg": 0,
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw000.png",
+      "sha": "c9a45f966e3de1a398efd43d6aec9810a5e192b0b11f836f9aa500a46c6c72aa",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 77.2021,
+        "sd_luma": 44.2359,
+        "p10": 37.48,
+        "p50": 62.62,
+        "p90": 163.99,
+        "mean_chroma": 32.7297,
+        "mean_rgb": [
+          77.526,
+          79.262,
+          55.844
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 13,
+      "yaw_deg": 30,
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw030.png",
+      "sha": "b83ccb6aa8977cb03b0099a37b24c9f1e8900168edcbdb927e57c8f7f97f83e4",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 73.5003,
+        "sd_luma": 41.3343,
+        "p10": 36.48,
+        "p50": 60.05,
+        "p90": 147.26,
+        "mean_chroma": 32.078,
+        "mean_rgb": [
+          74.626,
+          75.425,
+          51.117
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 13,
+      "yaw_deg": 60,
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw060.png",
+      "sha": "f09f86d5fb27f62d3dbc9ab76698cc9890fe5bb052c46c2d04de026ba21d9c69",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 70.8522,
+        "sd_luma": 40.5339,
+        "p10": 30.7,
+        "p50": 58.83,
+        "p90": 158.55,
+        "mean_chroma": 30.924,
+        "mean_rgb": [
+          72.365,
+          72.645,
+          48.638
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 13,
+      "yaw_deg": 90,
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw090.png",
+      "sha": "197fac68c5ba0833e2e1db5184526aeb886d4dc4eb461c2b0a21564de74355db",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 64.1219,
+        "sd_luma": 32.8951,
+        "p10": 28.78,
+        "p50": 58.76,
+        "p90": 100.83,
+        "mean_chroma": 30.0585,
+        "mean_rgb": [
+          66.518,
+          65.703,
+          41.401
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 13,
+      "yaw_deg": 120,
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw120.png",
+      "sha": "d364160ae93e1f38801a4a06bed1130cc9aa17f16b2c33ae50791e534ab033df",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 66.9716,
+        "sd_luma": 31.4463,
+        "p10": 34.63,
+        "p50": 61.62,
+        "p90": 100.97,
+        "mean_chroma": 30.4876,
+        "mean_rgb": [
+          70.274,
+          68.404,
+          43.059
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 13,
+      "yaw_deg": 150,
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw150.png",
+      "sha": "fb7e5f357683c0a1b7df74a94891cd00e05c84542b8c1fb30168858558596454",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 68.4458,
+        "sd_luma": 30.6685,
+        "p10": 31.92,
+        "p50": 64.9,
+        "p90": 104.32,
+        "mean_chroma": 31.3364,
+        "mean_rgb": [
+          73.027,
+          69.67,
+          42.83
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 13,
+      "yaw_deg": 180,
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw180.png",
+      "sha": "38a821ed6e31179bd9c668206cb746c604d783f956bdc6825c9d94d0b58a32c6",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 69.3976,
+        "sd_luma": 35.808,
+        "p10": 26.42,
+        "p50": 64.63,
+        "p90": 109.82,
+        "mean_chroma": 30.4222,
+        "mean_rgb": [
+          73.807,
+          70.629,
+          44.215
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 13,
+      "yaw_deg": 210,
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw210.png",
+      "sha": "dc205ce1c20e76b459843e8e3130f526e5db45445648c60c898aa811897b58c7",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 67.2963,
+        "sd_luma": 29.8678,
+        "p10": 28.27,
+        "p50": 64.83,
+        "p90": 98.13,
+        "mean_chroma": 30.8293,
+        "mean_rgb": [
+          71.134,
+          68.68,
+          42.287
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 13,
+      "yaw_deg": 240,
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw240.png",
+      "sha": "1ea2d36ace72a1f573a8deff9020188e30591940077799d7c8ee59cb2ae5da70",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 73.928,
+        "sd_luma": 38.463,
+        "p10": 33.34,
+        "p50": 64.69,
+        "p90": 133.8,
+        "mean_chroma": 32.6096,
+        "mean_rgb": [
+          76.492,
+          75.489,
+          50.917
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 13,
+      "yaw_deg": 270,
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw270.png",
+      "sha": "18690bda0390180b2e5879ca21a8608a38cda2478e5675bed325391178fce626",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 78.4071,
+        "sd_luma": 42.3476,
+        "p10": 44.84,
+        "p50": 62.55,
+        "p90": 167.56,
+        "mean_chroma": 33.0667,
+        "mean_rgb": [
+          79.371,
+          80.289,
+          56.921
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 13,
+      "yaw_deg": 300,
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw300.png",
+      "sha": "4fbfec3091aae24e9e0969752879dc3a8fd65fe82d319fcff33693ed96843c62",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 83.71,
+        "sd_luma": 46.9756,
+        "p10": 43.91,
+        "p50": 63.98,
+        "p90": 171.06,
+        "mean_chroma": 33.785,
+        "mean_rgb": [
+          83.22,
+          85.827,
+          64.177
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 13,
+      "yaw_deg": 330,
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw330.png",
+      "sha": "b49e70d215d1b96473b7b9f0e3de80bba87a6644df5384b9bb3795404a4dad2b",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 81.5222,
+        "sd_luma": 46.7659,
+        "p10": 39.98,
+        "p50": 64.98,
+        "p90": 169.7,
+        "mean_chroma": 33.6457,
+        "mean_rgb": [
+          81.184,
+          83.661,
+          61.328
+        ]
+      }
+    },
+    {
+      "mode": "walk",
+      "hour": 13,
+      "k": 0,
+      "moved_m_from_start": 0.533,
+      "pos": [
+        2766,
+        2.68,
+        5012.3867
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t13/f00.png",
+      "sha": "60be7753919aa9296bb0a824637f846256044ff5c27ef157809c7811f8d19eec",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 13,
+      "k": 1,
+      "moved_m_from_start": 1.227,
+      "pos": [
+        2766,
+        2.68,
+        5013.08
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t13/f01.png",
+      "sha": "43d9d0724c30a5893ef930055e7b2a665a00e5b7b0019bd490d51033200948f9",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 13,
+      "k": 2,
+      "moved_m_from_start": 1.92,
+      "pos": [
+        2766,
+        2.68,
+        5013.7733
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t13/f02.png",
+      "sha": "a4e5eece1d7b5555277bb17a236267b66961dbbfa1606c33ee08f2345df53db6",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 13,
+      "k": 3,
+      "moved_m_from_start": 2.613,
+      "pos": [
+        2766,
+        2.68,
+        5014.4666
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t13/f03.png",
+      "sha": "e0c38d49b38f85e95bf538de95689ccdeb519a9d9cc522e13ff569a58cf1fcf7",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 13,
+      "k": 4,
+      "moved_m_from_start": 3.307,
+      "pos": [
+        2766,
+        2.68,
+        5015.16
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t13/f04.png",
+      "sha": "38c9ec32dcd9aee1fe9b017c70753a60c3c941a9c5b1d058ab0ac76cf7625611",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 13,
+      "k": 5,
+      "moved_m_from_start": 4,
+      "pos": [
+        2766,
+        2.68,
+        5015.8533
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t13/f05.png",
+      "sha": "c97f73006e6e792b370f93f00047e83c03e5e17f1fc65882016a8c5a48f0cb3f",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "moonIntensity": 0,
+        "hemiTotal": 5.0011,
+        "ambientTotal": 0.4669,
+        "dirTotal": 11.9,
+        "dirCount": 5,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "orbit",
+      "hour": 19.5,
+      "yaw_deg": 0,
+      "file": "reports/f4c/B-look-landed/orbit-t19.5/yaw000.png",
+      "sha": "d649fb74ffce74671ef4c0fe4f1a30b7357f5c75f2ceb3b1fbbc8009a3d649e5",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 17.932,
+        "sd_luma": 20.2274,
+        "p10": 0.72,
+        "p50": 11.29,
+        "p90": 37.42,
+        "mean_chroma": 9.7768,
+        "mean_rgb": [
+          14.797,
+          19.069,
+          15.899
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 19.5,
+      "yaw_deg": 30,
+      "file": "reports/f4c/B-look-landed/orbit-t19.5/yaw030.png",
+      "sha": "632eb4026c6f100b5f1b820bcd56f1c6ea632df26935f5e3674d0f8f50c6876a",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 18.3163,
+        "sd_luma": 20.9099,
+        "p10": 0.72,
+        "p50": 10.58,
+        "p90": 41.35,
+        "mean_chroma": 8.9468,
+        "mean_rgb": [
+          15.649,
+          19.409,
+          15.345
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 19.5,
+      "yaw_deg": 60,
+      "file": "reports/f4c/B-look-landed/orbit-t19.5/yaw060.png",
+      "sha": "969359b45bfdf109a9d2bd08889a2ae89e1bcda58899ab88630b61fde396ec98",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 19.8502,
+        "sd_luma": 22.8979,
+        "p10": 0,
+        "p50": 11.07,
+        "p90": 45.36,
+        "mean_chroma": 8.4432,
+        "mean_rgb": [
+          17.507,
+          20.882,
+          16.532
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 19.5,
+      "yaw_deg": 90,
+      "file": "reports/f4c/B-look-landed/orbit-t19.5/yaw090.png",
+      "sha": "ecb9626269bd72566393928ef0382a10b1c9c9b383e162f7c77cdc0a4a48328b",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 16.7208,
+        "sd_luma": 18.2744,
+        "p10": 0,
+        "p50": 9.36,
+        "p90": 43.21,
+        "mean_chroma": 7.1413,
+        "mean_rgb": [
+          14.682,
+          17.658,
+          13.445
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 19.5,
+      "yaw_deg": 120,
+      "file": "reports/f4c/B-look-landed/orbit-t19.5/yaw120.png",
+      "sha": "d862f1c8d5804b5034b9c23afc2ebf3c6882b9c0dc2e6e42d778d06ceb069303",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 17.2614,
+        "sd_luma": 18.4819,
+        "p10": 0,
+        "p50": 9.65,
+        "p90": 42.86,
+        "mean_chroma": 7.0112,
+        "mean_rgb": [
+          15.219,
+          18.244,
+          13.538
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 19.5,
+      "yaw_deg": 150,
+      "file": "reports/f4c/B-look-landed/orbit-t19.5/yaw150.png",
+      "sha": "0d36dcb1124bedef14d819db822539dba7b6a85a65854f8fdbfcd6b64b83c4f6",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 16.682,
+        "sd_luma": 16.9658,
+        "p10": 0.72,
+        "p50": 10.08,
+        "p90": 41.49,
+        "mean_chroma": 7.0433,
+        "mean_rgb": [
+          14.651,
+          17.755,
+          12.029
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 19.5,
+      "yaw_deg": 180,
+      "file": "reports/f4c/B-look-landed/orbit-t19.5/yaw180.png",
+      "sha": "166122cec85f68fcb9ec34cef3eb8c452d90710fa7a36c7ee36681c9b6c14e5a",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 16.6335,
+        "sd_luma": 16.4849,
+        "p10": 0.72,
+        "p50": 10.72,
+        "p90": 41.43,
+        "mean_chroma": 7.1556,
+        "mean_rgb": [
+          14.384,
+          17.731,
+          12.384
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 19.5,
+      "yaw_deg": 210,
+      "file": "reports/f4c/B-look-landed/orbit-t19.5/yaw210.png",
+      "sha": "b8b13686b01767897dc568033f38118124176bef3307bd35f264d723dcd62e8a",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 21.9653,
+        "sd_luma": 22.1552,
+        "p10": 2.15,
+        "p50": 17.37,
+        "p90": 43.7,
+        "mean_chroma": 8.7494,
+        "mean_rgb": [
+          18.754,
+          23.169,
+          19.495
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 19.5,
+      "yaw_deg": 240,
+      "file": "reports/f4c/B-look-landed/orbit-t19.5/yaw240.png",
+      "sha": "d95ccf201e09d8bd4fb37ed20c66a83800b5b4d61d78da552201a45a24b53b56",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 27.7326,
+        "sd_luma": 26.4869,
+        "p10": 3.86,
+        "p50": 22.88,
+        "p90": 54.16,
+        "mean_chroma": 11.2973,
+        "mean_rgb": [
+          23.268,
+          28.952,
+          28.797
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 19.5,
+      "yaw_deg": 270,
+      "file": "reports/f4c/B-look-landed/orbit-t19.5/yaw270.png",
+      "sha": "5583db1337ada1a4bc30fe03b094c87974c49d2fff01b81fe206a7eddedc2fb5",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 25.9279,
+        "sd_luma": 28.6582,
+        "p10": 2.36,
+        "p50": 20.71,
+        "p90": 51.16,
+        "mean_chroma": 11.3885,
+        "mean_rgb": [
+          21.448,
+          27.039,
+          28.117
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 19.5,
+      "yaw_deg": 300,
+      "file": "reports/f4c/B-look-landed/orbit-t19.5/yaw300.png",
+      "sha": "942dd7f50b9a96e5ba98d13641593f255799d37ea360bdc3e48258985f6c9daf",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 19.969,
+        "sd_luma": 19.3165,
+        "p10": 0.72,
+        "p50": 17.36,
+        "p90": 42.44,
+        "mean_chroma": 9.7942,
+        "mean_rgb": [
+          16.271,
+          20.879,
+          21.839
+        ]
+      }
+    },
+    {
+      "mode": "orbit",
+      "hour": 19.5,
+      "yaw_deg": 330,
+      "file": "reports/f4c/B-look-landed/orbit-t19.5/yaw330.png",
+      "sha": "6e0d162895e3e7d00a29ff022fc767e3e1d998fa63edca1573d9abb2e8b206f9",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE",
+      "stats": {
+        "n": 921600,
+        "mean_luma": 16.78,
+        "sd_luma": 17.5063,
+        "p10": 0,
+        "p50": 12.44,
+        "p90": 34.29,
+        "mean_chroma": 8.7688,
+        "mean_rgb": [
+          13.668,
+          17.681,
+          17.016
+        ]
+      }
+    },
+    {
+      "mode": "walk",
+      "hour": 19.5,
+      "k": 0,
+      "moved_m_from_start": 0.533,
+      "pos": [
+        2766,
+        2.68,
+        5012.3867
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t19.5/f00.png",
+      "sha": "907369811d8e629d43d5ec057a3f2cbee81c00acfc9c43c45e2396ed5d8b932b",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 19.5,
+      "k": 1,
+      "moved_m_from_start": 1.227,
+      "pos": [
+        2766,
+        2.68,
+        5013.08
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t19.5/f01.png",
+      "sha": "f9c59ec128c809402ef65b1729b5130bd000fba0f5266ffae5fd433d7b7aadbf",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 19.5,
+      "k": 2,
+      "moved_m_from_start": 1.92,
+      "pos": [
+        2766,
+        2.68,
+        5013.7733
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t19.5/f02.png",
+      "sha": "aa5a67ebbf1a845d2e587550312161fc3e19c68b66077a8eaf54f9dd9002ad81",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 19.5,
+      "k": 3,
+      "moved_m_from_start": 2.613,
+      "pos": [
+        2766,
+        2.68,
+        5014.4666
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t19.5/f03.png",
+      "sha": "9be4d9b1ce010c2273c0bf26cd98734ee01a22c982d9d428a1826f5fe4702f43",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 19.5,
+      "k": 4,
+      "moved_m_from_start": 3.307,
+      "pos": [
+        2766,
+        2.68,
+        5015.16
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t19.5/f04.png",
+      "sha": "7c428132ed6f4bd86075f4ada1a97f8a89f8748252d44201d03783925f6a6cec",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    },
+    {
+      "mode": "walk",
+      "hour": 19.5,
+      "k": 5,
+      "moved_m_from_start": 4,
+      "pos": [
+        2766,
+        2.68,
+        5015.8533
+      ],
+      "file": "reports/f4c/B-look-landed/walk-t19.5/f05.png",
+      "sha": "1036a507f4ce36510234ba488b7ae608c748ea1d2402c4af96dd71570963266a",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0.0126,
+        "moonIntensity": 2.952,
+        "hemiTotal": 5.3982,
+        "ambientTotal": 0.7016,
+        "dirTotal": 8.5646,
+        "dirCount": 6,
+        "hasEnvironment": true,
+        "environmentIntensity": 0.195,
+        "cfgError": null
+      },
+      "liveness": "LIVE"
+    }
+  ],
+  "aborted": null
+}
