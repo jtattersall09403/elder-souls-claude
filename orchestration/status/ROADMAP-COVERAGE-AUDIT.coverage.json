@@ -1,11 +1,11 @@
 {
- "generated": "2026-08-15T15:39:34.979Z",
+ "generated": "2026-08-15T17:14:36.850Z",
  "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
  "method": "Inventory derived by fs walk + generated ledgers. Mapping authored by the audit agent after reading every RI title/front-matter, every plan heading, and every open gap record.",
  "inventory_counts": {
   "reference_items": 152,
   "plans": 49,
-  "open_gaps": 86,
+  "open_gaps": 87,
   "proposed_roadmap_items": 69
  },
  "rings": {
@@ -1492,14 +1492,15 @@
     "GAP-W1-map-fix-drops-the-journal-from-the-page-walk",
     "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
     "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them",
+    "GAP-W1-ui-container-clips-its-own-declared-text",
     "GAP-W1-ui-detectors-that-cannot-see",
     "GAP-W1-ui-hud-world-set-unbuilt-and-misplaced",
     "GAP-W1-ui-journal-search-view-has-no-exit",
     "GAP-W1-ui-map-outside-the-ar2-detectors",
     "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
    ],
-   "n_open_gaps": 8,
-   "blocking_gaps": 7,
+   "n_open_gaps": 9,
+   "blocking_gaps": 8,
    "plans": [
     "W1-21",
     "W1-HUD-TOAST"
@@ -3806,7 +3807,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 6,
+   "verdicts": 7,
    "best_score_0_10": 6,
    "state": "judged_at_or_above_bar"
   },
@@ -3824,7 +3825,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 8,
+   "verdicts": 9,
    "best_score_0_10": 7,
    "state": "judged_at_or_above_bar"
   },
@@ -3859,7 +3860,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 6,
+   "verdicts": 7,
    "best_score_0_10": 5,
    "state": "judged_below_bar"
   },
@@ -3876,7 +3877,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 4,
+   "verdicts": 5,
    "best_score_0_10": 5,
    "state": "judged_below_bar"
   },
@@ -3894,7 +3895,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 4,
+   "verdicts": 5,
    "best_score_0_10": 2,
    "state": "judged_below_bar"
   },
@@ -3911,7 +3912,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 4,
+   "verdicts": 5,
    "best_score_0_10": 5,
    "state": "judged_below_bar"
   },
@@ -3928,7 +3929,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 3,
+   "verdicts": 4,
    "best_score_0_10": 8,
    "state": "judged_at_or_above_bar"
   },
@@ -5975,6 +5976,16 @@
    "severity": "blocking",
    "path": "ui.style.diegesis",
    "what": "The per-screen boxes landed by round 4 are smaller than the content laid out into them and the content was not re-pitched to match, so at 1920x1080 on the shipp",
+   "covered_by": [
+    "T4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-ui-container-clips-its-own-declared-text",
+   "severity": "blocking",
+   "path": "ui.menu.inventory",
+   "what": "The container screen renders less than it declares, at 1920x1080, in the shipped ui-journal fixture, and the clip is silent. (a) container.band's declared descr",
    "covered_by": [
     "T4"
    ],

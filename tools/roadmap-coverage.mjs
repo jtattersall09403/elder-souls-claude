@@ -360,6 +360,7 @@ const GAP_MAP = {
   // The screens got denser and became unreadable: the density measure counts ink over ink, so it
   // REWARDED the regression (Ruling S58). Sizing the box was right; nothing reflowed inside it.
   'GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them': ['T4'],
+  'GAP-W1-ui-container-clips-its-own-declared-text': ['T4'],
   // Protocol A r2 lost 5/5 again with F1/F2/F3 all landed and green. Measured cause: 45.7% of the
   // light is indirect and cannot be occluded, so shadows and AO act on 19% of the frame. F4 owns the
   // remedy; F2 and F3 carry the consequence.
