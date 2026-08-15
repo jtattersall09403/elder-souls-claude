@@ -41,8 +41,12 @@ The answer reads *"The carriers have raised their rate on the Thorn run…"*, an
 
 | arm | `links_total` | picture |
 |---|---|---|
-| ours | **1** — `the-carriers` lit blue and underlined inside the prose | `sealing/lit-ours.png` |
-| ablated | **0** on the identical person and topic | `sealing/lit-ablated.png` |
+| ours | **1** — `the-carriers` lit blue and underlined inside the prose | `docs/shots/uix08-gate-g/dialogue-arm-with-inline-links.png` |
+| ablated | **0** on the identical person and topic | `docs/shots/uix08-gate-g/dialogue-arm-without-inline-links.png` |
+
+*(They live under `docs/shots/` and not beside this file because `reports/.gitignore`
+drops every `.png` under `reports/` — the same rule that nearly lost the key. The
+untracked originals are at `reports/blind/uix08-gate-g/sealing/`.)*
 
 **It was the ninth (person, topic) pair tried.** The first eight lit nothing. That
 number is the honest one and it matters more than the pair of pictures.
