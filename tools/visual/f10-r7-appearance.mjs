@@ -106,15 +106,22 @@ const REGION = {
  * showed so little.
  *
  * The two slope stands come from `f10-r7a-slope-scan.mjs --centre 2766,5011 --radius 300 --step 1`
- * over 361,201 points: `slope-strong` is the strongest walkable, dry point found, `slope-moderate`
- * is the strongest one that stays UNDER the conform's own +-0.25 m clamp so the effect can be seen
- * unsaturated. Both are ~340 m from Lilmoth, in the same region.
+ * over 361,201 points, ranked on the ground difference **between the actual foot bones** — not on
+ * the largest difference in any direction, which is a different and useless number. The scan's
+ * first version ranked the latter, picked 2978,4746 at 0.6811 m, and `--probe-only` stood the
+ * player there and read **0.0258 m**: all of that 0.68 m ran north-south and the feet are separated
+ * east-west. Both stands below were then re-probed live before a Pod was rented, and the
+ * `expected_` numbers are the scan's prediction, kept so the manifest can be checked against them.
+ *
+ * `char-player` is kept in the slope list ON PURPOSE, as the null control: it is one of the three
+ * stands every earlier round used, its per-foot difference measures 0.0000 m, and having it in the
+ * same sheet is what turns "the feet look the same" from a result into a property of the stand.
  */
 const STANDS = {
   crowd: { id: 'crowd-lilmoth', x: 2785.6, z: 5047.0 },
-  player: { id: 'char-player', x: 2766, z: 5011 },
-  slopeStrong: { id: 'slope-strong', x: 2978, z: 4746, expected_per_foot_m: 0.6811, expected_slope_deg: 19.57 },
-  slopeModerate: { id: 'slope-moderate', x: 2968, z: 4769, expected_per_foot_m: 0.2446, expected_slope_deg: 14.78 },
+  player: { id: 'char-player', x: 2766, z: 5011, expected_per_foot_m: 0.0 },
+  slopeStrong: { id: 'slope-strong', x: 3035, z: 4712, expected_per_foot_m: 0.4932, expected_slope_deg: 13.23 },
+  slopeModerate: { id: 'slope-moderate', x: 3002, z: 4727, expected_per_foot_m: 0.2530, expected_slope_deg: 6.72 },
 };
 
 /**
@@ -385,6 +392,61 @@ await mustCall('setUIVisible', false);
 await mustCall('setTimeOfDay', 13);
 await mustCall('setWeather', 'clear');
 
+/**
+ * `--probe-only` — every scene READER this tool depends on, run against the live game, with no
+ * screenshots taken and no Pod rented. It exists because the expensive failures on this project
+ * are not bad frames, they are tools that ran, reported success and read the wrong thing: a census
+ * pointed one layer away from the change, a gate called with argument names it does not have, a
+ * ray that hit the player's own chest. Those are all readable in a few seconds locally on
+ * SwiftShader, where a full capture costs ~45 s per frame and an hour of wall clock.
+ */
+if (args['probe-only']) {
+  const probe = { tool: 'f10-r7-appearance --probe-only', generated: new Date().toISOString(), stands: {}, aborted: null };
+  // WRITE WHAT IT GOT, EVEN IF IT DIES. The first run of this probe was killed by its own
+  // `timeout` while teleporting between stands and left NOTHING on disk, although the crowd census
+  // had already completed — the same shape as r7's own aborted ground-truth run. An honest partial
+  // result is worth more than a clean nothing (HAZARDS §13), so the write is in a `finally`.
+  try {
+  const err0 = await goTo(STANDS.crowd.x, STANDS.crowd.z);
+  probe.crowd = err0 ? { error: err0 } : await sceneCensus();
+  if (!err0) {
+    const drawn = probe.crowd.npcs.filter((n) => n.visible);
+    probe.crowd_summary = {
+      meshes: probe.crowd.npcs.length, visible: drawn.length,
+      drawn_buried: drawn.filter((n) => n.drawn_error_m < -0.15).length,
+      drawn_airborne: drawn.filter((n) => n.drawn_error_m > 0.15).length,
+      record_buried: drawn.filter((n) => n.record_error_m < -0.15).length,
+      record_airborne: drawn.filter((n) => n.record_error_m > 0.15).length,
+      worst_drawn_m: drawn.length ? Math.max(...drawn.map((n) => Math.abs(n.drawn_error_m))) : null,
+      worst_record_m: drawn.length ? Math.max(...drawn.map((n) => Math.abs(n.record_error_m))) : null,
+      variants: [...new Set(drawn.map((n) => n.variant))].sort(),
+    };
+    log(`crowd: ${probe.crowd_summary.visible} visible; AS DRAWN ${probe.crowd_summary.drawn_buried} buried / `
+      + `${probe.crowd_summary.drawn_airborne} airborne (worst |${probe.crowd_summary.worst_drawn_m}| m); `
+      + `BY RECORD ${probe.crowd_summary.record_buried} / ${probe.crowd_summary.record_airborne} (worst |${probe.crowd_summary.worst_record_m}| m)`);
+    log(`variants drawn here: ${probe.crowd_summary.variants.join(', ')}`);
+  }
+  for (const stand of [STANDS.slopeStrong, STANDS.slopeModerate, STANDS.player]) {
+    const err = await goTo(stand.x, stand.z);
+    if (err) { probe.stands[stand.id] = { error: err }; log(`RED ${stand.id}: ${err}`); continue; }
+    const snap = await call('snapshot');
+    const feet = await footGroundSpread();
+    probe.stands[stand.id] = { x: stand.x, z: stand.z, expected_per_foot_m: stand.expected_per_foot_m ?? null, player_pos: snap.ok && snap.v.player ? snap.v.player.pos : null, feet };
+    log(`${stand.id}: per-foot GROUND difference at the bones ${feet.per_foot_ground_difference_m ?? feet.error} m `
+      + `(scan predicted ${stand.expected_per_foot_m ?? 'n/a'}), stance ${feet.stance_m ?? '?'} m, `
+      + `drawn foot height difference ${feet.per_foot_drawn_difference_m ?? '?'} m, rigged=${feet.rigged}`);
+  }
+  } catch (e) {
+    probe.aborted = String((e && e.message) || e).split('\n')[0].slice(0, 240);
+    log(`ABORTED: ${probe.aborted}`);
+  } finally {
+    fs.writeFileSync(path.join(OUT, 'probe.json'), `${JSON.stringify(probe, null, 2)}\n`);
+    log(`\nwrote ${path.join(OUT, 'probe.json')}${probe.aborted ? ' (PARTIAL — see `aborted`)' : ''}`);
+    await g.close?.().catch(() => {});
+  }
+  process.exit(probe.aborted ? 1 : 0);
+}
+
 // ══════════════════════════════════════════════════════════════════════════════════════════════
 // W — THE CROWD. Three fixed vantages over the Lilmoth crowd centroid. The cameras are computed
 // from a coordinate and a constant, so the two arms get identical eyes and identical targets, and
@@ -396,18 +458,49 @@ if (wideErr) log(`RED crowd stand: ${wideErr}`);
 else {
   const c = await sceneCensus();
   censuses.crowd = c;
-  const gy = c.player ? c.player.ground : 2.68;
   const drawn = c.npcs.filter((n) => n.visible);
   const buried = drawn.filter((n) => n.drawn_error_m < -0.15);
   const air = drawn.filter((n) => n.drawn_error_m > 0.15);
   log(`crowd stand: ${c.npcs.length} npc meshes, ${drawn.length} visible; AS DRAWN ${buried.length} buried, ${air.length} airborne`
     + `  (BY RECORD ${drawn.filter((n) => n.record_error_m < -0.15).length} / ${drawn.filter((n) => n.record_error_m > 0.15).length})`);
+
+  /**
+   * THE ANCHOR, AND WHY IT IS ALLOWED TO COME FROM THE LIVE SCENE.
+   *
+   * A first version of this tool anchored the wide frames on a centroid computed offline from the
+   * NPC data files, and the frames came back with nobody in them — the posted records nearest that
+   * point are 38 m away and behind buildings. So the anchor is taken from the running game instead.
+   *
+   * That is only safe because it uses **x and z, which round 7 does not touch.** The status file is
+   * explicit: *"`n.pos` — what the stealth cones, `world-collision.js` and the sim read — is not
+   * touched"*; only the DRAWN y moves. So this anchor is identical in both arms by construction,
+   * and `f10-r7-appearance-read.mjs` checks that it came out identical rather than assuming it.
+   * Anchoring on the drawn y would have been the trap: the camera would follow the defect.
+   */
+  const near = drawn.filter((n) => Math.hypot(n.x - STANDS.crowd.x, n.z - STANDS.crowd.z) <= 45)
+    .sort((a, b) => Math.hypot(a.x - STANDS.crowd.x, a.z - STANDS.crowd.z) - Math.hypot(b.x - STANDS.crowd.x, b.z - STANDS.crowd.z));
+  const cluster = near.slice(0, 14);
+  const med = (xs) => { const s = xs.slice().sort((a, b) => a - b); return s.length ? +(s[Math.floor(s.length / 2)]).toFixed(2) : null; };
+  const ax = cluster.length ? med(cluster.map((n) => n.x)) : STANDS.crowd.x;
+  const az = cluster.length ? med(cluster.map((n) => n.z)) : STANDS.crowd.z;
+  const gy = cluster.length ? med(cluster.map((n) => n.ground_y)) : (c.player ? c.player.ground : 2.68);
+  const anchor = { x: ax, z: az, ground_y: gy, cluster_size: cluster.length, from: 'median x/z/ground of the 14 drawn NPCs nearest the crowd stand — all three untouched by round 7' };
+  censuses.crowd_anchor = anchor;
+  log(`crowd anchor ${ax},${az} ground ${gy} from ${cluster.length} nearest drawn NPCs`
+    + ` (nearest ${near.length ? Math.hypot(near[0].x - STANDS.crowd.x, near[0].z - STANDS.crowd.z).toFixed(1) : '?'} m from the stand)`);
+
+  // Close enough that a 1.78 m person is a readable fraction of frame height: at 16 m a whole
+  // figure is ~10% of frame height, at 26 m ~6%. The two raised vantages exist for the AIRBORNE
+  // half of the defect — a person 4.7 m up leaves a street-level frame, and round 7 measured one
+  // at +35.39 m, which needs the `sky` vantage or it is simply off the top of every picture.
   const vantages = [
-    { id: 'street', pose: widePose([STANDS.crowd.x, STANDS.crowd.z], gy, 34, 1.75, 1.55, 215) },
-    { id: 'raised', pose: widePose([STANDS.crowd.x, STANDS.crowd.z], gy, 46, 16, 1.20, 215) },
-    { id: 'over', pose: widePose([STANDS.crowd.x, STANDS.crowd.z], gy, 74, 44, 1.20, 215) },
-    { id: 'street-b035', pose: widePose([STANDS.crowd.x, STANDS.crowd.z], gy, 34, 1.75, 1.55, 35) },
-    { id: 'raised-b035', pose: widePose([STANDS.crowd.x, STANDS.crowd.z], gy, 46, 16, 1.20, 35) },
+    { id: 'close-b000', pose: widePose([ax, az], gy, 16, 1.75, 1.40, 0) },
+    { id: 'close-b090', pose: widePose([ax, az], gy, 16, 1.75, 1.40, 90) },
+    { id: 'close-b180', pose: widePose([ax, az], gy, 16, 1.75, 1.40, 180) },
+    { id: 'close-b270', pose: widePose([ax, az], gy, 16, 1.75, 1.40, 270) },
+    { id: 'mid-b045', pose: widePose([ax, az], gy, 26, 4.0, 1.40, 45) },
+    { id: 'raised-b045', pose: widePose([ax, az], gy, 30, 14, 1.20, 45) },
+    { id: 'sky-b045', pose: widePose([ax, az], gy, 52, 40, 1.20, 45) },
   ];
   for (const v of vantages) {
     const pose = await setCamera(v.pose);
@@ -417,7 +510,7 @@ else {
     // model whether or not anybody is there. The census above is this slot's subject check, and it
     // is a stronger one — it names each person and says where they are drawn.
     await shoot(`W__${v.id}.png`, {
-      slot: 'W', vantage: v.id, pose,
+      slot: 'W', vantage: v.id, pose, anchor,
       npcs_visible: drawn.length,
       drawn_buried: buried.length, drawn_airborne: air.length,
       record_buried: drawn.filter((n) => n.record_error_m < -0.15).length,
