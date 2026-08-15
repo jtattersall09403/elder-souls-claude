@@ -538,30 +538,126 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
   // the art-direction reference (corpus/70-visual/refs/morrowind/); the fidelity reference is
   // the modern set, which is why it is a shaped skull with a jaw rather than the sphere and
   // cone the previous actor used.
+  // THE CANON OF PROPORTION, AND WHY IT IS A SCALE ON THE HEAD RATHER THAN ON ANYTHING ELSE.
+  // `W1-F10-CHARACTERS` C1, measured over the 41 shipped figures: R = figure height / head height
+  // ran 5.87-6.84 with a median of 6.58, and **0 of 41** sat inside RI-VIS10's 7.0-8.0 band. A
+  // 6.5-head figure reads as stunted — it is one of the two numbers the critic says carries the
+  // whole ART verdict, and it is visible before any texture or material is considered.
+  //
+  // Bone lengths are not available as a lever and that is deliberate, not an oversight:
+  // `skeleton.json` declares the rest offsets `Rig.evaluate()` uses and `hitgeometry.json`
+  // declares every hurtbox as a segment OF a bone, so lengthening a leg to raise R would move the
+  // drawn body off the thing that can be hit. The head is the one end of the ratio that is pure
+  // presentation. `HEAD_SCALE` is applied about the head bone's ORIGIN, so the jaw and crown move
+  // toward the neck joint together and the neck reads longer — which is also what the ESO
+  // Argonian plates show (`refs/context/ESO-argonian_character__steam-1634540211.jpg`: a small
+  // skull on a long scaled neck, nothing like our previous head).
+  //
+  // The joint ball at `head` is deliberately NOT scaled with it. Its radius is derived from the
+  // neck tube's own r1 precisely so it can bridge the wedge on the outside of a neck bend; shrink
+  // it and the transparency defect that derivation exists to close reopens.
+  // AND WHY IT IS SOLVED RATHER THAN A CONSTANT. A flat 0.80 moved the median from 6.58 to 7.43
+  // but left 7 of 41 figures outside the band, and the residual was not noise — it tracked
+  // `build`. The head's measured vertical extent is the skull ABOVE the head bone plus the neck
+  // joint ball BELOW it, and that ball's radius is derived from the neck tube's r1 and therefore
+  // scales with `build`. So a heavy character grew the lower half of its own head measurement
+  // while the skull stayed put, and R fell; a slight character did the reverse. Compensating for
+  // it is one line of algebra rather than seven hand-tuned numbers:
+  //
+  //     extent = 0.070 * build            (the joint ball, below the bone)
+  //            + headTopLocal * hs        (the skull and crest, above it)
+  //     hs     = (TARGET_EXTENT - 0.070 * build) / headTopLocal
+  //
+  // The crest enters through `headTopLocal` and only when it actually rises above the crown —
+  // below M.crest ~1.03 the crest tubes finish under the skull ellipsoid and change nothing,
+  // which is why a high-crest variant was low and a crestless one was not.
+  //
+  // THE DESIGN RULE THIS ENCODES, stated so it can be argued with: build and crest are ornament
+  // axes. A character may be heavier, leaner or more crested than another; it may not thereby be
+  // a different number of heads tall. The canon of proportion is held, and the variant axes vary
+  // around it.
+  const TARGET_EXTENT = 0.2443;   // metres. ~1.82 m figure / R 7.45, the centre of RI-VIS10's band.
+  const headTopLocal = artFamily === 'saxhleel' ? Math.max(0.217, 0.150 + 0.065 * M.crest)
+    : artFamily === 'humanoid' ? 0.212
+      : artFamily === 'undead' ? 0.188 : 0.217;
+  const headScale = artFamily === 'beast' ? 1
+    : Math.max(0.55, Math.min(1.05, (TARGET_EXTENT - 0.070 * M.build) / headTopLocal)) * M.head;
   const hi = index.get('head');
   if (hi !== undefined) {
     const hm = restWorld[hi];
-    const P = (x, y, z) => new THREE.Vector3(x, y, z).applyMatrix4(hm);
+    const hs = headScale;
+    const P = (x, y, z) => new THREE.Vector3(x * hs, y * hs, z * hs).applyMatrix4(hm);
+    const S = (r) => r * hs;
+    // THE FACE IS BUILT, NOT IMPLIED. RI-VIS10 B4 scored **1 of 7** landmarks and the critic's
+    // word for the result was "a smooth blank"; §5.2 lists exactly what was missing — no brow
+    // ridge, no orbit rim, no naris, no cheek-to-jaw line, no mandible line, no chin underside.
+    // All seven are emitted below as real geometry into the same sealed skinned surface as the
+    // rest of the body, so they cannot detach in a pose (that is what happened to the crest when
+    // it was four floating cones) and they shade as form under a key light rather than as paint.
+    // Read against `refs/context/ESO-argonian_character__steam-1362731834.jpg` opened side by
+    // side: heavy supraorbital shelf, a raised bony rim around a small eye, nostril bosses on top
+    // of the muzzle, a cheek line running back to the jaw angle, and a pale throat mass under the
+    // mandible. RI-VIS08 refuses Morrowind references for characters (~1,000 triangles), so the
+    // construction target is the modern plate; the art direction stays Black Marsh.
     if(artFamily==='saxhleel'){
-      B.skin.ellipsoid(P(0,0.085,0.005),[.108,.132,.126],hi,12);          // skull
-      B.skin.tube(P(0, 0.070, 0.075), P(0, 0.028, 0.075+0.160*M.snout), 0.085, 0.047, hi, hi, 0, 8, 2); // snout
-      B.skin.tube(P(0, 0.035, 0.065), P(0, 0.012, 0.065+0.140*M.snout), 0.062, 0.036, hi, hi, 0, 8, 2); // jaw
+      B.skin.ellipsoid(P(0,0.085,0.005),[S(.108),S(.132),S(.126)],hi,14);          // skull
+      B.skin.tube(P(0, 0.070, 0.075), P(0, 0.028, 0.075+0.160*M.snout), S(0.085), S(0.047), hi, hi, 0, 10, 3); // snout
+      B.skin.tube(P(0, 0.035, 0.065), P(0, 0.012, 0.065+0.140*M.snout), S(0.062), S(0.036), hi, hi, 0, 10, 3); // jaw
       for (let k = 0; k < 3 && M.crest > 0.01; k++) {
         const t = k / 3;
         B.skin.tube(P(0, 0.150 - t * 0.030, 0.030 - t * 0.075),
           P(0, 0.150 + (0.065 - t * 0.055) * M.crest, 0.030 - t * 0.075 - (0.040 + t * 0.090) * M.crest),
-          0.030 * M.crest, 0.008, hi, hi, 0, 6, 2);
+          S(0.030 * M.crest), S(0.008), hi, hi, 0, 7, 2);
       }
+      for (const s of [-1, 1]) {
+        // 1. brow ridge — the supraorbital shelf, heaviest landmark on the ESO plate
+        B.skin.tube(P(s*.014,.146,.052), P(s*.090,.120,.086), S(.024), S(.013), hi, hi, 0, 7, 2);
+        // 2. orbit rim — a raised bony ring around the socket, six arcs
+        for (let k = 0; k < 6; k++) {
+          const a0 = (k/6)*Math.PI*2, a1 = ((k+1)/6)*Math.PI*2, rr = .042;
+          B.skin.tube(P(s*.052 + Math.cos(a0)*rr, .090 + Math.sin(a0)*rr, .100),
+            P(s*.052 + Math.cos(a1)*rr, .090 + Math.sin(a1)*rr, .100), S(.009), S(.009), hi, hi, 0, 5, 1);
+        }
+        // 3. naris — nostril boss on the top of the muzzle, near the tip
+        B.skin.ellipsoid(P(s*.020,.056,.196),[S(.016),S(.012),S(.019)],hi,8);
+        // 4. cheek-to-jaw — the zygomatic sweep, orbit down and back to the jaw angle
+        B.skin.tube(P(s*.078,.072,.088), P(s*.056,.020,.008), S(.020), S(.028), hi, hi, 0, 7, 2);
+        // 5. mandible line — the lower jaw edge, chin back to the angle under the ear
+        B.skin.tube(P(s*.028,.008,.176), P(s*.070,.030,.004), S(.012), S(.021), hi, hi, 0, 7, 2);
+      }
+      // 6. chin underside — the pale throat mass the plates carry under the jaw
+      B.skin.ellipsoid(P(0,-.004,.136),[S(.052),S(.028),S(.072)],hi,10);
+      // 7. crest root — the raised boss the crest actually leaves the skull from, so the crest
+      //    grows out of a head instead of being stuck onto one
+      if (M.crest > 0.01) B.skin.ellipsoid(P(0,.140,.008),[S(.070),S(.030),S(.058)],hi,10);
     }else if(artFamily==='humanoid'){
-      B.skin.ellipsoid(P(0,.080,.004),[.100,.132,.098],hi,14);
-      B.skin.ellipsoid(P(0,.045,.096),[.025,.040,.034],hi,9);             // nose
-      B.skin.ellipsoid(P(0,.002,.071),[.072,.040,.070],hi,10);            // jaw/chin
-      B.skin.ellipsoid(P(-.105,.076,0),[.018,.038,.014],hi,8);
-      B.skin.ellipsoid(P( .105,.076,0),[.018,.038,.014],hi,8);
+      B.skin.ellipsoid(P(0,.080,.004),[S(.100),S(.132),S(.098)],hi,16);
+      B.skin.ellipsoid(P(0,.045,.096),[S(.025),S(.040),S(.034)],hi,10);             // nose
+      B.skin.ellipsoid(P(0,.002,.071),[S(.072),S(.040),S(.070)],hi,12);            // jaw/chin
+      B.skin.ellipsoid(P(-.105,.076,0),[S(.018),S(.038),S(.014)],hi,8);
+      B.skin.ellipsoid(P( .105,.076,0),[S(.018),S(.038),S(.014)],hi,8);
+      // The same seven landmarks, against `refs/modern/character_closeup/REF-ER__steam-dyules-
+      // 2764067250.jpg` opened rather than described: brow, orbit rim, nostril wing, cheekbone,
+      // jaw edge and the underside of the chin all read as form there under a soft key. The
+      // seventh, "crest root", has no human referent, so this family carries the nasal bridge
+      // (glabella to tip) in its place — stated here rather than quietly counted as the same thing.
+      for (const s of [-1, 1]) {
+        B.skin.tube(P(s*.010,.120,.070), P(s*.072,.106,.056), S(.020), S(.012), hi, hi, 0, 7, 2);  // brow ridge
+        for (let k = 0; k < 6; k++) {
+          const a0 = (k/6)*Math.PI*2, a1 = ((k+1)/6)*Math.PI*2, rr = .034;
+          B.skin.tube(P(s*.042 + Math.cos(a0)*rr, .086 + Math.sin(a0)*rr, .066),
+            P(s*.042 + Math.cos(a1)*rr, .086 + Math.sin(a1)*rr, .066), S(.008), S(.008), hi, hi, 0, 5, 1);  // orbit rim
+        }
+        B.skin.ellipsoid(P(s*.021,.034,.098),[S(.014),S(.012),S(.015)],hi,8);                       // naris
+        B.skin.tube(P(s*.074,.064,.058), P(s*.052,.012,.036), S(.019), S(.024), hi, hi, 0, 7, 2);   // cheek-to-jaw
+        B.skin.tube(P(s*.018,-.018,.092), P(s*.064,.022,.006), S(.012), S(.019), hi, hi, 0, 7, 2);  // mandible line
+      }
+      B.skin.ellipsoid(P(0,-.020,.074),[S(.036),S(.020),S(.046)],hi,10);                            // chin underside
+      B.skin.tube(P(0,.108,.058), P(0,.062,.092), S(.013), S(.020), hi, hi, 0, 7, 2);               // nasal bridge
     }else if(artFamily==='undead'){
       // A narrow corpse volume supports the separate bone skull/ribs without smuggling the
       // player's reptile snout and crest underneath them.
-      B.skin.ellipsoid(P(0,.072,.006),[.083,.116,.079],hi,10);
+      B.skin.ellipsoid(P(0,.072,.006),[S(.083),S(.116),S(.079)],hi,10);
     }
   }
 
@@ -747,7 +843,13 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
   // body plan moved 15 of 17 characters rather than all of them, because the quadruped's whole body
   // is presentation geometry and none of it read the morph. `tools/visual/rig-variant-proof.mjs`
   // is what caught it; the registry alone said PASS.
-  const addPresentation=(boneId,geo,offset,scale=[1,1,1],rot=[0,0,0],label='form',material=familyMat)=>{const bi=index.get(boneId);if(bi===undefined)return;bakeCurvature(geo);const mesh=new THREE.Mesh(geo,material);mesh.name=`actor-family-form:${artFamily}:${label}@${boneId}`;mesh.castShadow=true;mesh.receiveShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const bs=M.build,local=new THREE.Matrix4().compose(new THREE.Vector3(offset[0]*bs,offset[1]*bs,offset[2]*bs),q,new THREE.Vector3(scale[0]*bs,scale[1]*bs,scale[2]*bs));const rootLocal=artFamily==='beast'?restWorld[bi].clone().multiply(local):null;group.add(mesh);presentation.push({bi,mesh,local,rootLocal});};
+  // `extra` multiplies offset AND scale on top of `M.build`. Head-attached pieces pass the family
+  // head scale through it, so eyes, pupils and horns shrink with the skull rather than staying at
+  // their old size on a smaller head — which would have turned the proportion fix into bug eyes.
+  const addPresentation=(boneId,geo,offset,scale=[1,1,1],rot=[0,0,0],label='form',material=familyMat,extra=1)=>{const bi=index.get(boneId);if(bi===undefined)return;bakeCurvature(geo);const mesh=new THREE.Mesh(geo,material);mesh.name=`actor-family-form:${artFamily}:${label}@${boneId}`;mesh.castShadow=true;mesh.receiveShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const bs=M.build*extra,local=new THREE.Matrix4().compose(new THREE.Vector3(offset[0]*bs,offset[1]*bs,offset[2]*bs),q,new THREE.Vector3(scale[0]*bs,scale[1]*bs,scale[2]*bs));const rootLocal=artFamily==='beast'?restWorld[bi].clone().multiply(local):null;group.add(mesh);presentation.push({bi,mesh,local,rootLocal});};
+  // The SAME `headScale` the skinned head block above solved for — one binding, read twice, so a
+  // future change to the canon cannot leave the eyes at the old size on a new skull.
+  const hScale = headScale;
   if(artFamily==='beast'){
     // The slitherfang is a low, weight-bearing animal with different widths at ribcage, loin,
     // neck and tail. A constant-radius TubeGeometry made it a glossy capsule. Overlapping closed
@@ -799,11 +901,11 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
   }else if(artFamily==='saxhleel'){
     const eyeMat=(mats.bone||mats.metal).clone();eyeMat.color.setHex(0xe2c46c);eyeMat.emissive?.setHex(0x352006);eyeMat.emissiveIntensity=.45;
     const pupilMat=mats.darkStone.clone();pupilMat.color.setHex(0x090b08);
-    addPresentation('head',new THREE.SphereGeometry(.026,10,7),[-.052,.09,.112],[1,.72,.58],[0,0,0],'eye-l',eyeMat);
-    addPresentation('head',new THREE.SphereGeometry(.026,10,7),[ .052,.09,.112],[1,.72,.58],[0,0,0],'eye-r',eyeMat);
-    addPresentation('head',new THREE.SphereGeometry(.010,8,5),[-.052,.09,.132],[.62,1,.40],[0,0,0],'pupil-l',pupilMat);
-    addPresentation('head',new THREE.SphereGeometry(.010,8,5),[ .052,.09,.132],[.62,1,.40],[0,0,0],'pupil-r',pupilMat);
-    if(M.horn>.01)for(const s of [-1,1]) addPresentation('head',new THREE.ConeGeometry(.045*M.horn,.16*M.horn,7),[s*.055,.16,-.045],[1,1,1],[-.30,0,s*.10],`brow-horn-${s<0?'l':'r'}`);
+    addPresentation('head',new THREE.SphereGeometry(.026,10,7),[-.052,.09,.112],[1,.72,.58],[0,0,0],'eye-l',eyeMat,hScale);
+    addPresentation('head',new THREE.SphereGeometry(.026,10,7),[ .052,.09,.112],[1,.72,.58],[0,0,0],'eye-r',eyeMat,hScale);
+    addPresentation('head',new THREE.SphereGeometry(.010,8,5),[-.052,.09,.132],[.62,1,.40],[0,0,0],'pupil-l',pupilMat,hScale);
+    addPresentation('head',new THREE.SphereGeometry(.010,8,5),[ .052,.09,.132],[.62,1,.40],[0,0,0],'pupil-r',pupilMat,hScale);
+    if(M.horn>.01)for(const s of [-1,1]) addPresentation('head',new THREE.ConeGeometry(.045*M.horn,.16*M.horn,7),[s*.055,.16,-.045],[1,1,1],[-.30,0,s*.10],`brow-horn-${s<0?'l':'r'}`,familyMat,hScale);
     // The four `spine-scale-*` cones that used to hang here are gone. They are now welded crest
     // tubes inside the skinned surface (see `buildSkeleton`'s tail/crest block) — same read, no
     // gap. Deleting a floating ornament is not "hiding the defect": the crest is still drawn, at
@@ -816,7 +918,21 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     // especially in the room census. This lighter tailored shell remains distinct from an
     // equipment chest piece while following the evaluated spine bone in every action.
     addPresentation('spine_02',torsoShellGeometry('reed'),[0,-.045,-.014],[1.05,1.08,1.02],[0,0,0],'tailored-tunic');
-    addPresentation('head',new THREE.SphereGeometry(.12,12,8,0,Math.PI*2,0,Math.PI*.48),[0,.13,-.015],[1,1,.9],[0,0,0],'hair-cap');
+    addPresentation('head',new THREE.SphereGeometry(.12,12,8,0,Math.PI*2,0,Math.PI*.48),[0,.13,-.015],[1,1,.9],[0,0,0],'hair-cap',familyMat,hScale);
+    // `base.humanoid` HAD NO EYE GEOMETRY AT ALL. RI-VIS08 B8 is a MINIMUM across characters, not
+    // the player's score, and this family's only two family-form parts were `hair-cap` and
+    // `tailored-tunic` — so every human and mer in the game was a bald egg with no face, which is
+    // what `C1__npc-blackwood-company-factor__closeup-lit.png` shows and why the critic's word for
+    // it was "a wooden artist's mannequin". It carried 329 of 408 NPCs before the race routing fix
+    // and still carries 148. Eye and pupil are separate geometry, as B8 requires, and they are cut
+    // from the same cloth as the saxhleel pair immediately above so improving one improves both.
+    const hEyeMat=(mats.bone||mats.metal).clone();hEyeMat.color.setHex(0xd8d2c4);hEyeMat.roughness=.28;
+    const hPupilMat=mats.darkStone.clone();hPupilMat.color.setHex(0x140f0c);
+    for(const s of [-1,1]){
+      const side=s<0?'l':'r';
+      addPresentation('head',new THREE.SphereGeometry(.021,10,7),[s*.042,.086,.074],[1,.80,.62],[0,0,0],`eye-${side}`,hEyeMat,hScale);
+      addPresentation('head',new THREE.SphereGeometry(.0085,8,6),[s*.042,.086,.090],[.78,1,.42],[0,0,0],`pupil-${side}`,hPupilMat,hScale);
+    }
   }
 
   return { group, bones, index, skeleton, meshes, rootBone, restWorld, waterU, secondary, secondaryMat: frillMat, equipment, equipmentMat:equipMat, presentation };
