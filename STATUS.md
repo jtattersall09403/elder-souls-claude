@@ -67,19 +67,24 @@ Alongside that: shrinking the documentation every agent reads before it can star
   tone from shoulder to ankle now has a sash with a bone toggle, three cord rings per forearm, a hem, a
   yoke and tonal variation. **A background NPC in the same frame gained a sash too — nobody targeted
   it**, which is the shared body plan working as intended.
-- **Characters, judged again on 318 hardware frames: hands yes, feet no, half the faces missing.**
-  **Hands work now** — the same NPC at the same camera goes from an egg with three stubs to four
-  clawed digits with the room visible between them. Still wrong: the digits are constant-thickness
-  sausages and the claws are nearly as long as the segments, so from below it reads as a raptor's foot.
-  **Feet: not one pixel changed.** The heel, sole, ball and toes built last round are *not on screen* —
-  the geometry exists and is buried inside the leg volume, the same defect as the hands had, one joint
-  down. Legs still end in flat-bottomed trouser cylinders.
-  **Faces: the reptiles read; the humans are featureless eggs** — no eyes, nose, mouth, ears, brow or
-  jaw from any angle. That is **148 of 408 NPCs, 36.3% of the cast.**
-  **The walk is a stiff shuffle** rather than the rigid glide it was — better, but nothing plants,
-  because there is nothing at the end of the leg to plant.
-  The judging agent's own summary: *"no, the characters do not look good. Round 4 fixed the hands, and
-  the hands were never the first thing you look at."* Feet and faces are next.
+- **The feet were 68 mm underground, and half the faces had their features buried inside the skull.**
+  Both turned out to be the *same* defect the hands had — geometry that exists, is drawn every frame,
+  and is enclosed by something else. Neither was a modelling problem.
+  **Feet:** the code that sits a character on the ground was written as a *pin* — it forced the ankle to
+  a fixed height — but the sole hangs 88 mm below the ankle bone, so it drove the whole foot 68 mm into
+  the dirt. That is why the last round's before-and-after photographs were byte-identical: **both had
+  their feet buried.** The flat pale shape you'd have seen was the trouser cuff. Now a *delta* instead
+  of a pin, so flat ground moves the foot exactly zero and slopes work per foot — and, as a bonus, it
+  had been overwriting the foot's up-and-down motion, which is what erased heel-strike and toe-off from
+  the walk.
+  **Faces:** the landmarks were placed at hand-typed depths against a curved skull, so the eye sat
+  5.8 mm inside the head and the jawline 27.6 mm inside the jaw. A second bug scaled heads twice.
+  Net effect: two character variants — **52 of the 148 human NPCs** — rendered *zero* eye pixels. All
+  six variants now sit in one band. A human head's most forward point was previously its **jaw**; it is
+  now the nose. And there was **no mouth at all**, on anyone.
+  **Not yet photographed in the game.** All of that is measured from an offline renderer, not the
+  game's own. A hardware pass costs about three pence and is running now — until it lands, treat this
+  as a promise.
 - **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
   out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
   it. Shadows still crush to black; that fix is being built now.
