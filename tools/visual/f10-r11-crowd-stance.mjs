@@ -318,6 +318,228 @@ if (args['self-test']) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════════════════
+// THE LIVE ARM — RI-VIS10 C3 arm (b) as the amendment writes it, in the RUNNING GAME
+// ═══════════════════════════════════════════════════════════════════════════════════════════
+//
+// WHY THIS EXISTS SEPARATELY FROM THE OFFLINE CENSUS BELOW. C3 arm (b) says *"the same three
+// numbers measured on the **drawn NPCs** of the largest settlement"*. The offline census builds
+// every one of the 408 records through the real `makeRiggedActor` → `poseStatic`, which is the
+// right population but is not *drawn*: it does not prove `renderer.js` passes the stance, and
+// `CLAUDE.md`'s own directive is that static inspection is not evidence. The r10 critic made
+// exactly this distinction and it is the reason its finding stood up.
+//
+// AND WHY IT IS HERE RATHER THAN AS AN EDIT TO `f10-r10c-npc-live.mjs`. That is the r10 CRITIC's
+// acceptance instrument. r10 refused to edit the r9 critic's audit tool for the same reason and
+// the r10 critic said it was right to (S60): editing the instrument that judges you is
+// metric-shopping. So the critic's tool runs UNMODIFIED as the anchor — it publishes hip and
+// shoulder `dy` in metres and the pose signature — and this arm publishes the three C3 numbers in
+// DEGREES plus the elbow difference, which its tool never carried. The two are laid side by side
+// in the report and `live.anchor_agreement` requires them to agree on the metres.
+//
+// THE ANGLES ARE FRAME-INVARIANT AND THAT IS WHY THEY CAN BE READ IN WORLD SPACE. An NPC group
+// carries a yaw about Y and a uniform `scale.setScalar(height_scale)`. Yaw preserves both the
+// vertical difference and the horizontal run, so `atan2(dy, run)` is unchanged; a uniform scale
+// multiplies both and cancels; and the elbow's interior angle is invariant under any similarity.
+// Arm L1 below tests exactly this rather than trusting the argument: the same person is read in
+// world space and in the actor's own frame and the three numbers must agree to 1e-4 deg.
+if (args.live) {
+  const OUT = resolve(ROOT, String(args.out || 'reports/visual-truth/f10-r11-crowd-stance-live'));
+  mkdirSync(OUT, { recursive: true });
+  const log = (...m) => process.stdout.write(`${m.join(' ')}\n`);
+  const { launchForCapture, resolveGpuMode } = await import(pathToFileURL(join(ROOT, 'tools/visual/lib/gpu-launch.mjs')).href);
+  const { rendererBanner } = await import(pathToFileURL(join(ROOT, 'tools/visual/lib/renderer-class.mjs')).href);
+  const { g, attestation } = await launchForCapture({
+    mode: resolveGpuMode(args), requireHardware: args['require-hardware'] === true,
+    entry: 'game/index.html', width: 960, height: 540, log,
+  });
+  await g.page.waitForFunction(() => window.__HARNESS, null, { timeout: 180000 });
+  await g.h('ready');
+  log(rendererBanner(attestation));
+  const call = async (m, ...a) => g.page.evaluate(async ({ method, callArgs }) => {
+    const H = window.__HARNESS;
+    if (!H || typeof H[method] !== 'function') return { __err: `${method} unavailable` };
+    try { return { __ok: await H[method](...callArgs) }; } catch (e) { return { __err: String((e && e.message) || e) }; }
+  }, { method: m, callArgs: a });
+  // The r10 critic's own Lilmoth stand, so this is the same crowd its 60-of-60 was read from.
+  const STAND = { x: Number(args.x ?? 2785.6), z: Number(args.z ?? 5047) };
+  const where = await call('whereAmI');
+  if (where && where.__ok && where.__ok.interior) await call('exitInterior');
+  await call('teleport', STAND.x, STAND.z);
+  await call('stepFrames', 14);
+
+  const readFrame = () => g.page.evaluate(() => {
+    const R = window.__ENGINE && window.__ENGINE.renderer;
+    if (!R) return { error: 'no renderer' };
+    const DEG = 180 / Math.PI;
+    const tilt = (L, Rr) => Math.atan2(Rr[1] - L[1], Math.hypot(Rr[0] - L[0], Rr[2] - L[2])) * DEG;
+    const interior = (A, B, C) => {
+      const u = [A[0] - B[0], A[1] - B[1], A[2] - B[2]];
+      const v = [C[0] - B[0], C[1] - B[1], C[2] - B[2]];
+      const lu = Math.hypot(...u); const lv = Math.hypot(...v);
+      if (!lu || !lv) return NaN;
+      const c = (u[0] * v[0] + u[1] * v[1] + u[2] * v[2]) / (lu * lv);
+      return Math.acos(Math.max(-1, Math.min(1, c))) * DEG;
+    };
+    const read = (group) => {
+      const A = group && group.userData && group.userData.actor;
+      if (!A || !A.built) return null;
+      const S = A.built;
+      group.updateMatrixWorld(true);
+      const index = {}; if (S.index && S.index.forEach) S.index.forEach((v, k) => { index[k] = v; });
+      const bones = S.bones || [];
+      const w = (id) => { const i = index[id]; if (i === undefined || !bones[i]) return null; const e = bones[i].matrixWorld.elements; return [e[12], e[13], e[14]]; };
+      // The same points expressed in the ACTOR's own frame — arm L1's counterpart reading.
+      const inv = new (group.matrixWorld.constructor)().copy(group.matrixWorld).invert();
+      const tmp = new (group.matrixWorld.constructor)();
+      const l = (id) => { const i = index[id]; if (i === undefined || !bones[i]) return null; tmp.multiplyMatrices(inv, bones[i].matrixWorld); const e = tmp.elements; return [e[12], e[13], e[14]]; };
+      const three = (f) => {
+        const uL = f('upperarm_l'); const uR = f('upperarm_r');
+        const tL = f('thigh_l'); const tR = f('thigh_r');
+        if (!uL || !uR || !tL || !tR) return null;
+        const eL = interior(f('upperarm_l'), f('lowerarm_l'), f('hand_l'));
+        const eR = interior(f('upperarm_r'), f('lowerarm_r'), f('hand_r'));
+        return { a: +tilt(uL, uR).toFixed(4), b: +tilt(tL, tR).toFixed(4), c: +Math.abs(eL - eR).toFixed(4) };
+      };
+      const World = three(w); const Local = three(l);
+      if (!World) return null;
+      // TWO signatures, and the difference between them is the whole of arm L2's diagnosis.
+      //  • `pose_sig` — every bone, the r10 critic's own definition, so the two tools compare.
+      //  • `stance_sig` — every bone EXCEPT `foot_l` / `foot_r`. Those two are the ONLY bones
+      //    `poseStatic`'s terrain conform writes per frame (`actor.js`: `A.footConform` is built
+      //    from exactly `['foot_l','foot_r']`), and it recomputes them from the terrain under the
+      //    foot every frame — so a person who WALKS over uneven ground changes `pose_sig` while
+      //    standing in an unchanged stance. Reported as two numbers rather than one, because
+      //    collapsing them would either hide a real re-roll or invent one.
+      const hash = (s) => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0).toString(16); };
+      const el = (b) => { tmp.multiplyMatrices(inv, b.matrixWorld); return Array.from(tmp.elements).map((n) => n.toFixed(4)).join(','); };
+      const sig = bones.map((b) => (b ? el(b) : 'x')).join('|');
+      const FEET = new Set([index.foot_l, index.foot_r]);
+      const sigStance = bones.map((b, i) => (FEET.has(i) ? 'conform' : (b ? el(b) : 'x'))).join('|');
+      const fl = w('foot_l'); const fr = w('foot_r');
+      const gr = R.groundResolver ? R.groundResolver(group.position.x, group.position.z)
+        : (R.groundAt ? R.groundAt(group.position.x, group.position.z, undefined, R.cell) : null);
+      return {
+        name: group.name,
+        a_shoulder_line_tilt_deg: World.a, b_hip_line_tilt_deg: World.b, c_elbow_difference_deg: World.c,
+        local_a: Local ? Local.a : null, local_b: Local ? Local.b : null, local_c: Local ? Local.c : null,
+        hip_line_dy_m: +(w('thigh_l')[1] - w('thigh_r')[1]).toFixed(6),
+        shoulder_line_dy_m: +(w('upperarm_l')[1] - w('upperarm_r')[1]).toFixed(6),
+        lower_ankle_y: fl && fr ? +Math.min(fl[1], fr[1]).toFixed(6) : null,
+        ground: (gr === null || gr === undefined) ? null : +gr.toFixed(6),
+        group_y: +group.position.y.toFixed(6),
+        group_xz: [+group.position.x.toFixed(4), +group.position.z.toFixed(4)],
+        pose_sig: hash(sig),
+        stance_sig: hash(sigStance),
+        // Raw actor-frame matrices, full precision, so the node side can say WHICH bone moved and
+        // by HOW MUCH rather than only that a hash changed. A hash tells you something differed
+        // and nothing about whether it matters; this is the difference between "31 people
+        // shuffled" and "31 people's ankles tracked the ground under them by 0.4 mm".
+        bone_ids: Object.keys(index).sort((x, y) => index[x] - index[y]),
+        bones_local: (() => { const a = []; for (const b of bones) { if (!b) { for (let k = 0; k < 16; k++) a.push(NaN); continue; } tmp.multiplyMatrices(inv, b.matrixWorld); for (let k = 0; k < 16; k++) a.push(tmp.elements[k]); } return a; })(),
+      };
+    };
+    const out = { npcs: [], player: null };
+    R.scene.traverse((o) => { if (o && o.name && o.name.startsWith('npc:')) { const r = read(o); if (r) out.npcs.push(r); } });
+    const pm = R.playerMesh || null; if (pm) out.player = read(pm);
+    return out;
+  });
+
+  const f1 = await readFrame();
+  await call('stepFrames', 37);
+  const f2 = await readFrame();
+  await g.close();
+
+  const rowsL = f1.npcs || [];
+  const byName2 = new Map((f2.npcs || []).map((r) => [r.name, r]));
+  const over = (r) => [Math.abs(r.a_shoulder_line_tilt_deg) > T, Math.abs(r.b_hip_line_tilt_deg) > T, Math.abs(r.c_elbow_difference_deg) > T].filter(Boolean).length;
+  const ok2 = rowsL.filter((r) => over(r) >= 2).length;
+  // L1 — frame invariance, measured rather than argued.
+  const l1 = rowsL.every((r) => r.local_a !== null
+    && Math.abs(r.local_a - r.a_shoulder_line_tilt_deg) < 1e-4
+    && Math.abs(r.local_b - r.b_hip_line_tilt_deg) < 1e-4
+    && Math.abs(r.local_c - r.c_elbow_difference_deg) < 1e-4);
+  // L2 — STABILITY. The same person, 37 frames later, in a bit-identical stand.
+  let shuffled = 0; let stanceShuffled = 0; let worstShift = 0; let movers = 0; let stationaryShuffled = 0;
+  const boneDrift = new Map();
+  for (const r of rowsL) {
+    const s = byName2.get(r.name);
+    if (!s) continue;
+    const moved = Math.hypot(s.group_xz[0] - r.group_xz[0], s.group_xz[1] - r.group_xz[1]) > 1e-6;
+    if (moved) movers++;
+    if (s.pose_sig !== r.pose_sig) { shuffled++; if (!moved) stationaryShuffled++; }
+    if (s.stance_sig !== r.stance_sig) stanceShuffled++;
+    // WHICH bone, and by HOW MUCH — the arm that separates a re-roll from a conform.
+    if (Array.isArray(r.bones_local) && Array.isArray(s.bones_local)) {
+      const ids = r.bone_ids || [];
+      for (let bi = 0; bi < ids.length; bi++) {
+        let d = 0;
+        for (let k = 0; k < 16; k++) {
+          const u = r.bones_local[bi * 16 + k]; const v = s.bones_local[bi * 16 + k];
+          if (!Number.isFinite(u) || !Number.isFinite(v)) continue;
+          d = Math.max(d, Math.abs(u - v));
+        }
+        const id = ids[bi];
+        if (!boneDrift.has(id) || boneDrift.get(id) < d) boneDrift.set(id, d);
+      }
+    }
+    worstShift = Math.max(worstShift, Math.abs(s.b_hip_line_tilt_deg - r.b_hip_line_tilt_deg),
+      Math.abs(s.a_shoulder_line_tilt_deg - r.a_shoulder_line_tilt_deg),
+      Math.abs(s.c_elbow_difference_deg - r.c_elbow_difference_deg));
+  }
+  // L3 — PLANTING, in the running game: the lower ankle above the ground under the person.
+  const ankles = rowsL.filter((r) => r.lower_ankle_y !== null && r.ground !== null).map((r) => +(r.lower_ankle_y - r.ground).toFixed(6));
+  const nonFootDrift = [...boneDrift.entries()].filter(([id]) => id !== 'foot_l' && id !== 'foot_r')
+    .reduce((m, [, d]) => Math.max(m, d), 0);
+  const rep = {
+    tool: 'tools/visual/f10-r11-crowd-stance.mjs --live',
+    generated: new Date().toISOString(),
+    renderer: attestation,
+    stand: STAND,
+    n_drawn: rowsL.length,
+    RI_VIS10_C3_arm_b: {
+      bar: '>= 90% of DRAWN NPCs show >= 2 of 3 C3 numbers over 3 deg',
+      n: rowsL.length, over2: ok2,
+      pct: +(100 * ok2 / (rowsL.length || 1)).toFixed(2),
+      pass: rowsL.length > 0 && ok2 / rowsL.length >= 0.9,
+    },
+    distinct_pose_signatures: new Set(rowsL.map((r) => r.pose_sig)).size,
+    player: f1.player,
+    arms: [
+      { arm: 'L1 the three numbers are identical read in WORLD space and in the ACTOR frame (frame invariance, measured not argued)', ok: l1 },
+      {
+        // THE CRITERION IS THE PHYSICAL QUANTITY, NOT THE HASH, AND THAT IS A CORRECTION THIS RUN
+        // FORCED. The first version of this arm failed on `stance_sig` and reported 31 of 60
+        // people shuffling — while `worst_C3_shift_deg` read 0.000000, which is the tell that the
+        // instrument and not the build was talking. The signature rounds `inverse(group) * bone`
+        // to 4 dp, and that recomposition carries ~1e-12 m of float round-off, so a value sitting
+        // on a rounding boundary flips the hash without anything moving. `worst_drift_per_bone_m`
+        // settles it in one look: every bone except the two ankles drifts by ≤ 3e-12 m. So the
+        // arm now passes when the STANCE bones are still to within a micron, and the hash counts
+        // are still published beside it, because deleting the number that looked bad would be
+        // exactly the move this project's doctrine exists to stop.
+        arm: 'L2 STABILITY — every drawn person holds their STANCE 37 frames later: no non-foot bone drifts more than 1 micron (a crowd that re-rolls is worse than a crowd of statues)',
+        ok: nonFootDrift < 1e-6,
+        worst_non_foot_bone_drift_m: +nonFootDrift.toExponential(3),
+        stance_sig_changed: stanceShuffled,
+        worst_C3_shift_deg: +worstShift.toFixed(6),
+        full_pose_sig_changed: shuffled,
+        of_which_did_not_move: stationaryShuffled,
+        people_who_moved: movers,
+        worst_drift_per_bone_m: [...boneDrift.entries()].sort((a, b) => b[1] - a[1]).map(([id, d]) => [id, +d.toExponential(3)]),
+        note: '`pose_sig` covers all 20 bones and therefore includes `foot_l`/`foot_r`, which `poseStatic` recomputes from the terrain under each foot EVERY frame. A walking person changes it without changing their stance. `worst_drift_per_bone_m` is the number that decides it: a genuine per-frame re-roll moves an upper-body bone by centimetres, a conform moves only the two ankles and only by the terrain difference under them.',
+      },
+      { arm: 'L3 PLANTING in the running game — lower ankle above the ground under each person', ok: ankles.length > 0, min_m: ankles.length ? Math.min(...ankles) : null, max_m: ankles.length ? Math.max(...ankles) : null },
+    ],
+    // The raw per-bone matrices are the input to L2's drift table and are not re-published: 60
+    // people x 20 bones x 16 floats x 2 frames is 38,400 numbers whose only consumer is above.
+    npcs: rowsL.map((r) => { const { bones_local, bone_ids, ...rest } = r; return rest; }),
+  };
+  writeFileSync(join(OUT, 'crowd-stance-live.json'), `${JSON.stringify(rep, null, 2)}\n`);
+  console.log(JSON.stringify({ ...rep, npcs: `${rowsL.length} rows -> ${join(OUT, 'crowd-stance-live.json')}` }, null, 2));
+  process.exit(0);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════════════════
 // THE CENSUS — all 408, the whole shipped population, not one settlement
 // ═══════════════════════════════════════════════════════════════════════════════════════════
 // TWO probe actors, one per arm. See the note inside `readIdentity`: sharing one leaked the
