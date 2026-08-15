@@ -118,6 +118,23 @@ named one-step reversal that has actually been executed on a copy, an after, and
 largest known lever is that the fleet is essentially all Opus — 3,230 Opus requests against 29
 Sonnet — while the model-choice policy that would fix it has been written down and never applied.
 
+## 0d. "Continue" means deliver the whole roadmap. Do not stop at a good stopping point.
+
+**Owner, 2026-08-15, verbatim:** *"when I say 'continue', I mean continue with delivering the whole
+roadmap as discussed until the whole game is delivered."*
+
+So: when a piece lands, **dispatch the next one**. Do not end a turn with an empty fleet and a summary.
+Do not wait to be told which item is next — `ROADMAP.md` says which item is next, and rule 0c says work
+the lowest unfinished ring. The only reasons to stop dispatching are a hard blocker recorded in the
+roadmap, or the box being at its ceiling.
+
+**Two to four agents at a time, always.** An idle fleet is the one failure mode the owner has named
+repeatedly and it wastes wall-clock rather than money.
+
+**At dispatch, route by `COST.md` C5/C5a: Sonnet by default, Opus for judgement — and Opus ALWAYS for
+3D visuals work** (`F1`–`F14`, `G1`, and any capture or comparison judging how the scene looks). The
+owner ruled that carve-out after finding Sonnet was not up to it.
+
 ## 0c. Work from the roadmap. Every dispatch names its item.
 
 **`orchestration/ROADMAP.md` decides what gets built and in what order.** It is not a summary of what
