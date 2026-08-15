@@ -94,6 +94,49 @@ read **11.5 hours** old by mtime and **122 hours** by `git log` — a 10.6× err
 misdirect a fresh dispatch at an already-answered brief. Hundreds of files share a bulk-checkout
 timestamp. Use git dates.
 
+## 15. The capture path can return a frame that is not a picture of anything — and nothing goes red
+
+**Found 2026-08-15, and it outranks any single visual defect, because every visual judgement this
+project makes rests on this path.**
+
+Two stills from one paid run, same scene, same pose, same GPU, same process:
+
+```
+capture 1: p10=4.641  p90=55.646  shadow_levels=28  local_contrast_med=6.217
+capture 2: p10=7.493  p90= 7.523  shadow_levels= 1  local_contrast_med=0
+```
+
+`p90` collapsed by 48 luma, **one distinct shadow level, zero local contrast**. That is a near-uniform
+frame — not a dark scene, not a subtle change, *not a picture*. The **pinned-baseline tree, containing
+none of the code under test, produced the identical degenerate capture.** Earlier runs on the same path
+returned 15.001 and 14.353, plausible enough that a **+223% improvement** would have been published
+from them. Every gate stayed green throughout.
+
+**The rule: sanity-check every frame before you measure it, per frame and not per run.** A capture with
+~1 distinct shadow level and ~0 local contrast is broken and must fail loudly. You already compute these
+statistics; the cost is an `if`.
+
+**This is not the only way a frame lies here.** A separate `F10` capture tool reported `0 red` while
+**17 of its 93 frames contained no subject at all** — it could not tell an empty frame from a full one.
+So a frame needs two liveness checks, not one: *is this an image*, and *is the thing I am measuring in
+it*.
+
+**What it costs us retrospectively, stated plainly:** the Protocol A blind pack — the only blind visual
+judgement in this project's history, which we lost 5 of 5 — was built by this path. Until the gate
+exists, that result is not known to be a measurement of our renderer.
+
+**Four hypotheses were tested and refuted before this was understood** — the analysis code, the world
+clock, scene age, and harness call order (a flag was built for that last one and it produced the wrong
+regime anyway). The agent found it by *looking at the numbers in the frame*, not by reasoning about the
+pipeline. When an instrument is suspect, read what it actually returned.
+
+## 15a. A paid GPU run inherits siblings' uncommitted edits — always pass `--revision`
+
+A paid run snapshots `revision + worktree changes`, so it carries whatever is uncommitted in the shared
+tree at that moment. **A mid-edit to `game/src/ui/icons.js` by one builder killed both arms of another
+agent's paid run.** The CLI's existing `--revision` flag pins it. Pass it on every paid run and record
+the sha — otherwise the arms of your experiment differ by whatever a neighbour happened to be typing.
+
 ## 13. Agents stall waiting on their own monitors — take the measurement or declare it unmeasured
 
 **Measured on the evening of 2026-08-14: four separate agents stalled waiting on background tasks, and
