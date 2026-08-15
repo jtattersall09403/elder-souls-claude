@@ -272,9 +272,21 @@ try {
 
 const h = await launchGame({ width: W, height: H, state: args.state || 'ui-journal' });
 
-/** Open a mode, screenshot it, and take every measurement that screen supports. */
+/**
+ * Open a mode, screenshot it, and take every measurement that screen supports.
+ *
+ * EVERY STEP IS RACED AGAINST A CLOCK, and this is not caution — a run without it hung inside
+ * `openMenu('levelup')` for six minutes and then died on the outer `timeout`, throwing away five
+ * screens of completed work that were already on disk only because `writeOut()` runs per step.
+ * The round-1 critic's own harness raced each step for exactly this reason and said so in its
+ * header ("every step is its own page.evaluate so one slow step cannot cost the rest"); this tool
+ * dropped that and paid for it. A step that times out is RECORDED as a timeout and the run
+ * continues, because "the level-up screen did not open in 90 s" is a finding and a blank file is
+ * not.
+ */
 async function measure(name, opener) {
-  const r = await h.page.evaluate(async (o) => {
+  const r = await Promise.race([
+    h.page.evaluate(async (o) => {
     const HH = window.__HARNESS;
     try { HH.conversationClose(); } catch { /* nothing open */ }
     await HH.closeMenu();
@@ -306,7 +318,18 @@ async function measure(name, opener) {
       elements: st.elements, screen: st.screen,
       shot: await HH.screenshot(),
     };
-  }, opener);
+    }, opener),
+    new Promise((resolve) => setTimeout(() => resolve({ __timeout: true }), Number(args.step_timeout || 90000))),
+  ]).catch((e) => ({ __err: String((e && e.message) || e) }));
+
+  if (r.__timeout || r.__err) {
+    const why = r.__timeout ? `step timed out after ${Number(args.step_timeout || 90000) / 1000}s` : r.__err;
+    out.screens[name] = { failed: why };
+    out.notes.push({ screen: name, failed: why });
+    console.log(`[${name}] FAILED — ${why}`);
+    writeOut();
+    return;
+  }
   const png = read(r.shot);
   // The bytes the browser produced, written unaltered — a re-encode would be a second picture and
   // the crops a critic takes must be of the frame that was measured.
