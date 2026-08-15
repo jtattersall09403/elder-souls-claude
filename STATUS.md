@@ -67,8 +67,19 @@ Alongside that: shrinking the documentation every agent reads before it can star
   tone from shoulder to ankle now has a sash with a bone toggle, three cord rings per forearm, a hem, a
   yoke and tonal variation. **A background NPC in the same frame gained a sash too — nobody targeted
   it**, which is the shared body plan working as intended.
-- **Still wrong on characters, and honestly reported:** there are **no hands and no feet** — every
-  close-up shows a stump; heads still read as eggs; and the walk is still a glide. Next up.
+- **Characters, judged again on 318 hardware frames: hands yes, feet no, half the faces missing.**
+  **Hands work now** — the same NPC at the same camera goes from an egg with three stubs to four
+  clawed digits with the room visible between them. Still wrong: the digits are constant-thickness
+  sausages and the claws are nearly as long as the segments, so from below it reads as a raptor's foot.
+  **Feet: not one pixel changed.** The heel, sole, ball and toes built last round are *not on screen* —
+  the geometry exists and is buried inside the leg volume, the same defect as the hands had, one joint
+  down. Legs still end in flat-bottomed trouser cylinders.
+  **Faces: the reptiles read; the humans are featureless eggs** — no eyes, nose, mouth, ears, brow or
+  jaw from any angle. That is **148 of 408 NPCs, 36.3% of the cast.**
+  **The walk is a stiff shuffle** rather than the rigid glide it was — better, but nothing plants,
+  because there is nothing at the end of the leg to plant.
+  The judging agent's own summary: *"no, the characters do not look good. Round 4 fixed the hands, and
+  the hands were never the first thing you look at."* Feet and faces are next.
 - **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
   out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
   it. Shadows still crush to black; that fix is being built now.
