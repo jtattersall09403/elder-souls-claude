@@ -51,27 +51,38 @@ git show b175da8e:game/src/render/actor.js | sha256sum                # -> 555d7
 
 **Reproduce:**
 
+The exact script the Pod was sent is committed beside this file as **`pod-command.sh`** — it is what
+swaps the arms and re-prints both shas. To repeat the run:
+
 ```sh
-node tools/runpod/cli.mjs run --revision <sha> --max-runtime 30 \
-  --artifact-dir reports/runpod-gpu/runs/f10-r5-appearance-r2 \
-  --command "$(cat <the pod script, reproduced in the status file>)"
+RUNPOD_OWNER=<your-agent-tag> node tools/runpod/cli.mjs run \
+  --revision "$(git rev-parse HEAD)" --max-runtime 30 \
+  --artifact-dir reports/runpod-gpu/runs/f10-r5-appearance-r3 \
+  --command "$(cat corpus/90-verdicts/wave1/artifacts/W1-F10-r5-appearance/pod-command.sh)"
 ```
+
+Background it (`nohup … &`) so a shell timeout cannot orphan a Pod, and never run
+`node tools/runpod/cli.mjs cleanup` with no arguments.
 
 ---
 
-## What was shot, per subject
+## What was shot
 
 Five subjects — the player and four NPCs, **both body families and four races** (saxhleel, argonian,
 dunmer, imperial), chosen by `selectByProximity` so the camera orbits a person and not open sea.
 
-| Slot | Frames | Question it answers |
-| --- | --- | --- |
-| `C4` | 8 | the directive's eight-angle orbit, whole figure |
-| `FA` | 4 | the face at head scale — *are the heads still eggs?* |
-| `H1` | 8 | the hand at hand scale, four bearings, each shot to both sides of the body axis |
-| `H2` | 4 | the hand from below and from above |
-| `F1` | 3 | the feet, from the front, the side and above |
-| `M` / `MF` | 24 | the walk, whole figure and feet, **with the stick actually held** |
+| Slot | Frames per subject | Total per arm | Question it answers |
+| --- | --- | --- | --- |
+| `C4` | 8 | 40 | the directive's eight-angle orbit, whole figure |
+| `FA` | 4 | 20 | the face at head scale — *are the heads still eggs?* |
+| `H1` | 8 | 40 | the hand at hand scale, four bearings, each shot to both sides of the body axis |
+| `H2` | 4 | 20 | the hand from below and from above |
+| `F1` | 3 | 15 | the feet, from the front, the side and above |
+| `M` | player only | 16 | the walk, whole figure, **with the stick actually held** |
+| `MF` | player only | 8 | the feet while walking |
+
+**159 frames per arm, 318 in total, 0 red, 141 `LIVE` and 18 `NO_SUBJECT` — all 18 named in §2 and §6
+rather than counted as evidence.**
 
 
 ---
