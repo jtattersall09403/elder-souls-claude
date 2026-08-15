@@ -1,0 +1,104 @@
+commit b0f3224e8a95cefb577a108fce1ed35349db2bb2
+Author: Claude <noreply@anthropic.com>
+Date:   Sat Aug 15 17:10:01 2026 +0000
+
+    F7 water: the marsh streaks are the reflection, not the waves — distance was forcing a 61% mirror at every viewing angle
+    
+    Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+
+ .../wave1/artifacts/W1-F7-WATER/PINNED-SHA.txt     |   1 +
+ .../artifacts/W1-F7-WATER/before-after-topdown.png | Bin 0 -> 2015672 bytes
+ .../owner-dm-before/frames/00-baseline.png         | Bin 0 -> 1040549 bytes
+ .../owner-dm-before/frames/both-hidden.png         | Bin 0 -> 941329 bytes
+ .../frames/nothing-restore-control.png             | Bin 0 -> 1041382 bytes
+ .../frames/shoreline-only-hidden.png               | Bin 0 -> 1039180 bytes
+ .../owner-dm-before/frames/surface-only-hidden.png | Bin 0 -> 942593 bytes
+ .../W1-F7-WATER/owner-dm-before/lane-owner.json    | 237 ++++++++++++
+ .../owner-eb-before/frames/00-baseline.png         | Bin 0 -> 1093592 bytes
+ .../owner-eb-before/frames/both-hidden.png         | Bin 0 -> 956595 bytes
+ .../frames/nothing-restore-control.png             | Bin 0 -> 1092497 bytes
+ .../frames/shoreline-only-hidden.png               | Bin 0 -> 1094973 bytes
+ .../owner-eb-before/frames/surface-only-hidden.png | Bin 0 -> 947629 bytes
+ .../W1-F7-WATER/owner-eb-before/lane-owner.json    | 233 +++++++++++
+ .../W1-F7-WATER/pitch-dm-after/frames/baseline.png | Bin 0 -> 1111271 bytes
+ .../frames/nothing-restore-control.png             | Bin 0 -> 1109727 bytes
+ .../frames/null-recolour-and-amplitude.png         | Bin 0 -> 1108676 bytes
+ .../pitch-dm-after/frames/surface-hidden.png       | Bin 0 -> 873304 bytes
+ .../W1-F7-WATER/pitch-dm-after/lane-pitch.json     | 159 ++++++++
+ .../pitch-dm-before/frames/baseline.png            | Bin 0 -> 1115823 bytes
+ .../pitch-dm-before/frames/shoreline-hidden.png    | Bin 0 -> 1113396 bytes
+ .../pitch-dm-before/frames/surface-hidden.png      | Bin 0 -> 873381 bytes
+ .../pitch-dm-before/frames/water-hidden.png        | Bin 0 -> 872728 bytes
+ .../W1-F7-WATER/pitch-dm-t1/frames/baseline.png    | Bin 0 -> 1115823 bytes
+ .../pitch-dm-t1/frames/nothing-restore-control.png | Bin 0 -> 1114022 bytes
+ .../frames/term-diffuse-modulation-zero.png        | Bin 0 -> 1114721 bytes
+ .../pitch-dm-t1/frames/term-vertexwave-zero.png    | Bin 0 -> 1114873 bytes
+ .../W1-F7-WATER/pitch-dm-t1/lane-pitch.json        | 161 ++++++++
+ .../W1-F7-WATER/pitch-dm-t2/frames/baseline.png    | Bin 0 -> 1115823 bytes
+ .../pitch-dm-t2/frames/nothing-restore-control.png | Bin 0 -> 1114022 bytes
+ .../pitch-dm-t2/frames/surface-hidden.png          | Bin 0 -> 873304 bytes
+ .../pitch-dm-t2/frames/term-slope-zero.png         | Bin 0 -> 1114230 bytes
+ .../W1-F7-WATER/pitch-dm-t2/lane-pitch.json        | 159 ++++++++
+ .../W1-F7-WATER/pitch-dm-t3/frames/baseline.png    | Bin 0 -> 1115823 bytes
+ .../pitch-dm-t3/frames/nothing-restore-control.png | Bin 0 -> 1114022 bytes
+ .../pitch-dm-t3/frames/surface-hidden.png          | Bin 0 -> 873304 bytes
+ .../pitch-dm-t3/frames/term-truly-flat-water.png   | Bin 0 -> 830794 bytes
+ .../W1-F7-WATER/pitch-dm-t3/lane-pitch.json        | 159 ++++++++
+ .../W1-F7-WATER/pitch-dm-t4/frames/baseline.png    | Bin 0 -> 1115823 bytes
+ .../pitch-dm-t4/frames/nothing-restore-control.png | Bin 0 -> 1113640 bytes
+ .../pitch-dm-t4/frames/surface-hidden.png          | Bin 0 -> 873304 bytes
+ .../pitch-dm-t4/frames/term-fine-additive-zero.png | Bin 0 -> 1113893 bytes
+ .../frames/term-reflection-uv-warp-zero.png        | Bin 0 -> 1114528 bytes
+ .../W1-F7-WATER/pitch-dm-t4/lane-pitch.json        | 186 +++++++++
+ .../W1-F7-WATER/pitch-dm-t5/frames/baseline.png    | Bin 0 -> 1115823 bytes
+ .../pitch-dm-t5/frames/nothing-restore-control.png | Bin 0 -> 1113640 bytes
+ .../pitch-dm-t5/frames/surface-hidden.png          | Bin 0 -> 873304 bytes
+ .../pitch-dm-t5/frames/term-no-reflection.png      | Bin 0 -> 1099815 bytes
+ .../frames/term-no-standard-lighting.png           | Bin 0 -> 1111598 bytes
+ .../W1-F7-WATER/pitch-dm-t5/lane-pitch.json        | 186 +++++++++
+ .../W1-F7-WATER/pitch-dm-t6/frames/baseline.png    | Bin 0 -> 1115823 bytes
+ .../pitch-dm-t6/frames/nothing-restore-control.png | Bin 0 -> 1113719 bytes
+ .../W1-F7-WATER/pitch-dm-t6/frames/shadows-off.png | Bin 0 -> 1114124 bytes
+ .../pitch-dm-t6/frames/surface-hidden.png          | Bin 0 -> 873304 bytes
+ .../W1-F7-WATER/pitch-dm-t6/lane-pitch.json        | 163 ++++++++
+ .../W1-F7-WATER/pitch-dm-t7/frames/baseline.png    | Bin 0 -> 1115823 bytes
+ .../pitch-dm-t7/frames/nothing-restore-control.png | Bin 0 -> 1114022 bytes
+ .../pitch-dm-t7/frames/surface-hidden.png          | Bin 0 -> 873304 bytes
+ .../frames/term-no-screenspace-reflection.png      | Bin 0 -> 1106959 bytes
+ .../W1-F7-WATER/pitch-dm-t7/lane-pitch.json        | 159 ++++++++
+ .../W1-F7-WATER/pitch-dm-terms/frames/baseline.png | Bin 0 -> 1115823 bytes
+ .../pitch-dm-terms/frames/shoreline-hidden.png     | Bin 0 -> 1113396 bytes
+ .../pitch-dm-terms/frames/surface-hidden.png       | Bin 0 -> 873381 bytes
+ .../preserve-after-reflect/frames/A-base.png       | Bin 0 -> 479364 bytes
+ .../frames/A-before-ablate.png                     | Bin 0 -> 479602 bytes
+ .../frames/A-reflection-ablated.png                | Bin 0 -> 469999 bytes
+ .../preserve-after-reflect/frames/B-motion-1.png   | Bin 0 -> 479431 bytes
+ .../preserve-after-reflect/frames/B-motion-2.png   | Bin 0 -> 479528 bytes
+ .../preserve-after-reflect/frames/B-motion-3.png   | Bin 0 -> 479708 bytes
+ .../preserve-after-reflect/frames/B-motion-4.png   | Bin 0 -> 479444 bytes
+ .../preserve-after-reflect/frames/B-motion-5.png   | Bin 0 -> 479505 bytes
+ .../preserve-after-reflect/preserve.json           |  51 +++
+ .../preserve-after-regions/frames/D-blackwood.png  | Bin 0 -> 569199 bytes
+ .../preserve-after-regions/frames/D-clay-moor.png  | Bin 0 -> 373609 bytes
+ .../frames/D-crimson-coast.png                     | Bin 0 -> 427830 bytes
+ .../frames/D-deep-marshes.png                      | Bin 0 -> 480233 bytes
+ .../frames/D-eastern-rootlands.png                 | Bin 0 -> 419288 bytes
+ .../preserve-after-regions/frames/D-hive.png       | Bin 0 -> 455710 bytes
+ .../frames/D-marauders-coast.png                   | Bin 0 -> 398278 bytes
+ .../preserve-after-regions/frames/D-salt-hills.png | Bin 0 -> 363618 bytes
+ .../frames/D-stone-forest.png                      | Bin 0 -> 438593 bytes
+ .../frames/D-stone-wastes.png                      | Bin 0 -> 363982 bytes
+ .../preserve-after-regions/frames/D-thornmarsh.png | Bin 0 -> 413646 bytes
+ .../frames/D-valus-ridge.png                       | Bin 0 -> 299146 bytes
+ .../frames/D-western-rootlands.png                 | Bin 0 -> 460482 bytes
+ .../preserve-after-regions/preserve.json           | 147 +++++++
+ .../wave1/artifacts/W1-F7-WATER/zoom-dm-crop.png   | Bin 0 -> 183872 bytes
+ .../artifacts/W1-F7-WATER/zoom-dm-nosurface.png    | Bin 0 -> 166862 bytes
+ ...-08-15-water-reflection-weight-before-after.png | Bin 0 -> 2015672 bytes
+ game/src/render/water.js                           |  30 +-
+ orchestration/status/W1-WATER-LANES.json           |  65 +++-
+ reports/blog-feed.jsonl                            |   1 +
+ tools/visual/w1-water-lane-owner.mjs               | 323 ++++++++++++++++
+ tools/visual/w1-water-lane-pitch.mjs               | 424 +++++++++++++++++++++
+ tools/visual/w1-water-preserve.mjs                 | 200 ++++++++++
+ 95 files changed, 3023 insertions(+), 21 deletions(-)

@@ -1,0 +1,373 @@
+{
+  "tool": "f7-critic-reanalyse",
+  "generated": "2026-08-15T17:36:52.658Z",
+  "what": "the builder's own committed frames, re-read with a water-masked, brightness-normalised banding metric",
+  "source_dir": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER",
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "arms": {
+    "prefix": {
+      "what": "the pinned pre-fix tree 3ca135ad — the builder's own baseline frame, x_rms 7.711",
+      "base_frame": "pitch-dm-t1/frames/baseline.png",
+      "mask_from": "pitch-dm-t2/frames/surface-hidden.png",
+      "water_mask_pct_of_frame": 88.06,
+      "stats": {
+        "water_px_in_crop": 201466,
+        "mean_luma": 102.223,
+        "band_rms": 14.0361,
+        "band_contrast": 0.13731
+      },
+      "stats_isotropic_hp": {
+        "water_px_in_crop": 201466,
+        "mean_luma": 102.223,
+        "band_rms": 16.2959,
+        "band_contrast": 0.15942
+      },
+      "orientation_whole_crop": {
+        "n": 194351,
+        "ridge_deg": 22.9,
+        "coherence": 0.018,
+        "energy": 842.9803
+      },
+      "orientation_by_tile": {
+        "tiles": [
+          {
+            "tile": "r0c0",
+            "n": 20413,
+            "ridge_deg": 48.9,
+            "coherence": 0.028,
+            "energy": 781.5888,
+            "radial_pred_deg": 36.8,
+            "dev_from_radial_deg": 12.1
+          },
+          {
+            "tile": "r0c1",
+            "n": 22626,
+            "ridge_deg": -15.6,
+            "coherence": 0.039,
+            "energy": 609.4338,
+            "radial_pred_deg": 89.6,
+            "dev_from_radial_deg": 74.8
+          },
+          {
+            "tile": "r0c2",
+            "n": 20639,
+            "ridge_deg": -43.4,
+            "coherence": 0.031,
+            "energy": 1016.1333,
+            "radial_pred_deg": -37.1,
+            "dev_from_radial_deg": -6.3
+          },
+          {
+            "tile": "r1c0",
+            "n": 19496,
+            "ridge_deg": 39.1,
+            "coherence": 0.038,
+            "energy": 636.0932,
+            "radial_pred_deg": 0,
+            "dev_from_radial_deg": 39.1
+          },
+          {
+            "tile": "r1c1",
+            "n": 24772,
+            "ridge_deg": -38.1,
+            "coherence": 0.029,
+            "energy": 862.2452,
+            "radial_pred_deg": 0,
+            "dev_from_radial_deg": -38.1
+          },
+          {
+            "tile": "r1c2",
+            "n": 21944,
+            "ridge_deg": -19.4,
+            "coherence": 0.035,
+            "energy": 854.6362,
+            "radial_pred_deg": 0,
+            "dev_from_radial_deg": -19.4
+          },
+          {
+            "tile": "r2c0",
+            "n": 20153,
+            "ridge_deg": -18.7,
+            "coherence": 0.041,
+            "energy": 966.1997,
+            "radial_pred_deg": -36.8,
+            "dev_from_radial_deg": 18.1
+          },
+          {
+            "tile": "r2c1",
+            "n": 19590,
+            "ridge_deg": 45.2,
+            "coherence": 0.132,
+            "energy": 1036.0957,
+            "radial_pred_deg": -89.6,
+            "dev_from_radial_deg": -45.2
+          },
+          {
+            "tile": "r2c2",
+            "n": 23965,
+            "ridge_deg": 40.3,
+            "coherence": 0.045,
+            "energy": 848.5168,
+            "radial_pred_deg": 37.1,
+            "dev_from_radial_deg": 3.2
+          }
+        ],
+        "mean_abs_dev_from_centre_tile_deg": 43.5,
+        "mean_abs_dev_from_radial_deg": 28.5,
+        "reading": "ONE world bearing => dev_from_centre_tile small, dev_from_radial large. A screen-space starburst => the reverse."
+      },
+      "lanes_on_water": {
+        "lane_bearing_screen_deg": 6,
+        "lane_power": 6.9516,
+        "lane_aniso": 1.69,
+        "lane_power_normalised": 0.000665,
+        "note": "screen degrees; top-down so screen X is world X and screen Y is world Z (scale probe: fov 50, 0.2072 m/px both axes, +X to screen-left, +Z to screen-up)"
+      },
+      "lanes_by_tile": [
+        {
+          "tile": "r0c0",
+          "bearing": -2,
+          "aniso": 1.95,
+          "radial_pred_deg": 36.8
+        },
+        {
+          "tile": "r0c1",
+          "bearing": 72,
+          "aniso": 1.72,
+          "radial_pred_deg": 89.6
+        },
+        {
+          "tile": "r0c2",
+          "bearing": 36,
+          "aniso": 1.46,
+          "radial_pred_deg": -37.1
+        },
+        {
+          "tile": "r1c0",
+          "bearing": -4,
+          "aniso": 3.88,
+          "radial_pred_deg": 0
+        },
+        {
+          "tile": "r1c1",
+          "bearing": -46,
+          "aniso": 1.88,
+          "radial_pred_deg": 0
+        },
+        {
+          "tile": "r1c2",
+          "bearing": -36,
+          "aniso": 1.58,
+          "radial_pred_deg": 0
+        },
+        {
+          "tile": "r2c0",
+          "bearing": 32,
+          "aniso": 2.69,
+          "radial_pred_deg": -36.8
+        },
+        {
+          "tile": "r2c1",
+          "bearing": 44,
+          "aniso": 1.76,
+          "radial_pred_deg": -89.6
+        },
+        {
+          "tile": "r2c2",
+          "bearing": -46,
+          "aniso": 1.93,
+          "radial_pred_deg": 37.1
+        }
+      ]
+    },
+    "fixed": {
+      "what": "HEAD b0f3224e — the builder's own baseline frame, x_rms 5.484",
+      "base_frame": "pitch-dm-after/frames/baseline.png",
+      "mask_from": "pitch-dm-after/frames/surface-hidden.png",
+      "water_mask_pct_of_frame": 87.62,
+      "stats": {
+        "water_px_in_crop": 200214,
+        "mean_luma": 84.961,
+        "band_rms": 12.3485,
+        "band_contrast": 0.14534
+      },
+      "stats_isotropic_hp": {
+        "water_px_in_crop": 200214,
+        "mean_luma": 84.961,
+        "band_rms": 14.2222,
+        "band_contrast": 0.1674
+      },
+      "orientation_whole_crop": {
+        "n": 192469,
+        "ridge_deg": 34.2,
+        "coherence": 0.043,
+        "energy": 642.9993
+      },
+      "orientation_by_tile": {
+        "tiles": [
+          {
+            "tile": "r0c0",
+            "n": 20193,
+            "ridge_deg": 46.3,
+            "coherence": 0.026,
+            "energy": 559.1461,
+            "radial_pred_deg": 36.8,
+            "dev_from_radial_deg": 9.5
+          },
+          {
+            "tile": "r0c1",
+            "n": 22425,
+            "ridge_deg": -23.1,
+            "coherence": 0.031,
+            "energy": 419.6712,
+            "radial_pred_deg": 89.6,
+            "dev_from_radial_deg": 67.3
+          },
+          {
+            "tile": "r0c2",
+            "n": 20412,
+            "ridge_deg": 10.3,
+            "coherence": 0.007,
+            "energy": 784.432,
+            "radial_pred_deg": -37.1,
+            "dev_from_radial_deg": 47.4
+          },
+          {
+            "tile": "r1c0",
+            "n": 19277,
+            "ridge_deg": 40.9,
+            "coherence": 0.077,
+            "energy": 499.6606,
+            "radial_pred_deg": 0,
+            "dev_from_radial_deg": 40.9
+          },
+          {
+            "tile": "r1c1",
+            "n": 24588,
+            "ridge_deg": -36.3,
+            "coherence": 0.033,
+            "energy": 629.1548,
+            "radial_pred_deg": 0,
+            "dev_from_radial_deg": -36.3
+          },
+          {
+            "tile": "r1c2",
+            "n": 21772,
+            "ridge_deg": -7.7,
+            "coherence": 0.028,
+            "energy": 661.8197,
+            "radial_pred_deg": 0,
+            "dev_from_radial_deg": -7.7
+          },
+          {
+            "tile": "r2c0",
+            "n": 19944,
+            "ridge_deg": 17.5,
+            "coherence": 0.048,
+            "energy": 763.0213,
+            "radial_pred_deg": -36.8,
+            "dev_from_radial_deg": 54.3
+          },
+          {
+            "tile": "r2c1",
+            "n": 19367,
+            "ridge_deg": 43.6,
+            "coherence": 0.21,
+            "energy": 867.6217,
+            "radial_pred_deg": -89.6,
+            "dev_from_radial_deg": -46.8
+          },
+          {
+            "tile": "r2c2",
+            "n": 23742,
+            "ridge_deg": 37.1,
+            "coherence": 0.054,
+            "energy": 637.7361,
+            "radial_pred_deg": 37.1,
+            "dev_from_radial_deg": 0
+          }
+        ],
+        "mean_abs_dev_from_centre_tile_deg": 50.6,
+        "mean_abs_dev_from_radial_deg": 34.5,
+        "reading": "ONE world bearing => dev_from_centre_tile small, dev_from_radial large. A screen-space starburst => the reverse."
+      },
+      "lanes_on_water": {
+        "lane_bearing_screen_deg": 6,
+        "lane_power": 3.5041,
+        "lane_aniso": 1.49,
+        "lane_power_normalised": 0.000485,
+        "note": "screen degrees; top-down so screen X is world X and screen Y is world Z (scale probe: fov 50, 0.2072 m/px both axes, +X to screen-left, +Z to screen-up)"
+      },
+      "lanes_by_tile": [
+        {
+          "tile": "r0c0",
+          "bearing": -2,
+          "aniso": 1.72,
+          "radial_pred_deg": 36.8
+        },
+        {
+          "tile": "r0c1",
+          "bearing": 74,
+          "aniso": 1.73,
+          "radial_pred_deg": 89.6
+        },
+        {
+          "tile": "r0c2",
+          "bearing": -20,
+          "aniso": 1.42,
+          "radial_pred_deg": -37.1
+        },
+        {
+          "tile": "r1c0",
+          "bearing": -4,
+          "aniso": 3.58,
+          "radial_pred_deg": 0
+        },
+        {
+          "tile": "r1c1",
+          "bearing": -52,
+          "aniso": 1.53,
+          "radial_pred_deg": 0
+        },
+        {
+          "tile": "r1c2",
+          "bearing": 30,
+          "aniso": 1.4,
+          "radial_pred_deg": 0
+        },
+        {
+          "tile": "r2c0",
+          "bearing": 32,
+          "aniso": 2.36,
+          "radial_pred_deg": -36.8
+        },
+        {
+          "tile": "r2c1",
+          "bearing": 66,
+          "aniso": 1.51,
+          "radial_pred_deg": -89.6
+        },
+        {
+          "tile": "r2c2",
+          "bearing": -44,
+          "aniso": 1.73,
+          "radial_pred_deg": 37.1
+        }
+      ]
+    }
+  },
+  "fix_effect": {
+    "mean_luma": "102.223 -> 84.961 (-16.9%)",
+    "band_rms_on_water": "14.0361 -> 12.3485 (-12.0%)",
+    "band_contrast_on_water": "0.13731 -> 0.14534 (5.8%)",
+    "builder_headline_x_rms": "7.711 -> 5.484 (-28.9%), taken over the WHOLE crop and not normalised",
+    "band_contrast_isotropic_hp": "0.15942 -> 0.1674 (5.0%)",
+    "lanes_on_water": "bearing 6 -> 6 deg; power 6.9516 -> 3.5041; aniso 1.69 -> 1.49; power/luma^2 0.000665 -> 0.000485",
+    "reading": "band_contrast is the streaks as a fraction of the water's own brightness. If it did not fall, the water got darker and not less streaked."
+  }
+}

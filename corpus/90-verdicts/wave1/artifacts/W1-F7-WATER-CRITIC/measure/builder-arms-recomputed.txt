@@ -1,0 +1,50 @@
+The builder's own fourteen arms, all three of its tool's metrics side by side.
+Recomputed by the F7 critic from the committed lane-pitch.json files. The builder reported x_rms only.
+
+batch           arm                            x_rms  vs_floor%  lane_power  lane_aniso  angle  builder verdict
+------------------------------------------------------------------------------------------------------------------------
+pitch-dm-t1     baseline                         7.711       -3.4        4.09        4.03    -50  no effect on the lanes
+pitch-dm-t1     term-vertexwave-zero             7.818         -2       4.023        3.89    -50  no effect on the lanes
+pitch-dm-t1     term-diffuse-modulation-zero     7.919       -0.8        3.94        3.72    -50  no effect on the lanes
+pitch-dm-t1     nothing-restore-control          7.981          0       3.897        3.61    -50  no effect on the lanes
+pitch-dm-t2     baseline                         7.711       -3.4        4.09        4.03    -50  no effect on the lanes
+pitch-dm-t2     surface-hidden                   1.208      -84.9       0.393        1.54    -56  REMOVES THE LANES
+pitch-dm-t2     term-slope-zero                  7.918       -0.8       3.941        3.73    -50  no effect on the lanes
+pitch-dm-t2     nothing-restore-control          7.981          0       3.897        3.61    -50  no effect on the lanes
+pitch-dm-t3     baseline                         7.711       -3.4        4.09        4.03    -50  no effect on the lanes
+pitch-dm-t3     surface-hidden                   1.208      -84.9       0.393        1.54    -56  REMOVES THE LANES
+pitch-dm-t3     term-truly-flat-water           11.393       42.8       4.109        2.25     66  MAKES THE LANES WORSE
+pitch-dm-t3     nothing-restore-control          7.981          0       3.897        3.61    -50  no effect on the lanes
+pitch-dm-t4     baseline                         7.711       -2.9        4.09        4.03    -50  no effect on the lanes
+pitch-dm-t4     surface-hidden                   1.208      -84.8       0.393        1.54    -56  REMOVES THE LANES
+pitch-dm-t4     term-reflection-uv-warp-zero     7.919       -0.3        3.94        3.73    -50  no effect on the lanes
+pitch-dm-t4     term-fine-additive-zero          7.917       -0.3       3.909        3.66    -50  no effect on the lanes
+pitch-dm-t4     nothing-restore-control          7.944          0       3.879        3.57    -50  no effect on the lanes
+pitch-dm-t5     baseline                         7.711       -2.9        4.09        4.03    -50  no effect on the lanes
+pitch-dm-t5     surface-hidden                   1.208      -84.8       0.393        1.54    -56  REMOVES THE LANES
+pitch-dm-t5     term-no-reflection               3.921      -50.6        4.95        8.62    -50  REMOVES THE LANES
+pitch-dm-t5     term-no-standard-lighting        9.886       24.4       3.582        2.61    -50  no effect on the lanes
+pitch-dm-t5     nothing-restore-control          7.944          0       3.879        3.57    -50  no effect on the lanes
+pitch-dm-t6     baseline                         7.711       -2.9        4.09        4.03    -50  no effect on the lanes
+pitch-dm-t6     surface-hidden                   1.208      -84.8       0.393        1.54    -56  REMOVES THE LANES
+pitch-dm-t6     shadows-off                      7.798       -1.8       3.935        3.73    -50  no effect on the lanes
+pitch-dm-t6     nothing-restore-control           7.94          0       3.903        3.61    -50  no effect on the lanes
+pitch-dm-t7     baseline                         7.711       -3.4        4.09        4.03    -50  no effect on the lanes
+pitch-dm-t7     surface-hidden                   1.208      -84.9       0.393        1.54    -56  REMOVES THE LANES
+pitch-dm-t7     term-no-screenspace-reflection   8.136        1.9       4.293        3.87    -50  no effect on the lanes
+pitch-dm-t7     nothing-restore-control          7.981          0       3.897        3.61    -50  no effect on the lanes
+pitch-dm-after  baseline                         5.484       -5.4       4.583        5.97    -50  no effect on the lanes
+pitch-dm-after  surface-hidden                   1.208      -79.2       0.393        1.54    -56  REMOVES THE LANES
+pitch-dm-after  null-recolour-and-amplitude      5.606       -3.3       4.436        5.71    -50  no effect on the lanes
+pitch-dm-after  nothing-restore-control          5.799          0       4.362        5.44    -50  no effect on the lanes
+
+THE FIX, on all three of the builder's own metrics (pitch-dm-t1 baseline -> pitch-dm-after baseline):
+  x_rms      7.711 -> 5.484   -28.9%   <- the only one reported
+  lane_power 4.090 -> 4.583   +12.1%
+  lane_aniso 4.030 -> 5.970   +48.1%
+
+LINEARITY IN THE REFLECTION MIX WEIGHT (pinned tree):
+  weight 0.610 -> x_rms 7.711 (baseline, pre-fix)
+  weight 0.000 -> x_rms 3.921 (term-no-reflection)
+  line: x_rms = 3.921 + 6.213*w ; predicts 5.474 at w=0.250 ; the shipped build measures 5.484 (0.2% error)
+  predicts 4.05 at w=0.020 (a physical normal-incidence Fresnel) — a further 26% off the residual
