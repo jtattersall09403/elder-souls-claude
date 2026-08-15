@@ -144,6 +144,67 @@ try {
     await h.h('stepFrames', 2);
   }
 
+  // ---- W3 / W6. THE TWO CONDITIONAL WORLD-SET ELEMENTS, with their conditions MADE TRUE -------
+  //
+  // The builder's evidence table reports W3 (sneak) and W6 (breath) as "built: yes, drawn on this
+  // frame: no (condition not met)". Built is a source claim and CRITIC-DOCTRINE §1.1 forbids
+  // scoring one. `crouch` is KeyC; submersion is reached by reading the water model rather than
+  // asserted. Whatever this leg finds is what V1 is scored on.
+  {
+    await h.page.evaluate(() => { window.__ENGINE.closeMenu(); });
+    await h.h('stepFrames', 3);
+    const b = await h.page.evaluate(() => {
+      const s = window.__HARNESS.getUIState();
+      return (s.elements || []).filter((e) => e.visible).map((e) => e.kind);
+    });
+    await key('KeyC', 6);
+    await h.h('stepFrames', 6);
+    const a = await h.page.evaluate(() => {
+      const s = window.__HARNESS.getUIState();
+      const eng = window.__ENGINE;
+      return {
+        kinds: (s.elements || []).filter((e) => e.visible).map((e) => e.kind),
+        crouched: !!(eng.sim.player && eng.sim.player.crouched),
+        stealth: s.hud && s.hud.world ? s.hud.world : null,
+      };
+    });
+    report.data.sneak = { kinds_before: b, after: a };
+    push('W3 the sneak state is drawn while sneaking',
+      a.kinds.includes('sneak_state'),
+      `crouched=${a.crouched}; world-set kinds before ${J(b.filter((k) => /bearing|effect|place|sneak|breath/.test(k)))}, ` +
+      `after ${J(a.kinds.filter((k) => /bearing|effect|place|sneak|breath/.test(k)))}`);
+    await key('KeyC', 6);
+  }
+
+  // ---- LG. RI-UIX03 M-E1, run first as L4 requires -------------------------------------------
+  {
+    const lg = await h.page.evaluate(() => {
+      const A = window.__HARNESS;
+      try { A.setAtHearth(true); A.openMenu('levelup'); } catch (e) { return { error: String(e.message || e) }; }
+      const s = A.getUIState();
+      const els = (s.elements || []).filter((e) => e.visible);
+      return {
+        mode: s.mode,
+        gold_kind: els.filter((e) => e.kind === 'currency_gold').map((e) => e.id),
+        gold_text: els.filter((e) => e.text != null && /\bgold\b|\bdrakes?\b|\bseptims?\b/i.test(String(e.text))).map((e) => `${e.id}: ${e.text}`),
+        ri_citation: els.filter((e) => e.text != null && /RI-[A-Z]{3}\d{2}/.test(String(e.text))).map((e) => `${e.id}: ${e.text}`),
+        attribute_rows: els.filter((e) => e.kind === 'attribute_row').length,
+        souls_to_next: (els.find((e) => e.kind === 'souls_to_next') || {}).text,
+        level: (els.find((e) => e.kind === 'level_value') || {}).text,
+      };
+    });
+    report.data.levelup = lg;
+    push('LG1 (RI-UIX03 M-E1 / S15) no gold anywhere on the level-up screen',
+      !lg.error && lg.gold_kind.length === 0 && lg.gold_text.length === 0,
+      `mode=${lg.mode}; currency_gold elements ${J(lg.gold_kind)}; gold/drake/septim strings ${J(lg.gold_text)}`);
+    push('LG2 no reference-item id is rendered in player-facing text (round 1 secondary #2)',
+      !lg.error && lg.ri_citation.length === 0, `RI- citations on the level-up screen: ${J(lg.ri_citation)}`);
+    push('LG3 (M-E2 / L5) all ten attributes are on screen at once',
+      lg.attribute_rows === 10, `${lg.attribute_rows} attribute_row elements; level '${lg.level}', souls to next '${lg.souls_to_next}'`);
+    await h.page.evaluate(() => { window.__ENGINE.closeMenu(); });
+    await h.h('stepFrames', 2);
+  }
+
   // ---- SHOT. the pictures ---------------------------------------------------------------------
   await h.h('setMode', 'play-instrumented');
   await goto('inventory');
