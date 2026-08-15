@@ -58,6 +58,28 @@
 # made them, which is the test for whether something belongs in history.
 reports/runs/
 
+# 7. `land-rescue/` IS THE SAFETY NET AND IT STAYS UN-IGNORED. Read this before "tidying" it.
+#
+#    `tools/land.mjs` writes a pre-resolution copy of any file a merge would otherwise discard to
+#    `reports/land-rescue/<utc>/<path>` — its own comment calls that "the difference between
+#    resolved and discarded". So these are not run artifacts and rule 1's reproducibility test does
+#    not apply: **nothing re-runs to produce them.** Checked 2026-08-15 on two singletons whose live
+#    counterparts still exist — `w1-30-shadow-casters.mjs` and `docs/data/roadmap.json` — and the
+#    rescued bytes appear NOWHERE in the history of their live paths. The mechanism has already saved
+#    content that was otherwise gone.
+#
+#    On 2026-08-15 the accumulated snapshots were REMOVED FROM THE WORKING TREE and left in history
+#    (see `git show 128eab4a:reports/land-rescue/...`). That is a working-tree cleanup, not a
+#    deletion, and it was done for one measured reason: 291 files, 68 MB, holding **88 stale copies
+#    of `orchestration/INDEX.md` against 1 live one** and 198 stale `progress.html`/`index.html`/
+#    `status.json` copies. An agent grepping the index hit 89 candidates and one was current — the
+#    same shape as the reference item that told builders for eight days that no images were vendored.
+#
+#    **Do NOT add an ignore rule here.** Ignoring the directory would leave future rescues untracked
+#    and therefore genuinely losable — which is the failure the mechanism exists to prevent. Let them
+#    accumulate, and sweep them out of the working tree again when they get in the way; history keeps
+#    every byte, and `git log --diff-filter=D -- reports/land-rescue` finds the sweep.
+
 # 6. A SEALED BLIND KEY IS NOT EVIDENCE, IT IS THE ANSWER SHEET — and rule 2's `!**/*.md` was
 #    quietly letting parts of one into the repo. Noticed 2026-08-15: `PAIRING-KEY.json` is
 #    correctly caught by `*`, but the five `pair0N.reveal/make-pair.PROMPT.md` files under
