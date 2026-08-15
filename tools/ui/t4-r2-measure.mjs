@@ -31,10 +31,65 @@
 // mode in which this script reports a pass it did not compute.
 import fs from 'node:fs';
 import path from 'node:path';
-import { PNG } from 'pngjs';
+import zlib from 'node:zlib';
 import { launchGame } from '../lib/browser.mjs';
 import { REPO_ROOT, parseArgs } from '../lib/cli.mjs';
 import { labFromSrgb255, de2000 } from '../lib/colour.mjs';
+
+// ---- PNG decoding, on node's own zlib -------------------------------------------------------
+//
+// `pngjs` is what the round-1 critic's tools import and it is NOT reliably installed here — this
+// repo's `node_modules` vanished mid-run while this tool was being written, which is exactly the
+// kind of thing that turns "the measurement was not taken" into "the measurement was taken on the
+// other arm only". A PNG is a zlib stream and five filter types; decoding it costs the forty lines
+// below and costs nothing at run time, and it means the delete-the-fix arm — which runs in a
+// worktree in /tmp, where module resolution finds nothing — measures with the identical code.
+//
+// It handles the one format `canvas.toDataURL()` produces: 8-bit RGBA, non-interlaced. Anything
+// else throws by name rather than returning a wrong picture quietly.
+function decodePNG(buf) {
+  if (buf.readUInt32BE(0) !== 0x89504e47) throw new Error('not a PNG');
+  let p = 8, width = 0, height = 0, bitDepth = 0, colourType = 0, interlace = 0;
+  const idat = [];
+  while (p < buf.length) {
+    const len = buf.readUInt32BE(p), type = buf.toString('ascii', p + 4, p + 8);
+    const data = buf.subarray(p + 8, p + 8 + len);
+    if (type === 'IHDR') {
+      width = data.readUInt32BE(0); height = data.readUInt32BE(4);
+      bitDepth = data[8]; colourType = data[9]; interlace = data[12];
+    } else if (type === 'IDAT') idat.push(data);
+    else if (type === 'IEND') break;
+    p += 12 + len;
+  }
+  if (bitDepth !== 8 || colourType !== 6 || interlace !== 0) {
+    throw new Error(`unsupported PNG: bitDepth ${bitDepth}, colourType ${colourType}, interlace ${interlace} — this decoder handles 8-bit RGBA only`);
+  }
+  const raw = zlib.inflateSync(Buffer.concat(idat));
+  const bpp = 4, stride = width * bpp;
+  const out = Buffer.alloc(height * stride);
+  let q = 0;
+  for (let y = 0; y < height; y++) {
+    const f = raw[q++];
+    const line = raw.subarray(q, q + stride); q += stride;
+    const cur = out.subarray(y * stride, (y + 1) * stride);
+    const prev = y ? out.subarray((y - 1) * stride, y * stride) : null;
+    for (let x = 0; x < stride; x++) {
+      const a = x >= bpp ? cur[x - bpp] : 0;
+      const b = prev ? prev[x] : 0;
+      const c = (prev && x >= bpp) ? prev[x - bpp] : 0;
+      let v = line[x];
+      if (f === 1) v += a;
+      else if (f === 2) v += b;
+      else if (f === 3) v += (a + b) >> 1;
+      else if (f === 4) {
+        const pp = a + b - c, pa = Math.abs(pp - a), pb = Math.abs(pp - b), pc = Math.abs(pp - c);
+        v += (pa <= pb && pa <= pc) ? a : (pb <= pc ? b : c);
+      } else if (f !== 0) throw new Error('unknown PNG filter ' + f);
+      cur[x] = v & 255;
+    }
+  }
+  return { width, height, data: out };
+}
 
 const args = parseArgs();
 const LABEL = String(args.label || 'live');
@@ -45,6 +100,97 @@ fs.mkdirSync(SHOTS, { recursive: true });
 
 const PICTORIAL = new Set(['item_icon', 'doll', 'glyph_object']);
 const WORLD_KINDS = new Set(['bearing_dial', 'effect_strip', 'sneak_state', 'place_name', 'breath_meter']);
+
+/**
+ * IS THIS FRAME A PICTURE OF ANYTHING? Run before any pixel number is believed.
+ *
+ * ---- why this exists, with the numbers ----
+ * The shared capture path can return a near-uniform frame and report success. A sibling piece
+ * caught it on 2026-08-15 with two stills taken the same way, minutes apart:
+ *
+ *     capture 1: p10=4.641  p90=55.646  shadow_levels=28  local_contrast_med=6.217
+ *     capture 2: p10=7.493  p90= 7.523  shadow_levels= 1  local_contrast_med=0
+ *
+ * The second is not a dark room, it is not an image — and it reproduced identically on a pinned
+ * baseline containing none of the code under test, which is how a **+223%** result nearly got
+ * published off it. That failure is lethal HERE specifically: a degenerate capture makes an empty
+ * panel and a full one measure the same, and "the panel is full" is the entire question this round
+ * is answering. So every frame is screened, the screening is recorded beside the number it
+ * guards, and a frame that fails it does not produce a fill figure at all.
+ *
+ * Three statistics, chosen because a uniform frame fails all three and a legitimately dark night
+ * exterior fails none:
+ *   levels     distinct luma values holding >= 0.05% of the pixels. A real frame has dozens.
+ *   contrast   median |dI/dx| + |dI/dy| over a sampled grid. Zero means nothing has an edge.
+ *   spread     p90 - p10. A uniform frame's is ~0 whatever its brightness.
+ *
+ * `--self-test` drives it with a synthetic flat grey and asserts it goes red, because a screen
+ * that has never been seen to fail is not a screen (RULES rule 4).
+ */
+function frameSanity(png, rect) {
+  const [rx, ry, rw, rh] = (rect || [0, 0, png.width, png.height]).map((v) => Math.round(v));
+  const x0 = Math.max(0, rx), y0 = Math.max(0, ry);
+  const x1 = Math.min(png.width, rx + rw), y1 = Math.min(png.height, ry + rh);
+  const hist = new Uint32Array(256);
+  let n = 0;
+  const luma = (x, y) => {
+    const i = (y * png.width + x) * 4;
+    return (png.data[i] * 0.2126 + png.data[i + 1] * 0.7152 + png.data[i + 2] * 0.0722);
+  };
+  for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) { hist[Math.round(luma(x, y))]++; n++; }
+  if (!n) return { ok: false, reason: 'empty rect' };
+  const floor = n * 0.0005;
+  let levels = 0;
+  for (let v = 0; v < 256; v++) if (hist[v] >= floor) levels++;
+  const pct = (p) => { let acc = 0; for (let v = 0; v < 256; v++) { acc += hist[v]; if (acc >= n * p) return v; } return 255; };
+  const p10 = pct(0.10), p90 = pct(0.90);
+  const grads = [];
+  const stepX = Math.max(1, Math.floor((x1 - x0) / 160)), stepY = Math.max(1, Math.floor((y1 - y0) / 160));
+  for (let y = y0; y + stepY < y1; y += stepY) {
+    for (let x = x0; x + stepX < x1; x += stepX) {
+      grads.push(Math.abs(luma(x + stepX, y) - luma(x, y)) + Math.abs(luma(x, y + stepY) - luma(x, y)));
+    }
+  }
+  grads.sort((a, b) => a - b);
+  const contrast = grads.length ? +grads[Math.floor(grads.length / 2)].toFixed(3) : 0;
+  // THE MEDIAN IS REPORTED AND THE p95 IS WHAT DECIDES, and the self-test is why.
+  //
+  // Written first as a median, to match the sibling's `local_contrast_med`, it rejected a
+  // deliberately patterned control image — because a picture whose detail sits in a MINORITY of
+  // its pixels has a median gradient of exactly 0, and so does a UI panel with a large plain
+  // ground, which is most of the screens this tool measures. A screen that red-lights a real
+  // picture is worse than none: every fill number would arrive marked "refused" and the round
+  // would have no evidence at all. `p95` is 0 only when essentially NOTHING in the frame has an
+  // edge, which is the actual failure being screened for. The median is still published beside it
+  // so the two runs stay comparable with the sibling's figures.
+  const contrastP95 = grads.length ? +grads[Math.floor(grads.length * 0.95)].toFixed(3) : 0;
+  const ok = levels >= 8 && contrastP95 > 0.5 && (p90 - p10) >= 4;
+  return {
+    ok, levels, local_contrast_med: contrast, local_contrast_p95: contrastP95, p10, p90, spread: p90 - p10,
+    reason: ok ? null
+      : `DEGENERATE FRAME: levels=${levels} (need >=8), local_contrast_p95=${contrastP95} (need >0.5), p90-p10=${p90 - p10} (need >=4). `
+        + 'This is not a dark picture, it is not a picture. The capture path returned a near-uniform buffer.',
+  };
+}
+
+if (args['self-test']) {
+  // Break it on purpose and watch it go red — and confirm the other arm passes, so the screen is
+  // not simply always-red (RULES rule 6's "inert control").
+  const flat = { width: 64, height: 64, data: Buffer.alloc(64 * 64 * 4, 30) };
+  const real = { width: 64, height: 64, data: Buffer.alloc(64 * 64 * 4) };
+  for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) {
+    const i = (y * 64 + x) * 4;
+    const v = ((x >> 2) * 17 + (y >> 3) * 9) % 200 + 20;
+    real.data[i] = v; real.data[i + 1] = v; real.data[i + 2] = v; real.data[i + 3] = 255;
+  }
+  const bad = frameSanity(flat), good = frameSanity(real);
+  console.log('flat grey   :', JSON.stringify(bad));
+  console.log('patterned   :', JSON.stringify(good));
+  if (bad.ok) { console.error('SELF-TEST FAIL: the degenerate-frame screen passed a flat grey buffer.'); process.exit(9); }
+  if (!good.ok) { console.error('SELF-TEST FAIL: the screen rejected a real patterned image — it is inert-red.'); process.exit(9); }
+  console.log('self-test PASS: the screen rejects a flat frame and accepts a patterned one.');
+  process.exit(0);
+}
 
 /** D2. Modal colour of a rect, then the dE00 > 6 fraction against it. */
 function panelFill(png, rect) {
@@ -115,7 +261,8 @@ function distinctHues(png, x, y, w, h) {
   return seen.length;
 }
 
-const read = (b64) => PNG.sync.read(Buffer.from(String(b64).split(',')[1], 'base64'));
+const rawPng = (b64) => Buffer.from(String(b64).split(',')[1], 'base64');
+const read = (b64) => decodePNG(rawPng(b64));
 const out = { label: LABEL, viewport: [W, H], commit: null, screens: {}, notes: [] };
 const writeOut = () => fs.writeFileSync(path.join(OUT, `measure-${LABEL}-${W}x${H}.json`), JSON.stringify(out, null, 2));
 
@@ -145,7 +292,17 @@ async function measure(name, opener) {
     };
   }, opener);
   const png = read(r.shot);
-  fs.writeFileSync(path.join(SHOTS, `${LABEL}-${name}__${W}x${H}.png`), PNG.sync.write(png));
+  // The bytes the browser produced, written unaltered — a re-encode would be a second picture and
+  // the crops a critic takes must be of the frame that was measured.
+  fs.writeFileSync(path.join(SHOTS, `${LABEL}-${name}__${W}x${H}.png`), rawPng(r.shot));
+
+  // ---- the frame screen, BEFORE anything is measured off these pixels ----------------------
+  const sanity = frameSanity(png, null);
+  const panelSanity = r.panel_rect ? frameSanity(png, r.panel_rect) : null;
+  if (!sanity.ok) {
+    console.error(`[${name}] ${sanity.reason}`);
+    out.notes.push({ screen: name, degenerate_frame: sanity });
+  }
 
   const kinds = {};
   for (const e of r.elements) if (e.visible) kinds[e.kind] = (kinds[e.kind] || 0) + 1;
@@ -157,7 +314,13 @@ async function measure(name, opener) {
     pictorial_declared: r.pictorial,
     pictorial_ids: pictorialEls.map((e) => e.id),
     panel_rect: r.panel_rect,
-    panel_fill: r.panel_rect ? panelFill(png, r.panel_rect) : { fill: null, reason: 'no panel on this frame' },
+    frame_sanity: sanity,
+    panel_sanity: panelSanity,
+    // A fill figure is NOT produced from a frame that failed the screen. Reporting one would be
+    // reporting a number about a buffer rather than about a screen.
+    panel_fill: !r.panel_rect ? { fill: null, reason: 'no panel on this frame' }
+      : !sanity.ok ? { fill: null, reason: 'refused: ' + sanity.reason }
+        : panelFill(png, r.panel_rect),
     // Every string the screen renders, so the `(RI-…)` acceptance and the `undefined` acceptance
     // are both greps over the same array rather than two separate runs.
     texts: r.elements.filter((e) => e.visible && e.text).map((e) => ({ id: e.id, text: String(e.text) })),
