@@ -55,11 +55,24 @@
  * regardless of which arm ends up with the higher ratio number, which is exactly why the ratio
  * alone is not used to gate the claim above.
  *
+ * READ THIS BEFORE CITING THE TWO-STILL NUMBERS. The original design captured GI-off, then GI-on,
+ * and compared. On an RTX A4500 that gave p10_luma 4.641 -> 15.001 and would have been published as a
+ * +223% shadow lift. Run against the pinned pre-F3 tree, where the shader is PHYSICALLY ABSENT, the
+ * same instrument gave 4.641 -> 14.353: 93.7% of the "improvement" reproduces with no fix in the
+ * tree, and SwiftShader reproduces the same 93.7% independently. The block design was measuring
+ * capture ORDER. Everything gating in this file is therefore PAIRED — arms interleaved at one pose
+ * (`--alternate`), or both arms taken at each pose before the camera moves (`--motion`) — and
+ * `result.checks`, the two stills, is written to disk but gates nothing.
+ *
  * Usage:
- *   node tools/visual/w1-f3-ambient-fill.mjs                     both arms, local browser
- *   node tools/visual/w1-f3-ambient-fill.mjs --entry <clone>/game/index.html   (delete-the-fix)
- *   node tools/visual/w1-f3-ambient-fill.mjs --hardware-gpu      pass through to launchGame
- *   node tools/visual/w1-f3-ambient-fill.mjs --null-control      also builds the flat-lift arm
+ *   node tools/visual/w1-f3-ambient-fill.mjs --alternate --pairs 6   THE load-bearing measurement
+ *   node tools/visual/w1-f3-ambient-fill.mjs --motion               orbit + pan, paired at each pose
+ *   node tools/visual/w1-f3-ambient-fill.mjs --null-control         the flat-lift arm (see below)
+ *   node tools/visual/w1-f3-ambient-fill.mjs --warmup-curve         characterise the drift itself
+ *   node tools/visual/w1-f3-ambient-fill.mjs --entry <clone>/game/index.html --compare-to <head result.json>
+ *                                                                   delete-the-fix against a pinned clone
+ *   node tools/visual/w1-f3-ambient-fill.mjs --offline-null <dir>    re-derive the null control, no browser
+ *   node tools/visual/w1-f3-ambient-fill.mjs --gpu hardware --require-hardware
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -272,12 +285,17 @@ async function shoot(g) {
   return PNG.sync.read(Buffer.from(url.split(',')[1], 'base64'));
 }
 
-async function placeScene(g) {
+/** `preroll` is the number of frames stepped after the teleport before anything is measured. It is a
+ * parameter rather than a constant because the warm-up curve has to start at the teleport itself:
+ * `deck.mjs`, which produced our side of the blind comparison pack, settles `deck.json`'s
+ * `settle_frames: 12` and no more, so a curve that begins 90 frames in cannot say anything about the
+ * state the judges were actually shown. */
+async function placeScene(g, preroll = 90) {
   await g.h('teleport', 3820, 859);
   await g.h('exitInterior').catch(() => {});
   await g.h('setWeather', 'clear');
   await g.h('setTimeOfDay', 9);
-  await g.h('stepFrames', 90);
+  if (preroll > 0) await g.h('stepFrames', preroll);
 }
 
 async function captureArm(g, { giFill }) {
@@ -501,8 +519,12 @@ if (args['null-control']) {
 // tools/visual/ or tools/harness/ calls it, though HARNESS.md 6 requires the clock pinned for a
 // comparable screenshot.
 if (args['warmup-curve']) {
-  const schedule = String(args.schedule || '0,15,30,60,90,120,180,240,300,420,600').split(',').map(Number);
-  await placeScene(g);
+  // The schedule starts at 4 and includes 12 on purpose: `deck.json`'s `settle_frames` is 12, and
+  // `deck.mjs` — the tool that produced our side of the blind pack — steps 4 after the teleport and
+  // then SETTLE, calling `pauseClock` never. Sampling at 12 is the difference between a claim about
+  // the pack and an extrapolation toward it.
+  const schedule = String(args.schedule || '4,12,20,30,45,60,90,120,180,240,300,420,600').split(',').map(Number);
+  await placeScene(g, 0);
   await setGI(g, false);
   await g.h('camera', CAMERA);
   const rows = [];
@@ -512,7 +534,7 @@ if (args['warmup-curve']) {
     const env = await g.h('getEnvironment').catch(() => null);
     const m = analyze(await shoot(g), CROP, MOTION_STEP);
     rows.push({
-      frames_since_place: elapsed,
+      frames_since_teleport: elapsed,
       time_of_day: env ? (env.time_of_day ?? env.timeOfDay ?? null) : null,
       p10_luma: m.p10_luma, p90_luma: m.p90_luma, mean_luma: m.mean_luma,
       shadow_levels: m.shadow_levels, local_contrast_med: m.local_contrast_med,
@@ -522,7 +544,7 @@ if (args['warmup-curve']) {
   const p10s = rows.map((r) => r.p10_luma);
   const first = p10s[0], last = p10s[p10s.length - 1];
   result.warmup_curve = {
-    note: 'GI held OFF throughout — this is the untouched scene measured against nothing but its own age, in frames since placeScene(). If p10_luma climbs here, every capture this project takes without a warm-up is measuring an unsettled frame.',
+    note: 'GI held OFF throughout — this is the untouched scene measured against nothing but its own age, in frames since the teleport, with the pose set before the first sample. If p10_luma climbs here, every capture this project takes without a warm-up is measuring an unsettled frame.',
     schedule, rows,
     p10_first: first, p10_last: last, p10_range: +(Math.max(...p10s) - Math.min(...p10s)).toFixed(3),
     checks: [
