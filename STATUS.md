@@ -32,10 +32,15 @@ Alongside that: shrinking the documentation every agent reads before it can star
   **Still open:** character creation still uses the old panel. Routing it through the new window needs
   three things the window has no element for — multi-select, a typed name, and a "waiting for two
   more" aside — so it is a real piece of design work rather than a one-line switch. Next up.
-- **The menus are text tables where Morrowind's are painted objects.** Measured: **zero** pictorial
-  elements in the inventory — no icons, no paper doll, no portraits. Panel fill 0.21 against
-  Morrowind's 0.61. The out-of-combat HUD has **1 of its 6 elements**, and that one sits in the
-  top-right corner like a modern minimap when Morrowind's runs along the bottom edge. Being built now.
+- **The menus have things drawn in them now — icons, a paper doll, a proper HUD.** They were text
+  tables where Morrowind's are walls of painted objects: **zero** pictorial elements in the inventory,
+  and the out-of-combat HUD had **1 of its 6 elements**, sitting in the top-right corner like a modern
+  minimap. Now **22 pictorial elements** from one icon set serving five screens, a Saxhleel paper doll
+  wearing what you have equipped, and **6 of 6** HUD elements moved to the bottom rail where
+  Morrowind's live. Delete-the-fix returns every screen to exactly zero icons, so the change is real.
+  **Not yet judged**, and one thing is honestly short: the panels are still too sparse against
+  Morrowind's, because ours are oversized rather than sized to their contents. That is ruled and is
+  the next fix, not a lowered bar.
 - **The container screen prints the word `undefined`** as its title. Being fixed.
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its own author reported that honestly after catching that the *first* version of the measurement was
