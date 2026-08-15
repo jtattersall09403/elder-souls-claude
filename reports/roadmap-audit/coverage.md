@@ -2,13 +2,13 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-15T18:55:06.649Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-15T19:10:13.418Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
 | reference items (`corpus/**/RI-*.md`) | 152 | 0 |
 | plans (`orchestration/plans/*`) | 49 | 0 |
-| open gaps (`GAP-LEDGER.json`) | 89 | 0 |
+| open gaps (`GAP-LEDGER.json`) | 90 | 0 |
 | proposed roadmap items | 69 | — |
 
 ## Proposed items
@@ -42,7 +42,7 @@
 | `F12` | VFX and particles | RI-MAG05 | — | 1 (0) | W1-30 W1-30H | built_below_bar | V13 |
 | `F13` | Art direction and region identity | RI-WLD04 RI-VIS05 RI-VIS07 RI-UIX06 | RI-VIS05 | 1 (1) | W1-30 W1-30K | built_below_bar | V15 |
 | `F14` | Performance, LOD and budgets | RI-PLT01 | — | 0 (0) | W1-30 | built_below_bar | V16 |
-| `T4` | The Morrowind screens | RI-UIX03 RI-UIX04 RI-UIX06 RI-UIX07 RI-UIX08 RI-UIX09 RI-UIX10 | — | 9 (8) | W1-21 W1-HUD-TOAST | built_below_bar | partial:V14 |
+| `T4` | The Morrowind screens | RI-UIX03 RI-UIX04 RI-UIX06 RI-UIX07 RI-UIX08 RI-UIX09 RI-UIX10 | — | 10 (9) | W1-21 W1-HUD-TOAST | built_below_bar | partial:V14 |
 
 ### Ring 2 — The body, the camera and the fight — Souls owns everything in here.
 
@@ -349,6 +349,7 @@
 | `GAP-W1-souls-alive-keyed-on-eid` | major | `progression.souls.economy` | C2 |
 | `GAP-W1-souls-world-copy-of-the-values-is-53pc-stale` | major | `progression.souls.economy` | C2 |
 | `GAP-W1-stealth-crime-model-not-coupled-to-the-world` | blocking | `crime.witness.model` | C7 C8 |
+| `GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry` | blocking | `ui.menu.inventory` | T4 |
 | `GAP-W1-the-building-is-smaller-than-the-room` | blocking | `world.settlement.anatomy` | W4 |
 | `GAP-W1-the-door-puts-you-inside-the-building` | blocking | `world.interior.named` | W5 |
 | `GAP-W1-the-doorstep-cannot-get-you-back-in` | blocking | `world.interior.continuity` | W5 |
