@@ -1,0 +1,28 @@
+{
+  "check": "RI-VIS10 C3 — the stand is not a mannequin",
+  "instrument": "shoulder-line tilt, hip-line tilt, left-vs-right elbow angle difference, at two separated idle frames, from the RI-VIS08 §A bone trace (traces/f10/locomotion_flat/trace.jsonl)",
+  "idle_frames_available": 210,
+  "rows": [
+    {
+      "idle_frame_index": 0,
+      "trace_frame": 271,
+      "shoulder_tilt_deg": 0.152,
+      "hip_tilt_deg": 0,
+      "elbow_angle_diff_deg": 4.231
+    },
+    {
+      "idle_frame_index": 120,
+      "trace_frame": 541,
+      "shoulder_tilt_deg": 0.32,
+      "hip_tilt_deg": 0,
+      "elbow_angle_diff_deg": 8.019
+    }
+  ],
+  "axes_exceeding_3deg": [
+    1,
+    1
+  ],
+  "frames_differ": true,
+  "pass_condition": ">=2 of 3 exceed 3 deg AND the two frames differ",
+  "verdict": "FAIL"
+}

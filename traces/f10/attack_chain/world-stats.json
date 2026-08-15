@@ -1,0 +1,95 @@
+{
+  "regions": 13,
+  "settlements": 8,
+  "pois": 42,
+  "interiors": 115,
+  "npcs": 408,
+  "areaKm2": 14.309,
+  "worldBoundsM": {
+    "x": [
+      0,
+      4825
+    ],
+    "z": [
+      0,
+      5540
+    ]
+  },
+  "elevationRangeM": [
+    -42.3,
+    423.9
+  ],
+  "roadNetworkM": 25067.2,
+  "crossingM": 6728.5,
+  "crossingWalkMin": 56.07,
+  "streaming": {
+    "tilesResident": 25,
+    "tilesQueued": 0,
+    "tilesBuiltTotal": 25,
+    "tileSizeM": 300,
+    "residentRadiusTiles": 2,
+    "meshes": 594,
+    "instances": 7044,
+    "groundCoverInstances": 0,
+    "groundCoverRadiusM": 70,
+    "geologyInstances": 1,
+    "geologyRadiusM": 76,
+    "geologyRegions": [
+      "western-rootlands"
+    ],
+    "drawGeology": true,
+    "lodBands": {
+      "nearM": 70,
+      "detailedTileM": 750,
+      "farM": 6400,
+      "hysteresisTiles": 1
+    },
+    "aerial": {
+      "falloff_m": 70,
+      "refY_m": 0,
+      "strength": 1,
+      "installed": false
+    },
+    "lodTransition": "near/far geometry and PBR material overlap; one-tile release hysteresis",
+    "sharedGeometryPool": 20,
+    "settlementsPlanned": 8,
+    "settlementsDrawn": 1,
+    "buildingGroups": 33,
+    "drawBuildings": true,
+    "signatureLights": []
+  },
+  "drawCalls": 165,
+  "triangles": 40816,
+  "vfx": {
+    "particles": 0,
+    "systems": 0,
+    "decals": 0,
+    "meshes": 0,
+    "particleDrawCalls": 0,
+    "overdrawFactor": 0,
+    "poolCapacity": 4800,
+    "frameParticleCap": 4000,
+    "decalCap": 60,
+    "practicalLights": 0,
+    "deterministicSeedSource": "spawnF + stable emitter index"
+  },
+  "textureMB": 123,
+  "programs": 84,
+  "materials": 45,
+  "stateChanges": 165,
+  "skinnedMeshes": 4,
+  "shadowLights": 2,
+  "geometryMB": 2.676,
+  "audioMB": 0,
+  "audioSynthesised": true,
+  "ambienceBeds": 28,
+  "ambienceDataKB": 285,
+  "atlasCount": 0,
+  "entitiesLive": 1,
+  "region": "arena",
+  "interior": null,
+  "_declared_incomplete": {
+    "owner": "wave-1 pieces W1-01..W1-05 (world, regions, settlements, interiors, roads)",
+    "note": "regions/settlements/pois/interiors/npcs are counted from game/data/**, which is the corpus transcription plus one worked settlement. They are real counts of real data files, not the shipped province, and they change with loadState because the data they count does. audioMB is 0 because the audio is SYNTHESISED, not sampled — see audioSynthesised/ambienceBeds/ambienceDataKB above and getAmbienceState(). Regional ambience (RI-AUD03) exists as of W1-22; combat impact audio (RI-AUD01, W1-11), music (RI-AUD04) and voice (RI-AUD05) do not."
+  }
+}

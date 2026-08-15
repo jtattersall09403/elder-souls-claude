@@ -1,0 +1,21 @@
+{
+  "task_id": "T4-r2-builder",
+  "roadmap_item": "T4",
+  "round": 2,
+  "state": "starting",
+  "could_not_do": [
+    "Nothing yet — just started. This list is written first and updated as blockers appear."
+  ],
+  "answering": "corpus/90-verdicts/wave1/T4-r1.md (FAIL)",
+  "defects_targeted": [
+    "ui.hud.world has 1 of 6 elements and it sits top-right at [1782,84,96,96]; RI-UIX07 D1 requires bottom half of frame",
+    "Zero pictorial elements in populated inventory; panel fill 0.207 vs Morrowind 0.61",
+    "Container screen header renders 'undefined'"
+  ],
+  "files_touched": [],
+  "files_claimed": [
+    "orchestration/status/T4-r2-builder.json",
+    "corpus/90-verdicts/wave1/artifacts/T4-r2/"
+  ],
+  "next_step": "Read verdict + RI-UIX07/03/09, open reference plates, run ownership check."
+}

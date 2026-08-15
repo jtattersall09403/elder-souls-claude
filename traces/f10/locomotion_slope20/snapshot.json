@@ -1,0 +1,692 @@
+{
+  "f": 630,
+  "t_ms": 10500,
+  "input": {
+    "move": [
+      0,
+      0
+    ],
+    "look": [
+      0,
+      0
+    ],
+    "held": [],
+    "pressed": [],
+    "dispatch_lag": 0,
+    "buffered": null,
+    "catchup_steps": 1
+  },
+  "player": {
+    "pos": [
+      2272.5072,
+      87.7447,
+      1818.6664
+    ],
+    "yaw_deg": 180,
+    "move_dir_deg": 180,
+    "state": "IDLE",
+    "anim": "idle",
+    "anim_frame": 54,
+    "anim_len": 1,
+    "phase": "none",
+    "anim_slot": null,
+    "hitstop_f": 0,
+    "hitstop_held": false,
+    "weapon_tip": [
+      2272.6075,
+      87.9313,
+      1817.3106
+    ],
+    "weapon_guard": [
+      2272.3892,
+      88.701,
+      1818.2828
+    ],
+    "weapon_id": "ssw_garrison_sword",
+    "weapon_class": "SSW",
+    "stance": "one_hand",
+    "offhand_kind": "shield",
+    "roll_tier": "LIGHT",
+    "charge_f": 0,
+    "charge_max_f": 0,
+    "chains_to": null,
+    "block_angle_deg": null,
+    "block_success_f": -9999,
+    "guard_raised": false,
+    "speed_mps": 0,
+    "stamina": 120,
+    "stamina_max": 120,
+    "stamina_regen_blocked": false,
+    "hp": 620,
+    "hp_max": 620,
+    "poise_cur": 48,
+    "poise_max": 48,
+    "iframe": false,
+    "iframe_kind": null,
+    "grounded": true,
+    "estus": 5,
+    "locked_on": null,
+    "equip_load_pct": 13.01,
+    "roll_class": "LIGHT",
+    "hitboxes": [],
+    "focus": 94,
+    "focus_max": 94,
+    "focus_locked": true,
+    "attuned": [
+      "spark_dart",
+      "slowfall"
+    ],
+    "cast": null,
+    "effects_active": [],
+    "levitating": false,
+    "airborne": false,
+    "altitude_m": 0,
+    "stealth": {
+      "crouched": false,
+      "light": 0.75,
+      "V": 0.3273,
+      "V_raw": 0.3273,
+      "sound_r_m": 0,
+      "surface": "earth",
+      "in_cover": false,
+      "motion": "still",
+      "sneak": 20,
+      "context": "public_street_sheathed",
+      "context_weight": 0,
+      "zone": null,
+      "zone_baseline_alert": 0,
+      "lock": null,
+      "bounty_imperial": 0,
+      "witnesses_pending": 0
+    }
+  },
+  "civilians": [],
+  "camera": {
+    "pos": [
+      2272.9272,
+      89.9493,
+      1814.7266
+    ],
+    "pos_exact": [
+      2272.927224,
+      89.949332,
+      1814.726556
+    ],
+    "pivot": [
+      2272.5072,
+      89.2946,
+      1818.6664
+    ],
+    "pivot_exact": [
+      2272.507224,
+      89.294635,
+      1818.666437
+    ],
+    "yaw_deg": 0,
+    "pitch_deg": -8,
+    "roll_deg": 0,
+    "fov_deg": 50,
+    "near_m": 0.1,
+    "far_m": 1200,
+    "dist_m": 3.9927,
+    "mode": "free",
+    "arm_len_m": 3.9927,
+    "arm_desired_m": 3.9927,
+    "arm_cast_m": 3.9927,
+    "arm_hit": false,
+    "arm_penetration_guard": false,
+    "arm_floor_emergency": false,
+    "arm_legal_connected_max_m": 3.992654545454545,
+    "arm_legal_normal_exists": true,
+    "arm_clear_frames": 0,
+    "shoulder": [
+      0.42,
+      0.1
+    ],
+    "char_opacity": 1,
+    "shake": [
+      0,
+      0
+    ],
+    "hitstop": false,
+    "clip_through": false,
+    "lock_on": null,
+    "lock_target": null,
+    "onscreen": {
+      "player": false,
+      "target": false,
+      "target_head": false,
+      "player_safe": false,
+      "target_safe": false,
+      "both": false,
+      "target_band": false,
+      "target_band_y": -1,
+      "player_ndc": [
+        0,
+        0
+      ],
+      "target_ndc": [
+        0,
+        0
+      ],
+      "target_head_ndc": [
+        0,
+        0
+      ]
+    },
+    "contain_arm_m": 0,
+    "contain_pitch_deg": 0,
+    "lock_dist_m": 0,
+    "lock_height_m": 1.9,
+    "recentre_frames": 0,
+    "recentre_active": false,
+    "cell": null
+  },
+  "enemies": [
+    {
+      "eid": "pop-0007-infantry-0",
+      "statblock": "guard_legion",
+      "moveset": "enemy:guard_legion",
+      "encounter": "wl-legion-patrol",
+      "encounter_role": "infantry",
+      "archetype": "INFANTRY",
+      "tier": "trash",
+      "state": "IDLE",
+      "state_entered_f": 30,
+      "prev_state": null,
+      "anim": "e_idle",
+      "anim_frame": 37,
+      "anim_len": 48,
+      "phase": "none",
+      "hit_active": false,
+      "hitboxes": [],
+      "pos": [
+        2373.9316,
+        52.3176,
+        1827.5103
+      ],
+      "yaw_deg": 180,
+      "yaw_rate_dps": 0,
+      "speed_mps": 0,
+      "alert_channel": null,
+      "los": true,
+      "search_target": null,
+      "search_radius_m": 0,
+      "lkp": null,
+      "alert_hop": 0,
+      "target": null,
+      "dist_m": 101.8092,
+      "in_sight_cone": false,
+      "alert": 0,
+      "alert_state": "IDLE",
+      "attack_token": false,
+      "hp": 520,
+      "hp_max": 520,
+      "poise_cur": 38,
+      "poise_max": 38,
+      "stagger": false,
+      "spawn_anchor": [
+        2373.9316,
+        52.3176,
+        1827.5103
+      ],
+      "leash_dist_m": 0,
+      "ai": "hold_ground"
+    },
+    {
+      "eid": "pop-0007-infantry-1",
+      "statblock": "guard_legion",
+      "moveset": "enemy:guard_legion",
+      "encounter": "wl-legion-patrol",
+      "encounter_role": "infantry",
+      "archetype": "INFANTRY",
+      "tier": "trash",
+      "state": "IDLE",
+      "state_entered_f": 30,
+      "prev_state": null,
+      "anim": "e_idle",
+      "anim_frame": 20,
+      "anim_len": 48,
+      "phase": "none",
+      "hit_active": false,
+      "hitboxes": [],
+      "pos": [
+        2369.1316,
+        53.3126,
+        1827.5103
+      ],
+      "yaw_deg": 180,
+      "yaw_rate_dps": 0,
+      "speed_mps": 0,
+      "alert_channel": null,
+      "los": true,
+      "search_target": null,
+      "search_radius_m": 0,
+      "lkp": null,
+      "alert_hop": 0,
+      "target": null,
+      "dist_m": 97.0283,
+      "in_sight_cone": false,
+      "alert": 0,
+      "alert_state": "IDLE",
+      "attack_token": false,
+      "hp": 520,
+      "hp_max": 520,
+      "poise_cur": 38,
+      "poise_max": 38,
+      "stagger": false,
+      "spawn_anchor": [
+        2369.1316,
+        53.3126,
+        1827.5103
+      ],
+      "leash_dist_m": 0,
+      "ai": "hold_ground"
+    },
+    {
+      "eid": "pop-0008-beast-0",
+      "statblock": "beast_slitherfang",
+      "moveset": "enemy:beast_slitherfang",
+      "encounter": "wl-slitherfang-pack",
+      "encounter_role": "beast",
+      "archetype": "BEAST",
+      "tier": "trash",
+      "state": "IDLE",
+      "state_entered_f": 30,
+      "prev_state": null,
+      "anim": "e_idle",
+      "anim_frame": 7,
+      "anim_len": 36,
+      "phase": "none",
+      "hit_active": false,
+      "hitboxes": [],
+      "pos": [
+        2347.1573,
+        58.5244,
+        1843.4616
+      ],
+      "yaw_deg": 180,
+      "yaw_rate_dps": 0,
+      "speed_mps": 0,
+      "alert_channel": null,
+      "los": true,
+      "search_target": null,
+      "search_radius_m": 0,
+      "lkp": null,
+      "alert_hop": 0,
+      "target": null,
+      "dist_m": 78.6603,
+      "in_sight_cone": true,
+      "alert": 0,
+      "alert_state": "IDLE",
+      "attack_token": false,
+      "hp": 286,
+      "hp_max": 286,
+      "poise_cur": 24,
+      "poise_max": 24,
+      "stagger": false,
+      "spawn_anchor": [
+        2347.1573,
+        58.5244,
+        1843.4616
+      ],
+      "leash_dist_m": 0,
+      "ai": "scripted"
+    },
+    {
+      "eid": "pop-0008-beast-1",
+      "statblock": "beast_slitherfang",
+      "moveset": "enemy:beast_slitherfang",
+      "encounter": "wl-slitherfang-pack",
+      "encounter_role": "beast",
+      "archetype": "BEAST",
+      "tier": "trash",
+      "state": "IDLE",
+      "state_entered_f": 30,
+      "prev_state": null,
+      "anim": "e_idle",
+      "anim_frame": 7,
+      "anim_len": 36,
+      "phase": "none",
+      "hit_active": false,
+      "hitboxes": [],
+      "pos": [
+        2342.6573,
+        60.8084,
+        1846.0616
+      ],
+      "yaw_deg": 180,
+      "yaw_rate_dps": 0,
+      "speed_mps": 0,
+      "alert_channel": null,
+      "los": true,
+      "search_target": null,
+      "search_radius_m": 0,
+      "lkp": null,
+      "alert_hop": 0,
+      "target": null,
+      "dist_m": 75.3096,
+      "in_sight_cone": true,
+      "alert": 0,
+      "alert_state": "IDLE",
+      "attack_token": false,
+      "hp": 286,
+      "hp_max": 286,
+      "poise_cur": 24,
+      "poise_max": 24,
+      "stagger": false,
+      "spawn_anchor": [
+        2342.6573,
+        60.8084,
+        1846.0616
+      ],
+      "leash_dist_m": 0,
+      "ai": "scripted"
+    },
+    {
+      "eid": "pop-0008-beast-2",
+      "statblock": "beast_slitherfang",
+      "moveset": "enemy:beast_slitherfang",
+      "encounter": "wl-slitherfang-pack",
+      "encounter_role": "beast",
+      "archetype": "BEAST",
+      "tier": "trash",
+      "state": "IDLE",
+      "state_entered_f": 30,
+      "prev_state": null,
+      "anim": "e_idle",
+      "anim_frame": 14,
+      "anim_len": 36,
+      "phase": "none",
+      "hit_active": false,
+      "hitboxes": [],
+      "pos": [
+        2342.6573,
+        59.895,
+        1840.8616
+      ],
+      "yaw_deg": 180,
+      "yaw_rate_dps": 0,
+      "speed_mps": 0,
+      "alert_channel": null,
+      "los": true,
+      "search_target": null,
+      "search_radius_m": 0,
+      "lkp": null,
+      "alert_hop": 0,
+      "target": null,
+      "dist_m": 73.5776,
+      "in_sight_cone": true,
+      "alert": 0,
+      "alert_state": "IDLE",
+      "attack_token": false,
+      "hp": 286,
+      "hp_max": 286,
+      "poise_cur": 24,
+      "poise_max": 24,
+      "stagger": false,
+      "spawn_anchor": [
+        2342.6573,
+        59.895,
+        1840.8616
+      ],
+      "leash_dist_m": 0,
+      "ai": "scripted"
+    },
+    {
+      "eid": "pop-0009-infantry-0",
+      "statblock": "guard_legion",
+      "moveset": "enemy:guard_legion",
+      "encounter": "wl-legion-picket",
+      "encounter_role": "infantry",
+      "archetype": "INFANTRY",
+      "tier": "trash",
+      "state": "RUSH",
+      "state_entered_f": 30,
+      "prev_state": "REPOSITION",
+      "anim": "e_walk",
+      "anim_frame": 11,
+      "anim_len": 48,
+      "phase": "none",
+      "hit_active": false,
+      "hitboxes": [],
+      "pos": [
+        2293.8595,
+        73.8957,
+        1918.0709
+      ],
+      "yaw_deg": 12.14,
+      "yaw_rate_dps": 300,
+      "speed_mps": 2,
+      "alert_channel": "scripted",
+      "los": true,
+      "search_target": [
+        2298.7,
+        73.9,
+        1940.56
+      ],
+      "search_radius_m": 14,
+      "lkp": null,
+      "alert_hop": 0,
+      "target": "player",
+      "dist_m": 101.6719,
+      "in_sight_cone": false,
+      "alert": 100,
+      "alert_state": "AGGRO",
+      "attack_token": false,
+      "hp": 520,
+      "hp_max": 520,
+      "poise_cur": 38,
+      "poise_max": 38,
+      "stagger": false,
+      "spawn_anchor": [
+        2300.6355,
+        73.8957,
+        1948.0812
+      ],
+      "leash_dist_m": 30.766,
+      "ai": "hold_ground"
+    }
+  ],
+  "events": [
+    {
+      "f": 629,
+      "type": "search_start",
+      "eid": "pop-0009-infantry-0",
+      "from": "AGGRO",
+      "to": "SEARCH",
+      "channel": "scripted",
+      "alert": 50
+    }
+  ],
+  "rng": {
+    "draws": 7,
+    "seed": 3030
+  },
+  "env": {
+    "time_of_day": 9.058,
+    "weather": "high_clear",
+    "region": "western-rootlands",
+    "interior": null
+  },
+  "cid": "player",
+  "rig": "humanoid_v2",
+  "clip": "idle",
+  "clip_t": 0.5625,
+  "clip_len_s": 1.6,
+  "clip_sample_hz": 60,
+  "blend": [
+    {
+      "clip": "idle",
+      "w": 1
+    }
+  ],
+  "root": {
+    "pos": [
+      2272.5072,
+      87.7447,
+      1818.6664
+    ],
+    "quat": [
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  "ctrl": {
+    "pos": [
+      2272.5072,
+      87.7447,
+      1818.6664
+    ],
+    "vel": [
+      0,
+      0,
+      0
+    ]
+  },
+  "bones": {
+    "hips": [
+      2272.5072,
+      88.7228,
+      1818.6664
+    ],
+    "spine2": [
+      2272.5072,
+      89.0825,
+      1818.6543
+    ],
+    "head": [
+      2272.5074,
+      89.382,
+      1818.6379
+    ],
+    "hand_r": [
+      2272.3718,
+      88.7621,
+      1818.36
+    ],
+    "hand_l": [
+      2272.7004,
+      88.7221,
+      1818.4517
+    ],
+    "ankle_r": [
+      2272.4072,
+      87.8145,
+      1818.5991
+    ],
+    "ankle_l": [
+      2272.6072,
+      87.7286,
+      1818.6138
+    ],
+    "toe_r": [
+      2272.4072,
+      87.8145,
+      1818.5991
+    ],
+    "toe_l": [
+      2272.6072,
+      87.7286,
+      1818.6138
+    ],
+    "shoulder_l": [
+      2272.6762,
+      89.2233,
+      1818.6663
+    ],
+    "shoulder_r": [
+      2272.3383,
+      89.2213,
+      1818.6282
+    ],
+    "elbow_l": [
+      2272.7039,
+      88.9194,
+      1818.621
+    ],
+    "elbow_r": [
+      2272.3267,
+      88.921,
+      1818.5607
+    ],
+    "hip_l": [
+      2272.5072,
+      88.7228,
+      1818.6664
+    ],
+    "hip_r": [
+      2272.5072,
+      88.7228,
+      1818.6664
+    ],
+    "knee_l": [
+      2272.6072,
+      88.2528,
+      1818.6702
+    ],
+    "knee_r": [
+      2272.4072,
+      88.2528,
+      1818.6627
+    ],
+    "weapon_tip": [
+      2272.6075,
+      87.9313,
+      1817.3106
+    ],
+    "frill_0": [
+      2272.5058,
+      89.0825,
+      1818.4743
+    ],
+    "frill_1": [
+      2272.5016,
+      88.9525,
+      1818.2943
+    ],
+    "frill_2": [
+      2272.4955,
+      88.8225,
+      1818.1143
+    ]
+  },
+  "weapon": {
+    "attached_to": "hand_r",
+    "grip_pos": [
+      2272.3718,
+      88.7621,
+      1818.36
+    ]
+  },
+  "ground": {
+    "ankle_r_h": 0.02,
+    "surface_normal_r": [
+      0.3843,
+      0.9175,
+      0.1026
+    ],
+    "ankle_l_h": 0.02,
+    "surface_normal_l": [
+      0.3878,
+      0.9161,
+      0.1018
+    ]
+  },
+  "ik": {
+    "foot_enabled": true,
+    "hand_enabled": false
+  },
+  "secondary": {
+    "kind": "deterministic_frill",
+    "delays_f60": [
+      4,
+      7,
+      10
+    ]
+  },
+  "pose_hash": "c7e66666f3333331",
+  "rest_hash": "0000000000000000"
+}

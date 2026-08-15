@@ -1,0 +1,377 @@
+{
+  "f": 630,
+  "t_ms": 10500,
+  "input": {
+    "move": [
+      0,
+      0
+    ],
+    "look": [
+      0,
+      0
+    ],
+    "held": [],
+    "pressed": [],
+    "dispatch_lag": 0,
+    "buffered": null,
+    "catchup_steps": 1
+  },
+  "player": {
+    "pos": [
+      0,
+      0,
+      8.8382
+    ],
+    "yaw_deg": 0,
+    "move_dir_deg": 0,
+    "state": "IDLE",
+    "anim": "idle",
+    "anim_frame": 54,
+    "anim_len": 1,
+    "phase": "none",
+    "anim_slot": null,
+    "hitstop_f": 0,
+    "hitstop_held": false,
+    "weapon_tip": [
+      -0.1003,
+      0.1866,
+      10.194
+    ],
+    "weapon_guard": [
+      0.118,
+      0.9563,
+      9.2219
+    ],
+    "weapon_id": "ssw_garrison_sword",
+    "weapon_class": "SSW",
+    "stance": "one_hand",
+    "offhand_kind": "shield",
+    "roll_tier": "LIGHT",
+    "charge_f": 0,
+    "charge_max_f": 0,
+    "chains_to": null,
+    "block_angle_deg": null,
+    "block_success_f": -9999,
+    "guard_raised": false,
+    "speed_mps": 0,
+    "stamina": 120,
+    "stamina_max": 120,
+    "stamina_regen_blocked": false,
+    "hp": 620,
+    "hp_max": 620,
+    "poise_cur": 48,
+    "poise_max": 48,
+    "iframe": false,
+    "iframe_kind": null,
+    "grounded": true,
+    "estus": 5,
+    "locked_on": null,
+    "equip_load_pct": 24,
+    "roll_class": "LIGHT",
+    "hitboxes": [],
+    "focus": 94,
+    "focus_max": 94,
+    "focus_locked": true,
+    "attuned": [
+      "spark_dart",
+      "slowfall"
+    ],
+    "cast": null,
+    "effects_active": [],
+    "levitating": false,
+    "airborne": false,
+    "altitude_m": 0,
+    "stealth": {
+      "crouched": false,
+      "light": 1,
+      "V": 0.484,
+      "V_raw": 0.484,
+      "sound_r_m": 0,
+      "surface": "earth",
+      "in_cover": false,
+      "motion": "still",
+      "sneak": 20,
+      "context": "public_street_sheathed",
+      "context_weight": 0,
+      "zone": null,
+      "zone_baseline_alert": 0,
+      "lock": null,
+      "bounty_imperial": 0,
+      "witnesses_pending": 0
+    }
+  },
+  "civilians": [],
+  "camera": {
+    "pos": [
+      -0.42,
+      2.2047,
+      12.7781
+    ],
+    "pos_exact": [
+      -0.42,
+      2.204708,
+      12.778069
+    ],
+    "pivot": [
+      0,
+      1.55,
+      8.8382
+    ],
+    "pivot_exact": [
+      0,
+      1.550011,
+      8.838188
+    ],
+    "yaw_deg": 180,
+    "pitch_deg": -8,
+    "roll_deg": 0,
+    "fov_deg": 50,
+    "near_m": 0.1,
+    "far_m": 1200,
+    "dist_m": 3.9927,
+    "mode": "free",
+    "arm_len_m": 3.9927,
+    "arm_desired_m": 3.9927,
+    "arm_cast_m": 3.9927,
+    "arm_hit": false,
+    "arm_penetration_guard": false,
+    "arm_floor_emergency": false,
+    "arm_legal_connected_max_m": 3.992654545454545,
+    "arm_legal_normal_exists": true,
+    "arm_clear_frames": 0,
+    "shoulder": [
+      0.42,
+      0.1
+    ],
+    "char_opacity": 1,
+    "shake": [
+      0,
+      0
+    ],
+    "hitstop": false,
+    "clip_through": false,
+    "lock_on": null,
+    "lock_target": null,
+    "onscreen": {
+      "player": false,
+      "target": false,
+      "target_head": false,
+      "player_safe": false,
+      "target_safe": false,
+      "both": false,
+      "target_band": false,
+      "target_band_y": -1,
+      "player_ndc": [
+        0,
+        0
+      ],
+      "target_ndc": [
+        0,
+        0
+      ],
+      "target_head_ndc": [
+        0,
+        0
+      ]
+    },
+    "contain_arm_m": 0,
+    "contain_pitch_deg": 0,
+    "lock_dist_m": 0,
+    "lock_height_m": 1.9,
+    "recentre_frames": 0,
+    "recentre_active": false,
+    "cell": "cam-stair"
+  },
+  "enemies": [],
+  "events": [],
+  "rng": {
+    "draws": 0,
+    "seed": 3030
+  },
+  "env": {
+    "time_of_day": 12.058,
+    "weather": "clear",
+    "region": "thornmarsh",
+    "interior": "stairwell"
+  },
+  "cid": "player",
+  "rig": "humanoid_v2",
+  "clip": "idle",
+  "clip_t": 0.5625,
+  "clip_len_s": 1.6,
+  "clip_sample_hz": 60,
+  "blend": [
+    {
+      "clip": "idle",
+      "w": 1
+    }
+  ],
+  "root": {
+    "pos": [
+      0,
+      0,
+      8.8382
+    ],
+    "quat": [
+      0,
+      0,
+      0,
+      1
+    ]
+  },
+  "ctrl": {
+    "pos": [
+      0,
+      0,
+      8.8382
+    ],
+    "vel": [
+      0,
+      0,
+      0
+    ]
+  },
+  "bones": {
+    "hips": [
+      0,
+      0.9781,
+      8.8382
+    ],
+    "spine2": [
+      0,
+      1.3378,
+      8.8503
+    ],
+    "head": [
+      -0.0001,
+      1.6374,
+      8.8667
+    ],
+    "hand_r": [
+      0.1354,
+      1.0174,
+      9.1446
+    ],
+    "hand_l": [
+      -0.1932,
+      0.9775,
+      9.053
+    ],
+    "ankle_r": [
+      0.1,
+      0.020000000000000004,
+      8.9056
+    ],
+    "ankle_l": [
+      -0.1,
+      0.020000000000000004,
+      8.8908
+    ],
+    "toe_r": [
+      0.1,
+      0.020000000000000004,
+      8.9056
+    ],
+    "toe_l": [
+      -0.1,
+      0.020000000000000004,
+      8.8908
+    ],
+    "shoulder_l": [
+      -0.1689,
+      1.4786,
+      8.8383
+    ],
+    "shoulder_r": [
+      0.1689,
+      1.4767,
+      8.8764
+    ],
+    "elbow_l": [
+      -0.1966,
+      1.1748,
+      8.8837
+    ],
+    "elbow_r": [
+      0.1805,
+      1.1764,
+      8.9439
+    ],
+    "hip_l": [
+      0,
+      0.9781,
+      8.8382
+    ],
+    "hip_r": [
+      0,
+      0.9781,
+      8.8382
+    ],
+    "knee_l": [
+      -0.1,
+      0.5081,
+      8.8345
+    ],
+    "knee_r": [
+      0.1,
+      0.5081,
+      8.8419
+    ],
+    "weapon_tip": [
+      -0.1003,
+      0.1866,
+      10.194
+    ],
+    "frill_0": [
+      -0.0014,
+      1.3378,
+      8.6703
+    ],
+    "frill_1": [
+      -0.0056,
+      1.2078,
+      8.4903
+    ],
+    "frill_2": [
+      -0.0117,
+      1.0778,
+      8.3103
+    ]
+  },
+  "weapon": {
+    "attached_to": "hand_r",
+    "grip_pos": [
+      0.1354,
+      1.0174,
+      9.1446
+    ]
+  },
+  "ground": {
+    "ankle_r_h": 0.02,
+    "surface_normal_r": [
+      0,
+      1,
+      0
+    ],
+    "ankle_l_h": 0.02,
+    "surface_normal_l": [
+      0,
+      1,
+      0
+    ]
+  },
+  "ik": {
+    "foot_enabled": true,
+    "hand_enabled": false
+  },
+  "secondary": {
+    "kind": "deterministic_frill",
+    "delays_f60": [
+      4,
+      7,
+      10
+    ]
+  },
+  "pose_hash": "c7e66666f3333331",
+  "rest_hash": "0000000000000000"
+}

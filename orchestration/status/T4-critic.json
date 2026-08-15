@@ -2,14 +2,20 @@
   "task": "T4-critic",
   "role": "independent critic (did not build any of this)",
   "piece": "T4 — the Morrowind screens (ring 1)",
-  "items": ["RI-UIX03", "RI-UIX04", "RI-UIX06", "RI-UIX07", "RI-UIX08 (look only)", "RI-UIX01"],
+  "items": ["RI-UIX03", "RI-UIX04", "RI-UIX06", "RI-UIX07", "RI-UIX08 (look only)", "RI-UIX01 (partial)", "RI-UIX09 (mine — owed, excluded from the score)"],
   "baseline_commit": "ec30c7b88356b39eac2c897afa47130105e3cf27",
-  "state": "measuring",
+  "state": "verdict filed",
+  "verdict": "corpus/90-verdicts/wave1/T4-r1.json",
   "what_I_could_not_do_first": [
-    "RI-UIX06 §G's six-fresh-judge Bootstrap test and RI-UIX07 §G / RI-UIX08 §G's played gates: rule 0 forbids create_session and I am a single agent — a gate I judge myself is rule 25's self-graded pack. Scored not_run, capped as the items require, and handed back.",
-    "content-stats.mjs (RI-UIX03 method step 1) emits NO items block — its own output has coverage.items (a file list) and no item statistics. Computed the §C census myself from game/data/items/** and recorded the deviation.",
-    "Two live runs were killed by a renderer crash / step hang before the dialogue and level-up screens were reached; recaptured on the corpus's own states/ui-journal.json fixture."
+    "THE PLAYED/HUMAN GATES — RI-UIX06 §G (six fresh Bootstrap judges), RI-UIX07 §G, RI-UIX08 §G. All three need fresh agents that have read neither the item nor the source. Rule 0 forbids create_session and a gate I judge myself is rule 25's self-graded pack. Scored 0/not_run and the caps each item declares are applied and stated. RI-UIX08's own rule — an unrun §G caps the item at 2 once a playable build exists — is the single largest reason that item scores 2, and it is procedural, not a judgement on the window.",
+    "RI-UIX01 §D (U5–U10): the stamina same-frame-truth trace, the OCR damage-number probe, the three worst-background contrast captures, the cross-resolution bar-size sweep and the spend/exhaustion timing were NOT run. RI-UIX01 is judged PARTIAL on §A/§B/§C only (U1–U4) and is excluded from the piece aggregate rather than allowed to set it from checks nobody took.",
+    "RI-UIX04 JU5 (append-only): the capture → advance ≥3 stages → recapture byte-diff was not run. Fail-closed. The data layer visibly refuses backwards and duplicate writes (live-run.json journal_fixture.noted), but that is the store, not the screen.",
+    "RI-UIX03 C4 (encumbrance is consequential — the load threshold changes roll distance and stamina cost) was not measured; tools/harness/prg-encumbrance.mjs exists and was not run for want of a browser slot. M-C2 is fail-closed on that half alone.",
+    "Every blind pair (RI-UIX03 method 8, RI-UIX04 JU12, RI-UIX09 DN7) is recorded blind_status: not_possible. I had already opened both sides attributed — REF-A12b's plates and our own captures — before a pack could be built, and rule 0 forbids spawning the fresh judge that would fix it. Recorded rather than faked.",
+    "THREE LIVE RUNS LOST THEIR PICTURES. critic-t4-live2 died to a renderer crash; critic-t4-lean lost pause/withdrawal/dialogue to 90 s step timeouts; critic-t4-r1-finish lost every step after boot to 120–150 s timeouts inside H.screenshot() on a box carrying 8 browser instances. The pause rule was recovered in full by running tools/harness/ui-pause.mjs; the withdrawal was recovered by a screenshot-free probe (critic-t4-r1-withdrawal.mjs). THE DIALOGUE WINDOW'S LOOK IS JUDGED FROM A BUILDER-PRODUCED CAPTURE (docs/shots/2026-08-14-uix08-dialogue-desktop-1920x1080-links.png), NOT ONE I TOOK. That is weaker evidence than my own and every claim off it is labelled.",
+    "RI-UIX06's FIDELITY side depends on tools/metrics/ui-metrics.mjs over 4 resolutions × 2 DPRs. Its --self-test passes (CIEDE2000 to 4e-5, fires at ΔE 33 on a dark halo, EMPTY on nothing) so the instrument is real; the capture sweep itself is recorded in the verdict as measured or not, and where not, FIDELITY is 0 fail-closed and min(ART, FIDELITY) makes RI-UIX06 that number."
   ],
-  "contention_note": "node tools/contention.mjs reported WAIT at 4.19 load/core (ceiling 4.0) with 3 of 6 browser instances in use. I proceeded with ONE browser instance, as the protocol requires me to record.",
-  "next_step": "lean run on ui-journal fixture -> ui-metrics/ui-forbidden/journal-ui/dialogue-window-probe -> RI-UIX09 (the bar hole) -> verdict"
+  "contention_note": "node tools/contention.mjs returned WAIT (load over the 4.0/core ceiling, 8 browser instances at peak). I proceeded with ONE browser instance at a time, never two, and serialised every run. Recording it here as the protocol requires. The timeouts above are what that contention cost.",
+  "headline": "The journal is closest to a pass and is the one screen I would show the owner: 10/12, ladder 6, chronological true and interleave_ratio 0.889 against a 0.30 hard-fail line. The inventory's pause rule is a clean 5 of 5 — including the check the corpus expects everyone to fail, `if (menuOpen) return;` — and the level-up screen's souls-to-next reads 788 at level 6 against RI-PRG01's shipped curve cost(7) = 788, exact. What fails is not the screens' shape: it is the out-of-combat HUD, which is 1 of 6 elements with its one element in the top-right corner where a minimap goes.",
+  "next_step": "none — verdict filed and ledger regenerated. Round 2 should carry RI-UIX09 (owed), the three played gates, RI-UIX01 §D, and JU5."
 }

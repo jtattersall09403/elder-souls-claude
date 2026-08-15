@@ -1,0 +1,95 @@
+{
+  "entry": "/tmp/elder-souls-control-clones/elder-souls-control-oe9b0d69d-p27580-f3-deletefix-2026-08-15T080840668Z-26759d/game/index.html",
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "software_renderer": true,
+  "gi_feature_present": false,
+  "capture_size": [
+    1920,
+    1080
+  ],
+  "requested_size": [
+    1920,
+    1080
+  ],
+  "camera": {
+    "pos": [
+      3859,
+      15,
+      860
+    ],
+    "look": [
+      3820,
+      14.2,
+      859
+    ],
+    "fov": 60
+  },
+  "crop": {
+    "x0": 0,
+    "x1": 1450,
+    "y0": 140,
+    "y1": 1080
+  },
+  "place": "town-thorn (VP04 pose)",
+  "time_of_day": 9,
+  "weather": "clear",
+  "gi_off": {
+    "mean_luma": 32.761,
+    "p10_luma": 4.734,
+    "p90_luma": 54.985,
+    "falloff_ratio": 11.6147,
+    "shadow_levels": 28,
+    "local_contrast_med": 6.275
+  },
+  "gi_on": {
+    "mean_luma": 36.391,
+    "p10_luma": 14.464,
+    "p90_luma": 54.658,
+    "falloff_ratio": 3.7788,
+    "shadow_levels": 33,
+    "local_contrast_med": 4.755
+  },
+  "checks": [
+    {
+      "id": "GI-ON-RAISES-SHADOW-FLOOR",
+      "ok": true,
+      "detail": "p10_luma off=4.734 on=14.464 — the fix must actually raise the darkest-decile mean"
+    },
+    {
+      "id": "GI-ON-INCREASES-SHADOW-DETAIL",
+      "ok": true,
+      "detail": "shadow_levels (image-leakcheck.mjs's own definition) off=28 on=33 — distinct luma levels below the 25th percentile"
+    },
+    {
+      "id": "GI-ON-DOES-NOT-BRIGHTEN-THE-LIT-END",
+      "ok": true,
+      "detail": "p90_luma off=54.985 on=54.658 — a pixel already at or above its neighbourhood's own brightness should receive ~nothing; this is what a flat lift CANNOT do"
+    }
+  ],
+  "delete_the_fix": {
+    "compared_to": "corpus/90-verdicts/wave1/artifacts/W1-F3-AMBIENT-FILL/sw-head/result.json",
+    "head_renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "head_software_renderer": true,
+    "control_p10": 14.464,
+    "head_gi_off_p10": 4.734,
+    "head_gi_on_p10": 15.116,
+    "note": "the control tree is the pinned pre-F3 baseline (HAZARDS.md §12: pinned sha, NOT HEAD). Both of this run's captures are the same tree because the giFill switch does not exist there — which is itself check 1.",
+    "checks": [
+      {
+        "id": "FIX-IS-ACTUALLY-ABSENT-FROM-THE-CONTROL-TREE",
+        "ok": true,
+        "detail": "renderer.setVisualFeature('giFill') threw 'unknown renderer feature' — the fix is genuinely torn out"
+      },
+      {
+        "id": "OLD-NUMBER-COMES-BACK",
+        "ok": false,
+        "detail": "control p10_luma=14.464 sits 9.730 from the head run's GI-OFF p10 (4.734) and 0.652 from its GI-ON p10 (15.116) — the fix's improvement must NOT survive its own removal"
+      },
+      {
+        "id": "BOTH-ARMS-ON-THE-SAME-RENDERER",
+        "ok": true,
+        "detail": "control renderer \"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)\" vs head run renderer \"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)\" — two arms on two different renderers are not comparable (dispatch brief item 2)"
+      }
+    ]
+  }
+}

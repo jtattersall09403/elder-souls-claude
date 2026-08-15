@@ -1,0 +1,73 @@
+{
+  "boot": {
+    "frame": 4,
+    "mode": "world",
+    "fields": [
+      "at_hearth",
+      "at_hearth_id",
+      "at_hearth_overridden",
+      "at_hearth_real",
+      "book",
+      "coveragePct",
+      "dialogue_surface",
+      "dialogue_window",
+      "draw_calls",
+      "elements",
+      "focus",
+      "fonts",
+      "frame",
+      "full_screen_panels",
+      "hud",
+      "hud_elements",
+      "journal",
+      "map",
+      "map_exists",
+      "marker_census",
+      "markers",
+      "materials",
+      "menu",
+      "mode",
+      "nav",
+      "navigable",
+      "non_world_area_frac",
+      "overdraw",
+      "screen",
+      "screen_alpha",
+      "surfaces",
+      "textRenderPath",
+      "text_glyph_source",
+      "text_raster_scale",
+      "toast",
+      "touch",
+      "world_rendered_behind"
+    ],
+    "elementKinds": [
+      "bearing_dial",
+      "equip_load",
+      "focus_bar",
+      "heal_charges",
+      "health_bar",
+      "interact_prompt",
+      "quick_slots",
+      "stamina_bar"
+    ]
+  },
+  "density_inventory": {
+    "__err": "step timeout 120s"
+  },
+  "withdrawal": {
+    "__err": "step timeout 150s"
+  },
+  "dialogue_list": {
+    "__err": "step timeout 90s"
+  },
+  "dialogue_open": {
+    "__err": "page.evaluate: Target page, context or browser has been closed"
+  },
+  "dialogue_say": {
+    "__err": "page.evaluate: Target page, context or browser has been closed"
+  },
+  "inventory_in_combat": {
+    "__err": "page.evaluate: Target page, context or browser has been closed"
+  }
+}

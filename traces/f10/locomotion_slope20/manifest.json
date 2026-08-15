@@ -1,0 +1,141 @@
+{
+  "schema": "elder-souls/run-manifest@1",
+  "run_id": "20260815T081337Z-locomotion_slope20-s3030-483142",
+  "ok": true,
+  "scenario": "locomotion_slope20",
+  "scenario_title": "RI-VIS08 locomotion on the measured 22.49-degree Stone Forest slope",
+  "seed": 3030,
+  "frames_requested": 600,
+  "frames_traced": 600,
+  "warmup_frames": 30,
+  "window_reanchor": {
+    "frame": 30,
+    "seed": 3030,
+    "entities": [
+      {
+        "eid": "pop-0007-infantry-0",
+        "anim_len": 48,
+        "seeded_phase": 33,
+        "anim_frame": [
+          13,
+          33
+        ],
+        "state_entered_f": [
+          2,
+          30
+        ]
+      },
+      {
+        "eid": "pop-0007-infantry-1",
+        "anim_len": 48,
+        "seeded_phase": 16,
+        "anim_frame": [
+          44,
+          16
+        ],
+        "state_entered_f": [
+          2,
+          30
+        ]
+      },
+      {
+        "eid": "pop-0008-beast-0",
+        "anim_len": 36,
+        "seeded_phase": 26,
+        "anim_frame": [
+          19,
+          26
+        ],
+        "state_entered_f": [
+          1,
+          30
+        ]
+      },
+      {
+        "eid": "pop-0008-beast-1",
+        "anim_len": 36,
+        "seeded_phase": 26,
+        "anim_frame": [
+          19,
+          26
+        ],
+        "state_entered_f": [
+          1,
+          30
+        ]
+      },
+      {
+        "eid": "pop-0008-beast-2",
+        "anim_len": 36,
+        "seeded_phase": 33,
+        "anim_frame": [
+          26,
+          33
+        ],
+        "state_entered_f": [
+          1,
+          30
+        ]
+      },
+      {
+        "eid": "pop-0009-infantry-0",
+        "anim_len": 48,
+        "seeded_phase": 44,
+        "anim_frame": [
+          27,
+          44
+        ],
+        "state_entered_f": [
+          26,
+          30
+        ]
+      }
+    ]
+  },
+  "character_override": null,
+  "character": null,
+  "fixed_step_hz": 60,
+  "trace": {
+    "path": "trace.jsonl",
+    "records": 600,
+    "body_sha256": "77565cd5d66ff2c456a62593025b1269fc922a62e2f7b17cb0b97cc515714602"
+  },
+  "url": "http://127.0.0.1:41927/game/index.html",
+  "harness_version": 2,
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 587
+  },
+  "git": {
+    "commit": "66cf8ff446e626012d05d98d701f3019f099d37e",
+    "branch": "codex/wave1-build-experiment",
+    "dirty": true
+  },
+  "data": {
+    "files": 590,
+    "sha256": "1bc3b0cacdc3f5c4c4e9628e90e4ada9123be98391561941968c6f709d1243f1"
+  },
+  "started_at": "2026-08-15T08:13:37.528Z",
+  "ended_at": "2026-08-15T08:13:59.286Z",
+  "wall_ms": 21758,
+  "page_errors": [],
+  "console_errors": [],
+  "node": "v22.22.2",
+  "tool_argv": [
+    "/home/user/elder-souls-claude/tools/harness/trace.mjs",
+    "--scenario",
+    "locomotion_slope20",
+    "--frames",
+    "600",
+    "--out",
+    "traces/f10/locomotion_slope20"
+  ]
+}

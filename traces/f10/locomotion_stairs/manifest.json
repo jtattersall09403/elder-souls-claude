@@ -1,0 +1,62 @@
+{
+  "schema": "elder-souls/run-manifest@1",
+  "run_id": "20260815T081637Z-locomotion_stairs-s3030-dc104c",
+  "ok": true,
+  "scenario": "locomotion_stairs",
+  "scenario_title": "RI-VIS08 locomotion on canonical 30-degree camera stair",
+  "seed": 3030,
+  "frames_requested": 600,
+  "frames_traced": 600,
+  "warmup_frames": 30,
+  "window_reanchor": {
+    "frame": 30,
+    "seed": 3030,
+    "entities": []
+  },
+  "character_override": null,
+  "character": null,
+  "fixed_step_hz": 60,
+  "trace": {
+    "path": "trace.jsonl",
+    "records": 600,
+    "body_sha256": "3e7ef62ff983fc9d13d2b147c9b0cec9adf110d27d727b7828f99ae676b490a9"
+  },
+  "url": "http://127.0.0.1:34157/game/index.html",
+  "harness_version": 2,
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 587
+  },
+  "git": {
+    "commit": "8cb76d4ecf07baf1996c44d26d3ab1be3b4b90c3",
+    "branch": "codex/wave1-build-experiment",
+    "dirty": true
+  },
+  "data": {
+    "files": 590,
+    "sha256": "1bc3b0cacdc3f5c4c4e9628e90e4ada9123be98391561941968c6f709d1243f1"
+  },
+  "started_at": "2026-08-15T08:16:37.425Z",
+  "ended_at": "2026-08-15T08:17:08.941Z",
+  "wall_ms": 31516,
+  "page_errors": [],
+  "console_errors": [],
+  "node": "v22.22.2",
+  "tool_argv": [
+    "/home/user/elder-souls-claude/tools/harness/trace.mjs",
+    "--scenario",
+    "locomotion_stairs",
+    "--frames",
+    "600",
+    "--out",
+    "traces/f10/locomotion_stairs"
+  ]
+}

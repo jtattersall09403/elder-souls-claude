@@ -1,0 +1,131 @@
+{
+  "schema": "elder-souls/ri-vis08-animation-metrics@1",
+  "item": "RI-VIS08",
+  "side": "FIDELITY",
+  "inputs": [
+    {
+      "path": "traces/f10/locomotion_stairs/trace.jsonl",
+      "sha256": "d0063c0f58158d6d16b65d8ae33603eec0c17cf4fa3b7925ec297f6cda4a8abf"
+    }
+  ],
+  "frames": 600,
+  "required_fields": [
+    "f",
+    "clip",
+    "clip_t",
+    "clip_len_s",
+    "clip_sample_hz",
+    "blend",
+    "root",
+    "ctrl",
+    "bones",
+    "weapon",
+    "ground",
+    "ik"
+  ],
+  "missing_fields": [],
+  "metrics": [
+    {
+      "id": "C1",
+      "value": 60,
+      "unit": "distinct poses/s",
+      "pass": true,
+      "band": "PASS",
+      "support_n": 600,
+      "tell": "stepped/low-sample animation",
+      "reason": "hold_ratio=0.0000"
+    },
+    {
+      "id": "C2",
+      "value": 0.054543,
+      "unit": "m/frame^3",
+      "pass": false,
+      "band": "FAIL",
+      "support_n": 2388,
+      "tell": "snapping",
+      "reason": null
+    },
+    {
+      "id": "C3",
+      "value": 0.0021,
+      "unit": "m/plant",
+      "pass": true,
+      "band": "PASS",
+      "support_n": 4,
+      "tell": "foot sliding",
+      "reason": "p95=0.0038999999999997925"
+    },
+    {
+      "id": "C4",
+      "value": 1,
+      "unit": "Pearson r",
+      "pass": true,
+      "band": "PASS",
+      "support_n": 599,
+      "tell": "capsule-driven motion",
+      "reason": "ratio=1.0000"
+    },
+    {
+      "id": "C5",
+      "value": 0,
+      "unit": "frames",
+      "pass": false,
+      "band": "FAIL",
+      "support_n": 4,
+      "tell": "hard clip cut",
+      "reason": "max_pose_step_m=0.27457241303525043; secondary proxies are assessed separately by C9"
+    },
+    {
+      "id": "C6",
+      "value": 0,
+      "unit": "frames within Hamming 6",
+      "pass": true,
+      "band": "PASS",
+      "support_n": 18,
+      "tell": "T-pose/rest-pose leakage",
+      "reason": "min_hamming=32"
+    },
+    {
+      "id": "C7",
+      "value": 0,
+      "unit": "m",
+      "pass": true,
+      "band": "PASS",
+      "support_n": 600,
+      "tell": "floating weapon",
+      "reason": null
+    },
+    {
+      "id": "C8",
+      "value": 1,
+      "unit": "fraction",
+      "pass": true,
+      "band": "PASS",
+      "support_n": 1200,
+      "tell": "foot penetration/hover",
+      "reason": null
+    },
+    {
+      "id": "C9",
+      "value": 20.498801,
+      "unit": "m cumulative",
+      "pass": true,
+      "band": "PASS",
+      "support_n": 600,
+      "tell": "rigid secondary motion",
+      "reason": "4,7,10"
+    },
+    {
+      "id": "C10",
+      "value": 3,
+      "unit": "distinct clips",
+      "pass": true,
+      "band": "PASS",
+      "support_n": 600,
+      "tell": "single animation reused",
+      "reason": "idle=1, hit=0; population completeness remains critic-owned"
+    }
+  ],
+  "result": "RED",
+  "note": "RED and fail-closed results are evidence, not a builder or critic verdict."
+}
