@@ -21,8 +21,12 @@
     "evidence": {
       "pre_fix_capture_matches_gate_g": "Visually and structurally identical to the judge's original capture (`quillon/shots5/012-022`): three presses on 'the carriers' produce three identical frames, blocks 2->2, lines 7->7, text unchanged.",
       "post_fix": "Neekhu no longer draws 'the-carriers' as a column row or a link at all (checked D1-2); `questTopicsKnown()` still includes 'the-carriers' (checked D1-3) — the permanent-index promise holds.",
-      "reports": ["reports/uix08/gate-g-repro/before.json", "reports/uix08/gate-g-repro/after.json"],
-      "screenshots": "reports/uix08/gate-g-repro/before-defect1-*.png (three identical dead-link frames), reports/uix08/gate-g-repro/after-defect1-000-fixed-neekhu-has-no-dead-link.png"
+      "reports": [
+        "corpus/90-verdicts/wave1/artifacts/P1-DIALOGUE-DEFECTS/gate-g-repro-before.json",
+        "corpus/90-verdicts/wave1/artifacts/P1-DIALOGUE-DEFECTS/gate-g-repro-after.json",
+        "corpus/90-verdicts/wave1/artifacts/P1-DIALOGUE-DEFECTS/gate-g-repro-deletefix-pinned-6df8d003.json"
+      ],
+      "screenshots": "corpus/90-verdicts/wave1/artifacts/P1-DIALOGUE-DEFECTS/before-defect1-000-before-any-press.png + before-defect1-003-after-press-3.png (identical dead-link frames, presses 1 and 3), corpus/90-verdicts/wave1/artifacts/P1-DIALOGUE-DEFECTS/after-defect1-000-fixed-neekhu-has-no-dead-link.png"
     },
     "landed": "139e23d9 (game/src/engine.js, tools/ui/dialogue-gate-g-repro.mjs)"
   },
@@ -34,8 +38,12 @@
     "evidence": {
       "pre_fix_capture_matches_gate_g": "Byte-for-byte visual match to `quillon/shots4/025`: 'the curfew' appears twice, identical heading, identical 87-char body, back to back.",
       "post_fix": "'the curfew' has exactly one block after the second confirm (checked D2-2); confirming a scrolled-away re-ask on a forced-overflow viewport snaps `scrolled_to_bottom` from false to true via the real KeyE press for topics that are NOT the current last block — the one narrow exception is the residual named above.",
-      "reports": ["reports/uix08/gate-g-repro/before.json", "reports/uix08/gate-g-repro/after.json"],
-      "screenshots": "reports/uix08/gate-g-repro/before-defect2-001-after-second-press.png (duplicate 'the curfew'), reports/uix08/gate-g-repro/after-defect2-001-after-second-press.png (single block)"
+      "reports": [
+        "corpus/90-verdicts/wave1/artifacts/P1-DIALOGUE-DEFECTS/gate-g-repro-before.json",
+        "corpus/90-verdicts/wave1/artifacts/P1-DIALOGUE-DEFECTS/gate-g-repro-after.json",
+        "corpus/90-verdicts/wave1/artifacts/P1-DIALOGUE-DEFECTS/gate-g-repro-deletefix-pinned-6df8d003.json"
+      ],
+      "screenshots": "corpus/90-verdicts/wave1/artifacts/P1-DIALOGUE-DEFECTS/before-defect2-000-before-second-press.png + before-defect2-001-after-second-press.png (duplicate 'the curfew' appears), corpus/90-verdicts/wave1/artifacts/P1-DIALOGUE-DEFECTS/after-defect2-000-before-second-press.png + after-defect2-001-after-second-press.png (single block, no duplicate)"
     },
     "landed": "84dd0b8b (game/src/ui/screens/dialogue.js, game/src/ui/system.js, tools/ui/dialogue-drive-probe.mjs)"
   },
@@ -44,10 +52,15 @@
     "real_input_only": "Every reproduction and every confirmation of the fix is driven through actual `KeyboardEvent`/`MouseEvent`/`PointerEvent` dispatch at the page via `tools/ui/dialogue-gate-g-repro.mjs` (new; reuses `dialogue-drive-probe.mjs`'s proven shape and its I0 instrument check verbatim) — nothing calls `_convPending`, `dialogueFocus`, or `DialogueHistory.append()` directly. `A.talkTo()` and one direct `dialogueScroll` write are used ONLY as harness-door PRECONDITIONS (opening a conversation; simulating a player who had scrolled up), exactly the same pattern `dialogue-drive-probe.mjs` already uses for opening conversations — never for the confirm or scroll action actually under test.",
     "delete_the_fix_from_a_pinned_sha_not_HEAD_1": "Per the brief's explicit instruction, NOT `HEAD~1`. Baseline commit `6df8d003` (the tree immediately before either defect's fix landed) was verified free of my work by `git diff 6df8d003 139e23d9 --stat` and by grepping both changed files for my own comment markers (0 hits) before use. `game/` was extracted from that exact commit via `git archive 6df8d003 game | tar -x` into a disposable scratch directory (the repo's disk was at 96%/1.7GB free, so a full `git worktree add` of the whole tree — which also pulls multi-GB `docs/shots/` — failed with ENOSPC; `git archive` of just `game/` avoided that entirely, 36 MB). `dialogue-gate-g-repro.mjs` gained an `--entry` flag to serve that pinned checkout instead of the live tree. Result: 7/7 checks pass against the pinned baseline, reproducing BOTH defects again, byte-for-byte identical to the original pre-fix run — proving the fix, not the environment, is what changed.",
     "full_regression_suite": "`tools/ui/dialogue-drive-probe.mjs` (the existing, pre-owned comprehensive probe) run in full before and after: IDENTICAL 15/18 pass pattern both times, with the identical three pre-existing failures (K4's Persuasion-only dead row, K5/M2's 0-links-at-this-NPC content gap) in both runs — zero new failures from either fix. Getting to that identical result required fixing a real methodology gap in K4 itself: its fixed-index walk was contaminated by K3 having already answered row 1 moments earlier (an artifact, not a player action), and its 'lines increased' success criterion no longer distinguishes a legitimate de-duplicated re-ask (which correctly does not add lines) from a truly dead control. Fixed by reopening on a fresh transcript before the K4 walk and by treating a changed TAIL block (not just added lines) as evidence the confirm did something — documented in the file itself.",
-    "reports_directory": "reports/uix08/gate-g-repro/ (targeted repro, before+after+delete-the-fix), reports/uix08/p1-regression-before/, reports/uix08/p1-regression-after5/ (full-suite comparison)."
+    "reports_directory": "reports/uix08/gate-g-repro/, reports/uix08/gate-g-repro-deletefix/, reports/uix08/p1-regression-before/, reports/uix08/p1-regression-after5/ — left on disk but NOT committed, because `reports/.gitignore` excludes every `*.json`/`*.png` in `reports/` by default (HAZARDS.md §9's exact warning: evidence under `reports/` can silently never reach the remote). The cited copies actually tracked and pushed live at `corpus/90-verdicts/wave1/artifacts/P1-DIALOGUE-DEFECTS/`, the route HAZARDS §9 names as the one other verdicts already use — 7 JSON reports + 7 representative screenshots, 7.3 MB total."
   },
 
-  "landed_commits": ["139e23d9 (defect 1)", "84dd0b8b (defect 2)", "8d58cf61e1 (repro tool's --entry, needed for the delete-the-fix)"],
+  "landed_commits": [
+    "139e23d9 (defect 1: game/src/engine.js, tools/ui/dialogue-gate-g-repro.mjs)",
+    "84dd0b8b (defect 2: game/src/ui/screens/dialogue.js, game/src/ui/system.js, tools/ui/dialogue-drive-probe.mjs)",
+    "8d58cf61e1 (repro tool's --entry flag, needed for the delete-the-fix against a pinned sha)",
+    "fb66f65582 (this status file, first pass — pointed at reports/ paths that turned out to be gitignored; superseded by this redeploy)"
+  ],
   "not_landed": [],
 
   "files_touched": [
@@ -56,9 +69,11 @@
     "game/src/ui/system.js",
     "tools/ui/dialogue-drive-probe.mjs",
     "tools/ui/dialogue-gate-g-repro.mjs",
-    "orchestration/status/P1-DIALOGUE-DEFECTS.json"
+    "orchestration/status/P1-DIALOGUE-DEFECTS.json",
+    "corpus/90-verdicts/wave1/artifacts/P1-DIALOGUE-DEFECTS/*"
   ],
   "files_claimed": [
-    "orchestration/status/P1-DIALOGUE-DEFECTS.json"
+    "orchestration/status/P1-DIALOGUE-DEFECTS.json",
+    "corpus/90-verdicts/wave1/artifacts/P1-DIALOGUE-DEFECTS/"
   ]
 }
