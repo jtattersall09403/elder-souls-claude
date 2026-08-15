@@ -144,6 +144,36 @@ the gameplay camera, and the eight-angle orbit with the whole figure in frame.
 | **C1** | **Canon of proportion** | From the 0° orbit frame, measure total figure height `H` and head height `h` in pixels; `R = H/h`. **Publish both pixel numbers**, so a second critic reproduces `R` rather than re-eyeballing it. Each race should declare its target; absent a declared target the default band is **7.0–8.0** for man/mer and **6.5–7.5** for the heavy races (orsimer, naga) | inside the declared or default band | outside **6.0–8.5** → the figure is a child or a giraffe and no amount of texture fixes it |
 | **C2** | **Silhouette distinctiveness across the roster** | Binary masks of every humanoid archetype at **120 px** figure height, front and 90°, using RI-VIS08 §D1's mask machinery. Pairwise IoU. (120 px, not §D1's 40 px: people genuinely are one blob at 40 px and penalising that would be a false finding) | median pairwise IoU ≤ **0.80** and no pair ≥ **0.93** | any pair ≥ 0.93 → two archetypes are the same figure in different colours |
 | **C3** | **The stand is not a mannequin** | From the idle at frame 0 and frame 120: (a) shoulder-line tilt off horizontal, (b) hip-line tilt, (c) left-vs-right elbow angle difference. **Publish the three numbers at both frames** | ≥ 2 of the 3 exceed **3°**, and the two frames differ | all three ≈ 0 at both frames → an A-pose with the arms lowered |
+
+> **AMENDED wave 1 (`W1-F10-r10` critic, 2026-08-15) — C3 must also reach the figures the player
+> actually sees. This tightens the item; it relaxes nothing, and it is NOT the reason anything
+> passes: applying it turns C3 from PASS to FAIL on the build that prompted it.**
+>
+> C3 as written measures *"the idle at frame 0 and frame 120"* — one idle, on one character. This
+> item's own §F#6 names the failure as *"a symmetric A-pose with the arms lowered, **identical on
+> every NPC**. C3."* The check table has no NPC arm, so a build can author a stance on a layer that
+> **no NPC's code path evaluates**, pass C3 on the player, and leave §F#6's failure present on every
+> other figure in the world. Two rounds of F10 stance work did exactly that and nobody had asked.
+>
+> **Measured in the RUNNING GAME this turn** (`tools/visual/f10-r10c-npc-live.mjs`, at the Lilmoth
+> crowd stand, reading `bone.matrixWorld` off the objects the renderer drew): **60 of 60 drawn NPCs
+> read hip-line `dy` = 0.000000 m and shoulder-line `dy` = 0.000000 m — exactly zero, not small** —
+> against the player's −0.018289 m and +0.047948 m in the same frame. `renderer.js:syncNPCs` calls
+> `poseStatic` and only `poseStatic`, and `poseStatic`'s own header is *"Non-combat people use the
+> rig's authored REST pose"*.
+>
+> **The rule is now: C3 passes only if BOTH arms pass.**
+> **(a)** the existing three-number test on the player's idle at frames 0 and 120; **and**
+> **(b)** the same three numbers measured on the **drawn NPCs** of the largest settlement, with
+> **≥ 90%** of them showing ≥ 2 of 3 exceeding 3°. A figure reading exactly 0.000 on all three is a
+> mannequin, and it is what a viewer sees several hundred times per settlement.
+>
+> **The guards `CRITIC-DOCTRINE` §1.3 requires.** ADD-only: arm (a) is unchanged and no threshold
+> moved. Not self-serving: it makes this round's score *worse* (4 of 18 → 3 of 18) and retroactively
+> turns `W1-F10-r9`'s C3 pass into a fail, exactly as the B3 amendment above did to the verdict that
+> wrote it. Bounded: arm (b) needs one browser session and a bone read, and the instrument that does
+> it is banked.
+
 | **C4** | **It reads at the distance the player sees it** | At 8–10 m, a fresh judge answers *"person, creature, or cannot tell"* and *"which way is it facing"*, per archetype | both correct on ≥ 90% of the roster | facing wrong → the figure has no front/back asymmetry, which at that range is the whole silhouette |
 
 ### §D — Dress: faction, rank and place
