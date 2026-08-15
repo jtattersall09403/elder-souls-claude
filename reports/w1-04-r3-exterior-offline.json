@@ -6,9 +6,9 @@
       "id": "archon",
       "declared": 22,
       "groups": 22,
-      "meshes": 630,
-      "triangles": 15216,
-      "kit_meshes": 78,
+      "meshes": 3017,
+      "triangles": 303836,
+      "kit_meshes": 69,
       "kit_ids": [
         "arc_clay_dome",
         "arc_drying_rack",
@@ -22,16 +22,16 @@
       "kit_declared": 8,
       "kit_implemented": 8,
       "doorways": 12,
-      "deep_overlaps": 2,
+      "deep_overlaps": 8,
       "plan": "downwind"
     },
     {
       "id": "blackrose",
       "declared": 22,
       "groups": 22,
-      "meshes": 1165,
-      "triangles": 17044,
-      "kit_meshes": 78,
+      "meshes": 3471,
+      "triangles": 335852,
+      "kit_meshes": 70,
       "kit_ids": [
         "bla_corridor_gate",
         "bla_fortress_wall",
@@ -52,9 +52,9 @@
       "id": "gideon",
       "declared": 22,
       "groups": 22,
-      "meshes": 1026,
-      "triangles": 16520,
-      "kit_meshes": 75,
+      "meshes": 3548,
+      "triangles": 358574,
+      "kit_meshes": 66,
       "kit_ids": [
         "gid_chapel_porch",
         "gid_county_court",
@@ -68,16 +68,16 @@
       "kit_declared": 8,
       "kit_implemented": 8,
       "doorways": 12,
-      "deep_overlaps": 0,
+      "deep_overlaps": 2,
       "plan": "imported"
     },
     {
       "id": "helstrom",
       "declared": 40,
       "groups": 40,
-      "meshes": 1657,
-      "triangles": 48888,
-      "kit_meshes": 159,
+      "meshes": 2349,
+      "triangles": 327622,
+      "kit_meshes": 150,
       "kit_ids": [
         "hel_bole_arch",
         "hel_egg_terrace",
@@ -100,9 +100,9 @@
       "id": "lilmoth",
       "declared": 33,
       "groups": 33,
-      "meshes": 1480,
-      "triangles": 27888,
-      "kit_meshes": 119,
+      "meshes": 2709,
+      "triangles": 318340,
+      "kit_meshes": 104,
       "kit_ids": [
         "lil_boom_chain",
         "lil_customs_hall",
@@ -118,16 +118,16 @@
       "kit_declared": 10,
       "kit_implemented": 10,
       "doorways": 18,
-      "deep_overlaps": 2,
+      "deep_overlaps": 4,
       "plan": "stacked"
     },
     {
       "id": "soulrest",
       "declared": 15,
       "groups": 15,
-      "meshes": 582,
-      "triangles": 13792,
-      "kit_meshes": 46,
+      "meshes": 1650,
+      "triangles": 159614,
+      "kit_meshes": 40,
       "kit_ids": [
         "sou_bleached_wall",
         "sou_bone_stack",
@@ -141,16 +141,16 @@
       "kit_declared": 8,
       "kit_implemented": 8,
       "doorways": 7,
-      "deep_overlaps": 1,
+      "deep_overlaps": 0,
       "plan": "facing"
     },
     {
       "id": "stormhold",
       "declared": 33,
       "groups": 33,
-      "meshes": 1474,
-      "triangles": 19648,
-      "kit_meshes": 116,
+      "meshes": 4160,
+      "triangles": 439602,
+      "kit_meshes": 102,
       "kit_ids": [
         "sto_bloom_course",
         "sto_customs_shed",
@@ -165,54 +165,57 @@
       "kit_declared": 9,
       "kit_implemented": 9,
       "doorways": 18,
-      "deep_overlaps": 0,
+      "deep_overlaps": 1,
       "plan": "walled"
     },
     {
       "id": "thorn",
-      "declared": 15,
-      "groups": 15,
-      "meshes": 717,
-      "triangles": 13296,
-      "kit_meshes": 47,
+      "declared": 24,
+      "groups": 24,
+      "meshes": 1859,
+      "triangles": 167298,
+      "kit_meshes": 48,
       "kit_ids": [
+        "tho_boom_chain",
         "tho_bow_rack",
         "tho_charter_post",
         "tho_lean_to",
+        "tho_moored_barge",
         "tho_needle_stack",
+        "tho_pile_cluster",
         "tho_rotted_hall",
-        "tho_sapwell_kerb",
+        "tho_silt_quay",
         "tho_stilt_house",
         "tho_thorn_thatch"
       ],
-      "kit_declared": 8,
-      "kit_implemented": 8,
-      "doorways": 7,
-      "deep_overlaps": 0,
+      "kit_declared": 14,
+      "kit_implemented": 14,
+      "doorways": 10,
+      "deep_overlaps": 3,
       "plan": "leaning"
     }
   ],
   "totals": {
     "settlements": 8,
-    "buildings_declared": 202,
-    "building_groups_drawn": 202,
-    "meshes": 8731,
-    "triangles": 172292,
-    "kit_meshes_drawn": 718,
-    "kit_ids_distinct": 69,
-    "kit_ids_declared_across_province": 69,
-    "doorways": 112,
-    "drawn_at_declared_footprint": 71,
-    "shrunk_to_fit_the_plan": 54,
-    "residual_deep_overlaps": 12,
-    "meshes_per_building_min": 12,
-    "meshes_per_building_max": 95
+    "buildings_declared": 211,
+    "building_groups_drawn": 211,
+    "meshes": 22763,
+    "triangles": 2410738,
+    "kit_meshes_drawn": 649,
+    "kit_ids_distinct": 72,
+    "kit_ids_declared_across_province": 75,
+    "doorways": 115,
+    "drawn_at_declared_footprint": 113,
+    "shrunk_to_fit_the_plan": 17,
+    "residual_deep_overlaps": 25,
+    "meshes_per_building_min": 6,
+    "meshes_per_building_max": 121
   },
   "control_arm": {
     "buildings": 0,
     "meshes": 0
   },
-  "kit_match_exterior_to_interior": "112 / 112",
+  "kit_match_exterior_to_interior": "113 / 115",
   "found_defect_in_interior_js": {
     "what": "Object.assign(group, { position: ... }) throws — three's Object3D.position is not writable",
     "sites": [
@@ -235,109 +238,121 @@
     {
       "what": "thorn buildings[] 15 -> 5",
       "before": {
-        "groups": 15,
-        "meshes": 717,
+        "groups": 24,
+        "meshes": 1859,
         "kit": [
+          "tho_boom_chain",
           "tho_bow_rack",
           "tho_charter_post",
           "tho_lean_to",
+          "tho_moored_barge",
           "tho_needle_stack",
+          "tho_pile_cluster",
           "tho_rotted_hall",
-          "tho_sapwell_kerb",
+          "tho_silt_quay",
           "tho_stilt_house",
           "tho_thorn_thatch"
         ],
         "thorn-hall_drawn_bbox_m": {
-          "w": 22.42,
-          "d": 17.71,
-          "h": 18.83
+          "w": 22.44,
+          "d": 20.78,
+          "h": 22.86
         }
       },
       "after": {
         "groups": 5,
-        "meshes": 361,
+        "meshes": 694,
         "kit": [
-          "tho_bow_rack",
+          "tho_boom_chain",
           "tho_charter_post",
           "tho_lean_to",
           "tho_needle_stack",
+          "tho_pile_cluster",
           "tho_rotted_hall",
-          "tho_sapwell_kerb",
           "tho_stilt_house",
           "tho_thorn_thatch"
         ],
         "thorn-hall_drawn_bbox_m": {
-          "w": 22.42,
-          "d": 17.71,
-          "h": 18.83
+          "w": 22.44,
+          "d": 20.78,
+          "h": 22.86
         }
       }
     },
     {
       "what": "thorn-hall continuity.exterior_footprint_m [16,18] -> [22,24]",
       "before": {
-        "groups": 15,
-        "meshes": 717,
+        "groups": 24,
+        "meshes": 1859,
         "kit": [
+          "tho_boom_chain",
           "tho_bow_rack",
           "tho_charter_post",
           "tho_lean_to",
+          "tho_moored_barge",
           "tho_needle_stack",
+          "tho_pile_cluster",
           "tho_rotted_hall",
-          "tho_sapwell_kerb",
+          "tho_silt_quay",
           "tho_stilt_house",
           "tho_thorn_thatch"
         ],
         "thorn-hall_drawn_bbox_m": {
-          "w": 22.42,
-          "d": 17.71,
-          "h": 18.83
+          "w": 22.44,
+          "d": 20.78,
+          "h": 22.86
         }
       },
       "after": {
-        "groups": 15,
-        "meshes": 718,
+        "groups": 24,
+        "meshes": 1859,
         "kit": [
+          "tho_boom_chain",
           "tho_bow_rack",
           "tho_charter_post",
           "tho_lean_to",
+          "tho_moored_barge",
           "tho_needle_stack",
+          "tho_pile_cluster",
           "tho_rotted_hall",
-          "tho_sapwell_kerb",
+          "tho_silt_quay",
           "tho_stilt_house",
           "tho_thorn_thatch"
         ],
         "thorn-hall_drawn_bbox_m": {
-          "w": 25.62,
-          "d": 18.07,
-          "h": 18.97
+          "w": 22.44,
+          "d": 20.78,
+          "h": 22.86
         }
       }
     },
     {
       "what": "thorn architecture_kit -> gideon's, inside and out",
       "before": {
-        "groups": 15,
-        "meshes": 717,
+        "groups": 24,
+        "meshes": 1859,
         "kit": [
+          "tho_boom_chain",
           "tho_bow_rack",
           "tho_charter_post",
           "tho_lean_to",
+          "tho_moored_barge",
           "tho_needle_stack",
+          "tho_pile_cluster",
           "tho_rotted_hall",
-          "tho_sapwell_kerb",
+          "tho_silt_quay",
           "tho_stilt_house",
           "tho_thorn_thatch"
         ],
         "thorn-hall_drawn_bbox_m": {
-          "w": 22.42,
-          "d": 17.71,
-          "h": 18.83
+          "w": 22.44,
+          "d": 20.78,
+          "h": 22.86
         }
       },
       "after": {
-        "groups": 15,
-        "meshes": 775,
+        "groups": 24,
+        "meshes": 2235,
         "kit": [
           "gid_chapel_porch",
           "gid_county_court",
@@ -349,9 +364,9 @@
           "gid_toll_house"
         ],
         "thorn-hall_drawn_bbox_m": {
-          "w": 20.51,
-          "d": 19.06,
-          "h": 17.71
+          "w": 20.52,
+          "d": 19.4,
+          "h": 22.86
         }
       }
     }
@@ -366,12 +381,12 @@
       "pass": true
     },
     {
-      "name": "every declared kit id that can be constructed is drawn (69 drawn, 69 declared, 0 unbuildable: none)",
-      "pass": true
+      "name": "every declared kit id that can be constructed is drawn (72 drawn, 75 declared, 0 unbuildable: none)",
+      "pass": false
     },
     {
       "name": "exterior kit carries interior kit on every enterable building",
-      "pass": true
+      "pass": false
     },
     {
       "name": "M14: no two towns share > 30% of their kit",
@@ -383,7 +398,7 @@
     },
     {
       "name": "perturbation moved the graph: thorn-hall continuity.exterior_footprint_m [16,18] -> [22,24]",
-      "pass": true
+      "pass": false
     },
     {
       "name": "perturbation moved the graph: thorn architecture_kit -> gideon's, inside and out",
