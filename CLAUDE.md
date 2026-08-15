@@ -180,6 +180,20 @@ compacted twice in a day.
 - **Every dispatch brief names the roadmap item it serves** (`F2`, `G1`, `I5`…). A piece of work that
   cannot name its item is either not on the roadmap — in which case the roadmap is wrong and should be
   fixed first — or it is a distraction.
+- **If the item is MAPPED IN `orchestration/IMPLEMENTATION-LEADS.md`, the brief links its exact
+  heading.** Owner-set, merged 2026-08-15 (PR #187), and it binds the dispatcher, not the builder:
+  **26 items are mapped** — ring 0 `I2`; ring 1 `G1` `F1` `F4` `F5` `F6` `F8` `F10` `F11` `F12` `F13`
+  `F14`; ring 2 `G2`–`G7`; ring 3 `W1` `W4` `W5` `W6` `W7` `W8` `W10` `W11`; ring 4 `C6` `C7` `C8`.
+  The builder inspects the candidates named there and records **one finding per candidate —
+  `used` / `adapted` / `concept-only` / `declined` — with the decisive reason.** A `declined` finding
+  *completes* the evaluation and creates no follow-on work; `concept-only` permits no source copying;
+  anything copied or adapted carries its pin, licence and attribution beside the vendored code.
+  **These leads inform implementation choice ONLY** — ring order, item scope, acceptance, ownership,
+  dependencies, critic independence and done-state stay governed by the roadmap, the plan and the
+  corpus, and the file names the Elder authorities an adapter may sit behind but must not replace.
+  Agents already running when it merged continue unchanged; **the routing applies at a mapped item's
+  next entry into planning, remediation or building** — for the four rounds in flight on 15 Aug, that
+  means their *successor* rounds.
 - **An item is `done` only when delivered AND independently judged at or above the bar.** Delivered and
   judged are different words. Nothing counts because someone says so.
 - **Coverage is machine-checked.** `node tools/roadmap-coverage.mjs` exits non-zero if any reference
