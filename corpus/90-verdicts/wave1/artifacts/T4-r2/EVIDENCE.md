@@ -6,7 +6,7 @@ is read off a measurement file at generation time; none is typed.
 | arm | commit | viewport | instrument |
 |---|---|---|---|
 | **live** (this round) | `27c44c77d775e90cf4c2fa25c51c4287b6aefc99` | 1920×1080 | `tools/ui/t4-r2-measure.mjs` |
-| **control** (delete-the-fix) | `ed140939636718afa984ee95732356207edee59a` | 1920×1080 | the same file, copied into the worktree — **7 of 7 screens usable** |
+| **control** (delete-the-fix) | `ed140939636718afa984ee95732356207edee59a` | 1920×1080 | the same file, copied into the worktree — **8 of 8 screens usable** |
 
 **The control is a real `git worktree` at a pinned sha, not a hard-link copy of the live tree**
 (`git worktree add --detach <dir> ed140939636718afa984ee95732356207edee59a`), which is the commit
@@ -29,13 +29,14 @@ rect's own modal colour.
 | spells | 0 | 2 | 0.0684 | 0.0703 |
 | levelup | 0 | 10 | 0.0894 | 0.0911 |
 | container | 0 | — | 0.0387 | — |
+| container_no_name | 0 | — | 0.0374 | — |
 
 **Both arms are measured with the same file.** The control publishes no `panel_rect`,
 no `pictorial` block and no `hud.world` — those are this round's additions — so the tool
 derives the panel rect and counts the pictorial kinds itself, per RI-UIX09 method 4's own
 definition ("the largest `kind: 'panel'` element").
 
-> The control arm produced **7 usable screen(s)**; any row showing a dash in the
+> The control arm produced **8 usable screen(s)**; any row showing a dash in the
 > control column failed on that arm and is an absence of evidence, not a zero.
 
 ## Every frame was screened before it was measured
@@ -63,6 +64,7 @@ deliberately patterned control image.
 | levelup | control | 81 | 71.458 | 0 → 221 | yes |
 | levelup | live | 79 | 74.154 | 0 → 221 | yes |
 | container | control | 48 | 28.741 | 0 → 94 | yes |
+| container_no_name | control | 47 | 26.597 | 0 → 94 | yes |
 
 ## RI-UIX07 — the world set
 

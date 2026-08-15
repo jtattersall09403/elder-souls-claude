@@ -1228,7 +1228,266 @@
           }
         ]
       }
+    },
+    "container_no_name": {
+      "mode": "container",
+      "element_count": 29,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "panel": 1,
+        "panel_header": 3,
+        "list_row": 16,
+        "hint": 1
+      },
+      "pictorial_ids": [],
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "panel_rect_source": "derived (build publishes none)",
+      "panel_rect_agrees": null,
+      "pictorial_measured": {
+        "on_screen": 0,
+        "in_panel": 0
+      },
+      "frame_sanity": {
+        "ok": true,
+        "levels": 47,
+        "local_contrast_med": 0,
+        "local_contrast_p95": 26.597,
+        "p10": 0,
+        "p90": 94,
+        "spread": 94,
+        "reason": null
+      },
+      "panel_sanity": {
+        "ok": false,
+        "levels": 35,
+        "local_contrast_med": 0,
+        "local_contrast_p95": 16.983,
+        "p10": 93,
+        "p90": 96,
+        "spread": 3,
+        "reason": "DEGENERATE FRAME: levels=35 (need >=8), local_contrast_p95=16.983 (need >0.5), p90-p10=3 (need >=4). This is not a dark picture, it is not a picture. The capture path returned a near-uniform buffer."
+      },
+      "panel_fill": {
+        "fill": 0.0374,
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 1185600,
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ]
+      },
+      "texts": [
+        {
+          "id": "hud.heal",
+          "text": "5"
+        },
+        {
+          "id": "hud.equipload",
+          "text": "LIGHT"
+        },
+        {
+          "id": "hud.quickslots",
+          "text": "Black-water draught / Spark-Dart"
+        },
+        {
+          "id": "hud.prompt",
+          "text": "Sesh-Anaat"
+        },
+        {
+          "id": "hud.bearing",
+          "text": "S"
+        },
+        {
+          "id": "container.header",
+          "text": "undefined"
+        },
+        {
+          "id": "container.mine.head",
+          "text": "Carried"
+        },
+        {
+          "id": "container.mine.row.hist-bark-token",
+          "text": "Bark token  0.1  —"
+        },
+        {
+          "id": "container.mine.row.black-water-draught",
+          "text": "Black-water draught  0.4  30"
+        },
+        {
+          "id": "container.mine.row.bog-iron-maul",
+          "text": "Bog-iron maul  11.5  96"
+        },
+        {
+          "id": "container.mine.row.boiled-hide-jack",
+          "text": "Boiled hide jack  4.2  55"
+        },
+        {
+          "id": "container.mine.row.bone-picks",
+          "text": "Bone picks, set of five  0.3  48"
+        },
+        {
+          "id": "container.mine.row.carved-egg",
+          "text": "Carved egg  0.2  5"
+        },
+        {
+          "id": "container.mine.row.chitin-cuirass",
+          "text": "Chitin cuirass  7.5  210"
+        },
+        {
+          "id": "container.mine.row.coil-of-twine",
+          "text": "Coil of weir twine  1.3  6"
+        },
+        {
+          "id": "container.mine.row.resin-of-the-comb",
+          "text": "Comb resin  0.5  22"
+        },
+        {
+          "id": "container.mine.row.counted-crate-tally",
+          "text": "Crate tally, three counts  0.0  —"
+        },
+        {
+          "id": "container.mine.row.silt-strider-silk-sash",
+          "text": "Dres silk sash  0.2  260"
+        },
+        {
+          "id": "container.mine.row.guar-jerky",
+          "text": "Dried guar  0.6  5"
+        },
+        {
+          "id": "container.mine.row.factors-coat",
+          "text": "Factor's coat  1.4  120"
+        },
+        {
+          "id": "container.mine.row.weighing-stone",
+          "text": "Factor's weighing stone  2.5  30"
+        },
+        {
+          "id": "container.mine.row.fever-cut",
+          "text": "Fever-cut  0.4  46"
+        },
+        {
+          "id": "container.theirs.head",
+          "text": "undefined"
+        },
+        {
+          "id": "container.theirs.row.reed-cutter",
+          "text": "Reed-cutter  3.0  42"
+        },
+        {
+          "id": "container.hint",
+          "text": "Confirm moves one thing across. There is no button that decides what is worth keeping."
+        }
+      ],
+      "ri_citations": [],
+      "undefined_headers": [
+        "container.header",
+        "container.theirs.head"
+      ],
+      "materials": [
+        "clay"
+      ],
+      "d1_observed": {
+        "rows": 16,
+        "rows_with_3_plus_hues_in_leading_48px": 16,
+        "min_hues": 3,
+        "per_row": [
+          {
+            "id": "container.mine.row.hist-bark-token",
+            "hues": 5
+          },
+          {
+            "id": "container.mine.row.black-water-draught",
+            "hues": 3
+          },
+          {
+            "id": "container.mine.row.bog-iron-maul",
+            "hues": 3
+          },
+          {
+            "id": "container.mine.row.boiled-hide-jack",
+            "hues": 4
+          },
+          {
+            "id": "container.mine.row.bone-picks",
+            "hues": 4
+          },
+          {
+            "id": "container.mine.row.carved-egg",
+            "hues": 4
+          }
+        ]
+      }
     }
   },
-  "notes": []
+  "notes": [],
+  "container_name_guard": [
+    {
+      "passed": "(absent)",
+      "why": "no name passed at all — the shape that shipped the defect",
+      "headers": [
+        "undefined",
+        "Carried",
+        "undefined"
+      ],
+      "any_undefined": true
+    },
+    {
+      "passed": null,
+      "why": "explicit null",
+      "headers": [
+        "null",
+        "Carried",
+        "null"
+      ],
+      "any_undefined": true
+    },
+    {
+      "passed": "",
+      "why": "empty string",
+      "headers": [
+        "Container",
+        "Carried",
+        "Container"
+      ],
+      "any_undefined": false
+    },
+    {
+      "passed": "undefined",
+      "why": "the literal word, arriving as text from a second call site",
+      "headers": [
+        "undefined",
+        "Carried",
+        "undefined"
+      ],
+      "any_undefined": true
+    },
+    {
+      "passed": "Reed Creel",
+      "why": "a good name — the control arm, which MUST come through unchanged",
+      "headers": [
+        "Reed Creel",
+        "Carried",
+        "Reed Creel"
+      ],
+      "any_undefined": false
+    }
+  ]
 }
