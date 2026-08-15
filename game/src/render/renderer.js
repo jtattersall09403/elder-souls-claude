@@ -677,9 +677,38 @@ export class Renderer {
     return null;
   }
 
+  /**
+   * THE STAND THE CROWD BORROWS FROM THE PLAYER — `RI-VIS10` C3 arm (b), added 2026-08-15.
+   *
+   * `CombatBody.poseLocomotion` stands the player on `idle_loop` (a LoopClip) plus the additive
+   * `idle_ready` stance layer. `poseStatic` had neither, so `W1-F10-r10-CRITIC` measured **60 of
+   * 60 drawn NPCs at hip-line dy exactly 0.000000 m** against the player's −0.018289 in the same
+   * frame — `RI-VIS10` §F#6's mannequin, on every figure in every settlement, after two rounds of
+   * stance work aimed squarely at it.
+   *
+   * The two objects are handed down rather than re-authored, which is the owner's reuse directive
+   * in its most literal form: *a good-looking player should teach the NPCs*. It also means there
+   * is no second copy to drift — the trap `HAZARDS §20a` records against `anim-author.mjs`, whose
+   * private copy of the idle stance silently reverts the shipped one.
+   *
+   * Returns null when there is no fight yet (a menu, a tool driving the renderer directly), and
+   * `poseStatic` then behaves exactly as it did before this existed.
+   */
+  _anyStance(sim) {
+    const C = sim && sim._combat;
+    if (!C) return null;
+    const bodies = [C.player, ...(C.bodies || [])];
+    for (const b of bodies) {
+      if (b && b.moves && b.moves._idlePose) return { pose: b.moves._idlePose, loop: b.moves._idle || null };
+    }
+    return null;
+  }
+
   syncEntities(sim) {
     const seen = new Set();
     const C = sim._combat;
+    // Resolved once per frame, not once per actor: it walks the body list.
+    const stance = this._anyStance(sim);
     for (const e of sim.entities) {
       seen.add(e.eid);
       let mesh = this.enemyMeshes.get(e.eid);
@@ -703,7 +732,7 @@ export class Renderer {
       // omission `syncNPCs` carried, on the line the r6 pass named (`:670` is THIS line, and it
       // is enemies; NPCs are in `syncNPCs` below).
       if (!(eb && poseFromRig(mesh, eb, this._actorGround()))) {
-        poseStatic(mesh, this._anyRig(sim), e.pos, e.yaw, this._actorGround());
+        poseStatic(mesh, this._anyRig(sim), e.pos, e.yaw, this._actorGround(), stance);
         mesh.scale.y = e.state === 'DEAD' ? 0.18 : 1;
       }
       mesh.visible = true;
@@ -722,6 +751,8 @@ export class Renderer {
   syncNPCs(sim) {
     const npcs = sim.npcs || [];
     const seen = new Set();
+    // Resolved once per frame, not once per NPC: it walks the body list, and there are 408.
+    const stance = this._anyStance(sim);
     for (const n of npcs) {
       seen.add(n.eid);
       let mesh = this.npcMeshes.get(n.eid);
@@ -778,7 +809,7 @@ export class Renderer {
         : n.pos[1];
       const drawPos = this._npcDrawPos || (this._npcDrawPos = [0, 0, 0]);
       drawPos[0] = n.pos[0]; drawPos[1] = Number.isFinite(gy) ? gy : n.pos[1]; drawPos[2] = n.pos[2];
-      poseStatic(mesh, this._anyRig(sim), drawPos, n.yaw, this._actorGround());
+      poseStatic(mesh, this._anyRig(sim), drawPos, n.yaw, this._actorGround(), stance);
       mesh.visible = n.visible !== false;
     }
     for (const [eid, mesh] of this.npcMeshes) {
@@ -1208,6 +1239,10 @@ export class Renderer {
     const cb = sim._combat && sim._combat.player;
     const water = this._playerWaterline(sim);
     if (!(cb && poseFromRig(this.playerMesh, cb, water))) {
+      // DELIBERATELY NO STANCE ARGUMENT. This is the one-frame fallback for the window before
+      // the fight is built; the player's real stand arrives from `poseFromRig` on the very next
+      // frame. Dealing the player a seeded crowd stance here would put a pose on the one
+      // character the camera is locked to and then replace it, which reads as a twitch.
       poseStatic(this.playerMesh, this._anyRig(sim), sim.player.pos, sim.player.yaw, this._actorGround());
     }
     // S18 / RI-CAM07: the character is third-person ALWAYS, so it is drawn always. This line

@@ -36,6 +36,12 @@ import { registerRig, registerCharacter, character, charactersOf, resolveMorph, 
 // this is D's half of the same contract. TEXEL_METRES is §5's seam — one UV unit is that many
 // metres of surface, which is the number `MeshBuilder` now unwraps against.
 import { worldMaterial, TEXEL_METRES } from './visual-foundation.js';
+// `addPose` is the ONE definition of "apply an additive stance layer to a pose" and
+// `stanceRootOffsetY` is the ONE definition of that layer's vertical. `poseStatic` — the path
+// every one of the 408 NPCs takes — reaches them through this import rather than through a
+// second copy, for exactly the reason `footConformDelta`'s header gives: a second copy of the
+// arithmetic is the same defect deferred by a week. See `staticStanceFor` below.
+import { addPose, stanceRootOffsetY } from '../combat/clips.js';
 
 // ---------------------------------------------------------------------------------------
 // Geometry helpers. Everything is authored directly into typed arrays with skin indices and
@@ -2480,6 +2486,277 @@ export function footConformDelta(groundAt, x, z, groundY) {
 const _CONFORM_M = new THREE.Matrix4();
 const _CONFORM_V = new THREE.Vector3();
 
+// =========================================================================================
+// THE CROWD'S STAND — one pose per person, solved once, never re-rolled
+// =========================================================================================
+//
+// THE DEFECT. `W1-F10-r10-CRITIC` read `bone.matrixWorld` off the objects the renderer had just
+// drawn, at the Lilmoth crowd stand, and found **60 of 60 drawn NPCs at hip-line dy 0.000000 m
+// and shoulder-line dy 0.000000 m — exactly zero, not small** — against the player's −0.018289 /
+// +0.047948 in the same frame. Two rounds of stance work (r9's contrapposto, r10's root drop)
+// reached one character, because `syncNPCs` calls `poseStatic` and `poseStatic` posed nothing:
+// its own header says *"Non-combat people use the rig's authored REST pose"*. `RI-VIS10` §F#6 —
+// *"a symmetric A-pose with the arms lowered, identical on every NPC"* — was therefore present
+// on every figure in every settlement, and C3 was amended (`RI-VIS10` C3 arm (b), 2026-08-15) to
+// require ≥ 90% of drawn NPCs to show ≥ 2 of 3 stance numbers over 3°.
+//
+// THE TRAP THE OBVIOUS FIX WALKS INTO, and it is the whole difficulty. Applying `idle_ready` to
+// every NPC satisfies arm (b) and produces **408 people standing identically in a new way** —
+// §F#6 with a tilt. So the stance below is a *distribution*, not a pose: every individual gets
+// its own weight-bearing side, stance depth, breathing phase, head aim, arm hang, foot splay and
+// posture, and `RI-VIS10` C2/E4 (silhouette distinctiveness, adjacency) move with C3.
+//
+// STABLE PER INDIVIDUAL, AND THAT IS A HARDER PROPERTY THAN VARIED. A crowd that re-rolls its
+// poses is a crowd of people twitching between frames, which is worse than a crowd of statues.
+// Two independent guarantees, either of which alone would be sufficient:
+//   1. the solve is a **pure function of `group.name`** (`npc:<eid>`, assigned in
+//      `renderer.js:syncNPCs` and stable for the life of the entity) — so the same person is
+//      dealt the same hand however many times the hand is dealt;
+//   2. it is **evaluated once** per actor and cached on `A.staticStance`, so in practice it is
+//      dealt exactly once.
+// `tools/visual/f10-r11-crowd-stance.mjs` arms 4 and 5 test both, and the live probe re-reads the
+// drawn bones over multiple frames and requires bit-identical world matrices.
+//
+// THE HOVER CANNOT COME BACK ON THIS PATH, BY CONSTRUCTION. r10's root drop is a single authored
+// constant (−0.00796 m) that compensates *one* stance at *one* depth; a per-individual stance at
+// a per-individual depth needs a per-individual compensation, and an authored constant would be
+// wrong for 407 of 408 people. So this solves the drop **numerically off the posed skeleton**:
+// the lower of the two foot bones is put back exactly where the REST pose had it. That is the
+// quantity the r10 critic photographed (`foot_l` −8.0 mm, `foot_r` −7.9 mm, lower ankle 88.1 mm
+// against a 89.0 mm pre-contrapposto baseline), measured per person rather than assumed, and it
+// is exact for any variation this file may grow later. `stanceRootOffsetY` is still evaluated and
+// published beside it as a cross-check — the two agree to the tenth of a millimetre at depth 1.0
+// with no variation, which is the arm that says the numeric solve is not measuring something else.
+
+/** FNV-1a over a string — the same hash `characterFor` uses to pick a body, seeded differently so
+ *  the stance a person stands in is independent of the body they were dealt. */
+function stanceSeed(name) {
+  let h = 2166136261;
+  const key = `stance:${name || 'anon'}`;
+  for (let i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  return h >>> 0;
+}
+
+/** mulberry32 — a 32-bit PRNG, deterministic, so one seed yields one whole person. */
+function stanceRng(seed) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6D2B79F5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/**
+ * The variation a single person is dealt. Every field is drawn from ONE seeded stream in a fixed
+ * order, so the whole person is a pure function of the name and adding a field at the END cannot
+ * change anybody's existing fields.
+ *
+ * The ranges are chosen to sit where a viewer starts to notice and no further; `depth`'s floor in
+ * particular is 0.72 rather than 0 because `RI-VIS10` C3 arm (b) wants ≥ 2 of 3 numbers over 3°
+ * and the stance's own pelvis roll is 5° — 0.72 × 5° = 3.6°, which clears it with margin at the
+ * shallowest person in the crowd. Nothing here is claimed to be validated against a measured
+ * population; like every threshold in `RI-VIS10` itself, they are constructed and reversible.
+ */
+export function stanceVariationFor(name) {
+  const seed = stanceSeed(name);
+  const r = stanceRng(seed);
+  const span = (lo, hi) => lo + r() * (hi - lo);
+  return {
+    name: name || 'anon',
+    seed,
+    // Which leg carries the weight. The single biggest crowd cue, and the only one that changes
+    // the SIGN of the hip line — so a town reads as people facing each other rather than a chorus.
+    mirror: r() < 0.5,
+    // How committed the weight shift is. 0.72..1.16 of the authored stance.
+    depth: +span(0.72, 1.16).toFixed(4),
+    // Where in the breathing cycle this person is standing. `idle_loop` is a 96-frame loop.
+    loopFrame: Math.floor(r() * 96),
+    // Head aim. People in a market are not all facing their own feet.
+    headYawDeg: +span(-19, 19).toFixed(3),
+    headPitchDeg: +span(-5, 7).toFixed(3),
+    headRollDeg: +span(-4, 4).toFixed(3),
+    // Trunk. A small independent twist off the shoulder line the stance already gives.
+    torsoYawDeg: +span(-7, 7).toFixed(3),
+    // Posture: a stoop is +rx on the lower spine. Nothing below the pelvis, so it cannot move a foot.
+    stoopDeg: +span(-2.5, 8).toFixed(3),
+    // Arms hang independently. Two draws, not one mirrored draw, or every arm pair is symmetric.
+    armLDeg: +span(-9, 7).toFixed(3),
+    armRDeg: +span(-9, 7).toFixed(3),
+    armSplayLDeg: +span(-4, 6).toFixed(3),
+    armSplayRDeg: +span(-6, 4).toFixed(3),
+    elbowLDeg: +span(-11, 9).toFixed(3),
+    elbowRDeg: +span(-11, 9).toFixed(3),
+    // Foot splay, as a twist about the leg's own vertical axis — chosen over any rx/rz on the leg
+    // because a rotation about the vertical through the hip moves a foot HORIZONTALLY and cannot
+    // change its height. The numeric root solve below would absorb a height change anyway; this
+    // keeps the two mechanisms from hiding each other.
+    splayLDeg: +span(-3, 11).toFixed(3),
+    splayRDeg: +span(-11, 3).toFixed(3),
+  };
+}
+
+/** Left/right bone index pairs, per skeleton index map. Built once per distinct index map. */
+const _MIRROR_PAIRS = new WeakMap();
+function mirrorPairs(index) {
+  let p = _MIRROR_PAIRS.get(index);
+  if (p) return p;
+  p = [];
+  index.forEach((i, id) => {
+    if (!id.endsWith('_l')) return;
+    const j = index.get(`${id.slice(0, -2)}_r`);
+    if (j !== undefined) p.push([i, j]);
+  });
+  _MIRROR_PAIRS.set(index, p);
+  return p;
+}
+
+/**
+ * Reflect a pose across the sagittal plane, in place.
+ *
+ * `skeleton.js`'s `xformCompose` composes `R = Rx·Ry·Rz` and THREE's default Euler order 'XYZ'
+ * builds the identical matrix, so a pose is (rx, ry, rz) in both. Under the reflection
+ * `M = diag(-1,1,1)`, `M·R(n,θ)·M = R((nx,−ny,−nz), θ)` — i.e. rx survives, ry and rz negate —
+ * and the composition mirrors term by term because `M·M = I`. The skeleton is exactly symmetric
+ * in x (`skeleton.json`: `clavicle_l/r` ±0.17, `thigh_l/r` ±0.10, everything else on the
+ * midline), so swapping the `_l` and `_r` channels completes a true mirror rather than an
+ * approximation. That matters here for a measurable reason: the free-leg knee is authored on the
+ * LEFT leg only (`thigh_l.rx 8.248`, `calf_l.rx −16.496`), so a half-mirror would shorten the
+ * wrong leg and the two halves of the crowd would stand at different heights.
+ */
+function mirrorPose(buf, index) {
+  const n = buf.rx.length;
+  for (let i = 0; i < n; i++) { buf.ry[i] = -buf.ry[i]; buf.rz[i] = -buf.rz[i]; }
+  for (const [i, j] of mirrorPairs(index)) {
+    let t = buf.rx[i]; buf.rx[i] = buf.rx[j]; buf.rx[j] = t;
+    t = buf.ry[i]; buf.ry[i] = buf.ry[j]; buf.ry[j] = t;
+    t = buf.rz[i]; buf.rz[i] = buf.rz[j]; buf.rz[j] = t;
+  }
+}
+
+/** Add this individual's own deviations on top of the shared stance. Degrees, additive, and
+ *  applied AFTER the mirror so a left-weighted person's head still turns their own way. */
+function addVariation(buf, index, V) {
+  const at = (id, ch, deg) => {
+    const i = index.get(id);
+    if (i === undefined || !deg) return;
+    buf[ch][i] += deg;
+  };
+  at('neck', 'ry', V.headYawDeg * 0.55);
+  at('neck', 'rx', V.headPitchDeg * 0.5);
+  at('head', 'ry', V.headYawDeg * 0.45);
+  at('head', 'rx', V.headPitchDeg * 0.5);
+  at('head', 'rz', V.headRollDeg);
+  at('spine_02', 'ry', V.torsoYawDeg);
+  at('spine_00', 'rx', V.stoopDeg);
+  at('upperarm_l', 'rx', V.armLDeg);
+  at('upperarm_r', 'rx', V.armRDeg);
+  at('upperarm_l', 'rz', V.armSplayLDeg);
+  at('upperarm_r', 'rz', V.armSplayRDeg);
+  at('lowerarm_l', 'rx', V.elbowLDeg);
+  at('lowerarm_r', 'rx', V.elbowRDeg);
+  at('thigh_l', 'ry', V.splayLDeg);
+  at('thigh_r', 'ry', V.splayRDeg);
+}
+
+const _STANCE_LOCAL_SAVE = new THREE.Matrix4();
+
+/**
+ * Solve and APPLY one person's stand. Called once per actor, from `poseStatic`.
+ *
+ * @param {object} S       the built skeleton (`buildSkeleton`'s return)
+ * @param {string} name    the actor group's name — `npc:<eid>`, `enemy:<eid>`, `player`
+ * @param {{pose:object, loop:object}} stance  the SAME `idle_ready` archetype and `idle_loop`
+ *        LoopClip the player's `poseLocomotion` uses, handed down from `renderer.js` off the live
+ *        combat body. Not a copy: `RI-VIS10`'s reuse directive and `HAZARDS §20a`'s second-copy
+ *        trap both point the same way.
+ * @returns {object|null}  the solved record, or null if the stance data was unusable
+ */
+function applyStaticStance(S, name, stance) {
+  const index = S.index;
+  const bones = S.bones;
+  if (!index || !bones || !bones.length || !stance || !stance.pose) return null;
+  const V = stanceVariationFor(name);
+  const n = bones.length;
+  const buf = {
+    index,
+    rx: new Float64Array(n), ry: new Float64Array(n), rz: new Float64Array(n),
+    clearPose() { this.rx.fill(0); this.ry.fill(0); this.rz.fill(0); },
+  };
+  // Same order as `CombatBody.poseLocomotion`: the loop ASSIGNS, the stance layer ADDS.
+  if (stance.loop && typeof stance.loop.applyPose === 'function') stance.loop.applyPose(buf, V.loopFrame);
+  addPose(buf, stance.pose, 0, V.depth);
+  if (V.mirror) mirrorPose(buf, index);
+  addVariation(buf, index, V);
+
+  // ---- write the pose onto the bones' LOCAL transforms ------------------------------------
+  // This path is cheap precisely because it does not write bone world matrices every frame; the
+  // pose therefore has to live where the rest pose lived, in `bone.rotation`. Euler order 'XYZ'
+  // is THREE's default and is `xformCompose`'s `Rx·Ry·Rz` exactly (see `mirrorPose`).
+  const DEG = Math.PI / 180;
+  for (let i = 0; i < n; i++) {
+    const b = bones[i];
+    if (!b) continue;
+    b.rotation.set(buf.rx[i] * DEG, buf.ry[i] * DEG, buf.rz[i] * DEG, 'XYZ');
+  }
+
+  // ---- the posed skeleton in ACTOR-LOCAL space ---------------------------------------------
+  // `restWorld` is actor-local (`buildSkeleton` takes it before the bones are parented to
+  // anything). The bones are now under `S.group`, whose own `matrixWorld` carries the actor's
+  // position, yaw and height scale — so it is neutralised for exactly the length of this
+  // traversal rather than the arithmetic being rewritten by hand. THREE's own `updateMatrixWorld`
+  // does the walk, so there is no second copy of the hierarchy composition here either.
+  const holder = S.rootBone.parent;
+  let posed;
+  if (holder) {
+    _STANCE_LOCAL_SAVE.copy(holder.matrixWorld);
+    holder.matrixWorld.identity();
+    S.rootBone.updateMatrixWorld(true);
+    posed = bones.map((b) => (b ? b.matrixWorld.clone() : new THREE.Matrix4()));
+    holder.matrixWorld.copy(_STANCE_LOCAL_SAVE);
+  } else {
+    S.rootBone.updateMatrixWorld(true);
+    posed = bones.map((b) => (b ? b.matrixWorld.clone() : new THREE.Matrix4()));
+  }
+
+  // ---- the root drop, solved rather than assumed ------------------------------------------
+  const footY = (mats, id) => {
+    const i = index.get(id);
+    return (i === undefined || !mats[i]) ? null : mats[i].elements[13];
+  };
+  const lo = (mats) => {
+    const a = footY(mats, 'foot_l'); const b = footY(mats, 'foot_r');
+    if (a === null) return b; if (b === null) return a;
+    return Math.min(a, b);
+  };
+  const restLo = lo(S.restWorld || posed);
+  const poseLo = lo(posed);
+  const rootDy = (restLo === null || poseLo === null) ? 0 : restLo - poseLo;
+
+  return {
+    variation: V,
+    posed_local: posed,
+    // The lower ankle's height above the actor's own origin, before and after. Rest is the
+    // pre-contrapposto baseline the r10 critic photographed at 89.0 mm; `after` is what this
+    // person stands at once `root_dy_m` is added to the group.
+    rest_lower_ankle_m: restLo === null ? null : +restLo.toFixed(6),
+    posed_lower_ankle_m: poseLo === null ? null : +poseLo.toFixed(6),
+    root_dy_m: +rootDy.toFixed(6),
+    // The authored constant, evaluated at this person's depth. Published, never applied — it is
+    // the cross-check that the numeric solve above is measuring the thing it claims to.
+    authored_root_dy_m: +stanceRootOffsetY(stance.pose, 0, V.depth).toFixed(6),
+  };
+}
+
+/**
+ * The stance a crowd stands in, for a caller that wants to know it without a scene — the
+ * instruments do, and so does anything that needs to prove the pose is a pure function of the
+ * name. Exported because a test that re-implements the seeding tests its own re-implementation.
+ */
+export { applyStaticStance as _applyStaticStance };
+
 /**
  * Drive the actor from a live `CombatBody`. This is the whole consumer: it writes the rig's
  * own world matrices into the skeleton and hangs the weapon off the grip hand's world frame.
@@ -2721,8 +2998,14 @@ export function poseFromRig(group, body, water) {
  *        takes. When it carries a `groundAt`, the two terminal foot bones ride the ground under
  *        them exactly as the player's do, through the SAME `footConformDelta`. Omitted, this
  *        function behaves precisely as it did before round 7.
+ * @param {{pose:object, loop:object}} [stance] the additive stance layer and idle loop the
+ *        PLAYER already stands in (`idle_ready` and `idle_loop`, handed down by `renderer.js`
+ *        off the live combat body). Supplied, every static actor gets its own seeded stand —
+ *        see "THE CROWD'S STAND" above. Omitted, this function behaves precisely as it did
+ *        before round 11, which is what keeps every tool that calls it with five arguments
+ *        measuring what it used to measure.
  */
-export function poseStatic(group, rigDefSource, pos, yawDeg, water) {
+export function poseStatic(group, rigDefSource, pos, yawDeg, water, stance) {
   const A = group.userData.actor;
   if (!A) return false;
   if (!A.built) {
@@ -2730,7 +3013,15 @@ export function poseStatic(group, rigDefSource, pos, yawDeg, water) {
     ensureBuilt(group, rigDefSource);
   }
   if (A.rigged) return false;                 // already world-driven; do not fight it
-  group.position.set(pos[0], pos[1], pos[2]);
+  // ---- this person's own stand, solved ONCE and then never touched again ---------------------
+  // Ordered before the presentation bind below on purpose: that bind is also one-time, and it
+  // must bind against the POSED skeleton or every horn, crest, helmet and garment in the crowd
+  // sits at the rest pose while the body under it stands somewhere else.
+  if (A.staticStance === undefined) {
+    A.staticStance = stance ? applyStaticStance(A.built, group.name, stance) : null;
+  }
+  const stanceDy = A.staticStance ? A.staticStance.root_dy_m : 0;
+  group.position.set(pos[0], pos[1] + stanceDy, pos[2]);
   group.rotation.y = (yawDeg * Math.PI) / 180;
   // Non-combat people use the rig's authored rest pose, but their equipment/species forms are
   // separate bone-bound presentation meshes. Previously only poseFromRig() evaluated those
@@ -2739,8 +3030,11 @@ export function poseStatic(group, rigDefSource, pos, yawDeg, water) {
   // against the stored actor-local rest matrices; the outer group still supplies position/yaw.
   if (!A.staticPresentationBound) {
     const S=A.built;
+    // The frame the attachments hang in: the posed skeleton when this actor has a stand, the
+    // rest skeleton when it does not. Same array shape either way, so there is one bind path.
+    const FRAME = (A.staticStance && A.staticStance.posed_local) || S.restWorld;
     const apply=(item)=>{
-      const bone=S.restWorld&&S.restWorld[item.bi];if(!bone)return;
+      const bone=FRAME&&FRAME[item.bi];if(!bone)return;
       item.mesh.matrix.copy(bone).multiply(item.local);
       item.mesh.matrixWorldNeedsUpdate=true;
     };
@@ -2749,7 +3043,7 @@ export function poseStatic(group, rigDefSource, pos, yawDeg, water) {
     // three breastplates and three greaves on every NPC even after their sockets were fixed.
     for(const item of S.equipment||[]){item.mesh.visible=!A.civilian&&item.set==='reed';apply(item);}
     for(const item of S.presentation||[])apply(item);
-    const spineI=S.index.get('spine_02'),spine=spineI===undefined?null:S.restWorld[spineI];
+    const spineI=S.index.get('spine_02'),spine=spineI===undefined?null:(FRAME&&FRAME[spineI]);
     for(const item of S.secondary||[]){
       if(!spine)continue;
       const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI/2,0,0));
