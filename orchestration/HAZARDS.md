@@ -234,6 +234,34 @@ caught only when somebody compared what the frames actually contained against wh
 **Verify your verbs exist** (`grep` the harness), **verify your gate's argument names**, and **make
 `call()` throw on an unknown verb** rather than swallow it.
 
+## 20. The stop hook tells you to commit the fleet's in-flight files. DO NOT. It is asking for §14's failure.
+
+**Standing, seen three times in one hour on 2026-08-15.** The session's stop hook checks `git status`
+and, whenever the tree is dirty, prints:
+
+> *There are uncommitted changes in the repository. Please commit and push these changes to the
+> remote branch.*
+
+It is **correct that the tree is dirty and wrong about what to do**, and the gap between those two is
+the whole hazard. With two to four agents running, a dirty tree is the *normal* state: those files are
+being written this minute. Doing what the hook says means banking a sibling's half-written edit —
+§14 exactly, and the mechanism that once carried an in-flight edit into `HEAD` and turned a
+delete-the-fix control green.
+
+**The check that settles it in one command**, and it is evidence rather than assumption:
+
+```sh
+git status --porcelain | awk '{print $NF}' | xargs -I{} ls -ld --time-style=+%H:%M:%S {}; date +%H:%M:%S
+```
+
+Three runs of it today returned files modified **11 seconds**, **53 seconds** and **under 5 minutes**
+before the check. A file a live agent touched a minute ago is not yours under any reading.
+
+**So: answer the hook by verifying, not by committing.** Land your own paths with
+`land.mjs --paths a,b,c` (commas — §14c), leave everything else, and say in the reply whose it is and
+how you know. The hook will fire again next turn; that is the correct state of a repo with a working
+fleet, not a backlog. **The one thing never to do is the thing it asks for.**
+
 ## 19. The branch the session was told to deliver on was 1,439 commits behind the branch we work on
 
 **Found 2026-08-15 by a builder reading its own brief, not by any check.** The F10 round-9 brief named
