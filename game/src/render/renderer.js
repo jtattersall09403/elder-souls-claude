@@ -677,6 +677,43 @@ export class Renderer {
     return null;
   }
 
+  /**
+   * THE STAND THE PLAYER IS ALREADY IN, HANDED DOWN TO THE CROWD.
+   *
+   * `W1-F10-r10-CRITIC` read `bone.matrixWorld` off the objects this renderer had just drawn and
+   * found **60 of 60 drawn NPCs at hip-line dy and shoulder-line dy of exactly 0.000000 m**
+   * against the player's −0.018289 / +0.047948 in the same frame. The cause is one line below —
+   * `syncNPCs` called `poseStatic`, and `poseStatic`'s own header said *"Non-combat people use
+   * the rig's authored REST pose"*. Two rounds of stance work (r9's contrapposto, r10's root
+   * drop) were therefore true of one character out of 409, and `RI-VIS10` §F#6 — *"a symmetric
+   * A-pose with the arms lowered, identical on every NPC"* — was present on every figure in
+   * every settlement. C3 was amended (arm (b), 2026-08-15) to require ≥ 90% of DRAWN NPCs to
+   * show ≥ 2 of 3 stance numbers over 3°.
+   *
+   * **THE SAME TWO OBJECTS, NOT A SECOND COPY.** `moves._idlePose` is `clips.archetypes.idle_ready`
+   * and `moves._idle` is the `LoopClip` over `idle_loop` — literally the pair
+   * `CombatBody.poseLocomotion` (`combat/actor.js:368,374`) stands the player on. A second copy of
+   * the stance in the render layer is `HAZARDS §20a`'s trap (`anim-author.mjs` holds one, and
+   * `--write` still shrinks the shipped breathing ~34%) arriving in a new file, and it is the
+   * 2026-08-14 reuse directive read the other way round.
+   *
+   * `LoopClip.applyPose(buf, frame)` takes its frame as an argument and holds no per-body state
+   * (`clips.js:145`), so borrowing any body's instance reads the same curve the player's does.
+   *
+   * Returns `null` when there is no combat state at all — a harness scene with no player. Every
+   * caller then gets `poseStatic`'s pre-round-11 behaviour exactly.
+   */
+  _anyStance(sim) {
+    const C = sim && sim._combat;
+    if (!C) return null;
+    const m = (C.player && C.player.moves) || (C.bodies || []).map((b) => b.moves).find(Boolean);
+    if (!m || !m._idlePose) return null;
+    if (!this._stanceArg || this._stanceArg.pose !== m._idlePose || this._stanceArg.loop !== m._idle) {
+      this._stanceArg = { pose: m._idlePose, loop: m._idle || null };
+    }
+    return this._stanceArg;
+  }
+
   syncEntities(sim) {
     const seen = new Set();
     const C = sim._combat;
@@ -722,6 +759,10 @@ export class Renderer {
   syncNPCs(sim) {
     const npcs = sim.npcs || [];
     const seen = new Set();
+    // Resolved ONCE per sync, not per person: `_anyStance` walks the combat bodies, and the
+    // solve it feeds is itself cached per actor inside `poseStatic` (`A.staticStance`). See
+    // `_anyStance`'s header for why the crowd is handed the player's own two objects.
+    const stance = this._anyStance(sim);
     for (const n of npcs) {
       seen.add(n.eid);
       let mesh = this.npcMeshes.get(n.eid);
@@ -778,7 +819,7 @@ export class Renderer {
         : n.pos[1];
       const drawPos = this._npcDrawPos || (this._npcDrawPos = [0, 0, 0]);
       drawPos[0] = n.pos[0]; drawPos[1] = Number.isFinite(gy) ? gy : n.pos[1]; drawPos[2] = n.pos[2];
-      poseStatic(mesh, this._anyRig(sim), drawPos, n.yaw, this._actorGround());
+      poseStatic(mesh, this._anyRig(sim), drawPos, n.yaw, this._actorGround(), stance);
       mesh.visible = n.visible !== false;
     }
     for (const [eid, mesh] of this.npcMeshes) {
