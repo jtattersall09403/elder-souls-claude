@@ -34,8 +34,10 @@ L.push('');
 L.push('| arm | commit | viewport | instrument |');
 L.push('|---|---|---|---|');
 L.push(`| **live** (this round) | \`${live.commit}\` | ${live.viewport.join('×')} | \`tools/ui/t4-r2-measure.mjs\` |`);
-if (ctl) L.push(`| **control** (delete-the-fix) | \`${ctl.commit}\` | ${ctl.viewport.join('×')} | the same file, copied into the worktree |`);
-else L.push('| **control** | **NOT TAKEN** | — | see §"what is missing" |');
+if (ctl) {
+  const u = Object.values(ctl.screens || {}).filter((v) => !v.failed).length;
+  L.push(`| **control** (delete-the-fix) | \`${ctl.commit}\` | ${ctl.viewport.join('×')} | the same file, copied into the worktree — **${u} of ${Object.keys(ctl.screens || {}).length} screens usable** |`);
+} else L.push('| **control** | **NOT TAKEN** | — | see §"what is missing" |');
 if (narrow) L.push(`| **live, narrow** | \`${narrow.commit}\` | ${narrow.viewport.join('×')} | same |`);
 L.push('');
 L.push('**The control is a real `git worktree` at a pinned sha, not a hard-link copy of the live tree**');
@@ -59,11 +61,32 @@ for (const s of screens) {
   L.push(`| ${s} | ${n(pict(a))} | ${n(pict(b))} | ${n(fill(a))} | ${n(fill(b))} |`);
 }
 L.push('');
-L.push('**Both arms were measured with the same file.** The control publishes no `panel_rect`,');
+const ctlUsable = ctl ? Object.values(ctl.screens || {}).filter((v) => !v.failed).length : 0;
+L.push('**Both arms are measured with the same file.** The control publishes no `panel_rect`,');
 L.push('no `pictorial` block and no `hud.world` — those are this round\'s additions — so the tool');
-L.push('derives the panel rect and counts the pictorial kinds itself. That is RI-UIX09 method 4\'s own');
-L.push('definition ("the largest `kind: \'panel\'` element"), and it is why the control column has');
-L.push('numbers in it rather than blanks.');
+L.push('derives the panel rect and counts the pictorial kinds itself, per RI-UIX09 method 4\'s own');
+L.push('definition ("the largest `kind: \'panel\'` element").');
+L.push('');
+if (!ctl) {
+  L.push('> **THE CONTROL ARM DID NOT RUN.** Every dash in the control column is an absence of');
+  L.push('> evidence, not a zero. No delete-the-fix claim in this file is made.');
+} else if (ctlUsable === 0) {
+  L.push('> **THE CONTROL ARM RAN AND EVERY SCREEN FAILED.** The worktree booted and the browser');
+  L.push('> launched, and then every step exceeded its budget or lost the page — the box was at');
+  L.push('> `load average: ~20` over 4 cores throughout, well past `tools/contention.mjs`\'s ceiling');
+  L.push('> of 4.0 per core, and the baseline tree is the slower of the two to boot. **So every dash');
+  L.push('> in the control column is an absence of evidence, not a zero, and no delete-the-fix claim');
+  L.push('> in this file is made.** The per-screen failures are listed under "what is missing".');
+  L.push('>');
+  L.push('> One control fact does survive, because it is structural rather than measured: the');
+  L.push('> baseline `getUIState()` has no `panel_rect`, no `pictorial` block, no `hud.world`, no');
+  L.push('> `combat_phase` — the tool\'s `panel_rect_source` reads `derived (build publishes none)` on');
+  L.push('> that arm — and `game/src/ui/icons.js` and `game/src/ui/hud-world.js` **do not exist in');
+  L.push('> that worktree at all**. `git -C <worktree> log --oneline -1` is the recorded sha above.');
+} else {
+  L.push(`> The control arm produced **${ctlUsable} usable screen(s)**; any row showing a dash in the`);
+  L.push('> control column failed on that arm and is an absence of evidence, not a zero.');
+}
 L.push('');
 
 L.push('## Every frame was screened before it was measured');
