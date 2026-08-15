@@ -1,0 +1,33 @@
+[harness]   ok   I0 INSTRUMENT a real DOM key reaches the input pipeline  real.attached=true, ArrowRight -> moveX=1, KeyM -> pendingPress=8192
+[harness]   ok   A1 `menu` opens a screen from the world  mode world -> inventory
+[harness]   ok   B1 every advertised screen is reachable by pressing swap_right  advertised ["world","journal","sheet","spells","map","wait"]; forward walk visited ["inventory","map","sheet","journal","spells","wait","world"]; never reached []
+[harness]   ok   B2 swap_left walks the ring too (and does not dead-end)  backward walk from inventory: ["inventory","world"]
+[harness]   ok   C0 the inventory is the screen `menu` opens  mode=inventory
+[harness]   ok   C1 left/right moves between the inventory columns  col 1 -(left)-> 0 -(right)-> 1
+[harness]   ok   C2 walking the category column filters the item list  tagIdx 0 -> 1; rows 20 -> 7 (first: 'Chitin cuirass' -> 'Chitin cuirass')
+[harness]   ok   C3 confirming the sort control changes the sort AND reorders the list  sortIdx 0 -> 1; first row 'Chitin cuirass' -> 'Chitin cuirass'
+[harness]   ok   C4 walking the item list moves the selection and the detail panel follows  rowIdx 0 -> 1; detail changed=true; focused row 'Shell-scale hauberk  9.1  340  37.4'
+[harness]   ok   C5 confirming a weapon row equips it  row 'Hooked gutting knife  0.9  14  15.6' (hooked-gutting-knife): equipment ["chitin-cuirass@chest","reed-cutter@right"] -> ["chitin-cuirass@chest","hooked-gutting-knife@right"]; 'hooked-gutting-knife' now in equipped=true
+[harness]   n/a  C5b confirming the refused weapon row does nothing to the inventory, but says so  row 'Sapwood bow  2.2  130  59.1' (inventory.row.hist-sap-bow): equipment ["chitin-cuirass@chest","hooked-gutting-knife@right"] -> ["chitin-cuirass@chest","hooked-gutting-knife@right"] (unchanged=true); toast after confirm: ["You cannot get a grip on the sapwood bow. It is not made for your hands."] (narrated=true)
+[harness]   ok   C6 the equipped figure is drawn (RI-UIX09 P2)  1 element(s) of kind 'doll' on the inventory screen; rects [[222,282,200,400]]; equipment ["chitin-cuirass@chest","hooked-gutting-knife@right"]
+[harness]   FAIL C7 the HUD full/minimal switch responds to a real press  hud.mode full -(4f hold)-> full -(8f hold)-> full; the inventory's own foot hint reads ["Left and right change column. Up and down move. Confirm to equip, read or use. Swap turns the page: the map, the journal, your case, your spells."]
+[harness]   ok   D0 the journal is reachable by pressing swap_right  mode=journal
+[harness]   ok   D1 the journal turns its pages on a real press  page 0 -> 1, view 'chronicle'
+[harness]   ok   D2 the quest index opens from the chronicle  view 'chronicle' -> 'index'
+[harness]   ok   D3 confirming an index row jumps the chronicle to that quest  indexIdx 0 -> 1; view -> 'chronicle', page 0
+[harness]   ok   D4 the search view opens from the chronicle  view 'chronicle' -> 'search'
+[harness]   ok   D5 the search ring walks and types a character into the query  ringIdx 0 -> 1; query '' -> 'B'
+[harness]   ok   D6 back inside the search view removes one character and stays in search  mode journal -> journal; view 'search' -> 'search'; query 'B' (len 1) -> '' (len 0)
+[harness]   ok   D7 closing and re-opening the journal returns to the chronicle, not a stuck search box  closed fully to 'world'; re-opened: view 'chronicle', query ''
+[harness]   ok   E-sheet the sheet screen is reachable and its list walks  rowIdx 0 -> 1, 0 rows
+[harness]   ok   E-spells the spells screen is reachable and its list walks  rowIdx 0 -> 1, 0 rows
+[harness]   n/a  F1 the map screen walks its places and swaps its view  fixture has 0 discovered places (rows=0), so the place-walk half cannot be exercised on this state — needs a fixture where the player has stood somewhere; view swap alone: 'world' -> 'local'
+[harness]   ok   G1 the wait screen sets hours and confirms  hours 1 -> 2; confirm left mode='world'
+[harness]   ok   H0 the container screen opens and names itself  mode=container; panel headers ["Reed Creel","Carried","Reed Creel"]
+[harness]   ok   H1 left/right switches which side of the container has focus  side 0 -> 1
+[harness]   ok   H2 items transfer in BOTH directions through real presses  carried 44 -(take)-> 45 -(put)-> 44
+[harness]   ok   H3 no container name prints the literal string `undefined` or `null`  {"absent":["Container","Carried","Container"],"null":["Container","Carried","Container"],"empty":["Container","Carried","Container"],"literal":["Container","Carried","Container"]}
+[harness]   ok   I1 `menu` closes the screen from inside it  mode inventory -> world
+[harness]   FAIL M1 clicking an inventory row does something  clicked 'Chitin cuirass' at [252,716,170,26]; focus {"col":1,"tagIdx":0,"rowIdx":8,"sortIdx":1} -> {"col":1,"tagIdx":0,"rowIdx":8,"sortIdx":1}, mode inventory -> inventory
+[harness]   ok   I1 INSTRUMENT the touch listeners are attached  touch.enabled=true, attached=true, surface hook=true
+[harness] could not run: page.evaluate: Target page, context or browser has been closed

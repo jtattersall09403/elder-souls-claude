@@ -1,0 +1,24 @@
+[harness]   ok   I0 INSTRUMENT real listeners attached and a movement key reaches the pipeline  real.attached=true, input.moveX=1
+[harness]   ok   JX0 confirm on the chronicle still enters the search view  view='search', query=''
+[harness]   ok   JX1 at least one action in the closed set returns the journal from search to the chronicle  1 of 15 escape: ["roll (back)->chronicle"]
+[harness]   ok   JX2a back removes exactly one letter per press, as the foot hint promises  typed 'BCD' then back x5: ["journal/search/'BCD'","journal/search/'BC'","journal/search/'B'","journal/search/''","journal/chronicle/''","world/null/'null'"]
+[harness]   ok   JX2b back on an EMPTY line returns to the chronicle and stays in the journal  empty-line press 3; chronicle at press 4
+[harness]   ok   JX2c a further back then leaves the journal — the top-level exit is not lost  press 5 -> mode 'world'
+[harness]   ok   JX3 the search view does not survive a close and a re-open (OP6)  entered search with query 'BC', closed to 'world', re-opened: view='chronicle' query=''
+[harness]   ok   JX4 walking to a peer screen and back returns the chronicle, not the search box  search(query='BC') -> 'spells' -> back to 'journal': view='chronicle' query=''
+[harness]   ok   JX5 the quest-index sub-view also has an exit that stays in the journal  index -(back)-> mode='journal' view='chronicle'
+[harness]   ok   JX6 back on the chronicle still LEAVES the journal (backOrSub did not swallow the exit)  chronicle -(back)-> mode='world'
+[harness]   ok   EQ1 (RI-UIX10 O3) confirm on a weapon row out of combat changes something WITHIN 15 FRAMES  row 'Bog-iron maul  11.5  96  8.3': equipment ["chitin-cuirass@chest","reed-cutter@right"] -> f+1 ["bog-iron-maul@right","chitin-cuirass@chest"] -> f+15 ["bog-iron-maul@right","chitin-cuirass@chest"]; frame 43 -> 43 (paused, as RI-UIX03 P1 requires); doll ["inventory.worn.body","inventory.worn.right"] -> ["inventory.worn.body","inventory.worn.right"]; screen moved by f+1=true, by f+15=true
+[harness]   ok   EQ1b the change is on the FIRST frame, not merely inside the window  screen/equipment moved at f+1: true
+[harness]   ok   EQ2 (O3) confirm on a row the game REFUSES still shows the player something within 15 frames  row 'Sapwood bow  2.2  130  59.1': equipment ["bog-iron-maul@right","chitin-cuirass@chest"] -> ["bog-iron-maul@right","chitin-cuirass@chest"] (refused by policy); toast elements before [] after [{"id":"hud.toast","text":"You cannot get a grip on the sapwood bow. It is not made for your hands."}]; screen moved=false
+[harness]   ok   IC0 GATE a fight is actually running  spawn {"eid":"e0","aggro":true}, inCombat=true
+[harness]   FAIL IC1 (O3) the in-combat commitment is NARRATED on the screen while it runs  no row in ["reed-cutter","chitin-cuirass","bog-iron-maul"] could be focused by walking the list
+[harness]   ok   I1 INSTRUMENT the touch listeners are attached on device class handheld  real.touch.attached=true, enabled=true
+[harness]   ok   TS0 INSTRUMENT the list is at its first row before the stick is measured  focus.rowIdx=0 (a drag DOWN cannot move a focus already on the last row, and reporting that as a dead stick is a probe defect, not a build defect)
+[harness]   ok   TS1 (OP3) the floating touch stick walks an open screen's list  focus {"col":1,"tagIdx":0,"rowIdx":0,"sortIdx":0} -(drag down 120 px)-> {"col":1,"tagIdx":0,"rowIdx":1,"sortIdx":0} on mode 'inventory'
+[harness]   ok   TS2 (OP3, §C "the directional half") three flicks reach a row three away  rowIdx 1 -(3 separate flicks)-> 4
+[harness]   ok   TS3 (OP3) a sideways touch drag moves between the screen's columns  focus.col 1 -(drag left 140 px)-> 0
+[harness]   ok   TS3b the item column is back in focus before the repeat measurement  focus.col=1
+[harness]   ok   TS4 DIAGNOSTIC a 40-frame HELD touch drag moves more than one row (axis repeat)  rowIdx 4 -(one 40-frame held drag)-> 10
+[harness]   FAIL TS5 DIAGNOSTIC a 40-frame HELD keyboard direction moves more than one row  rowIdx 10 -(one 40-frame held KeyS)-> 11  << compare with TS4: if both are 1, the missing repeat is device-neutral, not a touch defect
+[harness] could not run: page.evaluate: Target page, context or browser has been closed
