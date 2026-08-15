@@ -1,0 +1,104 @@
+{
+  "task_id": "W1-F10-r6-appearance",
+  "roadmap_item": "F10",
+  "role": "photograph in the RUNNING GAME, on hardware and in motion, what round 6 fixed offline — and say plainly whether it looks better",
+  "state": "delivered and banked; two hardware arms captured in one Pod process on one GPU; NOT independently judged",
+  "date": "2026-08-15",
+  "branch": "codex/wave1-build-experiment",
+
+  "what_i_could_not_do": [
+    "I PHOTOGRAPHED ONE OF THE TWO ZERO-EYE VARIANTS, NOT BOTH. Round 6's headline population is `hum.dunmer-lean` + `hum.imperial-clerk` = 52 of 148 humanoid NPCs. The capture tool picks subjects by proximity to three fixed stands, and the two humanoid NPCs it found were `assizer-corvo` and `spellwright-gideon`. I computed which morph each resolves to rather than assuming: `renderer.js:709` sets `mesh.name = 'npc:' + n.eid`, `characterFor()` (actor.js:1995-2007) FNV-1a hashes that name modulo the five-entry humanoid pool, and BOTH eids land on `hum.dunmer-lean`. So `hum.imperial-clerk` — one of the two variants that measured ZERO eye pixels offline, and the larger half of the 35.1% — has still never been photographed on hardware. Neither has `hum.legion-heavy`, `hum.breton-stout`, `hum.marauder` or `hum.drowned`.",
+
+    "I DID NOT PHOTOGRAPH A SLOPE OR A STAIR, WHICH IS THE ONLY PLACE THE FIX'S ACTUAL MECHANISM DOES ANYTHING. Round 6 replaced a pin with a delta whose whole point is that each foot rides its own terrain height. Every frame I took is on flat grass or a flat deck, where the delta is either exactly zero or fully clamped. So I have evidence that the fix stopped burying the foot; I have NO evidence that the per-foot conform it replaced the pin with actually works. A stair in Lilmoth and a bank of the river would settle it and I did not go to either.",
+
+    "THE BOARDWALK EXPLANATION IS READ OUT OF THE CODE AND THE PICTURE, NOT MEASURED. I claim below that the player's static feet are identical between arms because the Lilmoth player stand is a raised deck. That is derived from `poseFromRig`'s `groundY = (body.pos && body.pos[1]) || 0` against `water.groundAt(x,z)` and the ±0.25 m clamp, plus sheet 04 showing planks under cut-off legs. I did NOT call `groundAt` at that coordinate and read the gap, so the number of centimetres is unmeasured and the mechanism is an inference. What would falsify it: `groundAt(2766, 5011)` returning within 0.25 m of the player's `pos[1]` of 2.7.",
+
+    "NO BLIND GATE RAN AND I SCORED NO RI ACCEPTANCE ROW. `RI-VIS10` B4 (facial landmarks) and `RI-VIS08` B8 (eye and pupil as separate geometry) are both now arguable from these frames rather than from an offline rasteriser, which is exactly what they were missing. I built the pack, so my opinion on either is void by construction (CLAUDE.md 0e). Only the orchestrator can spawn the judge.",
+
+    "THE CHARACTER REFERENCE SET STILL DOES NOT EXIST, SO 'BETTER' IS ALL I CAN HONESTLY SAY. The character directive's requirement 1 asks for images AND motion at Skyrim/ESO level before this work is judged; `I5` owns it and it is not there. I opened `corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764067250.jpg` at native resolution, which is one plate, and requirement 4's hole — nothing in the corpus covers character DESIGN — is unchanged. So my verdict below is a comparison of two arms against each other, not a measurement against a bar.",
+
+    "I DID NOT RE-RENT A POD TO CHASE THE TWO DEFECTS I FOUND. The bright-bead eye and the jagged cloth-to-foot seam are both visible in these frames and both are new work, not this piece's."
+  ],
+
+  "headline": "BOTH FIXES ARE REAL ON HARDWARE AND BOTH ARE NARROWER THAN THE OFFLINE NUMBERS SUGGEST. The faces: 16 of 16 NPC face close-ups changed, 6.4%-17.2% of box pixels, and an egg with a muzzle became a face with brow, orbits, eyes, nose, mouth and chin — while `player.saxhleel` came back BYTE-IDENTICAL on 4 of 4, the exact null round 6 predicted. The feet: the fix bites ONLY on the player and ONLY when he is on terrain. 12 of 12 NPC static foot pairs are byte-identical because `renderer.js:670` poses NPCs as `poseFromRig(mesh, eb)` with NO water argument, so the terrain conform — and therefore round 6's foot change — has never run for a single one of the 408 NPCs. And 3 of 3 PLAYER static foot pairs are byte-identical too, because the game's own player stand is a raised boardwalk where both arms bury the foot beneath the planks. The place it does work is the walk on grass, where 6 of 8 foot frames differ and a detached brown dome poking through the turf becomes a foot seated at the end of the leg.",
+
+  "the_capture": {
+    "one_pod_one_gpu_one_process": "Pod 3fazzr4e44iyab, NVIDIA RTX A4500, SECURE, $0.250/hr, 13:49:16Z-13:55:57Z, terminated in the mandatory cleanup path with deletion CONFIRMED by a subsequent API lookup returning not-found. ~$0.028. Both arms ran back to back inside that one Pod, so GPU, driver, engine, UI, data, capture tool and process are held constant and the arms differ by one file.",
+    "renderer_attested": "ANGLE (NVIDIA, Vulkan 1.4.303 (NVIDIA RTX A4500 (0x00002232)), NVIDIA) — `evidence_class: HARDWARE — valid for appearance claims`, recorded in both arms' manifests and in both walk-silhouette reports. Not swiftshader, not the offline rasteriser round 6 was limited to.",
+    "the_arms": "AFTER = `669f50be`, actor.js sha256 38fc78c2. BEFORE = the SAME tree with ONLY `game/src/render/actor.js` reverted to 6df8d003, sha256 4445a0d2. Verified free of round 6 before use, by command not by memory: `git show 6df8d003:game/src/render/actor.js | grep -c 'e\\[13\\]=gy+\\.02'` returns 1 and `grep -c 'THE HEIGHT WAS PINNED TO A CONSTANT'` returns 0. Reverting the ONE file is a tighter control than checking out 6df8d003 wholesale: `git log --oneline 6df8d003..HEAD -- game/src/render/actor.js` lists exactly two commits, `b95f8149` and `4c6ab280`, both round 6's, so no sibling's work is reverted with it — while `git diff --stat 6df8d003..HEAD -- game/` shows seven OTHER game files moved in that window, all of which are held identical between my arms.",
+    "shot_list": "`tools/visual/f10-r5-appearance.mjs`, unmodified (it is W1-30V's directory; I ran it, I did not edit it). 159 frames per arm, 318 total, 159 paired. 5 subjects: player(saxhleel), Deekjul(argonian), Neloth Sedran(dunmer), Corvo(imperial), Eeja(saxhleel). Slots: C4 eight-angle orbit, FA face x4 bearings, H1/H2 hands x12, F1 feet x3, M walk x16 whole figure, MF walk x8 foot close-up.",
+    "liveness": "`gateBuffer` on every one of the 318 frames with the real parameter names and the manifest's own projected subject box: 141 LIVE / 18 NO_SUBJECT in EACH arm, identically. Every number below is computed only over frames LIVE in both arms, and the NO_SUBJECT frames are named in `measurements/compare.json`. 11 of the 18 are foot close-ups — the region box is aimed 0.10 m above the subject's reported position and on a deck the foot is not there, which is the same finding as the boardwalk one arriving through the gate."
+  },
+
+  "does_it_look_better": {
+    "the_short_answer": "Yes for the face, and it is not close. Yes but narrowly for the foot, and only where the fix reaches. No change at all for anything the owner sees at conversational distance.",
+    "faces_yes": "Sheets 02 and 03. BEFORE: a smooth brown ovoid with a jutting muzzle and nothing else — the r5 critic's word 'a smooth blank' is fair and generous. AFTER: brow ridge, orbit, two eyes, a nose with nostrils, cheekbones, a mouth seam, a chin. Measured: 16 of 16 NPC face frames differ, mean 8.2% of box pixels, worst 17.2% (`FA__npc-assizer-corvo__b090`). It is a CRUDE face — faceted, closer to a carved wooden mask than to the ER plate — but it is a face and the head is no longer an egg.",
+    "faces_the_new_defect": "THE EYE READS AS A BRIGHT CREAM BEAD, and in most frames only one of the two does. The sclera at 0xa79f8c is lighter than every humanoid skin swatch, and in this scene's shadow it is the brightest thing on the character by a distance, so it reads as a glowing dot rather than as an eye. The ER plate the round-6 builder himself opened has the opposite structure — the eye is a dark recess with a small light iris, and it reads because of what is in shadow beside it. Round 6 moved the eye from invisible to too visible. That is progress and it is not finished.",
+    "feet_yes_where_it_reaches": "Sheet 01, frames f052 and f060. BEFORE: the calf ends in a flat blue cylinder with air under it, and a small detached brown dome sits on the grass nearby — that dome is the top 20 mm of a foot that is 68 mm underground. AFTER: the foot is at the end of the leg, on the ground, with a toe projecting forward. 6 of 8 walking foot pairs differ, up to 11.4% of box pixels.",
+    "feet_the_honest_qualification": "At hardware scale, in the character's own shadow, the after-foot reads as a dark hoof-like lump. The three splayed clawed toes that read cleanly in round 6's offline sheet 01 barely read here — the offline rasteriser had no shadow, no texture and a light the builder chose. And the join between the blue cloth calf and the foot is a jagged zig-zag seam that looks like a tear. Both are visible in sheet 01 at full size.",
+    "feet_no_for_the_player_standing_still": "Sheet 04. At the game's own `char-player` stand the player is on a raised boardwalk, and BOTH arms show two legs ending in flat cut-off cylinders with no feet at all — 3 of 3 pairs identical, the one exception differing on 0.01% of pixels. The before arm pins the ankle to terrain+2 cm, which is under the planks; the after arm shifts by `clamp(groundAt - pos.y, -0.25, 0.25)`, which on a deck saturates at -0.25 m and is ALSO under the planks. This is the state the owner would find if they loaded the game and looked down.",
+    "feet_no_for_every_npc_and_correctly_so": "12 of 12 NPC static foot pairs byte-identical. `renderer.js:670` poses NPCs as `poseFromRig(mesh, eb)` — three arguments, no `water` — and the conform block is guarded by `water && typeof water.groundAt === 'function'`. Only `renderer.js:1144` passes it, and that is the player. So NPC feet were never buried (round 6's own offline measurement: the no-conform path puts the sole 2 mm above ground) and round 6 changes nothing for them. This is not a defect in the fix; it is a correction to how large the fix is.",
+    "whole_figure_no_change_at_all": "Sheet 05, eight-angle orbit. 8 of 40 C4 pairs are byte-identical and the mean difference across the rest is 0.4% of box pixels. At the distance a player actually sees an NPC, round 6 is invisible, and the r5 verdict on the whole figure — 'slabs: a broad flat-fronted torso, legs merging into one column at most bearings, no deltoid, one uninflected colour per surface, a neck nearly as wide as the skull' — is visible and untouched in every one of those forty frames."
+  },
+
+  "the_walk_it_moved_and_the_gait_did_not": {
+    "it_moved": "HAZARDS §16 says no capture in this project had ever photographed a moving player, that `setInput` is not a harness verb, and that a stationary sequence moves 0.2% of the border ring while a real walk moves 71.35%. Measured here from the returned frames, independently of what the manifest claims: MEDIAN CONSECUTIVE BORDER-RING CHANGE 42.38%, first-to-last 64.66%, identical in both arms. The manifest agrees from the other direction — `queueInputs` accepted 69 events and the player travelled 3.315 m over 64 simulated frames at stick 0.55. The player walked.",
+    "the_gait_did_not": "Round 6's `what_the_next_round_should_do` says the pin that overwrote the foot's animated height is gone, so heel-strike and toe-off can now exist, and that whether they DO is one command it did not run. I ran it. `f10-r5-walk-silhouette.mjs` on both arms: leg/head 3.56 BEFORE -> 3.54 AFTER, leg/torso 0.59 both, identity check 0 px both, `mean_head_px` and `mean_torso_px` byte-identical at 7.807 and 47.015. THE HYPOTHESIS IS NOT SUPPORTED. Removing the pin let the foot be drawn; it did not change how the leg band moves through the cycle. The 3.56 is no longer unretested — it is retested and it did not move.",
+    "a_number_worth_someone_looking_at": "`leg_over_torso` is 0.59 in both arms — the TORSO band's silhouette changes nearly twice as much per step as the LEG band's. For a walk that is the wrong way round. I make no claim about what causes it; it is the same in both arms so it is not round 6's, and it is the sort of thing this tool was built to surface."
+  },
+
+  "instruments_built": {
+    "tools/visual/f10-r6-appearance-compare.mjs": "Reads two returned arms; captures nothing, so it cannot inherit a capture defect. Per-frame liveness with the manifest's own subject box; per-frame before/after difference inside that box at an 8/255 threshold, with byte-identity reported rather than averaged away; and the border-ring change rate across the walk, which is the HAZARDS §16 statistic computed from the frames rather than trusted from the manifest. `--self-test` runs 5 checks whose arms are required to disagree, including the one that matters — a CENTRE-ONLY change must NOT move the ring, without which the ring statistic would pass a stationary player whose idle animation twitches."
+  },
+
+  "hazards_worth_recording": [
+    "A FIX CAN BE CORRECT, MEASURED, AND STILL NOT REACH THE THING IN FRONT OF THE PLAYER. Round 6's offline instrument reported 24 of 24 foot frames differing, and it was right — it posed the actor through `poseFromRig` with a supplied `groundAt` and a flat ground plane, which is the one configuration where the fix has full effect. In the running game the same fix reaches 0 of 408 NPCs (no `water` argument at the call site) and 0 of 3 player static frames (the stand is a deck). An offline harness that supplies its own preconditions will measure the fix's ceiling, never its reach. THE REACH IS A CALL-SITE QUESTION AND IT IS ANSWERED BY GREPPING THE CALLERS, WHICH COSTS ONE COMMAND.",
+    "THE SUBJECT-SELECTION TOOL PICKS THE POPULATION, AND NOBODY CHECKED WHICH ONE IT PICKED. Both humanoid NPCs near the stands hash to the same morph variant, so a five-subject sweep photographed one of six humanoid variants and I only know that because I reproduced the hash locally. A sweep that reports 'humanoid: 2' is reporting family, not variant, and the variant is what round 6 changed."
+  ],
+
+  "evidence": {
+    "where": "corpus/90-verdicts/wave1/artifacts/W1-F10-r6-appearance/",
+    "open_this_first": "sheets/03-dunmer-faces-hardware.png — `hum.dunmer-lean`, the variant carrying the larger share of the 52 NPCs that had zero visible eye pixels, four bearings, before left and after right, on a real GPU.",
+    "then": "sheets/01-walking-feet-hardware.png (the detached dome in the grass becomes a foot; look at f052 and f060), sheets/04-static-feet-boardwalk-null.png (the player standing at his own stand, no feet in EITHER arm), sheets/05-orbit-imperial-eight-angles.png (at figure distance the two arms are indistinguishable, and the 'slabs' verdict is untouched).",
+    "frames": "frames/ — the four before/after pairs that carry the argument, at full 960x540.",
+    "measurements": "measurements/compare.json (every frame, every verdict, every diff), walk-before.json and walk-after.json (the silhouette bands), after.manifest.json and before.manifest.json, arm-proof.txt and arm-shas-at-start.txt (which actor.js each arm actually rendered, computed on the Pod), gpu.csv, both capture logs.",
+    "raw": "reports/runpod-gpu/runs/f10-r6-appearance/ — all 318 frames. NOT on the branch (`reports/` is gitignored, HAZARDS §9) and prunable after 8 hours per §5a; everything cited above is in the corpus path.",
+    "reproduce": "node tools/visual/f10-r6-appearance-compare.mjs --run reports/runpod-gpu/runs/f10-r6-appearance/artifacts --out <dir> ; and node tools/visual/f10-r5-walk-silhouette.mjs --dir <arm-dir>"
+  },
+
+  "references_opened": [
+    "CLAUDE.md — the character directive, all four requirements. Requirement 3 ('builders and critics both look at our actual game, in motion... stills are not enough') is what this piece exists to satisfy and is why the walk was captured and the ring change measured rather than assumed.",
+    "orchestration/status/W1-F10-r6.json in full, including all seven entries of its `what_i_could_not_do` — its first entry is this piece's brief.",
+    "orchestration/HAZARDS.md §5a (pruning; checked `df -h .` first, 3.2 GiB free, 0 run directories older than 8 h so nothing was prunable), §13, §15, §15a (`--revision` passed, 3 uncommitted sibling paths excluded from the paid run and named in the log), §16.",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r6/sheets/01-feet-before-after.png at full size, before capturing.",
+    "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764067250.jpg — one plate, the same one round 6 used; it is why I call the bright-bead eye a defect rather than an improvement.",
+    "reports/runpod-gpu/runs/f10-r5-appearance-r2/ — the previous paid run's command script, logs and frames. Its 'after' arm carries actor.js sha256 4445a0d2, i.e. it is BYTE-IDENTICAL to my 'before' arm, which is a free cross-check that my control is the tree round 5 was judging.",
+    "game/src/render/actor.js — poseFromRig's conform block (2148-2196), characterFor (1995-2007), CHARACTER_SPECS (1953-1977).",
+    "game/src/render/renderer.js:670 and :1144 — the two poseFromRig call sites, which is where the foot fix's reach is decided; and :709, `mesh.name = 'npc:' + n.eid`, which is the hash key.",
+    "tools/visual/f10-r5-appearance.mjs and f10-r2-pair-sheet.mjs — read in full and RUN, not edited (W1-30V holds tools/visual/)."
+  ],
+
+  "files_touched": [
+    "tools/visual/fixtures/f10-r6-control-actor.js",
+    "tools/visual/f10-r6-appearance-compare.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r6-appearance/",
+    "orchestration/status/W1-F10-r6-appearance.json"
+  ],
+  "files_claimed": [
+    "tools/visual/fixtures/f10-r6-control-actor.js",
+    "tools/visual/f10-r6-appearance-compare.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r6-appearance/",
+    "orchestration/status/W1-F10-r6-appearance.json"
+  ],
+  "ownership_note": "`node tools/ownership.mjs --for tools/visual/f10-r5-appearance.mjs` RUN, not assumed: one live piece, W1-30V, holding a CLAIMED hold on `tools/visual/` as a directory. So this piece adds NEW FILES ONLY there and edits nothing W1-30V has touched — the precedent rounds 3, 4, 5 and 6 all followed. `--for corpus/90-verdicts/wave1/artifacts/` RUN: 8 live pieces and an UNDECLARED OVERLAP warning on the directory, so this piece writes only inside its own new `W1-F10-r6-appearance/` subdirectory and lands with `--paths`. NO game/ file was edited by this piece at all.",
+
+  "what_the_next_round_should_do_and_why": [
+    "PUT THE PLAYER'S FEET ON THE BOARDWALK. The clamp is ±0.25 m against a deck that is further above the terrain field than that, so at the game's own player stand the player has no feet in either arm — and that stand is where a player loads in. The conform should be against the surface the character is STANDING ON, which `body.pos[1]` already is, not against the terrain field beneath a structure. This is the single most visible thing in this piece.",
+    "THE EYE IS NOW TOO BRIGHT. A cream sclera at 0xa79f8c against skins from 0x7a6f78 to 0xc2a98c reads as a bead, especially in shadow, and only one of the two catches light in most frames. The reference structure is a dark recess with a small light iris. This is a materials change, not a geometry one, and it is small.",
+    "PHOTOGRAPH THE OTHER FIVE HUMANOID VARIANTS, ESPECIALLY `hum.imperial-clerk`. It is half of round 6's headline population and no camera in this project has ever pointed at it. Selecting subjects by variant rather than by proximity is a change to the sweep, not new capture cost.",
+    "THE GAIT IS STILL THE GAIT. leg/head 3.56 -> 3.54 across the fix. Whatever a stiff shuffle is, removing the foot pin did not change it, and the `leg_over_torso` of 0.59 says the torso silhouette moves more per step than the legs do.",
+    "THE BAR, NOT THE BUILD — unchanged from round 6 and now with a second round's worth of unfalsifiable aesthetic calls behind it. Nothing in the corpus covers character DESIGN, and `I5`'s reference set does not exist, so 'better' is the strongest honest word available for either of these fixes."
+  ],
+
+  "redundant_with": []
+}

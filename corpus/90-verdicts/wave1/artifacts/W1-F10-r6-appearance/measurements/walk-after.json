@@ -1,0 +1,284 @@
+{
+  "tool": "f10-r5-walk-silhouette",
+  "dir": "/home/user/elder-souls-claude/reports/runpod-gpu/runs/f10-r6-appearance/artifacts/after",
+  "tag": "after",
+  "renderer": "ANGLE (NVIDIA, Vulkan 1.4.303 (NVIDIA NVIDIA RTX A4500 (0x00002232)), NVIDIA)",
+  "evidence_class": "HARDWARE — valid for appearance claims.",
+  "identity_check_px": 0,
+  "bands": {
+    "head": [
+      0,
+      0.18
+    ],
+    "torso": [
+      0.18,
+      0.62
+    ],
+    "leg": [
+      0.62,
+      1
+    ]
+  },
+  "band_note": "bands are fractions of the subject box measured from its TOP; head 0-18%, torso 18-62%, leg 62-100%",
+  "travelled_m_total": 3.3153548120824685,
+  "motion_manifest": {
+    "queued": 69,
+    "stick": 0.55,
+    "note": "player travelled 3.315 m over 64 simulated frames with the stick at 0.55"
+  },
+  "boxes_supplied": 16,
+  "sequence_box": {
+    "x0": 365,
+    "x1": 595,
+    "y0": 47,
+    "y1": 493
+  },
+  "per_frame_box_drift_px": {
+    "x0": 0,
+    "x1": 0,
+    "y0": 0,
+    "y1": 0
+  },
+  "frames": [
+    {
+      "file": "M__walk__f004.png",
+      "sim_frame": 4,
+      "travelled_m": 0.1333603389317484,
+      "mask_px": 12304,
+      "bg_buckets": 180
+    },
+    {
+      "file": "M__walk__f008.png",
+      "sim_frame": 8,
+      "travelled_m": 0.3446336750810025,
+      "mask_px": 13363,
+      "bg_buckets": 154
+    },
+    {
+      "file": "M__walk__f012.png",
+      "sim_frame": 12,
+      "travelled_m": 0.49192309358289904,
+      "mask_px": 8584,
+      "bg_buckets": 146
+    },
+    {
+      "file": "M__walk__f016.png",
+      "sim_frame": 16,
+      "travelled_m": 0.7435683963161347,
+      "mask_px": 9510,
+      "bg_buckets": 140
+    },
+    {
+      "file": "M__walk__f020.png",
+      "sim_frame": 20,
+      "travelled_m": 0.9161407097165601,
+      "mask_px": 8115,
+      "bg_buckets": 150
+    },
+    {
+      "file": "M__walk__f024.png",
+      "sim_frame": 24,
+      "travelled_m": 1.1661656185979938,
+      "mask_px": 8571,
+      "bg_buckets": 145
+    },
+    {
+      "file": "M__walk__f028.png",
+      "sim_frame": 28,
+      "travelled_m": 1.3452947483733397,
+      "mask_px": 12566,
+      "bg_buckets": 125
+    },
+    {
+      "file": "M__walk__f032.png",
+      "sim_frame": 32,
+      "travelled_m": 1.5937981867223847,
+      "mask_px": 10717,
+      "bg_buckets": 156
+    },
+    {
+      "file": "M__walk__f036.png",
+      "sim_frame": 36,
+      "travelled_m": 1.7757117587038445,
+      "mask_px": 13988,
+      "bg_buckets": 153
+    },
+    {
+      "file": "M__walk__f040.png",
+      "sim_frame": 40,
+      "travelled_m": 2.023188021415418,
+      "mask_px": 11839,
+      "bg_buckets": 162
+    },
+    {
+      "file": "M__walk__f044.png",
+      "sim_frame": 44,
+      "travelled_m": 2.2067461702697337,
+      "mask_px": 15387,
+      "bg_buckets": 160
+    },
+    {
+      "file": "M__walk__f048.png",
+      "sim_frame": 48,
+      "travelled_m": 2.4535378802864067,
+      "mask_px": 14235,
+      "bg_buckets": 157
+    },
+    {
+      "file": "M__walk__f052.png",
+      "sim_frame": 52,
+      "travelled_m": 2.6380128449268834,
+      "mask_px": 9053,
+      "bg_buckets": 151
+    },
+    {
+      "file": "M__walk__f056.png",
+      "sim_frame": 56,
+      "travelled_m": 2.8843282545507156,
+      "mask_px": 15694,
+      "bg_buckets": 129
+    },
+    {
+      "file": "M__walk__f060.png",
+      "sim_frame": 60,
+      "travelled_m": 3.069497841666986,
+      "mask_px": 16132,
+      "bg_buckets": 119
+    },
+    {
+      "file": "M__walk__f064.png",
+      "sim_frame": 64,
+      "travelled_m": 3.3153548120824685,
+      "mask_px": 15600,
+      "bg_buckets": 114
+    }
+  ],
+  "steps": [
+    {
+      "from": "M__walk__f004.png",
+      "to": "M__walk__f008.png",
+      "travelled_m": 0.3446336750810025,
+      "head": 7.704,
+      "torso": 49.217,
+      "leg": 28.135
+    },
+    {
+      "from": "M__walk__f008.png",
+      "to": "M__walk__f012.png",
+      "travelled_m": 0.49192309358289904,
+      "head": 5.321,
+      "torso": 42.338,
+      "leg": 25.994
+    },
+    {
+      "from": "M__walk__f012.png",
+      "to": "M__walk__f016.png",
+      "travelled_m": 0.7435683963161347,
+      "head": 8.222,
+      "torso": 40.793,
+      "leg": 22.359
+    },
+    {
+      "from": "M__walk__f016.png",
+      "to": "M__walk__f020.png",
+      "travelled_m": 0.9161407097165601,
+      "head": 7.79,
+      "torso": 37.929,
+      "leg": 23.194
+    },
+    {
+      "from": "M__walk__f020.png",
+      "to": "M__walk__f024.png",
+      "travelled_m": 1.1661656185979938,
+      "head": 4.444,
+      "torso": 36.308,
+      "leg": 21.794
+    },
+    {
+      "from": "M__walk__f024.png",
+      "to": "M__walk__f028.png",
+      "travelled_m": 1.3452947483733397,
+      "head": 7.901,
+      "torso": 49.556,
+      "leg": 24.771
+    },
+    {
+      "from": "M__walk__f028.png",
+      "to": "M__walk__f032.png",
+      "travelled_m": 1.5937981867223847,
+      "head": 8.037,
+      "torso": 50.687,
+      "leg": 28.3
+    },
+    {
+      "from": "M__walk__f032.png",
+      "to": "M__walk__f036.png",
+      "travelled_m": 1.7757117587038445,
+      "head": 6.63,
+      "torso": 54.222,
+      "leg": 28.894
+    },
+    {
+      "from": "M__walk__f036.png",
+      "to": "M__walk__f040.png",
+      "travelled_m": 2.023188021415418,
+      "head": 10.148,
+      "torso": 52.838,
+      "leg": 25.418
+    },
+    {
+      "from": "M__walk__f040.png",
+      "to": "M__walk__f044.png",
+      "travelled_m": 2.2067461702697337,
+      "head": 9.395,
+      "torso": 45.571,
+      "leg": 29.112
+    },
+    {
+      "from": "M__walk__f044.png",
+      "to": "M__walk__f048.png",
+      "travelled_m": 2.4535378802864067,
+      "head": 9.173,
+      "torso": 48.682,
+      "leg": 36.771
+    },
+    {
+      "from": "M__walk__f048.png",
+      "to": "M__walk__f052.png",
+      "travelled_m": 2.6380128449268834,
+      "head": 7.63,
+      "torso": 48.374,
+      "leg": 29.035
+    },
+    {
+      "from": "M__walk__f052.png",
+      "to": "M__walk__f056.png",
+      "travelled_m": 2.8843282545507156,
+      "head": 7.037,
+      "torso": 51.076,
+      "leg": 31.665
+    },
+    {
+      "from": "M__walk__f056.png",
+      "to": "M__walk__f060.png",
+      "travelled_m": 3.069497841666986,
+      "head": 8,
+      "torso": 48.97,
+      "leg": 34.182
+    },
+    {
+      "from": "M__walk__f060.png",
+      "to": "M__walk__f064.png",
+      "travelled_m": 3.3153548120824685,
+      "head": 9.667,
+      "torso": 48.662,
+      "leg": 25.488
+    }
+  ],
+  "n_steps": 15,
+  "mean_head_px": 7.807,
+  "mean_torso_px": 47.015,
+  "mean_leg_px": 27.674,
+  "leg_over_head": 3.54,
+  "leg_over_torso": 0.59
+}
