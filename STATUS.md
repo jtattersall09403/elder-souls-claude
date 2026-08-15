@@ -67,26 +67,22 @@ Alongside that: shrinking the documentation every agent reads before it can star
   tone from shoulder to ankle now has a sash with a bone toggle, three cord rings per forearm, a hem, a
   yoke and tonal variation. **A background NPC in the same frame gained a sash too — nobody targeted
   it**, which is the shared body plan working as intended.
-- **Most of the people in the world were floating in the air or buried in the ground.** Nobody had ever
-  checked. NPC positions come from an authored number that turns out to be **one constant per
-  settlement**, never compared to the terrain — so at the Lilmoth stand, of the 31 people the game
-  draws, **12 were underground (worst 2.31 m) and 15 were in the air (worst 35 metres up).** Four of
-  thirty-one stood on the ground. Now zero and zero.
-- **Faces are fixed, and the eye has been corrected twice.** All 16 NPC face close-ups changed — a brown
-  ovoid with a muzzle became a face with brow, orbits, eyes, nose, mouth and chin. The eye then became a
-  *bright cream bead*; that is now fixed against the decoded reference plate, with eye and iris derived
-  as fractions of each character's own skin, so all nine races pass and none has an eye brighter than
-  its face.
-- **The camera stops burying you — and what was burying you is a market awning.** Not a deck: a 2.7 m
-  cloth awning slung over the street that the collision system could not see. Measured across all eight
-  towns, **1,197 overhead objects a player can walk under were invisible to collision** — every town
-  draws a market awning, a vendor awning and a rack beam over its street, and in every town all three
-  were absent. Camera burial at Lilmoth goes from **26 consecutive frames to 1**, and that 1 is a
-  measurement artefact, also fixed.
-  **The fix nearly made things worse in a way the test could not see:** adding the colliders alone shoved
-  the camera arm to its minimum length, which fades the player to fully transparent — the game would
-  have *passed* by making you invisible. Caught by the builder re-reading the rule when its own numbers
-  looked too good.
+- **People stand on the ground now, and it is photographed.** NPC positions came from one authored
+  constant per settlement, never compared to the terrain. At Lilmoth, of 31 people drawn, **12 were
+  underground and 15 were in the air (worst 35 metres up)**; four of thirty-one stood on the ground.
+  Now zero and zero, confirmed on hardware — in the before frame people are simply *absent*, in the
+  after frame they stand beside the wall. It turned out to be **mostly a Lilmoth defect**: five of the
+  eight towns were already fine.
+- **The eyes are the clearest win of the day.** The same Imperial goes from two cream googly eyeballs
+  to two dark sockets, and against the reference photograph the new version is on the right side of it
+  where the old one was its opposite. Two caveats, both found by the agent that made it: it may have
+  overshot — under a hat brim the eye can vanish entirely — and **the player character got nothing from
+  it**, because the fix landed in the human block and the player is a saxhleel.
+- **A new defect nobody had reported: a wide-brim hat is drawn as a flat hexagonal plank across the
+  eyebrows**, hiding the wearer's eyes completely. At conversation distance that is more disfiguring
+  than either thing this round fixed.
+- **The body is still wrong.** Eight orbit angles of the player: a flat pale-blue sandwich-board torso,
+  no waist, no shoulder line, shield and sword as planks. That verdict is unchanged.
 - **Still owed on characters:** none of this has been photographed in the game yet. And there is a
   measured reason the foot work kept photographing as "no change" — the three camera stands used for
   character captures offer **at most 34 mm of ground height difference between the two feet**, so a
