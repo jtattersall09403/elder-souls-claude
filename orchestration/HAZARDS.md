@@ -66,6 +66,29 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 14a. A whole-tree bank can hang indefinitely — `land --paths` is also the faster tool
+
+Measured twice on 2026-08-15, on the same tree, minutes apart:
+
+| | elapsed |
+|---|---|
+| `bank.mjs` with no `--paths` | **hung — killed at 584 s**, no output, no children, box at load 4.3 |
+| `land.mjs --paths <4 files>` | **~1 s**, landed and verified against the remote blob |
+
+It is not load and it is not the network. A whole-tree bank walks every changed path in a tree that a
+dozen agents are writing to, and the set it is walking keeps moving underneath it. Under `nohup` its
+output is block-buffered, so a hung bank looks identical to a working one — **no output is not
+evidence of no progress, and it is not evidence of progress either.**
+
+**So `--paths` is not merely the polite choice, it is the fast one.** §14 already gives the
+correctness reason (a whole-tree bank steals the commit headline and the finished piece never learns
+it finished) and §12 the experimental one (it can carry a sibling's uncommitted edit into `HEAD` and
+turn a delete-the-fix green). This is the third, and it is the one you notice first.
+
+**If you must run a whole-tree bank — before a restart, to save the fleet — give it a deadline and
+kill it by PID if it passes.** A bank that has produced nothing after five minutes on a quiet box is
+hung, not slow.
+
 ## 14. A whole-tree bank steals the headline — and the piece never learns it finished
 
 **Caused by the orchestrator, found three times in one day.**
