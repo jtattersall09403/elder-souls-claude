@@ -61,12 +61,14 @@
   builder declared against itself: making the price column fit shrank *every* column by 27%, so long
   item names now truncate harder (`Black-water draught` → `Black-wat…`); and most items still show only
   2 of the 4–6 lines they need, because the box was not made bigger. Being judged now.
-- **⚠ Something is wrong with how we measure the screens, and it is bigger than the screens.** The
-  round-6 builder could not reproduce round 5's filed density numbers **even on a byte-identical
-  checkout of the exact commit round 5 was judged on** — it reads a hard fail where the verdict records
-  a pass, in four separate arms. It proved its own change is not the cause (moves the number by exactly
-  0.0000) and reported it rather than working around it. Until that is settled, treat density scores on
-  these screens as unreliable in both directions.
+- **⚠ That measurement scare is closed, and the answer was the opposite.** I said an hour ago that a
+  filed verdict's numbers wouldn't reproduce and to distrust the screen scores. They reproduce
+  **exactly**. The four "isolated" copies the builder compared had all quietly measured **the same
+  live tree** — the tools work out where the repo is from *their own location on disk*, so copying the
+  game somewhere and running the normal command measures the original, not the copy. Four results
+  agreeing to four decimal places was the tell, and it reads as rigour. The real comparison shows
+  round 6's own change took the container from a pass to a fail. **Everything that was ever proved by
+  "we deleted the fix and the old number came back" is now worth re-checking.**
 - **The water: I told you it was 28% better yesterday. A judge has now failed it at 2 of 10, and the
   "28%" was mostly the water getting darker.** The diagnosis was right — the sea was compositing a
   **61% mirror at every viewing angle**, including looking straight down, where real water reflects

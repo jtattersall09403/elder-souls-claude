@@ -66,6 +66,49 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 22. A CONTROL CLONE THAT RUNS THE MAIN TREE'S TOOL IS NOT A CONTROL. It measures the main tree.
+
+**Found 2026-08-15 by the T4 r6 critic, and it invalidates a whole class of arms across this repo, not
+one round.** A builder reported four independent arms — a frozen clone, a reverted clone, a `git
+worktree` at a pinned commit, and the live tree — all returning the same number to four decimals, and
+concluded the instrument was non-deterministic. **Four arms agreeing to four decimals was the
+signature of four runs of the same tree.**
+
+**The mechanism, and it is two lines:**
+
+```js
+// tools/lib/cli.mjs
+export const HERE      = path.dirname(fileURLToPath(import.meta.url));
+export const REPO_ROOT = path.resolve(HERE, '..', '..');   // ← the SCRIPT's location, not the CWD
+```
+
+`browser.mjs` then serves `REPO_ROOT/game`. So **copying the game to a clone and running
+`node tools/whatever.mjs` from the main tree serves the MAIN TREE's game.** The clone is never
+opened. `grep -rl "lib/cli.mjs" tools/ | wc -l` returns **458**, so this is the default behaviour of
+essentially every measurement tool here.
+
+**An arm is isolated only if it is run through the CLONE'S OWN copy of the tool** — `node
+<clone>/tools/....mjs`, not `node tools/....mjs --entry <clone>`.
+
+**The discriminator, proved both ways rather than argued:** a genuine control clone records
+`commit: "unknown"` in its manifest; a genuine worktree records the **pinned sha**. The builder's four
+manifests each recorded **a live sibling's HEAD, timestamped to the minute the arm ran** — four
+different shas, because siblings were landing while it measured. **Read the `commit` field of every
+arm's manifest before believing any before/after pair.** If it names a commit you did not pin, the arm
+ran somewhere you did not intend.
+
+**What it cost here:** a real three-worktree comparison then showed round 6's own change moved the
+container's density by **−0.0079**, the entire distance from a pass to a hard fail — where the builder
+had reported *"exactly 0.0000"*. **The sign was inverted, not the magnitude**, and the conclusion drawn
+from it ("the instrument is unreliable, distrust these scores") propagated as far as `STATUS.md`
+before the critic caught it. The instrument was deterministic all along: same PNG in, same number out,
+verified by recomputing both rounds' filed figures from their stored captures.
+
+**This is §11 and §12's failure with the arms swapped.** §11: a shared tree moves under your
+experiment. §12: `HEAD` is not your baseline. §22: **your baseline was never loaded.** All three end
+with a delete-the-fix that proves nothing, and this one is the hardest to see, because it produces
+*agreement* — which reads as rigour.
+
 ## 20. Three traps found by the F10 r9 critic, 2026-08-15 — a generator that reverts a round, a `--pose` that silently means something else, and a shared tree that is mid-edit under you
 
 **20a. `tools/harness/anim-author.mjs` holds a SECOND COPY of the idle stance, and `--write` used to
