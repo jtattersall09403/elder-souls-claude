@@ -534,8 +534,12 @@ test('worktree snapshot contains exact dirty tracked and untracked bytes', async
   fs.writeFileSync(path.join(root, 'game', 'tracked.txt'), 'after\n');
   fs.unlinkSync(path.join(root, 'game', 'deleted.txt'));
   fs.writeFileSync(path.join(root, 'game', 'untracked.txt'), 'new\n');
-  const snapshot = await createSnapshot({ repoRoot: root, paths: ['game'], tempDir: scratch });
+  // --worktree is now the OPT-IN, so this test says so explicitly. It used to pass no flag at
+  // all, because carrying the working tree used to be the default — which is the defect
+  // HAZARDS.md §15a describes.
+  const snapshot = await createSnapshot({ repoRoot: root, paths: ['game'], tempDir: scratch, worktree: true });
   assert.equal(snapshot.dirty, true);
+  assert.equal(snapshot.worktree, true);
   assert.equal(snapshot.fileCount, 2);
   const extract = path.join(scratch, 'extract');
   fs.mkdirSync(extract);
@@ -543,6 +547,49 @@ test('worktree snapshot contains exact dirty tracked and untracked bytes', async
   assert.equal(fs.readFileSync(path.join(extract, 'game', 'tracked.txt'), 'utf8'), 'after\n');
   assert.equal(fs.readFileSync(path.join(extract, 'game', 'untracked.txt'), 'utf8'), 'new\n');
   assert.equal(fs.existsSync(path.join(extract, 'game', 'deleted.txt')), false);
+});
+
+// THE ARM THAT PROVES §15a IS ACTUALLY FIXED, and it is the same fixture as the test above with
+// the flag removed. Both arms must disagree: with --worktree the sibling's uncommitted edit is in
+// the tar, without it the tar carries the committed bytes and the run is reproducible from a sha.
+// A test that only asserted the new behaviour would not show that the old one was ever possible.
+test('default snapshot pins the committed revision and leaves a sibling\'s uncommitted edits out (HAZARDS 15a)', async (context) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'runpod-snapshot-pin-'));
+  const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'runpod-snapshot-pin-out-'));
+  context.after(() => { fs.rmSync(root, { recursive: true, force: true }); fs.rmSync(scratch, { recursive: true, force: true }); });
+  await runProcess('git', ['init', '-q'], { cwd: root });
+  await runProcess('git', ['config', 'user.email', 'test@example.invalid'], { cwd: root });
+  await runProcess('git', ['config', 'user.name', 'RunPod test'], { cwd: root });
+  fs.mkdirSync(path.join(root, 'game'));
+  fs.writeFileSync(path.join(root, 'game', 'icons.js'), 'export const ICONS = 1;\n');
+  await runProcess('git', ['add', 'game/icons.js'], { cwd: root });
+  await runProcess('git', ['commit', '-qm', 'fixture'], { cwd: root });
+
+  // A neighbour is mid-edit on the shared tree — exactly what killed both arms of a paid run.
+  fs.writeFileSync(path.join(root, 'game', 'icons.js'), 'export const ICONS = SYNTAX ERROR\n');
+  fs.writeFileSync(path.join(root, 'game', 'scratch-note.txt'), 'a sibling was here\n');
+
+  const pinned = await createSnapshot({ repoRoot: root, paths: ['game'], tempDir: scratch });
+  assert.equal(pinned.worktree, false);
+  assert.ok(pinned.excludedDirtyPaths.includes('game/icons.js'), 'the mid-edit must be NAMED as excluded, not silently dropped');
+  assert.ok(pinned.excludedDirtyPaths.includes('game/scratch-note.txt'));
+  const extract = path.join(scratch, 'pinned');
+  fs.mkdirSync(extract);
+  await runProcess('tar', ['-xzf', pinned.archivePath, '-C', extract]);
+  assert.equal(fs.readFileSync(path.join(extract, 'game', 'icons.js'), 'utf8'), 'export const ICONS = 1;\n',
+    'the paid run must execute the COMMITTED bytes, not the neighbour\'s broken mid-edit');
+  assert.equal(fs.existsSync(path.join(extract, 'game', 'scratch-note.txt')), false);
+
+  // The other arm, same fixture: with --worktree the contamination is present. If this arm did
+  // not go the other way, the test above would be proving nothing.
+  const scratch2 = path.join(scratch, 'wt');
+  fs.mkdirSync(scratch2);
+  const dirtySnap = await createSnapshot({ repoRoot: root, paths: ['game'], tempDir: scratch2, worktree: true });
+  const extract2 = path.join(scratch, 'wt-extract');
+  fs.mkdirSync(extract2);
+  await runProcess('tar', ['-xzf', dirtySnap.archivePath, '-C', extract2]);
+  assert.equal(fs.readFileSync(path.join(extract2, 'game', 'icons.js'), 'utf8'), 'export const ICONS = SYNTAX ERROR\n');
+  assert.equal(fs.existsSync(path.join(extract2, 'game', 'scratch-note.txt')), true);
 });
 
 test('ephemeral SSH key is generated with private permissions', async (context) => {

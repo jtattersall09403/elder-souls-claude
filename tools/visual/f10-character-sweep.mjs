@@ -31,6 +31,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { launchForCapture, resolveGpuMode } from './lib/gpu-launch.mjs';
 import { manifestRendererFields, rendererBanner } from './lib/renderer-class.mjs';
+import { gateBuffer, T as LIVENESS_T, SUBJECT_ROC } from './frame-liveness.mjs';
 
 const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const args = {};
@@ -96,7 +97,49 @@ async function shoot(file, meta) {
   const buf = Buffer.from(String(shot.v).replace(/^data:image\/png;base64,/, ''), 'base64');
   fs.writeFileSync(path.join(FRAMES_DIR, file), buf);
   const hash = crypto.createHash('sha256').update(buf).digest('hex').slice(0, 16);
-  rows.push({ file, status: 'ok', bytes: buf.length, hash, ...meta });
+
+  // THE CHECK THIS TOOL DID NOT HAVE, and it is why it exists in this form (HAZARDS.md §15,
+  // roadmap I2). Round 1 of this sweep reported `0 red` while 17 of its 93 frames contained no
+  // subject at all — Ixtei stands out at sea off the Lilmoth pier, so every frame of her is open
+  // water and sky. The tool could not tell an empty frame from a full one, and neither could
+  // anything downstream of it.
+  //
+  // The subject box comes from `meta.framing`, which this file computes from the subject's world
+  // height and the camera — independently of the pixels. That matters: it is the one input a
+  // pixel test must not invent for itself (HAZARDS §0).
+  //
+  // TWO DIFFERENT CONFIDENCES, recorded as two different fields. `status: red` is reserved for a
+  // frame that is not a picture at all, which is decided by a battery whose thresholds sit in a
+  // clear gap. Subject presence is `subject_amber`, because its measured error rate on this very
+  // run is 15 of 17 empties caught against 5 of 76 false reds — good enough to point a human at,
+  // not good enough to void a frame automatically.
+  const fr = meta && meta.framing;
+  let box = null;
+  const H = Number(CH) || null;
+  if (fr && fr.head && fr.foot && Array.isArray(fr.head.ndc) && Array.isArray(fr.foot.ndc) && H) {
+    const a = (1 - fr.head.ndc[1]) / 2 * H;
+    const b = (1 - fr.foot.ndc[1]) / 2 * H;
+    box = { x0: 0, x1: 10 ** 9, y0: Math.max(0, Math.round(Math.min(a, b))), y1: Math.round(Math.max(a, b)) };
+  }
+  const live = gateBuffer(buf, { label: file, box, subject: true, throwOnDegenerate: false });
+  const degenerate = live.verdict === 'DEGENERATE' || live.verdict === 'UNREADABLE';
+  if (live.verdict !== 'LIVE') log(`  ${degenerate ? 'RED ' : 'AMBER'} ${file}: ${live.verdict} — ${(live.why || []).join('; ')}`);
+  rows.push({
+    file,
+    status: degenerate ? 'red' : 'ok',
+    reason: degenerate ? `frame-liveness ${live.verdict}: ${(live.why || []).join('; ')}` : undefined,
+    subject_amber: (live.verdict === 'NO_SUBJECT' || live.verdict === 'SUBJECT_UNDECIDABLE') ? live.verdict : null,
+    subject_why: live.verdict === 'LIVE' ? null : (live.why || null),
+    liveness: live.verdict,
+    liveness_stats: {
+      luma_span: live.luma_span, shadow_levels: live.shadow_levels,
+      local_contrast_med: live.local_contrast_med, luma_entropy: live.luma_entropy,
+      dominant_frac: live.dominant_frac, structure_ratio: live.structure_ratio,
+      centre_flank_luma: live.centre_flank_luma,
+    },
+    subject_box_from: live.subject_box ? live.subject_box.from : null,
+    bytes: buf.length, hash, ...meta,
+  });
   return hash;
 }
 
@@ -264,6 +307,8 @@ const manifest = {
   schema: 'f10-character-sweep/1',
   tag: TAG,
   canvas: [CW, CH],
+  frame_liveness_thresholds: LIVENESS_T,
+  subject_test_measured_error_rate: SUBJECT_ROC,
   fov_deg: FOV_DEG,
   seed: SEED,
   orbit_angles: ORBIT_ANGLES,
