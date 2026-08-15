@@ -1,0 +1,3958 @@
+{
+  "boot": {
+    "frame": 4,
+    "mode": "world",
+    "quest": {
+      "journal_len": 19
+    },
+    "hud_elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.2328767123287671,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 23.28767123287671
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Black-water draught / Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": "Black-water draught",
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.prompt",
+        "kind": "interact_prompt",
+        "rect": [
+          860,
+          830,
+          200,
+          32
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Sesh-Anaat",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "range_m": 1.45,
+          "device": "keyboard",
+          "glyph": "keycap"
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      }
+    ],
+    "coveragePct": 2.7988,
+    "fonts": [
+      {
+        "family": "Argonian Reed (project)",
+        "size_px": 19,
+        "weight": 1.15,
+        "path": "game/src/ui/glyphs.js"
+      },
+      {
+        "family": "Argonian Bone-cut (project)",
+        "size_px": 15,
+        "weight": 1.5,
+        "path": "game/src/ui/glyphs.js"
+      }
+    ],
+    "textRenderPath": "canvas-vector",
+    "text_raster_scale": 1,
+    "text_glyph_source": "game/src/ui/glyphs.js",
+    "materials": [],
+    "overdraw": 0.028,
+    "markers": 0,
+    "marker_census": {
+      "scope": "screen",
+      "elements": 8,
+      "derived": true,
+      "clauses": [
+        "m1 forbidden kind",
+        "m2 world anchor",
+        "m3 quest identity or destination",
+        "m4 a place square the discovery model does not support"
+      ],
+      "model_available": true,
+      "hits": []
+    }
+  },
+  "journal": {
+    "journal": {
+      "chronological": true,
+      "interleave_ratio": 0.8889,
+      "entries": 19,
+      "view": "chronicle",
+      "query": ""
+    },
+    "navigable": [
+      "world",
+      "inventory",
+      "sheet",
+      "spells",
+      "wait"
+    ],
+    "mode": "journal",
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.2328767123287671,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 23.28767123287671
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Black-water draught / Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": "Black-water draught",
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.prompt",
+        "kind": "interact_prompt",
+        "rect": [
+          860,
+          830,
+          200,
+          32
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Sesh-Anaat",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "range_m": 1.45,
+          "device": "keyboard",
+          "glyph": "keycap"
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      },
+      {
+        "id": "journal.panel",
+        "kind": "panel",
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": "parchment",
+        "focused": false,
+        "meta": {
+          "area_frac": 0.5718
+        }
+      },
+      {
+        "id": "journal.header",
+        "kind": "panel_header",
+        "rect": [
+          200,
+          160,
+          1520,
+          54
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Journal",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.index.head",
+        "kind": "panel_header",
+        "rect": [
+          222,
+          224,
+          250,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Quests",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.index.Q-LILM-01",
+        "kind": "journal_index_row",
+        "rect": [
+          222,
+          254,
+          250,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "The Company Man",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-LILM-01"
+        }
+      },
+      {
+        "id": "journal.index.Q-DOCK-01",
+        "kind": "journal_index_row",
+        "rect": [
+          222,
+          280,
+          250,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Eleven Gold a Week",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-DOCK-01"
+        }
+      },
+      {
+        "id": "journal.index.Q-MAIN-01",
+        "kind": "journal_index_row",
+        "rect": [
+          222,
+          306,
+          250,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "The Reading of the Count",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-01"
+        }
+      },
+      {
+        "id": "journal.index.Q-MAIN-02",
+        "kind": "journal_index_row",
+        "rect": [
+          222,
+          332,
+          250,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Eleven Empty Boxes",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-02"
+        }
+      },
+      {
+        "id": "journal.index.Q-SOUL-02",
+        "kind": "journal_index_row",
+        "rect": [
+          222,
+          358,
+          250,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "The Count of the Drowned",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-SOUL-02"
+        }
+      },
+      {
+        "id": "journal.entry.Q-MAIN-01.3",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          230,
+          570,
+          131.96
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "A clerk on the Soulrest customs bench told me the Drowned Court has been paying outlanders to carry its books, and paying well, because it will not put its own people on the road. He said it as though it were a joke about the Court and not about the road.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-01",
+          "index": 3,
+          "day": 0,
+          "date_text": "1 Second Seed, 3E 427",
+          "page": 0
+        }
+      },
+      {
+        "id": "journal.entry.Q-MAIN-01.10",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          377.96,
+          570,
+          131.96
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Undersexton Aveline Rell has given me a sealed quarterly return to carry from Soulrest to the Court's factor in Gideon. She pays a hundred and twenty in advance, which is more than the work is worth, and she asked twice whether anyone had spoken to me on the stair.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-01",
+          "index": 10,
+          "day": 0,
+          "date_text": "1 Second Seed, 3E 427",
+          "page": 0
+        }
+      },
+      {
+        "id": "journal.entry.Q-MAIN-02.10",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          525.92,
+          570,
+          131.96
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Rell wants eleven burial boxes counted and their weights written down. They came back from the wells at Bone Ladder and Salt-Egg Camp with nothing in them, which she says happens, and which she is nonetheless paying me to write down.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-02",
+          "index": 10,
+          "day": 1,
+          "date_text": "2 Second Seed, 3E 427",
+          "page": 0
+        }
+      },
+      {
+        "id": "journal.entry.Q-SOUL-02.8",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          673.88,
+          570,
+          104.22
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "There is a book in the Soulrest customs post that lists bodies burned by the Drowned Court, and the number for last season is written twice in two different hands.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-SOUL-02",
+          "index": 8,
+          "day": 2,
+          "date_text": "3 Second Seed, 3E 427",
+          "page": 0
+        }
+      },
+      {
+        "id": "journal.entry.Q-LILM-01.8",
+        "kind": "journal_entry",
+        "rect": [
+          1128,
+          230,
+          570,
+          76.48
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "There is a body in the rotting quarter with a Leyawiin charter in its satchel and no rot on it at all. Nobody in Lilmoth has reported a body in nine years.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-LILM-01",
+          "index": 8,
+          "day": 3,
+          "date_text": "4 Second Seed, 3E 427",
+          "page": 0
+        }
+      },
+      {
+        "id": "journal.entry.Q-MAIN-02.20",
+        "kind": "journal_entry",
+        "rect": [
+          1128,
+          322.48,
+          570,
+          131.96
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "All eleven are empty and all eleven are the right weight for empty. The mortuary hands say the bodies went into the wells and did not come out as anything, not as sap, not as heat, not as the smell they expect. One of them would not go on talking about it inside.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-02",
+          "index": 20,
+          "day": 4,
+          "date_text": "5 Second Seed, 3E 427",
+          "page": 0
+        }
+      },
+      {
+        "id": "journal.entry.Q-MAIN-02.30",
+        "kind": "journal_entry",
+        "rect": [
+          1128,
+          470.44,
+          570,
+          104.22
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "I sat on the burial stair after dark and there is a sound under the Stone Wastes. It is not surf and it is not wind in the salt-store. It is regular, and slow, and it has been going on longer than anyone in Soulrest has been paying attention to it.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-02",
+          "index": 30,
+          "day": 4,
+          "date_text": "5 Second Seed, 3E 427",
+          "page": 0
+        }
+      },
+      {
+        "id": "journal.entry.Q-MAIN-01.20",
+        "kind": "journal_entry",
+        "rect": [
+          1128,
+          590.66,
+          570,
+          104.22
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "The seal on the return is a mortuary seal and it is not fresh. Whatever is in it was closed up before I was hired. At the Bone Ladder the keeper asked me whose count I was carrying and would not say what she meant.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-01",
+          "index": 20,
+          "day": 5,
+          "date_text": "6 Second Seed, 3E 427",
+          "page": 0
+        }
+      },
+      {
+        "id": "journal.entry.Q-DOCK-01.10",
+        "kind": "journal_entry",
+        "rect": [
+          1128,
+          710.88,
+          570,
+          104.22
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Eeja says the porters have been paid eleven gold a week short since Rain's Hand and that nobody will put a name to it. She is not asking me to fix it. She is asking me to count.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-DOCK-01",
+          "index": 10,
+          "day": 6,
+          "date_text": "7 Second Seed, 3E 427",
+          "page": 0
+        }
+      },
+      {
+        "id": "journal.entry.Q-SOUL-02.10",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          -9999,
+          570,
+          104.22
+        ],
+        "visible": false,
+        "opacity": 0,
+        "text": "Vaskh says the Court's count has been wrong for two years and that she wants it counted again from the yard's own tallies, by somebody who is not of the Court.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-SOUL-02",
+          "index": 10,
+          "day": 6,
+          "date_text": "7 Second Seed, 3E 427",
+          "page": null
+        }
+      },
+      {
+        "id": "journal.entry.Q-LILM-01.10",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          -9999,
+          570,
+          76.48
+        ],
+        "visible": false,
+        "opacity": 0,
+        "text": "The charter is a trading licence for a company I have not heard of, endorsed for the acquisition of botanical specimens. It names a tree.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-LILM-01",
+          "index": 10,
+          "day": 7,
+          "date_text": "8 Second Seed, 3E 427",
+          "page": null
+        }
+      },
+      {
+        "id": "journal.entry.Q-DOCK-01.20",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          -9999,
+          570,
+          76.48
+        ],
+        "visible": false,
+        "opacity": 0,
+        "text": "I counted. Forty-one porters, and the pay shed's book says thirty. The eleven who are not in the book are all Naga, and all of them work.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-DOCK-01",
+          "index": 20,
+          "day": 9,
+          "date_text": "10 Second Seed, 3E 427",
+          "page": null
+        }
+      },
+      {
+        "id": "journal.entry.Q-MAIN-01.30",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          -9999,
+          570,
+          104.22
+        ],
+        "visible": false,
+        "opacity": 0,
+        "text": "A man in a good coat walked the coast track behind me from the Ladder to Hollow-Reeds and turned back when I stopped to sit. He was not a carter and he was not going to Gideon.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-01",
+          "index": 30,
+          "day": 9,
+          "date_text": "10 Second Seed, 3E 427",
+          "page": null
+        }
+      },
+      {
+        "id": "journal.entry.Q-LILM-01.20",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          -9999,
+          570,
+          76.48
+        ],
+        "visible": false,
+        "opacity": 0,
+        "text": "Tesh has seen three of these. She has been putting them in a drawer for two years because there is nobody in Lilmoth whose job it is to care.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-LILM-01",
+          "index": 20,
+          "day": 11,
+          "date_text": "12 Second Seed, 3E 427",
+          "page": null
+        }
+      },
+      {
+        "id": "journal.entry.Q-SOUL-02.20",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          -9999,
+          570,
+          76.48
+        ],
+        "visible": false,
+        "opacity": 0,
+        "text": "The yard's tallies and the customs book differ by four hundred and eleven. Vaskh knew the number before I said it.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-SOUL-02",
+          "index": 20,
+          "day": 12,
+          "date_text": "13 Second Seed, 3E 427",
+          "page": null
+        }
+      },
+      {
+        "id": "journal.entry.Q-MAIN-02.45",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          -9999,
+          570,
+          131.96
+        ],
+        "visible": false,
+        "opacity": 0,
+        "text": "The mortuary hand's name is Ojal-Weeth and outside, where the sound is, she said the boxes have been coming back empty for longer than eleven. She has been counting them herself since her mother died and it is not eleven, it is closer to ninety.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-02",
+          "index": 45,
+          "day": 12,
+          "date_text": "13 Second Seed, 3E 427",
+          "page": null
+        }
+      },
+      {
+        "id": "journal.entry.Q-MAIN-01.45",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          -9999,
+          570,
+          131.96
+        ],
+        "visible": false,
+        "opacity": 0,
+        "text": "The factor's name for the man in the coat is Sedd Ravano and he takes money from the Wet Ledger to know what the Court is writing down. The factor says this is neither news nor a secret and that Rell has been trying to put a face to it for two seasons.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-01",
+          "index": 45,
+          "day": 13,
+          "date_text": "14 Second Seed, 3E 427",
+          "page": null
+        }
+      },
+      {
+        "id": "journal.entry.Q-DOCK-01.30",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          -9999,
+          570,
+          104.22
+        ],
+        "visible": false,
+        "opacity": 0,
+        "text": "The pay clerk says the eleven were never taken on, that they turn up and carry and get paid out of the shortfall by the other thirty. He says this as though it explains something.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-DOCK-01",
+          "index": 30,
+          "day": 14,
+          "date_text": "15 Second Seed, 3E 427",
+          "page": null
+        }
+      },
+      {
+        "id": "journal.entry.Q-LILM-01.30",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          -9999,
+          570,
+          104.22
+        ],
+        "visible": false,
+        "opacity": 0,
+        "text": "The rootkeepers under the old temple will not talk to me about the Empire and will talk about very little else. One of them asked whether the men with the licences had come back yet, as though I would know.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-LILM-01",
+          "index": 30,
+          "day": 15,
+          "date_text": "16 Second Seed, 3E 427",
+          "page": null
+        }
+      },
+      {
+        "id": "journal.gutter",
+        "kind": "divider",
+        "rect": [
+          1099,
+          224,
+          12,
+          644
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.pages",
+        "kind": "page_count",
+        "rect": [
+          512,
+          876,
+          1186,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "1 of 2",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "spread": 1,
+          "spreads": 2,
+          "entries": 19
+        }
+      },
+      {
+        "id": "journal.hint",
+        "kind": "hint",
+        "rect": [
+          222,
+          902,
+          1476,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Left and right turn the page. Confirm on a name in the margin to go to it.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      }
+    ],
+    "toast": null,
+    "map_exists": true,
+    "coveragePct": 59.6661,
+    "screen_alpha": 0.94,
+    "world_rendered_behind": true
+  },
+  "journal_search": {
+    "search": {
+      "query": "the",
+      "count": 19,
+      "results": [
+        {
+          "journal_id": "Q-MAIN-01",
+          "index": 3,
+          "day": 0,
+          "date": "1 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-MAIN-01",
+          "index": 10,
+          "day": 0,
+          "date": "1 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-MAIN-02",
+          "index": 10,
+          "day": 1,
+          "date": "2 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-SOUL-02",
+          "index": 8,
+          "day": 2,
+          "date": "3 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-LILM-01",
+          "index": 8,
+          "day": 3,
+          "date": "4 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-MAIN-02",
+          "index": 20,
+          "day": 4,
+          "date": "5 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-MAIN-02",
+          "index": 30,
+          "day": 4,
+          "date": "5 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-MAIN-01",
+          "index": 20,
+          "day": 5,
+          "date": "6 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-DOCK-01",
+          "index": 10,
+          "day": 6,
+          "date": "7 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-SOUL-02",
+          "index": 10,
+          "day": 6,
+          "date": "7 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-LILM-01",
+          "index": 10,
+          "day": 7,
+          "date": "8 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-DOCK-01",
+          "index": 20,
+          "day": 9,
+          "date": "10 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-MAIN-01",
+          "index": 30,
+          "day": 9,
+          "date": "10 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-LILM-01",
+          "index": 20,
+          "day": 11,
+          "date": "12 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-SOUL-02",
+          "index": 20,
+          "day": 12,
+          "date": "13 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-MAIN-02",
+          "index": 45,
+          "day": 12,
+          "date": "13 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-MAIN-01",
+          "index": 45,
+          "day": 13,
+          "date": "14 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-DOCK-01",
+          "index": 30,
+          "day": 14,
+          "date": "15 Second Seed, 3E 427"
+        },
+        {
+          "journal_id": "Q-LILM-01",
+          "index": 30,
+          "day": 15,
+          "date": "16 Second Seed, 3E 427"
+        }
+      ],
+      "chronological": true
+    },
+    "journal": {
+      "chronological": true,
+      "interleave_ratio": 0.8889,
+      "entries": 19,
+      "view": "search",
+      "query": "the"
+    },
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.2328767123287671,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 23.28767123287671
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Black-water draught / Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": "Black-water draught",
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.prompt",
+        "kind": "interact_prompt",
+        "rect": [
+          860,
+          830,
+          200,
+          32
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Sesh-Anaat",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "range_m": 1.45,
+          "device": "keyboard",
+          "glyph": "keycap"
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      },
+      {
+        "id": "journal.panel",
+        "kind": "panel",
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": "parchment",
+        "focused": false,
+        "meta": {
+          "area_frac": 0.5718
+        }
+      },
+      {
+        "id": "journal.header",
+        "kind": "panel_header",
+        "rect": [
+          200,
+          160,
+          1520,
+          54
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Journal",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.query",
+        "kind": "search_field",
+        "rect": [
+          222,
+          236,
+          420,
+          34
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "the",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k0",
+        "kind": "list_row",
+        "rect": [
+          222,
+          276,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "A",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": true
+      },
+      {
+        "id": "journal.ring.k1",
+        "kind": "list_row",
+        "rect": [
+          274.5,
+          276,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "B",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k2",
+        "kind": "list_row",
+        "rect": [
+          327,
+          276,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "C",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k3",
+        "kind": "list_row",
+        "rect": [
+          379.5,
+          276,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "D",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k4",
+        "kind": "list_row",
+        "rect": [
+          432,
+          276,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "E",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k5",
+        "kind": "list_row",
+        "rect": [
+          484.5,
+          276,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "F",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k6",
+        "kind": "list_row",
+        "rect": [
+          537,
+          276,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "G",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k7",
+        "kind": "list_row",
+        "rect": [
+          589.5,
+          276,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "H",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k8",
+        "kind": "list_row",
+        "rect": [
+          222,
+          322,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "I",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k9",
+        "kind": "list_row",
+        "rect": [
+          274.5,
+          322,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "J",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k10",
+        "kind": "list_row",
+        "rect": [
+          327,
+          322,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "K",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k11",
+        "kind": "list_row",
+        "rect": [
+          379.5,
+          322,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "L",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k12",
+        "kind": "list_row",
+        "rect": [
+          432,
+          322,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "M",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k13",
+        "kind": "list_row",
+        "rect": [
+          484.5,
+          322,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "N",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k14",
+        "kind": "list_row",
+        "rect": [
+          537,
+          322,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "O",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k15",
+        "kind": "list_row",
+        "rect": [
+          589.5,
+          322,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "P",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k16",
+        "kind": "list_row",
+        "rect": [
+          222,
+          368,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Q",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k17",
+        "kind": "list_row",
+        "rect": [
+          274.5,
+          368,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "R",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k18",
+        "kind": "list_row",
+        "rect": [
+          327,
+          368,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k19",
+        "kind": "list_row",
+        "rect": [
+          379.5,
+          368,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "T",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k20",
+        "kind": "list_row",
+        "rect": [
+          432,
+          368,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "U",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k21",
+        "kind": "list_row",
+        "rect": [
+          484.5,
+          368,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "V",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k22",
+        "kind": "list_row",
+        "rect": [
+          537,
+          368,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "W",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k23",
+        "kind": "list_row",
+        "rect": [
+          589.5,
+          368,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "X",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k24",
+        "kind": "list_row",
+        "rect": [
+          222,
+          414,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Y",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k25",
+        "kind": "list_row",
+        "rect": [
+          274.5,
+          414,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Z",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k26",
+        "kind": "list_row",
+        "rect": [
+          327,
+          414,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "(space)",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k27",
+        "kind": "list_row",
+        "rect": [
+          379.5,
+          414,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "0",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k28",
+        "kind": "list_row",
+        "rect": [
+          432,
+          414,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "1",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k29",
+        "kind": "list_row",
+        "rect": [
+          484.5,
+          414,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "2",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k30",
+        "kind": "list_row",
+        "rect": [
+          537,
+          414,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "3",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k31",
+        "kind": "list_row",
+        "rect": [
+          589.5,
+          414,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "4",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k32",
+        "kind": "list_row",
+        "rect": [
+          222,
+          460,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k33",
+        "kind": "list_row",
+        "rect": [
+          274.5,
+          460,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "6",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k34",
+        "kind": "list_row",
+        "rect": [
+          327,
+          460,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "7",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k35",
+        "kind": "list_row",
+        "rect": [
+          379.5,
+          460,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "8",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.ring.k36",
+        "kind": "list_row",
+        "rect": [
+          432,
+          460,
+          49.5,
+          43
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "9",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.results.head",
+        "kind": "panel_header",
+        "rect": [
+          682,
+          224,
+          1016,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "19 found",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 19,
+          "chronological": true
+        }
+      },
+      {
+        "id": "journal.result.Q-MAIN-01.3",
+        "kind": "journal_entry",
+        "rect": [
+          682,
+          264,
+          1016,
+          42.72
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "A clerk on the Soulrest customs bench told me the Drowned Court has been paying outlanders to carry its …",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-01",
+          "index": 3,
+          "day": 0
+        }
+      },
+      {
+        "id": "journal.result.Q-MAIN-01.10",
+        "kind": "journal_entry",
+        "rect": [
+          682,
+          308.72,
+          1016,
+          42.72
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "…Rell has given me a sealed quarterly return to carry from Soulrest to the Court's factor in Gideon. She pays a hundred and twenty in advance, which is more than th…",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-01",
+          "index": 10,
+          "day": 0
+        }
+      },
+      {
+        "id": "journal.result.Q-MAIN-02.10",
+        "kind": "journal_entry",
+        "rect": [
+          682,
+          353.44,
+          1016,
+          42.72
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Rell wants eleven burial boxes counted and their weights written down. They came back from the wells at Bone Ladder and Salt-Egg Camp wi…",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-02",
+          "index": 10,
+          "day": 1
+        }
+      },
+      {
+        "id": "journal.result.Q-SOUL-02.8",
+        "kind": "journal_entry",
+        "rect": [
+          682,
+          398.16,
+          1016,
+          42.72
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "There is a book in the Soulrest customs post that lists bodies burned by the Drowned Court, a…",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-SOUL-02",
+          "index": 8,
+          "day": 2
+        }
+      },
+      {
+        "id": "journal.result.Q-LILM-01.8",
+        "kind": "journal_entry",
+        "rect": [
+          682,
+          442.88,
+          1016,
+          42.72
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "There is a body in the rotting quarter with a Leyawiin charter in its satchel and no rot on i…",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-LILM-01",
+          "index": 8,
+          "day": 3
+        }
+      },
+      {
+        "id": "journal.result.Q-MAIN-02.20",
+        "kind": "journal_entry",
+        "rect": [
+          682,
+          487.6,
+          1016,
+          42.72
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "All eleven are empty and all eleven are the right weight for empty. The mortuary hands say the bodies went into the wells and did not…",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-02",
+          "index": 20,
+          "day": 4
+        }
+      },
+      {
+        "id": "journal.result.Q-MAIN-02.30",
+        "kind": "journal_entry",
+        "rect": [
+          682,
+          532.32,
+          1016,
+          42.72
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "I sat on the burial stair after dark and there is a sound under the Stone Wastes. It is not surf and i…",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-02",
+          "index": 30,
+          "day": 4
+        }
+      },
+      {
+        "id": "journal.result.Q-MAIN-01.20",
+        "kind": "journal_entry",
+        "rect": [
+          682,
+          577.04,
+          1016,
+          42.72
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "The seal on the return is a mortuary seal and it is not fresh. Whatever is in it was closed u…",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-MAIN-01",
+          "index": 20,
+          "day": 5
+        }
+      },
+      {
+        "id": "journal.result.Q-DOCK-01.10",
+        "kind": "journal_entry",
+        "rect": [
+          682,
+          621.76,
+          1016,
+          42.72
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Eeja says the porters have been paid eleven gold a week short since Rain's Hand and that nobody will pu…",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-DOCK-01",
+          "index": 10,
+          "day": 6
+        }
+      },
+      {
+        "id": "journal.result.Q-SOUL-02.10",
+        "kind": "journal_entry",
+        "rect": [
+          682,
+          666.48,
+          1016,
+          42.72
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Vaskh says the Court's count has been wrong for two years and that she wants it counted again from the y…",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-SOUL-02",
+          "index": 10,
+          "day": 6
+        }
+      },
+      {
+        "id": "journal.result.Q-LILM-01.10",
+        "kind": "journal_entry",
+        "rect": [
+          682,
+          711.2,
+          1016,
+          42.72
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "The charter is a trading licence for a company I have not heard of, endorsed for the acquisit…",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-LILM-01",
+          "index": 10,
+          "day": 7
+        }
+      },
+      {
+        "id": "journal.result.Q-DOCK-01.20",
+        "kind": "journal_entry",
+        "rect": [
+          682,
+          755.92,
+          1016,
+          42.72
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "I counted. Forty-one porters, and the pay shed's book says thirty. The eleven who are not in the book are all Naga, and all of …",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-DOCK-01",
+          "index": 20,
+          "day": 9
+        }
+      },
+      {
+        "id": "journal.hint",
+        "kind": "hint",
+        "rect": [
+          222,
+          902,
+          1476,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Walk the letters, confirm to add one, back to remove one. Results are in the order they happened.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      }
+    ]
+  },
+  "inventory": {
+    "mode": "inventory",
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.2328767123287671,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 23.28767123287671
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Black-water draught / Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": "Black-water draught",
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.prompt",
+        "kind": "interact_prompt",
+        "rect": [
+          860,
+          830,
+          200,
+          32
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Sesh-Anaat",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "range_m": 1.45,
+          "device": "keyboard",
+          "glyph": "keycap"
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      },
+      {
+        "id": "inventory.panel",
+        "kind": "panel",
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": "reed",
+        "focused": false,
+        "meta": {
+          "area_frac": 0.5718
+        }
+      },
+      {
+        "id": "inventory.header",
+        "kind": "panel_header",
+        "rect": [
+          200,
+          160,
+          1520,
+          54
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Bark token",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "inventory.encumbrance",
+        "kind": "encumbrance",
+        "rect": [
+          222,
+          224,
+          148,
+          60
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "81.7 / 183",
+        "fill": 0.44767123287671234,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "load": 81.7,
+          "max": 182.5,
+          "tier": "UNBURDENED"
+        }
+      },
+      {
+        "id": "inventory.cat.all",
+        "kind": "category",
+        "rect": [
+          222,
+          296,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "All",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 44
+        }
+      },
+      {
+        "id": "inventory.cat.weapon",
+        "kind": "category",
+        "rect": [
+          222,
+          347,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Weapon",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 5
+        }
+      },
+      {
+        "id": "inventory.cat.armour",
+        "kind": "category",
+        "rect": [
+          222,
+          398,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Armour",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 4
+        }
+      },
+      {
+        "id": "inventory.cat.clothing",
+        "kind": "category",
+        "rect": [
+          222,
+          449,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Clothing",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 5
+        }
+      },
+      {
+        "id": "inventory.cat.potion",
+        "kind": "category",
+        "rect": [
+          222,
+          500,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Potion",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 3
+        }
+      },
+      {
+        "id": "inventory.cat.ingredient",
+        "kind": "category",
+        "rect": [
+          222,
+          551,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Ingredient",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 4
+        }
+      },
+      {
+        "id": "inventory.cat.book",
+        "kind": "category",
+        "rect": [
+          222,
+          602,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Book",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 3
+        }
+      },
+      {
+        "id": "inventory.cat.tool",
+        "kind": "category",
+        "rect": [
+          222,
+          653,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Tool",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 8
+        }
+      },
+      {
+        "id": "inventory.cat.misc",
+        "kind": "category",
+        "rect": [
+          222,
+          704,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Misc",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 7
+        }
+      },
+      {
+        "id": "inventory.cat.quest",
+        "kind": "category",
+        "rect": [
+          222,
+          755,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Quest",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 4
+        }
+      },
+      {
+        "id": "inventory.sort",
+        "kind": "category",
+        "rect": [
+          222,
+          814,
+          148,
+          42
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "sorted by name",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "inventory.gold",
+        "kind": "gold",
+        "rect": [
+          222,
+          864,
+          148,
+          30
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "0 gold",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "inventory.rule1",
+        "kind": "divider",
+        "rect": [
+          376,
+          224,
+          12,
+          674
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "inventory.cols",
+        "kind": "divider",
+        "rect": [
+          396,
+          224,
+          700,
+          30
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "inventory.row.hist-bark-token",
+        "kind": "list_row",
+        "rect": [
+          396,
+          258,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Bark token  0.1  —  0.0",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": true,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "category": "quest",
+          "weight": 0.1,
+          "value_gold": 0,
+          "equipped": false,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.row.black-water-draught",
+        "kind": "list_row",
+        "rect": [
+          396,
+          290,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Black-water draught  ×3  0.4  30  75.0",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "black-water-draught",
+          "category": "potion",
+          "weight": 0.4,
+          "value_gold": 30,
+          "equipped": false,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.row.bog-iron-maul",
+        "kind": "list_row",
+        "rect": [
+          396,
+          322,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Bog-iron maul  11.5  96  8.3",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "bog-iron-maul",
+          "category": "weapon",
+          "weight": 11.5,
+          "value_gold": 96,
+          "equipped": false,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.row.boiled-hide-jack",
+        "kind": "list_row",
+        "rect": [
+          396,
+          354,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Boiled hide jack  4.2  55  13.1",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "boiled-hide-jack",
+          "category": "armour",
+          "weight": 4.2,
+          "value_gold": 55,
+          "equipped": false,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.row.bone-picks",
+        "kind": "list_row",
+        "rect": [
+          396,
+          386,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Bone picks, set of five  ×5  0.3  48  160",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "bone-picks",
+          "category": "tool",
+          "weight": 0.3,
+          "value_gold": 48,
+          "equipped": false,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.row.carved-egg",
+        "kind": "list_row",
+        "rect": [
+          396,
+          418,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Carved egg  0.2  5  25.0",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "carved-egg",
+          "category": "misc",
+          "weight": 0.2,
+          "value_gold": 5,
+          "equipped": false,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.row.chitin-cuirass",
+        "kind": "list_row",
+        "rect": [
+          396,
+          450,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "— Chitin cuirass  7.5  210  28.0",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "chitin-cuirass",
+          "category": "armour",
+          "weight": 7.5,
+          "value_gold": 210,
+          "equipped": true,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.row.coil-of-twine",
+        "kind": "list_row",
+        "rect": [
+          396,
+          482,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Coil of weir twine  1.3  6  4.6",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "coil-of-twine",
+          "category": "misc",
+          "weight": 1.3,
+          "value_gold": 6,
+          "equipped": false,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.row.resin-of-the-comb",
+        "kind": "list_row",
+        "rect": [
+          396,
+          514,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Comb resin  ×2  0.5  22  44.0",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "resin-of-the-comb",
+          "category": "ingredient",
+          "weight": 0.5,
+          "value_gold": 22,
+          "equipped": false,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.row.counted-crate-tally",
+        "kind": "list_row",
+        "rect": [
+          396,
+          546,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Crate tally, three counts  0.0  —  —",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "counted-crate-tally",
+          "category": "quest",
+          "weight": 0,
+          "value_gold": 0,
+          "equipped": false,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.row.silt-strider-silk-sash",
+        "kind": "list_row",
+        "rect": [
+          396,
+          578,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Dres silk sash  0.2  260  1300",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "silt-strider-silk-sash",
+          "category": "clothing",
+          "weight": 0.2,
+          "value_gold": 260,
+          "equipped": false,
+          "stolen": true
+        }
+      },
+      {
+        "id": "inventory.row.guar-jerky",
+        "kind": "list_row",
+        "rect": [
+          396,
+          610,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Dried guar  ×6  0.6  5  8.3",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "guar-jerky",
+          "category": "misc",
+          "weight": 0.6,
+          "value_gold": 5,
+          "equipped": false,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.row.factors-coat",
+        "kind": "list_row",
+        "rect": [
+          396,
+          642,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Factor's coat  1.4  120  85.7",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "factors-coat",
+          "category": "clothing",
+          "weight": 1.4,
+          "value_gold": 120,
+          "equipped": false,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.row.weighing-stone",
+        "kind": "list_row",
+        "rect": [
+          396,
+          674,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Factor's weighing stone  2.5  30  12.0",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "weighing-stone",
+          "category": "tool",
+          "weight": 2.5,
+          "value_gold": 30,
+          "equipped": false,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.row.fever-cut",
+        "kind": "list_row",
+        "rect": [
+          396,
+          706,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Fever-cut  ×2  0.4  46  115",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "fever-cut",
+          "category": "potion",
+          "weight": 0.4,
+          "value_gold": 46,
+          "equipped": false,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.extent",
+        "kind": "scroll_extent",
+        "rect": [
+          1102,
+          258,
+          12,
+          614
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "from": 0,
+          "shown": 15,
+          "total": 44
+        }
+      },
+      {
+        "id": "inventory.rule2",
+        "kind": "divider",
+        "rect": [
+          1108,
+          224,
+          12,
+          674
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "inventory.detail",
+        "kind": "detail_panel",
+        "rect": [
+          1130,
+          224,
+          568,
+          674
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "A palm-sized disc of Hist bark with three notches in the rim. Everyone who sees it knows what it means and nobody has yet explained it to you.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "hist-bark-token",
+          "weight": 0.1,
+          "value_gold": 0,
+          "condition": 1
+        }
+      },
+      {
+        "id": "inventory.hint",
+        "kind": "hint",
+        "rect": [
+          222,
+          902,
+          1476,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Left and right change column. Up and down move. Confirm to equip, read or use. Swap turns the page: the map, the journal, your case, your spells.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      }
+    ],
+    "coveragePct": 59.6661,
+    "screen_alpha": 0.94,
+    "world_rendered_behind": true,
+    "full_screen_panels": 0,
+    "non_world_area_frac": 0.5967
+  },
+  "levelup": {
+    "err": null,
+    "mode": "levelup",
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.2328767123287671,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 23.28767123287671
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Black-water draught / Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": "Black-water draught",
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.prompt",
+        "kind": "interact_prompt",
+        "rect": [
+          860,
+          830,
+          200,
+          32
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Sesh-Anaat",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "range_m": 1.45,
+          "device": "keyboard",
+          "glyph": "keycap"
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      },
+      {
+        "id": "levelup.panel",
+        "kind": "panel",
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": "bone",
+        "focused": false,
+        "meta": {
+          "area_frac": 0.5718
+        }
+      },
+      {
+        "id": "levelup.header",
+        "kind": "panel_header",
+        "rect": [
+          200,
+          160,
+          1520,
+          54
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "The hearth",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "levelup.level",
+        "kind": "level_value",
+        "rect": [
+          222,
+          224,
+          300,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "6",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "level": 6
+        }
+      },
+      {
+        "id": "levelup.souls",
+        "kind": "souls_held",
+        "rect": [
+          542,
+          224,
+          300,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "9400",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "souls_held": 9400
+        }
+      },
+      {
+        "id": "levelup.next",
+        "kind": "souls_to_next",
+        "rect": [
+          862,
+          224,
+          360,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "788",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "souls_to_next": 788,
+          "level_after": 7,
+          "affordable": true
+        }
+      },
+      {
+        "id": "levelup.rule",
+        "kind": "divider",
+        "rect": [
+          222,
+          268,
+          1476,
+          6
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "levelup.attr.strength",
+        "kind": "attribute_row",
+        "rect": [
+          222,
+          282,
+          826.56,
+          42
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "STRENGTH 12",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": true,
+        "meta": {
+          "attribute": "strength",
+          "value": 12,
+          "soft_cap": 40,
+          "hard_cap_curve": 60
+        }
+      },
+      {
+        "id": "levelup.attr.endurance",
+        "kind": "attribute_row",
+        "rect": [
+          222,
+          328,
+          826.56,
+          42
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "ENDURANCE 20",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "endurance",
+          "value": 20,
+          "soft_cap": 20,
+          "hard_cap_curve": 30
+        }
+      },
+      {
+        "id": "levelup.attr.agility",
+        "kind": "attribute_row",
+        "rect": [
+          222,
+          374,
+          826.56,
+          42
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "AGILITY 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "agility",
+          "value": 10,
+          "soft_cap": 40,
+          "hard_cap_curve": 60
+        }
+      },
+      {
+        "id": "levelup.attr.speed",
+        "kind": "attribute_row",
+        "rect": [
+          222,
+          420,
+          826.56,
+          42
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "SPEED 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "speed",
+          "value": 10,
+          "soft_cap": 35,
+          "hard_cap_curve": 50
+        }
+      },
+      {
+        "id": "levelup.attr.vigour",
+        "kind": "attribute_row",
+        "rect": [
+          222,
+          466,
+          826.56,
+          42
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "VIGOUR 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "vigour",
+          "value": 10,
+          "soft_cap": 27,
+          "hard_cap_curve": 40
+        }
+      },
+      {
+        "id": "levelup.attr.willpower",
+        "kind": "attribute_row",
+        "rect": [
+          222,
+          512,
+          826.56,
+          42
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "WILLPOWER 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "willpower",
+          "value": 10,
+          "soft_cap": 30,
+          "hard_cap_curve": 50
+        }
+      },
+      {
+        "id": "levelup.attr.intellect",
+        "kind": "attribute_row",
+        "rect": [
+          222,
+          558,
+          826.56,
+          42
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "INTELLECT 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "intellect",
+          "value": 10,
+          "soft_cap": 40,
+          "hard_cap_curve": 60
+        }
+      },
+      {
+        "id": "levelup.attr.hist-bond",
+        "kind": "attribute_row",
+        "rect": [
+          222,
+          604,
+          826.56,
+          42
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "HIST-BOND 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "hist-bond",
+          "value": 10,
+          "soft_cap": 40,
+          "hard_cap_curve": 60
+        }
+      },
+      {
+        "id": "levelup.attr.personality",
+        "kind": "attribute_row",
+        "rect": [
+          222,
+          650,
+          826.56,
+          42
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "PERSONALITY 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "personality",
+          "value": 10,
+          "soft_cap": 45,
+          "hard_cap_curve": 70
+        }
+      },
+      {
+        "id": "levelup.attr.luck",
+        "kind": "attribute_row",
+        "rect": [
+          222,
+          696,
+          826.56,
+          42
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "LUCK 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "luck",
+          "value": 10,
+          "soft_cap": 30,
+          "hard_cap_curve": 50
+        }
+      },
+      {
+        "id": "levelup.rule2",
+        "kind": "divider",
+        "rect": [
+          1056.56,
+          282,
+          12,
+          604
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "levelup.preview",
+        "kind": "attribute_preview",
+        "rect": [
+          1078.56,
+          282,
+          619.44,
+          604
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "STR-scaling damage; shield stability; heavy-weapon requirement Max equip load (RI-PRG07); carry capacity for loot; forcing doors and chests",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "strength",
+          "from": 12,
+          "to": 13,
+          "derived": [
+            {
+              "key": "equip_load_max",
+              "label": "equip load max",
+              "from": 73,
+              "to": 74.5
+            }
+          ]
+        }
+      },
+      {
+        "id": "levelup.hint",
+        "kind": "hint",
+        "rect": [
+          222,
+          902,
+          1476,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Confirm twice to spend. Nothing is spent until the second time.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      }
+    ]
+  },
+  "dialogue": {
+    "__err": "step timeout 90s"
+  },
+  "pause": {
+    "__err": "page.evaluate: Error: unknown encounter: undefined\n    at encounterById (http://127.0.0.1:34863/game/src/character/encounter.js:62:17)\n    at Engine.getEncounterState (http://127.0.0.1:34863/game/src/engine.js:6052:17)\n    at Object.getEncounterState (http://127.0.0.1:34863/game/src/harness/api.js:1343:43)\n    at eval (eval at evaluate (:290:30), <anonymous>:14:43)\n    at async <anonymous>:316:30"
+  },
+  "withdrawal": {
+    "__err": "step timeout 90s"
+  }
+}

@@ -119,7 +119,7 @@ export function buildCompositor(w, h, opts = {}) {
       // kernel samples are trusted (see `computeGI` below). `uGIStrength` is a fraction of the
       // local deficit, not a flat additive constant — see the null control this piece's own
       // instrument runs (`tools/visual/w1-f3-ambient-fill.mjs --null-control`).
-      uGI: { value: 1 }, uGIStrength: { value: 0.55 }, uGIRadius: { value: 1.6 }, uGIMaxDist: { value: 0.6 },
+      uGI: { value: 1 }, uGIStrength: { value: 0.22 }, uGIRadius: { value: 1.0 }, uGIMaxDist: { value: 0.4 },
       uBloom: { value: 0.16 }, uBloomThreshold: { value: 0.9 }, uBloomKnee: { value: 0.45 },
       // The grade block. Pushed every frame by `renderer.js` from `post/grade.js`; the identity
       // values here mean a compositor built and never fed is a no-op rather than a colour cast.

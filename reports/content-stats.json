@@ -1,24 +1,27 @@
 {
   "schema": "elder-souls/content-stats@1",
-  "computed_at": "2026-08-07T18:53:14.763Z",
+  "computed_at": "2026-08-14T20:03:21.814Z",
   "data_root": "/home/user/elder-souls-claude/game/data",
   "data_hash": {
-    "files": 551,
-    "sha256": "2ffb1432e3588225072d2f2f4f7750a60181954976359a1a5f6f20c8a62520c0"
+    "files": 590,
+    "sha256": "1bc3b0cacdc3f5c4c4e9628e90e4ada9123be98391561941968c6f709d1243f1"
   },
   "files": {
-    "total": 549,
+    "total": 588,
     "parse_errors": []
   },
   "coverage": {
     "quests": [
       "books/quest-keys.json",
       "npcs/quest-givers.json",
+      "npcs/quest-witnesses.json",
       "quests/blackmarsh-coast.json",
       "quests/blackmarsh-core.json",
       "quests/closure-registry.json",
+      "quests/faction-continuation-wave1.json",
       "quests/faction-gates.json",
       "quests/faction-imperial-assize.json",
+      "quests/faction-joining-wave1.json",
       "quests/faction-wet-ledger.json",
       "quests/faction-xul-aneekh.json",
       "quests/hooks.json",
@@ -36,6 +39,7 @@
       "dialogue/creation-names.json",
       "dialogue/creation-questions.json",
       "dialogue/faction-reactions.json",
+      "dialogue/faction-refusals.json",
       "dialogue/greetings/00-priority-classes.json",
       "dialogue/greetings/20-tier-a.json",
       "dialogue/greetings.json",
@@ -44,7 +48,9 @@
       "dialogue/rumours.json",
       "dialogue/slavery-lines.json",
       "dialogue/speakers.json",
+      "dialogue/topic-graph.json",
       "dialogue/topics/00-roots.json",
+      "dialogue/topics/05-asking-around.json",
       "dialogue/topics/06-opening-roots.json",
       "dialogue/topics/07-root-coverage.json",
       "dialogue/topics/10-global.json",
@@ -61,6 +67,7 @@
       "dialogue/topics/60-roads.json",
       "dialogue/topics/70-disputes.json",
       "dialogue/topics/75-tribes.json",
+      "dialogue/topics/_manifest.json",
       "dialogue/topics/main-quest-argument.json",
       "dialogue/topics/thorn.json",
       "dialogue/topics/writ-house.json"
@@ -83,6 +90,8 @@
       "npcs/pop-soulrest.json",
       "npcs/pop-stormhold.json",
       "npcs/pop-thorn.json",
+      "npcs/pop-trades.json",
+      "npcs/spellwrights.json",
       "npcs/thorn.json",
       "npcs/tribes.json",
       "npcs/writ-house.json",
@@ -93,9 +102,11 @@
       "books/deep-time.json",
       "books/foundational.json",
       "books/interface-readables.json",
+      "books/manifest.json",
       "books/scraps.json",
       "books/the-arms-of-the-province.json",
       "books/the-body-and-the-dark.json",
+      "books/the-books-in-evidence.json",
       "books/the-casebook-of-the-assize.json",
       "books/the-disputes.json",
       "books/the-drill-book.json",
@@ -105,10 +116,12 @@
       "books/the-long-service.json",
       "books/the-long-tail.json",
       "books/the-occupation.json",
+      "books/the-papers-in-evidence.json",
       "books/the-peoples.json",
       "books/the-schools-and-the-quarrels.json",
       "books/the-short-arms.json",
       "books/the-short-forms.json",
+      "books/the-short-measures.json",
       "books/told-and-sung.json",
       "lore/canon.json"
     ],
@@ -131,6 +144,21 @@
       "audio/ambience/deep-marshes.json",
       "audio/ambience/eastern-rootlands.json",
       "audio/ambience/hive.json",
+      "audio/ambience/interiors/barge_hold.json",
+      "audio/ambience/interiors/dungeon.json",
+      "audio/ambience/interiors/interior.json",
+      "audio/ambience/interiors/market.json",
+      "audio/ambience/interiors/settlement_archon.json",
+      "audio/ambience/interiors/settlement_blackrose.json",
+      "audio/ambience/interiors/settlement_gideon.json",
+      "audio/ambience/interiors/settlement_helstrom.json",
+      "audio/ambience/interiors/settlement_lilmoth.json",
+      "audio/ambience/interiors/settlement_soulrest.json",
+      "audio/ambience/interiors/settlement_stormhold.json",
+      "audio/ambience/interiors/settlement_thorn.json",
+      "audio/ambience/interiors/street.json",
+      "audio/ambience/interiors/well.json",
+      "audio/ambience/interiors/writ_house.json",
       "audio/ambience/marauders-coast.json",
       "audio/ambience/salt-hills.json",
       "audio/ambience/stone-forest.json",
@@ -139,10 +167,13 @@
       "audio/ambience/valus-ridge.json",
       "audio/ambience/western-rootlands.json",
       "combat/poise.json",
+      "factions/argonian-tribes.json",
       "magic/traversal-routes.json",
       "states/interior_firelit.json",
       "states/settlement_primary_street.json",
       "ui/map.json",
+      "world/architecture.json",
+      "world/assembled-lore.json",
       "world/borders.json",
       "world/encounters.json",
       "world/hazards.json",
@@ -276,6 +307,7 @@
       "world/property/soulrest.json",
       "world/property/stormhold.json",
       "world/property/thorn.json",
+      "world/readables/site-marks.json",
       "world/regions.json",
       "world/respawn.json",
       "world/roads.json",
@@ -295,10 +327,12 @@
       "world/travel/stations.json",
       "world/travel/tariff.json",
       "world/traversal.json",
+      "world/voids.json",
       "world/water.json",
       "world/weather.json"
     ],
     "combat": [
+      "combat/ai.json",
       "combat/clips.json",
       "combat/enemies/beast_slitherfang.json",
       "combat/enemies/cam_boss_great.json",
@@ -505,6 +539,7 @@
       "camera/rig.json",
       "camera/targets.json",
       "crime/justice.json",
+      "factions/registry.json",
       "index.json",
       "input/pad-quirks.json",
       "input/profiles.json",
@@ -551,6 +586,9 @@
       "states/stone-wastes-count.json",
       "states/stormhold-street.json",
       "states/sv1-midquest.json",
+      "states/sv2-mid-dungeon.json",
+      "states/sv3-post-rank-up.json",
+      "states/sv4-bounty-pursuit.json",
       "states/sv5-journal-bloodstain.json",
       "states/swamp_canopy.json",
       "states/thorn-hall.json",
@@ -575,19 +613,20 @@
       "stealth/detection.json",
       "stealth/locks.json",
       "stealth/search.json",
-      "stealth/theft.json"
+      "stealth/theft.json",
+      "visual/styleboards.json"
     ]
   },
   "dialogue": {
-    "topic_records": 892,
-    "npc_records": 946,
+    "topic_records": 1567,
+    "npc_records": 993,
     "text": {
-      "strings": 3837,
-      "words": 84072,
-      "unique_words": 4417,
-      "unique_content_words": 4326,
-      "type_token_ratio": 0.0525,
-      "mean_words_per_string": 21.91
+      "strings": 4188,
+      "words": 98075,
+      "unique_words": 4912,
+      "unique_content_words": 4821,
+      "type_token_ratio": 0.0501,
+      "mean_words_per_string": 23.42
     },
     "per_settlement": {
       "__unassigned": {
@@ -630,13 +669,13 @@
         "type_token_ratio": 0,
         "mean_words_per_string": 0
       },
-      "thorn": {
-        "strings": 4,
-        "words": 84,
-        "unique_words": 56,
-        "unique_content_words": 34,
-        "type_token_ratio": 0.6667,
-        "mean_words_per_string": 21
+      "blackrose": {
+        "strings": 1,
+        "words": 5,
+        "unique_words": 4,
+        "unique_content_words": 3,
+        "type_token_ratio": 0.8,
+        "mean_words_per_string": 5
       },
       "lilmoth": {
         "strings": 0,
@@ -646,6 +685,14 @@
         "type_token_ratio": 0,
         "mean_words_per_string": 0
       },
+      "thorn": {
+        "strings": 4,
+        "words": 84,
+        "unique_words": 56,
+        "unique_content_words": 34,
+        "type_token_ratio": 0.6667,
+        "mean_words_per_string": 21
+      },
       "stormhold": {
         "strings": 0,
         "words": 0,
@@ -654,37 +701,29 @@
         "type_token_ratio": 0,
         "mean_words_per_string": 0
       },
-      "blackrose": {
-        "strings": 1,
-        "words": 5,
-        "unique_words": 4,
-        "unique_content_words": 3,
-        "type_token_ratio": 0.8,
-        "mean_words_per_string": 5
-      },
       "barge-hold": {
         "strings": 3,
         "words": 59,
         "unique_words": 41,
-        "unique_content_words": 27,
+        "unique_content_words": 24,
         "type_token_ratio": 0.6949,
         "mean_words_per_string": 19.67
       },
       "tidewrack": {
         "strings": 19,
-        "words": 392,
-        "unique_words": 165,
-        "unique_content_words": 115,
-        "type_token_ratio": 0.4209,
-        "mean_words_per_string": 20.63
+        "words": 380,
+        "unique_words": 163,
+        "unique_content_words": 114,
+        "type_token_ratio": 0.4289,
+        "mean_words_per_string": 20
       },
       "writ-house": {
         "strings": 16,
-        "words": 333,
-        "unique_words": 142,
-        "unique_content_words": 95,
-        "type_token_ratio": 0.4264,
-        "mean_words_per_string": 20.81
+        "words": 321,
+        "unique_words": 140,
+        "unique_content_words": 94,
+        "type_token_ratio": 0.4361,
+        "mean_words_per_string": 20.06
       }
     },
     "settlement_exclusivity": {
@@ -713,59 +752,59 @@
         "exclusive_words": 0,
         "exclusivity_ratio": 0
       },
-      "thorn": {
-        "vocab": 34,
-        "exclusive_words": 19,
-        "exclusivity_ratio": 0.5588
+      "blackrose": {
+        "vocab": 3,
+        "exclusive_words": 1,
+        "exclusivity_ratio": 0.3333
       },
       "lilmoth": {
         "vocab": 0,
         "exclusive_words": 0,
         "exclusivity_ratio": 0
       },
+      "thorn": {
+        "vocab": 34,
+        "exclusive_words": 19,
+        "exclusivity_ratio": 0.5588
+      },
       "stormhold": {
         "vocab": 0,
         "exclusive_words": 0,
         "exclusivity_ratio": 0
       },
-      "blackrose": {
-        "vocab": 3,
-        "exclusive_words": 1,
-        "exclusivity_ratio": 0.3333
-      },
       "barge-hold": {
-        "vocab": 27,
+        "vocab": 24,
         "exclusive_words": 0,
         "exclusivity_ratio": 0
       },
       "tidewrack": {
-        "vocab": 115,
+        "vocab": 114,
         "exclusive_words": 0,
         "exclusivity_ratio": 0
       },
       "writ-house": {
-        "vocab": 95,
+        "vocab": 94,
         "exclusive_words": 0,
         "exclusivity_ratio": 0
       }
     },
     "settlements_with_dialogue": 11,
-    "unassigned_topics": 644
+    "unassigned_topics": 815
   },
   "topic_graph": {
-    "nodes": 747,
-    "edges": 57,
+    "nodes": 918,
+    "edges": 58,
     "out_degree": {
-      "n": 747,
+      "n": 918,
       "min": 0,
       "max": 13,
-      "mean": 0.0763,
-      "stdev": 0.6001,
+      "mean": 0.0632,
+      "stdev": 0.547,
       "p05": 0,
       "p50": 0,
       "p95": 0
     },
-    "out_degree_entropy_bits": 0.2886,
+    "out_degree_entropy_bits": 0.2441,
     "roots": 10,
     "max_depth": 2,
     "depth_distribution": {
@@ -779,7 +818,7 @@
       "p95": 1.45
     },
     "reachable": 12,
-    "reachable_frac": 0.0161,
+    "reachable_frac": 0.0131,
     "orphans": [
       "creation-names",
       "creation-questions",
@@ -812,6 +851,8 @@
       "house-dres",
       "shadowscale-order",
       "morag-tong",
+      "dockhands",
+      "faction-refusals",
       "g0-chargen",
       "g0-arrest",
       "g1-hostile-attacked",
@@ -955,17 +996,63 @@
       "thorn-heirloom",
       "thorn-stilled-man",
       "thorn-deadwater",
+      "tho-charter",
+      "tho-act1",
+      "tho-act2",
+      "tho-act3",
+      "tho-act5",
+      "tho-player-tree",
       "stormhold-tally",
       "stormhold-boxes",
       "stormhold-old-quarter",
       "stormhold-quiet-floor",
       "stormhold-hollowed-scribe",
       "stormhold-wastes-flues",
+      "sto-salt-short",
+      "sto-okanshei",
+      "sto-northwall",
+      "sto-drains",
+      "sto-nightwatch",
+      "sto-wallstreet",
+      "sto-quartermaster",
+      "sto-borderroad",
+      "sto-muster",
+      "sto-thinyears",
+      "sto-innkeeper",
+      "sto-belena",
+      "sto-saltrock",
+      "sto-gatefee",
+      "sto-oldquarter-rent",
+      "sto-act1",
+      "sto-act1b",
+      "sto-act2",
+      "sto-act2b",
+      "sto-act3",
+      "sto-act3b",
+      "sto-act5",
+      "sto-act5b",
+      "sto-player-wall",
+      "sto-player-muster",
+      "sto-player-quarter",
+      "sto-act2c",
+      "stormhold-enchanter",
       "soulrest-tally",
       "soulrest-boxes",
       "soulrest-well",
       "soulrest-yard-tally",
       "soulrest-cup-figures",
+      "sou-burning",
+      "sou-bonesetter",
+      "sou-listening",
+      "sou-drums",
+      "sou-silted",
+      "sou-act1",
+      "sou-act2",
+      "sou-act3",
+      "sou-act5",
+      "sou-salt-pans",
+      "sou-player-count",
+      "soulrest-enchanter",
       "gideon-tally",
       "gideon-name",
       "gideon-market-cross",
@@ -979,14 +1066,68 @@
       "gideon-high-ledger",
       "gideon-netted-calf",
       "gideon-grange-water",
+      "gid-underwriters",
+      "gid-scribe",
+      "gid-vestry",
+      "gid-fieldgrid",
+      "gid-witness",
+      "gid-act3",
+      "gid-act5",
+      "gid-act1",
+      "gid-act1b",
+      "gid-act2",
+      "gid-act2b",
+      "gid-act3b",
+      "gid-act5b",
+      "gid-player-witness",
+      "gid-player-assize",
+      "gideon-spellwright",
       "archon-tally",
       "archon-crane",
+      "arc-vats",
+      "arc-purple-law",
+      "arc-militia",
+      "arc-tidelichen",
+      "arc-bell",
+      "arc-watercall",
+      "arc-act2",
+      "arc-act3",
+      "arc-act5",
+      "arc-player-factor",
+      "arc-annexe",
+      "arc-deesei",
+      "arc-crossing",
+      "arc-vestry",
+      "arc-act1",
+      "arc-act2b",
+      "arc-act3b",
+      "arc-act5b",
+      "arc-player-water",
       "blackrose-tally",
       "blackrose-skei",
       "blackrose-labour-lease",
       "blackrose-two-brothers",
       "blackrose-cellar-door",
       "blackrose-paatru",
+      "bla-roseyard",
+      "bla-longsentences",
+      "bla-onecustomer",
+      "bla-supplyroad",
+      "bla-quietgrave",
+      "bla-act2",
+      "bla-act3",
+      "bla-act5",
+      "bla-warden-petition",
+      "bla-timber",
+      "bla-floats",
+      "bla-prison-food",
+      "bla-act1",
+      "bla-act2b",
+      "bla-act3b",
+      "bla-act5b",
+      "bla-player-lease",
+      "bla-player-keep",
+      "blackrose-enchanter",
       "helstrom-tally",
       "helstrom-gallery",
       "helstrom-phial",
@@ -995,6 +1136,34 @@
       "helstrom-conclave",
       "helstrom-agaceph-chart",
       "helstrom-sarpa-mark",
+      "hel-quiet-street",
+      "hel-arrangement",
+      "hel-fence",
+      "hel-naheesh",
+      "hel-thirdroot",
+      "hel-carriers",
+      "hel-dres-cages",
+      "hel-listening-floor",
+      "hel-fourth-day",
+      "hel-market-coin",
+      "hel-agaceph",
+      "hel-lodging",
+      "hel-boat-tax",
+      "hel-ferrymen",
+      "hel-naga",
+      "hel-act1",
+      "hel-act1b",
+      "hel-act2",
+      "hel-act2b",
+      "hel-act3",
+      "hel-act3b",
+      "hel-act5",
+      "hel-act5b",
+      "hel-player-fence",
+      "hel-player-halls",
+      "hel-player-dres",
+      "hel-act2c",
+      "helstrom-spellwright",
       "lilmoth-tally",
       "lilmoth-company",
       "lilmoth-charter",
@@ -1003,7 +1172,41 @@
       "lilmoth-lost-key",
       "lilmoth-far-exit",
       "lilmoth-speaker",
+      "lil-roofwalk-span",
+      "lil-teel-list",
+      "lil-warehouse-row",
+      "lil-sunken-well",
+      "lil-swimmers-fee",
+      "lil-fishmarket-half",
+      "lil-made-ground",
+      "lil-yard-brothers",
+      "lil-hidesfoot",
+      "lil-office-annexe",
+      "lil-hatchery-quiet",
+      "lil-drowned-quarter",
+      "lil-tide-steps-toll",
+      "lil-organ-market",
+      "lil-ledgerman",
+      "lil-act1-wells",
+      "lil-act1-yard",
+      "lil-act2-tally",
+      "lil-act2-court",
+      "lil-act3-roots",
+      "lil-act3-thread",
+      "lil-act5-after",
+      "lil-act5-after2",
+      "lil-player-boxes",
+      "lil-player-yardvote",
+      "lil-player-ledger",
+      "lil-act2c",
+      "lilmoth-spellwright",
       "tidewrack-tally",
+      "tid-hull",
+      "tid-clerks",
+      "tid-wreck",
+      "tid-boats",
+      "tid-act2",
+      "tid-act5",
       "soulrest-tally-marshborn",
       "soulrest-tally-outlander",
       "gideon-tally-marshborn",
@@ -1023,463 +1226,470 @@
       "imperative mood, procedural legal noun as the object",
       "archivist",
       "nominalisation and qualification",
-      "topic keyword slug; `name` is the keyword as the player sees it",
-      "opening-roots",
-      "the-ninth-cohort",
-      "the-tribune",
-      "ancus-varo",
-      "the-muster-board",
-      "the-dead-pay",
-      "the-paymaster",
-      "belena-sarn",
-      "the-provincial-office",
-      "the-charter",
-      "the-catalogue",
-      "the-manifest",
-      "the-short-weight",
-      "contraband",
-      "the-sanction",
-      "the-blood-price",
-      "the-arbiters",
-      "the-shadowscales",
-      "the-sapwells",
-      "hist-sap",
-      "the-great-hist",
-      "the-quiet-wells",
-      "the-bad-dreams",
-      "the-covenant",
-      "the-naming",
-      "jel",
-      "the-blackwater-treaty",
-      "the-heirs-clause",
-      "the-arnesian-war",
-      "the-slavers-road",
-      "magister-varo-dren",
-      "the-wet-ledger",
-      "the-factor",
-      "the-quiet-ledgerman",
-      "the-drowned-court",
-      "the-organ-market",
-      "the-sap-cutters",
-      "hard-bargain-jeel",
-      "the-cart-roads",
-      "the-drowned-road",
-      "tide-law",
-      "the-xanmeers",
-      "the-chronology",
-      "the-unfinished-survey",
-      "the-fever-year",
-      "the-physicians",
-      "the-imperial-claim",
-      "the-thirteen-regions",
-      "the-stone-forest",
-      "the-clay-moor",
-      "the-eastern-rootlands",
-      "the-deep-marshes",
-      "the-deep-kin",
-      "the-salt-hills",
-      "blackwood",
-      "the-blackwood-company",
-      "the-weeping-ford",
-      "the-cut",
-      "the-man-in-the-water",
-      "the-ledgerman-of-lilmoth",
-      "the-unlisted-well",
-      "the-quartermaster",
-      "the-gate-fee",
-      "the-tithe-roll",
-      "the-chapel-of-akatosh",
-      "the-needle-forest",
-      "the-dye-yards",
-      "the-crimson-coast",
-      "the-dead-well",
-      "blackrose-prison",
-      "the-drowned-quarter",
-      "lilmoth",
-      "the-low-city",
-      "the-roof-walks",
-      "the-tide-steps",
-      "the-second-stair",
-      "the-harbour-chain",
-      "the-made-ground",
-      "the-sunken-well",
-      "the-swimmers",
-      "hides-his-foot",
-      "the-lamp-tax",
-      "the-fish-market",
-      "wide-eye-teel",
-      "the-warehouse-row",
-      "stormhold",
-      "the-wall-street",
-      "the-weigh-house",
-      "the-night-watch",
-      "the-drains",
-      "the-under-drain",
-      "the-border-road",
-      "the-salt-market",
-      "okan-shei",
-      "helstrom",
-      "the-root-halls",
-      "the-given-halls",
-      "naheesh-tul",
-      "the-arrangement",
-      "the-carriers",
-      "the-third-root",
-      "the-thinning",
-      "the-hatchery",
-      "the-listening-floor",
-      "wades-deep",
-      "gideon",
-      "the-timber-yards",
-      "the-river-floats",
-      "the-field-grid",
-      "the-cleared-ground",
-      "the-vestry-well",
-      "brother-teleno",
-      "the-office-annexe",
-      "archon",
-      "the-tide-lichen",
-      "the-purple-law",
-      "the-vat-cough",
-      "the-militia",
-      "the-lung-wage",
-      "the-yard-office",
-      "an-deesei",
-      "blackrose",
-      "the-supply-road",
-      "the-one-customer",
-      "the-warden",
-      "the-petition",
-      "the-long-sentences",
-      "the-rose-yard",
-      "thorn",
-      "the-rotted-hall",
-      "hlaalu-teeth",
-      "the-drowning-at-the-ford",
-      "the-tenth",
-      "warden-eshi",
-      "the-one-path",
-      "the-thorn-charter",
-      "soulrest",
-      "the-salt-pans",
-      "the-silted-bay",
-      "the-bone-diggers",
-      "the-old-ground",
-      "the-tide-turn-walk",
-      "the-bone-setter",
-      "the-listening-at-soulrest",
-      "the-marsh-creatures",
-      "the-wamasu",
-      "the-haj-mota",
-      "the-hackwing",
-      "the-mire-crab",
-      "the-voriplasm",
-      "the-swamp-wyrm",
-      "the-root-golem",
-      "the-crab-boil",
-      "the-marsh-food",
-      "the-root-bread",
-      "the-blight-storms",
-      "the-ash-cough",
-      "the-wet-season",
-      "the-flood-marks",
-      "the-river-boats",
-      "the-boat-guilds",
-      "the-letter-trade",
-      "the-hist-songs",
-      "the-egg-tending",
-      "the-marsh-fever",
-      "the-sap-draught",
-      "the-holding",
-      "the-xul-teekh",
-      "the-soul-trade",
-      "the-marsh-magic",
-      "the-hedge-teachers",
-      "the-old-imperial-forts",
-      "the-milestones",
-      "the-removed-name",
-      "the-strider-analogue",
-      "the-fare",
-      "the-guild-guides",
-      "the-mark-and-recall",
-      "the-shrine-return",
-      "the-hearths",
-      "the-mudcrab-money",
-      "the-outlander-question",
-      "the-lukiul",
-      "the-dunmer-question",
-      "the-naga-bands",
-      "the-marauders-coast",
-      "the-hive",
-      "the-valus-ridge",
-      "topal-bay",
-      "the-padomaic",
-      "the-western-rootlands",
-      "thornmarsh",
-      "the-stone-wastes",
-      "the-imperial-tongue",
-      "the-writ-of-passage",
-      "the-curfew",
-      "the-fishing-rights",
-      "the-ferrymen",
-      "the-drowned-chapel",
-      "the-bell-that-rings",
-      "the-tribunal-question",
-      "the-nine-here",
-      "the-marsh-burial",
-      "the-drums",
-      "the-marsh-lights",
-      "the-first-tide",
-      "the-count-of-hands",
-      "the-thin-years",
-      "the-empty-nets",
-      "the-hatching-pool",
-      "your-egg-year",
-      "what-the-sap-says",
-      "the-second-name",
-      "root-water",
-      "the-drowned-kin",
-      "standing-in-the-shallows",
-      "the-old-tongue",
-      "counting-by-tides",
-      "what-the-warmbloods-ask",
-      "the-village-that-moved",
-      "your-clutch-mark",
-      "the-first-molt",
-      "hist-debt",
-      "the-river-bands",
-      "what-the-towns-say-about-us",
-      "the-long-swim",
-      "bank-law",
-      "the-third-person",
-      "house-business",
-      "the-factor-house",
-      "what-we-are-owed",
-      "the-wine",
-      "your-people-here",
-      "the-word-they-use",
-      "the-surcharge",
-      "what-the-marsh-remembers",
-      "cohort-business",
-      "citizenship",
-      "what-the-tribune-wants",
-      "home-leave",
-      "breathing-here",
-      "what-to-drink",
-      "warmblood",
-      "the-fever",
-      "why-anyone-comes-here",
-      "the-smell",
-      "boots",
-      "the-net-price",
-      "who-buys",
-      "the-quiet-route",
-      "the-tribune-drinks",
-      "what-the-cohort-sells",
-      "the-lukiul-problem",
-      "about-the-naga",
-      "the-shadowscale-list",
-      "what-the-house-pays-us",
-      "the-fence-at-helstrom",
-      "the-warden-scribes-file",
-      "what-happens-to-the-old-ones",
-      "our-losses",
-      "the-second-ledger",
-      "the-bank-toll",
-      "who-informs",
-      "the-thing-in-the-cistern",
-      "what-we-do-with-the-writs",
-      "the-hist-that-stopped",
-      "our-arrangement-with-the-legion",
-      "the-count-of-the-taken",
-      "why-the-village-is-empty",
-      "what-the-band-eats",
-      "the-price-of-a-name",
-      "the-warehouse-key",
-      "what-we-keep-from-the-office",
-      "the-old-cages",
-      "the-quiet-grave",
-      "the-hatch-name-list",
-      "what-the-sap-showed-me",
-      "the-writ-house",
-      "the-road-south",
-      "the-tides",
-      "the-office",
-      "the-hist",
-      "slavery",
-      "the-fee",
-      "the-boat-tax",
-      "what-the-band-owes",
-      "the-mud-season",
-      "egg-tending",
-      "the-village-tally",
-      "the-legion-quartermaster",
-      "bridge-duty",
-      "what-tear-thinks",
-      "the-vintage",
-      "your-accent",
-      "the-lodging-price",
-      "the-crossing-fee",
-      "speaker-coverage",
-      "what-they-take-off-you",
-      "tidewrack",
-      "writ-amendment",
-      "the-market",
-      "the-draught",
-      "my-kingdom",
-      "the-tolls",
-      "the-cut-roots",
-      "the-hollow",
-      "the-second-set-of-weights",
-      "the-wharf-debt",
-      "the-quiet-partner",
-      "the-water-call",
-      "the-underwriters-gate",
-      "the-archon-question",
-      "the-veto-minute",
-      "the-first-chair",
-      "the-assize",
-      "the-toll-book",
-      "the-lease-roll",
-      "the-struck-off-notary",
-      "the-blackrose-day-book",
-      "the-warrant-of-attainder",
-      "the-prefects-return",
-      "the-lease-vote",
-      "the-legates-seal",
-      "the-hollow-that-eats",
-      "the-root-track",
-      "the-lukiul-question",
-      "the-coast-wound",
-      "the-taking-below",
-      "the-ku-vastei",
-      "the-consensus",
-      "the-speakers-silence",
-      "the-empty-chair",
-      "the-head-of-the-assize",
-      "the-fourth-day",
-      "the-ninth-column",
-      "the-bond-berth",
-      "the-man-off-the-quay",
-      "the-second-refusal",
-      "the-room-with-no-case",
-      "the-removal-that-is-not-one",
-      "the-sound-below",
-      "the-drowned-post",
-      "the-fourth-silence",
-      "the-witness",
-      "the-drowned-tally",
-      "the-ninth-clause-of-the-drowned-tally",
-      "the-empty-boxes",
-      "the-cold-well",
       "a-name-for-cover",
-      "the-ninth-recension",
-      "the-cutting-yard",
-      "the-gem-shipping",
-      "the-low-chapel",
-      "the-root-gallery",
-      "the-crypt-road",
-      "the-intakes",
-      "reading-the-count",
-      "the-skei",
-      "the-tree-at-thorn",
-      "the-chapters-vote",
-      "the-ledgers-terms",
-      "the-interiors-consent",
-      "the-cutters-terms",
-      "the-writ-of-works",
-      "the-hiring-list",
-      "the-keepers-leave",
-      "the-salt-factor",
-      "the-works",
-      "the-ash-gallery",
-      "the-steward-of-the-count",
-      "the-sill",
-      "the-opening-of-the-count",
-      "the-eleven-live-roots",
-      "the-root-channels",
-      "the-thread-is-cut",
-      "what-the-wells-do-now",
-      "what-the-tide-does-now",
-      "the-count-of-forty",
-      "what-people-say-happened",
-      "the-three-previous-severances",
-      "the-clause",
-      "the-eleven-wells",
-      "the-leave-book",
-      "the-compact",
-      "the-cohorts-stormhold-does-not-have",
-      "the-rotting-quarter",
-      "the-fourth-yard",
-      "the-chain-on-the-wall",
-      "the-three-things-i-checked-myself",
-      "what-does-the-marsh-owe-you",
-      "the-house-under-the-wastes",
-      "the-tally-of-the-dead",
-      "the-labour-lease",
-      "the-four-hundred-and-eleven",
-      "the-old-quarter",
-      "the-leyawiin-charter",
-      "the-sap-house",
-      "the-phial",
-      "the-short-pay",
-      "the-ledger",
-      "the-seized-hull",
-      "the-barred-window",
-      "the-drowned-wreck",
-      "the-upper-shelf",
-      "the-causeway",
-      "the-conclave",
-      "the-counting-house",
-      "the-quiet-floor",
-      "the-guar-in-the-yard",
-      "the-two-brothers",
-      "the-dead-runner",
-      "the-lost-key",
-      "the-hollow-count",
-      "the-flues",
-      "the-rot-house",
-      "the-far-exit",
-      "the-cellar-door",
-      "the-heirloom",
-      "the-stilled-man",
-      "the-hollowed-scribe",
-      "the-weight-in-the-well",
-      "what-the-kiln-kept",
-      "the-high-ledger",
-      "the-netted-calf",
-      "the-hold",
-      "your-hatch-name",
-      "the-writ",
-      "my-work",
-      "the-list",
+      "about-the-naga",
+      "an-deesei",
+      "ancus-varo",
+      "archon",
+      "bank-law",
+      "belena-sarn",
+      "blackrose",
+      "blackrose-prison",
+      "blackwood",
+      "boots",
+      "breathing-here",
+      "bridge-duty",
+      "brother-teleno",
+      "citizenship",
+      "cohort-business",
+      "contraband",
+      "counting-by-tides",
+      "dying-far-from-the-tree",
+      "egg-tending",
+      "emptying-the-coast",
+      "gideon",
+      "hard-bargain-jeel",
+      "helstrom",
+      "hides-his-foot",
+      "hist-debt",
+      "hist-sap",
+      "hlaalu-teeth",
+      "home-leave",
+      "house-business",
+      "how-the-count-opens",
+      "jel",
+      "lilmoth",
       "lukiul",
+      "magister-varo-dren",
+      "my-kingdom",
+      "my-work",
+      "naheesh-tul",
+      "okan-shei",
+      "our-arrangement-with-the-legion",
+      "our-losses",
+      "reading-the-count",
+      "root-water",
+      "sap-from-a-cup",
+      "slavery",
+      "soulrest",
+      "standing-in-the-shallows",
+      "stormhold",
+      "the-allowance",
+      "the-arbiters",
+      "the-archon-question",
+      "the-arnesian-war",
+      "the-arrangement",
+      "the-ash-cough",
+      "the-ash-gallery",
+      "the-assize",
+      "the-bad-dreams",
+      "the-bank-toll",
+      "the-barred-window",
+      "the-bell-that-rings",
+      "the-blackrose-day-book",
+      "the-blackwater-treaty",
+      "the-blackwood-company",
+      "the-blight-storms",
+      "the-blood-price",
+      "the-boat-guilds",
+      "the-boat-tax",
+      "the-bond-berth",
+      "the-bone-diggers",
+      "the-bone-setter",
+      "the-border-road",
+      "the-burning-yard",
+      "the-carriers",
+      "the-cart-roads",
+      "the-catalogue",
+      "the-causeway",
+      "the-cellar-door",
+      "the-chain-on-the-wall",
+      "the-chapel-of-akatosh",
+      "the-chapters-vote",
+      "the-charter",
+      "the-chronology",
+      "the-clause",
+      "the-clay-in-the-wet",
+      "the-clay-moor",
+      "the-cleared-ground",
+      "the-coast-wound",
+      "the-cohorts-stormhold-does-not-have",
+      "the-cold-well",
+      "the-compact",
+      "the-conclave",
+      "the-consensus",
+      "the-count-itself",
+      "the-count-of-forty",
+      "the-count-of-hands",
+      "the-count-of-the-taken",
+      "the-counting-house",
+      "the-covenant",
+      "the-crab-boil",
+      "the-crimson-coast",
+      "the-crossing-fee",
+      "the-crypt-road",
+      "the-curfew",
+      "the-cut",
+      "the-cut-roots",
+      "the-cutters-terms",
+      "the-cutting-yard",
+      "the-dead-pay",
+      "the-dead-runner",
+      "the-dead-well",
+      "the-deep-kin",
+      "the-deep-marsh",
+      "the-deep-marshes",
+      "the-drains",
+      "the-draught",
+      "the-drowned-chapel",
+      "the-drowned-court",
+      "the-drowned-kin",
+      "the-drowned-post",
+      "the-drowned-quarter",
+      "the-drowned-road",
+      "the-drowned-tally",
+      "the-drowned-wreck",
+      "the-drowning-at-the-ford",
+      "the-drums",
+      "the-dunmer-question",
+      "the-duskfall-count",
+      "the-dye-yards",
+      "the-eastern-rootlands",
+      "the-egg-tending",
+      "the-eleven-live-roots",
+      "the-eleven-wells",
+      "the-empty-boxes",
+      "the-empty-chair",
+      "the-empty-nets",
+      "the-factor",
+      "the-factor-house",
+      "the-far-exit",
+      "the-fare",
+      "the-fee",
+      "the-fence-at-helstrom",
+      "the-ferrymen",
+      "the-fever",
+      "the-fever-year",
+      "the-field-grid",
+      "the-first-chair",
+      "the-first-molt",
+      "the-first-tide",
+      "the-fish-market",
+      "the-fishing-rights",
+      "the-flood-marks",
+      "the-flues",
+      "the-four-hundred-and-eleven",
+      "the-fourth-day",
+      "the-fourth-silence",
+      "the-fourth-yard",
+      "the-gate-fee",
+      "the-gem-shipping",
+      "the-given-halls",
+      "the-great-hist",
+      "the-guar-in-the-yard",
+      "the-guild-guides",
+      "the-hackwing",
+      "the-haj-mota",
+      "the-harbour-chain",
+      "the-hatch-name-list",
+      "the-hatchery",
+      "the-hatching-pool",
+      "the-head-of-the-assize",
+      "the-hearths",
+      "the-hedge-teachers",
+      "the-heirloom",
+      "the-heirs-clause",
+      "the-high-ledger",
+      "the-high-walks",
+      "the-hiring-list",
+      "the-hist",
+      "the-hist-songs",
+      "the-hist-that-stopped",
+      "the-hive",
+      "the-hold",
+      "the-holding",
+      "the-hollow",
+      "the-hollow-count",
+      "the-hollow-that-eats",
+      "the-hollowed-scribe",
+      "the-house-under-the-wastes",
+      "the-imperial-claim",
+      "the-imperial-tongue",
+      "the-intakes",
+      "the-interiors-consent",
+      "the-keepers-leave",
+      "the-ku-vastei",
+      "the-labour-lease",
+      "the-lamp-tax",
+      "the-lease-roll",
+      "the-lease-vote",
+      "the-leave-book",
+      "the-ledger",
+      "the-ledgerman-of-lilmoth",
+      "the-ledgers-terms",
+      "the-legates-seal",
+      "the-legion-quartermaster",
+      "the-letter-trade",
+      "the-leyawiin-charter",
+      "the-list",
+      "the-listening-at-soulrest",
+      "the-listening-floor",
+      "the-lodging-price",
+      "the-long-sentences",
+      "the-long-swim",
+      "the-lost-key",
+      "the-low-chapel",
+      "the-low-city",
+      "the-lukiul",
+      "the-lukiul-problem",
+      "the-lukiul-question",
+      "the-lung-wage",
+      "the-made-ground",
+      "the-man-in-the-water",
+      "the-man-off-the-quay",
+      "the-manifest",
+      "the-marauders-coast",
+      "the-mark-and-recall",
+      "the-market",
+      "the-marsh-burial",
+      "the-marsh-creatures",
+      "the-marsh-fever",
+      "the-marsh-food",
+      "the-marsh-lights",
+      "the-marsh-magic",
+      "the-milestones",
+      "the-militia",
+      "the-mire-crab",
+      "the-mud-season",
+      "the-mudcrab-money",
+      "the-muster-board",
+      "the-naga-bands",
+      "the-naming",
+      "the-needle-forest",
+      "the-net-price",
+      "the-netted-calf",
+      "the-night-watch",
+      "the-nine-here",
+      "the-ninth-clause-of-the-drowned-tally",
+      "the-ninth-cohort",
+      "the-ninth-column",
+      "the-ninth-recension",
+      "the-north-wall",
+      "the-office",
+      "the-office-annexe",
+      "the-old-cages",
+      "the-old-ground",
+      "the-old-imperial-forts",
+      "the-old-quarter",
+      "the-old-tongue",
+      "the-one-customer",
+      "the-one-path",
+      "the-opening-of-the-count",
+      "the-organ-market",
+      "the-outlander-question",
+      "the-padomaic",
+      "the-paymaster",
+      "the-peoples",
+      "the-petition",
+      "the-phial",
+      "the-physicians",
+      "the-prefects-return",
+      "the-price-of-a-name",
+      "the-provincial-office",
+      "the-purple-law",
+      "the-quartermaster",
+      "the-quiet-floor",
+      "the-quiet-grave",
+      "the-quiet-ledgerman",
+      "the-quiet-partner",
+      "the-quiet-route",
+      "the-quiet-wells",
+      "the-removal-that-is-not-one",
+      "the-removed-name",
+      "the-river-bands",
+      "the-river-boats",
+      "the-river-floats",
+      "the-road-south",
+      "the-road-to-archon",
+      "the-road-to-blackrose",
       "the-road-to-gideon",
       "the-road-to-helstrom",
-      "the-road-to-blackrose",
       "the-road-to-lilmoth",
-      "the-road-to-archon",
-      "the-road-to-thorn",
-      "the-road-to-stormhold",
       "the-road-to-soulrest",
-      "the-count-itself",
-      "the-peoples",
-      "dying-far-from-the-tree",
-      "the-wall-at-the-grange",
-      "sap-from-a-cup",
-      "the-duskfall-count",
-      "what-the-bone-holds",
-      "the-high-walks",
-      "what-we-will-not-do",
-      "the-clay-in-the-wet",
+      "the-road-to-stormhold",
+      "the-road-to-thorn",
+      "the-roof-walks",
+      "the-room-with-no-case",
+      "the-root-bread",
+      "the-root-channels",
+      "the-root-gallery",
+      "the-root-golem",
+      "the-root-halls",
+      "the-root-track",
+      "the-rose-yard",
+      "the-rot-house",
+      "the-rotted-hall",
+      "the-rotting-quarter",
+      "the-salt-factor",
+      "the-salt-hills",
+      "the-salt-market",
+      "the-salt-pans",
+      "the-sanction",
+      "the-sap-cutters",
+      "the-sap-draught",
+      "the-sap-house",
+      "the-sapwells",
+      "the-second-ledger",
+      "the-second-name",
+      "the-second-refusal",
+      "the-second-set-of-weights",
+      "the-second-stair",
+      "the-seized-hull",
+      "the-shadowscale-list",
+      "the-shadowscales",
+      "the-short-pay",
+      "the-short-weight",
+      "the-shrine-return",
+      "the-sill",
+      "the-silted-bay",
+      "the-skei",
+      "the-slavers-road",
+      "the-smell",
+      "the-soul-trade",
+      "the-sound-below",
       "the-speaker-goes-down",
+      "the-speakers-silence",
+      "the-steward-of-the-count",
+      "the-stilled-man",
+      "the-stone-forest",
+      "the-stone-wastes",
+      "the-strider-analogue",
+      "the-struck-off-notary",
+      "the-sunken-well",
+      "the-supply-road",
+      "the-surcharge",
+      "the-swamp-wyrm",
+      "the-swimmers",
+      "the-taking-below",
+      "the-tally-of-the-dead",
+      "the-tenth",
+      "the-thin-years",
+      "the-thing-in-the-cistern",
+      "the-thinning",
+      "the-third-person",
+      "the-third-root",
+      "the-thirteen-regions",
+      "the-thorn-charter",
+      "the-thread-is-cut",
+      "the-three-previous-severances",
+      "the-three-things-i-checked-myself",
+      "the-tide-lichen",
+      "the-tide-steps",
+      "the-tide-turn-walk",
+      "the-tides",
+      "the-timber-yards",
+      "the-tithe-roll",
+      "the-toll-book",
+      "the-tolls",
+      "the-tree-at-thorn",
+      "the-tribunal-question",
+      "the-tribune",
+      "the-tribune-drinks",
+      "the-two-brothers",
+      "the-under-drain",
+      "the-underwriters-gate",
+      "the-unfinished-survey",
+      "the-unlisted-well",
+      "the-upper-shelf",
+      "the-valus-ridge",
+      "the-vat-cough",
+      "the-vestry-well",
+      "the-veto-minute",
+      "the-village-tally",
+      "the-village-that-moved",
+      "the-vintage",
+      "the-voriplasm",
+      "the-wall-at-the-grange",
+      "the-wall-street",
+      "the-wamasu",
+      "the-warden",
+      "the-warden-scribes-file",
+      "the-warehouse-key",
+      "the-warehouse-row",
+      "the-warrant-of-attainder",
+      "the-water-call",
+      "the-weeping-ford",
+      "the-weigh-house",
+      "the-weight-in-the-well",
+      "the-western-rootlands",
+      "the-wet-ledger",
+      "the-wet-season",
+      "the-wharf-debt",
+      "the-wine",
+      "the-witness",
+      "the-word-they-use",
+      "the-works",
+      "the-writ",
+      "the-writ-house",
+      "the-writ-of-passage",
+      "the-writ-of-works",
+      "the-xanmeers",
+      "the-xul-teekh",
+      "the-yard-office",
+      "thorn",
+      "thornmarsh",
       "through-a-factor",
-      "emptying-the-coast",
-      "main-quest-argument",
-      "the-allowance",
-      "why-it-is-filling-now",
-      "how-the-count-opens",
+      "tide-law",
+      "tidewrack",
+      "topal-bay",
+      "wades-deep",
+      "warden-eshi",
+      "warmblood",
+      "what-does-the-marsh-owe-you",
+      "what-happens-to-the-old-ones",
+      "what-people-say-happened",
+      "what-tear-thinks",
+      "what-the-band-eats",
+      "what-the-band-owes",
+      "what-the-bone-holds",
+      "what-the-cohort-sells",
+      "what-the-house-pays-us",
+      "what-the-kiln-kept",
+      "what-the-marsh-remembers",
+      "what-the-sap-says",
+      "what-the-sap-showed-me",
+      "what-the-tide-does-now",
+      "what-the-towns-say-about-us",
+      "what-the-tribune-wants",
+      "what-the-warmbloods-ask",
+      "what-the-wells-do-now",
+      "what-they-take-off-you",
+      "what-to-drink",
+      "what-we-are-owed",
+      "what-we-do-with-the-writs",
+      "what-we-keep-from-the-office",
+      "what-we-will-not-do",
+      "who-buys",
+      "who-informs",
       "whose-count-are-you",
+      "why-anyone-comes-here",
+      "why-it-is-filling-now",
+      "why-the-village-is-empty",
+      "wide-eye-teel",
+      "writ-amendment",
+      "your-accent",
+      "your-clutch-mark",
+      "your-egg-year",
+      "your-hatch-name",
+      "your-people-here",
+      "topic keyword slug; `name` is the keyword as the player sees it",
+      "opening-roots",
+      "speaker-coverage",
+      "enchanting",
+      "spellmaking",
+      "topic-merge-manifest",
+      "main-quest-argument-vs-50-mainline",
+      "main-quest-argument",
       "hold.come-to",
       "hold.wake",
       "hold.hatch-name",
@@ -1517,36 +1727,36 @@
       "writ.stamp",
       "take"
     ],
-    "conditional_topics": 4,
+    "conditional_topics": 80,
     "reciprocal_edges": 2
   },
   "quests": {
-    "count": 122,
+    "count": 204,
     "stages": {
-      "n": 122,
+      "n": 204,
       "min": 0,
       "max": 3,
-      "mean": 0.0246,
-      "stdev": 0.2716,
+      "mean": 0.0147,
+      "stdev": 0.21,
       "p05": 0,
       "p50": 0,
       "p95": 0
     },
     "branches": {
-      "n": 122,
+      "n": 204,
       "min": 1,
       "max": 6,
-      "mean": 3.2131,
-      "stdev": 0.8355,
+      "mean": 2.7451,
+      "stdev": 0.8731,
       "p05": 2,
-      "p50": 3,
+      "p50": 2,
       "p95": 4
     },
-    "with_multiple_outcomes": 121,
-    "resolvable_without_combat": 107,
-    "pct_resolvable_without_combat": 87.7,
-    "mutually_exclusive": 121,
-    "giver_lies": 93,
+    "with_multiple_outcomes": 203,
+    "resolvable_without_combat": 128,
+    "pct_resolvable_without_combat": 62.75,
+    "mutually_exclusive": 203,
+    "giver_lies": 119,
     "with_objective_markers": 0,
     "per_quest": [
       {
@@ -1578,7 +1788,7 @@
           34
         ],
         "has_marker": false,
-        "words": 622
+        "words": 625
       },
       {
         "id": "Q-SOUL-02",
@@ -1610,7 +1820,7 @@
           34
         ],
         "has_marker": false,
-        "words": 700
+        "words": 714
       },
       {
         "id": "Q-BLAK-01",
@@ -1642,7 +1852,7 @@
           29
         ],
         "has_marker": false,
-        "words": 803
+        "words": 817
       },
       {
         "id": "Q-STRM-01",
@@ -1671,7 +1881,7 @@
           35
         ],
         "has_marker": false,
-        "words": 518
+        "words": 525
       },
       {
         "id": "Q-LILM-01",
@@ -1701,7 +1911,7 @@
           29
         ],
         "has_marker": false,
-        "words": 541
+        "words": 550
       },
       {
         "id": "Q-SAP-01",
@@ -1766,7 +1976,7 @@
           23
         ],
         "has_marker": false,
-        "words": 912
+        "words": 929
       },
       {
         "id": "Q-DOCK-01",
@@ -1797,7 +2007,7 @@
           35
         ],
         "has_marker": false,
-        "words": 578
+        "words": 591
       },
       {
         "id": "Q-DEEP-01",
@@ -1829,7 +2039,1957 @@
           26
         ],
         "has_marker": false,
-        "words": 638
+        "words": 646
+      },
+      {
+        "id": "Q-DEEP-30",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 178
+      },
+      {
+        "id": "Q-DEEP-31",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 178
+      },
+      {
+        "id": "Q-DEEP-32",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 178
+      },
+      {
+        "id": "Q-DEEP-33",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 204
+      },
+      {
+        "id": "Q-DEEP-34",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 188
+      },
+      {
+        "id": "Q-DEEP-35",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 178
+      },
+      {
+        "id": "Q-DEEP-36",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 178
+      },
+      {
+        "id": "Q-DEEP-37",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 178
+      },
+      {
+        "id": "Q-DEEP-38",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 178
+      },
+      {
+        "id": "Q-DEEP-39",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 178
+      },
+      {
+        "id": "Q-DEEP-40",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 178
+      },
+      {
+        "id": "Q-DEEP-41",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 204
+      },
+      {
+        "id": "Q-DEEP-42",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 188
+      },
+      {
+        "id": "Q-DEEP-43",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 178
+      },
+      {
+        "id": "Q-DEEP-44",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 178
+      },
+      {
+        "id": "Q-DEEP-45",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 178
+      },
+      {
+        "id": "Q-DEEP-46",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          26,
+          27,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 178
+      },
+      {
+        "id": "Q-DOCK-30",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 182
+      },
+      {
+        "id": "Q-DOCK-31",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 182
+      },
+      {
+        "id": "Q-DOCK-32",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 182
+      },
+      {
+        "id": "Q-DOCK-33",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 211
+      },
+      {
+        "id": "Q-DOCK-34",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 182
+      },
+      {
+        "id": "Q-DOCK-35",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          27,
+          14,
+          14,
+          15
+        ],
+        "has_marker": false,
+        "words": 172
+      },
+      {
+        "id": "Q-DOCK-36",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 182
+      },
+      {
+        "id": "Q-DOCK-37",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 182
+      },
+      {
+        "id": "Q-DOCK-38",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 182
+      },
+      {
+        "id": "Q-DOCK-39",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 182
+      },
+      {
+        "id": "Q-DOCK-40",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 182
+      },
+      {
+        "id": "Q-DOCK-41",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 211
+      },
+      {
+        "id": "Q-DOCK-42",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 182
+      },
+      {
+        "id": "Q-DOCK-43",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          27,
+          14,
+          14,
+          15
+        ],
+        "has_marker": false,
+        "words": 172
+      },
+      {
+        "id": "Q-CORT-30",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-CORT-31",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-CORT-32",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-CORT-33",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 218
+      },
+      {
+        "id": "Q-CORT-34",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-CORT-35",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-CORT-36",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-CORT-37",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-CORT-38",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-CORT-39",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-CORT-40",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-CORT-41",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 218
+      },
+      {
+        "id": "Q-CORT-42",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-CORT-43",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-CORT-44",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-CORT-45",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          16,
+          16,
+          17
+        ],
+        "has_marker": false,
+        "words": 187
+      },
+      {
+        "id": "Q-VAKH-30",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-VAKH-31",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-VAKH-32",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-VAKH-33",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 210
+      },
+      {
+        "id": "Q-VAKH-34",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-VAKH-35",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-VAKH-36",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-VAKH-37",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-VAKH-38",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-VAKH-39",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-VAKH-40",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-VAKH-41",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 210
+      },
+      {
+        "id": "Q-VAKH-42",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-VAKH-43",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-VAKH-44",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-VAKH-45",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          27,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 181
+      },
+      {
+        "id": "Q-ROOT-30",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 180
+      },
+      {
+        "id": "Q-ROOT-31",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 180
+      },
+      {
+        "id": "Q-ROOT-32",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 180
+      },
+      {
+        "id": "Q-ROOT-33",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 209
+      },
+      {
+        "id": "Q-ROOT-34",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 180
+      },
+      {
+        "id": "Q-ROOT-35",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 180
+      },
+      {
+        "id": "Q-ROOT-36",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 180
+      },
+      {
+        "id": "Q-ROOT-37",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 180
+      },
+      {
+        "id": "Q-ROOT-38",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 180
+      },
+      {
+        "id": "Q-ROOT-39",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 180
+      },
+      {
+        "id": "Q-ROOT-40",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 180
+      },
+      {
+        "id": "Q-ROOT-41",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 209
+      },
+      {
+        "id": "Q-ROOT-42",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 180
+      },
+      {
+        "id": "Q-ROOT-43",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 180
+      },
+      {
+        "id": "Q-ROOT-44",
+        "stages": 0,
+        "outcomes": 2,
+        "terminal_stages": 0,
+        "branch_count": 2,
+        "outcome_methods": [
+          "comply",
+          "expose"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 5,
+        "journal_word_lengths": [
+          28,
+          28,
+          15,
+          15,
+          16
+        ],
+        "has_marker": false,
+        "words": 180
       },
       {
         "id": "Q-ASSZ-00",
@@ -1856,7 +4016,7 @@
           36
         ],
         "has_marker": false,
-        "words": 545
+        "words": 565
       },
       {
         "id": "Q-ASSZ-01",
@@ -1885,7 +4045,7 @@
           38
         ],
         "has_marker": false,
-        "words": 617
+        "words": 643
       },
       {
         "id": "Q-ASSZ-02",
@@ -1915,7 +4075,7 @@
           43
         ],
         "has_marker": false,
-        "words": 669
+        "words": 693
       },
       {
         "id": "Q-ASSZ-03",
@@ -1946,7 +4106,7 @@
           49
         ],
         "has_marker": false,
-        "words": 782
+        "words": 811
       },
       {
         "id": "Q-ASSZ-04",
@@ -1978,7 +4138,7 @@
           45
         ],
         "has_marker": false,
-        "words": 982
+        "words": 1010
       },
       {
         "id": "Q-ASSZ-05",
@@ -2010,7 +4170,7 @@
           32
         ],
         "has_marker": false,
-        "words": 994
+        "words": 1019
       },
       {
         "id": "Q-ASSZ-06",
@@ -2039,7 +4199,7 @@
           41
         ],
         "has_marker": false,
-        "words": 907
+        "words": 931
       },
       {
         "id": "Q-ASSZ-07",
@@ -2071,7 +4231,7 @@
           36
         ],
         "has_marker": false,
-        "words": 940
+        "words": 967
       },
       {
         "id": "Q-ASSZ-08",
@@ -2102,7 +4262,7 @@
           48
         ],
         "has_marker": false,
-        "words": 998
+        "words": 1029
       },
       {
         "id": "Q-ASSZ-09",
@@ -2129,7 +4289,7 @@
           25
         ],
         "has_marker": false,
-        "words": 309
+        "words": 329
       },
       {
         "id": "Q-ASSZ-10",
@@ -2158,7 +4318,7 @@
           34
         ],
         "has_marker": false,
-        "words": 429
+        "words": 455
       },
       {
         "id": "Q-ASSZ-11",
@@ -2188,7 +4348,7 @@
           27
         ],
         "has_marker": false,
-        "words": 396
+        "words": 420
       },
       {
         "id": "Q-ASSZ-12",
@@ -2221,7 +4381,7 @@
           28
         ],
         "has_marker": false,
-        "words": 553
+        "words": 581
       },
       {
         "id": "Q-ASSZ-13",
@@ -2253,7 +4413,7 @@
           32
         ],
         "has_marker": false,
-        "words": 506
+        "words": 534
       },
       {
         "id": "Q-ASSZ-14",
@@ -2284,7 +4444,7 @@
           34
         ],
         "has_marker": false,
-        "words": 572
+        "words": 600
       },
       {
         "id": "Q-ASSZ-15",
@@ -2317,7 +4477,7 @@
           39
         ],
         "has_marker": false,
-        "words": 568
+        "words": 597
       },
       {
         "id": "Q-ASSZ-16",
@@ -2347,7 +4507,121 @@
           34
         ],
         "has_marker": false,
-        "words": 415
+        "words": 442
+      },
+      {
+        "id": "Q-ROOT-00",
+        "stages": 0,
+        "outcomes": 3,
+        "terminal_stages": 0,
+        "branch_count": 3,
+        "outcome_methods": [
+          "comply",
+          "investigate",
+          "lore_knowledge"
+        ],
+        "peaceful_outcomes": 0,
+        "resolvable_without_combat": false,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 8,
+        "journal_word_lengths": [
+          50,
+          40,
+          41,
+          53,
+          46,
+          47,
+          51,
+          48
+        ],
+        "has_marker": false,
+        "words": 663
+      },
+      {
+        "id": "Q-VAKH-00",
+        "stages": 0,
+        "outcomes": 3,
+        "terminal_stages": 0,
+        "branch_count": 3,
+        "outcome_methods": [
+          "comply",
+          "sneak",
+          "persuade"
+        ],
+        "peaceful_outcomes": 2,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": true,
+        "journal_entries": 7,
+        "journal_word_lengths": [
+          35,
+          46,
+          46,
+          52,
+          44,
+          52,
+          55
+        ],
+        "has_marker": false,
+        "words": 604
+      },
+      {
+        "id": "Q-CORT-00",
+        "stages": 0,
+        "outcomes": 3,
+        "terminal_stages": 0,
+        "branch_count": 3,
+        "outcome_methods": [
+          "comply",
+          "investigate",
+          "expose"
+        ],
+        "peaceful_outcomes": 1,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 8,
+        "journal_word_lengths": [
+          42,
+          43,
+          36,
+          52,
+          52,
+          49,
+          41,
+          53
+        ],
+        "has_marker": false,
+        "words": 638
+      },
+      {
+        "id": "Q-DOCK-00",
+        "stages": 0,
+        "outcomes": 3,
+        "terminal_stages": 0,
+        "branch_count": 3,
+        "outcome_methods": [
+          "comply",
+          "persuade",
+          "intimidate"
+        ],
+        "peaceful_outcomes": 2,
+        "resolvable_without_combat": true,
+        "mutually_exclusive": true,
+        "giver_lies": false,
+        "journal_entries": 7,
+        "journal_word_lengths": [
+          55,
+          54,
+          59,
+          52,
+          46,
+          54,
+          45
+        ],
+        "has_marker": false,
+        "words": 619
       },
       {
         "id": "Q-LEDG-00",
@@ -2376,7 +4650,7 @@
           41
         ],
         "has_marker": false,
-        "words": 644
+        "words": 666
       },
       {
         "id": "Q-LEDG-02",
@@ -2406,7 +4680,7 @@
           44
         ],
         "has_marker": false,
-        "words": 655
+        "words": 677
       },
       {
         "id": "Q-LEDG-03",
@@ -2438,7 +4712,7 @@
           41
         ],
         "has_marker": false,
-        "words": 743
+        "words": 769
       },
       {
         "id": "Q-LEDG-04",
@@ -2470,7 +4744,7 @@
           33
         ],
         "has_marker": false,
-        "words": 874
+        "words": 889
       },
       {
         "id": "Q-LEDG-05",
@@ -2502,7 +4776,7 @@
           39
         ],
         "has_marker": false,
-        "words": 855
+        "words": 884
       },
       {
         "id": "Q-LEDG-06",
@@ -2533,7 +4807,7 @@
           37
         ],
         "has_marker": false,
-        "words": 895
+        "words": 924
       },
       {
         "id": "Q-LEDG-07",
@@ -2565,7 +4839,7 @@
           35
         ],
         "has_marker": false,
-        "words": 950
+        "words": 977
       },
       {
         "id": "Q-LEDG-08",
@@ -2596,7 +4870,7 @@
           44
         ],
         "has_marker": false,
-        "words": 958
+        "words": 987
       },
       {
         "id": "Q-LEDG-09",
@@ -2625,7 +4899,7 @@
           28
         ],
         "has_marker": false,
-        "words": 385
+        "words": 408
       },
       {
         "id": "Q-LEDG-10",
@@ -2657,7 +4931,7 @@
           33
         ],
         "has_marker": false,
-        "words": 539
+        "words": 567
       },
       {
         "id": "Q-LEDG-11",
@@ -2687,7 +4961,7 @@
           33
         ],
         "has_marker": false,
-        "words": 429
+        "words": 453
       },
       {
         "id": "Q-LEDG-12",
@@ -2720,7 +4994,7 @@
           24
         ],
         "has_marker": false,
-        "words": 549
+        "words": 579
       },
       {
         "id": "Q-LEDG-13",
@@ -2752,7 +5026,7 @@
           32
         ],
         "has_marker": false,
-        "words": 515
+        "words": 546
       },
       {
         "id": "Q-LEDG-14",
@@ -2783,7 +5057,7 @@
           25
         ],
         "has_marker": false,
-        "words": 568
+        "words": 595
       },
       {
         "id": "Q-LEDG-15",
@@ -2816,7 +5090,7 @@
           26
         ],
         "has_marker": false,
-        "words": 526
+        "words": 554
       },
       {
         "id": "Q-LEDG-16",
@@ -2846,7 +5120,7 @@
           26
         ],
         "has_marker": false,
-        "words": 384
+        "words": 408
       },
       {
         "id": "Q-LEDG-17",
@@ -2862,7 +5136,7 @@
         "peaceful_outcomes": 0,
         "resolvable_without_combat": true,
         "mutually_exclusive": true,
-        "giver_lies": false,
+        "giver_lies": true,
         "journal_entries": 10,
         "journal_word_lengths": [
           33,
@@ -2877,7 +5151,7 @@
           35
         ],
         "has_marker": false,
-        "words": 462
+        "words": 487
       },
       {
         "id": "Q-XULA-00",
@@ -2905,7 +5179,7 @@
           54
         ],
         "has_marker": false,
-        "words": 622
+        "words": 641
       },
       {
         "id": "Q-XULA-01",
@@ -2938,7 +5212,7 @@
           55
         ],
         "has_marker": false,
-        "words": 823
+        "words": 853
       },
       {
         "id": "Q-XULA-02",
@@ -2971,7 +5245,7 @@
           42
         ],
         "has_marker": false,
-        "words": 642
+        "words": 676
       },
       {
         "id": "Q-XULA-03",
@@ -3003,7 +5277,7 @@
           40
         ],
         "has_marker": false,
-        "words": 743
+        "words": 772
       },
       {
         "id": "Q-XULA-04",
@@ -3035,7 +5309,7 @@
           41
         ],
         "has_marker": false,
-        "words": 986
+        "words": 1015
       },
       {
         "id": "Q-XULA-05",
@@ -3067,7 +5341,7 @@
           39
         ],
         "has_marker": false,
-        "words": 997
+        "words": 1027
       },
       {
         "id": "Q-XULA-06",
@@ -3099,7 +5373,7 @@
           38
         ],
         "has_marker": false,
-        "words": 991
+        "words": 1025
       },
       {
         "id": "Q-XULA-07",
@@ -3131,7 +5405,7 @@
           43
         ],
         "has_marker": false,
-        "words": 964
+        "words": 997
       },
       {
         "id": "Q-XULA-08",
@@ -3162,7 +5436,7 @@
           52
         ],
         "has_marker": false,
-        "words": 1175
+        "words": 1204
       },
       {
         "id": "Q-XULA-09",
@@ -3189,7 +5463,7 @@
           33
         ],
         "has_marker": false,
-        "words": 344
+        "words": 363
       },
       {
         "id": "Q-XULA-10",
@@ -3219,7 +5493,7 @@
           28
         ],
         "has_marker": false,
-        "words": 479
+        "words": 505
       },
       {
         "id": "Q-XULA-11",
@@ -3251,7 +5525,7 @@
           28
         ],
         "has_marker": false,
-        "words": 606
+        "words": 641
       },
       {
         "id": "Q-XULA-12",
@@ -3284,7 +5558,7 @@
           29
         ],
         "has_marker": false,
-        "words": 579
+        "words": 611
       },
       {
         "id": "Q-XULA-13",
@@ -3315,7 +5589,7 @@
           38
         ],
         "has_marker": false,
-        "words": 514
+        "words": 540
       },
       {
         "id": "Q-XULA-14",
@@ -3348,7 +5622,7 @@
           35
         ],
         "has_marker": false,
-        "words": 587
+        "words": 619
       },
       {
         "id": "Q-XULA-15",
@@ -3378,7 +5652,7 @@
           29
         ],
         "has_marker": false,
-        "words": 385
+        "words": 412
       },
       {
         "id": "Q-XULA-16",
@@ -3408,7 +5682,7 @@
           36
         ],
         "has_marker": false,
-        "words": 400
+        "words": 424
       },
       {
         "id": "Q-MAG-01",
@@ -3437,7 +5711,7 @@
           13
         ],
         "has_marker": false,
-        "words": 298
+        "words": 337
       },
       {
         "id": "Q-MAG-02",
@@ -3464,7 +5738,7 @@
           9
         ],
         "has_marker": false,
-        "words": 299
+        "words": 395
       },
       {
         "id": "Q-MAG-03",
@@ -3491,7 +5765,7 @@
           38
         ],
         "has_marker": false,
-        "words": 332
+        "words": 361
       },
       {
         "id": "Q-MAG-04",
@@ -3518,7 +5792,7 @@
           13
         ],
         "has_marker": false,
-        "words": 312
+        "words": 408
       },
       {
         "id": "Q-MAG-05",
@@ -3545,7 +5819,7 @@
           24
         ],
         "has_marker": false,
-        "words": 437
+        "words": 536
       },
       {
         "id": "Q-MAG-06",
@@ -3572,7 +5846,7 @@
           10
         ],
         "has_marker": false,
-        "words": 252
+        "words": 344
       },
       {
         "id": "Q-MAG-07",
@@ -3599,7 +5873,7 @@
           12
         ],
         "has_marker": false,
-        "words": 259
+        "words": 359
       },
       {
         "id": "Q-MAG-08",
@@ -3628,7 +5902,7 @@
           11
         ],
         "has_marker": false,
-        "words": 235
+        "words": 274
       },
       {
         "id": "Q-MAG-09",
@@ -3655,7 +5929,7 @@
           16
         ],
         "has_marker": false,
-        "words": 237
+        "words": 269
       },
       {
         "id": "Q-MAG-10",
@@ -3684,7 +5958,7 @@
           11
         ],
         "has_marker": false,
-        "words": 464
+        "words": 500
       },
       {
         "id": "Q-MAG-11",
@@ -3713,7 +5987,7 @@
           31
         ],
         "has_marker": false,
-        "words": 297
+        "words": 336
       },
       {
         "id": "Q-MAG-12",
@@ -3738,7 +6012,7 @@
           15
         ],
         "has_marker": false,
-        "words": 237
+        "words": 262
       },
       {
         "id": "Q-MAG-13",
@@ -3765,7 +6039,7 @@
           32
         ],
         "has_marker": false,
-        "words": 404
+        "words": 491
       },
       {
         "id": "Q-MAG-14",
@@ -3792,7 +6066,7 @@
           14
         ],
         "has_marker": false,
-        "words": 225
+        "words": 257
       },
       {
         "id": "Q-MAG-15",
@@ -3819,7 +6093,7 @@
           13
         ],
         "has_marker": false,
-        "words": 243
+        "words": 275
       },
       {
         "id": "Q-MAG-16",
@@ -3848,7 +6122,7 @@
           29
         ],
         "has_marker": false,
-        "words": 325
+        "words": 429
       },
       {
         "id": "Q-MAG-17",
@@ -3875,7 +6149,7 @@
           16
         ],
         "has_marker": false,
-        "words": 255
+        "words": 287
       },
       {
         "id": "Q-MAG-18",
@@ -3902,7 +6176,7 @@
           15
         ],
         "has_marker": false,
-        "words": 271
+        "words": 358
       },
       {
         "id": "Q-MAG-19",
@@ -3929,7 +6203,7 @@
           16
         ],
         "has_marker": false,
-        "words": 372
+        "words": 465
       },
       {
         "id": "Q-MAG-20",
@@ -3956,7 +6230,7 @@
           12
         ],
         "has_marker": false,
-        "words": 251
+        "words": 283
       },
       {
         "id": "Q-MAG-21",
@@ -3985,7 +6259,7 @@
           28
         ],
         "has_marker": false,
-        "words": 300
+        "words": 342
       },
       {
         "id": "Q-MAG-22",
@@ -4010,7 +6284,7 @@
           17
         ],
         "has_marker": false,
-        "words": 220
+        "words": 245
       },
       {
         "id": "Q-MAG-23",
@@ -4037,7 +6311,7 @@
           10
         ],
         "has_marker": false,
-        "words": 224
+        "words": 256
       },
       {
         "id": "Q-MAG-24",
@@ -4066,7 +6340,7 @@
           27
         ],
         "has_marker": false,
-        "words": 361
+        "words": 452
       },
       {
         "id": "Q-MAG-25",
@@ -4091,7 +6365,7 @@
           34
         ],
         "has_marker": false,
-        "words": 314
+        "words": 343
       },
       {
         "id": "Q-MAG-26",
@@ -4116,7 +6390,7 @@
           23
         ],
         "has_marker": false,
-        "words": 290
+        "words": 317
       },
       {
         "id": "Q-MAG-27",
@@ -4141,7 +6415,7 @@
           33
         ],
         "has_marker": false,
-        "words": 306
+        "words": 331
       },
       {
         "id": "Q-MAG-28",
@@ -4166,7 +6440,7 @@
           22
         ],
         "has_marker": false,
-        "words": 301
+        "words": 326
       },
       {
         "id": "Q-MAIN-01",
@@ -4200,7 +6474,7 @@
           43
         ],
         "has_marker": false,
-        "words": 1080
+        "words": 1094
       },
       {
         "id": "Q-MAIN-02",
@@ -4229,7 +6503,7 @@
           51
         ],
         "has_marker": false,
-        "words": 761
+        "words": 786
       },
       {
         "id": "Q-MAIN-03",
@@ -4260,7 +6534,7 @@
           41
         ],
         "has_marker": false,
-        "words": 876
+        "words": 887
       },
       {
         "id": "Q-MAIN-04",
@@ -4290,7 +6564,7 @@
           46
         ],
         "has_marker": false,
-        "words": 608
+        "words": 635
       },
       {
         "id": "Q-MAIN-05",
@@ -4318,7 +6592,7 @@
           54
         ],
         "has_marker": false,
-        "words": 801
+        "words": 810
       },
       {
         "id": "Q-MAIN-06",
@@ -4347,7 +6621,7 @@
           69
         ],
         "has_marker": false,
-        "words": 925
+        "words": 934
       },
       {
         "id": "Q-MAIN-07",
@@ -4375,7 +6649,7 @@
           56
         ],
         "has_marker": false,
-        "words": 927
+        "words": 948
       },
       {
         "id": "Q-MAIN-08",
@@ -4406,7 +6680,7 @@
           47
         ],
         "has_marker": false,
-        "words": 1150
+        "words": 1165
       },
       {
         "id": "Q-MAIN-09",
@@ -4434,7 +6708,7 @@
           55
         ],
         "has_marker": false,
-        "words": 747
+        "words": 767
       },
       {
         "id": "Q-MAIN-10",
@@ -4462,7 +6736,7 @@
           56
         ],
         "has_marker": false,
-        "words": 953
+        "words": 974
       },
       {
         "id": "Q-MAIN-11",
@@ -4490,7 +6764,7 @@
           50
         ],
         "has_marker": false,
-        "words": 916
+        "words": 925
       },
       {
         "id": "Q-MAIN-12",
@@ -4520,7 +6794,7 @@
           38
         ],
         "has_marker": false,
-        "words": 977
+        "words": 999
       },
       {
         "id": "Q-MAIN-13",
@@ -4549,7 +6823,7 @@
           51
         ],
         "has_marker": false,
-        "words": 1001
+        "words": 1022
       },
       {
         "id": "Q-MAIN-14",
@@ -4576,7 +6850,7 @@
           56
         ],
         "has_marker": false,
-        "words": 910
+        "words": 931
       },
       {
         "id": "Q-MAIN-15",
@@ -4604,7 +6878,7 @@
           55
         ],
         "has_marker": false,
-        "words": 975
+        "words": 995
       },
       {
         "id": "Q-MAIN-16",
@@ -4635,7 +6909,7 @@
           40
         ],
         "has_marker": false,
-        "words": 768
+        "words": 795
       },
       {
         "id": "Q-MAIN-17",
@@ -4666,7 +6940,7 @@
           44
         ],
         "has_marker": false,
-        "words": 1068
+        "words": 1023
       },
       {
         "id": "Q-MAIN-18",
@@ -4697,7 +6971,7 @@
           44
         ],
         "has_marker": false,
-        "words": 1119
+        "words": 1148
       },
       {
         "id": "Q-MAIN-19",
@@ -4725,7 +6999,7 @@
           52
         ],
         "has_marker": false,
-        "words": 951
+        "words": 976
       },
       {
         "id": "Q-MAIN-20",
@@ -4753,7 +7027,7 @@
           46
         ],
         "has_marker": false,
-        "words": 988
+        "words": 1012
       },
       {
         "id": "Q-MAIN-21",
@@ -4782,7 +7056,7 @@
           42
         ],
         "has_marker": false,
-        "words": 1095
+        "words": 1118
       },
       {
         "id": "Q-MAIN-22",
@@ -4811,7 +7085,7 @@
           56
         ],
         "has_marker": false,
-        "words": 967
+        "words": 990
       },
       {
         "id": "Q-MAIN-23",
@@ -4840,7 +7114,7 @@
           69
         ],
         "has_marker": false,
-        "words": 1335
+        "words": 1361
       },
       {
         "id": "Q-MAIN-24",
@@ -4868,7 +7142,7 @@
           65
         ],
         "has_marker": false,
-        "words": 905
+        "words": 926
       },
       {
         "id": "Q-MAIN-25",
@@ -4898,7 +7172,7 @@
           64
         ],
         "has_marker": false,
-        "words": 974
+        "words": 988
       },
       {
         "id": "Q-MAIN-26",
@@ -4930,7 +7204,7 @@
           79
         ],
         "has_marker": false,
-        "words": 1138
+        "words": 1150
       },
       {
         "id": "Q-MAIN-27",
@@ -4956,7 +7230,7 @@
           23
         ],
         "has_marker": false,
-        "words": 727
+        "words": 730
       },
       {
         "id": "Q-MAIN-28",
@@ -4985,7 +7259,7 @@
           79
         ],
         "has_marker": false,
-        "words": 984
+        "words": 1013
       },
       {
         "id": "Q-MAIN-29",
@@ -5012,7 +7286,7 @@
           49
         ],
         "has_marker": false,
-        "words": 854
+        "words": 875
       },
       {
         "id": "Q-MAIN-30",
@@ -5039,7 +7313,7 @@
           53
         ],
         "has_marker": false,
-        "words": 724
+        "words": 744
       },
       {
         "id": "Q-MAIN-31",
@@ -5068,7 +7342,7 @@
           36
         ],
         "has_marker": false,
-        "words": 875
+        "words": 902
       },
       {
         "id": "Q-MAIN-32",
@@ -5095,7 +7369,7 @@
           55
         ],
         "has_marker": false,
-        "words": 765
+        "words": 786
       },
       {
         "id": "mainline",
@@ -5136,35 +7410,35 @@
     ]
   },
   "journal": {
-    "entries": 1008,
+    "entries": 1428,
     "word_lengths": {
-      "n": 1008,
+      "n": 1428,
       "min": 8,
       "max": 131,
-      "mean": 37.6081,
-      "stdev": 15.848,
+      "mean": 33.1127,
+      "stdev": 15.8424,
       "p05": 15,
-      "p50": 35,
-      "p95": 65
+      "p50": 30,
+      "p95": 61
     },
     "histogram": {
       "0-9": 5,
-      "10-19": 77,
-      "20-39": 575,
-      "40-59": 272,
+      "10-19": 311,
+      "20-39": 733,
+      "40-59": 300,
       "60-99": 69,
       "100-199": 10,
       "200+": 0
     }
   },
   "world": {
-    "pois": 2102,
-    "named_pois": 304,
-    "named_ratio": 0.1446,
+    "pois": 2115,
+    "named_pois": 317,
+    "named_ratio": 0.1499,
     "settlements": 53,
-    "interiors": 112,
+    "interiors": 115,
     "regions": {
-      "unassigned": 1810,
+      "unassigned": 1823,
       "stone-forest": 48,
       "eastern-rootlands": 38,
       "blackwood": 34,
@@ -5182,272 +7456,272 @@
     "pois_per_region": {
       "n": 13,
       "min": 2,
-      "max": 1810,
-      "mean": 161.6923,
-      "stdev": 495.4055,
+      "max": 1823,
+      "mean": 162.6923,
+      "stdev": 499.0099,
       "p05": 6.8,
       "p50": 26,
-      "p95": 752.8
+      "p95": 758
     }
   },
   "lore": {
-    "books": 263,
+    "books": 443,
     "book_word_lengths": {
-      "n": 263,
-      "min": 8,
-      "max": 5481,
-      "mean": 410.3878,
-      "stdev": 625.4395,
-      "p05": 16.1,
-      "p50": 104,
-      "p95": 1761.6
+      "n": 443,
+      "min": 4,
+      "max": 5648,
+      "mean": 289.8262,
+      "stdev": 520.186,
+      "p05": 8,
+      "p50": 50,
+      "p95": 1374.3
     },
     "proper_nouns": {
-      "unique": 1107,
-      "total": 12016,
+      "unique": 1214,
+      "total": 15854,
       "top": [
         {
-          "word": "Gideon",
-          "n": 433
-        },
-        {
           "word": "Court",
-          "n": 413
+          "n": 606
         },
         {
-          "word": "Ledger",
-          "n": 325
-        },
-        {
-          "word": "Assize",
-          "n": 290
-        },
-        {
-          "word": "Act",
-          "n": 268
-        },
-        {
-          "word": "Lilmoth",
-          "n": 265
-        },
-        {
-          "word": "Archon",
-          "n": 244
-        },
-        {
-          "word": "Court's",
-          "n": 242
-        },
-        {
-          "word": "Office",
-          "n": 235
-        },
-        {
-          "word": "Soulrest",
-          "n": 230
-        },
-        {
-          "word": "Blackrose",
-          "n": 220
-        },
-        {
-          "word": "Helstrom",
-          "n": 204
-        },
-        {
-          "word": "Imperial",
-          "n": 194
+          "word": "Gideon",
+          "n": 515
         },
         {
           "word": "Drowned",
-          "n": 181
+          "n": 372
         },
         {
-          "word": "House",
-          "n": 160
+          "word": "Ledger",
+          "n": 363
         },
         {
-          "word": "Wastes",
-          "n": 155
+          "word": "Lilmoth",
+          "n": 331
         },
         {
-          "word": "Thorn",
-          "n": 142
+          "word": "Assize",
+          "n": 313
         },
         {
-          "word": "Company",
-          "n": 138
+          "word": "Court's",
+          "n": 304
         },
         {
-          "word": "Empire",
-          "n": 137
+          "word": "Office",
+          "n": 294
         },
         {
-          "word": "Count",
-          "n": 130
+          "word": "Archon",
+          "n": 289
+        },
+        {
+          "word": "Soulrest",
+          "n": 289
+        },
+        {
+          "word": "Act",
+          "n": 273
+        },
+        {
+          "word": "Helstrom",
+          "n": 267
+        },
+        {
+          "word": "Blackrose",
+          "n": 242
+        },
+        {
+          "word": "Deep",
+          "n": 236
+        },
+        {
+          "word": "Imperial",
+          "n": 203
         },
         {
           "word": "Stone",
-          "n": 122
+          "n": 201
         },
         {
-          "word": "Ladder",
-          "n": 122
+          "word": "House",
+          "n": 175
+        },
+        {
+          "word": "Kin",
+          "n": 170
+        },
+        {
+          "word": "Thorn",
+          "n": 168
+        },
+        {
+          "word": "Wastes",
+          "n": 163
+        },
+        {
+          "word": "Company",
+          "n": 153
+        },
+        {
+          "word": "Empire",
+          "n": 149
         },
         {
           "word": "Dres",
-          "n": 120
+          "n": 143
+        },
+        {
+          "word": "Rootkeepers",
+          "n": 140
+        },
+        {
+          "word": "Count",
+          "n": 139
+        },
+        {
+          "word": "Dockhands",
+          "n": 135
+        },
+        {
+          "word": "Tally",
+          "n": 134
         },
         {
           "word": "Hist",
+          "n": 126
+        },
+        {
+          "word": "Ladder",
+          "n": 126
+        },
+        {
+          "word": "Ninth",
+          "n": 122
+        },
+        {
+          "word": "Provincial",
+          "n": 116
+        },
+        {
+          "word": "Stormhold",
           "n": 116
         },
         {
           "word": "Prefect",
-          "n": 99
-        },
-        {
-          "word": "Stormhold",
-          "n": 98
+          "n": 103
         },
         {
           "word": "Bone",
-          "n": 97
-        },
-        {
-          "word": "Ninth",
-          "n": 96
-        },
-        {
-          "word": "Tally",
-          "n": 91
+          "n": 101
         },
         {
           "word": "Argonian",
-          "n": 89
+          "n": 90
         },
         {
-          "word": "Ledger's",
-          "n": 83
-        },
-        {
-          "word": "Provincial",
-          "n": 80
+          "word": "Forest",
+          "n": 87
         },
         {
           "word": "Blackwood",
-          "n": 75
+          "n": 85
+        },
+        {
+          "word": "Wet",
+          "n": 82
+        },
+        {
+          "word": "Salt",
+          "n": 82
+        },
+        {
+          "word": "Ledger's",
+          "n": 79
+        },
+        {
+          "word": "Volume",
+          "n": 77
         },
         {
           "word": "Legion",
-          "n": 73
-        },
-        {
-          "word": "Rootlands",
-          "n": 72
+          "n": 75
         },
         {
           "word": "Second",
-          "n": 70
+          "n": 75
         },
         {
-          "word": "Recension",
-          "n": 68
+          "word": "Rootlands",
+          "n": 73
         },
         {
           "word": "Marsh",
-          "n": 64
+          "n": 71
+        },
+        {
+          "word": "Recension",
+          "n": 71
+        },
+        {
+          "word": "Cohort",
+          "n": 66
         },
         {
           "word": "Rell",
-          "n": 64
+          "n": 65
         },
         {
           "word": "Cyrodiil",
           "n": 63
         },
         {
-          "word": "Volume",
-          "n": 60
+          "word": "Speaker",
+          "n": 63
         },
         {
           "word": "Seed",
-          "n": 58
-        },
-        {
-          "word": "Cohort",
-          "n": 57
-        },
-        {
-          "word": "Wet",
-          "n": 54
+          "n": 59
         },
         {
           "word": "I'll",
-          "n": 53
+          "n": 55
         },
         {
-          "word": "Salt",
-          "n": 52
-        },
-        {
-          "word": "Speaker",
-          "n": 48
-        },
-        {
-          "word": "Argonians",
-          "n": 45
-        },
-        {
-          "word": "Thornmarsh",
-          "n": 45
-        },
-        {
-          "word": "Coast",
-          "n": 44
-        },
-        {
-          "word": "Legate",
-          "n": 43
-        },
-        {
-          "word": "Vell",
-          "n": 42
-        },
-        {
-          "word": "Morrowind",
-          "n": 41
-        },
-        {
-          "word": "Ford",
-          "n": 41
-        },
-        {
-          "word": "Bel",
-          "n": 41
-        },
-        {
-          "word": "Company's",
-          "n": 40
-        },
-        {
-          "word": "Deep",
-          "n": 38
+          "word": "Sap",
+          "n": 55
         },
         {
           "word": "Marshes",
-          "n": 38
+          "n": 51
         },
         {
-          "word": "Prefect's",
-          "n": 38
+          "word": "Kin's",
+          "n": 51
         },
         {
-          "word": "Sath",
-          "n": 38
+          "word": "Thornmarsh",
+          "n": 50
+        },
+        {
+          "word": "Elder",
+          "n": 50
+        },
+        {
+          "word": "Coast",
+          "n": 49
+        },
+        {
+          "word": "Argonians",
+          "n": 46
+        },
+        {
+          "word": "First",
+          "n": 46
         }
       ]
     },
-    "total_authored_words": 380892
+    "total_authored_words": 465605
   }
 }

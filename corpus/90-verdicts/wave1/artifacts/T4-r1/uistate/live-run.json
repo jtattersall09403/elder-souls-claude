@@ -1,0 +1,200 @@
+{
+  "boot": {
+    "build": {
+      "name": "elder-souls",
+      "version": "0.2.0-w1-09",
+      "commit": null,
+      "builtAt": null,
+      "harnessVersion": 2,
+      "fixedStepHz": 60,
+      "dataRoot": "game/data",
+      "piece": "W1-09 — combat core (on W1-00’s harness)",
+      "threeVersion": "180",
+      "dataFiles": 587
+    },
+    "frame": 0
+  },
+  "journal_fixture": {
+    "opened": [
+      "Q-ARCH-01",
+      "Q-ASSZ-00",
+      "Q-ASSZ-09",
+      "Q-CORT-00"
+    ],
+    "noted": [
+      [
+        "Q-ARCH-01",
+        6,
+        "{\"threw\":\"journal: Q-ARCH-01 index 6 would go backwards past"
+      ],
+      [
+        "Q-ASSZ-00",
+        4,
+        "{\"ok\":false,\"reason\":\"quest is closed\"}"
+      ],
+      [
+        "Q-ASSZ-09",
+        10,
+        "{\"ok\":false,\"reason\":\"already written\"}"
+      ],
+      [
+        "Q-CORT-00",
+        4,
+        "{\"threw\":\"journal: Q-CORT-00 index 4 would go backwards past"
+      ],
+      [
+        "Q-ARCH-01",
+        10,
+        "{\"ok\":false,\"reason\":\"already written\"}"
+      ],
+      [
+        "Q-ASSZ-00",
+        10,
+        "{\"ok\":false,\"reason\":\"quest is closed\"}"
+      ],
+      [
+        "Q-ASSZ-09",
+        20,
+        "ok"
+      ],
+      [
+        "Q-CORT-00",
+        14,
+        "{\"ok\":false,\"reason\":\"already written\"}"
+      ],
+      [
+        "Q-ARCH-01",
+        20,
+        "ok"
+      ],
+      [
+        "Q-ASSZ-00",
+        20,
+        "{\"ok\":false,\"reason\":\"quest is closed\"}"
+      ],
+      [
+        "Q-ASSZ-09",
+        30,
+        "ok"
+      ],
+      [
+        "Q-CORT-00",
+        28,
+        "ok"
+      ],
+      [
+        "Q-ARCH-01",
+        25,
+        "ok"
+      ],
+      [
+        "Q-ASSZ-00",
+        46,
+        "{\"ok\":false,\"reason\":\"quest is closed\"}"
+      ],
+      [
+        "Q-ASSZ-09",
+        40,
+        "ok"
+      ],
+      [
+        "Q-ARCH-01",
+        50,
+        "ok"
+      ]
+    ],
+    "journal_len": 11,
+    "journal": [
+      {
+        "n": 10,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-ARCH-01",
+        "text": "Sallis wants the harvesters off the lichen beds. He says they are stealing from the vats and that the guild has a charter for the whole strand. He offered me a price before I had said anything."
+      },
+      {
+        "n": 10,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-ASSZ-00",
+        "text": "Assizer Corvo has put me on the morning carry. The fair copy goes up to the Governor's clerk, the day-book stays below, and I am not to let them travel together. He said it as a rule, not as a caution."
+      },
+      {
+        "n": 10,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-ASSZ-09",
+        "text": "Doren wants four oaths witnessed before the court sits. Three of the four are for men who have been in the Assize's service since before she was born."
+      },
+      {
+        "n": 14,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-CORT-00",
+        "text": "Vaskh says there's a man in the shallows past the salt pans who has been there four days and whom no one has claimed. He wants the body, and he wants it whole, and he was specific that the two are the same request."
+      },
+      {
+        "n": 20,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-ASSZ-09",
+        "text": "Nobody reads the oath. Each of them put a hand on the book, said the last four words with the clerk, and signed, and the whole thing took less time than the walk to the lectern."
+      },
+      {
+        "n": 20,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-ARCH-01",
+        "text": "The harvesters are coughing. All of them, the children too, and it is a dry cough that comes in threes. The beds they work are downstream of the vat run-off."
+      },
+      {
+        "n": 30,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-ASSZ-09",
+        "text": "The fourth is a bargeman from Soulrest who has never sworn anything in his life. He read it. He read all of it, twice, and then asked me what a distraint is."
+      },
+      {
+        "n": 28,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-CORT-00",
+        "text": "The man is where Vaskh said, face down in a foot of water, and the tide is coming in over him. He is wearing a Wet Ledger porter's tally-tag on a cord and his hands are not a porter's hands."
+      },
+      {
+        "n": 25,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-ARCH-01",
+        "text": "The apothecary sells one cure and only one, and she buys the base for it from the guild, and she will not discuss the price where she can be overheard."
+      },
+      {
+        "n": 40,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-ASSZ-09",
+        "text": "The oath binds the swearer to report any officer of the court who takes a fee outside the roll. Three men signed that this morning without looking at it and one man read it and went pale."
+      },
+      {
+        "n": 50,
+        "date": "1 Second Seed, 3E 427",
+        "quest": "Q-ARCH-01",
+        "text": "The strand burns at low tide if it is fired from the seaward end. Oreem told me that the way you tell a man something you want done."
+      }
+    ]
+  },
+  "journal_screen": {
+    "__err": "page.evaluate: Target page, context or browser has been closed"
+  },
+  "journal_append_only": {
+    "__err": "page.evaluate: Target page, context or browser has been closed"
+  },
+  "dialogue": {
+    "__err": "page.evaluate: Target page, context or browser has been closed"
+  },
+  "levelup": {
+    "__err": "page.evaluate: Target page, context or browser has been closed"
+  },
+  "book": {
+    "__err": "page.evaluate: Target page, context or browser has been closed"
+  },
+  "pause_rule": {
+    "__err": "page.evaluate: Target page, context or browser has been closed"
+  },
+  "withdrawal": {
+    "__err": "page.evaluate: Target page, context or browser has been closed"
+  },
+  "shot_combat_hud": {
+    "__err": "page.evaluate: Target page, context or browser has been closed"
+  }
+}
