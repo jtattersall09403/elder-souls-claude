@@ -98,6 +98,40 @@ export const KINDS = new Set([
   // "Goodbye is a button, at the foot of the topic column, the full width of that column. It is
   // the only way out that the window advertises." One per window, and nothing else may use it.
   'disposition_meter', 'dialogue_exit',
+  // T4 round 2 / RI-UIX09 §B. THE PICTORIAL VOCABULARY, and until this line it did not exist.
+  //
+  // The round-1 critic searched `icon | item_icon | doll | portrait | glyph_object` inside the
+  // populated inventory panel and found NOTHING — not "the wrong icons", none — so RI-UIX09's D1
+  // was 0 and RI-UIX06's AD5 passed vacuously, because A6's hard fail is a WRONG pictogram set and
+  // a screen with no pictures has no pictograms. These three kinds are what makes D1 countable.
+  //
+  // They are three and not one on purpose, and the distinction is what a census would otherwise
+  // have to guess at:
+  //   * `item_icon`    — a drawn depiction of a thing you are carrying. Inventory rows, container
+  //                      rows, the detail panel's lead depiction, the quick slots.
+  //   * `doll`         — the equipped figure (P2). One per screen, never more.
+  //   * `glyph_object` — a carved mark standing for an idea rather than an object: an attribute on
+  //                      the level-up screen, an active effect on the HUD strip. An attribute is
+  //                      not a thing you can pick up, and a census that could not tell it from
+  //                      `item_icon` would report the level-up screen as carrying inventory.
+  //
+  // `icon` and `portrait` are deliberately NOT added. `icon` is the name a flat-vector pictogram
+  // set would arrive under (RI-UIX06 G5, RI-UIX09 P6's hard fail) and `portrait` is a character
+  // headshot, which this interface does not have and should not acquire by having a name free.
+  // Everything drawn under these three kinds goes through `ui/icons.js`, which is the only file in
+  // the build that knows what a sword looks like.
+  'item_icon', 'doll', 'glyph_object',
+  // T4 round 2 / RI-UIX07 §B — the out-of-combat world set. W1 (`bearing_dial`) already existed
+  // and was 1 of 6; these are W2, W3, W5 and W6. W4 needs no kind at all because it is drawn
+  // INSIDE `quick_slots`' existing rect, which is why the item calls it the cheapest element in it.
+  //
+  // None of these is a marker and none of them can become one: `effect_strip` is handed a list of
+  // {effect, remaining_f} out of `magic.active` and `quest.afflictions` with no quest field on it,
+  // `place_name` is handed the cell name you are standing in and no destination, and
+  // `sneak_state` and `breath_meter` are booleans and a fraction. RI-UIX02 §A's "a compass added
+  // just for cardinal direction which then acquires a single tick" is defended the same structural
+  // way `bearing_dial` defends it — there is nothing on the model to acquire it from.
+  'effect_strip', 'sneak_state', 'place_name', 'breath_meter',
 ]);
 
 /**
@@ -219,6 +253,14 @@ export class UISurface {
     this.elements.length = 0;
     this.drawn = false;
     this.overdrawPx = 0;
+    // T4-r2. The materials PAINTED on this frame, filled by `theme.noteMaterial()` as the draw
+    // happens. Cleared here, so `getUIState().materials` is a statement about this frame and goes
+    // empty when the drawing does — which `[]` for a whole round proved a hand-filtered field
+    // does not. See `theme.noteMaterial`.
+    this.ctx.__esMaterials = new Set();
+    // The world set's own report, replaced by `hud.js` on every frame the HUD is drawn and
+    // cleared here so a frame with no HUD cannot inherit the last one's answer.
+    this.worldSet = { drawn: [], withdrawn: [] };
   }
 
   /**

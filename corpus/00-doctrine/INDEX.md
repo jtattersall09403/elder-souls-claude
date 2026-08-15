@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-14T19:13:19Z
+Generated: 2026-08-15T08:45:12Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -26,7 +26,7 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 ## 1. Coverage at a glance
 
 - Canonical subsystem paths: **332**
-- Reference items found: **150** across 18 area(s)
+- Reference items found: **151** across 18 area(s)
 - Subsystems with at least one judging reference item: **326**
 - Subsystems judged by a doctrine document instead: **6** (see §3b)
 - **Corpus holes (no judging item): 0** (0%)
@@ -308,7 +308,7 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | `ui.menu.inventory` | Inventory screen structure and information density | morrowind | [RI-CAM05](../../corpus/15-camera/RI-CAM05-camera-outside-the-fight.md)<br>[RI-UIX03](../../corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md) | `critic.ui` | in-item M0–M7 (8 checks); corpus/80-methods/m-cam05-world-camera.mjs<br>in-item procedure (kind: structure); tools/analysis/content-stats.mjs, tools/harness/run-headless.mjs |
 | `ui.menu.journal` | Journal presentation, topic index, quest filtering | morrowind | [RI-UIX04](../../corpus/86-ui/RI-UIX04-journal-ui.md) | `critic.ui` | in-item procedure (kind: structure); tools/corpus/dump-journal.mjs, tools/analysis/journal-ui.mjs, tools/harness/run-headless.mjs |
 | `ui.dialogue.presentation` | Dialogue window: topic list, hyperlinked keywords, portrait, prose | morrowind | [RI-CAM05](../../corpus/15-camera/RI-CAM05-camera-outside-the-fight.md)<br>[RI-UIX08](../../corpus/86-ui/RI-UIX08-dialogue-window.md) | `critic.ui` | in-item M0–M7 (8 checks); corpus/80-methods/m-cam05-world-camera.mjs<br>in-item procedure (kind: structure); tools/dialogue/build-graph.mjs |
-| `ui.style.diegesis` | UI art belongs to the world rather than to a UI kit | art-direction | [RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-UIX06](../../corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md) | `critic.ui` | in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: structure); corpus/80-methods/palette-conformance.mjs, corpus/80-methods/cc-scan.mjs, tools/harness/shoot.mjs, tools/metrics/ui-metrics.mjs, ui-metrics.mjs, cc-scan.mjs |
+| `ui.style.diegesis` | UI art belongs to the world rather than to a UI kit | art-direction | [RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-UIX06](../../corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md)<br>[RI-UIX09](../../corpus/86-ui/RI-UIX09-populated-density-and-object-iconography.md) | `critic.ui` | in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: structure); corpus/80-methods/palette-conformance.mjs, corpus/80-methods/cc-scan.mjs, tools/harness/shoot.mjs, tools/metrics/ui-metrics.mjs, ui-metrics.mjs, cc-scan.mjs<br>in-item procedure (kind: number); tools/harness/critic-t4-lean.mjs, tools/ui/critic-t4-palette.mjs |
 | `ui.menu.levelup` | The level-up screen: what it shows, what it costs, where it lives | split | [RI-PRG01](../../corpus/20-progression/RI-PRG01-soul-cost-curve.md)<br>[RI-PRG02](../../corpus/20-progression/RI-PRG02-stat-sheet.md)<br>[RI-UIX03](../../corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md) | `critic.ui` | in-item procedure (kind: number); corpus/80-methods/sim-souls-yield.md<br>in-item procedure (kind: number)<br>in-item procedure (kind: structure); tools/analysis/content-stats.mjs, tools/harness/run-headless.mjs |
 | `ui.menu.books` | Reading a book in-game: presentation, pagination, legibility | morrowind | [RI-LOR03](../../corpus/60-lore/RI-LOR03-in-world-book-structure.md)<br>[RI-UIX05](../../corpus/86-ui/RI-UIX05-books-and-readable-text.md) | `critic.ui` | in-item procedure (kind: text); corpus/80-methods/book-stats.py<br>in-item procedure (kind: number); tools/harness/run-headless.mjs, tools/harness/shoot.mjs, tools/analysis/text-metrics.mjs, tools/analysis/content-stats.mjs, text-metrics.mjs |
 
@@ -893,6 +893,7 @@ _None._
 | RI-UIX06 | UI diegesis and the UI bifurcation — style is art direction, rendering quality is fidelity | 86-ui | structure | neutral | constructed | high | yes | `ui.style.diegesis` `render.process.bifurcation` | [corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md](../../corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md) |
 | RI-UIX07 | The out-of-combat HUD — what persists when nothing is trying to kill you, and how the two sets change hands | 86-ui | number | morrowind | measured | medium | yes | `ui.hud.world` | [corpus/86-ui/RI-UIX07-out-of-combat-hud.md](../../corpus/86-ui/RI-UIX07-out-of-combat-hud.md) |
 | RI-UIX08 | The dialogue window — a floating index of keywords you find by reading, not a menu of replies | 86-ui | structure | morrowind | measured | high | yes | `ui.dialogue.presentation` `dialogue.topics.discovery` `dialogue.disposition.model` | [corpus/86-ui/RI-UIX08-dialogue-window.md](../../corpus/86-ui/RI-UIX08-dialogue-window.md) |
+| RI-UIX09 | Populated density and object iconography — a Morrowind screen is full of drawn things, and nothing in this corpus could fail a screen that is empty of them | 86-ui | number | morrowind | measured | medium | yes | `ui.style.diegesis` | [corpus/86-ui/RI-UIX09-populated-density-and-object-iconography.md](../../corpus/86-ui/RI-UIX09-populated-density-and-object-iconography.md) |
 | RI-AUD01 | Combat impact audio as frame-critical feedback | 87-audio | number | souls | constructed | medium | yes | `audio.combat.impact` `combat.feedback.hitstop` | [corpus/87-audio/RI-AUD01-combat-impact-audio.md](../../corpus/87-audio/RI-AUD01-combat-impact-audio.md) |
 | RI-AUD02 | Web Audio constraints, scheduling discipline and the voice budget | 87-audio | number | modern-fidelity | constructed | high | no | `audio.combat.impact` `platform.determinism.harness` | [corpus/87-audio/RI-AUD02-web-audio-budget.md](../../corpus/87-audio/RI-AUD02-web-audio-budget.md) |
 | RI-AUD03 | Regional ambience — every region identifiable by sound alone | 87-audio | structure | morrowind | constructed | medium | yes | `audio.ambience.region` `world.region.identity` | [corpus/87-audio/RI-AUD03-regional-ambience.md](../../corpus/87-audio/RI-AUD03-regional-ambience.md) |

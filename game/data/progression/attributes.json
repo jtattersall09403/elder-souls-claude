@@ -14,7 +14,7 @@
       "name": "STRENGTH",
       "abbr": "STR",
       "in_fight": "STR-scaling damage; shield stability; heavy-weapon requirement",
-      "out_of_fight": "Max equip load (RI-PRG07); carry capacity for loot; forcing doors and chests",
+      "out_of_fight": "Max equip load; carry capacity for loot; forcing doors and chests",
       "soft_cap": 40,
       "hard_cap_curve": 60,
       "past_hard_cap": "scaling +0.005/pt; equip load keeps rising linearly (the one uncapped return)"
@@ -85,7 +85,7 @@
       "name": "HIST-BOND",
       "abbr": "HIST",
       "in_fight": "Root/restoration and Hist-invocation scaling; miracle-equivalent access",
-      "out_of_fight": "HEARTH attunement quality (RI-PRG04); Hist-related faction rank thresholds",
+      "out_of_fight": "HEARTH attunement quality; Hist-related faction rank thresholds",
       "soft_cap": 40,
       "hard_cap_curve": 60,
       "past_hard_cap": "scaling +0.005/pt"
@@ -95,7 +95,7 @@
       "name": "PERSONALITY",
       "abbr": "PER",
       "in_fight": "NOTHING, explicitly.",
-      "out_of_fight": "Base disposition of every NPC; buy/sell price multiplier (RI-PRG05); persuasion success band; faction rank requirements; whether a bribe is even offered",
+      "out_of_fight": "Base disposition of every NPC; buy/sell price multiplier; persuasion success band; faction rank requirements; whether a bribe is even offered",
       "soft_cap": 45,
       "hard_cap_curve": 70,
       "past_hard_cap": "price multiplier hits its 0.80/0.60 clamps at ~70",

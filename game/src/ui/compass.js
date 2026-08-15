@@ -38,12 +38,26 @@
 //     the census honest is the withdrawal-in-combat above, not the name.
 //
 // The one thing NOT permitted, and it is a live decision rather than an oversight: **no quest
-// marker and no place ticks.** Morrowind's own compass carries a red quest arrow; seam S8 is
-// settled against it across RI-UIX02, RI-WLD06 (landmark sightlines) and RI-DLG05 (prose
-// directions), and the owner asked for "compass directions", not for a quest arrow. Overturning
-// S8 as a side effect of a HUD task would be the wrong way to overturn it. This is REVERSIBLE:
-// the evidence that would overturn it is the owner saying they want the marker, at which point
-// the change is a `ticks` array on the model and about thirty lines below.
+// marker and no place ticks.**
+//
+// R3 — THE SENTENCE THAT USED TO BE HERE WAS FALSE, AND IT WAS THE MOST DANGEROUS LINE IN THIS
+// FILE. It read: "Morrowind's own compass carries a red quest arrow." **It does not. Morrowind has
+// no quest markers of any kind** — that is the entire premise of seam S8 — and the red-arrow
+// compass is Oblivion (2006) and Skyrim (2011). Checked against the two vendored sources rather
+// than from memory: `corpus/70-visual/refs/morrowind/REF-A12/mygui/openmw_hud.layout`'s rotating
+// overlay is `textures\compass.dds`, a compass ROSE inside the local-map panel, and the owner's
+// own screenshot (sha e9a0531c…) shows that panel carrying a player facing-arrow on a map and
+// nothing else. RI-UIX07 §A M6 records both.
+//
+// A factual error in a comment is a design argument left loaded: this file's own header was, for
+// as long as that sentence stood, a citation a well-meaning future edit could lean on to add the
+// exact tick RI-UIX02 §A predicts by name. Corrected by T4 round 2 against RI-UIX07 R3.
+//
+// Seam S8 is settled against markers across RI-UIX02, RI-WLD06 (landmark sightlines) and RI-DLG05
+// (prose directions), and the owner asked for "compass directions", not for a quest arrow.
+// Overturning S8 as a side effect of a HUD task would be the wrong way to overturn it. This is
+// REVERSIBLE: the evidence that would overturn it is the owner saying they want the marker, at
+// which point the change is a `ticks` array on the model and about thirty lines below.
 //
 // ---------------------------------------------------------------------------------------------
 // WHICH WAY IS NORTH
@@ -165,11 +179,36 @@ export function dialGeometry(v) {
   const letterPx = Math.max(13 * s, floor);
   let r = Math.max(48 * s, 2.4 * letterPx);
   r = Math.min(r, 0.11 * W, 0.11 * H, Math.sqrt(0.03 * W * H) / 2);
-  // Top-right, inboard of the frame margin, and BELOW the journal entry glyph (hud.js draws it
-  // at y ∈ [40s, 72s]) so the two never overlap at any scale.
+  // ---- R1: THE BOTTOM RAIL, AND THIS WAS THE TOP-RIGHT CORNER UNTIL T4 ROUND 2 ---------------
+  //
+  // It computed `cy = max(84·s + r, margin + r)` — the TOP edge — and the round-1 critic measured
+  // the result at `[1782, 84, 96, 96]`: `y + h = 180` against `H/2 = 540`, wholly in the top half.
+  // RI-UIX07 §D1 requires no world-set element's rect to lie wholly in the top half, and its §A
+  // measures Morrowind's ENTIRE persistent HUD along the bottom edge with the top of the screen
+  // empty. The item predicted this failure in writing, as R1, before anything was measured, and
+  // §D1's reasoning is the part worth keeping: a dial in the top-right corner is where a modern
+  // action-RPG puts its minimap, which is the register RI-UIX06 §B G10 exists to keep us out of.
+  //
+  // §D2 decides WHICH bottom corner, and it is stated relatively on purpose: "the bearing dial
+  // anchors bottom-right; if a Souls element already occupies that corner, the Souls element keeps
+  // it and the dial sits immediately inboard on the same bottom rail." RI-UIX01 E5 (quick slots,
+  // `slotBox` 150 units) and E9 (equip load) hold the bottom-right corner in this build, and
+  // re-anchoring a Souls element would be re-litigating RI-UIX01, which RI-UIX07 may not do. So
+  // the dial sits INBOARD of E5 on the same rail:
+  //
+  //   right edge of the dial  = W − (42 + 150 + 16)·s      16 units of clearance from E5's box
+  //   bottom edge of the dial = H − 42·s                   the same margin every rail element uses
+  //
+  // §D4 (no overlap with any RI-UIX01 rect) is then true by construction rather than by check, and
+  // it is ALSO checked — `getUIState().hud.world.overlaps` is derived from the drawn rects, so a
+  // future change to `L.slotBox` that pushed E5 into the dial turns that list non-empty instead of
+  // going unnoticed. The three constants below are named after the RI-UIX01 §A geometry they
+  // clear, so the dependency is visible to whoever edits `hud.js`'s `L` next.
   const margin = 42 * s;
-  const cx = W - margin - r;
-  const cy = Math.max(84 * s + r, margin + r);
+  const E5_BOX = 150 * s;          // RI-UIX01 §A quick slots, `hud.js` L.slotBox
+  const E5_CLEAR = 16 * s;
+  const cx = W - margin - E5_BOX - E5_CLEAR - r;
+  const cy = H - margin - r;
   return {
     r: +r.toFixed(3),
     letterPx: +letterPx.toFixed(3),

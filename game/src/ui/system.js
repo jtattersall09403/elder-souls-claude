@@ -1056,7 +1056,87 @@ export class UISystem {
       toast: ctx.frame < (this.toastUntil || 0) ? this.toast : null,
       entryGlyph: ctx.frame < this.entryGlyphUntil,
       inCombat: !!ctx.inCombat,
+      // RI-UIX07 W4 — the condition and charge marks drawn inside RI-UIX01 E5's own rect.
+      //
+      // Read off the CARRIED RECORD rather than off a second copy: `sim.inventory` rows carry
+      // `condition` and `charge` and `slot`, and the inventory screen reads the same three fields
+      // through `_itemRow`, so the mark under the weapon in your hand and the mark under the same
+      // weapon's row in the case are the same number by construction. A weapon whose condition you
+      // cannot see is a Morrowind repair economy with no readout (§B W4's own argument).
+      slotCondition: this._slotConditions(ctx),
+      // RI-UIX07 §B W2/W3/W5/W6 — the rest of the world set. One object, handed to one module.
+      world: this._worldModel(ctx),
     };
+  }
+
+  /**
+   * The equipped record for each hand/quick slot, by `slot` on the carried row.
+   *
+   * Fails soft on purpose: a build whose rows carry no `condition` gets `null` and the mark is not
+   * drawn, rather than a bar sitting at zero and reading as a ruined weapon.
+   */
+  _slotConditions(ctx) {
+    const rows = ctx.inventory || [];
+    const bySlot = new Map();
+    for (const r of rows) if (r && r.slot) bySlot.set(String(r.slot), r);
+    const num = (v) => (v === null || v === undefined || Number.isNaN(Number(v)) ? null : Math.max(0, Math.min(1, Number(v))));
+    const right = bySlot.get('right') || bySlot.get('weapon') || null;
+    const left = bySlot.get('left') || bySlot.get('shield') || null;
+    const quick = rows.find((r) => r && r.quickSlot === 'item') || null;
+    // The spell "charge" is what Morrowind draws as cast chance (M5). This build has no to-hit
+    // roll on a cast (RI-MAG01 §E forbids one), so the honest analogue is HOW MUCH OF THE ATTUNED
+    // SPELL'S COST YOU ARE HOLDING: full mark means you can cast it now. Named `charge` and not
+    // `cast_chance` in the census so nobody reads a probability off it.
+    const spells = ctx.spells || [];
+    const cost = spells.length ? Number(spells[0].cost) || 0 : 0;
+    const focus = ctx.player && ctx.player.focus !== undefined ? Number(ctx.player.focus) || 0 : 0;
+    return {
+      right: right ? num(right.condition) : null,
+      left: left ? num(left.condition) : null,
+      item: quick ? num(quick.charge === undefined ? null : quick.charge) : null,
+      spell: cost > 0 ? num(Math.min(1, focus / cost)) : null,
+    };
+  }
+
+  /**
+   * The world set's model (RI-UIX07 §B W2/W3/W5/W6).
+   *
+   * NOTE WHAT IS NOT ON IT, because this is the same defence `_compassModel` and `_mapModel`
+   * make and it is the reason RI-UIX02 §A's prediction cannot come true here: there is **no quest
+   * field, no destination, no world position and no place list**. `effects` is a list of
+   * `{effect, remaining_f}` from `magic.active` and `quest.afflictions`; `placeAnnounce` is the
+   * name of the cell you are standing in and carries no bearing to anywhere else. There is nothing
+   * on this object an objective marker could be dotted out of, which is a structural guarantee
+   * rather than a promise not to.
+   *
+   * The place-name clock lives here rather than in the engine because it is a UI announcement:
+   * §A M9 is transient on cell change and RI-UIX07 §B caps it at 3 s. It is the ONLY clock in the
+   * world set, and it is not a second phase clock — E-T4's "one clock" is about the fight boundary
+   * and this one never touches it.
+   */
+  _worldModel(ctx) {
+    const place = ctx.placeName || null;
+    if (place !== this._lastPlace) {
+      this._lastPlace = place;
+      this._placeUntil = place ? (ctx.frame || 0) + 180 : 0;      // 3 s at 60 Hz
+    }
+    const framesLeft = Math.max(0, (this._placeUntil || 0) - (ctx.frame || 0));
+    const st = ctx.stealth || null;
+    const water = ctx.water || null;
+    // Kept for `state()`'s V1 `expected` column: "absent because you are not underwater" must be
+    // distinguishable from "unbuilt", and only the model knows which.
+    this._lastWorld = {
+      effects: (ctx.effects || []).slice(0, 12),
+      sneaking: !!(st && st.sneaking),
+      hidden: !!(st && st.hidden),
+      visibility: st && st.visibility !== undefined ? st.visibility : null,
+      submerged: !!(water && water.submerged),
+      breath: water && water.breath !== undefined ? water.breath : null,
+      breathFrac: water && water.breathMax ? Math.max(0, Math.min(1, water.breath / water.breathMax)) : null,
+      placeAnnounce: framesLeft > 0 ? place : null,
+      placeFramesLeft: framesLeft,
+    };
+    return this._lastWorld;
   }
 
   _invRows(ctx) {
@@ -1097,14 +1177,47 @@ export class UISystem {
       rows, counts, load: +load.toFixed(1), loadMax: ctx.loadMax || 0,
       burdenTier: ctx.burdenTier || 'unburdened',
       gold: ctx.gold || 0, placeName: ctx.placeName || null, inCombat: !!ctx.inCombat,
+      // RI-UIX09 P2 — what the figure is wearing. Read off the carried rows' own `slot`, so the
+      // doll and the list cannot disagree about what is equipped; P2's hard fail is "equipped
+      // state is legible only as text", which is what the row name's `— ` prefix was.
+      equipped: this._equippedSlots(ctx),
       ...this.focus.inventory,
     };
+  }
+
+  /**
+   * The seven doll positions, from the carried rows' `slot` field.
+   *
+   * The mapping is one-directional and total: every `slot` value the data uses lands somewhere or
+   * is deliberately not drawn, and `unmapped` records the ones that were not, so a new slot
+   * (`talisman`, `waist`) shows up as a census fact instead of silently vanishing off the figure.
+   */
+  _equippedSlots(ctx) {
+    const POS = {
+      head: 'head', chest: 'body', body: 'body', legs: 'legs', feet: 'feet',
+      hands: 'hands', gloves: 'hands', right: 'right', weapon: 'right',
+      left: 'left', shield: 'left', offhand: 'left',
+    };
+    const out = { head: null, body: null, legs: null, feet: null, hands: null, right: null, left: null };
+    const unmapped = [];
+    for (const r of (ctx.inventory || [])) {
+      if (!r || !r.slot) continue;
+      const pos = POS[String(r.slot)];
+      const rec = this._itemRow(r);
+      if (!pos) { unmapped.push(String(r.slot)); continue; }
+      if (rec) out[pos] = rec;
+    }
+    out.unmapped_slots = unmapped;
+    return out;
   }
 
   _containerModel(ctx) {
     return {
       rows: this._invRows(ctx), containerRows: this._containerRows(ctx),
-      containerName: ctx.containerName, placeName: ctx.placeName,
+      // The name AND its fallback source. `screens/inventory.js` `containerTitle()` refuses the
+      // string "undefined" here — see its header for why `|| 'Container'` could never fire.
+      containerName: ctx.containerName, containerKind: ctx.containerKind || null,
+      placeName: ctx.placeName,
       inCombat: !!ctx.inCombat, ...this.focus.container,
     };
   }
@@ -1379,8 +1492,77 @@ export class UISystem {
     // what the player reads.
     const bodyPx = (this.mode === 'book' ? BODY.book : BODY.screen) * S.s, labelPx = BODY.label * S.s;
     const bk = this.mode === 'book' && this.bookId ? this.data.books.get(this.bookId) : null;
+
+    // ---- R4: THE ONE FIELD RI-UIX07 CANNOT BE MEASURED WITHOUT --------------------------------
+    //
+    // Round 1 enumerated every key `getUIState()` returned at run time — there were 36 — and
+    // `combat_phase`, `combat_phase_source` and `frames_since_phase_change` were not among them,
+    // so V7 and V8 could not be run at all and the item's honest verdict was "unmeasurable".
+    //
+    // It is READ FROM THE ENCOUNTER STATE and never recomputed here. `ctx.inCombat` is
+    // `Engine.inCombat()` — ARBITRATION §1's boundary, the same value that gates roll i-frames and
+    // stamina regen and the same value the AI reads. RI-UIX07's "how we lose" names the
+    // alternative by hand: "if the field is computed in the UI layer rather than read from the
+    // encounter state, a build can be in a fight and report `world`, and every check in §C then
+    // measures the wrong frames — while V7 passes, because the census-identity test would also be
+    // comparing the wrong frames." `combat_phase_source` is asserted so a UI-side reimplementation
+    // would have to lie in writing.
+    const phase = (ctx && ctx.inCombat) ? 'fight' : 'world';
+    if (phase !== this._phase) { this._phase = phase; this._phaseAt = (ctx && ctx.frame) || 0; }
+    const worldSet = S.worldSet || { drawn: [], withdrawn: [] };
+    const WORLD_KINDS = new Set(['bearing_dial', 'effect_strip', 'sneak_state', 'place_name', 'breath_meter']);
+    const worldEls = els.filter((e) => WORLD_KINDS.has(e.kind) && e.visible);
+    const soulsEls = els.filter((e) => e.id.startsWith('hud.') && !WORLD_KINDS.has(e.kind) && e.visible);
+    // §D4, DERIVED FROM THE DRAWN RECTS rather than asserted from the layout constants. An edit to
+    // `hud.js`'s `L` table that pushed E5 into the dial turns this list non-empty.
+    const overlaps = [];
+    for (const w of worldEls) {
+      for (const o of soulsEls) {
+        const a = w.rect, b = o.rect;
+        if (a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3]) {
+          overlaps.push({ world: w.id, souls: o.id });
+        }
+      }
+    }
+    // RI-UIX09 §Harness-additions: `panel_rect`, so method step 4 does not have to re-derive the
+    // panel from the element list — and so a fill measured on the whole frame (the item's own
+    // named failure: "someone measures D2 on the whole frame… and every screen passes") is a
+    // deviation a critic has to declare rather than an accident.
+    const panels = els.filter((e) => e.kind === 'panel' && e.visible);
+    const biggestPanel = panels.sort((a, b) => (b.rect[2] * b.rect[3]) - (a.rect[2] * a.rect[3]))[0] || null;
+    const PICTORIAL = new Set(['item_icon', 'doll', 'glyph_object']);
+    const inRect = (e, r) => r && e.rect[0] >= r[0] - 1 && e.rect[1] >= r[1] - 1
+      && e.rect[0] + e.rect[2] <= r[0] + r[2] + 1 && e.rect[1] + e.rect[3] <= r[1] + r[3] + 1;
+
     return {
       mode: this.mode,
+      // ---- RI-UIX07 R4 -----------------------------------------------------------------------
+      combat_phase: phase,
+      combat_phase_source: 'encounter',
+      frames_since_phase_change: Math.max(0, ((ctx && ctx.frame) || 0) - (this._phaseAt || 0)),
+      // ---- RI-UIX09 §Harness-additions --------------------------------------------------------
+      //
+      // `panel_rect` is the LARGEST `panel` element's rect, which is the item's own definition, and
+      // `null` on a world frame where there is no panel — not a zero rect, because a zero rect
+      // would make `D2` divide by nothing and report a compliant screen.
+      panel_rect: biggestPanel ? biggestPanel.rect.slice() : null,
+      // D1's DECLARED half, computed here so a critic reads the count rather than assembling it.
+      // The OBSERVED half (method step 3 — the leading 48 px of each row carrying ≥ 3 distinct
+      // hues) is a pixel measurement and deliberately stays outside this self-report:
+      // `tools/ui/t4-r2-measure.mjs` takes it, and RI-UIX09 requires BOTH to be reported.
+      pictorial: {
+        kinds_counted: ['item_icon', 'doll', 'glyph_object'],
+        on_screen: els.filter((e) => PICTORIAL.has(e.kind) && e.visible).length,
+        in_panel: biggestPanel
+          ? els.filter((e) => PICTORIAL.has(e.kind) && e.visible && inRect(e, biggestPanel.rect)).length
+          : 0,
+        by_kind: ['item_icon', 'doll', 'glyph_object'].reduce((a, k) => {
+          a[k] = els.filter((e) => e.kind === k && e.visible).length; return a;
+        }, {}),
+        // The rows that are supposed to have one, and how many did. `0.8 ×` is P1's ratio.
+        item_rows: els.filter((e) => e.kind === 'list_row' && e.visible && e.meta && e.meta.item_id).length,
+        item_icons: els.filter((e) => e.kind === 'item_icon' && e.visible).length,
+      },
       /**
        * W1-UIX08. The dialogue window's own layout, published so every check in RI-UIX08's
        * comparison method reads the layout that drew rather than a pixel guess: the six elements
@@ -1541,6 +1723,63 @@ export class UISystem {
         world_anchored: els.filter((e) => e.worldAnchor).map((e) => e.id),
         numeric_text: els.filter((e) => e.visible && e.text !== null && /\d/.test(String(e.text)) && e.id.startsWith('hud.')).map((e) => e.id),
         bar_contrasts: barContrasts(),
+        // ---- RI-UIX07 §B/§C/§D/§E — the world set, measured off what was drawn ----------------
+        //
+        // Round 1 scored V1 at **1 of 6** and V6 outright failed: the one element that existed was
+        // at `[1782, 84, 96, 96]`, wholly in the top half. Everything below is derived from the
+        // element census that was just built, not asserted — a screen that draws a world-set
+        // element without declaring it is caught by the fact that `el()` is the only way to get a
+        // drawing context at all (`surface.js` property 2).
+        world: {
+          // V1. The six §B elements, each answering "is it present, and is it correctly
+          // conditioned". `expected` is `false` for a conditional element whose condition is not
+          // met right now, so "absent because you are not underwater" is not read as "unbuilt".
+          set: (() => {
+            const has = (k) => els.some((e) => e.kind === k && e.visible);
+            const q = els.find((e) => e.kind === 'quick_slots' && e.visible);
+            const cond = q && q.meta && q.meta.condition ? q.meta.condition : {};
+            const charge = q && q.meta && q.meta.charge ? q.meta.charge : {};
+            const w = this._lastWorld || {};
+            return {
+              W1_bearing_dial: { built: true, drawn: has('bearing_dial'), conditional: 'out of combat' },
+              W2_effect_strip: { built: true, drawn: has('effect_strip'), conditional: 'out of combat, ≥1 effect', expected: !(ctx && ctx.inCombat) && !!(w.effects || []).length },
+              W3_sneak_state: { built: true, drawn: has('sneak_state'), conditional: 'both phases, while sneaking', expected: !!w.sneaking },
+              // W4 has no kind of its own — it is drawn inside E5's rect, which is why RI-UIX07
+              // calls it the cheapest element in the item. Presence is the mark's own value.
+              W4_condition_marks: {
+                built: true,
+                drawn: !!q && (cond.right !== null && cond.right !== undefined
+                  || cond.left !== null && cond.left !== undefined
+                  || charge.spell !== null && charge.spell !== undefined),
+                conditional: 'both phases, always', inside: 'hud.quickslots', added_px: 0,
+                values: { ...cond, ...charge },
+              },
+              W5_place_name: { built: true, drawn: has('place_name'), conditional: 'out of combat, ≤3 s after a cell change', expected: !(ctx && ctx.inCombat) && !!w.placeAnnounce },
+              W6_breath_meter: { built: true, drawn: has('breath_meter'), conditional: 'both phases, while submerged', expected: !!w.submerged },
+            };
+          })(),
+          // V6 §D1/§D2/§D4, from the rects.
+          elements: worldEls.map((e) => ({
+            id: e.id, kind: e.kind, rect: e.rect.slice(),
+            in_bottom_half: e.rect[1] + e.rect[3] > S.H / 2,
+          })),
+          all_in_bottom_half: worldEls.every((e) => e.rect[1] + e.rect[3] > S.H / 2),
+          overlaps,
+          // §C C1/C3.
+          persistent_count: worldEls.length,
+          coverage_pct: +((S.unionArea((e) => WORLD_KINDS.has(e.kind)) / (S.W * S.H)) * 100).toFixed(4),
+          // §E E-T2, DECLARED ABSENCE rather than silent absence.
+          //
+          // DEVIATION FROM RI-UIX07's §Harness-additions, stated rather than hidden. The item asks
+          // for `elements[].withdrawn_because` — a field on a withdrawn element. A withdrawn
+          // element is not in `elements`, and putting it there would break E-T5 outright: the
+          // census-identity test requires the combat element list to be IDENTICAL, id for id, to
+          // one taken with the world-set module deleted, and a withdrawn placeholder is an extra
+          // id. So the withdrawal is reported here instead, at the same fidelity, and every
+          // element in `elements` carries `withdrawn_because: null` by construction.
+          withdrawn: worldSet.withdrawn.slice(),
+          withdrawn_because: worldSet.withdrawn.length ? 'combat_phase' : null,
+        },
       },
       menu: {
         area_frac: +(S.unionArea((e) => e.kind === 'panel') / (S.W * S.H)).toFixed(4),
@@ -1565,8 +1804,17 @@ export class UISystem {
       textRenderPath: 'canvas-vector',
       text_raster_scale: +(S.canvas.width / Math.max(1, ctx && ctx.drawingBufferWidth ? ctx.drawingBufferWidth : S.canvas.width)).toFixed(4),
       text_glyph_source: 'game/src/ui/glyphs.js',
-      materials: MATERIALS.filter((mm) => els.some((e) => e.material === mm)).concat(
-        this.mode === 'world' ? [] : []),
+      // DERIVED FROM THE DRAW CALLS — T4 round 2. This read `MATERIALS.filter(e.material === mm)`
+      // and returned `[]` for the whole of round 1, because `element.material` is set by exactly
+      // one caller (`chrome.screen()`'s panel) and is null everywhere else — so RI-UIX06 AD1's
+      // nine-material census had to be taken by eye off crops, and the verdict recorded it as a
+      // finding against the build. `theme.noteMaterial()` now records each material as it is
+      // painted, `UISurface.begin()` clears the set, and the union is reported here. Both routes
+      // are kept: a material declared on an element counts even if nothing painted it.
+      materials: MATERIALS.filter((mm) => els.some((e) => e.material === mm)
+        || (S.ctx.__esMaterials && S.ctx.__esMaterials.has(mm))),
+      materials_painted: MATERIALS.filter((mm) => S.ctx.__esMaterials && S.ctx.__esMaterials.has(mm)),
+      materials_declared: MATERIALS.filter((mm) => els.some((e) => e.material === mm)),
       overdraw: +(S.overdrawPx / (S.W * S.H)).toFixed(3),
       // RI-JRN04 §G/H1, and RI-MTH07's observable for both models. These count what this
       // build's LAST LAYOUT actually painted, not what the input layer would like drawn —
