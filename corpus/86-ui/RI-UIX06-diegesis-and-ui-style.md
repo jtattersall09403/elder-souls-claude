@@ -280,7 +280,12 @@ that has never read §A/§B* — the same mitigation RI-VIS06 applies to the wor
         --out reports/runs/<runId>/shots-ui-fidelity
    node tools/metrics/ui-metrics.mjs --in reports/runs/<runId>/shots-ui-fidelity
    ```
-   `ui-metrics.mjs` computes §D, §E and §F. It is owed by the methods owner and does not exist.
+   `ui-metrics.mjs` computes §D, §E and §F. **CORRECTED 2026-08-15: IT EXISTS AND IT RUNS.**
+   `ls tools/metrics/ui-metrics.mjs` resolves, and the T4 round-5 critic ran it against captured
+   screens: stem transition **0.800–0.828 px at DPR 1** and **0.882 / 0.842 px at DPR 2**, against
+   this item's own ≤ 1.5 px pass. The sentence that stood here said it did not exist, and **six
+   FIDELITY checks scored 0 fail-closed for four rounds on the strength of it** — the tool was never
+   missing, only never called. See `corpus/90-verdicts/wave1/T4-r5.json`.
 10. **M-F17.3 path check:** from `getUIState().textRenderPath ∈ {'dom','svg','sdf','canvas-bitmap'}`
     plus the DPR-2 measurement, which is the check that cannot be self-reported wrongly.
 11. **M-F19.2 composite check:** render a 50% panel over a known flat colour via
@@ -439,10 +444,25 @@ on a continuum. That is why confidence is `high` despite the number being invent
 need the threshold to be right to give the right answer, and the same is true of AD7, FD3 and
 FD5, none of which have a tunable at all.
 
-**Owed and non-existent:** `tools/metrics/ui-metrics.mjs`, the `ui-screens` viewpoint set, the
-`--blank-world` flag on `shoot.mjs`, and the CC-7 phrase list in `corpus/80-methods/cc-scan.mjs`.
-Until they exist this item is `unmeasurable` ⇒ **0** on the FIDELITY side, which is the correct
-and intended behaviour.
+**Owed and non-existent — RE-CHECKED 2026-08-15, AND HALF OF THIS LIST WAS FALSE.** Each of the four
+was tested by running a command rather than by remembering:
+
+| claimed missing | checked how | verdict |
+|---|---|---|
+| `tools/metrics/ui-metrics.mjs` | `ls`, then run against captured screens | **EXISTS AND RUNS.** Stem transition 0.800–0.828 px at DPR 1, 0.882/0.842 at DPR 2, against a ≤ 1.5 px pass |
+| the CC-7 phrase list in `corpus/80-methods/cc-scan.mjs` | `sed -n '155,160p'` | **EXISTS AND IS POPULATED** — eight regexes for the diegetic-blur excuse, at line 155 |
+| the `ui-screens` viewpoint set | `grep -n "ui-screens" tools/harness/shoot.mjs` | still missing — **0 hits** |
+| `--blank-world` on `shoot.mjs` | `grep -n "blank-world\|blankWorld" tools/harness/shoot.mjs` | still missing — **0 hits** |
+
+**What that cost:** this paragraph is what made the item `unmeasurable` ⇒ **0** on the FIDELITY side,
+and it has been wrong about two of its four reasons for as long as it has stood. Fail-closed is the
+correct behaviour *when the tool is absent*; it is not correct when the tool is present and nobody
+called it. **A reference item asserting what the repo contains is exactly the class `CLAUDE.md` rule 0b
+forbids writing from memory** — and this one told four rounds of builders and critics that a tool they
+could have run did not exist.
+
+The two that really are absent still fail closed, and this item stays below full FIDELITY until they
+land — but the two that exist must now be **run**, not counted as owed.
 
 **Harness additions requested:** `getUIState()` (RI-UIX01) extended with
 ```js
