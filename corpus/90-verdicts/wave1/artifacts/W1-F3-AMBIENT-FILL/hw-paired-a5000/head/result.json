@@ -1,0 +1,331 @@
+{
+  "entry": "game/index.html",
+  "renderer": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+  "software_renderer": false,
+  "gi_feature_present": true,
+  "capture_size": [
+    1920,
+    1080
+  ],
+  "requested_size": [
+    1920,
+    1080
+  ],
+  "camera": {
+    "pos": [
+      3859,
+      15,
+      860
+    ],
+    "look": [
+      3820,
+      14.2,
+      859
+    ],
+    "fov": 60
+  },
+  "crop": {
+    "x0": 0,
+    "x1": 1450,
+    "y0": 140,
+    "y1": 1080
+  },
+  "place": "town-thorn (VP04 pose)",
+  "time_of_day": 9,
+  "weather": "clear",
+  "gi_off": {
+    "mean_luma": 32.59,
+    "p10_luma": 4.641,
+    "p90_luma": 54.703,
+    "falloff_ratio": 11.7861,
+    "shadow_levels": 28,
+    "local_contrast_med": 6.172
+  },
+  "gi_on": {
+    "mean_luma": 36.681,
+    "p10_luma": 15.001,
+    "p90_luma": 54.548,
+    "falloff_ratio": 3.6363,
+    "shadow_levels": 34,
+    "local_contrast_med": 4.328
+  },
+  "checks": [
+    {
+      "id": "GI-ON-RAISES-SHADOW-FLOOR",
+      "ok": true,
+      "detail": "p10_luma off=4.641 on=15.001 — the fix must actually raise the darkest-decile mean"
+    },
+    {
+      "id": "GI-ON-INCREASES-SHADOW-DETAIL",
+      "ok": true,
+      "detail": "shadow_levels (image-leakcheck.mjs's own definition) off=28 on=34 — distinct luma levels below the 25th percentile"
+    },
+    {
+      "id": "GI-ON-DOES-NOT-BRIGHTEN-THE-LIT-END",
+      "ok": true,
+      "detail": "p90_luma off=54.703 on=54.548 — a pixel already at or above its neighbourhood's own brightness should receive ~nothing; this is what a flat lift CANNOT do"
+    }
+  ],
+  "null_control_global_lift": {
+    "lift_K": 11,
+    "note": "gi-off frame lifted by a flat additive constant K on every channel, K solved to be the SMALLEST lift that reaches gi-on's p10_luma — the most charitable construction available to the null control. An 8-bit additive lift is quantised to whole luma levels (see liftedCopy), so it cannot land exactly on the target and instead overshoots by up to one level; the overshoot is in the control's favour and the check below is written to require exactly that. falloff_ratio (p90/p10) is reported for both arms but is NOT the gating metric here: measured once with the first tuning of this piece, a flat lift that ALSO brightens the lit end produced a HIGHER falloff_ratio than the real fix, because the ratio rewards moving p90 up right alongside p10 — which is exactly the flattening a global lift does and a spatially-real fix does not. The metric that actually distinguishes \"raised the shadow floor\" from \"flattened the lighting\" is how much EACH arm has to move the lit end (p90) to buy the SAME amount of shadow-floor lift (p10) — see the check below.",
+    "measured": {
+      "mean_luma": 43.59,
+      "p10_luma": 15.641,
+      "p90_luma": 65.703,
+      "falloff_ratio": 4.2006,
+      "shadow_levels": 28,
+      "local_contrast_med": 6.172
+    },
+    "algebraic_prediction_of_falloff_ratio": 4.2007,
+    "p90_delta_gi_on": 0.155,
+    "p90_delta_null_control": 11,
+    "p10_excess_given_to_the_control": 0.64,
+    "checks": [
+      {
+        "id": "NULL-CONTROL-GETS-AT-LEAST-GI-ONS-SHADOW-FLOOR",
+        "ok": true,
+        "detail": "null p10=15.641 vs gi-on p10=15.001: the control was given 0.640 luma MORE shadow lift than the fix bought. Must be non-negative (the control is never short-changed) and within one 8-bit quantum (1.0 luma) so it is not handed an unearned advantage either. THIS CHECK WAS FOUND FAILING BY RUNNING IT: it originally demanded a match within 0.5 luma, which an integer-quantised lift can never deliver — measured p10 4.734 -> 15.734 at K=11 against a target of 15.116. That was the check being wrong about arithmetic, not the control being wrong about lighting."
+      },
+      {
+        "id": "ALGEBRAIC-LIFT-COMPRESSES-RATIO",
+        "ok": true,
+        "detail": "measured null falloff_ratio=4.2006 vs the algebraic prediction (p90+K)/(p10+K)=4.2007 — confirms the pixel-level measurement matches the closed-form identity (informational: this identity holds regardless of which arm \"wins\" on the ratio itself, which is why the ratio is not the gating check)"
+      },
+      {
+        "id": "GI-MOVES-THE-LIT-END-FAR-LESS-THAN-A-MATCHED-GLOBAL-LIFT",
+        "ok": true,
+        "detail": "for the SAME shadow-floor lift (p10 matched to within one 8-bit quantum), gi-on moves p90_luma by 0.155 while the null control — which by construction of an additive lift moves EVERY pixel by exactly K=11.00 — moves it by 11.000. This is the real directional-falloff claim: a spatially-local fix can leave an already-lit surface's brightness alone while raising a shadow floor by the same amount; a flat lift structurally cannot touch one region without touching all of them."
+      },
+      {
+        "id": "GLOBAL-LIFT-COMPRESSES-BELOW-GI-OFF-BASELINE",
+        "ok": true,
+        "detail": "null-control falloff_ratio=4.2006 vs the untouched gi-off baseline=11.7861 — any positive flat lift strictly compresses the ratio below where it started (the algebraic identity again; kept as an honest, if non-gating, fact about global lifts)"
+      }
+    ]
+  },
+  "alternating": {
+    "note": "off/on interleaved at ONE pose after a single 240-frame warm-up, so capture-order drift lands on both arms and cancels in the paired difference. This replaces the two-still block comparison as the load-bearing measurement — see the comment on `alternate()` for the RTX A4500 numbers that killed the block design.",
+    "pairs": 6,
+    "settle_frames": 12,
+    "subsample_step": 3,
+    "p10_off_series": [
+      14.287,
+      14.287,
+      14.287,
+      14.287,
+      14.289,
+      14.3
+    ],
+    "p10_on_series": [
+      14.913,
+      14.916,
+      14.92,
+      14.916,
+      14.931,
+      14.929
+    ],
+    "paired_p10_differences": [
+      0.626,
+      0.629,
+      0.633,
+      0.629,
+      0.642,
+      0.629
+    ],
+    "paired_p90_differences": [
+      0.206,
+      0.197,
+      0.222,
+      0.227,
+      0.256,
+      0.183
+    ],
+    "mean_paired_p10_difference": 0.631,
+    "mean_paired_p90_difference": 0.215,
+    "off_series_drift_range": 0.013,
+    "gi_feature_present": true,
+    "checks": [
+      {
+        "id": "PAIRED-GI-LIFT-IS-POSITIVE-EVERY-TIME",
+        "ok": true,
+        "detail": "every one of 6 pairs has p10(on) > p10(off); smallest paired lift 0.626, mean 0.631 luma. Series: [0.626,0.629,0.633,0.629,0.642,0.629]"
+      },
+      {
+        "id": "PAIRED-LIFT-EXCEEDS-THE-WARM-UP-DRIFT-IT-REPLACED",
+        "ok": true,
+        "detail": "mean paired lift 0.631 luma against 0.013 luma of total drift across the whole GI-off series. The block design failed precisely because its \"effect\" was smaller than its drift; this check refuses to repeat that."
+      },
+      {
+        "id": "PAIRED-DIFFERENCE-COLLAPSES-WITHOUT-THE-FIX",
+        "ok": true,
+        "detail": "NOT APPLICABLE — this tree has the fix; the control arm is the run against the pinned-baseline clone"
+      },
+      {
+        "id": "PAIRED-LIT-END-IS-UNMOVED",
+        "ok": true,
+        "detail": "mean paired p90 difference 0.215 luma — the lit end must not move when the shadow floor does, which is what separates this from a global lift"
+      }
+    ]
+  },
+  "motion": {
+    "note": "stills are not enough (owner directive, 2026-08-14). BOTH ARMS ARE TAKEN AT EACH POSE BEFORE THE CAMERA MOVES (see pairedSweep) — the earlier block ordering was confounded and its numbers are not in this file. Orbit = the same look point seen from 8 camera positions 39.0m out; pan = 12 adjacent frames of a 1.5-degree-per-frame yaw, i.e. what a moving camera actually sees. Motion frames are analysed on a 3x subsample of the same crop, so their absolute numbers are NOT comparable with the full-resolution stills above — only arm-vs-arm within this section.",
+    "orbit_radius_m": 39.01,
+    "orbit_centre": [
+      3820,
+      14.2,
+      859
+    ],
+    "subsample_step": 3,
+    "per_angle": [
+      {
+        "angle": "orbit-000",
+        "p10_off": 14.311,
+        "p10_on": 14.934,
+        "p10_lift": 0.623,
+        "p90_off": 53.44,
+        "p90_on": 53.566,
+        "mean_off": 36.032,
+        "mean_on": 36.497,
+        "shadow_levels_off": 32,
+        "shadow_levels_on": 33
+      },
+      {
+        "angle": "orbit-045",
+        "p10_off": 7.326,
+        "p10_on": 7.685,
+        "p10_lift": 0.359,
+        "p90_off": 95.703,
+        "p90_on": 96.005,
+        "mean_off": 43.007,
+        "mean_on": 43.638,
+        "shadow_levels_off": 33,
+        "shadow_levels_on": 34
+      },
+      {
+        "angle": "orbit-090",
+        "p10_off": 3.616,
+        "p10_on": 4.308,
+        "p10_lift": 0.692,
+        "p90_off": 72.934,
+        "p90_on": 73.206,
+        "mean_off": 32.505,
+        "mean_on": 33.254,
+        "shadow_levels_off": 25,
+        "shadow_levels_on": 26
+      },
+      {
+        "angle": "orbit-135",
+        "p10_off": 11.303,
+        "p10_on": 11.653,
+        "p10_lift": 0.35,
+        "p90_off": 144.527,
+        "p90_on": 144.593,
+        "mean_off": 51.582,
+        "mean_on": 52.099,
+        "shadow_levels_off": 37,
+        "shadow_levels_on": 38
+      },
+      {
+        "angle": "orbit-180",
+        "p10_off": 6.581,
+        "p10_on": 6.799,
+        "p10_lift": 0.218,
+        "p90_off": 169.55,
+        "p90_on": 169.551,
+        "mean_off": 58.161,
+        "mean_on": 58.565,
+        "shadow_levels_off": 30,
+        "shadow_levels_on": 31
+      },
+      {
+        "angle": "orbit-225",
+        "p10_off": 8.824,
+        "p10_on": 8.945,
+        "p10_lift": 0.121,
+        "p90_off": 178.862,
+        "p90_on": 178.861,
+        "mean_off": 70.794,
+        "mean_on": 71.124,
+        "shadow_levels_off": 35,
+        "shadow_levels_on": 35
+      },
+      {
+        "angle": "orbit-270",
+        "p10_off": 8.264,
+        "p10_on": 8.801,
+        "p10_lift": 0.537,
+        "p90_off": 177.443,
+        "p90_on": 177.441,
+        "mean_off": 65.343,
+        "mean_on": 66.077,
+        "shadow_levels_off": 32,
+        "shadow_levels_on": 33
+      },
+      {
+        "angle": "orbit-315",
+        "p10_off": 11.828,
+        "p10_on": 12.117,
+        "p10_lift": 0.289,
+        "p90_off": 145.948,
+        "p90_on": 146.047,
+        "mean_off": 53.335,
+        "mean_on": 53.764,
+        "shadow_levels_off": 39,
+        "shadow_levels_on": 39
+      }
+    ],
+    "pan_p10_off": [
+      4.639,
+      4.666,
+      4.765,
+      5.019,
+      5.432,
+      5.426,
+      5.392,
+      5.413,
+      5.366,
+      4.955,
+      4.949,
+      5.043
+    ],
+    "pan_p10_on": [
+      5.002,
+      5.029,
+      5.097,
+      5.343,
+      5.741,
+      5.738,
+      5.705,
+      5.718,
+      5.664,
+      5.261,
+      5.246,
+      5.342
+    ],
+    "pan_masd_p10_off": 0.1284,
+    "pan_masd_p10_on": 0.1233,
+    "checks": [
+      {
+        "id": "GI-LIFTS-THE-SHADOW-FLOOR-AT-EVERY-ANGLE",
+        "ok": true,
+        "detail": "8/8 orbit angles have p10_luma(on) > p10_luma(off), each pair taken back-to-back AT that angle. Per-angle lifts: [0.623,0.359,0.692,0.35,0.218,0.121,0.537,0.289]. A fix that only works from the one surveyed pose fails here."
+      },
+      {
+        "id": "GI-LEAVES-THE-LIT-END-ALONE-AT-EVERY-ANGLE",
+        "ok": true,
+        "detail": "worst-case |p90 drift| across all orbit angles = 0.37% (must stay under 6%, the same threshold the still uses) — the still's lit-end stability is not a lucky framing."
+      },
+      {
+        "id": "PER-ANGLE-LIFT-COLLAPSES-WITHOUT-THE-FIX",
+        "ok": true,
+        "detail": "NOT APPLICABLE — this tree has the fix; the collapse is checked on the pinned-baseline clone"
+      },
+      {
+        "id": "GI-DOES-NOT-CRAWL-UNDER-CAMERA-MOTION",
+        "ok": true,
+        "detail": "frame-to-frame mean absolute successive difference of p10_luma along a 1.5-degree-per-frame pan: off=0.1284, on=0.1233. The GI-off arm is the scene's OWN motion noise (foliage, sub-pixel sampling, TAA-free aliasing — HAZARDS.md §8), so the bar is \"GI adds no material instability on top of it\", not \"GI is perfectly still\"."
+      }
+    ]
+  }
+}

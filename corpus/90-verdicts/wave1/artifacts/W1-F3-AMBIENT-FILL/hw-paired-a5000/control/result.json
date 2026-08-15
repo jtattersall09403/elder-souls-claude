@@ -1,0 +1,324 @@
+{
+  "entry": "/tmp/ctrl-game/index.html",
+  "renderer": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+  "software_renderer": false,
+  "gi_feature_present": false,
+  "capture_size": [
+    1920,
+    1080
+  ],
+  "requested_size": [
+    1920,
+    1080
+  ],
+  "camera": {
+    "pos": [
+      3859,
+      15,
+      860
+    ],
+    "look": [
+      3820,
+      14.2,
+      859
+    ],
+    "fov": 60
+  },
+  "crop": {
+    "x0": 0,
+    "x1": 1450,
+    "y0": 140,
+    "y1": 1080
+  },
+  "place": "town-thorn (VP04 pose)",
+  "time_of_day": 9,
+  "weather": "clear",
+  "gi_off": {
+    "mean_luma": 32.59,
+    "p10_luma": 4.641,
+    "p90_luma": 54.703,
+    "falloff_ratio": 11.7861,
+    "shadow_levels": 28,
+    "local_contrast_med": 6.172
+  },
+  "gi_on": {
+    "mean_luma": 36.196,
+    "p10_luma": 14.353,
+    "p90_luma": 54.347,
+    "falloff_ratio": 3.7864,
+    "shadow_levels": 33,
+    "local_contrast_med": 4.679
+  },
+  "checks": [
+    {
+      "id": "GI-ON-RAISES-SHADOW-FLOOR",
+      "ok": true,
+      "detail": "p10_luma off=4.641 on=14.353 — the fix must actually raise the darkest-decile mean"
+    },
+    {
+      "id": "GI-ON-INCREASES-SHADOW-DETAIL",
+      "ok": true,
+      "detail": "shadow_levels (image-leakcheck.mjs's own definition) off=28 on=33 — distinct luma levels below the 25th percentile"
+    },
+    {
+      "id": "GI-ON-DOES-NOT-BRIGHTEN-THE-LIT-END",
+      "ok": true,
+      "detail": "p90_luma off=54.703 on=54.347 — a pixel already at or above its neighbourhood's own brightness should receive ~nothing; this is what a flat lift CANNOT do"
+    }
+  ],
+  "alternating": {
+    "note": "off/on interleaved at ONE pose after a single 240-frame warm-up, so capture-order drift lands on both arms and cancels in the paired difference. This replaces the two-still block comparison as the load-bearing measurement — see the comment on `alternate()` for the RTX A4500 numbers that killed the block design.",
+    "pairs": 6,
+    "settle_frames": 12,
+    "subsample_step": 3,
+    "p10_off_series": [
+      14.287,
+      14.287,
+      14.287,
+      14.287,
+      14.289,
+      14.3
+    ],
+    "p10_on_series": [
+      14.281,
+      14.285,
+      14.287,
+      14.284,
+      14.299,
+      14.296
+    ],
+    "paired_p10_differences": [
+      -0.006,
+      -0.002,
+      0,
+      -0.003,
+      0.01,
+      -0.004
+    ],
+    "paired_p90_differences": [
+      -0.004,
+      -0.014,
+      0.01,
+      0.015,
+      0.045,
+      -0.027
+    ],
+    "mean_paired_p10_difference": -0.001,
+    "mean_paired_p90_difference": 0.004,
+    "off_series_drift_range": 0.013,
+    "gi_feature_present": false,
+    "checks": [
+      {
+        "id": "PAIRED-GI-LIFT-IS-POSITIVE-EVERY-TIME",
+        "ok": true,
+        "detail": "NOT APPLICABLE — this tree has no giFill switch, so this run is the inert-control arm and is judged by PAIRED-DIFFERENCE-COLLAPSES-WITHOUT-THE-FIX instead"
+      },
+      {
+        "id": "PAIRED-LIFT-EXCEEDS-THE-WARM-UP-DRIFT-IT-REPLACED",
+        "ok": true,
+        "detail": "mean paired lift -0.001 luma against 0.013 luma of total drift across the whole GI-off series. The block design failed precisely because its \"effect\" was smaller than its drift; this check refuses to repeat that."
+      },
+      {
+        "id": "PAIRED-DIFFERENCE-COLLAPSES-WITHOUT-THE-FIX",
+        "ok": true,
+        "detail": "the giFill switch does not exist on this tree, so the alternation is just consecutive captures of one unchanging tree: mean paired difference -0.001 luma (must be under 0.5). This is the inert-control arm — if it does NOT collapse, the alternating instrument is measuring its own procedure and not the shader."
+      },
+      {
+        "id": "PAIRED-LIT-END-IS-UNMOVED",
+        "ok": true,
+        "detail": "mean paired p90 difference 0.004 luma — the lit end must not move when the shadow floor does, which is what separates this from a global lift"
+      }
+    ]
+  },
+  "motion": {
+    "note": "stills are not enough (owner directive, 2026-08-14). BOTH ARMS ARE TAKEN AT EACH POSE BEFORE THE CAMERA MOVES (see pairedSweep) — the earlier block ordering was confounded and its numbers are not in this file. Orbit = the same look point seen from 8 camera positions 39.0m out; pan = 12 adjacent frames of a 1.5-degree-per-frame yaw, i.e. what a moving camera actually sees. Motion frames are analysed on a 3x subsample of the same crop, so their absolute numbers are NOT comparable with the full-resolution stills above — only arm-vs-arm within this section.",
+    "orbit_radius_m": 39.01,
+    "orbit_centre": [
+      3820,
+      14.2,
+      859
+    ],
+    "subsample_step": 3,
+    "per_angle": [
+      {
+        "angle": "orbit-000",
+        "p10_off": 14.311,
+        "p10_on": 14.311,
+        "p10_lift": 0,
+        "p90_off": 53.44,
+        "p90_on": 53.441,
+        "mean_off": 36.032,
+        "mean_on": 36.033,
+        "shadow_levels_off": 32,
+        "shadow_levels_on": 32
+      },
+      {
+        "angle": "orbit-045",
+        "p10_off": 7.326,
+        "p10_on": 7.323,
+        "p10_lift": -0.003,
+        "p90_off": 95.703,
+        "p90_on": 95.706,
+        "mean_off": 43.007,
+        "mean_on": 43.005,
+        "shadow_levels_off": 33,
+        "shadow_levels_on": 33
+      },
+      {
+        "angle": "orbit-090",
+        "p10_off": 3.616,
+        "p10_on": 3.619,
+        "p10_lift": 0.003,
+        "p90_off": 72.934,
+        "p90_on": 72.925,
+        "mean_off": 32.505,
+        "mean_on": 32.503,
+        "shadow_levels_off": 25,
+        "shadow_levels_on": 25
+      },
+      {
+        "angle": "orbit-135",
+        "p10_off": 11.303,
+        "p10_on": 11.305,
+        "p10_lift": 0.002,
+        "p90_off": 144.527,
+        "p90_on": 144.528,
+        "mean_off": 51.582,
+        "mean_on": 51.584,
+        "shadow_levels_off": 37,
+        "shadow_levels_on": 37
+      },
+      {
+        "angle": "orbit-180",
+        "p10_off": 6.581,
+        "p10_on": 6.574,
+        "p10_lift": -0.007,
+        "p90_off": 169.55,
+        "p90_on": 169.545,
+        "mean_off": 58.161,
+        "mean_on": 58.152,
+        "shadow_levels_off": 30,
+        "shadow_levels_on": 30
+      },
+      {
+        "angle": "orbit-225",
+        "p10_off": 8.824,
+        "p10_on": 8.824,
+        "p10_lift": 0,
+        "p90_off": 178.862,
+        "p90_on": 178.86,
+        "mean_off": 70.794,
+        "mean_on": 70.795,
+        "shadow_levels_off": 35,
+        "shadow_levels_on": 35
+      },
+      {
+        "angle": "orbit-270",
+        "p10_off": 8.264,
+        "p10_on": 8.254,
+        "p10_lift": -0.01,
+        "p90_off": 177.443,
+        "p90_on": 177.441,
+        "mean_off": 65.343,
+        "mean_on": 65.329,
+        "shadow_levels_off": 32,
+        "shadow_levels_on": 32
+      },
+      {
+        "angle": "orbit-315",
+        "p10_off": 11.828,
+        "p10_on": 11.826,
+        "p10_lift": -0.002,
+        "p90_off": 145.948,
+        "p90_on": 145.949,
+        "mean_off": 53.335,
+        "mean_on": 53.335,
+        "shadow_levels_off": 39,
+        "shadow_levels_on": 39
+      }
+    ],
+    "pan_p10_off": [
+      4.639,
+      4.666,
+      4.765,
+      5.019,
+      5.432,
+      5.426,
+      5.392,
+      5.413,
+      5.366,
+      4.955,
+      4.949,
+      5.043
+    ],
+    "pan_p10_on": [
+      4.64,
+      4.664,
+      4.763,
+      5.02,
+      5.431,
+      5.426,
+      5.392,
+      5.414,
+      5.366,
+      4.955,
+      4.949,
+      5.044
+    ],
+    "pan_masd_p10_off": 0.1284,
+    "pan_masd_p10_on": 0.1284,
+    "checks": [
+      {
+        "id": "GI-LIFTS-THE-SHADOW-FLOOR-AT-EVERY-ANGLE",
+        "ok": true,
+        "detail": "NOT APPLICABLE — no giFill switch on this tree; per-angle lifts here are the inert-control arm: [0,-0.003,0.003,0.002,-0.007,0,-0.01,-0.002]"
+      },
+      {
+        "id": "GI-LEAVES-THE-LIT-END-ALONE-AT-EVERY-ANGLE",
+        "ok": true,
+        "detail": "worst-case |p90 drift| across all orbit angles = 0.01% (must stay under 6%, the same threshold the still uses) — the still's lit-end stability is not a lucky framing."
+      },
+      {
+        "id": "PER-ANGLE-LIFT-COLLAPSES-WITHOUT-THE-FIX",
+        "ok": true,
+        "detail": "inert-control arm: with the fix physically absent the toggle is a no-op, so every per-angle \"lift\" must be noise — largest |lift| 0.010 luma (bar: 0.5)"
+      },
+      {
+        "id": "GI-DOES-NOT-CRAWL-UNDER-CAMERA-MOTION",
+        "ok": true,
+        "detail": "frame-to-frame mean absolute successive difference of p10_luma along a 1.5-degree-per-frame pan: off=0.1284, on=0.1284. The GI-off arm is the scene's OWN motion noise (foliage, sub-pixel sampling, TAA-free aliasing — HAZARDS.md §8), so the bar is \"GI adds no material instability on top of it\", not \"GI is perfectly still\"."
+      }
+    ]
+  },
+  "delete_the_fix": {
+    "compared_to": "/workspace/elder-souls-artifacts-20260815-082405Z-21874/hw2-head/result.json",
+    "head_renderer": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+    "head_software_renderer": false,
+    "control_p10": 14.353,
+    "head_gi_off_p10": 4.641,
+    "head_gi_on_p10": 15.001,
+    "note": "the control tree is the pinned pre-F3 baseline (HAZARDS.md §12: pinned sha, NOT HEAD). Both of this run's captures are the same tree because the giFill switch does not exist there — which is itself check 1.",
+    "checks": [
+      {
+        "id": "FIX-IS-ACTUALLY-ABSENT-FROM-THE-CONTROL-TREE",
+        "ok": true,
+        "detail": "renderer.setVisualFeature('giFill') threw 'unknown renderer feature' — the fix is genuinely torn out"
+      },
+      {
+        "id": "OLD-NUMBER-COMES-BACK-PAIRED",
+        "ok": false,
+        "detail": "mean PAIRED p10 lift: this control tree -0.001 luma, head tree 0.631 luma. Removing the fix must collapse the paired lift to nothing."
+      },
+      {
+        "id": "BLOCK-COMPARISON-IS-CONFOUNDED-AND-IS-NOT-EVIDENCE",
+        "ok": true,
+        "detail": "RECORDED, NOT GATED. The old block-design claim was \"the control's second capture returns to the head run's GI-OFF number\". It does not: control second capture=14.353, head GI-OFF=4.641 (distance 9.712), head GI-ON=15.001 (distance 0.648). That is not the fix surviving its own removal — it is the block design measuring capture ORDER. The first capture of both trees is identical; only the second diverges, on a tree where the shader is physically absent. This row exists so the confound stays visible in the evidence instead of being quietly deleted once a better instrument replaced it."
+      },
+      {
+        "id": "BOTH-ARMS-ON-THE-SAME-RENDERER",
+        "ok": true,
+        "detail": "control renderer \"ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)\" vs head run renderer \"ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)\" — two arms on two different renderers are not comparable (dispatch brief item 2)"
+      }
+    ]
+  }
+}
