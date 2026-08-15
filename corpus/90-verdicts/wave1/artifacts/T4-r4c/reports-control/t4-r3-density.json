@@ -1,0 +1,158 @@
+{
+  "schema": "elder-souls/t4-r3-density@1",
+  "at": "2026-08-15T14:04:00.012Z",
+  "measure_dir": "corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7",
+  "bar": 0.35,
+  "hard_fail_below": 0.15,
+  "screens": {
+    "world": {
+      "error": "no capture on disk",
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7/screens/live-world__1920x1080.png"
+    },
+    "inventory": {
+      "error": "no capture on disk",
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7/screens/live-inventory__1920x1080.png"
+    },
+    "journal": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7/screens/live-journal__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": 0.1314,
+      "d2_detail": {
+        "mode_rgb": [
+          172,
+          165,
+          147
+        ],
+        "pixels": 1185600
+      },
+      "d2_builder_same_run": 0.1314,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.5718,
+      "matter_px2": 155788,
+      "panel_px2_at_bar": 445109,
+      "frame_fraction_at_bar": 0.2147,
+      "hard_fail": true,
+      "meets_bar": false
+    },
+    "sheet": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7/screens/live-sheet__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": 0.0895,
+      "d2_detail": {
+        "mode_rgb": [
+          44,
+          57,
+          45
+        ],
+        "pixels": 1185600
+      },
+      "d2_builder_same_run": 0.0895,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.5718,
+      "matter_px2": 106111,
+      "panel_px2_at_bar": 303174,
+      "frame_fraction_at_bar": 0.1462,
+      "hard_fail": true,
+      "meets_bar": false
+    },
+    "spells": {
+      "error": "no capture on disk",
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7/screens/live-spells__1920x1080.png"
+    },
+    "levelup": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7/screens/live-levelup__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": 0.0911,
+      "d2_detail": {
+        "mode_rgb": [
+          219,
+          217,
+          204
+        ],
+        "pixels": 1185600
+      },
+      "d2_builder_same_run": 0.0911,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.5718,
+      "matter_px2": 108008,
+      "panel_px2_at_bar": 308594,
+      "frame_fraction_at_bar": 0.1488,
+      "hard_fail": true,
+      "meets_bar": false
+    },
+    "container": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7/screens/live-container__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": 0.0572,
+      "d2_detail": {
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 1185600
+      },
+      "d2_builder_same_run": 0.0572,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.5718,
+      "matter_px2": 67816,
+      "panel_px2_at_bar": 193760,
+      "frame_fraction_at_bar": 0.0934,
+      "hard_fail": true,
+      "meets_bar": false
+    },
+    "container_no_name": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7/screens/live-container_no_name__1920x1080.png",
+      "panel_rect": [
+        200,
+        160,
+        1520,
+        780
+      ],
+      "d2_critic": 0.0554,
+      "d2_detail": {
+        "mode_rgb": [
+          132,
+          85,
+          55
+        ],
+        "pixels": 1185600
+      },
+      "d2_builder_same_run": 0.0554,
+      "agrees_with_builder_instrument": true,
+      "panel_fraction_of_frame": 0.5718,
+      "matter_px2": 65682,
+      "panel_px2_at_bar": 187663,
+      "frame_fraction_at_bar": 0.0905,
+      "hard_fail": true,
+      "meets_bar": false
+    }
+  },
+  "hard_fails": [
+    "journal",
+    "sheet",
+    "levelup",
+    "container",
+    "container_no_name"
+  ]
+}

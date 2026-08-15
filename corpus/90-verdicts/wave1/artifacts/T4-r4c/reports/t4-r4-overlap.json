@@ -1,0 +1,327 @@
+{
+  "schema": "elder-souls/t4-r4-overlap@2",
+  "at": "2026-08-15T14:27:29.373Z",
+  "rects_from": "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-critic.json",
+  "shots_from": "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens",
+  "metric": "foreground = rgb distance > 24 from the panel's modal colour; a SEPARATOR is >= 3 consecutive columns with none. name|value|gauge laid out apart => >= 2 separators.",
+  "screens": {
+    "levelup": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens/live-levelup__1920x1080.png",
+      "panel_rect": [
+        720,
+        300,
+        480,
+        480
+      ],
+      "panel_modal_rgb": [
+        208,
+        208,
+        208
+      ],
+      "rows": [
+        {
+          "id": "levelup.attr.strength",
+          "rect": [
+            742,
+            422,
+            244,
+            26
+          ],
+          "declared_text": "STRENGTH 12",
+          "separators": 1,
+          "runs": 2,
+          "ink_columns": 213,
+          "span": 225
+        },
+        {
+          "id": "levelup.attr.endurance",
+          "rect": [
+            742,
+            452,
+            244,
+            26
+          ],
+          "declared_text": "ENDURANCE 20",
+          "separators": 2,
+          "runs": 3,
+          "ink_columns": 212,
+          "span": 231
+        },
+        {
+          "id": "levelup.attr.agility",
+          "rect": [
+            742,
+            482,
+            244,
+            26
+          ],
+          "declared_text": "AGILITY 10",
+          "separators": 1,
+          "runs": 2,
+          "ink_columns": 215,
+          "span": 229
+        },
+        {
+          "id": "levelup.attr.speed",
+          "rect": [
+            742,
+            512,
+            244,
+            26
+          ],
+          "declared_text": "SPEED 10",
+          "separators": 1,
+          "runs": 2,
+          "ink_columns": 217,
+          "span": 230
+        },
+        {
+          "id": "levelup.attr.vigour",
+          "rect": [
+            742,
+            542,
+            244,
+            26
+          ],
+          "declared_text": "VIGOUR 10",
+          "separators": 1,
+          "runs": 2,
+          "ink_columns": 220,
+          "span": 232
+        },
+        {
+          "id": "levelup.attr.willpower",
+          "rect": [
+            742,
+            572,
+            244,
+            26
+          ],
+          "declared_text": "WILLPOWER 10",
+          "separators": 1,
+          "runs": 2,
+          "ink_columns": 218,
+          "span": 232
+        },
+        {
+          "id": "levelup.attr.intellect",
+          "rect": [
+            742,
+            602,
+            244,
+            26
+          ],
+          "declared_text": "INTELLECT 10",
+          "separators": 1,
+          "runs": 2,
+          "ink_columns": 215,
+          "span": 232
+        },
+        {
+          "id": "levelup.attr.hist-bond",
+          "rect": [
+            742,
+            632,
+            244,
+            26
+          ],
+          "declared_text": "HIST-BOND 10",
+          "separators": 1,
+          "runs": 2,
+          "ink_columns": 222,
+          "span": 225
+        },
+        {
+          "id": "levelup.attr.personality",
+          "rect": [
+            742,
+            662,
+            244,
+            26
+          ],
+          "declared_text": "PERSONALITY 10",
+          "separators": 1,
+          "runs": 2,
+          "ink_columns": 208,
+          "span": 223
+        },
+        {
+          "id": "levelup.attr.luck",
+          "rect": [
+            742,
+            692,
+            244,
+            26
+          ],
+          "declared_text": "LUCK 10",
+          "separators": 1,
+          "runs": 2,
+          "ink_columns": 214,
+          "span": 229
+        }
+      ],
+      "rows_total": 10,
+      "rows_with_fewer_than_two_separators": 9,
+      "m_f18_2_pass": false
+    },
+    "sheet": {
+      "capture": "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens/live-sheet__1920x1080.png",
+      "panel_rect": [
+        680,
+        295,
+        560,
+        490
+      ],
+      "panel_modal_rgb": [
+        48,
+        48,
+        48
+      ],
+      "rows": [
+        {
+          "id": "sheet.attr.strength",
+          "rect": [
+            901,
+            359,
+            161,
+            32
+          ],
+          "declared_text": "STRENGTH 12",
+          "separators": 1,
+          "runs": 2,
+          "ink_columns": 155,
+          "span": 161
+        },
+        {
+          "id": "sheet.attr.endurance",
+          "rect": [
+            901,
+            395,
+            161,
+            32
+          ],
+          "declared_text": "ENDURANCE 20",
+          "separators": 3,
+          "runs": 4,
+          "ink_columns": 146,
+          "span": 161
+        },
+        {
+          "id": "sheet.attr.agility",
+          "rect": [
+            901,
+            431,
+            161,
+            32
+          ],
+          "declared_text": "AGILITY 10",
+          "separators": 2,
+          "runs": 3,
+          "ink_columns": 151,
+          "span": 161
+        },
+        {
+          "id": "sheet.attr.speed",
+          "rect": [
+            901,
+            467,
+            161,
+            32
+          ],
+          "declared_text": "SPEED 10",
+          "separators": 4,
+          "runs": 5,
+          "ink_columns": 140,
+          "span": 158
+        },
+        {
+          "id": "sheet.attr.vigour",
+          "rect": [
+            901,
+            503,
+            161,
+            32
+          ],
+          "declared_text": "VIGOUR 10",
+          "separators": 5,
+          "runs": 6,
+          "ink_columns": 138,
+          "span": 158
+        },
+        {
+          "id": "sheet.attr.willpower",
+          "rect": [
+            901,
+            539,
+            161,
+            32
+          ],
+          "declared_text": "WILLPOWER 10",
+          "separators": 0,
+          "runs": 1,
+          "ink_columns": 154,
+          "span": 158
+        },
+        {
+          "id": "sheet.attr.intellect",
+          "rect": [
+            901,
+            575,
+            161,
+            32
+          ],
+          "declared_text": "INTELLECT 10",
+          "separators": 1,
+          "runs": 2,
+          "ink_columns": 150,
+          "span": 158
+        },
+        {
+          "id": "sheet.attr.hist-bond",
+          "rect": [
+            901,
+            611,
+            161,
+            32
+          ],
+          "declared_text": "HIST-BOND 10",
+          "separators": 2,
+          "runs": 3,
+          "ink_columns": 150,
+          "span": 158
+        },
+        {
+          "id": "sheet.attr.personality",
+          "rect": [
+            901,
+            647,
+            161,
+            32
+          ],
+          "declared_text": "PERSONALITY 10",
+          "separators": 2,
+          "runs": 3,
+          "ink_columns": 150,
+          "span": 160
+        },
+        {
+          "id": "sheet.attr.luck",
+          "rect": [
+            901,
+            683,
+            161,
+            32
+          ],
+          "declared_text": "LUCK 10",
+          "separators": 2,
+          "runs": 3,
+          "ink_columns": 150,
+          "span": 158
+        }
+      ],
+      "rows_total": 10,
+      "rows_with_fewer_than_two_separators": 3,
+      "m_f18_2_pass": false
+    }
+  }
+}

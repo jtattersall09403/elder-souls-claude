@@ -1,0 +1,1177 @@
+{
+  "schema_version": 1,
+  "piece_id": "T4-r4",
+  "piece_title": "The Morrowind screens — round 4",
+  "subsystem_paths": [
+    "ui.menu.inventory",
+    "ui.menu.journal",
+    "ui.style.diegesis",
+    "ui.hud.world"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-t4-r4",
+    "role": "critic.ui",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-15T13:45:00Z",
+    "finished_at": "2026-08-15T14:30:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true,
+    "note": "I built none of this and I am not the round-1, round-2 or round-3 critic. My dispatch brief handed me the round-3 verdict and the builder's status file up front, which departs from CRITIC-DOCTRINE §8's ordering; it is recorded rather than hidden, and no blind pack could be run anyway (see blind_comparisons)."
+  },
+  "build": {
+    "commit_sha": "ce563030995eae47fc029686c9497929a7022af3",
+    "branch": "codex/wave1-build-experiment",
+    "baseline_note": "PINNED TO BLOBS, NOT TO A COMMIT, BECAUSE HEAD MOVED TWICE UNDER ME. The five files this round touches or is read through were byte-identical at bc936a39 (the tip when I started), at 5d887461 (the tip the capture tool stamped into its own manifest), at ce563030 (the tip as I file) and on disk: game/src/ui/chrome.js 5921cc2bec9a0f6cb3150500a0a26aa03ee869c6, game/src/ui/screens/text.js cfc9125f77ac511e9bc737961575fd6c9b83c49f, game/src/ui/screens/progress.js f46f7fe6388af7fd47815ef0145646dfc4eb5d10, game/src/ui/screens/inventory.js 79d64ff3e78c09283a02e6a1ce3e89478bd83b4a, game/src/ui/system.js 830ae9deb1d66582c4757aed2ecaf3c6c382e991. `git diff --stat 5d887461..HEAD -- game/src/ui/ game/data/` is EMPTY, so nothing the verdict measures moved between capture and filing. The commits that advanced HEAD under me are F10 appearance work, G1 and status files. `git diff --stat 7c63111d..HEAD -- game/data/` is ALSO empty, which is what makes RI-UIX03 §B-§E carryable.",
+    "delete_the_fix": {
+      "control_sha": "c792e8d7926dd4850cf719c071490eefb83c190b",
+      "how": "A REAL fresh sparse worktree (`git worktree add --no-checkout` + `git sparse-checkout set game tools`, tools/node_modules symlinked), pinned to the commit immediately BEFORE the round-4 commit — not HEAD~1 and not an inherited baseline. Its blobs for all four changed files equal the round-3 critic's own pin exactly. The same sweep was run there.",
+      "result": "FIVE HARD FAILS COME BACK, at the round-3 numbers: journal 0.1314, sheet 0.0895, level-up 0.0911, container 0.0572, container-with-one-item 0.0554, and panel_fraction_of_frame 0.5718 on every one. inventory and spells timed out under browser contention in the control arm and are recorded as unmeasured there. The control's captures ALSO show the level-up attribute rows legible (name | value | gauge in three columns, with the soft/hard cap labels), which is the second half of the delete-the-fix arm and the one that carries the biggest gap.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7/measure-live-1920x1080.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-control/t4-r3-density.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/control-levelup-1x.png"
+      ]
+    },
+    "harness_commands": [
+      {
+        "command": "node tools/ui/t4-r2-measure.mjs --out corpus/90-verdicts/wave1/artifacts/T4-r4c/measure",
+        "exit_code": 1,
+        "note": "All eight screen captures and the manifest were written; the run then CRASHED in its withdrawal legs with 'page.evaluate: Target page, context or browser has been closed' under contention. RI-UIX07 V7/V8 are therefore NOT re-measured at these blobs and are carried behind an empty diff of hud.js."
+      },
+      {
+        "command": "node tools/ui/t4-r3-density.mjs --measure corpus/90-verdicts/wave1/artifacts/T4-r4c/measure --out corpus/90-verdicts/wave1/artifacts/T4-r4c/reports",
+        "exit_code": 1,
+        "note": "hard_fails: [\"container_no_name\"] — i.e. NONE of the six screens the previous round measured, and the seventh state (the container holding ONE item) at 0.1434. Ruled on in the verdict body."
+      },
+      {
+        "command": "node tools/visual/frame-liveness.mjs --in corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens",
+        "exit_code": 0,
+        "note": "8 frames: {\"LIVE\":8}. Run on EVERY frame this verdict measures."
+      },
+      {
+        "command": "node tools/visual/frame-liveness.mjs --in corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7/screens",
+        "exit_code": 0,
+        "note": "no degenerate frames — the control arm's captures are pictures of something too."
+      },
+      {
+        "command": "node tools/ui/t4-r3-critic.mjs --state ui-journal --legs jx,eq,ts --out corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-repress",
+        "exit_code": 1,
+        "note": "THE ROUND-3 CRITIC'S INSTRUMENT, BYTE-IDENTICAL, at these blobs. 18/20. JX0-JX6, EQ1, EQ1b, TS0-TS3b all green; the two reds are TS4/TS5, the axis-repeat DIAGNOSTIC that instrument's own author declared device-neutral and did not treat as a defect."
+      },
+      {
+        "command": "node tools/harness/ui-pause.mjs --out corpus/90-verdicts/wave1/artifacts/T4-r4c/reports",
+        "exit_code": 0,
+        "note": "10/10 at these blobs, including M-P4 (the P5 occlusion row the builder said it reasoned about rather than re-ran), PAD (the gamepad arm, re-run AFTER the resize) and SURFACES (all seven surfaces open and draw)."
+      },
+      {
+        "command": "node tools/ui/t4-r4-critic.mjs --out corpus/90-verdicts/wave1/artifacts/T4-r4c/reports --shots corpus/90-verdicts/wave1/artifacts/T4-r4c/screens",
+        "exit_code": 1,
+        "note": "My own instrument. 10/12. The pager legs (S57 condition (b)) are the point; the two reds are its own OVERLAP leg, whose pixel numbers are VOID — see method_deviations."
+      },
+      {
+        "command": "node tools/ui/t4-r4-critic-overlap.mjs --control corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7 --out corpus/90-verdicts/wave1/artifacts/T4-r4c/reports",
+        "exit_code": 0,
+        "note": "The OVERLAP leg recomputed OFFLINE against LIVE toDataURL captures. level-up: 9 of 10 attribute rows draw name/value/gauge with fewer than two separators. sheet: 3 of 10 by the same metric, and the crop shows ten."
+      },
+      {
+        "command": "node tools/ui/t4-r2-critic-drive.mjs --state ui-journal --out corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-drive",
+        "exit_code": 1,
+        "note": "The round-2 critic's affordance walk, REPAIRED THIS MORNING BY I1 (three of its old reds were probe defects and it now has a third outcome, not-applicable). Re-run at these blobs as the OP1 breadth arm: 32/37 passed, 3 not-applicable, 2 failed — against round 3's 28/36 on the unrepaired probe. The two reds are C7 (the HUD full/minimal switch, which cannot fire on a paused screen — RI-UIX10 trap I2, red on the last three builds and unchanged by the resize) and M1 (a click on a row does nothing, which is system.js rule 2's DECLARED absence of a pointer path, i.e. OP4's pass condition observed). The 3 not-applicable are C5b (a narrated policy refusal, correct behaviour) and F1/T2 (a map fixture with zero discovered places)."
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "both-separately",
+    "declared_before_citation": true,
+    "fidelity_refs": [
+      "RI-UIX06 (FIDELITY side: F17/F18/F19)"
+    ],
+    "art_refs": [
+      "RI-UIX06 (ART side: P09)",
+      "RI-UIX09"
+    ],
+    "note": "=== VIS DECLARATION === PASS 1, JUDGEMENT SIDE: ART_DIRECTION. PROPERTIES: P09 (RI-UIX06 ART) and RI-UIX09's object iconography and populated density. PERMITTED: RI-VIS05 §H, REF-A12b (Morrowind interface plates). FORBIDDEN: RI-VIS02 (modern), RI-VIS03 metrics. === PASS 2, JUDGEMENT SIDE: FIDELITY. PROPERTIES: F18 (layout integrity, M-F18.1/M-F18.2). PERMITTED: our own captures at 1920x1080 and modern practice. FORBIDDEN: RI-VIS05, REF-A12b, and every Morrowind plate. Both declared before any reference was cited. NOT ONE MORROWIND PLATE IS CITED IN THE FIDELITY SECTION AND NOT ONE MODERN REFERENCE IN THE ART SECTION. RI-UIX06 is the single item carrying both sides — that is the item's own design (two independent native scales, never combined, with a ship gate of min(ART, FIDELITY)) rather than my choosing to share a reference item between two sets; RI-UIX09 appears on the art side only and no item appears on both. CC-7 was not used: at no point is low rendering quality excused as art direction, and the defect judged on the fidelity side is geometric (text outside its container, elements on top of each other), not a matter of style."
+  },
+  "reference_items": [
+    {
+      "id": "RI-UIX09",
+      "path": "corpus/86-ui/RI-UIX09-populated-density-and-object-iconography.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "checks passed / 7; any hard fail caps at 2",
+      "native_score": 5,
+      "native_max": 7,
+      "native_verdict": "5/7, NO HARD FAIL — DN4's floor of 0.15 is cleared on all six screens round 3 measured; its bar of 0.35 is met on none of them",
+      "score_0_10": 5,
+      "justification": "not required below 7",
+      "measured": "full",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r3-density.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/measure-live-1920x1080.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/frame-liveness-head.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-control/t4-r3-density.json"
+      ],
+      "checks": [
+        {
+          "id": "DN1",
+          "result": "pass",
+          "value": "inventory item_icon 21 over list_row 20; 21 >= 0.8 x 20. Unchanged — the inventory kept the old BOX.",
+          "threshold": "D1 >= 0.8 x rows",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/measure-live-1920x1080.json"
+          ]
+        },
+        {
+          "id": "DN2",
+          "result": "pass",
+          "value": "one doll declared; inventory.worn.body and inventory.worn.right follow a REAL equip press at f+1 (EQ1, re-pressed at these blobs after the resize).",
+          "threshold": "present and drawn, not text only",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-repress/t4-r3-critic.json"
+          ]
+        },
+        {
+          "id": "DN3",
+          "result": "pass",
+          "value": "the HUD quick-slot cluster draws objects; no truncated label in it. NOTE, because it is a change and it is adjacent: a truncated label now EXISTS elsewhere on the build — the container's carried list renders 'Black-water dr...' at a name column of 0.60 x half, where half fell from ~718 to 198 units. DN3's own words scope its hard fail to the quick-slot cluster (RI-UIX01 E5), so I am not failing it here; it is cited under RI-UIX06 M-F18.1, which is the row that judges clipping.",
+          "threshold": "objects, not a truncated text label",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/measure-live-1920x1080.json",
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/container-panel-2x.png"
+          ]
+        },
+        {
+          "id": "DN4",
+          "result": "fail",
+          "value": "D2 at these blobs: journal 0.1805 (was 0.1314), sheet 0.1713 (0.0895), level-up 0.1855 (0.0910), spells 0.3026 (0.0702), container 0.1525 (0.0572), inventory 0.1557 (0.1524). ALL SIX >= the 0.15 floor; NONE reaches the 0.35 bar. My instrument is d2() imported from the round-2 critic's t4-r2-critic-measure.mjs and it agrees with the builder's independent instrument to four decimals on all seven measured states. Frames: 8 of 8 LIVE.",
+          "threshold": "D2 >= 0.35 on every populated screen; hard fail below 0.15",
+          "hard_fail": false,
+          "note": "THE SEVENTH STATE AND THE RULING I HAD TO MAKE. The same sweep measures `container_no_name` — the container screen holding ONE item — at 0.1434, BELOW the floor, and t4-r3-density.mjs therefore exits non-zero with hard_fails: [\"container_no_name\"]. I am NOT triggering DN4's hard fail on it, for three stated reasons: that state exists in the instrument to drive the container-TITLE guard with four bad names and its one-item contents were chosen for that; RI-UIX09's own 'how we lose' warns in terms against measuring D2 on a near-empty sample; and the round-3 critic measured the same state at 0.0554 and also excluded it, so excluding it keeps the two rounds comparable. REVERSIBLE: a capture of an ordinarily-looted container — two or three things in a crate — measuring below 0.15 overturns this and makes RI-UIX09 a 2. The honest sentence either way is that this screen's margin is 0.0025 at three items and negative at one, so its fill is a function of what is in the chest and the fixed box does not adapt. The builder flagged this margin itself, first, and was right to.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r3-density.json",
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/frame-liveness-head.json"
+          ]
+        },
+        {
+          "id": "DN5",
+          "result": "pass",
+          "value": "container.band.depiction renders the selected object at its full 140 px plate (visible in the crop); inventory.detail.depiction declared with depiction_shape.",
+          "threshold": "the detail panel leads with a depiction",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/container-panel-2x.png"
+          ]
+        },
+        {
+          "id": "DN6",
+          "result": "pass",
+          "value": "nine materials, one family: chitin, root, ink, parchment, bone, resin, reed, shell, clay.",
+          "threshold": "carved/painted, one family, the world's own materials",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/measure-live-1920x1080.json"
+          ]
+        },
+        {
+          "id": "DN7",
+          "result": "fail",
+          "value": "blind_status: not_possible",
+          "threshold": "judge names ours or BOTH",
+          "hard_fail": false,
+          "evidence": []
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "'D1 is scored off getUIState() alone... a self-report cannot see a canvas draw' — hit hard this round, and in the direction the item did not anticipate: row() declares the RAW joined column text and ellipsises only inside its draw callback, so the census reports 'STRENGTH 12' whether the two words sit side by side or on top of each other."
+      ],
+      "why_not_ten": "DN4's bar of 0.35 is met on no screen (best 0.3026, spells; four screens between 0.15 and 0.19) and DN7's blind pair has never been run by anybody. The builder measured WHY the bar is hard and the measurement holds up: journal matter fell from 155,788 px2 to 42,688 px2 as the box fell to 11.4% of frame, so a box holding flowing text loses matter almost as fast as area.",
+      "path_to_ten": "(1) Fix the layout regression first (see biggest_gap) — some of this round's D2 gain is ink drawn over ink and will be given back when the rows are re-pitched, so 0.35 must be chased AFTER the collision is fixed, not before. (2) Then reach 0.35 by adding MATTER rather than removing area: RI-UIX09's own reference plates show a Morrowind journal as a full double page of ink with red date headings and blue links, and a sheet as two dense stacked blocks — our sheet draws 8 sheet_row + 10 attribute_row + 19 skill_row and the reference draws every attribute and both skill lists at once. (3) Run DN7: it needs a fresh blind judge, which is CLAUDE.md rule 0e's orchestrator job.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-UIX10",
+      "path": "corpus/86-ui/RI-UIX10-screen-operability.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "checks passed / 8; any hard fail caps at 2",
+      "native_score": 8,
+      "native_max": 8,
+      "native_verdict": "8/8, no hard fail — the resize did not break hit-testing, and I pressed every one of round 3's three fixes rather than reading the diff",
+      "score_0_10": 8,
+      "justification": "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-repress/t4-r3-critic.json — the round-3 critic's own instrument, byte-identical, returning 18/20 at these blobs with JX0-JX6, EQ1, EQ1b and TS0-TS3b all green and the two reds being its own declared device-neutral diagnostic; corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/ui-pause.json — 10/10 including PAD (the gamepad arm re-run AFTER the resize) and SURFACES (all seven surfaces open and draw); corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-critic.json — JP0-JP4 and CP0-CP2, the pager and the container's 44-row scroll driven by real KeyboardEvents.",
+      "measured": "full",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-repress/t4-r3-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/ui-pause.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-drive/screens-drive.json"
+      ],
+      "checks": [
+        {
+          "id": "OP1",
+          "result": "pass",
+          "value": "Three instruments at these blobs. (a) Round 3's, byte-identical: JX0-JX6 green — typing 'BCD' then back x5 gives 'BCD' -> 'BC' -> 'B' -> '' -> chronicle -> world. (b) The REPAIRED t4-r2-critic-drive.mjs affordance walk: 32/37 passed, 3 not-applicable, 2 failed, against round 3's 28/36 on the unrepaired probe — and the 2 reds are C7 (trap I2, the HUD switch that cannot fire on a paused screen, red on the last three builds) and M1 (a click doing nothing, which is the DECLARED absence of a pointer path and therefore OP4's pass condition observed). Neither is a dead affordance. (c) My own pager legs: 19 of 19 journal entries by real KeyD, 44 of 44 container rows by real KeyS.",
+          "threshold": "every drawn affordance operable",
+          "hard_fail": false
+        },
+        {
+          "id": "OP2",
+          "result": "pass",
+          "value": "ui-pause PAD at these blobs: 'open true, stick moved focus true, d-pad moved exactly one column 1->0, irrelevant input stable true, closed true (final mode world)'. Re-run AFTER the resize, which is the point — the round-3 critic named 'I did not walk every affordance through the pad' as the cheapest thing to falsify and it is still the honest caveat here.",
+          "threshold": "the same set through the pad",
+          "hard_fail": false
+        },
+        {
+          "id": "OP3",
+          "result": "pass",
+          "value": "TS0 rowIdx asserted at 0 first; TS1 0->1 on a 120 px drag; TS2 three flicks 1->4; TS3 sideways drag col 1->0.",
+          "threshold": "buttons and the directional half",
+          "hard_fail": false
+        },
+        {
+          "id": "OP4",
+          "result": "pass",
+          "value": "system.js rule 2 declares no pointer path for these surfaces and nothing drawn implies one.",
+          "threshold": "responds, or no pointer path declared",
+          "hard_fail": false
+        },
+        {
+          "id": "OP5",
+          "result": "pass",
+          "value": "JX1 roll returns view 'chronicle' and stays in the journal; JX5 the quest index exits to the chronicle; JX6 back on the chronicle leaves the screen. All three re-pressed after the resize.",
+          "threshold": "every entered state has an exit",
+          "hard_fail": false
+        },
+        {
+          "id": "OP6",
+          "result": "pass",
+          "value": "JX3 close-and-reopen -> view 'chronicle', query ''; JX4 peer walk to spells and back -> same.",
+          "threshold": "a sub-view does not survive a close",
+          "hard_fail": false
+        },
+        {
+          "id": "OP7",
+          "result": "pass",
+          "value": "EQ1: equipment ['chitin-cuirass@chest','reed-cutter@right'] -> ['bog-iron-maul@right','chitin-cuirass@chest'] AT f+1, getFrame() 43 -> 43 (paused, as RI-UIX03 P1 requires); EQ1b confirms the change is on the first frame, not merely inside the 15-frame window.",
+          "threshold": "something visible within 15 frames",
+          "hard_fail": false
+        },
+        {
+          "id": "OP8",
+          "result": "pass",
+          "value": "I0 asserted (real.attached=true, moveX=1). Trap I2 (a paused screen freezes getFrame()) named and NOT reported as a defect. Counts recorded: 20 + 12 + 10 checks across three probes. AND MY OWN TWO INSTRUMENT DEFECTS ARE RECORDED RATHER THAN SHIPPED AS FINDINGS: my probe's first run read the attach flag at the wrong path (eng.input.real.attached, not eng.real.attached) and hung for want of setMode('play-instrumented'); and its page.screenshot() frames came back byte-identical, which frame-liveness caught as DUPLICATE on 3 of 4, so every pixel number that leg printed was VOID and was recomputed offline against LIVE captures.",
+          "threshold": "I0/I1/I2 asserted, counts recorded",
+          "hard_fail": false
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "why_not_ten": "8/8 is the top rung this item's own anchor table has ('8/8 on all four device arms'); it defines no 9 or 10, so a 10 is not reachable against the item as written. The residual doubt inside the 8 is OP2: the pad was re-run but not walked across EVERY affordance (the sort control and the container side switch specifically), which is the round-3 critic's own named weakness and is still unclosed.",
+      "path_to_ten": "Two things, and the first is a corpus fix rather than a build fix. (1) RI-UIX10 needs 9 and 10 anchors — 'beats the reference on operability' plausibly means every affordance reachable on every device AND a discoverability arm (RI-JRN04 T1), which the item currently hands away. (2) Walk every affordance through the pad, not just the ring: `t4-r2-critic-drive.mjs` should gain P3..Pn covering the sort control, the category tags, the container side switch and the page turn on the pad, so OP2 is measured at the same breadth as OP1.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-UIX06",
+      "path": "corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md",
+      "side": "neutral",
+      "kind": "image",
+      "native_scale": "two independent scales: UI ART /7 and UI FIDELITY /7; a hard fail on a side caps THAT side at 2; ship gate min(ART, FIDELITY) >= 6",
+      "native_score": 2,
+      "native_max": 7,
+      "native_verdict": "ART 6/7 with AD4 and AD7 unrun (cap carried from round 1); FIDELITY HARD FAIL on FD4, six instances at 1920x1080 — the side is capped at 2 and min(ART, FIDELITY) = 2",
+      "score_0_10": 2,
+      "justification": "not required below 7",
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/levelup-rows-6x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/sheet-panel-2x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/journal-panel-plus-margin-2x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/container-hint-3x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/spells-panel-2x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/control-levelup-1x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-overlap.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-critic.json"
+      ],
+      "checks": [
+        {
+          "id": "AD1",
+          "result": "pass",
+          "value": "9 of 9 materials against a bar of >= 6, re-derived from this round's own capture manifest.",
+          "threshold": ">= 6 of 9",
+          "hard_fail": false
+        },
+        {
+          "id": "AD2",
+          "result": "pass",
+          "value": "carried from round 2 behind an empty diff of the panel-drawing path other than the box table.",
+          "threshold": "0 uniform-radius axis-aligned panels",
+          "hard_fail": false
+        },
+        {
+          "id": "AD3",
+          "result": "pass",
+          "value": "carried from round 2.",
+          "threshold": "project faces, <= 2",
+          "hard_fail": false
+        },
+        {
+          "id": "AD4",
+          "result": "fail",
+          "value": "unrun for the FOURTH round — palette conformance needs --blank-world captures and my browser budget went to the operability and layout work. Fail-closed, not omitted.",
+          "threshold": "every hue dE <= 10 to the world palette",
+          "hard_fail": false
+        },
+        {
+          "id": "AD5",
+          "result": "pass",
+          "value": "carried from round 2.",
+          "threshold": "objects, no focus rings",
+          "hard_fail": false
+        },
+        {
+          "id": "AD6",
+          "result": "pass",
+          "value": "carried from round 2.",
+          "threshold": "0 tab bars / OK-Cancel modals",
+          "hard_fail": false
+        },
+        {
+          "id": "AD7",
+          "result": "fail",
+          "value": "§G Bootstrap test unrun — six fresh judges, which rule 0 forbids me spawning and rule 0e places with the orchestrator. Caps ART.",
+          "threshold": "worst-of-six >= PASS",
+          "hard_fail": false
+        },
+        {
+          "id": "FD1",
+          "result": "unmeasurable",
+          "value": "glyph stem transition width not measured. Fail-closed at 0 per SCORING §1.1.",
+          "threshold": "<= 1.5 device px",
+          "hard_fail": false
+        },
+        {
+          "id": "FD2",
+          "result": "unmeasurable",
+          "value": "DPR 2 sweep not run. Fail-closed at 0.",
+          "threshold": "<= 1.5 device px at DPR 2",
+          "hard_fail": false
+        },
+        {
+          "id": "FD3",
+          "result": "unmeasurable",
+          "value": "text render path not read. Fail-closed at 0.",
+          "threshold": "vector or SDF",
+          "hard_fail": false
+        },
+        {
+          "id": "FD4",
+          "result": "fail",
+          "value": "SIX INSTANCES AT 1920x1080, WHICH IS THE HARD-FAIL COLUMN'S OWN WORDING. M-F18.2 (element overlap): the level-up screen draws the attribute NAME, its VALUE and its GAUGE into the same pixels on 9 of 10 rows ('STRENGTH' renders as STREN with 12 through it), and the character sheet's ten rows collide likewise. M-F18.1 (text outside its container): 8 of 19 journal entry blocks end below the panel's own bottom edge (panel [685,325,550,430], foot at y=755; worst journal.entry.Q-MAIN-01.10 at y=860, 105 px past it, drawn onto the world) and 11 of 19 end below the top of the foot hint at y=717; the container hint renders '...what is worth keep' against a declared '...what is worth keeping.'; the spells hint loses its last eight words; two of five quest-index names ellipsise ('The Reading of the ...'); a carried item reads 'Black-water dr...'. THE SAME CROPS FROM THE DELETE-THE-FIX WORKTREE AT c792e8d7 SHOW EVERY ONE OF THESE LEGIBLE.",
+          "threshold": "0 clipping, 0 overlap, 0 overflow at all 8 capture configs; HARD FAIL: any at 1920x1080",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-overlap.json",
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/levelup-rows-6x.png",
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/journal-panel-plus-margin-2x.png"
+          ]
+        },
+        {
+          "id": "FD5",
+          "result": "unmeasurable",
+          "value": "the 4-resolution x 2-DPR sweep was not run. Fail-closed at 0.",
+          "threshold": "+-10% screen fraction",
+          "hard_fail": false
+        },
+        {
+          "id": "FD6",
+          "result": "unmeasurable",
+          "value": "not run. Fail-closed at 0.",
+          "threshold": "no fringing; dE <= 3",
+          "hard_fail": false
+        },
+        {
+          "id": "FD7",
+          "result": "unmeasurable",
+          "value": "not run. Fail-closed at 0.",
+          "threshold": ">= 7 bits; <= 3x overdraw",
+          "hard_fail": false
+        }
+      ],
+      "hard_fails": [
+        "FD4"
+      ],
+      "how_we_lose_hits": [
+        "'F17/F18/F19 are proposed here and never appended to RI-VIS01' — the reverse of the item's own worry has happened: they ARE appended, and for three consecutive rounds no critic captured the FIDELITY side at all, so the row that catches this defect existed and was never run."
+      ],
+      "why_not_ten": "FD4 is a triggered hard fail, which caps the FIDELITY side at 2 whatever else passes; six of the seven FIDELITY rows have never been measured by anybody and are 0 fail-closed; and on the ART side AD4 is unrun for the fourth round and AD7's six-judge Bootstrap gate has never run at all.",
+      "path_to_ten": "(1) Close the layout regression — see biggest_gap; the acceptance there IS FD4's acceptance. (2) Build tools/metrics/ui-metrics.mjs, which RI-UIX06's own comparison method step 9 names and which the item records as 'owed by the methods owner and does not exist'; without it FD1-FD3 and FD5-FD7 stay unmeasurable and this item can never exceed 2 on the fidelity side no matter what the build does. (3) Run AD4 on --blank-world captures. (4) Run §G with six fresh judges — orchestrator, per rule 0e.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-UIX04",
+      "path": "corpus/86-ui/RI-UIX04-journal-ui.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "checks passed / 12; any hard fail caps at 2",
+      "native_score": 9,
+      "native_max": 12,
+      "native_verdict": "9/12 — JU9 flips from pass to fail because the entries are no longer rendered whole on screen",
+      "score_0_10": 5,
+      "justification": "not required below 7",
+      "measured": "full",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/journal-panel-plus-margin-2x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/ui-pause.json"
+      ],
+      "checks": [
+        {
+          "id": "JU1",
+          "result": "pass",
+          "value": "carried from round 3 behind an empty diff of game/data/.",
+          "threshold": "chronological == true",
+          "hard_fail": false
+        },
+        {
+          "id": "JU2",
+          "result": "pass",
+          "value": "carried.",
+          "threshold": "interleave_ratio >= 0.5",
+          "hard_fail": false
+        },
+        {
+          "id": "JU3",
+          "result": "pass",
+          "value": "carried.",
+          "threshold": "0 declared prohibitions",
+          "hard_fail": false
+        },
+        {
+          "id": "JU4",
+          "result": "pass",
+          "value": "carried.",
+          "threshold": "0 observed prohibitions",
+          "hard_fail": false
+        },
+        {
+          "id": "JU5",
+          "result": "fail",
+          "value": "still unmeasurable on this fixture, as rounds 2 and 3 recorded. Fail-closed.",
+          "threshold": "byte-identical superset",
+          "hard_fail": false
+        },
+        {
+          "id": "JU6",
+          "result": "pass",
+          "value": "RE-MEASURED by driving it: JP4 finds all five quest-index rows drawn against five distinct quests in the data, and drive.mjs's D2/D3 open the index and jump the chronicle to a quest. Note the names are now ellipsised in the pixels ('The Reading of the ...') at idxW 250 -> 140; J5 asks for the display name and nothing else, which a shortened name still is, so I score this pass and cite the clipping under RI-UIX06 M-F18.1 instead.",
+          "threshold": "names only, scrolls chronology",
+          "hard_fail": false
+        },
+        {
+          "id": "JU7",
+          "result": "pass",
+          "value": "the search view opens, types through the ring, removes one letter per back press and exits to the chronicle (JX0, JX2a, drive D4/D5/D6).",
+          "threshold": "search + topics, chronological results, no map",
+          "hard_fail": false
+        },
+        {
+          "id": "JU8",
+          "result": "pass",
+          "value": "carried.",
+          "threshold": "map unreachable from the journal",
+          "hard_fail": false
+        },
+        {
+          "id": "JU9",
+          "result": "fail",
+          "value": "J2 requires the entry text 'rendered whole — never truncated'. Driven through all ten spreads with real KeyD presses: 8 of the 19 entry blocks are laid out ending BELOW the panel's own bottom edge (worst journal.entry.Q-MAIN-01.10 at y=860 against a panel foot at y=755 — 105 px onto the world, cut in half by the panel edge) and 11 of 19 end below the top of the foot hint at y=717, so the entry's last lines are printed over 'Left and right turn the page. Confirm on a name in the margin to go to it.' J10's extent IS visible (page counts read 1 of 10 ... 10 of 10) and J9's pagination works, so this check fails on the J2 clause only.",
+          "threshold": "verbatim, untruncated, extent visible",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-critic.json",
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/journal-panel-plus-margin-2x.png"
+          ]
+        },
+        {
+          "id": "JU10",
+          "result": "pass",
+          "value": "carried.",
+          "threshold": "silent glyph or nothing",
+          "hard_fail": false
+        },
+        {
+          "id": "JU11",
+          "result": "pass",
+          "value": "RE-MEASURED at these blobs: ui-pause.mjs 10/10, M-P1 frame delta 0 of 120 out of combat and M-P2 exactly 120 of 120 in combat.",
+          "threshold": "per RI-UIX03 §A",
+          "hard_fail": false
+        },
+        {
+          "id": "JU12",
+          "result": "fail",
+          "value": "blind_status: not_possible, the same reason rounds 1-3 recorded.",
+          "threshold": "judge distinguishes ours as character-written",
+          "hard_fail": false
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "why_not_ten": "JU9 fails on rendered overflow (8 of 19 blocks past the panel foot), JU5 is unmeasurable on the shipped fixture for the third round, and JU12's blind pair has never run.",
+      "path_to_ten": "(1) Fix the journal's pagination so a block taller than colH is split or shrunk rather than placed and overflowed — see biggest_gap remedy step 2; acceptance is 0 of 19 blocks past the panel foot. (2) Build the append-only fixture JU5 needs: two saves of the same run, one strictly later, so 'byte-identical superset' has two things to compare. (3) Run JU12's blind pair — orchestrator, rule 0e.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-UIX03",
+      "path": "corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "checks passed / 13; any hard fail caps at 2",
+      "native_score": 7,
+      "native_max": 13,
+      "native_verdict": "7/13 — §A re-measured clean at 10/10; M-E2 flips because the ten attribute values are drawn but cannot be read",
+      "score_0_10": 3,
+      "justification": "not required below 7",
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/ui-pause.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/levelup-rows-6x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/levelup-bar-ticks-8x.png"
+      ],
+      "checks": [
+        {
+          "id": "M-P1",
+          "result": "pass",
+          "value": "frame 12 -> 12 over 120 steps, delta 0 of 120, in_combat false. RE-MEASURED at these blobs.",
+          "threshold": "frame delta 0 over 120",
+          "hard_fail": false
+        },
+        {
+          "id": "M-P2",
+          "result": "pass",
+          "value": "frame 18 -> 138, delta EXACTLY 120 of 120, in_combat true. RE-MEASURED.",
+          "threshold": "delta exactly 120",
+          "hard_fail": false
+        },
+        {
+          "id": "M-P3",
+          "result": "pass",
+          "value": "P8 37 steps = 37 frames; P6 the queued roll reached the simulation ([IDLE, BACKSTEP], 14 stamina); P4 0/30 before aggro and 60/60 after with the screen still open. RE-MEASURED.",
+          "threshold": "all three clean",
+          "hard_fail": false
+        },
+        {
+          "id": "M-P4",
+          "result": "pass",
+          "value": "opacity 0.50, area 57.2%, the world moving 89.6% of the centre 40%x40% pixels against an 80.6% control. RE-MEASURED — this is the row the builder said it reasoned about rather than re-ran, and it is clean. The five NEW boxes are all under 13.3% of frame, so the area half of P5's ceiling has more room than before, not less.",
+          "threshold": "<=55% opacity, <=60% area, centre legible",
+          "hard_fail": false
+        },
+        {
+          "id": "M-P5",
+          "result": "pass",
+          "value": "in-combat equip {\"item\":\"chitin-cuirass\",\"equip_start\":true,\"equip_end\":true,\"commit_frames\":30}. RE-MEASURED. The round-3 critic's arbitration question about P7's unconditional text vs its conditional comparison method is unchanged and is not re-litigated here.",
+          "threshold": ">= 30 committed frames",
+          "hard_fail": false
+        },
+        {
+          "id": "M-C1",
+          "result": "fail",
+          "value": "carried from round 3 behind `git diff --stat 7c63111d..HEAD -- game/data/` = EMPTY. eshis-knife still has no category, weight, value or description.",
+          "threshold": ">= 8 categories, weights present",
+          "hard_fail": false
+        },
+        {
+          "id": "M-C2",
+          "result": "pass",
+          "value": "carried, same empty diff.",
+          "threshold": "number + bar + HUD",
+          "hard_fail": false
+        },
+        {
+          "id": "M-C3",
+          "result": "pass",
+          "value": "carried, same empty diff; corroborated at these blobs by ui-pause SURFACES (all seven surfaces open and draw) and by the container's own detail band rendering the selected object.",
+          "threshold": "all four affordances",
+          "hard_fail": false
+        },
+        {
+          "id": "M-L1",
+          "result": "fail",
+          "value": "carried, same empty diff. Ratio 0.0129 — well clear of the 0.20 AR-2 trigger — but the row's other clauses (four items with an empty description) still fail it.",
+          "threshold": "all five rows in band",
+          "hard_fail": false
+        },
+        {
+          "id": "M-D1",
+          "result": "fail",
+          "value": "carried, same empty diff.",
+          "threshold": "0 hits",
+          "hard_fail": false
+        },
+        {
+          "id": "M-E1",
+          "result": "pass",
+          "value": "RE-MEASURED: the level-up screen carries zero gold elements and zero gold-word matches; souls appear as souls_held and souls_to_next. S15 the right way round.",
+          "threshold": "no gold element",
+          "hard_fail": false
+        },
+        {
+          "id": "M-E2",
+          "result": "fail",
+          "value": "L5 requires all ten attributes on screen simultaneously WITH THEIR CURRENT VALUES. All ten rows are declared and all ten values are drawn — and on 9 of 10 rows the value is printed on top of the name and the gauge plate on top of both: 'STRENGTH' renders as STREN with 12 through it, ENDURANCE as ENDU with 20 through it, and so on down all ten. Measured: 9 of 10 attribute_row rects contain fewer than two separators between foreground runs, against a control at c792e8d7 whose crop shows three clean columns. I score 'on screen' as meaning a player can read it. L8 I did NOT fail — the cap ticks are still drawn on the bar, even though the 'soft'/'hard' labels the control carries are gone. THIS IS THE ONE SCORE IN THIS VERDICT A REASONABLE CRITIC COULD PUT THE OTHER WAY: if L5 is satisfied by declaration, RI-UIX03 is 8/13 -> 3 again and nothing about the piece changes.",
+          "threshold": "L1, L3, L5, L6, L8 all five",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/levelup-rows-6x.png",
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-overlap.json"
+          ]
+        },
+        {
+          "id": "M-E3",
+          "result": "pass",
+          "value": "carried, same empty diff.",
+          "threshold": "L2 and L7",
+          "hard_fail": false
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "why_not_ten": "7 of 13. Three of the six failing checks (M-C1, M-D1, M-L1) are the same item-data gap the round-2 and round-3 critics both measured and nobody has closed; M-E2 is this round's regression.",
+      "path_to_ten": "(1) Six lines of data, unchanged for three rounds and still the cheapest points on the board: give eshis-knife a category, weight, value and description, give stamped-writ / amended-writ / counted-crate-tally a weight, and fill the four empty descriptions. That moves M-C1, M-D1 and M-L1 together, 7/13 -> 10/13. (2) Fix the attribute-row layout (biggest_gap step 1) to restore M-E2, 10/13 -> 11/13. (3) The remaining two need C4's threshold-changes-roll measurement and the arbitration ruling on P7's conditionality.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-UIX07",
+      "path": "corpus/86-ui/RI-UIX07-out-of-combat-hud.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "checks passed / 11; §G caps",
+      "native_score": 10,
+      "native_max": 11,
+      "native_verdict": "10/11, V11 (§G) unrun — carried from round 3 behind an empty diff of the HUD path",
+      "score_0_10": 5,
+      "justification": "not required below 7",
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/measure-live-1920x1080.json",
+        "corpus/90-verdicts/wave1/T4-r3.md"
+      ],
+      "checks": [
+        {
+          "id": "V1",
+          "result": "pass",
+          "value": "RE-DERIVED at these blobs: the world frame declares exactly ten kinds and its whole text is [\"5\",\"LIGHT\",\"Sesh-Anaat\",\"S\",\"thorn-hall\"].",
+          "threshold": "all 6 world-set elements, 0 refused",
+          "hard_fail": false
+        },
+        {
+          "id": "V2",
+          "result": "pass",
+          "value": "carried; `git diff --stat 7c63111d..HEAD -- game/src/ui/hud.js` is EMPTY.",
+          "threshold": "within budget",
+          "hard_fail": false
+        },
+        {
+          "id": "V3",
+          "result": "pass",
+          "value": "carried, same empty diff.",
+          "threshold": "within budget",
+          "hard_fail": false
+        },
+        {
+          "id": "V4",
+          "result": "pass",
+          "value": "carried, same empty diff.",
+          "threshold": "centre clear, 0 world anchors",
+          "hard_fail": false
+        },
+        {
+          "id": "V5",
+          "result": "pass",
+          "value": "carried, same empty diff.",
+          "threshold": "<= 1 numeral",
+          "hard_fail": false
+        },
+        {
+          "id": "V6",
+          "result": "pass",
+          "value": "carried, same empty diff.",
+          "threshold": "all four placement rules",
+          "hard_fail": false
+        },
+        {
+          "id": "V7",
+          "result": "pass",
+          "value": "CARRIED FROM ROUND 3 AND NOT RE-RUN — my own sweep crashed in its withdrawal legs with 'Target page, context or browser has been closed'. The empty hud.js diff is what makes carrying it defensible; it is still a deviation and it is named in method_deviations.",
+          "threshold": "census-identity across the trace",
+          "hard_fail": false
+        },
+        {
+          "id": "V8",
+          "result": "pass",
+          "value": "carried, same reason.",
+          "threshold": "instant on entry, <=250 ms exit",
+          "hard_fail": false
+        },
+        {
+          "id": "V9",
+          "result": "pass",
+          "value": "carried, same reason.",
+          "threshold": "Souls set on 100% of HUD-up frames",
+          "hard_fail": false
+        },
+        {
+          "id": "V10",
+          "result": "pass",
+          "value": "carried from round 3.",
+          "threshold": "AR-2 detectors run on the world phase",
+          "hard_fail": false
+        },
+        {
+          "id": "V11",
+          "result": "fail",
+          "value": "§G played gate unrun for the fourth round — fresh judges, rule 0e, orchestrator. Caps the item.",
+          "threshold": "judges answer Q4 with the actual change",
+          "hard_fail": false
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "why_not_ten": "V11's played gate has never run, and its absence is a CAP rather than one eleventh, exactly as Ruling W2 intends; and seven of the eleven rows are round-3 measurements carried behind an empty diff rather than re-measured.",
+      "path_to_ten": "(1) Run §G: two arms, the shipped world HUD and an ablated one, four to six fresh judges, Q3 and Q4 as the item words them. That is the orchestrator's to spawn under rule 0e and it is the only thing between this item and its top band. (2) Re-run the withdrawal legs on a box that is not at its browser ceiling, so V7/V8/V9 are measured rather than carried.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-UIX08",
+      "path": "corpus/86-ui/RI-UIX08-dialogue-window.md",
+      "side": "morrowind",
+      "kind": "image",
+      "native_scale": "six mechanical rows 0/4/8 (native 0-48), capped by §G",
+      "native_score": 0,
+      "native_max": 48,
+      "native_verdict": "procedural cap: §G has not run, and the item's own aggregation says an unrun §G caps it at 2 once a playable build exists",
+      "score_0_10": 2,
+      "justification": "not required below 7",
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/T4-r3.md"
+      ],
+      "checks": [
+        {
+          "id": "§G",
+          "result": "fail",
+          "value": "unrun. A re-run of this gate is in flight as a separate piece; per my brief I neither duplicate it nor credit it. The dialogue window itself was edited this round by a SIBLING (game/src/ui/screens/dialogue.js, the P1 scroll-reset fix) and not by the T4 builder.",
+          "threshold": "the human gate, Ruling W2 form",
+          "hard_fail": false
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "why_not_ten": "The §G human gate has never run, which caps the item at 2 by its own aggregation rule regardless of every mechanical row.",
+      "path_to_ten": "Run §G. It is in flight separately; nothing in this piece can move this item.",
+      "ten_by_wave": 2
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/measure-live-1920x1080.json",
+      "kind": "report",
+      "produced_by": "node tools/ui/t4-r2-measure.mjs --out corpus/90-verdicts/wave1/artifacts/T4-r4c/measure",
+      "resolution": "1920x1080",
+      "note": "Eight captures and their element censuses at these blobs. The withdrawal legs crashed after the guard; the screen half is complete."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r3-density.json",
+      "kind": "report",
+      "produced_by": "node tools/ui/t4-r3-density.mjs --measure corpus/90-verdicts/wave1/artifacts/T4-r4c/measure --out corpus/90-verdicts/wave1/artifacts/T4-r4c/reports",
+      "resolution": "1920x1080",
+      "note": "DN4. Six named screens all clear the 0.15 floor; the seventh state (one-item container) is 0.1434."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-control/t4-r3-density.json",
+      "kind": "report",
+      "produced_by": "the same two commands, run inside a fresh sparse worktree pinned to c792e8d7",
+      "resolution": "1920x1080",
+      "note": "THE DELETE-THE-FIX ARM. hard_fails: [journal, sheet, levelup, container, container_no_name], panel at 57.2% of frame on all five."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7/measure-live-1920x1080.json",
+      "kind": "report",
+      "produced_by": "node tools/ui/t4-r2-measure.mjs inside the c792e8d7 worktree",
+      "resolution": "1920x1080",
+      "note": "The control arm's own manifest and captures."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/frame-liveness-head.json",
+      "kind": "report",
+      "produced_by": "node tools/visual/frame-liveness.mjs --in corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/screens",
+      "resolution": "1920x1080",
+      "note": "8 frames: {\"LIVE\":8}."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/frame-liveness-control.json",
+      "kind": "report",
+      "produced_by": "node tools/visual/frame-liveness.mjs --in corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7/screens",
+      "resolution": "1920x1080",
+      "note": "no degenerate frames."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-repress/t4-r3-critic.json",
+      "kind": "report",
+      "produced_by": "node tools/ui/t4-r3-critic.mjs --state ui-journal --legs jx,eq,ts --out corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-repress",
+      "resolution": "1920x1080",
+      "note": "THE ROUND-3 CRITIC'S INSTRUMENT, BYTE-IDENTICAL, at these blobs. 18/20; the two reds are its own declared device-neutral axis-repeat diagnostic."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/ui-pause.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/ui-pause.mjs --out corpus/90-verdicts/wave1/artifacts/T4-r4c/reports",
+      "resolution": "1920x1080",
+      "note": "RI-UIX03 §A, 10/10 at these blobs, including M-P4, PAD and SURFACES."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-critic.json",
+      "kind": "report",
+      "produced_by": "node tools/ui/t4-r4-critic.mjs --out corpus/90-verdicts/wave1/artifacts/T4-r4c/reports --shots corpus/90-verdicts/wave1/artifacts/T4-r4c/screens",
+      "resolution": "1920x1080",
+      "note": "S57's two conditions, operated: JP1 19 of 19 entries by real KeyD presses over 10 spreads; CP1 44 of 44 carried rows by real KeyS presses; CP2 extent {from:40,shown:4,total:44}. Its OVERLAP leg's pixel numbers are VOID (see method_deviations); its ELEMENT RECTS are sound."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-overlap.json",
+      "kind": "report",
+      "produced_by": "node tools/ui/t4-r4-critic-overlap.mjs --control corpus/90-verdicts/wave1/artifacts/T4-r4c/control-c792e8d7 --out corpus/90-verdicts/wave1/artifacts/T4-r4c/reports",
+      "resolution": "1920x1080",
+      "note": "M-F18.2 recomputed offline against LIVE captures. level-up 9 of 10 rows collide; sheet 3 of 10 by a metric that under-reports on that panel's ground colour."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-drive/screens-drive.json",
+      "kind": "report",
+      "produced_by": "node tools/ui/t4-r2-critic-drive.mjs --state ui-journal --out corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-drive",
+      "resolution": "1920x1080",
+      "note": "The repaired 36-check affordance walk, re-run at these blobs as OP1's breadth arm."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/levelup-rows-6x.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-t4-crop.mjs .../live-levelup__1920x1080.png 740 425 200 70 6",
+      "resolution": "1200x420 (6x of a 200x70 crop from a 1920x1080 capture)",
+      "note": "THE PICTURE THAT DECIDES THIS ROUND. 'STRENGTH' rendered as STREN with 12 printed through it and the gauge plate over the rest; the same for ENDURANCE. Camera: none — this is a UI capture over the shipped ui-journal fixture at the hearth.",
+      "camera_pose": "no world camera — a UI capture over the shipped ui-journal fixture at 1920x1080, DPR 1, setRenderRate(0), interior thorn-hall at the fixture's own time of day; the crop rect is in the produced_by command"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/control-levelup-1x.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-t4-crop.mjs .../control-c792e8d7/screens/live-levelup__1920x1080.png 200 160 700 300 1",
+      "resolution": "700x300 from a 1920x1080 capture",
+      "note": "THE DELETE-THE-FIX COUNTERPART. STRENGTH 12, ENDURANCE 20, AGILITY 10, SPEED 10 in three clean columns with the soft/hard cap labels drawn.",
+      "camera_pose": "no world camera — a UI capture over the shipped ui-journal fixture at 1920x1080, DPR 1, setRenderRate(0), interior thorn-hall at the fixture's own time of day; the crop rect is in the produced_by command"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/journal-panel-plus-margin-2x.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-t4-crop.mjs .../live-journal__1920x1080.png 660 300 600 560 2",
+      "resolution": "1200x1120 (2x of a 600x560 crop)",
+      "note": "The journal's last lines printed over the foot hint and off the bottom of the panel onto the world.",
+      "camera_pose": "no world camera — a UI capture over the shipped ui-journal fixture at 1920x1080, DPR 1, setRenderRate(0), interior thorn-hall at the fixture's own time of day; the crop rect is in the produced_by command"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/sheet-panel-2x.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-t4-crop.mjs .../live-sheet__1920x1080.png 680 295 560 490 2",
+      "resolution": "1120x980",
+      "note": "All ten sheet attribute rows with their values printed into their names.",
+      "camera_pose": "no world camera — a UI capture over the shipped ui-journal fixture at 1920x1080, DPR 1, setRenderRate(0), interior thorn-hall at the fixture's own time of day; the crop rect is in the produced_by command"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/container-hint-3x.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-t4-crop.mjs .../live-container__1920x1080.png 720 730 490 45 3",
+      "resolution": "1470x135",
+      "note": "'...what is worth keep' — cut mid-word at the panel edge, no ellipsis, against a declared '...what is worth keeping.'",
+      "camera_pose": "no world camera — a UI capture over the shipped ui-journal fixture at 1920x1080, DPR 1, setRenderRate(0), interior thorn-hall at the fixture's own time of day; the crop rect is in the produced_by command"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/container-panel-2x.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-t4-crop.mjs .../live-container__1920x1080.png 720 310 480 460 2",
+      "resolution": "960x920",
+      "note": "The container at its landed box — the best of the five, with its depiction plate at full size, and with 'Black-water dr...' ellipsised.",
+      "camera_pose": "no world camera — a UI capture over the shipped ui-journal fixture at 1920x1080, DPR 1, setRenderRate(0), interior thorn-hall at the fixture's own time of day; the crop rect is in the produced_by command"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/spells-panel-2x.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-t4-crop.mjs .../live-spells__1920x1080.png 730 365 460 350 2",
+      "resolution": "920x700",
+      "note": "The hint cut at '...and the'; also the pre-existing 'focus NaN' and the world clearly visible through the panel that scores D2 0.3026.",
+      "camera_pose": "no world camera — a UI capture over the shipped ui-journal fixture at 1920x1080, DPR 1, setRenderRate(0), interior thorn-hall at the fixture's own time of day; the crop rect is in the produced_by command"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/levelup-bar-ticks-8x.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/ui/critic-t4-crop.mjs .../live-levelup__1920x1080.png 860 420 140 70 8",
+      "resolution": "1120x560",
+      "note": "The cap ticks ARE still drawn — this is why I did not fail L8, only L5.",
+      "camera_pose": "no world camera — a UI capture over the shipped ui-journal fixture at 1920x1080, DPR 1, setRenderRate(0), interior thorn-hall at the fixture's own time of day; the crop rect is in the produced_by command"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/T4-r3.md",
+      "kind": "report",
+      "produced_by": "the round-3 critic (crit-t4-r3), not me",
+      "note": "Cited only where a row is explicitly CARRIED rather than re-measured — RI-UIX07 V2-V10, AR-2 B6, and RI-UIX08's procedural cap — and each citation says so on its face. Every figure this verdict banks is from a run I made at these blobs."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/frame-liveness-probe.json",
+      "kind": "negative-evidence",
+      "produced_by": "node tools/visual/frame-liveness.mjs --in corpus/90-verdicts/wave1/artifacts/T4-r4c/screens --json corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/frame-liveness-probe.json",
+      "note": "MY OWN INSTRUMENT'S FAILURE, KEPT ON DISK RATHER THAN DELETED. My probe's four page.screenshot() frames — still in .../T4-r4c/screens/ — are byte-identical to one another; frame-liveness reports DUPLICATE on 3 of 4 with the note 'the capture did not advance'. That is why every pixel number the probe's OVERLAP leg printed is void and was recomputed offline. DO NOT USE THOSE FOUR PNGs FOR ANYTHING: they are the proof of a broken capture path, not pictures of the screens they are named after."
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "check": "DN7",
+      "ref_item": "RI-UIX09",
+      "status": "not_possible",
+      "not_possible_reason": "I opened our captures attributed before any pack could have been built, so I cannot be the blind judge; CLAUDE.md rule 0 forbids me spawning a fresh one (create_session is approval-gated) and rule 0e places that with the orchestrator."
+    },
+    {
+      "check": "JU12",
+      "ref_item": "RI-UIX04",
+      "status": "not_possible",
+      "not_possible_reason": "Same reason, and the same reason rounds 1, 2 and 3 recorded. Four rounds is a corpus signal, not a scheduling accident."
+    },
+    {
+      "check": "AD7 (§G Bootstrap)",
+      "ref_item": "RI-UIX06",
+      "status": "not_possible",
+      "not_possible_reason": "Six fresh judges on six --blank-world screens. Rule 0 forbids me spawning them; a self-judged Bootstrap test is worthless."
+    },
+    {
+      "check": "V11 (§G played gate)",
+      "ref_item": "RI-UIX07",
+      "status": "not_possible",
+      "not_possible_reason": "Same. Fourth round unrun."
+    },
+    {
+      "check": "§G",
+      "ref_item": "RI-UIX08",
+      "status": "not_possible",
+      "not_possible_reason": "A re-run of this gate is in flight as a separate piece. Per my brief I neither duplicate it nor credit it."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "not_applicable_reason": "Of §4.1's ten probes only A3 (pause mid-fight) and A10 (talking mid-fight) can reach a screens piece. A3 WAS run and passes outright. A10 belongs to the dialogue piece's probe and is deliberately not duplicated. A1, A2 and A4-A9 all measure the fight itself and no menu, journal or panel can carry them.",
+      "checks": [
+        {
+          "id": "A3",
+          "result": "pass",
+          "observed": "With the inventory open during an active aggro the frame counter advanced EXACTLY 120 of 120 over 120 fixed steps (ui-pause M-P2 at these blobs), and combat inputs still reached the simulation ([IDLE, BACKSTEP], 14 stamina spent, menu still open). Out of combat it is frozen 0 of 120 (M-P1). A3's tell — world clock frozen in a fight — is absent.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/ui-pause.json"
+          ]
+        },
+        {
+          "id": "A10",
+          "result": "not_applicable",
+          "observed": "Owned by the dialogue piece's probe; not duplicated."
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/ui-pause.json"
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B1",
+          "result": "pass",
+          "observed": "RE-MEASURED at these blobs: the world frame's census carries exactly ten kinds — health_bar, stamina_bar, focus_bar, heal_charges, equip_load, quick_slots, interact_prompt, bearing_dial, effect_strip, place_name — and its entire text is [\"5\",\"LIGHT\",\"Sesh-Anaat\",\"S\",\"thorn-hall\"]. No arrow, pin, waypoint, distance readout or world anchor.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/measure-live-1920x1080.json"
+          ]
+        },
+        {
+          "id": "B5",
+          "result": "pass",
+          "observed": "RE-MEASURED: the level-up screen carries zero elements of a gold/currency kind and zero gold-word text matches; souls appear as souls_held and souls_to_next. S15 the right way round.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/measure-live-1920x1080.json"
+          ]
+        },
+        {
+          "id": "B6",
+          "result": "pass",
+          "observed": "Carried from round 3 at 0.0129 against a hard fail of 0.20, on data `git diff --stat 7c63111d..HEAD -- game/data/` proves has not moved.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/T4-r3.md"
+          ]
+        },
+        {
+          "id": "B12",
+          "result": "not_applicable",
+          "observed": "Not reachable from a screens critique — it needs five encounter classes and a fight."
+        },
+        {
+          "id": "B13",
+          "result": "not_applicable",
+          "observed": "Not reachable from a screens critique."
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/measure/measure-live-1920x1080.json"
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 2,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "min over the seven items this piece carries: RI-UIX03 3, RI-UIX04 5, RI-UIX06 2, RI-UIX07 5, RI-UIX08 2, RI-UIX09 5, RI-UIX10 8. RI-UIX01 (§D never measured in any of four rounds) is recorded and EXCLUDED with its reason, so an unmeasured item does not set the number. The min is 2 and it is set TWO ways: RI-UIX06's FD4 hard fail, which belongs to THIS round and is the gap named below, and RI-UIX08's procedural cap for an unrun §G, which belongs to another piece. RI-UIX09 moved 2 -> 5 and could not move the piece — the same shape as round 3, where RI-UIX10 moved 2 -> 8 and could not move it either. Two items went DOWN: RI-UIX04 6 -> 5 and RI-UIX06 4 -> 2.",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "hard_fail:RI-UIX06/FD4",
+    "cap:RI-UIX08/§G-unrun",
+    "below_threshold"
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them",
+    "subsystem_path": "ui.style.diegesis",
+    "severity": "blocking",
+    "what": "The per-screen boxes landed by round 4 are smaller than the content laid out into them and the content was not re-pitched to match, so at 1920x1080 on the shipped ui-journal fixture: (1) 9 of 10 level-up attribute rows and all ten character-sheet rows draw the attribute NAME, its VALUE and its GAUGE into the same pixels — 'STRENGTH' renders as STREN with 12 printed through it, and so on down all ten; (2) 8 of 19 journal entry blocks are laid out ending below the panel's own bottom edge (panel [685,325,550,430], foot y=755; worst journal.entry.Q-MAIN-01.10 at y=860, 105 px onto the world and cut in half by the panel edge) and 11 of 19 end below the top of the foot hint at y=717, so entry prose is printed over 'Left and right turn the page...'; (3) the container's foot hint renders '...what is worth keep' against a declared '...what is worth keeping.' and the spells hint loses its last eight words; (4) two of five quest-index names and at least one carried item name ellipsise. RI-UIX06 FD4's hard-fail column is 'any clipping, overlap or overflow at 1920x1080' and there are six. The same crops taken from a delete-the-fix worktree at c792e8d7 show every one of these legible, so the regression is round 4's and removing round 4's boxes removes it. AND THE REASON IT MATTERS BEYOND THE SIX INSTANCES: RI-UIX09's D2 counts pixels differing from the panel's modal colour, so INK DRAWN ON TOP OF INK STILL COUNTS — the level-up screen went from 0.0910 to 0.1855 and became unreadable in the same edit. The density metric is not safe to optimise on its own.",
+    "why_it_matters": "The screen where the player spends souls cannot be read, and the journal — the one document this game asks the player to actually read — prints its prose over its own instructions and off the edge of the paper.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/levelup-rows-6x.png",
+      "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/sheet-panel-2x.png",
+      "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/journal-panel-plus-margin-2x.png",
+      "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/container-hint-3x.png",
+      "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/spells-panel-2x.png",
+      "corpus/90-verdicts/wave1/artifacts/T4-r4c/crops/control-levelup-1x.png",
+      "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-overlap.json",
+      "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-critic.json",
+      "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/frame-liveness-head.json"
+    ],
+    "remedy": {
+      "action": "DO NOT UNDO S56 — the panel had no business being 57.2% of frame, and the delete-the-fix arm proves the smaller boxes are what cleared five hard fails. Re-pitch the CONTENTS instead. (1) game/src/ui/screens/progress.js, drawLevelUp() and drawSheet(): lay the attribute row out as three DISJOINT fractions of its own rect instead of the old fixed offsets — a name column, a right-aligned value column, and a gauge that starts at x >= name_w + value_w. (2) game/src/ui/screens/text.js, drawJournal(): the paging loop breaks a column only when the running height plus the block exceeds colH AND the column is already non-empty, so a block TALLER than colH is placed anyway and overflows — colH is ih - 30*s = 294 units and a wrapped entry at colW 140 px is about 397. Either split a block across columns or reduce the entry's own height to fit. (3) game/src/ui/screens/inventory.js and text.js: the container and spells foot hints must wrap or shrink to the panel's inner width instead of running off it. If re-pitching needs some width back, that is allowed and S56 still holds — S56 ruled 57.2% is a CEILING and named no target, and Morrowind's own inventory window is about 24% of frame, not 11%.",
+      "targets": [
+        "game/src/ui/screens/progress.js",
+        "game/src/ui/screens/text.js",
+        "game/src/ui/screens/inventory.js",
+        "game/src/ui/chrome.js"
+      ],
+      "acceptance": "(1) node tools/ui/t4-r4-critic-overlap.mjs reports rows_with_fewer_than_two_separators: 0 on BOTH levelup and sheet (today 9 of 10 and 3 of 10) and the 6x crop shows ten readable NAME / value / gauge rows. (2) The JP5 check in tools/ui/t4-r4-critic.mjs, moved INSIDE the paging loop so it runs on every page, reports 0 of 19 journal_entry rects whose bottom exceeds the panel's inner foot (today 8 of 19 past the panel and 11 of 19 past the hint). (3) The rendered container and spells hints contain their whole declared strings (today the container renders 'what is worth keep' against a declared 'what is worth keeping.'). (4) AND BOTH NUMBERS TOGETHER, because they trade off: node tools/ui/t4-r2-measure.mjs then node tools/ui/t4-r3-density.mjs must still report every named screen at or above 0.15, and the delete-the-fix arm re-run at c792e8d7 must still put the five hard fails back.",
+      "ref_item": "RI-UIX06",
+      "estimated_size": "one builder round — three files, layout arithmetic only, no new elements and no new data"
+    },
+    "would_close_items": [
+      "RI-UIX06 FD4",
+      "RI-UIX04 JU9",
+      "RI-UIX03 M-E2"
+    ],
+    "remedy_prose": "DO NOT UNDO S56 — the panel had no business being 57.2% of frame and the delete-the-fix arm proves the boxes are what cleared five hard fails. Re-pitch the contents instead, in four steps. (1) game/src/ui/screens/progress.js, drawLevelUp() and drawSheet(): lay the attribute row out as three DISJOINT fractions of its own rect instead of the old fixed offsets — a name column, a right-aligned value column, and a gauge starting at x >= name_w + value_w. DONE WHEN `node tools/ui/t4-r4-critic-overlap.mjs` reports rows_with_fewer_than_two_separators: 0 on BOTH levelup and sheet (today 9 and 3) and the 6x crop shows ten readable NAME / value / gauge rows. (2) game/src/ui/screens/text.js, drawJournal(): the paging loop breaks a column only when `curH + b.h > colH && cur.length`, so a block TALLER than colH is placed anyway and overflows — colH is ih - 30*s = 294 units and a wrapped entry at colW 140 px is about 397. Either split a block across columns or reduce the entry's own height to fit. DONE WHEN the JP5 check in tools/ui/t4-r4-critic.mjs, run on EVERY page rather than only the last, reports 0 of 19 journal_entry rects whose bottom exceeds the panel's inner foot (today 8 of 19). (3) container.hint and spells.hint must wrap or shrink to the panel's inner width. DONE WHEN the rendered hint contains the whole declared string. (4) Then re-run BOTH numbers together, because they trade off: `node tools/ui/t4-r2-measure.mjs` then `node tools/ui/t4-r3-density.mjs` must still report every named screen >= 0.15, and the delete-the-fix arm at c792e8d7 must still put the five hard fails back. If re-pitching needs some width back, that is allowed and S56 still holds — S56 ruled 57.2% is a CEILING and named no target, and Morrowind's own inventory window is about 24% of frame, not 11%."
+  },
+  "secondary_observations": [
+    "chrome.js's new screenRect() MOVED the default box and its own comment says it did not. The comment reads 'BOX itself is off this by 10 units vertically (160 rather than 150)... kept for BOX so nothing shifts under inventory/map/book/wait/bindings', but the code computes y = (S.H/s - h)/2 for every case including the fallback. Measured: the inventory panel rect is [200,160,1520,780] in round 3's manifest and [200,150,1520,780] in round 4's. Harmless; the comment is false.",
+    "The spells screen prints NaN. spells.row.spark_dart declares 'Spark-Dart  NaN' and the detail panel renders 'focus  NaN'. NOT round 4's — round 3's manifest carries the same string — but three rounds of critics have now measured this screen and none has said so.",
+    "D2 rewards translucency as much as content. The spells panel scores 0.3026, the best on the build, and its capture shows candle flames and a figure clearly visible THROUGH it; the metric counts the world bleeding through a dark chitin panel as matter. RI-UIX09's 'how we lose' anticipates this for the FRAME and not for a translucent PANEL. A --blank-world arm would separate them.",
+    "The container's item names now ellipsise ('Black-water dr...') at a name column of 0.60 x half where half fell from ~718 to 198 units. RI-UIX09 DN3's truncation clause is scoped to the quick-slot cluster, so no row of that item fails on it.",
+    "RI-UIX01 §D is unmeasured for the FOURTH consecutive round. Round 3 recommended it become its own piece on ui.hud.combat with the ui-combat viewpoint set as its first deliverable. It has not been dispatched. I repeat the recommendation and did not create it — that is dispatch, not critique.",
+    "The axis repeat still cannot fire on a paused screen — TS4/TS5, one row per 40-frame hold on both touch and keyboard. Device-neutral, unchanged, and round 3's reasoning for leaving it alone still stands.",
+    "The journal's chronicle column is 140 device px at a 19 px body face — roughly 15 characters a line. Nothing in the items handed to me sets a line-length floor for the journal (RI-UIX05 B2's 45-75 characters governs ui.menu.books, not ui.menu.journal). Cited as context, not as a bar; if a future round wants it to be a bar, that is a corpus addition for RI-UIX04's owner."
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it",
+      "status": "open",
+      "measured_value": "PARTIALLY CLOSED, and I measured its stated acceptance clause by clause rather than summarising it. The acceptance was: 't4-r3-density.mjs reports hard_fails: [] and d2_critic >= 0.35 on journal, level-up, sheet and spells, with no new drawn element on any of them (element_count per screen unchanged, +-2), and the delete-the-fix arm — restore the single BOX — must put all five hard fails back.' (a) hard_fails: [] on all six screens round 3 measured — MET; the tool exits non-zero only on the seventh state, the one-item container, at 0.1434, ruled on in DN4's note. (b) d2 >= 0.35 on journal, level-up, sheet and spells — NOT MET: 0.1805, 0.1855, 0.1713, 0.3026. Only spells is close. (c) no new drawn element — MET, and better than met: the counts FELL (journal 30 -> 23, container 49 -> 33) and ARBITRATION S57's two conditions both hold, checked by operating the screens rather than by arithmetic — no element TYPE disappeared on either screen, 19 of 19 journal entries are reachable over 10 spreads by real KeyD presses, and 44 of 44 carried rows by real KeyS presses with the extent reading total 44. (d) the delete-the-fix arm — MET, in a real fresh worktree at c792e8d7 rather than by inheriting a baseline: journal 0.1314, sheet 0.0895, level-up 0.0911, container 0.0572, one-item container 0.0554, panel 57.2% of frame on every one. THREE OF FOUR CLAUSES MET. It stays OPEN on clause (b), and it is superseded in priority by the new gap, because the same code must be touched again and chasing 0.35 before the collision is fixed would make the screens worse.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r3-density.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-control/t4-r3-density.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports/t4-r4-critic.json"
+      ],
+      "closed_by_builder": false
+    },
+    {
+      "gap_id": "GAP-W1-ui-journal-search-view-has-no-exit",
+      "status": "closed",
+      "measured_value": "Re-verified at these blobs after the resize, because a box change is exactly what would break hit-testing: JX1 (roll returns view 'chronicle' and stays in the journal), JX2a ('BCD' -> 'BC' -> 'B' -> '' -> chronicle -> world), JX2b, JX2c, JX3, JX4, JX5, JX6 — all eight green in a byte-identical re-run of the round-3 critic's own instrument. It was closed by round 3 and it has STAYED closed through the resize.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r4c/reports-repress/t4-r3-critic.json"
+      ],
+      "closed_by_builder": false
+    }
+  ],
+  "corpus_extended": [],
+  "method_deviations": [
+    "RI-UIX06's FIDELITY method (step 9) names `node tools/metrics/ui-metrics.mjs`, which the item itself records as 'owed by the methods owner and does not exist'. Under CRITIC-DOCTRINE §7.1 I ran the closest executable variant and scored only what I measured: M-F18.1 as declared element rects against the panel's own rect plus the captures, and M-F18.2 as a per-column foreground profile inside each declared attribute_row rect. FD1, FD2, FD3, FD5, FD6 and FD7 were NOT measured and are 0 fail-closed, not omitted. The 8-config sweep (4 resolutions x 2 DPRs) was not run; the hard fail fired at 1920x1080, which is the hard-fail column's own condition.",
+    "MY OWN INSTRUMENT DEFECTS, RECORDED RATHER THAN SHIPPED AS FINDINGS. (1) tools/ui/t4-r4-critic.mjs's first run read the input-attach flag at eng.input.real.attached instead of eng.real.attached and omitted setMode('play-instrumented'), so it reported I0 false and then hung; both were fixed and the run repeated. (2) THE IMPORTANT ONE: that script's page.screenshot() frames came back BYTE-IDENTICAL to one another — tools/visual/frame-liveness.mjs reported DUPLICATE on 3 of 4 — because the probe runs with setRenderRate(0) and the page's presented buffer does not advance. Every pixel number its OVERLAP leg printed was therefore VOID. Its ELEMENT RECTS are sound (getUIState() self-reports; the game state was correct), so the rects were kept and the pixels recomputed offline in tools/ui/t4-r4-critic-overlap.mjs against t4-r2-measure.mjs captures, which go through canvas.toDataURL() and which frame-liveness passes as LIVE. This is exactly why the brief mandated frame-liveness on every frame.",
+    "The overlap metric itself went through one discarded design, and the discard is evidence too. A colour heuristic classifying 'ink' as dark-and-low-chroma and 'gauge' as green failed twice: the level-up gauge plate is (42,55,43) and misses `G > B + 12` by one unit, and the CHARACTER SHEET's own panel ground is (44,57,45) — the same colour — so 'dark and low chroma' matched the background and reported 73% of a row as ink. The shipped metric uses RI-UIX09's own definition of foreground (a pixel more than 24 rgb from the PANEL's modal colour) and counts separators. It still under-reports on the sheet, which is stated in the verdict rather than hidden.",
+    "The delete-the-fix worktree is SPARSE (`git sparse-checkout set game tools`, tools/node_modules symlinked) because the box has 3.2 GB free and a full checkout is about 10 GB. It is a real worktree at a real pinned sha running the real tools; what it could not do is run the two scripts that import t4-r2-critic-measure.mjs's own default manifest, which is why the control arm has captures and density but no per-row element rects — the control evidence for the layout regression is therefore the CROP rather than a number.",
+    "My t4-r2-measure.mjs run at these blobs CRASHED in its withdrawal legs ('page.evaluate: Target page, context or browser has been closed') after writing all eight captures and the manifest. RI-UIX07 V7/V8/V9 are therefore carried from round 3 behind an empty `git diff -- game/src/ui/hud.js`, not re-measured. In the control arm, inventory and spells timed out under contention and are recorded as unmeasured there rather than inferred.",
+    "RI-UIX03 §B-§E (M-C1, M-C2, M-C3 in part, M-D1, M-L1, M-E3) and RI-UIX06 AD2/AD3/AD5/AD6 are CARRIED from round 3 rather than re-run, behind `git diff --stat 7c63111d..HEAD -- game/data/` = EMPTY. It is a deviation and it is the same one round 3 named.",
+    "RI-UIX01 is EXCLUDED from the aggregate for the fourth round running, with its reason in the verdict body rather than scored as 0. §D has never been measured by anyone and its comparison method needs a `ui-combat` viewpoint set that does not exist in tools/harness/viewpoints.json.",
+    "JP5 in my own probe reports PASS on a technicality I am declaring rather than banking: it read the element census AFTER the paging loop had ended, i.e. on page 10, which holds one short entry. The real answer was computed offline over the entry rects the same probe recorded for all ten spreads: 8 of 19 blocks past the panel foot, 11 of 19 past the hint. The check should be moved inside the loop."
+  ],
+  "arbitration_questions": [
+    "Does RI-UIX09 P4's 'every populated screen' include a screen whose SECOND list is nearly empty? The container screen holds a 44-item carried list and a chest; at three items in the chest it measures 0.1525 and at one item 0.1434, i.e. it crosses the hard-fail floor on contents rather than on layout. I ruled it excluded (see DN4's note) on the item's own warning against near-empty samples and on comparability with round 3, and named the evidence that would overturn me. A dimension owner may want to say instead that P4 is measured on the WORST reachable populated state, which would make a fixed box insufficient for any screen whose content varies.",
+    "Is RI-UIX03 L5 ('all ten attributes on screen simultaneously with their current values') satisfied by DECLARATION or by LEGIBILITY? I scored it by legibility and flipped M-E2 to fail. If it is satisfied by declaration, RI-UIX03 returns to 8/13 and the piece score is unchanged. The general form of the question matters more than this instance: every structural row in RI-UIX03 and RI-UIX04 is written as 'is it shown', and this round is the first time a build has shown something that cannot be read."
+  ],
+  "source_reads": [
+    {
+      "path": "game/src/ui/chrome.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read AFTER the panel_rect change was observed in two manifests and the collisions were photographed. Located screenRect()/BOXES to see which screens the table covers, and the line that centres every box — including the fallback — which is why the default BOX's y moved 160 -> 150 while its own comment says it was kept. The comment is quoted as a defect, never as evidence of behaviour."
+    },
+    {
+      "path": "game/src/ui/system.js",
+      "purpose": "locate-harness",
+      "note": "Located the beginScreen() call and the mode switch in order to ENUMERATE the screen ids the compositing rect must agree with, so the seam could be checked rather than assumed. No score depends on this read; ui-pause SURFACES and the captures are the evidence."
+    },
+    {
+      "path": "game/src/ui/screens/text.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read AFTER 8 of 19 journal blocks were shown overflowing the panel, from the probe's own recorded rects and from the capture. The paging loop breaks a column only when the running height plus the block exceeds colH AND the column is non-empty, so a block taller than colH is placed anyway; colH = ih - 30*s = 294 units against a wrapped entry of about 397. In the verdict to make the remedy concrete and for no other purpose."
+    },
+    {
+      "path": "game/src/ui/screens/progress.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read AFTER the attribute-row collisions were photographed at 6x and measured. Names the attrH/skillH/rowH constants and the two functions the remedy must touch."
+    },
+    {
+      "path": "game/src/ui/screens/inventory.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read AFTER the container hint was photographed clipped. Names CROWS and the 0.60/0.19/0.19 fractions of half, so the remedy can be written against real symbols."
+    },
+    {
+      "path": "game/data/states/ui-journal.json",
+      "purpose": "quote-written-content",
+      "note": "QUOTED for the fixture's own counts, which are the DENOMINATOR the pager legs are measured against: 19 journal entries (quest.journal, the array beginning at game/data/states/ui-journal.json:541), 44 carried items (inventory), 5 distinct quests."
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "TWO FALSE AND ONE FLAG, ALL STATED. (1) `ran_every_assigned_method` is FALSE: RI-UIX06's ui-metrics.mjs does not exist so six of seven FIDELITY rows are unmeasured and scored 0 fail-closed; AD4 is unrun for the fourth round; RI-UIX07's withdrawal legs crashed and are carried; RI-UIX01 §D is unmeasured for the fourth round; RI-UIX03 §B-§E are carried behind an empty data diff; and four played gates (RI-UIX06 §G, RI-UIX07 V11, RI-UIX08 §G, plus the two blind pairs) need fresh judges that rule 0 forbids me spawning. Every one is in method_deviations or in its check's note, and every one is fail-closed rather than omitted. (2) `blind_done_where_required` is FALSE for the same reason, on five gates. (3) `saw_builder_notes_before_blind` is TRUE in the critic block: my brief handed me the round-3 verdict and the builder's status file up front, which departs from §8's ordering. It is recorded rather than hidden, and it cost nothing here because no blind pack could be built anyway. ON ESCALATION: §2.1's ladder is what found this round's defect and I want that on the record. The numbers all improved and every structural check I ran went green; step 1 (zoom in — 2x, then 6x crops of the panels) and step 2 (change the sample — the one-item container, the last page of the journal, the ugly screens rather than the inventory) are what turned a clean sweep into a hard fail. A verdict written off the density table alone would have passed this round's headline and shipped a level-up screen you cannot read.",
+    "instrument_defects_of_my_own": [
+      "t4-r4-critic.mjs first run: wrong attach path and missing setMode('play-instrumented') — fixed, re-run.",
+      "t4-r4-critic.mjs OVERLAP leg: page.screenshot() under setRenderRate(0) produced DUPLICATE frames; all its pixel numbers void, recomputed offline.",
+      "t4-r4-critic.mjs JP5: read the census after the paging loop rather than inside it, so it reported PASS on page 10; the real answer was computed offline over all ten spreads.",
+      "First overlap metric (colour heuristic) discarded: broke on the level-up gauge colour and on the sheet's own ground colour."
+    ]
+  },
+  "notes": "ORDERING, per CRITIC-DOCTRINE §8: my dispatch brief handed me the round-3 verdict, the builder's status file and ARBITRATION S56/S57 BEFORE I measured anything, so I did not read the gap ledger after raw measurement — I had the prior verdict throughout. That is a departure and it is recorded rather than implied. What I did NOT do is inherit a number from any of them: every figure in this verdict comes from a capture or a run I made at these blobs, and the two figures the brief handed me as 'verify these, do not inherit' (the D2 table and the 18/20 re-press) were both re-derived and both hold. WHAT I COULD NOT DO IS IN MY STATUS FILE, FIRST. The one sentence I would want the owner to read: the density numbers round 4 was sent at all moved the right way and the delete-the-fix arm proves they are real, but if you open the game at this commit and press level-up, you cannot read your own attributes."
+}

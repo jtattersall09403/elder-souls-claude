@@ -1,0 +1,1407 @@
+{
+  "schema": "elder-souls/t4-screens-drive@1",
+  "at": "2026-08-15T14:15:15.653Z",
+  "state": "ui-journal",
+  "interactions": [
+    {
+      "action": "keydown KeyM (menu) from the world",
+      "before": {
+        "mode": "world",
+        "focus": null,
+        "n": 10
+      },
+      "after": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 0,
+          "sortIdx": 0
+        },
+        "n": 75
+      }
+    },
+    {
+      "action": "keydown Digit3 (swap_right)",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 0,
+          "sortIdx": 0
+        },
+        "n": 75
+      },
+      "after": {
+        "mode": "map",
+        "focus": {
+          "view": "world",
+          "placeIdx": 0
+        },
+        "n": 17
+      }
+    },
+    {
+      "action": "keydown Digit3 (swap_right)",
+      "before": {
+        "mode": "map",
+        "focus": {
+          "view": "world",
+          "placeIdx": 0
+        },
+        "n": 17
+      },
+      "after": {
+        "mode": "sheet",
+        "focus": {
+          "rowIdx": 0
+        },
+        "n": 62
+      }
+    },
+    {
+      "action": "keydown Digit3 (swap_right)",
+      "before": {
+        "mode": "sheet",
+        "focus": {
+          "rowIdx": 0
+        },
+        "n": 62
+      },
+      "after": {
+        "mode": "journal",
+        "focus": {
+          "view": "chronicle",
+          "page": 0,
+          "indexIdx": 0,
+          "ringIdx": 0,
+          "query": ""
+        },
+        "n": 23
+      }
+    },
+    {
+      "action": "keydown Digit3 (swap_right)",
+      "before": {
+        "mode": "journal",
+        "focus": {
+          "view": "chronicle",
+          "page": 0,
+          "indexIdx": 0,
+          "ringIdx": 0,
+          "query": ""
+        },
+        "n": 23
+      },
+      "after": {
+        "mode": "spells",
+        "focus": {
+          "rowIdx": 0
+        },
+        "n": 19
+      }
+    },
+    {
+      "action": "keydown Digit3 (swap_right)",
+      "before": {
+        "mode": "spells",
+        "focus": {
+          "rowIdx": 0
+        },
+        "n": 19
+      },
+      "after": {
+        "mode": "wait",
+        "focus": {
+          "hours": 1
+        },
+        "n": 39
+      }
+    },
+    {
+      "action": "keydown Digit3 (swap_right)",
+      "before": {
+        "mode": "wait",
+        "focus": {
+          "hours": 1
+        },
+        "n": 39
+      },
+      "after": {
+        "mode": "world",
+        "focus": null,
+        "n": 10
+      }
+    },
+    {
+      "action": "keydown Digit4 (swap_left)",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 0,
+          "sortIdx": 0
+        },
+        "n": 75
+      },
+      "after": {
+        "mode": "world",
+        "focus": null,
+        "n": 10
+      }
+    },
+    {
+      "action": "keydown KeyA (left) in inventory",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 0,
+          "sortIdx": 0
+        },
+        "n": 75
+      },
+      "after": {
+        "mode": "inventory",
+        "focus": {
+          "col": 0,
+          "tagIdx": 0,
+          "rowIdx": 0,
+          "sortIdx": 0
+        },
+        "n": 75
+      }
+    },
+    {
+      "action": "keydown KeyD (right) in inventory",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 0,
+          "tagIdx": 0,
+          "rowIdx": 0,
+          "sortIdx": 0
+        },
+        "n": 75
+      },
+      "after": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 0,
+          "sortIdx": 0
+        },
+        "n": 75
+      }
+    },
+    {
+      "action": "keydown KeyS (down) on the category column",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 0,
+          "tagIdx": 0,
+          "rowIdx": 0,
+          "sortIdx": 0
+        },
+        "n": 75
+      },
+      "after": {
+        "mode": "inventory",
+        "focus": {
+          "col": 0,
+          "tagIdx": 1,
+          "rowIdx": 0,
+          "sortIdx": 0
+        },
+        "n": 49
+      },
+      "rows_before": 20,
+      "rows_after": 7
+    },
+    {
+      "action": "keydown KeyE (confirm) on the sort control",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 0,
+          "tagIdx": 10,
+          "rowIdx": 0,
+          "sortIdx": 0
+        },
+        "n": 75
+      },
+      "after": {
+        "mode": "inventory",
+        "focus": {
+          "col": 0,
+          "tagIdx": 10,
+          "rowIdx": 0,
+          "sortIdx": 1
+        },
+        "n": 75
+      },
+      "rows_before": [
+        "Chitin cuirass",
+        "Reed-cutter",
+        "Bark token  0.1  —  0.0",
+        "Black-water draught  ×3  0.4  30  75.0",
+        "Bog-iron maul  11.5  96  8.3",
+        "Boiled hide jack  4.2  55  13.1",
+        "Bone picks, set of five  ×5  0.3  48  160",
+        "Carved egg  0.2  5  25.0",
+        "Chitin cuirass  7.5  210  28.0",
+        "Coil of weir twine  1.3  6  4.6",
+        "Comb resin  ×2  0.5  22  44.0",
+        "Crate tally, three counts  0.0  —  —",
+        "Dres silk sash  0.2  260  1300",
+        "Dried guar  ×6  0.6  5  8.3",
+        "Factor's coat  1.4  120  85.7",
+        "Factor's weighing stone  2.5  30  12.0",
+        "Fever-cut  ×2  0.4  46  115",
+        "Fire-drill and tinder  0.7  8  11.4",
+        "Flask of lamp resin  ×2  0.9  11  12.2",
+        "Hackle-lo leaf  ×12  0.1  3  30.0"
+      ],
+      "rows_after": [
+        "Chitin cuirass",
+        "Reed-cutter",
+        "Bog-iron maul  11.5  96  8.3",
+        "Shell-scale hauberk  9.1  340  37.4",
+        "Chitin cuirass  7.5  210  28.0",
+        "Legion greaves, worn  5.8  88  15.2",
+        "Boiled hide jack  4.2  55  13.1",
+        "Warden-issue sabre  3.4  180  52.9",
+        "Reed-cutter  3.0  42  14.0",
+        "Factor's weighing stone  2.5  30  12.0",
+        "Sapwood bow  2.2  130  59.1",
+        "Salt brick  ×2  2.0  12  6.0",
+        "Pilot's chart-book, Topal shore  1.6  140  87.5",
+        "Factor's coat  1.4  120  85.7",
+        "Coil of weir twine  1.3  6  4.6",
+        "On the Drowning at the Ford  1.2  35  29.2",
+        "Mud-slip bowl  1.1  4  3.6",
+        "Wet-season boots  1.1  24  21.8",
+        "Reed lantern  1.0  16  16.0",
+        "Hooked gutting knife  0.9  14  15.6"
+      ]
+    },
+    {
+      "action": "keydown KeyS (down) on the item column",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 0,
+          "sortIdx": 1
+        },
+        "n": 75
+      },
+      "after": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 1,
+          "sortIdx": 1
+        },
+        "n": 75
+      },
+      "detail_before": [
+        {
+          "id": "inventory.detail.plate",
+          "text": null
+        },
+        {
+          "id": "inventory.detail.depiction",
+          "text": null
+        },
+        {
+          "id": "inventory.detail",
+          "text": "Iron smelted out of marsh ore, which is poor iron, so the head is enormous to make up for it. It is heavier than it needs to be and everyone who carries one knows."
+        }
+      ],
+      "detail_after": [
+        {
+          "id": "inventory.detail.plate",
+          "text": null
+        },
+        {
+          "id": "inventory.detail.depiction",
+          "text": null
+        },
+        {
+          "id": "inventory.detail",
+          "text": "River-shell scales sewn onto reed cloth, nacreous where the light catches along the sewing line. Cool against the skin, loud in the rain, and worth more than the house it came from."
+        }
+      ]
+    },
+    {
+      "action": "keydown KeyE (confirm) on weapon row 'Hooked gutting knife  0.9  14  15.6'",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 17,
+          "sortIdx": 1
+        },
+        "n": 75
+      },
+      "after": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 17,
+          "sortIdx": 1
+        },
+        "n": 76
+      },
+      "equipped_before": [
+        "chitin-cuirass@chest",
+        "reed-cutter@right"
+      ],
+      "equipped_after": [
+        "chitin-cuirass@chest",
+        "hooked-gutting-knife@right"
+      ]
+    },
+    {
+      "action": "keydown KeyE (confirm) on the REFUSED weapon row 'Sapwood bow  2.2  130  59.1'",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 8,
+          "sortIdx": 1
+        },
+        "n": 75
+      },
+      "after": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 8,
+          "sortIdx": 1
+        },
+        "n": 76
+      },
+      "equipped_before": [
+        "chitin-cuirass@chest",
+        "hooked-gutting-knife@right"
+      ],
+      "equipped_after": [
+        "chitin-cuirass@chest",
+        "hooked-gutting-knife@right"
+      ],
+      "toast": [
+        {
+          "id": "hud.toast",
+          "kind": "toast",
+          "rect": [
+            760,
+            40,
+            400,
+            60
+          ],
+          "text": "You cannot get a grip on the sapwood bow. It is not made for your hands.",
+          "focused": false
+        }
+      ]
+    },
+    {
+      "action": "keydown KeyG (two_hand = HUD mode switch)",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 8,
+          "sortIdx": 1
+        },
+        "n": 76
+      },
+      "after": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 8,
+          "sortIdx": 1
+        },
+        "n": 76
+      },
+      "hud_before": "full",
+      "hud_after": "full",
+      "hud_after_second": "full"
+    },
+    {
+      "action": "keydown KeyD (right) in the journal",
+      "before": {
+        "mode": "journal",
+        "focus": {
+          "view": "chronicle",
+          "page": 0,
+          "indexIdx": 0,
+          "ringIdx": 0,
+          "query": ""
+        },
+        "n": 24
+      },
+      "after": {
+        "mode": "journal",
+        "focus": {
+          "view": "chronicle",
+          "page": 1,
+          "indexIdx": 0,
+          "ringIdx": 0,
+          "query": ""
+        },
+        "n": 24
+      },
+      "page_before": 0,
+      "page_after": 1
+    },
+    {
+      "action": "keydown KeyA (left) at page 0 — the quest index",
+      "before": {
+        "mode": "journal",
+        "focus": {
+          "view": "chronicle",
+          "page": 0,
+          "indexIdx": 0,
+          "ringIdx": 0,
+          "query": ""
+        },
+        "n": 24
+      },
+      "after": {
+        "mode": "journal",
+        "focus": {
+          "view": "index",
+          "page": 0,
+          "indexIdx": 0,
+          "ringIdx": 0,
+          "query": ""
+        },
+        "n": 24
+      }
+    },
+    {
+      "action": "keydown KeyS (down) in the quest index",
+      "before": {
+        "mode": "journal",
+        "focus": {
+          "view": "index",
+          "page": 0,
+          "indexIdx": 0,
+          "ringIdx": 0,
+          "query": ""
+        },
+        "n": 24
+      },
+      "after": {
+        "mode": "journal",
+        "focus": {
+          "view": "index",
+          "page": 0,
+          "indexIdx": 1,
+          "ringIdx": 0,
+          "query": ""
+        },
+        "n": 24
+      }
+    },
+    {
+      "action": "keydown KeyE (confirm) on an index row",
+      "before": {
+        "mode": "journal",
+        "focus": {
+          "view": "index",
+          "page": 0,
+          "indexIdx": 1,
+          "ringIdx": 0,
+          "query": ""
+        },
+        "n": 24
+      },
+      "after": {
+        "mode": "journal",
+        "focus": {
+          "view": "chronicle",
+          "page": 0,
+          "indexIdx": 1,
+          "ringIdx": 0,
+          "query": ""
+        },
+        "n": 24
+      },
+      "page_after": 0
+    },
+    {
+      "action": "keydown KeyE (confirm) in the chronicle — search",
+      "before": {
+        "mode": "journal",
+        "focus": {
+          "view": "chronicle",
+          "page": 0,
+          "indexIdx": 1,
+          "ringIdx": 0,
+          "query": ""
+        },
+        "n": 24
+      },
+      "after": {
+        "mode": "journal",
+        "focus": {
+          "view": "search",
+          "page": 0,
+          "indexIdx": 1,
+          "ringIdx": 0,
+          "query": ""
+        },
+        "n": 53
+      }
+    },
+    {
+      "action": "keydown KeyD (right) on the search ring",
+      "before": {
+        "mode": "journal",
+        "focus": {
+          "view": "search",
+          "page": 0,
+          "indexIdx": 1,
+          "ringIdx": 0,
+          "query": ""
+        },
+        "n": 53
+      },
+      "after": {
+        "mode": "journal",
+        "focus": {
+          "view": "search",
+          "page": 0,
+          "indexIdx": 1,
+          "ringIdx": 1,
+          "query": ""
+        },
+        "n": 53
+      }
+    },
+    {
+      "action": "keydown KeyE (confirm) on a ring letter",
+      "before": {
+        "mode": "journal",
+        "focus": {
+          "view": "search",
+          "page": 0,
+          "indexIdx": 1,
+          "ringIdx": 1,
+          "query": ""
+        },
+        "n": 53
+      },
+      "after": {
+        "mode": "journal",
+        "focus": {
+          "view": "search",
+          "page": 0,
+          "indexIdx": 1,
+          "ringIdx": 1,
+          "query": "B"
+        },
+        "n": 55
+      },
+      "query_after": "B"
+    },
+    {
+      "action": "keydown Space (roll = back) inside the search view",
+      "before": {
+        "mode": "journal",
+        "focus": {
+          "view": "search",
+          "page": 0,
+          "indexIdx": 1,
+          "ringIdx": 1,
+          "query": "B"
+        },
+        "n": 55
+      },
+      "after": {
+        "mode": "journal",
+        "focus": {
+          "view": "search",
+          "page": 0,
+          "indexIdx": 1,
+          "ringIdx": 1,
+          "query": ""
+        },
+        "n": 53
+      },
+      "view_before": "search",
+      "mode_after": "journal",
+      "focus_after": {
+        "view": "search",
+        "page": 0,
+        "indexIdx": 1,
+        "ringIdx": 1,
+        "query": ""
+      }
+    },
+    {
+      "action": "keydown KeyS (down) on the sheet screen",
+      "before": {
+        "mode": "sheet",
+        "focus": {
+          "rowIdx": 0
+        },
+        "n": 63
+      },
+      "after": {
+        "mode": "sheet",
+        "focus": {
+          "rowIdx": 1
+        },
+        "n": 63
+      }
+    },
+    {
+      "action": "keydown KeyS (down) on the spells screen",
+      "before": {
+        "mode": "spells",
+        "focus": {
+          "rowIdx": 0
+        },
+        "n": 20
+      },
+      "after": {
+        "mode": "spells",
+        "focus": {
+          "rowIdx": 1
+        },
+        "n": 20
+      }
+    },
+    {
+      "action": "keydown KeyE (confirm) on the map with zero discovered places",
+      "before": {
+        "mode": "map",
+        "focus": {
+          "view": "world",
+          "placeIdx": 0
+        },
+        "n": 18
+      },
+      "after": {
+        "mode": "map",
+        "focus": {
+          "view": "local",
+          "placeIdx": 0
+        },
+        "n": 18
+      },
+      "view_before": "world",
+      "view_after": "local"
+    },
+    {
+      "action": "keydown KeyS (down) on the wait screen",
+      "before": {
+        "mode": "wait",
+        "focus": {
+          "hours": 1
+        },
+        "n": 40
+      },
+      "after": {
+        "mode": "wait",
+        "focus": {
+          "hours": 2
+        },
+        "n": 40
+      }
+    },
+    {
+      "action": "keydown KeyE (confirm) on the wait screen",
+      "before": {
+        "mode": "wait",
+        "focus": {
+          "hours": 2
+        },
+        "n": 40
+      },
+      "after": {
+        "mode": "world",
+        "focus": null,
+        "n": 11
+      },
+      "frame_before": 33,
+      "frame_after": 56,
+      "mode_after": "world"
+    },
+    {
+      "action": "keydown KeyD (right) in the container — side switch",
+      "before": {
+        "mode": "container",
+        "focus": {
+          "side": 0,
+          "rowIdx": 0,
+          "otherIdx": 0
+        },
+        "n": 30
+      },
+      "after": {
+        "mode": "container",
+        "focus": {
+          "side": 1,
+          "rowIdx": 0,
+          "otherIdx": 0
+        },
+        "n": 30
+      }
+    },
+    {
+      "action": "keydown KeyE (confirm) — take from the container",
+      "before": {
+        "mode": "container",
+        "focus": {
+          "side": 1,
+          "rowIdx": 0,
+          "otherIdx": 0
+        },
+        "n": 30
+      },
+      "after": {
+        "mode": "container",
+        "focus": {
+          "side": 1,
+          "rowIdx": 0,
+          "otherIdx": 0
+        },
+        "n": 28
+      },
+      "carried_before": 44,
+      "carried_after": 45
+    },
+    {
+      "action": "keydown KeyE (confirm) — put into the container",
+      "before": {
+        "mode": "container",
+        "focus": {
+          "side": 0,
+          "rowIdx": 0,
+          "otherIdx": 0
+        },
+        "n": 29
+      },
+      "after": {
+        "mode": "container",
+        "focus": {
+          "side": 0,
+          "rowIdx": 0,
+          "otherIdx": 0
+        },
+        "n": 30
+      },
+      "carried_before": 45,
+      "carried_after": 44
+    },
+    {
+      "action": "keydown Escape (menu) from a screen",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 8,
+          "sortIdx": 1
+        },
+        "n": 76
+      },
+      "after": {
+        "mode": "world",
+        "focus": null,
+        "n": 11
+      }
+    },
+    {
+      "action": "click inventory row 'Chitin cuirass'",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 8,
+          "sortIdx": 1
+        },
+        "n": 76
+      },
+      "after": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 8,
+          "sortIdx": 1
+        },
+        "n": 76
+      },
+      "rect": [
+        252,
+        716,
+        170,
+        26
+      ]
+    },
+    {
+      "action": "tap touch.__drawer",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 8,
+          "sortIdx": 1
+        },
+        "n": 87
+      },
+      "after": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 8,
+          "sortIdx": 1
+        },
+        "n": 92
+      },
+      "petals": [
+        "touch.roll",
+        "touch.block",
+        "touch.light",
+        "touch.interact",
+        "touch.jump",
+        "touch.parry",
+        "touch.heavy",
+        "touch.use_item",
+        "touch.crouch",
+        "touch.lock_on",
+        "touch.__drawer",
+        "touch.two_hand",
+        "touch.swap_left",
+        "touch.swap_right",
+        "touch.spell_cycle",
+        "touch.menu"
+      ]
+    },
+    {
+      "action": "tap touch control 'touch.swap_right'",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 8,
+          "sortIdx": 1
+        },
+        "n": 92
+      },
+      "after": {
+        "mode": "map",
+        "focus": {
+          "view": "local",
+          "placeIdx": 0
+        },
+        "n": 24
+      },
+      "rect": [
+        1534,
+        730,
+        52,
+        52
+      ]
+    },
+    {
+      "action": "touch drag on the left half (the floating stick)",
+      "before": {
+        "mode": "map",
+        "focus": {
+          "view": "local",
+          "placeIdx": 0
+        },
+        "n": 24
+      },
+      "after": {
+        "mode": "map",
+        "focus": {
+          "view": "local",
+          "placeIdx": 0
+        },
+        "n": 24
+      },
+      "mid_focus": {
+        "view": "local",
+        "placeIdx": 0
+      }
+    },
+    {
+      "action": "pad button 9 (menu)",
+      "before": {
+        "mode": "world",
+        "focus": null,
+        "n": 11
+      },
+      "after": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 8,
+          "sortIdx": 1
+        },
+        "n": 76
+      }
+    },
+    {
+      "action": "pad button 15 (swap_right)",
+      "before": {
+        "mode": "inventory",
+        "focus": {
+          "col": 1,
+          "tagIdx": 0,
+          "rowIdx": 8,
+          "sortIdx": 1
+        },
+        "n": 76
+      },
+      "after": {
+        "mode": "map",
+        "focus": {
+          "view": "local",
+          "placeIdx": 0
+        },
+        "n": 18
+      }
+    }
+  ],
+  "checks": [
+    {
+      "id": "I0 INSTRUMENT a real DOM key reaches the input pipeline",
+      "pass": true,
+      "detail": "real.attached=true, ArrowRight -> moveX=1, KeyM -> pendingPress=8192"
+    },
+    {
+      "id": "A1 `menu` opens a screen from the world",
+      "pass": true,
+      "detail": "mode world -> inventory"
+    },
+    {
+      "id": "B1 every advertised screen is reachable by pressing swap_right",
+      "pass": true,
+      "detail": "advertised [\"world\",\"journal\",\"sheet\",\"spells\",\"map\",\"wait\"]; forward walk visited [\"inventory\",\"map\",\"sheet\",\"journal\",\"spells\",\"wait\",\"world\"]; never reached []"
+    },
+    {
+      "id": "B2 swap_left walks the ring too (and does not dead-end)",
+      "pass": true,
+      "detail": "backward walk from inventory: [\"inventory\",\"world\"]"
+    },
+    {
+      "id": "C0 the inventory is the screen `menu` opens",
+      "pass": true,
+      "detail": "mode=inventory"
+    },
+    {
+      "id": "C1 left/right moves between the inventory columns",
+      "pass": true,
+      "detail": "col 1 -(left)-> 0 -(right)-> 1"
+    },
+    {
+      "id": "C2 walking the category column filters the item list",
+      "pass": true,
+      "detail": "tagIdx 0 -> 1; rows 20 -> 7 (first: 'Chitin cuirass' -> 'Chitin cuirass')"
+    },
+    {
+      "id": "C3 confirming the sort control changes the sort AND reorders the list",
+      "pass": true,
+      "detail": "sortIdx 0 -> 1; first row 'Chitin cuirass' -> 'Chitin cuirass'"
+    },
+    {
+      "id": "C4 walking the item list moves the selection and the detail panel follows",
+      "pass": true,
+      "detail": "rowIdx 0 -> 1; detail changed=true; focused row 'Shell-scale hauberk  9.1  340  37.4'"
+    },
+    {
+      "id": "C5 confirming a weapon row equips it",
+      "pass": true,
+      "detail": "row 'Hooked gutting knife  0.9  14  15.6' (hooked-gutting-knife): equipment [\"chitin-cuirass@chest\",\"reed-cutter@right\"] -> [\"chitin-cuirass@chest\",\"hooked-gutting-knife@right\"]; 'hooked-gutting-knife' now in equipped=true"
+    },
+    {
+      "id": "C5b confirming the refused weapon row does nothing to the inventory, but says so",
+      "pass": null,
+      "outcome": "not-applicable",
+      "detail": "row 'Sapwood bow  2.2  130  59.1' (inventory.row.hist-sap-bow): equipment [\"chitin-cuirass@chest\",\"hooked-gutting-knife@right\"] -> [\"chitin-cuirass@chest\",\"hooked-gutting-knife@right\"] (unchanged=true); toast after confirm: [\"You cannot get a grip on the sapwood bow. It is not made for your hands.\"] (narrated=true)"
+    },
+    {
+      "id": "C6 the equipped figure is drawn (RI-UIX09 P2)",
+      "pass": true,
+      "detail": "1 element(s) of kind 'doll' on the inventory screen; rects [[222,282,200,400]]; equipment [\"chitin-cuirass@chest\",\"hooked-gutting-knife@right\"]"
+    },
+    {
+      "id": "C7 the HUD full/minimal switch responds to a real press",
+      "pass": false,
+      "detail": "hud.mode full -(4f hold)-> full -(8f hold)-> full; the inventory's own foot hint reads [\"Left and right change column. Up and down move. Confirm to equip, read or use. Swap turns the page: the map, the journal, your case, your spells.\"]"
+    },
+    {
+      "id": "D0 the journal is reachable by pressing swap_right",
+      "pass": true,
+      "detail": "mode=journal"
+    },
+    {
+      "id": "D1 the journal turns its pages on a real press",
+      "pass": true,
+      "detail": "page 0 -> 1, view 'chronicle'"
+    },
+    {
+      "id": "D2 the quest index opens from the chronicle",
+      "pass": true,
+      "detail": "view 'chronicle' -> 'index'"
+    },
+    {
+      "id": "D3 confirming an index row jumps the chronicle to that quest",
+      "pass": true,
+      "detail": "indexIdx 0 -> 1; view -> 'chronicle', page 0"
+    },
+    {
+      "id": "D4 the search view opens from the chronicle",
+      "pass": true,
+      "detail": "view 'chronicle' -> 'search'"
+    },
+    {
+      "id": "D5 the search ring walks and types a character into the query",
+      "pass": true,
+      "detail": "ringIdx 0 -> 1; query '' -> 'B'"
+    },
+    {
+      "id": "D6 back inside the search view removes one character and stays in search",
+      "pass": true,
+      "detail": "mode journal -> journal; view 'search' -> 'search'; query 'B' (len 1) -> '' (len 0)"
+    },
+    {
+      "id": "D7 closing and re-opening the journal returns to the chronicle, not a stuck search box",
+      "pass": true,
+      "detail": "closed fully to 'world'; re-opened: view 'chronicle', query ''"
+    },
+    {
+      "id": "E-sheet the sheet screen is reachable and its list walks",
+      "pass": true,
+      "detail": "rowIdx 0 -> 1, 0 rows"
+    },
+    {
+      "id": "E-spells the spells screen is reachable and its list walks",
+      "pass": true,
+      "detail": "rowIdx 0 -> 1, 0 rows"
+    },
+    {
+      "id": "F1 the map screen walks its places and swaps its view",
+      "pass": null,
+      "outcome": "not-applicable",
+      "detail": "fixture has 0 discovered places (rows=0), so the place-walk half cannot be exercised on this state — needs a fixture where the player has stood somewhere; view swap alone: 'world' -> 'local'"
+    },
+    {
+      "id": "G1 the wait screen sets hours and confirms",
+      "pass": true,
+      "detail": "hours 1 -> 2; confirm left mode='world'"
+    },
+    {
+      "id": "H0 the container screen opens and names itself",
+      "pass": true,
+      "detail": "mode=container; panel headers [\"Reed Creel\",\"Carried\",\"Reed Creel\"]"
+    },
+    {
+      "id": "H1 left/right switches which side of the container has focus",
+      "pass": true,
+      "detail": "side 0 -> 1"
+    },
+    {
+      "id": "H2 items transfer in BOTH directions through real presses",
+      "pass": true,
+      "detail": "carried 44 -(take)-> 45 -(put)-> 44"
+    },
+    {
+      "id": "H3 no container name prints the literal string `undefined` or `null`",
+      "pass": true,
+      "detail": "{\"absent\":[\"Container\",\"Carried\",\"Container\"],\"null\":[\"Container\",\"Carried\",\"Container\"],\"empty\":[\"Container\",\"Carried\",\"Container\"],\"literal\":[\"Container\",\"Carried\",\"Container\"]}"
+    },
+    {
+      "id": "I1 `menu` closes the screen from inside it",
+      "pass": true,
+      "detail": "mode inventory -> world"
+    },
+    {
+      "id": "M1 clicking an inventory row does something",
+      "pass": false,
+      "detail": "clicked 'Chitin cuirass' at [252,716,170,26]; focus {\"col\":1,\"tagIdx\":0,\"rowIdx\":8,\"sortIdx\":1} -> {\"col\":1,\"tagIdx\":0,\"rowIdx\":8,\"sortIdx\":1}, mode inventory -> inventory"
+    },
+    {
+      "id": "I1 INSTRUMENT the touch listeners are attached",
+      "pass": true,
+      "detail": "touch.enabled=true, attached=true, surface hook=true"
+    },
+    {
+      "id": "T0 the touch drawer opens and exposes the screen verbs",
+      "pass": true,
+      "detail": "arc [\"touch.roll\",\"touch.block\",\"touch.light\",\"touch.interact\",\"touch.jump\",\"touch.parry\",\"touch.heavy\",\"touch.use_item\",\"touch.crouch\",\"touch.lock_on\",\"touch.__drawer\"]; after tapping the drawer: [\"touch.roll\",\"touch.block\",\"touch.light\",\"touch.interact\",\"touch.jump\",\"touch.parry\",\"touch.heavy\",\"touch.use_item\",\"touch.crouch\",\"touch.lock_on\",\"touch.__drawer\",\"touch.two_hand\",\"touch.swap_left\",\"touch.swap_right\",\"touch.spell_cycle\",\"touch.menu\"]"
+    },
+    {
+      "id": "T1 a touch control operates a screen",
+      "pass": true,
+      "detail": "tapped 'touch.swap_right' at [1534,730,52,52]; mode inventory -> map"
+    },
+    {
+      "id": "T2 the floating stick walks the open screen's rows",
+      "pass": null,
+      "outcome": "not-applicable",
+      "detail": "mode 'map' has 0 rows to walk (fixture has no discovered places — the same gap as F1), so this half is not-applicable on this fixture; drag recorded anyway: focus {\"view\":\"local\",\"placeIdx\":0} -> (mid) {\"view\":\"local\",\"placeIdx\":0} -> {\"view\":\"local\",\"placeIdx\":0}, moved=false, mode unchanged=true"
+    },
+    {
+      "id": "P1 the pad `menu` button opens a screen",
+      "pass": true,
+      "detail": "mode world -> inventory on pad button 9"
+    },
+    {
+      "id": "P2 the pad walks the screen ring",
+      "pass": true,
+      "detail": "mode inventory -> map on pad button 15"
+    }
+  ],
+  "data": {
+    "instrument": {
+      "attached": true,
+      "moveX": 1,
+      "pending": 8192
+    },
+    "opened": {
+      "advertised": [
+        "world",
+        "journal",
+        "sheet",
+        "spells",
+        "map",
+        "wait"
+      ],
+      "walkable": [
+        "world",
+        "inventory",
+        "map",
+        "sheet",
+        "journal",
+        "spells",
+        "wait"
+      ]
+    },
+    "walk_forward": [
+      "inventory",
+      "map",
+      "sheet",
+      "journal",
+      "spells",
+      "wait",
+      "world"
+    ],
+    "walk_back": [
+      "inventory",
+      "world"
+    ],
+    "doll": {
+      "count": 1,
+      "rects": [
+        [
+          222,
+          282,
+          200,
+          400
+        ]
+      ],
+      "equipment": [
+        "chitin-cuirass@chest",
+        "hooked-gutting-knife@right"
+      ]
+    },
+    "journal_reopen": {
+      "closed_mode": "world",
+      "mode": "journal",
+      "focus": {
+        "view": "chronicle",
+        "page": 0,
+        "indexIdx": 1,
+        "ringIdx": 0,
+        "query": ""
+      }
+    },
+    "container_headers": {
+      "absent": [
+        "Container",
+        "Carried",
+        "Container"
+      ],
+      "null": [
+        "Container",
+        "Carried",
+        "Container"
+      ],
+      "empty": [
+        "Container",
+        "Carried",
+        "Container"
+      ],
+      "literal": [
+        "Container",
+        "Carried",
+        "Container"
+      ]
+    },
+    "touch_instrument": {
+      "enabled": true,
+      "attached": true,
+      "hook": true
+    },
+    "touch_buttons_arc": [
+      {
+        "id": "touch.roll",
+        "kind": "touch_button",
+        "rect": [
+          1725,
+          1008,
+          48,
+          48
+        ]
+      },
+      {
+        "id": "touch.block",
+        "kind": "touch_button",
+        "rect": [
+          1745,
+          951,
+          48,
+          48
+        ]
+      },
+      {
+        "id": "touch.light",
+        "kind": "touch_button",
+        "rect": [
+          1789,
+          908,
+          48,
+          48
+        ]
+      },
+      {
+        "id": "touch.interact",
+        "kind": "touch_button",
+        "rect": [
+          1847,
+          890,
+          48,
+          48
+        ]
+      },
+      {
+        "id": "touch.jump",
+        "kind": "touch_button",
+        "rect": [
+          1661,
+          1002,
+          48,
+          48
+        ]
+      },
+      {
+        "id": "touch.parry",
+        "kind": "touch_button",
+        "rect": [
+          1691,
+          916,
+          48,
+          48
+        ]
+      },
+      {
+        "id": "touch.heavy",
+        "kind": "touch_button",
+        "rect": [
+          1756,
+          853,
+          48,
+          48
+        ]
+      },
+      {
+        "id": "touch.use_item",
+        "kind": "touch_button",
+        "rect": [
+          1842,
+          826,
+          48,
+          48
+        ]
+      },
+      {
+        "id": "touch.crouch",
+        "kind": "touch_button",
+        "rect": [
+          1599,
+          997,
+          44,
+          44
+        ]
+      },
+      {
+        "id": "touch.lock_on",
+        "kind": "touch_button",
+        "rect": [
+          1840,
+          765,
+          44,
+          44
+        ]
+      },
+      {
+        "id": "touch.__drawer",
+        "kind": "touch_button",
+        "rect": [
+          1536,
+          824,
+          48,
+          48
+        ]
+      }
+    ],
+    "touch_drawer_petals": [
+      "touch.roll",
+      "touch.block",
+      "touch.light",
+      "touch.interact",
+      "touch.jump",
+      "touch.parry",
+      "touch.heavy",
+      "touch.use_item",
+      "touch.crouch",
+      "touch.lock_on",
+      "touch.__drawer",
+      "touch.two_hand",
+      "touch.swap_left",
+      "touch.swap_right",
+      "touch.spell_cycle",
+      "touch.menu"
+    ],
+    "errors": []
+  }
+}
