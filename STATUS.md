@@ -10,8 +10,8 @@
 
 - **Judging the sun.** The key-light rebalance landed — this is the one that matters, and it is the
   first change all day that should be visible the moment you walk outside.
-- **Judging the character work** — an independent critic, shooting the new standing pose on real
-  hardware, which the builder shipped without a photograph and said so itself.
+- **Characters, round ten** — the new standing pose was judged and it lifted everyone off the floor;
+  that, and an eye that still doesn't read as an eye.
 - **The water, round two** — round one was judged and failed; the sea still acts as a 17% mirror when
   you look straight at it.
 - **Judging the container screen fix** — and settling a worrying finding: a filed verdict's numbers
@@ -106,12 +106,12 @@
   eye entirely, with two armour sets losing it from *every* angle, because the head was shrunk without
   shrinking what sits on it and the heights were hand-typed so the band drew straight through the eye.
   Now 0 of 96.
-- **The player's own eye was the worst in the game** — 2.16× the brightness of their face, worse than
-  the case that was fixed two rounds ago, affecting the player and **260 of 408** NPC records. Now
-  0.847×.
-- **The body is now photographed on real hardware, and the change is visible.** Eight angles, before
-  and after, on an RTX A4500 — the exact picture the last four judgements were written against. The
-  waist reads at player distance.
+- **The player's own eye was the worst in the game** — 2.16× the brightness of their face, affecting
+  the player and **260 of 408** NPC records. Now 0.847× — but see below: the brightness was the only
+  thing fixed.
+- **The body is photographed on real hardware and the change is visible.** Eight angles, before and
+  after, on an RTX A4500 — the picture the last four judgements were written against. The waist reads
+  at player distance.
 - **And the character was standing like a shop mannequin — that is now fixed but NOT yet photographed.**
   Measured on the pose the game actually draws: shoulder tilt 0.3°, **hip tilt exactly 0.000°**, and
   frames two seconds apart were the identical stand. A real person's weight sits on one leg. The fix
@@ -119,10 +119,21 @@
   player and all 408 NPCs**. The catch is honest and the builder led with it: the paid photo run
   happened *before* the stance was written, so **the stance itself has never been seen on hardware** —
   a critic is shooting it now, along with eight face frames that were photographed and never opened.
-- **Two costs of that fix, both found by measurement.** Rolling the hips floated one foot **17.4 mm**
-  off the ground; that was solved properly (both feet now land level) but leaves the whole character
-  standing **8.9 mm higher**, which nobody has yet checked in the game. And the small-cracks number
-  went up another 0.8%.
+- **The stance was photographed, and it lifted every character in the game off the floor.** Rolling the
+  hips floated one foot; that was levelled properly, but it levelled them **8.9 mm too high**, and the
+  builder's reason for leaving it there turned out to be wrong — the foot-conform code it trusted is a
+  *terrain difference* term that is exactly zero on flat ground, so it cannot absorb a constant. In the
+  running game on real hardware: **frames of the idle loop where both soles are clear of the ground go
+  from 24 of 96 to 68 of 96**, largest gap 2 mm → 11 mm. All 409 characters hover slightly. Being fixed
+  now; the remedy is one line of data.
+- **The eye still doesn't read as an eye.** Eight face frames were shot on real hardware two rounds ago
+  and nobody opened them until today. What's there is *a flat amber lozenge — no pupil, no lid, no
+  orbit*. The round that changed it fixed its **brightness** and deliberately never touched its shape,
+  and said so. That's the standing defect at conversation distance, on the player and 260 of 408
+  people.
+- **Some good news in the same verdict:** the character bar now has **12 of its 18 checks published**
+  for the first time, and the head-count proportion check **has quietly gone from a hard fail to a pass**
+  — 0 of 41 figures in band, to 41 of 41.
 - **The four-round argument about "cracks" in the body got a photograph and a ruling.** The tool that
   counts them **emits no images**, so four rounds argued about the number blind. Someone finally dumped
   the frames and looked: the two largest "cracks" are **daylight between a hanging forearm and the
@@ -136,22 +147,16 @@
 - **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
   out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
   it. Shadows still crush to black; that fix is being built now.
-- **Both dialogue bugs the judges hit are fixed.** The highlighted phrase that did nothing turned out
-  not to be a UI bug at all: the topic was real, but *that speaker* could never answer it — her rumour
-  handed out a topic gated to a different kind of person. So the fix is in **what gets marked as a
-  link**, not in the pressing: a phrase is only drawn as followable if the person you are talking to
-  can actually answer it. And re-asking a topic no longer prints the paragraph twice — it moves the
-  existing answer to the bottom instead.
 - **Dialogue: the topic links work, and were preferred — the first real quality judgement this project
-  has ever completed.** Two people played two builds of the game blind — ours, and one with the inline
-  links removed but every topic still reachable from the list. Neither knew which was which. **Both
-  preferred ours**, and a third reader who never played confirmed their accounts were genuinely
-  distinguishable rather than a coin-flip.
-  **The catch, and it is the useful part:** of six people they talked to, the links were **absent on
-  two, present on four, and noticed on only two** — and on one of those the highlighted phrase **did
-  nothing when pressed**. So the feature works and is liked *where it lands*, and it lands on about
-  half of conversations. Combined with the first NPC you meet having no links at all, most players
-  would never discover it. Fixing placement is now the work, not adding more links.
+  has ever completed.** Two people played two builds blind — ours, and one with the inline links
+  removed but every topic still reachable from the list. **Both preferred ours**, and a third reader
+  confirmed their accounts were genuinely distinguishable rather than a coin-flip.
+  **The catch is the useful part:** of six people they talked to, the links were **absent on two,
+  present on four, noticed on only two** — and on one the phrase **did nothing when pressed**. So it
+  works and is liked *where it lands*, and it lands on about half of conversations; combined with the
+  first NPC you meet having none, most players would never find it. **Placement is the work now**, not
+  more links. Both bugs the judges hit are fixed — the dead phrase was a topic gated to a different
+  kind of person, so a phrase is now only drawn as followable if *this* speaker can answer it.
 - Some buildings still overlap each other; 24 doors still open into another building.
 
 ## Why the game doesn't look better — answered today, and it's one number

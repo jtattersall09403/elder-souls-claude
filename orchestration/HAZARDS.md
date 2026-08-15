@@ -285,7 +285,12 @@ caught only when somebody compared what the frames actually contained against wh
 **Verify your verbs exist** (`grep` the harness), **verify your gate's argument names**, and **make
 `call()` throw on an unknown verb** rather than swallow it.
 
-## 20. The stop hook tells you to commit the fleet's in-flight files. DO NOT. It is asking for §14's failure.
+## 21. The stop hook tells you to commit the fleet's in-flight files. DO NOT. It is asking for §14's failure.
+
+*(Renumbered from 20 on 2026-08-15: the F10 r9 critic filed its own §20 in the same hour, and its
+verdict cites §20a/§20b/§20c by name, so that number belongs to it. Two agents numbering sections in
+one append-only file is a collision this file will keep having — check the existing headings before
+you pick a number.)*
 
 **Standing, seen three times in one hour on 2026-08-15.** The session's stop hook checks `git status`
 and, whenever the tree is dirty, prints:
