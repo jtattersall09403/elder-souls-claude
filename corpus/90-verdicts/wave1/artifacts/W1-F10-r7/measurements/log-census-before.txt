@@ -1,0 +1,53 @@
+TOOL f10-r7-npc-ground-census — NPC burial census + the surface stack under the player stand.
+
+=== char-player ===
+  collision groundAt = 2.680   cell=province   4 non-actor meshes cross this column
+  surfaces within 1.2 m of the collision ground, highest first:
+     y=2.7879  (+0.1079 m)  ground-skin
+     y=2.6800  (+0.0000 m)  ground
+  census: 60 loaded NPC records, 31 DRAWN.
+     buried (>0.15 m below ground): 12/31  worst -2.31 m
+     floating (>0.15 m above ground): 15/31  worst +35.39 m
+       dockmaster-weeja-sen (saxhleel) pos.y=0.37 ground=2.491 delta=-2.121
+       harbourmistress-tesh (imperial) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-factor-0-child0 (argonian) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-keeper-scribe (imperial) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-keeper-smithy (dunmer) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-keeper-yard (imperial) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-legionary-10-partner0 (argonian) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-legionary-11 (argonian) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-cook-1 (argonian) pos.y=7.37 ground=2.68 delta=+4.69
+       lilmoth-cook-5-sibling0 (argonian) pos.y=7.37 ground=2.68 delta=+4.69
+       lilmoth-factor-4-elder0 (argonian) pos.y=7.37 ground=2.68 delta=+4.69
+       lilmoth-factor-4-sibling1 (dunmer) pos.y=7.37 ground=2.68 delta=+4.69
+       lilmoth-keeper-apothecary (argonian) pos.y=7.37 ground=2.68 delta=+4.69
+       lilmoth-keeper-customs (argonian) pos.y=7.37 ground=2.68 delta=+4.69
+       lilmoth-keeper-inn-drowned (argonian) pos.y=7.37 ground=2.68 delta=+4.69
+       lilmoth-keeper-ledger-house (imperial) pos.y=7.37 ground=2.68 delta=+4.69
+
+=== street-lilmoth ===
+  collision groundAt = 2.680   cell=province   4 non-actor meshes cross this column
+  surfaces within 1.2 m of the collision ground, highest first:
+     y=2.8141  (+0.1341 m)  ground-skin
+     y=2.6800  (+0.0000 m)  ground
+  census: 60 loaded NPC records, 31 DRAWN.
+     buried (>0.15 m below ground): 12/31  worst -2.31 m
+     floating (>0.15 m above ground): 15/31  worst +35.39 m
+       dockmaster-weeja-sen (saxhleel) pos.y=0.37 ground=2.491 delta=-2.121
+       harbourmistress-tesh (imperial) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-factor-0-child0 (argonian) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-keeper-scribe (imperial) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-keeper-smithy (dunmer) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-keeper-yard (imperial) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-legionary-10-partner0 (argonian) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-legionary-11 (argonian) pos.y=0.37 ground=2.68 delta=-2.31
+       lilmoth-cook-1 (argonian) pos.y=7.37 ground=2.68 delta=+4.69
+       lilmoth-cook-5-sibling0 (argonian) pos.y=7.37 ground=2.68 delta=+4.69
+       lilmoth-factor-4-elder0 (argonian) pos.y=7.37 ground=2.68 delta=+4.69
+       lilmoth-factor-4-sibling1 (dunmer) pos.y=7.074 ground=2.68 delta=+4.394
+       lilmoth-keeper-apothecary (argonian) pos.y=7.37 ground=2.68 delta=+4.69
+       lilmoth-keeper-customs (argonian) pos.y=7.37 ground=2.68 delta=+4.69
+       lilmoth-keeper-inn-drowned (argonian) pos.y=7.37 ground=2.68 delta=+4.69
+       lilmoth-keeper-ledger-house (imperial) pos.y=7.37 ground=2.68 delta=+4.69
+
+wrote /home/user/elder-souls-claude/reports/f10-r7-ground-truth/npc-ground-census.json

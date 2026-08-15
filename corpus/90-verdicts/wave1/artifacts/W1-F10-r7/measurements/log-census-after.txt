@@ -1,0 +1,39 @@
+TOOL f10-r7-npc-ground-census — NPC burial census + the surface stack under the player stand.
+
+=== char-player ===
+  collision groundAt = 2.680   cell=province   4 non-actor meshes cross this column
+  surfaces within 1.2 m of the collision ground, highest first:
+     y=2.7879  (+0.1079 m)  ground-skin
+     y=2.6800  (+0.0000 m)  ground
+  census: 60 loaded NPC records, 31 DRAWN.
+     BY THE RECORD (sim.npcs[].pos[1], untouched by round 7):
+       buried >0.15 m: 12/31 worst -2.31 m   floating >0.15 m: 15/31 worst +35.39 m
+     AS DRAWN (mesh.position.y — what the player sees):
+       buried >0.15 m: 0/31   floating >0.15 m: 0/31
+     foot_l bone above its own ground: min 0.0749 m, max 0.0970 m over 31 drawn NPCs (rest ankle is 0.090 m)
+       dockmaster-weeja-sen (saxhleel) record_y=0.37 ground=2.491 record_delta=-2.121  DRAWN_y=2.491 drawn_delta=0 foot_l=2.5777
+       harbourmistress-tesh (imperial) record_y=0.37 ground=2.68 record_delta=-2.31  DRAWN_y=2.68 drawn_delta=0 foot_l=2.77
+       lilmoth-cook-1 (argonian) record_y=7.37 ground=2.68 record_delta=4.69  DRAWN_y=2.68 drawn_delta=0 foot_l=2.77
+       lilmoth-cook-5-sibling0 (argonian) record_y=7.37 ground=2.68 record_delta=4.69  DRAWN_y=2.68 drawn_delta=0 foot_l=2.77
+       lilmoth-factor-0-child0 (argonian) record_y=0.37 ground=2.68 record_delta=-2.31  DRAWN_y=2.68 drawn_delta=0 foot_l=2.77
+       lilmoth-factor-4-elder0 (argonian) record_y=7.37 ground=2.68 record_delta=4.69  DRAWN_y=2.68 drawn_delta=0 foot_l=2.77
+
+=== street-lilmoth ===
+  collision groundAt = 2.680   cell=province   4 non-actor meshes cross this column
+  surfaces within 1.2 m of the collision ground, highest first:
+     y=2.8141  (+0.1341 m)  ground-skin
+     y=2.6800  (+0.0000 m)  ground
+  census: 60 loaded NPC records, 31 DRAWN.
+     BY THE RECORD (sim.npcs[].pos[1], untouched by round 7):
+       buried >0.15 m: 12/31 worst -2.31 m   floating >0.15 m: 15/31 worst +35.39 m
+     AS DRAWN (mesh.position.y — what the player sees):
+       buried >0.15 m: 0/31   floating >0.15 m: 0/31
+     foot_l bone above its own ground: min 0.0749 m, max 0.0970 m over 31 drawn NPCs (rest ankle is 0.090 m)
+       dockmaster-weeja-sen (saxhleel) record_y=0.37 ground=2.491 record_delta=-2.121  DRAWN_y=2.491 drawn_delta=0 foot_l=2.5777
+       harbourmistress-tesh (imperial) record_y=0.37 ground=2.68 record_delta=-2.31  DRAWN_y=2.68 drawn_delta=0 foot_l=2.77
+       lilmoth-cook-1 (argonian) record_y=7.37 ground=2.68 record_delta=4.69  DRAWN_y=2.68 drawn_delta=0 foot_l=2.77
+       lilmoth-cook-5-sibling0 (argonian) record_y=7.37 ground=2.68 record_delta=4.69  DRAWN_y=2.68 drawn_delta=0 foot_l=2.77
+       lilmoth-factor-0-child0 (argonian) record_y=0.37 ground=2.68 record_delta=-2.31  DRAWN_y=2.68 drawn_delta=0 foot_l=2.77
+       lilmoth-factor-4-elder0 (argonian) record_y=7.37 ground=2.68 record_delta=4.69  DRAWN_y=2.68 drawn_delta=0 foot_l=2.77
+
+wrote /home/user/elder-souls-claude/reports/f10-r7-ground-truth/after/npc-ground-census.json
