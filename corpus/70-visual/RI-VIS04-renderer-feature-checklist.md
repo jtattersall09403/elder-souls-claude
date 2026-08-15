@@ -77,6 +77,48 @@ that fires · **MIN BAR** = the minimum acceptable configuration.
 - **MIN BAR:** `scene.environment = pmrem(skyRenderTarget)`, refreshed on any sun move > 2°.
   `AmbientLight` alone is **not** acceptable and is treated as the absence of this feature.
 
+> **AMENDED 2026-08-16 — ADDED by the `F4` round-2 critic (`corpus/90-verdicts/wave1/W1-F4-r2.md`).
+> NOTHING ABOVE IS REMOVED, NO THRESHOLD IS LOWERED AND NO NUMBER IN §2 CHANGES. This adds a
+> METHOD that a claim about the light budget must follow, and it can only ever cost a build a
+> mark, never earn it one.**
+>
+> **§2-D2 — ENUMERATE THE LIGHT BUDGET PER LIGHT, ON THE *VISIBLE* RIG, AGAINST THE CAPTURE'S OWN
+> NOISE FLOOR — BEFORE CALLING ANY TERM A LEVER OR RULING ONE OUT.**
+>
+> §2's DETECT is one number over the whole frame. It says whether the shadow side takes the
+> environment's hue; it cannot say *which* of the frame's lights failed to put it there. Both F4
+> rounds picked their lever from an argument about the light budget rather than a measurement of
+> one — round 1 cut `sky` 0.42 → 0.315 and `fill` 0.30 → 0.225, and round 2's ablation then showed
+> both cuts sat inside the capture's own noise. Ruling **S60**'s clause (a) does not close this
+> either: it compares the key against the probe and puts the hemisphere and the ambient fill in
+> **neither arm**, so on this build 0.558 of ambient intensity is in no arm of the acceptance.
+>
+> **The method, four steps, and step 1 is the one that has already been got wrong.**
+>
+> 1. **Census every light with its parent chain's visibility, and quote only the lights that can
+>    reach a pixel.** A scene-wide `scene.traverse(o => o.isHemisphereLight)` sum is *not* the rig.
+>    Measured on this build at 08:00 (`artifacts/W1-F4-r2-critic/metrics/light-census-visible-vs-scenewide.json`):
+>    that sum is **5.0011**, and the hemisphere light whose chain is visible is **0.37107** — the
+>    other **4.63** sits inside `Group`s that are hidden (`arena-bounded-readable-fill`,
+>    `rootway-bounded-fill`, three interior sets). A budget quoted from the sum is wrong by 13×,
+>    and round 2's headline sentence — *"switching off a HemisphereLight of live intensity
+>    5.0011"* — is that error.
+> 2. **One ablation arm per visible light, plus one for `scene.environment`**, applied per frame
+>    (a one-shot edit is overwritten before the screenshot by any `apply()` that rewrites the rig).
+> 3. **A `base` re-capture taken AFTER every other arm is the run's own noise floor**, and every
+>    arm is reported as a multiple of it, on the sealed judged crop **and** the full frame (**S64**).
+> 4. **A term whose ablation lands inside that floor is `unresolvable at its shipped value`.** It
+>    may **not** be reported as absent, as "not a lever", or as evidence about a *class* of levers.
+>    The honest sentence names the value: here `hemi_off` 2.18 and `fill_off` 2.04 against a floor
+>    of 1.86 are unresolvable **at hemisphere 0.371 and ambient 0.187** — values a previous round
+>    chose. What the same term does at 4× is a different measurement and needs a different arm.
+>
+> **Bound.** DETECT and method only. It adds no route to a higher §14 mark and no route to a higher
+> score for any build; a critic may cite it to **withhold** a mark and never to grant one. It changes
+> none of §2's thresholds and it is **not the reason for any pass** — the verdict that adds it is a
+> FAIL set by §2's own pre-existing DETECT. **Overturned** if a per-light visible-chain census proves
+> unavailable to a harness, in which case §2 records the budget `UNVERIFIED`, which counts as absent.
+
 ---
 
 ### §3 — Cascaded shadow maps at a sane resolution
