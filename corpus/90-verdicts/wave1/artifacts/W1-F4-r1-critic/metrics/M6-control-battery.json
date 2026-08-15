@@ -1,0 +1,60 @@
+{
+  "at": "2026-08-15T18:32:40.003Z",
+  "bar": "RI-VIS03 M2/M6 — exterior_daylight: retention >= 0.60 (hard fail < 0.30), hue_offset >= 15 deg (hard fail < 6), C_shadow >= 6, C_local_med >= 0.045",
+  "rows": [
+    {
+      "file": "corpus/70-visual/refs/modern/exterior_daylight/REF-ER__steam-dyules-2764066988.jpg",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.0006,
+      "M2": {
+        "C_global": 0.2503,
+        "C_local_med": 0.0316
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2498,
+        "retention": 0.4426,
+        "hue_offset_deg": 96.08,
+        "C_shadow": 5.702,
+        "mean_Yp_shadow": 0.0762,
+        "mean_Yp_lit": 0.7288
+      }
+    },
+    {
+      "file": "corpus/70-visual/refs/modern/exterior_daylight/REF-ER__steam-dyules-2764130742.jpg",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.0114,
+      "M2": {
+        "C_global": 0.1134,
+        "C_local_med": 0.0471
+      },
+      "M6": {
+        "shadow_mask_frac": 0.247,
+        "retention": 0.6238,
+        "hue_offset_deg": 73.43,
+        "C_shadow": 7.921,
+        "mean_Yp_shadow": 0.133,
+        "mean_Yp_lit": 0.4082
+      }
+    },
+    {
+      "file": "corpus/70-visual/refs/modern/exterior_daylight/REF-ER__steam-dyules-2764457119.jpg",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0,
+      "M2": {
+        "C_global": 0.1005,
+        "C_local_med": 0.0519
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2499,
+        "retention": 0.9877,
+        "hue_offset_deg": 94.52,
+        "C_shadow": 4.903,
+        "mean_Yp_shadow": 0.1421,
+        "mean_Yp_lit": 0.394
+      }
+    }
+  ]
+}
