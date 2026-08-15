@@ -245,6 +245,68 @@ export const DERIVATION = {
   rows: {},
 };
 
+/**
+ * THE SUBJECT TEST'S MEASURED PERFORMANCE, on the only labelled set this repo has. Published
+ * because a screen whose error rate is unknown is a screen nobody can size their trust to.
+ *
+ * The set: `reports/runpod-gpu/runs/f10-characters-hw3/` — 93 hardware frames that the sweep
+ * itself reported as `0 red`, of which 17 are known empty. `W1-F10-CHARACTER-CRITIC`'s own words:
+ * *"17 of the 93 hardware frames contain no subject: Ixtei (race argonian) stands out at sea off
+ * the Lilmoth pier."* Those 17 are exactly the frames of subject `npc-lilmoth-apothecary-12`.
+ *
+ * The curve, measured by `tools/i2/eval-subject.mjs` on the raw statistic:
+ *
+ *   threshold   empties caught (of 17)   false reds (of 76 good frames)
+ *      4.0            8                        6
+ *      6.0           14                        6      <-- shipped
+ *      8.0           15                        9
+ *     10.0           16                       16
+ *     11.5           17                       22
+ *
+ * Run end to end through this module at the shipped threshold, using subject boxes derived from
+ * the sweep's own projected head/foot NDC, the result is **15 of 17 caught against 6 of 76 false
+ * reds** (`corpus/90-verdicts/wave1/artifacts/I2-CAPTURE-SANITY/retro-f10-characters-hw3.json`).
+ *
+ * THERE IS NO CLEAN SEPARATION, and that is the honest headline: catching the last two empties
+ * costs 22 of 76 good frames. So subject presence is AMBER by default and does not fail the run —
+ * `--require-subject` promotes it. At a ~8% false-red rate a hard gate would start eating good
+ * evidence within one sweep, and a check that eats good evidence is a check that earns the right
+ * to be ignored. This project has enough of those.
+ *
+ * WHAT WAS TRIED AND REJECTED, so nobody repeats it:
+ *  - OFF-BACKGROUND COLOUR SETS (the previous draft's connected-component test). On this same run
+ *    it returned NO_SUBJECT for 85 of 93 frames. At 4-bit-per-channel quantisation a character's
+ *    cloth and skin land in the same buckets as the town behind it, so almost nothing inside the
+ *    box is "off background". It passed a synthetic self-test at 320x240 because the border ring
+ *    there samples few buckets — `HAZARDS.md` §0 exactly: the arms agreed about a false premise.
+ *  - CONTRAST NORMALISATION (dividing by the frame's own pixel standard deviation) to fix the
+ *    night-frame confound. It made the curve strictly WORSE: 4 of 17 caught at zero false reds,
+ *    14 of 17 only at 23 false reds. Recorded because it is the obvious next idea.
+ *  - THE PROJECTION, which would need no pixels at all. Every frame in that run reports
+ *    `head.on_screen` and `foot.on_screen` true and an identical 491px projected box, INCLUDING
+ *    all 17 empties: the harness places the camera from the subject's nominal world position and
+ *    nothing is drawn there. The geometry cannot see this failure, which is why it is a pixel
+ *    question at all.
+ *
+ * THE UNSOLVED CONFOUND: every false red is a night frame. At low contrast the centre band stops
+ * differing from its flanks. A self-test arm — a dark scene WITH a figure in it — is kept red on
+ * purpose so this stays visible in the suite rather than only here.
+ */
+export const SUBJECT_ROC = {
+  labelled_set: 'reports/runpod-gpu/runs/f10-characters-hw3/artifacts/f10/hw — 93 frames, 17 known empty (subject npc-lilmoth-apothecary-12), 76 known full',
+  statistic: 'centre_flank_luma',
+  shipped_threshold: 6.0,
+  measured_end_to_end: { caught_of_17: 15, false_red_of_76: 6 },
+  curve: [
+    { threshold: 4.0, caught_of_17: 8, false_red_of_76: 6 },
+    { threshold: 6.0, caught_of_17: 14, false_red_of_76: 6, shipped: true },
+    { threshold: 8.0, caught_of_17: 15, false_red_of_76: 9 },
+    { threshold: 10.0, caught_of_17: 16, false_red_of_76: 16 },
+    { threshold: 11.5, caught_of_17: 17, false_red_of_76: 22 },
+  ],
+  confound: 'every false red is a night frame; contrast normalisation was tried and made it worse',
+};
+
 const PCTS = [0.01, 0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95, 0.99];
 
 /** Pure measurement. No thresholds are applied here, so calibration and gating share one path. */
