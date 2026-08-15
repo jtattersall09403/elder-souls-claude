@@ -244,6 +244,18 @@ export function drawContainer(S, m) {
   const sc = screen(S, 'container', title, m.placeName || null, 'clay', alpha, fl);
   const [ix, iy, iw, ih] = sc.inner;
   const half = (iw - 40 * s) / 2;
+  // T4 round 6, RI-UIX06 FD4 (`corpus/90-verdicts/wave1/T4-r5.md`, "the container clips its own
+  // gold column"). Round 4/5 pitched the three columns as fractions of `half` (0.60/0.19/0.19),
+  // but `row()` starts drawing them `inset` units RIGHT of the row's own left edge (the icon
+  // gutter, `ICON+10` below) and the row's own rect is `half-16` wide, not `half`. So the old
+  // pitch put the gold column's start at `inset + 0.98*half` = `38 + 0.98*198` = 232.04 units
+  // against a row that ends at `half-16` = 182 — 12.4 units past the row's own declared rect,
+  // which `surface.js`'s clip (`c.rect(...); c.clip()`) removes entirely, on all seven rows, both
+  // sides (re-derived independently of the critic and it matches: `38 + 0.98*198 - (198-16)` =
+  // `232.04 - 182` = `12.04`). Fixed by pitching the fractions against the space actually left for
+  // them — the row's own width MINUS the icon inset — so the three columns can never run past the
+  // row's declared right edge regardless of how the row is sized.
+  const usable = half / s - 16 - (ICON + 10);
   // THE ROWS STOP AT EIGHT AND THE BOTTOM THIRD BECOMES THE THING YOU ARE ABOUT TO MOVE.
   //
   // Round 1 measured this screen at **0.033** fill, the emptiest panel in the build — two lists of
@@ -289,15 +301,14 @@ export function drawContainer(S, m) {
     for (let i = win.from; i < win.to; i++) {
       const it = side.rows[i];
       const ry = iy + listTop * s + (i - win.from) * ROW_H * s;
-      // T4 round 4. name(280) + weight(90) + gold(90) = 460 was pitched against the old
-      // ~718-unit `half` ((iw-40)/2 at iw=1476); the new box's `half` is under 460 alone, so all
-      // three move onto fractions of `half` instead of literals that would run the gold column
-      // past the row's own edge and into the panel's outer margin.
+      // T4 round 4 pitched these as fractions of `half`; T4 round 6 pitches them as fractions of
+      // `usable` (`half` minus the icon inset minus the row's own right margin) so the gold column
+      // lands inside the row's own declared rect instead of 12 units past it — see `usable` above.
       row(S, `container.${side.id}.row.${it.id}`, 'list_row',
         side.x, ry, half - 16 * s, ROW_H * s, [
-          { text: it.name, w: (half / s) * 0.60 },
-          { text: fmt(it.weight), w: (half / s) * 0.19, align: 'right', face: 'bone', size: 15 },
-          { text: it.value_gold ? String(it.value_gold) : '—', w: (half / s) * 0.19, align: 'right', face: 'bone', size: 15 },
+          { text: it.name, w: usable * 0.60 },
+          { text: fmt(it.weight), w: usable * 0.19, align: 'right', face: 'bone', size: 15 },
+          { text: it.value_gold ? String(it.value_gold) : '—', w: usable * 0.19, align: 'right', face: 'bone', size: 15 },
         ], on && i === side.idx, alpha, { item_id: it.id, side: side.id }, ICON + 10);
       // RI-UIX09 P1 again, and the SAME call — a chest full of things looks like a chest full of
       // things on both sides of the transfer. Round 1 measured this panel at 0.033 fill, the
@@ -325,13 +336,20 @@ export function drawContainer(S, m) {
     itemIcon(S, 'container.band.depiction', ix, by + 6 * s, plate, plate, csel, alpha,
       { condition: csel.condition === null || csel.condition === undefined ? null : csel.condition });
   }
+  // Computed here (not inside the draw callback) so `meta.description_truncated` is available to
+  // any tool reading `getUIState()` without re-deriving the same wrap math a second time — the
+  // exact `truncated` decision the draw callback below makes for real.
+  const bandW = iw - 160 * s, bandDescTop = 106 * s;
+  const bandLines = csel ? wrap(csel.description || '', faceOf('ink'), BODY.screen * s, bandW * 0.94) : [];
+  const bandMaxLines = Math.max(1, Math.floor((bh - bandDescTop) / (BODY.screen * s * 1.44)));
   S.el({
     id: 'container.band', kind: 'detail_panel',
-    rect: [ix + 160 * s, by, iw - 160 * s, bh], opacity: alpha,
+    rect: [ix + 160 * s, by, bandW, bh], opacity: alpha,
     text: csel ? csel.description : null,
     meta: csel ? {
       item_id: csel.id, weight: csel.weight, value_gold: csel.value_gold, condition: csel.condition,
       side: m.side === 0 ? 'mine' : 'theirs', depiction_element: 'container.band.depiction',
+      description_truncated: bandLines.length > bandMaxLines,
     } : null,
   }, (c, r) => {
     if (!csel) {
@@ -350,8 +368,28 @@ export function drawContainer(S, m) {
       drawText(c, v, fx, r[1] + 78 * s, fb, 15 * s, ink());
       fx += 150 * s;
     }
-    const size = BODY.screen * s, lh = size * 1.44;
-    writeLines(c, wrap(csel.description || '', f, size, r[2] * 0.94), r[0], r[1] + 106 * s, 'ink', size, lh, ink());
+    const size = BODY.screen * s, lh = size * 1.44, descTop = 106 * s;
+    // T4 round 6, RI-UIX06 FD4 (`corpus/90-verdicts/wave1/T4-r5.md`, "container.band clips its own
+    // text"). `writeLines()` had no line cap, so a description longer than the band's own declared
+    // height (`r[3]`, the SAME rect `surface.js`'s clip is built from) drew lines whose baseline
+    // fell outside that clip -- pixels that never render, with no line drawn anywhere to say so.
+    // Re-derived independently of the critic over every carried item at this exact wrap width: 1
+    // of 45 needs <=3 lines, 19 need 4, 23 need 5, 2 need 6, against the ~2 lines this band's
+    // current height has room for. Growing the box to fit the long tail was tried and rejected --
+    // it lowers `D2` (more panel area, not proportionally more ink) and container's margin over
+    // `RI-UIX09` DN4's 0.15 floor is 0.0038, already spent once by round 5's `listTop` compensation
+    // (S59 preservation clause). So the band draws only as many FULL lines as its own declared rect
+    // can hold, and ellipsises the last one it shows whenever there is more text after it -- the
+    // declared rect is still the clip, but nothing is drawn past it that the player cannot also see
+    // was cut.
+    const wrapped = wrap(csel.description || '', f, size, r[2] * 0.94);
+    const maxLines = Math.max(1, Math.floor((r[3] - descTop) / lh));
+    let shown = wrapped;
+    if (wrapped.length > maxLines) {
+      shown = wrapped.slice(0, maxLines);
+      shown[maxLines - 1] = ellipsise(shown[maxLines - 1], f, size, r[2] * 0.94, { force: true });
+    }
+    writeLines(c, shown, r[0], r[1] + descTop, 'ink', size, lh, ink());
   });
   hint(S, 'container.hint', ix, iy + ih + 4 * s, iw, containerHint, alpha);
 }
