@@ -160,8 +160,43 @@ export function knownLightingRecipes() { return [...REGISTRY.keys()].sort(); }
 // arithmetic lands short. The visible payoff is not brightness: at these values the building at
 // the pack's own pose CASTS A READABLE SHADOW ONTO THE GROUND, in a frame where the shipped build
 // renders the same ground flat. The shadow map was always there. Nothing could see it.
+// F4 ROUND 2 — `env` AND `envGroundBounce`, AND WHY ONLY THOSE TWO OF THE SIX.
+//
+// Round 1 was judged FAIL at 2/10 (`corpus/90-verdicts/wave1/W1-F4-r1.md`), capped by `RI-VIS04`
+// §2's own DETECT — `M6 hue_offset` — which nobody had ever run. Round 2 ran the four ablation
+// arms that decide which of these numbers can move it, at pair01 08:00 on the sealed judged crop
+// (S64: the crop is the domain), each against that run's own noise floor of 1.86 mean|d|rgb:
+//
+//     key_off 26.33      env_off 8.10      hemi_off 2.18      fill_off 2.04
+//
+// `hemi_off` and `fill_off` are 1.17x and 1.10x the noise floor. THE HEMISPHERE AND THE FILL ARE
+// UNRESOLVABLE AT THIS WINDOW, so `sky` and `fill` are left exactly where round 1 put them — not
+// because they are right, but because moving them is measurably spending nothing. That is a
+// finding about round 1 too: its `sky` 0.42 -> 0.315 and `fill` 0.30 -> 0.225 bought nothing
+// either, and no arm in round 1 could have told it so.
+//
+// `env` is the one ambient term that IS resolvable (4.4x the floor), and it is what carries the
+// sky's hue into the shadow side, so round 1 cutting it 1.00 -> 0.35 is what emptied the shadows
+// — the r1 critic's new `RI-VIS04` §3-D3, `retention` 0.7199 -> 0.4526 and `C_shadow` 9.762 ->
+// 4.785 at pair03. It goes back up, and the ceiling is not chosen by taste: S60 clause (a)
+// requires `key_off >= 2x env_off`, measured 26.33/8.10 = 3.25 on the crop, so `env` has exactly
+// 1.625x of headroom before the acceptance fails. 0.35 -> 0.55 is 1.571x and lands INSIDE it with
+// margin for the capture noise, at a predicted ratio of 2.07.
+//
+// `envGroundBounce` 0.38 -> 0.22: how much of the probe's LOWER hemisphere is the brown ground
+// (0.34, 0.31, 0.24) rather than sky. Less brown in the ambient is more sky in the ambient, and
+// it costs nothing in `env_off` because it moves colour, not intensity.
+//
+// `key` STAYS AT 3.00. Warming or strengthening the key measured WORSE on the metric this round
+// exists to move — seven page-side candidates, `hue_offset` 7.16 (control) down to 5.84 at
+// warm 0.70 — because the shadow side of this world is the warm one and warming the key closes
+// the gap. The colour work is in `sky.js`'s daytime `horizon`, which is where the shadow side's
+// hue actually comes from; see the long note there.
+//
+// REVERT IN ONE STEP: set `env` back to 0.35 and `envGroundBounce` back to 0.38 here, and restore
+// the three `hor` day-end constants in `sky.js` to 0.760 / 0.790 / 0.700.
 registerLightingRecipe('noon-marsh', variantOf('exterior', {
-  key: 3.00, sky: 0.315, fill: 0.225, env: 0.35, envGroundBounce: 0.38,
+  key: 3.00, sky: 0.315, fill: 0.225, env: 0.55, envGroundBounce: 0.22,
   fog: { extinction: 0.90, height: 1.0, inscatter: 0.10 }, exposure: 1.0,
 }));
 

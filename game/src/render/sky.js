@@ -796,10 +796,48 @@ export class Sky {
       lerp(0.024, 0.115, day) * w.tint[0] + dusk * 0.05,
       lerp(0.036, 0.305, day) * w.tint[1] + dusk * 0.03,
       lerp(0.082, 0.620, day) * w.tint[2] + dusk * 0.02);
+    // F4 ROUND 2 — THE DAYTIME HORIZON IS THE ONLY COLOUR THE SHADOW SIDE CAN COME FROM, AND IT
+    // WAS THE WARMEST THING IN THE FRAME. The day end of this triple was (0.760, 0.790, 0.700):
+    // a pale yellow-green. It is not one colour among several — `hor` is read FOUR times below
+    // (`hemi.color`, `fill.color`, the fog lerp, and `bakeEnvironmentProbe`'s `horizon`), so every
+    // ambient term in a daylight frame took its hue from here, and the key at (1.00, 0.94, 0.82)
+    // is the same family. `RI-VIS03` M6 exists to catch exactly that — *"a single white
+    // DirectionalLight plus a white AmbientLight produces hue_offset ~ 0"* — and measured on the
+    // landed r1 build it reads 3.71 deg full-frame / 7.16 deg on the sealed pair01 crop, against
+    // an `exterior_daylight` minimum of 15 and a hard fail below 6. This repo's own vendored
+    // modern-fidelity plates, same instrument, same session, read 12.49-143.28 deg (n = 8,
+    // `reports/f4r2/plates-all` — and the first six reproduce the r1 critic's figures exactly).
+    //
+    // WHY THIS LINE AND NOT A RECIPE MULTIPLIER, WHICH IS WHAT ROUND 1 REACHED FOR. Measured at
+    // pair01, 08:00, on the sealed judged crop, ablating one term at a time — the arms nobody in
+    // this project had ever run: `key_off` 26.33, `env_off` 8.10, `hemi_off` 2.18, `fill_off`
+    // 2.04, against that run's own noise floor (base re-captured after every other arm) of 1.86.
+    // THE HEMISPHERE AND THE AMBIENT FILL ARE AT OR INSIDE THE NOISE FLOOR. You cannot colour a
+    // shadow with a light whose removal is indistinguishable from re-taking the photograph, which
+    // is why the page-side battery that cooled the hemisphere by 40% at constant luminance moved
+    // `hue_offset` by 0.18 deg (7.16 -> 7.34), and why warming the KEY made it WORSE (7.16 ->
+    // 5.84 at warm 0.70): the shadow side of this world is already the warm one, so warming the
+    // key closes the gap instead of opening it. Seven candidates, none above 7.34.
+    //
+    // The one ambient term that IS resolvable is the environment probe (`env_off` 8.10, 4.4x the
+    // floor) — and the probe is baked from `zenith`, `horizon` and `ground`. `horizon` is this
+    // line. So this is the lever, and it is the only one.
+    //
+    // AT MATCHED LUMINANCE, ON PURPOSE (S59). Old day end (0.760, 0.790, 0.700) has Rec.709
+    // luminance 0.77706; the new (0.677, 0.790, 0.944) has 0.77707. The lever CANNOT buy hue with
+    // brightness, which is the trade S59 was written about and the one a "make it bluer" change
+    // would otherwise smuggle in.
+    //
+    // WHAT IT CANNOT REACH, BY CONSTRUCTION, AND THIS IS THE PRESERVATION CLAUSE BUILT INTO THE
+    // ARITHMETIC RATHER THAN ASSERTED BESIDE IT: the term is `lerp(nightEnd, dayEnd, day)`, so at
+    // `day = 0` it is bit-identical and NIGHT IS UNTOUCHED; and twelve lines below, `hor` is
+    // lerped toward a neutral by `overcast`, so at full overcast it is bit-identical and the two
+    // recipes this round does not own (`overcast-flat`, `storm`) ARE UNTOUCHED AT THEIR OWN
+    // WEATHER. Both are checked as null controls rather than argued.
     const hor = new THREE.Color(
-      lerp(0.045, 0.760, day) * w.tint[0] + dusk * 0.36,
+      lerp(0.045, 0.677, day) * w.tint[0] + dusk * 0.36,
       lerp(0.058, 0.790, day) * w.tint[1] + dusk * 0.17,
-      lerp(0.090, 0.700, day) * w.tint[2] + dusk * 0.06);
+      lerp(0.090, 0.944, day) * w.tint[2] + dusk * 0.06);
     zen.lerp(new THREE.Color(0.30 * day + 0.02, 0.31 * day + 0.02, 0.33 * day + 0.03), overcast);
     hor.lerp(new THREE.Color(0.40 * day + 0.03, 0.41 * day + 0.03, 0.42 * day + 0.04), overcast);
 

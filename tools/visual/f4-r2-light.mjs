@@ -207,7 +207,7 @@ const MIX = `
   const WARM = [1.000, 0.855, 0.660];   // ~4800 K sunlight
   const COOL = [0.148, 0.393, 0.798];   // the day zenith's own ratio, normalised
   // MEASURED, NOT GUESSED: the first candidate battery moved hue_offset by 0.18 deg on the sealed
-  // pair01 crop (7.16 -> 7.34) with `cool = 0.40`, because CONSTANT LUMINANCE pulls a lerp back
+  // pair01 crop (7.16 -> 7.34) at cool = 0.40, because CONSTANT LUMINANCE pulls a lerp back
   // toward where it started when the start is already near the target's luminance. The night
   // recipe reaches 22-33 deg with a key of [0.549, 0.663, 0.847] — a hardcoded cool moon — so the
   // MAGNITUDE of tint that works on this scene's olive albedo is known, and these two targets are
