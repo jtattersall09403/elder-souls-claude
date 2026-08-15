@@ -72,6 +72,38 @@ do not count as a judging pass; the orchestrator re-runs the critic.
 Artifacts must be reproducible: record the exact command, the seed, the commit SHA, and
 the resolution/duration. A screenshot with no camera pose is an anecdote.
 
+### 1.2b A screen must WORK, not merely look right. Drive it with real inputs.
+
+**Mandatory for any piece that ships an interface. Added 2026-08-15 because the project shipped a
+dialogue window that measured `ΔE 0.00` against the owner's own reference capture — a perfect score on
+every appearance check we had — and the owner then opened it and could not select a topic.**
+
+Every check that existed asked *what does it look like*. Not one asked *does it do anything*. That is
+the same defect as a model nothing reads (`RI-MTH07`), arriving through the front end: a screen nothing
+can operate is a picture of a screen.
+
+**So, for every interface you judge:**
+
+1. **Drive it with the real input path.** Actual key presses, actual clicks, actual taps through the
+   shipped handler — not by calling a function that the UI happens to also call, and not by setting
+   state directly. A test that reaches past the input layer cannot see a dead input layer, which is
+   precisely what got shipped.
+2. **Enumerate every affordance the screen offers and operate each one.** Every topic, button, tab,
+   slot, list row, close control and page turn. **A control that is drawn and does nothing is a hard
+   fail**, and it is worse than a control that is absent, because it lies to the player.
+3. **Check it is actually the screen in use, everywhere it should be.** Ours was live in ordinary
+   conversation and *not* used by the character-creation flow, so the first dialogue a new player ever
+   sees was the old one. Ask: which code paths open this kind of screen, and do they all open *this*
+   one? Grep for the alternatives and say what you found.
+4. **On every supported input device**, keyboard, mouse, touch and gamepad, or state plainly which you
+   could not test and score that arm 0 fail-closed.
+5. **Record the state after each interaction**, not just that no error was thrown. "Clicked the topic"
+   is not evidence; "clicked the topic, the answer text changed to X and two new topics appeared" is.
+
+**A screenshot is not an interaction test and a geometry check is not either.** Both are necessary and
+neither is sufficient. If your evidence is entirely stills and rects, you have measured a photograph of
+a UI.
+
 ### 1.3 Judge the bar, not only the build — and close the hole yourself
 
 **Mandatory. A critic that scores a piece against an insufficient bar has produced a number, not a
@@ -115,9 +147,16 @@ If the answer is no, **say what is missing and fix it in the same pass**:
 
 - **You may only ADD. Never weaken, delete, or relax an existing row** to make a piece pass. An
   extension that lowers the bar is a corpus edit no critic may make — take it to arbitration.
-- **A bar you extended may not be the reason you PASS.** If your new item is the only thing standing
-  between the piece and a fail, you have graded your own work. Score the piece against the bar as it
-  stood, record the new item as **owed for the next round**, and say so.
+- **A bar you extended may not be the reason you PASS — but it absolutely may be the reason you FAIL,
+  and that is the entire point of extending it.** The conflict of interest runs one way only. A critic
+  who writes a new row and then passes a piece *because* of it has graded its own work; a critic who
+  writes a new row and **fails** a piece on it has found something the corpus could not previously see,
+  which is the job. *(Corrected 2026-08-15 at the owner's direction — the guard was stated symmetrically
+  and was wrong in the failing direction. The `T4` critic followed the old wording, excluded its own
+  `RI-UIX09` from the score, and so recorded that our inventory has **zero** pictorial elements against
+  Morrowind's wall of painted objects as something that did not count. It should have counted.)*
+  When a new row fails a piece, score it, say plainly that the row is new and that you wrote it, and
+  name what it would take to pass. A defect found by a bar written this morning is still a defect.
 - **Bound it.** If closing the hole properly is a piece of work rather than a pass — a whole reference
   set, a protocol, a new area — **do not build it inside a critique.** Write the finding, name what is
   needed, file it, and score against what exists while stating the cap that ignorance puts on your own
