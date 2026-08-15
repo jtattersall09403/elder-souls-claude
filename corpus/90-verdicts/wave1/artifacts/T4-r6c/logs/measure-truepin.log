@@ -1,0 +1,17 @@
+[world] elements 10  pictorial 0  fill null
+[inventory] elements 75  pictorial 22  fill 0.1557
+[journal] elements 23  pictorial 0  fill 0.174
+[sheet] elements 62  pictorial 10  fill 0.173
+[spells] elements 19  pictorial 2  fill 0.3048
+[levelup] elements 39  pictorial 10  fill 0.1521
+[container] elements 33  pictorial 8  fill 0.1538
+[container_no_name] elements 29  pictorial 6  fill 0.1449
+[guard] "(absent)"->["Container","Carried","Container"]  null->["Container","Carried","Container"]  ""->["Container","Carried","Container"]  "undefined"->["Container","Carried","Container"]  "Reed Creel"->["Reed Creel","Carried","Reed Creel"]
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: Target page, context or browser has been closed
+    at /tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/pin76cd/tools/ui/t4-r2-measure.mjs:478:33
+
+Node.js v22.22.2

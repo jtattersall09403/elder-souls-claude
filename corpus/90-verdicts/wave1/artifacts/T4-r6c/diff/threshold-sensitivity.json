@@ -1,0 +1,107 @@
+{
+  "note": "dE76 approximation used ONLY to profile the boundary population; the filed D2 numbers come from the module dE00 unchanged.",
+  "screens": {
+    "levelup": {
+      "pin": {
+        "mode": [
+          223,
+          223,
+          216
+        ],
+        "fill_at_dE": {
+          "5.0": 0.4294,
+          "5.5": 0.3482,
+          "6.0": 0.2754,
+          "6.5": 0.2173,
+          "7.0": 0.1887
+        },
+        "pixels_in_boundary_band_5_5_to_6_5": 30144,
+        "boundary_band_as_pct_of_panel": 13.08
+      },
+      "head": {
+        "mode": [
+          223,
+          223,
+          216
+        ],
+        "fill_at_dE": {
+          "5.0": 0.4292,
+          "5.5": 0.3496,
+          "6.0": 0.2829,
+          "6.5": 0.2217,
+          "7.0": 0.189
+        },
+        "pixels_in_boundary_band_5_5_to_6_5": 29462,
+        "boundary_band_as_pct_of_panel": 12.79
+      }
+    },
+    "container": {
+      "pin": {
+        "mode": [
+          132,
+          85,
+          55
+        ],
+        "fill_at_dE": {
+          "5.0": 0.1756,
+          "5.5": 0.1695,
+          "6.0": 0.1657,
+          "6.5": 0.1627,
+          "7.0": 0.1599
+        },
+        "pixels_in_boundary_band_5_5_to_6_5": 1487,
+        "boundary_band_as_pct_of_panel": 0.67
+      },
+      "head": {
+        "mode": [
+          132,
+          85,
+          55
+        ],
+        "fill_at_dE": {
+          "5.0": 0.1678,
+          "5.5": 0.1617,
+          "6.0": 0.1572,
+          "6.5": 0.155,
+          "7.0": 0.1523
+        },
+        "pixels_in_boundary_band_5_5_to_6_5": 1471,
+        "boundary_band_as_pct_of_panel": 0.67
+      }
+    },
+    "journal": {
+      "pin": {
+        "mode": [
+          34,
+          28,
+          26
+        ],
+        "fill_at_dE": {
+          "5.0": 0.9761,
+          "5.5": 0.9759,
+          "6.0": 0.9757,
+          "6.5": 0.9752,
+          "7.0": 0.9751
+        },
+        "pixels_in_boundary_band_5_5_to_6_5": 232,
+        "boundary_band_as_pct_of_panel": 0.07
+      },
+      "head": {
+        "mode": [
+          34,
+          28,
+          26
+        ],
+        "fill_at_dE": {
+          "5.0": 0.9762,
+          "5.5": 0.9759,
+          "6.0": 0.9757,
+          "6.5": 0.9752,
+          "7.0": 0.9751
+        },
+        "pixels_in_boundary_band_5_5_to_6_5": 236,
+        "boundary_band_as_pct_of_panel": 0.08
+      }
+    }
+  }
+}
