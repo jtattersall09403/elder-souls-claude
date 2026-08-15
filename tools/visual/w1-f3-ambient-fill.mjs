@@ -508,6 +508,18 @@ if (args.alternate) {
     mean_paired_p10_difference: +meanDiff.toFixed(3),
     mean_paired_p90_difference: +meanP90Diff.toFixed(3),
     off_series_drift_range: +drift.toFixed(3),
+    // THE TWO STATISTICS THE BLIND VERDICT ITSELF USED. W1-VISUAL-BLIND-PROTOCOL-A-r1 corroborated
+    // its judges with exactly these two from `image-leakcheck.mjs` — `shadow_levels` (5/5 pairs named
+    // the reference) is cluster C, this remedy's own cluster, and R3's stated acceptance is phrased
+    // in it; `local_contrast_med` (5/5) is cluster A. Carrying them here, paired, means the piece is
+    // measured in the verdict's vocabulary rather than only in one it invented for itself — and it
+    // is the only way to see whether the fill buys shadow detail at the price of micro-contrast.
+    shadow_levels_off_series: off.map((o) => o.shadow_levels),
+    shadow_levels_on_series: on.map((o) => o.shadow_levels),
+    mean_paired_shadow_levels_difference: +(on.reduce((s, o, i) => s + (o.shadow_levels - off[i].shadow_levels), 0) / on.length).toFixed(3),
+    local_contrast_med_off_series: off.map((o) => o.local_contrast_med),
+    local_contrast_med_on_series: on.map((o) => o.local_contrast_med),
+    mean_paired_local_contrast_difference: +(on.reduce((s, o, i) => s + (o.local_contrast_med - off[i].local_contrast_med), 0) / on.length).toFixed(3),
     gi_feature_present: giFeaturePresent,
     checks: [
       {
@@ -528,6 +540,15 @@ if (args.alternate) {
         detail: giFeaturePresent === false
           ? `the giFill switch does not exist on this tree, so the alternation is just consecutive captures of one unchanging tree: mean paired difference ${meanDiff.toFixed(3)} luma (must be under 0.5). This is the inert-control arm — if it does NOT collapse, the alternating instrument is measuring its own procedure and not the shader.`
           : 'NOT APPLICABLE — this tree has the fix; the control arm is the run against the pinned-baseline clone',
+      },
+      {
+        id: 'PAIRED-SHADOW-LEVELS-MOVE-THE-WAY-THE-VERDICT-ASKED',
+        ok: giFeaturePresent === true
+          ? on.every((o, i) => o.shadow_levels >= off[i].shadow_levels)
+          : true,
+        detail: giFeaturePresent === true
+          ? `shadow_levels, the statistic R3's acceptance is written in and the one 5/5 blind pairs named the reference on: off ${JSON.stringify(off.map((o) => o.shadow_levels))} -> on ${JSON.stringify(on.map((o) => o.shadow_levels))}, mean paired change ${(on.reduce((s, o, i) => s + (o.shadow_levels - off[i].shadow_levels), 0) / on.length).toFixed(3)}. Must not go DOWN in any pair.`
+          : 'NOT APPLICABLE — inert-control tree',
       },
       {
         id: 'PAIRED-LIT-END-IS-UNMOVED',
