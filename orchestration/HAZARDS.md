@@ -66,6 +66,33 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 14b. `land` cannot untrack a file that still exists on disk once you gitignore it
+
+Small, and it will cost you three attempts if you do not know it. Found 2026-08-15 cleaning up a `tmp/`
+tree that a whole-tree bank had swept into the repo.
+
+The sequence that does **not** work:
+
+```
+echo 'tmp/' >> .gitignore
+git rm -r --cached tmp/
+node tools/land.mjs "..." --paths tmp --allow-deletions      # lands nothing
+```
+
+`land` builds its own temporary index from the **working tree**. `git add` skips ignored paths, so the
+newly-ignored files are simply not added — and `land` will not carry a *deletion* for a file that is
+sitting right there on disk, which is the §2f guard working exactly as designed (a wrongly-deleted file
+is an agent's afternoon; a wrongly-kept one is a dead byte). Your `git rm --cached` staging is
+irrelevant to it, because it never touches the real index.
+
+**So the two effects separate:** the `.gitignore` lands and stops the tree growing, and the
+already-tracked files stay tracked. **That is an acceptable outcome — take it.** 660 KB of stale scratch
+on the branch is harmless; hand-rolling a commit to tidy it is the thing that has destroyed work here
+repeatedly, and no cosmetic tidy is worth that risk.
+
+If it genuinely must go, delete the files from disk first *and be certain no live agent is using them* —
+several were mid-run when this was found, which is the other reason to just leave it.
+
 ## 14a. A whole-tree bank can hang indefinitely — `land --paths` is also the faster tool
 
 Measured twice on 2026-08-15, on the same tree, minutes apart:
