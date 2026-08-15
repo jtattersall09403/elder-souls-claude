@@ -1,6 +1,7 @@
 {
   "could_not_do": [
-    "WIP — the delete-the-fix arm has not run yet. Everything else below is measured.",
+    "TWO WEAKNESSES I CAN SEE IN OUR OWN FRAME AND DID NOT FIX. Both come from opening `docs/shots/2026-08-15-uix08-census-FIX-new-dialogue-window.png` and looking at it, which is the owner's standing directive and not something the 16 passing checks would ever have told me. (a) THE TYPED ROW IS TOO QUIET. With nothing typed it is a bare `▁` caret sitting above the rule, and a new player asked for their name may not read that as the place their name goes. This is precisely the affordance §H5 names in advance as the most likely thing a human gate would overturn, so it is now an observation rather than only a hypothesis. (b) A LEDGER NAME IS TRUNCATED: `Waits-For-The-Second-Ti…`. The column is a fixed 166 layout units by §B1 and `clip()` is doing exactly what it was written to do — but truncating a KEYWORD you are following and truncating a NAME you are choosing for yourself are not equally acceptable, and the item does not currently distinguish them. Neither is fixed here; both are named so the next piece has them.",
+    "NO HUMAN GATE. §H is a ruling with no reference plate behind it (Morrowind's creation is not its dialogue window — see §H5) and it is exactly the kind of ruling §G-form play is for. Nobody has played this. The ruling is marked reversible in the item and names the evidence that would overturn it.",
     "THE PAUSED HAND-BACK NODES KEEP THE FULL WINDOW GEOMETRY AND I DID NOT FIX THAT. At `hold.out` the census hands the body back and the player walks out of the barge hold with a centred, translucent, ~43%-of-frame panel up, where the vellum panel was a bottom strip. It takes no input and the world is visible through it (§E1), and routing it anywhere else would be the partial route the previous piece correctly refused — but a reviewer who thinks a centred panel is the wrong shape for a frame in which the player is walking is looking at a real question this piece does not answer. Recorded in RI-UIX08 §H5 as well as here so it cannot be lost.",
     "NO GAMEPAD ARM. Same as the previous piece: no pad shim is wired into this probe, so CRITIC-DOCTRINE §1.2b clause 4's gamepad leg is scored 0 FAIL-CLOSED for the census, not passed. Keyboard is driven with real DOM KeyboardEvents throughout. Mouse and touch on the census columns are UNMEASURED here — the previous piece measured both on the conversation column and the census uses the SAME `hits` list, the SAME `pickHit`, the SAME `dialoguePointer` and the SAME `_dialogueConfirm`; that is an argument from shared code and NOT a measurement, and it must not be quoted as one.",
     "PERSUASION IS UNTOUCHED AND STILL UNDIAGNOSED. The previous piece measured it as a control that looks dead (69 -> 69, no prose). The census does not touch it: `_censusDialogueCtx` builds no action rows except the typed buffer, so no persuade row exists during creation and nothing I changed can have moved that number either way. I did not re-measure it and I am not claiming anything about it.",
@@ -9,7 +10,7 @@
     "`node tools/contention.mjs` said WAIT before the first run and I proceeded anyway, one browser at a time, sequentially; later runs were taken at 1-3 browsers and load 9-15 over 4 cores. Rule 21 says say so; this is me saying so."
   ],
   "task_id": "W1-UIX08-CENSUS-ROUTE",
-  "state": "in_progress",
+  "state": "delivered_and_self_measured__awaiting_an_independent_critic",
   "date": "2026-08-15",
   "roadmap_item": "RI-UIX08 §H / the second half of the defect the owner reported from playing the deployed build",
   "headline": "Character creation now runs on the RI-UIX08 dialogue window, whole. The route needed two affordances the window had no element for; both are expressed INSIDE §A's six elements, and RI-UIX08 is amended with a §H that says so and says what a critic measures.",
@@ -114,5 +115,13 @@
     "T4-r2-builder": "live in game/src/ui/ on the screens. My edits to game/src/ui/system.js are confined to the dialogue-window block (_dialogueModel, _censusWindowModel, dialogueStep, _dialogueConfirm, the dsig line) and to game/src/ui/screens/dialogue.js, which nobody live has declared. I touch no other screen.",
     "game/src/engine.js": "13 live pieces are registered against it; ownership.mjs reports UNDECLARED OVERLAP as the normal state of that file. My additions are `CENSUS_WINDOW`, `_censusDialogueCtx()`, `_censusRouted()`, three lines in `_censusSync`, two in `_conversationSync`, one in `_uiCtx` and the routed branch of `_censusStep`. `git diff HEAD -- game/src/engine.js` to be checked immediately before landing."
   },
-  "next_step": "read reports/uix08/drive-probe-census.json; then the delete-the-fix arm on a git worktree with CENSUS_WINDOW=false"
+  "next_step": "A fresh critic drives it per CRITIC-DOCTRINE 1.2b and scores RI-UIX08 including the new §H. Three things this piece could not do that a critic should: the gamepad arm (scored 0 fail-closed here), mouse/touch on the CENSUS column specifically (measured on the conversation column by the previous piece; shared code is an argument, not a measurement), and a §G-form human gate on §H, which is a ruling with no reference plate behind it.",
+  "evidence": {
+    "fix_arm_full_walk": "corpus/90-verdicts/wave1/artifacts/W1-UIX08-CENSUS-ROUTE/drive-probe-census-FIX-ARM.json (+ .log) — 16/16, 49 node visits over three class routes, commit 287f7ff7",
+    "delete_the_fix_control": "corpus/90-verdicts/wave1/artifacts/W1-UIX08-CENSUS-ROUTE/delete-the-fix-CONTROL-ARM.json (+ .log) — 3/5, CENSUS_WINDOW=false",
+    "delete_the_fix_positive": "corpus/90-verdicts/wave1/artifacts/W1-UIX08-CENSUS-ROUTE/delete-the-fix-POSITIVE-ARM.json (+ .log) — 5/5, same frozen worktree, CENSUS_WINDOW=true",
+    "the_pair_in_one_number": "PIXELS on the old vellum surface at the opening node, read from the rendered-text register: 0 distinct strings with the fix, 17 without. Same frozen git worktree at 287f7ff7, arms differing by one line.",
+    "pictures": "docs/shots/2026-08-15-uix08-census-FIX-new-dialogue-window.png and docs/shots/2026-08-15-uix08-census-CONTROL-old-vellum-panel.png — the same node (hold.hatch-name), the same frame, the two arms.",
+    "reports_dir_note": "reports/uix08/ is gitignored (reports/.gitignore line 3), so every citation above points at corpus/90-verdicts/wave1/artifacts/ instead. HAZARDS §9."
+  }
 }

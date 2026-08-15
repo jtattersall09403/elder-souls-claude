@@ -391,6 +391,21 @@ place a player could reasonably expect a text field rather than a row. If that i
 the fix named in advance is a text affordance defined here as a **seventh element scoped to census
 mode**, which is a deliberate amendment to §A and must be argued as one — not a quiet addition.
 
+**Two things a critic should expect to find, because the first build against this section already
+shows them.** Recorded here rather than left for rediscovery, from
+`docs/shots/2026-08-15-uix08-census-FIX-new-dialogue-window.png`:
+
+1. **The typed row is quiet.** With nothing typed it is a bare `▁` above the rule. It is present,
+   declared and operable — but "present" and "a new player will understand that their name goes
+   there" are different claims and only the first is measured. This is the affordance the reversible
+   ruling above expects to be challenged on.
+2. **A long ledger name is truncated** — `Waits-For-The-Second-Ti…` — because the column is a fixed
+   166 layout units (§B1) and the row clips. That is §B1 working as written. But truncating a
+   **keyword you are following** and truncating a **name you are choosing for yourself** are not
+   equally acceptable, and no row in this item currently distinguishes them. A critic may reasonably
+   score this as a gap; if it is fixed, the fix belongs in §H2b as a wrap-or-shrink rule for the
+   typed/ledger rows only, **not** as a change to §B1.
+
 **And one thing this section does not fix.** The census now inherits the window's geometry unchanged,
 including its height, at the paused hand-back nodes where the scene has given the body back and the
 player is walking (`hold.out`). The vellum panel there was a bottom strip; this is a centred panel.
