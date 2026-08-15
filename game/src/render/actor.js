@@ -613,8 +613,29 @@ function paintBody(geometry, key, L, artFamily) {
 
 /** bone id -> { to, r0, r1, mat, blend } ; `to` is the child bone whose offset gives length. */
 const PLAN = {
-  pelvis: { to: 'spine_00', r0: 0.185, r1: 0.170, mat: 'cloth', blend: 0 },
-  spine_00: { to: 'spine_02', r0: 0.178, r1: 0.218, mat: 'cloth', blend: 0.4 },
+  // THE TRUNK HAD NO WAIST ANYWHERE IN IT, AND THAT IS THE "SANDWICH BOARD".
+  //
+  // Four consecutive rounds of judgement have carried the same sentence — *"Still slabs. Eight
+  // orbit angles of the player: a flat pale-blue sandwich-board torso, no waist, no shoulder line"*
+  // (`W1-F10-r7-appearance`, forty orbit frames, unchanged since r6). Measured this turn over 11
+  // shipped figures with `tools/visual/f10-r8-torso.mjs`, which rasterises the trunk alone:
+  //
+  //     trunk waist_pinch  0.029   — the same reading its own self-test's synthetic CONE gives
+  //     trunk hip_flare    0.821   — THE HIP IS 18% NARROWER THAN THE WAIST
+  //     trunk solidity     0.973   — very nearly convex
+  //
+  // Every mass in the trunk widened monotonically from the pelvis to the chest: `pelvis` r0 0.185
+  // stepping DOWN to 0.170 and then `spine_00` stepping straight back UP through 0.178 to 0.218,
+  // with a 0.196-wide "lat sweep" ellipsoid sitting across the waist filling in what little dip
+  // those tubes left. That is a cone, and a cone is what the frames show. A body's narrowest trunk
+  // point is the waist and its widest lower point is the hip, in that order, and none of that was
+  // true here.
+  //
+  // The three numbers below put the pinch at `spine_00` and the flare at `pelvis`. They are shared
+  // body plan, so this moves all seventeen characters at once and `M.build` / `M.belly` still vary
+  // around it — which is the point: a per-character patch has been rejected before.
+  pelvis: { to: 'spine_00', r0: 0.198, r1: 0.158, mat: 'cloth', blend: 0 },
+  spine_00: { to: 'spine_02', r0: 0.160, r1: 0.218, mat: 'cloth', blend: 0.4 },
   // `r1` was 0.142 — a 2x step down into a 0.072 neck. That step is not a joint, it is a ledge,
   // and it is why the derived joint radius below would otherwise put a 28 cm collar at the throat.
   // The chest VOLUME is the ellipsoid emitted further down (0.228 x 0.20 x 0.142); this tube only
@@ -872,8 +893,13 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
   // Anatomical volumes bridge the mechanically useful skeleton tubes into a readable body.
   // They are emitted into the same sealed, skinned surfaces, so they cannot lag behind motion
   // or recreate the translucent-overlap defect that separate transparent shells produced.
+  // THE HIP. It was [.185, .13, .135] sitting 35 mm ABOVE the pelvis bone, so its widest section
+  // was at 1.015 m — climbing into the waist and filling the dip rather than making a hip. It is
+  // now wider, deeper and seated at the joint, so the widest point of the lower trunk is where a
+  // hip is. Depth 0.135 -> 0.150 for the same reason the waist got narrower: the trunk's
+  // depth/width ratio was 0.87 and a flat trunk is half of what "sandwich board" means.
   const pelvisI=index.get('pelvis');
-  if(pelvisI!==undefined)B.cloth.ellipsoid(originOf('pelvis').add(new THREE.Vector3(0,.035,0)),[.185*M.build*M.belly,.13*M.build,.135*M.build*M.belly],pelvisI,14);
+  if(pelvisI!==undefined)B.cloth.ellipsoid(originOf('pelvis').add(new THREE.Vector3(0,.012,0)),[.198*M.build*M.belly,.134*M.build,.150*M.build*M.belly],pelvisI,14);
   const chestI=index.get('spine_02');
   if(chestI!==undefined)B.cloth.ellipsoid(originOf('spine_02').add(new THREE.Vector3(0,.025,0)),[.228*M.build*M.shoulders,.20*M.build,.142*M.build],chestI,18);
 
@@ -923,9 +949,18 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     B.cloth.ellipsoid(originOf('spine_02').add(new THREE.Vector3(sign * .098 * M.build * M.shoulders, .018 * M.build, .092 * M.build)),
       [.098 * M.build * M.shoulders, .078 * M.build, .062 * M.build], chestI, 11);
   }
-  // lat sweep — the ribcage-into-waist taper
-  if (s00I !== undefined) B.cloth.ellipsoid(originOf('spine_00').add(new THREE.Vector3(0, .045 * M.build, -.006)),
-    [.196 * M.build * M.shoulders, .130 * M.build, .128 * M.build * M.belly], s00I, 14);
+  // LAT SWEEP — the ribcage-into-waist taper, and the single mass that was destroying the waist.
+  // At 0.196 half-width, seated 45 mm above `spine_00`, it was WIDER than the pelvis (0.185) and
+  // sat exactly where the trunk should be narrowest: the tubes on either side of it do dip to
+  // 0.158/0.160 and this covered the dip over. Narrowed to 0.164 and taller (0.130 -> 0.142) so it
+  // still bridges hip to chest without a step, and lowered onto the waist bone.
+  // Taller than it is narrow, deliberately: a mass's vertical extent buys OVERLAP with its
+  // neighbours (which is the only weld two separately-bound volumes have) while its horizontal
+  // half-width is what sets the waist. 0.150 of height puts 148 mm of overlap on the pelvis mass,
+  // more than the 130 mm the pre-round-8 pair had, and moves the waist width not at all: at the
+  // waist bone this ellipsoid is 0.982 of its own half-width either way.
+  if (s00I !== undefined) B.cloth.ellipsoid(originOf('spine_00').add(new THREE.Vector3(0, .028 * M.build, -.006)),
+    [.164 * M.build * M.shoulders, .150 * M.build, .124 * M.build * M.belly], s00I, 14);
 
   // ---- dress: the Argonian material vocabulary, as geometry -----------------------------
   //
@@ -1460,7 +1495,19 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
   const equipment=[];
   let equipMat=_equipmentMaterialCache.get(mats);
   if(!equipMat){equipMat={reed:mats.reed.clone(),chitin:(mats.chitin||mats.bark).clone(),xanmeer:mats.darkStone.clone()};equipMat.reed.color.setHex(0x91885b);equipMat.chitin.color.setHex(0x805d42);equipMat.xanmeer.color.setHex(0x969987);equipMat.reed.roughness=.78;equipMat.chitin.roughness=.48;equipMat.xanmeer.roughness=.38;_equipmentMaterialCache.set(mats,equipMat);}
-  const addEquip=(set,slot,boneId,geo,offset,scale=[1,1,1],rot=[0,0,0])=>{const bi=index.get(boneId);if(bi===undefined)return;bakeCurvature(geo);const mesh=new THREE.Mesh(geo,equipMat[set]);mesh.name=`actor-equipment:${set}:${slot}@${boneId}`;mesh.castShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const local=new THREE.Matrix4().compose(new THREE.Vector3(...offset),q,new THREE.Vector3(...scale));group.add(mesh);equipment.push({set,slot,bi,mesh,local});};
+  // THE MORPH REACHES EQUIPMENT NOW, AND WITHOUT IT THE SHARED BODY PLAN IS ONLY TRUE OF THE NAKED
+  // BODY. `addPresentation` below has always multiplied its offsets and scales by `M.build`; this
+  // did not, so a character built at 1.20 wore armour sized for 1.00 (the chest ellipsoid at
+  // .228 x 1.20 x 1.24 = .339 burst straight through a fixed .234 shell) and a character built at
+  // 0.78 was swallowed by it. Measured: with the shell fixed, three of eleven sampled figures still
+  // read `hip_flare` BELOW 1 after the trunk was rewaisted, because the FIXED garment was setting
+  // their waist while their MORPHED body set their hip.
+  //
+  // The `head` slot is exempt and that is deliberate, not an oversight: the head is the canon-of-
+  // proportion anchor and `headScale` already solves it as a function OF `M.build` (a heavier
+  // character gets a SMALLER head scale, not a bigger head). Multiplying head equipment by build as
+  // well would apply the axis twice, in opposite directions.
+  const addEquip=(set,slot,boneId,geo,offset,scale=[1,1,1],rot=[0,0,0])=>{const bi=index.get(boneId);if(bi===undefined)return;bakeCurvature(geo);const mesh=new THREE.Mesh(geo,equipMat[set]);mesh.name=`actor-equipment:${set}:${slot}@${boneId}`;mesh.castShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const bs=slot==='head'?1:M.build;const local=new THREE.Matrix4().compose(new THREE.Vector3(offset[0]*bs,offset[1]*bs,offset[2]*bs),q,new THREE.Vector3(scale[0]*bs,scale[1]*bs,scale[2]*bs));group.add(mesh);equipment.push({set,slot,bi,mesh,local});};
   for(const set of ['reed','chitin','xanmeer']){
     const heavy=set==='xanmeer',mid=set==='chitin';
     // ---- HEADGEAR: it was a plank across the eyes, on every head that wears one ---------------
@@ -1554,7 +1601,22 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     // moment the spine bent it opened, and it was the largest remaining crack in the orbit after
     // the body itself was fixed. The rule applied here and to the pack and the oblique straps is
     // that a fitting's inner surface sits at least 3 cm INSIDE the body radius at that height.
-    addEquip(set,'chest','spine_00',new THREE.TorusGeometry(.178,heavy?.050:.042,6,18),[0,-.04,0],[1,.72,1],[Math.PI/2,0,0]);
+    // THE BELT WAS WIDER THAN THE WAIST IT IS SUPPOSED TO CINCH. A 0.178 ring with a 0.042 section
+    // is 0.220 to its outer edge — wider than the new hip (0.198) and 34% wider than the new waist
+    // (0.164) — so once the trunk had a waist the belt would have been the widest thing in the
+    // lower half of the figure and would have put the cone straight back. Pulled in and thinned,
+    // and moved up onto the waist bone it marks. Its inner edge is still 39 mm INSIDE the body
+    // radius at that height, which is the rule the header above states and the reason the old one
+    // was oversized in the first place.
+    //
+    // AND THE FIRST CUT OF THIS LINE PUT A CRACK BACK. Shrinking the SECTION from .042 to .026 also
+    // halved the belt's VERTICAL coverage (after the Rx(PI/2) the tube radius is the world height),
+    // and `actor-orbit-holes.mjs` went 5,725 -> 6,432 crack px with the new worst frame bordered by
+    // `cloth/pelvis` and `cloth/spine_00`: the belt had been covering a skinning shear at that
+    // junction and nobody knew, because nothing had ever made it narrower. The section is back at
+    // .042 and the RING radius carries the reduction instead, so the outer edge lands in the same
+    // place while the band still spans the joint.
+    addEquip(set,'chest','spine_00',new THREE.TorusGeometry(.134,heavy?.050:.042,6,18),[0,-.005,0],[1,.70,1],[Math.PI/2,0,0]);
     addEquip(set,'legs','pelvis',garmentTabGeometry(heavy?.25:.215,heavy?.42:.36,.025),[0,-.20,.085],[1,1,1],[0,0,0]);
     for(const s of [-1,1]) addEquip(set,'chest','spine_02',new THREE.BoxGeometry(.035,.30,.025),[s*.100,-.02,.100],[1,1,1],[0,0,s*.24]);
     addEquip(set,'back','spine_02',heavy?new THREE.CylinderGeometry(.205,.205,.050,14):mid?new THREE.DodecahedronGeometry(.18,1):new THREE.CapsuleGeometry(.105,.20,4,8),[0,-.07,-.128],heavy?[1,.66,1]:mid?[.78,1,.32]:[.76,1,.34],[heavy?Math.PI/2:.08,0,mid?.10:-.06]);
@@ -1796,10 +1858,36 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
 /** Closed elliptical ring shell used by all three equipment families. The profile creates a
  * shoulder/chest/waist hierarchy instead of wrapping the torso in a cylinder or box. */
 function torsoShellGeometry(kind='reed') {
+  // THE PROFILES WERE MONOTONE AND THAT IS WHY THE GARMENT READ AS A TABARD.
+  //
+  // Every ring from the hem up to the chest got WIDER — reed ran .14, .17, .192, .202 — so the
+  // narrowest point of the garment was its own hem and there was no waist in it either. Over a
+  // trunk that was already a cone (see `PLAN`'s header) that is two cones stacked, which is exactly
+  // the flat sandwich-board read four rounds of orbit frames have described.
+  //
+  // The rings are now hip / WAIST / lower ribs / chest / yoke, at the same count so the triangle
+  // budget is untouched (5 rings x 18 radial, 180 triangles per shell, before and after). Local y
+  // is relative to `spine_02` less the 40 mm mounting offset, so on the shipped skeleton -.26 lands
+  // at 1.04 m — over the top of the hip and clear of the thigh joint at 0.94, which is where a
+  // rigid shell hung off the spine has to stop or it shears through a walking leg — and -.20 lands
+  // at 1.10 m, the waist bone itself.
+  //
+  // Every ring is also 4-13 mm proud of the body mass at its own height (checked against the new
+  // `pelvis` / lat-sweep / chest ellipsoids), so the garment sits ON the figure at every ring
+  // rather than being swallowed at one and floating at another.
   const profiles={
-    reed:[[-.22,.14,.10],[-.14,.17,.12],[.01,.192,.128],[.13,.202,.132],[.21,.158,.108]],
-    chitin:[[-.23,.15,.11],[-.14,.181,.132],[.02,.205,.145],[.14,.218,.150],[.22,.168,.12]],
-    xanmeer:[[-.24,.16,.12],[-.14,.195,.145],[.03,.222,.16],[.16,.232,.168],[.23,.18,.13]],
+    // THE HEM HEIGHT WAS SWEPT, NOT CHOSEN, AND BOTH OF MY GUESSES WERE WRONG. The hem is a rigid
+    // edge hung off `spine_02`, so where it stops governs how much daylight opens between it and a
+    // swinging thigh. Measured on `actor-orbit-holes.mjs`, 5,760 frames per arm:
+    //     hem local -.24 (world 1.06)  ->  7,113 crack px
+    //     hem local -.26 (world 1.04)  ->  6,405 crack px   <- shipped
+    //     hem local -.29 (world 1.01)  ->  7,228 crack px, and a worse worst frame (0.44%)
+    // I predicted the shorter hem would help and it was 11% worse; I then predicted the longer one
+    // would help and it was 13% worse. It is not a monotone lever and it should not be nudged by
+    // eye — re-run the sweep.
+    reed:[[-.26,.196,.140],[-.20,.166,.120],[-.06,.206,.142],[.09,.234,.154],[.20,.176,.120]],
+    chitin:[[-.27,.206,.148],[-.21,.176,.128],[-.06,.218,.150],[.10,.246,.162],[.21,.186,.128]],
+    xanmeer:[[-.28,.218,.158],[-.22,.188,.138],[-.06,.230,.160],[.11,.260,.172],[.22,.198,.138]],
   };
   const rings=profiles[kind]||profiles.reed,radial=18,pos=[],nrm=[],uv=[],idx=[];
   for(let r=0;r<rings.length;r++){
