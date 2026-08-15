@@ -22,7 +22,19 @@ Alongside that: shrinking the documentation every agent reads before it can star
 - The map opens, shows the whole province, and hides only the markers you haven't found.
 
 **Still wrong, and you will see it:**
-- Shadowed areas crush to black with no detail.
+- **You cannot select topics in the dialogue window, and character creation doesn't use it.** You found
+  both. The window itself is *right* — it measures identically to your own Morrowind reference — but
+  every check we had tested how it looks, none tested that it works. Both faults are being fixed, and
+  a rule is now in the doctrine that any screen must be driven with real key presses and clicks, with
+  every control operated. A control that is drawn and does nothing is a hard fail.
+- **The menus are text tables where Morrowind's are painted objects.** Measured: **zero** pictorial
+  elements in the inventory — no icons, no paper doll, no portraits. Panel fill 0.21 against
+  Morrowind's 0.61. The out-of-combat HUD has **1 of its 6 elements**, and that one sits in the
+  top-right corner like a modern minimap when Morrowind's runs along the bottom edge. Being built now.
+- **The container screen prints the word `undefined`** as its title. Being fixed.
+- Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
+  its own author reported that honestly after catching that the *first* version of the measurement was
+  void: 93.7% of the improvement it was about to claim reproduced with no fix in the tree at all.
 - **The characters are bad, and we now know exactly why.** Judged for the first time against real
   reference plates: **ART 1/10, FIDELITY 3/10.** Specifically — every figure is **5.9 to 6.8 heads
   tall** when a real one is 7.5 to 8, so the whole cast reads slightly dwarfish and *none* of the 41
