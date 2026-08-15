@@ -65,7 +65,6 @@ export function installWaterShader(mat) {
       // the old injection referenced it before declaration and the water draw never linked.
       .replace('#include <opaque_fragment>',`
         float esView=clamp(abs(dot(normalize(normal),normalize(vViewPosition))),0.0,1.0);
-        float esFresnel=pow(1.0-esView,2.2);
         vec3 esSky=vec3(0.20,0.37,0.44);
         vec2 esReflUV=clamp(vEsWaterReflectionCoord.xy/max(.0001,vEsWaterReflectionCoord.w)*.5+.5,vec2(.001),vec2(.999));
         esReflUV+=esSlope*.0015;
@@ -100,15 +99,30 @@ export function installWaterShader(mat) {
         // drift. Evidence: corpus/90-verdicts/wave1/artifacts/W1-F7-WATER/.
         //
         // The (1.0-esView) factor makes distance BROADEN the grazing response rather than
-        // replace it. It is deliberately the same linear grazing factor esFresnel is built from,
-        // so the two cannot disagree about what "grazing" means. Weights before -> after:
-        // straight down at 120 m .610 -> .250; the grazing marsh vista at 60 m .627 -> .627;
-        // close oblique water at 8 m .359 -> .359. Only the case that was physically wrong moves.
-        float esGrazing=max(esFresnel,smoothstep(10.0,52.0,length(vViewPosition))*.72*(1.0-esView));
+        // replace it. It is deliberately the same linear grazing factor the Schlick term below is
+        // built from, so the two cannot disagree about what "grazing" means. (Round 1's
+        // esFresnel=pow(1.0-esView,2.2) is gone: the Schlick exponent 5 replaces it, and the
+        // variable had no other reader.)
+        //
+        // ROUND 2 (verdict corpus/90-verdicts/wave1/W1-F7-WATER-r1.json, FAIL at 2). Round 1 moved
+        // the distance term and STOPPED AT THE CONSTANT FLOOR THE DISTANCE TERM WAS STANDING ON.
+        // The weight was .25+esGrazing*.50 , so every water pixel at every angle still composited
+        // a fixed .25 of the reflection target — at normal incidence, where water's Fresnel
+        // reflectance is about 2%. That .25 is now gone: the weight IS a Schlick Fresnel over the
+        // same esView, broadened (never floored) by the distance term.
+        //
+        // Weights, MEASURED off the GPU per pixel and not derived (tools/visual/f7-r2-sweep.mjs,
+        // which writes the weight itself into the frame with tonemapping/colourspace/fog stripped
+        // and calibrates the readback against a known constant first) — see the round-2 status
+        // file orchestration/status/W1-F7-r2.json for the full table including the numbers that
+        // moved the wrong way.
+        float esF0=.02;
+        float esRefl=esF0+(1.0-esF0)*pow(1.0-esView,5.0);
+        esRefl=max(esRefl,smoothstep(10.0,52.0,length(vViewPosition))*.72*(1.0-esView));
         float esReflLuma=dot(esReflection,vec3(.2126,.7152,.0722));
         esReflection=mix(esReflection,vec3(esReflLuma*.70,esReflLuma*.83,esReflLuma*.88),.48);
         vec3 esDepth=vec3(.038,.105,.118)+diffuseColor.rgb*.21;
-        vec3 esSurface=mix(esDepth,esReflection,(.25+esGrazing*.50)*uWaterReflectionStrength);
+        vec3 esSurface=mix(esDepth,esReflection,esRefl*uWaterReflectionStrength);
         outgoingLight=mix(outgoingLight,esSurface,.68);
         float esRipples=.5+.5*sin(vEsWaterWorld.x*4.7+uWaterPhase*2.1)*sin(vEsWaterWorld.z*4.1-uWaterPhase*1.7);
         float esCapillary=.5+.5*sin(vEsWaterWorld.x*13.7+vEsWaterWorld.z*9.3-uWaterPhase*3.4);
@@ -120,7 +134,7 @@ export function installWaterShader(mat) {
         outgoingLight=mix(outgoingLight,vec3(.055,.064,.048)+outgoingLight*.34,esShore*.76);
         outgoingLight+=vec3(.095,.105,.082)*esFoam;
         #include <opaque_fragment>`);
-  };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v15`;animatedWaterMaterials.add(mat);
+  };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v16`;animatedWaterMaterials.add(mat);
 }
 
 /** Drive all live water shaders from the fixed simulation frame. */
