@@ -1,0 +1,776 @@
+{
+  "tool": "mesh-winding",
+  "convention": "Three.js FrontSide = counter-clockwise seen from outside => signed volume > 0",
+  "subjects": 13,
+  "meshes_examined": 715,
+  "by_mesh": [
+    {
+      "name": "actor-body:<family>:skin",
+      "n": 13,
+      "inverted": 13,
+      "open": 13,
+      "tris": 118288,
+      "normal_disagree": 102708,
+      "normal_checked": 109792,
+      "sides": "FrontSide",
+      "min_v": -0.04542584489991598,
+      "max_v": -0.012906971650566403
+    },
+    {
+      "name": "actor-body:<family>:cloth",
+      "n": 13,
+      "inverted": 13,
+      "open": 13,
+      "tris": 55328,
+      "normal_disagree": 49088,
+      "normal_checked": 51896,
+      "sides": "FrontSide",
+      "min_v": -0.24667914337243477,
+      "max_v": -0.09784728776963851
+    },
+    {
+      "name": "actor-equipment:reed:chest@<bone>",
+      "n": 91,
+      "inverted": 0,
+      "open": 52,
+      "tris": 11336,
+      "normal_disagree": 468,
+      "normal_checked": 11336,
+      "sides": "FrontSide",
+      "min_v": 0.00026250001545995497,
+      "max_v": 0.015708410069856432
+    },
+    {
+      "name": "actor-equipment:chitin:chest@<bone>",
+      "n": 91,
+      "inverted": 0,
+      "open": 52,
+      "tris": 11336,
+      "normal_disagree": 468,
+      "normal_checked": 11336,
+      "sides": "FrontSide",
+      "min_v": 0.00026250001545995497,
+      "max_v": 0.01982425626627183
+    },
+    {
+      "name": "actor-equipment:xanmeer:chest@<bone>",
+      "n": 91,
+      "inverted": 0,
+      "open": 52,
+      "tris": 11336,
+      "normal_disagree": 468,
+      "normal_checked": 11336,
+      "sides": "FrontSide",
+      "min_v": 0.00026250001545995497,
+      "max_v": 0.024966758543417154
+    },
+    {
+      "name": "actor-action-silhouette",
+      "n": 13,
+      "inverted": 0,
+      "open": 13,
+      "tris": 4680,
+      "normal_disagree": 0,
+      "normal_checked": 4680,
+      "sides": "FrontSide",
+      "min_v": 0.0008277663596341308,
+      "max_v": 0.0008277663596341308
+    },
+    {
+      "name": "actor-equipment:reed:legs@<bone>",
+      "n": 39,
+      "inverted": 13,
+      "open": 0,
+      "tris": 2028,
+      "normal_disagree": 0,
+      "normal_checked": 2028,
+      "sides": "FrontSide",
+      "min_v": -0.0016254001104801913,
+      "max_v": 0.005582194725230435
+    },
+    {
+      "name": "actor-equipment:chitin:head@<bone>",
+      "n": 13,
+      "inverted": 0,
+      "open": 13,
+      "tris": 2028,
+      "normal_disagree": 0,
+      "normal_checked": 2028,
+      "sides": "FrontSide",
+      "min_v": 0.004911550799143403,
+      "max_v": 0.004911550799143403
+    },
+    {
+      "name": "actor-equipment:chitin:legs@<bone>",
+      "n": 39,
+      "inverted": 13,
+      "open": 0,
+      "tris": 2028,
+      "normal_disagree": 0,
+      "normal_checked": 2028,
+      "sides": "FrontSide",
+      "min_v": -0.0016254001104801913,
+      "max_v": 0.00840021016228616
+    },
+    {
+      "name": "actor-equipment:xanmeer:legs@<bone>",
+      "n": 39,
+      "inverted": 13,
+      "open": 0,
+      "tris": 2028,
+      "normal_disagree": 0,
+      "normal_checked": 2028,
+      "sides": "FrontSide",
+      "min_v": -0.0022049999734014263,
+      "max_v": 0.013039320025671042
+    },
+    {
+      "name": "actor-equipment:reed:hands@<bone>",
+      "n": 26,
+      "inverted": 0,
+      "open": 0,
+      "tris": 1872,
+      "normal_disagree": 0,
+      "normal_checked": 1872,
+      "sides": "FrontSide",
+      "min_v": 0.002131921598126758,
+      "max_v": 0.002131921598126758
+    },
+    {
+      "name": "actor-equipment:reed:back@<bone>",
+      "n": 13,
+      "inverted": 0,
+      "open": 0,
+      "tris": 1872,
+      "normal_disagree": 0,
+      "normal_checked": 1664,
+      "sides": "FrontSide",
+      "min_v": 0.010436200155647104,
+      "max_v": 0.010436200155647104
+    },
+    {
+      "name": "actor-equipment:chitin:hands@<bone>",
+      "n": 26,
+      "inverted": 0,
+      "open": 0,
+      "tris": 1872,
+      "normal_disagree": 0,
+      "normal_checked": 1872,
+      "sides": "FrontSide",
+      "min_v": 0.0032517435159091076,
+      "max_v": 0.0032517435159091076
+    },
+    {
+      "name": "actor-equipment:chitin:back@<bone>",
+      "n": 13,
+      "inverted": 0,
+      "open": 0,
+      "tris": 1872,
+      "normal_disagree": 0,
+      "normal_checked": 1872,
+      "sides": "FrontSide",
+      "min_v": 0.02201035228346639,
+      "max_v": 0.02201035228346639
+    },
+    {
+      "name": "actor-equipment:xanmeer:hands@<bone>",
+      "n": 26,
+      "inverted": 0,
+      "open": 0,
+      "tris": 1872,
+      "normal_disagree": 0,
+      "normal_checked": 1872,
+      "sides": "FrontSide",
+      "min_v": 0.005299302614544356,
+      "max_v": 0.005299302614544356
+    },
+    {
+      "name": "actor-family-form:<family>:shoulder-scale@<bone>",
+      "n": 18,
+      "inverted": 0,
+      "open": 18,
+      "tris": 1620,
+      "normal_disagree": 0,
+      "normal_checked": 1620,
+      "sides": "FrontSide",
+      "min_v": 0.002366204983719121,
+      "max_v": 0.002366204983719121
+    },
+    {
+      "name": "actor-equipment:reed:head@<bone>",
+      "n": 13,
+      "inverted": 0,
+      "open": 13,
+      "tris": 1560,
+      "normal_disagree": 0,
+      "normal_checked": 1560,
+      "sides": "FrontSide",
+      "min_v": 0.0009183164305734297,
+      "max_v": 0.0009183164305734297
+    },
+    {
+      "name": "actor-family-form:<family>:eye-l@<bone>",
+      "n": 9,
+      "inverted": 0,
+      "open": 0,
+      "tris": 1080,
+      "normal_disagree": 0,
+      "normal_checked": 1080,
+      "sides": "FrontSide",
+      "min_v": 0.00006546248297396093,
+      "max_v": 0.00006546248297396093
+    },
+    {
+      "name": "actor-family-form:<family>:eye-r@<bone>",
+      "n": 9,
+      "inverted": 0,
+      "open": 0,
+      "tris": 1080,
+      "normal_disagree": 0,
+      "normal_checked": 1080,
+      "sides": "FrontSide",
+      "min_v": 0.00006546248297396093,
+      "max_v": 0.00006546248297396093
+    },
+    {
+      "name": "actor-equipment:xanmeer:back@<bone>",
+      "n": 13,
+      "inverted": 0,
+      "open": 0,
+      "tris": 728,
+      "normal_disagree": 0,
+      "normal_checked": 728,
+      "sides": "FrontSide",
+      "min_v": 0.0063818873678127604,
+      "max_v": 0.0063818873678127604
+    },
+    {
+      "name": "actor-family-form:<family>:tailored-tunic@<bone>",
+      "n": 4,
+      "inverted": 0,
+      "open": 4,
+      "tris": 720,
+      "normal_disagree": 144,
+      "normal_checked": 720,
+      "sides": "FrontSide",
+      "min_v": 0.015708410069856432,
+      "max_v": 0.015708410069856432
+    },
+    {
+      "name": "actor-family-form:<family>:hair-cap@<bone>",
+      "n": 4,
+      "inverted": 0,
+      "open": 4,
+      "tris": 720,
+      "normal_disagree": 0,
+      "normal_checked": 720,
+      "sides": "FrontSide",
+      "min_v": 0.003210310225796217,
+      "max_v": 0.003210310225796217
+    },
+    {
+      "name": "actor-family-form:<family>:pupil-l@<bone>",
+      "n": 9,
+      "inverted": 0,
+      "open": 0,
+      "tris": 576,
+      "normal_disagree": 0,
+      "normal_checked": 576,
+      "sides": "FrontSide",
+      "min_v": 0.0000034111154083638517,
+      "max_v": 0.0000034111154083638517
+    },
+    {
+      "name": "actor-family-form:<family>:pupil-r@<bone>",
+      "n": 9,
+      "inverted": 0,
+      "open": 0,
+      "tris": 576,
+      "normal_disagree": 0,
+      "normal_checked": 576,
+      "sides": "FrontSide",
+      "min_v": 0.0000034111154083638517,
+      "max_v": 0.0000034111154083638517
+    },
+    {
+      "name": "actor-equipment:xanmeer:head@<bone>",
+      "n": 13,
+      "inverted": 0,
+      "open": 0,
+      "tris": 520,
+      "normal_disagree": 0,
+      "normal_checked": 520,
+      "sides": "FrontSide",
+      "min_v": 0.011871695078856664,
+      "max_v": 0.011871695078856664
+    },
+    {
+      "name": "actor-contact-shadow",
+      "n": 13,
+      "inverted": 0,
+      "open": 13,
+      "tris": 260,
+      "normal_disagree": 0,
+      "normal_checked": 260,
+      "sides": "FrontSide",
+      "min_v": 0,
+      "max_v": 0
+    },
+    {
+      "name": "actor-secondary-frill:0@<bone>",
+      "n": 13,
+      "inverted": 0,
+      "open": 0,
+      "tris": 182,
+      "normal_disagree": 0,
+      "normal_checked": 182,
+      "sides": "FrontSide",
+      "min_v": 0.0015333018932731902,
+      "max_v": 0.0015333018932731902
+    },
+    {
+      "name": "actor-secondary-frill:1@<bone>",
+      "n": 13,
+      "inverted": 0,
+      "open": 0,
+      "tris": 182,
+      "normal_disagree": 0,
+      "normal_checked": 182,
+      "sides": "FrontSide",
+      "min_v": 0.0009489870107923469,
+      "max_v": 0.0009489870107923469
+    },
+    {
+      "name": "actor-secondary-frill:2@<bone>",
+      "n": 13,
+      "inverted": 0,
+      "open": 0,
+      "tris": 182,
+      "normal_disagree": 0,
+      "normal_checked": 182,
+      "sides": "FrontSide",
+      "min_v": 0.0005319581594629129,
+      "max_v": 0.0005319581594629129
+    },
+    {
+      "name": "actor-family-form:<family>:brow-horn-l@<bone>",
+      "n": 8,
+      "inverted": 0,
+      "open": 0,
+      "tris": 112,
+      "normal_disagree": 0,
+      "normal_checked": 112,
+      "sides": "FrontSide",
+      "min_v": 0.0002955323037223549,
+      "max_v": 0.0006492844509645705
+    },
+    {
+      "name": "actor-family-form:<family>:brow-horn-r@<bone>",
+      "n": 8,
+      "inverted": 0,
+      "open": 0,
+      "tris": 112,
+      "normal_disagree": 0,
+      "normal_checked": 112,
+      "sides": "FrontSide",
+      "min_v": 0.0002955323037223549,
+      "max_v": 0.0006492844509645705
+    }
+  ],
+  "inverted_meshes": [
+    {
+      "subject": "player",
+      "name": "actor-body:saxhleel:cloth",
+      "V": -0.14958787782680139,
+      "closed": false
+    },
+    {
+      "subject": "player",
+      "name": "actor-body:saxhleel:skin",
+      "V": -0.027082508755315135,
+      "closed": false
+    },
+    {
+      "subject": "player",
+      "name": "actor-equipment:reed:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "player",
+      "name": "actor-equipment:chitin:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "player",
+      "name": "actor-equipment:xanmeer:legs@pelvis",
+      "V": -0.0022049999734014263,
+      "closed": true
+    },
+    {
+      "subject": "npc:npc-wuleen-kus",
+      "name": "actor-body:saxhleel:cloth",
+      "V": -0.10406825530958029,
+      "closed": false
+    },
+    {
+      "subject": "npc:npc-wuleen-kus",
+      "name": "actor-body:saxhleel:skin",
+      "V": -0.018712045930168758,
+      "closed": false
+    },
+    {
+      "subject": "npc:npc-wuleen-kus",
+      "name": "actor-equipment:reed:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:npc-wuleen-kus",
+      "name": "actor-equipment:chitin:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:npc-wuleen-kus",
+      "name": "actor-equipment:xanmeer:legs@pelvis",
+      "V": -0.0022049999734014263,
+      "closed": true
+    },
+    {
+      "subject": "npc:blackwood-company-camp",
+      "name": "actor-body:humanoid:cloth",
+      "V": -0.18909196990136395,
+      "closed": false
+    },
+    {
+      "subject": "npc:blackwood-company-camp",
+      "name": "actor-body:humanoid:skin",
+      "V": -0.018459968345799084,
+      "closed": false
+    },
+    {
+      "subject": "npc:blackwood-company-camp",
+      "name": "actor-equipment:reed:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:blackwood-company-camp",
+      "name": "actor-equipment:chitin:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:blackwood-company-camp",
+      "name": "actor-equipment:xanmeer:legs@pelvis",
+      "V": -0.0022049999734014263,
+      "closed": true
+    },
+    {
+      "subject": "npc:archon-priest-0",
+      "name": "actor-body:saxhleel:cloth",
+      "V": -0.22752929587909115,
+      "closed": false
+    },
+    {
+      "subject": "npc:archon-priest-0",
+      "name": "actor-body:saxhleel:skin",
+      "V": -0.04542584489991598,
+      "closed": false
+    },
+    {
+      "subject": "npc:archon-priest-0",
+      "name": "actor-equipment:reed:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:archon-priest-0",
+      "name": "actor-equipment:chitin:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:archon-priest-0",
+      "name": "actor-equipment:xanmeer:legs@pelvis",
+      "V": -0.0022049999734014263,
+      "closed": true
+    },
+    {
+      "subject": "npc:blackrose-rootkeeper-5",
+      "name": "actor-body:humanoid:cloth",
+      "V": -0.18909196990136395,
+      "closed": false
+    },
+    {
+      "subject": "npc:blackrose-rootkeeper-5",
+      "name": "actor-body:humanoid:skin",
+      "V": -0.018459968345799084,
+      "closed": false
+    },
+    {
+      "subject": "npc:blackrose-rootkeeper-5",
+      "name": "actor-equipment:reed:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:blackrose-rootkeeper-5",
+      "name": "actor-equipment:chitin:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:blackrose-rootkeeper-5",
+      "name": "actor-equipment:xanmeer:legs@pelvis",
+      "V": -0.0022049999734014263,
+      "closed": true
+    },
+    {
+      "subject": "npc:gideon-smith-10",
+      "name": "actor-body:saxhleel:cloth",
+      "V": -0.22752929587909115,
+      "closed": false
+    },
+    {
+      "subject": "npc:gideon-smith-10",
+      "name": "actor-body:saxhleel:skin",
+      "V": -0.04542584489991598,
+      "closed": false
+    },
+    {
+      "subject": "npc:gideon-smith-10",
+      "name": "actor-equipment:reed:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:gideon-smith-10",
+      "name": "actor-equipment:chitin:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:gideon-smith-10",
+      "name": "actor-equipment:xanmeer:legs@pelvis",
+      "V": -0.0022049999734014263,
+      "closed": true
+    },
+    {
+      "subject": "npc:helstrom-warder-0-apprentice0",
+      "name": "actor-body:saxhleel:cloth",
+      "V": -0.20099867601535962,
+      "closed": false
+    },
+    {
+      "subject": "npc:helstrom-warder-0-apprentice0",
+      "name": "actor-body:saxhleel:skin",
+      "V": -0.021982723601898454,
+      "closed": false
+    },
+    {
+      "subject": "npc:helstrom-warder-0-apprentice0",
+      "name": "actor-equipment:reed:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:helstrom-warder-0-apprentice0",
+      "name": "actor-equipment:chitin:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:helstrom-warder-0-apprentice0",
+      "name": "actor-equipment:xanmeer:legs@pelvis",
+      "V": -0.0022049999734014263,
+      "closed": true
+    },
+    {
+      "subject": "npc:helstrom-keeper-archive",
+      "name": "actor-body:saxhleel:cloth",
+      "V": -0.10406825530958029,
+      "closed": false
+    },
+    {
+      "subject": "npc:helstrom-keeper-archive",
+      "name": "actor-body:saxhleel:skin",
+      "V": -0.018712045930168758,
+      "closed": false
+    },
+    {
+      "subject": "npc:helstrom-keeper-archive",
+      "name": "actor-equipment:reed:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:helstrom-keeper-archive",
+      "name": "actor-equipment:chitin:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:helstrom-keeper-archive",
+      "name": "actor-equipment:xanmeer:legs@pelvis",
+      "V": -0.0022049999734014263,
+      "closed": true
+    },
+    {
+      "subject": "npc:lilmoth-keeper-market",
+      "name": "actor-body:humanoid:cloth",
+      "V": -0.09784728776963851,
+      "closed": false
+    },
+    {
+      "subject": "npc:lilmoth-keeper-market",
+      "name": "actor-body:humanoid:skin",
+      "V": -0.012906971650566403,
+      "closed": false
+    },
+    {
+      "subject": "npc:lilmoth-keeper-market",
+      "name": "actor-equipment:reed:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:lilmoth-keeper-market",
+      "name": "actor-equipment:chitin:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:lilmoth-keeper-market",
+      "name": "actor-equipment:xanmeer:legs@pelvis",
+      "V": -0.0022049999734014263,
+      "closed": true
+    },
+    {
+      "subject": "npc:stormhold-publican-5",
+      "name": "actor-body:saxhleel:cloth",
+      "V": -0.10406825530958029,
+      "closed": false
+    },
+    {
+      "subject": "npc:stormhold-publican-5",
+      "name": "actor-body:saxhleel:skin",
+      "V": -0.018712045930168758,
+      "closed": false
+    },
+    {
+      "subject": "npc:stormhold-publican-5",
+      "name": "actor-equipment:reed:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:stormhold-publican-5",
+      "name": "actor-equipment:chitin:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:stormhold-publican-5",
+      "name": "actor-equipment:xanmeer:legs@pelvis",
+      "V": -0.0022049999734014263,
+      "closed": true
+    },
+    {
+      "subject": "npc:stormhold-keeper-shrine",
+      "name": "actor-body:saxhleel:cloth",
+      "V": -0.24667914337243477,
+      "closed": false
+    },
+    {
+      "subject": "npc:stormhold-keeper-shrine",
+      "name": "actor-body:saxhleel:skin",
+      "V": -0.042500996079936966,
+      "closed": false
+    },
+    {
+      "subject": "npc:stormhold-keeper-shrine",
+      "name": "actor-equipment:reed:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:stormhold-keeper-shrine",
+      "name": "actor-equipment:chitin:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:stormhold-keeper-shrine",
+      "name": "actor-equipment:xanmeer:legs@pelvis",
+      "V": -0.0022049999734014263,
+      "closed": true
+    },
+    {
+      "subject": "npc:archon-sapcutter-market",
+      "name": "actor-body:humanoid:cloth",
+      "V": -0.23956174915301087,
+      "closed": false
+    },
+    {
+      "subject": "npc:archon-sapcutter-market",
+      "name": "actor-body:humanoid:skin",
+      "V": -0.02855921587583156,
+      "closed": false
+    },
+    {
+      "subject": "npc:archon-sapcutter-market",
+      "name": "actor-equipment:reed:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:archon-sapcutter-market",
+      "name": "actor-equipment:chitin:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:archon-sapcutter-market",
+      "name": "actor-equipment:xanmeer:legs@pelvis",
+      "V": -0.0022049999734014263,
+      "closed": true
+    },
+    {
+      "subject": "npc:cutter-ashaan-hulei",
+      "name": "actor-body:saxhleel:cloth",
+      "V": -0.10406825530958029,
+      "closed": false
+    },
+    {
+      "subject": "npc:cutter-ashaan-hulei",
+      "name": "actor-body:saxhleel:skin",
+      "V": -0.018712045930168758,
+      "closed": false
+    },
+    {
+      "subject": "npc:cutter-ashaan-hulei",
+      "name": "actor-equipment:reed:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:cutter-ashaan-hulei",
+      "name": "actor-equipment:chitin:legs@pelvis",
+      "V": -0.0016254001104801913,
+      "closed": true
+    },
+    {
+      "subject": "npc:cutter-ashaan-hulei",
+      "name": "actor-equipment:xanmeer:legs@pelvis",
+      "V": -0.0022049999734014263,
+      "closed": true
+    }
+  ],
+  "normal_disagreement_total": 153344,
+  "normal_checked_total": 227850,
+  "doubleside_meshes": [],
+  "verdict": "DEFECT: see inverted_meshes / normal_disagreement_total"
+}

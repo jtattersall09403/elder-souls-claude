@@ -1,40 +1,86 @@
 {
   "task_id": "W1-F10-r2-builder",
   "roadmap_item": "F10",
-  "state": "in-progress",
-  "started": "2026-08-15",
-  "commit_context": "branch codex/wave1-build-experiment, base f8f6b44b",
+  "state": "partial — banked, honest, incomplete",
+  "date": "2026-08-15",
+  "branch": "codex/wave1-build-experiment",
+  "baseline_commit": "f8f6b44b",
+
   "could_not_do": [
-    "NOT YET DONE — hardware eight-angle orbits and motion captures for the player AND NPCs. The winding fix changes what every frame shows, so any capture taken before it is void as evidence; captures are the next step and are unmeasured as of this write.",
-    "NOT YET DONE — delete-the-fix on a control clone from a pinned baseline via a real git worktree.",
-    "NOT YET STARTED — verdict §7 fixes 2 (proportion), 3 (face landmarks + humanoid eyes), 4 (shoulder/torso continuity + triangle budget), 5 (reptilian features), 6 (garment vocabulary), 7 (cross-fade), 8 (hit reactions), 9 (stance), 10 (actor count). Fix 1 is done and measured.",
-    "The verdict's own five unrun STATIC checks (B1 faceting, B3 material separation, B4 texel density, B5 contact shadow, B6 subsurface) remain unrun by me too."
+    "NO HARDWARE FRAMES. There is no local GPU (`nvidia-smi` absent), the `runpod` CLI is not on PATH, and `node tools/visual/gpu-deck.mjs --help` did not return inside 30 s. Under RULES.md rule 0 I treated the capability as absent rather than blocking. Every frame I have is SwiftShader, and the sweep tool stamps it itself: '*** SOFTWARE — not valid for an appearance claim (W1-30-EVIDENCE §4) ***'. So I make NO appearance claim — nothing about colour, material, light, or whether the face landmarks shade correctly under a key. See `evidence_scope` below for the one claim software frames DO support and why.",
+    "MY FRAME-LIVENESS GATE FALSE-REDS ON REAL CAPTURES, and I found it by looking rather than by trusting it. It reported NO_SUBJECT on 16 of 16 frames; I opened `C4__player__yaw000.png` and `C4__player__yaw090.png` and the figure is plainly there, whole, head to foot. A sibling rewrote the tool mid-run with connected-component detection and it reports the same false RED. Cause: the background is modelled from the frame's outer ring, and a colour-rich outdoor scene (sky, grass, timber, foliage) absorbs the character's own colours, so almost nothing inside the box reads as off-background. The DEGENERACY half of the gate is sound and is behaving (span 170-188, shadow_levels 63-98, entropy ~7.1 on every frame — these are real images, not the void capture the orchestrator warned about). The SUBJECT half needs the manifest's projected head-top/foot-bottom rows, which `f10-character-sweep.mjs` already records and which I did not wire through. DO NOT cite my gate as evidence that subjects are present; cite the two frames I opened.",
+    "THE FRAMES PREDATE MOST OF THE WORK. The sweep browser loaded the game when it launched, which was after the winding fix and race routing had landed but BEFORE the proportion, face-landmark, humanoid-eye and shoulder-girdle work. The frames therefore evidence the winding fix and nothing after it. The sweep did not finish: 16 frames across 2 of 5 subjects, at software speed.",
+    "NO EIGHT-ANGLE ORBIT FOR NPCs, and no motion sequences. The owner's directive is 'the player character and every NPC' and 'stills are not enough'. I have 8 player angles and 1 NPC angle, all stills. This is the largest gap in my evidence and it is not closed.",
+    "DELETE-THE-FIX WAS RUN FOR THE WINDING CLAIM ONLY. The proportion, face, eye and shoulder changes have before/after numbers from the same instrument but no control-arm teardown.",
+    "VERDICT §7 FIXES 5, 6, 7, 8, 9, 10 ARE UNTOUCHED — reptilian feature census, the garment vocabulary, locomotion cross-fade, hit reactions, the second idle stance, and the actor count. Fixes 1, 2, 3 (partly) and 4 are done and measured.",
+    "RI-VIS08's five unrun STATIC checks (B1 faceting, B3 material separation, B4 texel density, B5 contact shadow, B6 subsurface) remain unrun by me too. B1 in particular now measures a body with 80% more triangles, so the old threshold conversation has changed and has not been had.",
+    "A PERFORMANCE RISK I INTRODUCED AND HAVE NOT MEASURED. Raising tube radial 12->14 and rings 5->6 lifted every biped, not just the player: `humanoid` went 15,752 -> 28,136 triangles and it only needed 12,000. With 408 NPCs that is real cost and I took no frame-time measurement. If a critic or a perf piece wants it reverted for `humanoid`, the lever is the two literals in the PLAN tube call."
   ],
-  "headline": "The characters were being drawn inside-out. Three separate geometry generators had inverted triangle winding; the two that build the entire body accounted for 153,344 of 227,850 triangles rendering with a normal pointing away from the camera. Fixed, 0 remaining, with a guard that goes red.",
+
+  "headline": "The characters were being drawn inside-out. Three separate geometry generators had inverted triangle winding; the two that build the whole body meant 153,344 of 227,850 triangles rendered with their normal facing away from the camera, so WebGL culled the near surface and drew the inside of the far one. That is the see-through report, it is not a hole, and no amount of hole-filling could ever have reached it.",
+
+  "evidence_scope": "The winding claim is a RASTERISATION claim, not an appearance claim, and that distinction is why software frames are admissible for it: back-face culling by screen-space winding is core GL behaviour, identical under SwiftShader and hardware. The signed-volume numbers are geometry, computed offline from vertex buffers, with no renderer involved at all. Everything about how the new face, girdle and proportions LOOK under light is an appearance claim and I have not made one.",
+
   "done_and_measured": [
     {
-      "id": "winding",
-      "what": "Inverted triangle winding in three generators in game/src/render/actor.js",
-      "instrument": "tools/visual/mesh-winding.mjs (new), signed-volume + normal-agreement + boundary-edge, 13 subjects / 715 meshes",
-      "before": "65 of 715 meshes with NEGATIVE signed volume; 153,344 of 227,850 triangles whose authored normal disagrees with their winding (67.3%). actor-body:<family>:skin 13/13 inverted (102,708/109,792), actor-body:<family>:cloth 13/13 inverted (49,088/51,896).",
-      "after": "0 of 715 inverted; 0 of 227,850 disagreeing. Tool exits 0.",
-      "generators_fixed": [
-        "MeshBuilder.tube / .ball / .ellipsoid — side walls wound A,C,B (inward). tube's end CAPS were always correct, which is why the disagreement was 94% and not 100% and why one mesh carried two conventions.",
-        "garmentTabGeometry — the whole index list inverted. Invisible to a normal check because computeVertexNormals() derives normals FROM winding; only signed volume caught it (13/13 :legs meshes negative).",
-        "torsoShellGeometry — CAPS ONLY inverted, walls always correct. 36 tris per shell, matching the measured 144/720 on tailored-tunic over 4 meshes exactly."
+      "id": "A. inverted winding — the headline",
+      "instrument": "tools/visual/mesh-winding.mjs (new). Signed volume + authored-normal agreement + boundary-edge closure, per mesh and per generator.",
+      "before": "65 of 715 meshes NEGATIVE signed volume. 153,344 of 227,850 triangles (67.3%) whose authored normal disagrees with their winding. actor-body:<family>:skin 13/13 inverted (102,708/109,792). actor-body:<family>:cloth 13/13 inverted (49,088/51,896).",
+      "after": "0 of 715 inverted. 0 of 300,984 disagreeing. Tool exits 0. The two body meshes also went from 13/13 OPEN to 0/0 — they are now closed, consistently wound manifolds.",
+      "three_generators_and_each_was_wrong_differently": [
+        "MeshBuilder.tube/.ball/.ellipsoid — side walls wound A,C,B, giving a face normal of -_u (inward). tube's END CAPS were always correct, which is why the disagreement was 94% and not 100%: one mesh carried both conventions.",
+        "garmentTabGeometry — the entire index list inverted. INVISIBLE to a normal-agreement check, because computeVertexNormals() derives normals FROM the winding, so the normals agreed with a wrong surface. Only signed volume caught it (13/13 `:legs` meshes negative). This is why the instrument measures both and not one.",
+        "torsoShellGeometry — CAPS ONLY, walls always correct. 36 triangles per shell, matching the measured 144/720 on `tailored-tunic` over 4 meshes exactly."
       ],
-      "why_it_matters": "With FrontSide (every actor material; no mesh is DoubleSide) WebGL culls by screen-space winding. Inverted winding culls the NEAR surface and draws the FAR one — the owner's see-through report, and not a hole, so the previous round's gap-pixel census counted it as one and hole-filling could never reach it. It also inverted the lighting on 94% of the visible body, which is a direct contributor to the critic's finding #1 ('ellipsoid shoulders on a slab torso') because shading is what makes a form read as a form.",
-      "control": "mesh-winding.mjs --self-test reverses a correct sphere and asserts the tool goes red; it does. A separate control geometry (mirror-x with no index reversal) reproduces the classic flip at -1.075e-1. All seven THREE built-ins used by the presentation path measure positive, so the comparison is against the engine's own convention, not against my reasoning."
+      "why_this_is_a_fact_and_not_an_argument_about_conventions": "Three.js's own SphereGeometry measures +1.075e-1 on the same instrument; ours measured the same magnitude NEGATIVE. All seven THREE built-ins used by the presentation path measure positive. The comparison is against the engine's own geometry, not against my reasoning about GL.",
+      "control_1_instrument_can_fail": "mesh-winding.mjs --self-test reverses a correct sphere: +1.0752e-1 -> -1.0752e-1, normal_disagree 0/288 -> 288/288. It GOES RED. A second control geometry — mirror-x with no index reversal, the classic flip — reproduces it at -1.075e-1 with 216/288.",
+      "control_2_delete_the_fix": "A REAL `git worktree` (sparse, --no-checkout then cone checkout; the full checkout failed because the box is at 95% disk) pinned at f8f6b44b, which contains none of the fix. Today's instrument was copied IN so the instrument is held constant and only the code under test is reverted. Control arm returns 65 of 715 inverted and 153,344 of 227,850 disagreeing — the old numbers, exactly. Treatment arm 0 and 0. The two arms genuinely differ; this is not an inert fix and not an inert control."
     },
     {
-      "id": "fix1-race-routing",
-      "what": "verdict §7 fix 1 — route the reptilian races to the reptilian body",
-      "before": "renderer.js:693 tested (race==='saxhleel'||race==='naga'); 181 argonian records fell through to base.humanoid. npcs_per_art_family = {saxhleel: 79, humanoid: 329}.",
-      "after": "npcs_per_art_family = {saxhleel: 260, humanoid: 148} — meets the >=260 acceptance exactly. Median pairwise silhouette IoU 0.9109 -> 0.8954; the argonian-vs-breton IoU 1.0000 pair named in the verdict is gone.",
-      "ruling_on_the_data_defect": "BOTH, but not by rewriting 181 records. Saxhleel is the endonym and Argonian the Cyrodilic exonym for one people, so content using both is lore working, not a typo; what was wrong is that the renderer treated a NAME as a BODY PLAN. The map now lives once in game/src/render/lib/race-art.js and covers all 12 in-use strings plus none/mixed/khajiit with stated reasons. races.json is deliberately untouched: its own invariant is sum(attribute_deltas)==12 per race record and four checkers read races.map(r=>r.id), so an alias row there would break a progression invariant to solve a rendering problem. REVERSIBLE — overturned if a later piece needs argonian and saxhleel to differ in reaction or standing; nothing in disposition.js or race-reactions.json distinguishes them today.",
-      "drift_guard": "tools/visual/f10-silhouette.mjs held a hand-copy of the predicate annotated 'verbatim'. It now imports the same function renderer.js calls, so the instrument cannot measure the old world. tools/check-race-art.mjs walks the shipped NPC data and exits non-zero on any race string with no declared body plan; --self-test proves it goes red."
+      "id": "B. verdict §7 fix 1 — route the reptilian races to the reptilian body",
+      "before": "renderer.js:693 tested (race==='saxhleel'||race==='naga'). npcs_per_art_family = {saxhleel: 79, humanoid: 329}.",
+      "after": "npcs_per_art_family = {saxhleel: 260, humanoid: 148}. Acceptance was >=260 on saxhleel: MET, exactly. Verified by `node tools/check-race-art.mjs`.",
+      "second_acceptance": "'no argonian figure shares a silhouette with a breton or dunmer figure at IoU >= 0.93' — the verdict's named IoU 1.0000 pair `humanoid/breton/mudborn vs humanoid/argonian/rootkeeper` is gone from the worst-pairs list. Median pairwise IoU 0.9109 -> 0.8650 across the whole round.",
+      "ruling_on_the_data_defect_argonian_181_vs_saxhleel_77": "BOTH are fixed, but NOT by rewriting 181 records. Saxhleel is the endonym, Argonian the Cyrodilic exonym, for one people — content carrying both is lore working, not a typo. What was wrong is that the renderer treated a NAME as a BODY PLAN. The map now lives once in `game/src/render/lib/race-art.js`, total over all 12 in-use strings, with `khajiit` (6, no feline body plan exists — a stated known gap), `none` (1) and `mixed` (1) given explicit homes and reasons. `races.json` is deliberately UNTOUCHED: its own declared invariant is sum(attribute_deltas)==12 per race record and four checkers read `races.map(r=>r.id)`, so an alias row there would break a progression invariant to solve a rendering problem. REVERSIBLE — overturned the moment a piece needs `argonian` and `saxhleel` to differ in reaction or standing; nothing in `disposition.js` or `race-reactions.json` distinguishes them today.",
+      "drift_guard": "`tools/visual/f10-silhouette.mjs` held a hand-copy of the predicate annotated 'verbatim' — a mirror no check could keep honest. It now imports the same function `renderer.js` calls. `tools/check-race-art.mjs` walks the shipped data and exits non-zero on any undeclared race string; --self-test proves it goes red and proves the renderer DEGRADES to humanoid rather than throwing (RULES.md 13/14)."
+    },
+    {
+      "id": "C. verdict §7 fix 2 — the canon of proportion",
+      "acceptance": ">= 90% of figures inside R 7.0-8.0, 0 outside 6.0-8.5",
+      "before": "41 shipped figures, R = height/head: min 5.87, median 6.58, max 6.84. 0 of 41 in band. 6 of 41 outside the hard band.",
+      "after": "min 7.43, median 7.59, max 7.90. 41 of 41 in band (100%). 0 outside the hard band. ACCEPTANCE MET.",
+      "how": "A flat 0.80 head scale got the median to 7.43 but left 7 of 41 outside, and the residual TRACKED `build` — because head extent is the skull above the head bone PLUS the neck joint ball below it, and that ball's radius derives from the neck tube's r1 and so scales with build. Solved rather than hand-tuned: hs = (TARGET_EXTENT - 0.070*build) / headTopLocal, with the crest entering headTopLocal only when it actually rises above the crown. Spread collapsed from 0.97 wide to 0.47 wide. Bone offsets are untouched — they are where the hurtboxes live.",
+      "design_rule_encoded": "build and crest are ornament axes. A character may be heavier, leaner or more crested than another; it may not thereby be a different number of heads tall."
+    },
+    {
+      "id": "D. verdict §7 fix 3 — the face, and base.humanoid's missing eyes",
+      "eyes": "`base.humanoid` had NO eye geometry at all — its only family-form parts were `hair-cap` and `tailored-tunic`. It carried 329 of 408 NPCs before fix 1 and still carries 148. It now has eye-l/r and pupil-l/r as SEPARATE geometry, as RI-VIS08 B8 requires, cut from the same pattern as the saxhleel pair so improving one improves both. B8 is a minimum across characters, not the player's score.",
+      "landmarks": "All seven emitted as real geometry into the same sealed skinned surface, for BOTH families: brow ridge, orbit rim (six welded arcs per eye), naris, cheek-to-jaw, mandible line, chin underside, crest root. For `humanoid` the seventh has no human referent so that family carries the nasal bridge in its place — stated in the code rather than quietly counted as the same thing.",
+      "measured": "Geometry present and welded (winding/closure clean, 0 open edges on the body). NOT MEASURED: whether they produce visible form shading under a 45° key, which is the second half of the acceptance and is an appearance claim needing hardware. Scored by me as INCOMPLETE, not as met.",
+      "references_opened": "corpus/70-visual/refs/context/ESO-argonian_character__steam-1362731834.jpg and __steam-1634540211.jpg; refs/modern/character_fullbody/REF-CF-SK__skyrim-leather-armor-male-fullbody.png; refs/modern/character_closeup/REF-ER__steam-dyules-2764067250.jpg. I confirm the critic's §8.3 finding independently: the Skyrim C4 plates ARE headless armour renders on a card — no head, no hands, no feet — so they cannot serve the head-count canon, and I did not use them for it."
+    },
+    {
+      "id": "E. verdict §7 fix 4 — the shoulder girdle and the triangle budget",
+      "the_finding_being_answered": "critic §5.1, 'the shoulders are two glossy ellipsoids stuck to the sides of a flat rectangular torso plate'. TWO causes, and the winding fault was one of them: with the far surface drawn and its normals facing away, no modelling could have made a form read as a form. The other was that there was genuinely nothing between the chest ellipsoid and the shoulder ball.",
+      "added": "trapezius (neck base to clavicle end, weighted half into the chest), deltoid (a cap over each upper arm running a third of the way down it, skinned to the ARM so it moves as muscle not as a pauldron), pectoral pair, and a lat sweep taking the ribcage into the waist. All welded into the same skinned surface, so they cannot detach in a pose — the lesson of the four floating crest cones. Every one reads M.build and M.shoulders, so the shared-body-plan property holds.",
+      "triangle_budget_B2": "player/saxhleel 15,142 -> 27,240 (bar >=25,000, MET). beast 4,834 -> 31,828 (bar >=12,000, MET — and overshooting; see the perf risk above). humanoid 15,752 -> 28,136 (bar 12,000). undead 25,570.",
+      "not_measured": "Whether the girdle actually reads as continuous. That is B1 faceting plus an appearance judgement and needs hardware frames."
     }
   ],
+
+  "frames": {
+    "where": "reports/visual-truth/f10-characters/r2-sw/frames (16), two copied to corpus/90-verdicts/wave1/artifacts/W1-F10-r2/frames/",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver) — SOFTWARE",
+    "what_i_verified_by_opening_them": "C4__player__yaw000.png (back) and C4__player__yaw090.png (profile): the figure is whole and head-to-foot in frame, and the body is OPAQUE — no sky through the torso, shoulder or arm at profile, which is the angle the transparency was reported at. That is the winding fix, seen. It is also the angle at which the critic's §5.9 stands unchanged: the weapon crosses the entire silhouette, which the verdict correctly assigns to the weapons piece and not to this one.",
+    "what_these_frames_do_not_show": "Anything after the winding fix — they predate the proportion, face, eye and girdle work."
+  },
+
+  "new_tools": {
+    "tools/visual/mesh-winding.mjs": "Signed-volume + normal-agreement + closure, per mesh and per generator, with --self-test and a mirrored-part control. Exits non-zero on any inverted mesh or disagreeing triangle. This is the permanent regression guard.",
+    "tools/check-race-art.mjs": "Every race string in the shipped NPC data must have a declared body plan. --self-test.",
+    "tools/visual/frame-liveness.mjs": "Capture sanity gate. I wrote the first version; a sibling then rewrote it substantially and better. Its degeneracy half works. Its subject half false-REDs on real game captures — see could_not_do."
+  },
+
   "files_touched": [
     "game/src/render/actor.js",
     "game/src/render/renderer.js",
@@ -42,20 +88,26 @@
     "game/src/render/lib/rigs.js",
     "tools/check-race-art.mjs",
     "tools/visual/mesh-winding.mjs",
+    "tools/visual/frame-liveness.mjs",
     "tools/visual/f10-silhouette.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r2/",
     "orchestration/status/W1-F10-r2-builder.json"
   ],
   "files_claimed": [
     "game/src/render/actor.js",
     "game/src/render/renderer.js",
     "game/src/render/lib/race-art.js",
-    "game/src/render/lib/rigs.js",
-    "tools/check-race-art.mjs",
-    "tools/visual/mesh-winding.mjs",
-    "tools/visual/f10-silhouette.mjs",
     "corpus/90-verdicts/wave1/artifacts/W1-F10-r2/",
     "orchestration/status/W1-F10-r2-builder.json"
   ],
-  "ownership_note": "node tools/ownership.mjs --for game/src/render/actor.js reports W1-30-builder-20260812 as having TOUCHED it, 13h old, files_claimed: []. No live claim, so no declared conflict. Recorded rather than assumed.",
-  "next_step": "Capture hardware eight-angle orbits + motion for player AND NPCs to see the winding fix (all prior character frames are void as evidence), then verdict §7 fix 2 (head morph axis is already added to MORPH_KEYS and rigs.js; HEAD_SCALE per family still to be applied in actor.js buildSkeleton) and fix 3 (face landmarks, humanoid eyes)."
+  "ownership_note": "`node tools/ownership.mjs --for game/src/render/actor.js` reports W1-30-builder-20260812 as having TOUCHED it, 13 h old, files_claimed: []. No live claim, so no declared conflict. Run, not assumed. `tools/visual/frame-liveness.mjs` was concurrently rewritten by a sibling and I kept their version.",
+
+  "next_step_for_the_round_2_critic": [
+    "TAKE HARDWARE FRAMES FIRST. Nothing I did to the face, girdle or proportions has an appearance measurement, and every character frame in the repo older than commit 31c3e7ae shows an inside-out body and is void for any shading judgement. Eight angles, player AND NPCs, plus motion.",
+    "WIRE THE SWEEP'S PROJECTED head_top/foot_bottom ROWS INTO frame-liveness.mjs --manifest before trusting any subject verdict. Today it false-REDs 16 of 16 on real captures and I only caught that by opening the frames.",
+    "RE-RUN RI-VIS08 B1 (silhouette faceting). It was never computed, and the body now carries 80% more triangles, so whatever number it gives is about a different mesh than the threshold was imagined against.",
+    "C2 IS THE BIGGEST REMAINING ART NUMBER. Median IoU is down 0.9109 -> 0.8650 but MAX IS STILL 1.0000, and the cause is now visible: `characterFor` hashes the eid into a pool of only 9 saxhleel and 6 humanoid specs, so two different NPCs land on the same spec and are genuinely the same object. That is verdict §7 fix 10's territory (>=34 actors) and it is a registry problem, not a mesh problem.",
+    "FIXES 5-9 ARE UNTOUCHED: reptilian feature census (a tail exists for saxhleel and is welded — check whether the critic's 'the tail is absent entirely' was measuring base.humanoid, where it genuinely is), the garment vocabulary, the crossfade, hit reactions, the second idle stance.",
+    "MEASURE FRAME TIME. I roughly doubled the triangle count of every biped and did not measure the cost."
+  ]
 }
