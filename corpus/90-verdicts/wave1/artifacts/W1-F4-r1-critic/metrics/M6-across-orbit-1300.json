@@ -1,0 +1,78 @@
+{
+  "at": "2026-08-15T19:33:18.152Z",
+  "bar": "RI-VIS03 M2/M6 — exterior_daylight: retention >= 0.60 (hard fail < 0.30), hue_offset >= 15 deg (hard fail < 6), C_shadow >= 6, C_local_med >= 0.045",
+  "rows": [
+    {
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw000.png",
+      "W": 1280,
+      "H": 720,
+      "sky_frac": 0.1052,
+      "M2": {
+        "C_global": 0.1276,
+        "C_local_med": 0.0402
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2236,
+        "retention": 0.4153,
+        "hue_offset_deg": 3.31,
+        "C_shadow": 12.321,
+        "mean_Yp_shadow": 0.1299,
+        "mean_Yp_lit": 0.4356
+      }
+    },
+    {
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw090.png",
+      "W": 1280,
+      "H": 720,
+      "sky_frac": 0.0198,
+      "M2": {
+        "C_global": 0.1157,
+        "C_local_med": 0.0411
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2437,
+        "retention": 1.2359,
+        "hue_offset_deg": 3.25,
+        "C_shadow": 10.862,
+        "mean_Yp_shadow": 0.1302,
+        "mean_Yp_lit": 0.3829
+      }
+    },
+    {
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw180.png",
+      "W": 1280,
+      "H": 720,
+      "sky_frac": 0.0028,
+      "M2": {
+        "C_global": 0.1389,
+        "C_local_med": 0.0555
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2491,
+        "retention": 0.9293,
+        "hue_offset_deg": 8.58,
+        "C_shadow": 9.58,
+        "mean_Yp_shadow": 0.1209,
+        "mean_Yp_lit": 0.452
+      }
+    },
+    {
+      "file": "reports/f4c/B-look-landed/orbit-t13/yaw270.png",
+      "W": 1280,
+      "H": 720,
+      "sky_frac": 0.1074,
+      "M2": {
+        "C_global": 0.1127,
+        "C_local_med": 0.0508
+      },
+      "M6": {
+        "shadow_mask_frac": 0.2228,
+        "retention": 0.4515,
+        "hue_offset_deg": 4.03,
+        "C_shadow": 14.256,
+        "mean_Yp_shadow": 0.16,
+        "mean_Yp_lit": 0.416
+      }
+    }
+  ]
+}
