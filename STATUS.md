@@ -112,13 +112,13 @@
 - **The body is photographed on real hardware and the change is visible.** Eight angles, before and
   after, on an RTX A4500 — the picture the last four judgements were written against. The waist reads
   at player distance.
-- **And the character was standing like a shop mannequin — that is now fixed but NOT yet photographed.**
+- **The player was standing like a shop mannequin — fixed for the player, and NOT for anybody else.**
   Measured on the pose the game actually draws: shoulder tilt 0.3°, **hip tilt exactly 0.000°**, and
-  frames two seconds apart were the identical stand. A real person's weight sits on one leg. The fix
-  puts the hips and shoulders on opposite tilts on the shared stance layer, so **one edit moved the
-  player and all 408 NPCs**. The catch is honest and the builder led with it: the paid photo run
-  happened *before* the stance was written, so **the stance itself has never been seen on hardware** —
-  a critic is shooting it now, along with eight face frames that were photographed and never opened.
+  frames two seconds apart were the identical stand. A real person's weight sits on one leg. **I told
+  you this moved all 408 NPCs. It does not — it moves the player only**, and the next round found why:
+  the code that poses townspeople never reads the stance layer at all, so **every NPC in the game
+  stands in one identical rest pose**. That is now the biggest single reason a town reads as a crowd of
+  copies, and it is the next job.
 - **The stance was photographed, and it lifted every character in the game off the floor.** Rolling the
   hips floated one foot; that was levelled properly, but it levelled them **8.9 mm too high**, and the
   builder's reason for leaving it there turned out to be wrong — the foot-conform code it trusted is a
@@ -126,11 +126,12 @@
   running game on real hardware: **frames of the idle loop where both soles are clear of the ground go
   from 24 of 96 to 68 of 96**, largest gap 2 mm → 11 mm. All 409 characters hover slightly. Being fixed
   now; the remedy is one line of data.
-- **The eye still doesn't read as an eye.** Eight face frames were shot on real hardware two rounds ago
-  and nobody opened them until today. What's there is *a flat amber lozenge — no pupil, no lid, no
-  orbit*. The round that changed it fixed its **brightness** and deliberately never touched its shape,
-  and said so. That's the standing defect at conversation distance, on the player and 260 of 408
-  people.
+- **The eye had a pupil worth literally zero pixels — now it has one.** Eight face frames shot on
+  hardware two rounds ago went unopened until today; what they showed was *a flat amber lozenge — no
+  pupil, no lid, no orbit*. The pupil existed the whole time and was worth **0 pixels at every camera
+  angle on 4 of 5 face shapes**, and the cause was not the eye: **the snout was in front of it.** Moved
+  6 mm out and 12 mm forward — **0 → 10,316 pupil pixels**, and every one of 30 angle-and-subject pairs
+  now shows one. "No lid, no orbit" still stands, and none of this is photographed yet.
 - **Some good news in the same verdict:** the character bar now has **12 of its 18 checks published**
   for the first time, and the head-count proportion check **has quietly gone from a hard fail to a pass**
   — 0 of 41 figures in band, to 41 of 41.
