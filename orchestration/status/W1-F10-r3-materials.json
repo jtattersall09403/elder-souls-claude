@@ -1,0 +1,141 @@
+{
+  "task_id": "W1-F10-r3-materials",
+  "roadmap_item": "F10",
+  "role": "builder — the material work the round-2 appearance pass commissioned",
+  "state": "delivered and banked; before/after photographed on hardware and opened; four named gaps untouched and one confound stated",
+  "date": "2026-08-15",
+  "branch": "codex/wave1-build-experiment",
+  "baseline_commit": "f86acd5b",
+  "control_commit": "5572193ea53ebe81b49465193b61f7e47375fd7d (refs/control/f10-r3-control)",
+  "treatment_commit": "1a3151ff64c7987644f36013f3bd02ad8821fc38",
+
+  "could_not_do": [
+    "HANDS AND FEET ARE STILL ABSENT, AND THAT WAS GAP #1 AFTER MATERIALS IN MY OWN BRIEF. `PLAN.hand_l` is still a single tapered tube of r 0.055 -> 0.042 with a joint ball, and `PLAN.foot_l` a tube of r 0.062 -> 0.048. There are no fingers, no palm, no toes, no sole. I did not touch them. Every close-up in `pairs-after/` shows a stump where a hand should be, and `RI-VIS10` B2 row 9 ('clawed hand with non-human finger count or proportion') is therefore still a NO on every reptilian figure we ship. This is the single largest thing I leave undone and it is not blocked by anything — I ran out of piece, not out of route. The ESO plate I opened (`refs/context/ESO-argonian_character__steam-1634540211.jpg`) shows individually clawed fingers on both hands as the most legible non-human feature on the figure.",
+
+    "THE HEADS STILL READ AS EGGS AND THE WALK IS STILL A GLIDE. Untouched by me, both. `pairs-after/C1__npc-gideon-smith-10__b20.png` against its before is the honest picture: at conversation framing my change converts a flat pale muzzle into a scaled one with visible rows and grain, and that is ALL it does to the head. The dominant read at C1 is still the skull shape, which is not this piece. The three `M__walk__*` frames are captured in both arms and I make no claim from them beyond that they exist.",
+
+    "THE TWO ARMS RAN ON DIFFERENT GPU MODELS — after on an RTX A5000 (SECURE, $0.270/hr), before on an RTX A4500 (COMMUNITY, $0.190/hr) — because RunPod's availability ranking allocated them independently and I did not pin the type. THIS CONFOUND IS SPECIFIC TO THIS PIECE and I will not soften it: mip selection and anisotropic filtering are driver-side, and the change under test IS texel density, so any claim about fine grain is weakened by it. It does not reach the claims I actually make from the frames — a sash, a bone toggle, three cord rings per forearm, a hem, a yoke and a countershaded throat are geometry and vertex colour, and no driver invents them. Reproducing with `--gpu 'NVIDIA RTX A4500'` on both arms would cost about three more cents and I did not spend it.",
+
+    "FRAME TIME REMAINS UNMEASURED AND I ADDED COST I COULD NOT TIME. `getPerfStats()._unmeasurable` still hard-codes 'This container is SwiftShader' and zeroes `renderCpuMs` even on a run whose WebGL context reports an NVIDIA GPU; I did not patch it (`game/src/engine.js` is not mine and the fix belongs with whoever owns the harness). What I CAN state exactly, measured on both arms with the same offline instrument: every actor gains **884 triangles and one draw call**. Whole-actor totals, control -> treatment: saxhleel 27,476 -> 28,360 (+3.22%), humanoid 28,372 -> 29,256 (+3.12%), beast 31,740 -> 32,624 (+2.79%), undead 25,662 -> 26,546 (+3.45%). The extra draw call is the third body surface (`bone`); with the r2 pass's measured 138 skinned meshes in a settlement that is up to +138 draw calls against a measured 732, i.e. up to +19%, and THAT is the number I would watch rather than the triangles. REVERSIBLE IN ONE BLOCK: delete the `B.bone.ellipsoid(...)` calls in `buildSkeleton` and drop `'bone'` from `BODY_SURFACES`; the surface disappears, the sash and cord and paint all survive, and RI-VIS08 B3 goes back to being unanswerable.",
+
+    "I DID NOT SCORE RI-VIS08 B3, AND DELIBERATELY. I captured the pair it asks for — the same subject at bearing 60 and 90, five subjects, both arms, in `pairs-*/B3__*` — and computed nothing from it. A builder scoring its own acceptance is not evidence. The frames are there for a critic; the patch sampling and the 2x specular-delta test are that critic's to run.",
+
+    "THE FIVE UNRUN RI-VIS08 STATIC CHECKS ARE STILL UNRUN BY ME TOO — B1 faceting, B3 material separation, B4 texel density AS RI-VIS03 M5 HFR, B5 contact shadow, B6 subsurface. Note carefully that my texel instrument is NOT B4: B4 is `HFR >= 0.05` computed on the character crop of a rendered frame, and mine is a geometric measurement of the UV layout taken offline. They answer the same question from opposite ends and mine cannot substitute for it.",
+
+    "I DID NOT FIX THE TWO CLAIMED CAPTURE TOOLS. `node tools/ownership.mjs --for tools/visual/f10-character-sweep.mjs` and `--for tools/visual/f10-r2-appearance.mjs` each return one LIVE piece, W1-30V, holding a CLAIMED hold, 14 h old — run, not assumed. Editing a claimed file is the collision the fleet rule exists to prevent, so the fix lives in a new file and is EXPORTED (`selectByProximity` in `tools/visual/f10-r3-materials.mjs`) so W1-30V can adopt it in one import. Until they do, both of those tools still select subjects in list order and will still photograph the sea.",
+
+    "THE C4 ORBIT FRAMING IS POOR AND I INHERITED IT RATHER THAN FIXED IT. At `fill 0.55` on a 1.8 m subject the figure is small and, at these stands, standing in a shadowed alley; `pairs-*/C4__*` are correspondingly weak plates. The `B3` pair at `fill 0.80` is the readable one and is what I judged from. A future round should raise the C4 fill or pick a lit stand.",
+
+    "THE LOCAL SOFTWARE RUN DID NOT FINISH — 10 frames ok, 6 red, the browser closed under it at SwiftShader speed after the second subject. I make NO claim of any kind from it. Every appearance statement below comes from the two hardware arms.",
+
+    "NOBODY BUT ME HAS LOOKED AT THE STRENGTHS I CHOSE. The countershading amplitude (0.89..1.12), the scale-row pitch (34 mm) and depth (5.5%), the mottle (+-4.5%), the sash darkening (42%) and the seam width (12 mm) are my judgement against the plates, not measurements. A critic who thinks the dorsal darkening is over-driven on the skull has a case and the levers are all named constants in `paintBody`."
+  ],
+
+  "headline": "The material system was already there, the characters already declared their material variants, and nothing was reading them. All seventeen CHARACTER_SPECS carry `material: { skin, cloth, palette, wear }` with wear from 0.15 to 0.95 and a region palette on every one; `ensureBuilt` consumed two of the four and `palette` and `wear` reached no frame. On top of that the body's UVs were parametric — `u = i/radial`, `v = t*2`, no metres in them — so the authored linen and hide were pasted 5.52x too fine and the mip chain resolved them to their own mean colour. That is the whole of 'one flat colour of cloth over one flat colour of skin'.",
+
+  "the_diagnosis_and_how_it_was_derived": {
+    "the_reading_i_started_with_was_wrong": "The obvious reading of the round-2 finding is 'the characters have no textures'. They always had them. `game/src/render/scene.js:98` builds `mats.skin` and `mats.cloth` through `worldMaterial()`; `ls game/assets/w1-30/materials/rough_linen/` returns three files and `brown_leather/` three more. The maps were bound the whole time.",
+    "instrument": "`tools/visual/character-texel-density.mjs` (new). Per body mesh, per triangle: world area in m^2 against UV area in uv^2, area-weighted, giving metres per UV unit and hence metres per texture tile against `TEXEL_METRES[family] / repeat`. `--self-test` builds a quad whose UVs are correct by construction, asserts ratio 1.00, then multiplies its UVs by 8 and asserts the tool reports 8.00 — it GOES RED. `repeat` is 2 because `authoredMaps()`'s `setup()` sets `t.repeat.set(2,2)`; node has no `document` so the browser path cannot be read off a material built here, and the tool takes it as an argument rather than guessing.",
+    "before": "13 subjects, 26 body meshes. saxhleel:skin 0.127 m/tile against a 0.700 target = 5.52x TOO DENSE. humanoid:skin 5.06x. saxhleel:cloth 2.53x. humanoid:cloth 2.35x. 4 of 4 surfaces outside a 2x band; exit 1.",
+    "after": "13 subjects, 39 body meshes. Worst deviation 1.15x. 0 of 6 outside the band; exit 0.",
+    "why_that_produces_flatness_specifically": "A 1 k texture at 0.127 m per tile is eight texels to the millimetre. At every framing a player meets — 2 m conversation, 8-10 m gameplay — the selected mip is far up the chain and what reaches the screen is the texture's own mean colour. The map is bound, sampled, and invisible.",
+    "the_declaration_that_was_never_wired": "`lib/rigs.js` declares `material` as a variant axis and `variantKey()` hashes `palette`, `skin`, `cloth` and `wear` into the census identity that counts our seventeen characters as distinct. `ensureBuilt` read `mat.skin` and `mat.cloth` as tint hexes and dropped the other two on the floor. Verified by reading the call: `buildSkeleton(rigSource, A.mats, tintHex, skinHex, A.artFamily, spec && spec.morph)` — six arguments, no material."
+  },
+
+  "what_changed": [
+    {
+      "id": "1. the UVs unwrap in metres",
+      "what": "`MeshBuilder` takes `mpt` (its family's `TEXEL_METRES`) and every primitive unwraps against it — tube `u` is arc length at mean radius and `v` is distance along, ball and ellipsoid are equirectangular in metres. This is `MATERIAL_API.md` §5's stated seam and exactly what `lib/kits.js` has always done (`p[axis] / mpt`); the character was the one surface in the game that ignored it.",
+      "the_detail_that_is_easy_to_get_wrong": "Tube cap centres are placed a TRUE RADIUS away in UV on the `v` axis, so a cap triangle has UV area pi*r^2/mpt^2 against a world area of pi*r^2 — the same density as the wall it closes. The old `[.5,.5]` collapsed every cap to a UV sliver, which reads to a density instrument, and to the mip selector, as infinitely coarse.",
+      "measured": "5.52x -> 1.12x on skin, 2.53x -> 1.09x on cloth. See above."
+    },
+    {
+      "id": "2. the variant's own palette and wear, at last consumed",
+      "what": "`buildSkeleton` takes the material spec and builds the body surfaces through `worldMaterial(family, { palette, wear, wearFrom: 'geometry', vertexColors: true })`, banked by (family, palette, wear) so 408 NPCs cost at most seventeen materials plus a clone each for tint and waterline uniforms.",
+      "wearFrom_geometry_is_an_answer_to_a_written_request": "`MATERIAL_API.md` §6a is addressed to this file by name: 'Bake `esCurvature` onto your kit parts and your rigs ... and pass `wearFrom: geometry`. The option is frozen and live now ... this is the only route to the plan's `wear reads` gate.' `bakeCurvature()` has been running at the bottom of `MeshBuilder.build()` the whole time, writing that attribute with nothing reading it. Now it is read.",
+      "why_the_bank_is_in_actor_js_and_not_scene_js": "`mats.cloth` and `mats.skin` are SHARED — `places.js` hangs market awnings off `mats.cloth` and `scene.js`'s showcase builds a static villager from `mats.skin`. Turning `vertexColors` on there would multiply an awning by a vertex colour it does not have, and three.js reads a missing `color` attribute as undefined rather than as white. So the body surfaces get their own bank and the world materials are untouched."
+    },
+    {
+      "id": "3. the garment, painted per vertex — zero triangles, zero draw calls",
+      "what": "`paintBody()` writes a per-vertex colour over the finished surface in rest space, against landmarks read off the rig rather than retyped (pelvis 0.980, spine_00 1.100, spine_02 1.340, knee 0.510, ankle 0.090). Cloth: a shoulder yoke, a two-wrap sash, a tunic hem, a legging cuff, four vertical seams measured in ARC length so a seam is 12 mm wide on a narrow arm and 12 mm wide on a broad chest, a leggings panel tone, and a damp/dirt gradient rising from the hem. Skin: pale-ventral / dark-dorsal countershading off the normal's z, scale rows at 34 mm pitch on the reptilian family only, and a paler throat.",
+      "why_vertex_colour_and_not_a_second_texture_set": "A second texture set for a family we already have is a `visual-foundation` census `duplicate` by construction (MATERIAL_API §4). More geometry costs triangles on a body already at 28,136 against a 12,000 bar. A vertex colour costs three floats, multiplies the authored albedo rather than replacing it — so the linen weave still reads underneath the panel it belongs to — and lives on the SHARED BODY PLAN, so it improves all seventeen characters in one edit."
+    },
+    {
+      "id": "4. a third body surface, and it is Argonia's vocabulary rather than Skyrim's",
+      "what": "Cord lashing (cloth family, three rings per forearm and two per shin) and bone fittings (a new `bone` skinned surface: a sash toggle and two shoulder clasps).",
+      "the_design_call_and_why_the_obvious_one_was_wrong": "The Skyrim full-body plates I opened (`REF-CF-SK__skyrim-leather-armor-male-fullbody.png`) are all buckles, straps, rivets and a metal belt disc, and copying that read is EXACTLY what `RI-VIS10` §D2 forbids: 'buckled leather jerkin with bracers' is on the generic-fantasy list that must occur ZERO times, and three occurrences cap the item at 3. The modern plates are routed FIDELITY-ONLY (refs/characters/INDEX.md §4) — they govern how WELL a thing is made, not what it is. So the fittings are §D3's Black Marsh vocabulary — lashed cord and bone — and the ESO Argonian plate, which shows corded wraps running wrist to elbow on both arms, is cited for construction and not as a target.",
+      "and_it_is_what_makes_B3_answerable_at_all": "RI-VIS08 B3 asks for '>= 3 materially distinct regions' whose specular delta differs by >= 2x between highest and lowest. A body with exactly two surfaces cannot answer that question however well those two are made. Now there are three, with genuinely different roughness and response: cloth (rough_linen), skin (brown_leather), bone (marble_01)."
+    }
+  ],
+
+  "the_evidence": {
+    "where": "corpus/90-verdicts/wave1/artifacts/W1-F10-r3/ — README.md states the shas and the one-file diff; pairs-before/ and pairs-after/ carry 15 matched pairs; metrics/ carries both manifests, subjects.json and both texel-density reports.",
+    "open_this_first": "pairs-before/B3__npc-gideon-smith-10__yaw060.png against pairs-after/ — same subject, same camera, same pose, same lighting, same seed.",
+    "what_i_saw_when_i_opened_them": "BEFORE: each figure is one uninterrupted tone shoulder to ankle, marked only by two faint hairlines where the limb tubes join. AFTER, same figure: the sash reads as a dark band at the waist with a pale bone toggle at its front; cord lashing steps three times up the forearm and twice up the shin; the tunic hem and legging cuff read as bands; the shoulder yoke is a second tone; the trunk has tonal variation instead of one wash. On `B3__npc-assizer-corvo__yaw090.png` the same is true of a humanoid (imperial) figure standing beside a saxhleel one, so this is both body families in one frame.",
+    "the_reuse_property_is_visible_in_the_frame": "The small background NPC at the left of `B3__npc-gideon-smith-10__yaw060.png` also gained a sash. Nobody targeted it. One edit to the shared body plan, seventeen characters, 408 NPCs — OWNER-DIRECTIVES §3's 'make this structural, not a hope', seen rather than asserted.",
+    "what_it_does_NOT_show": "The head. At C1 framing the change converts a flat pale muzzle into a scaled one and does nothing else; the read at conversation distance is still dominated by skull shape. And the hands, which are still stumps at every angle.",
+    "coverage": "76 frames per arm, 0 red, 5 subjects (player + 4 NPCs) across both body families and four races, 8 orbit angles + 2 close-ups + the B3 pair each, plus 16 motion frames. Every frame carries per-frame liveness statistics and the subject's projected head-top and foot-bottom rows.",
+    "raw": "reports/runpod-gpu/runs/f10-r3-{after,before}/ hold all 152 frames. Per HAZARDS §9 nothing under reports/ is cited as evidence; everything cited is under corpus/."
+  },
+
+  "delete_the_fix": {
+    "control_arm": "`HEAD`'s tree with `game/src/render/actor.js` swapped for `f86acd5b`'s, built with `git commit-tree` against a temporary index so the working tree was never touched. `git diff --name-status HEAD 5572193e` returns exactly one path: `M game/src/render/actor.js`. Today's instrument was copied INTO the control worktree, so the instrument is held constant and only the code under test is reverted.",
+    "result": "Control arm: 5.52x / 5.06x / 2.53x / 2.35x, 4 of 4 surfaces outside the band, exit 1 — the old numbers, exactly. Treatment arm: worst 1.15x, PASS, exit 0. The two arms genuinely disagree; this is not an inert fix and not an inert control.",
+    "HAZARDS_12_HAPPENED_TO_THIS_PIECE_AND_IS_THE_REASON_THE_BASELINE_IS_f86acd5b": "A sibling's whole-tree bank, commit `c148fca9` 'In-flight agent work', carried this piece's UNCOMMITTED `actor.js` into `HEAD` before it was landed. `git show d72481fc:game/src/render/actor.js | grep -c 'paintBody\\|bodyMaterialBase'` returns 5; against `f86acd5b` it returns 0. A control taken from `HEAD~1` would have contained the fix and come back green, and every honest conclusion from that would have been wrong."
+  },
+
+  "the_capture_defect_the_orchestrator_flagged_mid_piece": {
+    "the_cause_read_out_of_the_engine_not_inferred": "`game/src/engine.js:11517` — `listEntities() { ... for (const n of this.sim.npcs) out.push({ ..., pos: [...] }) }`. IT IS NOT RANGE-FILTERED. It returns every NPC in the simulation wherever it is. Both existing capture tools log `stand X: N npc(s) in range` and then take the first N in LIST ORDER. There is no 'in range' — the phrase is the whole bug.",
+    "the_base_rate_and_it_is_far_worse_than_anyone_knew": "Measured this run, three stands: char-player 60 enumerated / 27 within 80 m, street-lilmoth 60 / 27, street-gideon 109 / 27. **148 of 229 enumerated NPCs — 64.6% — are not where the stand is.** Round 2's 'two of seven' and the sweep's '17 of 93' were not a rare bug; they were the tail of a majority.",
+    "the_fix_is_selection_not_detection": "A liveness gate that rejects the frame afterwards has already paid for it. `selectByProximity()` measures every enumerated NPC's distance from its stand, SORTS BY IT AND TAKES THE NEAREST — which is what 'in range' was supposed to mean — rejects anything beyond `--max-offset`, and publishes the whole distribution. Both arms independently selected the same five subjects at offsets 0, 11.1, 12.8, 14.5 and 14.8 m, and both wrote 148 rejections.",
+    "the_threshold_is_now_calibrated_against_the_real_population_which_is_what_HAZARDS_15_demands": "I could NOT calibrate it offline — `game/data/npcs/*.json` carries a position on 0 of 408 records, because placement is a run-time property of the sim — so I shipped it DECLARED at 80 m with its provenance stated, and made every run publish the population. The run then calibrated it: the largest gap in the sorted distances is 58.1 -> 5717.8 m at char-player, 60.4 -> 5750.7 m at lilmoth, 63.2 -> 2963.7 m at gideon. The nearest 27 subjects at every stand sit between 11 m and 63 m; the next one is between 2.9 km and 5.7 km away. **80 m sits in a measured gap roughly three orders of magnitude wider than the band it separates.** It is no longer a guess.",
+    "self_test": "`node tools/visual/f10-r3-materials.mjs --self-test` keeps a subject 3.6 m from the stand, rejects one at 2233.7 m, and then — the arm that must disagree — lifts the threshold and keeps BOTH, proving the rejection is the threshold doing work rather than a coincidence. Exit 0.",
+    "what_i_did_NOT_do": "I did not fix `f10-character-sweep.mjs` or `f10-r2-appearance.mjs`. Both are CLAIMED by live piece W1-30V (ownership run, not assumed). `selectByProximity` is exported from my file for exactly that adoption."
+  },
+
+  "performance": {
+    "measured_offline_on_both_arms_same_instrument": "Every actor gains 884 triangles and one draw call. Whole-actor: saxhleel 27,476 -> 28,360 (+3.22%), humanoid 28,372 -> 29,256 (+3.12%), beast 31,740 -> 32,624 (+2.79%), undead 25,662 -> 26,546 (+3.45%). Body-surface meshes per actor 2 -> 3.",
+    "frame_time": "UNMEASURED, because `getPerfStats()._unmeasurable` still refuses it on hardware — see could_not_do. I did not fix that predicate and I am not claiming the cost is free.",
+    "my_reading_marked_reversible": "The triangles are noise against the r2 pass's measured +49.7% and are not the risk. The DRAW CALL is: one extra skinned mesh per actor against 138 skinned meshes and 732 draw calls measured in a settlement is up to +19%. REVERSIBLE IN ONE BLOCK — delete the `B.bone.ellipsoid(...)` calls and drop `'bone'` from `BODY_SURFACES`; sash, cord, paint, UVs and wear all survive and only RI-VIS08 B3 becomes unanswerable again. OVERTURNED THE MOMENT a real frame-time reading shows the extra pass costs more than B3 is worth."
+  },
+
+  "what_a_critic_should_attack_first": [
+    "OPEN pairs-before/B3__npc-gideon-smith-10__yaw060.png AND pairs-after/ AND DISAGREE WITH ME. Everything I claim about appearance is in that pair and its four siblings. If the sash does not read to you, say so.",
+    "RUN RI-VIS08 B3 PROPERLY on the pairs I captured and did not score. Three patches, 16x16, specular delta between yaw 60 and yaw 90, highest/lowest >= 2x. I built the third surface specifically so the check has something to measure; whether it passes is not mine to say.",
+    "CHECK WHETHER THE COUNTERSHADING IS OVER-DRIVEN ON THE SKULL. `pairs-after/C1__*` at conversation framing is where I would look. The lever is one line in `paintBody` (0.89 + 0.23 * (nz*0.5+0.5)).",
+    "RE-RUN THE PAIR WITH BOTH ARMS PINNED TO ONE GPU TYPE — `--gpu 'NVIDIA RTX A4500'` on both — and see whether any fine-grain claim moves. Three cents.",
+    "CHALLENGE 80 m. The distributions are in metrics/manifest-after.json under `subject_offset_distributions.all_m`, every value, both arms."
+  ],
+
+  "cost": {
+    "pods": "b0loqeer88ak0w (after, RTX A5000 SECURE $0.270/hr) and cbzpst1wt0muio (before, RTX A4500 COMMUNITY $0.190/hr). Both terminated in the mandatory cleanup path with deletion confirmed by a subsequent API lookup returning not found; both ephemeral templates deleted and confirmed too.",
+    "spend": "~4.5 min and ~2 min of Pod wall time; about $0.026 in total across both arms.",
+    "guards_followed": "Every GPU command backgrounded with nohup+disown so a shell timeout could not orphan a Pod. `cleanup` was never run bare. RUNPOD_OWNER set per arm. `--revision` passed on both, so neither arm inherited a sibling's uncommitted edits (HAZARDS §15a)."
+  },
+
+  "files_touched": [
+    "game/src/render/actor.js",
+    "tools/visual/character-texel-density.mjs",
+    "tools/visual/f10-r3-materials.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r3/",
+    "orchestration/status/W1-F10-r3-materials.json"
+  ],
+  "files_claimed": [
+    "game/src/render/actor.js",
+    "tools/visual/character-texel-density.mjs",
+    "tools/visual/f10-r3-materials.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F10-r3/",
+    "orchestration/status/W1-F10-r3-materials.json"
+  ],
+  "ownership_note": "`node tools/ownership.mjs --for game/src/render/actor.js` was RUN, not assumed: one live piece, W1-30-builder-20260812, 14 h old, `touched` with `files_claimed: []` — no declared claim, so no conflict. `--for game/src/render/scene.js`: nobody live has declared it, and I did not edit it anyway. `--for tools/visual/f10-character-sweep.mjs` and `--for tools/visual/f10-r2-appearance.mjs`: BOTH return W1-30V holding a CLAIMED hold, which is why my capture is a new file. `node tools/contention.mjs` reported 3 browser instances and load 3.85/core against a 4.0 ceiling — GO with room for 3 — so I took one local browser and moved every frame that mattered to a rented GPU.",
+
+  "references_opened": [
+    "corpus/70-visual/refs/modern/character_fullbody/REF-CF-SK__skyrim-leather-armor-male-fullbody.png — opened at 2470x3568. Stitching along every seam, panel divisions, rows of rivets, fur trim at collar and hem, a metal belt disc, edge darkening where panels meet. Routed FIDELITY-ONLY, and its buckled-jerkin read is on RI-VIS10 §D2's forbidden list, so it governed how well and not what.",
+    "corpus/70-visual/refs/context/ESO-argonian_character__steam-1634540211.jpg — opened. Scaled hide with fine scale rows, a layered garment with the shoulder yoke in a second material over a paler body, CORD WRAPS FROM WRIST TO ELBOW ON BOTH ARMS, a waist wrap with a central fitting, a panelled skirt, individually clawed fingers and toes, pale ventral throat against a dark dorsal skull. The cord lashing and the countershading in this piece come straight off this plate; the clawed hands are the thing I did NOT build and they are the most legible non-human feature on it.",
+    "corpus/70-visual/refs/characters/INDEX.md — §3 pairing table, §4 routing, §5 what is missing (C5 is n=0), §6 how the set gets misused.",
+    "corpus/70-visual/RI-VIS08 §B3, §B4 — read for the acceptance wording quoted above.",
+    "corpus/70-visual/RI-VIS10 §A, §B2/B3/B4, §C, §D1-D5, §E, scoring — §D2's generic-fantasy list is what redirected the fittings from buckles to bone and cord, and §D3's eight-material vocabulary is what they answer."
+  ],
+
+  "redundant_with": []
+}
