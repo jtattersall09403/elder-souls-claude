@@ -95,6 +95,25 @@ export function buildSwing(p, opts) {
   // chain turned off entirely, the shoulder still swung the blade ~40 degrees. Solved jointly with
   // `yawGain` through the single monotone parameter in §calibrateYawGain.
   const accGain = opts && opts.accGain !== undefined ? opts.accGain : 1;
+  // `stanceRootY` — THE HEIGHT THE CHARACTER IS ACTUALLY STANDING AT WHEN THIS SWING BEGINS.
+  //
+  // `rootY` below was authored from literals with **no stance term at all**: `[0.0, 0.0]` at
+  // phase 0. That was correct when the idle stood at 0, and stopped being correct when F10 r9's
+  // contrapposto and r10's compensating root drop put `idle_ready.root_offset.y` at −0.00796 m.
+  // `HAZARDS §20d` filed the mechanism (correctly overturning r10's `r2()` diagnosis, which was
+  // wrong — `r2` rounds to THREE decimals, 1 mm steps, and would have carried −0.008 fine).
+  //
+  // MEASURED THIS ROUND, and it is larger than §20d's own scope: `game/data/weapons/
+  // clip-registry.json` carries **1,160 swing profiles**, every one of them built through this
+  // function at RUNTIME by `MovesetLibrary.clipFor`, and every one of them returning
+  // `root_offset.y[0] = 0` against a character standing at −0.00796 m. `tools/harness/
+  // anim-tune.mjs` cannot see any of it: it measures `clips.archetypes[m.archetype]` for the
+  // seven spine classes, 14 rows, and never calls `buildSwing`.
+  //
+  // Defaults to 0, so a caller that does not pass it gets exactly the curve it got before this
+  // parameter existed — which is what keeps every solver, probe and calibration in this file
+  // measuring what it used to measure.
+  const stanceRootY = opts && opts.stanceRootY !== undefined ? Number(opts.stanceRootY) || 0 : 0;
   const cockP = COCK_PHASE[tier] !== undefined ? COCK_PHASE[tier] : 0.5;
   const folP = FOLLOW_PHASE[tier] !== undefined ? FOLLOW_PHASE[tier] : 0.25;
   const settle = SETTLE[tier] !== undefined ? SETTLE[tier] : 0.03;
@@ -308,13 +327,19 @@ export function buildSwing(p, opts) {
     [3.0, 1.0],
   ];
 
+  // The two ENDPOINTS carry the stance term; the body of the curve is the authored crouch and is
+  // untouched. Additive rather than assigned, deliberately: phase 3's `-0.01 + cr * 0.25` is this
+  // swing's own SETTLE, an authored quantity, and replacing it with the stance height would be a
+  // second, unmeasured change smuggled in beside this one. Whether the settle should terminate at
+  // the idle height instead is a real question and it is NOT answered here — see
+  // `orchestration/status/W1-F10-r11.json`.
   const rootY = [
-    [0.0, 0.0],
+    [0.0, 0.0 + stanceRootY],
     [cockP, -0.02 + cr * 0.55],
     [1.0, -0.03 + cr * 0.8],
     [2.0, -0.06 + cr],
     [2.0 + folP, -0.08 + cr * 0.9],
-    [3.0, -0.01 + cr * 0.25],
+    [3.0, -0.01 + cr * 0.25 + stanceRootY],
   ];
 
   return {
