@@ -28,6 +28,8 @@ dialogue-gate-g-repro.mjs — Neekhu's dead "the carriers" link and Sigurd's dup
   --out <dir>      report + screenshot directory (default reports/uix08/gate-g-repro)
   --after          label the run as POST-FIX (changes only the report's own labelling)
   --revision <sha> recorded in the report for provenance; not enforced here
+  --entry <path>   serve a different game/index.html — for delete-the-fix against a pinned
+                    baseline checkout (HAZARDS.md's "pin your baseline, not HEAD")
 
 EXIT 0 = ran and checks match the expected arm · 1 = a check failed · 2 = could not run.
 `;
@@ -55,7 +57,8 @@ const report = {
   checks: [], data: {},
 };
 
-const h = await launchGame({ width: 1920, height: 1080, timeout: 300000 });
+const ENTRY = args.entry ? String(args.entry) : undefined;
+const h = await launchGame({ width: 1920, height: 1080, timeout: 300000, entry: ENTRY });
 let exit = 0;
 
 /** Real key press through the DOM — identical mechanism to `dialogue-drive-probe.mjs`'s `key()`. */
@@ -362,7 +365,7 @@ try {
       // nothing to scroll away FROM (`dialogueScroll` clamps back to 0 regardless of what it is
       // set to) — that was tried first and could not build the precondition. A short, sharply
       // shorter viewport forces real overflow without changing which topics get asked or how.
-      const hs = await launchGame({ width: 900, height: 320, timeout: 300000 });
+      const hs = await launchGame({ width: 900, height: 320, timeout: 300000, entry: ENTRY });
       try {
         await hs.h('setMode', 'play-instrumented');
         await hs.h('setRenderRate', 0);
