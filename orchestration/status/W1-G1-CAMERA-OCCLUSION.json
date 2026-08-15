@@ -1,50 +1,107 @@
 {
   "task_id": "W1-G1-CAMERA-OCCLUSION",
-  "brief": "G1/RI-CAM01 SS C.1 - close the buried-camera automatic fail (player_occluded run > 6 frames). corpus/90-verdicts/wave1/W1-FIRST-TEN-MINUTES-r1.md SS5.",
-  "base_commit_pinned": "65b30bee4db45434b00b320bf64fad4e9e02cbad",
-  "base_commit_pin_note": "Repinned from the predecessor's 725bca6f (pre shader-fix) to HEAD-at-session-start 65b30bee, which is the commit the dispatch names as carrying the actor.js#installWaterline rename (W1-F1-SHADER-COLLISION). Verified an ancestor of this commit: `git merge-base --is-ancestor b476b55d 65b30bee` (the province.js occlusion-sightline fix) also true.",
-  "state": "measuring",
+  "roadmap_item": "G1",
+  "brief": "G1/RI-CAM01 §C.1 — measure the longest run of player_occluded frames against the SHIPPED build, both arms, and say whether the automatic fail is cleared.",
+  "state": "measured",
+
   "what_could_not_be_done": [
-    "The full 0-500 frame dense walk (every frame) was NOT run in both arms end to end -- gl.readPixels-class readback cost was measured directly this session at ~11.1s/grab (223s wall / 20 grabs, timing-probe-G1 at contention ~2.15-2.3/core -- better than the predecessor's 3.0-3.4/core but still the dominant cost). A full 500-frame walk at 2 grabs/frame plus periodic reference grabs is >3h/arm at that rate, which is not a turn-safe budget (HAZARDS SS13). Instead: fast-forwarded (stepFrames, unmeasured, cost-free) to frame 270 and measured DENSELY (every single frame, per-frame, not sub-sampled) from frame 270 to 450 -- the window bracketing the verdict's own sparse-sampled crash (2.3% at f240, 0.5% at f300, 0.0% at f360, 6.1% at f420; W1-FIRST-TEN-MINUTES-r1.md SS5) with 30-frame margin on both sides. This is a bounded window, not the full walk; if the true run extends outside [270,450] this measurement will not see it, and that is stated as a limitation, not hidden.",
-    "Did not re-diagnose or re-implement the vegetation-occlusion fix -- it is already on this branch (see below) and was not authored by this task."
+    "THE FULL 0-500 WALK WAS NOT RUN. Measured window is sim frames 275..455 (181 frames, DENSE — every frame, no sub-sampling), fast-forwarded to 275 unmeasured. gl.readPixels-class readback is 10-20 s/call on this box; at 320x180 the observed rate was ~50 s/frame/arm, so the canvas was dropped to 160x90 to reach ~15 s/frame/arm. A full 500-frame dense walk in both arms remains out of turn-budget. If a longer run exists outside [275,455] this measurement does not see it — but see the result: the bar is already broken INSIDE the window, so a wider window can only make the number worse, never better.",
+    "RI-CAM03 (lock-on framing) NOT JUDGED. Its own Comparison method M1 requires 7 scenarios at frames_locked >= 3600 each (~25,200 locked frames), plus M2's 40-pose pitch grid, M3, and 40 latency trials. That is a full round, not a leftover from a measurement task. The instrument exists (corpus/80-methods/m-cam03-lockon-framing.mjs delegating to tools/camera/cam-probe.mjs --probe lock,pitchlaw,latency and tools/camera/cam-pitch-instrument.mjs --m2); the `onScreen(eid)` harness method the item asks for is NOT in game/src/harness/api.js (grepped: 0 hits). Left named and unstarted.",
+    "RI-CAM04 (directional roll clips) IS NOT JUDGEABLE AND THAT IS THE FINDING — see ri_cam04 below. Not a zero against the build; corpus/build debt.",
+    "RI-CAM01's declared blind pair (two unlabelled arm_len time series, ours vs one generated from §C's law) was NOT run. CLAUDE.md rule 0e: only the orchestrator can spawn a fresh blind judge; a subagent cannot. This caps RI-CAM01 independently of §C.1.",
+    "The occluder at sim 285+ was identified from a 160x90 evidence frame plus geometry, NOT from a high-resolution multi-angle capture. Stated as an inference below, not as a measured fact."
   ],
-  "key_finding_1_the_diagnostic_question_the_dispatch_asked_first": {
-    "question": "What collider set does the spring arm actually test against, and why is vegetation absent from it?",
-    "answer": "game/src/sim/camera.js#stepCamera (line 429) reads cell = sim.cell || EMPTY_CELL, and solveArm() (line 841) calls cell.sphereCast(...) against exactly that cell -- nothing else. sim.cell is assigned in game/src/engine.js from exactly two sources: (a) this._interiorCell, built by _syncInteriorCollisionCell() from interiorCollisionShapes(rec) -- an interior room's own shell; or (b) a settlement cell built at engine.js ~7034-7039 as `new CollisionCell('settlement:'+id, pv.settlementSolidsNear(x,z,45).shapes, ...)`, i.e. the output of game/src/render/exterior.js#settlementSolids() (line 3045), which is building walls/shells only by its own header comment. Grepped game/src exhaustively: no code path anywhere feeds canopy/trunk/tree placements into a CollisionCell's shapes array. Vegetation instead lives entirely in game/src/world/province.js as InstancedMesh crown/trunk pairs tracked via _registerOccludable()/updateOcclusion(), which only ever toggles rendering .visible flags -- it has no interaction with sim.cell, solveArm(), or sphereCast at all. That is the whole answer to 'why is vegetation absent': it was never wired into the arm's collider set in the first place, by construction, not by a bug in the set-membership test. This is why arm_len read 3.993 m (full extension) and arm_hit:false at the exact frame the player vanished (verdict SS5) -- the arm's own sphere-cast worked exactly as designed against exactly the set it owns; a tree was never a candidate member of it.",
-    "evidence_files": ["game/src/sim/camera.js:427-910", "game/src/engine.js:6664-7040,8255-8268", "game/src/render/exterior.js:3045", "game/src/world/province.js:1355-1460"]
+
+  "headline": "RI-CAM01 §C.1's automatic fail is NOT CLEARED. On the shipped build, in the measured window, the longest run of consecutive player_occluded frames is AT LEAST 12 and was still open when this file was written — against a bar of <= 6. The b476b55d sightline fix is real and does what it claims, but it is not the fix for THIS occluder, and both arms are byte-identical over the window.",
+
+  "the_measurement": {
+    "bar": "RI-CAM01 §C.1: player_occluded[f] = 1 if the character's visible pixel count is < 0.35x its unoccluded count at the same pose (fade forced to 1.0). Longest run <= 6 frames; mean <= 0.03 on a traversal.",
+    "window_sim_frames": [275, 455],
+    "sampling": "dense — every frame, no sub-sampling (M2b permits every-4th; run-length bars are not safely measurable at stride 4, so dense was used)",
+    "canvas": "160x90",
+    "arm_fix_on_shipped": {
+      "longest_run_frames": ">= 12 (sim 285..296+, still open at time of writing)",
+      "mean_occluded": ">= 0.5455 over the frames scored so far",
+      "pass_longest_run": false,
+      "pass_mean": false
+    },
+    "arm_control_delete_the_fix": {
+      "flag": "renderer.province.occlusionSightline = false — the fix's own documented control arm",
+      "result": "BYTE-IDENTICAL to the shipped arm on every frame common to both (occludedPx, refPx, armLen, armHit, playerPos all equal)."
+    },
+    "the_descent_is_real_not_marginal": "occludedPx falls monotonically 359 -> 34 px against a reference of ~595-629 px across sim 278..292 (ratio 0.613 -> 0.057). This is a progressive burial, not noise around the threshold.",
+    "arm_telemetry_through_the_whole_burial": "armLen pinned at 3.993 m (full extension), armHit false on every frame, clipThrough false on every frame. The spring arm never sees the occluder — exactly the verdict's original finding, still true."
   },
-  "key_finding_2_a_fix_of_the_correct_category_is_already_on_this_branch": {
-    "commit": "b476b55d29257b69f603c6ce2474a687bff65498",
-    "when": "2026-08-14T11:20:09Z (about 80 minutes after the verdict's evidence was captured at 10:02, and an ancestor of this task's pinned base 725bca6f)",
-    "what_it_does": "Rewrote Province.prototype.updateOcclusion (game/src/world/province.js) from a proximity-BUBBLE-around-instance-ORIGIN test to a camera-to-actor SEGMENT test against each canopy instance's baked crown/trunk radius (_registerOccludable, _occluderRadiusM). This matches the verdict's own prescribed remedy ('the fix belongs in vegetation collision or a near-field occluder fade, not in deck undersides') -- it is the near-field-occluder-fade branch, not the arm-collision branch, which is consistent with finding 1: the arm cannot be the fix surface here.",
-    "the_flag_that_makes_it_a_ready_delete_the_fix_control": "Province.occlusionSightline (public, documented in the source as the control arm: 'set it to false and the behaviour is bit-for-bit the behaviour of the commit before this one'). Since updateOcclusion never touches sim.cell/solveArm, arm_len and arm_hit are provably identical whether this flag is on or off -- so a run-length regression measured with it off cannot be a disguised 'the arm just moved' explanation; the only thing that changes between the two arms is which InstancedMesh entries are hidden.",
-    "existing_check": "tools/visual/occlusion-sightline-check.mjs exercises the shipped method against a synthetic one-tree scene (3 arms: the tree that defeats the old bubble, a trunk the old bubble already caught, a tree that must stay visible) and PASSES at HEAD as of this session. It does NOT measure a player_occluded run on the real walk -- that gap is what this task was dispatched to close, and remains open per the blockers above.",
-    "not_yet_done": "No one has re-run RI-CAM01's own SS C.1 bar (longest player_occluded run, dense sampling) against this fix. That is the actual acceptance number and it has not been produced, before or after b476b55d, by anyone -- the verdict's 2/10 score and 'automatic fail' predate the fix and have not been re-judged since."
+
+  "what_is_occluding_the_player_and_why_the_shipped_fix_does_not_catch_it": {
+    "inference": "The saved evidence frame reports/cam-occlusion-walk/g1-fixon-r3/frames/f0275.png shows the player beneath a RAISED DECK ON POSTS in Lilmoth, with the camera also under the deck looking at the player through vertical posts. The occluder is ARCHITECTURAL, not vegetal.",
+    "why_the_fix_cannot_help": "Province.updateOcclusion only ever hides canopy InstancedMesh instances registered by _registerOccludable (game/src/world/province.js:1315 registers only b.kind === 'canopy'). A deck post is not a canopy instance and is never a candidate, so the segment test cannot hide it — which is exactly why both arms are byte-identical here.",
+    "why_the_spring_arm_cannot_help_either": "settlementSolids() (game/src/render/exterior.js:3045) does build box shapes for buildings, and the player is inside Lilmoth so a settlement CollisionCell exists — yet armHit is false on every frame. Posts are thin; a 0.28 m sphere cast passes between them. RI-CAM01 §C.1 names this case in its own opening: the failure 'which a fade-only implementation still suffers whenever the obstruction is thin enough that the sphere cast misses it'. M2b names the route too: cam-walk-boardwalk, 'a stilt-village boardwalk with railings, the thin-geometry case a sphere cast most often misses'.",
+    "consequence_for_the_next_piece": "The remedy that would move this number is NOT more vegetation work. It is either (a) near-field occluder fade extended beyond canopy instances to settlement/deck geometry, or (b) thin-geometry handling in the arm. Whoever takes it should not re-derive the vegetation diagnosis — it is correct, landed, and orthogonal to this occluder."
   },
-  "instrument_built_this_session": {
-    "file": "tools/camera/cam-occlusion-walk.mjs",
-    "status": "written, structurally exercised (frame-0 smoke test ran the full pipeline: startOpening, stepFrames, canonical renderNow, root.visible pixel diff, isolated-scene reference diff -- no exceptions), NOT run to completion at any useful frame count due to the two blockers above",
-    "method": "RI-MTH04 Appendix A compliant: object.visible toggling only (player root, and separately every other top-level scene.children entry except lights, for the 'unoccluded at the same pose' reference), never a material mutation, so it cannot bleed into another actor's shared material instances the way the pre-existing tools/harness/first-ten.mjs#playerVisiblePx() (material colorWrite/depthWrite/depthTest) can per Appendix A's finding.",
-    "fade": "forces sim.camera.charOpacity = 1 before every canonical render, per SS C.1's 'evaluated with the fade opacity forced to 1.0'",
-    "control_arm": "--control old-bubble sets renderer.province.occlusionSightline = false for the whole walk -- the shipped delete-the-fix flag, applied without touching git state (HAZARDS SS12: HEAD is not a safe delete-the-fix baseline on this tree; this avoids that entirely by using a runtime flag the fix itself shipped as its own control)",
-    "perf_note_for_the_next_agent": "Disable R.three.shadowMap.autoUpdate before the extra (non-canonical) render calls and re-enable before each canonical renderNow() -- three.js recomputes the shadow map on every .render() call by default, which was the single largest fixed cost per frame on this forest-heavy scene before this fix. Even with that fix, gl.readPixels itself measured 10-20s per call under this session's contention -- budget accordingly or wait for contention.mjs to show a materially lower load before running the full walk.",
-    "recommended_next_run": "node tools/camera/cam-occlusion-walk.mjs --tag <name> --start debug --frames 500 --canvas 320x180 --ref-every 10   (matches the debug/Lilmoth spawn the verdict's own evidence frames were taken from -- d1-f360-camera-inside-a-tree-rtx-a5000.png, after-d1d2-006-walk-f0360.png), then the same with --control old-bubble as the delete-the-fix arm. Do this only after W1-F1-SHADER-COLLISION lands and contention.mjs shows room."
+
+  "delete_the_fix_discipline_RULES_rule_6": {
+    "control_is_inert_over_this_window": true,
+    "but_the_control_is_NOT_inert_by_construction": "Rule 6 demands the teardown be seen to go red. `node tools/visual/occlusion-sightline-check.mjs` run this session at HEAD: Arm A (a tree 7 m from camera, 2 m off the line, 4 m crown draped over it) reports proximity-only = VISIBLE, with-sightline = hidden. So occlusionSightline=false genuinely changes behaviour; it simply has nothing to change on this walk.",
+    "and_the_fix_is_live_in_this_region": "game/data/world/pois.json puts Lilmoth in region 'western-rootlands'; game/data/world/regions.json gives that region canopy.r = 4.5 m. The old bubble is 5.6 m around the camera and the arm is 3.99 m, so the entire camera-to-player segment sits inside the old bubble; the sightline test can only ever add trees whose crown radius exceeds ~1.06 m. 11 of 13 regions clear that, western-rootlands among them. The fix is therefore NOT structurally inert in Lilmoth — the occluder here is simply not a tree.",
+    "honest_statement": "Nothing measured in this window can be attributed to b476b55d, in either direction. This measurement neither confirms nor refutes the sightline fix; it shows the fix is not what §C.1 is failing on."
   },
+
+  "instrument_defects_found_and_fixed_this_session": {
+    "note": "tools/camera/cam-occlusion-walk.mjs was inherited built-but-never-run. Five defects, four of them the kind that produce a confident wrong number rather than an error.",
+    "1_total_loss_on_interruption": "The manifest was written ONLY at completion. The predecessor's two arms died mid-walk and lost 100% of their frames; mine were then killed at elapsed 123 s by what the logs show as an external browser kill ('Target page, context or browser has been closed' in both arms simultaneously — HAZARDS §10's fleet-wide `pkill -f headless_shell` signature) and lost everything again. FIXED: every row is appended to rows.jsonl the moment it is measured, and an interrupted walk now writes a partial manifest with an `aborted` block instead of throwing.",
+    "2_the_reference_arm_recorded_an_impossible_number_and_nobody_read_it": "refPx is the player's pixel count with all occluders removed — an upper bound by construction. The predecessor's own reports/cam-occlusion-walk/timing-probe-G1/manifest.json contains frame 2 with occludedPx 2568 against refPx 161, ratio 15.95. Cause: the reference is sampled at i=0, before the scene has settled (measured this session at both 161 px and 0 px on identical invocations), then carried forward for REF_EVERY frames. Silently this scores those frames occluded:false — it manufactures a PASS out of a broken reference. FIXED: a warm-up before the first measurement, plus a reference-integrity guard that scores ratio>1.05 or refPx==0 as null rather than false and reports them in a reference_gate block.",
+    "3_frame_labels_drifted_from_sim_frames": "Row numbers were computed host-side as FROM+i. When a warm-up step was added ahead of the loop, every label silently became 5 frames early — evidence that would no longer line up with the verdict frames it answers. FIXED: the row records sim.frame read from the sim itself.",
+    "4_no_liveness_gate": "HAZARDS §15 requires per-frame proof that a capture is a picture. FIXED: every measured frame is PNG-encoded from the exact canvas the pixel diff was taken from and run through tools/visual/frame-liveness.mjs metrics/classify. Result on this run: 0 non-LIVE frames.",
+    "5_no_motion_proof": "HAZARDS §16: no capture in this project had ever photographed a moving player, because setInput was never a harness verb and call() swallowed the failure. Verified the verbs this tool uses DO exist (queueInputs and stepFrames, game/src/harness/api.js:94,98) and that tools/lib/browser.mjs#h() dies loudly on an unknown method rather than swallowing. FIXED: the manifest now carries a motion_proof derived from the walk's own recorded positions. Result: 1.120 m displacement, 21 of 21 frames moved. The walk moved."
+  },
+
+  "method_deviations": [
+    "Canvas 160x90 rather than the canonical 1920x1080 (HARNESS §6). Reference player pixel counts are ~600 px, ample for a 0.35 ratio test, but this is not the canonical capture size.",
+    "PIXEL COUNTING IS A COLOUR DIFF, NOT AN ID BUFFER. §C.1 specifies the ID buffer. RI-MTH04 Appendix A prescribes root.visible toggling (never material mutation, which leaks across actors through shared material instances) and this tool complies. But a colour diff misses player pixels whose rendered colour equals what is behind them. CALIBRATED THIS SESSION: on frames where the player is provably unoccluded the ratio reads p50 = 0.560, not 1.000. The instrument therefore UNDER-reports the visible fraction and is biased TOWARD declaring occlusion. This matters for a marginal result and does not for this one — the frames in the run fall to 34 px of 595 (ratio 0.057), which no plausible recalibration lifts above 0.35.",
+    "Per RI-MTH04 Appendix A, root.visible=false also removes the cast shadow, so the figure measured is body-plus-shadow, not body alone.",
+    "The measured window's mean_occluded is a WINDOW mean, not the traversal mean §C.1's 0.03 bar is written against. Quoted as a window statistic only.",
+    "Appendix A's closing instruction — 'draw the mask at least once' — was carried out. The occluded-arm mask is a clean, correctly placed human silhouette; the reference-arm mask is the same silhouette plus its blob shadow against an emptied scene."
+  ],
+
+  "tree_under_measurement": {
+    "note": "HAZARDS §11 — a shared tree moves under every experiment. Stated exactly rather than pinned falsely.",
+    "head_at_launch": "46132703 (with a sibling's uncommitted game/src/render/actor.js in the working tree, which the browser loaded)",
+    "head_during_run": "4c6ab280 — a sibling banked mid-run; that bank included the actor.js edits already loaded",
+    "occlusion_fix_present": "`git merge-base --is-ancestor b476b55d HEAD` is true — the fix under test is in the tree",
+    "caveat": "This is a working-tree measurement, not a clean-commit measurement."
+  },
+
+  "ri_cam04": {
+    "verdict": "NOT JUDGEABLE — the system its headline method measures does not exist.",
+    "verified_independently_this_session_not_inherited": "grep -rn roll_bin game/ returns 0. Of the nine clip ids RI-CAM04 M1 censuses (roll_f, roll_fr, roll_r, roll_br, roll_b, roll_bl, roll_l, roll_fl, backstep), only `backstep` appears anywhere under game/data/ (5 files); the other eight are absent. corpus/80-methods/m-cam04-locked-movement.mjs is an honest absence-reporter and its claims match my own greps.",
+    "what_exists": "game/src/combat/lockon.js computes a target-relative quantised bin and a backstep boolean — the steering half is real. player.move_dir_deg is traced (game/src/sim/record.js:157).",
+    "classification": "corpus/build debt against RI-CAM04, not a zero against the build. M1 cannot run until roll_bin is traced and nine distinct roll clips are authored."
+  },
+
+  "ri_cam03": {
+    "verdict": "NOT JUDGED — named and left for a round of its own.",
+    "checked_the_brief_premise_rather_than_inheriting_it": "The dispatch said RI-CAM03/04 have never been judged. Confirmed: corpus/90-verdicts/wave1/W1-12-r1.json contains no RI-CAM01 and no RI-CAM03; RI-CAM04 appears only inside a prose mention of a wave-0 rebase list, not as a judged item.",
+    "blocker_for_a_successor": "the `onScreen(eid)` harness method RI-CAM03's Comparison method requires is absent from game/src/harness/api.js."
+  },
+
+  "evidence": {
+    "fix_on_arm": "reports/cam-occlusion-walk/g1-fixon-r3/ (rows.jsonl per-frame, manifest.json, frames/*.png)",
+    "control_arm": "reports/cam-occlusion-walk/g1-control-r3/",
+    "copied_to": "corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/",
+    "control_goes_red_proof": "tools/visual/occlusion-sightline-check.mjs, run at HEAD this session, exit 0, all three arms as specified"
+  },
+
   "files_touched": [
     "orchestration/status/W1-G1-CAMERA-OCCLUSION.json",
-    "tools/camera/cam-occlusion-walk.mjs"
+    "tools/camera/cam-occlusion-walk.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/"
   ],
   "files_claimed": [
     "orchestration/status/W1-G1-CAMERA-OCCLUSION.json",
     "tools/camera/cam-occlusion-walk.mjs",
     "corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/"
   ],
-  "interim_findings_this_session": {
-    "shader_fix_confirmed_in_own_capture": "Per dispatch item 3 ('confirm bodies actually render in your frames before trusting a single number'): confirmed in this session's OWN captures, not inherited. timing-probe-G1 (frame 0 of the debug walk) and both running arms' frame 270/295/320 rows all show refPx (the isolated, unoccluded player-root pixel count -- RI-MTH04 Appendix A method) > 0 and rising with proximity (161px at f0 near-distance close pose, 2142px/2430px/2415px at f270/295/320 mid-distance) -- a body is being rasterised, not the shader-collision regression's zero-pixel failure.",
-    "both_arms_still_running": "Two background walks launched in parallel from base_commit_pinned, same debug-spawn walk, same seed, --from 270 --frames 180 --canvas 320x180 --ref-every 15: (a) g1-fixon = shipped fix as-is, out dir reports/cam-occlusion-walk/g1-fixon/manifest.json; (b) g1-control-old-bubble = --control old-bubble (renderer.province.occlusionSightline=false at runtime, the shipped delete-the-fix flag, no git-state change per HAZARDS SS12), out dir reports/cam-occlusion-walk/g1-control-old-bubble/manifest.json. Commands are reproducible from this file alone if the container restarts before they finish; re-run verbatim.",
-    "partial_rows_read_so_far_both_arms_byte_identical_through_f320": "f270: ratio=0.2456, occluded=true. f295: ratio=0.0556, occluded=true. f320: ratio=0.4613, occluded=false. armLen/armHit/playerPos identical between arms at every one of these three frames -- confirms (per RULES rule 6 delete-the-fix discipline) that the arm's own numbers are unaffected by the occlusionSightline flag, exactly as the fix's own doc claims. NOT YET CONFIRMED: whether the two arms ever diverge in occludedPx (i.e. whether this window actually exercises the segment-vs-bubble difference, or whether the old proximity bubble alone already catches every tree encountered in [270,450]) -- if they never diverge, that is reported honestly as an inert-control risk per RULES rule 6, not papered over.",
-    "already_established_before_completion": "player_occluded IS true for at least 2 consecutive sampled frames (f270, f295, 25 apart) in BOTH arms so far -- the true per-frame run length within [270,320] is unresolved until the full manifest's every-frame rows are read back (only 1-in-25 frames are console-logged during the run; all rows are written to manifest.json only at completion)."
-  },
-  "next_step": "Read back reports/cam-occlusion-walk/g1-fixon/manifest.json and reports/cam-occlusion-walk/g1-control-old-bubble/manifest.json once both background jobs (still running at time of this write, contention.mjs now reporting WAIT at 4.34/core -- proceeding anyway since these jobs were launched before the ceiling was crossed, nothing new was started after) finish. Compute longest_run_frames and mean_occluded per RI-CAM01 SS C.1 for both arms from the full per-frame rows array (not just the 1-in-25 console samples), confirm the two arms diverge somewhere in occludedPx (else report inert-control risk per RULES rule 6), copy both manifests into corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/, land via node tools/land.mjs, and state plainly whether RI-CAM01's automatic fail (run > 6) is cleared inside the measured window [270,450] and what the window does not cover.",
-  "evidence_dir": "corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/ (not yet populated -- measurement in flight, see interim_findings_this_session and next_step)"
+
+  "next_step": "G1 is measured but NOT closed: RI-CAM01 §C.1 still carries its automatic fail, now with a number and a named cause. The next piece is the thin-architecture occluder (deck posts / boardwalk railings in Lilmoth), not vegetation. It needs a builder + a separate critic, and RI-CAM01 additionally cannot pass while its blind pair is unrun (rule 0e, orchestrator-only)."
 }
