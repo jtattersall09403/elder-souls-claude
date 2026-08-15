@@ -20,7 +20,7 @@
 
     "JOB 3 — `overcast-flat` AND `storm` — IS NOT THIS ROUND'S, AND I AM SAYING SO RATHER THAN LEAVING IT AMBIGUOUS. I captured nothing in overcast or storm. My ruling: it belongs to round 3 and it should be its OWN round, not a rider on a colour round, because an overcast sky IS the light source and the S60/M6 battery has to be re-derived for a keyless recipe before any number about it means anything. What I can say that is new: the sky.js change I shipped is BIT-IDENTICAL AT FULL OVERCAST BY CONSTRUCTION — twelve lines below the edit, `hor.lerp(neutralGrey, overcast)` erases it as overcast rises — so this round cannot have moved those two recipes even accidentally, and round 3 inherits them exactly as round 1 left them.",
 
-    "I DID NOT RE-SHOOT THE BEFORE ARM IN MOTION. The many-angles sweep I ran is of the SHIPPED build only, so it characterises what a player sees now and is NOT a before/after. The r1 critic's 54 motion frames are of the r1 build and are not comparable to mine. Stills-and-orbit for the shipped arm, no before arm in motion — that is a gap in this piece.",
+    "I DID NOT RE-SHOOT THE BEFORE ARM IN MOTION. The twelve-angle orbit I ran is of the SHIPPED build only, so it characterises what a player sees now and is NOT a before/after. The r1 critic's 54 motion frames are of the r1 build and are not comparable to mine. I also captured NO DRIVEN-WALK sequence at all — the r1 critic did (60 frames, displacement measured per capture against HAZARDS §16) and I did not, so on the 'motion, not only many angles' half of the directive this round is WEAKER THAN THE CRITIC THAT JUDGED THE ROUND BEFORE IT. Twelve angles, two hours, zero moving frames.",
 
     "EVERY CAPTURE IS SOFTWARE (SwiftShader). No Pod, no hardware confirmation of any window. It is differential by construction — all arms of one window run in one process at one pose (HAZARDS §15) — but the BEFORE and AFTER arms of the source change are two processes against two source states, and I did NOT get a byte-identical null control across them, so see the noise-floor entry below rather than assuming determinism.",
 
@@ -127,6 +127,35 @@
     "what_I_measured": "At the Lilmoth settlement pose (yaw 180, 9 m, pitch -14), landed build, `RI-VIS04` §3-D2's own shadow-map ablation mask as a tau curve: 08:00 cast-shadow area 10.431% at tau8 and 14.136% at tau1; 13:00 13.801% at tau8 and 18.895% at tau1. THE 08:00 FRAME IS AT 76% OF THE 13:00 FRAME'S CAST-SHADOW AREA AND BOTH ARE THREE TO FOUR TIMES §3-D2's 3% FLOOR. There is no hole at 08:00 in the quantity §3 names.",
     "so_what_is_the_08_00_defect": "It is a statement about the GROUND specifically, not about cast shadow, and the two are not the same measurement. The sun at 08:00 reads back off the live scene at elevation 33.704 deg (`sunDirUnit` [0.7203, 0.5549, 0.4162]) — hand-derived from `sky.js`'s `elev = sin((h-6)/24*2pi)` and `dir = (cos(azim)*0.75, elev, sin(azim)*0.75).normalize()`, and the live readback matches to three decimals. That is not a low sun and it is not a fit failure: the readback also gives `shadowCamera.right` 142.845, `shadowNormalBias` 0.09765 and `shadowBias` -8.6562e-5, and 0.09765 is exactly `texel * 1.4` for `texel = 2*142.845/4096`, so `_fitShadow` is doing what its source says at both hours. WHAT I DID NOT DO is separate ground-plane shadow from building self-shadow inside the mask, which is the measurement that would actually answer the brief's question. Round 3 should ask it that way.",
     "and_the_DETECT_that_could_not_fire": "`RI-VIS04` §3's original `SHADOW_MASK < 3%` clause is the darkest quartile of the foreground BY CONSTRUCTION. Re-derived on my own frames, independently of the r1 critic: `shadow_mask_frac` is 0.2458, 0.2492, 0.2488, 0.2496, 0.2490, 0.2369, 0.2381, 0.2458 across eight frames of three different builds. It never leaves 0.237-0.250. The r1 critic's §3-D2 amendment is correct and this is a second, independent confirmation of it."
+  },
+
+  "MANY_ANGLES — TWELVE ORBIT FRAMES OF THE SHIPPED BUILD, AND THEY ARE WORSE THAN THE ONE POSE": {
+    "why_this_is_here": "The standing directive is that stills from one angle are not evidence. One pose could be argued; twelve cannot — and in this case twelve are LESS flattering than the pose I tuned against, which is the point of shooting them.",
+    "what_it_is": "`--mode angles`, six yaws at 08:00 and six at 13:00, the shipped build, 960x540, camera orbited at 7 m around the player at Lilmoth, each with its own shadow-map ablation. Contact sheets: `frames/orbit-0800-6-angles-SHIPPED.png`, `frames/orbit-1300-6-angles-SHIPPED.png`. Twelve of twelve frames LIVE, no aborts.",
+    "M6_across_the_orbit": [
+      { "hour": "08:00", "yaw": 0,   "hue_offset": 0.01,  "retention": 0.4260, "C_shadow": 11.583, "C_local_med": 0.0377, "cast_shadow_area_tau8": 0.02151 },
+      { "hour": "08:00", "yaw": 60,  "hue_offset": 7.02,  "retention": 0.3462, "C_shadow": 11.817, "C_local_med": 0.0432, "cast_shadow_area_tau8": 0.07959 },
+      { "hour": "08:00", "yaw": 120, "hue_offset": 10.90, "retention": 0.2805, "C_shadow": 11.505, "C_local_med": 0.0607, "cast_shadow_area_tau8": 0.10537 },
+      { "hour": "08:00", "yaw": 180, "hue_offset": 7.32,  "retention": 1.0040, "C_shadow": 9.779,  "C_local_med": 0.0580, "cast_shadow_area_tau8": 0.10387 },
+      { "hour": "08:00", "yaw": 240, "hue_offset": 8.26,  "retention": 0.8970, "C_shadow": 11.158, "C_local_med": 0.0677, "cast_shadow_area_tau8": 0.08485 },
+      { "hour": "08:00", "yaw": 300, "hue_offset": 5.23,  "retention": 0.3176, "C_shadow": 12.238, "C_local_med": 0.0620, "cast_shadow_area_tau8": 0.03296 },
+      { "hour": "13:00", "yaw": 0,   "hue_offset": 1.36,  "retention": 0.7908, "C_shadow": 11.843, "C_local_med": 0.0466, "cast_shadow_area_tau8": 0.05423 },
+      { "hour": "13:00", "yaw": 60,  "hue_offset": 4.50,  "retention": 0.9893, "C_shadow": 9.591,  "C_local_med": 0.0461, "cast_shadow_area_tau8": 0.11486 },
+      { "hour": "13:00", "yaw": 120, "hue_offset": 9.20,  "retention": 1.2815, "C_shadow": 8.830,  "C_local_med": 0.0526, "cast_shadow_area_tau8": 0.13867 },
+      { "hour": "13:00", "yaw": 180, "hue_offset": 13.14, "retention": 0.9843, "C_shadow": 7.308,  "C_local_med": 0.0647, "cast_shadow_area_tau8": 0.14315 },
+      { "hour": "13:00", "yaw": 240, "hue_offset": 6.05,  "retention": 1.0037, "C_shadow": 10.434, "C_local_med": 0.0665, "cast_shadow_area_tau8": 0.09815 },
+      { "hour": "13:00", "yaw": 300, "hue_offset": 7.19,  "retention": 0.3318, "C_shadow": 13.726, "C_local_med": 0.0644, "cast_shadow_area_tau8": 0.02350 }
+    ],
+    "the_tally_on_the_SHIPPED_build": {
+      "hue_offset (min 15, hard fail < 6)": "12 of 12 below the minimum; 4 of 12 below the HARD FAIL (0.01, 5.23, 1.36, 4.50)",
+      "retention (min 0.60, hard fail < 0.30)": "5 of 12 below the minimum; 1 of 12 below the HARD FAIL (0.2805 at 08:00 yaw 120)",
+      "C_shadow (min 6)": "0 of 12 below the minimum — 7.308 to 13.726",
+      "C_local_med (min 0.045, fail < 0.025)": "2 of 12 below the minimum, 0 below the fail",
+      "cast_shadow_area tau8 (RI-VIS04 §3-D2 floor 0.03)": "2 of 12 BELOW THE FLOOR — 0.02151 at 08:00 yaw 000 and 0.02350 at 13:00 yaw 300"
+    },
+    "THE_THING_THIS_FOUND_THAT_THE_SINGLE_POSE_HID": "CAST-SHADOW AREA IS STRONGLY YAW-DEPENDENT AND FALLS THROUGH §3-D2's FLOOR AT SOME ANGLES AT BOTH HOURS. At 08:00 it runs 0.0215 (yaw 000) to 0.1054 (yaw 120), a factor of FIVE across a camera orbit at a fixed sun; at 13:00 0.0235 (yaw 300) to 0.1432 (yaw 180), a factor of six. So the brief's framing — 13:00 good, 08:00 empty — is not what the instrument says: BOTH hours have angles above the floor and angles below it, and the variable that dominates is where the camera is pointing, not what time it is. The sun elevation readback confirms the hours are what they claim (33.71-33.75 deg at 08:00, 52.16-52.17 at 13:00). This is exactly the value of shooting many angles and it changes round 3's question from 'why is 08:00 empty' to 'why does a camera orbit at a fixed sun move cast-shadow area by 5x'.",
+    "a_correlation_I_can_see_but_have_NOT_earned_the_right_to_explain": "`hue_offset` is near zero exactly where `sky_frac` is largest (yaw 000: sky 0.1046, hue 0.01 and 1.36) and largest where `sky_frac` is smallest (yaw 180: sky 0.0021/0.0031, hue 7.32 and 13.14). That is 12 points and a plausible story about the SKY_MASK's effect on the foreground quartiles, and it is NOT an arm — I did not design an experiment that separates it from the fact that different yaws see different geometry. Recorded as something round 3's critic should either confirm or discard, not as a finding.",
+    "and_the_best_number_anything_reached": "13.14 deg, 13:00 yaw 180. Still under 15, and it is one frame in twelve."
   },
 
   "AN_INSTRUMENT_RESULT_WORTH_MORE_THAN_MY_BUILD_CHANGE — THE SHADOW ABLATION IS NOW ~10x CHEAPER, PROVED RATHER THAN ASSERTED": {

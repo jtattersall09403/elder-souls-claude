@@ -1,0 +1,798 @@
+{
+  "at": "2026-08-15T23:23:01.149Z",
+  "mode": "angles",
+  "arm": "r2horizon",
+  "entry": "game/index.html",
+  "served": {
+    "game_dir": "/home/user/elder-souls-claude/game",
+    "sha256_16": {
+      "src/render/lib/lighting-recipes.js": "241690686dca41ac",
+      "src/render/sky.js": "5fd64d937c3c06df"
+    }
+  },
+  "renderer": {
+    "renderer_string": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "hardware": false,
+    "software_renderer": true,
+    "unknown": false,
+    "class": "SOFTWARE",
+    "evidence_class": "SOFTWARE — valid for geometry, layout, composition, determinism and census. NOT valid for antialiasing, bloom, AO, IBL or any appearance claim (W1-30-EVIDENCE §4).",
+    "reason": "the reported renderer names a software rasteriser: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "decided_from": "renderer-string",
+    "hardware_requested": false,
+    "fell_back": false,
+    "renderer_source": "live page WEBGL_debug_renderer_info",
+    "backend": null,
+    "backend_attempts": [],
+    "chromium_args": [
+      "--force-color-profile=srgb",
+      "--font-render-hinting=none",
+      "--disable-lcd-text",
+      "--disable-skia-runtime-opts",
+      "--hide-scrollbars",
+      "--mute-audio",
+      "--disable-background-timer-throttling",
+      "--disable-renderer-backgrounding",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-partial-raster",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-new-content-rendering-timeout",
+      "--enable-unsafe-swiftshader",
+      "--use-gl=angle",
+      "--use-angle=swiftshader"
+    ]
+  },
+  "resolution": [
+    960,
+    540
+  ],
+  "seed": 20260814,
+  "evidence_class": "SOFTWARE — differential only (HAZARDS §15)",
+  "rows": [
+    {
+      "mode": "angles",
+      "hour": 8,
+      "yaw_deg": 0,
+      "base": "reports/f4r2/angles-r2horizon/t8-yaw000/base.png",
+      "shadows_off": "reports/f4r2/angles-r2horizon/t8-yaw000/shadows_off.png",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "sunColour": [
+          1,
+          0.94,
+          0.82
+        ],
+        "sunCastShadow": true,
+        "sunDirUnit": [
+          0.7202,
+          0.555,
+          0.4162
+        ],
+        "sunElevationDeg": 33.711,
+        "moonIntensity": 0,
+        "moonColour": [
+          0.2623,
+          0.3968,
+          0.6867
+        ],
+        "moonCastShadow": false,
+        "hemiTotal": 5.0011,
+        "hemiColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "ambientTotal": 0.4669,
+        "ambientColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "shadowMapSize": 4096,
+        "shadowCamera": {
+          "left": -142.845,
+          "right": 142.845,
+          "near": 0.5,
+          "far": 725.691
+        },
+        "shadowBias": -0.000086562,
+        "shadowNormalBias": 0.09765,
+        "cfgError": null
+      },
+      "area": {
+        "tau1": 0.03601,
+        "tau2": 0.0316,
+        "tau4": 0.02679,
+        "tau8": 0.02151,
+        "tau16": 0.01492,
+        "mean_brighten_when_shadowmap_off": 0.5781
+      }
+    },
+    {
+      "mode": "angles",
+      "hour": 8,
+      "yaw_deg": 60,
+      "base": "reports/f4r2/angles-r2horizon/t8-yaw060/base.png",
+      "shadows_off": "reports/f4r2/angles-r2horizon/t8-yaw060/shadows_off.png",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "sunColour": [
+          1,
+          0.94,
+          0.82
+        ],
+        "sunCastShadow": true,
+        "sunDirUnit": [
+          0.7201,
+          0.5551,
+          0.4163
+        ],
+        "sunElevationDeg": 33.718,
+        "moonIntensity": 0,
+        "moonColour": [
+          0.2623,
+          0.3968,
+          0.6867
+        ],
+        "moonCastShadow": false,
+        "hemiTotal": 5.0011,
+        "hemiColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "ambientTotal": 0.4669,
+        "ambientColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "shadowMapSize": 4096,
+        "shadowCamera": {
+          "left": -142.845,
+          "right": 142.845,
+          "near": 0.5,
+          "far": 725.691
+        },
+        "shadowBias": -0.000086562,
+        "shadowNormalBias": 0.09765,
+        "cfgError": null
+      },
+      "area": {
+        "tau1": 0.09969,
+        "tau2": 0.09355,
+        "tau4": 0.08704,
+        "tau8": 0.07959,
+        "tau16": 0.06902,
+        "mean_brighten_when_shadowmap_off": 2.6514
+      }
+    },
+    {
+      "mode": "angles",
+      "hour": 8,
+      "yaw_deg": 120,
+      "base": "reports/f4r2/angles-r2horizon/t8-yaw120/base.png",
+      "shadows_off": "reports/f4r2/angles-r2horizon/t8-yaw120/shadows_off.png",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "sunColour": [
+          1,
+          0.94,
+          0.82
+        ],
+        "sunCastShadow": true,
+        "sunDirUnit": [
+          0.7199,
+          0.5552,
+          0.4164
+        ],
+        "sunElevationDeg": 33.724,
+        "moonIntensity": 0,
+        "moonColour": [
+          0.2623,
+          0.3968,
+          0.6867
+        ],
+        "moonCastShadow": false,
+        "hemiTotal": 5.0011,
+        "hemiColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "ambientTotal": 0.4669,
+        "ambientColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "shadowMapSize": 4096,
+        "shadowCamera": {
+          "left": -142.845,
+          "right": 142.845,
+          "near": 0.5,
+          "far": 725.691
+        },
+        "shadowBias": -0.000086562,
+        "shadowNormalBias": 0.09765,
+        "cfgError": null
+      },
+      "area": {
+        "tau1": 0.14183,
+        "tau2": 0.13096,
+        "tau4": 0.1195,
+        "tau8": 0.10537,
+        "tau16": 0.0862,
+        "mean_brighten_when_shadowmap_off": 3.2802
+      }
+    },
+    {
+      "mode": "angles",
+      "hour": 8,
+      "yaw_deg": 180,
+      "base": "reports/f4r2/angles-r2horizon/t8-yaw180/base.png",
+      "shadows_off": "reports/f4r2/angles-r2horizon/t8-yaw180/shadows_off.png",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "sunColour": [
+          1,
+          0.94,
+          0.82
+        ],
+        "sunCastShadow": true,
+        "sunDirUnit": [
+          0.7198,
+          0.5554,
+          0.4165
+        ],
+        "sunElevationDeg": 33.738,
+        "moonIntensity": 0,
+        "moonColour": [
+          0.2623,
+          0.3968,
+          0.6867
+        ],
+        "moonCastShadow": false,
+        "hemiTotal": 5.0011,
+        "hemiColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "ambientTotal": 0.4669,
+        "ambientColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "shadowMapSize": 4096,
+        "shadowCamera": {
+          "left": -142.845,
+          "right": 142.845,
+          "near": 0.5,
+          "far": 725.691
+        },
+        "shadowBias": -0.000086562,
+        "shadowNormalBias": 0.09765,
+        "cfgError": null
+      },
+      "area": {
+        "tau1": 0.15161,
+        "tau2": 0.13712,
+        "tau4": 0.12191,
+        "tau8": 0.10387,
+        "tau16": 0.08443,
+        "mean_brighten_when_shadowmap_off": 3.8568
+      }
+    },
+    {
+      "mode": "angles",
+      "hour": 8,
+      "yaw_deg": 240,
+      "base": "reports/f4r2/angles-r2horizon/t8-yaw240/base.png",
+      "shadows_off": "reports/f4r2/angles-r2horizon/t8-yaw240/shadows_off.png",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "sunColour": [
+          1,
+          0.94,
+          0.82
+        ],
+        "sunCastShadow": true,
+        "sunDirUnit": [
+          0.7196,
+          0.5555,
+          0.4166
+        ],
+        "sunElevationDeg": 33.745,
+        "moonIntensity": 0,
+        "moonColour": [
+          0.2623,
+          0.3968,
+          0.6867
+        ],
+        "moonCastShadow": false,
+        "hemiTotal": 5.0011,
+        "hemiColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "ambientTotal": 0.4669,
+        "ambientColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "shadowMapSize": 4096,
+        "shadowCamera": {
+          "left": -142.845,
+          "right": 142.845,
+          "near": 0.5,
+          "far": 725.691
+        },
+        "shadowBias": -0.000086562,
+        "shadowNormalBias": 0.09765,
+        "cfgError": null
+      },
+      "area": {
+        "tau1": 0.12265,
+        "tau2": 0.1102,
+        "tau4": 0.09831,
+        "tau8": 0.08485,
+        "tau16": 0.07093,
+        "mean_brighten_when_shadowmap_off": 4.7364
+      }
+    },
+    {
+      "mode": "angles",
+      "hour": 8,
+      "yaw_deg": 300,
+      "base": "reports/f4r2/angles-r2horizon/t8-yaw300/base.png",
+      "shadows_off": "reports/f4r2/angles-r2horizon/t8-yaw300/shadows_off.png",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "sunColour": [
+          1,
+          0.94,
+          0.82
+        ],
+        "sunCastShadow": true,
+        "sunDirUnit": [
+          0.7195,
+          0.5556,
+          0.4167
+        ],
+        "sunElevationDeg": 33.752,
+        "moonIntensity": 0,
+        "moonColour": [
+          0.2623,
+          0.3968,
+          0.6867
+        ],
+        "moonCastShadow": false,
+        "hemiTotal": 5.0011,
+        "hemiColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "ambientTotal": 0.4669,
+        "ambientColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "shadowMapSize": 4096,
+        "shadowCamera": {
+          "left": -142.845,
+          "right": 142.845,
+          "near": 0.5,
+          "far": 725.691
+        },
+        "shadowBias": -0.000086562,
+        "shadowNormalBias": 0.09765,
+        "cfgError": null
+      },
+      "area": {
+        "tau1": 0.0578,
+        "tau2": 0.04921,
+        "tau4": 0.04106,
+        "tau8": 0.03296,
+        "tau16": 0.0244,
+        "mean_brighten_when_shadowmap_off": 1.1665
+      }
+    },
+    {
+      "mode": "angles",
+      "hour": 13,
+      "yaw_deg": 0,
+      "base": "reports/f4r2/angles-r2horizon/t13-yaw000/base.png",
+      "shadows_off": "reports/f4r2/angles-r2horizon/t13-yaw000/shadows_off.png",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "sunColour": [
+          1,
+          0.94,
+          0.82
+        ],
+        "sunCastShadow": true,
+        "sunDirUnit": [
+          -0.159,
+          0.7898,
+          0.5924
+        ],
+        "sunElevationDeg": 52.167,
+        "moonIntensity": 0,
+        "moonColour": [
+          0.2623,
+          0.3968,
+          0.6867
+        ],
+        "moonCastShadow": false,
+        "hemiTotal": 5.0011,
+        "hemiColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "ambientTotal": 0.4669,
+        "ambientColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "shadowMapSize": 4096,
+        "shadowCamera": {
+          "left": -142.845,
+          "right": 142.845,
+          "near": 0.5,
+          "far": 725.691
+        },
+        "shadowBias": -0.000086562,
+        "shadowNormalBias": 0.09765,
+        "cfgError": null
+      },
+      "area": {
+        "tau1": 0.07136,
+        "tau2": 0.06542,
+        "tau4": 0.06028,
+        "tau8": 0.05423,
+        "tau16": 0.0466,
+        "mean_brighten_when_shadowmap_off": 1.9142
+      }
+    },
+    {
+      "mode": "angles",
+      "hour": 13,
+      "yaw_deg": 60,
+      "base": "reports/f4r2/angles-r2horizon/t13-yaw060/base.png",
+      "shadows_off": "reports/f4r2/angles-r2horizon/t13-yaw060/shadows_off.png",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "sunColour": [
+          1,
+          0.94,
+          0.82
+        ],
+        "sunCastShadow": true,
+        "sunDirUnit": [
+          -0.1591,
+          0.7898,
+          0.5924
+        ],
+        "sunElevationDeg": 52.167,
+        "moonIntensity": 0,
+        "moonColour": [
+          0.2623,
+          0.3968,
+          0.6867
+        ],
+        "moonCastShadow": false,
+        "hemiTotal": 5.0011,
+        "hemiColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "ambientTotal": 0.4669,
+        "ambientColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "shadowMapSize": 4096,
+        "shadowCamera": {
+          "left": -142.845,
+          "right": 142.845,
+          "near": 0.5,
+          "far": 725.691
+        },
+        "shadowBias": -0.000086562,
+        "shadowNormalBias": 0.09765,
+        "cfgError": null
+      },
+      "area": {
+        "tau1": 0.14487,
+        "tau2": 0.1335,
+        "tau4": 0.12398,
+        "tau8": 0.11486,
+        "tau16": 0.10486,
+        "mean_brighten_when_shadowmap_off": 4.5213
+      }
+    },
+    {
+      "mode": "angles",
+      "hour": 13,
+      "yaw_deg": 120,
+      "base": "reports/f4r2/angles-r2horizon/t13-yaw120/base.png",
+      "shadows_off": "reports/f4r2/angles-r2horizon/t13-yaw120/shadows_off.png",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "sunColour": [
+          1,
+          0.94,
+          0.82
+        ],
+        "sunCastShadow": true,
+        "sunDirUnit": [
+          -0.1592,
+          0.7898,
+          0.5923
+        ],
+        "sunElevationDeg": 52.167,
+        "moonIntensity": 0,
+        "moonColour": [
+          0.2623,
+          0.3968,
+          0.6867
+        ],
+        "moonCastShadow": false,
+        "hemiTotal": 5.0011,
+        "hemiColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "ambientTotal": 0.4669,
+        "ambientColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "shadowMapSize": 4096,
+        "shadowCamera": {
+          "left": -142.845,
+          "right": 142.845,
+          "near": 0.5,
+          "far": 725.691
+        },
+        "shadowBias": -0.000086562,
+        "shadowNormalBias": 0.09765,
+        "cfgError": null
+      },
+      "area": {
+        "tau1": 0.18547,
+        "tau2": 0.17016,
+        "tau4": 0.15474,
+        "tau8": 0.13867,
+        "tau16": 0.12497,
+        "mean_brighten_when_shadowmap_off": 6.1809
+      }
+    },
+    {
+      "mode": "angles",
+      "hour": 13,
+      "yaw_deg": 180,
+      "base": "reports/f4r2/angles-r2horizon/t13-yaw180/base.png",
+      "shadows_off": "reports/f4r2/angles-r2horizon/t13-yaw180/shadows_off.png",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "sunColour": [
+          1,
+          0.94,
+          0.82
+        ],
+        "sunCastShadow": true,
+        "sunDirUnit": [
+          -0.1593,
+          0.7898,
+          0.5923
+        ],
+        "sunElevationDeg": 52.167,
+        "moonIntensity": 0,
+        "moonColour": [
+          0.2623,
+          0.3968,
+          0.6867
+        ],
+        "moonCastShadow": false,
+        "hemiTotal": 5.0011,
+        "hemiColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "ambientTotal": 0.4669,
+        "ambientColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "shadowMapSize": 4096,
+        "shadowCamera": {
+          "left": -142.845,
+          "right": 142.845,
+          "near": 0.5,
+          "far": 725.691
+        },
+        "shadowBias": -0.000086562,
+        "shadowNormalBias": 0.09765,
+        "cfgError": null
+      },
+      "area": {
+        "tau1": 0.20174,
+        "tau2": 0.18539,
+        "tau4": 0.16809,
+        "tau8": 0.14315,
+        "tau16": 0.12497,
+        "mean_brighten_when_shadowmap_off": 7.3512
+      }
+    },
+    {
+      "mode": "angles",
+      "hour": 13,
+      "yaw_deg": 240,
+      "base": "reports/f4r2/angles-r2horizon/t13-yaw240/base.png",
+      "shadows_off": "reports/f4r2/angles-r2horizon/t13-yaw240/shadows_off.png",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "sunColour": [
+          1,
+          0.94,
+          0.82
+        ],
+        "sunCastShadow": true,
+        "sunDirUnit": [
+          -0.1595,
+          0.7898,
+          0.5923
+        ],
+        "sunElevationDeg": 52.167,
+        "moonIntensity": 0,
+        "moonColour": [
+          0.2623,
+          0.3968,
+          0.6867
+        ],
+        "moonCastShadow": false,
+        "hemiTotal": 5.0011,
+        "hemiColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "ambientTotal": 0.4669,
+        "ambientColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "shadowMapSize": 4096,
+        "shadowCamera": {
+          "left": -142.845,
+          "right": 142.845,
+          "near": 0.5,
+          "far": 725.691
+        },
+        "shadowBias": -0.000086562,
+        "shadowNormalBias": 0.09765,
+        "cfgError": null
+      },
+      "area": {
+        "tau1": 0.16158,
+        "tau2": 0.14695,
+        "tau4": 0.12915,
+        "tau8": 0.09815,
+        "tau16": 0.06742,
+        "mean_brighten_when_shadowmap_off": 3.32
+      }
+    },
+    {
+      "mode": "angles",
+      "hour": 13,
+      "yaw_deg": 300,
+      "base": "reports/f4r2/angles-r2horizon/t13-yaw300/base.png",
+      "shadows_off": "reports/f4r2/angles-r2horizon/t13-yaw300/shadows_off.png",
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.3,
+        "sunColour": [
+          1,
+          0.94,
+          0.82
+        ],
+        "sunCastShadow": true,
+        "sunDirUnit": [
+          -0.1596,
+          0.7897,
+          0.5923
+        ],
+        "sunElevationDeg": 52.157,
+        "moonIntensity": 0,
+        "moonColour": [
+          0.2623,
+          0.3968,
+          0.6867
+        ],
+        "moonCastShadow": false,
+        "hemiTotal": 5.0011,
+        "hemiColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "ambientTotal": 0.4669,
+        "ambientColour": [
+          0.677,
+          0.79,
+          0.944
+        ],
+        "hasEnvironment": true,
+        "environmentIntensity": 0.35,
+        "shadowMapSize": 4096,
+        "shadowCamera": {
+          "left": -142.845,
+          "right": 142.845,
+          "near": 0.5,
+          "far": 725.691
+        },
+        "shadowBias": -0.000086562,
+        "shadowNormalBias": 0.09765,
+        "cfgError": null
+      },
+      "area": {
+        "tau1": 0.04091,
+        "tau2": 0.03489,
+        "tau4": 0.0295,
+        "tau8": 0.0235,
+        "tau16": 0.01624,
+        "mean_brighten_when_shadowmap_off": 0.6404
+      }
+    }
+  ],
+  "aborted": null
+}
