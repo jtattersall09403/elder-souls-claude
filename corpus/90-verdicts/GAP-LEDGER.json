@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-15T08:45:48Z",
+  "generated": "2026-08-15T10:55:04Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 88,
+  "verdicts_read": 89,
   "counts": {
-    "total": 83,
-    "open": 82,
+    "total": 84,
+    "open": 83,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -207,6 +207,9 @@
     "ui.hud.world": [
       "GAP-W1-ui-hud-world-set-unbuilt-and-misplaced"
     ],
+    "ui.menu.journal": [
+      "GAP-W1-ui-journal-search-view-has-no-exit"
+    ],
     "render.process.measurement": [
       "GAP-W1-w1-30d-guard-misses-part-deletion",
       "GAP-W1-w1-30e-street-gate-never-ran"
@@ -248,6 +251,7 @@
     "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-PROSE-01: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-PACK-01: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
+    "corpus/90-verdicts/wave1/T4-r2.json: closure of GAP-W1-ui-hud-world-set-unbuilt-and-misplaced is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-00-r2.json: closure of GAP-W1-platform-prng-never-drawn is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-01-province-stream-r1.json: gap_closure references unknown gap_id GAP-W1-province-never-streamed.",
     "corpus/90-verdicts/wave1/W1-01-r2.json: closure of GAP-W1-world-trunk-road-below-the-waterline is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
@@ -344,6 +348,7 @@
     "corpus/90-verdicts/wave1/W1-READABLES-r2.json: gap_closure references unknown gap_id GAP-W1-library-has-no-reader-on-the-world-side.",
     "corpus/90-verdicts/wave1/W1-READABLES-r2.json: gap_closure references unknown gap_id GAP-W1-environment-channel-has-no-object.",
     "corpus/90-verdicts/wave1/W1-SAVE-r1.json: closure of GAP-W1-platform-save-drops-entity-prev-state is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "STALE-RISK GAP-W1-ui-hud-world-set-unbuilt-and-misplaced: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-t4-r2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-platform-prng-never-drawn: still open, and 5 later verdict(s) have been filed on the same piece or path since (crit-w1-00-r2-k4m9, crit-w1-09-r2-3c19, crit-w1-09-r3-3c19, crit-w1-deploy-r2-3c19, crit-w1-30s-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-platform-save-drops-entity-prev-state: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-save-r1-live-audit, crit-w1-map-r2-a91f). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-world-trunk-road-below-the-waterline: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-01-r2-world-b4e2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
@@ -3987,6 +3992,54 @@
         "corpus/90-verdicts/wave1/artifacts/T4-r1/screens/fixture-world-hud__1920x1080.png",
         "corpus/90-verdicts/wave1/artifacts/T4-r1/crops/world-hud-bearing-dial-5x.png",
         "corpus/90-verdicts/wave1/artifacts/T4-r1/crops/world-hud-quickslots-4x.png"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r2.json",
+          "run_id": "crit-t4-r2",
+          "at": "2026-08-15T11:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-journal-search-view-has-no-exit"
+        }
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-ui-journal-search-view-has-no-exit",
+      "subsystem_path": "ui.menu.journal",
+      "opened_wave": 1,
+      "opened_by": "crit-t4-r2",
+      "opened_in": "corpus/90-verdicts/wave1/T4-r2.json",
+      "piece_id": "T4-r2",
+      "severity": "blocking",
+      "what": "One press of `confirm` on the journal's chronicle puts `focus.journal.view` into 'search', and no input in the build's own closed action set returns it. I drove all fifteen — roll, block, parry, heavy, sprint, jump, use_item, lock_on, two_hand, crouch, spell_cycle and all four movement axes — one at a time, through real DOM KeyboardEvents in mode `play-instrumented` with the input path asserted live (real.attached true, ArrowRight -> input.moveX 1). Fourteen leave `view === 'search'`; the fifteenth, `roll`, exits the entire screen to `world`. Walking back to the journal from any peer returns `view: 'search'` with the query intact, because neither `open()` nor `close()` resets `focus.journal`. The player has permanently lost the journal for the session by pressing the button the interface tells them to press. `backOrSub()` — defined at game/src/ui/system.js:711, which leaves the search view for the chronicle, then the index for the chronicle, then the screen, exactly as required — is CALLED NOWHERE in the tree. AND THE SCREEN PROMISES THE WAY OUT IN WRITING: the search view's own foot hint, photographed at corpus/90-verdicts/wave1/artifacts/T4-r2c/screens/critic-journal-stuck-search__1920x1080.png, reads 'Walk the letters, confirm to add one, BACK TO REMOVE ONE. Results are in the order they happened.' Back does not remove one. Back closes the journal. backOrSub()'s first branch is exactly that promise, implemented and unreachable — which makes this not a missing feature but a broken one, and the remedy a call site rather than a design.",
+      "why_it_matters": "RI-UIX04 scores 11 of 12 on this same build and every one of its rows is about what the journal CONTAINS; none of them can see that the screen holding all of it can be shut in the player's face by one keystroke. That is the exact defect CRITIC-DOCTRINE §1.2b was written for two days after the project shipped a dialogue window measuring ΔE 0.00 that the owner could not use, and it is the second instance of the same shape in the same week.",
+      "remedy": {
+        "action": "In `UISystem.step` (game/src/ui/system.js), change `if (!inCombat && input.pressedName('roll')) this.back();` to call `this.backOrSub()` — the method is already defined at line 711 and already leaves the search view for the chronicle, then the index for the chronicle, then the screen. Then reset `focus.journal.view` to 'chronicle' and `focus.journal.query` to '' inside `close()`, so a sub-view cannot survive a screen the player has shut.",
+        "acceptance": "From `mode: 'journal'` with `focus.journal.view === 'search'` and a non-empty query, ONE real `roll` press removes one character; with an empty query it leaves `mode === 'journal'` with `focus.journal.view === 'chronicle'`; a further `roll` leaves the screen; and entering the journal from ANY of the peers in the walk ring returns `view: 'chronicle'`. `node tools/ui/t4-r2-critic-focus.mjs` must report JS1 and JS2 green (all 15 actions plus both axes enumerated), and the delete-the-fix arm — restore `this.back()` — must turn both red again, so the guard is proven to fail in both directions (HAZARDS §0b).",
+        "targets": [
+          "game/src/ui/system.js",
+          "tools/ui/t4-r2-critic-focus.mjs"
+        ]
+      },
+      "remedy_action": "In `UISystem.step` (game/src/ui/system.js), change `if (!inCombat && input.pressedName('roll')) this.back();` to call `this.backOrSub()` — the method is already defined at line 711 and already leaves the search view for the chronicle, then the index for the chronicle, then the screen. Then reset `focus.journal.view` to 'chronicle' and `focus.journal.query` to '' inside `close()`, so a sub-view cannot survive a screen the player has shut.",
+      "remedy_acceptance": "From `mode: 'journal'` with `focus.journal.view === 'search'` and a non-empty query, ONE real `roll` press removes one character; with an empty query it leaves `mode === 'journal'` with `focus.journal.view === 'chronicle'`; a further `roll` leaves the screen; and entering the journal from ANY of the peers in the walk ring returns `view: 'chronicle'`. `node tools/ui/t4-r2-critic-focus.mjs` must report JS1 and JS2 green (all 15 actions plus both axes enumerated), and the delete-the-fix arm — restore `this.back()` — must turn both red again, so the guard is proven to fail in both directions (HAZARDS §0b).",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r2c/reports/screens-focus.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r2c/reports/screens-drive.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r2c/screens/critic-journal-stuck-search__1920x1080.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r2c/screens/critic-journal-chronicle__1920x1080.png"
       ],
       "status": "open",
       "assigned_to_wave": 2,
