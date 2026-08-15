@@ -1,0 +1,623 @@
+{
+  "at": "2026-08-15T14:44:59.326Z",
+  "what_this_is": "F2/F1 diagnosis: the five judged Protocol A r2 windows re-rendered under forced render configurations. Crop boxes copied verbatim from the sealed pairing key.",
+  "renderer": {
+    "renderer_string": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "hardware": false,
+    "software_renderer": true,
+    "unknown": false,
+    "class": "SOFTWARE",
+    "evidence_class": "SOFTWARE \u2014 valid for geometry, layout, composition, determinism and census. NOT valid for antialiasing, bloom, AO, IBL or any appearance claim (W1-30-EVIDENCE \u00a74).",
+    "reason": "the reported renderer names a software rasteriser: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "decided_from": "renderer-string",
+    "hardware_requested": false,
+    "fell_back": false,
+    "renderer_source": "live page WEBGL_debug_renderer_info",
+    "backend": null,
+    "backend_attempts": [],
+    "chromium_args": [
+      "--force-color-profile=srgb",
+      "--font-render-hinting=none",
+      "--disable-lcd-text",
+      "--disable-skia-runtime-opts",
+      "--hide-scrollbars",
+      "--mute-audio",
+      "--disable-background-timer-throttling",
+      "--disable-renderer-backgrounding",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-partial-raster",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-new-content-rendering-timeout",
+      "--enable-unsafe-swiftshader",
+      "--use-gl=angle",
+      "--use-angle=swiftshader"
+    ]
+  },
+  "evidence_class": "SOFTWARE \u2014 differential only, not an absolute appearance claim (HAZARDS \u00a715)",
+  "configs": {
+    "shipped": "() => {}",
+    "shadows_off": "() => { __shadowMap(false); }",
+    "ao_off": "() => { __setU({ uAO: 0 }); }",
+    "ao_full": "() => { __setU({ uAOMaxOcclusion: 1.0, uAORadius: 1.2, uAOStrength: 3.1 }); }",
+    "gi_off": "() => { __setU({ uGI: 0 }); }",
+    "grade_off": "() => { __setU({ uGradeOn: 0 }); }",
+    "post_off": "() => { __setU({ uPost: 0 }); }",
+    "sun_off": "() => { __sun((L) => { L.intensity = 0; }); }",
+    "sun_x3": "() => { __sun((L, base) => { L.intensity = base * 3; }); }",
+    "env_off": "() => { __scene().environment = null; }",
+    "ambient_off": "() => { __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __setLight(o, 0); }); }",
+    "indirect_off": "() => { __scene().environment = null; __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __setLight(o, 0); }); }",
+    "fog_off": "() => { __scene().fog = null; }",
+    "shadow_tight": "() => { __tightShadow(24); }",
+    "sun_dominant": "() => { __sun((L, base) => { L.intensity = base * 2.2; }); __scene().traverse((o) => { if (o.isHemisphereLight || o.isAmbientLight) __scaleLight(o, 0.35); }); __scene().environmentIntensity = 0.35; }",
+    "shipped_recheck": "() => {}"
+  },
+  "judged_windows": [
+    {
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "crop": [
+        300,
+        150,
+        512,
+        512
+      ],
+      "what": "mid-distance exterior architecture over ground"
+    },
+    {
+      "pair": "pair02",
+      "setup": "char-player",
+      "hour": 13,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "what": "plain built masonry / ground under flat noon"
+    },
+    {
+      "pair": "pair03",
+      "setup": "char-npc",
+      "hour": 13,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "what": "carved built stonework at mid distance"
+    },
+    {
+      "pair": "pair04",
+      "setup": "char-npc",
+      "hour": 8,
+      "crop": [
+        200,
+        480,
+        512,
+        512
+      ],
+      "what": "near-field ground cover, low-angle light"
+    },
+    {
+      "pair": "pair05",
+      "setup": "char-player",
+      "hour": 19.5,
+      "crop": [
+        1100,
+        150,
+        512,
+        512
+      ],
+      "what": "dusk walkway, low ambient"
+    }
+  ],
+  "rows": [
+    {
+      "config": "shipped",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/forced/shipped/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/forced/shipped/pair01__CROP.png",
+      "frame_sha": "7c2c759750d1b3d3",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 59.1417,
+        "sd_luma": 29.8991,
+        "p10": 37.34,
+        "p50": 45.91,
+        "p90": 94.81,
+        "span": 153.2,
+        "mean_chroma": 25.067
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 2.1,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": true,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 0
+      }
+    },
+    {
+      "config": "shadows_off",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/forced/shadows_off/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/forced/shadows_off/pair01__CROP.png",
+      "frame_sha": "2226f99779f8c029",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 59.0793,
+        "sd_luma": 30.1553,
+        "p10": 37.06,
+        "p50": 45.56,
+        "p90": 94.88,
+        "span": 153.27,
+        "mean_chroma": 25.4611
+      },
+      "readback": {
+        "shadowMapEnabled": false,
+        "sunIntensity": 2.1,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": true,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 0.7796
+      }
+    },
+    {
+      "config": "ao_off",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/forced/ao_off/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/forced/ao_off/pair01__CROP.png",
+      "frame_sha": "4815e82401c4abfb",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 58.3057,
+        "sd_luma": 30.1004,
+        "p10": 36.34,
+        "p50": 45.12,
+        "p90": 94.03,
+        "span": 154.27,
+        "mean_chroma": 25.4068
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 2.1,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": true,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 0.921
+      }
+    },
+    {
+      "config": "ao_full",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/forced/ao_full/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/forced/ao_full/pair01__CROP.png",
+      "frame_sha": "7ffaaaca2b7dbdf7",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 54.1751,
+        "sd_luma": 30.9676,
+        "p10": 34.34,
+        "p50": 43.84,
+        "p90": 92.03,
+        "span": 177.11,
+        "mean_chroma": 24.327
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 2.1,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": true,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 1,
+        "uAORadius": 1.2,
+        "cfgError": null
+      },
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 6.0419
+      }
+    },
+    {
+      "config": "gi_off",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/forced/gi_off/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/forced/gi_off/pair01__CROP.png",
+      "frame_sha": "1775f96029f555ee",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 57.7728,
+        "sd_luma": 30.235,
+        "p10": 35.99,
+        "p50": 44.56,
+        "p90": 93.81,
+        "span": 154.98,
+        "mean_chroma": 25.6448
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 2.1,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": true,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 1.5109
+      }
+    },
+    {
+      "config": "grade_off",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/forced/grade_off/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/forced/grade_off/pair01__CROP.png",
+      "frame_sha": "d79f3bab1d2abb77",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 57.5756,
+        "sd_luma": 30.2902,
+        "p10": 35.42,
+        "p50": 44.34,
+        "p90": 93.67,
+        "span": 155.27,
+        "mean_chroma": 25.7266
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 2.1,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": true,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 1.728
+      }
+    },
+    {
+      "config": "post_off",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/forced/post_off/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/forced/post_off/pair01__CROP.png",
+      "frame_sha": "1e3d1b967f78cae7",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 57.4182,
+        "sd_luma": 30.3341,
+        "p10": 35.13,
+        "p50": 44.13,
+        "p90": 93.54,
+        "span": 155.49,
+        "mean_chroma": 25.7986
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 2.1,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": true,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 1.9029
+      }
+    },
+    {
+      "config": "sun_off",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/forced/sun_off/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/forced/sun_off/pair01__CROP.png",
+      "frame_sha": "02f5b23349ff97a0",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 47.8392,
+        "sd_luma": 32.2753,
+        "p10": 24.35,
+        "p50": 32.28,
+        "p90": 82.4,
+        "span": 161.48,
+        "mean_chroma": 21.2233
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 0,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": true,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 10.5055
+      }
+    },
+    {
+      "config": "sun_x3",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/forced/sun_x3/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/forced/sun_x3/pair01__CROP.png",
+      "frame_sha": "4220ddbbc2ff2636",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 73.9064,
+        "sd_luma": 28.1198,
+        "p10": 53.69,
+        "p50": 64.12,
+        "p90": 111.94,
+        "span": 150.85,
+        "mean_chroma": 33.6209
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 6.300000000000001,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": true,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 13.199
+      }
+    },
+    {
+      "config": "env_off",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/forced/env_off/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/forced/env_off/pair01__CROP.png",
+      "frame_sha": "3df576481ae0b857",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 35.5648,
+        "sd_luma": 28.3218,
+        "p10": 15.85,
+        "p50": 26.06,
+        "p90": 59.11,
+        "span": 169.69,
+        "mean_chroma": 18.116
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 2.1,
+        "hemiTotal": 5.1248,
+        "ambientTotal": 0.5292,
+        "hasEnvironment": false,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 21.7938
+      }
+    },
+    {
+      "config": "ambient_off",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/forced/ambient_off/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/forced/ambient_off/pair01__CROP.png",
+      "frame_sha": "d3c6fd0d670acac7",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 54.3941,
+        "sd_luma": 30.5062,
+        "p10": 32.34,
+        "p50": 40.91,
+        "p90": 89.39,
+        "span": 157.55,
+        "mean_chroma": 24.0635
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 2.1,
+        "hemiTotal": 0,
+        "ambientTotal": 0,
+        "hasEnvironment": true,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 4.4501
+      }
+    },
+    {
+      "config": "indirect_off",
+      "pair": "pair01",
+      "setup": "char-player",
+      "hour": 8,
+      "what": "mid-distance exterior architecture over ground",
+      "pose_error": null,
+      "frame": "reports/f2-why/forced/indirect_off/pair01__char-player__t8.png",
+      "crop_file": "reports/f2-why/forced/indirect_off/pair01__CROP.png",
+      "frame_sha": "afe315ed8f5c13cf",
+      "liveness": "LIVE",
+      "liveness_why": null,
+      "stats": {
+        "mean_luma": 32.1414,
+        "sd_luma": 28.7592,
+        "p10": 12.28,
+        "p50": 23.06,
+        "p90": 54.33,
+        "span": 173.48,
+        "mean_chroma": 15.6372
+      },
+      "readback": {
+        "shadowMapEnabled": true,
+        "sunIntensity": 2.1,
+        "hemiTotal": 0,
+        "ambientTotal": 0,
+        "hasEnvironment": false,
+        "environmentIntensity": 1,
+        "hasFog": true,
+        "shadowHalfExtent": 142.85,
+        "uAO": 1,
+        "uGI": 1,
+        "uPost": 1,
+        "uGradeOn": 1,
+        "uAOMaxOcclusion": 0.6,
+        "uAORadius": 0.42,
+        "cfgError": null
+      },
+      "delta_vs_shipped": {
+        "mean_abs_rgb": 24.5681
+      }
+    }
+  ]
+}
