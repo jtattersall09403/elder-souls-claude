@@ -23,7 +23,7 @@
 // not evidence, and neither is a JSON field.
 //
 // USAGE
-//   node tools/blind/uix08-gate-g/play.mjs --pack <dir> --arm <codename> \
+//   node tools/blind/played-pair/play.mjs --pack <dir> --arm <codename> \
 //        --script <session.json> --out <dir> [--state helstrom-market]
 //
 // EXIT 0 played · 1 the script asked for something impossible · 2 could not run

@@ -2,7 +2,7 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `9ab17331`: **1036 tools**, **159 reference items**,
+drift. At `2afc2dd5`: **1036 tools**, **159 reference items**,
 **56 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
@@ -164,8 +164,8 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 | piece | state | files claimed |
 |---|---|---|
 | `T4-r2-builder` | in_progress | `game/src/ui/icons.js` `game/src/ui/hud-world.js` `game/src/ui/compass.js` `game/src/ui/hud.js` +14 |
+| `W1-UIX08-CENSUS-ROUTE` | in_progress | `orchestration/status/W1-UIX08-CENSUS-ROUTE.json` `corpus/86-ui/RI-UIX08-dialogue-window.md` `game/src/engine.js` `game/src/ui/system.js` +4 |
 | `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
-| `W1-UIX08-CENSUS-ROUTE` | in_progress | `orchestration/status/W1-UIX08-CENSUS-ROUTE.json` |
 | `W1-G1-CAMERA-OCCLUSION` | measuring | `orchestration/status/W1-G1-CAMERA-OCCLUSION.json` `tools/camera/cam-occlusion-walk.mjs` `corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/` |
 | `AUDIT-R1-LIST` | running | `orchestration/status/AUDIT-R1-LIST.json` `orchestration/NEXT-DISPATCH.md` `tools/dispatch-staleness.mjs` `reports/blog-feed.jsonl` |
 | `COST-G3` | running | `orchestration/status/COST-G3.json` `tools/rigour.mjs` `corpus/90-verdicts/RIGOUR-SCHEMA.md` |

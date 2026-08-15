@@ -1,16 +1,61 @@
 {
   "task_id": "W1-UIX08-CENSUS-ROUTE",
   "state": "in_progress",
-  "started": "2026-08-15",
-  "roadmap_item": "F2",
-  "headline": "Route character creation (census) through the Morrowind dialogue window",
+  "date": "2026-08-15",
+  "roadmap_item": "RI-UIX08 §H / the second half of the defect the owner reported from playing the deployed build",
+  "headline": "Character creation now runs on the RI-UIX08 dialogue window, whole. The route needed two affordances the window had no element for; both are expressed INSIDE §A's six elements, and RI-UIX08 is amended with a §H that says so and says what a critic measures.",
   "could_not_do": [
-    "WIP — nothing measured yet. This list is written first and updated as facts arrive."
+    "WIP — measurements in flight. This list is written first and is updated as facts arrive; anything still reading WIP was not measured."
   ],
-  "next_step": "Read CLAUDE.md, RULES.md, CRITIC-DOCTRINE 1.2b, HAZARDS 11-15, W1-UIX08-INPUT-FIX.json, RI-UIX08",
+  "the_owner_defect": "Owner, having played it: 'It also wasn't being used for the dialogue in the character creation/new game flow, which it should be.' That is the first conversation any new player ever has, and it was the last one still drawn by render/ui.js's bottom-anchored vellum reply panel — the surface RI-UIX08's hard fail is written about.",
+  "the_ruling": {
+    "question": "RI-UIX08 §A says 'Six elements, no more.' The census asks in shapes the window has no element for. Amend the item, or fit the census inside the six?",
+    "answer": "BOTH, and they are not alternatives — that framing was the one thing in the brief I did not follow. The census FITS inside the six: no seventh element is added, and the two missing affordances are expressed as row semantics inside element 4. But TWO of the six are required to be ABSENT during creation, and no reading of §A as written permits that, so the item is AMENDED to say which four are present, why the other two must not be, and what a critic now measures. Fitting inside six without amending would have left a critic scoring a census capture at '4 of 6 elements' against a bar that never contemplated the scene.",
+    "the_two_affordances_and_where_they_went": {
+      "multi_select (4 `pick` nodes)": "A `· ` prefix INSIDE THE ROW'S OWN TEXT. Not a colour: §E3 measures one bronze for every column entry and §F1 rules read/unread marking off, so a colour mark would be indistinguishable from the affordance §F1 exists to prevent. A prefix lives in the row's `text`, so it is in the declared element census a probe reads and not only in the pixels. The count ('She is waiting for 2 more.') is AUTHORED text in her voice and goes into the transcript as prose. Nothing on this route composes English out of ids, stat names or numbers.",
+      "typed_name (3 `text` nodes)": "A ROW in the column, above §D2's rule, drawn as the typed characters plus the `▁` caret the vellum panel used. §D2 already divides the column into 'what you can DO with this person' and 'what you can ASK them about the world'; telling somebody your name is the first, and that is the section the reference itself puts Persuasion and Barter in. It is not a new section and not a new element. Both of RI-JRN01 O17's routes still work: type on a keyboard, or walk the caret onto a ledger name and confirm that instead."
+    },
+    "the_two_absences_and_why_they_are_required_not_permitted": {
+      "element_5_disposition": "Before the writ is stamped there is no character for anybody to have a disposition toward. Drawing one puts sim.player's boot default on screen as a fact about a person who does not exist yet — the same defect W1-26 r3 photographed on the title screen. RI-DLG04 has nothing to move here and no route to move it with.",
+      "element_6_goodbye": "There is no way out of character creation. §D5 says Goodbye is 'the only way out that the window advertises'; where there is no way out it must advertise none. A Goodbye drawn here would be CRITIC-DOCTRINE §1.2b's control that is drawn and does nothing — a hard fail, and worse than an absent control because it lies to the player. A greyed-out one is the same lie with an excuse attached."
+    },
+    "not_partial": "The route is all-or-nothing by construction, not by care. `Engine._censusRouted()` is ONE predicate read by the three sites that have to agree — `_censusSync` (suppresses the old panel), `_conversationSync` (must not un-suppress it out from under the census) and `_censusStep` (routes the input to whichever surface is drawing). The window is drawn under EXACTLY the condition the vellum panel was drawn under before: wherever `buildCensusModel()` returns a model. Same visibility rule, one surface.",
+    "reversible": "Ruling: creation runs on this window in this shape. Overturned by a §G-form human gate in which a participant who has played both reports creation as WORSE to use on this window — most plausibly on the typed name, the one affordance with no reference behind it and the one place a player could expect a text field rather than a row. The fix named in advance if that happens: a text affordance defined as a SEVENTH element scoped to census mode, argued as a deliberate amendment to §A, not added quietly."
+  },
+  "what_the_corpus_amendment_says": {
+    "file": "corpus/86-ui/RI-UIX08-dialogue-window.md",
+    "shape": "APPEND-ONLY. Nothing struck, nothing weakened, nothing deleted. §A gains a blockquote pointing at §H; §H is new; the Scoring section gains a second hard fail and an explicit statement that the native scale stays out of 48 because §H is a GATE, not an axis — an amendment that re-based the denominator would make every score recorded before today incomparable with every score after it.",
+    "H1": "which of the six elements are present (1,2,3,4) and which are required absent (5,6), with the reason for each.",
+    "H2": "the two row semantics inside element 4, and that neither is a new element.",
+    "H3": "census affordances may not leak into an ordinary conversation, stated as a measurable pair: a conversation frame declares six elements including the exit and the meter and carries no picked mark and no typed row; a census frame declares four and no exit.",
+    "H4": "what a critic must now measure — four checks, all §1.2b-shaped.",
+    "H5": "what the amendment does NOT claim. Morrowind's character creation is its own full-screen menus, not its dialogue window (REF-A12b-char_creation__mw-132183942.jpg is a panel over Seyda Neen). So §H has NO REFERENCE PLATE BEHIND IT and must not be read as measured; it is this build's own ruling, argued from RI-JRN01 rather than from Morrowind. §H5 also records the one thing this piece does not fix: at the paused hand-back nodes the window keeps its full geometry, where the vellum panel was a bottom strip."
+  },
+  "the_census_as_counted_from_the_repo_not_from_memory": {
+    "command": "node -e over the parsed `nodes` array of game/data/dialogue/topics/writ-house.json, 2026-08-15",
+    "nodes": 22,
+    "kinds": "8 choice, 4 pick, 3 text, 1 questionnaire (one node, ten dilemmas), 1 observed, 2 conditional, 5 with no input (hold.come-to, hold.wake, hold.out, writ.enter, writ.strange-check)",
+    "note": "The previous piece's grep over the raw file gave the same five input kinds. I re-derived it from the parsed nodes rather than inheriting the figure, per CLAUDE.md's four-line check clause 2."
+  },
   "files_touched": [
-    "orchestration/status/W1-UIX08-CENSUS-ROUTE.json"
+    "orchestration/status/W1-UIX08-CENSUS-ROUTE.json",
+    "corpus/86-ui/RI-UIX08-dialogue-window.md",
+    "game/src/engine.js",
+    "game/src/ui/system.js",
+    "game/src/ui/screens/dialogue.js",
+    "game/src/character/scene.js",
+    "tools/ui/dialogue-drive-probe.mjs"
   ],
-  "files_claimed": [],
-  "notes": []
+  "files_claimed": [
+    "corpus/86-ui/RI-UIX08-dialogue-window.md",
+    "game/src/character/scene.js",
+    "game/src/ui/screens/dialogue.js",
+    "tools/ui/dialogue-drive-probe.mjs",
+    "reports/uix08/"
+  ],
+  "declared_overlap": {
+    "T4-r2-builder": "live in game/src/ui/ on the screens. My edits to game/src/ui/system.js are confined to the dialogue-window block (_dialogueModel, _censusWindowModel, dialogueStep, _dialogueConfirm, the dsig line) and to game/src/ui/screens/dialogue.js, which nobody live has declared. I touch no other screen.",
+    "game/src/engine.js": "13 live pieces are registered against it; ownership.mjs reports UNDECLARED OVERLAP as the normal state of that file. My additions are `CENSUS_WINDOW`, `_censusDialogueCtx()`, `_censusRouted()`, three lines in `_censusSync`, two in `_conversationSync`, one in `_uiCtx` and the routed branch of `_censusStep`. `git diff HEAD -- game/src/engine.js` to be checked immediately before landing."
+  },
+  "next_step": "read reports/uix08/drive-probe-census.json; then the delete-the-fix arm on a git worktree with CENSUS_WINDOW=false"
 }

@@ -145,12 +145,12 @@ were each written by someone who could not find the other.
 - `tools/blind/make-image-pair.mjs` — **no header comment**
 - `tools/blind/make-pair.mjs` — assemble a blind comparison pack (CORPUS-CONTRACT §6).
 - `tools/blind/mask-text.mjs` — tools/blind/mask-text.mjs — hide provenance in a text artifact WITHOUT leaving a countable scar.
+- `tools/blind/played-pair/build-arms.mjs` — seal the two playable arms of the RI-UIX08 §G human gate.
+- `tools/blind/played-pair/leakcheck-arms.mjs` — the gate that must pass BEFORE a judge is handed the pack.
+- `tools/blind/played-pair/play.mjs` — the ONLY thing a §G judge runs.
+- `tools/blind/played-pair/tells.mjs` — the ONE list of strings that would tell a judge which arm it is playing.
 - `tools/blind/protocol-a-pack.mjs` — **no header comment**
 - `tools/blind/protocol-a-transport-proof.mjs` — **no header comment**
-- `tools/blind/uix08-gate-g/build-arms.mjs` — seal the two playable arms of the RI-UIX08 §G human gate.
-- `tools/blind/uix08-gate-g/leakcheck-arms.mjs` — the gate that must pass BEFORE a judge is handed the pack.
-- `tools/blind/uix08-gate-g/play.mjs` — the ONLY thing a §G judge runs.
-- `tools/blind/uix08-gate-g/tells.mjs` — the ONE list of strings that would tell a judge which arm it is playing.
 
 ## `tools/camera/` — 11
 

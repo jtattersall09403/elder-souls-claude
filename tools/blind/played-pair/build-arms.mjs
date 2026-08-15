@@ -41,8 +41,8 @@
 // for, and a module fetched twice in one session is a fetch the engine did not make.
 //
 // USAGE
-//   node tools/blind/uix08-gate-g/build-arms.mjs --out <packdir> --reveal <dir> [--seed N]
-//   node tools/blind/uix08-gate-g/build-arms.mjs ... --leaky     # for the leak-check self-test
+//   node tools/blind/played-pair/build-arms.mjs --out <packdir> --reveal <dir> [--seed N]
+//   node tools/blind/played-pair/build-arms.mjs ... --leaky     # for the leak-check self-test
 //
 // EXIT 0 built · 1 usage/IO · 2 could not run
 'use strict';
@@ -329,7 +329,7 @@ writeJson(path.join(REVEAL, 'mapping.json'), {
   seed,
   ablated_arm: ablatedIs,
   our_arm: ablatedIs === codeA ? codeB : codeA,
-  rebuild: `node tools/blind/uix08-gate-g/build-arms.mjs --out <dir> --reveal <dir> --commit ${COMMIT} --seed ${seed}`,
+  rebuild: `node tools/blind/played-pair/build-arms.mjs --out <dir> --reveal <dir> --commit ${COMMIT} --seed ${seed}`,
   note: 'Open only after every judge has recorded its five answers verbatim and the separability '
       + 'reader has returned. Reading this before then destroys the run and cannot be undone.',
 });

@@ -1012,6 +1012,40 @@ export class UISystem {
       this.dialogueScroll = 0; this.dialogueColScroll = 0;
     }
     for (const u of d.utterances || []) this.dialogue.appendKeyed(u.key, u.heading || null, u.text);
+
+    // ---- THE CARET IS RESET WHEN THE QUESTION CHANGES, AND THE BUILD DEAD-ENDED WITHOUT IT ----
+    //
+    // Found by `tools/ui/dialogue-drive-probe.mjs --census` driving all three class routes: the
+    // scene **stopped forever at `writ.class-verdict`** on every one of them. That node offers a
+    // single row, the caret was still on row 2 or row 6 from the node before it, and
+    // `_dialogueConfirm` read `m.topics[6]` — undefined — and returned null. A row you can see, a
+    // button you can press, and a scene that cannot be finished: the exact shape of
+    // CRITIC-DOCTRINE §1.2b's drawn-and-does-nothing, arriving in the one place the player cannot
+    // walk away from. It also silently chose the wrong branch at `writ.class-routes` — the run
+    // that asked for row 0 took row 1, because the caret arrived carrying the previous node's
+    // index — so a static check on "did it advance" would have called that healthy.
+    //
+    // `CensusSurface.sync()` has always done this for the vellum panel (`if (this.node !==
+    // wasNode) this.sel = 0`, then a clamp). The window has its own caret, so it needs its own
+    // copy of the rule — this is the one place the two carets could diverge and it is why the
+    // probe drove every node rather than a sample.
+    //
+    // THE KEY IS THE NODE **AND THE QUESTION**, not the node alone. `writ.class-questions` is one
+    // node that asks ten different dilemmas, and there is no guarantee two of them offer the same
+    // number of answers. A node-only key would leave exactly that case uncovered.
+    const nRows = (d.actions || []).length + (d.topics || []).length;
+    const key = `${d.node}#${d.question_key || '-'}`;
+    if (this._censusKey !== key) {
+      this._censusKey = key;
+      this.dialogueFocus = { pane: 'column', linkIdx: 0, rowIdx: 0 };
+      this.dialogueColScroll = 0;
+    } else if (this.dialogueFocus.rowIdx >= nRows) {
+      // Second guard, for a list that shrinks under the same key. A clamp cannot substitute for
+      // the reset above (it would leave the caret three rows down a four-row question) and the
+      // reset cannot substitute for the clamp, so both are here.
+      this.dialogueFocus.rowIdx = Math.max(0, nRows - 1);
+    }
+
     return {
       census: true,
       census_node: d.node || null,
@@ -1220,6 +1254,9 @@ export class UISystem {
     this.dialoguePressed = false;
     this.dialoguePointerDown = null;
     this.dialoguePointerConfirm = null;
+    // §H. Cleared so that starting a second new game in one session resets the caret on its first
+    // node instead of inheriting the key the last one ended on.
+    this._censusKey = null;
     this.builtFrame = -1;
     return null;
   }
