@@ -1,0 +1,2786 @@
+{
+  "schema": "f10-character-sweep/1",
+  "tag": "r2-sw",
+  "canvas": [
+    960,
+    540
+  ],
+  "fov_deg": 60,
+  "seed": 20260814,
+  "orbit_angles": [
+    0,
+    45,
+    90,
+    135,
+    180,
+    225,
+    270,
+    315
+  ],
+  "subjects": [
+    {
+      "id": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "kind": "player",
+      "height_m": 1.8,
+      "height_source": "declared fallback 1.8 m — no harness verb reports body height"
+    },
+    {
+      "id": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "kind": "npc",
+      "height_m": 1.8,
+      "height_source": "declared fallback 1.8 m — no harness verb reports body height"
+    },
+    {
+      "id": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "kind": "npc",
+      "height_m": 1.8,
+      "height_source": "declared fallback 1.8 m — no harness verb reports body height"
+    },
+    {
+      "id": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "kind": "npc",
+      "height_m": 1.8,
+      "height_source": "declared fallback 1.8 m — no harness verb reports body height"
+    },
+    {
+      "id": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "kind": "npc",
+      "height_m": 1.8,
+      "height_source": "declared fallback 1.8 m — no harness verb reports body height"
+    }
+  ],
+  "renderer_string": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "software_renderer": true,
+  "evidence_class": "SOFTWARE — valid for geometry, layout, composition, determinism and census. NOT valid for antialiasing, bloom, AO, IBL or any appearance claim (W1-30-EVIDENCE §4).",
+  "renderer_attestation": {
+    "class": "SOFTWARE",
+    "decided_from": "renderer-string",
+    "reason": "the reported renderer names a software rasteriser: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "unknown": false,
+    "hardware_requested": false,
+    "fell_back": false,
+    "source": "live page WEBGL_debug_renderer_info"
+  },
+  "rows": [
+    {
+      "file": "C4__player__yaw000.png",
+      "status": "ok",
+      "bytes": 932292,
+      "hash": "ecaaed337506cbe3",
+      "slot": "C4",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "yaw_deg": 0,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766,
+          3.58,
+          5013.834
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961797226
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__player__yaw045.png",
+      "status": "ok",
+      "bytes": 994850,
+      "hash": "cfb01136db6577c8",
+      "slot": "C4",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "yaw_deg": 45,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2768.004,
+          3.58,
+          5013.004
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.3703066112953005e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.3703066112953005e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__player__yaw090.png",
+      "status": "ok",
+      "bytes": 1027269,
+      "hash": "12a8b99edf27a117",
+      "slot": "C4",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "yaw_deg": 90,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2768.834,
+          3.58,
+          5011
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__player__yaw135.png",
+      "status": "ok",
+      "bytes": 1165277,
+      "hash": "464e730fd729e7bd",
+      "slot": "C4",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "yaw_deg": 135,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2768.004,
+          3.58,
+          5008.996
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__player__yaw180.png",
+      "status": "ok",
+      "bytes": 1086911,
+      "hash": "0882466b4dbc03c8",
+      "slot": "C4",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "yaw_deg": 180,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766,
+          3.58,
+          5008.166
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961797226
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__player__yaw225.png",
+      "status": "ok",
+      "bytes": 1063171,
+      "hash": "aea6d7f149857bf9",
+      "slot": "C4",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "yaw_deg": 225,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2763.996,
+          3.58,
+          5008.996
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.369361572253028e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.369361572253028e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__player__yaw270.png",
+      "status": "ok",
+      "bytes": 1015078,
+      "hash": "5107862dafbf6f94",
+      "slot": "C4",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "yaw_deg": 270,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2763.166,
+          3.58,
+          5011
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__player__yaw315.png",
+      "status": "ok",
+      "bytes": 959609,
+      "hash": "346da23cd50fccf6",
+      "slot": "C4",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "yaw_deg": 315,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2763.996,
+          3.58,
+          5013.004
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3674714941684826e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3674714941684826e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C1__player__closeup-lit.png",
+      "status": "ok",
+      "bytes": 979648,
+      "hash": "5917575ec15dfd97",
+      "slot": "C1",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2766.311,
+          4.174,
+          5011.854
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "B3__player__closeup-lit-orbit30.png",
+      "status": "ok",
+      "bytes": 1007760,
+      "hash": "90895b77db14c914",
+      "slot": "B3",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2766.697,
+          4.174,
+          5011.585
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C3__player__3m.png",
+      "status": "ok",
+      "bytes": 1004297,
+      "hash": "14b8fec986e0c8ac",
+      "slot": "C3",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "distance_m": 3,
+      "fill_fraction": 0.5196,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 3,
+        "eye": [
+          2767.5,
+          3.58,
+          5013.598
+        ]
+      }
+    },
+    {
+      "file": "C3__player__8m.png",
+      "status": "ok",
+      "bytes": 890672,
+      "hash": "db6405a447b33127",
+      "slot": "C3",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "distance_m": 8,
+      "fill_fraction": 0.1949,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 8,
+        "eye": [
+          2770,
+          3.58,
+          5017.928
+        ]
+      }
+    },
+    {
+      "file": "C3__player__20m.png",
+      "status": "ok",
+      "bytes": 970777,
+      "hash": "bdd61208fb594e28",
+      "slot": "C3",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "distance_m": 20,
+      "fill_fraction": 0.0779,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 20,
+        "eye": [
+          2776,
+          3.58,
+          5028.321
+        ]
+      }
+    },
+    {
+      "file": "IDLE__player__f000.png",
+      "status": "ok",
+      "bytes": 926286,
+      "hash": "40543ff661b68af7",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766,
+          3.58,
+          5013.834
+        ]
+      },
+      "idle_frame": 0
+    },
+    {
+      "file": "IDLE__player__f120.png",
+      "status": "ok",
+      "bytes": 931760,
+      "hash": "10713779d2f643f9",
+      "slot": "IDLE",
+      "subject": "player",
+      "label": "player",
+      "idle_frame": 120
+    },
+    {
+      "file": "C4__npc-blackwood-company-factor__yaw000.png",
+      "status": "ok",
+      "bytes": 986027,
+      "hash": "55a9c62381ef9cc5",
+      "slot": "C4",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "yaw_deg": 0,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2750.14,
+          3.58,
+          5034.724
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726507e-16,
+            -0.6809723961799408
+          ],
+          "z": 2.8342649999995047,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726507e-16,
+            0.6809723961799411
+          ],
+          "z": 2.8342649999995047,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-blackwood-company-factor__yaw045.png",
+      "status": "ok",
+      "bytes": 977022,
+      "hash": "9c4be58a092a2c8d",
+      "slot": "C4",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "yaw_deg": 45,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2752.144,
+          3.58,
+          5033.894
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.3703066112953005e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.3703066112953005e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-blackwood-company-factor__yaw090.png",
+      "status": "ok",
+      "bytes": 1048648,
+      "hash": "68589385a7510847",
+      "slot": "C4",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "yaw_deg": 90,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2752.974,
+          3.58,
+          5031.89
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-blackwood-company-factor__yaw135.png",
+      "status": "ok",
+      "bytes": 1093454,
+      "hash": "a92fcdb2c476d125",
+      "slot": "C4",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "yaw_deg": 135,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2752.144,
+          3.58,
+          5029.886
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.3712516503372619e-13,
+            -0.6809723965805727
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.3712516503372619e-13,
+            0.6809723965805731
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-blackwood-company-factor__yaw180.png",
+      "status": "ok",
+      "bytes": 1056314,
+      "hash": "52f6dfceee86f669",
+      "slot": "C4",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "yaw_deg": 180,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2750.14,
+          3.58,
+          5029.056
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961797226
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-blackwood-company-factor__yaw225.png",
+      "status": "ok",
+      "bytes": 1066945,
+      "hash": "c78ccf6f89f77364",
+      "slot": "C4",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "yaw_deg": 225,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2748.136,
+          3.58,
+          5029.886
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3674714941681721e-13,
+            -0.6809723965805727
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3674714941681721e-13,
+            0.6809723965805731
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-blackwood-company-factor__yaw270.png",
+      "status": "ok",
+      "bytes": 1000824,
+      "hash": "4b0501357a07f11c",
+      "slot": "C4",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "yaw_deg": 270,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2747.306,
+          3.58,
+          5031.89
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798319
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-blackwood-company-factor__yaw315.png",
+      "status": "ok",
+      "bytes": 1025765,
+      "hash": "e0793124efb0e0bc",
+      "slot": "C4",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "yaw_deg": 315,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2748.136,
+          3.58,
+          5033.894
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3674714941684826e-13,
+            -0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3674714941684826e-13,
+            0.6809723965807276
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C1__npc-blackwood-company-factor__closeup-lit.png",
+      "status": "ok",
+      "bytes": 1039431,
+      "hash": "2e97c8e5d9cb6ee5",
+      "slot": "C1",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2750.451,
+          4.174,
+          5032.744
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "B3__npc-blackwood-company-factor__closeup-lit-orbit30.png",
+      "status": "ok",
+      "bytes": 1030071,
+      "hash": "f72485016c3f890a",
+      "slot": "B3",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2750.837,
+          4.174,
+          5032.475
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C3__npc-blackwood-company-factor__3m.png",
+      "status": "ok",
+      "bytes": 973138,
+      "hash": "720634eb81ad1544",
+      "slot": "C3",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "distance_m": 3,
+      "fill_fraction": 0.5196,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 3,
+        "eye": [
+          2751.64,
+          3.58,
+          5034.488
+        ]
+      }
+    },
+    {
+      "file": "C3__npc-blackwood-company-factor__8m.png",
+      "status": "ok",
+      "bytes": 1012613,
+      "hash": "f2e8209bf922c688",
+      "slot": "C3",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "distance_m": 8,
+      "fill_fraction": 0.1949,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 8,
+        "eye": [
+          2754.14,
+          3.58,
+          5038.818
+        ]
+      }
+    },
+    {
+      "file": "C3__npc-blackwood-company-factor__20m.png",
+      "status": "ok",
+      "bytes": 989886,
+      "hash": "3e0f3422343ee020",
+      "slot": "C3",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "distance_m": 20,
+      "fill_fraction": 0.0779,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 20,
+        "eye": [
+          2760.14,
+          3.58,
+          5049.211
+        ]
+      }
+    },
+    {
+      "file": "IDLE__npc-blackwood-company-factor__f000.png",
+      "status": "ok",
+      "bytes": 986688,
+      "hash": "965bbe615f1f0d58",
+      "slot": "IDLE",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2750.14,
+          3.58,
+          5034.724
+        ]
+      },
+      "idle_frame": 0
+    },
+    {
+      "file": "IDLE__npc-blackwood-company-factor__f120.png",
+      "status": "ok",
+      "bytes": 987324,
+      "hash": "8ee7a2ad278db03e",
+      "slot": "IDLE",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "idle_frame": 120
+    },
+    {
+      "file": "C4__npc-dockmaster-weeja-sen__yaw000.png",
+      "status": "ok",
+      "bytes": 988809,
+      "hash": "f9302311d7065aeb",
+      "slot": "C4",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "yaw_deg": 0,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2804.61,
+          1.27,
+          5035.774
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961797224
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-dockmaster-weeja-sen__yaw045.png",
+      "status": "ok",
+      "bytes": 1119378,
+      "hash": "c0f17f4dafd8ab1a",
+      "slot": "C4",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "yaw_deg": 45,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2806.614,
+          1.27,
+          5034.944
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3665264551258998e-13,
+            -0.6809723965805728
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3665264551258998e-13,
+            0.6809723965805727
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-dockmaster-weeja-sen__yaw090.png",
+      "status": "ok",
+      "bytes": 1070967,
+      "hash": "41f7ed51cc7c78a8",
+      "slot": "C4",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "yaw_deg": 90,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2807.444,
+          1.27,
+          5032.94
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.6809723961798316
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-dockmaster-weeja-sen__yaw135.png",
+      "status": "ok",
+      "bytes": 1022603,
+      "hash": "053bddd7ebd0d48d",
+      "slot": "C4",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "yaw_deg": 135,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2806.614,
+          1.27,
+          5030.936
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            -0.6809723965807274
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-dockmaster-weeja-sen__yaw180.png",
+      "status": "ok",
+      "bytes": 1062183,
+      "hash": "0f1b658f7fbec3ee",
+      "slot": "C4",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "yaw_deg": 180,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2804.61,
+          1.27,
+          5030.106
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961799409
+          ],
+          "z": 2.8342649999995047,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961799408
+          ],
+          "z": 2.8342649999995047,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-dockmaster-weeja-sen__yaw225.png",
+      "status": "ok",
+      "bytes": 1050872,
+      "hash": "2daa8ed128d54f56",
+      "slot": "C4",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "yaw_deg": 225,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2802.606,
+          1.27,
+          5030.936
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.369361572253028e-13,
+            -0.6809723965807274
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.369361572253028e-13,
+            0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-dockmaster-weeja-sen__yaw270.png",
+      "status": "ok",
+      "bytes": 1061147,
+      "hash": "13612eecee663e81",
+      "slot": "C4",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "yaw_deg": 270,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2801.776,
+          1.27,
+          5032.94
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798316
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-dockmaster-weeja-sen__yaw315.png",
+      "status": "ok",
+      "bytes": 1060550,
+      "hash": "08fb60bcd6e42233",
+      "slot": "C4",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "yaw_deg": 315,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2802.606,
+          1.27,
+          5034.944
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.3693615722527171e-13,
+            -0.6809723965805728
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.3693615722527171e-13,
+            0.6809723965805727
+          ],
+          "z": 2.8342649983320403,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C1__npc-dockmaster-weeja-sen__closeup-lit.png",
+      "status": "ok",
+      "bytes": 1081510,
+      "hash": "1b0f5d9afe749db2",
+      "slot": "C1",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2804.921,
+          1.864,
+          5033.794
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "B3__npc-dockmaster-weeja-sen__closeup-lit-orbit30.png",
+      "status": "ok",
+      "bytes": 1120454,
+      "hash": "62d3816ae20aa564",
+      "slot": "B3",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2805.307,
+          1.864,
+          5033.525
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C3__npc-dockmaster-weeja-sen__3m.png",
+      "status": "ok",
+      "bytes": 1081707,
+      "hash": "375e326697825ef9",
+      "slot": "C3",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "distance_m": 3,
+      "fill_fraction": 0.5196,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 3,
+        "eye": [
+          2806.11,
+          1.27,
+          5035.538
+        ]
+      }
+    },
+    {
+      "file": "C3__npc-dockmaster-weeja-sen__8m.png",
+      "status": "ok",
+      "bytes": 967515,
+      "hash": "984532e924d841a4",
+      "slot": "C3",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "distance_m": 8,
+      "fill_fraction": 0.1949,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 8,
+        "eye": [
+          2808.61,
+          1.27,
+          5039.868
+        ]
+      }
+    },
+    {
+      "file": "C3__npc-dockmaster-weeja-sen__20m.png",
+      "status": "ok",
+      "bytes": 900694,
+      "hash": "98ff813a693239ba",
+      "slot": "C3",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "distance_m": 20,
+      "fill_fraction": 0.0779,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 20,
+        "eye": [
+          2814.61,
+          1.27,
+          5050.261
+        ]
+      }
+    },
+    {
+      "file": "IDLE__npc-dockmaster-weeja-sen__f000.png",
+      "status": "ok",
+      "bytes": 987281,
+      "hash": "fa9e9c4151af5585",
+      "slot": "IDLE",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2804.61,
+          1.27,
+          5035.774
+        ]
+      },
+      "idle_frame": 0
+    },
+    {
+      "file": "IDLE__npc-dockmaster-weeja-sen__f120.png",
+      "status": "ok",
+      "bytes": 982753,
+      "hash": "bbad2f30da7e47df",
+      "slot": "IDLE",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "idle_frame": 120
+    },
+    {
+      "file": "C4__npc-harbourmistress-tesh__yaw000.png",
+      "status": "ok",
+      "bytes": 900181,
+      "hash": "c27112efd69e1d2b",
+      "slot": "C4",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "yaw_deg": 0,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2800.35,
+          1.27,
+          5031.624
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961797224
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-harbourmistress-tesh__yaw045.png",
+      "status": "ok",
+      "bytes": 929116,
+      "hash": "74e2ecf8c7e522ce",
+      "slot": "C4",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "yaw_deg": 45,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2802.354,
+          1.27,
+          5030.794
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.3703066112953005e-13,
+            -0.6809723965807274
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.3703066112953005e-13,
+            0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-harbourmistress-tesh__yaw090.png",
+      "status": "ok",
+      "bytes": 945552,
+      "hash": "3e2a5dcbb63fb829",
+      "slot": "C4",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "yaw_deg": 90,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2803.184,
+          1.27,
+          5028.79
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589756e-16,
+            -0.6809723961798316
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589756e-16,
+            0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-harbourmistress-tesh__yaw135.png",
+      "status": "ok",
+      "bytes": 1025945,
+      "hash": "2c720d856b8663ec",
+      "slot": "C4",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "yaw_deg": 135,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2802.354,
+          1.27,
+          5026.786
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            -0.6809723965807274
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3655814160839374e-13,
+            0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-harbourmistress-tesh__yaw180.png",
+      "status": "ok",
+      "bytes": 1007577,
+      "hash": "bdc2290fc392d33f",
+      "slot": "C4",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "yaw_deg": 180,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2800.35,
+          1.27,
+          5025.956
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723961797224
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723961797223
+          ],
+          "z": 2.834265000000414,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-harbourmistress-tesh__yaw225.png",
+      "status": "ok",
+      "bytes": 999037,
+      "hash": "468dc194586e42e8",
+      "slot": "C4",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "yaw_deg": 225,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2798.346,
+          1.27,
+          5026.786
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.369361572253028e-13,
+            -0.6809723965807274
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.369361572253028e-13,
+            0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-harbourmistress-tesh__yaw270.png",
+      "status": "ok",
+      "bytes": 889290,
+      "hash": "5621cac322c7e78f",
+      "slot": "C4",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "yaw_deg": 270,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2797.516,
+          1.27,
+          5028.79
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863252e-17,
+            -0.6809723961798316
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863252e-17,
+            0.6809723961798315
+          ],
+          "z": 2.8342649999999594,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-harbourmistress-tesh__yaw315.png",
+      "status": "ok",
+      "bytes": 935063,
+      "hash": "11fda5087612955f",
+      "slot": "C4",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "yaw_deg": 315,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2798.346,
+          1.27,
+          5030.794
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            -1.3674714941684826e-13,
+            -0.6809723965807274
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            -1.3674714941684826e-13,
+            0.6809723965807273
+          ],
+          "z": 2.8342649983313972,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C1__npc-harbourmistress-tesh__closeup-lit.png",
+      "status": "ok",
+      "bytes": 887516,
+      "hash": "dd51bf8f7eb1985d",
+      "slot": "C1",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2800.661,
+          1.864,
+          5029.644
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "B3__npc-harbourmistress-tesh__closeup-lit-orbit30.png",
+      "status": "ok",
+      "bytes": 954934,
+      "hash": "264540946ee1f7ae",
+      "slot": "B3",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2801.047,
+          1.864,
+          5029.375
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C3__npc-harbourmistress-tesh__3m.png",
+      "status": "ok",
+      "bytes": 928195,
+      "hash": "ff2bda2a8b39e53c",
+      "slot": "C3",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "distance_m": 3,
+      "fill_fraction": 0.5196,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 3,
+        "eye": [
+          2801.85,
+          1.27,
+          5031.388
+        ]
+      }
+    },
+    {
+      "file": "C3__npc-harbourmistress-tesh__8m.png",
+      "status": "ok",
+      "bytes": 1151770,
+      "hash": "6aa9ead6bd7e67f4",
+      "slot": "C3",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "distance_m": 8,
+      "fill_fraction": 0.1949,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 8,
+        "eye": [
+          2804.35,
+          1.27,
+          5035.718
+        ]
+      }
+    },
+    {
+      "file": "C3__npc-harbourmistress-tesh__20m.png",
+      "status": "ok",
+      "bytes": 940255,
+      "hash": "d920d522bcea9763",
+      "slot": "C3",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "distance_m": 20,
+      "fill_fraction": 0.0779,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 20,
+        "eye": [
+          2810.35,
+          1.27,
+          5046.111
+        ]
+      }
+    },
+    {
+      "file": "IDLE__npc-harbourmistress-tesh__f000.png",
+      "status": "ok",
+      "bytes": 898343,
+      "hash": "3af27e0b49b6729b",
+      "slot": "IDLE",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2800.35,
+          1.27,
+          5031.624
+        ]
+      },
+      "idle_frame": 0
+    },
+    {
+      "file": "IDLE__npc-harbourmistress-tesh__f120.png",
+      "status": "ok",
+      "bytes": 898899,
+      "hash": "d179b1ab9a406a25",
+      "slot": "IDLE",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "idle_frame": 120
+    },
+    {
+      "file": "C4__npc-lilmoth-apothecary-12__yaw000.png",
+      "status": "ok",
+      "bytes": 589270,
+      "hash": "6a1a3cfc4da21592",
+      "slot": "C4",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "yaw_deg": 0,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2.05,
+          0.9,
+          4.504
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            1.4772732389726505e-16,
+            -0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            1.4772732389726505e-16,
+            0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-lilmoth-apothecary-12__yaw045.png",
+      "status": "ok",
+      "bytes": 596242,
+      "hash": "42e32df973a40c02",
+      "slot": "C4",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "yaw_deg": 45,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          4.054,
+          0.9,
+          3.674
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.835117126817593e-16,
+            -0.6809723965806626
+          ],
+          "z": 2.8342649983316672,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.835117126817593e-16,
+            0.6809723965806626
+          ],
+          "z": 2.8342649983316672,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-lilmoth-apothecary-12__yaw090.png",
+      "status": "ok",
+      "bytes": 596822,
+      "hash": "d3b46b37b5247659",
+      "slot": "C4",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "yaw_deg": 90,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          4.884,
+          0.9,
+          1.67
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.2159098584589753e-16,
+            -0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.2159098584589753e-16,
+            0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-lilmoth-apothecary-12__yaw135.png",
+      "status": "ok",
+      "bytes": 600968,
+      "hash": "b23bb90ec60075e7",
+      "slot": "C4",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "yaw_deg": 135,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          4.054,
+          0.9,
+          -0.334
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            0,
+            -0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            0,
+            0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-lilmoth-apothecary-12__yaw180.png",
+      "status": "ok",
+      "bytes": 645560,
+      "hash": "dae6061e7b603afd",
+      "slot": "C4",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "yaw_deg": 180,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2.05,
+          0.9,
+          -1.164
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.954546477945301e-16,
+            -0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.954546477945301e-16,
+            0.6809723961798217
+          ],
+          "z": 2.8342650000000003,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-lilmoth-apothecary-12__yaw225.png",
+      "status": "ok",
+      "bytes": 659678,
+      "hash": "3e3644bb9d1d1ed3",
+      "slot": "C4",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "yaw_deg": 225,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          0.046,
+          0.9,
+          -0.334
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            9.450390422725315e-17,
+            -0.6809723965806629
+          ],
+          "z": 2.8342649983316655,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            9.450390422725315e-17,
+            0.6809723965806629
+          ],
+          "z": 2.8342649983316655,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-lilmoth-apothecary-12__yaw270.png",
+      "status": "ok",
+      "bytes": 621270,
+      "hash": "3449138b338a7b0d",
+      "slot": "C4",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "yaw_deg": 270,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          -0.784,
+          0.9,
+          1.67
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            7.386366194863251e-17,
+            -0.6809723961798219
+          ],
+          "z": 2.834265,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            7.386366194863251e-17,
+            0.6809723961798219
+          ],
+          "z": 2.834265,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C4__npc-lilmoth-apothecary-12__yaw315.png",
+      "status": "ok",
+      "bytes": 593066,
+      "hash": "b3c8068c93294e9b",
+      "slot": "C4",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "yaw_deg": 315,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          0.046,
+          0.9,
+          3.674
+        ]
+      },
+      "framing": {
+        "foot": {
+          "ndc": [
+            2.835117126817594e-16,
+            -0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        },
+        "head": {
+          "ndc": [
+            2.835117126817594e-16,
+            0.6809723965806628
+          ],
+          "z": 2.8342649983316663,
+          "in_front": true,
+          "on_screen": true
+        }
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C1__npc-lilmoth-apothecary-12__closeup-lit.png",
+      "status": "ok",
+      "bytes": 611304,
+      "hash": "f887360c67a3970b",
+      "slot": "C1",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2.361,
+          1.494,
+          2.524
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "B3__npc-lilmoth-apothecary-12__closeup-lit-orbit30.png",
+      "status": "ok",
+      "bytes": 608681,
+      "hash": "5c7f4a99e912aae4",
+      "slot": "B3",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2.747,
+          1.494,
+          2.255
+        ]
+      },
+      "time": "t1300",
+      "weather": "clear"
+    },
+    {
+      "file": "C3__npc-lilmoth-apothecary-12__3m.png",
+      "status": "ok",
+      "bytes": 598019,
+      "hash": "c28caa8f9b46c71c",
+      "slot": "C3",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "distance_m": 3,
+      "fill_fraction": 0.5196,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 3,
+        "eye": [
+          3.55,
+          0.9,
+          4.268
+        ]
+      }
+    },
+    {
+      "file": "C3__npc-lilmoth-apothecary-12__8m.png",
+      "status": "ok",
+      "bytes": 614019,
+      "hash": "3734468d56aadf8b",
+      "slot": "C3",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "distance_m": 8,
+      "fill_fraction": 0.1949,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 8,
+        "eye": [
+          6.05,
+          0.9,
+          8.598
+        ]
+      }
+    },
+    {
+      "file": "C3__npc-lilmoth-apothecary-12__20m.png",
+      "status": "ok",
+      "bytes": 597723,
+      "hash": "3216cb9879da9ad5",
+      "slot": "C3",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "distance_m": 20,
+      "fill_fraction": 0.0779,
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 20,
+        "eye": [
+          12.05,
+          0.9,
+          18.991
+        ]
+      }
+    },
+    {
+      "file": "IDLE__npc-lilmoth-apothecary-12__f000.png",
+      "status": "ok",
+      "bytes": 590665,
+      "hash": "3648117b8eb30dba",
+      "slot": "IDLE",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2.05,
+          0.9,
+          4.504
+        ]
+      },
+      "idle_frame": 0
+    },
+    {
+      "file": "IDLE__npc-lilmoth-apothecary-12__f120.png",
+      "status": "ok",
+      "bytes": 589879,
+      "hash": "8440bc634eb65661",
+      "slot": "IDLE",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "idle_frame": 120
+    },
+    {
+      "file": "C2__player__closeup-night.png",
+      "status": "ok",
+      "bytes": 626644,
+      "hash": "c9c9b72b09d175e4",
+      "slot": "C2",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2766.311,
+          4.174,
+          5011.854
+        ]
+      },
+      "time": "t2100"
+    },
+    {
+      "file": "C2__player__fullbody-night.png",
+      "status": "ok",
+      "bytes": 579664,
+      "hash": "9e893ab3bd426686",
+      "slot": "C2",
+      "subject": "player",
+      "label": "player",
+      "race": "saxhleel",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2766,
+          3.58,
+          5013.834
+        ]
+      },
+      "time": "t2100"
+    },
+    {
+      "file": "C2__npc-blackwood-company-factor__closeup-night.png",
+      "status": "ok",
+      "bytes": 364261,
+      "hash": "7af4726d91ec8ecc",
+      "slot": "C2",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2750.451,
+          4.174,
+          5032.744
+        ]
+      },
+      "time": "t2100"
+    },
+    {
+      "file": "C2__npc-blackwood-company-factor__fullbody-night.png",
+      "status": "ok",
+      "bytes": 327954,
+      "hash": "232f570ecdb249f8",
+      "slot": "C2",
+      "subject": "npc-blackwood-company-factor",
+      "label": "Corvus Aldeyn",
+      "race": "imperial",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2750.14,
+          3.58,
+          5034.724
+        ]
+      },
+      "time": "t2100"
+    },
+    {
+      "file": "C2__npc-dockmaster-weeja-sen__closeup-night.png",
+      "status": "ok",
+      "bytes": 638297,
+      "hash": "ed95568f210d5365",
+      "slot": "C2",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          1.761,
+          1.494,
+          3.234
+        ]
+      },
+      "time": "t2100"
+    },
+    {
+      "file": "C2__npc-dockmaster-weeja-sen__fullbody-night.png",
+      "status": "ok",
+      "bytes": 607008,
+      "hash": "c18e7fb7eab68dd2",
+      "slot": "C2",
+      "subject": "npc-dockmaster-weeja-sen",
+      "label": "Weeja-Sen",
+      "race": "saxhleel",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          1.45,
+          0.9,
+          5.214
+        ]
+      },
+      "time": "t2100"
+    },
+    {
+      "file": "C2__npc-harbourmistress-tesh__closeup-night.png",
+      "status": "ok",
+      "bytes": 638422,
+      "hash": "22e5cf47b4749251",
+      "slot": "C2",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          -1.139,
+          1.494,
+          2.624
+        ]
+      },
+      "time": "t2100"
+    },
+    {
+      "file": "C2__npc-harbourmistress-tesh__fullbody-night.png",
+      "status": "ok",
+      "bytes": 605053,
+      "hash": "0e8f2822a786699c",
+      "slot": "C2",
+      "subject": "npc-harbourmistress-tesh",
+      "label": "Ottavia Tesh",
+      "race": "imperial",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          -1.45,
+          0.9,
+          4.604
+        ]
+      },
+      "time": "t2100"
+    },
+    {
+      "file": "C2__npc-lilmoth-apothecary-12__closeup-night.png",
+      "status": "ok",
+      "bytes": 662033,
+      "hash": "3fff56b8de44213d",
+      "slot": "C2",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 0.909,
+        "eye": [
+          2758.651,
+          8.864,
+          5069.474
+        ]
+      },
+      "time": "t2100"
+    },
+    {
+      "file": "C2__npc-lilmoth-apothecary-12__fullbody-night.png",
+      "status": "ok",
+      "bytes": 791527,
+      "hash": "4b7368f202ec4672",
+      "slot": "C2",
+      "subject": "npc-lilmoth-apothecary-12",
+      "label": "Ixtei",
+      "race": "argonian",
+      "camera": {
+        "ok": true,
+        "e": null,
+        "dist": 2.834,
+        "eye": [
+          2758.34,
+          8.27,
+          5071.454
+        ]
+      },
+      "time": "t2100"
+    },
+    {
+      "file": "E4__char-player__0.png",
+      "status": "ok",
+      "bytes": 912089,
+      "hash": "bd2fe5d6efe4925e",
+      "slot": "E4",
+      "stand": "char-player",
+      "yaw_deg": 0,
+      "time": "t1300"
+    },
+    {
+      "file": "E4__char-player__1.png",
+      "status": "ok",
+      "bytes": 982125,
+      "hash": "0cc531044350e497",
+      "slot": "E4",
+      "stand": "char-player",
+      "yaw_deg": 90,
+      "time": "t1300"
+    },
+    {
+      "file": "E4__char-player__2.png",
+      "status": "ok",
+      "bytes": 1072910,
+      "hash": "3e069eff0917dc70",
+      "slot": "E4",
+      "stand": "char-player",
+      "yaw_deg": 180,
+      "time": "t1300"
+    },
+    {
+      "file": "E4__char-player__3.png",
+      "status": "ok",
+      "bytes": 961383,
+      "hash": "079edc5e92ed6a06",
+      "slot": "E4",
+      "stand": "char-player",
+      "yaw_deg": 270,
+      "time": "t1300"
+    },
+    {
+      "file": "E4__lilmoth__0.png",
+      "status": "ok",
+      "bytes": 967262,
+      "hash": "6dc2cc87af88b863",
+      "slot": "E4",
+      "stand": "lilmoth",
+      "yaw_deg": 0,
+      "time": "t1300"
+    },
+    {
+      "file": "E4__lilmoth__1.png",
+      "status": "ok",
+      "bytes": 1013272,
+      "hash": "efd6a5f27f2ac695",
+      "slot": "E4",
+      "stand": "lilmoth",
+      "yaw_deg": 90,
+      "time": "t1300"
+    },
+    {
+      "file": "E4__lilmoth__2.png",
+      "status": "ok",
+      "bytes": 1069070,
+      "hash": "7385baa0cab0365a",
+      "slot": "E4",
+      "stand": "lilmoth",
+      "yaw_deg": 180,
+      "time": "t1300"
+    },
+    {
+      "file": "E4__lilmoth__3.png",
+      "status": "ok",
+      "bytes": 1038322,
+      "hash": "e39acbb094fec5af",
+      "slot": "E4",
+      "stand": "lilmoth",
+      "yaw_deg": 270,
+      "time": "t1300"
+    }
+  ]
+}

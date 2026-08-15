@@ -866,12 +866,38 @@ if (args.manifest && fs.existsSync(String(args.manifest))) {
     if (!o || typeof o !== 'object') return;
     if (Array.isArray(o)) { o.forEach(walk); return; }
     const file = o.file || o.frame || o.path;
-    const top = o.head_top_px ?? o.subject_top_px ?? o.top_px;
-    const bot = o.foot_bottom_px ?? o.subject_bottom_px ?? o.bottom_px;
-    if (file && Number.isFinite(top) && Number.isFinite(bot)) boxes.set(path.basename(String(file)), { top: Number(top), bottom: Number(bot) });
+    let top = o.head_top_px ?? o.subject_top_px ?? o.top_px;
+    let bot = o.foot_bottom_px ?? o.subject_bottom_px ?? o.bottom_px;
+    // NATIVE SHAPE OF `f10-character-sweep.mjs`, which is the tool that actually takes our
+    // character frames: it records `framing.head.ndc` / `framing.foot.ndc` as normalised device
+    // coordinates, not pixel rows. Converting here rather than asking every caller to write an
+    // adapter is the difference between this gate being used and being skipped — and it was
+    // skipped on the round-1 sweep, which reported "0 red" over 17 frames of open sea.
+    // NDC y is +1 at the top of the frame, so row = (1 - y) / 2 * height.
+    if (!Number.isFinite(top) && o.framing && o.framing.head && Array.isArray(o.framing.head.ndc) && canvasH) {
+      top = (1 - Number(o.framing.head.ndc[1])) / 2 * canvasH;
+    }
+    if (!Number.isFinite(bot) && o.framing && o.framing.foot && Array.isArray(o.framing.foot.ndc) && canvasH) {
+      bot = (1 - Number(o.framing.foot.ndc[1])) / 2 * canvasH;
+    }
+    if (file && Number.isFinite(top) && Number.isFinite(bot)) {
+      // head and foot may arrive either way round; the box is the span between them.
+      boxes.set(path.basename(String(file)), { top: Math.min(Number(top), Number(bot)), bottom: Math.max(Number(top), Number(bot)) });
+    }
     Object.values(o).forEach(walk);
   };
-  walk(JSON.parse(fs.readFileSync(String(args.manifest), 'utf8')));
+  const man = JSON.parse(fs.readFileSync(String(args.manifest), 'utf8'));
+  // Canvas height, for the NDC conversion above. "960x540" or {height}.
+  // `f10-character-sweep.mjs` writes it as an ARRAY [w, h]; other tools write "960x540" or
+  // {width, height}. All three are accepted, because a manifest reader that only understands the
+  // shape its author happened to test is how this gate ends up silently on the fallback box —
+  // which is exactly what happened on the first run of this code.
+  var canvasH = 0;
+  if (Array.isArray(man.canvas) && man.canvas.length >= 2) canvasH = Number(man.canvas[1]) || 0;
+  else if (typeof man.canvas === 'string' && /x/i.test(man.canvas)) canvasH = Number(man.canvas.split(/x/i)[1]) || 0;
+  else if (man.canvas && Number.isFinite(man.canvas.height)) canvasH = Number(man.canvas.height);
+  else if (Number.isFinite(man.height)) canvasH = Number(man.height);
+  walk(man);
 }
 
 const wantSubject = !args['no-subject'];
