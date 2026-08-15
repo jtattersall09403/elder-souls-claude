@@ -2,13 +2,13 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-15T15:39:34.979Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-15T17:14:36.850Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
 | reference items (`corpus/**/RI-*.md`) | 152 | 0 |
 | plans (`orchestration/plans/*`) | 49 | 0 |
-| open gaps (`GAP-LEDGER.json`) | 86 | 0 |
+| open gaps (`GAP-LEDGER.json`) | 87 | 0 |
 | proposed roadmap items | 69 | — |
 
 ## Proposed items
@@ -42,7 +42,7 @@
 | `F12` | VFX and particles | RI-MAG05 | — | 1 (0) | W1-30 W1-30H | built_below_bar | V13 |
 | `F13` | Art direction and region identity | RI-WLD04 RI-VIS05 RI-VIS07 RI-UIX06 | RI-VIS05 | 1 (1) | W1-30 W1-30K | built_below_bar | V15 |
 | `F14` | Performance, LOD and budgets | RI-PLT01 | — | 0 (0) | W1-30 | built_below_bar | V16 |
-| `T4` | The Morrowind screens | RI-UIX03 RI-UIX04 RI-UIX06 RI-UIX07 RI-UIX08 RI-UIX09 RI-UIX10 | — | 8 (7) | W1-21 W1-HUD-TOAST | built_below_bar | partial:V14 |
+| `T4` | The Morrowind screens | RI-UIX03 RI-UIX04 RI-UIX06 RI-UIX07 RI-UIX08 RI-UIX09 RI-UIX10 | — | 9 (8) | W1-21 W1-HUD-TOAST | built_below_bar | partial:V14 |
 
 ### Ring 2 — The body, the camera and the fight — Souls owns everything in here.
 
@@ -247,14 +247,14 @@
 | `RI-PLT03` | 85-platform | neutral | T3 | 3 | 2 | judged_below_bar |
 | `RI-UIX01` | 86-ui | souls | G6 | 1 | 0 | judged_below_bar |
 | `RI-UIX02` | 86-ui | morrowind | P3 | 3 | 4 | judged_below_bar |
-| `RI-UIX03` | 86-ui | neutral | C3 T4 | 6 | 6 | judged_at_or_above_bar |
-| `RI-UIX04` | 86-ui | morrowind | P3 T4 | 8 | 7 | judged_at_or_above_bar |
+| `RI-UIX03` | 86-ui | neutral | C3 T4 | 7 | 6 | judged_at_or_above_bar |
+| `RI-UIX04` | 86-ui | morrowind | P3 T4 | 9 | 7 | judged_at_or_above_bar |
 | `RI-UIX05` | 86-ui | morrowind | P4 | 4 | 8 | judged_at_or_above_bar |
-| `RI-UIX06` | 86-ui | neutral | T4 F13 | 6 | 5 | judged_below_bar |
-| `RI-UIX07` | 86-ui | morrowind | T4 | 4 | 5 | judged_below_bar |
-| `RI-UIX08` | 86-ui | morrowind | P1 T4 | 4 | 2 | judged_below_bar |
-| `RI-UIX09` | 86-ui | morrowind | T4 | 4 | 5 | judged_below_bar |
-| `RI-UIX10` | 86-ui | neutral | T4 | 3 | 8 | judged_at_or_above_bar |
+| `RI-UIX06` | 86-ui | neutral | T4 F13 | 7 | 5 | judged_below_bar |
+| `RI-UIX07` | 86-ui | morrowind | T4 | 5 | 5 | judged_below_bar |
+| `RI-UIX08` | 86-ui | morrowind | P1 T4 | 5 | 2 | judged_below_bar |
+| `RI-UIX09` | 86-ui | morrowind | T4 | 5 | 5 | judged_below_bar |
+| `RI-UIX10` | 86-ui | neutral | T4 | 4 | 8 | judged_at_or_above_bar |
 | `RI-AUD01` | 87-audio | souls | G6 | 1 | 6 | judged_at_or_above_bar |
 | `RI-AUD02` | 87-audio | modern-fidelity | E9 T3 | 1 | 6 | judged_at_or_above_bar |
 | `RI-AUD03` | 87-audio | morrowind | E9 | 4 | 5 | judged_below_bar |
@@ -354,6 +354,7 @@
 | `GAP-W1-the-naming-moment-is-still-orphan-text` | blocking | `journey.chargen.diegesis` | C1 |
 | `GAP-W1-two-placement-mechanisms-collide` | blocking | `?` | W5 |
 | `GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them` | blocking | `ui.style.diegesis` | T4 |
+| `GAP-W1-ui-container-clips-its-own-declared-text` | blocking | `ui.menu.inventory` | T4 |
 | `GAP-W1-ui-detectors-that-cannot-see` | blocking | `ui.hud.minimalism` | T4 I1 |
 | `GAP-W1-ui-hud-world-set-unbuilt-and-misplaced` | blocking | `ui.hud.world` | T4 |
 | `GAP-W1-ui-journal-search-view-has-no-exit` | blocking | `ui.menu.journal` | T4 |
