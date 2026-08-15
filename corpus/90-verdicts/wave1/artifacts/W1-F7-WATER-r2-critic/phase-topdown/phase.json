@@ -1,0 +1,26 @@
+{
+  "tool": "f7-r2-critic-phase",
+  "generated": "2026-08-15T22:37:18.279Z",
+  "commit": "00e1ee5e02a84dcb91d1edfa3e903d182b493f5c",
+  "seed": 20260814,
+  "site": "vista-deep-marshes",
+  "pose": "topdown-120",
+  "canvas": [
+    960,
+    540
+  ],
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "reps": 5,
+  "mode": "replicate",
+  "step_between_captures": 8,
+  "head_expression_asserted": "PASS — game/src/render/water.js carries the round-2 weight verbatim",
+  "what_this_separates": "the replicate series moves the water phase and NOTHING else; the interleaved pairs swap arm order every other replicate so phase drift cancels to first order",
+  "replicate_series": [],
+  "interleaved_pairs": [],
+  "pageErrors": []
+}
