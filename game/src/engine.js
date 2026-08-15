@@ -550,6 +550,7 @@ export class Engine {
     // place that reads it, and it throws if a play-mode wall read is attempted inside the step.
     this.real.modeOf = () => this.loop.mode;
     this.sim.realInput = this.real;
+    this._bindSurfacePointer();
 
     this.loadState_.phase = 'opening-store';
     await this.store.open();
@@ -3531,7 +3532,31 @@ export class Engine {
       if (!this.censusSurface || !this.censusSurface.open) this.renderer.ui.setModel(null);
       this.renderer.ui.setSuppressed(false);
       if (this.ui) this.ui.dialogueClosed();
+      // W1-UIX08-INPUT-FIX. Hand the pad's D-pad back to the world. The lock is NOT re-requested
+      // here: a browser only grants pointer lock inside a user gesture, and `input/real.js`'s
+      // mousedown handler already re-requests it on the next click, which is exactly how leaving
+      // a menu behaves today. Re-requesting from here would be a silent rejection (PL3).
+      if (this.real && this.real.pad && this.ui && !this.ui.isMenu()) this.real.pad.uiMode = !!this.real.menuOpen;
       return null;
+    }
+    // ---- W1-UIX08-INPUT-FIX: A WINDOW YOU CLICK NEEDS A CURSOR TO CLICK IT WITH -----------------
+    //
+    // While the game holds pointer lock there is no cursor on screen and `mousemove` reports only
+    // `movementX/Y` — `clientX/clientY` are meaningless, so every hit test would resolve against
+    // a stale point near where the cursor was when the lock was taken. The dialogue window is a
+    // pointer-operated surface (RI-UIX08 owns "what a click does"), so opening one releases the
+    // lock for exactly the same reason and by exactly the same route opening a menu does
+    // (`UISystem._surfaceChanged`).
+    //
+    // And the pad's D-pad. `input/gamepad.js` maps the hat onto `uiMove` only while `pad.uiMode`
+    // is set, and `uiMode` was set for menus alone — so on a GameSir X2s, the device the owner
+    // actually plays on, the D-pad did nothing in this window and only the left stick walked the
+    // column. One flag, the same flag menus use.
+    if (this.real) {
+      if (this.real.pad) this.real.pad.uiMode = true;
+      if (this.real.pointerLocked && typeof document !== 'undefined' && document.exitPointerLock) {
+        try { document.exitPointerLock(); } catch { /* PL5: the game stays playable without it */ }
+      }
     }
     const n = this.conversation.npc;
     const place = (n && n.interior && CENSUS_PLACES[n.interior]) ? CENSUS_PLACES[n.interior].name : (n ? (n.settlement || null) : null);
@@ -3633,12 +3658,58 @@ export class Engine {
       said: st.said || null,
       said_topic: st.said_topic || null,
       said_heading: st.said_topic ? topicLabel(st.said_topic) : null,
+      // W1-UIX08-INPUT-FIX. How many answers this session has produced. `DialogueHistory.append`
+      // needs to tell "the same answer, still on screen" from "that answer again, just asked" —
+      // and the text alone cannot, which is why re-asking the topic you just asked printed
+      // nothing. Bumped in `_afterStep()` where the say actually lands.
+      said_seq: this._dlgSaySeq || 0,
       topics,
       actions,
       // Everything clickable: the column AND the learned edges. The window decides which of these
       // words actually appear in the prose; the engine decides which of them would answer.
       linkable: [...rows.values()],
     };
+  }
+
+  /**
+   * W1-UIX08-INPUT-FIX — CLIENT PIXELS IN, SURFACE PIXELS OUT, AND ONE OWNER OF THAT SUM.
+   *
+   * A mouse and a finger both arrive in CSS client coordinates relative to the viewport. The
+   * dialogue window's rects are in `renderer.menus` pixels, which track the WebGL canvas's
+   * DRAWING BUFFER (`Renderer.setSize` resizes `menus` to `w, h`, never scales it — RI-UIX06
+   * M-F17.2). On a device-pixel-ratio-2 phone those two are a factor of two apart, and on a
+   * canvas that CSS has letterboxed they are apart by a different factor on each axis. Getting
+   * this wrong does not throw; it makes clicks land a row or two off, which is worse than not
+   * working at all because it looks like the player mis-aimed.
+   *
+   * So it is computed in ONE place, from `getBoundingClientRect()` and the buffer size, at the
+   * moment of the event. Not cached: the canvas resizes on rotation, on a window drag, and on
+   * every `setDevicePixelRatio` a harness tool makes.
+   *
+   * The hook is installed unconditionally and costs nothing when nothing is open —
+   * `UISystem.dialoguePointer()` returns false immediately unless `dialogueMetrics` exists,
+   * which is only while a conversation is drawn.
+   */
+  _bindSurfacePointer() {
+    const route = (clientX, clientY, phase) => {
+      if (!this.ui || !this.renderer || !this.canvas) return false;
+      const cv = this.canvas;
+      const r = typeof cv.getBoundingClientRect === 'function' ? cv.getBoundingClientRect() : null;
+      if (!r || !r.width || !r.height) return false;
+      const x = (clientX - r.left) * (cv.width / r.width);
+      const y = (clientY - r.top) * (cv.height / r.height);
+      const before = this.ui.builtFrame;
+      const took = this.ui.dialoguePointer(x, y, phase);
+      // Repaint only when the window says something moved — `dialoguePointer` invalidates
+      // `builtFrame` exactly when the caret or the pressed state changed, and not on a mouse
+      // that merely drifted inside the row it was already on. A hover that does not repaint is
+      // the class of defect W1-21 round 2 measured at 0 px, so the repaint must happen; a
+      // repaint per mousemove event would be a frame-rate defect, so it must not happen twice.
+      if (took && this.ui.builtFrame !== before && this.renderer.uiBuild) this.renderer.uiBuild(true);
+      return took;
+    };
+    if (this.real) this.real.onSurfacePointer = route;
+    if (this.real && this.real.touch) this.real.touch.onSurfacePointer = route;
   }
 
   /** One fixed step of an open conversation. Same closed action set the census uses. */
@@ -6889,6 +6960,9 @@ export class Engine {
       const t = this._convPending; this._convPending = null;
       let said = null;
       try { said = this.conversationSay(t); } catch { said = null; }
+      // W1-UIX08-INPUT-FIX. One tick per completed say, whatever it said and whether or not it
+      // repeats the previous one. This is the only writer; `_dialogueCtx()` is the only reader.
+      if (said && !said.refused) this._dlgSaySeq = (this._dlgSaySeq || 0) + 1;
       // W1-UIX08 §D1. THE BLUE WORD'S PROMISE, KEPT WHEN THIS PERSON HAS NOTHING TO SAY.
       //
       // `conversationSay()` returns `{refused:'no_info'}` before it reaches `learnTopics`, so a

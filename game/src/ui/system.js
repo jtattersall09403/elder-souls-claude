@@ -139,6 +139,10 @@ export class UISystem {
     this.dialogueColScroll = 0;
     this.dialogueMetrics = null;
     this.dialoguePressed = false;
+    // W1-UIX08-INPUT-FIX. The pointer's two pieces of state, and they are the whole of it: what
+    // the press landed on, and whether a completed click is waiting for the next fixed step.
+    this.dialoguePointerDown = null;
+    this.dialoguePointerConfirm = null;
     /**
      * §G's ablated arm, and this build's plausible null control, as a flag rather than a branch:
      * `links = false` renders the same window, the same prose and the same topic column with the
@@ -900,7 +904,7 @@ export class UISystem {
     // §D1: following a link "appends the answer to the bottom of the history pane. It does not
     // clear the pane." The heading is the topic's own words in `header` colour; the greeting,
     // which opened the transcript above, carries none.
-    if (d.said) this.dialogue.append(d.said_topic, d.said_heading || null, d.said);
+    if (d.said) this.dialogue.append(d.said_topic, d.said_heading || null, d.said, d.said_seq);
 
     // §D2, and it is the thing only the picture carries: what you can DO with this person goes
     // above the rule, what you can ASK them about the world goes below it, alphabetically.
@@ -994,12 +998,32 @@ export class UISystem {
       }
     }
 
+    // ---- W1-UIX08-INPUT-FIX: the pointer's confirm, resolved HERE and nowhere else -----------
+    //
+    // A click does not reach into the conversation. `dialoguePointer()` moved this same caret on
+    // the press and left a note saying "the finger came up on the thing the caret is now on";
+    // this reads the note and takes exactly the branch a button press would take. So mouse,
+    // touch, keyboard and pad all produce one action, decided in one place, on a fixed step —
+    // which is what stops the pointer route from being a second implementation that can rot
+    // separately (RULES rule 10: two parallel implementations of one system is how this build
+    // had a good detection model and a broken one at the same time).
+    const clicked = this.dialoguePointerConfirm;
+    this.dialoguePointerConfirm = null;
+    if (clicked) { this.dialoguePressed = true; return this._dialogueConfirm(m, L, 'pointer'); }
+
     if (input.pressedName('roll')) return { kind: 'goodbye' };
     if (!input.pressedName('interact')) { this.dialoguePressed = false; return null; }
     this.dialoguePressed = true;
+    return this._dialogueConfirm(m, L, f.pane === 'prose' ? 'link' : 'column');
+  }
+
+  /** What confirming on the currently focused thing does. One branch set, four input devices. */
+  _dialogueConfirm(m, L, via) {
+    const f = this.dialogueFocus;
+    const nRows = m.actions.length + m.topics.length + 1;
     if (f.pane === 'prose') {
       const topic = L && L.link_topics ? L.link_topics[f.linkIdx] : null;
-      return topic ? { kind: 'say', topic, via: 'link' } : null;
+      return topic ? { kind: 'say', topic, via: via === 'pointer' ? 'pointer-link' : 'link' } : null;
     }
     if (f.rowIdx < m.actions.length) {
       const a = m.actions[f.rowIdx];
@@ -1007,7 +1031,79 @@ export class UISystem {
     }
     if (f.rowIdx === nRows - 1) return { kind: 'goodbye' };
     const t = m.topics[f.rowIdx - m.actions.length];
-    return t ? { kind: 'say', topic: t.id, via: 'column' } : null;
+    return t ? { kind: 'say', topic: t.id, via: via === 'pointer' ? 'pointer-column' : 'column' } : null;
+  }
+
+  /**
+   * W1-UIX08-INPUT-FIX — A CLICK, A TAP, AND THE CARET THEY MOVE.
+   *
+   * THE DEFECT THIS CLOSES. The dialogue window shipped drawing a topic column, inline coloured
+   * links and a Goodbye button, and none of them could be clicked, because this file's rule 2
+   * ("no pointer path anywhere in this interface: no cursor, no hover, no drag, no click target")
+   * was written for the HUD's screens and inherited by a window that is not one of them. The
+   * owner opened the deployed build, moved a mouse at a lit word, and nothing happened.
+   *
+   * RULE 2 IS NOT REPEALED AND THIS DOES NOT WIDEN IT. It still holds for `inventory`,
+   * `journal`, `book`, `levelup`, `sheet`, `spells`, `map` and `wait` — none of them gains a
+   * cursor here, and the argument for that is unchanged: a menu that NEEDS a mouse is a menu the
+   * owner cannot use on a GameSir X2s. What changes is one window, on two grounds that do not
+   * generalise to the others:
+   *
+   *   * `RI-UIX08`'s scope note gives this item "what is on screen, where, in what colour, **and
+   *     what a click does**". No other UI item in the corpus says that, because no other window
+   *     in Morrowind is operated the way this one is: the topic list and the inline blue words
+   *     ARE click targets in the reference, and §C's `link_over` / `link_pressed` ramp is a
+   *     THREE-STATE HOVER MODEL that only a pointer can express. We shipped both extra colours
+   *     and had nothing that could reach them.
+   *   * The keyboard and pad path is untouched and remains complete. This adds a route; it
+   *     removes none. `dialogueStep()` still decides every action, on a fixed step, and the
+   *     pointer's only powers are "move the caret" and "say confirm happened".
+   *
+   * @param {number} x  canvas-pixel x on the `menus` surface (NOT client px — the caller maps)
+   * @param {number} y  canvas-pixel y
+   * @param {'down'|'move'|'up'} phase
+   * @returns {boolean} true if the window consumed the event; the caller must not also swing.
+   */
+  dialoguePointer(x, y, phase) {
+    const L = this.dialogueMetrics;
+    if (!L || !L.hits) return false;
+    const hit = pickHit(L.hits, x, y);
+    if (hit) {
+      // The caret follows the pointer. There is exactly one focus model in this window and this
+      // is it — a separate hover highlight would be a second cursor, and then the keyboard caret
+      // and the mouse caret could point at different words while the player looked at one of them.
+      //
+      // MOVED ONLY WHEN IT ACTUALLY MOVES. `mousemove` fires at the pointer's report rate — 60 to
+      // 1000 Hz on a gaming mouse — and `builtFrame = -1` forces a full redraw of the HUD and
+      // every open screen. Repainting the whole interface a thousand times a second because a
+      // cursor drifted three pixels inside one topic row would be a frame-rate defect introduced
+      // by a hover highlight, which is not a trade worth making for a hover highlight.
+      const f = this.dialogueFocus;
+      const changed = hit.pane === 'prose'
+        ? (f.pane !== 'prose' || f.linkIdx !== hit.idx)
+        : (f.pane !== 'column' || f.rowIdx !== hit.idx);
+      if (hit.pane === 'prose') { f.pane = 'prose'; f.linkIdx = hit.idx; }
+      else { f.pane = 'column'; f.rowIdx = hit.idx; }
+      if (changed) this.builtFrame = -1;
+      if (phase === 'down') { this.dialoguePressed = true; this.dialoguePointerDown = hit; this.builtFrame = -1; return true; }
+      if (phase === 'up') {
+        // A press and a release on the SAME control, which is what a click is. Pressing on one
+        // topic and releasing on another must do nothing — the same rule every button in every
+        // toolkit keeps, and the reason a mis-aimed drag is recoverable.
+        const armed = this.dialoguePointerDown;
+        this.dialoguePointerDown = null;
+        this.dialoguePressed = false;
+        this.builtFrame = -1;
+        if (armed && armed.kind === hit.kind && armed.idx === hit.idx) this.dialoguePointerConfirm = hit;
+        return true;
+      }
+      return true;                                   // 'move' — hover, consumed, nothing armed
+    }
+    if (phase === 'up') { this.dialoguePointerDown = null; this.dialoguePressed = false; }
+    // Inside the panel but not on a control: swallow it. Otherwise a click on the prose you are
+    // reading swings your weapon at the person you are talking to, which is `Mouse0` -> `light`
+    // in `input/profiles.json` and is exactly what a player does while thinking.
+    return !!(L.panel_rect && inRect(L.panel_rect, x, y));
   }
 
   /** Called by the engine when a conversation closes, so the next one starts on a clean page. */
@@ -1017,6 +1113,8 @@ export class UISystem {
     this.dialogueScroll = 0; this.dialogueColScroll = 0;
     this.dialogueMetrics = null;
     this.dialoguePressed = false;
+    this.dialoguePointerDown = null;
+    this.dialoguePointerConfirm = null;
     this.builtFrame = -1;
     return null;
   }
@@ -1862,6 +1960,24 @@ export class UISystem {
 }
 
 function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+
+/** Is (x, y) inside `[x, y, w, h]`? Half-open on the far edges, so touching rects cannot both win. */
+function inRect(r, x, y) { return x >= r[0] && x < r[0] + r[2] && y >= r[1] && y < r[1] + r[3]; }
+
+/**
+ * The topmost thing under a point, where "topmost" is the LAST one declared.
+ *
+ * `drawDialogue` pushes hits in paint order — links (inside the prose pane) before the column
+ * rows before Goodbye — and paint order is stacking order on a 2D canvas. Searching backwards
+ * therefore returns what the player can actually see at that point, which is the only defensible
+ * answer to "what did they click on". Ties are impossible by construction here (the prose pane
+ * and the topic column do not overlap) but the rule is stated rather than relied on, because the
+ * moment somebody adds a scrollbar over the prose it stops being true.
+ */
+function pickHit(hits, x, y) {
+  for (let i = hits.length - 1; i >= 0; i--) if (inRect(hits[i].rect, x, y)) return hits[i];
+  return null;
+}
 
 /**
  * `markers`, DERIVED FROM WHAT WAS DRAWN — W1-21 round 3.

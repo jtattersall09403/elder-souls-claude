@@ -302,6 +302,20 @@ export class RealInput {
       this.onDeviceChange && this.onDeviceChange('mouse');
       const control = 'Mouse' + e.button;
       if (this._captureControl(control)) return;
+      // W1-UIX08-INPUT-FIX — A SURFACE THAT IS ACTUALLY CLICKABLE GETS THE CLICK FIRST.
+      //
+      // This is a hook and not a feature: `onSurfacePointer` is null everywhere except while the
+      // dialogue window is open (`Engine._bindSurfacePointer`), and it returns true only when the
+      // point is inside that window. Everywhere else this line is `null &&` and the mouse path
+      // below is byte-identical to what it was.
+      //
+      // It sits HERE — after `_captureControl`, before `_down` and before the pointer-lock
+      // request — for two reasons. `Mouse0` is `light` in `game/data/input/profiles.json`, so
+      // without this a player clicking a topic swings a weapon at the person they are talking to.
+      // And re-requesting pointer lock on that click would take the cursor away from the window
+      // the cursor is being used on, which is the same knot PL3's comment below describes from
+      // the other side.
+      if (this.onSurfacePointer && this.onSurfacePointer(e.clientX, e.clientY, 'down')) return;
       this._down(control, this.controlMap[control], e);
       if (this.dragLook) { this.dragLook.dragging = true; this.dragLook.x = e.clientX; this.dragLook.y = e.clientY; }
       // PL1/PL3: the lock is requested on the gesture that starts the game and RE-requested on
@@ -321,6 +335,10 @@ export class RealInput {
     });
     on(window, 'mouseup', (e) => {
       const control = 'Mouse' + e.button;
+      // W1-UIX08-INPUT-FIX. The release half of the click. It must run even when the press was
+      // consumed, or the surface is left with a press armed forever and the next release
+      // anywhere completes a click on whatever the caret has since wandered to.
+      if (this.onSurfacePointer && this.onSurfacePointer(e.clientX, e.clientY, 'up')) return;
       this._up(control, e);
       if (this.dragLook) this.dragLook.dragging = false;
     });
@@ -341,6 +359,11 @@ export class RealInput {
         this.pipe.addLook(-this._look(dx, this.lookSensitivity), this._look(dy, this.lookSensitivityY));
         return;
       }
+      // W1-UIX08-INPUT-FIX. Hover. `RI-UIX08` §C ships a THREE-STATE colour ramp for an inline
+      // link — `link`, `link_over`, `link_pressed` — and until this line the middle state was
+      // unreachable, because nothing in the build could be "over" anything. Only when the lock
+      // is off, which is exactly when there is a cursor to hover with.
+      if (this.onSurfacePointer && this.onSurfacePointer(e.clientX, e.clientY, 'move')) return;
       // PL5: the lock failed permanently. The game stays fully playable — look falls back to
       // click-drag and every action is already keyboard-reachable (A1). No modal, ever.
       if (this.dragLook && this.dragLook.dragging) {

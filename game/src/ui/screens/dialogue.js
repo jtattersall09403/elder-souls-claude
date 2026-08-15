@@ -120,6 +120,7 @@ export class DialogueHistory {
   open(speaker, greeting) {
     this.speaker = speaker || null;
     this.blocks = [];
+    this.lastSeq = null;
     if (greeting) this.blocks.push({ heading: null, text: String(greeting), topic: null });
     return this;
   }
@@ -127,16 +128,34 @@ export class DialogueHistory {
   /**
    * §D1: clicking a blue word "appends the answer to the bottom of the history pane. It does not
    * clear the pane, it does not open a sub-window, and it does not close the conversation."
+   *
+   * WHY THERE IS A SEQUENCE NUMBER, AND WHAT IT REPLACED. `_dialogueModel()` calls this on EVERY
+   * build, with whatever `Conversation` last said, so something has to stop one answer being
+   * pushed sixty times a second. That something used to be "the last block already has this
+   * topic and this text" — which is true of a re-ask as well, so **asking the same person the
+   * same question twice in a row printed nothing at all**. Measured through the real input path
+   * on 2026-08-15: 10 of 12 column rows answered, and one of the two dead ones was dead only
+   * because it was the topic asked immediately before it. A row you can press that prints
+   * nothing is CRITIC-DOCTRINE §1.2b's drawn-and-does-nothing, and Morrowind re-prints.
+   *
+   * `seq` is the engine's count of completed says (`Engine._dlgSaySeq`), so "the same answer
+   * again" and "this answer, still on screen" are finally different values. The old text guard
+   * is kept for callers that pass no seq — several probes construct a history directly.
    */
-  append(topicId, heading, text) {
+  append(topicId, heading, text, seq) {
     if (!text) return this;
-    const last = this.blocks[this.blocks.length - 1];
-    if (last && last.topic === topicId && last.text === String(text)) return this;   // idempotent
+    if (seq !== undefined && seq !== null) {
+      if (this.lastSeq === seq) return this;
+      this.lastSeq = seq;
+    } else {
+      const last = this.blocks[this.blocks.length - 1];
+      if (last && last.topic === topicId && last.text === String(text)) return this;   // idempotent
+    }
     this.blocks.push({ heading: heading || null, text: String(text), topic: topicId || null });
     return this;
   }
 
-  close() { this.speaker = null; this.blocks = []; return this; }
+  close() { this.speaker = null; this.blocks = []; this.lastSeq = null; return this; }
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -325,6 +344,23 @@ function charsPerLine(lines, from, count) {
  */
 export function drawDialogue(S, m) {
   const L = layoutDialogue(S, m);
+  // ---- W1-UIX08-INPUT-FIX: THE HIT LIST -------------------------------------------------------
+  //
+  // WHY THIS EXISTS. This window shipped measuring ΔE 0.00 against the owner's own reference and
+  // the owner could not select a topic in it, because `ui/system.js` rule 2 said "there is no
+  // pointer path anywhere in this interface: no cursor, no hover, no drag, no click target" — a
+  // ruling made for the HUD's screens, which are walked with a thumbstick, and inherited by a
+  // window whose own item says it owns "what is on screen, where, in what colour, AND WHAT A
+  // CLICK DOES" (RI-UIX08 scope note). Morrowind's dialogue window is a mouse window. A drawn
+  // column that a click cannot operate is CRITIC-DOCTRINE §1.2b's hard fail: a control that is
+  // drawn and does nothing, which is worse than one that is absent because it lies to the player.
+  //
+  // The list is built from the SAME rects the elements are declared with, in the same pass, so
+  // the thing you can click and the thing you can see cannot drift apart. It carries no logic:
+  // `UISystem.dialoguePointer()` maps a point to one of these entries and then hands the caret
+  // to `dialogueStep()`, which is still the only place an action is decided. The pointer does not
+  // get a private route into the conversation — it moves the same caret a stick moves.
+  const hits = [];
   // §E1's alpha, as a MODEL FIELD rather than a constant, so the opaque arm is a frame that was
   // actually rendered rather than a number computed on paper. RULES rule 6: a control you have
   // never seen fail is not evidence, it is a second copy of the experiment.
@@ -435,6 +471,15 @@ export function drawDialogue(S, m) {
       const text = L.lines[lk.line].frags
         .filter((f) => f.topic === lk.topic && f.x >= lk.x - 0.01 && f.x + f.w <= lk.x + lk.w + 0.01)
         .map((f) => f.text).join('');
+      // The clickable rect is DELIBERATELY TALLER THAN THE INK. A word set at ~19 px has an ink
+      // box about 22 px high, and RI-UIX06 B4's touch floor is 44 CSS px; a link you have to hit
+      // to the pixel is a link a thumb cannot use. The rect grows around the baseline and never
+      // beyond half the line pitch, so two links on consecutive lines still cannot overlap.
+      const padY = Math.max(0, Math.min(L.lineH * 0.5, 22 * u) - L.bodyPx * 1.15) / 2;
+      hits.push({
+        kind: 'link', pane: 'prose', idx: i, topic: lk.topic, text,
+        rect: [HT[0] + lk.x - 3 * u, y - L.bodyPx * 0.86 - padY, lk.w + 6 * u, L.bodyPx * 1.15 + 2 * padY],
+      });
       S.el({
         id: `dialogue.link.${i}`, kind: 'topic_link',
         rect: [HT[0] + lk.x - 1 * u, y - L.bodyPx * 0.86, lk.w + 2 * u, L.bodyPx * 1.15],
@@ -522,6 +567,10 @@ export function drawDialogue(S, m) {
   const colFace = faceOf('ink');
   const colRow = (id, kind, label, idx, isAction) => {
     const focused = m.focus && m.focus.pane === 'column' && m.focus.rowIdx === idx;
+    hits.push({
+      kind: isAction ? 'action' : 'topic', pane: 'column', idx, text: label,
+      topic: isAction ? null : id.split('/').pop(), rect: [TC[0], ty, TC[2], L.rowH],
+    });
     S.el({
       id, kind, rect: [TC[0], ty, TC[2], L.rowH], text: label, focused: !!focused,
       meta: { element: 4, section: isAction ? 'actions' : 'topics', topic: isAction ? null : id.split('/').pop() },
@@ -564,6 +613,7 @@ export function drawDialogue(S, m) {
   // out that the window advertises."
   const byeIdx = actions.length + topics.length;
   const byeFocused = m.focus && m.focus.pane === 'column' && m.focus.rowIdx === byeIdx;
+  hits.push({ kind: 'goodbye', pane: 'column', idx: byeIdx, text: m.goodbye || 'Goodbye', topic: null, rect: L.goodbye.slice() });
   S.el({
     id: 'dialogue.goodbye', kind: 'dialogue_exit', rect: L.goodbye, text: m.goodbye || 'Goodbye',
     focused: !!byeFocused, meta: { element: 6, full_column_width: true },
@@ -618,6 +668,15 @@ export function drawDialogue(S, m) {
     topics: topics.map((t) => t.id),
     topics_shown: shown.length,
     focus: m.focus ? { ...m.focus } : null,
+    // W1-UIX08-INPUT-FIX. Every operable thing on this window, with the rect it was drawn at, in
+    // the canvas pixels a click arrives in. Published rather than kept private so a probe can
+    // enumerate the affordances and operate each one (CRITIC-DOCTRINE §1.2b clause 2) without
+    // knowing anything about this file's layout arithmetic.
+    hits,
+    hit_count: hits.length,
+    // The panel's own rect, so a click that lands on the window but not on a control can be
+    // swallowed rather than reaching the world as a sword swing.
+    panel_rect: L.panel.map((v) => +v.toFixed(1)),
     text: drawnText,
   };
 }
