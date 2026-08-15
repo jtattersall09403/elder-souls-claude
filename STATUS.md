@@ -22,16 +22,17 @@ Alongside that: shrinking the documentation every agent reads before it can star
 - The map opens, shows the whole province, and hides only the markers you haven't found.
 
 **Still wrong, and you will see it:**
-- **Dialogue: clicking now works — the mouse had never been wired up at all.** Not a bug in the window;
-  there was **no pointer path in the entire interface**. A rule written for the combat HUD's
-  thumbstick screens — *"no cursor, no hover, no click target"* — was silently inherited by a window
-  whose own spec describes what a click does. The keyboard always worked (arrow keys and E); the mouse
-  and touch did nothing, so every control you could see was a picture of a control. Mouse, touch,
-  keyboard and gamepad now all route through one place. Asking the same topic twice also printed
-  nothing, and now doesn't.
-  **Still open:** character creation still uses the old panel. Routing it through the new window needs
-  three things the window has no element for — multi-select, a typed name, and a "waiting for two
-  more" aside — so it is a real piece of design work rather than a one-line switch. Next up.
+- **Dialogue: clicking works, and character creation now uses the same window.** Both faults you found
+  are closed. On the first: there was **no pointer path in the entire interface** — a rule written for
+  the combat HUD's thumbstick screens said *"no cursor, no hover, no click target"* and was silently
+  inherited by the dialogue window. The keyboard always worked; the mouse and touch did nothing, so
+  every control you could see was a picture of a control. On the second: character creation ran on the
+  old panel, so the first conversation a new player ever had was the worse one. It now runs on the
+  Morrowind window, all-or-nothing by construction so you can never see both in one scene.
+  **Driving it turned up a bug that would have trapped you:** creation **dead-ended permanently** at
+  the class verdict, on all three class routes — the window only reset its selection when the *speaker*
+  changed, and the speaker never changes inside the Writ House. Also fixed: starting a new game with a
+  conversation open crashed the simulation step.
 - **The menus have things drawn in them now — icons, a paper doll, a proper HUD.** They were text
   tables where Morrowind's are walls of painted objects: **zero** pictorial elements in the inventory,
   and the out-of-combat HUD had **1 of its 6 elements**, sitting in the top-right corner like a modern
