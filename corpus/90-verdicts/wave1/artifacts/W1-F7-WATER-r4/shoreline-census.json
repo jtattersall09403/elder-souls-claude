@@ -1,6 +1,6 @@
 {
   "tool": "f7-r4-shoreline-census",
-  "generated": "2026-08-16T01:05:14.288Z",
+  "generated": "2026-08-16T01:06:34.134Z",
   "roadmap_item": "F7",
   "source": "game/data/world/{terrain,regions,water}.json via WorldField — the same construction engine.js performs; the cell arithmetic is province.js:1531-1562 reproduced verbatim",
   "province_js_constants_read_this_turn": {
@@ -123,7 +123,85 @@
           0,
           0
         ]
-      }
+      },
+      "declared_pose_targets": [
+        {
+          "bearing_deg": 45,
+          "cell_centre": [
+            3143.75,
+            3731.25
+          ],
+          "distance_m": 26,
+          "bearing_offset_deg": 6.3,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            1.453,
+            null,
+            1.492,
+            1.433
+          ],
+          "deepest_wet_corner_m": 1.492,
+          "water_y": null,
+          "ground_y": 2.263
+        },
+        {
+          "bearing_deg": 135,
+          "cell_centre": [
+            3143.75,
+            3693.75
+          ],
+          "distance_m": 29.4,
+          "bearing_offset_deg": 1.4,
+          "dry_corners": 2,
+          "wet_corner_depths_m": [
+            null,
+            0.704,
+            null,
+            0.027
+          ],
+          "deepest_wet_corner_m": 0.704,
+          "water_y": 1.88,
+          "ground_y": 1.675
+        },
+        {
+          "bearing_deg": 225,
+          "cell_centre": [
+            3106.25,
+            3706.25
+          ],
+          "distance_m": 19.3,
+          "bearing_offset_deg": 18.1,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            0.231,
+            1.084,
+            1.053,
+            null
+          ],
+          "deepest_wet_corner_m": 1.084,
+          "water_y": 1.88,
+          "ground_y": 1.142
+        },
+        {
+          "bearing_deg": 315,
+          "cell_centre": [
+            3093.75,
+            3731.25
+          ],
+          "distance_m": 33.9,
+          "bearing_offset_deg": -16.4,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            0.391,
+            1.063,
+            0.714,
+            null
+          ],
+          "deepest_wet_corner_m": 1.063,
+          "water_y": 1.88,
+          "ground_y": 1.457
+        }
+      ]
     },
     {
       "setup": "eye-deep-marshes",
@@ -236,7 +314,85 @@
           0,
           0
         ]
-      }
+      },
+      "declared_pose_targets": [
+        {
+          "bearing_deg": 45,
+          "cell_centre": [
+            3256.25,
+            3693.75
+          ],
+          "distance_m": 82.4,
+          "bearing_offset_deg": 17,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            1.743,
+            1.104,
+            null,
+            1.139
+          ],
+          "deepest_wet_corner_m": 1.743,
+          "water_y": 1.9612500000000002,
+          "ground_y": 0.549
+        },
+        {
+          "bearing_deg": 135,
+          "cell_centre": [
+            3206.25,
+            3631.25
+          ],
+          "distance_m": 32.9,
+          "bearing_offset_deg": 1.2,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            null,
+            0.693,
+            0.534,
+            0.882
+          ],
+          "deepest_wet_corner_m": 0.882,
+          "water_y": 1.88,
+          "ground_y": 1.395
+        },
+        {
+          "bearing_deg": 225,
+          "cell_centre": [
+            3143.75,
+            3606.25
+          ],
+          "distance_m": 62.9,
+          "bearing_offset_deg": -5.8,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            null,
+            1.92,
+            2.393,
+            2.02
+          ],
+          "deepest_wet_corner_m": 2.393,
+          "water_y": 1.88,
+          "ground_y": 1.101
+        },
+        {
+          "bearing_deg": 315,
+          "cell_centre": [
+            3156.25,
+            3668.75
+          ],
+          "distance_m": 30.5,
+          "bearing_offset_deg": -18.2,
+          "dry_corners": 2,
+          "wet_corner_depths_m": [
+            null,
+            0.178,
+            0.438,
+            null
+          ],
+          "deepest_wet_corner_m": 0.438,
+          "water_y": 1.88,
+          "ground_y": 1.407
+        }
+      ]
     },
     {
       "setup": "vista-western-rootlands",
@@ -349,7 +505,85 @@
           0,
           0
         ]
-      }
+      },
+      "declared_pose_targets": [
+        {
+          "bearing_deg": 45,
+          "cell_centre": [
+            1743.75,
+            4743.75
+          ],
+          "distance_m": 32.4,
+          "bearing_offset_deg": -13.9,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            0.618,
+            0.872,
+            0.901,
+            null
+          ],
+          "deepest_wet_corner_m": 0.901,
+          "water_y": 2.04,
+          "ground_y": 1.502
+        },
+        {
+          "bearing_deg": 135,
+          "cell_centre": [
+            1743.75,
+            4681.25
+          ],
+          "distance_m": 38.6,
+          "bearing_offset_deg": 19.3,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            null,
+            0.19,
+            0.711,
+            0.051
+          ],
+          "deepest_wet_corner_m": 0.711,
+          "water_y": 1.99625,
+          "ground_y": 1.523
+        },
+        {
+          "bearing_deg": 225,
+          "cell_centre": [
+            1706.25,
+            4706.25
+          ],
+          "distance_m": 22.9,
+          "bearing_offset_deg": 19.8,
+          "dry_corners": 2,
+          "wet_corner_depths_m": [
+            null,
+            0.56,
+            0.947,
+            null
+          ],
+          "deepest_wet_corner_m": 0.947,
+          "water_y": 2.065,
+          "ground_y": 1.335
+        },
+        {
+          "bearing_deg": 315,
+          "cell_centre": [
+            1706.25,
+            4731.25
+          ],
+          "distance_m": 25.8,
+          "bearing_offset_deg": -8.7,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            null,
+            0.048,
+            0.05,
+            0.127
+          ],
+          "deepest_wet_corner_m": 0.127,
+          "water_y": 2.12125,
+          "ground_y": 1.883
+        }
+      ]
     },
     {
       "setup": "eye-western-rootlands",
@@ -462,7 +696,85 @@
           0,
           0
         ]
-      }
+      },
+      "declared_pose_targets": [
+        {
+          "bearing_deg": 45,
+          "cell_centre": [
+            1806.25,
+            4668.75
+          ],
+          "distance_m": 23.1,
+          "bearing_offset_deg": 11.5,
+          "dry_corners": 3,
+          "wet_corner_depths_m": [
+            null,
+            null,
+            0.075,
+            null
+          ],
+          "deepest_wet_corner_m": 0.075,
+          "water_y": null,
+          "ground_y": 2.395
+        },
+        {
+          "bearing_deg": 135,
+          "cell_centre": [
+            1793.75,
+            4643.75
+          ],
+          "distance_m": 14,
+          "bearing_offset_deg": 16.1,
+          "dry_corners": 2,
+          "wet_corner_depths_m": [
+            0.551,
+            null,
+            null,
+            0.44
+          ],
+          "deepest_wet_corner_m": 0.551,
+          "water_y": 1.865,
+          "ground_y": 1.324
+        },
+        {
+          "bearing_deg": 225,
+          "cell_centre": [
+            1756.25,
+            4631.25
+          ],
+          "distance_m": 39.5,
+          "bearing_offset_deg": 6.2,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            null,
+            0.614,
+            0.947,
+            0.94
+          ],
+          "deepest_wet_corner_m": 0.947,
+          "water_y": 1.9212500000000003,
+          "ground_y": 1.583
+        },
+        {
+          "bearing_deg": 315,
+          "cell_centre": [
+            1768.75,
+            4668.75
+          ],
+          "distance_m": 22.3,
+          "bearing_offset_deg": -10.1,
+          "dry_corners": 2,
+          "wet_corner_depths_m": [
+            null,
+            null,
+            0.314,
+            0.8
+          ],
+          "deepest_wet_corner_m": 0.8,
+          "water_y": null,
+          "ground_y": 2.769
+        }
+      ]
     },
     {
       "setup": "vista-blackwood",
@@ -575,7 +887,85 @@
           4,
           0
         ]
-      }
+      },
+      "declared_pose_targets": [
+        {
+          "bearing_deg": 45,
+          "cell_centre": [
+            1131.25,
+            3493.75
+          ],
+          "distance_m": 14.7,
+          "bearing_offset_deg": 19.7,
+          "dry_corners": 3,
+          "wet_corner_depths_m": [
+            null,
+            0.111,
+            null,
+            null
+          ],
+          "deepest_wet_corner_m": 0.111,
+          "water_y": null,
+          "ground_y": 5.794
+        },
+        {
+          "bearing_deg": 135,
+          "cell_centre": [
+            1131.25,
+            3481.25
+          ],
+          "distance_m": 14.7,
+          "bearing_offset_deg": -19.7,
+          "dry_corners": 2,
+          "wet_corner_depths_m": [
+            null,
+            0.759,
+            0.111,
+            null
+          ],
+          "deepest_wet_corner_m": 0.759,
+          "water_y": 5.241250000000001,
+          "ground_y": 5.118
+        },
+        {
+          "bearing_deg": 225,
+          "cell_centre": [
+            1106.25,
+            3481.25
+          ],
+          "distance_m": 13.3,
+          "bearing_offset_deg": 17,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            null,
+            0.36,
+            0.429,
+            0.86
+          ],
+          "deepest_wet_corner_m": 0.86,
+          "water_y": 4.985,
+          "ground_y": 4.469
+        },
+        {
+          "bearing_deg": 315,
+          "cell_centre": [
+            1106.25,
+            3493.75
+          ],
+          "distance_m": 13.3,
+          "bearing_offset_deg": -17,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            0.86,
+            0.429,
+            0.972,
+            null
+          ],
+          "deepest_wet_corner_m": 0.972,
+          "water_y": 5.253750000000001,
+          "ground_y": 4.209
+        }
+      ]
     },
     {
       "setup": "vista-eastern-rootlands",
@@ -688,7 +1078,85 @@
           56,
           381
         ]
-      }
+      },
+      "declared_pose_targets": [
+        {
+          "bearing_deg": 45,
+          "cell_centre": [
+            3243.75,
+            4506.25
+          ],
+          "distance_m": 15.9,
+          "bearing_offset_deg": 2.5,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            0.621,
+            0.439,
+            0.649,
+            null
+          ],
+          "deepest_wet_corner_m": 0.649,
+          "water_y": 1.52875,
+          "ground_y": 1.009
+        },
+        {
+          "bearing_deg": 135,
+          "cell_centre": [
+            3256.25,
+            4456.25
+          ],
+          "distance_m": 46.1,
+          "bearing_offset_deg": 13.3,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            0.23,
+            null,
+            0.326,
+            0.31
+          ],
+          "deepest_wet_corner_m": 0.326,
+          "water_y": 1.6350000000000002,
+          "ground_y": 1.037
+        },
+        {
+          "bearing_deg": 225,
+          "cell_centre": [
+            3206.25,
+            4481.25
+          ],
+          "distance_m": 29.4,
+          "bearing_offset_deg": 16,
+          "dry_corners": 2,
+          "wet_corner_depths_m": [
+            null,
+            0.066,
+            0.455,
+            null
+          ],
+          "deepest_wet_corner_m": 0.455,
+          "water_y": 1.6350000000000002,
+          "ground_y": 1.574
+        },
+        {
+          "bearing_deg": 315,
+          "cell_centre": [
+            3218.75,
+            4506.25
+          ],
+          "distance_m": 17.1,
+          "bearing_offset_deg": -5.9,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            0.397,
+            0.285,
+            0.584,
+            null
+          ],
+          "deepest_wet_corner_m": 0.584,
+          "water_y": 1.5350000000000001,
+          "ground_y": 1.243
+        }
+      ]
     },
     {
       "setup": "vista-marauders-coast",
@@ -801,7 +1269,49 @@
           44,
           1582
         ]
-      }
+      },
+      "declared_pose_targets": [
+        {
+          "bearing_deg": 45,
+          "cell_centre": [
+            456.25,
+            4543.75
+          ],
+          "distance_m": 81,
+          "bearing_offset_deg": -1.5,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            0.324,
+            0.986,
+            null,
+            2.087
+          ],
+          "deepest_wet_corner_m": 2.087,
+          "water_y": 3.7,
+          "ground_y": 3.058
+        },
+        {
+          "bearing_deg": 135,
+          "cell_centre": [
+            506.25,
+            4368.75
+          ],
+          "distance_m": 157.2,
+          "bearing_offset_deg": 2.7,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            1.411,
+            null,
+            1.135,
+            1.89
+          ],
+          "deepest_wet_corner_m": 1.89,
+          "water_y": 2.275,
+          "ground_y": 1.355
+        },
+        null,
+        null
+      ]
     },
     {
       "setup": "vista-crimson-coast",
@@ -914,7 +1424,49 @@
           20,
           1616
         ]
-      }
+      },
+      "declared_pose_targets": [
+        null,
+        null,
+        {
+          "bearing_deg": 225,
+          "cell_centre": [
+            4168.75,
+            2643.75
+          ],
+          "distance_m": 60.5,
+          "bearing_offset_deg": 0.7,
+          "dry_corners": 1,
+          "wet_corner_depths_m": [
+            null,
+            1.137,
+            2.817,
+            0.69
+          ],
+          "deepest_wet_corner_m": 2.817,
+          "water_y": 11.525,
+          "ground_y": 10.725
+        },
+        {
+          "bearing_deg": 315,
+          "cell_centre": [
+            4106.25,
+            2743.75
+          ],
+          "distance_m": 120.5,
+          "bearing_offset_deg": -16.4,
+          "dry_corners": 2,
+          "wet_corner_depths_m": [
+            null,
+            2.343,
+            1.392,
+            null
+          ],
+          "deepest_wet_corner_m": 2.343,
+          "water_y": null,
+          "ground_y": 9.609
+        }
+      ]
     }
   ]
 }
