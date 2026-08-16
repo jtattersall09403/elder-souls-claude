@@ -110,11 +110,14 @@
     "4.22 WAIT",
     "3.28 GO",
     "4.03 WAIT",
-    "3.94 GO"
+    "3.94 GO",
+    "3.86 GO",
+    "4.19 WAIT"
   ],
   "tools_added": [
     "tools/visual/f7-r6-offline.mjs — `--mode span` (the drift run, from banked artifacts), `--mode spanctl` (the water-hidden control + `shore_contrast_retained_pct`, with a per-row `reproduces_sweep_json` faithfulness check), `--mode presence` (the decomposition re-derived in my own arithmetic from `mean_luma`, `L_hidden` and each arm's own flanking baselines — **70 of 70 rows** reproduce the published `presence_pct`, counted by re-running the tool rather than by memory), `--mode nulls`. No browser.",
-    "tools/visual/f7-r6-sweep.mjs — a copy of the r5 sweep (ownership: `tools/visual/` is claimed as a directory by live piece W1-30V, so every F7 round adds a file; and editing r5's tool would make round 5's artifacts non-reproducible, HAZARDS §17). Adds the gate arms `bandonly`, `bandonly-a70`, `bandonly-a00`, `transonly`, `union-a70`; puts `contrast` with its water-hidden control on every scored row; widens the source guard so it recognises EITHER the r4 or the r6 shore gate, quotes the two lines it found into the artifact, and refuses only if it finds neither."
+    "tools/visual/f7-r6-sweep.mjs — a copy of the r5 sweep (ownership: `tools/visual/` is claimed as a directory by live piece W1-30V, so every F7 round adds a file; and editing r5's tool would make round 5's artifacts non-reproducible, HAZARDS §17). Adds the gate arms `bandonly`, `bandonly-a70`, `bandonly-a00`, `transonly`, `union-a70`; puts `contrast` with its water-hidden control on every scored row; widens the source guard so it recognises EITHER the r4 or the r6 shore gate, quotes the two lines it found into the artifact, and refuses only if it finds neither.",
+    "tools/visual/f7-r6-report.mjs — one table over every r6 run: presence, `shore_contrast_retained_pct`, all five M12 sub-metrics and the RETIRED width, each beside its run's own drift band. `corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r6/offline/r6-report-thr16.json`."
   ],
   "for_the_critic": {
     "inherit_nothing": "Every number in this file was computed this turn from a banked artifact or by re-running an offline tool, in a process of mine. The four figures I did NOT derive are marked inherited in `what_i_could_not_do`: the r4 frame-time result, the r5 offline band census, the r5 `TemporalVar` 0.000341, and the r5 `no-shorefade` 91.34 (my own run's is 91.18).",
@@ -242,5 +245,10 @@
     "finding": "At western-rootlands `edge-b135`, threshold 16, baseline contrast drift 0.028 luma levels: `no-shorefade` retains **99.23%**, the r5 union arm retains **92.19%**, and the band-gate-only arm retains **104.37%**. **The band-only gate is the only arm anywhere in this round that raises the water's own shoreline contrast ABOVE both the unchanged water and the no-fade arm.** Presence at the same pose: 98.66 / 86.06 / 93.56.",
     "why_it_matters": "It is the one place a fade beats no-fade on a measure with a null behind it, and it is the gate this round changed rather than the multiplier it also changed. **Evidence for the gate change; not evidence for `.70`.**",
     "and_the_honest_limit": "One pose, one region, and the arm measured there was `.42` — the shipped `.70` was not run in the Western Rootlands at all."
+  },
+  "how_i_verified_the_shipped_source_and_what_is_still_unverified": {
+    "the_GLSL_edit_is_the_arm_i_measured_character_for_character": "The page-side arm `bandonly-a70` replaces the same two whole lines with the same two whole strings the source now contains, and it rendered 6 frames with `edits_applied: 10` (5 recompiled water materials x 2 needles) and no `pageErrors`. So the substituted shader compiles; the source states it directly instead of patching it in.",
+    "HAZARDS_26_guard_run_rather_than_assumed": "`node --check` passes a file that cannot run — a stray backtick inside a shader template literal terminates it early and still parses. So the check is the INVARIANTS, diffed against the last shipped version (`git show 5370ff7b:game/src/render/water.js`): backticks **128 -> 128**, `${` **5 -> 5**, braces balanced 0 -> 0, parens balanced 0 -> 0. My first draft of the comment DID break something and it was caught this way — see `what_i_shipped`.",
+    "WHAT_IS_NOT_VERIFIED_AND_A_CRITIC_SHOULD_DO_IT_FIRST": "**No browser has yet loaded the game FROM THE EDITED SOURCE.** Both r6 sweeps were launched before the edit landed, and the queued motion run — which reads `water.js` at startup and records the two lines it found — had not obtained a browser slot at filing (box at 4.19 per core, WAIT). If it lands, `corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r6/dm-motion/sweep.json` will carry `head_expression_asserted.shore_gate_line_in_source` = `float esShoreT=esBandM;` and that is the confirmation. **If it is absent, the shipped source has never been rendered and the first thing a critic should do is render it.**"
   }
 }
