@@ -1,0 +1,84 @@
+
+==================== BASELINE  (expect 0/0/0/0) ====================
+
+==================== CONTROL A — delete the load-order guard INSIDE foldBooks()  (expect bookfold red) ====================
+  patched fold-books.js: guard condition -> false
+    EXITS  leaks=0 consumer=0 voice=0 bookfold=1
+0/0/0/1
+
+==================== CONTROL B — leak at the AUTHORED SOURCE + regenerate  (expect leaks+consumer red) ====================
+  patched generator STANCE[RG-BWC].cold[3] -> the leak
+    grep 'Say it in one line' in shipped greetings.json BEFORE checks: 5
+    EXITS  leaks=1 consumer=1 voice=0 bookfold=0
+1/1/0/0
+    grep AFTER checks: 5
+
+==================== CONTROL B2 — leak at the source, NO regenerate  (expect leaks red off source text alone) ====================
+    grep in shipped greetings.json (must stay 0): 0
+    EXITS  leaks=1 consumer=0 voice=0 bookfold=0
+1/0/0/0
+    grep in shipped greetings.json after: 0
+
+==================== CONTROL C — revert engine.js call site, leave foldBooks() correct  (expect leaks+bookfold red) ====================
+  call site context: 'nd it is the SAME function `tools/books/check-book-fold.mjs` exercises.\n    const books = foldBooks(this.data.books);\n    const at'
+  reverted to the old inline last-write-wins fold
+    EXITS  leaks=2 consumer=0 voice=0 bookfold=4
+2/0/0/4
+
+==================== CONTROL D — hand-author the leak into SHIPPED greetings.json  (expect red AND evidence survives) ====================
+  wrote the leak into .pools[180].lines[3]
+    grep BEFORE run: 1
+    EXITS  leaks=1 consumer=1 voice=0 bookfold=0
+1/1/0/0
+    grep AFTER  run: 1
+    sha256(greetings.json) before=fad763ee76be3e01 after=fad763ee76be3e01  -> UNTOUCHED
+    what the leaks check named:
+FLAGGED:
+  game/data/dialogue/greetings.json  .pools[180].lines[3]
+    (authoring brief about line length) "Say it in one line. Local. Useful."
+
+==================== CONTROL E — leak into a SPOKEN faction-refusal line  (expect leaks red) ====================
+  wrote the leak into .factions.the_rootkeepers.reputation
+    grep BEFORE: 1
+    EXITS  leaks=1 consumer=0 voice=0 bookfold=0
+1/0/0/0
+    grep AFTER : 1
+FLAGGED:
+  game/data/dialogue/faction-refusals.json  .factions.the_rootkeepers.reputation
+    (authoring brief about line length) "TODO: say it in one line. Placeholder — keep it short, writer."
+
+==================== CONTROL F — put round 1's REJECTED line back in the slot  (expect voice red, leaks green) ====================
+  substituted round 1 line into all 5 RG-BWC/cold[3] cells
+    EXITS  leaks=0 consumer=1 voice=1 bookfold=0
+0/1/1/0
+    voice check said:
+  FAIL RG-BWC/cold[3] (saxhleel) exclusive tokens: (NONE — this line is common property)
+  FAIL RG-BWC/cold[3] (naga) exclusive tokens: (NONE — this line is common property)
+  ok   RG-BWC/cold[3] (dunmer) exclusive tokens: contract, coin, either's, fine
+  ok   RG-BWC/cold[3] (imperial) exclusive tokens: contract
+  FAIL RG-BWC/cold[3] (other-foreign) exclusive tokens: (NONE — this line is common property)
+FAIL: 3 guarded slot(s) carry no token exclusive to their reaction group.
+
+==================== CONTROL G1 — generator guard stripped + leak in shipped file (expect leaks red, evidence survives) ====================
+  RUN_DIRECTLY -> true, and the leak hand-authored into the shipped file
+    grep BEFORE: 1
+    EXITS  leaks=1 consumer=1 voice=0 bookfold=0
+1/1/0/0
+    grep AFTER : 1
+
+==================== CONTROL G2 — round-1 shape reconstructed on a COPY of the check (expect exit 4 tripwire) ====================
+  round-1 shape written to /tmp/cw-r1shape.mjs (copy, not the shipped check)
+    grep BEFORE: 1
+    round-1-shaped check EXIT=0
+wrote /home/user/elder-souls-claude/game/data/dialogue/greetings.json: 300 cells, 1500 lines, 1400 distinct
+scope: 61 JSON files under game/data/dialogue, game/data/books
+authored source (tools/dialogue/gen-greetings.mjs, read as TEXT — not imported): STANCE 312 literals, ADDRESS 84 literals · 0 hit(s)
+    tripwire lines: 0
+    grep AFTER : 0
+
+==================== TREE RESTORED? ====================
+bfe9064b32b537ce7083f63441f8658866318b15f7772cd020891d885265c185  game/data/dialogue/greetings.json
+bc38265c67a04ee84f97626554620787d9b58b396ba82a4e341fe559b97a16bd  game/data/dialogue/faction-refusals.json
+3ede561650f5ac09dbb88dcb41e19d852fe3bd9e086b19e750877f8db62fa7f4  tools/dialogue/gen-greetings.mjs
+d462e2460c75befc8edf328c09cb88acd501be79af0245862b4ad750aad369a9  game/src/engine.js
+610749f410fa2ec78ee11477ecab519bb47a976f4bf6d9b547a2c19453845217  game/src/data/fold-books.js

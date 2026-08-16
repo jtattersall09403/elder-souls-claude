@@ -1,0 +1,112 @@
+=== BASELINE (critic re-run, 2026-08-16T04:07:28Z) commit e1f5c74a
+
+--- node tools/dialogue/check-authoring-leaks.mjs --self-test
+self-test: known leak 'Say it in one line. Local. Useful.' correctly flagged (authoring brief about line length). Predicate is live.
+  (A predicate self-test is NOT a pipeline proof — HAZARDS §31 rule 4.)
+scope: 61 JSON files under game/data/dialogue, game/data/books
+authored source (tools/dialogue/gen-greetings.mjs, read as TEXT — not imported): STANCE 312 literals, ADDRESS 84 literals · 0 hit(s)
+shipped data: 16027 strings scanned · 0 hit(s)
+evidence-mutation tripwire: 62 files hashed before and after — 0 changed
+
+SCOPE HOLE, STATED (HAZARDS §31 rule 3): 398 string(s) under 12 key name(s) were EXCLUDED as never-rendered metadata:
+    120  why                design rationale block
+    102  note               design/provenance note about the data; never rendered
+     62  schema             schema identifier
+     59  owner              which wave-1 piece owns the file
+     22  _note              design note (underscore convention for non-data)
+     17  source             the reference item this file is built from
+      7  provenance         how this file was produced
+      4  generated_by       the generator that writes this file
+      2  register_anchor    provenance: the corpus register this file answers to
+      1  corpus_item        citation of the governing reference item
+      1  honest_statement   provenance's own volume-vs-labour declaration
+      1  order_note         note about declared merge order
+  A leak authored into one of those keys is invisible here — by design, and the
+  count is printed so that is a decision a reader can audit, not an assumption.
+
+check-authoring-leaks — WIRING (shipped call sites, read as text; see tools/lib/call-site.mjs
+  on what this proves and what it does not):
+  ok   game/src/engine.js — engine loads dialogue/greetings.json and dialogue/faction-refusals.json, and speaks both
+  ok   game/src/character/converse.js — greetingFor() is what turns a greetings.json pool into the line an NPC says
+  ok   game/src/sim/quest/refusal.js — FactionRefusals.speak() is what turns faction-refusals.json into a spoken refusal
+  ok   game/src/engine.js — books/*.json reach the reading UI through foldBooks() (see tools/books/check-book-fold.mjs)
+
+PASS: no authoring-instruction leaks in any scanned string, and every scanned
+surface still has its shipped call site.
+EXIT=0
+
+--- node tools/dialogue/check-greeting-consumer.mjs
+consumer: greetingFor() <- game/src/character/converse.js
+census (derived this run): 408 NPCs across game/data/npcs/**; 408 carry a reaction_group.
+swept 5 player race classes x 20 greet-counts per NPC: 3535 distinct (NPC, line) pairs reachable; 0 carrying a leak.
+
+RG-BWC speakers found by census (NOT hand-listed): 2
+  ok   blackwood-company-factor (Corvus Aldeyn) disposition=25 — 25 distinct lines; corrected line reachable = true
+  ok   blackwood-company-camp (the Company's camp) disposition=20 — 25 distinct lines; corrected line reachable = true
+
+perturbation (pinned pre-fix generator 8e778d4a616a, same consumer, same NPCs):
+  RG-BWC speakers that COULD speak the leak before the fix: blackwood-company-factor, blackwood-company-camp
+
+check-greeting-consumer — WIRING (shipped call sites, read as text; see tools/lib/call-site.mjs
+  on what this proves and what it does not):
+  ok   game/src/engine.js — the engine must import the greeting reader — a consumer nothing calls is an orphan
+  ok   game/src/character/converse.js — Conversation must actually call greetingFor() to produce the line an NPC speaks
+
+PASS: no live NPC can speak the leak, both RG-BWC speakers reach the corrected
+line, the pinned pre-fix control reproduces the defect, and the wiring is present.
+EXIT=0
+
+--- node tools/dialogue/check-greeting-voice.mjs --census
+derived from game/data/dialogue/greetings.json: 300 cells, 1500 lines, 12 reaction groups, 538 content tokens, 349 of them exclusive to one group.
+
+GATED CELLS (1 of 300 — everything else is census only):
+  ok   RG-BWC/cold[3] (saxhleel) exclusive tokens: leyawiin, bought
+         "Company time, and Leyawiin bought it. Local. Useful."
+  ok   RG-BWC/cold[3] (naga) exclusive tokens: leyawiin, bought
+         "Company time, and Leyawiin bought it. That is not a local. Keep clear of it."
+  ok   RG-BWC/cold[3] (dunmer) exclusive tokens: leyawiin, bought, contract, coin, either's, fine
+         "Company time, and Leyawiin bought it. Contract or coin. Either's fine."
+  ok   RG-BWC/cold[3] (imperial) exclusive tokens: leyawiin, bought, contract
+         "Company time, and Leyawiin bought it. You can read a contract. Sit down."
+  ok   RG-BWC/cold[3] (other-foreign) exclusive tokens: leyawiin, bought
+         "Company time, and Leyawiin bought it. You look like you can carry things."
+
+NEGATIVE CONTROL — round 1's rejected line "The writ says nothing about talk."
+  RG-BWC-exclusive tokens in it: (none)
+  who uses the word "writ" in the shipped file: RG-LEDGER
+  -> correctly rejected: every content word in it is shared with another group.
+
+CENSUS (not a gate) — slots per group whose line carries a group-exclusive token:
+  RG-DEEP        83 / 125
+  RG-ROOT       117 / 125
+  RG-LUKIUL     105 / 125
+  RG-NAGA       115 / 125
+  RG-LEDGER     122 / 125
+  RG-EMPIRE     125 / 125
+  RG-DRES       113 / 125
+  RG-BWC         95 / 125
+  RG-VAKH       121 / 125
+  RG-COURT      125 / 125
+  RG-TOWN       104 / 125
+  RG-OUTLAW     125 / 125
+
+PASS: every guarded slot names something only its own group says.
+EXIT=0
+
+--- node tools/books/check-book-fold.mjs --self-test
+loaded 26 books/*.json files in index.json order (manifest.json is #5)
+
+NAIVE arm (old inline fold, negative control): 24 book(s) with no text
+  a-practical-handling-of-the-marsh-fevers, a-progress-i, a-progress-ii, a-progress-iii, crate-tally, inscription-third-terrace, ledger-and-journal-of-andrel-vorin, ledger-leaf, nine-stanzas-upon-the-drowning, on-the-tally-stones, pilots-chart-book, sealed-letter-stormhold, shore-compass, the-blessings-of-the-coast, the-egg-speaks-twice, the-house-built-in-fear, the-house-built-in-reverence, the-oliis-bargain, the-sap-and-the-ledger, the-stone-nests-i, the-stone-nests-ii, the-stone-nests-iii, valus-survey-fragment, what-the-water-took
+Self-test passed: the scenario this check guards against is real, reproduced on real data.
+
+FIXED arm (real foldBooks(), the actual game consumer): 0 book(s) with no text
+Checked 163 distinct book ids; all carry non-empty text through the real fold.
+
+check-book-fold — WIRING (shipped call sites, read as text; see tools/lib/call-site.mjs
+  on what this proves and what it does not):
+  ok   game/src/engine.js — _buildUI() must build the reading UI's book Map by CALLING foldBooks(), not inline
+  ok   game/src/data/fold-books.js — the guard that makes the fold load-order-independent must still be in the function
+
+PASS: the fold is correct AND the shipped build calls it.
+EXIT=0

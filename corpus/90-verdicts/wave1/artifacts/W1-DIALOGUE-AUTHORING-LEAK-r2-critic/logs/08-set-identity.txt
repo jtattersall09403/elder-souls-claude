@@ -1,0 +1,41 @@
+RI-MTH07 §B — PERTURBATION RUN BY THIS CRITIC, BOTH ARMS, IN THE RUNNING ENGINE
+  model perturbed : engine.js _buildUI() call site — foldBooks(this.data.books) vs the old inline fold
+  entity observable: pages the reading UI hands out, via H.openMenu("book",{id}) + getUIState().book
+
+  fixed arm    total_pages 1897  min words/page 10  single-page rows 15
+  reverted arm total_pages 1715  min words/page 1  single-page rows 57
+  delta        182 pages lost
+
+NODE-SIDE PREDICTION (naive fold over the real data, re-derived): 24 textless ids
+BROWSER-SIDE OBSERVATION: 21 ids single-page ONLY under the reverted call site
+ids in the 24 that are ALSO single-page in the FIXED arm: 3 — crate-tally, inscription-third-terrace, shore-compass
+
+IDENTITY  newly-collapsed == predicted24 \ both-arms : HOLDS
+  21 + 3 = 24 = 24
+  symmetric difference: (empty)
+
+the 21:
+  a-practical-handling-of-the-marsh-fevers
+  a-progress-i
+  a-progress-ii
+  a-progress-iii
+  ledger-and-journal-of-andrel-vorin
+  ledger-leaf
+  nine-stanzas-upon-the-drowning
+  on-the-tally-stones
+  pilots-chart-book
+  sealed-letter-stormhold
+  the-blessings-of-the-coast
+  the-egg-speaks-twice
+  the-house-built-in-fear
+  the-house-built-in-reverence
+  the-oliis-bargain
+  the-sap-and-the-ledger
+  the-stone-nests-i
+  the-stone-nests-ii
+  the-stone-nests-iii
+  valus-survey-fragment
+  what-the-water-took
+
+COUPLING (RI-MTH07 §B): predicted textless ids 24, observed collapsed ids 24 -> coupling = 1.00
+NULL CONTROL: the 139 book ids the manifest does NOT collide with changed page count in neither arm -> 0 unexpected movers (0 = clean)

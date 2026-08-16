@@ -1,0 +1,30 @@
+=== G2 REVISITED: where the generator import sits decides whether the tripwire can see it ===
+Round 1's ACTUAL shape (git show 43d26e6e): 'await import()' at line 124, INSIDE
+scanAuthoredSource(), which round 2's main() calls AFTER taking the 'before' fingerprint.
+
+----------------------------------------------------------------
+VARIANT: faithful-inside-scan
+  grep 'Say it in one line' BEFORE: 1
+  EXIT=4
+  tripwire fired: 1
+  first line of output: wrote /home/user/elder-souls-claude/game/data/dialogue/greetings.json: 300 cells, 1500 lines, 1400 distinct
+  verdict line: 
+  grep 'Say it in one line' AFTER : 0
+----------------------------------------------------------------
+VARIANT: toplevel-static-import
+  grep 'Say it in one line' BEFORE: 1
+  EXIT=0
+  tripwire fired: 0
+  first line of output: wrote /home/user/elder-souls-claude/game/data/dialogue/greetings.json: 300 cells, 1500 lines, 1400 distinct
+  verdict line: PASS: no authoring-instruction leaks in any scanned string, and every scanned
+  grep 'Say it in one line' AFTER : 0
+----------------------------------------------------------------
+VARIANT: top-of-main
+  grep 'Say it in one line' BEFORE: 1
+  EXIT=0
+  tripwire fired: 0
+  first line of output: wrote /home/user/elder-souls-claude/game/data/dialogue/greetings.json: 300 cells, 1500 lines, 1400 distinct
+  verdict line: PASS: no authoring-instruction leaks in any scanned string, and every scanned
+  grep 'Say it in one line' AFTER : 0
+----------------------------------------------------------------
+tree restored: bfe9064b32b537ce 3ede561650f5ac09 

@@ -1,0 +1,39 @@
+fixed fold ids: 163  naive fold ids: 163
+naive-fold textless ids (the "24"): 24
+
+WORD COUNT of the real text of each of those ids (a book under ~180 words is legitimately one page):
+    799 a-practical-handling-of-the-marsh-fevers
+    849 a-progress-i
+   1453 a-progress-ii
+   1525 a-progress-iii
+    102 crate-tally
+     91 inscription-third-terrace
+    769 ledger-and-journal-of-andrel-vorin
+    134 ledger-leaf
+    253 nine-stanzas-upon-the-drowning
+    670 on-the-tally-stones
+    583 pilots-chart-book
+    151 sealed-letter-stormhold
+    113 shore-compass
+    443 the-blessings-of-the-coast
+    624 the-egg-speaks-twice
+    716 the-house-built-in-fear
+    634 the-house-built-in-reverence
+    529 the-oliis-bargain
+    943 the-sap-and-the-ledger
+    692 the-stone-nests-i
+    656 the-stone-nests-ii
+    582 the-stone-nests-iii
+    490 valus-survey-fragment
+    869 what-the-water-took
+
+the 3 the round calls "legitimately one-page": crate-tally=102w, inscription-third-terrace=91w, shore-compass=113w
+other ids in the 24 with <180 real words: ledger-leaf=134w, sealed-letter-stormhold=151w
+
+harness BOOKS list: 325 rows, 163 distinct ids, 162 duplicate rows
+   (manifest.json contributes 162 title-only entries)
+   -> books_asked=325 in the round's report is this list, so ids in manifest are asked TWICE.
+
+of the 24 textless ids, how many appear twice in the ask list: 24
+books whose real text is under 180 words (candidates for a legitimate 1-page book, ALL ids): 20
+  ...and how many rows that is in the ask list: 39

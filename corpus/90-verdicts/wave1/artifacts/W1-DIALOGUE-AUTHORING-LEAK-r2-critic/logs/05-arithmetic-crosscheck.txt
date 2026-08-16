@@ -1,0 +1,29 @@
+=== TESTING THE ROUND'S FOUR BROWSER NUMBERS FOR MUTUAL CONSISTENCY ===
+claimed: total_pages 1897 -> 1715 · single_page_books 15 -> 57 · min words/page 10 -> 1
+The harness asks 325 ROWS over 163 distinct ids; the 24 collided ids each appear TWICE
+(once from their real file, once from manifest.json). So every per-row count double-counts them.
+
+TEST 1 — does single_page 15 -> 57 force EXACTLY 3 of the 24 to be one-page when fixed?
+   if 0 of the 24 are legitimately 1 page -> reverted single_page rows = 15 + 48 = 63
+   if 1 of the 24 are legitimately 1 page -> reverted single_page rows = 13 + 48 = 61
+   if 2 of the 24 are legitimately 1 page -> reverted single_page rows = 11 + 48 = 59
+   if 3 of the 24 are legitimately 1 page -> reverted single_page rows = 9 + 48 = 57   <-- MATCHES the claimed 57
+   if 4 of the 24 are legitimately 1 page -> reverted single_page rows = 7 + 48 = 55
+   if 5 of the 24 are legitimately 1 page -> reverted single_page rows = 5 + 48 = 53
+
+TEST 2 — does the 182-page drop imply a sane page size for the 21 books that collapse?
+   the 21 ids carry 14364 real words; as 42 rows they lose 182 pages
+   fixed pages for those rows = 182 + 42 (each still renders 1 page) = 224
+   implied words per page = 28728 / 224 = 128.3
+   the round reports median words/page 120 (K1 band 120-180) — a consistent page size.
+
+TEST 3 — the two ids the round did NOT call one-page but which are short:
+   ledger-leaf: 134 real words -> at ~130 words/page this is 2 pages, so 1 page ONLY when collided. Consistent.
+   sealed-letter-stormhold: 151 real words -> at ~130 words/page this is 2 pages, so 1 page ONLY when collided. Consistent.
+
+TEST 4 — min words per page 10 -> 1 under the revert:
+   a collided record has text === undefined; String(undefined) is the single word "undefined" -> 1 word on 1 page. Consistent.
+
+   NOTE: every line above is a CONSISTENCY test on numbers that exist only as prose in the
+   round-2 status file. Neither commit banked the run's JSON (the harness only writes with
+   --out, and reports/critic-w1-library-pages.json is still the Aug-7 W1-LIBRARY-r1 file).
