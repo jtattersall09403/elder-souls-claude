@@ -232,6 +232,22 @@
     "the_hole_this_opened_in_my_OWN_reference_item_and_i_fixed_it": "RI-VIS11's first draft banded `>= 70%` and hard-failed `< 45%` and **said nothing about the middle**. The very first measurement taken against it returned 64.95% and landed in that gap. I amended the item the same turn to define 45-70% as `unresolved`, failing closed, citing `ARBITRATION` S61's asymmetry — a statistic can fail a build and can never pass one. Recording that my own new bar had a hole in it rather than rounding the number into whichever neighbouring verdict suited me."
   },
 
+  "THE_ACCEPTANCE_SCORED_AGAINST_ITS_OWN_CLAUSES_AND_IT_FAILS": {
+    "the_clause_verbatim_from_the_r4_verdict": "`gradient_width_px >= 12` at the WORST pose of a complete 4-bearing set in the Deep Marshes, at threshold 10 (the only threshold whose mask arm is stable), AND `presence >= 90%` at every pose in both regions, AND the mask control run in BOTH orders so `own_mask_delta` can be attributed.",
+    "clause_3_the_mask_control_in_both_orders": "**MET.** `dm-b225-reverse/` runs the arms reversed; one unchanged arm moves 12.52 points at threshold 10 between the two orders and 0.02 points at threshold 16. This is the only clause of the three that passes, and what it establishes is that the threshold the clause itself specifies is the wrong one.",
+    "clause_1_width_at_the_worst_pose_of_the_complete_DM_set": {
+      "at_threshold_10_which_the_clause_names": { "edge-b045": 17, "edge-b135": 34, "edge-b225": 2, "edge-b315": "see the banked run", "worst_pose": 2 },
+      "at_threshold_16_which_i_have_shown_to_be_the_stable_one": { "edge-b045": 1, "edge-b135": 32, "edge-b225": 1, "edge-b315": "see the banked run", "worst_pose": 1 },
+      "ruling": "**FAILS at either threshold.** The bar is 12 px at the worst pose; the worst pose reads 2 px at threshold 10 and 1 px at threshold 16. And the baseline arm — round 2's water, the thing this is supposed to beat — reads 2 px and 1 px at that same pose, so no arm is losing to the baseline; the pose simply carries no measurable waterline for anything. **I also cannot certify the width numbers themselves**: at `edge-b045` the unchanged arm reads 20 px at threshold 10 and 1 px at threshold 16, so this clause is being evaluated on a quantity whose own stability I have not established at any threshold."
+    },
+    "clause_2_presence_at_every_pose_in_both_regions": {
+      "deep_marshes_at_threshold_16_shipped_value": { "edge-b045": 100.1, "edge-b135": 51.38, "edge-b225": 100.16, "edge-b315": "see the banked run" },
+      "western_rootlands": "NOT MEASURED at the shipped value. The region is 1 of 4 bearings and was not re-taken. Round 4 measured 69.35% there at 1.20 m.",
+      "ruling": "**FAILS, at `edge-b135`, by 38.6 percentage points.** Three of the four Deep Marshes bearings sit at ~100% — the shipped band costs nothing where the water is too deep for it to act — and the fourth, which is the pose the entire positive result comes from, sits at 51.38%. Per M12a clause 3 a band is met only at the WORST pose, so 100/100/100/51 is a fail at 51. **And the second region is unmeasured, which fails it closed a second time independently.**"
+    },
+    "so": "**One clause of three is met, and it is the one that undermines the threshold the other two are specified at.** I am not claiming the acceptance and I am not claiming F7. What I claim is narrower and I think it is worth having: the shipped constant is measurably better than round 4's on both axes at every pose measured, the threshold question is settled with a number, and three multi-round debts are paid — one of which (`TemporalVar`) came back a hard fail that makes the item's position worse, not better."
+  },
+
   "the_ruling_i_made_and_what_would_overturn_it": {
     "ruling": "**KEEP the mechanism. SHIP 0.10 m. I am NOT claiming F7 and I am NOT claiming the acceptance — it fails on both halves.**",
     "why_ship_0.10_rather_than_keep_1.20": [
