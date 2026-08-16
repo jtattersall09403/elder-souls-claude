@@ -20,10 +20,23 @@
 //               round from 5 to 7 published and it is what the round-8 build must be compared to.
 //   B  exact    modal of the exact RGB triple over the panel rect, ties broken by lowest packed
 //               value so it is single-valued on any image. The r7 critic's second reading.
-//   C  pinned   the modal of the panel's OWN DECLARED GROUND PROBE — `getUIState()`'s
+//   C  pinned   THE PIN. Reading A's algorithm — 5-bit bucket, modal bucket, mean inside it —
+//               computed over the panel's OWN DECLARED GROUND PROBE (`getUIState()`'s
 //               `panel.meta.ground_probe`, a rect the layout guarantees carries only painted
-//               ground (`ui/chrome.js` `screen()`). Content cannot outvote it, because content is
-//               not inside it.
+//               ground; `ui/chrome.js` `screen()`). Content cannot outvote it, because content is
+//               not inside it, and it stays comparable with every figure rounds 5-7 published
+//               because it is the same estimator applied to a better sample.
+//   C2 exact-probe  the exact-colour modal of the same probe, reported alongside.
+//
+// WHY C IS THE BINNED ESTIMATOR AND NOT THE EXACT ONE, WHICH IS NOT WHAT I FIRST BUILT. The first
+// version of this tool pinned to the EXACT modal of the probe. Measured on the journal it read
+// **0.2524 against the shipped 0.1587**, because parchment is a TEXTURED ground: no single exact
+// RGB triple dominates it, so an exact modal picks one shade of the texture and then counts the
+// rest of the texture as matter. The run that found that is kept at
+// `corpus/90-verdicts/wave1/artifacts/T4-r8/d2/first-exact-probe-run.log`. The ambiguity being
+// pinned is "modal of WHAT SAMPLE", not "which estimator" — so the estimator stays the shipped one
+// and only the sample changes. Both are still reported, because the difference between them is a
+// measure of how textured a ground is and a critic should be able to see it.
 //
 // WHY C IS NOT "TAKE IT FROM `getUIState().materials`", WHICH IS WHAT S65(2) SAYS. `materials` is
 // a list of NAMES. The colour behind a name is `theme.js`'s palette — but `panel()` paints clay as
@@ -320,9 +333,11 @@ try {
     const probe = r.panel.meta && r.panel.meta.ground_probe;
 
     const A = refBinned(png, rect), B = refExact(png, rect);
-    const C = probe ? refExact(png, probe) : null;
+    const C = probe ? refBinned(png, probe) : null;
+    const C2 = probe ? refExact(png, probe) : null;
     const dA = d2With(png, rect, A.rgb), dB = d2With(png, rect, B.rgb);
     const dC = C ? d2With(png, rect, C.rgb) : null;
+    const dC2 = C2 ? d2With(png, rect, C2.rgb) : null;
     const pal = PALETTE_GROUND[r.panel.meta && r.panel.meta.ground_material] || null;
 
     const lab = (rgb) => labFromSrgb255(rgb[0], rgb[1], rgb[2]);
@@ -331,9 +346,15 @@ try {
       ground_probe: probe || null, ground_material: (r.panel.meta && r.panel.meta.ground_material) || null,
       A_binned: { ref: A.rgb, votes: A.votes, runner_up: A.runner_up, d2: dA.fill },
       B_exact: { ref: B.rgb, votes: B.votes, runner_up: B.runner_up, distinct_colours: B.distinct, d2: dB.fill },
-      C_pinned: C ? { ref: C.rgb, votes: C.votes, runner_up: C.runner_up, probe_px: dC.pixels && probe ? Math.round(probe[2]) * Math.round(probe[3]) : null, d2: dC.fill } : null,
-      // The guard: is the declared probe actually pointing at ground?
-      probe_vs_panel_dE00: C ? +de2000(lab(C.rgb), lab(B.rgb)).toFixed(3) : null,
+      C_pinned: C ? { ref: C.rgb, votes: C.votes, runner_up: C.runner_up, probe_px: probe ? Math.round(probe[2]) * Math.round(probe[3]) : null, d2: dC.fill } : null,
+      C2_exact_probe: C2 ? { ref: C2.rgb, votes: C2.votes, d2: dC2.fill } : null,
+      // THE GUARD: is the declared probe actually pointing at ground? Measured against reading A,
+      // which is the robust one — comparing it to B would be comparing it to a reading that is
+      // itself unreliable on a textured ground (the journal's B is 0.975).
+      probe_vs_panelA_dE00: C ? +de2000(lab(C.rgb), lab(A.rgb)).toFixed(3) : null,
+      probe_vs_panelB_dE00: C ? +de2000(lab(C.rgb), lab(B.rgb)).toFixed(3) : null,
+      // How textured the ground is: the distance between the two estimators ON THE SAME sample.
+      ground_texture_dE00: (C && C2) ? +de2000(lab(C.rgb), lab(C2.rgb)).toFixed(3) : null,
       // The measured answer to "could S65(2)'s palette lookup have worked?"
       palette_ground_hex: pal,
       palette_ground_dE00: (pal && C) ? +de2000(lab(hexRgb(pal)), lab(C.rgb)).toFixed(3) : null,
@@ -354,8 +375,8 @@ try {
     rec.verdict_flips = [dA.fill, dB.fill, dC ? dC.fill : dA.fill].some((v) => v >= 0.15)
       && [dA.fill, dB.fill, dC ? dC.fill : dA.fill].some((v) => v < 0.15);
     report.screens[name] = rec;
-    log(`  [${name}] A ${dA.fill}  B ${dB.fill}  C ${dC ? dC.fill : 'n/a'}`
-      + `   probe-vs-panel dE ${rec.probe_vs_panel_dE00}  palette dE ${rec.palette_ground_dE00}`
+    log(`  [${name}] A ${dA.fill}  B ${dB.fill}  C ${dC ? dC.fill : 'n/a'}  C2 ${dC2 ? dC2.fill : 'n/a'}`
+      + `   probe-vs-A dE ${rec.probe_vs_panelA_dE00}  palette dE ${rec.palette_ground_dE00}`
       + `   band_thresh A ${rec.band_thresh_binned} C ${rec.band_thresh}`
       + (rec.verdict_flips ? '   *** THE FLOOR VERDICT DEPENDS ON WHICH READING ***' : ''));
   }

@@ -123,6 +123,47 @@ to 0.9 has made a different mistake and `RI-UIX06` A2/G1 already owns it.
    2; a build that registers icon elements and draws nothing fails 3 and passes 2. **Report both.**
 4. **D2.** Modal colour of the panel rect, then the ΔE > 6 fraction. `tools/ui/critic-t4-palette.mjs`
    already does the quantisation half.
+
+   **PINNED, 2026-08-16 (T4 r8), closing a defect the T4 r7 critic filed and could not fix.** The
+   sentence above never said *how* the modal colour is taken, and two faithful readings of the same
+   level-up capture disagreed **across the hard floor**: the shipped estimator (bin each channel to
+   5 bits, take the modal bucket, average the pixels inside it) read `[220,217,204]` → **0.1494,
+   fail**; an exact-colour modal read `[223,223,216]` → **0.1625, pass**, because level-up's modal
+   bucket holds 7,673 pixels against a runner-up of 5,525. `ARBITRATION` S65(2) ruled that a band
+   made entirely of that ambiguity may not decide a build, and that the fix is to pin the reference
+   rather than re-derive it per capture. So:
+
+   > **The reference is the SHIPPED ESTIMATOR — 5-bit bucket, modal bucket, mean of the pixels
+   > inside it — computed over the panel's own DECLARED GROUND PROBE, not over the panel rect.**
+   > The probe is `getUIState()`'s `panel.meta.ground_probe`: a rect the layout guarantees carries
+   > only painted ground (`game/src/ui/chrome.js` `screen()` publishes it, in absolute device px).
+   > The ΔE00 > 6 fraction is then taken over the whole panel rect against that reference.
+
+   **What was ambiguous was the SAMPLE, not the estimator.** Changing the estimator was tried and
+   is wrong: pinning to the exact-colour modal of the probe reads the journal at **0.2524 against
+   the shipped 0.1587**, because parchment is a textured ground and an exact modal picks one shade
+   of the texture and counts the rest of it as matter. Keeping the estimator also keeps every
+   figure T4 rounds 5–7 published comparable — the pin is the same ruler applied to a better sample.
+
+   **Two guards, both required, both reported with the figure.** (a) `probe_vs_panelA_dE00` — the
+   ΔE00 between the pinned reference and the panel-rect reading. A large value means the declared
+   probe is not on ground and the reading is `unresolved`, not used. (b) The probe's own pixel
+   count, so a probe that has been sized to nothing is visible.
+
+   **S65(2)'s own suggested mechanism does not work and this is recorded rather than quietly
+   dropped** (`ARBITRATION` S63: a ruling may say what to measure and may not narrate why a number
+   moved unless it ran the ablation). It says to take the ground colour "from
+   `getUIState().materials`". `materials` is a list of *names*; the colour behind a name is
+   `theme.js`'s palette — but `panel()` paints clay as `clay_dark` under a 0.55 `chitin_dark` slip
+   and the whole panel composites at `CALM_ALPHA` **0.94** over the world, so six per cent of the
+   frame behind it is in every ground pixel. Measured, the naive palette lookup sits **0.90–4.63
+   ΔE00** from the real painted ground depending on the screen (level-up is the worst). The
+   instruction — take the reference from the game rather than from the content — is right; the
+   route to it is a declared probe, not a palette entry.
+
+   Instrument: `tools/ui/t4-r8-d2.mjs`, which reports all four readings side by side (panel-binned,
+   panel-exact, probe-binned = the pin, probe-exact) plus both guards, and carries a `--self-test`
+   whose fixtures are constructed so the readings are *required* to disagree.
 5. **Blind pair (`blind_pair: yes`).** Our populated inventory against
    `REF-A12b-inventory__mw-15538700.jpg`, both cropped to the panel, both downscaled to the same
    width, attribution stripped. **Question, written before looking:** *"One of these two screens is
