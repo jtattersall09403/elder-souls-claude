@@ -12,8 +12,8 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
 
 - **The sun, round three** — a judge found the fix: our daylight needs to go **cooler**, and both
   previous rounds pushed it warmer.
-- **Judging the crowd** — 408 people used to share one pose; now 392 stand differently, and nobody has
-  managed to photograph it.
+- **Characters, round twelve** — the crowd stands differently now but nobody in it moves. 392 poses,
+  zero motion.
 - **The water, round four** — the fade works; it just does nothing in the one region we kept testing
   it in.
 - **Judging the container screen** — round seven closed the density regression and found a third
@@ -79,7 +79,6 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   is making the fade work in metres rather than in murkiness, so it survives where you actually stand.
   **Still true: nobody knows what draws the marsh stripes.** Switch the reflection off entirely and 76%
   of them remain; two further explanations were proposed and killed by the same test.
-- **The container screen prints the word `undefined`** as its title. Being fixed.
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its author caught that 93.7% of the gain it was about to claim reproduced with no fix in the tree.
 - **The characters were being drawn inside-out — fixed, and confirmed by eye.** Your winding tip was
@@ -93,18 +92,16 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   too fine**, which averages to a flat colour — a smith who was one tone shoulder-to-ankle now has a
   sash, cord rings, a hem and a yoke, and *a background NPC gained one nobody targeted*; and the eyes
   went from cream googly balls to dark sockets.
-- **People stand on the ground now, and it is photographed.** NPC positions came from one authored
-  constant per settlement, never compared to the terrain. At Lilmoth, of 31 people drawn, **12 were
-  underground and 15 were in the air, worst 35 metres up**. Now zero and zero, confirmed on hardware.
-- **The bodies were measurably cones — now they have hips and a waist.** Nobody could say *how* wrong
-  the torso was, because no instrument in the project could tell a cone from a body. One was written,
-  and the answer was blunt: the **hip was 18% narrower than the waist on 11 of 11 figures**, and the
-  waist pinch measured **0.029 — identical to the reading a synthetic cone gives**. So "slabs" was
-  literally accurate. Fixed on the shared body plan, so **one edit moved all 17 characters**: hips now
-  wider than waists on 11 of 11, for 96 extra triangles and no new draw call.
-- **Armoured helmets were erasing people's eyes.** Not one hat — **69 of 96 camera bearings** lost the
-  eye entirely, with two armour sets losing it from *every* angle, because the head was shrunk without
-  shrinking what sits on it and the heights were hand-typed so the band drew straight through the eye.
+- **People stand on the ground now, and it is photographed.** Positions came from one authored constant
+  per settlement, never compared to the terrain: of 31 drawn at Lilmoth, **12 were underground and 15
+  in the air, worst 35 m up**. Now zero and zero, confirmed on hardware.
+- **The bodies were measurably cones — now they have hips and a waist.** No instrument in the project
+  could tell a cone from a body; one was written and the answer was blunt — the **hip was 18% narrower
+  than the waist on 11 of 11 figures**, and the waist pinch read **0.029, identical to a synthetic
+  cone**. So "slabs" was literally accurate. Fixed on the shared body plan: **one edit moved all 17
+  characters**, for 96 extra triangles and no new draw call.
+- **Armoured helmets were erasing people's eyes** — **69 of 96 camera bearings** lost the eye entirely,
+  two armour sets from *every* angle, because the head was shrunk without shrinking what sits on it.
   Now 0 of 96.
 - **The player's own eye was the worst in the game** — 2.16× the brightness of their face, on the
   player and **260 of 408** NPC records. Now 0.847×.
@@ -116,20 +113,23 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   put their weight on one leg, which is the first thing that makes a crowd read as people. In the
   running game at Lilmoth, **60 of 60 townspeople now clear the bar** (which asks for 90%), each with a
   different stance seeded from their own identity so the same person always stands the same way.
-  **Nobody has managed to photograph it.** Four camera attempts failed for one reason, and it is a
-  problem beyond this round: **the camera and the townspeople are being stepped on two different
-  clocks, and nothing joins them** — so the settlement shots come back with no legible people in them.
-  A judge is now trying to get the picture or prove the harness can't.
-- **A side-effect of that pose, found and closed: it lifted everyone 8.9 mm off the floor.** In the
-  running game, frames where both soles were clear of the ground went **24 of 96 → 68 of 96**. Fixed,
-  photographed, and now solved numerically per person — worst planting error across all 408 people is
-  effectively zero.
+  **It is photographed at last** — nine frames, five angles and two motion offsets, the first pictures
+  of this work in eleven rounds. The builder had reported the camera and the townspeople running on two
+  different clocks; **that turned out to be false**, and the real cause was one object reporting its
+  position as the origin.
+  **And the photograph shows the next problem: they are statues.** Over sixty frames, **not one person
+  moves a single joint** — 392 different poses, all frozen. Round twelve is giving them breathing,
+  staggered per person so a crowd doesn't inhale in unison.
+  **A counting error worth knowing:** two rounds reported 60 people at that spot. **29 of them are
+  invisible, heaped at the map origin 41 metres underground.** The real crowd is 27, and nobody has
+  looked at why the other 29 are down there.
+- **A side-effect of that pose, found and closed: it lifted everyone 8.9 mm off the floor.** Fixed and
+  photographed; worst planting error across all 408 people is now effectively zero.
 - **The eye had a pupil worth literally zero pixels — now it has one, and it reads in conversation.**
-  The pupil existed the whole time and rendered **0 pixels at every camera angle on 4 of 5 face
-  shapes**, and the cause was not the eye: **the snout was in front of it.** Moved 6 mm out and 12 mm
-  forward, then photographed on real hardware: **at talking distance you now see a dark pupil with a
-  catchlight in it.** Step back to third-person distance and it is still two amber smudges, and "no
-  lid, no orbit" still stands.
+  The pupil rendered **0 pixels at every angle on 4 of 5 face shapes**, and the cause was not the eye:
+  **the snout was in front of it.** Moved 6 mm out and 12 mm forward, then photographed on hardware:
+  at talking distance you now see a dark pupil with a catchlight. At third-person distance it is still
+  two amber smudges.
 - **The hover is fixed and photographed** — both feet back down within a millimetre of where they sat
   before the new pose, cross-checked by two independently written capture tools.
 - **Some good news in the same verdict:** the character bar now has **12 of its 18 checks published**
