@@ -478,7 +478,7 @@
       {
         "axis": "G \u2014 evidence integrity",
         "score": 8,
-        "note": "every figure reproduced on a third implementation; served shas per arm; no pose drift at 4 of 4; no unintended duplicate frames among 62 hashed; the change proved a bit-exact no-op; two in-flight defects found and reported by the builder against itself"
+        "note": "every figure reproduced on a third implementation; served shas per arm; no pose drift at 4 of 4; no unintended duplicate frames among 61 hashed; the change proved a bit-exact no-op; two in-flight defects found and reported by the builder against itself"
       },
       {
         "axis": "H \u2014 diagnostic value and candour",
@@ -524,7 +524,7 @@
   },
   "secondary_observations": [
     {
-      "what": "THE CHANGE IS A BIT-EXACT NO-OP AND THE ROUND HAD THE PROOF WITHOUT NOTICING. `probe/p0-control.png`, `keyhue/k0-control.png` and `before-pair01/pair01__base.png` share sha256 37d7838de3026a24; the three `*-recheck` frames share 588fe71062708002. The first two were served `sky.js 5fd64d93` \u2014 the round-2 tree, which has no `keyCool` in it at all \u2014 and the third `7172bb96`, the round-3 tree with the branch at 0.00. Two different source trees, three separate browser processes, identical 1920x1080 pixels. I hashed all 62 frames on disk: exactly two duplicate groups exist and both are these intended controls, which also confirms the round's `char-npc` fix is real."
+      "what": "THE CHANGE IS A BIT-EXACT NO-OP AND THE ROUND HAD THE PROOF WITHOUT NOTICING. `probe/p0-control.png`, `keyhue/k0-control.png` and `before-pair01/pair01__base.png` share sha256 37d7838de3026a24; the three `*-recheck` frames share 588fe71062708002. The first two were served `sky.js 5fd64d93` \u2014 the round-2 tree, which has no `keyCool` in it at all \u2014 and the third `7172bb96`, the round-3 tree with the branch at 0.00. Two different source trees, three separate browser processes, identical 1920x1080 pixels. I hashed all 61 frames on disk at that point (the round's 50 plus 11 of mine): exactly two duplicate groups exist and both are these intended controls, which also confirms the round's `char-npc` fix is real."
     },
     {
       "what": "THE SHIPPED TREE HAD NEVER BEEN PHOTOGRAPHED AT A JUDGED WINDOW. Every window run served `7172bb96`; HEAD carries `8cfc715a`. I captured it twice with two tools: pair01 crop 7.35 / 7.38, frame 6.48 / 6.39 / 6.36. Against the round's BEFORE frame the difference is mean |dRGB| 0.0016, max 15, 0.08% of subpixels, with two sibling commits touching NPC motion landed in between. The claim holds; it is now a measurement."
