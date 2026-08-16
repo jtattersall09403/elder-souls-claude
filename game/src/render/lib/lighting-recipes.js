@@ -57,6 +57,14 @@ const EXTERIOR_RIG = Object.freeze({
   // 1.0 is exactly today's behaviour; only `night-moon` departs from it.
   moon: 1.0,           // directional MOON multiplier
   keyWarmth: 0.0,      // -1 cools the key toward the sky, +1 warms it toward the horizon
+  // F4 ROUND 3. How far the DAY key is pulled toward `sky.js`'s `KEY_COOL_DAY`, at matched Rec.709
+  // luminance, scaled by `day` so night is untouched. 0 is exactly today's behaviour and every
+  // recipe that does not declare it is bit-identical — which is the preservation clause the round-2
+  // critic showed `overcast-flat` and `storm` did NOT have last round. See the long note at the
+  // lerp in `sky.js` `apply()`: this is the only term measured to move `RI-VIS03` M6 `hue_offset`,
+  // and the reason is that M6's shadow quartile is mostly LIT pixels, so an ambient term moves both
+  // quartiles together and cannot open the gap.
+  keyCool: 0.0,        // 0..1, how far the DAY key is cooled; night and other recipes unaffected
   // WHY THE HEMISPHERE AND FILL ARE BELOW 1.0 AND THE SUN IS NOT. Before W1-30B the environment
   // probe was 128 clamped texels, baked once at boot and never rebuilt, and tagged sRGB while
   // holding linear values — so it delivered almost no irradiance, and the HemisphereLight plus the
@@ -86,6 +94,7 @@ const INTERIOR_RIG = Object.freeze({
   key: 0.0,
   moon: 0.0,           // there is no moon in a room; declared so both bases carry the same fields
   keyWarmth: 0.0,
+  keyCool: 0.0,        // there is no sun in a room either; declared so both bases carry the same fields
   sky: 0.10,
   fill: 0.22,
   env: 0.55,
@@ -203,7 +212,7 @@ export function knownLightingRecipes() { return [...REGISTRY.keys()].sort(); }
 // REVERT IN ONE STEP: set `env` back to 0.35 and `envGroundBounce` back to 0.38 here, and restore
 // the three `hor` day-end constants in `sky.js` to 0.760 / 0.790 / 0.700.
 registerLightingRecipe('noon-marsh', variantOf('exterior', {
-  key: 3.00, sky: 0.315, fill: 0.225, env: 0.35, envGroundBounce: 0.38,
+  key: 3.00, keyCool: 1.00, sky: 0.315, fill: 0.225, env: 0.35, envGroundBounce: 0.38,
   fog: { extinction: 0.90, height: 1.0, inscatter: 0.10 }, exposure: 1.0,
 }));
 
