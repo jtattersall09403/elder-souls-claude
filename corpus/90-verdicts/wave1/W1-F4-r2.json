@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "piece_id": "W1-F4-r2",
-  "piece_title": "F4 round 2 — light, sky and atmosphere: the daytime horizon recolour at matched luminance",
+  "piece_title": "F4 round 2 \u2014 light, sky and atmosphere: the daytime horizon recolour at matched luminance",
   "subsystem_paths": [
     "render.fidelity.ibl",
     "render.fidelity.sky",
@@ -17,20 +17,46 @@
     "finished_at": "2026-08-16T00:30:00Z",
     "conflict_of_interest": false,
     "saw_builder_notes_before_blind": true,
-    "note": "I built none of this. My brief handed me the builder's status file first, which departs from CRITIC-DOCTRINE §8's ordering; recorded rather than hidden, and RI-VIS04 declares `blind_pair: no` so no pack was owed on this item. I INHERITED NO NUMBER FROM MY BRIEF. Every figure here was derived from a file opened or a command run in this session; where a brief figure disagreed with what I measured I have said so and given mine — the brief's blind-gate population of 100 is now 102, and the brief's `72 of 83`-shaped risk was avoided by re-running every grep. My M6 implementation is MINE, written from RI-VIS03's pseudocode WITHOUT opening the instrument both prior rounds used, precisely so that agreement is evidence rather than a shared bug."
+    "note": "I built none of this. My brief handed me the builder's status file first, which departs from CRITIC-DOCTRINE \u00a78's ordering; recorded rather than hidden, and RI-VIS04 declares `blind_pair: no` so no pack was owed on this item. I INHERITED NO NUMBER FROM MY BRIEF. Every figure here was derived from a file opened or a command run in this session; where a brief figure disagreed with what I measured I have said so and given mine \u2014 the brief's blind-gate population of 100 is now 102, and the brief's `72 of 83`-shaped risk was avoided by re-running every grep. My M6 implementation is MINE, written from RI-VIS03's pseudocode WITHOUT opening the instrument both prior rounds used, precisely so that agreement is evidence rather than a shared bug."
   },
   "build": {
     "commit_sha": "730ff822",
     "branch": "codex/wave1-build-experiment",
-    "baseline_note": "The judged build is the working tree, which is byte-identical to HEAD at both lighting sources: `sha256sum game/src/render/sky.js` = 5fd64d937c3c06df and `game/src/render/lib/lighting-recipes.js` = 241690686dca41ac, matching `git show HEAD:` for both, and matching the `served.sha256_16` recorded by the round's own `budget-r2-horizon-SHIPPED.json`. HAZARDS §22's discriminator is therefore satisfied without a clone: the round's three source arms served THREE DIFFERENT lighting shas (before 0277d24b/04031ecd, shipped 24169068/5fd64d93, refused env-0.55 30ad62a9/5fd64d93), so they are genuinely three trees and not one tree measured three times. My own arms are page-side and per-frame within ONE process on the shipped tree, so no cross-tree confound exists for them at all.",
+    "baseline_note": "The judged build is the working tree, which is byte-identical to HEAD at both lighting sources: `sha256sum game/src/render/sky.js` = 5fd64d937c3c06df and `game/src/render/lib/lighting-recipes.js` = 241690686dca41ac, matching `git show HEAD:` for both, and matching the `served.sha256_16` recorded by the round's own `budget-r2-horizon-SHIPPED.json`. HAZARDS \u00a722's discriminator is therefore satisfied without a clone: the round's three source arms served THREE DIFFERENT lighting shas (before 0277d24b/04031ecd, shipped 24169068/5fd64d93, refused env-0.55 30ad62a9/5fd64d93), so they are genuinely three trees and not one tree measured three times. My own arms are page-side and per-frame within ONE process on the shipped tree, so no cross-tree confound exists for them at all.",
     "harness_commands": [
-      { "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/f4r2c-capture.mjs --mode lights", "seed": 20260814, "exit_code": 0 },
-      { "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/f4r2c-capture.mjs --mode battery --hour 8", "seed": 20260814, "exit_code": 0 },
-      { "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/f4r2c-capture.mjs --mode matched --hour 8", "seed": 20260814, "exit_code": 0 },
-      { "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/f4r2c-capture.mjs --mode walk --hours 8,13 --frames 6 --res 1280x720", "seed": 20260814, "exit_code": 0 },
-      { "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/f4r2c-capture.mjs --mode weathercheck --hour 13 --res 1280x720", "seed": 20260814, "exit_code": 0 },
-      { "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/m6-independent.mjs --crop 300,150,512,512 <frames>", "exit_code": 0 },
-      { "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/crop-delta.mjs reports/f4r2/budget-*/pair01", "exit_code": 0 }
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/f4r2c-capture.mjs --mode lights",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/f4r2c-capture.mjs --mode battery --hour 8",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/f4r2c-capture.mjs --mode matched --hour 8",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/f4r2c-capture.mjs --mode walk --hours 8,13 --frames 6 --res 1280x720",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/f4r2c-capture.mjs --mode weathercheck --hour 13 --res 1280x720",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/m6-independent.mjs --crop 300,150,512,512 <frames>",
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/crop-delta.mjs reports/f4r2/budget-*/pair01",
+        "exit_code": 0
+      }
     ],
     "renderer_class": "SOFTWARE (SwiftShader) for every capture of mine. No Pod. Every claim in this verdict is a differential; no absolute appearance claim rests on a software frame."
   },
@@ -45,15 +71,15 @@
       "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
       "side": "modern-fidelity",
       "kind": "structure",
-      "native_scale": "min(raw, cap) over the §14 thirteen-feature table; raw = 10 * present/13, cap = min 'Blocks score above' among absent features",
+      "native_scale": "min(raw, cap) over the \u00a714 thirteen-feature table; raw = 10 * present/13, cap = min 'Blocks score above' among absent features",
       "native_score": null,
       "native_max": 13,
-      "native_verdict": "PARTIAL — I filled rows 2 and 3 only, which are the rows F4 moves, exactly as the r1 critic did, rather than marking eleven features UNVERIFIED and reporting on other pieces' work. Row 2 (IBL / environment map) is STILL ABSENT by its own DETECT, before and after this round, and its 'Blocks score above' value is 5. Row 3 (shadows) is measured against §3-D2 for the second time and holds at the judged window while failing at 2 of 12 orbit angles; its MIN BAR (3 cascades x 2048^2) is unverified by me and I did not run the cascade-ring DETECT.",
+      "native_verdict": "PARTIAL \u2014 I filled rows 2 and 3 only, which are the rows F4 moves, exactly as the r1 critic did, rather than marking eleven features UNVERIFIED and reporting on other pieces' work. Row 2 (IBL / environment map) is STILL ABSENT by its own DETECT, before and after this round, and its 'Blocks score above' value is 5. Row 3 (shadows) is measured against \u00a73-D2 for the second time and holds at the judged window while failing at 2 of 12 orbit angles; its MIN BAR (3 cascades x 2048^2) is unverified by me and I did not run the cascade-ring DETECT.",
       "score_0_10": 2,
-      "justification": "not required below 7. SCORING.md §1.1 caps the item at 2 because a hard fail is recorded on RI-VIS04 §2's own DETECT.",
+      "justification": "not required below 7. SCORING.md \u00a71.1 caps the item at 2 because a hard fail is recorded on RI-VIS04 \u00a72's own DETECT.",
       "measured": "partial",
-      "why_not_ten": "M6 `hue_offset` on the shipped build reads 7.32-7.34 on the sealed judged crop and 6.38 on the full frame, against an `exterior_daylight` minimum of 15, while this repo's own vendored modern-fidelity plates read 12.38-143.28 on the same instrument in the same session. Across a twelve-angle orbit it is below the minimum in 12 of 12 frames and below the 6 deg HARD FAIL in 4. §2 is absent by its own test.",
-      "path_to_ten": "See biggest_gap. The key light's HUE, in the COOL direction, measured 17.11 deg at matched luminance on the sealed judged crop with `retention`, `C_shadow` and `C_local_med` all preserved — and `noon-marsh` already carries the field that steers it (`keyWarmth`, currently 0.0, which `sky.js:854` lerps toward the day zenith for negative values). The remedy is a source arm on that field with the key's intensity compensated, measured at all five judged windows.",
+      "why_not_ten": "M6 `hue_offset` on the shipped build reads 7.32-7.34 on the sealed judged crop and 6.38 on the full frame, against an `exterior_daylight` minimum of 15, while this repo's own vendored modern-fidelity plates read 12.38-143.28 on the same instrument in the same session. Across a twelve-angle orbit it is below the minimum in 12 of 12 frames and below the 6 deg HARD FAIL in 4. \u00a72 is absent by its own test.",
+      "path_to_ten": "See biggest_gap. The key light's HUE, in the COOL direction, measured 17.11 deg at matched luminance on the sealed judged crop with `retention`, `C_shadow` and `C_local_med` all preserved \u2014 and `noon-marsh` already carries the field that steers it (`keyWarmth`, currently 0.0, which `sky.js:854` lerps toward the day zenith for negative values). The remedy is a source arm on that field with the key's intensity compensated, measured at all five judged windows.",
       "ten_by_wave": 2,
       "evidence": [
         "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/battery-hard-set-and-key-hue.json",
@@ -63,158 +89,346 @@
         "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/budget-ablation-recomputed-on-sealed-crop.json",
         "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/weather-preservation-claim.json",
         "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/x1-moonkey.png",
-        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/x0-control.png"
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/x0-control.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/driven-walk.json"
       ],
       "checks": [
         {
-          "id": "VIS04-§2-DETECT (M6 hue_offset) — RE-IMPLEMENTED INDEPENDENTLY",
+          "id": "VIS04-\u00a72-DETECT (M6 hue_offset) \u2014 RE-IMPLEMENTED INDEPENDENTLY",
           "result": "fail",
-          "value": "I wrote M6/M2/M7 from RI-VIS03 §0 and §M6's pseudocode WITHOUT opening the instrument both prior rounds used, because the r1 critic named that as the cheap way to falsify it and the r2 builder reused it instead. It agrees: sealed pair01 crop 7.16 -> MY 7.18 (landed r1) and 7.32 -> MY 7.34 (shipped); C_shadow 14.146 -> 14.148 and 12.377 -> 12.379; shadow_mask_frac 0.2458 exactly. Vendored plates on my code: 96.10 / 16.99 / 12.38 against the round's 96.08 / 16.06 / 12.49. THE HARD FAIL IS NOT AN INSTRUMENT ARTEFACT. Shipped build, sealed judged crop (S64's domain): 7.34. Full frame: 6.38. Twelve-angle orbit: 12 of 12 below the 15 deg minimum and 4 of 12 below the 6 deg HARD FAIL (0.01, 5.23, 1.36, 4.50).",
+          "value": "I wrote M6/M2/M7 from RI-VIS03 \u00a70 and \u00a7M6's pseudocode WITHOUT opening the instrument both prior rounds used, because the r1 critic named that as the cheap way to falsify it and the r2 builder reused it instead. It agrees: sealed pair01 crop 7.16 -> MY 7.18 (landed r1) and 7.32 -> MY 7.34 (shipped); C_shadow 14.146 -> 14.148 and 12.377 -> 12.379; shadow_mask_frac 0.2458 exactly. Vendored plates on my code: 96.10 / 16.99 / 12.38 against the round's 96.08 / 16.06 / 12.49. THE HARD FAIL IS NOT AN INSTRUMENT ARTEFACT. Shipped build, sealed judged crop (S64's domain): 7.34. Full frame: 6.38. Twelve-angle orbit: 12 of 12 below the 15 deg minimum and 4 of 12 below the 6 deg HARD FAIL (0.01, 5.23, 1.36, 4.50).",
           "threshold": "RI-VIS03 M6 exterior_daylight: hue_offset >= 15 deg; HARD FAIL below 6 deg",
           "hard_fail": true,
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/m6-independent-reimplementation.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/m6-independent-reimplementation.json"
+          ]
         },
         {
-          "id": "VIS04-§2 — THE FULL FRAME THE ROUND NEVER MEASURED (S64)",
+          "id": "VIS04-\u00a72 \u2014 THE FULL FRAME THE ROUND NEVER MEASURED (S64)",
           "result": "mixed",
-          "value": "S64 requires the full frame reported alongside the crop ALWAYS. `M6-fullframe-before-after.json` contains two rows: the BEFORE arm (3.71) and the REFUSED env-0.55 arm (4.43). THE ARM THAT SHIPPED IS NOT IN IT. Measured by me from the round's own banked capture: BEFORE 3.75, SHIPPED 6.38, REFUSED 4.51 (my figures reproduce the two the round published, to 0.04 and 0.08). SO THE SHIPPED CHANGE MOVED THE FULL FRAME +2.63 deg, A 70% RISE, AND LIFTED IT FROM BELOW THE 6 deg HARD-FAIL LINE TO ABOVE IT — while the crop moved +0.16. That is a 16x divergence between the two domains, which S64 says is itself a finding, and the round asserted the opposite ('the crop and the frame AGREE — no divergence') on the S60 table without ever computing M6 on the shipped full frame. THIS CORRECTION RUNS IN THE BUILD'S FAVOUR.",
+          "value": "S64 requires the full frame reported alongside the crop ALWAYS. `M6-fullframe-before-after.json` contains two rows: the BEFORE arm (3.71) and the REFUSED env-0.55 arm (4.43). THE ARM THAT SHIPPED IS NOT IN IT. Measured by me from the round's own banked capture: BEFORE 3.75, SHIPPED 6.38, REFUSED 4.51 (my figures reproduce the two the round published, to 0.04 and 0.08). SO THE SHIPPED CHANGE MOVED THE FULL FRAME +2.63 deg, A 70% RISE, AND LIFTED IT FROM BELOW THE 6 deg HARD-FAIL LINE TO ABOVE IT \u2014 while the crop moved +0.16. That is a 16x divergence between the two domains, which S64 says is itself a finding, and the round asserted the opposite ('the crop and the frame AGREE \u2014 no divergence') on the S60 table without ever computing M6 on the shipped full frame. THIS CORRECTION RUNS IN THE BUILD'S FAVOUR.",
           "threshold": "S64: sealed judged crop is the domain, full frame reported alongside always; divergence is a finding",
           "hard_fail": false,
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/m6-independent-reimplementation.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/m6-independent-reimplementation.json"
+          ]
         },
         {
-          "id": "VIS04-§2 — THE METRIC'S OWN NOISE FLOOR, AND WHAT IT DOES TO THE HEADLINE (S61)",
+          "id": "VIS04-\u00a72 \u2014 THE METRIC'S OWN NOISE FLOOR, AND WHAT IT DOES TO THE HEADLINE (S61)",
           "result": "fail",
-          "value": "I captured the SAME configuration twice in the SAME process at the SAME pose. `x0-control` 7.35, `x0b-control-recheck` 7.57 — a spread of 0.22 deg. The round's shipped gain on this crop is +0.16 deg (7.16 -> 7.32). By ruling S61, a reading inside the measure's demonstrated instability is `unresolved` and fails closed. SO THE CROP GAIN IS UNRESOLVED AND IS NOT A GAIN — which is what the builder said in words ('I am not going to describe that as progress') and now has a number. The full-frame gain, +2.63 deg, is 12x this floor and is real.",
+          "value": "I captured the SAME configuration twice in the SAME process at the SAME pose. `x0-control` 7.35, `x0b-control-recheck` 7.57 \u2014 a spread of 0.22 deg. The round's shipped gain on this crop is +0.16 deg (7.16 -> 7.32). By ruling S61, a reading inside the measure's demonstrated instability is `unresolved` and fails closed. SO THE CROP GAIN IS UNRESOLVED AND IS NOT A GAIN \u2014 which is what the builder said in words ('I am not going to describe that as progress') and now has a number. The full-frame gain, +2.63 deg, is 12x this floor and is real.",
           "threshold": "S61: a value inside the measure's demonstrated instability is `unresolved` and fails closed",
           "hard_fail": false,
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/battery-hard-set-and-key-hue.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/battery-hard-set-and-key-hue.json"
+          ]
         },
         {
-          "id": "VIS04-§2 — THE LEVER THE ROUND'S INSTRUMENT COULD NOT TEST",
+          "id": "VIS04-\u00a72 \u2014 THE LEVER THE ROUND'S INSTRUMENT COULD NOT TEST",
           "result": "fail",
           "value": "`f4-r2-light.mjs`'s `candidateCfg()` applies `warm` ONLY where `o === window.__sunLight` and `cool` ONLY to `isHemisphereLight` / `isAmbientLight`, in BOTH its `soft` and its `hard` set. THERE IS NO ARM IN THE ROUND, IN EITHER SET, THAT MAKES THE KEY COOLER. Separately, `grep -rn 'coolhard|warmhard|both100|amb250|amb180'` over the round's artifacts, status file and reports returns NOTHING: the `hard` set was written and never fired, and the lever class was ruled exhausted without it. I fired it and added the missing direction. Sealed pair01 crop, my instrument, all arms LIVE with cfgError null: control 7.35; ambient colour hard-cool 7.30 and hard-warm 7.37 (both inside the 0.22 noise); key hard-warm 3.34; probe x3 6.22; ambient intensity x4 8.87; KEY RECOLOURED TO sky.js:644's OWN NIGHT BLUE 17.07, and AT COMPENSATED INTENSITY 17.11 with mean Yp matched to 0.9% (lit) and 1.8% (shadow), `retention` 0.6759 (passes), `C_shadow` 8.935 (passes) and `C_local_med` 0.0245 (IDENTICAL to control).",
           "threshold": "the round's own named overturn condition: any configuration measuring hue_offset >= 15 on the sealed pair01 crop without failing S60 clause (a)",
           "hard_fail": false,
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/battery-hard-set-and-key-hue.json", "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/matched-key-hue-s59-and-s60.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/battery-hard-set-and-key-hue.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/matched-key-hue-s59-and-s60.json"
+          ]
         },
         {
-          "id": "VIS04-§2-D2 (the light budget, on the VISIBLE rig) — THE ROW I ADDED",
+          "id": "VIS04-\u00a72-D2 (the light budget, on the VISIBLE rig) \u2014 THE ROW I ADDED",
           "result": "fail",
-          "value": "The round reports its headline as 'switching off a HemisphereLight of live intensity 5.0011'. Live per-light census with each light's parent chain and its visibility, 08:00: the exterior rig is sun 6.30 (1.00, 0.94, 0.82), HemisphereLight 0.37107 (0.677, 0.790, 0.944), AmbientLight 0.18693 (same colour), moon 0. The 5.0011 is a SCENE-WIDE SUM over five hemisphere lights and 4.63 of it sits inside hidden Groups — `arena-bounded-readable-fill` 1.30, `rootway-bounded-fill` 0.48, three interior sets at 1.05 / 0.95 / 0.85. THE ABLATION MEASUREMENT STANDS; THE SENTENCE BUILT ON IT IS WRONG BY 13x. It matters because the round turns 'unresolvable' into a property of the LEVER CLASS when it is a property of the VALUE ROUND 1 LEFT THE TERM AT (0.4948 -> 0.3711). Tested: at 4x that value the same two lights are worth +1.52 deg and improve `retention` 0.6805 -> 0.7530, `C_shadow` 12.379 -> 13.995 and `C_local_med` 0.0245 -> 0.0271.",
-          "threshold": "RI-VIS04 §2-D2 (added by this verdict): a term inside the run's noise floor is `unresolvable at its shipped value` and may not be reported as absent, as 'not a lever', or as evidence about a class of levers",
+          "value": "The round reports its headline as 'switching off a HemisphereLight of live intensity 5.0011'. Live per-light census with each light's parent chain and its visibility, 08:00: the exterior rig is sun 6.30 (1.00, 0.94, 0.82), HemisphereLight 0.37107 (0.677, 0.790, 0.944), AmbientLight 0.18693 (same colour), moon 0. The 5.0011 is a SCENE-WIDE SUM over five hemisphere lights and 4.63 of it sits inside hidden Groups \u2014 `arena-bounded-readable-fill` 1.30, `rootway-bounded-fill` 0.48, three interior sets at 1.05 / 0.95 / 0.85. THE ABLATION MEASUREMENT STANDS; THE SENTENCE BUILT ON IT IS WRONG BY 13x. It matters because the round turns 'unresolvable' into a property of the LEVER CLASS when it is a property of the VALUE ROUND 1 LEFT THE TERM AT (0.4948 -> 0.3711). Tested: at 4x that value the same two lights are worth +1.52 deg and improve `retention` 0.6805 -> 0.7530, `C_shadow` 12.379 -> 13.995 and `C_local_med` 0.0245 -> 0.0271.",
+          "threshold": "RI-VIS04 \u00a72-D2 (added by this verdict): a term inside the run's noise floor is `unresolvable at its shipped value` and may not be reported as absent, as 'not a lever', or as evidence about a class of levers",
           "hard_fail": false,
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/light-census-visible-vs-scenewide.json", "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/battery-hard-set-and-key-hue.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/light-census-visible-vs-scenewide.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/battery-hard-set-and-key-hue.json"
+          ]
         },
         {
-          "id": "VIS04-§3-D2 (cast-shadow area) — RE-DERIVED, AND THE YAW SWING SURVIVES ITS OWN CONFOUND",
+          "id": "VIS04-\u00a73-D2 (cast-shadow area) \u2014 RE-DERIVED, AND THE YAW SWING SURVIVES ITS OWN CONFOUND",
           "result": "mixed",
-          "value": "At the judged window the area is unmoved within the instrument (-0.35% to +0.37%, CHANGING SIGN WITH TAU) and sits at 0.04046 at tau8, above the 0.03 floor. Across the twelve-angle orbit it is BELOW the floor at 2 of 12 (0.02151 at 08:00 yaw 000, 0.02350 at 13:00 yaw 300). I tested the confound the round did not name — `cast_shadow_area_fraction` is normalised by the WHOLE FRAME, so a camera seeing more sky mechanically scores lower. Renormalising by ground fraction (1 - sky_frac, which runs 0.891 to 0.998): the swing is 0.0240 -> 0.1080 at 08:00 and 0.0264 -> 0.1436 at 13:00, i.e. 4.5x and 5.4x. THE SWING SURVIVES; the sky confound accounts for about 8% of it. Between-hour ratio of means is 1.34x against a within-hour yaw swing of 4.9x. THE ROUND'S CORRECTION TO ITS BRIEF IS CONFIRMED: what dominates is where the camera points, not what hour it is.",
-          "threshold": "cast_shadow_area_fraction at tau=8 >= 0.03 in a daylight exterior (RI-VIS04 §3-D2)",
+          "value": "At the judged window the area is unmoved within the instrument (-0.35% to +0.37%, CHANGING SIGN WITH TAU) and sits at 0.04046 at tau8, above the 0.03 floor. Across the twelve-angle orbit it is BELOW the floor at 2 of 12 (0.02151 at 08:00 yaw 000, 0.02350 at 13:00 yaw 300). I tested the confound the round did not name \u2014 `cast_shadow_area_fraction` is normalised by the WHOLE FRAME, so a camera seeing more sky mechanically scores lower. Renormalising by ground fraction (1 - sky_frac, which runs 0.891 to 0.998): the swing is 0.0240 -> 0.1080 at 08:00 and 0.0264 -> 0.1436 at 13:00, i.e. 4.5x and 5.4x. THE SWING SURVIVES; the sky confound accounts for about 8% of it. Between-hour ratio of means is 1.34x against a within-hour yaw swing of 4.9x. THE ROUND'S CORRECTION TO ITS BRIEF IS CONFIRMED: what dominates is where the camera points, not what hour it is.",
+          "threshold": "cast_shadow_area_fraction at tau=8 >= 0.03 in a daylight exterior (RI-VIS04 \u00a73-D2)",
           "hard_fail": false,
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/orbit-area-normalised-by-ground-fraction.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/orbit-area-normalised-by-ground-fraction.json"
+          ]
         },
         {
-          "id": "VIS04-§3-D3 (what is inside the shadow)",
+          "id": "VIS04-\u00a73-D3 (what is inside the shadow)",
           "result": "pass",
-          "value": "NOT TRIGGERED at the judged window, and I say so rather than scoring it: §3-D3 binds 'in a window whose cast-shadow area ROSE', and the area did not rise. Reported anyway: `retention` 0.6901 -> 0.6926 (flat, above the 0.60 minimum) and `C_shadow` 14.146 -> 12.377, a 12.5% fall that stays 2.06x the exterior_daylight minimum of 6. Across the orbit `retention` is below its minimum at 5 of 12 and below the 0.30 HARD FAIL at 1 of 12 (0.2805, 08:00 yaw 120).",
+          "value": "NOT TRIGGERED at the judged window, and I say so rather than scoring it: \u00a73-D3 binds 'in a window whose cast-shadow area ROSE', and the area did not rise. Reported anyway: `retention` 0.6901 -> 0.6926 (flat, above the 0.60 minimum) and `C_shadow` 14.146 -> 12.377, a 12.5% fall that stays 2.06x the exterior_daylight minimum of 6. Across the orbit `retention` is below its minimum at 5 of 12 and below the 0.30 HARD FAIL at 1 of 12 (0.2805, 08:00 yaw 120).",
           "threshold": "M6 retention and C_shadow may not fall below their RI-VIS03 profile minima in a window whose cast-shadow area rose",
           "hard_fail": false,
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2/metrics/M6-across-orbit-12-angles.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F4-r2/metrics/M6-across-orbit-12-angles.json"
+          ]
         },
         {
-          "id": "VIS04-§3-MIN-BAR (3 cascades x 2048^2)",
+          "id": "VIS04-\u00a73-MIN-BAR (3 cascades x 2048^2)",
           "result": "unverified",
-          "value": "The live scene reports ONE shadow-casting directional with a 4096^2 map. Whether that is one cascade or three is a source question and CRITIC-DOCTRINE §1.1 forbids me scoring it from source; I did not run the item's image-side DETECT (blocky stair-steps of constant step size; walk the camera back 40 m and watch for the boundary ring). UNVERIFIED, which the item says counts as absent for the cap. Unchanged from round 1, which recorded the same.",
+          "value": "The live scene reports ONE shadow-casting directional with a 4096^2 map. Whether that is one cascade or three is a source question and CRITIC-DOCTRINE \u00a71.1 forbids me scoring it from source; I did not run the item's image-side DETECT (blocky stair-steps of constant step size; walk the camera back 40 m and watch for the boundary ring). UNVERIFIED, which the item says counts as absent for the cap. Unchanged from round 1, which recorded the same.",
           "threshold": "3 cascades x 2048^2, PCF 3x3 minimum, shadow distance >= 150 m",
           "hard_fail": false,
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/light-census-visible-vs-scenewide.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/light-census-visible-vs-scenewide.json"
+          ]
         },
         {
-          "id": "S59 — the shipped lever cannot have bought hue with brightness",
+          "id": "S59 \u2014 the shipped lever cannot have bought hue with brightness",
           "result": "pass",
-          "value": "VERIFIED TWO WAYS AND IT HOLDS. Arithmetic: `three.core.js:6309` sets `workingColorSpace = LinearSRGBColorSpace`, so Rec.709 on the raw triple is the right computation — (0.760, 0.790, 0.700) = 0.777124 and (0.677, 0.790, 0.944) = 0.777095, delta 2.9e-5. (The round quotes 0.77706 -> 0.77707; those digits do not reproduce and the true movement is a FALL, not a rise. Immaterial.) Empirical, which is stronger: mean Yp on the shadow quartile 0.1714 -> 0.1714 and on the lit quartile 0.3945 -> 0.3940.",
+          "value": "VERIFIED TWO WAYS AND IT HOLDS. Arithmetic: `three.core.js:6309` sets `workingColorSpace = LinearSRGBColorSpace`, so Rec.709 on the raw triple is the right computation \u2014 (0.760, 0.790, 0.700) = 0.777124 and (0.677, 0.790, 0.944) = 0.777095, delta 2.9e-5. (The round quotes 0.77706 -> 0.77707; those digits do not reproduce and the true movement is a FALL, not a rise. Immaterial.) Empirical, which is stronger: mean Yp on the shadow quartile 0.1714 -> 0.1714 and on the lit quartile 0.3945 -> 0.3940.",
           "threshold": "S59: an acceptance must name what it protects; a matched-luminance lever cannot trade brightness for hue",
           "hard_fail": false,
-          "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/m6-independent-reimplementation.json"]
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/m6-independent-reimplementation.json"
+          ]
+        },
+        {
+          "id": "S60 clause (a), MEASURED INSIDE THE KEY-HUE CONFIGURATION",
+          "result": "pass",
+          "value": "The ruling's overturn condition requires the >= 15 deg configuration not to fail clause (a). Measured with its OWN shadows_off / key_off / env_off arms in the same process rather than inherited: sealed judged crop lit_ratio 3.4816 / 3.4518 / 3.4240 / 3.4020 / 3.3697 over tau 1/2/4/8/16, full frame 3.2696 / 3.2481 / 3.2194 / 3.1817 / 3.1424. PASSES AT EVERY TAU IN BOTH DOMAINS, and higher than the shipped build's own table (crop 3.3834 down to 3.3014, frame 3.1918 down to 3.0956). CLAUSE (b) IS NOT MEASURED for this configuration and I record that rather than comparing across runs \u2014 it needs a `shadows_off` arm on the CONTROL in the same process, which this battery does not carry, and a cross-run area comparison is exactly the mistake HAZARDS \u00a712 and \u00a722 exist for.",
+          "threshold": "S60 clause (a): key_off >= 2.0x env_off on the lit subset",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/matched-key-hue-s60-clause-a.json"
+          ]
         }
       ],
-      "hard_fails": ["VIS04-§2-DETECT (M6 hue_offset)"],
+      "hard_fails": [
+        "VIS04-\u00a72-DETECT (M6 hue_offset)"
+      ],
       "how_we_lose_hits": [
         "A screening instrument that cannot express the lever. Both candidate sets warm only the key and cool only the ambient, so the direction that measures 17.11 deg was unreachable by construction and the lever class was declared exhausted from a battery that could not test it.",
-        "A budget quoted from a scene-wide sum rather than the visible rig — 5.0011 against 0.371 — which turned 'unresolvable at the value round 1 chose' into 'not a lever'.",
+        "A budget quoted from a scene-wide sum rather than the visible rig \u2014 5.0011 against 0.371 \u2014 which turned 'unresolvable at the value round 1 chose' into 'not a lever'.",
         "One judged window of five, so the acceptance that failed at 4 of 5 in round 1 is neither closed nor re-measured."
       ]
     }
   ],
   "artifacts": [
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/m6-independent.mjs", "kind": "log", "produced_by": "written by this critic from RI-VIS03 §0/§M6 pseudocode", "note": "M6/M2/M7 re-implemented WITHOUT opening f4c-analyse.mjs, so agreement with both prior rounds is evidence rather than a shared bug." },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/f4r2c-capture.mjs", "kind": "log", "produced_by": "written by this critic", "note": "modes `lights` (per-light visible-chain census), `battery` (the round's never-fired `hard` set plus the untested key-hue direction), `matched` (the S59-guarded arm plus its S60 clause-(a) arms), `walk` (driven motion, HAZARDS §16), `weathercheck` (the overcast preservation claim)." },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/crop-delta.mjs", "kind": "log", "produced_by": "written by this critic", "note": "independent recomputation of the round's light-budget ablation on the sealed judged crop." },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/light-census-visible-vs-scenewide.json", "kind": "report", "produced_by": "f4r2c-capture.mjs --mode lights", "seed": 20260814, "note": "Every light at 08:00, 13:00 and 19:30 with intensity, colour, parent chain and chain visibility. The 5.0011-vs-0.371 correction." },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/battery-hard-set-and-key-hue.json", "kind": "report", "produced_by": "f4r2c-capture.mjs --mode battery + m6-independent.mjs", "seed": 20260814, "note": "Fourteen arms at pair01 on the sealed judged crop, each with its live readback, including the control re-capture that measures the metric's own 0.22 deg noise floor." },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/matched-key-hue-s59-and-s60.json", "kind": "report", "produced_by": "f4r2c-capture.mjs --mode matched + m6-independent.mjs", "seed": 20260814, "note": "The S59-guarded key-hue arm at compensated intensity, with the shadow-map, key-off and env-off arms measured INSIDE that configuration so S60 clause (a) is evaluated there rather than inherited." },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/m6-independent-reimplementation.json", "kind": "report", "produced_by": "m6-independent.mjs", "note": "My figures against the round's, on the same frames: the sealed crop before/after, the full frame before/shipped/refused, and three vendored plates." },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/budget-ablation-recomputed-on-sealed-crop.json", "kind": "report", "produced_by": "crop-delta.mjs", "note": "The round's headline ablation, recomputed on my own code from its own PNGs, on both domains. Every figure reproduces." },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/weather-preservation-claim.json", "kind": "report", "produced_by": "f4r2c-capture.mjs --mode weathercheck", "seed": 20260814, "note": "The hemisphere's live colour at five weather states. `hemi.color` IS `hor` after the overcast lerp, so this measures directly how much of the shipped edit survives in the recipes the round says are untouched." },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/ablation-form-equivalence-recheck.json", "kind": "report", "produced_by": "crop-delta.mjs / equiv recompute", "note": "The instrument claim re-derived from the round's own frames, plus the stronger form: the choice of BASE frame moves area@tau8 four times as much as the choice of ablation form." },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/orbit-area-normalised-by-ground-fraction.json", "kind": "report", "produced_by": "recomputed from the round's banked orbit metrics", "note": "The yaw swing renormalised by ground fraction; it survives." },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/driven-walk.json", "kind": "report", "produced_by": "f4r2c-capture.mjs --mode walk", "seed": 20260814, "note": "Motion, which the round supplied none of. Displacement measured per frame per HAZARDS §16." },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/x0-control.png", "kind": "screenshot", "produced_by": "f4r2c-capture.mjs --mode battery", "seed": 20260814, "resolution": "1920x1080", "camera_pose": "deck-protocol-a char-player, yaw 35, pitch -6, distance 2.6 m, hour 08:00, weather clear; sealed judged crop [300,150,512,512]" },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/x1-moonkey.png", "kind": "screenshot", "produced_by": "f4r2c-capture.mjs --mode battery", "seed": 20260814, "resolution": "1920x1080", "camera_pose": "as x0-control; key recoloured to sky.js:644's 0x8ca9d8" },
-    { "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/x3-moonkey-warmamb-amb400.png", "kind": "screenshot", "produced_by": "f4r2c-capture.mjs --mode battery", "seed": 20260814, "resolution": "1920x1080", "camera_pose": "as x0-control; key blue, ambient warm at 4x" },
-    { "path": "corpus/90-verdicts/wave1/W1-F4-r2.md", "kind": "report", "produced_by": "this critic", "note": "the readable companion to this verdict" }
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/m6-independent.mjs",
+      "kind": "log",
+      "produced_by": "written by this critic from RI-VIS03 \u00a70/\u00a7M6 pseudocode",
+      "note": "M6/M2/M7 re-implemented WITHOUT opening f4c-analyse.mjs, so agreement with both prior rounds is evidence rather than a shared bug."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/f4r2c-capture.mjs",
+      "kind": "log",
+      "produced_by": "written by this critic",
+      "note": "modes `lights` (per-light visible-chain census), `battery` (the round's never-fired `hard` set plus the untested key-hue direction), `matched` (the S59-guarded arm plus its S60 clause-(a) arms), `walk` (driven motion, HAZARDS \u00a716), `weathercheck` (the overcast preservation claim)."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/crop-delta.mjs",
+      "kind": "log",
+      "produced_by": "written by this critic",
+      "note": "independent recomputation of the round's light-budget ablation on the sealed judged crop."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/light-census-visible-vs-scenewide.json",
+      "kind": "report",
+      "produced_by": "f4r2c-capture.mjs --mode lights",
+      "seed": 20260814,
+      "note": "Every light at 08:00, 13:00 and 19:30 with intensity, colour, parent chain and chain visibility. The 5.0011-vs-0.371 correction."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/battery-hard-set-and-key-hue.json",
+      "kind": "report",
+      "produced_by": "f4r2c-capture.mjs --mode battery + m6-independent.mjs",
+      "seed": 20260814,
+      "note": "Fourteen arms at pair01 on the sealed judged crop, each with its live readback, including the control re-capture that measures the metric's own 0.22 deg noise floor."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/matched-key-hue-s59-and-s60.json",
+      "kind": "report",
+      "produced_by": "f4r2c-capture.mjs --mode matched + m6-independent.mjs",
+      "seed": 20260814,
+      "note": "The S59-guarded key-hue arm at compensated intensity, with the shadow-map, key-off and env-off arms measured INSIDE that configuration so S60 clause (a) is evaluated there rather than inherited."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/m6-independent-reimplementation.json",
+      "kind": "report",
+      "produced_by": "m6-independent.mjs",
+      "note": "My figures against the round's, on the same frames: the sealed crop before/after, the full frame before/shipped/refused, and three vendored plates."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/budget-ablation-recomputed-on-sealed-crop.json",
+      "kind": "report",
+      "produced_by": "crop-delta.mjs",
+      "note": "The round's headline ablation, recomputed on my own code from its own PNGs, on both domains. Every figure reproduces."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/weather-preservation-claim.json",
+      "kind": "report",
+      "produced_by": "f4r2c-capture.mjs --mode weathercheck",
+      "seed": 20260814,
+      "note": "The hemisphere's live colour at five weather states. `hemi.color` IS `hor` after the overcast lerp, so this measures directly how much of the shipped edit survives in the recipes the round says are untouched."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/ablation-form-equivalence-recheck.json",
+      "kind": "report",
+      "produced_by": "crop-delta.mjs / equiv recompute",
+      "note": "The instrument claim re-derived from the round's own frames, plus the stronger form: the choice of BASE frame moves area@tau8 four times as much as the choice of ablation form."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/orbit-area-normalised-by-ground-fraction.json",
+      "kind": "report",
+      "produced_by": "recomputed from the round's banked orbit metrics",
+      "note": "The yaw swing renormalised by ground fraction; it survives."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/driven-walk.json",
+      "kind": "report",
+      "produced_by": "f4r2c-capture.mjs --mode walk",
+      "seed": 20260814,
+      "note": "Motion, which the round supplied none of. Displacement measured per frame per HAZARDS \u00a716."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/x0-control.png",
+      "kind": "screenshot",
+      "produced_by": "f4r2c-capture.mjs --mode battery",
+      "seed": 20260814,
+      "resolution": "1920x1080",
+      "camera_pose": "deck-protocol-a char-player, yaw 35, pitch -6, distance 2.6 m, hour 08:00, weather clear; sealed judged crop [300,150,512,512]"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/x1-moonkey.png",
+      "kind": "screenshot",
+      "produced_by": "f4r2c-capture.mjs --mode battery",
+      "seed": 20260814,
+      "resolution": "1920x1080",
+      "camera_pose": "as x0-control; key recoloured to sky.js:644's 0x8ca9d8"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/x3-moonkey-warmamb-amb400.png",
+      "kind": "screenshot",
+      "produced_by": "f4r2c-capture.mjs --mode battery",
+      "seed": 20260814,
+      "resolution": "1920x1080",
+      "camera_pose": "as x0-control; key blue, ambient warm at 4x"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-F4-r2.md",
+      "kind": "report",
+      "produced_by": "this critic",
+      "note": "the readable companion to this verdict"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/matched-key-hue-s60-clause-a.json",
+      "kind": "report",
+      "produced_by": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/s60-clause-a.mjs",
+      "note": "S60 clause (a) as a curve over tau in both domains, computed INSIDE the matched key-hue configuration from its own shadows_off / key_off / env_off arms. Crop 3.482 to 3.370, frame 3.270 to 3.142 \u2014 passes everywhere, and higher than the shipped build."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/s60-clause-a.mjs",
+      "kind": "log",
+      "produced_by": "written by this critic from ARBITRATION S60 and S64",
+      "note": "not imported from the round's tool"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/y1-moonkey-lummatched.png",
+      "kind": "screenshot",
+      "produced_by": "f4r2c-capture.mjs",
+      "seed": 20260814,
+      "note": "the matched key-hue arm, 17.11 deg, luminance within 2%"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/weather-overcast-hemi-NOT-neutral.png",
+      "kind": "screenshot",
+      "produced_by": "f4r2c-capture.mjs",
+      "seed": 20260814,
+      "note": "weather `overcast`: the hemisphere is NOT the neutral, so the edit is not erased"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/weather-storm-hemi-IS-neutral.png",
+      "kind": "screenshot",
+      "produced_by": "f4r2c-capture.mjs",
+      "seed": 20260814,
+      "note": "weather `storm`: the hemisphere IS the neutral exactly, so the edit is erased there"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/walk-t8-f05-driven-3.04m.png",
+      "kind": "screenshot",
+      "produced_by": "f4r2c-capture.mjs",
+      "seed": 20260814,
+      "note": "last frame of the 08:00 driven walk, 3.04 m from the start"
+    }
   ],
   "blind_comparisons": [
     {
       "ref_item": "RI-VIS04",
       "status": "not_required",
-      "not_possible_reason": "RI-VIS04 declares `blind_pair: no` in its own front matter (line 9), so no blind pack is owed on the item this piece is scored against. RECORDED RATHER THAN OMITTED, and it is not a free pass: F4 exists BECAUSE Protocol A ranked us last of five, twice, and the judgement this round is trying to move is a blind one. A critic cannot spawn a fresh judge — `create_session` is approval-gated and CLAUDE.md rule 0 forbids it; rule 0e places this with the ORCHESTRATOR and says an unrun gate is a live blocker, not a footnote. MEASURED THIS TURN RATHER THAN INHERITED FROM MY BRIEF, WHICH SAID 100 AND IS STALE: `grep -rl \"blind_pair: yes\" corpus/ --include=*.md | wc -l` returns 102, and `grep -rln \"blind_status: *run\" corpus/90-verdicts/ | wc -l` returns 1 — whose single hit is `W1-F7-WATER-r2.md:209` QUOTING THIS COMMAND, not recording a run. So the true count of verdicts that have ever run a blind pair is still ZERO, the population has grown by four since rule 0e was written, and the number run has not moved. THE ORCHESTRATOR OWES THIS ONE."
+      "not_possible_reason": "RI-VIS04 declares `blind_pair: no` in its own front matter (line 9), so no blind pack is owed on the item this piece is scored against. RECORDED RATHER THAN OMITTED, and it is not a free pass: F4 exists BECAUSE Protocol A ranked us last of five, twice, and the judgement this round is trying to move is a blind one. A critic cannot spawn a fresh judge \u2014 `create_session` is approval-gated and CLAUDE.md rule 0 forbids it; rule 0e places this with the ORCHESTRATOR and says an unrun gate is a live blocker, not a footnote. MEASURED THIS TURN RATHER THAN INHERITED FROM MY BRIEF, WHICH SAID 100 AND IS STALE: `grep -rl \"blind_pair: yes\" corpus/ --include=*.md | wc -l` returns 102, and `grep -rln \"blind_status: *run\" corpus/90-verdicts/ | wc -l` returns 1 \u2014 whose single hit is `W1-F7-WATER-r2.md:209` QUOTING THIS COMMAND, not recording a run. So the true count of verdicts that have ever run a blind pair is still ZERO, the population has grown by four since rule 0e was written, and the number run has not moved. THE ORCHESTRATOR OWES THIS ONE."
     }
   ],
   "arbitration": {
     "ar1": {
       "status": "not_applicable",
       "checks": [],
-      "not_applicable_reason": "AR-1 asks whether a Morrowind-flavoured mechanic contaminated the FIGHT. This round changes three floating-point constants on one colour expression in `game/src/render/sky.js` and two recipe values that were reverted to where round 1 left them. `git show 02d122bf --stat` and `git log -1 --stat d1627137` touch no combat, AI, stat, dialogue or inventory file, and no probe in §4.1 can reach a lighting recipe. Recorded not_applicable rather than skipped.",
-      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/light-census-visible-vs-scenewide.json"]
+      "not_applicable_reason": "AR-1 asks whether a Morrowind-flavoured mechanic contaminated the FIGHT. This round changes three floating-point constants on one colour expression in `game/src/render/sky.js` and two recipe values that were reverted to where round 1 left them. `git show 02d122bf --stat` and `git log -1 --stat d1627137` touch no combat, AI, stat, dialogue or inventory file, and no probe in \u00a74.1 can reach a lighting recipe. Recorded not_applicable rather than skipped.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/light-census-visible-vs-scenewide.json"
+      ]
     },
     "ar2": {
       "status": "not_applicable",
       "checks": [],
       "not_applicable_reason": "AR-2 asks whether a Souls-flavoured convention contaminated the WORLD. Same reason: the diff is three constants on a horizon colour. The one AR-2-adjacent property this round could damage is region distinguishability (RI-WLD04 M17), which is blind, which the orchestrator owes, and which is recorded under blind_comparisons rather than smuggled through AR-2 as a pass. Worth naming: the shipped edit moves `hor`, which `sky.js:889` and `:893` lerp toward each region's own `regionNight` colour, so the edit's reach into region identity is proportional to `1 - night*0.85` and is largest by day, where region hue comes from the region's fog record and not from `hor`.",
-      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/weather-preservation-claim.json"]
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/weather-preservation-claim.json"
+      ]
     },
     "rulings_applied": [
-      { "ruling": "S64", "applied": true, "note": "The sealed judged crop is the domain and the full frame is reported alongside. Applied to the metric the round left unmeasured on the shipped arm, and the divergence (crop +0.16, frame +2.63) is reported as S64 requires." },
-      { "ruling": "S60", "applied": true, "note": "Clause (a) applied as written INCLUDING its 'all five judged windows'. The round measured one. Clause (b) reported as unmoved-within-the-instrument, which is the round's own honest reading and I agree with it." },
-      { "ruling": "S59", "applied": true, "note": "Applied to the shipped lever (holds) AND, more importantly, to the arm that threatens the round's ruling: the key-hue arm was re-run at compensated intensity so it cannot buy hue with brightness, and it survives." },
-      { "ruling": "S61", "applied": true, "note": "The metric's own instability was MEASURED in this run (same configuration re-captured: 7.35 vs 7.57) and the round's crop-domain headline falls inside it, so it is `unresolved` and fails closed." },
-      { "ruling": "S63", "applied": true, "note": "'A ruling may state what must be measured. It may not narrate why the number moved unless it ran the ablation itself.' Applied to the round: its ablation is sound and the mechanism it narrates from it (a 5.0011 hemisphere) is not. Applied to me: I ran the arm before I claimed the lever." }
+      {
+        "ruling": "S64",
+        "applied": true,
+        "note": "The sealed judged crop is the domain and the full frame is reported alongside. Applied to the metric the round left unmeasured on the shipped arm, and the divergence (crop +0.16, frame +2.63) is reported as S64 requires."
+      },
+      {
+        "ruling": "S60",
+        "applied": true,
+        "note": "Clause (a) applied as written INCLUDING its 'all five judged windows'. The round measured one. Clause (b) reported as unmoved-within-the-instrument, which is the round's own honest reading and I agree with it."
+      },
+      {
+        "ruling": "S59",
+        "applied": true,
+        "note": "Applied to the shipped lever (holds) AND, more importantly, to the arm that threatens the round's ruling: the key-hue arm was re-run at compensated intensity so it cannot buy hue with brightness, and it survives."
+      },
+      {
+        "ruling": "S61",
+        "applied": true,
+        "note": "The metric's own instability was MEASURED in this run (same configuration re-captured: 7.35 vs 7.57) and the round's crop-domain headline falls inside it, so it is `unresolved` and fails closed."
+      },
+      {
+        "ruling": "S63",
+        "applied": true,
+        "note": "'A ruling may state what must be measured. It may not narrate why the number moved unless it ran the ablation itself.' Applied to the round: its ablation is sound and the mechanism it narrates from it (a 5.0011 hemisphere) is not. Applied to me: I ran the arm before I claimed the lever."
+      }
     ]
   },
   "score": {
     "overall_0_10": 2,
     "pass_threshold": 7,
     "aggregation": "min",
-    "band_label": "SCORING.md §1.1: a triggered hard fail on RI-VIS04 §2's own DETECT caps the item at 2, aggregation is min, so the OVERALL IS 2 — the same cap as round 1, set by the same pre-existing absence, not by a regression this round caused. THE AXES, MEASURED. (A) RI-VIS04 §2 by its own DETECT — sealed crop 7.16 -> 7.32, full frame 3.75 -> 6.38, twelve orbit angles all below the 15 minimum and four below the 6 hard fail: HARD FAIL, caps at 2. (B) S60 clause (a), the piece's own acceptance — measured at ONE of five judged windows and passing there at 3.33; the two windows that failed in round 1 were not re-measured, so the acceptance is NOT MET: 3. (C) clause (b) / §3-D2 area — unmoved within the instrument at the judged window, below the floor at 2 of 12 orbit angles: 5. (D) §3-D3 — not triggered (area did not rise); retention flat, C_shadow -12.5% but above 6; on the orbit retention below its minimum at 5 of 12 and below the hard fail at 1: 4. (E) the motion directive — twelve angles and ZERO moving frames from the build, weaker than the critic that judged the round before it; the walk in this verdict is mine: 4. (F) coverage — one judged window; overcast-flat and storm uncaptured AND, contrary to the round's arithmetic claim, genuinely touched at every state below overcast 1.00: 3. (G) evidence integrity — the headline sealed-crop ablation is banked only in its full-frame form, two banked frames named `AFTER-r2` are different arms (7.27 refused vs 7.34 shipped), and the shipped arm's full-frame M6 is missing while the refused arm's is present: 4. (H) diagnostic value and candour — the first per-term light ablation in this project, a reusable ~10x cheaper §3-D2 whose equivalence I re-derived exactly, a measured gain refused on its own acceptance, and two brief premises falsified rather than inherited: 8. WHAT THE 2 IS NOT: a claim that the round did nothing. Its own full frame moved out of the hard-fail band and it never noticed.",
+    "band_label": "SCORING.md \u00a71.1: a triggered hard fail on RI-VIS04 \u00a72's own DETECT caps the item at 2, aggregation is min, so the OVERALL IS 2 \u2014 the same cap as round 1, set by the same pre-existing absence, not by a regression this round caused. THE AXES, MEASURED. (A) RI-VIS04 \u00a72 by its own DETECT \u2014 sealed crop 7.16 -> 7.32, full frame 3.75 -> 6.38, twelve orbit angles all below the 15 minimum and four below the 6 hard fail: HARD FAIL, caps at 2. (B) S60 clause (a), the piece's own acceptance \u2014 measured at ONE of five judged windows and passing there at 3.33; the two windows that failed in round 1 were not re-measured, so the acceptance is NOT MET: 3. (C) clause (b) / \u00a73-D2 area \u2014 unmoved within the instrument at the judged window, below the floor at 2 of 12 orbit angles: 5. (D) \u00a73-D3 \u2014 not triggered (area did not rise); retention flat, C_shadow -12.5% but above 6; on the orbit retention below its minimum at 5 of 12 and below the hard fail at 1: 4. (E) the motion directive \u2014 twelve angles and ZERO moving frames from the build, weaker than the critic that judged the round before it; the walk in this verdict is mine: 4. (F) coverage \u2014 one judged window; overcast-flat and storm uncaptured AND, contrary to the round's arithmetic claim, genuinely touched at every state below overcast 1.00: 3. (G) evidence integrity \u2014 the headline sealed-crop ablation is banked only in its full-frame form, two banked frames named `AFTER-r2` are different arms (7.27 refused vs 7.34 shipped), and the shipped arm's full-frame M6 is missing while the refused arm's is present: 4. (H) diagnostic value and candour \u2014 the first per-term light ablation in this project, a reusable ~10x cheaper \u00a73-D2 whose equivalence I re-derived exactly, a measured gain refused on its own acceptance, and two brief premises falsified rather than inherited: 8. WHAT THE 2 IS NOT: a claim that the round did nothing. Its own full frame moved out of the hard-fail band and it never noticed.",
     "confidence": "high"
   },
   "status": "FAIL",
   "status_reasons": [
-    "hard_fail:RI-VIS04/§2-DETECT — M6 hue_offset 7.32-7.34 on the sealed judged crop and 6.38 on the full frame against a 15 deg minimum, and below the 6 deg HARD FAIL at 4 of 12 orbit angles. Not a regression; an absence F4 has not closed in two rounds.",
-    "acceptance_not_met:S60_clause_a — the round measured ONE of the five judged windows S60 names. Round 1 failed clause (a) at 4 of 5 in each domain (pair03 crop 0.473, pair04 frame 1.821) and neither window was re-measured.",
+    "hard_fail:RI-VIS04/\u00a72-DETECT \u2014 M6 hue_offset 7.32-7.34 on the sealed judged crop and 6.38 on the full frame against a 15 deg minimum, and below the 6 deg HARD FAIL at 4 of 12 orbit angles. Not a regression; an absence F4 has not closed in two rounds.",
+    "acceptance_not_met:S60_clause_a \u2014 the round measured ONE of the five judged windows S60 names. Round 1 failed clause (a) at 4 of 5 in each domain (pair03 crop 0.473, pair04 frame 1.821) and neither window was re-measured.",
     "below_threshold",
-    "RULING NOT SUSTAINED, AND THIS IS THE ONE THE ORCHESTRATOR SHOULD READ FIRST. The round rules that `F4 CANNOT CLOSE RI-VIS04 §2 BY ITSELF` and that round 3 should not be another lighting round, on the ground that eleven configurations span 5.84-7.34 deg. Its screening instrument applies `warm` only to the sun and `cool` only to the hemisphere and fill, in BOTH candidate sets — so NO ARM IN THE ROUND MAKES THE KEY COOLER, and the `hard` set was never fired at all (`grep -rn 'coolhard|warmhard|both100|amb250|amb180'` over its artifacts, status file and reports returns nothing). Measured: the key recoloured to `sky.js:644`'s own night blue reads 17.07 deg, and AT COMPENSATED INTENSITY — so it cannot buy hue with brightness — 17.11 deg, with mean Yp matched to 0.9% and 1.8%, `retention` 0.6759, `C_shadow` 8.935 and `C_local_med` IDENTICAL at 0.0245. The ruling's own named overturn condition is met on the sealed judged crop. ONE CAVEAT, STATED NOT BURIED: a page-side key recolour does not reach `bakeEnvironmentProbe`'s `uSunColour` uniform, so in source a bluer key also blues the probe's sun lobe and the number would fall — every key-hue figure here is an UPPER BOUND. THE RULING DOES NOT STAND AS WRITTEN AND RING 1'S ORDERING DOES NOT NEED THE REWRITE IT ASKED FOR.",
-    "PRESERVATION CLAIM FALSIFIED, AND IT COVERS 59.1% OF DAYLIGHT. The shipped source comment says `overcast-flat` and `storm` `ARE UNTOUCHED AT THEIR OWN WEATHER ... Both are checked as null controls rather than argued`, on the arithmetic that `hor.lerp(neutral, overcast)` erases the edit at FULL overcast. `recipeForConditions()` selects `overcast-flat` at `overcast >= 0.50`, so `1 - overcast` of the edit SURVIVES — 45% at dry_thunder's 0.55, 30% at fog's 0.70, 20% at the overcast state's 0.80, and 6% for heavy_rain, which selects `storm`. Only overcast 1.00 (`storm`, `sea_squall`) is genuinely erased. The status file states plainly `I captured nothing in overcast or storm`, so the source comment asserts a null control that was never run.",
+    "RULING NOT SUSTAINED, AND THIS IS THE ONE THE ORCHESTRATOR SHOULD READ FIRST. The round rules that `F4 CANNOT CLOSE RI-VIS04 \u00a72 BY ITSELF` and that round 3 should not be another lighting round, on the ground that eleven configurations span 5.84-7.34 deg. Its screening instrument applies `warm` only to the sun and `cool` only to the hemisphere and fill, in BOTH candidate sets \u2014 so NO ARM IN THE ROUND MAKES THE KEY COOLER, and the `hard` set was never fired at all (`grep -rn 'coolhard|warmhard|both100|amb250|amb180'` over its artifacts, status file and reports returns nothing). Measured: the key recoloured to `sky.js:644`'s own night blue reads 17.07 deg, and AT COMPENSATED INTENSITY \u2014 so it cannot buy hue with brightness \u2014 17.11 deg, with mean Yp matched to 0.9% and 1.8%, `retention` 0.6759, `C_shadow` 8.935 and `C_local_med` IDENTICAL at 0.0245. The ruling's own named overturn condition is met on the sealed judged crop. ONE CAVEAT, STATED NOT BURIED: a page-side key recolour does not reach `bakeEnvironmentProbe`'s `uSunColour` uniform, so in source a bluer key also blues the probe's sun lobe and the number would fall \u2014 every key-hue figure here is an UPPER BOUND. THE RULING DOES NOT STAND AS WRITTEN AND RING 1'S ORDERING DOES NOT NEED THE REWRITE IT ASKED FOR.",
+    "PRESERVATION CLAIM FALSIFIED, AND IT COVERS 59.1% OF DAYLIGHT. The shipped source comment says `overcast-flat` and `storm` `ARE UNTOUCHED AT THEIR OWN WEATHER ... Both are checked as null controls rather than argued`, on the arithmetic that `hor.lerp(neutral, overcast)` erases the edit at FULL overcast. `recipeForConditions()` selects `overcast-flat` at `overcast >= 0.50`, so `1 - overcast` of the edit SURVIVES \u2014 45% at dry_thunder's 0.55, 30% at fog's 0.70, 20% at the overcast state's 0.80, and 6% for heavy_rain, which selects `storm`. Only overcast 1.00 (`storm`, `sea_squall`) is genuinely erased. MEASURED, NOT ARGUED: `sky.js:889` copies `hor` into `hemi.color` and at 13:00 `night = 0`, so the hemisphere's live colour IS `hor` after the overcast lerp. Read back off the running build \u2014 `storm` [0.4300, 0.4400, 0.4600], the neutral EXACTLY and independent of that state's tint; `clear` [0.677, 0.790, 0.944], the new day-end triple exactly; and in between `overcast` [0.4604, 0.4910, 0.5417] and `fog` [0.4635, 0.5023, 0.5486], both well above the neutral, with 0.0449 of the `overcast` state's blue being this round's own edit. Both endpoints validate the arithmetic and the middle falsifies the claim. The status file states plainly `I captured nothing in overcast or storm`, so the source comment asserts a null control that was never run.",
     "CORRECTION IN THE BUILD'S FAVOUR, AND THE ROUND MISSED IT. S64 requires the full frame alongside the crop always. The round published the full frame for the arm it REFUSED and not for the arm it SHIPPED. Measured from its own capture: the shipped change moved the full frame 3.75 -> 6.38 deg, +70%, out of the 6 deg hard-fail band, against +0.16 deg on the crop. That 16x divergence is itself an S64 finding and the round asserted the opposite."
   ],
   "biggest_gap": {
     "gap_id": "GAP-W1-f4-the-key-has-no-hue-and-the-field-that-would-give-it-one-is-set-to-zero",
     "subsystem_path": "render.fidelity.ibl",
     "severity": "blocking",
-    "what": "TWO ROUNDS HAVE TUNED THE AMBIENT AND NEITHER HAS TUNED THE KEY'S HUE, BECAUSE BOTH TOOK ROUND 1'S REMEDY TO MEAN 'WARM' AND WARM IS THE WRONG SIGN. `noon-marsh` declares `keyWarmth: 0.0`. `sky.js:853-854` reads it both ways — positive lerps `sunCol` toward the horizon (warm), NEGATIVE lerps it toward `zen`, which at `day = 1` is (0.115, 0.305, 0.620), a strong blue. Round 1's remedy said start at +0.45. Round 2 measured warm and found it worse (7.16 -> 5.84) and then generalised that to the whole lever class, using a battery whose `cool` term is wired only to the hemisphere and the ambient fill and can never reach the key. Measured by me on the shipped build, pair01, sealed judged crop, my own M6 implementation: control 7.35; ambient colour in either direction 7.30 and 7.37 (inside the 0.22 deg noise floor I measured in the same run); probe x3 6.22 (WORSE, which independently vindicates the round's refusal of the env raise); ambient intensity x4 8.87; and THE KEY RECOLOURED TO THE GAME'S OWN NIGHT BLUE 17.07 — at compensated intensity 17.11, with mean Yp matched to 0.9% lit and 1.8% shadow, `retention` 0.6759, `C_shadow` 8.935 and `C_local_med` unchanged at 0.0245. The best combined arm, blue key with a warm ambient at 4x, reads 16.15 with `retention` 0.7132 and `C_shadow` 10.371 — better than the shipped build on both.",
-    "why_it_matters": "F4 exists because five blind judges ranked us last of five, twice, and every one of them named the same thing: 'every surface returns the same flat matte olive-grey'. That is a HUE complaint, and `hue_offset` is the corpus's one-number test for it. The round's ruling would have sent round 3 away from lighting entirely and rewritten ring 1's ordering around material differentiation. On this measurement that would have been the wrong call TWICE OVER: the lighting lever is not exhausted, and the one configuration that reaches the bar costs one number in a file F4 already owns. It is also the cheapest thing on the roadmap — three constants and an intensity compensation against a G-buffer normal target.",
+    "what": "TWO ROUNDS HAVE TUNED THE AMBIENT AND NEITHER HAS TUNED THE KEY'S HUE, BECAUSE BOTH TOOK ROUND 1'S REMEDY TO MEAN 'WARM' AND WARM IS THE WRONG SIGN. `noon-marsh` declares `keyWarmth: 0.0`. `sky.js:853-854` reads it both ways \u2014 positive lerps `sunCol` toward the horizon (warm), NEGATIVE lerps it toward `zen`, which at `day = 1` is (0.115, 0.305, 0.620), a strong blue. Round 1's remedy said start at +0.45. Round 2 measured warm and found it worse (7.16 -> 5.84) and then generalised that to the whole lever class, using a battery whose `cool` term is wired only to the hemisphere and the ambient fill and can never reach the key. Measured by me on the shipped build, pair01, sealed judged crop, my own M6 implementation: control 7.35; ambient colour in either direction 7.30 and 7.37 (inside the 0.22 deg noise floor I measured in the same run); probe x3 6.22 (WORSE, which independently vindicates the round's refusal of the env raise); ambient intensity x4 8.87; and THE KEY RECOLOURED TO THE GAME'S OWN NIGHT BLUE 17.07 \u2014 at compensated intensity 17.11, with mean Yp matched to 0.9% lit and 1.8% shadow, `retention` 0.6759, `C_shadow` 8.935 and `C_local_med` unchanged at 0.0245. The best combined arm, blue key with a warm ambient at 4x, reads 16.15 with `retention` 0.7132 and `C_shadow` 10.371 \u2014 better than the shipped build on both.",
+    "why_it_matters": "F4 exists because five blind judges ranked us last of five, twice, and every one of them named the same thing: 'every surface returns the same flat matte olive-grey'. That is a HUE complaint, and `hue_offset` is the corpus's one-number test for it. The round's ruling would have sent round 3 away from lighting entirely and rewritten ring 1's ordering around material differentiation. On this measurement that would have been the wrong call TWICE OVER: the lighting lever is not exhausted, and the one configuration that reaches the bar costs one number in a file F4 already owns. It is also the cheapest thing on the roadmap \u2014 three constants and an intensity compensation against a G-buffer normal target.",
     "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/battery-hard-set-and-key-hue.json",
       "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/matched-key-hue-s59-and-s60.json",
@@ -223,22 +437,57 @@
       "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/light-census-visible-vs-scenewide.json"
     ],
     "remedy": {
-      "action": "IN SOURCE, NOT PAGE-SIDE, because the probe must move with the key. In `game/src/render/sky.js`, give the daytime key a genuinely cool hue and compensate its luminous output so the frame's brightness does not move. Two shapes, either acceptable, and the second is the smaller diff: (1) set `noon-marsh`'s `keyWarmth` NEGATIVE and raise the lerp coefficient at `sky.js:854` (today 0.30, which at keyWarmth -1.0 reaches only (0.7345, 0.7495, 0.7600) — near-neutral, and 21% dimmer, so the coefficient alone is not enough); or (2) give the day end of `sunCol` at `sky.js:849-850` a cool triple directly, in the same style as the horizon triple this round already shipped, WITH `R.key` raised by the reciprocal of the Rec.709 luminance ratio so the key's luminous output is unchanged. Either way the change must reach `bakeEnvironmentProbe`'s `sunColour`, which is exactly why a page-side arm is only an upper bound and this must be measured in source. WHILE YOU ARE IN THE FILE: `moon.castShadow = false` at `sky.js:645` still means the light that carries half the clock cannot cast a shadow — carried forward from S64 as an `inapplicable` that names an absence, unchanged by this round.",
+      "action": "IN SOURCE, NOT PAGE-SIDE, because the probe must move with the key. In `game/src/render/sky.js`, give the daytime key a genuinely cool hue and compensate its luminous output so the frame's brightness does not move. Two shapes, either acceptable, and the second is the smaller diff: (1) set `noon-marsh`'s `keyWarmth` NEGATIVE and raise the lerp coefficient at `sky.js:854` (today 0.30, which at keyWarmth -1.0 reaches only (0.7345, 0.7495, 0.7600) \u2014 near-neutral, and 21% dimmer, so the coefficient alone is not enough); or (2) give the day end of `sunCol` at `sky.js:849-850` a cool triple directly, in the same style as the horizon triple this round already shipped, WITH `R.key` raised by the reciprocal of the Rec.709 luminance ratio so the key's luminous output is unchanged. Either way the change must reach `bakeEnvironmentProbe`'s `sunColour`, which is exactly why a page-side arm is only an upper bound and this must be measured in source. WHILE YOU ARE IN THE FILE: `moon.castShadow = false` at `sky.js:645` still means the light that carries half the clock cannot cast a shadow \u2014 carried forward from S64 as an `inapplicable` that names an absence, unchanged by this round.",
       "targets": [
         "game/src/render/sky.js",
         "game/src/render/lib/lighting-recipes.js"
       ],
-      "acceptance": "AT ALL FIVE JUDGED WINDOWS, NOT ONE — S60 says five and this round did one. Report the sealed judged crop and the full frame for every number (S64). (i) M6 `hue_offset` >= 15 deg on the sealed crop at pair01, pair02 and pair03, and not lower than the shipped build at pair04 and pair05. (ii) S59 PRESERVATION, PAIRED, so the hue cannot be bought with brightness: mean `Yp` on the LIT quartile and on the SHADOW quartile each within +/-3% of the shipped build, at every window. (iii) `retention` >= 0.60, `C_shadow` >= 6 and `C_local_med` not lower than the shipped build's, at every window. (iv) S60 clause (a) `key_off >= 2.0x env_off` ON THE LIT SUBSET, measured INSIDE the new configuration and not inherited, at every window; clause (b) cast-shadow area not falling. (v) THE NOISE FLOOR PUBLISHED WITH THE RESULT (S61): capture the shipped configuration twice in the same process and report the spread, because in my run that spread was 0.22 deg and it is larger than the whole of round 2's crop-domain gain. (vi) The twelve-angle orbit re-shot on the new build, since 4 of 12 angles are currently below the 6 deg hard fail and one configuration passing at one pose is not the feature being present."
+      "acceptance": "AT ALL FIVE JUDGED WINDOWS, NOT ONE \u2014 S60 says five and this round did one. Report the sealed judged crop and the full frame for every number (S64). (i) M6 `hue_offset` >= 15 deg on the sealed crop at pair01, pair02 and pair03, and not lower than the shipped build at pair04 and pair05. (ii) S59 PRESERVATION, PAIRED, so the hue cannot be bought with brightness: mean `Yp` on the LIT quartile and on the SHADOW quartile each within +/-3% of the shipped build, at every window. (iii) `retention` >= 0.60, `C_shadow` >= 6 and `C_local_med` not lower than the shipped build's, at every window. (iv) S60 clause (a) `key_off >= 2.0x env_off` ON THE LIT SUBSET, measured INSIDE the new configuration and not inherited, at every window; clause (b) cast-shadow area not falling. (v) THE NOISE FLOOR PUBLISHED WITH THE RESULT (S61): capture the shipped configuration twice in the same process and report the spread, because in my run that spread was 0.22 deg and it is larger than the whole of round 2's crop-domain gain. (vi) The twelve-angle orbit re-shot on the new build, since 4 of 12 angles are currently below the 6 deg hard fail and one configuration passing at one pose is not the feature being present."
     }
   },
   "secondary_observations": [
-    { "what": "THE ROUND'S OWN TOOL CONTAINS SEVEN ARMS IT NEVER FIRED. `f4-r2-light.mjs` defines `SETS.hard` — d0 to d6, `WARM_HARD`/`COOL_HARD`/`mixRaw`, the same levers without the constant-luminance normaliser its own comment says pulls a lerp back toward where it started. No metric file, no status row, no report contains any of their ids. I ran them: 3.31 to 7.30 on the sealed crop, i.e. the round's conclusion about them would have been right — but it declared the lever class exhausted without the evidence, and the same battery is the one that cannot cool the key.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/battery-hard-set-and-key-hue.json"] },
-    { "what": "THE HEADLINE ABLATION IS BANKED ONLY IN ITS FULL-FRAME FORM. The sealed-crop figures the status file leads with — 26.33 / 8.10 / 2.18 / 2.04 against a floor of 1.86 — are in none of the twelve banked metric files; the JSONs carry `full` only. They are computed from PNGs under `reports/`, which HAZARDS §9 says never reaches the remote. I reproduced all five EXACTLY on my own code from those PNGs while they still exist, and banked the result, so the round's headline is now reproducible off this box. It was not before.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/budget-ablation-recomputed-on-sealed-crop.json"] },
-    { "what": "TWO BANKED FRAMES CALLED `AFTER-r2` ARE DIFFERENT ARMS. `frames/AFTER-r2__pair01-crop.png` measures 7.27 on my instrument — it is the REFUSED `env 0.55` arm, a configuration that is not in the tree. `frames/pair01__AFTER-r2__judged-crop.png` measures 7.34 — that one is the shipped build. Nothing in the names distinguishes them. Same family as HAZARDS §17: a verdict's cited artefacts must mean what they say.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/m6-independent-reimplementation.json"] },
-    { "what": "THE 'NIGHT IS UNTOUCHED' CLAIM OVERREACHES BY ABOUT ONE HOUR A DAY, AND THE MAGNITUDE IS NEGLIGIBLE. `day = clamp(elev*1.6 + 0.28)` is 0 only for `h` outside (5.33, 18.67), while `night-moon` holds `h` in (18.18, 5.82). So roughly an hour a day of `night-moon` has `day > 0` and the edit does reach it — at the boundary, <= 0.005 in the ambient's blue channel after the `regionNight` lerp. The MEASURED window at 19:30 sits squarely in the `day = 0` band and is genuinely bit-identical. Recorded as a precision correction, not a defect.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/weather-preservation-claim.json"] },
-    { "what": "THE ROUND'S INSTRUMENT RESULT IS REAL AND I CAN MAKE IT STRONGER. `LightShadow.intensity` against `shadowMap.enabled = false`: the two forms differ by mean|d|luma 0.3368 at 08:00 and 0.1365 at 13:00, while the SAME configuration re-captured differs by 1.0918 and 0.4460 — 31% of the capture's own noise at both hours, reproduced exactly on my code. The stronger statement the round did not make: swapping which `base` frame you subtract moves `cast_shadow_area@tau8` by 0.00266 (0.10364 -> 0.10630), FOUR TIMES the 0.00067 between the two ablation forms. THE CHOICE OF BASE FRAME MATTERS MORE THAN THE CHOICE OF ABLATION FORM. This belongs in HAZARDS.md and it makes §3-D2 affordable at breadth on a software renderer.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/ablation-form-equivalence-recheck.json"] },
-    { "what": "THE YAW SWING SURVIVES ITS OWN CONFOUND. `cast_shadow_area_fraction` is normalised by the whole frame, so a camera seeing more sky mechanically scores lower — and sky fraction across the orbit runs 0.0021 to 0.1090, which is a 1.12x effect on ground fraction. Renormalised by ground fraction the swing is still 4.5x at 08:00 (0.0240 to 0.1080) and 5.4x at 13:00 (0.0264 to 0.1436), against a between-hour ratio of means of 1.34x. THE ROUND'S CORRECTION TO ITS BRIEF IS CONFIRMED AND STRENGTHENED: the dominant variable is where the camera points, not what hour it is, and 'why is 08:00 empty' was the wrong question.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/orbit-area-normalised-by-ground-fraction.json"] },
-    { "what": "CREDIT, AND IT SHOULD BE SAID AS PLAINLY AS THE FAILURES. This round refused a measured gain because it failed the piece's own acceptance by 1.6% at one tau; it put a value back it could not attribute; it falsified two premises its own brief handed it, including the one about the moon, which I re-verified off a live readback and which is exactly right; and it led with the number that damns it. Its light budget is the first per-term ablation this project has ever run and every figure of it reproduces on independent code. My disagreements are with a mechanism narrated from a sound measurement, a preservation clause argued instead of captured, a battery that could not express the lever, and one window of five — not with its arithmetic and not with its candour.", "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/budget-ablation-recomputed-on-sealed-crop.json"] }
+    {
+      "what": "THE ROUND'S OWN TOOL CONTAINS SEVEN ARMS IT NEVER FIRED. `f4-r2-light.mjs` defines `SETS.hard` \u2014 d0 to d6, `WARM_HARD`/`COOL_HARD`/`mixRaw`, the same levers without the constant-luminance normaliser its own comment says pulls a lerp back toward where it started. No metric file, no status row, no report contains any of their ids. I ran them: 3.31 to 7.30 on the sealed crop, i.e. the round's conclusion about them would have been right \u2014 but it declared the lever class exhausted without the evidence, and the same battery is the one that cannot cool the key.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/battery-hard-set-and-key-hue.json"
+      ]
+    },
+    {
+      "what": "THE HEADLINE ABLATION IS BANKED ONLY IN ITS FULL-FRAME FORM. The sealed-crop figures the status file leads with \u2014 26.33 / 8.10 / 2.18 / 2.04 against a floor of 1.86 \u2014 are in none of the twelve banked metric files; the JSONs carry `full` only. They are computed from PNGs under `reports/`, which HAZARDS \u00a79 says never reaches the remote. I reproduced all five EXACTLY on my own code from those PNGs while they still exist, and banked the result, so the round's headline is now reproducible off this box. It was not before.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/budget-ablation-recomputed-on-sealed-crop.json"
+      ]
+    },
+    {
+      "what": "TWO BANKED FRAMES CALLED `AFTER-r2` ARE DIFFERENT ARMS. `frames/AFTER-r2__pair01-crop.png` measures 7.27 on my instrument \u2014 it is the REFUSED `env 0.55` arm, a configuration that is not in the tree. `frames/pair01__AFTER-r2__judged-crop.png` measures 7.34 \u2014 that one is the shipped build. Nothing in the names distinguishes them. Same family as HAZARDS \u00a717: a verdict's cited artefacts must mean what they say.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/m6-independent-reimplementation.json"
+      ]
+    },
+    {
+      "what": "THE 'NIGHT IS UNTOUCHED' CLAIM OVERREACHES BY ABOUT ONE HOUR A DAY, AND THE MAGNITUDE IS NEGLIGIBLE. `day = clamp(elev*1.6 + 0.28)` is 0 only for `h` outside (5.33, 18.67), while `night-moon` holds `h` in (18.18, 5.82). So roughly an hour a day of `night-moon` has `day > 0` and the edit does reach it \u2014 at the boundary, <= 0.005 in the ambient's blue channel after the `regionNight` lerp. The MEASURED window at 19:30 sits squarely in the `day = 0` band and is genuinely bit-identical. Recorded as a precision correction, not a defect.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/weather-preservation-claim.json"
+      ]
+    },
+    {
+      "what": "THE ROUND'S INSTRUMENT RESULT IS REAL AND I CAN MAKE IT STRONGER. `LightShadow.intensity` against `shadowMap.enabled = false`: the two forms differ by mean|d|luma 0.3368 at 08:00 and 0.1365 at 13:00, while the SAME configuration re-captured differs by 1.0918 and 0.4460 \u2014 31% of the capture's own noise at both hours, reproduced exactly on my code. The stronger statement the round did not make: swapping which `base` frame you subtract moves `cast_shadow_area@tau8` by 0.00266 (0.10364 -> 0.10630), FOUR TIMES the 0.00067 between the two ablation forms. THE CHOICE OF BASE FRAME MATTERS MORE THAN THE CHOICE OF ABLATION FORM. This belongs in HAZARDS.md and it makes \u00a73-D2 affordable at breadth on a software renderer.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/ablation-form-equivalence-recheck.json"
+      ]
+    },
+    {
+      "what": "THE YAW SWING SURVIVES ITS OWN CONFOUND. `cast_shadow_area_fraction` is normalised by the whole frame, so a camera seeing more sky mechanically scores lower \u2014 and sky fraction across the orbit runs 0.0021 to 0.1090, which is a 1.12x effect on ground fraction. Renormalised by ground fraction the swing is still 4.5x at 08:00 (0.0240 to 0.1080) and 5.4x at 13:00 (0.0264 to 0.1436), against a between-hour ratio of means of 1.34x. THE ROUND'S CORRECTION TO ITS BRIEF IS CONFIRMED AND STRENGTHENED: the dominant variable is where the camera points, not what hour it is, and 'why is 08:00 empty' was the wrong question.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/orbit-area-normalised-by-ground-fraction.json"
+      ]
+    },
+    {
+      "what": "CREDIT, AND IT SHOULD BE SAID AS PLAINLY AS THE FAILURES. This round refused a measured gain because it failed the piece's own acceptance by 1.6% at one tau; it put a value back it could not attribute; it falsified two premises its own brief handed it, including the one about the moon, which I re-verified off a live readback and which is exactly right; and it led with the number that damns it. Its light budget is the first per-term ablation this project has ever run and every figure of it reproduces on independent code. My disagreements are with a mechanism narrated from a sound measurement, a preservation clause argued instead of captured, a battery that could not express the lever, and one window of five \u2014 not with its arithmetic and not with its candour.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/budget-ablation-recomputed-on-sealed-crop.json"
+      ]
+    }
   ],
   "gap_closure": [
     {
@@ -247,7 +496,9 @@
       "measured_value": "hue_offset, sealed judged crop: 7.16 -> 7.32 (the round's figures; mine 7.18 -> 7.34), against the r1 remedy's own interim target of >= 6.0 deg in every daylight window and the item's 15 deg minimum. Full frame 3.75 -> 6.38, which DOES clear the interim 6.0 target and which the round did not report. `retention` 0.6901 -> 0.6926 and `C_shadow` 14.146 -> 12.377 at the judged window, both above their minima; across twelve orbit angles `retention` is below its minimum at 5 and below the hard fail at 1.",
       "acceptance_restated": "The r1 remedy asked for three things at THE SAME FIVE JUDGED WINDOWS, paired per S59: hue_offset >= 6.0 everywhere, retention >= 0.60 and C_shadow >= 6 in every window whose cast-shadow area rose, and S60 clause (a) not falling at any window that already passed. It was measured at ONE window. The half that was measured passes there; the other four windows are unmeasured, so the gap is not closed.",
       "closed_by_builder_of_fix": false,
-      "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/m6-independent-reimplementation.json"]
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/m6-independent-reimplementation.json"
+      ]
     }
   ],
   "corpus_extended": [
@@ -255,37 +506,78 @@
       "id": "RI-VIS04",
       "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
       "area": "70-visual",
-      "reason": "AMENDMENT — ADD ONLY. §2 gains `§2-D2`: enumerate the light budget per light, ON THE VISIBLE RIG, against the capture's own noise floor, before calling any term a lever or ruling one out. Nothing was removed, no threshold was lowered and no number in §2 changed. WHY: §2's DETECT is one number over the whole frame — it says whether the shadow side takes the environment's hue and cannot say WHICH light failed to put it there. Both F4 rounds chose their lever from an argument about the budget rather than a measurement of one, and S60 clause (a) does not close the hole either because it compares the key against the probe and puts the hemisphere and the ambient fill in NEITHER arm. The clause's sharpest requirement is step 1, which has already been got wrong: a scene-wide `traverse` sum is not the rig — 5.0011 against a visible 0.37107 on this build, a 13x error that became the round's headline sentence. Its second requirement is that a term inside the noise floor is `unresolvable AT ITS SHIPPED VALUE` and may never be reported as absent, as 'not a lever', or as evidence about a class of levers.",
-      "note": "BOUND, exactly as CRITIC-DOCTRINE §1.3 requires. DETECT and method only: it adds no route to a higher §14 mark and no route to a higher score for any build, and a critic may cite it to WITHHOLD a mark and never to grant one. NOT THE REASON FOR ANY PASS — this verdict's status is FAIL and the FAIL is set by §2's OWN pre-existing DETECT, which predates me; §2-D2 contributes nothing to the score, which is a min. I checked the whole corpus before declaring the hole rather than assuming it: RI-VIS03 M6 defines the metric and no attribution method; RI-VIS04 §2 names the DETECT and no budget; §3-D2 and §3-D3 (added by the r1 critic) cover shadows, not the light budget; ARBITRATION S60 clause (a) is the acceptance that leaves two of the four visible lights out of both arms. Nothing covered this. Overturned if a visible-chain census proves unavailable to a harness, in which case §2 records the budget UNVERIFIED, which counts as absent.",
+      "reason": "AMENDMENT \u2014 ADD ONLY. \u00a72 gains `\u00a72-D2`: enumerate the light budget per light, ON THE VISIBLE RIG, against the capture's own noise floor, before calling any term a lever or ruling one out. Nothing was removed, no threshold was lowered and no number in \u00a72 changed. WHY: \u00a72's DETECT is one number over the whole frame \u2014 it says whether the shadow side takes the environment's hue and cannot say WHICH light failed to put it there. Both F4 rounds chose their lever from an argument about the budget rather than a measurement of one, and S60 clause (a) does not close the hole either because it compares the key against the probe and puts the hemisphere and the ambient fill in NEITHER arm. The clause's sharpest requirement is step 1, which has already been got wrong: a scene-wide `traverse` sum is not the rig \u2014 5.0011 against a visible 0.37107 on this build, a 13x error that became the round's headline sentence. Its second requirement is that a term inside the noise floor is `unresolvable AT ITS SHIPPED VALUE` and may never be reported as absent, as 'not a lever', or as evidence about a class of levers.",
+      "note": "BOUND, exactly as CRITIC-DOCTRINE \u00a71.3 requires. DETECT and method only: it adds no route to a higher \u00a714 mark and no route to a higher score for any build, and a critic may cite it to WITHHOLD a mark and never to grant one. NOT THE REASON FOR ANY PASS \u2014 this verdict's status is FAIL and the FAIL is set by \u00a72's OWN pre-existing DETECT, which predates me; \u00a72-D2 contributes nothing to the score, which is a min. I checked the whole corpus before declaring the hole rather than assuming it: RI-VIS03 M6 defines the metric and no attribution method; RI-VIS04 \u00a72 names the DETECT and no budget; \u00a73-D2 and \u00a73-D3 (added by the r1 critic) cover shadows, not the light budget; ARBITRATION S60 clause (a) is the acceptance that leaves two of the four visible lights out of both arms. Nothing covered this. Overturned if a visible-chain census proves unavailable to a harness, in which case \u00a72 records the budget UNVERIFIED, which counts as absent.",
       "index_regenerated": false
     }
   ],
   "method_deviations": [
-    { "ref_item": "RI-VIS04", "deviation": "I READ THE BUILDER'S STATUS FILE BEFORE CAPTURING, because my brief handed it to me and told me to read it first. CRITIC-DOCTRINE §8 asks for the reverse order.", "why": "Mitigation, such as it is: my instrument is my own, written from the reference item's pseudocode without opening the one both prior rounds used; my battery was designed from what the round's TOOL could not express rather than from what its status file said; and the two findings that most cut against the round — the visible-rig census and the cool-key arm — came from re-measuring things I had been told were settled. RI-VIS04 declares `blind_pair: no`, so no blind pack was compromised by the ordering.", "affects_scores": false },
-    { "ref_item": "RI-VIS04", "deviation": "I DID NOT FILL §14's THIRTEEN-FEATURE TABLE, and I scored rows 2 and 3 only.", "why": "F4 moves rows 2, 3 and (untested) 12. A full fill is the joint job of F1/F2/F5/F9, and a critic of F4 alone marking eleven features UNVERIFIED would be reporting on other pieces' work. RI-VIS04 is therefore scored `partial` with `native_score: null`, exactly as round 1 did.", "affects_scores": true },
-    { "ref_item": "RI-VIS04", "deviation": "I MEASURED ONE JUDGED WINDOW, pair01, AND SO DID THE ROUND. S60 names five.", "why": "The round's entire acceptance table, its light budget, its M6 before/after and its candidate battery are all pair01. Reproducing four more windows across three source arms was not reachable in this session at roughly 60-75 s per 1920x1080 capture under SwiftShader with the box at load 17. I have recorded the shortfall as a FINDING against the round rather than repeating it silently, and the remedy's acceptance names all five.", "affects_scores": true },
-    { "ref_item": "RI-VIS04", "deviation": "MY KEY-HUE ARMS ARE PAGE-SIDE AND ARE AN UPPER BOUND ON THE SOURCE CHANGE.", "why": "`bakeEnvironmentProbe()` consumes the `uSunColour` UNIFORM, which a page-side light recolour does not touch, so in source a bluer key would also blue the probe's sun lobe and pull the two quartiles back together. I first wrote in my own tool header that this made the arm a LOWER bound, realised the sign was inverted, and corrected the file before filing. It is why this verdict reports the round's ruling as NOT SUSTAINED rather than as OVERTURNED, and why the remedy insists on a source arm.", "affects_scores": true },
-    { "ref_item": "RI-VIS04", "deviation": "EVERY CAPTURE OF MINE IS SOFTWARE (SwiftShader). No hardware confirmation of any window.", "why": "No Pod available. Every claim here is a differential within one process at one pose, and the run carries its own noise floor (a control re-capture taken after every other arm) so that a movement smaller than the floor is reported as unresolved rather than as an effect.", "affects_scores": false }
+    {
+      "ref_item": "RI-VIS04",
+      "deviation": "I READ THE BUILDER'S STATUS FILE BEFORE CAPTURING, because my brief handed it to me and told me to read it first. CRITIC-DOCTRINE \u00a78 asks for the reverse order.",
+      "why": "Mitigation, such as it is: my instrument is my own, written from the reference item's pseudocode without opening the one both prior rounds used; my battery was designed from what the round's TOOL could not express rather than from what its status file said; and the two findings that most cut against the round \u2014 the visible-rig census and the cool-key arm \u2014 came from re-measuring things I had been told were settled. RI-VIS04 declares `blind_pair: no`, so no blind pack was compromised by the ordering.",
+      "affects_scores": false
+    },
+    {
+      "ref_item": "RI-VIS04",
+      "deviation": "I DID NOT FILL \u00a714's THIRTEEN-FEATURE TABLE, and I scored rows 2 and 3 only.",
+      "why": "F4 moves rows 2, 3 and (untested) 12. A full fill is the joint job of F1/F2/F5/F9, and a critic of F4 alone marking eleven features UNVERIFIED would be reporting on other pieces' work. RI-VIS04 is therefore scored `partial` with `native_score: null`, exactly as round 1 did.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-VIS04",
+      "deviation": "I MEASURED ONE JUDGED WINDOW, pair01, AND SO DID THE ROUND. S60 names five.",
+      "why": "The round's entire acceptance table, its light budget, its M6 before/after and its candidate battery are all pair01. Reproducing four more windows across three source arms was not reachable in this session at roughly 60-75 s per 1920x1080 capture under SwiftShader with the box at load 17. I have recorded the shortfall as a FINDING against the round rather than repeating it silently, and the remedy's acceptance names all five.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-VIS04",
+      "deviation": "MY KEY-HUE ARMS ARE PAGE-SIDE AND ARE AN UPPER BOUND ON THE SOURCE CHANGE.",
+      "why": "`bakeEnvironmentProbe()` consumes the `uSunColour` UNIFORM, which a page-side light recolour does not touch, so in source a bluer key would also blue the probe's sun lobe and pull the two quartiles back together. I first wrote in my own tool header that this made the arm a LOWER bound, realised the sign was inverted, and corrected the file before filing. It is why this verdict reports the round's ruling as NOT SUSTAINED rather than as OVERTURNED, and why the remedy insists on a source arm.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-VIS04",
+      "deviation": "EVERY CAPTURE OF MINE IS SOFTWARE (SwiftShader). No hardware confirmation of any window.",
+      "why": "No Pod available. Every claim here is a differential within one process at one pose, and the run carries its own noise floor (a control re-capture taken after every other arm) so that a movement smaller than the floor is reported as unresolved rather than as an effect.",
+      "affects_scores": false
+    }
   ],
   "arbitration_questions": [
     {
-      "question": "S60 clause (a) compares the KEY against the PROBE and puts the hemisphere and the ambient fill in NEITHER arm. Measured on this build's VISIBLE rig, that is 0.558 of ambient intensity (hemisphere 0.37107 + ambient 0.18693) inside no arm of the piece's own acceptance — and the ablation shows both terms are inside the capture's noise floor AT THOSE VALUES while being worth +1.52 deg of hue_offset at 4x. I have added `RI-VIS04` §2-D2 as a DETECT requiring the whole visible budget be enumerated, which is ADD-only and can only withhold a mark. But S60 is arbitration and a critic may not amend it. Should clause (a)'s denominator be ALL non-key light — probe plus hemisphere plus fill — rather than the probe alone?",
-      "souls_side": "not applicable — this is a measurement-domain question inside the FIDELITY axis, not a Souls/Morrowind seam.",
-      "morrowind_side": "not applicable — same.",
+      "question": "S60 clause (a) compares the KEY against the PROBE and puts the hemisphere and the ambient fill in NEITHER arm. Measured on this build's VISIBLE rig, that is 0.558 of ambient intensity (hemisphere 0.37107 + ambient 0.18693) inside no arm of the piece's own acceptance \u2014 and the ablation shows both terms are inside the capture's noise floor AT THOSE VALUES while being worth +1.52 deg of hue_offset at 4x. I have added `RI-VIS04` \u00a72-D2 as a DETECT requiring the whole visible budget be enumerated, which is ADD-only and can only withhold a mark. But S60 is arbitration and a critic may not amend it. Should clause (a)'s denominator be ALL non-key light \u2014 probe plus hemisphere plus fill \u2014 rather than the probe alone?",
+      "souls_side": "not applicable \u2014 this is a measurement-domain question inside the FIDELITY axis, not a Souls/Morrowind seam.",
+      "morrowind_side": "not applicable \u2014 same.",
       "proposed_seam_id": "Q-F4-3"
     },
     {
       "question": "The round measured ONE of S60's five judged windows and reported `clause (a) PASSES`. S64 fixed the DOMAIN (the sealed judged crop) and did not speak to the COUNT. Round 1 failed clause (a) at 4 of 5. Is a single-window measurement of a five-window acceptance reportable as a pass of that clause at all, or must it be recorded `unmeasured` for the other four and the acceptance therefore NOT MET? I have ruled the latter, fail-closed, and scored it that way.",
-      "souls_side": "not applicable — measurement scope, not a design seam.",
-      "morrowind_side": "not applicable — same.",
+      "souls_side": "not applicable \u2014 measurement scope, not a design seam.",
+      "morrowind_side": "not applicable \u2014 same.",
       "proposed_seam_id": "Q-F4-4"
     }
   ],
   "source_reads": [
-    { "path": "game/src/render/sky.js", "purpose": "diagnose-after-demonstrating", "note": "lines 630-660 (the moon's construction and `castShadow = false`), 775-900 (the `hor` triple, the overcast lerp, `keyWarmth`'s two branches at 853-854, and the night terms). Read ONLY after the hue failure had been demonstrated from pixels and after the live per-light readback had been captured, to make the remedy name a concrete existing lever. No score depends on this read." },
-    { "path": "game/src/render/lib/lighting-recipes.js", "purpose": "diagnose-after-demonstrating", "note": "`recipeForConditions()` at 346-352 — the `overcast >= 0.50` threshold that falsifies the round's preservation claim. The claim was then measured from the live hemisphere colour rather than scored from this read." },
-    { "path": "tools/visual/f4-r2-light.mjs", "purpose": "locate-harness", "note": "`candidateCfg()` and `SETS` — to establish that `warm` reaches only the sun and `cool` only the hemisphere and fill, and that a second candidate set exists. This is a claim about the ROUND'S INSTRUMENT, not about the build, so §1.1's prohibition does not apply; the corresponding claim about the BUILD was measured from pixels." },
-    { "path": "game/vendor/three/three.core.js", "purpose": "locate-harness", "note": "line 6309, `workingColorSpace = LinearSRGBColorSpace` — to establish that Rec.709 on the raw colour triple is the right luminance computation for the matched-luminance check. The check itself was then confirmed empirically from mean Yp." }
+    {
+      "path": "game/src/render/sky.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "lines 630-660 (the moon's construction and `castShadow = false`), 775-900 (the `hor` triple, the overcast lerp, `keyWarmth`'s two branches at 853-854, and the night terms). Read ONLY after the hue failure had been demonstrated from pixels and after the live per-light readback had been captured, to make the remedy name a concrete existing lever. No score depends on this read."
+    },
+    {
+      "path": "game/src/render/lib/lighting-recipes.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "`recipeForConditions()` at 346-352 \u2014 the `overcast >= 0.50` threshold that falsifies the round's preservation claim. The claim was then measured from the live hemisphere colour rather than scored from this read."
+    },
+    {
+      "path": "tools/visual/f4-r2-light.mjs",
+      "purpose": "locate-harness",
+      "note": "`candidateCfg()` and `SETS` \u2014 to establish that `warm` reaches only the sun and `cool` only the hemisphere and fill, and that a second candidate set exists. This is a claim about the ROUND'S INSTRUMENT, not about the build, so \u00a71.1's prohibition does not apply; the corresponding claim about the BUILD was measured from pixels."
+    },
+    {
+      "path": "game/vendor/three/three.core.js",
+      "purpose": "locate-harness",
+      "note": "line 6309, `workingColorSpace = LinearSRGBColorSpace` \u2014 to establish that Rec.709 on the raw colour triple is the right luminance computation for the matched-luminance check. The check itself was then confirmed empirically from mean Yp."
+    }
   ],
   "self_audit": {
     "judged_output_not_source": true,
@@ -295,7 +587,7 @@
     "remedy_is_buildable": true,
     "no_banned_reasoning_used": true,
     "escalation_ladder_used_if_gap_seemed_small": true,
-    "self_audit_note": "ran_every_assigned_method is FALSE and the omissions are named in method_deviations: §14's thirteen-feature table was not filled (rows 2 and 3 only), §3's cascade-ring DETECT was not run, four of the five judged windows were not captured, and no overcast or storm frame was captured for a source BEFORE arm — I evidenced the overcast preservation failure from the live hemisphere colour plus the affine structure of the expression instead, which is weaker than a before/after pair and is recorded as such. blind_done_where_required is TRUE only because RI-VIS04 declares `blind_pair: no`; the project-level gate that F4 exists to move is recorded under blind_comparisons as owed by the orchestrator, with the population re-counted this turn (102, not the 100 my brief carried) and the number ever run still zero. Every omission is scored fail-closed or recorded explicitly, never dropped.",
+    "self_audit_note": "ran_every_assigned_method is FALSE and the omissions are named in method_deviations: \u00a714's thirteen-feature table was not filled (rows 2 and 3 only), \u00a73's cascade-ring DETECT was not run, four of the five judged windows were not captured, and no overcast or storm frame was captured for a source BEFORE arm \u2014 I evidenced the overcast preservation failure from the live hemisphere colour plus the affine structure of the expression instead, which is weaker than a before/after pair and is recorded as such. blind_done_where_required is TRUE only because RI-VIS04 declares `blind_pair: no`; the project-level gate that F4 exists to move is recorded under blind_comparisons as owed by the orchestrator, with the population re-counted this turn (102, not the 100 my brief carried) and the number ever run still zero. Every omission is scored fail-closed or recorded explicitly, never dropped.",
     "what_would_make_this_verdict_wrong": [
       "MY KEY-HUE ARMS ARE PAGE-SIDE AND OVERSTATE THE SOURCE CHANGE. `bakeEnvironmentProbe()` bakes from the `uSunColour` uniform, not from the light, so a source key recolour would also blue the probe's sun lobe and pull the shadow quartile toward the lit one. If that term dominates, 17.11 could collapse back toward 7 in source and the round's ruling would be right after all. I have said this in the ruling paragraph, in the remedy and here, and it is the single cheapest way to falsify me: one source arm.",
       "MY M6 IS MINE, LIKE THE r1 CRITIC'S BEFORE IT. I transcribed M2/M6/M7 from RI-VIS03's pseudocode and the SKY_MASK step needs a gradient threshold and a connected-component rule that the item states loosely. Two things argue it is sound: it reproduces the round's figures on the same frames to within 0.02 deg on our crops and to within 0.9 deg on three vendored plates spanning 12 to 96 deg, and it was written without reading the implementation it agrees with. A third implementation is the cheap way to falsify me.",
@@ -305,15 +597,15 @@
     ],
     "what_i_did_not_check": [
       "Four of the five judged windows, in any arm.",
-      "A source-level BEFORE arm for the overcast claim — I evidenced it from the live hemisphere colour and the arithmetic of the lerp, not from a before/after capture pair.",
-      "RI-VIS04 rows 1, 4-13 — not this piece's scope.",
-      "The cascade-ring DETECT and the penumbra pixel count for §3's MIN BAR.",
+      "A source-level BEFORE arm for the overcast claim \u2014 I evidenced it from the hemisphere's LIVE colour at five weather states (which IS `hor` after the overcast lerp, validated at both endpoints) plus the affine structure of the expression, rather than from a before/after capture pair. That is weaker than a two-tree pair and is recorded as such.",
+      "RI-VIS04 rows 1, 4-13 \u2014 not this piece's scope.",
+      "The cascade-ring DETECT and the penumbra pixel count for \u00a73's MIN BAR.",
       "Whether the key-hue arm holds at 13:00 and 19:30, or across the twelve-angle orbit."
     ]
   },
   "notes": {
-    "look_capture": "MOTION, WHICH THE ROUND SUPPLIED NONE OF. It captured twelve orbit angles and zero moving frames, which by its own account made it weaker on the owner's standing directive than the critic that judged the round before it. I drove a walk through the shipped input pipeline at 08:00 and 13:00 with real `queueInputs` events, six captures each, camera trailing the moving body, and displacement measured per frame per HAZARDS §16 so a dead input path would show as data. See `metrics/driven-walk.json`.",
-    "what_the_frames_show": "Open `frames/x0-control.png` and `frames/x1-moonkey.png` side by side. The control is what the owner sees today at 08:00 in Lilmoth: a warm-white sun on an olive ground under a pale blue sky, with the lit and shadowed faces of the same stilt-house separated by BRIGHTNESS and almost nothing else — the two hue quartiles sit 7.35 deg apart in Lab, which is the number the corpus calls 'one light source only' territory. In the moon-key frame the shadowed faces go blue against a ground the sun still reads warm on, and the quartiles sit 17.07 deg apart. That is the difference between a frame lit by one lamp and a frame standing in a place, and it is the thing five blind judges named in words.",
-    "on_the_round_that_produced_this": "The most useful thing this round did is not the change it shipped. It is the ablation — the first time anyone here has switched off one light at a time and reported it against the run's own noise — and the equivalence proof that makes §3-D2 affordable. Both survive independent recomputation. The ruling attached to them does not, and the reason is instructive rather than careless: the round measured everything it could reach and then generalised from a battery it had not noticed was one-sided. That is the same shape as S58, S60 and S63 — a sound measurement with an invented mechanism attached — and it is worth saying that this builder is the one who spotted the same defect in someone else's premise twice in the same session."
+    "look_capture": "MOTION, WHICH THE ROUND SUPPLIED NONE OF. It captured twelve orbit angles and zero moving frames, which by its own account made it weaker on the owner's standing directive than the critic that judged the round before it. I drove a walk through the SHIPPED input pipeline at 08:00 and 13:00 \u2014 real `queueInputs` {f, move:[0,1]} events, the closed key set \u2014 six captures each, camera trailing the moving body, displacement measured per frame per HAZARDS \u00a716 so a dead input path would show as data. MEASURED: 08:00 gives 0 / 0.267 / 0.960 / 1.653 / 2.347 / 3.040 m and 13:00 gives 0.533 / 1.227 / 1.920 / 2.613 / 3.307 / 4.000 m, 12 of 12 frames LIVE with no aborts \u2014 figures that reproduce the r1 critic's driven walk exactly, which is itself a determinism check on the input path. WHAT THE MOTION SHOWS, and it is the honest answer rather than the flattering one: nothing the stills did not. Through both sequences the ground stays one flat olive plane whose lit and shadowed faces differ in BRIGHTNESS and not in HUE \u2014 which is what hue_offset 7.34 means, and motion neither hides it nor reveals anything new, because it is a property of the light budget rather than of the pose. Consistent with the twelve-angle orbit reading below the bar at 12 of 12. See metrics/driven-walk.json.",
+    "what_the_frames_show": "Open `frames/x0-control.png` and `frames/x1-moonkey.png` side by side. The control is what the owner sees today at 08:00 in Lilmoth: a warm-white sun on an olive ground under a pale blue sky, with the lit and shadowed faces of the same stilt-house separated by BRIGHTNESS and almost nothing else \u2014 the two hue quartiles sit 7.35 deg apart in Lab, which is the number the corpus calls 'one light source only' territory. In the moon-key frame the shadowed faces go blue against a ground the sun still reads warm on, and the quartiles sit 17.07 deg apart. That is the difference between a frame lit by one lamp and a frame standing in a place, and it is the thing five blind judges named in words.",
+    "on_the_round_that_produced_this": "The most useful thing this round did is not the change it shipped. It is the ablation \u2014 the first time anyone here has switched off one light at a time and reported it against the run's own noise \u2014 and the equivalence proof that makes \u00a73-D2 affordable. Both survive independent recomputation. The ruling attached to them does not, and the reason is instructive rather than careless: the round measured everything it could reach and then generalised from a battery it had not noticed was one-sided. That is the same shape as S58, S60 and S63 \u2014 a sound measurement with an invented mechanism attached \u2014 and it is worth saying that this builder is the one who spotted the same defect in someone else's premise twice in the same session."
   }
 }
