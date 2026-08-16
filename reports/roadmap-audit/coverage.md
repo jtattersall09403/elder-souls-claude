@@ -2,7 +2,7 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-16T00:56:16.986Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-16T01:12:59.195Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
@@ -232,9 +232,9 @@
 | `RI-VIS05` | 70-visual | morrowind | F13 | 0 | — | never_judged |
 | `RI-VIS06` | 70-visual | neutral | I3 | 5 | 5 | judged_below_bar |
 | `RI-VIS07` | 70-visual | morrowind | F13 | 1 | 4 | judged_below_bar |
-| `RI-VIS08` | 70-visual | modern-fidelity | F10 F11 | 5 | 3 | judged_below_bar |
+| `RI-VIS08` | 70-visual | modern-fidelity | F10 F11 | 6 | 3 | judged_below_bar |
 | `RI-VIS09` | 70-visual | neutral | I5 | 0 | — | never_judged |
-| `RI-VIS10` | 70-visual | morrowind | F10 I5 | 3 | 2 | judged_below_bar |
+| `RI-VIS10` | 70-visual | morrowind | F10 I5 | 4 | 2 | judged_below_bar |
 | `RI-MTH01` | 80-methods | neutral | I1 | 2 | 6 | judged_at_or_above_bar |
 | `RI-MTH02` | 80-methods | neutral | I1 | 3 | 7 | judged_at_or_above_bar |
 | `RI-MTH03` | 80-methods | neutral | I3 | 2 | 5 | judged_below_bar |
