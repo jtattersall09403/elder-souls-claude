@@ -1,0 +1,34 @@
+{
+  "tool": "f7-r5-offline",
+  "mode": "temporal",
+  "generated": "2026-08-16T03:48:42.786Z",
+  "thresholds": [
+    4,
+    6,
+    10,
+    16
+  ],
+  "results": [
+    {
+      "dir": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-motion",
+      "arms": {
+        "fixed": {
+          "frames": 30,
+          "water_mask_px": 235032,
+          "land_control_px": 258799,
+          "TemporalVar": 0.000341,
+          "band": 0.002,
+          "hard_fail_below": 0.0005,
+          "verdict": "HARD FAIL — water is static",
+          "TemporalVar_land_control": 0.000256,
+          "per_pixel_temporal_energy_water": 0.000525,
+          "per_pixel_temporal_energy_land": 0.000107,
+          "mean_Yp_first": 0.179969,
+          "mean_Yp_last": 0.180049,
+          "mean_Yp_range": 0.00098,
+          "how_to_read": "TemporalVar is RI-VIS03 M12 as written — the stddev of the MEAN. The per-pixel rows are the supplement it cannot see: if per_pixel_temporal_energy_water is also ~0 the surface is genuinely frozen; if it is large while TemporalVar is small, the water moves but its mean does not, and the metric is blind rather than the water static. The land control says how much of either is the scene rather than the water."
+        }
+      }
+    }
+  ]
+}

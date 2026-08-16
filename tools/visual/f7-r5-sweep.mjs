@@ -633,7 +633,12 @@ if (MODE === 'motion') {
   const ARMS = String(args.arms || 'fixed').split(',').map((s) => s.trim()).filter(Boolean);
   for (const poseId of POSE_LIST) {
     const bearing = Number((poseId.match(/edge-b(\d+)/) || [])[1]);
+    // ATTACHED BEFORE THE ARM LOOP — same defect as the supersample branch had, same reason. The
+    // per-arm `write()` below is only worth anything if the record it persists already contains
+    // the rows. `tools/visual/f7-r5-offline.mjs --mode temporal` recomputes TemporalVar from the
+    // banked frames independently, so the number survives even a run that dies mid-arm.
     const rec = { pose: poseId, bearing_deg: bearing, arms: {} };
+    out.motion[poseId] = rec;
     for (const armId of ARMS) {
       const applied = await applyArm(armId);
       // (a) THE ORBIT. The camera circles the declared waterline target. Phase is live, so the
@@ -688,7 +693,6 @@ if (MODE === 'motion') {
       console.log(`motion ${poseId} ${armId}: TemporalVar=${rec.arms[armId].temporal.TemporalVar} (${rec.arms[armId].temporal.verdict}) orbit=${orbitFrames.filter((f) => f.frame).length}/${ORBIT_BEARINGS} frames`);
       write();
     }
-    out.motion[poseId] = rec;
     write();
   }
 }

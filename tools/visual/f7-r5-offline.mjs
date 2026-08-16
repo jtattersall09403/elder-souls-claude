@@ -173,7 +173,78 @@ function stippleForDir(dir) {
   return out;
 }
 
-const results = dirs.map((d) => (MODE === 'stipple' ? stippleForDir(path.resolve(REPO, d)) : presenceForDir(path.resolve(REPO, d))));
+/* ---------------------------------------------------------------- temporal ------------------- */
+/** `RI-VIS03` M12 `TemporalVar`, computed from BANKED FRAMES rather than inside a browser run.
+ *
+ * WHY OFFLINE. The in-browser motion run attaches its results to the output only after every arm
+ * finishes, so a run killed by contention leaves its numbers in a console log and not in the
+ * artifact — HAZARDS §18's shape. The frames themselves are banked frame by frame, so deriving the
+ * statistic from them makes it reproducible by anyone with the directory and independent of whether
+ * the run survived. (The in-browser bug is fixed too; this is the belt as well as the braces.)
+ *
+ * AND IT ADDS THE CONTROL THE SPEC'S OWN DEFINITION CANNOT SEE. M12 defines `TemporalVar` as the
+ * stddev over the sequence of the MEAN of Yp inside the water mask. A mean is insensitive to
+ * motion that moves brightness around without changing the total — ripples travelling across a
+ * surface can leave it almost constant. So this also reports `per_pixel_temporal_energy`: the mean
+ * over the sequence of the mean |Yp(t) - Yp(t-1)| PER PIXEL inside the mask, and the same over a
+ * land control. A water surface that is genuinely frozen reads ~0 on both; a water surface that
+ * ripples while its mean holds still reads low on `TemporalVar` and high here, and the two together
+ * say which failure it is. */
+function temporalForDir(dir) {
+  const fdir = path.join(dir, 'frames');
+  const files = fs.readdirSync(fdir).filter((f) => /^motion-temporal--/.test(f) && f.endsWith('.png'));
+  const arms = [...new Set(files.map((f) => f.replace(/^motion-temporal--/, '').replace(/--f\d+\.png$/, '')))];
+  const out = { dir: path.relative(REPO, dir), arms: {} };
+  for (const arm of arms) {
+    const seq = files.filter((f) => f.startsWith(`motion-temporal--${arm}--f`)).sort();
+    const hiddenPath = path.join(fdir, `motion-hidden--${arm}.png`);
+    if (!fs.existsSync(hiddenPath) || seq.length < 2) { out.arms[arm] = { skipped: 'need a motion-hidden frame and >= 2 temporal frames' }; continue; }
+    const hid = read(hiddenPath), first = read(path.join(fdir, seq[0]));
+    const { m, n } = maskFrom(first, hid, 10);
+    // land control: pixels the water-hidden frame agrees with, i.e. no water involved.
+    const land = new Uint8Array(m.length); let nl = 0;
+    for (let i = 0, p = 0; i < m.length; i++, p += 4) {
+      const d = Math.abs(first.data[p] - hid.data[p]) + Math.abs(first.data[p + 1] - hid.data[p + 1]) + Math.abs(first.data[p + 2] - hid.data[p + 2]);
+      if (d <= 2) { land[i] = 1; nl++; }
+    }
+    const series = [], landSeries = [];
+    let prev = null, prevL = null, ppW = 0, ppL = 0, steps = 0;
+    for (const f of seq) {
+      const png = read(path.join(fdir, f));
+      // Yp is the sRGB-encoded display luma in 0..1, per RI-VIS03 §0.
+      const y = luma(png);
+      const yn = new Float32Array(y.length); for (let i = 0; i < y.length; i++) yn[i] = y[i] / 255;
+      series.push(meanOver(yn, m)); landSeries.push(meanOver(yn, land));
+      if (prev) {
+        let sw = 0, cw = 0, sl = 0, cl = 0;
+        for (let i = 0; i < m.length; i++) {
+          if (m[i]) { sw += Math.abs(yn[i] - prev[i]); cw++; }
+          if (land[i]) { sl += Math.abs(yn[i] - prevL[i]); cl++; }
+        }
+        ppW += cw ? sw / cw : 0; ppL += cl ? sl / cl : 0; steps++;
+      }
+      prev = yn; prevL = yn;
+    }
+    const sd = (a) => { const mu = a.reduce((x, y2) => x + y2, 0) / a.length; return Math.sqrt(a.reduce((x, y2) => x + (y2 - mu) ** 2, 0) / a.length); };
+    const tv = sd(series);
+    out.arms[arm] = {
+      frames: seq.length, water_mask_px: n, land_control_px: nl,
+      TemporalVar: +tv.toFixed(6), band: 0.002, hard_fail_below: 0.0005,
+      verdict: tv >= 0.002 ? 'PASS' : (tv < 0.0005 ? 'HARD FAIL — water is static' : 'FAIL (between the band and the hard-fail floor)'),
+      TemporalVar_land_control: +sd(landSeries).toFixed(6),
+      per_pixel_temporal_energy_water: +(ppW / steps).toFixed(6),
+      per_pixel_temporal_energy_land: +(ppL / steps).toFixed(6),
+      mean_Yp_first: +series[0].toFixed(6), mean_Yp_last: +series[series.length - 1].toFixed(6),
+      mean_Yp_range: +(Math.max(...series) - Math.min(...series)).toFixed(6),
+      how_to_read: 'TemporalVar is RI-VIS03 M12 as written — the stddev of the MEAN. The per-pixel rows are the supplement it cannot see: if per_pixel_temporal_energy_water is also ~0 the surface is genuinely frozen; if it is large while TemporalVar is small, the water moves but its mean does not, and the metric is blind rather than the water static. The land control says how much of either is the scene rather than the water.',
+    };
+  }
+  return out;
+}
+
+const results = dirs.map((d) => (MODE === 'stipple' ? stippleForDir(path.resolve(REPO, d))
+  : MODE === 'temporal' ? temporalForDir(path.resolve(REPO, d))
+    : presenceForDir(path.resolve(REPO, d))));
 const payload = { tool: 'f7-r5-offline', mode: MODE, generated: new Date().toISOString(), thresholds: THRESHOLDS, results };
 if (args.out) { fs.mkdirSync(path.dirname(path.resolve(REPO, String(args.out))), { recursive: true }); fs.writeFileSync(path.resolve(REPO, String(args.out)), JSON.stringify(payload, null, 2)); }
 console.log(JSON.stringify(payload, null, 2));
