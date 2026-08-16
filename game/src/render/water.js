@@ -19,7 +19,13 @@ import * as THREE from '../../vendor/three/three.module.js';
 
 const animatedWaterMaterials = new Set();
 
-// ---- F7 round 3: the region's own water model reaching the fragment shader -------------------
+// ---- F7 rounds 3-4: the region's own water model reaching the fragment shader -----------------
+//
+// ROUND 4, IN ONE LINE: round 3's shoreline fade was gated on transmittance alone, so its WIDTH
+// was a function of the region's extinction `k` and it collapsed to 1 px in the Deep Marshes
+// (k = 4.5) while reading 15 px in the Western Rootlands (k = 1.9) on identical code. Round 4
+// adds `uWaterShoreBandM` — a shore band in METRES of water column, with no k in it — combined
+// with the transmittance term as a union. Full reasoning at the fragment injection below.
 //
 // `RI-VIS04` §9's MIN BAR is "planar reflection at half-res + depth-based colour + two-layer
 // animated normals + shoreline depth fade". The r2 verdict measured TWO of those four as absent
@@ -96,7 +102,15 @@ export function installWaterShader(mat) {
     // F7 r3. `uWaterK` is the region's own extinction coefficient in 1/m (RI-WLD10 §8/§10.1).
     // `uWaterShoreFade` scales ONLY the shoreline alpha term so a control arm can ablate the
     // shore fade without touching the depth colour — the two must be separable for a critic.
-    uWaterK:{value:waterRegionDiag.fallback_k},uWaterShoreFade:{value:1.0}};mat.userData.waterUniforms=u;
+    // F7 r4. `uWaterShoreBandM` is the shore band's half-extent IN METRES OF WATER COLUMN. It is
+    // the whole point of round 4 and it is deliberately a uniform, not a literal, so that a
+    // critic can (a) ablate it to 1e-4 and recover round 3 exactly, and (b) sweep it without a
+    // recompile. Default 1.20 m: `tools/visual/f7-r4-shoreline-census.mjs`, run this turn against
+    // the same WorldField the engine builds, finds 71 of 121 water cells within 120 m of the Deep
+    // Marshes deck stand carry a corner shallower than 1.20 m and 72 of 121 carry one shallower
+    // than 1.35 m — so 1.20 m spans effectively the entire graded population province.js can
+    // express, while leaving the deepest 0.15 m of the 1.35 m clamp untouched.
+    uWaterK:{value:waterRegionDiag.fallback_k},uWaterShoreFade:{value:1.0},uWaterShoreBandM:{value:1.20}};mat.userData.waterUniforms=u;
   // Region resolution happens at DRAW time because that is the only place this module can see the
   // mesh, and `province.js:1577` names every water mesh `water:<region_id>` — the same ids
   // `water.json` is keyed by (`field.js:92` builds its own map from `region_id`). Cheap: one
@@ -110,7 +124,7 @@ export function installWaterShader(mat) {
     if(!Number.isFinite(k)){if(!waterRegionDiag.unresolved.includes(name))waterRegionDiag.unresolved.push(name);return;}
     u.uWaterK.value=k;mat.userData.waterRegionResolved=id;waterRegionDiag.resolved[id]=k;
   };
-  mat.onBeforeCompile=(shader)=>{shader.uniforms.uWaterPhase=u.uWaterPhase;shader.uniforms.uWaterReflection=u.uWaterReflection;shader.uniforms.uWaterReflectionResolution=u.uWaterReflectionResolution;shader.uniforms.uWaterReflectionStrength=u.uWaterReflectionStrength;shader.uniforms.uWaterReflectionMatrix=u.uWaterReflectionMatrix;shader.uniforms.uWaterK=u.uWaterK;shader.uniforms.uWaterShoreFade=u.uWaterShoreFade;
+  mat.onBeforeCompile=(shader)=>{shader.uniforms.uWaterPhase=u.uWaterPhase;shader.uniforms.uWaterReflection=u.uWaterReflection;shader.uniforms.uWaterReflectionResolution=u.uWaterReflectionResolution;shader.uniforms.uWaterReflectionStrength=u.uWaterReflectionStrength;shader.uniforms.uWaterReflectionMatrix=u.uWaterReflectionMatrix;shader.uniforms.uWaterK=u.uWaterK;shader.uniforms.uWaterShoreFade=u.uWaterShoreFade;shader.uniforms.uWaterShoreBandM=u.uWaterShoreBandM;
     shader.vertexShader='uniform float uWaterPhase;\nuniform mat4 uWaterReflectionMatrix;\nattribute float waterShore;\nvarying float vEsWaterWave;\nvarying float vEsWaterShore;\nvarying float vEsWaterQ;\nvarying vec2 vEsWaterXZ;\nvarying vec3 vEsWaterWorld;\nvarying vec4 vEsWaterReflectionCoord;\n'+shader.vertexShader
       .replace('#include <begin_vertex>',`#include <begin_vertex>
         // Crossed, incommensurate waves avoid the axis-aligned 20 m light/dark lanes produced
@@ -138,7 +152,7 @@ export function installWaterShader(mat) {
         #else
           vEsWaterQ=1.0;
         #endif`);
-    shader.fragmentShader='uniform float uWaterPhase;\nuniform sampler2D uWaterReflection;\nuniform vec2 uWaterReflectionResolution;\nuniform float uWaterReflectionStrength;\nuniform float uWaterK;\nuniform float uWaterShoreFade;\nvarying float vEsWaterWave;\nvarying float vEsWaterShore;\nvarying float vEsWaterQ;\nvarying vec2 vEsWaterXZ;\nvarying vec3 vEsWaterWorld;\nvarying vec4 vEsWaterReflectionCoord;\n'+shader.fragmentShader
+    shader.fragmentShader='uniform float uWaterPhase;\nuniform sampler2D uWaterReflection;\nuniform vec2 uWaterReflectionResolution;\nuniform float uWaterReflectionStrength;\nuniform float uWaterK;\nuniform float uWaterShoreFade;\nuniform float uWaterShoreBandM;\nvarying float vEsWaterWave;\nvarying float vEsWaterShore;\nvarying float vEsWaterQ;\nvarying vec2 vEsWaterXZ;\nvarying vec3 vEsWaterWorld;\nvarying vec4 vEsWaterReflectionCoord;\n'+shader.fragmentShader
       .replace('#include <normal_fragment_maps>',`#include <normal_fragment_maps>
         float esA=vEsWaterXZ.x*.23+vEsWaterXZ.y*.17+uWaterPhase*1.37;
         float esB=-vEsWaterXZ.x*.19+vEsWaterXZ.y*.31-uWaterPhase*.91;
@@ -246,11 +260,45 @@ export function installWaterShader(mat) {
         float esPath=esDepthM*(1.0+1.0/max(esView,.22));
         float esTrans=exp(-max(uWaterK,.05)*esPath);
         vec3 esDepth=mix(esDeepCol,esBedCol,esTrans);
-        // The shoreline fade proper: where the column is thin the surface stops occluding the
-        // bank at all, so the water plane no longer terminates in a hard geometric line
-        // (RI-VIS04 §9 TELL, RI-WLD10 §10 fidelity). Scaled by its own uniform so a control arm
-        // can delete the alpha half and leave the depth colour standing.
-        diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.42,esTrans*clamp(uWaterShoreFade,0.0,1.0));
+        // ROUND 4 — THE SHORE BAND IN METRES. THE FADE'S WIDTH STOPS BEING A FUNCTION OF k.
+        //
+        // The defect round 4 exists to fix, in the r3 verdict's own words: "the shoreline fade's
+        // width is a function of EXTINCTION, so it vanishes in exactly the region that needs it
+        // most." Round 3 gated the fade on `esTrans` alone. `esTrans = exp(-k*path)`, so its
+        // spatial extent is ~3/k metres of column: at the Padomaic's k = 0.35 that is metres, and
+        // at the Deep Marshes' k = 4.5 it is under 0.2 m of column at a grazing view — which is a
+        // couple of metres of ground and therefore ~1 px. Measured across two regions by the r3
+        // critic: 1 px at k = 4.5, 15 px at k = 1.9, ON THE SAME CODE.
+        //
+        // WHY EXTINCTION IS STILL RIGHT FOR THE COLOUR AND WRONG FOR THE WIDTH. RI-WLD10 §10.1 —
+        // "water is opaque before it is reflective" — is a statement about how much light returns
+        // from the column, and `esDepth` above keeps it unchanged: opaque water stays opaque. But
+        // RI-VIS04 §9's TELL is a statement about GEOMETRY — "a hard geometric line where the
+        // water plane intersects the terrain" — and how far a waterline should be softened over
+        // is a property of the bank's slope, not of how murky the water is. A perfectly opaque
+        // pond still does not end in a 1 px step.
+        //
+        // THE TERM. `esBandM` is 1 at the waterline and falls to 0 at `uWaterShoreBandM` metres of
+        // column, with no k in it anywhere. It is combined with the transmittance term as a UNION
+        // — mixed with, not replacing it, exactly as the r3 verdict's remedy asks — so the fade
+        // acts wherever EITHER light still gets through OR the column is thin, and clear water
+        // keeps the wider fade its own k earns it.
+        //
+        // PRESERVATION, BY CONSTRUCTION (ARBITRATION S59), BOTH ARMS:
+        //   * at `uWaterShoreBandM -> 0` the band is identically 0 and this line is round 3
+        //     EXACTLY. That is the r3-restore arm and it needs no shader edit, only a uniform.
+        //   * at `esDepthM >= uWaterShoreBandM` (deep water, and everything at province.js's q = 1
+        //     clamp) the band is 0, `esShoreT == esTrans`, and round 2's look is preserved through
+        //     round 3's own preservation property. This change can still only act in the shallows.
+        //
+        // WHAT IT CANNOT REPAIR, AND IT IS THE SAME LIMIT ROUND 3 NAMED: `esDepthM` is inverted
+        // from a PER-VERTEX quantity on province.js's 12.5 m water lattice, clamped at 1.35 m. So
+        // the band is as spatially coarse as that lattice and cannot resolve bed relief between
+        // two cell corners. Widening the band in metres widens the fade; it does not add
+        // resolution the vertex stream never carried.
+        float esBandM=1.0-smoothstep(0.0,max(uWaterShoreBandM,1e-4),esDepthM);
+        float esShoreT=1.0-(1.0-esTrans)*(1.0-esBandM);
+        diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.42,esShoreT*clamp(uWaterShoreFade,0.0,1.0));
         vec3 esSurface=mix(esDepth,esReflection,esRefl*uWaterReflectionStrength);
         outgoingLight=mix(outgoingLight,esSurface,.68);
         float esRipples=.5+.5*sin(vEsWaterWorld.x*4.7+uWaterPhase*2.1)*sin(vEsWaterWorld.z*4.1-uWaterPhase*1.7);
@@ -263,7 +311,7 @@ export function installWaterShader(mat) {
         outgoingLight=mix(outgoingLight,vec3(.055,.064,.048)+outgoingLight*.34,esShore*.76);
         outgoingLight+=vec3(.095,.105,.082)*esFoam;
         #include <opaque_fragment>`);
-  };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v17-f7r3-depth`;animatedWaterMaterials.add(mat);
+  };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v18-f7r4-shore-band-m`;animatedWaterMaterials.add(mat);
 }
 
 /** Drive all live water shaders from the fixed simulation frame. */
