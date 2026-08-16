@@ -13,8 +13,8 @@ work was quarantined on a side branch and every round restarted from it, so noth
   round one, and proved the metric we tuned against reads the wrong pixels.
 - **Judging the crowd, which went from 14 different bodies to 72** — and four more people who were
   standing 6 km out to sea are back in their towns.
-- **Judging the water, round five** — the setting is corrected, and the round found the bigger cost was
-  somewhere else entirely.
+- **The water, round six** — chasing the thing that actually costs the water, now that the measurement
+  we judged three rounds on has been thrown out.
 - **Judging the dialogue and books guards** — the checks that could delete their own evidence have been
   rebuilt, and all seven failure tests now go red when they should.
 
@@ -84,20 +84,18 @@ file order; the new code is invariant in all 500.
   the close-ups were simply shot 5 metres from a stand whose bank is 18 metres off. And I passed on a
   measurement as proof that our tools were mis-measuring; it turned out to be an artefact of *which
   order the pictures were taken in*.
-  **The real finding is worse and more useful: every number this work had ever published was measured on
-  a setting that drifts by up to 62% with nothing changed.** Round five found a stable one — and then
+  **The real finding is worse and more useful: the ruler itself was broken.** A judge rebuilt the width
+  measurement this work has been graded on for three rounds and found it returns **the identical answer
+  on a picture nobody could see** — squash the contrast twenty-five-fold until the edge is invisible and
+  it still reports the same 32 pixels. **Every width number in this piece's history is now void**, and
+  the target I set for it is retired. Round five found a stable one — and then
   found that the thing eating the water isn't the fade at all: a **multiplier added two rounds ago
   costs about three times more** than the setting everyone had been arguing about. That's round six.
   **And a correction the builder made against itself, after it had already filed.** It had declared its
-  fairness control a clean pass. Re-checking its own logs it found a fifth run that half-fails: at
-  matched brightness the fake produces no waterline where the real one produces 32 pixels — but make
-  the fake slightly darker and it reproduces the effect almost exactly. Its own words: *"had I stopped
-  ten minutes earlier I would have published the clean version and been wrong."* The consequence is
-  that **the width measurement this work has been judged on for three rounds cannot be trusted**, and
-  the target I set for it was written on sand. It also finally shot the water **in motion**, five rounds
-  in, and that turned up a new hard failure nobody had measured.
-  **Still true: nobody knows what draws the marsh stripes.** Switch the reflection off entirely and 76%
-  of them remain; two further explanations were proposed and killed by the same test.
+  fairness control a clean pass; re-checking its own logs it found a fifth run that half-fails, and
+  rewrote the ruling. Its words: *"had I stopped ten minutes earlier I would have published the clean
+  version and been wrong."* It also finally shot the water **in motion**, five rounds in, which turned
+  up a new hard failure nobody had measured.
 
 - **The characters were being drawn inside-out — fixed, and confirmed by eye.** Your winding tip was
   right and bigger than the report you sent: **153,344 of 227,850 triangles (67.3%)** had normals
