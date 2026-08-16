@@ -1,0 +1,106 @@
+{
+  "task_id": "GATE-UIX06-G-PACK",
+  "title": "RI-UIX06 §G (\"could this be Bootstrap?\") — stimulus pack built, sealed and leak-checked. Six screens. NOT JUDGED.",
+  "state": "ready_for_judges",
+  "owner": "pack-builder (subagent)",
+  "at": "2026-08-16T02:50:00Z",
+  "roadmap_item": "I3",
+  "branch": "codex/wave1-build-experiment",
+
+  "i_have_seen_everything_and_my_reading_is_void": "This agent captured every stimulus, opened every image, and read §G's answer key and §A's nine-material vocabulary in full. No verdict, no score and no opinion about how this interface looks appears anywhere in this pack or this file, and none could be admissible if it did. The judges are the instrument; this is the bench.",
+
+  "what_i_could_not_do": [
+    "I COULD NOT SPAWN THE JUDGES. A subagent cannot spawn subagents. That is exactly rule 0e's structural hole and the reason the orchestrator dispatched this; the pack is built and the judging step is still entirely the orchestrator's.",
+    "I COULD NOT MAKE A JUDGE NAIVE, AND THIS IS THE DOMINANT CONTAMINATION ON THIS GATE. First-hand rather than inherited: I am a subagent in this repository and the project CLAUDE.md is in my context, which is direct evidence that the judges will inherit it too. CLAUDE.md's own 'The project' paragraph says the game is Three.js, Morrowind's systems, Black Marsh, Dark Souls combat — so a judge that has read it can answer §G question 1 ('What is this interface from?') without looking at the picture. §G's PASS row REQUIRES `FROM: don't know`. The remedy named by the Protocol A runs — 'run the judges from a working directory with no project CLAUDE.md in scope' — is still unbuilt, and create_session is approval-gated so rule 0 forbids reaching for it. DIRECTION: it pushes AWAY from `FROM: don't know`, i.e. AGAINST us, so a `don't know` returned under it is STRENGTHENED. A decode ruling is asked for below rather than assumed.",
+    "I COULD NOT RUN tools/blind/image-leakcheck.mjs, and it would have been meaningless if I had. Nearly every rule in that battery asks whether a provenance channel SEPARATES arm A from arm B. §G is single-arm — one image, one 'what is this?' question, no counterpart — so there is nothing to sort against and the battery would have printed a green tick with no content behind it. Its DOCTRINE transferred instead (every rule reported with its value hit or miss; gates split from reported channels; fail closed) into a purpose-built tools/blind/uix06-g-seal.mjs.",
+    "I COULD NOT LAND `--blank-world` OR THE `ui-screens` VIEWPOINT SET. Re-verified this run: `grep -n \"ui-screens|blank-world|blankWorld\" tools/harness/shoot.mjs` returns 0 hits — two of the four rows in RI-UIX06's own 'owed and non-existent' table, both still standing. tools/harness/uix06-g-pack.mjs is a stand-in and does not discharge them.",
+    "I COULD NOT REMOVE THE ELDER SCROLLS CALENDAR FROM THE JOURNAL SCREEN, and deliberately did not try. It is CONTENT, not packaging; cropping it would be doctoring the stimulus. See leak L4 — it bounds screen 4's achievable result at FAIL for any Elder-Scrolls-literate judge regardless of how the interface looks.",
+    "I DID NOT CAPTURE AT ANY RESOLUTION OR DPR OTHER THAN 1920x1080 DPR 1. §G's stimulus contract specifies exactly that, so this is scope rather than a gap — but §E/§F's 4-resolution x 2-DPR sweep is a different capture and this pack is not evidence for it."
+  ],
+
+  "outcome": "PACK BUILT AND CLEAN. Six stimuli, six verbatim prompt files, all seven mechanical checks green, exit 0. The pack is NOT a result: no judge has run.",
+
+  "the_pack": {
+    "neutral_path": "/tmp/ui-read-53f9ac53/",
+    "note_on_volatility": "On /tmp by §G's own 'neutral temp path' requirement, so it does NOT survive a container restart. Originals live at reports/blind/uix06-gate-g-SEALED-KEY/final/ and `node tools/blind/uix06-g-seal.mjs --in <that> --pack <newdir>` regenerates the shipped pack, with new opaque directory names.",
+    "dispatch_file": "reports/blind/uix06-gate-g-SEALED-KEY/DISPATCH.md — the per-screen table, the decode fixed before any judge speaks, and every leak checked including the clean ones. Sealed and untracked by reports/.gitignore rule 6 (`git check-ignore -v` confirms).",
+    "mechanical_report": "reports/blind/uix06-gate-g-SEALED-KEY/leakcheck.json",
+    "screens": [
+      { "n": 1, "screen": "inventory",     "dir": "s01-b3f49b", "bytes": 319715,  "sha256_12": "2bde09fd7d87", "ui_coverage_frac": 0.5740, "control_non_black_px": 0 },
+      { "n": 2, "screen": "dialogue",      "dir": "s02-664600", "bytes": 118040,  "sha256_12": "132f8ebc0780", "ui_coverage_frac": 0.4500, "control_non_black_px": 0 },
+      { "n": 3, "screen": "level-up",      "dir": "s03-524d26", "bytes": 200931,  "sha256_12": "25b8d0eeba65", "ui_coverage_frac": 0.1120, "control_non_black_px": 0 },
+      { "n": 4, "screen": "journal",       "dir": "s04-943bf1", "bytes": 478910,  "sha256_12": "389c7ec4d7d4", "ui_coverage_frac": 0.1525, "control_non_black_px": 0 },
+      { "n": 5, "screen": "book",          "dir": "s05-815dff", "bytes": 1319825, "sha256_12": "78a7f43e2299", "ui_coverage_frac": 0.5740, "control_non_black_px": 0 },
+      { "n": 6, "screen": "HUD-in-combat", "dir": "s06-54f38f", "bytes": 52748,   "sha256_12": "b8b055e7174a", "ui_coverage_frac": 0.0130, "control_non_black_px": 0 }
+    ],
+    "each_dir_contains": "ui.png (§G's mandated filename) and prompt.txt (689 bytes, byte-identical across all six).",
+    "prompt_provenance": "Extracted with `sed -n '185,204p' corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md`, i.e. taken OUT OF THE ITEM rather than retyped, so 'verbatim' is a property of how the file was made rather than a claim about care."
+  },
+
+  "leaks_checked_including_the_clean_ones": {
+    "C1_dimensions": "1920x1080 on all six. PASS.",
+    "C2_png_metadata": "Every shipped file rewritten keeping only IHDR/IDAT/IEND, then RE-READ to prove the rewrite took: 0 ancillary chunks remain on all six — no tEXt, iTXt, zTXt, tIME or eXIf. Nothing was dropped either, i.e. Chrome's toDataURL had written none. PASS.",
+    "C3_world_blacked": "THE CHECK THAT MATTERS MOST FOR THIS ITEM. A CONTROL frame was captured per screen in the same state with the UI switched off. All six: 0 non-black pixels out of 2,073,600. The world is gone, not dimmed — so §G's 'a beautiful marsh behind a bootstrap panel rescues the panel' cannot happen here, and it is measured rather than promised. PASS.",
+    "C4_ui_coverage": "0.013 to 0.574. REPORTED, GATES NOTHING — a property of the thing under test.",
+    "C5_project_tokens_burnt_into_the_frame": "0 hits on all six, over the UNION of two text channels (see below). Blocklist: elder-souls, elder souls, eldersouls, claude, anthropic, orchestration, corpus/, RI-UIX, RI-VIS, wave1, wave-1, jacktattersall, home/user, codex/, bootstrap-test, blind_pair, __HARNESS, harness. PASS.",
+    "C6_byte_size": "52,748 to 1,319,825 — a 25x spread. REPORTED, GATES NOTHING: in a PAIR this is a live leak channel (the r2 Protocol A pack's PNGs ran 25-30% larger because real detail costs bytes, and that difference WAS the thing under test), but §G has one arm and no counterpart to sort against. Recorded so nobody later reads the spread as evidence or as a defect.",
+    "C7_path_and_filename": "Every file named ui.png; no project token anywhere in /tmp/ui-read-53f9ac53/sNN-xxxxxx/ui.png; directory names are opaque indices, not screen names. PASS.",
+    "I_OPENED_EVERY_IMAGE": "All six stimuli, all six controls and both discarded first-round captures were opened and read by eye. L4, L5 and L6 below were found this way and NONE of them moves a summary statistic. The r2 Protocol A HUD name-plate leak was found by looking rather than by the tool, and that is the whole reason this row exists."
+  },
+
+  "how_the_burnt_in_text_check_reads_the_frame_and_why_two_earlier_versions_were_wrong": {
+    "channel_A": "getUIState().elements[].text — exactly this frame, clipped by the surface itself. UNDER-reports: a string drawn inside an element's own callback is in the picture and not in the census, and the journal's red date line (the L4 string, the sharpest content channel in this pack) is exactly such a string.",
+    "channel_B": "__HARNESS.getRenderedText().entries[] — complete but SESSION-CUMULATIVE: 68 entries on the first screen captured against 525 on the last.",
+    "gate": "The UNION of both, every hit labelled with its channel. A leak check must fail toward over-reporting.",
+    "wrong_version_1": "It walked every string in the getRenderedText() RETURN VALUE, which carries its own provenance block `accessor: \"window.__HARNESS.getRenderedText()\"` — so it matched __HARNESS against the INSTRUMENT'S OWN NAME and failed all six screens on a leak that did not exist. A leak check that reads the instrument instead of the picture manufactures its own hits.",
+    "wrong_version_2": "It then filtered to the last frame — which does not isolate a screen either, because the simulation does not advance while a menu is open and journal and book both report frame 400.",
+    "both_are_recorded_in_the_tool": "tools/blind/uix06-g-seal.mjs carries both failures in its own comments rather than a quietly-correct final version."
+  },
+
+  "leaks_found_and_carried_forward_not_fixed": {
+    "L1_judge_inherits_CLAUDE_md": "See what_i_could_not_do #2. Dominant, unfixable from inside the pack, direction AGAINST us.",
+    "L2_the_answer_key_is_tracked_and_greppable": "corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md carries §G's prompt, §G's answer key AND §A's nine-material vocabulary in ONE FILE. A judge with repo access that greps any phrase from its own prompt lands on all three. Apply S51's DISCONNECTED-SCRIPT TEST — 'could a short script that has read the item's tables, and has never run the game, reproduce the judge's answer?' — and for the MADE OF field the answer is YES: a script that read §A could emit 'chitin, root, ink' having never seen an image. The pack lives outside the repo and the prompt names nothing, so the route is not signposted, but NOTHING ENFORCES IT. The judge brief must forbid reading any file but the image; that instruction is the entire mitigation.",
+    "L3_the_prompt_itself_carries_demand_characteristics_toward_PASS": "The GATE-G-RESULT lesson applied as instructed. §G's prompt is a 'what is this?' prompt, not a comparison, so it cannot announce a counterpart — but two of its five questions tell the judge what to hunt for, and both point our way. Q4 ('What is it made of? Name the physical materials it appears to be made from, if any') PRESUPPOSES PHYSICALITY and instructs a hunt for materials, while `MADE OF: nothing physical` is the item's own sharpest HARD FAIL — the question actively discourages the failing answer; the format line's `<materials, or \"nothing physical\">` partly re-opens it. Q5 ('anything you have never seen in an interface before') invites a novelty hunt, and `NEVER SEEN BEFORE: no` is a FAIL. Q2 enumerates 'a game, a website, an app, a tool' — two of those four are HARD FAIL categories and one ('a tool') appears in NO row of the answer key, so a common answer is unscorable. NOT REWORDED: §G says 'verbatim; do not paraphrase, do not soften', and rewording changes the instrument and makes this run incomparable with any other. Reported so any PASS is read carrying it. Belongs with I3 next to the UIX08 rewording; the general lesson for the other unrun gates is that A GATE'S OWN QUESTION CAN TELL THE JUDGE WHAT TO LOOK FOR.",
+    "L4_elder_scrolls_calendar_on_the_journal_screen": "Read off the image by eye: the journal header reads '1 Second Seed, 3E 427' and both entries are dated '10 — 1 Second Seed, 3E 427'. 3E 427 is Morrowind's own year; Second Seed is a Tamrielic month. A judge who recognises either can answer `FROM: Morrowind` — §G's FAIL row, 'FROM names an existing game' — from a DATE STAMP, having formed no view of the interface at all. Smaller instance: 'HIST-BOND' on the level-up attribute list. CONTENT, NOT PACKAGING, so not altered. DIRECTION: against us. Screen 4's achievable result is bounded at FAIL for any Elder-Scrolls-literate judge, and that must be said aloud when worst-of-six is taken.",
+    "L5_machine_identifiers_drawn_in_frame": "'western-rootlands' (inventory, top left) and 'hearth-lilmoth' (level-up, top left) are lowercase-hyphenated slugs. They name no project so they are not a C5 hit, but a hyphenated identifier is the visual signature of an internal id and could move KIND toward 'a tool' or 'a development build' — and 'a tool' is a Q2 category with no row in the answer key. Recorded, unaltered."
+  },
+
+  "two_build_findings_that_are_not_leaks_and_should_not_be_lost_here": {
+    "B1_every_book_in_four_of_twenty_six_data_files_renders_its_body_as_the_literal_string_undefined": "Round 1's book stimulus showed the word `undefined` as its entire body. Traced rather than guessed: Engine._buildUI() (game/src/engine.js:4567) folds every document under data.books into ONE Map keyed by book id; game/data/books/manifest.json holds 162 entries of {id, title} with NO `text` (measured: manifest.books.filter(x => x.text).length === 0); and game/data/index.json loads books/manifest.json FIFTH of twenty-six book files — so its stubs OVERWRITE the full records of the four loaded before it (a-progress-through-the-southern-marsh.json, deep-time.json, foundational.json, interface-readables.json) and are themselves overwritten by the twenty-one loaded after. ui/screens/text.js:240 then wraps `undefined`. Probed four ids live: the-sap-and-the-ledger BROKEN; the-boy-who-counted-the-tide, the-grange-book, the-marker-at-the-second-bend ALL FINE. Player-visible, cheap, and it belongs in a build piece. The pack ships a working book so §G measures the interface rather than a data bug.",
+    "B2_questOpen_returns_truthy_when_it_has_not_opened_anything": "Round 1's journal was COMPLETELY BLANK: `if (H.questOpen(id)) picked.push(id)` counted five opens and wrote ZERO journal entries (getUIState().journal.entries === 0). With questPrepareOffer(id) first the journal carries 2 entries and 2 quest names; questNote still refuses on Q-ARCH-01 ('no journal entry 1..4'). NOTE FOR WHOEVER OWNS THE T4 TOOLING: tools/harness/critic-t4-shots2.mjs contains the identical pattern and would produce the same blank page — a critic using it would be measuring an empty journal and calling it the journal."
+  },
+
+  "the_decode_is_fixed_before_any_judge_speaks": {
+    "where": "reports/blind/uix06-gate-g-SEALED-KEY/DISPATCH.md §2, copied from the item's own §G answer key.",
+    "rollup": "§G: 'Wave roll-up is the worst result'. AD7: 'worst-of-six >= PASS', any HARD FAIL fails.",
+    "caps_on_the_UI_ART_side": "STRONG PASS -> no cap; PASS -> cap 8; FAIL -> cap 5; HARD FAIL -> cap 2.",
+    "one_ruling_the_orchestrator_owes_before_reading_any_answer": "If a judge answers FROM with THIS PROJECT rather than with an existing published game, that is the L1 contamination speaking, not the interface, and it is NOT the FAIL row — this project is not 'an existing game'. PROPOSED, REVERSIBLE: treat such an answer as FROM inadmissible for that judge, score the remaining four fields, record the deviation. Overturned by any route that spawns a judge with no project CLAUDE.md in scope, at which point the honest move is to re-run the gate rather than reinterpret it."
+  },
+
+  "how_the_stimuli_were_made": {
+    "tool": "node tools/harness/uix06-g-pack.mjs --out <dir> [--only <legs>]  — 1920x1080, DPR 1.",
+    "world_blacked_in_the_renderer_not_cropped": "This interface is TRANSLUCENT — the world shows THROUGH the panels — so a crop removes the marsh beside a panel and leaves the marsh inside it. The first attempt (scene.visible=false, scene.background=null, scene.fog=null) THREW ON ALL SIX SCREENS: render/sky.js reads scene.fog.color every lighting frame (sky.js:994,1001,1044,1095). Nulling engine state to hide it breaks the engine. What ships intercepts the two world draw calls — three.render(scene,camera) and the composite pass — and replaces them with a flat black clear, touching no engine state. The three UI surfaces each render their own scene afterwards with autoClear=false, so UI pixels are byte-untouched. C3 is the proof rather than the argument.",
+    "screen_states": "inventory openMenu('inventory') | journal 5 quests prepared+opened, 2 entries | book the-boy-who-counted-the-tide | dialogue talkTo('blackwood-company-factor') then conversationSay('the fourth yard') | level-up setAtHearth(true)+openMenu('levelup') | HUD-in-combat spawn('drowned_lesser') at the player's REAL position from getCombatState().player.pos, aggro, lockOn, with lock.target ASSERTED as 'e1' afterwards.",
+    "a_discarded_capture_recorded_rather_than_hidden": "Round 1's HUD frame spawned the enemy at the WORLD ORIGIN because listEntities()[0] is an NPC record with no x/z, so px,pz fell through to 0,0 while the player stood at [2766.5, 2.68, 5011] — 5.7 km away. lockOn() returned true and getCombatState().lock.target stayed null: the frame was the exploration HUD wearing a combat label. Discarded, not shipped; the file is still in reports/blind/uix06-gate-g-SEALED-KEY/capture-hud/ as negative evidence."
+  },
+
+  "hazards_and_contention": {
+    "contention_before_every_launch": "node tools/contention.mjs was run before each. Run 1 launched at 2 instances / 3.33 per core; run 2 at 4 / 3.44; run 3 at 3 / 4.03 per core — MARGINALLY OVER the 4.0 per-core ceiling, stated here because tools/contention.mjs instructs whoever proceeds to say so.",
+    "an_earlier_attempt_waited": "The box was at 6 instances / 6.16 per core when this piece started. A bounded foreground poll held for 7 minutes until it fell to 3 / 3.88, then proceeded. No browser was killed; no PID was touched.",
+    "banking": "tools/harness/uix06-g-pack.mjs and tools/blind/uix06-g-seal.mjs landed via `node tools/land.mjs --paths a,b` (commas), commit 55c629a036, verified against the remote blob. Everything under reports/blind/uix06-gate-g-SEALED-KEY/ is untracked by design — reports/.gitignore rule 6, confirmed with git check-ignore -v."
+  },
+
+  "next_step_which_is_the_orchestrators_and_nobody_elses": "Spawn six fresh judges, one per screen, each given ONLY the image and the verbatim prompt.txt from its directory, plus an instruction to read no other file. Record all six answers verbatim. Decode against DISPATCH.md §2, rule L1 first. Then AD7 = worst-of-six, and the ART cap follows from it.",
+
+  "files_claimed": [
+    "tools/harness/uix06-g-pack.mjs",
+    "tools/blind/uix06-g-seal.mjs",
+    "orchestration/status/GATE-UIX06-G-PACK.json",
+    "reports/blind/uix06-gate-g-SEALED-KEY/**"
+  ],
+  "files_touched": [
+    "tools/harness/uix06-g-pack.mjs",
+    "tools/blind/uix06-g-seal.mjs",
+    "orchestration/status/GATE-UIX06-G-PACK.json"
+  ]
+}
