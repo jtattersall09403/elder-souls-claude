@@ -1,0 +1,130 @@
+{
+  "tool": "f7-r5-offline",
+  "mode": "presence",
+  "generated": "2026-08-16T03:23:06.935Z",
+  "thresholds": [
+    6,
+    10
+  ],
+  "results": [
+    {
+      "dir": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/dm-b225",
+      "poses": {
+        "edge-b225": {
+          "pin_frame": "edge-b225--PIN-prefix.png",
+          "hidden_frame": "edge-b225--water-hidden.png",
+          "by_threshold": {
+            "6": {
+              "mask_px": 302700,
+              "L_hidden": 27.516,
+              "L_pin": 69.237,
+              "denominator": 41.721,
+              "arms": {
+                "PIN-prefix": {
+                  "mean_luma": 69.237,
+                  "presence_pct": 100
+                },
+                "PIN2-prefix": {
+                  "mean_luma": 68.432,
+                  "presence_pct": 98.07
+                },
+                "fixed": {
+                  "mean_luma": 60.756,
+                  "presence_pct": 79.67
+                },
+                "null-const-trans-oend-lo": {
+                  "mean_luma": 66.763,
+                  "presence_pct": 94.07
+                },
+                "prefix": {
+                  "mean_luma": 67.903,
+                  "presence_pct": 96.8
+                },
+                "r3": {
+                  "mean_luma": 67.717,
+                  "presence_pct": 96.36
+                }
+              }
+            },
+            "10": {
+              "mask_px": 298656,
+              "L_hidden": 27.221,
+              "L_pin": 69.485,
+              "denominator": 42.264,
+              "arms": {
+                "PIN-prefix": {
+                  "mean_luma": 69.485,
+                  "presence_pct": 100
+                },
+                "PIN2-prefix": {
+                  "mean_luma": 68.681,
+                  "presence_pct": 98.1
+                },
+                "fixed": {
+                  "mean_luma": 60.925,
+                  "presence_pct": 79.75
+                },
+                "null-const-trans-oend-lo": {
+                  "mean_luma": 67.01,
+                  "presence_pct": 94.14
+                },
+                "prefix": {
+                  "mean_luma": 68.152,
+                  "presence_pct": 96.85
+                },
+                "r3": {
+                  "mean_luma": 67.971,
+                  "presence_pct": 96.42
+                }
+              }
+            }
+          },
+          "threshold_independence": {
+            "PIN-prefix": {
+              "values": [
+                100,
+                100
+              ],
+              "spread_pp": 0
+            },
+            "PIN2-prefix": {
+              "values": [
+                98.07,
+                98.1
+              ],
+              "spread_pp": 0.03
+            },
+            "fixed": {
+              "values": [
+                79.67,
+                79.75
+              ],
+              "spread_pp": 0.08
+            },
+            "null-const-trans-oend-lo": {
+              "values": [
+                94.07,
+                94.14
+              ],
+              "spread_pp": 0.07
+            },
+            "prefix": {
+              "values": [
+                96.8,
+                96.85
+              ],
+              "spread_pp": 0.05
+            },
+            "r3": {
+              "values": [
+                96.36,
+                96.42
+              ],
+              "spread_pp": 0.06
+            }
+          }
+        }
+      }
+    }
+  ]
+}

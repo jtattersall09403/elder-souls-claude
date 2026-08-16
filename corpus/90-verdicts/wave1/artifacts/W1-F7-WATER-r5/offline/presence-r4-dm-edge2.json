@@ -1,0 +1,308 @@
+{
+  "tool": "f7-r5-offline",
+  "mode": "presence",
+  "generated": "2026-08-16T03:22:48.739Z",
+  "thresholds": [
+    4,
+    6,
+    10,
+    16
+  ],
+  "results": [
+    {
+      "dir": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/dm-edge2",
+      "poses": {
+        "edge-b135": {
+          "pin_frame": "edge-b135--PIN-prefix.png",
+          "hidden_frame": "edge-b135--water-hidden.png",
+          "by_threshold": {
+            "4": {
+              "mask_px": 258719,
+              "L_hidden": 28.957,
+              "L_pin": 67.83,
+              "denominator": 38.873,
+              "arms": {
+                "PIN-prefix": {
+                  "mean_luma": 67.83,
+                  "presence_pct": 100
+                },
+                "PIN2-prefix": {
+                  "mean_luma": 67.013,
+                  "presence_pct": 97.9
+                },
+                "fixed": {
+                  "mean_luma": 44.368,
+                  "presence_pct": 39.64
+                },
+                "no-shorefade": {
+                  "mean_luma": 62.449,
+                  "presence_pct": 86.16
+                },
+                "null-const-trans-ocal0": {
+                  "mean_luma": 53.71,
+                  "presence_pct": 63.68
+                },
+                "null-const-trans-ocal1": {
+                  "mean_luma": 59.822,
+                  "presence_pct": 79.4
+                },
+                "null-const-trans-ocal2": {
+                  "mean_luma": 62.874,
+                  "presence_pct": 87.25
+                },
+                "prefix": {
+                  "mean_luma": 66.467,
+                  "presence_pct": 96.49
+                },
+                "r3": {
+                  "mean_luma": 51.255,
+                  "presence_pct": 57.36
+                },
+                "r3-shader": {
+                  "mean_luma": 50.991,
+                  "presence_pct": 56.68
+                }
+              }
+            },
+            "6": {
+              "mask_px": 253321,
+              "L_hidden": 28.699,
+              "L_pin": 68.378,
+              "denominator": 39.679,
+              "arms": {
+                "PIN-prefix": {
+                  "mean_luma": 68.378,
+                  "presence_pct": 100
+                },
+                "PIN2-prefix": {
+                  "mean_luma": 67.563,
+                  "presence_pct": 97.95
+                },
+                "fixed": {
+                  "mean_luma": 44.495,
+                  "presence_pct": 39.81
+                },
+                "no-shorefade": {
+                  "mean_luma": 62.944,
+                  "presence_pct": 86.31
+                },
+                "null-const-trans-ocal0": {
+                  "mean_luma": 54.03,
+                  "presence_pct": 63.84
+                },
+                "null-const-trans-ocal1": {
+                  "mean_luma": 60.266,
+                  "presence_pct": 79.56
+                },
+                "null-const-trans-ocal2": {
+                  "mean_luma": 63.38,
+                  "presence_pct": 87.4
+                },
+                "prefix": {
+                  "mean_luma": 67.02,
+                  "presence_pct": 96.58
+                },
+                "r3": {
+                  "mean_luma": 51.511,
+                  "presence_pct": 57.49
+                },
+                "r3-shader": {
+                  "mean_luma": 51.248,
+                  "presence_pct": 56.83
+                }
+              }
+            },
+            "10": {
+              "mask_px": 245866,
+              "L_hidden": 28.333,
+              "L_pin": 69.156,
+              "denominator": 40.823,
+              "arms": {
+                "PIN-prefix": {
+                  "mean_luma": 69.156,
+                  "presence_pct": 100
+                },
+                "PIN2-prefix": {
+                  "mean_luma": 68.344,
+                  "presence_pct": 98.01
+                },
+                "fixed": {
+                  "mean_luma": 44.674,
+                  "presence_pct": 40.03
+                },
+                "no-shorefade": {
+                  "mean_luma": 63.645,
+                  "presence_pct": 86.5
+                },
+                "null-const-trans-ocal0": {
+                  "mean_luma": 54.484,
+                  "presence_pct": 64.06
+                },
+                "null-const-trans-ocal1": {
+                  "mean_luma": 60.893,
+                  "presence_pct": 79.76
+                },
+                "null-const-trans-ocal2": {
+                  "mean_luma": 64.096,
+                  "presence_pct": 87.61
+                },
+                "prefix": {
+                  "mean_luma": 67.805,
+                  "presence_pct": 96.69
+                },
+                "r3": {
+                  "mean_luma": 51.876,
+                  "presence_pct": 57.67
+                },
+                "r3-shader": {
+                  "mean_luma": 51.613,
+                  "presence_pct": 57.03
+                }
+              }
+            },
+            "16": {
+              "mask_px": 238038,
+              "L_hidden": 28.053,
+              "L_pin": 70.106,
+              "denominator": 42.053,
+              "arms": {
+                "PIN-prefix": {
+                  "mean_luma": 70.106,
+                  "presence_pct": 100
+                },
+                "PIN2-prefix": {
+                  "mean_luma": 69.295,
+                  "presence_pct": 98.07
+                },
+                "fixed": {
+                  "mean_luma": 44.972,
+                  "presence_pct": 40.23
+                },
+                "no-shorefade": {
+                  "mean_luma": 64.506,
+                  "presence_pct": 86.68
+                },
+                "null-const-trans-ocal0": {
+                  "mean_luma": 55.08,
+                  "presence_pct": 64.27
+                },
+                "null-const-trans-ocal1": {
+                  "mean_luma": 61.677,
+                  "presence_pct": 79.96
+                },
+                "null-const-trans-ocal2": {
+                  "mean_luma": 64.975,
+                  "presence_pct": 87.8
+                },
+                "prefix": {
+                  "mean_luma": 68.757,
+                  "presence_pct": 96.79
+                },
+                "r3": {
+                  "mean_luma": 52.374,
+                  "presence_pct": 57.83
+                },
+                "r3-shader": {
+                  "mean_luma": 52.109,
+                  "presence_pct": 57.2
+                }
+              }
+            }
+          },
+          "threshold_independence": {
+            "PIN-prefix": {
+              "values": [
+                100,
+                100,
+                100,
+                100
+              ],
+              "spread_pp": 0
+            },
+            "PIN2-prefix": {
+              "values": [
+                97.9,
+                97.95,
+                98.01,
+                98.07
+              ],
+              "spread_pp": 0.17
+            },
+            "fixed": {
+              "values": [
+                39.64,
+                39.81,
+                40.03,
+                40.23
+              ],
+              "spread_pp": 0.59
+            },
+            "no-shorefade": {
+              "values": [
+                86.16,
+                86.31,
+                86.5,
+                86.68
+              ],
+              "spread_pp": 0.52
+            },
+            "null-const-trans-ocal0": {
+              "values": [
+                63.68,
+                63.84,
+                64.06,
+                64.27
+              ],
+              "spread_pp": 0.59
+            },
+            "null-const-trans-ocal1": {
+              "values": [
+                79.4,
+                79.56,
+                79.76,
+                79.96
+              ],
+              "spread_pp": 0.56
+            },
+            "null-const-trans-ocal2": {
+              "values": [
+                87.25,
+                87.4,
+                87.61,
+                87.8
+              ],
+              "spread_pp": 0.55
+            },
+            "prefix": {
+              "values": [
+                96.49,
+                96.58,
+                96.69,
+                96.79
+              ],
+              "spread_pp": 0.3
+            },
+            "r3": {
+              "values": [
+                57.36,
+                57.49,
+                57.67,
+                57.83
+              ],
+              "spread_pp": 0.47
+            },
+            "r3-shader": {
+              "values": [
+                56.68,
+                56.83,
+                57.03,
+                57.2
+              ],
+              "spread_pp": 0.52
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "tool": "f7-r5-offline",
+  "mode": "presence",
+  "generated": "2026-08-16T03:23:07.428Z",
+  "thresholds": [
+    6,
+    10
+  ],
+  "results": [
+    {
+      "dir": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/dm-b315",
+      "poses": {
+        "edge-b315": {
+          "pin_frame": "edge-b315--PIN-prefix.png",
+          "hidden_frame": "edge-b315--water-hidden.png",
+          "by_threshold": {
+            "6": {
+              "mask_px": 323259,
+              "L_hidden": 31.528,
+              "L_pin": 68.398,
+              "denominator": 36.87,
+              "arms": {
+                "PIN-prefix": {
+                  "mean_luma": 68.398,
+                  "presence_pct": 100
+                },
+                "PIN2-prefix": {
+                  "mean_luma": 68.391,
+                  "presence_pct": 99.98
+                },
+                "fixed": {
+                  "mean_luma": 63.4,
+                  "presence_pct": 86.45
+                },
+                "prefix": {
+                  "mean_luma": 68.395,
+                  "presence_pct": 99.99
+                },
+                "r3": {
+                  "mean_luma": 68.603,
+                  "presence_pct": 100.56
+                }
+              }
+            },
+            "10": {
+              "mask_px": 316621,
+              "L_hidden": 31.389,
+              "L_pin": 68.997,
+              "denominator": 37.609,
+              "arms": {
+                "PIN-prefix": {
+                  "mean_luma": 68.997,
+                  "presence_pct": 100
+                },
+                "PIN2-prefix": {
+                  "mean_luma": 68.982,
+                  "presence_pct": 99.96
+                },
+                "fixed": {
+                  "mean_luma": 63.901,
+                  "presence_pct": 86.45
+                },
+                "prefix": {
+                  "mean_luma": 68.993,
+                  "presence_pct": 99.99
+                },
+                "r3": {
+                  "mean_luma": 69.203,
+                  "presence_pct": 100.55
+                }
+              }
+            }
+          },
+          "threshold_independence": {
+            "PIN-prefix": {
+              "values": [
+                100,
+                100
+              ],
+              "spread_pp": 0
+            },
+            "PIN2-prefix": {
+              "values": [
+                99.98,
+                99.96
+              ],
+              "spread_pp": 0.02
+            },
+            "fixed": {
+              "values": [
+                86.45,
+                86.45
+              ],
+              "spread_pp": 0
+            },
+            "prefix": {
+              "values": [
+                99.99,
+                99.99
+              ],
+              "spread_pp": 0
+            },
+            "r3": {
+              "values": [
+                100.56,
+                100.55
+              ],
+              "spread_pp": 0.01
+            }
+          }
+        }
+      }
+    }
+  ]
+}
