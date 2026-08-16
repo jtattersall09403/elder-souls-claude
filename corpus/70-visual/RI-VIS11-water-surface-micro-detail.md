@@ -73,13 +73,22 @@ difference between two pixels *grows* with their separation, which is why land s
 Water sitting at 0.92 means its energy is concentrated at the **finest scale the pixel grid can
 carry** — the signature of a signal sampled at or past its Nyquist limit, not of a surface.
 
-**The candidate cause is named in F7's own source and it is not a mystery.** `game/src/render/water.js`
-lines 304–306, read this turn, add three procedural terms at spatial frequencies of **4.7, 13.7 and
-26.3 radians per world metre** in `vEsWaterWorld.x/z`, with no mip chain, no derivative-based
+**The candidate cause is named in F7's own source and it is not a mystery.** In
+`game/src/render/water.js`, the three lines declaring `esRipples`, `esCapillary` and `esMicro` add
+three procedural terms at spatial frequencies of **4.7, 13.7 and 26.3 radians per world metre** in
+`vEsWaterWorld.x/z`, with no mip chain, no derivative-based
 filtering and no distance rolloff. At a grazing view — which is every `water_edge` pose and most of
 how a player sees water — a metre of world compresses into a few pixels, so the 26.3 term is
 sampled far below its own period and returns a different arbitrary value per pixel. That is a
 stipple by construction, and it needs no dither matrix to appear.
+
+> **⚠ CITATION CORRECTED 2026-08-16 by the F7 r6 builder, found by the r5 critic.** This paragraph
+> cited *"lines 304–306"*. Read at the r5 critic's turn the three terms were at **323–325**: the
+> citation went stale *inside the round that wrote it*, when the shore-band edit landed above them.
+> The frequencies quoted were and remain exactly right. **The repair is not a new line number** —
+> round 6 edits the same region again and would stale it a third time. Locate the terms with
+> `grep -n 'esRipples\|esCapillary\|esMicro' game/src/render/water.js`, which is stable under any
+> edit that does not rename them. **A line number is a citation with a half-life;** name the symbol.
 
 **This item does not rule that this is the cause.** It rules that the cause is *an aliasing-class
 defect rather than a dithering-class one*, which changes the remedy from "find the dither and turn

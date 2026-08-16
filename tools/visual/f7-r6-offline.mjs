@@ -326,11 +326,19 @@ async function spanctlMode() {
         }
         rows.sort((a, b) => String(a.arm).localeCompare(String(b.arm)));
         const baseVals = rows.filter((r) => r.arm === 'prefix (BASELINE)').map((r) => r.span_water_minus_hidden);
+        // `span_water_minus_hidden` is threshold-DEPENDENT in absolute value (the mask changes
+        // size with the threshold), so the quantity a clause can be written in is the SHARE of the
+        // unchanged arm's own water-contributed contrast that survives — the same shape as
+        // `presence`, and reported the same way, with the unchanged arm's own drift band beside it.
+        const bMean = baseVals.filter((v) => v !== null).length ? baseVals.filter((v) => v !== null).reduce((a, b) => a + b, 0) / baseVals.filter((v) => v !== null).length : null;
+        for (const r of rows) r.shore_contrast_retained_pct = (bMean && r.span_water_minus_hidden !== null) ? +(100 * r.span_water_minus_hidden / bMean).toFixed(2) : null;
+        const retDrift = band(rows.filter((r) => r.arm === 'prefix (BASELINE)').map((r) => r.shore_contrast_retained_pct));
         out.poses.push({
           run, file, pose: poseId, threshold: thr,
           pinned_mask_px: n, closed_mask_used: true,
           hidden_frame: { near_shore_luma: hid.near_shore_luma ?? null, open_water_luma: hid.open_water_luma ?? null, span: hid.span ?? null, reason: hid.reason ?? null },
           baseline_span_water_minus_hidden_drift: band(baseVals),
+          baseline_shore_contrast_retained_pct_drift: retDrift,
           rows,
         });
       }
