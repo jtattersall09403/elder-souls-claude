@@ -122,6 +122,48 @@ function census(cx, cz, sideM) {
   };
 }
 
+/* ---- THE DECLARED POSE SET, DERIVED FROM THE FIELD RATHER THAN GUESSED ----------------------
+ * `RI-VIS03` M12a clause 1 wants >= 4 poses at least 90 deg apart, declared BEFORE measuring;
+ * clause 4 wants at least one of them to be a `water_edge` pose with a REAL water/land boundary
+ * in frame. Three rounds of F7 chose their close-ups by eye and the r3 critic opened all three
+ * and found no bank in any of them. So the bearings are fixed at exactly 45/135/225/315 — 90 deg
+ * apart by construction, no freedom to shop — and along each ray we find the NEAREST waterline
+ * cell, which is what a camera on that bearing would actually be looking at. The capture tool
+ * points at that cell and then verifies with `projectPoint` that it landed on screen; if it did
+ * not, the pose is void rather than quietly scored. */
+const DECLARED_BEARINGS = [45, 135, 225, 315];
+function waterlineAlongBearing(cx, cz, bearingDeg, maxM = 160, coneDeg = 20) {
+  const b = bearingDeg * Math.PI / 180;
+  let best = null;
+  const i0 = Math.floor((cx - maxM) / STEP), i1 = Math.ceil((cx + maxM) / STEP);
+  const j0 = Math.floor((cz - maxM) / STEP), j1 = Math.ceil((cz + maxM) / STEP);
+  for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) {
+    const x0 = i * STEP, z0 = j * STEP;
+    const c = cellAt(x0, z0);
+    if (!c) continue;
+    const dry = c.shores.reduce((a, x) => a + x, 0);
+    if (dry === 0 || dry === 4) continue;                 // not a waterline cell
+    const mx = x0 + STEP / 2, mz = z0 + STEP / 2;
+    const dx = mx - cx, dz = mz - cz, d = Math.hypot(dx, dz);
+    if (d < STEP || d > maxM) continue;
+    // The camera convention in the capture tool is pos = p - dist*(sin(yaw), cos(yaw)), look = p,
+    // so the view heading is (sin(yaw), cos(yaw)) and a target's bearing is atan2(dx, dz).
+    let off = (Math.atan2(dx, dz) * 180 / Math.PI - bearingDeg + 540) % 360 - 180;
+    if (Math.abs(off) > coneDeg) continue;
+    if (!best || d < best.distance_m) {
+      const wet = c.depths.filter((_, k) => !c.shores[k]);
+      best = {
+        bearing_deg: bearingDeg, cell_centre: [+mx.toFixed(2), +mz.toFixed(2)],
+        distance_m: +d.toFixed(1), bearing_offset_deg: +off.toFixed(1),
+        dry_corners: dry, wet_corner_depths_m: c.depths.map((v, k) => (c.shores[k] ? null : +v.toFixed(3))),
+        deepest_wet_corner_m: wet.length ? +Math.max(...wet).toFixed(3) : null,
+        water_y: field.waterSurfaceAt(mx, mz), ground_y: +field.heightAt(mx, mz).toFixed(3),
+      };
+    }
+  }
+  return best;
+}
+
 const SITES = String(process.env.F7R4_SITES || 'vista-deep-marshes,eye-deep-marshes,vista-western-rootlands,eye-western-rootlands,vista-blackwood,vista-eastern-rootlands,vista-marauders-coast,vista-crimson-coast').split(',');
 const rows = [];
 for (const id of SITES) {
@@ -136,6 +178,7 @@ for (const id of SITES) {
     within_60m: census(s.place.x, s.place.z, 60),
     within_120m: census(s.place.x, s.place.z, 120),
     within_300m: census(s.place.x, s.place.z, 300),
+    declared_pose_targets: DECLARED_BEARINGS.map((b) => waterlineAlongBearing(s.place.x, s.place.z, b)),
   });
 }
 

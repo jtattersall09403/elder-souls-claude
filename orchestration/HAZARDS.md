@@ -66,6 +66,45 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 26. `node --check` PASSES A FILE THAT CANNOT RUN — a backtick in a comment inside a shader template literal killed every browser tool on the branch
+
+**Done by me, the F7 r4 builder, 2026-08-16, and caught by a sibling doing branch repair rather than
+by any check of mine.** I added seven lines of explanatory comment inside `water.js`'s
+`onBeforeCompile` injection. That injection is a **JavaScript template literal containing GLSL**,
+and this repo's comment style quotes every identifier in backticks. Each of those backticks
+**terminated the template literal**. What came after it was re-parsed as JavaScript, the string ran
+to a later backtick, `water.js` still **parsed**, and the module was silently wrong from line 267 on.
+
+**The symptom does not point at the cause.** `window.__HARNESS never appeared` after 60 s, one
+`pageerror` reading `missing ) after argument list`, empty stack, no filename. That is the same
+message every tool on the branch got, so **every browser-driven measurement on the branch was dead**
+until a sibling bisected it — F7's, and everyone else's.
+
+**The trap is the check that passed.** Both of these exited 0 on the broken file:
+
+```sh
+node --check game/src/render/water.js     # exit 0
+node -e "import('./game/src/render/water.js')"   # error is about THREE, not the file
+```
+
+`--check` answers *"is this parseable"*, and it was. It does not answer *"is the string I meant
+still one string"*. This is §14c's shape again — **a success line counts what the tool received, not
+what you meant** — and §18's — an empty run reporting no errors.
+
+**The rule, and it costs nothing:** in any file that builds shader source in a template literal,
+**comments inside the literal use apostrophes or plain words, never backticks**, and after editing
+one you check the literal is still whole *before* launching a browser:
+
+```sh
+# count backticks between the injection's opening and closing lines — must be exactly 2 per literal
+awk 'NR>=A && NR<=B' <file> | grep -o '`' | wc -l
+```
+
+**Generalise it past backticks.** Any language-in-a-string — GLSL in JS, SQL in Python, HTML in a
+tagged literal — turns the host language's *quoting* characters into landmines inside prose that
+looks inert. The reviewer's eye skips comments; the parser does not. And when a whole-branch symptom
+appears right after a one-file comment edit, **suspect the edit that "couldn't matter" first**.
+
 ## 25. A MASK DERIVED PER ARM LETS THE THING UNDER TEST CHOOSE THE PIXELS IT IS SCORED ON
 
 **Found 2026-08-16 by the F7 r3 critic, which called it the most reusable thing in its round and did
