@@ -1,0 +1,13 @@
+[harness]   ok   C7-0a K0 the input path is live (a real ArrowRight moves focus.container.side)  side 0 -> 1. Every negative below is void if this is false.
+[harness]   ok   C7-0b K1 the read is of the record it names  45 of 45 reads select the record opened
+[harness]   ok   C7-1 at rest: the resting band shows what it holds and publishes the shortfall  20 of 45 complete AT REST; needed histogram {"1":2,"3":1,"4":17,"5":23,"6":2}; lines shown [1,3,4]. S65 does not require this to be 45 — it requires the ROUTE below.
+[harness]   ok   C7-2 ONE INPUT opens the reading view on every record (S65 guard a, driven through the shipped handler)  45 of 45 records opened on a single Tab (lock_on); read_flag true on 45
+[harness]   ok   C7-3 RI-UIX03 C7: the WHOLE description is on screen, unabbreviated and untruncated, on every record  45 of 45 complete in the reading view; shortfalls []
+[harness]   ok   C7-0c K2 the arms disagree — at rest the fixture contains BOTH complete and incomplete records  distinct rest outcomes false, true over 45 records. One outcome for all 45 would mean this tool cannot tell the two cases apart.
+[harness]   ok   C7-4 the reading view REPLACES the lists (0 list_row elements while open) — FD4 "0 overlap" survives the expansion  0 records left list rows declared under the reading view; heads still drawn on 45 of 45; depiction present on 45 (RI-UIX09 DN5)
+[harness]   ok   C7-5a a second lock_on returns the two lists on every record  45 of 45 closed back to the lists
+[harness]   ok   C7-5b `back` leaves the reading view before it leaves the screen (not GAP-W1-ui-journal-search-view-has-no-exit again)  open -> read element present; after back -> mode container, read element absent, rows 5
+[harness]   ok   C7-6 lock_on does nothing on an empty side — a control that opens an empty reading view is a control that lies  empty side: read element absent, read_flag false
+[harness]   ok   C7-7 the RESTATED numeric claim (job 2): the layout publishes its headroom instead of asserting it cannot truncate  clamp 51.68; weight widest 20.74 headroom 18.94; gold widest 17.76 headroom 21.92; cannot_truncate true over 45 rows
+[harness]   ok   C7-8 the foot hint wraps to the SAME number of lines in both views (so the inner box does not jump)  hint_lines observed across both views: [2]
+[harness] written: /home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/T4-r8/c7/t4-r8-c7-drive.json

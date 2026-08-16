@@ -1,0 +1,7 @@
+[harness]   1920x1080-rest: panel [720,314,480,452] head [742,378,206,24] firstRow [742,402,190,32]
+[harness]   1920x1080-open: panel [720,314,480,452] head [742,378,206,24] firstRow null  reading shown/needed 6/6
+[harness] ERROR: window.__HARNESS never appeared at http://127.0.0.1:40207/game/index.html?state=ui-journal within 300000ms.
+  The game MUST expose the automation API described in corpus/80-methods/HARNESS.md §3.
+  Without it, no combat, world or fidelity measurement in this corpus can be taken.
+[harness] {"pageErrors":[{"kind":"pageerror","message":"missing ) after argument list","stack":""}],"console":[]}
+{"ok":false,"error":"window.__HARNESS never appeared at http://127.0.0.1:40207/game/index.html?state=ui-journal within 300000ms.\n  The game MUST expose the automation API described in corpus/80-methods/HARNESS.md §3.\n  Without it, no combat, world or fidelity measurement in this corpus can be taken.","exit":11,"pageErrors":[{"kind":"pageerror","message":"missing ) after argument list","stack":""}],"console":[]}

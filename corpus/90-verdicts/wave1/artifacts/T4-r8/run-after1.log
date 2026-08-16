@@ -1,0 +1,13 @@
+[harness] 
+=== 1920x1080 ===
+[harness]   canvas #view: 1920x1080 -> 1920x1080 (window 1920x1080)
+[harness]   [1920x1080/container] opening...
+[harness]   [1920x1080/container] overflow=0 truncation=0 overlap=0 collision=0 -> clean
+[harness] 
+=== 1280x720 ===
+[harness]   canvas #view: 1920x1080 -> 1280x720 (window 1280x720)
+[harness]   [1280x720/container] opening...
+[harness]   [1280x720/container] overflow=0 truncation=0 overlap=0 collision=0 -> clean
+[harness] 
+-> /home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/T4-r8/legibility-after/t4-r5-legibility.json
+[harness] CLEAN: every screen at every requested viewport passes overflow, truncation and overlap.

@@ -1,0 +1,20 @@
+[harness] 
+=== 1920x1080 ===
+[harness]   canvas #view: 1920x1080 -> 1920x1080 (window 1920x1080)
+[harness]   [1920x1080/levelup] opening...
+[harness]   [1920x1080/levelup] overflow=0 truncation=0 overlap=2 collision=0 -> RED
+[harness]   [1920x1080/sheet] opening...
+[harness]   [1920x1080/sheet] overflow=0 truncation=0 overlap=3 collision=0 -> RED
+[harness]   [1920x1080/spells] opening...
+[harness]   [1920x1080/spells] overflow=0 truncation=0 overlap=0 collision=0 -> clean
+[harness]   [1920x1080/journal] opening...
+[harness]   [1920x1080/journal] overflow=0 truncation=0 overlap=0 collision=0 -> clean
+[harness]   [1920x1080/container] opening...
+[harness]   [1920x1080/container] overflow=0 truncation=0 overlap=0 collision=0 -> clean
+[harness] 
+=== 1280x720 ===
+[harness] ERROR: window.__HARNESS never appeared at http://127.0.0.1:37933/game/index.html?state=ui-journal within 180000ms.
+  The game MUST expose the automation API described in corpus/80-methods/HARNESS.md §3.
+  Without it, no combat, world or fidelity measurement in this corpus can be taken.
+[harness] {"pageErrors":[{"kind":"pageerror","message":"missing ) after argument list","stack":""}],"console":[]}
+{"ok":false,"error":"window.__HARNESS never appeared at http://127.0.0.1:37933/game/index.html?state=ui-journal within 180000ms.\n  The game MUST expose the automation API described in corpus/80-methods/HARNESS.md §3.\n  Without it, no combat, world or fidelity measurement in this corpus can be taken.","exit":11,"pageErrors":[{"kind":"pageerror","message":"missing ) after argument list","stack":""}],"console":[]}
