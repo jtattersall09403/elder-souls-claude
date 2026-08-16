@@ -3174,15 +3174,33 @@ export function poseStatic(group, rigDefSource, pos, yawDeg, water, stance) {
     A.staticStance = stance ? applyStaticStance(A.built, group.name, stance, stanceClock(stance), null) : null;
     resolved = !!A.staticStance;
   } else if (A.staticStance && stance && stance.t !== undefined && group.visible !== false) {
-    // THE STAGGER. One bucket of the crowd re-solves per frame, so the per-frame cost is
-    // 1/STANCE_STAGGER_N of solving everybody. `t !== t_solved` keeps a second `poseStatic` call
-    // in the same frame — the harness makes them — from paying twice, and `group.visible` keeps
-    // the 29 people at the Lilmoth stand whose day has them indoors from being breathed at all.
-    // The FIRST solve above is deliberately NOT gated on visibility: an actor must have a stand
-    // the instant it is drawn, and `syncNPCs` sets `visible` before it poses (renderer.js).
+    // THE STAGGER, AS A WINDOW AND NOT A MODULO — and the difference is not cosmetic.
+    //
+    // The obvious form is `if (t % N === bucket) re-solve`: one bucket per frame, 1/N of the cost.
+    // It is also **wrong the moment this function is not called on every frame**, and it was
+    // measured wrong before it was argued wrong. `f10-r12-crowd-motion.mjs` arm L1, first run:
+    // of 27 drawn NPCs at the Lilmoth stand, **2 re-solved over 60 frames — 7.41% against a 90%
+    // bar** — while the same code offline moved 408 of 408. `syncNPCs` runs on a RENDER, and
+    // `stepFrames(60)` steps the simulation sixty times and renders once, so the clock jumped
+    // 24 → 84 and only the one bucket congruent to 84 was ever offered a turn. Every other
+    // bucket starved, permanently, and a person whose bucket never lands on a render frame is a
+    // statue again with all the machinery apparently working.
+    //
+    // The window form asks the honest question — *has this person's turn come round since they
+    // last took it* — and answers it from their own last solve rather than from the calendar:
+    // each person owns the N-frame window offset by their bucket. Called every frame it is
+    // exactly the modulo form, one bucket per frame; called sporadically, everyone whose window
+    // has advanced re-solves at the next opportunity and nobody starves.
+    //
+    // `group.visible` keeps the 29 people at this stand whose day has them indoors — measured,
+    // L0 — from being breathed at all. The FIRST solve above is deliberately NOT gated on
+    // visibility: an actor must have a stand the instant it is drawn, and `syncNPCs` sets
+    // `visible` before it poses (renderer.js).
     const t = stanceClock(stance);
-    const V = A.staticStance.variation;
-    if (t !== A.staticStance.t_solved && (t % STANCE_STAGGER_N) === stanceBucket(V, STANCE_STAGGER_N)) {
+    const b = stanceBucket(A.staticStance.variation, STANCE_STAGGER_N);
+    const win = Math.floor((t - b) / STANCE_STAGGER_N);
+    const winPrev = Math.floor((A.staticStance.t_solved - b) / STANCE_STAGGER_N);
+    if (win !== winPrev) {
       applyStaticStance(A.built, group.name, stance, t, A.staticStance);
       resolved = true;
     }

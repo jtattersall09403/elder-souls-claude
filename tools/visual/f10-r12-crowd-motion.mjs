@@ -353,6 +353,27 @@ if (args['self-test']) {
   arms.push({ arm: '8a PERTURB — tripling every idle_loop rotation key changes the t=60 pose', ok: before60.euler_nofoot !== afterPerturb.euler_nofoot, expect: 'DIFFERENT', worst_deg: +nonFootDelta(before60, afterPerturb).toFixed(6) });
   arms.push({ arm: '8b NULL CONTROL — an unread field on the stance object changes nothing', ok: before60.euler_all === afterNull.euler_all, expect: 'IDENTICAL' });
 
+  // 9 — THE SPORADIC CLOCK. Written after the live arm caught what no offline arm could: with a
+  // modulo stagger, `stepFrames(60)` + one render advances the clock 24 -> 84 and offers a turn
+  // to ONE bucket, so 2 of 27 drawn NPCs moved while 408 of 408 moved offline. The offline arms
+  // all advanced the clock by 1, which is the only cadence a modulo schedule survives. This arm
+  // advances it the way a render loop that skips actually does, and it must hold for EVERY bucket.
+  {
+    const gsp = makeProbeActor();
+    const st = mkStance(24);
+    let starved = 0; const seen = new Set();
+    for (const rec of records.slice(0, 120)) {
+      const nm = 'npc:' + (rec.id || rec.eid);
+      const first = readAt(gsp, nm, 24, { stanceObj: st });     // fresh: solves at t=24
+      st.t = 84;
+      const after = readAt(gsp, nm, 84, { fresh: false, stanceObj: st });
+      st.t = 24;
+      seen.add(actorMod.stanceBucket(first.variation, N));
+      if (after.t_solved !== 84) starved++;
+    }
+    arms.push({ arm: '9 SPORADIC CLOCK — a clock that jumps 24 -> 84 (stepFrames(60) + one render) must re-solve EVERY bucket, not the one that happens to be congruent', ok: starved === 0, starved_of_120: starved, buckets_covered: seen.size, expect_buckets: N });
+  }
+
   const pass = arms.every((a) => a.ok);
   process.stdout.write(JSON.stringify({ tool: 'tools/visual/f10-r12-crowd-motion.mjs', ...treeCommit(), stagger_n: N, arms, pass }, null, 2) + '\n');
   process.exit(pass ? 0 : 1);
@@ -544,6 +565,41 @@ if (!args.live) {
 
   const report = { tool: 'tools/visual/f10-r12-crowd-motion.mjs', ...treeCommit(), generated: new Date().toISOString(), renderer: rendererBanner(attestation), stand: STAND, arms: [] };
 
+  // HAZARDS §13 AND §18 TOGETHER. r11's two capture runs both hit their foreground timeout after
+  // producing their evidence and before writing their report, and the report is what a critic
+  // reads. So every arm is flushed as it lands — to a PARTIAL file, never over the finished one,
+  // because §18's trap is a run that dies early truncating a complete previous report. The final
+  // `crowd-motion-live.json` is written once, at the end, and its absence means the run was cut.
+  const flush = () => writeFileSync(join(OUT, 'crowd-motion-live.partial.json'), JSON.stringify({ ...report, INCOMPLETE: 'this run had not finished when this was written; arms present are complete' }, null, 1));
+  const push = (a) => { report.arms.push(a); flush(); log(`  arm landed: ${a.arm}`); };
+  const STAGES = String(args.stages || 'all').split(',');
+  const want = (s) => STAGES.includes('all') || STAGES.includes(s);
+
+  // ── L5-ONLY. The frame-time BEFORE arm runs from inside a control clone (HAZARDS §22), where
+  // none of the arms below can run because the clone predates the change they measure. Same
+  // tool, same stand, same warm-up, one number. ────────────────────────────────────────────────
+  if (args['timing-only']) {
+    await call('stepFrames', 30);
+    const timeItOnly = async (n) => g.page.evaluate(async (frames) => {
+      const E = window.__ENGINE;
+      const samples = [];
+      for (let i = 0; i < frames; i++) {
+        const t0 = performance.now();
+        E.stepFrames(1); E.loop.renderNow();
+        samples.push(performance.now() - t0);
+      }
+      samples.sort((a, b) => a - b);
+      return { n: samples.length, mean: samples.reduce((a, b) => a + b, 0) / samples.length, median: samples[Math.floor(samples.length / 2)], p90: samples[Math.floor(samples.length * 0.9)] };
+    }, n);
+    const npcCount = await g.page.evaluate(() => { let n = 0, v = 0; window.__ENGINE.renderer.scene.traverse((o) => { if (o && o.name && String(o.name).startsWith('npc:')) { n++; if (o.visible) v++; } }); return { meshes: n, visible: v }; });
+    await timeItOnly(30);
+    const only = { tool: 'tools/visual/f10-r12-crowd-motion.mjs --timing-only', ...treeCommit(), generated: new Date().toISOString(), renderer: rendererBanner(attestation), stand: STAND, npc: npcCount, samples: await timeItOnly(240) };
+    writeFileSync(join(OUT, 'frame-time.json'), JSON.stringify(only, null, 1));
+    process.stdout.write(JSON.stringify(only, null, 2) + '\n');
+    await g.close();
+    process.exit(0);
+  }
+
   // ── L0. THE CENSUS, FIXED (job 2) ──────────────────────────────────────────────────────────
   const A0 = await READ(STAND.x, STAND.z);
   const eids = Object.keys(A0.npcs);
@@ -551,7 +607,7 @@ if (!args.live) {
   const near = vis.filter((e) => (A0.npcs[e].dist_to_stand_m ?? 1e9) < 200);
   const heap = eids.filter((e) => !A0.npcs[e].visible);
   const heapRows = heap.slice(0, 40).map((e) => ({ eid: e, world_xz: A0.npcs[e].world_xz, ground_y: A0.npcs[e].ground_y, sim: A0.simNpc[e] || null }));
-  report.arms.push({
+  if (want('census')) push({
     arm: 'L0 THE CENSUS — HAZARDS §26. A raw `npc:` mesh count is not a denominator.',
     npc_meshes: eids.length,
     visible: vis.length,
@@ -582,7 +638,7 @@ if (!args.live) {
   const drawn = rowsB2.filter((r) => r.visible && (r.dist_to_stand_m ?? 1e9) < 200);
   const movedD = drawn.filter((r) => r.worst_non_foot_rot_rad > 0);
   const playerMove = worstWorld(A0.player.worldNoFoot, A1.player.worldNoFoot);
-  report.arms.push({
+  push({
     arm: `L1 RI-VIS10 C3 ARM (b2) — a changed non-foot bone over ${F1} frames, in the running game`,
     frames_apart: F1,
     denominator_note: 'DRAWN = visible AND within 200 m of the stand (HAZARDS §26). All three denominators published.',
@@ -600,7 +656,7 @@ if (!args.live) {
   const b1rows = Object.keys(A1.npcs).map((e) => ({ eid: e, ...A1.npcs[e].three, visible: A1.npcs[e].visible, dist: A1.npcs[e].dist_to_stand_m }));
   const b1drawn = b1rows.filter((r) => r.visible && (r.dist ?? 1e9) < 200 && r.a !== undefined && r.a !== null);
   const overBar = (r) => [Math.abs(r.a) > 3, Math.abs(r.b) > 3, Math.abs(r.c) > 3].filter(Boolean).length >= 2;
-  report.arms.push({
+  push({
     arm: 'L2 RI-VIS10 C3 ARM (b1) — S59 preservation (a): the variety must survive the motion',
     DRAWN: { n: b1drawn.length, over_bar: b1drawn.filter(overBar).length, pct: b1drawn.length ? +(100 * b1drawn.filter(overBar).length / b1drawn.length).toFixed(2) : null, bar: '>= 90%' },
     all_meshes: { n: b1rows.filter((r) => r.a !== undefined && r.a !== null).length, over_bar: b1rows.filter((r) => r.a !== undefined && r.a !== null && overBar(r)).length },
@@ -611,7 +667,7 @@ if (!args.live) {
 
   // ── L3. PLANTING (S59 c) ──────────────────────────────────────────────────────────────────
   const ankles = Object.keys(A1.npcs).filter((e) => A1.npcs[e].visible && A1.npcs[e].lower_ankle_above_ground !== null).map((e) => A1.npcs[e].lower_ankle_above_ground);
-  report.arms.push({
+  push({
     arm: 'L3 PLANTING (S59 c) — the lower ankle above the ground resolver, drawn crowd',
     n: ankles.length, min: ankles.length ? Math.min(...ankles) : null, max: ankles.length ? Math.max(...ankles) : null,
     r11_measured_range: [0.067407, 0.104151], r10_photographed_baseline_m: 0.089,
@@ -619,6 +675,7 @@ if (!args.live) {
   });
 
   // ── L4. IDENTITY SURVIVES REBUILD / TRAVEL / SAVE-RELOAD (S59 b) ──────────────────────────
+  if (want('stability')) {
   const idOf = (snap) => {
     const o = {};
     for (const e of Object.keys(snap.npcs)) if (snap.npcs[e].stance) o[e] = JSON.stringify(snap.npcs[e].stance.variation);
@@ -648,13 +705,13 @@ if (!args.live) {
   await g.page.evaluate(() => { const R = window.__ENGINE.renderer; for (const [, m] of R.npcMeshes) R.scene.remove(m); R.npcMeshes.clear(); });
   await pinTo(PIN);
   const afterRebuild = await READ(STAND.x, STAND.z);
-  report.arms.push({ arm: 'L4a REBUILD — every NPC mesh destroyed and rebuilt by syncNPCs', identity: cmp(baseId, idOf(afterRebuild)), bones_at_the_SAME_pinned_clock: cmp(baseRot, rotOf(afterRebuild)), pinned_sim_frame: PIN });
+  push({ arm: 'L4a REBUILD — every NPC mesh destroyed and rebuilt by syncNPCs', identity: cmp(baseId, idOf(afterRebuild)), bones_at_the_SAME_pinned_clock: cmp(baseRot, rotOf(afterRebuild)), pinned_sim_frame: PIN });
 
   await call('teleport', AWAY.x, AWAY.z); await call('stepFrames', 30);
   await call('teleport', STAND.x, STAND.z);
   await pinTo(PIN);
   const afterTravel = await READ(STAND.x, STAND.z);
-  report.arms.push({ arm: 'L4b TRAVEL — away to another settlement and back', identity: cmp(baseId, idOf(afterTravel)), bones_at_the_SAME_pinned_clock: cmp(baseRot, rotOf(afterTravel)), pinned_sim_frame: PIN });
+  push({ arm: 'L4b TRAVEL — away to another settlement and back', identity: cmp(baseId, idOf(afterTravel)), bones_at_the_SAME_pinned_clock: cmp(baseRot, rotOf(afterTravel)), pinned_sim_frame: PIN });
 
   const blob = await call('saveState');
   let l4c = { arm: 'L4c SAVE/RELOAD', note: 'saveState unavailable' };
@@ -665,7 +722,8 @@ if (!args.live) {
     const afterLoad = await READ(STAND.x, STAND.z);
     l4c = { arm: 'L4c SAVE/RELOAD — saveState() then loadState(), then back to the same stand', load_ok: !(loaded && loaded.__err), identity: cmp(baseId, idOf(afterLoad)), bones_at_the_SAME_pinned_clock: cmp(baseRot, rotOf(afterLoad)), pinned_sim_frame: PIN };
   }
-  report.arms.push(l4c);
+  push(l4c);
+  }
 
   // ── L5. THE FRAME-TIME BUDGET (the critic's budget clause) ────────────────────────────────
   await call('teleport', STAND.x, STAND.z); await call('stepFrames', 30);
@@ -680,8 +738,10 @@ if (!args.live) {
     samples.sort((a, b) => a - b);
     return { n: samples.length, mean: samples.reduce((a, b) => a + b, 0) / samples.length, median: samples[Math.floor(samples.length / 2)], p90: samples[Math.floor(samples.length * 0.9)] };
   }, n);
+  if (want('timing')) {
   await timeIt(30);                       // warm
-  report.arms.push({ arm: 'L5 FRAME TIME at the Lilmoth stand (this tree). The BEFORE arm is the control clone, run from inside it.', budget_clause: 'must not rise more than 5%', samples: await timeIt(240) });
+  push({ arm: 'L5 FRAME TIME at the Lilmoth stand (this tree). The BEFORE arm is the control clone, run from inside it.', budget_clause: 'must not rise more than 5%', samples: await timeIt(240) });
+  }
 
   writeFileSync(join(OUT, 'crowd-motion-live.json'), JSON.stringify(report, null, 1));
   log(`wrote ${join(OUT, 'crowd-motion-live.json')}`);
