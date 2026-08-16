@@ -109,10 +109,14 @@ domain — three instances in one week, so the family is worth naming rather tha
 
 ## 32. `until [ -z "$(pgrep -f X)" ]` NEVER EXITS — the loop's own command line contains X
 
-**Found 2026-08-16 by the F10 r13 builder, THREE times in one round, at a cost of three dead
-background slots and ~75 minutes of wall-clock ceiling.** (Heading number re-read at the moment of
-writing per §27 — `grep -n "^## [0-9]" orchestration/HAZARDS.md | sort -t' ' -k2 -n | tail -1`
-returned 31.)
+**Found 2026-08-16 by the F10 r13 builder. FIVE OF THE SIX WAITERS IT WROTE IN ONE ROUND WERE DOOMED
+BY CONSTRUCTION, and the one that worked is the one that did not watch a process.** Counted by
+re-reading the six scripts rather than from memory: five open with
+`until [ -z "$(pgrep -f …)" ]` and every one of them died on its timeout or was killed; the sixth
+opens `until grep -q "boot-check" <output-file>` and exited normally on the first check that passed.
+That is fix (1) below, demonstrated against its four siblings in the same session. (Heading number
+re-read at the moment of writing per §27 — `grep -n "^## [0-9]" orchestration/HAZARDS.md |
+sort -t' ' -k2 -n | tail -1` returned 31.)
 
 The tool guidance says to wait on a condition with an until-loop. The obvious form is wrong:
 
@@ -127,10 +131,10 @@ long as the loop runs. The loop therefore observes itself, forever, and dies on 
 124 while the thing it was watching finished twenty minutes earlier.
 
 **The tell is specific and cheap to recognise: a waiter that times out on a job whose OUTPUT FILE is
-already complete.** Twice here the measurement had written its final JSON, with a clean `commit:` and
-`dirty: false`, before the waiter was killed. Nothing was lost either time — but a reader who trusts
-the exit code concludes the run failed, and that is a false negative about evidence, which is the
-expensive kind.
+already complete.** Three times here the measurement had written its final JSON, with a clean
+`commit:` and `dirty: false`, before the waiter was killed. Nothing was lost — but a reader who
+trusts the exit code concludes the run failed, and that is a false negative about evidence, which is
+the expensive kind.
 
 **The third instance is the one that shows why this is not only cosmetic.** That waiter was watching a
 capture that was ITSELF about to die on its own `timeout`, and because the waiter was busy watching
