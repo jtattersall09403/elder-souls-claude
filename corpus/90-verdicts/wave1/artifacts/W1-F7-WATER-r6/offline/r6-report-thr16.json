@@ -1,7 +1,7 @@
 {
  "tool": "tools/visual/f7-r6-report.mjs",
  "threshold": 16,
- "generated": "2026-08-16T05:17:27.638Z",
+ "generated": "2026-08-16T05:19:26.019Z",
  "runs": [
   {
    "run": "dm-b135-gate",
@@ -146,6 +146,19 @@
    }
   },
   {
+   "run": "dm-preserve",
+   "site": "vista-deep-marshes",
+   "pose": "edge-b315",
+   "commit": "e17736ba",
+   "shader_gate_measured": "float esShoreT=1.0-(1.0-esTrans)*(1.0-esBandM);",
+   "shader_alpha_measured": "diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.42,esShoreT*clamp(uWaterShoreFade,0.0,1.0));",
+   "baseline_captures": 1,
+   "baseline_water_contrast": 24.917,
+   "DRIFT_contrast_retained_pp": 0,
+   "DRIFT_presence_pp": null,
+   "arms": {}
+  },
+  {
    "run": "wr-4bearings",
    "site": "vista-western-rootlands",
    "pose": "edge-b045",
@@ -240,14 +253,14 @@
    "commit": "c2439837",
    "shader_gate_measured": "float esShoreT=1.0-(1.0-esTrans)*(1.0-esBandM);",
    "shader_alpha_measured": "diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.42,esShoreT*clamp(uWaterShoreFade,0.0,1.0));",
-   "baseline_captures": 3,
-   "baseline_water_contrast": 25.736,
+   "baseline_captures": 4,
+   "baseline_water_contrast": 25.746,
    "DRIFT_contrast_retained_pp": 0.52,
-   "DRIFT_presence_pp": null,
+   "DRIFT_presence_pp": 0.01,
    "arms": {
     "bandonly": {
      "presence_pct": 99.84,
-     "shore_contrast_retained_pct": 106.56,
+     "shore_contrast_retained_pct": 106.52,
      "m12_FresnelDelta": 0.09695,
      "m12_ShoreDelta": 0.00653,
      "m12_NormalEnergy": 0.02238,
@@ -257,10 +270,20 @@
     },
     "band-0.10": {
      "presence_pct": 98.07,
-     "shore_contrast_retained_pct": 107.15,
+     "shore_contrast_retained_pct": 107.11,
      "m12_FresnelDelta": 0.09397,
      "m12_ShoreDelta": 0.00234,
      "m12_NormalEnergy": 0.02263,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 1,
+     "VACUOUS": null
+    },
+    "no-shorefade": {
+     "presence_pct": 100.4,
+     "shore_contrast_retained_pct": 100.26,
+     "m12_FresnelDelta": 0.1104,
+     "m12_ShoreDelta": 0.01375,
+     "m12_NormalEnergy": 0.02234,
      "m12_ReflCorr": "unmeasurable — S64 inapplicable",
      "width_px_RETIRED_S67": 1,
      "VACUOUS": null
