@@ -15,8 +15,8 @@ work was quarantined on a side branch and every round restarted from it, so noth
   standing 6 km out to sea are back in their towns.
 - **The water, round six** — chasing the thing that actually costs the water, now that the measurement
   we judged three rounds on has been thrown out.
-- **The dialogue leak, round three** — we fixed a third of it twice; the rest is still being spoken by
-  every line that NPC says.
+- **Judging the dialogue leak, round three** — the two thirds we kept missing are fixed, and the reason
+  no check saw it is now a check.
 
 ## If you play right now, expect this
 
@@ -37,8 +37,11 @@ two screens carrying none of them are exactly the two that failed hardest.
 withdrawal.** I told you the second half of that line was legitimate authored text and not part of the
 defect; a builder and a critic both checked the word list and agreed. A third judge drove the actual
 game and found **all five lines that NPC speaks still carry it, sometimes as the opening words**. The
-first two were reading the *word list*; the judge was reading *the sentence a player hears*. Being
-fixed properly now, with a check that reads composed speech rather than fragments. And **books were printing the literal word `undefined`**: I said
+first two were reading the *word list*; the judge was reading *the sentence a player hears*. **Now fixed** — the
+fragment was in **25 of 25** lines that NPC speaks and opened 13 of them. And the reason nobody's check
+caught it is the useful part: the phrase contained **no word unique to that faction** — "local" is also
+an outlaw's word, "useful" an imperial's — so a gate on faction-exclusive wording would have failed it
+on day one. That gate now exists, with the old phrase kept as a permanent test case. And **books were printing the literal word `undefined`**: I said
 four, the true blast radius is **24** — a title-only catalogue of 162 entries loads fifth of twenty-six
 and was overwriting every real book before it. **The checks guarding them failed their own audit, and are now rebuilt.** One **imported a generator
 that rewrites the very file it then scans**, so hand-authoring the defect back in made it *vanish* and
