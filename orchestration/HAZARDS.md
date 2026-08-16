@@ -189,6 +189,15 @@ hoisted and runs before the fingerprint is taken, so the tripwire measures the f
 already rewritten. **Fix, one line: take the fingerprint at MODULE SCOPE, before any import can run.**
 A tripwire that runs after the thing it is watching for is not a tripwire.
 
+**⚠ AND THAT FIX IS ALSO NOT SUFFICIENT — found 2026-08-16 by the round-3 builder, hours after I wrote
+it.** *"Module scope"* is still **the importer's body, and ESM runs a module's body AFTER all of its
+imports have run.** So a fingerprint taken at the top of your check still measures a file the generator
+rewrote a moment earlier. **This section's remedy has now been wrong twice, in the same direction, and
+both times the wrong version looked airtight.** What actually closes it (`tools/lib/evidence-seal.mjs`):
+hash **inside the seal module's own body**, and have the seal **re-read the caller's source and assert
+it is the caller's FIRST import** — otherwise an import above it has already run. The control that
+proves it is the static top-level import that printed PASS in round 2; it now exits 4.
+
 **The rules.** (1) **A check must not import anything that writes.** Read the data; if you need the
 generator's vocabulary, read its source as text or extract the constant. (2) **Test the wiring, not the
 function** — assert the shipped call site, or the check passes a build where nothing calls it. (3) **A
