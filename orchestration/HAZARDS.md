@@ -66,6 +66,37 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 29. FOUR AGENTS LOST MEASUREMENT WORK TO CONTENTION IN ONE NIGHT. Four browser critics do not fit this box.
+
+**Measured 2026-08-16 02:52 with four agents running: `contention.mjs` returns WAIT, `/proc/loadavg`
+reads 17.55 on `nproc` 4 — 4.4 per core against a 4.0 ceiling.** The tool's own note is the part
+people miss: *a browser is 5.6 processes here, which is why `pgrep -c headless_shell` is not the
+number to throttle on.*
+
+**The cost, from one night's status files — all four are agents that did their job correctly and
+still lost the measurement:**
+
+- **F4 r3**: three capture runs killed by the 600 s ceiling, leaving two windows without noise floors
+  and one without its `env_off` arm.
+- **F10 r12**: the frame-time before/after pair built correctly (§22 control clone, both arms) and run
+  **twice** — 270 timed SwiftShader frames per arm do not fit 900 s. **The one preservation clause of
+  five it could not close**, and the cause is sample size *on this hardware*, not contention alone.
+- **F7 r3 critic**: orbit killed at **2.5 of 4 bearings**; two arms do not exist, so no pair may be
+  read from them.
+- **T4 r8 critic**: declined to start a sixth browser and left the 720p leg unmeasured — the *correct*
+  call, and still a hole in the evidence.
+
+**So the "two to four agents" rule in `CLAUDE.md` is a CONTENTION ceiling, not just a collision one,
+and four is the maximum only when they are not all driving browsers.** Two browser critics plus two
+offline pieces fits; four browser critics does not, and the failure mode is not a crash — it is
+**silently truncated evidence that a status file then has to apologise for.**
+
+**What to do instead of proceeding anyway.** `tools/capture/` has a pooled capture daemon that exists
+for exactly this. An offline measurement that answers the question is worth more than a browser run
+that dies at 2.5 of 4 bearings. A reduced frame count **with its confidence stated** beats an
+unmeasured claim. And if you do proceed over the ceiling, **say so in your status file** — three
+agents did, which is the only reason this entry could be written.
+
 ## 28. AN OFFLINE HARNESS THAT ADVANCES THE CLOCK BY 1 HIDES EVERY SCHEDULING BUG
 
 **Found 2026-08-16 by the F10 r12 builder, against its own shipped design, and it is the reason that
