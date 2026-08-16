@@ -105,7 +105,9 @@
       "file": "game/src/render/water.js",
       "change": "`uWaterShoreBandM` default 1.20 -> 0.10. `customProgramCacheKey` v18-f7r4-shore-band-m -> v19-f7r5-shore-band-0p10 so no cached program can outlive it. **The mechanism is round 4's and is byte-identical — only the constant moves**, which is why this is one number and exactly as reversible as round 4's own.",
       "the_HAZARDS_26_check_run_not_assumed": "My comment sits in the uniforms object, not in the shader template literal, but §26 says check anyway and `node --check` cannot. Backticks strictly between the fragment literal's open (L189) and close (L332): **0**. Total backticks in file: **even**. The literal is whole.",
-      "reversal": "one number back to 1.20, or to 1e-4 for round 3."
+      "reversal": "one number back to 1.20, or to 1e-4 for round 3.",
+      "IT_REACHES_THE_GPU_READ_OFF_THE_RUNNING_SCENE_NOT_ARGUED": "In the two runs launched after the change landed, `gpu_state_before` reports `uWaterShoreBandM = 0.1` on the live `water:deep-marshes` material (k = 4.5), and `head_expression_asserted.shore_band_uniform_default` reads `0.10` straight from the file. Two independent processes, two commits.",
+      "⚠_WHAT_THE_ARM_NAMED_fixed_MEANS_CHANGES_MID_ROUND_AND_A_CRITIC_MUST_NOT_BE_CAUGHT_BY_IT": "`fixed` is defined as 'whatever the source default is', so it means **1.20 m in `dm-b225-sweep/`, `dm-b135-verify/`, `dm-motion/` and `dm-supersample/`** (all launched before the change) and **0.10 m in `dm-b225-reverse/` and `dm-b045-b315/`** (launched after). Every `sweep.json` records the default it read at start in `head_expression_asserted.shore_band_uniform_default` and the live uniform in `gpu_state_before`, so no row is ambiguous — but the NAME is, and I am flagging it rather than letting it be discovered. In the post-change runs `fixed` and `band-0.10` are the same configuration and should read identically; **that is a free identity check and if they diverge, something is wrong with the arm machinery.**"
     }
   },
 
