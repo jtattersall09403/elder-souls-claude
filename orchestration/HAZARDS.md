@@ -66,6 +66,32 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 28. AN OFFLINE HARNESS THAT ADVANCES THE CLOCK BY 1 HIDES EVERY SCHEDULING BUG
+
+**Found 2026-08-16 by the F10 r12 builder, against its own shipped design, and it is the reason that
+round has a live number at all.**
+
+Its first stagger was the obvious one — `t % N === bucket`, each person taking a turn on their own
+frame. **Offline it read 408 of 408. Live it read 2 of 27 — 7.41%.**
+
+The cause is not the modulo. It is that **`syncNPCs` runs on a *render*, and `stepFrames(60)` renders
+once** — so the clock the scheduler sees jumps **24 → 84**, and exactly one bucket gets a turn.
+Meanwhile **every offline arm advanced the clock by 1**, which is the only cadence a modulo survives.
+The instrument and the design shared an assumption, so the instrument could not fail.
+
+**The rule: any per-frame scheduler must be tested against a SPORADIC clock, not a dense one.** A
+harness that steps 1, 2, 3, 4 will validate a design that the running game starves. The fix here was a
+per-person *window* rather than a modulo, plus **a self-test arm that replays the real jump (24 → 84)
+and is required to FAIL the old design** — which is the only form of proof that means anything.
+
+**The failing run is banked, not deleted**, which is the right instinct: a design that passed offline
+and starved live is evidence about the harness, and deleting it deletes the evidence.
+
+**Where else this bites:** anything gated on `frame % n`, any round-robin over NPCs, LOD or physics
+substeps, any "amortise the work across N frames" optimisation, and any budget measured in frames
+rather than seconds. If the game can skip frames — and this one demonstrably can — the schedule must
+be a function of *elapsed* clock, not of visit count.
+
 ## 26. `node --check` PASSES A FILE THAT CANNOT RUN — a backtick in a comment inside a shader template literal killed every browser tool on the branch
 
 **Done by me, the F7 r4 builder, 2026-08-16, and caught by a sibling doing branch repair rather than

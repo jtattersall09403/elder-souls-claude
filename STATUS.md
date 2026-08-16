@@ -10,10 +10,10 @@
 preserved on a side branch and all four rounds have been restarted from it — nothing is lost, but
 roughly two hours of work has to be re-derived rather than trusted. Same four jobs, all on ring 1:
 
-- **The sun, round three** — a judge found the fix: our daylight needs to go **cooler**, and both
-  previous rounds pushed it warmer.
-- **Characters, round twelve** — the crowd stands differently now but nobody in it moves. 392 poses,
-  zero motion.
+- **Judging the sun, round three** — the cool key was built, measured, and deliberately **not
+  shipped**; the reason reframes three rounds of this work.
+- **Judging the crowd, which now breathes** — 27 of 27 townspeople move, replicated across three
+  sessions, with the motion visible in pixels rather than only in numbers.
 - **The water, round four** — the fade works; it just does nothing in the one region we kept testing
   it in.
 - **The blind judging I owe.** 81 of our quality bars require a fresh outside judge and **not one has
@@ -112,20 +112,24 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
 - **The body is photographed on real hardware and the change is visible.** Eight angles, before and
   after, on an RTX A4500 — the picture the last four judgements were written against. The waist reads
   at player distance.
-- **Everybody in the game stood in one identical pose. Now 392 of 408 stand differently.** Measured on
-  the pose the game actually draws, every NPC had shoulder and hip tilt of **exactly 0.000°** — nobody
-  put their weight on one leg, which is the first thing that makes a crowd read as people. In the
-  running game at Lilmoth, **60 of 60 townspeople now clear the bar** (which asks for 90%), each with a
-  different stance seeded from their own identity so the same person always stands the same way.
+- **Everybody in the game stood in one identical pose. Now 392 of 408 stand differently.** Every NPC
+  had shoulder and hip tilt of **exactly 0.000°** — nobody put their weight on one leg, which is the
+  first thing that makes a crowd read as people. Each now has a stance seeded from their own identity,
+  so the same person always stands the same way.
   **It is photographed at last** — nine frames, five angles and two motion offsets, the first pictures
   of this work in eleven rounds. The builder had reported the camera and the townspeople running on two
   different clocks; **that turned out to be false**, and the real cause was one object reporting its
   position as the origin.
-  **And the photograph shows the next problem: they are statues.** Over sixty frames, **not one person
-  moves a single joint** — 392 different poses, all frozen. Round twelve is giving them breathing,
-  staggered per person so a crowd doesn't inhale in unison.
-  **A counting error worth knowing:** two rounds reported 60 people at that spot. **29 are invisible,
-  heaped at the map origin 41 m underground** — the real crowd is 27, and nobody has looked at why.
+  **The photograph showed the next problem — they were statues.** Over sixty frames not one person
+  moved a single joint. **They breathe now:** every townsperson at the stand moves, staggered so the
+  crowd doesn't inhale in unison, replicated in three separate runs and confirmed in pixels — three
+  consecutive frames differ by 42,186, 30,847 and 32,872 pixels against a control of exactly zero.
+  **The builder's first attempt at the stagger passed offline and starved in the real game** — 408 of
+  408 on the bench, **2 of 27 live** — because the game skips frames and its scheduler assumed it
+  didn't. It found that itself, kept the failing run, and rebuilt it.
+  **And the 29 buried people are explained:** they are the ones whose day is spent indoors, correctly
+  hidden — but their position is an *interior* coordinate read as a world one, so each is built and
+  parked at the map origin, 41 m down. They now cost nothing to draw.
 - **A side-effect of that pose, found and closed: it lifted everyone 8.9 mm off the floor.** Fixed and
   photographed; worst planting error across all 408 people is now effectively zero.
 - **The eye had a pupil worth literally zero pixels — now it has one, and it reads in conversation.**
@@ -133,15 +137,10 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   **the snout was in front of it.** Moved 6 mm out and 12 mm forward, then photographed on hardware:
   at talking distance you now see a dark pupil with a catchlight. At third-person distance it is still
   two amber smudges.
-- **The hover is fixed and photographed** — both feet back down within a millimetre of where they sat
-  before the new pose, cross-checked by two independently written capture tools.
-- **Some good news in the same verdict:** the character bar now has **12 of its 18 checks published**
-  for the first time, and the head-count proportion check **has quietly gone from a hard fail to a pass**
-  — 0 of 41 figures in band, to 41 of 41.
-- **The four-round argument about "cracks" in the body got a photograph and a ruling.** The tool that
-  counts them **emits no images**, so four rounds argued about the number blind. Someone finally dumped
-  the frames and looked: the two largest "cracks" are **daylight between a hanging forearm and the
-  body, capped by the greatsword's crossguard** — you can see the crossguard. Not holes.
+- **The hover is fixed and photographed** — both feet back within a millimetre of where they sat, cross-
+  checked by two independently written capture tools.
+- **Some good news:** the character bar now has **12 of its 18 checks published** for the first time,
+  and the head-count proportion check went from hard fail to pass — 0 of 41 figures in band, to 41/41.
 
 - **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
   out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
