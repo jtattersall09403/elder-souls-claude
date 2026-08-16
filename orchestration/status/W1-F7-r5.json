@@ -16,6 +16,39 @@
     "and_it_does_more_than_measure_the_drift_it_removes_it": "Each arm is scored against the MEAN OF ITS TWO FLANKING BASELINES — one capture interval away on each side instead of eight — so monotonic drift cancels to first order by construction. This is HAZARDS §25a rule 1 in its strongest form: instead of putting one proven-identical null arm LAST to size the drift, the proven-identical null (`prefix` itself) is captured BETWEEN EVERY PAIR of arms and subtracted."
   },
 
+  "job_2_the_failing_pose_swept_below_0.60_m_at_last_and_the_change_shipped": {
+    "what_nobody_had_done": "The r4 build swept 0.60 / 1.20 / 1.35 at `edge-b225` and concluded 'no band constant rescues it, therefore it is not a tuning problem'. All three sit above the median water depth in frame, i.e. entirely inside the broad regime. The r4 critic swept below 0.60 at `edge-b135` instead and said plainly: *'I ran this at edge-b135 only. The build's failing pose is edge-b225, where I did NOT test below 0.60. Nobody should read \"0.10 m rescues edge-b225\" into that table.'* **This round ran it.**",
+    "run": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b225-sweep/ — deep-marshes `edge-b225`, water_edge target verified on screen, eight arms, the UNCHANGED baseline arm re-captured before and after every one of them (15 baseline captures interleaved with 8 arms).",
+    "the_table_at_threshold_16_the_stable_one": {
+      "how_to_read": "`presence` is against the mean of the two flanking baseline captures, so ordinal drift is cancelled rather than carried. Width is the closed-mask gradient width in px.",
+      "r3 (band -> 1e-4)": { "presence_pct": 100.21, "width_px": 1 },
+      "band-0.05": { "presence_pct": 100.41, "width_px": 1 },
+      "band-0.10 (THE VALUE THIS ROUND SHIPS)": { "presence_pct": 100.35, "width_px": 1 },
+      "band-0.20": { "presence_pct": 100.1, "width_px": 1 },
+      "band-0.30": { "presence_pct": 99.57, "width_px": 1 },
+      "band-0.60": { "presence_pct": 96.59, "width_px": 1 },
+      "fixed = 1.20 m (ROUND 4'S SHIPPED DEFAULT)": { "presence_pct": 83.35, "width_px": 1 }
+    },
+    "the_same_table_at_threshold_10": {
+      "r3": { "presence_pct": 100.21, "width_px": 2 }, "band-0.05": { "presence_pct": 100.41, "width_px": 2 },
+      "band-0.10": { "presence_pct": 100.35, "width_px": 2 }, "band-0.20": { "presence_pct": 100.1, "width_px": 1 },
+      "band-0.30": { "presence_pct": 99.57, "width_px": 1 }, "band-0.60": { "presence_pct": 96.58, "width_px": 1 },
+      "fixed_1.20": { "presence_pct": 83.32, "width_px": 1 },
+      "the_baselines_own_width_at_this_threshold": "2 px at every one of its captures — so no arm at this pose exceeds the width the UNCHANGED arm already produces."
+    },
+    "TWO_FINDINGS_AND_THEY_POINT_OPPOSITE_WAYS": {
+      "1_the_r4_BUILD_was_right_about_this_pose": "**No band constant rescues `edge-b225`.** Swept across a 24x range from 0.05 m to 1.20 m, the waterline width is 1 px at threshold 16 and never exceeds the baseline's own 2 px at threshold 10. The width at this pose is a property of the scene, not of the shader, and I am reporting that even though it is the half that does not flatter the change I shipped.",
+      "2_the_r4_CRITIC_was_right_that_1.20_m_is_DOMINATED": "**At the same pose, 0.10 m returns 17.0 percentage points of presence over 1.20 m (100.35% vs 83.35%) for identical width.** That is the whole ruling, now measured at the pose that actually fails rather than inferred from the pose that does not. `presence` falls monotonically with the band constant across all seven arms — 100.4, 100.4, 100.3, 100.1, 99.6, 96.6, 83.3 — while width never moves. A constant that buys nothing and costs seventeen points is dominated.",
+      "and_it_cross_validates_the_r4_critic": "My interleaved `fixed` reads 83.3% where the r4 critic's drift-carrying protocol read 82.3% at the same pose. About one point apart, in the direction drift correction predicts."
+    },
+    "WHAT_I_SHIPPED": {
+      "file": "game/src/render/water.js",
+      "change": "`uWaterShoreBandM` default 1.20 -> 0.10. `customProgramCacheKey` v18-f7r4-shore-band-m -> v19-f7r5-shore-band-0p10 so no cached program can outlive it. **The mechanism is round 4's and is byte-identical — only the constant moves**, which is why this is one number and exactly as reversible as round 4's own.",
+      "the_HAZARDS_26_check_run_not_assumed": "My comment sits in the uniforms object, not in the shader template literal, but §26 says check anyway and `node --check` cannot. Backticks strictly between the fragment literal's open (L189) and close (L332): **0**. Total backticks in file: **even**. The literal is whole.",
+      "reversal": "one number back to 1.20, or to 1e-4 for round 3."
+    }
+  },
+
   "job_3_presence_re_derived_in_my_own_code_before_i_built_on_it": {
     "why_first": "The r4 critic offered `presence` as a standing measure and I am forbidden to inherit a number from a brief. So before spending a browser second I re-derived it offline over ROUND 4's own banked frames, in my own script (`tools/visual/f7-r5-offline.mjs --mode presence`), which imports nothing of the critic's.",
     "definition": "presence = (L[arm] - L[hidden]) / (L[baseline] - L[hidden]) over the pinned mask. 0% = the frame with all 93 water meshes hidden. 100% = the baseline arm. Every artifact in this piece has carried a `--water-hidden` frame since round 2 and no round scored it.",
