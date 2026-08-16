@@ -130,7 +130,35 @@ count is:**
 grep -rl "blind_pair: yes" corpus/ --include=*.md | grep -E '/RI-[^/]*\.md$' | wc -l   # → 81
 ```
 
-**81 reference items declare a blind pair. Verdicts that have ever RUN one: still 0.****
+**81 reference items declare a blind pair.**
+
+**AND THE "ZERO HAVE EVER RUN" FIGURE — WHICH I ASSERTED REPEATEDLY AND WROTE INTO THIS FILE — IS
+FALSE.** Caught 2026-08-16 by the F10 r12 critic. **The vocabulary is `done`, not `run`.** Across
+`blind_comparisons` in wave 1: **110 `not_possible`, 27 `done`, 5 `not_required`, 1 each of `void`,
+`not_run` and `answered-and-revealed`** — so **27 blind comparisons have been completed, across 15
+verdicts**. Ten of those are Protocol A r1/r2 (we lost 5 of 5, twice); the other 17 sit in older
+wave-1 verdicts.
+
+**The count that is actually true, and the command that derives it:**
+
+```sh
+node -e "const fs=require('fs'),d='corpus/90-verdicts/wave1';let n=0;
+for(const f of fs.readdirSync(d).filter(x=>x.endsWith('.json'))){
+ let v;try{v=JSON.parse(fs.readFileSync(d+'/'+f,'utf8'))}catch(e){continue}
+ let bc=v.blind_comparisons; if(!bc) continue;
+ if(!Array.isArray(bc)) bc=Object.values(bc).filter(x=>x&&typeof x==='object');
+ if(bc.some(b=>['done','run'].includes(b.status||b.blind_status))) n++;}
+console.log(n)"        # → 15 verdicts, 27 entries
+```
+
+**Why this matters more than the arithmetic.** I spent a night correcting five agents for deriving
+this number by grepping prose instead of reading the field — and then read the field **for the wrong
+value**, which is the same error one layer in. **A field read is not a derivation unless you have
+enumerated the values the field actually takes.** Print the histogram before you filter it.
+
+**The debt is real but smaller and more specific than I said:** it is the **visual and interface**
+items that had never had one, which is exactly why `RI-UIX06` §G mattered — it returned HARD FAIL with
+the UI art side capped at 2 on 2026-08-16.**
 
 **Derive that second number carefully — three agents got it wrong in one night**, reporting 98, 100,
 101, 102 and "1 verdict records a run". A plain grep for `blind_status.*run` matches **prose that
