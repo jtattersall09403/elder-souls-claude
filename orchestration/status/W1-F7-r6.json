@@ -136,43 +136,69 @@
     "rows": [
       {
         "pose": "edge-b045",
-        "baseline_contrast": 17.366,
-        "contrast_drift": 0.056,
-        "presence_drift": 0.2,
+        "baseline_water_contrast": 17.366,
+        "contrast_drift_luma": 0.056,
+        "presence_drift_pp": 0.2,
         "arms": {
           "bandonly": {
             "presence": 97.48,
-            "retained": 105.79
+            "retained": 105.79,
+            "ShoreDelta": 0.01196
           },
           "band-0.10 (r5 shipped)": {
             "presence": 95.51,
-            "retained": 105.7
+            "retained": 105.7,
+            "ShoreDelta": 0.01305
           },
           "no-shorefade": {
             "presence": 100.19,
-            "retained": 100.27
+            "retained": 100.27,
+            "ShoreDelta": 0.00647
           }
         }
       },
       {
         "pose": "edge-b135",
-        "baseline_contrast": 14.341,
-        "contrast_drift": 0.028,
+        "baseline_water_contrast": 14.34,
+        "contrast_drift_luma": 0.028,
         "arms": {
           "bandonly": {
             "presence": 93.56,
-            "retained": 104.36
+            "retained": 104.37,
+            "ShoreDelta": 0.01476
           },
           "band-0.10 (r5 shipped)": {
             "presence": 86.06,
-            "retained": 92.17
+            "retained": 92.19,
+            "ShoreDelta": 0.01266
+          },
+          "no-shorefade": {
+            "presence": 98.66,
+            "retained": 99.23,
+            "ShoreDelta": 0.0114
+          }
+        }
+      },
+      {
+        "pose": "edge-b225",
+        "arms": {
+          "bandonly": {
+            "presence": 99.84,
+            "retained": 106.56,
+            "ShoreDelta": 0.00653
+          },
+          "band-0.10 (r5 shipped)": {
+            "presence": 98.07,
+            "retained": 107.15,
+            "ShoreDelta": 0.00234
           }
         }
       }
     ],
     "what_it_does_NOT_carry": "**No `bandonly-a70` arm was run in the Western Rootlands.** The multiplier change is measured only in the Deep Marshes. The two changes shipped together and only one of them has two-region evidence; that is a real gap and a critic should treat the WR rows as evidence about the GATE only.",
-    "M12a_clause_1": "Still fails closed. Four bearings were dispatched; the box went to WAIT mid-run and the run banks after every arm, so whatever landed is real and whatever did not is absent. `job_5.rows` is the honest count at filing.",
-    "AND_A_LOOK_FINDING_THAT_NO_NUMBER_HERE_CARRIES": "I opened `wr-4bearings/frames/edge-b045--band-0.10-o3.png`. The paddy water is a flat pale-green sheet and **the boundary where it meets every bund is a hard geometric line** — `RI-VIS04` §9's TELL, in the frame, in the region where the contrast measure says the shore fade is doing its best work (105.7% retained). **The measure and the defect are looking at different things, and one frame settles it where three tables could not.** No reflection, no ripple, heavy speckle, consistent with `RI-VIS11`."
+    "M12a_clause_1": "**Still fails closed, and by one bearing.** Three of the four declared bearings landed (`edge-b045`, `edge-b135`, `edge-b225`); `edge-b315` was still capturing at filing with the box at 4.0-4.2 per core. The run banks `sweep.json` after every arm, so the three that landed are real and the fourth is absent rather than approximated. **Closer than any round since round 3, and still short of the clause.**",
+    "AND_A_LOOK_FINDING_THAT_NO_NUMBER_HERE_CARRIES": "I opened `wr-4bearings/frames/edge-b045--band-0.10-o3.png`. The paddy water is a flat pale-green sheet and **the boundary where it meets every bund is a hard geometric line** — `RI-VIS04` §9's TELL, in the frame, in the region where the contrast measure says the shore fade is doing its best work (105.7% retained). **The measure and the defect are looking at different things, and one frame settles it where three tables could not.** No reflection, no ripple, heavy speckle, consistent with `RI-VIS11`.",
+    "and_the_gate_change_holds_at_ALL_THREE_bearings_measured": "`bandonly` beats the r5 union arm on presence at every western-rootlands bearing measured — **97.48 vs 95.51**, **93.56 vs 86.06**, **99.84 vs 98.07** — and at two of the three it also retains more shoreline contrast (105.79 vs 105.70; 104.37 vs 92.19). At `edge-b225` it retains 0.59 points LESS (106.56 vs 107.15), which is the one row that goes the other way and I am printing it rather than the two that agree with me."
   },
   "job_6_M12_re_derived_in_my_own_captures_and_the_two_clauses_that_cannot_both_be_satisfied": {
     "method": "`RI-VIS03` M12 computed by `tools/metrics/lib/vis03.mjs` inside every scored row of every r6 run, over the PINNED mask, threshold 16, min over poses per M12a clause 3. 13 arm-rows across 2 regions and 4 poses. Nothing inherited.",
@@ -211,7 +237,7 @@
     "why_it_happens_is_NOT_narrated_here": "`ARBITRATION` S63 and S65: a ruling may state what must be measured and may not narrate why a number moved without the ablation. I ran the ablation of the MULTIPLIER, which is what licenses the table. I did not ablate whatever makes `ShoreDelta` rise as the water disappears, so I do not claim a mechanism for it.",
     "M12_scored_min_over_poses_from_MY_OWN_captures": {
       "FresnelDelta": "**PASS at 13 of 13 rows.** Band >= 0.05; worst row **0.10424** (deep-marshes `edge-b045`, `band-0.10`), best 0.21875. **This independently confirms the r5 critic's correction of the r5 build** — the inherited 0.03085 was wrong, the critic re-derived 0.08639, and my own captures in a different process at a different commit across two regions put the worst pose at 0.10424. `FresnelDelta` is not one of F7's failures and three rounds of paperwork said it was.",
-      "ShoreDelta": "**HARD FAIL.** Band >= 0.03, hard-fail floor < 0.01. Worst row **0.00647** (western-rootlands `edge-b045`, `no-shorefade`); the SHIPPED candidate reads **0.00982** at deep-marshes `edge-b045` and **0.01266–0.01476** at western-rootlands `edge-b135`. Below the floor at the worst pose, for both the r5 arm and mine.",
+      "ShoreDelta": "**HARD FAIL.** Band >= 0.03, hard-fail floor < 0.01. Worst row over all 18 arm-rows: **0.00234** (western-rootlands `edge-b225`, r5 shipped arm). The r6 candidate reads **0.00982** at deep-marshes `edge-b045` and its gate-only sibling reads **0.00653** at western-rootlands `edge-b225`. Below the floor at the worst pose for every arm this piece has, mine included.",
       "NormalEnergy": "**Fails two ways.** Below the 0.035 band outright at western-rootlands `edge-b045` (**0.02371** on all three arms), and gated `unresolved` everywhere else by `RI-VIS11` §3's 64.95% supersample survival, which fails closed.",
       "ReflCorr": "**Unmeasurable at 13 of 13 rows** — `only 0 paired samples above the far half of the water; need >= 500`. `inapplicable` under `ARBITRATION` S64, which carries the absence forward as a finding and is never a pass. Four rounds have now recorded this at every pose either has shot.",
       "TemporalVar": "**NOT MEASURED FOR THIS BUILD.** See `what_i_could_not_do`. The r5 hard fail of 0.000341 was shot on a 1.20 m arm and is not this build's number.",
@@ -233,8 +259,22 @@
         },
         "reading": "**No trade.** +0.24 presence and −0.05 retained contrast against a baseline contrast drift of 0.137 luma levels — the contrast move is inside the band and is nothing. ShoreDelta moves 0.00003, i.e. not at all."
       },
-      "and_the_regression_i_WILL_report_against_myself": "**At `edge-b135` the multiplier change LOWERS `ShoreDelta` from 0.07135 to 0.04133** — still above the 0.03 band, but a 42% fall, in the direction of the failure. It is the same opposition the table above describes, arriving as a cost of my own change. A critic is entitled to read that as the round buying presence with shoreline, and the only defence I have is that `ShoreDelta` at the WORST pose is a hard fail either way (0.00982 vs 0.00985) so nothing crossed a band because of me."
-    }
+      "and_the_regression_i_WILL_report_against_myself": "**At `edge-b135` the multiplier change LOWERS `ShoreDelta` from 0.07135 to 0.04133** — still above the 0.03 band, but a 42% fall, in the direction of the failure. It is the same opposition the table above describes, arriving as a cost of my own change. A critic is entitled to read that as the round buying presence with shoreline, and the only defence I have is that `ShoreDelta` at the WORST pose is a hard fail either way (0.00982 vs 0.00985) so nothing crossed a band because of me.",
+      "deep_marshes_edge_b225": {
+        "band-0.10 (r5 shipped)": {
+          "presence": 100.36,
+          "retained_contrast": 100.9,
+          "ShoreDelta": 0.01885
+        },
+        "bandonly-a70 (r6 shipped)": {
+          "presence": 100.46,
+          "retained_contrast": 100.83,
+          "ShoreDelta": 0.01912
+        },
+        "reading": "**No trade, again.** +0.10 presence, -0.07 retained contrast, +0.00027 ShoreDelta — every one inside its band. Two of the three deep-marshes preservation bearings landed; `edge-b315` was still capturing at filing."
+      }
+    },
+    "ShoreDelta_min_over_EVERY_pose_i_measured": "**0.00234** (western-rootlands `edge-b225`, the r5 shipped arm) against a 0.03 band and a 0.01 hard-fail floor; the r6 gate arm's worst measured row at that pose is **0.00653**. **Both arms hard-fail `ShoreDelta` min-over-poses, and the pose that fails hardest is in the region nobody had been shooting for four rounds.** My earlier worst-row figure of 0.00647 was taken before the `edge-b225` rows existed; the true worst over everything I captured is 0.00234, and it is the r5 arm's."
   },
   "job_7_S67_demonstrated_again_on_new_arms": {
     "claim": "`ARBITRATION` S67 retired `gradient_width_px` because it is amplitude-invariant. Round 6's arms show what that costs in practice, without needing the re-implementation argument at all.",
