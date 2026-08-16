@@ -56,6 +56,18 @@
       "what_this_costs_me_and_i_am_reporting_it": "**A ~3.9 pp drift band on `presence` means `band-0.30` (99.57%) and `band-0.60` (96.59%) are NOT distinguishable from 'changed nothing' at this pose, and my report tool flags them `~drift` rather than reporting them as effects.** Only `fixed` at 83.35% sits outside the band. So the b225 evidence supports 'the shipped 1.20 m costs real water' and does NOT support any fine ranking among the small bands."
     },
 
+    "THE ORDER-REVERSED CONTROL — HAZARDS §25a RULE 2, AND AN ACCEPTANCE CLAUSE, RUN AT LAST": {
+      "the_debt": "The r4 critic: *'One order-reversed run settles it; I launched exactly that and killed it by PID when contention hit 4.53 per core. It is owed.'* The r4 verdict then made it a clause of the round-5 acceptance. `corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b225-reverse/` is that run.",
+      "the_cleanest_comparison_is_ONE_UNCHANGED_ARM_AT_TWO_ORDINALS": {
+        "arm": "`band-0.10` — the identical uniform in both runs, same pose, same site, same seed",
+        "forward run, captured 5th": { "own_mask_delta_thr10": "+24.51%", "own_mask_delta_thr16": "-0.55%" },
+        "reverse run, captured 3rd": { "own_mask_delta_thr10": "+11.99%", "own_mask_delta_thr16": "-0.53%" },
+        "ruling": "**One unchanged arm, two capture positions: threshold 10 moves by 12.52 points and threshold 16 moves by 0.02 points.** HAZARDS §25a rule 2 says that if an ordering reverses with the sequence it is ordinal rather than the arm. It does, at thresholds 6 and 10, and it does not at 16. **The §25a confound is confirmed independently, and threshold 16 is confirmed order-independent as well as ordinal-independent.**"
+      },
+      "and_a_free_identity_check_fell_out_of_it": "Because the change shipped between runs, `fixed` in the reverse run IS the 0.10 m configuration. It reads **presence 100.16%** where the explicitly-set `band-0.10` arm in the same run reads **100.37%** — the same configuration reached by two different routes (source default vs uniform override), captured at different ordinals, agreeing to **0.21 percentage points**. That confirms the shipped default is what I say it is and that the arm machinery is not vacuous.",
+      "and_the_baseline_reproduced_ACROSS_PROCESSES": "The reverse run's baseline captures read 68.623 / 67.740 / 67.277 at threshold 6 — **identical to the forward run's first three baseline captures to three decimal places**, in a separate process, a separate browser and a later commit. The instrument is reproducible; it is the threshold choice that was not."
+    },
+
     "and_it_corrects_my_own_brief_which_the_r4_critic_had_already_corrected": "My brief relayed that HAZARDS §25 is *not* measured by round 4 because `own_mask_delta_pct` tracks capture ordinal, and that the +23.24% quoted as proof of the per-arm mask hazard is an ordinal artefact. **CONFIRMED and extended: I reproduce the ordinal climb at thresholds 6 and 10 in a fresh run with a different arm list, and I show it DISAPPEARS at threshold 16.** So the confound is not merely ordinal — it is ordinal *at unstable thresholds*, and choosing a stable threshold removes it without any ordering trick. §25's rule (pin the mask) is untouched and this round still pins it."
   },
 
