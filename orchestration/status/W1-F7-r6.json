@@ -226,5 +226,21 @@
       },
       "and_the_regression_i_WILL_report_against_myself": "**At `edge-b135` the multiplier change LOWERS `ShoreDelta` from 0.07135 to 0.04133** — still above the 0.03 band, but a 42% fall, in the direction of the failure. It is the same opposition the table above describes, arriving as a cost of my own change. A critic is entitled to read that as the round buying presence with shoreline, and the only defence I have is that `ShoreDelta` at the WORST pose is a hard fail either way (0.00982 vs 0.00985) so nothing crossed a band because of me."
     }
+  },
+  "job_7_S67_demonstrated_again_on_new_arms": {
+    "claim": "`ARBITRATION` S67 retired `gradient_width_px` because it is amplitude-invariant. Round 6's arms show what that costs in practice, without needing the re-implementation argument at all.",
+    "the_column_read_straight_off_the_report": {
+      "bandonly-a00 — the frame is BLACK MUD with a lily pad floating on nothing, presence 22.44%": "width 32 px",
+      "band-0.10 — the r5 arm the r5 critic described as 'wet mud', presence 50.77%": "width 32 px",
+      "bandonly-a70 — the arm this round ships, presence 72.78%": "width 1 px",
+      "no-shorefade — presence 91.18%": "width 1 px"
+    },
+    "reading": "**The retired measure awards its best score to the arm that deletes the water and its worst to both arms in which water is visible.** Under the old `>= 12 px` clause, round 6 would have shipped `bandonly-a00`. That is not a hypothetical: it is the ranking the clause produces on this round's own captures. Artifact: `corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r6/offline/r6-report-thr16.json`, `width_px_RETIRED_S67` column, printed deliberately rather than suppressed.",
+    "the_frame": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r6/dm-b135-gate/frames/edge-b135--bandonly-a00-o7.png — opened, not inferred."
+  },
+  "job_8_the_arm_that_ADDS_shoreline_contrast": {
+    "finding": "At western-rootlands `edge-b135`, threshold 16, baseline contrast drift 0.028 luma levels: `no-shorefade` retains **99.23%**, the r5 union arm retains **92.19%**, and the band-gate-only arm retains **104.37%**. **The band-only gate is the only arm anywhere in this round that raises the water's own shoreline contrast ABOVE both the unchanged water and the no-fade arm.** Presence at the same pose: 98.66 / 86.06 / 93.56.",
+    "why_it_matters": "It is the one place a fade beats no-fade on a measure with a null behind it, and it is the gate this round changed rather than the multiplier it also changed. **Evidence for the gate change; not evidence for `.70`.**",
+    "and_the_honest_limit": "One pose, one region, and the arm measured there was `.42` — the shipped `.70` was not run in the Western Rootlands at all."
   }
 }

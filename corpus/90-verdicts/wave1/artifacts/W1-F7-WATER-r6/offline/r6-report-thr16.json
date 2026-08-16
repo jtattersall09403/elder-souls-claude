@@ -1,0 +1,203 @@
+{
+ "tool": "tools/visual/f7-r6-report.mjs",
+ "threshold": 16,
+ "generated": "2026-08-16T05:12:12.525Z",
+ "runs": [
+  {
+   "run": "dm-b135-gate",
+   "site": "vista-deep-marshes",
+   "pose": "edge-b135",
+   "commit": "a140ff2b",
+   "shader_gate_measured": "float esShoreT=1.0-(1.0-esTrans)*(1.0-esBandM);",
+   "shader_alpha_measured": "diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.42,esShoreT*clamp(uWaterShoreFade,0.0,1.0));",
+   "baseline_captures": 7,
+   "baseline_water_contrast": 24.548,
+   "DRIFT_contrast_retained_pp": 0.72,
+   "DRIFT_presence_pp": 3.83,
+   "arms": {
+    "r3": {
+     "presence_pct": 60.66,
+     "shore_contrast_retained_pct": 41.07,
+     "m12_FresnelDelta": 0.16779,
+     "m12_ShoreDelta": 0.05943,
+     "m12_NormalEnergy": 0.13425,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 32,
+     "VACUOUS": null
+    },
+    "bandonly": {
+     "presence_pct": 54.42,
+     "shore_contrast_retained_pct": 32.73,
+     "m12_FresnelDelta": 0.17613,
+     "m12_ShoreDelta": 0.06744,
+     "m12_NormalEnergy": 0.14707,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 32,
+     "VACUOUS": null
+    },
+    "bandonly-a70": {
+     "presence_pct": 72.78,
+     "shore_contrast_retained_pct": 62.36,
+     "m12_FresnelDelta": 0.1503,
+     "m12_ShoreDelta": 0.04133,
+     "m12_NormalEnergy": 0.11714,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 1,
+     "VACUOUS": null
+    },
+    "bandonly-a00": {
+     "presence_pct": 22.44,
+     "shore_contrast_retained_pct": -19.02,
+     "m12_FresnelDelta": 0.21875,
+     "m12_ShoreDelta": 0.11282,
+     "m12_NormalEnergy": 0.26538,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 32,
+     "VACUOUS": null
+    },
+    "band-0.10": {
+     "presence_pct": 50.77,
+     "shore_contrast_retained_pct": 28.43,
+     "m12_FresnelDelta": 0.18375,
+     "m12_ShoreDelta": 0.07135,
+     "m12_NormalEnergy": 0.14923,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 32,
+     "VACUOUS": null
+    },
+    "no-shorefade": {
+     "presence_pct": 91.18,
+     "shore_contrast_retained_pct": 90.49,
+     "m12_FresnelDelta": 0.12396,
+     "m12_ShoreDelta": 0.01586,
+     "m12_NormalEnergy": 0.10024,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 1,
+     "VACUOUS": null
+    }
+   }
+  },
+  {
+   "run": "dm-preserve",
+   "site": "vista-deep-marshes",
+   "pose": "edge-b045",
+   "commit": "e17736ba",
+   "shader_gate_measured": "float esShoreT=1.0-(1.0-esTrans)*(1.0-esBandM);",
+   "shader_alpha_measured": "diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.42,esShoreT*clamp(uWaterShoreFade,0.0,1.0));",
+   "baseline_captures": 3,
+   "baseline_water_contrast": 26.047,
+   "DRIFT_contrast_retained_pp": 0.53,
+   "DRIFT_presence_pp": 3.12,
+   "arms": {
+    "band-0.10": {
+     "presence_pct": 99.93,
+     "shore_contrast_retained_pct": 100.58,
+     "m12_FresnelDelta": 0.10424,
+     "m12_ShoreDelta": 0.00985,
+     "m12_NormalEnergy": 0.06607,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 1,
+     "VACUOUS": null
+    },
+    "bandonly-a70": {
+     "presence_pct": 100.17,
+     "shore_contrast_retained_pct": 100.53,
+     "m12_FresnelDelta": 0.10515,
+     "m12_ShoreDelta": 0.00982,
+     "m12_NormalEnergy": 0.06608,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 1,
+     "VACUOUS": null
+    }
+   }
+  },
+  {
+   "run": "wr-4bearings",
+   "site": "vista-western-rootlands",
+   "pose": "edge-b045",
+   "commit": "c2439837",
+   "shader_gate_measured": "float esShoreT=1.0-(1.0-esTrans)*(1.0-esBandM);",
+   "shader_alpha_measured": "diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.42,esShoreT*clamp(uWaterShoreFade,0.0,1.0));",
+   "baseline_captures": 4,
+   "baseline_water_contrast": 17.366,
+   "DRIFT_contrast_retained_pp": 0.32,
+   "DRIFT_presence_pp": 0.2,
+   "arms": {
+    "bandonly": {
+     "presence_pct": 97.48,
+     "shore_contrast_retained_pct": 105.79,
+     "m12_FresnelDelta": 0.12673,
+     "m12_ShoreDelta": 0.01196,
+     "m12_NormalEnergy": 0.02371,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 1,
+     "VACUOUS": null
+    },
+    "band-0.10": {
+     "presence_pct": 95.51,
+     "shore_contrast_retained_pct": 105.7,
+     "m12_FresnelDelta": 0.12407,
+     "m12_ShoreDelta": 0.01305,
+     "m12_NormalEnergy": 0.02369,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 1,
+     "VACUOUS": null
+    },
+    "no-shorefade": {
+     "presence_pct": 100.19,
+     "shore_contrast_retained_pct": 100.27,
+     "m12_FresnelDelta": 0.14318,
+     "m12_ShoreDelta": 0.00647,
+     "m12_NormalEnergy": 0.02371,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 1,
+     "VACUOUS": null
+    }
+   }
+  },
+  {
+   "run": "wr-4bearings",
+   "site": "vista-western-rootlands",
+   "pose": "edge-b135",
+   "commit": "c2439837",
+   "shader_gate_measured": "float esShoreT=1.0-(1.0-esTrans)*(1.0-esBandM);",
+   "shader_alpha_measured": "diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.42,esShoreT*clamp(uWaterShoreFade,0.0,1.0));",
+   "baseline_captures": 4,
+   "baseline_water_contrast": 14.34,
+   "DRIFT_contrast_retained_pp": 0.2,
+   "DRIFT_presence_pp": 0,
+   "arms": {
+    "bandonly": {
+     "presence_pct": 93.56,
+     "shore_contrast_retained_pct": 104.37,
+     "m12_FresnelDelta": 0.14992,
+     "m12_ShoreDelta": 0.01476,
+     "m12_NormalEnergy": 0.05494,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 31,
+     "VACUOUS": null
+    },
+    "band-0.10": {
+     "presence_pct": 86.06,
+     "shore_contrast_retained_pct": 92.19,
+     "m12_FresnelDelta": 0.15836,
+     "m12_ShoreDelta": 0.01266,
+     "m12_NormalEnergy": 0.05015,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 31,
+     "VACUOUS": null
+    },
+    "no-shorefade": {
+     "presence_pct": 98.66,
+     "shore_contrast_retained_pct": 99.23,
+     "m12_FresnelDelta": 0.16775,
+     "m12_ShoreDelta": 0.0114,
+     "m12_NormalEnergy": 0.05497,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 13,
+     "VACUOUS": null
+    }
+   }
+  }
+ ]
+}
