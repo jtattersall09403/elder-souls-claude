@@ -343,14 +343,26 @@ const asserted = {
   backtick_count_in_file: (waterSrc.match(/`/g) || []).length,
 };
 
-let NULL_TRANS = Number(args.nullTrans || 0.5);
-const SHADER_ARMS = () => ({
+/* ---- THE S52 MATCHED-LUMINANCE NULL, PUBLISHED AS A CURVE RATHER THAN A FITTED POINT ---------
+ * `ARBITRATION` S52's control asks: could a plain brightness change reproduce the result? The r4
+ * tool answered it with a bisection that fitted ONE constant to the arm's luma — and the fit never
+ * completed, so round 4 shipped with `null_calibration: null` and no claim protected.
+ *
+ * A bisection is the wrong shape anyway: it costs 4-6 captures to find one point, and the point it
+ * finds is the one whose luma matches, which is exactly the number a critic must be able to check.
+ * So instead the null is a SWEEP of constant transmittances, run as ordinary interleaved arms with
+ * every other arm's drift control. Each `null-t<c>` sets `esTrans` to a constant and DELETES the
+ * metre band, so it has the arm's brightness with NO depth dependence, NO k and NO shore geometry
+ * anywhere. Reading it is then arithmetic a critic can redo from the table: find the null row whose
+ * `mean_luma` brackets the arm's, and compare widths at matched luminance. If a null at the arm's
+ * brightness reproduces the arm's width, the width is a brightness artefact and the claim is void
+ * in both directions. Publishing the whole curve also shows whether the arm's luma is reachable at
+ * all — round 4's search walked the wrong way for three iterations because it assumed it was. */
+const NULLS = String(args.nulls || '').split(',').map(Number).filter((v) => v > 0 && v < 1);
+const SHADER_ARMS = () => Object.assign({
   prefix: [[R3_DEPTH_BLOCK, R2_DEPTH_BLOCK], [R4_SHORE_BLOCK, R2_SHORE_BLOCK]],
-  // S52's plausible wrong answer: a CONSTANT transmittance with the metre band deleted, so the
-  // frame has the same average brightness change with NO depth dependence, NO k and NO shore
-  // geometry. Anything it reproduces is a brightness proxy and inadmissible in both directions.
-  'null-const-trans': [[TRANS_LINE, `        float esTrans=${NULL_TRANS.toFixed(4)};`], [BAND_LINE, `        float esBandM=0.0;`]],
-});
+}, Object.fromEntries(NULLS.map((c) => [`null-t${c.toFixed(2)}`,
+  [[TRANS_LINE, `        float esTrans=${c.toFixed(4)};`], [BAND_LINE, `        float esBandM=0.0;`]]])));
 /** Bands are generated from `--bands` so the sweep below 0.60 at the FAILING pose — which nobody
  * has run and which the r4 critic named as the gap in its own ruling — is one flag, not an edit. */
 const BANDS = String(args.bands || '0.05,0.10,0.20,0.30,0.60,1.20').split(',').map(Number).filter((v) => v > 0);

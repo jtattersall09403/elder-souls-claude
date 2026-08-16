@@ -1,0 +1,21 @@
+{
+  "task_id": "W1-F7-r5",
+  "title": "F7 — the water surface, round 5. Round 4 failed at 2/10 with every headline row measured at an unstable threshold. This round re-derives at a threshold it has SHOWN to be stable, removes ordinal drift from the instrument rather than measuring it, scores the water-hidden control nobody had scored, sweeps the band below 0.60 m at the pose that actually fails, and shoots the motion five rounds have owed.",
+  "roadmap_item": "F7",
+  "state": "IN PROGRESS — this file is written incrementally as runs land. Do not read it as final until `state` says delivered-awaiting-critic.",
+  "verdict_this_answers": "corpus/90-verdicts/wave1/W1-F7-WATER-r4.json (FAIL at 2/10, down from 3). Its biggest_gap is GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank; its ruling is KEEP the mechanism, set the default to 0.10 m, and its acceptance is `gradient_width_px >= 12` at the WORST pose of a complete 4-bearing Deep Marshes set at THRESHOLD 10, AND `presence >= 90%` at every pose in both regions, AND the mask control run in BOTH orders.",
+  "branch": "codex/wave1-build-experiment",
+  "what_i_could_not_do": [
+    "PLACEHOLDER — this section is written LAST and FIRST in the file, per the brief. Nothing below it is a claim until it is filled in."
+  ],
+  "files_claimed": [
+    "game/src/render/water.js",
+    "tools/visual/f7-r5-sweep.mjs",
+    "tools/visual/f7-r5-offline.mjs",
+    "tools/visual/f7-r5-band-census.mjs",
+    "corpus/70-visual/RI-VIS11-water-surface-micro-detail.md",
+    "orchestration/status/W1-F7-r5.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/"
+  ],
+  "declared_overlap": "`node tools/ownership.mjs --for game/src/render/water.js`, run this turn: 'nobody live has declared this file'. `--for tools/visual/f7-r4-sweep.mjs` reports `tools/visual/` claimed as a DIRECTORY by W1-30V [running], so — exactly as rounds 3 and 4 did — I ADDED files there and edited none of theirs. I edited `tools/roadmap-coverage.mjs` to home RI-VIS11 (CLAUDE.md rule 0c: fix the generator, not the markdown); it is not claimed."
+}
