@@ -9,8 +9,8 @@
 Four agents, on ring 1. (The container restarted overnight and killed a full fleet mid-round; their
 work was quarantined on a side branch and every round restarted from it, so nothing was lost.)
 
-- **Judging the sun, round three** — the cool key was built, measured, and deliberately **not
-  shipped**; the reason reframes three rounds of this work.
+- **The sun, round four** — a judge found the real hard fail, sitting unrecorded in the evidence since
+  round one, and proved the metric we tuned against reads the wrong pixels.
 - **Judging the crowd, which now breathes** — 27 of 27 townspeople move, replicated across three
   sessions, with the motion visible in pixels rather than only in numbers.
 - **The water, round five** — the fade's setting is twelve times too big, and every number this work
@@ -32,14 +32,12 @@ materials the interface should be made of. Across six people looking hard, only 
 were ever seen. **Chitin, root, bone, shell inlay and reed weave: nobody saw them anywhere** — and the
 two screens carrying none of them are exactly the two that failed hardest.
 
-**Two things you would see, found by accident — and both are now fixed.** A judge reading the
-conversation window noticed a line that *"reads like an authoring instruction to the writer rather than
-in-world dialogue"* — because it was one. **I told you 25 speakers were using it; the real number is 5
-lines from a single source**, and the "25" I quoted turned out to be a legitimate piece of authored
-Argonian address, checked by hand across 43 candidate matches. And **books were printing the literal
-word `undefined`** instead of their text: I said four, the true blast radius is **24** — a title-only
-catalogue of 162 entries loads fifth of twenty-six and was overwriting every real book that loaded
-before it. Both carry regression checks proven to fail on the old build and pass on the new.
+**Two things you would see, found by accident — and both are now fixed.** A judge noticed a line in the
+conversation window that *"reads like an authoring instruction to the writer"* — because it was one
+(**5 lines from a single source**; the larger count I first quoted was legitimate authored text,
+checked by hand across 43 matches). And **books were printing the literal word `undefined`**: I said
+four, the true blast radius is **24** — a title-only catalogue of 162 entries loads fifth of twenty-six
+and was overwriting every real book before it. Both carry checks proven to fail on the old build.
 
 **It is a slice, not a game.** You can walk around, look at things, open the map and journal, talk to people, and fight. It will not look good yet.
 
@@ -174,29 +172,31 @@ contains *"no terrain, no settlement and no canopy"*, so it lights every surface
 the way.
 
 **The rebalance landed, and it is four numbers.** Daytime key light ×3, sky ×0.75, fill ×0.75, ambient
-dome cut to a third; night got its own moon lever, because the moon had no control at all. **Judged and
-failed at 2 of 10** — with one real win: **at midday the settlement casts large readable shadows in 8
-of 12 camera angles**, shot in motion over 54 frames.
+dome cut to a third; night got its own moon lever. **Judged and failed at 2 of 10** — with one real
+win: **at midday the settlement casts large readable shadows in 8 of 12 camera angles**.
 
 **And the judge found the thing the numbers were missing: our sunlight has no colour.** The corpus's
 own detector was sitting unused — our daylight key reads **7.2°** against a minimum of 15, where six
 real photographs read 16–143°.
 
-**Round two tried to fix it and could not — and then a judge found the answer.** The whole time, the
-fix was to make the daylight **cooler**, and both rounds pushed it *warmer*. Worse, the round that
-declared the whole approach exhausted **could not have tested it**: its own tool only ever applied
-"warm" to the sun and "cool" to the sky, so no experiment it ran could cool the key light. Seven
-untried settings were sitting written in the file.
+**Three rounds tried to fix it. A judge has now shown we were measuring the wrong thing.**
 
-The judge ran them. Setting the key to the game's **own night-sky blue** scores **17.1** against a
-minimum of 15 — **the first passing configuration this project has ever measured** — and it survives
-every check for brightness, contrast and shadow that could have caught it cheating. The switch already
-exists in the code and takes a negative number; nobody had tried one. Round three is now making it a
-real source change rather than a test-harness one.
+The check that has driven all three rounds splits the picture into "lit" and "shadow" — and it has
+them **backwards**. Painted back onto the frame, what it calls *lit* is **the sky and a pale wall**,
+and what it calls *shadow* is **speckle on open sunlit ground**. Worse: **run it with the sun switched
+off entirely and it scores higher** at seven of eight test shots. And the same shipped build **passes
+it outright** when the camera is walking at midday and fails it at every angle at 8 a.m. — so the
+number was a property of *where the camera was pointed*, not of the light.
 
-**And this un-does a much bigger claim I passed on to you.** I said the builder's conclusion — that
-colour barely matters while every surface is the same olive — might reorder the whole plan and make
-materials the blocker instead of light. **That ruling is falsified.** The ordering stands.
+**Meanwhile the real hard failure was sitting in the evidence the whole time and nobody wrote it
+down** — a shadow-detail measure that has been below its floor **since round one**, in the first
+round's own saved picture, unrecorded by all three judgements. And the shadow system itself was never
+built to spec: **one shadow map where the standard asks for three**. That is round four's work.
+
+**Two things I told you are withdrawn.** "Our sunlight has no colour" was the wrong diagnosis. And the
+rule I wrote to replace it was half wrong too — I claimed the four test shots sorted perfectly by how
+much shadow they contained; they don't, and the fix I proposed would have passed shots carrying a
+building's shadow across sunlit stone.
 
 **The builder's conclusion, which a judge is now testing, would change the order of the work:** colour
 in a picture is the surface times the light, and **when every surface in the world is the same olive,
@@ -212,9 +212,8 @@ casting shadows. Replaced with the same test taken **only on the lit parts of th
 clause that the shadowed area must not shrink. **This is the fourth metric in two days that got better
 when the game got worse, or worse when it got better, and three of the four were mine.**
 
-**The coverage hole is bigger than it looked.** Only **2 of the 5** outdoor lighting recipes were
-rebalanced, and **overcast and storm weather cover 59% of daylight** across the thirteen regions. So
-most of the time you spend outdoors is still lit by the old flat budget.
+**The coverage hole:** only **2 of the 5** outdoor lighting recipes were rebalanced, and **overcast and
+storm weather cover 59% of daylight** — neither touched, and storm has never been photographed at all.
 
 ## The honest standard
 
