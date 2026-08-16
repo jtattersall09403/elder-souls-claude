@@ -2,7 +2,7 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-16T04:35:15.741Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-16T05:01:35.701Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
@@ -192,7 +192,7 @@
 | `RI-QST09` | 30-quests | morrowind | P10 | 0 | — | never_judged |
 | `RI-DLG01` | 40-dialogue | morrowind | P1 | 3 | 5 | judged_below_bar |
 | `RI-DLG02` | 40-dialogue | morrowind | P2 | 5 | 5 | judged_below_bar |
-| `RI-DLG03` | 40-dialogue | morrowind | P2 | 8 | 8 | judged_at_or_above_bar |
+| `RI-DLG03` | 40-dialogue | morrowind | P2 | 9 | 8 | judged_at_or_above_bar |
 | `RI-DLG04` | 40-dialogue | morrowind | P2 | 0 | — | never_judged |
 | `RI-DLG05` | 40-dialogue | morrowind | P3 | 0 | — | never_judged |
 | `RI-DLG06` | 40-dialogue | morrowind | P2 | 1 | 5 | judged_below_bar |
@@ -242,7 +242,7 @@
 | `RI-MTH04` | 80-methods | neutral | I2 | 7 | 8 | judged_at_or_above_bar |
 | `RI-MTH05` | 80-methods | neutral | I5 | 0 | — | never_judged |
 | `RI-MTH06` | 80-methods | neutral | I2 I5 | 0 | — | never_judged |
-| `RI-MTH07` | 80-methods | neutral | I4 | 26 | 8 | judged_at_or_above_bar |
+| `RI-MTH07` | 80-methods | neutral | I4 | 27 | 8 | judged_at_or_above_bar |
 | `RI-PLT01` | 85-platform | neutral | T3 F14 | 2 | 5 | judged_below_bar |
 | `RI-PLT02` | 85-platform | neutral | T3 | 0 | — | never_judged |
 | `RI-PLT03` | 85-platform | neutral | T3 | 3 | 2 | judged_below_bar |
@@ -250,7 +250,7 @@
 | `RI-UIX02` | 86-ui | morrowind | P3 | 3 | 4 | judged_below_bar |
 | `RI-UIX03` | 86-ui | neutral | C3 T4 | 9 | 6 | judged_at_or_above_bar |
 | `RI-UIX04` | 86-ui | morrowind | P3 T4 | 11 | 7 | judged_at_or_above_bar |
-| `RI-UIX05` | 86-ui | morrowind | P4 | 5 | 8 | judged_at_or_above_bar |
+| `RI-UIX05` | 86-ui | morrowind | P4 | 6 | 8 | judged_at_or_above_bar |
 | `RI-UIX06` | 86-ui | neutral | T4 F13 | 9 | 5 | judged_below_bar |
 | `RI-UIX07` | 86-ui | morrowind | T4 | 7 | 5 | judged_below_bar |
 | `RI-UIX08` | 86-ui | morrowind | P1 T4 | 5 | 2 | judged_below_bar |
