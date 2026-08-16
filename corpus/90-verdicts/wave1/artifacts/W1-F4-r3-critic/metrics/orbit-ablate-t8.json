@@ -1,0 +1,236 @@
+{
+ "at": "2026-08-16T03:19:11.050Z",
+ "note": "S66 tested at an orbit angle that VISIBLY holds a large cast shadow. Shipped tree, base + shadows_off in the same process.",
+ "rows": [
+  {
+   "label": "y000/centre-512",
+   "W": 512,
+   "H": 512,
+   "crop": [
+    704,
+    284,
+    512,
+    512
+   ],
+   "m6": {
+    "sky_frac": 0.0026,
+    "shadow_mask_frac": 0.2493,
+    "C_local_med": 0.0441,
+    "retention": 0.9815,
+    "hue_shadow_deg": 105.34,
+    "hue_lit_deg": 105.39,
+    "hue_offset_deg": 0.05,
+    "C_shadow": 9.4516,
+    "mean_Yp_shadow": 0.1415,
+    "mean_Yp_lit": 0.433
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.1047,
+     "area_frac_of_fg": 0.1049,
+     "p_cast_given_shadow_quartile": 0.2153,
+     "p_cast_given_lit_quartile": 0.0744,
+     "p_shadow_quartile_given_cast": 0.5129
+    },
+    "tau2": {
+     "area_frac_of_image": 0.0915,
+     "area_frac_of_fg": 0.0918,
+     "p_cast_given_shadow_quartile": 0.1944,
+     "p_cast_given_lit_quartile": 0.0606,
+     "p_shadow_quartile_given_cast": 0.5295
+    },
+    "tau4": {
+     "area_frac_of_image": 0.077,
+     "area_frac_of_fg": 0.0772,
+     "p_cast_given_shadow_quartile": 0.1728,
+     "p_cast_given_lit_quartile": 0.0442,
+     "p_shadow_quartile_given_cast": 0.5595
+    },
+    "tau8": {
+     "area_frac_of_image": 0.0604,
+     "area_frac_of_fg": 0.0605,
+     "p_cast_given_shadow_quartile": 0.1418,
+     "p_cast_given_lit_quartile": 0.0289,
+     "p_shadow_quartile_given_cast": 0.5856
+    },
+    "tau16": {
+     "area_frac_of_image": 0.0425,
+     "area_frac_of_fg": 0.0426,
+     "p_cast_given_shadow_quartile": 0.1046,
+     "p_cast_given_lit_quartile": 0.0169,
+     "p_shadow_quartile_given_cast": 0.6139
+    }
+   }
+  },
+  {
+   "label": "y000/frame",
+   "W": 1920,
+   "H": 1080,
+   "crop": null,
+   "m6": {
+    "sky_frac": 0.1576,
+    "shadow_mask_frac": 0.2099,
+    "C_local_med": 0.0277,
+    "retention": 0.6156,
+    "hue_shadow_deg": 107.59,
+    "hue_lit_deg": 107.69,
+    "hue_offset_deg": 0.1,
+    "C_shadow": 11.4723,
+    "mean_Yp_shadow": 0.1475,
+    "mean_Yp_lit": 0.4408
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.0325,
+     "area_frac_of_fg": 0.0385,
+     "p_cast_given_shadow_quartile": 0.0629,
+     "p_cast_given_lit_quartile": 0.0348,
+     "p_shadow_quartile_given_cast": 0.4065
+    },
+    "tau2": {
+     "area_frac_of_image": 0.0288,
+     "area_frac_of_fg": 0.0342,
+     "p_cast_given_shadow_quartile": 0.0581,
+     "p_cast_given_lit_quartile": 0.0279,
+     "p_shadow_quartile_given_cast": 0.4234
+    },
+    "tau4": {
+     "area_frac_of_image": 0.0246,
+     "area_frac_of_fg": 0.0293,
+     "p_cast_given_shadow_quartile": 0.052,
+     "p_cast_given_lit_quartile": 0.021,
+     "p_shadow_quartile_given_cast": 0.4431
+    },
+    "tau8": {
+     "area_frac_of_image": 0.0198,
+     "area_frac_of_fg": 0.0235,
+     "p_cast_given_shadow_quartile": 0.0437,
+     "p_cast_given_lit_quartile": 0.0142,
+     "p_shadow_quartile_given_cast": 0.4631
+    },
+    "tau16": {
+     "area_frac_of_image": 0.0142,
+     "area_frac_of_fg": 0.0169,
+     "p_cast_given_shadow_quartile": 0.0335,
+     "p_cast_given_lit_quartile": 0.0075,
+     "p_shadow_quartile_given_cast": 0.4948
+    }
+   }
+  },
+  {
+   "label": "y270/centre-512",
+   "W": 512,
+   "H": 512,
+   "crop": [
+    704,
+    284,
+    512,
+    512
+   ],
+   "m6": {
+    "sky_frac": 0.0051,
+    "shadow_mask_frac": 0.2485,
+    "C_local_med": 0.0775,
+    "retention": 0.917,
+    "hue_shadow_deg": 102.39,
+    "hue_lit_deg": 102.43,
+    "hue_offset_deg": 0.04,
+    "C_shadow": 10.2384,
+    "mean_Yp_shadow": 0.1817,
+    "mean_Yp_lit": 0.5662
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.1766,
+     "area_frac_of_fg": 0.1775,
+     "p_cast_given_shadow_quartile": 0.4304,
+     "p_cast_given_lit_quartile": 0.0601,
+     "p_shadow_quartile_given_cast": 0.6057
+    },
+    "tau2": {
+     "area_frac_of_image": 0.1561,
+     "area_frac_of_fg": 0.1569,
+     "p_cast_given_shadow_quartile": 0.3876,
+     "p_cast_given_lit_quartile": 0.0484,
+     "p_shadow_quartile_given_cast": 0.6171
+    },
+    "tau4": {
+     "area_frac_of_image": 0.1312,
+     "area_frac_of_fg": 0.1318,
+     "p_cast_given_shadow_quartile": 0.3358,
+     "p_cast_given_lit_quartile": 0.0354,
+     "p_shadow_quartile_given_cast": 0.6363
+    },
+    "tau8": {
+     "area_frac_of_image": 0.1025,
+     "area_frac_of_fg": 0.103,
+     "p_cast_given_shadow_quartile": 0.27,
+     "p_cast_given_lit_quartile": 0.0235,
+     "p_shadow_quartile_given_cast": 0.6546
+    },
+    "tau16": {
+     "area_frac_of_image": 0.0798,
+     "area_frac_of_fg": 0.0802,
+     "p_cast_given_shadow_quartile": 0.2199,
+     "p_cast_given_lit_quartile": 0.0134,
+     "p_shadow_quartile_given_cast": 0.6854
+    }
+   }
+  },
+  {
+   "label": "y270/frame",
+   "W": 1920,
+   "H": 1080,
+   "crop": null,
+   "m6": {
+    "sky_frac": 0.1516,
+    "shadow_mask_frac": 0.2119,
+    "C_local_med": 0.0461,
+    "retention": 0.6433,
+    "hue_shadow_deg": 107.5,
+    "hue_lit_deg": 102.67,
+    "hue_offset_deg": 4.83,
+    "C_shadow": 10.8189,
+    "mean_Yp_shadow": 0.1634,
+    "mean_Yp_lit": 0.5399
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.0831,
+     "area_frac_of_fg": 0.0979,
+     "p_cast_given_shadow_quartile": 0.2133,
+     "p_cast_given_lit_quartile": 0.0534,
+     "p_shadow_quartile_given_cast": 0.5439
+    },
+    "tau2": {
+     "area_frac_of_image": 0.0751,
+     "area_frac_of_fg": 0.0885,
+     "p_cast_given_shadow_quartile": 0.199,
+     "p_cast_given_lit_quartile": 0.0457,
+     "p_shadow_quartile_given_cast": 0.5616
+    },
+    "tau4": {
+     "area_frac_of_image": 0.0668,
+     "area_frac_of_fg": 0.0788,
+     "p_cast_given_shadow_quartile": 0.1863,
+     "p_cast_given_lit_quartile": 0.0372,
+     "p_shadow_quartile_given_cast": 0.5905
+    },
+    "tau8": {
+     "area_frac_of_image": 0.0582,
+     "area_frac_of_fg": 0.0686,
+     "p_cast_given_shadow_quartile": 0.173,
+     "p_cast_given_lit_quartile": 0.028,
+     "p_shadow_quartile_given_cast": 0.6298
+    },
+    "tau16": {
+     "area_frac_of_image": 0.05,
+     "area_frac_of_fg": 0.0589,
+     "p_cast_given_shadow_quartile": 0.1599,
+     "p_cast_given_lit_quartile": 0.018,
+     "p_shadow_quartile_given_cast": 0.6781
+    }
+   }
+  }
+ ]
+}

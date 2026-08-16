@@ -119,6 +119,66 @@ that fires · **MIN BAR** = the minimum acceptable configuration.
 > FAIL set by §2's own pre-existing DETECT. **Overturned** if a per-light visible-chain census proves
 > unavailable to a harness, in which case §2 records the budget `UNVERIFIED`, which counts as absent.
 
+> **AMENDED 2026-08-16 — ADDED by the `F4` round-3 critic (`corpus/90-verdicts/wave1/W1-F4-r3.md` §8).
+> NOTHING ABOVE IS REMOVED, NO THRESHOLD IS LOWERED AND NO NUMBER IN §2 CHANGES. This adds a
+> PRECONDITION on §2's own DETECT, and it can only ever cost a build a mark, never earn it one.**
+>
+> **§2-D3 — VALIDATE THE QUARTILES BEFORE YOU QUOTE THE NUMBER.**
+>
+> §2's DETECT is `M6 hue_offset`, which compares the hue of `SHADOW_MASK` against the hue of
+> `LIT_MASK`. `RI-VIS03` §0 builds both from **luminance percentiles** — darkest quartile, brightest
+> quartile — and nothing anywhere requires those quartiles to have anything to do with *light*. On
+> this build, measured from the same-run `key_off` arm that **S60** already requires, they frequently
+> do not:
+>
+> | sealed judged crop | `f_key` in `SHADOW_MASK` | `f_key` in `LIT_MASK` | what the quartiles actually separate |
+> |---|---:|---:|---|
+> | `pair01` | **0.6535** | **0.2633** | **inverted** — the "shadow" mask is the more key-lit of the two (AUC 0.439). `LIT_MASK` is sky and a pale wall; `SHADOW_MASK` is dither speckle on open sunlit ground. |
+> | `pair02` | 0.7656 | 0.7329 | albedo — dark wood against pale stone, with **zero** cast shadow in the crop |
+> | `pair04` | 0.6284 | 0.8310 | partly light, partly albedo |
+> | `pair03` | 0.0004 | 0.1229 | **light** — this is the one that works |
+>
+> where `f_key = mean(Yp_base − Yp_key_off) / mean(Yp_base)` inside the mask.
+>
+> **The three clauses, and every one is satisfied by arms `S60` already demands.**
+>
+> 1. **Key attribution.** If `f_key(SHADOW_MASK) > 0.5 × f_key(LIT_MASK)`, the quartiles are not an
+>    illumination split and `hue_offset` for that window is **`inapplicable`** — never PASS and never
+>    HARD FAIL. **S64** applies: the `inapplicable` must carry the absence forward as a candidate
+>    defect, and here the absence *is* one — a judged window whose dark quarter is sunlit ground is a
+>    window that cannot show whether the environment lights the shadows.
+> 2. **Publish the null control.** Report `hue_offset` on the `key_off` arm beside the shipped one.
+>    `key_off` is literally the *"one light source only"* configuration M6 names as its own failure
+>    mode, so it must score **lower**. On this build it scores **higher at 7 of 8** window/domain
+>    pairs, and at `pair02`'s crop it reads **24.70 against a bar of 15** — deleting the sun passes a
+>    window the shipped build hard-fails. Where `key_off` scores higher, the reading is
+>    `inapplicable` on the same terms.
+> 3. **Sky honesty on crops.** `RI-VIS03`'s `SKY_MASK` is *the largest 4-connected component touching
+>    row 0*. A sealed sub-frame crop has an arbitrary row 0, so sky inside the crop is classified as
+>    **foreground** and lands in `LIT_MASK`: `pair01`'s crop reports `sky_frac` **0.0000** while
+>    visibly containing sky, **9.61%** of its `LIT_MASK` by count and **6.81%** by chroma weight is
+>    sky-blue, and excluding it moves `hue_offset` **7.35 → 9.99**. Any M6 computed on a crop
+>    publishes the crop's `sky_frac` **and** the sky-excluded recomputation. *(Related and worth
+>    knowing: `sky_frac` is also arm-dependent — `pair04`'s crop reads 0.0000 on `base` and **0.2203**
+>    on `key_off`, so an ablation pair can compare a 100%-foreground image against a 78%-foreground
+>    one.)*
+>
+> **Why cast-shadow area is not the precondition, which is what one might reach for first.** Two
+> critic-driven orbit angles at 08:00, `base` and `shadows_off` in the same process: yaw 270 carries
+> `cast_shadow_area@tau8` **0.1025** — 3.4× §3-D2's floor, across a large soft building shadow lying
+> on brightly sunlit stone — and reads `hue_offset` **0.04°**; yaw 000 carries **0.0604** and reads
+> **0.05°**. A shadow-area floor passes both as valid readings. The quartile test classifies them
+> correctly, because at yaw 270 only 27% of the darkest quartile is cast-shadowed.
+>
+> **Bound.** DETECT and method only. It lowers no threshold, changes no number in §2, adds no route
+> to a higher §14 mark and no route to a higher score for any build; a critic may cite it to
+> **withhold** a mark and never to grant one. **It is not the reason for any pass, and it is not the
+> reason for the FAIL in the verdict that adds it** — that FAIL is set by `RI-VIS03` M6's own
+> unconditional `retention < 0.30` hard fail at `pair03`'s crop (0.2324), which predates this
+> amendment and does not involve `hue_offset` at all. **Overturned** if a same-run `key_off` arm
+> proves unavailable to a harness, in which case §2 records the budget `UNVERIFIED`, which counts as
+> absent.
+
 ---
 
 ### §3 — Cascaded shadow maps at a sane resolution

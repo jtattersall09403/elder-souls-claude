@@ -1,0 +1,667 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-F4-r3",
+  "piece_title": "F4 round 3 \u2014 light, sky and atmosphere: the source-side cool day key, measured at four judged windows and shipped OFF",
+  "subsystem_paths": [
+    "render.fidelity.ibl",
+    "render.fidelity.shadows",
+    "render.fidelity.sky",
+    "render.fidelity.atmosphere"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-f4-r3",
+    "role": "critic.visual",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-16T02:45:00Z",
+    "finished_at": "2026-08-16T03:35:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true,
+    "note": "I built none of this. My brief handed me the builder's status file first and told me to read `what_i_could_not_do` before anything else \u2014 a departure from CRITIC-DOCTRINE \u00a78, recorded in `method_deviations`. It cost less than it usually does: every gap the status file declared, I found on disk exactly as declared. My brief also carried three figures (81 reference items, 141 blind entries, 105 not_possible / 0 run) which I re-derived rather than inherited, and two of the three came out different \u2014 see `blind_comparisons`."
+  },
+  "build": {
+    "commit_sha": "a1bcea83",
+    "branch": "codex/wave1-build-experiment",
+    "baseline_note": "THE JUDGED TREE HAD NEVER BEEN PHOTOGRAPHED AT A JUDGED WINDOW BEFORE THIS VERDICT. All eight of the round's window runs served `game/src/render/sky.js 7172bb96019002d6`; the working copy and HEAD carry `8cfc715a2fcd9c7f` with `lighting-recipes.js 6d9dead3800eed86` (`sha256sum | cut -c1-16`, run by me). I photographed the actual tree twice with two different tools: pair01 sealed crop reads 7.35 and 7.38, full frame 6.48 / 6.39 / 6.36, `sunColour [1,0.94,0.82]`, `sunIntensity 6.3`, `recipeId noon-marsh` \u2014 matching the round's BEFORE arm to two decimals. Frame-level difference against the round's BEFORE capture: mean |dRGB| 0.0016, max 15, 0.08% of subpixels, with two sibling commits touching NPC motion (3221f40e, 5ab09795) landed in between. SEPARATELY AND MORE STRONGLY: the round-2 tree (`sky.js 5fd64d93`, which has no `keyCool` in it at all) and the round-3 window tree (`7172bb96`, with the branch at `keyCool: 0.00`) produce BYTE-IDENTICAL 1920x1080 PNGs at pair01 \u2014 sha256 37d7838de3026a24 for `base` and 588fe71062708002 for `base_recheck`, across three separate browser processes. The change is a bit-exact no-op and the round did not notice it had that proof.",
+    "harness_commands": [
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/tools/mask-anatomy.mjs <spec-before.json>",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/tools/mask-anatomy.mjs <spec-after.json>",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/tools/null-control.mjs",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/tools/s60-clause-a.mjs",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/tools/mask-viz.mjs <base> <shadows_off> <out> <crop>  (x3)",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/tools/f4r3c-motion.mjs --mode window --tag shipped-window",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/tools/f4r3c-motion.mjs --mode orbit --hour 8 --yaws 0,90,180,270 --tag orbit-t8",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/tools/f4r3c-motion.mjs --mode walk --hour 13 --frames 5 --tag walk-t13",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r3/tools/f4r3-capture.mjs --mode orbit --hours 8 --yaws 0,270 --out reports/f4r3c/orbit-ablate --tag orbit-ablate",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r3/tools/f4r3-capture.mjs --mode probe --arms p0-control --pair pair01 --out reports/f4r3c/final-tree --tag final-tree",
+        "seed": 20260814,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/contention.mjs (GO, 1 browser, load 4.15/4 cores) before every browser run",
+        "exit_code": 0
+      }
+    ],
+    "renderer_class": "SOFTWARE (SwiftShader) for every capture of mine and of the round's. No Pod, no hardware frame of any window in any F4 round. Every claim in this verdict is a differential; no absolute appearance claim is made."
+  },
+  "bifurcation": {
+    "axis": "fidelity",
+    "declared_before_citation": true,
+    "note": "JUDGEMENT SIDE: FIDELITY, declared before any reference is cited. RI-VIS04 is `side: modern-fidelity` and REFUSES Morrowind references; RI-VIS03 supplies the instrument. No Morrowind plate is cited anywhere in this verdict."
+  },
+  "reference_items": [
+    {
+      "id": "RI-VIS04",
+      "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+      "side": "modern-fidelity",
+      "kind": "structure",
+      "native_scale": "\u00a72 present/absent by its own DETECT (M6 hue_offset), \u00a73 present/absent against its MIN BAR, \u00a72-D2 method compliance",
+      "native_score": 0,
+      "native_verdict": "ABSENT \u2014 \u00a72 fails its own DETECT on the shipped build at every window and angle I measured except two moving frames at 13:00; \u00a73's MIN BAR is verified NOT MET (one shadow map, not three cascades); \u00a72-D2 steps 2-4 unfired = UNVERIFIED = absent.",
+      "hard_fails": [
+        "\u00a72 DETECT / RI-VIS03 M6 `hue_offset < 6` \u2014 pair02 sealed crop 5.02, pair04 sealed crop 4.50, and 8 of 8 measurements across four critic-driven orbit angles at 08:00 (0.04-5.71, two at 0.10 and 0.13)",
+        "RI-VIS03 M6 `retention < 0.30` \u2014 pair03 sealed judged crop 0.2324 on the shipped build, unconditional hard fail, present since round 1 (the round-1 builder's own banked AFTER crop measures 0.2321) and never recorded by any F4 verdict",
+        "\u00a72 DETECT hue_offset, sealed judged crops (shipped)",
+        "\u00a72 DETECT hue_offset, critic-driven orbit, 08:00, four angles",
+        "RI-VIS03 M6 retention, sealed crops"
+      ],
+      "checks": [
+        {
+          "id": "\u00a72 DETECT hue_offset, sealed judged crops (shipped)",
+          "result": "fail",
+          "value": "pair01 7.35, pair02 5.02, pair03 22.70, pair04 4.50 against a 15 minimum and a 6 hard fail; pair05 unmeasured",
+          "hard_fail": true
+        },
+        {
+          "id": "\u00a72 DETECT hue_offset, full frame (S64 second domain)",
+          "result": "fail",
+          "value": "pair01 6.37, pair02 6.82, pair03 18.54, pair04 24.98",
+          "hard_fail": false
+        },
+        {
+          "id": "\u00a72 DETECT hue_offset, critic-driven orbit, 08:00, four angles",
+          "result": "fail",
+          "value": "centre-512: 0.13 / 3.35 / 4.97 / 0.10; full frame: 0.13 / 5.71 / 5.31 / 4.85 \u2014 8 of 8 below the 6 deg hard fail",
+          "hard_fail": true
+        },
+        {
+          "id": "\u00a72 DETECT hue_offset, critic-driven walk, 13:00, five moving frames",
+          "result": "pass",
+          "value": "centre-512 11.81 -> 18.38, full frame 13.24 -> 15.57; f03 and f04 clear the 15 minimum in BOTH domains with retention 0.81-1.11 and C_shadow 6.29-7.26 \u2014 the whole exterior_daylight profile, on the shipped warm key",
+          "hard_fail": false
+        },
+        {
+          "id": "RI-VIS03 M6 retention, sealed crops",
+          "result": "fail",
+          "value": "pair01 0.6805, pair02 1.3550, pair03 0.2324 (HARD FAIL < 0.30), pair04 0.3449 (below the 0.60 minimum)",
+          "hard_fail": true
+        },
+        {
+          "id": "RI-VIS03 M6 C_shadow, sealed crops",
+          "result": "fail",
+          "value": "pair01 12.379, pair02 13.557, pair03 3.330 (below the 6 minimum), pair04 7.178",
+          "hard_fail": false
+        },
+        {
+          "id": "\u00a73 MIN BAR \u2014 3 cascades x 2048, PCF, shadow distance >= 150 m",
+          "result": "fail",
+          "value": "VERIFIED NOT MET, no longer UNVERIFIED. Live readback at four orbit angles: ONE shadow map, `shadow.mapSize.x = 4096`, `shadow.camera.far = 725.69`, `moon.castShadow = false`. `sky.js:701` states it itself: 'NOT A CASCADE. Three cascades were the plan's item 2.'",
+          "hard_fail": false
+        },
+        {
+          "id": "\u00a73-D2 cast-shadow area >= 0.03 at tau8, sealed crops",
+          "result": "fail",
+          "value": "pair01 0.0427, pair02 0.00000 (ABSENT), pair03 0.7693, pair04 0.1476; overcast 0.00001 (ABSENT)",
+          "hard_fail": false
+        },
+        {
+          "id": "\u00a72-D2 light budget per visible light",
+          "result": "fail",
+          "value": "step 1 run and reproduced (visible rig at 08:00/13:00 = DirectionalLight 6.3 [1,0.94,0.82], HemisphereLight 0.37107, AmbientLight 0.18693 against a scene-wide hemisphere sum of 5.00107, 30 lights in graph); steps 2-4 WRITTEN AND UNFIRED, so the budget is UNVERIFIED, which \u00a72-D2 counts as absent",
+          "hard_fail": false
+        },
+        {
+          "id": "\u00a72-D3 (added by this verdict) clause 1 \u2014 quartiles must track illumination",
+          "result": "fail",
+          "value": "f_key(SHADOW_MASK) vs f_key(LIT_MASK) on the shipped build: pair01 0.6535 vs 0.2633 (INVERTED, AUC 0.439), pair02 0.7656 vs 0.7329, pair04 0.6284 vs 0.8310, pair03 0.0004 vs 0.1229. Three of four judged crops fail the clause; only pair03 passes it.",
+          "hard_fail": false
+        },
+        {
+          "id": "\u00a72-D3 (added by this verdict) clause 2 \u2014 null control",
+          "result": "fail",
+          "value": "M6 hue_offset is HIGHER with the key at intensity 0 at 7 of 8 window/domain pairs; at pair02's crop key_off reads 24.70 against a bar of 15, passing a window the shipped build hard-fails. Caveat recorded: key_off collapses C_shadow to 1.32-3.32 so the full profile still fails it.",
+          "hard_fail": false
+        },
+        {
+          "id": "\u00a72-D3 (added by this verdict) clause 3 \u2014 sky honesty on crops",
+          "result": "fail",
+          "value": "pair01's crop reports sky_frac 0.0000 while visibly containing sky; 9.61% of LIT_MASK by count and 6.81% by chroma weight is sky-blue; excluding it moves hue_offset 7.35 -> 9.99, which is 24x round 2's whole shipped crop gain and 90x the run's own floor",
+          "hard_fail": false
+        },
+        {
+          "id": "S60 clause (a), lit subset at tau8, bar 2.0",
+          "result": "fail",
+          "value": "pair01 3.2588 crop / 3.0478 frame PASS; pair02 4.9106 / 3.2838 PASS; pair03 0.4660 crop FAIL / 2.5274 frame PASS; pair04 BEFORE unmeasurable (env_off lost to the timeout), AFTER 5.6698 crop / 1.9910 frame FAIL; pair05 unmeasured; overcast 0.0479 / 0.0555 recorded `inapplicable` in a keyless recipe. NOT MET.",
+          "hard_fail": false
+        },
+        {
+          "id": "S60 clause (b), cast-shadow area preservation, same-run control",
+          "result": "unresolved",
+          "value": "pair01 tau8 0.04271 -> 0.04200 (fall of 0.00071, a quarter of HAZARDS \u00a724's 0.00266 base-frame error); pair03 0.76933 -> 0.76881. Correctly recorded UNRESOLVED by the round rather than claimed as preservation.",
+          "hard_fail": false
+        },
+        {
+          "id": "S59 preservation, paired luminance, pair01",
+          "result": "pass",
+          "value": "mean Yp lit -1.6%, shadow -1.1%, both inside +/-3%; reproduced on my instrument",
+          "hard_fail": false
+        },
+        {
+          "id": "Motion directive \u2014 orbit and driven walk from OUR game",
+          "result": "fail",
+          "value": "the round supplied zero moving frames and zero orbit angles; `--mode orbit` and `--mode walk` are written in its own tool and were never fired. The critic drove both, for the second round running.",
+          "hard_fail": false
+        }
+      ],
+      "measured": "partial",
+      "score_0_10": 2,
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/mask-anatomy-BEFORE.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/orbit-t8-m6.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/walk-t13-m6.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/orbit-ablate-t8.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/frames/masks-pair01-BEFORE-crop.png"
+      ]
+    },
+    {
+      "id": "RI-VIS03",
+      "path": "corpus/70-visual/RI-VIS03-fidelity-image-metrics.md",
+      "side": "modern-fidelity",
+      "kind": "number",
+      "native_scale": "M6 exterior_daylight profile: retention >= 0.60, hue_offset >= 15 deg, SHADOW_MASK frac >= 0.03, C_shadow >= 6; hard fails at retention < 0.30 and hue_offset < 6",
+      "native_score": 0,
+      "native_verdict": "Two hard fails triggered on the shipped build. Cited here as the instrument RI-VIS04 \u00a72 nominates, and re-implemented independently for the third time in this project.",
+      "hard_fails": [
+        "hue_offset < 6 at pair02 crop (5.02), pair04 crop (4.50) and 8 of 8 orbit measurements at 08:00",
+        "retention < 0.30 at pair03 sealed judged crop (0.2324)"
+      ],
+      "checks": [
+        {
+          "id": "instrument agreement across three independent implementations",
+          "result": "pass",
+          "value": "my third implementation reproduces the round-2 critic's `m6-independent.mjs` and every figure in the round-3 status file: 7.35/15.69, 5.02/4.95, 22.70/11.69, 4.50/1.33, 6.37/8.44, 18.54/4.34, 24.98/10.19, probe 7.33 identity control, keyhue 17.11/16.17, overcast 10.90/7.52/0.4657/10.501. Not one figure off by more than rounding.",
+          "hard_fail": false
+        },
+        {
+          "id": "SKY_MASK stability across ablation arms",
+          "result": "fail",
+          "value": "sky_frac is ARM-DEPENDENT: pair04 crop 0.0000 on `base` and 0.2203 on `key_off`; pair02 crop 0.0000 -> 0.0722. A base-vs-key_off comparison at pair04's crop compares a 100%-foreground image against a 78%-foreground one \u2014 the domain moves with the intervention, the same family of defect as S60.",
+          "hard_fail": false
+        }
+      ],
+      "measured": "partial",
+      "score_0_10": 2,
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/null-control-and-sky.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/mask-anatomy-BEFORE.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/probe-keyhue-recheck.json"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/tools/mask-anatomy.mjs",
+      "kind": "log",
+      "produced_by": "written by this critic from RI-VIS03 \u00a70/\u00a7M6 and RI-VIS04 \u00a73-D2 \u2014 a THIRD independent implementation of M6 plus the key/env attribution that tests S66"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/tools/null-control.mjs",
+      "kind": "log",
+      "produced_by": "this critic \u2014 M6 on the key_off arm, and the sky contamination of LIT_MASK on sealed crops"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/tools/s60-clause-a.mjs",
+      "kind": "log",
+      "produced_by": "this critic \u2014 S60 clause (a) re-derived from my own lit-subset mask, curve over tau"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/tools/mask-viz.mjs",
+      "kind": "log",
+      "produced_by": "this critic \u2014 paints M6's own masks back onto the frame they were computed from"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/tools/f4r3c-motion.mjs",
+      "kind": "log",
+      "produced_by": "this critic \u2014 orbit, driven walk and a shipped-tree window capture"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/mask-anatomy-BEFORE.json",
+      "kind": "report",
+      "produced_by": "this critic"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/mask-anatomy-AFTER.json",
+      "kind": "report",
+      "produced_by": "this critic"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/null-control-and-sky.json",
+      "kind": "report",
+      "produced_by": "this critic \u2014 the null control that M6 has never been given"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/s60-clause-a-recheck.json",
+      "kind": "report",
+      "produced_by": "this critic"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/probe-keyhue-recheck.json",
+      "kind": "report",
+      "produced_by": "this critic \u2014 the identity control and the page-side key arm re-measured"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/orbit-t8-m6.json",
+      "kind": "report",
+      "produced_by": "this critic \u2014 8 of 8 measurements below the 6 deg hard fail at 08:00"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/walk-t13-m6.json",
+      "kind": "report",
+      "produced_by": "this critic \u2014 the shipped build passing the whole M6 profile in motion at 13:00"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/orbit-ablate-t8.json",
+      "kind": "report",
+      "produced_by": "this critic \u2014 10.25% cast shadow at hue_offset 0.04, the measurement that unseats S66's proposed floor"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/frames/masks-pair01-BEFORE-crop.png",
+      "kind": "screenshot",
+      "produced_by": "this critic \u2014 LIT_MASK is the sky and a pale wall; SHADOW_MASK is dither speckle on sunlit ground",
+      "camera_pose": "char-player deck camera, yaw 35 pitch -6 distance 2.6 m, 08:00 clear; sealed judged crop [300,150,512,512] of the 1920x1080 frame, 2x2 montage",
+      "resolution": "1024x1024"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/frames/masks-pair02-BEFORE-crop.png",
+      "kind": "screenshot",
+      "produced_by": "this critic \u2014 an albedo split: dark wood against pale stone, zero cast shadow",
+      "camera_pose": "char-player deck camera, yaw 35 pitch -6 distance 2.6 m, 13:00 clear; sealed judged crop [200,480,512,512], 2x2 montage",
+      "resolution": "1024x1024"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/frames/masks-pair03-BEFORE-crop.png",
+      "kind": "screenshot",
+      "produced_by": "this critic \u2014 the window that 'passes' is a near-black picture with retention 0.2324",
+      "camera_pose": "char-npc deck camera, yaw 35 pitch -6 distance 2.6 m, 13:00 clear; sealed judged crop [1100,150,512,512], 2x2 montage",
+      "resolution": "1024x1024"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/frames/walk-t13-f04.png",
+      "kind": "screenshot",
+      "produced_by": "this critic \u2014 hue_offset 18.38 crop / 15.57 frame, the whole profile passed, in motion, on the shipped key",
+      "camera_pose": "trailing camera yaw 180 pitch -10 distance 5.0 m, look height 1.2 m, 13:00 clear, driven walk frame 4 at 1.707 m from start",
+      "resolution": "1920x1080"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/frames/orbit-t8-y000.png",
+      "kind": "screenshot",
+      "produced_by": "this critic \u2014 hue_offset 0.13 at 08:00",
+      "camera_pose": "subject-orbit around the player, yaw 0 pitch -8 distance 7.0 m, look height 1.1 m, 08:00 clear",
+      "resolution": "1920x1080"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/frames/orbit-t8-y180.png",
+      "kind": "screenshot",
+      "produced_by": "this critic \u2014 the settlement in flat shade at 08:00",
+      "camera_pose": "subject-orbit around the player, yaw 180 pitch -8 distance 7.0 m, look height 1.1 m, 08:00 clear",
+      "resolution": "1920x1080"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/frames/orbit-t8-y270-base.png",
+      "kind": "screenshot",
+      "produced_by": "this critic \u2014 a large readable building shadow across sunlit stone, cast area 10.25% at tau8, hue_offset 0.04",
+      "camera_pose": "subject-orbit around the player, yaw 270 pitch -8 distance 7.0 m, look height 1.1 m, 08:00 clear",
+      "resolution": "1920x1080"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/frames/orbit-t8-y270-shadows_off.png",
+      "kind": "screenshot",
+      "produced_by": "this critic \u2014 the same pose with the shadow ablated, same process",
+      "camera_pose": "subject-orbit around the player, yaw 270 pitch -8 distance 7.0 m, look height 1.1 m, 08:00 clear, sun.shadow.intensity = 0 in the same process",
+      "resolution": "1920x1080"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/frames/pair01__shipped-tree-base.png",
+      "kind": "screenshot",
+      "produced_by": "this critic \u2014 the tree in HEAD, photographed at a judged window for the first time",
+      "camera_pose": "char-player deck camera, yaw 35 pitch -6 distance 2.6 m, 08:00 clear, on the tree in HEAD (sky.js 8cfc715a2fcd9c7f)",
+      "resolution": "1920x1080"
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-VIS04",
+      "status": "not_possible",
+      "not_possible_reason": "RI-VIS04 declares `blind_pair: no` in its own front matter, so no gate is owed on the item. The judgement F4 exists to move IS blind, and a critic cannot spawn a fresh judge: `create_session` raises an approval prompt and CLAUDE.md rule 0 forbids it; rule 0e places this with the orchestrator and says an unrun gate is a live blocker, not a footnote. Scored 0, fail-closed.",
+      "census_rederived_by_me_this_turn": "MY BRIEF SAID 81 ITEMS / 141 ENTRIES / 105 not_possible / 0 RUN. I re-derived all four and two came out different. Reading front matter rather than grepping \u2014 `blind_pair: yes` inside the `---` block, restricted to files carrying `id: RI-*` \u2014 **80** reference items declare a blind pair (the `grep -rl` figure is 106; the difference is documents quoting the string). Across 74 verdict JSON files carrying `blind_comparisons` there are **142** entries: **105 not_possible**, **27 done**, 3 not_required, 1 void, 1 not_run, 1 answered-and-revealed. `grep -rEn '\"blind_status\"[^,]*\"run\"' corpus/90-verdicts/` returns **0** and every loose-form hit is a document quoting the absence. SO 'ZERO RUN' IS ALSO NOT RIGHT AND I WILL NOT PASS IT ON: the 27 `done` entries carry pack_ids, seeds, blind_pick and reveal \u2014 camera series in W1-00, lore in W1-LIBRARY-r1, prose in W1-PROSE-BLIND-r1. I did NOT audit whether any used a fresh judge (S51) and I claim nothing about their validity. The defensible statement is narrower: no VISUAL blind pair has ever run, Protocol A on 2026-08-14 remains the whole visual blind history, and the 80 items are waiting on the orchestrator."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "checks": [],
+      "not_applicable_reason": "AR-1 asks whether a Morrowind-flavoured mechanic contaminated the FIGHT. This round's shipped diff is one recipe field at 0.00 and a dead branch in `sky.js`, proved a bit-exact no-op. Nothing reaches combat.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/mask-anatomy-AFTER.json"
+      ]
+    },
+    "ar2": {
+      "status": "not_applicable",
+      "checks": [],
+      "not_applicable_reason": "AR-2 asks whether a Souls-flavoured convention contaminated the WORLD. Same reason: the shipped behaviour is byte-identical to round 2's.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/mask-anatomy-BEFORE.json"
+      ]
+    },
+    "rulings_applied": [
+      {
+        "ruling": "S66",
+        "applied": true,
+        "note": "TESTED RATHER THAN APPLIED, as the brief required. (b) THE COOL KEY DOES NOT SHIP \u2014 CONFIRMED, and confirmed by a route S66 did not have: the page-side `k1` arm recolours the key with the environment untouched and moves hue_shadow +21.8 deg against hue_lit +12.1 deg, so at pair01 the mask called 'shadow' follows the key HARDER than the mask called 'lit'. (c) REPORT BOTH DOMAINS \u2014 CONFIRMED and reinforced. (a) A CAST-SHADOW-AREA FLOOR \u2014 NOT SUPPORTED, see `arbitration_questions`. The named overturn condition ('show the quartile mask holds a real lit/shadow split at low shadow area') DOES NOT FIRE: at pair01 the mask is not merely not-a-split, it is INVERTED (f_key 0.6535 shadow vs 0.2633 lit, AUC 0.439)."
+      },
+      {
+        "ruling": "S64",
+        "applied": true,
+        "note": "Both domains reported for every reading, including my orbit and walk. The divergence is itself reported: pair04 reverses direction between crop and frame, and at orbit yaw 270 the centre crop reads 0.04 while the frame reads 4.83."
+      },
+      {
+        "ruling": "S60",
+        "applied": true,
+        "note": "Clause (a) re-derived independently on my own lit-subset mask at every window with the arms to support it; every figure reproduces. NOT MET. Clause (b) unresolved at pair01 within HAZARDS \u00a724's own base-frame error, exactly as the round recorded it. Clause (a) `inapplicable` in `overcast-flat` \u2014 the round's reading is correct and the recipe declares key 0.34 / env 1.10."
+      },
+      {
+        "ruling": "S59",
+        "applied": true,
+        "note": "The luminance compensation is real in source (`sky.js:934-940`, before/after Rec.709 ratio) and the paired preservation at pair01 measures -1.6% lit and -1.1% shadow. The round supplied the preservation clause unprompted."
+      },
+      {
+        "ruling": "S61",
+        "applied": true,
+        "note": "The round published its own floor per window and refused to call movements inside it resolved. I add that on this pipeline a re-run with an identical prefix is BIT-IDENTICAL, so the published floor is not capture noise \u2014 it is how far the world moves in the twelve frames between `base` and `base_recheck`. That makes it an upper bound, which is the safe direction."
+      },
+      {
+        "ruling": "S63",
+        "applied": true,
+        "note": "Applied to myself: I measured the cast-shadow area at two orbit angles and did NOT capture a key_off arm there, so I state the area and refuse to narrate the mechanism at those poses. Named the arm that would settle it instead."
+      },
+      {
+        "ruling": "S51",
+        "applied": false,
+        "note": "No blind pack was built, so S51 does not bind. Noted in `blind_comparisons` that I did not audit the 27 `done` entries against it."
+      }
+    ]
+  },
+  "score": {
+    "overall_0_10": 2,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "SCORING.md \u00a71.1: any triggered hard fail caps the item at 2. Two are triggered on the shipped build \u2014 RI-VIS03 M6 `hue_offset < 6` at pair02/pair04 crops and at 8 of 8 orbit measurements at 08:00, and M6 `retention < 0.30` at pair03's sealed crop. Aggregation is min, so the axes at 8 do not lift it.",
+    "confidence": "high",
+    "axes": [
+      {
+        "axis": "A \u2014 RI-VIS04 \u00a72 by its own DETECT",
+        "score": 2,
+        "note": "hard fail; caps the item"
+      },
+      {
+        "axis": "B \u2014 S60 clause (a)",
+        "score": 3,
+        "note": "3 of 4 measured windows pass on the crop, pair03 fails, pair04-BEFORE unmeasurable, pair05 unmeasured"
+      },
+      {
+        "axis": "C \u2014 clause (b) / \u00a73-D2 area",
+        "score": 5,
+        "note": "unresolved within the instrument at pair01 and correctly recorded so; absent entirely at pair02"
+      },
+      {
+        "axis": "D \u2014 \u00a73-D3 retention / C_shadow",
+        "score": 2,
+        "note": "hard fail: pair03 crop retention 0.2324, present since round 1 and never recorded by any verdict"
+      },
+      {
+        "axis": "E \u2014 the motion directive",
+        "score": 3,
+        "note": "zero moving frames and zero orbit angles from the round; the critic drove both, for the second round running"
+      },
+      {
+        "axis": "F \u2014 coverage",
+        "score": 3,
+        "note": "4 of 5 windows; storm never photographed on any build; overcast one unfloored sample failing three clauses; \u00a72-D2 steps 2-4 unfired"
+      },
+      {
+        "axis": "G \u2014 evidence integrity",
+        "score": 8,
+        "note": "every figure reproduced on a third implementation; served shas per arm; no pose drift at 4 of 4; no unintended duplicate frames among 62 hashed; the change proved a bit-exact no-op; two in-flight defects found and reported by the builder against itself"
+      },
+      {
+        "axis": "H \u2014 diagnostic value and candour",
+        "score": 8,
+        "note": "the first cast-shadow-area sort in the project; a hypothesis built, tested with a working identity control, and killed in public; the first overcast measurement on any build; a measured gain refused rather than shipped; `what_i_could_not_do` first, and accurate against what I found on disk"
+      }
+    ]
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "hard_fail:RI-VIS03/M6 \u2014 `hue_offset < 6` on the shipped build at pair02's sealed crop (5.02), pair04's sealed crop (4.50) and at 8 of 8 measurements across four critic-driven orbit angles at 08:00 (0.04-5.71, two of them at 0.10 and 0.13). RI-VIS04 \u00a72 nominates this number as its DETECT and its stated meaning is 'one light source only'.",
+    "hard_fail:RI-VIS03/M6 \u2014 `retention < 0.30` at pair03's sealed judged crop (0.2324 shipped, 0.2334 in the cool-key arm), with C_shadow 3.33 against a minimum of 6. Unconditional in RI-VIS03, present since round 1 (the round-1 builder's own banked AFTER crop measures 0.2321 against its BEFORE-revert at 0.3965), and never recorded by any of the three F4 verdicts.",
+    "RI-VIS04 \u00a73 MIN BAR verified NOT MET \u2014 one shadow map at 4096, not three cascades at 2048; `sky.js:701` says so itself. Three rounds recorded it UNVERIFIED; a live readback settles it.",
+    "S60 clause (a) NOT MET \u2014 pair03's crop fails at 0.466/0.532, pair04's frame at 1.991, pair04-BEFORE is unmeasurable because its `env_off` arm was lost to the 600 s ceiling, pair05 is unmeasured, and the clause is `inapplicable` in the keyless `overcast-flat`.",
+    "RI-VIS04 \u00a72-D2 steps 2-4 written and unfired, so the light budget is UNVERIFIED, which \u00a72-D2 itself counts as absent.",
+    "Coverage: `storm` has never been photographed on any build by anyone in three rounds; `overcast-flat` has exactly one sample, taken by this round with no noise floor, and it fails retention (0.4657 against 0.60), hue_offset (10.90/7.52 against 15) and carries no cast shadow at all (0.00001).",
+    "The motion directive is unmet by the round: zero moving frames, zero orbit angles, `orbit` and `walk` written into its own tool and never fired."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-f4-three-rounds-judged-on-crops-whose-quartiles-do-not-track-illumination-and-the-build-is-bimodal",
+    "subsystem_path": "render.fidelity.ibl",
+    "severity": "blocking",
+    "what": "F4'S BAR IS `M6 hue_offset` ON FIVE 512x512 CROPS TAKEN FROM A CHARACTER DECK, AND ON THREE OF THEM THE METRIC'S QUARTILES DO NOT SEPARATE LIT FROM SHADOW. Measured from the round's own same-process `key_off` arms: at pair01 the mask called SHADOW is 65.4% key-lit and the mask called LIT is 26.3% key-lit \u2014 inverted, AUC 0.439 \u2014 and the picture says the same thing at a glance (LIT_MASK is the sky and a pale wall; SHADOW_MASK is dither speckle on open sunlit ground). At pair02 both quartiles are ~75% key-lit and the split is dark wood against pale stone: albedo, not light. The metric has also never been given a null control and fails one \u2014 with the sun at intensity 0 it scores HIGHER at 7 of 8 window/domain pairs, and at pair02's crop it reads 24.70 against a bar of 15. AND THE BUILD ITSELF IS BIMODAL: driven on foot at 13:00 through the plaza it reads hue_offset 18.38 crop / 15.57 frame with retention 0.88/1.11 and C_shadow 6.74/6.29 \u2014 the whole exterior_daylight profile passed, on the shipped warm key, nothing changed \u2014 while at 08:00, forty metres away, four orbit angles read 8 of 8 below the 6 deg hard fail. Every lever tested in three rounds (the horizon triple, keyWarmth, keyCool, the probe's sun lobe, the ambient's colour and intensity) was screened at pair01, whose mask is inverted.",
+    "why_it_matters": "F4 exists because five blind judges ranked us last of five, twice. Three rounds have moved one number at one crop, the owner has seen no change, and the reason is now measurable rather than arguable: the number was never reading the illuminant at the window it was tuned on. This also decides what round 4 does. S66 already withdrew 'our sunlight has no colour'; my measurements say the replacement \u2014 'there is no cast shadow for the hue to live in' \u2014 is also not it, because orbit yaw 270 carries 10.25% cast shadow at tau8 across brightly sunlit stone and reads 0.04 deg.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/mask-anatomy-BEFORE.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/null-control-and-sky.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/walk-t13-m6.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/orbit-t8-m6.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/orbit-ablate-t8.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/frames/masks-pair01-BEFORE-crop.png",
+      "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/frames/walk-t13-f04.png"
+    ],
+    "remedy": {
+      "action": "DO NOT RUN ANOTHER COLOUR ROUND. (1) RE-SEAT THE JUDGED DOMAIN: add at least two exterior windows whose quartiles pass \u00a72-D3 clause 1 \u2014 the driven-walk pose at 13:00 (`reports/f4r3c/walk-t13/`, f03 and f04 already pass it) and one 08:00 pose \u2014 and demote the five character crops to a REPORTED second domain, exactly as S64 does for the full frame. They stay the blind-pack window; they stop being the acceptance. (2) DECOMPOSE A FRAME THAT PASSES: nothing in three rounds has run \u00a72-D2 steps 2-4 on a frame where M6 works. Run the per-visible-light ablation plus `env_off` plus a `sunGain` arm at the f04 walk pose (18.38 deg) AND at orbit yaw 270 (0.04 deg), in the same process with the run's own floor. Those two poses bracket the entire measured behaviour of the build and nobody has looked between them. (3) ONLY THEN choose a lever.",
+      "targets": [
+        "tools/blind/deck-protocol-a.json",
+        "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+        "game/src/render/sky.js"
+      ],
+      "acceptance": "(i) \u00a72-D3 clauses 1-3 published for every window quoted, and any window failing clause 1 recorded `inapplicable` rather than scored. (ii) hue_offset >= 15 WITH retention >= 0.60 AND C_shadow >= 6 at >= 3 of 5 windows in BOTH domains, at least one of them at 08:00 \u2014 the morning is where 8 of 8 of my measurements hard-fail. (iii) retention >= 0.30 at EVERY window including pair03's crop, which is the hard fail this verdict is set by. (iv) The run's own floor published (S61) and the `key_off` null control published beside every reading. (v) `overcast-flat` measured with a floor and `storm` photographed for the first time on any build."
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "THE CHANGE IS A BIT-EXACT NO-OP AND THE ROUND HAD THE PROOF WITHOUT NOTICING. `probe/p0-control.png`, `keyhue/k0-control.png` and `before-pair01/pair01__base.png` share sha256 37d7838de3026a24; the three `*-recheck` frames share 588fe71062708002. The first two were served `sky.js 5fd64d93` \u2014 the round-2 tree, which has no `keyCool` in it at all \u2014 and the third `7172bb96`, the round-3 tree with the branch at 0.00. Two different source trees, three separate browser processes, identical 1920x1080 pixels. I hashed all 62 frames on disk: exactly two duplicate groups exist and both are these intended controls, which also confirms the round's `char-npc` fix is real."
+    },
+    {
+      "what": "THE SHIPPED TREE HAD NEVER BEEN PHOTOGRAPHED AT A JUDGED WINDOW. Every window run served `7172bb96`; HEAD carries `8cfc715a`. I captured it twice with two tools: pair01 crop 7.35 / 7.38, frame 6.48 / 6.39 / 6.36. Against the round's BEFORE frame the difference is mean |dRGB| 0.0016, max 15, 0.08% of subpixels, with two sibling commits touching NPC motion landed in between. The claim holds; it is now a measurement."
+    },
+    {
+      "what": "NO POSE DRIFT, AND THIS WAS THE ROUND'S BIGGEST STRUCTURAL RISK. `char-npc` resolves through `listEntities` at capture time in a process separate from its BEFORE twin, so pair03 and pair04 could have been shot from different places. Best integer alignment searched over +/-4 px is (0,0) at all four windows, with mean |dY| 1.119-1.295 and edge IoU 0.8752-0.9353."
+    },
+    {
+      "what": "A FOURTH INSTRUMENT DEFECT THE BRIEF DID NOT ASK FOR: `SKY_MASK` IS ARM-DEPENDENT. Same pose, same run: pair04's crop reads sky_frac 0.0000 on `base` and 0.2203 on `key_off`; pair02's 0.0000 -> 0.0722. Turning the key off darkens the ground, the P60 threshold moves, and a fifth of the crop reclassifies from foreground to sky \u2014 so a base-vs-key_off comparison there compares a 100%-foreground image against a 78%-foreground one. Same family as S60: a measure computed over a domain that moves with the intervention."
+    },
+    {
+      "what": "AND A FIFTH, MINOR AND IN THE SAFE DIRECTION: `f4r3-capture.mjs:288` steps 3 frames between arms while the deck declares `settle_frames: 12` and `SETTLE` is used at every pose change. Because `base_recheck` is taken four captures after `base`, the published 'noise floor' bundles simulation advance with capture wobble. On this pipeline an identical prefix reproduces BIT-IDENTICAL frames, so there is no stochastic capture noise at all \u2014 the 0.11/0.43 deg floors measure how far the world moves in twelve frames, which makes them upper bounds."
+    },
+    {
+      "what": "THE IDENTITY CONTROL HOLDS, WHICH IS THE THING THAT WOULD HAVE VOIDED THE WHOLE PROBE LEG. `p1-rebake-identity` (the builder's own rebake at the shipped `sunGain 3.0`) reads 7.33 on my instrument against a control of 7.35, inside the run's 0.11 deg floor. The falsification of its own hypothesis stands: deleting the probe's sun lobe entirely is worth +0.38 deg on the crop against a bar of 15, and worse on the frame."
+    },
+    {
+      "what": "S66'S STATED EVIDENCE IS OVERSTATED AND IT IS THE FIFTH RULING IN THE SAME PATTERN. 'The four windows sort perfectly by cast-shadow area' \u2014 ordered ascending (pair02 0.00001, pair01 0.0427, pair04 0.1476, pair03 0.7693) the crop deltas run -0.07, +8.34, -3.17, -11.01. Non-monotone, and it breaks at pair02, the window with the LEAST cast shadow, where S66's mechanism predicts the LARGEST spurious rise and the number does not move at all. The reason is the half S66 omits: the prediction needs BOTH quartiles. ARBITRATION's own tally under S63 and S65 lists S58, S60, S63, S65 as rulings whose rule survived and whose narrated mechanism did not; S66 is the fifth, written the same night the fourth was recorded."
+    },
+    {
+      "what": "`RI-VIS04` \u00a73-D3'S QUOTED FIGURES DO NOT REPRODUCE, AND THEY ARE IN THE CORPUS. \u00a73-D3 states 'M6 retention fell 0.7199 -> 0.4526 and M6 C_shadow fell 9.762 -> 4.785' at pair03. Measured by me on the round-1 BUILDER's own banked crops (`artifacts/F4-KEY-LIGHT/frames/pair03__{BEFORE-revert,AFTER}__judged-crop.png`, in this repo, no browser needed): 0.3965 -> 0.2321 and 11.176 -> 4.498. Direction and both threshold crossings agree; the absolute numbers do not. A future critic will inherit those from the corpus."
+    },
+    {
+      "what": "THE IMPLEMENTATION-LEADS DISPOSITION IS HONEST, WITH ONE THING NAMED. Every quoted string checks verbatim against the registry: the pin v0.0.24 / 3c6cda19d1788d7d93705eee704328e66823c845 / MIT / peers Three >= r180, three-mesh-bvh, xatlas-web (`:323`); the boundary about instanced geometry and `setScene` (`:328`); rule 4 that a `declined` finding completes the evaluation (`:18`). The F4 heading names exactly one candidate, as stated. The decisive reason is sound and does not depend on upstream source. What I will name: no upstream source was fetched or opened, so the pin and licence are copied from our own registry rather than verified against upstream \u2014 defensible for a `declined`, and it should not be read as an inspection."
+    },
+    {
+      "what": "WHAT A PLAYER SEES THAT IS NOT F4'S FAULT BUT IS IN MY FRAMES. At orbit yaw 0 and yaw 270 at 08:00 there are several building platforms hanging in mid-air with nothing beneath them (`orbit-t8-y000.png`, `orbit-t8-y270-base.png`). It is the first thing the eye goes to and it belongs to whoever owns exterior placement, not to F4. Recorded because the directive is to report what the game looks like, not what my item looks like."
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-f4-the-key-has-no-hue-and-the-field-that-would-give-it-one-is-set-to-zero",
+      "status": "closed",
+      "measured_value": "The round-2 critic's remedy was built in source, measured at four of five windows, and REFUSED \u2014 correctly. At pair01 it does what round 2 predicted (7.35 -> 15.69, clearing the 15 minimum for the first time in this project) and at pair03 it destroys the only window that passed (22.70 -> 11.69); on the full frame two windows were above 15 before and none after. The remedy's own acceptance clause (i) \u2014 'hue_offset >= 15 at pair01-pair03 and not lower at pair04-pair05' \u2014 is failed at pair03 and pair04 by the arm it asked for. My addition: at pair01 the gain is not a gain at all, because the quartiles there are inverted with respect to key illumination (f_key 0.6535 shadow vs 0.2633 lit), so the 15.69 is the metric's blind spot and not the light.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/mask-anatomy-BEFORE.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/mask-anatomy-AFTER.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/walk-t13-m6.json"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour",
+      "status": "open",
+      "measured_value": "Half of it is worse than recorded and half of it is better. WORSE: pair03's sealed crop reads retention 0.2324 and C_shadow 3.330 on the shipped build \u2014 an unconditional M6 hard fail that has stood since round 1 and that no verdict has recorded. BETTER: the key does have a colour and it does separate, where the frame has the composition for it \u2014 the driven walk at 13:00 reads hue_offset 18.38 crop / 15.57 frame with retention 0.88 and C_shadow 6.74, the whole profile, on the shipped warm key.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/mask-anatomy-BEFORE.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/mask-anatomy-AFTER.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/walk-t13-m6.json"
+      ]
+    }
+  ],
+  "corpus_extended": [
+    {
+      "id": "RI-VIS04",
+      "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+      "area": "70-visual",
+      "reason": "AMENDMENT \u2014 ADD ONLY. \u00a72 gains `\u00a72-D3`: VALIDATE THE QUARTILES BEFORE QUOTING THE NUMBER. Three clauses, all satisfied by arms S60 already requires. (1) Key-attribution check: from the same-run `key_off` arm compute `f_key = mean(Yp_base - Yp_key_off) / mean(Yp_base)` inside SHADOW_MASK and LIT_MASK; if `f_key(SHADOW_MASK) > 0.5 x f_key(LIT_MASK)` the quartiles are not an illumination split and `hue_offset` is `inapplicable` for that window \u2014 never PASS, never HARD FAIL, absence carried forward as a candidate defect per S64. (2) Null control published: report `hue_offset` on the `key_off` arm beside the shipped one; if `key_off` scores higher the reading is `inapplicable` on the same terms. (3) Sky honesty on crops: any M6 computed on a sub-frame crop publishes the crop's `sky_frac` AND a recomputation with sky-hue pixels excluded from LIT_MASK, because SKY_MASK requires a 4-connected component touching row 0 and a crop's row 0 is arbitrary.",
+      "bounded": "DETECT and method only. Lowers no threshold, changes no number in \u00a72, adds no route to a higher \u00a714 mark and no route to a higher score for any build; a critic may cite it to WITHHOLD a mark and never to grant one. EXPLICITLY NOT THE REASON FOR THIS FAIL: the FAIL is set by RI-VIS03 M6's own pre-existing unconditional `retention < 0.30` hard fail at pair03, which predates me and does not involve `hue_offset` at all.",
+      "checked_before_declaring_the_hole": "RI-VIS03 \u00a70/M6 (defines the masks, no validity condition on them); RI-VIS04 \u00a72 and \u00a72-D2 (DETECT and light budget); \u00a73-D2/\u00a73-D3 (shadow area and what is inside shadows); ARBITRATION S60 (scopes an ablation to the support of the thing ablated), S64 (fixes the domain), S66 (proposes a cast-shadow-area precondition). Nothing requires the mask itself to be shown to track illumination before its number is quoted, and nothing has ever required a null control.",
+      "overturned_if": "A `key_off` arm proves unavailable to a harness, in which case \u00a72 records the budget UNVERIFIED, which counts as absent."
+    }
+  ],
+  "method_deviations": [
+    {
+      "ref_item": "RI-VIS04",
+      "deviation": "I READ THE BUILDER'S STATUS FILE BEFORE CAPTURING ANYTHING, because my brief handed it to me and instructed me to read `what_i_could_not_do` first. CRITIC-DOCTRINE \u00a78 asks a critic to form its own reading first. Mitigation: I re-derived every figure from the round's own frames with an instrument I wrote, and I inherited no number from the brief \u2014 the brief's blind census (81/141/105/0) came out 80/142/105/27-done on my own derivation."
+    },
+    {
+      "ref_item": "RI-VIS04",
+      "deviation": "\u00a714's thirteen-feature table is not filled. Rows 2 and 3 only. Recorded UNVERIFIED, which counts as absent."
+    },
+    {
+      "ref_item": "RI-VIS04",
+      "deviation": "\u00a73's penumbra pixel count and cascade-ring walk-back test were not run. The MIN BAR was settled by live readback instead (one map, 4096, far 725.69), which is sufficient to fail it on the cascade count and not sufficient to grade the filtering."
+    },
+    {
+      "ref_item": "RI-VIS03",
+      "deviation": "I did not measure pair05, `storm`, or a second `overcast` sample, and I did not re-derive the inherited '59.1% of daylight' figure. I verified the selection rule that figure rests on (`recipeForConditions()` at `lighting-recipes.js:361-366` and the `WEATHER` table at `sky.js:56-80`, 15 of 20 states at `overcast >= 0.50`) and marked the percentage itself as inherited and unverified."
+    },
+    {
+      "ref_item": "RI-VIS04",
+      "deviation": "Every capture is SwiftShader. No hardware confirmation of any window in any F4 round. Every claim here is a differential inside one process."
+    }
+  ],
+  "arbitration_questions": [
+    {
+      "question": "S66 part (a) rules that `M6` carries a precondition \u2014 'a window with cast-shadow area below a floor scores inapplicable'. I drove the camera to two orbit angles at 08:00 and captured `base` + `shadows_off` in the same process. Yaw 270 \u2014 a large soft building shadow lying across brightly sunlit stone, the most textbook lit/shadow composition of the four \u2014 carries cast-shadow area 0.1025 at tau8, 3.4x \u00a73-D2's floor and 2.4x pair01's, and reads `hue_offset` 0.04 deg. Yaw 000 carries 0.0604 and reads 0.05 deg. A cast-shadow-area floor passes both as valid readings of the illuminant. Meanwhile P(cast-shadowed | SHADOW_MASK) at yaw 270 is only 0.27. IS CAST-SHADOW AREA THE RIGHT PRECONDITION VARIABLE, OR IS IT WHETHER THE QUARTILES LAND ON THE SHADOW?",
+      "my_ruling_pending_arbitration": "It is the quartiles, and \u00a72-D3 clause 1 is the measurable form: `f_key(SHADOW_MASK) <= 0.5 x f_key(LIT_MASK)`, computed from the `key_off` arm S60 already requires. On the four judged crops that clause fails at pair01, pair02 and pair04 and passes only at pair03 \u2014 the same three-of-four split S66 reaches, by a variable that also correctly classifies the two orbit angles S66's floor would have let through. S66 parts (b) and (c) are unaffected and I confirm both.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/orbit-ablate-t8.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/mask-anatomy-BEFORE.json"
+      ]
+    },
+    {
+      "question": "S64 fixed the domain as the sealed judged crop because 'it is the pixels five blind judges actually looked at'. Those five crops come from a CHARACTER deck (`char-player` and `char-npc` at 2.6 m). On three of the four measured, M6's quartiles do not separate illumination at all (\u00a72-D3 clause 1), and the same shipped build reads 18.38 deg in a driven walk at 13:00 and 0.10 deg at 08:00 forty metres away. MAY A LIGHTING ITEM'S ACCEPTANCE SIT ON A CHARACTER DECK'S WINDOWS, OR MUST F4 GET WINDOWS CHOSEN FOR LIGHTING \u2014 with the character crops kept as the blind-pack window and reported, but not as the bar?",
+      "my_ruling_pending_arbitration": "F4 needs its own windows, and the character crops stay as a reported second domain exactly as S64 already does for the full frame. This does not weaken S64 \u2014 the blind judgement still sits where the judges looked \u2014 it separates 'where the blind pack is drawn' from 'what the acceptance is computed on', which S64 conflated because at the time nobody had shown the two could disagree by 18 degrees.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/walk-t13-m6.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r3-critic/metrics/orbit-t8-m6.json"
+      ]
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "game/src/render/sky.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "`:545` KEY_COOL_DAY; `:548-550` SHADOW_TIERS (high = 4096 / 150 m); `:583-608` the single shadow construction; `:659` `moon.castShadow = false`; `:701-707` the source's own 'NOT A CASCADE'; `:925-945` the keyCool branch and the Rec.709 compensation. Read AFTER measuring, to name line numbers for findings the captures had already produced."
+    },
+    {
+      "path": "game/src/render/lib/lighting-recipes.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "`:67`, `:97`, `:221` \u2014 the only three mentions of `keyCool`, all 0.0; `:361-366` `recipeForConditions()`. Used to check the round's scoping claim, which holds."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r3/tools/f4r3-capture.mjs",
+      "purpose": "locate-harness",
+      "note": "Read in full looking for the third defect the brief asked for. Found `capture()` stepping 3 frames against the deck's `settle_frames: 12`; found no third subject-resolution or arm-application defect; confirmed the two the builder found are genuinely fixed (`(${pre})()` at `:287`, `listEntities` with a throw at `:296-304`)."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/m6-independent.mjs",
+      "purpose": "locate-harness",
+      "note": "Read only after writing my own from RI-VIS03, so that agreement between three implementations is evidence rather than a shared bug."
+    },
+    {
+      "path": "orchestration/IMPLEMENTATION-LEADS.md",
+      "purpose": "quote-written-content",
+      "note": "`:14-21` the usage rules, `:69-74` the F4 heading, `:320-329` the three-gpu-pathtracer candidate entry."
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "`ran_every_assigned_method` is false: \u00a714's thirteen-feature table, \u00a73's penumbra and cascade-ring tests, pair05, `storm` and a floored `overcast` were not run, and are recorded UNVERIFIED, which counts as absent. Everything I DID claim came from a file I opened or a command I ran this session; I inherited no number from my brief, and where I checked one it was wrong in both directions."
+  }
+}
