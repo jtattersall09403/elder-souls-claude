@@ -147,28 +147,49 @@ const setupOk = await g.page.evaluate(async () => {
     });
     return rows;
   };
-  /** `RI-VIS04` §3 MIN BAR read off the LIVE scene: cascade count, per-cascade map, distance. */
+  /**
+   * `RI-VIS04` §3 MIN BAR read off the LIVE scene: cascade count, per-cascade map, distance.
+   *
+   * CORRECTED IN FLIGHT, AGAINST MYSELF. The first version of this function counted every
+   * shadow-casting directional light in the graph and reported `cascade_count: 5`. Four of those
+   * five are 1024-map lights inside HIDDEN groups (`arena-warm-raking-key` and three unnamed at
+   * intensity 1.35) — they cannot reach a pixel. That is precisely the error `RI-VIS04` §2-D2
+   * step 1 was written about, where a scene-wide hemisphere sum was wrong by 13x, and I made it
+   * in my own instrument while reading the item that names it. `chain_visible` now decides, and
+   * both counts are published so the correction is legible rather than silent.
+   *
+   * `three.shadowMap.type` lives on the THREE.WebGLRenderer, which is `R.three` on this build's
+   * wrapper, not `R.renderer` — the first version read `null` and could not verify the MIN BAR's
+   * PCF clause at all.
+   */
   window.__shadowRig = () => {
-    const casters = [];
+    const casters = [], hidden = [];
+    const chainVisible = (o) => { let p = o; while (p) { if (p.visible === false) return false; p = p.parent; } return true; };
     R.scene.traverse((o) => {
       if (o.isDirectionalLight && o.castShadow && o.shadow) {
         const c = o.shadow.camera;
-        casters.push({
-          name: o.name || '(unnamed)', mapSize: o.shadow.mapSize.x,
+        const row = {
+          name: o.name || '(unnamed)', mapSize: o.shadow.mapSize.x, chain_visible: chainVisible(o),
           intensity: +Number(o.intensity).toFixed(5),
           shadowIntensity: o.shadow.intensity,
           bias: o.shadow.bias, normalBias: o.shadow.normalBias, radius: o.shadow.radius,
           camera: { near: +c.near.toFixed(3), far: +c.far.toFixed(3), left: +c.left.toFixed(3), right: +c.right.toFixed(3) },
           extent_m: +(c.right - c.left).toFixed(3),
           texel_m: +((c.right - c.left) / o.shadow.mapSize.x).toFixed(5),
-        });
+        };
+        (row.chain_visible ? casters : hidden).push(row);
       }
     });
     const sky = window.__sky;
+    const three = R.three || R.renderer || null;
     return {
+      // The number `RI-VIS04` §3's MIN BAR is about: shadow casters that can reach a pixel.
       cascade_count: casters.length, casters,
-      shadowMapType: R.renderer ? R.renderer.shadowMap.type : null,
-      shadowMapEnabled: R.renderer ? R.renderer.shadowMap.enabled : null,
+      cascade_count_scene_wide_DO_NOT_QUOTE: casters.length + hidden.length,
+      hidden_casters: hidden,
+      shadowMapType: three ? three.shadowMap.type : null,
+      shadowMapTypeName: three ? ({ 0: 'BasicShadowMap', 1: 'PCFShadowMap', 2: 'PCFSoftShadowMap', 3: 'VSMShadowMap' }[three.shadowMap.type] || String(three.shadowMap.type)) : null,
+      shadowMapEnabled: three ? three.shadowMap.enabled : null,
       shadowDistance_m: sky ? sky.shadowDistance : null,
       splits_m: sky && sky.cascadeSplits ? sky.cascadeSplits : null,
       lastFit: sky && sky._lastFit ? sky._lastFit : null,
@@ -382,14 +403,28 @@ try {
     await call('setTimeOfDay', hour);
     await call('stepFrames', 4);
     const s = await call('snapshot');
+    /**
+     * `--ablate` captures the S60 / §2-D3 arms AT AN ORBIT POSE. No round of F4 and no F4 critic
+     * has ever done this, and it is the gap that makes every orbit number in this item's history
+     * unreadable: `RI-VIS04` §2-D3 makes `hue_offset` conditional on a same-run `key_off` arm, and
+     * without one the reading is neither a pass nor a hard fail — §2-D3's own overturn clause says
+     * the budget is recorded `UNVERIFIED`, which counts as absent. Three rounds have argued about
+     * "the morning fails at 8 of 8" on readings that cannot legally be quoted either way.
+     */
+    const orbitArms = args.ablate
+      ? [['base', NOOP], ...WINDOW_ARMS.filter(([id]) => id === 'key_off' || id === 'shadows_off'), ['base_recheck', NOOP]]
+      : [['', NOOP]];
     for (const yaw of String(args.yaws || '0,45,90,135,180,225,270,315').split(',').map(Number)) {
       await poseAt(s.v.player.pos, { yaw_deg: yaw, pitch_deg: -8, distance_m: 7, lookHeight: 1.1 });
       await call('stepFrames', SETTLE);
       const rig = await g.page.evaluate(() => window.__shadowRig());
-      const r = await capture(path.join(OUT, `orbit-t${hour}-y${String(yaw).padStart(3, '0')}.png`), NOOP);
-      manifest.rows.push({ mode: MODE, hour, yaw, shadow_rig: rig, ...r });
-      flush();
-      console.log(`  orbit t=${hour} yaw=${yaw} ${r.liveness || 'ERR'} cascades=${rig.cascade_count} texel=${JSON.stringify(rig.casters.map((c) => c.texel_m))}`);
+      for (const [armId, cfg] of orbitArms) {
+        const stem = `orbit-t${hour}-y${String(yaw).padStart(3, '0')}${armId ? `__${armId}` : ''}`;
+        const r = await capture(path.join(OUT, `${stem}.png`), cfg);
+        manifest.rows.push({ mode: MODE, hour, yaw, arm: armId || 'base', shadow_rig: rig, ...r });
+        flush();
+        console.log(`  orbit t=${hour} yaw=${yaw} ${(armId || 'base').padEnd(13)} ${r.liveness || 'ERR'} cascades=${rig.cascade_count} (scene-wide ${rig.cascade_count_scene_wide_DO_NOT_QUOTE}) type=${rig.shadowMapTypeName} texel=${JSON.stringify(rig.casters.map((c) => c.texel_m))}`);
+      }
     }
   }
 

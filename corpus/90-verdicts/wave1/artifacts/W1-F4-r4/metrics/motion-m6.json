@@ -1,0 +1,236 @@
+{
+ "tool": "f4r4-m6.mjs",
+ "note": "HUD is present in these frames; centre512 = [704,284,512,512] is clear of every HUD element and is reported beside the full frame.",
+ "rows": [
+  {
+   "f": "walk-t13-f00",
+   "dom": "centre512",
+   "ret": 0.9551,
+   "C": 8.0445,
+   "hue": 9.81,
+   "cast": null,
+   "yp": 0.3272,
+   "hard": [],
+   "soft": [
+    "hue_offset<profile-min"
+   ]
+  },
+  {
+   "f": "walk-t13-f00",
+   "dom": "frame",
+   "ret": 1.2178,
+   "C": 9.2223,
+   "hue": 13.56,
+   "cast": null,
+   "yp": 0.3007,
+   "hard": [],
+   "soft": [
+    "hue_offset<profile-min"
+   ]
+  },
+  {
+   "f": "walk-t13-f01",
+   "dom": "centre512",
+   "ret": 0.921,
+   "C": 8.4602,
+   "hue": 6.76,
+   "cast": null,
+   "yp": 0.3325,
+   "hard": [],
+   "soft": [
+    "hue_offset<profile-min"
+   ]
+  },
+  {
+   "f": "walk-t13-f01",
+   "dom": "frame",
+   "ret": 1.2198,
+   "C": 9.2977,
+   "hue": 13.81,
+   "cast": null,
+   "yp": 0.2989,
+   "hard": [],
+   "soft": [
+    "hue_offset<profile-min"
+   ]
+  },
+  {
+   "f": "walk-t13-f02",
+   "dom": "centre512",
+   "ret": 0.9589,
+   "C": 8.8033,
+   "hue": 11.27,
+   "cast": null,
+   "yp": 0.3495,
+   "hard": [],
+   "soft": [
+    "hue_offset<profile-min"
+   ]
+  },
+  {
+   "f": "walk-t13-f02",
+   "dom": "frame",
+   "ret": 1.1805,
+   "C": 9.1492,
+   "hue": 14.64,
+   "cast": null,
+   "yp": 0.2957,
+   "hard": [],
+   "soft": [
+    "hue_offset<profile-min"
+   ]
+  },
+  {
+   "f": "walk-t13-f03",
+   "dom": "centre512",
+   "ret": 0.886,
+   "C": 8.2849,
+   "hue": 10.24,
+   "cast": null,
+   "yp": 0.339,
+   "hard": [],
+   "soft": [
+    "hue_offset<profile-min"
+   ]
+  },
+  {
+   "f": "walk-t13-f03",
+   "dom": "frame",
+   "ret": 1.2148,
+   "C": 8.9246,
+   "hue": 15.43,
+   "cast": null,
+   "yp": 0.2941,
+   "hard": [],
+   "soft": []
+  },
+  {
+   "f": "walk-t13-f04",
+   "dom": "centre512",
+   "ret": 0.9537,
+   "C": 8.271,
+   "hue": 9.32,
+   "cast": null,
+   "yp": 0.3423,
+   "hard": [],
+   "soft": [
+    "hue_offset<profile-min"
+   ]
+  },
+  {
+   "f": "walk-t13-f04",
+   "dom": "frame",
+   "ret": 1.2644,
+   "C": 8.8694,
+   "hue": 15.03,
+   "cast": null,
+   "yp": 0.2921,
+   "hard": [],
+   "soft": []
+  },
+  {
+   "f": "orbit-t8-y000",
+   "dom": "centre512",
+   "ret": 0.9769,
+   "C": 11.1444,
+   "hue": 0.96,
+   "cast": null,
+   "yp": 0.2917,
+   "hard": [
+    "hue_offset<6 ONE LIGHT SOURCE ONLY (caps shot at 4)"
+   ],
+   "soft": []
+  },
+  {
+   "f": "orbit-t8-y000",
+   "dom": "frame",
+   "ret": 0.6533,
+   "C": 13.1197,
+   "hue": 1.1,
+   "cast": null,
+   "yp": 0.2802,
+   "hard": [
+    "hue_offset<6 ONE LIGHT SOURCE ONLY (caps shot at 4)"
+   ],
+   "soft": []
+  },
+  {
+   "f": "orbit-t8-y090",
+   "dom": "centre512",
+   "ret": 0.8564,
+   "C": 11.7838,
+   "hue": 3.95,
+   "cast": null,
+   "yp": 0.264,
+   "hard": [
+    "hue_offset<6 ONE LIGHT SOURCE ONLY (caps shot at 4)"
+   ],
+   "soft": []
+  },
+  {
+   "f": "orbit-t8-y090",
+   "dom": "frame",
+   "ret": 0.6047,
+   "C": 12.7955,
+   "hue": 6.5,
+   "cast": null,
+   "yp": 0.2797,
+   "hard": [],
+   "soft": [
+    "hue_offset<profile-min"
+   ]
+  },
+  {
+   "f": "orbit-t8-y180",
+   "dom": "centre512",
+   "ret": 0.8471,
+   "C": 8.454,
+   "hue": 4.02,
+   "cast": null,
+   "yp": 0.2752,
+   "hard": [
+    "hue_offset<6 ONE LIGHT SOURCE ONLY (caps shot at 4)"
+   ],
+   "soft": []
+  },
+  {
+   "f": "orbit-t8-y180",
+   "dom": "frame",
+   "ret": 0.9473,
+   "C": 11.4012,
+   "hue": 5.99,
+   "cast": null,
+   "yp": 0.2844,
+   "hard": [
+    "hue_offset<6 ONE LIGHT SOURCE ONLY (caps shot at 4)"
+   ],
+   "soft": []
+  },
+  {
+   "f": "orbit-t8-y270",
+   "dom": "centre512",
+   "ret": 0.9085,
+   "C": 12.389,
+   "hue": 0.16,
+   "cast": null,
+   "yp": 0.3872,
+   "hard": [
+    "hue_offset<6 ONE LIGHT SOURCE ONLY (caps shot at 4)"
+   ],
+   "soft": []
+  },
+  {
+   "f": "orbit-t8-y270",
+   "dom": "frame",
+   "ret": 0.6211,
+   "C": 12.6248,
+   "hue": 5.26,
+   "cast": null,
+   "yp": 0.3333,
+   "hard": [
+    "hue_offset<6 ONE LIGHT SOURCE ONLY (caps shot at 4)"
+   ],
+   "soft": []
+  }
+ ]
+}
