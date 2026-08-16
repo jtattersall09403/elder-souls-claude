@@ -1,9 +1,9 @@
 {
- "generated": "2026-08-16T03:27:38.691Z",
+ "generated": "2026-08-16T04:03:16.644Z",
  "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
  "method": "Inventory derived by fs walk + generated ledgers. Mapping authored by the audit agent after reading every RI title/front-matter, every plan heading, and every open gap record.",
  "inventory_counts": {
-  "reference_items": 152,
+  "reference_items": 153,
   "plans": 49,
   "open_gaps": 100,
   "proposed_roadmap_items": 69
@@ -286,10 +286,13 @@
    "title": "The frame pipeline",
    "blurb": "Antialiasing, exposure, bloom, tonemapping, grade by region/time/weather; the renderer feature checklist.",
    "ref_items": [
-    "RI-VIS04"
+    "RI-VIS04",
+    "RI-VIS11"
    ],
-   "n_ref_items": 1,
-   "never_judged": [],
+   "n_ref_items": 2,
+   "never_judged": [
+    "RI-VIS11"
+   ],
    "open_gaps": [],
    "n_open_gaps": 0,
    "blocking_gaps": 0,
@@ -331,10 +334,13 @@
    "title": "The water surface",
    "blurb": "Surface, shore, depth, refraction; the axis-aligned lane defect.",
    "ref_items": [
-    "RI-WLD10"
+    "RI-WLD10",
+    "RI-VIS11"
    ],
-   "n_ref_items": 1,
-   "never_judged": [],
+   "n_ref_items": 2,
+   "never_judged": [
+    "RI-VIS11"
+   ],
    "open_gaps": [
     "GAP-W1-03-water-surface-undrawn-and-frozen",
     "GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank",
@@ -2869,7 +2875,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 7,
+   "verdicts": 8,
    "best_score_0_10": 8,
    "state": "judged_at_or_above_bar"
   },
@@ -3474,7 +3480,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 6,
+   "verdicts": 7,
    "best_score_0_10": 6,
    "state": "judged_at_or_above_bar"
   },
@@ -3494,7 +3500,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 10,
+   "verdicts": 11,
    "best_score_0_10": 8,
    "state": "judged_at_or_above_bar"
   },
@@ -3601,6 +3607,24 @@
    "verdicts": 5,
    "best_score_0_10": 2,
    "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-VIS11",
+   "file": "corpus/70-visual/RI-VIS11-water-surface-micro-detail.md",
+   "area": "70-visual",
+   "title": "Water surface micro-detail — when ripple becomes stipple",
+   "kind": "number",
+   "side": "modern-fidelity",
+   "judges": [],
+   "covered_by": [
+    "F7",
+    "F5"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
   },
   {
    "id": "RI-MTH01",
@@ -3718,7 +3742,7 @@
    ],
    "bucket": "method_doctrine",
    "judged": true,
-   "verdicts": 25,
+   "verdicts": 26,
    "best_score_0_10": 8,
    "state": "judged_at_or_above_bar"
   },
@@ -3857,7 +3881,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 4,
+   "verdicts": 5,
    "best_score_0_10": 8,
    "state": "judged_at_or_above_bar"
   },

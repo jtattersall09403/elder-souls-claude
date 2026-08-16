@@ -2,11 +2,11 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-16T03:27:38.691Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-16T04:03:16.644Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
-| reference items (`corpus/**/RI-*.md`) | 152 | 0 |
+| reference items (`corpus/**/RI-*.md`) | 153 | 0 |
 | plans (`orchestration/plans/*`) | 49 | 0 |
 | open gaps (`GAP-LEDGER.json`) | 100 | 0 |
 | proposed roadmap items | 69 | — |
@@ -32,9 +32,9 @@
 | `F2` | Shadow, contact and ambient occlusion | RI-VIS03 RI-VIS04 | — | 1 (1) | W1-30 W1-30A W1-30B W1-30S | built_below_bar | V2 |
 | `F3` | Ambient and bounce fill | RI-VIS03 RI-VIS04 | — | 2 (2) | W1-30 W1-30B W1-30S | built_below_bar | V3 |
 | `F4` | Light, sky and atmosphere | RI-VIS04 | — | 4 (3) | W1-30 W1-30B W1-30S | built_below_bar | V4/V12 |
-| `F5` | The frame pipeline | RI-VIS04 | — | 0 (0) | W1-30 W1-30A W1-30S | at_bar | V5 |
+| `F5` | The frame pipeline | RI-VIS04 RI-VIS11 | RI-VIS11 | 0 (0) | W1-30 W1-30A W1-30S | at_bar | V5 |
 | `F6` | Terrain and vegetation surfaces | RI-WLD15 RI-WLD16 | RI-WLD15 RI-WLD16 | 0 (0) | W1-30 W1-30F | planned_unjudged | V9/V10 |
-| `F7` | The water surface | RI-WLD10 | — | 5 (5) | W1-03 W1-30 W1-30H | built_below_bar | V11 |
+| `F7` | The water surface | RI-WLD10 RI-VIS11 | RI-VIS11 | 5 (5) | W1-03 W1-30 W1-30H | built_below_bar | V11 |
 | `F8` | The building kit and settlement silhouette | RI-WLD14 | — | 1 (1) | W1-30-LIBRARY W1-30 W1-30E | built_below_bar | V8 |
 | `F9` | Interiors and practical light | RI-STL01 | — | 1 (1) | W1-30 W1-30G | built_below_bar | partial:V4 |
 | `F10` | Characters and creatures | RI-CAM07 RI-VIS08 RI-VIS10 | — | 7 (2) | W1-24 W1-30-LIBRARY W1-30 W1-30D | built_below_bar | V6 |
@@ -192,7 +192,7 @@
 | `RI-QST09` | 30-quests | morrowind | P10 | 0 | — | never_judged |
 | `RI-DLG01` | 40-dialogue | morrowind | P1 | 3 | 5 | judged_below_bar |
 | `RI-DLG02` | 40-dialogue | morrowind | P2 | 5 | 5 | judged_below_bar |
-| `RI-DLG03` | 40-dialogue | morrowind | P2 | 7 | 8 | judged_at_or_above_bar |
+| `RI-DLG03` | 40-dialogue | morrowind | P2 | 8 | 8 | judged_at_or_above_bar |
 | `RI-DLG04` | 40-dialogue | morrowind | P2 | 0 | — | never_judged |
 | `RI-DLG05` | 40-dialogue | morrowind | P3 | 0 | — | never_judged |
 | `RI-DLG06` | 40-dialogue | morrowind | P2 | 1 | 5 | judged_below_bar |
@@ -227,21 +227,22 @@
 | `RI-LOR08` | 60-lore | morrowind | P5 | 0 | — | never_judged |
 | `RI-VIS01` | 70-visual | neutral | I3 | 0 | — | never_judged |
 | `RI-VIS02` | 70-visual | modern-fidelity | I5 | 1 | 0 | judged_below_bar |
-| `RI-VIS03` | 70-visual | modern-fidelity | I3 F2 F3 | 6 | 6 | judged_at_or_above_bar |
-| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 10 | 8 | judged_at_or_above_bar |
+| `RI-VIS03` | 70-visual | modern-fidelity | I3 F2 F3 | 7 | 6 | judged_at_or_above_bar |
+| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 11 | 8 | judged_at_or_above_bar |
 | `RI-VIS05` | 70-visual | morrowind | F13 | 0 | — | never_judged |
 | `RI-VIS06` | 70-visual | neutral | I3 | 5 | 5 | judged_below_bar |
 | `RI-VIS07` | 70-visual | morrowind | F13 | 1 | 4 | judged_below_bar |
 | `RI-VIS08` | 70-visual | modern-fidelity | F10 F11 | 7 | 3 | judged_below_bar |
 | `RI-VIS09` | 70-visual | neutral | I5 | 0 | — | never_judged |
 | `RI-VIS10` | 70-visual | morrowind | F10 I5 | 5 | 2 | judged_below_bar |
+| `RI-VIS11` | 70-visual | modern-fidelity | F7 F5 | 0 | — | never_judged |
 | `RI-MTH01` | 80-methods | neutral | I1 | 2 | 6 | judged_at_or_above_bar |
 | `RI-MTH02` | 80-methods | neutral | I1 | 3 | 7 | judged_at_or_above_bar |
 | `RI-MTH03` | 80-methods | neutral | I3 | 2 | 5 | judged_below_bar |
 | `RI-MTH04` | 80-methods | neutral | I2 | 7 | 8 | judged_at_or_above_bar |
 | `RI-MTH05` | 80-methods | neutral | I5 | 0 | — | never_judged |
 | `RI-MTH06` | 80-methods | neutral | I2 I5 | 0 | — | never_judged |
-| `RI-MTH07` | 80-methods | neutral | I4 | 25 | 8 | judged_at_or_above_bar |
+| `RI-MTH07` | 80-methods | neutral | I4 | 26 | 8 | judged_at_or_above_bar |
 | `RI-PLT01` | 85-platform | neutral | T3 F14 | 2 | 5 | judged_below_bar |
 | `RI-PLT02` | 85-platform | neutral | T3 | 0 | — | never_judged |
 | `RI-PLT03` | 85-platform | neutral | T3 | 3 | 2 | judged_below_bar |
@@ -249,7 +250,7 @@
 | `RI-UIX02` | 86-ui | morrowind | P3 | 3 | 4 | judged_below_bar |
 | `RI-UIX03` | 86-ui | neutral | C3 T4 | 9 | 6 | judged_at_or_above_bar |
 | `RI-UIX04` | 86-ui | morrowind | P3 T4 | 11 | 7 | judged_at_or_above_bar |
-| `RI-UIX05` | 86-ui | morrowind | P4 | 4 | 8 | judged_at_or_above_bar |
+| `RI-UIX05` | 86-ui | morrowind | P4 | 5 | 8 | judged_at_or_above_bar |
 | `RI-UIX06` | 86-ui | neutral | T4 F13 | 9 | 5 | judged_below_bar |
 | `RI-UIX07` | 86-ui | morrowind | T4 | 7 | 5 | judged_below_bar |
 | `RI-UIX08` | 86-ui | morrowind | P1 T4 | 5 | 2 | judged_below_bar |
