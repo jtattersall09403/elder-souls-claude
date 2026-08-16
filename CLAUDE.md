@@ -120,8 +120,16 @@ Sonnet — while the model-choice policy that would fix it has been written down
 
 ## 0e. Spawning blind judges is the ORCHESTRATOR's job, and nobody else can do it.
 
-**Measured 2026-08-15: `grep -rl "blind_pair: yes" corpus/ --include=*.md | wc -l` returns **98**.
-`grep -rln "blind_status: *run" corpus/90-verdicts/` returns **0**.** Ninety-eight reference items
+**Re-measured 2026-08-16 (the count grows as items land): `grep -rl "blind_pair: yes" corpus/
+--include=*.md | wc -l` returns **103**. Verdicts that have ever RUN one: still **0**.**
+
+**Derive that second number carefully — three agents got it wrong in one night**, reporting 98, 100,
+101, 102 and "1 verdict records a run". A plain grep for `blind_status.*run` matches **prose that
+quotes the phrase**, and one critic filed `W1-F7-WATER-r2.json` as the verdict that had run a gate
+when that file records `"status": "not_possible"`. **Read the `blind_comparisons` array, not the file
+text:** `node -e '...JSON.parse...blind_comparisons.some(b => b.status === "run")'`. The honest state
+is that **no blind gate has ever been run to completion by a verdict in this project**, and it is
+mine to fix. Ninety-eight reference items
 declare a blind pair as their quality gate. Not one verdict has ever run one. Protocol A ran once, on
 2026-08-14, and we lost 5 of 5 — that is the entire blind-judgement history of this project.
 
