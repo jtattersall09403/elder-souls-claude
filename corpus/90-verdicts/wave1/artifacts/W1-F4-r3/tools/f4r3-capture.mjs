@@ -255,7 +255,10 @@ async function poseAt([px, py, pz], { yaw_deg, pitch_deg, distance_m, lookHeight
 async function capture(file, cfgSrc, pre = null) {
   await g.page.evaluate(() => window.__restore());
   let preResult = null;
-  if (pre) preResult = await g.page.evaluate(pre);
+  // `page.evaluate(<string>)` evaluates the string as an EXPRESSION. Passing `"() => f()"` yields
+  // the function object and never calls it — a silently-not-applied arm, which would have read as
+  // "the lever does nothing". Call it explicitly.
+  if (pre) preResult = await g.page.evaluate(`(${pre})()`);
   await g.page.evaluate(`window.__cfgFn = (${cfgSrc});`);
   await call('stepFrames', 3);
   const readback = await g.page.evaluate(() => window.__readback());
@@ -289,17 +292,19 @@ const probeArm = ({ sunGain, groundBounce = 0.38, envMul = 1, sunColour = null }
  * `p1` is the identity rebake: my own bake at the SHIPPED sunGain, which must reproduce `p0` to
  * within that floor or the rebake path itself is the confound.
  */
-const PROBE_ARMS = [
-  ['p0-control', { cfg: NOOP, pre: null }],
-  ['p1-rebake-identity', probeArm({ sunGain: 3.0 })],
-  ['p2-sunlobe-0', probeArm({ sunGain: 0.0 })],
-  ['p3-sunlobe-0-env200', probeArm({ sunGain: 0.0, envMul: 2.0 })],
-  ['p4-sunlobe-0-env300', probeArm({ sunGain: 0.0, envMul: 3.0 })],
-  ['p5-sunlobe-0-env500', probeArm({ sunGain: 0.0, envMul: 5.0 })],
-  ['p6-sunlobe-050', probeArm({ sunGain: 0.5 })],
-  ['p7-sunlobe-0-bounce010-env300', probeArm({ sunGain: 0.0, groundBounce: 0.10, envMul: 3.0 })],
-  ['p0b-control-recheck', { cfg: NOOP, pre: null }],
-];
+const ALL_PROBE_ARMS = {
+  'p0-control': { cfg: NOOP, pre: null },
+  'p1-rebake-identity': probeArm({ sunGain: 3.0 }),
+  'p2-sunlobe-0': probeArm({ sunGain: 0.0 }),
+  'p3-sunlobe-0-env200': probeArm({ sunGain: 0.0, envMul: 2.0 }),
+  'p4-sunlobe-0-env300': probeArm({ sunGain: 0.0, envMul: 3.0 }),
+  'p5-sunlobe-0-env500': probeArm({ sunGain: 0.0, envMul: 5.0 }),
+  'p6-sunlobe-050': probeArm({ sunGain: 0.5 }),
+  'p7-sunlobe-0-bounce010-env300': probeArm({ sunGain: 0.0, groundBounce: 0.10, envMul: 3.0 }),
+  'p0b-control-recheck': { cfg: NOOP, pre: null },
+};
+const PROBE_ARMS = String(args.arms || 'p0-control,p1-rebake-identity,p2-sunlobe-0,p4-sunlobe-0-env300,p0b-control-recheck')
+  .split(',').map((id) => [id, ALL_PROBE_ARMS[id]]).filter(([, a]) => a);
 
 /**
  * `--mode keyhue`. The r2 critic's decisive arm re-run by me rather than inherited, PLUS the arms
@@ -366,6 +371,16 @@ const manifest = {
   windows: WINDOWS, rows: [], aborted: null,
 };
 const reportPath = path.join(OUT, `${TAG}.json`);
+/**
+ * Flush after EVERY arm. A SwiftShader capture at 1920x1080 on a box at load 20 takes about a
+ * minute, so a battery outlives any single foreground timeout — and a `timeout`-killed process
+ * never reaches a `finally`, so a manifest written only at the end is a manifest lost. HAZARDS §18
+ * still applies below: an empty run may not overwrite a full one.
+ */
+function flush() {
+  if (!manifest.rows.length) return;
+  fs.writeFileSync(reportPath, JSON.stringify(manifest, null, 2));
+}
 
 async function place(setupId) {
   const st = DECK.setups.find((x) => x.id === setupId);
@@ -388,6 +403,7 @@ try {
       const census = await g.page.evaluate(() => window.__lightCensus());
       const rb = await g.page.evaluate(() => window.__readback());
       manifest.rows.push({ mode: MODE, hour, readback: rb, census });
+      flush();
       console.log(`t=${hour}: ${census.length} lights; visible hemi=${rb.hemiVisible} scene-wide hemi=${rb.hemiSceneWide} visible amb=${rb.ambientVisible} recipe=${rb.recipeId}`);
       for (const c of census.filter((c) => c.chain_visible && c.intensity > 0)) console.log(`   VISIBLE ${c.type.padEnd(18)} i=${String(c.intensity).padEnd(9)} col=${JSON.stringify(c.colour)} ${c.name}`);
     }
@@ -404,6 +420,7 @@ try {
     for (const [id, a] of ARMS) {
       const r = await capture(path.join(OUT, `${id}.png`), a.cfg, a.pre);
       manifest.rows.push({ mode: MODE, pair: win.pair, hour: win.hour, crop: win.crop, arm: id, ...r });
+      flush();
       const rb = r.readback || {};
       console.log(`  ${id.padEnd(30)} ${r.error ? 'ERROR ' + r.error : `${r.liveness} sunCol=${JSON.stringify(rb.sunColour)} sunI=${rb.sunIntensity} env=${rb.environmentIntensity} mine=${rb.probeIsMine} cfgErr=${rb.cfgError}`}`);
       if (r.pre && r.pre.ok === false) console.log(`     PRE FAILED: ${r.pre.why}`);
@@ -421,6 +438,7 @@ try {
       for (const [id, cfg] of WINDOW_ARMS) {
         const r = await capture(path.join(OUT, `${win.pair}__${id}.png`), cfg, null);
         manifest.rows.push({ mode: MODE, pair: win.pair, hour: win.hour, crop: win.crop, arm: id, ...r });
+        flush();
         const rb = r.readback || {};
         console.log(`  ${win.pair} ${id.padEnd(16)} ${r.error ? 'ERROR ' + r.error : `${r.liveness} sunCol=${JSON.stringify(rb.sunColour)} sunI=${rb.sunIntensity} recipe=${rb.recipeId} shadowI=${rb.shadowIntensity}`}`);
       }
@@ -439,7 +457,9 @@ try {
         const rBase = await capture(path.join(OUT, `orbit-t${hour}-y${String(yaw).padStart(3, '0')}-base.png`), NOOP, null);
         const rOff = await capture(path.join(OUT, `orbit-t${hour}-y${String(yaw).padStart(3, '0')}-shadows_off.png`), WINDOW_ARMS[1][1], null);
         manifest.rows.push({ mode: MODE, hour, yaw, arm: 'base', ...rBase });
+        flush();
         manifest.rows.push({ mode: MODE, hour, yaw, arm: 'shadows_off', ...rOff });
+        flush();
         console.log(`  orbit t=${hour} yaw=${yaw} ${rBase.liveness}/${rOff.liveness}`);
       }
     }
@@ -458,6 +478,7 @@ try {
       for (const [id, cfg] of [['base', NOOP], ['shadows_off', WINDOW_ARMS[1][1]], ['key_off', WINDOW_ARMS[2][1]], ['env_off', WINDOW_ARMS[3][1]]]) {
         const r = await capture(path.join(OUT, `weather-${weather}__${id}.png`), cfg, null);
         manifest.rows.push({ mode: MODE, weather, hour: Number(args.hour || 13), arm: id, ...r });
+        flush();
         const rb = r.readback || {};
         console.log(`  ${weather.padEnd(10)} ${id.padEnd(14)} ${r.liveness} recipe=${rb.recipeId} hemiCol=${JSON.stringify(rb.hemiRootColour)} sunCol=${JSON.stringify(rb.sunColour)}`);
       }
@@ -485,6 +506,7 @@ try {
         const r = await capture(path.join(wdir, `f${String(k).padStart(2, '0')}.png`), NOOP, null);
         const moved = (start && p) ? +Math.hypot(p[0] - start[0], p[2] - start[2]).toFixed(3) : null;
         manifest.rows.push({ mode: 'walk', hour, k, moved_m_from_start: moved, pos: p, ...r });
+        flush();
         console.log(`  walk t=${hour} k=${k} moved=${moved} m ${r.liveness}`);
       }
     }
