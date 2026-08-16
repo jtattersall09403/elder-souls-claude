@@ -1,0 +1,669 @@
+{
+ "tool": "critic re-derivation, W1-F7-WATER-r5",
+ "generated": "2026-08-16",
+ "method": "Every block below is computed by this critic from the round's BANKED sweep.json files, not copied from its status file. No browser was launched: every number here comes from artifacts already on disk or from re-running the round's own OFFLINE tools, which take no GPU.",
+ "blocks": {
+  "A_threshold_stability_recomputed": {
+   "what": "own_mask_px spread across the interleaved captures of the UNCHANGED baseline arm, computed by me from poses[].baseline_captures[].by_threshold[].own_mask_px. This is the round's job-1 headline and I reproduce it.",
+   "runs": [
+    {
+     "run": "dm-b225-sweep",
+     "pose": "edge-b225",
+     "commit": "5e91b7eb1364",
+     "arm_order": "forward",
+     "n_baseline_captures": 9,
+     "thr6": {
+      "own_mask_pct_range": 57.0,
+      "width_closed_values": [
+       2,
+       2,
+       2,
+       3,
+       2,
+       2,
+       3,
+       3,
+       3
+      ],
+      "width_closed_range": 1,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100
+      ]
+     },
+     "thr10": {
+      "own_mask_pct_range": 33.68,
+      "width_closed_values": [
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2,
+       2
+      ],
+      "width_closed_range": 0,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100
+      ]
+     },
+     "thr16": {
+      "own_mask_pct_range": 0.26,
+      "width_closed_values": [
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1
+      ],
+      "width_closed_range": 0,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100,
+       100
+      ]
+     }
+    },
+    {
+     "run": "dm-b135-verify",
+     "pose": "edge-b135",
+     "commit": "0cb8931c76b7",
+     "arm_order": "forward",
+     "n_baseline_captures": 6,
+     "thr6": {
+      "own_mask_pct_range": 73.27,
+      "width_closed_values": [
+       4,
+       4,
+       4,
+       4,
+       4,
+       4
+      ],
+      "width_closed_range": 0,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100,
+       100,
+       100
+      ]
+     },
+     "thr10": {
+      "own_mask_pct_range": 50.22,
+      "width_closed_values": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ],
+      "width_closed_range": 0,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100,
+       100,
+       100
+      ]
+     },
+     "thr16": {
+      "own_mask_pct_range": 0.54,
+      "width_closed_values": [
+       2,
+       2,
+       2,
+       2,
+       2,
+       2
+      ],
+      "width_closed_range": 0,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100,
+       100,
+       100
+      ]
+     }
+    },
+    {
+     "run": "dm-b225-reverse",
+     "pose": "edge-b225",
+     "commit": "df9ec7b4c3e6",
+     "arm_order": "reverse",
+     "n_baseline_captures": 4,
+     "thr6": {
+      "own_mask_pct_range": 55.75,
+      "width_closed_values": [
+       2,
+       2,
+       2,
+       3
+      ],
+      "width_closed_range": 1,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100
+      ]
+     },
+     "thr10": {
+      "own_mask_pct_range": 28.21,
+      "width_closed_values": [
+       2,
+       2,
+       2,
+       2
+      ],
+      "width_closed_range": 0,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100
+      ]
+     },
+     "thr16": {
+      "own_mask_pct_range": 0.14,
+      "width_closed_values": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "width_closed_range": 0,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100
+      ]
+     }
+    },
+    {
+     "run": "dm-b045-b315",
+     "pose": "edge-b045",
+     "commit": "2d9941479294",
+     "arm_order": "forward",
+     "n_baseline_captures": 4,
+     "thr10": {
+      "own_mask_pct_range": 55.75,
+      "width_closed_values": [
+       20,
+       20,
+       17,
+       17
+      ],
+      "width_closed_range": 3,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100
+      ]
+     },
+     "thr16": {
+      "own_mask_pct_range": 0.33,
+      "width_closed_values": [
+       1,
+       1,
+       1,
+       1
+      ],
+      "width_closed_range": 0,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100
+      ]
+     }
+    },
+    {
+     "run": "dm-b045-b315",
+     "pose": "edge-b315",
+     "commit": "2d9941479294",
+     "arm_order": "forward",
+     "n_baseline_captures": 4,
+     "thr10": {
+      "own_mask_pct_range": 0.7,
+      "width_closed_values": [
+       6,
+       6,
+       6,
+       6
+      ],
+      "width_closed_range": 0,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100
+      ]
+     },
+     "thr16": {
+      "own_mask_pct_range": 0.26,
+      "width_closed_values": [
+       3,
+       3,
+       3,
+       3
+      ],
+      "width_closed_range": 0,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100
+      ]
+     }
+    },
+    {
+     "run": "dm-b135-null",
+     "pose": "edge-b135",
+     "commit": "7e20f572909e",
+     "arm_order": "forward",
+     "n_baseline_captures": 6,
+     "thr10": {
+      "own_mask_pct_range": 50.22,
+      "width_closed_values": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ],
+      "width_closed_range": 0,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100,
+       100,
+       100
+      ]
+     },
+     "thr16": {
+      "own_mask_pct_range": 0.54,
+      "width_closed_values": [
+       2,
+       2,
+       2,
+       2,
+       2,
+       2
+      ],
+      "width_closed_range": 0,
+      "presence_values": [
+       100,
+       100,
+       100,
+       100,
+       100,
+       100
+      ]
+     }
+    }
+   ],
+   "my_ruling": "CONFIRMED, and on more runs than the round claimed. Threshold 16's unchanged-arm mask spread is 0.26 / 0.54 / 0.14 / 0.33 / 0.54 % across FIVE runs (the round cited four; dm-b135-null is a fifth it did not count), two poses, five commits. Threshold 10 reads 33.68 / 50.22 / 28.21 / 55.75 / 50.22 %. The 100x separation is real and reproduces everywhere I looked.",
+   "the_qualifier_the_round_did_NOT_state": "Threshold 16 stabilises the MASK and does NOT stabilise PRESENCE. baseline_drift[].presence_pct_if_scored_as_an_arm has range 4.04 / 3.98 / 3.91 points at thresholds 6 / 10 / 16 in dm-b225-sweep. The presence drift band is the SAME at every threshold, so the threshold choice buys nothing for the round's own headline unit. The presence numbers still stand because the effects the round reports (9-40 points) are an order of magnitude outside a ~3.9 point band, but 'threshold 16 is the stable threshold' is true of the mask and is not true of presence, and the round's sentence 'my threshold-16 headline is well founded for presence' credits the threshold with a stability it did not supply.",
+   "and_the_width_is_flat_WITHIN_each_threshold": "Contrary to how the round's own qualifier reads, gradient_width_px does not drift on repeat captures at ANY threshold: the unchanged arm's closed width has range 0 or 1 px in all five runs at all thresholds (e.g. edge-b045 thr10 = [20,20,17,17], thr16 = [1,1,1,1]). What is unstable is the width ACROSS thresholds (20 vs 1 at edge-b045). So the width is repeatable and threshold-conditional, not noisy. That distinction matters because it rules out capture noise and points at the measure's construction instead - see block C."
+  },
+  "B_presence_and_the_decomposition": {
+   "what": "presence_pct re-derived by me from the banked luma triples, to check the round's decomposition is arithmetic and not assertion.",
+   "formula_i_inferred_and_verified": "presence_pct = 100 * (L_arm - L_hidden) / (L_baseline_local - L_hidden), where L_baseline_local is the mean of the arm's two flanking baseline captures.",
+   "pose": "deep-marshes edge-b135, threshold 16",
+   "rows": [
+    {
+     "arm": "no-shorefade",
+     "L_arm": 64.395,
+     "L_baseline_local": 67.822,
+     "L_hidden": 28.259,
+     "presence_published": 91.34,
+     "presence_i_computed": 91.34,
+     "width_closed": 1,
+     "width_raw": 1
+    },
+    {
+     "arm": "r3",
+     "L_arm": 52.918,
+     "L_baseline_local": 68.903,
+     "L_hidden": 28.259,
+     "presence_published": 60.67,
+     "presence_i_computed": 60.67,
+     "width_closed": 1,
+     "width_raw": 30
+    },
+    {
+     "arm": "band-0.10",
+     "L_arm": 48.816,
+     "L_baseline_local": 68.267,
+     "L_hidden": 28.259,
+     "presence_published": 51.38,
+     "presence_i_computed": 51.38,
+     "width_closed": 32,
+     "width_raw": 30
+    },
+    {
+     "arm": "band-0.30",
+     "L_arm": 47.478,
+     "L_baseline_local": 67.991,
+     "L_hidden": 28.259,
+     "presence_published": 48.37,
+     "presence_i_computed": 48.37,
+     "width_closed": 31,
+     "width_raw": 29
+    },
+    {
+     "arm": "fixed",
+     "L_arm": 44.891,
+     "L_baseline_local": 67.873,
+     "L_hidden": 28.259,
+     "presence_published": 41.99,
+     "presence_i_computed": 41.99,
+     "width_closed": 31,
+     "width_raw": 25
+    }
+   ],
+   "the_decomposition": {
+    "shore_alpha_term_off (no-shorefade)": 91.34,
+    "round_3 fade, no metre band (r3)": 60.67,
+    "shipped 0.10 m": 51.38,
+    "round_4 1.20 m": 41.99,
+    "cost_of_round_3_alpha_fade_points": 30.67,
+    "cost_of_the_shipped_band_points": 9.29,
+    "cost_of_round_4_band_points": 18.68
+   },
+   "my_ruling": "CONFIRMED to the digit, in my own arithmetic, from the banked frames' luma. Round 3's alpha fade costs 30.67 presence points and the shipped band constant costs a further 9.29. The round's ruling that round 6 should attack the multiplier rather than the constant is supported.",
+   "the_ceiling_the_round_did_not_state": "Deleting the shore alpha term ENTIRELY scores 91.34% at this pose, against a 90% acceptance bar and a 3.75-point drift band at this pose. So even a total removal of the multiplier clears the bar by 1.34 points inside a 3.75-point band - i.e. not distinguishably. A round 6 that removes the multiplier and nothing else should NOT be expected to pass clause 2 at edge-b135. The remaining ~8.7 points are the depth colour itself, which no round has been sent at."
+  },
+  "C_the_S52_null_all_five_arms": {
+   "what": "the S52 matched-luminance null, ALL FIVE arms, BOTH width measures, both thresholds, read out of the banked artifact.",
+   "rows": [
+    {
+     "arm": "null-t0.30",
+     "threshold": 10,
+     "mean_luma": 60.161,
+     "closed_span": 10.12,
+     "closed_width": 2,
+     "closed_refusal": null,
+     "raw_span": 5.195,
+     "raw_width": 1,
+     "raw_refusal": null
+    },
+    {
+     "arm": "null-t0.30",
+     "threshold": 16,
+     "mean_luma": 60.836,
+     "closed_span": 6.255,
+     "closed_width": 1,
+     "closed_refusal": null,
+     "raw_span": 0.468,
+     "raw_width": null,
+     "raw_refusal": "near-shore and open-water luma differ by < 0.6/255"
+    },
+    {
+     "arm": "null-t0.50",
+     "threshold": 10,
+     "mean_luma": 54.748,
+     "closed_span": 6.183,
+     "closed_width": 1,
+     "closed_refusal": null,
+     "raw_span": 1.884,
+     "raw_width": 1,
+     "raw_refusal": null
+    },
+    {
+     "arm": "null-t0.50",
+     "threshold": 16,
+     "mean_luma": 55.286,
+     "closed_span": 3.153,
+     "closed_width": 1,
+     "closed_refusal": null,
+     "raw_span": -2.324,
+     "raw_width": 1,
+     "raw_refusal": null
+    },
+    {
+     "arm": "null-t0.70",
+     "threshold": 10,
+     "mean_luma": 49.508,
+     "closed_span": 2.338,
+     "closed_width": 1,
+     "closed_refusal": null,
+     "raw_span": -1.42,
+     "raw_width": 1,
+     "raw_refusal": null
+    },
+    {
+     "arm": "null-t0.70",
+     "threshold": 16,
+     "mean_luma": 49.906,
+     "closed_span": 0.021,
+     "closed_width": null,
+     "closed_refusal": "near-shore and open-water luma differ by < 0.6/255",
+     "raw_span": -5.071,
+     "raw_width": 25,
+     "raw_refusal": null
+    },
+    {
+     "arm": "null-t0.90",
+     "threshold": 10,
+     "mean_luma": 44.382,
+     "closed_span": -1.505,
+     "closed_width": 1,
+     "closed_refusal": null,
+     "raw_span": -4.645,
+     "raw_width": 33,
+     "raw_refusal": null
+    },
+    {
+     "arm": "null-t0.90",
+     "threshold": 16,
+     "mean_luma": 44.644,
+     "closed_span": -3.06,
+     "closed_width": 31,
+     "closed_refusal": null,
+     "raw_span": -7.724,
+     "raw_width": 25,
+     "raw_refusal": null
+    },
+    {
+     "arm": "band-0.10",
+     "threshold": 10,
+     "mean_luma": 49.144,
+     "closed_span": -5.66,
+     "closed_width": 34,
+     "closed_refusal": null,
+     "raw_span": -11.689,
+     "raw_width": 33,
+     "raw_refusal": null
+    },
+    {
+     "arm": "band-0.10",
+     "threshold": 16,
+     "mean_luma": 49.5,
+     "closed_span": -7.664,
+     "closed_width": 32,
+     "closed_refusal": null,
+     "raw_span": -16.477,
+     "raw_width": 30,
+     "raw_refusal": null
+    }
+   ],
+   "THE_SPAN_SEQUENCE_WHICH_IS_THE_WHOLE_ANSWER": {
+    "closed_span_at_threshold_16_in_brightness_order": {
+     "baseline (unchanged water)": "+10.44 to +10.64 over six captures",
+     "null-t0.30": 6.255,
+     "null-t0.50": 3.153,
+     "null-t0.70 (THE MATCHED POINT)": 0.021,
+     "null-t0.90": -3.06,
+     "band-0.10 (the arm)": -7.664
+    },
+    "what_it_means": "The null family's shore profile span is MONOTONE in brightness and crosses zero at almost exactly the matched point. The width tool refuses to measure when |span| < 0.6/255. So the round's protective result - 'no measurable transition at the matched point' - is the zero-crossing of the null's own profile landing on the matched brightness. It is an amplitude coincidence, not the absence of a mechanism. One step further along the SAME one-parameter family (null-t0.90, no depth dependence, no k, no shore geometry) the closed width reads 31 against the arm's 32.",
+    "and_the_profiles_are_the_same_shape": "band-0.10 closed profile rises 50.8 -> 63.5 by distance bin 6 then falls to 47 by bin 24. null-t0.90 closed profile rises 45.1 -> 51.9 by bin 6 then falls to 47.2 by bin 24. The arm and a brightness-only null trace the same curve at different amplitudes."
+   }
+  },
+  "D_why_the_width_measure_cannot_gate_anything": {
+   "what": "I read tools/visual/f7-r5-sweep.mjs shoreProfile() (lines 155-178) and then tested it numerically.",
+   "the_construction": "first = mean of distance bins <= 2; last = median of bins >= 24; span = last - first; d10/d90 = the first distance bin crossing first + span*0.10 and first + span*0.90; gradient_width_px = d90 - d10. The only amplitude gate anywhere is a refusal at |span| < 0.6/255.",
+   "the_property": "gradient_width_px is EXACTLY INVARIANT under any affine rescaling of the luma profile. It records the spatial extent over which 80% of whatever near-shore-to-open-water ordering exists is traversed, and records nothing about how strong that ordering is.",
+   "my_test": "I re-implemented the measure, ran it on the shipped arm's own banked profile and reproduced its published 32 px. I then compressed the same profile toward its mean by 10x and by 25x - shape identical, contrast cut to 0.77 and 0.31 luma levels against the arm's 7.66 - and the measure returned 32 px both times.",
+   "command": "node -e '<re-implementation of shoreProfile at(), run over dm-b135-null band-0.10 shore.profile>'  ->  as banked 32; amplitude/10 -> 32; amplitude/25 -> 32",
+   "consequence_1": "It explains the S52 null result completely. null-t0.90's span is -3.06, 40% of the arm's -7.664, and it reads 31 px. A null with less than half the contrast reads 97% of the width because the measure does not see contrast.",
+   "consequence_2": "It explains the round's own unexplained r3 closed-vs-raw split (closed 1, raw 30) and the edge-b045 20-vs-1 threshold swing. Both are shape changes from a different mask, not measurement noise - which is why block A finds the width perfectly repeatable within each threshold.",
+   "consequence_3": "It means gradient_width_px >= 12 cannot gate a waterline. An arm with a 0.7-luma near-shore ordering - invisible - and an arm with a 16-luma one score identically. Under ARBITRATION S63's standing rule (a metric family a null reproduces is evidence in neither direction) NO width number in F7's history is admissible: not this round's 32, not round 4's 34, not round 3's 15."
+  },
+  "E_M12_scored_min_over_poses_in_my_own_reading": {
+   "what": "RI-VIS03 M12 sub-metrics for the SHIPPED arm (band-0.10), read out of poses[].arms['band-0.10'].by_threshold['16'].m12 across the complete Deep Marshes 4-bearing set, min over poses per M12a clause 3.",
+   "FresnelDelta": {
+    "band": ">= 0.05",
+    "fail_below": 0.02,
+    "per_pose": {
+     "edge-b225": 0.08639,
+     "edge-b135": 0.178,
+     "edge-b045": 0.11027,
+     "edge-b315": 0.12754
+    },
+    "worst_pose": 0.08639,
+    "verdict": "PASS at the worst pose"
+   },
+   "ShoreDelta": {
+    "band": ">= 0.03",
+    "fail_below": 0.01,
+    "per_pose": {
+     "edge-b225": 0.01814,
+     "edge-b135": 0.06797,
+     "edge-b045": 0.01392,
+     "edge-b315": 0.00461
+    },
+    "worst_pose": 0.00461,
+    "verdict": "FAIL - below the hard-fail floor at edge-b315"
+   },
+   "NormalEnergy": {
+    "band": ">= 0.035",
+    "per_pose": {
+     "edge-b225": 0.23166,
+     "edge-b135": 0.14802,
+     "edge-b045": 0.06449,
+     "edge-b315": 0.42509
+    },
+    "worst_pose": 0.06449,
+    "verdict": "numerically above band, but UNRESOLVED and fails closed under RI-VIS11 section 3 (hf_survival 64.95%)"
+   },
+   "ReflCorr": {
+    "band": ">= 0.35",
+    "measured": null,
+    "reason_at_every_pose": "only 0 paired samples above the far half of the water; need >= 500",
+    "verdict": "inapplicable at 5 of 5 poses - per ARBITRATION S64 the absence carries forward as a finding, never a pass"
+   },
+   "TemporalVar": {
+    "band": ">= 0.002",
+    "hard_fail_below": 0.0005,
+    "measured": 0.000341,
+    "verdict": "HARD FAIL"
+   },
+   "MY_CORRECTION_TO_THE_ROUND": "The round writes that FresnelDelta and ShoreDelta are 'already failing at their worst poses' and cites 0.03085 and 0.00610. It flags both, honestly, as INHERITED from the r4 critic at threshold 6 and not re-derived. I re-derived them. FresnelDelta's worst pose over the complete Deep Marshes set on the shipped arm is 0.08639 at threshold 16 and 0.07002 at threshold 6 - it PASSES its band at every pose and every threshold I can compute from this round's captures. The inherited 0.03085 does not reproduce here.",
+   "AND_THE_CONCLUSION_SURVIVES_ANYWAY": "M12's 'any two failing = blue plane hard fail' is met without FresnelDelta: ShoreDelta FAILS, TemporalVar HARD FAILS, ReflCorr is inapplicable at every pose and fails closed, NormalEnergy is unresolved and fails closed. Four, not three, and by a different route than the round gives. The round's headline is right and one of its two supporting figures is not.",
+   "command": "python3 over corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/{dm-b225-sweep,dm-b135-verify,dm-b225-reverse,dm-b045-b315}/sweep.json"
+  },
+  "F_RI_VIS11_reproduced_in_my_own_run": {
+   "what": "RI-VIS11 sections 1 and 2 are the round's falsification of the 'dither stipple' four critics inherited. I re-ran the instrument myself rather than reading the table.",
+   "command": "node tools/visual/f7-r5-offline.mjs --mode stipple --dir corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/dm-edge2 --out <scratch>",
+   "my_numbers": {
+    "edge-b135 fixed": {
+     "water_phase_spread_lsb": 0.5281,
+     "land_control": 1.2784,
+     "water_adjacent": 6.1673,
+     "water_two_apart": 6.6631,
+     "water_stipple_ratio": 0.9256,
+     "land_stipple_ratio": 0.7286
+    },
+    "edge-b135 prefix": {
+     "water_phase_spread_lsb": 0.6127,
+     "land_control": 1.1436,
+     "water_adjacent": 7.1734,
+     "water_two_apart": 7.8324,
+     "water_stipple_ratio": 0.9159,
+     "land_stipple_ratio": 0.7317
+    },
+    "edge-b135 water-hidden": {
+     "water_phase_spread_lsb": 0.3515,
+     "land_control": 1.1276,
+     "water_adjacent": 4.788,
+     "water_two_apart": 5.2331,
+     "water_stipple_ratio": 0.915
+    }
+   },
+   "verdict": "REPRODUCES to the digit against the item's published table (0.528 / 1.278, 0.613 / 1.144, 0.352 / 1.128; 4.788 / 5.233 / 0.915, 7.173 / 7.832 / 0.916, 6.167 / 6.663 / 0.926). The 4x4 phase signature on water is under two thirds of an 8-bit level and is two to five times LARGER on the land the water shader never touches. There is no ordered dither on our water. Four verdicts inherited a diagnosis that is wrong, and this round caught it by measuring.",
+   "one_defect_in_the_item": "RI-VIS11 section 2 cites 'game/src/render/water.js lines 304-306' for the three procedural terms at 4.7 / 13.7 / 26.3 rad per world metre. Read this turn, those terms are at lines 323-325; line 304 is inside the shore-band comment block. The frequencies are exactly right and the substance is unaffected - the citation went stale within the round when the shore-band edit landed above them. Fixable in one line and worth fixing, because stale citations are a defect this repo has been bitten by three times."
+  },
+  "G_TemporalVar_reproduced_and_a_mechanism_i_did_NOT_ablate": {
+   "what": "TemporalVar is the round's most damaging new finding and it is the one number whose in-browser artifact is EMPTY, so I re-derived it.",
+   "the_write_ordering_defect_confirmed": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-motion/sweep.json has motion: {} - the entire motion block is absent from the banked artifact. The round filed this against itself (HAZARDS section 18's shape) and its mitigation is real: the numbers are recoverable offline from the 58 banked PNGs.",
+   "my_reproduction": "node tools/visual/f7-r5-offline.mjs --mode temporal --dir <dm-motion> returns TemporalVar 0.000341, land control 0.000256, per-pixel water 0.000525, per-pixel land 0.000107 - identical to the banked offline/temporal.json, from a separate invocation.",
+   "the_identity_check_i_ran_myself": "md5sum over motion-temporal--fixed--f0*.png returns 30 distinct hashes from 30 files. HAZARDS section 30's identity trap is ruled out: the frames genuinely differ. The HARD FAIL stands.",
+   "a_limit_the_round_did_not_state": "The 30-frame sequence was shot on the arm named `fixed` at commit 5e91b7eb, where `fixed` was still 1.20 m. The SHIPPED 0.10 m arm has only 2 temporal frames, below the >= 5 the tool itself requires. TemporalVar has therefore not been measured on the configuration this round ships. It is very unlikely to differ - the band constant does not touch the ripple terms - but it is not measured, and the round reports the number without naming the arm.",
+   "THE_MECHANISM_AND_I_DID_NOT_ABLATE_IT": "Read this turn at game/src/render/water.js:323-328, the three ripple terms are added to outgoingLight with coefficients vec3(.007,.010,.011), vec3(.005,.007,.008) and vec3(.004,.006,.007), each multiplied by a (term - .5) that spans +/-0.5. Peak combined luma contribution is therefore of order 0.008 in linear light against a water surface whose mean Yp is 0.180 (offline/temporal.json). So the ripple is roughly a 0.5-1% modulation, living entirely at the 4.7 / 13.7 / 26.3 rad-per-metre frequencies RI-VIS11 shows collapse under supersampling. CANDIDATE ONLY: this says F7's ripple may be simultaneously too small in amplitude to move TemporalVar and too high in frequency to survive a resolve, which would make the M12 TemporalVar hard fail and the RI-VIS11 aliasing finding two halves of one defect in three lines of source. Per ARBITRATION S63 I may not narrate a mechanism I did not ablate, so this is recorded as a candidate with its arithmetic shown and NOT as a finding. The ablation that settles it is one browser run: scale the three coefficients up and the three frequencies down, and re-measure TemporalVar and hf_survival_pct together."
+  },
+  "H_the_blind_census_derived_by_me_and_why_it_keeps_moving": {
+   "the_number_depends_entirely_on_the_command_and_that_is_the_finding": {
+    "grep -rl 'blind_pair: yes' corpus/ --include=*.md | wc -l": 111,
+    "same, excluding corpus/90-verdicts/": 92,
+    "grep -rl 'blind_pair: yes' corpus/ --include=*.md | grep -E '/RI-[^/]*\\.md$' | wc -l  (the r4 critic's exact command)": 82,
+    "find corpus -name 'RI-*.md' | wc -l": 153
+   },
+   "so_the_80_81_82_drift_is_fully_explained": "The r4 critic ran the RI-restricted form and got 81. I run the identical command and get 82. The delta is exactly one file: RI-VIS11, written by this round, which declares blind_pair: yes. Nothing drifted and no count was wrong. The r1-r3 figures of 98/100/101/102 came from the WIDE form over all of corpus/*.md, which today returns 111 because verdict files quoting the string are counted as instances of it - the same false-positive shape the r3 critic caught in the blind_status grep.",
+   "the_recommendation": "Every future verdict should publish the RI-restricted form and the command, because it is the only one of the four that counts reference items rather than mentions.",
+   "gates_actually_run": {
+    "grep -rEn '\"blind_status\" *: *\"run\"' corpus/90-verdicts/ | wc -l": 0
+   },
+   "my_derivation": "82 reference items declare a blind pair. Zero verdicts have ever run one. Protocol A on 2026-08-14 remains the entire blind-judgement history of this project."
+  },
+  "I_what_the_frames_look_like_because_a_number_is_not_a_picture": {
+   "what": "CRITIC-DOCTRINE section 1.3 clause 1 and the owner's 2026-08-14 directive: render it and look. I opened the round's banked frames rather than reasoning from its tables. No browser was needed.",
+   "edge-b135 shipped (band-0.10)": "A near-black murk. The water is not distinguishable from the bank as water; the surface reads as wet mud. Heavy dotted speckle across the whole surface. I could not see a waterline anywhere in the frame - which is the visual counterpart of block D: the '32 px waterline' is not a waterline anyone can see.",
+   "edge-b135 no-shorefade": "A different and far better image. The water reads as a lighter blue-green sheet with the bed visible through it, and there IS a visible boundary against the dark bank at frame left. The 91.34 vs 51.38 presence gap is not a statistical artefact - it is the difference between a surface that looks like water and one that does not.",
+   "edge-b135 fixed (round 4's 1.20 m)": "Darker again than the shipped arm, consistent with 41.99 vs 51.38. The shipped change IS a visible improvement on round 4. It is also a small one: both arms read as mud.",
+   "motion-orbit b255": "At this bearing the water reads as a flat teal sheet with hard polygonal facet edges and heavy speckle. No ripple, no specular, no waterline. This is RI-VIS04 section 9's TELL - 'a flat blue/green semi-transparent plane, the same colour and brightness everywhere' - almost word for word.",
+   "and_the_stale_HUD_label": "CONFIRMED by my own eyes at edge-b135: the drawn label reads 'western-rootlands' in a Deep Marshes frame whose stand_verification block records running_field_region_at_player = deep-marshes. Read the block, never the label."
+  },
+  "J_one_thing_i_could_not_settle": {
+   "the_unregioned_water_material": "gpu_state_before in every run lists FOUR distinct water materials. Three resolve to a region with the k RI-WLD10 section 10.1 declares (deep-marshes 4.5, eastern-rootlands 3.2, western-rootlands 1.9). The fourth has mesh 'water', region_resolved: null and uWaterK: 2 - engine.js's waterRegionDiag.fallback_k. I cannot tell from the banked artifacts WHICH material the measured pixels belong to. If any part of the water in frame is the fallback material, it is being rendered at k=2 in a region RI-WLD10 declares at k=4.5, and every k-dependent number in this piece is measured through a mix. Settling it needs a browser and one line of instrumentation - report the resolved region per material for the pixels inside the pinned mask - and I did not spend a browser on it."
+  }
+ }
+}
