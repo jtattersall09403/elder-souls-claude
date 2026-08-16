@@ -968,6 +968,48 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
   if (s00I !== undefined) B.cloth.ellipsoid(originOf('spine_00').add(new THREE.Vector3(0, .028 * M.build, -.006)),
     [.164 * M.build * M.shoulders, .150 * M.build, .124 * M.build * M.belly], s00I, 14);
 
+  // ---- THE AGE AXIS, GEOMETRY HALF (`M.stoop`) -------------------------------------------
+  //
+  // `RI-VIS10` E3 wants four of five body archetypes and the r12 critic's census recorded why
+  // only three were reachable: *"CHARACTER_SPECS carries no spine curvature or age morph, so
+  // stooped-old cannot be reached by any shipped row."* Every other morph key in this file is a
+  // radius multiplier, and no product of radii bends a back.
+  //
+  // WHAT AN OLD BACK ACTUALLY IS, and why it is two masses rather than a scale on an existing
+  // one: the thoracic curve deepens, so the upper spine carries a mass BEHIND and ABOVE the
+  // chest, and the shoulder girdle rolls forward over it. Both are emitted into the same skinned
+  // cloth surface as the trunk and bound to the bones that already own those regions
+  // (`spine_02` for the dorsal mass, the clavicles for the roll), so they pose with the body and
+  // cannot separate — the lesson of the four floating crest cones, applied again.
+  //
+  // NO BONE OFFSET MOVES. The curvature the viewer reads is the POSTURE half, applied in
+  // `applyStaticStance` from this same axis, where it is a rotation on bones the hurtboxes
+  // follow. Geometry alone would be a bump on an upright man; posture alone would be a young
+  // man leaning. `tools/visual/f10-r13-body-census.mjs` arm `stoop_two_consumers` fails if
+  // either half stops reading the axis.
+  if (M.stoop > 0.01 && chestI !== undefined) {
+    const st = Math.min(1.6, M.stoop);
+    // SIZED BY MEASUREMENT, NOT BY TASTE. The first version of this mass sat at −78 mm with a
+    // depth radius of 120 mm and moved the side silhouette by **0.2%** (`f10-r13-body-census
+    // --self-test` arm 5 read IoU 0.9980 between a stoop-1.25 probe and a stoop-0 probe identical
+    // in every other axis). A hump a discriminator cannot see is a hump a player cannot see, so
+    // it was pushed back and deepened until the same arm reads a difference. The published number
+    // is that arm's, re-run; the arithmetic below is not the evidence.
+    B.cloth.ellipsoid(originOf('spine_02').add(new THREE.Vector3(0, .050 * M.build, -.112 * M.build)),
+      [.142 * M.build * M.shoulders, (.062 + .062 * st) * M.build, (.058 + .082 * st) * M.build], chestI, 13);
+    // The girdle rolls forward over it: a short tube from each clavicle end toward the front of
+    // the chest, which is what closes the gap a rolled shoulder opens and is why a stooped
+    // silhouette is NARROWER across the back than an upright one at the same `shoulders`.
+    for (const side of ['l', 'r']) {
+      const clavI2 = index.get(`clavicle_${side}`);
+      const armI2 = index.get(`upperarm_${side}`);
+      if (clavI2 === undefined || armI2 === undefined) continue;
+      const armTop2 = originOf(`upperarm_${side}`);
+      B.cloth.tube(armTop2, armTop2.clone().add(new THREE.Vector3(0, -.028 * M.build, .052 * st * M.build)),
+        .086 * M.build * M.shoulders, .070 * M.build * M.shoulders, armI2, clavI2, 0.5, 11, 3);
+    }
+  }
+
   // ---- dress: the Argonian material vocabulary, as geometry -----------------------------
   //
   // RI-VIS10 §D3 asks for five of eight materials from RI-VIS05's Black Marsh list — lashed cord,
@@ -1898,7 +1940,12 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     addPresentation('head',new THREE.SphereGeometry(1,12,6),[0,-.014,.112],[.026,.0035,.009],[0,0,0],'mouth-line',hMouthMat,hScale);
   }
 
-  return { group, bones, index, skeleton, meshes, rootBone, restWorld, waterU, secondary, secondaryMat: frillMat, equipment, equipmentMat:equipMat, presentation };
+  // `morph` travels with the built body because the AGE AXIS has a second consumer: the stance
+  // layer in `applyStaticStance` reads `S.morph.stoop` to add the postural curvature that makes
+  // the dorsal mass above read as an old back rather than a lump. Re-deriving it there from the
+  // spec would be a second copy of the same number in the same file, which is the defect
+  // `HAZARDS §20a` is about.
+  return { group, bones, index, skeleton, meshes, rootBone, restWorld, waterU, secondary, secondaryMat: frillMat, equipment, equipmentMat:equipMat, presentation, morph: M };
 }
 
 /** Closed elliptical ring shell used by all three equipment families. The profile creates a
@@ -2333,6 +2380,19 @@ const CHARACTER_SPECS = {
   // character's raw albedo is already at it, so this swatch is pulled back to C* 24.
   'sax.hive-drone':         { base: 'base.saxhleel', morph: { build: 0.80, shoulders: 0.86, crest: 0.0, horn: 0.0, snout: 0.82 }, material: { skin: 0x877c56, cloth: 0x6a6041, palette: 'hive', wear: 0.45 }, clips: 'clipset.civilian' },
   'sax.deep-warden':        { base: 'base.saxhleel', morph: { build: 1.22, shoulders: 1.10, belly: 1.10, crest: 1.20, horn: 1.3 }, material: { skin: 0x2f4a3f, cloth: 0x24302c, palette: 'deep-marshes', wear: 0.15 }, sockets: { set: 'xanmeer' }, clips: 'clipset.guard' },
+  // --- ROUND 13: six more Saxhleel, and they are people rather than settings -----------------
+  // Each row below opens something no shipped row reached. They are NOT interpolations of the
+  // nine above: `sax.dock-hauler` is the only heavy build with a SMALL head multiplier, and
+  // `sax.stooped-elder` and `sax.reed-widow` are the first two bodies in this project with an
+  // age axis at all. The pair of naga rows is drawn ONLY by `race: naga` (see `RACE_POOL`), which
+  // is what E5 asks for and what no previous round provided: a race that draws a body no other
+  // race in the settlement draws.
+  'sax.dock-hauler':        { base: 'base.saxhleel', morph: { build: 1.26, shoulders: 1.26, belly: 1.06, neck: 1.16, hand: 1.14, head: 0.97, crest: 0.55, snout: 0.96 }, material: { skin: 0x5d6f4e, cloth: 0x4a4436, palette: 'blackwood', wear: 0.75 }, clips: 'clipset.civilian' },
+  'sax.reed-widow':         { base: 'base.saxhleel', morph: { build: 0.88, shoulders: 0.88, belly: 1.12, neck: 0.84, hand: 0.94, head: 1.03, crest: 0.25, snout: 1.02, stoop: 0.85 }, material: { skin: 0x8d9276, cloth: 0x6d6a55, palette: 'salt-hills', wear: 0.90 }, clips: 'clipset.civilian' },
+  'sax.stooped-elder':      { base: 'base.saxhleel', morph: { build: 0.94, shoulders: 0.86, belly: 1.20, neck: 0.80, hand: 1.02, head: 1.02, crest: 0.20, snout: 1.06, stoop: 1.25 }, material: { skin: 0x9d9e83, cloth: 0x59543f, palette: 'eastern-rootlands', wear: 0.95 }, clips: 'clipset.civilian' },
+  'sax.hist-priest':        { base: 'base.saxhleel', morph: { build: 1.02, shoulders: 0.96, belly: 0.94, neck: 1.10, hand: 0.92, head: 0.98, crest: 1.60, horn: 1.85, snout: 1.24 }, material: { skin: 0x44705f, cloth: 0x2c4038, palette: 'deep-marshes', wear: 0.35 }, clips: 'clipset.civilian' },
+  'sax.mire-runner':        { base: 'base.saxhleel', morph: { build: 0.82, shoulders: 1.08, belly: 0.80, neck: 1.04, hand: 1.16, head: 0.99, crest: 0.88, snout: 1.28 }, material: { skin: 0x6b7f4a, cloth: 0x40502f, palette: 'thornmarsh', wear: 0.65 }, clips: 'clipset.civilian' },
+  'sax.naga-broad':         { base: 'base.saxhleel', morph: { build: 1.30, shoulders: 1.22, belly: 1.14, neck: 1.36, snout: 1.42, crest: 0.18, horn: 1.95, hand: 1.10, head: 1.02 }, material: { skin: 0x35564e, cloth: 0x233330, palette: 'crimson-coast', wear: 0.45 }, clips: 'clipset.civilian' },
   // --- base.humanoid -----------------------------------------------------------------------
   'hum.imperial-clerk':     { base: 'base.humanoid', morph: { build: 0.94, shoulders: 0.94, belly: 1.06 }, material: { skin: 0xb9a184, cloth: 0x6b6357, palette: 'stone-wastes', wear: 0.30 }, clips: 'clipset.civilian' },
   'hum.legion-heavy':       { base: 'base.humanoid', morph: { build: 1.20, shoulders: 1.24, neck: 1.14 }, material: { skin: 0xa08a6b, cloth: 0x4a4a52, palette: 'stone-wastes', wear: 0.35 }, sockets: { set: 'xanmeer' }, clips: 'clipset.guard' },
@@ -2340,6 +2400,19 @@ const CHARACTER_SPECS = {
   'hum.breton-stout':       { base: 'base.humanoid', morph: { build: 1.10, belly: 1.24, shoulders: 1.02 }, material: { skin: 0xc2a98c, cloth: 0x5a4a2f, palette: 'blackwood', wear: 0.60 }, clips: 'clipset.civilian' },
   'hum.marauder':           { base: 'base.humanoid', morph: { build: 1.14, shoulders: 1.16, hand: 1.12, belly: 0.92 }, material: { skin: 0x8a7256, cloth: 0x3f2f24, palette: 'marauders-coast', wear: 0.80 }, sockets: { set: 'chitin' }, clips: 'clipset.guard' },
   'hum.drowned':            { base: 'base.humanoid', morph: { build: 0.78, belly: 0.80, neck: 0.88, hand: 0.90 }, material: { skin: 0xc4bfa7, cloth: 0x555044, palette: 'salt-hills', wear: 0.95 }, clips: 'clipset.undead' },
+  // --- ROUND 13: six more man and mer -------------------------------------------------------
+  // `hum.imperial-factor` / `hum.dunmer-broad` / `hum.nord-raw` / `hum.khajiit-lean` are drawn by
+  // ONE race each (`RACE_POOL`). That is E5's requirement stated as data: before this round every
+  // race in a settlement drew from the same five-body pool, so `saxhleel` and `dunmer` drew no
+  // body another race there did not also draw, and the census said so for three verdicts.
+  // `hum.stooped-widow` is the humanoid half of the age axis; `hum.dock-porter` is the heavy
+  // civilian this pool never had (`hum.legion-heavy` and `hum.marauder` are both armoured).
+  'hum.imperial-factor':    { base: 'base.humanoid', morph: { build: 1.06, shoulders: 0.98, belly: 1.16, neck: 1.04, hand: 0.96, head: 1.02 }, material: { skin: 0xc0a687, cloth: 0x4a4658, palette: 'stone-wastes', wear: 0.25 }, clips: 'clipset.civilian' },
+  'hum.dunmer-broad':       { base: 'base.humanoid', morph: { build: 1.16, shoulders: 1.18, belly: 0.96, neck: 1.10, hand: 1.08, head: 0.97 }, material: { skin: 0x6f6470, cloth: 0x3d2a34, palette: 'valus-ridge', wear: 0.55 }, clips: 'clipset.civilian' },
+  'hum.nord-raw':           { base: 'base.humanoid', morph: { build: 1.24, shoulders: 1.22, belly: 1.04, neck: 1.18, hand: 1.14, head: 0.98 }, material: { skin: 0xd0b393, cloth: 0x5c5140, palette: 'salt-hills', wear: 0.70 }, clips: 'clipset.civilian' },
+  'hum.khajiit-lean':       { base: 'base.humanoid', morph: { build: 0.86, shoulders: 1.04, belly: 0.84, neck: 0.94, hand: 1.18, head: 1.04 }, material: { skin: 0xa88a5c, cloth: 0x4f4230, palette: 'marauders-coast', wear: 0.65 }, clips: 'clipset.civilian' },
+  'hum.stooped-widow':      { base: 'base.humanoid', morph: { build: 0.90, shoulders: 0.84, belly: 1.18, neck: 0.82, hand: 0.98, head: 1.03, stoop: 1.15 }, material: { skin: 0xbca894, cloth: 0x4d4740, palette: 'blackwood', wear: 0.92 }, clips: 'clipset.civilian' },
+  'hum.dock-porter':        { base: 'base.humanoid', morph: { build: 1.22, shoulders: 1.10, belly: 1.20, neck: 1.12, hand: 1.16, head: 0.99 }, material: { skin: 0x9d8464, cloth: 0x5a4c38, palette: 'blackwood', wear: 0.85 }, clips: 'clipset.civilian' },
   // --- base.slitherfang (exempt: see above) -------------------------------------------------
   'beast.slitherfang':      { base: 'base.slitherfang', morph: { build: 0.92 }, material: { skin: 0x47382b, cloth: 0x3a2f24, palette: 'deep-marshes', wear: 0.5 }, clips: 'clipset.beast' },
   'beast.slitherfang-pale': { base: 'base.slitherfang', morph: { build: 1.18 }, material: { skin: 0x7a7360, cloth: 0x5f5a4a, palette: 'salt-hills', wear: 0.7 }, clips: 'clipset.beast' },
@@ -2361,18 +2434,211 @@ for (const [id, spec] of Object.entries(CHARACTER_SPECS)) registerCharacter(id, 
  * An explicit `group.userData.actor.characterId` overrides it, so the one-line renderer change that
  * would make the choice authored rather than derived needs no further work here.
  */
-function characterFor(group, artFamily) {
-  const A = group.userData.actor;
-  if (A.characterId) return character(A.characterId);
+// =========================================================================================
+// ROUND 13 — HOW FOURTEEN BODIES BECAME A POPULATION, and the two traps on the way
+// =========================================================================================
+//
+// THE MEASUREMENT THAT PROMPTED IT. `W1-F10-r12-CRITIC`, re-derived on its own instrument:
+// **14 distinct rendered bodies serve 408 NPC records — one per 29.14, against RI-VIS10 E1's bar
+// of one per 12** — with 93 pairs of identically-rendered people standing within 15 m of each
+// other and three build bands of five. Twelve rounds of stance, proportion, eye and motion work
+// never touched it, because it is not a pose problem: `characterFor` hashed an eid into a pool of
+// **nine** saxhleel rows and **five** humanoid ones, and that pool was the whole population.
+//
+// TRAP 1 — A COUNT IS NOT THE GOAL, and it is trivially gameable. Fourteen bodies become forty by
+// permuting one scale factor, and the census reads green while forty people still read as the
+// same person. So **nothing here varies by SCALE**. Not one axis. A uniform scale is the only
+// change to a figure that `RI-VIS10` C2's 120 px normalised masks CANNOT see and that
+// `variantKey` does not hash — i.e. exactly the change no discriminator in this item can refuse —
+// and that is the reason to refuse it here instead. Every axis below changes a PROPORTION, which
+// means every one of them is visible to the silhouette test that scores it.
+// (`n.height_scale` at `renderer.js:syncNPCs` is 1.000 for all 408 records today; giving the
+// crowd real statures is a DATA change in `game/data/npcs/`, it is worth making, and it belongs
+// to whoever owns that data — recorded as a finding, not taken.)
+//
+// TRAP 2 — VARIETY MUST BE STABLE PER INDIVIDUAL. A crowd that re-rolls its bodies between frames,
+// saves or settlements is worse than a crowd of copies. Both draws below are pure functions of
+// `group.name` — `npc:<eid>`, which `renderer.js` assigns once and never changes — so the same
+// person is dealt the same body however many times the hand is dealt, exactly as round 11's
+// stance is.
+//
+// THE SHAPE OF THE ANSWER: two independent draws, an ARCHETYPE and a CUT.
+//
+//   archetype   who this is: palette, kit, clip set, species ornament. Thirty rows now, up from
+//               eighteen, and scoped by race so that a Dunmer is not built like an Imperial.
+//   cut         how this individual is proportioned: trunk, girdle, waist, neck, hands, cranium.
+//               Three published cuts, one of which is the archetype exactly as authored — so a
+//               third of the crowd keeps the body it had and nothing shipped is lost.
+//
+// The identity stamped on the meshes is `<archetype>~<cut>`, and the structural key beside it is
+// `variantKey(base, composedSpec)` — which hashes the MORPH NUMBERS. Two bodies with the same
+// structural key are one body under two names, and `rigCensus()` has always refused that. The
+// count that matters is therefore the key count, not the name count, and both are published.
+
+/**
+ * THE THREE CUTS. Multipliers on whatever the archetype declares, never absolutes — so a cut
+ * applied to a heavy row makes a heavier heavy row rather than flattening it toward a mean, and
+ * the archetypes stay separable under it.
+ *
+ * WHY THESE AXES. `MORPH_KEYS` offers nine multipliers; these use six of them and leave the
+ * species ornament (`crest`, `snout`, `horn`) to the archetype, because a cut is a build and not
+ * a face. The three cuts are deliberately OPPOSED rather than a ladder — `wiry` narrows the waist
+ * and widens the girdle while `thickset` does the reverse — so the two extremes differ on every
+ * axis at once and the silhouette test has something to find. A ladder of one axis would produce
+ * three figures on a line, which is the count-without-variety failure wearing three names.
+ *
+ * `head` is bounded to ±3%. It is the one axis that moves `R = H/h`, which C1 holds inside
+ * 7.0-8.0: measured at 7.32-7.68 by the r12 critic, so ±3% lands inside 7.10-7.91 with margin at
+ * both ends. It is in the set at all because cranial size is the strongest identity cue on a
+ * body at 8 m, and it is bounded because C1 is a preservation clause of this round's own remedy.
+ */
+const CHARACTER_CUTS = Object.freeze({
+  wiry:     Object.freeze({ build: 0.90, shoulders: 1.08, belly: 0.84, neck: 1.06, hand: 1.06, head: 0.97 }),
+  asbuilt:  Object.freeze({}),
+  thickset: Object.freeze({ build: 1.10, shoulders: 0.93, belly: 1.20, neck: 0.92, hand: 0.95, head: 1.03 }),
+});
+const CUT_IDS = Object.freeze(Object.keys(CHARACTER_CUTS));
+
+/**
+ * WHICH ARCHETYPES A RACE MAY DRAW.
+ *
+ * `RI-VIS10` E5 asks whether every race with a ≥ 5% share of a settlement is distinguishable on
+ * screen, and the r12 critic's answer was that **saxhleel and dunmer draw no body another
+ * Helstrom race does not** — because the only thing between a race string and a body was
+ * `artFamilyForRace`, which maps twelve race strings onto two body plans. Colour separated them
+ * and shape did not, and this item refuses a variety claim that rests on palette (C2's whole
+ * point).
+ *
+ * So the pool is scoped. A race with no entry here draws its family's full civilian pool, which
+ * is the pre-round-13 behaviour and is what an unmapped race, an enemy or a tool that does not
+ * know a race gets. `saxhleel` and `argonian` share one pool ON PURPOSE — `lib/race-art.js`
+ * records the reason and it is lore, not a typo: they are one people under an endonym and an
+ * exonym, and giving them different bodies would assert a difference the corpus denies.
+ *
+ * Ids are strings, so a renamed row would silently shrink a pool. `characterPoolCensus()` below
+ * reports every unknown id and `f10-r13-body-census.mjs` fails on a non-empty list — fail-closed
+ * in a check rather than a throw in a constructor (`RULES.md` 13/14).
+ */
+const RACE_POOL = Object.freeze({
+  naga:     Object.freeze(['sax.naga-tall', 'sax.naga-broad']),
+  imperial: Object.freeze(['hum.imperial-clerk', 'hum.imperial-factor', 'hum.legion-heavy', 'hum.dock-porter', 'hum.stooped-widow', 'hum.breton-stout']),
+  dunmer:   Object.freeze(['hum.dunmer-lean', 'hum.dunmer-broad', 'hum.marauder', 'hum.stooped-widow', 'hum.dock-porter', 'hum.khajiit-lean']),
+  nord:     Object.freeze(['hum.nord-raw', 'hum.legion-heavy', 'hum.dock-porter', 'hum.marauder']),
+  breton:   Object.freeze(['hum.breton-stout', 'hum.imperial-clerk', 'hum.stooped-widow', 'hum.dunmer-lean']),
+  khajiit:  Object.freeze(['hum.khajiit-lean', 'hum.marauder', 'hum.dock-porter']),
+});
+
+/** Every archetype a family may draw when the race is unknown — the pre-round-13 selection rule,
+ *  minus the two naga rows, which exist so that naga draws something nobody else does. */
+function familyPool(artFamily) {
   const base = FAMILY_BASE[artFamily] || 'base.humanoid';
-  const pool = charactersOf(base).filter((id) => (artFamily === 'undead') === /drowned|undead/.test(id));
-  const list = pool.length ? pool : charactersOf(base);
-  if (!list.length) return null;
-  if (artFamily === 'saxhleel' && /^player$|player/.test(group.name || '')) return character('player.saxhleel');
-  const key = String(group.name || 'anon');
+  const undead = artFamily === 'undead';
+  const pool = charactersOf(base).filter((id) => (undead === /drowned|undead/.test(id)) && (undead || !/naga/.test(id)));
+  return pool.length ? pool : charactersOf(base);
+}
+
+/** The archetype list a (race, family) pair draws from. Unknown ids are dropped here and counted
+ *  by `characterPoolCensus()`; an empty scoped pool falls back to the family's. */
+function poolFor(race, artFamily) {
+  const scoped = race ? RACE_POOL[String(race).toLowerCase()] : null;
+  if (scoped) {
+    const live = scoped.filter((id) => Object.prototype.hasOwnProperty.call(CHARACTER_SPECS, id));
+    if (live.length) return live;
+  }
+  return familyPool(artFamily);
+}
+
+/** FNV-1a over a prefixed key. The prefix is what makes the two draws independent: the archetype
+ *  and the cut a person is dealt come from different hashes of the same name, so a pool size that
+ *  divides evenly cannot lock a cut to an archetype. */
+function bodyHash(prefix, name) {
+  const key = `${prefix}:${name || 'anon'}`;
   let h = 2166136261;
   for (let i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
-  return character(list[h % list.length]);
+  return h >>> 0;
+}
+
+/** Composed (archetype × cut) specs, built once each and shared by every actor that draws them.
+ *  There are at most `rows × 3` of them, so this is bounded by the registry, not by the crowd. */
+const _COMPOSED = new Map();
+
+/** The composed spec for one archetype and one cut. `asbuilt` returns the registered object
+ *  itself, so a body that was shipped before round 13 is bit-identical rather than merely equal. */
+export function composedCharacter(archId, cutId) {
+  const cut = CHARACTER_CUTS[cutId];
+  if (!cut || cutId === 'asbuilt') return character(archId);
+  const key = `${archId}~${cutId}`;
+  let spec = _COMPOSED.get(key);
+  if (spec) return spec;
+  const arch = character(archId);
+  const morph = { ...(arch.morph || {}) };
+  for (const [k, v] of Object.entries(cut)) {
+    // A cut MULTIPLIES what the archetype declared. `MORPH_KEYS`' neutral for a multiplier is 1,
+    // so an axis the archetype left out starts there. `stoop` is additive with neutral 0 and no
+    // cut touches it — an old back is who somebody is, not how they are built.
+    morph[k] = +((morph[k] === undefined ? 1 : Number(morph[k])) * v).toFixed(4);
+  }
+  spec = { ...arch, morph };
+  _COMPOSED.set(key, spec);
+  return spec;
+}
+
+/**
+ * The body this actor draws: an archetype scoped by race, and a cut, both hashed off the name.
+ * Returns the spec AND the id, because the id is no longer findable by identity search over
+ * `CHARACTER_SPECS` — `ensureBuilt` used to do that, and a composed spec is not in that table.
+ */
+function characterFor(group, artFamily) {
+  const A = group.userData.actor;
+  if (A.characterId) {
+    // The override resolves against the REGISTRY, not against `CHARACTER_SPECS`, so a probe row a
+    // measurement registers (`registerCharacter`) is drivable through the shipped selection path.
+    // That is what lets an instrument build two bodies differing in ONE morph axis and prove the
+    // axis reaches geometry, instead of comparing two different rows and calling it an ablation.
+    const [archId, cutId] = String(A.characterId).split('~');
+    let known = null;
+    try { known = character(archId); } catch { known = null; }
+    if (known) return { spec: composedCharacter(archId, cutId || 'asbuilt'), id: A.characterId, archetype: archId, cut: cutId || 'asbuilt' };
+  }
+  const name = String(group.name || 'anon');
+  if (artFamily === 'saxhleel' && /^player$|player/.test(name)) {
+    return { spec: character('player.saxhleel'), id: 'player.saxhleel', archetype: 'player.saxhleel', cut: 'asbuilt' };
+  }
+  const list = poolFor(A.race, artFamily);
+  if (!list.length) return null;
+  const archId = list[bodyHash('body', name) % list.length];
+  const cutId = CUT_IDS[bodyHash('cut', name) % CUT_IDS.length];
+  return { spec: composedCharacter(archId, cutId), id: cutId === 'asbuilt' ? archId : `${archId}~${cutId}`, archetype: archId, cut: cutId };
+}
+
+/**
+ * What the pools actually reach, computed from the shipped tables rather than asserted.
+ *
+ * `unknown_ids` is the fail-closed row: a `RACE_POOL` entry naming a row that no longer exists is
+ * a pool that silently shrank, which is how a variety claim dies quietly. It is reported rather
+ * than thrown for `RULES.md` 13/14's reason — an unmapped id must not take out every agent's boot.
+ */
+export function characterPoolCensus() {
+  const unknown = [];
+  const perRace = {};
+  for (const [race, ids] of Object.entries(RACE_POOL)) {
+    for (const id of ids) if (!Object.prototype.hasOwnProperty.call(CHARACTER_SPECS, id)) unknown.push(`${race} -> ${id}`);
+    perRace[race] = ids.filter((id) => Object.prototype.hasOwnProperty.call(CHARACTER_SPECS, id)).length;
+  }
+  const families = {};
+  for (const f of ['saxhleel', 'humanoid', 'undead', 'beast']) families[f] = familyPool(f).length;
+  return {
+    archetypes: Object.keys(CHARACTER_SPECS).length,
+    cuts: CUT_IDS.slice(),
+    family_pools: families,
+    race_scoped_pools: perRace,
+    reachable_bodies_upper_bound: (new Set([
+      ...Object.values(RACE_POOL).flat(),
+      ...['saxhleel', 'humanoid', 'undead'].flatMap((f) => familyPool(f)),
+    ])).size * CUT_IDS.length,
+    unknown_ids: unknown,
+    pass: unknown.length === 0,
+  };
 }
 
 /**
@@ -2380,7 +2646,7 @@ function characterFor(group, artFamily) {
  * with a live rig — so an NPC that has no combat body still gets a proper humanoid, standing
  * in the rest pose, driven by the group transform as before.
  */
-export function makeRiggedActor(mats, tintHex, skinHex, artFamily='saxhleel') {
+export function makeRiggedActor(mats, tintHex, skinHex, artFamily='saxhleel', race=null) {
   const g = new THREE.Group();
   const art=creatureArt(artFamily);
   const direction=new THREE.Group();
@@ -2404,7 +2670,12 @@ export function makeRiggedActor(mats, tintHex, skinHex, artFamily='saxhleel') {
   shadow.name='actor-contact-shadow'; shadow.rotation.x=-Math.PI/2; shadow.renderOrder=2; g.add(shadow);
   const action=new THREE.Mesh(new THREE.TorusGeometry(.48,.014,5,36,Math.PI*1.18),new THREE.MeshBasicMaterial({color:0xd6a65f,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending}));
   action.name='actor-action-silhouette'; action.rotation.x=Math.PI/2; action.visible=false; g.add(action);
-  g.userData.actor = { built: null, mats, tintHex, skinHex, weapon: null, weaponKey: null, rigged: false, shadow, action, direction, artFamily, art };
+  // `race` is a FIFTH argument and it is optional on purpose. `renderer.js:syncNPCs` knows the
+  // race and passes it, so the crowd draws from race-scoped pools (E5); `syncEntities` does not
+  // and an enemy therefore draws its family's whole pool, which is what it did before. A caller
+  // that omits it gets the pre-round-13 selection rule rather than an error — the alternative is
+  // a renderer that throws on an unmapped race, which `lib/race-art.js` already rules against.
+  g.userData.actor = { built: null, mats, tintHex, skinHex, weapon: null, weaponKey: null, rigged: false, shadow, action, direction, artFamily, art, race: race || null };
   g.userData.worldArt={creature:artFamily,silhouette:art.silhouette,visibleConsumer:`actor-family-form:${artFamily}`};
   return g;
 }
@@ -2428,9 +2699,17 @@ export function isBuilt(group) {
 function ensureBuilt(group, rigSource) {
   const A = group.userData.actor;
   if (A.built) return A.built;
-  const spec = characterFor(group, A.artFamily);
+  // ROUND 13: `characterFor` now returns the id alongside the spec. It used to be recovered by an
+  // identity search over `CHARACTER_SPECS` — `Object.keys(...).find((k) => CHARACTER_SPECS[k] === spec)`
+  // — which works only while every body IS a registered row. A composed (archetype × cut) body is
+  // not in that table, so the search would have returned `undefined` and stamped `characterId:
+  // null` on every mesh in the world, and every census that reads it would have counted one body.
+  const pick = characterFor(group, A.artFamily);
+  const spec = pick && pick.spec;
   A.character = spec;
-  A.characterId = A.characterId || (spec && Object.keys(CHARACTER_SPECS).find((k) => CHARACTER_SPECS[k] === spec)) || null;
+  A.characterArchetype = pick ? pick.archetype : null;
+  A.characterCut = pick ? pick.cut : null;
+  A.characterId = (pick && pick.id) || null;
   const mat = (spec && spec.material) || {};
   // A variant's material is part of the variant, but a caller that named an explicit tint keeps it:
   // `renderer.js` hands per-race colours in and silently overriding them would make every Dunmer
@@ -2692,6 +2971,30 @@ function addVariation(buf, index, V) {
   at('thigh_r', 'ry', V.splayRDeg);
 }
 
+/**
+ * The character's own posture, added on top of the individual's stance. Today one axis, `stoop`.
+ *
+ * Degrees per unit of stoop are chosen to be visible in a 120 px silhouette rather than merely
+ * present in a bone buffer: 13° over the two thoracic joints puts the head roughly 90 mm forward
+ * of where an upright figure of the same build carries it, which is about a fifth of a head.
+ * `f10-r13-body-census.mjs` publishes the measured displacement rather than this arithmetic.
+ *
+ * Exported so an instrument reads the shipped function instead of holding a second copy of these
+ * numbers (`HAZARDS §20a`: a generator with its own copy of the stance reverted a whole round).
+ */
+export function addCharacterPosture(buf, index, morph) {
+  const st = morph && Number.isFinite(morph.stoop) ? morph.stoop : 0;
+  if (!(st > 0.001)) return;
+  const at = (id, ch, deg) => { const i = index.get(id); if (i !== undefined && deg) buf[ch][i] += deg; };
+  // `skeleton.json` declares TWO trunk joints between the pelvis and the neck — `spine_00` and
+  // `spine_02`; there is no `spine_01`, and reading the bone list rather than assuming a three-
+  // segment spine is why these are two terms and not three.
+  at('spine_00', 'rx', 6.4 * st);
+  at('spine_02', 'rx', 6.6 * st);
+  at('neck', 'rx', -4.4 * st);
+  at('head', 'rx', -3.0 * st);
+}
+
 const _STANCE_LOCAL_SAVE = new THREE.Matrix4();
 
 /**
@@ -2764,6 +3067,20 @@ function applyStaticStance(S, name, stance, t = 0, prev = null) {
   addPose(buf, stance.pose, 0, V.depth);
   if (V.mirror) mirrorPose(buf, index);
   addVariation(buf, index, V);
+  // THE AGE AXIS, POSTURE HALF. `S.morph.stoop` is the character's own curvature (0 on every row
+  // that does not declare one, so this is a no-op for every body shipped before round 13 and the
+  // r11/r12 stance tables re-derive unchanged). It is added AFTER `addVariation` for the same
+  // reason `addVariation` runs after the mirror: it is a property of the person, not of which way
+  // they happen to be weighted, and mirroring an rx would do nothing anyway.
+  //
+  // WHY THE NECK GETS THE OPPOSITE SIGN, and it is the difference between an old man and a man
+  // looking at the floor: a stooped person still holds their eyeline up, which is what makes the
+  // curve read as spine rather than as attention. 0.55 of the trunk's pitch is returned at the
+  // neck and the remainder is left, so the head sits FORWARD of the shoulders and slightly down —
+  // the thing a viewer actually recognises from twenty metres.
+  //
+  // NOTHING BELOW THE PELVIS, so it cannot move a foot and cannot reach the numeric root solve.
+  addCharacterPosture(buf, index, S.morph);
 
   // ---- write the pose onto the bones' LOCAL transforms ------------------------------------
   // This path is cheap precisely because it does not write bone world matrices every frame; the

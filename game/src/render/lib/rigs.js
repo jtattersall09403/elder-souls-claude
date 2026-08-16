@@ -56,6 +56,29 @@ export const MORPH_KEYS = Object.freeze({
   // hurtboxes live. The families carry a base scale of their own (`HEAD_SCALE` in actor.js); this
   // is the per-character multiplier on top of it.
   head: 1,
+  // THE AGE AXIS, AND IT IS THE ONE THIS REGISTRY WAS MISSING. `RI-VIS10` E3 asks for four of
+  // five body archetypes — child, slight, average, heavy, **stooped-old** — and the
+  // `W1-F10-r12` critic's census recorded the reason only three were reachable: *"CHARACTER_SPECS
+  // carries no spine curvature or age morph, so stooped-old cannot be reached by any shipped
+  // row."* Read this turn, that was exactly true: every key above is a RADIUS multiplier, and no
+  // multiplication of radii bends a back.
+  //
+  // NEUTRAL IS 0, NOT 1, because this is the one axis that is additive rather than
+  // multiplicative — it is a curvature, and 1 would mean "one unit of stoop" on every character
+  // that never asked for one. `resolveMorph` therefore leaves every existing row untouched.
+  //
+  // IT HAS TWO CONSUMERS AND BOTH ARE REQUIRED, which is why it is declared here rather than
+  // being a private number inside `actor.js`:
+  //   geometry  a dorsal mass over the upper spine, a narrowed shoulder span and a head set
+  //             forward on the neck — all inside `buildSkeleton`, all bound to the bones that
+  //             already own those regions, none of them touching a bone OFFSET (see the header:
+  //             a bone offset is where the hurtboxes are).
+  //   posture   a persistent forward curvature added into the stance layer that `poseStatic`
+  //             already solves per person. A hump with an upright carriage reads as a costume;
+  //             a curvature with no mass reads as a man leaning.
+  // A stoop that were only one of the two would be half a person, and a critic reading only the
+  // geometry half would correctly say the age axis is a bump.
+  stoop: 0,
 });
 
 const RIGS = new Map();

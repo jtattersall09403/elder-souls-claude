@@ -787,7 +787,13 @@ export class Renderer {
         // `argonian` records — 44.4% of the roster, in the Argonians' own province — onto the
         // human body plan. `tools/check-race-art.mjs` fails if the shipped data grows a race
         // string that map does not carry.
-        mesh = makeRiggedActor(this.mats, tint[1], tint[0], artFamilyForRace(n.race));
+        // ROUND 13 — the RACE reaches the body pool, not only the tint. `RI-VIS10` E5 failed for
+        // three verdicts because `artFamilyForRace` collapses twelve race strings onto two body
+        // plans, so saxhleel and dunmer drew no body another race in the same settlement did not
+        // also draw; colour separated them and shape did not, and C2 refuses a variety claim that
+        // rests on palette. `actor.js:RACE_POOL` scopes the archetype pool by race, and this is
+        // the one line that lets it: the fifth argument.
+        mesh = makeRiggedActor(this.mats, tint[1], tint[0], artFamilyForRace(n.race), n.race);
         // Non-combat townspeople wear the tinted skinned cloth body. Combat equipment sets are
         // selected from equip-load, a field civilians do not own; showing a guessed armour set
         // made every hall look like a formation of identical helmeted soldiers.
