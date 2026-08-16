@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-15T19:46:50Z",
+  "generated": "2026-08-16T03:18:25Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 98,
+  "verdicts_read": 106,
   "counts": {
-    "total": 93,
-    "open": 92,
+    "total": 101,
+    "open": 100,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -78,6 +78,8 @@
     "render.art.character": [
       "GAP-W1-character-surface-is-assembled-from-primitives-not-built",
       "GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground",
+      "GAP-W1-F10-the-crowd-breathes-and-there-are-still-fourteen-people-in-it",
+      "GAP-W1-F10-the-crowd-stands-392-ways-and-not-one-of-them-ever-moves",
       "GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins"
     ],
     "combat.frames.timing": [
@@ -85,6 +87,12 @@
     ],
     "combat.camera.behaviour": [
       "GAP-W1-consumption-sweep-tripwire-is-a-name-grep"
+    ],
+    "ui.menu.inventory": [
+      "GAP-W1-container-headers-print-across-the-first-row",
+      "GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry",
+      "GAP-W1-ui-container-clips-its-own-declared-text",
+      "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
     ],
     "journey.chargen.diegesis": [
       "GAP-W1-creation-is-an-api-not-a-scene",
@@ -104,9 +112,15 @@
       "GAP-W1-f1-actor-body-shader-does-not-link"
     ],
     "render.fidelity.ibl": [
-      "GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour"
+      "GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour",
+      "GAP-W1-f4-the-key-has-no-hue-and-the-field-that-would-give-it-one-is-set-to-zero"
+    ],
+    "render.fidelity.water": [
+      "GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank"
     ],
     "visual.renderer.water": [
+      "GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k",
+      "GAP-W1-F7-two-of-four-min-bar-components-are-absent-from-the-water-shader",
       "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence"
     ],
     "quests.faction.rankgating": [
@@ -130,6 +144,10 @@
     "world.interior.named": [
       "GAP-W1-interior-door-draws-nothing",
       "GAP-W1-the-door-puts-you-inside-the-building"
+    ],
+    "ui.style.diegesis": [
+      "GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar",
+      "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them"
     ],
     "lore.register": [
       "GAP-W1-library-martial-single-hand-fingerprint"
@@ -202,19 +220,11 @@
     "crime.witness.model": [
       "GAP-W1-stealth-crime-model-not-coupled-to-the-world"
     ],
-    "ui.menu.inventory": [
-      "GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry",
-      "GAP-W1-ui-container-clips-its-own-declared-text",
-      "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
-    ],
     "world.interior.continuity": [
       "GAP-W1-the-doorstep-cannot-get-you-back-in"
     ],
     "stealth.fence.economy": [
       "GAP-W1-the-fence-buys-your-victims-own-furniture"
-    ],
-    "ui.style.diegesis": [
-      "GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them"
     ],
     "ui.hud.minimalism": [
       "GAP-W1-ui-detectors-that-cannot-see",
@@ -264,8 +274,12 @@
     "AUDB2-F1: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-W1-w1-30s-seam-incomplete: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
+    "GAP-W1-F10-the-crowd-stands-392-ways-and-not-one-of-them-ever-moves: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
+    "GAP-W1-F10-the-crowd-breathes-and-there-are-still-fourteen-people-in-it: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
+    "GAP-W1-F7-two-of-four-min-bar-components-are-absent-from-the-water-shader: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
+    "GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "GAP-FCT-03: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "corpus/90-verdicts/wave1/W1-FACTIONS-r1.json: unsatisfied verdict has no biggest_gap; validator should reject it.",
     "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
@@ -278,6 +292,12 @@
     "corpus/90-verdicts/wave1/T4-r4.json: closure of GAP-W1-ui-journal-search-view-has-no-exit is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/T4-r6.json: closure of GAP-W1-ui-container-clips-its-own-declared-text is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/T4-r6.json: closure of GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/T4-r7.json: closure of GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/T4-r7.json: closure of GAP-W1-ui-container-clips-its-own-declared-text is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/T4-r7.json: closure of GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/T4-r8.json: closure of GAP-W1-container-headers-print-across-the-first-row is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/T4-r8.json: closure of GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/T4-r8.json: closure of GAP-W1-ui-container-clips-its-own-declared-text is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-00-r2.json: closure of GAP-W1-platform-prng-never-drawn is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-01-province-stream-r1.json: gap_closure references unknown gap_id GAP-W1-province-never-streamed.",
     "corpus/90-verdicts/wave1/W1-01-r2.json: closure of GAP-W1-world-trunk-road-below-the-waterline is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
@@ -364,8 +384,14 @@
     "corpus/90-verdicts/wave1/W1-26-r2.json: gap_closure references unknown gap_id RI-JRN01/HF5-touch-leg-unmeasurable-round-1.",
     "corpus/90-verdicts/wave1/W1-26-r2.json: gap_closure references unknown gap_id RI-JRN01/O6-control-precedes-definition.",
     "corpus/90-verdicts/wave1/W1-F10-r10-CRITIC.json: closure of GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-F10-r11-CRITIC.json: closure of GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-F10-r12-CRITIC.json: closure of GAP-W1-F10-the-crowd-stands-392-ways-and-not-one-of-them-ever-moves is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-F10-r9-CRITIC.json: closure of GAP-W1-character-surface-is-assembled-from-primitives-not-built is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-F4-r2.json: closure of GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-F7-WATER-r4.json: closure of GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-F7-WATER-r1.json: closure of GAP-W1-03-water-surface-undrawn-and-frozen is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-F7-WATER-r2.json: gap_closure is object where the schema requires an array. Its closures are IGNORED — any gap it meant to close stays open.",
+    "corpus/90-verdicts/wave1/W1-F7-WATER-r3.json: gap_closure is object where the schema requires an array. Its closures are IGNORED — any gap it meant to close stays open.",
     "corpus/90-verdicts/wave1/W1-FACTIONS-r2.json: gap_closure is object where the schema requires an array. Its closures are IGNORED — any gap it meant to close stays open.",
     "corpus/90-verdicts/wave1/W1-LIBRARY-r1.json: gap_closure references unknown gap_id K9-book-item-word-ratio.",
     "corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.json: gap_closure references unknown gap_id GAP-W1-library-l8-corpus-short.",
@@ -378,15 +404,18 @@
     "corpus/90-verdicts/wave1/W1-READABLES-r2.json: gap_closure references unknown gap_id GAP-W1-environment-channel-has-no-object.",
     "corpus/90-verdicts/wave1/W1-SAVE-r1.json: closure of GAP-W1-platform-save-drops-entity-prev-state is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json: closure of GAP-W1-pbr-material-set-unbound is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "STALE-RISK GAP-W1-ui-container-clips-its-own-declared-text: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-t4-r7, crit-t4-r8). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-ui-hud-world-set-unbuilt-and-misplaced: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-t4-r2, crit-t4-r3, crit-t4-r4). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-ui-journal-search-view-has-no-exit: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-t4-r3, crit-t4-r4, crit-t4-r5). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-t4-r4, crit-t4-r5). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-t4-r5). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry: still open, and 6 later verdict(s) have been filed on the same piece or path since (critic-w1-21-r2, crit-t4-r1-3c19, crit-t4-r2, crit-t4-r3, crit-t4-r4, crit-t4-r5). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it: still open, and 4 later verdict(s) have been filed on the same piece or path since (crit-t4-r4, crit-t4-r5, crit-t4-r7, crit-t4-r8). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-t4-r5, crit-t4-r7, crit-t4-r8). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry: still open, and 8 later verdict(s) have been filed on the same piece or path since (critic-w1-21-r2, crit-t4-r1-3c19, crit-t4-r2, crit-t4-r3, crit-t4-r4, crit-t4-r5, crit-t4-r7, crit-t4-r8). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-container-headers-print-across-the-first-row: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-t4-r8). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-platform-prng-never-drawn: still open, and 5 later verdict(s) have been filed on the same piece or path since (crit-w1-00-r2-k4m9, crit-w1-09-r2-3c19, crit-w1-09-r3-3c19, crit-w1-deploy-r2-3c19, crit-w1-30s-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-platform-save-drops-entity-prev-state: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-save-r1-live-audit, crit-w1-map-r2-a91f). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-world-trunk-road-below-the-waterline: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-01-r2-world-b4e2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-world-region-identity-is-a-tint: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-02-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-03-water-surface-undrawn-and-frozen: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-f7-water-r4). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-the-building-is-smaller-than-the-room: still open, and 3 later verdict(s) have been filed on the same piece or path since (critic-road-join, crit-w1-04-r4-3c19, crit-w1-04-r5-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-the-door-puts-you-inside-the-building: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-04-r5-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-interior-door-draws-nothing: still open, and 4 later verdict(s) have been filed on the same piece or path since (crit-w1-04-r2-3c19, crit-w1-04-r3-3c19, crit-w1-04-r4-3c19, crit-w1-04-r5-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
@@ -423,8 +452,11 @@
     "STALE-RISK GAP-W1-30c-wetness-mask-blind-to-instancematrix: still open, and 4 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-visual-blind-protocol-a-chunk2, crit-w1-orphaned-surface-shaders-r1-3c19, crit-w1-visual-blind-protocol-a-r2-verdict). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-w1-30d-guard-misses-part-deletion: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-orphaned-surface-shaders-r1-3c19, crit-w1-visual-blind-protocol-a-r2-verdict). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-w1-30e-street-gate-never-ran: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-orphaned-surface-shaders-r1-3c19, crit-w1-visual-blind-protocol-a-r2-verdict). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-character-surface-is-assembled-from-primitives-not-built: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-r9-stance, crit-w1-f10-r10). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-r10). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-character-surface-is-assembled-from-primitives-not-built: still open, and 4 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-r9-stance, crit-w1-f10-r10, crit-w1-f10-r11, crit-w1-f10-r12). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-r11, crit-w1-f10-r12). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-F10-the-crowd-stands-392-ways-and-not-one-of-them-ever-moves: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-r12). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-r10, crit-w1-f10-r11, crit-w1-f10-r12). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-f4-r2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-f1-actor-body-shader-does-not-link: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-f10-characters-a71c). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-population-save-reload-repays-every-corpse: still open, and 2 later verdict(s) have been filed on the same piece or path since (critic-w1-souls-r2, critic-w1-souls). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-PACK-01: still open, and 2 later verdict(s) have been filed on the same piece or path since (judge-prose-packs-r1, crit-w1-30c-r1-2634eb0e). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
@@ -665,7 +697,16 @@
       },
       "superseded_by": null,
       "age_waves": 0,
-      "filed_since": []
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-F7-WATER-r4.json",
+          "run_id": "crit-w1-f7-water-r4",
+          "at": "2026-08-16T04:10:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-12-approach-cannot-close-on-a-walking-player",
@@ -1487,6 +1528,22 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-F10-r11-CRITIC.json",
+          "run_id": "crit-w1-f10-r11",
+          "at": "2026-08-16T01:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-F10-the-crowd-stands-392-ways-and-not-one-of-them-ever-moves"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-F10-r12-CRITIC.json",
+          "run_id": "crit-w1-f10-r12",
+          "at": "2026-08-16T03:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-F10-the-crowd-breathes-and-there-are-still-fourteen-people-in-it"
         }
       ]
     },
@@ -1576,6 +1633,58 @@
       "superseded_by": null,
       "age_waves": 0,
       "filed_since": []
+    },
+    {
+      "gap_id": "GAP-W1-container-headers-print-across-the-first-row",
+      "subsystem_path": "ui.menu.inventory",
+      "opened_wave": 1,
+      "opened_by": "crit-t4-r7",
+      "opened_in": "corpus/90-verdicts/wave1/T4-r7.json",
+      "piece_id": "T4-r7",
+      "severity": "blocking",
+      "what": "The container's two side headers are drawn on top of the first row of their own lists. Measured off the build's own declared rects at 1920x1080: `container.mine.head` ('Carried') intersects `container.mine.row.hist-bark-token` by 190x20 units, and `container.theirs.head` ('Reed Creel') intersects `container.theirs.row.bog-iron-maul` by 190x20. At round 6 the same two pairs intersected by 182x12 and the glyphs did not touch; at round 7 they do — in a same-crop-box 3x pair, 'Carried' is broken by the Bark token's icon and 'Reed Creel' is printed through 'Bog-iron m…'. Every instrument in this round says the screen is clean, including `tools/ui/t4-r5-legibility.mjs`, which reports the container `overlap=0` at 1920x1080 and 1280x720 because its overlap metric only looks for column runs inside a single row band.",
+      "why_it_matters": "The player opens a chest and the word telling them which side is theirs is printed through the first thing they own — on the one screen whose whole job is deciding what to carry and what to leave behind. It is also the clause that stops this round's real density gain from counting: S58 makes DN4 conditional on a legibility pass, and RI-UIX06 FD4 hard-fails on any overlap at 1920x1080.",
+      "remedy": {
+        "action": "In `game/src/ui/screens/inventory.js` drawContainer(), give the side-header line its own vertical band again so the header rect and the first row rect do not intersect at all. The units the round took out of the inner top gap are where this went; take them back out of the depiction plate's growth (150 -> 140 returns 10 units of height at density 0.4028, which costs roughly 0.002 of D2 against a margin of 0.0185) rather than out of the list, and do NOT pay for it by growing the box — that trades a resolved pass for an unresolved one under S61. Then EXTEND `tools/ui/t4-r5-legibility.mjs` with the pairwise text-rect intersection check (`tools/ui/t4-r7-critic-headers.mjs` is 90 lines and does exactly this) so the S58 pass can see the class of defect it just missed.",
+        "targets": [
+          "game/src/ui/screens/inventory.js",
+          "tools/ui/t4-r5-legibility.mjs"
+        ],
+        "acceptance": "All of: (1) `node <worktree>/tools/ui/t4-r7-critic-headers.mjs` reports 0 partial intersections of text-bearing rects on the container at 1920x1080 AND at 1280x720, with the manifest commit asserted equal to the delivered SHA; (2) a 3x crop of the list head shows no glyph over another glyph, taken from the delivered commit; (3) PRESERVATION per S59 — container D2 >= 0.15 and >= 0.1685 minus its own published band, level-up not below 0.1494, and 0 numeric columns truncated across all 45 records of `carried.json` with the record identity asserted; (4) the legibility tool fails on the round-6 arm (8cde4128 shows the same rects at 182x12 with clean glyphs, so use the r7 arm as the positive control) before it is trusted green on the fix.",
+        "ref_item": "RI-UIX06 FD4, RI-UIX09 DN4 + ARBITRATION S58",
+        "estimated_size": "one screen, one file, plus a two-arm capture and a check added to an existing instrument"
+      },
+      "remedy_action": "In `game/src/ui/screens/inventory.js` drawContainer(), give the side-header line its own vertical band again so the header rect and the first row rect do not intersect at all. The units the round took out of the inner top gap are where this went; take them back out of the depiction plate's growth (150 -> 140 returns 10 units of height at density 0.4028, which costs roughly 0.002 of D2 against a margin of 0.0185) rather than out of the list, and do NOT pay for it by growing the box — that trades a resolved pass for an unresolved one under S61. Then EXTEND `tools/ui/t4-r5-legibility.mjs` with the pairwise text-rect intersection check (`tools/ui/t4-r7-critic-headers.mjs` is 90 lines and does exactly this) so the S58 pass can see the class of defect it just missed.",
+      "remedy_acceptance": "All of: (1) `node <worktree>/tools/ui/t4-r7-critic-headers.mjs` reports 0 partial intersections of text-bearing rects on the container at 1920x1080 AND at 1280x720, with the manifest commit asserted equal to the delivered SHA; (2) a 3x crop of the list head shows no glyph over another glyph, taken from the delivered commit; (3) PRESERVATION per S59 — container D2 >= 0.15 and >= 0.1685 minus its own published band, level-up not below 0.1494, and 0 numeric columns truncated across all 45 records of `carried.json` with the record identity asserted; (4) the legibility tool fails on the round-6 arm (8cde4128 shows the same rects at 182x12 with clean glyphs, so use the r7 arm as the positive control) before it is trusted green on the fix.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r7c/headers/after-r7-listhead-3x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r7c/headers/before-r6-listhead-3x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r7c/headers/after-r7-headers.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r7c/headers/before-r6-headers.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r7c/shots/panel-ui-journal-2x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r7c/legibility-after/t4-r5-legibility.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r8.json",
+          "run_id": "crit-t4-r8",
+          "at": "2026-08-16T02:55:00.000Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-creation-is-an-api-not-a-scene",
@@ -1958,6 +2067,95 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-F10-r11-CRITIC.json",
+          "run_id": "crit-w1-f10-r11",
+          "at": "2026-08-16T01:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-F10-the-crowd-stands-392-ways-and-not-one-of-them-ever-moves"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-F10-r12-CRITIC.json",
+          "run_id": "crit-w1-f10-r12",
+          "at": "2026-08-16T03:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-F10-the-crowd-breathes-and-there-are-still-fourteen-people-in-it"
+        }
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-F10-the-crowd-breathes-and-there-are-still-fourteen-people-in-it",
+      "subsystem_path": "render.art.character",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-f10-r12",
+      "opened_in": "corpus/90-verdicts/wave1/W1-F10-r12-CRITIC.json",
+      "piece_id": "W1-F10-r12-CRITIC",
+      "severity": "major",
+      "what": "Every person in Black Marsh now stands their own way and breathes on their own phase, and I have photographed it and located it in pixels. **There are still FOURTEEN distinct rendered bodies serving 408 NPC records — one per 29.14, against a bar of one per 12.** Re-derived this turn on the r9 critic's own instrument: the reachable pool is 9 bodies for `saxhleel` and 5 for `humanoid`; the `actor` arm is 32 for 408 (one per 12.75, needing 34) with `townsman` alone at 97 = 23.8% against a 10% ceiling; and 93 pairs of identically-rendered NPCs stand within 15 m of each other in the same settlement (E4, unchanged for three verdicts). E3 finds three build bands of five — no child, no stooped-old, because `CHARACTER_SPECS` carries no age or spine-curvature axis at all. E5 finds two of Helstrom's four significant races drawing no body another race there does not also draw. **In my own orbit at b000 the tell is visible without a measurement**: in the row of four under the stilt-house overhang, the two leftmost figures are the same body at slightly different phases of the same breath, and the difference between them is smaller than the difference a viewer needs to believe they are two people. §F ranks this failure SECOND of ten by how fast a viewer notices, behind only 'a human with a lizard head' — and E1 is one of the four checks RI-VIS10's own scoring names as blocking the 7-8 band (the `| 7-8 | 2-4 failing, none of them B1, B3, D2 or E1 |` row, read this turn; it sits at line 385 after my own amendment shifted it down).",
+      "why_it_matters": "Three consecutive rounds have now improved how the fourteen bodies STAND. The stance work is finished and it worked: C3 passes on every arm and there is nothing left in it to buy. Every remaining point in this item is bought with geometry — bodies, faces, garments — and E1 is the largest single block of it. A player walking Lilmoth now sees a crowd that shifts and breathes and is still, on inspection, fourteen people wearing each other's faces; and unlike stillness, that failure gets WORSE the longer they watch, because recognising a repeat requires having seen the original.",
+      "remedy": "Widen the RENDERED body pool from 14 to >= 34, which is E1's own arithmetic at n=408, by adding rows to `CHARACTER_SPECS` and to the per-art-family pools `characterFor` hashes into (`game/src/render/actor.js`, `characterFor` ~line 2319; the pool is selected by `artFamilyForRace(race)` and indexed by `FNV1a('npc:'+eid) % pool.length`). Two of the new rows must open axes that no shipped row reaches, because E3 fails on absence and not on count: **a child band (build < 0.70)** and **a stooped-old band (a spine-curvature or age morph on `CHARACTER_SPECS`, which today has no such field at all)**. DONE MEANS, and all four are machine-checkable on instruments that already exist: (1) `tools/visual/f10-r9c-crowd-census.mjs` reports `distinct rendered characterId >= 34` and `max rendered bucket <= 40` over the 408 — E1 on the arm that counts what is drawn; (2) the same run reports `>= 4 of 5` build bands — E3; (3) `tools/visual/f10-silhouette.mjs --res=1024` reports **median pairwise IoU <= 0.80 and no pair >= 0.93** over the widened roster — C2, which is the check that says the new bodies are actually different shapes and not recolours, and which today reads 0.8574 with FIVE pairs at exactly 1.0000; (4) E4's identical-pairs-within-15 m count falls below 3 from 93. **PRESERVATION PER S59, four clauses, and they are what stop (1) being bought by generating fourteen more mannequins:** (a) **C1 must hold** — `R = H/h` stays inside 7.0-8.0 for man/mer and 6.5-7.5 for the heavy races on EVERY new row, published as the two pixel numbers the item demands, because a body pool widened by stretching is proportion drift (§F#9) wearing variety's clothes; (b) **C3 must hold on both arms** — >= 90% of drawn NPCs over the 3 deg bar AND >= 90% changing a non-foot bone over 60 frames, on the live drawn denominator, so a new body that the stance solver cannot pose does not silently re-freeze part of the crowd; (c) **planting must hold** — the live lower-ankle range stays inside 0.080-0.100 m and the offline worst planting error stays under 1 mm over all 408, because a new skeleton proportion is exactly what breaks a numeric root solve; (d) **`node tools/harness/anim-tune.mjs` still reports 0 of 14 over 0.35 m with worst snapOut <= 0.0122 m.** AND ONE BUDGET CLAUSE, in the form this round's own experience earned: publish the frame time at the Lilmoth stand before and after **using two clones that differ only in the change under test**, at a stated sample size with a stated confidence interval, and it must not rise more than 5%. Fourteen bodies to thirty-four is a memory and draw-call change, not a per-frame arithmetic one, so the expected answer is 'no rise' — which is exactly why it should be measured rather than assumed.",
+      "remedy_action": null,
+      "remedy_acceptance": null,
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r12-critic/repro-crowd-census-E1-E5.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r12-critic/look/orbit-b000.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r12-critic/look/orbit-b090.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r12-critic/repro-silhouette-idle_loop.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
+    },
+    {
+      "gap_id": "GAP-W1-F10-the-crowd-stands-392-ways-and-not-one-of-them-ever-moves",
+      "subsystem_path": "render.art.character",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-f10-r11",
+      "opened_in": "corpus/90-verdicts/wave1/W1-F10-r11-CRITIC.json",
+      "piece_id": "W1-F10-r11-CRITIC",
+      "severity": "major",
+      "what": "Round 11 gave every person in Black Marsh their own stand and it worked. It also froze every one of them in it. MEASURED IN THE RUNNING GAME, not read out of the source: at the Lilmoth stand, reading each drawn actor's bone rotations twice sixty frames — one second — apart, **0 of 60 NPCs change any non-foot bone by any amount, and the worst change across the whole crowd is exactly 0 radians**. The required-to-disagree control in the same session is the player, whose bones move 0.011246 m over the same interval. The cause is not a defect in the stand and the stand should not be touched: `render/actor.js:poseStatic` solves each person's stance ONCE (`if (A.staticStance === undefined)`) and caches it, and each person's place in the 96-frame breathing loop is a per-person CONSTANT dealt by `stanceVariationFor`. Nothing re-evaluates it, so the only thing that changes on this path from one frame to the next is the two-bone terrain conform. THE BUILD PUBLISHED THIS ITSELF AND READ IT THE OTHER WAY UP: its live arm L2 reports worst non-foot drift of 2.842e-12 m over 37 frames and files it as proof the stance is stable. It is that, and it is also proof that a settlement is a waxworks. RI-VIS10 C3 arm (a) has always required that 'the two frames differ'; the crowd arm the r10 critic added inherited every other clause from arm (a) and not that one, so a town of 408 motionless figures in 392 distinct poses scores 100%.",
+      "why_it_matters": "A player walking into Lilmoth now sees sixty people standing in different attitudes, which is a genuine and photographed improvement over sixty copies of one mannequin — and then sees that not one of them draws breath, shifts weight, or turns their head, for as long as they care to watch. Stillness is the faster tell of the two: a viewer notices that nothing in a market moves before they notice that everybody in it is posed the same. This is also the cheapest remaining thing in the item by a wide margin, because the hard parts — a per-person seeded distribution, a numerically solved root drop, a presentation bind against the posed frame, and a caching strategy — are all already built and all measured correct.",
+      "remedy": "In `game/src/render/actor.js`, split `applyStaticStance`'s one-time solve into the part that is genuinely per-person-constant and the part that is a function of the loop frame. Cache the seeded `stanceVariationFor(name)` record on `A.staticStance` as now, and re-run only the `stance.loop.applyPose(buf, V.loopFrame + t)` / `addPose` / `mirrorPose` / `addVariation` / root-solve sequence on a staggered cadence — `t` advancing with the renderer's frame counter and the crowd split into N buckets so at most 408/N actors re-solve on any one frame. N = 8 gives every person a fresh pose eight times a second at one eighth of the per-frame cost, which is the same trade `syncNPCs` already makes for the terrain conform. DONE MEANS: (1) `corpus/90-verdicts/wave1/artifacts/W1-F10-r11-critic/frozen-crowd.json`'s probe, re-run, reports >= 90% of drawn NPCs with a changed non-foot bone rotation between two frames 60 apart — arm (b2) of the amended C3; and (2) the same probe still reports the PLAYER control moving, so a green (1) cannot be bought by breaking the reader. PRESERVATION PER S59, all four required, and they are what stop (1) being bought by re-rolling the crowd every frame: (a) arm (b1) stays >= 90% on the drawn population — variety must not be traded for motion; (b) each named individual's stance must remain a pure function of their eid, i.e. the REBUILD, TRAVEL and SAVE/RELOAD arms of `tools/visual/f10-r11c-stance-probe.mjs` must still return 60 of 60 bit-identical, because a crowd that re-rolls on stream-in is a worse defect than a crowd that is still; (c) the lower ankle stays within 1 mm of its current per-person value — the numeric root solve must be re-run with the pose, not left behind at the old phase, or the whole crowd hovers again; (d) `node tools/harness/anim-tune.mjs` still reports 0 of 14 over 0.35 m with worst snapOut <= 0.0122 m. AND ONE BUDGET CLAUSE, because this is the only remedy in this item with a per-frame cost: publish the frame time at the Lilmoth stand before and after, and it must not rise by more than 5%.",
+      "remedy_action": null,
+      "remedy_acceptance": null,
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r11-critic/frozen-crowd.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r11-critic/look/motion-t000.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r11-critic/look/motion-t024.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F10-r11-critic/probe/stance-probe.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-F10-r12-CRITIC.json",
+          "run_id": "crit-w1-f10-r12",
+          "at": "2026-08-16T03:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-F10-the-crowd-breathes-and-there-are-still-fourteen-people-in-it"
         }
       ]
     },
@@ -1990,7 +2188,24 @@
       },
       "superseded_by": null,
       "age_waves": 0,
-      "filed_since": []
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-F10-r11-CRITIC.json",
+          "run_id": "crit-w1-f10-r11",
+          "at": "2026-08-16T01:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-F10-the-crowd-stands-392-ways-and-not-one-of-them-ever-moves"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-F10-r12-CRITIC.json",
+          "run_id": "crit-w1-f10-r12",
+          "at": "2026-08-16T03:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-F10-the-crowd-breathes-and-there-are-still-fourteen-people-in-it"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour",
@@ -2016,6 +2231,167 @@
         "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/frames/pair03__BEFORE-sourcerevert__AFTER__AFTER-shadowmap-OFF.png",
         "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/S60-lit-subset-and-shadow-preservation.json",
         "corpus/90-verdicts/wave1/artifacts/W1-F4-r1-critic/metrics/pair03-row-band-profile.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-F4-r2.json",
+          "run_id": "crit-f4-r2",
+          "at": "2026-08-16T00:30:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-f4-the-key-has-no-hue-and-the-field-that-would-give-it-one-is-set-to-zero"
+        }
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-f4-the-key-has-no-hue-and-the-field-that-would-give-it-one-is-set-to-zero",
+      "subsystem_path": "render.fidelity.ibl",
+      "opened_wave": 1,
+      "opened_by": "crit-f4-r2",
+      "opened_in": "corpus/90-verdicts/wave1/W1-F4-r2.json",
+      "piece_id": "W1-F4-r2",
+      "severity": "blocking",
+      "what": "TWO ROUNDS HAVE TUNED THE AMBIENT AND NEITHER HAS TUNED THE KEY'S HUE, BECAUSE BOTH TOOK ROUND 1'S REMEDY TO MEAN 'WARM' AND WARM IS THE WRONG SIGN. `noon-marsh` declares `keyWarmth: 0.0`. `sky.js:853-854` reads it both ways — positive lerps `sunCol` toward the horizon (warm), NEGATIVE lerps it toward `zen`, which at `day = 1` is (0.115, 0.305, 0.620), a strong blue. Round 1's remedy said start at +0.45. Round 2 measured warm and found it worse (7.16 -> 5.84) and then generalised that to the whole lever class, using a battery whose `cool` term is wired only to the hemisphere and the ambient fill and can never reach the key. Measured by me on the shipped build, pair01, sealed judged crop, my own M6 implementation: control 7.35; ambient colour in either direction 7.30 and 7.37 (inside the 0.22 deg noise floor I measured in the same run); probe x3 6.22 (WORSE, which independently vindicates the round's refusal of the env raise); ambient intensity x4 8.87; and THE KEY RECOLOURED TO THE GAME'S OWN NIGHT BLUE 17.07 — at compensated intensity 17.11, with mean Yp matched to 0.9% lit and 1.8% shadow, `retention` 0.6759, `C_shadow` 8.935 and `C_local_med` unchanged at 0.0245. The best combined arm, blue key with a warm ambient at 4x, reads 16.15 with `retention` 0.7132 and `C_shadow` 10.371 — better than the shipped build on both.",
+      "why_it_matters": "F4 exists because five blind judges ranked us last of five, twice, and every one of them named the same thing: 'every surface returns the same flat matte olive-grey'. That is a HUE complaint, and `hue_offset` is the corpus's one-number test for it. The round's ruling would have sent round 3 away from lighting entirely and rewritten ring 1's ordering around material differentiation. On this measurement that would have been the wrong call TWICE OVER: the lighting lever is not exhausted, and the one configuration that reaches the bar costs one number in a file F4 already owns. It is also the cheapest thing on the roadmap — three constants and an intensity compensation against a G-buffer normal target.",
+      "remedy": {
+        "action": "IN SOURCE, NOT PAGE-SIDE, because the probe must move with the key. In `game/src/render/sky.js`, give the daytime key a genuinely cool hue and compensate its luminous output so the frame's brightness does not move. Two shapes, either acceptable, and the second is the smaller diff: (1) set `noon-marsh`'s `keyWarmth` NEGATIVE and raise the lerp coefficient at `sky.js:854` (today 0.30, which at keyWarmth -1.0 reaches only (0.7345, 0.7495, 0.7600) — near-neutral, and 21% dimmer, so the coefficient alone is not enough); or (2) give the day end of `sunCol` at `sky.js:849-850` a cool triple directly, in the same style as the horizon triple this round already shipped, WITH `R.key` raised by the reciprocal of the Rec.709 luminance ratio so the key's luminous output is unchanged. Either way the change must reach `bakeEnvironmentProbe`'s `sunColour`, which is exactly why a page-side arm is only an upper bound and this must be measured in source. WHILE YOU ARE IN THE FILE: `moon.castShadow = false` at `sky.js:645` still means the light that carries half the clock cannot cast a shadow — carried forward from S64 as an `inapplicable` that names an absence, unchanged by this round.",
+        "targets": [
+          "game/src/render/sky.js",
+          "game/src/render/lib/lighting-recipes.js"
+        ],
+        "acceptance": "AT ALL FIVE JUDGED WINDOWS, NOT ONE — S60 says five and this round did one. Report the sealed judged crop and the full frame for every number (S64). (i) M6 `hue_offset` >= 15 deg on the sealed crop at pair01, pair02 and pair03, and not lower than the shipped build at pair04 and pair05. (ii) S59 PRESERVATION, PAIRED, so the hue cannot be bought with brightness: mean `Yp` on the LIT quartile and on the SHADOW quartile each within +/-3% of the shipped build, at every window. (iii) `retention` >= 0.60, `C_shadow` >= 6 and `C_local_med` not lower than the shipped build's, at every window. (iv) S60 clause (a) `key_off >= 2.0x env_off` ON THE LIT SUBSET, measured INSIDE the new configuration and not inherited, at every window; clause (b) cast-shadow area not falling. (v) THE NOISE FLOOR PUBLISHED WITH THE RESULT (S61): capture the shipped configuration twice in the same process and report the spread, because in my run that spread was 0.22 deg and it is larger than the whole of round 2's crop-domain gain. (vi) The twelve-angle orbit re-shot on the new build, since 4 of 12 angles are currently below the 6 deg hard fail and one configuration passing at one pose is not the feature being present."
+      },
+      "remedy_action": "IN SOURCE, NOT PAGE-SIDE, because the probe must move with the key. In `game/src/render/sky.js`, give the daytime key a genuinely cool hue and compensate its luminous output so the frame's brightness does not move. Two shapes, either acceptable, and the second is the smaller diff: (1) set `noon-marsh`'s `keyWarmth` NEGATIVE and raise the lerp coefficient at `sky.js:854` (today 0.30, which at keyWarmth -1.0 reaches only (0.7345, 0.7495, 0.7600) — near-neutral, and 21% dimmer, so the coefficient alone is not enough); or (2) give the day end of `sunCol` at `sky.js:849-850` a cool triple directly, in the same style as the horizon triple this round already shipped, WITH `R.key` raised by the reciprocal of the Rec.709 luminance ratio so the key's luminous output is unchanged. Either way the change must reach `bakeEnvironmentProbe`'s `sunColour`, which is exactly why a page-side arm is only an upper bound and this must be measured in source. WHILE YOU ARE IN THE FILE: `moon.castShadow = false` at `sky.js:645` still means the light that carries half the clock cannot cast a shadow — carried forward from S64 as an `inapplicable` that names an absence, unchanged by this round.",
+      "remedy_acceptance": "AT ALL FIVE JUDGED WINDOWS, NOT ONE — S60 says five and this round did one. Report the sealed judged crop and the full frame for every number (S64). (i) M6 `hue_offset` >= 15 deg on the sealed crop at pair01, pair02 and pair03, and not lower than the shipped build at pair04 and pair05. (ii) S59 PRESERVATION, PAIRED, so the hue cannot be bought with brightness: mean `Yp` on the LIT quartile and on the SHADOW quartile each within +/-3% of the shipped build, at every window. (iii) `retention` >= 0.60, `C_shadow` >= 6 and `C_local_med` not lower than the shipped build's, at every window. (iv) S60 clause (a) `key_off >= 2.0x env_off` ON THE LIT SUBSET, measured INSIDE the new configuration and not inherited, at every window; clause (b) cast-shadow area not falling. (v) THE NOISE FLOOR PUBLISHED WITH THE RESULT (S61): capture the shipped configuration twice in the same process and report the spread, because in my run that spread was 0.22 deg and it is larger than the whole of round 2's crop-domain gain. (vi) The twelve-angle orbit re-shot on the new build, since 4 of 12 angles are currently below the 6 deg hard fail and one configuration passing at one pose is not the feature being present.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/battery-hard-set-and-key-hue.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/matched-key-hue-s59-and-s60.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/x1-moonkey.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/x0-control.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/light-census-visible-vs-scenewide.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
+    },
+    {
+      "gap_id": "GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank",
+      "subsystem_path": "render.fidelity.water",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-f7-water-r4",
+      "opened_in": "corpus/90-verdicts/wave1/W1-F7-WATER-r4.json",
+      "piece_id": "W1-F7-WATER",
+      "severity": "blocking",
+      "what": "`uWaterShoreBandM`'s default of 1.20 m exceeds the median water depth in both measured regions (Deep Marshes 0.824 m, Western Rootlands 0.375 m), so the term is non-zero over 65.1% and 98.6% of the water in frame respectively. It therefore acts as a depth-driven transparency multiplier over the water body rather than as a shoreline fade — which produces BOTH of the round's reported symptoms from one cause: a fade applied nearly everywhere has almost no edge (no gradient), and it lowers alpha nearly everywhere (the water reads as absent, worst-pose presence 41.2%).",
+      "why_it_matters": "RI-VIS04 §9's MIN BAR component is a SHORELINE depth fade and this is not one. RI-WLD10 §10.1 — 'water is opaque before it is reflective' — is contradicted by a term that drops diffuseColor.a to 0.42x over most of the surface. And the Deep Marshes is the starting region and the first water anybody sees, so the cost lands exactly where the owner would look first.",
+      "remedy": {
+        "action": "In game/src/render/water.js, F7's own file, in this order. (a) Set `uWaterShoreBandM`'s default to 0.10 m — measured to hold the full 34 px width at edge-b135 while returning ten points of presence over the shipped constant. (b) Re-sweep 0.10 / 0.20 / 0.30 at edge-b225 and in the Western Rootlands, because the failing pose was never tested below 0.60 m by anybody. (c) Report `presence` against the `water-hidden` frame on every row — the control already exists in every capture and has never been scored.",
+        "acceptance": "gradient_width_px >= 12 at the WORST pose of a complete 4-bearing declared set in the Deep Marshes, measured at THRESHOLD 10 (the only threshold whose mask arm is stable here: drift +0.01 / -1.66 / -0.52 / +0.20% against +61.75 / +51.07 / +33.56 / -0.03% at threshold 6); AND presence >= 90% at every pose in BOTH regions against the water-hidden frame taken in the same process (the shipped arm reads 41.2% at its worst pose); AND the band leaves >= 60% of wet corners untouched in BOTH regions, measured offline against the WorldField (the shipped 1.20 m leaves 34.9% in the Deep Marshes and 1.4% in the Western Rootlands); AND the arms run in BOTH orders at one pose so own_mask_delta_pct can be attributed to the arm rather than to capture ordinal. Per S64, a pose whose declared target has every wet corner beyond the band (edge-b045's are 1.433-1.492 m) scores `inapplicable` and must name the absence, never pass.",
+        "targets": [
+          "game/src/render/water.js",
+          "tools/visual/f7-r4-sweep.mjs"
+        ],
+        "acceptance_clause_provenance": {
+          "improving": "gradient_width_px >= 12 at the WORST pose of a complete 4-bearing declared set in the Deep Marshes, measured at THRESHOLD 10 — the only threshold whose mask arm is stable on this scene (measured drift +0.01 / -1.66 / -0.52 / +0.20% against +61.75 / +51.07 / +33.56 / -0.03% at threshold 6).",
+          "preserving_1": "presence >= 90% at every pose in both regions, against the `water-hidden` frame taken in the same process. This is what stops the width being bought by deleting the water, which is the mechanism S59 exists to catch and which round 4 hit at 41.2%.",
+          "preserving_2": "the band's coverage, measured offline against the WorldField, leaves >= 60% of wet corners untouched in BOTH regions — the clause that keeps a shoreline term shore-local.",
+          "attribution": "the arms run in BOTH orders at one pose, so `own_mask_delta_pct` can be attributed to the arm rather than to the capture ordinal. Without it that number is not evidence of anything.",
+          "domain_note_S60": "the width clause is only valid where a band could act — a pose whose declared target has every wet corner beyond the band (as edge-b045's do, at 1.433-1.492 m) scores `inapplicable` per S64 and must name the absence, not pass."
+        }
+      },
+      "remedy_action": "In game/src/render/water.js, F7's own file, in this order. (a) Set `uWaterShoreBandM`'s default to 0.10 m — measured to hold the full 34 px width at edge-b135 while returning ten points of presence over the shipped constant. (b) Re-sweep 0.10 / 0.20 / 0.30 at edge-b225 and in the Western Rootlands, because the failing pose was never tested below 0.60 m by anybody. (c) Report `presence` against the `water-hidden` frame on every row — the control already exists in every capture and has never been scored.",
+      "remedy_acceptance": "gradient_width_px >= 12 at the WORST pose of a complete 4-bearing declared set in the Deep Marshes, measured at THRESHOLD 10 (the only threshold whose mask arm is stable here: drift +0.01 / -1.66 / -0.52 / +0.20% against +61.75 / +51.07 / +33.56 / -0.03% at threshold 6); AND presence >= 90% at every pose in BOTH regions against the water-hidden frame taken in the same process (the shipped arm reads 41.2% at its worst pose); AND the band leaves >= 60% of wet corners untouched in BOTH regions, measured offline against the WorldField (the shipped 1.20 m leaves 34.9% in the Deep Marshes and 1.4% in the Western Rootlands); AND the arms run in BOTH orders at one pose so own_mask_delta_pct can be attributed to the arm rather than to capture ordinal. Per S64, a pose whose declared target has every wet corner beyond the band (edge-b045's are 1.433-1.492 m) scores `inapplicable` and must name the absence, never pass.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-measurements.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/bandsweep-b135/",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/dm-edge2/"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
+    },
+    {
+      "gap_id": "GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k",
+      "subsystem_path": "visual.renderer.water",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-f7-water-r3",
+      "opened_in": "corpus/90-verdicts/wave1/W1-F7-WATER-r3.json",
+      "piece_id": "W1-F7-WATER-r3",
+      "severity": "blocking",
+      "what": "**The shoreline fade's width is a function of EXTINCTION, so it vanishes in exactly the region that needs it most.** The fade is gated on `esTrans = exp(-k*esPath)`. At the Deep Marshes' declared k = 4.5 that term is below 0.07 beyond ~0.3 m of column, so the fade has nothing to spread across: measured, the waterline 10–90% transition is **1 px on BOTH arms** at all four eye-level bearings, at the deck vista and at all three close-ups, and 5 px top-down. At the Western Rootlands' k = 1.9 the identical code reads **15 px**. The Deep Marshes is the STARTING REGION and the first water anybody sees (`RI-VIS04` §9: 'the starting region is a fen and it is the first thing anyone sees'). A second, compounding cause: `esDepthM` is inverted from a per-vertex quantity on province.js's **12.5 m** water lattice and clamped at **1.35 m**, so the fade cannot be finer than a 12.5 m cell and cannot distinguish 1.4 m of water from 6 m.",
+      "why_it_matters": "Both of the components this round delivered are correct and both are invisible where the player begins. `RI-VIS04` §9's TELL — 'a hard geometric line where the water plane intersects the terrain' — is therefore still PRESENT at every pose a Deep Marshes player occupies, and `RI-WLD10` §10's fidelity clause still fails there, on a build that provably fixed it 1.2 km away. A feature that works only in five of thirteen regions is not the MIN BAR component being claimed.",
+      "remedy": "In `game/src/render/water.js`, F7's own file, in this order. **(a) Give the shoreline term a depth-driven component that does not vanish as k rises.** The extinction term is right for COLOUR — opaque water should be opaque — but the fade's WIDTH should be set by the water column's own depth, not by how far light gets through it: a shore band in metres (e.g. `smoothstep(0, d_shore_m, esDepthM)`) mixed with, not replaced by, the transmittance term, so that at k = 4.5 the waterline still resolves over a stated distance. Acceptance, PAIRED per S59 and per M12a: `gradient_width_px >= 12` at a declared `water_edge` pose **in the Deep Marshes**, measured over a **pinned** mask at three thresholds, AND `mean_luma` at the deck vista not falling below the round-3 arm's, AND the matched-luminance S52 null reproducing **< 20%** of the width change. **(b) Measure at least two regions and declare the pose set.** `RI-WLD10` §8's WCI table names where a waterline exists: the Deep Marshes at 0.86 has none, the Western Rootlands at 0.47 and Blackwood at 0.41 do. `RI-VIS03` M12a now requires this. **(c) Take one frame-time reading.** Three rounds have shipped with none, and this round lowered alpha on a `transparent: true` material with `depthWrite` on, which is a blending and sorting change and not only an ALU change. **(d) Run RI-VIS04 §8's supersample test on the water mask** — recapture at 2× and downsample — so `NormalEnergy`'s pass can be separated from the dither stipple.",
+      "remedy_action": null,
+      "remedy_acceptance": null,
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r3-critic/reprofile/wrootlands-pinned-mask.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r3-critic/reprofile/topdown-pinned-mask.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r3-critic/wrootlands-null-matched/sweep.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r3/look/sweep.json",
+        "game/src/render/water.js:241-253",
+        "game/src/world/province.js:1559"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
+    },
+    {
+      "gap_id": "GAP-W1-F7-two-of-four-min-bar-components-are-absent-from-the-water-shader",
+      "subsystem_path": "visual.renderer.water",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-f7-water-r2",
+      "opened_in": "corpus/90-verdicts/wave1/W1-F7-WATER-r2.json",
+      "piece_id": "W1-F7-WATER-r2",
+      "severity": "blocking",
+      "what": "`RI-VIS04` §9's MIN BAR is 'planar reflection at half-res + depth-based colour + two-layer animated normals + shoreline depth fade'. **Depth-based colour and shoreline depth fade do not exist in `game/src/render/water.js`.** Measured, not argued: `grep -c 'depthTexture|tDepth|depthFade'` returns 0, so there is no depth-buffer read of any kind; and the shader's complete uniform set, from `grep -o 'uWater[A-Za-z]*' | sort -u`, is uWaterPhase / uWaterReflection / uWaterReflectionMatrix / uWaterReflectionResolution / uWaterReflectionStrength — nothing carrying depth, extinction or region. `water.js:124` sets the water's body colour to the literal constant `vec3(.038,.105,.118)`. So one province gets one water colour, the Deep Marshes' declared k = 4.5 cannot reach the fragment shader, and the waterline is a per-vertex edge mask that `province.js:1554` documents against itself as 'not a depth ramp'. Two rounds and two critics have now been spent on the Fresnel BLEND between a constant and a stale half-res mirror — the one MIN BAR component that was already present.",
+      "why_it_matters": "F7 cannot pass while two of the four things its own checklist calls minimum are missing, and no amount of further Fresnel work reaches either. It also explains why every round produces a smaller visible change than expected: the blend is being tuned between two terms that are themselves wrong.",
+      "remedy": "In `game/src/render/water.js`, F7's own file, in this order. **(a) Depth-based colour.** Bind the scene depth texture, reconstruct water column depth per fragment, and drive the body colour by Beer-Lambert against the region's declared `k` from `game/data/world/water.json` — the data contract RI-WLD10 §11 already makes a required file. Acceptance: two regions whose `water.json` k differs by >= 2.0 must differ in measured water-body colour by a stated margin at the same pose and tide; and the Deep Marshes' rendered colour must be consistent with k = 4.5. **(b) Shoreline depth fade.** With the depth read now available, fade colour and alpha over the depth difference. Acceptance PAIRED per S59 and per this verdict's `bar_findings.shoredelta_is_the_wrong_shape`: `ShoreDelta` back >= 0.03 AND a new gradient-width measure showing the transition takes >= 15 px at the deck vista, so a hard line cannot satisfy it. **(c) Then, separately, the lanes** — see `secondary_observations.the_lanes`.",
+      "remedy_action": null,
+      "remedy_acceptance": null,
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/look/frames/look-orbit-eye-yaw090-prefix.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/look/frames/look-orbit-eye-yaw090-fixed.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r2-critic/look/phase.json",
+        "game/src/render/water.js:124",
+        "game/src/world/province.js:1554"
       ],
       "status": "open",
       "assigned_to_wave": 2,
@@ -2439,6 +2815,45 @@
           "opened_gap": "GAP-W1-the-doorstep-cannot-get-you-back-in"
         }
       ]
+    },
+    {
+      "gap_id": "GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar",
+      "subsystem_path": "ui.style.diegesis",
+      "opened_wave": 1,
+      "opened_by": "crit-t4-r8",
+      "opened_in": "corpus/90-verdicts/wave1/T4-r8.json",
+      "piece_id": "T4-r8",
+      "severity": "blocking",
+      "what": "`tools/ui/t4-r5-legibility.mjs`'s OVERLAP leg — the S58 legibility pass without which no density figure counts — reports 6 findings across level-up and the sheet that are not legibility defects. It projects an `attribute_row`'s whole rect down to one column profile and requires >= 2 runs of blank columns; the row rect contains a horizontal gauge bar that fills **134 to 217 of the row's 161-244 columns**, which destroys the separators no matter how the text is set. Ablated, every one of the 6 reported rows has a label/value line with 2 to 7 separators — `sheet.attr.willpower`, the worst, goes from `separators 0, runs 1` to `separators 2`. Read at 4x, 'WILLPOWER 10' and 'HIST-BOND 10' have wide clear space between label and value. The same blindness produces the opposite error at 1280x720, where the thinner gauge's antialiased ends open blank runs and the sheet is reported CLEAN for an equally irrelevant reason.",
+      "why_it_matters": "The next real legibility regression on the level-up or character screen — the two screens a player reads every time they spend souls — will be indistinguishable from the noise this leg is already emitting, exactly as round 4's regression was invisible to every instrument until the owner opened the game and could not read it. And in the other direction it is already costing: the round filed two 'pre-existing overlap findings' against `progress.js` and asked for a gap of their own, and a round dispatched at them would spend itself on a defect that is not there.",
+      "remedy": {
+        "action": "Make the OVERLAP leg measure the thing it is named for. Two changes, both small. (1) Profile the row's TEXT BAND, not the whole rect: take the sub-rect the label and value baselines actually occupy — derivable from the row's declared rect and the face metrics `drawText` uses, the same way `descLineCap()` already derives a line box — and run `rowProfile()` on that. (2) Give the leg a self-test in the shape the COLLISION leg already has: fixtures whose arms are REQUIRED to disagree, including (a) a round-4-style row with label, value and gauge printed on one another, which must be RED, (b) a clean row with a full-width gauge under separated text, which must be GREEN and which the current leg fails, and (c) the same clean row at 1280x720, which must give the SAME answer as (b). Assert the answer set has more than one member, exactly as the collision self-test does. Do NOT simply raise or scale `GAP` further — the threshold is not the defect; projecting a gauge and a text line onto one axis is.",
+        "targets": [
+          "tools/ui/t4-r5-legibility.mjs",
+          "corpus/90-verdicts/wave1/artifacts/T4-r8c/ablation/overlap-ablation.json"
+        ],
+        "acceptance": "The repaired leg, run at 1920x1080 and 1280x720 at the delivered commit, reports **0 overlap findings on level-up and the sheet** while its new self-test's round-4-style fixture still comes back RED and the two viewports agree on every fixture. Proven in the direction rule 4 requires: the leg must be shown RED on an actual capture of a build whose attribute rows collide — round 4's arm is the positive control and `t4-r4-critic-overlap.mjs`'s own fixtures are the starting point — before it is trusted green. Then re-run the five-screen sweep and publish it; FD4's remaining hard-fail candidates at 1920x1080 must be zero or real."
+      },
+      "remedy_action": "Make the OVERLAP leg measure the thing it is named for. Two changes, both small. (1) Profile the row's TEXT BAND, not the whole rect: take the sub-rect the label and value baselines actually occupy — derivable from the row's declared rect and the face metrics `drawText` uses, the same way `descLineCap()` already derives a line box — and run `rowProfile()` on that. (2) Give the leg a self-test in the shape the COLLISION leg already has: fixtures whose arms are REQUIRED to disagree, including (a) a round-4-style row with label, value and gauge printed on one another, which must be RED, (b) a clean row with a full-width gauge under separated text, which must be GREEN and which the current leg fails, and (c) the same clean row at 1280x720, which must give the SAME answer as (b). Assert the answer set has more than one member, exactly as the collision self-test does. Do NOT simply raise or scale `GAP` further — the threshold is not the defect; projecting a gauge and a text line onto one axis is.",
+      "remedy_acceptance": "The repaired leg, run at 1920x1080 and 1280x720 at the delivered commit, reports **0 overlap findings on level-up and the sheet** while its new self-test's round-4-style fixture still comes back RED and the two viewports agree on every fixture. Proven in the direction rule 4 requires: the leg must be shown RED on an actual capture of a build whose attribute rows collide — round 4's arm is the positive control and `t4-r4-critic-overlap.mjs`'s own fixtures are the starting point — before it is trusted green. Then re-run the five-screen sweep and publish it; FD4's remaining hard-fail candidates at 1920x1080 must be zero or real.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/T4-r8c/ablation/overlap-ablation.json",
+        "corpus/90-verdicts/wave1/artifacts/T4-r8c/crops/sheet-willpower-4x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r8c/crops/levelup-rows-4x.png",
+        "corpus/90-verdicts/wave1/artifacts/T4-r8c/legibility-all/t4-r5-legibility.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-library-martial-single-hand-fingerprint",
@@ -3887,6 +4302,22 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-ui-container-clips-its-own-declared-text"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r7.json",
+          "run_id": "crit-t4-r7",
+          "at": "2026-08-16T00:24:28.163Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-container-headers-print-across-the-first-row"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r8.json",
+          "run_id": "crit-t4-r8",
+          "at": "2026-08-16T02:55:00.000Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar"
         }
       ]
     },
@@ -4266,6 +4697,22 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-ui-container-clips-its-own-declared-text"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r7.json",
+          "run_id": "crit-t4-r7",
+          "at": "2026-08-16T00:24:28.163Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-container-headers-print-across-the-first-row"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r8.json",
+          "run_id": "crit-t4-r8",
+          "at": "2026-08-16T02:55:00.000Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar"
         }
       ]
     },
@@ -4310,7 +4757,24 @@
       },
       "superseded_by": null,
       "age_waves": 0,
-      "filed_since": []
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r7.json",
+          "run_id": "crit-t4-r7",
+          "at": "2026-08-16T00:24:28.163Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-container-headers-print-across-the-first-row"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r8.json",
+          "run_id": "crit-t4-r8",
+          "at": "2026-08-16T02:55:00.000Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-ui-detectors-that-cannot-see",
@@ -4635,6 +5099,22 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-ui-container-clips-its-own-declared-text"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r7.json",
+          "run_id": "crit-t4-r7",
+          "at": "2026-08-16T00:24:28.163Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-container-headers-print-across-the-first-row"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/T4-r8.json",
+          "run_id": "crit-t4-r8",
+          "at": "2026-08-16T02:55:00.000Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar"
         }
       ]
     },
