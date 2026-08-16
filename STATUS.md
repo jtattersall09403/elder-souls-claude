@@ -34,15 +34,12 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
 - **Dialogue: clicking works, and character creation now uses the same window.** Both faults you found
   are closed. There was **no pointer path in the entire interface** — a rule written for the combat
   HUD's thumbstick screens said *"no cursor, no hover, no click target"* and was silently inherited by
-  the dialogue window, so every control you could see was a picture of a control. And character
-  creation ran on the old panel, so the first conversation a new player ever had was the worse one.
-  **Driving it turned up a bug that would have trapped you:** creation **dead-ended permanently** at
-  the class verdict on all three routes, because the window only reset its selection when the *speaker*
-  changed and the speaker never changes inside the Writ House.
+  the dialogue window, so every control you could see was a picture of a control. **Driving it turned
+  up a bug that would have trapped you:** creation **dead-ended permanently** at the class verdict on
+  all three routes.
 - **The menus are denser *and* readable now.** Sizing each panel to its contents cleared all five
   density failures and then made the text collide — level-up drew name, value and gauge into the same
-  pixels on 9 of 10 rows, and 8 of 19 journal entries laid out past the panel onto the world. Both are
-  now **0**.
+  pixels on 9 of 10 rows, and 8 of 19 journal entries laid out past the panel. Both are now **0**.
 - **The menus were judged independently and FAILED at 2 of 10 — three times — though each round closes
   real defects.** The reflow work was confirmed by the judge: level-up's rows read at both sizes and
   the journal runs **0 of 19** blocks off the page. The container was the failure: its description
@@ -53,12 +50,18 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   nobody had reported is fixed** — the item's condition was being drawn 24 units outside its own box
   and clipped away entirely on every conditioned item.
   **Three of the checks meant to catch this could not fail.** One read the text the screen *declared*
-  rather than what it *drew*; one was written as a literal `true`; and the legibility pass called the
-  container clean **while two headers were printed through the first row**, because it only looked
-  inside one row band — a judge found that by cropping the picture at 2× and looking. All three now
-  assert real numbers and were proven to go red on the broken build first. **The collision itself is
-  fixed**, and long descriptions finally have somewhere to be read: a reading view opens over the
-  lists, and all **45 of 45** items now show their full text.
+  rather than what it *drew*; one was a literal `true`; and the legibility pass called the container
+  clean **while two headers were printed through the first row**, because it only looked inside one row
+  band — a judge found that by cropping the picture at 2× and looking. All three now assert real numbers
+  and go red on the broken build. **The collision is fixed**, and long descriptions finally have
+  somewhere to be read: a reading view opens over the lists and all **45 of 45** items show their full
+  text.
+- **Two other screens have the same defect and it has been hiding at one window size.** With the fixed
+  checker pointed at everything, **level-up and the character sheet still print labels through their
+  own values** — on the sheet, "willpower" and its number are *not separable at all*. They are clean at
+  the smaller window and broken at the larger one, which is suspicious in itself: the check's own
+  threshold scales with the window, so nobody yet knows whether the small window is genuinely fine or
+  the check simply stops being able to see. Being judged now.
 - **⚠ A measurement scare, and the answer was the opposite of what I told you.** I said a filed
   verdict's numbers wouldn't reproduce and to distrust the screen scores. They reproduce **exactly**.
   The four "isolated" copies compared had all quietly measured **the same live tree** — the tools work
@@ -75,22 +78,21 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   **The first water result a dimmer switch cannot fake** — a matched-brightness control reproduces 118%
   of the luma change and **none** of the widening.
   **And the judge found why it looked like nothing.** In a second region it is obvious — the band where
-  water meets land goes **1 pixel to 15** — while in the region three rounds kept testing, the water is
-  **drowned**: no real bank exists there at all, and the three "shoreline close-ups" everyone had been
-  chasing turn out to contain no shoreline. So the fade is real and the test site was wrong. Round four
-  is making the fade work in metres rather than in murkiness, so it survives where you actually stand.
+  water meets land goes **1 pixel to 15** — while the region three rounds kept testing is **drowned**:
+  no real bank exists there, and the three "shoreline close-ups" everyone chased contain no shoreline.
+  The fade is real and the test site was wrong. Round four is rebuilding it in metres.
   **Still true: nobody knows what draws the marsh stripes.** Switch the reflection off entirely and 76%
   of them remain; two further explanations were proposed and killed by the same test.
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its author caught that 93.7% of the gain it was about to claim reproduced with no fix in the tree.
 - **The characters were being drawn inside-out — fixed, and confirmed by eye.** Your winding tip was
   right and bigger than the report you sent: **153,344 of 227,850 triangles (67.3%)** had normals
-  disagreeing with winding, body meshes **13 of 13 inverted**. Now zero, photographed on hardware over
-  332 frames. A Gideon market stand that held *chrome-and-glass skeletons with black shards jutting
-  from their backs* now holds solid people in coloured clothes.
-- **Four more things about the cast, all fixed and all from one shared body plan.** 44% of them were on
-  a generic body with **no eye geometry at all** (79 → 260 NPCs routed correctly); **everyone was the
-  wrong height** (0 of 41 in the 7–8 head band → 41 of 41); the clothing textures were pasted **5.5×
+  disagreeing with winding, body meshes **13 of 13 inverted**. Now zero, photographed over 332 frames.
+  A Gideon market stand of *chrome-and-glass skeletons with black shards jutting from their backs* now
+  holds solid people in coloured clothes.
+- **Four more things about the cast, all fixed from one shared body plan.** 44% were on a generic body
+  with **no eye geometry at all** (79 → 260 routed correctly); **everyone was the wrong height** (0 of
+  41 in the 7–8 head band → 41 of 41); the clothing textures were pasted **5.5×
   too fine**, which averages to a flat colour — a smith who was one tone shoulder-to-ankle now has a
   sash, cord rings, a hem and a yoke, and *a background NPC gained one nobody targeted*; and the eyes
   went from cream googly balls to dark sockets.
@@ -122,9 +124,8 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   **And the photograph shows the next problem: they are statues.** Over sixty frames, **not one person
   moves a single joint** — 392 different poses, all frozen. Round twelve is giving them breathing,
   staggered per person so a crowd doesn't inhale in unison.
-  **A counting error worth knowing:** two rounds reported 60 people at that spot. **29 of them are
-  invisible, heaped at the map origin 41 metres underground.** The real crowd is 27, and nobody has
-  looked at why the other 29 are down there.
+  **A counting error worth knowing:** two rounds reported 60 people at that spot. **29 are invisible,
+  heaped at the map origin 41 m underground** — the real crowd is 27, and nobody has looked at why.
 - **A side-effect of that pose, found and closed: it lifted everyone 8.9 mm off the floor.** Fixed and
   photographed; worst planting error across all 408 people is now effectively zero.
 - **The eye had a pupil worth literally zero pixels — now it has one, and it reads in conversation.**
@@ -141,10 +142,7 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   counts them **emits no images**, so four rounds argued about the number blind. Someone finally dumped
   the frames and looked: the two largest "cracks" are **daylight between a hanging forearm and the
   body, capped by the greatsword's crossguard** — you can see the crossguard. Not holes.
-- **Still owed on characters:** none of this has been photographed in the game yet. And there is a
-  measured reason the foot work kept photographing as "no change" — the three camera stands used for
-  character captures offer **at most 34 mm of ground height difference between the two feet**, so a
-  photograph there was predetermined to show nothing whatever the fix did.
+
 - **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
   out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
   it. Shadows still crush to black; that fix is being built now.
