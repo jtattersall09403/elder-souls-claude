@@ -33,6 +33,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { execSync } from 'node:child_process';
 
 const args = {};
 for (let i = 2; i < process.argv.length; i++) {
@@ -174,8 +175,33 @@ const hips = (probe.npcs || []).map((n) => n.hip_line_dy_m).filter((v) => v !== 
 const shoulders = (probe.npcs || []).map((n) => n.shoulder_line_dy_m).filter((v) => v !== null);
 const maxAbs = (a) => (a.length ? Math.max(...a.map(Math.abs)) : null);
 
+/**
+ * WHICH TREE DID THIS ARM ACTUALLY RUN IN. Added 2026-08-16 (F10 r12 builder) because the r11
+ * critic found this file's output could not answer it: *"`f10-r10c-npc-live.mjs` writes no
+ * `commit` field, which is precisely the discriminator §22 tells you to read"*, so HAZARDS §22
+ * discipline on r11's before-arm was unverifiable from the artefact.
+ *
+ * `tools/lib/cli.mjs` resolves `REPO_ROOT` from the SCRIPT's own location, so a copy of this tool
+ * placed inside a control clone serves the CLONE's `game/` and a copy left in the main tree serves
+ * the MAIN TREE's — which is the whole §22 trap, and it produces two runs that look identical. The
+ * discriminator is proved both ways: a genuine control clone has no `.git` and records `unknown`;
+ * a worktree or the live tree records its sha, and `dirty` says whether that sha is the whole story.
+ * ADDITIVE ONLY — no measurement in this file is changed, so r10's and r11's numbers stand.
+ */
+function treeProvenance() {
+  try {
+    const cwd = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
+    const sha = execSync('git rev-parse HEAD', { cwd, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim();
+    const dirty = execSync('git status --short -- game/ tools/', { cwd, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim();
+    return { commit: sha, tree_root: cwd, dirty_in_game_or_tools: dirty.length > 0 };
+  } catch {
+    return { commit: 'unknown', tree_root: path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..'), dirty_in_game_or_tools: null };
+  }
+}
+
 const report = {
   tool: 'f10-r10c-npc-live.mjs',
+  ...treeProvenance(),
   generated: new Date().toISOString(),
   renderer: attestation,
   stand: STAND,
