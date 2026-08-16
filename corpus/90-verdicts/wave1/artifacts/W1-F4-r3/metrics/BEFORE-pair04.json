@@ -1,0 +1,225 @@
+{
+ "manifest": "reports/f4r3/before-pair04/before-pair04.json",
+ "mode": "windows",
+ "tag": "before-pair04",
+ "served": {
+  "game_dir": "/home/user/elder-souls-claude/game",
+  "sha256_16": {
+   "src/render/lib/lighting-recipes.js": "c40b36712455bacb",
+   "src/render/sky.js": "7172bb96019002d6"
+  }
+ },
+ "renderer": "SOFTWARE",
+ "evidence_class": "SOFTWARE — differential only (HAZARDS §15)",
+ "resolution": [
+  1920,
+  1080
+ ],
+ "instrument": "M6/M2/M7 = corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/m6-independent.mjs (the r2 critic's independent implementation), imported unmodified",
+ "groups": {
+  "pair04": {
+   "crop": [
+    200,
+    480,
+    512,
+    512
+   ],
+   "noise_floor": {
+    "note": "NO RE-CAPTURE IN THIS RUN — no noise floor, so no movement in it is resolvable (S61 fails closed)."
+   },
+   "m6": {
+    "base": {
+     "sealed_judged_crop": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair04/pair04__base.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0,
+      "shadow_mask_frac": 0.2497,
+      "C_local_med": 0.0166,
+      "retention": 0.3449,
+      "hue_shadow_deg": 114.86,
+      "hue_lit_deg": 110.35,
+      "hue_offset_deg": 4.5,
+      "C_shadow": 7.178,
+      "mean_Yp_shadow": 0.0833,
+      "mean_Yp_lit": 0.1813
+     },
+     "full_frame": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair04/pair04__base.png",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.031,
+      "shadow_mask_frac": 0.2414,
+      "C_local_med": 0.0203,
+      "retention": 0.3398,
+      "hue_shadow_deg": 127.41,
+      "hue_lit_deg": 102.43,
+      "hue_offset_deg": 24.98,
+      "C_shadow": 3.621,
+      "mean_Yp_shadow": 0.0452,
+      "mean_Yp_lit": 0.3123
+     },
+     "readback": {
+      "sunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "sunIntensity": 6.3,
+      "uSunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "uHorizon": [
+       0.677,
+       0.79,
+       0.944
+      ],
+      "environmentIntensity": 0.35,
+      "hemiVisible": 0.37107,
+      "ambientVisible": 0.18693,
+      "recipeId": "noon-marsh",
+      "probeIsMine": false,
+      "shadowIntensity": 1,
+      "cfgError": null
+     },
+     "liveness": "LIVE"
+    },
+    "shadows_off": {
+     "sealed_judged_crop": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair04/pair04__shadows_off.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0.0001,
+      "shadow_mask_frac": 0.2413,
+      "C_local_med": 0.0164,
+      "retention": 1.1784,
+      "hue_shadow_deg": 109.39,
+      "hue_lit_deg": 110.26,
+      "hue_offset_deg": 0.86,
+      "C_shadow": 12.674,
+      "mean_Yp_shadow": 0.1317,
+      "mean_Yp_lit": 0.1911
+     },
+     "full_frame": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair04/pair04__shadows_off.png",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.031,
+      "shadow_mask_frac": 0.242,
+      "C_local_med": 0.0232,
+      "retention": 0.8964,
+      "hue_shadow_deg": 106.96,
+      "hue_lit_deg": 98.31,
+      "hue_offset_deg": 8.65,
+      "C_shadow": 10.529,
+      "mean_Yp_shadow": 0.12,
+      "mean_Yp_lit": 0.379
+     },
+     "readback": {
+      "sunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "sunIntensity": 6.3,
+      "uSunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "uHorizon": [
+       0.677,
+       0.79,
+       0.944
+      ],
+      "environmentIntensity": 0.35,
+      "hemiVisible": 0.37107,
+      "ambientVisible": 0.18693,
+      "recipeId": "noon-marsh",
+      "probeIsMine": false,
+      "shadowIntensity": 0,
+      "cfgError": null
+     },
+     "liveness": "LIVE"
+    },
+    "key_off": {
+     "sealed_judged_crop": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair04/pair04__key_off.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0.2203,
+      "shadow_mask_frac": 0.1525,
+      "C_local_med": 0.0046,
+      "retention": 1.0149,
+      "hue_shadow_deg": 144.14,
+      "hue_lit_deg": 130.3,
+      "hue_offset_deg": 13.84,
+      "C_shadow": 1.322,
+      "mean_Yp_shadow": 0.0076,
+      "mean_Yp_lit": 0.0354
+     },
+     "full_frame": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair04/pair04__key_off.png",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.0309,
+      "shadow_mask_frac": 0.2418,
+      "C_local_med": 0.0075,
+      "retention": 0.6523,
+      "hue_shadow_deg": 138.85,
+      "hue_lit_deg": 110.08,
+      "hue_offset_deg": 28.77,
+      "C_shadow": 1.306,
+      "mean_Yp_shadow": 0.0084,
+      "mean_Yp_lit": 0.2701
+     },
+     "readback": {
+      "sunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "sunIntensity": 0,
+      "uSunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "uHorizon": [
+       0.677,
+       0.79,
+       0.944
+      ],
+      "environmentIntensity": 0.35,
+      "hemiVisible": 0.37107,
+      "ambientVisible": 0.18693,
+      "recipeId": "noon-marsh",
+      "probeIsMine": false,
+      "shadowIntensity": 1,
+      "cfgError": null
+     },
+     "liveness": "LIVE"
+    }
+   },
+   "ablation_vs_control": {
+    "shadows_off": {
+     "sealed_crop_mean_abs_drgb": 4.4369,
+     "full_frame_mean_abs_drgb": 13.0751,
+     "x_noise_floor_crop": null,
+     "x_noise_floor_frame": null,
+     "resolvable": null
+    },
+    "key_off": {
+     "sealed_crop_mean_abs_drgb": 26.281,
+     "full_frame_mean_abs_drgb": 13.621,
+     "x_noise_floor_crop": null,
+     "x_noise_floor_frame": null,
+     "resolvable": null
+    }
+   },
+   "s60_clauses": {}
+  }
+ }
+}

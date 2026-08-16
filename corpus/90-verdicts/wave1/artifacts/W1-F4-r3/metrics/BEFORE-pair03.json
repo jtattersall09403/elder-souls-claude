@@ -1,0 +1,373 @@
+{
+ "manifest": "reports/f4r3/before-pair03/before-pair03.json",
+ "mode": "windows",
+ "tag": "before-pair03",
+ "served": {
+  "game_dir": "/home/user/elder-souls-claude/game",
+  "sha256_16": {
+   "src/render/lib/lighting-recipes.js": "c40b36712455bacb",
+   "src/render/sky.js": "7172bb96019002d6"
+  }
+ },
+ "renderer": "SOFTWARE",
+ "evidence_class": "SOFTWARE — differential only (HAZARDS §15)",
+ "resolution": [
+  1920,
+  1080
+ ],
+ "instrument": "M6/M2/M7 = corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/m6-independent.mjs (the r2 critic's independent implementation), imported unmodified",
+ "groups": {
+  "pair03": {
+   "crop": [
+    1100,
+    150,
+    512,
+    512
+   ],
+   "noise_floor": {
+    "note": "NO RE-CAPTURE IN THIS RUN — no noise floor, so no movement in it is resolvable (S61 fails closed)."
+   },
+   "m6": {
+    "base": {
+     "sealed_judged_crop": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair03/pair03__base.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0.0009,
+      "shadow_mask_frac": 0.249,
+      "C_local_med": 0.0257,
+      "retention": 0.2324,
+      "hue_shadow_deg": 130.35,
+      "hue_lit_deg": 107.65,
+      "hue_offset_deg": 22.7,
+      "C_shadow": 3.33,
+      "mean_Yp_shadow": 0.0409,
+      "mean_Yp_lit": 0.3623
+     },
+     "full_frame": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair03/pair03__base.png",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.031,
+      "shadow_mask_frac": 0.2422,
+      "C_local_med": 0.0213,
+      "retention": 0.4567,
+      "hue_shadow_deg": 122.28,
+      "hue_lit_deg": 103.74,
+      "hue_offset_deg": 18.54,
+      "C_shadow": 3.824,
+      "mean_Yp_shadow": 0.0474,
+      "mean_Yp_lit": 0.3443
+     },
+     "readback": {
+      "sunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "sunIntensity": 6.3,
+      "uSunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "uHorizon": [
+       0.677,
+       0.79,
+       0.944
+      ],
+      "environmentIntensity": 0.35,
+      "hemiVisible": 0.37107,
+      "ambientVisible": 0.18693,
+      "recipeId": "noon-marsh",
+      "probeIsMine": false,
+      "shadowIntensity": 1,
+      "cfgError": null
+     },
+     "liveness": "LIVE"
+    },
+    "shadows_off": {
+     "sealed_judged_crop": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair03/pair03__shadows_off.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0.0009,
+      "shadow_mask_frac": 0.2497,
+      "C_local_med": 0.0368,
+      "retention": 0.5866,
+      "hue_shadow_deg": 108.67,
+      "hue_lit_deg": 101.82,
+      "hue_offset_deg": 6.85,
+      "C_shadow": 14.92,
+      "mean_Yp_shadow": 0.2049,
+      "mean_Yp_lit": 0.42
+     },
+     "full_frame": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair03/pair03__shadows_off.png",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.031,
+      "shadow_mask_frac": 0.2383,
+      "C_local_med": 0.0232,
+      "retention": 0.9914,
+      "hue_shadow_deg": 104.2,
+      "hue_lit_deg": 103.1,
+      "hue_offset_deg": 1.1,
+      "C_shadow": 10.283,
+      "mean_Yp_shadow": 0.1356,
+      "mean_Yp_lit": 0.3698
+     },
+     "readback": {
+      "sunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "sunIntensity": 6.3,
+      "uSunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "uHorizon": [
+       0.677,
+       0.79,
+       0.944
+      ],
+      "environmentIntensity": 0.35,
+      "hemiVisible": 0.37107,
+      "ambientVisible": 0.18693,
+      "recipeId": "noon-marsh",
+      "probeIsMine": false,
+      "shadowIntensity": 0,
+      "cfgError": null
+     },
+     "liveness": "LIVE"
+    },
+    "key_off": {
+     "sealed_judged_crop": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair03/pair03__key_off.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0.0009,
+      "shadow_mask_frac": 0.2497,
+      "C_local_med": 0.0202,
+      "retention": 0.2954,
+      "hue_shadow_deg": 130.36,
+      "hue_lit_deg": 112.1,
+      "hue_offset_deg": 18.26,
+      "C_shadow": 3.323,
+      "mean_Yp_shadow": 0.0408,
+      "mean_Yp_lit": 0.3256
+     },
+     "full_frame": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair03/pair03__key_off.png",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.0309,
+      "shadow_mask_frac": 0.2415,
+      "C_local_med": 0.0077,
+      "retention": 0.6238,
+      "hue_shadow_deg": 139.7,
+      "hue_lit_deg": 110.43,
+      "hue_offset_deg": 29.27,
+      "C_shadow": 1.295,
+      "mean_Yp_shadow": 0.0082,
+      "mean_Yp_lit": 0.2558
+     },
+     "readback": {
+      "sunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "sunIntensity": 0,
+      "uSunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "uHorizon": [
+       0.677,
+       0.79,
+       0.944
+      ],
+      "environmentIntensity": 0.35,
+      "hemiVisible": 0.37107,
+      "ambientVisible": 0.18693,
+      "recipeId": "noon-marsh",
+      "probeIsMine": false,
+      "shadowIntensity": 1,
+      "cfgError": null
+     },
+     "liveness": "LIVE"
+    },
+    "env_off": {
+     "sealed_judged_crop": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair03/pair03__env_off.png",
+      "W": 512,
+      "H": 512,
+      "sky_frac": 0.0036,
+      "shadow_mask_frac": 0.2442,
+      "C_local_med": 0.0175,
+      "retention": 0.1568,
+      "hue_shadow_deg": 141.19,
+      "hue_lit_deg": 108.83,
+      "hue_offset_deg": 32.37,
+      "C_shadow": 1.025,
+      "mean_Yp_shadow": 0.0063,
+      "mean_Yp_lit": 0.2872
+     },
+     "full_frame": {
+      "file": "/home/user/elder-souls-claude/reports/f4r3/before-pair03/pair03__env_off.png",
+      "W": 1920,
+      "H": 1080,
+      "sky_frac": 0.0309,
+      "shadow_mask_frac": 0.2404,
+      "C_local_med": 0.0192,
+      "retention": 0.1509,
+      "hue_shadow_deg": 132.57,
+      "hue_lit_deg": 102.97,
+      "hue_offset_deg": 29.6,
+      "C_shadow": 0.525,
+      "mean_Yp_shadow": 0.0036,
+      "mean_Yp_lit": 0.309
+     },
+     "readback": {
+      "sunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "sunIntensity": 6.3,
+      "uSunColour": [
+       1,
+       0.94,
+       0.82
+      ],
+      "uHorizon": [
+       0.677,
+       0.79,
+       0.944
+      ],
+      "environmentIntensity": 0,
+      "hemiVisible": 0.37107,
+      "ambientVisible": 0.18693,
+      "recipeId": "noon-marsh",
+      "probeIsMine": false,
+      "shadowIntensity": 1,
+      "cfgError": null
+     },
+     "liveness": "LIVE"
+    }
+   },
+   "ablation_vs_control": {
+    "shadows_off": {
+     "sealed_crop_mean_abs_drgb": 29.7638,
+     "full_frame_mean_abs_drgb": 10.4851,
+     "x_noise_floor_crop": null,
+     "x_noise_floor_frame": null,
+     "resolvable": null
+    },
+    "key_off": {
+     "sealed_crop_mean_abs_drgb": 2.7667,
+     "full_frame_mean_abs_drgb": 19.9319,
+     "x_noise_floor_crop": null,
+     "x_noise_floor_frame": null,
+     "resolvable": null
+    },
+    "env_off": {
+     "sealed_crop_mean_abs_drgb": 12.3566,
+     "full_frame_mean_abs_drgb": 9.7315,
+     "x_noise_floor_crop": null,
+     "x_noise_floor_frame": null,
+     "resolvable": null
+    }
+   },
+   "s60_clauses": {
+    "base": {
+     "arms": {
+      "base": "base",
+      "shadows_off": "shadows_off",
+      "key_off": "key_off",
+      "env_off": "env_off"
+     },
+     "sealed_judged_crop": {
+      "tau1": {
+       "lit_fraction": 0.2077,
+       "lit_key": 11.3838,
+       "lit_env": 24.3224,
+       "lit_ratio": 0.468,
+       "cast_shadow_area": 0.7923
+      },
+      "tau2": {
+       "lit_fraction": 0.2144,
+       "lit_key": 11.2635,
+       "lit_env": 24.1547,
+       "lit_ratio": 0.4663,
+       "cast_shadow_area": 0.7856
+      },
+      "tau4": {
+       "lit_fraction": 0.22148,
+       "lit_key": 11.1575,
+       "lit_env": 23.9792,
+       "lit_ratio": 0.4653,
+       "cast_shadow_area": 0.77852
+      },
+      "tau8": {
+       "lit_fraction": 0.23067,
+       "lit_key": 11.0242,
+       "lit_env": 23.6578,
+       "lit_ratio": 0.466,
+       "cast_shadow_area": 0.76933
+      },
+      "tau16": {
+       "lit_fraction": 0.25124,
+       "lit_key": 10.5154,
+       "lit_env": 22.5443,
+       "lit_ratio": 0.4664,
+       "cast_shadow_area": 0.74876
+      }
+     },
+     "full_frame": {
+      "tau1": {
+       "lit_fraction": 0.67956,
+       "lit_key": 27.0058,
+       "lit_env": 10.6426,
+       "lit_ratio": 2.5375,
+       "cast_shadow_area": 0.32044
+      },
+      "tau2": {
+       "lit_fraction": 0.69478,
+       "lit_key": 26.8629,
+       "lit_env": 10.6197,
+       "lit_ratio": 2.5295,
+       "cast_shadow_area": 0.30522
+      },
+      "tau4": {
+       "lit_fraction": 0.70747,
+       "lit_key": 26.756,
+       "lit_env": 10.5988,
+       "lit_ratio": 2.5244,
+       "cast_shadow_area": 0.29253
+      },
+      "tau8": {
+       "lit_fraction": 0.7198,
+       "lit_key": 26.6792,
+       "lit_env": 10.5558,
+       "lit_ratio": 2.5274,
+       "cast_shadow_area": 0.2802
+      },
+      "tau16": {
+       "lit_fraction": 0.73819,
+       "lit_key": 26.448,
+       "lit_env": 10.4574,
+       "lit_ratio": 2.5291,
+       "cast_shadow_area": 0.26181
+      }
+     }
+    }
+   }
+  }
+ }
+}

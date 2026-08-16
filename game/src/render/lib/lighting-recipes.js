@@ -212,7 +212,13 @@ export function knownLightingRecipes() { return [...REGISTRY.keys()].sort(); }
 // REVERT IN ONE STEP: set `env` back to 0.35 and `envGroundBounce` back to 0.38 here, and restore
 // the three `hor` day-end constants in `sky.js` to 0.760 / 0.790 / 0.700.
 registerLightingRecipe('noon-marsh', variantOf('exterior', {
-  key: 3.00, keyCool: 1.00, sky: 0.315, fill: 0.225, env: 0.35, envGroundBounce: 0.38,
+  // F4 ROUND 3 LEFT THIS AT 0.00 AFTER MEASURING IT AT 1.00, AND THE ZERO IS THE RESULT. At 1.00
+  // the sealed judged crop reads pair01 7.35 -> 15.69 (over the 15 minimum for the first time),
+  // pair02 5.02 -> 4.95, pair03 22.70 -> 11.69 and pair04 4.50 -> 1.33 — one window bought at the
+  // price of the only one that already passed, and on the full frame two passing windows became
+  // none. The long note at the lerp in `sky.js` `apply()` carries the ablation and the reason.
+  // Set it to 1.00 to re-run the arm; nothing else has to change.
+  key: 3.00, keyCool: 0.00, sky: 0.315, fill: 0.225, env: 0.35, envGroundBounce: 0.38,
   fog: { extinction: 0.90, height: 1.0, inscatter: 0.10 }, exposure: 1.0,
 }));
 

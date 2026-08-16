@@ -867,50 +867,70 @@ export class Sky {
     if (R.keyWarmth > 0) sunCol.lerp(hor, R.keyWarmth * 0.30);
     else if (R.keyWarmth < 0) sunCol.lerp(zen, -R.keyWarmth * 0.30);
 
-    // F4 ROUND 3 — THE KEY'S HUE, IN THE COOL DIRECTION, AND IT IS THE ONLY TERM WITH THE RIGHT
-    // DOMAIN. Two rounds tuned the AMBIENT and neither moved `RI-VIS03` M6 `hue_offset` off ~7 deg
-    // against a `exterior_daylight` minimum of 15. The reason is structural and is now measured
-    // rather than argued: M6's SHADOW_MASK is the darkest QUARTILE of the foreground by
-    // construction (`RI-VIS04` §3-D2), while the shadow-map ablation says only about 4% of the
-    // sealed pair01 crop is actually cast-shadowed. So roughly twenty-one of those twenty-five
-    // points are LIT pixels that are merely dark — and any light that reaches both quartiles alike
-    // moves both means together and cannot open the gap between them. Measured at pair01 on the
-    // shipped tree, this round, sealed judged crop / full frame, with the run's own noise floor of
-    // 0.11 deg (crop) beside it:
+    // F4 ROUND 3 — THE COOL DAY KEY: BUILT, MEASURED AT FOUR JUDGED WINDOWS, AND **NOT ENABLED**,
+    // BECAUSE IT TRADES TWO PASSING WINDOWS FOR ONE. `keyCool` is 0.00 on every recipe in the file,
+    // so this branch is a no-op in the shipped build and the whole of what follows is a record of an
+    // experiment, kept in source because one word re-runs it and because two rounds have now been
+    // spent guessing at this lever.
     //
-    //   * the probe's SUN LOBE removed entirely (`sunGain 3.0 -> 0`, a source-only lever no
-    //     page-side battery in this project could reach): 7.35 -> 7.73 crop, 6.37 -> 5.61 frame.
-    //     MY OWN HYPOTHESIS, AND IT IS FALSIFIED — the warm lobe is not what is suppressing hue.
-    //   * the same with the blue-sky probe raised 3x: 6.35 crop, 1.65 frame. WORSE, both domains,
-    //     which reproduces the round-2 critic's `x5-env300-only` from a different direction.
-    //   * the KEY recoloured to `sky.js:644`'s own night blue at compensated intensity: 17.11 crop.
-    //     With the probe's sun lobe recoloured to match — which is what this SOURCE change does and
-    //     a page-side arm cannot — 16.17. So the coupling the r2 critic warned about costs 0.94 deg,
-    //     not the collapse it feared, and 16.17 clears the 15 minimum.
+    // WHY IT WAS TRIED. Round 2's critic measured the key recoloured cool at pair01 and read 17.11
+    // deg against `RI-VIS03` M6's `exterior_daylight` minimum of 15 — the first passing configuration
+    // this project had seen — and named its own risk: it had measured ONE of the five judged windows.
     //
-    // WHAT THIS IS NOT. It is not physically what the sun does; real sunlight is warm and real
-    // skylight is cool, and that arrangement scores here only when the shadow quartile is genuinely
-    // in shadow. Both quartiles remain in the GREEN sector of Lab in every arm measured
-    // (lit 102 -> 114 deg, shadow 109 -> 131 deg), so this opens the gap M6 measures and does not by
-    // itself answer the blind judges' *"every surface returns the same flat matte olive-grey"*.
-    // Said plainly here rather than in a status file, because the next reader of this line deserves
-    // to know the change was chosen against a metric and judged by eye separately.
+    // WHAT IT DOES, MEASURED BY ME ON REAL SOURCE ARMS (this branch on / off, two processes each,
+    // 1920x1080 SwiftShader, sealed judged crops, `RI-VIS03` M6, and BOTH domains per S64):
     //
-    // SCOPED TO ONE RECIPE, ON PURPOSE. `keyCool` defaults to 0 on both bases, so every recipe
-    // except the one that declares it is BIT-IDENTICAL — `dusk-canopy`, `overcast-flat`, `storm`
-    // and `night-moon` are untouched by construction, not by assertion, which is the failure the
-    // round-2 critic found in this file's previous note. The `* day` factor makes it zero at
-    // `day = 0` as well, so the night is untouched twice over.
+    //   window                              crop hue_offset        full frame       cast shadow @tau8
+    //   pair01 08:00 player   OFF 7.35/7.46  ->  ON 15.69/15.99    6.37 -> 8.44     4.2%
+    //   pair02 13:00 player   OFF 5.02/5.09  ->  ON  4.95/4.38     6.82 -> 9.76     0.001%
+    //   pair03 13:00 npc      OFF 22.70      ->  ON 11.69         18.54 -> 4.34     76.9%
+    //   pair04 08:00 npc      OFF 4.50       ->  ON  1.33         24.98 -> 10.19    14.9%
     //
-    // AT MATCHED LUMINANCE (S59). `(0.549, 0.663, 0.847)` carries Rec.709 luminance 0.6521 against
-    // the shipped key's 0.9441, so the key's INTENSITY is divided by that ratio and the light's
-    // luminous output does not move. The compensation is derived from the two triples in flight
-    // rather than hard-coded, so it stays exact at every hour and is exactly 1.0 wherever the lerp
-    // is a no-op. It is applied to `sun.intensity` ONLY: the probe's `sunGain` is `R.key`, which
-    // does not move, so the probe's sun lobe changes COLOUR and not BRIGHTNESS.
+    // ON THE CROP IT PASSES AT ONE WINDOW AND DESTROYS THE ONLY WINDOW THAT ALREADY PASSED. On the
+    // full frame it is worse still: two windows were above 15 before and none are after.
     //
-    // REVERT IN ONE STEP: set `keyCool: 0` on `noon-marsh` in `lighting-recipes.js`. That restores
-    // the shipped behaviour exactly, because the guard below is `> 0`.
+    // AND THE MECHANISM, WHICH I RAN THE ABLATION FOR RATHER THAN NARRATED (S63). M6's SHADOW_MASK
+    // is the darkest QUARTILE of the foreground by construction (`RI-VIS04` §3-D2). Where the crop
+    // holds almost no cast shadow — pair01 at 4.2%, pair02 at 0.001% — that quartile is dark LIT
+    // pixels wearing the key's own hue, so cooling the key separates them from the brightest lit
+    // pixels and the number rises without any shadow becoming better lit. Where the crop really is
+    // in shadow — pair03 at 76.9% — the shipped WARM key against the blue sky was already producing
+    // the separation the metric exists to find (22.70 deg), and cooling the key walks the lit hue
+    // toward the shadow hue and closes it (lit 107.65 -> 118.70 against a shadow at 130.4).
+    //
+    // THE EYE AGREES WITH THE METRIC WHERE THE METRIC IS MEASURING SHADOW, AND NOT WHERE IT IS NOT.
+    // `artifacts/W1-F4-r3/frames/look-pair03-{BEFORE,AFTER}-crop.png`: the warm sunlit pools on the
+    // ground are the only warm accents in that frame and they go grey. `look-pair01-{BEFORE,AFTER}`:
+    // the metric more than doubles and the picture simply desaturates — `C_shadow` 12.4 -> 8.9.
+    // A statistic can fail a build and can never pass one.
+    //
+    // SO THE ITEM'S ABSENCE IS NOT "THE KEY HAS NO HUE". Three of the four judged crops contain
+    // almost no cast shadow, and that — not the illuminant — is what M6 is reporting. See the
+    // status file for the ruling and for what would overturn it.
+    //
+    // WHAT THE FIELD DOES IF SOMEBODY SETS IT. `keyCool` in 0..1 lerps the key toward
+    // `KEY_COOL_DAY`, scaled by `day` so the night is untouched, at MATCHED REC.709 LUMINANCE (S59):
+    // the compensation is derived from the two triples in flight, is exactly 1.0 wherever the lerp is
+    // a no-op, and is applied to `sun.intensity` ONLY — the probe's `sunGain` is `R.key`, which does
+    // not move, so the probe's sun lobe changes COLOUR and not BRIGHTNESS. Verified live: with
+    // `keyCool: 1.00` the readback is `sunColour (0.549, 0.663, 0.847)`, `sunIntensity 9.12168`
+    // against the shipped `(1, 0.94, 0.82)` at 6.3, and mean `Yp` moved -1.6% (lit) and -1.1%
+    // (shadow) at pair01, inside S59's +/-3%.
+    //
+    // SCOPED, BY CONSTRUCTION RATHER THAN BY ASSERTION. The field defaults to 0 on BOTH bases, so
+    // `dusk-canopy`, `overcast-flat`, `storm` and `night-moon` cannot be reached by it even if
+    // `noon-marsh` turns it on — which is precisely the preservation clause the round-2 critic showed
+    // this file's previous note did not have.
+    //
+    // ALSO MEASURED AND FALSIFIED THIS ROUND, so nobody repays for it: the probe's own SUN LOBE.
+    // `bakeEnvironmentProbe` is called below with `sunGain: R.key * max(0.05, day)`, and `noon-marsh`
+    // carries `key: 3.00` — so round 1's key raise silently TRIPLED the warm lobe this file's own
+    // comment warns "double-counts it into the diffuse mip and washes the shadows out". Removing it
+    // entirely (`sunGain 3.0 -> 0`, a source-only lever no page-side battery could reach) moves
+    // pair01 7.35 -> 7.73 on the crop and 6.37 -> 5.61 on the frame, against that run's own floor of
+    // 0.11 deg. It is not the suppressor. Raising the blue-sky probe 3x on top of it reads 6.35 crop
+    // and 1.65 frame — WORSE in both domains, for the same reason the cool key helps at pair01 and
+    // not at pair03: a term that reaches both quartiles alike moves both means together.
     let keyLumaComp = 1;
     if (R.keyCool > 0 && day > 0) {
       const before = 0.2126 * sunCol.r + 0.7152 * sunCol.g + 0.0722 * sunCol.b;
