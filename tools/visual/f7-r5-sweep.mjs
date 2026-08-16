@@ -720,7 +720,14 @@ if (MODE === 'supersample') {
     return na && nb ? { mean_abs_dY_adjacent: +(a / na).toFixed(4), mean_abs_dY_two_apart: +(b / nb).toFixed(4), stipple_ratio: +((a / na) / (b / nb)).toFixed(4) } : null;
   };
   for (const poseId of POSE_LIST) {
+    // ATTACHED BEFORE THE LOOP, NOT AFTER IT. The first version assigned `out.supersample[poseId]`
+    // after the arm loop, so the `write()` inside the loop persisted an object the rows were not
+    // in yet — a run killed by contention or its own timeout would have left its numbers in the
+    // console log and NOT in the banked artifact. That is exactly HAZARDS §18's shape and exactly
+    // what round 4 was faulted for on its frame-time figures. Found by checking the artifact
+    // rather than the log while the run was still going.
     const rows = {};
+    out.supersample[poseId] = rows;
     for (const armId of ARMS) {
       await applyArm(armId);
       await setCanvas(CW, CH); await POSES[poseId](); await step(STEP_F);
@@ -746,7 +753,6 @@ if (MODE === 'supersample') {
       console.log(`supersample ${poseId} ${armId}: 1x adj=${a && a.mean_abs_dY_adjacent} -> 2x-down adj=${b && b.mean_abs_dY_adjacent} (${rows[armId].hf_energy_surviving_pct}% survives)`);
       write();
     }
-    out.supersample[poseId] = rows;
     await setCanvas(CW, CH);
     write();
   }
