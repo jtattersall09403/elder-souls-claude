@@ -271,5 +271,61 @@
     "orchestration/status/W1-F7-r5.json",
     "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/"
   ],
-  "declared_overlap": "`node tools/ownership.mjs --for game/src/render/water.js`, run this turn: 'nobody live has declared this file'. `--for tools/visual/f7-r4-sweep.mjs` reports `tools/visual/` claimed as a DIRECTORY by W1-30V [running] — so, exactly as rounds 3 and 4 did, I ADDED files there and edited none of theirs. I also edited `tools/roadmap-coverage.mjs` to home RI-VIS11; it is not claimed by anyone."
+  "declared_overlap": "`node tools/ownership.mjs --for game/src/render/water.js`, run this turn: 'nobody live has declared this file'. `--for tools/visual/f7-r4-sweep.mjs` reports `tools/visual/` claimed as a DIRECTORY by W1-30V [running] — so, exactly as rounds 3 and 4 did, I ADDED files there and edited none of theirs. I also edited `tools/roadmap-coverage.mjs` to home RI-VIS11; it is not claimed by anyone.",
+
+  "headline": "The band constant was twelve times too large and is now 0.10 m, verified in my own instrument at two poses before shipping and confirmed live on the GPU: at `edge-b225` the shipped arm goes from 83.35% to 100.16% of the baseline's visible water for identical width, and at `edge-b135` it holds 32 px of waterline against 1.20 m's 31 while returning 9.39 points of water. **But the round's real finding is that threshold 10 — the remedy the r4 verdict prescribed — is not stable either**: over the ordinals the arms actually span, the unchanged baseline arm's own mask moves 33.68% at threshold 10 and 0.26% at threshold 16, so every headline row here is threshold 16 with its band printed beside it. **And the acceptance fails on both halves** — presence 51.38% against a 90% bar at `edge-b135`, width 1 px against a 12 px bar at `edge-b225` — because the dominant cost is not the constant I was sent to fix but round 3's `alpha * 0.42` multiplier, which no round has been sent at. Three debts are also paid: motion is shot (12-bearing orbits, phase live), `TemporalVar` is measured for the first time and is a **HARD FAIL at 0.000341**, `RI-VIS04` §8's supersample test is run and puts `NormalEnergy` at `unresolved` — and the dither-stipple reference item is written as `RI-VIS11`, which falsifies the 'dither' diagnosis four critics had been passing to each other.",
+
+  "next_step": "A fresh critic. Cheapest reproductions, each one process: `node tools/visual/f7-r5-report.mjs corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/*/sweep.json` prints every arm beside the drift band of the unchanged arm, from the banked files, no browser. `node tools/visual/f7-r5-offline.mjs --mode presence --dir <any r4 or r5 artifact dir>` re-derives `presence` from banked frames. `node tools/visual/f7-r5-offline.mjs --mode temporal --dir .../dm-motion` re-derives the `TemporalVar` hard fail. `node tools/visual/f7-r5-band-census.mjs` re-derives the band coverage offline with no browser at all. To re-take a measurement: `node tools/visual/f7-r5-sweep.mjs --mode arms --site vista-deep-marshes --poses edge-b135 --arms r3,band-0.10,fixed --thresholds 10,16`. **The three things I most want attacked:** (1) the width measure's threshold-dependence at `edge-b045` (20 px vs 1 px on an unchanged arm) — I have not shown `gradient_width_px` is stable at ANY threshold and the acceptance rests on it; (2) the missing S52 null, which leaves the 32 px result unprotected; (3) my ruling that round 6 should attack the `0.42` alpha multiplier rather than the band, which I recommend without having run its falsifier.",
+
+  "artifacts": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/ — `offline/` (presence re-derivation over round 4's frames, the stipple/phase measurement, the band-coverage census, the offline TemporalVar; all browser-free); `dm-b225-sweep/` (the failing pose swept 0.05–1.20 m, 8 arms, 9 interleaved baselines, the drift table that answers the threshold question); `dm-b135-verify/` (the pose carrying the positive result, 5 arms, 6 interleaved baselines); `dm-b225-reverse/` (HAZARDS §25a rule 2, arms reversed, and the before/after of the shipped change); `dm-b045-b315/` (the two remaining Deep Marshes bearings at the shipped value); `dm-motion/` (12-bearing orbits with `uWaterPhase` LIVE, plus a 30-frame stationary sequence — the first motion ever shot for this item); `dm-supersample/` (RI-VIS04 §8, 1x vs 2x-downsampled); `dm-b135-null/` (the S52 null attempt). Every `sweep.json` carries its commit, its `head_expression_asserted` (including the band default it read at start), its `stand_verification` and its `gpu_state_before` with the live uniform.",
+
+  "self_audit": {
+    "what_would_make_this_status_wrong": [
+      "**If `gradient_width_px` is not stable at threshold 16 either.** I proved mask stability and then reported widths, and at `edge-b045` the unchanged arm's width is 20 at threshold 10 and 1 at threshold 16. I flagged it rather than burying it, but a critic could reasonably rule that every width row in this round — including my 32 px — is unreadable until the width's own per-threshold drift is measured across the pose set. That is the attack I would make.",
+      "**If the S52 null would have reproduced the 32 px width.** It did not run. A constant-transmittance arm at matched luminance that produces a 32 px 'waterline' would void my headline in both directions, and I have no evidence either way.",
+      "**If the interleaved flanking baseline is itself wrong.** It assumes drift is approximately linear over one capture interval on each side. If drift is stepwise — e.g. a reflection target refreshing every N frames — the mean of two flanking captures is not the right correction and my presence figures carry a bias I have not characterised.",
+      "**If `presence` is the wrong measure of 'is there water'.** It is a luma ratio against a water-hidden frame, so a change that made the water the same brightness as the bed but visibly wrong would score 100%. It measures how much the water changes the picture, not whether it looks like water.",
+      "**If my choice of 0.10 m over 0.05 m or 0.20 m matters.** It rests on the offline band census, not on the captures, because all three sit inside the presence drift band at `edge-b225`. If the census's radius or its 1.35 m clamp is the wrong population, the choice is arbitrary within that range.",
+      "**If RI-VIS11's `unresolved` band lets a real defect through.** I wrote the item and then wrote its middle band after my own first measurement fell in the gap. A bar amended to accommodate the first number taken against it deserves suspicion, which is why I made the middle fail closed rather than pass."
+    ],
+    "did_i_grade_my_own_work": "No. I have recorded that the acceptance fails on both halves at the shipped value, that `TemporalVar` is a newly-measured HARD FAIL that makes M12's two-or-more clause met three times over, that the sub-metric F7 has been passing is `unresolved` under a bar I wrote this turn, that the S52 null did not run because of my own invocation error, that the Western Rootlands is still 1 of 4 bearings, and that the width measure I report is not shown to be stable. A critic decides.",
+    "numbers_i_inherited_rather_than_derived": "In the measurement sections, none — every figure came from a file I opened or a run I launched this turn, and where I re-derived one of the r4 critic's I say so and give both. THREE EXPLICIT EXCEPTIONS, all labelled in place: (1) round 4's frame-time figures, quoted only as round 4's and not re-run; (2) round 4's `depthWrite`/transparency-sort result, quoted only as round 4's and not re-run; (3) round 4's worst-pose `FresnelDelta` (0.03085) and `ShoreDelta` (0.00610), which I cite when saying M12's two-or-more clause is met — those are the r4 critic's numbers at threshold 6, I did not re-derive them at threshold 16, and my `TemporalVar` hard fail stands on its own regardless."
+  },
+
+  "source_reads": [
+    "corpus/90-verdicts/wave1/W1-F7-WATER-r4.md and .json (in full)",
+    "orchestration/status/W1-F7-r4.json (in full)",
+    "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md §9 (the MIN BAR) and §8",
+    "corpus/70-visual/RI-VIS03-fidelity-image-metrics.md M12 and §M12a including the r4 critic's in-place correction of clause 4",
+    "corpus/50-world/RI-WLD10-the-water-model.md §8 (the WCI table), §9 (the two seas), §10 and §10.1",
+    "corpus/00-doctrine/ARBITRATION.md S52, S59, S60, S61, S63, S64, S66",
+    "orchestration/HAZARDS.md §10, §13, §14c, §17, §18, §23, §25, §25a, §26, §29, §30",
+    "CLAUDE.md (in full — rule 0, 0a, 0b, 0c, 0d, 0e, the character directive, the four-line check)",
+    "game/src/render/water.js (whole file, before and after my edit)",
+    "tools/visual/f7-r4-sweep.mjs (whole file — the instrument I replaced and why)",
+    "tools/visual/f7-r4-shoreline-census.mjs (the offline WorldField pattern)",
+    "tools/roadmap-coverage.mjs (the reference-item -> roadmap mapping I extended)",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/*/sweep.json (every pose record, to resolve the r4 status's internal contradiction)",
+    "FRAMES OPENED BY EYE, not just measured: r4 `dm-edge2/frames/edge-b135--{prefix-o0,fixed-o3,water-hidden}.png`; r5 `dm-motion/frames/motion-orbit--{fixed,band-0.10}--b{015,195}.png`"
+  ],
+
+  "method_deviations": [
+    "I ran browsers with `node tools/contention.mjs` reporting the box over its per-core ceiling for part of this round. Full readings are in `what_i_could_not_do`. I launched only on a GO and did not launch once it read WAIT.",
+    "I killed the motion run by PID (HAZARDS §10 — by PID, never `pkill -f`) after its `fixed` arm was complete and its `band-0.10` 12-bearing orbit was complete, to free contention for the S52 null. Its third arm (`r3`) was never captured and `band-0.10`'s 30-frame temporal sequence got 1 frame. Recorded rather than presented as a completed run.",
+    "The arm named `fixed` means 1.20 m in the four runs launched before the change landed and 0.10 m in the two launched after. Every `sweep.json` records which, and the status flags it explicitly, but a reader skimming arm names across directories will be misled if they do not read that flag.",
+    "The S52 null arms were defined and not captured, because I passed `--nulls` alongside an explicit `--arms` list that omitted them. My error, found by reading my own output table.",
+    "`RI-VIS11` §3's middle band (45–70% = `unresolved`) was added AFTER the first measurement against it returned 64.95%. Amending a bar in the light of the first number taken against it is exactly the move `CRITIC-DOCTRINE` §1.3 guards, so it was made fail-closed: the amendment can only make a build fail, never pass."
+  ],
+
+  "files_touched": [
+    "game/src/render/water.js — the one-number default change, plus its comment and cache key",
+    "tools/visual/f7-r5-sweep.mjs — new (interleaved baseline, presence, motion, supersample, reversible order)",
+    "tools/visual/f7-r5-offline.mjs — new (presence, stipple/phase, TemporalVar; all browser-free)",
+    "tools/visual/f7-r5-band-census.mjs — new (offline band coverage against WorldField)",
+    "tools/visual/f7-r5-report.mjs — new (prints every arm beside its drift band)",
+    "corpus/70-visual/RI-VIS11-water-surface-micro-detail.md — new reference item",
+    "tools/roadmap-coverage.mjs — homed RI-VIS11 under F7 and F5; `node tools/roadmap-coverage.mjs` reports all gates green",
+    "orchestration/status/W1-F7-r5.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/"
+  ]
 }
