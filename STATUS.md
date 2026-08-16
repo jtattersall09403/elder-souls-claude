@@ -58,24 +58,19 @@ file order; the new code is invariant in all 500.
 **Still wrong, and you will see it:**
 - **Dialogue: clicking works, and character creation now uses the same window.** Both faults you found
   are closed. There was **no pointer path in the entire interface** — a rule written for the combat
-  HUD's thumbstick screens said *"no cursor, no hover, no click target"* and was silently inherited by
-  the dialogue window, so every control you could see was a picture of a control. **Driving it turned
-  up a bug that would have trapped you:** creation **dead-ended permanently** at the class verdict on
-  all three routes.
-- **The menus are denser *and* readable now.** Sizing each panel to its contents cleared all five
-  density failures and then made the text collide — level-up drew name, value and gauge into the same
-  pixels on 9 of 10 rows, and 8 of 19 journal entries laid out past the panel. Both are now **0**.
+  HUD's thumbstick screens was silently inherited by the dialogue window, so every control you could see
+  was a picture of a control. Driving it also turned up a bug that would have trapped you: creation
+  **dead-ended permanently** at the class verdict on all three routes.
+
+
 - **The container screen: three rounds, three failures, and every one closed a real defect.** Its
-  description **declared 137 characters and drew 100** with no "…"; **all seven rows declared a gold
-  price and drew none**; the fix for that truncated the weight column to a *wrong number*; and two
-  headers were being printed straight through the first row. **All fixed** — no numeric column
-  truncates, density is better than before it broke, and long descriptions now open in a reading view
-  where all **45 of 45** items show their full text.
-  **Three of the checks meant to catch this could not fail.** One read the text the screen *declared*
-  rather than what it *drew*; one was a literal `true`; one only looked inside a single row band. All
-  three now assert real numbers and go red on the broken build first.
-
-
+  description **declared 137 characters and drew 100**; **all seven rows declared a gold price and drew
+  none**; the fix for that truncated the weight column to a *wrong number*; and two headers printed
+  straight through the first row. **All fixed** — no numeric column truncates, density is better than
+  before it broke, and long descriptions open in a reading view where all **45 of 45** items show their
+  full text. **Three of the checks meant to catch this could not fail** — one read the text the screen
+  *declared* rather than what it *drew*, one was a literal `true`, one only looked inside a single row
+  band. All three now go red on the broken build first.
 
 - **The water: three rounds in, and the honest state is that we still cannot see the fix.** The sea was
   compositing a **61% mirror at every viewing angle**, including looking straight down where real water
@@ -93,9 +88,13 @@ file order; the new code is invariant in all 500.
   a setting that drifts by up to 62% with nothing changed.** Round five found a stable one — and then
   found that the thing eating the water isn't the fade at all: a **multiplier added two rounds ago
   costs about three times more** than the setting everyone had been arguing about. That's round six.
-  **And the good news is real:** for the first time in this piece's history, a proper control proves the
-  effect **is not just the picture getting darker** — a matched-brightness fake produces no waterline at
-  all where the real one produces 32 pixels. It also finally shot the water **in motion**, five rounds
+  **And a correction the builder made against itself, after it had already filed.** It had declared its
+  fairness control a clean pass. Re-checking its own logs it found a fifth run that half-fails: at
+  matched brightness the fake produces no waterline where the real one produces 32 pixels — but make
+  the fake slightly darker and it reproduces the effect almost exactly. Its own words: *"had I stopped
+  ten minutes earlier I would have published the clean version and been wrong."* The consequence is
+  that **the width measurement this work has been judged on for three rounds cannot be trusted**, and
+  the target I set for it was written on sand. It also finally shot the water **in motion**, five rounds
   in, and that turned up a new hard failure nobody had measured.
   **Still true: nobody knows what draws the marsh stripes.** Switch the reflection off entirely and 76%
   of them remain; two further explanations were proposed and killed by the same test.
