@@ -88,6 +88,7 @@ const FROZEN_PHASE = Number(args.phase || 11.0);
 const MASK_ARM = String(args.maskArm || 'prefix');
 const MASK_THRESHOLDS = String(args.thresholds || '4,6,10').split(',').map(Number);
 const PERF_ITERS = Number(args.perfIters || 16);
+const CLOSE_R = Number(args.closeR || 4);
 const { PNG } = await import(path.join(REPO, 'tools/node_modules/pngjs/lib/png.js'));
 const V = await import(path.join(REPO, 'tools/metrics/lib/vis03.mjs'));
 
@@ -127,6 +128,43 @@ function distanceFromLand(water, W, H) {
   for (let i = 0; i < N; i++) d[i] /= 3;
   return d;
 }
+/* ---- WHAT COUNTS AS "LAND" FOR A DISTANCE TRANSFORM ------------------------------------------
+ * `gradient_width_px` is the rise distance of luma against DISTANCE FROM NON-WATER, and the r3
+ * critic wrote the caveat its own headline depended on: "in the Deep Marshes that is reed clumps,
+ * not a bank." Our marsh water is punched full of reed blades, tussocks and trunks, each of which
+ * is a few pixels of non-water sitting in the middle of open water. A raw distance transform
+ * therefore reports "3 px from land" for a pixel in the middle of a lake, and no fade of any width
+ * can show up, because the profile's far bins never get populated by open water at all.
+ *
+ * So the distance is taken from a MORPHOLOGICALLY CLOSED copy of the mask — dilate by r, erode by
+ * r — which swallows holes narrower than 2r and leaves the actual bank, a large connected region,
+ * exactly where it was. Luma is still summed over the ORIGINAL pinned mask, so no land pixel ever
+ * enters a luma figure; only the binning changes. Both widths are reported side by side, raw and
+ * closed, with the number of pixels the closing moved, so a critic can see how much work it did.
+ * The closing is applied identically to every arm because it is applied to THE PIN. */
+function closeMask(m, W, H, r) {
+  const N = W * H, dil = new Uint8Array(N), out = new Uint8Array(N);
+  const box = (src, dst, want) => {
+    // separable box min/max: horizontal then vertical
+    const tmp = new Uint8Array(N);
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      let v = want ? 0 : 1;
+      for (let k = -r; k <= r; k++) { const xx = x + k; if (xx < 0 || xx >= W) continue; const s = src[y * W + xx]; v = want ? (v | s) : (v & s); }
+      tmp[y * W + x] = v;
+    }
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      let v = want ? 0 : 1;
+      for (let k = -r; k <= r; k++) { const yy = y + k; if (yy < 0 || yy >= H) continue; const s = tmp[yy * W + x]; v = want ? (v | s) : (v & s); }
+      dst[y * W + x] = v;
+    }
+  };
+  box(m, dil, true);       // dilate
+  box(dil, out, false);    // erode
+  let moved = 0;
+  for (let i = 0; i < N; i++) if (out[i] !== m[i]) moved++;
+  return { closed: out, moved };
+}
+
 function shoreProfile(png, mask, distCache) {
   const o = lumOf(png), { w: W, h: H } = o, N = W * H;
   const dist = distCache || distanceFromLand(mask, W, H);
@@ -151,6 +189,29 @@ function shoreProfile(png, mask, distCache) {
   const d10 = at(0.10), d90 = at(0.90);
   return { profile: prof, near_shore_luma: +first.toFixed(3), open_water_luma: +last.toFixed(3), span: +span.toFixed(3), d10_px: d10, d90_px: d90, gradient_width_px: Math.max(1, d90 - d10) };
 }
+/** For the `probe-shoreT-*` arms ONLY this is the measurement; for every other arm it is a
+ * histogram of the frame and is reported but meaningless. `transition_frac` is the fraction of
+ * masked pixels strictly between the two plateaus — the fade's spatial extent, expressed as area
+ * rather than as a screen distance so it does not depend on where the boundary happens to run. */
+function fadeField(png, mask) {
+  const o = lumOf(png);
+  const hist = new Array(10).fill(0);
+  let n = 0, lo = 0, hi = 0, mid = 0;
+  for (let i = 0; i < mask.length; i++) {
+    if (!mask[i]) continue;
+    const v = o.y[i] / 255; n++;
+    hist[Math.min(9, Math.floor(v * 10))]++;
+    if (v < 0.10) lo++; else if (v > 0.90) hi++; else mid++;
+  }
+  if (!n) return null;
+  return {
+    masked_px: n, decile_hist: hist,
+    below_0p10: lo, above_0p90: hi, transition_px: mid,
+    transition_frac: +(mid / n).toFixed(4),
+    note: 'ONLY meaningful on a probe-shoreT-* arm, where the frame IS the fade field. transition_frac is the share of the water surface on which the fade is partway between off and full — i.e. the fade\'s extent. Tonemapping maps the value but not the ordering, so the extent survives it.',
+  };
+}
+
 function maskedLuma(png, mask) {
   const o = lumOf(png); let n = 0, s = 0;
   for (let i = 0; i < mask.length; i++) if (mask[i]) { n++; s += o.y[i]; }
@@ -177,6 +238,26 @@ await g.h('setTimeOfDay', TIME);
 await step(12);
 const snap = await g.h('snapshot');
 const [px, py, pz] = snap.player.pos;
+
+/* ---- DID THE TELEPORT LAND WHERE THE DECK SAYS, AND IN THE REGION THE DECK NAMES? ------------
+ * Looking at the very first frame this tool produced, the in-frame region label read
+ * `western-rootlands` on a capture taken at the `vista-deep-marshes` stand. That is the same
+ * symptom `tools/visual/f7-critic-deck-region.mjs` was written for in round 1, and it decides
+ * whether every per-region number in this piece's history is attributed to the right region — so
+ * it is measured here, in-process, off the RUNNING field, and printed before any arm. */
+const standCheck = await g.page.evaluate(({ tx, tz }) => {
+  const E = window.__ENGINE, f = E.field, p = E.sim.player.pos;
+  const rAt = (x, z) => { const r = f && f.regionAt ? f.regionAt(x, z) : null; return r ? (r.id || r.name) : null; };
+  return {
+    deck_asked_for: [tx, tz],
+    player_pos_after_teleport: [+p[0].toFixed(2), +p[1].toFixed(2), +p[2].toFixed(2)],
+    teleport_offset_m: +Math.hypot(p[0] - tx, p[2] - tz).toFixed(2),
+    running_field_region_at_deck_point: rAt(tx, tz),
+    running_field_region_at_player: rAt(p[0], p[2]),
+    hud_region_name: (f && f.regionAt ? (f.regionAt(p[0], p[2]) || {}).name : null) || null,
+  };
+}, { tx: site.place.x, tz: site.place.z });
+console.log('stand:', JSON.stringify(standCheck));
 
 async function shot(name) {
   const d = await g.h('screenshot');
@@ -297,6 +378,25 @@ const R3_SHORE_BLOCK = `        float esBandM=0.0;
         float esShoreT=esTrans;
         diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.42,esShoreT*clamp(uWaterShoreFade,0.0,1.0));`;
 
+/* ---- THE DIRECT PROBE: RENDER THE FADE FIELD ITSELF ------------------------------------------
+ * `gradient_width_px` measures luma against distance-from-land, so it reads the SCENE as much as
+ * the shader: at three of four declared Deep Marshes poses it does not move at all while the arm's
+ * own mean luma moves 5-8%. That is a weak instrument for the one quantity actually in dispute —
+ * HOW WIDE IS THE FADE — and the r2 tool already established the better technique for this piece
+ * by writing the reflection weight itself into the frame.
+ *
+ * So these two arms paint `esShoreT`, the fade term, straight into the water surface as greyscale
+ * and force alpha to 1 so nothing composites over it. Tonemapping still maps the value, but it
+ * maps it MONOTONICALLY, so the SPATIAL EXTENT of the transition — the only thing being claimed —
+ * survives it. The transition band is the population of water pixels strictly between the black
+ * and white plateaus; a fade that collapses at k = 4.5 has almost none, and a fade that spans a
+ * metre of column has many. Scored over the same pinned mask as everything else. */
+const OUTGOING_LINE = `        outgoingLight=mix(outgoingLight,esSurface,.68);`;
+const PROBE_TAIL = `        outgoingLight=vec3(clamp(esShoreT,0.0,1.0));
+        diffuseColor.a=1.0;`;
+const PROBE_R3_TAIL = `        outgoingLight=vec3(clamp(esTrans,0.0,1.0));
+        diffuseColor.a=1.0;`;
+
 const waterSrc = fs.readFileSync(path.join(REPO, 'game/src/render/water.js'), 'utf8');
 const asserted = {
   r3_depth_block: waterSrc.includes(R3_DEPTH_BLOCK),
@@ -316,6 +416,11 @@ const SHADER_ARMS = () => ({
   // change with NO depth dependence, NO k dependence and NO shore geometry anywhere. Anything it
   // reproduces is a brightness proxy and inadmissible in both directions.
   'null-const-trans': [[TRANS_LINE, `        float esTrans=${NULL_TRANS.toFixed(4)};`], [BAND_LINE, `        float esBandM=0.0;`]],
+  // The r4 fade field, painted. Everything after it in the shader still runs; only what reaches
+  // the framebuffer changes, so the geometry, the mask and the pose are untouched.
+  'probe-shoreT-r4': [[OUTGOING_LINE, PROBE_TAIL]],
+  // The r3 fade field — transmittance alone — painted the same way, for the same pose and mask.
+  'probe-shoreT-r3': [[OUTGOING_LINE, PROBE_R3_TAIL]],
 });
 const UNIFORM_ARMS = {
   fixed: {},
@@ -392,6 +497,7 @@ try { commit = execSync('git rev-parse HEAD', { cwd: REPO }).toString().trim(); 
 const out = {
   tool: 'f7-r4-sweep', roadmap_item: 'F7', generated: new Date().toISOString(), commit, seed: SEED,
   site: SITE, region_from_census: censusRow.region_actual, region_k: censusRow.region_k,
+  stand_verification: standCheck,
   time_of_day: TIME, canvas: [CW, CH], mode: MODE, frozen_phase: FROZEN_PHASE,
   mask_policy: {
     pinned: true, mask_arm: MASK_ARM, thresholds: MASK_THRESHOLDS,
@@ -446,6 +552,20 @@ async function applyArm(armId) {
 }
 const clearArm = async () => { await restoreShader(); await setUniforms({}); await step(6); };
 
+/** EVERY capture in this tool goes through here, so the hidden frame, the pin and each arm are all
+ * taken with the identical pose/hide/step/shot sequence. The first version stepped 8 frames before
+ * the hidden frame and 22 before the pin, and the two were then differenced to build the mask — so
+ * fourteen frames of canopy drift were being counted as water. The prefix arm, which IS the mask
+ * arm, came back with an own-mask delta of +57.77% against its own pin, which is how it was found. */
+async function captureAt(poseId, tag, hideWhat = null) {
+  await POSES[poseId]();
+  const n = hideWhat ? await hide(hideWhat) : 0;
+  await step(STEP_F);
+  const buf = await shot(tag);
+  if (hideWhat) { await unhide(); }
+  return Object.assign(buf, { meshes_hidden: n });
+}
+
 async function preparePose(poseId) {
   const meta = await POSES[poseId]();
   await step(STEP_F);
@@ -459,21 +579,44 @@ async function preparePose(poseId) {
     const pr = await project(tx, wy, tz);
     rec.water_edge_verified = { projectPoint: pr, on_screen: !!(pr && pr.on_screen && pr.in_front) };
   }
-  // The hidden frame and the PIN are taken once, here, before any arm is measured.
-  const nHidden = await hide('all'); await step(4);
-  const hiddenBuf = await shot(`${poseId}--water-hidden`);
-  await unhide(); await step(4);
+  // The hidden frame and the PIN are taken once, here, before any arm is measured — and through
+  // `captureAt`, i.e. the same protocol every arm uses.
   await applyArm(MASK_ARM);
-  const pinBuf = await shot(`${poseId}--PIN-${MASK_ARM}`);
+  const hiddenBuf = await captureAt(poseId, `${poseId}--water-hidden`, 'all');
+  const nHidden = hiddenBuf.meshes_hidden;
+  const pinBuf = await captureAt(poseId, `${poseId}--PIN-${MASK_ARM}`);
   await clearArm();
   const hiddenPng = readPng(hiddenBuf), pinPng = readPng(pinBuf);
   const pins = {};
   for (const thr of MASK_THRESHOLDS) {
     const { m, n } = maskFrom(pinPng, hiddenPng, thr);
-    pins[thr] = { mask: m, px: n, dist: distanceFromLand(m, pinPng.width, pinPng.height) };
+    const { closed, moved } = closeMask(m, pinPng.width, pinPng.height, CLOSE_R);
+    pins[thr] = {
+      mask: m, px: n,
+      dist_raw: distanceFromLand(m, pinPng.width, pinPng.height),
+      dist_closed: distanceFromLand(closed, pinPng.width, pinPng.height),
+      close_radius_px: CLOSE_R, close_moved_px: moved,
+    };
   }
   rec.meshes_hidden = nHidden;
   rec.pinned_mask_px = Object.fromEntries(MASK_THRESHOLDS.map((t) => [t, pins[t].px]));
+  rec.mask_closing = Object.fromEntries(MASK_THRESHOLDS.map((t) => [t, { radius_px: pins[t].close_radius_px, pixels_moved: pins[t].close_moved_px, pct_of_mask: pins[t].px ? +(100 * pins[t].close_moved_px / pins[t].px).toFixed(2) : null }]));
+  // THE MASK'S OWN BAND, WITHOUT WHICH `own_mask_delta_pct` IS UNREADABLE. The mask is a
+  // difference of two frames, and `stepFrames` advances the canopy, the sun and the reflection
+  // target between any two captures even with `uWaterPhase` frozen (the r3 critic established
+  // that the freeze fixes the water and not the scene). So a mask built by differencing carries
+  // scene drift as well as water. This takes the pin a SECOND time, through the identical
+  // protocol, and reports how far the mask moves when NOTHING changed. Any arm whose own-mask
+  // delta is inside this replicate spread has not moved its mask at all.
+  await applyArm(MASK_ARM);
+  const pin2Buf = await captureAt(poseId, `${poseId}--PIN2-${MASK_ARM}`);
+  await clearArm();
+  const pin2Png = readPng(pin2Buf);
+  rec.pin_replicate = Object.fromEntries(MASK_THRESHOLDS.map((t) => {
+    const r2 = maskFrom(pin2Png, hiddenPng, t);
+    return [t, { pin_px: pins[t].px, replicate_px: r2.n, replicate_delta_pct: pins[t].px ? +(100 * (r2.n - pins[t].px) / pins[t].px).toFixed(2) : null }];
+  }));
+  rec.pin_replicate_note = 'Two captures of the SAME arm through the SAME protocol. This is the band on every `own_mask_delta_pct` below; a delta inside it is nothing.';
   maskStore.set(poseId, { hiddenPng, pins, W: pinPng.width, H: pinPng.height });
   return rec;
 }
@@ -481,8 +624,7 @@ async function preparePose(poseId) {
 async function measureArm(poseId, armId, ordinal) {
   const store = maskStore.get(poseId);
   const applied = await applyArm(armId);
-  await POSES[poseId](); await step(STEP_F);
-  const buf = await shot(`${poseId}--${armId}-o${ordinal}`);
+  const buf = await captureAt(poseId, `${poseId}--${armId}-o${ordinal}`);
   const png = readPng(buf);
   const row = { arm: armId, frame: `frames/${poseId}--${armId}-o${ordinal}.png`, ...applied, by_threshold: {} };
   if (applied.shader && !applied.edits_applied) {
@@ -499,7 +641,12 @@ async function measureArm(poseId, armId, ordinal) {
       own_mask_delta_pct: pin.px ? +(100 * (own.n - pin.px) / pin.px).toFixed(2) : null,
       ...maskedLuma(png, pin.mask),
       m12: Object.fromEntries(Object.entries(m12).map(([k, v]) => [k, typeof v === 'number' ? +v.toFixed(5) : v])),
-      shore: shoreProfile(png, pin.mask, pin.dist),
+      // HEADLINE: distance binned from the CLOSED mask, i.e. from the bank rather than from every
+      // reed blade. `shore_raw` is the r3-comparable figure and is reported beside it always.
+      shore: shoreProfile(png, pin.mask, pin.dist_closed),
+      shore_raw: shoreProfile(png, pin.mask, pin.dist_raw),
+      close_radius_px: pin.close_radius_px, close_moved_px: pin.close_moved_px,
+      fade_field: fadeField(png, pin.mask),
     };
   }
   await clearArm();
@@ -528,32 +675,45 @@ if (MODE === 'arms' || MODE === 'band') {
       if (armId === 'null-const-trans' && out.poses[poseId].arms.fixed && !out.null_calibration) {
         const target = out.poses[poseId].arms.fixed.by_threshold[MASK_THRESHOLDS[0]].mean_luma;
         const trace = [];
-        let lo = 0, hi = 1;
-        for (let it = 0; it < 5; it++) {
-          NULL_TRANS = (lo + hi) / 2;
-          const probe = await measureArm(poseId, 'null-const-trans', `cal${it}`);
+        const probeAt = async (t, tag) => {
+          NULL_TRANS = t;
+          const probe = await measureArm(poseId, 'null-const-trans', tag);
           const lum = probe.by_threshold[MASK_THRESHOLDS[0]] && probe.by_threshold[MASK_THRESHOLDS[0]].mean_luma;
-          trace.push({ iter: it, nullTrans: +NULL_TRANS.toFixed(4), mean_luma: lum, target, vacuous: !!probe.VACUOUS });
-          console.log(`  null cal ${it}: trans=${NULL_TRANS.toFixed(4)} luma=${lum} target=${target}`);
-          if (lum === null || lum === undefined) break;
-          // A higher constant transmittance lifts the body colour toward the bed AND lowers alpha.
-          // Which way luma moves is a property of the scene, so the direction is learned, not assumed.
-          if (trace.length >= 2) {
-            const prev = trace[trace.length - 2];
-            if (prev.mean_luma !== null && Math.abs(lum - target) < Math.abs(prev.mean_luma - target)) { /* improving */ }
+          trace.push({ tag, nullTrans: +t.toFixed(4), mean_luma: lum, target, vacuous: !!probe.VACUOUS });
+          console.log(`  null cal ${tag}: trans=${t.toFixed(4)} luma=${lum} target=${target}`);
+          return lum;
+        };
+        // THE DIRECTION IS MEASURED, NOT ASSUMED. The first version of this search hard-coded
+        // "more transmittance = brighter" and walked AWAY from the target for three iterations,
+        // because in a drowned marsh the bed under the water is DARKER than the water, so raising
+        // transmittance DARKENS the frame. Both ends are probed first and the bisection follows
+        // whichever way the scene actually goes; if the target is outside [lo, hi] the search says
+        // so instead of converging on an endpoint and calling it matched.
+        let lo = 0.02, hi = 0.98;
+        const lumLo = await probeAt(lo, 'end-lo'), lumHi = await probeAt(hi, 'end-hi');
+        let bracketed = null;
+        if (typeof lumLo === 'number' && typeof lumHi === 'number') {
+          bracketed = (target >= Math.min(lumLo, lumHi) && target <= Math.max(lumLo, lumHi));
+          const decreasing = lumHi < lumLo;
+          for (let it = 0; bracketed && it < 4; it++) {
+            const mid = (lo + hi) / 2;
+            const lum = await probeAt(mid, `bisect${it}`);
+            if (typeof lum !== 'number') break;
+            if (decreasing ? (lum > target) : (lum < target)) lo = mid; else hi = mid;
           }
-          if (lum > target) hi = NULL_TRANS; else lo = NULL_TRANS;
         }
         const best = trace.filter((t) => typeof t.mean_luma === 'number').sort((a, b) => Math.abs(a.mean_luma - target) - Math.abs(b.mean_luma - target))[0];
         if (best) NULL_TRANS = best.nullTrans;
         out.null_calibration = { fitted_at_pose: poseId, threshold: MASK_THRESHOLDS[0], target_mean_luma: target, trace, chosen: best || null,
+          target_is_bracketed_by_the_null: bracketed,
+          if_not_bracketed: 'The null CANNOT reach the arm\'s brightness at any constant transmittance. That is itself a result: it means the change is not on the brightness axis the null can travel, and the matched-luminance comparison S52 asks for is unavailable rather than merely unfavourable. The closest reachable row is reported and labelled.',
           why: 'ARBITRATION S52. A null pinned to a constant chosen for one region reproduced only 11% of the luma change in another and looked like the null failing. The constant is fitted to the arm under test so the null is at MATCHED LUMINANCE and any width it fails to reproduce is width the brightness cannot explain.' };
         write();
       }
       const row = await measureArm(poseId, armId, ord++);
       out.poses[poseId].arms[armId] = row; write();
       const t = row.by_threshold && row.by_threshold[MASK_THRESHOLDS[0]];
-      console.log(`${poseId} ${armId}: luma=${t && t.mean_luma} width=${t && t.shore && t.shore.gradient_width_px} FD=${t && t.m12.FresnelDelta} SD=${t && t.m12.ShoreDelta} NE=${t && t.m12.NormalEnergy} ownMaskΔ=${t && t.own_mask_delta_pct}%${row.VACUOUS ? '  VACUOUS' : ''}`);
+      console.log(`${poseId} ${armId}: luma=${t && t.mean_luma} width=${t && t.shore && t.shore.gradient_width_px} widthRaw=${t && t.shore_raw && t.shore_raw.gradient_width_px} fadeTrans=${t && t.fade_field && t.fade_field.transition_frac} FD=${t && t.m12.FresnelDelta} SD=${t && t.m12.ShoreDelta} NE=${t && t.m12.NormalEnergy} ownMaskΔ=${t && t.own_mask_delta_pct}%${row.VACUOUS ? '  VACUOUS' : ''}`);
     }
   }
 }
