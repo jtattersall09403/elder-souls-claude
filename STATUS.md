@@ -16,8 +16,8 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   zero motion.
 - **The water, round four** — the fade works; it just does nothing in the one region we kept testing
   it in.
-- **Judging the container screen** — the header collision is closed and the description now has a way
-  to be read in full.
+- **The blind judging I owe.** 81 of our quality bars require a fresh outside judge and **not one has
+  ever run**. An item is now capped by that rather than by the build, so it is being set up.
 
 ## If you play right now, expect this
 
@@ -56,12 +56,12 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   and go red on the broken build. **The collision is fixed**, and long descriptions finally have
   somewhere to be read: a reading view opens over the lists and all **45 of 45** items show their full
   text.
-- **Two other screens have the same defect and it has been hiding at one window size.** With the fixed
-  checker pointed at everything, **level-up and the character sheet still print labels through their
-  own values** — on the sheet, "willpower" and its number are *not separable at all*. They are clean at
-  the smaller window and broken at the larger one, which is suspicious in itself: the check's own
-  threshold scales with the window, so nobody yet knows whether the small window is genuinely fine or
-  the check simply stops being able to see. Being judged now.
+- **Two other screens looked like they had the same defect. They don't — the check was wrong.** With
+  the fixed checker pointed at everything, level-up and the character sheet appeared to print labels
+  through their own values. A judge ablated the gauge bar out and **all six rows separate cleanly**:
+  the gauge fills up to 217 of each row's columns, and that is what the check was seeing. It also
+  explains why they looked clean at the smaller window — the thinner gauge's antialiasing opens gaps.
+  **A round dispatched at those two screens would have spent itself on nothing.**
 - **⚠ A measurement scare, and the answer was the opposite of what I told you.** I said a filed
   verdict's numbers wouldn't reproduce and to distrust the screen scores. They reproduce **exactly**.
   The four "isolated" copies compared had all quietly measured **the same live tree** — the tools work
