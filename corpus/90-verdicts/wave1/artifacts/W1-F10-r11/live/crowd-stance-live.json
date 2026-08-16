@@ -1,6 +1,6 @@
 {
   "tool": "tools/visual/f10-r11-crowd-stance.mjs --live",
-  "generated": "2026-08-15T23:45:30.151Z",
+  "generated": "2026-08-16T00:14:31.592Z",
   "renderer": {
     "renderer_string": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
     "hardware": false,
@@ -48,21 +48,21 @@
   "distinct_pose_signatures": 60,
   "shots": [
     {
-      "subject": "npc:lilmoth-cook-5",
-      "bearing": 35,
-      "standoff_m": 3.2,
-      "file": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-F10-r11/live/person__npc-lilmoth-cook-5.png",
-      "bytes": 3864880,
+      "bearing": 0,
+      "standoff_m": 22,
+      "eye_height_m": 11,
+      "file": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-F10-r11/live/crowd-b000.png",
+      "bytes": 3963285,
       "camera_ok": true,
       "pos": [
-        2788.895,
-        4.477,
-        5047.361
+        2785.922,
+        14.265,
+        5069.86
       ],
       "look_at": [
-        2787.06,
-        4.277,
-        5044.74
+        2785.922,
+        4.265,
+        5047.86
       ],
       "scene_to_world_offset": [
         2785.6,
@@ -71,29 +71,74 @@
       ],
       "offset_pairs": 0,
       "offset_max_disagreement_m": null,
-      "c3": [
-        -4.6585,
-        4.5715,
-        2.3156
+      "nearest_people": [
+        {
+          "name": "npc:lilmoth-cook-5",
+          "c3": [
+            -4.6585,
+            4.5715,
+            2.3156
+          ]
+        },
+        {
+          "name": "npc:lilmoth-keeper-pawn",
+          "c3": [
+            6.1912,
+            -5.7455,
+            5.4438
+          ]
+        },
+        {
+          "name": "npc:lilmoth-keeper-shrine",
+          "c3": [
+            -5.6035,
+            5.308,
+            1.4538
+          ]
+        },
+        {
+          "name": "npc:lilmoth-weaver-3",
+          "c3": [
+            -7.0858,
+            5.683,
+            0.8252
+          ]
+        },
+        {
+          "name": "npc:lilmoth-legionary-13",
+          "c3": [
+            -6.323,
+            6.5485,
+            10.1088
+          ]
+        },
+        {
+          "name": "npc:lilmoth-priest-8-apprentice1",
+          "c3": [
+            5.4028,
+            -4.298,
+            2.6484
+          ]
+        }
       ],
       "people_within_9m": 29
     },
     {
-      "subject": "npc:lilmoth-keeper-pawn",
-      "bearing": 35,
-      "standoff_m": 3.2,
-      "file": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-F10-r11/live/person__npc-lilmoth-keeper-pawn.png",
-      "bytes": 4217043,
+      "bearing": 180,
+      "standoff_m": 22,
+      "eye_height_m": 11,
+      "file": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-F10-r11/live/crowd-b180.png",
+      "bytes": 3537855,
       "camera_ok": true,
       "pos": [
-        2788.713,
-        4.343,
-        5048.45
+        2785.922,
+        14.265,
+        5025.86
       ],
       "look_at": [
-        2786.877,
-        4.143,
-        5045.829
+        2785.922,
+        4.265,
+        5047.86
       ],
       "scene_to_world_offset": [
         2785.6,
@@ -102,72 +147,55 @@
       ],
       "offset_pairs": 0,
       "offset_max_disagreement_m": null,
-      "c3": [
-        6.1912,
-        -5.7455,
-        5.4438
-      ],
-      "people_within_9m": 29
-    },
-    {
-      "subject": "npc:lilmoth-keeper-shrine",
-      "bearing": 35,
-      "standoff_m": 3.2,
-      "file": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-F10-r11/live/person__npc-lilmoth-keeper-shrine.png",
-      "bytes": 4131634,
-      "camera_ok": true,
-      "pos": [
-        2791.08,
-        4.499,
-        5047.615
-      ],
-      "look_at": [
-        2789.244,
-        4.299,
-        5044.993
-      ],
-      "scene_to_world_offset": [
-        2785.6,
-        44.378,
-        5047
-      ],
-      "offset_pairs": 0,
-      "offset_max_disagreement_m": null,
-      "c3": [
-        -5.6035,
-        5.308,
-        1.4538
-      ],
-      "people_within_9m": 29
-    },
-    {
-      "subject": "npc:lilmoth-weaver-3",
-      "bearing": 35,
-      "standoff_m": 3.2,
-      "file": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-F10-r11/live/person__npc-lilmoth-weaver-3.png",
-      "bytes": 4204640,
-      "camera_ok": true,
-      "pos": [
-        2791.135,
-        4.443,
-        5048.261
-      ],
-      "look_at": [
-        2789.3,
-        4.243,
-        5045.64
-      ],
-      "scene_to_world_offset": [
-        2785.6,
-        44.378,
-        5047
-      ],
-      "offset_pairs": 0,
-      "offset_max_disagreement_m": null,
-      "c3": [
-        -7.0858,
-        5.683,
-        0.8252
+      "nearest_people": [
+        {
+          "name": "npc:lilmoth-cook-5",
+          "c3": [
+            -4.6585,
+            4.5715,
+            2.3156
+          ]
+        },
+        {
+          "name": "npc:lilmoth-keeper-pawn",
+          "c3": [
+            6.1912,
+            -5.7455,
+            5.4438
+          ]
+        },
+        {
+          "name": "npc:lilmoth-keeper-shrine",
+          "c3": [
+            -5.6035,
+            5.308,
+            1.4538
+          ]
+        },
+        {
+          "name": "npc:lilmoth-weaver-3",
+          "c3": [
+            -7.0858,
+            5.683,
+            0.8252
+          ]
+        },
+        {
+          "name": "npc:lilmoth-legionary-13",
+          "c3": [
+            -6.323,
+            6.5485,
+            10.1088
+          ]
+        },
+        {
+          "name": "npc:lilmoth-priest-8-apprentice1",
+          "c3": [
+            5.4028,
+            -4.298,
+            2.6484
+          ]
+        }
       ],
       "people_within_9m": 29
     }
