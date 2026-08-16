@@ -107,6 +107,44 @@ This is §0's failure family (*a self-test whose arms agree about a false premis
 collapsed to one, and §28's (*an offline harness that advances the clock by 1*) arriving in the pixel
 domain — three instances in one week, so the family is worth naming rather than re-deriving.
 
+## 32. `until [ -z "$(pgrep -f X)" ]` NEVER EXITS — the loop's own command line contains X
+
+**Found 2026-08-16 by the F10 r13 builder, twice in one round, at a cost of two dead background slots
+and ~50 minutes of wall-clock ceiling.** (Heading number re-read at the moment of writing per §27 —
+`grep -n "^## [0-9]" orchestration/HAZARDS.md | sort -t' ' -k2 -n | tail -1` returned 31.)
+
+The tool guidance says to wait on a condition with an until-loop. The obvious form is wrong:
+
+```sh
+until [ -z "$(pgrep -f 'f10-r13-body-stability')" ]; do sleep 15; done   # ← never terminates
+```
+
+**The string you are matching is sitting in the command line of the shell that is doing the
+matching.** `pgrep` excludes itself, but not its parent — and this harness runs a wrapper
+`bash -c '... eval "<your whole command>" ...'`, so the pattern is present in a live process for as
+long as the loop runs. The loop therefore observes itself, forever, and dies on its timeout with exit
+124 while the thing it was watching finished twenty minutes earlier.
+
+**The tell is specific and cheap to recognise: a waiter that times out on a job whose OUTPUT FILE is
+already complete.** Both times here the measurement had written its final JSON, with a clean
+`commit:` and `dirty: false`, before the waiter was killed. Nothing was lost either time — but a
+reader who trusts the exit code concludes the run failed, and that is a false negative about
+evidence, which is the expensive kind.
+
+**Three fixes, in order of preference.**
+
+1. **Wait on the ARTEFACT, not the process** — it is what you actually care about and it cannot
+   match itself: `until [ -f out/report.json ]; do sleep 10; done`.
+2. **Break the literal** so the loop's own command line does not contain the pattern:
+   `P='f10-r13-body[-]stability'; until [ -z "$(pgrep -f "$P")" ]; do sleep 15; done`.
+3. **Use `run_in_background: true` on the job itself** and let the completion notification arrive,
+   which is what it is for. A separate waiter process is almost never needed.
+
+**And do NOT reach for `pkill -f` when a waiter hangs.** §10: that is a fleet-wide kill, not a
+cleanup. Check `ps -o pid,args` first — in this round the one surviving `node tools/visual/...`
+process turned out to be **a critic re-running the builder's own instrument**, which is the gauntlet
+working and would have been destroyed by a pattern kill.
+
 ## 31. A CHECK THAT IMPORTS A GENERATOR DESTROYS THE EVIDENCE IT IS LOOKING FOR
 
 **Found 2026-08-16 by the dialogue-leak critic, as control D of five, and it is the sharpest instrument
