@@ -553,6 +553,47 @@ TemporalVar  = stddev over 30 stationary frames of mean(Yp[WATER_MASK])
 
 **Any two of these failing = "water is a blue plane" hard fail.**
 
+#### M12a — the declared pose set. A single bearing may not decide any M12 band.
+*(ADDED 2026-08-16 by the F7 r3 critic under `CRITIC-DOCTRINE` §1.3. `provenance: constructed`.
+This is an ADD: it removes a degree of freedom, it does not relax a threshold. It may be the
+reason a build FAILS and it may never be the reason a build PASSES.)*
+
+**Why.** M12's bands were being decided by where the camera was pointed. Measured on **one
+unchanged shader** (F7's round-2 water), `FresnelDelta` reads **0.00629 → 0.12817 across seven
+poses in the Deep Marshes** (a 20.4× spread) and **−0.08972 → +0.15514 across four poses in the
+Western Rootlands** — a range of **0.245**, spanning the sign, on a shader that did not change
+between readings. The `≥ 0.05` band was crossed at **5 of 7** Deep Marshes poses by the very arm
+that F7 round 2 was **failed** on at 0.04599 "short by 0.004", because that reading was taken at a
+26 m vista where the instrument sits near zero. A band that one arm both passes and fails by
+choice of pose is not gating the build.
+Evidence: `corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r3-critic/` (`m12redo`, `wrootlands-look`).
+
+**The rule, all four clauses required:**
+
+1. **Declare the pose set before measuring**, in the verdict, with each pose's yaw, pitch and
+   distance. **≥ 4 poses**, at least **90° apart** in bearing, all in the same scene, seed, time of
+   day and weather.
+2. **Report every pose on its own line. A mean over poses is inadmissible** — it is exactly the
+   averaging that let one bearing stand for the water.
+3. **A band is met only if it is met at the WORST pose in the set** (min over poses). Reporting the
+   best pose is metric-shopping and voids the row.
+4. **The pose set must contain at least one `water_edge` pose** — a close, low camera with a real
+   water/land boundary in frame. `RI-WLD10` §8's WCI table says where one exists: a region at
+   **WCI ≤ 0.05 has no water plane** (report `N/A — region has no water`), and a region at
+   **WCI ≥ 0.80 is drowned and may contain no waterline at all**. The Deep Marshes is WCI **0.86**;
+   three rounds of F7 shot every frame there and **not one frame contains a shoreline**. If no pose
+   in the region yields a water/land boundary, that is recorded as `no waterline in region` and the
+   shoreline rows are **`inapplicable`, which per `ARBITRATION` S64 must carry the absence forward
+   as a finding rather than absorb it** — not as a pass.
+
+**The mask is part of the instrument and must be pinned.** Where `WATER_MASK` is derived by
+differencing against a water-hidden frame, **an arm that changes the water's alpha changes the
+mask**, so the two arms are then scored over different pixel sets. Measured: at one pose the
+per-arm mask grew 5.7% and turned a `FresnelDelta` of **+0.148 → +0.161** (a small gain) into
+**+0.148 → −0.145** (a sign flip), and a `ShoreDelta` of 0.024 → 0.021 (still failing) into
+0.024 → 0.093 (a spurious pass). **Both arms of any comparison must be scored over ONE mask**,
+and the verdict must say which arm it was taken from.
+
 ---
 
 ### §13 Reference implementation sketch (normative for formulas, not for style)
