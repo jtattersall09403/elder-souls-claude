@@ -195,12 +195,30 @@
             "ShoreDelta": 0.00234
           }
         }
+      },
+      {
+        "pose": "edge-b315",
+        "note": "the shallowest declared target anywhere — census deepest wet corner 0.127 m — and a SECOND failing pose, found only because the four-bearing debt was paid",
+        "arms": {
+          "bandonly": {
+            "presence": 65.22,
+            "retained": 35.88,
+            "ShoreDelta": 0.02075
+          },
+          "band-0.10 (r5 shipped)": {
+            "presence": 54.07,
+            "retained": 14.78,
+            "ShoreDelta": 0.02185
+          }
+        }
       }
     ],
     "what_it_does_NOT_carry": "**No `bandonly-a70` arm was run in the Western Rootlands.** The multiplier change is measured only in the Deep Marshes. The two changes shipped together and only one of them has two-region evidence; that is a real gap and a critic should treat the WR rows as evidence about the GATE only.",
-    "M12a_clause_1": "**Still fails closed, and by one bearing.** Three of the four declared bearings landed (`edge-b045`, `edge-b135`, `edge-b225`); `edge-b315` was still capturing at filing with the box at 4.0-4.2 per core. The run banks `sweep.json` after every arm, so the three that landed are real and the fourth is absent rather than approximated. **Closer than any round since round 3, and still short of the clause.**",
+    "M12a_clause_1": "**PAID. All four declared Western Rootlands bearings landed** — `edge-b045`, `edge-b135`, `edge-b225`, `edge-b315` — after three rounds at 1 of 4. Combined with the complete Deep Marshes set in `job_9`, **round 6 is the first round of this piece with a complete declared pose set in EITHER region, and it has one in both.**",
     "AND_A_LOOK_FINDING_THAT_NO_NUMBER_HERE_CARRIES": "I opened `wr-4bearings/frames/edge-b045--band-0.10-o3.png`. The paddy water is a flat pale-green sheet and **the boundary where it meets every bund is a hard geometric line** — `RI-VIS04` §9's TELL, in the frame, in the region where the contrast measure says the shore fade is doing its best work (105.7% retained). **The measure and the defect are looking at different things, and one frame settles it where three tables could not.** No reflection, no ripple, heavy speckle, consistent with `RI-VIS11`.",
-    "and_the_gate_change_holds_at_ALL_THREE_bearings_measured": "`bandonly` beats the r5 union arm on presence at every western-rootlands bearing measured — **97.48 vs 95.51**, **93.56 vs 86.06**, **99.84 vs 98.07** — and at two of the three it also retains more shoreline contrast (105.79 vs 105.70; 104.37 vs 92.19). At `edge-b225` it retains 0.59 points LESS (106.56 vs 107.15), which is the one row that goes the other way and I am printing it rather than the two that agree with me."
+    "and_the_gate_change_holds_at_ALL_FOUR_bearings_measured": "`bandonly` beats the r5 union arm on presence at every western-rootlands bearing: **97.48 vs 95.51**, **93.56 vs 86.06**, **99.84 vs 98.07**, **65.22 vs 54.07**. Retained shoreline contrast: **105.79 vs 105.70**, **104.37 vs 92.19**, **106.52 vs 107.11**, **35.88 vs 14.78**. Three of four go my way on contrast; `edge-b225` goes the other way by 0.59 points and I am printing it rather than the three that agree with me.",
+    "min_over_the_complete_western_rootlands_set": "`bandonly` **presence 65.22%, retained contrast 35.88%, ShoreDelta 0.00653.** The r5 arm: **54.07% / 14.78% / 0.00234.** **Both fail. The gate change moves the worst pose +11.15 presence points and +21.10 contrast points and does not reach the bar.**",
+    "THE_PATTERN_AND_THE_LIMIT_ON_READING_IT": "Within each region the failing pose is the SHALLOWEST declared target, by the r4 shoreline census's own `deepest_wet_corner_m`: Deep Marshes **0.704 m -> 72.78%** against 1.063-1.492 m -> 100.2-100.6%; Western Rootlands **0.127 m -> 65.22%** against 0.901-0.947 m -> 97.5-99.8%. **But it does NOT sort across regions** — western-rootlands `edge-b135` at 0.711 m reads 93.56% where deep-marshes `edge-b135` at 0.704 m reads 72.78%, and those regions differ in k (1.9 vs 4.5) as well as in pose geometry. **So: depth ranks the poses inside a region and does not rank them between regions, and I am not going to name a mechanism for that from eight points** — `ARBITRATION` S66 is a ruling about exactly this, where a 'perfect sort across four points' turned out to be a pattern its author wanted."
   },
   "job_6_M12_re_derived_in_my_own_captures_and_the_two_clauses_that_cannot_both_be_satisfied": {
     "method": "`RI-VIS03` M12 computed by `tools/metrics/lib/vis03.mjs` inside every scored row of every r6 run, over the PINNED mask, threshold 16, min over poses per M12a clause 3. **19 arm-rows across 7 poses in 2 regions** — deep-marshes edge-b045/b135/b225/b315 and western-rootlands edge-b045/b135/b225 — counted by re-running `tools/visual/f7-r6-report.mjs`, not from memory. Nothing inherited.",

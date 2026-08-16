@@ -1,7 +1,7 @@
 {
  "tool": "tools/visual/f7-r6-report.mjs",
  "threshold": 16,
- "generated": "2026-08-16T05:22:33.623Z",
+ "generated": "2026-08-16T05:23:50.191Z",
  "runs": [
   {
    "run": "dm-b135-gate",
@@ -318,17 +318,27 @@
    "commit": "c2439837",
    "shader_gate_measured": "float esShoreT=1.0-(1.0-esTrans)*(1.0-esBandM);",
    "shader_alpha_measured": "diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.42,esShoreT*clamp(uWaterShoreFade,0.0,1.0));",
-   "baseline_captures": 2,
-   "baseline_water_contrast": 5.296,
+   "baseline_captures": 3,
+   "baseline_water_contrast": 5.298,
    "DRIFT_contrast_retained_pp": 0.49,
    "DRIFT_presence_pp": null,
    "arms": {
     "bandonly": {
      "presence_pct": 65.22,
-     "shore_contrast_retained_pct": 35.9,
+     "shore_contrast_retained_pct": 35.88,
      "m12_FresnelDelta": 0.15674,
      "m12_ShoreDelta": 0.02075,
      "m12_NormalEnergy": 0.30239,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 28,
+     "VACUOUS": null
+    },
+    "band-0.10": {
+     "presence_pct": 54.07,
+     "shore_contrast_retained_pct": 14.78,
+     "m12_FresnelDelta": 0.16001,
+     "m12_ShoreDelta": 0.02185,
+     "m12_NormalEnergy": 0.3181,
      "m12_ReflCorr": "unmeasurable — S64 inapplicable",
      "width_px_RETIRED_S67": 28,
      "VACUOUS": null
