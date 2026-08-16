@@ -1,0 +1,247 @@
+{
+  "task_id": "GATE-UIX06-G-RESULT",
+  "title": "RI-UIX06 §G (\"could this be Bootstrap?\") — six judges decoded against the sealed ladder. Worst-of-six = HARD FAIL. AD7 fails. UI ART side capped at 2.",
+  "state": "decoded",
+  "owner": "independent decoder (subagent)",
+  "at": "2026-08-16T03:20:00Z",
+  "roadmap_item": "I3",
+  "branch": "codex/wave1-build-experiment",
+  "decodes": "orchestration/status/GATE-UIX06-G-PACK.json (pack) + reports/blind/uix06-gate-g-SEALED-KEY/DISPATCH.md §2 (ladder, fixed before any judge spoke)",
+
+  "what_i_could_not_do": [
+    "I DID NOT LOOK AT THE SIX STIMULI, DELIBERATELY, AND THAT IS THE POINT. A decoder that opens the pictures while holding the answer key becomes a seventh judge with the key in hand, and its reading would be void by exactly the construction that voids the pack-builder's. Every statement in this file about how the interface looks is a JUDGE'S, quoted verbatim, or the PACK-BUILDER'S, cited — none is mine. The one thing I read out of the pack directory is the six answer.txt files.",
+    "I COULD NOT RE-RUN THE GATE WITHOUT THE L1 CONTAMINATION, and that is the remedy both rulings below name as their overturn condition. The route ('run the judges from a working directory with no project CLAUDE.md in scope') is still unbuilt; create_session is approval-gated so rule 0 forbids it; and I am a subagent, so I cannot spawn judges at all. This gate's result is therefore final only until that remedy exists.",
+    "I COULD NOT TEST WHETHER THE TWO 'nothing physical' ANSWERS WOULD SURVIVE A NON-LEADING Q4. §G says 'verbatim; do not paraphrase, do not soften', and rewording changes the instrument and makes this run incomparable with every other. RULING R1 is therefore a ruling on the answers AS GIVEN, not an experiment. What I can say is the direction, and it is stated in R1: the leading question points AWAY from the answer these two judges gave.",
+    "I COULD NOT VERIFY HOW THE JUDGES WERE ACTUALLY SPAWNED. I hold six answer files and the pack; the spawning was the orchestrator's step and I have no transcript of it, so I cannot confirm first-hand that each judge got only its image and its prompt.txt and read no other file. What I COULD do is test L2's consequence empirically, and I did — see l2_disconnected_script_test below. It comes back clean, which is evidence but not proof.",
+    "I COULD NOT SCORE 'a tool' OR 'an app in COULD ALSO BE'. Those answers exist in this run (four of six put 'app' or 'browser-based' in COULD ALSO BE) and the answer key has no row for them. I recorded them as unscorable rather than inventing a row — inventing rows after reading answers is the exact thing the sealed decode exists to prevent.",
+    "I DID NOT EDIT RI-UIX06 AND WILL NOT. A decoder amending the item it is scoring against is the conflict every guard here exists to prevent. What the item needs is filed below under what_the_item_needs, for its owner to action."
+  ],
+
+  "headline": "Two screens HARD FAIL on §G's sharpest trigger. Four FAIL. ZERO screens reached PASS under any reading. Worst-of-six = HARD FAIL, so AD7 = 'any HARD FAIL' fails and the UI ART side is capped at 2.",
+
+  "screen_map_used": "From DISPATCH.md §1's table, the only mapping in existence: s01-b3f49b=inventory, s02-664600=dialogue, s03-524d26=level-up, s04-943bf1=journal, s05-815dff=book, s06-54f38f=HUD-in-combat.",
+
+  "per_screen_decode": [
+    {
+      "n": 1,
+      "screen": "inventory",
+      "dir": "s01-b3f49b",
+      "result": "HARD FAIL",
+      "clause": "HARD FAIL row, verbatim: 'or `MADE OF: nothing physical`'. The field reads `MADE OF: nothing physical rendered convincingly — it suggests dark green woven cloth or canvas with a stitched leather-edged border...`. Ruled under R1.",
+      "independent_of_R1": "Cannot reach PASS on two further clauses even if R1 is overturned. (a) PASS requires '`MADE OF` names ≥2 of §A's materials'; §A materials actually named: INK only ('chalk or faded ink lettering') = 1 of 9. Cloth, canvas, leather, oilcloth and felt are not among §A's nine. (b) FAIL row, verbatim: \"`KIND` is ... 'an RPG inventory screen'\" — the field reads 'the inventory screen of a first/third-person fantasy role-playing video game, in the style of an Elder Scrolls-like PC RPG', which is that exemplar with a genre attached.",
+      "best_achievable_under_any_reading": "FAIL",
+      "fields_that_did_pass": "FROM: don't know (strengthened under L1 — see contamination_direction). NEVER SEEN BEFORE names a designed convention (stat readouts as words: weight 'nothing', price 'not for sale', durability '100 in 100')."
+    },
+    {
+      "n": 2,
+      "screen": "dialogue",
+      "dir": "s02-664600",
+      "result": "FAIL",
+      "clause": "FAIL row, verbatim: 'or `FROM` names an existing game'. The field reads 'The Elder Scrolls III: Morrowind (or a game closely imitating its dialogue interface)'. Ruled under R2.",
+      "no_hard_fail": "KIND names a game, not a website/web app/dashboard/mobile app/admin panel. MADE OF names materials. COULD ALSO BE names games, mods and an engine — no UI framework and no design system (verified by grep, see mechanical_checks_i_ran).",
+      "made_of_count": "2 of §A's nine: INK and WET PARCHMENT ('a dark inked parchment or slate panel behind the text'). Varnished wood, brass/gilt, leather and engraved metal are not among the nine. So this screen MET the PASS row's ≥2 clause and was blocked solely by FROM.",
+      "evidential_weight": "HIGH, and it survives R2's contamination discount. The judge grounds the identification in interface furniture it can only have seen — 'a clickable topic list, a persuasion/disposition meter'. That is a statement about the PACKAGING, not about content or about an inherited token. This is the one FAIL in the pack that is unambiguously evidence about the interface."
+    },
+    {
+      "n": 3,
+      "screen": "level-up",
+      "dir": "s03-524d26",
+      "result": "FAIL",
+      "clause": "No HARD FAIL trigger fires. It fails to reach PASS on: '`MADE OF` names ≥2 of §A's materials' — §A materials named: PARCHMENT only ('aged cream paper or parchment') = 1 of 9. Also on '`KIND` describes rather than categorises' — 'A level-up / character-stats screen from an indie fantasy action-RPG' is a genre-plus-menu-type label.",
+      "the_sharpest_finding_on_this_screen": "§A assigns the level-up attribute pips to BONE ('worked, polished, scrimshawed') and menu frames/binding to ROOT ('lashed, fibrous, grown-not-cut; corners are knots, not mitres'). The judge read them as 'a dark brown tooled-leather spine', 'small iron or brass tack heads' and 'carved stone, wood and metal tokens' — three materials, none of them §A's, and a tooled leather spine is the opposite of root's 'grown-not-cut'.",
+      "fields_that_did_pass": "FROM: don't know (strengthened). NEVER SEEN BEFORE names a genuinely designed element — 'stat bars drawn as tiny wooden rulers with hand-inked tick marks rather than filled meters'. Two of the four PASS clauses met."
+    },
+    {
+      "n": 4,
+      "screen": "journal",
+      "dir": "s04-943bf1",
+      "result": "FAIL — and bounded to FAIL under BOTH readings, which is why the L4 content channel does not decide anything here",
+      "clause": "FAIL row, verbatim: 'or `FROM` names an existing game'. The field reads 'The Elder Scrolls III: Morrowind (or a game deliberately imitating its journal)'.",
+      "bound_A_from_admitted": "FAIL on the FROM clause.",
+      "bound_B_from_discounted_as_content_derived": "Still FAIL. Two independent reasons. (i) The PASS row requires '`FROM: don't know`' as one of its four conditions; an inadmissible FROM is not a 'don't know', so PASS is unreachable by construction and the ladder has no rung between FAIL and PASS. (ii) Independently, '`KIND` describes rather than categorises' is not met — 'The in-game quest journal screen of a first-person fantasy role-playing video game, played with a controller'.",
+      "why_the_bound_matters": "The pack's L4 is real and I verified its shape from the pack-builder's account, not by looking: the header carries '1 Second Seed, 3E 427', which is Morrowind's own year and a Tamrielic month, so an Elder-Scrolls-literate judge can answer FROM from a DATE STAMP having formed no view of the interface. That makes this screen's FROM evidence about CONTENT, not about the interface. Bounding it both ways rather than dismissing it: it cannot be counted as an interface finding, and it cannot rescue the screen either. It does not move the roll-up in either direction.",
+      "made_of_count": "The strongest in the pack: 2 of §A's nine, and one of them reproduced §A's own phrasing unprompted — 'dark brown iron-gall ink' against §A's ink row, 'iron-gall on damp fibre'. Plus 'aged parchment or vellum ... deckled torn edges' against §A's 'fibrous, translucent at edges, cockled'. NEVER SEEN BEFORE also names a real designed element (two parchment columns split by a stitched binding seam, doubling as a navigation list)."
+    },
+    {
+      "n": 5,
+      "screen": "book",
+      "dir": "s05-815dff",
+      "result": "FAIL — the closest screen to PASS in the pack, and the only one whose result turns on a judgement call I had to define",
+      "clause": "Fails the PASS row on one clause only: '`KIND` describes rather than categorises'. The field reads 'An in-game readable-book viewer from a fantasy role-playing game, of the kind that opens a two-page spread when you read a book from your inventory' — the head is a category (viewer + genre) and the tail describes a BEHAVIOUR, not what the object appears to be made as.",
+      "clauses_met": "FROM: don't know ✓. MADE OF ≥2 of §A's nine ✓ — WET PARCHMENT ('aged paper or vellum with a faint linen grain') and INK ('black ink lettering'). NEVER SEEN BEFORE names something ✓, marginally — see the caveat.",
+      "caveat_recorded_not_hidden": "Its NEVER SEEN BEFORE names a LINE OF COPY ('The footer instruction ending \"Nobody will summarise this for you.\"'), not a form. The PASS row asks for 'a designed element'. A footer that refuses to summarise itself is authored and is part of the interface, so I admitted it — but it is the weakest of the six novelties and it is one of two in this run that are text rather than form (the other is screen 2's). Under a question that invites a novelty hunt (L3/Q5), a judge that cannot find novel FORM will find novel TEXT.",
+      "also_not_scored": "§A assigns BOOK COVERS to ROOT explicitly. The judge read 'darker leather-edged board covers' — conventional bookbinding. Same miss as screen 3's spine.",
+      "how_i_defined_the_KIND_clause": "See kind_clause_test — I fixed one test and applied it to all six identically, before ruling any of them, because this clause decided four screens and §G supplies no test for it."
+    },
+    {
+      "n": 6,
+      "screen": "HUD-in-combat",
+      "dir": "s06-54f38f",
+      "result": "HARD FAIL",
+      "clause": "HARD FAIL row, verbatim: 'or `MADE OF: nothing physical`'. The field reads `MADE OF: nothing physical — flat digital bars and lines, though the small pouch icon suggests drawn leather or cloth and the map tiles suggest parchment or dark stone`. Ruled under R1.",
+      "the_decisive_fact_and_it_is_the_item_s_own_words": "RI-UIX06's own worked example of losing, at line 354 of corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md, reads `MADE OF: nothing physical - flat panels and rounded rectangles` and is scored on line 356 as `=> HARD FAIL. ART capped at 2.` This answer is that example's form near-verbatim, INCLUDING the trailing elaboration after a dash. The item did not merely fail to anticipate a qualified 'nothing physical' — it wrote one down as its exemplar and scored it HARD FAIL. There is no ambiguity left to resolve charitably on this screen.",
+      "independent_of_R1": "Cannot reach PASS regardless: §A materials ASSERTED in MADE OF = 0. Parchment appears only as what map tiles 'suggest'; leather/cloth only as what a pouch ICON suggests. PASS needs ≥2 named.",
+      "recorded_not_scored": "COULD ALSO BE names 'Unity or Three.js'. An engine is not 'a UI framework or design system', so the third HARD FAIL clause does NOT fire on a literal reading and I did not fire it. But 'Three.js' and 'Dark Souls-like' are both CLAUDE.md tokens verbatim — see contamination_direction, where this is the strongest single piece of evidence that L1 is not theoretical."
+    }
+  ],
+
+  "kind_clause_test": {
+    "why_i_had_to_define_it": "The PASS row requires '`KIND` describes rather than categorises' and §G gives no test for it. It decided four of six screens, so leaving it undefined would have meant deciding four screens by feel. I fixed one test and applied it to all six identically.",
+    "the_test": "An answer CATEGORISES if its head noun phrase is a menu-type plus a software-genre label ('an X screen of a Y game'). It DESCRIBES if it says what the thing appears to BE as an object, independently of software genre. §G's own purpose is the warrant: the test asks whether a viewer can slot the interface into a familiar software category, and a KIND that names the category is the answer 'yes'.",
+    "result": "ALL SIX categorise. Every KIND field names a screen type and a genre. Not one judge, given a leading question set that invites material description, described the thing as an object rather than as a menu of a genre.",
+    "the_honest_counterweight": "This is the strictest defensible reading and I applied it against the build. Under the loosest possible reading — accepting screen 5's descriptive tail as satisfying the clause — screen 5 becomes a PASS and NOTHING ELSE CHANGES, because the roll-up is worst-of-six. See robustness_of_the_result."
+  },
+
+  "ruling_R1": {
+    "question": "`MADE OF: nothing physical` is a HARD FAIL trigger. Screens 1 and 6 open the field with that exact string and then partially retract it. Does the trigger fire?",
+    "ruling": "IT FIRES. Both screens are HARD FAIL.",
+    "marked": "REVERSIBLE",
+    "grounds": [
+      "1. THE ITEM ALREADY DECIDED THIS AND I ONLY HAD TO READ IT. RI-UIX06 line 354's own exemplar of losing is `MADE OF: nothing physical - flat panels and rounded rectangles` → line 356 `=> HARD FAIL. ART capped at 2.` A qualified 'nothing physical' with a trailing elaboration IS the item's written hard-fail case. Screen 6 matches it almost word for word. This ground alone settles screen 6.",
+      "2. POSITION IS THE ANSWER; WHAT FOLLOWS IS COMMENTARY. §G's format line offers `MADE OF: <materials, or \"nothing physical\">` — a binary. Both judges chose the second branch and put it in the answer position, then annotated. An annotation after an answer is not a different answer.",
+      "3. THE RETRACTIONS DESCRIBE A JUDGE STRAINING, NOT AN INTERFACE MADE OF SOMETHING. Screen 1 qualifies with 'rendered CONVINCINGLY' — an explicit finding that physicality is attempted and not achieved — and hedges every material with 'suggests' or 'like a'. Screen 6's concession is about two SUB-ELEMENTS (a pouch ICON, map TILES), each hedged with 'suggests', while the interface proper is 'flat digital bars and lines'. §G asks what THIS INTERFACE is made of, and §B G10 is the underlying test: 'any element whose appearance is unchanged if the game's setting changed'. Neither judge says the interface is made of something; both say hints can be found if one looks for them.",
+      "4. THE LEAK RUNS THE OTHER WAY, SO THESE TWO ANSWERS ARE STRENGTHENED, NOT WEAKENED. L3/Q4 presupposes physicality and instructs a material hunt ('Name the physical materials it appears to be made from'). Two judges answered 'nothing physical' ANYWAY, against the demand characteristic. That is the same symmetry the pack-builder applied to L1 for `FROM: don't know`, and it applies here identically: an answer that survives a question pushing the other way carries MORE weight, not less. Reading the retraction as evidence of physicality is reading the leak as a result.",
+      "5. THE TWO READINGS AGREE ON DIRECTION AND DIFFER ONLY IN CAP. Independently of the string, screen 1 names 1 of §A's nine materials and screen 6 names 0 — both below the PASS row's ≥2 either way. The charitable reading does not turn either screen into a pass; it only moves the cap from 2 to 5.",
+      "6. THE PRINCIPLE, AND IT IS THE BRIEF'S OWN: a gate that reads its own sharpest hard-fail trigger charitably is not a gate. §G calls this trigger 'the exact machine-readable form of \"this is a UI kit, not an object\"'. A trigger that any judge can defuse with its next clause is not machine-readable.",
+      "7. NOTHING ELSE CAN EXPLAIN THE FLATNESS. The pack's C3 measured 0 non-black pixels out of 2,073,600 in all six CONTROL frames — the world is gone, not dimmed — so §G's 'a beautiful marsh behind a bootstrap panel rescues the panel' is impossible here, and equally there is no world to blame for a judge reading the layer as flat."
+    ],
+    "overturn_conditions": [
+      "The item's owner amends §G to state that a qualified 'nothing physical' is scored on its retraction rather than on the trigger — which would require reconciling line 354's exemplar, and is the owner's call, not a decoder's.",
+      "A re-run under a Q4 that does not presuppose physicality (an I3 instrument change, versioned as §G v2 and re-baselined, NOT edited in place) returns materials-first answers on these two screens.",
+      "A fresh judge, given the same two images and asked what the interface is made of WITHOUT the material-hunt instruction, names ≥2 of §A's materials unprompted for those screens."
+    ],
+    "what_would_NOT_overturn_it": "Any argument from the retractions' content alone. That is precisely what I weighed, and grounds 1 and 3 are the answer."
+  },
+
+  "ruling_R2": {
+    "question": "Screens 2 and 4 answer FROM with a real commercial product — The Elder Scrolls III: Morrowind. DISPATCH.md §2 asks the orchestrator to rule and the ruling was never made. Is it the FAIL row, or is it contamination and inadmissible?",
+    "ruling": "ADMITTED AS THE FAIL ROW ON BOTH SCREENS, WITH PER-SCREEN EVIDENTIAL BOUNDS. Screen 2's FAIL is earned evidence about the interface. Screen 4's FAIL stands on the ladder but is NOT counted as an interface finding, and it is bounded to FAIL either way so it changes nothing.",
+    "marked": "REVERSIBLE",
+    "grounds": [
+      "1. THE LADDER IS LITERAL AND MORROWIND IS AN EXISTING GAME. FAIL row: '`FROM` names an existing game'. The dispatch's proposed inadmissibility carve-out is written for `FROM` = THIS PROJECT, on the reasoning that 'this project is not an existing game'. Morrowind is an existing published game and is not this project, so the carve-out does not reach it.",
+      "2. CONSISTENCY OF DIRECTION. R1 refuses to read a trigger charitably where the charity would favour the build. Reading FROM charitably here is that same charity, in the same direction. A gate cannot read literally when the literal reading hurts and charitably when it helps.",
+      "3. A CORRECTION TO THE PACK'S OWN PREMISE, MEASURED THIS TURN. DISPATCH.md §2/L1 and GATE-UIX06-G-PACK.json both reason that the contamination runs TOWARD naming this project, so naming 'a different, real, published game' is not explained by it. THAT IS FALSE FOR THIS PARTICULAR TITLE. `grep -c -i morrowind CLAUDE.md` returns 8; CLAUDE.md's 'The project' paragraph reads 'A browser game in Three.js: Morrowind in almost every system ... set in Black Marsh, with Dark Souls' combat'. The token 'Morrowind' IS in the inherited context, so a contaminated judge can emit it without the picture. I am not passing this figure on from the pack — I ran the grep.",
+      "4. THE ANSWERS THEMSELVES CORROBORATE THAT L1 IS OPERATING, NOT THEORETICAL. `grep -o` on CLAUDE.md returns 'Three.js' 1, 'Dark Souls' 1, 'Black Marsh' 2. Screen 6's answer names BOTH 'a Dark Souls-like' and 'built in Unity or Three.js'. Screens 1, 2 and 4 name Elder Scrolls. Four of six answers contain a token from CLAUDE.md's project paragraph. This is first-hand evidence from the answer files that judges inherited the project brief, and it is the strongest evidence this gate produced about its own validity.",
+      "5. SO THE FAIL STANDS BUT ITS WEIGHT DIFFERS BY SCREEN, AND I BOUND RATHER THAN DISMISS. Screen 2: the judge grounds the identification in furniture it can only have seen — 'a clickable topic list, a persuasion/disposition meter'. Evidence about the INTERFACE; the FAIL is earned and would survive the contamination being removed. Screen 4: L4 means the FROM is derivable from a date stamp with no view of the interface at all. Evidence about CONTENT; not counted as an interface finding — and bounded the other way, the screen is FAIL regardless (PASS requires `FROM: don't know`, absent by construction, and KIND categorises independently). Neither dismissed, both bounded."
+    ],
+    "and_it_does_not_change_the_result": "R2 moves nothing. Screens 2 and 4 are FAIL under every reading of it, and the roll-up is decided by screens 1 and 6. Stated plainly because the brief expected these two calls to decide the outcome: R1 decides the CAP (2 vs 5); R2 decides only how much of the FAIL is about the interface.",
+    "overturn_conditions": [
+      "A re-run with judges spawned with no project CLAUDE.md in scope — the remedy named by both Protocol A runs and still unbuilt. If screen 2 still returns Morrowind, R2 is confirmed and strengthened. If it returns 'don't know', these two FAILs were contamination and should be struck.",
+      "The item's owner rules that any title NAMED IN CLAUDE.md is inadmissible as FROM under the same logic as 'this project' — a defensible position given ground 3. Note the arithmetic: even then, screens 1 and 6 alone hold the roll-up at HARD FAIL and the cap at 2."
+    ]
+  },
+
+  "roll_up": {
+    "distribution": "STRONG PASS 0 · PASS 0 · FAIL 4 · HARD FAIL 2, of six.",
+    "rule_applied": "§G, verbatim: 'Wave roll-up is the worst result'. Scoring table AD7, verbatim: 'worst-of-six ≥ PASS' to pass, 'any HARD FAIL' to hard fail.",
+    "result": "WORST-OF-SIX = HARD FAIL. AD7 HARD FAILS.",
+    "cap_on_the_UI_ART_side": 2,
+    "cap_clause": "RI-UIX06 Scoring, verbatim: '§G caps the ART score exactly as RI-VIS07 caps the world's: STRONG PASS → no cap; PASS → cap 8; FAIL → cap 5; HARD FAIL → cap 2.' Reinforced by 'Any hard fail on a side caps that side at 2.'",
+    "what_this_does_NOT_say": "Nothing about the UI FIDELITY side. §H is a pair, forever, and 'min(), never mean()' — reporting a single fused UI score is CC-5 and voids a verdict. This decode touches ART only. FIDELITY is measured by FD1–FD7 via tools/metrics/ui-metrics.mjs and is a separate scale that this gate cannot inform.",
+    "ship_gate_consequence": "min(UI_ART, UI_FIDELITY) ≥ 6 is the ship gate. With UI_ART capped at 2 it is BLOCKED on the ART side regardless of any fidelity number."
+  },
+
+  "robustness_of_the_result": {
+    "claim": "No combination of my two rulings, taken at their most charitable to the build, produces a passing AD7.",
+    "arithmetic": "A PASS needs all four clauses: FROM don't know + KIND describes + MADE OF ≥2 of §A's nine + NEVER SEEN BEFORE names a designed element. Screen 1: MADE OF = 1 → cannot PASS. Screen 2: FROM names a game → cannot PASS. Screen 3: MADE OF = 1 → cannot PASS. Screen 4: FROM names a game → cannot PASS. Screen 6: MADE OF = 0 asserted → cannot PASS. Screen 5 is the ONLY screen with a route to PASS, and it needs the KIND clause read loosely.",
+    "therefore": "The most build-favourable reading available is: R1 overturned AND screen 5's KIND admitted → one PASS, five FAIL → worst-of-six = FAIL → AD7 still fails → cap 5. The cap is 2 or 5. There is no reading of these six answers that reaches cap 8, and none that passes AD7.",
+    "why_this_is_worth_stating": "It means the owner does not need to adjudicate my two rulings to know the outcome. AD7 fails either way. The rulings decide only how far the ART side is capped."
+  },
+
+  "mechanical_checks_i_ran": {
+    "l2_disconnected_script_test": "S51's test, run on the ANSWERS rather than argued about: 'could a short script that has read the item's tables reproduce the judge's answer?' If a judge had grepped §A, its distinctive vocabulary would appear. Grepped all six answer files, case-insensitive, for each: chitin 0 · root 0 · bark-paper 0 · bone 0 · resin 0 · amber 0 · 'reed weave' 0 · 'shell inlay' 0 · nacre 0 · mud-slip 0 · 'fired clay' 0 · scrimshaw 0 · iridescen* 0. NOT ONE §A TERM OF ART APPEARS IN ANY ANSWER. The only §A words present — parchment, ink, paper — are common English and would appear from any book-like image. This is evidence, not proof, that L2's route was not taken; it cannot exclude a judge reading the key and paraphrasing, but a paraphrase that avoids all thirteen markers is not what a key-reader produces.",
+    "third_hard_fail_clause": "'`COULD ALSO BE` names a UI framework or design system' — grepped all six for bootstrap, tailwind, 'material design', material-ui, figma, bulma, foundation, antd, 'design system', 'ui kit', chakra. ALL ZERO. This clause did not fire on any screen. Recorded because a gate must report the checks that came back clean.",
+    "first_hard_fail_clause": "'`KIND` is a website, web app, dashboard, mobile app, or admin panel' — read all six KIND lines. All six name a GAME. This clause did not fire on any screen either. THIS IS A REAL POSITIVE FOR THE BUILD AND IT SHOULD NOT BE LOST UNDER THE CAP: the categorical hard fail that §G was named after — 'could this be Bootstrap?' — fired zero times in six. Nobody looked at this interface and saw a web page.",
+    "the_near_miss_that_is_unscorable": "The 'app'/'browser' vocabulary that DID appear sits in COULD ALSO BE, which the ladder scores only for UI frameworks and design systems: screen 1 'a tabletop-RPG character-sheet/inventory web app'; screen 3 'a hand-drawn tabletop RPG character sheet app', 'a browser-based text-and-stats dungeon crawler'; screen 4 'an indie retro-CRPG made in a browser/Unity engine'; screen 5 'an e-reader app skinned as an open book', 'a browser-based interactive fiction'. FOUR OF SIX put an app or a browser in the plausible-alternatives field. Not scorable under any row. Filed below.",
+    "cLAUDE_md_token_counts": "`grep -c -i morrowind CLAUDE.md` = 8. `grep -o -i 'dark souls|three\\.js|black marsh' CLAUDE.md | sort | uniq -c` = Black Marsh 2, Dark Souls 1, Three.js 1. Run this turn, for ruling R2 ground 3.",
+    "books_manifest": "`node -e` over game/data/books/manifest.json: 162 entries, 0 with a `text` field. Confirms the pack's B1 premise first-hand rather than inheriting it."
+  },
+
+  "contamination_direction": {
+    "L1_as_the_pack_stated_it": "A judge inherits the project CLAUDE.md and cannot be made naive. Direction: it pushes AWAY from `FROM: don't know`, i.e. AGAINST us — so a 'don't know' returned under it is STRENGTHENED. Four screens returned 'don't know' (1, 3, 5, 6) and all four are strengthened by this.",
+    "the_correction_i_am_adding": "The pack's inference that naming 'a different, real, published game' is unexplained by the contamination DOES NOT HOLD for Morrowind, Dark Souls or Three.js, because CLAUDE.md names all three (8, 1 and 1 occurrences, measured this turn). It holds for titles CLAUDE.md does NOT name — Oblivion, OpenMW, Kingdom Come, Sunless Sea, Kenshi, Amnesia, Lethal Company, Minecraft, all of which appear in COULD ALSO BE fields and none of which is inherited. So the contamination is real and asymmetric, and the pack's direction claim needs this one amendment.",
+    "net_effect_on_this_result": "It weakens the EVIDENTIAL value of screens 2 and 4's FROM (handled in R2) and strengthens the four 'don't know's. It does not touch R1: nothing in CLAUDE.md tells a judge to say `nothing physical`, and the leak that bears on that field (Q4) points the OTHER way."
+  },
+
+  "the_leak_note_recorded_not_scored": {
+    "instruction_followed": "§G says 'Prompt (verbatim; do not paraphrase, do not soften)'. NOTHING WAS REWORDED, by the pack-builder or by me. This is a note on how to READ the result, not a change to the instrument.",
+    "Q4": "'What is it made of? Name the physical materials it appears to be made from, if any.' Presupposes physicality and instructs a material hunt, while `MADE OF: nothing physical` is the item's sharpest HARD FAIL. Direction: FLATTERS US.",
+    "Q5": "'Is there anything in this interface you have never seen in an interface before?' Invites a novelty hunt, while `NEVER SEEN BEFORE: no` is a FAIL. Direction: FLATTERS US.",
+    "how_much_of_any_PASS_this_bias_could_be_carrying": "NO SCREEN REACHED PASS, so no PASS in this run is carrying it — the leak bought nothing here. But the answer the brief actually wants is about the near-PASS, and it is uncomfortable: screen 5 satisfies three PASS clauses, and TWO OF THE THREE (`MADE OF` ≥2 materials, `NEVER SEEN BEFORE` names an element) are the two leaked questions. If screen 5 is ever cited as 'nearly passing', that citation carries the full weight of both leaks and should not be made without this sentence attached. Across the pack the same holds: every MADE OF material count in the per-screen table above was produced under a question that instructed the judge to find materials.",
+    "Q5_carried_zero_discriminating_power_in_this_run": "The FAIL trigger `NEVER SEEN BEFORE: no` fired ZERO times in six. All six judges produced a novelty. Under a question that invites a novelty hunt, 'no' is close to unreachable — so this run supplies NO EVIDENCE on that clause, in either direction. Note also that two of the six novelties are lines of COPY rather than form (screen 2's authoring-note line, screen 5's footer): a judge that cannot find novel form under Q5 will find novel text.",
+    "the_one_place_the_leak_helps_the_gate": "Q4's bias makes screens 1 and 6 STRONGER evidence, not weaker — they gave the failing answer against a question pushing away from it. See R1 ground 4.",
+    "this_is_the_second_gate_in_this_project_found_with_a_leaky_question": "Verified rather than asserted: orchestration/status/GATE-G-RESULT-AND-WHAT-IT-OWES.json exists (5,098 bytes, 2026-08-15) and its text contains 'demand characteristic', 'leaky' and 'leak'/'leaks'. That gate's question 2 presupposed its own mechanism and both judges said so unprompted; §G's Q4 and Q5 do the same thing in the same direction. TWO FOR TWO ON THE GATES THAT HAVE ACTUALLY RUN. The general lesson belongs to I3 and to the other 98 declared-but-unrun blind pairs before they run, not to this item alone: A GATE'S OWN QUESTION CAN TELL THE JUDGE WHAT TO LOOK FOR, and the failure mode is silent because the leak arrives as a good result.",
+    "how_to_fix_it_without_destroying_comparability": "Do not edit §G's prompt in place. Version it (§G v2), run both prompts on the same stimuli once, and record the delta — that measures the leak instead of hiding it, and keeps this run comparable. This is a recommendation to I3, not an action I took."
+  },
+
+  "player_visible_defects_the_judges_surfaced_by_accident_NOT_SCORED": {
+    "note": "Recorded here because they were found by this gate and would otherwise be lost. Neither is part of the §G decode and neither affects the cap. Both are real work for someone else.",
+    "D1_authoring_brief_leaked_into_shipped_dialogue": {
+      "how_it_surfaced": "Screen 2's judge, unprompted, in NEVER SEEN BEFORE: 'The narration line \"Say it in one line. Local. Useful.\" reads like an authoring instruction to the writer rather than in-world dialogue, which I have not seen surfaced inside a conversation window before.' A blind judge with no project context read the writer's brief off the screen and correctly identified it as a brief.",
+      "verified_this_turn_not_inherited": "`grep -n 'Say it in one line' game/data/dialogue/greetings.json` returns 5 hits (lines 2960, 2976, 2992, 3008, 3024). `grep -c 'Local\\. Useful\\.' game/data/dialogue/greetings.json` returns 25. `grep -rl` across game/data/ returns ONE file: game/data/dialogue/greetings.json.",
+      "what_it_actually_is_and_it_is_worse_than_the_judge_could_see": "It is not one stray line. The generation brief has been ingested as dialogue content across a whole reaction group. At line 2957 the `lines` array for reaction_group RG-BWC, disposition_band 'cold', reads: 'Local. Useful. Contract business only.' / 'The Company is not recruiting today. Local. Useful.' / 'Local. Useful. Take it to the factor.' / 'Say it in one line. Local. Useful.' / 'Local. Useful. We are working.' — five NPC greetings built out of the instruction 'say it in one line; keep it local and useful'.",
+      "scope": "25 lines carrying the fragment, 5 carrying the full instruction, 1 file. Player-visible in the conversation window, which is where the judge found it.",
+      "owner": "Unclaimed. `node tools/ownership.mjs --for` was run for my own output file only; whoever picks this up should run it for game/data/dialogue/greetings.json first."
+    },
+    "D2_book_bodies_render_as_the_literal_string_undefined": {
+      "how_it_surfaced": "Not from a judge — the pack-builder hit it capturing round 1's book stimulus, and shipped a working book so §G measured the interface rather than a data bug. Recorded here so it does not die inside a sealed pack directory.",
+      "verified_this_turn": "game/data/books/manifest.json holds 162 entries and `manifest.books.filter(x => x.text).length` is 0. Run by me, not inherited.",
+      "cause_as_traced_by_the_pack_builder_and_not_re_verified_by_me": "Engine._buildUI() (game/src/engine.js:4567) folds every document under data.books into one Map keyed by book id; game/data/index.json loads books/manifest.json FIFTH of twenty-six book files, so its text-less stubs overwrite the full records of the four files loaded before it (a-progress-through-the-southern-marsh.json, deep-time.json, foundational.json, interface-readables.json) and are themselves overwritten by the twenty-one after; ui/screens/text.js:240 then wraps `undefined`. Probed live: the-sap-and-the-ledger BROKEN; the-boy-who-counted-the-tide, the-grange-book, the-marker-at-the-second-bend fine. MARKED UNVERIFIED BY ME — I checked the manifest count only. Whoever fixes it should re-derive the load order rather than inherit it from this file.",
+      "why_it_matters_beyond_the_book_screen": "A player opening one of those four files' books reads the word 'undefined'. It is cheap and it is exactly the class of defect the owner sees immediately."
+    },
+    "D3_a_third_one_that_belongs_to_the_tooling_not_the_game": "The pack's B2: `questOpen(id)` returns truthy without opening anything, so round 1's journal captured COMPLETELY BLANK. tools/harness/critic-t4-shots2.mjs carries the identical `if (H.questOpen(id))` pattern and would produce the same blank page — meaning a critic using it would be measuring an empty journal and calling it the journal. Not scored, not verified by me, and it is a live risk to other verdicts rather than to this one."
+  },
+
+  "what_the_item_needs_filed_rather_than_edited": {
+    "why_filed": "A decoder amending the item it is scoring against is the conflict every guard in this project exists to prevent. RI-UIX06 was not touched. These are for its owner.",
+    "1_the_KIND_clause_has_no_test": "'`KIND` describes rather than categorises' decided FOUR of six screens in this run and §G supplies no test for it. I had to define one (see kind_clause_test) and apply it before ruling. The item should carry its own test, written by its owner, or the clause will be decided differently by every decoder.",
+    "2_line_354_should_be_cited_in_the_answer_key_itself": "The HARD FAIL row says `MADE OF: nothing physical`. The worked example at line 354 shows a QUALIFIED 'nothing physical' scored as HARD FAIL. That example is what settled R1, and it is 130 lines away from the row it governs. One cross-reference in the answer key would make this decode unnecessary next time.",
+    "3_Q2s_tool_category_still_has_no_row": "The pack's L3 reported it and it is still true: Q2 offers 'a game, a website, an app, a tool' and 'a tool' appears in NO row of the answer key. Unchanged.",
+    "4_COULD_ALSO_BE_scores_only_frameworks": "Four of six answers put an 'app' or a 'browser-based' thing in COULD ALSO BE and none is scorable. The field currently scores only 'a UI framework or design system'. Whether a plausible-alternative of 'a web app' should score is the owner's call; today it is invisible.",
+    "5_the_L4_content_channel_needs_a_stimulus_rule_not_a_crop": "The journal's in-world date ('1 Second Seed, 3E 427') lets a judge answer FROM without seeing the interface. Cropping it would be doctoring the stimulus and the pack-builder was right to refuse. The item's §G stimulus contract should instead say what to do: capture the journal in a state carrying no Elder-Scrolls-recognisable date, or record the screen's FROM as content-derived at capture time, as this decode did.",
+    "6_two_of_shoot_mjs_s_owed_flags_are_still_owed": "`grep -n 'ui-screens|blank-world|blankWorld' tools/harness/shoot.mjs` returns 0 hits per the pack, re-verified by it this run. §G's own method line calls for both. tools/harness/uix06-g-pack.mjs is a stand-in and does not discharge them."
+  },
+
+  "what_this_gate_bought_the_ART_builder": {
+    "note": "The most actionable output of this gate is not the cap — it is a materials to-do list written by six people who had never read §A, which is the only kind of material census that cannot be self-fulfilling.",
+    "materials_the_judges_actually_saw": "Across all six answers, exactly TWO of §A's nine were named: WET PARCHMENT (screens 3, 4, 5, and as a 'suggestion' on 6) and INK (screens 1, 2, 4, 5). Chitin, root, bone, resin/amber, reed weave, shell inlay and mud-slip/fired clay were named by NOBODY, on ANY screen.",
+    "where_A_says_they_should_have_been_and_what_was_seen_instead": [
+      "ROOT — §A: 'menu frames, the journal's binding, book covers'. Seen instead: 'a dark brown tooled-leather spine' (level-up), 'darker leather-edged board covers' (book), 'stitched into a leather-bound book' (journal). Three judges, three times leather. §A's root is 'grown-not-cut; corners are knots, not mitres'; a tooled leather spine is its opposite.",
+      "BONE — §A: 'dividers, tick marks, level-up attribute pips'. Seen instead on the level-up screen: 'carved stone, wood and metal tokens', 'small iron or brass tack heads'.",
+      "CHITIN — §A: 'frames, borders, bar casings, the HUD's bar housings'. Seen instead on the HUD: 'flat digital bars and lines'. The one screen where §A puts chitin is the one screen where a judge said the interface is made of nothing.",
+      "SHELL INLAY — §A: 'selection highlights, the lock-on reticle'. Named by nobody on any screen, including the combat HUD where the reticle lives.",
+      "REED WEAVE — §A: 'backgrounds, inventory list separators'. The inventory judge saw 'dark green woven cloth or canvas ... like a rolled-out oilcloth or felt-lined case'. WOVEN was seen; reed was not. This is the closest near-miss in the pack and the cheapest thing on this list to convert."
+    ],
+    "the_headline_for_whoever_builds_next": "The paper-and-ink half of §A's vocabulary is landing — journal and book were the two strongest screens and one judge reproduced §A's own 'iron-gall' unprompted. The MARSH half — chitin, root, shell, resin, reed — is not landing anywhere, and the two screens that carry the least of it (inventory, HUD) are the two that HARD FAILED. That is the shortest description of why this gate came back at cap 2.",
+    "AD1_note": "This is NOT AD1. AD1 ('≥6 of 9 materials across the UI set', hard fail at ≤2) is a manual census with a crop per claim, comparison method step 6, and it has not been run here. But six blind judges independently naming 2 of 9 is a loud prior for whoever runs it."
+  },
+
+  "provenance_and_bounds_of_this_decode": {
+    "what_i_read": "reports/blind/uix06-gate-g-SEALED-KEY/DISPATCH.md (full); corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md lines 58-386 (§A, §B, §C, §D-§F, §G, §H, comparison method, Scoring incl. AD7 and the worked failure example); orchestration/status/GATE-UIX06-G-PACK.json (full); the six /tmp/ui-read-53f9ac53/*/answer.txt.",
+    "what_i_did_not_read": "The six ui.png stimuli. Deliberately, and it is the first line of what_i_could_not_do.",
+    "commands_run_this_turn": [
+      "grep -c -i 'morrowind' CLAUDE.md → 8",
+      "grep -o -i 'dark souls|three\\.js|black marsh' CLAUDE.md | sort | uniq -c → Black Marsh 2, Dark Souls 1, Three.js 1",
+      "grep -ril <each of 13 §A terms> s0*/answer.txt | wc -l → 0 for all 13",
+      "grep -ril <each of 11 UI framework/design system names> s0*/answer.txt | wc -l → 0 for all 11",
+      "grep -h '^KIND:' s0*/answer.txt → six lines, all naming a game",
+      "grep -n 'Say it in one line' game/data/dialogue/greetings.json → 5 hits; grep -c 'Local\\. Useful\\.' → 25; grep -rl across game/data/ → 1 file",
+      "node -e over game/data/books/manifest.json → 162 entries, 0 with text",
+      "ls orchestration/status/ | grep GATE-G → GATE-G-RESULT-AND-WHAT-IT-OWES.json present, 5,098 bytes",
+      "node tools/ownership.mjs --for orchestration/status/GATE-UIX06-G-RESULT.json → 'nobody live has declared this file'"
+    ],
+    "figures_i_inherited_and_did_not_verify": "The pack's C1/C2/C3/C5a/C7 leak-check numbers (0 non-black control pixels, 0 ancillary chunks, 0 token hits), the L4 journal date strings, the L6/B1 causal chain through engine.js and index.json, the L7 questOpen finding, and the shoot.mjs grep. All are the pack-builder's, all are cited as such, and none of them decides anything in this decode. The two I could cheaply re-derive — the books manifest and the CLAUDE.md token counts — I re-derived.",
+    "the_decode_was_not_re_derived_after_reading_answers": "DISPATCH.md §2 says 'Do not re-derive it after reading an answer.' The ladder, the roll-up rule and the cap table were read from §2 and from RI-UIX06's Scoring section before any answer file was opened, and neither was altered afterwards. The one thing I DID have to construct after reading — the KIND clause test — is declared as such, was fixed once and applied to all six identically, and its effect if reversed is stated in robustness_of_the_result."
+  },
+
+  "next_steps_for_the_orchestrator": [
+    "The cap is a fact about the ART side now: any wave-1 UI verdict must carry UI_ART ≤ 2 until §G is re-run and comes back better. §H forbids fusing it with FIDELITY into one number (CC-5 voids the verdict).",
+    "The build lever is what_this_gate_bought_the_ART_builder: chitin on the HUD bar housings, root on the journal binding and book covers, bone on the level-up pips, shell inlay on the lock-on reticle. Five materials, four screens, and the two screens that HARD FAILED are the two carrying none of them.",
+    "D1 (authoring brief in shipped dialogue, 25 lines, 1 file) and D2 (books rendering `undefined`) are cheap, player-visible and belong in a build piece, not here.",
+    "I3 owns the leak: §G v2 alongside §G v1 on the same stimuli, delta recorded. Two of two gates that have actually run in this project were found to have a leading question, and 98 declared blind pairs have not run yet."
+  ],
+
+  "files_claimed": ["orchestration/status/GATE-UIX06-G-RESULT.json"],
+  "files_touched": ["orchestration/status/GATE-UIX06-G-RESULT.json"],
+  "files_deliberately_not_touched": ["corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md — see what_the_item_needs_filed_rather_than_edited"]
+}
