@@ -221,6 +221,51 @@ the gameplay camera, and the eight-angle orbit with the whole figure in frame.
 > per-frame stance evaluation for 408 actors cannot be afforded in a browser budget — in which case the
 > honest answer is a cheap phase advance on the existing one-time solve, not the deletion of (b2).
 
+> **AMENDED wave 1 (`W1-F10-r12` critic, 2026-08-16) — arm (b2) needs a FLOOR and a PLACE. This
+> tightens the item; it relaxes nothing. Unlike the two amendments above it does NOT fail the build
+> that prompted it, and the guard that matters is therefore the other one: `CRITIC-DOCTRINE` §1.3
+> forbids a bar a critic writes from being the reason anything passes, and C3's pass in
+> `W1-F10-r12-CRITIC` is scored on the bar exactly as the r11 critic left it and would stand if this
+> amendment were deleted.**
+>
+> (b2) as written says *"a measurably different pose"* and names no magnitude, so its pass condition
+> is `delta > 0`. **A jitter of one microradian satisfies it.** In the same week this project found
+> three separate checks that could not fail — including, inside the round this amends, a pixel
+> "control" computed as `diff(A, A)`, the same decoded buffer against itself, which reads 0 by
+> arithmetic. A temporal clause with no floor is that defect one level up. And radians are not
+> pixels: a bone can turn inside a garment and change nothing a player sees.
+>
+> **The rule is now: arm (b2) passes only if all three hold.**
+> **(b2-i)** the population clause already written above — ≥ 90% of drawn NPCs with a changed
+> non-foot bone rotation at two frames ≥ 60 apart; **and**
+> **(b2-ii)** an **amplitude floor**: each counted person's worst non-foot bone rotation change
+> **exceeds 0.25°**. Feet stay excluded for the reason (b2) already gives; **and**
+> **(b2-iii)** an **attribution arm** — the motion must be shown to reach the screen. From one fixed
+> camera, two frames ≥ 24 sim frames apart, **≥ 60% of the changed pixels must fall inside the drawn
+> NPCs' own screen-space boxes**, at an **enrichment of ≥ 3×** over those boxes' share of the frame
+> area, boxes projected from **bone world matrices** (`HAZARDS` §27 — read a bone, not the group).
+> **The determinism control for that pair must be two INDEPENDENT renders and encodes of the SAME
+> simulation frame** — `stepFrames(0)` then re-capture — and must read 0 changed pixels. *A control
+> that compares a decoded buffer with itself is an identity and does not satisfy this clause.*
+>
+> **Why these numbers and not this build's numbers.** Measured 2026-08-16 by the r12 critic:
+> per-person worst non-foot change over 60 frames is **0.6735°–1.5261°** live over 27 drawn people and
+> **0.644284°–1.637957°** offline over all 408, so the 0.25° floor sits at roughly a third of the
+> smallest real value rather than being a restatement of it. On the same tree the attribution reads
+> **82.28%–85.66% of changed pixels inside boxes covering 9.09%–9.36% of the frame — 8.93×–9.32×
+> enrichment** — so a 60% / 3× bar is met with a wide margin and is not this result written back as a
+> threshold.
+>
+> **Guards.** **ADD-only:** (b1), (b2)'s ≥ 90% population clause and arm (a) are untouched; no
+> threshold moved and nothing relaxed. **Bounded:** both new arms cost one browser session and the
+> instrument is banked (`tools/visual/f10-r12c-motion-truth.mjs`, plus the attribution report at
+> `corpus/90-verdicts/wave1/artifacts/W1-F10-r12-critic/motion-attribution.json`). **Reversible:**
+> overturned if a build shows a genuinely perceptible idle whose bone deltas sit under 0.25° — a
+> translation-driven weight shift would do it — in which case the floor moves to the translation
+> channel rather than being deleted; or if screen-box attribution proves unavailable on a camera a
+> capture needs, in which case (b2-iii) falls back to a whole-frame changed-pixel count **with the
+> determinism control still mandatory**, accepting that it is a weaker test.
+
 | **C4** | **It reads at the distance the player sees it** | At 8–10 m, a fresh judge answers *"person, creature, or cannot tell"* and *"which way is it facing"*, per archetype | both correct on ≥ 90% of the roster | facing wrong → the figure has no front/back asymmetry, which at that range is the whole silhouette |
 
 ### §D — Dress: faction, rank and place

@@ -1,0 +1,159 @@
+{
+  "tool": "tools/visual/f10-r12-crowd-motion.mjs",
+  "commit": "unknown",
+  "working_tree_dirty_in_game_or_tools": null,
+  "dirty_paths": [],
+  "stagger_n": 8,
+  "arms": [
+    {
+      "arm": "1a NULL CLOCK — the same person solved twice at t=0 is bit-identical",
+      "ok": true,
+      "expect": "IDENTICAL"
+    },
+    {
+      "arm": "1b LIVE CLOCK — the same person at t=0 and t=60 differs on a non-foot bone",
+      "ok": true,
+      "expect": "DIFFERENT",
+      "worst_non_foot_deg": 0.918084,
+      "r11_measured_worst_over_the_whole_crowd_rad": 0
+    },
+    {
+      "arm": "2 ROUND 11 REPRODUCES AT t=0 byte for byte over all 408 rows",
+      "ok": false,
+      "note": "artifact missing"
+    },
+    {
+      "arm": "3a BUCKET IS A FUNCTION OF THE IDENTITY HASH, not of file or array order",
+      "ok": true
+    },
+    {
+      "arm": "3b ALL 8 BUCKETS ARE OCCUPIED over the 408",
+      "ok": true,
+      "counts": [
+        60,
+        56,
+        51,
+        44,
+        47,
+        48,
+        51,
+        51
+      ],
+      "n": 408
+    },
+    {
+      "arm": "3c NO SETTLEMENT BREATHES AS A BLOCK — worst single-bucket share under 0.55",
+      "ok": true,
+      "worst_settlement": "gideon",
+      "worst_share": 0.2549
+    },
+    {
+      "arm": "4a DISTINCT LOOP PHASES at t=0, 600, 6000 — a floor of 200 of 408, i.e. under half the crowd may share a phase with anybody",
+      "ok": true,
+      "t0": 95,
+      "t600": 392,
+      "t6000": 391,
+      "n": 408
+    },
+    {
+      "arm": "4b THE PAIRWISE PHASE GAPS THEMSELVES MOVE — the crowd is not a rigid formation",
+      "ok": true,
+      "expect": "DIFFERENT"
+    },
+    {
+      "arm": "4c CONTROL — with every rate pinned to 1.0 the same gaps are FROZEN, so 4b is not satisfied by any advance",
+      "ok": true,
+      "expect": "IDENTICAL"
+    },
+    {
+      "arm": "5 PLANTING SURVIVES THE ADVANCE (S59 c) — lower ankle within 1 mm of rest at every clock",
+      "ok": true,
+      "rows": [
+        {
+          "t": 0,
+          "worst_plant_error_m": 1.3877787807814457e-17,
+          "n": 408
+        },
+        {
+          "t": 17,
+          "worst_plant_error_m": 1.3877787807814457e-17,
+          "n": 408
+        },
+        {
+          "t": 60,
+          "worst_plant_error_m": 1.3877787807814457e-17,
+          "n": 408
+        },
+        {
+          "t": 481,
+          "worst_plant_error_m": 1.3877787807814457e-17,
+          "n": 408
+        },
+        {
+          "t": 6000,
+          "worst_plant_error_m": 1.3877787807814457e-17,
+          "n": 408
+        }
+      ]
+    },
+    {
+      "arm": "6 C3 ARM b1 SURVIVES THE ADVANCE (S59 a) — >= 90% over 3 deg at every clock",
+      "ok": true,
+      "rows": [
+        {
+          "t": 0,
+          "over_bar": 408,
+          "n": 408,
+          "pct": 100
+        },
+        {
+          "t": 17,
+          "over_bar": 408,
+          "n": 408,
+          "pct": 100
+        },
+        {
+          "t": 60,
+          "over_bar": 408,
+          "n": 408,
+          "pct": 100
+        },
+        {
+          "t": 481,
+          "over_bar": 408,
+          "n": 408,
+          "pct": 100
+        },
+        {
+          "t": 6000,
+          "over_bar": 408,
+          "n": 408,
+          "pct": 100
+        }
+      ]
+    },
+    {
+      "arm": "7 THE SHARED idle_ready / idle_loop ARE BYTE-IDENTICAL after 408 x 5 solves",
+      "ok": true
+    },
+    {
+      "arm": "8a PERTURB — tripling every idle_loop rotation key changes the t=60 pose",
+      "ok": true,
+      "expect": "DIFFERENT",
+      "worst_deg": 0.534605
+    },
+    {
+      "arm": "8b NULL CONTROL — an unread field on the stance object changes nothing",
+      "ok": true,
+      "expect": "IDENTICAL"
+    },
+    {
+      "arm": "9 SPORADIC CLOCK — a clock that jumps 24 -> 84 (stepFrames(60) + one render) must re-solve EVERY bucket, not the one that happens to be congruent",
+      "ok": false,
+      "starved_of_120": 120,
+      "buckets_covered": 8,
+      "expect_buckets": 8
+    }
+  ],
+  "pass": false
+}

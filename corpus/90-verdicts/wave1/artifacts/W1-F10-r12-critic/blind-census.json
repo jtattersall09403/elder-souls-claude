@@ -1,0 +1,261 @@
+{
+ "tool": "critic re-derivation of the rule-0e blind census (EXCLUDING this verdict, so the figure is the state this verdict inherited)",
+ "generated": "2026-08-16T03:08:40.855Z",
+ "commands": [
+  "walk every corpus/90-verdicts/**/*.json (minus this verdict) for a blind_comparisons array",
+  "walk every corpus/**/*.md front matter for blind_pair: yes with an id"
+ ],
+ "verdict_json_files_scanned": 1115,
+ "files_carrying_blind_comparisons": 73,
+ "total_entries": 141,
+ "KEY_USED": {
+  "blind_status": 11,
+  "status": 135
+ },
+ "status_values": {
+  "not_possible": 108,
+  "done": 27,
+  "not_required": 3,
+  "void": 1,
+  "not_run": 1,
+  "answered-and-revealed": 1
+ },
+ "entries_that_are_neither_not_possible_nor_not_required": [
+  {
+   "file": "wave1/W1-00-r2.json",
+   "status": "done",
+   "item": "RI-CAM02"
+  },
+  {
+   "file": "wave1/W1-00.json",
+   "status": "done",
+   "item": "RI-CAM06"
+  },
+  {
+   "file": "wave1/W1-00.json",
+   "status": "done",
+   "item": "RI-CAM02"
+  },
+  {
+   "file": "wave1/W1-01-r2.json",
+   "status": "done",
+   "item": "RI-WLD04"
+  },
+  {
+   "file": "wave1/W1-01.json",
+   "status": "done",
+   "item": "RI-WLD04"
+  },
+  {
+   "file": "wave1/W1-02-r1.json",
+   "status": "done",
+   "item": "RI-WLD12"
+  },
+  {
+   "file": "wave1/W1-07.json",
+   "status": "done",
+   "item": "RI-JRN01"
+  },
+  {
+   "file": "wave1/W1-09-r2.json",
+   "status": "done",
+   "item": "RI-CMB07"
+  },
+  {
+   "file": "wave1/W1-09-r3.json",
+   "status": "done",
+   "item": "RI-CMB07"
+  },
+  {
+   "file": "wave1/W1-09.json",
+   "status": "done",
+   "item": "RI-CMB03"
+  },
+  {
+   "file": "wave1/W1-10-r2.json",
+   "status": "done",
+   "item": "RI-WPN03"
+  },
+  {
+   "file": "wave1/W1-10-r2.json",
+   "status": "done",
+   "item": "RI-WPN02"
+  },
+  {
+   "file": "wave1/W1-10-r3.json",
+   "status": "done",
+   "item": "RI-WPN03"
+  },
+  {
+   "file": "wave1/W1-10-r3.json",
+   "status": "done",
+   "item": "RI-WPN02"
+  },
+  {
+   "file": "wave1/W1-10.json",
+   "status": "done",
+   "item": "RI-WPN02"
+  },
+  {
+   "file": "wave1/W1-10.json",
+   "status": "done",
+   "item": "RI-WPN03"
+  },
+  {
+   "file": "wave1/W1-14.json",
+   "status": "done",
+   "item": "RI-MAG01"
+  },
+  {
+   "file": "wave1/W1-LIBRARY-r1.json",
+   "status": "void",
+   "item": "RI-LOR03"
+  },
+  {
+   "file": "wave1/W1-LIBRARY-r1.json",
+   "status": "not_run",
+   "item": "RI-UIX05"
+  },
+  {
+   "file": "wave1/W1-PROSE-BLIND-r1.json",
+   "status": "answered-and-revealed",
+   "item": "RI-MTH03"
+  },
+  {
+   "file": "wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.json",
+   "status": "done",
+   "item": "RI-VIS06"
+  },
+  {
+   "file": "wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.json",
+   "status": "done",
+   "item": "RI-VIS06"
+  },
+  {
+   "file": "wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.json",
+   "status": "done",
+   "item": "RI-VIS06"
+  },
+  {
+   "file": "wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.json",
+   "status": "done",
+   "item": "RI-VIS06"
+  },
+  {
+   "file": "wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.json",
+   "status": "done",
+   "item": "RI-VIS06"
+  },
+  {
+   "file": "wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json",
+   "status": "done",
+   "item": "RI-VIS06"
+  },
+  {
+   "file": "wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json",
+   "status": "done",
+   "item": "RI-VIS06"
+  },
+  {
+   "file": "wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json",
+   "status": "done",
+   "item": "RI-VIS06"
+  },
+  {
+   "file": "wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json",
+   "status": "done",
+   "item": "RI-VIS06"
+  },
+  {
+   "file": "wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json",
+   "status": "done",
+   "item": "RI-VIS06"
+  }
+ ],
+ "md_files_containing_the_string": 106,
+ "reference_items_declaring_blind_pair_yes_IN_FRONT_MATTER": 80,
+ "ids": [
+  "RI-AI01",
+  "RI-AI02",
+  "RI-AI03",
+  "RI-AI04",
+  "RI-AI05",
+  "RI-AI06",
+  "RI-AI07",
+  "RI-CMB01",
+  "RI-CMB02",
+  "RI-CMB03",
+  "RI-CMB05",
+  "RI-CMB06",
+  "RI-CMB07",
+  "RI-CMB08",
+  "RI-CMB09",
+  "RI-CMB10",
+  "RI-WPN01",
+  "RI-WPN02",
+  "RI-WPN03",
+  "RI-WPN04",
+  "RI-WPN05",
+  "RI-WPN06",
+  "RI-WPN07",
+  "RI-CAM01",
+  "RI-CAM02",
+  "RI-CAM03",
+  "RI-CAM04",
+  "RI-CAM05",
+  "RI-CAM06",
+  "RI-CAM07",
+  "RI-PRG09",
+  "RI-MAG01",
+  "RI-MAG05",
+  "RI-QST01",
+  "RI-QST02",
+  "RI-QST06",
+  "RI-QST08",
+  "RI-DLG01",
+  "RI-DLG03",
+  "RI-DLG05",
+  "RI-DLG06",
+  "RI-DLG07",
+  "RI-DLG08",
+  "RI-WLD03",
+  "RI-WLD04",
+  "RI-WLD05",
+  "RI-WLD06",
+  "RI-WLD08",
+  "RI-WLD09",
+  "RI-WLD10",
+  "RI-WLD12",
+  "RI-WLD14",
+  "RI-WLD15",
+  "RI-LOR03",
+  "RI-VIS02",
+  "RI-VIS05",
+  "RI-VIS06",
+  "RI-VIS07",
+  "RI-VIS08",
+  "RI-VIS09",
+  "RI-UIX01",
+  "RI-UIX03",
+  "RI-UIX04",
+  "RI-UIX05",
+  "RI-UIX06",
+  "RI-UIX07",
+  "RI-UIX08",
+  "RI-UIX09",
+  "RI-AUD01",
+  "RI-AUD03",
+  "RI-AUD05",
+  "RI-JRN01",
+  "RI-JRN02",
+  "RI-JRN07",
+  "RI-JRN08",
+  "RI-CMP03",
+  "RI-EXP01",
+  "RI-EXP02",
+  "RI-EXP03",
+  "RI-EXP05"
+ ],
+ "the_brief_said": "141 entries, 105 not_possible, 0 run; honest census 81 reference items",
+ "what_i_measured": "141 entries is right. 108 not_possible, not 105. \"0 run\" is an artefact of reading blind_status, a key only 11 of the 141 entries use; 135 use status, and 27 of those read done plus one answered-and-revealed. 80 reference items in front matter, not 81. The rule-0e hole is real and total for the FRESH-JUDGE checks RI-VIS10 needs (B1/C4/D4) and for the 80 blind_pair items; the claim that no blind comparison has ever run is false."
+}

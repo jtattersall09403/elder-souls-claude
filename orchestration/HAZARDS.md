@@ -66,6 +66,47 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 30. A "CONTROL" THAT COMPARES A BUFFER WITH ITSELF IS AN IDENTITY. It reads 0 by arithmetic and it cannot fail.
+
+**Found 2026-08-16 by the F10 r12 critic, in the arm the F10 r12 builder called *"the strongest single
+artefact in the round"*.** (Heading number re-read at the moment of writing, per §27's note — a sibling
+took 29 tonight.)
+
+The round showed its crowd breathing in pixels: four frames from one fixed camera, three consecutive
+steps of 42,186 / 30,847 / 32,872 changed pixels, offered *"against a required-to-disagree control of
+the frame compared with ITSELF at exactly 0 changed pixels of 2,073,600, which is what says the capture
+is deterministic and the changed pixels are the scene rather than the renderer."*
+
+Read the instrument. `tools/visual/f10-r12-motion-pixels.mjs:104`:
+
+```js
+CONTROL_frame_against_itself: diff(imgs[0].img, imgs[0].img, THRESH),
+```
+
+**Both arguments are the same decoded object.** Every delta is 0 by construction. It reads 0 on a
+corrupted decode, on a non-deterministic rasteriser, on a camera that moved between shots — on
+anything. `CONTROL_ok` is a tautology and the tool's `pass` therefore reduces to *"the other frames
+differ"*, which was never in doubt. It is not even a required-to-**disagree** arm: it is required to
+agree, and it agrees with itself.
+
+**The conclusion was true and the proof was worth nothing, which is the entire point.** Re-shot
+properly — capture, `stepFrames(0)` (legal: `engine.js:stepFrames` accepts 0 and still calls
+`loop.renderNow()`), capture again — the same simulation frame goes through the rasteriser twice and
+the PNG encoder twice and comes back **byte-identical, md5 `a5c6c873…` both times, 0 changed pixels of
+2,073,600.** That arm could have gone red. This one could not.
+
+**The rule: a determinism control must re-do the work.** Two independent renders and two independent
+encodes of the same state, compared as two files. Never one decoded buffer against itself, and never
+one file's bytes against its own bytes — that tests the filesystem.
+
+**Generalise past pixels.** The same shape is a hash compared with itself, a "did the config change"
+check that re-reads one parsed object, a golden test whose expected value is computed by the code under
+test, and a before/after pair where both arms load the same module. Ask of every control arm: **what
+edit to the system under test would turn this red?** If the honest answer is "none", it is decoration.
+This is §0's failure family (*a self-test whose arms agree about a false premise*) with the arms
+collapsed to one, and §28's (*an offline harness that advances the clock by 1*) arriving in the pixel
+domain — three instances in one week, so the family is worth naming rather than re-deriving.
+
 ## 29. FOUR AGENTS LOST MEASUREMENT WORK TO CONTENTION IN ONE NIGHT. Four browser critics do not fit this box.
 
 **Measured 2026-08-16 02:52 with four agents running: `contention.mjs` returns WAIT, `/proc/loadavg`

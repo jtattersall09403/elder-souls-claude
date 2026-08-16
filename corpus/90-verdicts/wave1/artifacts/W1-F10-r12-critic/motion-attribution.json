@@ -1,0 +1,89 @@
+{
+ "tool": "critic attribution over tools/visual/f10-r12c-motion-truth.mjs frames",
+ "generated": "2026-08-16T03:08:01.914Z",
+ "what_this_is": "Every changed pixel located against the DRAWN NPCs own screen-space boxes, projected from bone world matrices through the live camera matrices at each shot (HAZARDS 27 - read a bone, not the group). Boxes padded by 0.012 of frame width/height to absorb silhouette outside the bone hull.",
+ "no_appearance_claim": "SwiftShader. W1-30-EVIDENCE 4 admits geometry/composition/determinism and refuses appearance.",
+ "THE_CONTROL": "motion-t000 vs motion-t000r: the SAME sim frame (22), rendered twice via stepFrames(0) and captured twice. Required to read 0 changed pixels and CAPABLE of reading otherwise, unlike diff(A,A).",
+ "rows": [
+  {
+   "label": "TRUE DETERMINISM CONTROL — same sim frame, rendered and captured twice",
+   "a": "motion-t000.png",
+   "b": "motion-t000r.png",
+   "sim_frames": [
+    22,
+    22
+   ],
+   "camera_identical": true,
+   "pixels": 2073600,
+   "changed": 0,
+   "changed_pct": 0,
+   "npc_box_union_px": 188178,
+   "npc_box_union_pct_of_frame": 9.07,
+   "changed_inside_npc_boxes": 0,
+   "pct_of_changed_inside_npc_boxes": null,
+   "enrichment_vs_area": null,
+   "mean_abs_delta": 0,
+   "worst_channel_delta": 0
+  },
+  {
+   "label": "consecutive",
+   "a": "motion-t000.png",
+   "b": "motion-t024.png",
+   "sim_frames": [
+    22,
+    46
+   ],
+   "camera_identical": true,
+   "pixels": 2073600,
+   "changed": 56125,
+   "changed_pct": 2.7066,
+   "npc_box_union_px": 194141,
+   "npc_box_union_pct_of_frame": 9.36,
+   "changed_inside_npc_boxes": 46948,
+   "pct_of_changed_inside_npc_boxes": 83.65,
+   "enrichment_vs_area": 8.93,
+   "mean_abs_delta": 0.5039,
+   "worst_channel_delta": 116
+  },
+  {
+   "label": "consecutive",
+   "a": "motion-t024.png",
+   "b": "motion-t048.png",
+   "sim_frames": [
+    46,
+    70
+   ],
+   "camera_identical": true,
+   "pixels": 2073600,
+   "changed": 32682,
+   "changed_pct": 1.5761,
+   "npc_box_union_px": 190629,
+   "npc_box_union_pct_of_frame": 9.19,
+   "changed_inside_npc_boxes": 27995,
+   "pct_of_changed_inside_npc_boxes": 85.66,
+   "enrichment_vs_area": 9.32,
+   "mean_abs_delta": 0.2618,
+   "worst_channel_delta": 87
+  },
+  {
+   "label": "consecutive",
+   "a": "motion-t048.png",
+   "b": "motion-t072.png",
+   "sim_frames": [
+    70,
+    94
+   ],
+   "camera_identical": true,
+   "pixels": 2073600,
+   "changed": 32031,
+   "changed_pct": 1.5447,
+   "npc_box_union_px": 188571,
+   "npc_box_union_pct_of_frame": 9.09,
+   "changed_inside_npc_boxes": 26356,
+   "pct_of_changed_inside_npc_boxes": 82.28,
+   "enrichment_vs_area": 9.05,
+   "mean_abs_delta": 0.2566,
+   "worst_channel_delta": 94
+  }
+ ]
+}
