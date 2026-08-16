@@ -130,6 +130,14 @@ and it is the file the original defect lived in.
   strings across 7 factions** — and the check is blind, **while its own header claims to cover exactly
   that case.**
 
+**⚠ THE REMEDY BELOW IS INCOMPLETE — corrected 2026-08-16 by the round-2 critic, and the hole is the
+idiomatic case.** The repair shipped a fingerprint tripwire (SHA-256 all files, exit 4 if a byte moves).
+It fires for round 1's *placement* — and **a static top-level `import`, which is the ordinary form and
+the one this section literally describes, exits 0 printing PASS with the leak deleted.** The import is
+hoisted and runs before the fingerprint is taken, so the tripwire measures the file the generator has
+already rewritten. **Fix, one line: take the fingerprint at MODULE SCOPE, before any import can run.**
+A tripwire that runs after the thing it is watching for is not a tripwire.
+
 **The rules.** (1) **A check must not import anything that writes.** Read the data; if you need the
 generator's vocabulary, read its source as text or extract the constant. (2) **Test the wiring, not the
 function** — assert the shipped call site, or the check passes a build where nothing calls it. (3) **A
