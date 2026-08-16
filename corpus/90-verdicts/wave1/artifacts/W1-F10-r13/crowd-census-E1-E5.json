@@ -1,7 +1,7 @@
 {
   "tool": "f10-r9c-crowd-census.mjs",
   "role": "independent critic, W1-F10-r9",
-  "generated": "2026-08-16T03:46:21.105Z",
+  "generated": "2026-08-16T04:14:24.174Z",
   "item": "RI-VIS10 §E (E1..E5)",
   "enumeration": {
     "command": "readdirSync(game/data/npcs).filter(.json) then walk every record with an `id`",
@@ -1135,13 +1135,13 @@
     "check": "E4 — adjacency",
     "method_deviation": "the item asks for a 60-second walk counting pairs ON SCREEN TOGETHER; this counts authored posts within 15 m in the same settlement, which is the static proxy — declared, not substituted silently",
     "tuple": "(rendered characterId, race) — race is what carries the tint at renderer.js:729",
-    "total_identical_pairs_within_15m": 29,
+    "total_identical_pairs_within_15m": 28,
     "bar": "0 pairs; >= 3 pairs => the duplication is visible in one shot",
     "census": [
       {
         "settlement": "helstrom",
-        "placed_npcs": 67,
-        "identical_pairs_within_15m": 2,
+        "placed_npcs": 61,
+        "identical_pairs_within_15m": 1,
         "examples": [
           {
             "a": "helstrom-gallery-keepers",
@@ -1149,19 +1149,12 @@
             "body": "sax.reed-widow",
             "race": "saxhleel",
             "distance_m": 6.2
-          },
-          {
-            "a": "npc-uneel-vaakh-sister",
-            "b": "npc-fourth-day-boatman",
-            "body": "hum.dunmer-lean",
-            "race": "dunmer",
-            "distance_m": 4.3
           }
         ]
       },
       {
         "settlement": "lilmoth",
-        "placed_npcs": 54,
+        "placed_npcs": 49,
         "identical_pairs_within_15m": 4,
         "examples": [
           {
@@ -1196,7 +1189,7 @@
       },
       {
         "settlement": "stormhold",
-        "placed_npcs": 50,
+        "placed_npcs": 48,
         "identical_pairs_within_15m": 4,
         "examples": [
           {
@@ -1265,8 +1258,29 @@
         ]
       },
       {
-        "settlement": "blackrose",
+        "settlement": "archon",
         "placed_npcs": 37,
+        "identical_pairs_within_15m": 2,
+        "examples": [
+          {
+            "a": "archon-legionary-13",
+            "b": "archon-keeper-apothecary",
+            "body": "hum.breton-stout",
+            "race": "imperial",
+            "distance_m": 9.4
+          },
+          {
+            "a": "archon-keeper-guild-office",
+            "b": "archon-keeper-ward",
+            "body": "hum.khajiit-lean~wiry",
+            "race": "dunmer",
+            "distance_m": 1.4
+          }
+        ]
+      },
+      {
+        "settlement": "blackrose",
+        "placed_npcs": 35,
         "identical_pairs_within_15m": 7,
         "examples": [
           {
@@ -1296,27 +1310,6 @@
             "body": "hum.imperial-clerk~thickset",
             "race": "imperial",
             "distance_m": 2.3
-          }
-        ]
-      },
-      {
-        "settlement": "archon",
-        "placed_npcs": 37,
-        "identical_pairs_within_15m": 2,
-        "examples": [
-          {
-            "a": "archon-legionary-13",
-            "b": "archon-keeper-apothecary",
-            "body": "hum.breton-stout",
-            "race": "imperial",
-            "distance_m": 9.4
-          },
-          {
-            "a": "archon-keeper-guild-office",
-            "b": "archon-keeper-ward",
-            "body": "hum.khajiit-lean~wiry",
-            "race": "dunmer",
-            "distance_m": 1.4
           }
         ]
       },

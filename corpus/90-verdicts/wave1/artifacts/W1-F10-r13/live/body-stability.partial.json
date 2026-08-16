@@ -1,0 +1,116 @@
+{
+ "tool": "f10-r13-body-stability.mjs",
+ "generated": "2026-08-16T04:18:43.805Z",
+ "renderer": "renderer: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)\n  *** SOFTWARE — not valid for an appearance claim (W1-30-EVIDENCE §4) ***",
+ "stand": {
+  "x": 2785.6,
+  "z": 5047
+ },
+ "arms": [
+  {
+   "arm": "B1 REBUILD — every NPC mesh destroyed and rebuilt by syncNPCs",
+   "characterId": {
+    "compared": 60,
+    "identical": 60,
+    "DRAWN": {
+     "compared": 31,
+     "identical": 31
+    }
+   },
+   "rigVariantKey": {
+    "compared": 60,
+    "identical": 60,
+    "DRAWN": {
+     "compared": 31,
+     "identical": 31
+    }
+   }
+  },
+  {
+   "arm": "B2 TRAVEL — 2.4 km away to another settlement and back",
+   "characterId": {
+    "compared": 60,
+    "identical": 60,
+    "DRAWN": {
+     "compared": 31,
+     "identical": 31
+    }
+   },
+   "rigVariantKey": {
+    "compared": 60,
+    "identical": 60,
+    "DRAWN": {
+     "compared": 31,
+     "identical": 31
+    }
+   }
+  },
+  {
+   "arm": "B3 SAVE/RELOAD — saveState() then loadState(), then back to the same stand",
+   "load_ok": true,
+   "characterId": {
+    "compared": 60,
+    "identical": 60,
+    "DRAWN": {
+     "compared": 31,
+     "identical": 31
+    }
+   },
+   "rigVariantKey": {
+    "compared": 60,
+    "identical": 60,
+    "DRAWN": {
+     "compared": 31,
+     "identical": 31
+    }
+   }
+  },
+  {
+   "arm": "B4 CONTROL, REQUIRED TO DISAGREE — one actor renamed must be dealt a different body",
+   "eid": "blackwood-company-factor",
+   "before": "hum.legion-heavy",
+   "after": "hum.legion-heavy~thickset",
+   "ok": true,
+   "what_this_catches": "a selection rule that is not a function of the name — a constant, an array index, a build order. B1-B3 would all read green under any of those."
+  }
+ ],
+ "baseline": {
+  "npc_meshes": 60,
+  "drawn": 31,
+  "distinct_bodies_drawn": 26,
+  "distinct_structural_keys_drawn": 26,
+  "bodies_drawn": [
+   "hum.breton-stout",
+   "hum.breton-stout~wiry",
+   "hum.dock-porter~thickset",
+   "hum.dunmer-lean",
+   "hum.dunmer-lean~thickset",
+   "hum.imperial-factor~wiry",
+   "hum.khajiit-lean~wiry",
+   "hum.legion-heavy",
+   "hum.legion-heavy~thickset",
+   "hum.stooped-widow",
+   "player.saxhleel~wiry",
+   "sax.deep-warden~wiry",
+   "sax.dock-hauler~thickset",
+   "sax.dock-hauler~wiry",
+   "sax.helstrom-guard~wiry",
+   "sax.hist-priest~thickset",
+   "sax.hive-drone",
+   "sax.marsh-lean",
+   "sax.marsh-lean~wiry",
+   "sax.mire-runner",
+   "sax.reed-widow~thickset",
+   "sax.reed-widow~wiry",
+   "sax.salt-elder~wiry",
+   "sax.stooped-elder",
+   "sax.thorn-hunter",
+   "sax.thorn-hunter~wiry"
+  ],
+  "cut_census_drawn": {
+   "asbuilt": 10,
+   "wiry": 14,
+   "thickset": 7
+  }
+ }
+}

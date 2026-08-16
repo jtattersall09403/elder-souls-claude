@@ -1,0 +1,39 @@
+{
+  "check": "RI-VIS10 D2 — the generic-fantasy list is absent",
+  "why_this_exists": "D2 is one of the four checks RI-VIS10's own scoring table names as blocking the 7-8 band (line 385: `| 7-8 | 2-4 failing, none of them B1, B3, D2 or E1 |`), it needs no fresh judge, and it has read `census not published — bounded` for FOUR consecutive verdicts. An unpublished census scores 0 by the item's own rule, so four rounds of this item have been carrying a zero that nobody had actually looked for.",
+  "produced_by": "W1-F10-r13 builder, 2026-08-16",
+  "instrument": "a SOURCE census over game/src/render/actor.js — every garment in this build is runtime-created geometry in that one file, so the roster of garments IS the set of `addEquip` and `addPresentation` calls plus the three `equipMat` materials. Each row below names the command that produced its answer and the line that settles it. This is not a judgement of how the garments look; it is a count of whether eight named FORMS exist.",
+  "denominator": "the whole shipped roster — 3 equipment sets (reed, chitin, xanmeer) x 4 equipment slots (back, chest, hands, legs) plus every `addPresentation` garment piece, reachable by all 72 rendered bodies over 408 NPC records",
+  "equipment_slots_that_exist": ["back x1", "chest x5", "hands x2", "legs x2"],
+  "equipment_slots_that_do_not_exist": ["feet — there is no foot/boot slot in the build at all"],
+  "equipment_materials": {
+    "reed": "clone of mats.reed, colour 0x91885b, roughness 0.78",
+    "chitin": "clone of mats.chitin (fallback bark), colour 0x805d42, roughness 0.48",
+    "xanmeer": "clone of mats.darkStone, colour 0x969987, roughness 0.38",
+    "metalness_on_any_equipment_material": 0,
+    "command": "grep -n 'metalness' game/src/render/actor.js -> 2 hits, both outside equipment: :2301 the HELD WEAPON (metalness .68) and :2658 the creature accent (.16 for beasts). No garment in this build is metal."
+  },
+  "rows": [
+    { "n": 1, "item": "plate cuirass", "occurrences": 0,
+      "derivation": "the chest piece is `torsoShellGeometry(set)` in three sets, all of them fibre, chitin or stone; `grep -ic cuirass` = 0; no equipment material carries metalness. A plate cuirass is a metal breastplate and no metal garment exists." },
+    { "n": 2, "item": "mail hauberk", "occurrences": 0,
+      "derivation": "`grep -ic mail` = 0, `grep -ic hauberk` = 0. No ring, link or repeated-element geometry on the torso: the only tori there are the gorget `TorusGeometry(.176,.018,5,14,PI*1.65)` and the belt." },
+    { "n": 3, "item": "heraldic tabard", "occurrences": 0,
+      "derivation": "`grep -ic heraldic` = 0. `tabard` returns exactly one hit, :1954, and it is a comment recording a defect that was REMOVED — 'THE PROFILES WERE MONOTONE AND THAT IS WHY THE GARMENT READ AS A TABARD' — which is why `torsoShellGeometry` was reprofiled. No emblem or device geometry exists anywhere in the file." },
+    { "n": 4, "item": "pointed hood or wizard hat", "occurrences": 0,
+      "derivation": "`grep -ic hood` = 0, `grep -ic wizard` = 0. The three head-slot pieces are, at :1593: a tapered `CylinderGeometry(.55,1,1,12)` helm (xanmeer), a `SphereGeometry` hemisphere cap (chitin), and a `TorusGeometry(1,.17,6,18,PI*1.78)` lashed cord band (reed). None is a cone and none rises to a point." },
+    { "n": 5, "item": "horned helm", "occurrences": 0,
+      "derivation": "the only cones on the head bone are `brow-horn-l`/`brow-horn-r` at :1842, gated on `M.horn > .01`, drawn in `familyMat` — the BODY's own material — and added by `addPresentation`, not `addEquip`. They are species anatomy, which B2 and B3 ask for. No head-slot EQUIPMENT geometry carries a horn." },
+    { "n": 6, "item": "pauldron-and-cape hero silhouette", "occurrences": 0,
+      "derivation": "`grep -ic cloak` = 0; `grep -ic cape` returns 2 hits, both inside the words 'escaped'/'escape' at :1818-1819. No cape or cloak geometry exists, so the silhouette cannot be formed. The shoulder pieces are hemispherical caps of radius 0.064 (reed/chitin) to 0.078 (xanmeer), scaled [1.02, .48, .72] — flattened onto the deltoid, not projecting off it." },
+    { "n": 7, "item": "buckled leather jerkin with bracers", "occurrences": 0,
+      "derivation": "`grep -in buckle` returns 8 hits: seven are comments citing this very D2 row as the reason the fittings are lashed cord and bone (:513, :514, :549, :1017, :1019, :1598, :1637) and the eighth is `buckler`, a SHIELD class at :2312, not a garment. The wrist piece is a 9 cm lashed guard ending above the knuckle ridge, and the torso fittings are `B.cloth` cord rings plus `B.bone` toggles at :1032-1051." },
+    { "n": 8, "item": "tall cuffed riding boots", "occurrences": 0,
+      "derivation": "there is no foot slot: `grep -o \"addEquip(set,'[a-z]*'\" | sort -u` returns back, chest, hands, legs and nothing else. The leg piece is a `taperedGuardGeometry` 0.34-0.38 m long on the CALF bone at offset [0,-0.17,0] — a greave over the shin, with the foot bare below it." }
+  ],
+  "total_occurrences": 0,
+  "bar": "0 occurrences to pass; >= 3 caps the whole item at 3",
+  "verdict": "PASS",
+  "what_would_overturn_this": "any of the eight forms arriving as geometry. The cheapest way for that to happen is a future armour set authored from a modern full-body plate — this file's own header at :513 records that risk in terms: 'the obvious buckle-and-strap read off the Skyrim full-body plates is exactly the wrong one'. A critic should re-run the eight greps rather than trust this table, and should additionally LOOK at an armoured figure, because a source census can prove a form ABSENT and cannot prove that what is present reads as Black Marsh.",
+  "honest_limit": "This is a source census, not a look. It answers 'does the build contain these eight forms', which is what D2's instrument asks ('a closed list, counted across the roster'). It does not answer whether the three sets look good, and no appearance claim is made from it."
+}
