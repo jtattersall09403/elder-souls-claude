@@ -217,6 +217,40 @@
     "the_hole_this_opened_in_my_OWN_reference_item_and_i_fixed_it": "RI-VIS11's first draft banded `>= 70%` and hard-failed `< 45%` and **said nothing about the middle**. The very first measurement taken against it returned 64.95% and landed in that gap. I amended the item the same turn to define 45-70% as `unresolved`, failing closed, citing `ARBITRATION` S61's asymmetry — a statistic can fail a build and can never pass one. Recording that my own new bar had a hole in it rather than rounding the number into whichever neighbouring verdict suited me."
   },
 
+  "the_ruling_i_made_and_what_would_overturn_it": {
+    "ruling": "**KEEP the mechanism. SHIP 0.10 m. I am NOT claiming F7 and I am NOT claiming the acceptance — it fails on both halves.**",
+    "why_ship_0.10_rather_than_keep_1.20": [
+      "It is DOMINATED, measured twice in my own instrument at the threshold I have shown to be stable. At `edge-b135`: width 32 vs 31 against a measured width drift band of 0 px, and 9.39 points more presence. At `edge-b225`: identical width at every constant, and 17.00 points more presence.",
+      "The offline band census says why, from the field rather than from a frame: at 1.20 m the term is non-zero over 59.8% of Deep Marshes wet corners and 100% of Western Rootlands ones, so it was not a shoreline band; at 0.10 m it reaches 3.1% and 18.0%.",
+      "The width is a step function of whether a band exists, not of its size — 1 px at `r3`, 32 px at 0.10 m, and no further gain out to 1.20 m. So the larger constant buys nothing but absence."
+    ],
+    "why_not_revert_the_mechanism_entirely_to_round_2": "Because `RI-VIS04` §9's MIN BAR names a shoreline depth fade as a required component, and this term is the only thing in the shader that produces a waterline at all: without it the width is 1 px. Reverting would trade a measured 32 px softening for a measured 1 px step and put the MIN BAR component back to absent. **But a critic could reasonably rule the other way and I want the numbers for that ruling on the record, not buried:** at `edge-b135` the fade costs 48.6 points of presence to buy that width (100% -> 51.38%), and a reviewer who weights 'the starting region's water is half invisible' above 'the waterline is soft' should revert. I considered it and did not do it, because the cost is now attributable and the term that carries it is NOT the one I was sent to fix.",
+    "MY_RULING_ON_THE_QUESTION_THE_NUMBERS_ACTUALLY_RAISE_marked_reversible": {
+      "the_question": "Round 5 was sent at the band constant. The decomposition says the band constant is about a quarter of the cost. So what should round 6 attack?",
+      "the_evidence": "At `edge-b135`, threshold 16: `no-shorefade` (shore alpha term entirely off) 91.34% · `r3` (transmittance fade, no metre band) 60.67% · `band-0.10` (shipped) 51.38% · `fixed` 1.20 m 41.99%. **The single line doing the damage is `diffuseColor.a = mix(diffuseColor.a, diffuseColor.a * .42, esShoreT)` at `water.js`. Wherever `esShoreT` saturates, the water's alpha is multiplied by 0.42 — and that multiplier is ROUND 3's, not round 4's, and no round has ever been sent at it.**",
+      "my_ruling": "**Round 6 should attack the 0.42 alpha multiplier, not the band constant.** The band is now correctly scaled and further tuning of it is inside the drift band. A sweep of the multiplier — 0.42 / 0.60 / 0.75 / 0.85 — at `edge-b135` and `edge-b225`, scored on `presence` and `gradient_width_px` at threshold 16, is one uniform and one run, and it is the only lever left that is large enough to move `presence` from 51% toward the 90% the acceptance asks for.",
+      "what_would_overturn_it": "If the softening width collapses as the multiplier rises — i.e. if the waterline is only visible BECAUSE the water goes 58% transparent there — then the two cannot be separated by this constant and the remedy is a genuine depth-buffer fade (`RI-VIS04` §9's HAVE names a depth-buffer read, which needs a depth prepass in `renderer.js`, a file F7 does not own). **That is a one-run falsification and I did not have the browser budget to run it**, so this ruling is a recommendation with its own test attached, not a finding."
+    },
+    "what_would_overturn_the_SHIPPING_decision": [
+      "A matched-luminance S52 null that reproduces the 32 px width at `edge-b135`. **It did not run — my error — so this result is unprotected and that alone should hold it at 'unconfirmed'.**",
+      "A Western Rootlands re-take showing 0.10 m loses width there. My band census says the WR is where the constant matters most (100% coverage at 1.20 m vs 17.98% at 0.10 m) and it is the region I did not measure at the shipped value.",
+      "A blind pair ranking round 3 or round 2 above round 5. Nobody has ever run one for this piece.",
+      "Evidence that the closed-mask width is doing the work rather than the shader — noting the unexplained closed-vs-raw disagreement on `r3` at `edge-b135` (1 vs 30), which is exactly where a critic should attack."
+    ]
+  },
+
+  "inherited_findings_i_can_confirm_or_correct": {
+    "CONFIRM the r4 critic on `presence` and on all five of its figures": "Re-derived in my own script over round 4's banked frames: 41.2 / 94.5 / 82.3 / 86.5 / 69.3 reproduced exactly at every pose. And its threshold-independence claim holds — spread <= 0.59 pp across thresholds 4/6/10/16.",
+    "CONFIRM the r4 critic on the decomposition": "depth colour 10.5 points, shoreline alpha 48.1 points, against its 10.6 and 48.2, from my own arithmetic.",
+    "CONFIRM the r4 critic that 1.20 m is dominated by a much smaller constant": "Verified in my own instrument at two poses, including the failing pose it could not test.",
+    "CORRECT the r4 critic on WHICH threshold is stable": "It ruled *'threshold 10 is the only stable threshold'* from a back-to-back PIN -> PIN2 replicate. Measured over the ordinals the arms actually span, threshold 10's unchanged-arm mask moves **33.68%** and threshold 16's moves **0.26%**. **Threshold 10 is not stable and this round's headline rows are threshold 16.** The critic's own §25a reasoning is what shows this — it applied the rule to the arms and not to its own remedy.",
+    "CORRECT four critics on the dither stipple": "There is no ordered dither on our water. 4x4 phase spread 0.28–0.61 LSB on water against 1.13–1.52 LSB on the land the shader never touches; 2x2 parity contrast 0.027–0.059 LSB. It is aliasing-class. Written up as `RI-VIS11`.",
+    "RESOLVE the r4 status's internal contradiction": "`pose_set_completeness` (4 of 4, M12a clause 1 satisfied in the Deep Marshes) is RIGHT; `method_deviations[2]` (only 3 valid, satisfied in neither region) is WRONG for the Deep Marshes and right about the Western Rootlands. Established by enumerating every r4 `sweep.json` pose record, not by reading either sentence.",
+    "CONFIRM the r4 critic and my brief on HAZARDS §25a": "The ordinal climb reproduces in a fresh run with a different arm list, and it reverses when the sequence reverses. Extended: it vanishes entirely at threshold 16, so the confound is ordinal *at unstable thresholds* and a stable threshold removes it without any ordering trick.",
+    "CONFIRM the stale HUD label, by eye, at every frame I opened": "Frames taken at the `vista-deep-marshes` stand draw `western-rootlands`; the in-process field returns `deep-marshes` at offset 0.00 m.",
+    "INHERITED AND NOT RE-DERIVED": "Round 4's frame-time figures and its `depthWrite`/transparency-sort result. I did not re-run either. The sort test is quoted nowhere in this file as mine."
+  },
+
   "files_claimed": [
     "game/src/render/water.js",
     "tools/visual/f7-r5-sweep.mjs",
