@@ -58,6 +58,12 @@
 //             · 4 THIS CHECK MUTATED ITS OWN EVIDENCE (the §31 tripwire) · 5 IO/scope error.
 'use strict';
 
+// ⚠ THE NEXT LINE MUST STAY FIRST. `evidence-seal.mjs` takes the SHA-256 fingerprint of the
+// evidence in its OWN module body, which ESM evaluates before this file's body and before every
+// import listed below it. Round 2's fingerprint was taken inside `main()` and a static top-level
+// `import` of the generator therefore ran first, deleted the leak, and the check printed PASS.
+// `verifySeal()` re-reads this file and fails if this is not the first import — see §31.
+import { verifySeal, reportSeal } from '../lib/evidence-seal.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
@@ -296,6 +302,13 @@ function main() {
 
   const source = scanAuthoredSource();
   const data = scanShippedData(dataFiles);
+
+  // ---- the MODULE-SCOPE seal, which is the one that actually holds --------------------------
+  // Taken before this file's own body ran (see the first import). The local before/after below
+  // is kept as a narrower second layer: it still catches a write that happens DURING the scan,
+  // and round 2's control G2 is written against it.
+  const seal = verifySeal(import.meta.url);
+  if (!reportSeal('check-authoring-leaks', seal)) process.exit(4);
 
   const after = fingerprint(watched);
   const mutated = [...before.keys()].filter((f) => before.get(f) !== after.get(f));

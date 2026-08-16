@@ -60,6 +60,38 @@ const GUARDED = [
   { group: 'RG-BWC', band: 'cold', slot: 3, owner: 'W1-DIALOGUE-AUTHORING-LEAK r2 (P1)' },
 ];
 
+// =========================================================================================
+// ROUND 3 — GATING THE HALVES SEPARATELY, WHICH IS THE GUARD THAT WOULD HAVE CAUGHT THIS
+// =========================================================================================
+// Every shipped line is `ADDRESS + STANCE` or `STANCE + ADDRESS` (gen-greetings.mjs
+// `buildPools()`, alternating by slot parity). Round 2 gated the COMPOSED line — and passed
+// the RG-BWC/saxhleel cell on `leyawiin`, a token that comes from the STANCE half. The ADDRESS
+// half was `Local. Useful.`, the two words the blind judge flagged and the two that rounds 1
+// and 2 both left in place, and it carried **no RG-BWC-exclusive token at all**: `local` is
+// shared with RG-OUTLAW ("Local knowledge. I'll trade you for it.") and `useful` with
+// RG-EMPIRE ("Citizen. The useful sort."). A whole line can therefore borrow its identity from
+// one half while the other half is anonymous — or, as here, is not speech at all.
+//
+// So the halves are now gated independently. The ADDRESS is derived FROM THE SHIPPED FILE, not
+// from the generator, so this gates the artefact the player actually gets: for any cell,
+// `lines[0]` begins with the address and `lines[1]` ends with it, so the address is the longest
+// string that is both a prefix of the first and a suffix of the second. That derivation is run
+// on all five disposition bands of the (group, class) pair independently and **they must all
+// agree** — five derivations agreeing, or this check exits 3 rather than guessing.
+//
+// HONEST LIMIT, IN BOTH DIRECTIONS. Measured across all 60 address cells this run: 42 carry a
+// group-exclusive token and 18 do not, and several of the 18 are good writing — RG-NAGA's `Kin.`
+// to a Naga player is exactly right and will never carry an exclusive token. The predicate has
+// false positives as well as being insufficient, which is why only the cell this piece owns is
+// a gate and the other 59 are printed as a census.
+const GUARDED_ADDRESS = [
+  { group: 'RG-BWC', class: 'saxhleel', owner: 'W1-DIALOGUE-AUTHORING-LEAK r3 (P1)' },
+];
+
+// The second permanent negative control: the ADDRESS half as it shipped for two rounds. If the
+// predicate ever accepts it, this check can no longer see the defect it was built for.
+const REJECTED_ADDRESS = 'Local. Useful.';
+
 // Round 1's replacement, kept verbatim as the permanent negative control. It is a correct fix
 // (no leak) and an anonymous line, which is precisely the state this check must be able to
 // call out.
@@ -121,7 +153,63 @@ function main() {
     }
   }
 
-  // ---- the negative control ----------------------------------------------------------------
+  // ---- the ADDRESS half, derived from the shipped file ------------------------------------
+  const addressOf = (p) => {
+    const a = p.lines[0]; const b = p.lines[1];
+    if (typeof a !== 'string' || typeof b !== 'string') return null;
+    let best = '';
+    for (let k = 1; k <= Math.min(a.length, b.length); k++) {
+      if (a.slice(0, k) === b.slice(b.length - k)) best = a.slice(0, k);
+    }
+    best = best.trim();
+    return best.length ? best : null;
+  };
+  /** Derive the address for a (group, class) on all five bands and require unanimity. */
+  const addressFor = (group, cls) => {
+    const cells = pools.filter((p) => p.reaction_group === group && p.player_race_class === cls);
+    if (cells.length === 0) return { error: 'no such (group, class) cell' };
+    const derived = cells.map((p) => ({ band: p.disposition_band, addr: addressOf(p) }));
+    const distinct = [...new Set(derived.map((d) => d.addr))];
+    if (distinct.length !== 1 || distinct[0] === null) {
+      return { error: `the ${cells.length} bands do not agree on the address: ${JSON.stringify(distinct)}` };
+    }
+    return { addr: distinct[0], bands: cells.length };
+  };
+
+  console.log(`\nGATED ADDRESS HALVES (${GUARDED_ADDRESS.length} of ${new Set(pools.map((p) => `${p.reaction_group}|${p.player_race_class}`)).size}):`);
+  for (const g of GUARDED_ADDRESS) {
+    const d = addressFor(g.group, g.class);
+    if (d.error) {
+      console.log(`  FAIL ${g.group}/${g.class}: ${d.error}`);
+      console.log('       The ADDRESS could not be derived from the shipped lines. Do not read the');
+      console.log('       gate above as covering this cell — repair the derivation.');
+      process.exit(3);
+    }
+    const ex = exclusiveTo(g.group, d.addr);
+    const ok = ex.length > 0;
+    if (!ok) failed++;
+    console.log(`  ${ok ? 'ok  ' : 'FAIL'} ${g.group}/${g.class} ADDRESS (agreed by all ${d.bands} bands) `
+      + `exclusive tokens: ${ex.length ? ex.join(', ') : '(NONE — this half is common property)'}`);
+    console.log(`         ${JSON.stringify(d.addr)}`);
+  }
+
+  // ---- the negative controls -----------------------------------------------------------------
+  const addrEx = exclusiveTo('RG-BWC', REJECTED_ADDRESS);
+  console.log(`\nNEGATIVE CONTROL 2 — the ADDRESS half as it shipped for two rounds `
+    + `${JSON.stringify(REJECTED_ADDRESS)}`);
+  console.log(`  RG-BWC-exclusive tokens in it: ${addrEx.length ? addrEx.join(', ') : '(none)'}`);
+  for (const t of ['local', 'useful']) {
+    const o = owners.get(t);
+    console.log(`  who uses "${t}": ${o ? [...o].sort().join(', ') : '(nobody)'}`);
+  }
+  if (addrEx.length > 0) {
+    console.log('\nFAIL (negative control 2): the predicate accepts the ADDRESS fragment the blind');
+    console.log('judge flagged, so it cannot see the defect this round exists to fix. Repair the');
+    console.log('predicate before trusting any pass above.');
+    process.exit(2);
+  }
+  console.log('  -> correctly rejected: both content words are shared with another group.');
+
   const bwcCold = pools.find((p) => p.reaction_group === 'RG-BWC' && p.disposition_band === 'cold');
   const r1Ex = bwcCold ? exclusiveTo('RG-BWC', REJECTED_R1_LINE) : [];
   console.log(`\nNEGATIVE CONTROL — round 1's rejected line ${JSON.stringify(REJECTED_R1_LINE)}`);
@@ -145,6 +233,21 @@ function main() {
       for (const p of gp) for (const l of p.lines) { tot++; if (exclusiveTo(g, l).length) hit++; }
       console.log(`  ${g.padEnd(12)} ${String(hit).padStart(4)} / ${tot}`);
     }
+    console.log('\nADDRESS CENSUS (not a gate) — the 60 address halves, derived from the shipped file.');
+    console.log('An address with no exclusive token is NOT necessarily bad writing: RG-NAGA\'s "Kin."');
+    console.log('to a Naga is right and can never carry one. This is the shape of the unguarded area.');
+    let withEx = 0; const without = [];
+    const classes = [...new Set(pools.map((p) => p.player_race_class))];
+    for (const g of groups) {
+      for (const c of classes) {
+        const d = addressFor(g, c);
+        if (d.error) { without.push(`${g}/${c} (${d.error})`); continue; }
+        if (exclusiveTo(g, d.addr).length) withEx++;
+        else without.push(`${g.padEnd(11)} ${c.padEnd(14)} ${JSON.stringify(d.addr)}`);
+      }
+    }
+    console.log(`  ${withEx} of ${groups.length * classes.length} carry a group-exclusive token; ${without.length} do not:`);
+    for (const w of without) console.log(`    ${w}`);
   } else {
     console.log('\n(run with --census for the per-group table of how much of the corpus is unguarded)');
   }
