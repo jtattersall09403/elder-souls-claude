@@ -1,0 +1,46 @@
+{
+ "tool": "tools/visual/f10-r12c-stance-cost.mjs",
+ "commit": "7305d48893065bcfe23c2ec11711f8e56b187153",
+ "actor_js_sha256": "764785073dee667e75783a21a0b5df2cff3f230758a1b64673758ad7b0d9e28d",
+ "generated": "2026-08-16T03:22:51.455Z",
+ "node": "v22.22.2",
+ "WHAT_THIS_IS_AND_IS_NOT": "This is NOT the frame time S59 asked for. It is the cost of the TERM the clause is about, measured on the shipped `poseStatic` path, because the frame-time pair is unmeasurable on SwiftShader at any affordable n (five attempts, builder and critic, none finished). The frame budget it is compared against is STATED (60 Hz), not measured.",
+ "iters_per_rep": 3000,
+ "reps": 7,
+ "arm_A_advancing_clock_ms_per_call": {
+  "median": 0.008973884333333333,
+  "mean": 0.010365639476190475,
+  "sd": 0.002938552816391504,
+  "samples": [
+   0.016446743666666666,
+   0.012007898666666668,
+   0.008973884333333333,
+   0.009136675,
+   0.008719316333333333,
+   0.008599266333333334,
+   0.008675692
+  ]
+ },
+ "arm_B_pinned_clock_no_resolve_ms_per_call": {
+  "median": 0.00006372633333333333,
+  "mean": 0.00008053471428571427,
+  "sd": 0.000032681070640373116,
+  "samples": [
+   0.00008737733333333332,
+   0.00010506033333333333,
+   0.000054113333333333336,
+   0.00014063566666666665,
+   0.00005504933333333333,
+   0.00006372633333333333,
+   0.00005778066666666667
+  ]
+ },
+ "ADDED_MS_PER_RE_SOLVE": 0.008910158,
+ "stagger_n": 8,
+ "drawn_at_the_lilmoth_stand": 27,
+ "re_solves_per_frame_at_that_stand": 4,
+ "ADDED_MS_PER_FRAME_AT_THE_STAND": 0.035640632,
+ "as_pct_of_a_60Hz_frame_budget": 0.21383951520969577,
+ "budget_denominator_ms": 16.667,
+ "the_clause": "must not rise more than 5%"
+}

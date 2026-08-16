@@ -89,7 +89,7 @@ const timeIt = async (frames) => g.page.evaluate(async (f) => {
     median: sorted[Math.floor(sorted.length / 2)], p90: sorted[Math.floor(sorted.length * 0.9)],
     min: sorted[0], max: sorted[sorted.length - 1], samples_ms: s.map((x) => +x.toFixed(3)),
   };
-});
+}, frames);
 
 await timeIt(WARM);
 const r = await timeIt(N);

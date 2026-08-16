@@ -157,7 +157,40 @@ and it is not met by me.**
 
 ## Job 4 — the budget clause
 
-See `artifacts/W1-F10-r12-critic/timing/`. **The round's before/after pair was pointed at the wrong
+**The clause as S59 wrote it is NOT closed — by either of us — and on this box it cannot be. That is a
+finding, not an excuse.** Five attempts: the builder twice (30 warm + 240 timed per arm, neither
+finished inside 900 s) and me three times (once timing zero frames through a bug of mine, which the
+tool reported as `n: 0` rather than as a number; then 30+120 killed at 780 s; then 8+40 killed at
+560 s). **The cause is not contention and not sample size — it is S60's domain rule in the time
+axis.** A software-rasterised frame of a stilt town costs on the order of ten seconds here; the term
+under test is four stance solves over 20 bones. That is a part in ten thousand against noise orders of
+magnitude larger. **A frame-time pair on SwiftShader cannot answer this clause at any n a box will
+give you, and future rounds should be told that rather than burning three sessions rediscovering it.**
+
+**So I measured the term, with a control that disagrees by 988×.** `f10-r12c-stance-cost.mjs`, on the
+shipped `poseStatic` path: arm A an advancing clock so the window fires every call; arm B a pinned
+clock so it never does — same call, same terrain conform, same group writes; arm C **the
+required-to-disagree control**, the same tool run inside the clone with the re-solve branch removed,
+where A must collapse onto B. Seven reps × 3,000 iterations, medians:
+
+| arm | ms per call | added |
+|---|---|---|
+| A — advancing clock (re-solve fires) | 0.008974 | — |
+| B — pinned clock (no re-solve) | 0.000064 | — |
+| **A − B = the cost of one re-solve** | | **0.008910 ms** |
+| **C — control, branch removed** | | **0.000009 ms** — 988× smaller |
+
+At the Lilmoth stand, `ceil(27/8) = 4` re-solves per frame = **0.0356 ms**, which against a **stated**
+60 Hz budget of 16.667 ms is **0.214%** against a 5% clause. Extrapolated to all 408 drawn: 51 solves =
+0.454 ms = **2.73%**, still inside. Arm shas `764785073dee` vs `877bd274bb89`, published because both
+clones record `commit: unknown`.
+
+**The honest label: the clause asked for a measured frame time and this is a measured TERM against an
+assumed FRAME.** Much stronger than the round's arithmetic argument — a number, from the shipped code,
+with a control that can and does go the other way — and not the thing S59 literally asked for. A critic
+on hardware closes the literal clause in ten minutes; on SwiftShader nobody ever will.
+
+**The round's before/after pair was also pointed at the wrong
 base:** `git diff --stat caa8b01b..HEAD -- game/` shows `sky.js` (98 lines) and `lighting-recipes.js`
 (8) changed too, from a sibling's F4 work, so a pair against `caa8b01b` measures the stance advance
 **and** the sky and attributes the sum to F10. My BEFORE arm is HEAD with **one branch removed** —
