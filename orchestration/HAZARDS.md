@@ -178,13 +178,17 @@ Evidence: `corpus/90-verdicts/wave1/artifacts/W1-F4-r2/metrics/ablation-equivale
 and `corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/ablation-form-equivalence-recheck.json`
 (the recheck).
 
-## 26. `R.playerMesh.position` is (0, 0, 0) and always will be. Do NOT derive a scene→world offset from it — the frames already coincide.
+## 27. `R.playerMesh.position` is (0, 0, 0) and always will be. Do NOT derive a scene→world offset from it — the frames already coincide.
 
-*(Renumbered from 24 by the orchestrator on 2026-08-16: the F4 r2 critic filed its own §24 in the same
-hour and the F7 r3 finding landed as §25. **Three agents have now collided on a section number in this
-append-only file in two days.** Before you pick one, run `grep -n "^## [0-9]" orchestration/HAZARDS.md`
-and take the next free integer — and if a verdict already cites your old number, say so where you
-renumber, as here.)*
+*(Filed by the F10 r11 critic as §24, renumbered to §26 within the hour because the F4 r2 critic had
+already taken 24, and renumbered again to **§27** an hour later because the T4 r8 builder independently
+took 26. **FOUR collisions on a section number in two days, and this one entry absorbed three of
+them.** The cause is structural: every agent appends to the top of the same file, computes "the next
+number" from a snapshot of the file taken before its siblings landed, and nobody re-checks at write
+time. Two mitigations, in order of value. **(1) Re-read the headings at the MOMENT you write, not when
+you started:** `grep -n "^## [0-9]" orchestration/HAZARDS.md | sort -t' ' -k2 -n | tail -1`. **(2) If a
+filed verdict already cites your old number, do NOT silently renumber — say so where you move it**, as
+this note does, because a verdict is immutable under §17 and its citation cannot follow you.)*
 
 **Found 2026-08-16 by the F10 r11 critic, and it cost F10 r11 its pictures and produced a harness
 "defect" that does not exist.** The round's first admission is that four camera attempts failed, and
