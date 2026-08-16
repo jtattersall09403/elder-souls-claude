@@ -16,10 +16,27 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   sessions, with the motion visible in pixels rather than only in numbers.
 - **The water, round four** — the fade works; it just does nothing in the one region we kept testing
   it in.
-- **The blind judging I owe.** 81 of our quality bars require a fresh outside judge and **not one has
-  ever run**. An item is now capped by that rather than by the build, so it is being set up.
+- **Fixing two things the blind judging turned up** — the writer's own notes are shipping as NPC
+  dialogue, and four books print the word `undefined`.
 
 ## If you play right now, expect this
+
+**The interface has now been judged blind, and it failed.** Six people were each shown one screenshot
+of one screen, with the game world blacked out entirely, and asked what it was — no context, no
+comparison. **Nobody said "don't know" and meant it as a compliment:** four screens read as a real
+game's menu, and **two — the inventory and the combat HUD — were called "nothing physical", flat
+panels and bars.** That is the sharpest failure the standard has, and it caps the interface's art
+score at **2 out of 10**.
+
+**The most useful thing to come out of it is a shopping list.** Our own art direction names nine
+materials the interface should be made of. Across six people looking hard, only **parchment and ink**
+were ever seen. **Chitin, root, bone, shell inlay and reed weave: nobody saw them anywhere** — and the
+two screens carrying none of them are exactly the two that failed hardest.
+
+**Two things you would see, found by accident:** a judge reading the conversation window noticed a line
+that *"reads like an authoring instruction to the writer rather than in-world dialogue"* — because it
+is one, and **25 speakers are using it**. And **four books in the game print the literal word
+`undefined`** instead of their text. Both are being fixed now.
 
 **It is a slice, not a game.** You can walk around, look at things, open the map and journal, talk to people, and fight. It will not look good yet.
 
@@ -40,35 +57,18 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
 - **The menus are denser *and* readable now.** Sizing each panel to its contents cleared all five
   density failures and then made the text collide — level-up drew name, value and gauge into the same
   pixels on 9 of 10 rows, and 8 of 19 journal entries laid out past the panel. Both are now **0**.
-- **The menus were judged independently and FAILED at 2 of 10 — three times — though each round closes
-  real defects.** The reflow work was confirmed by the judge: level-up's rows read at both sizes and
-  the journal runs **0 of 19** blocks off the page. The container was the failure: its description
-  **declared 137 characters and drew 100** — ten words gone with no "…" — and **all seven rows declared
-  a gold price and none drew one**. Both were fixed, and the fix broke the weight column (`11.5` →
-  `11…`) — a wrong number, not a shortened label. **Now: no numeric column truncates, the density is
-  better than before it broke, and a third defect
-  nobody had reported is fixed** — the item's condition was being drawn 24 units outside its own box
-  and clipped away entirely on every conditioned item.
+- **The container screen: three rounds, three failures, and every one closed a real defect.** Its
+  description **declared 137 characters and drew 100** with no "…"; **all seven rows declared a gold
+  price and drew none**; the fix for that truncated the weight column to a *wrong number*; and two
+  headers were being printed straight through the first row. **All fixed** — no numeric column
+  truncates, density is better than before it broke, and long descriptions now open in a reading view
+  where all **45 of 45** items show their full text.
   **Three of the checks meant to catch this could not fail.** One read the text the screen *declared*
-  rather than what it *drew*; one was a literal `true`; and the legibility pass called the container
-  clean **while two headers were printed through the first row**, because it only looked inside one row
-  band — a judge found that by cropping the picture at 2× and looking. All three now assert real numbers
-  and go red on the broken build. **The collision is fixed**, and long descriptions finally have
-  somewhere to be read: a reading view opens over the lists and all **45 of 45** items show their full
-  text.
-- **Two other screens looked like they had the same defect. They don't — the check was wrong.** With
-  the fixed checker pointed at everything, level-up and the character sheet appeared to print labels
-  through their own values. A judge ablated the gauge bar out and **all six rows separate cleanly**:
-  the gauge fills up to 217 of each row's columns, and that is what the check was seeing. It also
-  explains why they looked clean at the smaller window — the thinner gauge's antialiasing opens gaps.
-  **A round dispatched at those two screens would have spent itself on nothing.**
-- **⚠ A measurement scare, and the answer was the opposite of what I told you.** I said a filed
-  verdict's numbers wouldn't reproduce and to distrust the screen scores. They reproduce **exactly**.
-  The four "isolated" copies compared had all quietly measured **the same live tree** — the tools work
-  out where the repo is from *their own location on disk*, so copying the game elsewhere and running
-  the normal command measures the original. Four results agreeing to four decimals was the tell, and
-  it reads as rigour. **Everything ever proved by "we deleted the fix and the old number came back" is
-  now worth re-checking.**
+  rather than what it *drew*; one was a literal `true`; one only looked inside a single row band. All
+  three now assert real numbers and go red on the broken build first.
+
+
+
 - **The water: the depth colouring was running backwards, and now it exists at all.** Two of the four
   things the standard requires of water were simply not in the code. They are now, from one mechanism:
   light is absorbed through the water column against **each region's own murkiness value, which reaches
