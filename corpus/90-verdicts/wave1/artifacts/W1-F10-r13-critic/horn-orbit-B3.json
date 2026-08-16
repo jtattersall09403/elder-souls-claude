@@ -1,0 +1,61 @@
+{
+  "tool": "f10-r13c-horn-orbit",
+  "generated": "2026-08-16T05:12:25.999Z",
+  "res": 768,
+  "bar": "RI-VIS10 B3 — the feature's occluding contour must move against the silhouette between the orbit-30 pair; absent or texture-only fails",
+  "note": "shipped max horn before this round was 1.6; these two rows are the ONLY ones the round put outside it and it asked a critic to shoot them",
+  "rows": [
+    {
+      "row": "sax.hist-priest",
+      "declared_horn": 1.85,
+      "morph_horn_read_off_the_built_actor": 1.85,
+      "shipped": {
+        "horn_pixels_at_0deg": 0,
+        "horn_pixels_at_30deg": 0,
+        "head_silhouette_px_0": 237411,
+        "head_silhouette_px_30": 235478,
+        "head_silhouette_IoU_0_vs_30": 0.5749
+      },
+      "control_horn_forced_to_0": {
+        "horn_pixels_at_0deg": 0,
+        "horn_pixels_at_30deg": 0,
+        "head_silhouette_px_0": 265912,
+        "head_silhouette_px_30": 269341
+      },
+      "horn_is_geometry": {
+        "silhouette_changes_when_the_horn_is_removed_at_0deg": true,
+        "silhouette_IoU_shipped_vs_hornless_at_0deg": 0.8928,
+        "silhouette_IoU_shipped_vs_hornless_at_30deg": 0.8743,
+        "horn_px_delta_0deg": -28501,
+        "contour_moves_between_bearings": false,
+        "verdict": "NOT ESTABLISHED — see the numbers"
+      }
+    },
+    {
+      "row": "sax.naga-broad",
+      "declared_horn": 1.95,
+      "morph_horn_read_off_the_built_actor": 1.95,
+      "shipped": {
+        "horn_pixels_at_0deg": 0,
+        "horn_pixels_at_30deg": 0,
+        "head_silhouette_px_0": 287019,
+        "head_silhouette_px_30": 295046,
+        "head_silhouette_IoU_0_vs_30": 0.6223
+      },
+      "control_horn_forced_to_0": {
+        "horn_pixels_at_0deg": 0,
+        "horn_pixels_at_30deg": 0,
+        "head_silhouette_px_0": 328343,
+        "head_silhouette_px_30": 336882
+      },
+      "horn_is_geometry": {
+        "silhouette_changes_when_the_horn_is_removed_at_0deg": true,
+        "silhouette_IoU_shipped_vs_hornless_at_0deg": 0.8741,
+        "silhouette_IoU_shipped_vs_hornless_at_30deg": 0.8758,
+        "horn_px_delta_0deg": -41324,
+        "contour_moves_between_bearings": false,
+        "verdict": "NOT ESTABLISHED — see the numbers"
+      }
+    }
+  ]
+}
