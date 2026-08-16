@@ -1,0 +1,623 @@
+{
+  "tool": "f7-r5-band-census",
+  "roadmap_item": "F7",
+  "generated": "2026-08-16T03:32:14.431Z",
+  "method": "Offline against the same WorldField the engine builds. Cell arithmetic re-derived from game/src/world/province.js read this turn; depths CLAMPED at 1.35 m because that is what the shader can see through province.js's q. `esBandM = 1 - smoothstep(0, band, depth)`, evaluated per wet corner inside the radius.",
+  "what_untouched_means": "esBandM <= 0.001 — the shore band does nothing to this corner and round 3's behaviour is preserved there exactly. A SHORELINE band should leave most of a water body untouched; the round-4 constant was chosen to maximise coverage, which is the criterion for a depth TINT and the inverse of what a shore band needs.",
+  "radius_m": 120,
+  "bands_tested": [
+    0.05,
+    0.1,
+    0.2,
+    0.3,
+    0.45,
+    0.6,
+    0.9,
+    1.2,
+    1.35
+  ],
+  "rows": [
+    {
+      "setup": "vista-deep-marshes",
+      "region_actual": "deep-marshes",
+      "radius_m": 120,
+      "water_cells": 287,
+      "waterline_cells": 90,
+      "waterline_pct": 31.36,
+      "wet_corners": 1030,
+      "q_saturation": 33.4,
+      "median_depth_m": 1.026,
+      "mean_depth_m": 0.9246,
+      "bands": {
+        "0.05": {
+          "untouched_pct": 98.45,
+          "in_transition_pct": 1.55,
+          "full_fade_pct": 0,
+          "touched_pct": 1.55,
+          "mean_band_strength": 0.0068,
+          "mean_alpha_multiplier_from_band_alone": 0.996
+        },
+        "0.10": {
+          "untouched_pct": 96.89,
+          "in_transition_pct": 3.11,
+          "full_fade_pct": 0,
+          "touched_pct": 3.11,
+          "mean_band_strength": 0.015,
+          "mean_alpha_multiplier_from_band_alone": 0.9913
+        },
+        "0.20": {
+          "untouched_pct": 92.43,
+          "in_transition_pct": 7.57,
+          "full_fade_pct": 0,
+          "touched_pct": 7.57,
+          "mean_band_strength": 0.0343,
+          "mean_alpha_multiplier_from_band_alone": 0.9801
+        },
+        "0.30": {
+          "untouched_pct": 89.13,
+          "in_transition_pct": 10.87,
+          "full_fade_pct": 0,
+          "touched_pct": 10.87,
+          "mean_band_strength": 0.0568,
+          "mean_alpha_multiplier_from_band_alone": 0.9671
+        },
+        "0.45": {
+          "untouched_pct": 82.72,
+          "in_transition_pct": 17.28,
+          "full_fade_pct": 0,
+          "touched_pct": 17.28,
+          "mean_band_strength": 0.0839,
+          "mean_alpha_multiplier_from_band_alone": 0.9513
+        },
+        "0.60": {
+          "untouched_pct": 75.44,
+          "in_transition_pct": 24.56,
+          "full_fade_pct": 0,
+          "touched_pct": 24.56,
+          "mean_band_strength": 0.1132,
+          "mean_alpha_multiplier_from_band_alone": 0.9343
+        },
+        "0.90": {
+          "untouched_pct": 56.6,
+          "in_transition_pct": 43.01,
+          "full_fade_pct": 0.39,
+          "touched_pct": 43.4,
+          "mean_band_strength": 0.1868,
+          "mean_alpha_multiplier_from_band_alone": 0.8917
+        },
+        "1.20": {
+          "untouched_pct": 40.19,
+          "in_transition_pct": 59.42,
+          "full_fade_pct": 0.39,
+          "touched_pct": 59.81,
+          "mean_band_strength": 0.2688,
+          "mean_alpha_multiplier_from_band_alone": 0.8441
+        },
+        "1.35": {
+          "untouched_pct": 35.05,
+          "in_transition_pct": 64.56,
+          "full_fade_pct": 0.39,
+          "touched_pct": 64.95,
+          "mean_band_strength": 0.3103,
+          "mean_alpha_multiplier_from_band_alone": 0.8201
+        }
+      }
+    },
+    {
+      "setup": "vista-western-rootlands",
+      "region_actual": "western-rootlands",
+      "radius_m": 120,
+      "water_cells": 278,
+      "waterline_cells": 210,
+      "waterline_pct": 75.54,
+      "wet_corners": 584,
+      "q_saturation": 0,
+      "median_depth_m": 0.3374,
+      "mean_depth_m": 0.3885,
+      "bands": {
+        "0.05": {
+          "untouched_pct": 91.61,
+          "in_transition_pct": 8.05,
+          "full_fade_pct": 0.34,
+          "touched_pct": 8.39,
+          "mean_band_strength": 0.0398,
+          "mean_alpha_multiplier_from_band_alone": 0.9769
+        },
+        "0.10": {
+          "untouched_pct": 82.02,
+          "in_transition_pct": 17.64,
+          "full_fade_pct": 0.34,
+          "touched_pct": 17.98,
+          "mean_band_strength": 0.0835,
+          "mean_alpha_multiplier_from_band_alone": 0.9516
+        },
+        "0.20": {
+          "untouched_pct": 69.35,
+          "in_transition_pct": 30.31,
+          "full_fade_pct": 0.34,
+          "touched_pct": 30.65,
+          "mean_band_strength": 0.1676,
+          "mean_alpha_multiplier_from_band_alone": 0.9028
+        },
+        "0.30": {
+          "untouched_pct": 55.65,
+          "in_transition_pct": 44.01,
+          "full_fade_pct": 0.34,
+          "touched_pct": 44.35,
+          "mean_band_strength": 0.2436,
+          "mean_alpha_multiplier_from_band_alone": 0.8587
+        },
+        "0.45": {
+          "untouched_pct": 35.45,
+          "in_transition_pct": 63.53,
+          "full_fade_pct": 1.03,
+          "touched_pct": 64.55,
+          "mean_band_strength": 0.3503,
+          "mean_alpha_multiplier_from_band_alone": 0.7968
+        },
+        "0.60": {
+          "untouched_pct": 24.66,
+          "in_transition_pct": 73.63,
+          "full_fade_pct": 1.71,
+          "touched_pct": 75.34,
+          "mean_band_strength": 0.4492,
+          "mean_alpha_multiplier_from_band_alone": 0.7395
+        },
+        "0.90": {
+          "untouched_pct": 9.25,
+          "in_transition_pct": 89.04,
+          "full_fade_pct": 1.71,
+          "touched_pct": 90.75,
+          "mean_band_strength": 0.6023,
+          "mean_alpha_multiplier_from_band_alone": 0.6506
+        },
+        "1.20": {
+          "untouched_pct": 0,
+          "in_transition_pct": 95.55,
+          "full_fade_pct": 4.45,
+          "touched_pct": 100,
+          "mean_band_strength": 0.7124,
+          "mean_alpha_multiplier_from_band_alone": 0.5868
+        },
+        "1.35": {
+          "untouched_pct": 0,
+          "in_transition_pct": 95.03,
+          "full_fade_pct": 4.97,
+          "touched_pct": 100,
+          "mean_band_strength": 0.7553,
+          "mean_alpha_multiplier_from_band_alone": 0.5619
+        }
+      }
+    },
+    {
+      "setup": "eye-deep-marshes",
+      "region_actual": "deep-marshes",
+      "radius_m": 120,
+      "water_cells": 287,
+      "waterline_cells": 114,
+      "waterline_pct": 39.72,
+      "wet_corners": 990,
+      "q_saturation": 27.37,
+      "median_depth_m": 0.9814,
+      "mean_depth_m": 0.901,
+      "bands": {
+        "0.05": {
+          "untouched_pct": 98.59,
+          "in_transition_pct": 1.41,
+          "full_fade_pct": 0,
+          "touched_pct": 1.41,
+          "mean_band_strength": 0.0109,
+          "mean_alpha_multiplier_from_band_alone": 0.9937
+        },
+        "0.10": {
+          "untouched_pct": 96.77,
+          "in_transition_pct": 3.23,
+          "full_fade_pct": 0,
+          "touched_pct": 3.23,
+          "mean_band_strength": 0.0162,
+          "mean_alpha_multiplier_from_band_alone": 0.9906
+        },
+        "0.20": {
+          "untouched_pct": 91.92,
+          "in_transition_pct": 8.08,
+          "full_fade_pct": 0,
+          "touched_pct": 8.08,
+          "mean_band_strength": 0.0348,
+          "mean_alpha_multiplier_from_band_alone": 0.9798
+        },
+        "0.30": {
+          "untouched_pct": 86.87,
+          "in_transition_pct": 12.73,
+          "full_fade_pct": 0.4,
+          "touched_pct": 13.13,
+          "mean_band_strength": 0.0603,
+          "mean_alpha_multiplier_from_band_alone": 0.965
+        },
+        "0.45": {
+          "untouched_pct": 80.2,
+          "in_transition_pct": 19.39,
+          "full_fade_pct": 0.4,
+          "touched_pct": 19.8,
+          "mean_band_strength": 0.097,
+          "mean_alpha_multiplier_from_band_alone": 0.9437
+        },
+        "0.60": {
+          "untouched_pct": 74.55,
+          "in_transition_pct": 25.05,
+          "full_fade_pct": 0.4,
+          "touched_pct": 25.45,
+          "mean_band_strength": 0.1301,
+          "mean_alpha_multiplier_from_band_alone": 0.9246
+        },
+        "0.90": {
+          "untouched_pct": 55.05,
+          "in_transition_pct": 43.94,
+          "full_fade_pct": 1.01,
+          "touched_pct": 44.95,
+          "mean_band_strength": 0.2017,
+          "mean_alpha_multiplier_from_band_alone": 0.883
+        },
+        "1.20": {
+          "untouched_pct": 38.59,
+          "in_transition_pct": 60.4,
+          "full_fade_pct": 1.01,
+          "touched_pct": 61.41,
+          "mean_band_strength": 0.284,
+          "mean_alpha_multiplier_from_band_alone": 0.8353
+        },
+        "1.35": {
+          "untouched_pct": 29.8,
+          "in_transition_pct": 69.19,
+          "full_fade_pct": 1.01,
+          "touched_pct": 70.2,
+          "mean_band_strength": 0.3266,
+          "mean_alpha_multiplier_from_band_alone": 0.8106
+        }
+      }
+    },
+    {
+      "setup": "vista-blackwood",
+      "region_actual": "blackwood",
+      "radius_m": 120,
+      "water_cells": 203,
+      "waterline_cells": 167,
+      "waterline_pct": 82.27,
+      "wet_corners": 434,
+      "q_saturation": 18.66,
+      "median_depth_m": 0.5934,
+      "mean_depth_m": 0.6758,
+      "bands": {
+        "0.05": {
+          "untouched_pct": 94.7,
+          "in_transition_pct": 5.3,
+          "full_fade_pct": 0,
+          "touched_pct": 5.3,
+          "mean_band_strength": 0.0227,
+          "mean_alpha_multiplier_from_band_alone": 0.9868
+        },
+        "0.10": {
+          "untouched_pct": 89.86,
+          "in_transition_pct": 10.14,
+          "full_fade_pct": 0,
+          "touched_pct": 10.14,
+          "mean_band_strength": 0.0479,
+          "mean_alpha_multiplier_from_band_alone": 0.9722
+        },
+        "0.20": {
+          "untouched_pct": 79.49,
+          "in_transition_pct": 19.59,
+          "full_fade_pct": 0.92,
+          "touched_pct": 20.51,
+          "mean_band_strength": 0.1044,
+          "mean_alpha_multiplier_from_band_alone": 0.9395
+        },
+        "0.30": {
+          "untouched_pct": 71.43,
+          "in_transition_pct": 27.65,
+          "full_fade_pct": 0.92,
+          "touched_pct": 28.57,
+          "mean_band_strength": 0.1576,
+          "mean_alpha_multiplier_from_band_alone": 0.9086
+        },
+        "0.45": {
+          "untouched_pct": 58.06,
+          "in_transition_pct": 41.01,
+          "full_fade_pct": 0.92,
+          "touched_pct": 41.94,
+          "mean_band_strength": 0.2256,
+          "mean_alpha_multiplier_from_band_alone": 0.8692
+        },
+        "0.60": {
+          "untouched_pct": 50,
+          "in_transition_pct": 49.08,
+          "full_fade_pct": 0.92,
+          "touched_pct": 50,
+          "mean_band_strength": 0.2867,
+          "mean_alpha_multiplier_from_band_alone": 0.8337
+        },
+        "0.90": {
+          "untouched_pct": 37.33,
+          "in_transition_pct": 60.83,
+          "full_fade_pct": 1.84,
+          "touched_pct": 62.67,
+          "mean_band_strength": 0.3916,
+          "mean_alpha_multiplier_from_band_alone": 0.7729
+        },
+        "1.20": {
+          "untouched_pct": 24.42,
+          "in_transition_pct": 73.73,
+          "full_fade_pct": 1.84,
+          "touched_pct": 75.58,
+          "mean_band_strength": 0.4797,
+          "mean_alpha_multiplier_from_band_alone": 0.7218
+        },
+        "1.35": {
+          "untouched_pct": 20.51,
+          "in_transition_pct": 76.73,
+          "full_fade_pct": 2.76,
+          "touched_pct": 79.49,
+          "mean_band_strength": 0.5185,
+          "mean_alpha_multiplier_from_band_alone": 0.6993
+        }
+      }
+    },
+    {
+      "setup": "vista-eastern-rootlands",
+      "region_actual": "eastern-rootlands",
+      "radius_m": 120,
+      "water_cells": 264,
+      "waterline_cells": 108,
+      "waterline_pct": 40.91,
+      "wet_corners": 797,
+      "q_saturation": 29.49,
+      "median_depth_m": 0.6448,
+      "mean_depth_m": 0.7528,
+      "bands": {
+        "0.05": {
+          "untouched_pct": 97.24,
+          "in_transition_pct": 2.76,
+          "full_fade_pct": 0,
+          "touched_pct": 2.76,
+          "mean_band_strength": 0.0082,
+          "mean_alpha_multiplier_from_band_alone": 0.9953
+        },
+        "0.10": {
+          "untouched_pct": 94.35,
+          "in_transition_pct": 5.65,
+          "full_fade_pct": 0,
+          "touched_pct": 5.65,
+          "mean_band_strength": 0.0266,
+          "mean_alpha_multiplier_from_band_alone": 0.9846
+        },
+        "0.20": {
+          "untouched_pct": 88.46,
+          "in_transition_pct": 11.54,
+          "full_fade_pct": 0,
+          "touched_pct": 11.54,
+          "mean_band_strength": 0.0606,
+          "mean_alpha_multiplier_from_band_alone": 0.9649
+        },
+        "0.30": {
+          "untouched_pct": 80.8,
+          "in_transition_pct": 19.07,
+          "full_fade_pct": 0.13,
+          "touched_pct": 19.2,
+          "mean_band_strength": 0.0885,
+          "mean_alpha_multiplier_from_band_alone": 0.9487
+        },
+        "0.45": {
+          "untouched_pct": 64.49,
+          "in_transition_pct": 35.38,
+          "full_fade_pct": 0.13,
+          "touched_pct": 35.51,
+          "mean_band_strength": 0.1496,
+          "mean_alpha_multiplier_from_band_alone": 0.9132
+        },
+        "0.60": {
+          "untouched_pct": 53.58,
+          "in_transition_pct": 46.3,
+          "full_fade_pct": 0.13,
+          "touched_pct": 46.42,
+          "mean_band_strength": 0.2192,
+          "mean_alpha_multiplier_from_band_alone": 0.8728
+        },
+        "0.90": {
+          "untouched_pct": 38.14,
+          "in_transition_pct": 61.23,
+          "full_fade_pct": 0.63,
+          "touched_pct": 61.86,
+          "mean_band_strength": 0.3386,
+          "mean_alpha_multiplier_from_band_alone": 0.8036
+        },
+        "1.20": {
+          "untouched_pct": 31.74,
+          "in_transition_pct": 67.25,
+          "full_fade_pct": 1,
+          "touched_pct": 68.26,
+          "mean_band_strength": 0.4292,
+          "mean_alpha_multiplier_from_band_alone": 0.7511
+        },
+        "1.35": {
+          "untouched_pct": 29.74,
+          "in_transition_pct": 69.26,
+          "full_fade_pct": 1,
+          "touched_pct": 70.26,
+          "mean_band_strength": 0.4659,
+          "mean_alpha_multiplier_from_band_alone": 0.7298
+        }
+      }
+    },
+    {
+      "setup": "vista-marauders-coast",
+      "region_actual": "marauders-coast",
+      "radius_m": 120,
+      "water_cells": 289,
+      "waterline_cells": 24,
+      "waterline_pct": 8.3,
+      "wet_corners": 1105,
+      "q_saturation": 91.13,
+      "median_depth_m": 1.35,
+      "mean_depth_m": 1.3084,
+      "bands": {
+        "0.05": {
+          "untouched_pct": 100,
+          "in_transition_pct": 0,
+          "full_fade_pct": 0,
+          "touched_pct": 0,
+          "mean_band_strength": 0,
+          "mean_alpha_multiplier_from_band_alone": 1
+        },
+        "0.10": {
+          "untouched_pct": 100,
+          "in_transition_pct": 0,
+          "full_fade_pct": 0,
+          "touched_pct": 0,
+          "mean_band_strength": 0,
+          "mean_alpha_multiplier_from_band_alone": 1
+        },
+        "0.20": {
+          "untouched_pct": 99.64,
+          "in_transition_pct": 0.36,
+          "full_fade_pct": 0,
+          "touched_pct": 0.36,
+          "mean_band_strength": 0.0014,
+          "mean_alpha_multiplier_from_band_alone": 0.9992
+        },
+        "0.30": {
+          "untouched_pct": 99.64,
+          "in_transition_pct": 0.36,
+          "full_fade_pct": 0,
+          "touched_pct": 0.36,
+          "mean_band_strength": 0.0024,
+          "mean_alpha_multiplier_from_band_alone": 0.9986
+        },
+        "0.45": {
+          "untouched_pct": 98.19,
+          "in_transition_pct": 1.81,
+          "full_fade_pct": 0,
+          "touched_pct": 1.81,
+          "mean_band_strength": 0.0045,
+          "mean_alpha_multiplier_from_band_alone": 0.9974
+        },
+        "0.60": {
+          "untouched_pct": 98.19,
+          "in_transition_pct": 1.81,
+          "full_fade_pct": 0,
+          "touched_pct": 1.81,
+          "mean_band_strength": 0.0083,
+          "mean_alpha_multiplier_from_band_alone": 0.9952
+        },
+        "0.90": {
+          "untouched_pct": 96.29,
+          "in_transition_pct": 3.71,
+          "full_fade_pct": 0,
+          "touched_pct": 3.71,
+          "mean_band_strength": 0.0149,
+          "mean_alpha_multiplier_from_band_alone": 0.9914
+        },
+        "1.20": {
+          "untouched_pct": 93.21,
+          "in_transition_pct": 6.79,
+          "full_fade_pct": 0,
+          "touched_pct": 6.79,
+          "mean_band_strength": 0.0235,
+          "mean_alpha_multiplier_from_band_alone": 0.9864
+        },
+        "1.35": {
+          "untouched_pct": 91.49,
+          "in_transition_pct": 8.51,
+          "full_fade_pct": 0,
+          "touched_pct": 8.51,
+          "mean_band_strength": 0.0286,
+          "mean_alpha_multiplier_from_band_alone": 0.9834
+        }
+      }
+    },
+    {
+      "setup": "vista-crimson-coast",
+      "region_actual": "crimson-coast",
+      "radius_m": 120,
+      "water_cells": 290,
+      "waterline_cells": 26,
+      "waterline_pct": 8.97,
+      "wet_corners": 1117,
+      "q_saturation": 90.24,
+      "median_depth_m": 1.35,
+      "mean_depth_m": 1.2849,
+      "bands": {
+        "0.05": {
+          "untouched_pct": 100,
+          "in_transition_pct": 0,
+          "full_fade_pct": 0,
+          "touched_pct": 0,
+          "mean_band_strength": 0,
+          "mean_alpha_multiplier_from_band_alone": 1
+        },
+        "0.10": {
+          "untouched_pct": 98.93,
+          "in_transition_pct": 1.07,
+          "full_fade_pct": 0,
+          "touched_pct": 1.07,
+          "mean_band_strength": 0.0012,
+          "mean_alpha_multiplier_from_band_alone": 0.9993
+        },
+        "0.20": {
+          "untouched_pct": 98.48,
+          "in_transition_pct": 1.52,
+          "full_fade_pct": 0,
+          "touched_pct": 1.52,
+          "mean_band_strength": 0.0079,
+          "mean_alpha_multiplier_from_band_alone": 0.9954
+        },
+        "0.30": {
+          "untouched_pct": 97.67,
+          "in_transition_pct": 2.33,
+          "full_fade_pct": 0,
+          "touched_pct": 2.33,
+          "mean_band_strength": 0.0124,
+          "mean_alpha_multiplier_from_band_alone": 0.9928
+        },
+        "0.45": {
+          "untouched_pct": 97.14,
+          "in_transition_pct": 2.86,
+          "full_fade_pct": 0,
+          "touched_pct": 2.86,
+          "mean_band_strength": 0.0177,
+          "mean_alpha_multiplier_from_band_alone": 0.9898
+        },
+        "0.60": {
+          "untouched_pct": 96.24,
+          "in_transition_pct": 3.76,
+          "full_fade_pct": 0,
+          "touched_pct": 3.76,
+          "mean_band_strength": 0.0221,
+          "mean_alpha_multiplier_from_band_alone": 0.9872
+        },
+        "0.90": {
+          "untouched_pct": 93.82,
+          "in_transition_pct": 6.18,
+          "full_fade_pct": 0,
+          "touched_pct": 6.18,
+          "mean_band_strength": 0.0325,
+          "mean_alpha_multiplier_from_band_alone": 0.9811
+        },
+        "1.20": {
+          "untouched_pct": 91.32,
+          "in_transition_pct": 8.68,
+          "full_fade_pct": 0,
+          "touched_pct": 8.68,
+          "mean_band_strength": 0.043,
+          "mean_alpha_multiplier_from_band_alone": 0.9751
+        },
+        "1.35": {
+          "untouched_pct": 90.6,
+          "in_transition_pct": 9.4,
+          "full_fade_pct": 0,
+          "touched_pct": 9.4,
+          "mean_band_strength": 0.0482,
+          "mean_alpha_multiplier_from_band_alone": 0.9721
+        }
+      }
+    }
+  ]
+}
