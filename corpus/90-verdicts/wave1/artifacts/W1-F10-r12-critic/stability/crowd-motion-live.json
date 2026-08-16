@@ -1,0 +1,1835 @@
+{
+ "tool": "tools/visual/f10-r12-crowd-motion.mjs",
+ "commit": "55c629a036e920b699d5033984f3d312847b0fd8",
+ "working_tree_dirty_in_game_or_tools": false,
+ "dirty_paths": [],
+ "generated": "2026-08-16T02:43:41.505Z",
+ "renderer": "renderer: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)\n  *** SOFTWARE — not valid for an appearance claim (W1-30-EVIDENCE §4) ***",
+ "stand": {
+  "x": 2785.6,
+  "z": 5047
+ },
+ "arms": [
+  {
+   "arm": "L0 THE CENSUS — HAZARDS §26. A raw `npc:` mesh count is not a denominator.",
+   "npc_meshes": 60,
+   "visible": 31,
+   "visible_and_within_200m_of_the_stand": 27,
+   "invisible": 29,
+   "invisible_within_5m_of_the_world_origin": 28,
+   "invisible_ground_y_range": [
+    -41.134,
+    -40.725
+   ],
+   "env_interior": null,
+   "WHY_THEY_ARE_THERE": "read from `sim.npcs` in the same pass — see `invisible_sample`. `sim/npc.js:applyPresence` sets `visible=false` for anybody whose `at` names a cell the player is not in, and `makeNPC` copies `pos` verbatim from the record, which for an interior-dwelling person is an INTERIOR-LOCAL coordinate. As a world coordinate that is a few metres from the origin, and `syncNPCs` resolves the ground there, which at (0,0) is the Topal sea floor.",
+   "invisible_sample": [
+    {
+     "eid": "lilmoth-apothecary-12",
+     "world_xz": [
+      -4.366,
+      -1.911
+     ],
+     "ground_y": -40.918,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-yard",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-yard",
+      "pos": [
+       -4.366,
+       0,
+       -1.911
+      ],
+      "has_post": true,
+      "schedule_len": 6
+     }
+    },
+    {
+     "eid": "lilmoth-archivist-ledger",
+     "world_xz": [
+      4.11,
+      1.84
+     ],
+     "ground_y": -40.98,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-ledger-house",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-ledger-house",
+      "pos": [
+       4.11,
+       0,
+       1.84
+      ],
+      "has_post": false,
+      "schedule_len": 0
+     }
+    },
+    {
+     "eid": "lilmoth-cook-1-partner0",
+     "world_xz": [
+      3.663,
+      3.026
+     ],
+     "ground_y": -40.836,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-house-1",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-house-1",
+      "pos": [
+       3.663,
+       0,
+       3.026
+      ],
+      "has_post": true,
+      "schedule_len": 5
+     }
+    },
+    {
+     "eid": "lilmoth-cook-5",
+     "world_xz": [
+      1.46,
+      -2.26
+     ],
+     "ground_y": -40.951,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-inn-drowned",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-customs",
+      "pos": [
+       1.46,
+       0,
+       -2.26
+      ],
+      "has_post": true,
+      "schedule_len": 9
+     }
+    },
+    {
+     "eid": "lilmoth-factor-0",
+     "world_xz": [
+      -1.45,
+      -0.09
+     ],
+     "ground_y": -41.134,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-customs",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-house-0",
+      "pos": [
+       -1.45,
+       0,
+       -0.09
+      ],
+      "has_post": true,
+      "schedule_len": 8
+     }
+    },
+    {
+     "eid": "lilmoth-factor-0-partner1",
+     "world_xz": [
+      -2.453,
+      1.554
+     ],
+     "ground_y": -41.004,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-house-0",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-house-0",
+      "pos": [
+       -2.453,
+       0,
+       1.554
+      ],
+      "has_post": true,
+      "schedule_len": 5
+     }
+    },
+    {
+     "eid": "lilmoth-factor-4",
+     "world_xz": [
+      -1.79,
+      -2.34
+     ],
+     "ground_y": -40.933,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-customs",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-house-4",
+      "pos": [
+       -1.79,
+       0,
+       -2.34
+      ],
+      "has_post": true,
+      "schedule_len": 6
+     }
+    },
+    {
+     "eid": "lilmoth-keeper-healer",
+     "world_xz": [
+      -1.844,
+      3.649
+     ],
+     "ground_y": -40.739,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-healer",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-healer",
+      "pos": [
+       -1.844,
+       0,
+       3.649
+      ],
+      "has_post": true,
+      "schedule_len": 9
+     }
+    },
+    {
+     "eid": "lilmoth-keeper-inn-stilt",
+     "world_xz": [
+      -3.349,
+      2.945
+     ],
+     "ground_y": -40.728,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-inn-stilt",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-inn-stilt",
+      "pos": [
+       -3.349,
+       0,
+       2.945
+      ],
+      "has_post": true,
+      "schedule_len": 4
+     }
+    },
+    {
+     "eid": "lilmoth-keeper-market",
+     "world_xz": [
+      -2.496,
+      0.949
+     ],
+     "ground_y": -41.07,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-market",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-market",
+      "pos": [
+       -2.496,
+       0,
+       0.949
+      ],
+      "has_post": true,
+      "schedule_len": 8
+     }
+    },
+    {
+     "eid": "lilmoth-keeper-pawn",
+     "world_xz": [
+      1.139,
+      -0.993
+     ],
+     "ground_y": -41.101,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-pawn",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-pawn",
+      "pos": [
+       1.139,
+       0,
+       -0.993
+      ],
+      "has_post": true,
+      "schedule_len": 6
+     }
+    },
+    {
+     "eid": "lilmoth-keeper-rootpost",
+     "world_xz": [
+      -1.741,
+      4.803
+     ],
+     "ground_y": -40.725,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-rootpost",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-rootpost",
+      "pos": [
+       -1.741,
+       0,
+       4.803
+      ],
+      "has_post": true,
+      "schedule_len": 7
+     }
+    },
+    {
+     "eid": "lilmoth-keeper-shrine",
+     "world_xz": [
+      3.426,
+      -2.062
+     ],
+     "ground_y": -40.931,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-shrine",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-shrine",
+      "pos": [
+       3.426,
+       0,
+       -2.062
+      ],
+      "has_post": true,
+      "schedule_len": 5
+     }
+    },
+    {
+     "eid": "lilmoth-legionary-10",
+     "world_xz": [
+      -1.452,
+      0.819
+     ],
+     "ground_y": -41.105,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-shrine",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-shrine",
+      "pos": [
+       -1.452,
+       0,
+       0.819
+      ],
+      "has_post": true,
+      "schedule_len": 5
+     }
+    },
+    {
+     "eid": "lilmoth-legionary-13",
+     "world_xz": [
+      -0.923,
+      -1.071
+     ],
+     "ground_y": -41.1,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-market",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-market",
+      "pos": [
+       -0.923,
+       0,
+       -1.071
+      ],
+      "has_post": true,
+      "schedule_len": 6
+     }
+    },
+    {
+     "eid": "lilmoth-mudborn-shrine",
+     "world_xz": [
+      3.99,
+      1.98
+     ],
+     "ground_y": -40.973,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-shrine",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-shrine",
+      "pos": [
+       3.99,
+       0,
+       1.98
+      ],
+      "has_post": false,
+      "schedule_len": 0
+     }
+    },
+    {
+     "eid": "lilmoth-priest-6-apprentice1",
+     "world_xz": [
+      1.45,
+      4.7
+     ],
+     "ground_y": -40.812,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-healer",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-ledger-house",
+      "pos": [
+       1.45,
+       0,
+       4.7
+      ],
+      "has_post": true,
+      "schedule_len": 6
+     }
+    },
+    {
+     "eid": "lilmoth-priest-6-lodger0",
+     "world_xz": [
+      3.663,
+      -0.098
+     ],
+     "ground_y": -41.039,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-ledger-house",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-ledger-house",
+      "pos": [
+       3.663,
+       0,
+       -0.098
+      ],
+      "has_post": true,
+      "schedule_len": 7
+     }
+    },
+    {
+     "eid": "lilmoth-priest-8-apprentice1",
+     "world_xz": [
+      -1.45,
+      -1.75
+     ],
+     "ground_y": -41.025,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-healer",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-scribe",
+      "pos": [
+       -1.45,
+       0,
+       -1.75
+      ],
+      "has_post": true,
+      "schedule_len": 8
+     }
+    },
+    {
+     "eid": "lilmoth-priest-8-lodger0",
+     "world_xz": [
+      2.47,
+      3.214
+     ],
+     "ground_y": -40.786,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-scribe",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-scribe",
+      "pos": [
+       2.47,
+       0,
+       3.214
+      ],
+      "has_post": true,
+      "schedule_len": 3
+     }
+    },
+    {
+     "eid": "lilmoth-scribe-2-elder0",
+     "world_xz": [
+      -1.507,
+      -1.357
+     ],
+     "ground_y": -41.067,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-house-2",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-house-2",
+      "pos": [
+       -1.507,
+       0,
+       -1.357
+      ],
+      "has_post": true,
+      "schedule_len": 5
+     }
+    },
+    {
+     "eid": "lilmoth-scribe-2-sibling1",
+     "world_xz": [
+      1.609,
+      3.47
+     ],
+     "ground_y": -40.823,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-house-2",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-house-2",
+      "pos": [
+       1.609,
+       0,
+       3.47
+      ],
+      "has_post": true,
+      "schedule_len": 6
+     }
+    },
+    {
+     "eid": "lilmoth-smith-9",
+     "world_xz": [
+      2.78,
+      2.7
+     ],
+     "ground_y": -40.88,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-yard",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-inn-drowned",
+      "pos": [
+       2.78,
+       0,
+       2.7
+      ],
+      "has_post": true,
+      "schedule_len": 7
+     }
+    },
+    {
+     "eid": "lilmoth-smith-9-sibling0",
+     "world_xz": [
+      -1.588,
+      -1.708
+     ],
+     "ground_y": -41.028,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-inn-drowned",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-inn-drowned",
+      "pos": [
+       -1.588,
+       0,
+       -1.708
+      ],
+      "has_post": true,
+      "schedule_len": 6
+     }
+    },
+    {
+     "eid": "lilmoth-weaver-3",
+     "world_xz": [
+      3.7,
+      -1.36
+     ],
+     "ground_y": -40.985,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-yard",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-house-3",
+      "pos": [
+       3.7,
+       0,
+       -1.36
+      ],
+      "has_post": true,
+      "schedule_len": 8
+     }
+    },
+    {
+     "eid": "lilmoth-weaver-7",
+     "world_xz": [
+      4.5,
+      1.3
+     ],
+     "ground_y": -40.991,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-yard",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-smithy",
+      "pos": [
+       4.5,
+       0,
+       1.3
+      ],
+      "has_post": true,
+      "schedule_len": 7
+     }
+    },
+    {
+     "eid": "lilmoth-weaver-7-sibling0",
+     "world_xz": [
+      1.625,
+      4.222
+     ],
+     "ground_y": -40.833,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-smithy",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-smithy",
+      "pos": [
+       1.625,
+       0,
+       4.222
+      ],
+      "has_post": true,
+      "schedule_len": 6
+     }
+    },
+    {
+     "eid": "miredancer-omu-ei",
+     "world_xz": [
+      -1.682,
+      1.601
+     ],
+     "ground_y": -41.012,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-inn-stilt",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-inn-stilt",
+      "pos": [
+       -1.682,
+       0,
+       1.601
+      ],
+      "has_post": false,
+      "schedule_len": 1
+     }
+    },
+    {
+     "eid": "miredancer-sap-speaker",
+     "world_xz": [
+      -2.174,
+      -1.261
+     ],
+     "ground_y": -41.062,
+     "sim": {
+      "visible": false,
+      "present": false,
+      "at": "lilmoth-rootpost",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-rootpost",
+      "pos": [
+       -2.174,
+       0,
+       -1.261
+      ],
+      "has_post": false,
+      "schedule_len": 1
+     }
+    }
+   ]
+  },
+  {
+   "arm": "L1 RI-VIS10 C3 ARM (b2) — a changed non-foot bone over 60 frames, in the running game",
+   "frames_apart": 60,
+   "denominator_note": "DRAWN = visible AND within 200 m of the stand (HAZARDS §26). All three denominators published.",
+   "all_meshes": {
+    "n": 60,
+    "moved": 31
+   },
+   "visible": {
+    "n": 31,
+    "moved": 31
+   },
+   "DRAWN": {
+    "n": 27,
+    "moved": 27,
+    "pct": 100,
+    "bar": ">= 90%"
+   },
+   "worst_non_foot_rot_rad_over_the_drawn_crowd": 0.026635584,
+   "r11_measured_the_same_quantity_at": 0,
+   "worst_non_foot_bone_move_m_over_the_drawn_crowd": 0.592687,
+   "PLAYER_CONTROL_required_to_disagree": {
+    "bone_move_m": 0.015456,
+    "r11_measured": 0.011246,
+    "ok": true
+   },
+   "rows": [
+    {
+     "eid": "blackwood-company-factor",
+     "visible": true,
+     "dist_to_stand_m": 38.55,
+     "worst_non_foot_rot_rad": 0.013955148,
+     "worst_non_foot_bone_move_m": 0.010002,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "dockmaster-weeja-sen",
+     "visible": true,
+     "dist_to_stand_m": 23.64,
+     "worst_non_foot_rot_rad": 0.020931171,
+     "worst_non_foot_bone_move_m": 0.016683,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "harbourmistress-tesh",
+     "visible": true,
+     "dist_to_stand_m": 23.43,
+     "worst_non_foot_rot_rad": 0.021425077,
+     "worst_non_foot_bone_move_m": 0.143785,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-apothecary-12",
+     "visible": false,
+     "dist_to_stand_m": 5768.48,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.352883,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-archivist-ledger",
+     "visible": false,
+     "dist_to_stand_m": 5761.1,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 0,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-cook-1",
+     "visible": true,
+     "dist_to_stand_m": 7.76,
+     "worst_non_foot_rot_rad": 0.020506453,
+     "worst_non_foot_bone_move_m": 0.012364,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-cook-1-partner0",
+     "visible": false,
+     "dist_to_stand_m": 5760.28,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.354851,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-cook-5",
+     "visible": false,
+     "dist_to_stand_m": 5765.97,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 0,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-cook-5-sibling0",
+     "visible": true,
+     "dist_to_stand_m": 18.63,
+     "worst_non_foot_rot_rad": 0.011754651,
+     "worst_non_foot_bone_move_m": 0.421262,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-factor-0",
+     "visible": false,
+     "dist_to_stand_m": 5765.48,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 0,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-factor-0-child0",
+     "visible": true,
+     "dist_to_stand_m": 12.46,
+     "worst_non_foot_rot_rad": 0.017278259,
+     "worst_non_foot_bone_move_m": 0.238894,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-factor-0-partner1",
+     "visible": false,
+     "dist_to_stand_m": 5764.53,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.354751,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-factor-4",
+     "visible": false,
+     "dist_to_stand_m": 5767.61,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 0,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-factor-4-elder0",
+     "visible": true,
+     "dist_to_stand_m": 21.27,
+     "worst_non_foot_rot_rad": 0.019166667,
+     "worst_non_foot_bone_move_m": 0.374805,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-factor-4-sibling1",
+     "visible": true,
+     "dist_to_stand_m": 17.29,
+     "worst_non_foot_rot_rad": 0.016771774,
+     "worst_non_foot_bone_move_m": 0.495169,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-keeper-apothecary",
+     "visible": true,
+     "dist_to_stand_m": 19.63,
+     "worst_non_foot_rot_rad": 0.018150119,
+     "worst_non_foot_bone_move_m": 0.215837,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-keeper-customs",
+     "visible": true,
+     "dist_to_stand_m": 19.64,
+     "worst_non_foot_rot_rad": 0.01594748,
+     "worst_non_foot_bone_move_m": 0.260417,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-keeper-healer",
+     "visible": false,
+     "dist_to_stand_m": 5762.4,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.35505,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-keeper-inn-drowned",
+     "visible": true,
+     "dist_to_stand_m": 12.39,
+     "worst_non_foot_rot_rad": 0.026635584,
+     "worst_non_foot_bone_move_m": 0.222416,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-keeper-inn-stilt",
+     "visible": false,
+     "dist_to_stand_m": 5763.74,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.356912,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-keeper-ledger-house",
+     "visible": true,
+     "dist_to_stand_m": 17.46,
+     "worst_non_foot_rot_rad": 0.01326988,
+     "worst_non_foot_bone_move_m": 0.155607,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-keeper-market",
+     "visible": false,
+     "dist_to_stand_m": 5765.08,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.35165,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-keeper-pawn",
+     "visible": false,
+     "dist_to_stand_m": 5765.02,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.350769,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-keeper-rootpost",
+     "visible": false,
+     "dist_to_stand_m": 5761.34,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.350203,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-keeper-scribe",
+     "visible": true,
+     "dist_to_stand_m": 13.76,
+     "worst_non_foot_rot_rad": 0.012645881,
+     "worst_non_foot_bone_move_m": 0.28807,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-keeper-shrine",
+     "visible": false,
+     "dist_to_stand_m": 5764.85,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.350071,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-keeper-smithy",
+     "visible": true,
+     "dist_to_stand_m": 12.48,
+     "worst_non_foot_rot_rad": 0.026253953,
+     "worst_non_foot_bone_move_m": 0.127927,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-keeper-yard",
+     "visible": true,
+     "dist_to_stand_m": 11.46,
+     "worst_non_foot_rot_rad": 0.019629574,
+     "worst_non_foot_bone_move_m": 0.06337,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-legionary-10",
+     "visible": false,
+     "dist_to_stand_m": 5764.69,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.350132,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-legionary-10-partner0",
+     "visible": true,
+     "dist_to_stand_m": 13.09,
+     "worst_non_foot_rot_rad": 0.017085331,
+     "worst_non_foot_bone_move_m": 0.011454,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-legionary-11",
+     "visible": true,
+     "dist_to_stand_m": 13.31,
+     "worst_non_foot_rot_rad": 0.018780116,
+     "worst_non_foot_bone_move_m": 0.592687,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-legionary-13",
+     "visible": false,
+     "dist_to_stand_m": 5766.08,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.350237,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-mudborn-shrine",
+     "visible": false,
+     "dist_to_stand_m": 5761.04,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 0,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-priest-6",
+     "visible": true,
+     "dist_to_stand_m": 9.04,
+     "worst_non_foot_rot_rad": 0.02537981,
+     "worst_non_foot_bone_move_m": 0.010672,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-priest-6-apprentice1",
+     "visible": false,
+     "dist_to_stand_m": 5759.89,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 0,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-priest-6-lodger0",
+     "visible": false,
+     "dist_to_stand_m": 5763.02,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.351157,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-priest-8",
+     "visible": true,
+     "dist_to_stand_m": 11.17,
+     "worst_non_foot_rot_rad": 0.02153379,
+     "worst_non_foot_bone_move_m": 0.107829,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-priest-8-apprentice1",
+     "visible": false,
+     "dist_to_stand_m": 5766.93,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 0,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-priest-8-lodger0",
+     "visible": false,
+     "dist_to_stand_m": 5760.69,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 0.981765,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-rootkeepers",
+     "visible": true,
+     "dist_to_stand_m": 66.45,
+     "worst_non_foot_rot_rad": 0.014509865,
+     "worst_non_foot_bone_move_m": 0.009965,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-scribe-2",
+     "visible": true,
+     "dist_to_stand_m": 15.21,
+     "worst_non_foot_rot_rad": 0.020325544,
+     "worst_non_foot_bone_move_m": 0.132124,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-scribe-2-elder0",
+     "visible": false,
+     "dist_to_stand_m": 5766.62,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.364325,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-scribe-2-sibling1",
+     "visible": false,
+     "dist_to_stand_m": 5760.89,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.350948,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-smith-9",
+     "visible": false,
+     "dist_to_stand_m": 5760.99,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 0,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-smith-9-sibling0",
+     "visible": false,
+     "dist_to_stand_m": 5766.96,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.352969,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-weaver-3",
+     "visible": false,
+     "dist_to_stand_m": 5764.1,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 0,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-weaver-3-sibling0",
+     "visible": true,
+     "dist_to_stand_m": 11.79,
+     "worst_non_foot_rot_rad": 0.020688091,
+     "worst_non_foot_bone_move_m": 0.012529,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-weaver-7",
+     "visible": false,
+     "dist_to_stand_m": 5761.39,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 0,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-weaver-7-sibling0",
+     "visible": false,
+     "dist_to_stand_m": 5760.22,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 0.945757,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "lilmoth-wharf-cutters",
+     "visible": true,
+     "dist_to_stand_m": 30.93,
+     "worst_non_foot_rot_rad": 0.020682221,
+     "worst_non_foot_bone_move_m": 0.012667,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "lilmoth-yard-brothers",
+     "visible": true,
+     "dist_to_stand_m": 24.64,
+     "worst_non_foot_rot_rad": 0.015260951,
+     "worst_non_foot_bone_move_m": 0.009697,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "miredancer-omu-ei",
+     "visible": false,
+     "dist_to_stand_m": 5764.11,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.130495,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "miredancer-sap-speaker",
+     "visible": false,
+     "dist_to_stand_m": 5766.86,
+     "worst_non_foot_rot_rad": 0,
+     "worst_non_foot_bone_move_m": 1.351064,
+     "t_solved_before": 24,
+     "t_solved_after": 24
+    },
+    {
+     "eid": "npc-eleen",
+     "visible": true,
+     "dist_to_stand_m": 6027.39,
+     "worst_non_foot_rot_rad": 0.012863842,
+     "worst_non_foot_bone_move_m": 0.013191,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "npc-ineve-corrano",
+     "visible": true,
+     "dist_to_stand_m": 6025.53,
+     "worst_non_foot_rot_rad": 0.011808005,
+     "worst_non_foot_bone_move_m": 0.015478,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "npc-skara-hull-chalk",
+     "visible": true,
+     "dist_to_stand_m": 6026.15,
+     "worst_non_foot_rot_rad": 0.015454859,
+     "worst_non_foot_bone_move_m": 0.014632,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "npc-widow-tesla-vor",
+     "visible": true,
+     "dist_to_stand_m": 6016.41,
+     "worst_non_foot_rot_rad": 0.016441349,
+     "worst_non_foot_bone_move_m": 0.01571,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "rootkeeper-under-the-temple",
+     "visible": true,
+     "dist_to_stand_m": 27.15,
+     "worst_non_foot_rot_rad": 0.012725754,
+     "worst_non_foot_bone_move_m": 0.012625,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "shipwright-oleen",
+     "visible": true,
+     "dist_to_stand_m": 17.82,
+     "worst_non_foot_rot_rad": 0.020645694,
+     "worst_non_foot_bone_move_m": 0.078502,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    },
+    {
+     "eid": "spellwright-lilmoth",
+     "visible": true,
+     "dist_to_stand_m": 16.16,
+     "worst_non_foot_rot_rad": 0.026003611,
+     "worst_non_foot_bone_move_m": 0.014404,
+     "t_solved_before": 24,
+     "t_solved_after": 84
+    }
+   ]
+  },
+  {
+   "arm": "L2 RI-VIS10 C3 ARM (b1) — S59 preservation (a): the variety must survive the motion",
+   "DRAWN": {
+    "n": 27,
+    "over_bar": 27,
+    "pct": 100,
+    "bar": ">= 90%"
+   },
+   "all_meshes": {
+    "n": 60,
+    "over_bar": 60
+   },
+   "distinct_pose_signatures_drawn": 27,
+   "player": {
+    "a": -6.231,
+    "b": 5.1875,
+    "c": 8
+   },
+   "rows": [
+    {
+     "eid": "blackwood-company-factor",
+     "a": 4.6965,
+     "b": -4.7371,
+     "c": 11.525,
+     "visible": true,
+     "dist": 38.55
+    },
+    {
+     "eid": "dockmaster-weeja-sen",
+     "a": -5.2704,
+     "b": 5.4586,
+     "c": 1.4628,
+     "visible": true,
+     "dist": 23.64
+    },
+    {
+     "eid": "harbourmistress-tesh",
+     "a": -5.8163,
+     "b": 4.3922,
+     "c": 12.4744,
+     "visible": true,
+     "dist": 23.43
+    },
+    {
+     "eid": "lilmoth-apothecary-12",
+     "a": -7.7372,
+     "b": 6.5135,
+     "c": 4.2176,
+     "visible": false,
+     "dist": 5767.34
+    },
+    {
+     "eid": "lilmoth-archivist-ledger",
+     "a": 4.8216,
+     "b": -4.2427,
+     "c": 17.5746,
+     "visible": false,
+     "dist": 5761.1
+    },
+    {
+     "eid": "lilmoth-cook-1",
+     "a": 5.7555,
+     "b": -3.963,
+     "c": 4.0022,
+     "visible": true,
+     "dist": 7.76
+    },
+    {
+     "eid": "lilmoth-cook-1-partner0",
+     "a": 5.4522,
+     "b": -4.6992,
+     "c": 12.6246,
+     "visible": false,
+     "dist": 5761.49
+    },
+    {
+     "eid": "lilmoth-cook-5",
+     "a": -4.778,
+     "b": 4.0039,
+     "c": 2.3156,
+     "visible": false,
+     "dist": 5765.97
+    },
+    {
+     "eid": "lilmoth-cook-5-sibling0",
+     "a": -6.2321,
+     "b": 4.9106,
+     "c": 18.0368,
+     "visible": true,
+     "dist": 18.63
+    },
+    {
+     "eid": "lilmoth-factor-0",
+     "a": 6.9468,
+     "b": -5.9959,
+     "c": 6.6956,
+     "visible": false,
+     "dist": 5765.48
+    },
+    {
+     "eid": "lilmoth-factor-0-child0",
+     "a": -4.6786,
+     "b": 4.2994,
+     "c": 18.5228,
+     "visible": true,
+     "dist": 12.46
+    },
+    {
+     "eid": "lilmoth-factor-0-partner1",
+     "a": 6.1793,
+     "b": -5.3323,
+     "c": 19.2538,
+     "visible": false,
+     "dist": 5764.92
+    },
+    {
+     "eid": "lilmoth-factor-4",
+     "a": -5.9706,
+     "b": 6.0024,
+     "c": 9.3392,
+     "visible": false,
+     "dist": 5767.61
+    },
+    {
+     "eid": "lilmoth-factor-4-elder0",
+     "a": -5.4334,
+     "b": 5.9387,
+     "c": 14.5908,
+     "visible": true,
+     "dist": 21.27
+    },
+    {
+     "eid": "lilmoth-factor-4-sibling1",
+     "a": -7.5254,
+     "b": 5.8966,
+     "c": 14.2368,
+     "visible": true,
+     "dist": 17.29
+    },
+    {
+     "eid": "lilmoth-keeper-apothecary",
+     "a": -6.1105,
+     "b": 5.3549,
+     "c": 0.416,
+     "visible": true,
+     "dist": 19.63
+    },
+    {
+     "eid": "lilmoth-keeper-customs",
+     "a": -6.1369,
+     "b": 5.8546,
+     "c": 12.2188,
+     "visible": true,
+     "dist": 19.64
+    },
+    {
+     "eid": "lilmoth-keeper-healer",
+     "a": 7.5637,
+     "b": -6.8434,
+     "c": 1.7638,
+     "visible": false,
+     "dist": 5763.73
+    },
+    {
+     "eid": "lilmoth-keeper-inn-drowned",
+     "a": -4.8019,
+     "b": 4.9524,
+     "c": 7.4538,
+     "visible": true,
+     "dist": 12.39
+    },
+    {
+     "eid": "lilmoth-keeper-inn-stilt",
+     "a": 6.6583,
+     "b": -5.7261,
+     "c": 10.6762,
+     "visible": false,
+     "dist": 5763.7
+    },
+    {
+     "eid": "lilmoth-keeper-ledger-house",
+     "a": -4.613,
+     "b": 3.614,
+     "c": 0.5178,
+     "visible": true,
+     "dist": 17.46
+    },
+    {
+     "eid": "lilmoth-keeper-market",
+     "a": -7.1079,
+     "b": 5.4246,
+     "c": 6.8568,
+     "visible": false,
+     "dist": 5765.57
+    },
+    {
+     "eid": "lilmoth-keeper-pawn",
+     "a": 6.2927,
+     "b": -5.2278,
+     "c": 5.4438,
+     "visible": false,
+     "dist": 5764.49
+    },
+    {
+     "eid": "lilmoth-keeper-rootpost",
+     "a": -6.3063,
+     "b": 4.5764,
+     "c": 14.5048,
+     "visible": false,
+     "dist": 5760.61
+    },
+    {
+     "eid": "lilmoth-keeper-scribe",
+     "a": 5.1549,
+     "b": -3.8636,
+     "c": 8.2,
+     "visible": true,
+     "dist": 13.76
+    },
+    {
+     "eid": "lilmoth-keeper-shrine",
+     "a": -5.7886,
+     "b": 4.6705,
+     "c": 1.4538,
+     "visible": false,
+     "dist": 5765.77
+    },
+    {
+     "eid": "lilmoth-keeper-smithy",
+     "a": 6.4877,
+     "b": -5.7257,
+     "c": 4.0296,
+     "visible": true,
+     "dist": 12.48
+    },
+    {
+     "eid": "lilmoth-keeper-yard",
+     "a": -4.8481,
+     "b": 5.1468,
+     "c": 3.9694,
+     "visible": true,
+     "dist": 11.46
+    },
+    {
+     "eid": "lilmoth-legionary-10",
+     "a": 5.6832,
+     "b": -5.7586,
+     "c": 3.8492,
+     "visible": false,
+     "dist": 5764.13
+    },
+    {
+     "eid": "lilmoth-legionary-10-partner0",
+     "a": -6.3064,
+     "b": 5.3427,
+     "c": 0.35,
+     "visible": true,
+     "dist": 13.09
+    },
+    {
+     "eid": "lilmoth-legionary-11",
+     "a": -6.4495,
+     "b": 6.7389,
+     "c": 20.2336,
+     "visible": true,
+     "dist": 13.31
+    },
+    {
+     "eid": "lilmoth-legionary-13",
+     "a": -6.494,
+     "b": 5.7728,
+     "c": 10.1088,
+     "visible": false,
+     "dist": 5765.19
+    },
+    {
+     "eid": "lilmoth-mudborn-shrine",
+     "a": 5.7574,
+     "b": -4.6906,
+     "c": 3.4836,
+     "visible": false,
+     "dist": 5761.04
+    },
+    {
+     "eid": "lilmoth-priest-6",
+     "a": 5.4965,
+     "b": -5.755,
+     "c": 21.443,
+     "visible": true,
+     "dist": 9.04
+    },
+    {
+     "eid": "lilmoth-priest-6-apprentice1",
+     "a": 5.882,
+     "b": -4.0116,
+     "c": 13.693,
+     "visible": false,
+     "dist": 5759.89
+    },
+    {
+     "eid": "lilmoth-priest-6-lodger0",
+     "a": -6.044,
+     "b": 6.1689,
+     "c": 14.5492,
+     "visible": false,
+     "dist": 5763.15
+    },
+    {
+     "eid": "lilmoth-priest-8",
+     "a": 8.6945,
+     "b": -6.1187,
+     "c": 18.6706,
+     "visible": true,
+     "dist": 11.17
+    },
+    {
+     "eid": "lilmoth-priest-8-apprentice1",
+     "a": 5.1858,
+     "b": -4.7457,
+     "c": 2.6484,
+     "visible": false,
+     "dist": 5766.93
+    },
+    {
+     "eid": "lilmoth-priest-8-lodger0",
+     "a": -5.5561,
+     "b": 5.8267,
+     "c": 0.0924,
+     "visible": false,
+     "dist": 5761.47
+    },
+    {
+     "eid": "lilmoth-rootkeepers",
+     "a": -4.1347,
+     "b": 4.5839,
+     "c": 7.531,
+     "visible": true,
+     "dist": 66.45
+    },
+    {
+     "eid": "lilmoth-scribe-2",
+     "a": -4.5475,
+     "b": 5.2593,
+     "c": 7.0176,
+     "visible": true,
+     "dist": 15.21
+    },
+    {
+     "eid": "lilmoth-scribe-2-elder0",
+     "a": -5.6047,
+     "b": 5.4582,
+     "c": 14.9466,
+     "visible": false,
+     "dist": 5767.86
+    },
+    {
+     "eid": "lilmoth-scribe-2-sibling1",
+     "a": 6.1092,
+     "b": -5.3579,
+     "c": 9.9086,
+     "visible": false,
+     "dist": 5762.21
+    },
+    {
+     "eid": "lilmoth-smith-9",
+     "a": -7.8697,
+     "b": 5.4322,
+     "c": 16.866,
+     "visible": false,
+     "dist": 5760.99
+    },
+    {
+     "eid": "lilmoth-smith-9-sibling0",
+     "a": 6.0012,
+     "b": -4.9845,
+     "c": 13.5308,
+     "visible": false,
+     "dist": 5765.99
+    },
+    {
+     "eid": "lilmoth-weaver-3",
+     "a": -6.9079,
+     "b": 6.1467,
+     "c": 0.8252,
+     "visible": false,
+     "dist": 5764.1
+    },
+    {
+     "eid": "lilmoth-weaver-3-sibling0",
+     "a": -5.1985,
+     "b": 5.6894,
+     "c": 8.311,
+     "visible": true,
+     "dist": 11.79
+    },
+    {
+     "eid": "lilmoth-weaver-7",
+     "a": 6.7364,
+     "b": -6.914,
+     "c": 5.6042,
+     "visible": false,
+     "dist": 5761.39
+    },
+    {
+     "eid": "lilmoth-weaver-7-sibling0",
+     "a": -4.7159,
+     "b": 4.1964,
+     "c": 11.1794,
+     "visible": false,
+     "dist": 5759.49
+    },
+    {
+     "eid": "lilmoth-wharf-cutters",
+     "a": -6.2268,
+     "b": 6.413,
+     "c": 2.0608,
+     "visible": true,
+     "dist": 30.93
+    },
+    {
+     "eid": "lilmoth-yard-brothers",
+     "a": 5.986,
+     "b": -5.0579,
+     "c": 6.9124,
+     "visible": true,
+     "dist": 24.64
+    },
+    {
+     "eid": "miredancer-omu-ei",
+     "a": -6.539,
+     "b": 6.0006,
+     "c": 11.8118,
+     "visible": false,
+     "dist": 5764.97
+    },
+    {
+     "eid": "miredancer-sap-speaker",
+     "a": -6.874,
+     "b": 4.9966,
+     "c": 9.4038,
+     "visible": false,
+     "dist": 5765.88
+    },
+    {
+     "eid": "npc-eleen",
+     "a": 6.932,
+     "b": -6.2466,
+     "c": 16.7538,
+     "visible": true,
+     "dist": 6027.39
+    },
+    {
+     "eid": "npc-ineve-corrano",
+     "a": -5.5204,
+     "b": 5.9109,
+     "c": 7.8006,
+     "visible": true,
+     "dist": 6025.53
+    },
+    {
+     "eid": "npc-skara-hull-chalk",
+     "a": -5.4878,
+     "b": 3.9741,
+     "c": 8.8164,
+     "visible": true,
+     "dist": 6026.15
+    },
+    {
+     "eid": "npc-widow-tesla-vor",
+     "a": -6.1826,
+     "b": 5.2473,
+     "c": 0.9914,
+     "visible": true,
+     "dist": 6016.41
+    },
+    {
+     "eid": "rootkeeper-under-the-temple",
+     "a": -5.9787,
+     "b": 4.4425,
+     "c": 5.4806,
+     "visible": true,
+     "dist": 27.15
+    },
+    {
+     "eid": "shipwright-oleen",
+     "a": 6.2659,
+     "b": -5.2349,
+     "c": 14.3504,
+     "visible": true,
+     "dist": 17.82
+    },
+    {
+     "eid": "spellwright-lilmoth",
+     "a": -5.415,
+     "b": 5.2828,
+     "c": 13.745,
+     "visible": true,
+     "dist": 16.16
+    }
+   ]
+  },
+  {
+   "arm": "L3 PLANTING (S59 c) — the lower ankle above the ground resolver, drawn crowd",
+   "n": 31,
+   "min": 0.088203,
+   "max": 0.09126,
+   "r11_measured_range": [
+    0.067407,
+    0.104151
+   ],
+   "r10_photographed_baseline_m": 0.089,
+   "note": "the spread is terrain under a stilt town, not stance — r11 established that and this arm only has to show it did not widen."
+  },
+  {
+   "arm": "L4a REBUILD — every NPC mesh destroyed and rebuilt by syncNPCs",
+   "identity": {
+    "compared": 60,
+    "identical": 60,
+    "DRAWN": {
+     "compared": 27,
+     "identical": 27
+    },
+    "invisible_never_advanced": {
+     "compared": 33,
+     "identical": 33
+    }
+   },
+   "bones_at_the_SAME_pinned_clock": {
+    "compared": 60,
+    "identical": 31,
+    "DRAWN": {
+     "compared": 27,
+     "identical": 27
+    },
+    "invisible_never_advanced": {
+     "compared": 33,
+     "identical": 4
+    }
+   },
+   "pinned_sim_frame": 84
+  },
+  {
+   "arm": "L4b TRAVEL — away to another settlement and back",
+   "identity": {
+    "compared": 60,
+    "identical": 60,
+    "DRAWN": {
+     "compared": 27,
+     "identical": 27
+    },
+    "invisible_never_advanced": {
+     "compared": 33,
+     "identical": 33
+    }
+   },
+   "bones_at_the_SAME_pinned_clock": {
+    "compared": 60,
+    "identical": 31,
+    "DRAWN": {
+     "compared": 27,
+     "identical": 27
+    },
+    "invisible_never_advanced": {
+     "compared": 33,
+     "identical": 4
+    }
+   },
+   "pinned_sim_frame": 84
+  },
+  {
+   "arm": "L4c SAVE/RELOAD — saveState() then loadState(), then back to the same stand",
+   "load_ok": true,
+   "identity": {
+    "compared": 60,
+    "identical": 60,
+    "DRAWN": {
+     "compared": 27,
+     "identical": 27
+    },
+    "invisible_never_advanced": {
+     "compared": 33,
+     "identical": 33
+    }
+   },
+   "bones_at_the_SAME_pinned_clock": {
+    "compared": 60,
+    "identical": 31,
+    "DRAWN": {
+     "compared": 27,
+     "identical": 27
+    },
+    "invisible_never_advanced": {
+     "compared": 33,
+     "identical": 4
+    }
+   },
+   "pinned_sim_frame": 84
+  }
+ ]
+}
