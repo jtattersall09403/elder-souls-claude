@@ -1,0 +1,591 @@
+{
+  "tool": "f10-r13c-critic-probe",
+  "generated": "2026-08-16T04:37:52.171Z",
+  "res": 640,
+  "mask_px": 120,
+  "A_three_counts": {
+    "n_records": 408,
+    "distinct_characterId_NAMES": 72,
+    "distinct_rigVariantKey_MORPH_NUMBERS": 72,
+    "distinct_vertex_hash_GEOMETRY": 72,
+    "names_bought_free": 0,
+    "keys_with_identical_geometry": [],
+    "reading": "names == morph keys == vertex hashes. No body in this build is another body under a second name, and no two morph keys produce the same mesh."
+  },
+  "B_would_a_scale_axis_have_been_visible": {
+    "probe_record": "npc-wuleen-kus",
+    "probe_race": "saxhleel",
+    "group_scale_applied": 1.15,
+    "note": "the scale is applied exactly as renderer.js:801 applies height_scale — group scale on the built mesh",
+    "variantKey_before": "base.saxhleel|m=build:0.792,shoulders:0.950,belly:0.941,neck:0.890,snout:1.020,crest:0.250,horn:1.000,hand:0.996,head:0.999,stoop:0.850|mat=salt-hills:9278070:7170645:0.90|sk=-|cl=clipset.civilian",
+    "variantKey_after": "base.saxhleel|m=build:0.792,shoulders:0.950,belly:0.941,neck:0.890,snout:1.020,crest:0.250,horn:1.000,hand:0.996,head:0.999,stoop:0.850|mat=salt-hills:9278070:7170645:0.90|sk=-|cl=clipset.civilian",
+    "variantKey_moved": false,
+    "variantKey_hashes_scale_axis_at_all": false,
+    "world_height_m_before": 1.8157,
+    "world_height_m_after": 2.051,
+    "world_height_moved": true,
+    "mask_front_IoU": 0.791331,
+    "mask_90_IoU": 0.553343,
+    "C1_R_before": 7.462,
+    "C1_R_after": 8.559,
+    "verdict": "VISIBLE to at least one instrument — the round's stated reason does NOT hold"
+  },
+  "C_C2_rederived": {
+    "n_bodies": 72,
+    "n_pairs": 2556,
+    "median_iou": 0.6453,
+    "max_iou": 0.9806,
+    "worst_pair": {
+      "a": "sax.reed-widow",
+      "b": "sax.hive-drone~thickset",
+      "iou": 0.9806
+    },
+    "pairs_at_or_above_0_93": 114,
+    "bar": "median <= 0.80 AND no pair >= 0.93",
+    "verdict": "FAIL",
+    "top_10": [
+      {
+        "a": "sax.reed-widow",
+        "b": "sax.hive-drone~thickset",
+        "iou": 0.9806
+      },
+      {
+        "a": "sax.reed-widow~wiry",
+        "b": "sax.hive-drone",
+        "iou": 0.9783
+      },
+      {
+        "a": "sax.mire-runner",
+        "b": "sax.thorn-hunter~wiry",
+        "iou": 0.9748
+      },
+      {
+        "a": "sax.mire-runner~thickset",
+        "b": "sax.thorn-hunter",
+        "iou": 0.9745
+      },
+      {
+        "a": "hum.marauder~thickset",
+        "b": "hum.dock-porter",
+        "iou": 0.9697
+      },
+      {
+        "a": "hum.marauder",
+        "b": "hum.dunmer-broad",
+        "iou": 0.9696
+      },
+      {
+        "a": "player.saxhleel~thickset",
+        "b": "sax.salt-elder",
+        "iou": 0.9675
+      },
+      {
+        "a": "sax.hist-broad~wiry",
+        "b": "sax.deep-warden~wiry",
+        "iou": 0.967
+      },
+      {
+        "a": "sax.reed-widow~wiry",
+        "b": "sax.marsh-lean~wiry",
+        "iou": 0.9668
+      },
+      {
+        "a": "player.saxhleel",
+        "b": "sax.thorn-hunter~thickset",
+        "iou": 0.9664
+      }
+    ]
+  },
+  "C1_rederived": {
+    "n_bodies": 72,
+    "R_min": 7.098,
+    "R_median": 7.449,
+    "R_max": 7.838,
+    "inside_7_0_to_8_0": 72,
+    "inside_6_0_to_8_5": 72,
+    "world_height_m_min": 1.7785,
+    "world_height_m_max": 1.8188,
+    "pixel_numbers": [
+      {
+        "body": "sax.reed-widow~wiry",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "hum.breton-stout~thickset",
+        "H_px": 581,
+        "h_px": 79,
+        "R": 7.354
+      },
+      {
+        "body": "sax.helstrom-guard~thickset",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "hum.stooped-widow~wiry",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.imperial-clerk~wiry",
+        "H_px": 581,
+        "h_px": 75,
+        "R": 7.747
+      },
+      {
+        "body": "sax.mire-runner",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "sax.mire-runner~thickset",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "hum.legion-heavy~wiry",
+        "H_px": 580,
+        "h_px": 74,
+        "R": 7.838
+      },
+      {
+        "body": "hum.dunmer-lean",
+        "H_px": 581,
+        "h_px": 76,
+        "R": 7.645
+      },
+      {
+        "body": "hum.imperial-clerk",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "sax.reed-widow~thickset",
+        "H_px": 582,
+        "h_px": 82,
+        "R": 7.098
+      },
+      {
+        "body": "sax.stooped-elder~wiry",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.marauder",
+        "H_px": 581,
+        "h_px": 78,
+        "R": 7.449
+      },
+      {
+        "body": "sax.dock-hauler",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.breton-stout",
+        "H_px": 581,
+        "h_px": 78,
+        "R": 7.449
+      },
+      {
+        "body": "hum.khajiit-lean~thickset",
+        "H_px": 581,
+        "h_px": 81,
+        "R": 7.173
+      },
+      {
+        "body": "hum.dunmer-lean~thickset",
+        "H_px": 581,
+        "h_px": 78,
+        "R": 7.449
+      },
+      {
+        "body": "sax.hist-broad~wiry",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "sax.reed-widow",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "player.saxhleel",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "hum.stooped-widow",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "sax.thorn-hunter~wiry",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "sax.stooped-elder",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "sax.marsh-lean",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.legion-heavy",
+        "H_px": 581,
+        "h_px": 78,
+        "R": 7.449
+      },
+      {
+        "body": "sax.marsh-lean~thickset",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "sax.deep-warden~wiry",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "sax.hive-drone~wiry",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "sax.dock-hauler~thickset",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "hum.marauder~wiry",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.marauder~thickset",
+        "H_px": 581,
+        "h_px": 80,
+        "R": 7.263
+      },
+      {
+        "body": "hum.dock-porter~wiry",
+        "H_px": 581,
+        "h_px": 76,
+        "R": 7.645
+      },
+      {
+        "body": "sax.deep-warden",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "sax.helstrom-guard~wiry",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.dunmer-lean~wiry",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "sax.hive-drone~thickset",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "hum.dock-porter~thickset",
+        "H_px": 581,
+        "h_px": 79,
+        "R": 7.354
+      },
+      {
+        "body": "hum.stooped-widow~thickset",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "hum.imperial-clerk~thickset",
+        "H_px": 581,
+        "h_px": 79,
+        "R": 7.354
+      },
+      {
+        "body": "sax.hist-broad",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "sax.dock-hauler~wiry",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "sax.mire-runner~wiry",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "hum.khajiit-lean~wiry",
+        "H_px": 580,
+        "h_px": 74,
+        "R": 7.838
+      },
+      {
+        "body": "sax.helstrom-guard",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "player.saxhleel~thickset",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "sax.hist-broad~thickset",
+        "H_px": 582,
+        "h_px": 82,
+        "R": 7.098
+      },
+      {
+        "body": "sax.naga-broad~wiry",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "sax.marsh-lean~wiry",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "hum.dock-porter",
+        "H_px": 581,
+        "h_px": 78,
+        "R": 7.449
+      },
+      {
+        "body": "sax.thorn-hunter",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "hum.imperial-factor~thickset",
+        "H_px": 582,
+        "h_px": 81,
+        "R": 7.185
+      },
+      {
+        "body": "hum.dunmer-broad",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "sax.salt-elder",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "sax.hive-drone",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "sax.hist-priest~thickset",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "hum.dunmer-broad~thickset",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "player.saxhleel~wiry",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "hum.imperial-factor~wiry",
+        "H_px": 581,
+        "h_px": 77,
+        "R": 7.545
+      },
+      {
+        "body": "hum.khajiit-lean",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "sax.stooped-elder~thickset",
+        "H_px": 582,
+        "h_px": 81,
+        "R": 7.185
+      },
+      {
+        "body": "sax.deep-warden~thickset",
+        "H_px": 582,
+        "h_px": 81,
+        "R": 7.185
+      },
+      {
+        "body": "sax.salt-elder~wiry",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.nord-raw",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "sax.thorn-hunter~thickset",
+        "H_px": 582,
+        "h_px": 81,
+        "R": 7.185
+      },
+      {
+        "body": "hum.nord-raw~thickset",
+        "H_px": 581,
+        "h_px": 79,
+        "R": 7.354
+      },
+      {
+        "body": "sax.hist-priest",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "sax.hist-priest~wiry",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.legion-heavy~thickset",
+        "H_px": 582,
+        "h_px": 81,
+        "R": 7.185
+      },
+      {
+        "body": "sax.salt-elder~thickset",
+        "H_px": 582,
+        "h_px": 81,
+        "R": 7.185
+      },
+      {
+        "body": "hum.breton-stout~wiry",
+        "H_px": 581,
+        "h_px": 76,
+        "R": 7.645
+      },
+      {
+        "body": "hum.imperial-factor",
+        "H_px": 580,
+        "h_px": 77,
+        "R": 7.532
+      },
+      {
+        "body": "sax.naga-tall",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      }
+    ]
+  },
+  "D_does_max_iou_rise_with_pool_size": {
+    "method": "subsample n bodies from the reachable set, 24 random draws per n, report mean max and mean median IoU",
+    "rows": [
+      {
+        "pool_n": 5,
+        "mean_max_iou": 0.9069,
+        "mean_median_iou": 0.6125,
+        "trials": 24
+      },
+      {
+        "pool_n": 9,
+        "mean_max_iou": 0.9436,
+        "mean_median_iou": 0.6213,
+        "trials": 24
+      },
+      {
+        "pool_n": 14,
+        "mean_max_iou": 0.9548,
+        "mean_median_iou": 0.6363,
+        "trials": 24
+      },
+      {
+        "pool_n": 24,
+        "mean_max_iou": 0.9725,
+        "mean_median_iou": 0.6415,
+        "trials": 24
+      },
+      {
+        "pool_n": 36,
+        "mean_max_iou": 0.9745,
+        "mean_median_iou": 0.6416,
+        "trials": 24
+      },
+      {
+        "pool_n": 50,
+        "mean_max_iou": 0.9793,
+        "mean_median_iou": 0.6427,
+        "trials": 24
+      },
+      {
+        "pool_n": 72,
+        "mean_max_iou": 0.9806,
+        "mean_median_iou": 0.6453,
+        "trials": 24
+      }
+    ],
+    "reading": "the round argues E4->0 needs a pool near 400 and that at 400 the closest pair must approach IoU 1.0. This arm measures the direction and the RATE at the sizes actually available."
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "tool": "f10-r13c-critic-probe2",
+  "generated": "2026-08-16T04:43:02.722Z",
+  "B1_uniform_figure_scale_is_it_visible": {
+    "method": "every collected triangle multiplied by k — a genuinely uniform figure scale — then the same 120 px height-normalised mask",
+    "probe_record": "npc-wuleen-kus",
+    "unscaled": {
+      "world_h_m": 1.8157,
+      "H_px": 582,
+      "h_px": 78,
+      "R": 7.462
+    },
+    "rows": [
+      {
+        "uniform_scale": 1.05,
+        "world_h_m": 1.9065,
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658,
+        "mask_IoU_against_unscaled": 0.998794
+      },
+      {
+        "uniform_scale": 1.15,
+        "world_h_m": 2.088,
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462,
+        "mask_IoU_against_unscaled": 0.998794
+      },
+      {
+        "uniform_scale": 1.3,
+        "world_h_m": 2.3604,
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558,
+        "mask_IoU_against_unscaled": 0.998794
+      },
+      {
+        "uniform_scale": 0.85,
+        "world_h_m": 1.5433,
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558,
+        "mask_IoU_against_unscaled": 0.999598
+      }
+    ],
+    "variantKey_hashes_a_scale_axis": false,
+    "verdict": "VISIBLE at some k — see rows",
+    "variantKey_note": "`scale` is a declared VARIANT_AXIS (rigs.js:36) and variantKey (rigs.js:153) hashes base|morph|material|sockets|clips. It never reads `variant.scale`."
+  },
+  "B2_group_scale_is_NOT_a_uniform_scale_in_this_measurement_path": {
+    "method": "mesh.scale.setScalar(1.15) exactly as renderer.js:801 applies height_scale, then the same mask",
+    "world_h_m_before": 1.8157,
+    "world_h_m_after": 2.051,
+    "world_h_ratio": 1.1296,
+    "expected_ratio_if_uniform": 1.15,
+    "C1_R_before": 7.462,
+    "C1_R_after": 8.559,
+    "mask_IoU": 0.791331,
+    "mechanism": "actor-orbit-holes.mjs:collectTriangles reads a SkinnedMesh as bone.matrixWorld * boneInverse (line 116-135) and never applies the group matrixWorld; it reads a non-skinned mesh through o.matrixWorld (line 146), which does carry the group scale. So the group scale reaches the equipment and presentation pieces and not the skinned body.",
+    "n_skinned_meshes": 3,
+    "n_rigid_meshes": 55,
+    "rigid_mesh_names": [
+      "actor-contact-shadow",
+      "actor-action-silhouette",
+      "actor-secondary-frill:0@spine_02",
+      "actor-secondary-frill:1@spine_02",
+      "actor-secondary-frill:2@spine_02",
+      "actor-equipment:reed:head@head",
+      "actor-equipment:reed:chest@spine_02",
+      "actor-equipment:reed:chest@spine_02",
+      "actor-equipment:reed:chest@upperarm_l",
+      "actor-equipment:reed:chest@upperarm_r",
+      "actor-equipment:reed:hands@hand_l",
+      "actor-equipment:reed:hands@hand_r",
+      "actor-equipment:reed:legs@calf_l",
+      "actor-equipment:reed:legs@calf_r",
+      "actor-equipment:reed:chest@spine_00",
+      "actor-equipment:reed:legs@pelvis",
+      "actor-equipment:reed:chest@spine_02",
+      "actor-equipment:reed:chest@spine_02",
+      "actor-equipment:reed:back@spine_02",
+      "actor-equipment:chitin:head@head",
+      "actor-equipment:chitin:chest@spine_02",
+      "actor-equipment:chitin:chest@spine_02",
+      "actor-equipment:chitin:chest@upperarm_l",
+      "actor-equipment:chitin:chest@upperarm_r"
+    ],
+    "reading": "This is NOT evidence that a uniform scale is visible. It is evidence that height_scale, applied as a group scale, is not a uniform scale as far as every offline instrument in this family is concerned — which matters because the round names height_scale as the next round's largest visible win."
+  },
+  "E_how_E4_falls_with_pool_size": {
+    "method": "the real same-settlement/within-15 m/same-race adjacency graph, with each person dealt a body by FNV-1a('npc:'+id) % P — the shipped draw shape at a hypothetical pool size P",
+    "n_posts_with_coordinates": 321,
+    "n_same_race_adjacent_pairs_total": 751,
+    "rows": [
+      {
+        "pool_P": 5,
+        "identical_adjacent_pairs": 164
+      },
+      {
+        "pool_P": 9,
+        "identical_adjacent_pairs": 80
+      },
+      {
+        "pool_P": 14,
+        "identical_adjacent_pairs": 55
+      },
+      {
+        "pool_P": 24,
+        "identical_adjacent_pairs": 33
+      },
+      {
+        "pool_P": 36,
+        "identical_adjacent_pairs": 19
+      },
+      {
+        "pool_P": 50,
+        "identical_adjacent_pairs": 19
+      },
+      {
+        "pool_P": 72,
+        "identical_adjacent_pairs": 10
+      },
+      {
+        "pool_P": 100,
+        "identical_adjacent_pairs": 9
+      },
+      {
+        "pool_P": 150,
+        "identical_adjacent_pairs": 5
+      },
+      {
+        "pool_P": 200,
+        "identical_adjacent_pairs": 6
+      },
+      {
+        "pool_P": 300,
+        "identical_adjacent_pairs": 2
+      },
+      {
+        "pool_P": 400,
+        "identical_adjacent_pairs": 2
+      },
+      {
+        "pool_P": 600,
+        "identical_adjacent_pairs": 2
+      },
+      {
+        "pool_P": 700,
+        "identical_adjacent_pairs": 1
+      },
+      {
+        "pool_P": 900,
+        "identical_adjacent_pairs": 1
+      }
+    ],
+    "smallest_P_reaching_under_3": 300,
+    "smallest_P_reaching_zero": "not reached at P<=900"
+  }
+}
