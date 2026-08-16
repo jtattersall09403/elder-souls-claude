@@ -106,15 +106,25 @@ feature. **Aliasing collapses** — four samples of an unresolved oscillation av
 | `phase_spread_lsb` (4×4), water mask | < 1.0 | ≥ 2.0 → an ordered dither IS present; a different defect, fix that instead |
 | `stipple_ratio` (adjacent / two-apart) | ≤ **0.85** | > 0.95 → energy is entirely at the Nyquist limit |
 
+**The 45–70% middle is `unresolved`, and `unresolved` fails closed.** *(Added 2026-08-16, hours after
+this item was written, by the F7 r5 builder — the first measurement taken against it returned
+**64.95%** and landed in a zone the first draft did not define. Recording the hole rather than
+rounding the number into whichever neighbouring verdict was convenient.)* This follows `ARBITRATION`
+S61's asymmetry directly: **a statistic can fail a build and can never pass one**, so a survival
+figure that is neither clearly resolved detail nor clearly aliasing may not be read as either. It is
+reported as `unresolved`, it does not license a `NormalEnergy` pass, and it is not the hard fail that
+`< 45%` is.
+
 **The land control is required on every row.** All three numbers are properties of a region of
 screen as much as of a shader, and the only thing that makes a water reading mean anything is the
 same reading taken over pixels the water shader does not touch, in the same frame. A water figure
 published without its land control is inadmissible here.
 
 **And `NormalEnergy` is gated on this.** `RI-VIS03` M12's `NormalEnergy ≥ 0.035` may be reported as
-a **PASS only where `hf_survival_pct ≥ 70%`**. Below 45% it is recorded `inapplicable — high-frequency
-energy is predominantly aliasing`, and per `ARBITRATION` S64 that `inapplicable` **carries the
-absence forward as a finding and is never a pass**. This is an ADD under `CRITIC-DOCTRINE` §1.3: it
+a **PASS only where `hf_survival_pct ≥ 70%`**. Between 45% and 70% it is `unresolved` and fails
+closed. Below 45% it is recorded `inapplicable — high-frequency energy is predominantly aliasing`,
+and per `ARBITRATION` S64 that `inapplicable` **carries the absence forward as a finding and is never
+a pass**. This is an ADD under `CRITIC-DOCTRINE` §1.3: it
 removes a degree of freedom, relaxes no threshold, and **it may be the reason a build fails and may
 never be the reason one passes.**
 
