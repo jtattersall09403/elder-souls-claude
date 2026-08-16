@@ -709,8 +709,19 @@ export class Renderer {
     const m = (C.player && C.player.moves) || (C.bodies || []).map((b) => b.moves).find(Boolean);
     if (!m || !m._idlePose) return null;
     if (!this._stanceArg || this._stanceArg.pose !== m._idlePose || this._stanceArg.loop !== m._idle) {
-      this._stanceArg = { pose: m._idlePose, loop: m._idle || null };
+      this._stanceArg = { pose: m._idlePose, loop: m._idle || null, t: 0 };
     }
+    // ROUND 12 — THE CLOCK. `W1-F10-r11-CRITIC` measured 0 of 60 drawn NPCs changing any non-foot
+    // bone over 60 frames, worst change exactly 0 radians, against the player's 0.011246 m: the
+    // crowd stood 392 ways and every one of them was a statue. `poseStatic` now advances each
+    // person's breathing phase against this counter on a staggered cadence.
+    //
+    // `sim.frame` AND NOT A RENDER COUNTER, deliberately. It is the fixed-step simulation's own
+    // tick (`sim/step.js:214`), so the crowd's pose is a pure function of (eid, sim frame): the
+    // same stand comes back on a replay, and it does not drift with how many frames the browser
+    // managed to draw. `poseLocomotion` advances the player's own `_loopFrame` once per sim step
+    // at `combat/actor.js:371`, so the crowd breathes at the player's rate, modulated per person.
+    this._stanceArg.t = (sim && Number.isFinite(sim.frame)) ? (sim.frame | 0) : 0;
     return this._stanceArg;
   }
 
@@ -819,8 +830,16 @@ export class Renderer {
         : n.pos[1];
       const drawPos = this._npcDrawPos || (this._npcDrawPos = [0, 0, 0]);
       drawPos[0] = n.pos[0]; drawPos[1] = Number.isFinite(gy) ? gy : n.pos[1]; drawPos[2] = n.pos[2];
-      poseStatic(mesh, this._anyRig(sim), drawPos, n.yaw, this._actorGround(), stance);
+      // VISIBILITY IS SET BEFORE THE POSE, NOT AFTER. `poseStatic`'s round-12 phase advance skips
+      // an actor that is not drawn, and reading `group.visible` one line later would read the
+      // PREVIOUS frame's answer — a person who just walked out of a door would miss one advance.
+      // Measured at the Lilmoth stand by `f10-r12-crowd-motion.mjs`: of the 60 `npc:` meshes, 29
+      // are `visible === false` (their day has them inside a cell the player is not in) and sit at
+      // their INTERIOR-LOCAL coordinate, i.e. within 5 m of the world origin on ground ≈ −41 m —
+      // `sim/npc.js:applyPresence` and its own comment. Advancing 29 people nobody can see is
+      // ~48% of this stand's stance budget spent on figures under the Topal.
       mesh.visible = n.visible !== false;
+      poseStatic(mesh, this._anyRig(sim), drawPos, n.yaw, this._actorGround(), stance);
     }
     for (const [eid, mesh] of this.npcMeshes) {
       if (!seen.has(eid)) { this.scene.remove(mesh); this.npcMeshes.delete(eid); }

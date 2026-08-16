@@ -2595,8 +2595,39 @@ export function stanceVariationFor(name) {
     // keeps the two mechanisms from hiding each other.
     splayLDeg: +span(-3, 11).toFixed(3),
     splayRDeg: +span(-11, 3).toFixed(3),
+    // HOW FAST THIS PERSON BREATHES. Round 12. `loopFrame` above already gives everyone their own
+    // PHASE, but with one shared period a crowd advanced by a common clock is a rigid formation:
+    // every pairwise phase difference is frozen for the life of the world, and 408 people in
+    // lockstep at a fixed offset is `RI-VIS10` §F#6 arriving in the time axis instead of the
+    // spatial one. A per-person RATE is the one field that makes the offsets themselves move.
+    //
+    // DRAWN LAST, AND THAT IS LOAD-BEARING, NOT TIDINESS. Every field above is taken from one
+    // seeded stream in source order, so a field appended at the END consumes a draw nobody else
+    // was going to consume: with `t = 0` this whole record is bit-identical to round 11's, which
+    // is what keeps r11's offline table (392 signatures, planting 1.388e-17 m) reproducible
+    // rather than merely re-asserted. `tools/visual/f10-r12-crowd-motion.mjs` arm 2 checks it.
+    loopRate: +span(0.82, 1.22).toFixed(6),
   };
 }
+
+/**
+ * WHICH FRAMES THIS PERSON RE-SOLVES ON. The crowd is split into `n` buckets and one bucket
+ * re-solves per frame, so a settlement of 408 costs at most 408/n solves in any one frame.
+ *
+ * Seeded from the SAME identity hash as the stance itself (`V.seed` is FNV-1a of
+ * `stance:npc:<eid>`), not from array order or mesh-creation order — otherwise the set of people
+ * who move together is a property of the streaming order, which changes under travel and reload,
+ * and neighbours in `sim.npcs` (who are neighbours in the WORLD, because the roster is authored
+ * per settlement) would breathe in visible blocks.
+ */
+export function stanceBucket(V, n) {
+  return (V.seed >>> 0) % Math.max(1, n | 0);
+}
+
+/** Frames between two consecutive re-solves of one person. 8 at the sim's step is ~7.5 re-solves
+ *  per person per second, and at most 51 of 408 people re-solving on any one frame. Exported so
+ *  an instrument reads the shipped number rather than holding its own copy of it (`HAZARDS §20a`). */
+export const STANCE_STAGGER_N = 8;
 
 /** Left/right bone index pairs, per skeleton index map. Built once per distinct index map. */
 const _MIRROR_PAIRS = new WeakMap();
@@ -2664,29 +2695,72 @@ function addVariation(buf, index, V) {
 const _STANCE_LOCAL_SAVE = new THREE.Matrix4();
 
 /**
- * Solve and APPLY one person's stand. Called once per actor, from `poseStatic`.
+ * The pose scratch, one per distinct bone count, reused across every solve.
+ *
+ * Round 11 allocated three `Float64Array`s per solve, which was free when a solve happened once
+ * per actor for the life of the world. Round 12 re-solves ~51 actors per frame, so the same three
+ * allocations become ~9,200 per second at the Lilmoth stand. Nothing here is retained past the
+ * call — only `posed_local` survives, and that is reused too — so one scratch per shape is safe.
+ * Keyed on the EXACT length because `mirrorPose` iterates `buf.rx.length`.
+ */
+const _STANCE_BUFS = new Map();
+function stanceBufFor(index, n) {
+  let b = _STANCE_BUFS.get(n);
+  if (!b) {
+    b = {
+      index,
+      rx: new Float64Array(n), ry: new Float64Array(n), rz: new Float64Array(n),
+      clearPose() { this.rx.fill(0); this.ry.fill(0); this.rz.fill(0); },
+    };
+    _STANCE_BUFS.set(n, b);
+  }
+  b.index = index;
+  b.rx.fill(0); b.ry.fill(0); b.rz.fill(0);
+  return b;
+}
+
+/**
+ * Solve and APPLY one person's stand, at a point in time.
+ *
+ * ROUND 12 — WHY THIS TAKES A CLOCK. Round 11 called this once per actor and cached the result,
+ * and `W1-F10-r11-CRITIC` measured the consequence in the running game: **0 of 60 drawn NPCs
+ * change any non-foot bone rotation over 60 frames, worst change exactly 0 radians**, against a
+ * player control moving 0.011246 m in the same interval. Every clause of `RI-VIS10` C3 arm (b1)
+ * passed at 100% — the crowd genuinely stands 392 ways — and a town of motionless figures scored
+ * it, because arm (b) inherited every clause of arm (a) except *"and the two frames differ"*.
+ * C3 gained arm (b2) in the same verdict. So the loop phase is now a function of `t`, and the
+ * `t` the renderer hands down is `sim.frame` — the fixed-step simulation's own counter, which is
+ * what makes the crowd's breathing a deterministic function of (eid, sim frame) rather than of
+ * wall-clock or of how many frames the browser managed to draw.
+ *
+ * WHAT MUST NOT MOVE, AND WHY IT CANNOT. The identity — weight-bearing side, depth, phase offset,
+ * rate, head aim, arm hang, splay — is `stanceVariationFor(name)`, untouched here and still a
+ * pure function of the name. `prev.variation` is reused across re-solves rather than re-derived,
+ * so a re-solve cannot deal anybody a new hand even if the hash changed under it.
  *
  * @param {object} S       the built skeleton (`buildSkeleton`'s return)
  * @param {string} name    the actor group's name — `npc:<eid>`, `enemy:<eid>`, `player`
- * @param {{pose:object, loop:object}} stance  the SAME `idle_ready` archetype and `idle_loop`
- *        LoopClip the player's `poseLocomotion` uses, handed down from `renderer.js` off the live
- *        combat body. Not a copy: `RI-VIS10`'s reuse directive and `HAZARDS §20a`'s second-copy
- *        trap both point the same way.
+ * @param {{pose:object, loop:object, t?:number}} stance  the SAME `idle_ready` archetype and
+ *        `idle_loop` LoopClip the player's `poseLocomotion` uses, handed down from `renderer.js`
+ *        off the live combat body. Not a copy: `RI-VIS10`'s reuse directive and `HAZARDS §20a`'s
+ *        second-copy trap both point the same way.
+ * @param {number} [t]     the sim frame to solve at. 0 (or omitted) reproduces round 11 exactly.
+ * @param {object} [prev]  this person's previous record, mutated in place and its matrices
+ *        reused. Omitted, a fresh record is allocated.
  * @returns {object|null}  the solved record, or null if the stance data was unusable
  */
-function applyStaticStance(S, name, stance) {
+function applyStaticStance(S, name, stance, t = 0, prev = null) {
   const index = S.index;
   const bones = S.bones;
   if (!index || !bones || !bones.length || !stance || !stance.pose) return null;
-  const V = stanceVariationFor(name);
+  const V = (prev && prev.variation) || stanceVariationFor(name);
   const n = bones.length;
-  const buf = {
-    index,
-    rx: new Float64Array(n), ry: new Float64Array(n), rz: new Float64Array(n),
-    clearPose() { this.rx.fill(0); this.ry.fill(0); this.rz.fill(0); },
-  };
+  const buf = stanceBufFor(index, n);
   // Same order as `CombatBody.poseLocomotion`: the loop ASSIGNS, the stance layer ADDS.
-  if (stance.loop && typeof stance.loop.applyPose === 'function') stance.loop.applyPose(buf, V.loopFrame);
+  // The loop frame is this person's own offset plus the clock at this person's own rate — the
+  // two seeded fields that stop 408 people breathing as one object.
+  const loopF = V.loopFrame + (t || 0) * (V.loopRate || 1);
+  if (stance.loop && typeof stance.loop.applyPose === 'function') stance.loop.applyPose(buf, loopF);
   addPose(buf, stance.pose, 0, V.depth);
   if (V.mirror) mirrorPose(buf, index);
   addVariation(buf, index, V);
@@ -2708,17 +2782,29 @@ function applyStaticStance(S, name, stance) {
   // position, yaw and height scale — so it is neutralised for exactly the length of this
   // traversal rather than the arithmetic being rewritten by hand. THREE's own `updateMatrixWorld`
   // does the walk, so there is no second copy of the hierarchy composition here either.
+  //
+  // The 20 matrices are CLONED on the first solve and COPIED INTO on every later one. A re-solve
+  // that cloned would allocate 20 `Matrix4`s per person per re-solve — ~1,020 per frame at the
+  // Lilmoth stand, which is the shape of per-frame cost the budget clause exists to catch.
   const holder = S.rootBone.parent;
+  const reuse = (prev && prev.posed_local && prev.posed_local.length === n) ? prev.posed_local : null;
+  const snap = () => {
+    if (!reuse) return bones.map((b) => (b ? b.matrixWorld.clone() : new THREE.Matrix4()));
+    for (let i = 0; i < n; i++) {
+      if (bones[i]) reuse[i].copy(bones[i].matrixWorld); else reuse[i].identity();
+    }
+    return reuse;
+  };
   let posed;
   if (holder) {
     _STANCE_LOCAL_SAVE.copy(holder.matrixWorld);
     holder.matrixWorld.identity();
     S.rootBone.updateMatrixWorld(true);
-    posed = bones.map((b) => (b ? b.matrixWorld.clone() : new THREE.Matrix4()));
+    posed = snap();
     holder.matrixWorld.copy(_STANCE_LOCAL_SAVE);
   } else {
     S.rootBone.updateMatrixWorld(true);
-    posed = bones.map((b) => (b ? b.matrixWorld.clone() : new THREE.Matrix4()));
+    posed = snap();
   }
 
   // ---- the root drop, solved rather than assumed ------------------------------------------
@@ -2735,19 +2821,29 @@ function applyStaticStance(S, name, stance) {
   const poseLo = lo(posed);
   const rootDy = (restLo === null || poseLo === null) ? 0 : restLo - poseLo;
 
-  return {
-    variation: V,
-    posed_local: posed,
-    // The lower ankle's height above the actor's own origin, before and after. Rest is the
-    // pre-contrapposto baseline the r10 critic photographed at 89.0 mm; `after` is what this
-    // person stands at once `root_dy_m` is added to the group.
-    rest_lower_ankle_m: restLo === null ? null : +restLo.toFixed(6),
-    posed_lower_ankle_m: poseLo === null ? null : +poseLo.toFixed(6),
-    root_dy_m: +rootDy.toFixed(6),
-    // The authored constant, evaluated at this person's depth. Published, never applied — it is
-    // the cross-check that the numeric solve above is measuring the thing it claims to.
-    authored_root_dy_m: +stanceRootOffsetY(stance.pose, 0, V.depth).toFixed(6),
-  };
+  const rec = prev || {};
+  rec.variation = V;
+  rec.posed_local = posed;
+  // The lower ankle's height above the actor's own origin, before and after. Rest is the
+  // pre-contrapposto baseline the r10 critic photographed at 89.0 mm; `after` is what this
+  // person stands at once `root_dy_m` is added to the group.
+  //
+  // THE ROOT SOLVE MOVES WITH THE POSE, and that is S59 preservation clause (c) rather than an
+  // implementation detail: the drop is recomputed off the skeleton as it stands NOW, so a person
+  // whose breathing has lifted a heel is re-planted on the same frame. Leaving the drop behind at
+  // the phase it was first solved at is exactly how the whole crowd starts hovering again.
+  rec.rest_lower_ankle_m = restLo === null ? null : +restLo.toFixed(6);
+  rec.posed_lower_ankle_m = poseLo === null ? null : +poseLo.toFixed(6);
+  rec.root_dy_m = +rootDy.toFixed(6);
+  // The authored constant, evaluated at this person's depth. Published, never applied — it is
+  // the cross-check that the numeric solve above is measuring the thing it claims to. Per-person
+  // constant, so it is computed on the first solve only.
+  if (rec.authored_root_dy_m === undefined) {
+    rec.authored_root_dy_m = +stanceRootOffsetY(stance.pose, 0, V.depth).toFixed(6);
+  }
+  rec.loop_frame_solved = +loopF.toFixed(4);
+  rec.t_solved = t || 0;
+  return rec;
 }
 
 /**
@@ -2756,6 +2852,60 @@ function applyStaticStance(S, name, stance) {
  * name. Exported because a test that re-implements the seeding tests its own re-implementation.
  */
 export { applyStaticStance as _applyStaticStance };
+
+/**
+ * The clock a stance argument carries, as a whole number of sim frames.
+ *
+ * `undefined` reads as 0, and that is the compatibility contract the offline instruments depend
+ * on: a caller that hands down `{pose, loop}` with no `t` — every tool written before round 12,
+ * and `syncEntities` — gets round 11's behaviour to the last bit, because `t = 0` makes the loop
+ * frame `V.loopFrame` exactly and the advance never fires.
+ */
+function stanceClock(stance) {
+  const t = stance && stance.t;
+  return Number.isFinite(t) ? (t | 0) : 0;
+}
+
+const _SEC_Q = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 2, 0, 0));
+const _SEC_M = new THREE.Matrix4();
+const _SEC_P = new THREE.Vector3();
+const _SEC_S = new THREE.Vector3(1, 1, 1);
+
+/**
+ * Hang this actor's equipment, species forms and secondary meshes off its skeleton's current
+ * actor-local frames. Called on the first pose and again after every re-solve.
+ *
+ * Round 11 ran this body once, inline, behind `A.staticPresentationBound`. It is a function now
+ * for one reason: the pose moves. The quaternion, matrix and vectors below used to be allocated
+ * per secondary item per call, which was three objects once per actor and is three objects per
+ * item per re-solve after the advance — the same per-frame-cost shape the budget clause exists
+ * to catch, so they are module scratch.
+ */
+function bindStaticPresentation(A) {
+  const S = A.built;
+  if (!S) return;
+  // The frame the attachments hang in: the posed skeleton when this actor has a stand, the
+  // rest skeleton when it does not. Same array shape either way, so there is one bind path.
+  const FRAME = (A.staticStance && A.staticStance.posed_local) || S.restWorld;
+  const apply = (item) => {
+    const bone = FRAME && FRAME[item.bi]; if (!bone) return;
+    item.mesh.matrix.copy(bone).multiply(item.local);
+    item.mesh.matrixWorldNeedsUpdate = true;
+  };
+  // Civilians have no combat equip-load field. Give them the light reed set and explicitly
+  // suppress the other two authored sets; leaving all three visible stacked three helmets,
+  // three breastplates and three greaves on every NPC even after their sockets were fixed.
+  for (const item of S.equipment || []) { item.mesh.visible = !A.civilian && item.set === 'reed'; apply(item); }
+  for (const item of S.presentation || []) apply(item);
+  const spineI = S.index.get('spine_02'), spine = spineI === undefined ? null : (FRAME && FRAME[spineI]);
+  if (!spine) return;
+  for (const item of S.secondary || []) {
+    _SEC_P.set(0, item.localY, item.localZ);
+    _SEC_M.compose(_SEC_P, _SEC_Q, _SEC_S);
+    item.mesh.matrix.copy(spine).multiply(_SEC_M);
+    item.mesh.matrixWorldNeedsUpdate = true;
+  }
+}
 
 /**
  * Drive the actor from a live `CombatBody`. This is the whole consumer: it writes the rig's
@@ -3013,12 +3163,29 @@ export function poseStatic(group, rigDefSource, pos, yawDeg, water, stance) {
     ensureBuilt(group, rigDefSource);
   }
   if (A.rigged) return false;                 // already world-driven; do not fight it
-  // ---- this person's own stand, solved ONCE and then never touched again ---------------------
-  // Ordered before the presentation bind below on purpose: that bind is also one-time, and it
-  // must bind against the POSED skeleton or every horn, crest, helmet and garment in the crowd
-  // sits at the rest pose while the body under it stands somewhere else.
+  // ---- this person's own stand: solved once, then ADVANCED on a staggered cadence -------------
+  // Ordered before the presentation bind below on purpose: that bind must run against the POSED
+  // skeleton or every horn, crest, helmet and garment in the crowd sits at the rest pose while
+  // the body under it stands somewhere else — and after round 12 that applies on every re-solve
+  // too, not only the first, or the attachments drift a few millimetres off a breathing body and
+  // do it rhythmically, which reads worse than a static offset.
+  let resolved = false;
   if (A.staticStance === undefined) {
-    A.staticStance = stance ? applyStaticStance(A.built, group.name, stance) : null;
+    A.staticStance = stance ? applyStaticStance(A.built, group.name, stance, stanceClock(stance), null) : null;
+    resolved = !!A.staticStance;
+  } else if (A.staticStance && stance && stance.t !== undefined && group.visible !== false) {
+    // THE STAGGER. One bucket of the crowd re-solves per frame, so the per-frame cost is
+    // 1/STANCE_STAGGER_N of solving everybody. `t !== t_solved` keeps a second `poseStatic` call
+    // in the same frame — the harness makes them — from paying twice, and `group.visible` keeps
+    // the 29 people at the Lilmoth stand whose day has them indoors from being breathed at all.
+    // The FIRST solve above is deliberately NOT gated on visibility: an actor must have a stand
+    // the instant it is drawn, and `syncNPCs` sets `visible` before it poses (renderer.js).
+    const t = stanceClock(stance);
+    const V = A.staticStance.variation;
+    if (t !== A.staticStance.t_solved && (t % STANCE_STAGGER_N) === stanceBucket(V, STANCE_STAGGER_N)) {
+      applyStaticStance(A.built, group.name, stance, t, A.staticStance);
+      resolved = true;
+    }
   }
   const stanceDy = A.staticStance ? A.staticStance.root_dy_m : 0;
   group.position.set(pos[0], pos[1] + stanceDy, pos[2]);
@@ -3026,31 +3193,11 @@ export function poseStatic(group, rigDefSource, pos, yawDeg, water, stance) {
   // Non-combat people use the rig's authored rest pose, but their equipment/species forms are
   // separate bone-bound presentation meshes. Previously only poseFromRig() evaluated those
   // bindings: a static NPC left every helmet, shoulder shell, horn and garment at actor origin,
-  // stacking them into the giant bulbous silhouettes visible in populated interiors. Bind once
-  // against the stored actor-local rest matrices; the outer group still supplies position/yaw.
-  if (!A.staticPresentationBound) {
-    const S=A.built;
-    // The frame the attachments hang in: the posed skeleton when this actor has a stand, the
-    // rest skeleton when it does not. Same array shape either way, so there is one bind path.
-    const FRAME = (A.staticStance && A.staticStance.posed_local) || S.restWorld;
-    const apply=(item)=>{
-      const bone=FRAME&&FRAME[item.bi];if(!bone)return;
-      item.mesh.matrix.copy(bone).multiply(item.local);
-      item.mesh.matrixWorldNeedsUpdate=true;
-    };
-    // Civilians have no combat equip-load field. Give them the light reed set and explicitly
-    // suppress the other two authored sets; leaving all three visible stacked three helmets,
-    // three breastplates and three greaves on every NPC even after their sockets were fixed.
-    for(const item of S.equipment||[]){item.mesh.visible=!A.civilian&&item.set==='reed';apply(item);}
-    for(const item of S.presentation||[])apply(item);
-    const spineI=S.index.get('spine_02'),spine=spineI===undefined?null:(FRAME&&FRAME[spineI]);
-    for(const item of S.secondary||[]){
-      if(!spine)continue;
-      const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI/2,0,0));
-      const local=new THREE.Matrix4().compose(new THREE.Vector3(0,item.localY,item.localZ),q,new THREE.Vector3(1,1,1));
-      item.mesh.matrix.copy(spine).multiply(local);item.mesh.matrixWorldNeedsUpdate=true;
-    }
-    A.staticPresentationBound=true;
+  // stacking them into the giant bulbous silhouettes visible in populated interiors. Bind
+  // against the stored actor-local matrices; the outer group still supplies position/yaw.
+  if (!A.staticPresentationBound || resolved) {
+    bindStaticPresentation(A);
+    A.staticPresentationBound = true;
   }
   // ---- the terrain conform, on the path 408 NPCs and every static enemy take ------------------
   //
