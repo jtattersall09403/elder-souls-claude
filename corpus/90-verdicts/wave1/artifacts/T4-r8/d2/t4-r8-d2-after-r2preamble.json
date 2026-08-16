@@ -1,0 +1,274 @@
+{
+  "schema": "elder-souls/t4-r8-d2@1",
+  "at": "2026-08-16T01:02:36.104Z",
+  "label": "after-r2preamble",
+  "repo_root": "/home/user/elder-souls-claude",
+  "commit": "ee29ff9dd14abac85843ea896e317989edb921a9",
+  "worktree_dirty": true,
+  "bar": "A (binned) is the bar this round is judged against — it is what rounds 5-7 published. B and C are reported so the corpus defect can be closed with numbers.",
+  "does_not_claim": "CRITIC-DOCTRINE §1.3: reading C is an instrument written this round by the builder. It may be the reason a screen FAILS and is never offered as the reason one passes. Any screen that clears the floor only under C is recorded as still failing.",
+  "screens": {
+    "journal": {
+      "mode": "journal",
+      "panel_rect": [
+        595,
+        325,
+        730,
+        430
+      ],
+      "element_count": 23,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "effect_strip": 1,
+        "place_name": 1,
+        "panel": 1,
+        "panel_header": 2,
+        "journal_index_row": 5,
+        "journal_entry": 2,
+        "divider": 1,
+        "page_count": 1,
+        "hint": 1
+      },
+      "ground_probe": [
+        635,
+        383,
+        650,
+        5
+      ],
+      "ground_material": "parchment",
+      "A_binned": {
+        "ref": [
+          187,
+          178,
+          156
+        ],
+        "votes": 49752,
+        "runner_up": 44094,
+        "d2": 0.1587
+      },
+      "B_exact": {
+        "ref": [
+          34,
+          28,
+          26
+        ],
+        "votes": 4473,
+        "runner_up": 2064,
+        "distinct_colours": 6891,
+        "d2": 0.975
+      },
+      "C_pinned": {
+        "ref": [
+          195,
+          185,
+          163
+        ],
+        "votes": 1104,
+        "runner_up": 449,
+        "probe_px": 3250,
+        "d2": 0.2806
+      },
+      "C2_exact_probe": {
+        "ref": [
+          193,
+          184,
+          162
+        ],
+        "votes": 126,
+        "d2": 0.2524
+      },
+      "probe_vs_panelA_dE00": 2.013,
+      "probe_vs_panelB_dE00": 60.069,
+      "ground_texture_dE00": 0.59,
+      "palette_ground_hex": "#c8bfa8",
+      "palette_ground_dE00": 1.661,
+      "band_thresh": 0.1338,
+      "band_thresh_binned": 0.0571,
+      "spread_A_to_B": 0.8163,
+      "spread_A_to_C": 0.1219,
+      "verdict_flips": false
+    },
+    "spells": {
+      "mode": "spells",
+      "panel_rect": [
+        730,
+        365,
+        460,
+        350
+      ],
+      "element_count": 19,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "effect_strip": 1,
+        "place_name": 1,
+        "panel": 1,
+        "panel_header": 1,
+        "spell_row": 2,
+        "glyph_object": 2,
+        "divider": 1,
+        "detail_panel": 1,
+        "hint": 1
+      },
+      "ground_probe": [
+        770,
+        423,
+        380,
+        5
+      ],
+      "ground_material": "chitin",
+      "A_binned": {
+        "ref": [
+          27,
+          26,
+          24
+        ],
+        "votes": 47102,
+        "runner_up": 32814,
+        "d2": 0.2358
+      },
+      "B_exact": {
+        "ref": [
+          22,
+          24,
+          24
+        ],
+        "votes": 7133,
+        "runner_up": 6800,
+        "distinct_colours": 5386,
+        "d2": 0.4246
+      },
+      "C_pinned": {
+        "ref": [
+          27,
+          26,
+          25
+        ],
+        "votes": 646,
+        "runner_up": 328,
+        "probe_px": 1900,
+        "d2": 0.2788
+      },
+      "C2_exact_probe": {
+        "ref": [
+          22,
+          24,
+          24
+        ],
+        "votes": 93,
+        "d2": 0.4246
+      },
+      "probe_vs_panelA_dE00": 0.758,
+      "probe_vs_panelB_dE00": 2.253,
+      "ground_texture_dE00": 2.253,
+      "palette_ground_hex": "#16191a",
+      "palette_ground_dE00": 2.872,
+      "band_thresh": 0.1174,
+      "band_thresh_binned": 0.1045,
+      "spread_A_to_B": 0.1888,
+      "spread_A_to_C": 0.043,
+      "verdict_flips": false
+    },
+    "container": {
+      "mode": "container",
+      "panel_rect": [
+        720,
+        314,
+        480,
+        452
+      ],
+      "element_count": 33,
+      "kinds": {
+        "health_bar": 1,
+        "stamina_bar": 1,
+        "focus_bar": 1,
+        "heal_charges": 1,
+        "equip_load": 1,
+        "quick_slots": 1,
+        "interact_prompt": 1,
+        "bearing_dial": 1,
+        "effect_strip": 1,
+        "place_name": 1,
+        "panel": 1,
+        "panel_header": 3,
+        "scroll_extent": 1,
+        "list_row": 7,
+        "item_icon": 8,
+        "divider": 1,
+        "detail_panel": 1,
+        "hint": 1
+      },
+      "ground_probe": [
+        760,
+        372,
+        400,
+        5
+      ],
+      "ground_material": "clay",
+      "A_binned": {
+        "ref": [
+          132,
+          85,
+          55
+        ],
+        "votes": 132463,
+        "runner_up": 15190,
+        "d2": 0.1744
+      },
+      "B_exact": {
+        "ref": [
+          132,
+          85,
+          55
+        ],
+        "votes": 88431,
+        "runner_up": 26210,
+        "distinct_colours": 4421,
+        "d2": 0.1744
+      },
+      "C_pinned": {
+        "ref": [
+          132,
+          85,
+          55
+        ],
+        "votes": 1448,
+        "runner_up": 408,
+        "probe_px": 2000,
+        "d2": 0.1744
+      },
+      "C2_exact_probe": {
+        "ref": [
+          132,
+          85,
+          55
+        ],
+        "votes": 1124,
+        "d2": 0.1744
+      },
+      "probe_vs_panelA_dE00": 0,
+      "probe_vs_panelB_dE00": 0,
+      "ground_texture_dE00": 0,
+      "palette_ground_hex": "#8c5a3a",
+      "palette_ground_dE00": 2.238,
+      "band_thresh": 0.0067,
+      "band_thresh_binned": 0.0067,
+      "spread_A_to_B": 0,
+      "spread_A_to_C": 0,
+      "verdict_flips": false
+    }
+  }
+}

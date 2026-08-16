@@ -288,12 +288,23 @@ const report = {
 
 const h = await launchGame({ width: 1920, height: 1080, state: 'ui-journal', timeout: 300000 });
 try {
+  // THE r2 PREAMBLE — `setMode('play-instrumented')`, `loadState`, then a SECOND `setMode`.
+  // Added after the first version of this tool (which only did `ready()` + `closeMenu()`) read
+  // **spells 0.2359 against the 0.3075 every T4 round has published**, and journal 0.1587 against
+  // 0.1669. Both arms agreed with each other, so the DELTA was sound and the ABSOLUTE numbers were
+  // not comparable to the record — which is the more dangerous of the two errors, because a table
+  // of seven figures that is uniformly off by an unexplained amount discredits the two that moved.
+  // The world is drawn behind every panel at `CALM_ALPHA` 0.94, so which frame of the world is
+  // behind it changes D2; `loadState` is what puts the world in the state the record was taken in.
+  await h.h('setMode', 'play-instrumented');
+  await h.h('setRenderRate', 0);
+  await h.h('setDevicePixelRatio', 1);
+  await h.h('loadState', 'ui-journal');
+  await h.h('setMode', 'play-instrumented');
+  await h.h('stepFrames', 4);
   await h.page.evaluate(async () => {
     const HH = window.__HARNESS;
-    await HH.ready();
     if (HH.setUIVisible) await HH.setUIVisible(true);
-    await HH.setRenderRate(0);
-    await HH.setDevicePixelRatio(1);
     await HH.closeMenu(); await HH.stepFrames(4);
   });
   for (const [name, opener] of Object.entries(OPENERS)) {
