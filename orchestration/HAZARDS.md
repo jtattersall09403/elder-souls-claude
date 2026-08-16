@@ -107,6 +107,43 @@ This is §0's failure family (*a self-test whose arms agree about a false premis
 collapsed to one, and §28's (*an offline harness that advances the clock by 1*) arriving in the pixel
 domain — three instances in one week, so the family is worth naming rather than re-deriving.
 
+## 31. A CHECK THAT IMPORTS A GENERATOR DESTROYS THE EVIDENCE IT IS LOOKING FOR
+
+**Found 2026-08-16 by the dialogue-leak critic, as control D of five, and it is the sharpest instrument
+defect this project has recorded.**
+
+`check-authoring-leaks.mjs` scans `game/data/dialogue/greetings.json` for text that should not have
+shipped. To know what a leak looks like it imports `tools/dialogue/gen-greetings.mjs` — **which has a
+top-level write side-effect.** So the check **regenerates the file it is about to scan**.
+
+The control that exposed it: hand-author the defect back into the shipped `greetings.json` and run the
+check. It **exits 0 — and the leak is gone from the file.** The check deleted the evidence, then
+reported the absence of evidence. That file is **1,500 of the corpus's 4,988 rendered strings (30.1%)**
+and it is the file the original defect lived in.
+
+**Two more controls failed in the same battery and are the same family:**
+
+- **Revert the call site, leave the fixed function in place** — `foldBooks()` still correct, `engine.js`
+  no longer calling it — and **all three checks exit 0**. They test the function, not the wiring, which
+  is `RI-MTH07`'s consumption gate in miniature: *a correct rule with no caller*.
+- **Inject the defect into a spoken line under a key the whitelist does not name** — **59 faction-refusal
+  strings across 7 factions** — and the check is blind, **while its own header claims to cover exactly
+  that case.**
+
+**The rules.** (1) **A check must not import anything that writes.** Read the data; if you need the
+generator's vocabulary, read its source as text or extract the constant. (2) **Test the wiring, not the
+function** — assert the shipped call site, or the check passes a build where nothing calls it. (3) **A
+whitelist of keys is a denylist of everything else**; enumerate what it excludes and put the count in
+the report. (4) **Prove a check by hand-authoring the defect into the SHIPPED artefact and watching it
+go red.** A self-test against a fixture proves the predicate; only this proves the pipeline.
+
+**This is the sixth check found in two days that could not fail** — after one that read a screen's
+*declared* text rather than what it drew, one written as a literal `true`, one that only looked inside a
+single row band, one that hashed quaternions the poser never writes, and one that compared an image
+buffer with itself. **The pattern is not carelessness; it is that a check is written by the person who
+already believes the fix works, and tested in the direction they expect.** Write the failing direction
+first.
+
 ## 29. FOUR AGENTS LOST MEASUREMENT WORK TO CONTENTION IN ONE NIGHT. Four browser critics do not fit this box.
 
 **Measured 2026-08-16 02:52 with four agents running: `contention.mjs` returns WAIT, `/proc/loadavg`
