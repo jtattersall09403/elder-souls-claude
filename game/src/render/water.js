@@ -264,7 +264,7 @@ export function installWaterShader(mat) {
         //
         // The defect round 4 exists to fix, in the r3 verdict's own words: "the shoreline fade's
         // width is a function of EXTINCTION, so it vanishes in exactly the region that needs it
-        // most." Round 3 gated the fade on `esTrans` alone. `esTrans = exp(-k*path)`, so its
+        // most." Round 3 gated the fade on 'esTrans' alone. 'esTrans = exp(-k*path)', so its
         // spatial extent is ~3/k metres of column: at the Padomaic's k = 0.35 that is metres, and
         // at the Deep Marshes' k = 4.5 it is under 0.2 m of column at a grazing view — which is a
         // couple of metres of ground and therefore ~1 px. Measured across two regions by the r3
@@ -272,26 +272,26 @@ export function installWaterShader(mat) {
         //
         // WHY EXTINCTION IS STILL RIGHT FOR THE COLOUR AND WRONG FOR THE WIDTH. RI-WLD10 §10.1 —
         // "water is opaque before it is reflective" — is a statement about how much light returns
-        // from the column, and `esDepth` above keeps it unchanged: opaque water stays opaque. But
+        // from the column, and 'esDepth' above keeps it unchanged: opaque water stays opaque. But
         // RI-VIS04 §9's TELL is a statement about GEOMETRY — "a hard geometric line where the
         // water plane intersects the terrain" — and how far a waterline should be softened over
         // is a property of the bank's slope, not of how murky the water is. A perfectly opaque
         // pond still does not end in a 1 px step.
         //
-        // THE TERM. `esBandM` is 1 at the waterline and falls to 0 at `uWaterShoreBandM` metres of
+        // THE TERM. 'esBandM' is 1 at the waterline and falls to 0 at 'uWaterShoreBandM' metres of
         // column, with no k in it anywhere. It is combined with the transmittance term as a UNION
         // — mixed with, not replacing it, exactly as the r3 verdict's remedy asks — so the fade
         // acts wherever EITHER light still gets through OR the column is thin, and clear water
         // keeps the wider fade its own k earns it.
         //
         // PRESERVATION, BY CONSTRUCTION (ARBITRATION S59), BOTH ARMS:
-        //   * at `uWaterShoreBandM -> 0` the band is identically 0 and this line is round 3
+        //   * at 'uWaterShoreBandM -> 0' the band is identically 0 and this line is round 3
         //     EXACTLY. That is the r3-restore arm and it needs no shader edit, only a uniform.
-        //   * at `esDepthM >= uWaterShoreBandM` (deep water, and everything at province.js's q = 1
-        //     clamp) the band is 0, `esShoreT == esTrans`, and round 2's look is preserved through
+        //   * at 'esDepthM >= uWaterShoreBandM' (deep water, and everything at province.js's q = 1
+        //     clamp) the band is 0, 'esShoreT == esTrans', and round 2's look is preserved through
         //     round 3's own preservation property. This change can still only act in the shallows.
         //
-        // WHAT IT CANNOT REPAIR, AND IT IS THE SAME LIMIT ROUND 3 NAMED: `esDepthM` is inverted
+        // WHAT IT CANNOT REPAIR, AND IT IS THE SAME LIMIT ROUND 3 NAMED: 'esDepthM' is inverted
         // from a PER-VERTEX quantity on province.js's 12.5 m water lattice, clamped at 1.35 m. So
         // the band is as spatially coarse as that lattice and cannot resolve bed relief between
         // two cell corners. Widening the band in metres widens the fade; it does not add
